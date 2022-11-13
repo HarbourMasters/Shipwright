@@ -557,7 +557,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
 
     // Causes Dark Link to shield in place when Link is using magic attacks other than the spin attack
 
-    if ((gSaveContext.unk_13F0 == 3) && (player->swordState == 0 || (player->meleeWeaponAnimation < SPIN_ATTACK_1H) ||
+    if ((gSaveContext.magicState == 3) && (player->swordState == 0 || (player->meleeWeaponAnimation < SPIN_ATTACK_1H) ||
                                          (player->meleeWeaponAnimation > BIG_SPIN_2H))) {
         sStickTilt = 0.0f;
         input->cur.stick_x = 0;

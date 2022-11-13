@@ -1808,7 +1808,7 @@ void func_80B5772C(EnZl3* this, PlayState* play) {
 }
 
 void func_80B57754(EnZl3* this, PlayState* play) {
-    if (gSaveContext.unk_13F0 == 0) {
+    if (gSaveContext.magicState == 0) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_OCEFF_WIPE4, this->actor.world.pos.x,
                     this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 1);
         func_80B56DA4(this);

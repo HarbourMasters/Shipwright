@@ -54,7 +54,7 @@ u32 ElfMessage_CheckCondition(ElfMessage* msg) {
                     return ((msg->byte0 & 1) == 1) ==
                            (CHECK_QUEST_ITEM(msg->byte3 - ITEM_MEDALLION_FOREST + QUEST_MEDALLION_FOREST) != 0);
                 case (ELF_MSG_CONDITION_MAGIC << 4):
-                    return ((msg->byte0 & 1) == 1) == (((void)0, gSaveContext.magicAcquired) != 0);
+                    return ((msg->byte0 & 1) == 1) == (((void)0, gSaveContext.isMagicAcquired) != 0);
             }
     }
 

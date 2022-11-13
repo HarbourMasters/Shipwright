@@ -368,7 +368,7 @@ void EnHeishi1_Kick(EnHeishi1* this, PlayState* play) {
                 this->loadStarted = true;
                 sHeishi1PlayerIsCaught = false;
                 play->fadeTransition = 0x2E;
-                gSaveContext.nextTransition = 0x2E;
+                gSaveContext.nextTransitionType = 0x2E;
             }
         }
     }

@@ -2210,7 +2210,7 @@ s32 func_8083442C(Player* this, PlayState* play) {
     s32 magicArrowType;
 
     if ((this->heldItemAction >= PLAYER_AI_BOW_FIRE) && (this->heldItemAction <= PLAYER_AI_BOW_0E) &&
-        (gSaveContext.unk_13F0 != 0)) {
+        (gSaveContext.magicState != 0)) {
         func_80078884(NA_SE_SY_ERROR);
     } else {
         func_80833638(this, func_808351D4);
@@ -2993,7 +2993,7 @@ void func_80835F44(PlayState* play, Player* this, s32 item) {
             temp = Player_ActionToMagicSpell(this, actionParam);
             if (temp >= 0) {
                 if (((actionParam == PLAYER_AI_FARORES_WIND) && (gSaveContext.respawn[RESPAWN_MODE_TOP].data > 0)) ||
-                    ((gSaveContext.unk_13F4 != 0) && (gSaveContext.unk_13F0 == 0) &&
+                    ((gSaveContext.magicCapacity != 0) && (gSaveContext.magicState == 0) &&
                      (gSaveContext.magic >= sMagicSpellCosts[temp]))) {
                     this->itemAction = actionParam;
                     this->unk_6AD = 4;
@@ -4248,7 +4248,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                     gSaveContext.respawnFlag = 2;
                     play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex;
                     play->fadeTransition = 3;
-                    gSaveContext.nextTransition = 3;
+                    gSaveContext.nextTransitionType = 3;
                 } else if (play->nextEntranceIndex >= 0x7FF9) {
                     // handle dynamic exits
                     if (gSaveContext.n64ddFlag) {
@@ -4265,7 +4265,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                         Play_TriggerVoidOut(play);
                         gSaveContext.respawnFlag = -2;
                     }
-                    gSaveContext.unk_13C3 = 1;
+                    gSaveContext.retainWeatherMode = 1;
                     func_800994A0(play);
                 }
                 play->sceneLoadFlag = 0x14;
@@ -9699,7 +9699,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     }
 
     if (gSaveContext.nayrusLoveTimer != 0) {
-        gSaveContext.unk_13F0 = 3;
+        gSaveContext.magicState = 3;
         func_80846A00(play, this, 1);
         this->stateFlags3 &= ~PLAYER_STATE3_RESTORE_NAYRUS_LOVE;
     }
@@ -10600,8 +10600,8 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
         func_80848C74(play, this);
     }
 
-    if ((this->stateFlags3 & PLAYER_STATE3_RESTORE_NAYRUS_LOVE) && (gSaveContext.nayrusLoveTimer != 0) && (gSaveContext.unk_13F0 == 0)) {
-        gSaveContext.unk_13F0 = 3;
+    if ((this->stateFlags3 & PLAYER_STATE3_RESTORE_NAYRUS_LOVE) && (gSaveContext.nayrusLoveTimer != 0) && (gSaveContext.magicState == 0)) {
+        gSaveContext.magicState = 3;
         func_80846A00(play, this, 1);
         this->stateFlags3 &= ~PLAYER_STATE3_RESTORE_NAYRUS_LOVE;
     }
@@ -13016,7 +13016,7 @@ void func_8084EAC0(Player* this, PlayState* play) {
                     }
 
                     if (CVar_GetS32("gBlueManaPercentRestore", 0)) {
-                        if (gSaveContext.unk_13F0 != 10) {
+                        if (gSaveContext.magicState != 10) {
                             Magic_Fill(play);
                         }
 
@@ -13025,7 +13025,7 @@ void func_8084EAC0(Player* this, PlayState* play) {
                                           16 * 16,
                                       5);
                     } else {
-                        if (gSaveContext.unk_13F0 != 10) {
+                        if (gSaveContext.magicState != 10) {
                             Magic_Fill(play);
                         }
 
@@ -13035,7 +13035,7 @@ void func_8084EAC0(Player* this, PlayState* play) {
                 } else if (CVar_GetS32("gGreenPotionEffect", 0) &&
                            this->itemAction == PLAYER_AI_BOTTLE_POTION_GREEN) {
                     if (CVar_GetS32("gGreenPercentRestore", 0)) {
-                        if (gSaveContext.unk_13F0 != 10) {
+                        if (gSaveContext.magicState != 10) {
                             Magic_Fill(play);
                         }
 
@@ -13044,7 +13044,7 @@ void func_8084EAC0(Player* this, PlayState* play) {
                                           16 * 16,
                                       5);
                     } else {
-                        if (gSaveContext.unk_13F0 != 10) {
+                        if (gSaveContext.magicState != 10) {
                             Magic_Fill(play);
                         }
 
@@ -13092,7 +13092,7 @@ void func_8084EAC0(Player* this, PlayState* play) {
         func_8083C0E8(this, play);
         func_8005B1A4(Play_GetCamera(play, 0));
     } else if (this->unk_850 == 1) {
-        if ((gSaveContext.healthAccumulator == 0) && (gSaveContext.unk_13F0 != 9)) {
+        if ((gSaveContext.healthAccumulator == 0) && (gSaveContext.magicState != 9)) {
             func_80832B78(play, this, &gPlayerAnim_link_bottle_drink_demo_end);
             this->unk_850 = 2;
             Player_UpdateBottleHeld(play, this, ITEM_BOTTLE, PLAYER_AI_BOTTLE);
@@ -13449,7 +13449,7 @@ void func_8084F88C(Player* this, PlayState* play) {
             func_80078884(NA_SE_OC_ABYSS);
         } else {
             play->fadeTransition = 2;
-            gSaveContext.nextTransition = 2;
+            gSaveContext.nextTransitionType = 2;
             gSaveContext.seqId = (u8)NA_BGM_DISABLED;
             gSaveContext.natureAmbienceId = 0xFF;
         }
@@ -13850,7 +13850,7 @@ static struct_80832924 D_80854A8C[][2] = {
 void func_808507F4(Player* this, PlayState* play) {
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         if (this->unk_84F < 0) {
-            if ((this->itemAction == PLAYER_AI_NAYRUS_LOVE) || (gSaveContext.unk_13F0 == 0)) {
+            if ((this->itemAction == PLAYER_AI_NAYRUS_LOVE) || (gSaveContext.magicState == 0)) {
                 func_80839FFC(this, play);
                 func_8005B1A4(Play_GetCamera(play, 0));
             }
@@ -13861,7 +13861,7 @@ void func_808507F4(Player* this, PlayState* play) {
                 if (func_80846A00(play, this, this->unk_84F) != NULL) {
                     this->stateFlags1 |= PLAYER_STATE1_28 | PLAYER_STATE1_29;
                     if ((this->unk_84F != 0) || (gSaveContext.respawn[RESPAWN_MODE_TOP].data <= 0)) {
-                        gSaveContext.unk_13F0 = 1;
+                        gSaveContext.magicState = 1;
                     }
                 } else {
                     func_800876C8(play);

@@ -385,9 +385,9 @@ void SaveManager::InitFileNormal() {
     gSaveContext.rupees = 0;
     gSaveContext.swordHealth = 0;
     gSaveContext.naviTimer = 0;
-    gSaveContext.magicAcquired = 0;
-    gSaveContext.doubleMagic = 0;
-    gSaveContext.doubleDefense = 0;
+    gSaveContext.isMagicAcquired = 0;
+    gSaveContext.isDoubleMagicAcquired = 0;
+    gSaveContext.isDoubleDefenseAcquired = 0;
     gSaveContext.bgsFlag = 0;
     gSaveContext.ocarinaGameRoundNum = 0;
     for (int button = 0; button < ARRAY_COUNT(gSaveContext.childEquips.buttonItems); button++) {
@@ -483,15 +483,15 @@ void SaveManager::InitFileNormal() {
         gSaveContext.infTable[flag] = 0;
     }
     gSaveContext.worldMapAreaData = 0;
-    gSaveContext.scarecrowCustomSongSet = 0;
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowCustomSong); i++) {
-        gSaveContext.scarecrowCustomSong[i].noteIdx = 0;
-        gSaveContext.scarecrowCustomSong[i].unk_01 = 0;
-        gSaveContext.scarecrowCustomSong[i].unk_02 = 0;
-        gSaveContext.scarecrowCustomSong[i].volume = 0;
-        gSaveContext.scarecrowCustomSong[i].vibrato = 0;
-        gSaveContext.scarecrowCustomSong[i].tone = 0;
-        gSaveContext.scarecrowCustomSong[i].semitone = 0;
+    gSaveContext.scarecrowLongSongSet = 0;
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowLongSong); i++) {
+        gSaveContext.scarecrowLongSong[i].noteIdx = 0;
+        gSaveContext.scarecrowLongSong[i].unk_01 = 0;
+        gSaveContext.scarecrowLongSong[i].unk_02 = 0;
+        gSaveContext.scarecrowLongSong[i].volume = 0;
+        gSaveContext.scarecrowLongSong[i].vibrato = 0;
+        gSaveContext.scarecrowLongSong[i].tone = 0;
+        gSaveContext.scarecrowLongSong[i].semitone = 0;
     }
     gSaveContext.scarecrowSpawnSongSet = 0;
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowSpawnSong); i++) {
@@ -534,9 +534,9 @@ void SaveManager::InitFileDebug() {
     gSaveContext.rupees = 150;
     gSaveContext.swordHealth = 8;
     gSaveContext.naviTimer = 0;
-    gSaveContext.magicAcquired = 1;
-    gSaveContext.doubleMagic = 0;
-    gSaveContext.doubleDefense = 0;
+    gSaveContext.isMagicAcquired = 1;
+    gSaveContext.isDoubleMagicAcquired = 0;
+    gSaveContext.isDoubleDefenseAcquired = 0;
     gSaveContext.bgsFlag = 0;
     gSaveContext.ocarinaGameRoundNum = 0;
     for (int button = 0; button < ARRAY_COUNT(gSaveContext.childEquips.buttonItems); button++) {
@@ -794,9 +794,9 @@ void SaveManager::LoadBaseVersion1() {
     SaveManager::Instance->LoadData("rupees", gSaveContext.rupees);
     SaveManager::Instance->LoadData("swordHealth", gSaveContext.swordHealth);
     SaveManager::Instance->LoadData("naviTimer", gSaveContext.naviTimer);
-    SaveManager::Instance->LoadData("magicAcquired", gSaveContext.magicAcquired);
-    SaveManager::Instance->LoadData("doubleMagic", gSaveContext.doubleMagic);
-    SaveManager::Instance->LoadData("doubleDefense", gSaveContext.doubleDefense);
+    SaveManager::Instance->LoadData("isMagicAcquired", gSaveContext.isMagicAcquired);
+    SaveManager::Instance->LoadData("isDoubleMagicAcquired", gSaveContext.isDoubleMagicAcquired);
+    SaveManager::Instance->LoadData("isDoubleDefenseAcquired", gSaveContext.isDoubleDefenseAcquired);
     SaveManager::Instance->LoadData("bgsFlag", gSaveContext.bgsFlag);
     SaveManager::Instance->LoadData("ocarinaGameRoundNum", gSaveContext.ocarinaGameRoundNum);
     SaveManager::Instance->LoadStruct("childEquips", []() {
@@ -892,9 +892,9 @@ void SaveManager::LoadBaseVersion1() {
         SaveManager::Instance->LoadData("", gSaveContext.infTable[i]);
     });
     SaveManager::Instance->LoadData("worldMapAreaData", gSaveContext.worldMapAreaData);
-    SaveManager::Instance->LoadData("scarecrowCustomSongSet", gSaveContext.scarecrowCustomSongSet);
-    SaveManager::Instance->LoadArray("scarecrowCustomSong", sizeof(gSaveContext.scarecrowCustomSong), [](size_t i) {
-        SaveManager::Instance->LoadData("", ((u8*)&gSaveContext.scarecrowCustomSong)[i]);
+    SaveManager::Instance->LoadData("scarecrowLongSongSet", gSaveContext.scarecrowLongSongSet);
+    SaveManager::Instance->LoadArray("scarecrowLongSong", sizeof(gSaveContext.scarecrowLongSong), [](size_t i) {
+        SaveManager::Instance->LoadData("", ((u8*)&gSaveContext.scarecrowLongSong)[i]);
     });
     SaveManager::Instance->LoadData("scarecrowSpawnSongSet", gSaveContext.scarecrowSpawnSongSet);
     SaveManager::Instance->LoadArray("scarecrowSpawnSong", sizeof(gSaveContext.scarecrowSpawnSong), [](size_t i) {
@@ -935,9 +935,9 @@ void SaveManager::LoadBaseVersion2() {
     SaveManager::Instance->LoadData("rupees", gSaveContext.rupees);
     SaveManager::Instance->LoadData("swordHealth", gSaveContext.swordHealth);
     SaveManager::Instance->LoadData("naviTimer", gSaveContext.naviTimer);
-    SaveManager::Instance->LoadData("magicAcquired", gSaveContext.magicAcquired);
-    SaveManager::Instance->LoadData("doubleMagic", gSaveContext.doubleMagic);
-    SaveManager::Instance->LoadData("doubleDefense", gSaveContext.doubleDefense);
+    SaveManager::Instance->LoadData("isMagicAcquired", gSaveContext.isMagicAcquired);
+    SaveManager::Instance->LoadData("isDoubleMagicAcquired", gSaveContext.isDoubleMagicAcquired);
+    SaveManager::Instance->LoadData("isDoubleDefenseAcquired", gSaveContext.isDoubleDefenseAcquired);
     SaveManager::Instance->LoadData("bgsFlag", gSaveContext.bgsFlag);
     SaveManager::Instance->LoadData("ocarinaGameRoundNum", gSaveContext.ocarinaGameRoundNum);
     SaveManager::Instance->LoadStruct("childEquips", []() {
@@ -1048,16 +1048,16 @@ void SaveManager::LoadBaseVersion2() {
         SaveManager::Instance->LoadData("", gSaveContext.infTable[i]);
     });
     SaveManager::Instance->LoadData("worldMapAreaData", gSaveContext.worldMapAreaData);
-    SaveManager::Instance->LoadData("scarecrowCustomSongSet", gSaveContext.scarecrowCustomSongSet);
-    SaveManager::Instance->LoadArray("scarecrowCustomSong", ARRAY_COUNT(gSaveContext.scarecrowCustomSong), [](size_t i) {
+    SaveManager::Instance->LoadData("scarecrowLongSongSet", gSaveContext.scarecrowLongSongSet);
+    SaveManager::Instance->LoadArray("scarecrowLongSong", ARRAY_COUNT(gSaveContext.scarecrowLongSong), [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&i]() {
-            SaveManager::Instance->LoadData("noteIdx", gSaveContext.scarecrowCustomSong[i].noteIdx);
-            SaveManager::Instance->LoadData("unk_01", gSaveContext.scarecrowCustomSong[i].unk_01);
-            SaveManager::Instance->LoadData("unk_02", gSaveContext.scarecrowCustomSong[i].unk_02);
-            SaveManager::Instance->LoadData("volume", gSaveContext.scarecrowCustomSong[i].volume);
-            SaveManager::Instance->LoadData("vibrato", gSaveContext.scarecrowCustomSong[i].vibrato);
-            SaveManager::Instance->LoadData("tone", gSaveContext.scarecrowCustomSong[i].tone);
-            SaveManager::Instance->LoadData("semitone", gSaveContext.scarecrowCustomSong[i].semitone);
+            SaveManager::Instance->LoadData("noteIdx", gSaveContext.scarecrowLongSong[i].noteIdx);
+            SaveManager::Instance->LoadData("unk_01", gSaveContext.scarecrowLongSong[i].unk_01);
+            SaveManager::Instance->LoadData("unk_02", gSaveContext.scarecrowLongSong[i].unk_02);
+            SaveManager::Instance->LoadData("volume", gSaveContext.scarecrowLongSong[i].volume);
+            SaveManager::Instance->LoadData("vibrato", gSaveContext.scarecrowLongSong[i].vibrato);
+            SaveManager::Instance->LoadData("tone", gSaveContext.scarecrowLongSong[i].tone);
+            SaveManager::Instance->LoadData("semitone", gSaveContext.scarecrowLongSong[i].semitone);
         });
     });
     SaveManager::Instance->LoadData("scarecrowSpawnSongSet", gSaveContext.scarecrowSpawnSongSet);
@@ -1108,9 +1108,9 @@ void SaveManager::SaveBase() {
     SaveManager::Instance->SaveData("rupees", gSaveContext.rupees);
     SaveManager::Instance->SaveData("swordHealth", gSaveContext.swordHealth);
     SaveManager::Instance->SaveData("naviTimer", gSaveContext.naviTimer);
-    SaveManager::Instance->SaveData("magicAcquired", gSaveContext.magicAcquired);
-    SaveManager::Instance->SaveData("doubleMagic", gSaveContext.doubleMagic);
-    SaveManager::Instance->SaveData("doubleDefense", gSaveContext.doubleDefense);
+    SaveManager::Instance->SaveData("isMagicAcquired", gSaveContext.isMagicAcquired);
+    SaveManager::Instance->SaveData("isDoubleMagicAcquired", gSaveContext.isDoubleMagicAcquired);
+    SaveManager::Instance->SaveData("isDoubleDefenseAcquired", gSaveContext.isDoubleDefenseAcquired);
     SaveManager::Instance->SaveData("bgsFlag", gSaveContext.bgsFlag);
     SaveManager::Instance->SaveData("ocarinaGameRoundNum", gSaveContext.ocarinaGameRoundNum);
     SaveManager::Instance->SaveStruct("childEquips", []() {
@@ -1217,16 +1217,16 @@ void SaveManager::SaveBase() {
         SaveManager::Instance->SaveData("", gSaveContext.infTable[i]);
     });
     SaveManager::Instance->SaveData("worldMapAreaData", gSaveContext.worldMapAreaData);
-    SaveManager::Instance->SaveData("scarecrowCustomSongSet", gSaveContext.scarecrowCustomSongSet);
-    SaveManager::Instance->SaveArray("scarecrowCustomSong", ARRAY_COUNT(gSaveContext.scarecrowCustomSong), [](size_t i) {
+    SaveManager::Instance->SaveData("scarecrowLongSongSet", gSaveContext.scarecrowLongSongSet);
+    SaveManager::Instance->SaveArray("scarecrowLongSong", ARRAY_COUNT(gSaveContext.scarecrowLongSong), [](size_t i) {
         SaveManager::Instance->SaveStruct("", [&i]() {
-            SaveManager::Instance->SaveData("noteIdx", gSaveContext.scarecrowCustomSong[i].noteIdx);
-            SaveManager::Instance->SaveData("unk_01", gSaveContext.scarecrowCustomSong[i].unk_01);
-            SaveManager::Instance->SaveData("unk_02", gSaveContext.scarecrowCustomSong[i].unk_02);
-            SaveManager::Instance->SaveData("volume", gSaveContext.scarecrowCustomSong[i].volume);
-            SaveManager::Instance->SaveData("vibrato", gSaveContext.scarecrowCustomSong[i].vibrato);
-            SaveManager::Instance->SaveData("tone", gSaveContext.scarecrowCustomSong[i].tone);
-            SaveManager::Instance->SaveData("semitone", gSaveContext.scarecrowCustomSong[i].semitone);
+            SaveManager::Instance->SaveData("noteIdx", gSaveContext.scarecrowLongSong[i].noteIdx);
+            SaveManager::Instance->SaveData("unk_01", gSaveContext.scarecrowLongSong[i].unk_01);
+            SaveManager::Instance->SaveData("unk_02", gSaveContext.scarecrowLongSong[i].unk_02);
+            SaveManager::Instance->SaveData("volume", gSaveContext.scarecrowLongSong[i].volume);
+            SaveManager::Instance->SaveData("vibrato", gSaveContext.scarecrowLongSong[i].vibrato);
+            SaveManager::Instance->SaveData("tone", gSaveContext.scarecrowLongSong[i].tone);
+            SaveManager::Instance->SaveData("semitone", gSaveContext.scarecrowLongSong[i].semitone);
         });
     });
     SaveManager::Instance->SaveData("scarecrowSpawnSongSet", gSaveContext.scarecrowSpawnSongSet);
@@ -1484,10 +1484,10 @@ typedef struct {
     /* 0x0034 */ s16 rupees;
     /* 0x0036 */ u16 swordHealth;
     /* 0x0038 */ u16 naviTimer;
-    /* 0x003A */ u8 magicAcquired;
+    /* 0x003A */ u8 isMagicAcquired;
     /* 0x003B */ char unk_3B[0x01];
-    /* 0x003C */ u8 doubleMagic;
-    /* 0x003D */ u8 doubleDefense;
+    /* 0x003C */ u8 isDoubleMagicAcquired;
+    /* 0x003D */ u8 isDoubleDefenseAcquired;
     /* 0x003E */ u8 bgsFlag;
     /* 0x003F */ u8 ocarinaGameRoundNum;
     /* 0x0040 */ ItemEquips_v0 childEquips;
@@ -1509,8 +1509,8 @@ typedef struct {
     /* 0x0F34 */ char unk_F34[0x04];
     /* 0x0F38 */ u32 worldMapAreaData; // "area_arrival"
     /* 0x0F3C */ char unk_F3C[0x4];
-    /* 0x0F40 */ u8 scarecrowCustomSongSet;
-    /* 0x0F41 */ u8 scarecrowCustomSong[0x360];
+    /* 0x0F40 */ u8 scarecrowLongSongSet;
+    /* 0x0F41 */ u8 scarecrowLongSong[0x360];
     /* 0x12A1 */ char unk_12A1[0x24];
     /* 0x12C5 */ u8 scarecrowSpawnSongSet;
     /* 0x12C6 */ u8 scarecrowSpawnSong[0x80];
@@ -1526,7 +1526,7 @@ typedef struct {
     /* 0x13BC */ f32 entranceSpeed;
     /* 0x13C0 */ u16 entranceSound;
     /* 0x13C2 */ char unk_13C2[0x0001];
-    /* 0x13C3 */ u8 unk_13C3;
+    /* 0x13C3 */ u8 retainWeatherMode;
     /* 0x13C4 */ s16 dogParams;
     /* 0x13C6 */ u8 textTriggerFlags;
     /* 0x13C7 */ u8 showTitleCard;
@@ -1548,11 +1548,11 @@ typedef struct {
     /* 0x13EA */ u16 unk_13EA;    // also alpha type?
     /* 0x13EC */ u16 unk_13EC;    // alpha type counter?
     /* 0x13EE */ u16 unk_13EE;    // previous alpha type?
-    /* 0x13F0 */ s16 unk_13F0;    // magic related
-    /* 0x13F2 */ s16 unk_13F2;    // magic related
-    /* 0x13F4 */ s16 unk_13F4;    // magic related
-    /* 0x13F6 */ s16 unk_13F6;    // magic related
-    /* 0x13F8 */ s16 unk_13F8;    // magic related
+    /* 0x13F0 */ s16 magicState;    // magic related
+    /* 0x13F2 */ s16 prevMagicState;    // magic related
+    /* 0x13F4 */ s16 magicCapacity;    // magic related
+    /* 0x13F6 */ s16 magicFillTarget;    // magic related
+    /* 0x13F8 */ s16 magicTarget;    // magic related
     /* 0x13FA */ u16 eventInf[4]; // "event_inf"
     /* 0x1402 */ u16 mapIndex;    // intended for maps/minimaps but commonly used as the dungeon index
     /* 0x1404 */ u16 minigameState;
@@ -1563,17 +1563,17 @@ typedef struct {
     /* 0x140B */ char unk_140B[0x0001];
     /* 0x140C */ u8 zTargetSetting; // 0: Switch; 1: Hold
     /* 0x140E */ u16 forcedSeqId;   // immediately start playing the sequence if set
-    /* 0x1410 */ u8 unk_1410;       // transition related
+    /* 0x1410 */ u8 cutsceneTransitionControl;       // transition related
     /* 0x1411 */ char unk_1411[0x0001];
     /* 0x1412 */ u16 nextCutsceneIndex;
     /* 0x1414 */ u8 cutsceneTrigger;
     /* 0x1415 */ u8 chamberCutsceneNum;
     /* 0x1416 */ u16 nextDayTime; // "next_zelda_time"
-    /* 0x1418 */ u8 fadeDuration;
-    /* 0x1419 */ u8 unk_1419; // transition related
+    /* 0x1418 */ u8 transFadeDuration;
+    /* 0x1419 */ u8 transWipeSpeed; // transition related
     /* 0x141A */ u16 skyboxTime;
     /* 0x141C */ u8 dogIsLost;
-    /* 0x141D */ u8 nextTransition;
+    /* 0x141D */ u8 nextTransitionType;
     /* 0x141E */ char unk_141E[0x0002];
     /* 0x1420 */ s16 worldMapArea;
     /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
@@ -1600,9 +1600,9 @@ void CopyV0Save(SaveContext_v0& src, SaveContext& dst) {
     dst.rupees = src.rupees;
     dst.swordHealth = src.swordHealth;
     dst.naviTimer = src.naviTimer;
-    dst.magicAcquired = src.magicAcquired;
-    dst.doubleMagic = src.doubleMagic;
-    dst.doubleDefense = src.doubleDefense;
+    dst.isMagicAcquired = src.isMagicAcquired;
+    dst.isDoubleMagicAcquired = src.isDoubleMagicAcquired;
+    dst.isDoubleDefenseAcquired = src.isDoubleDefenseAcquired;
     dst.bgsFlag = src.bgsFlag;
     dst.ocarinaGameRoundNum = src.ocarinaGameRoundNum;
     for (size_t i = 0; i < ARRAY_COUNT(src.childEquips.buttonItems); i++) {
@@ -1680,8 +1680,8 @@ void CopyV0Save(SaveContext_v0& src, SaveContext& dst) {
         dst.infTable[i] = src.infTable[i];
     }
     dst.worldMapAreaData = src.worldMapAreaData;
-    dst.scarecrowCustomSongSet = src.scarecrowCustomSongSet;
-    memcpy(&dst.scarecrowCustomSong[0], &src.scarecrowCustomSong[0], sizeof(src.scarecrowCustomSong));
+    dst.scarecrowLongSongSet = src.scarecrowLongSongSet;
+    memcpy(&dst.scarecrowLongSong[0], &src.scarecrowLongSong[0], sizeof(src.scarecrowLongSong));
     dst.scarecrowSpawnSongSet = src.scarecrowSpawnSongSet;
     memcpy(&dst.scarecrowSpawnSong[0], &src.scarecrowSpawnSong[0], sizeof(src.scarecrowSpawnSong));
     dst.horseData.scene = src.horseData.scene;

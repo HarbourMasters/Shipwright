@@ -915,7 +915,7 @@ void GivePlayerRandoRewardImpa(Actor* impa, PlayState* play, RandomizerCheck che
         gSaveContext.eventChkInf[5] |= 0x200;
         play->sceneLoadFlag = 0x14;
         play->fadeTransition = 3;
-        gSaveContext.nextTransition = 3;
+        gSaveContext.nextTransitionType = 3;
         // In entrance rando have impa bring link back to the front of castle grounds
         if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
             play->nextEntranceIndex = 0x0138;

@@ -381,8 +381,8 @@ void GameState_Update(GameState* gameState) {
 
     // Inf Magic
     if (CVar_GetS32("gInfiniteMagic", 0) != 0) {
-        if (gSaveContext.magicAcquired && gSaveContext.magic != (gSaveContext.doubleMagic + 1) * 0x30) {
-            gSaveContext.magic = (gSaveContext.doubleMagic + 1) * 0x30;
+        if (gSaveContext.isMagicAcquired && gSaveContext.magic != (gSaveContext.isDoubleMagicAcquired + 1) * 0x30) {
+            gSaveContext.magic = (gSaveContext.isDoubleMagicAcquired + 1) * 0x30;
         }
     }
 

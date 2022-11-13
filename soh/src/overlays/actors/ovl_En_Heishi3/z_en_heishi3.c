@@ -208,7 +208,7 @@ void func_80A55D00(EnHeishi3* this, PlayState* play) {
         play->sceneLoadFlag = 0x14;
         this->respawnFlag = 1;
         play->fadeTransition = 0x2E;
-        gSaveContext.nextTransition = 0x2E;
+        gSaveContext.nextTransitionType = 0x2E;
     }
 }
 

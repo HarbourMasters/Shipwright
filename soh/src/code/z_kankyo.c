@@ -295,7 +295,7 @@ void Environment_Init(PlayState* play2, EnvironmentContext* envCtx, s32 unused) 
 
     sLightningFlashAlpha = 0;
 
-    gSaveContext.unk_1410 = 0;
+    gSaveContext.cutsceneTransitionControl = 0;
 
     envCtx->adjAmbientColor[0] = envCtx->adjAmbientColor[1] = envCtx->adjAmbientColor[2] = envCtx->adjLight1Color[0] =
         envCtx->adjLight1Color[1] = envCtx->adjLight1Color[2] = envCtx->adjFogColor[0] = envCtx->adjFogColor[1] =
@@ -326,7 +326,7 @@ void Environment_Init(PlayState* play2, EnvironmentContext* envCtx, s32 unused) 
 
     play->envCtx.unk_F2[0] = 0;
 
-    if (gSaveContext.unk_13C3 != 0) {
+    if (gSaveContext.retainWeatherMode != 0) {
         if (((void)0, gSaveContext.sceneSetupIndex) < 4) {
             switch (gWeatherMode) {
                 case 1:
@@ -378,7 +378,7 @@ void Environment_Init(PlayState* play2, EnvironmentContext* envCtx, s32 unused) 
     D_8011FB38 = 0;
     D_8011FB34 = 0;
     gSkyboxBlendingEnabled = false;
-    gSaveContext.unk_13C3 = 0;
+    gSaveContext.retainWeatherMode = 0;
     R_ENV_LIGHT1_DIR(0) = 80;
     R_ENV_LIGHT1_DIR(1) = 80;
     R_ENV_LIGHT1_DIR(2) = 80;
@@ -2531,7 +2531,7 @@ void Environment_WarpSongLeave(PlayState* play) {
     play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex;
     play->sceneLoadFlag = 0x14;
     play->fadeTransition = 3;
-    gSaveContext.nextTransition = 3;
+    gSaveContext.nextTransitionType = 3;
 
     switch (play->nextEntranceIndex) {
         case 0x147:
