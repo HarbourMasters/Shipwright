@@ -1484,10 +1484,10 @@ typedef struct {
     /* 0x0034 */ s16 rupees;
     /* 0x0036 */ u16 swordHealth;
     /* 0x0038 */ u16 naviTimer;
-    /* 0x003A */ u8 isMagicAcquired;
+    /* 0x003A */ u8 magicAcquired;
     /* 0x003B */ char unk_3B[0x01];
-    /* 0x003C */ u8 isDoubleMagicAcquired;
-    /* 0x003D */ u8 isDoubleDefenseAcquired;
+    /* 0x003C */ u8 doubleMagic;
+    /* 0x003D */ u8 doubleDefense;
     /* 0x003E */ u8 bgsFlag;
     /* 0x003F */ u8 ocarinaGameRoundNum;
     /* 0x0040 */ ItemEquips_v0 childEquips;
@@ -1509,8 +1509,8 @@ typedef struct {
     /* 0x0F34 */ char unk_F34[0x04];
     /* 0x0F38 */ u32 worldMapAreaData; // "area_arrival"
     /* 0x0F3C */ char unk_F3C[0x4];
-    /* 0x0F40 */ u8 scarecrowLongSongSet;
-    /* 0x0F41 */ u8 scarecrowLongSong[0x360];
+    /* 0x0F40 */ u8 scarecrowCustomSongSet;
+    /* 0x0F41 */ u8 scarecrowCustomSong[0x360];
     /* 0x12A1 */ char unk_12A1[0x24];
     /* 0x12C5 */ u8 scarecrowSpawnSongSet;
     /* 0x12C6 */ u8 scarecrowSpawnSong[0x80];
@@ -1526,7 +1526,7 @@ typedef struct {
     /* 0x13BC */ f32 entranceSpeed;
     /* 0x13C0 */ u16 entranceSound;
     /* 0x13C2 */ char unk_13C2[0x0001];
-    /* 0x13C3 */ u8 retainWeatherMode;
+    /* 0x13C3 */ u8 unk_13C3;
     /* 0x13C4 */ s16 dogParams;
     /* 0x13C6 */ u8 textTriggerFlags;
     /* 0x13C7 */ u8 showTitleCard;
@@ -1548,11 +1548,11 @@ typedef struct {
     /* 0x13EA */ u16 unk_13EA;    // also alpha type?
     /* 0x13EC */ u16 unk_13EC;    // alpha type counter?
     /* 0x13EE */ u16 unk_13EE;    // previous alpha type?
-    /* 0x13F0 */ s16 magicState;    // magic related
-    /* 0x13F2 */ s16 prevMagicState;    // magic related
-    /* 0x13F4 */ s16 magicCapacity;    // magic related
-    /* 0x13F6 */ s16 magicFillTarget;    // magic related
-    /* 0x13F8 */ s16 magicTarget;    // magic related
+    /* 0x13F0 */ s16 unk_13F0;    // magic related
+    /* 0x13F2 */ s16 unk_13F2;    // magic related
+    /* 0x13F4 */ s16 unk_13F4;    // magic related
+    /* 0x13F6 */ s16 unk_13F6;    // magic related
+    /* 0x13F8 */ s16 unk_13F8;    // magic related
     /* 0x13FA */ u16 eventInf[4]; // "event_inf"
     /* 0x1402 */ u16 mapIndex;    // intended for maps/minimaps but commonly used as the dungeon index
     /* 0x1404 */ u16 minigameState;
@@ -1563,17 +1563,17 @@ typedef struct {
     /* 0x140B */ char unk_140B[0x0001];
     /* 0x140C */ u8 zTargetSetting; // 0: Switch; 1: Hold
     /* 0x140E */ u16 forcedSeqId;   // immediately start playing the sequence if set
-    /* 0x1410 */ u8 cutsceneTransitionControl;       // transition related
+    /* 0x1410 */ u8 unk_1410;       // transition related
     /* 0x1411 */ char unk_1411[0x0001];
     /* 0x1412 */ u16 nextCutsceneIndex;
     /* 0x1414 */ u8 cutsceneTrigger;
     /* 0x1415 */ u8 chamberCutsceneNum;
     /* 0x1416 */ u16 nextDayTime; // "next_zelda_time"
-    /* 0x1418 */ u8 transFadeDuration;
-    /* 0x1419 */ u8 transWipeSpeed; // transition related
+    /* 0x1418 */ u8 fadeDuration;
+    /* 0x1419 */ u8 unk_1419; // transition related
     /* 0x141A */ u16 skyboxTime;
     /* 0x141C */ u8 dogIsLost;
-    /* 0x141D */ u8 nextTransitionType;
+    /* 0x141D */ u8 nextTransition;
     /* 0x141E */ char unk_141E[0x0002];
     /* 0x1420 */ s16 worldMapArea;
     /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
@@ -1600,9 +1600,9 @@ void CopyV0Save(SaveContext_v0& src, SaveContext& dst) {
     dst.rupees = src.rupees;
     dst.swordHealth = src.swordHealth;
     dst.naviTimer = src.naviTimer;
-    dst.isMagicAcquired = src.isMagicAcquired;
-    dst.isDoubleMagicAcquired = src.isDoubleMagicAcquired;
-    dst.isDoubleDefenseAcquired = src.isDoubleDefenseAcquired;
+    dst.isMagicAcquired = src.magicAcquired;
+    dst.isDoubleMagicAcquired = src.doubleMagic;
+    dst.isDoubleDefenseAcquired = src.doubleDefense;
     dst.bgsFlag = src.bgsFlag;
     dst.ocarinaGameRoundNum = src.ocarinaGameRoundNum;
     for (size_t i = 0; i < ARRAY_COUNT(src.childEquips.buttonItems); i++) {
@@ -1680,8 +1680,8 @@ void CopyV0Save(SaveContext_v0& src, SaveContext& dst) {
         dst.infTable[i] = src.infTable[i];
     }
     dst.worldMapAreaData = src.worldMapAreaData;
-    dst.scarecrowLongSongSet = src.scarecrowLongSongSet;
-    memcpy(&dst.scarecrowLongSong[0], &src.scarecrowLongSong[0], sizeof(src.scarecrowLongSong));
+    dst.scarecrowLongSongSet = src.scarecrowCustomSongSet;
+    memcpy(&dst.scarecrowLongSong[0], &src.scarecrowCustomSong[0], sizeof(src.scarecrowCustomSong));
     dst.scarecrowSpawnSongSet = src.scarecrowSpawnSongSet;
     memcpy(&dst.scarecrowSpawnSong[0], &src.scarecrowSpawnSong[0], sizeof(src.scarecrowSpawnSong));
     dst.horseData.scene = src.horseData.scene;
