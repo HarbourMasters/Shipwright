@@ -739,6 +739,7 @@ void DrawLocations() {
                     hasItems = true;
                     doAreaScroll = 
                         (currentArea != RCAREA_INVALID && sceneId != SCENE_KAKUSIANA && // Don't move for grottos
+                         sceneId != SCENE_YOUSEI_IZUMI_TATE && sceneId != SCENE_YOUSEI_IZUMI_YOKO && // Don't move for fairy fountains
                          currentArea != lastArea && currentArea == rcArea);
                     break;
                 }
@@ -821,6 +822,7 @@ void DrawLocations() {
                     hasItems = true;
                     doAreaScroll =
                         (currentArea != RCAREA_INVALID && sceneId != SCENE_KAKUSIANA && // Don't move for kakusiana/grottos
+                         sceneId != SCENE_YOUSEI_IZUMI_TATE && sceneId != SCENE_YOUSEI_IZUMI_YOKO && // Don't move for fairy fountains
                          currentArea != lastArea && currentArea == rcArea);
                     break;
                 }
@@ -869,7 +871,7 @@ void DrawLocations() {
         ImGui::EndChild();
         ImGui::EndTable();
 
-        if (sceneId != SCENE_KAKUSIANA)
+        if (sceneId != SCENE_KAKUSIANA && sceneId != SCENE_YOUSEI_IZUMI_TATE && sceneId != SCENE_YOUSEI_IZUMI_YOKO)
             lastArea = currentArea;
     }
 }
