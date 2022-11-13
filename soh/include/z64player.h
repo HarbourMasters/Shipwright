@@ -65,84 +65,84 @@ typedef enum {
 } PlayerMask;
 
 typedef enum {
-    /* 0x00 */ PLAYER_AP_NONE,
-    /* 0x01 */ PLAYER_AP_LAST_USED,
-    /* 0x02 */ PLAYER_AP_FISHING_POLE,
-    /* 0x03 */ PLAYER_AP_SWORD_MASTER,
-    /* 0x04 */ PLAYER_AP_SWORD_KOKIRI,
-    /* 0x05 */ PLAYER_AP_SWORD_BGS,
-    /* 0x06 */ PLAYER_AP_STICK,
-    /* 0x07 */ PLAYER_AP_HAMMER,
-    /* 0x08 */ PLAYER_AP_BOW,
-    /* 0x09 */ PLAYER_AP_BOW_FIRE,
-    /* 0x0A */ PLAYER_AP_BOW_ICE,
-    /* 0x0B */ PLAYER_AP_BOW_LIGHT,
-    /* 0x0C */ PLAYER_AP_BOW_0C,
-    /* 0x0D */ PLAYER_AP_BOW_0D,
-    /* 0x0E */ PLAYER_AP_BOW_0E,
-    /* 0x0F */ PLAYER_AP_SLINGSHOT,
-    /* 0x10 */ PLAYER_AP_HOOKSHOT,
-    /* 0x11 */ PLAYER_AP_LONGSHOT,
-    /* 0x12 */ PLAYER_AP_BOMB,
-    /* 0x13 */ PLAYER_AP_BOMBCHU,
-    /* 0x14 */ PLAYER_AP_BOOMERANG,
-    /* 0x15 */ PLAYER_AP_MAGIC_SPELL_15,
-    /* 0x16 */ PLAYER_AP_MAGIC_SPELL_16,
-    /* 0x17 */ PLAYER_AP_MAGIC_SPELL_17,
-    /* 0x18 */ PLAYER_AP_FARORES_WIND,
-    /* 0x19 */ PLAYER_AP_NAYRUS_LOVE,
-    /* 0x1A */ PLAYER_AP_DINS_FIRE,
-    /* 0x1B */ PLAYER_AP_NUT,
-    /* 0x1C */ PLAYER_AP_OCARINA_FAIRY,
-    /* 0x1D */ PLAYER_AP_OCARINA_TIME,
-    /* 0x1E */ PLAYER_AP_BOTTLE,
-    /* 0x1F */ PLAYER_AP_BOTTLE_FISH,
-    /* 0x20 */ PLAYER_AP_BOTTLE_FIRE,
-    /* 0x21 */ PLAYER_AP_BOTTLE_BUG,
-    /* 0x22 */ PLAYER_AP_BOTTLE_POE,
-    /* 0x23 */ PLAYER_AP_BOTTLE_BIG_POE,
-    /* 0x24 */ PLAYER_AP_BOTTLE_LETTER,
-    /* 0x25 */ PLAYER_AP_BOTTLE_POTION_RED,
-    /* 0x26 */ PLAYER_AP_BOTTLE_POTION_BLUE,
-    /* 0x27 */ PLAYER_AP_BOTTLE_POTION_GREEN,
-    /* 0x28 */ PLAYER_AP_BOTTLE_MILK,
-    /* 0x29 */ PLAYER_AP_BOTTLE_MILK_HALF,
-    /* 0x2A */ PLAYER_AP_BOTTLE_FAIRY,
-    /* 0x2B */ PLAYER_AP_LETTER_ZELDA,
-    /* 0x2C */ PLAYER_AP_WEIRD_EGG,
-    /* 0x2D */ PLAYER_AP_CHICKEN,
-    /* 0x2E */ PLAYER_AP_BEAN,
-    /* 0x2F */ PLAYER_AP_POCKET_EGG,
-    /* 0x30 */ PLAYER_AP_POCKET_CUCCO,
-    /* 0x31 */ PLAYER_AP_COJIRO,
-    /* 0x32 */ PLAYER_AP_ODD_MUSHROOM,
-    /* 0x33 */ PLAYER_AP_ODD_POTION,
-    /* 0x34 */ PLAYER_AP_SAW,
-    /* 0x35 */ PLAYER_AP_SWORD_BROKEN,
-    /* 0x36 */ PLAYER_AP_PRESCRIPTION,
-    /* 0x37 */ PLAYER_AP_FROG,
-    /* 0x38 */ PLAYER_AP_EYEDROPS,
-    /* 0x39 */ PLAYER_AP_CLAIM_CHECK,
-    /* 0x3A */ PLAYER_AP_MASK_KEATON,
-    /* 0x3B */ PLAYER_AP_MASK_SKULL,
-    /* 0x3C */ PLAYER_AP_MASK_SPOOKY,
-    /* 0x3D */ PLAYER_AP_MASK_BUNNY,
-    /* 0x3E */ PLAYER_AP_MASK_GORON,
-    /* 0x3F */ PLAYER_AP_MASK_ZORA,
-    /* 0x40 */ PLAYER_AP_MASK_GERUDO,
-    /* 0x41 */ PLAYER_AP_MASK_TRUTH,
-    /* 0x42 */ PLAYER_AP_LENS,
-    /* 0x43 */ PLAYER_AP_SHIELD_DEKU,
-    /* 0x44 */ PLAYER_AP_SHIELD_HYLIAN,
-    /* 0x45 */ PLAYER_AP_SHIELD_MIRROR,
-    /* 0x46 */ PLAYER_AP_TUNIC_KOKIRI,
-    /* 0x47 */ PLAYER_AP_TUNIC_GORON,
-    /* 0x48 */ PLAYER_AP_TUNIC_ZORA,
-    /* 0x49 */ PLAYER_AP_BOOTS_KOKIRI,
-    /* 0x4A */ PLAYER_AP_BOOTS_IRON,
-    /* 0x4B */ PLAYER_AP_BOOTS_HOVER,
-    /* 0x4C */ PLAYER_AP_MAX
-} PlayerActionParam; // Upstream TODO: PlayerItemAction
+    /* 0x00 */ PLAYER_AI_NONE,
+    /* 0x01 */ PLAYER_AI_LAST_USED,
+    /* 0x02 */ PLAYER_AI_FISHING_POLE,
+    /* 0x03 */ PLAYER_AI_SWORD_MASTER,
+    /* 0x04 */ PLAYER_AI_SWORD_KOKIRI,
+    /* 0x05 */ PLAYER_AI_SWORD_BGS,
+    /* 0x06 */ PLAYER_AI_STICK,
+    /* 0x07 */ PLAYER_AI_HAMMER,
+    /* 0x08 */ PLAYER_AI_BOW,
+    /* 0x09 */ PLAYER_AI_BOW_FIRE,
+    /* 0x0A */ PLAYER_AI_BOW_ICE,
+    /* 0x0B */ PLAYER_AI_BOW_LIGHT,
+    /* 0x0C */ PLAYER_AI_BOW_0C,
+    /* 0x0D */ PLAYER_AI_BOW_0D,
+    /* 0x0E */ PLAYER_AI_BOW_0E,
+    /* 0x0F */ PLAYER_AI_SLINGSHOT,
+    /* 0x10 */ PLAYER_AI_HOOKSHOT,
+    /* 0x11 */ PLAYER_AI_LONGSHOT,
+    /* 0x12 */ PLAYER_AI_BOMB,
+    /* 0x13 */ PLAYER_AI_BOMBCHU,
+    /* 0x14 */ PLAYER_AI_BOOMERANG,
+    /* 0x15 */ PLAYER_AI_MAGIC_SPELL_15,
+    /* 0x16 */ PLAYER_AI_MAGIC_SPELL_16,
+    /* 0x17 */ PLAYER_AI_MAGIC_SPELL_17,
+    /* 0x18 */ PLAYER_AI_FARORES_WIND,
+    /* 0x19 */ PLAYER_AI_NAYRUS_LOVE,
+    /* 0x1A */ PLAYER_AI_DINS_FIRE,
+    /* 0x1B */ PLAYER_AI_NUT,
+    /* 0x1C */ PLAYER_AI_OCARINA_FAIRY,
+    /* 0x1D */ PLAYER_AI_OCARINA_TIME,
+    /* 0x1E */ PLAYER_AI_BOTTLE,
+    /* 0x1F */ PLAYER_AI_BOTTLE_FISH,
+    /* 0x20 */ PLAYER_AI_BOTTLE_FIRE,
+    /* 0x21 */ PLAYER_AI_BOTTLE_BUG,
+    /* 0x22 */ PLAYER_AI_BOTTLE_POE,
+    /* 0x23 */ PLAYER_AI_BOTTLE_BIG_POE,
+    /* 0x24 */ PLAYER_AI_BOTTLE_LETTER,
+    /* 0x25 */ PLAYER_AI_BOTTLE_POTION_RED,
+    /* 0x26 */ PLAYER_AI_BOTTLE_POTION_BLUE,
+    /* 0x27 */ PLAYER_AI_BOTTLE_POTION_GREEN,
+    /* 0x28 */ PLAYER_AI_BOTTLE_MILK,
+    /* 0x29 */ PLAYER_AI_BOTTLE_MILK_HALF,
+    /* 0x2A */ PLAYER_AI_BOTTLE_FAIRY,
+    /* 0x2B */ PLAYER_AI_LETTER_ZELDA,
+    /* 0x2C */ PLAYER_AI_WEIRD_EGG,
+    /* 0x2D */ PLAYER_AI_CHICKEN,
+    /* 0x2E */ PLAYER_AI_BEAN,
+    /* 0x2F */ PLAYER_AI_POCKET_EGG,
+    /* 0x30 */ PLAYER_AI_POCKET_CUCCO,
+    /* 0x31 */ PLAYER_AI_COJIRO,
+    /* 0x32 */ PLAYER_AI_ODD_MUSHROOM,
+    /* 0x33 */ PLAYER_AI_ODD_POTION,
+    /* 0x34 */ PLAYER_AI_SAW,
+    /* 0x35 */ PLAYER_AI_SWORD_BROKEN,
+    /* 0x36 */ PLAYER_AI_PRESCRIPTION,
+    /* 0x37 */ PLAYER_AI_FROG,
+    /* 0x38 */ PLAYER_AI_EYEDROPS,
+    /* 0x39 */ PLAYER_AI_CLAIM_CHECK,
+    /* 0x3A */ PLAYER_AI_MASK_KEATON,
+    /* 0x3B */ PLAYER_AI_MASK_SKULL,
+    /* 0x3C */ PLAYER_AI_MASK_SPOOKY,
+    /* 0x3D */ PLAYER_AI_MASK_BUNNY,
+    /* 0x3E */ PLAYER_AI_MASK_GORON,
+    /* 0x3F */ PLAYER_AI_MASK_ZORA,
+    /* 0x40 */ PLAYER_AI_MASK_GERUDO,
+    /* 0x41 */ PLAYER_AI_MASK_TRUTH,
+    /* 0x42 */ PLAYER_AI_LENS,
+    /* 0x43 */ PLAYER_AI_SHIELD_DEKU,
+    /* 0x44 */ PLAYER_AI_SHIELD_HYLIAN,
+    /* 0x45 */ PLAYER_AI_SHIELD_MIRROR,
+    /* 0x46 */ PLAYER_AI_TUNIC_KOKIRI,
+    /* 0x47 */ PLAYER_AI_TUNIC_GORON,
+    /* 0x48 */ PLAYER_AI_TUNIC_ZORA,
+    /* 0x49 */ PLAYER_AI_BOOTS_KOKIRI,
+    /* 0x4A */ PLAYER_AI_BOOTS_IRON,
+    /* 0x4B */ PLAYER_AI_BOOTS_HOVER,
+    /* 0x4C */ PLAYER_AI_MAX
+} PlayerItemAction;
 
 typedef enum {
     /* 0x00 */ PLAYER_LIMB_NONE,
@@ -414,7 +414,7 @@ typedef struct {
 // #endregion
 
 #define PLAYER_STATE1_0 (1 << 0)
-#define PLAYER_STATE1_1 (1 << 1) // Upstream TODO: PLAYER_STATE1_SWINGING_BOTTLE
+#define PLAYER_STATE1_SWINGING_BOTTLE (1 << 1)
 #define PLAYER_STATE1_2 (1 << 2)
 #define PLAYER_STATE1_3 (1 << 3)
 #define PLAYER_STATE1_4 (1 << 4)
@@ -462,9 +462,9 @@ typedef struct {
 #define PLAYER_STATE2_13 (1 << 13)
 #define PLAYER_STATE2_14 (1 << 14)
 #define PLAYER_STATE2_15 (1 << 15)
-#define PLAYER_STATE2_16 (1 << 16) // Turns on the "Enter On A" DoAction // Upstream TODO: PLAYER_STATE2_DO_ACTION_ENTER
+#define PLAYER_STATE2_DO_ACTION_ENTER (1 << 16) // Turns on the "Enter On A" DoAction
 #define PLAYER_STATE2_17 (1 << 17)
-#define PLAYER_STATE2_18 (1 << 18) // Crawling through a crawlspace // Upstream TODO: PLAYER_STATE2_CRAWLING
+#define PLAYER_STATE2_CRAWLING (1 << 18) // Crawling through a crawlspace
 #define PLAYER_STATE2_19 (1 << 19)
 #define PLAYER_STATE2_20 (1 << 20)
 #define PLAYER_STATE2_21 (1 << 21)
@@ -485,7 +485,7 @@ typedef struct {
 #define PLAYER_STATE3_3 (1 << 3)
 #define PLAYER_STATE3_4 (1 << 4)
 #define PLAYER_STATE3_5 (1 << 5)
-#define PLAYER_STATE3_6 (1 << 6) // Set by ocarina effects actors when destroyed to signal Nayru's Love may be restored (see `ACTOROVL_ALLOC_ABSOLUTE`) // Upstream TODO: PLAYER_STATE3_RESTORE_NAYRUS_LOVE
+#define PLAYER_STATE3_RESTORE_NAYRUS_LOVE (1 << 6) // Set by ocarina effects actors when destroyed to signal Nayru's Love may be restored (see `ACTOROVL_ALLOC_ABSOLUTE`)
 #define PLAYER_STATE3_7 (1 << 7)
 
 typedef void (*PlayerFunc674)(struct Player*, struct PlayState*);
@@ -495,14 +495,14 @@ typedef void (*PlayerFuncA74)(struct PlayState*, struct Player*);
 typedef struct Player {
     /* 0x0000 */ Actor      actor;
     /* 0x014C */ s8         currentTunic; // current tunic from `PlayerTunic`
-    /* 0x014D */ s8         currentSwordItem; // Upstream TODO: currentSwordItemId
+    /* 0x014D */ s8         currentSwordItemId;
     /* 0x014E */ s8         currentShield; // current shield from `PlayerShield`
     /* 0x014F */ s8         currentBoots; // current boots from `PlayerBoots`
     /* 0x0150 */ s8         heldItemButton; // Button index for the item currently used
-    /* 0x0151 */ s8         heldItemActionParam; // Item action for the item currently used // Upstream TODO: heldItemAction
+    /* 0x0151 */ s8         heldItemAction; // Item action for the item currently used
     /* 0x0152 */ u8         heldItemId; // Item id for the item currently used
     /* 0x0153 */ s8         prevBoots; // previous boots from `PlayerBoots`
-    /* 0x0154 */ s8         itemActionParam; // the difference between this and heldItemAction is unclear // Upstream TODO: itemAction
+    /* 0x0154 */ s8         itemAction; // the difference between this and heldItemAction is unclear
     /* 0x0155 */ char       unk_155[0x003];
     /* 0x0158 */ u8         modelGroup;
     /* 0x0159 */ u8         nextModelGroup;
@@ -551,16 +551,16 @@ typedef struct Player {
     /* 0x0450 */ Vec3f      unk_450;
     /* 0x045C */ Vec3f      unk_45C;
     /* 0x0468 */ char       unk_468[0x002];
-    /* 0x046A */ s16        unk_46A; // Upstream TODO: doorBgCamIndex
-    /* 0x046C */ s16        unk_46C; // Upstream TODO: subCamId
+    /* 0x046A */ s16        doorBgCamIndex;
+    /* 0x046C */ s16        subCamId;
     /* 0x046E */ char       unk_46E[0x02A];
     /* 0x0498 */ ColliderCylinder cylinder;
-    /* 0x04E4 */ ColliderQuad swordQuads[2]; // Upstream TODO: meleeWeaponQuads
+    /* 0x04E4 */ ColliderQuad meleeWeaponQuads[2];
     /* 0x05E4 */ ColliderQuad shieldQuad;
     /* 0x0664 */ Actor*     unk_664;
     /* 0x0668 */ char       unk_668[0x004];
     /* 0x066C */ s32        unk_66C;
-    /* 0x0670 */ s32        swordEffectIndex; // Upstream TODO: meleeWeaponEffectIndex
+    /* 0x0670 */ s32        meleeWeaponEffectIndex;
     /* 0x0674 */ PlayerFunc674 func_674;
     /* 0x0678 */ PlayerAgeProperties* ageProperties;
     /* 0x067C */ u32        stateFlags1;
@@ -602,7 +602,7 @@ typedef struct Player {
     /* 0x083C */ s16        currentYaw;
     /* 0x083E */ s16        targetYaw;
     /* 0x0840 */ u16        unk_840;
-    /* 0x0842 */ s8         swordAnimation; // Upstream TODO: meleeWeaponAnimation
+    /* 0x0842 */ s8         meleeWeaponAnimation;
     /* 0x0843 */ s8         swordState; // Upstream TODO: meleeWeaponState
     /* 0x0844 */ s8         unk_844;
     /* 0x0845 */ u8         unk_845;
@@ -648,7 +648,7 @@ typedef struct Player {
     /* 0x08A8 */ f32        unk_8A8;
     /* 0x08AC */ f32        windSpeed; // Pushing player, examples include water currents, floor conveyors, climbing sloped surfaces // Upstream TODO: pushedSpeed
     /* 0x08B0 */ s16        windDirection; // Yaw direction of player being pushed // Upstream TODO: pushedYaw
-    /* 0x08B4 */ WeaponInfo swordInfo[3]; // Upstream TODO: meleeWeaponInfo
+    /* 0x08B4 */ WeaponInfo meleeWeaponInfo[3];
     /* 0x0908 */ Vec3f      bodyPartsPos[PLAYER_BODYPART_MAX];
     /* 0x09E0 */ MtxF       mf_9E0;
     /* 0x0A20 */ MtxF       shieldMf;

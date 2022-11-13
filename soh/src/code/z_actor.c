@@ -1423,7 +1423,7 @@ s32 func_8002DF38(PlayState* play, Actor* actor, u8 csMode) {
 
     player->csMode = csMode;
     player->unk_448 = actor;
-    player->unk_46A = 0;
+    player->doorBgCamIndex = 0;
 
     return true;
 }
@@ -1432,7 +1432,7 @@ s32 func_8002DF54(PlayState* play, Actor* actor, u8 csMode) {
     Player* player = GET_PLAYER(play);
 
     func_8002DF38(play, actor, csMode);
-    player->unk_46A = 1;
+    player->doorBgCamIndex = 1;
 
     return true;
 }
@@ -4529,7 +4529,7 @@ void func_800355B8(PlayState* play, Vec3f* pos) {
 u8 func_800355E4(PlayState* play, Collider* collider) {
     Player* player = GET_PLAYER(play);
 
-    if ((collider->acFlags & AC_TYPE_PLAYER) && (player->swordState != 0) && (player->swordAnimation == 0x16)) {
+    if ((collider->acFlags & AC_TYPE_PLAYER) && (player->swordState != 0) && (player->meleeWeaponAnimation == 0x16)) {
         return true;
     } else {
         return false;

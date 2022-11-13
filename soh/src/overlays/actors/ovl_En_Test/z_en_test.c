@@ -496,7 +496,7 @@ void EnTest_Idle(EnTest* this, PlayState* play) {
             if ((player->swordState != 0) && (ABS(yawDiff) >= 0x1F40)) {
                 this->actor.shape.rot.y = this->actor.world.rot.y = this->actor.yawTowardsPlayer;
 
-                if (Rand_ZeroOne() > 0.7f && player->swordAnimation != 0x11) {
+                if (Rand_ZeroOne() > 0.7f && player->meleeWeaponAnimation != 0x11) {
                     EnTest_SetupJumpBack(this);
                 } else {
                     func_808627C4(this, play);
@@ -627,7 +627,7 @@ void EnTest_WalkAndBlock(EnTest* this, PlayState* play) {
             if (ABS(yawDiff) >= 0x1F40) {
                 this->actor.shape.rot.y = this->actor.world.rot.y = this->actor.yawTowardsPlayer;
 
-                if ((Rand_ZeroOne() > 0.7f) && (player->swordAnimation != 0x11)) {
+                if ((Rand_ZeroOne() > 0.7f) && (player->meleeWeaponAnimation != 0x11)) {
                     EnTest_SetupJumpBack(this);
                 } else {
                     EnTest_SetupStopAndBlock(this);
@@ -663,7 +663,7 @@ void EnTest_WalkAndBlock(EnTest* this, PlayState* play) {
                     EnTest_SetupJumpslash(this);
                     return;
                 }
-            } else if (player->heldItemActionParam != PLAYER_AP_NONE) {
+            } else if (player->heldItemAction != PLAYER_AI_NONE) {
                 if (this->actor.isTargeted) {
                     if ((play->gameplayFrames % 2) != 0) {
                         func_808627C4(this, play);
@@ -1238,7 +1238,7 @@ void func_808621D4(EnTest* this, PlayState* play) {
                                                (this->actor.xzDistToPlayer < 80.0f))) {
             EnTest_SetupJumpUp(this);
         } else if ((Rand_ZeroOne() > 0.7f) && (this->actor.params != STALFOS_TYPE_CEILING) &&
-                   (player->swordAnimation != 0x11)) {
+                   (player->meleeWeaponAnimation != 0x11)) {
             EnTest_SetupJumpBack(this);
         } else {
             EnTest_SetupStopAndBlock(this);
@@ -1277,7 +1277,7 @@ void func_80862418(EnTest* this, PlayState* play) {
                                                (this->actor.xzDistToPlayer < 80.0f))) {
             EnTest_SetupJumpUp(this);
         } else if ((Rand_ZeroOne() > 0.7f) && (this->actor.params != STALFOS_TYPE_CEILING) &&
-                   (player->swordAnimation != 0x11)) {
+                   (player->meleeWeaponAnimation != 0x11)) {
             EnTest_SetupJumpBack(this);
         } else {
             EnTest_SetupStopAndBlock(this);
@@ -1323,7 +1323,7 @@ void EnTest_Stunned(EnTest* this, PlayState* play) {
                 ((ABS((s16)(this->actor.wallYaw - this->actor.shape.rot.y)) < 0x38A4) &&
                  (this->actor.xzDistToPlayer < 80.0f))) {
                 EnTest_SetupJumpUp(this);
-            } else if ((Rand_ZeroOne() > 0.7f) && (player->swordAnimation != 0x11)) {
+            } else if ((Rand_ZeroOne() > 0.7f) && (player->meleeWeaponAnimation != 0x11)) {
                 EnTest_SetupJumpBack(this);
             } else {
                 EnTest_SetupStopAndBlock(this);
@@ -1459,7 +1459,7 @@ void func_808628C8(EnTest* this, PlayState* play) {
             if (!EnTest_ReactToProjectile(play, this)) {
                 EnTest_ChooseAction(this, play);
             }
-        } else if (player->heldItemActionParam != PLAYER_AP_NONE) {
+        } else if (player->heldItemAction != PLAYER_AI_NONE) {
             if ((play->gameplayFrames % 2) != 0) {
                 EnTest_SetupIdle(this);
             } else {

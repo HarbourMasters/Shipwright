@@ -294,7 +294,7 @@ s32 EnWf_ChangeAction(PlayState* play, EnWf* this, s16 mustChoose) {
     playerYawDiff = ABS(playerYawDiff);
 
     if (func_800354B4(play, &this->actor, 100.0f, 0x2710, 0x2EE0, this->actor.shape.rot.y)) {
-        if (player->swordAnimation == 0x11) {
+        if (player->meleeWeaponAnimation == 0x11) {
             EnWf_SetupBlocking(this);
             return true;
         }
@@ -311,7 +311,7 @@ s32 EnWf_ChangeAction(PlayState* play, EnWf* this, s16 mustChoose) {
         if ((this->actor.bgCheckFlags & 8) && (ABS(wallYawDiff) < 0x2EE0) && (this->actor.xzDistToPlayer < 120.0f)) {
             EnWf_SetupSomersaultAndAttack(this);
             return true;
-        } else if (player->swordAnimation == 0x11) {
+        } else if (player->meleeWeaponAnimation == 0x11) {
             EnWf_SetupBlocking(this);
             return true;
         } else if ((this->actor.xzDistToPlayer < 80.0f) && (play->gameplayFrames % 2) != 0) {
@@ -1021,7 +1021,7 @@ void EnWf_Blocking(EnWf* this, PlayState* play) {
         if ((ABS(yawDiff) <= 0x4000) && (this->actor.xzDistToPlayer < 60.0f) &&
             (ABS(this->actor.yDistToPlayer) < 50.0f)) {
             if (func_800354B4(play, &this->actor, 100.0f, 10000, 0x4000, this->actor.shape.rot.y)) {
-                if (player->swordAnimation == 0x11) {
+                if (player->meleeWeaponAnimation == 0x11) {
                     EnWf_SetupBlocking(this);
                 } else if ((play->gameplayFrames % 2) != 0) {
                     EnWf_SetupBlocking(this);
@@ -1044,7 +1044,7 @@ void EnWf_Blocking(EnWf* this, PlayState* play) {
         }
     } else if (this->actionTimer == 0) {
         if (func_800354B4(play, &this->actor, 100.0f, 10000, 0x4000, this->actor.shape.rot.y)) {
-            if (player->swordAnimation == 0x11) {
+            if (player->meleeWeaponAnimation == 0x11) {
                 EnWf_SetupBlocking(this);
             } else if ((play->gameplayFrames % 2) != 0) {
                 EnWf_SetupBlocking(this);

@@ -732,7 +732,7 @@ s32 func_80B0DFFC(EnSw* this, PlayState* play) {
                                        false, false, true, &sp5C)) {
         sp4C = false;
     } else if (((play->state.frames % 4) == 2) &&
-               !BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &this->unk_46C, &sp50, &sp60, true,
+               !BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &this->subCamId, &sp50, &sp60, true,
                                         false, false, true, &sp5C)) {
         sp4C = false;
     } else if (((play->state.frames % 4) == 3) &&
@@ -949,7 +949,7 @@ s32 EnSw_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
     if (limbIndex == 1) {
         Matrix_MultVec3f(&sp7C, &this->unk_454);
         Matrix_MultVec3f(&sp70, &this->unk_460);
-        Matrix_MultVec3f(&sp64, &this->unk_46C);
+        Matrix_MultVec3f(&sp64, &this->subCamId);
         Matrix_MultVec3f(&sp58, &this->unk_478);
         Matrix_MultVec3f(&sp4C, &this->unk_484);
     }

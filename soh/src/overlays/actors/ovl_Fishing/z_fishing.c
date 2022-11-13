@@ -5122,7 +5122,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                 Player* player = GET_PLAYER(play);
 
                 if (gSaveContext.temporaryWeapon) {
-                    player->currentSwordItem = ITEM_NONE;
+                    player->currentSwordItemId = ITEM_NONE;
                     gSaveContext.equips.buttonItems[0] = ITEM_NONE;
                     Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
                     gSaveContext.temporaryWeapon = false;
