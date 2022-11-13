@@ -921,9 +921,42 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
     for (auto& [randomizerCheck, locationIt] : rcObjects) {
         locationIt.visibleInImgui = (
             (locationIt.vOrMQ != RCVORMQ_MQ) && // don't show MQ checks until we support MQ
-            //(locationIt.rcType != RCTYPE_SHOP) && // don't show shop items until we have shopsanity
+            ((locationIt.rcType != RCTYPE_SHOP) || CVar_GetS32("gRandomizeShopsanity", 0) > 1) && // 1 is the value for "0 random items" for shop
             (locationIt.rcType != RCTYPE_GOSSIP_STONE) && // don't show gossip stones (maybe gossipsanity will be a thing eventually?)
             (locationIt.rcType != RCTYPE_LINKS_POCKET) &&
+            (locationIt.rcType != RCTYPE_CHEST_GAME) && // don't show non final reward chest game checks until we support shuffling them
+            ((locationIt.rcType != RCTYPE_SKULL_TOKEN) ||
+            (CVar_GetS32("gRandomizeShuffleTokens", 0) == 3) || // all tokens
+            ((CVar_GetS32("gRandomizeShuffleTokens", 0) == 2) && RandomizerCheckObjects::AreaIsOverworld(locationIt.rcArea)) || // overworld tokens
+            ((CVar_GetS32("gRandomizeShuffleTokens", 0) == 1) && RandomizerCheckObjects::AreaIsDungeon(locationIt.rcArea)) // dungeon tokens
+            ) &&
+            ((locationIt.rcType != RCTYPE_COW) || CVar_GetS32("gRandomizeShuffleCows", 0)) &&
+            ((locationIt.rcType != RCTYPE_ADULT_TRADE) || CVar_GetS32("gRandomizeShuffleAdultTrade", 0)) &&
+            ((locationIt.rc != RC_KF_KOKIRI_SWORD_CHEST) || CVar_GetS32("gRandomizeShuffleKokiriSword", 0)) &&
+            ((locationIt.rc != RC_HC_MALON_EGG) || CVar_GetS32("gRandomizeShuffleWeirdEgg", 0)) &&
+            ((locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) || CVar_GetS32("gRandomizeShuffleGerudoToken", 0)) &&
+            ((locationIt.rcType != RCTYPE_FROG_SONG) || CVar_GetS32("gRandomizeShuffleFrogSongRupees", 0)) &&
+            ((locationIt.rcType != RCTYPE_MAP_COMPASS) || CVar_GetS32("gRandomizeStartingMapsCompasses", 0) != 1) && // 1 is the value for "vanilla" maps/compasses
+            ((locationIt.rcType != RCTYPE_SMALL_KEY) || CVar_GetS32("gRandomizeKeysanity", 0) != 1) && // 1 is the value for "vanilla" small keys
+            ((locationIt.rcType != RCTYPE_GF_KEY) || CVar_GetS32("randoShuffleGerudoFortressKeys", 0) != 0) && // 0 is the value for "vanilla" gf keys
+            ((locationIt.rcType != RCTYPE_BOSS_KEY) || CVar_GetS32("gRandomizeBossKeysanity", 0) != 1) && // 1 is the value for "vanilla" boss keys
+            ((locationIt.rcType != RCTYPE_GANON_BOSS_KEY) || CVar_GetS32("gRandomizeShuffleGanonBossKey", 0) != 0) && // 0 is the value for "vanilla" ganon's boss key
+            ((!RC_IS_CARPENTER(locationIt.rc) && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) ||
+              (CVar_GetS32("gRandomizeGerudoFortress", 0) == 2 && !RC_IS_CARPENTER(locationIt.rc) && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) || //2 is the value for "open" gerudo's fortress
+              (CVar_GetS32("gRandomizeGerudoFortress", 0) == 1 && locationIt.rc == RC_GF_NORTH_F1_CARPENTER) || //1 is the value for "fast" gerudo's fortress
+              (CVar_GetS32("gRandomizeGerudoFortress", 0) == 0) //0 is the value for "normal" gerudo's fortress
+            )
+        );
+    }
+}
+
+void RandomizerCheckObjects::UpdateTrackerImGuiVisibility() {
+    for (auto& [randomizerCheck, locationIt] : rcObjects) {
+        locationIt.visibleInImgui = (
+            (locationIt.rcArea != RCAREA_INVALID) && // don't show Invalid locations
+            (locationIt.vOrMQ != RCVORMQ_MQ) && // don't show MQ checks until we support MQ
+            ((locationIt.rcType != RCTYPE_SHOP) || CVar_GetS32("gRandomizeShopsanity", 0) > 1) && // 1 is the value for "0 random items" for shop
+            (locationIt.rcType != RCTYPE_GOSSIP_STONE) && // don't show gossip stones (maybe gossipsanity will be a thing eventually?)
             (locationIt.rcType != RCTYPE_CHEST_GAME) && // don't show non final reward chest game checks until we support shuffling them
             ((locationIt.rcType != RCTYPE_SKULL_TOKEN) ||
             (CVar_GetS32("gRandomizeShuffleTokens", 0) == 3) || // all tokens

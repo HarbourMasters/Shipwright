@@ -642,8 +642,8 @@ void DrawNotes(bool resizeable = false) {
 bool HasItemBeenCollected(RandomizerCheckObject obj) {
     // TODO doesn't consider vanilla/MQ?
 
-    // return Location(obj.rc)->GetCollectionCheck().IsChecked(gSaveContext); //TODO move all the code to a static
-    // function in item_location
+    // TODO move all the code to a static function in item_location
+    // return Location(obj.rc)->GetCollectionCheck().IsChecked(gSaveContext); 
 
     ItemLocation* x = Location(obj.rc);
     SpoilerCollectionCheck check = x->GetCollectionCheck();
@@ -784,27 +784,6 @@ void DrawLocations() {
 
                             ImGui::SameLine();
                             ImGui::Text(locationIt.second.rcShortName.c_str());
-                            // TODO if the check has been hinted, show the hint's value beside the check
-                            // TODO if the check has been rendered, show its (fake) name beside the check
-
-                            // gSaveContext.itemLocations[0].get.rgID;
-                            // Show the name of the check and the item gotten
-                            // ImGui::Text(ItemTable(gSaveContext.itemLocations[locationIt.rc].get.rgID).GetName().english.c_str());
-                            // //TODO This is hardcoded english
-                            // ImGui::Text(ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER,
-                            // gSaveContext.itemLocations[locationIt.rc].get.rgID).
-
-                            // ImGui::Text(
-                            //     OTRGlobals::Instance->gRandomizer->getItemMessageTableID(gSaveContext.itemLocations[locationIt.rc].get.rgID)
-                            //         .GetName()
-                            //         .english.c_str()); // TODO This is hardcoded english
-                            // gSaveContext.itemLocations[locationIt.rc].get).GetName().english.c_str()
-
-                            //  name of the check is locationIt.rcShortName.c_str()
-                            // ImGui::Text(locationIt.rcShortName.c_str());
-
-                            // ImGui::Text(gSaveContext.itemLocations[locationIt.rc].check);
-                            // OTRGlobals::Instance->gRandomizer->GetRandomizerGetDataFromKnownCheck(locationIt.rc));
                         }
                     }
                     ImGui::TreePop();
@@ -866,8 +845,6 @@ void DrawLocations() {
                             ImGui::SameLine();
                             ImGui::Text("(%s)", txt.c_str());
                             ImGui::PopStyleColor();
-                            // TODO GetItemObtainabilityFromRandomizerGet(rgData.rgID).CAN_OBTAIN or something to
-                            // determine if it should say blue rupee
                         }
                     }
                     ImGui::TreePop();
@@ -1318,11 +1295,12 @@ void InitItemTracker() {
     Ship::RegisterHook<Ship::LoadFile>([](uint32_t fileNum) {
         const char* initialTrackerNotes = CVar_GetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
         strcpy(itemTrackerNotes.Data, initialTrackerNotes);
+        RandomizerCheckObjects::UpdateTrackerImGuiVisibility();
     });
     Ship::RegisterHook<Ship::DeleteFile>([](uint32_t fileNum) {
         CVar_SetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
         SohImGui::RequestCvarSaveOnNextTick();
     });
-    RandomizerCheckObjects::UpdateImGuiVisibility();
+    RandomizerCheckObjects::UpdateTrackerImGuiVisibility();
     LocationTable_Init();
 }

@@ -919,7 +919,6 @@ void LocationTable_Init() {
 
     locationTable[GANONDORF_HINT]                                = ItemLocation::OtherHint(RC_GANONDORF_HINT,                       0x00, 0x00, "Ganondorf Hint",                              {});
 
-    // TODO also update the Add/Remove/Etc functions
     for (int i = NONE; i != KEY_ENUM_MAX; i++)
         locationLookupTable.insert(std::make_pair(locationTable[i].GetRandomizerCheck(), static_cast<Key>(i)));
 }
