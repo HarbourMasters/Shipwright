@@ -744,7 +744,7 @@ void DrawLocations() {
                     doAreaScroll = 
                         (currentArea != RCAREA_INVALID && sceneId != SCENE_KAKUSIANA && // Don't move for grottos
                          sceneId != SCENE_YOUSEI_IZUMI_TATE && sceneId != SCENE_YOUSEI_IZUMI_YOKO && // Don't move for fairy fountains
-                         sceneId != SCENE_SHOP1 && // Don't move for Bazaar, as it moves between Kak and Market
+                         sceneId != SCENE_SHOP1 && sceneId != SCENE_SYATEKIJYOU && // Don't move for Bazaar/Gallery, as it moves between Kak and Market
                          currentArea != lastArea && currentArea == rcArea);
                     break;
                 }
@@ -828,7 +828,7 @@ void DrawLocations() {
                     doAreaScroll =
                         (currentArea != RCAREA_INVALID && sceneId != SCENE_KAKUSIANA && // Don't move for kakusiana/grottos
                          sceneId != SCENE_YOUSEI_IZUMI_TATE && sceneId != SCENE_YOUSEI_IZUMI_YOKO && // Don't move for fairy fountains
-                         sceneId != SCENE_SHOP1 && //Don't move for Bazaar, as it moves between Kak and Market
+                         sceneId != SCENE_SHOP1 && sceneId != SCENE_SYATEKIJYOU && // Don't move for Bazaar/Gallery, as it moves between Kak and Market
                          currentArea != lastArea && currentArea == rcArea);
                     break;
                 }
@@ -880,6 +880,7 @@ void DrawLocations() {
         if (sceneId != SCENE_KAKUSIANA && 
             sceneId != SCENE_YOUSEI_IZUMI_TATE && 
             sceneId != SCENE_YOUSEI_IZUMI_YOKO &&
+            sceneId != SCENE_SYATEKIJYOU &&
             sceneId != SCENE_SHOP1)
             lastArea = currentArea;
     }
