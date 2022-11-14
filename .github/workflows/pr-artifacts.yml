@@ -3,13 +3,13 @@ name: pr-artifacts
 on:
   workflow_run:
     workflows: [generate-builds]
-    branches-ignore: [develop, develop-zhora]
     types:
       - completed
 
 jobs:
   pr-artifacts:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.event == 'pull_request' }}
     steps:
       - id: 'get-info'
         uses: actions/github-script@v6
