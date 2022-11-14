@@ -66,6 +66,8 @@ namespace SohImGui {
         WindowDrawFunc drawFunc;
     } CustomWindow;
 
+    bool SupportsViewports();
+
     void Init(WindowImpl window_impl);
     void Update(EventImpl event);
 
