@@ -25,7 +25,7 @@ jobs:
             return allArtifacts.data.artifacts.reduce((acc, item) => {
               if (item.name === "assets") return acc;
               acc += `
-              - [${item.name}](${item.archive_download_url})`;
+              - [${item.name}](${context.payload.repository.html_url}/suites/${context.payload.workflow_run.check_suite_id}/artifacts/${item.id})`;
               return acc;
             }, '### Build Artifacts');
       - id: 'add-to-pr'
