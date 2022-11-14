@@ -1181,6 +1181,7 @@ typedef struct {
     /*      */ s32 returnEntranceIndex;
     /*      */ s8 roomIndex;
     /*      */ s8 data;
+    /*      */ s8 exitScene;
     /*      */ Vec3f pos;
 } BetterSceneSelectGrottoData;
 

@@ -1836,6 +1836,10 @@ extern "C" bool Randomizer_IsTrialRequired(RandomizerInf trial) {
     return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trial);
 }
 
+extern "C" void Randomizer_LoadEntranceOverrides(const char* spoilerFileName, bool silent) {
+    OTRGlobals::Instance->gRandomizer->LoadEntranceOverrides(spoilerFileName, silent);
+}
+
 extern "C" u32 SpoilerFileExists(const char* spoilerFileName) {
     return OTRGlobals::Instance->gRandomizer->SpoilerFileExists(spoilerFileName);
 }
