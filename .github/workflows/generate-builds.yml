@@ -122,7 +122,7 @@ jobs:
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
         cmake --build build-cmake --target OTRGui -j3
         cmake --build build-cmake --config Release -j3
-        (cd build-cmake && cpack -G External)
+        (cd build-cmake && cpack -G External -C Release)
 
         mv README.md readme.txt
         mv build-cmake/*.appimage soh.appimage
