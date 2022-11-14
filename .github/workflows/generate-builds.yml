@@ -9,7 +9,9 @@ jobs:
   extract-assets:
     runs-on: [ self-hosted, asset-builder ]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
     - name: Extract assets
       run: |
         cp ../../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
@@ -25,7 +27,9 @@ jobs:
     needs: extract-assets
     runs-on: macos-12
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -83,7 +87,9 @@ jobs:
     needs: extract-assets
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
     - name: Install dependencies
       run: |
         sudo apt-get update
@@ -146,7 +152,9 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y ninja-build
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -181,7 +189,9 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y ninja-build
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -219,7 +229,9 @@ jobs:
       run: |
         choco install ninja
         Remove-Item -Path "C:\ProgramData\Chocolatey\bin\ccache.exe" -Force
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
     - name: ccache
       uses: dcvz/ccache-action@27b9f33213c0079872f064f6b6ba0233dfa16ba2
       with:

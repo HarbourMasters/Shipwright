@@ -1,15 +1,16 @@
 #include "savestates.h"
 
-#include <libultraship/GameVersions.h>
+#include <GameVersions.h>
 
 #include <cstdio> // std::sprintf
 
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
+#include <spdlog/fmt/fmt.h>
 
 #include <soh/OTRGlobals.h>
 #include <soh/OTRAudio.h>
 
-#include <libultraship/ImGuiImpl.h>
+#include <ImGuiImpl.h>
 
 #include "z64.h"
 #include "z64save.h"
@@ -23,6 +24,19 @@
 #include "../../src/overlays/actors/ovl_En_Fr/z_en_fr.h"
 
 extern "C" PlayState* gPlayState;
+
+template <> struct fmt::formatter<RequestType> {
+    constexpr auto parse(format_parse_context& ctx) { return ctx.begin(); }
+
+    template <typename FormatContext>
+    auto format(const RequestType& type, FormatContext& ctx) {
+        switch (type) {
+            case RequestType::SAVE: return fmt::format_to(ctx.out(), "Save");
+            case RequestType::LOAD: return fmt::format_to(ctx.out(), "Load");
+            default: return fmt::format_to(ctx.out(), "Unknown");
+        }
+    }
+};
 
 // FROM z_lights.c
 // I didn't feel like moving it into a header file.

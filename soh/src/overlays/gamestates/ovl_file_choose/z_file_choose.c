@@ -6,7 +6,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include <textures/icon_item_static/icon_item_static.h>
 #include "soh/frame_interpolation.h"
-#include <libultraship/GameVersions.h>
+#include <GameVersions.h>
 #include "objects/object_mag/object_mag.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 

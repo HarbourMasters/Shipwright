@@ -1,10 +1,10 @@
 #include "OTRGlobals.h"
-#include <libultraship/ResourceMgr.h>
-#include <libultraship/Scene.h>
+#include <ResourceMgr.h>
+#include <Scene.h>
 #include <Utils/StringHelper.h>
 #include "global.h"
 #include "vt.h"
-#include <libultraship/Text.h>
+#include <Text.h>
 #include <message_data_static.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 #include "Enhancements/custom-message/CustomMessageTypes.h"
