@@ -103,6 +103,7 @@ void DrawStatsTracker(bool& open) {
 
     u32 totalTimer = GAMEPLAYSTAT_TOTAL_TIME;
     u32 enemiesDefeated = 0;
+    u32 ammoUsed = 0;
 
     DisplayTimeHHMMSS(totalTimer,     "Total game Time:     ");
     DisplayTimeHHMMSS(gSaveContext.gameplayStats.playTimer / 2,  "Gameplay Time:       ");
@@ -138,6 +139,9 @@ void DrawStatsTracker(bool& open) {
 
     for (int i = COUNT_ENEMIES_DEFEATED_ANUBIS; i <= COUNT_ENEMIES_DEFEATED_WOLFOS; i++) {
         enemiesDefeated += gSaveContext.gameplayStats.count[i];
+    }
+    for (int i = COUNT_AMMO_USED_STICK; i <= COUNT_AMMO_USED_BEAN; i++) {
+        ammoUsed += gSaveContext.gameplayStats.count[i];
     }
 
     DisplayStat("Enemies Defeated:      ", enemiesDefeated);
@@ -218,6 +222,23 @@ void DrawStatsTracker(bool& open) {
     
     DisplayStat("Rupees Collected:      ", gSaveContext.gameplayStats.count[COUNT_RUPEES_COLLECTED]);
     DisplayStat("Rupees Spent:          ", gSaveContext.gameplayStats.count[COUNT_RUPEES_SPENT]);
+
+    DisplayStat("Ammo Used:             ", ammoUsed);
+
+    if (ImGui::TreeNode("Ammo Details...")) {
+
+        DisplayStatIfNonZero("Deku Sticks:       ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_STICK]);
+        DisplayStatIfNonZero("Deku Nuts:         ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_NUT]);
+        DisplayStatIfNonZero("Deku Seeds:        ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_SEED]);
+        DisplayStatIfNonZero("Bombs:             ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_BOMB]);
+        DisplayStatIfNonZero("Bombchus:          ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_BOMBCHU]);
+        DisplayStatIfNonZero("Arrows:            ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_ARROW]);
+        DisplayStatIfNonZero("Beans:             ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_BEAN]);
+
+        ImGui::NewLine();
+        ImGui::TreePop();
+    }
+
     DisplayStat("Damage Taken:          ", gSaveContext.gameplayStats.count[COUNT_DAMAGE_TAKEN]);
     DisplayStat("Sword Swings:          ", gSaveContext.gameplayStats.count[COUNT_SWORD_SWINGS]);
     DisplayStat("Steps Taken:           ", gSaveContext.gameplayStats.count[COUNT_STEPS]);
