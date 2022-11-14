@@ -33,6 +33,7 @@ void DrawSong(ItemTrackerItem item);
 
 OSContPad* buttonsPressed;
 std::set<RandomizerCheck> checkedLocations;
+std::set<RandomizerCheck> skippedLocations;
 std::set<RandomizerCheck> prevCheckedLocations;
 RandomizerCheck lastLocationChecked;
 
@@ -639,11 +640,15 @@ void DrawNotes(bool resizeable = false) {
 }
 
 
+bool HasItemBeenSkipped(RandomizerCheckObject obj) {
+    return skippedLocations.find(obj.rc) != skippedLocations.end();
+}
+
 bool HasItemBeenCollected(RandomizerCheckObject obj) {
     // TODO doesn't consider vanilla/MQ?
 
-    // return Location(obj.rc)->GetCollectionCheck().IsChecked(gSaveContext); //TODO move all the code to a static
-    // function in item_location
+    // TODO move all the code to a static function in item_location
+    // return Location(obj.rc)->GetCollectionCheck().IsChecked(gSaveContext); 
 
     ItemLocation* x = Location(obj.rc);
     SpoilerCollectionCheck check = x->GetCollectionCheck();
@@ -695,6 +700,10 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
             return false;
         case SpoilerCollectionCheckType::SPOILER_CHK_POE_POINTS:
             return gSaveContext.highScores[HS_POE_POINTS] >= 1000;
+        case SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER:
+            //Gravedigger has a fix in place that means one of two save locations. Check both.
+            return (gSaveContext.itemGetInf[1] & 0x1000) ||
+                   CVar_GetS32("gGravediggingTourFix", 0) && gSaveContext.sceneFlags[scene].collect & (1 << flag);
         default:
             return false;
     }
@@ -733,12 +742,14 @@ void DrawLocations() {
                 if (!locationIt.second.visibleInImgui)
                     continue;
 
-                if (!checkedLocations.count(locationIt.second.rc) &&
+                if (!checkedLocations.count(locationIt.second.rc) && !skippedLocations.count(locationIt.second.rc) &&
                     locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
 
                     hasItems = true;
                     doAreaScroll = 
                         (currentArea != RCAREA_INVALID && sceneId != SCENE_KAKUSIANA && // Don't move for grottos
+                         sceneId != SCENE_YOUSEI_IZUMI_TATE && sceneId != SCENE_YOUSEI_IZUMI_YOKO && // Don't move for fairy fountains
+                         sceneId != SCENE_SHOP1 && sceneId != SCENE_SYATEKIJYOU && // Don't move for Bazaar/Gallery, as it moves between Kak and Market
                          currentArea != lastArea && currentArea == rcArea);
                     break;
                 }
@@ -755,10 +766,15 @@ void DrawLocations() {
                         if (!locationIt.second.visibleInImgui)
                             continue;
 
+                        bool checked = HasItemBeenCollected(locationIt.second);
+                        bool skipped = HasItemBeenSkipped(locationIt.second);
+
                         // If the location has its scene flag set
-                        if (inGame && HasItemBeenCollected(locationIt.second)) { // && checkedLocations.find(locationIt.rc) != checkedLocations.end()) {
+                        if (inGame && checked) {
                             // show it as checked
                             checkedLocations.insert(locationIt.second.rc);
+                            if (skipped)
+                                skippedLocations.erase(locationIt.second.rc);
 
                             if (!lastItemFound &&
                                 prevCheckedLocations.find(locationIt.second.rc) == prevCheckedLocations.end()) {
@@ -768,37 +784,16 @@ void DrawLocations() {
                             }
                         }
 
-                        // TODO remove the arrows? Or make it so they can be skipped or something
-                        if (locationIt.second.visibleInImgui && !checkedLocations.count(locationIt.second.rc) &&
+                        if (locationIt.second.visibleInImgui && 
+                            !checkedLocations.count(locationIt.second.rc) && !skippedLocations.count(locationIt.second.rc) &&
                             locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
 
                             if (ImGui::ArrowButton(std::to_string(locationIt.second.rc).c_str(), ImGuiDir_Right)) {
-                                checkedLocations.insert(locationIt.second.rc);
+                                skippedLocations.insert(locationIt.second.rc);
+                            } else {
+                                ImGui::SameLine();
+                                ImGui::Text(locationIt.second.rcShortName.c_str());
                             }
-
-                            ImGui::SameLine();
-                            ImGui::Text(locationIt.second.rcShortName.c_str());
-                            // TODO if the check has been hinted, show the hint's value beside the check
-                            // TODO if the check has been rendered, show its (fake) name beside the check
-
-                            // gSaveContext.itemLocations[0].get.rgID;
-                            // Show the name of the check and the item gotten
-                            // ImGui::Text(ItemTable(gSaveContext.itemLocations[locationIt.rc].get.rgID).GetName().english.c_str());
-                            // //TODO This is hardcoded english
-                            // ImGui::Text(ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER,
-                            // gSaveContext.itemLocations[locationIt.rc].get.rgID).
-
-                            // ImGui::Text(
-                            //     OTRGlobals::Instance->gRandomizer->getItemMessageTableID(gSaveContext.itemLocations[locationIt.rc].get.rgID)
-                            //         .GetName()
-                            //         .english.c_str()); // TODO This is hardcoded english
-                            // gSaveContext.itemLocations[locationIt.rc].get).GetName().english.c_str()
-
-                            //  name of the check is locationIt.rcShortName.c_str()
-                            // ImGui::Text(locationIt.rcShortName.c_str());
-
-                            // ImGui::Text(gSaveContext.itemLocations[locationIt.rc].check);
-                            // OTRGlobals::Instance->gRandomizer->GetRandomizerGetDataFromKnownCheck(locationIt.rc));
                         }
                     }
                     ImGui::TreePop();
@@ -817,10 +812,12 @@ void DrawLocations() {
                 if (!locationIt.second.visibleInImgui)
                     continue;
 
-                if (checkedLocations.count(locationIt.second.rc)) {
+                if (checkedLocations.count(locationIt.second.rc) || skippedLocations.count(locationIt.second.rc)) {
                     hasItems = true;
                     doAreaScroll =
                         (currentArea != RCAREA_INVALID && sceneId != SCENE_KAKUSIANA && // Don't move for kakusiana/grottos
+                         sceneId != SCENE_YOUSEI_IZUMI_TATE && sceneId != SCENE_YOUSEI_IZUMI_YOKO && // Don't move for fairy fountains
+                         sceneId != SCENE_SHOP1 && sceneId != SCENE_SYATEKIJYOU && // Don't move for Bazaar/Gallery, as it moves between Kak and Market
                          currentArea != lastArea && currentArea == rcArea);
                     break;
                 }
@@ -837,29 +834,46 @@ void DrawLocations() {
                         if (!locationIt.second.visibleInImgui)
                             continue;
 
+                        bool checked = HasItemBeenCollected(locationIt.second);
+                        bool skipped = HasItemBeenSkipped(locationIt.second);
+
                         auto elfound = checkedLocations.find(locationIt.second.rc);
-                        if (locationIt.second.visibleInImgui && elfound != checkedLocations.end()) {
+                        auto skfound = skippedLocations.find(locationIt.second.rc);
+                        if (locationIt.second.visibleInImgui && (elfound != checkedLocations.end() || skfound != skippedLocations.end())) {
                             // If the location has its scene flag set
-                            if (!inGame || !HasItemBeenCollected(locationIt.second)) {
+                            if (!inGame || (!checked && !skipped)) {
                                 // show it as unchecked
-                                checkedLocations.erase(locationIt.second.rc);
-                            } else if (ImGui::ArrowButton(std::to_string(locationIt.second.rc).c_str(), ImGuiDir_Left)) {
-                                checkedLocations.erase(elfound);
+                                if (!checked)
+                                    checkedLocations.erase(elfound);
+                                if (!skipped)
+                                    skippedLocations.erase(skfound);
+                            } else if (skipped && ImGui::ArrowButton(std::to_string(locationIt.second.rc).c_str(), ImGuiDir_Left)) {
+                                if (skipped)
+                                    skippedLocations.erase(skfound);
+                            } else if (!skipped) {
+                                float sz = ImGui::GetFrameHeight();
+                                ImGui::InvisibleButton("", ImVec2(sz, sz));
                             }
                             ImGui::SameLine();
                             std::string txt =
                                 (lastLocationChecked == locationIt.second.rc ? "* " : "") + // Indicate the last location checked (before app reset at least)
                                 locationIt.second.rcShortName;
-                            ImGui::Text(txt.c_str());
-                            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 185, 0, 255));
 
-                            txt = OTRGlobals::Instance->gRandomizer
+                            if (skipped)
+                                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(160, 160, 160, 255));
+                            ImGui::Text(txt.c_str());
+                            if (!skipped)
+                                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 185, 0, 255));
+                            
+
+                            if (skipped)
+                                txt = "Skipped";
+                            else
+                                txt = OTRGlobals::Instance->gRandomizer
                                        ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[locationIt.second.rc].get.rgID][LANGUAGE_ENG]; // TODO Language
                             ImGui::SameLine();
                             ImGui::Text("(%s)", txt.c_str());
                             ImGui::PopStyleColor();
-                            // TODO GetItemObtainabilityFromRandomizerGet(rgData.rgID).CAN_OBTAIN or something to
-                            // determine if it should say blue rupee
                         }
                     }
                     ImGui::TreePop();
@@ -869,7 +883,11 @@ void DrawLocations() {
         ImGui::EndChild();
         ImGui::EndTable();
 
-        if (sceneId != SCENE_KAKUSIANA)
+        if (sceneId != SCENE_KAKUSIANA && 
+            sceneId != SCENE_YOUSEI_IZUMI_TATE && 
+            sceneId != SCENE_YOUSEI_IZUMI_YOKO &&
+            sceneId != SCENE_SYATEKIJYOU &&
+            sceneId != SCENE_SHOP1)
             lastArea = currentArea;
     }
 }
@@ -1306,11 +1324,12 @@ void InitItemTracker() {
     Ship::RegisterHook<Ship::LoadFile>([](uint32_t fileNum) {
         const char* initialTrackerNotes = CVar_GetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
         strcpy(itemTrackerNotes.Data, initialTrackerNotes);
+        RandomizerCheckObjects::UpdateTrackerImGuiVisibility();
     });
     Ship::RegisterHook<Ship::DeleteFile>([](uint32_t fileNum) {
         CVar_SetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
         SohImGui::RequestCvarSaveOnNextTick();
     });
-    RandomizerCheckObjects::UpdateImGuiVisibility();
+    RandomizerCheckObjects::UpdateTrackerImGuiVisibility();
     LocationTable_Init();
 }

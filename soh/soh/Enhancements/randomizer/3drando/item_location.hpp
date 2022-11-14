@@ -142,6 +142,10 @@ class SpoilerCollectionCheck {
     static auto BigPoePoints() {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_POE_POINTS, 0x00, 0x00);
     }
+    
+    static auto Gravedigger(uint8_t scene, uint8_t flag) {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER, scene, flag);
+    }
 
     static auto ShopItem(uint8_t scene, uint8_t itemSlot) {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM, scene, itemSlot);

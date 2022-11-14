@@ -25,6 +25,7 @@ typedef enum {
     SPOILER_CHK_SHOP_ITEM,
     SPOILER_CHK_MAGIC_BEANS,
     SPOILER_CHK_MERCHANT,
+    SPOILER_CHK_GRAVEDIGGER,
 } SpoilerCollectionCheckType;
 
 // Location groups for checks, used to group the checks by logical location
