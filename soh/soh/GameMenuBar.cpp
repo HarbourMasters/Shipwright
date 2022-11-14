@@ -27,6 +27,7 @@
 #include "include/z64audio.h"
 #include "soh/SaveManager.h"
 #include "OTRGlobals.h"
+#include <soh/Enhancements/online/Online.h>
 
 #ifdef ENABLE_CROWD_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
@@ -1532,6 +1533,52 @@ namespace GameMenuBar {
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
+
+            ImGui::EndMenu();
+        }
+
+        ImGui::SetCursorPosY(0.0f);
+
+        if (ImGui::BeginMenu("Online")) {
+            if (ImGui::BeginMenu("Server")) {
+                int newPort = CVar_GetS32("gOnlineServerPort", 25565);
+                ImGui::InputInt("Port", &newPort);
+                CVar_SetS32("gOnlineServerPort", newPort);
+
+                if (ImGui::Button("Host Game")) {
+                    Ship::Online::InitOnline(nullptr, newPort);
+                }
+
+                ImGui::EndMenu();
+            }
+
+            if (ImGui::BeginMenu("Client")) {
+                const char* ipAddr = CVar_GetString("gOnlineClientIPAddress", "127.0.0.1");
+                ImGui::InputText("IP Address", (char*)ipAddr, 32);
+                CVar_SetString("gOnlineClientIPAddress", ipAddr);
+
+                int newPort = CVar_GetS32("gOnlineClientPort", 25565);
+                ImGui::InputInt("Port", &newPort);
+                CVar_SetS32("gOnlineClientPort", newPort);
+
+                if (ImGui::Button("Connect to Game")) {
+                    Ship::Online::InitOnline((char*)ipAddr, newPort);
+                }
+
+                ImGui::EndMenu();
+            }
+
+            if (ImGui::BeginMenu("Character Info")) {
+                const char* nickname = CVar_GetString("gOnlineName", "Link");
+                ImGui::InputText("Nickname", (char*)nickname, 32);
+                CVar_SetString("gOnlineName", nickname);
+
+                const char* bio = CVar_GetString("gOnlineBio", "This is a test bio");
+                ImGui::InputText("Description", (char*)bio, 128);
+                CVar_SetString("gOnlineBio", bio);
+
+                ImGui::EndMenu();
+            }
 
             ImGui::EndMenu();
         }

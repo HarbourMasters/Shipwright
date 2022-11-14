@@ -70,6 +70,33 @@ extern "C"
 {
 #endif
 
+typedef struct OnlinePacket {
+    uint8_t player_id;
+
+    PosRot posRot;
+    uint8_t biggoron_broken;
+    uint16_t scene_id;
+    uint16_t sound_id;
+    uint8_t puppet_age;
+
+    // SkelAnime Data
+    Vec3s jointTable[24];
+
+    uint8_t sheathType;
+    uint8_t shieldType;
+    uint8_t leftHandType;
+    uint8_t rightHandType;
+
+    int16_t faceType;
+    uint8_t tunicType;
+    uint8_t bootsType;
+
+    uint8_t damageEffect;
+    uint8_t damageValue;
+} OnlinePacket;
+
+OnlinePacket gPacket;
+
 typedef struct{
     /* 0x00 */ char unk[0x4];
     /* 0x04 */ MtxF mf;

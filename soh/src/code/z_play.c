@@ -8,6 +8,8 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/debugconsole.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
+#include <overlays/actors/ovl_Link_Puppet/z_link_puppet.h>
+#include <soh/Enhancements/online/Online.h>
 
 #include <time.h>
 
@@ -26,6 +28,7 @@ u64 D_801614D0[0xA00];
 #endif
 
 PlayState* gPlayState;
+LinkPuppet* puppets[32];
 
 void func_800BC450(PlayState* play) {
     Camera_ChangeDataIdx(GET_ACTIVE_CAM(play), play->unk_1242B - 1);
@@ -623,6 +626,11 @@ void Play_Init(GameState* thisx) {
         play->unk_1242B = 1;
     } else {
         play->unk_1242B = 0;
+    }
+
+    for (size_t i = 0; i < 32; i++) {
+        puppets[i] = Actor_Spawn(&play->actorCtx, gPlayState, ACTOR_LINK_PUPPET, -32000.0f, -32000.0f, -32000.0f,
+                                 0, 0, 0, 0);
     }
 
     Interface_SetSceneRestrictions(play);
@@ -1640,6 +1648,24 @@ void Play_Main(GameState* thisx) {
         Play_Update(play);
     }
 
+    gPacket.posRot.pos = GET_PLAYER(play)->actor.world.pos;
+    gPacket.posRot.rot = GET_PLAYER(play)->actor.shape.rot;
+    memcpy(gPacket.jointTable, GET_PLAYER(play)->skelAnime.jointTable, 6 * PLAYER_LIMB_MAX);
+    gPacket.biggoron_broken = (gSaveContext.swordHealth <= 0.0f);
+
+    gPacket.shieldType = GET_PLAYER(play)->currentShield;
+    gPacket.sheathType = GET_PLAYER(play)->sheathType;
+    gPacket.leftHandType = GET_PLAYER(play)->leftHandType;
+    gPacket.rightHandType = GET_PLAYER(play)->rightHandType;
+
+    gPacket.tunicType = GET_PLAYER(play)->currentTunic;
+    gPacket.bootsType = GET_PLAYER(play)->currentBoots;
+    gPacket.faceType = GET_PLAYER(play)->actor.shape.face;
+    gPacket.scene_id = play->sceneNum;
+    gPacket.puppet_age = gSaveContext.linkAge;
+
+    OTRSendPacket();
+
     if (1 && HREG(63)) {
         LOG_NUM("1", 1);
     }
@@ -2144,5 +2170,11 @@ void Play_PerformSave(PlayState* play) {
         if (CVar_GetS32("gAutosave", 0)) {
             Overlay_DisplayText(3.0f, "Game Saved");
         }
+    }
+}
+
+void SetLinkPuppetData(OnlinePacket* packet, u8 player_id) {
+    if (puppets[player_id] != NULL) {
+        memcpy(&puppets[player_id]->packet, packet, sizeof(OnlinePacket));
     }
 }
