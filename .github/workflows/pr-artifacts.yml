@@ -1,0 +1,61 @@
+name: pr-artifacts
+
+on:
+  workflow_run:
+    workflows: [generate-builds]
+    branches-ignore: [develop, develop-zhora]
+    types:
+      - completed
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Expose artifacts'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.payload.workflow_run.id,
+            });
+            console.log(context.payload);
+            allArtifacts.data.artifacts.forEach((artifact) => {
+              console.log(artifact);
+            });
+      - name: 'soh-windows.zip'
+        uses: garrettjoecox/pr-section@main
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          pr-number: ${{ github.event.workflow_run.head_branch }}
+          section-name: 'soh-windows.zip'
+          section-value: '[soh-windows.zip](https://example.com)'
+      - name: 'soh-linux.zip'
+        uses: garrettjoecox/pr-section@main
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          pr-number: ${{ github.event.workflow_run.head_branch }}
+          section-name: 'soh-linux.zip'
+          section-value: '[soh-linux.zip](https://example.com)'
+      - name: 'soh-mac.zip'
+        uses: garrettjoecox/pr-section@main
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          pr-number: ${{ github.event.workflow_run.head_branch }}
+          section-name: 'soh-mac.zip'
+          section-value: '[soh-mac.zip](https://example.com)'
+      - name: 'soh-switch.zip'
+        uses: garrettjoecox/pr-section@main
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          pr-number: ${{ github.event.workflow_run.head_branch }}
+          section-name: 'soh-switch.zip'
+          section-value: '[soh-switch.zip](https://example.com)'
+      - name: 'soh-wiiu.zip'
+        uses: garrettjoecox/pr-section@main
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          pr-number: ${{ github.event.workflow_run.head_branch }}
+          section-name: 'soh-wiiu.zip'
+          section-value: '[soh-wiiu.zip](https://example.com)'

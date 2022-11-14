@@ -1,6 +1,5 @@
 name: generate-builds
 on:
-  push:
   pull_request:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -22,6 +21,7 @@ jobs:
         path: assets.zip
         retention-days: 1
   build-macos:
+    if: false
     needs: extract-assets
     runs-on: macos-12
     steps:
@@ -80,6 +80,7 @@ jobs:
           SoH.dmg
           readme.txt
   build-linux:
+    if: false
     needs: extract-assets
     runs-on: ubuntu-20.04
     steps:
@@ -214,6 +215,7 @@ jobs:
   build-windows:
     needs: extract-assets
     runs-on: windows-latest
+    if: false
     steps:
     - name: Install dependencies
       run: |
