@@ -658,7 +658,7 @@ s16 EnGo2_GetStateGoronDmtBiggoron(PlayState* play, EnGo2* this) {
                             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
                             Randomizer_ConsumeAdultTradeItem(play, ITEM_SWORD_BROKEN);
                             EnGo2_GetItemEntry(this, play, getItemEntry);
-                            Flags_SetTreasure(play, 0x1D);
+                            Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD);
                         } else {
                             u32 getItemId = GI_PRESCRIPTION;
                             EnGo2_GetItem(this, play, getItemId);

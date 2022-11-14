@@ -672,7 +672,8 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
         case SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM:
         case SpoilerCollectionCheckType::SPOILER_CHK_COW:
         case SpoilerCollectionCheckType::SPOILER_CHK_SCRUB:
-            return Flags_GetRandomizerInf(randomizerFlagLookup[obj.rc]);
+        case SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF:
+            return Flags_GetRandomizerInf(randomizerFlagLookup[obj.rc]); //TODO randomizer.cpp has rcToRandomizerInf
         case SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF:
             return gSaveContext.eventChkInf[flag / 16] & (0x01 << flag % 16);
         case SpoilerCollectionCheckType::SPOILER_CHK_GERUDO_MEMBERSHIP_CARD:
