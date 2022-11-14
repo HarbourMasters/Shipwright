@@ -21,13 +21,13 @@ typedef enum {
     /* 4 */ DOOR_KILLER_RUBBLE_PIECE_4
 } DoorKillerBehaviour;
 
-void DoorKiller_Init(Actor* thisx, GlobalContext* globalCtx);
-void DoorKiller_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void DoorKiller_Update(Actor* thisx, GlobalContext* globalCtx);
-void DoorKiller_Wait(DoorKiller* this, GlobalContext* globalCtx);
-void DoorKiller_SetProperties(DoorKiller* this, GlobalContext* globalCtx);
-void DoorKiller_DrawDoor(Actor* thisx, GlobalContext* globalCtx);
-void DoorKiller_DrawRubble(Actor* thisx, GlobalContext* globalCtx);
+void DoorKiller_Init(Actor* thisx, PlayState* play);
+void DoorKiller_Destroy(Actor* thisx, PlayState* play);
+void DoorKiller_Update(Actor* thisx, PlayState* play);
+void DoorKiller_Wait(DoorKiller* this, PlayState* play);
+void DoorKiller_SetProperties(DoorKiller* this, PlayState* play);
+void DoorKiller_DrawDoor(Actor* thisx, PlayState* play);
+void DoorKiller_DrawRubble(Actor* thisx, PlayState* play);
 
 const ActorInit Door_Killer_InitVars = {
     ACTOR_DOOR_KILLER,
@@ -96,8 +96,8 @@ static DoorKillerTextureEntry sDoorTextures[4] = {
     { OBJECT_GAMEPLAY_KEEP, gWoodenDoorTex },
 };
 
-void DoorKiller_Init(Actor* thisx, GlobalContext* globalCtx2) {
-    GlobalContext* globalCtx = globalCtx2;
+void DoorKiller_Init(Actor* thisx, PlayState* play2) {
+    PlayState* play = play2;
     f32 randF;
     DoorKiller* this = (DoorKiller*)thisx;
     s32 bankIndex;
@@ -107,13 +107,13 @@ void DoorKiller_Init(Actor* thisx, GlobalContext* globalCtx2) {
     // Look in the object bank for one of the four objects containing door textures
     bankIndex = -1;
     for (i = 0; bankIndex < 0; i++) {
-        bankIndex = Object_GetIndex(&globalCtx->objectCtx, sDoorTextures[i].objectId);
+        bankIndex = Object_GetIndex(&play->objectCtx, sDoorTextures[i].objectId);
         this->textureEntryIndex = i;
     }
     */
 
     // For SoH where all objects are loaded, hardcode the index to match the current map.
-    switch (globalCtx->sceneNum) {
+    switch (play->sceneNum) {
         case SCENE_HIDAN:
             this->textureEntryIndex = 0;
             break;
@@ -127,7 +127,7 @@ void DoorKiller_Init(Actor* thisx, GlobalContext* globalCtx2) {
         default:
             this->textureEntryIndex = 3;
     }
-    bankIndex = Object_GetIndex(&globalCtx->objectCtx, sDoorTextures[this->textureEntryIndex].objectId);
+    bankIndex = Object_GetIndex(&play->objectCtx, sDoorTextures[this->textureEntryIndex].objectId);
 
     osSyncPrintf("bank_ID = %d\n", bankIndex);
     osSyncPrintf("status = %d\n", this->textureEntryIndex);
@@ -145,19 +145,19 @@ void DoorKiller_Init(Actor* thisx, GlobalContext* globalCtx2) {
         case DOOR_KILLER_DOOR:
             // `jointTable` is used for both the `jointTable` and `morphTable` args here. Because this actor doesn't
             // play any animations it does not cause problems, but it would need to be changed otherwise.
-            SkelAnime_InitFlex(globalCtx, &this->skelAnime, &object_door_killer_Skel_001BC8, NULL, this->jointTable,
+            SkelAnime_InitFlex(play, &this->skelAnime, &object_door_killer_Skel_001BC8, NULL, this->jointTable,
                                this->jointTable, 9);
             this->actionFunc = DoorKiller_SetProperties;
-            DoorKiller_SetProperties(this, globalCtx);
+            DoorKiller_SetProperties(this, play);
 
             // manually set the overall rotation of the door
             this->jointTable[1].x = this->jointTable[1].z = 0x4000;
 
             // Set a cylinder collider to detect link attacks and larger sphere collider to detect explosions
-            Collider_InitCylinder(globalCtx, &this->colliderCylinder);
-            Collider_SetCylinder(globalCtx, &this->colliderCylinder, &this->actor, &sCylinderInit);
-            Collider_InitJntSph(globalCtx, &this->colliderJntSph);
-            Collider_SetJntSph(globalCtx, &this->colliderJntSph, &this->actor, &sJntSphInit, this->colliderJntSphItems);
+            Collider_InitCylinder(play, &this->colliderCylinder);
+            Collider_SetCylinder(play, &this->colliderCylinder, &this->actor, &sCylinderInit);
+            Collider_InitJntSph(play, &this->colliderJntSph);
+            Collider_SetJntSph(play, &this->colliderJntSph, &this->actor, &sJntSphInit, this->colliderJntSphItems);
             this->colliderJntSph.elements[0].dim.worldSphere.radius = 80;
             this->colliderJntSph.elements[0].dim.worldSphere.center.x = (s16)this->actor.world.pos.x;
             this->colliderJntSph.elements[0].dim.worldSphere.center.y = (s16)this->actor.world.pos.y + 50;
@@ -165,7 +165,7 @@ void DoorKiller_Init(Actor* thisx, GlobalContext* globalCtx2) {
 
             // If tied to a switch flag and that switch flag is already set, kill the actor.
             if ((((this->actor.params >> 8) & 0x3F) != 0x3F) &&
-                Flags_GetSwitch(globalCtx, ((this->actor.params >> 8) & 0x3F))) {
+                Flags_GetSwitch(play, ((this->actor.params >> 8) & 0x3F))) {
                 Actor_Kill(&this->actor);
             }
             break;
@@ -174,7 +174,7 @@ void DoorKiller_Init(Actor* thisx, GlobalContext* globalCtx2) {
         case DOOR_KILLER_RUBBLE_PIECE_3:
         case DOOR_KILLER_RUBBLE_PIECE_4:
             this->actionFunc = DoorKiller_SetProperties;
-            DoorKiller_SetProperties(this, globalCtx);
+            DoorKiller_SetProperties(this, play);
 
             this->actor.gravity = -0.6f;
             this->actor.minVelocityY = -6.0f;
@@ -197,26 +197,26 @@ void DoorKiller_Init(Actor* thisx, GlobalContext* globalCtx2) {
     }
 }
 
-void DoorKiller_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void DoorKiller_Destroy(Actor* thisx, PlayState* play) {
     DoorKiller* this = (DoorKiller*)thisx;
 
     if ((thisx->params & 0xFF) == DOOR_KILLER_DOOR) {
-        Collider_DestroyCylinder(globalCtx, &this->colliderCylinder);
-        Collider_DestroyJntSph(globalCtx, &this->colliderJntSph);
+        Collider_DestroyCylinder(play, &this->colliderCylinder);
+        Collider_DestroyJntSph(play, &this->colliderJntSph);
     }
 }
 
-void DoorKiller_SpawnRubble(Actor* thisx, GlobalContext* globalCtx) {
-    Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_DOOR_KILLER, thisx->world.pos.x, thisx->world.pos.y + 9.0f,
+void DoorKiller_SpawnRubble(Actor* thisx, PlayState* play) {
+    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x, thisx->world.pos.y + 9.0f,
                 thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y, thisx->shape.rot.z,
                 DOOR_KILLER_RUBBLE_PIECE_1);
-    Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_DOOR_KILLER, thisx->world.pos.x + 7.88f,
+    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x + 7.88f,
                 thisx->world.pos.y + 39.8f, thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y,
                 thisx->shape.rot.z, DOOR_KILLER_RUBBLE_PIECE_2);
-    Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_DOOR_KILLER, thisx->world.pos.x - 15.86f,
+    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x - 15.86f,
                 thisx->world.pos.y + 61.98f, thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y,
                 thisx->shape.rot.z, DOOR_KILLER_RUBBLE_PIECE_3);
-    Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_DOOR_KILLER, thisx->world.pos.x + 3.72f,
+    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x + 3.72f,
                 thisx->world.pos.y + 85.1f, thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y,
                 thisx->shape.rot.z, DOOR_KILLER_RUBBLE_PIECE_4);
 }
@@ -224,7 +224,7 @@ void DoorKiller_SpawnRubble(Actor* thisx, GlobalContext* globalCtx) {
 /**
  * action function for the individual door pieces that spawn and fall down when the door is destroyed
  */
-void DoorKiller_FallAsRubble(DoorKiller* this, GlobalContext* globalCtx) {
+void DoorKiller_FallAsRubble(DoorKiller* this, PlayState* play) {
     this->actor.velocity.y += this->actor.gravity;
     if (this->actor.velocity.y < this->actor.minVelocityY) {
         this->actor.velocity.y = this->actor.minVelocityY;
@@ -246,7 +246,7 @@ void DoorKiller_FallAsRubble(DoorKiller* this, GlobalContext* globalCtx) {
     func_8002D7EC(&this->actor);
 }
 
-s32 DoorKiller_IsHit(Actor* thisx, GlobalContext* globalCtx) {
+s32 DoorKiller_IsHit(Actor* thisx, PlayState* play) {
     DoorKiller* this = (DoorKiller*)thisx;
     if ((this->colliderCylinder.base.acFlags & 2) && (this->colliderCylinder.info.acHitInfo != NULL)) {
         return true;
@@ -254,18 +254,18 @@ s32 DoorKiller_IsHit(Actor* thisx, GlobalContext* globalCtx) {
     return false;
 }
 
-void DoorKiller_SetAC(DoorKiller* this, GlobalContext* globalCtx) {
+void DoorKiller_SetAC(DoorKiller* this, PlayState* play) {
     Collider_UpdateCylinder(&this->actor, &this->colliderCylinder);
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colliderCylinder.base);
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colliderJntSph.base);
+    CollisionCheck_SetAC(play, &play->colChkCtx, &this->colliderCylinder.base);
+    CollisionCheck_SetAC(play, &play->colChkCtx, &this->colliderJntSph.base);
 }
 
-void DoorKiller_Die(DoorKiller* this, GlobalContext* globalCtx) {
+void DoorKiller_Die(DoorKiller* this, PlayState* play) {
     s32 switchFlag = (this->actor.params >> 8) & 0x3F;
 
     // Can set a switch flag on death based on params
     if (switchFlag != 0x3F) {
-        Flags_SetSwitch(globalCtx, switchFlag);
+        Flags_SetSwitch(play, switchFlag);
     }
     Actor_Kill(&this->actor);
 }
@@ -273,7 +273,7 @@ void DoorKiller_Die(DoorKiller* this, GlobalContext* globalCtx) {
 /**
  * After slamming on the floor, rise back upright
  */
-void DoorKiller_RiseBackUp(DoorKiller* this, GlobalContext* globalCtx) {
+void DoorKiller_RiseBackUp(DoorKiller* this, PlayState* play) {
     s32 i;
     s16 rotation;
 
@@ -282,7 +282,7 @@ void DoorKiller_RiseBackUp(DoorKiller* this, GlobalContext* globalCtx) {
     } else {
         this->actionFunc = DoorKiller_Wait;
         this->timer = 16;
-        DoorKiller_SetAC(this, globalCtx);
+        DoorKiller_SetAC(this, play);
         return;
     }
 
@@ -314,7 +314,7 @@ void DoorKiller_RiseBackUp(DoorKiller* this, GlobalContext* globalCtx) {
  * After wobbling, fall over and slam onto the floor, damaging the player if they are in the way. Uses manual distance
  * check for damaging player, not AT system.
  */
-void DoorKiller_FallOver(DoorKiller* this, GlobalContext* globalCtx) {
+void DoorKiller_FallOver(DoorKiller* this, PlayState* play) {
     s32 i;
     s16 rotation;
 
@@ -363,17 +363,17 @@ void DoorKiller_FallOver(DoorKiller* this, GlobalContext* globalCtx) {
             pos.x += this->actor.world.pos.x;
             pos.y += this->actor.world.pos.y;
             pos.z += this->actor.world.pos.z;
-            func_8002865C(globalCtx, &pos, &velocity, &accel, 300, 30);
+            func_8002865C(play, &pos, &velocity, &accel, 300, 30);
         }
     }
     if (!(this->hasHitPlayerOrGround & 1)) {
         Vec3f playerPosRelToDoor;
-        Player* player = GET_PLAYER(globalCtx);
+        Player* player = GET_PLAYER(play);
         func_8002DBD0(&this->actor, &playerPosRelToDoor, &player->actor.world.pos);
         if ((fabsf(playerPosRelToDoor.y) < 20.0f) && (fabsf(playerPosRelToDoor.x) < 20.0f) &&
             (playerPosRelToDoor.z < 100.0f) && (playerPosRelToDoor.z > 0.0f)) {
             this->hasHitPlayerOrGround |= 1;
-            func_8002F6D4(globalCtx, &this->actor, 6.0f, this->actor.yawTowardsPlayer, 6.0f, 16);
+            func_8002F6D4(play, &this->actor, 6.0f, this->actor.yawTowardsPlayer, 6.0f, 16);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_KDOOR_HIT);
             func_8002F7DC(&player->actor, NA_SE_PL_BODY_HIT);
         }
@@ -387,7 +387,7 @@ void DoorKiller_FallOver(DoorKiller* this, GlobalContext* globalCtx) {
 /**
  * Wobble around, signifying the door is about to fall over. Does not set AC and so cannot be destroyed during this.
  */
-void DoorKiller_Wobble(DoorKiller* this, GlobalContext* globalCtx) {
+void DoorKiller_Wobble(DoorKiller* this, PlayState* play) {
     s16 rotation;
     s32 i;
 
@@ -417,7 +417,7 @@ void DoorKiller_Wobble(DoorKiller* this, GlobalContext* globalCtx) {
 /**
  * Idle while the player attempts to open the door and then begin to wobble
  */
-void DoorKiller_WaitBeforeWobble(DoorKiller* this, GlobalContext* globalCtx) {
+void DoorKiller_WaitBeforeWobble(DoorKiller* this, PlayState* play) {
     if (this->timer > 0) {
         this->timer--;
     } else {
@@ -426,8 +426,8 @@ void DoorKiller_WaitBeforeWobble(DoorKiller* this, GlobalContext* globalCtx) {
     }
 }
 
-void DoorKiller_Wait(DoorKiller* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void DoorKiller_Wait(DoorKiller* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     Vec3f playerPosRelToDoor;
     s16 angleToFacingPlayer;
 
@@ -441,22 +441,22 @@ void DoorKiller_Wait(DoorKiller* this, GlobalContext* globalCtx) {
         return;
     }
 
-    if (DoorKiller_IsHit(&this->actor, globalCtx)) {
+    if (DoorKiller_IsHit(&this->actor, play)) {
         // AC cylinder: wobble if hit by most weapons, die if hit by explosives or hammer
         if ((this->colliderCylinder.info.acHitInfo->toucher.dmgFlags & 0x1FFA6) != 0) {
             this->timer = 16;
             this->actionFunc = DoorKiller_Wobble;
         } else if ((this->colliderCylinder.info.acHitInfo->toucher.dmgFlags & 0x48) != 0) {
-            DoorKiller_SpawnRubble(&this->actor, globalCtx);
+            DoorKiller_SpawnRubble(&this->actor, play);
             this->actionFunc = DoorKiller_Die;
-            SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->actor.world.pos, 20, NA_SE_EN_KDOOR_BREAK);
+            SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 20, NA_SE_EN_KDOOR_BREAK);
         }
-    } else if (Actor_GetCollidedExplosive(globalCtx, &this->colliderJntSph.base) != NULL) {
+    } else if (Actor_GetCollidedExplosive(play, &this->colliderJntSph.base) != NULL) {
         // AC sphere: die if hit by explosive
-        DoorKiller_SpawnRubble(&this->actor, globalCtx);
+        DoorKiller_SpawnRubble(&this->actor, play);
         this->actionFunc = DoorKiller_Die;
-        SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->actor.world.pos, 20, NA_SE_EN_KDOOR_BREAK);
-    } else if (!Player_InCsMode(globalCtx) && (fabsf(playerPosRelToDoor.y) < 20.0f) &&
+        SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 20, NA_SE_EN_KDOOR_BREAK);
+    } else if (!Player_InCsMode(play) && (fabsf(playerPosRelToDoor.y) < 20.0f) &&
                (fabsf(playerPosRelToDoor.x) < 20.0f) && (playerPosRelToDoor.z < 50.0f) &&
                (playerPosRelToDoor.z > 0.0f)) {
         // Set player properties to make the door openable if within range
@@ -471,27 +471,27 @@ void DoorKiller_Wait(DoorKiller* this, GlobalContext* globalCtx) {
         }
     }
 
-    DoorKiller_SetAC(this, globalCtx);
+    DoorKiller_SetAC(this, play);
 }
 
 /**
  * Grabs the virtual address of the texture from the relevant door object
  */
-void DoorKiller_UpdateTexture(Actor* thisx, GlobalContext* globalCtx) {
+void DoorKiller_UpdateTexture(Actor* thisx, PlayState* play) {
     DoorKiller* this = (DoorKiller*)thisx;
 
-    gSegments[6] = VIRTUAL_TO_PHYSICAL(globalCtx->objectCtx.status[this->doorObjBankIndex].segment);
+    gSegments[6] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[this->doorObjBankIndex].segment);
     this->texture = SEGMENTED_TO_VIRTUAL(this->texture);
-    gSegments[6] = VIRTUAL_TO_PHYSICAL(globalCtx->objectCtx.status[thisx->objBankIndex].segment);
+    gSegments[6] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[thisx->objBankIndex].segment);
 }
 
 /**
  * Gets the correct door texture, defines the appropriate draw fucntion and action function based on type behaviour
  * (door or rubble).
  */
-void DoorKiller_SetProperties(DoorKiller* this, GlobalContext* globalCtx) {
-    if (Object_IsLoaded(&globalCtx->objectCtx, this->doorObjBankIndex)) {
-        DoorKiller_UpdateTexture(&this->actor, globalCtx);
+void DoorKiller_SetProperties(DoorKiller* this, PlayState* play) {
+    if (Object_IsLoaded(&play->objectCtx, this->doorObjBankIndex)) {
+        DoorKiller_UpdateTexture(&this->actor, play);
         switch (this->actor.params & 0xFF) {
             case DOOR_KILLER_DOOR:
                 this->actionFunc = DoorKiller_Wait;
@@ -508,38 +508,38 @@ void DoorKiller_SetProperties(DoorKiller* this, GlobalContext* globalCtx) {
     }
 }
 
-void DoorKiller_Update(Actor* thisx, GlobalContext* globalCtx) {
+void DoorKiller_Update(Actor* thisx, PlayState* play) {
     DoorKiller* this = (DoorKiller*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void DoorKiller_SetTexture(Actor* thisx, GlobalContext* globalCtx) {
+void DoorKiller_SetTexture(Actor* thisx, PlayState* play) {
     DoorKiller* this = (DoorKiller*)thisx;
     void* doorTexture = this->texture;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, doorTexture);
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void DoorKiller_DrawDoor(Actor* thisx, GlobalContext* globalCtx) {
+void DoorKiller_DrawDoor(Actor* thisx, PlayState* play) {
     DoorKiller* this = (DoorKiller*)thisx;
 
-    func_800943C8(globalCtx->state.gfxCtx);
-    DoorKiller_SetTexture(&this->actor, globalCtx);
-    SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+    func_800943C8(play->state.gfxCtx);
+    DoorKiller_SetTexture(&this->actor, play);
+    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, NULL, NULL);
 }
 
-void DoorKiller_DrawRubble(Actor* thisx, GlobalContext* globalCtx) {
+void DoorKiller_DrawRubble(Actor* thisx, PlayState* play) {
     static Gfx* dLists[] = { object_door_killer_DL_001250, object_door_killer_DL_001550, object_door_killer_DL_0017B8,
                              object_door_killer_DL_001A58 };
     s32 rubblePieceIndex = (thisx->params & 0xFF) - 1;
     DoorKiller* this = (DoorKiller*)thisx;
 
     if ((this->timer >= 20) || ((this->timer & 1) == 0)) {
-        DoorKiller_SetTexture(thisx, globalCtx);
-        Gfx_DrawDListOpa(globalCtx, dLists[rubblePieceIndex]);
+        DoorKiller_SetTexture(thisx, play);
+        Gfx_DrawDListOpa(play, dLists[rubblePieceIndex]);
     }
 }

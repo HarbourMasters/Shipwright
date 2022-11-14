@@ -6,7 +6,7 @@
 
 struct BgIceTurara;
 
-typedef void (*BgIceTuraraActionFunc)(struct BgIceTurara*, GlobalContext*);
+typedef void (*BgIceTuraraActionFunc)(struct BgIceTurara*, PlayState*);
 
 typedef enum {
     /* 0 */ TURARA_STALAGMITE,

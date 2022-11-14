@@ -17,24 +17,24 @@ typedef enum {
     DODONGO_WALK
 } EnDodongoActionState;
 
-void EnDodongo_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnDodongo_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnDodongo_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnDodongo_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnDodongo_Init(Actor* thisx, PlayState* play);
+void EnDodongo_Destroy(Actor* thisx, PlayState* play);
+void EnDodongo_Update(Actor* thisx, PlayState* play);
+void EnDodongo_Draw(Actor* thisx, PlayState* play);
 
-void EnDodongo_SetupDeath(EnDodongo* this, GlobalContext* globalCtx);
+void EnDodongo_SetupDeath(EnDodongo* this, PlayState* play);
 void EnDodongo_ShiftVecRadial(s16 yaw, f32 radius, Vec3f* vec);
-s32 EnDodongo_AteBomb(EnDodongo* this, GlobalContext* globalCtx);
+s32 EnDodongo_AteBomb(EnDodongo* this, PlayState* play);
 void EnDodongo_SetupIdle(EnDodongo* this);
 
-void EnDodongo_Idle(EnDodongo* this, GlobalContext* globalCtx);
-void EnDodongo_EndBreatheFire(EnDodongo* this, GlobalContext* globalCtx);
-void EnDodongo_BreatheFire(EnDodongo* this, GlobalContext* globalCtx);
-void EnDodongo_SwallowBomb(EnDodongo* this, GlobalContext* globalCtx);
-void EnDodongo_Walk(EnDodongo* this, GlobalContext* globalCtx);
-void EnDodongo_Stunned(EnDodongo* this, GlobalContext* globalCtx);
-void EnDodongo_Death(EnDodongo* this, GlobalContext* globalCtx);
-void EnDodongo_SweepTail(EnDodongo* this, GlobalContext* globalCtx);
+void EnDodongo_Idle(EnDodongo* this, PlayState* play);
+void EnDodongo_EndBreatheFire(EnDodongo* this, PlayState* play);
+void EnDodongo_BreatheFire(EnDodongo* this, PlayState* play);
+void EnDodongo_SwallowBomb(EnDodongo* this, PlayState* play);
+void EnDodongo_Walk(EnDodongo* this, PlayState* play);
+void EnDodongo_Stunned(EnDodongo* this, PlayState* play);
+void EnDodongo_Death(EnDodongo* this, PlayState* play);
+void EnDodongo_SweepTail(EnDodongo* this, PlayState* play);
 
 const ActorInit En_Dodongo_InitVars = {
     ACTOR_EN_DODONGO,
@@ -239,7 +239,7 @@ void EnDodongo_SetupAction(EnDodongo* this, EnDodongoActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
-void EnDodongo_SpawnBombSmoke(EnDodongo* this, GlobalContext* globalCtx) {
+void EnDodongo_SpawnBombSmoke(EnDodongo* this, PlayState* play) {
     s32 pad;
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     Vec3f accel = { 0.0f, 0.3f, 0.0f };
@@ -271,7 +271,7 @@ void EnDodongo_SpawnBombSmoke(EnDodongo* this, GlobalContext* globalCtx) {
     velocity.z = randCos * 3.5f;
     accel.x = ((Rand_ZeroOne() * 0.1f) + 0.15f) * -randSin;
     accel.z = ((Rand_ZeroOne() * 0.1f) + 0.15f) * -randCos;
-    func_8002836C(globalCtx, &pos, &velocity, &accel, &this->bombSmokePrimColor, &this->bombSmokeEnvColor, 100, 25, 20);
+    func_8002836C(play, &pos, &velocity, &accel, &this->bombSmokePrimColor, &this->bombSmokeEnvColor, 100, 25, 20);
 
     randAngle = Rand_ZeroOne() * 0x2000;
     randCos = Math_CosS(this->actor.shape.rot.y + randAngle);
@@ -283,7 +283,7 @@ void EnDodongo_SpawnBombSmoke(EnDodongo* this, GlobalContext* globalCtx) {
     velocity.z = randSin * 3.5f;
     accel.x = ((Rand_ZeroOne() * 0.1f) + 0.15f) * randCos;
     accel.z = ((Rand_ZeroOne() * 0.1f) + 0.15f) * -randSin;
-    func_8002836C(globalCtx, &pos, &velocity, &accel, &this->bombSmokePrimColor, &this->bombSmokeEnvColor, 100, 25, 20);
+    func_8002836C(play, &pos, &velocity, &accel, &this->bombSmokePrimColor, &this->bombSmokeEnvColor, 100, 25, 20);
 
     randAngle = Rand_ZeroOne() * 0x2000;
     randCos = Math_CosS(this->actor.shape.rot.y + randAngle);
@@ -296,7 +296,7 @@ void EnDodongo_SpawnBombSmoke(EnDodongo* this, GlobalContext* globalCtx) {
     velocity.z = -randSin * 3.5f;
     accel.x = ((Rand_ZeroOne() * 0.1f) + 0.15f) * -randCos;
     accel.z = ((Rand_ZeroOne() * 0.1f) + 0.15f) * randSin;
-    func_8002836C(globalCtx, &pos, &velocity, &accel, &this->bombSmokePrimColor, &this->bombSmokeEnvColor, 100, 25, 20);
+    func_8002836C(play, &pos, &velocity, &accel, &this->bombSmokePrimColor, &this->bombSmokeEnvColor, 100, 25, 20);
 }
 
 static InitChainEntry sInitChain[] = {
@@ -305,7 +305,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(targetArrowOffset, 2800, ICHAIN_STOP),
 };
 
-void EnDodongo_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnDodongo_Init(Actor* thisx, PlayState* play) {
     EnDodongo* this = (EnDodongo*)thisx;
     EffectBlureInit1 blureInit;
 
@@ -317,17 +317,17 @@ void EnDodongo_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->bodyScale.x = this->bodyScale.y = this->bodyScale.z = 1.0f;
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 48.0f);
     Actor_SetScale(&this->actor, 0.01875f);
-    SkelAnime_Init(globalCtx, &this->skelAnime, &gDodongoSkel, &gDodongoWaitAnim, this->jointTable, this->morphTable,
+    SkelAnime_Init(play, &this->skelAnime, &gDodongoSkel, &gDodongoWaitAnim, this->jointTable, this->morphTable,
                    31);
     this->actor.colChkInfo.health = 4;
     this->actor.colChkInfo.mass = MASS_HEAVY;
     this->actor.colChkInfo.damageTable = &sDamageTable;
-    Collider_InitQuad(globalCtx, &this->colliderAT);
-    Collider_InitTris(globalCtx, &this->colliderHard);
-    Collider_InitJntSph(globalCtx, &this->colliderBody);
-    Collider_SetQuad(globalCtx, &this->colliderAT, &this->actor, &sAttackQuadInit);
-    Collider_SetTris(globalCtx, &this->colliderHard, &this->actor, &sHardTrisInit, this->trisElements);
-    Collider_SetJntSph(globalCtx, &this->colliderBody, &this->actor, &sBodyJntSphInit, this->sphElements);
+    Collider_InitQuad(play, &this->colliderAT);
+    Collider_InitTris(play, &this->colliderHard);
+    Collider_InitJntSph(play, &this->colliderBody);
+    Collider_SetQuad(play, &this->colliderAT, &this->actor, &sAttackQuadInit);
+    Collider_SetTris(play, &this->colliderHard, &this->actor, &sHardTrisInit, this->trisElements);
+    Collider_SetJntSph(play, &this->colliderBody, &this->actor, &sBodyJntSphInit, this->sphElements);
 
     blureInit.p1StartColor[0] = blureInit.p1StartColor[1] = blureInit.p1StartColor[2] = blureInit.p1StartColor[3] =
         blureInit.p2StartColor[0] = blureInit.p2StartColor[1] = blureInit.p2StartColor[2] = blureInit.p1EndColor[0] =
@@ -340,19 +340,19 @@ void EnDodongo_Init(Actor* thisx, GlobalContext* globalCtx) {
     blureInit.unkFlag = false;
     blureInit.calcMode = 2;
 
-    Effect_Add(globalCtx, &this->blureIdx, EFFECT_BLURE1, 0, 0, &blureInit);
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 75.0f, 60.0f, 70.0f, 0x1D);
+    Effect_Add(play, &this->blureIdx, EFFECT_BLURE1, 0, 0, &blureInit);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 75.0f, 60.0f, 70.0f, 0x1D);
     EnDodongo_SetupIdle(this);
 }
 
-void EnDodongo_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnDodongo_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     EnDodongo* this = (EnDodongo*)thisx;
 
-    Effect_Delete(globalCtx, this->blureIdx);
-    Collider_DestroyTris(globalCtx, &this->colliderHard);
-    Collider_DestroyJntSph(globalCtx, &this->colliderBody);
-    Collider_DestroyQuad(globalCtx, &this->colliderAT);
+    Effect_Delete(play, this->blureIdx);
+    Collider_DestroyTris(play, &this->colliderHard);
+    Collider_DestroyJntSph(play, &this->colliderBody);
+    Collider_DestroyQuad(play, &this->colliderAT);
 }
 
 void EnDodongo_SetupIdle(EnDodongo* this) {
@@ -407,21 +407,21 @@ void EnDodongo_SetupStunned(EnDodongo* this) {
     EnDodongo_SetupAction(this, EnDodongo_Stunned);
 }
 
-void EnDodongo_Idle(EnDodongo* this, GlobalContext* globalCtx) {
+void EnDodongo_Idle(EnDodongo* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if ((DECR(this->timer) == 0) && Animation_OnFrame(&this->skelAnime, 0.0f)) {
         EnDodongo_SetupWalk(this);
     }
 }
 
-void EnDodongo_EndBreatheFire(EnDodongo* this, GlobalContext* globalCtx) {
+void EnDodongo_EndBreatheFire(EnDodongo* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
         EnDodongo_SetupIdle(this);
         this->timer = Rand_S16Offset(10, 20);
     }
 }
 
-void EnDodongo_BreatheFire(EnDodongo* this, GlobalContext* globalCtx) {
+void EnDodongo_BreatheFire(EnDodongo* this, PlayState* play) {
     s32 pad;
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     Vec3f accel = { 0.0f, 0.0f, 0.0f };
@@ -439,7 +439,7 @@ void EnDodongo_BreatheFire(EnDodongo* this, GlobalContext* globalCtx) {
         pos.y += 35.0f;
         EnDodongo_ShiftVecRadial(this->actor.world.rot.y, 30.0f, &pos);
         EnDodongo_ShiftVecRadial(this->actor.world.rot.y, 2.5f, &accel);
-        EffectSsDFire_SpawnFixedScale(globalCtx, &pos, &velocity, &accel, 255 - (fireFrame * 10), fireFrame + 3);
+        EffectSsDFire_SpawnFixedScale(play, &pos, &velocity, &accel, 255 - (fireFrame * 10), fireFrame + 3);
     } else if ((2.0f <= this->skelAnime.curFrame) && (this->skelAnime.curFrame <= 20.0f)) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_J_BREATH - SFX_FLAG);
     }
@@ -448,7 +448,7 @@ void EnDodongo_BreatheFire(EnDodongo* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnDodongo_SwallowBomb(EnDodongo* this, GlobalContext* globalCtx) {
+void EnDodongo_SwallowBomb(EnDodongo* this, PlayState* play) {
     Vec3f smokeVel = { 0.0f, 0.0f, 0.0f };
     Vec3f smokeAccel = { 0.0f, 0.6f, 0.0f };
     Color_RGBA8 white = { 255, 255, 255, 255 };
@@ -493,7 +493,7 @@ void EnDodongo_SwallowBomb(EnDodongo* this, GlobalContext* globalCtx) {
                     pos.x = this->sphElements[0].dim.worldSphere.center.x + deathFireVel.x;
                     pos.y = this->sphElements[0].dim.worldSphere.center.y + deathFireVel.y;
                     pos.z = this->sphElements[0].dim.worldSphere.center.z + deathFireVel.z;
-                    func_8002836C(globalCtx, &pos, &deathFireVel, &deathFireAccel, &this->bombSmokePrimColor,
+                    func_8002836C(play, &pos, &deathFireVel, &deathFireAccel, &this->bombSmokePrimColor,
                                   &this->bombSmokeEnvColor, 400, 10, 10);
                 }
                 Audio_PlayActorSound2(&this->actor, NA_SE_IT_BOMB_EXPLOSION);
@@ -503,16 +503,16 @@ void EnDodongo_SwallowBomb(EnDodongo* this, GlobalContext* globalCtx) {
     }
     if ((s32)this->skelAnime.curFrame < 28) {
         if (((s32)this->skelAnime.curFrame < 26) && (this->timer <= 10)) {
-            EnDodongo_SpawnBombSmoke(this, globalCtx);
+            EnDodongo_SpawnBombSmoke(this, play);
         } else {
             pos = this->headPos;
-            func_8002829C(globalCtx, &pos, &smokeVel, &smokeAccel, &white, &white, 50, 5);
+            func_8002829C(play, &pos, &smokeVel, &smokeAccel, &white, &white, 50, 5);
             pos.x -= (Math_CosS(this->actor.shape.rot.y) * 6.0f);
             pos.z += (Math_SinS(this->actor.shape.rot.y) * 6.0f);
-            func_8002829C(globalCtx, &pos, &smokeVel, &smokeAccel, &white, &white, 50, 5);
+            func_8002829C(play, &pos, &smokeVel, &smokeAccel, &white, &white, 50, 5);
             pos.x = this->headPos.x + (Math_CosS(this->actor.shape.rot.y) * 6.0f);
             pos.z = this->headPos.z - (Math_SinS(this->actor.shape.rot.y) * 6.0f);
-            func_8002829C(globalCtx, &pos, &smokeVel, &smokeAccel, &white, &white, 50, 5);
+            func_8002829C(play, &pos, &smokeVel, &smokeAccel, &white, &white, 50, 5);
         }
     }
     this->bodyScale.y = this->bodyScale.z = (Math_SinS(this->actor.colorFilterTimer * 0x1000) * 0.5f) + 1.0f;
@@ -520,14 +520,14 @@ void EnDodongo_SwallowBomb(EnDodongo* this, GlobalContext* globalCtx) {
 
     SkelAnime_Update(&this->skelAnime);
     if (this->timer == 0) {
-        EnDodongo_SetupDeath(this, globalCtx);
+        EnDodongo_SetupDeath(this, play);
     }
 }
 
-void EnDodongo_Walk(EnDodongo* this, GlobalContext* globalCtx) {
+void EnDodongo_Walk(EnDodongo* this, PlayState* play) {
     s32 pad;
     f32 playbackSpeed;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     s16 yawDiff = (s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y);
 
     yawDiff = ABS(yawDiff);
@@ -550,13 +550,13 @@ void EnDodongo_Walk(EnDodongo* this, GlobalContext* globalCtx) {
     if ((s32)this->skelAnime.curFrame < 21) {
         if (!this->rightFootStep) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_J_WALK);
-            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->leftFootPos, 10.0f, 3, 2.0f, 200, 15, false);
+            Actor_SpawnFloorDustRing(play, &this->actor, &this->leftFootPos, 10.0f, 3, 2.0f, 200, 15, false);
             this->rightFootStep = true;
         }
     } else {
         if (this->rightFootStep) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_J_WALK);
-            Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->rightFootPos, 10.0f, 3, 2.0f, 200, 15, false);
+            Actor_SpawnFloorDustRing(play, &this->actor, &this->rightFootPos, 10.0f, 3, 2.0f, 200, 15, false);
             this->rightFootStep = false;
         }
     }
@@ -600,7 +600,7 @@ void EnDodongo_SetupSweepTail(EnDodongo* this) {
     EnDodongo_SetupAction(this, EnDodongo_SweepTail);
 }
 
-void EnDodongo_SweepTail(EnDodongo* this, GlobalContext* globalCtx) {
+void EnDodongo_SweepTail(EnDodongo* this, PlayState* play) {
     s16 yawDiff1 = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
 
     if (SkelAnime_Update(&this->skelAnime)) {
@@ -641,24 +641,24 @@ void EnDodongo_SweepTail(EnDodongo* this, GlobalContext* globalCtx) {
         tailPos.x = this->sphElements[1].dim.worldSphere.center.x;
         tailPos.y = this->sphElements[1].dim.worldSphere.center.y;
         tailPos.z = this->sphElements[1].dim.worldSphere.center.z;
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &tailPos, 5.0f, 2, 2.0f, 100, 15, false);
+        Actor_SpawnFloorDustRing(play, &this->actor, &tailPos, 5.0f, 2, 2.0f, 100, 15, false);
         tailPos.x = this->sphElements[2].dim.worldSphere.center.x;
         tailPos.y = this->sphElements[2].dim.worldSphere.center.y;
         tailPos.z = this->sphElements[2].dim.worldSphere.center.z;
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &tailPos, 5.0f, 2, 2.0f, 100, 15, false);
+        Actor_SpawnFloorDustRing(play, &this->actor, &tailPos, 5.0f, 2, 2.0f, 100, 15, false);
 
         if (this->colliderBody.base.atFlags & AT_HIT) {
-            Player* player = GET_PLAYER(globalCtx);
+            Player* player = GET_PLAYER(play);
 
             if (this->colliderBody.base.at == &player->actor) {
                 Audio_PlayActorSound2(&player->actor, NA_SE_PL_BODY_HIT);
             }
         }
-        CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->colliderBody.base);
+        CollisionCheck_SetAT(play, &play->colChkCtx, &this->colliderBody.base);
     }
 }
 
-void EnDodongo_SetupDeath(EnDodongo* this, GlobalContext* globalCtx) {
+void EnDodongo_SetupDeath(EnDodongo* this, PlayState* play) {
     Animation_MorphToPlayOnce(&this->skelAnime, &gDodongoDieAnim, -8.0f);
     this->timer = 0;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_J_DEAD);
@@ -668,19 +668,19 @@ void EnDodongo_SetupDeath(EnDodongo* this, GlobalContext* globalCtx) {
     EnDodongo_SetupAction(this, EnDodongo_Death);
 }
 
-void EnDodongo_Death(EnDodongo* this, GlobalContext* globalCtx) {
+void EnDodongo_Death(EnDodongo* this, PlayState* play) {
     EnBom* bomb;
 
     if (this->skelAnime.curFrame < 35.0f) {
         if (this->actor.params == EN_DODONGO_SMOKE_DEATH) {
-            EnDodongo_SpawnBombSmoke(this, globalCtx);
+            EnDodongo_SpawnBombSmoke(this, play);
         }
     } else if (this->actor.colorFilterTimer == 0) {
         Actor_SetColorFilter(&this->actor, 0x4000, 0x78, 0, 4);
     }
     if (SkelAnime_Update(&this->skelAnime) != 0) {
         if (this->timer == 0) {
-            bomb = (EnBom*)Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_BOM, this->actor.world.pos.x,
+            bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
                                        this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 6, BOMB_BODY);
             if (bomb != NULL) {
                 bomb->timer = 0;
@@ -693,24 +693,24 @@ void EnDodongo_Death(EnDodongo* this, GlobalContext* globalCtx) {
     if (this->timer != 0) {
         this->timer--;
         if (this->timer == 0) {
-            Item_DropCollectibleRandom(globalCtx, &this->actor, &this->actor.world.pos, 0x40);
+            Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x40);
             Actor_Kill(&this->actor);
         }
     }
 }
 
-void EnDodongo_Stunned(EnDodongo* this, GlobalContext* globalCtx) {
+void EnDodongo_Stunned(EnDodongo* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if (this->actor.colorFilterTimer == 0) {
         if (this->actor.colChkInfo.health == 0) {
-            EnDodongo_SetupDeath(this, globalCtx);
+            EnDodongo_SetupDeath(this, play);
         } else {
             EnDodongo_SetupIdle(this);
         }
     }
 }
 
-void EnDodongo_CollisionCheck(EnDodongo* this, GlobalContext* globalCtx) {
+void EnDodongo_CollisionCheck(EnDodongo* this, PlayState* play) {
     if (this->colliderHard.base.acFlags & AC_BOUNCED) {
         this->colliderHard.base.acFlags &= ~AC_BOUNCED;
         this->colliderBody.base.acFlags &= ~AC_HIT;
@@ -728,7 +728,7 @@ void EnDodongo_CollisionCheck(EnDodongo* this, GlobalContext* globalCtx) {
             } else {
                 Actor_SetColorFilter(&this->actor, 0x4000, 0x78, 0, 8);
                 if (Actor_ApplyDamage(&this->actor) == 0) {
-                    EnDodongo_SetupDeath(this, globalCtx);
+                    EnDodongo_SetupDeath(this, play);
                 } else {
                     EnDodongo_SetupSweepTail(this);
                 }
@@ -737,7 +737,7 @@ void EnDodongo_CollisionCheck(EnDodongo* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnDodongo_UpdateQuad(EnDodongo* this, GlobalContext* globalCtx) {
+void EnDodongo_UpdateQuad(EnDodongo* this, PlayState* play) {
     Vec3f sp94 = { -1000.0f, -1500.0f, 0.0f };
     Vec3f sp88 = { -1000.0f, -200.0f, 1500.0f };
     Vec3f sp7C = { -1000.0f, -200.0f, -1500.0f };
@@ -762,32 +762,32 @@ void EnDodongo_UpdateQuad(EnDodongo* this, GlobalContext* globalCtx) {
                              &this->colliderAT.dim.quad[c], &this->colliderAT.dim.quad[d]);
 }
 
-void EnDodongo_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnDodongo_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     EnDodongo* this = (EnDodongo*)thisx;
 
-    EnDodongo_CollisionCheck(this, globalCtx);
+    EnDodongo_CollisionCheck(this, play);
     if (this->actor.colChkInfo.damageEffect != 0xE) {
-        this->actionFunc(this, globalCtx);
+        this->actionFunc(this, play);
         Actor_MoveForward(&this->actor);
-        Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 75.0f, 60.0f, 70.0f, 0x1D);
+        Actor_UpdateBgCheckInfo(play, &this->actor, 75.0f, 60.0f, 70.0f, 0x1D);
         if (this->actor.bgCheckFlags & 2) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIZA_DOWN);
         }
     }
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->colliderBody.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliderBody.base);
     if (this->actionState != DODONGO_DEATH) {
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colliderHard.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->colliderHard.base);
     }
     if (this->actionState > DODONGO_DEATH) {
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colliderBody.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->colliderBody.base);
     }
-    if ((this->actionState >= DODONGO_IDLE) && EnDodongo_AteBomb(this, globalCtx)) {
+    if ((this->actionState >= DODONGO_IDLE) && EnDodongo_AteBomb(this, play)) {
         EnDodongo_SetupSwallowBomb(this);
     }
     if (this->actionState == DODONGO_BREATHE_FIRE) {
         if ((29.0f < this->skelAnime.curFrame) && (this->skelAnime.curFrame < 43.0f)) {
-            CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->colliderAT.base);
+            CollisionCheck_SetAT(play, &play->colChkCtx, &this->colliderAT.base);
         }
     }
     this->actor.focus.pos.x = this->actor.world.pos.x + Math_SinS(this->actor.shape.rot.y) * -30.0f;
@@ -795,7 +795,7 @@ void EnDodongo_Update(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.focus.pos.z = this->actor.world.pos.z + Math_CosS(this->actor.shape.rot.y) * -30.0f;
 }
 
-s32 EnDodongo_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
+s32 EnDodongo_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                                void* thisx) {
     EnDodongo* this = (EnDodongo*)thisx;
 
@@ -805,7 +805,7 @@ s32 EnDodongo_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dL
     return false;
 }
 
-void EnDodongo_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+void EnDodongo_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     static Vec3f legOffsets[3] = {
         { 1100.0f, -700.0f, 0.0f },
         { 0.0f, 0.0f, 0.0f },
@@ -844,7 +844,7 @@ void EnDodongo_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
         case 2:
             if ((this->actionState == DODONGO_BREATHE_FIRE) && (29.0f < this->skelAnime.curFrame) &&
                 (this->skelAnime.curFrame < 43.0f)) {
-                EnDodongo_UpdateQuad(this, globalCtx);
+                EnDodongo_UpdateQuad(this, play);
             }
             break;
         case 7:
@@ -913,13 +913,13 @@ void EnDodongo_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
     }
 }
 
-void EnDodongo_Draw(Actor* thisx, GlobalContext* globalCtx2) {
-    GlobalContext* globalCtx = globalCtx2;
+void EnDodongo_Draw(Actor* thisx, PlayState* play2) {
+    PlayState* play = play2;
     EnDodongo* this = (EnDodongo*)thisx;
     s32 index;
 
-    func_80093D18(globalCtx->state.gfxCtx);
-    SkelAnime_DrawOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDodongo_OverrideLimbDraw,
+    func_80093D18(play->state.gfxCtx);
+    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDodongo_OverrideLimbDraw,
                       EnDodongo_PostLimbDraw, this);
 
     if (this->iceTimer != 0) {
@@ -927,7 +927,7 @@ void EnDodongo_Draw(Actor* thisx, GlobalContext* globalCtx2) {
         this->iceTimer--;
         if ((this->iceTimer % 4) == 0) {
             index = this->iceTimer >> 2;
-            EffectSsEnIce_SpawnFlyingVec3f(globalCtx, &this->actor, &this->icePos[index], 150, 150, 150, 250, 235, 245,
+            EffectSsEnIce_SpawnFlyingVec3f(play, &this->actor, &this->icePos[index], 150, 150, 150, 250, 235, 245,
                                            255, 1.8f);
         }
     }
@@ -938,8 +938,8 @@ void EnDodongo_ShiftVecRadial(s16 yaw, f32 radius, Vec3f* vec) {
     vec->z += Math_CosS(yaw) * radius;
 }
 
-s32 EnDodongo_AteBomb(EnDodongo* this, GlobalContext* globalCtx) {
-    Actor* actor = globalCtx->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].head;
+s32 EnDodongo_AteBomb(EnDodongo* this, PlayState* play) {
+    Actor* actor = play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].head;
     f32 dx;
     f32 dy;
     f32 dz;

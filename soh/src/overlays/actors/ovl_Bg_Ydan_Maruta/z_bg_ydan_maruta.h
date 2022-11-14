@@ -6,7 +6,7 @@
 
 struct BgYdanMaruta;
 
-typedef void (*BgYdanMarutaActionFunc)(struct BgYdanMaruta*, GlobalContext*);
+typedef void (*BgYdanMarutaActionFunc)(struct BgYdanMaruta*, PlayState*);
 
 typedef struct BgYdanMaruta {
     /* 0x0000 */ DynaPolyActor dyna;

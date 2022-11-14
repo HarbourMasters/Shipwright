@@ -14,14 +14,14 @@
 #define MASS_HEAVY 0xFE // Can only be pushed by OC collisions with IMMOVABLE and HEAVY objects.
 
 struct Actor;
-struct GlobalContext;
+struct PlayState;
 struct Lights;
 
-typedef void (*ActorFunc)(struct Actor*, struct GlobalContext*);
+typedef void (*ActorFunc)(struct Actor*, struct PlayState*);
 typedef void (*ActorResetFunc)(void);
-typedef void (*ActorShadowFunc)(struct Actor*, struct Lights*, struct GlobalContext*);
-typedef u16 (*callback1_800343CC)(struct GlobalContext*, struct Actor*);
-typedef s16 (*callback2_800343CC)(struct GlobalContext*, struct Actor*);
+typedef void (*ActorShadowFunc)(struct Actor*, struct Lights*, struct PlayState*);
+typedef u16 (*callback1_800343CC)(struct PlayState*, struct Actor*);
+typedef s16 (*callback2_800343CC)(struct PlayState*, struct Actor*);
 
 typedef struct {
     Vec3f pos;
@@ -278,7 +278,7 @@ typedef enum {
 
 struct EnItem00;
 
-typedef void (*EnItem00ActionFunc)(struct EnItem00*, struct GlobalContext*);
+typedef void (*EnItem00ActionFunc)(struct EnItem00*, struct PlayState*);
 
 typedef struct EnItem00 {
     /* 0x000 */ Actor actor;
@@ -314,7 +314,7 @@ typedef enum {
 
 struct EnAObj;
 
-typedef void (*EnAObjActionFunc)(struct EnAObj*, struct GlobalContext*);
+typedef void (*EnAObjActionFunc)(struct EnAObj*, struct PlayState*);
 
 typedef struct EnAObj {
     /* 0x000 */ DynaPolyActor dyna;

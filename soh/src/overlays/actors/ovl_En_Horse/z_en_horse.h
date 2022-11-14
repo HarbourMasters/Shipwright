@@ -89,7 +89,7 @@ typedef enum {
     /* 1 */ HORSE_HNI
 } HorseType;
 
-typedef void (*EnHorsePostdrawFunc)(struct EnHorse*, GlobalContext*);
+typedef void (*EnHorsePostdrawFunc)(struct EnHorse*, PlayState*);
 
 typedef struct EnHorse {
     /* 0x0000 */ Actor actor;

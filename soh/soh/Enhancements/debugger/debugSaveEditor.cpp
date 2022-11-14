@@ -17,7 +17,7 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
-extern GlobalContext* gGlobalCtx;
+extern PlayState* gPlayState;
 
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
@@ -134,6 +134,7 @@ std::map<uint32_t, ItemMapEntry> itemMapping = {
     ITEM_MAP_ENTRY(ITEM_DUNGEON_MAP),
     ITEM_MAP_ENTRY(ITEM_KEY_SMALL),
     ITEM_MAP_ENTRY(ITEM_HEART_CONTAINER),
+    ITEM_MAP_ENTRY(ITEM_HEART_PIECE),
     ITEM_MAP_ENTRY(ITEM_MAGIC_SMALL),
     ITEM_MAP_ENTRY(ITEM_MAGIC_LARGE)
 };
@@ -515,6 +516,75 @@ void DrawInfoTab() {
     
     if (ImGui::TreeNode("Minigames")) {
         for (int i = 0; i < 7; i++) {
+            if(i == 2 && ImGui::TreeNode("Fishing") ){ //fishing has a few more flags to it
+                u8 fishSize = gSaveContext.highScores[i] & 0x7F;
+                if(ImGui::InputScalar("Child Size Record",ImGuiDataType_U8,&fishSize)){
+                    gSaveContext.highScores[i]&=~0x7F;
+                    gSaveContext.highScores[i]|=fishSize & 0x7F;
+                }
+                char fishMsg[64];
+                std::sprintf(fishMsg,"Weight: %2.0f lbs",((SQ(fishSize)*.0036)+.5));
+                UIWidgets::InsertHelpHoverText(fishMsg);
+                bool FishBool = gSaveContext.highScores[i]&0x80;
+                if (ImGui::Checkbox("Cheated as Child", &FishBool)) {
+                        gSaveContext.highScores[i] &= ~0x80;
+                        gSaveContext.highScores[i] |= (0x80 * FishBool);
+                }
+                UIWidgets::InsertHelpHoverText("Used the Sinking lure to catch it.");
+                fishSize=(gSaveContext.highScores[i] & 0x7F000000)>>0x18;
+                if(ImGui::InputScalar("Adult Size Record",ImGuiDataType_U8,&fishSize)){
+                    gSaveContext.highScores[i]&=~0x7F000000;
+                    gSaveContext.highScores[i]|=(fishSize & 0x7F) << 0x18;
+                }
+                std::sprintf(fishMsg,"Weight: %2.0f lbs",((SQ(fishSize)*.0036)+.5));
+                UIWidgets::InsertHelpHoverText(fishMsg);
+                FishBool = gSaveContext.highScores[i] & 0x80000000;
+                if (ImGui::Checkbox("Cheated as Adult", &FishBool)) {
+                        gSaveContext.highScores[i] &= ~0x80000000;
+                        gSaveContext.highScores[i] |= (0x80000000 * FishBool);
+                }
+                UIWidgets::InsertHelpHoverText("Used the Sinking lure to catch it.");
+                FishBool = gSaveContext.highScores[i]&0x100;
+                if (ImGui::Checkbox("Played as Child", &FishBool)) {
+                        gSaveContext.highScores[i] &= ~0x100;
+                        gSaveContext.highScores[i] |= (0x100 * FishBool);
+                }
+                UIWidgets::InsertHelpHoverText("Played at least one game as a child");
+                FishBool = gSaveContext.highScores[i]&0x200;
+                if (ImGui::Checkbox("Played as Adult", &FishBool)) {
+                        gSaveContext.highScores[i] &= ~0x200;
+                        gSaveContext.highScores[i] |= (0x200 * FishBool);
+                }
+                UIWidgets::InsertHelpHoverText("Played at least one game as an adult");
+                FishBool = gSaveContext.highScores[i]&0x400;
+                if (ImGui::Checkbox("Got Prize as Child", &FishBool)) {
+                        gSaveContext.highScores[i] &= ~0x400;
+                        gSaveContext.highScores[i] |= (0x400 * FishBool);
+                }
+                UIWidgets::InsertHelpHoverText("Got the prize item (Heart Piece, unless rando.)\nunlocks Sinking Lure for Child Link.");
+                FishBool = gSaveContext.highScores[i]&0x800;
+                if (ImGui::Checkbox("Got Prize as Adult", &FishBool)) {
+                        gSaveContext.highScores[i] &= ~0x800;
+                        gSaveContext.highScores[i] |= (0x800 * FishBool);
+                }
+                UIWidgets::InsertHelpHoverText("Got the prize item (Golden Scale, unless rando.)\nUnlocks Sinking Lure for Adult Link.");
+                FishBool = gSaveContext.highScores[i] & 0x1000;
+                if (ImGui::Checkbox("Stole Owner's Hat", &FishBool)) {
+                        gSaveContext.highScores[i] &= ~0x1000;
+                        gSaveContext.highScores[i] |= (0x1000 * FishBool);
+                }
+                UIWidgets::InsertHelpHoverText("The owner's now visibly bald when Adult Link.");
+                fishSize=(gSaveContext.highScores[i] & 0xFF0000)>>16;
+                if(ImGui::InputScalar("Times Played",ImGuiDataType_U8,&fishSize)){
+                    gSaveContext.highScores[i]&=~0xFF0000;
+                    gSaveContext.highScores[i]|=(fishSize) << 16;
+                }
+                UIWidgets::InsertHelpHoverText("Determines weather and school size during dawn/dusk.");
+                
+                ImGui::TreePop();
+                continue;
+            }
+            
             if (i == 5) { //HS_UNK_05 is unused
                 continue;
             }
@@ -544,7 +614,7 @@ void DrawBGSItemFlag(uint8_t itemID) {
             }
         } else {
             gSaveContext.adultTradeItems &= ~(1 << tradeIndex);
-            Inventory_ReplaceItem(gGlobalCtx, itemID, Randomizer_GetNextAdultTradeItem());
+            Inventory_ReplaceItem(gPlayState, itemID, Randomizer_GetNextAdultTradeItem());
         }
     }
 }
@@ -729,8 +799,8 @@ void DrawFlagArray16(const FlagTable& flagTable, uint16_t row, uint16_t& flags) 
 
 void DrawFlagsTab() {
     if (ImGui::TreeNode("Current Scene")) {
-        if (gGlobalCtx != nullptr) {
-            ActorContext* act = &gGlobalCtx->actorCtx;
+        if (gPlayState != nullptr) {
+            ActorContext* act = &gPlayState->actorCtx;
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Switch");
@@ -785,18 +855,18 @@ void DrawFlagsTab() {
             ImGui::BeginGroup();
 
             if (ImGui::Button("Reload Flags")) {
-                act->flags.swch = gSaveContext.sceneFlags[gGlobalCtx->sceneNum].swch;
-                act->flags.clear = gSaveContext.sceneFlags[gGlobalCtx->sceneNum].clear;
-                act->flags.collect = gSaveContext.sceneFlags[gGlobalCtx->sceneNum].collect;
-                act->flags.chest = gSaveContext.sceneFlags[gGlobalCtx->sceneNum].chest;
+                act->flags.swch = gSaveContext.sceneFlags[gPlayState->sceneNum].swch;
+                act->flags.clear = gSaveContext.sceneFlags[gPlayState->sceneNum].clear;
+                act->flags.collect = gSaveContext.sceneFlags[gPlayState->sceneNum].collect;
+                act->flags.chest = gSaveContext.sceneFlags[gPlayState->sceneNum].chest;
             }
             UIWidgets::SetLastItemHoverText("Load flags from saved scene flags. Normally happens on scene load");
 
             if (ImGui::Button("Save Flags")) {
-                gSaveContext.sceneFlags[gGlobalCtx->sceneNum].swch = act->flags.swch;
-                gSaveContext.sceneFlags[gGlobalCtx->sceneNum].clear = act->flags.clear;
-                gSaveContext.sceneFlags[gGlobalCtx->sceneNum].collect = act->flags.collect;
-                gSaveContext.sceneFlags[gGlobalCtx->sceneNum].chest = act->flags.chest;
+                gSaveContext.sceneFlags[gPlayState->sceneNum].swch = act->flags.swch;
+                gSaveContext.sceneFlags[gPlayState->sceneNum].clear = act->flags.clear;
+                gSaveContext.sceneFlags[gPlayState->sceneNum].collect = act->flags.collect;
+                gSaveContext.sceneFlags[gPlayState->sceneNum].chest = act->flags.chest;
             }
             UIWidgets::SetLastItemHoverText("Save current scene flags. Normally happens on scene exit");
             
@@ -832,10 +902,10 @@ void DrawFlagsTab() {
         }
 
         // Don't show current scene button if there is no current scene
-        if (gGlobalCtx != nullptr) {
+        if (gPlayState != nullptr) {
             ImGui::SameLine();
             if (ImGui::Button("Current")) {
-                selectedSceneFlagMap = gGlobalCtx->sceneNum;
+                selectedSceneFlagMap = gPlayState->sceneNum;
             }
             UIWidgets::SetLastItemHoverText("Open flags for current scene");
         }
@@ -1302,7 +1372,9 @@ void DrawQuestStatusTab() {
             float lineHeight = ImGui::GetTextLineHeightWithSpacing();
             ImGui::Image(SohImGui::GetTextureByName(itemMapping[ITEM_KEY_SMALL].name), ImVec2(lineHeight, lineHeight));
             ImGui::SameLine();
-            ImGui::InputScalar("##Keys", ImGuiDataType_S8, gSaveContext.inventory.dungeonKeys + dungeonItemsScene);
+            if (ImGui::InputScalar("##Keys", ImGuiDataType_S8, gSaveContext.inventory.dungeonKeys + dungeonItemsScene)) {
+                gSaveContext.sohStats.dungeonKeys[dungeonItemsScene] = gSaveContext.inventory.dungeonKeys[dungeonItemsScene];
+            };
         } else {
             // dungeonItems is size 20 but dungeonKeys is size 19, so there are no keys for the last scene (Barinade's Lair)
             ImGui::Text("Barinade's Lair does not have small keys");
@@ -1313,8 +1385,8 @@ void DrawQuestStatusTab() {
 }
 
 void DrawPlayerTab() {
-    if (gGlobalCtx != nullptr) {
-        Player* player = GET_PLAYER(gGlobalCtx);
+    if (gPlayState != nullptr) {
+        Player* player = GET_PLAYER(gPlayState);
         const char* curSword;
         const char* curShield;
         const char* curTunic;
@@ -1431,12 +1503,12 @@ void DrawPlayerTab() {
         ImGui::InputScalar("Gravity", ImGuiDataType_Float, &player->actor.gravity);
         UIWidgets::InsertHelpHoverText("Rate at which Link falls. Default -4.0f");
 
-        if (ImGui::BeginCombo("Link Age on Load", gGlobalCtx->linkAgeOnLoad == 0 ? "Adult" : "Child")) {
+        if (ImGui::BeginCombo("Link Age on Load", gPlayState->linkAgeOnLoad == 0 ? "Adult" : "Child")) {
             if (ImGui::Selectable("Adult")) {
-                gGlobalCtx->linkAgeOnLoad = 0;
+                gPlayState->linkAgeOnLoad = 0;
             }
             if (ImGui::Selectable("Child")) {
-                gGlobalCtx->linkAgeOnLoad = 1;
+                gPlayState->linkAgeOnLoad = 1;
             }
             ImGui::EndCombo();
         }
@@ -1561,6 +1633,27 @@ void DrawPlayerTab() {
                 ImGui::SameLine();
                 ImGui::InputScalar("D-pad Right", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[7], &one, NULL);
             }
+        });
+
+        ImGui::Text("Player State");
+        uint8_t bit[32] = {};
+        uint32_t flags[3] = { player->stateFlags1, player->stateFlags2, player->stateFlags3 };
+
+        for (int j = 0; j <= 2; j++) {
+            DrawGroupWithBorder([&]() {
+                ImGui::Text("State Flags %d", j + 1);
+                for (int i = 0; i <= 31; i++) {
+                    bit[i] = ((flags[j] >> i) & 1);
+                    if (bit[i] != 0) {
+                        ImGui::Text("Flag %d", i);
+                    }
+                }
+            });
+            ImGui::SameLine();
+        }
+        DrawGroupWithBorder([&]() {
+            ImGui::Text("Sword");
+            ImGui::Text("  %d", player->swordState);
         });
 
     } else {

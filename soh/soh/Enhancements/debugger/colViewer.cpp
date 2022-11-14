@@ -13,7 +13,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
-extern GlobalContext* gGlobalCtx;
+extern PlayState* gPlayState;
 }
 
 enum class ColRenderSetting { Disabled, Solid, Transparent };
@@ -358,29 +358,29 @@ void DrawDynapoly(std::vector<Gfx>& dl, CollisionHeader* col, int32_t bgId) {
     for (int i = 0; i < col->numPolygons; i++) {
         CollisionPoly* poly = &col->polyList[i];
 
-        if (SurfaceType_IsHookshotSurface(&gGlobalCtx->colCtx, poly, bgId)) {
+        if (SurfaceType_IsHookshotSurface(&gPlayState->colCtx, poly, bgId)) {
             colorR = CVar_GetS32("gColViewerColorHookshotR", 128);
             colorG = CVar_GetS32("gColViewerColorHookshotG", 128);
             colorB = CVar_GetS32("gColViewerColorHookshotB", 255);
-        } else if (func_80041D94(&gGlobalCtx->colCtx, poly, bgId) > 0x01) {
+        } else if (func_80041D94(&gPlayState->colCtx, poly, bgId) > 0x01) {
             colorR = CVar_GetS32("gColViewerColorInteractableR", 192);
             colorG = CVar_GetS32("gColViewerColorInteractableG", 0);
             colorB = CVar_GetS32("gColViewerColorInteractableB", 192);
-        } else if (func_80041E80(&gGlobalCtx->colCtx, poly, bgId) == 0x0C) {
+        } else if (func_80041E80(&gPlayState->colCtx, poly, bgId) == 0x0C) {
             colorR = CVar_GetS32("gColViewerColorVoidR", 255);
             colorG = CVar_GetS32("gColViewerColorVoidG", 0);
             colorB = CVar_GetS32("gColViewerColorVoidB", 0);
-        } else if (SurfaceType_GetSceneExitIndex(&gGlobalCtx->colCtx, poly, bgId) ||
-                   func_80041E80(&gGlobalCtx->colCtx, poly, bgId) == 0x05) {
+        } else if (SurfaceType_GetSceneExitIndex(&gPlayState->colCtx, poly, bgId) ||
+                   func_80041E80(&gPlayState->colCtx, poly, bgId) == 0x05) {
             colorR = CVar_GetS32("gColViewerColorEntranceR", 0);
             colorG = CVar_GetS32("gColViewerColorEntranceG", 255);
             colorB = CVar_GetS32("gColViewerColorEntranceB", 0);
-        } else if (func_80041D4C(&gGlobalCtx->colCtx, poly, bgId) != 0 ||
-                   SurfaceType_IsWallDamage(&gGlobalCtx->colCtx, poly, bgId)) {
+        } else if (func_80041D4C(&gPlayState->colCtx, poly, bgId) != 0 ||
+                   SurfaceType_IsWallDamage(&gPlayState->colCtx, poly, bgId)) {
             colorR = CVar_GetS32("gColViewerColorSpecialSurfaceR", 192);
             colorG = CVar_GetS32("gColViewerColorSpecialSurfaceG", 255);
             colorB = CVar_GetS32("gColViewerColorSpecialSurfaceB", 192);
-        } else if (SurfaceType_GetSlope(&gGlobalCtx->colCtx, poly, bgId) == 0x01) {
+        } else if (SurfaceType_GetSlope(&gPlayState->colCtx, poly, bgId) == 0x01) {
             colorR = CVar_GetS32("gColViewerColorSlopeR", 255);
             colorG = CVar_GetS32("gColViewerColorSlopeG", 255);
             colorB = CVar_GetS32("gColViewerColorSlopeB", 128);
@@ -445,7 +445,7 @@ void DrawSceneCollision() {
     InitGfx(dl, showSceneColSetting);
     dl.push_back(gsSPMatrix(&gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH));
 
-    DrawDynapoly(dl, gGlobalCtx->colCtx.colHeader, BGCHECK_SCENE);
+    DrawDynapoly(dl, gPlayState->colCtx.colHeader, BGCHECK_SCENE);
 }
 
 // Draws all Bg Actors
@@ -460,8 +460,8 @@ void DrawBgActorCollision() {
     dl.push_back(gsSPMatrix(&gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH));
 
     for (int32_t bgIndex = 0; bgIndex < BG_ACTOR_MAX; bgIndex++) {
-        if (gGlobalCtx->colCtx.dyna.bgActorFlags[bgIndex] & 1) {
-            BgActor& bg = gGlobalCtx->colCtx.dyna.bgActors[bgIndex];
+        if (gPlayState->colCtx.dyna.bgActorFlags[bgIndex] & 1) {
+            BgActor& bg = gPlayState->colCtx.dyna.bgActors[bgIndex];
             Mtx m;
             MtxF mf;
             SkinMatrix_SetTranslateRotateYXZScale(&mf, bg.curTransform.scale.x, bg.curTransform.scale.y,
@@ -584,7 +584,7 @@ void DrawColCheckCollision() {
     InitGfx(dl, showColCheckSetting);
     dl.push_back(gsSPMatrix(&gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH));
 
-    CollisionCheckContext& col = gGlobalCtx->colChkCtx;
+    CollisionCheckContext& col = gPlayState->colChkCtx;
 
     dl.push_back(gsDPSetPrimColor(0, 0, CVar_GetS32("gColViewerColorOCR", 255), CVar_GetS32("gColViewerColorOCG", 255),
                                   CVar_GetS32("gColViewerColorOCB", 255), 255));
@@ -602,7 +602,7 @@ void DrawColCheckCollision() {
 void DrawWaterbox(std::vector<Gfx>& dl, WaterBox* water, float water_max_depth = -4000.0f) {
     // Skip waterboxes that would be disabled in current room
     int32_t room = ((water->properties >> 13) & 0x3F);
-    if ((room != gGlobalCtx->roomCtx.curRoom.num) && (room != 0x3F)) {
+    if ((room != gPlayState->roomCtx.curRoom.num) && (room != 0x3F)) {
         return;
     }
 
@@ -641,14 +641,14 @@ void DrawWaterboxList() {
                                   CVar_GetS32("gColViewerColorWaterboxG", 0),
                                   CVar_GetS32("gColViewerColorWaterboxB", 255), 255));
 
-    CollisionHeader* col = gGlobalCtx->colCtx.colHeader;
+    CollisionHeader* col = gPlayState->colCtx.colHeader;
     for (int32_t waterboxIndex = 0; waterboxIndex < col->numWaterBoxes; waterboxIndex++) {
         WaterBox* water = &col->waterBoxes[waterboxIndex];
         DrawWaterbox(dl, water);
     }
 
     // Zora's Domain has a special, hard-coded waterbox with a bottom so you can go under the waterfall
-    if (gGlobalCtx->sceneNum == SCENE_SPOT07) {
+    if (gPlayState->sceneNum == SCENE_SPOT07) {
         DrawWaterbox(dl, &zdWaterBox, zdWaterBoxMinY);
     }
 }
@@ -663,7 +663,7 @@ template <typename T> size_t ResetVector(T& vec) {
 }
 
 void DrawColViewer() {
-    if (gGlobalCtx == nullptr) {
+    if (gPlayState == nullptr) {
         return;
     }
 
@@ -698,7 +698,7 @@ void DrawColViewer() {
         return;
     }
 
-    OPEN_DISPS(gGlobalCtx->state.gfxCtx);
+    OPEN_DISPS(gPlayState->state.gfxCtx);
 
     opaDl.push_back(gsSPEndDisplayList());
     gSPDisplayList(POLY_OPA_DISP++, opaDl.data());
@@ -706,5 +706,5 @@ void DrawColViewer() {
     xluDl.push_back(gsSPEndDisplayList());
     gSPDisplayList(POLY_XLU_DISP++, xluDl.data());
 
-    CLOSE_DISPS(gGlobalCtx->state.gfxCtx);
+    CLOSE_DISPS(gPlayState->state.gfxCtx);
 }

@@ -9,16 +9,16 @@
 
 #define FLAGS 0
 
-void BgMoriKaitenkabe_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgMoriKaitenkabe_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgMoriKaitenkabe_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgMoriKaitenkabe_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgMoriKaitenkabe_Init(Actor* thisx, PlayState* play);
+void BgMoriKaitenkabe_Destroy(Actor* thisx, PlayState* play);
+void BgMoriKaitenkabe_Update(Actor* thisx, PlayState* play);
+void BgMoriKaitenkabe_Draw(Actor* thisx, PlayState* play);
 
-void BgMoriKaitenkabe_WaitForMoriTex(BgMoriKaitenkabe* this, GlobalContext* globalCtx);
+void BgMoriKaitenkabe_WaitForMoriTex(BgMoriKaitenkabe* this, PlayState* play);
 void BgMoriKaitenkabe_SetupWait(BgMoriKaitenkabe* this);
-void BgMoriKaitenkabe_Wait(BgMoriKaitenkabe* this, GlobalContext* globalCtx);
+void BgMoriKaitenkabe_Wait(BgMoriKaitenkabe* this, PlayState* play);
 void BgMoriKaitenkabe_SetupRotate(BgMoriKaitenkabe* this);
-void BgMoriKaitenkabe_Rotate(BgMoriKaitenkabe* this, GlobalContext* globalCtx);
+void BgMoriKaitenkabe_Rotate(BgMoriKaitenkabe* this, PlayState* play);
 
 const ActorInit Bg_Mori_Kaitenkabe_InitVars = {
     ACTOR_BG_MORI_KAITENKABE,
@@ -46,7 +46,7 @@ void BgMoriKaitenkabe_CrossProduct(Vec3f* dest, Vec3f* v1, Vec3f* v2) {
     dest->z = (v1->x * v2->y) - (v1->y * v2->x);
 }
 
-void BgMoriKaitenkabe_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgMoriKaitenkabe_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgMoriKaitenkabe* this = (BgMoriKaitenkabe*)thisx;
     CollisionHeader* colHeader = NULL;
@@ -56,8 +56,8 @@ void BgMoriKaitenkabe_Init(Actor* thisx, GlobalContext* globalCtx) {
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&gMoriKaitenkabeCol, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
-    this->moriTexObjIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_MORI_TEX);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->moriTexObjIndex = Object_GetIndex(&play->objectCtx, OBJECT_MORI_TEX);
     if (this->moriTexObjIndex < 0) {
         Actor_Kill(&this->dyna.actor);
         // "【Rotating wall】 Bank danger!"
@@ -67,15 +67,15 @@ void BgMoriKaitenkabe_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void BgMoriKaitenkabe_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgMoriKaitenkabe_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     BgMoriKaitenkabe* this = (BgMoriKaitenkabe*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void BgMoriKaitenkabe_WaitForMoriTex(BgMoriKaitenkabe* this, GlobalContext* globalCtx) {
-    if (Object_IsLoaded(&globalCtx->objectCtx, this->moriTexObjIndex)) {
+void BgMoriKaitenkabe_WaitForMoriTex(BgMoriKaitenkabe* this, PlayState* play) {
+    if (Object_IsLoaded(&play->objectCtx, this->moriTexObjIndex)) {
         BgMoriKaitenkabe_SetupWait(this);
         this->dyna.actor.draw = BgMoriKaitenkabe_Draw;
     }
@@ -86,17 +86,17 @@ void BgMoriKaitenkabe_SetupWait(BgMoriKaitenkabe* this) {
     this->timer = 0;
 }
 
-void BgMoriKaitenkabe_Wait(BgMoriKaitenkabe* this, GlobalContext* globalCtx) {
+void BgMoriKaitenkabe_Wait(BgMoriKaitenkabe* this, PlayState* play) {
     Vec3f push;
     Vec3f leverArm;
     Vec3f torque;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
 
     if (this->dyna.unk_150 > 0.001f) {
         this->timer++;
-        if ((this->timer > (28 - CVar_GetS32("gFasterBlockPush", 0) * 4)) && !Player_InCsMode(globalCtx)) {
+        if ((this->timer > (28 - CVar_GetS32("gFasterBlockPush", 0) * 4)) && !Player_InCsMode(play)) {
             BgMoriKaitenkabe_SetupRotate(this);
-            func_8002DF54(globalCtx, &this->dyna.actor, 8);
+            func_8002DF54(play, &this->dyna.actor, 8);
             Math_Vec3f_Copy(&this->lockedPlayerPos, &player->actor.world.pos);
             push.x = Math_SinS(this->dyna.unk_158);
             push.y = 0.0f;
@@ -122,15 +122,15 @@ void BgMoriKaitenkabe_SetupRotate(BgMoriKaitenkabe* this) {
     this->rotYdeg = 0.0f;
 }
 
-void BgMoriKaitenkabe_Rotate(BgMoriKaitenkabe* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void BgMoriKaitenkabe_Rotate(BgMoriKaitenkabe* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     Actor* thisx = &this->dyna.actor;
     s16 rotY;
 
     Math_StepToF(&this->rotSpeed, 0.6f, 0.02f);
     if (Math_StepToF(&this->rotYdeg, this->rotDirection * 45.0f, this->rotSpeed)) {
         BgMoriKaitenkabe_SetupWait(this);
-        func_8002DF54(globalCtx, thisx, 7);
+        func_8002DF54(play, thisx, 7);
         if (this->rotDirection > 0.0f) {
             thisx->home.rot.y += 0x2000;
         } else {
@@ -150,26 +150,26 @@ void BgMoriKaitenkabe_Rotate(BgMoriKaitenkabe* this, GlobalContext* globalCtx) {
     Math_Vec3f_Copy(&player->actor.world.pos, &this->lockedPlayerPos);
 }
 
-void BgMoriKaitenkabe_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgMoriKaitenkabe_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     BgMoriKaitenkabe* this = (BgMoriKaitenkabe*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgMoriKaitenkabe_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgMoriKaitenkabe_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     BgMoriKaitenkabe* this = (BgMoriKaitenkabe*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-    func_80093D18(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
-    gSPSegment(POLY_OPA_DISP++, 0x08, globalCtx->objectCtx.status[this->moriTexObjIndex].segment);
+    gSPSegment(POLY_OPA_DISP++, 0x08, play->objectCtx.status[this->moriTexObjIndex].segment);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, gMoriKaitenkabeDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -140,6 +140,9 @@ typedef enum {
     RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_7,
     RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8,
 
+    RAND_INF_MERCHANTS_CARPET_SALESMAN,
+    RAND_INF_MERCHANTS_MEDIGORON,
+
     // If you add anything to this list, you need to update the size of randomizerInf in z64save.h to be ceil(RAND_INF_MAX / 16)
 
     RAND_INF_MAX,

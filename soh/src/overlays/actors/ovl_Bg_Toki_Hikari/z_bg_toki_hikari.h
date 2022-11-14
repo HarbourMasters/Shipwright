@@ -6,7 +6,7 @@
 
 struct BgTokiHikari;
 
-typedef void (*BgTokiHikariActionFunc)(struct BgTokiHikari*, GlobalContext*);
+typedef void (*BgTokiHikariActionFunc)(struct BgTokiHikari*, PlayState*);
 
 typedef struct BgTokiHikari {
     /* 0x0000 */ Actor actor;

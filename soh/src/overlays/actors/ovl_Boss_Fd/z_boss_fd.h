@@ -6,7 +6,7 @@
 
 struct BossFd;
 
-typedef void (*BossFdActionFunc)(struct BossFd*, GlobalContext*);
+typedef void (*BossFdActionFunc)(struct BossFd*, PlayState*);
 
 typedef enum {
     /*  -1 */ BOSSFD_WAIT_INTRO = -1,

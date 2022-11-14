@@ -18,15 +18,15 @@ typedef enum {
     SSH_ANIM_UNK6  // Faster repeating version of ANIM_UNK0
 } EnSshAnimation;
 
-void EnSsh_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnSsh_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnSsh_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnSsh_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnSsh_Init(Actor* thisx, PlayState* play);
+void EnSsh_Destroy(Actor* thisx, PlayState* play);
+void EnSsh_Update(Actor* thisx, PlayState* play);
+void EnSsh_Draw(Actor* thisx, PlayState* play);
 
-void EnSsh_Idle(EnSsh* this, GlobalContext* globalCtx);
-void EnSsh_Drop(EnSsh* this, GlobalContext* globalCtx);
-void EnSsh_Return(EnSsh* this, GlobalContext* globalCtx);
-void EnSsh_Start(EnSsh* this, GlobalContext* globalCtx);
+void EnSsh_Idle(EnSsh* this, PlayState* play);
+void EnSsh_Drop(EnSsh* this, PlayState* play);
+void EnSsh_Return(EnSsh* this, PlayState* play);
+void EnSsh_Start(EnSsh* this, PlayState* play);
 
 #include "overlays/ovl_En_Ssh/ovl_En_Ssh.h"
 
@@ -116,17 +116,17 @@ void EnSsh_SetupAction(EnSsh* this, EnSshActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
-void EnSsh_SpawnShockwave(EnSsh* this, GlobalContext* globalCtx) {
+void EnSsh_SpawnShockwave(EnSsh* this, PlayState* play) {
     Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
     Vec3f pos;
 
     pos.x = this->actor.world.pos.x;
     pos.y = this->actor.floorHeight;
     pos.z = this->actor.world.pos.z;
-    EffectSsBlast_SpawnWhiteCustomScale(globalCtx, &pos, &zeroVec, &zeroVec, 100, 220, 8);
+    EffectSsBlast_SpawnWhiteCustomScale(play, &pos, &zeroVec, &zeroVec, 100, 220, 8);
 }
 
-s32 EnSsh_CreateBlureEffect(GlobalContext* globalCtx) {
+s32 EnSsh_CreateBlureEffect(PlayState* play) {
     EffectBlureInit1 blureInit;
     u8 p1StartColor[] = { 255, 255, 255, 75 };
     u8 p2StartColor[] = { 255, 255, 255, 75 };
@@ -146,11 +146,11 @@ s32 EnSsh_CreateBlureEffect(GlobalContext* globalCtx) {
     blureInit.unkFlag = 0;
     blureInit.calcMode = 3;
 
-    Effect_Add(globalCtx, &blureIdx, EFFECT_BLURE1, 0, 0, &blureInit);
+    Effect_Add(play, &blureIdx, EFFECT_BLURE1, 0, 0, &blureInit);
     return blureIdx;
 }
 
-s32 EnSsh_CheckCeilingPos(EnSsh* this, GlobalContext* globalCtx) {
+s32 EnSsh_CheckCeilingPos(EnSsh* this, PlayState* play) {
     CollisionPoly* poly;
     s32 bgId;
     Vec3f posB;
@@ -158,7 +158,7 @@ s32 EnSsh_CheckCeilingPos(EnSsh* this, GlobalContext* globalCtx) {
     posB.x = this->actor.world.pos.x;
     posB.y = this->actor.world.pos.y + 1000.0f;
     posB.z = this->actor.world.pos.z;
-    if (!BgCheck_EntityLineTest1(&globalCtx->colCtx, &this->actor.world.pos, &posB, &this->ceilingPos, &poly, false,
+    if (!BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &posB, &this->ceilingPos, &poly, false,
                                  false, true, true, &bgId)) {
         return false;
     } else {
@@ -189,7 +189,7 @@ void EnSsh_AddBlureSpace(EnSsh* this) {
     EffectBlure_AddSpace(Effect_GetByIndex(this->blureIdx));
 }
 
-void EnSsh_InitColliders(EnSsh* this, GlobalContext* globalCtx) {
+void EnSsh_InitColliders(EnSsh* this, PlayState* play) {
     ColliderCylinderInit* cylinders[6] = {
         &sCylinderInit1, &sCylinderInit1, &sCylinderInit1, &sCylinderInit2, &sCylinderInit2, &sCylinderInit2,
     };
@@ -197,8 +197,8 @@ void EnSsh_InitColliders(EnSsh* this, GlobalContext* globalCtx) {
     s32 pad;
 
     for (i = 0; i < ARRAY_COUNT(cylinders); i++) {
-        Collider_InitCylinder(globalCtx, &this->colCylinder[i]);
-        Collider_SetCylinder(globalCtx, &this->colCylinder[i], &this->actor, cylinders[i]);
+        Collider_InitCylinder(play, &this->colCylinder[i]);
+        Collider_SetCylinder(play, &this->colCylinder[i], &this->actor, cylinders[i]);
     }
 
     this->colCylinder[0].info.bumper.dmgFlags = 0x0003F8E9;
@@ -210,8 +210,8 @@ void EnSsh_InitColliders(EnSsh* this, GlobalContext* globalCtx) {
 
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, DamageTable_Get(2), &sColChkInfoInit);
 
-    Collider_InitJntSph(globalCtx, &this->colSph);
-    Collider_SetJntSph(globalCtx, &this->colSph, &this->actor, &sJntSphInit, this->colSphElements);
+    Collider_InitJntSph(play, &this->colSph);
+    Collider_SetJntSph(play, &this->colSph, &this->actor, &sJntSphInit, this->colSphElements);
 }
 
 f32 EnSsh_SetAnimation(EnSsh* this, s32 animIndex) {
@@ -306,7 +306,7 @@ s32 EnSsh_Damaged(EnSsh* this) {
     }
 }
 
-void EnSsh_Turn(EnSsh* this, GlobalContext* globalCtx) {
+void EnSsh_Turn(EnSsh* this, PlayState* play) {
     if (this->hitTimer != 0) {
         this->hitTimer--;
     }
@@ -318,7 +318,7 @@ void EnSsh_Turn(EnSsh* this, GlobalContext* globalCtx) {
     this->actor.shape.rot.y = this->actor.world.rot.y;
 }
 
-void EnSsh_Stunned(EnSsh* this, GlobalContext* globalCtx) {
+void EnSsh_Stunned(EnSsh* this, PlayState* play) {
     if ((this->swayTimer == 0) && (this->stunTimer == 0)) {
         Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer ^ 0x8000, 4, this->maxTurnRate, 1);
     }
@@ -332,25 +332,25 @@ void EnSsh_Stunned(EnSsh* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnSsh_UpdateYaw(EnSsh* this, GlobalContext* globalCtx) {
+void EnSsh_UpdateYaw(EnSsh* this, PlayState* play) {
     if (this->stunTimer != 0) {
-        EnSsh_Stunned(this, globalCtx);
+        EnSsh_Stunned(this, play);
     } else {
-        EnSsh_Turn(this, globalCtx);
+        EnSsh_Turn(this, play);
     }
 }
 
-void EnSsh_Bob(EnSsh* this, GlobalContext* globalCtx) {
+void EnSsh_Bob(EnSsh* this, PlayState* play) {
     f32 bobVel = 0.5f;
 
-    if ((globalCtx->state.frames & 8) != 0) {
+    if ((play->state.frames & 8) != 0) {
         bobVel *= -1.0f;
     }
     Math_SmoothStepToF(&this->actor.velocity.y, bobVel, 0.4f, 1000.0f, 0.0f);
 }
 
-s32 EnSsh_IsCloseToLink(EnSsh* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+s32 EnSsh_IsCloseToLink(EnSsh* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     f32 yDist;
 
     if (this->stateFlags & SSH_STATE_GROUND_START) {
@@ -430,9 +430,9 @@ void EnSsh_Sway(EnSsh* this) {
     }
 }
 
-void EnSsh_CheckBodyStickHit(EnSsh* this, GlobalContext* globalCtx) {
+void EnSsh_CheckBodyStickHit(EnSsh* this, PlayState* play) {
     ColliderInfo* info = &this->colCylinder[0].info;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
 
     if (player->unk_860 != 0) {
         info->bumper.dmgFlags |= 2;
@@ -445,7 +445,7 @@ void EnSsh_CheckBodyStickHit(EnSsh* this, GlobalContext* globalCtx) {
     }
 }
 
-s32 EnSsh_CheckHitPlayer(EnSsh* this, GlobalContext* globalCtx) {
+s32 EnSsh_CheckHitPlayer(EnSsh* this, PlayState* play) {
     s32 i;
     s32 hit = false;
 
@@ -467,8 +467,8 @@ s32 EnSsh_CheckHitPlayer(EnSsh* this, GlobalContext* globalCtx) {
     }
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_STALTU_ROLL);
     Audio_PlayActorSound2(&this->actor, NA_SE_VO_ST_ATTACK);
-    globalCtx->damagePlayer(globalCtx, -8);
-    func_8002F71C(globalCtx, &this->actor, 4.0f, this->actor.yawTowardsPlayer, 6.0f);
+    play->damagePlayer(play, -8);
+    func_8002F71C(play, &this->actor, 4.0f, this->actor.yawTowardsPlayer, 6.0f);
     this->hitCount--;
     return true;
 }
@@ -491,7 +491,7 @@ s32 EnSsh_CheckHitFront(EnSsh* this) {
     }
 }
 
-s32 EnSsh_CheckHitBack(EnSsh* this, GlobalContext* globalCtx) {
+s32 EnSsh_CheckHitBack(EnSsh* this, PlayState* play) {
     ColliderCylinder* cyl = &this->colCylinder[0];
     s32 hit = false;
 
@@ -520,13 +520,13 @@ s32 EnSsh_CheckHitBack(EnSsh* this, GlobalContext* globalCtx) {
     return false;
 }
 
-s32 EnSsh_CollisionCheck(EnSsh* this, GlobalContext* globalCtx) {
+s32 EnSsh_CollisionCheck(EnSsh* this, PlayState* play) {
     if (this->stunTimer == 0) {
-        EnSsh_CheckHitPlayer(this, globalCtx);
+        EnSsh_CheckHitPlayer(this, play);
     }
     if (EnSsh_CheckHitFront(this)) {
         return false;
-    } else if (globalCtx->actorCtx.unk_02 != 0) {
+    } else if (play->actorCtx.unk_02 != 0) {
         this->invincibilityTimer = 8;
         if (this->stunTimer == 0) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOMA_JR_FREEZE);
@@ -536,29 +536,29 @@ s32 EnSsh_CollisionCheck(EnSsh* this, GlobalContext* globalCtx) {
         this->stateFlags |= SSH_STATE_STUNNED;
         return false;
     } else {
-        return EnSsh_CheckHitBack(this, globalCtx);
+        return EnSsh_CheckHitBack(this, play);
         // Always returns false
     }
 }
 
-void EnSsh_SetBodyCylinderAC(EnSsh* this, GlobalContext* globalCtx) {
+void EnSsh_SetBodyCylinderAC(EnSsh* this, PlayState* play) {
     Collider_UpdateCylinder(&this->actor, &this->colCylinder[0]);
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colCylinder[0].base);
+    CollisionCheck_SetAC(play, &play->colChkCtx, &this->colCylinder[0].base);
 }
 
-void EnSsh_SetLegsCylinderAC(EnSsh* this, GlobalContext* globalCtx) {
+void EnSsh_SetLegsCylinderAC(EnSsh* this, PlayState* play) {
     s16 angleTowardsLink = ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y));
 
     if (angleTowardsLink < 90 * (0x10000 / 360)) {
         Collider_UpdateCylinder(&this->actor, &this->colCylinder[2]);
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colCylinder[2].base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->colCylinder[2].base);
     } else {
         Collider_UpdateCylinder(&this->actor, &this->colCylinder[1]);
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colCylinder[1].base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->colCylinder[1].base);
     }
 }
 
-s32 EnSsh_SetCylinderOC(EnSsh* this, GlobalContext* globalCtx) {
+s32 EnSsh_SetCylinderOC(EnSsh* this, PlayState* play) {
     Vec3f cyloffsets[] = {
         { 40.0f, 0.0f, 0.0f },
         { 0.0f, 0.0f, 0.0f },
@@ -580,27 +580,27 @@ s32 EnSsh_SetCylinderOC(EnSsh* this, GlobalContext* globalCtx) {
         this->colCylinder[i + 3].dim.pos.x = cylPos.x;
         this->colCylinder[i + 3].dim.pos.y = cylPos.y;
         this->colCylinder[i + 3].dim.pos.z = cylPos.z;
-        CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->colCylinder[i + 3].base);
+        CollisionCheck_SetOC(play, &play->colChkCtx, &this->colCylinder[i + 3].base);
     }
     return 1;
 }
 
-void EnSsh_SetColliders(EnSsh* this, GlobalContext* globalCtx) {
+void EnSsh_SetColliders(EnSsh* this, PlayState* play) {
     if (this->actor.colChkInfo.health == 0) {
-        CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->colSph.base);
-        CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->colSph.base);
+        CollisionCheck_SetAT(play, &play->colChkCtx, &this->colSph.base);
+        CollisionCheck_SetOC(play, &play->colChkCtx, &this->colSph.base);
     } else {
         if (this->hitTimer == 0) {
-            EnSsh_SetCylinderOC(this, globalCtx);
+            EnSsh_SetCylinderOC(this, play);
         }
         if (DECR(this->invincibilityTimer) == 0) {
-            EnSsh_SetBodyCylinderAC(this, globalCtx);
-            EnSsh_SetLegsCylinderAC(this, globalCtx);
+            EnSsh_SetBodyCylinderAC(this, play);
+            EnSsh_SetLegsCylinderAC(this, play);
         }
     }
 }
 
-void EnSsh_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnSsh_Init(Actor* thisx, PlayState* play) {
     f32 frameCount;
     s32 pad;
     EnSsh* this = (EnSsh*)thisx;
@@ -616,13 +616,13 @@ void EnSsh_Init(Actor* thisx, GlobalContext* globalCtx) {
         return;
     }
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
-    SkelAnime_Init(globalCtx, &this->skelAnime, &object_ssh_Skel_0052E0, NULL, this->jointTable, this->morphTable, 30);
+    SkelAnime_Init(play, &this->skelAnime, &object_ssh_Skel_0052E0, NULL, this->jointTable, this->morphTable, 30);
     Animation_Change(&this->skelAnime, &object_ssh_Anim_000304, 1.0f, 0.0f, frameCount, ANIMMODE_LOOP_INTERP, 0.0f);
-    this->blureIdx = EnSsh_CreateBlureEffect(globalCtx);
-    EnSsh_InitColliders(this, globalCtx);
+    this->blureIdx = EnSsh_CreateBlureEffect(play);
+    EnSsh_InitColliders(this, play);
     this->stateFlags = 0;
     this->hitCount = 0;
-    EnSsh_CheckCeilingPos(this, globalCtx);
+    EnSsh_CheckCeilingPos(this, play);
     if (this->actor.params != ENSSH_FATHER) {
         EnSsh_SetColliderScale(this, 0.5f, 1.0f);
     } else {
@@ -633,36 +633,36 @@ void EnSsh_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnSsh_SetupAction(this, EnSsh_Start);
 }
 
-void EnSsh_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnSsh_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     EnSsh* this = (EnSsh*)thisx;
     s32 i;
 
-    Effect_Delete(globalCtx, this->blureIdx);
+    Effect_Delete(play, this->blureIdx);
     for (i = 0; i < 6; i++) {
-        Collider_DestroyCylinder(globalCtx, &this->colCylinder[i]);
+        Collider_DestroyCylinder(play, &this->colCylinder[i]);
     }
-    Collider_DestroyJntSph(globalCtx, &this->colSph);
+    Collider_DestroyJntSph(play, &this->colSph);
 }
 
-void EnSsh_Wait(EnSsh* this, GlobalContext* globalCtx) {
-    if (EnSsh_IsCloseToLink(this, globalCtx)) {
+void EnSsh_Wait(EnSsh* this, PlayState* play) {
+    if (EnSsh_IsCloseToLink(this, play)) {
         EnSsh_SetDropAnimation(this);
         EnSsh_SetupAction(this, EnSsh_Drop);
     } else {
-        EnSsh_Bob(this, globalCtx);
+        EnSsh_Bob(this, play);
     }
 }
 
-void EnSsh_Talk(EnSsh* this, GlobalContext* globalCtx) {
-    EnSsh_Bob(this, globalCtx);
-    if (Actor_TextboxIsClosing(&this->actor, globalCtx)) {
+void EnSsh_Talk(EnSsh* this, PlayState* play) {
+    EnSsh_Bob(this, play);
+    if (Actor_TextboxIsClosing(&this->actor, play)) {
         this->actionFunc = EnSsh_Idle;
     }
 }
 
-void EnSsh_Idle(EnSsh* this, GlobalContext* globalCtx) {
-    if (Actor_ProcessTalkRequest(&this->actor, globalCtx)) {
+void EnSsh_Idle(EnSsh* this, PlayState* play) {
+    if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = EnSsh_Talk;
         if (this->actor.params == ENSSH_FATHER) {
             gSaveContext.eventChkInf[9] |= 0x40;
@@ -680,7 +680,7 @@ void EnSsh_Idle(EnSsh* this, GlobalContext* globalCtx) {
         if ((this->animTimer != 0) && (DECR(this->animTimer) == 0)) {
             EnSsh_SetAnimation(this, SSH_ANIM_WAIT);
         }
-        if (!EnSsh_IsCloseToLink(this, globalCtx)) {
+        if (!EnSsh_IsCloseToLink(this, play)) {
             EnSsh_SetReturnAnimation(this);
             EnSsh_SetupAction(this, EnSsh_Return);
         } else {
@@ -688,9 +688,9 @@ void EnSsh_Idle(EnSsh* this, GlobalContext* globalCtx) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_STALTU_LAUGH);
                 this->sfxTimer = 64;
             }
-            EnSsh_Bob(this, globalCtx);
+            EnSsh_Bob(this, play);
             if ((this->unkTimer == 0) && (this->animTimer == 0)) {
-                this->actor.textId = Text_GetFaceReaction(globalCtx, 0xD);
+                this->actor.textId = Text_GetFaceReaction(play, 0xD);
                 if (this->actor.textId == 0) {
                     if (this->actor.params == ENSSH_FATHER) {
                         if (gSaveContext.inventory.gsTokens >= 50) {
@@ -712,13 +712,13 @@ void EnSsh_Idle(EnSsh* this, GlobalContext* globalCtx) {
                         this->actor.textId = 0x22;
                     }
                 }
-                func_8002F2CC(&this->actor, globalCtx, 100.0f);
+                func_8002F2CC(&this->actor, play, 100.0f);
             }
         }
     }
 }
 
-void EnSsh_Land(EnSsh* this, GlobalContext* globalCtx) {
+void EnSsh_Land(EnSsh* this, PlayState* play) {
     if ((this->unkTimer != 0) && (DECR(this->unkTimer) == 0)) {
         EnSsh_SetAnimation(this, SSH_ANIM_WAIT);
     }
@@ -732,15 +732,15 @@ void EnSsh_Land(EnSsh* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnSsh_Drop(EnSsh* this, GlobalContext* globalCtx) {
+void EnSsh_Drop(EnSsh* this, PlayState* play) {
     if ((this->unkTimer != 0) && (DECR(this->unkTimer) == 0)) {
         EnSsh_SetAnimation(this, SSH_ANIM_DROP);
     }
-    if (!EnSsh_IsCloseToLink(this, globalCtx)) {
+    if (!EnSsh_IsCloseToLink(this, play)) {
         EnSsh_SetReturnAnimation(this);
         EnSsh_SetupAction(this, EnSsh_Return);
     } else if (EnSsh_IsCloseToGround(this)) {
-        EnSsh_SpawnShockwave(this, globalCtx);
+        EnSsh_SpawnShockwave(this, play);
         EnSsh_SetLandAnimation(this);
         EnSsh_SetupAction(this, EnSsh_Land);
     } else if (DECR(this->sfxTimer) == 0) {
@@ -749,13 +749,13 @@ void EnSsh_Drop(EnSsh* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnSsh_Return(EnSsh* this, GlobalContext* globalCtx) {
+void EnSsh_Return(EnSsh* this, PlayState* play) {
     f32 frameRatio = this->skelAnime.curFrame / (this->skelAnime.animLength - 1.0f);
 
     if (frameRatio == 1.0f) {
         EnSsh_SetReturnAnimation(this);
     }
-    if (EnSsh_IsCloseToLink(this, globalCtx)) {
+    if (EnSsh_IsCloseToLink(this, play)) {
         EnSsh_SetDropAnimation(this);
         EnSsh_SetupAction(this, EnSsh_Drop);
     } else if (EnSsh_IsCloseToHome(this)) {
@@ -788,24 +788,24 @@ void EnSsh_UpdateColliderScale(EnSsh* this) {
     }
 }
 
-void EnSsh_Start(EnSsh* this, GlobalContext* globalCtx) {
+void EnSsh_Start(EnSsh* this, PlayState* play) {
     if (!EnSsh_IsCloseToGround(this)) {
         EnSsh_SetupAction(this, EnSsh_Wait);
-        EnSsh_Wait(this, globalCtx);
+        EnSsh_Wait(this, play);
     } else {
         EnSsh_SetLandAnimation(this);
         this->stateFlags |= 4;
         EnSsh_SetupAction(this, EnSsh_Land);
-        EnSsh_Land(this, globalCtx);
+        EnSsh_Land(this, play);
     }
 }
 
-void EnSsh_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnSsh_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     EnSsh* this = (EnSsh*)thisx;
 
     EnSsh_UpdateColliderScale(this);
-    if (EnSsh_CollisionCheck(this, globalCtx)) {
+    if (EnSsh_CollisionCheck(this, play)) {
         return; // EnSsh_CollisionCheck always returns false, so this never happens
     }
     if (this->stunTimer != 0) {
@@ -813,10 +813,10 @@ void EnSsh_Update(Actor* thisx, GlobalContext* globalCtx) {
     } else {
         SkelAnime_Update(&this->skelAnime);
         func_8002D7EC(&this->actor);
-        Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 0.0f, 0.0f, 0.0f, 4);
-        this->actionFunc(this, globalCtx);
+        Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
+        this->actionFunc(this, play);
     }
-    EnSsh_UpdateYaw(this, globalCtx);
+    EnSsh_UpdateYaw(this, play);
     if (DECR(this->blinkTimer) == 0) {
         this->blinkTimer = Rand_S16Offset(60, 60);
     }
@@ -824,11 +824,11 @@ void EnSsh_Update(Actor* thisx, GlobalContext* globalCtx) {
     if (this->blinkState >= 3) {
         this->blinkState = 0;
     }
-    EnSsh_SetColliders(this, globalCtx);
+    EnSsh_SetColliders(this, play);
     Actor_SetFocus(&this->actor, 0.0f);
 }
 
-s32 EnSsh_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+s32 EnSsh_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnSsh* this = (EnSsh*)thisx;
 
     switch (limbIndex) {
@@ -860,13 +860,13 @@ s32 EnSsh_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
     return false;
 }
 
-void EnSsh_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+void EnSsh_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     EnSsh* this = (EnSsh*)thisx;
 
     Collider_UpdateSpheres(limbIndex, &this->colSph);
 }
 
-void EnSsh_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnSsh_Draw(Actor* thisx, PlayState* play) {
     static void* blinkTex[] = {
         object_ssh_Tex_0007E0,
         object_ssh_Tex_000C60,
@@ -875,11 +875,11 @@ void EnSsh_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnSsh* this = (EnSsh*)thisx;
 
-    EnSsh_CheckBodyStickHit(this, globalCtx);
+    EnSsh_CheckBodyStickHit(this, play);
     EnSsh_Sway(this);
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(blinkTex[this->blinkState]));
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
-    SkelAnime_DrawOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, EnSsh_OverrideLimbDraw,
+    CLOSE_DISPS(play->state.gfxCtx);
+    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnSsh_OverrideLimbDraw,
                       EnSsh_PostLimbDraw, &this->actor);
 }

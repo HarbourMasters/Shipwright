@@ -1,10 +1,10 @@
 #include "global.h"
 
-Path* Path_GetByIndex(GlobalContext* globalCtx, s16 index, s16 max) {
+Path* Path_GetByIndex(PlayState* play, s16 index, s16 max) {
     Path* path;
 
     if (index != max) {
-        path = &globalCtx->setupPathList[index];
+        path = &play->setupPathList[index];
     } else {
         path = NULL;
     }

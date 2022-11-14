@@ -6,7 +6,7 @@
 
 struct EnGSwitch;
 
-typedef void (*EnGSwitchActionFunc)(struct EnGSwitch*, GlobalContext*);
+typedef void (*EnGSwitchActionFunc)(struct EnGSwitch*, PlayState*);
 
 typedef enum {
     /* 0 */ GSWITCH_NONE,

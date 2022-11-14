@@ -9,16 +9,16 @@
 
 #define rScale regs[0]
 
-u32 EffectSsBubble_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx);
-void EffectSsBubble_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsBubble_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsBubble_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+void EffectSsBubble_Draw(PlayState* play, u32 index, EffectSs* this);
+void EffectSsBubble_Update(PlayState* play, u32 index, EffectSs* this);
 
 EffectSsInit Effect_Ss_Bubble_InitVars = {
     EFFECT_SS_BUBBLE,
     EffectSsBubble_Init,
 };
 
-u32 EffectSsBubble_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
+u32 EffectSsBubble_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsBubbleInitParams* initParams = (EffectSsBubbleInitParams*)initParamsx;
 
     //! @bug Rand_ZeroOne in the macro means a random number is generated for both parts of the macro.
@@ -37,8 +37,8 @@ u32 EffectSsBubble_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, voi
     return 1;
 }
 
-void EffectSsBubble_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+void EffectSsBubble_Draw(PlayState* play, u32 index, EffectSs* this) {
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     f32 scale = this->rScale / 100.0f;
 
     OPEN_DISPS(gfxCtx);
@@ -56,7 +56,7 @@ void EffectSsBubble_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void EffectSsBubble_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsBubble_Update(PlayState* play, u32 index, EffectSs* this) {
     WaterBox* waterBox;
     f32 waterSurfaceY;
     Vec3f ripplePos;
@@ -64,7 +64,7 @@ void EffectSsBubble_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) 
     waterSurfaceY = this->pos.y;
 
     // kill bubble if it's out of range of a water box
-    if (!WaterBox_GetSurface1(globalCtx, &globalCtx->colCtx, this->pos.x, this->pos.z, &waterSurfaceY, &waterBox)) {
+    if (!WaterBox_GetSurface1(play, &play->colCtx, this->pos.x, this->pos.z, &waterSurfaceY, &waterBox)) {
         this->life = -1;
         return;
     }
@@ -73,7 +73,7 @@ void EffectSsBubble_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) 
         ripplePos.x = this->pos.x;
         ripplePos.y = waterSurfaceY;
         ripplePos.z = this->pos.z;
-        EffectSsGRipple_Spawn(globalCtx, &ripplePos, 0, 80, 0);
+        EffectSsGRipple_Spawn(play, &ripplePos, 0, 80, 0);
         this->life = -1;
     } else {
         this->life++;

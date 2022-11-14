@@ -6,7 +6,7 @@
 
 struct EnHonotrap;
 
-typedef void (*EnHonotrapActionFunc)(struct EnHonotrap*, GlobalContext*);
+typedef void (*EnHonotrapActionFunc)(struct EnHonotrap*, PlayState*);
 
 typedef union {
     struct {

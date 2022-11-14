@@ -1,6 +1,6 @@
 #include "global.h"
 
-void FlagSet_Update(GlobalContext* globalCtx) {
+void FlagSet_Update(PlayState* play) {
     static s32 entryIdx = 0;
     static u32 curBit = 0;
     static s32 timer = 0;
@@ -35,8 +35,8 @@ void FlagSet_Update(GlobalContext* globalCtx) {
         { &gSaveContext.eventInf[2], "event_inf[2]" },          { &gSaveContext.eventInf[3], "event_inf[3]" },
     };
 
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
-    Input* input = &globalCtx->state.input[0];
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
+    Input* input = &play->state.input[0];
     Gfx* gfx;
     Gfx* polyOpa;
 
@@ -145,7 +145,7 @@ void FlagSet_Update(GlobalContext* globalCtx) {
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_L)) {
-        globalCtx->pauseCtx.debugState = 0;
+        play->pauseCtx.debugState = 0;
     }
 
     CLOSE_DISPS(gfxCtx);

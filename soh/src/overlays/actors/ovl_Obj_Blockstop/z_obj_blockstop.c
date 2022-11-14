@@ -9,9 +9,9 @@
 
 #define FLAGS 0
 
-void ObjBlockstop_Init(Actor* thisx, GlobalContext* globalCtx);
-void ObjBlockstop_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void ObjBlockstop_Update(Actor* thisx, GlobalContext* globalCtx);
+void ObjBlockstop_Init(Actor* thisx, PlayState* play);
+void ObjBlockstop_Destroy(Actor* thisx, PlayState* play);
+void ObjBlockstop_Update(Actor* thisx, PlayState* play);
 
 const ActorInit Obj_Blockstop_InitVars = {
     ACTOR_OBJ_BLOCKSTOP,
@@ -26,29 +26,29 @@ const ActorInit Obj_Blockstop_InitVars = {
     NULL,
 };
 
-void ObjBlockstop_Init(Actor* thisx, GlobalContext* globalCtx) {
+void ObjBlockstop_Init(Actor* thisx, PlayState* play) {
     ObjBlockstop* this = (ObjBlockstop*)thisx;
 
-    if (Flags_GetSwitch(globalCtx, this->actor.params)) {
+    if (Flags_GetSwitch(play, this->actor.params)) {
         Actor_Kill(&this->actor);
     } else {
         this->actor.world.pos.y++;
     }
 }
 
-void ObjBlockstop_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void ObjBlockstop_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void ObjBlockstop_Update(Actor* thisx, GlobalContext* globalCtx) {
+void ObjBlockstop_Update(Actor* thisx, PlayState* play) {
     ObjBlockstop* this = (ObjBlockstop*)thisx;
     DynaPolyActor* dynaPolyActor;
     Vec3f sp4C;
     s32 bgId;
     s32 pad;
 
-    if (BgCheck_EntityLineTest2(&globalCtx->colCtx, &this->actor.home.pos, &this->actor.world.pos, &sp4C,
+    if (BgCheck_EntityLineTest2(&play->colCtx, &this->actor.home.pos, &this->actor.world.pos, &sp4C,
                                 &this->actor.floorPoly, false, false, true, true, &bgId, &this->actor)) {
-        dynaPolyActor = DynaPoly_GetActor(&globalCtx->colCtx, bgId);
+        dynaPolyActor = DynaPoly_GetActor(&play->colCtx, bgId);
 
         if (dynaPolyActor != NULL && dynaPolyActor->actor.id == ACTOR_OBJ_OSHIHIKI) {
             if ((dynaPolyActor->actor.params & 0x000F) == PUSHBLOCK_HUGE_START_ON ||
@@ -58,7 +58,7 @@ void ObjBlockstop_Update(Actor* thisx, GlobalContext* globalCtx) {
                 func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
             }
 
-            Flags_SetSwitch(globalCtx, this->actor.params);
+            Flags_SetSwitch(play, this->actor.params);
             Actor_Kill(&this->actor);
         }
     }

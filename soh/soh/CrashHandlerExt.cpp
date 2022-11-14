@@ -13,7 +13,7 @@
     append_str(buff, len, varName);             \
     append_str(buff, len, varValue);
 
-extern "C" GlobalContext* gGlobalCtx;
+extern "C" PlayState* gPlayState;
 
 static std::array<const char*, ACTORCAT_MAX> sCatToStrArray{
     "SWITCH", "BG", "PLAYER", "EXPLOSIVE", "NPC", "ENEMY", "PROP", "ITEMACTION", "MISC", "BOSS", "DOOR", "CHEST",
@@ -139,7 +139,7 @@ static void CrashHandler_WriteActorData(char* buffer, size_t* pos) {
     append_line(buffer, pos, "Actor Id      Params");
     for (unsigned int i = 0; i < ACTORCAT_MAX; i++) {
 
-        ActorListEntry* entry = &gGlobalCtx->actorCtx.actorLists[i];
+        ActorListEntry* entry = &gPlayState->actorCtx.actorLists[i];
         Actor* cur;
 
         if(entry->length == 0) {
@@ -167,13 +167,13 @@ extern "C" void CrashHandler_PrintSohData(char* buffer, size_t* pos) {
     WRITE_VAR_LINE(buffer, pos, "Game Version: ", (const char*)gBuildVersion);
     WRITE_VAR_LINE(buffer, pos, "Build Date: ", (const char*)gBuildDate);
 
-    if (gGlobalCtx != nullptr) {
+    if (gPlayState != nullptr) {
         append_line(buffer, pos, "Actors:");
         CrashHandler_WriteActorData(buffer, pos);
         
-        WRITE_VAR_LINE(buffer, pos, "Scene: ", sSceneIdToStrArray[gGlobalCtx->sceneNum]);
+        WRITE_VAR_LINE(buffer, pos, "Scene: ", sSceneIdToStrArray[gPlayState->sceneNum]);
 
-        snprintf(intCharBuffer, sizeof(intCharBuffer), "%i", gGlobalCtx->roomCtx.curRoom.num);
+        snprintf(intCharBuffer, sizeof(intCharBuffer), "%i", gPlayState->roomCtx.curRoom.num);
         WRITE_VAR_LINE(buffer, pos, "Room: ", intCharBuffer);
     }
 }

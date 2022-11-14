@@ -7,7 +7,7 @@
 
 struct EnChanger;
 
-typedef void (*EnChangerActionFunc)(struct EnChanger*, GlobalContext*);
+typedef void (*EnChangerActionFunc)(struct EnChanger*, PlayState*);
 
 typedef struct EnChanger {
     /* 0x0000 */ Actor actor;
