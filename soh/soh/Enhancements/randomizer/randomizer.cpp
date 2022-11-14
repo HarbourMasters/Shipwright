@@ -3175,7 +3175,7 @@ void DrawRandoEditor(bool& open) {
                     false, disable100GSRewardText, UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::InsertHelpHoverText(
                     "Shuffle the item the cursed rich man in the House of Skulltula gives when you "
-                    "have collected all 100 Golden Skull Tokens.\n"
+                    "have collected all 100 Gold Skulltula Tokens.\n"
                     "\n"
                     "You can still talk to him multiple times to get Huge Rupees."
                 );
