@@ -734,7 +734,7 @@ void EnDodongo_CollisionCheck(EnDodongo* this, PlayState* play) {
                     EnDodongo_SetupStunned(this);
                 }
             } else {
-                if (CVar_GetS32("gPhotosensitiveMode", 0)) {
+                if (CVar_GetS32("gPhotosensitiveMode", 1)) {
                     Actor_SetColorFilter(&this->actor, 0x4000, 0x78, 0, 8); 
                 } 
                 if (Actor_ApplyDamage(&this->actor) == 0) {
