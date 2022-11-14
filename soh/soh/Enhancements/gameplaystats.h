@@ -25,6 +25,7 @@ typedef enum {
 typedef enum {
     /* 0x00 */ COUNT_RUPEES_COLLECTED,
     /* 0x01 */ COUNT_RUPEES_SPENT,
+               COUNT_CHESTS_OPENED,
     /* 0x02 */ COUNT_DAMAGE_TAKEN,
     /* 0x03 */ COUNT_ICE_TRAPS,
     /* 0x04 */ COUNT_ROLLS,

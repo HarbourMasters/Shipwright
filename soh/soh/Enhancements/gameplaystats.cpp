@@ -224,6 +224,7 @@ void DrawStatsTracker(bool& open) {
     
     DisplayStat("Rupees Collected:      ", gSaveContext.gameplayStats.count[COUNT_RUPEES_COLLECTED]);
     DisplayStat("Rupees Spent:          ", gSaveContext.gameplayStats.count[COUNT_RUPEES_SPENT]);
+    DisplayStat("Chests Opened:         ", gSaveContext.gameplayStats.count[COUNT_CHESTS_OPENED]);
 
     DisplayStat("Ammo Used:             ", ammoUsed);
     if (ammoUsed > 0) {
