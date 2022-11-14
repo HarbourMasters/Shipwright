@@ -9,6 +9,10 @@ VisMono sMonoColors;
 ViMode sViMode;
 FaultClient sGameFaultClient;
 u16 sLastButtonPressed;
+int32_t warpTime = 0;
+bool warped = false;
+Vec3f pos;
+int16_t yaw;
 
 // Forward declared, because this in a C++ header.
 int gfx_create_framebuffer(uint32_t width, uint32_t height);
@@ -425,6 +429,33 @@ void GameState_Update(GameState* gameState) {
         gSaveContext.dayTime = prevTime;
     } else {
         CVar_SetS32("gPrevTime", -1);
+    }
+    
+    //Switches Link's age and respawns him at the last entrance he entered.
+    if (CVar_GetS32("gSwitchAge", 0) != 0) {
+        CVar_SetS32("gSwitchAge", 0);
+        if (gGlobalCtx) {
+            pos = GET_PLAYER(gGlobalCtx)->actor.world.pos;
+            yaw = GET_PLAYER(gGlobalCtx)->actor.shape.rot.y;
+            gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
+            gGlobalCtx->sceneLoadFlag = 0x14;
+            gGlobalCtx->fadeTransition = 11;
+            gSaveContext.nextTransition = 11;
+            warped = true;
+            if (gGlobalCtx->linkAgeOnLoad == 1) {
+                gGlobalCtx->linkAgeOnLoad = 0;
+            } else {
+                gGlobalCtx->linkAgeOnLoad = 1;
+            }
+        }
+    }
+
+    if (gGlobalCtx) {
+        if (warped && gGlobalCtx->sceneLoadFlag != 0x0014 && gSaveContext.nextTransition == 255) {
+            GET_PLAYER(gGlobalCtx)->actor.shape.rot.y = yaw;
+            GET_PLAYER(gGlobalCtx)->actor.world.pos = pos;
+            warped = false;
+        }
     }
 
     //since our CVar is same value and properly default to 0 there is not problems doing this in single line.
