@@ -9,8 +9,8 @@
 
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <ImGui/imgui_internal.h>
-#include <libultraship/ImGuiImpl.h>
-#include <libultraship/Cvar.h>
+#include <ImGuiImpl.h>
+#include <Cvar.h>
 
 #include <ultra64/types.h>
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"

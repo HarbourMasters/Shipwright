@@ -9,7 +9,7 @@ extern "C"
 {
 #endif
 
-#include "../../libultraship/libultraship/luslog.h"
+#include "luslog.h"
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
 #include <soh/Enhancements/randomizer/randomizer_inf.h>
 

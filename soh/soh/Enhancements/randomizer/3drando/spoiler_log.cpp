@@ -27,7 +27,7 @@
 #include <filesystem>
 #include <variables.h>
 
-#include <libultraship/Window.h>
+#include <Window.h>
 
 using json = nlohmann::json;
 

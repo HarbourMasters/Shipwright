@@ -1,10 +1,10 @@
 #include "OTRGlobals.h"
-#include <libultraship/ResourceMgr.h>
-#include <libultraship/Scene.h>
+#include <ResourceMgr.h>
+#include <Scene.h>
 #include <Utils/StringHelper.h>
 #include "global.h"
 #include "vt.h"
-#include <libultraship/Vertex.h>
+#include <Vertex.h>
 
 extern "C" void Play_InitScene(PlayState * play, s32 spawn);
 extern "C" void Play_InitEnvironment(PlayState * play, s16 skyboxId);

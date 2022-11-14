@@ -2,8 +2,8 @@
 #include "sequence.h"
 #include <string>
 #include <map>
-#include <libultraship/Cvar.h>
-#include <libultraship/ImGuiImpl.h>
+#include <Cvar.h>
+#include <ImGuiImpl.h>
 #include <functions.h>
 #include "../randomizer/3drando/random.hpp"
 

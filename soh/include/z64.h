@@ -26,7 +26,7 @@
 #include "z64interface.h"
 #include "sequence.h"
 #include "sfx.h"
-#include <libultraship/color.h>
+#include <color.h>
 #include "ichain.h"
 #include "regs.h"
 

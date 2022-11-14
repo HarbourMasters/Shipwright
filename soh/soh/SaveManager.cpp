@@ -4,11 +4,11 @@
 #include "z64.h"
 #include "functions.h"
 #include "macros.h"
-#include <libultraship/Hooks.h>
-#include <libultraship/Cvar.h>
+#include <Hooks.h>
+#include <Cvar.h>
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
 
 #include <fstream>
 #include <filesystem>

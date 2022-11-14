@@ -7,7 +7,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/gameconsole.h"
 #include "soh/Enhancements/gameplaystats.h"
-#include <libultraship/Cvar.h>
+#include <Cvar.h>
 
 
 
