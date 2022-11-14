@@ -3475,7 +3475,9 @@ Actor* Actor_Find(ActorContext* actorCtx, s32 actorId, s32 actorCategory) {
  * While the screen flashes, the game freezes.
  */
 void Enemy_StartFinishingBlow(PlayState* play, Actor* actor) {
-    play->actorCtx.freezeFlashTimer = 5;
+    if (CVar_GetS32("gPhotosensitiveMode", 0) == 0) {
+        play->actorCtx.freezeFlashTimer = 5;
+    }
     SoundSource_PlaySfxAtFixedWorldPos(play, &actor->world.pos, 20, NA_SE_EN_LAST_DAMAGE);
 }
 
