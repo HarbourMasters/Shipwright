@@ -5,5 +5,6 @@ cmake --build build-cmake --target OTRGui --
 cmake --build build-cmake --config Release --
 
 pushd
-cd build-cmake && cpack -G External -C Release --trace-expand --debug
+cd build-cmake
+cpack -G External -C Release 
 popd
