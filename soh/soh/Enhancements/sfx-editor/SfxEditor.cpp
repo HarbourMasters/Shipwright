@@ -374,6 +374,7 @@ extern "C" void SfxEditor_AddSequence(char *otrPath, uint16_t seqNum) {
     if (splitFileName[splitFileName.size() - 1] == "fanfare" || splitFileName[splitFileName.size() - 1] == "Fanfare") {
         type = SEQ_FANFARE;
     }
-    auto tuple = std::make_tuple(sequenceName, StringHelper::Replace(sequenceName, " ", "_"), type);
+    auto tuple = std::make_tuple(
+        sequenceName, StringHelper::Replace(StringHelper::Replace(sequenceName, " ", "_"), "~", "-"), type);
     sequenceMap.emplace(seqNum, tuple);
 }
