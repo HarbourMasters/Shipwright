@@ -59,6 +59,7 @@ The packaging process can take up to **5 minutes**.
 
 If you get any errors, then you might have selected the wrong rom. Make sure to use a rom consistent with the above checksum.
 
+
 ### MacOS Rom Extraction
 
 * Run `soh.app`, and when prompted, select one of the supported roms listed above.
