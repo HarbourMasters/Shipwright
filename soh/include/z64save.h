@@ -216,7 +216,7 @@ typedef struct {
     /* 0x13E1 */ u8 natureAmbienceId;
     // #region SOH [Enhancements]
     // Support Dpad equips
-    /* 0x13E2 */ u8 buttonStatus[5];
+    /* 0x13E2 */ u8 buttonStatus[9];
     // #endregion
     /* 0x13E7 */ u8 unk_13E7; // alpha related
     /* 0x13E8 */ u16 unk_13E8; // alpha type?
