@@ -1051,6 +1051,10 @@ void Play_Update(PlayState* play) {
                 }
 
                 play->gameplayFrames++;
+                // Gameplay stat tracking
+                if (!gSaveContext.gameplayStats.ganonDefeated) {
+                      gSaveContext.gameplayStats.playTimer++;
+                }
 
                 func_800AA178(1);
 
