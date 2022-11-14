@@ -9,6 +9,8 @@
 #include "vt.h"
 #include "alloca.h"
 
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
+
 void Select_LoadTitle(SelectContext* this) {
     this->state.running = false;
     SET_NEXT_GAMESTATE(&this->state, Title_Init, TitleContext);
@@ -31,6 +33,12 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
     gSaveContext.unk_13E7 = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC = 0;
     Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
     gSaveContext.entranceIndex = entranceIndex;
+
+    // Check the entrance to see if the exit should be overriden to a grotto return point for entrance rando
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+        // Ignore return value as we want to load into the entrance specified by the debug menu
+        Grotto_OverrideSpecialEntrance(Entrance_GetOverride(entranceIndex));
+    }
 
     if (CVar_GetS32("gBetterDebugWarpScreen", 0)) {
         CVar_SetS32("gBetterDebugWarpScreenCurrentScene", this->currentScene);
@@ -73,6 +81,14 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
     gSaveContext.respawn[RESPAWN_MODE_RETURN].roomIndex = this->betterGrottos[grottoIndex].roomIndex;
     gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = 0x4ff;
     gSaveContext.respawn[RESPAWN_MODE_RETURN].pos = this->betterGrottos[grottoIndex].pos;
+
+    // Check the entrance to see if the exit should be overriden to a grotto return point for entrance rando
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+        // Use grotto content and parent scene num to identify the right grotto
+        s16 grottoEntrance = Grotto_GetRenamedGrottoIndexFromOriginal(this->betterGrottos[grottoIndex].data, this->betterGrottos[grottoIndex].exitScene);
+        // Ignore return value as we want to load into the entrance specified by the debug menu
+        Grotto_OverrideSpecialEntrance(Entrance_GetOverride(grottoEntrance));
+    }
 
     if (CVar_GetS32("gBetterDebugWarpScreen", 0)) {
         CVar_SetS32("gBetterDebugWarpScreenCurrentScene", this->currentScene);
@@ -623,34 +639,34 @@ static BetterSceneSelectEntry sBetterScenes[] = {
 };
 
 static BetterSceneSelectGrottoData sBetterGrottos[] = {
-    { 0x003F, 0x00EE, 0, 0x2C,       {  -504.0,   380.0, -1224.0 }},
-    { 0x003F, 0x04D6, 2, 0x14,       {   922.0,     0.0,  -933.0 }},
-    { 0x05B4, 0x00FC, 0, 0xFFFFFFED, {  -201.0,     0.0,  1906.0 }},
-    { 0x003F, 0x00CD, 0, 0x00,       { -1428.0,     0.0,   790.0 }},
-    { 0x003F, 0x0189, 0, 0x03,        { -4026.0, -700.0, 13858.0 }},
-    { 0x003F, 0x0189, 0, 0x22,       {  -259.0,  -500.0, 12356.0 }},
-    { 0x003F, 0x034D, 0, 0x28,       {   861.0,    80.0,  -253.0 }},
-    { 0x05A0, 0x034D, 0, 0xFFFFFFE7, {  -400.0,     0.0,   408.0 }},
-    { 0x003F, 0x01B9, 0, 0x57,       {  -389.0,  1386.0, -1202.0 }},
-    { 0x003F, 0x0147, 1, 0x7A,       {    50.0,  1233.0,  1776.0 }},
-    { 0x003F, 0x019D, 0, 0x29,       {   369.0,   570.0,   128.0 }},
-    { 0x059C, 0x0189, 0, 0xFFFFFFE6, { -5002.0,  -700.0, 13823.0 }},
-    { 0x05A4, 0x0246, 1, 0xFFFFFFF9, { -1703.0,   722.0,  -481.0 }},
-    { 0x05A4, 0x014D, 3, 0xFFFFFFFB, {  1091.0,   580.0, -1192.0 }},
-    { 0x05A4, 0x05D4, 0, 0xFFFFFFFC, {  1798.0,     0.0,  1498.0 }},
-    { 0x05A4, 0x021D, 0, 0xFFFFFFEF, { -3044.0, -1033.0,  6070.0 }},
-    { 0x05B0, 0x01A9, 8, 0xFFFFFFF5, {   677.0,     0.0, -2515.0 }},
-    { 0x05BC, 0x00EA, 0, 0xFFFFFFEB, { -1632.0,   100.0,  -123.0 }},
-    { 0x05BC, 0x0215, 0, 0xFFFFFFEE, {   317.0,   480.0, -2303.0 }},
-    { 0x05BC, 0x03D0, 0, 0xFFFFFFF0, { -1321.0,    15.0,  -968.0 }},
-    { 0x05BC, 0x01F1, 0, 0xFFFFFFFD, {    71.0,   -32.0, -1303.0 }},
-    { 0x05C4, 0x04D6, 6, 0xFFFFFFF3, {    75.0,   -20.0, -1596.0 }},
-    { 0x0598, 0x017D, 0, 0xFFFFFFE5, {  2059.0,    20.0,  -174.0 }},
-    { 0x05B8, 0x023D, 0, 0xFFFFFFF6, {   986.0,  1571.0,   837.0 }},
-    { 0x05A8, 0x018D, 0, 0xFFFFFFE4, { -7873.0,  -300.0,  6916.0 }},
-    { 0x05FC, 0x01B9, 0, 0xFFFFFFF8, {  -678.0,  1946.0,  -284.0 }},
-    { 0x05AC, 0x0117, 0, 0xFFFFFFF2, {   271.0,  -555.0,  1465.0 }},
-    { 0x05C0, 0x00CD, 0, 0xFFFFFFE1, { -4945.0,  -300.0,  2841.0 }},
+    { 0x003F, 0x00EE, 0, 0x2C, 0x55, {  -504.0,   380.0, -1224.0 }}, // Kokiri Forest -> KF Storms Grotto
+    { 0x003F, 0x04D6, 2, 0x14, 0x5B, {   922.0,     0.0,  -933.0 }}, // Lost Woods -> LW Near Shortcuts Grotto
+    { 0x05B4, 0x00FC, 0, 0xED, 0x56, {  -201.0,     0.0,  1906.0 }}, // SFM Entryway -> SFM Wolfos Grotto
+    { 0x003F, 0x00CD, 0, 0x00, 0x51, { -1428.0,     0.0,   790.0 }}, // Hyrule Field -> HF Near Market Grotto
+    { 0x003F, 0x0189, 0, 0x03, 0x51, { -4026.0,  -700.0, 13858.0 }}, // Hyrule Field -> HF Open Grotto
+    { 0x003F, 0x0189, 0, 0x22, 0x51, {  -259.0,  -500.0, 12356.0 }}, // Hyrule Field -> HF Southeast Grotto
+    { 0x003F, 0x034D, 0, 0x28, 0x52, {   861.0,    80.0,  -253.0 }}, // Kak Backyard -> Kak Open Grotto
+    { 0x05A0, 0x034D, 0, 0xE7, 0x52, {  -400.0,     0.0,   408.0 }}, // Kakariko Village -> Kak Redead Grotto
+    { 0x003F, 0x01B9, 0, 0x57, 0x60, {  -389.0,  1386.0, -1202.0 }}, // Death Mountain -> DMT Storms Grotto
+    { 0x003F, 0x0147, 1, 0x7A, 0x61, {    50.0,  1233.0,  1776.0 }}, // DMC Upper Nearby -> DMC Upper Grotto
+    { 0x003F, 0x019D, 0, 0x29, 0x54, {   369.0,   570.0,   128.0 }}, // Zora River -> ZR Open Grotto
+    { 0x059C, 0x0189, 0, 0xE6, 0x51, { -5002.0,  -700.0, 13823.0 }}, // Hyrule Field -> HF Inside Fence Grotto
+    { 0x05A4, 0x0246, 1, 0xF9, 0x61, { -1703.0,   722.0,  -481.0 }}, // DMC Lower Nearby -> DMC Hammer Grotto
+    { 0x05A4, 0x014D, 3, 0xFB, 0x62, {  1091.0,   580.0, -1192.0 }}, // GC Grotto Platform -> GC Grotto
+    { 0x05A4, 0x05D4, 0, 0xFC, 0x63, {  1798.0,     0.0,  1498.0 }}, // Lon Lon Ranch -> LLR Grotto
+    { 0x05A4, 0x021D, 0, 0xEF, 0x57, { -3044.0, -1033.0,  6070.0 }}, // Lake Hylia -> LH Grotto
+    { 0x05B0, 0x01A9, 8, 0xF5, 0x5B, {   677.0,     0.0, -2515.0 }}, // LW Beyond Mido -> LW Scrubs Grotto
+    { 0x05BC, 0x00EA, 0, 0xEB, 0x54, { -1632.0,   100.0,  -123.0 }}, // Zora River -> ZR Storms Grotto
+    { 0x05BC, 0x0215, 0, 0xEE, 0x56, {   317.0,   480.0, -2303.0 }}, // Sacred Forest Meadow -> SFM Storms Grotto
+    { 0x05BC, 0x03D0, 0, 0xF0, 0x5A, { -1321.0,    15.0,  -968.0 }}, // GV Fortress Side -> GV Storms Grotto
+    { 0x05BC, 0x01F1, 0, 0xFD, 0x5C, {    71.0,   -32.0, -1303.0 }}, // Desert Colossus -> Colossus Grotto
+    { 0x05C4, 0x04D6, 6, 0xF3, 0x5B, {    75.0,   -20.0, -1596.0 }}, // LW Beyond Mido -> Deku Theater
+    { 0x0598, 0x017D, 0, 0xE5, 0x51, {  2059.0,    20.0,  -174.0 }}, // Hyrule Field -> HF Near Kak Grotto
+    { 0x05B8, 0x023D, 0, 0xF6, 0x5F, {   986.0,  1571.0,   837.0 }}, // Hyrule Castle Grounds -> HC Storms Grotto
+    { 0x05A8, 0x018D, 0, 0xE4, 0x51, { -7873.0,  -300.0,  6916.0 }}, // Hyrule Field -> HF Cow Grotto
+    { 0x05FC, 0x01B9, 0, 0xF8, 0x60, {  -678.0,  1946.0,  -284.0 }}, // Death Mountain Summit -> DMT Cow Grotto
+    { 0x05AC, 0x0117, 0, 0xF2, 0x5A, {   271.0,  -555.0,  1465.0 }}, // GV Grotto Ledge -> GV Octorok Grotto
+    { 0x05C0, 0x00CD, 0, 0xE1, 0x51, { -4945.0,  -300.0,  2841.0 }}, // Hyrule Field -> HF Tektite Grotto
 };
 
 void Select_UpdateMenu(SelectContext* this) {

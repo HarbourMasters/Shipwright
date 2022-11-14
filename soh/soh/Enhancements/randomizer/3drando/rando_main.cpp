@@ -5,8 +5,8 @@
 #include "location_access.hpp"
 #include "rando_main.hpp"
 // #include <soh/Enhancements/randomizer.h>
-#include <libultraship/Cvar.h>
-#include <libultraship/Window.h>
+#include <Cvar.h>
+#include <Window.h>
 #include <ultra64/types.h>
 
 #define TICKS_PER_SEC 268123480.0
