@@ -844,9 +844,9 @@ void DrawLocations() {
                             // If the location has its scene flag set
                             if (!inGame || (!checked && !skipped)) {
                                 // show it as unchecked
-                                if (!checked)
+                                if (!checked && elfound != checkedLocations.end())
                                     checkedLocations.erase(elfound);
-                                if (!skipped)
+                                if (!skipped && skfound != skippedLocations.end())
                                     skippedLocations.erase(skfound);
                             } else if (skipped && ImGui::ArrowButton(std::to_string(locationIt.second.rc).c_str(), ImGuiDir_Left)) {
                                 if (skipped)
