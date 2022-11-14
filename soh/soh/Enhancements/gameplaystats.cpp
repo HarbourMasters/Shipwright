@@ -153,6 +153,7 @@ void DrawStatsTracker(bool& open) {
             DisplayStatIfNonZero("Bari:              ", gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_BARI]);
             DisplayStatIfNonZero("Biri:              ", gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_BIRI]);
             DisplayStatIfNonZero("Beamos:            ", gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_BEAMOS]);
+            DisplayStatIfNonZero("Big Octo:          ", gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_BIG_OCTO]);
             DisplayStatIfNonZero("Bubble (Blue):     ", gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_BLUE]);
             DisplayStatIfNonZero("Bubble (Green):    ", gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN]);
             DisplayStatIfNonZero("Bubble (Red):      ", gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_RED]);
