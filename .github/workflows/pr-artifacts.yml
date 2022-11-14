@@ -1,0 +1,37 @@
+name: pr-artifacts
+
+on:
+  workflow_run:
+    workflows: [generate-builds]
+    branches-ignore: [develop, develop-zhora]
+    types:
+      - completed
+
+jobs:
+  pr-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - id: 'get-info'
+        uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: |
+            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.payload.workflow_run.id,
+            });
+
+            return allArtifacts.data.artifacts.reduce((acc, item) => {
+              if (item.name === "assets") return acc;
+              acc += `
+              - [${item.name}](${item.archive_download_url})`;
+              return acc;
+            }, '### Build Artifacts');
+      - id: 'add-to-pr'
+        uses: garrettjoecox/pr-section@3.1.0
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          pr-number: ${{ github.event.workflow_run.pull_requests[0].number }}
+          section-name: 'artifacts'
+          section-value: '${{ steps.get-info.outputs.result }}'
