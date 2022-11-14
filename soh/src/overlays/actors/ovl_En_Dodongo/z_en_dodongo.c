@@ -680,7 +680,7 @@ void EnDodongo_Death(EnDodongo* this, PlayState* play) {
             EnDodongo_SpawnBombSmoke(this, play);
         }
     } else if (this->actor.colorFilterTimer == 0) {
-        if (CVar_GetS32("gPhotosensitiveMode", 1)) {
+        if (CVar_GetS32("gPhotosensitiveMode", 0) == 1) {
             Actor_SetColorFilter(&this->actor, 0x4000, 0, 0, 0); // Note: the explosion timer is also related to their blinking...
         } else {
             Actor_SetColorFilter(&this->actor, 0x4000, 0x78, 0, 4);
@@ -734,7 +734,7 @@ void EnDodongo_CollisionCheck(EnDodongo* this, PlayState* play) {
                     EnDodongo_SetupStunned(this);
                 }
             } else {
-                if (CVar_GetS32("gPhotosensitiveMode", 1)) {
+                if (CVar_GetS32("gPhotosensitiveMode", 0) == 0) {
                     Actor_SetColorFilter(&this->actor, 0x4000, 0x78, 0, 8); 
                 } 
                 if (Actor_ApplyDamage(&this->actor) == 0) {

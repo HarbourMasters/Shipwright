@@ -271,7 +271,9 @@ void EnWeatherTag_EnabledRainLakeHylia(EnWeatherTag* this, PlayState* play) {
 void EnWeatherTag_DisabledCloudyRainThunderKakariko(EnWeatherTag* this, PlayState* play) {
     if (WeatherTag_CheckEnableWeatherEffect(this, play, 0, 1, 0, 4, 100, 5)) {
         Environment_PlayStormNatureAmbience(play);
-        play->envCtx.lightningMode = LIGHTNING_MODE_ON;
+        if (CVar_GetS32("gPhotosensitiveMode", 0) == 1) {
+            play->envCtx.lightningMode = LIGHTNING_MODE_ON;
+        }
         play->envCtx.unk_EE[0] = 30;
         EnWeatherTag_SetupAction(this, EnWeatherTag_EnabledCloudyRainThunderKakariko);
     }
@@ -303,7 +305,9 @@ void EnWeatherTag_DisabledRainThunder(EnWeatherTag* this, PlayState* play) {
 
     if (Actor_WorldDistXZToActor(&player->actor, &this->actor) < WEATHER_TAG_RANGE100(this->actor.params)) {
         Environment_PlayStormNatureAmbience(play);
-        play->envCtx.lightningMode = LIGHTNING_MODE_ON;
+        if (CVar_GetS32("gPhotosensitiveMode", 0) == 1) {
+            play->envCtx.lightningMode = LIGHTNING_MODE_ON;
+        }
         play->envCtx.unk_EE[0] = 25;
         EnWeatherTag_SetupAction(this, EnWeatherTag_EnabledRainThunder);
     }
