@@ -202,8 +202,8 @@ namespace Settings {
                                                                          {gerudoKeysVanilla, gerudoKeysAnyDungeon, gerudoKeysOverworld, gerudoKeysAnywhere});
   Option BossKeysanity       = Option::U8  ("Boss Keys",                 {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"},
                                                                          {bossKeyStartWith, bossKeyVanilla, bossKeyOwnDungeon, bossKeyAnyDungeon, bossKeyOverworld, bossKeyAnywhere},                                                                              OptionCategory::Setting,    BOSSKEYSANITY_OWN_DUNGEON);
-  Option GanonsBossKey       = Option::U8  ("Ganon's Boss Key",          {"Vanilla", "Own dungeon", "Start with", "Any Dungeon", "Overworld", "Anywhere", "LACS-Vanilla", "LACS-Medallions", "LACS-Stones", "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens"},
-                                                                         {ganonKeyVanilla, ganonKeyOwnDungeon, ganonKeyStartWith, ganonKeyAnyDungeon, ganonKeyOverworld, ganonKeyAnywhere, ganonKeyLACS},                                                          OptionCategory::Setting,    GANONSBOSSKEY_VANILLA);
+  Option GanonsBossKey       = Option::U8  ("Ganon's Boss Key",          {"Vanilla", "Own dungeon", "Start with", "Any Dungeon", "Overworld", "Anywhere", "LACS-Vanilla", "LACS-Medallions", "LACS-Stones", "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens", "100 GS Reward"},
+                                                                         {ganonKeyVanilla, ganonKeyOwnDungeon, ganonKeyStartWith, ganonKeyAnyDungeon, ganonKeyOverworld, ganonKeyAnywhere, ganonKeyLACS, ganonKey100GS},                                           OptionCategory::Setting,    GANONSBOSSKEY_VANILLA);
   uint8_t LACSCondition           = 0;
   Option LACSMedallionCount  = Option::U8  ("Medallion Count",         {NumOpts(0, 6)},                                                        {lacsMedallionCountDesc},                                                                                         OptionCategory::Setting,    1,                          true);
   Option LACSStoneCount      = Option::U8  ("Stone Count",             {NumOpts(0, 3)},                                                        {lacsStoneCountDesc},                                                                                             OptionCategory::Setting,    1,                          true);
@@ -1971,6 +1971,17 @@ namespace Settings {
       }
     }
 
+    //Only go through options if all settings are not randomized
+    if (!RandomizeShuffle) {
+      // Ganon's Boss Key on 100 GS reward must also have the reward shuffled
+      if (GanonsBossKey.Is(GANONSBOSSKEY_FINAL_GS_REWARD)) {
+        Shuffle100GSReward.SetSelectedIndex(ON);
+        Shuffle100GSReward.Lock();
+      } else {
+        Shuffle100GSReward.Unlock();
+      }
+    }
+
     //Force Link's Pocket Item to be a dungeon reward if Shuffle Rewards is end of dungeons
     if (ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON)) {
       LinksPocketItem.Lock();
@@ -2592,7 +2603,12 @@ namespace Settings {
     ShuffleMagicBeans.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_MAGIC_BEANS]);
     ShuffleMerchants.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_MERCHANTS]);
 
-    Shuffle100GSReward.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_100_GS_REWARD]);
+    // Force 100 GS Shuffle if that's where Ganon's Boss Key is
+    if (cvarSettings[RSK_GANONS_BOSS_KEY] == 12) {
+      Shuffle100GSReward.SetSelectedIndex(0);
+    } else {
+      Shuffle100GSReward.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_100_GS_REWARD]);
+    }
 
     // the  checkbox works because 0 is "Off" and 1 is "Fairy Ocarina"
     StartingOcarina.SetSelectedIndex(cvarSettings[RSK_STARTING_OCARINA]);

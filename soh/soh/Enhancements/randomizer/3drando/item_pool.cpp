@@ -1128,7 +1128,9 @@ void GenerateItemPool() {
     AddItemToMainPool(SHADOW_TEMPLE_BOSS_KEY);
   }
 
-  if (GanonsBossKey.Value<uint8_t>() >= GANONSBOSSKEY_LACS_VANILLA) {
+  if (GanonsBossKey.Is(GANONSBOSSKEY_FINAL_GS_REWARD)) {
+    PlaceItemInLocation(KAK_100_GOLD_SKULLTULA_REWARD, GANONS_CASTLE_BOSS_KEY);
+  } else if (GanonsBossKey.Value<uint8_t>() >= GANONSBOSSKEY_LACS_VANILLA) {
     PlaceItemInLocation(TOT_LIGHT_ARROWS_CUTSCENE, GANONS_CASTLE_BOSS_KEY);
   } else if (GanonsBossKey.Is(GANONSBOSSKEY_VANILLA)) {
     PlaceItemInLocation(GANONS_TOWER_BOSS_KEY_CHEST, GANONS_CASTLE_BOSS_KEY);

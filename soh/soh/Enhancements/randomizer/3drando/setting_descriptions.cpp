@@ -520,6 +520,9 @@ string_view ganonKeyAnywhere          = "Ganon's Castle Boss Key can appear anyw
 string_view ganonKeyLACS              = "These settings put the boss key on the Light Arrow"
                                         "Cutscene location, from Zelda in Temple of Time as"
                                         "adult, with differing requirements.";             //
+string_view ganonKey100GS             = "Ganon's Castle Boss Key is given to you by the\n" //
+                                        "cursed rich man in the House of Skulltula after\n"//
+                                        "you collect all 100 Gold Skulltula Tokens.";      //
 /*------------------------------                                                           //
 |        LACS CONDITIONS       |                                                           //
 ------------------------------*/                                                           //

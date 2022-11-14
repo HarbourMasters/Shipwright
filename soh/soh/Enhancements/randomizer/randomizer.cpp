@@ -850,6 +850,8 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 10;
                         } else if(it.value() == "LACS-Tokens") {
                             gSaveContext.randoSettings[index].value = 11;
+                        } else if(it.value() == "100 GS Reward") {
+                            gSaveContext.randoSettings[index].value = 12;
                         }
                         break;
                     case RSK_SKIP_CHILD_ZELDA:
@@ -2641,10 +2643,11 @@ void DrawRandoEditor(bool& open) {
     const char* randoShuffleGerudoFortressKeys[4] = { "Vanilla", "Any Dungeon", "Overworld", "Anywhere" };
     const char* randoShuffleBossKeys[6] = { "Start With",  "Vanilla",   "Own Dungeon",
                                             "Any Dungeon", "Overworld", "Anywhere" };
-    const char* randoShuffleGanonsBossKey[12] = {"Vanilla", "Own dungeon", "Start with", 
+    const char* randoShuffleGanonsBossKey[13] = {"Vanilla", "Own dungeon", "Start with", 
                                                 "Any Dungeon", "Overworld", "Anywhere", 
                                                 "LACS-Vanilla", "LACS-Medallions", "LACS-Stones", 
-                                                "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens"};
+                                                "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens",
+                                                "100 GS Reward"};
     const char* randoShuffleKeyRings[4] = { "Off", "Random", "Count", "Selection" };
 
     // Misc Settings
@@ -3166,7 +3169,10 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle 100 GS Reward
-                UIWidgets::EnhancementCheckbox(Settings::Shuffle100GSReward.GetName().c_str(), "gRandomizeShuffle100GSReward");
+                bool forceEnable100GSShuffle = (CVar_GetS32("gRandomizeShuffleGanonBossKey", 1) == 12);
+                const char* disable100GSRewardText = "This option is forcefully enabled because \"Ganon's Boss Key\" is set to \"100 GS Reward.\"";
+                UIWidgets::EnhancementCheckbox(Settings::Shuffle100GSReward.GetName().c_str(), "gRandomizeShuffle100GSReward",
+                    false, disable100GSRewardText, UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::InsertHelpHoverText(
                     "Shuffle the item the cursed rich man in the House of Skulltula gives when you "
                     "have collected all 100 Golden Skull Tokens.\n"
@@ -3334,9 +3340,11 @@ void DrawRandoEditor(bool& open) {
                     "- Stones: Obtain the specified amount of spiritual stones.\n"
                     "- Dungeon rewards: Obtain the specified total sum of spiritual stones or medallions.\n"
                     "- Dungeons: Complete the specified amount of dungeons. Dungeons are considered complete after stepping in to the blue warp after the boss.\n"
-                    "- Tokens: Obtain the specified amount of Skulltula tokens."
+                    "- Tokens: Obtain the specified amount of Skulltula tokens.\n"
+                    "\n"
+                    "100 GS Reward - Ganon's Boss Key will be awarded by the cursed rich man after you collect 100 Gold Skulltula Tokens."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 12, 1);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 13, 1);
                 ImGui::PopItemWidth();
                 switch (CVar_GetS32("gRandomizeShuffleGanonBossKey", 1)) {
                     case 7:
