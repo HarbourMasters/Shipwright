@@ -10,7 +10,6 @@
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
 #include <overlays/actors/ovl_Link_Puppet/z_link_puppet.h>
-#include <soh/Enhancements/online/Online.h>
 
 #include <time.h>
 

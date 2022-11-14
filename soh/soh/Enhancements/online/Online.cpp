@@ -1,7 +1,7 @@
 #include "Online.h"
 #include <spdlog/spdlog.h>
-#include <libultraship/Lib/Fast3D/U64/PR/ultra64/gbi.h>
-#include <libultraship/ImGuiImpl.h>
+#include <Fast3D/U64/PR/ultra64/gbi.h>
+#include <ImGuiImpl.h>
 
 #define MAX_CLIENTS 32
 
