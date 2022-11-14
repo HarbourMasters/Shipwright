@@ -867,7 +867,12 @@ void func_80986B2C(PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
         Player* player = GET_PLAYER(play);
 
-        play->nextEntranceIndex = 0xCD;
+        // In entrance rando have impa bring link back to the front of castle grounds
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
+            play->nextEntranceIndex = 0x0138;
+        } else {
+            play->nextEntranceIndex = 0xCD;
+        }
         play->fadeTransition = 38;
         play->sceneLoadFlag = 0x14;
         func_8002DF54(play, &player->actor, 8);
@@ -911,7 +916,12 @@ void GivePlayerRandoRewardImpa(Actor* impa, PlayState* play, RandomizerCheck che
         play->sceneLoadFlag = 0x14;
         play->fadeTransition = 3;
         gSaveContext.nextTransition = 3;
-        play->nextEntranceIndex = 0x0594;
+        // In entrance rando have impa bring link back to the front of castle grounds
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
+            play->nextEntranceIndex = 0x0138;
+        } else {
+            play->nextEntranceIndex = 0x0594;
+        }
         gSaveContext.nextCutsceneIndex = 0;
     }
 }

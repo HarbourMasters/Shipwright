@@ -7,6 +7,7 @@
 #include "z_en_ge2.h"
 #include "vt.h"
 #include "objects/object_gla/object_gla.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
 
@@ -253,6 +254,10 @@ void EnGe2_CaptureClose(EnGe2* this, PlayState* play) {
             play->nextEntranceIndex = 0x3B4;
         }
 
+        if (gSaveContext.n64ddFlag) {
+            Entrance_OverrideGeurdoGuardCapture();
+        }
+
         play->fadeTransition = 0x26;
         play->sceneLoadFlag = 0x14;
     }
@@ -277,6 +282,10 @@ void EnGe2_CaptureCharge(EnGe2* this, PlayState* play) {
             play->nextEntranceIndex = 0x5F8;
         } else {
             play->nextEntranceIndex = 0x3B4;
+        }
+
+        if (gSaveContext.n64ddFlag) {
+            Entrance_OverrideGeurdoGuardCapture();
         }
 
         play->fadeTransition = 0x26;
