@@ -3169,10 +3169,11 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle 100 GS Reward
+                // Forcefully enabled if Ganon's Boss Key is on the cursed man
                 bool forceEnable100GSShuffle = (CVar_GetS32("gRandomizeShuffleGanonBossKey", 1) == 12);
                 const char* disable100GSRewardText = "This option is forcefully enabled because \"Ganon's Boss Key\" is set to \"100 GS Reward.\"";
                 UIWidgets::EnhancementCheckbox(Settings::Shuffle100GSReward.GetName().c_str(), "gRandomizeShuffle100GSReward",
-                    false, disable100GSRewardText, UIWidgets::CheckboxGraphics::Checkmark);
+                    forceEnable100GSShuffle, disable100GSRewardText, UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::InsertHelpHoverText(
                     "Shuffle the item the cursed rich man in the House of Skulltula gives when you "
                     "have collected all 100 Gold Skulltula Tokens.\n"
