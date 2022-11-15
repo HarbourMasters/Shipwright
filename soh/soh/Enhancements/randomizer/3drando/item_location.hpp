@@ -158,6 +158,10 @@ class SpoilerCollectionCheck {
     static auto Merchant(int8_t scene, uint8_t flag) {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT, scene, flag);
     }
+
+    static auto RandomizerInf(int8_t scene, uint8_t flag) {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF, scene, flag);
+    }
 };
 
 class ItemLocation {
@@ -602,6 +606,12 @@ static std::unordered_map<RandomizerCheck, RandomizerInf> randomizerFlagLookup =
 
     { RC_WASTELAND_BOMBCHU_SALESMAN, RAND_INF_MERCHANTS_CARPET_SALESMAN },
     { RC_GC_MEDIGORON, RAND_INF_MERCHANTS_MEDIGORON },
+
+    { RC_LW_TRADE_COJIRO, RAND_INF_ADULT_TRADES_LW_TRADE_COJIRO },
+    { RC_GV_TRADE_SAW, RAND_INF_ADULT_TRADES_GV_TRADE_SAW },
+    { RC_DMT_TRADE_BROKEN_SWORD, RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD },
+    { RC_LH_TRADE_FROG, RAND_INF_ADULT_TRADES_LH_TRADE_FROG },
+    { RC_DMT_TRADE_EYEDROPS, RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS },
 };
 
 

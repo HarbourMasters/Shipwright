@@ -8,9 +8,9 @@
 #include <string>
 #include <vector>
 #include <set>
+#include "3drando/item_location.hpp"
 #include <Cvar.h>
 #include <Hooks.h>
-#include "3drando/item_location.hpp"
 
 extern "C" {
 #include <z64.h>
@@ -672,7 +672,8 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
         case SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM:
         case SpoilerCollectionCheckType::SPOILER_CHK_COW:
         case SpoilerCollectionCheckType::SPOILER_CHK_SCRUB:
-            return Flags_GetRandomizerInf(randomizerFlagLookup[obj.rc]);
+        case SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF:
+            return Flags_GetRandomizerInf(randomizerFlagLookup[obj.rc]); //TODO randomizer.cpp has rcToRandomizerInf
         case SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF:
             return gSaveContext.eventChkInf[flag / 16] & (0x01 << flag % 16);
         case SpoilerCollectionCheckType::SPOILER_CHK_GERUDO_MEMBERSHIP_CARD:
@@ -843,9 +844,9 @@ void DrawLocations() {
                             // If the location has its scene flag set
                             if (!inGame || (!checked && !skipped)) {
                                 // show it as unchecked
-                                if (!checked)
+                                if (!checked && elfound != checkedLocations.end())
                                     checkedLocations.erase(elfound);
-                                if (!skipped)
+                                if (!skipped && skfound != skippedLocations.end())
                                     skippedLocations.erase(skfound);
                             } else if (skipped && ImGui::ArrowButton(std::to_string(locationIt.second.rc).c_str(), ImGuiDir_Left)) {
                                 if (skipped)
@@ -870,7 +871,7 @@ void DrawLocations() {
                                 txt = "Skipped";
                             else
                                 txt = OTRGlobals::Instance->gRandomizer
-                                       ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[locationIt.second.rc].get.rgID][LANGUAGE_ENG]; // TODO Language
+                                       ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[locationIt.second.rc].get.rgID][gSaveContext.language];
                             ImGui::SameLine();
                             ImGui::Text("(%s)", txt.c_str());
                             ImGui::PopStyleColor();

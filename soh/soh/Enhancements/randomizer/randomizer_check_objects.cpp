@@ -943,7 +943,7 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             ((locationIt.rcType != RCTYPE_GANON_BOSS_KEY) || CVar_GetS32("gRandomizeShuffleGanonBossKey", 0) != 0) && // 0 is the value for "vanilla" ganon's boss key
             ((!RC_IS_CARPENTER(locationIt.rc) && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) ||
               (CVar_GetS32("gRandomizeGerudoFortress", 0) == 2 && !RC_IS_CARPENTER(locationIt.rc) && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) || //2 is the value for "open" gerudo's fortress
-              (CVar_GetS32("gRandomizeGerudoFortress", 0) == 1 && locationIt.rc == RC_GF_NORTH_F1_CARPENTER) || //1 is the value for "fast" gerudo's fortress
+              (CVar_GetS32("gRandomizeGerudoFortress", 0) == 1 && (locationIt.rc == RC_GF_NORTH_F1_CARPENTER || locationIt.rc == RC_GF_GERUDO_MEMBERSHIP_CARD)) || //1 is the value for "fast" gerudo's fortress
               (CVar_GetS32("gRandomizeGerudoFortress", 0) == 0) //0 is the value for "normal" gerudo's fortress
             )
         );
@@ -976,7 +976,7 @@ void RandomizerCheckObjects::UpdateTrackerImGuiVisibility() {
             ((locationIt.rcType != RCTYPE_GANON_BOSS_KEY) || CVar_GetS32("gRandomizeShuffleGanonBossKey", 0) != 0) && // 0 is the value for "vanilla" ganon's boss key
             ((!RC_IS_CARPENTER(locationIt.rc) && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) ||
               (CVar_GetS32("gRandomizeGerudoFortress", 0) == 2 && !RC_IS_CARPENTER(locationIt.rc) && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) || //2 is the value for "open" gerudo's fortress
-              (CVar_GetS32("gRandomizeGerudoFortress", 0) == 1 && locationIt.rc == RC_GF_NORTH_F1_CARPENTER) || //1 is the value for "fast" gerudo's fortress
+              (CVar_GetS32("gRandomizeGerudoFortress", 0) == 1 && (locationIt.rc == RC_GF_NORTH_F1_CARPENTER || locationIt.rc == RC_GF_GERUDO_MEMBERSHIP_CARD)) || //1 is the value for "fast" gerudo's fortress
               (CVar_GetS32("gRandomizeGerudoFortress", 0) == 0) //0 is the value for "normal" gerudo's fortress
             )
         );
