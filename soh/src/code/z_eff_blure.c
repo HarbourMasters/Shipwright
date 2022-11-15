@@ -403,6 +403,22 @@ s32 EffectBlure_Update(void* thisx) {
                 break;
         }
 
+    if (CVar_GetS32("gCosmetics.Equipment_ChuBody.Changed", 0)) {
+        Color_RGB8 color = CVar_GetRGB("gCosmetics.Equipment_ChuBody", (Color_RGB8){ 250, 0, 0 });
+        this->p1StartColor.r = color.r;
+        this->p2StartColor.r = color.r * 0.8f;
+        this->p1EndColor.r = color.r * 0.6f;
+        this->p2EndColor.r = color.r * 0.4f;
+        this->p1StartColor.g = color.g;
+        this->p2StartColor.g = color.g * 0.8f;
+        this->p1EndColor.g = color.g * 0.6f;
+        this->p2EndColor.g = color.g * 0.4f;
+        this->p1StartColor.b = color.b;
+        this->p2StartColor.b = color.b * 0.8f;
+        this->p1EndColor.b = color.b * 0.6f;
+        this->p2EndColor.b = color.b * 0.4f;
+    }
+
     if (this == NULL) {
         return 0;
     }
