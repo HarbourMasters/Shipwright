@@ -8,9 +8,9 @@
 #include <string>
 #include <vector>
 #include <set>
-#include "3drando/item_location.hpp"
 #include <Cvar.h>
 #include <Hooks.h>
+#include "3drando/item_location.hpp"
 
 extern "C" {
 #include <z64.h>
