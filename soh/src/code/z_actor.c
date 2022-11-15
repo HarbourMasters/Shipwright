@@ -3160,6 +3160,16 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
 
         if (IsEnemyFoundToRandomize(play, actorId, params, posX)) {
 
+            // When replacing Iron Knuckles in Spirit Temple, move them away from the throne because
+            // some enemies can get stuck on the throne.
+            if (actorId == ACTOR_EN_IK && play->sceneNum == SCENE_JYASINZOU) {
+                if (params == 6657) {
+                    posX = posX + 150;
+                } else if (params == 6401) {
+                    posX = posX - 150;
+                }
+            }
+
             // Do a raycast from the original position of the actor to find the ground below it, then try to place
             // the new actor on the ground. This way enemies don't spawn very high in the sky, and gives us control
             // over height offsets per enemy from a proven grounded position.
