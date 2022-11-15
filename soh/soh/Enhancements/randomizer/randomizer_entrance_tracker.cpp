@@ -1,15 +1,15 @@
 #include "randomizer_entrance_tracker.h"
 #include "../../util.h"
 #include "../../OTRGlobals.h"
-#include <libultraship/ImGuiImpl.h>
+#include <ImGuiImpl.h>
 #include "../../UIWidgets.hpp"
 
 
 #include <map>
 #include <string>
 #include <vector>
-#include <libultraship/Cvar.h>
-#include <libultraship/Hooks.h>
+#include <Cvar.h>
+#include <Hooks.h>
 
 extern "C" {
 #include <z64.h>
