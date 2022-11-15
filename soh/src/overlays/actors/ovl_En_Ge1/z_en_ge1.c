@@ -7,6 +7,7 @@
 #include "z_en_ge1.h"
 #include "vt.h"
 #include "objects/object_ge1/object_ge1.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
 
@@ -93,6 +94,20 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     EnGe1* this = (EnGe1*)thisx;
 
+    // When spawning the gate operator, also spawn an extra gate operator on the wasteland side
+    if (gSaveContext.n64ddFlag && (Randomizer_GetSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) ||
+        Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) && (this->actor.params & 0xFF) == GE1_TYPE_GATE_OPERATOR) {
+        // Spawn the extra gaurd with params matching the custom type added (0x0300 + 0x02)
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0, 0x95B0, 0,
+                    0x0300 | GE1_TYPE_EXTRA_GATE_OPERATOR);
+    }
+
+    // Convert the "extra" gate operator into a normal one so it matches the same params
+    if ((this->actor.params & 0xFF) == GE1_TYPE_EXTRA_GATE_OPERATOR) {
+        this->actor.params &= ~0xFF;
+        this->actor.params |= GE1_TYPE_GATE_OPERATOR;
+    }
+
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
     SkelAnime_InitFlex(play, &this->skelAnime, &gGerudoWhiteSkel, &gGerudoWhiteIdleAnim, this->jointTable,
                        this->morphTable, GE1_LIMB_MAX);
@@ -169,7 +184,12 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
             this->hairstyle = GE1_HAIR_STRAIGHT;
 
             if (EnGe1_CheckCarpentersFreed()) {
-                this->actionFunc = EnGe1_CheckForCard_GTGGuard;
+                // If the gtg gate is permanently open, don't let the gaurd charge to open it again
+                if (gSaveContext.n64ddFlag && gSaveContext.sceneFlags[93].swch & 0x00000004) {
+                    this->actionFunc = EnGe1_SetNormalText;
+                } else {
+                    this->actionFunc = EnGe1_CheckForCard_GTGGuard;
+                }
             } else {
                 this->actionFunc = EnGe1_WatchForPlayerFrontOnly;
             }
@@ -245,6 +265,10 @@ void EnGe1_KickPlayer(EnGe1* this, PlayState* play) {
             play->nextEntranceIndex = 0x5F8;
         } else {
             play->nextEntranceIndex = 0x3B4;
+        }
+
+        if (gSaveContext.n64ddFlag) {
+            Entrance_OverrideGeurdoGuardCapture();
         }
 
         play->fadeTransition = 0x26;
