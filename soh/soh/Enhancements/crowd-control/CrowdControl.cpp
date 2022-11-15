@@ -527,7 +527,7 @@ bool CrowdControl::SpawnEnemy(std::string effectId) {
         posYOffset = 50;
     }
 
-    return Actor_Spawn_NoRandomize(&gPlayState->actorCtx, gPlayState, enemyId, player->actor.world.pos.x + posXOffset,
+    return Actor_Spawn_NotRandom(&gPlayState->actorCtx, gPlayState, enemyId, player->actor.world.pos.x + posXOffset,
         player->actor.world.pos.y + posYOffset, player->actor.world.pos.z + posZOffset, 0, 0, 0, enemyParams);
 
 }

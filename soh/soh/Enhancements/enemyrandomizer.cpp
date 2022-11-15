@@ -164,6 +164,10 @@ extern "C" uint8_t IsEnemyFoundToRandomize(PlayState* play, int actorId = 0, int
                     return (play->sceneNum == SCENE_MIZUSIN && (posX == 419 || posX == 435));
                 case ACTOR_EN_NY:
                     return (play->sceneNum == SCENE_MIZUSIN && (posX == 380 || posX == 382 || posX == 416 || posX == 452 || posX == 454));
+                // Don't randomize the 2 like-likes in Jabu Jabu's Belly in MQ because they spawn in a box on top of the ceilling.
+                // Other enemies won't aggro on Link correctly to fall down.
+                case ACTOR_EN_RR:
+                    return (play->sceneNum != SCENE_BDAN);
                 default:
                     return 1;
             }
