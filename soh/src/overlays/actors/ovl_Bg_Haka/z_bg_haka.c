@@ -181,6 +181,7 @@ void BgHaka_Draw(Actor* thisx, PlayState* play) {
     graveHue++;
     if (graveHue >= 360) graveHue = 0;
 
+
     OPEN_DISPS(play->state.gfxCtx);
 
     if (((BgHaka*)thisx)->state == 2) {
@@ -194,8 +195,8 @@ void BgHaka_Draw(Actor* thisx, PlayState* play) {
         D_801614B0.g = newColor.g;
         D_801614B0.b = newColor.b;
         D_801614B0.a = 255;
-        gsDPSetGrayscaleColor(POLY_OPA_DISP++, newColor.r, newColor.g, newColor.b, 255);
-        gsSPGrayscale(POLY_OPA_DISP++, true);
+        gDPSetGrayscaleColor(POLY_OPA_DISP++, newColor.r, newColor.g, newColor.b, 255);
+        gSPGrayscale(POLY_OPA_DISP++, true);
     }
 
     func_80093D18(play->state.gfxCtx);
@@ -205,7 +206,7 @@ void BgHaka_Draw(Actor* thisx, PlayState* play) {
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gGravestoneStoneDL);
     if (((BgHaka*)thisx)->state == 2) {
-        gsSPGrayscale(POLY_OPA_DISP++, false);
+        gSPGrayscale(POLY_OPA_DISP++, false);
     }
     Matrix_Translate(0.0f, 0.0f, thisx->minVelocityY * 10.0f, MTXMODE_APPLY);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),

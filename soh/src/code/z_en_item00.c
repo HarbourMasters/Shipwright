@@ -1366,6 +1366,7 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
     }
     pos.z = Rand_CenteredFloat(15.0f) + Parent->world.pos.z;
 
+
     EffectSsKiraKira_SpawnFocused(play, &pos, &velocity, &accel, &primColor, &envColor, 1000, 30);
 }
 
@@ -1416,11 +1417,11 @@ void EnItem00_DrawRupee(EnItem00* this, PlayState* play) {
     }
 
     if (shouldColor) {
-        gsDPSetGrayscaleColor(POLY_OPA_DISP++, rupeeColor.r, rupeeColor.g, rupeeColor.b, 255);
-        gsSPGrayscale(POLY_OPA_DISP++, true);
+        gDPSetGrayscaleColor(POLY_OPA_DISP++, rupeeColor.r, rupeeColor.g, rupeeColor.b, 255);
+        gSPGrayscale(POLY_OPA_DISP++, true);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTex[texIndex]));
         gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
-        gsSPGrayscale(POLY_OPA_DISP++, false);
+        gSPGrayscale(POLY_OPA_DISP++, false);
     } else {
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTex[texIndex]));
         gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);

@@ -1,12 +1,5 @@
 #pragma once
 #include <ImGuiImpl.h>
-#define SECTION_SIZE(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
-#define RANDOMIZE_32(Max) GetRandomValue(Max);
-#define CATEGORY_NPC 0
-#define CATEGORY_ITEMS 1
-#define CATEGORY_MENU 2
-#define CATEGORY_HUD 3
-#define CATEGORY_MISC 4
 
 #define PATCH_GFX(path, name, cvar, index, instruction) \
     if (CVar_GetS32(cvar, 0)) { \
