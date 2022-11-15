@@ -3130,6 +3130,36 @@ void Rupees_ChangeBy(s16 rupeeChange) {
     }
 }
 
+void GameplayStats_UpdateAmmoUsed(s16 item, s16 ammoUsed) {
+
+    switch (item) { 
+        case ITEM_STICK:
+            gSaveContext.gameplayStats.count[COUNT_AMMO_USED_STICK] += ammoUsed;
+            break;
+        case ITEM_NUT:
+            gSaveContext.gameplayStats.count[COUNT_AMMO_USED_NUT] += ammoUsed;
+            break;
+        case ITEM_BOMB:
+            gSaveContext.gameplayStats.count[COUNT_AMMO_USED_BOMB] += ammoUsed;
+            break;
+        case ITEM_BOW:
+            gSaveContext.gameplayStats.count[COUNT_AMMO_USED_ARROW] += ammoUsed;
+            break;
+        case ITEM_SLINGSHOT:
+            gSaveContext.gameplayStats.count[COUNT_AMMO_USED_SEED] += ammoUsed;
+            break;
+        case ITEM_BOMBCHU:
+            gSaveContext.gameplayStats.count[COUNT_AMMO_USED_BOMBCHU] += ammoUsed;
+            break;
+        case ITEM_BEAN:
+            gSaveContext.gameplayStats.count[COUNT_AMMO_USED_BEAN] += ammoUsed;
+            break;
+        default:
+            break;
+    }
+    return;
+}
+
 void Inventory_ChangeAmmo(s16 item, s16 ammoChange) {
     // "Item = (%d)    Amount = (%d + %d)"
     osSyncPrintf("アイテム = (%d)    数 = (%d + %d)  ", item, AMMO(item), ammoChange);
@@ -3187,6 +3217,10 @@ void Inventory_ChangeAmmo(s16 item, s16 ammoChange) {
     }
 
     osSyncPrintf("合計 = (%d)\n", AMMO(item)); // "Total = (%d)"
+
+    if (ammoChange < 0) {
+        GameplayStats_UpdateAmmoUsed(item, -ammoChange);
+    }
 }
 
 void Magic_Fill(PlayState* play) {
