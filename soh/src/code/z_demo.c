@@ -515,7 +515,7 @@ void Cutscene_Command_Terminator(GlobalContext* globalCtx, CutsceneContext* csCt
     } else if (CVar_GetS32("gCreditsFix", 1)) {
         u16 delay = 0;
         
-        // HACK:  Align visual timing with audio curing credits sequence
+        // HACK:  Align visual timing with audio during credits sequence
         switch (cmd->base) {
             case 55: // Gerudo fortress (second scene of credits roll)
                 delay = 20;
