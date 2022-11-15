@@ -54,6 +54,12 @@ const ActorInit En_Tubo_Trap_InitVars = {
 };
 
 void EnTuboTrap_Init(Actor* thisx, PlayState* play) {
+    // Change Flying Pots to regular enemy instead of prop with enemy randomizer.
+    // This way Flying Pots will be considered for "clear enemy" rooms properly.
+    if (CVar_GetS32("gRandomizedEnemies", 0)) {
+        Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_ENEMY);
+    }
+
     EnTuboTrap* this = (EnTuboTrap*)thisx;
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 2.0f);
