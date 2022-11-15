@@ -24,7 +24,6 @@ void BootCommands_Init()
 {
     CVar_RegisterS32("gDebugEnabled", 0);
     CVar_RegisterS32("gLanguages", LANGUAGE_ENG);
-    CVar_RegisterS32("gHudColors", 0); //0 = N64 / 1 = NGC / 2 = Custom
     CVar_RegisterS32("gInvertYAxis", 1);
     CVar_RegisterS32("gTrailDuration", 4); // 4 = Default trail duration
     CVar_SetS32("gRandoGenerating", 0); // Clear when a crash happened during rando seed generation
