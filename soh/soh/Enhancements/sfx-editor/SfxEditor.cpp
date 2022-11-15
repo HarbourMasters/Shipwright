@@ -244,7 +244,8 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         ImGui::Text(name.c_str());
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(-FLT_MIN);
-        if (ImGui::BeginCombo(hiddenKey.c_str(), std::get<0>(map.at(currentValue)).c_str())) {
+        const int initialValue = map.contains(currentValue) ? currentValue : defaultValue;
+        if (ImGui::BeginCombo(hiddenKey.c_str(), std::get<0>(map.at(initialValue)).c_str())) {
             for (const auto& [value, seqData] : map) {
                 const auto& [name, sfxKey, seqType] = seqData;
                 if (~(seqType) & type) {
@@ -302,7 +303,10 @@ extern "C" u16 SfxEditor_GetReplacementSeq(u16 seqId) {
 
     const auto& [name, sfxKey, seqType] = sequenceMap.at(seqId);
     const std::string cvarKey = "gSfxEditor_" + sfxKey;
-    const int replacementSeq = CVar_GetS32(cvarKey.c_str(), seqId);
+    int replacementSeq = CVar_GetS32(cvarKey.c_str(), seqId);
+    if (!sequenceMap.contains(replacementSeq)) {
+        replacementSeq = seqId;
+    }
     return static_cast<u16>(replacementSeq);
 }
 
