@@ -159,6 +159,12 @@ void Play_Destroy(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
     Player* player = GET_PLAYER(play);
 
+
+    // Only initialize the frame counter when exiting the title screen
+    if (gSaveContext.fileNum == 0xFF) {
+        play->gameplayFrames = 0;
+    }
+
     // In ER, remove link from epona when entering somewhere that doesn't support epona
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
         Entrance_HandleEponaState();
@@ -844,7 +850,9 @@ void Play_Update(PlayState* play) {
                             }
 
                             // Don't autosave in grottos or cutscenes
-                            if (CVar_GetS32("gAutosave", 0) && (play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA) && (gSaveContext.cutsceneIndex == 0)) {
+                            // Also don't save when you first load a file
+                            if (CVar_GetS32("gAutosave", 0) && (gSaveContext.cutsceneIndex == 0) && (play->gameplayFrames > 60) &&
+                                (play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA)) {
                                 Play_PerformSave(play);
                             }
                         }
