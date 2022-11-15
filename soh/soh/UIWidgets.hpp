@@ -40,7 +40,7 @@ namespace UIWidgets {
     void PaddedText(const char* text, bool padTop = true, bool padBottom = true);
     void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue = 0, bool PlusMinusButton = false, bool disabled = false, const char* disabledTooltipText = "");
     void PaddedEnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue = 0, bool PlusMinusButton = false, bool padTop = true, bool padBottom = true, bool disabled = false, const char* disabledTooltipText = "");
-    void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton = false, bool disabled = false, const char* disabledTooltipText = "");
+    bool EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton = false, bool disabled = false, const char* disabledTooltipText = "");
     void EnhancementRadioButton(const char* text, const char* cvarName, int id);
 
     bool EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow = true, bool has_alpha=false, bool TitleSameLine=false);
