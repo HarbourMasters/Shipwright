@@ -198,7 +198,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
     if (ImGui::Button(randomizeAllButton.c_str())) {
         std::vector<u16> values;
         for (const auto& [value, seqData] : map) {
-            if (std::get<2>(seqData) == type) {
+            if (std::get<2>(seqData) & type) {
                 values.push_back(value);
             }
         }
@@ -206,8 +206,8 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         for (const auto& [defaultValue, seqData] : map) {
             const auto& [name, sfxKey, seqType] = seqData;
             const std::string cvarKey = "gSfxEditor_" + sfxKey;
-            if (seqType == type) {
-                if ((seqType == SEQ_BGM_WORLD || seqType == SEQ_FANFARE) && defaultValue >= 110) {
+            if (seqType & type) {
+                if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue >= 110) {
                     continue;
                 }
                 const int randomValue = values.back();
@@ -225,10 +225,10 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
     for (const auto& [defaultValue, seqData] : map) {
         const auto& [name, sfxKey, seqType] = seqData;
 
-        if (seqType != type) {
+        if (~(seqType) & type) {
             continue;
         }
-        if ((seqType == SEQ_BGM_WORLD || seqType == SEQ_FANFARE) && defaultValue >= 110) {
+        if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue >= 110) {
             continue;
         }
 
