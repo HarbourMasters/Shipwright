@@ -88,10 +88,10 @@ void DrawDLViewer(bool& open) {
                     *gfx = gsDPPipeSync();
                 }
                 if (ImGui::Selectable("gsSPGrayscale")) {
-                    *gfx = gsDPGrayscale(true);
+                    *gfx = gsSPGrayscale(true);
                 }
                 if (ImGui::Selectable("gDPSetGrayscaleColor")) {
-                    *gfx = gDPSetGrayscaleColor(0, 0, 0, 255);
+                    *gfx = gsDPSetGrayscaleColor(0, 0, 0, 255);
                 }
                 ImGui::EndCombo();
             }
