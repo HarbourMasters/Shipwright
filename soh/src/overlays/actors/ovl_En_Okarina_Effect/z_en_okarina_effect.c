@@ -64,7 +64,7 @@ void EnOkarinaEffect_TriggerStorm(EnOkarinaEffect* this, PlayState* play) {
     if ((gWeatherMode != 0) || play->envCtx.unk_17 != 0) {
         play->envCtx.unk_DE = 1;
     }
-    if (CVar_GetS32("gPhotosensitiveMode", 0) == 1) {
+    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
         play->envCtx.lightningMode = LIGHTNING_MODE_ON;
     }
     Environment_PlayStormNatureAmbience(play);
