@@ -3220,10 +3220,10 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         }
     }
 
-    return Actor_Spawn_NoRandomize(actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
+    return Actor_Spawn_NotRandom(actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
 }
 
-Actor* Actor_Spawn_NoRandomize(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY,
+Actor* Actor_Spawn_NotRandom(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY,
                                f32 posZ, s16 rotX, s16 rotY, s16 rotZ, s16 params) {
     s32 pad;
     Actor* actor;

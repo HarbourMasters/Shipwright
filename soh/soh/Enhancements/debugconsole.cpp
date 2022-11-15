@@ -87,7 +87,7 @@ static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std:
             }
     }
 
-    if (Actor_Spawn_NoRandomize(&gPlayState->actorCtx, gPlayState, actorId, spawnPoint.pos.x, spawnPoint.pos.y, spawnPoint.pos.z,
+    if (Actor_Spawn_NotRandom(&gPlayState->actorCtx, gPlayState, actorId, spawnPoint.pos.x, spawnPoint.pos.y, spawnPoint.pos.z,
                     spawnPoint.rot.x, spawnPoint.rot.y, spawnPoint.rot.z, params) == NULL) {
         SohImGui::GetConsole()->SendErrorMessage("Failed to spawn actor. Actor_Spawn returned NULL");
         return CMD_FAILED;
@@ -900,7 +900,7 @@ static bool BurnHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
 
 static bool CuccoStormHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     Player* player = GET_PLAYER(gPlayState);
-    EnNiw* cucco = (EnNiw*)Actor_Spawn_NoRandomize(&gPlayState->actorCtx, gPlayState, ACTOR_EN_NIW, player->actor.world.pos.x,
+    EnNiw* cucco = (EnNiw*)Actor_Spawn_NotRandom(&gPlayState->actorCtx, gPlayState, ACTOR_EN_NIW, player->actor.world.pos.x,
                                        player->actor.world.pos.y + 2200, player->actor.world.pos.z, 0, 0, 0, 0);
     cucco->actionFunc = func_80AB70A0_nocutscene;
     return CMD_SUCCESS;
