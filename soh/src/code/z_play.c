@@ -1380,7 +1380,7 @@ void Play_Draw(PlayState* play) {
 
             gfxP = Graph_GfxPlusOne(sp1CC);
             gSPDisplayList(OVERLAY_DISP++, gfxP);
-            gsSPGrayscale(gfxP++, false);
+            gSPGrayscale(gfxP++, false);
 
             if ((play->transitionMode == 3) || (play->transitionMode == 11) ||
                 (play->transitionCtx.transitionType >= 56)) {
@@ -1398,8 +1398,8 @@ void Play_Draw(PlayState* play) {
             TransitionFade_Draw(&play->transitionFade, &gfxP);
 
             if (D_801614B0.a > 0) {
-                gsDPSetGrayscaleColor(gfxP++, D_801614B0.r, D_801614B0.g, D_801614B0.b, D_801614B0.a);
-                gsSPGrayscale(gfxP++, true);
+                gDPSetGrayscaleColor(gfxP++, D_801614B0.r, D_801614B0.g, D_801614B0.b, D_801614B0.a);
+                gSPGrayscale(gfxP++, true);
             }
 
             gSPEndDisplayList(gfxP++);
