@@ -6,7 +6,7 @@
 
 struct EnYabusameMark;
 
-typedef void (*EnYabusameMarkActionFunc)(struct EnYabusameMark*, GlobalContext*);
+typedef void (*EnYabusameMarkActionFunc)(struct EnYabusameMark*, PlayState*);
 
 typedef struct EnYabusameMark {
     /* 0x0000 */ Actor actor;

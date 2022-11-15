@@ -21,8 +21,8 @@ set(Header_Files
 source_group("Header Files" FILES ${Header_Files})
 
 set(Header_Files__Libraries
-    "../../libultraship/libultraship/Lib/stb/stb_image.h"
-    "../../libultraship/libultraship/Lib/stb/stb_image_write.h"
+    "../../libultraship/extern/stb/stb_image.h"
+    "../../libultraship/extern/stb/stb_image_write.h"
     "ctpl_stl.h"
 )
 source_group("Header Files\\Libraries" FILES ${Header_Files__Libraries})
@@ -332,7 +332,7 @@ endif()
 find_package(PNG REQUIRED)
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/ZAPDUtils
+	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/ZAPDUtils
 	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/lib/tinyxml2
 	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/lib/libgfxd
 	${PNG_PNG_INCLUDE_DIR}/

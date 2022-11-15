@@ -10,13 +10,13 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void ItemShield_Init(Actor* thisx, GlobalContext* globalCtx);
-void ItemShield_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void ItemShield_Update(Actor* thisx, GlobalContext* globalCtx);
-void ItemShield_Draw(Actor* thisx, GlobalContext* globalCtx);
+void ItemShield_Init(Actor* thisx, PlayState* play);
+void ItemShield_Destroy(Actor* thisx, PlayState* play);
+void ItemShield_Update(Actor* thisx, PlayState* play);
+void ItemShield_Draw(Actor* thisx, PlayState* play);
 
-void func_80B86F68(ItemShield* this, GlobalContext* globalCtx);
-void func_80B86BC8(ItemShield* this, GlobalContext* globalCtx);
+void func_80B86F68(ItemShield* this, PlayState* play);
+void func_80B86BC8(ItemShield* this, PlayState* play);
 
 static ColliderCylinderInit sCylinderInit = {
     {
@@ -58,7 +58,7 @@ void ItemShield_SetupAction(ItemShield* this, ItemShieldActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
-void ItemShield_Init(Actor* thisx, GlobalContext* globalCtx) {
+void ItemShield_Init(Actor* thisx, PlayState* play) {
     ItemShield* this = (ItemShield*)thisx;
     s32 i;
 
@@ -86,25 +86,25 @@ void ItemShield_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     Actor_SetScale(&this->actor, 0.01f);
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     osSyncPrintf(VT_FGCOL(GREEN) "Item_Shild %d \n" VT_RST, this->actor.params);
 }
 
-void ItemShield_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void ItemShield_Destroy(Actor* thisx, PlayState* play) {
     ItemShield* this = (ItemShield*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void func_80B86AC8(ItemShield* this, GlobalContext* globalCtx) {
+void func_80B86AC8(ItemShield* this, PlayState* play) {
     Actor_MoveForward(&this->actor);
-    if (Actor_HasParent(&this->actor, globalCtx)) {
+    if (Actor_HasParent(&this->actor, play)) {
         Actor_Kill(&this->actor);
         return;
     }
-    func_8002F434(&this->actor, globalCtx, GI_SHIELD_DEKU, 30.0f, 50.0f);
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 10.0f, 10.0f, 0.0f, 5);
+    func_8002F434(&this->actor, play, GI_SHIELD_DEKU, 30.0f, 50.0f);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 10.0f, 0.0f, 5);
     if (this->actor.bgCheckFlags & 1) {
         this->timer--;
         if (this->timer < 60) {
@@ -120,12 +120,12 @@ void func_80B86AC8(ItemShield* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80B86BC8(ItemShield* this, GlobalContext* globalCtx) {
-    if (Actor_HasParent(&this->actor, globalCtx)) {
+void func_80B86BC8(ItemShield* this, PlayState* play) {
+    if (Actor_HasParent(&this->actor, play)) {
         Actor_Kill(&this->actor);
         return;
     }
-    func_8002F434(&this->actor, globalCtx, GI_SHIELD_DEKU, 30.0f, 50.0f);
+    func_8002F434(&this->actor, play, GI_SHIELD_DEKU, 30.0f, 50.0f);
     if (this->collider.base.acFlags & AC_HIT) {
         ItemShield_SetupAction(this, func_80B86AC8);
         this->actor.velocity.y = 4.0f;
@@ -135,11 +135,11 @@ void func_80B86BC8(ItemShield* this, GlobalContext* globalCtx) {
         this->timer = 160;
     } else {
         Collider_UpdateCylinder(&this->actor, &this->collider);
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
     }
 }
 
-void func_80B86CA8(ItemShield* this, GlobalContext* globalCtx) {
+void func_80B86CA8(ItemShield* this, PlayState* play) {
     static Vec3f D_80B871F4 = { 0.0f, 0.0f, 0.0f };
     static f32 D_80B87200[] = { 0.3f, 0.6f,  0.9f, 1.0f,  1.0f, 1.0f,  1.0f, 1.0f,
                                 1.0f, 0.85f, 0.7f, 0.55f, 0.4f, 0.25f, 0.1f, 0.0f };
@@ -149,7 +149,7 @@ void func_80B86CA8(ItemShield* this, GlobalContext* globalCtx) {
     s32 temp;
 
     Actor_MoveForward(&this->actor);
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 10.0f, 10.0f, 0.0f, 5);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 10.0f, 0.0f, 5);
     this->actor.shape.yOffset = ABS(Math_SinS(this->actor.shape.rot.x)) * 1500.0f;
 
     for (i = 0; i < 8; i++) {
@@ -157,7 +157,7 @@ void func_80B86CA8(ItemShield* this, GlobalContext* globalCtx) {
         D_80B871F4.x = this->unk_1A8[i].x;
         D_80B871F4.y = this->unk_1A8[i].y + (this->actor.shape.yOffset * 0.01f) + (D_80B87200[temp] * -10.0f * 0.2f);
         D_80B871F4.z = this->unk_1A8[i].z;
-        EffectSsFireTail_SpawnFlame(globalCtx, &this->actor, &D_80B871F4, D_80B87200[temp] * 0.2f, -1,
+        EffectSsFireTail_SpawnFlame(play, &this->actor, &D_80B871F4, D_80B87200[temp] * 0.2f, -1,
                                     D_80B87240[temp]);
         if (this->unk_19E[i] != 0) {
             this->unk_19E[i]--;
@@ -183,9 +183,9 @@ void func_80B86CA8(ItemShield* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80B86F68(ItemShield* this, GlobalContext* globalCtx) {
+void func_80B86F68(ItemShield* this, PlayState* play) {
     s32 pad;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     MtxF* shield = &player->shieldMf;
 
     this->actor.world.pos.x = shield->xw;
@@ -210,21 +210,21 @@ void func_80B86F68(ItemShield* this, GlobalContext* globalCtx) {
     this->actor.speedXZ = 0;
 }
 
-void ItemShield_Update(Actor* thisx, GlobalContext* globalCtx) {
+void ItemShield_Update(Actor* thisx, PlayState* play) {
     ItemShield* this = (ItemShield*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void ItemShield_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void ItemShield_Draw(Actor* thisx, PlayState* play) {
     ItemShield* this = (ItemShield*)thisx;
 
     if (!(this->unk_19C & 2)) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
-        func_80093D18(globalCtx->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        OPEN_DISPS(play->state.gfxCtx);
+        func_80093D18(play->state.gfxCtx);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, SEGMENTED_TO_VIRTUAL(gLinkChildDekuShieldDL));
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        CLOSE_DISPS(play->state.gfxCtx);
     }
 }

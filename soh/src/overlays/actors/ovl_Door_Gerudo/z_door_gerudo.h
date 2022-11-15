@@ -6,7 +6,7 @@
 
 struct DoorGerudo;
 
-typedef void (*DoorGerudoActionFunc)(struct DoorGerudo*, GlobalContext*);
+typedef void (*DoorGerudoActionFunc)(struct DoorGerudo*, PlayState*);
 
 typedef struct DoorGerudo {
     /* 0x0000 */ DynaPolyActor dyna;

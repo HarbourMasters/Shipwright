@@ -6,7 +6,7 @@
 
 struct BgGateShutter;
 
-typedef void (*BgGateShutterActionFunc)(struct BgGateShutter*, GlobalContext*);
+typedef void (*BgGateShutterActionFunc)(struct BgGateShutter*, PlayState*);
 
 typedef struct BgGateShutter {
     /* 0x0000 */ DynaPolyActor dyna;

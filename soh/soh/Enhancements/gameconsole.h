@@ -3,7 +3,7 @@
 
 #include <ultra64.h>
 #include <z64.h>
-#include <libultraship/Cvar.h>
+#include <Cvar.h>
 
 #define MAX_CVARS 2048
 
@@ -29,7 +29,7 @@ typedef struct ConsoleCommand
     char* description;
 } ConsoleCommand;
 
-extern GlobalContext* gGlobalCtx;
+extern PlayState* gPlayState;
 
 void GameConsole_Init();
 

@@ -5,15 +5,15 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
-void EnFireRock_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnFireRock_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnFireRock_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnFireRock_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnFireRock_Init(Actor* thisx, PlayState* play);
+void EnFireRock_Destroy(Actor* thisx, PlayState* play);
+void EnFireRock_Update(Actor* thisx, PlayState* play);
+void EnFireRock_Draw(Actor* thisx, PlayState* play);
 
-void FireRock_WaitSpawnRocksFromCeiling(EnFireRock* this, GlobalContext* globalCtx);
-void FireRock_WaitOnFloor(EnFireRock* this, GlobalContext* globalCtx);
-void EnFireRock_Fall(EnFireRock* this, GlobalContext* globalCtx);
-void EnFireRock_SpawnMoreBrokenPieces(EnFireRock* this, GlobalContext* globalCtx);
+void FireRock_WaitSpawnRocksFromCeiling(EnFireRock* this, PlayState* play);
+void FireRock_WaitOnFloor(EnFireRock* this, PlayState* play);
+void EnFireRock_Fall(EnFireRock* this, PlayState* play);
+void EnFireRock_SpawnMoreBrokenPieces(EnFireRock* this, PlayState* play);
 
 const ActorInit En_Fire_Rock_InitVars = {
     ACTOR_EN_FIRE_ROCK,
@@ -68,9 +68,9 @@ static ColliderCylinderInit D_80A12CCC = {
     { 30, 30, -10, { 0, 0, 0 } },
 };
 
-void EnFireRock_Init(Actor* thisx, GlobalContext* globalCtx) {
-    GlobalContext* globalCtx2 = globalCtx;
-    Player* player = GET_PLAYER(globalCtx);
+void EnFireRock_Init(Actor* thisx, PlayState* play) {
+    PlayState* play2 = play;
+    Player* player = GET_PLAYER(play);
     EnFireRock* this = (EnFireRock*)thisx;
     s16 temp;
 
@@ -92,14 +92,14 @@ void EnFireRock_Init(Actor* thisx, GlobalContext* globalCtx) {
             break;
         case FIRE_ROCK_ON_FLOOR:
             Actor_SetScale(&this->actor, 0.03f);
-            Collider_InitCylinder(globalCtx, &this->collider);
-            Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &D_80A12CCC);
+            Collider_InitCylinder(play, &this->collider);
+            Collider_SetCylinder(play, &this->collider, &this->actor, &D_80A12CCC);
             // "☆☆☆☆☆ floor rock ☆☆☆☆☆"
             osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ 床岩 ☆☆☆☆☆ \n" VT_RST);
             this->collider.dim.radius = 23;
             this->collider.dim.height = 37;
             this->collider.dim.yShift = -10;
-            Actor_ChangeCategory(globalCtx, &globalCtx->actorCtx, &this->actor, ACTORCAT_PROP);
+            Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_PROP);
             this->actor.colChkInfo.mass = MASS_IMMOVABLE;
             this->actionFunc = FireRock_WaitOnFloor;
             break;
@@ -110,8 +110,8 @@ void EnFireRock_Init(Actor* thisx, GlobalContext* globalCtx) {
         case FIRE_ROCK_SPAWNED_FALLING2: // spawned by encount2 and by the ceilling spawner
             this->scale = (Rand_ZeroFloat(2.0f) / 100.0f) + 0.02f;
             Actor_SetScale(&this->actor, this->scale);
-            Collider_InitCylinder(globalCtx, &this->collider);
-            Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &D_80A12CA0);
+            Collider_InitCylinder(play, &this->collider);
+            Collider_SetCylinder(play, &this->collider, &this->actor, &D_80A12CA0);
             this->actor.world.rot.y = this->actor.shape.rot.y = Rand_CenteredFloat(65535.0f);
             this->actionFunc = EnFireRock_Fall;
             this->actor.shape.shadowScale = 15.0f;
@@ -122,8 +122,8 @@ void EnFireRock_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->scale = (Rand_ZeroFloat(1.0f) / 100.0f) + 0.02f;
             Actor_SetScale(&this->actor, this->scale);
             this->actor.gravity = -1.5f;
-            Collider_InitCylinder(globalCtx, &this->collider);
-            Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &D_80A12CA0);
+            Collider_InitCylinder(play, &this->collider);
+            Collider_SetCylinder(play, &this->collider, &this->actor, &D_80A12CA0);
             this->actor.shape.shadowScale = 10.0f;
             this->actor.world.rot.y = this->actor.shape.rot.y = Rand_CenteredFloat(65535.0f);
             this->actionFunc = EnFireRock_Fall;
@@ -146,7 +146,7 @@ void EnFireRock_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnFireRock_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnFireRock_Destroy(Actor* thisx, PlayState* play) {
     EnFireRock* this = (EnFireRock*)thisx;
 
     if ((this->actor.parent != NULL) && (this->actor.parent == &this->spawner->actor)) {
@@ -159,15 +159,15 @@ void EnFireRock_Destroy(Actor* thisx, GlobalContext* globalCtx) {
             osSyncPrintf("\n\n");
         }
     }
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void EnFireRock_Fall(EnFireRock* this, GlobalContext* globalCtx) {
+void EnFireRock_Fall(EnFireRock* this, PlayState* play) {
     Player* player;
     Vec3f flamePos;
     s32 i;
 
-    player = GET_PLAYER(globalCtx);
+    player = GET_PLAYER(play);
     if ((this->actor.floorHeight == -10000.0f) || (this->actor.world.pos.y < (player->actor.world.pos.y - 200.0f))) {
         Actor_Kill(&this->actor);
         return;
@@ -185,10 +185,10 @@ void EnFireRock_Fall(EnFireRock* this, GlobalContext* globalCtx) {
             flamePos.x = Rand_CenteredFloat(20.0f) + this->actor.world.pos.x;
             flamePos.y = Rand_CenteredFloat(20.0f) + this->actor.world.pos.y;
             flamePos.z = Rand_CenteredFloat(20.0f) + this->actor.world.pos.z;
-            EffectSsEnFire_SpawnVec3f(globalCtx, &this->actor, &flamePos, 100, 0, 0, -1);
+            EffectSsEnFire_SpawnVec3f(play, &this->actor, &flamePos, 100, 0, 0, -1);
             break;
         case FIRE_ROCK_BROKEN_PIECE1:
-            if ((globalCtx->gameplayFrames & 3) == 0) {
+            if ((play->gameplayFrames & 3) == 0) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_VALVAISA_ROCK);
             }
             break;
@@ -197,22 +197,22 @@ void EnFireRock_Fall(EnFireRock* this, GlobalContext* globalCtx) {
         switch (this->type) {
             case FIRE_ROCK_SPAWNED_FALLING1:
             case FIRE_ROCK_SPAWNED_FALLING2:
-                func_80033E88(&this->actor, globalCtx, 5, 2);
+                func_80033E88(&this->actor, play, 5, 2);
             case FIRE_ROCK_BROKEN_PIECE1:
-                Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale,
+                Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale,
                                          1, 8.0f, 500, 10, false);
                 for (i = 0; i < 5; i++) {
                     flamePos.x = Rand_CenteredFloat(20.0f) + this->actor.world.pos.x;
                     flamePos.y = this->actor.floorHeight;
                     flamePos.z = Rand_CenteredFloat(20.0f) + this->actor.world.pos.z;
-                    EffectSsEnFire_SpawnVec3f(globalCtx, &this->actor, &flamePos, 300, 0, 0, -1);
+                    EffectSsEnFire_SpawnVec3f(play, &this->actor, &flamePos, 300, 0, 0, -1);
                 }
                 this->actionFunc = EnFireRock_SpawnMoreBrokenPieces;
                 break;
             default:
-                Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale,
+                Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale,
                                          3, 8.0f, 200, 10, false);
-                SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->actor.world.pos, 40, NA_SE_EV_EXPLOSION);
+                SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 40, NA_SE_EV_EXPLOSION);
                 Actor_Kill(&this->actor);
                 break;
         }
@@ -223,7 +223,7 @@ void EnFireRock_Fall(EnFireRock* this, GlobalContext* globalCtx) {
  * After the rock has already hit the ground and started rolling, spawn two more, giving the illusion of breaking into
  * two pieces.
  */
-void EnFireRock_SpawnMoreBrokenPieces(EnFireRock* this, GlobalContext* globalCtx) {
+void EnFireRock_SpawnMoreBrokenPieces(EnFireRock* this, PlayState* play) {
     EnFireRock* spawnedFireRock;
     s32 nextRockType;
     s32 i;
@@ -242,7 +242,7 @@ void EnFireRock_SpawnMoreBrokenPieces(EnFireRock* this, GlobalContext* globalCtx
     if (nextRockType != FIRE_ROCK_SPAWNED_FALLING1) {
         for (i = 0; i < 2; i++) {
             spawnedFireRock = (EnFireRock*)Actor_Spawn(
-                &globalCtx->actorCtx, globalCtx, ACTOR_EN_FIRE_ROCK, Rand_CenteredFloat(3.0f) + this->actor.world.pos.x,
+                &play->actorCtx, play, ACTOR_EN_FIRE_ROCK, Rand_CenteredFloat(3.0f) + this->actor.world.pos.x,
                 Rand_CenteredFloat(3.0f) + (this->actor.world.pos.y + 10.0f),
                 Rand_CenteredFloat(3.0f) + this->actor.world.pos.z, 0, 0, 0, nextRockType);
             if (spawnedFireRock != NULL) {
@@ -260,14 +260,14 @@ void EnFireRock_SpawnMoreBrokenPieces(EnFireRock* this, GlobalContext* globalCtx
     Actor_Kill(&this->actor);
 }
 
-void FireRock_WaitSpawnRocksFromCeiling(EnFireRock* this, GlobalContext* globalCtx) {
+void FireRock_WaitSpawnRocksFromCeiling(EnFireRock* this, PlayState* play) {
     EnFireRock* spawnedFireRock;
 
     if (this->actor.xzDistToPlayer < 200.0f) {
         if ((this->playerNearby == 0) && (this->timer2 == 0)) {
             this->timer2 = 30;
             spawnedFireRock = (EnFireRock*)Actor_Spawn(
-                &globalCtx->actorCtx, globalCtx, ACTOR_EN_FIRE_ROCK, Rand_CenteredFloat(3.0f) + this->actor.world.pos.x,
+                &play->actorCtx, play, ACTOR_EN_FIRE_ROCK, Rand_CenteredFloat(3.0f) + this->actor.world.pos.x,
                 this->actor.world.pos.y + 10.0f, Rand_CenteredFloat(3.0f) + this->actor.world.pos.z, 0, 0, 0,
                 FIRE_ROCK_SPAWNED_FALLING2);
             if (spawnedFireRock != NULL) {
@@ -283,11 +283,11 @@ void FireRock_WaitSpawnRocksFromCeiling(EnFireRock* this, GlobalContext* globalC
     if (BREG(0) != 0) {
         DebugDisplay_AddObject(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z,
                                this->actor.world.rot.x, this->actor.world.rot.y, this->actor.world.rot.z, 1.0f, 1.0f,
-                               1.0f, 0, 255, 0, 255, 4, globalCtx->state.gfxCtx);
+                               1.0f, 0, 255, 0, 255, 4, play->state.gfxCtx);
     }
 }
 
-void FireRock_WaitOnFloor(EnFireRock* this, GlobalContext* globalCtx) {
+void FireRock_WaitOnFloor(EnFireRock* this, PlayState* play) {
     Vec3f flamePos;
     s16 scale;
 
@@ -297,15 +297,15 @@ void FireRock_WaitOnFloor(EnFireRock* this, GlobalContext* globalCtx) {
         flamePos.z = Rand_CenteredFloat(20.0f) + this->actor.world.pos.z;
         scale = 130 + (s16)Rand_CenteredFloat(60.0f);
         this->timer2 = 3 + (s16)Rand_ZeroFloat(3.0f);
-        EffectSsEnFire_SpawnVec3f(globalCtx, &this->actor, &flamePos, scale, 0, 0, -1);
+        EffectSsEnFire_SpawnVec3f(play, &this->actor, &flamePos, scale, 0, 0, -1);
     }
 }
 
-void EnFireRock_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnFireRock_Update(Actor* thisx, PlayState* play) {
     EnFireRock* this = (EnFireRock*)thisx;
     s16 setCollision;
-    Player* player = GET_PLAYER(globalCtx);
-    Actor* playerActor = &GET_PLAYER(globalCtx)->actor;
+    Player* player = GET_PLAYER(play);
+    Actor* playerActor = &GET_PLAYER(play)->actor;
 
     if (this->timer2 != 0) {
         this->timer2--;
@@ -313,7 +313,7 @@ void EnFireRock_Update(Actor* thisx, GlobalContext* globalCtx) {
     if (this->timer != 0) {
         this->timer--;
     }
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 
     if (this->type != FIRE_ROCK_CEILING_SPOT_SPAWNER) {
         f32 temp;
@@ -337,7 +337,7 @@ void EnFireRock_Update(Actor* thisx, GlobalContext* globalCtx) {
         }
         if (this->type != FIRE_ROCK_ON_FLOOR) {
             Actor_MoveForward(thisx);
-            Actor_UpdateBgCheckInfo(globalCtx, thisx, 50.0f, 50.0f, 100.0f, 0x1C);
+            Actor_UpdateBgCheckInfo(play, thisx, 50.0f, 50.0f, 100.0f, 0x1C);
         }
 
         setCollision = false;
@@ -363,7 +363,7 @@ void EnFireRock_Update(Actor* thisx, GlobalContext* globalCtx) {
                 this->collider.base.atFlags &= ~2;
                 if (this->collider.base.at == playerActor) {
                     if (!(player->stateFlags1 & 0x04000000)) {
-                        func_8002F758(globalCtx, thisx, 2.0f, -player->actor.world.rot.y, 3.0f, 4);
+                        func_8002F758(play, thisx, 2.0f, -player->actor.world.rot.y, 3.0f, 4);
                     }
                     return;
                 }
@@ -372,28 +372,28 @@ void EnFireRock_Update(Actor* thisx, GlobalContext* globalCtx) {
         }
         if (setCollision) {
             Collider_UpdateCylinder(thisx, &this->collider);
-            CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-            CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+            CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
+            CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
         }
     }
 }
 
-void EnFireRock_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnFireRock_Draw(Actor* thisx, PlayState* play) {
     EnFireRock* this = (EnFireRock*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
     Matrix_Translate(thisx->world.pos.x + this->relativePos.x, thisx->world.pos.y + this->relativePos.y,
                      thisx->world.pos.z + this->relativePos.z, MTXMODE_NEW);
     Matrix_RotateX(DEG_TO_RAD(this->rockRotation.x), MTXMODE_APPLY);
     Matrix_RotateY(DEG_TO_RAD(this->rockRotation.y), MTXMODE_APPLY);
     Matrix_RotateZ(DEG_TO_RAD(this->rockRotation.z), MTXMODE_APPLY);
     Matrix_Scale(thisx->scale.x, thisx->scale.y, thisx->scale.z, MTXMODE_APPLY);
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 155, 55, 255);
     gDPSetEnvColor(POLY_OPA_DISP++, 155, 255, 55, 255);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, object_efc_star_field_DL_000DE0);
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

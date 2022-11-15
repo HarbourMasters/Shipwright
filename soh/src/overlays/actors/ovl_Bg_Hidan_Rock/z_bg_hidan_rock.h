@@ -6,7 +6,7 @@
 
 struct BgHidanRock;
 
-typedef void (*BgHidanRockActionFunc)(struct BgHidanRock*, GlobalContext*);
+typedef void (*BgHidanRockActionFunc)(struct BgHidanRock*, PlayState*);
 
 typedef struct BgHidanRock {
     /* 0x0000 */ DynaPolyActor dyna;

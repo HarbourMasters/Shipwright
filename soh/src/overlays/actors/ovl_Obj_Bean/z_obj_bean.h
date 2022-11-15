@@ -6,7 +6,7 @@
 
 struct ObjBean;
 
-typedef void (*ObjBeanActionFunc)(struct ObjBean*, GlobalContext*);
+typedef void (*ObjBeanActionFunc)(struct ObjBean*, PlayState*);
 typedef void (*ObjBeanTransformFunc)(struct ObjBean*);
 
 typedef struct ObjBean {

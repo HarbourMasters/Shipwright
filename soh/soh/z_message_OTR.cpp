@@ -1,10 +1,10 @@
 #include "OTRGlobals.h"
-#include <libultraship/ResourceMgr.h>
-#include <libultraship/Scene.h>
+#include <ResourceMgr.h>
+#include <Scene.h>
 #include <Utils/StringHelper.h>
 #include "global.h"
 #include "vt.h"
-#include <libultraship/Text.h>
+#include <Text.h>
 #include <message_data_static.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 #include "Enhancements/custom-message/CustomMessageTypes.h"
@@ -100,18 +100,18 @@ extern "C" void OTRMessage_Init()
         customMessageTableID, (GetItemID)TEXT_GS_NO_FREEZE, ITEM_SKULL_TOKEN,
         { 
             TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
-            "You got a %rGold Skulltula Token%w!&You've collected %r\x19%w tokens&in total!\x0E\x3C",
-            "Du erhälst ein %rGoldene&Skulltula-Symbol%w! Du hast&insgesamt %r\x19%w symbol gesammelt!\x0E\x3C",
-            "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r\x19\%w symboles en tout!\x0E\x3C"
+            "You got a %rGold Skulltula Token%w!&You've collected %r{{gsCount}}%w tokens&in total!\x0E\x3C",
+            "Du erhälst ein %rGoldene&Skulltula-Symbol%w! Du hast&insgesamt %r{{gsCount}}%w symbol gesammelt!\x0E\x3C",
+            "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r{{gsCount}}%w symboles en tout!\x0E\x3C"
         }
     );
     CustomMessageManager::Instance->CreateGetItemMessage(
         customMessageTableID, (GetItemID)TEXT_GS_FREEZE, ITEM_SKULL_TOKEN,
         { 
           TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
-          "You got a %rGold Skulltula Token%w!&You've collected %r\x19%w tokens&in total!",
-          "Du erhälst ein %rGoldene&Skulltula-Symbol%w! Du hast&insgesamt %r\x19%w symbol gesammelt!",
-          "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r\x19\%w symboles en tout!"
+          "You got a %rGold Skulltula Token%w!&You've collected %r{{gsCount}}%w tokens&in total!",
+          "Du erhälst ein %rGoldene&Skulltula-Symbol%w! Du hast&insgesamt %r{{gsCount}}%w symbol gesammelt!",
+          "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r{{gsCount}}%w symboles en tout!"
         }
     );
     CustomMessageManager::Instance->CreateMessage(
@@ -127,9 +127,27 @@ extern "C" void OTRMessage_Init()
         customMessageTableID, TEXT_BUY_BOMBCHU_10_PROMPT,
         {
           TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-          "\x08\Bombchu  10 pieces   99 Rupees\x09&&\x1B%gBuy&Don't buy%w",
+          "\x08" "Bombchu  10 pieces   99 Rupees\x09&&\x1B%gBuy&Don't buy%w",
           "\x08Krabbelmine  10 Stück  99 Rubine\x09&&\x1B%gKaufen!&Nicht kaufen!%w",
           "\x08Missiles  10 unités   99 Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w",
+        }
+    );
+    CustomMessageManager::Instance->CreateGetItemMessage(
+        customMessageTableID, (GetItemID)TEXT_HEART_CONTAINER, ITEM_HEART_CONTAINER,
+        {
+            TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
+            "You got a %rHeart Container%w!&You've collected %r{{heartContainerCount}}%w containers&in total!",
+            "Du erhältst ein %rHerzgefäß%w! Du&hast insgesamt %r{{heartContainerCount}}%w Gefäße&gesammelt!",
+            "Vous obtenez un %rRécipient de&coeur%w! Vous avez&collecté %r{{heartContainerCount}}%w récipients en tout!"
+        }
+    );
+    CustomMessageManager::Instance->CreateGetItemMessage(
+        customMessageTableID, (GetItemID)TEXT_HEART_PIECE, ITEM_HEART_PIECE,
+        {
+            TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
+            "You got a %rHeart Piece%w!&You've collected %r{{heartPieceCount}}%w pieces&in total!",
+            "Du erhältst ein %rHerzteil%w! Du hast&insgesamt %r{{heartPieceCount}}%w Teile&gesammelt!",
+            "Vous obtenez un %rMorceau de&coeur%w! Vous avez&collecté %r{{heartPieceCount}}%w morceaux en tout!"
         }
     );
 }

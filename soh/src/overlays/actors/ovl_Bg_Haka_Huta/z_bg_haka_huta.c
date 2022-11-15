@@ -9,18 +9,18 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void BgHakaHuta_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaHuta_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaHuta_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaHuta_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgHakaHuta_Init(Actor* thisx, PlayState* play);
+void BgHakaHuta_Destroy(Actor* thisx, PlayState* play);
+void BgHakaHuta_Update(Actor* thisx, PlayState* play);
+void BgHakaHuta_Draw(Actor* thisx, PlayState* play);
 
-void BgHakaHuta_SpawnDust(BgHakaHuta* this, GlobalContext* globalCtx);
-void BgHakaHuta_PlaySound(BgHakaHuta* this, GlobalContext* globalCtx, u16 sfx);
-void BgHakaHuta_SpawnEnemies(BgHakaHuta* this, GlobalContext* globalCtx);
-void BgHakaHuta_Open(BgHakaHuta* this, GlobalContext* globalCtx);
-void BgHakaHuta_SlideOpen(BgHakaHuta* this, GlobalContext* globalCtx);
-void func_8087D720(BgHakaHuta* this, GlobalContext* globalCtx);
-void BgHakaHuta_DoNothing(BgHakaHuta* this, GlobalContext* globalCtx);
+void BgHakaHuta_SpawnDust(BgHakaHuta* this, PlayState* play);
+void BgHakaHuta_PlaySound(BgHakaHuta* this, PlayState* play, u16 sfx);
+void BgHakaHuta_SpawnEnemies(BgHakaHuta* this, PlayState* play);
+void BgHakaHuta_Open(BgHakaHuta* this, PlayState* play);
+void BgHakaHuta_SlideOpen(BgHakaHuta* this, PlayState* play);
+void func_8087D720(BgHakaHuta* this, PlayState* play);
+void BgHakaHuta_DoNothing(BgHakaHuta* this, PlayState* play);
 
 const ActorInit Bg_Haka_Huta_InitVars = {
     ACTOR_BG_HAKA_HUTA,
@@ -39,7 +39,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void BgHakaHuta_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaHuta_Init(Actor* thisx, PlayState* play) {
     BgHakaHuta* this = (BgHakaHuta*)thisx;
     s16 pad;
     CollisionHeader* colHeader = NULL;
@@ -47,10 +47,10 @@ void BgHakaHuta_Init(Actor* thisx, GlobalContext* globalCtx) {
     Actor_ProcessInitChain(thisx, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_PLAYER);
     CollisionHeader_GetVirtual(&gBotwCoffinLidCol, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, thisx, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
     this->unk_16A = (thisx->params >> 8) & 0xFF;
     thisx->params &= 0xFF;
-    if (Flags_GetSwitch(globalCtx, thisx->params)) {
+    if (Flags_GetSwitch(play, thisx->params)) {
         this->counter = -1;
         this->actionFunc = func_8087D720;
     } else {
@@ -58,12 +58,12 @@ void BgHakaHuta_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void BgHakaHuta_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaHuta_Destroy(Actor* thisx, PlayState* play) {
     BgHakaHuta* this = (BgHakaHuta*)thisx;
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void BgHakaHuta_SpawnDust(BgHakaHuta* this, GlobalContext* globalCtx) {
+void BgHakaHuta_SpawnDust(BgHakaHuta* this, PlayState* play) {
     static Vec3f sEffectAccel[] = { 0.0f, 0.0f, 0.0f };
     static Color_RGBA8 primColor = { 30, 20, 50, 255 };
     static Color_RGBA8 envColor = { 0, 0, 0, 255 };
@@ -90,27 +90,27 @@ void BgHakaHuta_SpawnDust(BgHakaHuta* this, GlobalContext* globalCtx) {
         }
         effectPos.x = this->dyna.actor.home.pos.x - (Rand_ZeroOne() * xPosOffset);
         scale = ((Rand_ZeroOne() * 10.0f) + 50.0f);
-        func_8002829C(globalCtx, &effectPos, &effectVel, sEffectAccel, &primColor, &envColor, scale, 0xA);
+        func_8002829C(play, &effectPos, &effectVel, sEffectAccel, &primColor, &envColor, scale, 0xA);
     }
 }
 
-void BgHakaHuta_PlaySound(BgHakaHuta* this, GlobalContext* globalCtx, u16 sfx) {
+void BgHakaHuta_PlaySound(BgHakaHuta* this, PlayState* play, u16 sfx) {
     Vec3f pos;
 
     pos.z = (this->dyna.actor.shape.rot.y == 0) ? this->dyna.actor.world.pos.z + 120.0f
                                                 : this->dyna.actor.world.pos.z - 120.0f;
     pos.x = this->dyna.actor.world.pos.x;
     pos.y = this->dyna.actor.world.pos.y;
-    SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &pos, 30, sfx);
+    SoundSource_PlaySfxAtFixedWorldPos(play, &pos, 30, sfx);
 }
 
-void BgHakaHuta_SpawnEnemies(BgHakaHuta* this, GlobalContext* globalCtx) {
-    if (Flags_GetSwitch(globalCtx, this->dyna.actor.params) && !Player_InCsMode(globalCtx)) {
+void BgHakaHuta_SpawnEnemies(BgHakaHuta* this, PlayState* play) {
+    if (Flags_GetSwitch(play, this->dyna.actor.params) && !Player_InCsMode(play)) {
         this->counter = 25;
         this->actionFunc = BgHakaHuta_Open;
-        OnePointCutscene_Init(globalCtx, 6001, 999, &this->dyna.actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 6001, 999, &this->dyna.actor, MAIN_CAM);
         if (this->unk_16A == 2) {
-            Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_FIREFLY,
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_FIREFLY,
                         (this->dyna.actor.world.pos.x + (-25.0f) * Math_CosS(this->dyna.actor.shape.rot.y) +
                          40.0f * Math_SinS(this->dyna.actor.shape.rot.y)),
                         this->dyna.actor.world.pos.y - 10.0f,
@@ -118,7 +118,7 @@ void BgHakaHuta_SpawnEnemies(BgHakaHuta* this, GlobalContext* globalCtx) {
                          Math_CosS(this->dyna.actor.shape.rot.y) * 40.0f),
                         0, this->dyna.actor.shape.rot.y + 0x8000, 0, 2);
 
-            Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_FIREFLY,
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_FIREFLY,
                         (this->dyna.actor.world.pos.x + (-25.0f) * (Math_CosS(this->dyna.actor.shape.rot.y)) +
                          Math_SinS(this->dyna.actor.shape.rot.y) * 80.0f),
                         this->dyna.actor.world.pos.y - 10.0f,
@@ -127,7 +127,7 @@ void BgHakaHuta_SpawnEnemies(BgHakaHuta* this, GlobalContext* globalCtx) {
                         0, this->dyna.actor.shape.rot.y, 0, 2);
 
         } else if (this->unk_16A == 1) {
-            Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_RD,
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_RD,
                         (this->dyna.actor.home.pos.x + (-25.0f) * (Math_CosS(this->dyna.actor.shape.rot.y)) +
                          Math_SinS(this->dyna.actor.shape.rot.y) * 100.0f),
                         this->dyna.actor.home.pos.y - 40.0f,
@@ -138,7 +138,7 @@ void BgHakaHuta_SpawnEnemies(BgHakaHuta* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgHakaHuta_Open(BgHakaHuta* this, GlobalContext* globalCtx) {
+void BgHakaHuta_Open(BgHakaHuta* this, PlayState* play) {
     f32 posOffset;
 
     if (this->counter != 0) {
@@ -148,12 +148,12 @@ void BgHakaHuta_Open(BgHakaHuta* this, GlobalContext* globalCtx) {
     Math_StepToF(&this->dyna.actor.world.pos.x, this->dyna.actor.home.pos.x + posOffset, 2.0f);
     if (this->counter == 0) {
         this->counter = 37;
-        BgHakaHuta_PlaySound(this, globalCtx, NA_SE_EV_COFFIN_CAP_OPEN);
+        BgHakaHuta_PlaySound(this, play, NA_SE_EV_COFFIN_CAP_OPEN);
         this->actionFunc = BgHakaHuta_SlideOpen;
     }
 }
 
-void BgHakaHuta_SlideOpen(BgHakaHuta* this, GlobalContext* globalCtx) {
+void BgHakaHuta_SlideOpen(BgHakaHuta* this, PlayState* play) {
     f32 posOffset;
 
     if (this->counter != 0) {
@@ -161,15 +161,15 @@ void BgHakaHuta_SlideOpen(BgHakaHuta* this, GlobalContext* globalCtx) {
     }
     posOffset = (this->dyna.actor.world.rot.y == 0) ? 24.0f : -24.0f;
     if (!Math_StepToF(&this->dyna.actor.world.pos.x, this->dyna.actor.home.pos.x + posOffset, 0.5f)) {
-        BgHakaHuta_SpawnDust(this, globalCtx);
+        BgHakaHuta_SpawnDust(this, play);
     }
     if (this->counter == 0) {
-        BgHakaHuta_PlaySound(this, globalCtx, NA_SE_EV_COFFIN_CAP_BOUND);
+        BgHakaHuta_PlaySound(this, play, NA_SE_EV_COFFIN_CAP_BOUND);
         this->actionFunc = func_8087D720;
     }
 }
 
-void func_8087D720(BgHakaHuta* this, GlobalContext* globalCtx) {
+void func_8087D720(BgHakaHuta* this, PlayState* play) {
     static Vec3f D_8087D958 = { 30.0f, 0.0f, 0.0f };
     static Vec3f D_8087D964 = { 0.03258f, 0.3258f, -0.9449f };
     MtxF mtx;
@@ -179,7 +179,7 @@ void func_8087D720(BgHakaHuta* this, GlobalContext* globalCtx) {
     this->counter++;
     if (this->counter == 6) {
         this->actionFunc = BgHakaHuta_DoNothing;
-        quakeIndex = Quake_Add(GET_ACTIVE_CAM(globalCtx), 3);
+        quakeIndex = Quake_Add(GET_ACTIVE_CAM(play), 3);
         Quake_SetSpeed(quakeIndex, 0x7530);
         Quake_SetQuakeValues(quakeIndex, 4, 0, 0, 0);
         Quake_SetCountdown(quakeIndex, 2);
@@ -202,15 +202,15 @@ void func_8087D720(BgHakaHuta* this, GlobalContext* globalCtx) {
     Matrix_MtxFToYXZRotS(&mtx, &this->dyna.actor.shape.rot, 0);
 }
 
-void BgHakaHuta_DoNothing(BgHakaHuta* this, GlobalContext* globalCtx) {
+void BgHakaHuta_DoNothing(BgHakaHuta* this, PlayState* play) {
 }
 
-void BgHakaHuta_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaHuta_Update(Actor* thisx, PlayState* play) {
     BgHakaHuta* this = (BgHakaHuta*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgHakaHuta_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    Gfx_DrawDListOpa(globalCtx, gBotwCoffinLidDL);
+void BgHakaHuta_Draw(Actor* thisx, PlayState* play) {
+    Gfx_DrawDListOpa(play, gBotwCoffinLidDL);
 }

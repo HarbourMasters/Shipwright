@@ -6,7 +6,7 @@
 
 struct BgMizuUzu;
 
-typedef void (*BgMizuUzuActionFunc)(struct BgMizuUzu*, GlobalContext*);
+typedef void (*BgMizuUzuActionFunc)(struct BgMizuUzu*, PlayState*);
 
 typedef struct BgMizuUzu {
     /* 0x0000 */ DynaPolyActor dyna;

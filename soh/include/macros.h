@@ -1,7 +1,7 @@
 #ifndef MACROS_H
 #define MACROS_H
 
-#include <libultraship/endianness.h>
+#include <endianness.h>
 
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
 #define ARRAY_COUNTU(arr) (u32)(sizeof(arr) / sizeof(arr[0]))
@@ -31,12 +31,16 @@
 
 #define RGBA8(r, g, b, a) ((((r) & 0xFF) << 24) | (((g) & 0xFF) << 16) | (((b) & 0xFF) << 8) | (((a) & 0xFF) << 0))
 
-#define GET_PLAYER(globalCtx) ((Player*)(globalCtx)->actorCtx.actorLists[ACTORCAT_PLAYER].head)
+#define GET_PLAYER(play) ((Player*)(play)->actorCtx.actorLists[ACTORCAT_PLAYER].head)
 
-#define GET_ACTIVE_CAM(globalCtx) ((globalCtx)->cameraPtrs[(globalCtx)->activeCamera])
+#define GET_ACTIVE_CAM(play) ((play)->cameraPtrs[(play)->activeCamera])
 
 #define LINK_IS_ADULT (gSaveContext.linkAge == 0)
 #define LINK_IS_CHILD (gSaveContext.linkAge == 1)
+
+#define CHECK_EQUIPMENT_AGE(i, j) (CVar_GetS32("gTimelessEquipment", 0) || (gEquipAgeReqs[i][j] == 9) || (gEquipAgeReqs[i][j] == ((void)0, gSaveContext.linkAge)))
+#define CHECK_SLOT_AGE(slotIndex) (CVar_GetS32("gTimelessEquipment", 0) || (gSlotAgeReqs[slotIndex] == 9) || gSlotAgeReqs[slotIndex] == ((void)0, gSaveContext.linkAge))
+#define CHECK_ITEM_AGE(itemIndex) (CVar_GetS32("gTimelessEquipment", 0) || (gItemAgeReqs[itemIndex] == 9) || (gItemAgeReqs[itemIndex] == gSaveContext.linkAge))
 
 #define YEARS_CHILD 5
 #define YEARS_ADULT 17
@@ -262,6 +266,16 @@ extern GraphicsContext* __gfxCtx;
 
 #define NUM_TRIALS 6
 #define NUM_SHOP_ITEMS 64
-#define NUM_SCRUBS 35
+#define NUM_SCRUBS 46
+#define FOREST_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_BMORI1) ? 6 : 5)
+#define FIRE_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_HIDAN) ? 5 : 8)
+#define WATER_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_MIZUSIN) ? 2 : 6)
+#define SPIRIT_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_JYASINZOU) ? 7 : 5)
+#define SHADOW_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_HAKADAN) ? 6 : 5)
+#define BOTTOM_OF_THE_WELL_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_HAKADANCH) ? 2 : 3)
+#define GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_MEN) ? 3 : 9)
+#define GERUDO_FORTRESS_SMALL_KEY_MAX 4
+#define GANONS_CASTLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_GANONTIKA) ? 3 : 2)
+#define TREASURE_GAME_SMALL_KEY_MAX 6
 
 #endif

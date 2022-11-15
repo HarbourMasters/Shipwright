@@ -6,7 +6,7 @@
 
 struct BgHidanFirewall;
 
-typedef void (*BgHidanFirewallActionFunc)(struct BgHidanFirewall*, GlobalContext*);
+typedef void (*BgHidanFirewallActionFunc)(struct BgHidanFirewall*, PlayState*);
 
 typedef struct BgHidanFirewall {
     /* 0x0000 */ Actor actor;

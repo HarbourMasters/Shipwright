@@ -5,19 +5,19 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void EnExRuppy_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnExRuppy_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnExRuppy_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnExRuppy_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnExRuppy_Init(Actor* thisx, PlayState* play);
+void EnExRuppy_Destroy(Actor* thisx, PlayState* play);
+void EnExRuppy_Update(Actor* thisx, PlayState* play);
+void EnExRuppy_Draw(Actor* thisx, PlayState* play);
 
-void EnExRuppy_DropIntoWater(EnExRuppy* this, GlobalContext* globalCtx);
-void EnExRuppy_WaitToBlowUp(EnExRuppy* this, GlobalContext* globalCtx);
-void EnExRuppy_WaitAsCollectible(EnExRuppy* this, GlobalContext* globalCtx);
-void EnExRuppy_GalleryTarget(EnExRuppy* this, GlobalContext* globalCtx);
-void EnExRuppy_EnterWater(EnExRuppy* this, GlobalContext* globalCtx);
-void EnExRuppy_Sink(EnExRuppy* this, GlobalContext* globalCtx);
-void EnExRuppy_WaitInGame(EnExRuppy* this, GlobalContext* globalCtx);
-void EnExRuppy_Kill(EnExRuppy* this, GlobalContext* globalCtx);
+void EnExRuppy_DropIntoWater(EnExRuppy* this, PlayState* play);
+void EnExRuppy_WaitToBlowUp(EnExRuppy* this, PlayState* play);
+void EnExRuppy_WaitAsCollectible(EnExRuppy* this, PlayState* play);
+void EnExRuppy_GalleryTarget(EnExRuppy* this, PlayState* play);
+void EnExRuppy_EnterWater(EnExRuppy* this, PlayState* play);
+void EnExRuppy_Sink(EnExRuppy* this, PlayState* play);
+void EnExRuppy_WaitInGame(EnExRuppy* this, PlayState* play);
+void EnExRuppy_Kill(EnExRuppy* this, PlayState* play);
 
 static s16 sEnExRuppyCollectibleTypes[] = {
     ITEM00_RUPEE_GREEN, ITEM00_RUPEE_BLUE, ITEM00_RUPEE_RED, ITEM00_RUPEE_ORANGE, ITEM00_RUPEE_PURPLE,
@@ -41,7 +41,7 @@ const ActorInit En_Ex_Ruppy_InitVars = {
     NULL,
 };
 
-void EnExRuppy_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnExRuppy_Init(Actor* thisx, PlayState* play) {
     EnExRuppy* this = (EnExRuppy*)thisx;
     EnDivingGame* divingGame;
     f32 temp1;
@@ -199,10 +199,10 @@ void EnExRuppy_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnExRuppy_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnExRuppy_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void EnExRuppy_SpawnSparkles(EnExRuppy* this, GlobalContext* globalCtx, s16 numSparkles, s32 movementType) {
+void EnExRuppy_SpawnSparkles(EnExRuppy* this, PlayState* play, s16 numSparkles, s32 movementType) {
     static Vec3f velocities[] = { { 0.0f, 0.1f, 0.0f }, { 0.0f, 0.0f, 0.0f } };
     static Vec3f accelerations[] = { { 0.0f, 0.01f, 0.0f }, { 0.0f, 0.0f, 0.0f } };
     Vec3f pos;
@@ -239,16 +239,16 @@ void EnExRuppy_SpawnSparkles(EnExRuppy* this, GlobalContext* globalCtx, s16 numS
         pos.x = (Rand_ZeroOne() - 0.5f) * 10.0f + this->actor.world.pos.x;
         pos.y = (Rand_ZeroOne() - 0.5f) * 10.0f + (this->actor.world.pos.y + this->unk_160 * 600.0f);
         pos.z = (Rand_ZeroOne() - 0.5f) * 10.0f + this->actor.world.pos.z;
-        EffectSsKiraKira_SpawnDispersed(globalCtx, &pos, &velocity, &accel, &primColor, &envColor, scale, life);
+        EffectSsKiraKira_SpawnDispersed(play, &pos, &velocity, &accel, &primColor, &envColor, scale, life);
     }
 }
 
-void EnExRuppy_DropIntoWater(EnExRuppy* this, GlobalContext* globalCtx) {
+void EnExRuppy_DropIntoWater(EnExRuppy* this, PlayState* play) {
     EnDivingGame* divingGame;
 
     this->actor.shape.rot.y += 0x7A8;
     Math_ApproachF(&this->actor.gravity, -2.0f, 0.3f, 1.0f);
-    EnExRuppy_SpawnSparkles(this, globalCtx, 2, 0);
+    EnExRuppy_SpawnSparkles(this, play, 2, 0);
     func_80078884(NA_SE_EV_RAINBOW_SHOWER - SFX_FLAG);
     divingGame = (EnDivingGame*)this->actor.parent;
     if ((divingGame != NULL) && (divingGame->actor.update != NULL) &&
@@ -262,7 +262,7 @@ void EnExRuppy_DropIntoWater(EnExRuppy* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnExRuppy_EnterWater(EnExRuppy* this, GlobalContext* globalCtx) {
+void EnExRuppy_EnterWater(EnExRuppy* this, PlayState* play) {
     EnDivingGame* divingGame = (EnDivingGame*)this->actor.parent;
     f32 temp_f2;
 
@@ -283,7 +283,7 @@ void EnExRuppy_EnterWater(EnExRuppy* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnExRuppy_Sink(EnExRuppy* this, GlobalContext* globalCtx) {
+void EnExRuppy_Sink(EnExRuppy* this, PlayState* play) {
     EnDivingGame* divingGame;
     Vec3f pos;
     s32 pad;
@@ -293,7 +293,7 @@ void EnExRuppy_Sink(EnExRuppy* this, GlobalContext* globalCtx) {
         pos.y += this->actor.yDistToWater;
         this->actor.velocity.y = -1.0f;
         this->actor.gravity = -0.2f;
-        EffectSsGSplash_Spawn(globalCtx, &pos, 0, 0, 0, 800);
+        EffectSsGSplash_Spawn(play, &pos, 0, 0, 0, 800);
         func_80078914(&this->actor.projectedPos, NA_SE_EV_BOMB_DROP_WATER);
         this->actionFunc = EnExRuppy_WaitInGame;
     }
@@ -304,7 +304,7 @@ void EnExRuppy_Sink(EnExRuppy* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnExRuppy_WaitInGame(EnExRuppy* this, GlobalContext* globalCtx) {
+void EnExRuppy_WaitInGame(EnExRuppy* this, PlayState* play) {
     EnDivingGame* divingGame;
     Vec3f D_80A0B388 = { 0.0f, 0.1f, 0.0f };
     Vec3f D_80A0B394 = { 0.0f, 0.0f, 0.0f };
@@ -312,7 +312,7 @@ void EnExRuppy_WaitInGame(EnExRuppy* this, GlobalContext* globalCtx) {
 
     if (this->timer == 0) {
         this->timer = 10;
-        EffectSsBubble_Spawn(globalCtx, &this->actor.world.pos, 0.0f, 5.0f, 5.0f, Rand_ZeroFloat(0.03f) + 0.07f);
+        EffectSsBubble_Spawn(play, &this->actor.world.pos, 0.0f, 5.0f, 5.0f, Rand_ZeroFloat(0.03f) + 0.07f);
     }
     if (this->actor.parent != NULL) {
         divingGame = (EnDivingGame*)this->actor.parent;
@@ -332,7 +332,7 @@ void EnExRuppy_WaitInGame(EnExRuppy* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnExRuppy_Kill(EnExRuppy* this, GlobalContext* globalCtx) {
+void EnExRuppy_Kill(EnExRuppy* this, PlayState* play) {
     this->invisible += 1;
     this->invisible &= 1; // Net effect is this->invisible = !this->invisible;
     if (this->timer == 0) {
@@ -346,7 +346,7 @@ typedef struct {
     /* 0x226 */ s16 unk_226;
 } EnExRuppyParentActor; // Unclear what actor was intended to spawn this.
 
-void EnExRuppy_WaitToBlowUp(EnExRuppy* this, GlobalContext* globalCtx) {
+void EnExRuppy_WaitToBlowUp(EnExRuppy* this, PlayState* play) {
     EnExRuppyParentActor* parent;
     Vec3f accel = { 0.0f, 0.1f, 0.0f };
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
@@ -374,25 +374,25 @@ void EnExRuppy_WaitToBlowUp(EnExRuppy* this, GlobalContext* globalCtx) {
             explosionScale = 20;
             explosionScaleStep = 6;
         }
-        EffectSsBomb2_SpawnLayered(globalCtx, &this->actor.world.pos, &velocity, &accel, explosionScale,
+        EffectSsBomb2_SpawnLayered(play, &this->actor.world.pos, &velocity, &accel, explosionScale,
                                    explosionScaleStep);
-        func_8002F71C(globalCtx, &this->actor, 2.0f, this->actor.yawTowardsPlayer, 0.0f);
+        func_8002F71C(play, &this->actor, 2.0f, this->actor.yawTowardsPlayer, 0.0f);
         Audio_PlayActorSound2(&this->actor, NA_SE_IT_BOMB_EXPLOSION);
         Actor_Kill(&this->actor);
     }
 }
 
-void EnExRuppy_WaitAsCollectible(EnExRuppy* this, GlobalContext* globalCtx) {
+void EnExRuppy_WaitAsCollectible(EnExRuppy* this, PlayState* play) {
     f32 localConst = 30.0f;
 
     if (this->actor.xyzDistToPlayerSq < SQ(localConst)) {
         func_80078884(NA_SE_SY_GET_RUPY);
-        Item_DropCollectible(globalCtx, &this->actor.world.pos, (sEnExRuppyCollectibleTypes[this->colorIdx] | 0x8000));
+        Item_DropCollectible(play, &this->actor.world.pos, (sEnExRuppyCollectibleTypes[this->colorIdx] | 0x8000));
         Actor_Kill(&this->actor);
     }
 }
 
-void EnExRuppy_GalleryTarget(EnExRuppy* this, GlobalContext* globalCtx) {
+void EnExRuppy_GalleryTarget(EnExRuppy* this, PlayState* play) {
     if (CVar_GetS32("gNewDrops", 0) !=0) {
         if (this->galleryFlag) {
             Math_ApproachF(&this->actor.shape.yOffset, 35.0f, 0.5f, 200.0f);
@@ -408,19 +408,19 @@ void EnExRuppy_GalleryTarget(EnExRuppy* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnExRuppy_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnExRuppy_Update(Actor* thisx, PlayState* play) {
     EnExRuppy* this = (EnExRuppy*)thisx;
 
     this->actor.shape.rot.y += 1960;
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     if (this->timer != 0) {
         this->timer--;
     }
     Actor_MoveForward(&this->actor);
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 20.0f, 20.0f, 50.0f, 0x1C);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 50.0f, 0x1C);
 }
 
-void EnExRuppy_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnExRuppy_Draw(Actor* thisx, PlayState* play) {
     static void* rupeeTextures[] = {
         gRupeeGreenTex, gRupeeBlueTex, gRupeeRedTex, gRupeePinkTex, gRupeeOrangeTex,
     };
@@ -431,23 +431,23 @@ void EnExRuppy_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnExRuppy* this = (EnExRuppy*)thisx;
 
     if (!this->invisible) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
+        OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093D18(globalCtx->state.gfxCtx);
-        func_8002EBCC(thisx, globalCtx, 0);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        func_80093D18(play->state.gfxCtx);
+        func_8002EBCC(thisx, play, 0);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         if (CVar_GetS32("gNewDrops", 0) !=0) {
             if (this->type == 4 && this->colorIdx >= 3) {
                 //For some reason the red rupee target become purple.
                 //when using new drops it will show as Gold and that wrong it need to be red.
                 this->colorIdx = 2;
             }
-            GetItem_Draw(globalCtx, rupeeTexturesNew[this->colorIdx]);
+            GetItem_Draw(play, rupeeTexturesNew[this->colorIdx]);
         } else {
             gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(rupeeTextures[this->colorIdx]));
             gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
         }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        CLOSE_DISPS(play->state.gfxCtx);
     }
 }

@@ -31,7 +31,7 @@ typedef enum {
     /* 5 */ WARP_BLUE_RUTO_STATE_WARPING    // set by warp, after closing dialog
 } DoorWarp1RutoState;
 
-typedef void (*DoorWarp1ActionFunc)(struct DoorWarp1*, GlobalContext*);
+typedef void (*DoorWarp1ActionFunc)(struct DoorWarp1*, PlayState*);
 
 typedef struct DoorWarp1 {
     /* 0x0000 */ Actor actor;

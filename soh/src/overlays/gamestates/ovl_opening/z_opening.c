@@ -11,10 +11,12 @@ void Opening_SetupTitleScreen(OpeningContext* this) {
     this->state.running = false;
     gSaveContext.linkAge = 0;
     gSaveContext.fileNum = 0xFF;
+    gWalkSpeedToggle1 = 0;
+    gWalkSpeedToggle2 = 0;
     Sram_InitDebugSave();
     gSaveContext.cutsceneIndex = 0xFFF3;
     gSaveContext.sceneSetupIndex = 7;
-    SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);
+    SET_NEXT_GAMESTATE(&this->state, Play_Init, PlayState);
 }
 
 void func_80803C5C(OpeningContext* this) {

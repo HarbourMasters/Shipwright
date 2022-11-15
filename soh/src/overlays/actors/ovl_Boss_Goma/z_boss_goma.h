@@ -6,7 +6,7 @@
 
 struct BossGoma;
 
-typedef void (*BossGomaActionFunc)(struct BossGoma*, GlobalContext*);
+typedef void (*BossGomaActionFunc)(struct BossGoma*, PlayState*);
 
 typedef enum {
     /*  0 */ BOSSGOMA_LIMB_NONE,

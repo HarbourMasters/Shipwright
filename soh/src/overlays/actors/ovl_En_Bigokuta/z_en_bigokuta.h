@@ -6,7 +6,7 @@
 
 struct EnBigokuta;
 
-typedef void (*EnBigokutaActionFunc)(struct EnBigokuta*, GlobalContext*);
+typedef void (*EnBigokutaActionFunc)(struct EnBigokuta*, PlayState*);
 
 typedef struct EnBigokuta {
     /* 0x0000 */ Actor actor;

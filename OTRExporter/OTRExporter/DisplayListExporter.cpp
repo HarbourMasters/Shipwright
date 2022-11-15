@@ -3,7 +3,7 @@
 #include "../ZAPD/ZFile.h"
 #include <Utils/MemoryStream.h>
 #include <Utils/BitConverter.h>
-#include "Lib/StrHash64.h"
+#include "StrHash64/StrHash64.h"
 #include "spdlog/spdlog.h"
 #include "PR/ultra64/gbi.h"
 #include <Globals.h>
@@ -882,8 +882,14 @@ std::string OTRExporter_DisplayList::GetPrefix(ZResource* res)
 	std::string prefix = "";
 	std::string xmlPath = StringHelper::Replace(res->parent->GetXmlFilePath().string(), "\\", "/");
 
-	if (StringHelper::Contains(oName, "_scene") || StringHelper::Contains(oName, "_room"))
+	if (StringHelper::Contains(oName, "_scene") || StringHelper::Contains(oName, "_room")) {
 		prefix = "scenes";
+        if (Globals::Instance->rom->IsMQ()) {
+            prefix += "/mq";
+        } else {
+            prefix += "/nonmq";
+        }
+    }
 	else if (StringHelper::Contains(xmlPath, "objects/"))
 		prefix = "objects";
 	else if (StringHelper::Contains(xmlPath, "textures/"))

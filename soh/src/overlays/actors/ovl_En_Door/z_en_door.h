@@ -41,7 +41,7 @@ typedef enum {
 
 struct EnDoor;
 
-typedef void (*EnDoorActionFunc)(struct EnDoor*, GlobalContext*);
+typedef void (*EnDoorActionFunc)(struct EnDoor*, PlayState*);
 
 typedef struct EnDoor {
     /* 0x0000 */ Actor actor;
