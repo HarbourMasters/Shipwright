@@ -448,3 +448,7 @@ _deps
 */extract_assets_cmake*
 /build*
 build.c
+
+# custom assets
+OTRExporter/Custom/*
+custom-music.otr

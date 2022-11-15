@@ -1313,7 +1313,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
 
     int customSeqListSize = 0;
     int startingSeqNum = 110; // 109 is the highest vanilla sequence
-    char** customSeqList = ResourceMgr_ListFiles("assets/audio/sequences/*", &customSeqListSize);
+    char** customSeqList = ResourceMgr_ListFiles("Custom/Music/*", &customSeqListSize);
 
     for (size_t i = startingSeqNum; i < startingSeqNum + customSeqListSize; i++) {
         int j = i - startingSeqNum;
