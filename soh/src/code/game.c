@@ -11,8 +11,8 @@ FaultClient sGameFaultClient;
 u16 sLastButtonPressed;
 int32_t warpTime = 0;
 bool warped = false;
-Vec3f pos;
-int16_t yaw;
+Vec3f playerPos;
+int16_t playerYaw;
 
 // Forward declared, because this in a C++ header.
 int gfx_create_framebuffer(uint32_t width, uint32_t height);
@@ -434,26 +434,26 @@ void GameState_Update(GameState* gameState) {
     //Switches Link's age and respawns him at the last entrance he entered.
     if (CVar_GetS32("gSwitchAge", 0) != 0) {
         CVar_SetS32("gSwitchAge", 0);
-        if (gGlobalCtx) {
-            pos = GET_PLAYER(gGlobalCtx)->actor.world.pos;
-            yaw = GET_PLAYER(gGlobalCtx)->actor.shape.rot.y;
-            gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
-            gGlobalCtx->sceneLoadFlag = 0x14;
-            gGlobalCtx->fadeTransition = 11;
+        if (gPlayState) {
+            playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
+            playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
+            gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
+            gPlayState->sceneLoadFlag = 0x14;
+            gPlayState->fadeTransition = 11;
             gSaveContext.nextTransition = 11;
             warped = true;
-            if (gGlobalCtx->linkAgeOnLoad == 1) {
-                gGlobalCtx->linkAgeOnLoad = 0;
+            if (gPlayState->linkAgeOnLoad == 1) {
+                gPlayState->linkAgeOnLoad = 0;
             } else {
-                gGlobalCtx->linkAgeOnLoad = 1;
+                gPlayState->linkAgeOnLoad = 1;
             }
         }
     }
 
-    if (gGlobalCtx) {
-        if (warped && gGlobalCtx->sceneLoadFlag != 0x0014 && gSaveContext.nextTransition == 255) {
-            GET_PLAYER(gGlobalCtx)->actor.shape.rot.y = yaw;
-            GET_PLAYER(gGlobalCtx)->actor.world.pos = pos;
+    if (gPlayState) {
+        if (warped && gPlayState->sceneLoadFlag != 0x0014 && gSaveContext.nextTransition == 255) {
+            GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
+            GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
             warped = false;
         }
     }
