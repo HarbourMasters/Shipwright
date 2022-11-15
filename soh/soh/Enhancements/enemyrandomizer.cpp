@@ -130,7 +130,7 @@ extern "C" uint8_t IsEnemyFoundToRandomize(PlayState* play, int actorId = 0, int
                     return (param == -256 || param == 768);
                 // Only randomize initial floormaster actor (it can split and does some spawning on init).
                 case ACTOR_EN_FLOORMAS:
-                    return (param == 0);
+                    return (param == 0 || param == -32768);
                 // Only randomize the initial eggs, not the enemies that spawn from them.
                 case ACTOR_EN_GOMA:
                     return ((param >= 0 && param <= 6) || param == 8);
