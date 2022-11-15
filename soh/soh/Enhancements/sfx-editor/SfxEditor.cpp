@@ -247,7 +247,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         if (ImGui::BeginCombo(hiddenKey.c_str(), std::get<0>(map.at(currentValue)).c_str())) {
             for (const auto& [value, seqData] : map) {
                 const auto& [name, sfxKey, seqType] = seqData;
-                if (seqType != type) {
+                if (~(seqType) & type) {
                     continue;
                 }
 
@@ -370,7 +370,7 @@ extern "C" void SfxEditor_AddSequence(char *otrPath, uint16_t seqNum) {
     std::string fileName = splitName[splitName.size() - 1];
     std::vector<std::string> splitFileName = StringHelper::Split(fileName, "_");
     std::string sequenceName = splitFileName[0];
-    SeqType type = SEQ_BGM_WORLD;
+    SeqType type = SEQ_BGM_CUSTOM;
     if (splitFileName[splitFileName.size() - 1] == "fanfare" || splitFileName[splitFileName.size() - 1] == "Fanfare") {
         type = SEQ_FANFARE;
     }
