@@ -1,6 +1,6 @@
 /*
  * Much of the code here was borrowed from https://github.com/gamestabled/OoT3D_Randomizer/blob/main/code/src/entrance.c
- * It's been adapted for SoH to use our gPlayState vs their gPlayState with slightly different named properties, and our enums for some scenes/entrances.
+ * It's been adapted for SoH to use our gPlayState vs their gGlobalContext with slightly different named properties, and our enums for some scenes/entrances.
  * 
  * Unlike 3DS rando, we need to be able to support the user loading up vanilla and rando saves, so the logic around
  * modifying the entrance table requires that we save the original table and reset whenever loading a vanilla save.

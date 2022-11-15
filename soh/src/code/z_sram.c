@@ -205,6 +205,10 @@ void Sram_OpenSave() {
             gSaveContext.savedSceneNum == SCENE_KAKUSIANA) {
             Entrance_SetSavewarpEntrance();
         }
+    } else {
+        // When going from a rando save to a vanilla save within the same game instance
+        // we need to reset the entrance table back to its vanilla state
+        Entrance_ResetEntranceTable();
     }
 
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);
