@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <string>
+#include <vector>
 #include "../../../include/ultra64.h"
 #include "../../../include/z64item.h"
 #include <memory>
