@@ -3151,6 +3151,12 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         (actorId == ACTOR_EN_OKUTA && play->sceneNum == SCENE_SPOT10)) {
         return NULL;
     }
+
+    // Hack to change a pot in Spirit Temple that holds a Deku Shield to not hold anything.
+    // This Deku Shield doesn't normally spawn in authentic gameplay because of object dependency.
+    if (actorId == ACTOR_OBJ_TSUBO && params == 24597) {
+        params = 24067;
+    }
     
     uint8_t tryRandomizeEnemy = 
         CVar_GetS32("gRandomizedEnemies", 0) && 
