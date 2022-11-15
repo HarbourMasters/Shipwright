@@ -4,9 +4,10 @@
 #include <string.h>
 
 #include "soh/Enhancements/gameconsole.h"
-#include <libultraship/ImGuiImpl.h>
+#include <ImGuiImpl.h>
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/debugconsole.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
 
 #include <time.h>
@@ -158,9 +159,15 @@ void Play_Destroy(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
     Player* player = GET_PLAYER(play);
 
+
     // Only initialize the frame counter when exiting the title screen
     if (gSaveContext.fileNum == 0xFF) {
         play->gameplayFrames = 0;
+    }
+
+    // In ER, remove link from epona when entering somewhere that doesn't support epona
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
+        Entrance_HandleEponaState();
     }
 
     play->state.gfxCtx->callback = NULL;
@@ -517,6 +524,7 @@ void Play_Init(GameState* thisx) {
         play,
         gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene,
         gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.entranceIndex)].spawn);
+
     osSyncPrintf("\nSCENE_NO=%d COUNTER=%d\n", ((void)0, gSaveContext.entranceIndex), gSaveContext.sceneSetupIndex);
 
     Cutscene_HandleEntranceTriggers(play);
@@ -1761,6 +1769,10 @@ void* Play_LoadFile(PlayState* play, RomFile* file) {
 }
 
 void Play_InitEnvironment(PlayState* play, s16 skyboxId) {
+    // For entrance rando, ensure the correct weather state and sky mode is applied
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+        Entrance_OverrideWeatherState();
+    }
     Skybox_Init(&play->state, &play->skyboxCtx, skyboxId);
     Environment_Init(play, &play->envCtx, 0);
 }
@@ -1788,6 +1800,10 @@ void Play_InitScene(PlayState* play, s32 spawn)
 void Play_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
 
     OTRPlay_SpawnScene(play, sceneNum, spawn);
+
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+        Entrance_OverrideSpawnScene(sceneNum, spawn);
+    }
 }
 
 void func_800C016C(PlayState* play, Vec3f* src, Vec3f* dest) {

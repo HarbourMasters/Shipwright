@@ -1458,9 +1458,6 @@ s32 Camera_Free(Camera* camera) {
     if (RELOAD_PARAMS) {
         OLib_Vec3fDiffToVecSphGeo(&spA8, &camera->at, &camera->eye);
 
-        camera->play->camX = spA8.yaw;
-        camera->play->camY = spA8.pitch;
-
         CameraModeValue* values = sCameraSettings[camera->setting].cameraModes[camera->mode].values;
         f32 yNormal = (1.0f + PCT(OREG(46))) - (PCT(OREG(46)) * (68.0f / playerHeight));
 
@@ -1483,7 +1480,7 @@ s32 Camera_Free(Camera* camera) {
 
     sCameraInterfaceFlags = 1;
 
-    camera->animState = 1;
+    camera->animState = 0;
 
     f32 newCamX = -D_8015BD7C->state.input[0].cur.right_stick_x * 10.0f * (CVar_GetFloat("gCameraSensitivity", 1.0f));
     f32 newCamY = D_8015BD7C->state.input[0].cur.right_stick_y * 10.0f * (CVar_GetFloat("gCameraSensitivity", 1.0f));

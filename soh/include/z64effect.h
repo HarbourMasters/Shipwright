@@ -1,7 +1,7 @@
 #ifndef Z64EFFECT_H
 #define Z64EFFECT_H
 
-#include <libultraship/color.h>
+#include <color.h>
 
 struct GraphicsContext;
 struct PlayState;

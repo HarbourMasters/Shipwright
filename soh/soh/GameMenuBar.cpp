@@ -11,15 +11,15 @@
 #include <ImGui/imgui.h>
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <ImGui/imgui_internal.h>
-#include <libultraship/ImGuiImpl.h>
-#include <libultraship/Cvar.h>
-#include <libultraship/Hooks.h>
+#include <ImGuiImpl.h>
+#include <Cvar.h>
+#include <Hooks.h>
 #include <ultra64/types.h>
 #include <ultra64/pi.h>
 #include <ultra64/sptask.h>
 
 #ifdef __SWITCH__
-#include <libultraship/SwitchImpl.h>
+#include <port/switch/SwitchImpl.h>
 #endif
 
 #include "UIWidgets.hpp"
@@ -540,16 +540,22 @@ namespace GameMenuBar {
                 auto audioBackends = SohImGui::GetAvailableAudioBackends();
                 auto currentAudioBackend = SohImGui::GetCurrentAudioBackend();
 
+                if (audioBackends.size() <= 1) {
+                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+                }
                 if (ImGui::BeginCombo("##AApi", currentAudioBackend.second)) {
-                    if (audioBackends.size() > 1) {
-                        for (uint8_t i = 0; i < audioBackends.size(); i++) {
-                            if (ImGui::Selectable(audioBackends[i].second, audioBackends[i] == currentAudioBackend)) {
-                                SohImGui::SetCurrentAudioBackend(i, audioBackends[i]);
-                            }
+                    for (uint8_t i = 0; i < audioBackends.size(); i++) {
+                        if (ImGui::Selectable(audioBackends[i].second, audioBackends[i] == currentAudioBackend)) {
+                            SohImGui::SetCurrentAudioBackend(i, audioBackends[i]);
                         }
                     }
 
                     ImGui::EndCombo();
+                }
+                if (audioBackends.size() <= 1) {
+                    ImGui::PopItemFlag();
+                    ImGui::PopStyleVar(1);
                 }
 
                 ImGui::EndMenu();
@@ -662,16 +668,22 @@ namespace GameMenuBar {
                 auto renderingBackends = SohImGui::GetAvailableRenderingBackends();
                 auto currentRenderingBackend = SohImGui::GetCurrentRenderingBackend();
 
+                if (renderingBackends.size() <= 1) {
+                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+                }
                 if (ImGui::BeginCombo("##RApi", currentRenderingBackend.second)) {
-                    if (renderingBackends.size() > 1) {
-                        for (uint8_t i = 0; i < renderingBackends.size(); i++) {
-                            if (ImGui::Selectable(renderingBackends[i].second, renderingBackends[i] == currentRenderingBackend)) {
-                                SohImGui::SetCurrentRenderingBackend(i, renderingBackends[i]);
-                            }
+                    for (uint8_t i = 0; i < renderingBackends.size(); i++) {
+                        if (ImGui::Selectable(renderingBackends[i].second, renderingBackends[i] == currentRenderingBackend)) {
+                            SohImGui::SetCurrentRenderingBackend(i, renderingBackends[i]);
                         }
                     }
 
                     ImGui::EndCombo();
+                }
+                if (renderingBackends.size() <= 1) {
+                    ImGui::PopItemFlag();
+                    ImGui::PopStyleVar(1);
                 }
 
                 EXPERIMENTAL();
@@ -1457,6 +1469,11 @@ namespace GameMenuBar {
                     ImGui::PopStyleVar(1);
                 }
             }
+
+            if (ImGui::Button("Change Age")) {
+                CVar_SetS32("gSwitchAge", 1);
+            }
+            UIWidgets::Tooltip("Switches links age and reloads the area.");   
 
             ImGui::EndMenu();
         }

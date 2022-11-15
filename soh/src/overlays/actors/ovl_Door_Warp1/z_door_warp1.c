@@ -1,5 +1,6 @@
 #include "z_door_warp1.h"
 #include "objects/object_warp1/object_warp1.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 #define FLAGS 0
 
@@ -580,6 +581,11 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
             play->nextEntranceIndex = 0x10E;
             gSaveContext.nextCutsceneIndex = 0;
         }
+
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES)) {
+            Entrance_OverrideBlueWarp();
+        }
+
         osSyncPrintf("\n\n\nおわりおわり");
         play->sceneLoadFlag = 0x14;
         play->fadeTransition = 7;
@@ -680,6 +686,10 @@ void DoorWarp1_RutoWarpOut(DoorWarp1* this, PlayState* play) {
             Item_Give(play, ITEM_ZORA_SAPPHIRE);
             play->nextEntranceIndex = 0x10E;
             gSaveContext.nextCutsceneIndex = 0xFFF0;
+        }
+
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES)) {
+            Entrance_OverrideBlueWarp();
         }
 
         play->sceneLoadFlag = 0x14;
@@ -890,6 +900,11 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.nextCutsceneIndex = 0;
             }
         }
+
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES)) {
+            Entrance_OverrideBlueWarp();
+        }
+
         play->sceneLoadFlag = 0x14;
         play->fadeTransition = 3;
         gSaveContext.nextTransition = 7;
