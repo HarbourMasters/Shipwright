@@ -3194,11 +3194,11 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
             }
 
             // Get randomized enemy ID and parameter.
-            enemyEntry newEnemy = GetRandomizedEnemy();
+            enemyEntry newEnemy = GetRandomizedEnemy(posX, posY, posZ);
 
             // While randomized enemy isn't allowed in certain situations, randomize again.
             while (!IsEnemyAllowedToSpawn(play, newEnemy)) {
-                newEnemy = GetRandomizedEnemy();
+                newEnemy = GetRandomizedEnemy(posX, posY, posZ);
             }
 
             actorId = newEnemy.enemyId;

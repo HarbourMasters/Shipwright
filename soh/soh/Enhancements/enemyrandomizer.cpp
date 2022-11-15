@@ -111,8 +111,9 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_CROW       // Guay
 };
 
-extern "C" enemyEntry GetRandomizedEnemy(void) {
-    return randomizedEnemySpawnTable[rand() % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
+extern "C" enemyEntry GetRandomizedEnemy(f32 seed1, f32 seed2, f32 seed3) {
+    uint32_t randomNumber = rand() + (int)seed1 + (int)seed2 + (int)seed3;
+    return randomizedEnemySpawnTable[randomNumber % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
 }
 
 extern "C" uint8_t IsEnemyFoundToRandomize(PlayState* play, int actorId = 0, int param = 0, f32 posX = 0) {
