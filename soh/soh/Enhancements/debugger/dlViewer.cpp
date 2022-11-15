@@ -1,16 +1,16 @@
 #include "actorViewer.h"
 #include "../../util.h"
 #include "../../UIWidgets.hpp"
-#include <libultraship/ImGuiImpl.h>
-#include "libultraship/ResourceMgr.h"
-#include "libultraship/DisplayList.h"
+#include <ImGuiImpl.h>
+#include "ResourceMgr.h"
+#include "DisplayList.h"
 #include "../../OTRGlobals.h"
 
 #include <array>
 #include <bit>
 #include <map>
 #include <string>
-#include <libultraship/Cvar.h>
+#include <Cvar.h>
 
 extern "C" {
 #include <z64.h>

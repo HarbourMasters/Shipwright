@@ -1,12 +1,12 @@
 #include "gameplaystats.h"
 
-#include "libultraship/ImGuiImpl.h"
+#include "ImGuiImpl.h"
 
 #include <map>
 #include <string>
 #include <vector>
-#include <libultraship/Cvar.h>
-#include <libultraship/Hooks.h>
+#include <Cvar.h>
+#include <Hooks.h>
 
 extern "C" {
 #include <z64.h>
