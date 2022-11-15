@@ -14,6 +14,7 @@
 #include "vt.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 static void* sEquipmentFRATexs[] = {
     gPauseEquipment00FRATex, gPauseEquipment01Tex, gPauseEquipment02Tex, gPauseEquipment03Tex, gPauseEquipment04Tex,
@@ -4213,6 +4214,10 @@ void KaleidoScope_Update(PlayState* play)
                     if (pauseCtx->promptChoice == 0) {
                         Play_TriggerRespawn(play);
                         gSaveContext.respawnFlag = -2;
+                        // In ER, handle death warp to last entrance from grottos
+                        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+                            Grotto_ForceGrottoReturn();
+                        }
                         gSaveContext.nextTransition = 2;
                         gSaveContext.health = 0x30;
                         Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);

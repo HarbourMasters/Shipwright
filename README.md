@@ -128,7 +128,7 @@ To get this step working on your fork, you'll need to add a machine to your own 
 - Confirm that `zapd.exe` exists in the `/assets/extractor` folder
 
 ## Nightly Builds
-Nightly builds of Ship of Harkinian are available [here](https://builds.shipofharkinian.com/)
+Nightly builds of Ship of Harkinian are available here: [Windows](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-windows.zip), [macOS](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-mac.zip), [Linux](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-linux.zip), [Switch](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-switch.zip), [Wii U](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-wiiu.zip)
 
 
 ## The Harbour Masters Are...

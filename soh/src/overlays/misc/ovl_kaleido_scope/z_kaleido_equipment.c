@@ -671,29 +671,29 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                 if (drawGreyItems &&
                     ((sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_SILVER || 
                     (sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1) == ITEM_GAUNTLETS_GOLD)) { // Grey Out the Gauntlets
-                    gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
-                    gsSPGrayscale(POLY_KAL_DISP++, true);
+                    gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
+                    gSPGrayscale(POLY_KAL_DISP++, true);
                 }
                 KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[sChildUpgradeItemBases[i] + point - 1], 32, 32, 0);
-                gsSPGrayscale(POLY_KAL_DISP++, false);
+                gSPGrayscale(POLY_KAL_DISP++, false);
             }
         } else {
             if ((i == 0) && (CUR_UPG_VALUE(sAdultUpgrades[i]) == 0)) { // If the player doesn't have the bow, load the current slingshot ammo upgrade instead.
                 if (drawGreyItems) {
-                    gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255); // Grey Out Slingshot Bullet Bags
-                    gsSPGrayscale(POLY_KAL_DISP++, true);
+                    gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255); // Grey Out Slingshot Bullet Bags
+                    gSPGrayscale(POLY_KAL_DISP++, true);
                 }
                 KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[sChildUpgradeItemBases[i] + CUR_UPG_VALUE(sChildUpgrades[i]) - 1], 32, 32, 0);
-                gsSPGrayscale(POLY_KAL_DISP++, false);
+                gSPGrayscale(POLY_KAL_DISP++, false);
             } else if (CUR_UPG_VALUE(sAdultUpgrades[i]) != 0) {
                 if (drawGreyItems &&
                     ((sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1) == ITEM_BRACELET &&
                         !(gSaveContext.n64ddFlag))) { // Grey Out the Goron Bracelet when Not Randomized
-                    gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
-                    gsSPGrayscale(POLY_KAL_DISP++, true);
+                    gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
+                    gSPGrayscale(POLY_KAL_DISP++, true);
                 }
                 KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1], 32, 32, 0);
-                gsSPGrayscale(POLY_KAL_DISP++, false);
+                gSPGrayscale(POLY_KAL_DISP++, false);
             }
         }
         // Draw inventory screen icons
@@ -702,8 +702,8 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             int itemId = ITEM_SWORD_KOKIRI + temp;
             bool age_restricted = !CHECK_ITEM_AGE(itemId);
             if (age_restricted) {
-                gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
-                gsSPGrayscale(POLY_KAL_DISP++, true);
+                gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
+                gSPGrayscale(POLY_KAL_DISP++, true);
             }
             if (((u32)i == 0) && (k == 2) && (gSaveContext.bgsFlag != 0)) {
                 KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gBiggoronSwordIconTex, 32, 32, point);
@@ -712,7 +712,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             } else if (gBitFlags[bit] & gSaveContext.inventory.equipment) {
                 KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[itemId], 32, 32, point);
             }
-            gsSPGrayscale(POLY_KAL_DISP++, false);
+            gSPGrayscale(POLY_KAL_DISP++, false);
         }
     }
 

@@ -3,7 +3,7 @@
 #include "../ZAPD/ZFile.h"
 #include <Utils/MemoryStream.h>
 #include <Utils/BitConverter.h>
-#include "Lib/StrHash64.h"
+#include "StrHash64/StrHash64.h"
 #include "spdlog/spdlog.h"
 #include "PR/ultra64/gbi.h"
 #include <Globals.h>
