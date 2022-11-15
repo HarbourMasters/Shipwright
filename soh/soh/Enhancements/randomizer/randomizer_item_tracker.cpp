@@ -871,7 +871,7 @@ void DrawLocations() {
                                 txt = "Skipped";
                             else
                                 txt = OTRGlobals::Instance->gRandomizer
-                                       ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[locationIt.second.rc].get.rgID][LANGUAGE_ENG]; // TODO Language
+                                       ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[locationIt.second.rc].get.rgID][gSaveContext.language];
                             ImGui::SameLine();
                             ImGui::Text("(%s)", txt.c_str());
                             ImGui::PopStyleColor();
