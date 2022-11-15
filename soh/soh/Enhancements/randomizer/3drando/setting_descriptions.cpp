@@ -309,6 +309,7 @@ string_view tokensOverworld           = "This only shuffles the GS locations tha
                                         "outside of dungeons.";                            //
 string_view tokensAllTokens           = "Effectively adds 100 new locations for items to\n"//
                                         "appear.";                                         //
+
 /*------------------------------                                                           //
 |        SCRUB SHUFFLE         |                                                           //
 ------------------------------*/                                                           //
@@ -417,7 +418,7 @@ string_view chestMinigameDesc         = "The 5 key chests in the Treasure Chest 
 ------------------------------*/                                                           //
 string_view shuffle100GsDesc          = "The cursed rich man in the House of Skulltula\n"  //
                                         "will give you a random item for collecting all\n" //
-                                        "100 Golden Skull Tokens, then he will give you\n" //
+                                        "100 Gold Skulltula Tokens, then he will give you\n"
                                         "Huge Rupees.";                                    //
                                                                                            //
 /*------------------------------                                                           //
@@ -520,6 +521,9 @@ string_view ganonKeyAnywhere          = "Ganon's Castle Boss Key can appear anyw
 string_view ganonKeyLACS              = "These settings put the boss key on the Light Arrow"
                                         "Cutscene location, from Zelda in Temple of Time as"
                                         "adult, with differing requirements.";             //
+string_view ganonKey100GS             = "Ganon's Castle Boss Key is given to you by the\n" //
+                                        "cursed rich man in the House of Skulltula after\n"//
+                                        "you collect all 100 Gold Skulltula Tokens.";      //
 /*------------------------------                                                           //
 |        LACS CONDITIONS       |                                                           //
 ------------------------------*/                                                           //

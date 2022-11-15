@@ -2750,6 +2750,13 @@ void HintTable_Init() {
               /*spanish*/ "Y el héroe recibirá la llave del #señor del mal# cuando haya completado la #Trifuerza#." },
     });
 
+    hintTable[GANON_BK_SKULLTULA_HINT] = HintText::GanonsBossKey({
+        // obscure text
+        Text { "And the %revil one%w's key will be&provided by the cursed rich man&once %r100 Gold Skulltula Tokens%w&are retrieved.",
+              /*french*/ HINT_TEXT_NEEDS_TRANSLATION_FR,
+              /*spanish*/ "Y el rico maldito entregará la llave&del #señor de mal# tras obtener&100 símbolos de skulltula dorada#."},
+    });
+
     /*--------------------------
     |      LACS HINT TEXT      |
     ---------------------------*/
