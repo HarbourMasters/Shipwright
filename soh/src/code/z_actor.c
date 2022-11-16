@@ -3143,26 +3143,27 @@ int gMapLoading = 0;
 
 Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ,
                    s16 rotX, s16 rotY, s16 rotZ, s16 params, s16 canRandomize) {
-
-    // Hack to remove enemies that wrongfully spawn because of bypassing object dependency with enemy randomizer on.
-    // This should probably be handled on OTR generation in the future when object dependency is fully removed.
-    // Remove bats and skulltulas from graveyard.
-    // Remove octorok in lost woods.
-    if (((actorId == ACTOR_EN_FIREFLY || (actorId == ACTOR_EN_SW && params == 0)) && play->sceneNum == SCENE_SPOT02) ||
-        (actorId == ACTOR_EN_OKUTA && play->sceneNum == SCENE_SPOT10)) {
-        return NULL;
-    }
-
-    // Hack to change a pot in Spirit Temple that holds a Deku Shield to not hold anything.
-    // This should probably be handled on OTR generation in the future when object dependency is fully removed.
-    // This Deku Shield doesn't normally spawn in authentic gameplay because of object dependency.
-    if (actorId == ACTOR_OBJ_TSUBO && params == 24597) {
-        params = 24067;
-    }
     
     uint8_t tryRandomizeEnemy = CVar_GetS32("gRandomizedEnemies", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2 && canRandomize;
 
     if (tryRandomizeEnemy) {
+
+        // Hack to remove enemies that wrongfully spawn because of bypassing object dependency with enemy randomizer on.
+        // This should probably be handled on OTR generation in the future when object dependency is fully removed.
+        // Remove bats and skulltulas from graveyard.
+        // Remove octorok in lost woods.
+        if (((actorId == ACTOR_EN_FIREFLY || (actorId == ACTOR_EN_SW && params == 0)) &&
+             play->sceneNum == SCENE_SPOT02) ||
+            (actorId == ACTOR_EN_OKUTA && play->sceneNum == SCENE_SPOT10)) {
+            return NULL;
+        }
+
+        // Hack to change a pot in Spirit Temple that holds a Deku Shield to not hold anything.
+        // This should probably be handled on OTR generation in the future when object dependency is fully removed.
+        // This Deku Shield doesn't normally spawn in authentic gameplay because of object dependency.
+        if (actorId == ACTOR_OBJ_TSUBO && params == 24597) {
+            params = 24067;
+        }
 
         RandomizedEnemy newEnemy = GetRandomizedEnemy(play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
         actorId = newEnemy.id;
