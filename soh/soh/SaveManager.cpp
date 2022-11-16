@@ -463,6 +463,7 @@ void SaveManager::InitFileNormal() {
     gSaveContext.sohStats.heartContainers = 0;
     gSaveContext.sohStats.hasObtainedWeirdEgg = 0;
     gSaveContext.sohStats.weirdEggHasHatched = 0;
+    gSaveContext.sohStats.activeMaskItemId = 0;
     for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys); dungeon++) {
         gSaveContext.sohStats.dungeonKeys[dungeon] = 0;
     }
@@ -631,6 +632,7 @@ void SaveManager::InitFileDebug() {
     gSaveContext.sohStats.heartContainers = 8;
     gSaveContext.sohStats.hasObtainedWeirdEgg = 0;
     gSaveContext.sohStats.weirdEggHasHatched = 0;
+    gSaveContext.sohStats.activeMaskItemId = 0;
     for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys); dungeon++) {
         gSaveContext.sohStats.dungeonKeys[dungeon] = 8;
     }
@@ -1239,6 +1241,7 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadData("heartContainers", gSaveContext.sohStats.heartContainers);
         SaveManager::Instance->LoadData("hasObtainedWeirdEgg", gSaveContext.sohStats.hasObtainedWeirdEgg);
         SaveManager::Instance->LoadData("weirdEggHasHatched", gSaveContext.sohStats.weirdEggHasHatched);
+        SaveManager::Instance->LoadData("activeMaskItemId", gSaveContext.sohStats.activeMaskItemId);
         SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.dungeonKeys[i]);
         });
@@ -1416,6 +1419,7 @@ void SaveManager::SaveBase() {
         SaveManager::Instance->SaveData("heartContainers", gSaveContext.sohStats.heartContainers);
         SaveManager::Instance->SaveData("hasObtainedWeirdEgg", gSaveContext.sohStats.hasObtainedWeirdEgg);
         SaveManager::Instance->SaveData("weirdEggHasHatched", gSaveContext.sohStats.weirdEggHasHatched);
+        SaveManager::Instance->SaveData("activeMaskItemId", gSaveContext.sohStats.activeMaskItemId);
         SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
             SaveManager::Instance->SaveData("", gSaveContext.sohStats.dungeonKeys[i]);
         });
