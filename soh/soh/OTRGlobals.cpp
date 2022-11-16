@@ -1714,24 +1714,7 @@ extern "C" int16_t OTRGetRectDimensionFromRightEdge(float v) {
 }
 
 extern "C" bool AudioPlayer_Init(void) {
-    if (OTRGlobals::Instance->context->GetAudioPlayer() == nullptr){
-        return false;
-    }
-
-    if (!OTRGlobals::Instance->context->GetAudioPlayer()->Init()) {
-        auto audioBackends = SohImGui::GetAvailableAudioBackends();
-
-        // loop over available audio apis if current fails
-        for (uint8_t i = 0; i < audioBackends.size(); i++) {
-            SohImGui::SetCurrentAudioBackend(i, audioBackends[i]);
-            OTRGlobals::Instance->context->InitializeAudioPlayer(audioBackends[i].first);
-            if (OTRGlobals::Instance->context->GetAudioPlayer()->Init()) {
-                return true;
-            }
-        }
-    }
-
-    return false;
+    return OTRGlobals::Instance->context->StartAudioPlayer();
 }
 
 extern "C" int AudioPlayer_Buffered(void) {
