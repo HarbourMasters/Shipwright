@@ -206,7 +206,7 @@ Actor* BgBreakwall_SpawnFragments(PlayState* play, BgBreakwall* this, Vec3f* pos
             for (k = 3; k >= 0; k--) {
                 Matrix_MultVec3f(&actorPosList[j][k], &actorPos);
                 actor =
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_A_OBJ, Rand_CenteredFloat(20.0f, true) + actorPos.x,
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_A_OBJ, Rand_CenteredFloat(20.0f) + actorPos.x,
                                 Rand_CenteredFloat(20.0f) + actorPos.y, Rand_CenteredFloat(20.0f) + actorPos.z,
                                 actorRotList[k].x, actorRotList[k].y + angle1, actorRotList[k].z, 0x000B, true);
 
