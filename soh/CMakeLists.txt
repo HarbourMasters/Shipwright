@@ -182,6 +182,7 @@ set(Header_Files__soh__Enhancements__sfx_editor
 source_group("Header Files\\soh\\Enhancements\\sfx-editor" FILES ${Header_Files__soh__Enhancements__sfx_editor})
 
 set(Header_Files__soh__Enhancements__debugger
+    "soh/Enhancements/debugger/dlViewer.h"
     "soh/Enhancements/debugger/actorViewer.h"
     "soh/Enhancements/debugger/colViewer.h"
     "soh/Enhancements/debugger/debugger.h"
@@ -505,6 +506,7 @@ set(Source_Files__soh__Enhancements__sfx_editor
 source_group("Source Files\\soh\\Enhancements\\sfx-editor" FILES ${Source_Files__soh__Enhancements__sfx_editor})
 
 set(Source_Files__soh__Enhancements__debugger
+    "soh/Enhancements/debugger/dlViewer.cpp"
     "soh/Enhancements/debugger/actorViewer.cpp"
     "soh/Enhancements/debugger/colViewer.cpp"
     "soh/Enhancements/debugger/debugger.cpp"
