@@ -1,11 +1,4 @@
 #include "enemyrandomizer.h"
-#include "global.h"
-
-extern "C" {
-#include <z64.h>
-}
-
-#include "macros.h"
 
 static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
     { ACTOR_EN_FIREFLY, 2 },    // Regular Keese
@@ -112,7 +105,7 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_CROW       // Guay
 };
 
-extern "C" RandomizedEnemy GetRandomizedEnemy(PlayState* play, uint16_t actorId, f32 posX, f32 posY, f32 posZ, s16 rotX, s16 rotY, s16 rotZ, s16 params) {
+extern "C" RandomizedEnemy GetRandomizedEnemy(PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ, s16 rotX, s16 rotY, s16 rotZ, s16 params) {
 
     if (IsEnemyFoundToRandomize(play->sceneNum, actorId, params, posX)) {
 
@@ -198,12 +191,12 @@ extern "C" RandomizedEnemy GetRandomizedEnemy(PlayState* play, uint16_t actorId,
     return newEnemy;
 }
 
-EnemyEntry GetRandomizedEnemyEntry(float seed1, float seed2, float seed3) {
+EnemyEntry GetRandomizedEnemyEntry(f32 seed1, f32 seed2, f32 seed3) {
     uint32_t randomNumber = rand() + (int)seed1 + (int)seed2 + (int)seed3;
     return randomizedEnemySpawnTable[randomNumber % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
 }
 
-uint8_t IsEnemyFoundToRandomize(uint8_t sceneNum, uint8_t actorId, uint8_t params, float posX) {
+uint8_t IsEnemyFoundToRandomize(s16 sceneNum, s16 actorId, s16 params, f32 posX) {
 
     for (int i = 0; i < ARRAY_COUNT(enemiesToRandomize); i++) {
 
@@ -266,7 +259,7 @@ uint8_t IsEnemyFoundToRandomize(uint8_t sceneNum, uint8_t actorId, uint8_t param
     return 0;
 }
 
-uint8_t IsEnemyAllowedToSpawn(uint8_t sceneNum, EnemyEntry enemy) {
+uint8_t IsEnemyAllowedToSpawn(s16 sceneNum, EnemyEntry enemy) {
 
     switch (sceneNum) {
         // Don't allow Dark Link in areas with void out zones as it voids out the player as well.
