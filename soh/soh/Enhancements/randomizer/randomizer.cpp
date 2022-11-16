@@ -233,6 +233,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
     { "Start with Consumables", RSK_STARTING_CONSUMABLES },
     { "Start with Max Rupees", RSK_FULL_WALLETS },
+    { "Gold Skulltula Tokens", RSK_STARTING_SKULLTULA_TOKEN },
     { "Timesaver Settings:Cuccos to return", RSK_CUCCO_COUNT },
     { "Timesaver Settings:Big Poe Target Count", RSK_BIG_POE_COUNT },
     { "Timesaver Settings:Skip Child Stealth", RSK_SKIP_CHILD_STEALTH },
@@ -670,6 +671,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_TRIAL_COUNT:
                     case RSK_BIG_POE_COUNT:
                     case RSK_CUCCO_COUNT:
+                    case RSK_STARTING_SKULLTULA_TOKEN:
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         break;
@@ -2556,6 +2558,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD] = CVar_GetS32("gRandomizeShuffleKokiriSword", 0) ||
                                              CVar_GetS32("gRandomizeStartingKokiriSword", 0);
     cvarSettings[RSK_STARTING_DEKU_SHIELD] = CVar_GetS32("gRandomizeStartingDekuShield", 0);
+    cvarSettings[RSK_STARTING_SKULLTULA_TOKEN] = CVar_GetS32("gRandomizeStartingSkulltulaToken", 0);
     cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVar_GetS32("gRandomizeStartingMapsCompasses", 2);
     cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0);
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
@@ -3948,6 +3951,8 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
                 UIWidgets::EnhancementCheckbox(Settings::StartingConsumables.GetName().c_str(),
                                               "gRandomizeStartingConsumables");
+                UIWidgets::PaddedSeparator();
+                UIWidgets::EnhancementSliderInt("Gold Skulltula Tokens: %d", "##RandoStartingSkulltulaToken", "gRandomizeStartingSkulltulaToken", 0, 100, "", 0, true);
                 UIWidgets::PaddedSeparator();
 
                 ImGui::EndChild();
