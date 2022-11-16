@@ -2507,7 +2507,7 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
         refActor = &GET_PLAYER(play)->actor;
         KREG(0) = 0;
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, refActor->world.pos.x,
-                    refActor->world.pos.y + 100.0f, refActor->world.pos.z, 0, 0, 0, 0, 1);
+                    refActor->world.pos.y + 100.0f, refActor->world.pos.z, 0, 0, 0, 1, 1);
     }
 
     sp80 = &D_80116068[0];
@@ -3244,19 +3244,17 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
             osSyncPrintf(VT_FGCOL(GREEN));
             osSyncPrintf("OVL(a):Seg:%08x-%08x Ram:%08x-%08x Off:%08x %s\n", overlayEntry->vramStart,
                          overlayEntry->vramEnd, overlayEntry->loadedRamAddr,
-                         (uintptr_t)overlayEntry->loadedRamAddr + (uintptr_t)overlayEntry->vramEnd -
-                             (uintptr_t)overlayEntry->vramStart,
+                         (uintptr_t)overlayEntry->loadedRamAddr + (uintptr_t)overlayEntry->vramEnd - (uintptr_t)overlayEntry->vramStart,
                          (uintptr_t)overlayEntry->vramStart - (uintptr_t)overlayEntry->loadedRamAddr, name);
             osSyncPrintf(VT_RST);
 
             overlayEntry->numLoaded = 0;
         }
 
-        actorInit =
-            (void*)(uintptr_t)((overlayEntry->initInfo != NULL) ? (void*)((uintptr_t)overlayEntry->initInfo -
-                                                                          ((intptr_t)overlayEntry->vramStart -
-                                                                           (intptr_t)overlayEntry->loadedRamAddr))
-                                                                : NULL);
+        actorInit = (void*)(uintptr_t)((overlayEntry->initInfo != NULL)
+                                     ? (void*)((uintptr_t)overlayEntry->initInfo -
+                                               ((intptr_t)overlayEntry->vramStart - (intptr_t)overlayEntry->loadedRamAddr))
+                                     : NULL);
     }
 
     objBankIndex = Object_GetIndex(&play->objectCtx, actorInit->objectId);
