@@ -1,7 +1,7 @@
 #include "debugSaveEditor.h"
 #include "../../util.h"
 #include "../../OTRGlobals.h"
-#include <libultraship/ImGuiImpl.h>
+#include <ImGuiImpl.h>
 #include "../../UIWidgets.hpp"
 
 #include <spdlog/fmt/fmt.h>
@@ -9,7 +9,7 @@
 #include <bit>
 #include <map>
 #include <string>
-#include <libultraship/Cvar.h>
+#include <Cvar.h>
 
 extern "C" {
 #include <z64.h>

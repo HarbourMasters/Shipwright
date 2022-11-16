@@ -1,4 +1,4 @@
-#include <libultraship/CrashHandler.h>
+#include <CrashHandler.h>
 
 
 #ifdef __cplusplus

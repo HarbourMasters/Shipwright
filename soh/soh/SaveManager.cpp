@@ -4,11 +4,11 @@
 #include "z64.h"
 #include "functions.h"
 #include "macros.h"
-#include <libultraship/Hooks.h>
-#include <libultraship/Cvar.h>
+#include <Hooks.h>
+#include <Cvar.h>
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
 
 #include <fstream>
 #include <filesystem>
@@ -137,6 +137,16 @@ void SaveManager::LoadRandomizerVersion2() {
         });
     });
 
+    SaveManager::Instance->LoadArray("entrances", ARRAY_COUNT(gSaveContext.entranceOverrides), [&](size_t i) {
+        SaveManager::Instance->LoadStruct("", [&]() {
+            SaveManager::Instance->LoadData("index", gSaveContext.entranceOverrides[i].index);
+            SaveManager::Instance->LoadData("destination", gSaveContext.entranceOverrides[i].destination);
+            SaveManager::Instance->LoadData("blueWarp", gSaveContext.entranceOverrides[i].blueWarp);
+            SaveManager::Instance->LoadData("override", gSaveContext.entranceOverrides[i].override);
+            SaveManager::Instance->LoadData("overrideDestination", gSaveContext.entranceOverrides[i].overrideDestination);
+        });
+    });
+
     SaveManager::Instance->LoadArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.seedIcons[i]);
     });
@@ -206,6 +216,16 @@ void SaveManager::SaveRandomizer() {
             SaveManager::Instance->SaveData("rgID", gSaveContext.itemLocations[i].get.rgID);
             SaveManager::Instance->SaveData("fakeRgID", gSaveContext.itemLocations[i].get.fakeRgID);
             SaveManager::Instance->SaveData("trickName", gSaveContext.itemLocations[i].get.trickName);
+        });
+    });
+
+    SaveManager::Instance->SaveArray("entrances", ARRAY_COUNT(gSaveContext.entranceOverrides), [&](size_t i) {
+        SaveManager::Instance->SaveStruct("", [&]() {
+            SaveManager::Instance->SaveData("index", gSaveContext.entranceOverrides[i].index);
+            SaveManager::Instance->SaveData("destination", gSaveContext.entranceOverrides[i].destination);
+            SaveManager::Instance->SaveData("blueWarp", gSaveContext.entranceOverrides[i].blueWarp);
+            SaveManager::Instance->SaveData("override", gSaveContext.entranceOverrides[i].override);
+            SaveManager::Instance->SaveData("overrideDestination", gSaveContext.entranceOverrides[i].overrideDestination);
         });
     });
 
