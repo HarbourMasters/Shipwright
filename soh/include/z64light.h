@@ -4,7 +4,7 @@
 #include "ultra64.h"
 #include "ultra64/gbi.h"
 #include "z64math.h"
-#include <libultraship/color.h>
+#include <color.h>
 
 typedef struct {
     /* 0x0 */ s16 x;

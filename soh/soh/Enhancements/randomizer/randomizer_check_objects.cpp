@@ -1,7 +1,7 @@
 #include "randomizer_check_objects.h"
 #include <map>
 #include <string>
-#include <libultraship/Cvar.h>
+#include <Cvar.h>
 #include "z64.h"
 
 /*

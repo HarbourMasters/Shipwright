@@ -5,6 +5,7 @@
 #include "textures/icon_item_static/icon_item_static.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/Enhancements/item_use_from_inventory.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 #ifdef _MSC_VER
 #include <stdlib.h>
@@ -6366,6 +6367,12 @@ void Interface_Update(PlayState* play) {
 
             gSaveContext.respawnFlag = -2;
             play->nextEntranceIndex = gSaveContext.entranceIndex;
+
+            // In ER, handle sun song respawn from last entrance from grottos
+            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+                Grotto_ForceGrottoReturn();
+            }
+
             play->sceneLoadFlag = 0x14;
             gSaveContext.sunsSongState = SUNSSONG_INACTIVE;
             func_800F6964(30);

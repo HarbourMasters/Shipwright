@@ -1,5 +1,5 @@
 #include "global.h"
-#include <libultraship/Cvar.h>
+#include <Cvar.h>
 
 extern bool gUseLegacySD;
 

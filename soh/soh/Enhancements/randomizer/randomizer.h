@@ -28,6 +28,7 @@ class Randomizer {
     void ParseRequiredTrialsFile(const char* spoilerFileName);
     void ParseMasterQuestDungeonsFile(const char* spoilerFileName);
     void ParseItemLocationsFile(const char* spoilerFileName, bool silent);
+    void ParseEntranceDataFile(const char* spoilerFileName, bool silent);
     bool IsItemVanilla(RandomizerGet randoGet);
     GetItemEntry GetItemEntryFromRGData(RandomizerGetData rgData, GetItemID ogItemId, bool checkObtainability = true);
 
@@ -58,6 +59,7 @@ class Randomizer {
     void LoadRequiredTrials(const char* spoilerFileName);
     void LoadMasterQuestDungeons(const char* spoilerFileName);
     bool IsTrialRequired(RandomizerInf trial);
+    void LoadEntranceOverrides(const char* spoilerFileName, bool silent);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
     RandomizerCheck GetCheckFromRandomizerInf(RandomizerInf randomizerInf);

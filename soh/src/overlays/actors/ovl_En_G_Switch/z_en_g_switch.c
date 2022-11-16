@@ -503,15 +503,15 @@ void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play) {
             if (this->type == ENGSWITCH_TARGET_RUPEE) {
                 GetItem_Draw(play, sRupeeTexturesNew[this->colorIdx]);
             } else {
-                gsDPSetGrayscaleColor(POLY_OPA_DISP++, 255, 255, 255, 255);
-                gsSPGrayscale(POLY_OPA_DISP++, true);
+                gDPSetGrayscaleColor(POLY_OPA_DISP++, 255, 255, 255, 255);
+                gSPGrayscale(POLY_OPA_DISP++, true);
                 func_80093D18(play->state.gfxCtx);
                 gSPDisplayList(POLY_OPA_DISP++, gGiRupeeInnerDL);
                 gSPDisplayList(POLY_OPA_DISP++, gGiGoldRupeeInnerColorDL);
                 func_80093D84(play->state.gfxCtx);
                 gSPDisplayList(POLY_OPA_DISP++, gGiRupeeOuterDL);
                 gSPDisplayList(POLY_OPA_DISP++, gGiGoldRupeeOuterColorDL);
-                gsSPGrayscale(POLY_OPA_DISP++, false);
+                gSPGrayscale(POLY_OPA_DISP++, false);
             }
         } else {
             gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTextures[this->colorIdx]));

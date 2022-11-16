@@ -1,9 +1,9 @@
 #ifdef ENABLE_CROWD_CONTROL
 
 #include "CrowdControl.h"
-#include <libultraship/Cvar.h>
-#include <libultraship/Console.h>
-#include <libultraship/ImGuiImpl.h>
+#include <Cvar.h>
+#include <Console.h>
+#include <ImGuiImpl.h>
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/fmt.h>
