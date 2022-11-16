@@ -6,7 +6,7 @@
 
 struct EnKz;
 
-typedef void (*EnKzActionFunc)(struct EnKz*, GlobalContext*);
+typedef void (*EnKzActionFunc)(struct EnKz*, PlayState*);
 
 typedef struct EnKz {
     /* 0x0000 */ Actor actor;

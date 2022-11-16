@@ -6,7 +6,7 @@
 
 struct BgGndFiremeiro;
 
-typedef void (*BgGndFiremeiroActionFunc)(struct BgGndFiremeiro*, GlobalContext*);
+typedef void (*BgGndFiremeiroActionFunc)(struct BgGndFiremeiro*, PlayState*);
 
 typedef struct BgGndFiremeiro {
     /* 0x0000 */ DynaPolyActor dyna;

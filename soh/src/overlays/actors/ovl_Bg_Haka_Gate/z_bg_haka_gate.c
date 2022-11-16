@@ -30,22 +30,22 @@
 
 #define SKULL_OF_TRUTH_FOUND 100
 
-void BgHakaGate_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaGate_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaGate_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgHakaGate_Draw(Actor* this, GlobalContext* globalCtx);
+void BgHakaGate_Init(Actor* thisx, PlayState* play);
+void BgHakaGate_Destroy(Actor* thisx, PlayState* play);
+void BgHakaGate_Update(Actor* thisx, PlayState* play);
+void BgHakaGate_Draw(Actor* this, PlayState* play);
 void BgHakaGate_Reset(void);
 
-void BgHakaGate_DoNothing(BgHakaGate* this, GlobalContext* globalCtx);
-void BgHakaGate_StatueInactive(BgHakaGate* this, GlobalContext* globalCtx);
-void BgHakaGate_StatueIdle(BgHakaGate* this, GlobalContext* globalCtx);
-void BgHakaGate_StatueTurn(BgHakaGate* this, GlobalContext* globalCtx);
-void BgHakaGate_FloorClosed(BgHakaGate* this, GlobalContext* globalCtx);
-void BgHakaGate_FloorOpen(BgHakaGate* this, GlobalContext* globalCtx);
-void BgHakaGate_GateWait(BgHakaGate* this, GlobalContext* globalCtx);
-void BgHakaGate_GateOpen(BgHakaGate* this, GlobalContext* globalCtx);
-void BgHakaGate_SkullOfTruth(BgHakaGate* this, GlobalContext* globalCtx);
-void BgHakaGate_FalseSkull(BgHakaGate* this, GlobalContext* globalCtx);
+void BgHakaGate_DoNothing(BgHakaGate* this, PlayState* play);
+void BgHakaGate_StatueInactive(BgHakaGate* this, PlayState* play);
+void BgHakaGate_StatueIdle(BgHakaGate* this, PlayState* play);
+void BgHakaGate_StatueTurn(BgHakaGate* this, PlayState* play);
+void BgHakaGate_FloorClosed(BgHakaGate* this, PlayState* play);
+void BgHakaGate_FloorOpen(BgHakaGate* this, PlayState* play);
+void BgHakaGate_GateWait(BgHakaGate* this, PlayState* play);
+void BgHakaGate_GateOpen(BgHakaGate* this, PlayState* play);
+void BgHakaGate_SkullOfTruth(BgHakaGate* this, PlayState* play);
+void BgHakaGate_FalseSkull(BgHakaGate* this, PlayState* play);
 
 static s16 sSkullOfTruthRotY = 0x100;
 static u8 sBgPoEventPuzzleState = 1;
@@ -70,7 +70,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void BgHakaGate_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaGate_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgHakaGate* this = (BgHakaGate*)thisx;
     CollisionHeader* colHeader = NULL;
@@ -86,7 +86,7 @@ void BgHakaGate_Init(Actor* thisx, GlobalContext* globalCtx) {
             if ((Rand_ZeroOne() * 3.0f) < sBgPoEventPuzzleState) {
                 this->vIsSkullOfTruth = true;
                 sSkullOfTruthRotY = thisx->shape.rot.y + 0x8000;
-                if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
+                if (Flags_GetSwitch(play, this->switchFlag)) {
                     this->actionFunc = BgHakaGate_DoNothing;
                 } else {
                     this->actionFunc = BgHakaGate_SkullOfTruth;
@@ -100,7 +100,7 @@ void BgHakaGate_Init(Actor* thisx, GlobalContext* globalCtx) {
         }
         this->vScrollTimer = Rand_ZeroOne() * 20.0f;
         thisx->flags |= ACTOR_FLAG_4;
-        if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
+        if (Flags_GetSwitch(play, this->switchFlag)) {
             this->vFlameScale = 350;
         }
     } else {
@@ -108,21 +108,21 @@ void BgHakaGate_Init(Actor* thisx, GlobalContext* globalCtx) {
             CollisionHeader_GetVirtual(&object_haka_objects_Col_0131C4, &colHeader);
             this->vTimer = 0;
             sStatueDistToPlayer = 0.0f;
-            if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
+            if (Flags_GetSwitch(play, this->switchFlag)) {
                 this->actionFunc = BgHakaGate_StatueInactive;
             } else {
                 this->actionFunc = BgHakaGate_StatueIdle;
             }
         } else if (thisx->params == BGHAKAGATE_FLOOR) {
             CollisionHeader_GetVirtual(&object_haka_objects_Col_010E10, &colHeader);
-            if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
+            if (Flags_GetSwitch(play, this->switchFlag)) {
                 this->actionFunc = BgHakaGate_DoNothing;
             } else {
                 this->actionFunc = BgHakaGate_FloorClosed;
             }
         } else { // BGHAKAGATE_GATE
             CollisionHeader_GetVirtual(&object_haka_objects_Col_00A938, &colHeader);
-            if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
+            if (Flags_GetSwitch(play, this->switchFlag)) {
                 this->actionFunc = BgHakaGate_DoNothing;
                 thisx->world.pos.y += 80.0f;
             } else {
@@ -131,26 +131,26 @@ void BgHakaGate_Init(Actor* thisx, GlobalContext* globalCtx) {
                 this->actionFunc = BgHakaGate_GateWait;
             }
         }
-        this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, thisx, colHeader);
+        this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
     }
 }
 
-void BgHakaGate_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaGate_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     BgHakaGate* this = (BgHakaGate*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
     if (this->dyna.actor.params == BGHAKAGATE_STATUE) {
         sSkullOfTruthRotY = 0x100;
         sBgPoEventPuzzleState = 1;
     }
 }
 
-void BgHakaGate_DoNothing(BgHakaGate* this, GlobalContext* globalCtx) {
+void BgHakaGate_DoNothing(BgHakaGate* this, PlayState* play) {
 }
 
-void BgHakaGate_StatueInactive(BgHakaGate* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void BgHakaGate_StatueInactive(BgHakaGate* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     if (this->dyna.unk_150 != 0.0f) {
         player->stateFlags2 &= ~0x10;
@@ -158,8 +158,8 @@ void BgHakaGate_StatueInactive(BgHakaGate* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgHakaGate_StatueIdle(BgHakaGate* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void BgHakaGate_StatueIdle(BgHakaGate* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     s32 linkDirection;
     f32 forceDirection;
 
@@ -187,8 +187,8 @@ void BgHakaGate_StatueIdle(BgHakaGate* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgHakaGate_StatueTurn(BgHakaGate* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void BgHakaGate_StatueTurn(BgHakaGate* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     s32 turnFinished;
     s16 turnAngle;
 
@@ -220,9 +220,9 @@ void BgHakaGate_StatueTurn(BgHakaGate* this, GlobalContext* globalCtx) {
     func_8002F974(&this->dyna.actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);
 }
 
-void BgHakaGate_FloorClosed(BgHakaGate* this, GlobalContext* globalCtx) {
+void BgHakaGate_FloorClosed(BgHakaGate* this, PlayState* play) {
     if ((sStatueDistToPlayer > 1.0f) && (sStatueRotY != 0)) {
-        Player* player = GET_PLAYER(globalCtx);
+        Player* player = GET_PLAYER(play);
         f32 radialDist;
         f32 angDist;
         f32 cos = Math_CosS(sStatueRotY);
@@ -238,13 +238,13 @@ void BgHakaGate_FloorClosed(BgHakaGate* this, GlobalContext* globalCtx) {
 
             sStatueDistToPlayer = 0.0f;
             if (ABS(yawDiff) < 0x80) {
-                Flags_SetSwitch(globalCtx, this->switchFlag);
+                Flags_SetSwitch(play, this->switchFlag);
                 sBgPoEventPuzzleState = SKULL_OF_TRUTH_FOUND;
                 this->actionFunc = BgHakaGate_DoNothing;
             } else {
                 func_80078884(NA_SE_SY_ERROR);
                 Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_GROUND_GATE_OPEN);
-                func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+                func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
                 this->vTimer = 60;
                 this->actionFunc = BgHakaGate_FloorOpen;
             }
@@ -252,13 +252,13 @@ void BgHakaGate_FloorClosed(BgHakaGate* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgHakaGate_FloorOpen(BgHakaGate* this, GlobalContext* globalCtx) {
+void BgHakaGate_FloorOpen(BgHakaGate* this, PlayState* play) {
     if (this->vTimer != 0) {
         this->vTimer--;
     }
     if (this->vTimer == 0) {
         if (Math_ScaledStepToS(&this->vOpenAngle, 0, 0x800)) {
-            func_8003EC50(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+            func_8003EC50(play, &play->colCtx.dyna, this->dyna.bgId);
             this->actionFunc = BgHakaGate_FloorClosed;
         }
     } else {
@@ -266,14 +266,14 @@ void BgHakaGate_FloorOpen(BgHakaGate* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgHakaGate_GateWait(BgHakaGate* this, GlobalContext* globalCtx) {
-    if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
-        OnePointCutscene_Attention(globalCtx, &this->dyna.actor);
+void BgHakaGate_GateWait(BgHakaGate* this, PlayState* play) {
+    if (Flags_GetSwitch(play, this->switchFlag)) {
+        OnePointCutscene_Attention(play, &this->dyna.actor);
         this->actionFunc = BgHakaGate_GateOpen;
     }
 }
 
-void BgHakaGate_GateOpen(BgHakaGate* this, GlobalContext* globalCtx) {
+void BgHakaGate_GateOpen(BgHakaGate* this, PlayState* play) {
     if (Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y + 80.0f, 1.0f)) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_METALDOOR_STOP);
         this->dyna.actor.flags &= ~ACTOR_FLAG_4;
@@ -283,59 +283,59 @@ void BgHakaGate_GateOpen(BgHakaGate* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgHakaGate_SkullOfTruth(BgHakaGate* this, GlobalContext* globalCtx) {
-    if (Flags_GetSwitch(globalCtx, this->switchFlag) && Math_StepToS(&this->vFlameScale, 350, 20)) {
+void BgHakaGate_SkullOfTruth(BgHakaGate* this, PlayState* play) {
+    if (Flags_GetSwitch(play, this->switchFlag) && Math_StepToS(&this->vFlameScale, 350, 20)) {
         this->actionFunc = BgHakaGate_DoNothing;
     }
 }
 
-void BgHakaGate_FalseSkull(BgHakaGate* this, GlobalContext* globalCtx) {
-    if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
+void BgHakaGate_FalseSkull(BgHakaGate* this, PlayState* play) {
+    if (Flags_GetSwitch(play, this->switchFlag)) {
         Math_StepToS(&this->vFlameScale, 350, 20);
     }
-    if (globalCtx->actorCtx.lensActive) {
+    if (play->actorCtx.lensActive) {
         this->dyna.actor.flags |= ACTOR_FLAG_7;
     } else {
         this->dyna.actor.flags &= ~ACTOR_FLAG_7;
     }
 }
 
-void BgHakaGate_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaGate_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     BgHakaGate* this = (BgHakaGate*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     if (this->dyna.actor.params == BGHAKAGATE_SKULL) {
         this->vScrollTimer++;
     }
 }
 
-void BgHakaGate_DrawFlame(BgHakaGate* this, GlobalContext* globalCtx) {
+void BgHakaGate_DrawFlame(BgHakaGate* this, PlayState* play) {
     Actor* thisx = &this->dyna.actor;
     f32 scale;
 
     if (this->vFlameScale > 0) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
+        OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093D84(globalCtx->state.gfxCtx);
+        func_80093D84(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
+                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
                                     (this->vScrollTimer * -20) & 0x1FF, 0x20, 0x80));
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 0, 255);
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);
 
         Matrix_Translate(thisx->world.pos.x, thisx->world.pos.y + 15.0f, thisx->world.pos.z, MTXMODE_NEW);
-        Matrix_RotateY(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) * (M_PI / 0x8000), MTXMODE_APPLY);
+        Matrix_RotateY(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) * (M_PI / 0x8000), MTXMODE_APPLY);
         scale = this->vFlameScale * 0.00001f;
         Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        CLOSE_DISPS(play->state.gfxCtx);
     }
 }
 
-void BgHakaGate_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgHakaGate_Draw(Actor* thisx, PlayState* play) {
     static Gfx* displayLists[] = {
         object_haka_objects_DL_012270,
         object_haka_objects_DL_010A10,
@@ -346,32 +346,32 @@ void BgHakaGate_Draw(Actor* thisx, GlobalContext* globalCtx) {
     MtxF currentMtxF;
 
     if (CHECK_FLAG_ALL(thisx->flags, ACTOR_FLAG_7)) {
-        Gfx_DrawDListXlu(globalCtx, object_haka_objects_DL_00F1B0);
+        Gfx_DrawDListXlu(play, object_haka_objects_DL_00F1B0);
     } else {
-        func_80093D18(globalCtx->state.gfxCtx);
+        func_80093D18(play->state.gfxCtx);
         if (thisx->params == BGHAKAGATE_FLOOR) {
-            OPEN_DISPS(globalCtx->state.gfxCtx);
+            OPEN_DISPS(play->state.gfxCtx);
             Matrix_Get(&currentMtxF);
             Matrix_Translate(0.0f, 0.0f, -2000.0f, MTXMODE_APPLY);
             Matrix_RotateX(this->vOpenAngle * (M_PI / 0x8000), MTXMODE_APPLY);
             Matrix_Translate(0.0f, 0.0f, 2000.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, object_haka_objects_DL_010A10);
             Matrix_Put(&currentMtxF);
             Matrix_Translate(0.0f, 0.0f, 2000.0f, MTXMODE_APPLY);
             Matrix_RotateX(-this->vOpenAngle * (M_PI / 0x8000), MTXMODE_APPLY);
             Matrix_Translate(0.0f, 0.0f, -2000.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, object_haka_objects_DL_010C10);
-            CLOSE_DISPS(globalCtx->state.gfxCtx);
+            CLOSE_DISPS(play->state.gfxCtx);
         } else {
-            Gfx_DrawDListOpa(globalCtx, displayLists[thisx->params]);
+            Gfx_DrawDListOpa(play, displayLists[thisx->params]);
         }
     }
     if (thisx->params == BGHAKAGATE_SKULL) {
-        BgHakaGate_DrawFlame(this, globalCtx);
+        BgHakaGate_DrawFlame(this, play);
     }
 }
 

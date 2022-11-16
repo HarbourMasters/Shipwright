@@ -9,19 +9,19 @@
 
 #define FLAGS 0
 
-void BgSpot15Rrbox_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot15Rrbox_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot15Rrbox_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot15Rrbox_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgSpot15Rrbox_Init(Actor* thisx, PlayState* play);
+void BgSpot15Rrbox_Destroy(Actor* thisx, PlayState* play);
+void BgSpot15Rrbox_Update(Actor* thisx, PlayState* play);
+void BgSpot15Rrbox_Draw(Actor* thisx, PlayState* play);
 
-void func_808B4084(BgSpot15Rrbox* this, GlobalContext* globalCtx);
-void func_808B40AC(BgSpot15Rrbox* this, GlobalContext* globalCtx);
-void func_808B4194(BgSpot15Rrbox* this, GlobalContext* globalCtx);
-void func_808B4380(BgSpot15Rrbox* this, GlobalContext* globalCtx);
-void func_808B43D0(BgSpot15Rrbox* this, GlobalContext* globalCtx);
-void func_808B44B8(BgSpot15Rrbox* this, GlobalContext* globalCtx);
-void func_808B4178(BgSpot15Rrbox* this, GlobalContext* globalCtx);
-void func_808B44CC(BgSpot15Rrbox* this, GlobalContext* globalCtx);
+void func_808B4084(BgSpot15Rrbox* this, PlayState* play);
+void func_808B40AC(BgSpot15Rrbox* this, PlayState* play);
+void func_808B4194(BgSpot15Rrbox* this, PlayState* play);
+void func_808B4380(BgSpot15Rrbox* this, PlayState* play);
+void func_808B43D0(BgSpot15Rrbox* this, PlayState* play);
+void func_808B44B8(BgSpot15Rrbox* this, PlayState* play);
+void func_808B4178(BgSpot15Rrbox* this, PlayState* play);
+void func_808B44CC(BgSpot15Rrbox* this, PlayState* play);
 
 static s16 D_808B4590 = 0;
 
@@ -55,7 +55,7 @@ static Vec3f D_808B45DC[] = {
     { 29.99f, 0.01f, 29.99f },  { 0.0f, 0.01f, 0.0f },
 };
 
-void func_808B3960(BgSpot15Rrbox* this, GlobalContext* globalCtx, CollisionHeader* collision, s32 flags) {
+void func_808B3960(BgSpot15Rrbox* this, PlayState* play, CollisionHeader* collision, s32 flags) {
     s32 pad;
     CollisionHeader* colHeader = NULL;
     u32 pad2;
@@ -63,7 +63,7 @@ void func_808B3960(BgSpot15Rrbox* this, GlobalContext* globalCtx, CollisionHeade
     DynaPolyActor_Init(&this->dyna, flags);
     CollisionHeader_GetVirtual(collision, &colHeader);
 
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 
     if (this->dyna.bgId == BG_ACTOR_MAX) {
         osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
@@ -81,8 +81,8 @@ void func_808B3A34(BgSpot15Rrbox* this) {
     this->bgId = BG_ACTOR_MAX;
 }
 
-s32 func_808B3A40(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
-    DynaPolyActor* dynaPolyActor = DynaPoly_GetActor(&globalCtx->colCtx, this->bgId);
+s32 func_808B3A40(BgSpot15Rrbox* this, PlayState* play) {
+    DynaPolyActor* dynaPolyActor = DynaPoly_GetActor(&play->colCtx, this->bgId);
 
     if ((dynaPolyActor != NULL) &&
         Math3D_Dist2DSq(dynaPolyActor->actor.world.pos.x, dynaPolyActor->actor.world.pos.z,
@@ -92,13 +92,13 @@ s32 func_808B3A40(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
     return false;
 }
 
-s32 func_808B3AAC(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
+s32 func_808B3AAC(BgSpot15Rrbox* this, PlayState* play) {
     s16 rotY;
     Actor* actor = &this->dyna.actor;
 
-    if (globalCtx->sceneNum == SCENE_SOUKO) {
+    if (play->sceneNum == SCENE_SOUKO) {
         return true;
-    } else if (func_808B3A40(this, globalCtx)) {
+    } else if (func_808B3A40(this, play)) {
         return false;
     }
 
@@ -118,30 +118,30 @@ s32 func_808B3AAC(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
     return true;
 }
 
-void BgSpot15Rrbox_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot15Rrbox_Init(Actor* thisx, PlayState* play) {
     BgSpot15Rrbox* this = (BgSpot15Rrbox*)thisx;
 
-    func_808B3960(this, globalCtx, &gLonLonMilkCrateCol, DPM_UNK);
+    func_808B3960(this, play, &gLonLonMilkCrateCol, DPM_UNK);
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     func_808B3A34(this);
-    if (Flags_GetSwitch(globalCtx, (this->dyna.actor.params & 0x3F))) {
-        func_808B44B8(this, globalCtx);
+    if (Flags_GetSwitch(play, (this->dyna.actor.params & 0x3F))) {
+        func_808B44B8(this, play);
         this->dyna.actor.world.pos = D_808B45C4[D_808B4590];
         D_808B4590++;
     } else {
-        func_808B4084(this, globalCtx);
+        func_808B4084(this, play);
     }
     osSyncPrintf("(spot15 ロンロン木箱)(arg_data 0x%04x)\n", this->dyna.actor.params);
 }
 
-void BgSpot15Rrbox_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot15Rrbox_Destroy(Actor* thisx, PlayState* play) {
     BgSpot15Rrbox* this = (BgSpot15Rrbox*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
     D_808B4590 = 0;
 }
 
-s32 func_808B3CA0(BgSpot15Rrbox* this, GlobalContext* globalCtx, s32 arg2) {
+s32 func_808B3CA0(BgSpot15Rrbox* this, PlayState* play, s32 arg2) {
     f32 chkDist = 0.0f;
     Vec3f actorPosition;
     Vec3f actorScale;
@@ -158,7 +158,7 @@ s32 func_808B3CA0(BgSpot15Rrbox* this, GlobalContext* globalCtx, s32 arg2) {
     actorPosition.y += this->dyna.actor.prevPos.y;
     actorPosition.z += this->dyna.actor.world.pos.z;
 
-    this->dyna.actor.floorHeight = BgCheck_EntityRaycastFloor6(&globalCtx->colCtx, &this->dyna.actor.floorPoly,
+    this->dyna.actor.floorHeight = BgCheck_EntityRaycastFloor6(&play->colCtx, &this->dyna.actor.floorPoly,
                                                                &this->bgId, &this->dyna.actor, &actorPosition, chkDist);
 
     if ((this->dyna.actor.floorHeight - this->dyna.actor.world.pos.y) >= -0.001f) {
@@ -168,7 +168,7 @@ s32 func_808B3CA0(BgSpot15Rrbox* this, GlobalContext* globalCtx, s32 arg2) {
     return false;
 }
 
-f32 func_808B3DDC(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
+f32 func_808B3DDC(BgSpot15Rrbox* this, PlayState* play) {
     s32 i;
     Vec3f position;
     Vec3f scale;
@@ -189,7 +189,7 @@ f32 func_808B3DDC(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
         position.y += actor->prevPos.y;
         position.z += actor->world.pos.z;
 
-        yIntersect = BgCheck_EntityRaycastFloor6(&globalCtx->colCtx, &actor->floorPoly, &bgId, actor, &position, 0);
+        yIntersect = BgCheck_EntityRaycastFloor6(&play->colCtx, &actor->floorPoly, &bgId, actor, &position, 0);
 
         if (returnValue < yIntersect) {
             returnValue = yIntersect;
@@ -199,31 +199,31 @@ f32 func_808B3DDC(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
     return returnValue;
 }
 
-s32 func_808B3F58(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
-    if (func_808B3CA0(this, globalCtx, 0)) {
+s32 func_808B3F58(BgSpot15Rrbox* this, PlayState* play) {
+    if (func_808B3CA0(this, play, 0)) {
         return true;
     }
-    if (func_808B3CA0(this, globalCtx, 1)) {
+    if (func_808B3CA0(this, play, 1)) {
         return true;
     }
-    if (func_808B3CA0(this, globalCtx, 2)) {
+    if (func_808B3CA0(this, play, 2)) {
         return true;
     }
-    if (func_808B3CA0(this, globalCtx, 3)) {
+    if (func_808B3CA0(this, play, 3)) {
         return true;
     }
-    if (func_808B3CA0(this, globalCtx, 4)) {
+    if (func_808B3CA0(this, play, 4)) {
         return true;
     }
     return false;
 }
 
-s32 func_808B4010(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
-    return !func_800435D8(globalCtx, &this->dyna, this->dyna.actor.scale.x * 290.0f,
+s32 func_808B4010(BgSpot15Rrbox* this, PlayState* play) {
+    return !func_800435D8(play, &this->dyna, this->dyna.actor.scale.x * 290.0f,
                           this->dyna.actor.scale.x * 290.0f + 20.0f, 1.0f);
 }
 
-void func_808B4084(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
+void func_808B4084(BgSpot15Rrbox* this, PlayState* play) {
     this->actionFunc = func_808B40AC;
     this->dyna.actor.gravity = 0.0f;
     this->dyna.actor.velocity.x = 0.0f;
@@ -231,13 +231,13 @@ void func_808B4084(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
     this->dyna.actor.velocity.z = 0.0f;
 }
 
-void func_808B40AC(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_808B40AC(BgSpot15Rrbox* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     if (this->unk_168 <= 0 && fabsf(this->dyna.unk_150) > 0.001f) {
-        if (func_808B3AAC(this, globalCtx) && !func_808B4010(this, globalCtx)) {
+        if (func_808B3AAC(this, play) && !func_808B4010(this, play)) {
             this->unk_17C = this->dyna.unk_150;
-            func_808B4178(this, globalCtx);
+            func_808B4178(this, play);
         } else {
             player->stateFlags2 &= ~0x10;
             this->dyna.unk_150 = 0.0f;
@@ -248,14 +248,14 @@ void func_808B40AC(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_808B4178(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
+void func_808B4178(BgSpot15Rrbox* this, PlayState* play) {
     this->actionFunc = func_808B4194;
     this->dyna.actor.gravity = 0.0f;
 }
 
-void func_808B4194(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
+void func_808B4194(BgSpot15Rrbox* this, PlayState* play) {
     f32 sign;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     f32 tempUnk178;
     s32 approxFResult;
     Actor* actor = &this->dyna.actor;
@@ -272,20 +272,20 @@ void func_808B4194(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
     actor->world.pos.x = actor->home.pos.x + (tempUnk178 * this->unk_16C);
     actor->world.pos.z = actor->home.pos.z + (tempUnk178 * this->unk_170);
 
-    if (!func_808B3F58(this, globalCtx)) {
+    if (!func_808B3F58(this, play)) {
         actor->home.pos.x = actor->world.pos.x;
         actor->home.pos.z = actor->world.pos.z;
         player->stateFlags2 &= ~0x10;
         this->dyna.unk_150 = 0.0f;
         this->unk_178 = 0.0f;
         this->unk_174 = 0.0f;
-        func_808B4380(this, globalCtx);
+        func_808B4380(this, play);
     } else if (approxFResult) {
-        player = GET_PLAYER(globalCtx);
-        if (func_808B4010(this, globalCtx)) {
+        player = GET_PLAYER(play);
+        if (func_808B4010(this, play)) {
             Audio_PlayActorSound2(actor, NA_SE_EV_WOOD_BOUND);
         }
-        if (func_808B3A40(this, globalCtx)) {
+        if (func_808B3A40(this, play)) {
             func_80078884(NA_SE_SY_CORRECT_CHIME);
         }
         actor->home.pos.x = actor->world.pos.x;
@@ -295,23 +295,23 @@ void func_808B4194(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
         this->unk_178 = 0.0f;
         this->unk_174 = 0.0f;
         this->unk_168 = 10 - ((CVar_GetS32("gFasterBlockPush", 0) * 3) / 2);
-        func_808B4084(this, globalCtx);
+        func_808B4084(this, play);
     }
     Audio_PlayActorSound2(actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);
 }
 
-void func_808B4380(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
+void func_808B4380(BgSpot15Rrbox* this, PlayState* play) {
     this->dyna.actor.velocity.x = 0.0f;
     this->dyna.actor.velocity.y = 0.0f;
     this->dyna.actor.velocity.z = 0.0f;
     this->dyna.actor.gravity = -1.0f;
-    this->dyna.actor.floorHeight = func_808B3DDC(this, globalCtx);
+    this->dyna.actor.floorHeight = func_808B3DDC(this, play);
     this->actionFunc = func_808B43D0;
 }
 
-void func_808B43D0(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
+void func_808B43D0(BgSpot15Rrbox* this, PlayState* play) {
     f32 floorHeight;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     Actor* actor = &this->dyna.actor;
 
     if (fabsf(this->dyna.unk_150) > 0.001f) {
@@ -335,23 +335,23 @@ void func_808B43D0(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
 
     if ((floorHeight - actor->world.pos.y) >= -0.001f) {
         actor->world.pos.y = floorHeight;
-        func_808B4084(this, globalCtx);
+        func_808B4084(this, play);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_WOOD_BOUND);
     }
 }
 
-void func_808B44B8(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
+void func_808B44B8(BgSpot15Rrbox* this, PlayState* play) {
     this->actionFunc = func_808B44CC;
 }
 
-void func_808B44CC(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_808B44CC(BgSpot15Rrbox* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     player->stateFlags2 &= ~0x10;
     this->dyna.unk_150 = 0.0f;
 }
 
-void BgSpot15Rrbox_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot15Rrbox_Update(Actor* thisx, PlayState* play) {
     BgSpot15Rrbox* this = (BgSpot15Rrbox*)thisx;
 
     if (this->unk_168 > 0) {
@@ -360,9 +360,9 @@ void BgSpot15Rrbox_Update(Actor* thisx, GlobalContext* globalCtx) {
     this->dyna.actor.world.rot.y = this->dyna.unk_158;
     this->unk_16C = Math_SinS(this->dyna.actor.world.rot.y);
     this->unk_170 = Math_CosS(this->dyna.actor.world.rot.y);
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgSpot15Rrbox_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    Gfx_DrawDListOpa(globalCtx, gLonLonMilkCrateDL);
+void BgSpot15Rrbox_Draw(Actor* thisx, PlayState* play) {
+    Gfx_DrawDListOpa(play, gLonLonMilkCrateDL);
 }

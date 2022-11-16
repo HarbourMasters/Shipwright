@@ -9,10 +9,10 @@
 
 #define FLAGS 0
 
-void EnHata_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnHata_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnHata_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnHata_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnHata_Init(Actor* thisx, PlayState* play);
+void EnHata_Destroy(Actor* thisx, PlayState* play);
+void EnHata_Update(Actor* thisx, PlayState* play);
+void EnHata_Draw(Actor* thisx, PlayState* play);
 
 const ActorInit En_Hata_InitVars = {
     ACTOR_EN_HATA,
@@ -50,18 +50,18 @@ static ColliderCylinderInit sCylinderInit = {
 
 static CollisionCheckInfoInit2 sColChkInfoInit = { 0, 0, 0, 0, MASS_IMMOVABLE };
 
-void EnHata_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnHata_Init(Actor* thisx, PlayState* play) {
     EnHata* this = (EnHata*)thisx;
     s32 pad;
     CollisionHeader* colHeader = NULL;
     f32 frameCount = Animation_GetLastFrame(&gFlagpoleFlapAnim);
 
     Actor_SetScale(&this->dyna.actor, 1.0f / 75.0f);
-    SkelAnime_Init(globalCtx, &this->skelAnime, &gFlagpoleSkel, &gFlagpoleFlapAnim, NULL, NULL, 0);
+    SkelAnime_Init(play, &this->skelAnime, &gFlagpoleSkel, &gFlagpoleFlapAnim, NULL, NULL, 0);
     Animation_Change(&this->skelAnime, &gFlagpoleFlapAnim, 1.0f, 0.0f, frameCount, ANIMMODE_LOOP, 0.0f);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&gFlagpoleCol, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     this->dyna.actor.uncullZoneScale = 500.0f;
     this->dyna.actor.uncullZoneDownward = 550.0f;
     this->dyna.actor.uncullZoneForward = 2200.0f;
@@ -71,15 +71,15 @@ void EnHata_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->unk_278 = Rand_ZeroOne() * 0xFFFF;
 }
 
-void EnHata_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnHata_Destroy(Actor* thisx, PlayState* play) {
     EnHata* this = (EnHata*)thisx;
 
-    SkelAnime_Free(&this->skelAnime, globalCtx);
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    SkelAnime_Free(&this->skelAnime, play);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void EnHata_Update(Actor* thisx, GlobalContext* globalCtx2) {
-    GlobalContext* globalCtx = globalCtx2;
+void EnHata_Update(Actor* thisx, PlayState* play2) {
+    PlayState* play = play2;
     EnHata* this = (EnHata*)thisx;
     s32 pitch;
     Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
@@ -89,16 +89,16 @@ void EnHata_Update(Actor* thisx, GlobalContext* globalCtx2) {
     SkelAnime_Update(&this->skelAnime);
     // Rotate to hang down by default
     this->limbs[FLAGPOLE_LIMB_FLAG_1_BASE].y = this->limbs[FLAGPOLE_LIMB_FLAG_2_BASE].y = -0x4000;
-    windVec.x = globalCtx->envCtx.windDirection.x;
-    windVec.y = globalCtx->envCtx.windDirection.y;
-    windVec.z = globalCtx->envCtx.windDirection.z;
+    windVec.x = play->envCtx.windDirection.x;
+    windVec.y = play->envCtx.windDirection.y;
+    windVec.z = play->envCtx.windDirection.z;
 
-    if (globalCtx->envCtx.windSpeed > 255.0f) {
-        globalCtx->envCtx.windSpeed = 255.0f;
+    if (play->envCtx.windSpeed > 255.0f) {
+        play->envCtx.windSpeed = 255.0f;
     }
 
-    if (globalCtx->envCtx.windSpeed < 0.0f) {
-        globalCtx->envCtx.windSpeed = 0.0f;
+    if (play->envCtx.windSpeed < 0.0f) {
+        play->envCtx.windSpeed = 0.0f;
     }
 
     if (Rand_ZeroOne() > 0.5f) {
@@ -110,16 +110,16 @@ void EnHata_Update(Actor* thisx, GlobalContext* globalCtx2) {
     // Mimic varying wind gusts
     sin = Math_SinS(this->unk_278) * 80.0f;
     pitch = -Math_Vec3f_Pitch(&zeroVec, &windVec);
-    pitch = ((s32)((15000 - pitch) * (1.0f - (globalCtx->envCtx.windSpeed / (255.0f - sin))))) + pitch;
+    pitch = ((s32)((15000 - pitch) * (1.0f - (play->envCtx.windSpeed / (255.0f - sin))))) + pitch;
     Math_SmoothStepToS(&this->limbs[FLAGPOLE_LIMB_FLAG_1_HOIST_END_BASE].y, pitch, this->invScale, this->maxStep,
                        this->minStep);
     this->limbs[FLAGPOLE_LIMB_FLAG_2_HOIST_END_BASE].y = this->limbs[FLAGPOLE_LIMB_FLAG_1_HOIST_END_BASE].y;
     this->limbs[FLAGPOLE_LIMB_FLAG_1_HOIST_END_BASE].z = -Math_Vec3f_Yaw(&zeroVec, &windVec);
     this->limbs[FLAGPOLE_LIMB_FLAG_2_HOIST_END_BASE].z = this->limbs[FLAGPOLE_LIMB_FLAG_1_HOIST_END_BASE].z;
-    this->skelAnime.playSpeed = (Rand_ZeroFloat(1.25f) + 2.75f) * (globalCtx->envCtx.windSpeed / 255.0f);
+    this->skelAnime.playSpeed = (Rand_ZeroFloat(1.25f) + 2.75f) * (play->envCtx.windSpeed / 255.0f);
 }
 
-s32 EnHata_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+s32 EnHata_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnHata* this = (EnHata*)thisx;
     Vec3s* limbs;
 
@@ -133,14 +133,14 @@ s32 EnHata_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
     return false;
 }
 
-void EnHata_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+void EnHata_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
 }
 
-void EnHata_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnHata_Draw(Actor* thisx, PlayState* play) {
     EnHata* this = (EnHata*)thisx;
 
-    func_800943C8(globalCtx->state.gfxCtx);
+    func_800943C8(play->state.gfxCtx);
     Matrix_Scale(1.0f, 1.1f, 1.0f, MTXMODE_APPLY);
-    SkelAnime_DrawOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, EnHata_OverrideLimbDraw,
+    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnHata_OverrideLimbDraw,
                       EnHata_PostLimbDraw, this);
 }

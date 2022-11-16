@@ -9,9 +9,9 @@
 
 #define rReg0 regs[0]
 
-u32 EffectSsStone1_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx);
-void EffectSsStone1_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsStone1_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsStone1_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+void EffectSsStone1_Draw(PlayState* play, u32 index, EffectSs* this);
+void EffectSsStone1_Update(PlayState* play, u32 index, EffectSs* this);
 
 EffectSsInit Effect_Ss_Stone1_InitVars = {
     EFFECT_SS_STONE1,
@@ -35,7 +35,7 @@ static EffStoneDrawInfo sDrawInfo[] = {
     { gUnknownEffStone1Tex, { 255, 255, 255, 255 }, { 0, 255, 255, 255 } },
 };
 
-u32 EffectSsStone1_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
+u32 EffectSsStone1_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsStone1InitParams* initParams = (EffectSsStone1InitParams*)initParamsx;
     Vec3f pos = initParams->pos;
 
@@ -49,8 +49,8 @@ u32 EffectSsStone1_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, voi
     return 1;
 }
 
-void EffectSsStone1_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+void EffectSsStone1_Draw(PlayState* play, u32 index, EffectSs* this) {
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     EffStoneDrawInfo* drawParams = &sDrawInfo[this->life];
     Vec3f mfVec;
     f32 mfW;
@@ -58,7 +58,7 @@ void EffectSsStone1_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
 
     OPEN_DISPS(gfxCtx);
 
-    SkinMatrix_Vec3fMtxFMultXYZW(&globalCtx->viewProjectionMtxF, &this->pos, &mfVec, &mfW);
+    SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &this->pos, &mfVec, &mfW);
     scale = (mfW < 1500.0f) ? 3.0f : (mfW / 1500.0f) * 3.0f;
     Matrix_Translate(this->pos.x, this->pos.y, this->pos.z, MTXMODE_NEW);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
@@ -74,7 +74,7 @@ void EffectSsStone1_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void EffectSsStone1_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsStone1_Update(PlayState* play, u32 index, EffectSs* this) {
     if ((this->life == 6) && (this->rReg0 != 0)) {
         iREG(50) = 0;
     }

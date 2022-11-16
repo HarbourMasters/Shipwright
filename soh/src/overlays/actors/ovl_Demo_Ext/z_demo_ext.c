@@ -21,15 +21,15 @@ typedef enum {
     /* 0x01 */ EXT_DRAW_VORTEX
 } DemoExtDrawMode;
 
-void DemoExt_Init(Actor* thisx, GlobalContext* globalCtx);
-void DemoExt_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void DemoExt_Update(Actor* thisx, GlobalContext* globalCtx);
-void DemoExt_Draw(Actor* thisx, GlobalContext* globalCtx);
+void DemoExt_Init(Actor* thisx, PlayState* play);
+void DemoExt_Destroy(Actor* thisx, PlayState* play);
+void DemoExt_Update(Actor* thisx, PlayState* play);
+void DemoExt_Draw(Actor* thisx, PlayState* play);
 
-void DemoExt_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void DemoExt_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void DemoExt_Init(Actor* thisx, GlobalContext* globalCtx) {
+void DemoExt_Init(Actor* thisx, PlayState* play) {
     DemoExt* this = (DemoExt*)thisx;
 
     this->scrollIncr[0] = 25;
@@ -50,9 +50,9 @@ void DemoExt_PlayVortexSFX(DemoExt* this) {
     }
 }
 
-CsCmdActorAction* DemoExt_GetNpcAction(GlobalContext* globalCtx, s32 npcActionIndex) {
-    if (globalCtx->csCtx.state != CS_STATE_IDLE) {
-        return globalCtx->csCtx.npcActions[npcActionIndex];
+CsCmdActorAction* DemoExt_GetNpcAction(PlayState* play, s32 npcActionIndex) {
+    if (play->csCtx.state != CS_STATE_IDLE) {
+        return play->csCtx.npcActions[npcActionIndex];
     }
     return NULL;
 }
@@ -62,8 +62,8 @@ void DemoExt_SetupWait(DemoExt* this) {
     this->drawMode = EXT_DRAW_NOTHING;
 }
 
-void DemoExt_SetupMaintainVortex(DemoExt* this, GlobalContext* globalCtx) {
-    CsCmdActorAction* npcAction = DemoExt_GetNpcAction(globalCtx, 5);
+void DemoExt_SetupMaintainVortex(DemoExt* this, PlayState* play) {
+    CsCmdActorAction* npcAction = DemoExt_GetNpcAction(play, 5);
 
     if (npcAction != NULL) {
         this->actor.world.pos.x = npcAction->startPos.x;
@@ -87,8 +87,8 @@ void DemoExt_FinishClosing(DemoExt* this) {
     }
 }
 
-void DemoExt_CheckCsMode(DemoExt* this, GlobalContext* globalCtx) {
-    CsCmdActorAction* csCmdNPCAction = DemoExt_GetNpcAction(globalCtx, 5);
+void DemoExt_CheckCsMode(DemoExt* this, PlayState* play) {
+    CsCmdActorAction* csCmdNPCAction = DemoExt_GetNpcAction(play, 5);
     s32 csAction;
     s32 previousCsAction;
 
@@ -102,7 +102,7 @@ void DemoExt_CheckCsMode(DemoExt* this, GlobalContext* globalCtx) {
                     DemoExt_SetupWait(this);
                     break;
                 case 2:
-                    DemoExt_SetupMaintainVortex(this, globalCtx);
+                    DemoExt_SetupMaintainVortex(this, play);
                     break;
                 case 3:
                     DemoExt_SetupDispellVortex(this);
@@ -144,17 +144,17 @@ void DemoExt_SetColorsAndScales(DemoExt* this) {
     scale->z = (kREG(21) + 400.0f) * shrinkFactor;
 }
 
-void DemoExt_Wait(DemoExt* this, GlobalContext* globalCtx) {
-    DemoExt_CheckCsMode(this, globalCtx);
+void DemoExt_Wait(DemoExt* this, PlayState* play) {
+    DemoExt_CheckCsMode(this, play);
 }
 
-void DemoExt_MaintainVortex(DemoExt* this, GlobalContext* globalCtx) {
+void DemoExt_MaintainVortex(DemoExt* this, PlayState* play) {
     DemoExt_PlayVortexSFX(this);
     DemoExt_SetScrollAndRotation(this);
-    DemoExt_CheckCsMode(this, globalCtx);
+    DemoExt_CheckCsMode(this, play);
 }
 
-void DemoExt_DispellVortex(DemoExt* this, GlobalContext* globalCtx) {
+void DemoExt_DispellVortex(DemoExt* this, PlayState* play) {
     DemoExt_PlayVortexSFX(this);
     DemoExt_SetScrollAndRotation(this);
     DemoExt_SetColorsAndScales(this);
@@ -167,21 +167,21 @@ static DemoExtActionFunc sActionFuncs[] = {
     DemoExt_DispellVortex,
 };
 
-void DemoExt_Update(Actor* thisx, GlobalContext* globalCtx) {
+void DemoExt_Update(Actor* thisx, PlayState* play) {
     DemoExt* this = (DemoExt*)thisx;
 
     if ((this->action < EXT_WAIT) || (this->action > EXT_DISPELL) || sActionFuncs[this->action] == NULL) {
         // "Main mode is abnormal!"
         osSyncPrintf(VT_FGCOL(RED) "メインモードがおかしい!!!!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST);
     } else {
-        sActionFuncs[this->action](this, globalCtx);
+        sActionFuncs[this->action](this, play);
     }
 }
 
-void DemoExt_DrawNothing(Actor* thisx, GlobalContext* globalCtx) {
+void DemoExt_DrawNothing(Actor* thisx, PlayState* play) {
 }
 
-void DemoExt_DrawVortex(Actor* thisx, GlobalContext* globalCtx) {
+void DemoExt_DrawVortex(Actor* thisx, PlayState* play) {
     DemoExt* this = (DemoExt*)thisx;
     Mtx* mtx;
     GraphicsContext* gfxCtx;
@@ -189,7 +189,7 @@ void DemoExt_DrawVortex(Actor* thisx, GlobalContext* globalCtx) {
     Vec3f* scale;
 
     scale = &this->scale;
-    gfxCtx = globalCtx->state.gfxCtx;
+    gfxCtx = play->state.gfxCtx;
     mtx = Graph_Alloc(gfxCtx, sizeof(Mtx));
 
     OPEN_DISPS(gfxCtx);
@@ -221,7 +221,7 @@ static DemoExtDrawFunc sDrawFuncs[] = {
     DemoExt_DrawVortex,
 };
 
-void DemoExt_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void DemoExt_Draw(Actor* thisx, PlayState* play) {
     DemoExt* this = (DemoExt*)thisx;
 
     if ((this->drawMode < EXT_DRAW_NOTHING) || (this->drawMode > EXT_DRAW_VORTEX) ||
@@ -229,7 +229,7 @@ void DemoExt_Draw(Actor* thisx, GlobalContext* globalCtx) {
         // "Draw mode is abnormal!"
         osSyncPrintf(VT_FGCOL(RED) "描画モードがおかしい!!!!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST);
     } else {
-        sDrawFuncs[this->drawMode](thisx, globalCtx);
+        sDrawFuncs[this->drawMode](thisx, play);
     }
 }
 

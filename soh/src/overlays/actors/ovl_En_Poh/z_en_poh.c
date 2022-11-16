@@ -10,35 +10,35 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_12)
 
-void EnPoh_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnPoh_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnPoh_Update(Actor* thisx, GlobalContext* globalCtx);
+void EnPoh_Init(Actor* thisx, PlayState* play);
+void EnPoh_Destroy(Actor* thisx, PlayState* play);
+void EnPoh_Update(Actor* thisx, PlayState* play);
 
-void EnPoh_UpdateLiving(Actor* thisx, GlobalContext* globalCtx);
-void EnPoh_UpdateDead(Actor* thisx, GlobalContext* globalCtx);
-void EnPoh_DrawRegular(Actor* thisx, GlobalContext* globalCtx);
-void EnPoh_DrawComposer(Actor* thisx, GlobalContext* globalCtx);
-void EnPoh_DrawSoul(Actor* thisx, GlobalContext* globalCtx);
+void EnPoh_UpdateLiving(Actor* thisx, PlayState* play);
+void EnPoh_UpdateDead(Actor* thisx, PlayState* play);
+void EnPoh_DrawRegular(Actor* thisx, PlayState* play);
+void EnPoh_DrawComposer(Actor* thisx, PlayState* play);
+void EnPoh_DrawSoul(Actor* thisx, PlayState* play);
 
-void func_80ADEAC4(EnPoh* this, GlobalContext* globalCtx);
-void EnPoh_Idle(EnPoh* this, GlobalContext* globalCtx);
-void func_80ADEC9C(EnPoh* this, GlobalContext* globalCtx);
-void EnPoh_Attack(EnPoh* this, GlobalContext* globalCtx);
-void func_80ADEECC(EnPoh* this, GlobalContext* globalCtx);
-void func_80ADF894(EnPoh* this, GlobalContext* globalCtx);
-void EnPoh_ComposerAppear(EnPoh* this, GlobalContext* globalCtx);
-void func_80ADEF38(EnPoh* this, GlobalContext* globalCtx);
-void func_80ADF15C(EnPoh* this, GlobalContext* globalCtx);
-void func_80ADF574(EnPoh* this, GlobalContext* globalCtx);
-void func_80ADF5E0(EnPoh* this, GlobalContext* globalCtx);
-void EnPoh_Disappear(EnPoh* this, GlobalContext* globalCtx);
-void EnPoh_Appear(EnPoh* this, GlobalContext* globalCtx);
-void EnPoh_Death(EnPoh* this, GlobalContext* globalCtx);
-void func_80ADFE28(EnPoh* this, GlobalContext* globalCtx);
-void func_80ADFE80(EnPoh* this, GlobalContext* globalCtx);
-void func_80AE009C(EnPoh* this, GlobalContext* globalCtx);
-void EnPoh_TalkRegular(EnPoh* this, GlobalContext* globalCtx);
-void EnPoh_TalkComposer(EnPoh* this, GlobalContext* globalCtx);
+void func_80ADEAC4(EnPoh* this, PlayState* play);
+void EnPoh_Idle(EnPoh* this, PlayState* play);
+void func_80ADEC9C(EnPoh* this, PlayState* play);
+void EnPoh_Attack(EnPoh* this, PlayState* play);
+void func_80ADEECC(EnPoh* this, PlayState* play);
+void func_80ADF894(EnPoh* this, PlayState* play);
+void EnPoh_ComposerAppear(EnPoh* this, PlayState* play);
+void func_80ADEF38(EnPoh* this, PlayState* play);
+void func_80ADF15C(EnPoh* this, PlayState* play);
+void func_80ADF574(EnPoh* this, PlayState* play);
+void func_80ADF5E0(EnPoh* this, PlayState* play);
+void EnPoh_Disappear(EnPoh* this, PlayState* play);
+void EnPoh_Appear(EnPoh* this, PlayState* play);
+void EnPoh_Death(EnPoh* this, PlayState* play);
+void func_80ADFE28(EnPoh* this, PlayState* play);
+void func_80ADFE80(EnPoh* this, PlayState* play);
+void func_80AE009C(EnPoh* this, PlayState* play);
+void EnPoh_TalkRegular(EnPoh* this, PlayState* play);
+void EnPoh_TalkComposer(EnPoh* this, PlayState* play);
 
 static s16 D_80AE1A50 = 0;
 
@@ -182,26 +182,26 @@ static InitChainEntry sInitChain[] = {
 static Vec3f D_80AE1B60 = { 0.0f, 3.0f, 0.0f };
 static Vec3f D_80AE1B6C = { 0.0f, 0.0f, 0.0f };
 
-void EnPoh_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnPoh_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     EnItem00* collectible;
     EnPoh* this = (EnPoh*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
-    Collider_InitJntSph(globalCtx, &this->colliderSph);
-    Collider_SetJntSph(globalCtx, &this->colliderSph, &this->actor, &sJntSphInit, &this->colliderSphItem);
+    Collider_InitJntSph(play, &this->colliderSph);
+    Collider_SetJntSph(play, &this->colliderSph, &this->actor, &sJntSphInit, &this->colliderSphItem);
     this->colliderSph.elements[0].dim.worldSphere.radius = 0;
     this->colliderSph.elements[0].dim.worldSphere.center.x = this->actor.world.pos.x;
     this->colliderSph.elements[0].dim.worldSphere.center.y = this->actor.world.pos.y;
     this->colliderSph.elements[0].dim.worldSphere.center.z = this->actor.world.pos.z;
-    Collider_InitCylinder(globalCtx, &this->colliderCyl);
-    Collider_SetCylinder(globalCtx, &this->colliderCyl, &this->actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->colliderCyl);
+    Collider_SetCylinder(play, &this->colliderCyl, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo(&this->actor.colChkInfo, &sDamageTable, &sColChkInfoInit);
     this->unk_194 = 0;
     this->unk_195 = 32;
     this->visibilityTimer = Rand_S16Offset(700, 300);
-    this->lightNode = LightContext_InsertLight(globalCtx, &globalCtx->lightCtx, &this->lightInfo);
+    this->lightNode = LightContext_InsertLight(play, &play->lightCtx, &this->lightInfo);
     Lights_PointGlowSetInfo(&this->lightInfo, this->actor.home.pos.x, this->actor.home.pos.y, this->actor.home.pos.z,
                             255, 255, 255, 0);
     if (this->actor.params >= 4) {
@@ -212,30 +212,30 @@ void EnPoh_Init(Actor* thisx, GlobalContext* globalCtx) {
         if (D_80AE1A50 >= 3) {
             Actor_Kill(&this->actor);
         } else {
-            collectible = Item_DropCollectible(globalCtx, &this->actor.world.pos, 0x4000 | ITEM00_RUPEE_BLUE);
+            collectible = Item_DropCollectible(play, &this->actor.world.pos, 0x4000 | ITEM00_RUPEE_BLUE);
             if (collectible != NULL) {
                 collectible->actor.speedXZ = 0.0f;
             }
         }
     } else if (this->actor.params == EN_POH_FLAT) {
-        if (Flags_GetSwitch(globalCtx, 0x28) || Flags_GetSwitch(globalCtx, 0x9)) {
+        if (Flags_GetSwitch(play, 0x28) || Flags_GetSwitch(play, 0x9)) {
             Actor_Kill(&this->actor);
         } else {
-            Flags_SetSwitch(globalCtx, 0x28);
+            Flags_SetSwitch(play, 0x28);
         }
     } else if (this->actor.params == EN_POH_SHARP) {
-        if (Flags_GetSwitch(globalCtx, 0x29) || Flags_GetSwitch(globalCtx, 0x9)) {
+        if (Flags_GetSwitch(play, 0x29) || Flags_GetSwitch(play, 0x9)) {
             Actor_Kill(&this->actor);
         } else {
-            Flags_SetSwitch(globalCtx, 0x29);
+            Flags_SetSwitch(play, 0x29);
         }
     }
     if (this->actor.params < EN_POH_SHARP) {
-        this->objectIdx = Object_GetIndex(&globalCtx->objectCtx, OBJECT_POH);
+        this->objectIdx = Object_GetIndex(&play->objectCtx, OBJECT_POH);
         this->infoIdx = EN_POH_INFO_NORMAL;
         this->actor.naviEnemyId = 0x44;
     } else {
-        this->objectIdx = Object_GetIndex(&globalCtx->objectCtx, OBJECT_PO_COMPOSER);
+        this->objectIdx = Object_GetIndex(&play->objectCtx, OBJECT_PO_COMPOSER);
         this->infoIdx = EN_POH_INFO_COMPOSER;
         this->actor.naviEnemyId = 0x43;
     }
@@ -245,12 +245,12 @@ void EnPoh_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnPoh_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnPoh_Destroy(Actor* thisx, PlayState* play) {
     EnPoh* this = (EnPoh*)thisx;
 
-    LightContext_RemoveLight(globalCtx, &globalCtx->lightCtx, this->lightNode);
-    Collider_DestroyJntSph(globalCtx, &this->colliderSph);
-    Collider_DestroyCylinder(globalCtx, &this->colliderCyl);
+    LightContext_RemoveLight(play, &play->lightCtx, this->lightNode);
+    Collider_DestroyJntSph(play, &this->colliderSph);
+    Collider_DestroyCylinder(play, &this->colliderCyl);
     if (this->actor.params == EN_POH_RUPEE) {
         D_80AE1A50--;
     }
@@ -368,7 +368,7 @@ void EnPoh_SetupAppear(EnPoh* this) {
     this->actionFunc = EnPoh_Appear;
 }
 
-void EnPoh_SetupDeath(EnPoh* this, GlobalContext* globalCtx) {
+void EnPoh_SetupDeath(EnPoh* this, PlayState* play) {
     this->actor.update = EnPoh_UpdateDead;
     this->actor.draw = EnPoh_DrawSoul;
     this->actor.shape.shadowDraw = NULL;
@@ -380,7 +380,7 @@ void EnPoh_SetupDeath(EnPoh* this, GlobalContext* globalCtx) {
     if (this->infoIdx != EN_POH_INFO_COMPOSER) {
         this->actor.shape.rot.x = -0x8000;
     }
-    Actor_ChangeCategory(globalCtx, &globalCtx->actorCtx, &this->actor, 8);
+    Actor_ChangeCategory(play, &play->actorCtx, &this->actor, 8);
     this->unk_198 = 60;
     this->actionFunc = EnPoh_Death;
 }
@@ -410,7 +410,7 @@ void func_80ADE6D4(EnPoh* this) {
     this->actionFunc = func_80ADFE28;
 }
 
-void EnPoh_Talk(EnPoh* this, GlobalContext* globalCtx) {
+void EnPoh_Talk(EnPoh* this, PlayState* play) {
     this->actor.home.pos.y = this->actor.world.pos.y;
     Actor_SetFocus(&this->actor, -10.0f);
     this->colliderCyl.dim.radius = 13;
@@ -423,10 +423,10 @@ void EnPoh_Talk(EnPoh* this, GlobalContext* globalCtx) {
     if (this->actor.params == EN_POH_FLAT || this->actor.params == EN_POH_SHARP) {
         if (CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
             this->actor.textId = 0x5000;
-        } else if (!Flags_GetSwitch(globalCtx, 0xA) && !Flags_GetSwitch(globalCtx, 0xB)) {
+        } else if (!Flags_GetSwitch(play, 0xA) && !Flags_GetSwitch(play, 0xB)) {
             this->actor.textId = 0x500F;
-        } else if ((this->actor.params == EN_POH_FLAT && Flags_GetSwitch(globalCtx, 0xA)) ||
-                   (this->actor.params == EN_POH_SHARP && Flags_GetSwitch(globalCtx, 0xB))) {
+        } else if ((this->actor.params == EN_POH_FLAT && Flags_GetSwitch(play, 0xA)) ||
+                   (this->actor.params == EN_POH_SHARP && Flags_GetSwitch(play, 0xB))) {
             this->actor.textId = 0x5013;
         } else {
             this->actor.textId = 0x5012;
@@ -457,8 +457,8 @@ void func_80ADE9BC(EnPoh* this) {
     this->actionFunc = EnPoh_TalkComposer;
 }
 
-void EnPoh_MoveTowardsPlayerHeight(EnPoh* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void EnPoh_MoveTowardsPlayerHeight(EnPoh* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     Math_StepToF(&this->actor.world.pos.y, player->actor.world.pos.y, 1.0f);
     this->actor.world.pos.y += 2.5f * Math_SinS(this->unk_195 * 0x800);
@@ -477,12 +477,12 @@ void func_80ADEA5C(EnPoh* this) {
     Math_ScaledStepToS(&this->actor.world.rot.y, this->unk_19C, 0x71C);
 }
 
-void func_80ADEAC4(EnPoh* this, GlobalContext* globalCtx) {
+void func_80ADEAC4(EnPoh* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if (Animation_OnFrame(&this->skelAnime, 0.0f) && this->unk_198 != 0) {
         this->unk_198--;
     }
-    EnPoh_MoveTowardsPlayerHeight(this, globalCtx);
+    EnPoh_MoveTowardsPlayerHeight(this, play);
     if (this->actor.xzDistToPlayer < 200.0f) {
         func_80ADE1BC(this);
     } else if (this->unk_198 == 0) {
@@ -493,14 +493,14 @@ void func_80ADEAC4(EnPoh* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnPoh_Idle(EnPoh* this, GlobalContext* globalCtx) {
+void EnPoh_Idle(EnPoh* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     Math_StepToF(&this->actor.speedXZ, 1.0f, 0.2f);
     if (Animation_OnFrame(&this->skelAnime, 0.0f) && this->unk_198 != 0) {
         this->unk_198--;
     }
     func_80ADEA5C(this);
-    EnPoh_MoveTowardsPlayerHeight(this, globalCtx);
+    EnPoh_MoveTowardsPlayerHeight(this, play);
     if (this->actor.xzDistToPlayer < 200.0f && this->unk_198 < 19) {
         func_80ADE1BC(this);
     } else if (this->unk_198 == 0) {
@@ -515,11 +515,11 @@ void EnPoh_Idle(EnPoh* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80ADEC9C(EnPoh* this, GlobalContext* globalCtx) {
+void func_80ADEC9C(EnPoh* this, PlayState* play) {
     Player* player;
     s16 facingDiff;
 
-    player = GET_PLAYER(globalCtx);
+    player = GET_PLAYER(play);
     SkelAnime_Update(&this->skelAnime);
     if (this->unk_198 != 0) {
         this->unk_198--;
@@ -532,11 +532,11 @@ void func_80ADEC9C(EnPoh* this, GlobalContext* globalCtx) {
     } else {
         Math_ScaledStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 0x71C);
     }
-    EnPoh_MoveTowardsPlayerHeight(this, globalCtx);
+    EnPoh_MoveTowardsPlayerHeight(this, play);
     if (this->actor.xzDistToPlayer > 280.0f) {
         EnPoh_SetupIdle(this);
     } else if (this->unk_198 == 0 && this->actor.xzDistToPlayer < 140.0f &&
-               !Player_IsFacingActor(&this->actor, 0x2AAA, globalCtx)) {
+               !Player_IsFacingActor(&this->actor, 0x2AAA, play)) {
         EnPoh_SetupAttack(this);
     }
     if (this->lightColor.a == 255) {
@@ -544,7 +544,7 @@ void func_80ADEC9C(EnPoh* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnPoh_Attack(EnPoh* this, GlobalContext* globalCtx) {
+void EnPoh_Attack(EnPoh* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if (Animation_OnFrame(&this->skelAnime, 0.0f)) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_PO_KANTERA);
@@ -552,7 +552,7 @@ void EnPoh_Attack(EnPoh* this, GlobalContext* globalCtx) {
             this->unk_198--;
         }
     }
-    EnPoh_MoveTowardsPlayerHeight(this, globalCtx);
+    EnPoh_MoveTowardsPlayerHeight(this, play);
     if (this->unk_198 >= 10) {
         Math_ScaledStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 0xE38);
     } else if (this->unk_198 == 9) {
@@ -564,7 +564,7 @@ void EnPoh_Attack(EnPoh* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80ADEECC(EnPoh* this, GlobalContext* globalCtx) {
+void func_80ADEECC(EnPoh* this, PlayState* play) {
     Math_StepToF(&this->actor.speedXZ, 0.0f, 0.5f);
     if (SkelAnime_Update(&this->skelAnime)) {
         if (this->actor.colChkInfo.health != 0) {
@@ -575,7 +575,7 @@ void func_80ADEECC(EnPoh* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80ADEF38(EnPoh* this, GlobalContext* globalCtx) {
+void func_80ADEF38(EnPoh* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
         this->lightColor.a = 255;
         this->visibilityTimer = Rand_S16Offset(700, 300);
@@ -590,7 +590,7 @@ void func_80ADEF38(EnPoh* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnPoh_ComposerAppear(EnPoh* this, GlobalContext* globalCtx) {
+void EnPoh_ComposerAppear(EnPoh* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
         this->lightColor.a = 255;
         this->visibilityTimer = Rand_S16Offset(700, 300);
@@ -601,7 +601,7 @@ void EnPoh_ComposerAppear(EnPoh* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80ADF15C(EnPoh* this, GlobalContext* globalCtx) {
+void func_80ADF15C(EnPoh* this, PlayState* play) {
     Vec3f vec;
     f32 multiplier;
     f32 newScale;
@@ -613,32 +613,32 @@ void func_80ADF15C(EnPoh* this, GlobalContext* globalCtx) {
         if (this->unk_198 < 5) {
             vec.y = Math_SinS((this->unk_198 * 0x1000) - 0x4000) * 23.0f + (this->actor.world.pos.y + 40.0f);
             multiplier = Math_CosS((this->unk_198 * 0x1000) - 0x4000) * 23.0f;
-            vec.x = Math_SinS(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) + 0x4800) * multiplier +
+            vec.x = Math_SinS(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x4800) * multiplier +
                     this->actor.world.pos.x;
-            vec.z = Math_CosS(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) + 0x4800) * multiplier +
+            vec.z = Math_CosS(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x4800) * multiplier +
                     this->actor.world.pos.z;
         } else {
             vec.y = (this->actor.world.pos.y + 40.0f) + (15.0f * (this->unk_198 - 5));
             vec.x =
-                Math_SinS(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) + 0x4800) * 23.0f + this->actor.world.pos.x;
+                Math_SinS(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x4800) * 23.0f + this->actor.world.pos.x;
             vec.z =
-                Math_CosS(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) + 0x4800) * 23.0f + this->actor.world.pos.z;
+                Math_CosS(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x4800) * 23.0f + this->actor.world.pos.z;
         }
-        EffectSsDeadDb_Spawn(globalCtx, &vec, &D_80AE1B60, &D_80AE1B6C, this->unk_198 * 10 + 80, 0, 255, 255, 255, 255,
+        EffectSsDeadDb_Spawn(play, &vec, &D_80AE1B60, &D_80AE1B6C, this->unk_198 * 10 + 80, 0, 255, 255, 255, 255,
                              0, 0, 255, 1, 9, 1);
         vec.x = (this->actor.world.pos.x + this->actor.world.pos.x) - vec.x;
         vec.z = (this->actor.world.pos.z + this->actor.world.pos.z) - vec.z;
-        EffectSsDeadDb_Spawn(globalCtx, &vec, &D_80AE1B60, &D_80AE1B6C, this->unk_198 * 10 + 80, 0, 255, 255, 255, 255,
+        EffectSsDeadDb_Spawn(play, &vec, &D_80AE1B60, &D_80AE1B6C, this->unk_198 * 10 + 80, 0, 255, 255, 255, 255,
                              0, 0, 255, 1, 9, 1);
         vec.x = this->actor.world.pos.x;
         vec.z = this->actor.world.pos.z;
-        EffectSsDeadDb_Spawn(globalCtx, &vec, &D_80AE1B60, &D_80AE1B6C, this->unk_198 * 10 + 80, 0, 255, 255, 255, 255,
+        EffectSsDeadDb_Spawn(play, &vec, &D_80AE1B60, &D_80AE1B6C, this->unk_198 * 10 + 80, 0, 255, 255, 255, 255,
                              0, 0, 255, 1, 9, 1);
         if (this->unk_198 == 1) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_EXTINCT);
         }
     } else if (this->unk_198 == 28) {
-        EnPoh_SetupDeath(this, globalCtx);
+        EnPoh_SetupDeath(this, play);
     } else if (this->unk_198 >= 19) {
         newScale = (28 - this->unk_198) * 0.001f;
         this->actor.world.pos.y += 5.0f;
@@ -651,7 +651,7 @@ void func_80ADF15C(EnPoh* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80ADF574(EnPoh* this, GlobalContext* globalCtx) {
+void func_80ADF574(EnPoh* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
         this->actor.world.rot.y = this->actor.shape.rot.y;
         EnPoh_SetupIdle(this);
@@ -662,7 +662,7 @@ void func_80ADF574(EnPoh* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80ADF5E0(EnPoh* this, GlobalContext* globalCtx) {
+void func_80ADF5E0(EnPoh* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if (Math_ScaledStepToS(&this->actor.world.rot.y, this->unk_19C, 1820) != 0) {
         EnPoh_SetupIdle(this);
@@ -670,15 +670,15 @@ void func_80ADF5E0(EnPoh* this, GlobalContext* globalCtx) {
     if (this->actor.xzDistToPlayer < 200.0f) {
         func_80ADE1BC(this);
     }
-    EnPoh_MoveTowardsPlayerHeight(this, globalCtx);
+    EnPoh_MoveTowardsPlayerHeight(this, play);
 }
 
-void EnPoh_Disappear(EnPoh* this, GlobalContext* globalCtx) {
+void EnPoh_Disappear(EnPoh* this, PlayState* play) {
     if (this->unk_194 != 0) {
         this->unk_194--;
     }
     this->actor.world.rot.y += 0x1000;
-    EnPoh_MoveTowardsPlayerHeight(this, globalCtx);
+    EnPoh_MoveTowardsPlayerHeight(this, play);
     this->lightColor.a = this->unk_194 * 7.96875f;
     if (this->unk_194 == 0) {
         this->visibilityTimer = Rand_S16Offset(100, 50);
@@ -686,10 +686,10 @@ void EnPoh_Disappear(EnPoh* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnPoh_Appear(EnPoh* this, GlobalContext* globalCtx) {
+void EnPoh_Appear(EnPoh* this, PlayState* play) {
     this->unk_194++;
     this->actor.world.rot.y -= 0x1000;
-    EnPoh_MoveTowardsPlayerHeight(this, globalCtx);
+    EnPoh_MoveTowardsPlayerHeight(this, play);
     this->lightColor.a = this->unk_194 * 7.96875f;
     if (this->unk_194 == 32) {
         this->visibilityTimer = Rand_S16Offset(700, 300);
@@ -698,7 +698,7 @@ void EnPoh_Appear(EnPoh* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80ADF894(EnPoh* this, GlobalContext* globalCtx) {
+void func_80ADF894(EnPoh* this, PlayState* play) {
     f32 multiplier;
 
     SkelAnime_Update(&this->skelAnime);
@@ -706,7 +706,7 @@ void func_80ADF894(EnPoh* this, GlobalContext* globalCtx) {
     this->actor.world.pos.x -= multiplier * Math_CosS(this->actor.shape.rot.y);
     this->actor.world.pos.z += multiplier * Math_SinS(this->actor.shape.rot.y);
     Math_ScaledStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer + 0x8000, 0x71C);
-    EnPoh_MoveTowardsPlayerHeight(this, globalCtx);
+    EnPoh_MoveTowardsPlayerHeight(this, play);
     if (this->unk_198 == 0 || this->actor.xzDistToPlayer > 250.0f) {
         this->actor.world.rot.y = this->actor.shape.rot.y;
         EnPoh_SetupIdle(this);
@@ -714,7 +714,7 @@ void func_80ADF894(EnPoh* this, GlobalContext* globalCtx) {
     func_8002F974(&this->actor, NA_SE_EN_PO_AWAY - SFX_FLAG);
 }
 
-void EnPoh_Death(EnPoh* this, GlobalContext* globalCtx) {
+void EnPoh_Death(EnPoh* this, PlayState* play) {
     s32 objId;
 
     if (this->unk_198 != 0) {
@@ -722,7 +722,7 @@ void EnPoh_Death(EnPoh* this, GlobalContext* globalCtx) {
     }
     if (this->actor.bgCheckFlags & 1) {
         objId = (this->infoIdx == EN_POH_INFO_COMPOSER) ? OBJECT_PO_COMPOSER : OBJECT_POH;
-        EffectSsHahen_SpawnBurst(globalCtx, &this->actor.world.pos, 6.0f, 0, 1, 1, 15, objId, 10,
+        EffectSsHahen_SpawnBurst(play, &this->actor.world.pos, 6.0f, 0, 1, 1, 15, objId, 10,
                                  this->info->lanternDisplayList);
         func_80ADE6D4(this);
     } else if (this->unk_198 == 0) {
@@ -730,7 +730,7 @@ void EnPoh_Death(EnPoh* this, GlobalContext* globalCtx) {
         return;
     }
     Actor_MoveForward(&this->actor);
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 10.0f, 10.0f, 10.0f, 4);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 10.0f, 10.0f, 4);
 }
 
 void func_80ADFA90(EnPoh* this, s32 arg1) {
@@ -754,19 +754,19 @@ void func_80ADFA90(EnPoh* this, s32 arg1) {
                               this->info->lightColor.b, this->lightColor.a * (200.0f / 255));
 }
 
-void func_80ADFE28(EnPoh* this, GlobalContext* globalCtx) {
+void func_80ADFE28(EnPoh* this, PlayState* play) {
     this->actor.home.pos.y += 2.0f;
     func_80ADFA90(this, 20);
     if (this->lightColor.a == 255) {
-        EnPoh_Talk(this, globalCtx);
+        EnPoh_Talk(this, play);
     }
 }
 
-void func_80ADFE80(EnPoh* this, GlobalContext* globalCtx) {
+void func_80ADFE80(EnPoh* this, PlayState* play) {
     if (this->unk_198 != 0) {
         this->unk_198--;
     }
-    if (Actor_ProcessTalkRequest(&this->actor, globalCtx)) {
+    if (Actor_ProcessTalkRequest(&this->actor, play)) {
         if (this->actor.params >= EN_POH_SHARP) {
             func_80ADE9BC(this);
         } else {
@@ -781,10 +781,10 @@ void func_80ADFE80(EnPoh* this, GlobalContext* globalCtx) {
     }
     if (this->colliderCyl.base.ocFlags1 & OC1_HIT) {
         this->actor.flags |= ACTOR_FLAG_16;
-        func_8002F2F4(&this->actor, globalCtx);
+        func_8002F2F4(&this->actor, play);
     } else {
         this->actor.flags &= ~ACTOR_FLAG_16;
-        CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->colliderCyl.base);
+        CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliderCyl.base);
     }
     this->actor.world.pos.y = Math_SinS(this->unk_195 * 0x800) * 5.0f + this->actor.home.pos.y;
     if (this->unk_195 != 0) {
@@ -800,26 +800,26 @@ void func_80ADFE80(EnPoh* this, GlobalContext* globalCtx) {
                               this->info->lightColor.b, this->lightColor.a * (200.0f / 255));
 }
 
-void func_80AE009C(EnPoh* this, GlobalContext* globalCtx) {
+void func_80AE009C(EnPoh* this, PlayState* play) {
     func_80ADFA90(this, -13);
     if (this->lightColor.a == 0) {
         Actor_Kill(&this->actor);
     }
 }
 
-void EnPoh_TalkRegular(EnPoh* this, GlobalContext* globalCtx) {
+void EnPoh_TalkRegular(EnPoh* this, PlayState* play) {
     if (this->actor.textId != 0x5005) {
         func_80ADFA90(this, -13);
     } else {
         func_8002F974(&this->actor, NA_SE_EN_PO_BIG_CRY - SFX_FLAG);
     }
-    if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CHOICE) {
-        if (Message_ShouldAdvance(globalCtx)) {
+    if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) {
+        if (Message_ShouldAdvance(play)) {
             Audio_StopSfxByPosAndId(&this->actor.projectedPos, NA_SE_EN_PO_BIG_CRY - SFX_FLAG);
-            if (globalCtx->msgCtx.choiceIndex == 0) {
+            if (play->msgCtx.choiceIndex == 0) {
                 if (Inventory_HasEmptyBottle()) {
                     this->actor.textId = 0x5008;
-                    Item_Give(globalCtx, ITEM_POE);
+                    Item_Give(play, ITEM_POE);
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_PO_BIG_GET);
                 } else {
                     this->actor.textId = 0x5006;
@@ -829,47 +829,47 @@ void EnPoh_TalkRegular(EnPoh* this, GlobalContext* globalCtx) {
                 this->actor.textId = 0x5007;
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_PO_LAUGH);
             }
-            Message_ContinueTextbox(globalCtx, this->actor.textId);
+            Message_ContinueTextbox(play, this->actor.textId);
         }
-    } else if (Actor_TextboxIsClosing(&this->actor, globalCtx)) {
+    } else if (Actor_TextboxIsClosing(&this->actor, play)) {
         func_80ADE950(this, 0);
     }
 }
 
-void EnPoh_TalkComposer(EnPoh* this, GlobalContext* globalCtx) {
+void EnPoh_TalkComposer(EnPoh* this, PlayState* play) {
     func_8002F974(&this->actor, NA_SE_EN_PO_BIG_CRY - SFX_FLAG);
-    if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CHOICE) {
-        if (Message_ShouldAdvance(globalCtx)) {
-            if (globalCtx->msgCtx.choiceIndex == 0) {
-                if (!Flags_GetSwitch(globalCtx, 0xB) && !Flags_GetSwitch(globalCtx, 0xA)) {
+    if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) {
+        if (Message_ShouldAdvance(play)) {
+            if (play->msgCtx.choiceIndex == 0) {
+                if (!Flags_GetSwitch(play, 0xB) && !Flags_GetSwitch(play, 0xA)) {
                     this->actor.textId = 0x5010;
                 } else {
                     this->actor.textId = 0x5014;
                 }
-                Message_ContinueTextbox(globalCtx, this->actor.textId);
+                Message_ContinueTextbox(play, this->actor.textId);
             } else {
                 if (this->actor.params == EN_POH_SHARP) {
-                    Flags_SetSwitch(globalCtx, 0xB);
+                    Flags_SetSwitch(play, 0xB);
                 } else {
-                    Flags_SetSwitch(globalCtx, 0xA);
+                    Flags_SetSwitch(play, 0xA);
                 }
                 func_80ADE950(this, 1);
             }
         }
-    } else if (Actor_TextboxIsClosing(&this->actor, globalCtx)) {
+    } else if (Actor_TextboxIsClosing(&this->actor, play)) {
         if (this->actor.textId == 0x5000) {
-            Flags_SetSwitch(globalCtx, 9);
+            Flags_SetSwitch(play, 9);
         }
         func_80ADE950(this, 1);
     }
 }
 
-void func_80AE032C(EnPoh* this, GlobalContext* globalCtx) {
+void func_80AE032C(EnPoh* this, PlayState* play) {
     if (this->colliderCyl.base.acFlags & AC_HIT) {
         this->colliderCyl.base.acFlags &= ~AC_HIT;
         if (this->actor.colChkInfo.damageEffect != 0 || this->actor.colChkInfo.damage != 0) {
             if (Actor_ApplyDamage(&this->actor) == 0) {
-                Enemy_StartFinishingBlow(globalCtx, &this->actor);
+                Enemy_StartFinishingBlow(play, &this->actor);
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_PO_DEAD);
             } else {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_PO_DAMAGE);
@@ -906,19 +906,19 @@ void EnPoh_UpdateVisibility(EnPoh* this) {
     }
 }
 
-void EnPoh_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnPoh_Update(Actor* thisx, PlayState* play) {
     EnPoh* this = (EnPoh*)thisx;
 
-    if (Object_IsLoaded(&globalCtx->objectCtx, this->objectIdx)) {
+    if (Object_IsLoaded(&play->objectCtx, this->objectIdx)) {
         this->actor.objBankIndex = this->objectIdx;
         this->actor.update = EnPoh_UpdateLiving;
-        Actor_SetObjectDependency(globalCtx, &this->actor);
+        Actor_SetObjectDependency(play, &this->actor);
         if (this->infoIdx == EN_POH_INFO_NORMAL) {
-            SkelAnime_Init(globalCtx, &this->skelAnime, &gPoeSkel, &gPoeFloatAnim, this->jointTable, this->morphTable,
+            SkelAnime_Init(play, &this->skelAnime, &gPoeSkel, &gPoeFloatAnim, this->jointTable, this->morphTable,
                            21);
             this->actor.draw = EnPoh_DrawRegular;
         } else {
-            SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gPoeComposerSkel, &gPoeComposerFloatAnim, this->jointTable,
+            SkelAnime_InitFlex(play, &this->skelAnime, &gPoeComposerSkel, &gPoeComposerFloatAnim, this->jointTable,
                                this->morphTable, 12);
             this->actor.draw = EnPoh_DrawComposer;
             this->colliderSph.elements[0].dim.limb = 9;
@@ -985,7 +985,7 @@ void func_80AE089C(EnPoh* this) {
     }
 }
 
-void EnPoh_UpdateLiving(Actor* thisx, GlobalContext* globalCtx) {
+void EnPoh_UpdateLiving(Actor* thisx, PlayState* play) {
     EnPoh* this = (EnPoh*)thisx;
     s32 pad;
     Vec3f vec;
@@ -995,20 +995,20 @@ void EnPoh_UpdateLiving(Actor* thisx, GlobalContext* globalCtx) {
         this->colliderSph.base.atFlags &= ~AT_HIT;
         func_80ADE4C8(this);
     }
-    func_80AE032C(this, globalCtx);
+    func_80AE032C(this, play);
     EnPoh_UpdateVisibility(this);
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     Actor_MoveForward(&this->actor);
     if (this->actionFunc == EnPoh_Attack && this->unk_198 < 10) {
         this->actor.flags |= ACTOR_FLAG_24;
-        CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->colliderSph.base);
+        CollisionCheck_SetAT(play, &play->colChkCtx, &this->colliderSph.base);
     }
     Collider_UpdateCylinder(&this->actor, &this->colliderCyl);
     if ((this->colliderCyl.base.acFlags & AC_ON) && this->lightColor.a == 255) {
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->colliderCyl.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->colliderCyl.base);
     }
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->colliderCyl.base);
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->colliderSph.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliderCyl.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliderSph.base);
     Actor_SetFocus(&this->actor, 42.0f);
     if (this->actionFunc != func_80ADEECC && this->actionFunc != func_80ADF574) {
         if (this->actionFunc == func_80ADF894) {
@@ -1021,12 +1021,12 @@ void EnPoh_UpdateLiving(Actor* thisx, GlobalContext* globalCtx) {
     vec.y = this->actor.world.pos.y + 20.0f;
     vec.z = this->actor.world.pos.z;
     this->actor.floorHeight =
-        BgCheck_EntityRaycastFloor4(&globalCtx->colCtx, &this->actor.floorPoly, &sp38, &this->actor, &vec);
+        BgCheck_EntityRaycastFloor4(&play->colCtx, &this->actor.floorPoly, &sp38, &this->actor, &vec);
     func_80AE089C(this);
     this->actor.shape.shadowAlpha = this->lightColor.a;
 }
 
-s32 EnPoh_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
+s32 EnPoh_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
                            Gfx** gfxP) {
     EnPoh* this = (EnPoh*)thisx;
 
@@ -1044,12 +1044,12 @@ s32 EnPoh_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
     return false;
 }
 
-void EnPoh_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfxP) {
+void EnPoh_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfxP) {
     EnPoh* this = (EnPoh*)thisx;
 
     Collider_UpdateSpheres(limbIndex, &this->colliderSph);
     if (this->actionFunc == func_80ADF15C && this->unk_198 >= 2 && limbIndex == this->info->unk_7) {
-        gSPMatrix((*gfxP)++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix((*gfxP)++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList((*gfxP)++, this->info->burnDisplayList);
     }
@@ -1071,39 +1071,39 @@ void EnPoh_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
     }
 }
 
-void EnPoh_DrawRegular(Actor* thisx, GlobalContext* globalCtx) {
+void EnPoh_DrawRegular(Actor* thisx, PlayState* play) {
     EnPoh* this = (EnPoh*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
     func_80AE067C(this);
-    func_80093D18(globalCtx->state.gfxCtx);
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
     if (this->lightColor.a == 255 || this->lightColor.a == 0) {
         gDPSetEnvColor(POLY_OPA_DISP++, this->lightColor.r, this->lightColor.g, this->lightColor.b, this->lightColor.a);
         gSPSegment(POLY_OPA_DISP++, 0x08, D_80116280 + 2);
-        POLY_OPA_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
+        POLY_OPA_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                        EnPoh_OverrideLimbDraw, EnPoh_PostLimbDraw, &this->actor, POLY_OPA_DISP);
     } else {
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, this->lightColor.a);
         gSPSegment(POLY_XLU_DISP++, 0x08, D_80116280);
-        POLY_XLU_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
+        POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                        EnPoh_OverrideLimbDraw, EnPoh_PostLimbDraw, &this->actor, POLY_XLU_DISP);
     }
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, this->envColor.r, this->envColor.g, this->envColor.b, 255);
     Matrix_Put(&this->unk_368);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, this->info->lanternDisplayList);
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void EnPoh_DrawComposer(Actor* thisx, GlobalContext* globalCtx) {
+void EnPoh_DrawComposer(Actor* thisx, PlayState* play) {
     EnPoh* this = (EnPoh*)thisx;
     Color_RGBA8* sp90;
     Color_RGBA8* phi_t0;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
     func_80AE067C(this);
     if (this->actor.params == EN_POH_SHARP) {
         sp90 = &D_80AE1B4C;
@@ -1113,67 +1113,67 @@ void EnPoh_DrawComposer(Actor* thisx, GlobalContext* globalCtx) {
         phi_t0 = &D_80AE1B58;
     }
     if (this->lightColor.a == 255 || this->lightColor.a == 0) {
-        func_80093D18(globalCtx->state.gfxCtx);
+        func_80093D18(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08,
-                   Gfx_EnvColor(globalCtx->state.gfxCtx, this->lightColor.r, this->lightColor.g, this->lightColor.b,
+                   Gfx_EnvColor(play->state.gfxCtx, this->lightColor.r, this->lightColor.g, this->lightColor.b,
                                 this->lightColor.a));
         gSPSegment(POLY_OPA_DISP++, 0x0A,
-                   Gfx_EnvColor(globalCtx->state.gfxCtx, sp90->r, sp90->g, sp90->b, this->lightColor.a));
+                   Gfx_EnvColor(play->state.gfxCtx, sp90->r, sp90->g, sp90->b, this->lightColor.a));
         gSPSegment(POLY_OPA_DISP++, 0x0B,
-                   Gfx_EnvColor(globalCtx->state.gfxCtx, phi_t0->r, phi_t0->g, phi_t0->b, this->lightColor.a));
+                   Gfx_EnvColor(play->state.gfxCtx, phi_t0->r, phi_t0->g, phi_t0->b, this->lightColor.a));
         gSPSegment(POLY_OPA_DISP++, 0x0C, D_80116280 + 2);
-        POLY_OPA_DISP = SkelAnime_DrawFlex(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
+        POLY_OPA_DISP = SkelAnime_DrawFlex(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                            this->skelAnime.dListCount, EnPoh_OverrideLimbDraw, EnPoh_PostLimbDraw,
                                            &this->actor, POLY_OPA_DISP);
     } else {
-        func_80093D18(globalCtx->state.gfxCtx);
-        func_80093D84(globalCtx->state.gfxCtx);
+        func_80093D18(play->state.gfxCtx);
+        func_80093D84(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_EnvColor(globalCtx->state.gfxCtx, this->lightColor.r, this->lightColor.g, this->lightColor.b,
+                   Gfx_EnvColor(play->state.gfxCtx, this->lightColor.r, this->lightColor.g, this->lightColor.b,
                                 this->lightColor.a));
         gSPSegment(POLY_XLU_DISP++, 0x0A,
-                   Gfx_EnvColor(globalCtx->state.gfxCtx, sp90->r, sp90->g, sp90->b, this->lightColor.a));
+                   Gfx_EnvColor(play->state.gfxCtx, sp90->r, sp90->g, sp90->b, this->lightColor.a));
         gSPSegment(POLY_XLU_DISP++, 0x0B,
-                   Gfx_EnvColor(globalCtx->state.gfxCtx, phi_t0->r, phi_t0->g, phi_t0->b, this->lightColor.a));
+                   Gfx_EnvColor(play->state.gfxCtx, phi_t0->r, phi_t0->g, phi_t0->b, this->lightColor.a));
         gSPSegment(POLY_XLU_DISP++, 0x0C, D_80116280);
-        POLY_XLU_DISP = SkelAnime_DrawFlex(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
+        POLY_XLU_DISP = SkelAnime_DrawFlex(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                            this->skelAnime.dListCount, EnPoh_OverrideLimbDraw, EnPoh_PostLimbDraw,
                                            &this->actor, POLY_XLU_DISP);
     }
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, this->envColor.r, this->envColor.g, this->envColor.b, 255);
     Matrix_Put(&this->unk_368);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, this->info->lanternDisplayList);
     gSPDisplayList(POLY_OPA_DISP++, gPoeComposerLanternBottomDL);
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, sp90->r, sp90->g, sp90->b, 255);
     gSPDisplayList(POLY_OPA_DISP++, gPoeComposerLanternTopDL);
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void EnPoh_UpdateDead(Actor* thisx, GlobalContext* globalCtx) {
+void EnPoh_UpdateDead(Actor* thisx, PlayState* play) {
     EnPoh* this = (EnPoh*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     if (this->actionFunc != EnPoh_Death) {
         this->visibilityTimer++;
     }
     func_80AE089C(this);
 }
 
-void EnPoh_DrawSoul(Actor* thisx, GlobalContext* globalCtx) {
+void EnPoh_DrawSoul(Actor* thisx, PlayState* play) {
     EnPoh* this = (EnPoh*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     if (this->actionFunc == EnPoh_Death) {
-        func_80093D18(globalCtx->state.gfxCtx);
+        func_80093D18(play->state.gfxCtx);
         gDPSetEnvColor(POLY_OPA_DISP++, this->envColor.r, this->envColor.g, this->envColor.b, 255);
         Lights_PointGlowSetInfo(&this->lightInfo, this->actor.world.pos.x, this->actor.world.pos.y,
                                 this->actor.world.pos.z, this->envColor.r, this->envColor.g, this->envColor.b, 200);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, this->info->lanternDisplayList);
         if (this->infoIdx == EN_POH_INFO_COMPOSER) {
@@ -1186,17 +1186,17 @@ void EnPoh_DrawSoul(Actor* thisx, GlobalContext* globalCtx) {
             gSPDisplayList(POLY_OPA_DISP++, gPoeComposerLanternTopDL);
         }
     } else {
-        func_80093D84(globalCtx->state.gfxCtx);
+        func_80093D84(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
+                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
                                     (this->visibilityTimer * this->info->unk_8) % 512U, 0x20, 0x80));
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, this->info->primColor.r, this->info->primColor.g,
                         this->info->primColor.b, this->lightColor.a);
         gDPSetEnvColor(POLY_XLU_DISP++, this->lightColor.r, this->lightColor.g, this->lightColor.b, 255);
-        Matrix_RotateY((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) + 0x8000) * 9.58738e-05f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        Matrix_RotateY((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x8000) * 9.58738e-05f, MTXMODE_APPLY);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, this->info->soulDisplayList);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

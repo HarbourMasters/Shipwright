@@ -20,7 +20,7 @@ typedef struct {
 
 struct BossGanon2;
 
-typedef void (*BossGanon2ActionFunc)(struct BossGanon2*, GlobalContext*);
+typedef void (*BossGanon2ActionFunc)(struct BossGanon2*, PlayState*);
 
 typedef struct BossGanon2 {
     /* 0x0000 */ Actor actor;

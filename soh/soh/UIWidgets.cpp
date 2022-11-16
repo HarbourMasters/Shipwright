@@ -9,8 +9,8 @@
 
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <ImGui/imgui_internal.h>
-#include <libultraship/ImGuiImpl.h>
-#include <libultraship/Cvar.h>
+#include <ImGuiImpl.h>
+#include <Cvar.h>
 
 #include <ultra64/types.h>
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
@@ -227,7 +227,8 @@ namespace UIWidgets {
         }
     }
 
-    void EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue) {
+    bool EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue) {
+        bool changed = false;
         if (FirstTimeValue <= 0) {
             FirstTimeValue = 0;
         }
@@ -240,12 +241,14 @@ namespace UIWidgets {
                     if (ImGui::Selectable(ComboArray[i], i == selected)) {
                         CVar_SetS32(name, i);
                         selected = i;
+                        changed = true;
                         SohImGui::RequestCvarSaveOnNextTick();
                     }
                 }
             }
             ImGui::EndCombo();
         }
+        return changed;
     }
 
     void PaddedText(const char* text, bool padTop, bool padBottom) {

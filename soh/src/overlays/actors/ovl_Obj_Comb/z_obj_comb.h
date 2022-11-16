@@ -6,7 +6,7 @@
 
 struct ObjComb;
 
-typedef void (*ObjCombActionFunc)(struct ObjComb*, GlobalContext*);
+typedef void (*ObjCombActionFunc)(struct ObjComb*, PlayState*);
 
 typedef struct ObjComb {
     /* 0x0000 */ Actor actor;

@@ -12,7 +12,7 @@
 
 struct BgGanonOtyuka;
 
-typedef void (*BgGanonOtyukaActionFunc)(struct BgGanonOtyuka*, GlobalContext*);
+typedef void (*BgGanonOtyukaActionFunc)(struct BgGanonOtyuka*, PlayState*);
 
 typedef struct BgGanonOtyuka {
     /* 0x0000 */ DynaPolyActor dyna;

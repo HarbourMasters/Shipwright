@@ -6,7 +6,7 @@
 
 struct EnDodongo;
 
-typedef void (*EnDodongoActionFunc)(struct EnDodongo*, GlobalContext*);
+typedef void (*EnDodongoActionFunc)(struct EnDodongo*, PlayState*);
 
 typedef struct EnDodongo {
     /* 0x0000 */ Actor actor;

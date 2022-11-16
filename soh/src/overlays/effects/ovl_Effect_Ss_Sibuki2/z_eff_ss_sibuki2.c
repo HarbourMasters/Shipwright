@@ -18,16 +18,16 @@
 #define rTexIdx regs[8]
 #define rScale regs[9]
 
-u32 EffectSsSibuki2_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx);
-void EffectSsSibuki2_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsSibuki2_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsSibuki2_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+void EffectSsSibuki2_Draw(PlayState* play, u32 index, EffectSs* this);
+void EffectSsSibuki2_Update(PlayState* play, u32 index, EffectSs* this);
 
 EffectSsInit Effect_Ss_Sibuki2_InitVars = {
     EFFECT_SS_SIBUKI2,
     EffectSsSibuki2_Init,
 };
 
-u32 EffectSsSibuki2_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
+u32 EffectSsSibuki2_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsSibuki2InitParams* initParams = (EffectSsSibuki2InitParams*)initParamsx;
 
     this->pos = initParams->pos;
@@ -50,13 +50,13 @@ u32 EffectSsSibuki2_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, vo
     return 1;
 }
 
-void EffectSsSibuki2_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsSibuki2_Draw(PlayState* play, u32 index, EffectSs* this) {
     static void* bubbleTextures[] = {
         gEffUnusedBubbles1Tex, gEffUnusedBubbles1Tex, gEffUnusedBubbles2Tex,
         gEffUnusedBubbles3Tex, gEffUnusedBubbles4Tex, gEffUnusedBubbles5Tex,
         gEffUnusedBubbles6Tex, gEffUnusedBubbles7Tex, gEffUnusedBubbles8Tex,
     };
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     f32 scale = this->rScale / 100.0f;
 
     OPEN_DISPS(gfxCtx);
@@ -74,7 +74,7 @@ void EffectSsSibuki2_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void EffectSsSibuki2_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsSibuki2_Update(PlayState* play, u32 index, EffectSs* this) {
     if (this->rTexIdx < 8) {
         this->rTexIdx++;
     }

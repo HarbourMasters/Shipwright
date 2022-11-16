@@ -31,7 +31,7 @@ typedef enum {
 
 struct EnHy;
 
-typedef void (*EnHyActionFunc)(struct EnHy*, GlobalContext*);
+typedef void (*EnHyActionFunc)(struct EnHy*, PlayState*);
 
 typedef struct EnHy {
     /* 0x0000 */ Actor actor;

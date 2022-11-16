@@ -15,6 +15,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-extern GlobalContext* gGlobalCtx;
+extern PlayState* gPlayState;
 
 void GameConsole_Init() {}

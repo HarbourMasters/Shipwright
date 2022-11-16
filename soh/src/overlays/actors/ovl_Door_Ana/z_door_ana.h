@@ -6,7 +6,7 @@
 
 struct DoorAna;
 
-typedef void (*DoorAnaActionFunc)(struct DoorAna*, GlobalContext*);
+typedef void (*DoorAnaActionFunc)(struct DoorAna*, PlayState*);
 
 typedef struct DoorAna {
     /* 0x0000 */ Actor actor;

@@ -2563,6 +2563,13 @@ namespace Settings {
     ShuffleKokiriSword.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD]);
     ShuffleOcarinas.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_OCARINA]);
 
+    // Shuffle Entrances
+    ShuffleEntrances.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_ENTRANCES]);
+    ShuffleDungeonEntrances.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_DUNGEON_ENTRANCES]);
+    ShuffleOverworldEntrances.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES]);
+    ShuffleInteriorEntrances.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_INTERIOR_ENTRANCES]);
+    ShuffleGrottoEntrances.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_GROTTO_ENTRANCES]);
+
     // if we skip child zelda, we start with zelda's letter, and malon starts
     // at the ranch, so we should *not* shuffle the weird egg
     if(cvarSettings[RSK_SKIP_CHILD_ZELDA]) {
@@ -2579,6 +2586,7 @@ namespace Settings {
 
     ShuffleAdultTradeQuest.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_ADULT_TRADE]);
     ShuffleMagicBeans.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_MAGIC_BEANS]);
+    ShuffleMerchants.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_MERCHANTS]);
 
     // the  checkbox works because 0 is "Off" and 1 is "Fairy Ocarina"
     StartingOcarina.SetSelectedIndex(cvarSettings[RSK_STARTING_OCARINA]);

@@ -7,7 +7,7 @@
 
 struct EnGo2;
 
-typedef void (*EnGo2ActionFunc)(struct EnGo2*, GlobalContext*);
+typedef void (*EnGo2ActionFunc)(struct EnGo2*, PlayState*);
 
 typedef enum {
     /* 0x00 */ GORON_CITY_ROLLING_BIG,

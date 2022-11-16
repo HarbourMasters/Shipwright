@@ -1,14 +1,14 @@
 #include "global.h"
 #include "vt.h"
 
-void (*sKaleidoScopeUpdateFunc)(GlobalContext* globalCtx);
-void (*sKaleidoScopeDrawFunc)(GlobalContext* globalCtx);
+void (*sKaleidoScopeUpdateFunc)(PlayState* play);
+void (*sKaleidoScopeDrawFunc)(PlayState* play);
 f32 gBossMarkScale;
 u32 D_8016139C;
 PauseMapMarksData* gLoadedPauseMarkDataTable;
 
-extern void KaleidoScope_Update(GlobalContext* globalCtx);
-extern void KaleidoScope_Draw(GlobalContext* globalCtx);
+extern void KaleidoScope_Update(PlayState* play);
+extern void KaleidoScope_Draw(PlayState* play);
 
 void KaleidoScopeCall_LoadPlayer() {
     KaleidoMgrOverlay* playerActorOvl = &gKaleidoMgrOverlayTable[KALEIDO_OVL_PLAYER_ACTOR];
@@ -30,7 +30,7 @@ void KaleidoScopeCall_LoadPlayer() {
     }
 }
 
-void KaleidoScopeCall_Init(GlobalContext* globalCtx) {
+void KaleidoScopeCall_Init(PlayState* play) {
     // "Kaleidoscope replacement construction"
     osSyncPrintf("カレイド・スコープ入れ替え コンストラクト \n");
 
@@ -42,19 +42,19 @@ void KaleidoScopeCall_Init(GlobalContext* globalCtx) {
     LOG_ADDRESS("kaleido_scope_draw", KaleidoScope_Draw);
     LOG_ADDRESS("kaleido_scope_draw_func", sKaleidoScopeDrawFunc);
 
-    KaleidoSetup_Init(globalCtx);
+    KaleidoSetup_Init(play);
 }
 
-void KaleidoScopeCall_Destroy(GlobalContext* globalCtx) {
+void KaleidoScopeCall_Destroy(PlayState* play) {
     // "Kaleidoscope replacement destruction"
     osSyncPrintf("カレイド・スコープ入れ替え デストラクト \n");
 
-    KaleidoSetup_Destroy(globalCtx);
+    KaleidoSetup_Destroy(play);
 }
 
-void KaleidoScopeCall_Update(GlobalContext* globalCtx) {
+void KaleidoScopeCall_Update(PlayState* play) {
     KaleidoMgrOverlay* kaleidoScopeOvl = &gKaleidoMgrOverlayTable[KALEIDO_OVL_KALEIDO_SCOPE];
-    PauseContext* pauseCtx = &globalCtx->pauseCtx;
+    PauseContext* pauseCtx = &play->pauseCtx;
 
     if ((pauseCtx->state != 0) || (pauseCtx->debugState != 0)) {
         if (pauseCtx->state == 1) {
@@ -101,9 +101,9 @@ void KaleidoScopeCall_Update(GlobalContext* globalCtx) {
 
             if (gKaleidoMgrCurOvl == kaleidoScopeOvl) 
             {
-                sKaleidoScopeUpdateFunc(globalCtx);
+                sKaleidoScopeUpdateFunc(play);
 
-                if ((globalCtx->pauseCtx.state == 0) && (globalCtx->pauseCtx.debugState == 0)) {
+                if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0)) {
                     osSyncPrintf(VT_FGCOL(GREEN));
                     // "Kaleido area Kaleidoscope Emission"
                     osSyncPrintf("カレイド領域 カレイドスコープ排出\n");
@@ -117,15 +117,15 @@ void KaleidoScopeCall_Update(GlobalContext* globalCtx) {
     }
 }
 
-void KaleidoScopeCall_Draw(GlobalContext* globalCtx) {
+void KaleidoScopeCall_Draw(PlayState* play) {
     KaleidoMgrOverlay* kaleidoScopeOvl = &gKaleidoMgrOverlayTable[KALEIDO_OVL_KALEIDO_SCOPE];
 
     if (R_PAUSE_MENU_MODE >= 3) {
-        if (((globalCtx->pauseCtx.state >= 4) && (globalCtx->pauseCtx.state <= 7)) ||
-            ((globalCtx->pauseCtx.state >= 11) && (globalCtx->pauseCtx.state <= 18))) {
+        if (((play->pauseCtx.state >= 4) && (play->pauseCtx.state <= 7)) ||
+            ((play->pauseCtx.state >= 11) && (play->pauseCtx.state <= 18))) {
             if (gKaleidoMgrCurOvl == kaleidoScopeOvl) 
             {
-                sKaleidoScopeDrawFunc(globalCtx);
+                sKaleidoScopeDrawFunc(play);
             }
         }
     }

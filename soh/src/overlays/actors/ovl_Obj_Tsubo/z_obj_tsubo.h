@@ -6,7 +6,7 @@
 
 struct ObjTsubo;
 
-typedef void (*ObjTsuboActionFunc)(struct ObjTsubo*, GlobalContext*);
+typedef void (*ObjTsuboActionFunc)(struct ObjTsubo*, PlayState*);
 
 typedef struct ObjTsubo {
     /* 0x0000 */ Actor actor;

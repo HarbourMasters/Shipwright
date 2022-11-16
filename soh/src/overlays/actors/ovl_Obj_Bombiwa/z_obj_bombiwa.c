@@ -10,13 +10,13 @@
 
 #define FLAGS 0
 
-void ObjBombiwa_Init(Actor* thisx, GlobalContext* globalCtx);
-void ObjBombiwa_InitCollision(Actor* thisx, GlobalContext* globalCtx);
-void ObjBombiwa_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void ObjBombiwa_Update(Actor* thisx, GlobalContext* globalCtx);
-void ObjBombiwa_Draw(Actor* thisx, GlobalContext* globalCtx);
+void ObjBombiwa_Init(Actor* thisx, PlayState* play);
+void ObjBombiwa_InitCollision(Actor* thisx, PlayState* play);
+void ObjBombiwa_Destroy(Actor* thisx, PlayState* play);
+void ObjBombiwa_Update(Actor* thisx, PlayState* play);
+void ObjBombiwa_Draw(Actor* thisx, PlayState* play);
 
-void ObjBombiwa_Break(ObjBombiwa* this, GlobalContext* globalCtx);
+void ObjBombiwa_Break(ObjBombiwa* this, PlayState* play);
 
 const ActorInit Obj_Bombiwa_InitVars = {
     ACTOR_OBJ_BOMBIWA,
@@ -64,18 +64,18 @@ static s16 sEffectScales[] = {
     17, 14, 10, 8, 7, 5, 3, 2,
 };
 
-void ObjBombiwa_InitCollision(Actor* thisx, GlobalContext* globalCtx) {
+void ObjBombiwa_InitCollision(Actor* thisx, PlayState* play) {
     ObjBombiwa* this = (ObjBombiwa*)thisx;
 
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     Collider_UpdateCylinder(&this->actor, &this->collider);
 }
 
-void ObjBombiwa_Init(Actor* thisx, GlobalContext* globalCtx) {
+void ObjBombiwa_Init(Actor* thisx, PlayState* play) {
     Actor_ProcessInitChain(thisx, sInitChain);
-    ObjBombiwa_InitCollision(thisx, globalCtx);
-    if ((Flags_GetSwitch(globalCtx, thisx->params & 0x3F) != 0)) {
+    ObjBombiwa_InitCollision(thisx, play);
+    if ((Flags_GetSwitch(play, thisx->params & 0x3F) != 0)) {
         Actor_Kill(thisx);
     } else {
         CollisionCheck_SetInfo(&thisx->colChkInfo, NULL, &sColChkInfoInit);
@@ -90,14 +90,14 @@ void ObjBombiwa_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void ObjBombiwa_Destroy(Actor* thisx, GlobalContext* globalCtx2) {
-    GlobalContext* globalCtx = globalCtx2;
+void ObjBombiwa_Destroy(Actor* thisx, PlayState* play2) {
+    PlayState* play = play2;
     ObjBombiwa* this = (ObjBombiwa*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void ObjBombiwa_Break(ObjBombiwa* this, GlobalContext* globalCtx) {
+void ObjBombiwa_Break(ObjBombiwa* this, PlayState* play) {
     Vec3f pos;
     Vec3f velocity;
     Gfx* dlist;
@@ -115,21 +115,21 @@ void ObjBombiwa_Break(ObjBombiwa* this, GlobalContext* globalCtx) {
         velocity.z = (Rand_ZeroOne() - 0.5f) * 15.0f;
         scale = sEffectScales[i];
         arg5 = (scale >= 11) ? 37 : 33;
-        EffectSsKakera_Spawn(globalCtx, &pos, &velocity, &pos, -400, arg5, 10, 2, 0, scale, 1, 0, 80, KAKERA_COLOR_NONE,
+        EffectSsKakera_Spawn(play, &pos, &velocity, &pos, -400, arg5, 10, 2, 0, scale, 1, 0, 80, KAKERA_COLOR_NONE,
                              OBJECT_BOMBIWA, dlist);
     }
-    func_80033480(globalCtx, &this->actor.world.pos, 60.0f, 8, 100, 160, 1);
+    func_80033480(play, &this->actor.world.pos, 60.0f, 8, 100, 160, 1);
 }
 
-void ObjBombiwa_Update(Actor* thisx, GlobalContext* globalCtx) {
+void ObjBombiwa_Update(Actor* thisx, PlayState* play) {
     ObjBombiwa* this = (ObjBombiwa*)thisx;
     s32 pad;
 
-    if ((func_80033684(globalCtx, &this->actor) != NULL) ||
+    if ((func_80033684(play, &this->actor) != NULL) ||
         ((this->collider.base.acFlags & AC_HIT) && (this->collider.info.acHitInfo->toucher.dmgFlags & 0x40000040))) {
-        ObjBombiwa_Break(this, globalCtx);
-        Flags_SetSwitch(globalCtx, this->actor.params & 0x3F);
-        SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->actor.world.pos, 80, NA_SE_EV_WALL_BROKEN);
+        ObjBombiwa_Break(this, play);
+        Flags_SetSwitch(play, this->actor.params & 0x3F);
+        SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 80, NA_SE_EV_WALL_BROKEN);
         if (((this->actor.params >> 0xF) & 1) != 0) {
             func_80078884(NA_SE_SY_CORRECT_CHIME);
         }
@@ -137,12 +137,12 @@ void ObjBombiwa_Update(Actor* thisx, GlobalContext* globalCtx) {
     } else {
         this->collider.base.acFlags &= ~AC_HIT;
         if (this->actor.xzDistToPlayer < 800.0f) {
-            CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-            CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+            CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
+            CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
         }
     }
 }
 
-void ObjBombiwa_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    Gfx_DrawDListOpa(globalCtx, object_bombiwa_DL_0009E0);
+void ObjBombiwa_Draw(Actor* thisx, PlayState* play) {
+    Gfx_DrawDListOpa(play, object_bombiwa_DL_0009E0);
 }

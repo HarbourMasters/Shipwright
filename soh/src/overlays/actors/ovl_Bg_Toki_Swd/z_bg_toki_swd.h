@@ -6,7 +6,7 @@
 
 struct BgTokiSwd;
 
-typedef void (*BgTokiSwdActionFunc)(struct BgTokiSwd*, GlobalContext*);
+typedef void (*BgTokiSwdActionFunc)(struct BgTokiSwd*, PlayState*);
 
 typedef struct BgTokiSwd {
     /* 0x0000 */ Actor actor;

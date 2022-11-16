@@ -6,7 +6,7 @@
 
 struct EnSi;
 
-typedef void (*EnSiActionFunc)(struct EnSi*, GlobalContext*);
+typedef void (*EnSiActionFunc)(struct EnSi*, PlayState*);
 
 typedef struct EnSi {
     /* 0x0000 */ Actor actor;

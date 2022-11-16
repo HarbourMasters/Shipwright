@@ -6,8 +6,8 @@
 
 struct DemoSa;
 
-typedef void (*DemoSaActionFunc)(struct DemoSa*, GlobalContext*);
-typedef void (*DemoSaDrawFunc)(struct DemoSa*, GlobalContext*);
+typedef void (*DemoSaActionFunc)(struct DemoSa*, PlayState*);
+typedef void (*DemoSaDrawFunc)(struct DemoSa*, PlayState*);
 
 typedef struct DemoSa {
     /* 0x0000 */ Actor actor;
