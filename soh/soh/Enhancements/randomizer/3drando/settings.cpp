@@ -2595,6 +2595,8 @@ namespace Settings {
     StartingDekuShield.SetSelectedIndex(cvarSettings[RSK_STARTING_DEKU_SHIELD]);
     StartingKokiriSword.SetSelectedIndex(cvarSettings[RSK_STARTING_KOKIRI_SWORD]);
 
+    StartingSkulltulaToken.SetSelectedIndex(cvarSettings[RSK_STARTING_SKULLTULA_TOKEN]);
+
     MapsAndCompasses.SetSelectedIndex(cvarSettings[RSK_STARTING_MAPS_COMPASSES]);
 
     // RANDOTODO: Implement disabling ammo drops. Currently only "On" (index 0) or "On + Bombchus" (index 1) is implemented.
