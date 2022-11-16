@@ -502,7 +502,7 @@ void EnClearTag_Update(Actor* thisx, PlayState* play2) {
                     this->shouldShootLaser = false;
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, this->actor.world.pos.x,
                                 this->actor.world.pos.y, this->actor.world.pos.z, this->actor.world.rot.x,
-                                this->actor.world.rot.y, this->actor.world.rot.z, CLEAR_TAG_STATE_LASER);
+                                this->actor.world.rot.y, this->actor.world.rot.z, CLEAR_TAG_STATE_LASER, true);
                 }
             }
             case CLEAR_TAG_STATE_CRASHING:

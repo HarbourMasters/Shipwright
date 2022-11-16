@@ -400,7 +400,7 @@ void EnElf_Init(Actor* thisx, PlayState* play) {
 
             for (i = 0; i < 8; i++) {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, thisx->world.pos.x,
-                            thisx->world.pos.y - 30.0f, thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL);
+                            thisx->world.pos.y - 30.0f, thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL, true);
             }
             break;
         default:

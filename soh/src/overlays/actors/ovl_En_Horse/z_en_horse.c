@@ -867,7 +867,7 @@ void EnHorse_Init(Actor* thisx, PlayState* play2) {
         EnHorse_InitIngoHorse(this);
         this->rider =
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_IN, this->actor.world.pos.x, this->actor.world.pos.y,
-                        this->actor.world.pos.z, this->actor.shape.rot.x, this->actor.shape.rot.y, 1, 1);
+                        this->actor.world.pos.z, this->actor.shape.rot.x, this->actor.shape.rot.y, 1, 1, true);
         if (this->rider == NULL) {
             //__assert("this->race.rider != NULL");
             ASSERT(this->rider == NULL);

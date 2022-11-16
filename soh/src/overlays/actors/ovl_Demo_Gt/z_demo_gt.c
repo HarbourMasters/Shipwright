@@ -74,7 +74,7 @@ void func_8097D7D8(PlayState* play, Vec3f* pos, Vec3f* velOffset, f32 scale, s32
 
 Actor* DemoGt_SpawnCloudRing(PlayState* play, Vec3f* pos, s16 params) {
     return Actor_Spawn(&play->actorCtx, play, ACTOR_BG_SPOT16_DOUGHNUT, pos->x, pos->y, pos->z, 0, 0, 0,
-                       params);
+                       params, true);
 }
 
 void DemoGt_SpawnExplosionWithSound(PlayState* play, Vec3f* pos, f32 scale) {

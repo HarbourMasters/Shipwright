@@ -371,7 +371,7 @@ void EnBox_AppearInit(EnBox* this, PlayState* play) {
         EnBox_SetupAction(this, EnBox_AppearAnimation);
         this->unk_1A8 = 0;
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, this->dyna.actor.home.pos.x,
-                    this->dyna.actor.home.pos.y, this->dyna.actor.home.pos.z, 0, 0, 0, 0x0011);
+                    this->dyna.actor.home.pos.y, this->dyna.actor.home.pos.z, 0, 0, 0, 0x0011, true);
         Audio_PlaySoundGeneral(NA_SE_EV_TRE_BOX_APPEAR, &this->dyna.actor.projectedPos, 4, &D_801333E0, &D_801333E0,
                                &D_801333E8);
     }

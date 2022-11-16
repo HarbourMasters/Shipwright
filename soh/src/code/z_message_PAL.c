@@ -2680,7 +2680,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                         Actor_Spawn(&play->actorCtx, play,
                                     sOcarinaEffectActorIds[msgCtx->lastPlayedSong - OCARINA_SONG_SARIAS],
                                     player->actor.world.pos.x, player->actor.world.pos.y, player->actor.world.pos.z, 0,
-                                    0, 0, sOcarinaEffectActorParams[msgCtx->lastPlayedSong - OCARINA_SONG_SARIAS]);
+                                    0, 0, sOcarinaEffectActorParams[msgCtx->lastPlayedSong - OCARINA_SONG_SARIAS], true);
                     }
                 }
                 break;

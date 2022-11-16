@@ -108,7 +108,7 @@ void func_8087B938(BgHaka* this, PlayState* play) {
         } else if (!IS_DAY && play->sceneNum == SCENE_SPOT02) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_POH, this->dyna.actor.home.pos.x,
                         this->dyna.actor.home.pos.y, this->dyna.actor.home.pos.z, 0, this->dyna.actor.shape.rot.y, 0,
-                        1);
+                        1, true);
         }
         this->actionFunc = func_8087BAAC;
     }

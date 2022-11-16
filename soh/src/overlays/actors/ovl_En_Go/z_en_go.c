@@ -722,7 +722,7 @@ void EnGo_StopRolling(EnGo* this, PlayState* play) {
     this->actor.speedXZ = 3.0f;
     if ((EnGo_FollowPath(this, play) == true) && (this->unk_218 == 0)) {
         bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
+                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
         if (bomb != NULL) {
             bomb->timer = 0;
         }

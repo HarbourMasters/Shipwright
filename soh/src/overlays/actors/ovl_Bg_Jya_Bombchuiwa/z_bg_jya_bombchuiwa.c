@@ -181,7 +181,7 @@ void BgJyaBombchuiwa_SpawnLightRay(BgJyaBombchuiwa* this, PlayState* play) {
     this->lightRayIntensity = 153.0f;
     BgJyaBombchuiwa_SetDrawFlags(this, 4);
     if (Actor_Spawn(&play->actorCtx, play, ACTOR_MIR_RAY, this->actor.world.pos.x, this->actor.world.pos.y,
-                    this->actor.world.pos.z, 0, 0, 0, 0) == NULL) {
+                    this->actor.world.pos.z, 0, 0, 0, 0, true) == NULL) {
         // "Occurrence failure"
         osSyncPrintf("Ｅｒｒｏｒ : Mir_Ray 発生失敗(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->actor.params);

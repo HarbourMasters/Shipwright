@@ -118,16 +118,16 @@ void BgJyaIronobj_SpawnPillarParticles(BgJyaIronobj* this, PlayState* play, EnIk
         Actor* actor =
             Actor_Spawn(&play->actorCtx, play, ACTOR_BG_JYA_HAHENIRON, this->dyna.actor.world.pos.x,
                         Rand_ZeroOne() * 80.0f + this->dyna.actor.world.pos.y + 20.0f, this->dyna.actor.world.pos.z, 0,
-                        (s16)(Rand_ZeroOne() * 0x4000) + rotY - 0x2000, 0, 0);
+                        (s16)(Rand_ZeroOne() * 0x4000) + rotY - 0x2000, 0, 0, true);
         if (actor != NULL) {
             actor->speedXZ = Rand_ZeroOne() * 8.0f + 9.0f;
             actor->velocity.y = Rand_ZeroOne() * 10.0f + 6.0f;
         }
     }
     Actor_Spawn(&play->actorCtx, play, ACTOR_BG_JYA_HAHENIRON, this->dyna.actor.world.pos.x,
-                this->dyna.actor.world.pos.y + 150.0f, this->dyna.actor.world.pos.z, 0, 0, 0, 1);
+                this->dyna.actor.world.pos.y + 150.0f, this->dyna.actor.world.pos.z, 0, 0, 0, 1, true);
     Actor_Spawn(&play->actorCtx, play, ACTOR_BG_JYA_HAHENIRON, this->dyna.actor.world.pos.x,
-                this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, 0, 0, 2);
+                this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, 0, 0, 2, true);
     sins = Math_SinS(rotY);
     coss = Math_CosS(rotY);
     for (j = 0; j < 32; j++) {
@@ -180,7 +180,7 @@ void BgJyaIronobj_SpawnThoneParticles(BgJyaIronobj* this, PlayState* play, EnIk*
         Actor* actor =
             Actor_Spawn(&play->actorCtx, play, ACTOR_BG_JYA_HAHENIRON, this->dyna.actor.world.pos.x,
                         (Rand_ZeroOne() * 80.0f) + this->dyna.actor.world.pos.y + 10.0f, this->dyna.actor.world.pos.z,
-                        0, ((s16)(s32)(Rand_ZeroOne() * 0x4000) + rotY) - 0x2000, 0, 0);
+                        0, ((s16)(s32)(Rand_ZeroOne() * 0x4000) + rotY) - 0x2000, 0, 0, true);
         if (actor != NULL) {
             actor->speedXZ = Rand_ZeroOne() * 8.0f + 9.0f;
             actor->velocity.y = Rand_ZeroOne() * 10.0f + 6.0f;

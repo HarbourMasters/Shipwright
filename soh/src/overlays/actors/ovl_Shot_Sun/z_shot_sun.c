@@ -101,7 +101,7 @@ void ShotSun_SpawnFairy(ShotSun* this, PlayState* play) {
 
         //! @bug fairyType may be uninitialized
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, this->actor.home.pos.x, this->actor.home.pos.y,
-                    this->actor.home.pos.z, 0, 0, 0, fairyType);
+                    this->actor.home.pos.z, 0, 0, 0, fairyType, true);
 
         Actor_Kill(&this->actor);
     }
@@ -113,7 +113,7 @@ void ShotSun_TriggerFairy(ShotSun* this, PlayState* play) {
         this->timer = 50;
 
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, this->actor.home.pos.x, this->actor.home.pos.y,
-                    this->actor.home.pos.z, 0, 0, 0, 0x11);
+                    this->actor.home.pos.z, 0, 0, 0, 0x11, true);
 
         func_80078914(&this->actor.projectedPos, NA_SE_EV_TRE_BOX_APPEAR);
     }
@@ -164,7 +164,7 @@ void ShotSun_UpdateHyliaSun(ShotSun* this, PlayState* play) {
         osSyncPrintf(VT_FGCOL(CYAN) "SHOT_SUN HIT!!!!!!!\n" VT_RST);
         if ((INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE && !gSaveContext.n64ddFlag) ||
             !Flags_GetTreasure(play, 0x1F)) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_ETCETERA, 700.0f, -800.0f, 7261.0f, 0, 0, 0, 7);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_ETCETERA, 700.0f, -800.0f, 7261.0f, 0, 0, 0, 7, true);
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gLakeHyliaFireArrowsCS);
             gSaveContext.cutsceneTrigger = 1;
         } else {

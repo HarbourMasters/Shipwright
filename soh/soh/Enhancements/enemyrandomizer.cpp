@@ -1,4 +1,5 @@
 #include "enemyrandomizer.h"
+#include "global.h"
 
 extern "C" {
 #include <z64.h>
@@ -6,7 +7,7 @@ extern "C" {
 
 #include "macros.h"
 
-static enemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
+static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
     { ACTOR_EN_FIREFLY, 2 },    // Regular Keese
     { ACTOR_EN_FIREFLY, 1 },    // Fire Keese
     { ACTOR_EN_FIREFLY, 4 },    // Ice Keese
@@ -111,12 +112,98 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_CROW       // Guay
 };
 
-extern "C" enemyEntry GetRandomizedEnemy(f32 seed1, f32 seed2, f32 seed3) {
+extern "C" RandomizedEnemy GetRandomizedEnemy(PlayState* play, uint16_t actorId, f32 posX, f32 posY, f32 posZ, s16 rotX, s16 rotY, s16 rotZ, s16 params) {
+
+    if (IsEnemyFoundToRandomize(play->sceneNum, actorId, params, posX)) {
+
+        // When replacing Iron Knuckles in Spirit Temple, move them away from the throne because
+        // some enemies can get stuck on the throne.
+        if (actorId == ACTOR_EN_IK && play->sceneNum == SCENE_JYASINZOU) {
+            if (params == 6657) {
+                posX = posX + 150;
+            } else if (params == 6401) {
+                posX = posX - 150;
+            }
+        }
+
+        // Do a raycast from the original position of the actor to find the ground below it, then try to place
+        // the new actor on the ground. This way enemies don't spawn very high in the sky, and gives us control
+        // over height offsets per enemy from a proven grounded position.
+        CollisionPoly poly;
+        Vec3f pos;
+        f32 raycastResult;
+
+        pos.x = posX;
+        pos.y = posY + 50;
+        pos.z = posZ;
+        raycastResult = BgCheck_AnyRaycastFloor1(&play->colCtx, &poly, &pos);
+
+        // If ground is found below actor, move actor to that height.
+        if (raycastResult > BGCHECK_Y_MIN) {
+            posY = raycastResult;
+        }
+
+        // Get randomized enemy ID and parameter.
+        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(posX, posY, posZ);
+
+        // While randomized enemy isn't allowed in certain situations, randomize again.
+        while (!IsEnemyAllowedToSpawn(play->sceneNum, randomEnemy)) {
+            randomEnemy = GetRandomizedEnemyEntry(posX, posY, posZ);
+        }
+
+        actorId = randomEnemy.id;
+        params = randomEnemy.params;
+
+        // Straighten out enemies so they aren't flipped on their sides when the original spawn is.
+        rotX = 0;
+
+        switch (actorId) {
+            // When spawning big jellyfish, spawn it up high.
+            case ACTOR_EN_VALI:
+                posY = posY + 300;
+                break;
+            // Spawn peahat off the ground, otherwise it kills itself by colliding with the ground.
+            case ACTOR_EN_PEEHAT:
+                if (params == 1) {
+                    posY = posY + 100;
+                }
+                break;
+            // Spawn skulltulas off the ground.
+            case ACTOR_EN_ST:
+                posY = posY + 200;
+                break;
+            // Spawn flying enemies off the ground.
+            case ACTOR_EN_FIREFLY:
+            case ACTOR_EN_BILI:
+            case ACTOR_EN_BB:
+            case ACTOR_EN_CLEAR_TAG:
+            case ACTOR_EN_CROW:
+                posY = posY + 75;
+                break;
+            default:
+                break;
+        }
+    }
+
+    RandomizedEnemy newEnemy;
+    newEnemy.id = actorId;
+    newEnemy.posX = posX;
+    newEnemy.posY = posY;
+    newEnemy.posZ = posZ;
+    newEnemy.rotX = rotX;
+    newEnemy.rotY = rotX;
+    newEnemy.rotZ = rotX;
+    newEnemy.params = params;
+
+    return newEnemy;
+}
+
+EnemyEntry GetRandomizedEnemyEntry(float seed1, float seed2, float seed3) {
     uint32_t randomNumber = rand() + (int)seed1 + (int)seed2 + (int)seed3;
     return randomizedEnemySpawnTable[randomNumber % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
 }
 
-extern "C" uint8_t IsEnemyFoundToRandomize(PlayState* play, int actorId = 0, int param = 0, f32 posX = 0) {
+uint8_t IsEnemyFoundToRandomize(uint8_t sceneNum, uint8_t actorId, uint8_t params, float posX) {
 
     for (int i = 0; i < ARRAY_COUNT(enemiesToRandomize); i++) {
 
@@ -125,50 +212,50 @@ extern "C" uint8_t IsEnemyFoundToRandomize(PlayState* play, int actorId = 0, int
             switch (actorId) {
                 // Only randomize the main component of Electric Tailparasans, not the tail segments they spawn.
                 case ACTOR_EN_TP:
-                    return (param == -1);
+                    return (params == -1);
                 // Only randomize the initial deku scrub actor (single and triple attack), not the flower they spawn.
                 case ACTOR_EN_DEKUNUTS:
-                    return (param == -256 || param == 768);
+                    return (params == -256 || params == 768);
                 // Only randomize initial floormaster actor (it can split and does some spawning on init).
                 case ACTOR_EN_FLOORMAS:
-                    return (param == 0 || param == -32768);
+                    return (params == 0 || params == -32768);
                 // Only randomize the initial eggs, not the enemies that spawn from them.
                 case ACTOR_EN_GOMA:
-                    return ((param >= 0 && param <= 6) || param == 8);
+                    return ((params >= 0 && params <= 6) || params == 8);
                 // Only randomize Skullwalltulas, not Golden Skulltulas.
                 case ACTOR_EN_SW:
-                    return (param == 0);
+                    return (params == 0);
                 // Don't randomize Nabooru because it'll break the cutscene and the door.
                 case ACTOR_EN_IK:
-                    return (param != 1280);
+                    return (params != 1280);
                 // Only randomize the intitial spawn of the huge jellyfish. It spawns another copy when hit with a sword.
                 case ACTOR_EN_VALI:
-                    return (param == -1);
+                    return (params == -1);
                 // Don't randomize lizalfos in Doodong's Cavern because the gates won't work correctly otherwise.
                 case ACTOR_EN_ZF:
-                    return (param != 1280 && param != 1281 && param != 1536 && param != 1537);
+                    return (params != 1280 && params != 1281 && params != 1536 && params != 1537);
                 // Don't randomize the Wolfos in SFM because it's needed to open the gate.
                 case ACTOR_EN_WF:
-                    return (param != 7936);
+                    return (params != 7936);
                 // Don't randomize the Stalfos in Forest Temple because other enemies fall through the hole and don't trigger the platform.
                 // Don't randomize the Stalfos spawning on the boat in Shadow Temple, as randomizing them places the new enemies
                 // down in the river.
                 case ACTOR_EN_TEST:
-                    return (param != 1 && !(play->sceneNum == SCENE_HAKADAN && (posX == 2746 || posX == 1209)));
+                    return (params != 1 && !(sceneNum == SCENE_HAKADAN && (posX == 2746 || posX == 1209)));
                 // Only randomize the enemy variant of Armos Statue.
                 // Leave one Armos unrandomized in the Spirit Temple room where an armos is needed to push down a button
                 case ACTOR_EN_AM:
-                    return (param == -1 && !(play->sceneNum == SCENE_JYASINZOU && posX == 2141));
+                    return ((params == -1 || params == 255) && !(sceneNum == SCENE_JYASINZOU && posX == 2141));
                 // Don't randomize Shell Blades and Spikes in the underwater portion in Water Temple as it's impossible to kill
                 // most other enemies underwater with just hookshot and they're required to be killed for a grate to open.
                 case ACTOR_EN_SB:
-                    return (play->sceneNum == SCENE_MIZUSIN && (posX == 419 || posX == 435));
+                    return (sceneNum == SCENE_MIZUSIN && (posX == 419 || posX == 435));
                 case ACTOR_EN_NY:
-                    return (play->sceneNum == SCENE_MIZUSIN && (posX == 380 || posX == 382 || posX == 416 || posX == 452 || posX == 454));
+                    return (sceneNum == SCENE_MIZUSIN && (posX == 380 || posX == 382 || posX == 416 || posX == 452 || posX == 454));
                 // Don't randomize the 2 like-likes in Jabu Jabu's Belly in MQ because they spawn in a box on top of the ceilling.
                 // Other enemies won't aggro on Link correctly to fall down.
                 case ACTOR_EN_RR:
-                    return (play->sceneNum != SCENE_BDAN);
+                    return (sceneNum != SCENE_BDAN);
                 default:
                     return 1;
             }
@@ -179,20 +266,20 @@ extern "C" uint8_t IsEnemyFoundToRandomize(PlayState* play, int actorId = 0, int
     return 0;
 }
 
-extern "C" uint8_t IsEnemyAllowedToSpawn(PlayState* play, enemyEntry enemy) {
+uint8_t IsEnemyAllowedToSpawn(uint8_t sceneNum, EnemyEntry enemy) {
 
-    switch (play->sceneNum) {
+    switch (sceneNum) {
         // Don't allow Dark Link in areas with void out zones as it voids out the player as well.
         // Shadow Temple, Gerudo Training Ground and Death Mountain Crater. 
         case SCENE_HAKADAN:
         case SCENE_MEN:
         case SCENE_SPOT17:
-            return (enemy.enemyId != ACTOR_EN_TORCH2);
+            return (enemy.id != ACTOR_EN_TORCH2);
         // Don't allow certain enemies in Ganon's Tower because they would spawn up on the ceilling,
         // becoming impossible to kill
         case SCENE_GANON:
         case SCENE_GANON_SONOGO:
-            return (enemy.enemyId != ACTOR_EN_CLEAR_TAG && enemy.enemyId != ACTOR_EN_VALI && !(enemy.enemyId == ACTOR_EN_ZF && enemy.enemyParam == -1));
+            return (enemy.id != ACTOR_EN_CLEAR_TAG && enemy.id != ACTOR_EN_VALI && !(enemy.id == ACTOR_EN_ZF && enemy.params == -1));
         default:
             return 1;
     }

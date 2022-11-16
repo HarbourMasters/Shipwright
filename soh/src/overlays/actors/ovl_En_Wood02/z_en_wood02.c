@@ -349,7 +349,7 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
                     this->actor.home.rot.z &= 0x1FFF;
                     this->actor.home.rot.z |= 0xE000;
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, dropsSpawnPt.x, dropsSpawnPt.y,
-                                dropsSpawnPt.z, 0, this->actor.world.rot.y, 0, this->actor.home.rot.z);
+                                dropsSpawnPt.z, 0, this->actor.world.rot.y, 0, this->actor.home.rot.z, true);
                     this->actor.home.rot.z = 0;
                 }
             }
@@ -366,7 +366,7 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
 
                 for (i = 3; i >= 0; i--) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_WOOD02, dropsSpawnPt.x, dropsSpawnPt.y,
-                                dropsSpawnPt.z, 0, Rand_CenteredFloat(65535.0f), 0, leavesParams);
+                                dropsSpawnPt.z, 0, Rand_CenteredFloat(65535.0f), 0, leavesParams, true);
                 }
             }
             this->unk_14C = -0x15;

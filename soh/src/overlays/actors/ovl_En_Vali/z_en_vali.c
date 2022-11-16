@@ -240,7 +240,7 @@ void EnVali_SetupDivideAndDie(EnVali* this, PlayState* play) {
 
     for (i = 0; i < 3; i++) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BILI, this->actor.world.pos.x, this->actor.world.pos.y,
-                    this->actor.world.pos.z, 0, this->actor.world.rot.y, 0, 0);
+                    this->actor.world.pos.z, 0, this->actor.world.rot.y, 0, 0, true);
 
         this->actor.world.rot.y += 0x10000 / 3;
     }

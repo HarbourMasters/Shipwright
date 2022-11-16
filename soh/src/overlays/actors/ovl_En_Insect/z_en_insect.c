@@ -205,7 +205,7 @@ void EnInsect_Init(Actor* thisx, PlayState* play2) {
             for (count = 0; count < 2; count++) {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_INSECT, this->actor.world.pos.x,
                             this->actor.world.pos.y, this->actor.world.pos.z, this->actor.shape.rot.x,
-                            this->actor.shape.rot.y, this->actor.shape.rot.z, 3);
+                            this->actor.shape.rot.y, this->actor.shape.rot.z, 3, true);
             }
         }
 

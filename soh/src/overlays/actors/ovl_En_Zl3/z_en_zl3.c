@@ -138,7 +138,7 @@ void func_80B5357C(EnZl3* this, PlayState* play) {
 }
 
 void func_80B53614(EnZl3* this, PlayState* play) {
-    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_RIVER_SOUND, -442.0f, 4102.0f, -371.0f, 0, 0, 0, 0x12);
+    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_RIVER_SOUND, -442.0f, 4102.0f, -371.0f, 0, 0, 0, 0x12, true);
 }
 
 void func_80B5366C(EnZl3* this, PlayState* play) {
@@ -770,7 +770,7 @@ void func_80B54EA4(EnZl3* this, PlayState* play) {
     f32 posY = this->actor.world.pos.y;
     f32 posZ = this->actor.world.pos.z;
 
-    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EG, posX, posY, posZ, 0, 0, 0, 0);
+    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EG, posX, posY, posZ, 0, 0, 0, 0, true);
 }
 
 void func_80B54EF4(EnZl3* this) {
@@ -1810,7 +1810,7 @@ void func_80B5772C(EnZl3* this, PlayState* play) {
 void func_80B57754(EnZl3* this, PlayState* play) {
     if (gSaveContext.unk_13F0 == 0) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_OCEFF_WIPE4, this->actor.world.pos.x,
-                    this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 1);
+                    this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 1, true);
         func_80B56DA4(this);
     }
 }
@@ -1824,7 +1824,7 @@ void func_80B577BC(PlayState* play, Vec3f* vec) {
     f32 posZ = vec->z;
 
     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TEST, posX, posY, posZ, 0,
-                (Math_FAtan2F(playerPos->x - posX, playerPos->z - posZ) * (0x8000 / M_PI)), 0, 5);
+                (Math_FAtan2F(playerPos->x - posX, playerPos->z - posZ) * (0x8000 / M_PI)), 0, 5, true);
 }
 
 void func_80B57858(PlayState* play) {
@@ -2537,7 +2537,7 @@ void func_80B59828(EnZl3* this, PlayState* play) {
         Magic_Fill(play);
         if (Flags_GetSwitch(play, 0x20)) {
             Flags_UnsetSwitch(play, 0x20);
-            Actor_Spawn(&play->actorCtx, play, ACTOR_BG_ZG, -144.0f, 3544.0f, -43.0f, 0, 0x2000, 0, 0x2000);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_BG_ZG, -144.0f, 3544.0f, -43.0f, 0, 0x2000, 0, 0x2000, true);
         }
         Flags_UnsetSwitch(play, 0x21);
         Flags_UnsetSwitch(play, 0x22);
