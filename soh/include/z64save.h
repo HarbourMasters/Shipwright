@@ -32,6 +32,7 @@ typedef struct {
     /*      */ u8 dungeonKeys[19];
     /*      */ u8 hasObtainedWeirdEgg;
     /*      */ u8 weirdEggHasHatched;
+    /*      */ u8 activeMaskItemId;
 } SohStats;
 
 typedef struct {
