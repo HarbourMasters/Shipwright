@@ -1,11 +1,10 @@
 #include "enemyrandomizer.h"
-#include "global.h"
+#include "functions.h"
+#include "macros.h"
 
 extern "C" {
 #include <z64.h>
 }
-
-#include "macros.h"
 
 static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
     { ACTOR_EN_FIREFLY, 2 },    // Regular Keese
