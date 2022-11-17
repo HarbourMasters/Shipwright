@@ -249,9 +249,9 @@ uint8_t IsEnemyFoundToRandomize(int16_t sceneNum, int16_t actorId, int16_t param
                 // Don't randomize Shell Blades and Spikes in the underwater portion in Water Temple as it's impossible to kill
                 // most other enemies underwater with just hookshot and they're required to be killed for a grate to open.
                 case ACTOR_EN_SB:
-                    return (sceneNum == SCENE_MIZUSIN && (posX == 419 || posX == 435));
+                    return (!(sceneNum == SCENE_MIZUSIN && (posX == 419 || posX == 435)));
                 case ACTOR_EN_NY:
-                    return (sceneNum == SCENE_MIZUSIN && (posX == 380 || posX == 382 || posX == 416 || posX == 452 || posX == 454));
+                    return (!(sceneNum == SCENE_MIZUSIN && (posX == 380 || posX == 382 || posX == 416 || posX == 452 || posX == 454)));
                 // Don't randomize the 2 like-likes in Jabu Jabu's Belly in MQ because they spawn in a box on top of the ceilling.
                 // Other enemies won't aggro on Link correctly to fall down.
                 case ACTOR_EN_RR:
