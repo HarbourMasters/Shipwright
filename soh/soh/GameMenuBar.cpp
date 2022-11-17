@@ -1408,6 +1408,8 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
             UIWidgets::PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
             UIWidgets::Tooltip("This syncs the ingame time with the real world time");
+            UIWidgets::PaddedEnhancementCheckbox("Ultra Deku Stick", "gUltraDekuStick", true, false);
+            UIWidgets::Tooltip("Lights your Deku Stick, keeps it lit and keeps it from breaking.");
 
             {
                 static int32_t betaQuestEnabled = CVar_GetS32("gEnableBetaQuest", 0);
