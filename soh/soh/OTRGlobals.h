@@ -7,7 +7,7 @@
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
 #ifdef __cplusplus
-#include <libultraship/Window.h>
+#include <Window.h>
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
 
@@ -120,6 +120,7 @@ void Randomizer_LoadMerchantMessages(const char* spoilerFileName);
 void Randomizer_LoadRequiredTrials(const char* spoilerFileName);
 void Randomizer_LoadMasterQuestDungeons(const char* spoilerFileName);
 void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
+void Randomizer_LoadEntranceOverrides(const char* spoilerFileName, bool silent);
 bool Randomizer_IsTrialRequired(RandomizerInf trial);
 GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);
 GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId);

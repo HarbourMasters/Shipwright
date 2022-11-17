@@ -31,6 +31,8 @@
 
 #include "scenes/misc/hakaana_ouke/hakaana_ouke_scene.h"
 
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
+
 u16 D_8011E1C0 = 0;
 u16 D_8011E1C4 = 0;
 
@@ -1235,6 +1237,10 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->sceneLoadFlag = 0x14;
                 play->fadeTransition = 3;
                 break;
+        }
+
+        if (randoCsSkip) {
+            Entrance_OverrideCutsceneEntrance(cmd->base);
         }
     }
 }

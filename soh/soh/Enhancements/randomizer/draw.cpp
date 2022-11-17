@@ -31,12 +31,12 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gsDPSetGrayscaleColor(POLY_OPA_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
-    gsSPGrayscale(POLY_OPA_DISP++, true);
+    gDPSetGrayscaleColor(POLY_OPA_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
+    gSPGrayscale(POLY_OPA_DISP++, true);
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
 
-    gsSPGrayscale(POLY_OPA_DISP++, false);
+    gSPGrayscale(POLY_OPA_DISP++, false);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -62,14 +62,14 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
     if (color_slot == 5) { // Ganon's Boss Key
-        gsDPSetGrayscaleColor(POLY_OPA_DISP++, 80, 80, 80, 255);
-        gsSPGrayscale(POLY_OPA_DISP++, true);
+        gDPSetGrayscaleColor(POLY_OPA_DISP++, 80, 80, 80, 255);
+        gSPGrayscale(POLY_OPA_DISP++, true);
     }
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBossKeyDL);
 
     if (color_slot == 5) { // Ganon's Boss Key
-        gsSPGrayscale(POLY_OPA_DISP++, false);
+        gSPGrayscale(POLY_OPA_DISP++, false);
     }
 
     func_80093D84(play->state.gfxCtx);
@@ -77,13 +77,13 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gsDPSetGrayscaleColor(POLY_XLU_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2],
+    gDPSetGrayscaleColor(POLY_XLU_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2],
                             255);
-    gsSPGrayscale(POLY_XLU_DISP++, true);
+    gSPGrayscale(POLY_XLU_DISP++, true);
 
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBossKeyGemDL);
 
-    gsSPGrayscale(POLY_XLU_DISP++, false);
+    gSPGrayscale(POLY_XLU_DISP++, false);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -108,8 +108,8 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
 
     func_80093D18(play->state.gfxCtx);
 
-    gsDPSetGrayscaleColor(POLY_OPA_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
-    gsSPGrayscale(POLY_OPA_DISP++, true);
+    gDPSetGrayscaleColor(POLY_OPA_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
+    gSPGrayscale(POLY_OPA_DISP++, true);
 
     Matrix_Scale(0.5f, 0.5f, 0.5f, MTXMODE_APPLY);
     Matrix_RotateZ(0.8f, MTXMODE_APPLY);
@@ -131,7 +131,7 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
     }
 
-    gsSPGrayscale(POLY_OPA_DISP++, false);
+    gSPGrayscale(POLY_OPA_DISP++, false);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -144,12 +144,12 @@ extern "C" void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry getIt
    
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gsDPSetGrayscaleColor(POLY_XLU_DISP++, 255, 255, 255, 255);
-    gsSPGrayscale(POLY_XLU_DISP++, true);
+    gDPSetGrayscaleColor(POLY_XLU_DISP++, 255, 255, 255, 255);
+    gSPGrayscale(POLY_XLU_DISP++, true);
 
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiHeartBorderDL);
 
-    gsSPGrayscale(POLY_XLU_DISP++, false);
+    gSPGrayscale(POLY_XLU_DISP++, false);
 
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiHeartContainerDL);
 

@@ -26,7 +26,7 @@
 #include "z64interface.h"
 #include "sequence.h"
 #include "sfx.h"
-#include <libultraship/color.h>
+#include <color.h>
 #include "ichain.h"
 #include "regs.h"
 
@@ -1181,6 +1181,7 @@ typedef struct {
     /*      */ s32 returnEntranceIndex;
     /*      */ s8 roomIndex;
     /*      */ s8 data;
+    /*      */ s8 exitScene;
     /*      */ Vec3f pos;
 } BetterSceneSelectGrottoData;
 

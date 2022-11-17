@@ -23,6 +23,7 @@
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/Enhancements/debugconsole.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 typedef enum {
     /* 0x00 */ KNOB_ANIM_ADULT_L,
@@ -4221,14 +4222,26 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                 func_800994A0(play);
             } else {
                 play->nextEntranceIndex = play->setupExitList[sp3C - 1];
+
+                // Main override for entrance rando and entrance skips
+                if (gSaveContext.n64ddFlag) {
+                    play->nextEntranceIndex = Entrance_OverrideNextIndex(play->nextEntranceIndex);
+                }
+
                 if (play->nextEntranceIndex == 0x7FFF) {
                     gSaveContext.respawnFlag = 2;
                     play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex;
                     play->fadeTransition = 3;
                     gSaveContext.nextTransition = 3;
                 } else if (play->nextEntranceIndex >= 0x7FF9) {
-                    play->nextEntranceIndex =
-                        D_808544F8[D_80854514[play->nextEntranceIndex - 0x7FF9] + play->curSpawn];
+                    // handle dynamic exits
+                    if (gSaveContext.n64ddFlag) {
+                        play->nextEntranceIndex = Entrance_OverrideDynamicExit(D_80854514[play->nextEntranceIndex - 0x7FF9] + play->curSpawn);
+                    } else {
+                        play->nextEntranceIndex =
+                            D_808544F8[D_80854514[play->nextEntranceIndex - 0x7FF9] + play->curSpawn];
+                    }
+
                     func_800994A0(play);
                 } else {
                     if (SurfaceType_GetSlope(&play->colCtx, poly, bgId) == 2) {
@@ -13400,6 +13413,10 @@ void func_8084F88C(Player* this, PlayState* play) {
                 play->nextEntranceIndex = 0x0088;
             } else if (this->unk_84F < 0) {
                 Play_TriggerRespawn(play);
+                // In ER, handle DMT and other special void outs to respawn from last entrance from grotto 
+                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+                    Grotto_ForceRegularVoidOut();
+                }
             } else {
                 Play_TriggerVoidOut(play);
             }

@@ -6,6 +6,7 @@
 #include "z64audio.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/randomizer_inf.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 typedef struct {
     /* 0x00 */ u8 buttonItems[8];
@@ -185,6 +186,7 @@ typedef struct {
     RandoSetting randoSettings[300];
     ItemLocationRando itemLocations[RC_MAX];
     HintLocationRando hintLocations[50];
+    EntranceOverride entranceOverrides[ENTRANCE_OVERRIDES_MAX_COUNT];
     char childAltarText[250];
     char adultAltarText[750];
     char ganonHintText[150];
