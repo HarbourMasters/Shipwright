@@ -276,6 +276,10 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int16_t actorId, int16_t params, 
 bool IsEnemyAllowedToSpawn(int16_t sceneNum, EnemyEntry enemy) {
 
     switch (sceneNum) {
+        // Don't allow big stalchildren and big peahats during the Gohma fight because they can clip into Gohma
+        // and it crashes the game. Likely because Gohma on the ceilling can't handle collision with other enemies.
+        case SCENE_YDAN_BOSS:
+            return (!(enemy.id == ACTOR_EN_SKB && enemy.params == 20) && !(enemy.id == ACTOR_EN_PEEHAT && enemy.params == -1));
         // Don't allow Dark Link in areas with void out zones as it voids out the player as well.
         // Shadow Temple, Gerudo Training Ground and Death Mountain Crater. 
         case SCENE_HAKADAN:
