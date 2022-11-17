@@ -1373,7 +1373,6 @@ namespace GameMenuBar {
                 UIWidgets::EnhancementCheckbox("Money", "gInfiniteMoney");
                 UIWidgets::PaddedEnhancementCheckbox("Health", "gInfiniteHealth", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("Ammo", "gInfiniteAmmo", true, false);
-                UIWidgets::PaddedEnhancementCheckbox("Minigame Ammo", "gInfiniteMinigame", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("Magic", "gInfiniteMagic", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("Nayru's Love", "gInfiniteNayru", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("Epona Boost", "gInfiniteEpona", true, false);
