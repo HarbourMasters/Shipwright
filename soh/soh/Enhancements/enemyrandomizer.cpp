@@ -111,18 +111,34 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_CROW       // Guay
 };
 
-extern "C" RandomizedEnemy GetRandomizedEnemy(PlayState* play, int16_t actorId, f32 posX, f32 posY, f32 posZ,
-                                              int16_t rotX, int16_t rotY, int16_t rotZ, int16_t params) {
+extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *posX, f32 *posY, f32 *posZ, int16_t *rotX,
+                                      int16_t *rotY, int16_t *rotZ, int16_t *params) {
 
-    if (IsEnemyFoundToRandomize(play->sceneNum, actorId, params, posX)) {
+    // Hack to remove enemies that wrongfully spawn because of bypassing object dependency with enemy randomizer on.
+    // This should probably be handled on OTR generation in the future when object dependency is fully removed.
+    // Remove bats and skulltulas from graveyard.
+    // Remove octorok in lost woods.
+    if (((*actorId == ACTOR_EN_FIREFLY || (*actorId == ACTOR_EN_SW && *params == 0)) && play->sceneNum == SCENE_SPOT02) ||
+        (*actorId == ACTOR_EN_OKUTA && play->sceneNum == SCENE_SPOT10)) {
+        return 0;
+    }
+
+    // Hack to change a pot in Spirit Temple that holds a Deku Shield to not hold anything.
+    // This should probably be handled on OTR generation in the future when object dependency is fully removed.
+    // This Deku Shield doesn't normally spawn in authentic gameplay because of object dependency.
+    if (*actorId == ACTOR_OBJ_TSUBO && *params == 24597) {
+        *params = 24067;
+    }
+
+    if (IsEnemyFoundToRandomize(play->sceneNum, *actorId, *params, *posX)) {
 
         // When replacing Iron Knuckles in Spirit Temple, move them away from the throne because
         // some enemies can get stuck on the throne.
-        if (actorId == ACTOR_EN_IK && play->sceneNum == SCENE_JYASINZOU) {
-            if (params == 6657) {
-                posX = posX + 150;
-            } else if (params == 6401) {
-                posX = posX - 150;
+        if (*actorId == ACTOR_EN_IK && play->sceneNum == SCENE_JYASINZOU) {
+            if (*params == 6657) {
+                *posX = *posX + 150;
+            } else if (*params == 6401) {
+                *posX = *posX - 150;
             }
         }
 
@@ -133,44 +149,44 @@ extern "C" RandomizedEnemy GetRandomizedEnemy(PlayState* play, int16_t actorId, 
         Vec3f pos;
         f32 raycastResult;
 
-        pos.x = posX;
-        pos.y = posY + 50;
-        pos.z = posZ;
+        pos.x = *posX;
+        pos.y = *posY + 50;
+        pos.z = *posZ;
         raycastResult = BgCheck_AnyRaycastFloor1(&play->colCtx, &poly, &pos);
 
         // If ground is found below actor, move actor to that height.
         if (raycastResult > BGCHECK_Y_MIN) {
-            posY = raycastResult;
+            *posY = raycastResult;
         }
 
         // Get randomized enemy ID and parameter.
-        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(posX, posY, posZ);
+        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(*posX, *posY, *posZ);
 
         // While randomized enemy isn't allowed in certain situations, randomize again.
         while (!IsEnemyAllowedToSpawn(play->sceneNum, randomEnemy)) {
-            randomEnemy = GetRandomizedEnemyEntry(posX, posY, posZ);
+            randomEnemy = GetRandomizedEnemyEntry(*posX, *posY, *posZ);
         }
 
-        actorId = randomEnemy.id;
-        params = randomEnemy.params;
+        *actorId = randomEnemy.id;
+        *params = randomEnemy.params;
 
         // Straighten out enemies so they aren't flipped on their sides when the original spawn is.
-        rotX = 0;
+        *rotX = 0;
 
-        switch (actorId) {
+        switch (*actorId) {
             // When spawning big jellyfish, spawn it up high.
             case ACTOR_EN_VALI:
-                posY = posY + 300;
+                *posY = *posY + 300;
                 break;
             // Spawn peahat off the ground, otherwise it kills itself by colliding with the ground.
             case ACTOR_EN_PEEHAT:
-                if (params == 1) {
-                    posY = posY + 100;
+                if (*params == 1) {
+                    *posY = *posY + 100;
                 }
                 break;
             // Spawn skulltulas off the ground.
             case ACTOR_EN_ST:
-                posY = posY + 200;
+                *posY = *posY + 200;
                 break;
             // Spawn flying enemies off the ground.
             case ACTOR_EN_FIREFLY:
@@ -178,24 +194,15 @@ extern "C" RandomizedEnemy GetRandomizedEnemy(PlayState* play, int16_t actorId, 
             case ACTOR_EN_BB:
             case ACTOR_EN_CLEAR_TAG:
             case ACTOR_EN_CROW:
-                posY = posY + 75;
+                *posY = *posY + 75;
                 break;
             default:
                 break;
         }
     }
 
-    RandomizedEnemy newEnemy;
-    newEnemy.id = actorId;
-    newEnemy.posX = posX;
-    newEnemy.posY = posY;
-    newEnemy.posZ = posZ;
-    newEnemy.rotX = rotX;
-    newEnemy.rotY = rotX;
-    newEnemy.rotZ = rotX;
-    newEnemy.params = params;
-
-    return newEnemy;
+    // Enemy finished randomization process.
+    return 1;
 }
 
 EnemyEntry GetRandomizedEnemyEntry(float seed1, float seed2, float seed3) {
@@ -203,7 +210,7 @@ EnemyEntry GetRandomizedEnemyEntry(float seed1, float seed2, float seed3) {
     return randomizedEnemySpawnTable[randomNumber % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
 }
 
-uint8_t IsEnemyFoundToRandomize(int16_t sceneNum, int16_t actorId, int16_t params, float posX) {
+bool IsEnemyFoundToRandomize(int16_t sceneNum, int16_t actorId, int16_t params, float posX) {
 
     for (int i = 0; i < ARRAY_COUNT(enemiesToRandomize); i++) {
 
@@ -266,7 +273,7 @@ uint8_t IsEnemyFoundToRandomize(int16_t sceneNum, int16_t actorId, int16_t param
     return 0;
 }
 
-uint8_t IsEnemyAllowedToSpawn(int16_t sceneNum, EnemyEntry enemy) {
+bool IsEnemyAllowedToSpawn(int16_t sceneNum, EnemyEntry enemy) {
 
     switch (sceneNum) {
         // Don't allow Dark Link in areas with void out zones as it voids out the player as well.
