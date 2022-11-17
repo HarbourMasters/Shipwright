@@ -1,8 +1,8 @@
 #include "debugconsole.h"
-#include <libultraship/ImGuiImpl.h>
-#include <libultraship/Utils.h>
+#include <ImGuiImpl.h>
+#include <Utils.h>
 #include "savestates.h"
-#include <libultraship/Console.h>
+#include <Console.h>
 
 #include <vector>
 #include <string>
@@ -14,7 +14,7 @@
 #define PATH_HACK
 #include <Utils/StringHelper.h>
 
-#include <libultraship/Window.h>
+#include <Window.h>
 #include <ImGui/imgui_internal.h>
 #undef PATH_HACK
 #undef Path
@@ -27,7 +27,7 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-#include <libultraship/Cvar.h>
+#include <Cvar.h>
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 
 #define CMD_REGISTER SohImGui::GetConsole()->AddCommand
@@ -974,14 +974,14 @@ static bool GetCVarHandler(std::shared_ptr<Ship::Console> Console, const std::ve
 
     if (cvar != nullptr)
     {
-        if (cvar->type == CVarType::S32)
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %i", args[1].c_str(), cvar->value.valueS32);
-        else if (cvar->type == CVarType::Float)
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %f", args[1].c_str(), cvar->value.valueFloat);
-        else if (cvar->type == CVarType::String)
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %s", args[1].c_str(), cvar->value.valueStr);
-        else if (cvar->type == CVarType::RGBA)
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %08X", args[1].c_str(), cvar->value.valueRGBA);
+        if (cvar->Type == CVarType::S32)
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %i", args[1].c_str(), cvar->value.ValueS32);
+        else if (cvar->Type == CVarType::Float)
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %f", args[1].c_str(), cvar->value.ValueFloat);
+        else if (cvar->Type == CVarType::String)
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %s", args[1].c_str(), cvar->value.ValueStr);
+        else if (cvar->Type == CVarType::RGBA)
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %08X", args[1].c_str(), cvar->value.ValueRGBA);
     }
     else
     {

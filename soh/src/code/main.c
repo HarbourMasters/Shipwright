@@ -3,7 +3,7 @@
 #include <soh/Enhancements/bootcommands.h>
 #include "soh/OTRGlobals.h"
 
-#include <libultraship/CrashHandler.h>
+#include <CrashHandler.h>
 #include "soh/CrashHandlerExp.h"
 
 

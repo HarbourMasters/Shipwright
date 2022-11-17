@@ -6,7 +6,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include <textures/icon_item_static/icon_item_static.h>
 #include "soh/frame_interpolation.h"
-#include <libultraship/GameVersions.h>
+#include <GameVersions.h>
 #include "objects/object_mag/object_mag.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
@@ -458,6 +458,7 @@ void FileChoose_UpdateRandomizer() {
             Randomizer_LoadItemLocations(fileLoc, silent);
             Randomizer_LoadMerchantMessages(fileLoc);
             Randomizer_LoadMasterQuestDungeons(fileLoc);
+            Randomizer_LoadEntranceOverrides(fileLoc, silent);
             fileSelectSpoilerFileLoaded = true;
     }
 }
@@ -2136,6 +2137,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     Randomizer_LoadRequiredTrials("");
     Randomizer_LoadMerchantMessages("");
     Randomizer_LoadMasterQuestDungeons("");
+    Randomizer_LoadEntranceOverrides("", true);
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;
