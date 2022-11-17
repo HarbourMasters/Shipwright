@@ -316,6 +316,8 @@ namespace GameMenuBar {
         CVar_SetS32("gCrouchStabFix", 0);
         // Fix Gerudo Warrior's clothing colors
         CVar_SetS32("gGerudoWarriorClothingFix", 0);
+        // Fix Bow and Slingshot Ammo use
+        CVar_SetS32("gSlingshotBowAmmoFix", 0);
 
         // Red Ganon blood
         CVar_SetS32("gRedGanonBlood", 0);
@@ -1168,6 +1170,8 @@ namespace GameMenuBar {
                 }
                 UIWidgets::PaddedEnhancementCheckbox("Fix Gerudo Warrior's clothing colors", "gGerudoWarriorClothingFix", true, false);
                 UIWidgets::Tooltip("Prevent the Gerudo Warrior's clothes changing color when changing Link's tunic or using bombs in front of her");
+                UIWidgets::PaddedEnhancementCheckbox("Fix Slingshot and Bow ammo use", "gSlingshotBowAmmoFix", true, false);
+                UIWidgets::Tooltip("Make slingshot and bow use correct ammo for equip swap glitch or Timeless Equipment cheat");
 
                 ImGui::EndMenu();
             }
@@ -1373,6 +1377,7 @@ namespace GameMenuBar {
                 UIWidgets::EnhancementCheckbox("Money", "gInfiniteMoney");
                 UIWidgets::PaddedEnhancementCheckbox("Health", "gInfiniteHealth", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("Ammo", "gInfiniteAmmo", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Minigame Ammo", "gInfiniteMinigame", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("Magic", "gInfiniteMagic", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("Nayru's Love", "gInfiniteNayru", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("Epona Boost", "gInfiniteEpona", true, false);
@@ -1392,6 +1397,8 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Makes every tunic have the effects of every other tunic");
             UIWidgets::PaddedEnhancementCheckbox("Easy ISG", "gEzISG", true, false);
             UIWidgets::Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
+            UIWidgets::PaddedEnhancementCheckbox("Ultra Deku Stick", "gUltraDekuStick", true, false);
+            UIWidgets::Tooltip("Lights your Deku Stick, keeps it lit and keeps it from breaking.");
             UIWidgets::PaddedEnhancementCheckbox("Timeless Equipment", "gTimelessEquipment", true, false);
             UIWidgets::Tooltip("Allows any item to be equipped, regardless of age\nAlso allows Child to use Adult strength upgrades");
             UIWidgets::PaddedEnhancementCheckbox("Easy Frame Advancing", "gCheatEasyPauseBufferEnabled", true, false);
