@@ -414,6 +414,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         if(Randomizer_GetSettingValue(RSK_STARTING_KOKIRI_SWORD)) Item_Give(NULL, ITEM_SWORD_KOKIRI);
         if(Randomizer_GetSettingValue(RSK_STARTING_DEKU_SHIELD)) Item_Give(NULL, ITEM_SHIELD_DEKU);
 
+        if(Randomizer_GetSettingValue(RSK_STARTING_SKULLTULA_TOKEN)) {
+            gSaveContext.inventory.questItems |= gBitFlags[QUEST_SKULL_TOKEN];
+            gSaveContext.inventory.gsTokens = Randomizer_GetSettingValue(RSK_STARTING_SKULLTULA_TOKEN);
+        }
+
         if(Randomizer_GetSettingValue(RSK_STARTING_OCARINA)) {
             INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
         }
