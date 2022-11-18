@@ -6,7 +6,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include <textures/icon_item_static/icon_item_static.h>
 #include "soh/frame_interpolation.h"
-#include <libultraship/GameVersions.h>
+#include <GameVersions.h>
 #include "objects/object_mag/object_mag.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
@@ -458,6 +458,7 @@ void FileChoose_UpdateRandomizer() {
             Randomizer_LoadItemLocations(fileLoc, silent);
             Randomizer_LoadMerchantMessages(fileLoc);
             Randomizer_LoadMasterQuestDungeons(fileLoc);
+            Randomizer_LoadEntranceOverrides(fileLoc, silent);
             fileSelectSpoilerFileLoaded = true;
     }
 }
@@ -663,8 +664,22 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
             this->questType[this->buttonIndex] += 1;
+            if (this->questType[this->buttonIndex] == MASTER_QUEST && !ResourceMgr_GameHasMasterQuest()) {
+                // the only case not handled by the MIN/MAX_QUEST logic below. This will either put it at 
+                // above MAX_QUEST in which case it will wrap back around, or it will put it on MAX_QUEST
+                // in which case if MAX_QUEST even is that number it will be a valid selection that won't
+                // crash.
+                this->questType[this->buttonIndex] += 1;
+            }
         } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
             this->questType[this->buttonIndex] -= 1;
+            if (this->questType[this->buttonIndex] == MASTER_QUEST && !ResourceMgr_GameHasMasterQuest()) {
+                // the only case not handled by the MIN/MAX_QUEST logic below. This will either put it at
+                // below MIN_QUEST in which case it will wrap back around, or it will put it on MIN_QUEST
+                // in which case if MIN_QUEST even is that number it will be a valid selection that won't
+                // crash.
+                this->questType[this->buttonIndex] -= 1;
+            }
         }
 
         if (this->questType[this->buttonIndex] > MAX_QUEST) {
@@ -766,7 +781,7 @@ void FileChoose_RotateToOptions(GameState* thisx) {
  */
 void FileChoose_RotateToMain(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
-    if (this->configMode == CM_QUEST_TO_MAIN || (MIN_QUEST == MAX_QUEST && this->configMode == CM_NAME_ENTRY_TO_MAIN) || 
+    if (this->configMode == CM_QUEST_TO_MAIN || (MIN_QUEST == MAX_QUEST && this->configMode == CM_NAME_ENTRY_TO_MAIN && this->prevConfigMode != CM_MAIN_MENU) || 
         this->configMode == CM_OPTIONS_TO_MAIN) {
         this->windowRot -= VREG(16);
 
@@ -2112,7 +2127,7 @@ void FileChoose_LoadGame(GameState* thisx) {
         gSaveContext.fileNum = this->buttonIndex;
         Sram_OpenSave();
         gSaveContext.gameMode = 0;
-        SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);
+        SET_NEXT_GAMESTATE(&this->state, Play_Init, PlayState);
         this->state.running = false;
     }
 
@@ -2122,6 +2137,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     Randomizer_LoadRequiredTrials("");
     Randomizer_LoadMerchantMessages("");
     Randomizer_LoadMasterQuestDungeons("");
+    Randomizer_LoadEntranceOverrides("", true);
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;

@@ -9,6 +9,10 @@ VisMono sMonoColors;
 ViMode sViMode;
 FaultClient sGameFaultClient;
 u16 sLastButtonPressed;
+int32_t warpTime = 0;
+bool warped = false;
+Vec3f playerPos;
+int16_t playerYaw;
 
 // Forward declared, because this in a C++ header.
 int gfx_create_framebuffer(uint32_t width, uint32_t height);
@@ -389,10 +393,10 @@ void GameState_Update(GameState* gameState) {
 
     // Moon Jump On L
     if (CVar_GetS32("gMoonJumpOnL", 0) != 0) {
-        if (gGlobalCtx) {
-            Player* player = GET_PLAYER(gGlobalCtx);
+        if (gPlayState) {
+            Player* player = GET_PLAYER(gPlayState);
 
-            if (CHECK_BTN_ANY(gGlobalCtx->state.input[0].cur.button, BTN_L)) {
+            if (CHECK_BTN_ANY(gPlayState->state.input[0].cur.button, BTN_L)) {
                 player->actor.velocity.y = 6.34375f;
             }
         }
@@ -400,18 +404,18 @@ void GameState_Update(GameState* gameState) {
 
     // Permanent infinite sword glitch (ISG)
     if (CVar_GetS32("gEzISG", 0) != 0) {
-        if (gGlobalCtx) {
-            Player* player = GET_PLAYER(gGlobalCtx);
+        if (gPlayState) {
+            Player* player = GET_PLAYER(gPlayState);
             player->swordState = 1;
         }
     }
 
     // Unrestricted Items
     if (CVar_GetS32("gNoRestrictItems", 0) != 0) {
-        if (gGlobalCtx) {
-            u8 sunsBackup = gGlobalCtx->interfaceCtx.restrictions.sunsSong;
-            memset(&gGlobalCtx->interfaceCtx.restrictions, 0, sizeof(gGlobalCtx->interfaceCtx.restrictions));
-            gGlobalCtx->interfaceCtx.restrictions.sunsSong = sunsBackup;
+        if (gPlayState) {
+            u8 sunsBackup = gPlayState->interfaceCtx.restrictions.sunsSong;
+            memset(&gPlayState->interfaceCtx.restrictions, 0, sizeof(gPlayState->interfaceCtx.restrictions));
+            gPlayState->interfaceCtx.restrictions.sunsSong = sunsBackup;
         }
     }
 
@@ -425,6 +429,33 @@ void GameState_Update(GameState* gameState) {
         gSaveContext.dayTime = prevTime;
     } else {
         CVar_SetS32("gPrevTime", -1);
+    }
+    
+    //Switches Link's age and respawns him at the last entrance he entered.
+    if (CVar_GetS32("gSwitchAge", 0) != 0) {
+        CVar_SetS32("gSwitchAge", 0);
+        if (gPlayState) {
+            playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
+            playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
+            gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
+            gPlayState->sceneLoadFlag = 0x14;
+            gPlayState->fadeTransition = 11;
+            gSaveContext.nextTransition = 11;
+            warped = true;
+            if (gPlayState->linkAgeOnLoad == 1) {
+                gPlayState->linkAgeOnLoad = 0;
+            } else {
+                gPlayState->linkAgeOnLoad = 1;
+            }
+        }
+    }
+
+    if (gPlayState) {
+        if (warped && gPlayState->sceneLoadFlag != 0x0014 && gSaveContext.nextTransition == 255) {
+            GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
+            GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
+            warped = false;
+        }
     }
 
     //since our CVar is same value and properly default to 0 there is not problems doing this in single line.

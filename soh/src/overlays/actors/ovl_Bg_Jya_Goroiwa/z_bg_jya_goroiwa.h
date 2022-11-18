@@ -6,7 +6,7 @@
 
 struct BgJyaGoroiwa;
 
-typedef void (*BgJyaGoroiwaFunc)(struct BgJyaGoroiwa*, GlobalContext*);
+typedef void (*BgJyaGoroiwaFunc)(struct BgJyaGoroiwa*, PlayState*);
 
 typedef struct BgJyaGoroiwa {
     /* 0x0000 */ Actor actor;

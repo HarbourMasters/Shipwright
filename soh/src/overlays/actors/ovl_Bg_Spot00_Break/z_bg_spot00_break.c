@@ -9,10 +9,10 @@
 
 #define FLAGS 0
 
-void BgSpot00Break_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot00Break_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot00Break_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot00Break_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgSpot00Break_Init(Actor* thisx, PlayState* play);
+void BgSpot00Break_Destroy(Actor* thisx, PlayState* play);
+void BgSpot00Break_Update(Actor* thisx, PlayState* play);
+void BgSpot00Break_Draw(Actor* thisx, PlayState* play);
 
 const ActorInit Bg_Spot00_Break_InitVars = {
     ACTOR_BG_SPOT00_BREAK,
@@ -34,7 +34,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 1000, ICHAIN_STOP),
 };
 
-void BgSpot00Break_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot00Break_Init(Actor* thisx, PlayState* play) {
     BgSpot00Break* this = (BgSpot00Break*)thisx;
     s32 pad;
     CollisionHeader* colHeader = NULL;
@@ -48,28 +48,28 @@ void BgSpot00Break_Init(Actor* thisx, GlobalContext* globalCtx) {
         CollisionHeader_GetVirtual(&gBrokenDrawbridgeCol, &colHeader);
     }
 
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 
     if (!LINK_IS_ADULT) {
         Actor_Kill(&this->dyna.actor);
     }
 }
 
-void BgSpot00Break_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot00Break_Destroy(Actor* thisx, PlayState* play) {
     BgSpot00Break* this = (BgSpot00Break*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void BgSpot00Break_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot00Break_Update(Actor* thisx, PlayState* play) {
 }
 
-void BgSpot00Break_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot00Break_Draw(Actor* thisx, PlayState* play) {
     BgSpot00Break* this = (BgSpot00Break*)thisx;
 
     if (this->dyna.actor.params == 1) {
-        Gfx_DrawDListOpa(globalCtx, gBarbedWireFenceDL);
+        Gfx_DrawDListOpa(play, gBarbedWireFenceDL);
     } else {
-        Gfx_DrawDListOpa(globalCtx, gBrokenDrawbridgeDL);
+        Gfx_DrawDListOpa(play, gBrokenDrawbridgeDL);
     }
 }

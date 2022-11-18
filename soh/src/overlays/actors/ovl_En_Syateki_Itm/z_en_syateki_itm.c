@@ -16,16 +16,16 @@ typedef enum {
     SYATEKI_ROUND_MAX
 } EnSyatekItemRound;
 
-void EnSyatekiItm_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnSyatekiItm_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnSyatekiItm_Update(Actor* thisx, GlobalContext* globalCtx);
+void EnSyatekiItm_Init(Actor* thisx, PlayState* play);
+void EnSyatekiItm_Destroy(Actor* thisx, PlayState* play);
+void EnSyatekiItm_Update(Actor* thisx, PlayState* play);
 
-void EnSyatekiItm_Idle(EnSyatekiItm* this, GlobalContext* globalCtx);
-void EnSyatekiItm_StartRound(EnSyatekiItm* this, GlobalContext* globalCtx);
-void EnSyatekiItm_SpawnTargets(EnSyatekiItm* this, GlobalContext* globalCtx);
-void EnSyatekiItm_CheckTargets(EnSyatekiItm* this, GlobalContext* globalCtx);
-void EnSyatekiItm_CleanupGame(EnSyatekiItm* this, GlobalContext* globalCtx);
-void EnSyatekiItm_EndGame(EnSyatekiItm* this, GlobalContext* globalCtx);
+void EnSyatekiItm_Idle(EnSyatekiItm* this, PlayState* play);
+void EnSyatekiItm_StartRound(EnSyatekiItm* this, PlayState* play);
+void EnSyatekiItm_SpawnTargets(EnSyatekiItm* this, PlayState* play);
+void EnSyatekiItm_CheckTargets(EnSyatekiItm* this, PlayState* play);
+void EnSyatekiItm_CleanupGame(EnSyatekiItm* this, PlayState* play);
+void EnSyatekiItm_EndGame(EnSyatekiItm* this, PlayState* play);
 
 const ActorInit En_Syateki_Itm_InitVars = {
     ACTOR_EN_SYATEKI_ITM,
@@ -68,12 +68,12 @@ static Vec3f sRupeePos[] = {
     { 20.0f, 0.0f, -60.0f },  { 40.0f, 0.0f, -60.0f },
 };
 
-void EnSyatekiItm_Init(Actor* thisx, GlobalContext* globalCtx2) {
-    GlobalContext* globalCtx = globalCtx2;
+void EnSyatekiItm_Init(Actor* thisx, PlayState* play2) {
+    PlayState* play = play2;
     EnSyatekiItm* this = (EnSyatekiItm*)thisx;
     s32 i;
 
-    this->man = (EnSyatekiMan*)Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_SYATEKI_MAN,
+    this->man = (EnSyatekiMan*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_SYATEKI_MAN,
                                                   140.0f, 0.0f, 255.0f, 0, -0x4000, 0, 0);
     if (this->man == NULL) {
         // "Spawn error"
@@ -83,7 +83,7 @@ void EnSyatekiItm_Init(Actor* thisx, GlobalContext* globalCtx2) {
     }
     for (i = 0; i < 10; i++) {
         this->markers[i] =
-            (EnExRuppy*)Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_EX_RUPPY,
+            (EnExRuppy*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_EX_RUPPY,
                                            sRupeePos[i].x, sRupeePos[i].y, sRupeePos[i].z, 0, 0, 0, 4);
         if (this->markers[i] == NULL) {
             // "Second spawn error"
@@ -96,12 +96,12 @@ void EnSyatekiItm_Init(Actor* thisx, GlobalContext* globalCtx2) {
     this->actionFunc = EnSyatekiItm_Idle;
 }
 
-void EnSyatekiItm_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnSyatekiItm_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void EnSyatekiItm_Idle(EnSyatekiItm* this, GlobalContext* globalCtx) {
+void EnSyatekiItm_Idle(EnSyatekiItm* this, PlayState* play) {
     s32 i;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
 
     if (this->signal == ENSYATEKI_START) {
         player->actor.world.pos.x = -12.0f;
@@ -110,7 +110,7 @@ void EnSyatekiItm_Idle(EnSyatekiItm* this, GlobalContext* globalCtx) {
         player->currentYaw = player->actor.world.rot.y = player->actor.shape.rot.y = 0x7F03;
         player->actor.world.rot.x = player->actor.shape.rot.x = player->actor.world.rot.z = player->actor.shape.rot.z =
             0;
-        func_8008EF44(globalCtx, 15);
+        func_8008EF44(play, 15);
         this->roundNum = this->hitCount = 0;
         for (i = 0; i < 6; i++) {
             this->roundFlags[i] = false;
@@ -122,10 +122,10 @@ void EnSyatekiItm_Idle(EnSyatekiItm* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnSyatekiItm_StartRound(EnSyatekiItm* this, GlobalContext* globalCtx) {
+void EnSyatekiItm_StartRound(EnSyatekiItm* this, PlayState* play) {
     s32 i;
     s32 j;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
 
     if (this->unkTimer == 0) {
         if (LINK_IS_ADULT) {
@@ -163,13 +163,13 @@ void EnSyatekiItm_StartRound(EnSyatekiItm* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnSyatekiItm_SpawnTargets(EnSyatekiItm* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void EnSyatekiItm_SpawnTargets(EnSyatekiItm* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
     s32 i;
     s32 roundIdx;
 
-    if (globalCtx->shootingGalleryStatus == -1) {
+    if (play->shootingGalleryStatus == -1) {
         player->actor.freezeTimer = 10;
         this->signal = ENSYATEKI_END;
         this->actionFunc = EnSyatekiItm_CleanupGame;
@@ -234,7 +234,7 @@ void EnSyatekiItm_SpawnTargets(EnSyatekiItm* this, GlobalContext* globalCtx) {
 
         for (i = 0; i < this->numTargets; i++) {
             this->targets[i] = (EnGSwitch*)Actor_SpawnAsChild(
-                &globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_G_SWITCH, this->targetHome[i].x,
+                &play->actorCtx, &this->actor, play, ACTOR_EN_G_SWITCH, this->targetHome[i].x,
                 this->targetHome[i].y, this->targetHome[i].z, 0, 0, 0, (ENGSWITCH_TARGET_RUPEE << 0xC) | 0x3F);
             if (this->targets[i] == NULL) {
                 // "Rupee spawn error"
@@ -271,12 +271,12 @@ void EnSyatekiItm_SpawnTargets(EnSyatekiItm* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnSyatekiItm_CheckTargets(EnSyatekiItm* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void EnSyatekiItm_CheckTargets(EnSyatekiItm* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     s32 i;
     s16 j;
 
-    if (globalCtx->shootingGalleryStatus == -1) {
+    if (play->shootingGalleryStatus == -1) {
         player->actor.freezeTimer = 10;
         this->signal = ENSYATEKI_END;
         this->actionFunc = EnSyatekiItm_CleanupGame;
@@ -295,7 +295,7 @@ void EnSyatekiItm_CheckTargets(EnSyatekiItm* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnSyatekiItm_CleanupGame(EnSyatekiItm* this, GlobalContext* globalCtx) {
+void EnSyatekiItm_CleanupGame(EnSyatekiItm* this, PlayState* play) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
@@ -306,8 +306,8 @@ void EnSyatekiItm_CleanupGame(EnSyatekiItm* this, GlobalContext* globalCtx) {
     this->actionFunc = EnSyatekiItm_EndGame;
 }
 
-void EnSyatekiItm_EndGame(EnSyatekiItm* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void EnSyatekiItm_EndGame(EnSyatekiItm* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     player->actor.freezeTimer = 10;
     if (this->signal == ENSYATEKI_RESULTS) {
@@ -331,11 +331,11 @@ void EnSyatekiItm_EndGame(EnSyatekiItm* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnSyatekiItm_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnSyatekiItm_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     EnSyatekiItm* this = (EnSyatekiItm*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 
     if (this->timer != 0) {
         this->timer--;
@@ -346,6 +346,6 @@ void EnSyatekiItm_Update(Actor* thisx, GlobalContext* globalCtx) {
     if (BREG(0)) {
         DebugDisplay_AddObject(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z,
                                this->actor.world.rot.x, this->actor.world.rot.y, this->actor.world.rot.z, 1.0f, 1.0f,
-                               1.0f, 255, 0, 0, 255, 4, globalCtx->state.gfxCtx);
+                               1.0f, 255, 0, 0, 255, 4, play->state.gfxCtx);
     }
 }

@@ -13,36 +13,36 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void DemoSa_Init(Actor* thisx, GlobalContext* globalCtx);
-void DemoSa_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void DemoSa_Update(Actor* thisx, GlobalContext* globalCtx);
-void DemoSa_Draw(Actor* thisx, GlobalContext* globalCtx);
+void DemoSa_Init(Actor* thisx, PlayState* play);
+void DemoSa_Destroy(Actor* thisx, PlayState* play);
+void DemoSa_Update(Actor* thisx, PlayState* play);
+void DemoSa_Draw(Actor* thisx, PlayState* play);
 
-void func_8098EBB8(DemoSa* this, GlobalContext* globalCtx);
-void func_8098EBD8(DemoSa* this, GlobalContext* globalCtx);
-void func_8098EBF8(DemoSa* this, GlobalContext* globalCtx);
-void func_8098EC28(DemoSa* this, GlobalContext* globalCtx);
-void func_8098EC60(DemoSa* this, GlobalContext* globalCtx);
-void func_8098EC94(DemoSa* this, GlobalContext* globalCtx);
-void func_8098ECCC(DemoSa* this, GlobalContext* globalCtx);
-void func_8098F0E8(DemoSa* this, GlobalContext* globalCtx);
-void func_8098F118(DemoSa* this, GlobalContext* globalCtx);
-void func_8098F16C(DemoSa* this, GlobalContext* globalCtx);
-void func_8098F3F0(DemoSa* this, GlobalContext* globalCtx);
-void func_8098F714(DemoSa* this, GlobalContext* globalCtx);
-void func_8098F734(DemoSa* this, GlobalContext* globalCtx);
-void func_8098F77C(DemoSa* this, GlobalContext* globalCtx);
-void func_8098F7BC(DemoSa* this, GlobalContext* globalCtx);
-void func_8098F7FC(DemoSa* this, GlobalContext* globalCtx);
-void func_8098FC44(DemoSa* this, GlobalContext* globalCtx);
-void func_8098FC64(DemoSa* this, GlobalContext* globalCtx);
-void func_8098FC9C(DemoSa* this, GlobalContext* globalCtx);
-void func_8098FCD4(DemoSa* this, GlobalContext* globalCtx);
-void func_8098FD0C(DemoSa* this, GlobalContext* globalCtx);
+void func_8098EBB8(DemoSa* this, PlayState* play);
+void func_8098EBD8(DemoSa* this, PlayState* play);
+void func_8098EBF8(DemoSa* this, PlayState* play);
+void func_8098EC28(DemoSa* this, PlayState* play);
+void func_8098EC60(DemoSa* this, PlayState* play);
+void func_8098EC94(DemoSa* this, PlayState* play);
+void func_8098ECCC(DemoSa* this, PlayState* play);
+void func_8098F0E8(DemoSa* this, PlayState* play);
+void func_8098F118(DemoSa* this, PlayState* play);
+void func_8098F16C(DemoSa* this, PlayState* play);
+void func_8098F3F0(DemoSa* this, PlayState* play);
+void func_8098F714(DemoSa* this, PlayState* play);
+void func_8098F734(DemoSa* this, PlayState* play);
+void func_8098F77C(DemoSa* this, PlayState* play);
+void func_8098F7BC(DemoSa* this, PlayState* play);
+void func_8098F7FC(DemoSa* this, PlayState* play);
+void func_8098FC44(DemoSa* this, PlayState* play);
+void func_8098FC64(DemoSa* this, PlayState* play);
+void func_8098FC9C(DemoSa* this, PlayState* play);
+void func_8098FCD4(DemoSa* this, PlayState* play);
+void func_8098FD0C(DemoSa* this, PlayState* play);
 
-void DemoSa_DrawNothing(DemoSa* this, GlobalContext* globalCtx);
-void DemoSa_DrawOpa(DemoSa* this, GlobalContext* globalCtx);
-void DemoSa_DrawXlu(DemoSa* this, GlobalContext* globalCtx);
+void DemoSa_DrawNothing(DemoSa* this, PlayState* play);
+void DemoSa_DrawOpa(DemoSa* this, PlayState* play);
+void DemoSa_DrawXlu(DemoSa* this, PlayState* play);
 
 typedef enum {
     /* 0 */ SARIA_EYE_OPEN,
@@ -98,10 +98,10 @@ const ActorInit Demo_Sa_InitVars = {
     NULL,
 };
 
-void DemoSa_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void DemoSa_Destroy(Actor* thisx, PlayState* play) {
     DemoSa* this = (DemoSa*)thisx;
 
-    SkelAnime_Free(&this->skelAnime, globalCtx);
+    SkelAnime_Free(&this->skelAnime, play);
 }
 
 void func_8098E480(DemoSa* this) {
@@ -136,10 +136,10 @@ void func_8098E530(DemoSa* this) {
     this->unk_1A0 = 0.0f;
 }
 
-void func_8098E554(DemoSa* this, GlobalContext* globalCtx) {
+void func_8098E554(DemoSa* this, PlayState* play) {
     u32* something = &D_80990108;
 
-    if (globalCtx->csCtx.state == CS_STATE_IDLE) {
+    if (play->csCtx.state == CS_STATE_IDLE) {
         if (*something != 0) {
             if (this->actor.params == 2) {
                 func_8098E530(this);
@@ -151,23 +151,23 @@ void func_8098E554(DemoSa* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_8098E5C8(DemoSa* this, GlobalContext* globalCtx) {
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 75.0f, 30.0f, 30.0f, 5);
+void func_8098E5C8(DemoSa* this, PlayState* play) {
+    Actor_UpdateBgCheckInfo(play, &this->actor, 75.0f, 30.0f, 30.0f, 5);
 }
 
 s32 DemoSa_UpdateSkelAnime(DemoSa* this) {
     return SkelAnime_Update(&this->skelAnime);
 }
 
-CsCmdActorAction* DemoSa_GetNpcAction(GlobalContext* globalCtx, s32 idx) {
-    if (globalCtx->csCtx.state != CS_STATE_IDLE) {
-        return globalCtx->csCtx.npcActions[idx];
+CsCmdActorAction* DemoSa_GetNpcAction(PlayState* play, s32 idx) {
+    if (play->csCtx.state != CS_STATE_IDLE) {
+        return play->csCtx.npcActions[idx];
     }
     return NULL;
 }
 
-s32 func_8098E654(DemoSa* this, GlobalContext* globalCtx, u16 arg2, s32 arg3) {
-    CsCmdActorAction* npcAction = DemoSa_GetNpcAction(globalCtx, arg3);
+s32 func_8098E654(DemoSa* this, PlayState* play, u16 arg2, s32 arg3) {
+    CsCmdActorAction* npcAction = DemoSa_GetNpcAction(play, arg3);
 
     if ((npcAction != NULL) && (npcAction->action == arg2)) {
         return 1;
@@ -175,8 +175,8 @@ s32 func_8098E654(DemoSa* this, GlobalContext* globalCtx, u16 arg2, s32 arg3) {
     return 0;
 }
 
-s32 func_8098E6A0(DemoSa* this, GlobalContext* globalCtx, u16 arg2, s32 arg3) {
-    CsCmdActorAction* npcAction = DemoSa_GetNpcAction(globalCtx, arg3);
+s32 func_8098E6A0(DemoSa* this, PlayState* play, u16 arg2, s32 arg3) {
+    CsCmdActorAction* npcAction = DemoSa_GetNpcAction(play, arg3);
 
     if ((npcAction != NULL) && (npcAction->action != arg2)) {
         return 1;
@@ -184,8 +184,8 @@ s32 func_8098E6A0(DemoSa* this, GlobalContext* globalCtx, u16 arg2, s32 arg3) {
     return 0;
 }
 
-void func_8098E6EC(DemoSa* this, GlobalContext* globalCtx, s32 actionIdx) {
-    CsCmdActorAction* npcAction = DemoSa_GetNpcAction(globalCtx, actionIdx);
+void func_8098E6EC(DemoSa* this, PlayState* play, s32 actionIdx) {
+    CsCmdActorAction* npcAction = DemoSa_GetNpcAction(play, actionIdx);
 
     if (npcAction != NULL) {
         this->actor.world.pos.x = npcAction->startPos.x;
@@ -215,61 +215,61 @@ void func_8098E76C(DemoSa* this, AnimationHeader* animHeaderSeg, u8 arg2, f32 tr
     Animation_Change(&this->skelAnime, animHeaderSeg, playbackSpeed, unk0, fc, arg2, transitionRate);
 }
 
-void func_8098E7FC(DemoSa* this, GlobalContext* globalCtx) {
-    SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gSariaSkel, &gSariaWaitArmsToSideAnim, NULL, NULL, 0);
+void func_8098E7FC(DemoSa* this, PlayState* play) {
+    SkelAnime_InitFlex(play, &this->skelAnime, &gSariaSkel, &gSariaWaitArmsToSideAnim, NULL, NULL, 0);
     this->actor.shape.yOffset = -10000.0f;
     DemoSa_SetEyeIndex(this, SARIA_EYE_HALF);
     DemoSa_SetMouthIndex(this, SARIA_MOUTH_CLOSED2);
 }
 
-void func_8098E86C(DemoSa* this, GlobalContext* globalCtx) {
+void func_8098E86C(DemoSa* this, PlayState* play) {
     Vec3f* world = &this->actor.world.pos;
     f32 posX = world->x;
     f32 posY = world->y;
     f32 posZ = world->z;
 
-    Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0,
+    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0,
                        WARP_SAGES);
 }
 
-void func_8098E8C8(DemoSa* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_8098E8C8(DemoSa* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     f32 posX = player->actor.world.pos.x;
     f32 posY = player->actor.world.pos.y + 80.0f;
     f32 posZ = player->actor.world.pos.z;
 
-    Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0,
+    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0,
                        0xB);
-    Item_Give(globalCtx, ITEM_MEDALLION_FOREST);
+    Item_Give(play, ITEM_MEDALLION_FOREST);
 }
 
-void func_8098E944(DemoSa* this, GlobalContext* globalCtx) {
+void func_8098E944(DemoSa* this, PlayState* play) {
     this->actor.shape.yOffset += (250.0f / 3.0f);
 }
 
-void func_8098E960(DemoSa* this, GlobalContext* globalCtx) {
+void func_8098E960(DemoSa* this, PlayState* play) {
     s32 pad[2];
     Player* player;
 
     if ((gSaveContext.chamberCutsceneNum == 0) && (gSaveContext.sceneSetupIndex < 4)) {
-        player = GET_PLAYER(globalCtx);
+        player = GET_PLAYER(play);
         this->action = 1;
-        globalCtx->csCtx.segment = D_8099010C;
+        play->csCtx.segment = D_8099010C;
         gSaveContext.cutsceneTrigger = 2;
-        Item_Give(globalCtx, ITEM_MEDALLION_FOREST);
+        Item_Give(play, ITEM_MEDALLION_FOREST);
         player->actor.world.rot.y = player->actor.shape.rot.y = this->actor.world.rot.y + 0x8000;
     }
 }
 
-void func_8098E9EC(DemoSa* this, GlobalContext* globalCtx) {
+void func_8098E9EC(DemoSa* this, PlayState* play) {
     CsCmdActorAction* npcAction;
 
-    if (globalCtx->csCtx.state != CS_STATE_IDLE) {
-        npcAction = globalCtx->csCtx.npcActions[4];
+    if (play->csCtx.state != CS_STATE_IDLE) {
+        npcAction = play->csCtx.npcActions[4];
         if ((npcAction != NULL) && (npcAction->action == 2)) {
             this->action = 2;
             this->drawConfig = 1;
-            func_8098E86C(this, globalCtx);
+            func_8098E86C(this, play);
         }
     }
 }
@@ -281,11 +281,11 @@ void func_8098EA3C(DemoSa* this) {
     }
 }
 
-void func_8098EA68(DemoSa* this, GlobalContext* globalCtx) {
+void func_8098EA68(DemoSa* this, PlayState* play) {
     CsCmdActorAction* npcAction;
 
-    if (globalCtx->csCtx.state != CS_STATE_IDLE) {
-        npcAction = globalCtx->csCtx.npcActions[4];
+    if (play->csCtx.state != CS_STATE_IDLE) {
+        npcAction = play->csCtx.npcActions[4];
         if ((npcAction != NULL) && (npcAction->action == 3)) {
             Animation_Change(&this->skelAnime, &gSariaGiveForestMedallionAnim, 1.0f, 0.0f,
                              Animation_GetLastFrame(&gSariaGiveForestMedallionAnim), ANIMMODE_ONCE, -4.0f);
@@ -302,60 +302,60 @@ void func_8098EB00(DemoSa* this, s32 arg1) {
     }
 }
 
-void func_8098EB6C(DemoSa* this, GlobalContext* globalCtx) {
+void func_8098EB6C(DemoSa* this, PlayState* play) {
     CsCmdActorAction* npcAction;
 
-    if (globalCtx->csCtx.state != CS_STATE_IDLE) {
-        npcAction = globalCtx->csCtx.npcActions[6];
+    if (play->csCtx.state != CS_STATE_IDLE) {
+        npcAction = play->csCtx.npcActions[6];
         if ((npcAction != NULL) && (npcAction->action == 2)) {
             this->action = 6;
-            func_8098E8C8(this, globalCtx);
+            func_8098E8C8(this, play);
         }
     }
 }
 
-void func_8098EBB8(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E960(this, globalCtx);
+void func_8098EBB8(DemoSa* this, PlayState* play) {
+    func_8098E960(this, play);
 }
 
-void func_8098EBD8(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E9EC(this, globalCtx);
+void func_8098EBD8(DemoSa* this, PlayState* play) {
+    func_8098E9EC(this, play);
 }
 
-void func_8098EBF8(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E944(this, globalCtx);
+void func_8098EBF8(DemoSa* this, PlayState* play) {
+    func_8098E944(this, play);
     DemoSa_UpdateSkelAnime(this);
     func_8098EA3C(this);
 }
 
-void func_8098EC28(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E5C8(this, globalCtx);
+void func_8098EC28(DemoSa* this, PlayState* play) {
+    func_8098E5C8(this, play);
     DemoSa_UpdateSkelAnime(this);
-    func_8098EA68(this, globalCtx);
+    func_8098EA68(this, play);
 }
 
-void func_8098EC60(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E5C8(this, globalCtx);
+void func_8098EC60(DemoSa* this, PlayState* play) {
+    func_8098E5C8(this, play);
     func_8098EB00(this, DemoSa_UpdateSkelAnime(this));
 }
 
-void func_8098EC94(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E5C8(this, globalCtx);
+void func_8098EC94(DemoSa* this, PlayState* play) {
+    func_8098E5C8(this, play);
     DemoSa_UpdateSkelAnime(this);
-    func_8098EB6C(this, globalCtx);
+    func_8098EB6C(this, play);
 }
 
-void func_8098ECCC(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E5C8(this, globalCtx);
+void func_8098ECCC(DemoSa* this, PlayState* play) {
+    func_8098E5C8(this, play);
     DemoSa_UpdateSkelAnime(this);
 }
 
-void func_8098ECF4(DemoSa* this, GlobalContext* globalCtx) {
+void func_8098ECF4(DemoSa* this, PlayState* play) {
     s32 pad[2];
     SkelAnime* skelAnime = &this->skelAnime;
     f32 frameCount = Animation_GetLastFrame(&gSariaSealGanonAnim);
 
-    SkelAnime_InitFlex(globalCtx, skelAnime, &gSariaSkel, NULL, NULL, NULL, 0);
+    SkelAnime_InitFlex(play, skelAnime, &gSariaSkel, NULL, NULL, NULL, 0);
     Animation_Change(skelAnime, &gSariaSealGanonAnim, 1.0f, 0.0f, frameCount, ANIMMODE_ONCE, 0.0f);
     this->action = 7;
     this->actor.shape.shadowAlpha = 0;
@@ -376,13 +376,13 @@ void func_8098EE08(void) {
     func_800788CC(NA_SE_SY_WHITE_OUT_T);
 }
 
-void func_8098EE28(DemoSa* this, GlobalContext* globalCtx) {
-    Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_DEMO_6K, this->actor.world.pos.x,
+void func_8098EE28(DemoSa* this, PlayState* play) {
+    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_6K, this->actor.world.pos.x,
                        (kREG(23) + 25.0f) + this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 4);
 }
 
-void func_8098EEA8(DemoSa* this, GlobalContext* globalCtx) {
-    if (func_8098E654(this, globalCtx, 4, 4)) {
+void func_8098EEA8(DemoSa* this, PlayState* play) {
+    if (func_8098E654(this, play, 4, 4)) {
         this->action = 8;
         this->drawConfig = 2;
         this->alpha = 0;
@@ -392,11 +392,11 @@ void func_8098EEA8(DemoSa* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_8098EEFC(DemoSa* this, GlobalContext* globalCtx) {
+void func_8098EEFC(DemoSa* this, PlayState* play) {
     s32 alpha = 255;
     f32* unk_1A0 = &this->unk_1A0;
 
-    if (func_8098E654(this, globalCtx, 4, 4)) {
+    if (func_8098E654(this, play, 4, 4)) {
         *unk_1A0 += 1.0f;
         if ((kREG(5) + 10.0f) <= *unk_1A0) {
             this->action = 9;
@@ -420,42 +420,42 @@ void func_8098EEFC(DemoSa* this, GlobalContext* globalCtx) {
     this->actor.shape.shadowAlpha = this->alpha = (*unk_1A0 / (kREG(5) + 10.0f)) * 255.0f;
 }
 
-void func_8098F050(DemoSa* this, GlobalContext* globalCtx) {
-    if (func_8098E6A0(this, globalCtx, 4, 4)) {
+void func_8098F050(DemoSa* this, PlayState* play) {
+    if (func_8098E6A0(this, play, 4, 4)) {
         this->action = 8;
         this->drawConfig = 2;
         this->unk_1A0 = kREG(5) + 10.0f;
         this->alpha = 255;
         if (this->unk_1A8 == 0) {
-            func_8098EE28(this, globalCtx);
+            func_8098EE28(this, play);
             this->unk_1A8 = 1;
         }
         this->actor.shape.shadowAlpha = 0xFF;
     }
 }
 
-void func_8098F0E8(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098EEA8(this, globalCtx);
-    func_8098E554(this, globalCtx);
+void func_8098F0E8(DemoSa* this, PlayState* play) {
+    func_8098EEA8(this, play);
+    func_8098E554(this, play);
 }
 
-void func_8098F118(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E5C8(this, globalCtx);
+void func_8098F118(DemoSa* this, PlayState* play) {
+    func_8098E5C8(this, play);
     DemoSa_UpdateSkelAnime(this);
     func_8098E480(this);
-    func_8098EEFC(this, globalCtx);
-    func_8098E554(this, globalCtx);
+    func_8098EEFC(this, play);
+    func_8098E554(this, play);
 }
 
-void func_8098F16C(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E5C8(this, globalCtx);
+void func_8098F16C(DemoSa* this, PlayState* play) {
+    func_8098E5C8(this, play);
     DemoSa_UpdateSkelAnime(this);
     func_8098EDB0(this);
-    func_8098F050(this, globalCtx);
-    func_8098E554(this, globalCtx);
+    func_8098F050(this, play);
+    func_8098E554(this, play);
 }
 
-void DemoSa_DrawXlu(DemoSa* this, GlobalContext* globalCtx) {
+void DemoSa_DrawXlu(DemoSa* this, PlayState* play) {
     s32 pad[2];
     s16 eyeIndex = this->eyeIndex;
     void* sp78 = sEyeTextures[eyeIndex];
@@ -464,9 +464,9 @@ void DemoSa_DrawXlu(DemoSa* this, GlobalContext* globalCtx) {
     void* sp6C = sMouthTextures[mouthIndex];
     SkelAnime* skelAnime = &this->skelAnime;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sp78));
     gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sp78));
@@ -474,26 +474,26 @@ void DemoSa_DrawXlu(DemoSa* this, GlobalContext* globalCtx) {
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, this->alpha);
     gSPSegment(POLY_XLU_DISP++, 0x0C, D_80116280);
 
-    POLY_XLU_DISP = SkelAnime_DrawFlex(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
+    POLY_XLU_DISP = SkelAnime_DrawFlex(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                                        NULL, NULL, NULL, POLY_XLU_DISP);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void func_8098F390(DemoSa* this, GlobalContext* globalCtx) {
-    SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gSariaSkel, &gSariaWaitArmsToSideAnim, NULL, NULL, 0);
+void func_8098F390(DemoSa* this, PlayState* play) {
+    SkelAnime_InitFlex(play, &this->skelAnime, &gSariaSkel, &gSariaWaitArmsToSideAnim, NULL, NULL, 0);
     this->action = 10;
     this->drawConfig = 1;
 }
 
-void func_8098F3F0(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E5C8(this, globalCtx);
+void func_8098F3F0(DemoSa* this, PlayState* play) {
+    func_8098E5C8(this, play);
     DemoSa_UpdateSkelAnime(this);
     func_8098E480(this);
 }
 
-void func_8098F420(DemoSa* this, GlobalContext* globalCtx) {
-    SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gSariaSkel, &gSariaSitting3Anim, NULL, NULL, 0);
+void func_8098F420(DemoSa* this, PlayState* play) {
+    SkelAnime_InitFlex(play, &this->skelAnime, &gSariaSkel, &gSariaSitting3Anim, NULL, NULL, 0);
     this->action = 11;
     this->drawConfig = 0;
     this->actor.shape.shadowAlpha = 0;
@@ -514,8 +514,8 @@ void func_8098F480(DemoSa* this) {
     }
 }
 
-void func_8098F50C(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E6EC(this, globalCtx, 4);
+void func_8098F50C(DemoSa* this, PlayState* play) {
+    func_8098E6EC(this, play, 4);
     this->action = 12;
     this->drawConfig = 2;
 }
@@ -544,10 +544,10 @@ void func_8098F610(DemoSa* this, s32 arg1) {
     }
 }
 
-void func_8098F654(DemoSa* this, GlobalContext* globalCtx) {
+void func_8098F654(DemoSa* this, PlayState* play) {
     s32 unk_1AC;
     s32 action;
-    CsCmdActorAction* npcAction = DemoSa_GetNpcAction(globalCtx, 4);
+    CsCmdActorAction* npcAction = DemoSa_GetNpcAction(play, 4);
 
     if (npcAction != NULL) {
         action = npcAction->action;
@@ -555,7 +555,7 @@ void func_8098F654(DemoSa* this, GlobalContext* globalCtx) {
         if (action != unk_1AC) {
             switch (action) {
                 case 7:
-                    func_8098F50C(this, globalCtx);
+                    func_8098F50C(this, play);
                     break;
                 case 8:
                     func_8098F590(this);
@@ -571,46 +571,46 @@ void func_8098F654(DemoSa* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_8098F714(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098F654(this, globalCtx);
+void func_8098F714(DemoSa* this, PlayState* play) {
+    func_8098F654(this, play);
 }
 
-void func_8098F734(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E5C8(this, globalCtx);
+void func_8098F734(DemoSa* this, PlayState* play) {
+    func_8098E5C8(this, play);
     DemoSa_UpdateSkelAnime(this);
     func_8098E480(this);
     func_8098F480(this);
     func_8098F544(this);
 }
 
-void func_8098F77C(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E5C8(this, globalCtx);
+void func_8098F77C(DemoSa* this, PlayState* play) {
+    func_8098E5C8(this, play);
     DemoSa_UpdateSkelAnime(this);
     func_8098E480(this);
-    func_8098F654(this, globalCtx);
+    func_8098F654(this, play);
 }
 
-void func_8098F7BC(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E5C8(this, globalCtx);
+void func_8098F7BC(DemoSa* this, PlayState* play) {
+    func_8098E5C8(this, play);
     DemoSa_UpdateSkelAnime(this);
     func_8098E480(this);
-    func_8098F654(this, globalCtx);
+    func_8098F654(this, play);
 }
 
-void func_8098F7FC(DemoSa* this, GlobalContext* globalCtx) {
+void func_8098F7FC(DemoSa* this, PlayState* play) {
     s32 sp1C;
 
-    func_8098E5C8(this, globalCtx);
+    func_8098E5C8(this, play);
     sp1C = DemoSa_UpdateSkelAnime(this);
     func_8098E480(this);
     func_8098F610(this, sp1C);
 }
 
-void func_8098F83C(DemoSa* this, GlobalContext* globalCtx) {
+void func_8098F83C(DemoSa* this, PlayState* play) {
     Vec3f* thisPos = &this->actor.world.pos;
 
-    SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gSariaSkel, &gSariaWaitOnBridgeAnim, NULL, NULL, 0);
-    Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_ELF, thisPos->x, thisPos->y, thisPos->z,
+    SkelAnime_InitFlex(play, &this->skelAnime, &gSariaSkel, &gSariaWaitOnBridgeAnim, NULL, NULL, 0);
+    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_ELF, thisPos->x, thisPos->y, thisPos->z,
                        0, 0, 0, FAIRY_KOKIRI);
     this->action = 16;
     this->drawConfig = 0;
@@ -640,9 +640,9 @@ void func_8098F984(DemoSa* this) {
     this->actor.shape.shadowAlpha = 0;
 }
 
-void func_8098F998(DemoSa* this, GlobalContext* globalCtx) {
+void func_8098F998(DemoSa* this, PlayState* play) {
     if (this->unk_1AC == 4) {
-        func_8098E6EC(this, globalCtx, 1);
+        func_8098E6EC(this, play, 1);
         this->action = 17;
         this->drawConfig = 2;
         this->unk_1B0 = 0;
@@ -689,10 +689,10 @@ void func_8098FB34(DemoSa* this, s32 arg1) {
     }
 }
 
-void func_8098FB68(DemoSa* this, GlobalContext* globalCtx) {
+void func_8098FB68(DemoSa* this, PlayState* play) {
     s32 unk_1AC;
     s32 action;
-    CsCmdActorAction* npcAction = DemoSa_GetNpcAction(globalCtx, 1);
+    CsCmdActorAction* npcAction = DemoSa_GetNpcAction(play, 1);
 
     if (npcAction != NULL) {
         action = npcAction->action;
@@ -703,7 +703,7 @@ void func_8098FB68(DemoSa* this, GlobalContext* globalCtx) {
                     func_8098F984(this);
                     break;
                 case 12:
-                    func_8098F998(this, globalCtx);
+                    func_8098F998(this, play);
                     break;
                 case 13:
                     func_8098FA84(this);
@@ -719,69 +719,69 @@ void func_8098FB68(DemoSa* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_8098FC44(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098FB68(this, globalCtx);
+void func_8098FC44(DemoSa* this, PlayState* play) {
+    func_8098FB68(this, play);
 }
 
-void func_8098FC64(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E5C8(this, globalCtx);
+void func_8098FC64(DemoSa* this, PlayState* play) {
+    func_8098E5C8(this, play);
     DemoSa_UpdateSkelAnime(this);
     func_8098F8F8(this);
     func_8098FA2C(this);
 }
 
-void func_8098FC9C(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E5C8(this, globalCtx);
+void func_8098FC9C(DemoSa* this, PlayState* play) {
+    func_8098E5C8(this, play);
     DemoSa_UpdateSkelAnime(this);
-    func_8098FB68(this, globalCtx);
+    func_8098FB68(this, play);
 }
 
-void func_8098FCD4(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E5C8(this, globalCtx);
+void func_8098FCD4(DemoSa* this, PlayState* play) {
+    func_8098E5C8(this, play);
     DemoSa_UpdateSkelAnime(this);
-    func_8098FB68(this, globalCtx);
+    func_8098FB68(this, play);
 }
 
-void func_8098FD0C(DemoSa* this, GlobalContext* globalCtx) {
-    func_8098E5C8(this, globalCtx);
+void func_8098FD0C(DemoSa* this, PlayState* play) {
+    func_8098E5C8(this, play);
     func_8098FB34(this, DemoSa_UpdateSkelAnime(this));
-    func_8098FB68(this, globalCtx);
+    func_8098FB68(this, play);
 }
 
-void DemoSa_Update(Actor* thisx, GlobalContext* globalCtx) {
+void DemoSa_Update(Actor* thisx, PlayState* play) {
     DemoSa* this = (DemoSa*)thisx;
 
     if (this->action < 0 || this->action >= 21 || sActionFuncs[this->action] == NULL) {
         osSyncPrintf(VT_FGCOL(RED) "メインモードがおかしい!!!!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST);
         return;
     }
-    sActionFuncs[this->action](this, globalCtx);
+    sActionFuncs[this->action](this, play);
 }
 
-void DemoSa_Init(Actor* thisx, GlobalContext* globalCtx) {
+void DemoSa_Init(Actor* thisx, PlayState* play) {
     DemoSa* this = (DemoSa*)thisx;
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
 
     switch (this->actor.params) {
         case 2:
-            func_8098ECF4(this, globalCtx);
+            func_8098ECF4(this, play);
             break;
         case 3:
-            func_8098F390(this, globalCtx);
+            func_8098F390(this, play);
             break;
         case 4:
-            func_8098F420(this, globalCtx);
+            func_8098F420(this, play);
             break;
         case 5:
-            func_8098F83C(this, globalCtx);
+            func_8098F83C(this, play);
             break;
         default:
-            func_8098E7FC(this, globalCtx);
+            func_8098E7FC(this, play);
     }
 }
 
-s32 DemoSa_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+s32 DemoSa_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     DemoSa* this = (DemoSa*)thisx;
 
     if ((limbIndex == 15) && (this->unk_1B0 != 0)) {
@@ -790,10 +790,10 @@ s32 DemoSa_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
     return false;
 }
 
-void DemoSa_DrawNothing(DemoSa* this, GlobalContext* globalCtx) {
+void DemoSa_DrawNothing(DemoSa* this, PlayState* play) {
 }
 
-void DemoSa_DrawOpa(DemoSa* this, GlobalContext* globalCtx) {
+void DemoSa_DrawOpa(DemoSa* this, PlayState* play) {
     s32 pad[2];
     s16 eyeIndex = this->eyeIndex;
     void* eyeTex = sEyeTextures[eyeIndex];
@@ -802,9 +802,9 @@ void DemoSa_DrawOpa(DemoSa* this, GlobalContext* globalCtx) {
     void* mouthTex = sMouthTextures[mouthIndex];
     SkelAnime* skelAnime = &this->skelAnime;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTex));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTex));
@@ -812,18 +812,18 @@ void DemoSa_DrawOpa(DemoSa* this, GlobalContext* globalCtx) {
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, &D_80116280[2]);
 
-    SkelAnime_DrawFlexOpa(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
+    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                           DemoSa_OverrideLimbDraw, NULL, &this->actor);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void DemoSa_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void DemoSa_Draw(Actor* thisx, PlayState* play) {
     DemoSa* this = (DemoSa*)thisx;
 
     if (this->drawConfig < 0 || this->drawConfig >= 3 || sDrawFuncs[this->drawConfig] == NULL) {
         osSyncPrintf(VT_FGCOL(RED) "描画モードがおかしい!!!!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST);
         return;
     }
-    sDrawFuncs[this->drawConfig](this, globalCtx);
+    sDrawFuncs[this->drawConfig](this, play);
 }

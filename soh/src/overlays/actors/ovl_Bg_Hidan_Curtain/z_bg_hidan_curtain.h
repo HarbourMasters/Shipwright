@@ -6,7 +6,7 @@
 
 struct BgHidanCurtain;
 
-typedef void (*BgHidanCurtainActionFunc)(struct BgHidanCurtain*, GlobalContext*);
+typedef void (*BgHidanCurtainActionFunc)(struct BgHidanCurtain*, PlayState*);
 
 typedef struct BgHidanCurtain {
     /* 0x0000 */ Actor actor;

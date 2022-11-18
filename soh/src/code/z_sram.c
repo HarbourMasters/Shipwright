@@ -4,6 +4,7 @@
 #include <string.h>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include <soh/Enhancements/randomizer/randomizer_inf.h>
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define NUM_DUNGEONS 8
@@ -32,7 +33,7 @@ void Sram_InitDebugSave(void) {
 
 // RANDOTODO replace most of these GiveLink functions with calls to
 // Item_Give in z_parameter, we'll need to update Item_Give to ensure
-// nothing breaks when calling it without a valid globalCtx first
+// nothing breaks when calling it without a valid play first
 void GiveLinkRupees(int numOfRupees) {
     int maxRupeeCount;
     if (CUR_UPG_VALUE(UPG_WALLET) == 0) {
@@ -194,6 +195,19 @@ void Sram_OpenSave() {
                 }
                 break;
         }
+    }
+
+    // Setup the modified entrance table and entrance shuffle table for rando
+    if (gSaveContext.n64ddFlag) {
+        Entrance_Init();
+        if (!CVar_GetS32("gRememberSaveLocation", 0) || gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE ||
+            gSaveContext.savedSceneNum == SCENE_KAKUSIANA) {
+            Entrance_SetSavewarpEntrance();
+        }
+    } else {
+        // When going from a rando save to a vanilla save within the same game instance
+        // we need to reset the entrance table back to its vanilla state
+        Entrance_ResetEntranceTable();
     }
 
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);
@@ -399,6 +413,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
       
         if(Randomizer_GetSettingValue(RSK_STARTING_KOKIRI_SWORD)) Item_Give(NULL, ITEM_SWORD_KOKIRI);
         if(Randomizer_GetSettingValue(RSK_STARTING_DEKU_SHIELD)) Item_Give(NULL, ITEM_SHIELD_DEKU);
+
+        if(Randomizer_GetSettingValue(RSK_STARTING_SKULLTULA_TOKEN)) {
+            gSaveContext.inventory.questItems |= gBitFlags[QUEST_SKULL_TOKEN];
+            gSaveContext.inventory.gsTokens = Randomizer_GetSettingValue(RSK_STARTING_SKULLTULA_TOKEN);
+        }
 
         if(Randomizer_GetSettingValue(RSK_STARTING_OCARINA)) {
             INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;

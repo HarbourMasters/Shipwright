@@ -5,32 +5,32 @@
 #include <filesystem>
 #include <fstream>
 
-#include <libultraship/ResourceMgr.h>
-#include <libultraship/DisplayList.h>
-#include <libultraship/PlayerAnimation.h>
-#include <libultraship/Skeleton.h>
-#include <libultraship/Window.h>
-#include <libultraship/GameVersions.h>
+#include <ResourceMgr.h>
+#include <DisplayList.h>
+#include <PlayerAnimation.h>
+#include <Skeleton.h>
+#include <Window.h>
+#include <GameVersions.h>
 
 #include "z64animation.h"
 #include "z64bgcheck.h"
 #include "Enhancements/gameconsole.h"
 #include <ultra64/gbi.h>
-#include <libultraship/Animation.h>
+#include <Animation.h>
 #ifdef _WIN32
 #include <Windows.h>
 #else
 #include <time.h>
 #endif
-#include <libultraship/CollisionHeader.h>
-#include <libultraship/Array.h>
-#include <libultraship/Cutscene.h>
+#include <CollisionHeader.h>
+#include <Array.h>
+#include <Cutscene.h>
 #include <stb/stb_image.h>
 #define DRMP3_IMPLEMENTATION
 #include <dr_libs/mp3.h>
 #define DRWAV_IMPLEMENTATION
 #include <dr_libs/wav.h>
-#include <libultraship/AudioPlayer.h>
+#include <AudioPlayer.h>
 #include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/sfx-editor/SfxEditor.h"
@@ -44,7 +44,7 @@
 #include "variables.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
-#include <libultraship/Hooks.h>
+#include <Hooks.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 
 #include <Fast3D/gfx_pc.h>
@@ -57,12 +57,14 @@
 #endif
 
 #ifdef __SWITCH__
-#include <libultraship/SwitchImpl.h>
+#include <port/switch/SwitchImpl.h>
 #elif defined(__WIIU__)
-#include <libultraship/WiiUImpl.h>
+#include <port/wiiu/WiiUImpl.h>
 #endif
 
-#include <libultraship/Audio.h>
+
+
+#include <Audio.h>
 #include "Enhancements/custom-message/CustomMessageTypes.h"
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
@@ -431,12 +433,9 @@ extern "C" void InitOTR() {
     ItemTableManager::Instance = new ItemTableManager();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
 
-    if (!t->bHasLoadError)
+    if (!t->HasLoadError)
     {
-        Ship::BinaryReader reader(t->buffer.get(), t->dwBufferSize);
-        Ship::Endianness endianness = (Ship::Endianness)reader.ReadUByte();
-        reader.SetEndianness(endianness);
-        uint32_t gameVersion = reader.ReadUInt32();
+        uint32_t gameVersion = OTRGlobals::Instance->context->GetResourceManager()->GetGameVersion();
         OTRGlobals::Instance->context->GetResourceManager()->SetGameVersion(gameVersion);
     }
 
@@ -455,12 +454,15 @@ extern "C" void InitOTR() {
 
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance = new CrowdControl();
-    CrowdControl::Instance->InitCrowdControl();
+    CrowdControl::Instance->Init();
 #endif
 }
 
 extern "C" void DeinitOTR() {
     OTRAudio_Exit();
+#ifdef ENABLE_CROWD_CONTROL
+    CrowdControl::Instance->Shutdown();
+#endif
 }
 
 #ifdef _WIN32
@@ -656,7 +658,7 @@ uint32_t IsSceneMasterQuest(s16 sceneNum) {
             value = 0;
             if (gSaveContext.n64ddFlag) {
                 if (!OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty()) {
-                    if (gGlobalCtx != NULL && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
+                    if (gPlayState != NULL && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
                         value = 1;
                     }
                 }
@@ -667,7 +669,7 @@ uint32_t IsSceneMasterQuest(s16 sceneNum) {
 }
 
 uint32_t IsGameMasterQuest() {
-    return gGlobalCtx != NULL ? IsSceneMasterQuest(gGlobalCtx->sceneNum) : 0;
+    return gPlayState != NULL ? IsSceneMasterQuest(gPlayState->sceneNum) : 0;
 }
 
 extern "C" uint32_t ResourceMgr_GameHasMasterQuest() {
@@ -729,7 +731,7 @@ std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path) {
 }
 
 extern "C" char* ResourceMgr_LoadFileRaw(const char* resName) {
-    return OTRGlobals::Instance->context->GetResourceManager()->LoadFile(resName)->buffer.get();
+    return OTRGlobals::Instance->context->GetResourceManager()->LoadFile(resName)->Buffer.get();
 }
 
 extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
@@ -795,9 +797,9 @@ extern "C" uint32_t ResourceMgr_LoadTexSizeByName(const char* texPath);
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = ResourceMgr_LoadResource(filePath);
 
-    if (res->resType == Ship::ResourceType::DisplayList)
+    if (res->ResType == Ship::ResourceType::DisplayList)
         return (char*)&((std::static_pointer_cast<Ship::DisplayList>(res))->instructions[0]);
-    else if (res->resType == Ship::ResourceType::Array)
+    else if (res->ResType == Ship::ResourceType::Array)
         return (char*)(std::static_pointer_cast<Ship::Array>(res))->vertices.data();
     else {
         std::string Path = filePath;
@@ -887,8 +889,8 @@ extern "C" char* ResourceMgr_LoadArrayByName(const char* path)
 extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
     auto res = std::static_pointer_cast<Ship::Array>(ResourceMgr_LoadResource(path));
 
-    if (res->cachedGameAsset != nullptr)
-        return (char*)res->cachedGameAsset;
+    if (res->CachedGameAsset != nullptr)
+        return (char*)res->CachedGameAsset;
     else
     {
         Vec3s* data = (Vec3s*)malloc(sizeof(Vec3s) * res->scalars.size());
@@ -899,7 +901,7 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
             data[(i / 3)].z = res->scalars[i + 2].s16;
         }
 
-        res->cachedGameAsset = data;
+        res->CachedGameAsset = data;
 
         return (char*)data;
     }
@@ -909,8 +911,8 @@ extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path)
 {
     auto colRes = std::static_pointer_cast<Ship::CollisionHeader>(ResourceMgr_LoadResource(path));
 
-    if (colRes->cachedGameAsset != nullptr)
-        return (CollisionHeader*)colRes->cachedGameAsset;
+    if (colRes->CachedGameAsset != nullptr)
+        return (CollisionHeader*)colRes->CachedGameAsset;
 
     CollisionHeader* colHeader = (CollisionHeader*)malloc(sizeof(CollisionHeader));
 
@@ -994,7 +996,7 @@ extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path)
         colHeader->waterBoxes[i].properties = colRes->waterBoxes[i].properties;
     }
 
-    colRes->cachedGameAsset = colHeader;
+    colRes->CachedGameAsset = colHeader;
 
     return (CollisionHeader*)colHeader;
 }
@@ -1035,7 +1037,7 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
     ExtensionEntry entry = ExtensionCache[path];
 
     auto sampleRaw = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(entry.path);
-    uint32_t* strem = (uint32_t*)sampleRaw->buffer.get();
+    uint32_t* strem = (uint32_t*)sampleRaw->Buffer.get();
     uint8_t* strem2 = (uint8_t*)strem;
 
     SoundFontSample* sampleC = new SoundFontSample;
@@ -1045,7 +1047,7 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
         drwav_uint32 sampleRate;
         drwav_uint64 totalPcm;
         drmp3_int16* pcmData =
-            drwav_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->dwBufferSize, &channels, &sampleRate, &totalPcm, NULL);
+            drwav_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->BufferSize, &channels, &sampleRate, &totalPcm, NULL);
         sampleC->size = totalPcm;
         sampleC->sampleAddr = (uint8_t*)pcmData;
         sampleC->codec = CODEC_S16;
@@ -1063,7 +1065,7 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
         drmp3_config mp3Info;
         drmp3_uint64 totalPcm;
         drmp3_int16* pcmData =
-            drmp3_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->dwBufferSize, &mp3Info, &totalPcm, NULL);
+            drmp3_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->BufferSize, &mp3Info, &totalPcm, NULL);
 
         sampleC->size = totalPcm * mp3Info.channels * sizeof(short);
         sampleC->sampleAddr = (uint8_t*)pcmData;
@@ -1101,10 +1103,10 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
     if (sample == nullptr)
         return NULL;
 
-    if (sample->cachedGameAsset != nullptr)
+    if (sample->CachedGameAsset != nullptr)
     {
-        SoundFontSample* sampleC = (SoundFontSample*)sample->cachedGameAsset;
-        return (SoundFontSample*)sample->cachedGameAsset;
+        SoundFontSample* sampleC = (SoundFontSample*)sample->CachedGameAsset;
+        return (SoundFontSample*)sample->CachedGameAsset;
     }
     else
     {
@@ -1136,7 +1138,7 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
         for (size_t i = 0; i < sample->loop.states.size(); i++)
             sampleC->loop->state[i] = sample->loop.states[i];
 
-        sample->cachedGameAsset = sampleC;
+        sample->CachedGameAsset = sampleC;
         return sampleC;
     }
 }
@@ -1147,9 +1149,9 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
     if (soundFont == nullptr)
         return NULL;
 
-    if (soundFont->cachedGameAsset != nullptr)
+    if (soundFont->CachedGameAsset != nullptr)
     {
-        return (SoundFont*)soundFont->cachedGameAsset;
+        return (SoundFont*)soundFont->CachedGameAsset;
     }
     else
     {
@@ -1261,7 +1263,7 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
             soundFontC->soundEffects[i].tuning = soundFont->soundEffects[i]->tuning;
         }
 
-        soundFont->cachedGameAsset = soundFontC;
+        soundFont->CachedGameAsset = soundFontC;
         return soundFontC;
     }
 }
@@ -1287,8 +1289,8 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
     auto res = std::static_pointer_cast<Ship::Animation>(ResourceMgr_LoadResource(path));
 
-    if (res->cachedGameAsset != nullptr)
-        return (AnimationHeaderCommon*)res->cachedGameAsset;
+    if (res->CachedGameAsset != nullptr)
+        return (AnimationHeaderCommon*)res->CachedGameAsset;
 
     AnimationHeaderCommon* anim = nullptr;
 
@@ -1347,7 +1349,7 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
         anim = (AnimationHeaderCommon*)animLink;
     }
 
-    res->cachedGameAsset = anim;
+    res->CachedGameAsset = anim;
 
     return anim;
 }
@@ -1355,8 +1357,8 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
 extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
     auto res = std::static_pointer_cast<Ship::Skeleton>(ResourceMgr_LoadResource(path));
 
-    if (res->cachedGameAsset != nullptr)
-        return (SkeletonHeader*)res->cachedGameAsset;
+    if (res->CachedGameAsset != nullptr)
+        return (SkeletonHeader*)res->CachedGameAsset;
 
     SkeletonHeader* baseHeader = nullptr;
 
@@ -1533,7 +1535,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
         }
     }
 
-    res->cachedGameAsset = baseHeader;
+    res->CachedGameAsset = baseHeader;
 
     return baseHeader;
 }
@@ -1838,6 +1840,10 @@ extern "C" bool Randomizer_IsTrialRequired(RandomizerInf trial) {
     return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trial);
 }
 
+extern "C" void Randomizer_LoadEntranceOverrides(const char* spoilerFileName, bool silent) {
+    OTRGlobals::Instance->gRandomizer->LoadEntranceOverrides(spoilerFileName, silent);
+}
+
 extern "C" u32 SpoilerFileExists(const char* spoilerFileName) {
     return OTRGlobals::Instance->gRandomizer->SpoilerFileExists(spoilerFileName);
 }
@@ -1902,8 +1908,8 @@ extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(Player* player)
     return getItemText;
 }
 
-extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
-    MessageContext* msgCtx = &globalCtx->msgCtx;
+extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
+    MessageContext* msgCtx = &play->msgCtx;
     uint16_t textId = msgCtx->textId;
     Font* font = &msgCtx->font;
     char* buffer = font->msgBuf;
@@ -1911,7 +1917,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     CustomMessageEntry messageEntry;
     if (gSaveContext.n64ddFlag) {
         if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
-            Player* player = GET_PLAYER(globalCtx);
+            Player* player = GET_PLAYER(play);
             if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
                 u16 iceTrapTextId = Random(0, NUM_ICE_TRAP_MESSAGES);
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, iceTrapTextId);
@@ -1923,29 +1929,29 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
         } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
              (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
-              Player_GetMask(globalCtx) == PLAYER_MASK_TRUTH) ||
+              Player_GetMask(play) == PLAYER_MASK_TRUTH) ||
              (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 3 && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
 
             s16 actorParams = msgCtx->talkActor->params;
 
             // if we're in a generic grotto
-            if (globalCtx->sceneNum == 62 && actorParams == 14360) {
+            if (play->sceneNum == 62 && actorParams == 14360) {
                 // look for the chest in the actorlist to determine
                 // which grotto we're in
                 int numOfActorLists =
-                    sizeof(globalCtx->actorCtx.actorLists) / sizeof(globalCtx->actorCtx.actorLists[0]);
+                    sizeof(play->actorCtx.actorLists) / sizeof(play->actorCtx.actorLists[0]);
                 for (int i = 0; i < numOfActorLists; i++) {
-                    if (globalCtx->actorCtx.actorLists[i].length) {
-                        if (globalCtx->actorCtx.actorLists[i].head->id == 10) {
+                    if (play->actorCtx.actorLists[i].length) {
+                        if (play->actorCtx.actorLists[i].head->id == 10) {
                             // set the params for the hint check to be negative chest params
-                            actorParams = 0 - globalCtx->actorCtx.actorLists[i].head->params;
+                            actorParams = 0 - play->actorCtx.actorLists[i].head->params;
                         }
                     }
                 }
             }
 
             RandomizerCheck hintCheck =
-                Randomizer_GetCheckFromActor(msgCtx->talkActor->id, globalCtx->sceneNum, actorParams);
+                Randomizer_GetCheckFromActor(msgCtx->talkActor->id, play->sceneNum, actorParams);
 
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, hintCheck);
         } else if (textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT) {
@@ -1962,7 +1968,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
         // textId: TEXT_SCRUB_RANDOM + (randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT)
         } else if (textId >= TEXT_SCRUB_RANDOM && textId <= TEXT_SCRUB_RANDOM + NUM_SCRUBS) {
             RandomizerInf randoInf = (RandomizerInf)((textId - TEXT_SCRUB_RANDOM) + RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT);
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, TEXT_SCRUB_RANDOM, Player_GetMask(globalCtx) != PLAYER_MASK_TRUTH);
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, TEXT_SCRUB_RANDOM, Player_GetMask(play) != PLAYER_MASK_TRUTH);
         // Shop items each have two message entries, second one offset by NUM_SHOP_ITEMS
         // textId: TEXT_SHOP_ITEM_RANDOM + (randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1)
         // textId: TEXT_SHOP_ITEM_RANDOM + ((randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS)
@@ -1984,6 +1990,11 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
         } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS) && textId == TEXT_BEAN_SALESMAN) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN);
+        } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) && (textId == TEXT_MEDIGORON || 
+          (textId == TEXT_CARPET_SALESMAN_1 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)) ||
+          (textId == TEXT_CARPET_SALESMAN_2 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)))) {
+            RandomizerInf randoInf = (RandomizerInf)(textId == TEXT_MEDIGORON ? RAND_INF_MERCHANTS_MEDIGORON : RAND_INF_MERCHANTS_CARPET_SALESMAN);
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, textId, Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != 2);            
         } else if (Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
                    (textId == TEXT_BUY_BOMBCHU_10_DESC || textId == TEXT_BUY_BOMBCHU_10_PROMPT)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);

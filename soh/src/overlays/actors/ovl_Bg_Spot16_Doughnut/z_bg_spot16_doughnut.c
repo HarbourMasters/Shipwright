@@ -10,13 +10,13 @@
 
 #define FLAGS 0
 
-void BgSpot16Doughnut_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot16Doughnut_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot16Doughnut_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot16Doughnut_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgSpot16Doughnut_Init(Actor* thisx, PlayState* play);
+void BgSpot16Doughnut_Destroy(Actor* thisx, PlayState* play);
+void BgSpot16Doughnut_Update(Actor* thisx, PlayState* play);
+void BgSpot16Doughnut_Draw(Actor* thisx, PlayState* play);
 
-void BgSpot16Doughnut_UpdateExpanding(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot16Doughnut_DrawExpanding(Actor* thisx, GlobalContext* globalCtx);
+void BgSpot16Doughnut_UpdateExpanding(Actor* thisx, PlayState* play);
+void BgSpot16Doughnut_DrawExpanding(Actor* thisx, PlayState* play);
 
 const ActorInit Bg_Spot16_Doughnut_InitVars = {
     ACTOR_BG_SPOT16_DOUGHNUT,
@@ -41,7 +41,7 @@ static s16 sScales[] = {
     0, 0, 70, 210, 300,
 };
 
-void BgSpot16Doughnut_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot16Doughnut_Init(Actor* thisx, PlayState* play) {
     BgSpot16Doughnut* this = (BgSpot16Doughnut*)thisx;
     s32 params;
 
@@ -57,7 +57,7 @@ void BgSpot16Doughnut_Init(Actor* thisx, GlobalContext* globalCtx) {
     } else {
         // Scales this actor for scenes where it is featured in the background,
         // Death Mountain itself falls into the default case.
-        switch (globalCtx->sceneNum) {
+        switch (play->sceneNum) {
             case SCENE_SPOT01:
                 Actor_SetScale(&this->actor, 0.04f);
                 break;
@@ -80,10 +80,10 @@ void BgSpot16Doughnut_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void BgSpot16Doughnut_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot16Doughnut_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void BgSpot16Doughnut_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot16Doughnut_Update(Actor* thisx, PlayState* play) {
     BgSpot16Doughnut* this = (BgSpot16Doughnut*)thisx;
 
     if (!(this->fireFlag & 1)) {
@@ -93,8 +93,8 @@ void BgSpot16Doughnut_Update(Actor* thisx, GlobalContext* globalCtx) {
         } else {
             this->envColorAlpha = 255;
         }
-    } else if (globalCtx->csCtx.state != CS_STATE_IDLE && globalCtx->csCtx.npcActions[2] != NULL &&
-               globalCtx->csCtx.npcActions[2]->action == 2) {
+    } else if (play->csCtx.state != CS_STATE_IDLE && play->csCtx.npcActions[2] != NULL &&
+               play->csCtx.npcActions[2]->action == 2) {
         if (this->envColorAlpha >= 6) {
             this->envColorAlpha -= 5;
         } else {
@@ -105,7 +105,7 @@ void BgSpot16Doughnut_Update(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 // Update function for outwardly expanding and dissipating
-void BgSpot16Doughnut_UpdateExpanding(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot16Doughnut_UpdateExpanding(Actor* thisx, PlayState* play) {
     BgSpot16Doughnut* this = (BgSpot16Doughnut*)thisx;
 
     if (this->envColorAlpha >= 6) {
@@ -117,21 +117,21 @@ void BgSpot16Doughnut_UpdateExpanding(Actor* thisx, GlobalContext* globalCtx) {
     Actor_SetScale(&this->actor, this->actor.scale.x + 0.0019999998f);
 }
 
-void BgSpot16Doughnut_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot16Doughnut_Draw(Actor* thisx, PlayState* play) {
     BgSpot16Doughnut* this = (BgSpot16Doughnut*)thisx;
-    u32 scroll = globalCtx->gameplayFrames & 0xFFFF;
+    u32 scroll = play->gameplayFrames & 0xFFFF;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     if (this->fireFlag & 1) {
         gSPSegment(
             POLY_XLU_DISP++, 0x08,
-            Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, scroll * (-1), 0, 16, 32, 1, scroll, scroll * (-2), 16, 32));
+            Gfx_TwoTexScroll(play->state.gfxCtx, 0, scroll * (-1), 0, 16, 32, 1, scroll, scroll * (-2), 16, 32));
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, this->envColorAlpha);
         gSPDisplayList(POLY_XLU_DISP++, gDeathMountainCloudCircleFieryDL);
     } else {
@@ -140,22 +140,22 @@ void BgSpot16Doughnut_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, gDeathMountainCloudCircleNormalDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
 // Draw function for outwardly expanding and dissipating
-void BgSpot16Doughnut_DrawExpanding(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot16Doughnut_DrawExpanding(Actor* thisx, PlayState* play) {
     BgSpot16Doughnut* this = (BgSpot16Doughnut*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(globalCtx->state.gfxCtx);
+    func_80093D84(play->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, this->envColorAlpha);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
     gSPDisplayList(POLY_XLU_DISP++, gDeathMountainCloudCircleNormalDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

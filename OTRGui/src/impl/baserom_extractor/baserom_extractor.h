@@ -1,7 +1,7 @@
 #ifndef EXTRACT_BASEROM_H_
 #define EXTRACT_BASEROM_H_
 
-#include "../../libultraship/libultraship/GameVersions.h"
+#include "src/resource/GameVersions.h"
 #include <cstdio>
 #include <string>
 

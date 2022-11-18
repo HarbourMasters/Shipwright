@@ -15,15 +15,15 @@ typedef struct {
     s16 angle;
 } Mure2sScatteredShrubInfo;
 
-void ObjMure2_Init(Actor* thisx, GlobalContext* globalCtx);
-void ObjMure2_Update(Actor* thisx, GlobalContext* globalCtx);
+void ObjMure2_Init(Actor* thisx, PlayState* play);
+void ObjMure2_Update(Actor* thisx, PlayState* play);
 
 void ObjMure2_SetPosShrubCircle(Vec3f* vec, ObjMure2* this);
 void ObjMure2_SetPosShrubScattered(Vec3f* vec, ObjMure2* this);
 void ObjMure2_SetPosRockCircle(Vec3f* vec, ObjMure2* this);
-void ObjMure2_Wait(ObjMure2* this, GlobalContext* globalCtx);
-void func_80B9A668(ObjMure2* this, GlobalContext* globalCtx);
-void func_80B9A6F8(ObjMure2* this, GlobalContext* globalCtx);
+void ObjMure2_Wait(ObjMure2* this, PlayState* play);
+void func_80B9A668(ObjMure2* this, PlayState* play);
+void func_80B9A6F8(ObjMure2* this, PlayState* play);
 void ObjMure2_SetupWait(ObjMure2* this);
 void func_80B9A658(ObjMure2* this);
 void func_80B9A6E8(ObjMure2* this);
@@ -96,7 +96,7 @@ void ObjMure2_SetActorSpawnParams(s16* params, ObjMure2* this) {
     *params |= (dropTable << 8);
 }
 
-void ObjMure2_SpawnActors(ObjMure2* this, GlobalContext* globalCtx) {
+void ObjMure2_SpawnActors(ObjMure2* this, PlayState* play) {
     static ObjMure2SetPosFunc setPosFunc[] = {
         ObjMure2_SetPosShrubCircle,
         ObjMure2_SetPosShrubScattered,
@@ -120,7 +120,7 @@ void ObjMure2_SpawnActors(ObjMure2* this, GlobalContext* globalCtx) {
 
         if (((this->currentActorNum >> i) & 1) == 0) {
             this->actorSpawnPtrList[i] =
-                Actor_Spawn(&globalCtx->actorCtx, globalCtx, sActorSpawnIDs[actorNum], spawnPos[i].x, spawnPos[i].y,
+                Actor_Spawn(&play->actorCtx, play, sActorSpawnIDs[actorNum], spawnPos[i].x, spawnPos[i].y,
                             spawnPos[i].z, this->actor.world.rot.x, 0, this->actor.world.rot.z, params);
             if (this->actorSpawnPtrList[i] != NULL) {
                 this->actorSpawnPtrList[i]->room = this->actor.room;
@@ -129,13 +129,13 @@ void ObjMure2_SpawnActors(ObjMure2* this, GlobalContext* globalCtx) {
     }
 }
 
-void ObjMure2_CleanupAndDie(ObjMure2* this, GlobalContext* globalCtx) {
+void ObjMure2_CleanupAndDie(ObjMure2* this, PlayState* play) {
     s32 i;
 
     for (i = 0; i < D_80B9A818[this->actor.params & 3]; i++) {
         if (((this->currentActorNum >> i) & 1) == 0) {
             if (this->actorSpawnPtrList[i] != NULL) {
-                if (Actor_HasParent(this->actorSpawnPtrList[i], globalCtx)) {
+                if (Actor_HasParent(this->actorSpawnPtrList[i], play)) {
                     this->currentActorNum |= (1 << i);
                 } else {
                     Actor_Kill(this->actorSpawnPtrList[i]);
@@ -166,11 +166,11 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneDownward, 100, ICHAIN_STOP),
 };
 
-void ObjMure2_Init(Actor* thisx, GlobalContext* globalCtx) {
+void ObjMure2_Init(Actor* thisx, PlayState* play) {
     ObjMure2* this = (ObjMure2*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
-    if (globalCtx->csCtx.state != CS_STATE_IDLE) {
+    if (play->csCtx.state != CS_STATE_IDLE) {
         this->actor.uncullZoneForward += 1200.0f;
     }
     ObjMure2_SetupWait(this);
@@ -180,7 +180,7 @@ void ObjMure2_SetupWait(ObjMure2* this) {
     this->actionFunc = ObjMure2_Wait;
 }
 
-void ObjMure2_Wait(ObjMure2* this, GlobalContext* globalCtx) {
+void ObjMure2_Wait(ObjMure2* this, PlayState* play) {
     func_80B9A658(this);
 }
 
@@ -188,12 +188,12 @@ void func_80B9A658(ObjMure2* this) {
     this->actionFunc = func_80B9A668;
 }
 
-void func_80B9A668(ObjMure2* this, GlobalContext* globalCtx) {
+void func_80B9A668(ObjMure2* this, PlayState* play) {
     if (Math3D_Dist1DSq(this->actor.projectedPos.x, this->actor.projectedPos.z) <
             (sDistSquared1[this->actor.params & 3] * this->unk_184) ||
         CVar_GetS32("gDisableDrawDistance", 0) != 0) {
         this->actor.flags |= ACTOR_FLAG_4;
-        ObjMure2_SpawnActors(this, globalCtx);
+        ObjMure2_SpawnActors(this, play);
         func_80B9A6E8(this);
     }
 }
@@ -202,7 +202,7 @@ void func_80B9A6E8(ObjMure2* this) {
     this->actionFunc = func_80B9A6F8;
 }
 
-void func_80B9A6F8(ObjMure2* this, GlobalContext* globalCtx) {
+void func_80B9A6F8(ObjMure2* this, PlayState* play) {
     func_80B9A534(this);
 
     if (CVar_GetS32("gDisableDrawDistance", 0) != 0) {
@@ -212,18 +212,18 @@ void func_80B9A6F8(ObjMure2* this, GlobalContext* globalCtx) {
     if ((sDistSquared2[this->actor.params & 3] * this->unk_184) <=
             Math3D_Dist1DSq(this->actor.projectedPos.x, this->actor.projectedPos.z)) {
         this->actor.flags &= ~ACTOR_FLAG_4;
-        ObjMure2_CleanupAndDie(this, globalCtx);
+        ObjMure2_CleanupAndDie(this, play);
         func_80B9A658(this);
     }
 }
 
-void ObjMure2_Update(Actor* thisx, GlobalContext* globalCtx) {
+void ObjMure2_Update(Actor* thisx, PlayState* play) {
     ObjMure2* this = (ObjMure2*)thisx;
 
-    if (globalCtx->csCtx.state == CS_STATE_IDLE) {
+    if (play->csCtx.state == CS_STATE_IDLE) {
         this->unk_184 = 1.0f;
     } else {
         this->unk_184 = 4.0f;
     }
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }

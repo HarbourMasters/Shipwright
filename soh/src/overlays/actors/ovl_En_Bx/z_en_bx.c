@@ -10,10 +10,10 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void EnBx_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnBx_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnBx_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnBx_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnBx_Init(Actor* thisx, PlayState* play);
+void EnBx_Destroy(Actor* thisx, PlayState* play);
+void EnBx_Update(Actor* thisx, PlayState* play);
+void EnBx_Draw(Actor* thisx, PlayState* play);
 
 const ActorInit En_Bx_InitVars = {
     ACTOR_EN_BX,
@@ -68,7 +68,7 @@ static ColliderQuadInit sQuadInit = {
     { { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } } },
 };
 
-void EnBx_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnBx_Init(Actor* thisx, PlayState* play) {
     EnBx* this = (EnBx*)thisx;
     Vec3f sp48 = { 0.015f, 0.015f, 0.015f };
     Vec3f sp3C = { 0.0f, 0.0f, 0.0f };
@@ -93,27 +93,27 @@ void EnBx_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     ActorShape_Init(&thisx->shape, 0.0f, ActorShadow_DrawCircle, 48.0f);
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
-    Collider_InitQuad(globalCtx, &this->colliderQuad);
-    Collider_SetQuad(globalCtx, &this->colliderQuad, &this->actor, &sQuadInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
+    Collider_InitQuad(play, &this->colliderQuad);
+    Collider_SetQuad(play, &this->colliderQuad, &this->actor, &sQuadInit);
     thisx->colChkInfo.mass = MASS_IMMOVABLE;
     this->unk_14C = 0;
     thisx->uncullZoneDownward = 2000.0f;
-    if (Flags_GetSwitch(globalCtx, (thisx->params >> 8) & 0xFF)) {
+    if (Flags_GetSwitch(play, (thisx->params >> 8) & 0xFF)) {
         Actor_Kill(&this->actor);
     }
     thisx->params &= 0xFF;
     this->epoch++;
 }
 
-void EnBx_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnBx_Destroy(Actor* thisx, PlayState* play) {
     EnBx* this = (EnBx*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void func_809D1D0C(Actor* thisx, GlobalContext* globalCtx) {
+void func_809D1D0C(Actor* thisx, PlayState* play) {
     Vec3f sp5C = { 8000.0f, 15000.0f, 2500.0f };
     Vec3f sp50 = { 8000.0f, 10000.0f, 2500.0f };
     static Vec3f D_809D2540 = { -8000.0f, 15000.0f, 2500.0f };
@@ -130,9 +130,9 @@ void func_809D1D0C(Actor* thisx, GlobalContext* globalCtx) {
                              &this->colliderQuad.dim.quad[1]);
 }
 
-void EnBx_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnBx_Update(Actor* thisx, PlayState* play) {
     EnBx* this = (EnBx*)thisx;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     s32 i;
     s16 tmp32;
     s32 tmp33;
@@ -152,10 +152,10 @@ void EnBx_Update(Actor* thisx, GlobalContext* globalCtx) {
                     player->invincibilityTimer = 0;
                 } else {
                     player->invincibilityTimer = 0;
-                    globalCtx->damagePlayer(globalCtx, -4);
+                    play->damagePlayer(play, -4);
                 }
             }
-            func_8002F71C(globalCtx, &this->actor, 6.0f, tmp32, 6.0f);
+            func_8002F71C(play, &this->actor, 6.0f, tmp32, 6.0f);
             player->invincibilityTimer = tmp33;
         }
 
@@ -182,7 +182,7 @@ void EnBx_Update(Actor* thisx, GlobalContext* globalCtx) {
                 pos.x = Rand_CenteredFloat(5.0f) + thisx->world.pos.x;
                 pos.y = Rand_CenteredFloat(30.0f) + thisx->world.pos.y + 170.0f;
                 pos.z = Rand_CenteredFloat(5.0f) + thisx->world.pos.z;
-                EffectSsLightning_Spawn(globalCtx, &pos, &primColor, &envColor, 230, yaw, 6, 0);
+                EffectSsLightning_Spawn(play, &pos, &primColor, &envColor, 230, yaw, 6, 0);
             }
         }
 
@@ -190,14 +190,14 @@ void EnBx_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
     thisx->focus.pos = thisx->world.pos;
     Collider_UpdateCylinder(thisx, &this->collider);
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-    CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+    CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
+    CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
     if (thisx->params & 0x80) {
-        CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->colliderQuad.base);
+        CollisionCheck_SetAT(play, &play->colChkCtx, &this->colliderQuad.base);
     }
 }
 
-void EnBx_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnBx_Draw(Actor* thisx, PlayState* play) {
     static void* D_809D2560[] = {
         object_bxa_Tex_0024F0,
         object_bxa_Tex_0027F0,
@@ -205,23 +205,23 @@ void EnBx_Draw(Actor* thisx, GlobalContext* globalCtx) {
     };
     EnBx* this = (EnBx*)thisx;
     s32 pad;
-    Mtx* mtx = Graph_Alloc(globalCtx->state.gfxCtx, 4 * sizeof(Mtx));
+    Mtx* mtx = Graph_Alloc(play->state.gfxCtx, 4 * sizeof(Mtx));
     s16 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x0C, mtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_809D2560[this->actor.params & 0x7F]));
     gSPSegment(POLY_OPA_DISP++, 0x09,
-               Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 16, 16, 1, 0, (globalCtx->gameplayFrames * -10) % 128,
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 16, 16, 1, 0, (play->gameplayFrames * -10) % 128,
                                 32, 32));
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->actor.params & 0x80) {
-        func_809D1D0C(&this->actor, globalCtx);
+        func_809D1D0C(&this->actor, play);
     }
 
     this->unk_14E -= 0xBB8;
@@ -249,5 +249,5 @@ void EnBx_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     gSPDisplayList(POLY_OPA_DISP++, object_bxa_DL_0022F0);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

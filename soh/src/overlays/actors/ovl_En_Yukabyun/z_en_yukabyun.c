@@ -9,14 +9,14 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void EnYukabyun_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnYukabyun_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnYukabyun_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnYukabyun_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnYukabyun_Init(Actor* thisx, PlayState* play);
+void EnYukabyun_Destroy(Actor* thisx, PlayState* play);
+void EnYukabyun_Update(Actor* thisx, PlayState* play);
+void EnYukabyun_Draw(Actor* thisx, PlayState* play);
 
-void func_80B43A94(EnYukabyun* this, GlobalContext* globalCtx);
-void func_80B43AD4(EnYukabyun* this, GlobalContext* globalCtx);
-void func_80B43B6C(EnYukabyun* this, GlobalContext* globalCtx);
+void func_80B43A94(EnYukabyun* this, PlayState* play);
+void func_80B43AD4(EnYukabyun* this, PlayState* play);
+void func_80B43B6C(EnYukabyun* this, PlayState* play);
 
 const ActorInit En_Yukabyun_InitVars = {
     ACTOR_EN_YUKABYUN,
@@ -58,25 +58,25 @@ static InitChainEntry sInitChain[] = {
 
 static void* D_80B43F64[] = { gFloorTileEnemyTopTex, gFloorTileEnemyBottomTex };
 
-void EnYukabyun_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnYukabyun_Init(Actor* thisx, PlayState* play) {
     EnYukabyun* this = (EnYukabyun*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 0.4f);
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     this->actor.params++;
     this->unk_152 = 0;
     this->unk_150 = (u8)(this->actor.params) * 0xA + 0x14;
     this->actionfunc = func_80B43A94;
 }
 
-void EnYukabyun_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnYukabyun_Destroy(Actor* thisx, PlayState* play) {
     EnYukabyun* this = (EnYukabyun*)thisx;
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void func_80B43A94(EnYukabyun* this, GlobalContext* globalCtx) {
+void func_80B43A94(EnYukabyun* this, PlayState* play) {
     if (this->unk_150 != 0) {
         this->unk_150--;
     }
@@ -86,7 +86,7 @@ void func_80B43A94(EnYukabyun* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80B43AD4(EnYukabyun* this, GlobalContext* globalCtx) {
+void func_80B43AD4(EnYukabyun* this, PlayState* play) {
     this->unk_150 += 0xA0;
     this->actor.shape.rot.y += this->unk_150;
     if (this->unk_150 >= 0x2000) {
@@ -98,7 +98,7 @@ void func_80B43AD4(EnYukabyun* this, GlobalContext* globalCtx) {
     func_8002F974(&this->actor, NA_SE_EN_YUKABYUN_FLY - SFX_FLAG);
 }
 
-void func_80B43B6C(EnYukabyun* this, GlobalContext* globalCtx) {
+void func_80B43B6C(EnYukabyun* this, PlayState* play) {
     this->actor.shape.rot.y += this->unk_150;
     if (this->actor.xzDistToPlayer > 5000.0f) {
         Actor_Kill(&this->actor);
@@ -107,13 +107,13 @@ void func_80B43B6C(EnYukabyun* this, GlobalContext* globalCtx) {
     func_8002F974(&this->actor, NA_SE_EN_YUKABYUN_FLY - SFX_FLAG);
 }
 
-void EnYukabyun_Break(EnYukabyun* this, GlobalContext* globalCtx) {
-    EffectSsHahen_SpawnBurst(globalCtx, &this->actor.world.pos, 8.0f, 0, 1300, 300, 15, OBJECT_YUKABYUN, 10,
+void EnYukabyun_Break(EnYukabyun* this, PlayState* play) {
+    EffectSsHahen_SpawnBurst(play, &this->actor.world.pos, 8.0f, 0, 1300, 300, 15, OBJECT_YUKABYUN, 10,
                              gFloorTileEnemyFragmentDL);
     Actor_Kill(&this->actor);
 }
 
-void EnYukabyun_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnYukabyun_Update(Actor* thisx, PlayState* play) {
     EnYukabyun* this = (EnYukabyun*)thisx;
     s32 pad;
 
@@ -124,36 +124,36 @@ void EnYukabyun_Update(Actor* thisx, GlobalContext* globalCtx) {
         this->collider.base.acFlags &= ~AC_HIT;
         this->collider.base.ocFlags1 &= ~OC1_HIT;
         this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_2);
-        SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->actor.world.pos, 30, NA_SE_EN_OCTAROCK_ROCK);
+        SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 30, NA_SE_EN_OCTAROCK_ROCK);
         this->actionfunc = EnYukabyun_Break;
     }
 
-    this->actionfunc(this, globalCtx);
+    this->actionfunc(this, play);
     Actor_MoveForward(&this->actor);
 
     if (!(this->actionfunc == func_80B43A94 || this->actionfunc == EnYukabyun_Break)) {
-        Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 5.0f, 20.0f, 8.0f, 5);
+        Actor_UpdateBgCheckInfo(play, &this->actor, 5.0f, 20.0f, 8.0f, 5);
         Collider_UpdateCylinder(&this->actor, &this->collider);
 
         this->actor.flags |= ACTOR_FLAG_24;
 
-        CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-        CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
-        CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
+        CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
     }
     Actor_SetFocus(&this->actor, 4.0f);
 }
 
-void EnYukabyun_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnYukabyun_Draw(Actor* thisx, PlayState* play) {
     EnYukabyun* this = (EnYukabyun*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_80B43F64[this->unk_152]));
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gFloorTileEnemyDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

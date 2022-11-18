@@ -9,10 +9,10 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
 
-void EnJsjutan_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnJsjutan_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnJsjutan_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnJsjutan_Init(Actor* thisx, PlayState* play);
+void EnJsjutan_Destroy(Actor* thisx, PlayState* play);
+void EnJsjutan_Update(Actor* thisx, PlayState* play);
+void EnJsjutan_Draw(Actor* thisx, PlayState* play);
 
 const ActorInit En_Jsjutan_InitVars = {
     ACTOR_EN_JSJUTAN,
@@ -36,7 +36,7 @@ static s32 sUnused[2] = { 0, 0 };
 
 #include "overlays/ovl_En_Jsjutan/ovl_En_Jsjutan.h"
 
-void EnJsjutan_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnJsjutan_Init(Actor* thisx, PlayState* play) {
     EnJsjutan* this = (EnJsjutan*)thisx;
     s32 pad;
     CollisionHeader* header = NULL;
@@ -44,19 +44,19 @@ void EnJsjutan_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->dyna.actor.flags &= ~ACTOR_FLAG_0;
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&sCol, &header);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, thisx, header);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, header);
     Actor_SetScale(thisx, 0.02f);
     this->unk_164 = true;
     this->shadowAlpha = 100.0f;
 }
 
-void EnJsjutan_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnJsjutan_Destroy(Actor* thisx, PlayState* play) {
     EnJsjutan* this = (EnJsjutan*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void func_80A89860(EnJsjutan* this, GlobalContext* globalCtx) {
+void func_80A89860(EnJsjutan* this, PlayState* play) {
     s16 i;
     Vtx* oddVtx;
     Vtx* evenVtx;
@@ -73,14 +73,14 @@ void func_80A89860(EnJsjutan* this, GlobalContext* globalCtx) {
         } else {
             this->dyna.actor.world.pos.x = oddVtx->v.ob[0] * 0.02f + actorPos.x;
             this->dyna.actor.world.pos.z = oddVtx->v.ob[2] * 0.02f + actorPos.z;
-            Actor_UpdateBgCheckInfo(globalCtx, &this->dyna.actor, 10.0f, 10.0f, 10.0f, 4);
+            Actor_UpdateBgCheckInfo(play, &this->dyna.actor, 10.0f, 10.0f, 10.0f, 4);
             oddVtx->v.ob[1] = evenVtx->v.ob[1] = this->dyna.actor.floorHeight;
             this->dyna.actor.world.pos = actorPos;
         }
     }
 }
 
-void func_80A89A6C(EnJsjutan* this, GlobalContext* globalCtx) {
+void func_80A89A6C(EnJsjutan* this, PlayState* play) {
     u8 isPlayerOnTop = false; // sp127
     s16 i;
     s16 j;
@@ -112,12 +112,12 @@ void func_80A89A6C(EnJsjutan* this, GlobalContext* globalCtx) {
     f32 maxOffset;
     f32 maxAmp;
     f32 waveform;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     Actor* parent = this->dyna.actor.parent;
-    Actor* actorExplosive = globalCtx->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].head;
+    Actor* actorExplosive = play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].head;
     u8 isInCreditsScene = false; // sp8B
 
-    if (globalCtx->gameplayFrames % 2 != 0) {
+    if (play->gameplayFrames % 2 != 0) {
         carpetVtx = SEGMENTED_TO_VIRTUAL(sCarpetOddVtx);
         shadowVtx = SEGMENTED_TO_VIRTUAL(gShadowOddVtx);
     } else {
@@ -154,7 +154,7 @@ void func_80A89A6C(EnJsjutan* this, GlobalContext* globalCtx) {
     if ((gSaveContext.entranceIndex == 0x157) && (gSaveContext.sceneSetupIndex == 8)) {
         isInCreditsScene = true;
 
-        actorProfessor = globalCtx->actorCtx.actorLists[ACTORCAT_NPC].head;
+        actorProfessor = play->actorCtx.actorLists[ACTORCAT_NPC].head;
         while (actorProfessor != NULL) {
             if (actorProfessor->id == ACTOR_EN_MK) {
                 break;
@@ -162,7 +162,7 @@ void func_80A89A6C(EnJsjutan* this, GlobalContext* globalCtx) {
             actorProfessor = actorProfessor->next;
         }
 
-        actorBeanGuy = globalCtx->actorCtx.actorLists[ACTORCAT_NPC].head;
+        actorBeanGuy = play->actorCtx.actorLists[ACTORCAT_NPC].head;
         while (actorBeanGuy != NULL) {
             if (actorBeanGuy->id == ACTOR_EN_MS) {
                 break;
@@ -273,7 +273,7 @@ void func_80A89A6C(EnJsjutan* this, GlobalContext* globalCtx) {
          * A: spA8
          * D: phi_f28
          */
-        waveform = spA8 * Math_SinS(globalCtx->gameplayFrames * 4000 + i * 10000);
+        waveform = spA8 * Math_SinS(play->gameplayFrames * 4000 + i * 10000);
 
         if (this->unk_174) {
             s16 phi_v1_4 = offset + waveform;
@@ -360,20 +360,20 @@ void func_80A89A6C(EnJsjutan* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnJsjutan_Update(Actor* thisx, GlobalContext* globalCtx2) {
-    GlobalContext* globalCtx = globalCtx2;
+void EnJsjutan_Update(Actor* thisx, PlayState* play2) {
+    PlayState* play = play2;
 
-    thisx->shape.rot.x = Math_SinS(globalCtx->gameplayFrames * 3000) * 300.0f;
-    thisx->shape.rot.z = Math_CosS(globalCtx->gameplayFrames * 3500) * 300.0f;
+    thisx->shape.rot.x = Math_SinS(play->gameplayFrames * 3000) * 300.0f;
+    thisx->shape.rot.z = Math_CosS(play->gameplayFrames * 3500) * 300.0f;
 }
 
-void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
+void EnJsjutan_Draw(Actor* thisx, PlayState* play2) {
     EnJsjutan* this = (EnJsjutan*)thisx;
-    GlobalContext* globalCtx = globalCtx2;
+    PlayState* play = play2;
     s16 i;
     Actor* parent = thisx->parent;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     if (thisx->params == ENJSJUTAN_TYPE_01) {
         thisx->world.pos.x = parent->world.pos.x;
@@ -382,7 +382,7 @@ void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
         this->unk_168 = thisx->world.pos.y;
         if (!this->unk_175) {
             this->unk_175 = true;
-            func_80A89860(this, globalCtx);
+            func_80A89860(this, play);
         }
     } else if (!this->unk_175) {
         this->unk_175 = true;
@@ -390,10 +390,10 @@ void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
         thisx->world.pos.y = (parent->world.pos.y + 5.0f) - 10.0f;
         thisx->world.pos.z = Math_CosS(parent->shape.rot.y) * 60.0f + parent->world.pos.z;
         this->unk_168 = thisx->world.pos.y;
-        func_80A89860(this, globalCtx);
+        func_80A89860(this, play);
     }
 
-    func_80A89A6C(this, globalCtx);
+    func_80A89A6C(this, play);
 
     if (this->unk_164) {
         this->unk_164 = false;
@@ -407,14 +407,14 @@ void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
             }
         }
     }
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, (s16)this->shadowAlpha);
 
     Matrix_Translate(thisx->world.pos.x, 3.0f, thisx->world.pos.z, MTXMODE_NEW);
     Matrix_Scale(thisx->scale.x, 1.0f, thisx->scale.z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     // Draws the carpet's shadow texture.
@@ -423,18 +423,18 @@ void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     gDPPipeSync(POLY_OPA_DISP++);
 
     // Draws the carpet's shadow vertices. Swaps them between frames to get a smoother result.
-    if (globalCtx->gameplayFrames % 2 != 0) {
+    if (play->gameplayFrames % 2 != 0) {
         gSPSegment(POLY_OPA_DISP++, 0x0C, gShadowOddVtx);
     } else {
         gSPSegment(POLY_OPA_DISP++, 0x0C, sShadowEvenVtx);
     }
     gSPDisplayList(POLY_OPA_DISP++, sModelDL);
 
-    func_80093D18(globalCtx->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
     Matrix_Translate(thisx->world.pos.x, this->unk_168 + 3.0f, thisx->world.pos.z, MTXMODE_NEW);
     Matrix_Scale(thisx->scale.x, thisx->scale.y, thisx->scale.z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     // Draws the carpet's texture.
     gSPDisplayList(POLY_OPA_DISP++, sCarpetMaterialDL);
@@ -442,12 +442,12 @@ void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     gDPPipeSync(POLY_OPA_DISP++);
 
     // Draws the carpet vertices.
-    if (globalCtx->gameplayFrames % 2 != 0) {
+    if (play->gameplayFrames % 2 != 0) {
         gSPSegment(POLY_OPA_DISP++, 0x0C, sCarpetOddVtx);
     } else {
         gSPSegment(POLY_OPA_DISP++, 0x0C, sCarpetEvenVtx);
     }
     gSPDisplayList(POLY_OPA_DISP++, sModelDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

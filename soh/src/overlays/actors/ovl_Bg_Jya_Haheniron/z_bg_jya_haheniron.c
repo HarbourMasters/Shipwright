@@ -10,17 +10,17 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void BgJyaHaheniron_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgJyaHaheniron_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgJyaHaheniron_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgJyaHaheniron_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgJyaHaheniron_Init(Actor* thisx, PlayState* play);
+void BgJyaHaheniron_Destroy(Actor* thisx, PlayState* play);
+void BgJyaHaheniron_Update(Actor* thisx, PlayState* play);
+void BgJyaHaheniron_Draw(Actor* thisx, PlayState* play);
 
 void BgJyaHaheniron_SetupChairCrumble(BgJyaHaheniron* this);
-void BgJyaHaheniron_ChairCrumble(BgJyaHaheniron* this, GlobalContext* globalCtx);
+void BgJyaHaheniron_ChairCrumble(BgJyaHaheniron* this, PlayState* play);
 void BgJyaHaheniron_SetupPillarCrumble(BgJyaHaheniron* this);
-void BgJyaHaheniron_PillarCrumble(BgJyaHaheniron* this, GlobalContext* globalCtx);
+void BgJyaHaheniron_PillarCrumble(BgJyaHaheniron* this, PlayState* play);
 void BgJyaHaheniron_SetupRubbleCollide(BgJyaHaheniron* this);
-void BgJyaHaheniron_RubbleCollide(BgJyaHaheniron* this, GlobalContext* globalCtx);
+void BgJyaHaheniron_RubbleCollide(BgJyaHaheniron* this, PlayState* play);
 
 const ActorInit Bg_Jya_Haheniron_InitVars = {
     ACTOR_BG_JYA_HAHENIRON,
@@ -76,14 +76,14 @@ static Vec3f D_808987A0[] = { 0.0f, 14.0f, 0.0f };
 
 static Vec3f D_808987AC[] = { 0.0f, 8.0f, 0.0f };
 
-void BgJyaHaheniron_ColliderInit(BgJyaHaheniron* this, GlobalContext* globalCtx) {
+void BgJyaHaheniron_ColliderInit(BgJyaHaheniron* this, PlayState* play) {
     s32 pad;
 
-    Collider_InitJntSph(globalCtx, &this->collider);
-    Collider_SetJntSph(globalCtx, &this->collider, &this->actor, &sJntSphInit, this->colliderItems);
+    Collider_InitJntSph(play, &this->collider);
+    Collider_SetJntSph(play, &this->collider, &this->actor, &sJntSphInit, this->colliderItems);
 }
 
-void BgJyaHaheniron_SpawnFragments(GlobalContext* globalCtx, Vec3f* vec1, Vec3f* vec2) {
+void BgJyaHaheniron_SpawnFragments(PlayState* play, Vec3f* vec1, Vec3f* vec2) {
     Vec3f vel;
     Vec3f pos;
     s16 arg5;
@@ -106,24 +106,24 @@ void BgJyaHaheniron_SpawnFragments(GlobalContext* globalCtx, Vec3f* vec1, Vec3f*
             arg5 = 32;
         }
 
-        EffectSsKakera_Spawn(globalCtx, vec1, &vel, vec1, -350, arg5, 40, 4, 0, sKakeraScales[i], 0, 20, 40,
+        EffectSsKakera_Spawn(play, vec1, &vel, vec1, -350, arg5, 40, 4, 0, sKakeraScales[i], 0, 20, 40,
                              KAKERA_COLOR_NONE, OBJECT_JYA_IRON, gObjectJyaIronDL_000880);
         angle += 0x3333;
     }
     pos.x = vec1->x + (vec2->x * 5.0f);
     pos.y = vec1->y + (vec2->y * 5.0f);
     pos.z = vec1->z + (vec2->z * 5.0f);
-    func_80033480(globalCtx, &pos, 100.0f, 4, 100, 160, 1);
+    func_80033480(play, &pos, 100.0f, 4, 100, 160, 1);
 }
 
-void BgJyaHaheniron_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgJyaHaheniron_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgJyaHaheniron* this = (BgJyaHaheniron*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     Actor_SetScale(&this->actor, D_80898794[this->actor.params]);
     if (this->actor.params == 0) {
-        BgJyaHaheniron_ColliderInit(this, globalCtx);
+        BgJyaHaheniron_ColliderInit(this, play);
         this->actor.shape.rot.z = (Rand_ZeroOne() * 65535.0f);
         BgJyaHaheniron_SetupChairCrumble(this);
     } else if (this->actor.params == 1) {
@@ -133,12 +133,12 @@ void BgJyaHaheniron_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void BgJyaHaheniron_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgJyaHaheniron_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     BgJyaHaheniron* this = (BgJyaHaheniron*)thisx;
 
     if (this->actor.params == 0) {
-        Collider_DestroyJntSph(globalCtx, &this->collider);
+        Collider_DestroyJntSph(play, &this->collider);
     }
 }
 
@@ -146,22 +146,22 @@ void BgJyaHaheniron_SetupChairCrumble(BgJyaHaheniron* this) {
     this->actionFunc = BgJyaHaheniron_ChairCrumble;
 }
 
-void BgJyaHaheniron_ChairCrumble(BgJyaHaheniron* this, GlobalContext* globalCtx) {
+void BgJyaHaheniron_ChairCrumble(BgJyaHaheniron* this, PlayState* play) {
     Vec3f vec;
 
     Actor_MoveForward(&this->actor);
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 5.0f, 8.0f, 0.0f, 0x85);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 5.0f, 8.0f, 0.0f, 0x85);
     if ((this->actor.bgCheckFlags & 9) || ((this->collider.base.atFlags & AT_HIT) && (this->collider.base.at != NULL) &&
                                            (this->collider.base.at->category == ACTORCAT_PLAYER))) {
         vec.x = -Rand_ZeroOne() * this->actor.velocity.x;
         vec.y = -Rand_ZeroOne() * this->actor.velocity.y;
         vec.z = -Rand_ZeroOne() * this->actor.velocity.z;
-        BgJyaHaheniron_SpawnFragments(globalCtx, &this->actor.world.pos, &vec);
+        BgJyaHaheniron_SpawnFragments(play, &this->actor.world.pos, &vec);
         Actor_Kill(&this->actor);
     } else if (this->timer > 60) {
         Actor_Kill(&this->actor);
     } else {
-        CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
     }
     this->actor.shape.rot.y += 0x4B0;
     this->actor.shape.rot.x += 0xFA0;
@@ -171,11 +171,11 @@ void BgJyaHaheniron_SetupPillarCrumble(BgJyaHaheniron* this) {
     this->actionFunc = BgJyaHaheniron_PillarCrumble;
 }
 
-void BgJyaHaheniron_PillarCrumble(BgJyaHaheniron* this, GlobalContext* globalCtx) {
+void BgJyaHaheniron_PillarCrumble(BgJyaHaheniron* this, PlayState* play) {
     if (this->timer >= 8) {
         Actor_MoveForward(&this->actor);
     } else if (this->timer >= 17) {
-        BgJyaHaheniron_SpawnFragments(globalCtx, &this->actor.world.pos, D_808987A0);
+        BgJyaHaheniron_SpawnFragments(play, &this->actor.world.pos, D_808987A0);
         Actor_Kill(&this->actor);
     }
     this->actor.shape.rot.y += 0x258;
@@ -186,23 +186,23 @@ void BgJyaHaheniron_SetupRubbleCollide(BgJyaHaheniron* this) {
     this->actionFunc = BgJyaHaheniron_RubbleCollide;
 }
 
-void BgJyaHaheniron_RubbleCollide(BgJyaHaheniron* this, GlobalContext* globalCtx) {
+void BgJyaHaheniron_RubbleCollide(BgJyaHaheniron* this, PlayState* play) {
     if (this->timer >= 17) {
-        BgJyaHaheniron_SpawnFragments(globalCtx, &this->actor.world.pos, D_808987AC);
-        SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->actor.world.pos, 80, NA_SE_EN_IRONNACK_BREAK_PILLAR2);
+        BgJyaHaheniron_SpawnFragments(play, &this->actor.world.pos, D_808987AC);
+        SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 80, NA_SE_EN_IRONNACK_BREAK_PILLAR2);
         Actor_Kill(&this->actor);
     }
 }
 
-void BgJyaHaheniron_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgJyaHaheniron_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     BgJyaHaheniron* this = (BgJyaHaheniron*)thisx;
 
     this->timer++;
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgJyaHaheniron_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgJyaHaheniron_Draw(Actor* thisx, PlayState* play) {
     static Gfx* dLists[] = {
         gObjectJyaIronDL_000880,
         gObjectJyaIronDL_000AE0,
@@ -214,5 +214,5 @@ void BgJyaHaheniron_Draw(Actor* thisx, GlobalContext* globalCtx) {
     if (this->actor.params == 0) {
         Collider_UpdateSpheres(0, &this->collider);
     }
-    Gfx_DrawDListOpa(globalCtx, dLists[this->actor.params]);
+    Gfx_DrawDListOpa(play, dLists[this->actor.params]);
 }

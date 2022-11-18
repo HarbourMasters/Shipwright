@@ -6,7 +6,7 @@
 
 struct BgJyaKanaami;
 
-typedef void (*BgJyaKanaamiActionFunc)(struct BgJyaKanaami*, GlobalContext*);
+typedef void (*BgJyaKanaamiActionFunc)(struct BgJyaKanaami*, PlayState*);
 
 typedef struct BgJyaKanaami {
     /* 0x0000 */ DynaPolyActor dyna;

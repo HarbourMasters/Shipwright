@@ -6,7 +6,7 @@
 
 struct EnSyatekiMan;
 
-typedef void (*EnSyatekiManActionFunc) (struct EnSyatekiMan*, GlobalContext*);
+typedef void (*EnSyatekiManActionFunc) (struct EnSyatekiMan*, PlayState*);
 typedef void (*EnSyatekiManOtherFunc) (struct EnSyatekiMan*);
 
 typedef struct EnSyatekiMan {

@@ -27,7 +27,7 @@
 #include <filesystem>
 #include <variables.h>
 
-#include <libultraship/Window.h>
+#include <Window.h>
 
 using json = nlohmann::json;
 
@@ -296,26 +296,46 @@ static void WriteLocation(
 }
 
 //Writes a shuffled entrance to the specified node
-static void WriteShuffledEntrance(
-  tinyxml2::XMLElement* parentNode,
-  Entrance* entrance,
-  const bool withPadding = false
-) {
-  auto node = parentNode->InsertNewChildElement("entrance");
-  node->SetAttribute("name", entrance->GetName().c_str());
-  auto text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
-  node->SetText(text.c_str());
+static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) {
+  int16_t originalIndex = entrance->GetIndex();
+  int16_t destinationIndex = entrance->GetReverse()->GetIndex();
+  int16_t originalBlueWarp = entrance->GetBlueWarp();
+  int16_t replacementBlueWarp = entrance->GetReplacement()->GetReverse()->GetBlueWarp();
+  int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
+  int16_t replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+  std::string name = entrance->GetName();
+  std::string text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
 
-  if (withPadding) {
-    constexpr int16_t LONGEST_NAME = 56; //The longest name of a vanilla entrance
+  switch (gSaveContext.language) {
+        case LANGUAGE_ENG:
+        case LANGUAGE_FRA:
+        default:
+            json entranceJson = json::object({
+              {"index", originalIndex},
+              {"destination", destinationIndex},
+              {"blueWarp", originalBlueWarp},
+              {"override", replacementIndex},
+              {"overrideDestination", replacementDestinationIndex},
+            });
 
-    //Insert padding so we get a kind of table in the XML document
-    int16_t requiredPadding = LONGEST_NAME - entrance->GetName().length();
-    if (requiredPadding > 0) {
-      std::string padding(requiredPadding, ' ');
-      node->SetAttribute("_", padding.c_str());
+            jsonData["entrances"].push_back(entranceJson);
+
+             // When decoupled entrances is off, handle saving reverse entrances with blue warps
+            if (!false) { // RANDOTODO: add check for decoupled entrances
+              json reverseEntranceJson = json::object({
+                {"index", replacementDestinationIndex},
+                {"destination", replacementIndex},
+                {"blueWarp", replacementBlueWarp},
+                {"override", destinationIndex},
+                {"overrideDestination", originalIndex},
+              });
+
+              jsonData["entrances"].push_back(reverseEntranceJson);
+            }
+
+            jsonData["entrancesMap"][sphereString][name] = text;
+            break;
     }
-  }
 }
 
 // Writes the settings (without excluded locations, starting inventory and tricks) to the spoilerLog document.
@@ -420,6 +440,7 @@ static void WriteStartingInventory() {
       // to see if the name is one of the 3 we're using rn
       if (setting->GetName() == "Start with Consumables" ||
           setting->GetName() == "Start with Max Rupees" ||
+          setting->GetName() == "Gold Skulltula Tokens" ||
           setting->GetName() == "Start with Fairy Ocarina" ||
           setting->GetName() == "Start with Kokiri Sword" ||
           setting->GetName() == "Start with Deku Shield") {
@@ -512,7 +533,7 @@ static void WritePlaythrough() {
   for (uint32_t i = 0; i < playthroughLocations.size(); ++i) {
     auto sphereNum = std::to_string(i);
     std::string sphereString =  "sphere ";
-    if (sphereNum.length() == 1) sphereString += "0";
+    if (i < 10) sphereString += "0";
     sphereString += sphereNum;
     for (const uint32_t key : playthroughLocations[i]) {
       WriteLocation(sphereString, key, true);
@@ -523,23 +544,16 @@ static void WritePlaythrough() {
 }
 
 //Write the randomized entrance playthrough to the spoiler log, if applicable
-static void WriteShuffledEntrances(tinyxml2::XMLDocument& spoilerLog) {
-    if (!Settings::ShuffleEntrances || noRandomEntrances) {
-        return;
+static void WriteShuffledEntrances() {
+  for (uint32_t i = 0; i < playthroughEntrances.size(); ++i) {
+    auto sphereNum = std::to_string(i);
+    std::string sphereString = "sphere ";
+    if (i < 10) sphereString += "0";
+    sphereString += sphereNum;
+    for (Entrance* entrance : playthroughEntrances[i]) {
+      WriteShuffledEntrance(sphereString, entrance);
     }
-
-    auto playthroughNode = spoilerLog.NewElement("entrance-playthrough");
-
-    for (uint32_t i = 0; i < playthroughEntrances.size(); ++i) {
-        auto sphereNode = playthroughNode->InsertNewChildElement("sphere");
-        sphereNode->SetAttribute("level", i + 1);
-
-        for (Entrance* entrance : playthroughEntrances[i]) {
-            WriteShuffledEntrance(sphereNode, entrance, true);
-        }
-    }
-
-    spoilerLog.RootElement()->InsertEndChild(playthroughNode);
+  }
 }
 
 // Writes the WOTH locations to the spoiler log, if there are any.
@@ -744,7 +758,7 @@ const char* SpoilerLog_Write(int language) {
     wothLocations.clear();
 
     WriteHints(language);
-    //WriteShuffledEntrances(spoilerLog);
+    WriteShuffledEntrances();
     WriteAllLocations(language);
 
     if (!std::filesystem::exists(Ship::Window::GetPathRelativeToAppDirectory("Randomizer"))) {
