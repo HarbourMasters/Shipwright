@@ -120,7 +120,11 @@ void Audio_NoteSetResamplingRate(NoteSubEu* noteSubEu, f32 resamplingRateInput) 
     } else {
         noteSubEu->bitField1.hasTwoParts = true;
         if (3.99996f < resamplingRateInput) {
-            resamplingRate = 1.99998f;
+            if (CVar_GetS32("gExperimentalOctaveDrop", 0)) {
+                resamplingRate = resamplingRateInput * 0.25;
+            } else {
+                resamplingRate = 1.99998f;
+            }
         } else {
             resamplingRate = resamplingRateInput * 0.5f;
         }
@@ -539,6 +543,9 @@ s32 Audio_BuildSyntheticWave(Note* note, SequenceLayer* layer, s32 waveId) {
 
     if (waveId < 128) {
         waveId = 128;
+    }
+    if (waveId > 136) {
+        waveId = 136;
     }
 
     freqScale = layer->freqScale;

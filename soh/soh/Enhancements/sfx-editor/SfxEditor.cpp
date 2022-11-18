@@ -8,6 +8,7 @@
 #include "../randomizer/3drando/random.hpp"
 #include "../../OTRGlobals.h"
 #include <Utils/StringHelper.h>
+#include "../../UIWidgets.hpp"
 
 Vec3f pos = { 0.0f, 0.0f, 0.0f };
 f32 freqScale = 1.0f;
@@ -357,6 +358,16 @@ void DrawSfxEditor(bool& open) {
         }
         if (ImGui::BeginTabItem("Sound Effects")) {
             Draw_SfxTab("sfx", sequenceMap, SEQ_SFX);
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem("Experimental")) {
+            UIWidgets::PaddedText("These features are experimental and may cause music to sound odd or have other undesireable effects.");
+            UIWidgets::EnhancementCheckbox("Lower Octaves of Unplayable High Notes", "gExperimentalOctaveDrop");
+            UIWidgets::InsertHelpHoverText("Some custom sequences may have notes that are too high for the game's audio "
+                                           "engine to play. Enabling this checkbox will cause these notes to drop a "
+                                           "couple of octaves so they can still harmonize with the other notes of the "
+                                           "sequence");
             ImGui::EndTabItem();
         }
         ImGui::EndTabBar();
