@@ -314,6 +314,8 @@ namespace GameMenuBar {
         CVar_SetS32("gCrouchStabHammerFix", 0);
         // Fix all crouch stab
         CVar_SetS32("gCrouchStabFix", 0);
+        // Fix credits timing
+        CVar_SetS32("gCreditsFix", 1);
         // Fix Gerudo Warrior's clothing colors
         CVar_SetS32("gGerudoWarriorClothingFix", 0);
 
@@ -1166,6 +1168,8 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Remove power crouch stab", "gCrouchStabFix", true, false);
                     UIWidgets::Tooltip("Make crouch stabbing always do the same damage as a regular slash");
                 }
+                UIWidgets::PaddedEnhancementCheckbox("Fix credits timing", "gCreditsFix", true, false);
+                UIWidgets::Tooltip("Extend certain credits scenes so the music lines up properly with the visuals");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Gerudo Warrior's clothing colors", "gGerudoWarriorClothingFix", true, false);
                 UIWidgets::Tooltip("Prevent the Gerudo Warrior's clothes changing color when changing Link's tunic or using bombs in front of her");
 
