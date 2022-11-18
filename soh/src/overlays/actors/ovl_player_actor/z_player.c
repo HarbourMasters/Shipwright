@@ -10268,11 +10268,11 @@ void func_80848A04(PlayState* play, Player* this) {
     f32 temp2;
     
     if(CVar_GetS32("gUltraDekuStick", 0)){
-        temp2 = 1.0f;
-        this->unk_860 = 200;
-        this->unk_85C = 1.0f;
+        temp2 = 1.0f;           // Secondary temporary variable to use with the alleged draw flame function
+        this->unk_860 = 200;    // Keeps the stick's flame lit
+        this->unk_85C = 1.0f;   // Ensures the stick is the proper length
         func_8002836C(play, &this->swordInfo[0].tip, &D_808547A4, &D_808547B0, &D_808547BC, &D_808547C0, temp2 * 200.0f,
-                    0, 8);
+                    0, 8);      // I believe this draws the flame effect
     }
     if (this->unk_85C == 0.0f && !CVar_GetS32("gUltraDekuStick", 0)) {
         func_80835F44(play, this, 0xFF);
