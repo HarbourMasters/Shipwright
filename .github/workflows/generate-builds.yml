@@ -223,7 +223,7 @@ jobs:
           readme.txt
   build-windows:
     needs: extract-assets
-    runs-on: windows-latest
+    runs-on: [self-hosted, Windows, x64]
     steps:
     - uses: actions/checkout@v3
       with:
