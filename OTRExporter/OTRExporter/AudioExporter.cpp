@@ -204,7 +204,7 @@ std::vector<char> OTRExporter_Audio::BuildAssetSequence(const fs::path &sourcePa
         seqWriter.Write((uint32_t)seq.size());
         seqWriter.Write(seq.data(), seq.size());
         seqWriter.Write((uint8_t)0);
-        seqWriter.Write((uint8_t)0);
+        seqWriter.Write((uint8_t)2);
         seqWriter.Write((uint8_t)3);
         seqWriter.Write((uint32_t)1);
         seqWriter.Write((uint8_t)fontIdx);

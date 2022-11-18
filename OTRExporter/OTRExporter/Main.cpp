@@ -63,8 +63,7 @@ static void ExporterParseFileMode(const std::string& buildMode, ZFileMode& fileM
 }
 
 void GenerateMusicPatch() {
-    std::string musicArchiveName = "custom-music.otr";
-    musicArchive = Ship::Archive::CreateArchive(musicArchiveName, 40000);
+    musicArchive = Ship::Archive::CreateArchive("custom-music.otr", 40000);
 }
 
 static void ExporterProgramEnd()
@@ -151,9 +150,9 @@ static void ExporterProgramEnd()
 		}
 
         // Add Custom Music if the path exists.
-        if (std::filesystem::exists(customMusicPath)) {
+        if (std::filesystem::exists(customMusicPath) && !std::filesystem::exists("custom-music.otr")) {
             auto lst = Directory::ListFiles(customMusicPath);
-            bool musicPatchCreated = false;
+            GenerateMusicPatch();
             for (auto item : lst) {
                 std::vector<std::string> splitPath = StringHelper::Split(item, ".");
                 if (splitPath.size() >= 2) {
@@ -161,10 +160,6 @@ static void ExporterProgramEnd()
                     splitPath.pop_back();
                     std::string afterPath = std::accumulate(splitPath.begin(), splitPath.end(), std::string(""));
                     if (extension == "seq" && std::filesystem::exists(afterPath + ".meta")) {
-                        if (!musicPatchCreated) {
-                            GenerateMusicPatch();
-                            musicPatchCreated = true;
-                        }
                         uint8_t fontIdx;
                         std::ifstream metaFile(afterPath + ".meta");
                         std::string metaName;
