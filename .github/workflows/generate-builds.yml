@@ -232,6 +232,9 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: assets
+    - name: Setup 7-Zip
+      run: |
+        "C:\Program Files\7-Zip" >> $env:GITHUB_PATH
     - name: Build SoH
       run: |
         7z x assets.zip -aoa
