@@ -1005,6 +1005,24 @@ namespace GameMenuBar {
 
                     UIWidgets::Spacer(0);
 
+                    if (ImGui::BeginMenu("Shooting Gallery")) {
+                        UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeShootingGallery");
+                        UIWidgets::Tooltip("Turn on/off changes to the shooting gallery behavior");
+                        bool disabled = CVar_GetS32("gCustomizeShootingGallery", 0) == 0;
+                        const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
+                        UIWidgets::EnhancementCheckbox("Instant Win", "gInstantShootingGalleryWin", disabled, disabledTooltip);
+                        UIWidgets::Tooltip("Skips the shooting gallery minigame");
+                        UIWidgets::EnhancementCheckbox("No Rupee Randomization", "gConstantAdultGallery", disabled, disabledTooltip);
+                        UIWidgets::Tooltip("Forces the rupee order to not be randomized as adult, making it the same as chlid");
+                        UIWidgets::PaddedEnhancementSliderInt("Child Starting Ammunition: %d", "##cShootingGalleryAmmunition", "gChildShootingGalleryAmmunition", 10, 30, "", 15, false, true, false, disabled, disabledTooltip);
+                        UIWidgets::Tooltip("The ammunition at the start of the shooting gallery minigame as a child");
+                        UIWidgets::PaddedEnhancementSliderInt("Adult Starting Ammunition: %d", "##aShootingGalleryAmmunition", "gAdultShootingGalleryAmmunition", 10, 30, "", 15, false, true, false, disabled, disabledTooltip);
+                        UIWidgets::Tooltip("The ammunition at the start of the shooting gallery minigame as an adult");
+                        ImGui::EndMenu();
+                    }
+
+                    UIWidgets::Spacer(0);
+
                     if (ImGui::BeginMenu("Fishing")) {
                         UIWidgets::EnhancementCheckbox("Instant Fishing", "gInstantFishing");
                         UIWidgets::Tooltip("All fish will be caught instantly");
