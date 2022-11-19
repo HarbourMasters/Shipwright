@@ -278,9 +278,11 @@ void DrawStatsTracker(bool& open) {
     ImGui::End();
 }
 
+// Entries listed here will have a timestamp shown in the stat window
 void SetupDisplayNames() {
-    
-    // Only items in this list will have their times shown in the stat window
+    // To add a timestamp for an item or event, add it to this list and ensure
+    // it has a corresponding entry in the enum (see gameplaystats.h)
+
     strcpy(timestampDisplayName[ITEM_BOW],              "Fairy Bow:          ");
     strcpy(timestampDisplayName[ITEM_ARROW_FIRE],       "Fire Arrows:        ");
     strcpy(timestampDisplayName[ITEM_DINS_FIRE],        "Din's Fire:         ");

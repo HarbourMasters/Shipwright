@@ -9,7 +9,7 @@ void InitStatTracker();
 
 typedef enum {
     // 0x00 to 0x9B (0 to 155) used for getting items,
-    // see struct "ItemID" in z64item.h
+    // piggybacked off enum "ItemID" in z64item.h
 
     /* 0xA0 */ TIMESTAMP_DEFEAT_GOHMA = 0xA0,
     /* 0xA1 */ TIMESTAMP_DEFEAT_KING_DODONGO,
