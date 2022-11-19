@@ -106,10 +106,41 @@ void DrawStatsTracker(bool& open) {
     u32 enemiesDefeated = 0;
     u32 ammoUsed = 0;
 
-    DisplayTimeHHMMSS(totalTimer,     "Total game Time:     ");
+    // Sum of all enemies defeated
+    for (int i = COUNT_ENEMIES_DEFEATED_ANUBIS; i <= COUNT_ENEMIES_DEFEATED_WOLFOS; i++) {
+        if (i == COUNT_ENEMIES_DEFEATED_FLOORMASTER) {
+            // Special case: You must kill 3 mini Floormasters for it count as one defeated Floormaster
+            enemiesDefeated += gSaveContext.gameplayStats.count[i] / 3;
+        } else {
+            enemiesDefeated += gSaveContext.gameplayStats.count[i];
+        }
+    }
+    // Sum of all ammo used
+    for (int i = COUNT_AMMO_USED_STICK; i <= COUNT_AMMO_USED_BEAN; i++) {
+        ammoUsed += gSaveContext.gameplayStats.count[i];
+    }
+    // Set up the array of timestamps and then sort it chronologically
+    for (int i = 0; i < TIMESTAMP_MAX; i++) {
+        strcpy(timestampDisplay[i].name, timestampDisplayName[i]);
+        timestampDisplay[i].time = gSaveContext.gameplayStats.timestamp[i];
+    }
+    SortChronological(timestampDisplay, sizeof(timestampDisplay) / sizeof(timestampDisplay[0]));
+
+    
+    // Begin drawing the table and showing the stats
+
+    ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
+    ImGui::BeginTable("timers", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
+    ImGui::TableSetupColumn("Timers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+    ImGui::TableNextColumn();
+
+    DisplayTimeHHMMSS(totalTimer, "Total Game Time:    ");
     UIWidgets::Tooltip("Note: Timer accuracy may be affected by game performance and loading.");
-    DisplayTimeHHMMSS(gSaveContext.gameplayStats.playTimer / 2,  "Gameplay Time:       ");
-    DisplayTimeHHMMSS(gSaveContext.gameplayStats.pauseTimer / 3, "Pause Menu Time:     ");
+    DisplayTimeHHMMSS(gSaveContext.gameplayStats.playTimer / 2,  "Gameplay Time:      ");
+    DisplayTimeHHMMSS(gSaveContext.gameplayStats.pauseTimer / 3, "Pause Menu Time:    ");
+
+    ImGui::PopStyleVar(1);
+    ImGui::EndTable();
 
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
     ImGui::BeginTable("gameStatsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
@@ -120,16 +151,7 @@ void DrawStatsTracker(bool& open) {
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
 
-    // Initialize the array to match the one stored in gSaveContext
-    for (int i = 0; i < TIMESTAMP_MAX; i++) {
-        strcpy(timestampDisplay[i].name, timestampDisplayName[i]);
-        timestampDisplay[i].time = gSaveContext.gameplayStats.timestamp[i];
-    }
-
-    // Sort it according to time obtained
-    SortChronological(timestampDisplay, sizeof(timestampDisplay) / sizeof(timestampDisplay[0]));
-
-    // Display it
+    // Display chronological timestamps of items obtained and bosses defeated
     for (int i = 0; i < TIMESTAMP_MAX; i++) {
         // To be shown, the entry must have a non-zero time and a string for its display name
         if (timestampDisplay[i].time > 0 && strnlen(timestampDisplay[i].name, 21) > 1) {
@@ -138,15 +160,6 @@ void DrawStatsTracker(bool& open) {
     }
 
     ImGui::TableNextColumn();
-
-    // Sum of all enemies defeated
-    for (int i = COUNT_ENEMIES_DEFEATED_ANUBIS; i <= COUNT_ENEMIES_DEFEATED_WOLFOS; i++) {
-        enemiesDefeated += gSaveContext.gameplayStats.count[i];
-    }
-    // Sum of all ammo used
-    for (int i = COUNT_AMMO_USED_STICK; i <= COUNT_AMMO_USED_BEAN; i++) {
-        ammoUsed += gSaveContext.gameplayStats.count[i];
-    }
 
     DisplayStat("Enemies Defeated:      ", enemiesDefeated);
     // Show breakdown of enemies defeated in a tree. Only show counts for enemies if they've been defeated at least once.
@@ -174,7 +187,7 @@ void DrawStatsTracker(bool& open) {
             DisplayStatIfNonZero("Dodongo (Baby):     ", gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_DODONGO_BABY]);
             DisplayStatIfNonZero("Door Mimic:         ", gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_DOOR_TRAP]);
             DisplayStatIfNonZero("Flare Dancer:       ", gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_FLARE_DANCER]);
-            DisplayStatIfNonZero("Floormaster:        ", gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_FLOORMASTER]);
+            DisplayStatIfNonZero("Floormaster:        ", gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_FLOORMASTER]/3);
             DisplayStatIfNonZero("Flying Floor Tile:  ", gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_FLOOR_TILE]);
             DisplayStatIfNonZero("Flying Pot:         ", gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]);
             DisplayStatIfNonZero("Freezard:           ", gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_FREEZARD]);
@@ -236,13 +249,13 @@ void DrawStatsTracker(bool& open) {
     if (ammoUsed > 0) {
         if (ImGui::TreeNode("Ammo Details...")) {
 
-            DisplayStatIfNonZero("Deku Sticks:       ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_STICK]);
-            DisplayStatIfNonZero("Deku Nuts:         ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_NUT]);
-            DisplayStatIfNonZero("Deku Seeds:        ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_SEED]);
-            DisplayStatIfNonZero("Bombs:             ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_BOMB]);
-            DisplayStatIfNonZero("Bombchus:          ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_BOMBCHU]);
-            DisplayStatIfNonZero("Arrows:            ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_ARROW]);
-            DisplayStatIfNonZero("Beans:             ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_BEAN]);
+            DisplayStatIfNonZero("Deku Sticks:        ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_STICK]);
+            DisplayStatIfNonZero("Deku Nuts:          ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_NUT]);
+            DisplayStatIfNonZero("Deku Seeds:         ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_SEED]);
+            DisplayStatIfNonZero("Bombs:              ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_BOMB]);
+            DisplayStatIfNonZero("Bombchus:           ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_BOMBCHU]);
+            DisplayStatIfNonZero("Arrows:             ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_ARROW]);
+            DisplayStatIfNonZero("Beans:              ", gSaveContext.gameplayStats.count[COUNT_AMMO_USED_BEAN]);
 
             ImGui::NewLine();
             ImGui::TreePop();

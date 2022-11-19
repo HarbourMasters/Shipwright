@@ -1616,7 +1616,7 @@ void func_80084BF4(PlayState* play, u16 flag) {
 
 // Gameplay stat tracking: Update time the item was acquired
 // (special cases for some duplicate items)
-void GameplayStats_UpdateItemGetTime(u8 item) {
+void GameplayStats_SetTimestamp(u8 item) {
 
     if (gSaveContext.gameplayStats.timestamp[item] != 0) {
         return;
@@ -1649,7 +1649,7 @@ void GameplayStats_UpdateItemGetTime(u8 item) {
 
 // Gameplay stat tracking: Update time the item was acquired
 // (special cases for rando items)
-void Randomizer_GameplayStats_UpdateItemGetTime(uint16_t item) {
+void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
 
     u32 time = GAMEPLAYSTAT_TOTAL_TIME;
 
@@ -1698,7 +1698,7 @@ u8 Item_Give(PlayState* play, u8 item) {
     s16 temp;
 
     // Gameplay stats: Update the time the item was obtained
-    GameplayStats_UpdateItemGetTime(item);
+    GameplayStats_SetTimestamp(item);
 
     slot = SLOT(item);
     if (item >= ITEM_STICKS_5) {
@@ -2361,7 +2361,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     uint16_t slot;
 
     // Gameplay stats: Update the time the item was obtained
-    Randomizer_GameplayStats_UpdateItemGetTime(item);
+    Randomizer_GameplayStats_SetTimestamp(item);
 
     slot = SLOT(item);
     if (item == RG_MAGIC_SINGLE) {
