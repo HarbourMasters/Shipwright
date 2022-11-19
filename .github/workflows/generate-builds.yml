@@ -107,6 +107,7 @@ jobs:
         ./configure
         make -j 10
         sudo make install
+        sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
     - name: Install latest SDL_net
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -116,6 +117,7 @@ jobs:
         ./configure
         make -j 10
         sudo make install
+        sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
     - name: Restore assets
       uses: actions/download-artifact@v3
       with:
