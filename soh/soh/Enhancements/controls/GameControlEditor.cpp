@@ -8,10 +8,10 @@
 
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
-#include <libultraship/Cvar.h>
-#include <libultraship/UltraController.h>
+#include <Cvar.h>
+#include <UltraController.h>
 #include <Utils/StringHelper.h>
-#include <libultraship/ImGuiImpl.h>
+#include <ImGuiImpl.h>
 
 #include "../../UIWidgets.hpp"
 

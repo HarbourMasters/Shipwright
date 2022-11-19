@@ -11,15 +11,15 @@
 #include <ImGui/imgui.h>
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <ImGui/imgui_internal.h>
-#include <libultraship/ImGuiImpl.h>
-#include <libultraship/Cvar.h>
-#include <libultraship/Hooks.h>
+#include <ImGuiImpl.h>
+#include <Cvar.h>
+#include <Hooks.h>
 #include <ultra64/types.h>
 #include <ultra64/pi.h>
 #include <ultra64/sptask.h>
 
 #ifdef __SWITCH__
-#include <libultraship/SwitchImpl.h>
+#include <port/switch/SwitchImpl.h>
 #endif
 
 #include "UIWidgets.hpp"
@@ -314,6 +314,8 @@ namespace GameMenuBar {
         CVar_SetS32("gCrouchStabHammerFix", 0);
         // Fix all crouch stab
         CVar_SetS32("gCrouchStabFix", 0);
+        // Fix credits timing
+        CVar_SetS32("gCreditsFix", 1);
         // Fix Gerudo Warrior's clothing colors
         CVar_SetS32("gGerudoWarriorClothingFix", 0);
 
@@ -540,16 +542,22 @@ namespace GameMenuBar {
                 auto audioBackends = SohImGui::GetAvailableAudioBackends();
                 auto currentAudioBackend = SohImGui::GetCurrentAudioBackend();
 
+                if (audioBackends.size() <= 1) {
+                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+                }
                 if (ImGui::BeginCombo("##AApi", currentAudioBackend.second)) {
-                    if (audioBackends.size() > 1) {
-                        for (uint8_t i = 0; i < audioBackends.size(); i++) {
-                            if (ImGui::Selectable(audioBackends[i].second, audioBackends[i] == currentAudioBackend)) {
-                                SohImGui::SetCurrentAudioBackend(i, audioBackends[i]);
-                            }
+                    for (uint8_t i = 0; i < audioBackends.size(); i++) {
+                        if (ImGui::Selectable(audioBackends[i].second, audioBackends[i] == currentAudioBackend)) {
+                            SohImGui::SetCurrentAudioBackend(i, audioBackends[i]);
                         }
                     }
 
                     ImGui::EndCombo();
+                }
+                if (audioBackends.size() <= 1) {
+                    ImGui::PopItemFlag();
+                    ImGui::PopStyleVar(1);
                 }
 
                 ImGui::EndMenu();
@@ -662,16 +670,27 @@ namespace GameMenuBar {
                 auto renderingBackends = SohImGui::GetAvailableRenderingBackends();
                 auto currentRenderingBackend = SohImGui::GetCurrentRenderingBackend();
 
+                if (renderingBackends.size() <= 1) {
+                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+                }
                 if (ImGui::BeginCombo("##RApi", currentRenderingBackend.second)) {
-                    if (renderingBackends.size() > 1) {
-                        for (uint8_t i = 0; i < renderingBackends.size(); i++) {
-                            if (ImGui::Selectable(renderingBackends[i].second, renderingBackends[i] == currentRenderingBackend)) {
-                                SohImGui::SetCurrentRenderingBackend(i, renderingBackends[i]);
-                            }
+                    for (uint8_t i = 0; i < renderingBackends.size(); i++) {
+                        if (ImGui::Selectable(renderingBackends[i].second, renderingBackends[i] == currentRenderingBackend)) {
+                            SohImGui::SetCurrentRenderingBackend(i, renderingBackends[i]);
                         }
                     }
 
                     ImGui::EndCombo();
+                }
+                if (renderingBackends.size() <= 1) {
+                    ImGui::PopItemFlag();
+                    ImGui::PopStyleVar(1);
+                }
+
+                if (SohImGui::supportsViewports()) {
+                    UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false);
+                    UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
                 }
 
                 EXPERIMENTAL();
@@ -988,6 +1007,24 @@ namespace GameMenuBar {
 
                     UIWidgets::Spacer(0);
 
+                    if (ImGui::BeginMenu("Shooting Gallery")) {
+                        UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeShootingGallery");
+                        UIWidgets::Tooltip("Turn on/off changes to the shooting gallery behavior");
+                        bool disabled = CVar_GetS32("gCustomizeShootingGallery", 0) == 0;
+                        const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
+                        UIWidgets::EnhancementCheckbox("Instant Win", "gInstantShootingGalleryWin", disabled, disabledTooltip);
+                        UIWidgets::Tooltip("Skips the shooting gallery minigame");
+                        UIWidgets::EnhancementCheckbox("No Rupee Randomization", "gConstantAdultGallery", disabled, disabledTooltip);
+                        UIWidgets::Tooltip("Forces the rupee order to not be randomized as adult, making it the same as chlid");
+                        UIWidgets::PaddedEnhancementSliderInt("Child Starting Ammunition: %d", "##cShootingGalleryAmmunition", "gChildShootingGalleryAmmunition", 10, 30, "", 15, false, true, false, disabled, disabledTooltip);
+                        UIWidgets::Tooltip("The ammunition at the start of the shooting gallery minigame as a child");
+                        UIWidgets::PaddedEnhancementSliderInt("Adult Starting Ammunition: %d", "##aShootingGalleryAmmunition", "gAdultShootingGalleryAmmunition", 10, 30, "", 15, false, true, false, disabled, disabledTooltip);
+                        UIWidgets::Tooltip("The ammunition at the start of the shooting gallery minigame as an adult");
+                        ImGui::EndMenu();
+                    }
+
+                    UIWidgets::Spacer(0);
+
                     if (ImGui::BeginMenu("Fishing")) {
                         UIWidgets::EnhancementCheckbox("Instant Fishing", "gInstantFishing");
                         UIWidgets::Tooltip("All fish will be caught instantly");
@@ -1151,6 +1188,8 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Remove power crouch stab", "gCrouchStabFix", true, false);
                     UIWidgets::Tooltip("Make crouch stabbing always do the same damage as a regular slash");
                 }
+                UIWidgets::PaddedEnhancementCheckbox("Fix credits timing", "gCreditsFix", true, false);
+                UIWidgets::Tooltip("Extend certain credits scenes so the music lines up properly with the visuals");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Gerudo Warrior's clothing colors", "gGerudoWarriorClothingFix", true, false);
                 UIWidgets::Tooltip("Prevent the Gerudo Warrior's clothes changing color when changing Link's tunic or using bombs in front of her");
 
@@ -1459,6 +1498,11 @@ namespace GameMenuBar {
                     ImGui::PopStyleVar(1);
                 }
             }
+
+            if (ImGui::Button("Change Age")) {
+                CVar_SetS32("gSwitchAge", 1);
+            }
+            UIWidgets::Tooltip("Switches links age and reloads the area.");   
 
             ImGui::EndMenu();
         }

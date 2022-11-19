@@ -9,8 +9,8 @@
 
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <ImGui/imgui_internal.h>
-#include <libultraship/ImGuiImpl.h>
-#include <libultraship/Cvar.h>
+#include <ImGuiImpl.h>
+#include <Cvar.h>
 
 #include <ultra64/types.h>
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
@@ -261,9 +261,35 @@ namespace UIWidgets {
             Spacer(0);
     }
 
-    void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton) {
+    void DisableComponentSwitch(const char* disabledTooltipText, const float alpha) {
+        // End of disable region of previous component
+        ImGui::PopStyleVar(1);
+        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(disabledTooltipText, "") != 0) {
+            ImGui::SetTooltip("%s", disabledTooltipText);
+        }
+        ImGui::PopItemFlag();
+
+        // Start of disable region of next component
+        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
+    }
+
+    void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool disabled, const char* disabledTooltipText) {
         int val = CVar_GetS32(cvarName, defaultValue);
+
+        float alpha;
+        if (disabled) {
+            alpha = ImGui::GetStyle().Alpha * 0.5f;
+            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
+        }
+
         ImGui::Text(text, val);
+
+        if (disabled) {
+            DisableComponentSwitch(disabledTooltipText, alpha);
+        }
+
         if(PlusMinusButton) {
             std::string MinusBTNName = " - ##";
             MinusBTNName += cvarName;
@@ -274,6 +300,10 @@ namespace UIWidgets {
             }
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+
+            if (disabled) {
+                DisableComponentSwitch(disabledTooltipText, alpha);
+            }
         }
 
         if (ImGui::SliderInt(id, &val, min, max, format))
@@ -283,6 +313,10 @@ namespace UIWidgets {
         }
 
         if(PlusMinusButton) {
+            if (disabled) {
+                DisableComponentSwitch(disabledTooltipText, alpha);
+            }
+
             std::string PlusBTNName = " + ##";
             PlusBTNName += cvarName;
             ImGui::SameLine();
@@ -292,6 +326,14 @@ namespace UIWidgets {
                 CVar_SetS32(cvarName, val);
                 SohImGui::RequestCvarSaveOnNextTick();
             }
+        }
+
+        if (disabled) {
+            ImGui::PopStyleVar(1);
+            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(disabledTooltipText, "") != 0) {
+                ImGui::SetTooltip("%s", disabledTooltipText);
+            }
+            ImGui::PopItemFlag();
         }
 
         if (val < min)
@@ -309,8 +351,13 @@ namespace UIWidgets {
         }
     }
 
-    void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton) {
+    void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton, bool disabled, const char* disabledTooltipText) {
         float val = CVar_GetFloat(cvarName, defaultValue);
+
+        if (disabled) {
+            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+        }
 
         if (!isPercentage) {
             ImGui::Text(text, val);
@@ -371,6 +418,14 @@ namespace UIWidgets {
             }
         }
 
+        if (disabled) {
+            ImGui::PopStyleVar(1);
+            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(disabledTooltipText, "") != 0) {
+                ImGui::SetTooltip("%s", disabledTooltipText);
+            }
+            ImGui::PopItemFlag();
+        }
+
         if (val < min) {
             val = min;
             CVar_SetFloat(cvarName, val);
@@ -384,11 +439,11 @@ namespace UIWidgets {
         }
     }
 
-    void PaddedEnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool padTop, bool padBottom) {
+    void PaddedEnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText) {
         if (padTop)
             Spacer(0);
 
-        EnhancementSliderInt(text, id, cvarName, min, max, format, defaultValue, PlusMinusButton);
+        EnhancementSliderInt(text, id, cvarName, min, max, format, defaultValue, PlusMinusButton, disabled, disabledTooltipText);
 
         if (padBottom)
             Spacer(0);

@@ -6,10 +6,10 @@
 #include <macros.h>
 #include <objects/gameplay_keep/gameplay_keep.h>
 #include <functions.h>
-#include <libultraship/Cvar.h>
+#include <Cvar.h>
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
-#include <libultraship/ImGuiImpl.h>
+#include <ImGuiImpl.h>
 #include <thread>
 #include "3drando/rando_main.hpp"
 #include "3drando/random.hpp"
@@ -203,6 +203,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
     { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
+    { "Shuffle Settings:Shuffle Merchants", RSK_SHUFFLE_MERCHANTS },
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
@@ -219,6 +220,11 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "World Settings:Starting Age", RSK_STARTING_AGE },
     { "World Settings:Ammo Drops", RSK_ENABLE_BOMBCHU_DROPS },
     { "World Settings:Bombchus in Logic", RSK_BOMBCHUS_IN_LOGIC },
+    { "World Settings:Shuffle Entrances", RSK_SHUFFLE_ENTRANCES },
+    { "World Settings:Dungeon Entrances", RSK_SHUFFLE_DUNGEON_ENTRANCES },
+    { "World Settings:Overworld Entrances", RSK_SHUFFLE_OVERWORLD_ENTRANCES },
+    { "World Settings:Interior Entrances", RSK_SHUFFLE_INTERIOR_ENTRANCES },
+    { "World Settings:Grottos Entrances", RSK_SHUFFLE_GROTTO_ENTRANCES },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
     { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
@@ -227,6 +233,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
     { "Start with Consumables", RSK_STARTING_CONSUMABLES },
     { "Start with Max Rupees", RSK_FULL_WALLETS },
+    { "Gold Skulltula Tokens", RSK_STARTING_SKULLTULA_TOKEN },
     { "Timesaver Settings:Cuccos to return", RSK_CUCCO_COUNT },
     { "Timesaver Settings:Big Poe Target Count", RSK_BIG_POE_COUNT },
     { "Timesaver Settings:Skip Child Stealth", RSK_SKIP_CHILD_STEALTH },
@@ -453,6 +460,61 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
             "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w",
         });
 
+
+    //Setup for merchant text boxes
+    //Medigoron
+    //RANDOTODO: Implement obscure/ambiguous hints
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_MEDIGORON,
+        {
+            TEXTBOX_TYPE_BLACK,
+            TEXTBOX_POS_BOTTOM,
+            "How about buying %r&{{item}}%w for %g200 rupees%w?\x1B&%gYes&No%w",
+            "Wie wäre es mit %r&{{item}}%w für %g200 Rubine?%w\x1B&%gJa!&Nein!%w",
+            "Veux-tu acheter %r&{{item}}%w pour %g200 rubis?%w\x1B&%gOui&Non&w" 
+        });
+    
+    //Carpet Salesman
+    //RANDOTODO: Implement obscure/ambiguous hints
+    std::vector<std::string> cgBoxTwoText;
+    if (Randomizer::GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) == 2) { //If merchant hints are clear... 
+        cgBoxTwoText = {
+            "!%w&It's real, I promise!&A lonely man such as myself&wouldn't %rlie%w to you, hmm?^",
+            "!%w&Ich kann versichern es ist ein&aufrichtiges Angebot!^Ein einsamer Mann wie ich würde dich&doch nicht %ranlügen%w, oder?^",
+            "!%w&C'est vrai! J'te jure!&Un gars comme moi ne te %rmentirai%w pas&tu ne crois pas?^"
+        };
+    } else {
+        cgBoxTwoText = {
+            "!%w&I won't tell you what it is until I see&the money...^",
+            "!%w&Erst kommt das Geld, dann die Ware...^",
+            "!%w&Je ne te dirai pas ce que c'est avant&d'être payé rubis sur l'ongle...^"
+            };
+        }
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_1,
+        {
+            TEXTBOX_TYPE_BLACK,
+            TEXTBOX_POS_BOTTOM,
+            "Welcome!^I am selling stuff, strange and rare, &from all over the world to everybody.&Today's special is...^%r{{item}}" + cgBoxTwoText[0] +
+            "How about %g200 Rupees?%w\x1B&&%gYes&No%w",
+            "Sei gegrüßt!^Ich verkaufe allerlei Kuriorisäten.&Stets sonderliche und seltene Ware&aus aller Welt für jedermann.&Das heutige Angebot bleibt...^%r{{item}}" + 
+            cgBoxTwoText[1] + "Wie wäre es mit %g200 Rubinen?%w\x1B&&%gJa!&Nein!%w",
+            "Bienvenue!^Je vends des trucs étranges et rares,&de partout dans le monde et à tout le&monde! L'objet du jour est...^%r{{item}}" + 
+            cgBoxTwoText[2] + "Alors, marché conclu pour %g200 rubis?%w\x1B&&%gOui&Non%w"
+        }
+    );
+
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_2,
+        {
+            TEXTBOX_TYPE_BLACK,
+            TEXTBOX_POS_TOP,
+            "Finally! Now I can go back to being &an %rarms dealer!%w",
+            "Endlich! Schon bald kann ich wieder &%rKrabbelminen-Händler%w sein!",
+            "Squalala! Je vais enfin pouvoir &%rprendre des vacances!%w"
+        }
+    );
+
     // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
     // prompted buy/don't buy
     CustomMessageManager::Instance->CreateMessage(
@@ -484,6 +546,12 @@ void Randomizer::LoadItemLocations(const char* spoilerFileName, bool silent) {
 void Randomizer::LoadRequiredTrials(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
         ParseRequiredTrialsFile(spoilerFileName);
+    }
+}
+
+void Randomizer::LoadEntranceOverrides(const char* spoilerFileName, bool silent){
+    if (strcmp(spoilerFileName, "") != 0) {
+        ParseEntranceDataFile(spoilerFileName, silent);
     }
 }
 
@@ -603,6 +671,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_TRIAL_COUNT:
                     case RSK_BIG_POE_COUNT:
                     case RSK_CUCCO_COUNT:
+                    case RSK_STARTING_SKULLTULA_TOKEN:
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         break;
@@ -648,10 +717,22 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_BLUE_FIRE_ARROWS:
                     case RSK_SUNLIGHT_ARROWS:
                     case RSK_BOMBCHUS_IN_LOGIC:
+                    case RSK_SHUFFLE_ENTRANCES:
+                    case RSK_SHUFFLE_OVERWORLD_ENTRANCES:
+                    case RSK_SHUFFLE_GROTTO_ENTRANCES:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;            
                         } else if(it.value() == "On") {
                             gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
+                    case RSK_SHUFFLE_MERCHANTS:
+                        if(it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "On (No Hints)") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if (it.value() == "On (With Hints)") {
+                            gSaveContext.randoSettings[index].value = 2;
                         }
                         break;
                     // Uses Ammo Drops option for now. "Off" not yet implemented
@@ -834,6 +915,24 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         }
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
+                        break;
+                    case RSK_SHUFFLE_DUNGEON_ENTRANCES:
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if (it.value() == "On + Ganon") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
+                        break;
+                    case RSK_SHUFFLE_INTERIOR_ENTRANCES:
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Simple") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if (it.value() == "All") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
                         break;
                 }
             }
@@ -1096,6 +1195,49 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
         success = true;
     } catch (const std::exception& e) {
         Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        return;
+    }
+}
+
+void Randomizer::ParseEntranceDataFile(const char* spoilerFileName, bool silent) {
+    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    if (!spoilerFileStream) {
+        return;
+    }
+
+    // set all the entrances to be 0 to indicate an unshuffled entrance
+    for (auto &entranceOveride : gSaveContext.entranceOverrides) {
+        entranceOveride.index = 0;
+        entranceOveride.destination = 0;
+        entranceOveride.blueWarp = 0;
+        entranceOveride.override = 0;
+        entranceOveride.overrideDestination = 0;
+    }
+
+    try {
+        json spoilerFileJson;
+        spoilerFileStream >> spoilerFileJson;
+        json EntrancesJson = spoilerFileJson["entrances"];
+
+        size_t i = 0;
+        for (auto it = EntrancesJson.begin(); it != EntrancesJson.end(); ++it, i++) {
+            json entranceJson = *it;
+
+            for (auto entranceIt = entranceJson.begin(); entranceIt != entranceJson.end(); ++entranceIt) {
+                if (entranceIt.key() == "index") {
+                    gSaveContext.entranceOverrides[i].index = entranceIt.value();
+                } else if (entranceIt.key() == "destination") {
+                    gSaveContext.entranceOverrides[i].destination = entranceIt.value();
+                } else if (entranceIt.key() == "blueWarp") {
+                    gSaveContext.entranceOverrides[i].blueWarp = entranceIt.value();
+                } else if (entranceIt.key() == "override") {
+                    gSaveContext.entranceOverrides[i].override = entranceIt.value();
+                } else if (entranceIt.key() == "overrideDestination") {
+                    gSaveContext.entranceOverrides[i].overrideDestination = entranceIt.value();
+                }
+            }
+        }
+    } catch (const std::exception& e) {
         return;
     }
 }
@@ -2145,6 +2287,9 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_MARKET_BOMBCHU_SHOP_ITEM_6,                                  RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_6 },
     { RC_MARKET_BOMBCHU_SHOP_ITEM_7,                                  RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_7 },
     { RC_MARKET_BOMBCHU_SHOP_ITEM_8,                                  RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8 },
+    { RC_GC_MEDIGORON,                                                RAND_INF_MERCHANTS_MEDIGORON                   },
+    { RC_WASTELAND_BOMBCHU_SALESMAN,                                  RAND_INF_MERCHANTS_CARPET_SALESMAN              },
+
 };
 
 RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
@@ -2413,6 +2558,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD] = CVar_GetS32("gRandomizeShuffleKokiriSword", 0) ||
                                              CVar_GetS32("gRandomizeStartingKokiriSword", 0);
     cvarSettings[RSK_STARTING_DEKU_SHIELD] = CVar_GetS32("gRandomizeStartingDekuShield", 0);
+    cvarSettings[RSK_STARTING_SKULLTULA_TOKEN] = CVar_GetS32("gRandomizeStartingSkulltulaToken", 0);
     cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVar_GetS32("gRandomizeStartingMapsCompasses", 2);
     cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0);
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
@@ -2422,6 +2568,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_COWS] = CVar_GetS32("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVar_GetS32("gRandomizeShuffleAdultTrade", 0);
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVar_GetS32("gRandomizeShuffleBeans", 0);
+    cvarSettings[RSK_SHUFFLE_MERCHANTS] = CVar_GetS32("gRandomizeShuffleMerchants", 0);
     cvarSettings[RSK_ENABLE_BOMBCHU_DROPS] = CVar_GetS32("gRandomizeEnableBombchuDrops", 0);
     cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = CVar_GetS32("gRandomizeBombchusInLogic", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
@@ -2443,7 +2590,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_KEYSANITY] = CVar_GetS32("gRandomizeKeysanity", 2);
     cvarSettings[RSK_GERUDO_KEYS] = CVar_GetS32("gRandomizeGerudoKeys", 0);
     cvarSettings[RSK_KEYRINGS] = CVar_GetS32("gRandomizeShuffleKeyRings", 0);
-    cvarSettings[RSK_KEYRINGS_RANDOM_COUNT] = CVar_GetS32("gRandomizeShuffleKeyRingsRandomCount", 0);
+    cvarSettings[RSK_KEYRINGS_RANDOM_COUNT] = CVar_GetS32("gRandomizeShuffleKeyRingsRandomCount", 8);
     cvarSettings[RSK_KEYRINGS_FOREST_TEMPLE] = CVar_GetS32("gRandomizeShuffleKeyRingsForestTemple", 0);
     cvarSettings[RSK_KEYRINGS_FIRE_TEMPLE] = CVar_GetS32("gRandomizeShuffleKeyRingsFireTemple", 0);
     cvarSettings[RSK_KEYRINGS_WATER_TEMPLE] = CVar_GetS32("gRandomizeShuffleKeyRingsWaterTemple", 0);
@@ -2484,6 +2631,7 @@ void GenerateRandomizerImgui() {
     // Link's Pocket has to have a dungeon reward if the other rewards are shuffled to end of dungeon.
     cvarSettings[RSK_LINKS_POCKET] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0) != 0 ? 
                                         CVar_GetS32("gRandomizeLinksPocket", 0) : 0;
+
     if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
         // If both OTRs are loaded.
         cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = CVar_GetS32("gRandomizeMqDungeons", 0);
@@ -2498,22 +2646,33 @@ void GenerateRandomizerImgui() {
         cvarSettings[RSK_MQ_DUNGEON_COUNT] = 0;
     }
 
-        // todo: this efficently when we build out cvar array support
-        std::set<RandomizerCheck> excludedLocations;
-        std::stringstream excludedLocationStringStream(CVar_GetString("gRandomizeExcludedLocations", ""));
-        std::string excludedLocationString;
-        while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
-            excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
-        }
+    // Enable if any of the entrance rando options are enabled.
+    cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0) ||
+                                          CVar_GetS32("gRandomizeShuffleOverworldEntrances", 0) ||
+                                          CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0) ||
+                                          CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0);
 
-        RandoMain::GenerateRando(cvarSettings, excludedLocations);
+    cvarSettings[RSK_SHUFFLE_DUNGEON_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0);
+    cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = CVar_GetS32("gRandomizeShuffleOverworldEntrances", 0);
+    cvarSettings[RSK_SHUFFLE_INTERIOR_ENTRANCES] = CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0);
+    cvarSettings[RSK_SHUFFLE_GROTTO_ENTRANCES] = CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0);
 
-        CVar_SetS32("gRandoGenerating", 0);
-        CVar_Save();
-        CVar_Load();
-
-        generated = 1;
+    // todo: this efficently when we build out cvar array support
+    std::set<RandomizerCheck> excludedLocations;
+    std::stringstream excludedLocationStringStream(CVar_GetString("gRandomizeExcludedLocations", ""));
+    std::string excludedLocationString;
+    while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
+        excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
     }
+
+    RandoMain::GenerateRando(cvarSettings, excludedLocations);
+
+    CVar_SetS32("gRandoGenerating", 0);
+    CVar_Save();
+    CVar_Load();
+
+    generated = 1;
+}
 
 void DrawRandoEditor(bool& open) {
     if (generated) {
@@ -2543,11 +2702,8 @@ void DrawRandoEditor(bool& open) {
 
     // World Settings
     const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
-    const char* randoShuffleEntrances[2] = { "Off", "On" };
-    const char* randoShuffleDungeonsEntrances[2] = { "Off", "On" };
-    const char* randoShuffleOverworldEntrances[2] = { "Off", "On" };
-    const char* randoShuffleInteriorsEntrances[2] = { "Off", "On" };
-    const char* randoShuffleGrottosEntrances[2] = { "Off", "On" };
+    const char* randoShuffleDungeonsEntrances[3] = { "Off", "On", "On + Ganon" };
+    const char* randoShuffleInteriorsEntrances[3] = { "Off", "Simple", "All" };
     const char* randoBombchusInLogic[2] = { "Off", "On" };
     const char* randoAmmoDrops[3] = { "On + Bombchu", "Off", "On" };
     const char* randoHeartDropsAndRefills[4] = { "On", "No Drop", "No Refill", "Off" };
@@ -2865,9 +3021,56 @@ void DrawRandoEditor(bool& open) {
                 ImGui::BeginChild("ChildShuffleEntrances", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
 
-                ImGui::Text("Coming soon");
+                // Shuffle Dungeon Entrances
+                ImGui::Text("Shuffle Dungeon Entrances");
+                UIWidgets::InsertHelpHoverText(
+                    "Shuffle the pool of dungeon entrances, including Bottom of the Well, Ice Cavern and Gerudo Training Grounds.\n"
+                    "\n"
+                    "Shuffling Ganon's Castle can be enabled separately.\n"
+                    "\n"
+                    "Additionally, the entrances of Deku Tree, Fire Temple, Bottom of the Well and Gerudo Training Ground are opened for both child and adult.\n"
+                    "\n"
+                    "- Deku Tree will be open for adult after Mido has seen child Link with a sword and shield.\n"
+                    "- Bottom of the Well will be open for adult after playing Song of Storms to the Windmill guy as child.\n"
+                    "- Gerudo Training Ground will be open for child after adult has paid to open the gate once."
+                );
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonsEntrances", randoShuffleDungeonsEntrances, 3, 0);
 
                 UIWidgets::PaddedSeparator();
+
+                // Shuffle Overworld Entrances
+                UIWidgets::EnhancementCheckbox("Shuffle Overworld Entrances", "gRandomizeShuffleOverworldEntrances");
+                UIWidgets::InsertHelpHoverText(
+                    "Shuffle the pool of Overworld entrances, which corresponds to almost all loading zones between overworld areas.\n"
+                    "\n"
+                    "Some entrances are unshuffled to avoid issues:\n"
+                    "- Hyrule Castle Courtyard and Garden entrance\n"
+                    "- Both Market Back Alley entrances\n"
+                    "- Gerudo Valley to Lake Hylia (unless entrances are decoupled)"
+                );
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle Interior Entrances
+                ImGui::Text("Shuffle Interior Entrances");
+                UIWidgets::InsertHelpHoverText(
+                    "Shuffle the pool of interior entrances which contains most Houses and all Great Fairies.\n"
+                    "\n"
+                    "All - An extended version of 'Simple' with some extra places:\n"
+                    "- Windmill\n"
+                    "- Link's House\n"
+                    "- Temple of Time\n"
+                    "- Kakariko Potion Shop"
+                );
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleInteriorsEntrances", randoShuffleInteriorsEntrances, 3, 0);
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle Grotto Entrances
+                UIWidgets::EnhancementCheckbox("Shuffle Grotto Entrances", "gRandomizeShuffleGrottosEntrances");
+                UIWidgets::InsertHelpHoverText(
+                    "Shuffle the pool of grotto entrances, including all graves, small Fairy fountains and the Deku Theatre."
+                );
 
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
@@ -3049,6 +3252,19 @@ void DrawRandoEditor(bool& open) {
                     "Enabling this adds a pack of 10 beans to the item pool and changes the Magic Bean "
                     "Salesman to sell a random item at a price of 60 rupees."
                 );
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle Merchants
+                ImGui::Text(Settings::ShuffleMerchants.GetName().c_str());
+                UIWidgets::InsertHelpHoverText(
+                    "Enabling this adds a Giant's Knife and a pack of Bombchus to the item pool "
+                    "and changes both Medigoron and the Haunted Wasteland Carpet Salesman to sell "
+                    "a random item once at the price of 200 rupees.\n\n"
+                    "On (no hints) - Salesmen will be included but won't tell you what you'll get.\n"
+                    "On (with hints) - Salesmen will be included and you'll know what you're buying."
+                );
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleMerchants", randoShuffleMerchants, 3, 0);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3735,6 +3951,8 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
                 UIWidgets::EnhancementCheckbox(Settings::StartingConsumables.GetName().c_str(),
                                               "gRandomizeStartingConsumables");
+                UIWidgets::PaddedSeparator();
+                UIWidgets::EnhancementSliderInt("Gold Skulltula Tokens: %d", "##RandoStartingSkulltulaToken", "gRandomizeStartingSkulltulaToken", 0, 100, "", 0, true);
                 UIWidgets::PaddedSeparator();
 
                 ImGui::EndChild();

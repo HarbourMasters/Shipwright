@@ -15,7 +15,9 @@ set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 
 if (CMAKE_SYSTEM_NAME MATCHES "Windows|Linux")
-    set(BUILD_CROWD_CONTROL ON)
+    if(NOT DEFINED BUILD_CROWD_CONTROL)
+        set(BUILD_CROWD_CONTROL ON)
+    endif()
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -118,9 +120,8 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
-add_subdirectory(libultraship/libultraship ${CMAKE_BINARY_DIR}/libultraship)
+add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship)
 add_subdirectory(ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
-add_subdirectory(ZAPDTR/ZAPDUtils ${CMAKE_BINARY_DIR}/ZAPDUtils)
 add_subdirectory(OTRExporter)
 add_subdirectory(soh)
 if(NOT CMAKE_SYSTEM_NAME MATCHES "Darwin|NintendoSwitch|CafeOS")

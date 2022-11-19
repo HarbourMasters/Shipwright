@@ -10,7 +10,7 @@
 #include "alloca.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 #include <soh/Enhancements/bootcommands.h>
-#include <libultraship/GameVersions.h>
+#include <GameVersions.h>
 #include <soh/SaveManager.h>
 
 #include "time.h"
