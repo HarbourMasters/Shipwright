@@ -1,5 +1,8 @@
 #pragma once
 
+// Total gameplay time is tracked in tenths of seconds
+// I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
+// Frame counts in z_play.c and z_kaleido_scope_call.c
 #define GAMEPLAYSTAT_TOTAL_TIME (gSaveContext.gameplayStats.playTimer / 2 + gSaveContext.gameplayStats.pauseTimer / 3)
 
 void InitStatTracker();
@@ -23,18 +26,18 @@ typedef enum {
 }GameplayStatTimestamp;
 
 typedef enum {
-    /* 0x00 */ COUNT_RUPEES_COLLECTED,
-    /* 0x01 */ COUNT_RUPEES_SPENT,
-               COUNT_CHESTS_OPENED,
-    /* 0x02 */ COUNT_DAMAGE_TAKEN,
-    /* 0x03 */ COUNT_ICE_TRAPS,
-    /* 0x04 */ COUNT_ROLLS,
-    /* 0x05 */ COUNT_BONKS,
-    /* 0x06 */ COUNT_PAUSES,
-    /* 0x07 */ COUNT_STEPS,
-    /* 0x08 */ COUNT_POTS_BROKEN,
-    /* 0x09 */ COUNT_BUSHES_CUT,
-    /* 0x0A */ COUNT_SWORD_SWINGS,
+    COUNT_RUPEES_COLLECTED,
+    COUNT_RUPEES_SPENT,
+    COUNT_CHESTS_OPENED,
+    COUNT_DAMAGE_TAKEN,
+    COUNT_ICE_TRAPS,
+    COUNT_ROLLS,
+    COUNT_BONKS,
+    COUNT_PAUSES,
+    COUNT_STEPS,
+    COUNT_POTS_BROKEN,
+    COUNT_BUSHES_CUT,
+    COUNT_SWORD_SWINGS,
 
     COUNT_ENEMIES_DEFEATED_ANUBIS,               // EN_ANUBICE
     COUNT_ENEMIES_DEFEATED_ARMOS,                // EN_AM

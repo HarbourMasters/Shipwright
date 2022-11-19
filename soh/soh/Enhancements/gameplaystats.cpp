@@ -1,6 +1,7 @@
 #include "gameplaystats.h"
 
 #include "ImGuiImpl.h"
+#include "../UIWidgets.hpp"
 
 #include <map>
 #include <string>
@@ -106,6 +107,7 @@ void DrawStatsTracker(bool& open) {
     u32 ammoUsed = 0;
 
     DisplayTimeHHMMSS(totalTimer,     "Total game Time:     ");
+    UIWidgets::Tooltip("Note: Timer accuracy may be affected by game performance and loading.");
     DisplayTimeHHMMSS(gSaveContext.gameplayStats.playTimer / 2,  "Gameplay Time:       ");
     DisplayTimeHHMMSS(gSaveContext.gameplayStats.pauseTimer / 3, "Pause Menu Time:     ");
 
@@ -129,7 +131,7 @@ void DrawStatsTracker(bool& open) {
 
     // Display it
     for (int i = 0; i < TIMESTAMP_MAX; i++) {
-        // To be shown, the entry must have a time and a string for its display name
+        // To be shown, the entry must have a non-zero time and a string for its display name
         if (timestampDisplay[i].time > 0 && strnlen(timestampDisplay[i].name, 21) > 1) {
             DisplayTimeHHMMSS(timestampDisplay[i].time, timestampDisplay[i].name);
         }
@@ -137,14 +139,17 @@ void DrawStatsTracker(bool& open) {
 
     ImGui::TableNextColumn();
 
+    // Sum of all enemies defeated
     for (int i = COUNT_ENEMIES_DEFEATED_ANUBIS; i <= COUNT_ENEMIES_DEFEATED_WOLFOS; i++) {
         enemiesDefeated += gSaveContext.gameplayStats.count[i];
     }
+    // Sum of all ammo used
     for (int i = COUNT_AMMO_USED_STICK; i <= COUNT_AMMO_USED_BEAN; i++) {
         ammoUsed += gSaveContext.gameplayStats.count[i];
     }
 
     DisplayStat("Enemies Defeated:      ", enemiesDefeated);
+    // Show breakdown of enemies defeated in a tree. Only show counts for enemies if they've been defeated at least once.
     if (enemiesDefeated > 0) {
         if (ImGui::TreeNode("Enemy Details...")) {
 
@@ -227,6 +232,7 @@ void DrawStatsTracker(bool& open) {
     DisplayStat("Chests Opened:         ", gSaveContext.gameplayStats.count[COUNT_CHESTS_OPENED]);
 
     DisplayStat("Ammo Used:             ", ammoUsed);
+    // Show breakdown of ammo used in a collapsible tree. Only show ammo types if they've been used at least once.
     if (ammoUsed > 0) {
         if (ImGui::TreeNode("Ammo Details...")) {
 
@@ -332,7 +338,6 @@ void SetupDisplayNames() {
     strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_TWINROVA],      "Twinrova Defeated:  ");
     strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_GANONDORF],     "Ganondorf Defeated: ");
     strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:     ");
-
 }
 
 void InitStatTracker() {
