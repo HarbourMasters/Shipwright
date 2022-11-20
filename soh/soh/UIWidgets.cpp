@@ -265,6 +265,7 @@ namespace UIWidgets {
         int val = CVar_GetS32(cvarName, defaultValue);
         ImGui::Text(text, val);
 
+        Spacer(0);
         if(PlusMinusButton) {
             std::string MinusBTNName = " - ##";
             MinusBTNName += cvarName;
