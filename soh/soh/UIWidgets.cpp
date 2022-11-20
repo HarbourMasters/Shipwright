@@ -290,7 +290,9 @@ namespace UIWidgets {
             CVar_SetS32(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
         }
-
+        if (PlusMinusButton) {
+            ImGui::PopItemWidth();
+        }
         if(PlusMinusButton) {
             std::string PlusBTNName = " + ##";
             PlusBTNName += cvarName;
