@@ -1168,6 +1168,8 @@ namespace GameMenuBar {
                 }
                 UIWidgets::PaddedEnhancementCheckbox("Fix Gerudo Warrior's clothing colors", "gGerudoWarriorClothingFix", true, false);
                 UIWidgets::Tooltip("Prevent the Gerudo Warrior's clothes changing color when changing Link's tunic or using bombs in front of her");
+                UIWidgets::PaddedEnhancementCheckbox("Fix Camera Drift", "gFixCameraDrift", true, false);
+                UIWidgets::Tooltip("Fixes the math for sin/cos accuracy in calucaltation from spherical to cartisean cordinates");
 
                 ImGui::EndMenu();
             }
@@ -1343,7 +1345,7 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Holding down B skips text");
             UIWidgets::PaddedEnhancementCheckbox("Free Camera", "gFreeCamera", true, false);
             UIWidgets::Tooltip("Enables camera control\nNote: You must remap C buttons off of the right stick in the controller config menu, and map the camera stick to the right stick.");
-
+            
          #ifdef __SWITCH__
             UIWidgets::Spacer(0);
             int slot = CVar_GetS32("gSwitchPerfMode", (int)Ship::SwitchProfiles::STOCK);
