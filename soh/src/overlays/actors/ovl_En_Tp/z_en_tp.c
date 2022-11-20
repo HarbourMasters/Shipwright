@@ -290,7 +290,7 @@ void EnTp_SetupDie(EnTp* this) {
     this->actionIndex = TAILPASARAN_ACTION_DIE;
     EnTp_SetupAction(this, EnTp_Die);
     if (this->actor.params == TAILPASARAN_HEAD) {  // Only count the head, otherwise each body segment will increment
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_TAILPASARAN]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TAILPASARAN]++;
     }
 }
 

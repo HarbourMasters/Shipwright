@@ -439,7 +439,7 @@ void func_80AE5A9C(EnReeba* this, PlayState* play) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIVA_DEAD);
         Enemy_StartFinishingBlow(play, &this->actor);
         this->actionfunc = func_80AE5C38;
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
     }
 }
 
@@ -495,9 +495,9 @@ void func_80AE5C38(EnReeba* this, PlayState* play) {
 
                 Actor_Kill(&this->actor);
                 if (this->isBig) {
-                    gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_LEEVER_BIG]++;
+                    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER_BIG]++;
                 } else {
-                    gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
+                    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
                 }
             }
         }

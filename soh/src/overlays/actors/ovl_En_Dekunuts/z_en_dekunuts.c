@@ -233,7 +233,7 @@ void EnDekunuts_SetupDie(EnDekunuts* this) {
     this->actionFunc = EnDekunuts_Die;
     this->actor.speedXZ = 0.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_DEAD);
-    gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_MAD_SCRUB]++;
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MAD_SCRUB]++;
 }
 
 void EnDekunuts_Wait(EnDekunuts* this, PlayState* play) {

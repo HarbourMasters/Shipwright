@@ -1,12 +1,15 @@
 #pragma once
 
-#define GAMEPLAYSTAT_TOTAL_TIME (gSaveContext.gameplayStats.playTimer / 2 + gSaveContext.gameplayStats.pauseTimer / 3)
+// Total gameplay time is tracked in tenths of seconds
+// I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
+// Frame counts in z_play.c and z_kaleido_scope_call.c
+#define GAMEPLAYSTAT_TOTAL_TIME (gSaveContext.sohStats.playTimer / 2 + gSaveContext.sohStats.pauseTimer / 3)
 
 void InitStatTracker();
 
 typedef enum {
     // 0x00 to 0x9B (0 to 155) used for getting items,
-    // see struct "ItemID" in z64item.h
+    // piggybacked off enum "ItemID" in z64item.h
 
     /* 0xA0 */ TIMESTAMP_DEFEAT_GOHMA = 0xA0,
     /* 0xA1 */ TIMESTAMP_DEFEAT_KING_DODONGO,
@@ -23,19 +26,7 @@ typedef enum {
 }GameplayStatTimestamp;
 
 typedef enum {
-    /* 0x00 */ COUNT_RUPEES_COLLECTED,
-    /* 0x01 */ COUNT_RUPEES_SPENT,
-               COUNT_CHESTS_OPENED,
-    /* 0x02 */ COUNT_DAMAGE_TAKEN,
-    /* 0x03 */ COUNT_ICE_TRAPS,
-    /* 0x04 */ COUNT_ROLLS,
-    /* 0x05 */ COUNT_BONKS,
-    /* 0x06 */ COUNT_PAUSES,
-    /* 0x07 */ COUNT_STEPS,
-    /* 0x08 */ COUNT_POTS_BROKEN,
-    /* 0x09 */ COUNT_BUSHES_CUT,
-    /* 0x0A */ COUNT_SWORD_SWINGS,
-
+    // Enemies defeated
     COUNT_ENEMIES_DEFEATED_ANUBIS,               // EN_ANUBICE
     COUNT_ENEMIES_DEFEATED_ARMOS,                // EN_AM
     COUNT_ENEMIES_DEFEATED_BARI,                 // EN_VALI
@@ -95,7 +86,7 @@ typedef enum {
     COUNT_ENEMIES_DEFEATED_SPIKE,                // EN_NY
     COUNT_ENEMIES_DEFEATED_STALCHILD,            // EN_SKB
     COUNT_ENEMIES_DEFEATED_STALFOS,              // EN_TEST
-    COUNT_ENEMIES_DEFEATED_STINGER,              // EN_WEIYER 
+    COUNT_ENEMIES_DEFEATED_STINGER,              // EN_WEIYER
     COUNT_ENEMIES_DEFEATED_TAILPASARAN,          // EN_TP
     COUNT_ENEMIES_DEFEATED_TEKTITE_BLUE,         // EN_TITE
     COUNT_ENEMIES_DEFEATED_TEKTITE_RED,          // EN_TITE
@@ -104,7 +95,7 @@ typedef enum {
     COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA,   // EN_KAREBABA
     COUNT_ENEMIES_DEFEATED_WOLFOS,               // EN_WF
     COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE,         // EN_WF
-
+    // Ammo used
     COUNT_AMMO_USED_STICK,
     COUNT_AMMO_USED_NUT,
     COUNT_AMMO_USED_BOMB,
@@ -112,6 +103,19 @@ typedef enum {
     COUNT_AMMO_USED_SEED,
     COUNT_AMMO_USED_BOMBCHU,
     COUNT_AMMO_USED_BEAN,
+    // Other counts
+    COUNT_RUPEES_COLLECTED,
+    COUNT_RUPEES_SPENT,
+    COUNT_CHESTS_OPENED,
+    COUNT_DAMAGE_TAKEN,
+    COUNT_ICE_TRAPS,
+    COUNT_ROLLS,
+    COUNT_BONKS,
+    COUNT_PAUSES,
+    COUNT_STEPS,
+    COUNT_POTS_BROKEN,
+    COUNT_BUSHES_CUT,
+    COUNT_SWORD_SWINGS,
 
     COUNT_MAX
 

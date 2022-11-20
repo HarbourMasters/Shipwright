@@ -189,7 +189,7 @@ void EnCrow_SetupDamaged(EnCrow* this, PlayState* play) {
 void EnCrow_SetupDie(EnCrow* this) {
     this->actor.colorFilterTimer = 0;
     this->actionFunc = EnCrow_Die;
-    gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_GUAY]++;
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GUAY]++;
 }
 
 void EnCrow_SetupTurnAway(EnCrow* this) {

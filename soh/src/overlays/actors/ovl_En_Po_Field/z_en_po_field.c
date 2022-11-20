@@ -578,9 +578,9 @@ void EnPoField_Death(EnPoField* this, PlayState* play) {
         if (this->actionTimer == 1) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_EXTINCT);
             if (this->actor.params == EN_PO_FIELD_BIG) {
-                gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_POE_BIG]++;
+                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_BIG]++;
             } else {
-                gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_POE]++;
+                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE]++;
             }
         }
     } else if (this->actionTimer == 28) {

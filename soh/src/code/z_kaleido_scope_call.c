@@ -56,8 +56,8 @@ void KaleidoScopeCall_Update(PlayState* play) {
     KaleidoMgrOverlay* kaleidoScopeOvl = &gKaleidoMgrOverlayTable[KALEIDO_OVL_KALEIDO_SCOPE];
     PauseContext* pauseCtx = &play->pauseCtx;
 
-    if (!gSaveContext.gameplayStats.ganonDefeated) {
-        gSaveContext.gameplayStats.pauseTimer++;
+    if (!gSaveContext.sohStats.gameComplete) {
+        gSaveContext.sohStats.pauseTimer++;
     }
 
     if ((pauseCtx->state != 0) || (pauseCtx->debugState != 0)) {
@@ -69,7 +69,7 @@ void KaleidoScopeCall_Update(PlayState* play) {
                 pauseCtx->unk_1E4 = 0;
                 pauseCtx->unk_1EC = 0;
                 pauseCtx->state = (pauseCtx->state & 0xFFFF) + 1;
-                gSaveContext.gameplayStats.count[COUNT_PAUSES]++;
+                gSaveContext.sohStats.count[COUNT_PAUSES]++;
             }
         } else if (pauseCtx->state == 8) {
             HREG(80) = 7;

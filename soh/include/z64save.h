@@ -6,8 +6,8 @@
 #include "z64audio.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/randomizer_inf.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/gameplaystats.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 typedef struct {
     /* 0x00 */ u8 buttonItems[8];
@@ -33,6 +33,11 @@ typedef struct {
     /*      */ u8 dungeonKeys[19];
     /*      */ u8 hasObtainedWeirdEgg;
     /*      */ u8 weirdEggHasHatched;
+    /*      */ u32 playTimer;
+    /*      */ u32 pauseTimer;
+    /*      */ bool gameComplete;
+    /*      */ u32 timestamp[TIMESTAMP_MAX];
+    /*      */ u32 count[COUNT_MAX];
 } SohStats;
 
 typedef struct {
@@ -87,14 +92,6 @@ typedef struct {
     RandomizerSettingKey key;
     u8 value;
 } RandoSetting;
-
-typedef struct {
-    u32 playTimer;
-    u32 pauseTimer;
-    bool ganonDefeated;
-    u32 timestamp[TIMESTAMP_MAX];
-    u32 count[COUNT_MAX];
-} GameplayStats;
 
 typedef struct {
     /* 0x0000 */ s32 entranceIndex; // start of `save` substruct, originally called "memory"
@@ -208,7 +205,6 @@ typedef struct {
     u16 adultTradeItems;
     u8 pendingIceTrapCount;
     u8 mqDungeonCount;
-    GameplayStats gameplayStats;
     SohStats sohStats;
 } SaveContext; // size = 0x1428
 

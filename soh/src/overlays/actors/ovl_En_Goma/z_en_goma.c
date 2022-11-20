@@ -396,7 +396,7 @@ void EnGoma_SetupDead(EnGoma* this) {
                      Animation_GetLastFrame(&gObjectGolDeadTwitchingAnim), ANIMMODE_LOOP, -2.0f);
     this->actionFunc = EnGoma_Dead;
     this->actionTimer = 3;
-    gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_GOHMA_LARVA]++;
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GOHMA_LARVA]++;
 }
 
 void EnGoma_Dead(EnGoma* this, PlayState* play) {
@@ -667,7 +667,7 @@ void EnGoma_UpdateHit(EnGoma* this, PlayState* play) {
 
                 EnGoma_SpawnHatchDebris(this, play);
                 Actor_Kill(&this->actor);
-                gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_GOHMA_LARVA]++;
+                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GOHMA_LARVA]++;
             }
         }
     }

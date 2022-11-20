@@ -1069,8 +1069,8 @@ void Play_Update(PlayState* play) {
 
                 play->gameplayFrames++;
                 // Gameplay stat tracking
-                if (!gSaveContext.gameplayStats.ganonDefeated) {
-                      gSaveContext.gameplayStats.playTimer++;
+                if (!gSaveContext.sohStats.gameComplete) {
+                      gSaveContext.sohStats.playTimer++;
                 }
 
                 func_800AA178(1);

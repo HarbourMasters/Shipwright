@@ -1616,9 +1616,9 @@ void func_80084BF4(PlayState* play, u16 flag) {
 
 // Gameplay stat tracking: Update time the item was acquired
 // (special cases for some duplicate items)
-void GameplayStats_UpdateItemGetTime(u8 item) {
+void GameplayStats_SetTimestamp(u8 item) {
 
-    if (gSaveContext.gameplayStats.timestamp[item] != 0) {
+    if (gSaveContext.sohStats.timestamp[item] != 0) {
         return;
     }
 
@@ -1631,25 +1631,25 @@ void GameplayStats_UpdateItemGetTime(u8 item) {
 
     // Count any bottled item as a bottle
     if (item >= ITEM_BOTTLE && item <= ITEM_POE) {
-        if (gSaveContext.gameplayStats.timestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.gameplayStats.timestamp[ITEM_BOTTLE] = time;
+        if (gSaveContext.sohStats.timestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.sohStats.timestamp[ITEM_BOTTLE] = time;
         }
         return;
     }
     // Count any bombchu pack as bombchus
     if (item == ITEM_BOMBCHU || (item >= ITEM_BOMBCHUS_5 && item <= ITEM_BOMBCHUS_20)) {
-        if (gSaveContext.gameplayStats.timestamp[ITEM_BOMBCHU] == 0) {
-            gSaveContext.gameplayStats.timestamp[ITEM_BOMBCHU] = time;
+        if (gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] == 0) {
+            gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] = time;
         }
         return;
     }
 
-    gSaveContext.gameplayStats.timestamp[item] = time;
+    gSaveContext.sohStats.timestamp[item] = time;
 }
 
 // Gameplay stat tracking: Update time the item was acquired
 // (special cases for rando items)
-void Randomizer_GameplayStats_UpdateItemGetTime(uint16_t item) {
+void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
 
     u32 time = GAMEPLAYSTAT_TOTAL_TIME;
 
@@ -1660,23 +1660,23 @@ void Randomizer_GameplayStats_UpdateItemGetTime(uint16_t item) {
 
     // Count any bottled item as a bottle
     if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
-        if (gSaveContext.gameplayStats.timestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.gameplayStats.timestamp[ITEM_BOTTLE] = time;
+        if (gSaveContext.sohStats.timestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.sohStats.timestamp[ITEM_BOTTLE] = time;
         }
         return;
     }
     // Count any bombchu pack as bombchus
     if (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) {
-        if (gSaveContext.gameplayStats.timestamp[ITEM_BOMBCHU] = 0) {
-            gSaveContext.gameplayStats.timestamp[ITEM_BOMBCHU] = time;
+        if (gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] = 0) {
+            gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] = time;
         }
         return;
     }
     if (item == RG_MAGIC_SINGLE) {
-        gSaveContext.gameplayStats.timestamp[ITEM_SINGLE_MAGIC] = time;
+        gSaveContext.sohStats.timestamp[ITEM_SINGLE_MAGIC] = time;
     }
     if (item == RG_DOUBLE_DEFENSE) {
-        gSaveContext.gameplayStats.timestamp[ITEM_DOUBLE_DEFENSE] = time;
+        gSaveContext.sohStats.timestamp[ITEM_DOUBLE_DEFENSE] = time;
     }
 }
 
@@ -1698,7 +1698,7 @@ u8 Item_Give(PlayState* play, u8 item) {
     s16 temp;
 
     // Gameplay stats: Update the time the item was obtained
-    GameplayStats_UpdateItemGetTime(item);
+    GameplayStats_SetTimestamp(item);
 
     slot = SLOT(item);
     if (item >= ITEM_STICKS_5) {
@@ -2365,7 +2365,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     uint16_t slot;
 
     // Gameplay stats: Update the time the item was obtained
-    Randomizer_GameplayStats_UpdateItemGetTime(item);
+    Randomizer_GameplayStats_SetTimestamp(item);
 
     slot = SLOT(item);
     if (item == RG_MAGIC_SINGLE) {
@@ -3052,7 +3052,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
                  gSaveContext.healthCapacity);
 
     if (healthChange < 0) {
-        gSaveContext.gameplayStats.count[COUNT_DAMAGE_TAKEN] += -healthChange;
+        gSaveContext.sohStats.count[COUNT_DAMAGE_TAKEN] += -healthChange;
     }
 
     // If one-hit ko mode is on, any damage kills you and you cannot gain health.
@@ -3123,10 +3123,10 @@ void Rupees_ChangeBy(s16 rupeeChange) {
     gSaveContext.rupeeAccumulator += rupeeChange;
 
     if (rupeeChange > 0) {
-        gSaveContext.gameplayStats.count[COUNT_RUPEES_COLLECTED] += rupeeChange;
+        gSaveContext.sohStats.count[COUNT_RUPEES_COLLECTED] += rupeeChange;
     }
     if (rupeeChange < 0) {
-        gSaveContext.gameplayStats.count[COUNT_RUPEES_SPENT] += -rupeeChange;
+        gSaveContext.sohStats.count[COUNT_RUPEES_SPENT] += -rupeeChange;
     }
 }
 
@@ -3134,25 +3134,25 @@ void GameplayStats_UpdateAmmoUsed(s16 item, s16 ammoUsed) {
 
     switch (item) { 
         case ITEM_STICK:
-            gSaveContext.gameplayStats.count[COUNT_AMMO_USED_STICK] += ammoUsed;
+            gSaveContext.sohStats.count[COUNT_AMMO_USED_STICK] += ammoUsed;
             break;
         case ITEM_NUT:
-            gSaveContext.gameplayStats.count[COUNT_AMMO_USED_NUT] += ammoUsed;
+            gSaveContext.sohStats.count[COUNT_AMMO_USED_NUT] += ammoUsed;
             break;
         case ITEM_BOMB:
-            gSaveContext.gameplayStats.count[COUNT_AMMO_USED_BOMB] += ammoUsed;
+            gSaveContext.sohStats.count[COUNT_AMMO_USED_BOMB] += ammoUsed;
             break;
         case ITEM_BOW:
-            gSaveContext.gameplayStats.count[COUNT_AMMO_USED_ARROW] += ammoUsed;
+            gSaveContext.sohStats.count[COUNT_AMMO_USED_ARROW] += ammoUsed;
             break;
         case ITEM_SLINGSHOT:
-            gSaveContext.gameplayStats.count[COUNT_AMMO_USED_SEED] += ammoUsed;
+            gSaveContext.sohStats.count[COUNT_AMMO_USED_SEED] += ammoUsed;
             break;
         case ITEM_BOMBCHU:
-            gSaveContext.gameplayStats.count[COUNT_AMMO_USED_BOMBCHU] += ammoUsed;
+            gSaveContext.sohStats.count[COUNT_AMMO_USED_BOMBCHU] += ammoUsed;
             break;
         case ITEM_BEAN:
-            gSaveContext.gameplayStats.count[COUNT_AMMO_USED_BEAN] += ammoUsed;
+            gSaveContext.sohStats.count[COUNT_AMMO_USED_BEAN] += ammoUsed;
             break;
         default:
             break;
