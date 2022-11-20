@@ -15,8 +15,6 @@
 #include <array>
 
 extern "C" SaveContext gSaveContext;
-extern "C" uint32_t ResourceMgr_GetGameVersion();
-extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
     const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
