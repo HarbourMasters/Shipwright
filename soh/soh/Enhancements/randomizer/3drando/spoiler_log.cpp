@@ -440,6 +440,7 @@ static void WriteStartingInventory() {
       // to see if the name is one of the 3 we're using rn
       if (setting->GetName() == "Start with Consumables" ||
           setting->GetName() == "Start with Max Rupees" ||
+          setting->GetName() == "Gold Skulltula Tokens" ||
           setting->GetName() == "Start with Fairy Ocarina" ||
           setting->GetName() == "Start with Kokiri Sword" ||
           setting->GetName() == "Start with Deku Shield") {
