@@ -5,7 +5,6 @@
 
 #include <map>
 #include <string>
-#include <vector>
 #include <Cvar.h>
 #include <Hooks.h>
 
@@ -14,22 +13,39 @@ extern "C" {
 #include "variables.h"
 }
 
+#define COLOR_WHITE      ImVec4(1.00f, 1.00f, 1.00f, 1.00f)
+#define COLOR_RED        ImVec4(1.00f, 0.00f, 0.00f, 1.00f)
+#define COLOR_GREEN      ImVec4(0.10f, 1.00f, 0.10f, 1.00f)
+#define COLOR_BLUE       ImVec4(0.00f, 0.33f, 1.00f, 1.00f)
+#define COLOR_PURPLE     ImVec4(0.54f, 0.19f, 0.89f, 1.00f)
+#define COLOR_YELLOW     ImVec4(1.00f, 1.00f, 0.00f, 1.00f)
+#define COLOR_ORANGE     ImVec4(1.00f, 0.67f, 0.11f, 1.00f)
+#define COLOR_LIGHT_BLUE ImVec4(0.00f, 0.88f, 1.00f, 1.00f)
+#define COLOR_GREY       ImVec4(0.78f, 0.78f, 0.78f, 1.00f)
+
 char timestampDisplayName[TIMESTAMP_MAX][21] = { "" };
+ImVec4 timestampDisplayColor[TIMESTAMP_MAX];
 
 typedef struct {
     char name[21];
     u32 time;
+    ImVec4 color;
 }TimestampInfo;
 
+// Timestamps are an array of structs, each with a name, time, and color
+// Names and colors are set up at the bottom of this file
+// Times are stored in gSaveContext.gameplayStats.timestamp
 TimestampInfo timestampDisplay[TIMESTAMP_MAX];
 
-void DisplayTimeHHMMSS(uint32_t timeInTenthsOfSeconds, const char* text) {
+void DisplayTimeHHMMSS(uint32_t timeInTenthsOfSeconds, const char* text, ImVec4 color) {
 
     uint32_t sec = timeInTenthsOfSeconds / 10;
     uint32_t hh = sec / 3600;
     uint32_t mm = (sec - hh * 3600) / 60;
     uint32_t ss = sec - hh * 3600 - mm * 60;
     uint32_t ds = timeInTenthsOfSeconds % 10;
+
+    ImGui::PushStyleColor(ImGuiCol_Text, color);
 
     ImGui::Text(text);
     ImGui::SameLine();
@@ -48,6 +64,8 @@ void DisplayTimeHHMMSS(uint32_t timeInTenthsOfSeconds, const char* text) {
     if (mm >= 10 && ss >= 10) {
         ImGui::Text("%u:%u:%u.%u", hh, mm, ss, ds);
     }
+
+    ImGui::PopStyleColor();
 }
 
 void SortChronological(TimestampInfo* arr, size_t len) {
@@ -123,6 +141,7 @@ void DrawStatsTracker(bool& open) {
     for (int i = 0; i < TIMESTAMP_MAX; i++) {
         strcpy(timestampDisplay[i].name, timestampDisplayName[i]);
         timestampDisplay[i].time = gSaveContext.gameplayStats.timestamp[i];
+        timestampDisplay[i].color = timestampDisplayColor[i];
     }
     SortChronological(timestampDisplay, sizeof(timestampDisplay) / sizeof(timestampDisplay[0]));
 
@@ -134,10 +153,10 @@ void DrawStatsTracker(bool& open) {
     ImGui::TableSetupColumn("Timers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
     ImGui::TableNextColumn();
 
-    DisplayTimeHHMMSS(totalTimer, "Total Game Time:    ");
+    DisplayTimeHHMMSS(totalTimer, "Total Game Time:    ", COLOR_WHITE);
     UIWidgets::Tooltip("Note: Timer accuracy may be affected by game performance and loading.");
-    DisplayTimeHHMMSS(gSaveContext.gameplayStats.playTimer / 2,  "Gameplay Time:      ");
-    DisplayTimeHHMMSS(gSaveContext.gameplayStats.pauseTimer / 3, "Pause Menu Time:    ");
+    DisplayTimeHHMMSS(gSaveContext.gameplayStats.playTimer / 2, "Gameplay Time:      ", COLOR_WHITE);
+    DisplayTimeHHMMSS(gSaveContext.gameplayStats.pauseTimer / 3, "Pause Menu Time:    ", COLOR_WHITE);
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
@@ -155,7 +174,7 @@ void DrawStatsTracker(bool& open) {
     for (int i = 0; i < TIMESTAMP_MAX; i++) {
         // To be shown, the entry must have a non-zero time and a string for its display name
         if (timestampDisplay[i].time > 0 && strnlen(timestampDisplay[i].name, 21) > 1) {
-            DisplayTimeHHMMSS(timestampDisplay[i].time, timestampDisplay[i].name);
+            DisplayTimeHHMMSS(timestampDisplay[i].time, timestampDisplay[i].name, timestampDisplay[i].color);
         }
     }
 
@@ -355,7 +374,56 @@ void SetupDisplayNames() {
     strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:     ");
 }
 
+void SetupDisplayColors() {
+    for (int i = 0; i < TIMESTAMP_MAX; i++) {
+        switch (i) {
+            case ITEM_SONG_MINUET:
+            case ITEM_KOKIRI_EMERALD:
+            case ITEM_SONG_SARIA:
+            case ITEM_MEDALLION_FOREST:
+                timestampDisplayColor[i] = COLOR_GREEN;
+                break;
+            case ITEM_SONG_BOLERO:
+            case ITEM_GORON_RUBY:
+            case ITEM_MEDALLION_FIRE:
+                timestampDisplayColor[i] = COLOR_RED;
+                break;
+            case ITEM_SONG_SERENADE:
+            case ITEM_ZORA_SAPPHIRE:
+            case ITEM_MEDALLION_WATER:
+                timestampDisplayColor[i] = COLOR_BLUE;
+                break;
+            case ITEM_SONG_LULLABY:
+            case ITEM_SONG_NOCTURNE:
+            case ITEM_MEDALLION_SHADOW:
+                timestampDisplayColor[i] = COLOR_PURPLE;
+                break;
+            case ITEM_SONG_EPONA:
+            case ITEM_SONG_REQUIEM:
+            case ITEM_MEDALLION_SPIRIT:
+                timestampDisplayColor[i] = COLOR_ORANGE;
+                break;
+            case ITEM_SONG_SUN:
+            case ITEM_SONG_PRELUDE:
+            case ITEM_MEDALLION_LIGHT:
+            case ITEM_ARROW_LIGHT:
+                timestampDisplayColor[i] = COLOR_YELLOW;
+                break;
+            case ITEM_SONG_STORMS:
+                timestampDisplayColor[i] = COLOR_GREY;
+                break;
+            case ITEM_SONG_TIME:
+                timestampDisplayColor[i] = COLOR_LIGHT_BLUE;
+                break;
+            default:
+                timestampDisplayColor[i] = COLOR_WHITE;
+                break;
+        }
+    }
+}
+
 void InitStatTracker() {
     SohImGui::AddWindow("Enhancements", "Gameplay Stats", DrawStatsTracker);
     SetupDisplayNames();
+    SetupDisplayColors();
 }
