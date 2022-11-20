@@ -1191,6 +1191,8 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Extend certain credits scenes so the music lines up properly with the visuals");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Gerudo Warrior's clothing colors", "gGerudoWarriorClothingFix", true, false);
                 UIWidgets::Tooltip("Prevent the Gerudo Warrior's clothes changing color when changing Link's tunic or using bombs in front of her");
+                UIWidgets::PaddedEnhancementCheckbox("Fix Camera Drift", "gFixCameraDrift", true, false);
+                UIWidgets::Tooltip("Fixes camera slightly drifting to the left when standing still due to a math error");
 
                 ImGui::EndMenu();
             }
