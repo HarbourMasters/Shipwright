@@ -1252,9 +1252,10 @@ void ResetColor(CosmeticOption& cosmeticOption) {
     cosmeticOption.currentColor.z = defaultColor.b / 255.0;
     cosmeticOption.currentColor.w = defaultColor.a / 255.0;
 
-    CVar_SetRGBA(cosmeticOption.cvar, defaultColor);
-    CVar_SetS32((cosmeticOption.rainbowCvar), 0);
-    CVar_SetS32((cosmeticOption.changedCvar), 0);
+    CVar_Clear(cosmeticOption.changedCvar);
+    CVar_Clear(cosmeticOption.rainbowCvar);
+    CVar_Clear(cosmeticOption.lockedCvar);
+    CVar_Clear(cosmeticOption.cvar);
 
     if (cosmeticOption.cvar == "gCosmetics.Equipment_BowBody") {
         ResetColor(cosmeticOptions.at("Equipment_BowTips"));
@@ -1314,7 +1315,7 @@ void DrawCosmeticBox(CosmeticBox cosmeticBox) {
     ImGui::SameLine((ImGui::CalcTextSize("Mirror Shield Mirror").x * 1.0f) + 60.0f);
     if (ImGui::Button(("Random##" + label).c_str())) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
-            if (cosmeticOption.box == cosmeticBox && (!cosmeticOption.advancedOption || CVar_GetS32("gCosmetics.AdvancedMode", 0))) {
+            if (cosmeticOption.box == cosmeticBox && (!cosmeticOption.advancedOption || CVar_GetS32("gCosmetics.AdvancedMode", 0)) && !CVar_GetS32(cosmeticOption.lockedCvar, 0)) {
                 RandomizeColor(cosmeticOption);
             }
         }
@@ -1324,7 +1325,7 @@ void DrawCosmeticBox(CosmeticBox cosmeticBox) {
     ImGui::SameLine();
     if (ImGui::Button(("Reset##" + label).c_str())) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
-            if (cosmeticOption.box == cosmeticBox && (!cosmeticOption.advancedOption || CVar_GetS32("gCosmetics.AdvancedMode", 0))) {
+            if (cosmeticOption.box == cosmeticBox && !CVar_GetS32(cosmeticOption.lockedCvar, 0)) {
                 ResetColor(cosmeticOption);
             }
         }
@@ -1377,13 +1378,6 @@ void DrawCosmeticsEditor(bool& open) {
                 ResetColor(cosmeticOption);
             }
         }
-        CVar_SetFloat("gCosmetics.Link_BodyScale.Value", 0.01f);
-        CVar_SetS32("gCosmetics.Link_BodyScale.Changed", 0);
-        CVar_SetFloat("gCosmetics.Link_HeadScale.Value", 1.0f);
-        CVar_SetS32("gCosmetics.Link_HeadScale.Changed", 0);
-        CVar_SetFloat("gCosmetics.BunnyHood_EarLength", 0.0f);
-        CVar_SetFloat("gCosmetics.BunnyHood_EarSpread", 0.0f);
-        CVar_SetFloat("gCosmetics.Goron_NeckLength", 0.0f);
         ApplyOrResetCustomGfxPatches();
         SohImGui::RequestCvarSaveOnNextTick();
     }
@@ -1414,14 +1408,45 @@ void DrawCosmeticsEditor(bool& open) {
             if (UIWidgets::EnhancementSliderFloat("Body Scale: %f", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, false)) {
                 CVar_SetS32("gCosmetics.Link_BodyScale.Changed", 1);
             }
+            ImGui::SameLine();
+            if (ImGui::Button("Reset##Link_BodyScale")) {
+                CVar_Clear("gCosmetics.Link_BodyScale.Value");
+                CVar_Clear("gCosmetics.Link_BodyScale.Changed");
+                SohImGui::RequestCvarSaveOnNextTick();
+                static Player* player = GET_PLAYER(gPlayState);
+                player->actor.scale.x = 0.01f;
+                player->actor.scale.y = 0.01f;
+                player->actor.scale.z = 0.01f;
+            }
             if (UIWidgets::EnhancementSliderFloat("Head Scale: %f", "##Link_HeadScale", "gCosmetics.Link_HeadScale.Value", 0.4f, 4.0f, "", 1.0f, false)) {
                 CVar_SetS32("gCosmetics.Link_HeadScale.Changed", 1);
             }
+            ImGui::SameLine();
+            if (ImGui::Button("Reset##Link_HeadScale")) {
+                CVar_Clear("gCosmetics.Link_HeadScale.Value");
+                CVar_Clear("gCosmetics.Link_HeadScale.Changed");
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
             ImGui::Text("Bunny Hood");
             UIWidgets::EnhancementSliderFloat("Length: %f", "##BunnyHood_EarLength", "gCosmetics.BunnyHood_EarLength", -300.0f, 1000.0f, "", 0.0f, false);
+            ImGui::SameLine();
+            if (ImGui::Button("Reset##BunnyHood_EarLength")) {
+                CVar_Clear("gCosmetics.BunnyHood_EarLength");
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
             UIWidgets::EnhancementSliderFloat("Spread: %f", "##BunnyHood_EarSpread", "gCosmetics.BunnyHood_EarSpread", -300.0f, 500.0f, "", 0.0f, false);
+            ImGui::SameLine();
+            if (ImGui::Button("Reset##BunnyHood_EarSpread")) {
+                CVar_Clear("gCosmetics.BunnyHood_EarSpread");
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
             ImGui::Text("Gorons");
             UIWidgets::EnhancementSliderFloat("Neck Length: %f", "##Goron_NeckLength", "gCosmetics.Goron_NeckLength", 0.0f, 1000.0f, "", 0.0f, false);
+            ImGui::SameLine();
+            if (ImGui::Button("Reset##Goron_NeckLength")) {
+                CVar_Clear("gCosmetics.Goron_NeckLength");
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
             UIWidgets::EnhancementCheckbox("Unfix Goron Spin", "gUnfixGoronSpin");
             ImGui::EndTabItem();
         }
