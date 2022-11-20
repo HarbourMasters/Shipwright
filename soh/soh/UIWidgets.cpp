@@ -263,7 +263,6 @@ namespace UIWidgets {
 
     void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton) {
         int val = CVar_GetS32(cvarName, defaultValue);
-        Spacer(0);
         ImGui::Text(text, val);
         Spacer(0);
         if(PlusMinusButton) {
@@ -321,7 +320,6 @@ namespace UIWidgets {
 
     void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton) {
         float val = CVar_GetFloat(cvarName, defaultValue);
-        Spacer(0);
         if (!isPercentage) {
             ImGui::Text(text, val);
         } else {
