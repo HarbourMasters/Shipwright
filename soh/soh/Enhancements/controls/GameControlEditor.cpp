@@ -230,20 +230,20 @@ namespace GameControlEditor {
         }
 
         UIWidgets::Spacer(0);
-        SohImGui::BeginGroupPanel("Aiming/First Person Camera", ImGui::GetContentRegionAvail());
+        SohImGui::BeginGroupPanel("Aiming/First-Person Camera", ImGui::GetContentRegionAvail());
         UIWidgets::PaddedEnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
-        DrawHelpIcon("Allows for aiming with the right stick in:\n-First Person/C-Up view\n-Weapon Aiming");
+        DrawHelpIcon("Allows for aiming with the right stick in:\n-First-Person/C-Up view\n-Weapon Aiming");
         UIWidgets::PaddedEnhancementCheckbox("Invert Aiming X Axis", "gInvertAimingXAxis");
-        DrawHelpIcon("Inverts the Camera X Axis in:\n-First Person/C-Up view\n-Weapon Aiming");
+        DrawHelpIcon("Inverts the Camera X Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
         UIWidgets::PaddedEnhancementCheckbox("Invert Aiming Y Axis", "gInvertAimingYAxis");
-        DrawHelpIcon("Inverts the Camera Y Axis in:\n-First Person/C-Up view\n-Weapon Aiming");
+        DrawHelpIcon("Inverts the Camera Y Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-        UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First Person View", "gDisableAutoCenterViewFirstPerson");
+        UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First-Person View", "gDisableAutoCenterViewFirstPerson");
         DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
         UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First Serson sensitivity", "gEnableFirstPersonSensitivity", true, false);
         if (CVar_GetS32("gEnableFirstPersonSensitivity", 0)) {
-            UIWidgets::EnhancementSliderFloat("Aiming/First Person Sensitivity: %d %%", "##FirstPersonSensitivity",
+            UIWidgets::EnhancementSliderFloat("Aiming/First-Person Sensitivity: %d %%", "##FirstPersonSensitivity",
                                                 "gFirstPersonCameraSensitivity", 0.01f, 5.0f, "", 1.0f, true, true);
         } else {
             CVar_SetFloat("gFirstPersonCameraSensitivity", 1.0f);
@@ -251,16 +251,16 @@ namespace GameControlEditor {
         SohImGui::EndGroupPanel();
 
         UIWidgets::Spacer(0);
-        SohImGui::BeginGroupPanel("Third Person Camera", ImGui::GetContentRegionAvail());
+        SohImGui::BeginGroupPanel("Third-Person Camera", ImGui::GetContentRegionAvail());
 
         UIWidgets::PaddedEnhancementCheckbox("Right Stick Camera", "gFreeCamera");
         DrawHelpIcon("Enables free camera control\nNote: You must remap C buttons off of the right stick in the "
                             "controller config menu, and map the camera stick to the right stick.");
         UIWidgets::PaddedEnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
-        DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera\n-First Person/C-Up view\n-Weapon Aiming");
+        DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera\n-First-Person/C-Up view\n-Weapon Aiming");
         UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
-        DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera\n-First Person/C-Up view\n-Weapon Aiming");
-        UIWidgets::EnhancementSliderFloat("Third Person Sensitivity: %d %%", "##ThirdPersonSensitivity",
+        DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera\n-First-Person/C-Up view\n-Weapon Aiming");
+        UIWidgets::EnhancementSliderFloat("Third-Person Sensitivity: %d %%", "##ThirdPersonSensitivity",
                                             "gThirdPersonCameraSensitivity", 0.01f, 5.0f, "", 1.0f, true, true);
         UIWidgets::EnhancementSliderInt("Camera Distance: %d", "##CamDist",
                                         "gFreeCameraDistMax", 100, 900, "", 185, true);
