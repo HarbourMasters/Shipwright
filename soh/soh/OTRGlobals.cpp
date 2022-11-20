@@ -428,13 +428,6 @@ extern "C" void InitOTR() {
     SaveManager::Instance = new SaveManager();
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
-    auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
-
-    if (!t->HasLoadError)
-    {
-        uint32_t gameVersion = OTRGlobals::Instance->context->GetResourceManager()->GetGameVersion();
-        OTRGlobals::Instance->context->GetResourceManager()->SetGameVersion(gameVersion);
-    }
 
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
@@ -640,9 +633,12 @@ extern "C" uint16_t OTRGetPixelDepth(float x, float y) {
     return OTRGlobals::Instance->context->GetPixelDepth(x, y);
 }
 
-extern "C" uint32_t ResourceMgr_GetGameVersion()
-{
-    return OTRGlobals::Instance->context->GetResourceManager()->GetGameVersion();
+extern "C" uint32_t ResourceMgr_GetNumGameVersions() {
+    return OTRGlobals::Instance->context->GetResourceManager()->GetGameVersions().size();
+}
+
+extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
+    return OTRGlobals::Instance->context->GetResourceManager()->GetGameVersions()[index];
 }
 
 uint32_t IsSceneMasterQuest(s16 sceneNum) {
