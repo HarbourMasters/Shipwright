@@ -257,9 +257,9 @@ namespace GameControlEditor {
         DrawHelpIcon("Enables free camera control\nNote: You must remap C buttons off of the right stick in the "
                             "controller config menu, and map the camera stick to the right stick.");
         UIWidgets::PaddedEnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
-        DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera\n-First-Person/C-Up view\n-Weapon Aiming");
+        DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera");
         UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
-        DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera\n-First-Person/C-Up view\n-Weapon Aiming");
+        DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera");
         UIWidgets::EnhancementSliderFloat("Third-Person Sensitivity: %d %%", "##ThirdPersonSensitivity",
                                             "gThirdPersonCameraSensitivity", 0.01f, 5.0f, "", 1.0f, true, true);
         UIWidgets::EnhancementSliderInt("Camera Distance: %d", "##CamDist",
