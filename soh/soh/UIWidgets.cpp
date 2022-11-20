@@ -264,6 +264,7 @@ namespace UIWidgets {
     void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton) {
         int val = CVar_GetS32(cvarName, defaultValue);
         ImGui::Text(text, val);
+
         if(PlusMinusButton) {
             std::string MinusBTNName = " - ##";
             MinusBTNName += cvarName;
@@ -275,7 +276,15 @@ namespace UIWidgets {
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
         }
-
+        if (PlusMinusButton) {
+#ifdef __SWITCH__
+            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
+#elif defined(__WIIU__)
+            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
+#else
+            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
+#endif
+        }
         if (ImGui::SliderInt(id, &val, min, max, format))
         {
             CVar_SetS32(cvarName, val);
