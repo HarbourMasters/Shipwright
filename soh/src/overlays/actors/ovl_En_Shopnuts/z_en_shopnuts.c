@@ -207,7 +207,7 @@ void EnShopnuts_ThrowNut(EnShopnuts* this, PlayState* play) {
         spawnPos.y = this->actor.world.pos.y + 12.0f;
         spawnPos.z = this->actor.world.pos.z + (Math_CosS(this->actor.shape.rot.y) * 23.0f);
         if (Actor_Spawn(&play->actorCtx, play, ACTOR_EN_NUTSBALL, spawnPos.x, spawnPos.y, spawnPos.z,
-                        this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z, 2) != NULL) {
+                        this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z, 2, true) != NULL) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_THROW);
         }
     }
@@ -228,7 +228,7 @@ void EnShopnuts_SpawnSalesman(EnShopnuts* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_DNS, this->actor.world.pos.x, this->actor.world.pos.y,
                     this->actor.world.pos.z, this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z,
-                    this->actor.params);
+                    this->actor.params, true);
         Actor_Kill(&this->actor);
     } else {
         Math_ApproachS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 2, 0xE38);

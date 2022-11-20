@@ -52,7 +52,7 @@ void OceffStorm_Init(Actor* thisx, PlayState* play) {
         this->actor.draw = OceffStorm_Draw2;
     } else {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_OKARINA_EFFECT, this->actor.world.pos.x,
-                    this->actor.world.pos.y - 30.0f, this->actor.world.pos.z, 0, 0, 0, 1);
+                    this->actor.world.pos.y - 30.0f, this->actor.world.pos.z, 0, 0, 0, 1, true);
     }
 }
 

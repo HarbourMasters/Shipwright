@@ -152,7 +152,7 @@ void EnBombf_GrowBomb(EnBombf* this, PlayState* play) {
     if (this->flowerBombScale >= 1.0f) {
         if (Actor_HasParent(&this->actor, play)) {
             bombFlower = (EnBombf*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOMBF, this->actor.world.pos.x,
-                                               this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
+                                               this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
             if (bombFlower != NULL) {
                 func_8002F5C4(&this->actor, &bombFlower->actor, play);
                 this->timer = 180;
@@ -172,7 +172,7 @@ void EnBombf_GrowBomb(EnBombf* this, PlayState* play) {
             if (this->bombCollider.base.ac->category != ACTORCAT_BOSS) {
                 bombFlower =
                     (EnBombf*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOMBF, this->actor.world.pos.x,
-                                          this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
+                                          this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
                 if (bombFlower != NULL) {
                     bombFlower->unk_200 = 1;
                     bombFlower->timer = 0;
@@ -185,7 +185,7 @@ void EnBombf_GrowBomb(EnBombf* this, PlayState* play) {
             if (Player_IsBurningStickInRange(play, &this->actor.world.pos, 30.0f, 50.0f)) {
                 bombFlower =
                     (EnBombf*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOMBF, this->actor.world.pos.x,
-                                          this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
+                                          this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
                 if (bombFlower != NULL) {
                     bombFlower->timer = 100;
                     this->timer = 180;

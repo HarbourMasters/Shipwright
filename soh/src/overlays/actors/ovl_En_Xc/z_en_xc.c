@@ -108,7 +108,7 @@ void EnXc_SpawnNut(EnXc* this, PlayState* play) {
     f32 z = (Math_CosS(angle) * 30.0f) + pos->z;
 
     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, x, y, z, 0xFA0, this->actor.shape.rot.y, 0,
-                ARROW_CS_NUT);
+                ARROW_CS_NUT, true);
 }
 
 void EnXc_BgCheck(EnXc* this, PlayState* play) {
@@ -537,7 +537,7 @@ void EnXc_SpawnFlame(EnXc* this, PlayState* play) {
         f32 yPos = npcAction->startPos.y;
         f32 zPos = npcAction->startPos.z;
 
-        this->flameActor = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_LIGHT, xPos, yPos, zPos, 0, 0, 0, 5);
+        this->flameActor = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_LIGHT, xPos, yPos, zPos, 0, 0, 0, 5, true);
         sEnXcFlameSpawned = true;
     }
 }
@@ -1442,7 +1442,7 @@ void func_80B3F534(PlayState* play) {
 
     if (frameCount == 310) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -1044.0f, -1243.0f, 7458.0f, 0, 0, 0,
-                    WARP_DESTINATION);
+                    WARP_DESTINATION, true);
     }
 }
 

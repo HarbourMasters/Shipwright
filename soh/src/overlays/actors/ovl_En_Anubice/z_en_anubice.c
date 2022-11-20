@@ -286,7 +286,7 @@ void EnAnubice_ShootFireball(EnAnubice* this, PlayState* play) {
 
     if (curFrame == 12.0f) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ANUBICE_FIRE, this->fireballPos.x,
-                    this->fireballPos.y + 15.0f, this->fireballPos.z, this->fireballRot.x, this->fireballRot.y, 0, 0);
+                    this->fireballPos.y + 15.0f, this->fireballPos.z, this->fireballRot.x, this->fireballRot.y, 0, 0, true);
     }
 
     if (this->animLastFrame <= curFrame) {

@@ -237,7 +237,7 @@ void func_80966E98(Demo6K* this, PlayState* play) {
     if (this->timer1 == 39) {
         func_800788CC(NA_SE_EV_CONSENTRATION);
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_6K, this->actor.world.pos.x,
-                    this->actor.world.pos.y + 10.0f, this->actor.world.pos.z, 0, 0, 0, 2);
+                    this->actor.world.pos.y + 10.0f, this->actor.world.pos.z, 0, 0, 0, 2, true);
     }
 
     if (this->timer1 == 64) {
@@ -542,7 +542,7 @@ void func_80967DBC(Demo6K* this, PlayState* play) {
 void func_80967F10(Demo6K* this, PlayState* play) {
     if (this->timer2 == 0) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_6K, this->actor.world.pos.x, this->actor.world.pos.y,
-                    this->actor.world.pos.z, 0, 0, 0, 13);
+                    this->actor.world.pos.z, 0, 0, 0, 13, true);
     }
 
     this->timer2++;

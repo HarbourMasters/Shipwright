@@ -866,7 +866,7 @@ void EnAm_Update(Actor* thisx, PlayState* play) {
                 EnAm_SpawnEffects(this, play);
                 bomb =
                     (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->dyna.actor.world.pos.x,
-                                        this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, 0, 2, BOMB_BODY);
+                                        this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, 0, 2, BOMB_BODY, true);
                 if (bomb != NULL) {
                     bomb->timer = 0;
                 }

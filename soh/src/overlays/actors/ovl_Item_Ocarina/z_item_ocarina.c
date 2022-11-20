@@ -62,7 +62,7 @@ void ItemOcarina_Init(Actor* thisx, PlayState* play) {
                 Actor_Kill(thisx);
                 return;
             }
-            Actor_Spawn(&play->actorCtx, play, ACTOR_ELF_MSG2, 299.0f, -140.0f, 884.0f, 0, 4, 1, 0x3800);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_ELF_MSG2, 299.0f, -140.0f, 884.0f, 0, 4, 1, 0x3800, true);
             Actor_SetScale(thisx, 0.2f);
             break;
         default:
