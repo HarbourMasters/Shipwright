@@ -380,7 +380,6 @@ void SaveManager::InitFileNormal() {
         gSaveContext.playerName[i] = 0x3E;
     }
     gSaveContext.n64ddFlag = 0;
-    gSaveContext.gameplayStats = {};
     gSaveContext.healthCapacity = 0x30;
     gSaveContext.health = 0x30;
     gSaveContext.magicLevel = 0;
@@ -442,6 +441,15 @@ void SaveManager::InitFileNormal() {
     for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys); dungeon++) {
         gSaveContext.sohStats.dungeonKeys[dungeon] = 0;
     }
+    gSaveContext.sohStats.playTimer = 0;
+    gSaveContext.sohStats.pauseTimer = 0;
+    for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.sohStats.timestamp); timestamp++) {
+        gSaveContext.sohStats.timestamp[timestamp] = 0;
+    }
+    for (int count = 0; count < ARRAY_COUNT(gSaveContext.sohStats.count); count++) {
+        gSaveContext.sohStats.count[count] = 0;
+    }
+    gSaveContext.sohStats.gameComplete = false;
     for (int scene = 0; scene < ARRAY_COUNT(gSaveContext.sceneFlags); scene++) {
         gSaveContext.sceneFlags[scene].chest = 0;
         gSaveContext.sceneFlags[scene].swch = 0;
@@ -907,16 +915,6 @@ void SaveManager::LoadBaseVersion1() {
     SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
-    SaveManager::Instance->LoadStruct("gameplayStats", [&]() {
-        SaveManager::Instance->LoadData("playTimer", gSaveContext.gameplayStats.playTimer);
-        SaveManager::Instance->LoadData("pauseTimer", gSaveContext.gameplayStats.pauseTimer);
-        SaveManager::Instance->LoadArray("timestamps", ARRAY_COUNT(gSaveContext.gameplayStats.timestamp), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.gameplayStats.timestamp[i]);
-        });
-        SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.gameplayStats.count), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.gameplayStats.count[i]);
-        });
-    });
 }
 
 void SaveManager::LoadBaseVersion2() {
@@ -1002,6 +1000,14 @@ void SaveManager::LoadBaseVersion2() {
         SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.dungeonKeys[i]);
         });
+        SaveManager::Instance->LoadData("playTimer", gSaveContext.sohStats.playTimer);
+        SaveManager::Instance->LoadData("pauseTimer", gSaveContext.sohStats.pauseTimer);
+        SaveManager::Instance->LoadArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.timestamp), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.sohStats.timestamp[i]);
+        });
+        SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.sohStats.count[i]);
+        });
     });
     SaveManager::Instance->LoadArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&i]() {
@@ -1082,16 +1088,6 @@ void SaveManager::LoadBaseVersion2() {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
     SaveManager::Instance->LoadData("isMasterQuest", gSaveContext.isMasterQuest);
-    SaveManager::Instance->LoadStruct("gameplayStats", [&]() {
-        SaveManager::Instance->LoadData("playTimer", gSaveContext.gameplayStats.playTimer);
-        SaveManager::Instance->LoadData("pauseTimer", gSaveContext.gameplayStats.pauseTimer);
-        SaveManager::Instance->LoadArray("timestamps", ARRAY_COUNT(gSaveContext.gameplayStats.timestamp), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.gameplayStats.timestamp[i]);
-        });
-        SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.gameplayStats.count), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.gameplayStats.count[i]);
-        });
-    });
 }
 
 void SaveManager::SaveBase() {
@@ -1173,6 +1169,14 @@ void SaveManager::SaveBase() {
         SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
             SaveManager::Instance->SaveData("", gSaveContext.sohStats.dungeonKeys[i]);
         });
+        SaveManager::Instance->SaveData("playTimer", gSaveContext.sohStats.playTimer);
+        SaveManager::Instance->SaveData("pauseTimer", gSaveContext.sohStats.pauseTimer);
+        SaveManager::Instance->SaveArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.timestamp), [](size_t i) {
+            SaveManager::Instance->SaveData("", gSaveContext.sohStats.timestamp[i]);
+        });
+        SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
+            SaveManager::Instance->SaveData("", gSaveContext.sohStats.count[i]);
+        });
     });
     SaveManager::Instance->SaveArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {
         SaveManager::Instance->SaveStruct("", [&i]() {
@@ -1253,16 +1257,6 @@ void SaveManager::SaveBase() {
         SaveManager::Instance->SaveData("", gSaveContext.randomizerInf[i]);
     });
     SaveManager::Instance->SaveData("isMasterQuest", gSaveContext.isMasterQuest);
-    SaveManager::Instance->SaveStruct("gameplayStats", [&]() {
-        SaveManager::Instance->SaveData("playTimer", gSaveContext.gameplayStats.playTimer);
-        SaveManager::Instance->SaveData("pauseTimer", gSaveContext.gameplayStats.pauseTimer);
-        SaveManager::Instance->SaveArray("timestamps", ARRAY_COUNT(gSaveContext.gameplayStats.timestamp), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.gameplayStats.timestamp[i]);
-        });
-        SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(gSaveContext.gameplayStats.count), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.gameplayStats.count[i]);
-        });
-    });
 }
 
 void SaveManager::SaveArray(const std::string& name, const size_t size, SaveArrayFunc func) {

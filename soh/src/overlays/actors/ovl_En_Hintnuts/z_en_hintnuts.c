@@ -428,7 +428,7 @@ void EnHintnuts_Leave(EnHintnuts* this, PlayState* play) {
             Actor_ChangeCategory(play, &play->actorCtx, this->actor.child, ACTORCAT_PROP);
         }
         Actor_Kill(&this->actor);
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_DEKU_SCRUB]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_SCRUB]++;
     }
 }
 

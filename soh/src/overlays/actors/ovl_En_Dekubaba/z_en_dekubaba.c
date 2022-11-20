@@ -408,9 +408,9 @@ void EnDekubaba_SetupPrunedSomersault(EnDekubaba* this) {
     this->actionFunc = EnDekubaba_PrunedSomersault;
 
     if (this->actor.params == DEKUBABA_BIG) {
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]++;
     } else {
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]++;
     }
 }
 
@@ -421,9 +421,9 @@ void EnDekubaba_SetupShrinkDie(EnDekubaba* this) {
     this->actionFunc = EnDekubaba_ShrinkDie;
 
     if (this->actor.params == DEKUBABA_BIG) {
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]++;
     } else {
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]++;
     }
 }
 

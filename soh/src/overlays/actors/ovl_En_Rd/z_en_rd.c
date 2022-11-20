@@ -640,9 +640,9 @@ void func_80AE3C20(EnRd* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_REDEAD_DEAD);
     EnRd_SetupAction(this, func_80AE3C98);
     if (this->actor.params >= -1) {
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_REDEAD]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_REDEAD]++;
     } else {
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_GIBDO]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GIBDO]++;
     }
 }
 

@@ -1194,9 +1194,9 @@ void EnWf_SetupDie(EnWf* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_WOLFOS_DEAD);
     EnWf_SetupAction(this, EnWf_Die);
     if (this->actor.params == WOLFOS_WHITE) {
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE]++;
     } else {
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS]++;
     }
 }
 

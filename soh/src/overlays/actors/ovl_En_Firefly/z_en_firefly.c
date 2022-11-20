@@ -224,13 +224,13 @@ void EnFirefly_SetupDie(EnFirefly* this) {
     this->actor.speedXZ = 0.0f;
     this->actionFunc = EnFirefly_Die;
     if (this->actor.params == KEESE_NORMAL_FLY || this->actor.params == KEESE_NORMAL_PERCH) {
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_KEESE]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE]++;
     }
     if (this->actor.params == KEESE_FIRE_FLY || this->actor.params == KEESE_FIRE_PERCH) {
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_KEESE_FIRE]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE_FIRE]++;
     }
     if (this->actor.params == KEESE_ICE_FLY) {
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_KEESE_ICE]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE_ICE]++;
     }
 }
 

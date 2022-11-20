@@ -253,7 +253,7 @@ void EnOkuta_SetupDie(EnOkuta* this) {
     Animation_MorphToPlayOnce(&this->skelAnime, &gOctorokDieAnim, -3.0f);
     this->timer = 0;
     this->actionFunc = EnOkuta_Die;
-    gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_OCTOROK]++;
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_OCTOROK]++;
 }
 
 void EnOkuta_SetupFreeze(EnOkuta* this) {

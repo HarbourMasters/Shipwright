@@ -464,16 +464,16 @@ void EnBb_SetupDeath(EnBb* this, PlayState* play) {
     EnBb_SetupAction(this, EnBb_Death);
 
     if (this->actor.params == ENBB_GREEN || this->actor.params == ENBB_GREEN_BIG) {
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN]++;
     }
     if (this->actor.params == ENBB_BLUE) {
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_BLUE]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_BLUE]++;
     }
     if (this->actor.params == ENBB_WHITE) {
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_WHITE]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_WHITE]++;
     }
     if (this->actor.params == ENBB_RED) {
-        gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_RED]++;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_RED]++;
     }
 }
 

@@ -637,9 +637,9 @@ void func_80ADF15C(EnPoh* this, PlayState* play) {
         if (this->unk_198 == 1) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_EXTINCT);
             if (this->actor.params == EN_POH_FLAT || this->actor.params == EN_POH_SHARP) {
-                gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_POE_COMPOSER]++;
+                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_COMPOSER]++;
             } else {
-                gSaveContext.gameplayStats.count[COUNT_ENEMIES_DEFEATED_POE]++;
+                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE]++;
             }
         }
     } else if (this->unk_198 == 28) {
