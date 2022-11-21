@@ -749,13 +749,13 @@ void func_8008F470(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dLis
     Color_RGB8 sTemp;
     color = &sTunicColors[tunic];
     if (tunic == PLAYER_TUNIC_KOKIRI && CVar_GetS32("gCosmetics.Link_KokiriTunic.Changed", 0)) {
-        sTemp = CVar_GetRGB("gCosmetics.Link_KokiriTunic", sTunicColors[PLAYER_TUNIC_KOKIRI]);
+        sTemp = CVar_GetRGB("gCosmetics.Link_KokiriTunic.Value", sTunicColors[PLAYER_TUNIC_KOKIRI]);
         color = &sTemp;
     } else if (tunic == PLAYER_TUNIC_GORON && CVar_GetS32("gCosmetics.Link_GoronTunic.Changed", 0)) {
-        sTemp = CVar_GetRGB("gCosmetics.Link_GoronTunic", sTunicColors[PLAYER_TUNIC_GORON]);
+        sTemp = CVar_GetRGB("gCosmetics.Link_GoronTunic.Value", sTunicColors[PLAYER_TUNIC_GORON]);
         color = &sTemp;
     } else if (tunic == PLAYER_TUNIC_ZORA && CVar_GetS32("gCosmetics.Link_ZoraTunic.Changed", 0)) {
-        sTemp = CVar_GetRGB("gCosmetics.Link_ZoraTunic", sTunicColors[PLAYER_TUNIC_ZORA]);
+        sTemp = CVar_GetRGB("gCosmetics.Link_ZoraTunic.Value", sTunicColors[PLAYER_TUNIC_ZORA]);
         color = &sTemp;
     }
 
@@ -774,10 +774,10 @@ void func_8008F470(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dLis
 
                 color = &sGauntletColors[strengthUpgrade - 2];
                 if (strengthUpgrade == PLAYER_STR_SILVER_G && CVar_GetS32("gCosmetics.Gloves_SilverGauntlets.Changed", 0)) {
-                    sTemp = CVar_GetRGB("gCosmetics.Gloves_SilverGauntlets", sGauntletColors[PLAYER_STR_SILVER_G - 2]);
+                    sTemp = CVar_GetRGB("gCosmetics.Gloves_SilverGauntlets.Value", sGauntletColors[PLAYER_STR_SILVER_G - 2]);
                     color = &sTemp;
                 } else if (strengthUpgrade == PLAYER_STR_GOLD_G && CVar_GetS32("gCosmetics.Gloves_GoldenGauntlets.Changed", 0)) {
-                    sTemp = CVar_GetRGB("gCosmetics.Gloves_GoldenGauntlets", sGauntletColors[PLAYER_STR_GOLD_G - 2]);
+                    sTemp = CVar_GetRGB("gCosmetics.Gloves_GoldenGauntlets.Value", sGauntletColors[PLAYER_STR_GOLD_G - 2]);
                     color = &sTemp;
                 }
                 gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);

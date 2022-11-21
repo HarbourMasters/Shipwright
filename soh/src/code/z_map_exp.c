@@ -603,11 +603,11 @@ void Minimap_DrawCompassIcons(PlayState* play) {
     s16 tempX, tempZ;
     Color_RGB8 lastEntranceColor = { 200, 0, 0 };
     if (CVar_GetS32("gCosmetics.Hud_MinimapEntrance.Changed", 0)) {
-        lastEntranceColor = CVar_GetRGB("gCosmetics.Hud_MinimapEntrance", lastEntranceColor);
+        lastEntranceColor = CVar_GetRGB("gCosmetics.Hud_MinimapEntrance.Value", lastEntranceColor);
     }
     Color_RGB8 currentPositionColor = { 200, 255, 0 };
     if (CVar_GetS32("gCosmetics.Hud_MinimapPosition.Changed", 0)) {
-        currentPositionColor = CVar_GetRGB("gCosmetics.Hud_MinimapPosition", currentPositionColor);
+        currentPositionColor = CVar_GetRGB("gCosmetics.Hud_MinimapPosition.Value", currentPositionColor);
     }
     s16 X_Margins_Minimap;
     s16 Y_Margins_Minimap;
@@ -715,7 +715,7 @@ void Minimap_Draw(PlayState* play) {
     s32 mapIndex = gSaveContext.mapIndex;
     Color_RGB8 minimapColor = {0, 255, 255};
     if (CVar_GetS32("gCosmetics.Hud_Minimap.Changed", 0)) {
-        minimapColor = CVar_GetRGB("gCosmetics.Hud_Minimap", minimapColor);
+        minimapColor = CVar_GetRGB("gCosmetics.Hud_Minimap.Value", minimapColor);
     }
 
     OPEN_DISPS(play->state.gfxCtx);
