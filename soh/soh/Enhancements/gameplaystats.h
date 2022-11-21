@@ -95,7 +95,7 @@ typedef enum {
     COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA,   // EN_KAREBABA
     COUNT_ENEMIES_DEFEATED_WOLFOS,               // EN_WF
     COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE,         // EN_WF
-    // Ammo used
+    // Ammo used (z_parameter.c)
     COUNT_AMMO_USED_STICK,
     COUNT_AMMO_USED_NUT,
     COUNT_AMMO_USED_BOMB,
@@ -103,19 +103,34 @@ typedef enum {
     COUNT_AMMO_USED_SEED,
     COUNT_AMMO_USED_BOMBCHU,
     COUNT_AMMO_USED_BEAN,
+    // Buttons pressed (z_play.c)
+    COUNT_BUTTON_PRESSES_A,
+    COUNT_BUTTON_PRESSES_B,
+    COUNT_BUTTON_PRESSES_L,
+    COUNT_BUTTON_PRESSES_R,
+    COUNT_BUTTON_PRESSES_Z,
+    COUNT_BUTTON_PRESSES_CUP,
+    COUNT_BUTTON_PRESSES_CRIGHT,
+    COUNT_BUTTON_PRESSES_CDOWN,
+    COUNT_BUTTON_PRESSES_CLEFT,
+    COUNT_BUTTON_PRESSES_DUP,
+    COUNT_BUTTON_PRESSES_DRIGHT,
+    COUNT_BUTTON_PRESSES_DDOWN,
+    COUNT_BUTTON_PRESSES_DLEFT,
+    COUNT_BUTTON_PRESSES_START,
     // Other counts
-    COUNT_RUPEES_COLLECTED,
-    COUNT_RUPEES_SPENT,
-    COUNT_CHESTS_OPENED,
-    COUNT_DAMAGE_TAKEN,
-    COUNT_ICE_TRAPS,
-    COUNT_ROLLS,
-    COUNT_BONKS,
-    COUNT_PAUSES,
-    COUNT_STEPS,
-    COUNT_POTS_BROKEN,
-    COUNT_BUSHES_CUT,
-    COUNT_SWORD_SWINGS,
+    COUNT_RUPEES_COLLECTED, // z_parameter.c
+    COUNT_RUPEES_SPENT,     // z_parameter.c
+    COUNT_CHESTS_OPENED,    // z_en_box.c
+    COUNT_DAMAGE_TAKEN,     // z_parameter.c
+    COUNT_ICE_TRAPS,        // z_player.c
+    COUNT_ROLLS,            // z_player.c
+    COUNT_BONKS,            // z_player.c
+    COUNT_PAUSES,           // z_kaleido_scope_call.c
+    COUNT_STEPS,            // z_player.c
+    COUNT_POTS_BROKEN,      // z_obj_tsubo.c
+    COUNT_BUSHES_CUT,       // z_en_kusa.c
+    COUNT_SWORD_SWINGS,     // z_player.c
 
     COUNT_MAX
 
