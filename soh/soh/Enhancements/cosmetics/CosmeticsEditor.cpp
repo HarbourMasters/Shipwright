@@ -174,14 +174,14 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Title_N64LogoGreen",            "N64 Green",            BOX_TITLE,        ImVec4( 50, 100,   0, 255), false, true, true),
     COSMETIC_OPTION("Title_N64LogoYellow",           "N64 Yellow",           BOX_TITLE,        ImVec4(200, 150,   0, 255), false, true, true),
 
-    COSMETIC_OPTION("Arrows_NormalPrimary",          "Normal Primary",       BOX_ARROWS,       ImVec4(255, 255, 255, 255), false, true, false), // gNormalArrowCol
-    COSMETIC_OPTION("Arrows_NormalSecondary",        "Normal Secondary",     BOX_ARROWS,       ImVec4(255, 255, 255, 255), false, true, true), // gNormalArrowColEnv
-    COSMETIC_OPTION("Arrows_FirePrimary",            "Fire Primary",         BOX_ARROWS,       ImVec4(255, 255, 255, 255), false, true, false), // gFireArrowCol
-    COSMETIC_OPTION("Arrows_FireSecondary",          "Fire Secondary",       BOX_ARROWS,       ImVec4(255, 255, 255, 255), false, true, true), // gFireArrowColEnv
-    COSMETIC_OPTION("Arrows_IcePrimary",             "Ice Primary",          BOX_ARROWS,       ImVec4(255, 255, 255, 255), false, true, false), // gIceArrowCol
-    COSMETIC_OPTION("Arrows_IceSecondary",           "Ice Secondary",        BOX_ARROWS,       ImVec4(255, 255, 255, 255), false, true, true), // gIceArrowColEnv
-    COSMETIC_OPTION("Arrows_LightPrimary",           "Light Primary",        BOX_ARROWS,       ImVec4(255, 255, 255, 255), false, true, false), // gLightArrowCol
-    COSMETIC_OPTION("Arrows_LightSecondary",         "Light Secondary",      BOX_ARROWS,       ImVec4(255, 255, 255, 255), false, true, true), // gLightArrowColEnv
+    COSMETIC_OPTION("Arrows_NormalPrimary",          "Normal Primary",       BOX_ARROWS,       ImVec4(  0, 150,   0,   0), false, true, false),
+    COSMETIC_OPTION("Arrows_NormalSecondary",        "Normal Secondary",     BOX_ARROWS,       ImVec4(255, 255, 170, 255), false, true, true),
+    COSMETIC_OPTION("Arrows_FirePrimary",            "Fire Primary",         BOX_ARROWS,       ImVec4(255, 200,   0,   0), false, true, false),
+    COSMETIC_OPTION("Arrows_FireSecondary",          "Fire Secondary",       BOX_ARROWS,       ImVec4(255,   0,   0, 255), false, true, true),
+    COSMETIC_OPTION("Arrows_IcePrimary",             "Ice Primary",          BOX_ARROWS,       ImVec4(  0,   0, 255, 255), false, true, false),
+    COSMETIC_OPTION("Arrows_IceSecondary",           "Ice Secondary",        BOX_ARROWS,       ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Arrows_LightPrimary",           "Light Primary",        BOX_ARROWS,       ImVec4(255, 255,   0, 255), false, true, false),
+    COSMETIC_OPTION("Arrows_LightSecondary",         "Light Secondary",      BOX_ARROWS,       ImVec4(255, 255, 170,   0), false, true, true),
 
     COSMETIC_OPTION("Magic_DinsPrimary",             "Din's Primary",        BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false), // gDF_Col
     COSMETIC_OPTION("Magic_DinsSecondary",           "Din's Secondary",      BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true), // gDF_Env
