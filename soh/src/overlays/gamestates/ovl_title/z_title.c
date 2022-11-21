@@ -202,7 +202,7 @@ void Title_Draw(TitleContext* this) {
     gDPSetCombineLERP(POLY_OPA_DISP++, TEXEL1, PRIMITIVE, ENV_ALPHA, TEXEL0, 0, 0, 0, TEXEL0, PRIMITIVE, ENVIRONMENT,
         COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
     if (CVar_GetS32("gCosmetics.Title_NintendoLogo.Changed", 0)) {
-        Color_RGB8 nintendoLogoColor = CVar_GetRGB("gCosmetics.Title_NintendoLogo", (Color_RGB8){0, 0, 255});
+        Color_RGB8 nintendoLogoColor = CVar_GetRGB("gCosmetics.Title_NintendoLogo.Value", (Color_RGB8){0, 0, 255});
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
         gDPSetEnvColor(POLY_OPA_DISP++, nintendoLogoColor.r, nintendoLogoColor.g, nintendoLogoColor.b, 128);
     } else {
