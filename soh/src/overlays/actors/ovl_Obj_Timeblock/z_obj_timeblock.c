@@ -341,7 +341,7 @@ void ObjTimeblock_Draw(Actor* thisx, PlayState* play) {
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         if (CVar_GetS32("gCosmetics.World_BlockOfTime.Changed", 0)) {
-            Color_RGB8 color = CVar_GetRGB("gCosmetics.World_BlockOfTime", *primColor);
+            Color_RGB8 color = CVar_GetRGB("gCosmetics.World_BlockOfTime.Value", *primColor);
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, color.r, color.g, color.b, 255);
         } else {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, primColor->r, primColor->g, primColor->b, 255);

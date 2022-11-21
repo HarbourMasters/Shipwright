@@ -3339,21 +3339,21 @@ void Interface_UpdateMagicBar(PlayState* play) {
     Color_RGB8 MagicBorder_3 = { 255, 255, 50 };
 
     if (CVar_GetS32("gCosmetics.Consumable_MagicBorderActive.Changed", 0)) { //This will make custom color based on users selected colors.
-        sMagicBorderColors[0][0] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_0).r;
-        sMagicBorderColors[0][1] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_0).g;
-        sMagicBorderColors[0][2] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_0).b;
+        sMagicBorderColors[0][0] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).r;
+        sMagicBorderColors[0][1] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).g;
+        sMagicBorderColors[0][2] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).b;
 
-        sMagicBorderColors[1][0] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_1).r/2;
-        sMagicBorderColors[1][1] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_1).g/2;
-        sMagicBorderColors[1][2] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_1).b/2;
+        sMagicBorderColors[1][0] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_1).r/2;
+        sMagicBorderColors[1][1] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_1).g/2;
+        sMagicBorderColors[1][2] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_1).b/2;
 
-        sMagicBorderColors[2][0] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_2).r/2.5;
-        sMagicBorderColors[2][1] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_2).g/2.5;
-        sMagicBorderColors[2][2] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_2).b/2.5;
+        sMagicBorderColors[2][0] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_2).r/2.5;
+        sMagicBorderColors[2][1] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_2).g/2.5;
+        sMagicBorderColors[2][2] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_2).b/2.5;
 
-        sMagicBorderColors[3][0] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_3).r/3;
-        sMagicBorderColors[3][1] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_3).g/3;
-        sMagicBorderColors[3][2] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive", MagicBorder_3).b/3;
+        sMagicBorderColors[3][0] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_3).r/3;
+        sMagicBorderColors[3][1] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_3).g/3;
+        sMagicBorderColors[3][2] = CVar_GetRGB("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_3).b/3;
     }
 
     static s16 sMagicBorderIndexes[] = { 0, 1, 1, 0 };
@@ -3414,14 +3414,14 @@ void Interface_UpdateMagicBar(PlayState* play) {
                 gSaveContext.magic = 0;
                 gSaveContext.magicState = 3;
                 if (CVar_GetS32("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
-                    sMagicBorder = CVar_GetRGB("gCosmetics.Consumable_MagicBorder", sMagicBorder_ori);
+                    sMagicBorder = CVar_GetRGB("gCosmetics.Consumable_MagicBorder.Value", sMagicBorder_ori);
                 } else {
                     sMagicBorder = sMagicBorder_ori;
                 }
             } else if (gSaveContext.magic == gSaveContext.magicTarget) {
                 gSaveContext.magicState = 3;
                 if (CVar_GetS32("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
-                    sMagicBorder = CVar_GetRGB("gCosmetics.Consumable_MagicBorder", sMagicBorder_ori);
+                    sMagicBorder = CVar_GetRGB("gCosmetics.Consumable_MagicBorder.Value", sMagicBorder_ori);
                 } else {
                     sMagicBorder = sMagicBorder_ori;
                 }
@@ -3467,7 +3467,7 @@ void Interface_UpdateMagicBar(PlayState* play) {
 
         case 5:
             if (CVar_GetS32("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
-                sMagicBorder = CVar_GetRGB("gCosmetics.Consumable_MagicBorder", sMagicBorder_ori);
+                sMagicBorder = CVar_GetRGB("gCosmetics.Consumable_MagicBorder.Value", sMagicBorder_ori);
             } else {
                 sMagicBorder = sMagicBorder_ori;
             }
@@ -3493,7 +3493,7 @@ void Interface_UpdateMagicBar(PlayState* play) {
                                            &D_801333E8);
                     gSaveContext.magicState = 0;
                     if (CVar_GetS32("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
-                        sMagicBorder = CVar_GetRGB("gCosmetics.Consumable_MagicBorder", sMagicBorder_ori);
+                        sMagicBorder = CVar_GetRGB("gCosmetics.Consumable_MagicBorder.Value", sMagicBorder_ori);
                     } else {
                         sMagicBorder = sMagicBorder_ori;
                     }
@@ -3589,10 +3589,10 @@ void Interface_DrawMagicBar(PlayState* play) {
     Color_RGB8 magicbar_green = {R_MAGIC_FILL_COLOR(0),R_MAGIC_FILL_COLOR(1),R_MAGIC_FILL_COLOR(2)}; //Magic bar fill
 
     if (CVar_GetS32("gCosmetics.Consumable_MagicActive.Changed", 0)) {
-        magicbar_yellow = CVar_GetRGB("gCosmetics.Consumable_MagicActive", magicbar_yellow);
+        magicbar_yellow = CVar_GetRGB("gCosmetics.Consumable_MagicActive.Value", magicbar_yellow);
     }
     if (CVar_GetS32("gCosmetics.Consumable_Magic.Changed", 0)) {
-        magicbar_green = CVar_GetRGB("gCosmetics.Consumable_Magic", magicbar_green);
+        magicbar_green = CVar_GetRGB("gCosmetics.Consumable_Magic.Value", magicbar_green);
     }
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -3788,35 +3788,35 @@ void Interface_DrawItemButtons(PlayState* play) {
 
     Color_RGB8 bButtonColor = { 0, 150, 0 };
     if (CVar_GetS32("gCosmetics.Hud_BButton.Changed", 0)) {
-        bButtonColor = CVar_GetRGB("gCosmetics.Hud_BButton", bButtonColor);
+        bButtonColor = CVar_GetRGB("gCosmetics.Hud_BButton.Value", bButtonColor);
     } else if (CVar_GetS32("gCosmetics.DefaultColorScheme", 0)) {
         bButtonColor = (Color_RGB8){ 255, 30, 30 };
     }
 
     Color_RGB8 cButtonsColor = { 255, 160, 0 };
     if (CVar_GetS32("gCosmetics.Hud_CButtons.Changed", 0)) {
-        cButtonsColor = CVar_GetRGB("gCosmetics.Hud_CButtons", cButtonsColor);
+        cButtonsColor = CVar_GetRGB("gCosmetics.Hud_CButtons.Value", cButtonsColor);
     }
     Color_RGB8 cUpButtonColor = cButtonsColor;
     if (CVar_GetS32("gCosmetics.Hud_CUpButton.Changed", 0)) {
-        cUpButtonColor = CVar_GetRGB("gCosmetics.Hud_CUpButton", cUpButtonColor);
+        cUpButtonColor = CVar_GetRGB("gCosmetics.Hud_CUpButton.Value", cUpButtonColor);
     }
     Color_RGB8 cDownButtonColor = cButtonsColor;
     if (CVar_GetS32("gCosmetics.Hud_CDownButton.Changed", 0)) {
-        cDownButtonColor = CVar_GetRGB("gCosmetics.Hud_CDownButton", cDownButtonColor);
+        cDownButtonColor = CVar_GetRGB("gCosmetics.Hud_CDownButton.Value", cDownButtonColor);
     }
     Color_RGB8 cLeftButtonColor = cButtonsColor;
     if (CVar_GetS32("gCosmetics.Hud_CLeftButton.Changed", 0)) {
-        cLeftButtonColor = CVar_GetRGB("gCosmetics.Hud_CLeftButton", cLeftButtonColor);
+        cLeftButtonColor = CVar_GetRGB("gCosmetics.Hud_CLeftButton.Value", cLeftButtonColor);
     }
     Color_RGB8 cRightButtonColor = cButtonsColor;
     if (CVar_GetS32("gCosmetics.Hud_CRightButton.Changed", 0)) {
-        cRightButtonColor = CVar_GetRGB("gCosmetics.Hud_CRightButton", cRightButtonColor);
+        cRightButtonColor = CVar_GetRGB("gCosmetics.Hud_CRightButton.Value", cRightButtonColor);
     }
 
     Color_RGB8 startButtonColor = { 200, 0, 0 };
     if (CVar_GetS32("gCosmetics.Hud_StartButton.Changed", 0)) {
-        startButtonColor = CVar_GetRGB("gCosmetics.Hud_StartButton", startButtonColor);
+        startButtonColor = CVar_GetRGB("gCosmetics.Hud_StartButton.Value", startButtonColor);
     } else if (CVar_GetS32("gCosmetics.DefaultColorScheme", 0)) {
         startButtonColor = (Color_RGB8){ 120, 120, 120 };
     }
@@ -4922,17 +4922,17 @@ void Interface_Draw(PlayState* play) {
 
     Color_RGB8 keyCountColor = { 200, 230, 255 };
     if (CVar_GetS32("gCosmetics.Hud_KeyCount.Changed", 0)) {
-        keyCountColor = CVar_GetRGB("gCosmetics.Hud_KeyCount", keyCountColor);
+        keyCountColor = CVar_GetRGB("gCosmetics.Hud_KeyCount.Value", keyCountColor);
     }
 
     Color_RGB8 dPadColor = { 255, 255, 255 };
     if (CVar_GetS32("gCosmetics.Hud_Dpad.Changed", 0)) {
-        dPadColor = CVar_GetRGB("gCosmetics.Hud_Dpad", dPadColor);
+        dPadColor = CVar_GetRGB("gCosmetics.Hud_Dpad.Value", dPadColor);
     }
 
     Color_RGB8 aButtonColor = { 90, 90, 255 };
     if (CVar_GetS32("gCosmetics.Hud_AButton.Changed", 0)) {
-        aButtonColor = CVar_GetRGB("gCosmetics.Hud_AButton", aButtonColor);
+        aButtonColor = CVar_GetRGB("gCosmetics.Hud_AButton.Value", aButtonColor);
     } else if (CVar_GetS32("gCosmetics.DefaultColorScheme", 0)) {
         aButtonColor = (Color_RGB8){ 0, 200, 50 };
     }
@@ -4987,28 +4987,28 @@ void Interface_Draw(PlayState* play) {
                 switch (CUR_UPG_VALUE(UPG_WALLET)) {
                     case 0:
                         if (CVar_GetS32("gCosmetics.Consumable_GreenRupee.Changed", 0)) {
-                            rColor = CVar_GetRGB("gCosmetics.Consumable_GreenRupee", rupeeWalletColors[0]);
+                            rColor = CVar_GetRGB("gCosmetics.Consumable_GreenRupee.Value", rupeeWalletColors[0]);
                         } else {
                             rColor = rupeeWalletColors[0];
                         }
                         break;
                     case 1:
                         if (CVar_GetS32("gCosmetics.Consumable_BlueRupee.Changed", 0)) {
-                            rColor = CVar_GetRGB("gCosmetics.Consumable_BlueRupee", rupeeWalletColors[1]);
+                            rColor = CVar_GetRGB("gCosmetics.Consumable_BlueRupee.Value", rupeeWalletColors[1]);
                         } else {
                             rColor = rupeeWalletColors[1];
                         }
                         break;
                     case 2:
                         if (CVar_GetS32("gCosmetics.Consumable_RedRupee.Changed", 0)) {
-                            rColor = CVar_GetRGB("gCosmetics.Consumable_RedRupee", rupeeWalletColors[2]);
+                            rColor = CVar_GetRGB("gCosmetics.Consumable_RedRupee.Value", rupeeWalletColors[2]);
                         } else {
                             rColor = rupeeWalletColors[2];
                         }
                         break;
                     case 3:
                         if (CVar_GetS32("gCosmetics.Consumable_PurpleRupee.Changed", 0)) {
-                            rColor = CVar_GetRGB("gCosmetics.Consumable_PurpleRupee", rupeeWalletColors[3]);
+                            rColor = CVar_GetRGB("gCosmetics.Consumable_PurpleRupee.Value", rupeeWalletColors[3]);
                         } else {
                             rColor = rupeeWalletColors[3];
                         }
@@ -5016,7 +5016,7 @@ void Interface_Draw(PlayState* play) {
                 }
             } else {
                 if (CVar_GetS32("gCosmetics.Consumable_GreenRupee.Changed", rupeeWalletColors)) {
-                     rColor = CVar_GetRGB("gCosmetics.Consumable_GreenRupee", rupeeWalletColors[0]);
+                     rColor = CVar_GetRGB("gCosmetics.Consumable_GreenRupee.Value", rupeeWalletColors[0]);
                 } else {
                      rColor = rupeeWalletColors[0];
                 }
