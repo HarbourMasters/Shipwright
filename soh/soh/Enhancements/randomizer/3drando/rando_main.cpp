@@ -7,7 +7,7 @@
 // #include <soh/Enhancements/randomizer.h>
 #include <Cvar.h>
 #include <Window.h>
-#include <ultra64/types.h>
+#include <libultra/types.h>
 
 #define TICKS_PER_SEC 268123480.0
 

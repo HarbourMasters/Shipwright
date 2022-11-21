@@ -9,7 +9,7 @@
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
 #include <Cvar.h>
-#include <UltraController.h>
+#include <libultra/controller.h>
 #include <Utils/StringHelper.h>
 #include <ImGuiImpl.h>
 

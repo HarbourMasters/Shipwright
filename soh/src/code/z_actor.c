@@ -781,7 +781,7 @@ void TitleCard_InitBossName(PlayState* play, TitleCardContext* titleCtx, void* t
                             u8 height, s16 hasTranslation) {
 
     if (ResourceMgr_OTRSigCheck(texture))
-        texture = ResourceMgr_LoadTexByName(texture);
+        texture = GetResourceDataByName(texture);
 
     titleCtx->texture = texture;
     titleCtx->isBossCard = true;
@@ -1003,7 +1003,7 @@ void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* 
         texture = newName;
     }
 
-    titleCtx->texture = ResourceMgr_LoadTexByName(texture);
+    titleCtx->texture = GetResourceDataByName(texture);
 
     //titleCtx->texture = texture;
     titleCtx->isBossCard = false;

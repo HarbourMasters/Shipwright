@@ -12,7 +12,7 @@
 #include <ImGuiImpl.h>
 #include <Cvar.h>
 
-#include <ultra64/types.h>
+#include <libultra/types.h>
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 
 namespace UIWidgets {

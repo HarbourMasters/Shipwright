@@ -2,7 +2,7 @@
 #define Z64LIGHT_H
 
 #include "ultra64.h"
-#include "ultra64/gbi.h"
+// #include "libultra/gbi.h"
 #include "z64math.h"
 #include <color.h>
 

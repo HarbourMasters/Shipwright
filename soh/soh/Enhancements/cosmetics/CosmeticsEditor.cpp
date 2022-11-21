@@ -5,7 +5,7 @@
 #include <Cvar.h>
 #include <random>
 #include <algorithm>
-#include <ultra64/types.h>
+#include <libultra/types.h>
 
 #include "../../UIWidgets.hpp"
 

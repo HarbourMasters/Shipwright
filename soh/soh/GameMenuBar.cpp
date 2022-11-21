@@ -14,9 +14,9 @@
 #include <ImGuiImpl.h>
 #include <Cvar.h>
 #include <Hooks.h>
-#include <ultra64/types.h>
-#include <ultra64/pi.h>
-#include <ultra64/sptask.h>
+#include <libultra/types.h>
+#include <libultra/pi.h>
+#include <libultra/sptask.h>
 
 #ifdef __SWITCH__
 #include <port/switch/SwitchImpl.h>

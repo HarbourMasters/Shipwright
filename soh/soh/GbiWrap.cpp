@@ -16,10 +16,10 @@ int32_t OTRGetLastScancode();
 void ResourceMgr_CacheDirectory(const char* resName);
 void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
-char* ResourceMgr_LoadTexByName(char* texPath);
+char* GetResourceDataByName(char* texPath);
 uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
 uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
-uint32_t ResourceMgr_LoadTexSizeByName(char* texPath);
+uint32_t GetResourceTexSizeByName(char* texPath);
 char* ResourceMgr_LoadTexOrDListByName(char* filePath);
 char* ResourceMgr_LoadPlayerAnimByName(char* animPath);
 char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc);
@@ -85,7 +85,7 @@ extern "C" void gSPInvalidateTexCache(Gfx* pkt, uintptr_t texAddr)
     char* imgData = (char*)texAddr;
 
     if (texAddr != 0 && ResourceMgr_OTRSigCheck(imgData))
-        texAddr = (uintptr_t)ResourceMgr_LoadTexByName(imgData);
+        texAddr = (uintptr_t)GetResourceDataByName(imgData);
 
     __gSPInvalidateTexCache(pkt, texAddr);
  }

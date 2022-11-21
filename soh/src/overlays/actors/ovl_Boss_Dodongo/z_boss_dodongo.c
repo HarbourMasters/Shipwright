@@ -57,7 +57,7 @@ static InitChainEntry sInitChain[] = {
 };
 
 void func_808C1190(s16* arg0, u8* arg1, s16 arg2) {
-    arg0 = ResourceMgr_LoadTexByName(arg0);
+    arg0 = GetResourceDataByName(arg0);
 
     if (arg2[arg1] != 0) {
         arg0[arg2 / 2] = 0;
@@ -65,7 +65,7 @@ void func_808C1190(s16* arg0, u8* arg1, s16 arg2) {
 }
 
 void func_808C11D0(s16* arg0, u8* arg1, s16 arg2) {
-    arg0 = ResourceMgr_LoadTexByName(arg0);
+    arg0 = GetResourceDataByName(arg0);
 
     if (arg1[arg2] != 0) {
         arg0[arg2] = 0;
@@ -73,7 +73,7 @@ void func_808C11D0(s16* arg0, u8* arg1, s16 arg2) {
 }
 
 void func_808C1200(s16* arg0, u8* arg1, s16 arg2) {
-    arg0 = ResourceMgr_LoadTexByName(arg0);
+    arg0 = GetResourceDataByName(arg0);
 
     if (arg1[arg2] != 0) {
         arg0[arg2] = 0;
@@ -83,7 +83,7 @@ void func_808C1200(s16* arg0, u8* arg1, s16 arg2) {
 void func_808C1230(s16* arg0, u8* arg1, s16 arg2) {
     s16 index;
 
-    arg0 = ResourceMgr_LoadTexByName(arg0);
+    arg0 = GetResourceDataByName(arg0);
 
     if (arg1[arg2] != 0) {
         index = ((arg2 & 0xF) + ((arg2 & 0xF0) * 2));
@@ -95,7 +95,7 @@ void func_808C1230(s16* arg0, u8* arg1, s16 arg2) {
 void func_808C1278(s16* arg0, u8* arg1, s16 arg2) {
     s16 index;
 
-    arg0 = ResourceMgr_LoadTexByName(arg0);
+    arg0 = GetResourceDataByName(arg0);
 
     if (arg1[arg2] != 0) {
         index = ((arg2 & 0xF) * 2) + ((arg2 & 0xF0) * 2);
@@ -118,8 +118,8 @@ void func_808C12C4(u8* arg1, s16 arg2) {
 }
 
 void func_808C1554(void* arg0, void* floorTex, s32 arg2, f32 arg3) {
-    arg0 = ResourceMgr_LoadTexByName(arg0);
-    floorTex = ResourceMgr_LoadTexByName(floorTex);
+    arg0 = GetResourceDataByName(arg0);
+    floorTex = GetResourceDataByName(floorTex);
 
     u16* temp_s3 = SEGMENTED_TO_VIRTUAL(arg0);
     u16* temp_s1 = SEGMENTED_TO_VIRTUAL(floorTex);
@@ -218,8 +218,8 @@ void BossDodongo_Init(Actor* thisx, PlayState* play) {
     Collider_SetJntSph(play, &this->collider, &this->actor, &sJntSphInit, this->items);
 
     if (Flags_GetClear(play, play->roomCtx.curRoom.num)) { // KD is dead
-        u16* LavaFloorTex = ResourceMgr_LoadTexByName(gDodongosCavernBossLavaFloorTex);
-        u16* LavaFloorRockTex = ResourceMgr_LoadTexByName(sLavaFloorRockTex);
+        u16* LavaFloorTex = GetResourceDataByName(gDodongosCavernBossLavaFloorTex);
+        u16* LavaFloorRockTex = GetResourceDataByName(sLavaFloorRockTex);
         temp_s1_3 = SEGMENTED_TO_VIRTUAL(LavaFloorTex);
         temp_s2 = SEGMENTED_TO_VIRTUAL(LavaFloorRockTex);
         Actor_Kill(&this->actor);
@@ -1015,8 +1015,8 @@ void BossDodongo_Update(Actor* thisx, PlayState* play2) {
     }
 
     if (this->unk_1C6 != 0) {
-        u16* ptr1 = ResourceMgr_LoadTexByName(sLavaFloorLavaTex);
-        u16* ptr2 = ResourceMgr_LoadTexByName(sLavaFloorRockTex);
+        u16* ptr1 = GetResourceDataByName(sLavaFloorLavaTex);
+        u16* ptr2 = GetResourceDataByName(sLavaFloorRockTex);
         s16 i2;
 
         for (i2 = 0; i2 < 20; i2++) {

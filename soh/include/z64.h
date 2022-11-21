@@ -2,7 +2,7 @@
 #define Z64_H
 
 #include "ultra64.h"
-#include "ultra64/gs2dex.h"
+// #include "libultra/gs2dex.h"
 #include "z64save.h"
 #include "z64light.h"
 #include "z64bgcheck.h"

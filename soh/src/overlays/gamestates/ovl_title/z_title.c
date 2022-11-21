@@ -194,7 +194,7 @@ void Title_Draw(TitleContext* this) {
     v1.z = 0;
     v2.z = 1119.0837;
 
-    char* n64LogoTex = ResourceMgr_LoadTexByName(nintendo_rogo_static_Tex_000000);
+    char* n64LogoTex = GetResourceDataByName(nintendo_rogo_static_Tex_000000);
 
     func_8002EABC(&v1, &v2, &v3, this->state.gfxCtx);
     gSPSetLights1(POLY_OPA_DISP++, sTitleLights);

@@ -8,9 +8,9 @@
 #include <string.h>
 #include <stdarg.h>
 #include <z64.h>
-#include <ultra64/gbi.h>
-#include <ultra64/gs2dex.h>
-#include <ultra64/controller.h>
+#include <libultra/gbi.h>
+#include <libultra/gs2dex.h>
+#include <libultra/controller.h>
 
 uint8_t gLoadFileSelect = 0, gSkipLogoTest = 0;
 

@@ -15,7 +15,7 @@
 #include "z64animation.h"
 #include "z64bgcheck.h"
 #include "Enhancements/gameconsole.h"
-#include <ultra64/gbi.h>
+#include <libultra/gbi.h>
 #include <Animation.h>
 #ifdef _WIN32
 #include <Windows.h>
@@ -778,13 +778,13 @@ extern "C" char* ResourceMgr_LoadJPEG(char* data, int dataSize)
     return (char*)finalBuffer;
 }
 
-extern "C" char* ResourceMgr_LoadTexByName(const char* texPath);
+extern "C" char* GetResourceDataByName(const char* texPath);
 
 extern "C" uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
 
 extern "C" uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 
-extern "C" uint32_t ResourceMgr_LoadTexSizeByName(const char* texPath);
+extern "C" uint32_t GetResourceTexSizeByName(const char* texPath);
 
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = ResourceMgr_LoadResource(filePath);
@@ -801,7 +801,7 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
                 Path.replace(pos, 7, "/mq/");
             }
         }
-        return ResourceMgr_LoadTexByName(Path.c_str());
+        return GetResourceDataByName(Path.c_str());
     }
 }
 
