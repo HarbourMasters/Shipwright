@@ -93,7 +93,7 @@ typedef struct {
 
 #define COSMETIC_OPTION(id, label, box, defaultColor, supportsAlpha, supportsRainbow, advancedOption) \
     { id, { \
-        "gCosmetics." id, "gCosmetics." id ".Rainbow", "gCosmetics." id ".Locked", "gCosmetics." id ".Changed", label, box, \
+        "gCosmetics." id ".Value", "gCosmetics." id ".Rainbow", "gCosmetics." id ".Locked", "gCosmetics." id ".Changed", label, box, \
         defaultColor, defaultColor, \
         supportsAlpha, supportsRainbow, advancedOption \
     } }

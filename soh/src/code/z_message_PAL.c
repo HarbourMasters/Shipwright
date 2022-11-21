@@ -96,12 +96,12 @@ void Message_ResetOcarinaNoteState(void) {
     sOcarinaNoteCBtnPrim = (Color_RGB8){ 255, 255, 50 };
     sOcarinaNoteCBtnEnv = (Color_RGB8){ 10, 10, 10 };
     if (CVar_GetS32("gCosmetics.Hud_AButton.Changed", 0)) {
-        sOcarinaNoteABtnPrim = CVar_GetRGB("gCosmetics.Hud_AButton", sOcarinaNoteABtnPrim);
+        sOcarinaNoteABtnPrim = CVar_GetRGB("gCosmetics.Hud_AButton.Value", sOcarinaNoteABtnPrim);
     } else if (CVar_GetS32("gCosmetics.DefaultColorScheme", 0)) {
         sOcarinaNoteABtnPrim = (Color_RGB8){ 80, 255, 150 };
     }
     if (CVar_GetS32("gCosmetics.Hud_CButtons.Changed", 0)) {
-        sOcarinaNoteCBtnPrim = CVar_GetRGB("gCosmetics.Hud_CButtons", sOcarinaNoteCBtnPrim);
+        sOcarinaNoteCBtnPrim = CVar_GetRGB("gCosmetics.Hud_CButtons.Value", sOcarinaNoteCBtnPrim);
     }
 
     sOcarinaNoteCUpBtnPrim = sOcarinaNoteCBtnPrim;
@@ -109,16 +109,16 @@ void Message_ResetOcarinaNoteState(void) {
     sOcarinaNoteCLeftBtnPrim = sOcarinaNoteCBtnPrim;
     sOcarinaNoteCRightBtnPrim = sOcarinaNoteCBtnPrim;
     if (CVar_GetS32("gCosmetics.Hud_CUpButton.Changed", 0)) {
-        sOcarinaNoteCUpBtnPrim = CVar_GetRGB("gCosmetics.Hud_CUpButton", sOcarinaNoteCUpBtnPrim);
+        sOcarinaNoteCUpBtnPrim = CVar_GetRGB("gCosmetics.Hud_CUpButton.Value", sOcarinaNoteCUpBtnPrim);
     }
     if (CVar_GetS32("gCosmetics.Hud_CDownButton.Changed", 0)) {
-        sOcarinaNoteCDownBtnPrim = CVar_GetRGB("gCosmetics.Hud_CDownButton", sOcarinaNoteCDownBtnPrim);
+        sOcarinaNoteCDownBtnPrim = CVar_GetRGB("gCosmetics.Hud_CDownButton.Value", sOcarinaNoteCDownBtnPrim);
     }
     if (CVar_GetS32("gCosmetics.Hud_CLeftButton.Changed", 0)) {
-        sOcarinaNoteCLeftBtnPrim = CVar_GetRGB("gCosmetics.Hud_CLeftButton", sOcarinaNoteCLeftBtnPrim);
+        sOcarinaNoteCLeftBtnPrim = CVar_GetRGB("gCosmetics.Hud_CLeftButton.Value", sOcarinaNoteCLeftBtnPrim);
     }
     if (CVar_GetS32("gCosmetics.Hud_CRightButton.Changed", 0)) {
-        sOcarinaNoteCRightBtnPrim = CVar_GetRGB("gCosmetics.Hud_CRightButton", sOcarinaNoteCRightBtnPrim);
+        sOcarinaNoteCRightBtnPrim = CVar_GetRGB("gCosmetics.Hud_CRightButton.Value", sOcarinaNoteCRightBtnPrim);
     }
 }
 
@@ -459,7 +459,7 @@ void Message_DrawTextboxIcon(PlayState* play, Gfx** p, s16 x, s16 y) {
         { 0, 130, 255 },
     };
     if (CVar_GetS32("gCosmetics.Hud_AButton.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_AButton", (Color_RGB8){ 50, 130, 255 });
+        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_AButton.Value", (Color_RGB8){ 50, 130, 255 });
         sIconPrimColors[0].r = (color.r / 255) * 95;
         sIconPrimColors[0].g = (color.g / 255) * 95;
         sIconPrimColors[0].b = (color.b / 255) * 95;
@@ -2000,7 +2000,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 50, 50, 255 },
     };
     if (CVar_GetS32("gCosmetics.Hud_AButton.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_AButton", (Color_RGB8){ 100, 200, 255 });
+        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_AButton.Value", (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteAPrimColors[0].r = (color.r / 255) * 95;
         sOcarinaNoteAPrimColors[0].g = (color.g / 255) * 95;
         sOcarinaNoteAPrimColors[0].b = (color.b / 255) * 95;
@@ -2021,7 +2021,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 110, 110, 50 },
     };
     if (CVar_GetS32("gCosmetics.Hud_CButtons.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_CButtons", (Color_RGB8){ 100, 200, 255 });
+        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_CButtons.Value", (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCPrimColors[0] = color;
         sOcarinaNoteCPrimColors[1] = color;
         sOcarinaNoteCEnvColors[1].r = (color.r / 255) * 95;
@@ -2038,7 +2038,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 110, 110, 50 },
     };
     if (CVar_GetS32("gCosmetics.Hud_CUpButton.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_CUpButton", (Color_RGB8){ 100, 200, 255 });
+        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_CUpButton.Value", (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCUpPrimColors[0] = color;
         sOcarinaNoteCUpPrimColors[1] = color;
         sOcarinaNoteCUpEnvColors[1].r = (color.r / 255) * 95;
@@ -2055,7 +2055,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 110, 110, 50 },
     };
     if (CVar_GetS32("gCosmetics.Hud_CDownButton.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_CDownButton", (Color_RGB8){ 100, 200, 255 });
+        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_CDownButton.Value", (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCDownPrimColors[0] = color;
         sOcarinaNoteCDownPrimColors[1] = color;
         sOcarinaNoteCDownEnvColors[1].r = (color.r / 255) * 95;
@@ -2072,7 +2072,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 110, 110, 50 },
     };
     if (CVar_GetS32("gCosmetics.Hud_CLeftButton.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_CLeftButton", (Color_RGB8){ 100, 200, 255 });
+        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_CLeftButton.Value", (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCLeftPrimColors[0] = color;
         sOcarinaNoteCLeftPrimColors[1] = color;
         sOcarinaNoteCLeftEnvColors[1].r = (color.r / 255) * 95;
@@ -2089,7 +2089,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 110, 110, 50 },
     };
     if (CVar_GetS32("gCosmetics.Hud_CRightButton.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_CRightButton", (Color_RGB8){ 100, 200, 255 });
+        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_CRightButton.Value", (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCRightPrimColors[0] = color;
         sOcarinaNoteCRightPrimColors[1] = color;
         sOcarinaNoteCRightEnvColors[1].r = (color.r / 255) * 95;

@@ -595,7 +595,7 @@ void EnGs_Draw(Actor* thisx, PlayState* play) {
                             this->flashColor.a);
         } else {
             if (CVar_GetS32("gCosmetics.World_GossipStone.Changed", 0)) {
-                Color_RGB8 color = CVar_GetRGB("gCosmetics.World_GossipStone", (Color_RGB8){255, 255, 255});
+                Color_RGB8 color = CVar_GetRGB("gCosmetics.World_GossipStone.Value", (Color_RGB8){255, 255, 255});
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, color.r, color.g, color.b, 255);
             } else {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
