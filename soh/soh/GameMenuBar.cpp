@@ -314,6 +314,8 @@ namespace GameMenuBar {
         CVar_SetS32("gCrouchStabHammerFix", 0);
         // Fix all crouch stab
         CVar_SetS32("gCrouchStabFix", 0);
+        // Fix credits timing
+        CVar_SetS32("gCreditsFix", 1);
         // Fix Gerudo Warrior's clothing colors
         CVar_SetS32("gGerudoWarriorClothingFix", 0);
 
@@ -686,6 +688,11 @@ namespace GameMenuBar {
                     ImGui::PopStyleVar(1);
                 }
 
+                if (SohImGui::supportsViewports()) {
+                    UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false);
+                    UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
+                }
+
                 EXPERIMENTAL();
 
                 ImGui::Text("Texture Filter (Needs reload)");
@@ -998,6 +1005,24 @@ namespace GameMenuBar {
 
                     UIWidgets::Spacer(0);
 
+                    if (ImGui::BeginMenu("Shooting Gallery")) {
+                        UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeShootingGallery");
+                        UIWidgets::Tooltip("Turn on/off changes to the shooting gallery behavior");
+                        bool disabled = CVar_GetS32("gCustomizeShootingGallery", 0) == 0;
+                        const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
+                        UIWidgets::EnhancementCheckbox("Instant Win", "gInstantShootingGalleryWin", disabled, disabledTooltip);
+                        UIWidgets::Tooltip("Skips the shooting gallery minigame");
+                        UIWidgets::EnhancementCheckbox("No Rupee Randomization", "gConstantAdultGallery", disabled, disabledTooltip);
+                        UIWidgets::Tooltip("Forces the rupee order to not be randomized as adult, making it the same as chlid");
+                        UIWidgets::PaddedEnhancementSliderInt("Child Starting Ammunition: %d", "##cShootingGalleryAmmunition", "gChildShootingGalleryAmmunition", 10, 30, "", 15, false, true, false, disabled, disabledTooltip);
+                        UIWidgets::Tooltip("The ammunition at the start of the shooting gallery minigame as a child");
+                        UIWidgets::PaddedEnhancementSliderInt("Adult Starting Ammunition: %d", "##aShootingGalleryAmmunition", "gAdultShootingGalleryAmmunition", 10, 30, "", 15, false, true, false, disabled, disabledTooltip);
+                        UIWidgets::Tooltip("The ammunition at the start of the shooting gallery minigame as an adult");
+                        ImGui::EndMenu();
+                    }
+
+                    UIWidgets::Spacer(0);
+
                     if (ImGui::BeginMenu("Fishing")) {
                         UIWidgets::EnhancementCheckbox("Instant Fishing", "gInstantFishing");
                         UIWidgets::Tooltip("All fish will be caught instantly");
@@ -1161,6 +1186,8 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Remove power crouch stab", "gCrouchStabFix", true, false);
                     UIWidgets::Tooltip("Make crouch stabbing always do the same damage as a regular slash");
                 }
+                UIWidgets::PaddedEnhancementCheckbox("Fix credits timing", "gCreditsFix", true, false);
+                UIWidgets::Tooltip("Extend certain credits scenes so the music lines up properly with the visuals");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Gerudo Warrior's clothing colors", "gGerudoWarriorClothingFix", true, false);
                 UIWidgets::Tooltip("Prevent the Gerudo Warrior's clothes changing color when changing Link's tunic or using bombs in front of her");
 
@@ -1469,6 +1496,11 @@ namespace GameMenuBar {
                     ImGui::PopStyleVar(1);
                 }
             }
+
+            if (ImGui::Button("Change Age")) {
+                CVar_SetS32("gSwitchAge", 1);
+            }
+            UIWidgets::Tooltip("Switches links age and reloads the area.");   
 
             ImGui::EndMenu();
         }
