@@ -2660,7 +2660,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_KEYSANITY] = CVar_GetS32("gRandomizeKeysanity", 2);
     cvarSettings[RSK_GERUDO_KEYS] = CVar_GetS32("gRandomizeGerudoKeys", 0);
     cvarSettings[RSK_KEYRINGS] = CVar_GetS32("gRandomizeShuffleKeyRings", 0);
-    cvarSettings[RSK_KEYRINGS_RANDOM_COUNT] = CVar_GetS32("gRandomizeShuffleKeyRingsRandomCount", 0);
+    cvarSettings[RSK_KEYRINGS_RANDOM_COUNT] = CVar_GetS32("gRandomizeShuffleKeyRingsRandomCount", 8);
     cvarSettings[RSK_KEYRINGS_FOREST_TEMPLE] = CVar_GetS32("gRandomizeShuffleKeyRingsForestTemple", 0);
     cvarSettings[RSK_KEYRINGS_FIRE_TEMPLE] = CVar_GetS32("gRandomizeShuffleKeyRingsFireTemple", 0);
     cvarSettings[RSK_KEYRINGS_WATER_TEMPLE] = CVar_GetS32("gRandomizeShuffleKeyRingsWaterTemple", 0);
