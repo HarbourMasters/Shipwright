@@ -126,17 +126,17 @@ s16 sHeartsDDEnv[2][3];
 void HealthMeter_Init(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
     if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
-        HeartInner = CVar_GetRGB("gCosmetics.Consumable_Hearts", HeartInner_ori);
+        HeartInner = CVar_GetRGB("gCosmetics.Consumable_Hearts.Value", HeartInner_ori);
     } else {
         HeartInner = HeartInner_ori;
     }
     if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
-        HeartDDInner = CVar_GetRGB("gCosmetics.Consumable_DDHearts", HeartInner_ori);
+        HeartDDInner = CVar_GetRGB("gCosmetics.Consumable_DDHearts.Value", HeartInner_ori);
     } else {
         HeartDDInner = HeartInner_ori;
     }
     if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
-        HeartDDOutline = CVar_GetRGB("gCosmetics.Consumable_DDBorder", HeartInner_ori);
+        HeartDDOutline = CVar_GetRGB("gCosmetics.Consumable_DDBorder.Value", HeartInner_ori);
     } else {
         HeartDDOutline = HeartInner_ori;
     }
@@ -191,17 +191,17 @@ void HealthMeter_Update(PlayState* play) {
     Bottom_LM_Margin = CVar_GetS32("gHUDMargin_B", 0);
 
     if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
-        HeartInner = CVar_GetRGB("gCosmetics.Consumable_Hearts", HeartInner_ori);
+        HeartInner = CVar_GetRGB("gCosmetics.Consumable_Hearts.Value", HeartInner_ori);
     } else {
         HeartInner = HeartInner_ori;
     }
     if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
-        HeartDDInner = CVar_GetRGB("gCosmetics.Consumable_DDHearts", HeartInner_ori);
+        HeartDDInner = CVar_GetRGB("gCosmetics.Consumable_DDHearts.Value", HeartInner_ori);
     } else {
         HeartDDInner = HeartInner_ori;
     }
     if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
-        HeartDDOutline = CVar_GetRGB("gCosmetics.Consumable_DDBorder", HeartInner_ori);
+        HeartDDOutline = CVar_GetRGB("gCosmetics.Consumable_DDBorder.Value", HeartInner_ori);
     } else {
         HeartDDOutline = HeartInner_ori;
     }
@@ -283,7 +283,7 @@ void HealthMeter_Update(PlayState* play) {
         sHeartsDDEnv[1][1] = HeartDDInner.g;
         sHeartsDDEnv[1][2] = HeartDDInner.b;
 
-        HeartDDInner = CVar_GetRGB("gCosmetics.Consumable_Hearts", HeartDDInner_ori);
+        HeartDDInner = CVar_GetRGB("gCosmetics.Consumable_Hearts.Value", HeartDDInner_ori);
 
         sHeartsDDEnv[0][0] = HeartDDInner.r;
         sHeartsDDEnv[0][1] = HeartDDInner.g;

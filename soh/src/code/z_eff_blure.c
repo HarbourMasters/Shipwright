@@ -404,7 +404,7 @@ s32 EffectBlure_Update(void* thisx) {
         }
 
     if (CVar_GetS32("gCosmetics.Equipment_ChuBody.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.Equipment_ChuBody", (Color_RGB8){ 250, 0, 0 });
+        Color_RGB8 color = CVar_GetRGB("gCosmetics.Equipment_ChuBody.Value", (Color_RGB8){ 250, 0, 0 });
         this->p1StartColor.r = color.r;
         this->p2StartColor.r = color.r * 0.8f;
         this->p1EndColor.r = color.r * 0.6f;

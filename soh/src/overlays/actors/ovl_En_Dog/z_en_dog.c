@@ -474,10 +474,10 @@ void EnDog_Draw(Actor* thisx, PlayState* play) {
     Color_RGB8 colors[] = { { 255, 255, 200 }, { 150, 100, 50 } };
 
     if (CVar_GetS32("gCosmetics.NPC_Dog1.Changed", 0)) {
-        colors[0] = CVar_GetRGB("gCosmetics.NPC_Dog1", colors[0]);
+        colors[0] = CVar_GetRGB("gCosmetics.NPC_Dog1.Value", colors[0]);
     }
     if (CVar_GetS32("gCosmetics.NPC_Dog2.Changed", 0)) {
-        colors[1] = CVar_GetRGB("gCosmetics.NPC_Dog2", colors[1]);
+        colors[1] = CVar_GetRGB("gCosmetics.NPC_Dog2.Value", colors[1]);
     }
 
     OPEN_DISPS(play->state.gfxCtx);
