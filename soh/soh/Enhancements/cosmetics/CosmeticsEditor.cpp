@@ -93,7 +93,7 @@ typedef struct {
 
 #define COSMETIC_OPTION(id, label, box, defaultColor, supportsAlpha, supportsRainbow, advancedOption) \
     { id, { \
-        "gCosmetics." id, "gCosmetics." id ".Rainbow", "gCosmetics." id ".Locked", "gCosmetics." id ".Changed", label, box, \
+        "gCosmetics." id ".Value", "gCosmetics." id ".Rainbow", "gCosmetics." id ".Locked", "gCosmetics." id ".Changed", label, box, \
         defaultColor, defaultColor, \
         supportsAlpha, supportsRainbow, advancedOption \
     } }
@@ -1256,6 +1256,11 @@ void ResetColor(CosmeticOption& cosmeticOption) {
     CVar_Clear(cosmeticOption.rainbowCvar);
     CVar_Clear(cosmeticOption.lockedCvar);
     CVar_Clear(cosmeticOption.cvar);
+    CVar_Clear((std::string(cosmeticOption.cvar) + ".R").c_str());
+    CVar_Clear((std::string(cosmeticOption.cvar) + ".G").c_str());
+    CVar_Clear((std::string(cosmeticOption.cvar) + ".B").c_str());
+    CVar_Clear((std::string(cosmeticOption.cvar) + ".A").c_str());
+    CVar_Clear((std::string(cosmeticOption.cvar) + ".Type").c_str());
 
     if (cosmeticOption.cvar == "gCosmetics.Equipment_BowBody") {
         ResetColor(cosmeticOptions.at("Equipment_BowTips"));
