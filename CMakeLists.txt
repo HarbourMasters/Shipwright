@@ -154,6 +154,28 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
             OUTPUT_VARIABLE outVar
         )
     endif()
+
+    add_custom_target(CreateLinuxIcons
+        COMMAND mkdir -p ${CMAKE_BINARY_DIR}/hicolor/16x16/apps
+        COMMAND ${ImageMagick_convert_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/soh/macosx/sohIcon.png -resize 16x16 ${CMAKE_BINARY_DIR}/hicolor/16x16/apps/sohIcon.png
+        COMMAND mkdir -p ${CMAKE_BINARY_DIR}/hicolor/32x32/apps
+        COMMAND ${ImageMagick_convert_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/soh/macosx/sohIcon.png -resize 32x32 ${CMAKE_BINARY_DIR}/hicolor/32x32/apps/sohIcon.png
+        COMMAND mkdir -p ${CMAKE_BINARY_DIR}/hicolor/48x48/apps
+        COMMAND ${ImageMagick_convert_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/soh/macosx/sohIcon.png -resize 48x48 ${CMAKE_BINARY_DIR}/hicolor/48x48/apps/sohIcon.png
+        COMMAND mkdir -p ${CMAKE_BINARY_DIR}/hicolor/64x64/apps
+        COMMAND ${ImageMagick_convert_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/soh/macosx/sohIcon.png -resize 64x64 ${CMAKE_BINARY_DIR}/hicolor/64x64/apps/sohIcon.png
+        COMMAND mkdir -p ${CMAKE_BINARY_DIR}/hicolor/256x256/apps
+        COMMAND ${ImageMagick_convert_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/soh/macosx/sohIcon.png -resize 256x256 ${CMAKE_BINARY_DIR}/hicolor/256x256/apps/sohIcon.png
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Creating Linux icons ..."
+    )
+
+    add_dependencies(soh CreateLinuxIcons)
+
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/hicolor
+        DESTINATION ../share/icons COMPONENT ship
+    )
+
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")

@@ -38,7 +38,7 @@ modules:
       path: ZELOOTD.z64
       dest: OTRExporter
 rename-desktop-file: soh.desktop
-rename-icon: "sohIcon"
+rename-icon: sohIcon
 runtime: "org.freedesktop.Platform"
 runtime-version: "22.08"
 sdk: "org.freedesktop.Sdk"
