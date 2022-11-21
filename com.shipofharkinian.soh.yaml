@@ -1,0 +1,45 @@
+id: com.shipofharkinian.soh
+command: "soh.elf"
+desktop-file-name-suffix: " (Nightly)"
+finish-args: 
+  - --share=ipc
+  - --socket=fallback-x11
+  - --socket=x11
+  - --nosocket=wayland
+  - --socket=pulseaudio
+  - --share=network
+  - --filesystem=home
+  - --device=all
+modules: 
+  - "flatpak-modules/glew/glew.json"
+  - "flatpak-modules/glfw/glfw.json"
+  - "flatpak-modules/glu/glu-9.json"
+  - "flatpak-modules/ImageMagick/ImageMagick.json"
+  - name: "soh"
+    buildsystem: "simple"
+    build-commands:
+    - cmake -H. -Bbuild -GNinja -DCMAKE_BUILD_TYPE=Release
+    - cmake --build build --config Release --target ExtractAssets
+    - cmake --build build --config Release --target OTRGui
+    - cmake --build build --config Release
+    - cmake --install build --config Release --prefix ${FLATPAK_DEST}/bin
+    - mkdir ${FLATPAK_DEST}/share/applications
+    - cp scripts/linux/appimage/soh.desktop ${FLATPAK_DEST}/share/applications
+    - mkdir ${FLATPAK_DEST}/share/appdata
+    - cp ${FLATPAK_ID}.appdata.xml /app/share/appdata/${FLATPAK_ID}.appdata.xml
+    build-options: 
+      build-args: 
+        - --share=network
+    sources: 
+    - type: git
+      url: https://github.com/th-2021/Shipwright-cmake
+      branch: flatpak
+    - type: file
+      path: ZELOOTD.z64
+      dest: OTRExporter
+rename-desktop-file: soh.desktop
+rename-icon: "sohIcon"
+runtime: "org.freedesktop.Platform"
+runtime-version: "22.08"
+sdk: "org.freedesktop.Sdk"
+default-branch: "Stable"

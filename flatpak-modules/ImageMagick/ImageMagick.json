@@ -1,0 +1,27 @@
+{
+        "name": "ImageMagick",
+        "no-autogen": true,
+        "make-args": [
+                "LIBDIR=${FLATPAK_DEST}/lib",
+                "CFLAGS.EXTRA:=${CFLAGS} -fPIC",
+                "LDFLAGS.EXTRA=${LDFLAGS}"
+        ],
+        "make-install-args": [
+                "LIBDIR=${FLATPAK_DEST}/lib",
+                "CFLAGS.EXTRA:=${CFLAGS} -fPIC",
+                "LDFLAGS.EXTRA=${LDFLAGS}"
+        ],
+        "sources": [
+                {
+                        "type": "archive",
+                        "url": "https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.0-52.tar.gz",
+			"sha256": "bacd6d63f16482f269bf5cfe76d34b9a2b01ec737e9cb41fd2612d37f34698fc"
+                }
+        ],
+        "cleanup": [
+                "/include",
+                "/lib/pkgconfig",
+                "/lib/*.a"
+        ]
+}
+
