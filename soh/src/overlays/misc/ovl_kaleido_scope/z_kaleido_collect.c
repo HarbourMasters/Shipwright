@@ -7,30 +7,30 @@ extern const char* digitTextures[];
 void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
     Color_RGB8 aButtonColor = { 80, 150, 255 };
     if (CVar_GetS32("gCosmetics.Hud_AButton.Changed", 0)) {
-        aButtonColor = CVar_GetRGB("gCosmetics.Hud_AButton", aButtonColor);
+        aButtonColor = CVar_GetRGB("gCosmetics.Hud_AButton.Value", aButtonColor);
     } else if (CVar_GetS32("gCosmetics.DefaultColorScheme", 0)) {
         aButtonColor = (Color_RGB8){ 80, 255, 150 };
     }
 
     Color_RGB8 cButtonsColor = {255, 255, 50};
     if (CVar_GetS32("gCosmetics.Hud_CButtons.Changed", 0)) {
-        cButtonsColor = CVar_GetRGB("gCosmetics.Hud_CButtons", cButtonsColor);
+        cButtonsColor = CVar_GetRGB("gCosmetics.Hud_CButtons.Value", cButtonsColor);
     }
     Color_RGB8 cUpButtonColor = cButtonsColor;
     if (CVar_GetS32("gCosmetics.Hud_CUpButton.Changed", 0)) {
-        cUpButtonColor = CVar_GetRGB("gCosmetics.Hud_CUpButton", cUpButtonColor);
+        cUpButtonColor = CVar_GetRGB("gCosmetics.Hud_CUpButton.Value", cUpButtonColor);
     }
     Color_RGB8 cDownButtonColor = cButtonsColor;
     if (CVar_GetS32("gCosmetics.Hud_CDownButton.Changed", 0)) {
-        cDownButtonColor = CVar_GetRGB("gCosmetics.Hud_CDownButton", cDownButtonColor);
+        cDownButtonColor = CVar_GetRGB("gCosmetics.Hud_CDownButton.Value", cDownButtonColor);
     }
     Color_RGB8 cLeftButtonColor = cButtonsColor;
     if (CVar_GetS32("gCosmetics.Hud_CLeftButton.Changed", 0)) {
-        cLeftButtonColor = CVar_GetRGB("gCosmetics.Hud_CLeftButton", cLeftButtonColor);
+        cLeftButtonColor = CVar_GetRGB("gCosmetics.Hud_CLeftButton.Value", cLeftButtonColor);
     }
     Color_RGB8 cRightButtonColor = cButtonsColor;
     if (CVar_GetS32("gCosmetics.Hud_CRightButton.Changed", 0)) {
-        cRightButtonColor = CVar_GetRGB("gCosmetics.Hud_CRightButton", cRightButtonColor);
+        cRightButtonColor = CVar_GetRGB("gCosmetics.Hud_CRightButton.Value", cRightButtonColor);
     }
 
     static s16 D_8082A070[][4] = {

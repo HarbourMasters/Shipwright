@@ -1391,7 +1391,7 @@ void Environment_DrawSunAndMoon(PlayState* play) {
             Gfx_SetupDL_51Opa(play->state.gfxCtx);
             gDPPipeSync(POLY_OPA_DISP++);
             if (CVar_GetS32("gCosmetics.World_Moon.Changed", 0)) {
-                Color_RGB8 moonColor = CVar_GetRGB("gCosmetics.World_Moon", (Color_RGB8){ 0, 0, 240 });
+                Color_RGB8 moonColor = CVar_GetRGB("gCosmetics.World_Moon.Value", (Color_RGB8){ 0, 0, 240 });
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, moonColor.r, moonColor.g, moonColor.b, alpha);
                 gDPSetEnvColor(POLY_OPA_DISP++, moonColor.r / 2, moonColor.g / 2, moonColor.b / 2, alpha);
             } else {
