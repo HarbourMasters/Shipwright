@@ -10,11 +10,11 @@ f32 Math_SinS(s16 angle) {
 }
 
 f32 Math_AccurateCosS(s16 angle) {
-    return cosf(DEG_TO_RAD((f32)angle / SHT_MAX) * 180.0f);
+    return cosf(DEG_TO_RAD((f32)(angle & 0xFFFC) / SHT_MAX) * 180.0f);
 }
 
 f32 Math_AccurateSinS(s16 angle) {
-    return sinf(DEG_TO_RAD((f32)angle / SHT_MAX) * 180.0f);
+    return sinf(DEG_TO_RAD((f32)(angle & 0xFFFC) / SHT_MAX) * 180.0f);
 }
 
 /**
