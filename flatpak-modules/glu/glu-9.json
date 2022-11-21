@@ -1,0 +1,12 @@
+{
+  "name": "glu",
+  "config-opts": ["--disable-static"],
+  "sources": [
+    {
+      "type": "archive",
+      "url": "https://archive.mesa3d.org//glu/glu-9.0.2.tar.xz",
+      "sha256": "6e7280ff585c6a1d9dfcdf2fca489251634b3377bfc33c29e4002466a38d02d4"
+    }
+  ],
+  "cleanup": [ "/include", "/lib/*.a", "/lib/*.la", "/lib/pkgconfig" ]
+}

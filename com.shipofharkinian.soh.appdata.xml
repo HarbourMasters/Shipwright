@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>com.shipofharkinian.soh</id>
+  <launchable type="desktop-id">com.shipofharkinian.soh.desktop</launchable>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  
+  <name>SoH</name>
+  <summary>Ship of Harkinian</summary>
+
+  <releases>
+    <release date="2022-10-21" version="4.0.5" />
+    <release date="2022-10-20" version="4.0.4" />
+    <release date="2022-10-13" version="4.0.3" />
+    <release date="2022-10-07" version="4.0.2" />
+    <release date="2022-10-01" version="4.0.1" />
+    <release date="2022-09-30" version="4.0.0" />
+  </releases>
+
+  <categories>
+    <category>Game</category>
+  </categories>
+
+  <description>
+	  <p>Ship of Harkinian</p>
+  </description>
+
+</component>
