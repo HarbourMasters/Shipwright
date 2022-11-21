@@ -516,7 +516,7 @@ void EnBomChu_Draw(Actor* thisx, PlayState* play) {
     colorIntensity = blinkTime / (f32)blinkHalfPeriod;
 
     if (CVar_GetS32("gCosmetics.Equipment_ChuBody.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.Equipment_ChuBody", (Color_RGB8){ 209.0f, 34.0f, -35.0f });
+        Color_RGB8 color = CVar_GetRGB("gCosmetics.Equipment_ChuBody.Value", (Color_RGB8){ 209.0f, 34.0f, -35.0f });
         gDPSetEnvColor(POLY_OPA_DISP++, (colorIntensity * color.r), (colorIntensity * color.g),
                    (colorIntensity * color.b), 255);
     } else {
