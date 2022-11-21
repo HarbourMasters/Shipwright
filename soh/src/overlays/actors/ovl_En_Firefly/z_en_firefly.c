@@ -744,11 +744,10 @@ void EnFirefly_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* 
     static Color_RGBA8 fireAuraEnvColor = { 255, 50, 0, 0 };
     static Color_RGBA8 iceAuraPrimColor = { 100, 200, 255, 255 };
     static Color_RGBA8 iceAuraEnvColor = { 0, 0, 255, 0 };
-    static Color_RGB8 fireAuraPrimColor_ori = { 255, 255, 100 };
-    static Color_RGB8 fireAuraEnvColor_ori = { 255, 50, 0 };
-    static Color_RGB8 iceAuraPrimColor_ori = { 100, 200, 255 };
-    static Color_RGB8 iceAuraEnvColor_ori = { 0, 0, 255 };
-
+    Color_RGBA8 customFireAuraPrimColor = CVar_GetRGBA("gCosmetics.NPC_FireKeesePrimary.Value", fireAuraPrimColor);
+    Color_RGBA8 customFireAuraEnvColor = CVar_GetRGBA("gCosmetics.NPC_FireKeeseSecondary.Value", fireAuraEnvColor);
+    Color_RGBA8 customIceAuraPrimColor = CVar_GetRGBA("gCosmetics.NPC_IceKeesePrimary.Value", iceAuraPrimColor);
+    Color_RGBA8 customIceAuraEnvColor = CVar_GetRGBA("gCosmetics.NPC_IceKeeseSecondary.Value", iceAuraEnvColor);
     static Vec3f effVelocity = { 0.0f, 0.5f, 0.0f };
     static Vec3f effAccel = { 0.0f, 0.5f, 0.0f };
     static Vec3f limbSrc = { 0.0f, 0.0f, 0.0f };
@@ -760,26 +759,7 @@ void EnFirefly_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* 
     s16 effScaleStep;
     s16 effLife;
     EnFirefly* this = (EnFirefly*)thisx;
-    if (CVar_GetS32("gUseKeeseCol", 0)) {
-        Color_RGBA8 fireAuraPrimColor_custom = { CVar_GetRGB("gKeese1_Ef_Prim", fireAuraPrimColor_ori).r,CVar_GetRGB("gKeese1_Ef_Prim", fireAuraPrimColor_ori).g,CVar_GetRGB("gKeese1_Ef_Prim", fireAuraPrimColor_ori).b, 255 };
-        Color_RGBA8 fireAuraEnvColor_custom = { CVar_GetRGB("gKeese1_Ef_Env", fireAuraEnvColor_ori).r,CVar_GetRGB("gKeese1_Ef_Env", fireAuraEnvColor_ori).g,CVar_GetRGB("gKeese1_Ef_Env", fireAuraEnvColor_ori).b, 0 };
-        Color_RGBA8 iceAuraPrimColor_custom = { CVar_GetRGB("gKeese2_Ef_Prim", iceAuraPrimColor_ori).r,CVar_GetRGB("gKeese2_Ef_Prim", iceAuraPrimColor_ori).g,CVar_GetRGB("gKeese2_Ef_Prim", iceAuraPrimColor_ori).b, 255 };
-        Color_RGBA8 iceAuraEnvColor_custom = { CVar_GetRGB("gKeese2_Ef_Env", iceAuraEnvColor_ori).r,CVar_GetRGB("gKeese2_Ef_Env", iceAuraEnvColor_ori).g,CVar_GetRGB("gKeese2_Ef_Env", iceAuraEnvColor_ori).b, 0 };
-        fireAuraPrimColor = fireAuraPrimColor_custom;
-        fireAuraEnvColor = fireAuraEnvColor_custom;
-        iceAuraPrimColor = iceAuraPrimColor_custom;
-        iceAuraEnvColor = iceAuraEnvColor_custom;
-    } else {
-        //Original colors are back there
-        Color_RGBA8 fireAuraPrimColor_custom = { fireAuraPrimColor_ori.r, fireAuraPrimColor_ori.g, fireAuraPrimColor_ori.b, 255 };
-        Color_RGBA8 fireAuraEnvColor_custom = { fireAuraEnvColor_ori.r, fireAuraEnvColor_ori.g, fireAuraEnvColor_ori.b, 0 };
-        Color_RGBA8 iceAuraPrimColor_custom = { iceAuraPrimColor_ori.r, iceAuraPrimColor_ori.g, iceAuraPrimColor_ori.b, 255 };
-        Color_RGBA8 iceAuraEnvColor_custom = { iceAuraEnvColor_ori.r, iceAuraEnvColor_ori.g, iceAuraEnvColor_ori.b, 0 };
-        fireAuraPrimColor = fireAuraPrimColor_custom;
-        fireAuraEnvColor = fireAuraEnvColor_custom;
-        iceAuraPrimColor = iceAuraPrimColor_custom;
-        iceAuraEnvColor = iceAuraEnvColor_custom;
-    }
+
     if (!this->onFire && (limbIndex == 27)) {
         gSPDisplayList((*gfx)++, gKeeseEyesDL);
     } else {
@@ -807,11 +787,27 @@ void EnFirefly_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* 
                 }
 
                 if (this->auraType == KEESE_AURA_FIRE) {
-                    effPrimColor = &fireAuraPrimColor;
-                    effEnvColor = &fireAuraEnvColor;
+                    if (CVar_GetS32("gCosmetics.NPC_FireKeesePrimary.Changed", 0)) {
+                        effPrimColor = &customFireAuraPrimColor;
+                    } else {
+                        effPrimColor = &fireAuraPrimColor;
+                    }
+                    if (CVar_GetS32("gCosmetics.NPC_FireKeeseSecondary.Changed", 0)) {
+                        effEnvColor = &customFireAuraEnvColor;
+                    } else {
+                        effEnvColor = &fireAuraEnvColor;
+                    }
                 } else {
-                    effPrimColor = &iceAuraPrimColor;
-                    effEnvColor = &iceAuraEnvColor;
+                    if (CVar_GetS32("gCosmetics.NPC_IceKeesePrimary.Changed", 0)) {
+                        effPrimColor = &customIceAuraPrimColor;
+                    } else {
+                        effPrimColor = &iceAuraPrimColor;
+                    }
+                    if (CVar_GetS32("gCosmetics.NPC_IceKeeseSecondary.Changed", 0)) {
+                        effEnvColor = &customIceAuraEnvColor;
+                    } else {
+                        effEnvColor = &iceAuraEnvColor;
+                    }
                 }
 
                 func_8002843C(play, &effPos, &effVelocity, &effAccel, effPrimColor, effEnvColor, 250, effScaleStep,
