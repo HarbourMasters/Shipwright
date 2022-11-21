@@ -4716,7 +4716,7 @@ s32 Camera_Unique1(Camera* camera) {
         anim->timer--;
     }
 
-    sp8C.yaw = Camera_LERPFloorS(anim->yawTarget, eyeNextAtOffset.yaw, 0.5f, 0x2710);
+    sp8C.yaw = Camera_LERPFloorS(anim->yawTarget, eyeNextAtOffset.yaw, 0.5f, CVar_GetS32("gFixHangingLedgeSwingRate", 0) ? 0xA : 0x2710);
     Camera_Vec3fVecSphGeoAdd(eyeNext, at, &sp8C);
     *eye = *eyeNext;
     Camera_BGCheck(camera, at, eye);

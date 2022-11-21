@@ -1192,6 +1192,8 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Prevent the Gerudo Warrior's clothes changing color when changing Link's tunic or using bombs in front of her");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Camera Swing", "gFixCameraSwing", true, false);
                 UIWidgets::Tooltip("Fixes camera getting stuck on collision when standing still, also fixes slight shift back in camera when stop moving");
+                UIWidgets::PaddedEnhancementCheckbox("Fix Hanging Ledge Swing Rate", "gFixHangingLedgeSwingRate", true, false);
+                UIWidgets::Tooltip("Fixes camera swing rate when player falls of a ledge and camera swings around");
 
                 ImGui::EndMenu();
             }
