@@ -204,8 +204,10 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     /* NPCs */
     // Navi
     // Other fairies
-    // Keese Fire
-    // Keese Ice
+    COSMETIC_OPTION("NPC_FireKeesePrimary",          "Fire Keese Primary",   BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("NPC_FireKeeseSecondary",        "Fire Keese Secondary", BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("NPC_IceKeesePrimary",           "Ice Keese Primary",    BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("NPC_IceKeeseSecondary",         "Ice Keese Secondary",  BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("NPC_Dog1",                      "Dog 1",                BOX_NPC,          ImVec4(255, 255, 200, 255), false, true, true),
     COSMETIC_OPTION("NPC_Dog2",                      "Dog 2",                BOX_NPC,          ImVec4(150, 100,  50, 255), false, true, true),
     COSMETIC_OPTION("NPC_GoldenSkulltula",           "Golden Skulltula",     BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
