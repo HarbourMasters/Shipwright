@@ -18,7 +18,7 @@ modules:
   - name: "soh"
     buildsystem: "simple"
     build-commands:
-    - cmake -H. -Bbuild -GNinja -DCMAKE_BUILD_TYPE=Release
+    - cmake -H. -Bbuild -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/app
     - cmake --build build --config Release --target ExtractAssets
     - cmake --build build --config Release --target OTRGui
     - cmake --build build --config Release
