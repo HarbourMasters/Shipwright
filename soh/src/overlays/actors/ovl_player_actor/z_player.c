@@ -10244,7 +10244,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
             seqMode = SEQ_MODE_STILL;
         }
 
-        if (play->actorCtx.targetCtx.bgmEnemy != NULL) {
+        if (play->actorCtx.targetCtx.bgmEnemy != NULL && !CVar_GetS32("gEnemyBGMDisable", 0)) {
             seqMode = SEQ_MODE_ENEMY;
             Audio_SetBgmEnemyVolume(sqrtf(play->actorCtx.targetCtx.bgmEnemy->xyzDistToPlayerSq));
         }

@@ -361,13 +361,31 @@ void DrawSfxEditor(bool& open) {
             ImGui::EndTabItem();
         }
 
-        if (ImGui::BeginTabItem("Experimental")) {
-            UIWidgets::PaddedText("These features are experimental and may cause music to sound odd or have other undesireable effects.");
-            UIWidgets::EnhancementCheckbox("Lower Octaves of Unplayable High Notes", "gExperimentalOctaveDrop");
-            UIWidgets::InsertHelpHoverText("Some custom sequences may have notes that are too high for the game's audio "
-                                           "engine to play. Enabling this checkbox will cause these notes to drop a "
-                                           "couple of octaves so they can still harmonize with the other notes of the "
-                                           "sequence");
+        static ImVec2 cellPadding(8.0f, 8.0f);
+        if (ImGui::BeginTabItem("Options")) {
+            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+            ImGui::BeginTable("Options", 1, ImGuiTableFlags_SizingStretchSame);
+            ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            if (ImGui::BeginChild("SfxOptions", ImVec2(0, -8))) {
+                ImGui::PushItemWidth(-FLT_MIN);
+                UIWidgets::EnhancementCheckbox("Disable Enemy Proximity Music", "gEnemyBGMDisable");
+                UIWidgets::InsertHelpHoverText(
+                    "Disables the music change when getting close to enemies. Useful for hearing "
+                    "your custom music for each scene more often.");
+                UIWidgets::PaddedSeparator();
+                UIWidgets::PaddedText("The following options are experimental and may cause music\nto sound odd or have other undesireable effects.");
+                UIWidgets::EnhancementCheckbox("Lower Octaves of Unplayable High Notes", "gExperimentalOctaveDrop");
+                UIWidgets::InsertHelpHoverText("Some custom sequences may have notes that are too high for the game's audio "
+                                            "engine to play. Enabling this checkbox will cause these notes to drop a "
+                                            "couple of octaves so they can still harmonize with the other notes of the "
+                                            "sequence.");
+                ImGui::PopItemWidth();
+            }
+            ImGui::EndChild();
+            ImGui::EndTable();
+            ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         }
         ImGui::EndTabBar();
