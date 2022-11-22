@@ -181,7 +181,7 @@ static void ExporterProgramEnd()
                             type = "bgm";
                         }
                         afterPath += ("_" + type);
-                        auto fileData = OTRExporter_Audio::BuildAssetSequence(item, fontIdx);
+                        auto fileData = OTRExporter_Audio::BuildAssetSequence(item, fontIdx, type);
                         printf("musicArchive->AddFile(%s)\n", afterPath.c_str());
                         musicArchive->AddFile(afterPath, (uintptr_t)fileData.data(), fileData.size());
                     }

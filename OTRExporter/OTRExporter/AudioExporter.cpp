@@ -191,7 +191,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 	}
 }
 
-std::vector<char> OTRExporter_Audio::BuildAssetSequence(const fs::path &sourcePath, uint8_t fontIdx) {
+std::vector<char> OTRExporter_Audio::BuildAssetSequence(const fs::path &sourcePath, uint8_t fontIdx, std::string type) {
         std::vector<uint8_t> seqData = File::ReadAllBytes(sourcePath);
         std::vector<char> seq = std::vector<char>(seqData.size());
         memcpy(seq.data(), seqData.data(), seqData.size());
@@ -205,7 +205,7 @@ std::vector<char> OTRExporter_Audio::BuildAssetSequence(const fs::path &sourcePa
         seqWriter.Write(seq.data(), seq.size());
         seqWriter.Write((uint8_t)0);
         seqWriter.Write((uint8_t)2);
-        seqWriter.Write((uint8_t)3);
+        seqWriter.Write((uint8_t)(type == "bgm" ? 2 : 1));
         seqWriter.Write((uint32_t)1);
         seqWriter.Write((uint8_t)fontIdx);
         return seqStream->ToVector();
