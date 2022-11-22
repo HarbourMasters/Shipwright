@@ -476,6 +476,8 @@ namespace GameMenuBar {
         // Allow the cursor to be on any slot
         CVar_SetS32("gPauseAnyCursor", 1);
 
+        // Customize Fishing
+        CVar_SetS32("gCustomizeFishing", 1);
         // Guarantee Bite
         CVar_SetS32("gGuaranteeFishingBite", 1);
         // Fish Never Escape
