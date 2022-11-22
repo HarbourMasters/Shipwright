@@ -235,6 +235,17 @@ namespace GameMenuBar {
         // Fairy Revive Percent Restore
         CVar_SetS32("gFairyRevivePercentRestore", 0);
 
+        // Customize Shooting Gallery
+        CVar_SetS32("gCustomizeShootingGallery", 0);
+        // Shooting Gallery Instant Win
+        CVar_SetS32("gInstantShootingGalleryWin", 0);
+        // Constant Adult Shooting Gallery
+        CVar_SetS32("gConstantAdultGallery", 0);
+        // Child Starting Ammunition (10 to 30)
+        CVar_SetS32("gChildShootingGalleryAmmunition", 15);
+        // Adult Starting Ammunition (10 to 30)
+        CVar_SetS32("gAdultShootingGalleryAmmunition", 15);
+
         // Instant Fishing
         CVar_SetS32("gInstantFishing", 0);
         // Guarantee Bite
@@ -1190,6 +1201,8 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Extend certain credits scenes so the music lines up properly with the visuals");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Gerudo Warrior's clothing colors", "gGerudoWarriorClothingFix", true, false);
                 UIWidgets::Tooltip("Prevent the Gerudo Warrior's clothes changing color when changing Link's tunic or using bombs in front of her");
+                UIWidgets::PaddedEnhancementCheckbox("Fix Camera Drift", "gFixCameraDrift", true, false);
+                UIWidgets::Tooltip("Fixes camera slightly drifting to the left when standing still due to a math error");
 
                 ImGui::EndMenu();
             }
@@ -1365,7 +1378,7 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Holding down B skips text");
             UIWidgets::PaddedEnhancementCheckbox("Free Camera", "gFreeCamera", true, false);
             UIWidgets::Tooltip("Enables camera control\nNote: You must remap C buttons off of the right stick in the controller config menu, and map the camera stick to the right stick.");
-
+            
          #ifdef __SWITCH__
             UIWidgets::Spacer(0);
             int slot = CVar_GetS32("gSwitchPerfMode", (int)Ship::SwitchProfiles::STOCK);
@@ -1526,6 +1539,8 @@ namespace GameMenuBar {
                 ImGui::Text("Loading :");
                 UIWidgets::EnhancementCombobox("gSaveFileID", FastFileSelect, 5, 0);
             };
+            UIWidgets::PaddedEnhancementCheckbox("Hide Build Info", "gHideBuildInfo", true, false);
+            UIWidgets::Tooltip("Hides the game version and build details in the boot logo start screen");
             UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
             UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
             UIWidgets::PaddedSeparator();
