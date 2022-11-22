@@ -1149,8 +1149,18 @@ typedef enum RandoOption {
   RO_DUNGEON_ITEM_LOC_ANYWHERE,
 
   //Dungeon reward settings
+  RO_DUNGEON_REWARDS_END_OF_DUNGEON = 0,
+  RO_DUNGEON_REWARDS_ANY_DUNGEON,
+  RO_DUNGEON_REWARDS_OVERWORLD,
+  RO_DUNGEON_REWARDS_ANYWHERE,
 
-  //Ganon Boss Key Settins (vanilla, own dungeon, start with,
+  //Keyring Settings
+  RO_KEYRINGS_OFF = 0,
+  RO_KEYRINGS_RANDOM,
+  RO_KEYRINGS_COUNT,
+  RO_KEYRINGS_SELECTION,
+
+  //Ganon Boss Key Settings (vanilla, own dungeon, start with,
   //overworld, anywhere)
   RO_GANON_BOSS_KEY_VANILLA = 0,
   RO_GANON_BOSS_KEY_OWN_DUNGEON,
@@ -1158,6 +1168,32 @@ typedef enum RandoOption {
   RO_GANON_BOSS_KEY_ANY_DUNGEON,
   RO_GANON_BOSS_KEY_OVERWORLD,
   RO_GANON_BOSS_KEY_ANYWHERE,
+  RO_GANON_BOSS_KEY_LACS_VANILLA,
+  RO_GANON_BOSS_KEY_LACS_MEDALLIONS,
+  RO_GANON_BOSS_KEY_LACS_STONES,
+  RO_GANON_BOSS_KEY_LACS_REWARDS,
+  RO_GANON_BOSS_KEY_LACS_DUNGEONS,
+  RO_GANON_BOSS_KEY_LACS_TOKENS,
+
+  //Shuffle Dungeon Entrance Settings (Off, on, plus ganon)
+  RO_DUNGEON_ENTRANCE_SHUFFLE_OFF = 0,
+  RO_DUNGEON_ENTRANCE_SHUFFLE_ON,
+  RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON,
+
+  //Shuffle Interior Entrance Settings (Off, simple, all)
+  RO_INTERIOR_ENTRANCE_SHUFFLE_OFF = 0,
+  RO_INTERIOR_ENTRANCE_SHUFFLE_SIMPLE,
+  RO_INTERIOR_ENTRANCE_SHUFFLE_ALL,
+
+  //Song shuffle Settings (Song locations, Dungeon rewards, anywhere)
+  RO_SONG_SHUFFLE_SONG_LOCATIONS = 0,
+  RO_SONG_SHUFFLE_DUNGEON_REWARDS,
+  RO_SONG_SHUFFLE_ANYWHERE,
+
+  //Shuffle Merchants Settings (Off, On no hint, on with wint)
+  RO_SHUFFLE_MERCHANTS_OFF = 0,
+  RO_SHUFFLE_MERCHANTS_ON_NO_HINT,
+  RO_SHUFFLE_MERCHANTS_ON_HINT,
 
   //Starting Ocarina Settings (off, fairy)
   RO_STARTING_OCARINA_OFF = 0,

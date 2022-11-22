@@ -728,11 +728,11 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         break;
                     case RSK_SHUFFLE_MERCHANTS:
                         if(it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = 0;
+                            gSaveContext.randoSettings[index].value = RO_SHUFFLE_MERCHANTS_OFF;
                         } else if (it.value() == "On (No Hints)") {
-                            gSaveContext.randoSettings[index].value = 1;
+                            gSaveContext.randoSettings[index].value = RO_SHUFFLE_MERCHANTS_ON_NO_HINT;
                         } else if (it.value() == "On (With Hints)") {
-                            gSaveContext.randoSettings[index].value = 2;
+                            gSaveContext.randoSettings[index].value = RO_SHUFFLE_MERCHANTS_ON_HINT;
                         }
                         break;
                     // Uses Ammo Drops option for now. "Off" not yet implemented
@@ -873,19 +873,19 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         } else if(it.value() == "Overworld") {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_OVERWORLD;
                         } else if(it.value() == "Anywhere") {                         
-                            gSaveContext.randoSettings[index].value = 5;
+                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_ANYWHERE;
                         } else if(it.value() == "LACS-Vanilla") {
-                            gSaveContext.randoSettings[index].value = 6;
+                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_VANILLA;
                         } else if(it.value() == "LACS-Medallions") {
-                            gSaveContext.randoSettings[index].value = 7;
+                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_MEDALLIONS;
                         } else if(it.value() == "LACS-Stones") {
-                            gSaveContext.randoSettings[index].value = 8;
+                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_STONES;
                         } else if(it.value() == "LACS-Rewards") {
-                            gSaveContext.randoSettings[index].value = 9;
+                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_REWARDS;
                         } else if(it.value() == "LACS-Dungeons") {
-                            gSaveContext.randoSettings[index].value = 10;
+                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_DUNGEONS;
                         } else if(it.value() == "LACS-Tokens") {
-                            gSaveContext.randoSettings[index].value = 11;
+                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_TOKENS;
                         }
                         break;
                     case RSK_SKIP_CHILD_ZELDA:
@@ -940,20 +940,20 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         break;
                     case RSK_SHUFFLE_DUNGEON_ENTRANCES:
                         if (it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = 0;
+                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ENTRANCE_SHUFFLE_OFF;
                         } else if (it.value() == "On") {
-                            gSaveContext.randoSettings[index].value = 1;
+                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ENTRANCE_SHUFFLE_ON;
                         } else if (it.value() == "On + Ganon") {
-                            gSaveContext.randoSettings[index].value = 2;
+                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON;
                         }
                         break;
                     case RSK_SHUFFLE_INTERIOR_ENTRANCES:
                         if (it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = 0;
+                            gSaveContext.randoSettings[index].value = RO_INTERIOR_ENTRANCE_SHUFFLE_OFF;
                         } else if (it.value() == "Simple") {
-                            gSaveContext.randoSettings[index].value = 1;
+                            gSaveContext.randoSettings[index].value = RO_INTERIOR_ENTRANCE_SHUFFLE_SIMPLE;
                         } else if (it.value() == "All") {
-                            gSaveContext.randoSettings[index].value = 2;
+                            gSaveContext.randoSettings[index].value = RO_INTERIOR_ENTRANCE_SHUFFLE_ALL;
                         }
                         break;
                 }
@@ -3056,7 +3056,7 @@ void DrawRandoEditor(bool& open) {
                     "- Bottom of the Well will be open for adult after playing Song of Storms to the Windmill guy as child.\n"
                     "- Gerudo Training Ground will be open for child after adult has paid to open the gate once."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonsEntrances", randoShuffleDungeonsEntrances, 3, 0);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonsEntrances", randoShuffleDungeonsEntrances, 3, RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3084,7 +3084,7 @@ void DrawRandoEditor(bool& open) {
                     "- Temple of Time\n"
                     "- Kakariko Potion Shop"
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleInteriorsEntrances", randoShuffleInteriorsEntrances, 3, 0);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleInteriorsEntrances", randoShuffleInteriorsEntrances, 3, RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3134,7 +3134,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Anywhere - Songs can appear at any location."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, 0);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, RO_SONG_SHUFFLE_SONG_LOCATIONS);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3286,7 +3286,7 @@ void DrawRandoEditor(bool& open) {
                     "On (no hints) - Salesmen will be included but won't tell you what you'll get.\n"
                     "On (with hints) - Salesmen will be included and you'll know what you're buying."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleMerchants", randoShuffleMerchants, 3, 0);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleMerchants", randoShuffleMerchants, 3, RO_SHUFFLE_MERCHANTS_OFF);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3341,7 +3341,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Anywhere - Spiritual stones and medallions can appear anywhere."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4, 0);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4, RO_DUNGEON_REWARDS_END_OF_DUNGEON);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3396,15 +3396,15 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Selection - Hand select which dungeons will have their keys replaced with keyrings."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleKeyRings", randoShuffleKeyRings, 4, 0);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleKeyRings", randoShuffleKeyRings, 4, RO_KEYRINGS_OFF);
                 ImGui::PopItemWidth();
-                switch (CVar_GetS32("gRandomizeShuffleKeyRings", 0)) {
-                    case 2:
+                switch (CVar_GetS32("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF)) {
+                    case RO_KEYRINGS_COUNT:
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Key Ring Count: %d", "##RandomizeShuffleKeyRingsRandomCount",
                                                         "gRandomizeShuffleKeyRingsRandomCount", 1, 8, "", 8, true);
                         break;
-                    case 3:
+                    case RO_KEYRINGS_SELECTION:
                         UIWidgets::EnhancementCheckbox("Forest Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsForestTemple");
                         UIWidgets::EnhancementCheckbox("Fire Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsFireTemple");
                         UIWidgets::EnhancementCheckbox("Water Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsWaterTemple");
@@ -3480,28 +3480,28 @@ void DrawRandoEditor(bool& open) {
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 12, RO_GANON_BOSS_KEY_VANILLA);
                 ImGui::PopItemWidth();
-                switch (CVar_GetS32("gRandomizeShuffleGanonBossKey", 1)) {
-                    case 7:
+                switch (CVar_GetS32("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_OWN_DUNGEON)) {
+                    case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount",
                                                         "gRandomizeLacsMedallionCount", 1, 6, "", 6, true);
                         break;
-                    case 8:
+                    case RO_GANON_BOSS_KEY_LACS_STONES:
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount",
                                                         "gRandomizeLacsStoneCount", 1, 3, "", 3, true);
                         break;
-                    case 9:
+                    case RO_GANON_BOSS_KEY_LACS_REWARDS:
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount",
                                                         "gRandomizeLacsRewardCount", 1, 9, "", 9, true);
                         break;
-                    case 10:
+                    case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount",
                                                         "gRandomizeLacsDungeonCount", 1, 8, "", 8, true);
                         break;
-                    case 11:
+                    case RO_GANON_BOSS_KEY_LACS_TOKENS:
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Token Count: %d", "##RandoLacsTokenCount",
                                                         "gRandomizeLacsTokenCount", 1, 100, "", 100, true);
