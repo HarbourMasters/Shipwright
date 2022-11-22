@@ -156,6 +156,12 @@ const std::vector<const char*> enhancementsCvars = {
     "gChestSizeDependsStoneOfAgony",
     "gSkipArrowAnimation",
     "gSeparateArrows",
+    "gCustomizeShootingGallery",
+    "gInstantShootingGalleryWin",
+    "gConstantAdultGallery",
+    "gChildShootingGalleryAmmunition",
+    "gAdultShootingGalleryAmmunition",
+    "gCreditsFix",
 };
 
 const std::vector<const char*> randomizerCvars = {
