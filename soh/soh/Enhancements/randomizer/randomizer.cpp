@@ -2531,6 +2531,14 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, s16 sceneNum, s16 act
     return GetCheckObjectFromActor(actorId, sceneNum, actorParams).rc;
 }
 
+RandomizerInf Randomizer::GetRandomizerInfFromCheck(RandomizerCheck rc) {
+    auto rcIt = rcToRandomizerInf.find(rc);
+    if (rcIt == rcToRandomizerInf.end())
+        return RAND_INF_MAX;
+    
+    return rcIt->second;
+}
+
 RandomizerCheck Randomizer::GetCheckFromRandomizerInf(RandomizerInf randomizerInf) {
     for (auto const& [key, value] : rcToRandomizerInf) {
         if (value == randomizerInf) return key;

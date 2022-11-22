@@ -76,6 +76,35 @@ std::map<CosmeticBox, const char*> boxLabels = {
     { BOX_ARROWS, "Arrow Effects" },
     { BOX_SPIN_ATTACK, "Spin Attack" },
 };
+const char* RainbowColorCvarList[] = {
+    //This is the list of possible CVars that has rainbow effect.
+    "gTunic_Kokiri", "gTunic_Goron", "gTunic_Zora",
+    "gGauntlets_Silver", "gGauntlets_Golden",
+    "gFireArrowCol", "gIceArrowCol",
+    "gNormalArrowCol", "gNormalArrowColEnv",
+    "gFireArrowColEnv", "gIceArrowColEnv", "gLightArrowColEnv",
+    "gCCHeartsPrim", "gDDCCHeartsPrim", "gLightArrowCol", "gCCDDHeartsPrim",
+    "gCCABtnPrim", "gCCBBtnPrim", "gCCCBtnPrim", "gCCStartBtnPrim",
+    "gCCCUBtnPrim", "gCCCLBtnPrim", "gCCCRBtnPrim", "gCCCDBtnPrim", "gCCDpadPrim",
+    "gCCMagicBorderNormPrim", "gCCMagicBorderPrim", "gCCMagicPrim", "gCCMagicUsePrim",
+    "gCCMinimapPrim", "gCCMinimapDGNPrim", "gCCMinimapCPPrim", "gCCMinimapLEPrim",
+    "gCCRupeePrim", "gCCKeysPrim", "gDog1Col", "gDog2Col", "gCCVSOAPrim",
+    "gKeese1_Ef_Prim","gKeese2_Ef_Prim","gKeese1_Ef_Env","gKeese2_Ef_Env",
+    "gDF_Col", "gDF_Env", 
+    "gNL_Diamond_Col", "gNL_Diamond_Env", "gNL_Orb_Col", "gNL_Orb_Env",
+    "gSwordTrailTopCol", "gSwordTrailBottomCol", "gBoomTrailStartCol", "gBoomTrailEndCol", "gBombTrailCol",
+    "gKSwordTrailTopCol", "gKSwordTrailBottomCol","gMSwordTrailTopCol", "gMSwordTrailBottomCol","gBSwordTrailTopCol", "gBSwordTrailBottomCol",
+    "gStickTrailTopCol", "gStickTrailBottomCol","gHammerTrailTopCol", "gHammerTrailBottomCol",
+    "gCharged1Col", "gCharged1ColEnv", "gCharged2Col", "gCharged2ColEnv",
+    "gCCFileChoosePrim", "gCCFileChooseTextPrim", "gCCEquipmentsPrim", "gCCItemsPrim",
+    "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim",
+    "gCheckTrackerAreaMainIncompleteColor", "gCheckTrackerAreaExtraIncompleteColor",
+    "gCheckTrackerAreaMainCompleteColor", "gCheckTrackerAreaExtraCompleteColor",  
+    "gCheckTrackerUncheckedMainColor", "gCheckTrackerUncheckedExtraColor",
+    "gCheckTrackerSkippedMainColor", "gCheckTrackerSkippedExtraColor", "gCheckTrackerSeenMainColor", "gCheckTrackerSeenExtraColor",
+    "gCheckTrackerHintedMainColor", "gCheckTrackerHintedExtraColor", "gCheckTrackerCheckedMainColor", "gCheckTrackerCheckedExtraColor",
+    "gCheckTrackerScummedMainColor", "gCheckTrackerScummedExtraColor", "gCheckTrackerSavedMainColor", "gCheckTrackerSavedExtraColor",
+};
 
 typedef struct {
     const char* cvar;

@@ -7,8 +7,6 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <set>
-#include "3drando/item_location.hpp"
 #include <Cvar.h>
 #include <Hooks.h>
 
@@ -32,10 +30,6 @@ void DrawQuest(ItemTrackerItem item);
 void DrawSong(ItemTrackerItem item);
 
 OSContPad* buttonsPressed;
-std::set<RandomizerCheck> checkedLocations;
-std::set<RandomizerCheck> skippedLocations;
-std::set<RandomizerCheck> prevCheckedLocations;
-RandomizerCheck lastLocationChecked;
 
 bool shouldUpdateVectors = true;
 
@@ -639,261 +633,6 @@ void DrawNotes(bool resizeable = false) {
     ImGui::EndGroup();
 }
 
-
-bool HasItemBeenSkipped(RandomizerCheckObject obj) {
-    return skippedLocations.find(obj.rc) != skippedLocations.end();
-}
-
-bool HasItemBeenCollected(RandomizerCheckObject obj) {
-    // TODO doesn't consider vanilla/MQ?
-
-    // TODO move all the code to a static function in item_location
-    // return Location(obj.rc)->GetCollectionCheck().IsChecked(gSaveContext); 
-
-    ItemLocation* x = Location(obj.rc);
-    SpoilerCollectionCheck check = x->GetCollectionCheck();
-    auto flag = check.flag;
-    auto scene = check.scene;
-    auto type = check.type;
-
-    int shift;
-    int mask;
-
-    switch (type) {
-        case SpoilerCollectionCheckType::SPOILER_CHK_ALWAYS_COLLECTED:
-            return true;
-        case SpoilerCollectionCheckType::SPOILER_CHK_BIGGORON:
-            return gSaveContext.bgsFlag & flag;
-        case SpoilerCollectionCheckType::SPOILER_CHK_CHEST:
-            return gSaveContext.sceneFlags[scene].chest & (1 << flag);
-        case SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE:
-            return gSaveContext.sceneFlags[scene].collect & (1 << flag);
-        case SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT:
-        case SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM:
-        case SpoilerCollectionCheckType::SPOILER_CHK_COW:
-        case SpoilerCollectionCheckType::SPOILER_CHK_SCRUB:
-        case SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF:
-            return Flags_GetRandomizerInf(randomizerFlagLookup[obj.rc]); //TODO randomizer.cpp has rcToRandomizerInf
-        case SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF:
-            return gSaveContext.eventChkInf[flag / 16] & (0x01 << flag % 16);
-        case SpoilerCollectionCheckType::SPOILER_CHK_GERUDO_MEMBERSHIP_CARD:
-            return CHECK_FLAG_ALL(gSaveContext.eventChkInf[0x09], 0x0F);
-        case SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA:
-            return GET_GS_FLAGS(scene) & flag;
-        case SpoilerCollectionCheckType::SPOILER_CHK_INF_TABLE:
-            // Magic to flip an index `flag` to a lookup for 16bit big endian integers. Probably an easier way.....
-            shift = 7 - (flag % 8) + ((flag % 16) / 8) * 8;
-            mask = 0x8000 >> shift;
-            return gSaveContext.infTable[scene] & mask;
-        case SpoilerCollectionCheckType::SPOILER_CHK_ITEM_GET_INF:
-            // Magic to flip an index `flag` to a lookup for 16bit big endian integers. Probably an easier way.....
-            shift = 7 - (flag % 8) + ((flag % 16) / 8) * 8;
-            mask = 0x8000 >> shift;
-            return gSaveContext.itemGetInf[flag / 16] & mask;
-        case SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS:
-            return BEANS_BOUGHT >= 10;
-        case SpoilerCollectionCheckType::SPOILER_CHK_MINIGAME: 
-            if (obj.rc == RC_LH_CHILD_FISHING)
-                return HIGH_SCORE(HS_FISHING) & 0x400;
-            if (obj.rc == RC_LH_ADULT_FISHING)
-                return HIGH_SCORE(HS_FISHING) & 0x800;
-        case SpoilerCollectionCheckType::SPOILER_CHK_NONE:
-            return false;
-        case SpoilerCollectionCheckType::SPOILER_CHK_POE_POINTS:
-            return gSaveContext.highScores[HS_POE_POINTS] >= 1000;
-        case SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER:
-            //Gravedigger has a fix in place that means one of two save locations. Check both.
-            return (gSaveContext.itemGetInf[1] & 0x1000) ||
-                   CVar_GetS32("gGravediggingTourFix", 0) && gSaveContext.sceneFlags[scene].collect & (1 << flag);
-        default:
-            return false;
-    }
-    return false;
-}
-
-RandomizerCheckArea lastArea = RCAREA_INVALID;
-void DrawLocations() {
-
-    if (ImGui::BeginTable("tableRandoChecks", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-        ImGui::TableSetupColumn("To Check", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-        ImGui::TableSetupColumn("Checked", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-        ImGui::TableHeadersRow();
-        ImGui::TableNextRow();
-
-        // COLUMN 1 - TO CHECK LOCATIONS
-        ImGui::TableNextColumn();
-
-        static ImGuiTextFilter locationSearch;
-        locationSearch.Draw();
-
-        bool lastItemFound = false;
-        bool doAreaScroll = false;
-        bool inGame = gPlayState != nullptr && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
-        RandomizerCheckArea currentArea = RCAREA_INVALID;
-        SceneID sceneId = SCENE_ID_MAX;
-        if (gPlayState != nullptr) {
-            sceneId = (SceneID)gPlayState->sceneNum;
-            currentArea = RandomizerCheckObjects::GetRCAreaBySceneID(sceneId);
-        }
-
-        ImGui::BeginChild("ChildToCheckLocations", ImVec2(0, -8));
-        for (auto& [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
-            bool hasItems = false;
-            for (auto& locationIt : rcObjects) {
-                if (!locationIt.second.visibleInImgui)
-                    continue;
-
-                if (!checkedLocations.count(locationIt.second.rc) && !skippedLocations.count(locationIt.second.rc) &&
-                    locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
-
-                    hasItems = true;
-                    doAreaScroll = 
-                        (currentArea != RCAREA_INVALID && sceneId != SCENE_KAKUSIANA && // Don't move for grottos
-                         sceneId != SCENE_YOUSEI_IZUMI_TATE && sceneId != SCENE_YOUSEI_IZUMI_YOKO && // Don't move for fairy fountains
-                         sceneId != SCENE_SHOP1 && sceneId != SCENE_SYATEKIJYOU && // Don't move for Bazaar/Gallery, as it moves between Kak and Market
-                         currentArea != lastArea && currentArea == rcArea);
-                    break;
-                }
-            }
-
-            if (hasItems) {
-                ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
-                    if (doAreaScroll) {
-                        ImGui::SetScrollHereY(0.0f);
-                        doAreaScroll = false;
-                    }
-                    for (auto& locationIt : rcObjects) {
-                        if (!locationIt.second.visibleInImgui)
-                            continue;
-
-                        bool checked = HasItemBeenCollected(locationIt.second);
-                        bool skipped = HasItemBeenSkipped(locationIt.second);
-
-                        // If the location has its scene flag set
-                        if (inGame && checked) {
-                            // show it as checked
-                            checkedLocations.insert(locationIt.second.rc);
-                            if (skipped)
-                                skippedLocations.erase(locationIt.second.rc);
-
-                            if (!lastItemFound &&
-                                prevCheckedLocations.find(locationIt.second.rc) == prevCheckedLocations.end()) {
-                                lastItemFound = true;
-                                prevCheckedLocations.insert(locationIt.second.rc);
-                                lastLocationChecked = locationIt.second.rc;
-                            }
-                        }
-
-                        if (locationIt.second.visibleInImgui && 
-                            !checkedLocations.count(locationIt.second.rc) && !skippedLocations.count(locationIt.second.rc) &&
-                            locationSearch.PassFilter(locationIt.second.rcSpoilerName.c_str())) {
-
-                            if (ImGui::ArrowButton(std::to_string(locationIt.second.rc).c_str(), ImGuiDir_Right)) {
-                                skippedLocations.insert(locationIt.second.rc);
-                            } else {
-                                ImGui::SameLine();
-                                ImGui::Text(locationIt.second.rcShortName.c_str());
-                            }
-                        }
-                    }
-                    ImGui::TreePop();
-                }
-            }
-        }
-        ImGui::EndChild();
-
-        // COLUMN 2 - CHECKED LOCATIONS
-        doAreaScroll = false;
-        ImGui::TableNextColumn();
-        ImGui::BeginChild("ChildCheckedLocations", ImVec2(0, -8));
-        for (auto& [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
-            bool hasItems = false;
-            for (auto& locationIt : rcObjects) {
-                if (!locationIt.second.visibleInImgui)
-                    continue;
-
-                if (checkedLocations.count(locationIt.second.rc) || skippedLocations.count(locationIt.second.rc)) {
-                    hasItems = true;
-                    doAreaScroll =
-                        (currentArea != RCAREA_INVALID && sceneId != SCENE_KAKUSIANA && // Don't move for kakusiana/grottos
-                         sceneId != SCENE_YOUSEI_IZUMI_TATE && sceneId != SCENE_YOUSEI_IZUMI_YOKO && // Don't move for fairy fountains
-                         sceneId != SCENE_SHOP1 && sceneId != SCENE_SYATEKIJYOU && // Don't move for Bazaar/Gallery, as it moves between Kak and Market
-                         currentArea != lastArea && currentArea == rcArea);
-                    break;
-                }
-            }
-
-            if (hasItems) {
-                ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
-                    if (doAreaScroll) {
-                        ImGui::SetScrollHereY(0.0f);
-                        doAreaScroll = false;
-                    }
-                    for (auto& locationIt : rcObjects) {
-                        if (!locationIt.second.visibleInImgui)
-                            continue;
-
-                        bool checked = HasItemBeenCollected(locationIt.second);
-                        bool skipped = HasItemBeenSkipped(locationIt.second);
-
-                        auto elfound = checkedLocations.find(locationIt.second.rc);
-                        auto skfound = skippedLocations.find(locationIt.second.rc);
-                        if (locationIt.second.visibleInImgui && (elfound != checkedLocations.end() || skfound != skippedLocations.end())) {
-                            // If the location has its scene flag set
-                            if (!inGame || (!checked && !skipped)) {
-                                // show it as unchecked
-                                if (!checked && elfound != checkedLocations.end())
-                                    checkedLocations.erase(elfound);
-                                if (!skipped && skfound != skippedLocations.end())
-                                    skippedLocations.erase(skfound);
-                            } else if (skipped && ImGui::ArrowButton(std::to_string(locationIt.second.rc).c_str(), ImGuiDir_Left)) {
-                                if (skipped)
-                                    skippedLocations.erase(skfound);
-                            } else if (!skipped) {
-                                float sz = ImGui::GetFrameHeight();
-                                ImGui::InvisibleButton("", ImVec2(sz, sz));
-                            }
-                            ImGui::SameLine();
-                            std::string txt =
-                                (lastLocationChecked == locationIt.second.rc ? "* " : "") + // Indicate the last location checked (before app reset at least)
-                                locationIt.second.rcShortName;
-
-                            if (skipped)
-                                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(160, 160, 160, 255));
-                            ImGui::Text(txt.c_str());
-                            if (!skipped)
-                                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 185, 0, 255));
-                            
-
-                            if (skipped)
-                                txt = "Skipped";
-                            else
-                                txt = OTRGlobals::Instance->gRandomizer
-                                       ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[locationIt.second.rc].get.rgID][gSaveContext.language];
-                            ImGui::SameLine();
-                            ImGui::Text("(%s)", txt.c_str());
-                            ImGui::PopStyleColor();
-                        }
-                    }
-                    ImGui::TreePop();
-                }
-            }
-        }
-        ImGui::EndChild();
-        ImGui::EndTable();
-
-        if (sceneId != SCENE_KAKUSIANA && 
-            sceneId != SCENE_YOUSEI_IZUMI_TATE && 
-            sceneId != SCENE_YOUSEI_IZUMI_YOKO &&
-            sceneId != SCENE_SYATEKIJYOU &&
-            sceneId != SCENE_SHOP1)
-            lastArea = currentArea;
-    }
-}
-
-
 // Windowing stuff
 ImVec4 ChromaKeyBackground = { 0, 0, 0, 0 }; // Float value, 1 = 255 in rgb value.
 void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
@@ -1057,6 +796,7 @@ void UpdateVectors() {
     if  (!shouldUpdateVectors) {
         return;
     }
+
     dungeonRewards.clear();
     dungeonRewards.insert(dungeonRewards.end(), dungeonRewardStones.begin(), dungeonRewardStones.end());
     dungeonRewards.insert(dungeonRewards.end(), dungeonRewardMedallions.begin(), dungeonRewardMedallions.end());
@@ -1202,13 +942,6 @@ void DrawItemTracker(bool& open) {
             DrawNotes(true);
             EndFloatingWindows();
         }
-
-        if (CVar_GetS32("gItemTrackerLocationDisplayType", 0) == 2 && CVar_GetS32("gItemTrackerDisplayType", 0) == 0) {
-            ImGui::SetNextWindowSize(ImVec2(600, 1000), ImGuiCond_FirstUseEver);
-            BeginFloatingWindows("Check Tracker", ImGuiWindowFlags_NoFocusOnAppearing);
-            DrawLocations();
-            EndFloatingWindows();
-        }
     }
 }
 
@@ -1294,7 +1027,6 @@ void DrawItemTrackerOptions(bool& open) {
     if (CVar_GetS32("gItemTrackerDisplayType", 0) != 1) {
         LabeledComboBoxRightAligned("Personal notes", "gItemTrackerNotesDisplayType", { "Hidden", "Main Window", "Seperate" }, 0);
     }
-    LabeledComboBoxRightAligned("Location Tracker", "gItemTrackerLocationDisplayType", { "Hidden", "Main Window (WIP)", "Separate" }, 0);
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
@@ -1325,12 +1057,9 @@ void InitItemTracker() {
     Ship::RegisterHook<Ship::LoadFile>([](uint32_t fileNum) {
         const char* initialTrackerNotes = CVar_GetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
         strcpy(itemTrackerNotes.Data, initialTrackerNotes);
-        RandomizerCheckObjects::UpdateTrackerImGuiVisibility();
     });
     Ship::RegisterHook<Ship::DeleteFile>([](uint32_t fileNum) {
         CVar_SetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
         SohImGui::RequestCvarSaveOnNextTick();
     });
-    RandomizerCheckObjects::UpdateTrackerImGuiVisibility();
-    LocationTable_Init();
 }

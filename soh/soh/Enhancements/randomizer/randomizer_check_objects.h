@@ -64,6 +64,7 @@ typedef enum {
     RCAREA_ICE_CAVERN,
     RCAREA_GERUDO_TRAINING_GROUND,
     RCAREA_GANONS_CASTLE,
+    //If adding any more areas, Check Tracker will need a refactor
     RCAREA_INVALID
 } RandomizerCheckArea;
 
@@ -103,4 +104,5 @@ namespace RandomizerCheckObjects {
     RandomizerCheckArea GetRCAreaBySceneID(SceneID sceneId);
     void UpdateImGuiVisibility();
     void UpdateTrackerImGuiVisibility();
-}
+    bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj);
+    }
