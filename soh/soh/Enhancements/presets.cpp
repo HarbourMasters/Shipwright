@@ -31,29 +31,34 @@ void applyPreset(std::vector<PresetEntry> entries) {
 void DrawPresetSelector(PresetType presetTypeId) {
     const std::string presetTypeCvar = "gPreset" + std::to_string(presetTypeId);
     const PresetTypeDefinition presetTypeDef = presetTypes.at(presetTypeId);
-    // I don't love having the hardcoded length here, but combobox needs a const and this can be a dynamic length so for
-    // the time being this should be the length of the largest amount of presets under any preset type + 1 for "default" option
-    const char* comboboxOptions[4];
-    comboboxOptions[0] = "Default";
-    std::string comboboxTooltip = "Default - Reset all options to their default values.";
+    const uint16_t selectedPresetId = CVar_GetS32(presetTypeCvar.c_str(), 0);
+    const PresetDefinition selectedPresetDef = presetTypeDef.presets.at(selectedPresetId);
+    std::string comboboxTooltip = "";
     for ( auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter ) {
-        comboboxOptions[iter->first + 1] = iter->second.label;
-        comboboxTooltip += "\n\n" + std::string(iter->second.label) + " - " + std::string(iter->second.description);
+        if (iter->first != 0) comboboxTooltip += "\n\n";
+        comboboxTooltip += std::string(iter->second.label) + " - " + std::string(iter->second.description);
     }
 
     UIWidgets::PaddedText("Presets", false, true);
-    UIWidgets::EnhancementCombobox(presetTypeCvar.c_str(), comboboxOptions, presetTypeDef.presets.size() + 1, 0);
+    if (ImGui::BeginCombo("##PresetsComboBox", selectedPresetDef.label)) {
+        for ( auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter ) {
+            if (ImGui::Selectable(iter->second.label, iter->first == selectedPresetId)) {
+                CVar_SetS32(presetTypeCvar.c_str(), iter->first);
+            }
+        }
+
+        ImGui::EndCombo();
+    }
     UIWidgets::Tooltip(comboboxTooltip.c_str());
 
     UIWidgets::Spacer(0);
 
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6.0f, 4.0f));
     if (ImGui::Button(("Apply Preset##" + presetTypeCvar).c_str())) {
-        uint16_t presetSelectionId = CVar_GetS32(presetTypeCvar.c_str(), 0);
-        clearCvars(presetTypeDef.cvarsToClear);
-        if (presetSelectionId > 0) { 
-            PresetDefinition presetDef = presetTypeDef.presets.at(presetSelectionId - 1);
-            applyPreset(presetDef.entries);
+        if (selectedPresetId == 0) {
+            clearCvars(presetTypeDef.cvarsToClear);
+        } else {
+            applyPreset(selectedPresetDef.entries);
         }
         SohImGui::RequestCvarSaveOnNextTick();
     }

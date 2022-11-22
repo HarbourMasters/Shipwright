@@ -17,12 +17,14 @@ enum PresetType {
 };
 
 enum EnhancementPreset {
+    ENHANCEMENT_PRESET_DEFAULT,
     ENHANCEMENT_PRESET_VANILLA_PLUS,
     ENHANCEMENT_PRESET_ENHANCED,
     ENHANCEMENT_PRESET_RANDOMIZER,
 };
 
 enum RandomizerPreset {
+    RANDOMIZER_PRESET_DEFAULT,
     RANDOMIZER_PRESET_S6,
     RANDOMIZER_PRESET_HELL_MODE,
 };
@@ -636,6 +638,11 @@ typedef struct PresetTypeDefinition {
 
 const std::map<PresetType, PresetTypeDefinition> presetTypes = {
     { PRESET_TYPE_ENHANCEMENTS, { enhancementsCvars, {
+        { ENHANCEMENT_PRESET_DEFAULT, {
+            "Default",
+            "Reset all options to their default values.",
+            {},
+        } },
         { ENHANCEMENT_PRESET_VANILLA_PLUS, {
             "Vanilla Plus",
             "Adds Quality of Life features that enhance your experience, but don't alter gameplay. Recommended for a first playthrough of OoT.",
@@ -653,6 +660,11 @@ const std::map<PresetType, PresetTypeDefinition> presetTypes = {
         } },
     } } },
     { PRESET_TYPE_RANDOMIZER, { randomizerCvars, {
+        { RANDOMIZER_PRESET_DEFAULT, {
+            "Default",
+            "Reset all options to their default values.",
+            {},
+        } },
         { RANDOMIZER_PRESET_S6, {
             "S6 Tournament (Adapted)",
             "Matches OOTR S6 tournament settings as close as we can get with the options available in SoH. The following differences are notable:\n" \
