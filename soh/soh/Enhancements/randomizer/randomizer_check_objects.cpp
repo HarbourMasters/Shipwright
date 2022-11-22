@@ -3,6 +3,7 @@
 #include <string>
 #include <Cvar.h>
 #include "z64.h"
+#include "../../OTRGlobals.h"
 
 /*
 typedef struct {
@@ -950,35 +951,48 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
     }
 }
 
-void RandomizerCheckObjects::UpdateTrackerImGuiVisibility() {
-    for (auto& [randomizerCheck, locationIt] : rcObjects) {
-        locationIt.visibleInImgui = (
-            (locationIt.rcArea != RCAREA_INVALID) && // don't show Invalid locations
-            (locationIt.vOrMQ != RCVORMQ_MQ) && // don't show MQ checks until we support MQ
-            ((locationIt.rcType != RCTYPE_SHOP) || CVar_GetS32("gRandomizeShopsanity", 0) > 1) && // 1 is the value for "0 random items" for shop
-            (locationIt.rcType != RCTYPE_GOSSIP_STONE) && // don't show gossip stones (maybe gossipsanity will be a thing eventually?)
-            (locationIt.rcType != RCTYPE_CHEST_GAME) && // don't show non final reward chest game checks until we support shuffling them
-            ((locationIt.rcType != RCTYPE_SKULL_TOKEN) ||
-            (CVar_GetS32("gRandomizeShuffleTokens", 0) == 3) || // all tokens
-            ((CVar_GetS32("gRandomizeShuffleTokens", 0) == 2) && RandomizerCheckObjects::AreaIsOverworld(locationIt.rcArea)) || // overworld tokens
-            ((CVar_GetS32("gRandomizeShuffleTokens", 0) == 1) && RandomizerCheckObjects::AreaIsDungeon(locationIt.rcArea)) // dungeon tokens
-            ) &&
-            ((locationIt.rcType != RCTYPE_COW) || CVar_GetS32("gRandomizeShuffleCows", 0)) &&
-            ((locationIt.rcType != RCTYPE_ADULT_TRADE) || CVar_GetS32("gRandomizeShuffleAdultTrade", 0)) &&
-            ((locationIt.rc != RC_KF_KOKIRI_SWORD_CHEST) || CVar_GetS32("gRandomizeShuffleKokiriSword", 0)) &&
-            ((locationIt.rc != RC_HC_MALON_EGG) || CVar_GetS32("gRandomizeShuffleWeirdEgg", 0)) &&
-            ((locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) || CVar_GetS32("gRandomizeShuffleGerudoToken", 0)) &&
-            ((locationIt.rcType != RCTYPE_FROG_SONG) || CVar_GetS32("gRandomizeShuffleFrogSongRupees", 0)) &&
-            ((locationIt.rcType != RCTYPE_MAP_COMPASS) || CVar_GetS32("gRandomizeStartingMapsCompasses", 0) != 1) && // 1 is the value for "vanilla" maps/compasses
-            ((locationIt.rcType != RCTYPE_SMALL_KEY) || CVar_GetS32("gRandomizeKeysanity", 0) != 1) && // 1 is the value for "vanilla" small keys
-            ((locationIt.rcType != RCTYPE_GF_KEY) || CVar_GetS32("randoShuffleGerudoFortressKeys", 0) != 0) && // 0 is the value for "vanilla" gf keys
-            ((locationIt.rcType != RCTYPE_BOSS_KEY) || CVar_GetS32("gRandomizeBossKeysanity", 0) != 1) && // 1 is the value for "vanilla" boss keys
-            ((locationIt.rcType != RCTYPE_GANON_BOSS_KEY) || CVar_GetS32("gRandomizeShuffleGanonBossKey", 0) != 0) && // 0 is the value for "vanilla" ganon's boss key
-            ((!RC_IS_CARPENTER(locationIt.rc) && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) ||
-              (CVar_GetS32("gRandomizeGerudoFortress", 0) == 2 && !RC_IS_CARPENTER(locationIt.rc) && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) || //2 is the value for "open" gerudo's fortress
-              (CVar_GetS32("gRandomizeGerudoFortress", 0) == 1 && (locationIt.rc == RC_GF_NORTH_F1_CARPENTER || locationIt.rc == RC_GF_GERUDO_MEMBERSHIP_CARD)) || //1 is the value for "fast" gerudo's fortress
-              (CVar_GetS32("gRandomizeGerudoFortress", 0) == 0) //0 is the value for "normal" gerudo's fortress
-            )
+bool RandomizerCheckObjects::IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
+    uint8_t gRandomizeShopsanity =              OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY);
+    uint8_t gRandomizeShuffleTokens =           OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS);
+    uint8_t gRandomizeShuffleCows =             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_COWS);
+    uint8_t gRandomizeShuffleAdultTrade =       OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE);
+    uint8_t gRandomizeShuffleKokiriSword =      OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_KOKIRI_SWORD);
+    uint8_t gRandomizeShuffleWeirdEgg =         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_WEIRD_EGG);
+    uint8_t gRandomizeShuffleGerudoToken =      OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD);
+    uint8_t gRandomizeShuffleFrogSongRupees =   OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FROG_SONG_RUPEES);
+    uint8_t gRandomizeStartingMapsCompasses =   OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES);
+    uint8_t gRandomizeKeysanity =               OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY);
+    uint8_t randoShuffleGerudoFortressKeys =    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS);
+    uint8_t gRandomizeBossKeysanity =           OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY);
+    uint8_t gRandomizeShuffleGanonBossKey =     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY);
+    uint8_t gRandomizeGerudoFortress =          OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS);
+
+    return
+        (rcObj.rcArea != RCAREA_INVALID) && // don't show Invalid locations
+        (rcObj.vOrMQ != RCVORMQ_MQ) && // don't show MQ checks until we support MQ
+        ((rcObj.rcType != RCTYPE_SHOP) || gRandomizeShopsanity > 1) && // 1 is the value for "0 random items" for shop
+        (rcObj.rcType != RCTYPE_GOSSIP_STONE) && // don't show gossip stones (maybe gossipsanity will be a thing eventually?)
+        (rcObj.rcType != RCTYPE_CHEST_GAME) && // don't show non final reward chest game checks until we support shuffling them
+        ((rcObj.rcType != RCTYPE_SKULL_TOKEN) ||
+        (gRandomizeShuffleTokens == 3) || // all tokens
+        ((gRandomizeShuffleTokens == 2) && RandomizerCheckObjects::AreaIsOverworld(rcObj.rcArea)) || // overworld tokens
+        ((gRandomizeShuffleTokens == 1) && RandomizerCheckObjects::AreaIsDungeon(rcObj.rcArea)) // dungeon tokens
+        ) &&
+        ((rcObj.rcType != RCTYPE_COW) || gRandomizeShuffleCows) &&
+        ((rcObj.rcType != RCTYPE_ADULT_TRADE) || gRandomizeShuffleAdultTrade) &&
+        ((rcObj.rc != RC_KF_KOKIRI_SWORD_CHEST) || gRandomizeShuffleKokiriSword) &&
+        ((rcObj.rc != RC_HC_MALON_EGG) || gRandomizeShuffleWeirdEgg) &&
+        ((rcObj.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) || gRandomizeShuffleGerudoToken) &&
+        ((rcObj.rcType != RCTYPE_FROG_SONG) || gRandomizeShuffleFrogSongRupees) &&
+        ((rcObj.rcType != RCTYPE_MAP_COMPASS) || gRandomizeStartingMapsCompasses != 1) && // 1 is the value for "vanilla" maps/compasses
+        ((rcObj.rcType != RCTYPE_SMALL_KEY) || gRandomizeKeysanity != 1) && // 1 is the value for "vanilla" small keys
+        ((rcObj.rcType != RCTYPE_GF_KEY) || gRandomizeKeysanity != 0) && // 0 is the value for "vanilla" gf keys
+        ((rcObj.rcType != RCTYPE_BOSS_KEY) || gRandomizeBossKeysanity != 1) && // 1 is the value for "vanilla" boss keys
+        ((rcObj.rcType != RCTYPE_GANON_BOSS_KEY) || gRandomizeShuffleGanonBossKey != 0) && // 0 is the value for "vanilla" ganon's boss key
+        ((!RC_IS_CARPENTER(rcObj.rc) && rcObj.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) ||
+            (gRandomizeGerudoFortress == 2 && !RC_IS_CARPENTER(rcObj.rc) && rcObj.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) || //2 is the value for "open" gerudo's fortress
+            (gRandomizeGerudoFortress == 1 && (rcObj.rc == RC_GF_NORTH_F1_CARPENTER || rcObj.rc == RC_GF_GERUDO_MEMBERSHIP_CARD)) || //1 is the value for "fast" gerudo's fortress
+            (gRandomizeGerudoFortress == 0) //0 is the value for "normal" gerudo's fortress
         );
-    }
 }
+

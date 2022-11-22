@@ -38,7 +38,13 @@ const char* RainbowColorCvarList[] = {
     "gStickTrailTopCol", "gStickTrailBottomCol","gHammerTrailTopCol", "gHammerTrailBottomCol",
     "gCharged1Col", "gCharged1ColEnv", "gCharged2Col", "gCharged2ColEnv",
     "gCCFileChoosePrim", "gCCFileChooseTextPrim", "gCCEquipmentsPrim", "gCCItemsPrim",
-    "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim"
+    "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim",
+    "gCheckTrackerAreaMainIncompleteColor", "gCheckTrackerAreaExtraIncompleteColor",
+    "gCheckTrackerAreaMainCompleteColor", "gCheckTrackerAreaExtraCompleteColor",  
+    "gCheckTrackerUncheckedMainColor", "gCheckTrackerUncheckedExtraColor",
+    "gCheckTrackerSkippedMainColor", "gCheckTrackerSkippedExtraColor", "gCheckTrackerSeenMainColor", "gCheckTrackerSeenExtraColor",
+    "gCheckTrackerHintedMainColor", "gCheckTrackerHintedExtraColor", "gCheckTrackerCheckedMainColor", "gCheckTrackerCheckedExtraColor",
+    "gCheckTrackerScummedMainColor", "gCheckTrackerScummedExtraColor", "gCheckTrackerSavedMainColor", "gCheckTrackerSavedExtraColor",
 };
 const char* MarginCvarList[] {
     "gHearts", "gHeartsCount", "gMagicBar", "gVSOA", "gBBtn", "gABtn", "gStartBtn", 
