@@ -942,6 +942,7 @@ typedef struct {
     /* 0x5C40 */ OSMesg cmdProcMsgs[4];
     /* 0x5C50 */ AudioCmd cmdBuf[0x100];
     u16 seqToPlay;
+    u16 prevSeqToPlay;
 } AudioContext; // size = 0x6450
 
 typedef struct {

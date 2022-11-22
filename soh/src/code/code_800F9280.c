@@ -371,15 +371,20 @@ void Audio_QueueSeqCmd(u32 cmd)
     u8 op = cmd >> 28;
     if (op == 0 || op == 2 || op == 12){
         u8 seqId = cmd & 0xFF;
-        u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
-        if (newSeqId > 109) {
-            gAudioContext.seqToPlay = newSeqId;
-            cmd &= 0xFFFFFF00;
-            cmd |= (110 & 0xFF);
+        if (seqId == 110) {
+            gAudioContext.seqToPlay = gAudioContext.prevSeqToPlay;
+            gAudioContext.prevSeqToPlay = 0;
         } else {
-            //gAudioContext.seqToPlay = 0;
-            cmd &= 0xFFFFFF00;
-            cmd |= (newSeqId & 0xFF);
+            u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
+            if (newSeqId > 109) {
+                gAudioContext.seqToPlay = newSeqId;
+                cmd &= 0xFFFFFF00;
+                cmd |= (110 & 0xFF);
+            } else {
+                //gAudioContext.seqToPlay = 0;
+                cmd &= 0xFFFFFF00;
+                cmd |= (newSeqId & 0xFF);
+            }
         }
     }
 
