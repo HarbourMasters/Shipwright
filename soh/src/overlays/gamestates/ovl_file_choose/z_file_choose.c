@@ -488,6 +488,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
                     this->configMode = CM_ROTATE_TO_QUEST_MENU;
                 } else {
                     this->configMode = CM_ROTATE_TO_NAME_ENTRY;
+                    gSaveContext.isMasterQuest = MIN_QUEST == MASTER_QUEST;
                     this->questType[this->buttonIndex] = MIN_QUEST;
                     CVar_SetS32("gOnFileSelectNameEntry", 1);
                     this->kbdButton = FS_KBD_BTN_NONE;
