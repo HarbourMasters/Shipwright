@@ -1,4 +1,5 @@
 <Root>
+    <ExternalFile XmlPath="objects/object_mori_tex.xml" OutPath="objects/object_mori_tex/"/>
     <File Name="object_mori_objects" Segment="6">
         <Texture Name="gMoriHashiraTLUT" OutName="hashira_tlut" Format="rgba16" Width="112" Height="1" Offset="0x0000"/>
         <Texture Name="gMoriHashiraTex" OutName="hashira" Format="ci8" Width="32" Height="32" Offset="0x00E0" TlutOffset="0x0000"/>

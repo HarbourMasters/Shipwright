@@ -6,7 +6,7 @@
 
 struct DemoEffect;
 
-typedef void (*DemoEffectFunc)(struct DemoEffect*, GlobalContext*);
+typedef void (*DemoEffectFunc)(struct DemoEffect*, PlayState*);
 
 typedef struct {
     /* 0x00 */ u8 timer;

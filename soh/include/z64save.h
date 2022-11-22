@@ -6,6 +6,7 @@
 #include "z64audio.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/randomizer_inf.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 typedef struct {
     /* 0x00 */ u8 buttonItems[8];
@@ -24,6 +25,12 @@ typedef struct {
     /* 0x5B */ s8 defenseHearts;
     /* 0x5C */ s16 gsTokens;
 } Inventory; // size = 0x5E
+
+typedef struct {
+    /*      */ u8 heartPieces;
+    /*      */ u8 heartContainers;
+    /*      */ u8 dungeonKeys[19];
+} SohStats;
 
 typedef struct {
     /* 0x00 */ u32 chest;
@@ -65,7 +72,7 @@ typedef struct {
 
 typedef struct {
     RandomizerCheck check;
-    RandomizerGet get;
+    RandomizerGetData get;
 } ItemLocationRando;
 
 typedef struct {
@@ -179,15 +186,18 @@ typedef struct {
     RandoSetting randoSettings[300];
     ItemLocationRando itemLocations[RC_MAX];
     HintLocationRando hintLocations[50];
+    EntranceOverride entranceOverrides[ENTRANCE_OVERRIDES_MAX_COUNT];
     char childAltarText[250];
     char adultAltarText[750];
     char ganonHintText[150];
     char ganonText[250];
     u8 seedIcons[5];
-    u16 randomizerInf[8];
+    u16 randomizerInf[9];
     u8 temporaryWeapon;
     u16 adultTradeItems;
     u8 pendingIceTrapCount;
+    u8 mqDungeonCount;
+    SohStats sohStats;
 } SaveContext; // size = 0x1428
 
 typedef enum {

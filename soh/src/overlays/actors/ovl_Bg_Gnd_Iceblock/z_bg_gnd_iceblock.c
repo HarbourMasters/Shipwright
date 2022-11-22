@@ -15,13 +15,13 @@ typedef enum {
     /* 2 */ GNDICE_HOLE
 } BgGndIceblockAction;
 
-void BgGndIceblock_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgGndIceblock_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgGndIceblock_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgGndIceblock_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgGndIceblock_Init(Actor* thisx, PlayState* play);
+void BgGndIceblock_Destroy(Actor* thisx, PlayState* play);
+void BgGndIceblock_Update(Actor* thisx, PlayState* play);
+void BgGndIceblock_Draw(Actor* thisx, PlayState* play);
 
-void BgGndIceblock_Idle(BgGndIceblock* this, GlobalContext* globalCtx);
-void BgGndIceblock_Slide(BgGndIceblock* this, GlobalContext* globalCtx);
+void BgGndIceblock_Idle(BgGndIceblock* this, PlayState* play);
+void BgGndIceblock_Slide(BgGndIceblock* this, PlayState* play);
 
 const ActorInit Bg_Gnd_Iceblock_InitVars = {
     ACTOR_BG_GND_ICEBLOCK,
@@ -45,7 +45,7 @@ static InitChainEntry sInitChain[] = {
 
 static u8 sBlockPositions[2];
 
-void BgGndIceblock_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgGndIceblock_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgGndIceblock* this = (BgGndIceblock*)thisx;
     CollisionHeader* colHeader = NULL;
@@ -55,7 +55,7 @@ void BgGndIceblock_Init(Actor* thisx, GlobalContext* globalCtx) {
     CollisionHeader_GetVirtual(&gWaterTrialIceBlockCol, &colHeader);
     this->targetPos = this->dyna.actor.home.pos;
     this->actionFunc = BgGndIceblock_Idle;
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     if (this->dyna.actor.world.pos.x == 2792.0f) {
         this->dyna.actor.params = 0;
         sBlockPositions[0] = 7;
@@ -68,11 +68,11 @@ void BgGndIceblock_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void BgGndIceblock_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgGndIceblock_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     BgGndIceblock* this = (BgGndIceblock*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
 /*
@@ -232,15 +232,15 @@ void BgGndIceblock_SetNextPosition(BgGndIceblock* this) {
     }
 }
 
-void BgGndIceblock_Idle(BgGndIceblock* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void BgGndIceblock_Idle(BgGndIceblock* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     if (this->dyna.unk_150 != 0.0f) {
         player->stateFlags2 &= ~0x10;
         if (this->dyna.unk_150 > 0.0f) {
             BgGndIceblock_SetNextPosition(this);
             if (Actor_WorldDistXZToPoint(&this->dyna.actor, &this->targetPos) > 1.0f) {
-                func_8002DF54(globalCtx, &this->dyna.actor, 8);
+                func_8002DF54(play, &this->dyna.actor, 8);
                 this->actionFunc = BgGndIceblock_Slide;
             }
         }
@@ -248,8 +248,8 @@ void BgGndIceblock_Idle(BgGndIceblock* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgGndIceblock_Reset(BgGndIceblock* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void BgGndIceblock_Reset(BgGndIceblock* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     Actor* thisx = &this->dyna.actor;
 
     if (this->dyna.unk_150 != 0.0f) {
@@ -271,7 +271,7 @@ void BgGndIceblock_Reset(BgGndIceblock* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgGndIceblock_Fall(BgGndIceblock* this, GlobalContext* globalCtx) {
+void BgGndIceblock_Fall(BgGndIceblock* this, PlayState* play) {
     Actor* thisx = &this->dyna.actor;
 
     thisx->velocity.y += 1.0f;
@@ -280,27 +280,27 @@ void BgGndIceblock_Fall(BgGndIceblock* this, GlobalContext* globalCtx) {
         thisx->world.pos.x = thisx->home.pos.x;
         thisx->world.pos.y = thisx->home.pos.y - 100.0f;
         thisx->world.pos.z = thisx->home.pos.z;
-        if (Player_InCsMode(globalCtx)) {
-            func_8002DF54(globalCtx, thisx, 7);
+        if (Player_InCsMode(play)) {
+            func_8002DF54(play, thisx, 7);
         }
         this->actionFunc = BgGndIceblock_Reset;
     }
 }
 
-void BgGndIceblock_Hole(BgGndIceblock* this, GlobalContext* globalCtx) {
+void BgGndIceblock_Hole(BgGndIceblock* this, PlayState* play) {
     Actor* thisx = &this->dyna.actor;
 
     thisx->velocity.y += 1.0f;
     if (Math_StepToF(&thisx->world.pos.y, thisx->home.pos.y - 100.0f, thisx->velocity.y)) {
         thisx->velocity.y = 0.0f;
-        if (Player_InCsMode(globalCtx)) {
-            func_8002DF54(globalCtx, thisx, 7);
+        if (Player_InCsMode(play)) {
+            func_8002DF54(play, thisx, 7);
         }
         this->actionFunc = BgGndIceblock_Idle;
     }
 }
 
-void BgGndIceblock_Slide(BgGndIceblock* this, GlobalContext* globalCtx) {
+void BgGndIceblock_Slide(BgGndIceblock* this, PlayState* play) {
     s32 atTarget;
     Vec3f pos;
     Vec3f velocity;
@@ -318,7 +318,7 @@ void BgGndIceblock_Slide(BgGndIceblock* this, GlobalContext* globalCtx) {
         switch (BgGndIceblock_NextAction(this)) {
             case GNDICE_IDLE:
                 this->actionFunc = BgGndIceblock_Idle;
-                func_8002DF54(globalCtx, thisx, 7);
+                func_8002DF54(play, thisx, 7);
                 break;
             case GNDICE_FALL:
                 this->actionFunc = BgGndIceblock_Fall;
@@ -335,25 +335,25 @@ void BgGndIceblock_Slide(BgGndIceblock* this, GlobalContext* globalCtx) {
         pos.x = thisx->world.pos.x - (60.0f * Math_SinS(this->dyna.unk_158)) - (Math_CosS(this->dyna.unk_158) * spread);
         pos.z = thisx->world.pos.z - (60.0f * Math_CosS(this->dyna.unk_158)) + (Math_SinS(this->dyna.unk_158) * spread);
         pos.y = thisx->world.pos.y;
-        func_8002829C(globalCtx, &pos, &velocity, &sZeroVec, &sWhite, &sGray, 250, Rand_S16Offset(40, 15));
+        func_8002829C(play, &pos, &velocity, &sZeroVec, &sWhite, &sGray, 250, Rand_S16Offset(40, 15));
         spread = Rand_CenteredFloat(120.0f);
         pos.x = thisx->world.pos.x - (60.0f * Math_SinS(this->dyna.unk_158)) + (Math_CosS(this->dyna.unk_158) * spread);
         pos.z = thisx->world.pos.z - (60.0f * Math_CosS(this->dyna.unk_158)) - (Math_SinS(this->dyna.unk_158) * spread);
-        func_8002829C(globalCtx, &pos, &velocity, &sZeroVec, &sWhite, &sGray, 250, Rand_S16Offset(40, 15));
+        func_8002829C(play, &pos, &velocity, &sZeroVec, &sWhite, &sGray, 250, Rand_S16Offset(40, 15));
         func_8002F974(thisx, NA_SE_PL_SLIP_ICE_LEVEL - SFX_FLAG);
     }
 }
 
-void BgGndIceblock_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgGndIceblock_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     BgGndIceblock* this = (BgGndIceblock*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgGndIceblock_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgGndIceblock_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     BgGndIceblock* this = (BgGndIceblock*)thisx;
 
-    Gfx_DrawDListOpa(globalCtx, gWaterTrialIceBlockDL);
+    Gfx_DrawDListOpa(play, gWaterTrialIceBlockDL);
 }

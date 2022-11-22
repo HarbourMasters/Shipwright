@@ -6,8 +6,8 @@
 
 struct EnZl4;
 
-typedef void (*EnZl4ActionFunc)(struct EnZl4*, GlobalContext*);
-typedef void (*EnZl4DrawFunc)(struct EnZl4*, GlobalContext*);
+typedef void (*EnZl4ActionFunc)(struct EnZl4*, PlayState*);
+typedef void (*EnZl4DrawFunc)(struct EnZl4*, PlayState*);
 
 typedef struct EnZl4 {
     /* 0x0000 */ Actor actor;

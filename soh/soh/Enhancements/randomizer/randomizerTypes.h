@@ -4,6 +4,8 @@
 #include "z64item.h"
 #include "randomizer_inf.h"
 
+#define MAX_TRICK_NAME_SIZE 50
+
 // This should probably go in a less rando-specific location
 // but the best location will probably be in the modding engine
 // which doesn't exist yet.
@@ -964,6 +966,12 @@ typedef enum {
     RG_MAX
 } RandomizerGet;
 
+typedef struct {
+    RandomizerGet rgID;
+    RandomizerGet fakeRgID;
+    char trickName[MAX_TRICK_NAME_SIZE];
+} RandomizerGetData;
+
 typedef enum {
     RSK_NONE,
     RSK_LOGIC_RULES,
@@ -971,6 +979,7 @@ typedef enum {
     RSK_KAK_GATE,
     RSK_DOOR_OF_TIME,
     RSK_ZORAS_FOUNTAIN,
+    RSK_STARTING_AGE,
     RSK_GERUDO_FORTRESS,
     RSK_RAINBOW_BRIDGE,
     RSK_RAINBOW_BRIDGE_STONE_COUNT,
@@ -1020,11 +1029,44 @@ typedef enum {
     RSK_SKULLS_SUNS_SONG,
     RSK_SHUFFLE_ADULT_TRADE,
     RSK_SHUFFLE_MAGIC_BEANS,
+    RSK_SHUFFLE_MERCHANTS,
     RSK_BLUE_FIRE_ARROWS,
     RSK_SUNLIGHT_ARROWS,
     RSK_ENABLE_BOMBCHU_DROPS,
     RSK_BOMBCHUS_IN_LOGIC,
     RSK_LINKS_POCKET,
+    RSK_RANDOM_MQ_DUNGEONS,
+    RSK_MQ_DUNGEON_COUNT,
+    RSK_LACS_MEDALLION_COUNT,
+    RSK_LACS_STONE_COUNT,
+    RSK_LACS_REWARD_COUNT,
+    RSK_LACS_DUNGEON_COUNT,
+    RSK_LACS_TOKEN_COUNT,
+    RSK_KEYRINGS,
+    RSK_KEYRINGS_RANDOM_COUNT,
+    RSK_KEYRINGS_FOREST_TEMPLE,
+    RSK_KEYRINGS_FIRE_TEMPLE,
+    RSK_KEYRINGS_WATER_TEMPLE,
+    RSK_KEYRINGS_SPIRIT_TEMPLE,
+    RSK_KEYRINGS_SHADOW_TEMPLE,
+    RSK_KEYRINGS_BOTTOM_OF_THE_WELL,
+    RSK_KEYRINGS_GTG,
+    RSK_KEYRINGS_GANONS_CASTLE,
+    RSK_SHUFFLE_ENTRANCES,
+    RSK_SHUFFLE_DUNGEON_ENTRANCES,
+    RSK_SHUFFLE_OVERWORLD_ENTRANCES,
+    RSK_SHUFFLE_INTERIOR_ENTRANCES,
+    RSK_SHUFFLE_GROTTO_ENTRANCES,
+    RSK_SHUFFLE_OWL_DROPS,
+    RSK_SHUFFLE_WARP_SONGS,
+    RSK_SHUFFLE_OVERWORLD_SPAWNS,
+    RSK_MIXED_ENTRANCE_POOLS,
+    RSK_MIX_DUNGEON_ENTRANCES,
+    RSK_MIX_OVERWORLD_ENTRANCES,
+    RSK_MIX_INTERIOR_ENTRANCES,
+    RSK_MIX_GROTTO_ENTRANCES,
+    RSK_DECOUPLED_ENTRANCES,
+    RSK_STARTING_SKULLTULA_TOKEN,
     RSK_MAX
 } RandomizerSettingKey;
 
@@ -1041,7 +1083,7 @@ typedef struct ScrubIdentity {
     RandomizerCheck randomizerCheck;
     GetItemID getItemId;
     int32_t itemPrice;
-    bool isShuffled;
+    uint8_t isShuffled;
 } ScrubIdentity;
 
 typedef struct ShopItemIdentity {
@@ -1051,3 +1093,8 @@ typedef struct ShopItemIdentity {
     int32_t enGirlAShopItem;
     int32_t itemPrice;
 } ShopItemIdentity;
+
+typedef struct CowIdentity {
+    RandomizerInf randomizerInf;
+    RandomizerCheck randomizerCheck;
+} CowIdentity;

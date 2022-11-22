@@ -22,7 +22,7 @@ typedef struct EnTkEff {
 
 struct EnTk;
 
-typedef void (*EnTkActionFunc)(struct EnTk*, GlobalContext*);
+typedef void (*EnTkActionFunc)(struct EnTk*, PlayState*);
 
 typedef struct EnTk {
     /* 0x0000 */ Actor      actor;

@@ -6,7 +6,7 @@
 
 struct EnShopnuts;
 
-typedef void (*EnShopnutsActionFunc)(struct EnShopnuts*, GlobalContext*);
+typedef void (*EnShopnutsActionFunc)(struct EnShopnuts*, PlayState*);
 
 typedef struct EnShopnuts {
     /* 0x0000 */ Actor actor;

@@ -81,8 +81,8 @@ typedef enum {
 } LACSConditionSetting;
 
 typedef enum {
-    AGE_ADULT,
     AGE_CHILD,
+    AGE_ADULT,
     AGE_RANDOM,
 } AgeSetting;
 
@@ -201,6 +201,13 @@ typedef enum {
     GERUDOKEYS_OVERWORLD,
     GERUDOKEYS_ANYWHERE,
 } GerudoKeysSetting;
+
+typedef enum {
+    KEYRINGS_OFF,
+    KEYRINGS_RANDOM,
+    KEYRINGS_RANDOM_COUNT,
+    KEYRINGS_SELECTION,
+} KeyRingsSetting;
 
 typedef enum {
     BOSSKEYSANITY_START_WITH,
@@ -925,6 +932,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option LACSDungeonCount;
   extern Option LACSTokenCount;
   extern Option KeyRings;
+  extern Option KeyRingsRandomCount;
   extern Option RingFortress;
   extern Option RingForest;
   extern Option RingFire;

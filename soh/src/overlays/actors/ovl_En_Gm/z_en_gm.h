@@ -6,8 +6,8 @@
 
 struct EnGm;
 
-typedef void (*EnGmUpdateFunc)(struct EnGm*, GlobalContext*);
-typedef void (*EnGmActionFunc)(struct EnGm*, GlobalContext*);
+typedef void (*EnGmUpdateFunc)(struct EnGm*, PlayState*);
+typedef void (*EnGmActionFunc)(struct EnGm*, PlayState*);
 
 typedef struct EnGm {
     /* 0x0000 */ Actor actor;

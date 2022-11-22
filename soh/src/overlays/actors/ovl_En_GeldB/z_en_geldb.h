@@ -34,7 +34,7 @@ typedef enum {
     /* 0x18 */ GELDB_LIMB_MAX
 } EnGeldBLimb;
 
-typedef void (*EnGeldBActionFunc)(struct EnGeldB*, GlobalContext*);
+typedef void (*EnGeldBActionFunc)(struct EnGeldB*, PlayState*);
 
 typedef struct EnGeldB {
     /* 0x0000 */ Actor actor;

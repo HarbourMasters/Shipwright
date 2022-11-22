@@ -64,7 +64,33 @@ namespace fs = std::filesystem;
 #define OOT_PAL_GC_MQ_DBG 0x917D18F6
 #define OOT_IQUE_TW 0x3D81FB3E
 #define OOT_IQUE_CN 0xB1E1E07B
-#define OOT_UNKNOWN 0xFFFFFFFF
+#define UNKNOWN 0xFFFFFFFF
+
+bool ZRom::IsMQ() {
+    int crc = BitConverter::ToInt32BE(romData, 0x10);
+    switch (crc) {
+        case OOT_NTSC_10:
+        case OOT_NTSC_11:
+        case OOT_NTSC_12:
+        case OOT_PAL_10:
+        case OOT_PAL_11:
+        case OOT_NTSC_JP_GC:
+        case OOT_NTSC_JP_GC_CE:
+        case OOT_NTSC_US_GC:
+        case OOT_PAL_GC:
+        case OOT_PAL_GC_DBG1:
+        case OOT_PAL_GC_DBG2:
+        case OOT_IQUE_CN:
+        case OOT_IQUE_TW:
+        default:
+            return false;
+        case OOT_NTSC_JP_MQ:
+        case OOT_NTSC_US_MQ:
+        case OOT_PAL_MQ:
+        case OOT_PAL_GC_MQ_DBG:
+            return true;
+    }
+}
 
 ZRom::ZRom(std::string romPath)
 {

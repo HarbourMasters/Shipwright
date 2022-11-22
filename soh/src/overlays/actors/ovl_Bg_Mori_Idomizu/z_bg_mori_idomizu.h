@@ -6,7 +6,7 @@
 
 struct BgMoriIdomizu;
 
-typedef void (*BgMoriIdomizuActionFunc)(struct BgMoriIdomizu*, GlobalContext*);
+typedef void (*BgMoriIdomizuActionFunc)(struct BgMoriIdomizu*, PlayState*);
 
 typedef struct BgMoriIdomizu {
     /* 0x0000 */ Actor actor;

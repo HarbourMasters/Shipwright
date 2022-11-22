@@ -6,7 +6,7 @@
 
 struct BgPoEvent;
 
-typedef void (*BgPoEventActionFunc)(struct BgPoEvent*, GlobalContext*);
+typedef void (*BgPoEventActionFunc)(struct BgPoEvent*, PlayState*);
 
 typedef struct BgPoEvent {
     /* 0x0000 */ DynaPolyActor dyna;

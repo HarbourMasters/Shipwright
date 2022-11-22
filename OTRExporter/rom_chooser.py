@@ -2,7 +2,7 @@ import os, sys, glob
 
 from rom_info import Z64Rom
 
-def chooseROM():
+def chooseROM(non_interactive=False):
     roms = []
 
     for file in glob.glob("*.z64"):
@@ -14,7 +14,21 @@ def chooseROM():
         sys.exit(1)
 
     if (len(roms) == 1):
-        return roms[0]
+        return roms
+
+    if non_interactive:
+        romsToExtract = []
+        foundMq = False
+        foundOot = False
+        for rom in roms:
+            isMq = Z64Rom.isMqRom(rom)
+            if isMq and not foundMq:
+                romsToExtract.append(rom)
+                foundMq = True
+            elif not isMq and not foundOot:
+                romsToExtract.append(rom)
+                foundOot = True
+        return romsToExtract
 
     print(str(len(roms))+ " roms found, please select one by pressing 1-"+str(len(roms)))
 
@@ -34,4 +48,4 @@ def chooseROM():
 
         else: break
 
-    return roms[selection - 1]
+    return [ roms[selection - 1] ]

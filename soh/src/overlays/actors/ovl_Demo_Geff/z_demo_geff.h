@@ -8,9 +8,9 @@
 
 struct DemoGeff;
 
-typedef void (*DemoGeffInitFunc)(struct DemoGeff*, GlobalContext*);
-typedef void (*DemoGeffActionFunc)(struct DemoGeff*, GlobalContext*);
-typedef void (*DemoGeffDrawFunc)(struct DemoGeff*, GlobalContext*);
+typedef void (*DemoGeffInitFunc)(struct DemoGeff*, PlayState*);
+typedef void (*DemoGeffActionFunc)(struct DemoGeff*, PlayState*);
+typedef void (*DemoGeffDrawFunc)(struct DemoGeff*, PlayState*);
 
 typedef struct DemoGeff {
     /* 0x0000 */ Actor actor;

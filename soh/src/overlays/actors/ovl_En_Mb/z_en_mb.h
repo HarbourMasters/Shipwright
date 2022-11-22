@@ -6,7 +6,7 @@
 
 struct EnMb;
 
-typedef void (*EnMbActionFunc)(struct EnMb*, GlobalContext*);
+typedef void (*EnMbActionFunc)(struct EnMb*, PlayState*);
 
 typedef enum {
     /*  0 */ ENMB_STATE_SPEAR_SPEARPATH_DAMAGED,

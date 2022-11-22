@@ -9,17 +9,17 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void BgMoriHashira4_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgMoriHashira4_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgMoriHashira4_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgMoriHashira4_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgMoriHashira4_Init(Actor* thisx, PlayState* play);
+void BgMoriHashira4_Destroy(Actor* thisx, PlayState* play);
+void BgMoriHashira4_Update(Actor* thisx, PlayState* play);
+void BgMoriHashira4_Draw(Actor* thisx, PlayState* play);
 
 void BgMoriHashira4_SetupWaitForMoriTex(BgMoriHashira4* this);
-void BgMoriHashira4_WaitForMoriTex(BgMoriHashira4* this, GlobalContext* globalCtx);
+void BgMoriHashira4_WaitForMoriTex(BgMoriHashira4* this, PlayState* play);
 void BgMoriHashira4_SetupPillarsRotate(BgMoriHashira4* this);
-void BgMoriHashira4_PillarsRotate(BgMoriHashira4* this, GlobalContext* globalCtx);
-void BgMoriHashira4_GateWait(BgMoriHashira4* this, GlobalContext* globalCtx);
-void BgMoriHashira4_GateOpen(BgMoriHashira4* this, GlobalContext* globalCtx);
+void BgMoriHashira4_PillarsRotate(BgMoriHashira4* this, PlayState* play);
+void BgMoriHashira4_GateWait(BgMoriHashira4* this, PlayState* play);
+void BgMoriHashira4_GateOpen(BgMoriHashira4* this, PlayState* play);
 
 const ActorInit Bg_Mori_Hashira4_InitVars = {
     ACTOR_BG_MORI_HASHIRA4,
@@ -49,7 +49,7 @@ void BgMoriHashira4_SetupAction(BgMoriHashira4* this, BgMoriHashira4ActionFunc a
     this->actionFunc = actionFunc;
 }
 
-void BgMoriHashira4_InitDynaPoly(BgMoriHashira4* this, GlobalContext* globalCtx, CollisionHeader* collision,
+void BgMoriHashira4_InitDynaPoly(BgMoriHashira4* this, PlayState* play, CollisionHeader* collision,
                                  s32 moveFlag) {
     s32 pad;
     CollisionHeader* colHeader;
@@ -58,7 +58,7 @@ void BgMoriHashira4_InitDynaPoly(BgMoriHashira4* this, GlobalContext* globalCtx,
     colHeader = NULL;
     DynaPolyActor_Init(&this->dyna, moveFlag);
     CollisionHeader_GetVirtual(collision, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 
     if (this->dyna.bgId == BG_ACTOR_MAX) {
         // "Warning : move BG login failed"
@@ -67,7 +67,7 @@ void BgMoriHashira4_InitDynaPoly(BgMoriHashira4* this, GlobalContext* globalCtx,
     }
 }
 
-void BgMoriHashira4_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgMoriHashira4_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgMoriHashira4* this = (BgMoriHashira4*)thisx;
 
@@ -75,12 +75,12 @@ void BgMoriHashira4_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->dyna.actor.params &= 0xFF;
 
     if (this->dyna.actor.params == 0) {
-        BgMoriHashira4_InitDynaPoly(this, globalCtx, &gMoriHashira1Col, DPM_UNK3);
+        BgMoriHashira4_InitDynaPoly(this, play, &gMoriHashira1Col, DPM_UNK3);
     } else {
-        BgMoriHashira4_InitDynaPoly(this, globalCtx, &gMoriHashira2Col, DPM_UNK);
+        BgMoriHashira4_InitDynaPoly(this, play, &gMoriHashira2Col, DPM_UNK);
     }
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
-    this->moriTexObjIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_MORI_TEX);
+    this->moriTexObjIndex = Object_GetIndex(&play->objectCtx, OBJECT_MORI_TEX);
     if (this->moriTexObjIndex < 0) {
         Actor_Kill(&this->dyna.actor);
         // "Bank danger!"
@@ -88,7 +88,7 @@ void BgMoriHashira4_Init(Actor* thisx, GlobalContext* globalCtx) {
                      __FILE__, __LINE__);
         return;
     }
-    if ((this->dyna.actor.params != 0) && Flags_GetSwitch(globalCtx, this->switchFlag)) {
+    if ((this->dyna.actor.params != 0) && Flags_GetSwitch(play, this->switchFlag)) {
         Actor_Kill(&this->dyna.actor);
         return;
     }
@@ -99,19 +99,19 @@ void BgMoriHashira4_Init(Actor* thisx, GlobalContext* globalCtx) {
     sUnkTimer = 0;
 }
 
-void BgMoriHashira4_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgMoriHashira4_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     BgMoriHashira4* this = (BgMoriHashira4*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
 void BgMoriHashira4_SetupWaitForMoriTex(BgMoriHashira4* this) {
     BgMoriHashira4_SetupAction(this, BgMoriHashira4_WaitForMoriTex);
 }
 
-void BgMoriHashira4_WaitForMoriTex(BgMoriHashira4* this, GlobalContext* globalCtx) {
-    if (Object_IsLoaded(&globalCtx->objectCtx, this->moriTexObjIndex)) {
+void BgMoriHashira4_WaitForMoriTex(BgMoriHashira4* this, PlayState* play) {
+    if (Object_IsLoaded(&play->objectCtx, this->moriTexObjIndex)) {
         this->gateTimer = 0;
         if (this->dyna.actor.params == 0) {
             BgMoriHashira4_SetupPillarsRotate(this);
@@ -126,50 +126,50 @@ void BgMoriHashira4_SetupPillarsRotate(BgMoriHashira4* this) {
     BgMoriHashira4_SetupAction(this, BgMoriHashira4_PillarsRotate);
 }
 
-void BgMoriHashira4_PillarsRotate(BgMoriHashira4* this, GlobalContext* globalCtx) {
+void BgMoriHashira4_PillarsRotate(BgMoriHashira4* this, PlayState* play) {
     this->dyna.actor.shape.rot.y = this->dyna.actor.world.rot.y += 0x96;
     Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_ROLL_STAND_2 - SFX_FLAG);
 }
 
-void BgMoriHashira4_GateWait(BgMoriHashira4* this, GlobalContext* globalCtx) {
-    if (Flags_GetSwitch(globalCtx, this->switchFlag) || (this->gateTimer != 0)) {
+void BgMoriHashira4_GateWait(BgMoriHashira4* this, PlayState* play) {
+    if (Flags_GetSwitch(play, this->switchFlag) || (this->gateTimer != 0)) {
         this->gateTimer++;
         if (this->gateTimer > 30) {
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_METALDOOR_OPEN);
             BgMoriHashira4_SetupAction(this, BgMoriHashira4_GateOpen);
-            OnePointCutscene_Init(globalCtx, 6010, 20, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 6010, 20, &this->dyna.actor, MAIN_CAM);
             sUnkTimer++;
         }
     }
 }
 
-void BgMoriHashira4_GateOpen(BgMoriHashira4* this, GlobalContext* globalCtx) {
+void BgMoriHashira4_GateOpen(BgMoriHashira4* this, PlayState* play) {
     if (Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y + 120.0f, 10.0f)) {
         Actor_Kill(&this->dyna.actor);
     }
 }
 
-void BgMoriHashira4_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgMoriHashira4_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     BgMoriHashira4* this = (BgMoriHashira4*)thisx;
 
     if (this->actionFunc != NULL) {
-        this->actionFunc(this, globalCtx);
+        this->actionFunc(this, play);
     }
 }
 
-void BgMoriHashira4_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void BgMoriHashira4_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     BgMoriHashira4* this = (BgMoriHashira4*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-    func_80093D18(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
-    gSPSegment(POLY_OPA_DISP++, 0x08, globalCtx->objectCtx.status[this->moriTexObjIndex].segment);
+    gSPSegment(POLY_OPA_DISP++, 0x08, play->objectCtx.status[this->moriTexObjIndex].segment);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, sDisplayLists[this->dyna.actor.params]);
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

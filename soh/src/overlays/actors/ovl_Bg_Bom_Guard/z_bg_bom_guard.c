@@ -11,11 +11,11 @@
 
 #define FLAGS ACTOR_FLAG_4
 
-void BgBomGuard_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgBomGuard_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgBomGuard_Update(Actor* thisx, GlobalContext* globalCtx);
+void BgBomGuard_Init(Actor* thisx, PlayState* play);
+void BgBomGuard_Destroy(Actor* thisx, PlayState* play);
+void BgBomGuard_Update(Actor* thisx, PlayState* play);
 
-void func_8086E638(BgBomGuard* this, GlobalContext* globalCtx);
+void func_8086E638(BgBomGuard* this, PlayState* play);
 
 const ActorInit Bg_Bom_Guard_InitVars = {
     ACTOR_BG_BOM_GUARD,
@@ -34,14 +34,14 @@ void BgBomGuard_SetupAction(BgBomGuard* this, BgBomGuardActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
-void BgBomGuard_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgBomGuard_Init(Actor* thisx, PlayState* play) {
     BgBomGuard* this = (BgBomGuard*)thisx;
     s32 pad[2];
     CollisionHeader* colHeader = NULL;
 
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&gBowlingDefaultCol, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, thisx, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
 
     osSyncPrintf("\n\n");
     osSyncPrintf(VT_FGCOL(GREEN) " ☆☆☆☆☆ 透明ガード出現 ☆☆☆☆☆ \n" VT_RST);
@@ -53,22 +53,22 @@ void BgBomGuard_Init(Actor* thisx, GlobalContext* globalCtx) {
     BgBomGuard_SetupAction(this, func_8086E638);
 }
 
-void BgBomGuard_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgBomGuard_Destroy(Actor* thisx, PlayState* play) {
     BgBomGuard* this = (BgBomGuard*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void func_8086E638(BgBomGuard* this, GlobalContext* globalCtx) {
-    Actor* it = globalCtx->actorCtx.actorLists[ACTORCAT_NPC].head;
+void func_8086E638(BgBomGuard* this, PlayState* play) {
+    Actor* it = play->actorCtx.actorLists[ACTORCAT_NPC].head;
     Actor* thisx = &this->dyna.actor;
 
     this->unk_168 = 0;
 
     while (it != 0) {
         if (it->id == ACTOR_EN_BOM_BOWL_MAN) {
-            if ((((EnBomBowlMan*)it)->minigamePlayStatus != 0) && (fabsf(globalCtx->view.eye.x) > -20.0f) &&
-                (fabsf(globalCtx->view.eye.y) > 110.0f)) {
+            if ((((EnBomBowlMan*)it)->minigamePlayStatus != 0) && (fabsf(play->view.eye.x) > -20.0f) &&
+                (fabsf(play->view.eye.y) > 110.0f)) {
                 this->unk_168 = 1;
             }
             break;
@@ -83,8 +83,8 @@ void func_8086E638(BgBomGuard* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgBomGuard_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgBomGuard_Update(Actor* thisx, PlayState* play) {
     BgBomGuard* this = (BgBomGuard*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }

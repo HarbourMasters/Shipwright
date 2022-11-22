@@ -31,19 +31,19 @@ typedef enum {
     /* 15 */ INTRO_READY = 15
 } EnfHGIntroState;
 
-void EnfHG_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnfHG_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnfHG_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnfHG_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnfHG_Init(Actor* thisx, PlayState* play);
+void EnfHG_Destroy(Actor* thisx, PlayState* play);
+void EnfHG_Update(Actor* thisx, PlayState* play);
+void EnfHG_Draw(Actor* thisx, PlayState* play);
 
-void EnfHG_SetupIntro(EnfHG* this, GlobalContext* globalCtx);
-void EnfHG_Intro(EnfHG* this, GlobalContext* globalCtx);
-void EnfHG_SetupApproach(EnfHG* this, GlobalContext* globalCtx, s16 paintingIndex);
-void EnfHG_Approach(EnfHG* this, GlobalContext* globalCtx);
-void EnfHG_Attack(EnfHG* this, GlobalContext* globalCtx);
-void EnfHG_Damage(EnfHG* this, GlobalContext* globalCtx);
-void EnfHG_Retreat(EnfHG* this, GlobalContext* globalCtx);
-void EnfHG_Done(EnfHG* this, GlobalContext* globalCtx);
+void EnfHG_SetupIntro(EnfHG* this, PlayState* play);
+void EnfHG_Intro(EnfHG* this, PlayState* play);
+void EnfHG_SetupApproach(EnfHG* this, PlayState* play, s16 paintingIndex);
+void EnfHG_Approach(EnfHG* this, PlayState* play);
+void EnfHG_Attack(EnfHG* this, PlayState* play);
+void EnfHG_Damage(EnfHG* this, PlayState* play);
+void EnfHG_Retreat(EnfHG* this, PlayState* play);
+void EnfHG_Done(EnfHG* this, PlayState* play);
 
 const ActorInit En_fHG_InitVars = {
     ACTOR_EN_FHG,
@@ -69,37 +69,37 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneScale, 1200, ICHAIN_STOP),
 };
 
-void EnfHG_Init(Actor* thisx, GlobalContext* globalCtx2) {
-    GlobalContext* globalCtx = globalCtx2;
+void EnfHG_Init(Actor* thisx, PlayState* play2) {
+    PlayState* play = play2;
     EnfHG* this = (EnfHG*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
-    Flags_SetSwitch(globalCtx, 0x14);
+    Flags_SetSwitch(play, 0x14);
     Actor_SetScale(&this->actor, 0.011499999f);
     this->actor.gravity = -3.5f;
     ActorShape_Init(&this->actor.shape, -2600.0f, NULL, 20.0f);
     this->actor.speedXZ = 0.0f;
     this->actor.focus.pos = this->actor.world.pos;
     this->actor.focus.pos.y += 70.0f;
-    Skin_Init(globalCtx, &this->skin, &gPhantomHorseSkel, &gPhantomHorseRunningAnim);
+    Skin_Init(play, &this->skin, &gPhantomHorseSkel, &gPhantomHorseRunningAnim);
 
     if (this->actor.params >= GND_FAKE_BOSS) {
-        EnfHG_SetupApproach(this, globalCtx, this->actor.params - GND_FAKE_BOSS);
+        EnfHG_SetupApproach(this, play, this->actor.params - GND_FAKE_BOSS);
     } else {
-        EnfHG_SetupIntro(this, globalCtx);
+        EnfHG_SetupIntro(this, play);
     }
 }
 
-void EnfHG_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnfHG_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     EnfHG* this = (EnfHG*)thisx;
 
     osSyncPrintf("F DT1\n");
-    Skin_Free(globalCtx, &this->skin);
+    Skin_Free(play, &this->skin);
     osSyncPrintf("F DT2\n");
 }
 
-void EnfHG_SetupIntro(EnfHG* this, GlobalContext* globalCtx) {
+void EnfHG_SetupIntro(EnfHG* this, PlayState* play) {
     Animation_PlayLoop(&this->skin.skelAnime, &gPhantomHorseIdleAnim);
     this->actionFunc = EnfHG_Intro;
     this->actor.world.pos.x = GND_BOSSROOM_CENTER_X;
@@ -107,10 +107,10 @@ void EnfHG_SetupIntro(EnfHG* this, GlobalContext* globalCtx) {
     this->actor.world.pos.z = GND_BOSSROOM_CENTER_Z;
 }
 
-void EnfHG_Intro(EnfHG* this, GlobalContext* globalCtx) {
+void EnfHG_Intro(EnfHG* this, PlayState* play) {
     static Vec3f audioVec = { 0.0f, 0.0f, 50.0f };
     s32 pad64;
-    Player* player = GET_PLAYER(globalCtx);
+    Player* player = GET_PLAYER(play);
     BossGanondrof* bossGnd = (BossGanondrof*)this->actor.parent;
     s32 pad58;
     s32 pad54;
@@ -137,7 +137,7 @@ void EnfHG_Intro(EnfHG* this, GlobalContext* globalCtx) {
         case INTRO_START:
             if (gSaveContext.eventChkInf[7] & 4) {
                 if (this->timers[0] == 55) {
-                    Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_DOOR_SHUTTER,
+                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_SHUTTER,
                                        GND_BOSSROOM_CENTER_X + 0.0f, GND_BOSSROOM_CENTER_Y - 97.0f,
                                        GND_BOSSROOM_CENTER_Z + 308.0f, 0, 0, 0, (SHUTTER_PG_BARS << 6));
                 }
@@ -146,22 +146,22 @@ void EnfHG_Intro(EnfHG* this, GlobalContext* globalCtx) {
                     Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS);
                 }
                 if (this->timers[0] == 0) {
-                    EnfHG_SetupApproach(this, globalCtx, Rand_ZeroOne() * 5.99f);
+                    EnfHG_SetupApproach(this, play, Rand_ZeroOne() * 5.99f);
                     this->bossGndSignal = FHG_START_FIGHT;
                 }
                 break;
             }
-            func_80064520(globalCtx, &globalCtx->csCtx);
-            func_8002DF54(globalCtx, &this->actor, 8);
-            this->cutsceneCamera = Gameplay_CreateSubCamera(globalCtx);
-            Gameplay_ChangeCameraStatus(globalCtx, MAIN_CAM, CAM_STAT_WAIT);
-            Gameplay_ChangeCameraStatus(globalCtx, this->cutsceneCamera, CAM_STAT_ACTIVE);
+            func_80064520(play, &play->csCtx);
+            func_8002DF54(play, &this->actor, 8);
+            this->cutsceneCamera = Play_CreateSubCamera(play);
+            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, this->cutsceneCamera, CAM_STAT_ACTIVE);
             this->cutsceneState = INTRO_FENCE;
             this->timers[0] = 60;
             this->actor.world.pos.y = GND_BOSSROOM_CENTER_Y - 7.0f;
             Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x100FF);
             gSaveContext.eventChkInf[7] |= 4;
-            Flags_SetSwitch(globalCtx, 0x23);
+            Flags_SetSwitch(play, 0x23);
         case INTRO_FENCE:
             player->actor.world.pos.x = GND_BOSSROOM_CENTER_X + 0.0f;
             player->actor.world.pos.y = GND_BOSSROOM_CENTER_Y + 7.0f;
@@ -175,7 +175,7 @@ void EnfHG_Intro(EnfHG* this, GlobalContext* globalCtx) {
             this->cameraAt.y = GND_BOSSROOM_CENTER_Y + 47.0f;
             this->cameraAt.z = GND_BOSSROOM_CENTER_Z + 315.0f;
             if (this->timers[0] == 25) {
-                Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_DOOR_SHUTTER,
+                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_SHUTTER,
                                    GND_BOSSROOM_CENTER_X + 0.0f, GND_BOSSROOM_CENTER_Y - 97.0f,
                                    GND_BOSSROOM_CENTER_Z + 308.0f, 0, 0, 0, (SHUTTER_PG_BARS << 6));
             }
@@ -192,7 +192,7 @@ void EnfHG_Intro(EnfHG* this, GlobalContext* globalCtx) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_GANON_HORSE_GROAN);
             }
             if (this->timers[0] == 20) {
-                func_8002DF54(globalCtx, &this->actor, 9);
+                func_8002DF54(play, &this->actor, 9);
             }
             if (this->timers[0] == 1) {
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_OPENING_GANON);
@@ -273,8 +273,8 @@ void EnfHG_Intro(EnfHG* this, GlobalContext* globalCtx) {
                                  -10.0f);
             }
             if (this->timers[0] == 90) {
-                globalCtx->envCtx.unk_BF = 2;
-                globalCtx->envCtx.unk_D6 = 0x14;
+                play->envCtx.unk_BF = 2;
+                play->envCtx.unk_D6 = 0x14;
             }
             if (this->timers[0] == 100) {
                 this->bossGndSignal = FHG_LIGHTNING;
@@ -331,7 +331,7 @@ void EnfHG_Intro(EnfHG* this, GlobalContext* globalCtx) {
             this->actor.world.pos.y += 2.0f * Math_SinS(this->gallopTimer * 0x5DC);
             Math_ApproachF(&this->cameraSpeedMod, 1.0f, 1.0f, 0.05f);
             if (this->timers[0] == 75) {
-                TitleCard_InitBossName(globalCtx, &globalCtx->actorCtx.titleCtx,
+                TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
                                        SEGMENTED_TO_VIRTUAL(gPhantomGanonTitleCardTex), 160, 180, 128, 40, true);
             }
             if (this->timers[0] == 0) {
@@ -353,7 +353,7 @@ void EnfHG_Intro(EnfHG* this, GlobalContext* globalCtx) {
                 this->bossGndSignal = FHG_FINISH;
             }
             if (this->timers[0] == 170) {
-                func_8002DF54(globalCtx, &this->actor, 8);
+                func_8002DF54(play, &this->actor, 8);
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_FANTOM_MASIC2);
             }
             Math_ApproachF(&this->cameraEye.z, this->cameraPanZ + (GND_BOSSROOM_CENTER_Z + 100.0f), 0.1f,
@@ -365,7 +365,7 @@ void EnfHG_Intro(EnfHG* this, GlobalContext* globalCtx) {
             if ((fabsf(this->actor.world.pos.z - (GND_BOSSROOM_CENTER_Z + 400.0f - 0.5f)) < 300.0f) &&
                 !this->spawnedWarp) {
                 this->spawnedWarp = true;
-                Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_FHG_FIRE,
+                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE,
                                    GND_BOSSROOM_CENTER_X + 0.0f, this->actor.world.pos.y + 50.0f,
                                    GND_BOSSROOM_CENTER_Z + 400.0f - 0.5f, 0, this->actor.shape.rot.y, 0,
                                    FHGFIRE_WARP_RETREAT);
@@ -375,8 +375,8 @@ void EnfHG_Intro(EnfHG* this, GlobalContext* globalCtx) {
             Math_ApproachF(&this->cameraAt.z, this->actor.world.pos.z, 0.2f, 50.0f);
             osSyncPrintf("TIME %d-------------------------------------------------\n", this->timers[0]);
             if (fabsf(this->actor.world.pos.z - (GND_BOSSROOM_CENTER_Z + 400.0f - 0.5f)) < 1.0f) {
-                globalCtx->envCtx.unk_BF = 0;
-                globalCtx->envCtx.unk_D6 = 0x14;
+                play->envCtx.unk_BF = 0;
+                play->envCtx.unk_D6 = 0x14;
                 this->cutsceneState = INTRO_FINISH;
                 Animation_MorphToLoop(&this->skin.skelAnime, &gPhantomHorseRunningAnim, -3.0f);
                 this->bossGndSignal = FHG_START_FIGHT;
@@ -385,32 +385,32 @@ void EnfHG_Intro(EnfHG* this, GlobalContext* globalCtx) {
             }
             break;
         case INTRO_FINISH:
-            EnfHG_Retreat(this, globalCtx);
+            EnfHG_Retreat(this, play);
             Math_ApproachF(&this->cameraEye.z, this->cameraPanZ + (GND_BOSSROOM_CENTER_Z + 100.0f), 0.1f,
                            this->cameraSpeedMod * 1.5f);
             Math_ApproachF(&this->cameraPanZ, -100.0f, 0.1f, 1.0f);
             Math_ApproachF(&this->cameraAt.y, (this->actor.world.pos.y + 70.0f) - 20.0f, 0.1f,
                            this->cameraSpeedMod * 10.0f);
             if (this->timers[1] == 0) {
-                Camera* camera = Gameplay_GetCamera(globalCtx, 0);
+                Camera* camera = Play_GetCamera(play, 0);
 
                 camera->eye = this->cameraEye;
                 camera->eyeNext = this->cameraEye;
                 camera->at = this->cameraAt;
-                func_800C08AC(globalCtx, this->cutsceneCamera, 0);
+                func_800C08AC(play, this->cutsceneCamera, 0);
                 this->cutsceneCamera = 0;
-                func_80064534(globalCtx, &globalCtx->csCtx);
-                func_8002DF54(globalCtx, &this->actor, 7);
+                func_80064534(play, &play->csCtx);
+                func_8002DF54(play, &this->actor, 7);
                 this->actionFunc = EnfHG_Retreat;
             }
             break;
     }
     if (this->cutsceneCamera != 0) {
-        Gameplay_CameraSetAtEye(globalCtx, this->cutsceneCamera, &this->cameraAt, &this->cameraEye);
+        Play_CameraSetAtEye(play, this->cutsceneCamera, &this->cameraAt, &this->cameraEye);
     }
 }
 
-void EnfHG_SetupApproach(EnfHG* this, GlobalContext* globalCtx, s16 paintingIndex) {
+void EnfHG_SetupApproach(EnfHG* this, PlayState* play, s16 paintingIndex) {
     s16 oppositeIndex[6] = { 3, 4, 5, 0, 1, 2 };
 
     Animation_MorphToLoop(&this->skin.skelAnime, &gPhantomHorseRunningAnim, 0.0f);
@@ -448,9 +448,9 @@ void EnfHG_SetupApproach(EnfHG* this, GlobalContext* globalCtx, s16 paintingInde
     this->actor.scale.z = 0.001f;
     this->approachRate = 0.0f;
 
-    this->warpColorFilterR = globalCtx->lightCtx.fogColor[0];
-    this->warpColorFilterG = globalCtx->lightCtx.fogColor[1];
-    this->warpColorFilterB = globalCtx->lightCtx.fogColor[2];
+    this->warpColorFilterR = play->lightCtx.fogColor[0];
+    this->warpColorFilterG = play->lightCtx.fogColor[1];
+    this->warpColorFilterB = play->lightCtx.fogColor[2];
     this->warpColorFilterUnk1 = 0.0f;
     this->warpColorFilterUnk2 = 0.0f;
     this->turnRot = 0;
@@ -458,7 +458,7 @@ void EnfHG_SetupApproach(EnfHG* this, GlobalContext* globalCtx, s16 paintingInde
     this->spawnedWarp = false;
 }
 
-void EnfHG_Approach(EnfHG* this, GlobalContext* globalCtx) {
+void EnfHG_Approach(EnfHG* this, PlayState* play) {
     osSyncPrintf("STANDBY !!\n");
     osSyncPrintf("XP2  = %f\n", this->actor.world.pos.x);
     osSyncPrintf("ZP2  = %f\n", this->actor.world.pos.z);
@@ -486,7 +486,7 @@ void EnfHG_Approach(EnfHG* this, GlobalContext* globalCtx) {
             this->actionFunc = EnfHG_Attack;
             Audio_PlayActorSound2(&this->actor, NA_SE_EV_GANON_HORSE_NEIGH);
             this->timers[0] = 40;
-            Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_FHG_FIRE,
+            Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE,
                                this->actor.world.pos.x, this->actor.world.pos.y + 50.0f, this->actor.world.pos.z, 0,
                                this->actor.shape.rot.y + 0x8000, 0, FHGFIRE_WARP_EMERGE);
             this->fhgFireKillWarp = false;
@@ -494,7 +494,7 @@ void EnfHG_Approach(EnfHG* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnfHG_Attack(EnfHG* this, GlobalContext* globalCtx) {
+void EnfHG_Attack(EnfHG* this, PlayState* play) {
     osSyncPrintf("KABE OUT !!\n");
     this->bossGndInPainting = false;
     SkelAnime_Update(&this->skin.skelAnime);
@@ -510,9 +510,9 @@ void EnfHG_Attack(EnfHG* this, GlobalContext* globalCtx) {
         Math_ApproachF(&this->warpColorFilterB, 255.0f, 1.0f, 10.0f);
         Math_ApproachF(&this->warpColorFilterUnk1, -60.0f, 1.0f, 5.0f);
     } else {
-        Math_ApproachF(&this->warpColorFilterR, globalCtx->lightCtx.fogColor[0], 1.0f, 10.0f);
-        Math_ApproachF(&this->warpColorFilterG, globalCtx->lightCtx.fogColor[0], 1.0f, 10.0f);
-        Math_ApproachF(&this->warpColorFilterB, globalCtx->lightCtx.fogColor[0], 1.0f, 10.0f);
+        Math_ApproachF(&this->warpColorFilterR, play->lightCtx.fogColor[0], 1.0f, 10.0f);
+        Math_ApproachF(&this->warpColorFilterG, play->lightCtx.fogColor[0], 1.0f, 10.0f);
+        Math_ApproachF(&this->warpColorFilterB, play->lightCtx.fogColor[0], 1.0f, 10.0f);
         Math_ApproachF(&this->warpColorFilterUnk1, 0.0f, 1.0f, 5.0f);
         if (this->timers[1] == 29) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_FANTOM_MASIC2);
@@ -520,7 +520,7 @@ void EnfHG_Attack(EnfHG* this, GlobalContext* globalCtx) {
         }
         if (this->hitTimer == 0) {
             if (this->timers[1] == 24) {
-                Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_FHG_FIRE,
+                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE,
                                    this->actor.world.pos.x, (this->actor.world.pos.y + 100.0f) + 25.0f,
                                    this->actor.world.pos.z, 0, 0, 0, FHGFIRE_LIGHTNING_STRIKE);
             }
@@ -558,7 +558,7 @@ void EnfHG_Attack(EnfHG* this, GlobalContext* globalCtx) {
         }
         if ((dxz < 300.0f) && !this->spawnedWarp) {
             this->spawnedWarp = true;
-            Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_FHG_FIRE, this->inPaintingPos.x,
+            Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->inPaintingPos.x,
                                this->actor.world.pos.y + 50.0f, this->inPaintingPos.z, 0, this->actor.shape.rot.y, 0,
                                FHGFIRE_WARP_RETREAT);
             this->fhgFireKillWarp = true;
@@ -576,16 +576,16 @@ void EnfHG_Attack(EnfHG* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnfHG_Damage(EnfHG* this, GlobalContext* globalCtx) {
+void EnfHG_Damage(EnfHG* this, PlayState* play) {
     f32 dx;
     f32 dz;
     f32 dxz2;
 
     osSyncPrintf("REVISE !!\n");
     SkelAnime_Update(&this->skin.skelAnime);
-    Math_ApproachF(&this->warpColorFilterR, globalCtx->lightCtx.fogColor[0], 1.0f, 10.0f);
-    Math_ApproachF(&this->warpColorFilterG, globalCtx->lightCtx.fogColor[0], 1.0f, 10.0f);
-    Math_ApproachF(&this->warpColorFilterB, globalCtx->lightCtx.fogColor[0], 1.0f, 10.0f);
+    Math_ApproachF(&this->warpColorFilterR, play->lightCtx.fogColor[0], 1.0f, 10.0f);
+    Math_ApproachF(&this->warpColorFilterG, play->lightCtx.fogColor[0], 1.0f, 10.0f);
+    Math_ApproachF(&this->warpColorFilterB, play->lightCtx.fogColor[0], 1.0f, 10.0f);
     Math_ApproachF(&this->warpColorFilterUnk1, 0.0f, 1.0f, 5.0f);
     Math_ApproachF(&this->actor.scale.z, 0.011499999f, 1.0f, 0.002f);
     if (this->timers[0] != 0) {
@@ -607,7 +607,7 @@ void EnfHG_Damage(EnfHG* this, GlobalContext* globalCtx) {
     dxz2 = sqrtf(SQ(dx) + SQ(dz));
     if ((dxz2 < 300.0f) && (!this->spawnedWarp)) {
         this->spawnedWarp = true;
-        Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_FHG_FIRE, this->inPaintingPos.x,
+        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->inPaintingPos.x,
                            this->actor.world.pos.y + 50.0f, this->inPaintingPos.z, 0, this->actor.shape.rot.y + 0x8000,
                            0, FHGFIRE_WARP_RETREAT);
     }
@@ -626,7 +626,7 @@ void EnfHG_Damage(EnfHG* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnfHG_Retreat(EnfHG* this, GlobalContext* globalCtx) {
+void EnfHG_Retreat(EnfHG* this, PlayState* play) {
     osSyncPrintf("KABE IN !!\n");
     if (this->turnTarget != 0) {
         Math_ApproachS(&this->turnRot, this->turnTarget, 5, 2000);
@@ -660,23 +660,23 @@ void EnfHG_Retreat(EnfHG* this, GlobalContext* globalCtx) {
             this->actor.draw = NULL;
         } else {
             paintingIdxReal = Rand_ZeroOne() * 5.99f;
-            EnfHG_SetupApproach(this, globalCtx, paintingIdxReal);
+            EnfHG_SetupApproach(this, play, paintingIdxReal);
             do {
                 paintingIdxFake = Rand_ZeroOne() * 5.99f;
             } while (paintingIdxFake == paintingIdxReal);
             osSyncPrintf("ac1 = %x `````````````````````````````````````````````````\n",
-                         Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_BOSS_GANONDROF,
+                         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_BOSS_GANONDROF,
                                             this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z,
                                             0, 0, 0, paintingIdxFake + GND_FAKE_BOSS));
         }
     }
 }
 
-void EnfHG_Done(EnfHG* this, GlobalContext* globalCtx) {
+void EnfHG_Done(EnfHG* this, PlayState* play) {
     this->bossGndInPainting = false;
 }
 
-void EnfHG_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnfHG_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     EnfHG* this = (EnfHG*)thisx;
     u8 i;
@@ -693,7 +693,7 @@ void EnfHG_Update(Actor* thisx, GlobalContext* globalCtx) {
         }
     }
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 
     if (this->hitTimer != 0) {
         this->hitTimer--;
@@ -707,23 +707,23 @@ void EnfHG_Update(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.shape.rot.z = (s16)(Math_SinS(this->hitTimer * 0x7000) * 1500.0f) * (this->hitTimer / 20.0f);
 }
 
-void EnfHG_PostDraw(Actor* thisx, GlobalContext* globalCtx, Skin* skin) {
+void EnfHG_PostDraw(Actor* thisx, PlayState* play, Skin* skin) {
 }
 
-void EnfHG_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnfHG_Draw(Actor* thisx, PlayState* play) {
     EnfHG* this = (EnfHG*)thisx;
     BossGanondrof* bossGnd = (BossGanondrof*)this->actor.parent;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-    func_80093D18(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
+    func_80093D18(play->state.gfxCtx);
 
     POLY_OPA_DISP = ((bossGnd->work[GND_INVINC_TIMER] & 4) && (bossGnd->flyMode == GND_FLY_PAINTING))
                         ? Gfx_SetFog(POLY_OPA_DISP, 255, 50, 0, 0, 900, 1099)
                         : Gfx_SetFog(POLY_OPA_DISP, (u32)this->warpColorFilterR, (u32)this->warpColorFilterG,
                                      (u32)this->warpColorFilterB, 0, (s32)this->warpColorFilterUnk1 + 995,
                                      (s32)this->warpColorFilterUnk2 + 1000);
-    func_800A6330(&this->actor, globalCtx, &this->skin, EnfHG_PostDraw, SKIN_TRANSFORM_IS_FHG);
-    POLY_OPA_DISP = Gameplay_SetFog(globalCtx, POLY_OPA_DISP);
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    func_800A6330(&this->actor, play, &this->skin, EnfHG_PostDraw, SKIN_TRANSFORM_IS_FHG);
+    POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

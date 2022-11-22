@@ -6,7 +6,7 @@
 
 struct EnArrow;
 
-typedef void (*EnArrowActionFunc)(struct EnArrow*, GlobalContext*);
+typedef void (*EnArrowActionFunc)(struct EnArrow*, PlayState*);
 
 typedef struct EnArrow {
     /* 0x0000 */ Actor actor;

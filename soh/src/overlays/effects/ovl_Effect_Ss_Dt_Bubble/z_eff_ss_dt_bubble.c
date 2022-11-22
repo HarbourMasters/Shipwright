@@ -19,9 +19,9 @@
 #define rScale regs[9]
 #define rLifespan regs[10]
 
-u32 EffectSsDtBubble_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx);
-void EffectSsDtBubble_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this);
-void EffectSsDtBubble_Update(GlobalContext* globalCtx, u32 index, EffectSs* this);
+u32 EffectSsDtBubble_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+void EffectSsDtBubble_Draw(PlayState* play, u32 index, EffectSs* this);
+void EffectSsDtBubble_Update(PlayState* play, u32 index, EffectSs* this);
 
 static Color_RGBA8 sPrimColors[] = { { 255, 255, 100, 255 }, { 150, 255, 255, 255 }, { 100, 255, 255, 255 } };
 static Color_RGBA8 sEnvColors[] = { { 170, 0, 0, 255 }, { 0, 100, 0, 255 }, { 0, 0, 255, 255 } };
@@ -31,7 +31,7 @@ EffectSsInit Effect_Ss_Dt_Bubble_InitVars = {
     EffectSsDtBubble_Init,
 };
 
-u32 EffectSsDtBubble_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void* initParamsx) {
+u32 EffectSsDtBubble_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsDtBubbleInitParams* initParams = (EffectSsDtBubbleInitParams*)initParamsx;
 
     //! @bug Rand_ZeroOne in the macro means a random number is generated for both parts of the macro.
@@ -72,8 +72,8 @@ u32 EffectSsDtBubble_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, v
     return 1;
 }
 
-void EffectSsDtBubble_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
-    GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+void EffectSsDtBubble_Draw(PlayState* play, u32 index, EffectSs* this) {
+    GraphicsContext* gfxCtx = play->state.gfxCtx;
     f32 scale;
 
     OPEN_DISPS(gfxCtx);
@@ -94,7 +94,7 @@ void EffectSsDtBubble_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) 
     CLOSE_DISPS(gfxCtx);
 }
 
-void EffectSsDtBubble_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+void EffectSsDtBubble_Update(PlayState* play, u32 index, EffectSs* this) {
     f32 rand;
 
     if (this->rRandXZ == 1) {
