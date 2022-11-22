@@ -22,6 +22,7 @@
 #include <Utils/MemoryStream.h>
 #include <Utils/BinaryWriter.h>
 #include <bit>
+#include <locale>
 
 std::string otrFileName = "oot.otr";
 std::string customMusicPath = "Custom/Music";
@@ -181,6 +182,10 @@ static void ExporterProgramEnd()
                             type = "bgm";
                         }
                         afterPath += ("_" + type);
+                        std::locale loc;
+                        for (int i = 0; i < type.length(); i++) {
+                            type[i] = std::tolower(type[i], loc);
+                        }
                         auto fileData = OTRExporter_Audio::BuildAssetSequence(item, fontIdx, type);
                         printf("musicArchive->AddFile(%s)\n", afterPath.c_str());
                         musicArchive->AddFile(afterPath, (uintptr_t)fileData.data(), fileData.size());
