@@ -26,7 +26,7 @@ s16 dynamicExitList[] = { 0x045B, 0x0482, 0x03E8, 0x044B, 0x02A2, 0x0201, 0x03B8
 
 static s16 entranceOverrideTable[ENTRANCE_TABLE_SIZE] = {0};
 
-EntranceInfo originalEntranceTable[1556] = {0};
+EntranceInfo originalEntranceTable[ENTRANCE_TABLE_SIZE] = {0};
 
 //These variables store the new entrance indices for dungeons so that
 //savewarping and game overs respawn players at the proper entrance.
@@ -46,7 +46,7 @@ static s16 newIceCavernEntrance             = ICE_CAVERN_ENTRANCE;
 static s8 hasCopiedEntranceTable = 0;
 static s8 hasModifiedEntranceTable = 0;
 
-void Entrance_SetEntranceDiscovered(int16_t entranceIndex);
+void Entrance_SetEntranceDiscovered(u16 entranceIndex);
 
 u8 Entrance_EntranceIsNull(EntranceOverride* entranceOverride) {
     return entranceOverride->index == 0 && entranceOverride->destination == 0 && entranceOverride->blueWarp == 0
@@ -63,14 +63,14 @@ static void Entrance_SeparateOGCFairyFountainExit(void) {
 
 void Entrance_CopyOriginalEntranceTable(void) {
     if (!hasCopiedEntranceTable) {
-        memcpy(originalEntranceTable, gEntranceTable, sizeof(EntranceInfo) * 1556);
+        memcpy(originalEntranceTable, gEntranceTable, sizeof(EntranceInfo) * ENTRANCE_TABLE_SIZE);
         hasCopiedEntranceTable = 1;
     }
 }
 
 void Entrance_ResetEntranceTable(void) {
     if (hasCopiedEntranceTable && hasModifiedEntranceTable) {
-        memcpy(gEntranceTable, originalEntranceTable, sizeof(EntranceInfo) * 1556);
+        memcpy(gEntranceTable, originalEntranceTable, sizeof(EntranceInfo) * ENTRANCE_TABLE_SIZE);
         hasModifiedEntranceTable = 0;
     }
 }
@@ -204,7 +204,23 @@ s16 Entrance_OverrideDynamicExit(s16 dynamicExitIndex) {
 }
 
 u32 Entrance_SceneAndSpawnAre(u8 scene, u8 spawn) {
-    EntranceInfo currentEntrance = gEntranceTable[gSaveContext.entranceIndex];
+    s16 computedEntranceIndex;
+
+    if (!IS_DAY) {
+        if (!LINK_IS_ADULT) {
+            computedEntranceIndex = gSaveContext.entranceIndex + 1;
+        } else {
+            computedEntranceIndex = gSaveContext.entranceIndex + 3;
+        }
+    } else {
+        if (!LINK_IS_ADULT) {
+            computedEntranceIndex = gSaveContext.entranceIndex;
+        } else {
+            computedEntranceIndex = gSaveContext.entranceIndex + 2;
+        }
+    }
+
+    EntranceInfo currentEntrance = gEntranceTable[computedEntranceIndex];
     return currentEntrance.scene == scene && currentEntrance.spawn == spawn;
 }
 
@@ -529,39 +545,60 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
     }
 }
 
-void Entrance_SetEntranceDiscovered(int16_t entranceIndex) {
-    // Skip if this is a dynamic entrance
-    if (entranceIndex > 0x0820) {
+u8 Entrance_GetIsSceneDiscovered(u8 sceneNum) {
+    u32 numBits = sizeof(u32) * 8;
+    u32 idx = sceneNum / numBits;
+    if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
+        u32 bit = 1 << (sceneNum - (idx * numBits));
+        return (gSaveContext.sohStats.scenesDiscovered[idx] & bit) != 0;
+    }
+    return 0;
+}
+
+void Entrance_SetSceneDiscovered(u8 sceneNum) {
+    if (Entrance_GetIsSceneDiscovered(sceneNum)) {
         return;
     }
 
-    // If crossing the water entrance for Hyrule Field <-> ZR, set the land entrance as discovered
-    if (entranceIndex == 0x01D9) { //Hyrule Field -> ZR Front water entrance
-        entranceIndex = 0x00EA;
-    } else if (entranceIndex == 0x0311) { //ZR Front -> Hyrule Field water entrance
-        entranceIndex = 0x0181;
+    u16 numBits = sizeof(u32) * 8;
+    u32 idx = sceneNum / numBits;
+    if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
+        u32 sceneBit = 1 << (sceneNum - (idx * numBits));
+        gSaveContext.sohStats.scenesDiscovered[idx] |= sceneBit;
+    }
+}
+
+u8 Entrance_GetIsEntranceDiscovered(u16 entranceIndex) {
+    u32 numBits = sizeof(u32) * 8;
+    u32 idx = entranceIndex / numBits;
+    if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
+        u32 bit = 1 << (entranceIndex - (idx * numBits));
+        return (gSaveContext.sohStats.entrancesDiscovered[idx] & bit) != 0;
+    }
+    return 0;
+}
+
+void Entrance_SetEntranceDiscovered(u16 entranceIndex) {
+
+    // Skip if already set to save time from setting the connected or
+    // if this is a dynamic entrance
+    if (entranceIndex > 0x0820 || Entrance_GetIsEntranceDiscovered(entranceIndex)) {
+        return;
     }
 
-    int16_t override = -1;
-
-    // Mark entrance as discovered
-    for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
-        if (entranceIndex == gSaveContext.entranceOverrides[i].index) {
-            gSaveContext.entranceOverrides[i].discovered = 1;
-            override = gSaveContext.entranceOverrides[i].overrideDestination;
-            break;
-        }
-    }
-
-    // Mark reverse direction when coupled and not a one way entrance
-    if (override != -1) {
+    u16 numBits = sizeof(u32) * 8;
+    u32 idx = entranceIndex / numBits;
+    if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
+        u32 entranceBit = 1 << (entranceIndex - (idx * numBits));
+        gSaveContext.sohStats.entrancesDiscovered[idx] |= entranceBit;
+        // Set connected
         for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
-            if (override == gSaveContext.entranceOverrides[i].index) {
-                gSaveContext.entranceOverrides[i].discovered = 1;
+            if (entranceIndex == gSaveContext.entranceOverrides[i].index) {
+                if (!Entrance_GetIsEntranceDiscovered(gSaveContext.entranceOverrides[i].overrideDestination)) {
+                    Entrance_SetEntranceDiscovered(gSaveContext.entranceOverrides[i].overrideDestination);
+                }
                 break;
             }
         }
     }
-
-    Entrance_InitEntranceTrackingData();
 }
