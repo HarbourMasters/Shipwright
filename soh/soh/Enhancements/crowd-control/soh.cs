@@ -30,6 +30,17 @@ public class SoH : SimpleTCPPack
 		{"likelike", ("Like-Like")}
 	};
 
+	private Dictionary<string, string> _ammoType = new Dictionary<string, string>()
+	{
+		{"arrows", ("Arrows")},
+		{"bombs", ("Bombs")},
+		{"chus", ("Bombchus")},
+		{"nuts", ("Nuts")},
+		{"seeds", ("Slingshot Seeds")},
+		{"sticks", ("Sticks")},
+		{"beans", ("Beans")},
+	};
+
 	public override List<Effect> Effects
 	{
 		get
@@ -69,10 +80,16 @@ public class SoH : SimpleTCPPack
 				new Effect("Electrocute Link", "electrocute"),
 				new Effect("Iron Boots", "iron_boots") { Duration = 30 },
 				new Effect("Give Deku Shield", "give_dekushield"),
+				new Effect("Change Time to Day", "time_day"),
+				new Effect("Change Time to Night", "time_night"),
+				new Effect("Void Player", "void"),
+				new Effect("Ammo Refill", "ammo", ItemKind.Folder),
 				new Effect("Spawn Enemy", "spawn_enemy", ItemKind.Folder),
 			};
 			
 			effects.AddRange(_enemyType.Select(t => new Effect($"Spawn {t.Value}", $"spawn_{t.Key}", "spawn_enemy")));
+			effects.AddRange(_ammoType.Select(t => new Effect($"{t.Value}", $"{t.Key}", new[] { "ammorefill" }, "ammo")));
+
 
 			return effects;
 		}
@@ -84,7 +101,8 @@ public class SoH : SimpleTCPPack
         new ItemType("Rupees", "rupees999", ItemType.Subtype.Slider, "{\"min\":1,\"max\":999}"),
 		new ItemType("Health", "health20", ItemType.Subtype.Slider, "{\"min\":1,\"max\":20}"),
 		new ItemType("Damage/Defense Multiplier", "damdefmulti", ItemType.Subtype.Slider, "{\"min\":1,\"max\":10}"),
-		new ItemType("Knockback Strength", "knockbackstrength", ItemType.Subtype.Slider, "{\"min\":1,\"max\":3}")
+		new ItemType("Knockback Strength", "knockbackstrength", ItemType.Subtype.Slider, "{\"min\":1,\"max\":3}"),
+		new ItemType("Ammo Refill", "ammorefill", ItemType.Subtype.Slider, "{\"min\":-50,\"max\":50}" ),
     };
 	
 }

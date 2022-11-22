@@ -235,7 +235,7 @@ static bool AmmoHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
         return CMD_FAILED;
     }
 
-    if (count < 0) {
+    if (count < 0 && !(CVar_GetS32("gCrowdControl", 0))) {
         SohImGui::GetConsole()->SendErrorMessage("Ammo count must be positive");
         return CMD_FAILED;
     }
@@ -247,11 +247,18 @@ static bool AmmoHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
         return CMD_FAILED;
     }
 
-    // I dont think you can do OOB with just this
-    AMMO(it->second) = count;
-
-    //To use a change by uncomment this
-    //Inventory_ChangeAmmo(it->second, count);
+    // Allows giving/removing ammo when crowd control is on
+    if (CVar_GetS32("gCrowdControl", 0)) {
+        if (AMMO(it->second) + count < 0) {
+            SohImGui::GetConsole()->SendErrorMessage("Attempting to remove more ammo than is there!");
+            return CMD_FAILED;
+        }
+        Inventory_ChangeAmmo(it->second, count);
+    } else {
+        //Original implementation
+        AMMO(it->second) = count;
+    }
+    return CMD_SUCCESS;
 }
 
 const static std::map<std::string, uint16_t> bottleItems{
@@ -571,7 +578,7 @@ static bool GravityHandler(std::shared_ptr<Ship::Console> Console, const std::ve
         chaosEffectGravityLevel = Ship::Math::clamp(std::stoi(args[1], nullptr, 10), GRAVITY_LEVEL_LIGHT, GRAVITY_LEVEL_HEAVY);
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
-        SohImGui::GetConsole()->SendErrorMessage("[SOH] Minish value must be a number.");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Gravity value must be a number.");
         return CMD_FAILED;
     }
 }
@@ -906,6 +913,58 @@ static bool CuccoStormHandler(std::shared_ptr<Ship::Console> Console, const std:
     return CMD_SUCCESS;
 }
 
+static bool TimeHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    if ((args[1].compare("day") == 0 && IS_DAY) || (args[1].compare("night") == 0 && IS_NIGHT)) {
+            SohImGui::GetConsole()->SendErrorMessage("[SOH] It's already that time!");
+            return CMD_FAILED;
+    } else {
+        uint16_t speed = 0x0800;
+        uint16_t newtime =  IS_DAY ? 0xC010 : 0x4AB0; //direct clock value, lifted from similar function in gz
+
+        while (gSaveContext.dayTime != newtime) {
+            if ((gSaveContext.dayTime < newtime) && (newtime - gSaveContext.dayTime <= speed)) {
+                gSaveContext.dayTime = newtime;
+                gSaveContext.skyboxTime = newtime;
+            } else {
+                gSaveContext.dayTime += speed;
+                gSaveContext.skyboxTime += speed;
+            }
+        }
+    }
+    return CMD_SUCCESS;
+}
+
+static bool TimeHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    if ((args[1].compare("day") == 0 && IS_DAY) || (args[1].compare("night") == 0 && IS_NIGHT)) {
+            SohImGui::GetConsole()->SendErrorMessage("[SOH] It's already that time!");
+            return CMD_FAILED;
+    } else {
+        uint16_t speed = 0x0800;
+        uint16_t newtime =  IS_DAY ? 0xC010 : 0x4AB0; //direct clock value, lifted from similar function in gz
+
+        while (gSaveContext.dayTime != newtime) {
+            if ((gSaveContext.dayTime < newtime) && (newtime - gSaveContext.dayTime <= speed)) {
+                gSaveContext.dayTime = newtime;
+                gSaveContext.skyboxTime = newtime;
+            } else {
+                gSaveContext.dayTime += speed;
+                gSaveContext.skyboxTime += speed;
+            }
+        }
+    }
+    return CMD_SUCCESS;
+}
+
 #define VARTYPE_INTEGER 0
 #define VARTYPE_FLOAT   1
 #define VARTYPE_STRING  2
@@ -1158,6 +1217,10 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("burn", { BurnHandler, "Burns Link." });
 
     CMD_REGISTER("cucco_storm", { CuccoStormHandler, "Cucco Storm" });
+
+    CMD_REGISTER("time", { TimeHandler, "Changes the time to either night or day.", {
+        {"day|night", Ship::ArgumentType::TEXT}
+    }});
 
     CVar_Load();
 }

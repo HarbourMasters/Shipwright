@@ -52,6 +52,9 @@ extern PlayState* gPlayState;
 #define EFFECT_INCREASE_SPEED "increase_speed"
 #define EFFECT_DECREASE_SPEED "decrease_speed"
 #define EFFECT_NO_Z_TARGETING "no_z"
+#define EFFECT_VOID "void"
+#define EFFECT_TIME_DAY "time_day"
+#define EFFECT_TIME_NIGHT "time_night"
 
 #define EFFECT_SPAWN_WALLMASTER "spawn_wallmaster"
 #define EFFECT_SPAWN_ARWING "spawn_arwing"
@@ -66,6 +69,13 @@ extern PlayState* gPlayState;
 #define EFFECT_SPAWN_LIKE_LIKE "spawn_likelike"
 #define EFFECT_SPAWN_CUCCO_STORM "cucco_storm"
 
+#define EFFECT_AMMO_STICK "stick"
+#define EFFECT_AMMO_NUTS "nuts"
+#define EFFECT_AMMO_BOMB "bombs"
+#define EFFECT_AMMO_ARROWS "arrows"
+#define EFFECT_AMMO_CHU "bombchus"
+#define EFFECT_AMMO_BEANS "beans"
+#define EFFECT_AMMO_SLINGSHOT "seeds"
 
 void CrowdControl::Init() {
     SDLNet_Init();
@@ -314,6 +324,15 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
                effect->type == EFFECT_SPAWN_FIRE_KEESE || effect->type == EFFECT_SPAWN_TEKTITE ||
                effect->type == EFFECT_SPAWN_LIKE_LIKE || effect->type == EFFECT_SPAWN_CUCCO_STORM) {
         effect->category = "spawn";
+    } else if (effect->type == EFFECT_AMMO_ARROWS || effect->type == EFFECT_AMMO_BOMB ||
+               effect->type == EFFECT_AMMO_CHU || effect->type == EFFECT_AMMO_NUTS ||
+               effect->type == EFFECT_AMMO_SLINGSHOT || effect->type == EFFECT_AMMO_STICK ||
+               effect->type == EFFECT_AMMO_BEANS) {
+        effect->category = "ammo";
+    } else if (effect->type == EFFECT_VOID) {
+        effect->category = "void";
+    } else if (effect->type == EFFECT_TIME_DAY || effect->type == EFFECT_TIME_NIGHT) {
+        effect->category = "time";
     } else {
         effect->category = "none";
         effect->timeRemaining = 0;
@@ -461,8 +480,23 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uin
             if ((gSaveContext.healthCapacity - 0x10) <= 0) {
                 return EffectResult::Failure;
             }
-            
             if (dryRun == 0) CMD_EXECUTE(fmt::format("{} {}", effectId, value));
+            return EffectResult::Success;
+        } else if (effectId == EFFECT_AMMO_ARROWS
+            || effectId == EFFECT_AMMO_BOMB
+            || effectId == EFFECT_AMMO_BEANS
+            || effectId == EFFECT_AMMO_CHU
+            || effectId == EFFECT_AMMO_NUTS
+            || effectId == EFFECT_AMMO_SLINGSHOT
+            || effectId == EFFECT_AMMO_STICK
+        ) {
+            if (dryRun == 0) CMD_EXECUTE(fmt::format("ammo {} {}",  effectId, value));
+            return EffectResult::Success;
+        } else if (effectId == EFFECT_TIME_DAY || effectId == EFFECT_TIME_NIGHT) {
+            if (dryRun == 0) CMD_EXECUTE(fmt::format("time {}", value));
+            return EffectResult::Success;
+        } else if (effectId == EFFECT_VOID) {
+            if (dryRun == 0) CMD_EXECUTE("void");
             return EffectResult::Success;
         }
     }
@@ -480,49 +514,49 @@ bool CrowdControl::SpawnEnemy(std::string effectId) {
     float posZOffset = 0;
 
     if (effectId == EFFECT_SPAWN_WALLMASTER) {
-        enemyId = 17;
+        enemyId = ACTOR_EN_WALLMAS;
     } else if (effectId == EFFECT_SPAWN_ARWING) {
-        enemyId = 315;
+        enemyId = ACTOR_EN_CLEAR_TAG;
         enemyParams = 1;
         posYOffset = 100;
     } else if (effectId == EFFECT_SPAWN_DARK_LINK) {
-        enemyId = 51;
+        enemyId = ACTOR_EN_TORCH2;
         posXOffset = 75;
         posYOffset = 50;
     } else if (effectId == EFFECT_SPAWN_STALFOS) {
-        enemyId = 2;
+        enemyId = ACTOR_EN_TEST;
         enemyParams = 2;
         posXOffset = 75;
         posYOffset = 50;
     } else if (effectId == EFFECT_SPAWN_WOLFOS) {
-        enemyId = 431;
+        enemyId = ACTOR_EN_WF;
         posXOffset = 75;
         posYOffset = 50;
     } else if (effectId == EFFECT_SPAWN_FREEZARD) {
-        enemyId = 289;
+        enemyId = ACTOR_EN_FZ;
         posXOffset = 75;
         posYOffset = 50;
     } else if (effectId == EFFECT_SPAWN_KEESE) {
-        enemyId = 19;
+        enemyId = ACTOR_EN_FIREFLY;
         enemyParams = 2;
         posXOffset = 75;
         posYOffset = 50;
     } else if (effectId == EFFECT_SPAWN_ICE_KEESE) {
-        enemyId = 19;
+        enemyId = ACTOR_EN_FIREFLY;
         enemyParams = 4;
         posXOffset = 75;
         posYOffset = 50;
     } else if (effectId == EFFECT_SPAWN_FIRE_KEESE) {
-        enemyId = 19;
+        enemyId = ACTOR_EN_FIREFLY;
         enemyParams = 1;
         posXOffset = 75;
         posYOffset = 50;
     } else if (effectId == EFFECT_SPAWN_TEKTITE) {
-        enemyId = 27;
+        enemyId = ACTOR_EN_TITE;
         posXOffset = 75;
         posYOffset = 50;
     } else if (effectId == EFFECT_SPAWN_LIKE_LIKE) {
-        enemyId = 221;
+        enemyId = ACTOR_EN_RR;
         posXOffset = 75;
         posYOffset = 50;
     }
