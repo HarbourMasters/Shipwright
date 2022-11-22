@@ -19,9 +19,7 @@
                 }
         ],
         "cleanup": [
-                "/include",
-                "/lib/pkgconfig",
-                "/lib/*.a"
+                "*"
         ]
 }
 
