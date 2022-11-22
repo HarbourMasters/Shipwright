@@ -138,7 +138,7 @@ void DrawStatsTracker(bool& open) {
     for (int i = COUNT_AMMO_USED_STICK; i <= COUNT_AMMO_USED_BEAN; i++) {
         ammoUsed += gSaveContext.sohStats.count[i];
     }
-    // Sum of all ammo used
+    // Sum of all button presses
     for (int i = COUNT_BUTTON_PRESSES_A; i <= COUNT_BUTTON_PRESSES_START; i++) {
         buttonPresses += gSaveContext.sohStats.count[i];
     }
