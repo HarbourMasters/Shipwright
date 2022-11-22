@@ -11247,7 +11247,7 @@ void Player_Destroy(Actor* thisx, PlayState* play) {
     gSaveContext.linkAge = play->linkAgeOnLoad;
 }
 
-//first person manupulate player actor
+//first person manipulate player actor
 s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
     s32 temp1;
     s16 temp2;

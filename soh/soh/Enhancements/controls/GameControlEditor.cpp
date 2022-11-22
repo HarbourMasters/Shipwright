@@ -241,7 +241,7 @@ namespace GameControlEditor {
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
         UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First-Person View", "gDisableAutoCenterViewFirstPerson");
         DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
-        UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First Serson sensitivity", "gEnableFirstPersonSensitivity", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", "gEnableFirstPersonSensitivity", true, false);
         if (CVar_GetS32("gEnableFirstPersonSensitivity", 0)) {
             UIWidgets::EnhancementSliderFloat("Aiming/First-Person Sensitivity: %d %%", "##FirstPersonSensitivity",
                                                 "gFirstPersonCameraSensitivity", 0.01f, 5.0f, "", 1.0f, true, true);
