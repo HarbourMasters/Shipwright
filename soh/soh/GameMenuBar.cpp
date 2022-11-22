@@ -235,6 +235,17 @@ namespace GameMenuBar {
         // Fairy Revive Percent Restore
         CVar_SetS32("gFairyRevivePercentRestore", 0);
 
+        // Customize Shooting Gallery
+        CVar_SetS32("gCustomizeShootingGallery", 0);
+        // Shooting Gallery Instant Win
+        CVar_SetS32("gInstantShootingGalleryWin", 0);
+        // Constant Adult Shooting Gallery
+        CVar_SetS32("gConstantAdultGallery", 0);
+        // Child Starting Ammunition (10 to 30)
+        CVar_SetS32("gChildShootingGalleryAmmunition", 15);
+        // Adult Starting Ammunition (10 to 30)
+        CVar_SetS32("gAdultShootingGalleryAmmunition", 15);
+
         // Instant Fishing
         CVar_SetS32("gInstantFishing", 0);
         // Guarantee Bite
@@ -1589,6 +1600,8 @@ namespace GameMenuBar {
                 ImGui::Text("Loading :");
                 UIWidgets::EnhancementCombobox("gSaveFileID", FastFileSelect, 5, 0);
             };
+            UIWidgets::PaddedEnhancementCheckbox("Hide Build Info", "gHideBuildInfo", true, false);
+            UIWidgets::Tooltip("Hides the game version and build details in the boot logo start screen");
             UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
             UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
             UIWidgets::PaddedSeparator();

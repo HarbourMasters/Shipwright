@@ -1886,7 +1886,9 @@ void func_808337D4(PlayState* play, Player* this) {
                                       this->actor.shape.rot.y, 0, 0);
     if (spawnedActor != NULL) {
         if ((explosiveType != 0) && (play->bombchuBowlingStatus != 0)) {
-            play->bombchuBowlingStatus--;
+            if (!CVar_GetS32("gInfiniteAmmo", 0)) {
+                play->bombchuBowlingStatus--;
+            }
             if (play->bombchuBowlingStatus == 0) {
                 play->bombchuBowlingStatus = -1;
             }
@@ -2531,9 +2533,13 @@ s32 func_808350A4(PlayState* play, Player* this) {
             func_80834380(play, this, &item, &arrowType);
 
             if (gSaveContext.minigameState == 1) {
-                play->interfaceCtx.hbaAmmo--;
+                if (!CVar_GetS32("gInfiniteAmmo", 0)) {
+                    play->interfaceCtx.hbaAmmo--;
+                }
             } else if (play->shootingGalleryStatus != 0) {
-                play->shootingGalleryStatus--;
+                if (!CVar_GetS32("gInfiniteAmmo", 0)) {
+                    play->shootingGalleryStatus--;
+                }
             } else {
                 Inventory_ChangeAmmo(item, -1);
             }
