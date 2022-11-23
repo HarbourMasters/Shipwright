@@ -1,20 +1,20 @@
 #!/bin/bash
-HERE="$(dirname "$(readlink -f "${0}")")"/../..
+HERE="$(dirname "$(readlink -f "${0}")")"
 
-export PATH="$HERE"/bin:"$HERE"/usr/bin:"$PATH"
-export LD_LIBRARY_PATH="$HERE"/usr/lib:"$LD_LIBRARY_PATH"
+export PATH="$HERE"/../../bin:"$HERE":"$PATH"
+export LD_LIBRARY_PATH="$HERE"/../lib:"$LD_LIBRARY_PATH"
 export ZENITY=$(command -v zenity)
 
 if [ -z ${SHIP_HOME+x} ]; then
 export SHIP_HOME=$PWD
 fi
 
-while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
+while [[ (! -e "$SHIP_HOME"/oot.otr) && (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
         for romfile in "$SHIP_HOME"/*.*64
         do
             if [[ -e $romfile ]]; then
                 export ASSETDIR="$(mktemp -d /tmp/assets-XXXXX)"
-                ln -s "$HERE"/usr/bin/{assets,soh.elf,OTRGui} "$ASSETDIR"
+                ln -s "$HERE"/{assets,soh.elf,OTRGui} "$ASSETDIR"
                 export OLDPWD="$PWD"
                 mkdir -p "$ASSETDIR"/tmp
 	            mkdir -p "$ASSETDIR"/Extract
@@ -91,10 +91,10 @@ while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
             rm -r "$ASSETDIR"
             exit
         else
-            (cd "$HERE/usr/bin"; ./soh.elf)
+            (cd "$HERE"; ./soh.elf)
             exit
         fi
         rm -r "$ASSETDIR"
 done	
-	(cd "$HERE/usr/bin"; ./soh.elf)
+	(cd "$HERE"; ./soh.elf)
 exit

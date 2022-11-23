@@ -1,5 +1,5 @@
 id: com.shipofharkinian.soh
-command: "soh.elf"
+command: "soh.sh"
 desktop-file-name-suffix: " (Nightly)"
 finish-args: 
   - --share=ipc
