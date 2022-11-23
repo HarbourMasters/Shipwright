@@ -720,8 +720,8 @@ void DrawEntranceTracker(bool& open) {
 
             bool isDiscovered = Entrance_GetIsEntranceDiscovered(entrance.index);
 
-            bool showOriginal = (!destToggle ? CVar_GetS32("gEntranceTrackerShowTo", 0) : CVar_GetS32("gEntranceTrackerShowFrom", 0)) || isDiscovered;
-            bool showOverride = (!destToggle ? CVar_GetS32("gEntranceTrackerShowFrom", 0) : CVar_GetS32("gEntranceTrackerShowTo", 0)) || isDiscovered;
+            bool showOriginal = !destToggle ? CVar_GetS32("gEntranceTrackerShowTo", 0) : CVar_GetS32("gEntranceTrackerShowFrom", 0) || isDiscovered;
+            bool showOverride = !destToggle ? CVar_GetS32("gEntranceTrackerShowFrom", 0) : CVar_GetS32("gEntranceTrackerShowTo", 0) || isDiscovered;
 
             const char* origSrcAreaName = spoilerEntranceGroupNames[original->srcGroup].c_str();
             const char* origTypeName = groupTypeNames[original->type].c_str();
