@@ -285,6 +285,7 @@ namespace UIWidgets {
         }
 
         ImGui::Text(text, val);
+        Spacer(0);
 
         if (disabled) {
             DisableComponentSwitch(disabledTooltipText, alpha);
@@ -305,13 +306,23 @@ namespace UIWidgets {
                 DisableComponentSwitch(disabledTooltipText, alpha);
             }
         }
-
+        if (PlusMinusButton) {
+#ifdef __SWITCH__
+            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
+#elif defined(__WIIU__)
+            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
+#else
+            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
+#endif
+        }
         if (ImGui::SliderInt(id, &val, min, max, format))
         {
             CVar_SetS32(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
         }
-
+        if (PlusMinusButton) {
+            ImGui::PopItemWidth();
+        }
         if(PlusMinusButton) {
             if (disabled) {
                 DisableComponentSwitch(disabledTooltipText, alpha);
@@ -364,9 +375,7 @@ namespace UIWidgets {
         } else {
             ImGui::Text(text, static_cast<int>(100 * val));
         }
-
         Spacer(0);
-
         if(PlusMinusButton) {
             std::string MinusBTNName = " - ##";
             MinusBTNName += cvarName;
