@@ -68,6 +68,7 @@ static std::string groupTypeNames[] = {
     "Dungeon",
 };
 
+// Entrance data for the tracker taken from the 3ds rando entrance tracker, and supplemented with scene/spawn info and meta search tags
 const EntranceData entranceData[] = {
     //index,  scenes (and spawns),     source name,   destination name, source group,           destination group,      type,                 oneExit
     { 0x00BB, SINGLE_SCENE_INFO(0x34), "Child Spawn", "Link's House",   ENTRANCE_GROUP_ONE_WAY, ENTRANCE_GROUP_ONE_WAY, ENTRANCE_TYPE_ONE_WAY},
@@ -381,6 +382,20 @@ s8 LinkIsInArea(const EntranceData* entrance) {
     }
 
     return -1;
+}
+
+bool IsEntranceDiscovered(s16 index) {
+    bool isDiscovered = Entrance_GetIsEntranceDiscovered(index);
+    if (!isDiscovered) {
+        // If the pair included one of the hyrule field <-> zora's river entrances,
+        // the randomizer will have also overriden the water-based entrances, so check those too
+        if ((index == 0x00EA && Entrance_GetIsEntranceDiscovered(0x01D9)) || (index == 0x01D9 && Entrance_GetIsEntranceDiscovered(0x00EA))) {
+            isDiscovered = true;
+        } else if ((index == 0x0181 && Entrance_GetIsEntranceDiscovered(0x0311)) || (index == 0x0311 && Entrance_GetIsEntranceDiscovered(0x0181))) {
+            isDiscovered = true;
+        }
+    }
+    return isDiscovered;
 }
 
 const EntranceData* GetEntranceData(s16 index) {
@@ -718,7 +733,7 @@ void DrawEntranceTracker(bool& open) {
             const EntranceData* original = GetEntranceData(entrance.index);
             const EntranceData* override = GetEntranceData(entrance.override);
 
-            bool isDiscovered = Entrance_GetIsEntranceDiscovered(entrance.index);
+            bool isDiscovered = IsEntranceDiscovered(entrance.index);
 
             bool showOriginal = (!destToggle ? CVar_GetS32("gEntranceTrackerShowTo", 0) : CVar_GetS32("gEntranceTrackerShowFrom", 0)) || isDiscovered;
             bool showOverride = (!destToggle ? CVar_GetS32("gEntranceTrackerShowFrom", 0) : CVar_GetS32("gEntranceTrackerShowTo", 0)) || isDiscovered;
@@ -770,7 +785,7 @@ void DrawEntranceTracker(bool& open) {
                     const EntranceData* original = GetEntranceData(entrance.index);
                     const EntranceData* override = GetEntranceData(entrance.override);
 
-                    bool isDiscovered = Entrance_GetIsEntranceDiscovered(entrance.index);
+                    bool isDiscovered = IsEntranceDiscovered(entrance.index);
 
                     bool showOriginal = (!destToggle ? CVar_GetS32("gEntranceTrackerShowTo", 0) : CVar_GetS32("gEntranceTrackerShowFrom", 0)) || isDiscovered;
                     bool showOverride = (!destToggle ? CVar_GetS32("gEntranceTrackerShowFrom", 0) : CVar_GetS32("gEntranceTrackerShowTo", 0)) || isDiscovered;
