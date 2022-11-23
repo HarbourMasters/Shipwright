@@ -302,9 +302,6 @@ void DrawStatsTracker(bool& open) {
     DisplayStat("Pots Smashed:          ", gSaveContext.sohStats.count[COUNT_POTS_BROKEN]);
     DisplayStat("Bushes Cut:            ", gSaveContext.sohStats.count[COUNT_BUSHES_CUT]);
 
-    ImGui::PopStyleVar(1);
-    ImGui::EndTable();
-
     DisplayStat("Buttons Pressed:       ", buttonPresses);
     // Show breakdown of ammo used in a collapsible tree. Only show ammo types if they've been used at least once.
     if (buttonPresses > 0) {
