@@ -264,13 +264,14 @@ namespace GameControlEditor {
         SohImGui::EndGroupPanel();
     }
 
-    void DrawMKBControlPanel() {
-        if (!ImGui::CollapsingHeader("Mouse and Keyboard Controls")) {
+    void DrawMiscControlPanel() {
+        if (!ImGui::CollapsingHeader("Miscellaneous Controls")) {
             return;
         }
 
         ImVec2 cursor = ImGui::GetCursorPos();
         ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
+        SohImGui::BeginGroupPanel("Misc Controls", ImGui::GetContentRegionAvail());
         UIWidgets::PaddedEnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify", true, false);
         DrawHelpIcon("Hold the assigned button to change the maximum walking speed\nTo change the assigned button, go into the Ports tabs above");
          if (CVar_GetS32("gEnableWalkModify", 0)) {
@@ -281,17 +282,7 @@ namespace GameControlEditor {
             UIWidgets::EnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true);
             SohImGui::EndGroupPanel();
         }
-        UIWidgets::Spacer(5);
-    }
-
-    void DrawMiscControlPanel() {
-        if (!ImGui::CollapsingHeader("Miscellaneous Controls")) {
-            return;
-        }
-
-        ImVec2 cursor = ImGui::GetCursorPos();
-        ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
-        SohImGui::BeginGroupPanel("Misc Controls", ImGui::GetContentRegionAvail());
+        UIWidgets::Spacer(0);
         UIWidgets::PaddedEnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor");
         DrawHelpIcon("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
         UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");
@@ -327,7 +318,6 @@ namespace GameControlEditor {
                 DrawOcarinaControlPanel();
                 DrawCameraControlPanel();
                 DrawDpadControlPanel();
-                DrawMKBControlPanel();
                 DrawMiscControlPanel();
             } else {
                 DrawCustomButtons();
