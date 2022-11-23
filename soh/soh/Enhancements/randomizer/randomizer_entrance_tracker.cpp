@@ -36,7 +36,7 @@ static const EntranceOverride emptyOverride = {0};
 
 static s16 lastEntranceIndex = -1;
 static s16 currentGrottoId = -1;
-static s16 lastScene = -1;
+static s16 lastSceneOrEntranceDetected = -1;
 
 static std::string spoilerEntranceGroupNames[] = {
     "Spawns/Warp Songs/Owls",
@@ -353,7 +353,8 @@ const EntranceData entranceData[] = {
     { 0x023D, SINGLE_SCENE_INFO(0x0D), "Ganon's Castle",           "OGC",                      ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,  "outside ganon's castle,gc"}
 };
 
-const s8 LinkIsInArea(const EntranceData* entrance) {
+// Check if Link is in the area and return that scene/entrance for tracking
+s8 LinkIsInArea(const EntranceData* entrance) {
     bool result = false;
 
     // Handle detecting the current grotto
@@ -366,6 +367,7 @@ const s8 LinkIsInArea(const EntranceData* entrance) {
         }
     }
 
+    // Otherwise check all scenes/spawns
     for (auto info : entrance->scenes) {
         if (info.spawn != -1) {
             result = Entrance_SceneAndSpawnAre(info.scene, info.spawn);
@@ -510,7 +512,7 @@ void SetLastEntranceOverrideForTracker(s16 entranceIndex) {
 void ClearEntranceTrackingData() {
     currentGrottoId = -1;
     lastEntranceIndex = -1;
-    lastScene == -1;
+    lastSceneOrEntranceDetected == -1;
     gEntranceTrackingData = {0};
 }
 
@@ -588,6 +590,7 @@ void DrawEntranceTracker(bool& open) {
         return;
     }
 
+    // Begin tracker settings
     ImGui::SetNextItemOpen(false, ImGuiCond_Once);
     if (ImGui::TreeNode("Tracker Settings")) {
         ImGui::TextWrapped("The entrance tracker will only track shuffled entrances");
@@ -694,6 +697,7 @@ void DrawEntranceTracker(bool& open) {
             break;
     }
 
+    // Begin tracker list
     ImGui::BeginChild("ChildEntranceLocations", ImVec2(0, -8));
     for (size_t i = 0; i < groupCount; i++) {
         std::string groupName = groupNames[i];
@@ -705,6 +709,7 @@ void DrawEntranceTracker(bool& open) {
         size_t undiscovered = 0;
         std::vector<EntranceOverride> displayEntrances = {};
 
+        // Loop over entrances first for filtering
         for (size_t entranceIdx = 0; entranceIdx < entranceCount; entranceIdx++) {
             size_t trueIdx = entranceIdx + startIndex;
 
@@ -728,6 +733,7 @@ void DrawEntranceTracker(bool& open) {
             const char* rplcSrcName = showOverride ? override->source.c_str()      : "";
             const char* rplcDstName = showOverride ? override->destination.c_str() : "";
 
+            // Filter for entrances by group name, type, source/destination names, and meta tags
             if ((!locationSearch.IsActive() && (showOriginal || showOverride || !CVar_GetS32("gEntranceTrackerCollapseUndiscovered", 0))) ||
                 ((showOriginal && (locationSearch.PassFilter(origSrcName) ||
                 locationSearch.PassFilter(origDstName) || locationSearch.PassFilter(origSrcAreaName) ||
@@ -736,9 +742,9 @@ void DrawEntranceTracker(bool& open) {
                 locationSearch.PassFilter(rplcDstName) || locationSearch.PassFilter(rplcSrcAreaName) ||
                 locationSearch.PassFilter(rplcTypeName) || locationSearch.PassFilter(override->metaTag.c_str()))))) {
 
-                if (gPlayState != nullptr && !doAreaScroll &&
-                    (lastScene != LinkIsInArea(original) && LinkIsInArea(original) != -1)) {
-                    lastScene = LinkIsInArea(original);
+                // Detect if a scroll should happen and remember the scene for that scroll
+                if (!doAreaScroll && (lastSceneOrEntranceDetected != LinkIsInArea(original) && LinkIsInArea(original) != -1)) {
+                    lastSceneOrEntranceDetected = LinkIsInArea(original);
                     doAreaScroll = true;
                 }
 
@@ -750,12 +756,15 @@ void DrawEntranceTracker(bool& open) {
             }
         }
 
+        // Then display the entrances in groups
         if (displayEntrances.size() != 0 || (!locationSearch.IsActive() && undiscovered > 0)) {
+            // Handle opening/closing trees based on auto scroll or collapse/expand buttons
             if (nextTreeState == 1) {
                 ImGui::SetNextItemOpen(false, ImGuiCond_None);
             } else {
                 ImGui::SetNextItemOpen(true, nextTreeState == 0 && !doAreaScroll ? ImGuiCond_Once : ImGuiCond_None);
             }
+
             if (ImGui::TreeNode(groupName.c_str())) {
                 for (auto entrance : displayEntrances) {
                     const EntranceData* original = GetEntranceData(entrance.index);
@@ -775,6 +784,7 @@ void DrawEntranceTracker(bool& open) {
 
                     uint32_t color = isDiscovered ? IM_COL32_WHITE : COLOR_GRAY;
 
+                    // Handle highlighting and auto scroll
                     if (LinkIsInArea(original) != -1) {
                         if (CVar_GetS32("gEntranceTrackerHighlightAvailable", 0)) {
                             color = COLOR_GREEN;
@@ -814,6 +824,7 @@ void DrawEntranceTracker(bool& open) {
                     ImGui::PopStyleColor();
                 }
 
+                // Write collapsed undiscovered info
                 if (!locationSearch.IsActive() && undiscovered > 0) {
                     UIWidgets::Spacer(0);
                     ImGui::PushStyleColor(ImGuiCol_Text, COLOR_GRAY);
