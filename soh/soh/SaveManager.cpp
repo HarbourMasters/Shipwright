@@ -1017,6 +1017,7 @@ void SaveManager::LoadBaseVersion2() {
         });
         SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.count[i]);
+        });
         SaveManager::Instance->LoadArray("scenesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.scenesDiscovered[i]);
         });
@@ -1191,6 +1192,7 @@ void SaveManager::SaveBase() {
         });
         SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
             SaveManager::Instance->SaveData("", gSaveContext.sohStats.count[i]);
+        });
         SaveManager::Instance->SaveArray("scenesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered), [](size_t i) {
             SaveManager::Instance->SaveData("", gSaveContext.sohStats.scenesDiscovered[i]);
         });
