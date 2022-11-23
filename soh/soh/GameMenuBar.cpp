@@ -570,7 +570,7 @@ namespace GameMenuBar {
                     if (ImGui::BeginMenu("Shooting Gallery")) {
                         UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeShootingGallery");
                         UIWidgets::Tooltip("Turn on/off changes to the shooting gallery behavior");
-                        bool disabled = CVar_GetS32("gCustomizeShootingGallery", 0) == 0;
+                        bool disabled = !CVar_GetS32("gCustomizeShootingGallery", 0);
                         const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
                         UIWidgets::EnhancementCheckbox("Instant Win", "gInstantShootingGalleryWin", disabled, disabledTooltip);
                         UIWidgets::Tooltip("Skips the shooting gallery minigame");
@@ -586,15 +586,19 @@ namespace GameMenuBar {
                     UIWidgets::Spacer(0);
 
                     if (ImGui::BeginMenu("Fishing")) {
-                        UIWidgets::EnhancementCheckbox("Instant Fishing", "gInstantFishing");
+                        UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeFishing");
+                        UIWidgets::Tooltip("Turn on/off changes to the fishing behavior");
+                        bool disabled = !CVar_GetS32("gCustomizeFishing", 0);
+                        const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
+                        UIWidgets::EnhancementCheckbox("Instant Fishing", "gInstantFishing", disabled, disabledTooltip);
                         UIWidgets::Tooltip("All fish will be caught instantly");
-                        UIWidgets::PaddedEnhancementCheckbox("Guarantee Bite", "gGuaranteeFishingBite", true, false);
+                        UIWidgets::PaddedEnhancementCheckbox("Guarantee Bite", "gGuaranteeFishingBite", true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("When a line is stable, guarantee bite. Otherwise use default logic");
-                        UIWidgets::PaddedEnhancementCheckbox("Fish Never Escape", "gFishNeverEscape", true, false);
+                        UIWidgets::PaddedEnhancementCheckbox("Fish Never Escape", "gFishNeverEscape", true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("Once a hook has been set, fish will never let go while being reeled in.");
-                        UIWidgets::PaddedEnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", "gChildMinimumWeightFish", 3, 10, "", 10, false, true, false);
+                        UIWidgets::PaddedEnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", "gChildMinimumWeightFish", 3, 10, "", 10, false, true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("The minimum weight for the unique fishing reward as a child");
-                        UIWidgets::PaddedEnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 6, 13, "", 13, false, true, false);
+                        UIWidgets::PaddedEnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 6, 13, "", 13, false, true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("The minimum weight for the unique fishing reward as an adult");
                         ImGui::EndMenu();
                     }
