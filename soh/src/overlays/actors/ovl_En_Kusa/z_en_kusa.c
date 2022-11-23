@@ -310,6 +310,7 @@ void EnKusa_Main(EnKusa* this, PlayState* play) {
         EnKusa_SpawnFragments(this, play);
         EnKusa_DropCollectible(this, play);
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 20, NA_SE_EV_PLANT_BROKEN);
+        gSaveContext.sohStats.count[COUNT_BUSHES_CUT]++;
 
         if ((this->actor.params >> 4) & 1) {
             EnKusa_SpawnBugs(this, play);
@@ -378,6 +379,7 @@ void EnKusa_Fall(EnKusa* this, PlayState* play) {
     if (this->actor.bgCheckFlags & 0xB) {
         if (!(this->actor.bgCheckFlags & 0x20)) {
             SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 20, NA_SE_EV_PLANT_BROKEN);
+            gSaveContext.sohStats.count[COUNT_BUSHES_CUT]++;
         }
         EnKusa_SpawnFragments(this, play);
         EnKusa_DropCollectible(this, play);

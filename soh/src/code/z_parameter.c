@@ -1614,6 +1614,72 @@ void func_80084BF4(PlayState* play, u16 flag) {
     }
 }
 
+// Gameplay stat tracking: Update time the item was acquired
+// (special cases for some duplicate items)
+void GameplayStats_SetTimestamp(u8 item) {
+
+    if (gSaveContext.sohStats.timestamp[item] != 0) {
+        return;
+    }
+
+    u32 time = GAMEPLAYSTAT_TOTAL_TIME;
+
+    // Have items in Link's pocket shown as being obtained at 0.1 seconds
+    if (time == 0) {
+        time = 1;
+    }
+
+    // Count any bottled item as a bottle
+    if (item >= ITEM_BOTTLE && item <= ITEM_POE) {
+        if (gSaveContext.sohStats.timestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.sohStats.timestamp[ITEM_BOTTLE] = time;
+        }
+        return;
+    }
+    // Count any bombchu pack as bombchus
+    if (item == ITEM_BOMBCHU || (item >= ITEM_BOMBCHUS_5 && item <= ITEM_BOMBCHUS_20)) {
+        if (gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] == 0) {
+            gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] = time;
+        }
+        return;
+    }
+
+    gSaveContext.sohStats.timestamp[item] = time;
+}
+
+// Gameplay stat tracking: Update time the item was acquired
+// (special cases for rando items)
+void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
+
+    u32 time = GAMEPLAYSTAT_TOTAL_TIME;
+
+    // Have items in Link's pocket shown as being obtained at 0.1 seconds
+    if (time == 0) {
+        time = 1;
+    }
+
+    // Count any bottled item as a bottle
+    if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
+        if (gSaveContext.sohStats.timestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.sohStats.timestamp[ITEM_BOTTLE] = time;
+        }
+        return;
+    }
+    // Count any bombchu pack as bombchus
+    if (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) {
+        if (gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] = 0) {
+            gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] = time;
+        }
+        return;
+    }
+    if (item == RG_MAGIC_SINGLE) {
+        gSaveContext.sohStats.timestamp[ITEM_SINGLE_MAGIC] = time;
+    }
+    if (item == RG_DOUBLE_DEFENSE) {
+        gSaveContext.sohStats.timestamp[ITEM_DOUBLE_DEFENSE] = time;
+    }
+}
+
 /**
  * @brief Adds the given item to Link's inventory.
  * 
@@ -1630,6 +1696,9 @@ u8 Item_Give(PlayState* play, u8 item) {
     s16 i;
     s16 slot;
     s16 temp;
+
+    // Gameplay stats: Update the time the item was obtained
+    GameplayStats_SetTimestamp(item);
 
     slot = SLOT(item);
     if (item >= ITEM_STICKS_5) {
@@ -2290,6 +2359,9 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     uint16_t temp;
     uint16_t i;
     uint16_t slot;
+
+    // Gameplay stats: Update the time the item was obtained
+    Randomizer_GameplayStats_SetTimestamp(item);
 
     slot = SLOT(item);
     if (item == RG_MAGIC_SINGLE) {
@@ -2975,6 +3047,10 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
     osSyncPrintf("＊＊＊＊＊  増減=%d (now=%d, max=%d)  ＊＊＊", healthChange, gSaveContext.health,
                  gSaveContext.healthCapacity);
 
+    if (healthChange < 0) {
+        gSaveContext.sohStats.count[COUNT_DAMAGE_TAKEN] += -healthChange;
+    }
+
     // If one-hit ko mode is on, any damage kills you and you cannot gain health.
     if (chaosEffectOneHitKO) {
         if (healthChange < 0) {
@@ -3041,6 +3117,43 @@ void Health_RemoveHearts(s16 hearts) {
 
 void Rupees_ChangeBy(s16 rupeeChange) {
     gSaveContext.rupeeAccumulator += rupeeChange;
+
+    if (rupeeChange > 0) {
+        gSaveContext.sohStats.count[COUNT_RUPEES_COLLECTED] += rupeeChange;
+    }
+    if (rupeeChange < 0) {
+        gSaveContext.sohStats.count[COUNT_RUPEES_SPENT] += -rupeeChange;
+    }
+}
+
+void GameplayStats_UpdateAmmoUsed(s16 item, s16 ammoUsed) {
+
+    switch (item) { 
+        case ITEM_STICK:
+            gSaveContext.sohStats.count[COUNT_AMMO_USED_STICK] += ammoUsed;
+            break;
+        case ITEM_NUT:
+            gSaveContext.sohStats.count[COUNT_AMMO_USED_NUT] += ammoUsed;
+            break;
+        case ITEM_BOMB:
+            gSaveContext.sohStats.count[COUNT_AMMO_USED_BOMB] += ammoUsed;
+            break;
+        case ITEM_BOW:
+            gSaveContext.sohStats.count[COUNT_AMMO_USED_ARROW] += ammoUsed;
+            break;
+        case ITEM_SLINGSHOT:
+            gSaveContext.sohStats.count[COUNT_AMMO_USED_SEED] += ammoUsed;
+            break;
+        case ITEM_BOMBCHU:
+            gSaveContext.sohStats.count[COUNT_AMMO_USED_BOMBCHU] += ammoUsed;
+            break;
+        case ITEM_BEAN:
+            gSaveContext.sohStats.count[COUNT_AMMO_USED_BEAN] += ammoUsed;
+            break;
+        default:
+            break;
+    }
+    return;
 }
 
 void Inventory_ChangeAmmo(s16 item, s16 ammoChange) {
@@ -3100,6 +3213,10 @@ void Inventory_ChangeAmmo(s16 item, s16 ammoChange) {
     }
 
     osSyncPrintf("合計 = (%d)\n", AMMO(item)); // "Total = (%d)"
+
+    if (ammoChange < 0) {
+        GameplayStats_UpdateAmmoUsed(item, -ammoChange);
+    }
 }
 
 void Magic_Fill(PlayState* play) {
