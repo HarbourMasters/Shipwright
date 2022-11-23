@@ -6,6 +6,7 @@
 #include "macros.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/gameconsole.h"
+#include "soh/Enhancements/gameplaystats.h"
 #include <Cvar.h>
 
 

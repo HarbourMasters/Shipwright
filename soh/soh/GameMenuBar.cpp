@@ -27,6 +27,7 @@
 #include "include/z64audio.h"
 #include "soh/SaveManager.h"
 #include "OTRGlobals.h"
+#include "soh/Enhancements/presets.h"
 
 #ifdef ENABLE_CROWD_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
@@ -97,422 +98,6 @@ namespace GameMenuBar {
         Audio_SetGameVolume(SEQ_BGM_SUB, CVar_GetFloat("gSubMusicVolume", 1));
         Audio_SetGameVolume(SEQ_FANFARE, CVar_GetFloat("gSFXMusicVolume", 1));
         Audio_SetGameVolume(SEQ_SFX, CVar_GetFloat("gFanfareVolume", 1));
-    }
-
-    void applyEnhancementPresetDefault(void) {
-        // D-pad Support on Pause
-        CVar_SetS32("gDpadPause", 0);
-        // D-pad Support in text and file select
-        CVar_SetS32("gDpadText", 0);
-        // Play Ocarina with D-pad
-        CVar_SetS32("gDpadOcarina", 0);
-        // Play Ocarina with Right Stick
-        CVar_SetS32("gRStickOcarina", 0);
-        // D-pad as Equip Items
-        CVar_SetS32("gDpadEquips", 0);
-        // Allow the cursor to be on any slot
-        CVar_SetS32("gPauseAnyCursor", 0);
-        // Prevent Dropped Ocarina Inputs
-        CVar_SetS32("gDpadNoDropOcarinaInput", 0);
-        // Answer Navi Prompt with L Button
-        CVar_SetS32("gNaviOnL", 0);
-        // Invert Camera X Axis
-        CVar_SetS32("gInvertXAxis", 0);
-        // Invert Camera Y Axis
-        CVar_SetS32("gInvertYAxis", 1);
-        // Right Stick Aiming
-        CVar_SetS32("gRightStickAiming", 0);
-        // Disable Auto-Center First Person View
-        CVar_SetS32("gDisableAutoCenterView", 0);
-
-        // Text Speed (1 to 5)
-        CVar_SetS32("gTextSpeed", 1);
-        // King Zora Speed (1 to 5)
-        CVar_SetS32("gMweepSpeed", 1);
-        // Biggoron Forge Time (0 to 3)
-        CVar_SetS32("gForgeTime", 3);
-        // Vine/Ladder Climb speed (+0 to +12)
-        CVar_SetS32("gClimbSpeed", 0);
-        // Faster Block Push (+0 to +5)
-        CVar_SetS32("gFasterBlockPush", 0);
-        // Faster Heavy Block Lift
-        CVar_SetS32("gFasterHeavyBlockLift", 0);
-        // No Forced Navi
-        CVar_SetS32("gNoForcedNavi", 0);
-        // No Skulltula Freeze
-        CVar_SetS32("gSkulltulaFreeze", 0);
-        // MM Bunny Hood
-        CVar_SetS32("gMMBunnyHood", 0);
-        // Fast Chests
-        CVar_SetS32("gFastChests", 0);
-        // Chest size & texture matches contents
-        CVar_SetS32("gChestSizeAndTextureMatchesContents", 0);
-        // Chest size & texture matches contents only with agony
-        CVar_SetS32("gChestSizeDependsStoneOfAgony", 0);
-        // Fast Drops
-        CVar_SetS32("gFastDrops", 0);
-        // Better Owl
-        CVar_SetS32("gBetterOwl", 0);
-        // Fast Ocarina Playback
-        CVar_SetS32("gFastOcarinaPlayback", 0);
-        // Instant Putaway
-        CVar_SetS32("gInstantPutaway", 0);
-        // Instant Boomerang Recall
-        CVar_SetS32("gFastBoomerang", 0);
-        // Ask to Equip New Items
-        CVar_SetS32("gAskToEquip", 0);
-        // Mask Select in Inventory
-        CVar_SetS32("gMaskSelect", 0);
-        // Remember Save Location
-        CVar_SetS32("gRememberSaveLocation", 0);
-        // Skip Magic Arrow Equip Animation
-        CVar_SetS32("gSkipArrowAnimation", 0);
-
-        // Equip arrows on multiple slots
-        CVar_SetS32("gSeparateArrows", 0);
-
-        // Damage Multiplier (0 to 8)
-        CVar_SetS32("gDamageMul", 0);
-        // Fall Damage Multiplier (0 to 7)
-        CVar_SetS32("gFallDamageMul", 0);
-        // Void Damage Multiplier (0 to 6)
-        CVar_SetS32("gVoidDamageMul", 0);
-        // No Random Drops
-        CVar_SetS32("gNoRandomDrops", 0);
-        // No Heart Drops
-        CVar_SetS32("gNoHeartDrops", 0);
-        // Enable Bombchu Drops
-        CVar_SetS32("gBombchuDrops", 0);
-        // Always Win Goron Pot
-        CVar_SetS32("gGoronPot", 0);
-        // Always Win Dampe Digging First Try
-        CVar_SetS32("gDampeWin", 0);
-
-        // Change Red Potion Effect
-        CVar_SetS32("gRedPotionEffect", 0);
-        // Red Potion Health (1 to 100)
-        CVar_SetS32("gRedPotionHealth", 1);
-        // Red Potion Percent Restore
-        CVar_SetS32("gRedPercentRestore", 0);
-        // Change Green Potion Effect
-        CVar_SetS32("gGreenPotionEffect", 0);
-        // Green Potion Mana (1 to 100)
-        CVar_SetS32("gGreenPotionMana", 1);
-        // Green Potion Percent Restore
-        CVar_SetS32("gGreenPercentRestore", 0);
-        // Change Blue Potion Effects
-        CVar_SetS32("gBluePotionEffects", 0);
-        // Blue Potion Health (1 to 100)
-        CVar_SetS32("gBluePotionHealth", 1);
-        // Blue Potion Health Percent Restore
-        CVar_SetS32("gBlueHealthPercentRestore", 0);
-        // Blue Potion Mana (1 to 100)
-        CVar_SetS32("gBluePotionMana", 1);
-        // Blue Potion Mana Percent Restore
-        CVar_SetS32("gBlueManaPercentRestore", 0);
-        // Change Milk Effect
-        CVar_SetS32("gMilkEffect", 0);
-        // Milk Health (1 to 100)
-        CVar_SetS32("gMilkHealth", 1);
-        // Milk Percent Restore
-        CVar_SetS32("gMilkPercentRestore", 0);
-        // Separate Half Milk Effect
-        CVar_SetS32("gSeparateHalfMilkEffect", 0);
-        // Half Milk Health (1 to 100)
-        CVar_SetS32("gHalfMilkHealth", 0);
-        // Half Milk Percent Restore
-        CVar_SetS32("gHalfMilkPercentRestore", 0);
-        // Change Fairy Effect
-        CVar_SetS32("gFairyEffect", 0);
-        // Fairy (1 to 100)
-        CVar_SetS32("gFairyHealth", 1);
-        // Fairy Percent Restore
-        CVar_SetS32("gFairyPercentRestore", 0);
-        // Change Fairy Revive Effect
-        CVar_SetS32("gFairyReviveEffect", 0);
-        // Fairy Revival (1 to 100)
-        CVar_SetS32("gFairyReviveHealth", 1);
-        // Fairy Revive Percent Restore
-        CVar_SetS32("gFairyRevivePercentRestore", 0);
-
-        // Instant Fishing
-        CVar_SetS32("gInstantFishing", 0);
-        // Guarantee Bite
-        CVar_SetS32("gGuaranteeFishingBite", 0);
-        // Fish Never Escape
-        CVar_SetS32("gFishNeverEscape", 0);
-        // Child Minimum Weight (6 to 10)
-        CVar_SetS32("gChildMinimumWeightFish", 10);
-        // Adult Minimum Weight (8 to 13)
-        CVar_SetS32("gAdultMinimumWeightFish", 13);
-
-        // Mute Low HP Alarm
-        CVar_SetS32("gLowHpAlarm", 0);
-        // Minimal UI
-        CVar_SetS32("gMinimalUI", 0);
-        // Disable Navi Call Audio
-        CVar_SetS32("gDisableNaviCallAudio", 0);
-
-        // Visual Stone of Agony
-        CVar_SetS32("gVisualAgony", 0);
-        // Assignable Tunics and Boots
-        CVar_SetS32("gAssignableTunicsAndBoots", 0);
-        // Equipment Toggle
-        CVar_SetS32("gEquipmentCanBeRemoved", 0);
-        // Link's Cow in Both Time Periods
-        CVar_SetS32("gCowOfTime", 0);
-        // Enable visible guard vision
-        CVar_SetS32("gGuardVision", 0);
-        // Enable passage of time on file select
-        CVar_SetS32("gTimeFlowFileSelect", 0);
-        // Inject Item Counts in messages
-        CVar_SetS32("gInjectItemCounts", 0);
-        // Pull grave during the day
-        CVar_SetS32("gDayGravePull", 0);
-        // Pull out Ocarina to Summon Scarecrow
-        CVar_SetS32("gSkipScarecrow", 0);
-        // Blue Fire Arrows
-        CVar_SetS32("gBlueFireArrows", 0);
-        // Sunlight Arrows
-        CVar_SetS32("gSunlightArrows", 0);
-
-        // Rotate link (0 to 2)
-        CVar_SetS32("gPauseLiveLinkRotation", 0);
-        // Pause link animation (0 to 16)
-        CVar_SetS32("gPauseLiveLink", 0);
-        // Frames to wait
-        CVar_SetS32("gMinFrameCount", 1);
-
-        // N64 Mode
-        CVar_SetS32("gN64Mode", 0);
-        // Enable 3D Dropped items/projectiles
-        CVar_SetS32("gNewDrops", 0);
-        // Disable Black Bar Letterboxes
-        CVar_SetS32("gDisableBlackBars", 0);
-        // Dynamic Wallet Icon
-        CVar_SetS32("gDynamicWalletIcon", 0);
-        // Always show dungeon entrances
-        CVar_SetS32("gAlwaysShowDungeonMinimapIcon", 0);
-
-        // Fix L&R Pause menu
-        CVar_SetS32("gUniformLR", 0);
-        // Fix L&Z Page switch in Pause menu
-        CVar_SetS32("gNGCKaleidoSwitcher", 0);
-        // Fix Dungeon entrances
-        CVar_SetS32("gFixDungeonMinimapIcon", 0);
-        // Fix Two Handed idle animations
-        CVar_SetS32("gTwoHandedIdle", 0);
-        // Fix the Gravedigging Tour Glitch
-        CVar_SetS32("gGravediggingTourFix", 0);
-        // Fix Deku Nut upgrade
-        CVar_SetS32("gDekuNutUpgradeFix", 0);
-        // Fix Navi text HUD position
-        CVar_SetS32("gNaviTextFix", 0);
-        // Fix Anubis fireballs
-        CVar_SetS32("gAnubisFix", 0);
-        // Fix Megaton Hammer crouch stab
-        CVar_SetS32("gCrouchStabHammerFix", 0);
-        // Fix all crouch stab
-        CVar_SetS32("gCrouchStabFix", 0);
-        // Fix Gerudo Warrior's clothing colors
-        CVar_SetS32("gGerudoWarriorClothingFix", 0);
-
-        // Red Ganon blood
-        CVar_SetS32("gRedGanonBlood", 0);
-        // Fish while hovering
-        CVar_SetS32("gHoverFishing", 0);
-        // N64 Weird Frames
-        CVar_SetS32("gN64WeirdFrames", 0);
-        // Bombchus out of bounds
-        CVar_SetS32("gBombchusOOB", 0);
-
-        // Restore old Gold Skulltula cutscene
-        CVar_SetS32("gGsCutscene", 0);
-        // Skip save confirmation
-        CVar_SetS32("gSkipSaveConfirmation", 0);
-        // Autosave
-        CVar_SetS32("gAutosave", 0);
-
-        //Crit wiggle disable
-        CVar_SetS32("gDisableCritWiggle", 0);
-    }
-
-    void applyEnhancementPresetVanillaPlus(void) {
-        // D-pad Support in text and file select
-        CVar_SetS32("gDpadText", 1);
-        // Play Ocarina with D-pad
-        CVar_SetS32("gDpadOcarina", 1);
-        // Play Ocarina with Right Stick
-        CVar_SetS32("gRStickOcarina", 1);
-        // D-pad as Equip Items
-        CVar_SetS32("gDpadEquips", 1);
-        // Prevent Dropped Ocarina Inputs
-        CVar_SetS32("gDpadNoDropOcarinaInput", 1);
-        // Right Stick Aiming
-        CVar_SetS32("gRightStickAiming", 1);
-
-        // Text Speed (1 to 5)
-        CVar_SetS32("gTextSpeed", 5);
-        // King Zora Speed (1 to 5)
-        CVar_SetS32("gMweepSpeed", 2);
-        // Faster Block Push (+0 to +5)
-        CVar_SetS32("gFasterBlockPush", 5);
-        // Better Owl
-        CVar_SetS32("gBetterOwl", 1);
-
-        // Assignable Tunics and Boots
-        CVar_SetS32("gAssignableTunicsAndBoots", 1);
-        // Enable passage of time on file select
-        CVar_SetS32("gTimeFlowFileSelect", 1);
-        // Inject Item Counts in messages
-        CVar_SetS32("gInjectItemCounts", 1);
-
-        // Pause link animation (0 to 16)
-        CVar_SetS32("gPauseLiveLink", 1);
-
-        // Dynamic Wallet Icon
-        CVar_SetS32("gDynamicWalletIcon", 1);
-        // Always show dungeon entrances
-        CVar_SetS32("gAlwaysShowDungeonMinimapIcon", 1);
-
-        // Fix L&R Pause menu
-        CVar_SetS32("gUniformLR", 1);
-        // Fix Dungeon entrances
-        CVar_SetS32("gFixDungeonMinimapIcon", 1);
-        // Fix Two Handed idle animations
-        CVar_SetS32("gTwoHandedIdle", 1);
-        // Fix the Gravedigging Tour Glitch
-        CVar_SetS32("gGravediggingTourFix", 1);
-        // Fix Deku Nut upgrade
-        CVar_SetS32("gDekuNutUpgradeFix", 1);
-        // Fix Navi text HUD position
-        CVar_SetS32("gNaviTextFix", 1);
-
-        // Red Ganon blood
-        CVar_SetS32("gRedGanonBlood", 1);
-        // Fish while hovering
-        CVar_SetS32("gHoverFishing", 1);
-        // N64 Weird Frames
-        CVar_SetS32("gN64WeirdFrames", 1);
-        // Bombchus out of bounds
-        CVar_SetS32("gBombchusOOB", 1);
-        // Skip save confirmation
-        CVar_SetS32("gSkipSaveConfirmation", 1);
-    }
-
-    void applyEnhancementPresetEnhanced(void) {
-        // King Zora Speed (1 to 5)
-        CVar_SetS32("gMweepSpeed", 5);
-        // Biggoron Forge Time (0 to 3)
-        CVar_SetS32("gForgeTime", 0);
-        // Vine/Ladder Climb speed (+0 to +12)
-        CVar_SetS32("gClimbSpeed", 3);
-        // Faster Heavy Block Lift
-        CVar_SetS32("gFasterHeavyBlockLift", 1);
-        // No Forced Navi
-        CVar_SetS32("gNoForcedNavi", 1);
-        // No Skulltula Freeze
-        CVar_SetS32("gSkulltulaFreeze", 1);
-        // MM Bunny Hood
-        CVar_SetS32("gMMBunnyHood", 1);
-        // Fast Chests
-        CVar_SetS32("gFastChests", 1);
-        // Fast Drops
-        CVar_SetS32("gFastDrops", 1);
-        // Fast Ocarina Playback
-        CVar_SetS32("gFastOcarinaPlayback", 1);
-        // Instant Putaway
-        CVar_SetS32("gInstantPutaway", 1);
-        // Instant Boomerang Recall
-        CVar_SetS32("gFastBoomerang", 1);
-        // Ask to Equip New Items
-        CVar_SetS32("gAskToEquip", 1);
-        // Mask Select in Inventory
-        CVar_SetS32("gMaskSelect", 1);
-        // Always Win Goron Pot
-        CVar_SetS32("gGoronPot", 1);
-        // Always Win Dampe Digging
-        CVar_SetS32("gDampeWin", 1);
-        // Skip Magic Arrow Equip Animation
-        CVar_SetS32("gSkipArrowAnimation", 1);
-
-        // Equip arrows on multiple slots
-        CVar_SetS32("gSeparateArrows", 1);
-
-        // Disable Navi Call Audio
-        CVar_SetS32("gDisableNaviCallAudio", 1);
-
-        // Equipment Toggle
-        CVar_SetS32("gEquipmentCanBeRemoved", 1);
-        // Link's Cow in Both Time Periods
-        CVar_SetS32("gCowOfTime", 1);
-
-        // Enable 3D Dropped items/projectiles
-        CVar_SetS32("gNewDrops", 1);
-
-        // Fix Anubis fireballs
-        CVar_SetS32("gAnubisFix", 1);
-
-        // Autosave
-        CVar_SetS32("gAutosave", 1);
-    }
-
-    void applyEnhancementPresetRandomizer(void) {
-        // Allow the cursor to be on any slot
-        CVar_SetS32("gPauseAnyCursor", 1);
-
-        // Guarantee Bite
-        CVar_SetS32("gGuaranteeFishingBite", 1);
-        // Fish Never Escape
-        CVar_SetS32("gFishNeverEscape", 1);
-        // Child Minimum Weight (6 to 10)
-        CVar_SetS32("gChildMinimumWeightFish", 3);
-        // Adult Minimum Weight (8 to 13)
-        CVar_SetS32("gAdultMinimumWeightFish", 6);
-
-        // Visual Stone of Agony
-        CVar_SetS32("gVisualAgony", 1);
-        // Pull grave during the day
-        CVar_SetS32("gDayGravePull", 1);
-        // Pull out Ocarina to Summon Scarecrow
-        CVar_SetS32("gSkipScarecrow", 1);
-        // Chest size & texture matches contents
-        CVar_SetS32("gChestSizeAndTextureMatchesContents", 1);
-
-        // Pause link animation (0 to 16)
-        CVar_SetS32("gPauseLiveLink", 16);
-        // Frames to wait
-        CVar_SetS32("gMinFrameCount", 200);
-    }
-
-    void applyEnhancementPresets(void) {
-        switch (CVar_GetS32("gSelectEnhancementPresets", 0)) {
-            // Default
-        case 0:
-            applyEnhancementPresetDefault();
-            break;
-
-            // Vanilla Plus
-        case 1:
-            applyEnhancementPresetDefault();
-            applyEnhancementPresetVanillaPlus();
-            break;
-
-            // Enhanced
-        case 2:
-            applyEnhancementPresetDefault();
-            applyEnhancementPresetVanillaPlus();
-            applyEnhancementPresetEnhanced();
-            break;
-
-            // Randomizer
-        case 3:
-            applyEnhancementPresetDefault();
-            applyEnhancementPresetVanillaPlus();
-            applyEnhancementPresetEnhanced();
-            applyEnhancementPresetRandomizer();
-            break;
-        }
     }
 
     // MARK: - Delegates
@@ -718,28 +303,7 @@ namespace GameMenuBar {
 
         if (ImGui::BeginMenu("Enhancements"))
         {
-
-            const char* enhancementPresets[4] = { "Default", "Vanilla Plus", "Enhanced", "Randomizer"};
-            UIWidgets::PaddedText("Enhancement Presets", false, true);
-            UIWidgets::EnhancementCombobox("gSelectEnhancementPresets", enhancementPresets, 4, 0);
-            UIWidgets::Tooltip(
-                "Default - Set all enhancements to their default values. The true vanilla SoH experience.\n"
-                "\n"
-                "Vanilla Plus - Adds Quality of Life features that enhance your experience, but don't alter gameplay. Recommended for a first playthrough of OoT.\n"
-                "\n"
-                "Enhanced - The \"Vanilla Plus\" preset, but with more quality of life enhancements that might alter gameplay slightly. Recommended for returning players.\n"
-                "\n"
-                "Randomizer - The \"Enhanced\" preset, plus any other enhancements that are recommended for playing Randomizer."
-            );
-
-            UIWidgets::Spacer(0);
-
-            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6.0f, 4.0f));
-            if (ImGui::Button("Apply Preset")) {
-                applyEnhancementPresets();
-                SohImGui::RequestCvarSaveOnNextTick();
-            }
-            ImGui::PopStyleVar(1);
+            DrawPresetSelector(PRESET_TYPE_ENHANCEMENTS);
 
             UIWidgets::Spacer(0);
 
@@ -1003,16 +567,38 @@ namespace GameMenuBar {
 
                     UIWidgets::Spacer(0);
 
+                    if (ImGui::BeginMenu("Shooting Gallery")) {
+                        UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeShootingGallery");
+                        UIWidgets::Tooltip("Turn on/off changes to the shooting gallery behavior");
+                        bool disabled = !CVar_GetS32("gCustomizeShootingGallery", 0);
+                        const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
+                        UIWidgets::EnhancementCheckbox("Instant Win", "gInstantShootingGalleryWin", disabled, disabledTooltip);
+                        UIWidgets::Tooltip("Skips the shooting gallery minigame");
+                        UIWidgets::EnhancementCheckbox("No Rupee Randomization", "gConstantAdultGallery", disabled, disabledTooltip);
+                        UIWidgets::Tooltip("Forces the rupee order to not be randomized as adult, making it the same as chlid");
+                        UIWidgets::PaddedEnhancementSliderInt("Child Starting Ammunition: %d", "##cShootingGalleryAmmunition", "gChildShootingGalleryAmmunition", 10, 30, "", 15, false, true, false, disabled, disabledTooltip);
+                        UIWidgets::Tooltip("The ammunition at the start of the shooting gallery minigame as a child");
+                        UIWidgets::PaddedEnhancementSliderInt("Adult Starting Ammunition: %d", "##aShootingGalleryAmmunition", "gAdultShootingGalleryAmmunition", 10, 30, "", 15, false, true, false, disabled, disabledTooltip);
+                        UIWidgets::Tooltip("The ammunition at the start of the shooting gallery minigame as an adult");
+                        ImGui::EndMenu();
+                    }
+
+                    UIWidgets::Spacer(0);
+
                     if (ImGui::BeginMenu("Fishing")) {
-                        UIWidgets::EnhancementCheckbox("Instant Fishing", "gInstantFishing");
+                        UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeFishing");
+                        UIWidgets::Tooltip("Turn on/off changes to the fishing behavior");
+                        bool disabled = !CVar_GetS32("gCustomizeFishing", 0);
+                        const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
+                        UIWidgets::EnhancementCheckbox("Instant Fishing", "gInstantFishing", disabled, disabledTooltip);
                         UIWidgets::Tooltip("All fish will be caught instantly");
-                        UIWidgets::PaddedEnhancementCheckbox("Guarantee Bite", "gGuaranteeFishingBite", true, false);
+                        UIWidgets::PaddedEnhancementCheckbox("Guarantee Bite", "gGuaranteeFishingBite", true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("When a line is stable, guarantee bite. Otherwise use default logic");
-                        UIWidgets::PaddedEnhancementCheckbox("Fish Never Escape", "gFishNeverEscape", true, false);
+                        UIWidgets::PaddedEnhancementCheckbox("Fish Never Escape", "gFishNeverEscape", true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("Once a hook has been set, fish will never let go while being reeled in.");
-                        UIWidgets::PaddedEnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", "gChildMinimumWeightFish", 3, 10, "", 10, false, true, false);
+                        UIWidgets::PaddedEnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", "gChildMinimumWeightFish", 3, 10, "", 10, false, true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("The minimum weight for the unique fishing reward as a child");
-                        UIWidgets::PaddedEnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 6, 13, "", 13, false, true, false);
+                        UIWidgets::PaddedEnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 6, 13, "", 13, false, true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("The minimum weight for the unique fishing reward as an adult");
                         ImGui::EndMenu();
                     }
@@ -1166,8 +752,12 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Remove power crouch stab", "gCrouchStabFix", true, false);
                     UIWidgets::Tooltip("Make crouch stabbing always do the same damage as a regular slash");
                 }
+                UIWidgets::PaddedEnhancementCheckbox("Fix credits timing", "gCreditsFix", true, false);
+                UIWidgets::Tooltip("Extend certain credits scenes so the music lines up properly with the visuals");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Gerudo Warrior's clothing colors", "gGerudoWarriorClothingFix", true, false);
                 UIWidgets::Tooltip("Prevent the Gerudo Warrior's clothes changing color when changing Link's tunic or using bombs in front of her");
+                UIWidgets::PaddedEnhancementCheckbox("Fix Camera Drift", "gFixCameraDrift", true, false);
+                UIWidgets::Tooltip("Fixes camera slightly drifting to the left when standing still due to a math error");
 
                 ImGui::EndMenu();
             }
@@ -1215,6 +805,12 @@ namespace GameMenuBar {
                 CVar_SetS32("gSfxEditor", !currentValue);
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("SFX Editor", CVar_GetS32("gSfxEditor", 0));
+            }
+            if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVar_GetS32("gGameplayStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                bool currentValue = CVar_GetS32("gGameplayStatsEnabled", 0);
+                CVar_SetS32("gGameplayStatsEnabled", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("Gameplay Stats", CVar_GetS32("gGameplayStatsEnabled", 0));
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
@@ -1343,7 +939,7 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Holding down B skips text");
             UIWidgets::PaddedEnhancementCheckbox("Free Camera", "gFreeCamera", true, false);
             UIWidgets::Tooltip("Enables camera control\nNote: You must remap C buttons off of the right stick in the controller config menu, and map the camera stick to the right stick.");
-
+            
          #ifdef __SWITCH__
             UIWidgets::Spacer(0);
             int slot = CVar_GetS32("gSwitchPerfMode", (int)Ship::SwitchProfiles::STOCK);
@@ -1504,6 +1100,8 @@ namespace GameMenuBar {
                 ImGui::Text("Loading :");
                 UIWidgets::EnhancementCombobox("gSaveFileID", FastFileSelect, 5, 0);
             };
+            UIWidgets::PaddedEnhancementCheckbox("Hide Build Info", "gHideBuildInfo", true, false);
+            UIWidgets::Tooltip("Hides the game version and build details in the boot logo start screen");
             UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
             UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
             UIWidgets::PaddedSeparator();

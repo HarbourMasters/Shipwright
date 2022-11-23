@@ -1921,6 +1921,12 @@ void EnZf_SetupDie(EnZf* this) {
     D_80B4A1B0 = 0;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIZA_DEAD);
     EnZf_SetupAction(this, EnZf_Die);
+    
+    if (this->actor.params == ENZF_TYPE_DINOLFOS) {
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DINOLFOS]++;
+    } else {
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LIZALFOS]++;
+    }
 }
 
 void EnZf_Die(EnZf* this, PlayState* play) {

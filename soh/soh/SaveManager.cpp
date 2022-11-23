@@ -15,8 +15,6 @@
 #include <array>
 
 extern "C" SaveContext gSaveContext;
-extern "C" uint32_t ResourceMgr_GetGameVersion();
-extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
     const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
@@ -441,6 +439,15 @@ void SaveManager::InitFileNormal() {
     for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys); dungeon++) {
         gSaveContext.sohStats.dungeonKeys[dungeon] = 0;
     }
+    gSaveContext.sohStats.playTimer = 0;
+    gSaveContext.sohStats.pauseTimer = 0;
+    for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.sohStats.timestamp); timestamp++) {
+        gSaveContext.sohStats.timestamp[timestamp] = 0;
+    }
+    for (int count = 0; count < ARRAY_COUNT(gSaveContext.sohStats.count); count++) {
+        gSaveContext.sohStats.count[count] = 0;
+    }
+    gSaveContext.sohStats.gameComplete = false;
     for (int scene = 0; scene < ARRAY_COUNT(gSaveContext.sceneFlags); scene++) {
         gSaveContext.sceneFlags[scene].chest = 0;
         gSaveContext.sceneFlags[scene].swch = 0;
@@ -991,6 +998,14 @@ void SaveManager::LoadBaseVersion2() {
         SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.dungeonKeys[i]);
         });
+        SaveManager::Instance->LoadData("playTimer", gSaveContext.sohStats.playTimer);
+        SaveManager::Instance->LoadData("pauseTimer", gSaveContext.sohStats.pauseTimer);
+        SaveManager::Instance->LoadArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.timestamp), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.sohStats.timestamp[i]);
+        });
+        SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.sohStats.count[i]);
+        });
     });
     SaveManager::Instance->LoadArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&i]() {
@@ -1151,6 +1166,14 @@ void SaveManager::SaveBase() {
         SaveManager::Instance->SaveData("heartContainers", gSaveContext.sohStats.heartContainers);
         SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
             SaveManager::Instance->SaveData("", gSaveContext.sohStats.dungeonKeys[i]);
+        });
+        SaveManager::Instance->SaveData("playTimer", gSaveContext.sohStats.playTimer);
+        SaveManager::Instance->SaveData("pauseTimer", gSaveContext.sohStats.pauseTimer);
+        SaveManager::Instance->SaveArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.timestamp), [](size_t i) {
+            SaveManager::Instance->SaveData("", gSaveContext.sohStats.timestamp[i]);
+        });
+        SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
+            SaveManager::Instance->SaveData("", gSaveContext.sohStats.count[i]);
         });
     });
     SaveManager::Instance->SaveArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {
