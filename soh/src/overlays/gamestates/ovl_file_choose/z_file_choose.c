@@ -2197,6 +2197,12 @@ void FileChoose_LoadGame(GameState* thisx) {
             gSaveContext.inventory.equipment ^= (gBitFlags[swordEquipMask - 1] << BOMSWAP16(gEquipShifts[EQUIP_SWORD]));
         }
     }
+
+    // Handle randomized spawn positions after the save context has been setup from load
+    if (gSaveContext.n64ddFlag && RSK_SHUFFLE_ENTRANCES && (!CVar_GetS32("gRememberSaveLocation", 0) ||
+        gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE || gSaveContext.savedSceneNum == SCENE_KAKUSIANA)) {
+        Entrance_SetSavewarpEntrance();
+    }
 }
 
 static void (*gSelectModeUpdateFuncs[])(GameState*) = {
