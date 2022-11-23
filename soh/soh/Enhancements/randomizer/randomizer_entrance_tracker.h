@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 typedef enum {
     // ENTRANCE_GROUP_NO_GROUP,
@@ -37,7 +38,13 @@ typedef enum {
 } TrackerEntranceType;
 
 typedef struct {
+    int8_t scene;
+    int8_t spawn;
+} EntranceDataSceneAndSpawn;
+
+typedef struct {
     int16_t index;
+    std::vector<EntranceDataSceneAndSpawn> scenes;
     std::string source;
     std::string destination;
     SpoilerEntranceGroup srcGroup;
@@ -63,7 +70,12 @@ typedef struct {
 
 extern EntranceTrackingData gEntranceTrackingData;
 
+#define SINGLE_SCENE_INFO(scene) {{ scene, -1 }}
+#define SCENE_NO_SPAWN(scene) { scene, -1 }
+
+void SetCurrentGrottoIDForTracker(int16_t entranceIndex);
+void SetLastEntranceOverrideForTracker(int16_t entranceIndex);
 void ClearEntranceTrackingData();
-void InitEntranceTracker();
-void DrawEntranceTracker(bool& open);
 void InitEntranceTrackingData();
+void DrawEntranceTracker(bool& open);
+void InitEntranceTracker();

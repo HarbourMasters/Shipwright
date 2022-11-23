@@ -144,6 +144,7 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
     // based on the current grotto ID
     if (nextEntranceIndex == 0x7FFF) {
         Entrance_SetEntranceDiscovered(0x0800 + grottoId);
+        EntranceTracker_SetLastEntranceOverride(0x0800 + grottoId);
         nextEntranceIndex = grottoExitList[grottoId];
     }
 
@@ -178,6 +179,8 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
         gSaveContext.respawn[RESPAWN_MODE_RETURN].data = grotto.content;
         nextEntranceIndex = grotto.entranceIndex;
 
+        EntranceTracker_SetCurrentGrottoID(grottoId);
+
         lastEntranceType = NOT_GROTTO;
     // Otherwise just unset the current grotto ID
     } else {
@@ -206,6 +209,7 @@ void Grotto_OverrideActorEntrance(Actor* thisx) {
         if (grottoContent == grottoLoadTable[index].content && gPlayState->sceneNum == grottoLoadTable[index].scene) {
             // Find the override for the matching index from the grotto Load List
             Entrance_SetEntranceDiscovered(0x0700 + index);
+            EntranceTracker_SetLastEntranceOverride(0x0700 + index);
             index = grottoLoadList[index];
 
             // Run the index through the special entrances override check
