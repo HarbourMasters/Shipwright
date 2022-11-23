@@ -363,6 +363,7 @@ void EnFz_ApplyDamage(EnFz* this, PlayState* play) {
                         vec.z = this->actor.world.pos.z;
                         EnFz_Damaged(this, play, &vec, 30, 10.0f);
                         EnFz_SetupDespawn(this, play);
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FREEZARD]++;
                     }
                 }
             } else {

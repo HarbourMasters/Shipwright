@@ -1525,6 +1525,7 @@ void func_80862E6C(EnTest* this, PlayState* play) {
             }
 
             Actor_Kill(&this->actor);
+            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_STALFOS]++;
         }
     }
 }
@@ -1633,6 +1634,7 @@ void func_808633E8(EnTest* this, PlayState* play) {
         }
 
         Actor_Kill(&this->actor);
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_STALFOS]++;
     }
 }
 
@@ -1723,6 +1725,7 @@ void EnTest_Update(Actor* thisx, PlayState* play) {
             if ((floorProperty == 5) || (floorProperty == 0xC) ||
                 func_80041D4C(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId) == 9) {
                 Actor_Kill(&this->actor);
+                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_STALFOS]++;
                 return;
             }
         }

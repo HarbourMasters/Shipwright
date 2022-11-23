@@ -646,6 +646,7 @@ void func_809BE26C(EnBigokuta* this, PlayState* play) {
             SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 50, NA_SE_EN_OCTAROCK_BUBLE);
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xB0);
             Actor_Kill(&this->actor);
+            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BIG_OCTO]++;
         }
     }
 }

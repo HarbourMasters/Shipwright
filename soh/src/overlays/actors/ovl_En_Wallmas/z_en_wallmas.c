@@ -252,6 +252,7 @@ void EnWallmas_SetupDie(EnWallmas* this, PlayState* play) {
 
     Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xC0);
     this->actionFunc = EnWallmas_Die;
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WALLMASTER]++;
 }
 
 void EnWallmas_SetupTakePlayer(EnWallmas* this, PlayState* play) {
