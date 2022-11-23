@@ -349,6 +349,7 @@ void Teardown() {
         areaChecksTotal[i] = 0;
         areaChecksGotten[i] = 0;
     }
+    doInitialize = true;
 }
 
 bool ShouldUpdateChecks() {
