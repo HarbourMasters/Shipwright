@@ -13,7 +13,6 @@
 
 #define NUM_NAVI_MESSAGES 19
 #define NUM_ICE_TRAP_MESSAGES 23
-
 class Randomizer {
   private:
     std::unordered_map<RandomizerCheck, RandomizerGetData> itemLocations;
