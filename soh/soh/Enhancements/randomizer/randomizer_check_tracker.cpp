@@ -688,8 +688,8 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
 
 const char* windowType[] = { "Floating", "Window" };
 const char* displayType[] = { "Always", "Combo Button Hold" };
-const char* buttonStrings[] = { "A", "B", "C-Up",  "C-Down", "C-Left", "C-Right", "L",
-                                "Z", "R", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
+const char* buttonStrings[] = { "A Button", "B Button", "C-Up",  "C-Down", "C-Left", "C-Right", "L Button",
+                                "Z Button", "R Button", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
 void DrawCheckTrackerOptions(bool& open) {
     if (!open) {
         CVar_SetS32("gCheckTrackerSettingsEnabled", 0);
@@ -733,10 +733,10 @@ void DrawCheckTrackerOptions(bool& open) {
         ImGui::SameLine();
         UIWidgets::EnhancementCombobox("gCheckTrackerDisplayType", displayType, 2, 0);
         if (CVar_GetS32("gCheckTrackerDisplayType", 0) > 0) {
-            ImGui::Text("Combo Button 2");
+            ImGui::Text("Combo Button 1");
             ImGui::SameLine();
             UIWidgets::EnhancementCombobox("gCheckTrackerComboButton1", buttonStrings, 14, 6);
-            ImGui::Text("Combo Button 1");
+            ImGui::Text("Combo Button 2");
             ImGui::SameLine();
             UIWidgets::EnhancementCombobox("gCheckTrackerComboButton2", buttonStrings, 14, 8);
         }
