@@ -11,16 +11,16 @@ typedef enum {
     // 0x00 to 0x9B (0 to 155) used for getting items,
     // piggybacked off enum "ItemID" in z64item.h
 
-    /* 0xA0 */ TIMESTAMP_DEFEAT_GOHMA = 0xA0,
-    /* 0xA1 */ TIMESTAMP_DEFEAT_KING_DODONGO,
-    /* 0xA2 */ TIMESTAMP_DEFEAT_BARINADE,
-    /* 0xA3 */ TIMESTAMP_DEFEAT_PHANTOM_GANON,
-    /* 0xA4 */ TIMESTAMP_DEFEAT_VOLVAGIA,
-    /* 0xA5 */ TIMESTAMP_DEFEAT_MORPHA,
-    /* 0xA6 */ TIMESTAMP_DEFEAT_BONGO_BONGO,
-    /* 0xA7 */ TIMESTAMP_DEFEAT_TWINROVA,
-    /* 0xA8 */ TIMESTAMP_DEFEAT_GANONDORF,
-    /* 0xA9 */ TIMESTAMP_DEFEAT_GANON,
+    /* 0xA0 */ TIMESTAMP_DEFEAT_GOHMA = 0xA0,   // z_boss_goma.c
+    /* 0xA1 */ TIMESTAMP_DEFEAT_KING_DODONGO,   // z_boss_dodongo.c
+    /* 0xA2 */ TIMESTAMP_DEFEAT_BARINADE,       // z_boss_va.c
+    /* 0xA3 */ TIMESTAMP_DEFEAT_PHANTOM_GANON,  // z_boss_ganondrof.c
+    /* 0xA4 */ TIMESTAMP_DEFEAT_VOLVAGIA,       // z_boss_fd2.c
+    /* 0xA5 */ TIMESTAMP_DEFEAT_MORPHA,         // z_boss_mo.c
+    /* 0xA6 */ TIMESTAMP_DEFEAT_BONGO_BONGO,    // z_boss_sst.c
+    /* 0xA7 */ TIMESTAMP_DEFEAT_TWINROVA,       // z_boss_tw.c
+    /* 0xA8 */ TIMESTAMP_DEFEAT_GANONDORF,      // z_boss_ganon.c
+    /* 0xA9 */ TIMESTAMP_DEFEAT_GANON,          // z_boss_ganon2.c
     /* 0xAA */ TIMESTAMP_MAX
 
 }GameplayStatTimestamp;
@@ -52,6 +52,7 @@ typedef enum {
     COUNT_ENEMIES_DEFEATED_FLYING_POT,           // EN_TUBO_TRAP
     COUNT_ENEMIES_DEFEATED_FLOOR_TILE,           // EN_YUKABYUN
     COUNT_ENEMIES_DEFEATED_FREEZARD,             // EN_FZ
+    COUNT_ENEMIES_DEFEATED_GERUDO_THIEF,         // EN_GELDB
     COUNT_ENEMIES_DEFEATED_GIBDO,                // EN_RD
     COUNT_ENEMIES_DEFEATED_GOHMA_LARVA,          // EN_GOMA
     COUNT_ENEMIES_DEFEATED_GUAY,                 // EN_CROW
@@ -95,7 +96,7 @@ typedef enum {
     COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA,   // EN_KAREBABA
     COUNT_ENEMIES_DEFEATED_WOLFOS,               // EN_WF
     COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE,         // EN_WF
-    // Ammo used
+    // Ammo used (z_parameter.c)
     COUNT_AMMO_USED_STICK,
     COUNT_AMMO_USED_NUT,
     COUNT_AMMO_USED_BOMB,
@@ -103,19 +104,34 @@ typedef enum {
     COUNT_AMMO_USED_SEED,
     COUNT_AMMO_USED_BOMBCHU,
     COUNT_AMMO_USED_BEAN,
+    // Buttons pressed (z_play.c)
+    COUNT_BUTTON_PRESSES_A,
+    COUNT_BUTTON_PRESSES_B,
+    COUNT_BUTTON_PRESSES_L,
+    COUNT_BUTTON_PRESSES_R,
+    COUNT_BUTTON_PRESSES_Z,
+    COUNT_BUTTON_PRESSES_CUP,
+    COUNT_BUTTON_PRESSES_CRIGHT,
+    COUNT_BUTTON_PRESSES_CDOWN,
+    COUNT_BUTTON_PRESSES_CLEFT,
+    COUNT_BUTTON_PRESSES_DUP,
+    COUNT_BUTTON_PRESSES_DRIGHT,
+    COUNT_BUTTON_PRESSES_DDOWN,
+    COUNT_BUTTON_PRESSES_DLEFT,
+    COUNT_BUTTON_PRESSES_START,
     // Other counts
-    COUNT_RUPEES_COLLECTED,
-    COUNT_RUPEES_SPENT,
-    COUNT_CHESTS_OPENED,
-    COUNT_DAMAGE_TAKEN,
-    COUNT_ICE_TRAPS,
-    COUNT_ROLLS,
-    COUNT_BONKS,
-    COUNT_PAUSES,
-    COUNT_STEPS,
-    COUNT_POTS_BROKEN,
-    COUNT_BUSHES_CUT,
-    COUNT_SWORD_SWINGS,
+    COUNT_RUPEES_COLLECTED, // z_parameter.c
+    COUNT_RUPEES_SPENT,     // z_parameter.c
+    COUNT_CHESTS_OPENED,    // z_en_box.c
+    COUNT_DAMAGE_TAKEN,     // z_parameter.c
+    COUNT_ICE_TRAPS,        // z_player.c
+    COUNT_ROLLS,            // z_player.c
+    COUNT_BONKS,            // z_player.c
+    COUNT_PAUSES,           // z_kaleido_scope_call.c
+    COUNT_STEPS,            // z_player.c
+    COUNT_POTS_BROKEN,      // z_obj_tsubo.c
+    COUNT_BUSHES_CUT,       // z_en_kusa.c
+    COUNT_SWORD_SWINGS,     // z_player.c
 
     COUNT_MAX
 

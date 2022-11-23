@@ -126,6 +126,7 @@ void DrawStatsTracker(bool& open) {
     u32 totalTimer = GAMEPLAYSTAT_TOTAL_TIME;
     u32 enemiesDefeated = 0;
     u32 ammoUsed = 0;
+    u32 buttonPresses = 0;
 
     // Sum of all enemies defeated
     for (int i = COUNT_ENEMIES_DEFEATED_ANUBIS; i <= COUNT_ENEMIES_DEFEATED_WOLFOS; i++) {
@@ -140,6 +141,11 @@ void DrawStatsTracker(bool& open) {
     for (int i = COUNT_AMMO_USED_STICK; i <= COUNT_AMMO_USED_BEAN; i++) {
         ammoUsed += gSaveContext.sohStats.count[i];
     }
+    // Sum of all button presses
+    for (int i = COUNT_BUTTON_PRESSES_A; i <= COUNT_BUTTON_PRESSES_START; i++) {
+        buttonPresses += gSaveContext.sohStats.count[i];
+    }
+>>>>>>> 9c162fc0ecd4c2f4b7ad23bb311cd06496da9ca1
     // Set up the array of timestamps and then sort it chronologically
     for (int i = 0; i < TIMESTAMP_MAX; i++) {
         strcpy(timestampDisplay[i].name, timestampDisplayName[i]);
@@ -157,8 +163,9 @@ void DrawStatsTracker(bool& open) {
     ImGui::TableNextColumn();
 
     DisplayTimeHHMMSS(totalTimer, "Total Game Time:    ", COLOR_WHITE);
-    UIWidgets::Tooltip("Note: Timer accuracy may be affected by game performance and loading.");
+    UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
     DisplayTimeHHMMSS(gSaveContext.sohStats.playTimer / 2, "Gameplay Time:      ", COLOR_WHITE);
+    UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
     DisplayTimeHHMMSS(gSaveContext.sohStats.pauseTimer / 3, "Pause Menu Time:    ", COLOR_WHITE);
 
     ImGui::PopStyleVar(1);
@@ -213,6 +220,7 @@ void DrawStatsTracker(bool& open) {
             DisplayStatIfNonZero("Flying Floor Tile:  ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLOOR_TILE]);
             DisplayStatIfNonZero("Flying Pot:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]);
             DisplayStatIfNonZero("Freezard:           ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FREEZARD]);
+            DisplayStatIfNonZero("Gerudo Thief:       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GERUDO_THIEF]);
             DisplayStatIfNonZero("Gibdo:              ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GIBDO]);
             DisplayStatIfNonZero("Gohma Larva:        ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GOHMA_LARVA]);
             DisplayStatIfNonZero("Guay:               ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GUAY]);
@@ -263,6 +271,7 @@ void DrawStatsTracker(bool& open) {
     }
     
     DisplayStat("Rupees Collected:      ", gSaveContext.sohStats.count[COUNT_RUPEES_COLLECTED]);
+    UIWidgets::Tooltip("Includes rupees collected with a full wallet.");
     DisplayStat("Rupees Spent:          ", gSaveContext.sohStats.count[COUNT_RUPEES_SPENT]);
     DisplayStat("Chests Opened:         ", gSaveContext.sohStats.count[COUNT_CHESTS_OPENED]);
 
@@ -297,6 +306,37 @@ void DrawStatsTracker(bool& open) {
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
 
+    DisplayStat("Buttons Pressed:       ", buttonPresses);
+    // Show breakdown of ammo used in a collapsible tree. Only show ammo types if they've been used at least once.
+    if (buttonPresses > 0) {
+        if (ImGui::TreeNode("Buttons...")) {
+
+            DisplayStatIfNonZero("A:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]);
+            DisplayStatIfNonZero("B:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_B]);
+            DisplayStatIfNonZero("L:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_L]);
+            DisplayStatIfNonZero("R:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_R]);
+            DisplayStatIfNonZero("Z:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_Z]);
+            DisplayStatIfNonZero("C-Up:               ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CUP]);
+            DisplayStatIfNonZero("C-Right:            ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CRIGHT]);
+            DisplayStatIfNonZero("C-Down:             ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CDOWN]);
+            DisplayStatIfNonZero("C-Left:             ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CLEFT]);
+            DisplayStatIfNonZero("D-Up:               ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DUP]);
+            DisplayStatIfNonZero("D-Right:            ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DRIGHT]);
+            DisplayStatIfNonZero("D-Down:             ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DDOWN]);
+            DisplayStatIfNonZero("D-Left:             ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DLEFT]);
+            DisplayStatIfNonZero("Start:              ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_START]);
+
+            ImGui::NewLine();
+            ImGui::TreePop();
+        }
+    }
+
+    ImGui::PopStyleVar(1);
+    ImGui::EndTable();
+
+    ImGui::Text("Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving.");
+
+>>>>>>> 9c162fc0ecd4c2f4b7ad23bb311cd06496da9ca1
     ImGui::End();
 }
 

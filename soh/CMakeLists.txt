@@ -158,6 +158,7 @@ set(Header_Files__soh__Enhancements
     "soh/Enhancements/debugconsole.h"
     "soh/Enhancements/enemyrandomizer.h"
     "soh/Enhancements/gameconsole.h"
+    "soh/Enhancements/presets.h"
     "soh/Enhancements/savestates.h"
     "soh/Enhancements/savestates_extern.inc"
     "soh/Enhancements/gameplaystats.h"
@@ -293,6 +294,7 @@ set(Source_Files__soh__Enhancements
     "soh/Enhancements/debugconsole.cpp"
     "soh/Enhancements/enemyrandomizer.cpp"
     "soh/Enhancements/gameconsole.c"
+    "soh/Enhancements/presets.cpp"
     "soh/Enhancements/savestates.cpp"
     "soh/Enhancements/gameplaystats.cpp"
 )

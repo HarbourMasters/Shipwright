@@ -1461,7 +1461,12 @@ void func_808327F8(Player* this, f32 arg1) {
     }
 
     func_800F4010(&this->actor.projectedPos, sfxId, arg1);
-    gSaveContext.sohStats.count[COUNT_STEPS]++;
+    // Gameplay stats: Count footsteps
+    // Only count while game isn't complete and don't count Link's idle animations or crawling in crawlspaces
+    if (!gSaveContext.sohStats.gameComplete && !(this->stateFlags2 & PLAYER_STATE2_28) &&
+        !(this->stateFlags2 & PLAYER_STATE2_18)) {
+        gSaveContext.sohStats.count[COUNT_STEPS]++;
+    }
 }
 
 void func_80832854(Player* this) {
