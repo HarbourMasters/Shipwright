@@ -164,6 +164,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gChildShootingGalleryAmmunition",
     "gAdultShootingGalleryAmmunition",
     "gCreditsFix",
+    "gItemUseFromInventory"
 };
 
 const std::vector<const char*> randomizerCvars = {
