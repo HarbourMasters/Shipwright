@@ -145,7 +145,6 @@ void DrawStatsTracker(bool& open) {
     for (int i = COUNT_BUTTON_PRESSES_A; i <= COUNT_BUTTON_PRESSES_START; i++) {
         buttonPresses += gSaveContext.sohStats.count[i];
     }
->>>>>>> 9c162fc0ecd4c2f4b7ad23bb311cd06496da9ca1
     // Set up the array of timestamps and then sort it chronologically
     for (int i = 0; i < TIMESTAMP_MAX; i++) {
         strcpy(timestampDisplay[i].name, timestampDisplayName[i]);
@@ -336,7 +335,6 @@ void DrawStatsTracker(bool& open) {
 
     ImGui::Text("Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving.");
 
->>>>>>> 9c162fc0ecd4c2f4b7ad23bb311cd06496da9ca1
     ImGui::End();
 }
 
