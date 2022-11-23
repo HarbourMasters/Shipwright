@@ -306,7 +306,7 @@ namespace GameMenuBar {
             DrawPresetSelector(PRESET_TYPE_ENHANCEMENTS);
 
             UIWidgets::Spacer(0);
-            
+
             if (ImGui::BeginMenu("Gameplay"))
             {
                 if (ImGui::BeginMenu("Time Savers"))
@@ -750,11 +750,9 @@ namespace GameMenuBar {
             ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-            float availableWidth = ImGui::GetContentRegionAvail().x;
-            if (ImGui::Button(
-                GetWindowButtonText("Customize Game Controls", CVar_GetS32("gGameControlEditorEnabled", 0)).c_str(),
-                ImVec2(availableWidth, 0)
-            )) {
+
+            if (ImGui::Button(GetWindowButtonText("Customize Game Controls", CVar_GetS32("gGameControlEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
+            {
                 bool currentValue = CVar_GetS32("gGameControlEditorEnabled", 0);
                 CVar_SetS32("gGameControlEditorEnabled", !currentValue);
                 SohImGui::RequestCvarSaveOnNextTick();
