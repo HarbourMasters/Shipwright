@@ -699,6 +699,24 @@ void Play_Update(PlayState* play) {
             play->transitionMode = 1;
         }
 
+        // Gameplay stats: Count button presses
+        if (!gSaveContext.sohStats.gameComplete) {
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_A))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_B))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_B]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_CUP))    {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CUP]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_CRIGHT)) {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CLEFT]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_CLEFT))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CDOWN]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_CDOWN))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CRIGHT]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_DUP))    {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DUP]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_DRIGHT)) {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DRIGHT]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_DDOWN))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DDOWN]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_DLEFT))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DLEFT]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_L))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_L]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_R))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_R]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_Z))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_Z]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_START))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_START]++;}
+        }
+
         if (gTrnsnUnkState != 0) {
             switch (gTrnsnUnkState) {
                 case 2:
@@ -1066,6 +1084,10 @@ void Play_Update(PlayState* play) {
                 }
 
                 play->gameplayFrames++;
+                // Gameplay stat tracking
+                if (!gSaveContext.sohStats.gameComplete) {
+                      gSaveContext.sohStats.playTimer++;
+                }
 
                 func_800AA178(1);
 
@@ -1380,7 +1402,7 @@ void Play_Draw(PlayState* play) {
 
             gfxP = Graph_GfxPlusOne(sp1CC);
             gSPDisplayList(OVERLAY_DISP++, gfxP);
-            gsSPGrayscale(gfxP++, false);
+            gSPGrayscale(gfxP++, false);
 
             if ((play->transitionMode == 3) || (play->transitionMode == 11) ||
                 (play->transitionCtx.transitionType >= 56)) {
@@ -1398,8 +1420,8 @@ void Play_Draw(PlayState* play) {
             TransitionFade_Draw(&play->transitionFade, &gfxP);
 
             if (D_801614B0.a > 0) {
-                gsDPSetGrayscaleColor(gfxP++, D_801614B0.r, D_801614B0.g, D_801614B0.b, D_801614B0.a);
-                gsSPGrayscale(gfxP++, true);
+                gDPSetGrayscaleColor(gfxP++, D_801614B0.r, D_801614B0.g, D_801614B0.b, D_801614B0.a);
+                gSPGrayscale(gfxP++, true);
             }
 
             gSPEndDisplayList(gfxP++);

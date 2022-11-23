@@ -636,6 +636,11 @@ void func_80ADF15C(EnPoh* this, PlayState* play) {
                              0, 0, 255, 1, 9, 1);
         if (this->unk_198 == 1) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_EXTINCT);
+            if (this->actor.params == EN_POH_FLAT || this->actor.params == EN_POH_SHARP) {
+                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_COMPOSER]++;
+            } else {
+                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE]++;
+            }
         }
     } else if (this->unk_198 == 28) {
         EnPoh_SetupDeath(this, play);

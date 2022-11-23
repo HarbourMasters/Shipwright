@@ -828,11 +828,11 @@ void GetItem_DrawGenericMusicNote(PlayState* play, s16 drawId) {
     OPEN_DISPS(play->state.gfxCtx);
 
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx,  __FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
-    gsDPSetGrayscaleColor(POLY_XLU_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
-    gsSPGrayscale(POLY_XLU_DISP++, true);
+    gDPSetGrayscaleColor(POLY_XLU_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
+    gSPGrayscale(POLY_XLU_DISP++, true);
     func_80093D18(play->state.gfxCtx);
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[0]);
-    gsSPGrayscale(POLY_XLU_DISP++, false);
+    gSPGrayscale(POLY_XLU_DISP++, false);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

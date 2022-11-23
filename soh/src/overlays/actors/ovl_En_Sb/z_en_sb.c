@@ -456,6 +456,7 @@ void EnSb_Update(Actor* thisx, PlayState* play) {
             } else {
                 Item_DropCollectible(play, &this->actor.world.pos, 8);
             }
+            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SHELLBLADE]++;
             Actor_Kill(&this->actor);
         }
     } else {

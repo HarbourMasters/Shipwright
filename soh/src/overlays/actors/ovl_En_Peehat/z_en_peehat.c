@@ -590,6 +590,7 @@ void EnPeehat_Larva_StateSeekPlayer(EnPeehat* this, PlayState* play) {
             }
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x20);
             Actor_Kill(&this->actor);
+            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA]++;
         }
     }
 }
@@ -759,6 +760,7 @@ void EnPeehat_StateAttackRecoil(EnPeehat* this, PlayState* play) {
                                      1);
             }
             Actor_Kill(&this->actor);
+            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA]++;
         } else {
             EnPeehat_Ground_SetStateSeekPlayer(this);
             // Is PEAHAT_TYPE_GROUNDED
@@ -875,6 +877,7 @@ void EnPeehat_StateExplode(EnPeehat* this, PlayState* play) {
         Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x40);
         Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x40);
         Actor_Kill(&this->actor);
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT]++;
     }
 }
 
