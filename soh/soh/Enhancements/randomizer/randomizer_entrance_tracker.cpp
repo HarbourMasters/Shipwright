@@ -527,7 +527,7 @@ void SetLastEntranceOverrideForTracker(s16 entranceIndex) {
 void ClearEntranceTrackingData() {
     currentGrottoId = -1;
     lastEntranceIndex = -1;
-    lastSceneOrEntranceDetected == -1;
+    lastSceneOrEntranceDetected = -1;
     gEntranceTrackingData = {0};
 }
 
