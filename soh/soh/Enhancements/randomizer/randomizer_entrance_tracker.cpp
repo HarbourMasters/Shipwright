@@ -750,7 +750,7 @@ void DrawEntranceTracker(bool& open) {
             }
         }
 
-        if (displayEntrances.size() != 0) {
+        if (displayEntrances.size() != 0 || (!locationSearch.IsActive() && undiscovered > 0)) {
             if (nextTreeState == 1) {
                 ImGui::SetNextItemOpen(false, ImGuiCond_None);
             } else {
@@ -787,8 +787,6 @@ void DrawEntranceTracker(bool& open) {
                             }
                         }
                     } else if (original->index == lastEntranceIndex) {
-                    // } else if ((original->type != ENTRANCE_TYPE_GROTTO && override->index == lastEntranceIndex) ||
-                    //            (original->type == ENTRANCE_TYPE_GROTTO && original->index == lastEntranceIndex)) {
                         if (CVar_GetS32("gEntranceTrackerHighlightPrevious", 0)) {
                             color = COLOR_ORANGE;
                         }
@@ -816,7 +814,7 @@ void DrawEntranceTracker(bool& open) {
                     ImGui::PopStyleColor();
                 }
 
-                if (undiscovered > 0) {
+                if (!locationSearch.IsActive() && undiscovered > 0) {
                     UIWidgets::Spacer(0);
                     ImGui::PushStyleColor(ImGuiCol_Text, COLOR_GRAY);
                     ImGui::TextWrapped("%d Undiscovered", undiscovered);
