@@ -93,7 +93,11 @@ void DrawCheckTracker(bool& open) {
 
     if (doInitialize)
         InitializeChecks();
-    
+    else if (gPlayState == nullptr || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2) {
+        Teardown();
+        return;
+    }
+
     if (CVar_GetS32("gCheckTrackerWindowType", 1) == 0) {
         if (CVar_GetS32("gCheckTrackerShowOnlyPaused", 0) == 1)
             if (gPlayState == nullptr || gPlayState->pauseCtx.state == 0)
@@ -114,10 +118,6 @@ void DrawCheckTracker(bool& open) {
 
     if (!initialized) {
         ImGui::Text("Waiting for file load...");
-        EndFloatWindows();
-        return;
-    } else if (gPlayState == nullptr || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2) {
-        Teardown();
         EndFloatWindows();
         return;
     }
