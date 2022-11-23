@@ -160,6 +160,7 @@ set(Header_Files__soh__Enhancements
     "soh/Enhancements/presets.h"
     "soh/Enhancements/savestates.h"
     "soh/Enhancements/savestates_extern.inc"
+    "soh/Enhancements/gameplaystats.h"
 )
 source_group("Header Files\\soh\\Enhancements" FILES ${Header_Files__soh__Enhancements})
 
@@ -290,6 +291,7 @@ set(Source_Files__soh__Enhancements
     "soh/Enhancements/gameconsole.c"
     "soh/Enhancements/presets.cpp"
     "soh/Enhancements/savestates.cpp"
+    "soh/Enhancements/gameplaystats.cpp"
 )
 source_group("Source Files\\soh\\Enhancements" FILES ${Source_Files__soh__Enhancements})
 
