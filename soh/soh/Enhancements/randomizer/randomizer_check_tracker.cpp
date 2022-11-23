@@ -17,6 +17,7 @@ extern PlayState* gPlayState;
 }
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
+void Teardown();
 void InitializeChecks();
 void UpdateChecks();
 void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckStatus);
@@ -85,16 +86,13 @@ std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 
 void DrawCheckTracker(bool& open) {
-    if (doInitialize)
-        InitializeChecks();
-
-    if (!initialized)
-        return;
-
     if (!open) {
         CVar_SetS32("gCheckTrackerEnabled", 0);
         return;
     }
+
+    if (doInitialize)
+        InitializeChecks();
     
     if (CVar_GetS32("gCheckTrackerWindowType", 1) == 0) {
         if (CVar_GetS32("gCheckTrackerShowOnlyPaused", 0) == 1)
@@ -110,6 +108,18 @@ void DrawCheckTracker(bool& open) {
             if (!comboButtonsHeld)
                 return;
         }
+    }
+
+    BeginFloatWindows("Check Tracker", ImGuiWindowFlags_NoScrollbar);
+
+    if (!initialized) {
+        ImGui::Text("Waiting for file load...");
+        EndFloatWindows();
+        return;
+    } else if (gPlayState == nullptr || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2) {
+        Teardown();
+        EndFloatWindows();
+        return;
     }
 
     SceneID sceneId = SCENE_ID_MAX;
@@ -132,7 +142,6 @@ void DrawCheckTracker(bool& open) {
         UpdateOrdering();
     }
 
-    BeginFloatWindows("Check Tracker", ImGuiWindowFlags_NoScrollbar);
 
     //Quick Options
 #ifdef __WIIU__
@@ -331,7 +340,7 @@ void InitializeChecks() {
 
 void Teardown() {
     initialized = false;
-    //delete checkStatus; //TODO may cause crashes due to race conditions during a draw cycle, but if you don't have it, then there's a memory leak when switching files
+    checkStatusMap.clear();
     areasFullyChecked = 0;
     checks.clear();
     lastSaveCount = -1;
