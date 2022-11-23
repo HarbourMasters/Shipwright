@@ -6,6 +6,7 @@
 #include "z64audio.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/randomizer_inf.h"
+#include "soh/Enhancements/gameplaystats.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 typedef struct {
@@ -30,6 +31,11 @@ typedef struct {
     /*      */ u8 heartPieces;
     /*      */ u8 heartContainers;
     /*      */ u8 dungeonKeys[19];
+    /*      */ u32 playTimer;
+    /*      */ u32 pauseTimer;
+    /*      */ bool gameComplete;
+    /*      */ u32 timestamp[TIMESTAMP_MAX];
+    /*      */ u32 count[COUNT_MAX];
 } SohStats;
 
 typedef struct {
