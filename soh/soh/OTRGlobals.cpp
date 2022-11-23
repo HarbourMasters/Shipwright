@@ -2118,3 +2118,11 @@ extern "C" void Entrance_ClearEntranceTrackingData(void) {
 extern "C" void Entrance_InitEntranceTrackingData(void) {
     InitEntranceTrackingData();
 }
+
+extern "C" void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex) {
+    SetCurrentGrottoIDForTracker(entranceIndex);
+}
+
+extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
+    SetLastEntranceOverrideForTracker(entranceIndex);
+}

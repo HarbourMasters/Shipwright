@@ -24,6 +24,9 @@
 
 #define ENTRANCE_OVERRIDES_MAX_COUNT 256
 
+#define SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT 66 // Max entrance rando index is 0x0820, (2080 / 32 == 65) + 1
+#define SAVEFILE_SCENES_DISCOVERED_IDX_COUNT 4 // Max scene ID is 0x6E, (110 / 32 == 3) + 1
+
 typedef struct {
     int16_t index;
     int16_t destination;
@@ -48,5 +51,7 @@ void Entrance_OverrideWeatherState(void);
 void Entrance_OverrideGeurdoGuardCapture(void);
 void Entrance_OverrideSpawnScene(int32_t sceneNum, int32_t spawn);
 void Entrance_EnableFW(void);
+uint8_t Entrance_GetIsEntranceDiscovered(uint16_t entranceIndex);
+void Entrance_SetEntranceDiscovered(uint16_t entranceIndex);
 
 #endif //_RANDO_ENTRANCE_H_
