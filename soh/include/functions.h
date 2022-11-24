@@ -944,6 +944,8 @@ void Environment_StopStormNatureAmbience(PlayState* play);
 void Environment_WarpSongLeave(PlayState* play);
 f32 Math_CosS(s16 angle);
 f32 Math_SinS(s16 angle);
+f32 Math_AccurateCosS(s16 angle);
+f32 Math_AccurateSinS(s16 angle);
 s32 Math_ScaledStepToS(s16* pValue, s16 target, s16 step);
 s32 Math_StepToS(s16* pValue, s16 target, s16 step);
 s32 Math_StepToF(f32* pValue, f32 target, f32 step);

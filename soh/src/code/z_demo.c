@@ -511,7 +511,54 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
         temp = 1;
     }
 
-    if ((csCtx->frames == cmd->startFrame) || (temp != 0) || ((csCtx->frames > 20) && (randoCsSkip || debugCsSkip))) {
+    bool playCutscene = false;
+    if (!CVar_GetS32("gCreditsFix", 1) && (cmd->startFrame == csCtx->frames)) {
+        playCutscene = true;
+    } else if (CVar_GetS32("gCreditsFix", 1)) {
+        u16 delay = 0;
+        
+        // HACK:  Align visual timing with audio during credits sequence
+        switch (cmd->base) {
+            case 55: // Gerudo fortress (second scene of credits roll)
+                delay = 20;
+                break;
+            case 56: // Kakariko village
+                delay = 40;
+                break;
+            case 57: // Death mountain trail
+                delay = 20;
+                break;
+            case 58: // Goron city
+                delay = 20;
+                break;
+            case 59: // Lake hylia
+                delay = 20;
+                break;
+            case 62: // Kokiri forest (houses)
+                delay = 40;
+                break;
+            case 63: // Kokiri forest (deku tree)
+                delay = 40;
+                break;
+            case 74: // First gorons dancing
+                delay = 100;
+                break;
+            case 75: // Magic carpet guy and old shop keepers
+                delay = 180;
+                break;
+            case 77: // Sad mido and king zora (plays after scene 78)
+                delay = 100;
+                break;
+            case 78: // Second gorons dancing
+                delay = 160;
+                break;
+        }
+        if (cmd->startFrame + delay == csCtx->frames) {
+            playCutscene = true;
+        }
+    }
+
+    if (playCutscene || (temp != 0) || ((csCtx->frames > 20) && (randoCsSkip || debugCsSkip))) {
 
         csCtx->state = CS_STATE_UNSKIPPABLE_EXEC;
         Audio_SetCutsceneFlag(0);
