@@ -1132,11 +1132,6 @@ typedef enum RandoOption {
   RO_SCRUBS_EXPENSIVE,
   RO_SCRUBS_RANDOM,
 
-  //Shuffle Merchants settings (off, on w/o hints, on w/hints)
-  RO_MERCHANTS_OFF = 0,
-  RO_MERCHANTS_ON_NO_HINTS,
-  RO_MERCHANTS_ON_WITH_HINTS,
-
   //Ammo drop settings (on, "on+bombchu", off)
   RO_AMMO_DROPS_ON = 0,
   RO_AMMO_DROPS_ON_PLUS_BOMBCHU,
