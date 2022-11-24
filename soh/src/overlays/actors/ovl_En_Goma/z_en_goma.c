@@ -657,7 +657,11 @@ void EnGoma_UpdateHit(EnGoma* this, PlayState* play) {
 
                     this->actor.colChkInfo.health -= swordDamage;
                     EnGoma_SetupHurt(this, play);
-                    Actor_SetColorFilter(&this->actor, 0x4000, 255, 0, 5);
+
+                    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+                        Actor_SetColorFilter(&this->actor, 0x4000, 255, 0, 5);
+                    }
+
                     this->hurtTimer = 13;
                 }
             } else {
