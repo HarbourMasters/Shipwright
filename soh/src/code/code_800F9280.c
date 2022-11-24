@@ -372,8 +372,10 @@ void Audio_QueueSeqCmd(u32 cmd)
     if (op == 0 || op == 2 || op == 12){
         u8 seqId = cmd & 0xFF;
         if (seqId == 110) {
-            gAudioContext.seqToPlay = gAudioContext.prevSeqToPlay;
-            gAudioContext.prevSeqToPlay = 0;
+            if (gAudioContext.prevSeqToPlay != 0) {
+                gAudioContext.seqToPlay = gAudioContext.prevSeqToPlay;
+                gAudioContext.prevSeqToPlay = 0;
+            }
         } else {
             u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
             if (newSeqId > 109) {
