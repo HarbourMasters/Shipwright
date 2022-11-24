@@ -485,7 +485,9 @@ void EnDh_CollisionCheck(EnDh* this, PlayState* play) {
             if (player->unk_844 != 0) {
                 this->unk_258 = player->unk_845;
             }
-            Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 8);
+            if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+                Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 8);
+            }
             lastHealth = this->actor.colChkInfo.health;
             if (Actor_ApplyDamage(&this->actor) == 0) {
                 EnDh_SetupDeath(this);

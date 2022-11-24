@@ -247,7 +247,9 @@ void EnOkuta_SetupShoot(EnOkuta* this, PlayState* play) {
 
 void EnOkuta_SetupWaitToDie(EnOkuta* this) {
     Animation_MorphToPlayOnce(&this->skelAnime, &gOctorokHitAnim, -5.0f);
-    Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 0xB);
+    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+        Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 0xB);
+    }
     this->collider.base.acFlags &= ~AC_HIT;
     Actor_SetScale(&this->actor, 0.01f);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_OCTAROCK_DEAD1);

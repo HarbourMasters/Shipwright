@@ -386,7 +386,9 @@ void EnDha_UpdateHealth(EnDha* this, PlayState* play) {
         if (this->actor.colChkInfo.damageEffect == 0 || this->actor.colChkInfo.damageEffect == 6) {
             return;
         } else {
-            Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 8);
+            if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+                Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 8);
+            }
             if (Actor_ApplyDamage(&this->actor) == 0) {
                 EnDha_SetupDeath(this);
                 this->actor.colChkInfo.health = 8;
