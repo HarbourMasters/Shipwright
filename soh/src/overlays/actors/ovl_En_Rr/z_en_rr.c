@@ -453,7 +453,11 @@ void EnRr_CollisionCheck(EnRr* this, PlayState* play) {
                     this->stopScroll = false;
                     Actor_ApplyDamage(&this->actor);
                     this->invincibilityTimer = 40;
-                    Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0x2000, this->invincibilityTimer);
+                    if (CVar_GetS32("gPhotosensitiveMode", 0)) {
+                        Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0x2000, this->invincibilityTimer);
+                    } else {
+                        Actor_SetColorFilter(&this->actor, 0, 0, 0, this->invincibilityTimer);
+                    }
                     if (this->hasPlayer) {
                         EnRr_SetupReleasePlayer(this, play);
                     } else if (this->actor.colChkInfo.health != 0) {
@@ -468,7 +472,9 @@ void EnRr_CollisionCheck(EnRr* this, PlayState* play) {
                     if (this->actor.colChkInfo.health == 0) {
                         this->dropType = RR_DROP_RANDOM_RUPEE;
                     }
-                    Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0x2000, 0x50);
+                    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+                        Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0x2000, 0x50);
+                    }
                     this->effectTimer = 20;
                     EnRr_SetupStunned(this);
                     return;
@@ -479,7 +485,9 @@ void EnRr_CollisionCheck(EnRr* this, PlayState* play) {
                     }
                     if (this->actor.colorFilterTimer == 0) {
                         this->effectTimer = 20;
-                        Actor_SetColorFilter(&this->actor, 0, 0xFF, 0x2000, 0x50);
+                        if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+                            Actor_SetColorFilter(&this->actor, 0, 0xFF, 0x2000, 0x50);
+                        }
                     }
                     EnRr_SetupStunned(this);
                     return;
@@ -488,7 +496,9 @@ void EnRr_CollisionCheck(EnRr* this, PlayState* play) {
                     if (this->actor.colChkInfo.health == 0) {
                         this->dropType = RR_DROP_RUPEE_RED;
                     }
-                    Actor_SetColorFilter(&this->actor, -0x8000, 0xFF, 0x2000, 0x50);
+                    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+                        Actor_SetColorFilter(&this->actor, -0x8000, 0xFF, 0x2000, 0x50);
+                    }
                     EnRr_SetupStunned(this);
                     return;
                 case RR_DMG_STUN: // Boomerang and Hookshot
