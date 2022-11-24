@@ -9,7 +9,7 @@ if [ -z ${SHIP_HOME+x} ]; then
 export SHIP_HOME=$PWD
 fi
 
-while [[ (! -e "$SHIP_HOME"/oot.otr) && (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
+while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
         for romfile in "$SHIP_HOME"/*.*64
         do
             if [[ -e $romfile ]]; then
