@@ -328,11 +328,11 @@ std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
 
     RC_OBJECT(RC_ZR_OPEN_GROTTO_CHEST,                                        RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_ZORAS_RIVER,            ACTOR_EN_BOX,       SCENE_KAKUSIANA,                      22985,                       GI_RUPEE_RED,        "Open Grotto Chest", "ZR Open Grotto Chest"),
     RC_OBJECT(RC_ZR_MAGIC_BEAN_SALESMAN,                                      RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_ZORAS_RIVER,            ACTOR_ID_MAX,       SCENE_SPOT03,                         0x00,                        GI_NONE,             "Magic Bean Salesman", "ZR Magic Bean Salesman"),
-    RC_OBJECT(RC_ZR_FROGS_ZELDAS_LULLABY,                                     RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_ZORAS_RIVER,            ACTOR_EN_FR,        SCENE_SPOT03,                         0x00,                        GI_NONE,             "Frogs Zelda's Lullaby", "ZR Frogs Zelda's Lullaby"),
-    RC_OBJECT(RC_ZR_FROGS_EPONAS_SONG,                                        RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_ZORAS_RIVER,            ACTOR_EN_FR,        SCENE_SPOT03,                         0x00,                        GI_NONE,             "Frogs Epona's Song", "ZR Frogs Epona's Song"),
-    RC_OBJECT(RC_ZR_FROGS_SARIAS_SONG,                                        RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_ZORAS_RIVER,            ACTOR_EN_FR,        SCENE_SPOT03,                         0x00,                        GI_NONE,             "Frogs Saria's Song", "ZR Frogs Saria's Song"),
-    RC_OBJECT(RC_ZR_FROGS_SUNS_SONG,                                          RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_ZORAS_RIVER,            ACTOR_EN_FR,        SCENE_SPOT03,                         0x00,                        GI_NONE,             "Frogs Sun's Song", "ZR Frogs Sun's Song"),
-    RC_OBJECT(RC_ZR_FROGS_SONG_OF_TIME,                                       RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_ZORAS_RIVER,            ACTOR_EN_FR,        SCENE_SPOT03,                         0x00,                        GI_NONE,             "Frogs Song of Time", "ZR Frogs Song of Time"),
+    RC_OBJECT(RC_ZR_FROGS_ZELDAS_LULLABY,                                     RCVORMQ_BOTH,    RCTYPE_FROG_SONG,    RCAREA_ZORAS_RIVER,            ACTOR_EN_FR,        SCENE_SPOT03,                         0x00,                        GI_NONE,             "Frogs Zelda's Lullaby", "ZR Frogs Zelda's Lullaby"),
+    RC_OBJECT(RC_ZR_FROGS_EPONAS_SONG,                                        RCVORMQ_BOTH,    RCTYPE_FROG_SONG,    RCAREA_ZORAS_RIVER,            ACTOR_EN_FR,        SCENE_SPOT03,                         0x00,                        GI_NONE,             "Frogs Epona's Song", "ZR Frogs Epona's Song"),
+    RC_OBJECT(RC_ZR_FROGS_SARIAS_SONG,                                        RCVORMQ_BOTH,    RCTYPE_FROG_SONG,    RCAREA_ZORAS_RIVER,            ACTOR_EN_FR,        SCENE_SPOT03,                         0x00,                        GI_NONE,             "Frogs Saria's Song", "ZR Frogs Saria's Song"),
+    RC_OBJECT(RC_ZR_FROGS_SUNS_SONG,                                          RCVORMQ_BOTH,    RCTYPE_FROG_SONG,    RCAREA_ZORAS_RIVER,            ACTOR_EN_FR,        SCENE_SPOT03,                         0x00,                        GI_NONE,             "Frogs Sun's Song", "ZR Frogs Sun's Song"),
+    RC_OBJECT(RC_ZR_FROGS_SONG_OF_TIME,                                       RCVORMQ_BOTH,    RCTYPE_FROG_SONG,    RCAREA_ZORAS_RIVER,            ACTOR_EN_FR,        SCENE_SPOT03,                         0x00,                        GI_NONE,             "Frogs Song of Time", "ZR Frogs Song of Time"),
     RC_OBJECT(RC_ZR_FROGS_IN_THE_RAIN,                                        RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_ZORAS_RIVER,            ACTOR_EN_FR,        SCENE_SPOT03,                         0x00,                        GI_NONE,             "Frogs in the Rain", "ZR Frogs in the Rain"),
     RC_OBJECT(RC_ZR_FROGS_OCARINA_GAME,                                       RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_ZORAS_RIVER,            ACTOR_EN_FR,        SCENE_SPOT03,                         0x00,                        GI_NONE,             "Frogs Ocarina Game", "ZR Frogs Ocarina Game"),
     RC_OBJECT(RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH,                        RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_ZORAS_RIVER,            ACTOR_EN_ITEM00,    SCENE_SPOT03,                         1030,                        GI_HEART_PIECE,      "Near Open Grotto Freestanding PoH", "ZR Near Open Grotto Freestanding PoH"),
@@ -954,6 +954,7 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
 bool RandomizerCheckObjects::IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
     uint8_t gRandomizeShopsanity =              OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY);
     uint8_t gRandomizeShuffleTokens =           OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS);
+    uint8_t gRandomizeShuffleBeans =            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MAGIC_BEANS);
     uint8_t gRandomizeShuffleScrubs =           OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS);
     uint8_t gRandomizeShuffleMerchants =        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS);
     uint8_t gRandomizeShuffleCows =             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_COWS);
@@ -985,6 +986,7 @@ bool RandomizerCheckObjects::IsVisibleInCheckTracker(RandomizerCheckObject rcObj
         (rcObj.rcType != RCTYPE_COW || gRandomizeShuffleCows == RO_GENERIC_YES) &&
         (rcObj.rcType != RCTYPE_ADULT_TRADE || gRandomizeShuffleAdultTrade == RO_GENERIC_YES) &&
         (rcObj.rc != RC_KF_KOKIRI_SWORD_CHEST || gRandomizeShuffleKokiriSword == RO_GENERIC_YES) &&
+        (rcObj.rc != RC_ZR_MAGIC_BEAN_SALESMAN || gRandomizeShuffleBeans == RO_GENERIC_YES) &&
         (rcObj.rc != RC_HC_MALON_EGG || gRandomizeShuffleWeirdEgg == RO_GENERIC_YES) &&
         (rcObj.rc != RC_GF_GERUDO_MEMBERSHIP_CARD || gRandomizeShuffleGerudoCard == RO_GENERIC_YES) &&
         (rcObj.rcType != RCTYPE_FROG_SONG || gRandomizeShuffleFrogSongRupees == RO_GENERIC_YES) &&
