@@ -4131,7 +4131,6 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::EnhancementCheckbox(Settings::StartingConsumables.GetName().c_str(),
                                               "gRandomizeStartingConsumables");
                 UIWidgets::PaddedSeparator();
-                UIWidgets::EnhancementCheckbox(Settings::StartingBunnyHood.GetName().c_str(), "gRandomizeStartingBunnyHood");
                 UIWidgets::EnhancementSliderInt("Gold Skulltula Tokens: %d", "##RandoStartingSkulltulaToken", "gRandomizeStartingSkulltulaToken", 0, 100, "", 0, true);
                 UIWidgets::EnhancementCheckbox(Settings::StartingBunnyHood.GetName().c_str(), "gRandomizeStartingBunnyHood");
                 UIWidgets::PaddedSeparator();
