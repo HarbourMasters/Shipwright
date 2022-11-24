@@ -38,6 +38,20 @@ const ActorInit En_Mag_InitVars = {
     NULL,
 };
 
+const u8* noControllerIndices[][2] = {
+    /* Message, Length */
+    { "NO CONTROLLER", 13 },
+    { "CONTROLLER FEHLT", 16 },
+    { "MANETTE DEBRANCHEE", 18 },
+};
+
+const u8* pressStartIndices[][2] = {
+    /* Message, Length */
+    { "PRESS START", 11 },
+    { "DRUCKE START", 12 },
+    { "APPUYEZ SUR START", 17 },
+};
+
 void EnMag_Init(Actor* thisx, PlayState* play) {
     if (ResourceMgr_IsGameMasterQuest()) {
         EnMag_InitMq(thisx, play);
@@ -675,24 +689,6 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
     static s16 textAlpha = 0;
     static s16 textFadeDirection = 0;
     static s16 textFadeTimer = 0;
-    static u8 noControllerFontIndexes[] = {
-        0x17, 0x18, 0x0C, 0x18, 0x17, 0x1D, 0x1B, 0x18, 0x15, 0x15, 0x0E, 0x1B,
-    };
-    static u8 pressStartFontIndexes_ENG[] = {
-        0x19, 0x1B, 0x0E, 0x1C, 0x1C, 0x1C, 0x1D, 0x0A, 0x1B, 0x1D,
-    };
-    static u8 pressStartFontIndexes_GER[] = {
-        0x0D, 0x1B, 0x1E, 0x0C, 0x14, 0x0E, 0x1C, 0x1D, 0x0A, 0x1B, 0x1D,
-    };
-    static u8 pressStartFontIndexes_FRA[] = {
-        0x0A, 0x19, 0x19, 0x1E, 0x22, 0x0E, 0x23, 0x1C, 0x1E, 0x1B, 0x1C, 0x1D, 0x0A, 0x1B, 0x1D,
-    };
-    static u8* pressStartFontIndexes[][5] = {
-        /* FontIndex, Count, LeftAlign, FirstSpaceIndex, StartIndex */
-        { pressStartFontIndexes_ENG, ARRAY_COUNT(pressStartFontIndexes_ENG), 0, 4, 4 },
-        { pressStartFontIndexes_GER, ARRAY_COUNT(pressStartFontIndexes_GER), -3, 5, 5 },
-        { pressStartFontIndexes_FRA, ARRAY_COUNT(pressStartFontIndexes_FRA), -15, 9, 6 }
-    };
     static void* effectMaskTextures[] = {
         gTitleEffectMask00Tex, gTitleEffectMask01Tex, gTitleEffectMask02Tex,
         gTitleEffectMask10Tex, gTitleEffectMask11Tex, gTitleEffectMask12Tex,
@@ -705,6 +701,11 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
     u16 i, j, k;
     u16 rectLeft;
     u16 rectTop;
+    u16 length;
+    int lang = LANGUAGE_ENG;
+    if (CVar_GetS32("gTitleScreenTranslation", 0)) {
+        lang = gSaveContext.language;
+    }
 
     gSPSegment(gfx++, 0x06, play->objectCtx.status[this->actor.objBankIndex].segment);
 
@@ -799,13 +800,15 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
                           0);
         gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, textAlpha);
 
-        rectLeft = VREG(19) + 1;
-        for (i = 0; i < ARRAY_COUNT(noControllerFontIndexes); i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + noControllerFontIndexes[i] * FONT_CHAR_TEX_SIZE, rectLeft,
-                                  YREG(10) + 172);
-            rectLeft += VREG(21);
-            if (i == 1) {
+        length = noControllerIndices[lang][1];
+        rectLeft = VREG(19) + 1 + ((length - 13) * -3);
+        for (i = 0; i < length; i++) {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + (noControllerIndices[lang][0][i] - '\x37') * FONT_CHAR_TEX_SIZE,
+                                  rectLeft, YREG(10) + 172);
+            if (noControllerIndices[lang][0][i] == ' ') {
                 rectLeft += VREG(23);
+            } else {
+                rectLeft += VREG(21);
             }
         }
 
@@ -813,13 +816,14 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
         gDPPipeSync(gfx++);
         gDPSetPrimColor(gfx++, 0, 0, 100, 255, 255, textAlpha);
 
-        rectLeft = VREG(19);
-        for (i = 0; i < ARRAY_COUNT(noControllerFontIndexes); i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + noControllerFontIndexes[i] * FONT_CHAR_TEX_SIZE, rectLeft,
-                                  YREG(10) + 171);
-            rectLeft += VREG(21);
-            if (i == 1) {
+        rectLeft = VREG(19) + ((length - 13) * -3);
+        for (i = 0; i < length; i++) {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + (noControllerIndices[lang][0][i] - '\x37') * FONT_CHAR_TEX_SIZE,
+                                  rectLeft, YREG(10) + 171);
+            if (noControllerIndices[lang][0][i] == ' ') {
                 rectLeft += VREG(23);
+            } else {
+                rectLeft += VREG(21);
             }
         }
     } else if (this->copyrightAlpha >= 200.0f) {
@@ -829,24 +833,21 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
             textAlpha = 255;
         }
 
-        int lang = LANGUAGE_ENG;
-        if (CVar_GetS32("gPressStartTranslation", 0)) {
-            lang = gSaveContext.language;
-        }
-
         // Text Shadow
         gDPPipeSync(gfx++);
         gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE,
                           0);
         gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, textAlpha);
 
-        rectLeft = YREG(7) + 1 + pressStartFontIndexes[lang][2];
-        for (i = 0; i < pressStartFontIndexes[lang][1]; i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndexes[lang][0][i] * FONT_CHAR_TEX_SIZE,
+        length = pressStartIndices[lang][1];
+        rectLeft = YREG(7) + 1 + ((length - 11) * -3);
+        for (i = 0; i < length; i++) {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + (pressStartIndices[lang][0][i] - '\x37') * FONT_CHAR_TEX_SIZE,
                                   rectLeft, YREG(10) + 172);
-            rectLeft += YREG(8);
-            if ((i == pressStartFontIndexes[lang][3]) || (i == pressStartFontIndexes[lang][4])) {
+            if (pressStartIndices[lang][0][i] == ' ') {
                 rectLeft += YREG(9);
+            } else {
+                rectLeft += YREG(8);
             }
         }
 
@@ -854,13 +855,14 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
         gDPPipeSync(gfx++);
         gDPSetPrimColor(gfx++, 0, 0, YREG(4), YREG(5), YREG(6), textAlpha);
 
-        rectLeft = YREG(7) + pressStartFontIndexes[lang][2];
-        for (i = 0; i < pressStartFontIndexes[lang][1]; i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndexes[lang][0][i] * FONT_CHAR_TEX_SIZE,
+        rectLeft = YREG(7) + ((length - 11) * -3);
+        for (i = 0; i < length; i++) {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + (pressStartIndices[lang][0][i] - '\x37') * FONT_CHAR_TEX_SIZE,
                                   rectLeft, YREG(10) + 171);
-            rectLeft += YREG(8);
-            if ((i == pressStartFontIndexes[lang][3]) || (i == pressStartFontIndexes[lang][4])) {
+            if (pressStartIndices[lang][0][i] == ' ') {
                 rectLeft += YREG(9);
+            } else {
+                rectLeft += YREG(8);
             }
         }
     }
@@ -882,24 +884,6 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
     static s16 textAlpha = 0;
     static s16 textFadeDirection = 0;
     static s16 textFadeTimer = 0;
-    static u8 noControllerFontIndexes[] = {
-        0x17, 0x18, 0x0C, 0x18, 0x17, 0x1D, 0x1B, 0x18, 0x15, 0x15, 0x0E, 0x1B,
-    };
-    static u8 pressStartFontIndexes_ENG[] = {
-        0x19, 0x1B, 0x0E, 0x1C, 0x1C, 0x1C, 0x1D, 0x0A, 0x1B, 0x1D,
-    };
-    static u8 pressStartFontIndexes_GER[] = {
-        0x0D, 0x1B, 0x1E, 0x0C, 0x14, 0x0E, 0x1C, 0x1D, 0x0A, 0x1B, 0x1D,
-    };
-    static u8 pressStartFontIndexes_FRA[] = {
-        0x0A, 0x19, 0x19, 0x1E, 0x22, 0x0E, 0x23, 0x1C, 0x1E, 0x1B, 0x1C, 0x1D, 0x0A, 0x1B, 0x1D,
-    };
-    static u8* pressStartFontIndexes[][5] = {
-        /* FontIndex, Count, LeftAlign, FirstSpaceIndex, StartIndex */
-        { pressStartFontIndexes_ENG, ARRAY_COUNT(pressStartFontIndexes_ENG), 0, 4, 4 },
-        { pressStartFontIndexes_GER, ARRAY_COUNT(pressStartFontIndexes_GER), -3, 5, 5 },
-        { pressStartFontIndexes_FRA, ARRAY_COUNT(pressStartFontIndexes_FRA), -15, 9, 6 }
-    };
     static const void* effectMaskTextures[] = {
         gTitleEffectMask00Tex, gTitleEffectMask01Tex, gTitleEffectMask02Tex,
         gTitleEffectMask10Tex, gTitleEffectMask11Tex, gTitleEffectMask12Tex,
@@ -912,6 +896,11 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
     u16 i, j, k;
     u16 rectLeft;
     u16 rectTop;
+    u16 length;
+    int lang = LANGUAGE_ENG;
+    if (CVar_GetS32("gTitleScreenTranslation", 0)) {
+        lang = gSaveContext.language;
+    }
 
     gSPSegment(gfx++, 0x06, play->objectCtx.status[this->actor.objBankIndex].segment);
 
@@ -1003,13 +992,15 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
                           0);
         gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, textAlpha);
 
-        rectLeft = VREG(19) + 1;
-        for (i = 0; i < ARRAY_COUNT(noControllerFontIndexes); i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + noControllerFontIndexes[i] * FONT_CHAR_TEX_SIZE, rectLeft,
+        length = noControllerIndices[lang][1];
+        rectLeft = VREG(19) + 1 + ((length - 13) * -3);
+        for (i = 0; i < length; i++) {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + (noControllerIndices[lang][0][i] - '\x37') * FONT_CHAR_TEX_SIZE, rectLeft,
                                   YREG(10) + 172);
-            rectLeft += VREG(21);
-            if (i == 1) {
+            if (noControllerIndices[lang][0][i] == ' ') {
                 rectLeft += VREG(23);
+            } else {
+                rectLeft += VREG(21);
             }
         }
 
@@ -1017,13 +1008,14 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
         gDPPipeSync(gfx++);
         gDPSetPrimColor(gfx++, 0, 0, 100, 255, 255, textAlpha);
 
-        rectLeft = VREG(19);
-        for (i = 0; i < ARRAY_COUNT(noControllerFontIndexes); i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + noControllerFontIndexes[i] * FONT_CHAR_TEX_SIZE, rectLeft,
+        rectLeft = VREG(19) + ((length - 13) * -3);
+        for (i = 0; i < length; i++) {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + (noControllerIndices[lang][0][i] - '\x37') * FONT_CHAR_TEX_SIZE, rectLeft,
                                   YREG(10) + 171);
-            rectLeft += VREG(21);
-            if (i == 1) {
+            if (noControllerIndices[lang][0][i] == ' ') {
                 rectLeft += VREG(23);
+            } else {
+                rectLeft += VREG(21);
             }
         }
     } else if (this->copyrightAlpha >= 200.0f) {
@@ -1032,11 +1024,6 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
         if (textAlpha >= 255) {
             textAlpha = 255;
         }
-        
-        int lang = LANGUAGE_ENG;
-        if (CVar_GetS32("gPressStartTranslation", 0)) {
-            lang = gSaveContext.language;
-        }
 
         // Text Shadow
         gDPPipeSync(gfx++);
@@ -1044,13 +1031,15 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
                           0);
         gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, textAlpha);
 
-        rectLeft = YREG(7) + 1 + pressStartFontIndexes[lang][2];
-        for (i = 0; i < pressStartFontIndexes[lang][1]; i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndexes[lang][0][i] * FONT_CHAR_TEX_SIZE, rectLeft,
-                                  YREG(10) + 172);
-            rectLeft += YREG(8);
-            if ((i == pressStartFontIndexes[lang][3]) || (i == pressStartFontIndexes[lang][4])) {
+        length = pressStartIndices[lang][1];
+        rectLeft = YREG(7) + 1 + ((length - 11) * -3);
+        for (i = 0; i < length; i++) {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + (pressStartIndices[lang][0][i] - '\x37') * FONT_CHAR_TEX_SIZE,
+                                  rectLeft, YREG(10) + 172);
+            if (pressStartIndices[lang][0][i] == ' ') {
                 rectLeft += YREG(9);
+            } else {
+                rectLeft += YREG(8);
             }
         }
 
@@ -1058,13 +1047,14 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
         gDPPipeSync(gfx++);
         gDPSetPrimColor(gfx++, 0, 0, YREG(4), YREG(5), YREG(6), textAlpha);
 
-        rectLeft = YREG(7) + pressStartFontIndexes[lang][2];
-        for (i = 0; i < pressStartFontIndexes[lang][1]; i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + pressStartFontIndexes[lang][0][i] * FONT_CHAR_TEX_SIZE, rectLeft,
-                                  YREG(10) + 171);
-            rectLeft += YREG(8);
-            if ((i == pressStartFontIndexes[lang][3]) || (i == pressStartFontIndexes[lang][4])) {
+        rectLeft = YREG(7) + ((length - 11) * -3);
+        for (i = 0; i < length; i++) {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + (pressStartIndices[lang][0][i] - '\x37') * FONT_CHAR_TEX_SIZE,
+                                  rectLeft, YREG(10) + 171);
+            if (pressStartIndices[lang][0][i] == ' ') {
                 rectLeft += YREG(9);
+            } else {
+                rectLeft += YREG(8);
             }
         }
     }
