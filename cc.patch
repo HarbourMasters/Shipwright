@@ -1,0 +1,314 @@
+From 05e7d249dcf21a773f1d6dd79d0795b99c6326cf Mon Sep 17 00:00:00 2001
+From: Ralphie Morell <stratomaster64@gmail.com>
+Date: Mon, 21 Nov 2022 19:50:31 -0500
+Subject: [PATCH] Added additional options for crowd control
+
+---
+ libultraship                                  |  2 +-
+ .../crowd-control/CrowdControl.cpp            | 58 +++++++++++---
+ soh/soh/Enhancements/crowd-control/soh.cs     | 20 ++++-
+ soh/soh/Enhancements/debugconsole.cpp         | 77 +++++++++++++++++--
+ 4 files changed, 136 insertions(+), 21 deletions(-)
+
+diff --git a/libultraship b/libultraship
+index 751f719a75..8d88beffdd 160000
+--- a/libultraship
++++ b/libultraship
+@@ -1 +1 @@
+-Subproject commit 751f719a75e54acbfc8d5d3545d450cd3d2dfc4d
++Subproject commit 8d88beffdd29734ac8bc1f507d422215a6f954e7
+diff --git a/soh/soh/Enhancements/crowd-control/CrowdControl.cpp b/soh/soh/Enhancements/crowd-control/CrowdControl.cpp
+index f00b25b1d8..1423d1d185 100644
+--- a/soh/soh/Enhancements/crowd-control/CrowdControl.cpp
++++ b/soh/soh/Enhancements/crowd-control/CrowdControl.cpp
+@@ -52,6 +52,9 @@ extern PlayState* gPlayState;
+ #define EFFECT_INCREASE_SPEED "increase_speed"
+ #define EFFECT_DECREASE_SPEED "decrease_speed"
+ #define EFFECT_NO_Z_TARGETING "no_z"
++#define EFFECT_VOID "void"
++#define EFFECT_TIME_DAY "time_day"
++#define EFFECT_TIME_NIGHT "time_night"
+ 
+ #define EFFECT_SPAWN_WALLMASTER "spawn_wallmaster"
+ #define EFFECT_SPAWN_ARWING "spawn_arwing"
+@@ -66,6 +69,13 @@ extern PlayState* gPlayState;
+ #define EFFECT_SPAWN_LIKE_LIKE "spawn_likelike"
+ #define EFFECT_SPAWN_CUCCO_STORM "cucco_storm"
+ 
++#define EFFECT_AMMO_STICK "stick"
++#define EFFECT_AMMO_NUTS "nuts"
++#define EFFECT_AMMO_BOMB "bombs"
++#define EFFECT_AMMO_ARROWS "arrows"
++#define EFFECT_AMMO_CHU "bombchus"
++#define EFFECT_AMMO_BEANS "beans"
++#define EFFECT_AMMO_SLINGSHOT "seeds"
+ 
+ void CrowdControl::Init() {
+     SDLNet_Init();
+@@ -314,6 +324,15 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
+                effect->type == EFFECT_SPAWN_FIRE_KEESE || effect->type == EFFECT_SPAWN_TEKTITE ||
+                effect->type == EFFECT_SPAWN_LIKE_LIKE || effect->type == EFFECT_SPAWN_CUCCO_STORM) {
+         effect->category = "spawn";
++    } else if (effect->type == EFFECT_AMMO_ARROWS || effect->type == EFFECT_AMMO_BOMB ||
++               effect->type == EFFECT_AMMO_CHU || effect->type == EFFECT_AMMO_NUTS ||
++               effect->type == EFFECT_AMMO_SLINGSHOT || effect->type == EFFECT_AMMO_STICK ||
++               effect->type == EFFECT_AMMO_BEANS) {
++        effect->category = "ammo";
++    } else if (effect->type == EFFECT_VOID) {
++        effect->category = "void";
++    } else if (effect->type == EFFECT_TIME_DAY || effect->type == EFFECT_TIME_NIGHT) {
++        effect->category = "time";
+     } else {
+         effect->category = "none";
+         effect->timeRemaining = 0;
+@@ -461,9 +480,24 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uin
+             if ((gSaveContext.healthCapacity - 0x10) <= 0) {
+                 return EffectResult::Failure;
+             }
+-            
+             if (dryRun == 0) CMD_EXECUTE(fmt::format("{} {}", effectId, value));
+             return EffectResult::Success;
++        } else if (effectId == EFFECT_AMMO_ARROWS
++            || effectId == EFFECT_AMMO_BOMB
++            || effectId == EFFECT_AMMO_BEANS
++            || effectId == EFFECT_AMMO_CHU
++            || effectId == EFFECT_AMMO_NUTS
++            || effectId == EFFECT_AMMO_SLINGSHOT
++            || effectId == EFFECT_AMMO_STICK
++        ) {
++            if (dryRun == 0) CMD_EXECUTE(fmt::format("ammo {} {}",  effectId, value));
++            return EffectResult::Success;
++        } else if (effectId == EFFECT_TIME_DAY || effectId == EFFECT_TIME_NIGHT) {
++            if (dryRun == 0) CMD_EXECUTE(fmt::format("time {}", value));
++            return EffectResult::Success;
++        } else if (effectId == EFFECT_VOID) {
++            if (dryRun == 0) CMD_EXECUTE("void");
++            return EffectResult::Success;
+         }
+     }
+ 
+@@ -480,49 +514,49 @@ bool CrowdControl::SpawnEnemy(std::string effectId) {
+     float posZOffset = 0;
+ 
+     if (effectId == EFFECT_SPAWN_WALLMASTER) {
+-        enemyId = 17;
++        enemyId = ACTOR_EN_WALLMAS;
+     } else if (effectId == EFFECT_SPAWN_ARWING) {
+-        enemyId = 315;
++        enemyId = ACTOR_EN_CLEAR_TAG;
+         enemyParams = 1;
+         posYOffset = 100;
+     } else if (effectId == EFFECT_SPAWN_DARK_LINK) {
+-        enemyId = 51;
++        enemyId = ACTOR_EN_TORCH2;
+         posXOffset = 75;
+         posYOffset = 50;
+     } else if (effectId == EFFECT_SPAWN_STALFOS) {
+-        enemyId = 2;
++        enemyId = ACTOR_EN_TEST;
+         enemyParams = 2;
+         posXOffset = 75;
+         posYOffset = 50;
+     } else if (effectId == EFFECT_SPAWN_WOLFOS) {
+-        enemyId = 431;
++        enemyId = ACTOR_EN_WF;
+         posXOffset = 75;
+         posYOffset = 50;
+     } else if (effectId == EFFECT_SPAWN_FREEZARD) {
+-        enemyId = 289;
++        enemyId = ACTOR_EN_FZ;
+         posXOffset = 75;
+         posYOffset = 50;
+     } else if (effectId == EFFECT_SPAWN_KEESE) {
+-        enemyId = 19;
++        enemyId = ACTOR_EN_FIREFLY;
+         enemyParams = 2;
+         posXOffset = 75;
+         posYOffset = 50;
+     } else if (effectId == EFFECT_SPAWN_ICE_KEESE) {
+-        enemyId = 19;
++        enemyId = ACTOR_EN_FIREFLY;
+         enemyParams = 4;
+         posXOffset = 75;
+         posYOffset = 50;
+     } else if (effectId == EFFECT_SPAWN_FIRE_KEESE) {
+-        enemyId = 19;
++        enemyId = ACTOR_EN_FIREFLY;
+         enemyParams = 1;
+         posXOffset = 75;
+         posYOffset = 50;
+     } else if (effectId == EFFECT_SPAWN_TEKTITE) {
+-        enemyId = 27;
++        enemyId = ACTOR_EN_TITE;
+         posXOffset = 75;
+         posYOffset = 50;
+     } else if (effectId == EFFECT_SPAWN_LIKE_LIKE) {
+-        enemyId = 221;
++        enemyId = ACTOR_EN_RR;
+         posXOffset = 75;
+         posYOffset = 50;
+     }
+diff --git a/soh/soh/Enhancements/crowd-control/soh.cs b/soh/soh/Enhancements/crowd-control/soh.cs
+index e8649fcdec..ff2b1f4b62 100644
+--- a/soh/soh/Enhancements/crowd-control/soh.cs
++++ b/soh/soh/Enhancements/crowd-control/soh.cs
+@@ -30,6 +30,17 @@ public class SoH : SimpleTCPPack
+ 		{"likelike", ("Like-Like")}
+ 	};
+ 
++	private Dictionary<string, string> _ammoType = new Dictionary<string, string>()
++	{
++		{"arrows", ("Arrows")},
++		{"bombs", ("Bombs")},
++		{"chus", ("Bombchus")},
++		{"nuts", ("Nuts")},
++		{"seeds", ("Slingshot Seeds")},
++		{"sticks", ("Sticks")},
++		{"beans", ("Beans")},
++	};
++
+ 	public override List<Effect> Effects
+ 	{
+ 		get
+@@ -69,10 +80,16 @@ public override List<Effect> Effects
+ 				new Effect("Electrocute Link", "electrocute"),
+ 				new Effect("Iron Boots", "iron_boots") { Duration = 30 },
+ 				new Effect("Give Deku Shield", "give_dekushield"),
++				new Effect("Change Time to Day", "time_day"),
++				new Effect("Change Time to Night", "time_night"),
++				new Effect("Void Player", "void"),
++				new Effect("Ammo Refill", "ammo", ItemKind.Folder),
+ 				new Effect("Spawn Enemy", "spawn_enemy", ItemKind.Folder),
+ 			};
+ 			
+ 			effects.AddRange(_enemyType.Select(t => new Effect($"Spawn {t.Value}", $"spawn_{t.Key}", "spawn_enemy")));
++			effects.AddRange(_ammoType.Select(t => new Effect($"{t.Value}", $"{t.Key}", new[] { "ammorefill" }, "ammo")));
++
+ 
+ 			return effects;
+ 		}
+@@ -84,7 +101,8 @@ public override List<Effect> Effects
+         new ItemType("Rupees", "rupees999", ItemType.Subtype.Slider, "{\"min\":1,\"max\":999}"),
+ 		new ItemType("Health", "health20", ItemType.Subtype.Slider, "{\"min\":1,\"max\":20}"),
+ 		new ItemType("Damage/Defense Multiplier", "damdefmulti", ItemType.Subtype.Slider, "{\"min\":1,\"max\":10}"),
+-		new ItemType("Knockback Strength", "knockbackstrength", ItemType.Subtype.Slider, "{\"min\":1,\"max\":3}")
++		new ItemType("Knockback Strength", "knockbackstrength", ItemType.Subtype.Slider, "{\"min\":1,\"max\":3}"),
++		new ItemType("Ammo Refill", "ammorefill", ItemType.Subtype.Slider, "{\"min\":-50,\"max\":50}" ),
+     };
+ 	
+ }
+diff --git a/soh/soh/Enhancements/debugconsole.cpp b/soh/soh/Enhancements/debugconsole.cpp
+index c31e88d4ca..c4be3e94b6 100644
+--- a/soh/soh/Enhancements/debugconsole.cpp
++++ b/soh/soh/Enhancements/debugconsole.cpp
+@@ -235,7 +235,7 @@ static bool AmmoHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
+         return CMD_FAILED;
+     }
+ 
+-    if (count < 0) {
++    if (count < 0 && !(CVar_GetS32("gCrowdControl", 0))) {
+         SohImGui::GetConsole()->SendErrorMessage("Ammo count must be positive");
+         return CMD_FAILED;
+     }
+@@ -247,11 +247,18 @@ static bool AmmoHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
+         return CMD_FAILED;
+     }
+ 
+-    // I dont think you can do OOB with just this
+-    AMMO(it->second) = count;
+-
+-    //To use a change by uncomment this
+-    //Inventory_ChangeAmmo(it->second, count);
++    // Allows giving/removing ammo when crowd control is on
++    if (CVar_GetS32("gCrowdControl", 0)) {
++        if (AMMO(it->second) + count < 0) {
++            SohImGui::GetConsole()->SendErrorMessage("Attempting to remove more ammo than is there!");
++            return CMD_FAILED;
++        }
++        Inventory_ChangeAmmo(it->second, count);
++    } else {
++        //Original implementation
++        AMMO(it->second) = count;
++    }
++    return CMD_SUCCESS;
+ }
+ 
+ const static std::map<std::string, uint16_t> bottleItems{
+@@ -571,7 +578,7 @@ static bool GravityHandler(std::shared_ptr<Ship::Console> Console, const std::ve
+         chaosEffectGravityLevel = Ship::Math::clamp(std::stoi(args[1], nullptr, 10), GRAVITY_LEVEL_LIGHT, GRAVITY_LEVEL_HEAVY);
+         return CMD_SUCCESS;
+     } catch (std::invalid_argument const& ex) {
+-        SohImGui::GetConsole()->SendErrorMessage("[SOH] Minish value must be a number.");
++        SohImGui::GetConsole()->SendErrorMessage("[SOH] Gravity value must be a number.");
+         return CMD_FAILED;
+     }
+ }
+@@ -906,6 +913,58 @@ static bool CuccoStormHandler(std::shared_ptr<Ship::Console> Console, const std:
+     return CMD_SUCCESS;
+ }
+ 
++static bool TimeHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
++    if (args.size() != 2) {
++        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
++        return CMD_FAILED;
++    }
++
++    if ((args[1].compare("day") == 0 && IS_DAY) || (args[1].compare("night") == 0 && IS_NIGHT)) {
++            SohImGui::GetConsole()->SendErrorMessage("[SOH] It's already that time!");
++            return CMD_FAILED;
++    } else {
++        uint16_t speed = 0x0800;
++        uint16_t newtime =  IS_DAY ? 0xC010 : 0x4AB0; //direct clock value, lifted from similar function in gz
++
++        while (gSaveContext.dayTime != newtime) {
++            if ((gSaveContext.dayTime < newtime) && (newtime - gSaveContext.dayTime <= speed)) {
++                gSaveContext.dayTime = newtime;
++                gSaveContext.skyboxTime = newtime;
++            } else {
++                gSaveContext.dayTime += speed;
++                gSaveContext.skyboxTime += speed;
++            }
++        }
++    }
++    return CMD_SUCCESS;
++}
++
++static bool TimeHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
++    if (args.size() != 2) {
++        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
++        return CMD_FAILED;
++    }
++
++    if ((args[1].compare("day") == 0 && IS_DAY) || (args[1].compare("night") == 0 && IS_NIGHT)) {
++            SohImGui::GetConsole()->SendErrorMessage("[SOH] It's already that time!");
++            return CMD_FAILED;
++    } else {
++        uint16_t speed = 0x0800;
++        uint16_t newtime =  IS_DAY ? 0xC010 : 0x4AB0; //direct clock value, lifted from similar function in gz
++
++        while (gSaveContext.dayTime != newtime) {
++            if ((gSaveContext.dayTime < newtime) && (newtime - gSaveContext.dayTime <= speed)) {
++                gSaveContext.dayTime = newtime;
++                gSaveContext.skyboxTime = newtime;
++            } else {
++                gSaveContext.dayTime += speed;
++                gSaveContext.skyboxTime += speed;
++            }
++        }
++    }
++    return CMD_SUCCESS;
++}
++
+ #define VARTYPE_INTEGER 0
+ #define VARTYPE_FLOAT   1
+ #define VARTYPE_STRING  2
+@@ -1159,5 +1218,9 @@ void DebugConsole_Init(void) {
+ 
+     CMD_REGISTER("cucco_storm", { CuccoStormHandler, "Cucco Storm" });
+ 
++    CMD_REGISTER("time", { TimeHandler, "Changes the time to either night or day.", {
++        {"day|night", Ship::ArgumentType::TEXT}
++    }});
++
+     CVar_Load();
+ }
