@@ -376,13 +376,36 @@ void Teardown() {
     doInitialize = true;
 }
 
+int slowCheckIdx = 0;
+// Checks only one check every call
+bool SlowUpdateCheck() {
+    bool ret = false;
+    auto checkIt = checks.begin() + slowCheckIdx;
+    if (checkIt == checks.end()) {
+        slowCheckIdx = 0;
+        return false;
+    }
+
+    RandomizerCheckObject rcObj = *checkIt;
+    RandomizerCheckShow lastStatus = checkStatusMap.find(rcObj.rc)->second;
+    if (lastStatus != GetCheckStatus(rcObj, slowCheckIdx))
+        ret = true;
+
+    slowCheckIdx++;
+    return ret;
+}
+
 bool ShouldUpdateChecks() {
     // TODO eventually will need to be hooked into game elements rather than just save file
     // TODO, saveCount isn't actually a thing. If not allowed to add it, will need to iterate over save bits and see if any changed 
     // TODO, or enhance hooks, but that is a LUS change
     //return lastSaveCount != gSaveContext.sohStats.saveCount;
 
-    return true;
+
+    if (CVar_GetS32("gCheckTrackerOptionPerformanceMode", 0))
+        return SlowUpdateCheck();
+    else
+        return true;
 }
 
 void UpdateChecks() {
@@ -765,6 +788,9 @@ void DrawCheckTrackerOptions(bool& open) {
             UIWidgets::EnhancementCombobox("gCheckTrackerComboButton2", buttonStrings, 14, 8);
         }
     }
+    UIWidgets::EnhancementCheckbox("Performance mode", "gCheckTrackerOptionPerformanceMode", 0);
+    UIWidgets::Tooltip("Slows down checking for updates to 1 check per frame. Only required if experiencing poor performance when using Check Tracker.");
+
     ImGui::TableNextColumn();
     
     ImGuiDrawTwoColorPickerSection("Area Incomplete",  "gCheckTrackerAreaMainIncompleteColor",   "gCheckTrackerAreaExtraIncompleteColor",  Color_Area_Incomplete_Main,   Color_Area_Incomplete_Extra,  Color_Main_Default, Color_Area_Incomplete_Extra_Default, "gCheckTrackerAreaIncompleteHide" );
