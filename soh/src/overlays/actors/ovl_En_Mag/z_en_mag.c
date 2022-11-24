@@ -38,18 +38,16 @@ const ActorInit En_Mag_InitVars = {
     NULL,
 };
 
-const u8* noControllerIndices[][2] = {
-    /* Message, Length */
-    { "NO CONTROLLER", 13 },
-    { "CONTROLLER FEHLT", 16 },
-    { "MANETTE DEBRANCHEE", 18 },
+const char* noControllerMsg[] = {
+    "NO CONTROLLER",
+    "CONTROLLER FEHLT",
+    "MANETTE DEBRANCHEE",
 };
 
-const u8* pressStartIndices[][2] = {
-    /* Message, Length */
-    { "PRESS START", 11 },
-    { "DRUCKE START", 12 },
-    { "APPUYEZ SUR START", 17 },
+const char* pressStartMsg[] = {
+    "PRESS START",
+    "DRUCKE START",
+    "APPUYEZ SUR START",
 };
 
 void EnMag_Init(Actor* thisx, PlayState* play) {
@@ -684,6 +682,17 @@ void EnMag_DrawCharTexture(Gfx** gfxp, u8* texture, s32 rectLeft, s32 rectTop) {
     *gfxp = gfx;
 }
 
+s16 GetCharArraySize(const char* str) {
+    s16 length = 0;
+    char c = str[length];
+
+    while (c != 0) {
+        length++;
+        c = str[length];
+    }
+
+    return length;
+}
 
 void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
     static s16 textAlpha = 0;
@@ -800,12 +809,12 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
                           0);
         gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, textAlpha);
 
-        length = noControllerIndices[lang][1];
+        length = GetCharArraySize(noControllerMsg[lang]);
         rectLeft = VREG(19) + 1 + ((length - 13) * -3);
         for (i = 0; i < length; i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + (noControllerIndices[lang][0][i] - '\x37') * FONT_CHAR_TEX_SIZE,
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + (noControllerMsg[lang][i] - '\x37') * FONT_CHAR_TEX_SIZE,
                                   rectLeft, YREG(10) + 172);
-            if (noControllerIndices[lang][0][i] == ' ') {
+            if (noControllerMsg[lang][i] == ' ') {
                 rectLeft += VREG(23);
             } else {
                 rectLeft += VREG(21);
@@ -818,9 +827,9 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
 
         rectLeft = VREG(19) + ((length - 13) * -3);
         for (i = 0; i < length; i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + (noControllerIndices[lang][0][i] - '\x37') * FONT_CHAR_TEX_SIZE,
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + (noControllerMsg[lang][i] - '\x37') * FONT_CHAR_TEX_SIZE,
                                   rectLeft, YREG(10) + 171);
-            if (noControllerIndices[lang][0][i] == ' ') {
+            if (noControllerMsg[lang][i] == ' ') {
                 rectLeft += VREG(23);
             } else {
                 rectLeft += VREG(21);
@@ -839,12 +848,12 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
                           0);
         gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, textAlpha);
 
-        length = pressStartIndices[lang][1];
+        length = GetCharArraySize(pressStartMsg[lang]);
         rectLeft = YREG(7) + 1 + ((length - 11) * -3);
         for (i = 0; i < length; i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + (pressStartIndices[lang][0][i] - '\x37') * FONT_CHAR_TEX_SIZE,
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + (pressStartMsg[lang][i] - '\x37') * FONT_CHAR_TEX_SIZE,
                                   rectLeft, YREG(10) + 172);
-            if (pressStartIndices[lang][0][i] == ' ') {
+            if (pressStartMsg[lang][i] == ' ') {
                 rectLeft += YREG(9);
             } else {
                 rectLeft += YREG(8);
@@ -857,9 +866,9 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
 
         rectLeft = YREG(7) + ((length - 11) * -3);
         for (i = 0; i < length; i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + (pressStartIndices[lang][0][i] - '\x37') * FONT_CHAR_TEX_SIZE,
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + (pressStartMsg[lang][i] - '\x37') * FONT_CHAR_TEX_SIZE,
                                   rectLeft, YREG(10) + 171);
-            if (pressStartIndices[lang][0][i] == ' ') {
+            if (pressStartMsg[lang][i] == ' ') {
                 rectLeft += YREG(9);
             } else {
                 rectLeft += YREG(8);
@@ -992,12 +1001,12 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
                           0);
         gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, textAlpha);
 
-        length = noControllerIndices[lang][1];
+        length = GetCharArraySize(noControllerMsg[lang]);
         rectLeft = VREG(19) + 1 + ((length - 13) * -3);
         for (i = 0; i < length; i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + (noControllerIndices[lang][0][i] - '\x37') * FONT_CHAR_TEX_SIZE, rectLeft,
-                                  YREG(10) + 172);
-            if (noControllerIndices[lang][0][i] == ' ') {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + (noControllerMsg[lang][i] - '\x37') * FONT_CHAR_TEX_SIZE,
+                                  rectLeft, YREG(10) + 172);
+            if (noControllerMsg[lang][i] == ' ') {
                 rectLeft += VREG(23);
             } else {
                 rectLeft += VREG(21);
@@ -1010,9 +1019,9 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
 
         rectLeft = VREG(19) + ((length - 13) * -3);
         for (i = 0; i < length; i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + (noControllerIndices[lang][0][i] - '\x37') * FONT_CHAR_TEX_SIZE, rectLeft,
-                                  YREG(10) + 171);
-            if (noControllerIndices[lang][0][i] == ' ') {
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + (noControllerMsg[lang][i] - '\x37') * FONT_CHAR_TEX_SIZE,
+                                  rectLeft, YREG(10) + 171);
+            if (noControllerMsg[lang][i] == ' ') {
                 rectLeft += VREG(23);
             } else {
                 rectLeft += VREG(21);
@@ -1031,12 +1040,12 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
                           0);
         gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, textAlpha);
 
-        length = pressStartIndices[lang][1];
+        length = GetCharArraySize(pressStartMsg[lang]);
         rectLeft = YREG(7) + 1 + ((length - 11) * -3);
         for (i = 0; i < length; i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + (pressStartIndices[lang][0][i] - '\x37') * FONT_CHAR_TEX_SIZE,
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + (pressStartMsg[lang][i] - '\x37') * FONT_CHAR_TEX_SIZE,
                                   rectLeft, YREG(10) + 172);
-            if (pressStartIndices[lang][0][i] == ' ') {
+            if (pressStartMsg[lang][i] == ' ') {
                 rectLeft += YREG(9);
             } else {
                 rectLeft += YREG(8);
@@ -1049,9 +1058,9 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
 
         rectLeft = YREG(7) + ((length - 11) * -3);
         for (i = 0; i < length; i++) {
-            EnMag_DrawCharTexture(&gfx, font->fontBuf + (pressStartIndices[lang][0][i] - '\x37') * FONT_CHAR_TEX_SIZE,
+            EnMag_DrawCharTexture(&gfx, font->fontBuf + (pressStartMsg[lang][i] - '\x37') * FONT_CHAR_TEX_SIZE,
                                   rectLeft, YREG(10) + 171);
-            if (pressStartIndices[lang][0][i] == ' ') {
+            if (pressStartMsg[lang][i] == ' ') {
                 rectLeft += YREG(9);
             } else {
                 rectLeft += YREG(8);
