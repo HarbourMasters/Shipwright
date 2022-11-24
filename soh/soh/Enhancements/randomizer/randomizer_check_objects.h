@@ -19,7 +19,9 @@ typedef enum {
     RCTYPE_GF_KEY, // Gerudo Fortress Keys
     RCTYPE_BOSS_KEY, // Boss Keys
     RCTYPE_GANON_BOSS_KEY, // Ganon's boss key
-    RCTYPE_SHOP, // shops/scrubs
+    RCTYPE_SHOP, // shops
+    RCTYPE_SCRUB, // scrubs
+    RCTYPE_MERCHANT, // merchants
     RCTYPE_CHEST_GAME, //todo replace this once we implement it, just using it to exclude for now
     RCTYPE_LINKS_POCKET, //todo this feels hacky
     RCTYPE_GOSSIP_STONE,

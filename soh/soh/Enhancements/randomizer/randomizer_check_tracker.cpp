@@ -322,6 +322,30 @@ void InitializeChecks() {
         return;
 
     int count = 0;
+    
+    //Link's Pocket
+    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING) {
+        s8 startingAge = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_AGE);
+        RandomizerCheckArea startingArea;
+        switch (startingAge) {
+            case RO_AGE_CHILD:
+                startingArea = RCAREA_KOKIRI_FOREST;
+                break;
+            case RO_AGE_ADULT:
+                startingArea = RCAREA_MARKET;
+                break;
+            default:
+                startingArea = RCAREA_KOKIRI_FOREST;
+                break;
+        }
+        RandomizerCheckObject linksPocket = { RC_LINKS_POCKET, RCVORMQ_BOTH, RCTYPE_LINKS_POCKET, startingArea, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, false, true, "Link's Pocket", "Link's Pocket" };
+
+        checks.push_back(linksPocket);
+        checkStatusMap.emplace(RC_LINKS_POCKET, RCSHOW_SAVED);
+        count++;
+        areaChecksTotal[startingArea]++;
+    }
+
     for (auto& [rcCheck, rcObj] : RandomizerCheckObjects::GetAllRCObjects()) {
         if (!RandomizerCheckObjects::IsVisibleInCheckTracker(rcObj))
             continue;
