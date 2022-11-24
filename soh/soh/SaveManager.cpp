@@ -610,12 +610,6 @@ void SaveManager::InitFileDebug() {
     for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys); dungeon++) {
         gSaveContext.sohStats.dungeonKeys[dungeon] = 8;
     }
-    for (int scenesIdx = 0; scenesIdx < ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered); scenesIdx++) {
-        gSaveContext.sohStats.scenesDiscovered[scenesIdx] = 0;
-    }
-    for (int entrancesIdx = 0; entrancesIdx < ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered); entrancesIdx++) {
-        gSaveContext.sohStats.entrancesDiscovered[entrancesIdx] = 0;
-    }
 
     gSaveContext.horseData.scene = SCENE_SPOT00;
     gSaveContext.horseData.pos.x = -1840;

@@ -425,6 +425,11 @@ void DemoKankyo_KillDoorOfTimeCollision(DemoKankyo* this, PlayState* play) {
 void DemoKankyo_Update(Actor* thisx, PlayState* play) {
     DemoKankyo* this = (DemoKankyo*)thisx;
     this->actionFunc(this, play);
+
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS) &&
+        thisx->params == 0x000F) { // Warp Song particles
+        Entrance_SetWarpSongEntrance();
+    }
 }
 
 void DemoKankyo_Draw(Actor* thisx, PlayState* play) {

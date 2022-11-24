@@ -201,10 +201,6 @@ void Sram_OpenSave() {
     if (gSaveContext.n64ddFlag) {
         Entrance_Init();
         Entrance_InitEntranceTrackingData();
-        if (!CVar_GetS32("gRememberSaveLocation", 0) || gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE ||
-            gSaveContext.savedSceneNum == SCENE_KAKUSIANA) {
-            Entrance_SetSavewarpEntrance();
-        }
     }
 
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);
@@ -389,6 +385,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 break;
             case 0: //Child
                 gSaveContext.linkAge = 1;
+                gSaveContext.entranceIndex = -1;
+                gSaveContext.savedSceneNum = -1;
                 break;
             default:
                 break;
