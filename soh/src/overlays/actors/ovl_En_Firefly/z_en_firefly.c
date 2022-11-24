@@ -217,8 +217,11 @@ void EnFirefly_SetupFall(EnFirefly* this) {
     this->actor.velocity.y = 0.0f;
     Animation_Change(&this->skelAnime, &gKeeseFlyAnim, 0.5f, 0.0f, 0.0f, ANIMMODE_LOOP_INTERP, -3.0f);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_FFLY_DEAD);
+
     this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
-    Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 40);
+    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+        Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 40);
+    }
     this->actionFunc = EnFirefly_Fall;
 }
 

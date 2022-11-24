@@ -801,7 +801,9 @@ void EnPeehat_Adult_SetStateDie(EnPeehat* this) {
     this->bladeRotVel = 0;
     this->isStateDieFirstUpdate = 1;
     this->actor.speedXZ = 0.0f;
-    Actor_SetColorFilter(&this->actor, 0x4000, 255, 0, 8);
+    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+        Actor_SetColorFilter(&this->actor, 0x4000, 255, 0, 8);
+    }
     this->state = PEAHAT_STATE_DYING;
     this->scaleShift = 0.0f;
     this->actor.world.rot.y = this->actor.yawTowardsPlayer;

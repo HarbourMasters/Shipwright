@@ -458,7 +458,9 @@ void func_80AFD968(EnSkb* this, PlayState* play) {
                 this->unk_281 = 0;
                 if (this->actor.colChkInfo.damageEffect == 1) {
                     if (this->unk_280 != 6) {
-                        Actor_SetColorFilter(&this->actor, 0, 0x78, 0, 0x50);
+                        if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+                            Actor_SetColorFilter(&this->actor, 0, 0x78, 0, 0x50);
+                        }
                         Actor_ApplyDamage(&this->actor);
                         EnSkb_SetupStunned(this);
                     }
@@ -475,7 +477,9 @@ void func_80AFD968(EnSkb* this, PlayState* play) {
                         }
                         phi_v1 = 25;
                     }
-                    Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, phi_v1);
+                    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+                        Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, phi_v1);
+                    }
                     if (!Actor_ApplyDamage(&this->actor)) {
                         func_80AFD7B4(this, play);
                         return;

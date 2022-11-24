@@ -161,7 +161,9 @@ void EnCrow_SetupDamaged(EnCrow* this, PlayState* play) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_KAICHO_DEAD);
 
     if (this->actor.colChkInfo.damageEffect == 3) { // Ice arrows
-        Actor_SetColorFilter(&this->actor, 0, 255, 0, 40);
+        if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+            Actor_SetColorFilter(&this->actor, 0, 255, 0, 40);
+        }
         for (i = 0; i < 8; i++) {
             iceParticlePos.x = ((i & 1 ? 7.0f : -7.0f) * scale) + this->actor.world.pos.x;
             iceParticlePos.y = ((i & 2 ? 7.0f : -7.0f) * scale) + this->actor.world.pos.y;
@@ -170,13 +172,17 @@ void EnCrow_SetupDamaged(EnCrow* this, PlayState* play) {
                                            ((Rand_ZeroOne() * 0.15f) + 0.85f) * scale);
         }
     } else if (this->actor.colChkInfo.damageEffect == 2) { // Fire arrows and Din's Fire
-        Actor_SetColorFilter(&this->actor, 0x4000, 255, 0, 40);
+        if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+            Actor_SetColorFilter(&this->actor, 0x4000, 255, 0, 40);
+        }
 
         for (i = 0; i < 4; i++) {
             EffectSsEnFire_SpawnVec3f(play, &this->actor, &this->actor.world.pos, 50.0f * scale, 0, 0, i);
         }
     } else {
-        Actor_SetColorFilter(&this->actor, 0x4000, 255, 0, 40);
+        if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+            Actor_SetColorFilter(&this->actor, 0x4000, 255, 0, 40);
+        }
     }
 
     if (this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW) {
