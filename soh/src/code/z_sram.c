@@ -385,11 +385,16 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 break;
             case 0: //Child
                 gSaveContext.linkAge = 1;
-                gSaveContext.entranceIndex = -1;
                 gSaveContext.savedSceneNum = -1;
                 break;
             default:
                 break;
+        }
+
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS)) {
+            // Override the spawn entrance so entrance rando can take control,
+            // and to prevent remember save location from breaking inital spawn
+            gSaveContext.entranceIndex = -1;
         }
 
         int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);
