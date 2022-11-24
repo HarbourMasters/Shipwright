@@ -40,6 +40,7 @@ typedef struct {
     /*      */ u32 count[COUNT_MAX];
     /*      */ u32 entrancesDiscovered[SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT];
     /*      */ u32 scenesDiscovered[SAVEFILE_SCENES_DISCOVERED_IDX_COUNT];
+    /*      */ u8 activeMaskItemId;
 } SohStats;
 
 typedef struct {

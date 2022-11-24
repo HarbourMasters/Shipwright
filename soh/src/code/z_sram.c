@@ -571,6 +571,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         if (Randomizer_GetSettingValue(RSK_STARTING_BUNNY_HOOD)) {
             gSaveContext.itemGetInf[2] |= 0x40;
             INV_CONTENT(ITEM_MASK_BUNNY) = ITEM_MASK_BUNNY;
+            gSaveContext.sohStats.activeMaskItemId = ITEM_MASK_BUNNY;
         }
 
         // complete mask quest
