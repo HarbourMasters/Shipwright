@@ -304,7 +304,9 @@ void func_80ADE28C(EnPoh* this) {
     }
     this->colliderCyl.base.acFlags &= ~AC_ON;
     this->actor.speedXZ = 5.0f;
-    Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 0x10);
+    if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+        Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 0x10);
+    }
     this->actionFunc = func_80ADEECC;
 }
 
