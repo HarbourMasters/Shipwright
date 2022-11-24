@@ -93,7 +93,11 @@ void DrawCheckTracker(bool& open) {
 
     if (doInitialize)
         InitializeChecks();
-    
+    else if (gPlayState == nullptr || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2) {
+        Teardown();
+        return;
+    }
+
     if (CVar_GetS32("gCheckTrackerWindowType", 1) == 0) {
         if (CVar_GetS32("gCheckTrackerShowOnlyPaused", 0) == 1)
             if (gPlayState == nullptr || gPlayState->pauseCtx.state == 0)
@@ -114,10 +118,6 @@ void DrawCheckTracker(bool& open) {
 
     if (!initialized) {
         ImGui::Text("Waiting for file load...");
-        EndFloatWindows();
-        return;
-    } else if (gPlayState == nullptr || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2) {
-        Teardown();
         EndFloatWindows();
         return;
     }
@@ -322,6 +322,30 @@ void InitializeChecks() {
         return;
 
     int count = 0;
+    
+    //Link's Pocket
+    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING) {
+        s8 startingAge = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_AGE);
+        RandomizerCheckArea startingArea;
+        switch (startingAge) {
+            case RO_AGE_CHILD:
+                startingArea = RCAREA_KOKIRI_FOREST;
+                break;
+            case RO_AGE_ADULT:
+                startingArea = RCAREA_MARKET;
+                break;
+            default:
+                startingArea = RCAREA_KOKIRI_FOREST;
+                break;
+        }
+        RandomizerCheckObject linksPocket = { RC_LINKS_POCKET, RCVORMQ_BOTH, RCTYPE_LINKS_POCKET, startingArea, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, false, true, "Link's Pocket", "Link's Pocket" };
+
+        checks.push_back(linksPocket);
+        checkStatusMap.emplace(RC_LINKS_POCKET, RCSHOW_SAVED);
+        count++;
+        areaChecksTotal[startingArea]++;
+    }
+
     for (auto& [rcCheck, rcObj] : RandomizerCheckObjects::GetAllRCObjects()) {
         if (!RandomizerCheckObjects::IsVisibleInCheckTracker(rcObj))
             continue;
@@ -349,6 +373,26 @@ void Teardown() {
         areaChecksTotal[i] = 0;
         areaChecksGotten[i] = 0;
     }
+    doInitialize = true;
+}
+
+int slowCheckIdx = 0;
+// Checks only one check every call
+bool SlowUpdateCheck() {
+    bool ret = false;
+    auto checkIt = checks.begin() + slowCheckIdx;
+    if (checkIt == checks.end()) {
+        slowCheckIdx = 0;
+        return false;
+    }
+
+    RandomizerCheckObject rcObj = *checkIt;
+    RandomizerCheckShow lastStatus = checkStatusMap.find(rcObj.rc)->second;
+    if (lastStatus != GetCheckStatus(rcObj, slowCheckIdx))
+        ret = true;
+
+    slowCheckIdx++;
+    return ret;
 }
 
 bool ShouldUpdateChecks() {
@@ -357,7 +401,11 @@ bool ShouldUpdateChecks() {
     // TODO, or enhance hooks, but that is a LUS change
     //return lastSaveCount != gSaveContext.sohStats.saveCount;
 
-    return true;
+
+    if (CVar_GetS32("gCheckTrackerOptionPerformanceMode", 0))
+        return SlowUpdateCheck();
+    else
+        return true;
 }
 
 void UpdateChecks() {
@@ -687,8 +735,8 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
 
 const char* windowType[] = { "Floating", "Window" };
 const char* displayType[] = { "Always", "Combo Button Hold" };
-const char* buttonStrings[] = { "A", "B", "C-Up",  "C-Down", "C-Left", "C-Right", "L",
-                                "Z", "R", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
+const char* buttonStrings[] = { "A Button", "B Button", "C-Up",  "C-Down", "C-Left", "C-Right", "L Button",
+                                "Z Button", "R Button", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
 void DrawCheckTrackerOptions(bool& open) {
     if (!open) {
         CVar_SetS32("gCheckTrackerSettingsEnabled", 0);
@@ -732,14 +780,17 @@ void DrawCheckTrackerOptions(bool& open) {
         ImGui::SameLine();
         UIWidgets::EnhancementCombobox("gCheckTrackerDisplayType", displayType, 2, 0);
         if (CVar_GetS32("gCheckTrackerDisplayType", 0) > 0) {
-            ImGui::Text("Combo Button 2");
+            ImGui::Text("Combo Button 1");
             ImGui::SameLine();
             UIWidgets::EnhancementCombobox("gCheckTrackerComboButton1", buttonStrings, 14, 6);
-            ImGui::Text("Combo Button 1");
+            ImGui::Text("Combo Button 2");
             ImGui::SameLine();
             UIWidgets::EnhancementCombobox("gCheckTrackerComboButton2", buttonStrings, 14, 8);
         }
     }
+    UIWidgets::EnhancementCheckbox("Performance mode", "gCheckTrackerOptionPerformanceMode", 0);
+    UIWidgets::Tooltip("Slows down checking for updates to 1 check per frame. Only required if experiencing poor performance when using Check Tracker.");
+
     ImGui::TableNextColumn();
     
     ImGuiDrawTwoColorPickerSection("Area Incomplete",  "gCheckTrackerAreaMainIncompleteColor",   "gCheckTrackerAreaExtraIncompleteColor",  Color_Area_Incomplete_Main,   Color_Area_Incomplete_Extra,  Color_Main_Default, Color_Area_Incomplete_Extra_Default, "gCheckTrackerAreaIncompleteHide" );
