@@ -972,7 +972,11 @@ bool RandomizerCheckObjects::IsVisibleInCheckTracker(RandomizerCheckObject rcObj
 
     return
         (rcObj.rcArea != RCAREA_INVALID) && // don't show Invalid locations
-        (rcObj.vOrMQ != RCVORMQ_MQ) && // TODO: don't show MQ checks until check tracker supports MQ
+        (!AreaIsDungeon(rcObj.rcArea) || 
+            rcObj.vOrMQ == RCVORMQ_BOTH ||
+            rcObj.vOrMQ == RCVORMQ_MQ && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) ||
+            rcObj.vOrMQ == RCVORMQ_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId)
+        ) &&
         (rcObj.rcType != RCTYPE_SHOP || gRandomizeShopsanity > RO_SHOPSANITY_ZERO_ITEMS) &&
         (rcObj.rcType != RCTYPE_SCRUB || gRandomizeShuffleScrubs > RO_SCRUBS_OFF) &&
         (rcObj.rcType != RCTYPE_MERCHANT || gRandomizeShuffleMerchants > RO_SHUFFLE_MERCHANTS_OFF) &&
