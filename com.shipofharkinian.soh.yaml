@@ -25,8 +25,8 @@ modules:
     - cmake --install build --config Release --prefix ${FLATPAK_DEST}/bin
     - mkdir ${FLATPAK_DEST}/share/applications
     - cp scripts/linux/appimage/soh.desktop ${FLATPAK_DEST}/share/applications
-    - mkdir ${FLATPAK_DEST}/share/appdata
-    - cp ${FLATPAK_ID}.appdata.xml /app/share/appdata/${FLATPAK_ID}.appdata.xml
+    - mkdir ${FLATPAK_DEST}/share/metainfo
+    - cp ${FLATPAK_ID}.metainfo.xml /app/share/appdata/${FLATPAK_ID}.metainfo.xml
     build-options: 
       build-args: 
         - --share=network
