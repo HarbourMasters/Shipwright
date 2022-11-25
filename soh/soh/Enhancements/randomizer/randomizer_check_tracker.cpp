@@ -71,6 +71,8 @@ bool initialized = false;
 bool doInitialize = false;
 std::map<RandomizerCheck, RandomizerCheckShow> checkStatusMap;
 u32 areasFullyChecked = 0;
+u32 areasSpoiled = 0;
+bool showVOrMQ;
 s8 areaChecksTotal[32];   //| For sorting and showing
 s8 areaChecksGotten[32];  //|     "Kokiri Forest (4/9)"
 std::vector<RandomizerCheckObject> checks;
@@ -135,6 +137,7 @@ void DrawCheckTracker(bool& open) {
          sceneId != SCENE_SHOP1 && sceneId != SCENE_SYATEKIJYOU // Don't move for Bazaar/Gallery, as it moves between Kak and Market
          );
     previousArea = currentArea;
+    areasSpoiled |= (1 << currentArea);
 
     //Only update the checks if something has changed
     if (ShouldUpdateChecks()) {
@@ -190,6 +193,7 @@ void DrawCheckTracker(bool& open) {
     bool hideComplete = CVar_GetS32("gCheckTrackerAreaCompleteHide", 0);
     bool collapseLogic;
     bool doingCollapseOrExpand = optExpandAll || optCollapseAll;
+    bool isThisAreaSpoiled;
     RandomizerCheckArea lastArea = RCAREA_INVALID;
     Color_RGBA8 areaCompleteColor = CVar_GetRGBA("gCheckTrackerAreaMainCompleteColor", Color_Main_Default);
     Color_RGBA8 areaIncompleteColor = CVar_GetRGBA("gCheckTrackerAreaMainIncompleteColor", Color_Main_Default);
@@ -258,7 +262,22 @@ void DrawCheckTracker(bool& open) {
                 ImGui::PopStyleColor();
                 ImGui::SameLine();
                 ImGui::PushStyleColor(ImGuiCol_Text, Color_RGBA8_to_ImVec4(extraColor));
-                ImGui::Text("(%d/%d)", areaChecksGotten[obj.rcArea], areaChecksTotal[obj.rcArea]);
+
+                isThisAreaSpoiled = areasSpoiled & areaMask || CVar_GetS32("gCheckTrackerOptionMQSpoilers", 0);
+
+                if (isThisAreaSpoiled) {
+                    if (showVOrMQ && RandomizerCheckObjects::AreaIsDungeon(obj.rcArea)) {
+                        if (OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(obj.sceneId))
+                            ImGui::Text("(%d/%d) - MQ", areaChecksGotten[obj.rcArea], areaChecksTotal[obj.rcArea]);
+                        else
+                            ImGui::Text("(%d/%d) - Vanilla", areaChecksGotten[obj.rcArea], areaChecksTotal[obj.rcArea]);
+                    } else {
+                        ImGui::Text("(%d/%d)", areaChecksGotten[obj.rcArea], areaChecksTotal[obj.rcArea]);
+                    }
+                } else {
+                    ImGui::Text("???", areaChecksGotten[obj.rcArea], areaChecksTotal[obj.rcArea]);
+                }
+
                 ImGui::PopStyleColor();
 
                 //Keep areas loaded between transitions
@@ -269,7 +288,7 @@ void DrawCheckTracker(bool& open) {
             areaMask <<= 1;
         }
 
-        if (doDraw)
+        if (doDraw && isThisAreaSpoiled)
             DrawLocation(obj, &checkStatusMap.find(obj.rc)->second);
     }
 
@@ -354,7 +373,15 @@ void InitializeChecks() {
         checkStatusMap.emplace(rcObj.rc, RCSHOW_UNCHECKED);
         count++;
         areaChecksTotal[rcObj.rcArea]++;
+
+        if (areaChecksGotten[rcObj.rcArea] != 0 || RandomizerCheckObjects::AreaIsOverworld(rcObj.rcArea))
+            areasSpoiled |= (1 << rcObj.rcArea);
     }
+
+    showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) > 0);
+    //Bug: the above will spoil that everything is vanilla if the random count rolled 0. 
+    // Should use the below instead, but the setting isn't currently saved to the savefile
+    //showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) != RO_GENERIC_OFF);
 
     UpdateChecks();
     UpdateOrdering(true);
@@ -428,6 +455,9 @@ void UpdateChecks() {
                 areasFullyChecked |= (1 << rcObj.rcArea);
             else
                 areasFullyChecked &= (0xFFFFFFFF - (1 << rcObj.rcArea));
+
+            if (areaChecksGotten[rcObj.rcArea] != 0 || RandomizerCheckObjects::AreaIsOverworld(rcObj.rcArea))
+                areasSpoiled |= (1 << rcObj.rcArea);
         }
 
 
@@ -774,8 +804,8 @@ void DrawCheckTrackerOptions(bool& open) {
     UIWidgets::EnhancementCombobox("gCheckTrackerWindowType", windowType, 2, 1);
 
     if (CVar_GetS32("gCheckTrackerWindowType", 0) == 0) {
-        UIWidgets::EnhancementCheckbox("Enable Dragging", "gCheckTrackerHudEditMode", 0);
-        UIWidgets::EnhancementCheckbox("Only enable while paused", "gCheckTrackerShowOnlyPaused", 0);
+        UIWidgets::EnhancementCheckbox("Enable Dragging", "gCheckTrackerHudEditMode");
+        UIWidgets::EnhancementCheckbox("Only enable while paused", "gCheckTrackerShowOnlyPaused");
         ImGui::Text("Display Mode");
         ImGui::SameLine();
         UIWidgets::EnhancementCombobox("gCheckTrackerDisplayType", displayType, 2, 0);
@@ -788,11 +818,13 @@ void DrawCheckTrackerOptions(bool& open) {
             UIWidgets::EnhancementCombobox("gCheckTrackerComboButton2", buttonStrings, 14, 8);
         }
     }
-    UIWidgets::EnhancementCheckbox("Performance mode", "gCheckTrackerOptionPerformanceMode", 0);
+    UIWidgets::EnhancementCheckbox("Performance mode", "gCheckTrackerOptionPerformanceMode");
     UIWidgets::Tooltip("Slows down checking for updates to 1 check per frame. Only required if experiencing poor performance when using Check Tracker.");
+    UIWidgets::EnhancementCheckbox("Vanilla/MQ Dungeon Spoilers", "gCheckTrackerOptionMQSpoilers");
+    UIWidgets::Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. Otherwise, Vanilla/MQ dungeon locations must be unlocked. ");
 
     ImGui::TableNextColumn();
-    
+
     ImGuiDrawTwoColorPickerSection("Area Incomplete",  "gCheckTrackerAreaMainIncompleteColor",   "gCheckTrackerAreaExtraIncompleteColor",  Color_Area_Incomplete_Main,   Color_Area_Incomplete_Extra,  Color_Main_Default, Color_Area_Incomplete_Extra_Default, "gCheckTrackerAreaIncompleteHide" );
     ImGuiDrawTwoColorPickerSection("Area Complete",    "gCheckTrackerAreaMainCompleteColor",     "gCheckTrackerAreaExtraCompleteColor",    Color_Area_Complete_Main,     Color_Area_Complete_Extra,    Color_Main_Default, Color_Area_Complete_Extra_Default,   "gCheckTrackerAreaCompleteHide"   );
     ImGuiDrawTwoColorPickerSection("Unchecked",        "gCheckTrackerUncheckedMainColor",        "gCheckTrackerUncheckedExtraColor",       Color_Unchecked_Main,         Color_Unchecked_Extra,        Color_Main_Default, Color_Unchecked_Extra_Default,       "gCheckTrackerUncheckedHide"      );
