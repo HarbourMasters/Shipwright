@@ -113,10 +113,10 @@ const EntranceData entranceData[] = {
     { 0x00FC, SINGLE_SCENE_INFO(0x5B), "Lost Woods",               "SFM",                      ENTRANCE_GROUP_LOST_WOODS, ENTRANCE_GROUP_SFM,           ENTRANCE_TYPE_OVERWORLD, "lw"},
     { 0x071A, SINGLE_SCENE_INFO(0x5B), "Lost Woods",               "LW Near Shortcuts Grotto", ENTRANCE_GROUP_LOST_WOODS, ENTRANCE_GROUP_LOST_WOODS,    ENTRANCE_TYPE_GROTTO,    "lw,chest", 1},
     { 0x0719, SINGLE_SCENE_INFO(0x5B), "Lost Woods",               "LW Scrubs Grotto",         ENTRANCE_GROUP_LOST_WOODS, ENTRANCE_GROUP_LOST_WOODS,    ENTRANCE_TYPE_GROTTO,    "lw", 1},
-    { 0x0720, SINGLE_SCENE_INFO(0x5B), "Lost Woods",               "Deku Theater",             ENTRANCE_GROUP_LOST_WOODS, ENTRANCE_GROUP_LOST_WOODS,    ENTRANCE_TYPE_GROTTO,    "lw", 1},
+    { 0x0720, SINGLE_SCENE_INFO(0x5B), "Lost Woods",               "Deku Theater",             ENTRANCE_GROUP_LOST_WOODS, ENTRANCE_GROUP_LOST_WOODS,    ENTRANCE_TYPE_GROTTO,    "lw,mask,stage", 1},
     { 0x081A, {{ 0x3E, 0x00 }},        "LW Near Shortcuts Grotto", "Lost Woods",               ENTRANCE_GROUP_LOST_WOODS, ENTRANCE_GROUP_LOST_WOODS,    ENTRANCE_TYPE_GROTTO,    "lw,chest"},
     { 0x0819, {{ 0x3E, 0x07 }},        "LW Scrubs Grotto",         "Lost Woods",               ENTRANCE_GROUP_LOST_WOODS, ENTRANCE_GROUP_LOST_WOODS,    ENTRANCE_TYPE_GROTTO,    "lw"},
-    { 0x0820, {{ 0x3E, 0x0C }},        "Deku Theater",             "Lost Woods",               ENTRANCE_GROUP_LOST_WOODS, ENTRANCE_GROUP_LOST_WOODS,    ENTRANCE_TYPE_GROTTO,    "lw,mask"},
+    { 0x0820, {{ 0x3E, 0x0C }},        "Deku Theater",             "Lost Woods",               ENTRANCE_GROUP_LOST_WOODS, ENTRANCE_GROUP_LOST_WOODS,    ENTRANCE_TYPE_GROTTO,    "lw,mask,stage"},
 
     // Sacred Forest Meadow
     { 0x01A9, SINGLE_SCENE_INFO(0x56), "SFM",               "Lost Woods",        ENTRANCE_GROUP_SFM, ENTRANCE_GROUP_LOST_WOODS, ENTRANCE_TYPE_OVERWORLD, "lw"},
@@ -136,7 +136,7 @@ const EntranceData entranceData[] = {
     { 0x02FD, SINGLE_SCENE_INFO(0x52), "Kakariko",              "Carpenter Boss House",  ENTRANCE_GROUP_KAKARIKO, ENTRANCE_GROUP_KAKARIKO,             ENTRANCE_TYPE_INTERIOR,  "", 1},
     { 0x0550, SINGLE_SCENE_INFO(0x52), "Kakariko",              "House of Skulltula",    ENTRANCE_GROUP_KAKARIKO, ENTRANCE_GROUP_KAKARIKO,             ENTRANCE_TYPE_INTERIOR,  "", 1},
     { 0x039C, SINGLE_SCENE_INFO(0x52), "Kakariko",              "Impa's House Front",    ENTRANCE_GROUP_KAKARIKO, ENTRANCE_GROUP_KAKARIKO,             ENTRANCE_TYPE_INTERIOR,  "", 1},
-    { 0x05C8, SINGLE_SCENE_INFO(0x52), "Kakariko",              "Impa's House Back",     ENTRANCE_GROUP_KAKARIKO, ENTRANCE_GROUP_KAKARIKO,             ENTRANCE_TYPE_INTERIOR,  "", 1},
+    { 0x05C8, SINGLE_SCENE_INFO(0x52), "Kakariko",              "Impa's House Back",     ENTRANCE_GROUP_KAKARIKO, ENTRANCE_GROUP_KAKARIKO,             ENTRANCE_TYPE_INTERIOR,  "cow", 1},
     { 0x0453, SINGLE_SCENE_INFO(0x52), "Kakariko",              "Windmill",              ENTRANCE_GROUP_KAKARIKO, ENTRANCE_GROUP_KAKARIKO,             ENTRANCE_TYPE_INTERIOR,  "", 1},
     { 0x003B, SINGLE_SCENE_INFO(0x52), "Kakariko",              "Kak Shooting Gallery",  ENTRANCE_GROUP_KAKARIKO, ENTRANCE_GROUP_KAKARIKO,             ENTRANCE_TYPE_INTERIOR,  "adult", 1},
     { 0x0072, SINGLE_SCENE_INFO(0x52), "Kakariko",              "Granny's Potion Shop",  ENTRANCE_GROUP_KAKARIKO, ENTRANCE_GROUP_KAKARIKO,             ENTRANCE_TYPE_INTERIOR,  "", 1},
@@ -149,7 +149,7 @@ const EntranceData entranceData[] = {
     { 0x0349, SINGLE_SCENE_INFO(0x2A), "Carpenter Boss House",  "Kakariko",              ENTRANCE_GROUP_KAKARIKO, ENTRANCE_GROUP_KAKARIKO,             ENTRANCE_TYPE_INTERIOR},
     { 0x04EE, SINGLE_SCENE_INFO(0x50), "House of Skulltula",    "Kakariko",              ENTRANCE_GROUP_KAKARIKO, ENTRANCE_GROUP_KAKARIKO,             ENTRANCE_TYPE_INTERIOR},
     { 0x0345, SINGLE_SCENE_INFO(0x37), "Impa's House Front",    "Kakariko",              ENTRANCE_GROUP_KAKARIKO, ENTRANCE_GROUP_KAKARIKO,             ENTRANCE_TYPE_INTERIOR},
-    { 0x05DC, SINGLE_SCENE_INFO(0x37), "Impa's House Back",     "Kakariko",              ENTRANCE_GROUP_KAKARIKO, ENTRANCE_GROUP_KAKARIKO,             ENTRANCE_TYPE_INTERIOR},
+    { 0x05DC, SINGLE_SCENE_INFO(0x37), "Impa's House Back",     "Kakariko",              ENTRANCE_GROUP_KAKARIKO, ENTRANCE_GROUP_KAKARIKO,             ENTRANCE_TYPE_INTERIOR,  "cow"},
     { 0x0351, SINGLE_SCENE_INFO(0x48), "Windmill",              "Kakariko",              ENTRANCE_GROUP_KAKARIKO, ENTRANCE_GROUP_KAKARIKO,             ENTRANCE_TYPE_INTERIOR},
     { 0x0463, {{ 0x42, 0x00 }},        "Kak Shooting Gallery",  "Kakariko",              ENTRANCE_GROUP_KAKARIKO, ENTRANCE_GROUP_KAKARIKO,             ENTRANCE_TYPE_INTERIOR},
     { 0x034D, SINGLE_SCENE_INFO(0x4E), "Granny's Potion Shop",  "Kakariko",              ENTRANCE_GROUP_KAKARIKO, ENTRANCE_GROUP_KAKARIKO,             ENTRANCE_TYPE_INTERIOR},
@@ -207,7 +207,7 @@ const EntranceData entranceData[] = {
     { 0x037C, SINGLE_SCENE_INFO(0x62), "Goron City",        "Goron Shop",        ENTRANCE_GROUP_GORON_CITY, ENTRANCE_GROUP_GORON_CITY,            ENTRANCE_TYPE_INTERIOR,  "gc", 1},
     { 0x0707, SINGLE_SCENE_INFO(0x62), "Goron City",        "Goron City Grotto", ENTRANCE_GROUP_GORON_CITY, ENTRANCE_GROUP_GORON_CITY,            ENTRANCE_TYPE_GROTTO,    "gc,scrubs", 1},
     { 0x03FC, SINGLE_SCENE_INFO(0x2E), "Goron Shop",        "Goron City",        ENTRANCE_GROUP_GORON_CITY, ENTRANCE_GROUP_GORON_CITY,            ENTRANCE_TYPE_INTERIOR,  "gc"},
-    { 0x0807, {{ 0x3E, 0x04 }},        "Goron City Grotto", "Goron City",        ENTRANCE_GROUP_GORON_CITY, ENTRANCE_GROUP_GORON_CITY,            ENTRANCE_TYPE_GROTTO,    "gc"},
+    { 0x0807, {{ 0x3E, 0x04 }},        "Goron City Grotto", "Goron City",        ENTRANCE_GROUP_GORON_CITY, ENTRANCE_GROUP_GORON_CITY,            ENTRANCE_TYPE_GROTTO,    "gc,scrubs"},
 
     // Zora's River
     { 0x0181, SINGLE_SCENE_INFO(0x54), "ZR",               "Hyrule Field",     ENTRANCE_GROUP_ZORAS_RIVER, ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_TYPE_OVERWORLD, "hf"},
@@ -250,7 +250,7 @@ const EntranceData entranceData[] = {
     { 0x070E, SINGLE_SCENE_INFO(0x51), "Hyrule Field",           "HF Near Kak Grotto",     ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_GROTTO,    "spider", 1},
     { 0x070D, SINGLE_SCENE_INFO(0x51), "Hyrule Field",           "HF Tektite Grotto",      ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_GROTTO,    "water", 1},
     { 0x070F, SINGLE_SCENE_INFO(0x51), "Hyrule Field",           "HF Fairy Grotto",        ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_GROTTO,    "", 1},
-    { 0x0711, SINGLE_SCENE_INFO(0x51), "Hyrule Field",           "HF Cow Grotto",          ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_GROTTO,    "", 1},
+    { 0x0711, SINGLE_SCENE_INFO(0x51), "Hyrule Field",           "HF Cow Grotto",          ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_GROTTO,    "webbed", 1},
     { 0x0713, SINGLE_SCENE_INFO(0x51), "Hyrule Field",           "HF Open Grotto",         ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_GROTTO,    "chest", 1},
     { 0x0712, SINGLE_SCENE_INFO(0x51), "Hyrule Field",           "HF Inside Fence Grotto", ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_GROTTO,    "scrubs", 1},
     { 0x0714, SINGLE_SCENE_INFO(0x51), "Hyrule Field",           "HF Southeast Grotto",    ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_GROTTO,    "chest", 1},
@@ -258,7 +258,7 @@ const EntranceData entranceData[] = {
     { 0x080E, {{ 0x3E, 0x01 }},        "HF Near Kak Grotto",     "Hyrule Field",           ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_GROTTO,    "spider"},
     { 0x080D, {{ 0x3E, 0x0B }},        "HF Tektite Grotto",      "Hyrule Field",           ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_GROTTO,    "water"},
     { 0x080F, {{ 0x3C, 0x00 }},        "HF Fairy Grotto",        "Hyrule Field",           ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_GROTTO},
-    { 0x0811, {{ 0x3E, 0x05 }},        "HF Cow Grotto",          "Hyrule Field",           ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_GROTTO},
+    { 0x0811, {{ 0x3E, 0x05 }},        "HF Cow Grotto",          "Hyrule Field",           ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_GROTTO,    "webbed"},
     { 0x0813, {{ 0x3E, 0x00 }},        "HF Open Grotto",         "Hyrule Field",           ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_GROTTO,    "chest"},
     { 0x0812, {{ 0x3E, 0x02 }},        "HF Inside Fence Grotto", "Hyrule Field",           ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_GROTTO,    "srubs"},
     { 0x0814, {{ 0x3E, 0x00 }},        "HF Southeast Grotto",    "Hyrule Field",           ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_GROTTO,    "chest"},
@@ -266,12 +266,12 @@ const EntranceData entranceData[] = {
     // Lon Lon Ranch
     { 0x01F9, SINGLE_SCENE_INFO(0x63), "Lon Lon Ranch", "Hyrule Field",  ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_OVERWORLD, "hf"},
     { 0x004F, SINGLE_SCENE_INFO(0x63), "Lon Lon Ranch", "Talon's House", ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_TYPE_INTERIOR,  "llr", 1},
-    { 0x02F9, SINGLE_SCENE_INFO(0x63), "Lon Lon Ranch", "LLR Stables",   ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_TYPE_INTERIOR,  "", 1},
-    { 0x05D0, SINGLE_SCENE_INFO(0x63), "Lon Lon Ranch", "LLR Tower",     ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_TYPE_INTERIOR,  "", 1},
+    { 0x02F9, SINGLE_SCENE_INFO(0x63), "Lon Lon Ranch", "LLR Stables",   ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_TYPE_INTERIOR,  "cow", 1},
+    { 0x05D0, SINGLE_SCENE_INFO(0x63), "Lon Lon Ranch", "LLR Tower",     ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_TYPE_INTERIOR,  "cow", 1},
     { 0x0715, SINGLE_SCENE_INFO(0x63), "Lon Lon Ranch", "LLR Grotto",    ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_TYPE_GROTTO,    "scrubs", 1},
     { 0x0378, {{ 0x4C, 0x00 }},        "Talon's House", "Lon Lon Ranch", ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_TYPE_INTERIOR,  "llr"},
-    { 0x042F, SINGLE_SCENE_INFO(0x36), "LLR Stables",   "Lon Lon Ranch", ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_TYPE_INTERIOR},
-    { 0x05D4, {{ 0x4C, 0x01 }},        "LLR Tower",     "Lon Lon Ranch", ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_TYPE_INTERIOR},
+    { 0x042F, SINGLE_SCENE_INFO(0x36), "LLR Stables",   "Lon Lon Ranch", ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_TYPE_INTERIOR,  "cow"},
+    { 0x05D4, {{ 0x4C, 0x01 }},        "LLR Tower",     "Lon Lon Ranch", ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_TYPE_INTERIOR,  "cow"},
     { 0x0815, {{ 0x3E, 0x04 }},        "LLR Grotto",    "Lon Lon Ranch", ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_TYPE_GROTTO,    "scrubs"},
 
     // Lake Hylia
@@ -317,7 +317,7 @@ const EntranceData entranceData[] = {
     // Market
     { 0x01FD, {SCENE_NO_SPAWN(0x1B), SCENE_NO_SPAWN(0x1C), SCENE_NO_SPAWN(0x1D)}, "Market Entrance",   "Hyrule Field",        ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_HYRULE_FIELD,  ENTRANCE_TYPE_OVERWORLD, "hf"},
     { 0x00B1, {SCENE_NO_SPAWN(0x1B), SCENE_NO_SPAWN(0x1C), SCENE_NO_SPAWN(0x1D)}, "Market Entrance",   "Market",              ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_OVERWORLD},
-    { 0x007E, {SCENE_NO_SPAWN(0x1B), SCENE_NO_SPAWN(0x1C), SCENE_NO_SPAWN(0x1D)}, "Market Entrance",   "Guard House",         ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "", 1},
+    { 0x007E, {SCENE_NO_SPAWN(0x1B), SCENE_NO_SPAWN(0x1C), SCENE_NO_SPAWN(0x1D)}, "Market Entrance",   "Guard House",         ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "pots,poe", 1},
     { 0x0033, {SCENE_NO_SPAWN(0x20), SCENE_NO_SPAWN(0x21), SCENE_NO_SPAWN(0x22), SCENE_NO_SPAWN(0x1E), SCENE_NO_SPAWN(0x1F)}, "Market",              "Market Entrance",        ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_OVERWORLD},
     { 0x0138, {SCENE_NO_SPAWN(0x20), SCENE_NO_SPAWN(0x21), SCENE_NO_SPAWN(0x22), SCENE_NO_SPAWN(0x1E), SCENE_NO_SPAWN(0x1F)}, "Market",              "HC Grounds / OGC",       ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_OVERWORLD, "outside ganon's castle"},
     { 0x0171, {SCENE_NO_SPAWN(0x20), SCENE_NO_SPAWN(0x21), SCENE_NO_SPAWN(0x22), SCENE_NO_SPAWN(0x1E), SCENE_NO_SPAWN(0x1F)}, "Market",              "Outside Temple of Time", ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_OVERWORLD},
@@ -329,7 +329,7 @@ const EntranceData entranceData[] = {
     { 0x052C, {SCENE_NO_SPAWN(0x20), SCENE_NO_SPAWN(0x21), SCENE_NO_SPAWN(0x22), SCENE_NO_SPAWN(0x1E), SCENE_NO_SPAWN(0x1F)}, "Market",              "MK Bazaar",              ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "shop", 1},
     { 0x0388, {SCENE_NO_SPAWN(0x20), SCENE_NO_SPAWN(0x21), SCENE_NO_SPAWN(0x22), SCENE_NO_SPAWN(0x1E), SCENE_NO_SPAWN(0x1F)}, "Market",              "MK Potion Shop",         ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "", 1},
     { 0x0528, {SCENE_NO_SPAWN(0x20), SCENE_NO_SPAWN(0x21), SCENE_NO_SPAWN(0x22), SCENE_NO_SPAWN(0x1E), SCENE_NO_SPAWN(0x1F)}, "Market",              "Bombchu Shop",           ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "", 1},
-    { 0x026E, {{ 0x4D }},              "Guard House",                             "Market Entrance",        ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,      ENTRANCE_TYPE_INTERIOR},
+    { 0x026E, {{ 0x4D }},              "Guard House",                             "Market Entrance",        ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,      ENTRANCE_TYPE_INTERIOR, "pots,poe"},
     { 0x01CD, {{ 0x42, 0x01 }},        "MK Shooting Gallery",                     "Market",                 ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,      ENTRANCE_TYPE_INTERIOR},
     { 0x03BC, SINGLE_SCENE_INFO(0x4B), "Bombchu Bowling",                         "Market",                 ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,      ENTRANCE_TYPE_INTERIOR},
     { 0x01D5, SINGLE_SCENE_INFO(0x10), "Treasure Chest Game",                     "Market",                 ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,      ENTRANCE_TYPE_INTERIOR},
@@ -343,7 +343,7 @@ const EntranceData entranceData[] = {
     { 0x0472, SINGLE_SCENE_INFO(0x43), "Temple of Time",                          "Outside Temple of Time", ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,      ENTRANCE_TYPE_INTERIOR, "tot"},
 
     // Hyrule Castle
-    { 0x025A, {SCENE_NO_SPAWN(0x5F), SCENE_NO_SPAWN(0x64)}, "HC Grounds / OGC",               "Market",                      ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_MARKET, ENTRANCE_TYPE_OVERWORLD, "outside ganon's castle"},
+    { 0x025A, {SCENE_NO_SPAWN(0x5F), SCENE_NO_SPAWN(0x64)},        "HC Grounds / OGC",         "Market",                     ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_MARKET, ENTRANCE_TYPE_OVERWORLD, "outside ganon's castle"},
     { 0x0578, SINGLE_SCENE_INFO(0x5F), "HC Grounds",               "HC Great Fairy Fountain",  ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_INTERIOR, "", 1},
     { 0x070C, SINGLE_SCENE_INFO(0x5F), "HC Grounds",               "HC Storms Grotto",         ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_GROTTO,   "bombable", 1},
     { 0x0340, {{ 0x3D, 0x01 }},        "HC Great Fairy Fountain",  "HC Grounds",               ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_INTERIOR},
@@ -608,63 +608,79 @@ void DrawEntranceTracker(bool& open) {
     // Begin tracker settings
     ImGui::SetNextItemOpen(false, ImGuiCond_Once);
     if (ImGui::TreeNode("Tracker Settings")) {
-        ImGui::TextWrapped("The entrance tracker will only track shuffled entrances");
-        UIWidgets::PaddedSeparator();
+        // Reduce indentation from the tree node for the table
+        ImGui::SetCursorPosX((ImGui::GetCursorPosX() / 2) + 4.0f);
 
-        ImGui::SetCursorPosX(8.0f);
-
-        if (ImGui::BeginTable("entranceTrackerSettings", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp)) {
+        if (ImGui::BeginTable("entranceTrackerSettings", 1, ImGuiTableFlags_BordersInnerH)) {
 
             ImGui::TableNextColumn();
 
-            ImGui::Text("Sort By");
-            UIWidgets::EnhancementRadioButton("To", "gEntranceTrackerSortBy", 0);
-            UIWidgets::Tooltip("Sort entrances by the original source entrance");
-            UIWidgets::EnhancementRadioButton("From", "gEntranceTrackerSortBy", 1);
-            UIWidgets::Tooltip("Sort entrances by the overrided destination");
-
-            UIWidgets::Spacer(2.0f);
-
-            ImGui::Text("List Items");
-            UIWidgets::PaddedEnhancementCheckbox("Auto scroll", "gEntranceTrackerAutoScroll", true, false);
-            UIWidgets::Tooltip("Automatically scroll to the first aviable entrance in the current scene");
-            UIWidgets::PaddedEnhancementCheckbox("Highlight previous", "gEntranceTrackerHighlightPrevious", true, false);
-            UIWidgets::Tooltip("Highlight the previous entrance that Link came from");
-            UIWidgets::PaddedEnhancementCheckbox("Highlight available", "gEntranceTrackerHighlightAvailable", true, false);
-            UIWidgets::Tooltip("Highlight available entrances in the current scene");
-            UIWidgets::PaddedEnhancementCheckbox("Hide undiscovered", "gEntranceTrackerCollapseUndiscovered", true, false);
-            UIWidgets::Tooltip("Collapse undiscovered entrances towards the bottom of each group");
+            UIWidgets::Spacer(0);
+            ImGui::TextWrapped("The entrance tracker will only track shuffled entrances");
+            UIWidgets::Spacer(0);
 
             ImGui::TableNextColumn();
 
-            ImGui::Text("Group By");
-            UIWidgets::EnhancementRadioButton("Area", "gEntranceTrackerGroupBy", 0);
-            UIWidgets::Tooltip("Group entrances by their area");
-            UIWidgets::EnhancementRadioButton("Type", "gEntranceTrackerGroupBy", 1);
-            UIWidgets::Tooltip("Group entrances by their entrance type");
+            if (ImGui::BeginTable("entranceTrackerSubSettings", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp)) {
 
-            UIWidgets::Spacer(2.0f);
+                ImGui::TableNextColumn();
 
-            ImGui::Text("Spoiler Reveal");
-            UIWidgets::PaddedEnhancementCheckbox("Show \"To\"", "gEntranceTrackerShowTo", true, false);
-            UIWidgets::Tooltip("Reveal the \"To\" entrance for undiscovered entrances");
-            UIWidgets::PaddedEnhancementCheckbox("Show \"From\"", "gEntranceTrackerShowFrom", true, false);
-            UIWidgets::Tooltip("Reveal the \"From\" entrance for undiscovered entrances");
+                ImGui::Text("Sort By");
+                UIWidgets::EnhancementRadioButton("To", "gEntranceTrackerSortBy", 0);
+                UIWidgets::Tooltip("Sort entrances by the original source entrance");
+                UIWidgets::EnhancementRadioButton("From", "gEntranceTrackerSortBy", 1);
+                UIWidgets::Tooltip("Sort entrances by the overrided destination");
+
+                UIWidgets::Spacer(2.0f);
+
+                ImGui::Text("List Items");
+                UIWidgets::PaddedEnhancementCheckbox("Auto scroll", "gEntranceTrackerAutoScroll", true, false);
+                UIWidgets::Tooltip("Automatically scroll to the first aviable entrance in the current scene");
+                UIWidgets::PaddedEnhancementCheckbox("Highlight previous", "gEntranceTrackerHighlightPrevious", true, false);
+                UIWidgets::Tooltip("Highlight the previous entrance that Link came from");
+                UIWidgets::PaddedEnhancementCheckbox("Highlight available", "gEntranceTrackerHighlightAvailable", true, false);
+                UIWidgets::Tooltip("Highlight available entrances in the current scene");
+                UIWidgets::PaddedEnhancementCheckbox("Hide undiscovered", "gEntranceTrackerCollapseUndiscovered", true, true);
+                UIWidgets::Tooltip("Collapse undiscovered entrances towards the bottom of each group");
+
+                ImGui::TableNextColumn();
+
+                ImGui::Text("Group By");
+                UIWidgets::EnhancementRadioButton("Area", "gEntranceTrackerGroupBy", 0);
+                UIWidgets::Tooltip("Group entrances by their area");
+                UIWidgets::EnhancementRadioButton("Type", "gEntranceTrackerGroupBy", 1);
+                UIWidgets::Tooltip("Group entrances by their entrance type");
+
+                UIWidgets::Spacer(2.0f);
+
+                ImGui::Text("Spoiler Reveal");
+                UIWidgets::PaddedEnhancementCheckbox("Show \"To\"", "gEntranceTrackerShowTo", true, false);
+                UIWidgets::Tooltip("Reveal the \"To\" entrance for undiscovered entrances");
+                UIWidgets::PaddedEnhancementCheckbox("Show \"From\"", "gEntranceTrackerShowFrom", true, false);
+                UIWidgets::Tooltip("Reveal the \"From\" entrance for undiscovered entrances");
+
+                ImGui::EndTable();
+            }
+
+            ImGui::TableNextColumn();
+
+            ImGui::SetNextItemOpen(false, ImGuiCond_Once);
+            if (ImGui::TreeNode("Legend")) {
+                ImGui::TextColored(ImColor(COLOR_ORANGE), "Last Entrance");
+                ImGui::TextColored(ImColor(COLOR_GREEN), "Available Entrances");
+                ImGui::TextColored(ImColor(COLOR_GRAY), "Undiscovered Entrances");
+                ImGui::TreePop();
+            }
+
+            UIWidgets::Spacer(0);
 
             ImGui::EndTable();
         }
 
-        UIWidgets::PaddedSeparator();
-
-        ImGui::Text("Legend");
-        ImGui::TextColored(ImColor(COLOR_ORANGE), "Last Entrance");
-        ImGui::TextColored(ImColor(COLOR_GREEN), "Available Entrances");
-        ImGui::TextColored(ImColor(COLOR_GRAY), "Undiscovered Entrances");
-
         ImGui::TreePop();
+    } else {
+        UIWidgets::PaddedSeparator();
     }
-
-    UIWidgets::PaddedSeparator();
 
     static ImGuiTextFilter locationSearch;
 
@@ -713,7 +729,7 @@ void DrawEntranceTracker(bool& open) {
     }
 
     // Begin tracker list
-    ImGui::BeginChild("ChildEntranceLocations", ImVec2(0, -8));
+    ImGui::BeginChild("ChildEntranceTrackerLocations", ImVec2(0, -8));
     for (size_t i = 0; i < groupCount; i++) {
         std::string groupName = groupNames[i];
 
@@ -828,8 +844,7 @@ void DrawEntranceTracker(bool& open) {
                     }
 
                     // Indent the destination
-                    float paddingX = ImGui::GetCursorPosX();
-                    ImGui::SetCursorPosX(paddingX * 2);
+                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() * 2);
                     if (!showOverride || (showOverride && (!override->oneExit && override->srcGroup != ENTRANCE_GROUP_ONE_WAY))) {
                         ImGui::TextWrapped("%s from %s", rplcDstName, rplcSrcName);
                     } else {
