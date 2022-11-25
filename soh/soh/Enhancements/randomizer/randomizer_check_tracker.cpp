@@ -20,6 +20,7 @@ extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 void Teardown();
 void InitializeChecks();
 void UpdateChecks();
+void UpdateInventoryChecks();
 void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckStatus);
 void BeginFloatWindows(std::string UniqueName, ImGuiWindowFlags flags = 0);
 void EndFloatWindows();
@@ -142,6 +143,7 @@ void DrawCheckTracker(bool& open) {
     //Only update the checks if something has changed
     if (ShouldUpdateChecks()) {
         UpdateChecks();
+        UpdateInventoryChecks();
         UpdateOrdering();
     }
 
@@ -384,6 +386,7 @@ void InitializeChecks() {
     //showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) != RO_GENERIC_OFF);
 
     UpdateChecks();
+    UpdateInventoryChecks();
     UpdateOrdering(true);
     doInitialize = false;
     initialized = true;
@@ -435,6 +438,13 @@ bool ShouldUpdateChecks() {
         return true;
 }
 
+void UpdateInventoryChecks() {
+    //For all the areas with compasses, if you have one, spoil the area
+    for (u8 i = RCAREA_DEKU_TREE; i <= RCAREA_ICE_CAVERN; i++)
+        if (gSaveContext.inventory.dungeonItems[i - RCAREA_DEKU_TREE] & 0x02)
+            areasSpoiled |= (1 << i);
+}
+
 void UpdateChecks() {
     int idx = 0;
     RandomizerCheckObject* lastCheck;
@@ -459,7 +469,6 @@ void UpdateChecks() {
             if (areaChecksGotten[rcObj.rcArea] != 0 || RandomizerCheckObjects::AreaIsOverworld(rcObj.rcArea))
                 areasSpoiled |= (1 << rcObj.rcArea);
         }
-
 
         lastCheck = &rcObj;
 
