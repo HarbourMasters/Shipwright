@@ -201,7 +201,7 @@ static Gfx sScreenFillSetupDL[] = {
 
 static s16 sFileInfoBoxPartWidths[] = { 36, 36, 36, 36, 24 };
 
-static s16 sWindowContentColors[2][3] = {
+s16 sWindowContentColors[2][3] = {
     { 100, 150, 255 }, // blue
     { 100, 100, 100 }, // gray
 };
@@ -1414,7 +1414,6 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU)
                   ? ResourceMgr_LoadFileRaw(FileChoose_GetQuestChooseTitleTexName(gSaveContext.language))
                   : sTitleLabels[gSaveContext.language][this->titleLabel];
-    Color_RGB8 Background_Color = { this->windowColor[0], this->windowColor[1], this->windowColor[2] };
 
     OPEN_DISPS(this->state.gfxCtx);
 
@@ -1501,15 +1500,8 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         // draw file info box (large box when a file is selected)
         for (fileIndex = 0; fileIndex < 3; fileIndex++, temp += 20) {
             gDPPipeSync(POLY_OPA_DISP++);
-
-            if (CVar_GetS32("gHudColors", 1) == 2) {
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r,
-                                CVar_GetRGB("gCCFileChoosePrim", Background_Color).g,
-                                CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->fileInfoAlpha[fileIndex]);
-            } else {
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, Background_Color.r, Background_Color.g, Background_Color.b,
-                                this->fileInfoAlpha[fileIndex]);
-            }
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                            this->fileInfoAlpha[fileIndex]);
             gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[temp], 20, 0);
 
             for (quadVtxIndex = 0, i = 0; i < 5; i++, quadVtxIndex += 4) {
@@ -1529,10 +1521,6 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i)) && Save_GetSaveMetaInfo(i)->valid) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[1][0], sWindowContentColors[1][1],
                                 sWindowContentColors[1][2], this->fileButtonAlpha[i]);
-            } else if (CVar_GetS32("gHudColors", 1) == 2) {
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r,
-                                CVar_GetRGB("gCCFileChoosePrim", Background_Color).g,
-                                CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->fileButtonAlpha[i]);
             } else {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0],
                                 sWindowContentColors[isActive][1], sWindowContentColors[isActive][2],
@@ -1545,11 +1533,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
 
             // draw file name box
-            if (CVar_GetS32("gHudColors", 1) == 2 && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r,
-                                CVar_GetRGB("gCCFileChoosePrim", Background_Color).g,
-                                CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->nameBoxAlpha[i]);
-            } else if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
+            if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[1][0], sWindowContentColors[1][1],
                                 sWindowContentColors[1][2], this->nameBoxAlpha[i]);
             } else {
@@ -1565,11 +1549,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
             // draw rando label
             if (Save_GetSaveMetaInfo(i)->randoSave) {
-                if (CVar_GetS32("gHudColors", 1) == 2 && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
-                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r,
-                                    CVar_GetRGB("gCCFileChoosePrim", Background_Color).g,
-                                    CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->nameAlpha[i]);
-                } else if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
+                if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
                     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[1][0], sWindowContentColors[1][1],
                                     sWindowContentColors[1][2], this->nameBoxAlpha[i]);
                 } else {
@@ -1586,11 +1566,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             // Draw MQ label
             if (Save_GetSaveMetaInfo(i)->requiresMasterQuest && !Save_GetSaveMetaInfo(i)->randoSave &&
                 Save_GetSaveMetaInfo(i)->valid) {
-                if (CVar_GetS32("gHudColors", 1) == 2 && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
-                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r,
-                                    CVar_GetRGB("gCCFileChoosePrim", Background_Color).g,
-                                    CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->nameAlpha[i]);
-                } else if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
+                if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
                     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[1][0], sWindowContentColors[1][1],
                                     sWindowContentColors[1][2], this->nameBoxAlpha[i]);
                 } else {
@@ -1606,11 +1582,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             }
 
             // draw connectors
-            if (CVar_GetS32("gHudColors", 1) == 2 && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r,
-                                CVar_GetRGB("gCCFileChoosePrim", Background_Color).g,
-                                CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->connectorAlpha[i]);
-            } else if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i)) && Save_GetSaveMetaInfo(i)->valid) {
+            if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i)) && Save_GetSaveMetaInfo(i)->valid) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[1][0], sWindowContentColors[1][1],
                                 sWindowContentColors[1][2], this->fileButtonAlpha[i]);
             } else {
@@ -1643,15 +1615,8 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         // draw primary action buttons (copy/erase)
         for (quadVtxIndex = 0, i = 0; i < 2; i++, quadVtxIndex += 4) {
             gDPPipeSync(POLY_OPA_DISP++);
-
-            if (CVar_GetS32("gHudColors", 1) == 2) {
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r,
-                                CVar_GetRGB("gCCFileChoosePrim", Background_Color).g,
-                                CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->actionButtonAlpha[i]);
-            } else {
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                                this->actionButtonAlpha[i]);
-            }
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                            this->actionButtonAlpha[i]);
             gDPLoadTextureBlock(POLY_OPA_DISP++, sActionButtonTextures[gSaveContext.language][i], G_IM_FMT_IA,
                                 G_IM_SIZ_16b, 64, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -1664,14 +1629,8 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         for (quadVtxIndex = 0, i = 0; i < 2; i++, quadVtxIndex += 4) {
             temp = this->confirmButtonTexIndices[i];
 
-            if (CVar_GetS32("gHudColors", 1) == 2) {
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r,
-                                CVar_GetRGB("gCCFileChoosePrim", Background_Color).g,
-                                CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->confirmButtonAlpha[i]);
-            } else {
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                                this->confirmButtonAlpha[i]);
-            }
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                            this->confirmButtonAlpha[i]);
             gDPLoadTextureBlock(POLY_OPA_DISP++, sActionButtonTextures[gSaveContext.language][temp], G_IM_FMT_IA,
                                 G_IM_SIZ_16b, 64, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -1680,15 +1639,8 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
         // draw options button
         gDPPipeSync(POLY_OPA_DISP++);
-
-        if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r,
-                            CVar_GetRGB("gCCFileChoosePrim", Background_Color).g,
-                            CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->optionButtonAlpha);
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                            this->optionButtonAlpha);
-        }
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                        this->optionButtonAlpha);
         gDPLoadTextureBlock(POLY_OPA_DISP++, sOptionsButtonTextures[gSaveContext.language], G_IM_FMT_IA, G_IM_SIZ_16b,
                             64, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
@@ -1703,15 +1655,8 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             gDPPipeSync(POLY_OPA_DISP++);
             gDPSetCombineLERP(POLY_OPA_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0, TEXEL0,
                               0, PRIMITIVE, 0);
-
-            if (CVar_GetS32("gHudColors", 1) == 2) {
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r,
-                                CVar_GetRGB("gCCFileChoosePrim", Background_Color).g,
-                                CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->highlightColor[3]);
-            } else {
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->highlightColor[0], this->highlightColor[1],
-                                this->highlightColor[2], this->highlightColor[3]);
-            }
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->highlightColor[0], this->highlightColor[1],
+                            this->highlightColor[2], this->highlightColor[3]);
             gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelBigButtonHighlightTex, G_IM_FMT_I, G_IM_SIZ_8b, 72, 24, 0,
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
@@ -1743,7 +1688,6 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
     f32 eyeX;
     f32 eyeY;
     f32 eyeZ;
-    Color_RGB8 Background_Color = {this->windowColor[0], this->windowColor[1], this->windowColor[2]};
 
     OPEN_DISPS(this->state.gfxCtx);
     gDPPipeSync(POLY_OPA_DISP++);
@@ -1769,13 +1713,8 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
         (this->configMode != CM_QUEST_MENU) && this->configMode != CM_NAME_ENTRY_TO_QUEST_MENU) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-
-        if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->windowAlpha);
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                            this->windowAlpha);
-        }
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                        this->windowAlpha);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
         Matrix_Translate(0.0f, 0.0f, -93.6f, MTXMODE_NEW);
@@ -1812,13 +1751,8 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
     if ((this->configMode >= CM_ROTATE_TO_NAME_ENTRY) && (this->configMode <= CM_NAME_ENTRY_TO_MAIN)) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-
-        if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->windowAlpha);
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                            this->windowAlpha);
-        }
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                        this->windowAlpha);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
         Matrix_Translate(0.0f, 0.0f, -93.6f, MTXMODE_NEW);
@@ -1849,13 +1783,8 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
     if ((this->configMode >= CM_MAIN_TO_OPTIONS) && (this->configMode <= CM_OPTIONS_TO_MAIN)) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-
-        if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->windowAlpha);
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                            this->windowAlpha);
-        }
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                        this->windowAlpha);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
         Matrix_Translate(0.0f, 0.0f, -93.6f, MTXMODE_NEW);
@@ -1886,12 +1815,8 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
         // window
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-        if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->windowAlpha);
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                            this->windowAlpha);
-        }
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                        this->windowAlpha);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
         Matrix_Translate(0.0f, 0.0f, -93.6f, MTXMODE_NEW);
@@ -2232,7 +2157,6 @@ void FileChoose_SelectModeDraw(GameState* thisx) {
     f32 eyeX;
     f32 eyeY;
     f32 eyeZ;
-    Color_RGB8 Background_Color = { this->windowColor[0], this->windowColor[1], this->windowColor[2] };
 
     OPEN_DISPS(this->state.gfxCtx);
 
@@ -2254,13 +2178,8 @@ void FileChoose_SelectModeDraw(GameState* thisx) {
     FileChoose_SetWindowContentVtx(&this->state);
 
     gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-
-    if (CVar_GetS32("gHudColors", 1) == 2) {
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->windowAlpha);
-    } else {
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                        this->windowAlpha);
-    }
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                    this->windowAlpha);
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
     Matrix_Translate(0.0f, 0.0f, -93.6f, MTXMODE_NEW);
@@ -2305,9 +2224,35 @@ void FileChoose_Main(GameState* thisx) {
         gFileSelControlsGERTex,
         gFileSelControlsFRATex,
     };
-    Color_RGB8 Text_Color = { 100, 255, 255 };
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
+
+    Color_RGB8 helpTextColor = { 100, 255, 255 };
+    if (CVar_GetS32("gCosmetics.Title_FileChoose.Changed", 0)) {
+        Color_RGB8 backgroundColor = CVar_GetRGB("gCosmetics.Title_FileChoose.Value", (Color_RGB8){ 100, 150, 255 });
+        this->windowColor[0] = backgroundColor.r;
+        this->windowColor[1] = backgroundColor.g;
+        this->windowColor[2] = backgroundColor.b;
+        this->highlightColor[0] = MIN(backgroundColor.r + 100, 255);
+        this->highlightColor[1] = MIN(backgroundColor.g + 100, 255);
+        this->highlightColor[2] = MIN(backgroundColor.b + 100, 255);
+        helpTextColor.r = MIN(backgroundColor.r + 100, 255);
+        helpTextColor.g = MIN(backgroundColor.g + 100, 255);
+        helpTextColor.b = MIN(backgroundColor.b + 100, 255);
+        sWindowContentColors[0][0] = backgroundColor.r;
+        sWindowContentColors[0][1] = backgroundColor.g;
+        sWindowContentColors[0][2] = backgroundColor.b;
+    } else {
+        this->windowColor[0] = 100;
+        this->windowColor[1] = 150;
+        this->windowColor[2] = 255;
+        this->highlightColor[0] = 155;
+        this->highlightColor[1] = 255;
+        this->highlightColor[2] = 255;
+        sWindowContentColors[0][0] = 100;
+        sWindowContentColors[0][1] = 150;
+        sWindowContentColors[0][2] = 255;
+    }
 
     if (CVar_GetS32("gTimeFlowFileSelect", 0) != 0) {
         gSaveContext.skyboxTime += 0x10;
@@ -2454,12 +2399,7 @@ void FileChoose_Main(GameState* thisx) {
 
         gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-
-        if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChooseTextPrim", Text_Color).r, CVar_GetRGB("gCCFileChooseTextPrim", Text_Color).g, CVar_GetRGB("gCCFileChooseTextPrim", Text_Color).b, this->controlsAlpha);
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, Text_Color.r, Text_Color.g, Text_Color.b, this->controlsAlpha);
-        }
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, helpTextColor.r, helpTextColor.g, helpTextColor.b, this->controlsAlpha);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
         gDPLoadTextureBlock(POLY_OPA_DISP++, controlsTextures[gSaveContext.language], G_IM_FMT_IA, G_IM_SIZ_8b, 144, 16,
                             0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
