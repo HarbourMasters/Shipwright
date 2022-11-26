@@ -29,10 +29,7 @@ static ImVec4 navi_prop_i_col;        static ImVec4 navi_prop_o_col;
 static ImVec4 swordtrailtop_col;      static ImVec4 swordtrailbottom_col;
 static ImVec4 boomtrailstart_col;     static ImVec4 boomtrailend_col;
 static ImVec4 bombtrail_col;           
-static ImVec4 Keese1_primcol;         static ImVec4 Keese2_primcol;
-static ImVec4 Keese1_envcol;          static ImVec4 Keese2_envcol;
 static ImVec4 tc_ou_colors;           static ImVec4 tc_bu_colors;
-static ImVec4 tc_fire_colors;         static ImVec4 tc_fire_colors_env; 
 
 //Navi
 static CosmeticsColorIndividual Navi_Idle_Inner = { "Navi Idle (Primary)", "Inner color for Navi (idle flying around)", "gNavi_Idle_Inner", navi_idle_i_col, ImVec4(255, 255, 255, 255), false, false, false };
@@ -43,12 +40,6 @@ static CosmeticsColorIndividual Navi_Enemy_Inner = { "Navi Enemy (Primary)", "In
 static CosmeticsColorIndividual Navi_Enemy_Outer = { "Navi Enemy (Secondary)", "Outer color for Navi (when Navi fly around Enemies or Bosses)", "gNavi_Enemy_Outer", navi_enemy_o_col, ImVec4(220, 155, 0, 255), false, false, false };
 static CosmeticsColorIndividual Navi_Prop_Inner = { "Navi Props (Primary)", "Inner color for Navi (when Navi fly around props (signs etc))", "gNavi_Prop_Inner", navi_prop_i_col, ImVec4(0, 255, 0, 255), false, false, false };
 static CosmeticsColorIndividual Navi_Prop_Outer = { "Navi Props (Secondary)", "Outer color for Navi (when Navi fly around props (signs etc))", "gNavi_Prop_Outer", navi_prop_o_col, ImVec4(0, 255, 0, 255), false, false, false };
-
-//Keese
-static CosmeticsColorIndividual Keese1_prim = { "Fire Primary color", "Affects the primary color of the Fire itself of the Keese", "gKeese1_Ef_Prim", Keese1_primcol, ImVec4(255, 255, 100, 255), true, false, false };
-static CosmeticsColorIndividual Keese2_prim = { "Ice Primary color", "Affects the primary color of the Ice itself of the Keese", "gKeese2_Ef_Prim", Keese2_primcol, ImVec4(100, 200, 255, 255), true, false, false };
-static CosmeticsColorIndividual Keese1_env = { "Fire Secondary color", "Affects the secondary color of the Fire itself of the Keese", "gKeese1_Ef_Env", Keese1_envcol, ImVec4(255, 50, 0, 255), true, false, false };
-static CosmeticsColorIndividual Keese2_env = { "Ice Secondary color", "Affects the secondary color of the Ice itself of the Keese", "gKeese2_Ef_Env", Keese2_envcol, ImVec4(0, 0, 255, 255), true, false, false };
 
 //Trails
 static CosmeticsColorIndividual Sword_Trails_Top_col = { "Sword Trail Top Color", "Affects top of sword slash", "gSwordTrailTopCol", swordtrailtop_col, ImVec4(255,255,255,255), true, false, false };
@@ -72,15 +63,6 @@ static CosmeticsColorIndividual Hammer_Trails_Bottom_col = { "Hammer End Color",
 //Title Cards colors
 static CosmeticsColorIndividual TitleCards_OW = { "Main color (Overworld)", "Affects all the overworld title cards color, white is the default value", "gCCTC_OW_U_Prim", tc_ou_colors, ImVec4(255, 255, 255, 255), false, false, false };
 static CosmeticsColorIndividual TitleCards_DG = { "Main color (Dungeon)", "Affects all the bosses title cards color, white is the default value", "gCCTC_B_U_Prim", tc_bu_colors, ImVec4(255, 255, 255, 255), false, false, false };
-
-//Misc. colors, the one I have no clue where to put nor that aren't that important
-#ifdef MASTER_QUEST
-static CosmeticsColorIndividual TitleScreen_fire_Prim = { "Opening logo fire (Primary)", "Affects the fire behind the title screen logo", "gCCTCFirePrim", tc_fire_colors, ImVec4(170, 255, 255, 255), false, false, false };
-static CosmeticsColorIndividual TitleScreen_fire_Env = { "Opening logo fire (Secondary)", "Affects the fire behind the title screen logo", "gCCTCFireEnv", tc_fire_colors_env, ImVec4(200, 255, 0, 255), false, false, false };
-#else
-static CosmeticsColorIndividual TitleScreen_fire_Prim = { "Opening logo fire (Primary)", "Affects the fire behind the title screen logo", "gCCTCFirePrim", tc_fire_colors, ImVec4(255, 255, 170, 255), false, false, false };
-static CosmeticsColorIndividual TitleScreen_fire_Env = { "Opening logo fire (Secondary)", "Affects the fire behind the title screen logo", "gCCTCFireEnv", tc_fire_colors_env, ImVec4(255, 100, 0, 255), false, false, false };
-#endif
 
 void InitCosmeticsEditor();//Init the menu itself
 ImVec4 GetRandomValue(int MaximumPossible);
