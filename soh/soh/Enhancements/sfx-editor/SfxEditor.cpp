@@ -222,7 +222,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
     ImGui::BeginTable(tabId.c_str(), 3, ImGuiTableFlags_SizingFixedFit);
     ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
     ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
-    ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 110.0f);
+    ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 190.0f);
     for (const auto& [defaultValue, seqData] : map) {
         const auto& [name, sfxKey, seqType] = seqData;
 
@@ -238,6 +238,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         const std::string stopButton = " Stop  " + hiddenKey;
         const std::string previewButton = "Preview" + hiddenKey;
         const std::string resetButton = "Reset" + hiddenKey;
+        const std::string randomizeButton = "Randomize" + hiddenKey;
         const int currentValue = CVar_GetS32(cvarKey.c_str(), defaultValue);
 
         ImGui::TableNextRow();
@@ -291,6 +292,21 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         ImGui::PushItemWidth(-FLT_MIN);
         if (ImGui::Button(resetButton.c_str())) {
             CVar_SetS32(cvarKey.c_str(), defaultValue);
+            SohImGui::RequestCvarSaveOnNextTick();
+        }
+        ImGui::SameLine();
+        ImGui::PushItemWidth(-FLT_MIN);
+        if (ImGui::Button(randomizeButton.c_str())) {
+            bool valid = false;
+            uint32_t value;
+            while (!valid) {
+                value = Random(2, map.size());
+                auto [name, sfxKey, seqType] = map.at(value);
+                if (seqType & type) {
+                    valid = true;
+                }
+            }
+            CVar_SetS32(cvarKey.c_str(), value);
             SohImGui::RequestCvarSaveOnNextTick();
         }
     }
