@@ -183,6 +183,7 @@ void func_809F6A20(EnDodojr* this) {
         this->unk_1FC = 3;
         this->actor.velocity.y = 10.0f;
     }
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DODONGO_BABY]++;
 }
 
 void func_809F6AC4(EnDodojr* this) {

@@ -1460,6 +1460,12 @@ void func_808327F8(Player* this, f32 arg1) {
     }
 
     func_800F4010(&this->actor.projectedPos, sfxId, arg1);
+    // Gameplay stats: Count footsteps
+    // Only count while game isn't complete and don't count Link's idle animations or crawling in crawlspaces
+    if (!gSaveContext.sohStats.gameComplete && !(this->stateFlags2 & PLAYER_STATE2_28) &&
+        !(this->stateFlags2 & PLAYER_STATE2_18)) {
+        gSaveContext.sohStats.count[COUNT_STEPS]++;
+    }
 }
 
 void func_80832854(Player* this) {
@@ -1949,6 +1955,10 @@ void func_80833A20(Player* this, s32 newSwordState) {
 
         if ((this->swordAnimation < 0x10) || (this->swordAnimation >= 0x14)) {
             func_80832698(this, voiceSfx);
+        }
+
+        if (this->heldItemActionParam >= PLAYER_AP_SWORD_MASTER && this->heldItemActionParam <= PLAYER_AP_SWORD_BGS) {
+            gSaveContext.sohStats.count[COUNT_SWORD_SWINGS]++;
         }
     }
 
@@ -5285,6 +5295,7 @@ void func_8083BC04(Player* this, PlayState* play) {
     func_80835C58(play, this, func_80844708, 0);
     LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, D_80853914[PLAYER_ANIMGROUP_16][this->modelAnimType],
                                    1.25f * D_808535E8);
+    gSaveContext.sohStats.count[COUNT_ROLLS]++;
 }
 
 s32 func_8083BC7C(Player* this, PlayState* play) {
@@ -6258,6 +6269,8 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
         func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
         this->getItemId = GI_NONE;
         this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
+        // Gameplay stats: Increment Ice Trap count
+        gSaveContext.sohStats.count[COUNT_ICE_TRAPS]++;
         return 1;
     }
 
@@ -6292,6 +6305,8 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
                         Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
                         this->getItemId = GI_NONE;
                         this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
+                        // Gameplay stats: Increment Ice Trap count
+                        gSaveContext.sohStats.count[COUNT_ICE_TRAPS]++;
                         return 1;
                     }
                 }
@@ -8648,6 +8663,7 @@ void func_80844708(Player* this, PlayState* play) {
                     func_8002F7DC(&this->actor, NA_SE_PL_BODY_HIT);
                     func_80832698(this, NA_SE_VO_LI_CLIMB_END);
                     this->unk_850 = 1;
+                    gSaveContext.sohStats.count[COUNT_BONKS]++;
                     return;
                 }
             }
@@ -12887,6 +12903,8 @@ void func_8084E6D4(Player* this, PlayState* play) {
                     func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
                     this->getItemId = GI_NONE;
                     this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
+                    // Gameplay stats: Increment Ice Trap count
+                    gSaveContext.sohStats.count[COUNT_ICE_TRAPS]++;
                 }
                 return;
             }

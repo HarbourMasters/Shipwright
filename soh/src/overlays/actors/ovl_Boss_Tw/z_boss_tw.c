@@ -5285,6 +5285,7 @@ void BossTw_TwinrovaDamage(BossTw* this, PlayState* play, u8 damage) {
             BossTw_TwinrovaSetupDeathCS(this, play);
             Enemy_StartFinishingBlow(play, &this->actor);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_TWINROBA_YOUNG_DEAD);
+            gSaveContext.sohStats.timestamp[TIMESTAMP_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
             return;
         }
 
