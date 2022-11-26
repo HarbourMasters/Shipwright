@@ -3024,7 +3024,7 @@ void DrawRandoEditor(bool& open) {
                         "\n"
                         "None - All Dungeons will be their Vanilla versions.\n"
                         "\n"
-                        "Set Number - Select a number of dungeons that will be their Master Quest versions"
+                        "Set Number - Select a number of dungeons that will be their Master Quest versions "
                         "using the slider below. Which dungeons are set to be the Master Quest variety will be random.\n"
                         "\n"
                         "Random Number - A Random number and set of dungeons will be their Master Quest varieties."
