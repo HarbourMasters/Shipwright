@@ -139,8 +139,9 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Equipment_ChuBody",             "Bombchu Body",         BOX_EQUIPMENT,    ImVec4(180, 130,  50, 255), false, true, true), 
 
     COSMETIC_OPTION("Consumable_Hearts",             "Hearts",               BOX_CONSUMABLE,   ImVec4(255,  70,  50, 255), false, true, false),
+    COSMETIC_OPTION("Consumable_HeartBorder",        "HeartBorder",          BOX_CONSUMABLE,   ImVec4( 50,  40,  60, 255), false, true, true),
     COSMETIC_OPTION("Consumable_DDHearts",           "DD Hearts",            BOX_CONSUMABLE,   ImVec4(200,   0,   0, 255), false, true, false),
-    COSMETIC_OPTION("Consumable_DDBorder",           "DD Border",            BOX_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Consumable_DDHeartBorder",      "DD Heart Border",      BOX_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Consumable_Magic",              "Magic",                BOX_CONSUMABLE,   ImVec4(  0, 200,   0, 255), false, true, false),
     COSMETIC_OPTION("Consumable_MagicActive",        "Magic Active",         BOX_CONSUMABLE,   ImVec4(250, 250,   0, 255), false, true, true),
     COSMETIC_OPTION("Consumable_MagicBorder",        "Magic Border",         BOX_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, false, true),
