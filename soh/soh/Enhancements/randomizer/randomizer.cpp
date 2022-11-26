@@ -232,7 +232,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "World Settings:Grottos Entrances", RSK_SHUFFLE_GROTTO_ENTRANCES },
     { "World Settings:Owl Drops", RSK_SHUFFLE_OWL_DROPS },
     { "World Settings:Warp Songs", RSK_SHUFFLE_WARP_SONGS },
-    { "World Settings:Overwold Spawns", RSK_SHUFFLE_OVERWORLD_SPAWNS },
+    { "World Settings:Overworld Spawns", RSK_SHUFFLE_OVERWORLD_SPAWNS },
     { "World Settings:Mixed Entrance Pools", RSK_MIXED_ENTRANCE_POOLS },
     { "World Settings:Mix Dungeons", RSK_MIX_DUNGEON_ENTRANCES },
     { "World Settings:Mix Overworld", RSK_MIX_OVERWORLD_ENTRANCES },
@@ -3179,8 +3179,10 @@ void DrawRandoEditor(bool& open) {
                     "Randomize where you start as Child or Adult when loading a save in the Overworld. This "
                     "means you may not necessarily spawn inside Link's House or Temple of Time.\n"
                     "\n"
-                    "This stays consistent after saving and loading the"
-                    "game again."
+                    "This stays consistent after saving and loading the game again.\n"
+                    "\n"
+                    "Keep in mind you may need to temporarily disable the \"Remember Save Location\" time saver to "
+                    "be able use the spawn positions, especially if they are the only logical way to get to certain areas."
                 );
 
                 UIWidgets::PaddedSeparator();
