@@ -1228,8 +1228,6 @@ static s16 sQuestItemBlue[] = { 255, 255, 255, 0, 0, 255, 0, 255, 0 };
 static s16 sQuestItemFlags[] = { 0x0012, 0x0013, 0x0014, 0x0000, 0x0001, 0x0002, 0x0003, 0x0004, 0x0005 };
 static s16 sNamePrimColors[2][3] = { { 255, 255, 255 }, { 100, 100, 100 } };
 static void* sHeartTextures[] = { gHeartFullTex, gDefenseHeartFullTex };
-static s16 sHeartPrimColors[2][3] = { { 255, 70, 50 }, { 200, 0, 0 } };
-static s16 sHeartEnvColors[2][3] = { { 50, 40, 60 }, { 255, 255, 255 } };
 
 void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
     FileChooseContext* this = (FileChooseContext*)thisx;
@@ -1239,6 +1237,23 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
     s16 vtxOffset;
     s16 j;
     s16 deathCountSplit[3];
+
+    Color_RGB8 heartColor = {HEARTS_PRIM_R, HEARTS_PRIM_G, HEARTS_PRIM_B};
+    if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
+        heartColor = CVar_GetRGB("gCosmetics.Consumable_Hearts.Value", heartColor);
+    }
+    Color_RGB8 heartBorder = {HEARTS_ENV_R, HEARTS_ENV_G, HEARTS_ENV_B};
+    if (CVar_GetS32("gCosmetics.Consumable_HeartBorder.Changed", 0)) {
+        heartBorder = CVar_GetRGB("gCosmetics.Consumable_HeartBorder.Value", heartBorder);
+    }
+    Color_RGB8 ddColor = {HEARTS_DD_ENV_R, HEARTS_DD_ENV_G, HEARTS_DD_ENV_B};
+    if (CVar_GetS32("gCosmetics.Consumable_DDHearts.Changed", 0)) {
+        ddColor = CVar_GetRGB("gCosmetics.Consumable_DDHearts.Value", ddColor);
+    }
+    Color_RGB8 ddBorder = {HEARTS_DD_PRIM_R, HEARTS_DD_PRIM_G, HEARTS_DD_PRIM_B};
+    if (CVar_GetS32("gCosmetics.Consumable_DDHeartBorder.Changed", 0)) {
+        ddBorder = CVar_GetRGB("gCosmetics.Consumable_DDHeartBorder.Value", ddBorder);
+    }
 
     OPEN_DISPS(this->state.gfxCtx);
 
@@ -1282,10 +1297,13 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-        gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x00, sHeartPrimColors[heartType][0], sHeartPrimColors[heartType][1],
-                        sHeartPrimColors[heartType][2], this->fileInfoAlpha[fileIndex]);
-        gDPSetEnvColor(POLY_OPA_DISP++, sHeartEnvColors[heartType][0], sHeartEnvColors[heartType][1],
-                       sHeartEnvColors[heartType][2], 255);
+        if (heartType) {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x00, ddColor.r, ddColor.g, ddColor.b, this->fileInfoAlpha[fileIndex]);
+            gDPSetEnvColor(POLY_OPA_DISP++, ddBorder.r, ddBorder.g, ddBorder.b, 255);
+        } else {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x00, heartColor.r, heartColor.g, heartColor.b, this->fileInfoAlpha[fileIndex]);
+            gDPSetEnvColor(POLY_OPA_DISP++, heartBorder.r, heartBorder.g, heartBorder.b, 255);
+        }
 
         i = Save_GetSaveMetaInfo(fileIndex)->healthCapacity / 0x10;
 
