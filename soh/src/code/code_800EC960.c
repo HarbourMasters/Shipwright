@@ -1702,7 +1702,7 @@ void Audio_OcaSetInstrument(u8 arg0) {
     u16 sfxEditorId = arg0 + 0x81;
     u16 newArg0 = SfxEditor_GetReplacementSeq(sfxEditorId);
     if (newArg0 != sfxEditorId) {
-        gAudioContext.seqReplaced = 1;
+        gAudioContext.seqReplaced[SEQ_PLAYER_SFX] = 1;
         arg0 = newArg0 - 0x81;
     }
 

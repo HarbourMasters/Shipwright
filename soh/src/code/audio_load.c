@@ -486,9 +486,6 @@ u8* AudioLoad_GetFontsForSequence(s32 seqId, u32* outNumFonts) {
     //     return NULL;
 
     u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
-    if (seqId != newSeqId) {
-        gAudioContext.seqReplaced = 1;
-    }
     SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[newSeqId]);
 
     if (sDat.numFonts == 0)
@@ -575,9 +572,9 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     fontId = 0xFF;
     //index = ((u16*)gAudioContext.sequenceFontTable)[seqId];
     //numFonts = gAudioContext.sequenceFontTable[index++];
-    if (gAudioContext.seqReplaced) {
-        seqId = gAudioContext.seqToPlay;
-        gAudioContext.seqReplaced = 0;
+    if (gAudioContext.seqReplaced[playerIdx]) {
+        seqId = gAudioContext.seqToPlay[playerIdx];
+        gAudioContext.seqReplaced[playerIdx] = 0;
     }
     SequenceData seqData2 = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
 
@@ -1231,8 +1228,8 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     gAudioContext.resetTimer = 0;
 
     memset(&gAudioContext, 0, sizeof(gAudioContext));
-    gAudioContext.seqToPlay = 0;
-    gAudioContext.seqReplaced = 0;
+    memset(gAudioContext.seqToPlay, 0, 8);
+    memset(gAudioContext.seqReplaced, 0, 8);
 
     switch (osTvType) {
         case OS_TV_PAL:
@@ -1536,10 +1533,10 @@ s32 AudioLoad_SlowLoadSeq(s32 seqId, u8* ramAddr, s8* isDone) {
     slowLoad->sample.sampleAddr = NULL;
     slowLoad->isDone = isDone;
 
-    if (gAudioContext.seqReplaced) {
-        seqId = gAudioContext.seqToPlay;
-        gAudioContext.seqReplaced = 0;
-    }
+    // if (gAudioContext.seqReplaced) {
+    //     seqId = gAudioContext.seqToPlay;
+    //     gAudioContext.seqReplaced = 0;
+    // }
     SequenceData sData = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
     char* seqData = sData.seqData;
     size = sData.seqDataSize;

@@ -223,7 +223,7 @@ void Audio_ProcessSoundRequest(void)
     }
     u16 newSfxId = SfxEditor_GetReplacementSeq(req->sfxId);
     if (req->sfxId != newSfxId) {
-        gAudioContext.seqReplaced = 1;
+        gAudioContext.seqReplaced[SEQ_PLAYER_SFX] = 1;
         req->sfxId = newSfxId;
     }
     bankId = SFX_BANK(req->sfxId);

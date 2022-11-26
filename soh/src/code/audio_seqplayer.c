@@ -1063,9 +1063,9 @@ void AudioSeq_SequenceChannelProcessScript(SequenceChannel* channel) {
 
                         if (seqPlayer->defaultFont != 0xFF) 
                         {
-                            if (gAudioContext.seqReplaced) {
-                                seqPlayer->seqId = gAudioContext.seqToPlay;
-                                gAudioContext.seqReplaced = 0;
+                            if (gAudioContext.seqReplaced[seqPlayer->playerIdx]) {
+                                seqPlayer->seqId = gAudioContext.seqToPlay[seqPlayer->playerIdx];
+                                gAudioContext.seqReplaced[seqPlayer->playerIdx] = 0;
                             }
                             SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqPlayer->seqId]);
                             command = sDat.fonts[sDat.numFonts - result - 1];
@@ -1179,9 +1179,9 @@ void AudioSeq_SequenceChannelProcessScript(SequenceChannel* channel) {
 
                         if (seqPlayer->defaultFont != 0xFF) 
                         {
-                            if (gAudioContext.seqReplaced) {
-                                seqPlayer->seqId = gAudioContext.seqToPlay;
-                                gAudioContext.seqReplaced = 0;
+                            if (gAudioContext.seqReplaced[seqPlayer->playerIdx]) {
+                                seqPlayer->seqId = gAudioContext.seqToPlay[seqPlayer->playerIdx];
+                                gAudioContext.seqReplaced[seqPlayer->playerIdx] = 0;
                             }
                             SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqPlayer->seqId]);
 
