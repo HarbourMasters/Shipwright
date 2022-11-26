@@ -168,12 +168,14 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Hud_MinimapPosition",           "Minimap Position",     BOX_HUD,          ImVec4(200, 255,   0, 255), false, true, true),
     COSMETIC_OPTION("Hud_MinimapEntrance",           "Minimap Entrance",     BOX_HUD,          ImVec4(200,   0,   0, 255), false, true, true),
 
-    COSMETIC_OPTION("Title_FileChoose",              "File Choose",          BOX_TITLE,        ImVec4(100, 150, 255, 255), false, true, true),
+    COSMETIC_OPTION("Title_FileChoose",              "File Choose",          BOX_TITLE,        ImVec4(100, 150, 255, 255), false, true, false),
     COSMETIC_OPTION("Title_NintendoLogo",            "Nintendo Logo",        BOX_TITLE,        ImVec4(  0,   0, 255, 255), false, true, true),
     COSMETIC_OPTION("Title_N64LogoRed",              "N64 Red",              BOX_TITLE,        ImVec4(150,   0,   0, 255), false, true, true),
     COSMETIC_OPTION("Title_N64LogoBlue",             "N64 Blue",             BOX_TITLE,        ImVec4(  0,  50, 150, 255), false, true, true),
     COSMETIC_OPTION("Title_N64LogoGreen",            "N64 Green",            BOX_TITLE,        ImVec4( 50, 100,   0, 255), false, true, true),
     COSMETIC_OPTION("Title_N64LogoYellow",           "N64 Yellow",           BOX_TITLE,        ImVec4(200, 150,   0, 255), false, true, true),
+    COSMETIC_OPTION("Title_FirePrimary",             "Title Fire Primary",   BOX_TITLE,        ImVec4(255, 255, 170, 255), false, true, false), // Todo (Cosmetics): Kinda complicated
+    COSMETIC_OPTION("Title_FireSecondary",           "Title Fire Secondary", BOX_TITLE,        ImVec4(255, 100,   0, 255), false, true, true), // Todo (Cosmetics): Kinda complicated
 
     COSMETIC_OPTION("Arrows_NormalPrimary",          "Normal Primary",       BOX_ARROWS,       ImVec4(  0, 150,   0,   0), false, true, false),
     COSMETIC_OPTION("Arrows_NormalSecondary",        "Normal Secondary",     BOX_ARROWS,       ImVec4(255, 255, 170, 255), false, true, true),
