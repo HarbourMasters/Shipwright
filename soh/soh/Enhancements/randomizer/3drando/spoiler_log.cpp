@@ -312,33 +312,33 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
     replacementBlueWarp = entrance->GetReplacement()->GetReverse()->GetBlueWarp();
   }
 
+  json entranceJson = json::object({
+    {"index", originalIndex},
+    {"destination", destinationIndex},
+    {"blueWarp", originalBlueWarp},
+    {"override", replacementIndex},
+    {"overrideDestination", replacementDestinationIndex},
+  });
+
+  jsonData["entrances"].push_back(entranceJson);
+
+  // When decoupled entrances is off, handle saving reverse entrances with blue warps
+  if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+    json reverseEntranceJson = json::object({
+      {"index", replacementDestinationIndex},
+      {"destination", replacementIndex},
+      {"blueWarp", replacementBlueWarp},
+      {"override", destinationIndex},
+      {"overrideDestination", originalIndex},
+    });
+
+    jsonData["entrances"].push_back(reverseEntranceJson);
+  }
+
   switch (gSaveContext.language) {
         case LANGUAGE_ENG:
         case LANGUAGE_FRA:
         default:
-            json entranceJson = json::object({
-              {"index", originalIndex},
-              {"destination", destinationIndex},
-              {"blueWarp", originalBlueWarp},
-              {"override", replacementIndex},
-              {"overrideDestination", replacementDestinationIndex},
-            });
-
-            jsonData["entrances"].push_back(entranceJson);
-
-             // When decoupled entrances is off, handle saving reverse entrances with blue warps
-            if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
-              json reverseEntranceJson = json::object({
-                {"index", replacementDestinationIndex},
-                {"destination", replacementIndex},
-                {"blueWarp", replacementBlueWarp},
-                {"override", destinationIndex},
-                {"overrideDestination", originalIndex},
-              });
-
-              jsonData["entrances"].push_back(reverseEntranceJson);
-            }
-
             jsonData["entrancesMap"][sphereString][name] = text;
             break;
     }
