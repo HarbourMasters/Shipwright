@@ -1106,8 +1106,8 @@ typedef enum RandoOption {
   RO_GF_OPEN,
 
   //Rainbow Bridge settings (always open, vanilla, stones, medallions, dungeon rewards, dungeons, tokens)
-  RO_BRIDGE_VANILLA = 0,
-  RO_BRIDGE_ALWAYS_OPEN,
+  RO_BRIDGE_ALWAYS_OPEN = 0,
+  RO_BRIDGE_VANILLA,
   RO_BRIDGE_STONES,
   RO_BRIDGE_MEDALLIONS,
   RO_BRIDGE_DUNGEON_REWARDS,
