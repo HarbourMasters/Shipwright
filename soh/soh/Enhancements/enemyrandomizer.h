@@ -9,8 +9,8 @@ typedef struct EnemyEntry {
 
 #define RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE 49
 
-bool IsEnemyFoundToRandomize(int16_t sceneNum, int16_t actorId, int16_t params, float posX);
-bool IsEnemyAllowedToSpawn(int16_t sceneNum, EnemyEntry enemy);
+bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, int16_t params, float posX);
+bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy);
 EnemyEntry GetRandomizedEnemyEntry(float seed1, float seed2, float seed3);
 
 #ifndef __cplusplus

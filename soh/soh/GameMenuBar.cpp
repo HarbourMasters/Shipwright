@@ -1254,9 +1254,20 @@ namespace GameMenuBar {
 
             UIWidgets::EnhancementCheckbox("Enemy Randomizer", "gRandomizedEnemies");
             UIWidgets::Tooltip(
-                "Randomizes regular enemy spawns everytime they're spawned.\n\n"
-                "WARNING: Potential to softlock rooms because you don't have the equipment to kill them. You can reload the room to get a new set of enemies to spawn."
+                "Randomizes regular enemies every time you load a room. Bosses, mini-bosses and a few specific regular enemies are excluded.\n\n"
+                "Enemies that need more than Deku Nuts + either Deku Sticks or a sword to kill are excluded from spawning in \"clear enemy\" rooms."
             );
+
+            if (CVar_GetS32("gRandomizedEnemies", 0)) {
+
+                bool disableSeededEnemies = !gSaveContext.n64ddFlag && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
+                const char* disableSeededEnemiesText = "This setting is disabled because it relies on a randomizer savefile.";
+
+                UIWidgets::PaddedEnhancementCheckbox("Seeded Enemy Spawns", "gSeededRandomizedEnemies", true, false, disableSeededEnemies, disableSeededEnemiesText);
+                UIWidgets::Tooltip(
+                    "Enemy spawns will stay consistent throughout room reloads. Enemy spawns are based on randomizer seeds, so this only works with randomizer savefiles."
+                );
+            }
 
             ImGui::EndMenu();
         }
