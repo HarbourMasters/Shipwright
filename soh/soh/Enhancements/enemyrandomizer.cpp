@@ -1,9 +1,5 @@
 #include "enemyrandomizer.h"
-#include "functions.h"
-#include "macros.h"
-#include <Cvar.h>
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
-#include "variables.h"
 
 extern "C" {
 #include <z64.h>

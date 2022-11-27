@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdint.h>
+#include "global.h"
 
 typedef struct EnemyEntry {
     int16_t id;
