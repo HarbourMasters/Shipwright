@@ -1,19 +1,8 @@
 #pragma once
 
-#include <thread>
-#include <mutex>
 #include <iostream>
-#include <string>
-#include <chrono>
 #include <thread>
-#include <future>
-
 #include <SDL_net.h>
-
-namespace Ship {
-namespace Online {
-
-#define MAX_PLAYERS 32
 
 typedef struct {
     float x, y, z;
@@ -53,51 +42,37 @@ typedef struct OnlinePacket {
     uint8_t damageValue;
 } OnlinePacket;
 
-void InitOnline(char* ipAddr, int port);
-void SendPacketMessage(OnlinePacket* packet, TCPsocket* sendTo);
-
-class Server {
-  private:
-    std::thread onlineThread;
-    std::thread connectionsThread;
-
+class OnlineServer {
   public:
-    IPaddress ip;
-    int port;
+    bool running = false;
+    int maxPlayers = 32;
+    TCPsocket clients[32];
 
-    bool serverOpen = false;
+    void InitServer(int port);
+    void SendPacketMessage(OnlinePacket* packet, TCPsocket* sendTo);
 
-    TCPsocket serverSocket;
-    TCPsocket clientSockets[MAX_PLAYERS];
+    ~OnlineServer();
 
-    ~Server();
-    void WaitForConnections();
-    void CreateServer(int serverPort);
-    void RunServer();
+  private:
+    void WaitForClientConnections();
+    void RunServerReceive(TCPsocket receiveClient);
+    void CloseServer();
+
 };
 
-class Client {
-  private:
-    std::thread onlineThread;
-
+class OnlineClient {
   public:
-    IPaddress ip;
-    int port;
+    TCPsocket client;
+    bool running = false;
 
-    TCPsocket clientSocket;
+    void InitClient(char* ipAddr, int port);
+    void SendPacketMessage(OnlinePacket* packet, TCPsocket* sendTo);
 
-    bool clientConnected = false;
+    ~OnlineClient();
 
-    ~Client();
-    void CreateClient(char* ipAddr, int port);
-    void RunClient();
+  private:
+    void WaitForServerConnection(IPaddress ip);
+    void RunClientReceive();
+    void CloseClient();
+
 };
-
-OnlinePacket serverPacket;
-OnlinePacket clientPacket;
-
-Server server = Server();
-Client client = Client();
-
-} // namespace Online
-} // namespace Ship

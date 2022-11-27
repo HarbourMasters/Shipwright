@@ -19,9 +19,14 @@ extern "C" {
 }
 #endif
 
+#include "Enhancements/online/Online.h"
+
 namespace GameMenuBar {
     void SetupHooks();
     void Draw();
 }
+
+OnlineServer server;
+OnlineClient client;
 
 #endif /* GameMenuBar_hpp */
