@@ -2900,24 +2900,24 @@ f32 Fishing_GetMinimumRequiredScore() {
     // RANDOTODO: update the enhancement sliders to not allow
     // values above rando fish weight values when rando'd
     if(sLinkAge == 1) {
-        weight = CVar_GetS32("gChildMinimumWeightFish", 10);
+        weight = CVar_GetS32("gCustomizeFishing", 0) ? CVar_GetS32("gChildMinimumWeightFish", 10) : 10;
     } else {
-        weight = CVar_GetS32("gAdultMinimumWeightFish", 13);     
+        weight = CVar_GetS32("gCustomizeFishing", 0) ? CVar_GetS32("gAdultMinimumWeightFish", 13) : 13;     
     }
 
     return sqrt(((f32)weight - 0.5f) / 0.0036f);
 }
 
 bool getInstantFish() {
-    return CVar_GetS32("gInstantFishing", 0);
+    return CVar_GetS32("gCustomizeFishing", 0) && CVar_GetS32("gInstantFishing", 0);
 }
 
 bool getGuaranteeBite() {
-    return CVar_GetS32("gGuaranteeFishingBite", 0);
+    return CVar_GetS32("gCustomizeFishing", 0) && CVar_GetS32("gGuaranteeFishingBite", 0);
 }
 
 bool getFishNeverEscape() {
-    return CVar_GetS32("gFishNeverEscape", 0);
+    return CVar_GetS32("gCustomizeFishing", 0) && CVar_GetS32("gFishNeverEscape", 0);
 }
 
 void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {

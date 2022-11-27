@@ -109,6 +109,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gFairyReviveEffect",
     "gFairyReviveHealth",
     "gFairyRevivePercentRestore",
+    "gCustomizeFishing",
     "gInstantFishing",
     "gGuaranteeFishingBite",
     "gFishNeverEscape",

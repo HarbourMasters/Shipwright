@@ -6306,6 +6306,8 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
                         Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
                         this->getItemId = GI_NONE;
                         this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
+                        // Gameplay stats: Increment Ice Trap count
+                        gSaveContext.sohStats.count[COUNT_ICE_TRAPS]++;
                         return 1;
                     }
                 }
