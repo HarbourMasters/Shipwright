@@ -10566,7 +10566,7 @@ void ItemUseFromInventory_UpdateBottleSlot(ItemID item) {
     bottleWasUsedFromInventory = false;
     swingingBottleFromInventory = false;
 
-    // Special case for going from fill milk to half milk
+    // Special case for going from full milk to half milk
     if (inventoryUsedItem == ITEM_MILK_BOTTLE) {
         item = ITEM_MILK_HALF;
     }
@@ -10663,7 +10663,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     if (swingingBottleFromInventory && !(this->stateFlags1 & PLAYER_STATE1_1)) {
         ItemUseFromInventory_UpdateBottleSlot(ITEM_BOTTLE);
         func_80835F44(play, this, ITEM_NONE); // Ensures the bottle is put away in the case that another empty bottle is equipped
-    }
+    } // End of code for "Item Use From Inventory" enhancement
 
     if ((this->heldItemActionParam == PLAYER_AP_STICK) && (this->unk_860 != 0)) {
         func_80848A04(play, this);
