@@ -246,7 +246,16 @@ void func_80AE2744(EnRd* this, PlayState* play) {
         }
 
         this->unk_305 = 0;
-        if ((this->actor.xzDistToPlayer <= 150.0f) && func_8002DDE4(play)) {
+
+        // Consider player height for Redead/Gibdo's freeze effect with enemy randomizer
+        // so the player doesn't get frozen when a Redead/Gibdo spawns in a vertical room.
+        f32 distanceToPlayer;
+        if (CVar_GetS32("gRandomizedEnemies", 0)) {
+            distanceToPlayer = this->actor.xzDistToPlayer + this->actor.yDistToPlayer;
+        } else {
+            distanceToPlayer = this->actor.xzDistToPlayer;
+        }
+        if ((distanceToPlayer <= 150.0f) && func_8002DDE4(play)) {
             if ((this->actor.params != 2) && (this->unk_305 == 0)) {
                 func_80AE37BC(this);
             } else {
