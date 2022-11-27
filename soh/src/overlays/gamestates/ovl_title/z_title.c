@@ -236,7 +236,7 @@ void Title_Draw(TitleContext* this) {
 
     Environment_FillScreen(this->state.gfxCtx, 0, 0, 0, (s16)this->coverAlpha, FILL_SCREEN_XLU);
 
-    sTitleRotY += 300;
+    sTitleRotY += (300 * CVar_GetFloat("gCosmetics.N64Logo_SpinSpeed", 1.0f));
 
     CLOSE_DISPS(this->state.gfxCtx);
 }
