@@ -1414,8 +1414,7 @@ void DrawCosmeticsEditor(bool& open) {
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Silly")) {
-            ImGui::Text("Link");
-            if (UIWidgets::EnhancementSliderFloat("Body Scale: %f", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, false)) {
+            if (UIWidgets::EnhancementSliderFloat("Link Body Scale: %f", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, false)) {
                 CVar_SetS32("gCosmetics.Link_BodyScale.Changed", 1);
             }
             ImGui::SameLine();
@@ -1428,7 +1427,7 @@ void DrawCosmeticsEditor(bool& open) {
                 player->actor.scale.y = 0.01f;
                 player->actor.scale.z = 0.01f;
             }
-            if (UIWidgets::EnhancementSliderFloat("Head Scale: %f", "##Link_HeadScale", "gCosmetics.Link_HeadScale.Value", 0.4f, 4.0f, "", 1.0f, false)) {
+            if (UIWidgets::EnhancementSliderFloat("Link Head Scale: %f", "##Link_HeadScale", "gCosmetics.Link_HeadScale.Value", 0.4f, 4.0f, "", 1.0f, false)) {
                 CVar_SetS32("gCosmetics.Link_HeadScale.Changed", 1);
             }
             ImGui::SameLine();
@@ -1437,27 +1436,43 @@ void DrawCosmeticsEditor(bool& open) {
                 CVar_Clear("gCosmetics.Link_HeadScale.Changed");
                 SohImGui::RequestCvarSaveOnNextTick();
             }
-            ImGui::Text("Bunny Hood");
-            UIWidgets::EnhancementSliderFloat("Length: %f", "##BunnyHood_EarLength", "gCosmetics.BunnyHood_EarLength", -300.0f, 1000.0f, "", 0.0f, false);
+            UIWidgets::EnhancementSliderFloat("Bunny Hood Length: %f", "##BunnyHood_EarLength", "gCosmetics.BunnyHood_EarLength", -300.0f, 1000.0f, "", 0.0f, false);
             ImGui::SameLine();
             if (ImGui::Button("Reset##BunnyHood_EarLength")) {
                 CVar_Clear("gCosmetics.BunnyHood_EarLength");
                 SohImGui::RequestCvarSaveOnNextTick();
             }
-            UIWidgets::EnhancementSliderFloat("Spread: %f", "##BunnyHood_EarSpread", "gCosmetics.BunnyHood_EarSpread", -300.0f, 500.0f, "", 0.0f, false);
+            UIWidgets::EnhancementSliderFloat("Bunny Hood Spread: %f", "##BunnyHood_EarSpread", "gCosmetics.BunnyHood_EarSpread", -300.0f, 500.0f, "", 0.0f, false);
             ImGui::SameLine();
             if (ImGui::Button("Reset##BunnyHood_EarSpread")) {
                 CVar_Clear("gCosmetics.BunnyHood_EarSpread");
                 SohImGui::RequestCvarSaveOnNextTick();
             }
-            ImGui::Text("Gorons");
-            UIWidgets::EnhancementSliderFloat("Neck Length: %f", "##Goron_NeckLength", "gCosmetics.Goron_NeckLength", 0.0f, 1000.0f, "", 0.0f, false);
+            UIWidgets::EnhancementSliderFloat("Goron Neck Length: %f", "##Goron_NeckLength", "gCosmetics.Goron_NeckLength", 0.0f, 1000.0f, "", 0.0f, false);
             ImGui::SameLine();
             if (ImGui::Button("Reset##Goron_NeckLength")) {
                 CVar_Clear("gCosmetics.Goron_NeckLength");
                 SohImGui::RequestCvarSaveOnNextTick();
             }
             UIWidgets::EnhancementCheckbox("Unfix Goron Spin", "gUnfixGoronSpin");
+            UIWidgets::EnhancementSliderFloat("Fairies Size: %f", "##Fairies_Size", "gCosmetics.Fairies_Size", 0.25f, 5.0f, "", 1.0f, false);
+            ImGui::SameLine();
+            if (ImGui::Button("Reset##Fairies_Size")) {
+                CVar_Clear("gCosmetics.Fairies_Size");
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
+            UIWidgets::EnhancementSliderFloat("N64 Logo Spin Speed: %f", "##N64Logo_SpinSpeed", "gCosmetics.N64Logo_SpinSpeed", 0.25f, 5.0f, "", 1.0f, false);
+            ImGui::SameLine();
+            if (ImGui::Button("Reset##N64Logo_SpinSpeed")) {
+                CVar_Clear("gCosmetics.N64Logo_SpinSpeed");
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
+            UIWidgets::EnhancementSliderFloat("Moon Size: %f", "##Moon_Size", "gCosmetics.Moon_Size", 0.5f, 2.0f, "", 1.0f, false);
+            ImGui::SameLine();
+            if (ImGui::Button("Reset##Moon_Size")) {
+                CVar_Clear("gCosmetics.Moon_Size");
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("HUD")) {

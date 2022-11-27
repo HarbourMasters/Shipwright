@@ -1379,6 +1379,7 @@ void Environment_DrawSunAndMoon(PlayState* play) {
         color = CLAMP_MIN(color, 0.0f);
 
         scale = -15.0f * color + 25.0f;
+        scale *= CVar_GetFloat("gCosmetics.Moon_Size", 1.0f);
         Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
 
         temp = -y / 80.0f;
