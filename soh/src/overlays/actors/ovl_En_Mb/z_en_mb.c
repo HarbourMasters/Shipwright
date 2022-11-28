@@ -863,7 +863,10 @@ void EnMb_ClubAttack(EnMb* this, PlayState* play) {
             EffectSsBlast_SpawnWhiteShockwave(play, &effSpawnPos, &effWhiteShockwaveDynamics,
                                               &effWhiteShockwaveDynamics);
             func_80033480(play, &effSpawnPos, 2.0f, 3, 0x12C, 0xB4, 1);
-            Camera_AddQuake(&play->mainCamera, 2, 0x19, 5);
+            // Disable camera shake with Enemy Randomizer enabled.
+            if (!CVar_GetS32("gRandomizedEnemies", 0)) {
+                Camera_AddQuake(&play->mainCamera, 2, 0x19, 5);
+            }
             func_800358DC(&this->actor, &effSpawnPos, &this->actor.world.rot, flamesParams, 20, flamesUnused, play,
                           -1, 0);
             EnMb_SetupClubWaitAfterAttack(this);
