@@ -144,8 +144,13 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
             }
         }
 
-        // Move like-likes in Jabu Jabu down into the room as they otherwise get stuck on Song of Time blocks.
-        if (*actorId == ACTOR_EN_RR && play->sceneNum == SCENE_BDAN) {
+        // Move like-likes in MQ Jabu Jabu down into the room as they otherwise get stuck on Song of Time blocks.
+        if (*actorId == ACTOR_EN_RR && play->sceneNum == SCENE_BDAN && play->roomCtx.curRoom.num == 11) {
+            if (*posX == 1003) {
+                *posX = *posX - 75;
+            } else {
+                *posX = *posX + 75;
+            }
             *posY = *posY - 200;
         }
 
