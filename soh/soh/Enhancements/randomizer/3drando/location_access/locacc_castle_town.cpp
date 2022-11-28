@@ -50,7 +50,7 @@ void AreaTable_Init_CastleTown() {
                   Entrance(TEMPLE_OF_TIME, {[]{return true;}}),
   });
 
-  areaTable[TEMPLE_OF_TIME] = Area("Temple of Time", "", TEMPLE_OF_TIME, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[TEMPLE_OF_TIME] = Area("Temple of Time", "Temple of Time", TEMPLE_OF_TIME, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(TOT_LIGHT_ARROWS_CUTSCENE, {[]{return IsAdult && CanTriggerLACS;}}),
                 }, {
@@ -61,7 +61,7 @@ void AreaTable_Init_CastleTown() {
                                                                ((Bugs || Fish) && Bombs && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED) && CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE)));}}),
   });
 
-  areaTable[TOT_BEYOND_DOOR_OF_TIME] = Area("Beyond Door of Time", "", TEMPLE_OF_TIME, NO_DAY_NIGHT_CYCLE, {
+  areaTable[TOT_BEYOND_DOOR_OF_TIME] = Area("Beyond Door of Time", "Beyond Door of Time", TEMPLE_OF_TIME, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   //EventAccess(&TimeTravel, {[]{return true;}}),
                 }, {
@@ -111,7 +111,7 @@ void AreaTable_Init_CastleTown() {
                   Entrance(HYRULE_CASTLE_GROUNDS, {[]{return true;}}),
   });
 
-  areaTable[HC_GREAT_FAIRY_FOUNTAIN] = Area("HC Great Fairy Fountain", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[HC_GREAT_FAIRY_FOUNTAIN] = Area("HC Great Fairy Fountain", "HC Great Fairy Fountain", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(HC_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby);},
                                              /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && Bombs && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && ZeldasLullaby;}}),
@@ -120,7 +120,7 @@ void AreaTable_Init_CastleTown() {
                   Entrance(CASTLE_GROUNDS, {[]{return true;}}),
   });
 
-  areaTable[HC_STORMS_GROTTO] = Area("HC Storms Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, {
+  areaTable[HC_STORMS_GROTTO] = Area("HC Storms Grotto", "HC Storms Grotto", NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&NutPot,           {[]{return NutPot           || CanBlastOrSmash;}}),
                   EventAccess(&GossipStoneFairy, {[]{return GossipStoneFairy || (CanBlastOrSmash && CanSummonGossipFairy);}}),
@@ -146,7 +146,7 @@ void AreaTable_Init_CastleTown() {
                                           /*Glitched*/[]{return (HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::ADVANCED) || (HoverBoots && CanShield && Bombs && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::EXPERT)) || (HoverBoots && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::ADVANCED));}}),
   });
 
-  areaTable[OGC_GREAT_FAIRY_FOUNTAIN] = Area("OGC Great Fairy Fountain", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[OGC_GREAT_FAIRY_FOUNTAIN] = Area("OGC Great Fairy Fountain", "OGC Great Fairy Fountain", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(OGC_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby);},
                                               /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && Bombs && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && ZeldasLullaby;}}),
@@ -155,7 +155,7 @@ void AreaTable_Init_CastleTown() {
                   Entrance(CASTLE_GROUNDS, {[]{return true;}}),
   });
 
-  areaTable[MARKET_GUARD_HOUSE] = Area("Market Guard House", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[MARKET_GUARD_HOUSE] = Area("Market Guard House", "Market Guard House", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(MARKET_10_BIG_POES,    {[]{return IsAdult && BigPoeKill;}}),
                   LocationAccess(MARKET_GS_GUARD_HOUSE, {[]{return IsChild;}}),
@@ -164,7 +164,7 @@ void AreaTable_Init_CastleTown() {
                   Entrance(MARKET_ENTRANCE, {[]{return true;}}),
   });
 
-  areaTable[MARKET_BAZAAR] = Area("Market Bazaar", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[MARKET_BAZAAR] = Area("Market Bazaar", "Market Bazaar", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(MARKET_BAZAAR_ITEM_1, {[]{return true;}}),
                   LocationAccess(MARKET_BAZAAR_ITEM_2, {[]{return true;}}),
@@ -179,7 +179,7 @@ void AreaTable_Init_CastleTown() {
                   Entrance(THE_MARKET, {[]{return true;}}),
   });
 
-  areaTable[MARKET_MASK_SHOP] = Area("Market Mask Shop", "", NONE, NO_DAY_NIGHT_CYCLE, {
+  areaTable[MARKET_MASK_SHOP] = Area("Market Mask Shop", "Market Mask Shop", NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&SkullMask,   {[]{return SkullMask   || (ZeldasLetter && (CompleteMaskQuest ||  ChildCanAccess(KAKARIKO_VILLAGE)));}}),
                   EventAccess(&MaskOfTruth, {[]{return MaskOfTruth || (SkullMask && (CompleteMaskQuest || (ChildCanAccess(THE_LOST_WOODS) && CanPlay(SariasSong) && AreaTable(THE_GRAVEYARD)->childDay && ChildCanAccess(HYRULE_FIELD) && HasAllStones)));}}),
@@ -188,7 +188,7 @@ void AreaTable_Init_CastleTown() {
                   Entrance(THE_MARKET, {[]{return true;}}),
   });
 
-  areaTable[MARKET_SHOOTING_GALLERY] = Area("Market Shooting Gallery", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[MARKET_SHOOTING_GALLERY] = Area("Market Shooting Gallery", "Market Shooting Gallery", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(MARKET_SHOOTING_GALLERY_REWARD, {[]{return IsChild;}}),
                 }, {
@@ -196,7 +196,7 @@ void AreaTable_Init_CastleTown() {
                   Entrance(THE_MARKET, {[]{return true;}}),
   });
 
-  areaTable[MARKET_BOMBCHU_BOWLING] = Area("Market Bombchu Bowling", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[MARKET_BOMBCHU_BOWLING] = Area("Market Bombchu Bowling", "Market Bombchu Bowling", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(MARKET_BOMBCHU_BOWLING_FIRST_PRIZE,  {[]{return CanPlayBowling;}}),
                   LocationAccess(MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, {[]{return CanPlayBowling;}}),
@@ -206,7 +206,7 @@ void AreaTable_Init_CastleTown() {
                   Entrance(THE_MARKET, {[]{return true;}}),
   });
 
-  areaTable[MARKET_POTION_SHOP] = Area("Market Potion Shop", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[MARKET_POTION_SHOP] = Area("Market Potion Shop", "Market Potion Shop", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(MARKET_POTION_SHOP_ITEM_1, {[]{return true;}}),
                   LocationAccess(MARKET_POTION_SHOP_ITEM_2, {[]{return true;}}),
@@ -221,7 +221,7 @@ void AreaTable_Init_CastleTown() {
                   Entrance(THE_MARKET, {[]{return true;}}),
   });
 
-  areaTable[MARKET_TREASURE_CHEST_GAME] = Area("Market Treasure Chest Game", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[MARKET_TREASURE_CHEST_GAME] = Area("Market Treasure Chest Game", "Market Treasure Chest Game", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(MARKET_TREASURE_CHEST_GAME_REWARD, {[]{return (CanUse(LENS_OF_TRUTH) && !ShuffleChestMinigame) || (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_SINGLE_KEYS) && SmallKeys(MARKET_TREASURE_CHEST_GAME, 6)) || (ShuffleChestMinigame.Is(SHUFFLECHESTMINIGAME_PACK) && SmallKeys(MARKET_TREASURE_CHEST_GAME, 1));},
                                                          /*Glitched*/[]{return !ShuffleChestMinigame && (CanUse(FARORES_WIND) && (HasBottle || WeirdEgg) && CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE));}}),
@@ -235,7 +235,7 @@ void AreaTable_Init_CastleTown() {
                   Entrance(THE_MARKET, {[]{return true;}}),
   });
 
-  areaTable[MARKET_BOMBCHU_SHOP] = Area("Market Bombchu Shop", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[MARKET_BOMBCHU_SHOP] = Area("Market Bombchu Shop", "Market Bombchu Shop", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(MARKET_BOMBCHU_SHOP_ITEM_1, {[]{return true;}}),
                   LocationAccess(MARKET_BOMBCHU_SHOP_ITEM_2, {[]{return true;}}),
@@ -250,7 +250,7 @@ void AreaTable_Init_CastleTown() {
                   Entrance(MARKET_BACK_ALLEY, {[]{return true;}}),
   });
 
-  areaTable[MARKET_DOG_LADY_HOUSE] = Area("Market Dog Lady House", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[MARKET_DOG_LADY_HOUSE] = Area("Market Dog Lady House", "Market Dog Lady House", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(MARKET_LOST_DOG, {[]{return IsChild && AtNight;}}),
                 }, {
@@ -258,7 +258,7 @@ void AreaTable_Init_CastleTown() {
                   Entrance(MARKET_BACK_ALLEY, {[]{return true;}}),
   });
 
-  areaTable[MARKET_MAN_IN_GREEN_HOUSE] = Area("Market Man in Green House", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[MARKET_MAN_IN_GREEN_HOUSE] = Area("Market Man in Green House", "Market Man in Green House", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(MARKET_BACK_ALLEY, {[]{return true;}}),
   });
