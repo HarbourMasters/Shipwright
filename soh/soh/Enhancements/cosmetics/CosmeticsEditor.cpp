@@ -139,8 +139,9 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Equipment_ChuBody",             "Bombchu Body",         BOX_EQUIPMENT,    ImVec4(180, 130,  50, 255), false, true, true), 
 
     COSMETIC_OPTION("Consumable_Hearts",             "Hearts",               BOX_CONSUMABLE,   ImVec4(255,  70,  50, 255), false, true, false),
+    COSMETIC_OPTION("Consumable_HeartBorder",        "HeartBorder",          BOX_CONSUMABLE,   ImVec4( 50,  40,  60, 255), false, true, true),
     COSMETIC_OPTION("Consumable_DDHearts",           "DD Hearts",            BOX_CONSUMABLE,   ImVec4(200,   0,   0, 255), false, true, false),
-    COSMETIC_OPTION("Consumable_DDBorder",           "DD Border",            BOX_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Consumable_DDHeartBorder",      "DD Heart Border",      BOX_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Consumable_Magic",              "Magic",                BOX_CONSUMABLE,   ImVec4(  0, 200,   0, 255), false, true, false),
     COSMETIC_OPTION("Consumable_MagicActive",        "Magic Active",         BOX_CONSUMABLE,   ImVec4(250, 250,   0, 255), false, true, true),
     COSMETIC_OPTION("Consumable_MagicBorder",        "Magic Border",         BOX_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, false, true),
@@ -167,12 +168,14 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Hud_MinimapPosition",           "Minimap Position",     BOX_HUD,          ImVec4(200, 255,   0, 255), false, true, true),
     COSMETIC_OPTION("Hud_MinimapEntrance",           "Minimap Entrance",     BOX_HUD,          ImVec4(200,   0,   0, 255), false, true, true),
 
-    COSMETIC_OPTION("Title_FileChoose",              "File Choose",          BOX_TITLE,        ImVec4(100, 150, 255, 255), false, true, true), // Todo (Cosmetics): waiting for title screen change gCCFileChoosePrim, 
+    COSMETIC_OPTION("Title_FileChoose",              "File Choose",          BOX_TITLE,        ImVec4(100, 150, 255, 255), false, true, false),
     COSMETIC_OPTION("Title_NintendoLogo",            "Nintendo Logo",        BOX_TITLE,        ImVec4(  0,   0, 255, 255), false, true, true),
     COSMETIC_OPTION("Title_N64LogoRed",              "N64 Red",              BOX_TITLE,        ImVec4(150,   0,   0, 255), false, true, true),
     COSMETIC_OPTION("Title_N64LogoBlue",             "N64 Blue",             BOX_TITLE,        ImVec4(  0,  50, 150, 255), false, true, true),
     COSMETIC_OPTION("Title_N64LogoGreen",            "N64 Green",            BOX_TITLE,        ImVec4( 50, 100,   0, 255), false, true, true),
     COSMETIC_OPTION("Title_N64LogoYellow",           "N64 Yellow",           BOX_TITLE,        ImVec4(200, 150,   0, 255), false, true, true),
+    COSMETIC_OPTION("Title_FirePrimary",             "Title Fire Primary",   BOX_TITLE,        ImVec4(255, 255, 170, 255), false, true, false), // Todo (Cosmetics): Kinda complicated
+    COSMETIC_OPTION("Title_FireSecondary",           "Title Fire Secondary", BOX_TITLE,        ImVec4(255, 100,   0, 255), false, true, true), // Todo (Cosmetics): Kinda complicated
 
     COSMETIC_OPTION("Arrows_NormalPrimary",          "Normal Primary",       BOX_ARROWS,       ImVec4(  0, 150,   0,   0), false, true, false),
     COSMETIC_OPTION("Arrows_NormalSecondary",        "Normal Secondary",     BOX_ARROWS,       ImVec4(255, 255, 170, 255), false, true, true),
@@ -1411,8 +1414,7 @@ void DrawCosmeticsEditor(bool& open) {
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Silly")) {
-            ImGui::Text("Link");
-            if (UIWidgets::EnhancementSliderFloat("Body Scale: %f", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, false)) {
+            if (UIWidgets::EnhancementSliderFloat("Link Body Scale: %f", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, false)) {
                 CVar_SetS32("gCosmetics.Link_BodyScale.Changed", 1);
             }
             ImGui::SameLine();
@@ -1425,7 +1427,7 @@ void DrawCosmeticsEditor(bool& open) {
                 player->actor.scale.y = 0.01f;
                 player->actor.scale.z = 0.01f;
             }
-            if (UIWidgets::EnhancementSliderFloat("Head Scale: %f", "##Link_HeadScale", "gCosmetics.Link_HeadScale.Value", 0.4f, 4.0f, "", 1.0f, false)) {
+            if (UIWidgets::EnhancementSliderFloat("Link Head Scale: %f", "##Link_HeadScale", "gCosmetics.Link_HeadScale.Value", 0.4f, 4.0f, "", 1.0f, false)) {
                 CVar_SetS32("gCosmetics.Link_HeadScale.Changed", 1);
             }
             ImGui::SameLine();
@@ -1434,27 +1436,43 @@ void DrawCosmeticsEditor(bool& open) {
                 CVar_Clear("gCosmetics.Link_HeadScale.Changed");
                 SohImGui::RequestCvarSaveOnNextTick();
             }
-            ImGui::Text("Bunny Hood");
-            UIWidgets::EnhancementSliderFloat("Length: %f", "##BunnyHood_EarLength", "gCosmetics.BunnyHood_EarLength", -300.0f, 1000.0f, "", 0.0f, false);
+            UIWidgets::EnhancementSliderFloat("Bunny Hood Length: %f", "##BunnyHood_EarLength", "gCosmetics.BunnyHood_EarLength", -300.0f, 1000.0f, "", 0.0f, false);
             ImGui::SameLine();
             if (ImGui::Button("Reset##BunnyHood_EarLength")) {
                 CVar_Clear("gCosmetics.BunnyHood_EarLength");
                 SohImGui::RequestCvarSaveOnNextTick();
             }
-            UIWidgets::EnhancementSliderFloat("Spread: %f", "##BunnyHood_EarSpread", "gCosmetics.BunnyHood_EarSpread", -300.0f, 500.0f, "", 0.0f, false);
+            UIWidgets::EnhancementSliderFloat("Bunny Hood Spread: %f", "##BunnyHood_EarSpread", "gCosmetics.BunnyHood_EarSpread", -300.0f, 500.0f, "", 0.0f, false);
             ImGui::SameLine();
             if (ImGui::Button("Reset##BunnyHood_EarSpread")) {
                 CVar_Clear("gCosmetics.BunnyHood_EarSpread");
                 SohImGui::RequestCvarSaveOnNextTick();
             }
-            ImGui::Text("Gorons");
-            UIWidgets::EnhancementSliderFloat("Neck Length: %f", "##Goron_NeckLength", "gCosmetics.Goron_NeckLength", 0.0f, 1000.0f, "", 0.0f, false);
+            UIWidgets::EnhancementSliderFloat("Goron Neck Length: %f", "##Goron_NeckLength", "gCosmetics.Goron_NeckLength", 0.0f, 1000.0f, "", 0.0f, false);
             ImGui::SameLine();
             if (ImGui::Button("Reset##Goron_NeckLength")) {
                 CVar_Clear("gCosmetics.Goron_NeckLength");
                 SohImGui::RequestCvarSaveOnNextTick();
             }
             UIWidgets::EnhancementCheckbox("Unfix Goron Spin", "gUnfixGoronSpin");
+            UIWidgets::EnhancementSliderFloat("Fairies Size: %f", "##Fairies_Size", "gCosmetics.Fairies_Size", 0.25f, 5.0f, "", 1.0f, false);
+            ImGui::SameLine();
+            if (ImGui::Button("Reset##Fairies_Size")) {
+                CVar_Clear("gCosmetics.Fairies_Size");
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
+            UIWidgets::EnhancementSliderFloat("N64 Logo Spin Speed: %f", "##N64Logo_SpinSpeed", "gCosmetics.N64Logo_SpinSpeed", 0.25f, 5.0f, "", 1.0f, false);
+            ImGui::SameLine();
+            if (ImGui::Button("Reset##N64Logo_SpinSpeed")) {
+                CVar_Clear("gCosmetics.N64Logo_SpinSpeed");
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
+            UIWidgets::EnhancementSliderFloat("Moon Size: %f", "##Moon_Size", "gCosmetics.Moon_Size", 0.5f, 2.0f, "", 1.0f, false);
+            ImGui::SameLine();
+            if (ImGui::Button("Reset##Moon_Size")) {
+                CVar_Clear("gCosmetics.Moon_Size");
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("HUD")) {
