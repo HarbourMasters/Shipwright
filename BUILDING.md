@@ -22,8 +22,7 @@ You can also find the v142 toolset by searching through the individual component
 While you're there, you can also install Python 3 and Git if needed.
 
 1. Clone the Ship of Harkinian repository
-2. Clone the [libultraship](https://github.com/kenix3/libultraship.git) submodule into the Ship of Harkinian folder
-3. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice
+2. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice
 
 _Note: Instructions assume using powershell_
 ```powershell
