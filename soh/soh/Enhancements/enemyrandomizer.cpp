@@ -1,10 +1,14 @@
 #include "enemyrandomizer.h"
 #include "functions.h"
 #include "macros.h"
+#include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include "variables.h"
 
 extern "C" {
 #include <z64.h>
 }
+
+extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
 static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
     { ACTOR_EN_FIREFLY, 2 },    // Regular Keese
@@ -130,7 +134,7 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
         *params = 24067;
     }
 
-    if (IsEnemyFoundToRandomize(play->sceneNum, *actorId, *params, *posX)) {
+    if (IsEnemyFoundToRandomize(play->sceneNum, play->roomCtx.curRoom.num, *actorId, *params, *posX)) {
 
         // When replacing Iron Knuckles in Spirit Temple, move them away from the throne because
         // some enemies can get stuck on the throne.
@@ -140,6 +144,16 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
             } else if (*params == 6401) {
                 *posX = *posX - 150;
             }
+        }
+
+        // Move like-likes in MQ Jabu Jabu down into the room as they otherwise get stuck on Song of Time blocks.
+        if (*actorId == ACTOR_EN_RR && play->sceneNum == SCENE_BDAN && play->roomCtx.curRoom.num == 11) {
+            if (*posX == 1003) {
+                *posX = *posX - 75;
+            } else {
+                *posX = *posX + 75;
+            }
+            *posY = *posY - 200;
         }
 
         // Do a raycast from the original position of the actor to find the ground below it, then try to place
@@ -162,9 +176,12 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
         // Get randomized enemy ID and parameter.
         EnemyEntry randomEnemy = GetRandomizedEnemyEntry(*posX, *posY, *posZ);
 
+        int8_t timesRandomized = 1;
+
         // While randomized enemy isn't allowed in certain situations, randomize again.
-        while (!IsEnemyAllowedToSpawn(play->sceneNum, randomEnemy)) {
-            randomEnemy = GetRandomizedEnemyEntry(*posX, *posY, *posZ);
+        while (!IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, randomEnemy)) {
+            randomEnemy = GetRandomizedEnemyEntry(*posX + timesRandomized, *posY, *posZ);
+            timesRandomized++;
         }
 
         *actorId = randomEnemy.id;
@@ -206,11 +223,18 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
 }
 
 EnemyEntry GetRandomizedEnemyEntry(float seed1, float seed2, float seed3) {
-    uint32_t randomNumber = rand() + (int)seed1 + (int)seed2 + (int)seed3;
-    return randomizedEnemySpawnTable[randomNumber % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
+    if (CVar_GetS32("gSeededRandomizedEnemies", 0) && gSaveContext.n64ddFlag) {
+        uint32_t seed = (int)seed1 + (int)seed2 + (int)seed3 + *gSaveContext.seedIcons;
+        Random_Init(seed);
+        uint32_t randomNumber = Random(0, RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE);
+        return randomizedEnemySpawnTable[randomNumber];
+    } else {
+        uint32_t randomNumber = rand() + (int)seed1 + (int)seed2 + (int)seed3;
+        return randomizedEnemySpawnTable[randomNumber % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
+    }
 }
 
-bool IsEnemyFoundToRandomize(int16_t sceneNum, int16_t actorId, int16_t params, float posX) {
+bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, int16_t params, float posX) {
 
     for (int i = 0; i < ARRAY_COUNT(enemiesToRandomize); i++) {
 
@@ -228,7 +252,7 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int16_t actorId, int16_t params, 
                     return (params == 0 || params == -32768);
                 // Only randomize the initial eggs, not the enemies that spawn from them.
                 case ACTOR_EN_GOMA:
-                    return ((params >= 0 && params <= 6) || params == 8);
+                    return (params >= 0 && params <= 9);
                 // Only randomize Skullwalltulas, not Golden Skulltulas.
                 case ACTOR_EN_SW:
                     return (params == 0);
@@ -248,7 +272,7 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int16_t actorId, int16_t params, 
                 // Don't randomize the Stalfos spawning on the boat in Shadow Temple, as randomizing them places the new enemies
                 // down in the river.
                 case ACTOR_EN_TEST:
-                    return (params != 1 && !(sceneNum == SCENE_HAKADAN && (posX == 2746 || posX == 1209)));
+                    return (params != 1 && !(sceneNum == SCENE_HAKADAN && roomNum == 21));
                 // Only randomize the enemy variant of Armos Statue.
                 // Leave one Armos unrandomized in the Spirit Temple room where an armos is needed to push down a button
                 case ACTOR_EN_AM:
@@ -256,13 +280,8 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int16_t actorId, int16_t params, 
                 // Don't randomize Shell Blades and Spikes in the underwater portion in Water Temple as it's impossible to kill
                 // most other enemies underwater with just hookshot and they're required to be killed for a grate to open.
                 case ACTOR_EN_SB:
-                    return (!(sceneNum == SCENE_MIZUSIN && (posX == 419 || posX == 435)));
                 case ACTOR_EN_NY:
-                    return (!(sceneNum == SCENE_MIZUSIN && (posX == 380 || posX == 382 || posX == 416 || posX == 452 || posX == 454)));
-                // Don't randomize the 2 like-likes in Jabu Jabu's Belly in MQ because they spawn in a box on top of the ceilling.
-                // Other enemies won't aggro on Link correctly to fall down.
-                case ACTOR_EN_RR:
-                    return (sceneNum != SCENE_BDAN);
+                    return (!(sceneNum == SCENE_MIZUSIN && roomNum == 2));
                 default:
                     return 1;
             }
@@ -273,24 +292,87 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int16_t actorId, int16_t params, 
     return 0;
 }
 
-bool IsEnemyAllowedToSpawn(int16_t sceneNum, EnemyEntry enemy) {
+bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
+
+    uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(sceneNum);
+
+    // Freezard, Beamos, Shell Blade, Spike, Arwing, Wallmaster
+    bool enemiesToExcludeClearRooms = enemy.id == ACTOR_EN_FZ || enemy.id == ACTOR_EN_VM || enemy.id == ACTOR_EN_SB ||
+                                      enemy.id == ACTOR_EN_NY || enemy.id == ACTOR_EN_CLEAR_TAG ||
+                                      enemy.id == ACTOR_EN_WALLMAS;
+
+    // Bari (big jellyfish), Dark Link
+    bool enemiesToExcludeTimedRooms = enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI || enemy.id == ACTOR_EN_TORCH2;
 
     switch (sceneNum) {
+        // Deku Tree
+        case SCENE_YDAN:
+            return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 9)) &&
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 4 || roomNum == 6 || roomNum == 9 || roomNum == 10)));
+        // Dodongo's Cavern
+        case SCENE_DDAN:
+            return (!(!isMQ && enemiesToExcludeClearRooms && roomNum == 15) &&
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 5 || roomNum == 13 || roomNum == 14)));
+        // Jabu Jabu
+        case SCENE_BDAN:
+            return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 8 || roomNum == 9)) &&
+                    !(!isMQ && enemiesToExcludeTimedRooms && roomNum == 12) &&
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 11 || roomNum == 14)));
+        // Forest Temple
+        case SCENE_BMORI1:
+            return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 6 || roomNum == 10 || roomNum == 18 || roomNum == 21)) &&
+                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+        // Fire Temple
+        case SCENE_HIDAN:
+            return (!(!isMQ && enemiesToExcludeClearRooms && roomNum == 15) &&
+                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+        // Water Temple
+        case SCENE_MIZUSIN:
+            return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 13 || roomNum == 18 || roomNum == 19)) &&
+                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+        // Spirit Temple
+        case SCENE_JYASINZOU:
+            return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 10 || roomNum == 17 || roomNum == 20)) &&
+                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+        // Shadow Temple
+        case SCENE_HAKADAN:
+            return (!(!isMQ && enemiesToExcludeClearRooms && 
+                        (roomNum == 1 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 16 || roomNum == 17 || roomNum == 19 || roomNum == 20)) &&
+                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+        // Ganon's Castle Trials
+        case SCENE_GANONTIKA:
+            return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 2 || roomNum == 5 || roomNum == 9)) &&
+                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+        // Ice Caverns
+        case SCENE_ICE_DOUKUTO:
+            return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 7)) &&
+                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+        // Don't allow Dark Link in areas with lava void out zones as it voids out the player as well.
+        // Gerudo Training Ground.
+        case SCENE_MEN:
+            return (!(enemy.id == ACTOR_EN_TORCH2 && roomNum == 6) &&
+                    !(!isMQ && enemiesToExcludeTimedRooms && (roomNum == 1 || roomNum == 7)) &&
+                    !(!isMQ && enemiesToExcludeClearRooms && (roomNum == 3 || roomNum == 5 || roomNum == 10)) &&
+                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+        // Don't allow certain enemies in Ganon's Tower because they would spawn up on the ceilling,
+        // becoming impossible to kill.
+        // Ganon's Tower.
+        case SCENE_GANON:
+            return (!(enemiesToExcludeClearRooms || enemy.id != ACTOR_EN_VALI || (enemy.id == ACTOR_EN_ZF && enemy.params == -1)));
+        // Ganon's Tower Escape.
+        case SCENE_GANON_SONOGO:
+            return (!((enemiesToExcludeTimedRooms || (enemy.id == ACTOR_EN_ZF && enemy.params == -1)) && roomNum == 1));
         // Don't allow big stalchildren and big peahats during the Gohma fight because they can clip into Gohma
         // and it crashes the game. Likely because Gohma on the ceilling can't handle collision with other enemies.
         case SCENE_YDAN_BOSS:
             return (!(enemy.id == ACTOR_EN_SKB && enemy.params == 20) && !(enemy.id == ACTOR_EN_PEEHAT && enemy.params == -1));
-        // Don't allow Dark Link in areas with void out zones as it voids out the player as well.
-        // Shadow Temple, Gerudo Training Ground and Death Mountain Crater. 
-        case SCENE_HAKADAN:
-        case SCENE_MEN:
+        // Grottos.
+        case SCENE_KAKUSIANA:
+            return (!(enemiesToExcludeClearRooms && (roomNum == 2 || roomNum == 7)));
+        // Don't allow Dark Link in areas with lava void out zones as it voids out the player as well.
+        // Death Mountain Crater.
         case SCENE_SPOT17:
             return (enemy.id != ACTOR_EN_TORCH2);
-        // Don't allow certain enemies in Ganon's Tower because they would spawn up on the ceilling,
-        // becoming impossible to kill
-        case SCENE_GANON:
-        case SCENE_GANON_SONOGO:
-            return (enemy.id != ACTOR_EN_CLEAR_TAG && enemy.id != ACTOR_EN_VALI && !(enemy.id == ACTOR_EN_ZF && enemy.params == -1));
         default:
             return 1;
     }

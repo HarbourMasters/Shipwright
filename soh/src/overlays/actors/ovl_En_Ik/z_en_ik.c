@@ -292,7 +292,11 @@ void func_80A747C0(EnIk* this, PlayState* play) {
         sp24.y += 30.0f;
         func_8003424C(play, &sp24);
         this->skelAnime.playSpeed = 1.0f;
-        func_800F5ACC(NA_BGM_MINI_BOSS);
+        // Disable miniboss music with Enemy Randomizer because the music would keep
+        // playing if the enemy was never defeated, which is common with Enemy Randomizer.
+        if (!CVar_GetS32("gRandomizedEnemies", 0)) {
+            func_800F5ACC(NA_BGM_MINI_BOSS);
+        }
     }
     if (this->skelAnime.curFrame == 5.0f) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_IRONNACK_WAKEUP);
@@ -1473,7 +1477,6 @@ void EnIk_Init(Actor* thisx, PlayState* play) {
         sp24.y += 30.0f;
         func_8003424C(play, &sp24);
         this->skelAnime.playSpeed = 1.0f;
-        func_800F5ACC(NA_BGM_MINI_BOSS);
     }
 }
 

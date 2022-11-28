@@ -276,7 +276,11 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
                     if (stickY) {}
                     sInput.cur.stick_y = stickY;
                 }
-                func_800F5ACC(NA_BGM_MINI_BOSS);
+                // Disable miniboss music with Enemy Randomizer because the music would keep
+                // playing if the enemy was never defeated, which is common with Enemy Randomizer.
+                if (!CVar_GetS32("gRandomizedEnemies", 0)) {
+                    func_800F5ACC(NA_BGM_MINI_BOSS);
+                }
                 sActionState = ENTORCH2_ATTACK;
             }
             break;

@@ -863,7 +863,10 @@ void EnMb_ClubAttack(EnMb* this, PlayState* play) {
             EffectSsBlast_SpawnWhiteShockwave(play, &effSpawnPos, &effWhiteShockwaveDynamics,
                                               &effWhiteShockwaveDynamics);
             func_80033480(play, &effSpawnPos, 2.0f, 3, 0x12C, 0xB4, 1);
-            Camera_AddQuake(&play->mainCamera, 2, 0x19, 5);
+            // Disable camera shake with Enemy Randomizer enabled.
+            if (!CVar_GetS32("gRandomizedEnemies", 0)) {
+                Camera_AddQuake(&play->mainCamera, 2, 0x19, 5);
+            }
             func_800358DC(&this->actor, &effSpawnPos, &this->actor.world.rot, flamesParams, 20, flamesUnused, play,
                           -1, 0);
             EnMb_SetupClubWaitAfterAttack(this);
@@ -1238,7 +1241,11 @@ void EnMb_ClubWaitPlayerNear(EnMb* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if (Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) < this->playerDetectionRange &&
         !(player->stateFlags1 & 0x4000000) && ABS(relYawFromPlayer) < 0x3E80) {
-        EnMb_SetupClubAttack(this);
+        // Add a height check to the Moblin's Club attack when Enemy Randomizer is on.
+        s8 enemyRando = CVar_GetS32("gRandomizedEnemies", 0);
+        if (!enemyRando || (enemyRando && this->actor.yDistToPlayer <= 100.0f && this->actor.yDistToPlayer >= -100.0f)) {
+            EnMb_SetupClubAttack(this);
+        }
     }
 }
 
