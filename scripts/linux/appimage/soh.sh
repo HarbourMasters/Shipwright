@@ -74,12 +74,14 @@ while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
                 assets/extractor/ZAPD.out ed -eh -i assets/extractor/xmls/"${ROM}" -b tmp/rom.z64 -fl assets/extractor/filelists -o placeholder -osf placeholder -gsf 1 -rconf assets/extractor/Config_"${ROM}".xml -se OTR --otrfile "${OTRNAME}" > /dev/null 2>&1
                 cp "$ASSETDIR"/"$OTRNAME" "$SHIP_HOME"
             else
-                if [ -n "$ZENITY" ]; then
-                    zenity --error --timeout=5 --text="Place ROM in $SHIP_HOME" --title="Missing ROM file" --width=500 --width=200
-                else
-                    echo -e "\nPlace ROM in this folder\n"
-                fi	
-                exit
+                if [[ (! -e "$SHIP_HOME"/oot.otr) && (! -e "$SHIP_HOME"/oot-mq.otr) ]]; then
+                    if [ -n "$ZENITY" ]; then
+                        zenity --error --timeout=5 --text="Place ROM in $SHIP_HOME" --title="Missing ROM file" --width=500 --width=200
+                    else
+                        echo -e "\nPlace ROM in this folder\n"
+                    fi	
+                    exit
+                fi
             fi
         done
         if [[ (! -e "$SHIP_HOME"/oot.otr) && (! -e "$SHIP_HOME"/oot-mq.otr) ]]; then
