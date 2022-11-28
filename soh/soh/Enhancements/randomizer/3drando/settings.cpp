@@ -1864,7 +1864,7 @@ namespace Settings {
 
       //Adult is also not compatible with the following combination:
       //DoT:Intended, ShuffleOcarinas:false, Logic:Glitchless
-      if (OpenDoorOfTime.Is(OPENDOOROFTIME_INTENDED) && !ShuffleOcarinas &&
+      if (OpenDoorOfTime.Is(OPENDOOROFTIME_CLOSED) && !ShuffleOcarinas &&
         Logic.Is(LOGIC_GLITCHLESS)) {
           StartingAge.SetSelectedIndex(AGE_CHILD);
           StartingAge.Lock();
