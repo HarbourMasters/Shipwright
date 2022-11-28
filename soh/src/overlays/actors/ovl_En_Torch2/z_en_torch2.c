@@ -276,7 +276,9 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
                     if (stickY) {}
                     sInput.cur.stick_y = stickY;
                 }
-                func_800F5ACC(NA_BGM_MINI_BOSS);
+                if (!CVar_GetS32("gRandomizedEnemies", 0)) {
+                    func_800F5ACC(NA_BGM_MINI_BOSS);
+                }
                 sActionState = ENTORCH2_ATTACK;
             }
             break;

@@ -286,7 +286,7 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
 
 bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
 
-    // Freezard, Beamos, Shell Blade, Spike, Arwing
+    // Freezard, Beamos, Shell Blade, Spike, Arwing, Wallmaster
     bool enemiesToExcludeClearRooms = enemy.id == ACTOR_EN_FZ || enemy.id == ACTOR_EN_VM || enemy.id == ACTOR_EN_SB ||
                                       enemy.id == ACTOR_EN_NY || enemy.id == ACTOR_EN_CLEAR_TAG ||
                                       enemy.id == ACTOR_EN_WALLMAS;
