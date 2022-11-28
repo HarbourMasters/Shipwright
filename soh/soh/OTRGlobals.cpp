@@ -31,7 +31,6 @@
 #define DRWAV_IMPLEMENTATION
 #include <dr_libs/wav.h>
 #include <AudioPlayer.h>
-#include "Enhancements/online/Online.h"
 #include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/sfx-editor/SfxEditor.h"
@@ -2044,20 +2043,24 @@ extern "C" void Overlay_DisplayText(float duration, const char* text) {
     SohImGui::GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
-extern "C" void OTRSendPacket() {
-    if (Ship::Online::server.serverOpen) {
-        for (size_t i = 0; i < MAX_PLAYERS; i++) {
-            if (Ship::Online::server.clientSockets[i] != nullptr) {
-                gPacket.player_id = i;
-                Ship::Online::SendPacketMessage((Ship::Online::OnlinePacket*)&gPacket,
-                                                &Ship::Online::server.clientSockets[i]);
+extern "C" void OTRSendPacketToClients() {
+    if (server.running) {
+        for (size_t i = 0; i < server.maxPlayers; i++) {
+            if (server.clients[i] != NULL) {
+                gPacket.player_id = 0;
+                server.SendPacketMessage((OnlinePacket*)&gPacket, &server.clients[i]);
             }
         }
-    }
 
-    if (Ship::Online::client.clientConnected) {
-        Ship::Online::SendPacketMessage((Ship::Online::OnlinePacket*)&gPacket, &Ship::Online::client.clientSocket);
+        memset(&gPacket, 0, sizeof(gPacket));
     }
+}
 
-    memset(&gPacket, 0, sizeof(gPacket));
+extern "C" void OTRSendPacketToServer() {
+    if (client.running) {
+        gPacket.player_id = 1;
+        client.SendPacketMessage((OnlinePacket*)&gPacket, &client.client);
+
+        memset(&gPacket, 0, sizeof(gPacket));
+    }
 }

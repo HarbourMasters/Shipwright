@@ -70,7 +70,7 @@ extern "C"
 {
 #endif
 
-typedef struct OnlinePacket {
+typedef struct OnlinePacketZ64 {
     uint8_t player_id;
 
     PosRot posRot;
@@ -93,9 +93,9 @@ typedef struct OnlinePacket {
 
     uint8_t damageEffect;
     uint8_t damageValue;
-} OnlinePacket;
+} OnlinePacketZ64;
 
-OnlinePacket gPacket;
+OnlinePacketZ64 gPacket;
 
 typedef struct{
     /* 0x00 */ char unk[0x4];

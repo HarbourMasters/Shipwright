@@ -10,6 +10,7 @@
 #include <Window.h>
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
+#include "Enhancements/online/Online.h"
 
 const std::string customMessageTableID = "BaseGameOverrides";
 
@@ -132,7 +133,8 @@ int CustomMessage_RetrieveIfExists(PlayState* play);
 void Overlay_DisplayText(float duration, const char* text);
 GetItemEntry ItemTable_Retrieve(int16_t getItemID);
 GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
-void OTRSendPacket();
+void OTRSendPacketToClients();
+void OTRSendPacketToServer();
 #endif
 
 #endif

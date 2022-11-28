@@ -27,7 +27,6 @@
 #include "include/z64audio.h"
 #include "soh/SaveManager.h"
 #include "OTRGlobals.h"
-#include <soh/Enhancements/online/Online.h>
 #include "soh/Enhancements/presets.h"
 
 #ifdef ENABLE_CROWD_CONTROL
@@ -1161,12 +1160,12 @@ namespace GameMenuBar {
 
         if (ImGui::BeginMenu("Online")) {
             if (ImGui::BeginMenu("Server")) {
-                int newPort = CVar_GetS32("gOnlineServerPort", 25565);
+                int newPort = CVar_GetS32("gOnlineServerPort", 7777);
                 ImGui::InputInt("Port", &newPort);
                 CVar_SetS32("gOnlineServerPort", newPort);
 
                 if (ImGui::Button("Host Game")) {
-                    Ship::Online::InitOnline(nullptr, newPort);
+                    server.InitServer(newPort);
                 }
 
                 ImGui::EndMenu();
@@ -1177,12 +1176,12 @@ namespace GameMenuBar {
                 ImGui::InputText("IP Address", (char*)ipAddr, 32);
                 CVar_SetString("gOnlineClientIPAddress", ipAddr);
 
-                int newPort = CVar_GetS32("gOnlineClientPort", 25565);
+                int newPort = CVar_GetS32("gOnlineClientPort", 7777);
                 ImGui::InputInt("Port", &newPort);
                 CVar_SetS32("gOnlineClientPort", newPort);
 
                 if (ImGui::Button("Connect to Game")) {
-                    Ship::Online::InitOnline((char*)ipAddr, newPort);
+                    client.InitClient((char*)ipAddr, newPort);
                 }
 
                 ImGui::EndMenu();

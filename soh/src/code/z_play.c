@@ -1700,7 +1700,8 @@ void Play_Main(GameState* thisx) {
     gPacket.scene_id = play->sceneNum;
     gPacket.puppet_age = gSaveContext.linkAge;
 
-    OTRSendPacket();
+    OTRSendPacketToClients();
+    OTRSendPacketToServer();
 
     if (1 && HREG(63)) {
         LOG_NUM("1", 1);
@@ -2217,8 +2218,8 @@ void Play_PerformSave(PlayState* play) {
     }
 }
 
-void SetLinkPuppetData(OnlinePacket* packet, u8 player_id) {
+void SetLinkPuppetData(OnlinePacketZ64* packet, u8 player_id) {
     if (puppets[player_id] != NULL) {
-        memcpy(&puppets[player_id]->packet, packet, sizeof(OnlinePacket));
+        memcpy(&puppets[player_id]->packet, packet, sizeof(OnlinePacketZ64));
     }
 }
