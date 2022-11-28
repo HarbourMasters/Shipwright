@@ -22,7 +22,8 @@ You can also find the v142 toolset by searching through the individual component
 While you're there, you can also install Python 3 and Git if needed.
 
 1. Clone the Ship of Harkinian repository
-2. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice
+2. Clone the [libultraship](https://github.com/kenix3/libultraship.git) submodule into the Ship of Harkinian folder
+3. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice
 
 _Note: Instructions assume using powershell_
 ```powershell
@@ -84,6 +85,8 @@ _Note: If you're using Visual Studio Code, the [cpack plugin](https://marketplac
 ```bash
 # Clone the repo
 git clone https://github.com/HarbourMasters/Shipwright.git
+# Clone the submodule libultraship
+git submodule update --recursive --init
 cd Shipwright
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
@@ -122,6 +125,8 @@ _Note: If you're using Visual Studio Code, the [cpack plugin](https://marketplac
 ```bash
 # Clone the repo
 git clone https://github.com/HarbourMasters/Shipwright.git
+# Clone the submodule libultraship
+git submodule update --recursive --init
 cd ShipWright
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
