@@ -87,7 +87,7 @@ _Note: If you're using Visual Studio Code, the [cpack plugin](https://marketplac
 git clone https://github.com/HarbourMasters/Shipwright.git
 cd Shipwright
 # Clone the submodule libultraship
-git submodule update --recursive --init
+git submodule update --init
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
 # Generate Ninja project
@@ -127,7 +127,7 @@ _Note: If you're using Visual Studio Code, the [cpack plugin](https://marketplac
 git clone https://github.com/HarbourMasters/Shipwright.git
 cd ShipWright
 # Clone the submodule libultraship
-git submodule update --recursive --init
+git submodule update --init
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
 # Generate Ninja project
