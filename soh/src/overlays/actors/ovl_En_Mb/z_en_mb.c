@@ -1243,7 +1243,7 @@ void EnMb_ClubWaitPlayerNear(EnMb* this, PlayState* play) {
         !(player->stateFlags1 & 0x4000000) && ABS(relYawFromPlayer) < 0x3E80) {
         // Add a height check to the Moblin's Club attack when Enemy Randomizer is on.
         s8 enemyRando = CVar_GetS32("gRandomizedEnemies", 0);
-        if (!enemyRando || (enemyRando && this->actor.yDistToPlayer <= 100.0)) {
+        if (!enemyRando || (enemyRando && this->actor.yDistToPlayer <= 100.0f && this->actor.yDistToPlayer >= -100.0f)) {
             EnMb_SetupClubAttack(this);
         }
     }
