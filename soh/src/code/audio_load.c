@@ -1524,6 +1524,13 @@ s32 AudioLoad_SlowLoadSeq(s32 seqId, u8* ramAddr, s8* isDone) {
     size_t size;
 
     seqId = AudioLoad_GetRealTableIndex(SEQUENCE_TABLE, seqId);
+    u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
+    if (seqId != newSeqId) {
+        gAudioContext.seqToPlay[SEQ_PLAYER_BGM_MAIN] = newSeqId;
+        gAudioContext.seqReplaced[SEQ_PLAYER_BGM_MAIN] = 1;
+        Audio_QueueSeqCmd(0x00000000 | ((u8)SEQ_PLAYER_BGM_MAIN << 24) | ((u8)(0) << 0x10) | (u16)seqId);
+        return 0;
+    }
     seqTable = AudioLoad_GetLoadTable(SEQUENCE_TABLE);
     slowLoad = &gAudioContext.slowLoads[gAudioContext.slowLoadPos];
     if (slowLoad->status == LOAD_STATUS_DONE) {
@@ -1532,11 +1539,7 @@ s32 AudioLoad_SlowLoadSeq(s32 seqId, u8* ramAddr, s8* isDone) {
 
     slowLoad->sample.sampleAddr = NULL;
     slowLoad->isDone = isDone;
-
-    // if (gAudioContext.seqReplaced) {
-    //     seqId = gAudioContext.seqToPlay;
-    //     gAudioContext.seqReplaced = 0;
-    // }
+ 
     SequenceData sData = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
     char* seqData = sData.seqData;
     size = sData.seqDataSize;

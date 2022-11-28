@@ -42,7 +42,7 @@ std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap = {
     {NA_BGM_GANON_TOWER,           {"Ganondorf's Theme",                   "NA_BGM_GANON_TOWER",             SEQ_BGM_WORLD}},
     {NA_BGM_LONLON,                {"Lon Lon Ranch",                       "NA_BGM_LONLON",                  SEQ_BGM_WORLD}},
     {NA_BGM_GORON_CITY,            {"Goron City",                          "NA_BGM_GORON_CITY",              SEQ_BGM_WORLD}},
-    {NA_BGM_FIELD_MORNING,         {"Hyrule Field Morning Theme",          "NA_BGM_FIELD_MORNING",           SEQ_BGM_WORLD}},
+    //{NA_BGM_FIELD_MORNING,         {"Hyrule Field Morning Theme",          "NA_BGM_FIELD_MORNING",           SEQ_BGM_WORLD}},
     {NA_BGM_SPIRITUAL_STONE,       {"Spiritual Stone Get",                 "NA_BGM_SPIRITUAL_STONE",         SEQ_FANFARE}},
     {NA_BGM_OCA_BOLERO,            {"Bolero of Fire",                      "NA_BGM_OCA_BOLERO",              SEQ_OCARINA}},
     {NA_BGM_OCA_MINUET,            {"Minuet of Forest",                    "NA_BGM_OCA_MINUET",              SEQ_OCARINA}},
@@ -301,9 +301,11 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
             uint32_t value;
             while (!valid) {
                 value = Random(2, map.size());
-                auto [name, sfxKey, seqType] = map.at(value);
-                if (seqType & type) {
-                    valid = true;
+                if (map.contains(value)) {
+                    auto [name, sfxKey, seqType] = map.at(value);
+                    if (seqType & type) {
+                        valid = true;
+                    }
                 }
             }
             CVar_SetS32(cvarKey.c_str(), value);
@@ -314,6 +316,15 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
 }
 
 extern "C" u16 SfxEditor_GetReplacementSeq(u16 seqId) {
+    // if Hyrule Field Morning is about to play, but Hyrule Field is swapped, get the replacement sequence
+    // for Hyrule Field instead. Otherwise, leave it alone, so that without any sfx editor modifications we will
+    // play the normal track as usual.
+    if (seqId == NA_BGM_FIELD_MORNING) {
+        if (CVar_GetS32("gSfxEditor_NA_BGM_FIELD_LOGIC", NA_BGM_FIELD_LOGIC) != NA_BGM_FIELD_LOGIC) {
+            seqId = NA_BGM_FIELD_LOGIC;
+        }
+    }
+    
     if (sequenceMap.find(seqId) == sequenceMap.end()) {
         return seqId;
     }
