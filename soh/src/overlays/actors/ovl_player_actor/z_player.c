@@ -1463,7 +1463,7 @@ void func_808327F8(Player* this, f32 arg1) {
     // Gameplay stats: Count footsteps
     // Only count while game isn't complete and don't count Link's idle animations or crawling in crawlspaces
     if (!gSaveContext.sohStats.gameComplete && !(this->stateFlags2 & PLAYER_STATE2_28) &&
-        !(this->stateFlags2 & PLAYER_STATE2_18)) {
+        !(this->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
         gSaveContext.sohStats.count[COUNT_STEPS]++;
     }
 }
@@ -1957,7 +1957,7 @@ void func_80833A20(Player* this, s32 newSwordState) {
             func_80832698(this, voiceSfx);
         }
 
-        if (this->heldItemActionParam >= PLAYER_AP_SWORD_MASTER && this->heldItemActionParam <= PLAYER_AP_SWORD_BGS) {
+        if (this->heldItemAction >= PLAYER_AI_SWORD_MASTER && this->heldItemAction <= PLAYER_AI_SWORD_BGS) {
             gSaveContext.sohStats.count[COUNT_SWORD_SWINGS]++;
         }
     }
