@@ -399,7 +399,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
         int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);
         switch (doorOfTime) {
-            case 0: // open
+            case RO_DOOROFTIME_OPEN:
                 gSaveContext.eventChkInf[4] |= 0x800;
                 break;
         }
