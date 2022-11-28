@@ -375,6 +375,8 @@ void Audio_QueueSeqCmd(u32 cmd)
         u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
         if (seqId != newSeqId) {
             gAudioContext.seqReplaced[playerIdx] = 1;
+        } else {
+            gAudioContext.seqReplaced[playerIdx] = 0;
         }
         gAudioContext.seqToPlay[playerIdx] = newSeqId;
         cmd |= (seqId & 0xFF);

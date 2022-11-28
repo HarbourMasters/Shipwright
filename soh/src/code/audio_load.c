@@ -574,7 +574,6 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     //numFonts = gAudioContext.sequenceFontTable[index++];
     if (gAudioContext.seqReplaced[playerIdx]) {
         seqId = gAudioContext.seqToPlay[playerIdx];
-        gAudioContext.seqReplaced[playerIdx] = 0;
     }
     SequenceData seqData2 = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
 
@@ -989,7 +988,6 @@ void* AudioLoad_AsyncLoadInner(s32 tableType, s32 id, s32 nChunks, s32 retData, 
     u32 temp_v0;
     u32 realId;
 
-    realId = AudioLoad_GetRealTableIndex(tableType, id);
     switch (tableType) {
         case SEQUENCE_TABLE:
             if (gAudioContext.seqLoadStatus[realId] == 1) {
