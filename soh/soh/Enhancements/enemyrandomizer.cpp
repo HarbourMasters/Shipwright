@@ -252,7 +252,7 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                     return (params == 0 || params == -32768);
                 // Only randomize the initial eggs, not the enemies that spawn from them.
                 case ACTOR_EN_GOMA:
-                    return ((params >= 0 && params <= 6) || params == 8);
+                    return (params >= 0 && params <= 9);
                 // Only randomize Skullwalltulas, not Golden Skulltulas.
                 case ACTOR_EN_SW:
                     return (params == 0);
@@ -308,16 +308,16 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
         // Deku Tree
         case SCENE_YDAN:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 9)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 4 || roomNum == 6 || roomNum == 9 || roomNum == 10)));
         // Dodongo's Cavern
         case SCENE_DDAN:
             return (!(!isMQ && enemiesToExcludeClearRooms && roomNum == 15) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 5 || roomNum == 13 || roomNum == 14)));
         // Jabu Jabu
         case SCENE_BDAN:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 8 || roomNum == 9)) &&
                     !(!isMQ && enemiesToExcludeTimedRooms && roomNum == 12) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 11 || roomNum == 14)));
         // Forest Temple
         case SCENE_BMORI1:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 6 || roomNum == 10 || roomNum == 18 || roomNum == 21)) &&
