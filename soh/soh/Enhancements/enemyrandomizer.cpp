@@ -144,6 +144,11 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
             }
         }
 
+        // Move like-likes in Jabu Jabu down into the room as they otherwise get stuck on Song of Time blocks.
+        if (*actorId == ACTOR_EN_RR && play->sceneNum == SCENE_BDAN) {
+            *posY = *posY - 200;
+        }
+
         // Do a raycast from the original position of the actor to find the ground below it, then try to place
         // the new actor on the ground. This way enemies don't spawn very high in the sky, and gives us control
         // over height offsets per enemy from a proven grounded position.
@@ -270,10 +275,6 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                 case ACTOR_EN_SB:
                 case ACTOR_EN_NY:
                     return (!(sceneNum == SCENE_MIZUSIN && roomNum == 2));
-                // Don't randomize the 2 like-likes in Jabu Jabu's Belly in MQ because they spawn in a box on top of the ceilling.
-                // Other enemies won't aggro on Link correctly to fall down.
-                case ACTOR_EN_RR:
-                    return (sceneNum != SCENE_BDAN);
                 default:
                     return 1;
             }
@@ -344,13 +345,11 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
         case SCENE_SPOT17:
             return (enemy.id != ACTOR_EN_TORCH2);
         // Don't allow certain enemies in Ganon's Tower because they would spawn up on the ceilling,
-        // becoming impossible to kill
+        // becoming impossible to kill.
         case SCENE_GANON:
-            return (!enemiesToExcludeClearRooms && enemy.id != ACTOR_EN_CLEAR_TAG && enemy.id != ACTOR_EN_VALI &&
-                    !(enemy.id == ACTOR_EN_ZF && enemy.params == -1));
+            return (!enemiesToExcludeClearRooms && enemy.id != ACTOR_EN_VALI && !(enemy.id == ACTOR_EN_ZF && enemy.params == -1));
         case SCENE_GANON_SONOGO:
-            return (!enemiesToExcludeTimedRooms && enemy.id != ACTOR_EN_CLEAR_TAG &&
-                    !(enemy.id == ACTOR_EN_ZF && enemy.params == -1));
+            return (!enemiesToExcludeTimedRooms && !(enemy.id == ACTOR_EN_ZF && enemy.params == -1));
         default:
             return 1;
     }

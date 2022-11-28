@@ -1241,7 +1241,11 @@ void EnMb_ClubWaitPlayerNear(EnMb* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if (Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) < this->playerDetectionRange &&
         !(player->stateFlags1 & 0x4000000) && ABS(relYawFromPlayer) < 0x3E80) {
-        EnMb_SetupClubAttack(this);
+        // Add a height check to the Moblin's Club attack when Enemy Randomizer is on.
+        s8 enemyRando = CVar_GetS32("gRandomizedEnemies", 0);
+        if (!enemyRando || (enemyRando && this->actor.yDistToPlayer <= 100.0)) {
+            EnMb_SetupClubAttack(this);
+        }
     }
 }
 
