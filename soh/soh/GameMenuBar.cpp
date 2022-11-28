@@ -307,48 +307,6 @@ namespace GameMenuBar {
 
             UIWidgets::Spacer(0);
 
-            if (ImGui::BeginMenu("Controls")) {
-                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
-                ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
-                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-                float availableWidth = ImGui::GetContentRegionAvail().x;
-                if (ImGui::Button(
-                    GetWindowButtonText("Customize Game Controls", CVar_GetS32("gGameControlEditorEnabled", 0)).c_str(),
-                    ImVec2(availableWidth, 0)
-                )) {
-                    bool currentValue = CVar_GetS32("gGameControlEditorEnabled", 0);
-                    CVar_SetS32("gGameControlEditorEnabled", !currentValue);
-                    SohImGui::RequestCvarSaveOnNextTick();
-                    SohImGui::EnableWindow("Game Control Editor", CVar_GetS32("gGameControlEditorEnabled", 0));
-                }
-                ImGui::PopStyleVar(3);
-                ImGui::PopStyleColor(1);
-
-                UIWidgets::PaddedEnhancementCheckbox("D-pad Support on Pause Screen", "gDpadPause", true, false);
-                UIWidgets::Tooltip("Navigate Pause with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate\n"
-                    "To make the cursor only move a single space no matter how long a direction is held, manually set gDpadHoldChange to 0");
-                UIWidgets::PaddedEnhancementCheckbox("D-pad Support in Text Boxes", "gDpadText", true, false);
-                UIWidgets::Tooltip("Navigate choices in text boxes, shop item selection, and the file select / name entry screens with the D-pad\n"
-                    "To make the cursor only move a single space during name entry no matter how long a direction is held, manually set gDpadHoldChange to 0");
-                UIWidgets::PaddedEnhancementCheckbox("D-pad as Equip Items", "gDpadEquips", true, false);
-                UIWidgets::Tooltip("Equip items and equipment on the D-pad\nIf used with D-pad on Pause Screen, you must hold C-Up to equip instead of navigate");
-                UIWidgets::PaddedEnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor", true, false);
-                UIWidgets::Tooltip("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
-                UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL", true, false);
-                UIWidgets::Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
-                UIWidgets::PaddedEnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify", true, false);
-                UIWidgets::Tooltip("Hold the assigned button to change the maximum walking speed\nTo change the assigned button, click Customize Game Controls");
-                if (CVar_GetS32("gEnableWalkModify", 0)) {
-                    UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding", "gWalkSpeedToggle", true, false);
-                    UIWidgets::EnhancementSliderFloat("Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true);
-                    UIWidgets::EnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true);
-                }
-                ImGui::EndMenu();
-            }
-
-            UIWidgets::Spacer(0);
-
             if (ImGui::BeginMenu("Gameplay"))
             {
                 if (ImGui::BeginMenu("Time Savers"))
@@ -792,6 +750,14 @@ namespace GameMenuBar {
             ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+
+            if (ImGui::Button(GetWindowButtonText("Customize Game Controls", CVar_GetS32("gGameControlEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
+            {
+                bool currentValue = CVar_GetS32("gGameControlEditorEnabled", 0);
+                CVar_SetS32("gGameControlEditorEnabled", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("Game Control Editor", CVar_GetS32("gGameControlEditorEnabled", 0));
+            }
             if (ImGui::Button(GetWindowButtonText("Cosmetics Editor", CVar_GetS32("gCosmeticsEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
                 bool currentValue = CVar_GetS32("gCosmeticsEditorEnabled", 0);
