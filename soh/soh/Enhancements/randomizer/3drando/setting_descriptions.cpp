@@ -63,9 +63,9 @@ string_view kakGateClosed             = "The gate and the Happy Mask Shop both r
 ------------------------------*/                                                           //
 string_view doorOfTimeOpen            = "The Door of Time starts opened instead of needing\n"
                                         "to play the Song of Time.";                       //
-string_view doorOfTimeClosed          = "Only an Ocarina and the Song of Time need to be\n"//
+string_view doorOfTimeSongOnly        = "Only an Ocarina and the Song of Time need to be\n"//
                                         "found to open the Door of Time.";                 //
-string_view doorOfTimeIntended        = "The Ocarina of Time, the Song of Time, and\n"     //
+string_view doorOfTimeClosed          = "The Ocarina of Time, the Song of Time, and\n"     //
                                         "all Spiritual Stones need to be found to\n"       //
                                         "open the Door of Time.";                          //
 /*------------------------------                                                           //

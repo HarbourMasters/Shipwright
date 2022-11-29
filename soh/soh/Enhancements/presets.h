@@ -4,6 +4,7 @@
 #include <vector>
 #include <variant>
 #include <cstdint>
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 enum PresetEntryType {
     PRESET_ENTRY_TYPE_S32,
@@ -551,7 +552,7 @@ const std::vector<PresetEntry> s6PresetEntries = {
     PRESET_ENTRY_S32("gMMBunnyHood", 2),
     PRESET_ENTRY_S32("gRandomizeBigPoeTargetCount", 1),
     PRESET_ENTRY_S32("gRandomizeCuccosToReturn", 4),
-    PRESET_ENTRY_S32("gRandomizeDoorOfTime", 2),
+    PRESET_ENTRY_S32("gRandomizeDoorOfTime", RO_DOOROFTIME_OPEN),
     PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "48,"),
     PRESET_ENTRY_S32("gRandomizeForest", 1),
     PRESET_ENTRY_S32("gRandomizeGanonTrial", 0),
@@ -586,7 +587,7 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32("gRandomizeBossKeysanity", 5),
     PRESET_ENTRY_S32("gRandomizeCompleteMaskQuest", 1),
     PRESET_ENTRY_S32("gRandomizeCuccosToReturn", 1),
-    PRESET_ENTRY_S32("gRandomizeDoorOfTime", 2),
+    PRESET_ENTRY_S32("gRandomizeDoorOfTime", RO_DOOROFTIME_OPEN),
     PRESET_ENTRY_S32("gRandomizeEnableBombchuDrops", 1),
     PRESET_ENTRY_S32("gRandomizeEnableGlitchCutscenes", 1),
     PRESET_ENTRY_S32("gRandomizeForest", 2),

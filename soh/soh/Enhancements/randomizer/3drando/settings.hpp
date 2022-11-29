@@ -44,8 +44,8 @@ typedef enum {
 } OpenKakarikoSetting;
 
 typedef enum {
-    OPENDOOROFTIME_INTENDED,
     OPENDOOROFTIME_CLOSED,
+    OPENDOOROFTIME_SONGONLY,
     OPENDOOROFTIME_OPEN,
 } OpenDoorOfTimeSetting;
 

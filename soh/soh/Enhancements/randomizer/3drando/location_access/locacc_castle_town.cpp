@@ -56,8 +56,8 @@ void AreaTable_Init_CastleTown() {
                 }, {
                   //Exits
                   Entrance(TOT_ENTRANCE,            {[]{return true;}}),
-                  Entrance(TOT_BEYOND_DOOR_OF_TIME, {[]{return OpenDoorOfTime.Is(OPENDOOROFTIME_OPEN) || (CanPlay(SongOfTime) && (OpenDoorOfTime.Is(OPENDOOROFTIME_CLOSED) || (HasAllStones && OcarinaOfTime)));},
-                                         /*Glitched*/[]{return SongOfTime && OpenDoorOfTime.Is(OPENDOOROFTIME_CLOSED) && (CanDoGlitch(GlitchType::IndoorBombOI, GlitchDifficulty::ADVANCED) ||
+                  Entrance(TOT_BEYOND_DOOR_OF_TIME, {[]{return OpenDoorOfTime.Is(OPENDOOROFTIME_OPEN) || (CanPlay(SongOfTime) && (OpenDoorOfTime.Is(OPENDOOROFTIME_SONGONLY) || (HasAllStones && OcarinaOfTime)));},
+                                         /*Glitched*/[]{return SongOfTime && OpenDoorOfTime.Is(OPENDOOROFTIME_SONGONLY) && (CanDoGlitch(GlitchType::IndoorBombOI, GlitchDifficulty::ADVANCED) ||
                                                                ((Bugs || Fish) && Bombs && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED) && CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE)));}}),
   });
 
