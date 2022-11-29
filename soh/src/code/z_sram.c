@@ -539,8 +539,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // skip verbose lake owl, skip to "i'm on my way back to the castle"
         gSaveContext.infTable[25] |= 0x20;
 
-        // fast gerudo fortress
-        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == 1 || Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == 2) {
+        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_FAST ||
+            Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_OPEN) {
             gSaveContext.eventChkInf[9] |= 2;
             gSaveContext.eventChkInf[9] |= 4;
             gSaveContext.eventChkInf[9] |= 8;
@@ -558,8 +558,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.sceneFlags[12].collect |= (1 << 0x0F);
         }
 
-        // open gerudo fortress
-        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == 2) {
+        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_OPEN) {
             gSaveContext.eventChkInf[9] |= 1;
             gSaveContext.sceneFlags[12].swch |= (1 << 0x01);
             gSaveContext.sceneFlags[12].swch |= (1 << 0x05);

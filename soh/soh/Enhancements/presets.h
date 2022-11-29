@@ -556,7 +556,7 @@ const std::vector<PresetEntry> s6PresetEntries = {
     PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "48,"),
     PRESET_ENTRY_S32("gRandomizeForest", 1),
     PRESET_ENTRY_S32("gRandomizeGanonTrial", 0),
-    PRESET_ENTRY_S32("gRandomizeGerudoFortress", 1),
+    PRESET_ENTRY_S32("gRandomizeGerudoFortress", RO_GF_FAST),
     PRESET_ENTRY_S32("gRandomizeIceTraps", 0),
     PRESET_ENTRY_S32("gRandomizeKakarikoGate", 1),
     PRESET_ENTRY_S32("gRandomizeMedallionCount", 6),
