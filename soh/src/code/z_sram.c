@@ -97,7 +97,7 @@ void GiveLinkDekuNuts(int howManyNuts) {
 }
 
 void GiveLinksPocketItem() {
-    if (Randomizer_GetSettingValue(RSK_LINKS_POCKET) < 3)  {
+    if (Randomizer_GetSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING)  {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
 
         if (getItemEntry.modIndex == MOD_NONE) {
