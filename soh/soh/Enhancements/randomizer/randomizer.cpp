@@ -2138,9 +2138,9 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
             if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_VANILLA ||
                 GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_OWN_DUNGEON ||
                 GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_STARTWITH) {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         case RG_DEKU_TREE_COMPASS:
         case RG_DODONGOS_CAVERN_COMPASS:
         case RG_JABU_JABUS_BELLY_COMPASS:
