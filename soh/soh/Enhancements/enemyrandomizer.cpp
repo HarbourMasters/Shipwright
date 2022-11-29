@@ -365,10 +365,14 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
         // Don't allow big stalchildren and big peahats during the Gohma fight because they can clip into Gohma
         // and it crashes the game. Likely because Gohma on the ceilling can't handle collision with other enemies.
         case SCENE_YDAN_BOSS:
-            return (!(enemy.id == ACTOR_EN_SKB && enemy.params == 20) && !(enemy.id == ACTOR_EN_PEEHAT && enemy.params == -1));
+            return (!enemiesToExcludeClearRooms && !(enemy.id == ACTOR_EN_SKB && enemy.params == 20) &&
+                    !(enemy.id == ACTOR_EN_PEEHAT && enemy.params == -1));
         // Grottos.
         case SCENE_KAKUSIANA:
             return (!(enemiesToExcludeClearRooms && (roomNum == 2 || roomNum == 7)));
+        // Royal Grave.
+        case SCENE_HAKAANA_OUKE:
+            return (!(enemiesToExcludeClearRooms && roomNum == 0));
         // Don't allow Dark Link in areas with lava void out zones as it voids out the player as well.
         // Death Mountain Crater.
         case SCENE_SPOT17:
