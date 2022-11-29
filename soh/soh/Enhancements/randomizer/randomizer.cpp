@@ -2583,7 +2583,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_STARTING_DEKU_SHIELD] = CVar_GetS32("gRandomizeStartingDekuShield", 0);
     cvarSettings[RSK_STARTING_SKULLTULA_TOKEN] = CVar_GetS32("gRandomizeStartingSkulltulaToken", 0);
     cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVar_GetS32("gRandomizeStartingMapsCompasses", 2);
-    cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0);
+    cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON);
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
     cvarSettings[RSK_SHUFFLE_TOKENS] = CVar_GetS32("gRandomizeShuffleTokens", 0);
     cvarSettings[RSK_SHOPSANITY] = CVar_GetS32("gRandomizeShopsanity", 0);
@@ -2652,8 +2652,9 @@ void GenerateRandomizerImgui() {
 
     cvarSettings[RSK_SKULLS_SUNS_SONG] = CVar_GetS32("gRandomizeGsExpectSunsSong", 0);
     // Link's Pocket has to have a dungeon reward if the other rewards are shuffled to end of dungeon.
-    cvarSettings[RSK_LINKS_POCKET] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0) != 0 ? 
-                                        CVar_GetS32("gRandomizeLinksPocket", 0) : 0;
+    cvarSettings[RSK_LINKS_POCKET] = CVar_GetS32("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) != RO_DUNGEON_REWARDS_END_OF_DUNGEON ? 
+                                        CVar_GetS32("gRandomizeLinksPocket", RO_LINKS_POCKET_DUNGEON_REWARD) :
+                                        RO_LINKS_POCKET_DUNGEON_REWARD;
 
     if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
         // If both OTRs are loaded.
@@ -3951,7 +3952,7 @@ void DrawRandoEditor(bool& open) {
                 ImGui::BeginChild("ChildStartingEquipment", ImVec2(0, -8));
                 // Don't display this option if Dungeon Rewards are Shuffled to End of Dungeon.
                 // TODO: Show this but disabled when we have options for disabled Comboboxes.
-                if (CVar_GetS32("gRandomizeShuffleDungeonReward", 0) != 0) {
+                if (CVar_GetS32("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) != RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
                     ImGui::Text(Settings::LinksPocketItem.GetName().c_str());
                     UIWidgets::EnhancementCombobox("gRandomizeLinksPocket", randoLinksPocket, 4, RO_LINKS_POCKET_DUNGEON_REWARD);
                     UIWidgets::PaddedSeparator();
