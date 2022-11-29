@@ -271,7 +271,7 @@ void DemoGj_DrawCommon(DemoGj* this, PlayState* play, Gfx* displayList) {
 
         OPEN_DISPS(gfxCtx);
 
-        func_80093D18(gfxCtx);
+        Gfx_SetupDL_25Opa(gfxCtx);
 
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                   G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -302,7 +302,7 @@ void DemoGj_DrawRotated(DemoGj* this, PlayState* play, Gfx* displayList) {
     MATRIX_TOMTX(matrix);
     Matrix_Pop();
 
-    func_80093D18(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, matrix, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, displayList);

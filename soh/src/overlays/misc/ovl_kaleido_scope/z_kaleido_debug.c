@@ -115,7 +115,7 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
     pauseCtx->stickRelX = input->rel.stick_x;
     pauseCtx->stickRelY = input->rel.stick_y;
 
-    func_800944C4_KAL(play->state.gfxCtx);
+    Gfx_SetupDL_39Kal(play->state.gfxCtx);
 
     gDPSetRenderMode(POLY_KAL_DISP++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
     gDPSetCombineMode(POLY_KAL_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);

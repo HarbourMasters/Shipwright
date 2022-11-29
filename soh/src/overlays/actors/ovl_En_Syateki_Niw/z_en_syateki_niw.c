@@ -696,7 +696,7 @@ void EnSyatekiNiw_Draw(Actor* thisx, PlayState* play) {
     Color_RGBA8 sp30 = { 0, 0, 0, 255 };
 
     if (this->actionFunc != func_80B128F8) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         if (this->unk_260 != 0) {
             func_80026230(play, &sp30, 0, 0x14);
         }
@@ -766,7 +766,7 @@ void func_80B13464(EnSyatekiNiw* this, PlayState* play) {
 
     OPEN_DISPS(gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     for (i = 0; i < 5; i++, ptr++) {
         if (ptr->unk_00 == 1) {

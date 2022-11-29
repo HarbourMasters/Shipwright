@@ -789,7 +789,7 @@ void EnPoField_DrawFlame(EnPoField* this, PlayState* play) {
 
     if (this->flameTimer != 0) {
         OPEN_DISPS(play->state.gfxCtx);
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0,
                                     (play->gameplayFrames * -20) % 512, 32, 128));
@@ -935,8 +935,8 @@ void EnPoField_Draw(Actor* thisx, PlayState* play) {
 
     if (this->actionFunc != EnPoField_WaitForSpawn) {
         OPEN_DISPS(play->state.gfxCtx);
-        func_80093D18(play->state.gfxCtx);
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x0A,
                    Gfx_EnvColor(play->state.gfxCtx, info->envColor.r, info->envColor.g, info->envColor.b, 255));
         if (this->lightColor.a == 255 || this->lightColor.a == 0) {
@@ -985,7 +985,7 @@ void EnPoField_DrawSoul(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     if (this->actionFunc == EnPoField_SoulIdle) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x0A,
                    Gfx_EnvColor(play->state.gfxCtx, info->envColor.r, info->envColor.g, info->envColor.b, 255));
         Lights_PointGlowSetInfo(&this->lightInfo, this->actor.world.pos.x, this->actor.world.pos.y,
@@ -996,7 +996,7 @@ void EnPoField_DrawSoul(Actor* thisx, PlayState* play) {
         gSPDisplayList(POLY_OPA_DISP++, gPoeFieldLanternDL);
         gSPDisplayList(POLY_OPA_DISP++, gPoeFieldLanternTopDL);
     } else {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
                                     (play->gameplayFrames * info->unk_9) & 0x1FF, 0x20, 0x80));

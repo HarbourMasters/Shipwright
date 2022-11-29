@@ -118,7 +118,7 @@ void EfcErupc_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, this->unk_14C * 1, this->unk_14E * -4, 32, 64, 1,
@@ -171,7 +171,7 @@ void EfcErupc_DrawParticles(EfcErupcParticles* particles, PlayState* play) {
         FrameInterpolation_RecordOpenChild(particles, particles->epoch);
 
         if (particles->isActive) {
-            func_80093D84(play->state.gfxCtx);
+            Gfx_SetupDL_25Xlu(play->state.gfxCtx);
             gSPDisplayList(POLY_XLU_DISP++, object_efc_erupc_DL_002760);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, particles->color.r, particles->color.g, particles->color.b,
                             particles->alpha);

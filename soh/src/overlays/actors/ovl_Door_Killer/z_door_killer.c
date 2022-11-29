@@ -527,7 +527,7 @@ void DoorKiller_SetTexture(Actor* thisx, PlayState* play) {
 void DoorKiller_DrawDoor(Actor* thisx, PlayState* play) {
     DoorKiller* this = (DoorKiller*)thisx;
 
-    func_800943C8(play->state.gfxCtx);
+    Gfx_SetupDL_37Opa(play->state.gfxCtx);
     DoorKiller_SetTexture(&this->actor, play);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, NULL, NULL);

@@ -417,7 +417,7 @@ void func_80996C60(DoorShutter* this, PlayState* play) {
         DoorShutter_SetupAction(this, func_80997004);
         this->unk_16C = sp38;
         this->unk_170 = 0.0f;
-        Camera_ChangeDoorCam(play->cameraPtrs[MAIN_CAM], &this->dyna.actor, player->unk_46A, 0.0f, 12, sp34, 10);
+        Camera_ChangeDoorCam(play->cameraPtrs[MAIN_CAM], &this->dyna.actor, player->doorBgCamIndex, 0.0f, 12, sp34, 10);
     }
 }
 
@@ -709,14 +709,14 @@ void DoorShutter_Draw(Actor* thisx, PlayState* play) {
 
         OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
         if (this->unk_16C == 3) {
             POLY_OPA_DISP = func_80997838(play, this, POLY_OPA_DISP);
             if (this->unk_170 != 0.0f) {
                 f32 sp58 = (this->unk_166 * 0.01f) * this->unk_170;
 
-                func_80093D18(play->state.gfxCtx);
+                Gfx_SetupDL_25Opa(play->state.gfxCtx);
                 gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255.0f * sp58);
                 Matrix_Translate(0, 0, sp70->translateZ, MTXMODE_APPLY);
                 Matrix_Scale(sp58, sp58, sp58, MTXMODE_APPLY);
