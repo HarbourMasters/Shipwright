@@ -188,7 +188,7 @@ void EnNwc_DrawChicks(EnNwc* this, PlayState* play) {
 
     chick = this->chicks;
     POLY_XLU_DISP = dList3;
-    func_80094044(play->state.gfxCtx);
+    Gfx_SetupDL_44Xlu(play->state.gfxCtx);
     gSPDisplayList(POLY_XLU_DISP++, gCuccoChickSetupShadowDL);
 
     for (i = 0; i < this->count; i++, chick++) {

@@ -486,7 +486,7 @@ void EnArrow_Draw(Actor* thisx, PlayState* play) {
     f32 scale;
 
     if (this->actor.params <= ARROW_0E) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         SkelAnime_DrawLod(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL, this,
                           (this->actor.projectedPos.z < MREG(95)) ? 0 : 1);
     } else if (this->actor.speedXZ != 0.0f) {
@@ -494,7 +494,7 @@ void EnArrow_Draw(Actor* thisx, PlayState* play) {
 
         OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093C14(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu2(play->state.gfxCtx);
 
         if (this->actor.params == ARROW_SEED) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);

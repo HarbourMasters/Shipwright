@@ -389,7 +389,7 @@ void EnFireRock_Draw(Actor* thisx, PlayState* play) {
     Matrix_RotateY(DEG_TO_RAD(this->rockRotation.y), MTXMODE_APPLY);
     Matrix_RotateZ(DEG_TO_RAD(this->rockRotation.z), MTXMODE_APPLY);
     Matrix_Scale(thisx->scale.x, thisx->scale.y, thisx->scale.z, MTXMODE_APPLY);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 155, 55, 255);
     gDPSetEnvColor(POLY_OPA_DISP++, 155, 255, 55, 255);
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),

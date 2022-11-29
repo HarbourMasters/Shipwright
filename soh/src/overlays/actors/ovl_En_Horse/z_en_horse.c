@@ -3825,7 +3825,7 @@ void EnHorse_Draw(Actor* thisx, PlayState* play) {
     EnHorse* this = (EnHorse*)thisx;
 
     if (!(this->stateFlags & ENHORSE_INACTIVE)) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         this->stateFlags |= ENHORSE_DRAW;
         if (this->stateFlags & ENHORSE_JUMPING) {
             func_800A6360(thisx, play, &this->skin, EnHorse_PostDraw, EnHorse_OverrideLimbDraw, false);

@@ -214,7 +214,7 @@ void GivePlayerRandoRewardSongOfTime(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
 
     if (gSaveContext.entranceIndex == 0x050F && player != NULL && !Player_InBlockingCsMode(play, player) &&
-        !Flags_GetTreasure(play, 0x1F) && gSaveContext.nextTransition == 0xFF && !gSaveContext.pendingIceTrapCount) {
+        !Flags_GetTreasure(play, 0x1F) && gSaveContext.nextTransitionType == 0xFF && !gSaveContext.pendingIceTrapCount) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
         GiveItemEntryWithoutActor(play, getItemEntry);
         player->pendingFlag.flagID = 0x1F;
@@ -556,7 +556,7 @@ void Play_Init(GameState* thisx) {
 
     if (CVar_GetS32("gSceneTransitions", 255)!= 255){
         play->transitionMode = CVar_GetS32("gSceneTransitions", 0);
-        gSaveContext.nextTransition = CVar_GetS32("gSceneTransitions", 0);
+        gSaveContext.nextTransitionType = CVar_GetS32("gSceneTransitions", 0);
         play->fadeTransition = CVar_GetS32("gSceneTransitions", 0);
     }
 
@@ -571,12 +571,12 @@ void Play_Init(GameState* thisx) {
     play->unk_11DE9 = 0;
 
     if (gSaveContext.gameMode != 1) {
-        if (gSaveContext.nextTransition == 0xFF) {
+        if (gSaveContext.nextTransitionType == 0xFF) {
             play->fadeTransition =
                 (gEntranceTable[((void)0, gSaveContext.entranceIndex) + tempSetupIndex].field >> 7) & 0x7F; // Fade In
         } else {
-            play->fadeTransition = gSaveContext.nextTransition;
-            gSaveContext.nextTransition = 0xFF;
+            play->fadeTransition = gSaveContext.nextTransitionType;
+            gSaveContext.nextTransitionType = 0xFF;
         }
     } else {
         play->fadeTransition = 6;
@@ -777,21 +777,21 @@ void Play_Update(PlayState* play) {
                                                          play->transitionCtx.transitionType | 0x80);
                     }
 
-                    gSaveContext.unk_1419 = 14;
+                    gSaveContext.transWipeSpeed = 14;
                     if ((play->transitionCtx.transitionType == 8) ||
                         (play->transitionCtx.transitionType == 9)) {
-                        gSaveContext.unk_1419 = 28;
+                        gSaveContext.transWipeSpeed = 28;
                     }
 
-                    gSaveContext.fadeDuration = 60;
+                    gSaveContext.transFadeDuration = 60;
                     if ((play->transitionCtx.transitionType == 4) ||
                         (play->transitionCtx.transitionType == 5)) {
-                        gSaveContext.fadeDuration = 20;
+                        gSaveContext.transFadeDuration = 20;
                     } else if ((play->transitionCtx.transitionType == 6) ||
                                (play->transitionCtx.transitionType == 7)) {
-                        gSaveContext.fadeDuration = 150;
+                        gSaveContext.transFadeDuration = 150;
                     } else if (play->transitionCtx.transitionType == 17) {
-                        gSaveContext.fadeDuration = 2;
+                        gSaveContext.transFadeDuration = 2;
                     }
 
                     if ((play->transitionCtx.transitionType == 3) ||
@@ -954,7 +954,7 @@ void Play_Update(PlayState* play) {
                     break;
 
                 case 11:
-                    if (gSaveContext.unk_1410 != 0) {
+                    if (gSaveContext.cutsceneTransitionControl != 0) {
                         play->transitionMode = 3;
                     }
                     break;
@@ -1029,9 +1029,9 @@ void Play_Update(PlayState* play) {
                     break;
 
                 case 17:
-                    if (gSaveContext.unk_1410 != 0) {
-                        play->envCtx.screenFillColor[3] = gSaveContext.unk_1410;
-                        if (gSaveContext.unk_1410 < 0x65) {
+                    if (gSaveContext.cutsceneTransitionControl != 0) {
+                        play->envCtx.screenFillColor[3] = gSaveContext.cutsceneTransitionControl;
+                        if (gSaveContext.cutsceneTransitionControl < 0x65) {
                             gTrnsnUnkState = 0;
                             R_UPDATE_RATE = 3;
                             play->sceneLoadFlag = 0;
@@ -1369,7 +1369,7 @@ void Play_Draw(PlayState* play) {
     gSPSegment(POLY_XLU_DISP++, 0x02, play->sceneSegment);
     gSPSegment(OVERLAY_DISP++, 0x02, play->sceneSegment);
 
-    func_80095248(gfxCtx, 0, 0, 0);
+    Gfx_SetupFrame(gfxCtx, 0, 0, 0);
 
     if ((HREG(80) != 10) || (HREG(82) != 0)) {
         POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
@@ -2177,11 +2177,11 @@ void Play_PerformSave(PlayState* play) {
         gSaveContext.savedSceneNum = play->sceneNum;
         if (gSaveContext.temporaryWeapon) {
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-            GET_PLAYER(play)->currentSwordItem = ITEM_NONE;
+            GET_PLAYER(play)->currentSwordItemId = ITEM_NONE;
             Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
             Save_SaveFile();
             gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-            GET_PLAYER(play)->currentSwordItem = ITEM_SWORD_KOKIRI;
+            GET_PLAYER(play)->currentSwordItemId = ITEM_SWORD_KOKIRI;
             Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
         } else {
             Save_SaveFile();

@@ -295,7 +295,7 @@ void Environment_Init(PlayState* play2, EnvironmentContext* envCtx, s32 unused) 
 
     sLightningFlashAlpha = 0;
 
-    gSaveContext.unk_1410 = 0;
+    gSaveContext.cutsceneTransitionControl = 0;
 
     envCtx->adjAmbientColor[0] = envCtx->adjAmbientColor[1] = envCtx->adjAmbientColor[2] = envCtx->adjLight1Color[0] =
         envCtx->adjLight1Color[1] = envCtx->adjLight1Color[2] = envCtx->adjFogColor[0] = envCtx->adjFogColor[1] =
@@ -326,7 +326,7 @@ void Environment_Init(PlayState* play2, EnvironmentContext* envCtx, s32 unused) 
 
     play->envCtx.unk_F2[0] = 0;
 
-    if (gSaveContext.unk_13C3 != 0) {
+    if (gSaveContext.retainWeatherMode != 0) {
         if (((void)0, gSaveContext.sceneSetupIndex) < 4) {
             switch (gWeatherMode) {
                 case 1:
@@ -378,7 +378,7 @@ void Environment_Init(PlayState* play2, EnvironmentContext* envCtx, s32 unused) 
     D_8011FB38 = 0;
     D_8011FB34 = 0;
     gSkyboxBlendingEnabled = false;
-    gSaveContext.unk_13C3 = 0;
+    gSaveContext.retainWeatherMode = 0;
     R_ENV_LIGHT1_DIR(0) = 80;
     R_ENV_LIGHT1_DIR(1) = 80;
     R_ENV_LIGHT1_DIR(2) = 80;
@@ -1350,7 +1350,7 @@ void Environment_DrawSunAndMoon(PlayState* play) {
         scale = (color * 2.0f) + 10.0f;
         Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD);
-        func_80093AD0(play->state.gfxCtx);
+        Gfx_SetupDL_54Opa(play->state.gfxCtx);
 
         static Vtx vertices[] = {
             VTX(-31, -31, 0, 0, 0, 255, 255, 255, 255),
@@ -1388,7 +1388,7 @@ void Environment_DrawSunAndMoon(PlayState* play) {
 
         if (alpha > 0.0f) {
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD);
-            func_8009398C(play->state.gfxCtx);
+            Gfx_SetupDL_51Opa(play->state.gfxCtx);
             gDPPipeSync(POLY_OPA_DISP++);
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 240, 255, 180, alpha);
             gDPSetEnvColor(POLY_OPA_DISP++, 80, 70, 20, alpha);
@@ -1581,7 +1581,7 @@ void Environment_DrawLensFlare(PlayState* play, EnvironmentContext* envCtx, View
 
         if (screenFillAlpha != 0) {
             if (alphaScale > 0.0f) {
-                POLY_XLU_DISP = func_800937C0(POLY_XLU_DISP);
+                POLY_XLU_DISP = Gfx_SetupDL_57(POLY_XLU_DISP);
 
                 alpha = colorIntensity / 10.0f;
                 alpha = CLAMP_MAX(alpha, 1.0f);
@@ -1664,7 +1664,7 @@ void Environment_DrawRain(PlayState* play, View* view, GraphicsContext* gfxCtx) 
         if (play->envCtx.unk_EE[1]) {
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 150, 255, 255, 30);
-            POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 20);
+            POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 20);
         }
 
         // draw rain drops
@@ -1708,7 +1708,7 @@ void Environment_DrawRain(PlayState* play, View* view, GraphicsContext* gfxCtx) 
                 FrameInterpolation_RecordOpenChild("Droplet Ring", i);
                 
                 if (!firstDone) {
-                    func_80093D84(gfxCtx);
+                    Gfx_SetupDL_25Xlu(gfxCtx);
                     gDPSetEnvColor(POLY_XLU_DISP++, 155, 155, 155, 0);
                     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 120);
                     firstDone++;
@@ -1768,7 +1768,7 @@ void Environment_DrawSkyboxFilters(PlayState* play) {
 
         OPEN_DISPS(play->state.gfxCtx);
 
-        func_800938B4(play->state.gfxCtx);
+        Gfx_SetupDL_57Opa(play->state.gfxCtx);
 
         alpha = (1000 - play->lightCtx.fogNear) * 0.02f;
 
@@ -1790,7 +1790,7 @@ void Environment_DrawSkyboxFilters(PlayState* play) {
     if (play->envCtx.customSkyboxFilter) {
         OPEN_DISPS(play->state.gfxCtx);
 
-        func_800938B4(play->state.gfxCtx);
+        Gfx_SetupDL_57Opa(play->state.gfxCtx);
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, play->envCtx.skyboxFilterColor[0],
                         play->envCtx.skyboxFilterColor[1], play->envCtx.skyboxFilterColor[2],
                         play->envCtx.skyboxFilterColor[3]);
@@ -1803,7 +1803,7 @@ void Environment_DrawSkyboxFilters(PlayState* play) {
 void Environment_DrawLightningFlash(PlayState* play, u8 red, u8 green, u8 blue, u8 alpha) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_800938B4(play->state.gfxCtx);
+    Gfx_SetupDL_57Opa(play->state.gfxCtx);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, red, green, blue, alpha);
     gDPFillRectangle(POLY_OPA_DISP++, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
 
@@ -1977,7 +1977,7 @@ void Environment_DrawLightning(PlayState* play, s32 unused) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(lightningTextures[sLightningBolts[i].textureIndex]));
-            func_80094C50(play->state.gfxCtx);
+            Gfx_SetupDL_61Xlu(play->state.gfxCtx);
             gSPMatrix(POLY_XLU_DISP++, SEG_ADDR(1, 0), G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gEffLightningDL);
         }
@@ -2252,7 +2252,7 @@ void Environment_FillScreen(GraphicsContext* gfxCtx, u8 red, u8 green, u8 blue, 
         OPEN_DISPS(gfxCtx);
 
         if (drawFlags & FILL_SCREEN_OPA) {
-            POLY_OPA_DISP = func_800937C0(POLY_OPA_DISP);
+            POLY_OPA_DISP = Gfx_SetupDL_57(POLY_OPA_DISP);
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, red, green, blue, alpha);
             gDPSetAlphaDither(POLY_OPA_DISP++, G_AD_DISABLE);
             gDPSetColorDither(POLY_OPA_DISP++, G_CD_DISABLE);
@@ -2260,7 +2260,7 @@ void Environment_FillScreen(GraphicsContext* gfxCtx, u8 red, u8 green, u8 blue, 
         }
 
         if (drawFlags & FILL_SCREEN_XLU) {
-            POLY_XLU_DISP = func_800937C0(POLY_XLU_DISP);
+            POLY_XLU_DISP = Gfx_SetupDL_57(POLY_XLU_DISP);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, red, green, blue, alpha);
 
             if ((u32)alpha == 255) {
@@ -2420,7 +2420,7 @@ void Environment_DrawSandstorm(PlayState* play, u8 sandstormState) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    POLY_XLU_DISP = func_80093F34(POLY_XLU_DISP);
+    POLY_XLU_DISP = Gfx_SetupDL_64(POLY_XLU_DISP);
     gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_NOISE);
     gDPSetColorDither(POLY_XLU_DISP++, G_CD_NOISE);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, primColor.r, primColor.g, primColor.b, play->envCtx.sandstormPrimA);
@@ -2531,7 +2531,7 @@ void Environment_WarpSongLeave(PlayState* play) {
     play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex;
     play->sceneLoadFlag = 0x14;
     play->fadeTransition = 3;
-    gSaveContext.nextTransition = 3;
+    gSaveContext.nextTransitionType = 3;
 
     switch (play->nextEntranceIndex) {
         case 0x147:

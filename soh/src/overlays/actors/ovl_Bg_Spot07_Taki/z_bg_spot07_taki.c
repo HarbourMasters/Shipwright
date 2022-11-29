@@ -73,7 +73,7 @@ void BgSpot07Taki_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
     frames = play->gameplayFrames;
     if (LINK_IS_ADULT) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         if (this->dyna.actor.params == 0) {
@@ -82,7 +82,7 @@ void BgSpot07Taki_Draw(Actor* thisx, PlayState* play) {
             gSPDisplayList(POLY_OPA_DISP++, object_spot07_object_DL_003210);
         }
     }
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
