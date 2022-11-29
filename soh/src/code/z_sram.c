@@ -372,14 +372,14 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
         int openForest = Randomizer_GetSettingValue(RSK_FOREST);
         switch (openForest) {
-            case 0: // closed
+            case RO_FOREST_CLOSED:
                 break;
-            case 1: // open
+            case RO_FOREST_CLOSED_DEKU:
+                Flags_SetEventChkInf(7);
+                break;
+            case RO_FOREST_OPEN:
                 Flags_SetEventChkInf(7);
                 gSaveContext.eventChkInf[0] |= 0x10;
-                break;
-            case 2: // closed deku
-                Flags_SetEventChkInf(7);
                 break;
         }
 
