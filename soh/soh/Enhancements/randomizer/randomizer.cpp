@@ -2562,7 +2562,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_LOGIC_RULES] = CVar_GetS32("gRandomizeLogicRules", 0);
     cvarSettings[RSK_FOREST] = CVar_GetS32("gRandomizeForest", 0);
     cvarSettings[RSK_KAK_GATE] = CVar_GetS32("gRandomizeKakarikoGate", 0);
-    cvarSettings[RSK_DOOR_OF_TIME] = CVar_GetS32("gRandomizeDoorOfTime", 0);
+    cvarSettings[RSK_DOOR_OF_TIME] = CVar_GetS32("gRandomizeDoorOfTime", RO_DOOROFTIME_CLOSED);
     cvarSettings[RSK_ZORAS_FOUNTAIN] = CVar_GetS32("gRandomizeZorasFountain", 0);
     cvarSettings[RSK_STARTING_AGE] = CVar_GetS32("gRandomizeStartingAge", 0);
     cvarSettings[RSK_GERUDO_FORTRESS] = CVar_GetS32("gRandomizeGerudoFortress", 0);
@@ -2890,7 +2890,7 @@ void DrawRandoEditor(bool& open) {
                 //RANDOTODO: Replace magic number checks with enums
                 bool disableRandoStartingAge =  (CVar_GetS32("gRandomizeLogicRules", 0) == 0) && // glitchless logic
                 ((CVar_GetS32("gRandomizeForest", 0) == 0) || // Closed Forest
-                 ((CVar_GetS32("gRandomizeDoorOfTime", 0) == 0) && // Closed Door of Time 
+                 ((CVar_GetS32("gRandomizeDoorOfTime", RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED) &&
                  (CVar_GetS32("gRandomizeShuffleOcarinas", 0) == 0)));  // ocarinas not shuffled
                     
                 const char* disableRandoStartingAgeText = "This option is disabled due to other options making the game unbeatable.";
@@ -3024,7 +3024,7 @@ void DrawRandoEditor(bool& open) {
                         "\n"
                         "None - All Dungeons will be their Vanilla versions.\n"
                         "\n"
-                        "Set Number - Select a number of dungeons that will be their Master Quest versions"
+                        "Set Number - Select a number of dungeons that will be their Master Quest versions "
                         "using the slider below. Which dungeons are set to be the Master Quest variety will be random.\n"
                         "\n"
                         "Random Number - A Random number and set of dungeons will be their Master Quest varieties."
