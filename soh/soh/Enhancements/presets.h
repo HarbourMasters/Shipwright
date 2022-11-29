@@ -596,7 +596,7 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32("gRandomizeGerudoKeys", 3),
     PRESET_ENTRY_S32("gRandomizeGsExpectSunsSong", 1),
     PRESET_ENTRY_S32("gRandomizeIceTraps", 4),
-    PRESET_ENTRY_S32("gRandomizeItemPool", RO_ITEM_POOL_BALANCED),
+    PRESET_ENTRY_S32("gRandomizeItemPool", RO_ITEM_POOL_MINIMAL),
     PRESET_ENTRY_S32("gRandomizeKakarikoGate", 1),
     PRESET_ENTRY_S32("gRandomizeKeysanity", 5),
     PRESET_ENTRY_S32("gRandomizeLinksPocket", 3),
