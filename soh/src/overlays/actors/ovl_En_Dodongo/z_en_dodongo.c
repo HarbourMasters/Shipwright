@@ -919,7 +919,7 @@ void EnDodongo_Draw(Actor* thisx, PlayState* play2) {
     EnDodongo* this = (EnDodongo*)thisx;
     s32 index;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDodongo_OverrideLimbDraw,
                       EnDodongo_PostLimbDraw, this);
 

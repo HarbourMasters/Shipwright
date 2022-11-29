@@ -120,7 +120,7 @@ void EffectSsEnIce_Draw(PlayState* play, u32 index, EffectSs* this) {
     hiliteLightDir.y = 0.0f;
     hiliteLightDir.z = 89.8f;
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     func_8002EB44(&this->pos, &play->view.eye, &hiliteLightDir, play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, gameplayFrames & 0xFF, 0x20, 0x10, 1, 0,
