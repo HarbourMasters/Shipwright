@@ -404,11 +404,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 break;
         }
 
-        int kakGate = Randomizer_GetSettingValue(RSK_KAK_GATE);
-        switch (kakGate) {
-            case 1: // open
-                gSaveContext.infTable[7] |= 0x40;
-                break;
+        if (Randomizer_GetSettingValue(RSK_KAK_GATE) == RO_KAK_GATE_OPEN) {
+            gSaveContext.infTable[7] |= 0x40;
         }
       
         if(Randomizer_GetSettingValue(RSK_STARTING_KOKIRI_SWORD)) Item_Give(NULL, ITEM_SWORD_KOKIRI);
