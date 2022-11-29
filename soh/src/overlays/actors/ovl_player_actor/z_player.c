@@ -10955,7 +10955,8 @@ void Player_Update(Actor* thisx, PlayState* play) {
 
     if (func_8084FCAC(this, play)) {
         if (gSaveContext.dogParams < 0) {
-            if (Object_GetIndex(&play->objectCtx, OBJECT_DOG) < 0) {
+            // Disable object dependency to prevent losing dog in scenes other than market
+            if (Object_GetIndex(&play->objectCtx, OBJECT_DOG) < 0 && !CVar_GetS32("gDogFollowsEverywhere", 0)) {
                 gSaveContext.dogParams = 0;
             } else {
                 gSaveContext.dogParams &= 0x7FFF;
@@ -10965,7 +10966,8 @@ void Player_Update(Actor* thisx, PlayState* play) {
                 dog = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_DOG, sDogSpawnPos.x, sDogSpawnPos.y,
                                   sDogSpawnPos.z, 0, this->actor.shape.rot.y, 0, dogParams | 0x8000);
                 if (dog != NULL) {
-                    dog->room = 0;
+                    // Room -1 allows actor to cross between rooms, similar to Navi
+                    dog->room = CVar_GetS32("gDogFollowsEverywhere", 0) ? -1 : 0;
                 }
             }
         }
