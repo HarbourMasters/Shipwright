@@ -282,7 +282,7 @@ void EnPart_Draw(Actor* thisx, PlayState* play) {
         Matrix_RotateZ(this->rotZ, MTXMODE_APPLY);
     }
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     func_8002EBCC(thisx, play, 0);
 
     if (thisx->params == 5) {

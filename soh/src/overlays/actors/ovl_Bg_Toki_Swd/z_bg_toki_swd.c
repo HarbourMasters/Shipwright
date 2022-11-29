@@ -187,7 +187,7 @@ void BgTokiSwd_Draw(Actor* thisx, PlayState* play2) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     func_8002EBCC(&this->actor, play, 0);
 

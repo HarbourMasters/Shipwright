@@ -531,7 +531,7 @@ void BgJyaCobra_Update(Actor* thisx, PlayState* play2) {
 void func_80896CB4(PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gCobra2DL);
@@ -544,7 +544,7 @@ void func_80896D78(BgJyaCobra* this, PlayState* play) {
     Vec3s sp44;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     sp44.x = D_80897308[this->dyna.actor.params & 3] + this->dyna.actor.shape.rot.x;
     sp44.y = this->dyna.actor.shape.rot.y;
@@ -568,7 +568,7 @@ void BgJyaCobra_DrawShadow(BgJyaCobra* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80094044(play->state.gfxCtx);
+    Gfx_SetupDL_44Xlu(play->state.gfxCtx);
 
     if (params == 0) {
         sp64.x = this->dyna.actor.world.pos.x - 50.0f;

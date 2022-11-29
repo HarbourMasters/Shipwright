@@ -3557,7 +3557,7 @@ void Interface_DrawLineupTick(PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80094520(play->state.gfxCtx);
+    Gfx_SetupDL_39Overlay(play->state.gfxCtx);
 
     gDPSetEnvColor(OVERLAY_DISP++, 255, 255, 255, 255);
     gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
@@ -3652,7 +3652,7 @@ void Interface_DrawMagicBar(PlayState* play) {
             rMagicFillX = rMagicFillX_original;
         }
 
-        func_80094520(play->state.gfxCtx);
+        Gfx_SetupDL_39Overlay(play->state.gfxCtx);
 
         if (CVar_GetS32("gHudColors", 1) == 2) {//Original game add color there so to prevent miss match we make it all white :)
             gDPSetEnvColor(OVERLAY_DISP++, 255, 255, 255, 255);
@@ -4995,7 +4995,7 @@ void Interface_Draw(PlayState* play) {
             HealthMeter_Draw(play);
         }
 
-        func_80094520(play->state.gfxCtx);
+        Gfx_SetupDL_39Overlay(play->state.gfxCtx);
 
         if (fullUi) {
             // Rupee Icon
@@ -5204,7 +5204,7 @@ void Interface_Draw(PlayState* play) {
             func_8002C124(&play->actorCtx.targetCtx, play); // Draw Z-Target
         }
 
-        func_80094520(play->state.gfxCtx);
+        Gfx_SetupDL_39Overlay(play->state.gfxCtx);
 
         if (fullUi) {
             Interface_DrawItemButtons(play);
@@ -5431,7 +5431,7 @@ void Interface_Draw(PlayState* play) {
         }
 
         // A Button
-        func_80094A14(play->state.gfxCtx);
+        Gfx_SetupDL_42Overlay(play->state.gfxCtx);
         const Color_RGB8 A_Button_Colors = {R_A_BTN_COLOR(0), R_A_BTN_COLOR(1), R_A_BTN_COLOR(2)};
         s16 X_Margins_BtnA;
         s16 Y_Margins_BtnA;
@@ -5513,7 +5513,7 @@ void Interface_Draw(PlayState* play) {
         if ((pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 3)) {
             // Inventory Equip Effects
             gSPSegment(OVERLAY_DISP++, 0x08, pauseCtx->iconItemSegment);
-            func_80094A14(play->state.gfxCtx);
+            Gfx_SetupDL_42Overlay(play->state.gfxCtx);
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATERGBA_PRIM, G_CC_MODULATERGBA_PRIM);
             gSPMatrix(OVERLAY_DISP++, &gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD);
 
@@ -5559,7 +5559,7 @@ void Interface_Draw(PlayState* play) {
             gSP1Quadrangle(OVERLAY_DISP++, 0, 2, 3, 1, 0);
         }
 
-        func_80094520(play->state.gfxCtx);
+        Gfx_SetupDL_39Overlay(play->state.gfxCtx);
 
         if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0)) {
             if (gSaveContext.minigameState != 1) {

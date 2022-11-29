@@ -266,7 +266,7 @@ void ObjSyokudai_Draw(Actor* thisx, PlayState* play) {
     timerMax = (((this->actor.params >> 6) & 0xF) * 50) + 100;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -283,7 +283,7 @@ void ObjSyokudai_Draw(Actor* thisx, PlayState* play) {
         }
         flameScale *= 0.0027f;
 
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,

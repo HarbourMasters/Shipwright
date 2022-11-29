@@ -1537,7 +1537,7 @@ void BossGanondrof_Draw(Actor* thisx, PlayState* play) {
     }
 
     osSyncPrintf("YP %f\n", this->actor.world.pos.y);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     if (this->work[GND_INVINC_TIMER] & 4) {
         POLY_OPA_DISP = Gfx_SetFog(POLY_OPA_DISP, 255, 50, 0, 0, 900, 1099);
     } else {

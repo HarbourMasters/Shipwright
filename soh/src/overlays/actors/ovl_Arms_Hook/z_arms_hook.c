@@ -320,7 +320,7 @@ void ArmsHook_Draw(Actor* thisx, PlayState* play) {
         }
 
         func_80090480(play, &this->collider, &this->hookInfo, &sp6C, &sp60);
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHookshotTipDL);
