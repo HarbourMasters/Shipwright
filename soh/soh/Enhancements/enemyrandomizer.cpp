@@ -174,13 +174,14 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
         }
 
         // Get randomized enemy ID and parameter.
-        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(*posX, *posY, *posZ);
+        uint32_t seed = play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params;
+        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed);
 
         int8_t timesRandomized = 1;
 
         // While randomized enemy isn't allowed in certain situations, randomize again.
         while (!IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, randomEnemy)) {
-            randomEnemy = GetRandomizedEnemyEntry(*posX + timesRandomized, *posY, *posZ);
+            randomEnemy = GetRandomizedEnemyEntry(seed + timesRandomized);
             timesRandomized++;
         }
 
@@ -222,14 +223,15 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
     return 1;
 }
 
-EnemyEntry GetRandomizedEnemyEntry(float seed1, float seed2, float seed3) {
+EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
     if (CVar_GetS32("gSeededRandomizedEnemies", 0) && gSaveContext.n64ddFlag) {
-        uint32_t seed = (int)seed1 + (int)seed2 + (int)seed3 + *gSaveContext.seedIcons;
-        Random_Init(seed);
+        uint32_t finalSeed = seed + gSaveContext.seedIcons[0] + gSaveContext.seedIcons[1] + gSaveContext.seedIcons[2] +
+                        gSaveContext.seedIcons[3] + gSaveContext.seedIcons[4];
+        Random_Init(finalSeed);
         uint32_t randomNumber = Random(0, RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE);
         return randomizedEnemySpawnTable[randomNumber];
     } else {
-        uint32_t randomNumber = rand() + (int)seed1 + (int)seed2 + (int)seed3;
+        uint32_t randomNumber = rand() + seed;
         return randomizedEnemySpawnTable[randomNumber % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
     }
 }
