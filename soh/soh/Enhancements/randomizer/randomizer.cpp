@@ -2604,7 +2604,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = CVar_GetS32("gRandomizeShuffleGerudoToken", 0);
     cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES] = CVar_GetS32("gRandomizeShuffleFrogSongRupees", 0);
     cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", RO_ITEM_POOL_BALANCED);
-    cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", 1);
+    cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", RO_ICE_TRAPS_NORMAL);
     cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 1);
     cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", 2);
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 1);
