@@ -663,7 +663,7 @@ void EnTest_WalkAndBlock(EnTest* this, PlayState* play) {
                     EnTest_SetupJumpslash(this);
                     return;
                 }
-            } else if (player->heldItemAction != PLAYER_AI_NONE) {
+            } else if (player->heldItemAction != PLAYER_IA_NONE) {
                 if (this->actor.isTargeted) {
                     if ((play->gameplayFrames % 2) != 0) {
                         func_808627C4(this, play);
@@ -1459,7 +1459,7 @@ void func_808628C8(EnTest* this, PlayState* play) {
             if (!EnTest_ReactToProjectile(play, this)) {
                 EnTest_ChooseAction(this, play);
             }
-        } else if (player->heldItemAction != PLAYER_AI_NONE) {
+        } else if (player->heldItemAction != PLAYER_IA_NONE) {
             if ((play->gameplayFrames % 2) != 0) {
                 EnTest_SetupIdle(this);
             } else {

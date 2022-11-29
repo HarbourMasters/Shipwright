@@ -362,7 +362,7 @@ s32 Player_ActionToModelGroup(Player* this, s32 actionParam) {
 void Player_SetModelsForHoldingShield(Player* this) {
     if ((this->stateFlags1 & 0x400000) &&
         ((this->itemAction < 0) || (this->itemAction == this->heldItemAction))) {
-        if ((CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemAction != PLAYER_AI_STICK) ||
+        if ((CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemAction != PLAYER_IA_STICK) ||
             !Player_HoldsTwoHandedWeapon(this)) && !Player_IsChildWithHylianShield(this)) {
             this->rightHandType = 10;
             this->rightHandDLists = &sPlayerDListGroups[10][gSaveContext.linkAge];
@@ -478,7 +478,7 @@ s32 Player_IsBurningStickInRange(PlayState* play, Vec3f* pos, f32 xzRange, f32 y
     Vec3f diff;
     s32 pad;
 
-    if ((this->heldItemAction == PLAYER_AI_STICK) && (this->unk_860 != 0)) {
+    if ((this->heldItemAction == PLAYER_IA_STICK) && (this->unk_860 != 0)) {
         Math_Vec3f_Diff(&this->meleeWeaponInfo[0].tip, pos, &diff);
         return ((SQ(diff.x) + SQ(diff.z)) <= SQ(xzRange)) && (0.0f <= diff.y) && (diff.y <= yRange);
     } else {
@@ -525,7 +525,7 @@ s32 Player_HasMirrorShieldSetToDraw(PlayState* play) {
 }
 
 s32 Player_ActionToMagicSpell(Player* this, s32 actionParam) {
-    s32 magicSpell = actionParam - PLAYER_AI_MAGIC_SPELL_15;
+    s32 magicSpell = actionParam - PLAYER_IA_MAGIC_SPELL_15;
 
     if ((magicSpell >= 0) && (magicSpell < 6)) {
         return magicSpell;
@@ -535,7 +535,7 @@ s32 Player_ActionToMagicSpell(Player* this, s32 actionParam) {
 }
 
 s32 Player_HoldsHookshot(Player* this) {
-    return (this->heldItemAction == PLAYER_AI_HOOKSHOT) || (this->heldItemAction == PLAYER_AI_LONGSHOT);
+    return (this->heldItemAction == PLAYER_IA_HOOKSHOT) || (this->heldItemAction == PLAYER_IA_LONGSHOT);
 }
 
 s32 func_8008F128(Player* this) {
@@ -543,7 +543,7 @@ s32 func_8008F128(Player* this) {
 }
 
 s32 Player_ActionToSword(s32 actionParam) {
-    s32 sword = actionParam - PLAYER_AI_FISHING_POLE;
+    s32 sword = actionParam - PLAYER_IA_FISHING_POLE;
 
     if ((sword > 0) && (sword < 6)) {
         return sword;
@@ -557,7 +557,7 @@ s32 Player_GetSwordHeld(Player* this) {
 }
 
 s32 Player_HoldsTwoHandedWeapon(Player* this) {
-    if ((this->heldItemAction >= PLAYER_AI_SWORD_BGS) && (this->heldItemAction <= PLAYER_AI_HAMMER)) {
+    if ((this->heldItemAction >= PLAYER_IA_SWORD_BGS) && (this->heldItemAction <= PLAYER_IA_HAMMER)) {
         return 1;
     } else {
         return 0;
@@ -565,11 +565,11 @@ s32 Player_HoldsTwoHandedWeapon(Player* this) {
 }
 
 s32 Player_HoldsBrokenKnife(Player* this) {
-    return (this->heldItemAction == PLAYER_AI_SWORD_BGS) && (gSaveContext.swordHealth <= 0.0f);
+    return (this->heldItemAction == PLAYER_IA_SWORD_BGS) && (gSaveContext.swordHealth <= 0.0f);
 }
 
 s32 Player_ActionToBottle(Player* this, s32 actionParam) {
-    s32 bottle = actionParam - PLAYER_AI_BOTTLE;
+    s32 bottle = actionParam - PLAYER_IA_BOTTLE;
 
     if ((bottle >= 0) && (bottle < 13)) {
         return bottle;
@@ -583,7 +583,7 @@ s32 Player_GetBottleHeld(Player* this) {
 }
 
 s32 Player_ActionToExplosive(Player* this, s32 actionParam) {
-    s32 explosive = actionParam - PLAYER_AI_BOMB;
+    s32 explosive = actionParam - PLAYER_IA_BOMB;
 
     if ((explosive >= 0) && (explosive < 2)) {
         return explosive;
@@ -599,8 +599,8 @@ s32 Player_GetExplosiveHeld(Player* this) {
 s32 func_8008F2BC(Player* this, s32 actionParam) {
     s32 sword = 0;
 
-    if (actionParam != PLAYER_AI_LAST_USED) {
-        sword = actionParam - PLAYER_AI_SWORD_MASTER;
+    if (actionParam != PLAYER_IA_LAST_USED) {
+        sword = actionParam - PLAYER_IA_SWORD_MASTER;
         if ((sword < 0) || (sword >= 3)) {
             goto return_neg;
         }
@@ -1321,7 +1321,7 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
 
         Math_Vec3f_Copy(&this->leftHandPos, D_80160000);
 
-        if (this->itemAction == PLAYER_AI_STICK) {
+        if (this->itemAction == PLAYER_IA_STICK) {
             Vec3f sp124[3];
 
             OPEN_DISPS(play->state.gfxCtx);
@@ -1451,8 +1451,8 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
         }
 
         if (this->actor.scale.y >= 0.0f) {
-            if ((this->heldItemAction == PLAYER_AI_HOOKSHOT) ||
-                (this->heldItemAction == PLAYER_AI_LONGSHOT)) {
+            if ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
+                (this->heldItemAction == PLAYER_IA_LONGSHOT)) {
                 Matrix_MultVec3f(&D_80126184, &this->unk_3C8);
 
                 if (heldActor != NULL) {
@@ -1468,7 +1468,7 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                     if (func_8002DD78(this) != 0) {
                         Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
                         Player_DrawHookshotReticle(
-                            play, this, (this->heldItemAction == PLAYER_AI_HOOKSHOT) ? 38600.0f : 77600.0f);
+                            play, this, (this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 77600.0f);
                     }
                 }
             }

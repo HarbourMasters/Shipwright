@@ -22,10 +22,9 @@
 
 #define PHYSICAL_TO_VIRTUAL(addr) (void*)((uintptr_t)(addr) + 0x80000000)
 #define VIRTUAL_TO_PHYSICAL(addr) (uintptr_t)((u8*)(addr) - 0x80000000)
-// #region SOH [General]
+// Upstream TODO: Document reasoning for change
 //#define SEGMENTED_TO_VIRTUAL(addr) PHYSICAL_TO_VIRTUAL(gSegments[SEGMENT_NUMBER(addr)] + SEGMENT_OFFSET(addr))
 #define SEGMENTED_TO_VIRTUAL(addr) addr
-// #endregion
 
 #define SQ(x) ((x)*(x))
 #define ABS(x) ((x) >= 0 ? (x) : -(x))
@@ -183,7 +182,7 @@ extern GraphicsContext* __gfxCtx;
 #define POLY_OPA_DISP      __gfxCtx->polyOpa.p
 #define POLY_XLU_DISP      __gfxCtx->polyXlu.p
 // #region SOH [General]
-// Upstream TODO: Document reasoning for change
+// Upstream TODO: Document reasoning for these only existing in SoH
 #define WORLD_OVERLAY_DISP __gfxCtx->worldOverlay.p
 #define POLY_KAL_DISP      __gfxCtx->polyKal.p
 // #endregion

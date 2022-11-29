@@ -65,83 +65,84 @@ typedef enum {
 } PlayerMask;
 
 typedef enum {
-    /* 0x00 */ PLAYER_AI_NONE,
-    /* 0x01 */ PLAYER_AI_LAST_USED,
-    /* 0x02 */ PLAYER_AI_FISHING_POLE,
-    /* 0x03 */ PLAYER_AI_SWORD_MASTER,
-    /* 0x04 */ PLAYER_AI_SWORD_KOKIRI,
-    /* 0x05 */ PLAYER_AI_SWORD_BGS,
-    /* 0x06 */ PLAYER_AI_STICK,
-    /* 0x07 */ PLAYER_AI_HAMMER,
-    /* 0x08 */ PLAYER_AI_BOW,
-    /* 0x09 */ PLAYER_AI_BOW_FIRE,
-    /* 0x0A */ PLAYER_AI_BOW_ICE,
-    /* 0x0B */ PLAYER_AI_BOW_LIGHT,
-    /* 0x0C */ PLAYER_AI_BOW_0C,
-    /* 0x0D */ PLAYER_AI_BOW_0D,
-    /* 0x0E */ PLAYER_AI_BOW_0E,
-    /* 0x0F */ PLAYER_AI_SLINGSHOT,
-    /* 0x10 */ PLAYER_AI_HOOKSHOT,
-    /* 0x11 */ PLAYER_AI_LONGSHOT,
-    /* 0x12 */ PLAYER_AI_BOMB,
-    /* 0x13 */ PLAYER_AI_BOMBCHU,
-    /* 0x14 */ PLAYER_AI_BOOMERANG,
-    /* 0x15 */ PLAYER_AI_MAGIC_SPELL_15,
-    /* 0x16 */ PLAYER_AI_MAGIC_SPELL_16,
-    /* 0x17 */ PLAYER_AI_MAGIC_SPELL_17,
-    /* 0x18 */ PLAYER_AI_FARORES_WIND,
-    /* 0x19 */ PLAYER_AI_NAYRUS_LOVE,
-    /* 0x1A */ PLAYER_AI_DINS_FIRE,
-    /* 0x1B */ PLAYER_AI_NUT,
-    /* 0x1C */ PLAYER_AI_OCARINA_FAIRY,
-    /* 0x1D */ PLAYER_AI_OCARINA_TIME,
-    /* 0x1E */ PLAYER_AI_BOTTLE,
-    /* 0x1F */ PLAYER_AI_BOTTLE_FISH,
-    /* 0x20 */ PLAYER_AI_BOTTLE_FIRE,
-    /* 0x21 */ PLAYER_AI_BOTTLE_BUG,
-    /* 0x22 */ PLAYER_AI_BOTTLE_POE,
-    /* 0x23 */ PLAYER_AI_BOTTLE_BIG_POE,
-    /* 0x24 */ PLAYER_AI_BOTTLE_LETTER,
-    /* 0x25 */ PLAYER_AI_BOTTLE_POTION_RED,
-    /* 0x26 */ PLAYER_AI_BOTTLE_POTION_BLUE,
-    /* 0x27 */ PLAYER_AI_BOTTLE_POTION_GREEN,
-    /* 0x28 */ PLAYER_AI_BOTTLE_MILK,
-    /* 0x29 */ PLAYER_AI_BOTTLE_MILK_HALF,
-    /* 0x2A */ PLAYER_AI_BOTTLE_FAIRY,
-    /* 0x2B */ PLAYER_AI_LETTER_ZELDA,
-    /* 0x2C */ PLAYER_AI_WEIRD_EGG,
-    /* 0x2D */ PLAYER_AI_CHICKEN,
-    /* 0x2E */ PLAYER_AI_BEAN,
-    /* 0x2F */ PLAYER_AI_POCKET_EGG,
-    /* 0x30 */ PLAYER_AI_POCKET_CUCCO,
-    /* 0x31 */ PLAYER_AI_COJIRO,
-    /* 0x32 */ PLAYER_AI_ODD_MUSHROOM,
-    /* 0x33 */ PLAYER_AI_ODD_POTION,
-    /* 0x34 */ PLAYER_AI_SAW,
-    /* 0x35 */ PLAYER_AI_SWORD_BROKEN,
-    /* 0x36 */ PLAYER_AI_PRESCRIPTION,
-    /* 0x37 */ PLAYER_AI_FROG,
-    /* 0x38 */ PLAYER_AI_EYEDROPS,
-    /* 0x39 */ PLAYER_AI_CLAIM_CHECK,
-    /* 0x3A */ PLAYER_AI_MASK_KEATON,
-    /* 0x3B */ PLAYER_AI_MASK_SKULL,
-    /* 0x3C */ PLAYER_AI_MASK_SPOOKY,
-    /* 0x3D */ PLAYER_AI_MASK_BUNNY,
-    /* 0x3E */ PLAYER_AI_MASK_GORON,
-    /* 0x3F */ PLAYER_AI_MASK_ZORA,
-    /* 0x40 */ PLAYER_AI_MASK_GERUDO,
-    /* 0x41 */ PLAYER_AI_MASK_TRUTH,
-    /* 0x42 */ PLAYER_AI_LENS,
-    /* 0x43 */ PLAYER_AI_SHIELD_DEKU,
-    /* 0x44 */ PLAYER_AI_SHIELD_HYLIAN,
-    /* 0x45 */ PLAYER_AI_SHIELD_MIRROR,
-    /* 0x46 */ PLAYER_AI_TUNIC_KOKIRI,
-    /* 0x47 */ PLAYER_AI_TUNIC_GORON,
-    /* 0x48 */ PLAYER_AI_TUNIC_ZORA,
-    /* 0x49 */ PLAYER_AI_BOOTS_KOKIRI,
-    /* 0x4A */ PLAYER_AI_BOOTS_IRON,
-    /* 0x4B */ PLAYER_AI_BOOTS_HOVER,
-    /* 0x4C */ PLAYER_AI_MAX
+    /* 0x00 */ PLAYER_IA_NONE,
+    /* 0x01 */ PLAYER_IA_LAST_USED,
+    /* 0x02 */ PLAYER_IA_FISHING_POLE,
+    /* 0x03 */ PLAYER_IA_SWORD_MASTER,
+    /* 0x04 */ PLAYER_IA_SWORD_KOKIRI,
+    /* 0x05 */ PLAYER_IA_SWORD_BGS,
+    /* 0x06 */ PLAYER_IA_STICK,
+    /* 0x07 */ PLAYER_IA_HAMMER,
+    /* 0x08 */ PLAYER_IA_BOW,
+    /* 0x09 */ PLAYER_IA_BOW_FIRE,
+    /* 0x0A */ PLAYER_IA_BOW_ICE,
+    /* 0x0B */ PLAYER_IA_BOW_LIGHT,
+    /* 0x0C */ PLAYER_IA_BOW_0C,
+    /* 0x0D */ PLAYER_IA_BOW_0D,
+    /* 0x0E */ PLAYER_IA_BOW_0E,
+    /* 0x0F */ PLAYER_IA_SLINGSHOT,
+    /* 0x10 */ PLAYER_IA_HOOKSHOT,
+    /* 0x11 */ PLAYER_IA_LONGSHOT,
+    /* 0x12 */ PLAYER_IA_BOMB,
+    /* 0x13 */ PLAYER_IA_BOMBCHU,
+    /* 0x14 */ PLAYER_IA_BOOMERANG,
+    /* 0x15 */ PLAYER_IA_MAGIC_SPELL_15,
+    /* 0x16 */ PLAYER_IA_MAGIC_SPELL_16,
+    /* 0x17 */ PLAYER_IA_MAGIC_SPELL_17,
+    /* 0x18 */ PLAYER_IA_FARORES_WIND,
+    /* 0x19 */ PLAYER_IA_NAYRUS_LOVE,
+    /* 0x1A */ PLAYER_IA_DINS_FIRE,
+    /* 0x1B */ PLAYER_IA_NUT,
+    /* 0x1C */ PLAYER_IA_OCARINA_FAIRY,
+    /* 0x1D */ PLAYER_IA_OCARINA_TIME,
+    /* 0x1E */ PLAYER_IA_BOTTLE,
+    /* 0x1F */ PLAYER_IA_BOTTLE_FISH,
+    /* 0x20 */ PLAYER_IA_BOTTLE_FIRE,
+    /* 0x21 */ PLAYER_IA_BOTTLE_BUG,
+    /* 0x22 */ PLAYER_IA_BOTTLE_POE,
+    /* 0x23 */ PLAYER_IA_BOTTLE_BIG_POE,
+    /* 0x24 */ PLAYER_IA_BOTTLE_LETTER,
+    /* 0x25 */ PLAYER_IA_BOTTLE_POTION_RED,
+    /* 0x26 */ PLAYER_IA_BOTTLE_POTION_BLUE,
+    /* 0x27 */ PLAYER_IA_BOTTLE_POTION_GREEN,
+    /* 0x28 */ PLAYER_IA_BOTTLE_MILK,
+    /* 0x29 */ PLAYER_IA_BOTTLE_MILK_HALF,
+    /* 0x2A */ PLAYER_IA_BOTTLE_FAIRY,
+    /* 0x2B */ PLAYER_IA_LETTER_ZELDA,
+    /* 0x2C */ PLAYER_IA_WEIRD_EGG,
+    /* 0x2D */ PLAYER_IA_CHICKEN,
+    /* 0x2E */ PLAYER_IA_BEAN,
+    /* 0x2F */ PLAYER_IA_POCKET_EGG,
+    /* 0x30 */ PLAYER_IA_POCKET_CUCCO,
+    /* 0x31 */ PLAYER_IA_COJIRO,
+    /* 0x32 */ PLAYER_IA_ODD_MUSHROOM,
+    /* 0x33 */ PLAYER_IA_ODD_POTION,
+    /* 0x34 */ PLAYER_IA_SAW,
+    /* 0x35 */ PLAYER_IA_SWORD_BROKEN,
+    /* 0x36 */ PLAYER_IA_PRESCRIPTION,
+    /* 0x37 */ PLAYER_IA_FROG,
+    /* 0x38 */ PLAYER_IA_EYEDROPS,
+    /* 0x39 */ PLAYER_IA_CLAIM_CHECK,
+    /* 0x3A */ PLAYER_IA_MASK_KEATON,
+    /* 0x3B */ PLAYER_IA_MASK_SKULL,
+    /* 0x3C */ PLAYER_IA_MASK_SPOOKY,
+    /* 0x3D */ PLAYER_IA_MASK_BUNNY,
+    /* 0x3E */ PLAYER_IA_MASK_GORON,
+    /* 0x3F */ PLAYER_IA_MASK_ZORA,
+    /* 0x40 */ PLAYER_IA_MASK_GERUDO,
+    /* 0x41 */ PLAYER_IA_MASK_TRUTH,
+    /* 0x42 */ PLAYER_IA_LENS,
+    // Upstream TODO: Document why these entries were added
+    /* 0x43 */ PLAYER_IA_SHIELD_DEKU,
+    /* 0x44 */ PLAYER_IA_SHIELD_HYLIAN,
+    /* 0x45 */ PLAYER_IA_SHIELD_MIRROR,
+    /* 0x46 */ PLAYER_IA_TUNIC_KOKIRI,
+    /* 0x47 */ PLAYER_IA_TUNIC_GORON,
+    /* 0x48 */ PLAYER_IA_TUNIC_ZORA,
+    /* 0x49 */ PLAYER_IA_BOOTS_KOKIRI,
+    /* 0x4A */ PLAYER_IA_BOOTS_IRON,
+    /* 0x4B */ PLAYER_IA_BOOTS_HOVER,
+    /* 0x4C */ PLAYER_IA_MAX
 } PlayerItemAction;
 
 typedef enum {
@@ -397,6 +398,7 @@ typedef struct {
 
 // #region SOH [General]
 // Supporting pendingFlag
+// Upstream TODO: Rename these to be more obviously SoH specific
 typedef enum {
     FLAG_NONE,
     FLAG_SCENE_SWITCH,
@@ -536,7 +538,7 @@ typedef struct Player {
     /* 0x042D */ s8         doorDirection;
     /* 0x042E */ s16        doorTimer;
     /* 0x0430 */ Actor*     doorActor;
-    /* 0x0434 */ s16        getItemId; // Upstream TODO: s8?
+    /* 0x0434 */ s16        getItemId; // Upstream TODO: Document why this is s16 while it's s8 upstream
     /* 0x0436 */ u16        getItemDirection;
     /* 0x0438 */ Actor*     interactRangeActor;
     /* 0x043C */ s8         mountSide;
@@ -668,10 +670,12 @@ typedef struct Player {
     /* 0x0A87 */ u8         unk_A87;
     /* 0x0A88 */ Vec3f      unk_A88; // previous body part 0 position
     // #region SOH [General]
+    // Upstream TODO: Rename these to be more obviously SoH specific
     /*        */ PendingFlag pendingFlag;
     /*        */ GetItemEntry getItemEntry;
     // #endregion
     // #region SOH [Enhancements]
+    // Upstream TODO: Rename this to make it more obvious it is apart of an enhancement
     /*        */ u8         boomerangQuickRecall; // Has the player pressed the boomerang button while it's in the air still?
     // #endregion
 } Player; // size = 0xA94

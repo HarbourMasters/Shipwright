@@ -36,11 +36,8 @@ typedef enum {
 #define MAGIC_DOUBLE_METER (2 * MAGIC_NORMAL_METER)
 
 typedef struct {
-    // #region SOH [Enhancements]
-    // Support Dpad equips
-    /* 0x00 */ u8 buttonItems[8];
-    /* 0x04 */ u8 cButtonSlots[7];
-    // #endregion
+    /* 0x00 */ u8 buttonItems[8]; // SOH [Enhancements] Changed from 4 to 8 to support Dpad equips
+    /* 0x04 */ u8 cButtonSlots[7]; // SOH [Enhancements] Changed from 3 to 7 to support Dpad equips
     /* 0x08 */ u16 equipment; // a mask where each nibble corresponds to a type of equipment `EquipmentType`, and each nibble is a piece `EquipValue*`
 } ItemEquips; // size = 0x0A
 
@@ -56,7 +53,6 @@ typedef struct {
     /* 0x5C */ s16 gsTokens;
 } Inventory; // size = 0x5E
 
-// #region SOH [Enhancements]
 typedef struct {
     /*      */ u8 heartPieces;
     /*      */ u8 heartContainers;
@@ -67,7 +63,6 @@ typedef struct {
     /*      */ u32 timestamp[TIMESTAMP_MAX];
     /*      */ u32 count[COUNT_MAX];
 } SohStats;
-// #endregion
 
 typedef struct {
     /* 0x00 */ u32 chest;
@@ -120,7 +115,6 @@ typedef struct {
     /* 0x24 */ s32 tempCollectFlags;
 } FaroresWindData; // size = 0x28
 
-// #region SOH [Randomizer]
 typedef struct {
     RandomizerCheck check;
     RandomizerGetData get;
@@ -135,7 +129,6 @@ typedef struct {
     RandomizerSettingKey key;
     u8 value;
 } RandoSetting;
-// #endregion
 
 typedef struct {
     /* 0x0000 */ s32 entranceIndex; // start of `save` substruct, originally called "memory"
@@ -214,10 +207,7 @@ typedef struct {
     /* 0x13DE */ char unk_13DE[0x0002];
     /* 0x13E0 */ u8 seqId;
     /* 0x13E1 */ u8 natureAmbienceId;
-    // #region SOH [Enhancements]
-    // Support Dpad equips
-    /* 0x13E2 */ u8 buttonStatus[9];
-    // #endregion
+    /* 0x13E2 */ u8 buttonStatus[9]; // SOH [Enhancements] Changed from 5 to 9 to support Dpad equips
     /* 0x13E7 */ u8 unk_13E7; // alpha related
     /* 0x13E8 */ u16 unk_13E8; // alpha type?
     /* 0x13EA */ u16 unk_13EA; // also alpha type?
@@ -254,6 +244,7 @@ typedef struct {
     /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
     /* 0x1424 */ s16 healthAccumulator;
     // #region SOH [General]
+    // Upstream TODO: Move these to their own struct or name to more obviously specific to SoH
     /*        */ uint32_t isMasterQuest;
     /*        */ u8 mqDungeonCount;
     /*        */ u8 pendingIceTrapCount;
@@ -261,6 +252,7 @@ typedef struct {
     /*        */ u8 temporaryWeapon;
     // #endregion
     // #region SOH [Randomizer]
+    // Upstream TODO: Move these to their own struct or name to more obviously specific to Randomizer
     /*        */ RandoSetting randoSettings[300];
     /*        */ ItemLocationRando itemLocations[RC_MAX];
     /*        */ HintLocationRando hintLocations[50];

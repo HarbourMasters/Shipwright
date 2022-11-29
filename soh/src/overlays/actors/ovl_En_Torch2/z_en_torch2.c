@@ -128,7 +128,7 @@ void EnTorch2_Init(Actor* thisx, PlayState* play2) {
     sInput.cur.button = sInput.press.button = sInput.rel.button = 0;
     sInput.cur.stick_x = sInput.cur.stick_y = 0;
     this->currentShield = PLAYER_SHIELD_HYLIAN;
-    this->heldItemAction = this->heldItemId = PLAYER_AI_SWORD_MASTER;
+    this->heldItemAction = this->heldItemId = PLAYER_IA_SWORD_MASTER;
     Player_SetModelGroup(this, 2);
     play->playerInit(this, play, &gDarkLinkSkel);
     this->actor.naviEnemyId = 0x26;
