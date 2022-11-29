@@ -323,39 +323,40 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
         // Forest Temple
         case SCENE_BMORI1:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 6 || roomNum == 10 || roomNum == 18 || roomNum == 21)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 5 || roomNum == 6 || roomNum == 18 || roomNum == 21)));
         // Fire Temple
         case SCENE_HIDAN:
             return (!(!isMQ && enemiesToExcludeClearRooms && roomNum == 15) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 15 || roomNum == 17 || roomNum == 18)));
         // Water Temple
         case SCENE_MIZUSIN:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 13 || roomNum == 18 || roomNum == 19)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 13 || roomNum == 18)));
         // Spirit Temple
         case SCENE_JYASINZOU:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 10 || roomNum == 17 || roomNum == 20)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 2 || roomNum == 4 || roomNum == 10 || roomNum == 15 || roomNum == 19 || roomNum == 20)));
         // Shadow Temple
         case SCENE_HAKADAN:
             return (!(!isMQ && enemiesToExcludeClearRooms && 
                         (roomNum == 1 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 16 || roomNum == 17 || roomNum == 19 || roomNum == 20)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 6 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 20)));
         // Ganon's Castle Trials
         case SCENE_GANONTIKA:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 2 || roomNum == 5 || roomNum == 9)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 0 || roomNum == 2 || roomNum == 5 || roomNum == 9)));
         // Ice Caverns
         case SCENE_ICE_DOUKUTO:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 7)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 3 || roomNum == 7)));
         // Don't allow Dark Link in areas with lava void out zones as it voids out the player as well.
         // Gerudo Training Ground.
         case SCENE_MEN:
             return (!(enemy.id == ACTOR_EN_TORCH2 && roomNum == 6) &&
                     !(!isMQ && enemiesToExcludeTimedRooms && (roomNum == 1 || roomNum == 7)) &&
                     !(!isMQ && enemiesToExcludeClearRooms && (roomNum == 3 || roomNum == 5 || roomNum == 10)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeTimedRooms && (roomNum == 1 || roomNum == 3 || roomNum == 5 || roomNum == 7)) &&
+                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 10));
         // Don't allow certain enemies in Ganon's Tower because they would spawn up on the ceilling,
         // becoming impossible to kill.
         // Ganon's Tower.
