@@ -22,9 +22,9 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
     osSyncPrintf(VT_RST);
     if (gSaveContext.fileNum == 0xFF) {
         Sram_InitDebugSave();
-        gSaveContext.unk_13F6 = gSaveContext.magic;
+        gSaveContext.magicFillTarget = gSaveContext.magic;
         gSaveContext.magic = 0;
-        gSaveContext.unk_13F4 = 0;
+        gSaveContext.magicCapacity = 0;
         gSaveContext.magicLevel = gSaveContext.magic;
     }
     for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
@@ -63,9 +63,9 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
     osSyncPrintf(VT_RST);
     if (gSaveContext.fileNum == 0xFF) {
         Sram_InitDebugSave();
-        gSaveContext.unk_13F6 = gSaveContext.magic;
+        gSaveContext.magicFillTarget = gSaveContext.magic;
         gSaveContext.magic = 0;
-        gSaveContext.unk_13F4 = 0;
+        gSaveContext.magicCapacity = 0;
         gSaveContext.magicLevel = gSaveContext.magic;
     }
     for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {

@@ -479,8 +479,8 @@ void func_80AFD968(EnSkb* this, PlayState* play) {
                     if (this->unk_283 == 0) {
                         if ((this->actor.colChkInfo.damageEffect == 0xD) ||
                             ((this->actor.colChkInfo.damageEffect == 0xE) &&
-                             ((player->swordAnimation >= 4 && player->swordAnimation <= 11) ||
-                              (player->swordAnimation == 20 || player->swordAnimation == 21)))) {
+                             ((player->meleeWeaponAnimation >= 4 && player->meleeWeaponAnimation <= 11) ||
+                              (player->meleeWeaponAnimation == 20 || player->meleeWeaponAnimation == 21)))) {
                             BodyBreak_Alloc(&this->bodyBreak, 2, play);
                             this->unk_283 = 1;
                         }

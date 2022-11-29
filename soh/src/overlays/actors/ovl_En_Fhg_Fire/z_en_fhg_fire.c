@@ -470,7 +470,7 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
         switch (this->work[FHGFIRE_FIRE_MODE]) {
             case FHGFIRE_LIGHT_GREEN:
                 canBottleReflect1 =
-                    ((player->stateFlags1 & 2) &&
+                    ((player->stateFlags1 & PLAYER_STATE1_SWINGING_BOTTLE) &&
                      (ABS((s16)(player->actor.shape.rot.y - (s16)(bossGnd->actor.yawTowardsPlayer + 0x8000))) <
                       0x2000) &&
                      (sqrtf(SQ(dxL) + SQ(dyL) + SQ(dzL)) <= 25.0f))
@@ -510,7 +510,7 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
                                 this->work[FHGFIRE_RETURN_COUNT] = 100;
                             }
 
-                            if (!canBottleReflect2 && (player->swordAnimation >= 24)) {
+                            if (!canBottleReflect2 && (player->meleeWeaponAnimation >= 24)) {
                                 this->actor.speedXZ = 20.0f;
                                 this->work[FHGFIRE_RETURN_COUNT] = 4;
                             } else {
