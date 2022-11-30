@@ -108,7 +108,7 @@ void SaveManager::LoadRandomizerVersion1() {
     if (randomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) > 0) {
         merchantPricesSize += NUM_SCRUBS;
     }
-    if (randomizer->GetRandoSettingValue(RSK_SHOPSANITY) > 0) {
+    if (randomizer->GetRandoSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_OFF) {
         merchantPricesSize += NUM_SHOP_ITEMS;
     }
 
