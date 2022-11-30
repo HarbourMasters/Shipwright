@@ -2831,7 +2831,7 @@ void DrawRandoEditor(bool& open) {
                     "Open - Mido no longer blocks the path to the Deku Tree. Kokiri "
                     "boy no longer blocks the path out of the forest."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeForest", randoForest, 3, RO_FOREST_CLOSED);
+                UIWidgets::EnhancementCombobox("gRandomizeForest", randoForest, RO_FOREST_MAX, RO_FOREST_CLOSED);
 
                 UIWidgets::PaddedSeparator();
 
@@ -2844,7 +2844,7 @@ void DrawRandoEditor(bool& open) {
                     "Open - The gate is always open. The happy mask shop "
                     "will open immediately after obtaining Zelda's letter."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, RO_KAK_GATE_CLOSED);
+                UIWidgets::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, RO_KAK_GATE_MAX, RO_KAK_GATE_CLOSED);
 
                 UIWidgets::PaddedSeparator();
 
@@ -2859,7 +2859,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Open - The Door of Time is permanently open with no requirements."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeDoorOfTime", randoDoorOfTime, 3, RO_DOOROFTIME_CLOSED);
+                UIWidgets::EnhancementCombobox("gRandomizeDoorOfTime", randoDoorOfTime, RO_DOOROFTIME_MAX, RO_DOOROFTIME_CLOSED);
 
                 UIWidgets::PaddedSeparator();
 
@@ -2876,7 +2876,7 @@ void DrawRandoEditor(bool& open) {
                     "Open - King Zora has already mweeped out of the way in both "
                     "time periods. Ruto's Letter is removed from the item pool."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeZorasFountain", randoZorasFountain, 3, RO_ZF_CLOSED);
+                UIWidgets::EnhancementCombobox("gRandomizeZorasFountain", randoZorasFountain, RO_ZF_MAX, RO_ZF_CLOSED);
 
                 UIWidgets::PaddedSeparator();
 
@@ -2907,7 +2907,7 @@ void DrawRandoEditor(bool& open) {
                     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                     ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
                 }    
-                UIWidgets::EnhancementCombobox("gRandomizeStartingAge", randoStartingAge, 3, RO_AGE_CHILD);
+                UIWidgets::EnhancementCombobox("gRandomizeStartingAge", randoStartingAge, RO_AGE_MAX, RO_AGE_CHILD);
                 if (disableRandoStartingAge) {
                     if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
                        ImGui::SetTooltip("%s", disableRandoStartingAgeText);
@@ -2931,7 +2931,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Open - The bridge is repaired from the start."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, 3, RO_GF_NORMAL);
+                UIWidgets::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, RO_GF_MAX, RO_GF_NORMAL);
 
                 UIWidgets::PaddedSeparator();
 
@@ -2958,7 +2958,7 @@ void DrawRandoEditor(bool& open) {
                     "Tokens - Obtain the specified amount of Skulltula tokens."
                 );
 
-                UIWidgets::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, 7, RO_BRIDGE_VANILLA);
+                UIWidgets::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, RO_BRIDGE_MAX, RO_BRIDGE_VANILLA);
                 ImGui::PopItemWidth();
                 switch (CVar_GetS32("gRandomizeRainbowBridge", RO_BRIDGE_VANILLA)) {
                     case RO_BRIDGE_ALWAYS_OPEN:
@@ -3007,7 +3007,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Random Number - A Random number and set of trials will be required."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 3, RO_GANONS_TRIALS_SET_NUMBER);
+                UIWidgets::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, RO_GANONS_TRIALS_MAX, RO_GANONS_TRIALS_SET_NUMBER);
                 ImGui::PopItemWidth();
                 if (CVar_GetS32("gRandomizeGanonTrial", RO_GANONS_TRIALS_SET_NUMBER) == RO_GANONS_TRIALS_SET_NUMBER) {
                     ImGui::Dummy(ImVec2(0.0f, 0.0f));
@@ -3061,7 +3061,7 @@ void DrawRandoEditor(bool& open) {
                     "- Bottom of the Well will be open for adult after playing Song of Storms to the Windmill guy as child.\n"
                     "- Gerudo Training Ground will be open for child after adult has paid to open the gate once."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonsEntrances", randoShuffleDungeonsEntrances, 3, RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonsEntrances", randoShuffleDungeonsEntrances, RO_DUNGEON_ENTRANCE_SHUFFLE_MAX, RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3089,7 +3089,7 @@ void DrawRandoEditor(bool& open) {
                     "- Temple of Time\n"
                     "- Kakariko Potion Shop"
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleInteriorsEntrances", randoShuffleInteriorsEntrances, 3, RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleInteriorsEntrances", randoShuffleInteriorsEntrances, RO_INTERIOR_ENTRANCE_SHUFFLE_MAX, RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3139,7 +3139,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Anywhere - Songs can appear at any location."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, RO_SONG_SHUFFLE_SONG_LOCATIONS);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, RO_SONG_SHUFFLE_MAX, RO_SONG_SHUFFLE_SONG_LOCATIONS);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3157,7 +3157,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "All Tokens - Shuffle all 100 GS tokens."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleTokens", randoTokensanity, 4, RO_TOKENSANITY_OFF);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleTokens", randoTokensanity, RO_TOKENSANITY_MAX, RO_TOKENSANITY_OFF);
 
                 ImGui::Dummy(ImVec2(0,0));
 
@@ -3249,7 +3249,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Random - Vanilla shop items will be shuffled among different shops, and each shop will contain a random number(1-4) of non-vanilla shop items.\n"
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, 7, RO_SHOPSANITY_OFF);
+                UIWidgets::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, RO_SHOPSANITY_MAX, RO_SHOPSANITY_OFF);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3264,7 +3264,7 @@ void DrawRandoEditor(bool& open) {
                     "Expensive - Scrubs will be shuffled and their item will cost the vanilla price.\n"
                     "\n"
                     "Random - Scrubs will be shuffled and their item will cost will be between 0-95 rupees.\n");
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, 4, RO_SCRUBS_OFF);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, RO_SCRUBS_MAX, RO_SCRUBS_OFF);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3291,7 +3291,7 @@ void DrawRandoEditor(bool& open) {
                     "On (no hints) - Salesmen will be included but won't tell you what you'll get.\n"
                     "On (with hints) - Salesmen will be included and you'll know what you're buying."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleMerchants", randoShuffleMerchants, 3, RO_SHUFFLE_MERCHANTS_OFF);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleMerchants", randoShuffleMerchants, RO_SHUFFLE_MERCHANTS_MAX, RO_SHUFFLE_MERCHANTS_OFF);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3346,7 +3346,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Anywhere - Spiritual stones and medallions can appear anywhere."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4, RO_DUNGEON_REWARDS_END_OF_DUNGEON);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, RO_DUNGEON_REWARDS_MAX, RO_DUNGEON_REWARDS_END_OF_DUNGEON);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3365,7 +3365,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Anywhere - Maps & Compasses can appear anywhere in the world."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses, 6, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
+                UIWidgets::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses, RO_DUNGEON_ITEM_LOC_MAX, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3384,7 +3384,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Anywhere - Small Keys can appear anywhere in the world."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeKeysanity", randoShuffleSmallKeys, 6, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
+                UIWidgets::EnhancementCombobox("gRandomizeKeysanity", randoShuffleSmallKeys, RO_DUNGEON_ITEM_LOC_MAX, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3401,7 +3401,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Selection - Hand select which dungeons will have their keys replaced with keyrings."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleKeyRings", randoShuffleKeyRings, 4, RO_KEYRINGS_OFF);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleKeyRings", randoShuffleKeyRings, RO_KEYRINGS_MAX, RO_KEYRINGS_OFF);
                 ImGui::PopItemWidth();
                 switch (CVar_GetS32("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF)) {
                     case RO_KEYRINGS_COUNT:
@@ -3437,7 +3437,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Anywhere - Thieve's Hideout Keys can appear anywhere in the world."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeGerudoKeys", randoShuffleGerudoFortressKeys, 4, RO_GERUDO_KEYS_VANILLA);
+                UIWidgets::EnhancementCombobox("gRandomizeGerudoKeys", randoShuffleGerudoFortressKeys, RO_GERUDO_KEYS_MAX, RO_GERUDO_KEYS_VANILLA);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3456,7 +3456,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Anywhere - Boss Keys can appear anywhere in the world."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeBossKeysanity", randoShuffleBossKeys, 6, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
+                UIWidgets::EnhancementCombobox("gRandomizeBossKeysanity", randoShuffleBossKeys, RO_DUNGEON_ITEM_LOC_MAX, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3483,7 +3483,7 @@ void DrawRandoEditor(bool& open) {
                     "- Dungeons: Complete the specified amount of dungeons. Dungeons are considered complete after stepping in to the blue warp after the boss.\n"
                     "- Tokens: Obtain the specified amount of Skulltula tokens."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 12, RO_GANON_BOSS_KEY_VANILLA);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, RO_GANON_BOSS_KEY_MAX, RO_GANON_BOSS_KEY_VANILLA);
                 ImGui::PopItemWidth();
                 switch (CVar_GetS32("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA)) {
                     case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
@@ -3621,7 +3621,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Minimal - Most excess items are removed."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, RO_ITEM_POOL_BALANCED);
+                UIWidgets::EnhancementCombobox("gRandomizeItemPool", randoItemPool, RO_ITEM_POOL_MAX, RO_ITEM_POOL_BALANCED);
                 UIWidgets::PaddedSeparator();
 
                 // Ice Traps
@@ -3640,7 +3640,7 @@ void DrawRandoEditor(bool& open) {
                     "Onslaught - All junk items will be replaced by Ice Traps, even those "
                     "in the base pool."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, RO_ICE_TRAPS_NORMAL);
+                UIWidgets::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, RO_ICE_TRAPS_MAX, RO_ICE_TRAPS_NORMAL);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3658,7 +3658,7 @@ void DrawRandoEditor(bool& open) {
                     "Need Stone of Agony - Hints are only available after obtaining the Stone of Agony.\n"
                     "\n"
                     "Need Mask of Truth - Hints are only available whilst wearing the Mask of Truth.\n");
-                UIWidgets::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, RO_GOSSIP_STONES_NEED_NOTHING);
+                UIWidgets::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, RO_GOSSIP_STONES_MAX, RO_GOSSIP_STONES_NEED_NOTHING);
                 if (CVar_GetS32("gRandomizeGossipStoneHints", 1) != 0) {
                     // Hint Clarity
                     ImGui::Dummy(ImVec2(0.0f, 0.0f));
@@ -3676,7 +3676,7 @@ void DrawRandoEditor(bool& open) {
                         "Clear - Hints are clearly written and are unique for each item.\n"
                         "Ex: Kokiri Sword > the Kokiri Sword"
                     );
-                    UIWidgets::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, RO_HINT_CLARITY_CLEAR);
+                    UIWidgets::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, RO_HINT_CLARITY_MAX, RO_HINT_CLARITY_CLEAR);
 
                     // Hint Distribution
                     ImGui::Dummy(ImVec2(0.0f, 0.0f));
@@ -3692,7 +3692,7 @@ void DrawRandoEditor(bool& open) {
                         "\n"
                         "Very Strong - Many powerful hints."
                     );
-                    UIWidgets::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, RO_HINT_DIST_BALANCED);
+                    UIWidgets::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, RO_HINT_DIST_MAX, RO_HINT_DIST_BALANCED);
                     ImGui::Unindent();
                 }
 
@@ -3890,7 +3890,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, 2, RO_GENERIC_OFF);
+                UIWidgets::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, RO_LOGIC_MAX, RO_LOGIC_GLITCHLESS);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3955,7 +3955,7 @@ void DrawRandoEditor(bool& open) {
                 // TODO: Show this but disabled when we have options for disabled Comboboxes.
                 if (CVar_GetS32("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) != RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
                     ImGui::Text(Settings::LinksPocketItem.GetName().c_str());
-                    UIWidgets::EnhancementCombobox("gRandomizeLinksPocket", randoLinksPocket, 4, RO_LINKS_POCKET_DUNGEON_REWARD);
+                    UIWidgets::EnhancementCombobox("gRandomizeLinksPocket", randoLinksPocket, RO_LINKS_POCKET_MAX, RO_LINKS_POCKET_DUNGEON_REWARD);
                     UIWidgets::PaddedSeparator();
                 }
 
