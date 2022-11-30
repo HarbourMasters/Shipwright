@@ -25,7 +25,6 @@
 
 std::string otrFileName = "oot.otr";
 std::shared_ptr<Ship::Archive> otrArchive;
-std::shared_ptr<Ship::Archive> musicArchive;
 BinaryWriter* fileWriter;
 std::chrono::steady_clock::time_point fileStart, resStart;
 std::map<std::string, std::vector<char>> files;
@@ -146,11 +145,11 @@ static void ExporterParseArgs(int argc, char* argv[], int& i)
 {
 	std::string arg = argv[i];
 
-	if (arg == "--otrfile") 
+	if (arg == "--otrfile")
     {
 		otrFileName = argv[i + 1];
         i++;
-	}
+    }
 }
 
 static bool ExporterProcessFileMode(ZFileMode fileMode)
