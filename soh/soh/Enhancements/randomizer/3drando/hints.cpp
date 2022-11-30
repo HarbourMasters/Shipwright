@@ -555,13 +555,13 @@ static Text BuildDoorOfTimeText() {
     itemObtained = "$o";
     doorOfTimeText = Hint(CHILD_ALTAR_TEXT_END_DOTOPEN).GetText();
 
-  } else if (OpenDoorOfTime.Is(OPENDOOROFTIME_CLOSED)) {
+  } else if (OpenDoorOfTime.Is(OPENDOOROFTIME_SONGONLY)) {
     itemObtained = "$c";
-    doorOfTimeText = Hint(CHILD_ALTAR_TEXT_END_DOTCLOSED).GetText();
+    doorOfTimeText = Hint(CHILD_ALTAR_TEXT_END_DOTSONGONLY).GetText();
 
-  } else if (OpenDoorOfTime.Is(OPENDOOROFTIME_INTENDED)) {
+  } else if (OpenDoorOfTime.Is(OPENDOOROFTIME_CLOSED)) {
     itemObtained = "$i";
-    doorOfTimeText = Hint(CHILD_ALTAR_TEXT_END_DOTINTENDED).GetText();
+    doorOfTimeText = Hint(CHILD_ALTAR_TEXT_END_DOTCLOSED).GetText();
   }
 
   return Text()+itemObtained+doorOfTimeText;

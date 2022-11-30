@@ -2210,11 +2210,11 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
             msgCtx->msgMode >= MSGMODE_TEXT_BOX_GROWING && msgCtx->msgMode < MSGMODE_TEXT_CLOSING &&
             msgCtx->textBoxType < TEXTBOX_TYPE_NONE_BOTTOM) {
             Message_SetView(&msgCtx->view);
-            func_8009457C(&gfx);
+            Gfx_SetupDL_39Ptr(&gfx);
             Message_DrawTextBox(play, &gfx);
         }
 
-        func_8009457C(&gfx);
+        Gfx_SetupDL_39Ptr(&gfx);
 
         gDPSetAlphaCompare(gfx++, G_AC_NONE);
         gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE,
@@ -2917,7 +2917,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                         // "Recording complete！！！！！！！！！"
                         osSyncPrintf("録音終了！！！！！！！！！  message->info->status=%d \n",
                                      msgCtx->ocarinaStaff->state);
-                        gSaveContext.scarecrowCustomSongSet = true;
+                        gSaveContext.scarecrowLongSongSet = true;
                     }
                     Audio_PlaySoundGeneral(NA_SE_SY_OCARINA_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
@@ -2930,10 +2930,10 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     osSyncPrintf("録音終了！！！！！！！！！録音終了\n");
                     osSyncPrintf(VT_FGCOL(YELLOW));
                     osSyncPrintf("\n====================================================================\n");
-                    memcpy(gSaveContext.scarecrowCustomSong, gScarecrowCustomSongPtr,
-                            sizeof(gSaveContext.scarecrowCustomSong));
-                    for (i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowCustomSong); i++) {
-                        osSyncPrintf("%d, ", gSaveContext.scarecrowCustomSong[i]);
+                    memcpy(gSaveContext.scarecrowLongSong, gScarecrowCustomSongPtr,
+                            sizeof(gSaveContext.scarecrowLongSong));
+                    for (i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowLongSong); i++) {
+                        osSyncPrintf("%d, ", gSaveContext.scarecrowLongSong[i]);
                     }
                     osSyncPrintf(VT_RST);
                     osSyncPrintf("\n====================================================================\n");
@@ -3176,7 +3176,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
 
         if (msgCtx->msgMode >= MSGMODE_OCARINA_PLAYING && msgCtx->msgMode < MSGMODE_TEXT_AWAIT_NEXT &&
             msgCtx->ocarinaAction != OCARINA_ACTION_FREE_PLAY && msgCtx->ocarinaAction != OCARINA_ACTION_CHECK_NOWARP) {
-            func_8009457C(&gfx);
+            Gfx_SetupDL_39Ptr(&gfx);
 
             gDPSetCombineLERP(gfx++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
                               ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
@@ -3310,7 +3310,7 @@ void Message_Draw(PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    watchVar = gSaveContext.scarecrowCustomSongSet;
+    watchVar = gSaveContext.scarecrowLongSongSet;
     Message_DrawDebugVariableChanged(&watchVar, play->state.gfxCtx);
     if (BREG(0) != 0 && play->msgCtx.textId != 0) {
         plusOne = Graph_GfxPlusOne(polyOpaP = POLY_OPA_DISP);

@@ -58,7 +58,7 @@ void EndTitle_DrawFull(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     // Draw the Triforce on Link's left hand
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     Matrix_Mult(mf, MTXMODE_NEW);
     Matrix_Translate(0.0f, 150.0f, 170.0f, MTXMODE_APPLY);
     Matrix_Scale(0.13f, 0.13f, 0.13f, MTXMODE_APPLY);
@@ -83,7 +83,7 @@ void EndTitle_DrawFull(Actor* thisx, PlayState* play) {
         this->ootAlpha += 15;
     }
 
-    OVERLAY_DISP = func_80093F34(OVERLAY_DISP);
+    OVERLAY_DISP = Gfx_SetupDL_64(OVERLAY_DISP);
     if (D_801614B0.a > 0)
         gSPGrayscale(OVERLAY_DISP++, false);
     gDPSetTextureLUT(OVERLAY_DISP++, G_TT_NONE);
@@ -128,7 +128,7 @@ void EndTitle_DrawNintendoLogo(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    OVERLAY_DISP = func_80093F34(OVERLAY_DISP);
+    OVERLAY_DISP = Gfx_SetupDL_64(OVERLAY_DISP);
     gDPSetPrimColor(OVERLAY_DISP++, 0, 0x80, 0, 0, 0, this->endAlpha);
     gSPDisplayList(OVERLAY_DISP++, sPresentedByNintendoDL);
 

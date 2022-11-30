@@ -112,7 +112,7 @@ void EnDyExtra_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->state.frames * 2, 0, 0x20, 0x40, 1,
                                 play->state.frames, play->state.frames * -8, 0x10, 0x10));

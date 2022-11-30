@@ -1515,7 +1515,7 @@ void EnElf_Draw(Actor* thisx, PlayState* play) {
 
             OPEN_DISPS(play->state.gfxCtx);
 
-            func_80094B58(play->state.gfxCtx);
+            Gfx_SetupDL_27Xlu(play->state.gfxCtx);
 
             envAlpha = (this->timer * 50) & 0x1FF;
             envAlpha = (envAlpha > 255) ? 511 - envAlpha : envAlpha;

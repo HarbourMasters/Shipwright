@@ -225,15 +225,24 @@ jobs:
           readme.txt
   build-windows:
     needs: extract-assets
-    runs-on: [self-hosted, Windows, x64]
+    runs-on: windows-latest
     steps:
+    - name: Install dependencies
+      run: |
+        choco install ninja
+        Remove-Item -Path "C:\ProgramData\Chocolatey\bin\ccache.exe" -Force
     - uses: actions/checkout@v3
       with:
         submodules: true
+    - name: ccache
+      uses: dcvz/ccache-action@27b9f33213c0079872f064f6b6ba0233dfa16ba2
+      with:
+        key: ${{ runner.os }}-ccache
     - name: Restore assets
       uses: actions/download-artifact@v3
       with:
         name: assets
+    - uses: ilammy/msvc-dev-cmd@v1
     - name: Setup 7-Zip
       run: |
         "C:\Program Files\7-Zip" >> $env:GITHUB_PATH
@@ -241,7 +250,8 @@ jobs:
       run: |
         7z x assets.zip -aoa
 
-        cmake -S . -B build-windows -G "Visual Studio 17 2022" -T v142 -A x64 -DCMAKE_BUILD_TYPE:STRING=Release
+        set $env:PATH="$env:USERPROFILE/.cargo/bin;$env:PATH"
+        cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
         cmake --build build-windows --target OTRGui --config Release --parallel 10
         cmake --build build-windows --config Release --parallel 10
         cd build-windows

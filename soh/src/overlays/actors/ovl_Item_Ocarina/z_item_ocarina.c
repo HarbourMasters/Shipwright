@@ -175,7 +175,7 @@ void ItemOcarina_StartSoTCutscene(ItemOcarina* this, PlayState* play) {
         } else {
             play->sceneLoadFlag = 0x14;
             play->fadeTransition = 3;
-            gSaveContext.nextTransition = 3;
+            gSaveContext.nextTransitionType = 3;
             play->nextEntranceIndex = 0x050F;
             gSaveContext.nextCutsceneIndex = 0;
         }

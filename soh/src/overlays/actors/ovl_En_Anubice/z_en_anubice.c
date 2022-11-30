@@ -493,7 +493,7 @@ void EnAnubice_PostLimbDraw(struct PlayState* play, s32 limbIndex, Gfx** dList, 
 void EnAnubice_Draw(Actor* thisx, PlayState* play) {
     EnAnubice* this = (EnAnubice*)thisx;
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnAnubice_OverrideLimbDraw,
                       EnAnubice_PostLimbDraw, this);
 }

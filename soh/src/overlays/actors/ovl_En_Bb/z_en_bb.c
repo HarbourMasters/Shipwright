@@ -1299,7 +1299,7 @@ void EnBb_Draw(Actor* thisx, PlayState* play) {
     blureBase2.z = this->maxSpeed * 80.0f;
     if (this->moveMode != BBMOVE_HIDDEN) {
         if (this->actor.params <= ENBB_BLUE) {
-            func_80093D18(play->state.gfxCtx);
+            Gfx_SetupDL_25Opa(play->state.gfxCtx);
             SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, EnBb_PostLimbDraw,
                               this);
 
@@ -1333,7 +1333,7 @@ void EnBb_Draw(Actor* thisx, PlayState* play) {
             Matrix_Translate(0.0f, -40.0f, 0.0f, MTXMODE_APPLY);
         }
         if (this->actor.params != ENBB_WHITE) {
-            func_80093D84(play->state.gfxCtx);
+            Gfx_SetupDL_25Xlu(play->state.gfxCtx);
             gSPSegment(POLY_XLU_DISP++, 0x08,
                        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
                                         ((play->gameplayFrames + (this->flameScrollMod * 10)) *
