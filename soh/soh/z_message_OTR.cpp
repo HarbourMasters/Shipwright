@@ -77,17 +77,17 @@ extern "C" void OTRMessage_Init()
     sGerMessageEntryTablePtr = OTRMessage_LoadTable("text/ger_message_data_static/ger_message_data_static", false);
     sFraMessageEntryTablePtr = OTRMessage_LoadTable("text/fra_message_data_static/fra_message_data_static", false);
 
-	auto file2 = std::static_pointer_cast<Ship::Text>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource("text/staff_message_data_static/staff_message_data_static"));
+    auto file2 = std::static_pointer_cast<Ship::Text>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource("text/staff_message_data_static/staff_message_data_static"));
 
-	sStaffMessageEntryTablePtr = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * file2->messages.size());
+    sStaffMessageEntryTablePtr = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * file2->messages.size());
 
-	for (int i = 0; i < file2->messages.size(); i++)
-	{
-		sStaffMessageEntryTablePtr[i].textId = file2->messages[i].id;
-		sStaffMessageEntryTablePtr[i].typePos = (file2->messages[i].textboxType << 4) | file2->messages[i].textboxYPos;
-		sStaffMessageEntryTablePtr[i].segment = file2->messages[i].msg.c_str();
-		sStaffMessageEntryTablePtr[i].msgSize = file2->messages[i].msg.size();
-	}
+    for (int i = 0; i < file2->messages.size(); i++)
+    {
+	    sStaffMessageEntryTablePtr[i].textId = file2->messages[i].id;
+	    sStaffMessageEntryTablePtr[i].typePos = (file2->messages[i].textboxType << 4) | file2->messages[i].textboxYPos;
+	    sStaffMessageEntryTablePtr[i].segment = file2->messages[i].msg.c_str();
+	    sStaffMessageEntryTablePtr[i].msgSize = file2->messages[i].msg.size();
+    }
 
     CustomMessageManager::Instance->AddCustomMessageTable(customMessageTableID);
     CustomMessageManager::Instance->CreateGetItemMessage(
