@@ -10665,7 +10665,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
         func_80835F44(play, this, ITEM_NONE); // Ensures the bottle is put away in the case that another empty bottle is equipped
     } // End of code for "Item Use From Inventory" enhancement
 
-    if ((this->heldItemActionParam == PLAYER_AP_STICK) && (this->unk_860 != 0)) {
+    if ((this->heldItemActionParam == PLAYER_IA_STICK) && (this->unk_860 != 0)) {
         func_80848A04(play, this);
     } else if ((this->heldItemActionParam == PLAYER_AP_FISHING_POLE) && (this->unk_860 < 0)) {
         this->unk_860++;
