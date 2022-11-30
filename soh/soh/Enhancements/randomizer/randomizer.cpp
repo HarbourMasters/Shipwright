@@ -2787,6 +2787,7 @@ void DrawRandoEditor(bool& open) {
 
     ImGui::Text("Seed");
     ImGui::InputText("##RandomizerSeed", seedInputBuffer, MAX_SEED_BUFFER_SIZE, ImGuiInputTextFlags_None);
+    UIWidgets::Tooltip("Leaving this field blank will use a random seed value automatically");
 
     ImGui::SameLine();
     if (ImGui::Button("New Seed")) {
