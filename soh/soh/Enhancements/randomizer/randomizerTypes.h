@@ -1085,10 +1085,10 @@ typedef enum RandoOption {
   RO_FOREST_CLOSED_DEKU,
   RO_FOREST_OPEN,
 
-  //Door of Time settings (open, song only, closed)
-  RO_DOOROFTIME_OPEN = 0,
+  //Door of Time settings (closed, song only, open)
+  RO_DOOROFTIME_CLOSED = 0,
   RO_DOOROFTIME_SONGONLY,
-  RO_DOOROFTIME_CLOSED,
+  RO_DOOROFTIME_OPEN,
   
   //Zora's Fountain settings (closed, closed as child, open)
   RO_ZF_CLOSED = 0,
@@ -1105,9 +1105,13 @@ typedef enum RandoOption {
   RO_GF_FAST,
   RO_GF_OPEN,
 
+  //Kakariko Gate settings (closed/open)
+  RO_KAK_GATE_CLOSED = 0,
+  RO_KAK_GATE_OPEN,
+
   //Rainbow Bridge settings (always open, vanilla, stones, medallions, dungeon rewards, dungeons, tokens)
-  RO_BRIDGE_VANILLA = 0,
-  RO_BRIDGE_ALWAYS_OPEN,
+  RO_BRIDGE_ALWAYS_OPEN = 0,
+  RO_BRIDGE_VANILLA,
   RO_BRIDGE_STONES,
   RO_BRIDGE_MEDALLIONS,
   RO_BRIDGE_DUNGEON_REWARDS,
@@ -1128,11 +1132,6 @@ typedef enum RandoOption {
   RO_SCRUBS_AFFORDABLE,
   RO_SCRUBS_EXPENSIVE,
   RO_SCRUBS_RANDOM,
-
-  //Shuffle Merchants settings (off, on w/o hints, on w/hints)
-  RO_MERCHANTS_OFF = 0,
-  RO_MERCHANTS_ON_NO_HINTS,
-  RO_MERCHANTS_ON_WITH_HINTS,
 
   //Ammo drop settings (on, "on+bombchu", off)
   RO_AMMO_DROPS_ON = 0,

@@ -700,7 +700,7 @@ void EnEiyer_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     if (this->actionFunc != EnEiyer_Dead) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
         gSPSegment(POLY_OPA_DISP++, 0x08, &D_80116280[2]);
         gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, 255);
@@ -708,7 +708,7 @@ void EnEiyer_Draw(Actor* thisx, PlayState* play) {
         POLY_OPA_DISP = SkelAnime_Draw(play, this->skelanime.skeleton, this->skelanime.jointTable,
                                        EnEiyer_OverrideLimbDraw, NULL, this, POLY_OPA_DISP);
     } else {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08, D_80116280);
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, this->actor.shape.shadowAlpha);
 

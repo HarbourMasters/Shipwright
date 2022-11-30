@@ -366,7 +366,7 @@ void EnBom_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     if (thisx->params == BOMB_BODY) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         Matrix_ReplaceRotation(&play->billboardMtxF);
         func_8002EBCC(thisx, play, 0);
 

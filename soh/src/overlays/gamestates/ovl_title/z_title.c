@@ -24,7 +24,7 @@ void Title_PrintBuildInfo(Gfx** gfxp) {
     GfxPrint printer;
 
     g = *gfxp;
-    g = func_8009411C(g);
+    g = Gfx_SetupDL_28(g);
     //printer = alloca(sizeof(GfxPrint));
     GfxPrint_Init(&printer);
     GfxPrint_Open(&printer, g);
@@ -199,14 +199,14 @@ void Title_Draw(TitleContext* this) {
     func_8002EABC(&v1, &v2, &v3, this->state.gfxCtx);
     gSPSetLights1(POLY_OPA_DISP++, sTitleLights);
     Title_SetupView(this, 0, 150.0, 300.0);
-    func_80093D18(this->state.gfxCtx);
+    Gfx_SetupDL_25Opa(this->state.gfxCtx);
     Matrix_Translate(-53.0, -5.0, 0, MTXMODE_NEW);
     Matrix_Scale(1.0, 1.0, 1.0, MTXMODE_APPLY);
     Matrix_RotateZYX(0, sTitleRotY, 0, MTXMODE_APPLY);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx), G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, gNintendo64LogoDL);
-    func_800944C4(this->state.gfxCtx);
+    Gfx_SetupDL_39Opa(this->state.gfxCtx);
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetCycleType(POLY_OPA_DISP++, G_CYC_2CYCLE);
     gDPSetRenderMode(POLY_OPA_DISP++, G_RM_XLU_SURF2, G_RM_OPA_CI | CVG_DST_WRAP);
@@ -242,7 +242,7 @@ void Title_Main(GameState* thisx) {
 
     gSPSegment(POLY_OPA_DISP++, 0, NULL);
     gSPSegment(POLY_OPA_DISP++, 1, this->staticSegment);
-    func_80095248(this->state.gfxCtx, 0, 0, 0);
+    Gfx_SetupFrame(this->state.gfxCtx, 0, 0, 0);
     Title_Calc(this);
     Title_Draw(this);
 
