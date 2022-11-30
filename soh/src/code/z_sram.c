@@ -473,8 +473,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             GiveLinkRupees(9001);
         }
 
-        // "Start with" == 0 for Keysanity
-        if(Randomizer_GetSettingValue(RSK_KEYSANITY) == 0) {
+        if(Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
             // TODO: If master quest there are different key counts
             gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] = FOREST_TEMPLE_SMALL_KEY_MAX; // Forest
             gSaveContext.sohStats.dungeonKeys[SCENE_BMORI1]     = FOREST_TEMPLE_SMALL_KEY_MAX; // Forest
