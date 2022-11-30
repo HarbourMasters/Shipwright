@@ -596,9 +596,9 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         if(it.value() == "Closed") {
                             gSaveContext.randoSettings[index].value = RO_FOREST_CLOSED;            
                         } else if(it.value() == "Open") {
-                            gSaveContext.randoSettings[index].value = RO_FOREST_CLOSED_DEKU;
-                        } else if(it.value() == "Closed Deku") {
                             gSaveContext.randoSettings[index].value = RO_FOREST_OPEN;
+                        } else if(it.value() == "Closed Deku") {
+                            gSaveContext.randoSettings[index].value = RO_FOREST_CLOSED_DEKU;
                         }
                         break;
                     case RSK_KAK_GATE:
@@ -2566,7 +2566,7 @@ void GenerateRandomizerImgui() {
 
     std::unordered_map<RandomizerSettingKey, u8> cvarSettings;
     cvarSettings[RSK_LOGIC_RULES] = CVar_GetS32("gRandomizeLogicRules", 0);
-    cvarSettings[RSK_FOREST] = CVar_GetS32("gRandomizeForest", 0);
+    cvarSettings[RSK_FOREST] = CVar_GetS32("gRandomizeForest", RO_FOREST_CLOSED);
     cvarSettings[RSK_KAK_GATE] = CVar_GetS32("gRandomizeKakarikoGate", RO_KAK_GATE_CLOSED);
     cvarSettings[RSK_DOOR_OF_TIME] = CVar_GetS32("gRandomizeDoorOfTime", RO_DOOROFTIME_CLOSED);
     cvarSettings[RSK_ZORAS_FOUNTAIN] = CVar_GetS32("gRandomizeZorasFountain", 0);
@@ -2896,7 +2896,7 @@ void DrawRandoEditor(bool& open) {
                 //Disabled when Forest is set to Closed or under very specific conditions
                 //RANDOTODO: Replace magic number checks with enums
                 bool disableRandoStartingAge =  (CVar_GetS32("gRandomizeLogicRules", 0) == 0) && // glitchless logic
-                ((CVar_GetS32("gRandomizeForest", 0) == 0) || // Closed Forest
+                ((CVar_GetS32("gRandomizeForest", RO_FOREST_CLOSED) == RO_FOREST_CLOSED) ||
                  ((CVar_GetS32("gRandomizeDoorOfTime", RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED) &&
                  (CVar_GetS32("gRandomizeShuffleOcarinas", 0) == 0)));  // ocarinas not shuffled
                     
