@@ -22,10 +22,8 @@
 #include <Utils/MemoryStream.h>
 #include <Utils/BinaryWriter.h>
 #include <bit>
-#include <locale>
 
 std::string otrFileName = "oot.otr";
-std::string customMusicPath = "Custom/Music";
 std::shared_ptr<Ship::Archive> otrArchive;
 std::shared_ptr<Ship::Archive> musicArchive;
 BinaryWriter* fileWriter;
@@ -61,10 +59,6 @@ static void ExporterParseFileMode(const std::string& buildMode, ZFileMode& fileM
 			otrArchive->AddFile(StringHelper::Split(item, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
 		}
 	}
-}
-
-void GenerateMusicPatch() {
-    musicArchive = Ship::Archive::CreateArchive("custom-music.otr", 40000);
 }
 
 static void ExporterProgramEnd()
@@ -134,65 +128,12 @@ static void ExporterProgramEnd()
 					printf("otrArchive->AddFile(%s)\n", StringHelper::Split(afterPath, "Extract/")[1].c_str());
 					otrArchive->AddFile(StringHelper::Split(afterPath, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
 				}
-			} else if (splitPath.size() >= 2) {
-                std::string extension = splitPath.at(splitPath.size() - 1);
-                splitPath.pop_back();
-                std::string afterPath = std::accumulate(splitPath.begin(), splitPath.end(), std::string(""));
-                if (extension == "otf" || extension == "ttf" || extension == "png") {
-                    auto fileData = File::ReadAllBytes(item);
-                    printf("otrArchive->AddFile(%s)\n", StringHelper::Split(item, "Extract/")[1].c_str());
-                    otrArchive->AddFile(StringHelper::Split(item, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
-                }
-            } else {
-                auto fileData = File::ReadAllBytes(item);
-                printf("otrArchive->AddFile(%s)\n", StringHelper::Split(item, "Extract/")[1].c_str());
-                otrArchive->AddFile(StringHelper::Split(item, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
-            }
-		}
+			}
 
-        // Add Custom Music if the path exists.
-        if (std::filesystem::exists(customMusicPath) && !std::filesystem::exists("custom-music.otr")) {
-            auto lst = Directory::ListFiles(customMusicPath);
-            GenerateMusicPatch();
-            for (auto item : lst) {
-                std::vector<std::string> splitPath = StringHelper::Split(item, ".");
-                if (splitPath.size() >= 2) {
-                    std::string extension = splitPath.at(splitPath.size() - 1);
-                    splitPath.pop_back();
-                    std::string afterPath = std::accumulate(splitPath.begin(), splitPath.end(), std::string(""));
-                    if (extension == "seq" && std::filesystem::exists(afterPath + ".meta")) {
-                        uint8_t fontIdx;
-                        std::ifstream metaFile(afterPath + ".meta");
-                        std::string metaName;
-                        if (std::getline(metaFile, metaName)) {
-                            auto tmp = StringHelper::Split(afterPath, "/");
-                            StringHelper::ReplaceOriginal(metaName, "/", "|");
-                            tmp[tmp.size() - 1] = metaName;
-                            afterPath = std::accumulate(tmp.begin(), tmp.end(), std::string(),
-                                [](std::string lhs, const std::string &rhs) {
-                                    return lhs.empty() ? rhs : lhs + '/' + rhs;
-                                });
-                        }
-                        std::string metaFontIdx;
-                        if (std::getline(metaFile, metaFontIdx)) {
-                            fontIdx = stoi(metaFontIdx, nullptr, 16);
-                        }
-                        std::string type;
-                        if (!std::getline(metaFile, type)) {
-                            type = "bgm";
-                        }
-                        afterPath += ("_" + type);
-                        std::locale loc;
-                        for (int i = 0; i < type.length(); i++) {
-                            type[i] = std::tolower(type[i], loc);
-                        }
-                        auto fileData = OTRExporter_Audio::BuildAssetSequence(item, fontIdx, type);
-                        printf("musicArchive->AddFile(%s)\n", afterPath.c_str());
-                        musicArchive->AddFile(afterPath, (uintptr_t)fileData.data(), fileData.size());
-                    }
-                }
-            }
-        }
+			auto fileData = File::ReadAllBytes(item);
+			printf("otrArchive->AddFile(%s)\n", StringHelper::Split(item, "Extract/")[1].c_str());
+			otrArchive->AddFile(StringHelper::Split(item, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
+		}
 
 		//otrArchive->AddFile("Audiobank", (uintptr_t)Globals::Instance->GetBaseromFile("Audiobank").data(), Globals::Instance->GetBaseromFile("Audiobank").size());
 		//otrArchive->AddFile("Audioseq", (uintptr_t)Globals::Instance->GetBaseromFile("Audioseq").data(), Globals::Instance->GetBaseromFile("Audioseq").size());
@@ -205,14 +146,11 @@ static void ExporterParseArgs(int argc, char* argv[], int& i)
 {
 	std::string arg = argv[i];
 
-	if (arg == "--otrfile") {
+	if (arg == "--otrfile") 
+    {
 		otrFileName = argv[i + 1];
+        i++;
 	}
-
-    if (arg == "--custom-music") {
-        customMusicPath = argv[i + 1];
-    }
-    i++;
 }
 
 static bool ExporterProcessFileMode(ZFileMode fileMode)
