@@ -102,7 +102,7 @@ bool ItemUseFromInventory_IsValidItemForUse(PlayState* play) {
     // To use an item from within inventory, Link must not be in any of the following states
     if (this->swordState != 0 ||                // Swinging sword
         this->stateFlags1 & PLAYER_STATE1_0  || // Transitioning scenes
-        this->stateFlags1 & PLAYER_STATE1_1  || // Swinging a bottle
+        this->stateFlags1 & PLAYER_STATE1_SWINGING_BOTTLE  ||
         this->stateFlags1 & PLAYER_STATE1_6  || // Talking to NPC/reading a sign
         this->stateFlags1 & PLAYER_STATE1_10 || // Getting an item/opening a chest
         this->stateFlags1 & PLAYER_STATE1_11 || // Carrying an object (i.e. rock/bomb)
@@ -121,7 +121,7 @@ bool ItemUseFromInventory_IsValidItemForUse(PlayState* play) {
         this->stateFlags1 & PLAYER_STATE1_29 || // Busy in various other ways
         
         this->stateFlags2 & PLAYER_STATE2_6  || // Pushing a block?
-        this->stateFlags2 & PLAYER_STATE2_18 || // In a crawlspace
+        this->stateFlags2 & PLAYER_STATE2_CRAWLING ||
         
         this->stateFlags3 & PLAYER_STATE3_1  ){ // Jumpslashing
         return false;
@@ -151,10 +151,10 @@ bool ItemUseFromInventory_IsValidItemForUse(PlayState* play) {
             interfaceCtx->restrictions.all        == 0 && cursorSlot == SLOT_BOMB         && AMMO(ITEM_BOMB)    > 0 ||
             interfaceCtx->restrictions.all        == 0 && cursorSlot == SLOT_BOMBCHU      && AMMO(ITEM_BOMBCHU) > 0 ||
             interfaceCtx->restrictions.all        == 0 && cursorSlot == SLOT_BEAN         && AMMO(ITEM_BEAN)    > 0 ||
-            interfaceCtx->restrictions.all        == 0 && cursorSlot == SLOT_LENS         && gSaveContext.magicAcquired && gSaveContext.magic >=  1 ||
-            interfaceCtx->restrictions.dinsNayrus == 0 && cursorSlot == SLOT_DINS_FIRE    && gSaveContext.magicAcquired && gSaveContext.magic >= 12 ||
-            interfaceCtx->restrictions.dinsNayrus == 0 && cursorSlot == SLOT_NAYRUS_LOVE  && gSaveContext.magicAcquired && gSaveContext.magic >= 24 ||
-            interfaceCtx->restrictions.farores    == 0 && cursorSlot == SLOT_FARORES_WIND && gSaveContext.magicAcquired && gSaveContext.magic >= 12 ){
+            interfaceCtx->restrictions.all        == 0 && cursorSlot == SLOT_LENS         && gSaveContext.isMagicAcquired && gSaveContext.magic >=  1 ||
+            interfaceCtx->restrictions.dinsNayrus == 0 && cursorSlot == SLOT_DINS_FIRE    && gSaveContext.isMagicAcquired && gSaveContext.magic >= 12 ||
+            interfaceCtx->restrictions.dinsNayrus == 0 && cursorSlot == SLOT_NAYRUS_LOVE  && gSaveContext.isMagicAcquired && gSaveContext.magic >= 24 ||
+            interfaceCtx->restrictions.farores    == 0 && cursorSlot == SLOT_FARORES_WIND && gSaveContext.isMagicAcquired && gSaveContext.magic >= 12 ){
 
             return true;
         }

@@ -23,7 +23,7 @@
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/Enhancements/debugconsole.h"
-#include "soh/Enhancements/item_use_from_inventory.h"
+//#include "soh/Enhancements/item_use_from_inventory.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 typedef enum {
@@ -10650,7 +10650,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
        itemWasUsedFromInventory = false;
     }
     // If we used a bottle from inventory AND Link is in the "swinging a bottle" state
-    if (bottleWasUsedFromInventory && (this->stateFlags1 & PLAYER_STATE1_1)) {
+    if (bottleWasUsedFromInventory && (this->stateFlags1 & PLAYER_STATE1_SWINGING_BOTTLE)) {
        swingingBottleFromInventory = true; 
        // If we interrupt the bottle swing by equipping over C-Left while it was in use, then stop everything here
        if (gSaveContext.equips.buttonItems[1] != inventoryUsedItem) {
@@ -10660,12 +10660,12 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     }
     // If we used a bottle from inventory AND Link is no longer swinging it,
     // then update the inventory and restore the previous C-Left equip
-    if (swingingBottleFromInventory && !(this->stateFlags1 & PLAYER_STATE1_1)) {
+    if (swingingBottleFromInventory && !(this->stateFlags1 & PLAYER_STATE1_SWINGING_BOTTLE)) {
         ItemUseFromInventory_UpdateBottleSlot(ITEM_BOTTLE);
         func_80835F44(play, this, ITEM_NONE); // Ensures the bottle is put away in the case that another empty bottle is equipped
     } // End of code for "Item Use From Inventory" enhancement
 
-    if ((this->heldItemActionParam == PLAYER_IA_STICK) && (this->unk_860 != 0)) {
+    if ((this->heldItemAction == PLAYER_IA_STICK) && (this->unk_860 != 0)) {
         func_80848A04(play, this);
     } else if ((this->heldItemAction == PLAYER_IA_FISHING_POLE) && (this->unk_860 < 0)) {
         this->unk_860++;
