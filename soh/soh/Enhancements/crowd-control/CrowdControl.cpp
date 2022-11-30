@@ -485,8 +485,9 @@ bool CrowdControl::SpawnEnemy(std::string effectId) {
         // Don't allow Arwings in certain areas because they cause issues.
         // Locations: King dodongo room, Morpha room, Twinrova room, Ganondorf room, Fishing pond, Ganon's room
         // TODO: Swap this to disabling the option in CC options menu instead.
-        if (gPlayState->sceneNum == 18 || gPlayState->sceneNum == 22 || gPlayState->sceneNum == 23 ||
-            gPlayState->sceneNum == 25 || gPlayState->sceneNum == 73 || gPlayState->sceneNum == 79) {
+        if (gPlayState->sceneNum == SCENE_DDAN_BOSS || gPlayState->sceneNum == SCENE_MIZUSIN_BS ||
+            gPlayState->sceneNum == SCENE_JYASINBOSS || gPlayState->sceneNum == SCENE_GANON_BOSS ||
+            gPlayState->sceneNum == SCENE_TURIBORI || gPlayState->sceneNum == SCENE_GANON_DEMO) {
             return 0;
         }
         enemyId = 315;
