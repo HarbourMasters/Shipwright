@@ -11,10 +11,10 @@ finish-args:
   - --filesystem=home
   - --device=all
 modules: 
-  - "flatpak-modules/glew/glew.json"
-  - "flatpak-modules/glfw/glfw.json"
-  - "flatpak-modules/glu/glu-9.json"
-  - "flatpak-modules/ImageMagick/ImageMagick.json"
+  - "modules/glew/glew.json"
+  - "modules/glfw/glfw.json"
+  - "modules/glu/glu-9.json"
+  - "modules/ImageMagick/ImageMagick.json"
   - name: "soh"
     buildsystem: "simple"
     build-commands:
