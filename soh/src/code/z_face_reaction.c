@@ -66,7 +66,7 @@ u16 sReactionTextIds[][PLAYER_MASK_MAX] = {
 u16 Text_GetFaceReaction(PlayState* play, u32 reactionSet) {
     u8 currentMask = Player_GetMask(play);
 
-    if (CVar_GetS32("gMMBunnyHood", 0) && currentMask == 4) {
+    if (CVar_GetS32("gMMBunnyHood", 0) && currentMask == PLAYER_MASK_BUNNY) {
         return 0;
     } else {
         return sReactionTextIds[reactionSet][currentMask];
