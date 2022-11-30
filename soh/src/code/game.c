@@ -381,8 +381,8 @@ void GameState_Update(GameState* gameState) {
 
     // Inf Magic
     if (CVar_GetS32("gInfiniteMagic", 0) != 0) {
-        if (gSaveContext.magicAcquired && gSaveContext.magic != (gSaveContext.doubleMagic + 1) * 0x30) {
-            gSaveContext.magic = (gSaveContext.doubleMagic + 1) * 0x30;
+        if (gSaveContext.isMagicAcquired && gSaveContext.magic != (gSaveContext.isDoubleMagicAcquired + 1) * 0x30) {
+            gSaveContext.magic = (gSaveContext.isDoubleMagicAcquired + 1) * 0x30;
         }
     }
 
@@ -440,7 +440,7 @@ void GameState_Update(GameState* gameState) {
             gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
             gPlayState->sceneLoadFlag = 0x14;
             gPlayState->fadeTransition = 11;
-            gSaveContext.nextTransition = 11;
+            gSaveContext.nextTransitionType = 11;
             warped = true;
             if (gPlayState->linkAgeOnLoad == 1) {
                 gPlayState->linkAgeOnLoad = 0;
@@ -451,7 +451,7 @@ void GameState_Update(GameState* gameState) {
     }
 
     if (gPlayState) {
-        if (warped && gPlayState->sceneLoadFlag != 0x0014 && gSaveContext.nextTransition == 255) {
+        if (warped && gPlayState->sceneLoadFlag != 0x0014 && gSaveContext.nextTransitionType == 255) {
             GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
             GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
             warped = false;

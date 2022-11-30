@@ -270,6 +270,6 @@ void EnHorseZelda_Draw(Actor* thisx, PlayState* play) {
     EnHorseZelda* this = (EnHorseZelda*)thisx;
 
     func_80A6DE38(this, play);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     func_800A6330(&this->actor, play, &this->skin, EnHorseZelda_PostDraw, true);
 }

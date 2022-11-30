@@ -470,7 +470,7 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
         switch (this->work[FHGFIRE_FIRE_MODE]) {
             case FHGFIRE_LIGHT_GREEN:
                 canBottleReflect1 =
-                    ((player->stateFlags1 & 2) &&
+                    ((player->stateFlags1 & PLAYER_STATE1_SWINGING_BOTTLE) &&
                      (ABS((s16)(player->actor.shape.rot.y - (s16)(bossGnd->actor.yawTowardsPlayer + 0x8000))) <
                       0x2000) &&
                      (sqrtf(SQ(dxL) + SQ(dyL) + SQ(dzL)) <= 25.0f))
@@ -510,7 +510,7 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
                                 this->work[FHGFIRE_RETURN_COUNT] = 100;
                             }
 
-                            if (!canBottleReflect2 && (player->swordAnimation >= 24)) {
+                            if (!canBottleReflect2 && (player->meleeWeaponAnimation >= 24)) {
                                 this->actor.speedXZ = 20.0f;
                                 this->work[FHGFIRE_RETURN_COUNT] = 4;
                             } else {
@@ -703,7 +703,7 @@ void EnFhgFire_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     if (this->actor.params == FHGFIRE_LIGHTNING_BURST) {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, (s8)this->fwork[FHGFIRE_ALPHA]);
         gDPSetEnvColor(POLY_XLU_DISP++, 165, 255, 75, 0);
         gDPPipeSync(POLY_XLU_DISP++);
@@ -713,7 +713,7 @@ void EnFhgFire_Draw(Actor* thisx, PlayState* play) {
     } else if ((this->actor.params == FHGFIRE_SPEAR_LIGHT) || (this->actor.params == FHGFIRE_ENERGY_BALL)) {
         osSyncPrintf("yari hikari draw 1\n");
         Matrix_ReplaceRotation(&play->billboardMtxF);
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, (s8)this->fwork[FHGFIRE_ALPHA]);
 
         if (this->work[FHGFIRE_FIRE_MODE] > FHGFIRE_LIGHT_GREEN) {
@@ -728,7 +728,7 @@ void EnFhgFire_Draw(Actor* thisx, PlayState* play) {
         gSPDisplayList(POLY_XLU_DISP++, gPhantomEnergyBallDL);
     } else if ((this->actor.params == FHGFIRE_WARP_EMERGE) || (this->actor.params == FHGFIRE_WARP_RETREAT) ||
                (this->actor.params == FHGFIRE_WARP_DEATH)) {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, (u8)this->fwork[FHGFIRE_WARP_ALPHA]);
         gDPSetEnvColor(POLY_XLU_DISP++, 90, 50, 95, (s8)(this->fwork[FHGFIRE_WARP_ALPHA] * 0.5f));
         gDPPipeSync(POLY_XLU_DISP++);
@@ -743,7 +743,7 @@ void EnFhgFire_Draw(Actor* thisx, PlayState* play) {
     } else {
         osSyncPrintf("FF DRAW 1\n");
         Matrix_Translate(0.0f, -100.0f, 0.0f, MTXMODE_APPLY);
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, (s8)this->fwork[FHGFIRE_ALPHA]);
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 255, 30, 0);
         gDPPipeSync(POLY_XLU_DISP++);

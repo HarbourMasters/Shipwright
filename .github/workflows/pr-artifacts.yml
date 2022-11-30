@@ -11,7 +11,31 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.event == 'pull_request' }}
     steps:
-      - id: 'get-info'
+      - id: 'pr-number'
+        uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: |
+            const {owner, repo} = context.repo;
+            const pullHeadSHA = '${{github.event.workflow_run.head_sha}}';
+            const pullUserId = ${{github.event.sender.id}};
+            const prNumber = await (async () => {
+              const pulls = await github.rest.pulls.list({owner, repo});
+              for await (const {data} of github.paginate.iterator(pulls)) {
+                for (const pull of data) {
+                  if (pull.head.sha === pullHeadSHA && pull.user.id === pullUserId) {
+                    return pull.number;
+                  }
+                }
+              }
+            })();
+
+            if (!prNumber) {
+              return core.error(`No matching pull request found`);
+            }
+
+            return prNumber;
+      - id: 'artifacts-text'
         uses: actions/github-script@v6
         with:
           result-encoding: string
@@ -25,13 +49,13 @@ jobs:
             return allArtifacts.data.artifacts.reduce((acc, item) => {
               if (item.name === "assets") return acc;
               acc += `
-              - [${item.name}](${context.payload.repository.html_url}/suites/${context.payload.workflow_run.check_suite_id}/artifacts/${item.id})`;
+              - [${item.name}.zip](https://nightly.link/${context.repo.owner}/${context.repo.repo}/actions/artifacts/${item.id}.zip)`;
               return acc;
             }, '### Build Artifacts');
       - id: 'add-to-pr'
         uses: garrettjoecox/pr-section@3.1.0
         with:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
-          pr-number: ${{ github.event.workflow_run.pull_requests[0].number }}
+          pr-number: ${{ steps.pr-number.outputs.result }}
           section-name: 'artifacts'
-          section-value: '${{ steps.get-info.outputs.result }}'
+          section-value: '${{ steps.artifacts-text.outputs.result }}'

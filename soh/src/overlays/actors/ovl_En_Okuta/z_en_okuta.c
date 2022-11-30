@@ -750,7 +750,7 @@ void EnOkuta_Draw(Actor* thisx, PlayState* play) {
     EnOkuta* this = (EnOkuta*)thisx;
     s32 pad;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if (this->actor.params == 0) {
         SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnOkuta_OverrideLimbDraw,
@@ -759,7 +759,7 @@ void EnOkuta_Draw(Actor* thisx, PlayState* play) {
         OPEN_DISPS(play->state.gfxCtx);
 
         if (CVar_GetS32("gNewDrops", 0) != 0) {
-            func_80093D18(play->state.gfxCtx);
+            Gfx_SetupDL_25Opa(play->state.gfxCtx);
             gSPSegment(POLY_OPA_DISP++, 0x08,
                     Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 6),
                                         1 * (play->state.frames * 6), 32, 32, 1, 1 * (play->state.frames * 6),

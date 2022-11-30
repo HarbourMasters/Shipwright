@@ -25,7 +25,7 @@ void func_80803C5C(OpeningContext* this) {
 void Opening_Main(GameState* thisx) {
     OpeningContext* this = (OpeningContext*)thisx;
 
-    func_80095248(this->state.gfxCtx, 0, 0, 0);
+    Gfx_SetupFrame(this->state.gfxCtx, 0, 0, 0);
     Opening_SetupTitleScreen(this);
     func_80803C5C(this);
 }
