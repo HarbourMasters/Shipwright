@@ -62,7 +62,7 @@ void OceffStorm_Destroy(Actor* thisx, PlayState* play) {
 
     func_800876C8(play);
     if (gSaveContext.nayrusLoveTimer != 0) {
-        player->stateFlags3 |= 0x40;
+        player->stateFlags3 |= PLAYER_STATE3_RESTORE_NAYRUS_LOVE;
     }
 }
 
@@ -131,7 +131,7 @@ void OceffStorm_Draw2(Actor* thisx, PlayState* play) {
 
     gDPPipeSync(POLY_XLU_DISP++);
 
-    POLY_XLU_DISP = func_80093F34(POLY_XLU_DISP);
+    POLY_XLU_DISP = Gfx_SetupDL_64(POLY_XLU_DISP);
     gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_NOISE);
     gDPSetColorDither(POLY_XLU_DISP++, G_CD_NOISE);
     gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 200, 200, 150, this->primColorAlpha);
@@ -152,7 +152,7 @@ void OceffStorm_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 200, 255);
     gDPSetEnvColor(POLY_XLU_DISP++, 150, 150, 0, 128);

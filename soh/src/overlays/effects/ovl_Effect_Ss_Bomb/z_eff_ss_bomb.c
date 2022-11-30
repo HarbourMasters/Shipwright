@@ -69,7 +69,7 @@ void EffectSsBomb_Draw(PlayState* play, u32 index, EffectSs* this) {
         gSPMatrix(POLY_XLU_DISP++, mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(explosionTextures[this->rTexIdx]));
         gDPPipeSync(POLY_XLU_DISP++);
-        func_80094C50(gfxCtx);
+        Gfx_SetupDL_61Xlu(gfxCtx);
         color = this->life * 12.75f;
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, color, color, color, color);
         gDPPipeSync(POLY_XLU_DISP++);

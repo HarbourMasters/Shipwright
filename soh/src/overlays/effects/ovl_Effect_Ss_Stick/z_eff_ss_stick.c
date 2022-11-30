@@ -66,7 +66,7 @@ void EffectSsStick_Draw(PlayState* play, u32 index, EffectSs* this) {
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    func_80093D18(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x06, play->objectCtx.status[this->rObjBankIdx].segment);
     gSPSegment(POLY_OPA_DISP++, 0x0C, gCullBackDList);
     gSPDisplayList(POLY_OPA_DISP++, this->gfx);

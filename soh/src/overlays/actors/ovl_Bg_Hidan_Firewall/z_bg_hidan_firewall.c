@@ -204,7 +204,7 @@ void BgHidanFirewall_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x14);
+    POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x14);
 
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sFireballTexs[this->unk_150]));
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x01, 255, 255, 0, 150);

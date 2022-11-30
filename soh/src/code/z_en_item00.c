@@ -1363,7 +1363,7 @@ void EnItem00_DrawRupee(EnItem00* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     func_8002EBCC(&this->actor, play, 0);
 
     if (this->actor.params <= ITEM00_RUPEE_RED) {
@@ -1407,7 +1407,7 @@ void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
             texIndex -= 3;
         }
 
-        POLY_OPA_DISP = func_800946E4(POLY_OPA_DISP);
+        POLY_OPA_DISP = Gfx_SetupDL_66(POLY_OPA_DISP);
 
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sItemDropTex[texIndex]));
 
@@ -1427,13 +1427,13 @@ void EnItem00_DrawHeartContainer(EnItem00* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     func_8002EBCC(&this->actor, play, 0);
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, gHeartPieceExteriorDL);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     func_8002ED80(&this->actor, play, 0);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
@@ -1456,7 +1456,7 @@ void EnItem00_DrawHeartPiece(EnItem00* this, PlayState* play) {
 
         OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         func_8002ED80(&this->actor, play, 0);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                 G_MTX_MODELVIEW | G_MTX_LOAD);

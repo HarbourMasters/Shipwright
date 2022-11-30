@@ -303,7 +303,7 @@ void func_80AE7D94(EnRl* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(tex));
     gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(tex));
@@ -352,7 +352,7 @@ void func_80AE7FDC(EnRl* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(tex));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(tex));

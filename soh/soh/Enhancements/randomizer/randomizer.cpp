@@ -603,9 +603,9 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         break;
                     case RSK_KAK_GATE:
                         if(it.value() == "Closed") {
-                            gSaveContext.randoSettings[index].value = RO_GENERIC_OFF;            
+                            gSaveContext.randoSettings[index].value = RO_KAK_GATE_CLOSED;            
                         } else if(it.value() == "Open") {
-                            gSaveContext.randoSettings[index].value = RO_GENERIC_ON;
+                            gSaveContext.randoSettings[index].value = RO_KAK_GATE_OPEN;
                         }
                         break;
                     case RSK_DOOR_OF_TIME:
@@ -1465,7 +1465,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_GERUDO_MEMBERSHIP_CARD:
             return !CHECK_QUEST_ITEM(QUEST_GERUDO_CARD) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_DOUBLE_DEFENSE:
-            return !gSaveContext.doubleDefense ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !gSaveContext.isDoubleDefenseAcquired ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GOLD_SKULLTULA_TOKEN:
             return gSaveContext.inventory.gsTokens < 100 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_PROGRESSIVE_STRENGTH:
@@ -2561,11 +2561,11 @@ void GenerateRandomizerImgui() {
     std::unordered_map<RandomizerSettingKey, u8> cvarSettings;
     cvarSettings[RSK_LOGIC_RULES] = CVar_GetS32("gRandomizeLogicRules", 0);
     cvarSettings[RSK_FOREST] = CVar_GetS32("gRandomizeForest", 0);
-    cvarSettings[RSK_KAK_GATE] = CVar_GetS32("gRandomizeKakarikoGate", 0);
+    cvarSettings[RSK_KAK_GATE] = CVar_GetS32("gRandomizeKakarikoGate", RO_KAK_GATE_CLOSED);
     cvarSettings[RSK_DOOR_OF_TIME] = CVar_GetS32("gRandomizeDoorOfTime", RO_DOOROFTIME_CLOSED);
     cvarSettings[RSK_ZORAS_FOUNTAIN] = CVar_GetS32("gRandomizeZorasFountain", 0);
     cvarSettings[RSK_STARTING_AGE] = CVar_GetS32("gRandomizeStartingAge", 0);
-    cvarSettings[RSK_GERUDO_FORTRESS] = CVar_GetS32("gRandomizeGerudoFortress", 0);
+    cvarSettings[RSK_GERUDO_FORTRESS] = CVar_GetS32("gRandomizeGerudoFortress", RO_GF_NORMAL);
     cvarSettings[RSK_RAINBOW_BRIDGE] = CVar_GetS32("gRandomizeRainbowBridge", 0);
     cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] = CVar_GetS32("gRandomizeStoneCount", 3);
     cvarSettings[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] = CVar_GetS32("gRandomizeMedallionCount", 6);
@@ -2583,7 +2583,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_STARTING_DEKU_SHIELD] = CVar_GetS32("gRandomizeStartingDekuShield", 0);
     cvarSettings[RSK_STARTING_SKULLTULA_TOKEN] = CVar_GetS32("gRandomizeStartingSkulltulaToken", 0);
     cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVar_GetS32("gRandomizeStartingMapsCompasses", 2);
-    cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0);
+    cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON);
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
     cvarSettings[RSK_SHUFFLE_TOKENS] = CVar_GetS32("gRandomizeShuffleTokens", 0);
     cvarSettings[RSK_SHOPSANITY] = CVar_GetS32("gRandomizeShopsanity", 0);
@@ -2603,8 +2603,8 @@ void GenerateRandomizerImgui() {
     
     cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = CVar_GetS32("gRandomizeShuffleGerudoToken", 0);
     cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES] = CVar_GetS32("gRandomizeShuffleFrogSongRupees", 0);
-    cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", 1);
-    cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", 1);
+    cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", RO_ITEM_POOL_BALANCED);
+    cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", RO_ICE_TRAPS_NORMAL);
     cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 1);
     cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", 2);
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 1);
@@ -2652,8 +2652,9 @@ void GenerateRandomizerImgui() {
 
     cvarSettings[RSK_SKULLS_SUNS_SONG] = CVar_GetS32("gRandomizeGsExpectSunsSong", 0);
     // Link's Pocket has to have a dungeon reward if the other rewards are shuffled to end of dungeon.
-    cvarSettings[RSK_LINKS_POCKET] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0) != 0 ? 
-                                        CVar_GetS32("gRandomizeLinksPocket", 0) : 0;
+    cvarSettings[RSK_LINKS_POCKET] = CVar_GetS32("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) != RO_DUNGEON_REWARDS_END_OF_DUNGEON ? 
+                                        CVar_GetS32("gRandomizeLinksPocket", RO_LINKS_POCKET_DUNGEON_REWARD) :
+                                        RO_LINKS_POCKET_DUNGEON_REWARD;
 
     if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
         // If both OTRs are loaded.
@@ -2841,7 +2842,7 @@ void DrawRandoEditor(bool& open) {
                     "Open - The gate is always open. The happy mask shop "
                     "will open immediately after obtaining Zelda's letter."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, RO_GENERIC_DONT_SKIP);
+                UIWidgets::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, RO_KAK_GATE_CLOSED);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3951,7 +3952,7 @@ void DrawRandoEditor(bool& open) {
                 ImGui::BeginChild("ChildStartingEquipment", ImVec2(0, -8));
                 // Don't display this option if Dungeon Rewards are Shuffled to End of Dungeon.
                 // TODO: Show this but disabled when we have options for disabled Comboboxes.
-                if (CVar_GetS32("gRandomizeShuffleDungeonReward", 0) != 0) {
+                if (CVar_GetS32("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) != RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
                     ImGui::Text(Settings::LinksPocketItem.GetName().c_str());
                     UIWidgets::EnhancementCombobox("gRandomizeLinksPocket", randoLinksPocket, 4, RO_LINKS_POCKET_DUNGEON_REWARD);
                     UIWidgets::PaddedSeparator();
