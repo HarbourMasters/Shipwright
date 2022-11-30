@@ -427,7 +427,7 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, PlayState* play, ShopItem* shopI
             this->shelfSlots[i] = NULL;
         } else {
             itemParams = sShopItemReplaceFunc[shopItems->shopItemIndex](shopItems->shopItemIndex);
-            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
+            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_OFF) {
                 ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, i);
                 if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
                     itemParams = shopItemIdentity.enGirlAShopItem;
@@ -447,7 +447,7 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, PlayState* play, ShopItem* shopI
                     shelves->actor.world.pos.y + shopItems->yOffset, shelves->actor.world.pos.z + shopItems->zOffset,
                     shelves->actor.shape.rot.x, shelves->actor.shape.rot.y + sItemShelfRot[i],
                     shelves->actor.shape.rot.z, itemParams);
-                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY)) {
+                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_OFF) {
                     this->shelfSlots[i]->randoSlotIndex = i;
                 }
             }
