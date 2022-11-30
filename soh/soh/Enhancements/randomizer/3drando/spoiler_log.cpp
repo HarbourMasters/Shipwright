@@ -729,10 +729,10 @@ const char* SpoilerLog_Write(int language) {
     auto rootNode = spoilerLog.NewElement("spoiler-log");
     spoilerLog.InsertEndChild(rootNode);
 
-    rootNode->SetAttribute("version", Settings::version.c_str());
-    rootNode->SetAttribute("seed", Settings::seed.c_str());
-
     jsonData.clear();
+
+    jsonData["_version"] = (char*) gBuildVersion;
+    jsonData["_seed"] = Settings::seed;
 
     // Write Hash
     int index = 0;

@@ -517,10 +517,16 @@ void PrintOptionDescription() {
   printf("\x1b[22;0H%s", description.data());
 }
 
-std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations) {
+std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations,
+    std::string seedInput) {
+
     // if a blank seed was entered, make a random one
-    srand(time(NULL));
-    Settings::seed = std::to_string(rand());
+    if (seedInput.empty()) {
+        srand(time(NULL));
+        Settings::seed = std::to_string(rand());
+    } else {
+        Settings::seed = seedInput;
+    }
 
     int ret = Playthrough::Playthrough_Init(std::hash<std::string>{}(Settings::seed), cvarSettings, excludedLocations);
     if (ret < 0) {
