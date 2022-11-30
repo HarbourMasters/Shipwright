@@ -194,8 +194,6 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Reward Count", RSK_RAINBOW_BRIDGE_REWARD_COUNT },
     { "Open Settings:Dungeon Count", RSK_RAINBOW_BRIDGE_DUNGEON_COUNT },
     { "Open Settings:Token Count", RSK_RAINBOW_BRIDGE_TOKEN_COUNT },
-    { "Open Settings:Random Ganon's Trials", RSK_RANDOM_TRIALS },
-    { "Open Settings:Trial Count", RSK_TRIAL_COUNT },
     { "Shuffle Settings:Link's Pocket", RSK_LINKS_POCKET},
     { "Shuffle Settings:Shuffle Gerudo Card", RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD },
     { "Shuffle Settings:Shopsanity", RSK_SHOPSANITY },
@@ -669,7 +667,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_LACS_REWARD_COUNT:
                     case RSK_LACS_DUNGEON_COUNT:
                     case RSK_LACS_TOKEN_COUNT:
-                    case RSK_TRIAL_COUNT:
                     case RSK_BIG_POE_COUNT:
                     case RSK_CUCCO_COUNT:
                     case RSK_STARTING_SKULLTULA_TOKEN:
@@ -708,7 +705,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_COWS:
                     case RSK_SHUFFLE_ADULT_TRADE:
                     case RSK_SHUFFLE_MAGIC_BEANS:
-                    case RSK_RANDOM_TRIALS:
                     case RSK_RANDOM_MQ_DUNGEONS:
                     case RSK_STARTING_DEKU_SHIELD:
                     case RSK_STARTING_KOKIRI_SWORD:
@@ -2578,7 +2574,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = CVar_GetS32("gRandomizeRewardCount", 9);
     cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = CVar_GetS32("gRandomizeDungeonCount", 8);
     cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = CVar_GetS32("gRandomizeTokenCount", 100);
-    cvarSettings[RSK_RANDOM_TRIALS] = CVar_GetS32("gRandomizeGanonTrial", 0);
+    cvarSettings[RSK_GANONS_TRIALS] = CVar_GetS32("gRandomizeGanonTrial", RO_GANONS_TRIALS_SET_NUMBER);
     cvarSettings[RSK_TRIAL_COUNT] = CVar_GetS32("gRandomizeGanonTrialCount", 6);
     cvarSettings[RSK_STARTING_OCARINA] = CVar_GetS32("gRandomizeStartingOcarina", 0);
     cvarSettings[RSK_SHUFFLE_OCARINA] = CVar_GetS32("gRandomizeShuffleOcarinas", 0) ||
@@ -3011,13 +3007,12 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Random Number - A Random number and set of trials will be required."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 3, CVar_GetS32("gRandomizeGanonTrial", 0));
+                UIWidgets::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 3, RO_GANONS_TRIALS_SET_NUMBER);
                 ImGui::PopItemWidth();
-                if (CVar_GetS32("gRandomizeGanonTrial", 0) == 1) {
+                if (CVar_GetS32("gRandomizeGanonTrial", RO_GANONS_TRIALS_SET_NUMBER) == RO_GANONS_TRIALS_SET_NUMBER) {
                     ImGui::Dummy(ImVec2(0.0f, 0.0f));
                     UIWidgets::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
-                                                    "gRandomizeGanonTrialCount", 1, 6, "", 
-                                                    CVar_GetS32("gRandomizeGanonTrialCount", 6), true);
+                                                    "gRandomizeGanonTrialCount", 1, 6, "", 6, true);
                     UIWidgets::InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower.");
                 }
 

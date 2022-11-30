@@ -2537,12 +2537,12 @@ namespace Settings {
     BridgeRewardCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT]);
     BridgeDungeonCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT]);
     BridgeTokenCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT]);
-    if (cvarSettings[RSK_RANDOM_TRIALS] == 2) {
+    if (cvarSettings[RSK_GANONS_TRIALS] == RO_GANONS_TRIALS_RANDOM_NUMBER) {
         RandomGanonsTrials.SetSelectedIndex(1);
     } else {
         RandomGanonsTrials.SetSelectedIndex(0);
     }
-    if (cvarSettings[RSK_RANDOM_TRIALS] == 0) {
+    if (cvarSettings[RSK_GANONS_TRIALS] == RO_GANONS_TRIALS_SKIP) {
         GanonsTrialsCount.SetSelectedIndex(0);
     } else {
         GanonsTrialsCount.SetSelectedIndex(cvarSettings[RSK_TRIAL_COUNT]);
