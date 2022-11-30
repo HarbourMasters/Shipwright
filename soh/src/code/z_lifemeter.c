@@ -395,7 +395,7 @@ void HealthMeter_Draw(PlayState* play) {
     f32 sp144 = interfaceCtx->unk_22A * 0.1f;
     s32 curCombineModeSet = 0;
     u8* curBgImgLoaded = NULL;
-    s32 ddHeartCountMinusOne = gSaveContext.doubleDefense ? totalHeartCount - 1 : -1;
+    s32 ddHeartCountMinusOne = gSaveContext.isDoubleDefenseAcquired ? totalHeartCount - 1 : -1;
     f32 HeartsScale = 0.7f; 
     if (CVar_GetS32("gHeartsCountPosType", 0) != 0) {
         HeartsScale = CVar_GetFloat("gHeartsCountScale", 0.7f);
