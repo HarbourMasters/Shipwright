@@ -370,14 +370,14 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
         int openForest = Randomizer_GetSettingValue(RSK_FOREST);
         switch (openForest) {
-            case 0: // closed
+            case RO_FOREST_CLOSED:
                 break;
-            case 1: // open
+            case RO_FOREST_CLOSED_DEKU:
+                Flags_SetEventChkInf(7);
+                break;
+            case RO_FOREST_OPEN:
                 Flags_SetEventChkInf(7);
                 gSaveContext.eventChkInf[0] |= 0x10;
-                break;
-            case 2: // closed deku
-                Flags_SetEventChkInf(7);
                 break;
         }
 
@@ -471,8 +471,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             GiveLinkRupees(9001);
         }
 
-        // "Start with" == 0 for Keysanity
-        if(Randomizer_GetSettingValue(RSK_KEYSANITY) == 0) {
+        if(Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
             // TODO: If master quest there are different key counts
             gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] = FOREST_TEMPLE_SMALL_KEY_MAX; // Forest
             gSaveContext.sohStats.dungeonKeys[SCENE_BMORI1]     = FOREST_TEMPLE_SMALL_KEY_MAX; // Forest
@@ -501,8 +500,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.inventory.dungeonItems[SCENE_HAKADAN] |= 1; // Shadow
         }
 
-        // "Start with" == 2 for Ganon's Boss Key
-        if(Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY) == 2) {
+        if(Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_STARTWITH) {
             gSaveContext.inventory.dungeonItems[SCENE_GANON] |= 1;
         }
 
