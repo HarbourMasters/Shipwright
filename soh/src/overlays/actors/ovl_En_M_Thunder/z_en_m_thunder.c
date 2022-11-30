@@ -85,7 +85,7 @@ void EnMThunder_Init(Actor* thisx, PlayState* play2) {
     this->unk_1CA = 0;
 
     if (player->stateFlags2 & 0x20000) {
-        if (!gSaveContext.magicAcquired || gSaveContext.unk_13F0 ||
+        if (!gSaveContext.isMagicAcquired || gSaveContext.magicState ||
             (((this->actor.params & 0xFF00) >> 8) &&
              !(func_80087708(play, (this->actor.params & 0xFF00) >> 8, 0)))) {
             Audio_PlaySoundGeneral(NA_SE_IT_ROLLING_CUT, &player->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
@@ -132,7 +132,7 @@ void func_80A9F350(EnMThunder* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (player->stateFlags2 & 0x20000) {
-        if (player->swordAnimation >= 0x18) {
+        if (player->meleeWeaponAnimation >= 0x18) {
             Audio_PlaySoundGeneral(NA_SE_IT_ROLLING_CUT, &player->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
                                    &D_801333E8);
             Audio_PlaySoundGeneral(NA_SE_IT_SWORD_SWING_HARD, &player->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
@@ -158,7 +158,7 @@ void func_80A9F408(EnMThunder* this, PlayState* play) {
 
     if (this->unk_1CA == 0) {
         if (player->unk_858 >= 0.1f) {
-            if ((gSaveContext.unk_13F0) || (((this->actor.params & 0xFF00) >> 8) &&
+            if ((gSaveContext.magicState) || (((this->actor.params & 0xFF00) >> 8) &&
                                             !(func_80087708(play, (this->actor.params & 0xFF00) >> 8, 4)))) {
                 func_80A9F350(this, play);
                 func_80A9EFE0(this, func_80A9F350);
@@ -182,7 +182,7 @@ void func_80A9F408(EnMThunder* this, PlayState* play) {
         }
 
         if (player->unk_858 <= 0.15f) {
-            if ((player->unk_858 >= 0.1f) && (player->swordAnimation >= 0x18)) {
+            if ((player->unk_858 >= 0.1f) && (player->meleeWeaponAnimation >= 0x18)) {
                 Audio_PlaySoundGeneral(NA_SE_IT_ROLLING_CUT, &player->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
                                        &D_801333E8);
                 Audio_PlaySoundGeneral(NA_SE_IT_SWORD_SWING_HARD, &player->actor.projectedPos, 4, &D_801333E0,
@@ -193,7 +193,7 @@ void func_80A9F408(EnMThunder* this, PlayState* play) {
         } else {
             player->stateFlags2 &= ~0x20000;
             if ((this->actor.params & 0xFF00) >> 8) {
-                gSaveContext.unk_13F0 = 1;
+                gSaveContext.magicState = 1;
             }
             if (player->unk_858 < 0.85f) {
                 this->collider.info.toucher.dmgFlags = D_80AA044C[this->unk_1C7];
@@ -324,7 +324,7 @@ void EnMThunder_Draw(Actor* thisx, PlayState* play2) {
     s32 phi_t1;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     Matrix_Scale(0.02f, 0.02f, 0.02f, MTXMODE_APPLY);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

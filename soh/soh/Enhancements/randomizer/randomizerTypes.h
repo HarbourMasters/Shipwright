@@ -1105,6 +1105,10 @@ typedef enum RandoOption {
   RO_GF_FAST,
   RO_GF_OPEN,
 
+  //Kakariko Gate settings (closed/open)
+  RO_KAK_GATE_CLOSED = 0,
+  RO_KAK_GATE_OPEN,
+
   //Rainbow Bridge settings (always open, vanilla, stones, medallions, dungeon rewards, dungeons, tokens)
   RO_BRIDGE_ALWAYS_OPEN = 0,
   RO_BRIDGE_VANILLA,
