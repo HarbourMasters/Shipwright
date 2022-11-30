@@ -242,6 +242,7 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: assets
+    - uses: ilammy/msvc-dev-cmd@v1
     - name: Setup 7-Zip
       run: |
         "C:\Program Files\7-Zip" >> $env:GITHUB_PATH
