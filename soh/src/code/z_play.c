@@ -343,27 +343,27 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(PlayState* play, RandomizerCheck 
     u8 meetsRequirements = 0;
 
     switch (Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY)) {
-        case 7:
+        case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
             if (CheckMedallionCount() >= Randomizer_GetSettingValue(RSK_LACS_MEDALLION_COUNT)) {
                 meetsRequirements = true;
             }
             break;
-        case 8:
+        case RO_GANON_BOSS_KEY_LACS_STONES:
             if (CheckStoneCount() >= Randomizer_GetSettingValue(RSK_LACS_STONE_COUNT)) {
                 meetsRequirements = true;
             }
             break;
-        case 9:
+        case RO_GANON_BOSS_KEY_LACS_REWARDS:
             if ((CheckMedallionCount() + CheckStoneCount()) >= Randomizer_GetSettingValue(RSK_LACS_REWARD_COUNT)) {
                 meetsRequirements = true;
             }
             break;
-        case 10:
+        case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
             if (CheckDungeonCount() >= Randomizer_GetSettingValue(RSK_LACS_DUNGEON_COUNT)) {
                 meetsRequirements = true;
             }
             break;
-        case 11:
+        case RO_GANON_BOSS_KEY_LACS_TOKENS:
             if (gSaveContext.inventory.gsTokens >= Randomizer_GetSettingValue(RSK_LACS_TOKEN_COUNT)) {
                 meetsRequirements = true;
             }

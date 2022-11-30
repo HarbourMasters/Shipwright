@@ -1922,7 +1922,9 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 return (GetItemID)randoGet;
             }
         case RG_GANONS_CASTLE_BOSS_KEY:
-            if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) < 3) {
+            if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_VANILLA ||
+                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_OWN_DUNGEON ||
+                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_STARTWITH) {
                 return GI_KEY_BOSS;
             } else {
                 return (GetItemID)randoGet;
@@ -2133,10 +2135,12 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
             }
             return true;
         case RG_GANONS_CASTLE_BOSS_KEY:
-            if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) > 2) {
-                return false;
+            if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_VANILLA ||
+                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_OWN_DUNGEON ||
+                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_STARTWITH) {
+                return true;
             }
-            return true;
+            return false;
         case RG_DEKU_TREE_COMPASS:
         case RG_DODONGOS_CAVERN_COMPASS:
         case RG_JABU_JABUS_BELLY_COMPASS:
@@ -2623,7 +2627,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_KEYRINGS_GTG] = CVar_GetS32("gRandomizeShuffleKeyRingsGTG", 0);
     cvarSettings[RSK_KEYRINGS_GANONS_CASTLE] = CVar_GetS32("gRandomizeShuffleKeyRingsGanonsCastle", 0);
     cvarSettings[RSK_BOSS_KEYSANITY] = CVar_GetS32("gRandomizeBossKeysanity", 2);
-    cvarSettings[RSK_GANONS_BOSS_KEY] = CVar_GetS32("gRandomizeShuffleGanonBossKey", 1);
+    cvarSettings[RSK_GANONS_BOSS_KEY] = CVar_GetS32("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA);
     cvarSettings[RSK_LACS_STONE_COUNT] = CVar_GetS32("gRandomizeLacsStoneCount", 3);
     cvarSettings[RSK_LACS_MEDALLION_COUNT] = CVar_GetS32("gRandomizeLacsMedallionCount", 6);
     cvarSettings[RSK_LACS_REWARD_COUNT] = CVar_GetS32("gRandomizeLacsRewardCount", 9);
@@ -3484,7 +3488,7 @@ void DrawRandoEditor(bool& open) {
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 12, RO_GANON_BOSS_KEY_VANILLA);
                 ImGui::PopItemWidth();
-                switch (CVar_GetS32("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_OWN_DUNGEON)) {
+                switch (CVar_GetS32("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA)) {
                     case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount",

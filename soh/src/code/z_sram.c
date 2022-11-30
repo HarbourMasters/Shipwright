@@ -503,8 +503,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.inventory.dungeonItems[SCENE_HAKADAN] |= 1; // Shadow
         }
 
-        // "Start with" == 2 for Ganon's Boss Key
-        if(Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY) == 2) {
+        if(Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_STARTWITH) {
             gSaveContext.inventory.dungeonItems[SCENE_GANON] |= 1;
         }
 
