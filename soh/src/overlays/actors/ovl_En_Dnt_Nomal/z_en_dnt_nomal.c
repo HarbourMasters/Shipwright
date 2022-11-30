@@ -858,7 +858,7 @@ void EnDntNomal_DrawStageScrub(Actor* thisx, PlayState* play) {
     s32 pad;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(blinkTex[this->eyeState]));
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDntNomal_OverrideLimbDraw,
                       EnDntNomal_PostLimbDraw, this);
@@ -880,7 +880,7 @@ void EnDntNomal_DrawTargetScrub(Actor* thisx, PlayState* play) {
     EnDntNomal* this = (EnDntNomal*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, EnDntNomal_PostLimbDraw,
                       this);
     Matrix_Translate(this->flowerPos.x, this->flowerPos.y, this->flowerPos.z, MTXMODE_NEW);

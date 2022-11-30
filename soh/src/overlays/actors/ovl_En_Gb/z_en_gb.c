@@ -320,7 +320,7 @@ void func_80A2F9C0(EnGb* this, PlayState* play) {
             gSaveContext.infTable[0xB] |= 0x40;
         }
         func_80A2F180(this);
-        Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_AP_BOTTLE);
+        Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_IA_BOTTLE);
         Rupees_ChangeBy(10);
         this->actionFunc = func_80A2F83C;
     }
@@ -332,7 +332,7 @@ void func_80A2FA50(EnGb* this, PlayState* play) {
             gSaveContext.infTable[0xB] |= 0x40;
         }
         func_80A2F180(this);
-        Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_AP_BOTTLE);
+        Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_IA_BOTTLE);
         Rupees_ChangeBy(50);
         HIGH_SCORE(HS_POE_POINTS) += 100;
         if (HIGH_SCORE(HS_POE_POINTS) != 1000) {
@@ -437,7 +437,7 @@ void EnGb_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, this->lightColor.r, this->lightColor.g, this->lightColor.b, 255);
@@ -531,7 +531,7 @@ void EnGb_DrawCagedSouls(EnGb* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     for (i = 0; i < 4; i++) {
         s32 idx = this->cagedSouls[i].infoIdx;

@@ -194,7 +194,7 @@ void ObjIcePoly_Draw(Actor* thisx, PlayState* play) {
     ObjIcePoly* this = (ObjIcePoly*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     func_8002ED80(&this->actor, play, 0);
     Matrix_RotateZYX(0x500, 0, -0x500, MTXMODE_APPLY);
 

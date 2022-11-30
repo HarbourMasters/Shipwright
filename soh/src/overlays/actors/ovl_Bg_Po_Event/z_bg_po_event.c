@@ -605,7 +605,7 @@ void BgPoEvent_Draw(Actor* thisx, PlayState* play) {
     s32 pad2;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     if ((this->type == 3) || (this->type == 2)) {
         if (this->actionFunc == BgPoEvent_PaintingEmpty) {
             alpha = 255;

@@ -1629,7 +1629,7 @@ void EnSkj_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
     OPEN_DISPS(play->state.gfxCtx);
 
     if ((limbIndex == 11) && (gSaveContext.itemGetInf[3] & 0x200)) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         Matrix_Push();
         Matrix_RotateZYX(-0x4000, 0, 0, MTXMODE_APPLY);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -1672,7 +1672,7 @@ void EnSkj_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if (this->alpha < 255) {
         gSPSegment(POLY_OPA_DISP++, 0x0C, EnSkj_TranslucentDL(play->state.gfxCtx, this->alpha));
