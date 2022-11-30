@@ -657,7 +657,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         }
     }
 
-    func_800949A8(play->state.gfxCtx);
+    Gfx_SetupDL_42Opa(play->state.gfxCtx);
 
     gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
@@ -739,7 +739,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
     gSPSegment(POLY_KAL_DISP++, 0x0B, play->interfaceCtx.mapSegment);
     //gSPSegment(POLY_KAL_DISP++, 0x0C, pauseCtx->iconItemAltSegment);
 
-    func_800949A8_KAL(play->state.gfxCtx);
+    Gfx_SetupDL_42Kal(play->state.gfxCtx);
     KaleidoScope_DrawEquipmentImage(play, pauseCtx->playerSegment, 64, 112);
 
     if (gUpgradeMasks[0]) {}

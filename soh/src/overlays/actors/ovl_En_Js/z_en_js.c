@@ -234,7 +234,7 @@ void EnJs_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, 
 void EnJs_Draw(Actor* thisx, PlayState* play) {
     EnJs* this = (EnJs*)thisx;
 
-    func_800943C8(play->state.gfxCtx);
+    Gfx_SetupDL_37Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnJs_OverrideLimbDraw, EnJs_PostLimbDraw, this);
 }

@@ -97,7 +97,7 @@ void GiveLinkDekuNuts(int howManyNuts) {
 }
 
 void GiveLinksPocketItem() {
-    if (Randomizer_GetSettingValue(RSK_LINKS_POCKET) < 3)  {
+    if (Randomizer_GetSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING)  {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
 
         if (getItemEntry.modIndex == MOD_NONE) {
@@ -217,14 +217,14 @@ void Sram_OpenSave() {
         gSaveContext.health = 0x30;
     }
 
-    if (gSaveContext.scarecrowCustomSongSet) {
+    if (gSaveContext.scarecrowLongSongSet) {
         osSyncPrintf(VT_FGCOL(BLUE));
         osSyncPrintf("\n====================================================================\n");
 
-        memcpy(gScarecrowCustomSongPtr, gSaveContext.scarecrowCustomSong, sizeof(gSaveContext.scarecrowCustomSong));
+        memcpy(gScarecrowCustomSongPtr, gSaveContext.scarecrowLongSong, sizeof(gSaveContext.scarecrowLongSong));
 
         ptr = (u8*)gScarecrowCustomSongPtr;
-        for (i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowCustomSong); i++, ptr++) {
+        for (i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowLongSong); i++, ptr++) {
             osSyncPrintf("%d, ", *ptr);
         }
 
@@ -404,11 +404,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 break;
         }
 
-        int kakGate = Randomizer_GetSettingValue(RSK_KAK_GATE);
-        switch (kakGate) {
-            case 1: // open
-                gSaveContext.infTable[7] |= 0x40;
-                break;
+        if (Randomizer_GetSettingValue(RSK_KAK_GATE) == RO_KAK_GATE_OPEN) {
+            gSaveContext.infTable[7] |= 0x40;
         }
       
         if(Randomizer_GetSettingValue(RSK_STARTING_KOKIRI_SWORD)) Item_Give(NULL, ITEM_SWORD_KOKIRI);
@@ -539,8 +536,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // skip verbose lake owl, skip to "i'm on my way back to the castle"
         gSaveContext.infTable[25] |= 0x20;
 
-        // fast gerudo fortress
-        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == 1 || Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == 2) {
+        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_FAST ||
+            Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_OPEN) {
             gSaveContext.eventChkInf[9] |= 2;
             gSaveContext.eventChkInf[9] |= 4;
             gSaveContext.eventChkInf[9] |= 8;
@@ -558,8 +555,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.sceneFlags[12].collect |= (1 << 0x0F);
         }
 
-        // open gerudo fortress
-        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == 2) {
+        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_OPEN) {
             gSaveContext.eventChkInf[9] |= 1;
             gSaveContext.sceneFlags[12].swch |= (1 << 0x01);
             gSaveContext.sceneFlags[12].swch |= (1 << 0x05);

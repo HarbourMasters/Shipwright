@@ -89,7 +89,7 @@ void BgTokiSwd_Init(Actor* thisx, PlayState* play) {
         uint32_t kokiriSwordBitMask = 1 << 0;
         if (!(gSaveContext.inventory.equipment & kokiriSwordBitMask)) {
             Player* player = GET_PLAYER(gPlayState);
-            player->currentSwordItem = ITEM_NONE;
+            player->currentSwordItemId = ITEM_NONE;
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;
             Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
         }
@@ -187,7 +187,7 @@ void BgTokiSwd_Draw(Actor* thisx, PlayState* play2) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     func_8002EBCC(&this->actor, play, 0);
 
