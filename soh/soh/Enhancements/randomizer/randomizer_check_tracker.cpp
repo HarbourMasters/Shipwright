@@ -316,7 +316,7 @@ void BeginFloatWindows(std::string UniqueName, ImGuiWindowFlags flags) {
             ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoFocusOnAppearing;
     }
 
-    if (!CVar_GetS32("gCheckTrackerWindowType", 0)) {
+    if (!CVar_GetS32("gCheckTrackerWindowType", 1)) {
         ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
         windowFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoTitleBar |
                        ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
@@ -922,7 +922,7 @@ void DrawCheckTrackerOptions(bool& open) {
     ImGui::SameLine();
     UIWidgets::EnhancementCombobox("gCheckTrackerWindowType", windowType, 2, 1);
 
-    if (CVar_GetS32("gCheckTrackerWindowType", 0) == 0) {
+    if (CVar_GetS32("gCheckTrackerWindowType", 1) == 0) {
         UIWidgets::EnhancementCheckbox("Enable Dragging", "gCheckTrackerHudEditMode");
         UIWidgets::EnhancementCheckbox("Only enable while paused", "gCheckTrackerShowOnlyPaused");
         ImGui::Text("Display Mode");
