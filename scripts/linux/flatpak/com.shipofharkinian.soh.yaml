@@ -26,7 +26,7 @@ modules:
     - mkdir ${FLATPAK_DEST}/share/applications
     - cp scripts/linux/appimage/soh.desktop ${FLATPAK_DEST}/share/applications
     - mkdir ${FLATPAK_DEST}/share/metainfo
-    - cp ${FLATPAK_ID}.metainfo.xml /app/share/metainfo/${FLATPAK_ID}.metainfo.xml
+    - cp scripts/linux/flatpak/${FLATPAK_ID}.metainfo.xml /app/share/metainfo/${FLATPAK_ID}.metainfo.xml
     build-options: 
       build-args: 
         - --share=network
