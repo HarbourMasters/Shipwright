@@ -628,6 +628,7 @@ void func_80A7598C(EnIk* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_IRONNACK_DEAD);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_CUTBODY);
     EnIk_SetupAction(this, func_80A75A38);
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE]++;
 }
 
 void func_80A75A38(EnIk* this, PlayState* play) {
@@ -929,8 +930,8 @@ void func_80A76798(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     if (this->actor.params == 0) {
         gSPSegment(POLY_OPA_DISP++, 0x08, func_80A761B0(play->state.gfxCtx, 245, 225, 155, 30, 30, 0));
@@ -1214,8 +1215,8 @@ void func_80A77844(EnIk* this, PlayState* play) {
     OPEN_DISPS(gfxCtx);
 
     func_8002EBCC(&this->actor, play, 0);
-    func_80093D18(gfxCtx);
-    func_80093D84(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
+    Gfx_SetupDL_25Xlu(gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, func_80A761B0(gfxCtx, 245, 225, 155, 30, 30, 0));
     gSPSegment(POLY_OPA_DISP++, 0x09, func_80A761B0(gfxCtx, 255, 40, 0, 40, 0, 0));
     gSPSegment(POLY_OPA_DISP++, 0x0A, func_80A761B0(gfxCtx, 255, 255, 255, 20, 40, 30));
@@ -1368,8 +1369,8 @@ void func_80A77EDC(EnIk* this, PlayState* play) {
     OPEN_DISPS(gfxCtx);
 
     func_8002EBCC(&this->actor, play, 0);
-    func_80093D18(gfxCtx);
-    func_80093D84(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
+    Gfx_SetupDL_25Xlu(gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, func_80A761B0(gfxCtx, 245, 225, 155, 30, 30, 0));
     gSPSegment(POLY_OPA_DISP++, 0x09, func_80A761B0(gfxCtx, 255, 40, 0, 40, 0, 0));
     gSPSegment(POLY_OPA_DISP++, 0x0A, func_80A761B0(gfxCtx, 255, 255, 255, 20, 40, 30));
@@ -1446,6 +1447,7 @@ void func_80A781CC(Actor* thisx, PlayState* play) {
         }
         gSaveContext.eventChkInf[3] |= 0x1000;
         func_80A7735C(this, play);
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE_NABOORU]++;
     }
 }
 

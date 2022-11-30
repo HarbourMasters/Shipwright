@@ -289,7 +289,7 @@ void EnSyatekiMan_StartGame(EnSyatekiMan* this, PlayState* play) {
         Message_CloseTextbox(play);
         gallery = ((EnSyatekiItm*)this->actor.parent);
         if (gallery->actor.update != NULL) {
-            if(CVar_Get("gCustomizeShootingGallery", 0) && CVar_Get("gInstantShootingGalleryWin", 0)) {
+            if(CVar_GetS32("gCustomizeShootingGallery", 0) && CVar_GetS32("gInstantShootingGalleryWin", 0)) {
                 gallery->hitCount = 10;
                 gallery->signal = ENSYATEKI_END;
             } else {
@@ -401,7 +401,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                 case SYATEKI_RESULT_ALMOST:
                     this->timer = 20;
                     s32 ammunition = 15;
-                    if(CVar_Get("gCustomizeShootingGallery", 0)) {
+                    if(CVar_GetS32("gCustomizeShootingGallery", 0)) {
                         ammunition = CVar_GetS32(LINK_IS_ADULT ? "gAdultShootingGalleryAmmunition" : "gChildShootingGalleryAmmunition", 15);
                     }
                     func_8008EF44(play, ammunition);
@@ -536,7 +536,7 @@ void EnSyatekiMan_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     EnSyatekiMan* this = (EnSyatekiMan*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnSyatekiMan_OverrideLimbDraw, NULL, this);
 }

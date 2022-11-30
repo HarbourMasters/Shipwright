@@ -914,10 +914,10 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             ((locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) || CVar_GetS32("gRandomizeShuffleGerudoToken", 0)) &&
             ((locationIt.rcType != RCTYPE_FROG_SONG) || CVar_GetS32("gRandomizeShuffleFrogSongRupees", 0)) &&
             ((locationIt.rcType != RCTYPE_MAP_COMPASS) || CVar_GetS32("gRandomizeStartingMapsCompasses", 0) != 1) && // 1 is the value for "vanilla" maps/compasses
-            ((locationIt.rcType != RCTYPE_SMALL_KEY) || CVar_GetS32("gRandomizeKeysanity", 0) != 1) && // 1 is the value for "vanilla" small keys
+            ((locationIt.rcType != RCTYPE_SMALL_KEY) || CVar_GetS32("gRandomizeKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
             ((locationIt.rcType != RCTYPE_GF_KEY) || CVar_GetS32("randoShuffleGerudoFortressKeys", 0) != 0) && // 0 is the value for "vanilla" gf keys
             ((locationIt.rcType != RCTYPE_BOSS_KEY) || CVar_GetS32("gRandomizeBossKeysanity", 0) != 1) && // 1 is the value for "vanilla" boss keys
-            ((locationIt.rcType != RCTYPE_GANON_BOSS_KEY) || CVar_GetS32("gRandomizeShuffleGanonBossKey", 0) != 0) // 0 is the value for "vanilla" ganon's boss key
+            ((locationIt.rcType != RCTYPE_GANON_BOSS_KEY) || CVar_GetS32("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) != RO_GANON_BOSS_KEY_VANILLA)
         );
     }
 }

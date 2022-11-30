@@ -487,7 +487,6 @@ u8 EnMd_ShouldSpawn(EnMd* this, PlayState* play) {
             // if we have beaten deku tree or have open forest turned on
             // or have already shown mido we have an equipped sword/shield
             if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) ||
-                Randomizer_GetSettingValue(RSK_FOREST) == 1 ||
                 gSaveContext.eventChkInf[0] & 0x10) {
                 return 0;
             }

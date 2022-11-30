@@ -590,6 +590,7 @@ void EnPeehat_Larva_StateSeekPlayer(EnPeehat* this, PlayState* play) {
             }
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x20);
             Actor_Kill(&this->actor);
+            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA]++;
         }
     }
 }
@@ -759,6 +760,7 @@ void EnPeehat_StateAttackRecoil(EnPeehat* this, PlayState* play) {
                                      1);
             }
             Actor_Kill(&this->actor);
+            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA]++;
         } else {
             EnPeehat_Ground_SetStateSeekPlayer(this);
             // Is PEAHAT_TYPE_GROUNDED
@@ -875,6 +877,7 @@ void EnPeehat_StateExplode(EnPeehat* this, PlayState* play) {
         Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x40);
         Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x40);
         Actor_Kill(&this->actor);
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT]++;
     }
 }
 
@@ -1070,7 +1073,7 @@ void EnPeehat_Draw(Actor* thisx, PlayState* play) {
     };
     EnPeehat* this = (EnPeehat*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnPeehat_OverrideLimbDraw,
                       EnPeehat_PostLimbDraw, this);
     if (this->actor.speedXZ != 0.0f || this->actor.velocity.y != 0.0f) {

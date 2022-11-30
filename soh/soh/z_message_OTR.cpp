@@ -28,41 +28,35 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
         // Look for Owl Text
         if (file->messages[i].id == 0x2066) {
             // Create a new message based on the Owl Text
-            char* kaeporaPatch = (char*)malloc(sizeof(char) * file->messages[i].msg.size());
-            file->messages[i].msg.copy(kaeporaPatch, file->messages[i].msg.size(), 0);
+            uint32_t kaeporaMsgSize = file->messages[i].msg.size();
+            char* kaeporaOg = (char*)malloc(sizeof(char) * kaeporaMsgSize);
+            char* kaeporaPatch = (char*)malloc(sizeof(char) * kaeporaMsgSize);
+            file->messages[i].msg.copy(kaeporaOg, kaeporaMsgSize, 0);
+            file->messages[i].msg.copy(kaeporaPatch, kaeporaMsgSize, 0);
 
+            size_t colorPos = file->messages[i].msg.find(QM_GREEN);
+            size_t newLinePos = colorPos + file->messages[i].msg.substr(colorPos + 1).find(CTRL_NEWLINE) + 1;
+            size_t endColorPos = newLinePos + file->messages[i].msg.substr(newLinePos).find(CTRL_COLOR);
+            size_t NoLength = newLinePos - (colorPos + 1);
+            size_t YesLength = endColorPos - (newLinePos + 1);
             // Swap the order of yes and no in this new message
-            if (filePath == "text/nes_message_data_static/nes_message_data_static") {
-                kaeporaPatch[26] = 'Y';
-                kaeporaPatch[27] = 'e';
-                kaeporaPatch[28] = 's';
-                kaeporaPatch[29] = 1;
-                kaeporaPatch[30] = 'N';
-                kaeporaPatch[31] = 'o';
-            } else if (filePath == "text/ger_message_data_static/ger_message_data_static") {
-                kaeporaPatch[30] = 'J';
-                kaeporaPatch[31] = 'a';
-                kaeporaPatch[32] = '!';
-                kaeporaPatch[33] = 1;
-                kaeporaPatch[34] = 'N';
-                kaeporaPatch[35] = 'e';
-                kaeporaPatch[36] = 'i';
-                kaeporaPatch[37] = 'n';
-            } else {
-                kaeporaPatch[26] = 'O';
-                kaeporaPatch[27] = 'u';
-                kaeporaPatch[28] = 'i';
-                kaeporaPatch[29] = 1;
-                kaeporaPatch[30] = 'N';
-                kaeporaPatch[31] = 'o';
-                kaeporaPatch[32] = 'n';
+            size_t yes = 0;
+            while (yes < YesLength) {
+                kaeporaPatch[colorPos + yes + 1] = kaeporaOg[newLinePos + yes + 1];
+                yes++;
+            }
+            kaeporaPatch[colorPos + yes + 1] = CTRL_NEWLINE;
+            size_t no = 0;
+            while (no < NoLength) {
+                kaeporaPatch[colorPos + yes + 2 + no] = kaeporaOg[colorPos + 1 + no];
+                no++;
             }
 
             // load data into message
             table[file->messages.size()].textId = 0x71B3;
             table[file->messages.size()].typePos = (file->messages[i].textboxType << 4) | file->messages[i].textboxYPos;
             table[file->messages.size()].segment = kaeporaPatch;
-            table[file->messages.size()].msgSize = file->messages[i].msg.size();
+            table[file->messages.size()].msgSize = kaeporaMsgSize;
         }
 
         table[i].textId = file->messages[i].id;
@@ -138,7 +132,7 @@ extern "C" void OTRMessage_Init()
             TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
             "You got a %rHeart Container%w!&You've collected %r{{heartContainerCount}}%w containers&in total!",
             "Du erhältst ein %rHerzgefäß%w! Du&hast insgesamt %r{{heartContainerCount}}%w Gefäße&gesammelt!",
-            "Vous obtenez un %rRécipient de&coeur%w! Vous avez&collecté %r{{heartContainerCount}}%w récipients en tout!"
+            "Vous obtenez un %rCoeur&d'Energie%w! Vous en avez&collecté %r{{heartContainerCount}}%w en tout!"
         }
     );
     CustomMessageManager::Instance->CreateGetItemMessage(
@@ -147,7 +141,7 @@ extern "C" void OTRMessage_Init()
             TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
             "You got a %rHeart Piece%w!&You've collected %r{{heartPieceCount}}%w pieces&in total!",
             "Du erhältst ein %rHerzteil%w! Du hast&insgesamt %r{{heartPieceCount}}%w Teile&gesammelt!",
-            "Vous obtenez un %rMorceau de&coeur%w! Vous avez&collecté %r{{heartPieceCount}}%w morceaux en tout!"
+            "Vous obtenez un %rQuart de&Coeur%w! Vous en avez collecté&%r{{heartPieceCount}}%w en tout!"
         }
     );
 }

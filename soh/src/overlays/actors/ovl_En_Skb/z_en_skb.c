@@ -412,6 +412,7 @@ void func_80AFD7B4(EnSkb* this, PlayState* play) {
     this->unk_283 |= 4;
     EffectSsDeadSound_SpawnStationary(play, &this->actor.projectedPos, NA_SE_EN_STALKID_DEAD, 1, 1, 0x28);
     EnSkb_SetupAction(this, func_80AFD880);
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_STALCHILD]++;
 }
 
 void func_80AFD880(EnSkb* this, PlayState* play) {
@@ -478,8 +479,8 @@ void func_80AFD968(EnSkb* this, PlayState* play) {
                     if (this->unk_283 == 0) {
                         if ((this->actor.colChkInfo.damageEffect == 0xD) ||
                             ((this->actor.colChkInfo.damageEffect == 0xE) &&
-                             ((player->swordAnimation >= 4 && player->swordAnimation <= 11) ||
-                              (player->swordAnimation == 20 || player->swordAnimation == 21)))) {
+                             ((player->meleeWeaponAnimation >= 4 && player->meleeWeaponAnimation <= 11) ||
+                              (player->meleeWeaponAnimation == 20 || player->meleeWeaponAnimation == 21)))) {
                             BodyBreak_Alloc(&this->bodyBreak, 2, play);
                             this->unk_283 = 1;
                         }
@@ -549,7 +550,7 @@ void EnSkb_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
 
 void EnSkb_Draw(Actor* thisx, PlayState* play) {
     EnSkb* this = (EnSkb*)thisx;
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnSkb_OverrideLimbDraw,
                       EnSkb_PostLimbDraw, &this->actor);
 }

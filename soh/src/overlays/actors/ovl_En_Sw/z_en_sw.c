@@ -346,6 +346,7 @@ s32 func_80B0C9F0(EnSw* this, PlayState* play) {
                 this->unk_38A = 1;
                 this->unk_420 *= 4.0f;
                 this->actionFunc = func_80B0D878;
+                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_GOLD]++;
             } else {
                 this->actor.shape.shadowDraw = ActorShadow_DrawCircle;
                 this->actor.shape.shadowAlpha = 0xFF;
@@ -354,6 +355,7 @@ s32 func_80B0C9F0(EnSw* this, PlayState* play) {
                 this->actor.gravity = -1.0f;
                 this->actor.flags &= ~ACTOR_FLAG_0;
                 this->actionFunc = func_80B0DB00;
+                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLWALLTULA]++;
             }
 
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_STALWALL_DEAD);
@@ -730,7 +732,7 @@ s32 func_80B0DFFC(EnSw* this, PlayState* play) {
                                        false, false, true, &sp5C)) {
         sp4C = false;
     } else if (((play->state.frames % 4) == 2) &&
-               !BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &this->unk_46C, &sp50, &sp60, true,
+               !BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &this->subCamId, &sp50, &sp60, true,
                                         false, false, true, &sp5C)) {
         sp4C = false;
     } else if (((play->state.frames % 4) == 3) &&
@@ -947,7 +949,7 @@ s32 EnSw_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
     if (limbIndex == 1) {
         Matrix_MultVec3f(&sp7C, &this->unk_454);
         Matrix_MultVec3f(&sp70, &this->unk_460);
-        Matrix_MultVec3f(&sp64, &this->unk_46C);
+        Matrix_MultVec3f(&sp64, &this->subCamId);
         Matrix_MultVec3f(&sp58, &this->unk_478);
         Matrix_MultVec3f(&sp4C, &this->unk_484);
     }
@@ -1010,7 +1012,7 @@ void EnSw_Draw(Actor* thisx, PlayState* play) {
         func_80B0EDB8(play, &sp30, 0x14, 0x1E);
     }
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnSw_OverrideLimbDraw,
                       EnSw_PostLimbDraw, this);
     if (this->actionFunc == func_80B0E728) {

@@ -180,6 +180,7 @@ void EnKarebaba_SetupDying(EnKarebaba* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DEKU_JR_DEAD);
     this->actor.flags |= ACTOR_FLAG_4 | ACTOR_FLAG_5;
     this->actionFunc = EnKarebaba_Dying;
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA]++;
 }
 
 void EnKarebaba_SetupDeadItemDrop(EnKarebaba* this, PlayState* play) {
@@ -444,7 +445,7 @@ void EnKarebaba_DrawBaseShadow(EnKarebaba* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80094044(play->state.gfxCtx);
+    Gfx_SetupDL_44Xlu(play->state.gfxCtx);
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, 255);
     func_80038A28(this->boundFloor, this->actor.home.pos.x, this->actor.home.pos.y, this->actor.home.pos.z, &mf);
@@ -468,7 +469,7 @@ void EnKarebaba_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if (this->actionFunc == EnKarebaba_DeadItemDrop) {
         if (this->actor.params > 40 || (this->actor.params & 1)) {

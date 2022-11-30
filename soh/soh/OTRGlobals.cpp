@@ -39,6 +39,7 @@
 #include "Enhancements/randomizer/randomizer.h"
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
 #include "Enhancements/randomizer/3drando/random.hpp"
+#include "Enhancements/gameplaystats.h"
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "frame_interpolation.h"
 #include "variables.h"
@@ -438,6 +439,7 @@ extern "C" void InitOTR() {
     Debug_Init();
     Rando_Init();
     InitItemTracker();
+    InitStatTracker();
     OTRExtScanner();
     VanillaItemTable_Init();
 

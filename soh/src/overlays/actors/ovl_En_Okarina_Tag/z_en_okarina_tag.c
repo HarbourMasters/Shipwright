@@ -234,7 +234,7 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
     if (play->msgCtx.ocarinaMode == OCARINA_MODE_04) {
         this->actionFunc = func_80ABF28C;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
-        if (!gSaveContext.n64ddFlag || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_DOOR_OF_TIME) != 2)) {
+        if (!gSaveContext.n64ddFlag || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_DOOR_OF_TIME) != RO_DOOROFTIME_CLOSED)) {
             func_80078884(NA_SE_SY_CORRECT_CHIME);
         }
         if (this->switchFlag >= 0) {
@@ -257,8 +257,7 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
                 break;
             case 4:
                 if (gSaveContext.n64ddFlag) {
-                    int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);
-                    if (doorOfTime == 2 &&
+                    if (Randomizer_GetSettingValue(RSK_DOOR_OF_TIME) == RO_DOOROFTIME_CLOSED &&
                         (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_OCARINA_TIME ||
                          !CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) || !CHECK_QUEST_ITEM(QUEST_GORON_RUBY) ||
                          !CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE))) {
