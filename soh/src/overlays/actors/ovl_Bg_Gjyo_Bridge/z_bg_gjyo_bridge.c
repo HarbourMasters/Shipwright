@@ -51,7 +51,7 @@ void BgGjyoBridge_Init(Actor* thisx, PlayState* play) {
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
 
     int bridge = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE);
-    if (gSaveContext.eventChkInf[4] & 0x2000 || (gSaveContext.n64ddFlag && bridge == 0)) {
+    if (gSaveContext.eventChkInf[4] & 0x2000 || (gSaveContext.n64ddFlag && bridge == RO_BRIDGE_ALWAYS_OPEN)) {
         this->actionFunc = func_808787A4;
     } else {
         this->dyna.actor.draw = NULL;
@@ -98,38 +98,38 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, PlayState* play) {
         int bridgeTokenCount = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE_TOKEN_COUNT);
 
         switch (bridge) {
-            case 1:
+            case RO_BRIDGE_VANILLA:
                 if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
                     (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT)) {
                     this->actionFunc = BgGjyoBridge_SpawnBridge;
                     func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
                 }
                 break;
-            case 2:
+            case RO_BRIDGE_STONES:
                 if (CheckStoneCount() >= bridgeStoneCount) {
                     this->actionFunc = BgGjyoBridge_SpawnBridge;
                     func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
                 }
                 break;
-            case 3:
+            case RO_BRIDGE_MEDALLIONS:
                 if (CheckMedallionCount() >= bridgeMedallionCount) {
                     this->actionFunc = BgGjyoBridge_SpawnBridge;
                     func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
                 }
                 break;
-            case 4:
+            case RO_BRIDGE_DUNGEON_REWARDS:
                 if ((CheckMedallionCount() + CheckStoneCount()) >= bridgeRewardCount) {
                     this->actionFunc = BgGjyoBridge_SpawnBridge;
                     func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
                 }
                 break;
-            case 5:
+            case RO_BRIDGE_DUNGEONS:
                 if (CheckDungeonCount() >= bridgeDungeonCount) {
                     this->actionFunc = BgGjyoBridge_SpawnBridge;
                     func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
                 }
                 break;
-            case 6:
+            case RO_BRIDGE_TOKENS:
                 if (gSaveContext.inventory.gsTokens >= bridgeTokenCount) {
                     this->actionFunc = BgGjyoBridge_SpawnBridge;
                     func_800F595C(NA_BGM_BRIDGE_TO_GANONS);

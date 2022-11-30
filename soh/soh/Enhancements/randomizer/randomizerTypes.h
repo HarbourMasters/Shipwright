@@ -987,7 +987,7 @@ typedef enum {
     RSK_RAINBOW_BRIDGE_REWARD_COUNT,
     RSK_RAINBOW_BRIDGE_DUNGEON_COUNT,
     RSK_RAINBOW_BRIDGE_TOKEN_COUNT,
-    RSK_RANDOM_TRIALS,
+    RSK_GANONS_TRIALS,
     RSK_TRIAL_COUNT,
     RSK_STARTING_OCARINA,
     RSK_SHUFFLE_OCARINA,
@@ -1109,9 +1109,9 @@ typedef enum RandoOption {
   RO_KAK_GATE_CLOSED = 0,
   RO_KAK_GATE_OPEN,
 
-  //Rainbow Bridge settings (always open, vanilla, stones, medallions, dungeon rewards, dungeons, tokens)
-  RO_BRIDGE_ALWAYS_OPEN = 0,
-  RO_BRIDGE_VANILLA,
+  //Rainbow Bridge settings (vanilla, always open, stones, medallions, dungeon rewards, dungeons, tokens)
+  RO_BRIDGE_VANILLA = 0,
+  RO_BRIDGE_ALWAYS_OPEN,
   RO_BRIDGE_STONES,
   RO_BRIDGE_MEDALLIONS,
   RO_BRIDGE_DUNGEON_REWARDS,
@@ -1173,6 +1173,11 @@ typedef enum RandoOption {
   RO_GANON_BOSS_KEY_LACS_REWARDS,
   RO_GANON_BOSS_KEY_LACS_DUNGEONS,
   RO_GANON_BOSS_KEY_LACS_TOKENS,
+
+  //Ganon's Trials
+  RO_GANONS_TRIALS_SKIP = 0,
+  RO_GANONS_TRIALS_SET_NUMBER,
+  RO_GANONS_TRIALS_RANDOM_NUMBER,
 
   //Shuffle Dungeon Entrance Settings (Off, on, plus ganon)
   RO_DUNGEON_ENTRANCE_SHUFFLE_OFF = 0,
