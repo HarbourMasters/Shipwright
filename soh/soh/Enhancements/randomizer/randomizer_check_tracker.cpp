@@ -337,10 +337,110 @@ void EndFloatWindows() {
     ImGui::End();
 }
 
+uint8_t gRandomizeShopsanity;
+uint8_t gRandomizeShuffleTokens;
+uint8_t gRandomizeShuffleBeans;
+uint8_t gRandomizeShuffleScrubs;
+uint8_t gRandomizeShuffleMerchants;
+uint8_t gRandomizeShuffleCows;
+uint8_t gRandomizeShuffleAdultTrade;
+uint8_t gRandomizeShuffleKokiriSword;
+uint8_t gRandomizeShuffleWeirdEgg;
+uint8_t gRandomizeShuffleGerudoCard;
+uint8_t gRandomizeShuffleFrogSongRupees;
+uint8_t gRandomizeStartingMapsCompasses;
+uint8_t gRandomizeKeysanity;
+uint8_t gRandomizeGerudoFortressKeys;
+uint8_t gRandomizeBossKeysanity;
+uint8_t gRandomizeShuffleGanonBossKey;
+uint8_t gRandomizeGerudoFortress;
+
+void SetVanillaSettings() {
+    gRandomizeShopsanity = RO_SHOPSANITY_OFF;
+    gRandomizeShuffleTokens = RO_TOKENSANITY_ALL;
+    gRandomizeShuffleBeans = RO_GENERIC_YES;
+    gRandomizeShuffleScrubs = RO_GENERIC_YES;
+    gRandomizeShuffleMerchants = RO_GENERIC_YES;
+    gRandomizeShuffleCows = RO_GENERIC_NO;
+    gRandomizeShuffleAdultTrade = RO_GENERIC_YES;
+    gRandomizeShuffleKokiriSword = RO_GENERIC_YES;
+    gRandomizeShuffleWeirdEgg = RO_GENERIC_YES;
+    gRandomizeShuffleGerudoCard = RO_GENERIC_YES;
+    gRandomizeShuffleFrogSongRupees = RO_GENERIC_NO;
+    gRandomizeStartingMapsCompasses = RO_DUNGEON_ITEM_LOC_ANYWHERE;
+    gRandomizeKeysanity = RO_DUNGEON_ITEM_LOC_ANYWHERE;
+    gRandomizeGerudoFortressKeys = RO_GERUDO_KEYS_VANILLA;
+    gRandomizeBossKeysanity = RO_DUNGEON_ITEM_LOC_ANYWHERE;
+    gRandomizeShuffleGanonBossKey = RO_GANON_BOSS_KEY_ANYWHERE;
+    gRandomizeGerudoFortress = RO_GF_NORMAL;
+}
+
+void SetRandomizerSettings() {
+    uint8_t gRandomizeShopsanity =              OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY);
+    uint8_t gRandomizeShuffleTokens =           OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS);
+    uint8_t gRandomizeShuffleBeans =            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MAGIC_BEANS);
+    uint8_t gRandomizeShuffleScrubs =           OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS);
+    uint8_t gRandomizeShuffleMerchants =        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS);
+    uint8_t gRandomizeShuffleCows =             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_COWS);
+    uint8_t gRandomizeShuffleAdultTrade =       OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE);
+    uint8_t gRandomizeShuffleKokiriSword =      OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_KOKIRI_SWORD);
+    uint8_t gRandomizeShuffleWeirdEgg =         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_WEIRD_EGG);
+    uint8_t gRandomizeShuffleGerudoCard =       OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD);
+    uint8_t gRandomizeShuffleFrogSongRupees =   OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FROG_SONG_RUPEES);
+    uint8_t gRandomizeStartingMapsCompasses =   OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES);
+    uint8_t gRandomizeKeysanity =               OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY);
+    uint8_t gRandomizeGerudoFortressKeys =      OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS);
+    uint8_t gRandomizeBossKeysanity =           OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY);
+    uint8_t gRandomizeShuffleGanonBossKey =     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY);
+    uint8_t gRandomizeGerudoFortress =          OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS);
+}
+
+bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
+    return
+        (rcObj.rcArea != RCAREA_INVALID) && // don't show Invalid locations
+        (!RandomizerCheckObjects::AreaIsDungeon(rcObj.rcArea) || 
+            rcObj.vOrMQ == RCVORMQ_BOTH ||
+            rcObj.vOrMQ == RCVORMQ_MQ && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) ||
+            rcObj.vOrMQ == RCVORMQ_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId)
+        ) &&
+        (rcObj.rcType != RCTYPE_SHOP || gRandomizeShopsanity > RO_SHOPSANITY_ZERO_ITEMS) &&
+        (rcObj.rcType != RCTYPE_SCRUB || gRandomizeShuffleScrubs > RO_SCRUBS_OFF) &&
+        (rcObj.rcType != RCTYPE_MERCHANT || gRandomizeShuffleMerchants > RO_SHUFFLE_MERCHANTS_OFF) &&
+        (rcObj.rcType != RCTYPE_GOSSIP_STONE) && //TODO: Don't show hints until tracker supports them
+        (rcObj.rcType != RCTYPE_CHEST_GAME) && // don't show non final reward chest game checks until we support shuffling them
+        (rcObj.rcType != RCTYPE_SKULL_TOKEN ||
+            (gRandomizeShuffleTokens == RO_TOKENSANITY_ALL) ||
+            (gRandomizeShuffleTokens == RO_TOKENSANITY_OVERWORLD && RandomizerCheckObjects::AreaIsOverworld(rcObj.rcArea)) ||
+            (gRandomizeShuffleTokens == RO_TOKENSANITY_DUNGEONS && RandomizerCheckObjects::AreaIsDungeon(rcObj.rcArea))
+        ) &&
+        (rcObj.rcType != RCTYPE_COW || gRandomizeShuffleCows == RO_GENERIC_YES) &&
+        (rcObj.rcType != RCTYPE_ADULT_TRADE || gRandomizeShuffleAdultTrade == RO_GENERIC_YES) &&
+        (rcObj.rc != RC_KF_KOKIRI_SWORD_CHEST || gRandomizeShuffleKokiriSword == RO_GENERIC_YES) &&
+        (rcObj.rc != RC_ZR_MAGIC_BEAN_SALESMAN || gRandomizeShuffleBeans == RO_GENERIC_YES) &&
+        (rcObj.rc != RC_HC_MALON_EGG || gRandomizeShuffleWeirdEgg == RO_GENERIC_YES) &&
+        (rcObj.rc != RC_GF_GERUDO_MEMBERSHIP_CARD || gRandomizeShuffleGerudoCard == RO_GENERIC_YES) &&
+        (rcObj.rcType != RCTYPE_FROG_SONG || gRandomizeShuffleFrogSongRupees == RO_GENERIC_YES) &&
+        (rcObj.rcType != RCTYPE_MAP_COMPASS || gRandomizeStartingMapsCompasses != RO_DUNGEON_ITEM_LOC_VANILLA) &&
+        (rcObj.rcType != RCTYPE_SMALL_KEY || gRandomizeKeysanity != RO_DUNGEON_ITEM_LOC_VANILLA) &&
+           (rcObj.rcType != RCTYPE_GF_KEY || gRandomizeGerudoFortressKeys != RO_GERUDO_KEYS_VANILLA) &&
+        (rcObj.rcType != RCTYPE_BOSS_KEY || gRandomizeBossKeysanity != RO_DUNGEON_ITEM_LOC_VANILLA) &&
+        (rcObj.rcType != RCTYPE_GANON_BOSS_KEY || gRandomizeShuffleGanonBossKey != RO_GANON_BOSS_KEY_VANILLA) &&
+        (!RC_IS_CARPENTER(rcObj.rc) && rcObj.rc != RC_GF_GERUDO_MEMBERSHIP_CARD ||
+            (gRandomizeGerudoFortress == RO_GF_OPEN && !RC_IS_CARPENTER(rcObj.rc) && rcObj.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) ||
+            (gRandomizeGerudoFortress == RO_GF_FAST && (rcObj.rc == RC_GF_NORTH_F1_CARPENTER || rcObj.rc == RC_GF_GERUDO_MEMBERSHIP_CARD)) ||
+            (gRandomizeGerudoFortress == RO_GF_NORMAL)
+        );
+}
+
 
 void InitializeChecks() {
     if (gPlayState == nullptr || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2)
         return;
+
+    if (gSaveContext.n64ddFlag)
+        SetRandomizerSettings();
+    else
+        SetVanillaSettings();
 
     int count = 0;
     
@@ -368,7 +468,7 @@ void InitializeChecks() {
     }
 
     for (auto& [rcCheck, rcObj] : RandomizerCheckObjects::GetAllRCObjects()) {
-        if (!RandomizerCheckObjects::IsVisibleInCheckTracker(rcObj))
+        if (!IsVisibleInCheckTracker(rcObj))
             continue;
 
         checks.push_back(rcObj);
@@ -674,15 +774,25 @@ void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckSta
             case RCSHOW_SAVED:
             case RCSHOW_CHECKED:
             case RCSHOW_SCUMMED:
-                txt = OTRGlobals::Instance->gRandomizer
-                    ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.rgID][gSaveContext.language];
+                if (gSaveContext.n64ddFlag)
+                    txt = OTRGlobals::Instance->gRandomizer
+                        ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.rgID][gSaveContext.language];
+                else if (gSaveContext.language == LANGUAGE_ENG)
+                    txt = ItemFromGIID(rcObj.ogItemId).GetName().english;
+                else if (gSaveContext.language == LANGUAGE_FRA)
+                    txt = ItemFromGIID(rcObj.ogItemId).GetName().french;
                 break;
             case RCSHOW_SKIPPED:
                 txt = "Skipped"; //TODO language
                 break;
             case RCSHOW_SEEN:
-                txt = OTRGlobals::Instance->gRandomizer
-                    ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.fakeRgID][gSaveContext.language];
+                if (gSaveContext.n64ddFlag)
+                    txt = OTRGlobals::Instance->gRandomizer
+                        ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.fakeRgID][gSaveContext.language];
+                else if (gSaveContext.language == LANGUAGE_ENG)
+                    txt = ItemFromGIID(rcObj.ogItemId).GetName().english;
+                else if (gSaveContext.language == LANGUAGE_FRA)
+                    txt = ItemFromGIID(rcObj.ogItemId).GetName().french;
                 break;
             case RCSHOW_HINTED:
                 txt = "Hints are WIP"; // TODO language
