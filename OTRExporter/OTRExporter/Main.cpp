@@ -146,10 +146,10 @@ static void ExporterParseArgs(int argc, char* argv[], int& i)
 	std::string arg = argv[i];
 
 	if (arg == "--otrfile")
-    {
+        {
 		otrFileName = argv[i + 1];
-        i++;
-    }
+            i++;
+        }
 }
 
 static bool ExporterProcessFileMode(ZFileMode fileMode)
