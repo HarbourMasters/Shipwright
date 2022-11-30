@@ -509,7 +509,7 @@ void BgHeavyBlock_Draw(Actor* thisx, PlayState* play) {
 
     Matrix_MultVec3f(&D_80884EC8, &thisx->world.pos);
     Matrix_MultVec3f(&D_80884ED4, &thisx->home.pos);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

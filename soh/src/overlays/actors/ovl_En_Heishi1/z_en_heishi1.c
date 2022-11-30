@@ -368,7 +368,7 @@ void EnHeishi1_Kick(EnHeishi1* this, PlayState* play) {
                 this->loadStarted = true;
                 sHeishi1PlayerIsCaught = false;
                 play->fadeTransition = 0x2E;
-                gSaveContext.nextTransition = 0x2E;
+                gSaveContext.nextTransitionType = 0x2E;
             }
         }
     }
@@ -502,7 +502,7 @@ void EnHeishi1_Draw(Actor* thisx, PlayState* play) {
     EnHeishi1* this = (EnHeishi1*)thisx;
     Vec3f matrixScale = { 0.3f, 0.3f, 0.3f };
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnHeishi1_OverrideLimbDraw, NULL,
                       this);
     func_80033C30(&this->actor.world.pos, &matrixScale, 0xFF, play);

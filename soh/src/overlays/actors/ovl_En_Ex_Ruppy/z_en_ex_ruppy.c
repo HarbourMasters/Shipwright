@@ -433,7 +433,7 @@ void EnExRuppy_Draw(Actor* thisx, PlayState* play) {
     if (!this->invisible) {
         OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         func_8002EBCC(thisx, play, 0);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         if (CVar_GetS32("gNewDrops", 0) !=0) {

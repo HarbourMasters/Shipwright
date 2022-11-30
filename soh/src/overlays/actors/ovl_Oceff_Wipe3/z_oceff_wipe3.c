@@ -45,7 +45,7 @@ void OceffWipe3_Destroy(Actor* thisx, PlayState* play) {
 
     func_800876C8(play);
     if (gSaveContext.nayrusLoveTimer != 0) {
-        player->stateFlags3 |= 0x40;
+        player->stateFlags3 |= PLAYER_STATE3_RESTORE_NAYRUS_LOVE;
     }
 }
 
@@ -91,7 +91,7 @@ void OceffWipe3_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     Matrix_Translate(eye.x + vec.x, eye.y + vec.y, eye.z + vec.z, MTXMODE_NEW);
     Matrix_Scale(0.1f, 0.1f, 0.1f, MTXMODE_APPLY);

@@ -2710,7 +2710,7 @@ void BossSst_DrawHand(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x80, sBodyColor.r, sBodyColor.g, sBodyColor.b, 255);
 
@@ -2731,7 +2731,7 @@ void BossSst_DrawHand(Actor* thisx, PlayState* play) {
         s32 end;
         s32 pad;
 
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
         end = this->trailCount >> 1;
         idx = (this->trailIndex + 4) % 7;
@@ -2867,7 +2867,7 @@ void BossSst_DrawHead(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_7)) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x80, sBodyColor.r, sBodyColor.g, sBodyColor.b, 255);
         if (!sBodyStatic) {
             gSPSegment(POLY_OPA_DISP++, 0x08, &D_80116280[2]);
@@ -2876,7 +2876,7 @@ void BossSst_DrawHead(Actor* thisx, PlayState* play) {
             gSPSegment(POLY_OPA_DISP++, 0x08, sBodyStaticDList);
         }
     } else {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0x00, 0x80, 255, 255, 255, 255);
         gSPSegment(POLY_XLU_DISP++, 0x08, &D_80116280[2]);
     }
@@ -2908,7 +2908,7 @@ void BossSst_DrawHead(Actor* thisx, PlayState* play) {
         Vec3f vanishMaskPos;
         Vec3f vanishMaskOffset;
 
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0x00, 0x00, 0, 0, 18, 255);
 
         yOffset = 113 * 8 - this->timer * 8;
@@ -3168,7 +3168,7 @@ void BossSst_DrawEffect(Actor* thisx, PlayState* play) {
     if (this->effectMode != BONGO_NULL) {
         OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         if (this->effectMode == BONGO_ICE) {
             gSPSegment(POLY_XLU_DISP++, 0x08,
                        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, play->gameplayFrames % 256, 0x20, 0x10, 1,

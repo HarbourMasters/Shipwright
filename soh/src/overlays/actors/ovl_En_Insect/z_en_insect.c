@@ -789,7 +789,7 @@ void EnInsect_Update(Actor* thisx, PlayState* play) {
 void EnInsect_Draw(Actor* thisx, PlayState* play) {
     EnInsect* this = (EnInsect*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL, NULL);
     Collider_UpdateSpheres(0, &this->collider);
     D_80A7DEB4 = 0;

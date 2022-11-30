@@ -398,7 +398,7 @@ s32 func_809B5F98(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
 void EnAttackNiw_Draw(Actor* thisx, PlayState* play) {
     EnAttackNiw* this = (EnAttackNiw*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           func_809B5F98, NULL, this);
 }
