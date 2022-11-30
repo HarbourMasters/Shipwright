@@ -22,9 +22,9 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
     osSyncPrintf(VT_RST);
     if (gSaveContext.fileNum == 0xFF) {
         Sram_InitDebugSave();
-        gSaveContext.unk_13F6 = gSaveContext.magic;
+        gSaveContext.magicFillTarget = gSaveContext.magic;
         gSaveContext.magic = 0;
-        gSaveContext.unk_13F4 = 0;
+        gSaveContext.magicCapacity = 0;
         gSaveContext.magicLevel = gSaveContext.magic;
     }
     for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
@@ -63,9 +63,9 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
     osSyncPrintf(VT_RST);
     if (gSaveContext.fileNum == 0xFF) {
         Sram_InitDebugSave();
-        gSaveContext.unk_13F6 = gSaveContext.magic;
+        gSaveContext.magicFillTarget = gSaveContext.magic;
         gSaveContext.magic = 0;
-        gSaveContext.unk_13F4 = 0;
+        gSaveContext.magicCapacity = 0;
         gSaveContext.magicLevel = gSaveContext.magic;
     }
     for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
@@ -1219,10 +1219,10 @@ void Select_DrawMenu(SelectContext* this) {
     OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
-    func_80095248(gfxCtx, 0, 0, 0);
+    Gfx_SetupFrame(gfxCtx, 0, 0, 0);
     SET_FULLSCREEN_VIEWPORT(&this->view);
     func_800AAA50(&this->view, 0xF);
-    func_80094140(gfxCtx);
+    Gfx_SetupDL_28Opa(gfxCtx);
 
     printer = alloca(sizeof(GfxPrint));
     GfxPrint_Init(printer);
@@ -1249,10 +1249,10 @@ void Select_DrawLoadingScreen(SelectContext* this) {
     OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
-    func_80095248(gfxCtx, 0, 0, 0);
+    Gfx_SetupFrame(gfxCtx, 0, 0, 0);
     SET_FULLSCREEN_VIEWPORT(&this->view);
     func_800AAA50(&this->view, 0xF);
-    func_80094140(gfxCtx);
+    Gfx_SetupDL_28Opa(gfxCtx);
 
     printer = alloca(sizeof(GfxPrint));
     GfxPrint_Init(printer);
@@ -1270,7 +1270,7 @@ void Select_Draw(SelectContext* this) {
     OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
-    func_80095248(gfxCtx, 0, 0, 0);
+    Gfx_SetupFrame(gfxCtx, 0, 0, 0);
     SET_FULLSCREEN_VIEWPORT(&this->view);
     func_800AAA50(&this->view, 0xF);
 
