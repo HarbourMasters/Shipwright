@@ -324,12 +324,10 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.randomizerInf[i] = 0;
         }
 
-        // Set all trials to cleared if trial count is random or anything other than 6
-        if (Randomizer_GetSettingValue(RSK_RANDOM_TRIALS) || (Randomizer_GetSettingValue(RSK_TRIAL_COUNT) != 6)) {
-            for (u16 i = RAND_INF_TRIALS_DONE_LIGHT_TRIAL; i <= RAND_INF_TRIALS_DONE_SHADOW_TRIAL; i++) {
-                if (!Randomizer_IsTrialRequired(i)) {
-                    Flags_SetRandomizerInf(i);
-                }
+        // If any trials aren't required, set them as completed
+        for (u16 i = RAND_INF_TRIALS_DONE_LIGHT_TRIAL; i <= RAND_INF_TRIALS_DONE_SHADOW_TRIAL; i++) {
+            if (!Randomizer_IsTrialRequired(i)) {
+                Flags_SetRandomizerInf(i);
             }
         }
 
