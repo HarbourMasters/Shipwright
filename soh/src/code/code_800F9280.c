@@ -33,7 +33,7 @@ u8 D_80133418 = 0;
 #define Audio_SetVolScaleNow(playerIdx, volFadeTimer, volScale) \
     Audio_ProcessSeqCmd(0x40000000 | ((u8)playerIdx << 24) | ((u8)volFadeTimer << 16) | ((u8)(volScale * 127.0f)));
 
-void func_800F9280(u8 playerIdx, u16 seqId, u8 arg2, u16 fadeTimer) {
+void func_800F9280(u8 playerIdx, u8 seqId, u8 arg2, u16 fadeTimer) {
     u8 i;
     u16 dur;
     s32 pad;
