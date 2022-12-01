@@ -870,7 +870,7 @@ void Play_Update(PlayState* play) {
                             // Don't autosave in grottos or cutscenes
                             // Also don't save when you first load a file
                             if (CVar_GetS32("gAutosave", 0) && (gSaveContext.cutsceneIndex == 0) && (play->gameplayFrames > 60) &&
-                                (play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA)) {
+                                (play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA) && (play->sceneNum != SCENE_KENJYANOMA)) {
                                 Play_PerformSave(play);
                             }
                         }
