@@ -39,6 +39,7 @@ extern PlayState* gPlayState;
 #include "objects/object_gla/object_gla.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
 #include "objects/object_gi_pachinko/object_gi_pachinko.h"
+#include "objects/object_trap/object_trap.h"
 #include "overlays/ovl_Boss_Ganon2/ovl_Boss_Ganon2.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
@@ -206,6 +207,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("World_BlockOfTime",             "Block of Time",        BOX_WORLD,        ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("World_Moon",                    "Moon",                 BOX_WORLD,        ImVec4(240, 255, 180, 255), false, true, true),
     COSMETIC_OPTION("World_GossipStone",             "Gossip Stone",         BOX_WORLD,        ImVec4(200, 200, 200, 255), false, true, true),
+    COSMETIC_OPTION("World_RedIce",                  "Red Ice",              BOX_WORLD,        ImVec4(255,   0,   0, 255), false, true, false),
 
     /* NPCs */
     // Navi
@@ -221,6 +223,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("NPC_GoldenSkulltula",           "Golden Skulltula",     BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("NPC_Kokiri",                    "Kokiri",               BOX_NPC,          ImVec4(  0, 130,  70, 255), false, true, false),
     COSMETIC_OPTION("NPC_Gerudo",                    "Gerudo",               BOX_NPC,          ImVec4( 90,   0, 140, 255), false, true, false),
+    COSMETIC_OPTION("NPC_MetalTrap",                 "Metal Trap",           BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
     // Cucco
 };
 
@@ -891,6 +894,13 @@ void ApplyOrResetCustomGfxPatches(bool rainbowTick = false) {
         PATCH_GFX(gGerudoPurpleRightShinDL,                       "NPC_Gerudo6",              npcGerudo.changedCvar,               22, gsDPSetEnvColor(color.r, color.g, color.b, 255));
         PATCH_GFX(gGerudoPurpleLeftHandDL,                        "NPC_Gerudo7",              npcGerudo.changedCvar,               34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGerudoPurpleRightHandDL,                       "NPC_Gerudo8",              npcGerudo.changedCvar,               34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+    }
+
+    static CosmeticOption& npcMetalTrap = cosmeticOptions.at("NPC_MetalTrap");
+    if (rainbowTick == false || CVar_GetS32(npcMetalTrap.rainbowCvar, 0)) {
+        static Color_RGBA8 defaultColor = {npcMetalTrap.defaultColor.x, npcMetalTrap.defaultColor.y, npcMetalTrap.defaultColor.z, npcMetalTrap.defaultColor.w};
+        Color_RGBA8 color = CVar_GetRGBA(npcMetalTrap.cvar, defaultColor);
+        PATCH_GFX(gSlidingBladeTrapDL,                            "NPC_MetalTrap1",           npcMetalTrap.changedCvar,           118, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& n64LogoRed = cosmeticOptions.at("Title_N64LogoRed");
