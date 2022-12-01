@@ -174,13 +174,14 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
         }
 
         // Get randomized enemy ID and parameter.
-        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(*posX, *posY, *posZ);
+        uint32_t seed = play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params;
+        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed);
 
         int8_t timesRandomized = 1;
 
         // While randomized enemy isn't allowed in certain situations, randomize again.
         while (!IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, randomEnemy)) {
-            randomEnemy = GetRandomizedEnemyEntry(*posX + timesRandomized, *posY, *posZ);
+            randomEnemy = GetRandomizedEnemyEntry(seed + timesRandomized);
             timesRandomized++;
         }
 
@@ -222,14 +223,15 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
     return 1;
 }
 
-EnemyEntry GetRandomizedEnemyEntry(float seed1, float seed2, float seed3) {
+EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
     if (CVar_GetS32("gSeededRandomizedEnemies", 0) && gSaveContext.n64ddFlag) {
-        uint32_t seed = (int)seed1 + (int)seed2 + (int)seed3 + *gSaveContext.seedIcons;
-        Random_Init(seed);
+        uint32_t finalSeed = seed + gSaveContext.seedIcons[0] + gSaveContext.seedIcons[1] + gSaveContext.seedIcons[2] +
+                        gSaveContext.seedIcons[3] + gSaveContext.seedIcons[4];
+        Random_Init(finalSeed);
         uint32_t randomNumber = Random(0, RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE);
         return randomizedEnemySpawnTable[randomNumber];
     } else {
-        uint32_t randomNumber = rand() + (int)seed1 + (int)seed2 + (int)seed3;
+        uint32_t randomNumber = rand() + seed;
         return randomizedEnemySpawnTable[randomNumber % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
     }
 }
@@ -321,39 +323,40 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
         // Forest Temple
         case SCENE_BMORI1:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 6 || roomNum == 10 || roomNum == 18 || roomNum == 21)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 5 || roomNum == 6 || roomNum == 18 || roomNum == 21)));
         // Fire Temple
         case SCENE_HIDAN:
             return (!(!isMQ && enemiesToExcludeClearRooms && roomNum == 15) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 15 || roomNum == 17 || roomNum == 18)));
         // Water Temple
         case SCENE_MIZUSIN:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 13 || roomNum == 18 || roomNum == 19)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 13 || roomNum == 18)));
         // Spirit Temple
         case SCENE_JYASINZOU:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 10 || roomNum == 17 || roomNum == 20)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 2 || roomNum == 4 || roomNum == 10 || roomNum == 15 || roomNum == 19 || roomNum == 20)));
         // Shadow Temple
         case SCENE_HAKADAN:
             return (!(!isMQ && enemiesToExcludeClearRooms && 
                         (roomNum == 1 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 16 || roomNum == 17 || roomNum == 19 || roomNum == 20)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 6 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 20)));
         // Ganon's Castle Trials
         case SCENE_GANONTIKA:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 2 || roomNum == 5 || roomNum == 9)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 0 || roomNum == 2 || roomNum == 5 || roomNum == 9)));
         // Ice Caverns
         case SCENE_ICE_DOUKUTO:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 7)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 3 || roomNum == 7)));
         // Don't allow Dark Link in areas with lava void out zones as it voids out the player as well.
         // Gerudo Training Ground.
         case SCENE_MEN:
             return (!(enemy.id == ACTOR_EN_TORCH2 && roomNum == 6) &&
                     !(!isMQ && enemiesToExcludeTimedRooms && (roomNum == 1 || roomNum == 7)) &&
                     !(!isMQ && enemiesToExcludeClearRooms && (roomNum == 3 || roomNum == 5 || roomNum == 10)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 0));
+                    !(isMQ && enemiesToExcludeTimedRooms && (roomNum == 1 || roomNum == 3 || roomNum == 5 || roomNum == 7)) &&
+                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 10));
         // Don't allow certain enemies in Ganon's Tower because they would spawn up on the ceilling,
         // becoming impossible to kill.
         // Ganon's Tower.
@@ -365,10 +368,14 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
         // Don't allow big stalchildren and big peahats during the Gohma fight because they can clip into Gohma
         // and it crashes the game. Likely because Gohma on the ceilling can't handle collision with other enemies.
         case SCENE_YDAN_BOSS:
-            return (!(enemy.id == ACTOR_EN_SKB && enemy.params == 20) && !(enemy.id == ACTOR_EN_PEEHAT && enemy.params == -1));
+            return (!enemiesToExcludeClearRooms && !(enemy.id == ACTOR_EN_SKB && enemy.params == 20) &&
+                    !(enemy.id == ACTOR_EN_PEEHAT && enemy.params == -1));
         // Grottos.
         case SCENE_KAKUSIANA:
             return (!(enemiesToExcludeClearRooms && (roomNum == 2 || roomNum == 7)));
+        // Royal Grave.
+        case SCENE_HAKAANA_OUKE:
+            return (!(enemiesToExcludeClearRooms && roomNum == 0));
         // Don't allow Dark Link in areas with lava void out zones as it voids out the player as well.
         // Death Mountain Crater.
         case SCENE_SPOT17:
