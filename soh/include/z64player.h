@@ -677,6 +677,7 @@ typedef struct Player {
     // Upstream TODO: Rename these to be more obviously SoH specific
     /*        */ PendingFlag pendingFlag;
     /*        */ GetItemEntry getItemEntry;
+    /*        */ s8 rocUseCount;
     // #endregion
     // #region SOH [Enhancements]
     // Upstream TODO: Rename this to make it more obvious it is apart of an enhancement

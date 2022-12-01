@@ -353,6 +353,8 @@ s32 Player_InflictDamage(PlayState* play, s32 damage);
 s32 Player_InflictDamageModified(PlayState* play, s32 damage, u8 modified);
 void func_80853148(PlayState* play, Actor* actor);
 
+void func_80838940(Player* this, LinkAnimationHeader* anim, f32 arg2, PlayState* play, u16 sfxId);
+
 // .bss part 1
 static s32 D_80858AA0;
 static s32 D_80858AA4;
@@ -2057,6 +2059,10 @@ void func_80833DF8(Player* this, PlayState* play) {
     s32 item;
     s32 i;
 
+    if (this->actor.bgCheckFlags & 1) {
+        this->rocUseCount = 0;
+    }
+
     if (this->currentMask != PLAYER_MASK_NONE) {
         if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
             s32 maskItem = this->currentMask - PLAYER_MASK_KEATON + ITEM_MASK_KEATON;
@@ -2121,9 +2127,29 @@ void func_80833DF8(Player* this, PlayState* play) {
             if ((item < ITEM_NONE_FE) && (Player_ItemToItemAction(item) == this->heldItemAction)) {
                 D_80853618 = true;
             }
-        } else {
+        } else if (item != ITEM_NAYRUS_LOVE) {
             this->heldItemButton = i;
             func_80835F44(play, this, item);
+        } else if (this->rocUseCount == 0) {
+            this->rocUseCount++;
+            this->linearVelocity = 5.0f;
+            this->actor.velocity.y = 8.0f;
+            this->actor.world.rot.y = this->currentYaw = this->actor.shape.rot.y;
+
+            func_80838940(this, D_80853D4C[2][0], !(2 & 1) ? 5.8f : 3.5f, play, /* NA_SE_VO_LI_SWORD_N*/ 0);
+
+            Vec3f effectsPos = this->actor.home.pos;
+            effectsPos.y += 3;
+            f32 effectsScale = 1;
+            if (!gSaveContext.linkAge) {
+                effectsScale = 1.5f;
+            }
+            EffectSsGRipple_Spawn(play, &effectsPos, 200 * effectsScale, 300 * effectsScale, 1);
+            EffectSsGSplash_Spawn(play, &effectsPos, NULL, NULL, 0, 150 * effectsScale);
+
+            this->stateFlags2 &= ~(PLAYER_STATE2_19);
+
+            func_8002F7DC(&this->actor, NA_SE_PL_SKIP);
         }
     }
 }
