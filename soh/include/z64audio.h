@@ -259,7 +259,7 @@ typedef struct {
     /* 0x001 */ u8 state;
     /* 0x002 */ u8 noteAllocPolicy;
     /* 0x003 */ u8 muteBehavior;
-    /* 0x004 */ u8 seqId;
+    /* 0x004 */ u16 seqId;
     /* 0x005 */ u8 defaultFont;
     /* 0x006 */ u8 unk_06[1];
     /* 0x007 */ s8 playerIdx;
@@ -913,7 +913,7 @@ typedef struct {
     /* 0x342C */ AudioPoolSplit3 temporaryCommonPoolSplit;
     /* 0x3438 */ u8 sampleFontLoadStatus[0x30];
     /* 0x3468 */ u8 fontLoadStatus[0x30];
-    /* 0x3498 */ u8 seqLoadStatus[0x80];
+    /* 0x3498 */ u8 seqLoadStatus[1024];
     /* 0x3518 */ volatile u8 resetStatus;
     /* 0x3519 */ u8 audioResetSpecIdToLoad;
     /* 0x351C */ s32 audioResetFadeOutFramesLeft;
@@ -941,6 +941,8 @@ typedef struct {
     /* 0x5C3C */ OSMesg audioResetMesgs[1];
     /* 0x5C40 */ OSMesg cmdProcMsgs[4];
     /* 0x5C50 */ AudioCmd cmdBuf[0x100];
+    u16 seqToPlay[4];
+    u8 seqReplaced[4];
 } AudioContext; // size = 0x6450
 
 typedef struct {
@@ -1105,7 +1107,7 @@ typedef enum {
 typedef struct {
     char* seqData;
     int32_t seqDataSize;
-    uint8_t seqNumber;
+    uint16_t seqNumber;
     uint8_t medium;
     uint8_t cachePolicy;
     int32_t numFonts;

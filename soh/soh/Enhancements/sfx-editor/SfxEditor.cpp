@@ -6,13 +6,16 @@
 #include <ImGuiImpl.h>
 #include <functions.h>
 #include "../randomizer/3drando/random.hpp"
+#include "../../OTRGlobals.h"
+#include <Utils/StringHelper.h>
+#include "../../UIWidgets.hpp"
 
 Vec3f pos = { 0.0f, 0.0f, 0.0f };
 f32 freqScale = 1.0f;
 s8 reverbAdd = 0;
 
 //  {originalSequenceId,           {label,                                  sfxKey,                          category},
-const std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap = {
+std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap = {
     {NA_BGM_FIELD_LOGIC,           {"Hyrule Field",                        "NA_BGM_FIELD_LOGIC",             SEQ_BGM_WORLD}},
     {NA_BGM_DUNGEON,               {"Dodongo's Cavern",                    "NA_BGM_DUNGEON",                 SEQ_BGM_WORLD}},
     {NA_BGM_KAKARIKO_ADULT,        {"Kakariko Village (Adult)",            "NA_BGM_KAKARIKO_ADULT",          SEQ_BGM_WORLD}},
@@ -39,7 +42,7 @@ const std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap =
     {NA_BGM_GANON_TOWER,           {"Ganondorf's Theme",                   "NA_BGM_GANON_TOWER",             SEQ_BGM_WORLD}},
     {NA_BGM_LONLON,                {"Lon Lon Ranch",                       "NA_BGM_LONLON",                  SEQ_BGM_WORLD}},
     {NA_BGM_GORON_CITY,            {"Goron City",                          "NA_BGM_GORON_CITY",              SEQ_BGM_WORLD}},
-    {NA_BGM_FIELD_MORNING,         {"Hyrule Field Morning Theme",          "NA_BGM_FIELD_MORNING",           SEQ_BGM_WORLD}},
+    //{NA_BGM_FIELD_MORNING,         {"Hyrule Field Morning Theme",          "NA_BGM_FIELD_MORNING",           SEQ_BGM_WORLD}},
     {NA_BGM_SPIRITUAL_STONE,       {"Spiritual Stone Get",                 "NA_BGM_SPIRITUAL_STONE",         SEQ_FANFARE}},
     {NA_BGM_OCA_BOLERO,            {"Bolero of Fire",                      "NA_BGM_OCA_BOLERO",              SEQ_OCARINA}},
     {NA_BGM_OCA_MINUET,            {"Minuet of Forest",                    "NA_BGM_OCA_MINUET",              SEQ_OCARINA}},
@@ -196,7 +199,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
     if (ImGui::Button(randomizeAllButton.c_str())) {
         std::vector<u16> values;
         for (const auto& [value, seqData] : map) {
-            if (std::get<2>(seqData) == type) {
+            if (std::get<2>(seqData) & type) {
                 values.push_back(value);
             }
         }
@@ -204,7 +207,10 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         for (const auto& [defaultValue, seqData] : map) {
             const auto& [name, sfxKey, seqType] = seqData;
             const std::string cvarKey = "gSfxEditor_" + sfxKey;
-            if (seqType == type) {
+            if (seqType & type) {
+                if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue >= 110) {
+                    continue;
+                }
                 const int randomValue = values.back();
                 CVar_SetS32(cvarKey.c_str(), randomValue);
                 values.pop_back();
@@ -216,11 +222,14 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
     ImGui::BeginTable(tabId.c_str(), 3, ImGuiTableFlags_SizingFixedFit);
     ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
     ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
-    ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 110.0f);
+    ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 190.0f);
     for (const auto& [defaultValue, seqData] : map) {
         const auto& [name, sfxKey, seqType] = seqData;
 
-        if (seqType != type) {
+        if (~(seqType) & type) {
+            continue;
+        }
+        if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue >= 110) {
             continue;
         }
 
@@ -229,6 +238,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         const std::string stopButton = " Stop  " + hiddenKey;
         const std::string previewButton = "Preview" + hiddenKey;
         const std::string resetButton = "Reset" + hiddenKey;
+        const std::string randomizeButton = "Randomize" + hiddenKey;
         const int currentValue = CVar_GetS32(cvarKey.c_str(), defaultValue);
 
         ImGui::TableNextRow();
@@ -236,10 +246,11 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         ImGui::Text(name.c_str());
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(-FLT_MIN);
-        if (ImGui::BeginCombo(hiddenKey.c_str(), std::get<0>(map.at(currentValue)).c_str())) {
+        const int initialValue = map.contains(currentValue) ? currentValue : defaultValue;
+        if (ImGui::BeginCombo(hiddenKey.c_str(), std::get<0>(map.at(initialValue)).c_str())) {
             for (const auto& [value, seqData] : map) {
                 const auto& [name, sfxKey, seqType] = seqData;
-                if (seqType != type) {
+                if (~(seqType) & type) {
                     continue;
                 }
 
@@ -283,19 +294,47 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
             CVar_SetS32(cvarKey.c_str(), defaultValue);
             SohImGui::RequestCvarSaveOnNextTick();
         }
+        ImGui::SameLine();
+        ImGui::PushItemWidth(-FLT_MIN);
+        if (ImGui::Button(randomizeButton.c_str())) {
+            bool valid = false;
+            uint32_t value;
+            while (!valid) {
+                value = Random(2, map.size());
+                if (map.contains(value)) {
+                    auto [name, sfxKey, seqType] = map.at(value);
+                    if (seqType & type) {
+                        valid = true;
+                    }
+                }
+            }
+            CVar_SetS32(cvarKey.c_str(), value);
+            SohImGui::RequestCvarSaveOnNextTick();
+        }
     }
     ImGui::EndTable();
 }
 
 extern "C" u16 SfxEditor_GetReplacementSeq(u16 seqId) {
+    // if Hyrule Field Morning is about to play, but Hyrule Field is swapped, get the replacement sequence
+    // for Hyrule Field instead. Otherwise, leave it alone, so that without any sfx editor modifications we will
+    // play the normal track as usual.
+    if (seqId == NA_BGM_FIELD_MORNING) {
+        if (CVar_GetS32("gSfxEditor_NA_BGM_FIELD_LOGIC", NA_BGM_FIELD_LOGIC) != NA_BGM_FIELD_LOGIC) {
+            seqId = NA_BGM_FIELD_LOGIC;
+        }
+    }
+    
     if (sequenceMap.find(seqId) == sequenceMap.end()) {
         return seqId;
     }
 
     const auto& [name, sfxKey, seqType] = sequenceMap.at(seqId);
     const std::string cvarKey = "gSfxEditor_" + sfxKey;
-    const int replacementSeq = CVar_GetS32(cvarKey.c_str(), seqId);
-
+    int replacementSeq = CVar_GetS32(cvarKey.c_str(), seqId);
+    if (!sequenceMap.contains(replacementSeq)) {
+        replacementSeq = seqId;
+    }
     return static_cast<u16>(replacementSeq);
 }
 
@@ -348,6 +387,34 @@ void DrawSfxEditor(bool& open) {
             Draw_SfxTab("sfx", sequenceMap, SEQ_SFX);
             ImGui::EndTabItem();
         }
+
+        static ImVec2 cellPadding(8.0f, 8.0f);
+        if (ImGui::BeginTabItem("Options")) {
+            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+            ImGui::BeginTable("Options", 1, ImGuiTableFlags_SizingStretchSame);
+            ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            if (ImGui::BeginChild("SfxOptions", ImVec2(0, -8))) {
+                ImGui::PushItemWidth(-FLT_MIN);
+                UIWidgets::EnhancementCheckbox("Disable Enemy Proximity Music", "gEnemyBGMDisable");
+                UIWidgets::InsertHelpHoverText(
+                    "Disables the music change when getting close to enemies. Useful for hearing "
+                    "your custom music for each scene more often.");
+                UIWidgets::PaddedSeparator();
+                UIWidgets::PaddedText("The following options are experimental and may cause music\nto sound odd or have other undesireable effects.");
+                UIWidgets::EnhancementCheckbox("Lower Octaves of Unplayable High Notes", "gExperimentalOctaveDrop");
+                UIWidgets::InsertHelpHoverText("Some custom sequences may have notes that are too high for the game's audio "
+                                            "engine to play. Enabling this checkbox will cause these notes to drop a "
+                                            "couple of octaves so they can still harmonize with the other notes of the "
+                                            "sequence.");
+                ImGui::PopItemWidth();
+            }
+            ImGui::EndChild();
+            ImGui::EndTable();
+            ImGui::PopStyleVar(1);
+            ImGui::EndTabItem();
+        }
         ImGui::EndTabBar();
     }
     ImGui::End();
@@ -356,4 +423,18 @@ void DrawSfxEditor(bool& open) {
 void InitSfxEditor() {
     //Draw the bar in the menu.
     SohImGui::AddWindow("Enhancements", "SFX Editor", DrawSfxEditor);
+}
+
+extern "C" void SfxEditor_AddSequence(char *otrPath, uint16_t seqNum) {
+    std::vector<std::string> splitName = StringHelper::Split(otrPath, "/");
+    std::string fileName = splitName[splitName.size() - 1];
+    std::vector<std::string> splitFileName = StringHelper::Split(fileName, "_");
+    std::string sequenceName = splitFileName[0];
+    SeqType type = SEQ_BGM_CUSTOM;
+    if (splitFileName[splitFileName.size() - 1] == "fanfare" || splitFileName[splitFileName.size() - 1] == "Fanfare") {
+        type = SEQ_FANFARE;
+    }
+    auto tuple = std::make_tuple(
+        sequenceName, StringHelper::Replace(StringHelper::Replace(sequenceName, " ", "_"), "~", "-"), type);
+    sequenceMap.emplace(seqNum, tuple);
 }

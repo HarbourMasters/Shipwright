@@ -5,6 +5,7 @@
 #include "ultra64.h"
 #include "global.h"
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/sfx-editor/SfxEditor.h"
 
 #define MK_ASYNC_MSG(retData, tableType, id, status) (((retData) << 24) | ((tableType) << 16) | ((id) << 8) | (status))
 #define ASYNC_TBLTYPE(v) ((u8)(v >> 16))
@@ -76,7 +77,7 @@ void* sUnusedHandler = NULL;
 
 s32 gAudioContextInitalized = false;
 
-char* sequenceMap[256];
+char* sequenceMap[1024];
 char* fontMap[256];
 
 uintptr_t fontStart;
@@ -481,10 +482,11 @@ void AudioLoad_AsyncLoadFont(s32 fontId, s32 arg1, s32 retData, OSMesgQueue* ret
 u8* AudioLoad_GetFontsForSequence(s32 seqId, u32* outNumFonts) {
     s32 index;
 
-    if (seqId == 255)
-        return NULL;
+    // if (seqId == 255)
+    //     return NULL;
 
-    SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
+    u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
+    SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[newSeqId]);
 
     if (sDat.numFonts == 0)
         return NULL;
@@ -570,7 +572,9 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     fontId = 0xFF;
     //index = ((u16*)gAudioContext.sequenceFontTable)[seqId];
     //numFonts = gAudioContext.sequenceFontTable[index++];
-
+    if (gAudioContext.seqReplaced[playerIdx]) {
+        seqId = gAudioContext.seqToPlay[playerIdx];
+    }
     SequenceData seqData2 = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
 
     for (int i = 0; i < seqData2.numFonts; i++)
@@ -984,7 +988,6 @@ void* AudioLoad_AsyncLoadInner(s32 tableType, s32 id, s32 nChunks, s32 retData, 
     u32 temp_v0;
     u32 realId;
 
-    realId = AudioLoad_GetRealTableIndex(tableType, id);
     switch (tableType) {
         case SEQUENCE_TABLE:
             if (gAudioContext.seqLoadStatus[realId] == 1) {
@@ -1223,6 +1226,8 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     gAudioContext.resetTimer = 0;
 
     memset(&gAudioContext, 0, sizeof(gAudioContext));
+    memset(gAudioContext.seqToPlay, 0, 8);
+    memset(gAudioContext.seqReplaced, 0, 8);
 
     switch (osTvType) {
         case OS_TV_PAL:
@@ -1306,6 +1311,24 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     }
 
     free(seqList);
+
+    int customSeqListSize = 0;
+    int startingSeqNum = 110; // 109 is the highest vanilla sequence
+    char** customSeqList = ResourceMgr_ListFiles("custom/music/*", &customSeqListSize);
+
+    for (size_t i = startingSeqNum; i < startingSeqNum + customSeqListSize; i++) {
+        int j = i - startingSeqNum;
+        SfxEditor_AddSequence(customSeqList[j], i);
+        SequenceData sDat = ResourceMgr_LoadSeqByName(customSeqList[j]);
+        sDat.seqNumber = i;
+
+        char* str = malloc(strlen(customSeqList[j]) + 1);
+        strcpy(str, customSeqList[j]);
+
+        sequenceMap[sDat.seqNumber] = str;
+    }
+
+    free(customSeqList);
 
     int fntListSize = 0;
     char** fntList = ResourceMgr_ListFiles("audio/fonts*", &fntListSize);
@@ -1499,6 +1522,13 @@ s32 AudioLoad_SlowLoadSeq(s32 seqId, u8* ramAddr, s8* isDone) {
     size_t size;
 
     seqId = AudioLoad_GetRealTableIndex(SEQUENCE_TABLE, seqId);
+    u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
+    if (seqId != newSeqId) {
+        gAudioContext.seqToPlay[SEQ_PLAYER_BGM_MAIN] = newSeqId;
+        gAudioContext.seqReplaced[SEQ_PLAYER_BGM_MAIN] = 1;
+        Audio_QueueSeqCmd(0x00000000 | ((u8)SEQ_PLAYER_BGM_MAIN << 24) | ((u8)(0) << 0x10) | (u16)seqId);
+        return 0;
+    }
     seqTable = AudioLoad_GetLoadTable(SEQUENCE_TABLE);
     slowLoad = &gAudioContext.slowLoads[gAudioContext.slowLoadPos];
     if (slowLoad->status == LOAD_STATUS_DONE) {
@@ -1507,7 +1537,7 @@ s32 AudioLoad_SlowLoadSeq(s32 seqId, u8* ramAddr, s8* isDone) {
 
     slowLoad->sample.sampleAddr = NULL;
     slowLoad->isDone = isDone;
-
+ 
     SequenceData sData = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
     char* seqData = sData.seqData;
     size = sData.seqDataSize;

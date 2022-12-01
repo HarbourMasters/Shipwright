@@ -178,6 +178,10 @@ bool OTRGlobals::HasOriginal() {
     return hasOriginal;
 }
 
+std::shared_ptr<std::vector<std::string>> OTRGlobals::ListFiles(std::string path) {
+    return context->GetResourceManager()->ListFiles(path);
+}
+
 struct ExtensionEntry {
     std::string path;
     std::string ext;
