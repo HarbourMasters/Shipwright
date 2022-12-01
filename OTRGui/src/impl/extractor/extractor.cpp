@@ -36,7 +36,7 @@ std::string GetXMLVersion(RomVersion version)
 	return "ERROR";
 }
 
-void BuildOTR(const std::string output) {
+void BuildOTR(const std::string output, RomVersion version) {
 	if (oldExtractMode)
 	{
 		std::string execStr = Util::format("assets/extractor/%s", isWindows() ? "ZAPD.exe" : "ZAPD.out") + " botr -se OTR";
@@ -49,11 +49,17 @@ void BuildOTR(const std::string output) {
 
 	setCurrentStep("Done!");
 
-	if (output == ".") return;
-	const std::string outputPath = MoonUtils::join(output, "oot.otr");
-	if(MoonUtils::exists(outputPath)) MoonUtils::rm(outputPath);
+	if (output == ".") {
+		if (version.isMQ) {
+			MoonUtils::move("oot.otr", "oot-mq.otr");
+		}
+	} else {
+		const std::string otrName = version.isMQ ? "oot-mq.otr" : "oot.otr";
+		const std::string outputPath = MoonUtils::join(output, otrName);
+		if(MoonUtils::exists(outputPath)) MoonUtils::rm(outputPath);
 
-	MoonUtils::copy("oot.otr", outputPath);
+		MoonUtils::copy("oot.otr", outputPath);
+	}
 }
 
 void ExtractFile(std::string xmlPath, std::string outPath, std::string outSrcPath, RomVersion version) {
@@ -127,7 +133,7 @@ void startWorker(RomVersion version) {
 	}
 }
 
-void updateWorker(const std::string& output) {
+void updateWorker(const std::string& output, RomVersion version) {
 	if (maxResources > 0 && !buildingOtr && (extractedResources >= maxResources || !oldExtractMode)) 
 	{
 		setCurrentStep("Building OTR...");
@@ -138,10 +144,10 @@ void updateWorker(const std::string& output) {
 		buildingOtr = true;
 		
 		if (single_thread || !oldExtractMode){
-			BuildOTR(output);
+			BuildOTR(output, version);
 			return;
 		}
-		std::thread otr(BuildOTR, output);
+		std::thread otr(BuildOTR, output, version);
 		otr.detach();
 	}
 }

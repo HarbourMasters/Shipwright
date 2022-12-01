@@ -9,6 +9,7 @@ struct RomVersion {
 	std::string version = "None";
 	std::string error = "None";
 	std::string listPath = "None";
+	bool isMQ;
 	int offset;
 	uint32_t crc;
 };
