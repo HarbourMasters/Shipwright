@@ -15,7 +15,7 @@ f32 freqScale = 1.0f;
 s8 reverbAdd = 0;
 
 //  {originalSequenceId,           {label,                                  sfxKey,                          category},
-std::map<u16, std::tuple<std::string, std::string, SeqType>> sequenceMap = {
+std::map<u16, std::tuple<std::string, std::string, SeqType>> sfxEditorSequenceMap = {
     {NA_BGM_FIELD_LOGIC,           {"Hyrule Field",                        "NA_BGM_FIELD_LOGIC",             SEQ_BGM_WORLD}},
     {NA_BGM_DUNGEON,               {"Dodongo's Cavern",                    "NA_BGM_DUNGEON",                 SEQ_BGM_WORLD}},
     {NA_BGM_KAKARIKO_ADULT,        {"Kakariko Village (Adult)",            "NA_BGM_KAKARIKO_ADULT",          SEQ_BGM_WORLD}},
@@ -325,22 +325,22 @@ extern "C" u16 SfxEditor_GetReplacementSeq(u16 seqId) {
         }
     }
     
-    if (sequenceMap.find(seqId) == sequenceMap.end()) {
+    if (sfxEditorSequenceMap.find(seqId) == sfxEditorSequenceMap.end()) {
         return seqId;
     }
 
-    const auto& [name, sfxKey, seqType] = sequenceMap.at(seqId);
+    const auto& [name, sfxKey, seqType] = sfxEditorSequenceMap.at(seqId);
     const std::string cvarKey = "gSfxEditor_" + sfxKey;
     int replacementSeq = CVar_GetS32(cvarKey.c_str(), seqId);
-    if (!sequenceMap.contains(replacementSeq)) {
+    if (!sfxEditorSequenceMap.contains(replacementSeq)) {
         replacementSeq = seqId;
     }
     return static_cast<u16>(replacementSeq);
 }
 
 extern "C" u16 SfxEditor_GetReverseReplacementSeq(u16 seqId) {
-    for (const auto& [id, nameAndsfxKey] : sequenceMap) {
-        const auto& [name, sfxKey, seqType] = sequenceMap.at(id);
+    for (const auto& [id, nameAndsfxKey] : sfxEditorSequenceMap) {
+        const auto& [name, sfxKey, seqType] = sfxEditorSequenceMap.at(id);
         const std::string cvarKey = "gSfxEditor_" + sfxKey;
         if (CVar_GetS32(cvarKey.c_str(), id) == seqId){
             return static_cast<u16>(id);
@@ -363,28 +363,28 @@ void DrawSfxEditor(bool& open) {
 
     if (ImGui::BeginTabBar("SfxContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Background Music")) {
-            Draw_SfxTab("backgroundMusic", sequenceMap, SEQ_BGM_WORLD);
+            Draw_SfxTab("backgroundMusic", sfxEditorSequenceMap, SEQ_BGM_WORLD);
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Fanfares")) {
-            Draw_SfxTab("fanfares", sequenceMap, SEQ_FANFARE);
+            Draw_SfxTab("fanfares", sfxEditorSequenceMap, SEQ_FANFARE);
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Events")) {
-            Draw_SfxTab("event", sequenceMap, SEQ_BGM_EVENT);
+            Draw_SfxTab("event", sfxEditorSequenceMap, SEQ_BGM_EVENT);
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Battle Music")) {
-            Draw_SfxTab("battleMusic", sequenceMap, SEQ_BGM_BATTLE);
+            Draw_SfxTab("battleMusic", sfxEditorSequenceMap, SEQ_BGM_BATTLE);
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Ocarina")) {
-            Draw_SfxTab("instrument", sequenceMap, SEQ_INSTRUMENT);
-            Draw_SfxTab("ocarina", sequenceMap, SEQ_OCARINA);
+            Draw_SfxTab("instrument", sfxEditorSequenceMap, SEQ_INSTRUMENT);
+            Draw_SfxTab("ocarina", sfxEditorSequenceMap, SEQ_OCARINA);
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Sound Effects")) {
-            Draw_SfxTab("sfx", sequenceMap, SEQ_SFX);
+            Draw_SfxTab("sfx", sfxEditorSequenceMap, SEQ_SFX);
             ImGui::EndTabItem();
         }
 
@@ -436,5 +436,5 @@ extern "C" void SfxEditor_AddSequence(char *otrPath, uint16_t seqNum) {
     }
     auto tuple = std::make_tuple(
         sequenceName, StringHelper::Replace(StringHelper::Replace(sequenceName, " ", "_"), "~", "-"), type);
-    sequenceMap.emplace(seqNum, tuple);
+    sfxEditorSequenceMap.emplace(seqNum, tuple);
 }
