@@ -4637,8 +4637,7 @@ void InitRandoItemTable() {
 void InitRando() {
     SohImGui::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
     Randomizer::CreateCustomMessages();
-    seedInputBuffer = new char[MAX_SEED_BUFFER_SIZE];
-    strcpy(seedInputBuffer, "");
+    seedInputBuffer = (char*)calloc(MAX_SEED_BUFFER_SIZE, sizeof(char));
     InitRandoItemTable();
 }
 
