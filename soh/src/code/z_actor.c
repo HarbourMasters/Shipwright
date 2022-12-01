@@ -96,7 +96,7 @@ void ActorShadow_Draw(Actor* actor, Lights* lights, PlayState* play, Gfx* dlist,
         if (temp1 >= -50.0f && temp1 < 500.0f) {
             OPEN_DISPS(play->state.gfxCtx);
 
-            POLY_OPA_DISP = Gfx_CallSetupDL(POLY_OPA_DISP, 0x2C);
+            POLY_OPA_DISP = Gfx_SetupDL(POLY_OPA_DISP, 0x2C);
 
             gDPSetCombineLERP(POLY_OPA_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED, 0, 0, 0,
                               COMBINED);
@@ -203,7 +203,7 @@ void ActorShadow_DrawFeet(Actor* actor, Lights* lights, PlayState* play) {
 
         OPEN_DISPS(play->state.gfxCtx);
 
-        POLY_OPA_DISP = Gfx_CallSetupDL(POLY_OPA_DISP, 0x2C);
+        POLY_OPA_DISP = Gfx_SetupDL(POLY_OPA_DISP, 0x2C);
 
         actor->shape.feetFloorFlags = 0;
 
@@ -466,7 +466,7 @@ void func_8002C124(TargetContext* targetCtx, PlayState* play) {
         func_8002BE64(targetCtx, targetCtx->unk_4C, spBC.x, spBC.y, spBC.z);
 
         if ((!(player->stateFlags1 & 0x40)) || (actor != player->unk_664)) {
-            OVERLAY_DISP = Gfx_CallSetupDL(OVERLAY_DISP, 0x39);
+            OVERLAY_DISP = Gfx_SetupDL(OVERLAY_DISP, 0x39);
 
             for (spB0 = 0, spAC = targetCtx->unk_4C; spB0 < spB8; spB0++, spAC = (spAC + 1) % 3) {
                 entry = &targetCtx->arr_50[spAC];
@@ -510,7 +510,7 @@ void func_8002C124(TargetContext* targetCtx, PlayState* play) {
         FrameInterpolation_RecordOpenChild(actor, 1);
         NaviColor* naviColor = &sNaviColorList[actor->category];
 
-        POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x7);
+        POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x7);
 
         Matrix_Translate(actor->focus.pos.x, actor->focus.pos.y + (actor->targetArrowOffset * actor->scale.y) + 17.0f,
                          actor->focus.pos.z, MTXMODE_NEW);
@@ -1106,7 +1106,7 @@ void TitleCard_Draw(PlayState* play, TitleCardContext* titleCtx) {
         }
 
         // WORLD_OVERLAY_DISP Goes over POLY_XLU_DISP but under POLY_KAL_DISP
-        WORLD_OVERLAY_DISP = func_80093808(WORLD_OVERLAY_DISP);
+        WORLD_OVERLAY_DISP = Gfx_SetupDL_52NoCD(WORLD_OVERLAY_DISP);
 
         gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, (u8)titleCtx->intensityR, (u8)titleCtx->intensityG, (u8)titleCtx->intensityB,
                         (u8)titleCtx->alpha);
@@ -1424,7 +1424,7 @@ s32 func_8002DF38(PlayState* play, Actor* actor, u8 csMode) {
 
     player->csMode = csMode;
     player->unk_448 = actor;
-    player->unk_46A = 0;
+    player->doorBgCamIndex = 0;
 
     return true;
 }
@@ -1433,7 +1433,7 @@ s32 func_8002DF54(PlayState* play, Actor* actor, u8 csMode) {
     Player* player = GET_PLAYER(play);
 
     func_8002DF38(play, actor, csMode);
-    player->unk_46A = 1;
+    player->doorBgCamIndex = 1;
 
     return true;
 }
@@ -2385,7 +2385,7 @@ void Actor_DrawFaroresWindPointer(PlayState* play) {
             (((void)0, gSaveContext.respawn[RESPAWN_MODE_TOP].roomIndex) == play->roomCtx.curRoom.num)) {
             f32 scale = 0.025f * ratio;
 
-            POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x19);
+            POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x19);
 
             Matrix_Translate(((void)0, gSaveContext.respawn[RESPAWN_MODE_TOP].pos.x),
                              ((void)0, gSaveContext.respawn[RESPAWN_MODE_TOP].pos.y) + yOffset,
@@ -3980,7 +3980,7 @@ void func_80033C30(Vec3f* arg0, Vec3f* arg1, u8 alpha, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    POLY_OPA_DISP = Gfx_CallSetupDL(POLY_OPA_DISP, 0x2C);
+    POLY_OPA_DISP = Gfx_SetupDL(POLY_OPA_DISP, 0x2C);
 
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, alpha);
 
@@ -4355,7 +4355,7 @@ void func_80034BA0(PlayState* play, SkelAnime* skelAnime, OverrideLimbDraw overr
                    PostLimbDraw postLimbDraw, Actor* actor, s16 alpha) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, alpha);
@@ -4372,7 +4372,7 @@ void func_80034CC4(PlayState* play, SkelAnime* skelAnime, OverrideLimbDraw overr
                    PostLimbDraw postLimbDraw, Actor* actor, s16 alpha) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, alpha);
@@ -4540,7 +4540,7 @@ void func_800355B8(PlayState* play, Vec3f* pos) {
 u8 func_800355E4(PlayState* play, Collider* collider) {
     Player* player = GET_PLAYER(play);
 
-    if ((collider->acFlags & AC_TYPE_PLAYER) && (player->swordState != 0) && (player->swordAnimation == 0x16)) {
+    if ((collider->acFlags & AC_TYPE_PLAYER) && (player->swordState != 0) && (player->meleeWeaponAnimation == 0x16)) {
         return true;
     } else {
         return false;

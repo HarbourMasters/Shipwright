@@ -349,7 +349,7 @@ void func_80AD97C8(EnPoSisters* this, PlayState* play) {
     f32 sp20;
 
     if (this->unk_195 == 0 || this->actionFunc != func_80ADAAA4) {
-        if ((player->swordState == 0 || player->swordAnimation >= 24) &&
+        if ((player->swordState == 0 || player->meleeWeaponAnimation >= 24) &&
             player->actor.world.pos.y - player->actor.floorHeight < 1.0f) {
             Math_StepToF(&this->unk_294, 110.0f, 3.0f);
         } else {
@@ -1365,8 +1365,8 @@ void EnPoSisters_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     func_80ADC55C(this);
-    func_80093D18(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     if (this->unk_22E.a == 255 || this->unk_22E.a == 0) {
         gDPSetEnvColor(POLY_OPA_DISP++, this->unk_22E.r, this->unk_22E.g, this->unk_22E.b, this->unk_22E.a);
         gSPSegment(POLY_OPA_DISP++, 0x09, D_80116280 + 2);

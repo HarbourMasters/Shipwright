@@ -97,11 +97,6 @@ void EnBoom_Init(Actor* thisx, PlayState* play) {
     Collider_SetQuad(play, &this->collider, &this->actor, &sQuadInit);
 
     EnBoom_SetupAction(this, EnBoom_Fly);
-
-    Player* player = GET_PLAYER(play);
-    if(player->boomSpawnGrab){
-        this->grabbed = player->boomSpawnGrab;
-    }
 }
 
 void EnBoom_Destroy(Actor* thisx, PlayState* play) {
@@ -196,12 +191,11 @@ void EnBoom_Fly(EnBoom* this, PlayState* play) {
             player->stateFlags1 &= ~PLAYER_STATE1_25;
             player->boomerangQuickRecall = false;
             Actor_Kill(&this->actor);
-            player->boomSpawnGrab = 0;
         }
     } else {
         collided = (this->collider.base.atFlags & AT_HIT);
         collided = (!!(collided));
-        if (collided && this->collider.base.at != player->boomSpawnGrab) {
+        if (collided) {
             // Copy the position from the prevous frame to the boomerang to start the bounce back.
             Math_Vec3f_Copy(&this->actor.world.pos, &this->actor.prevPos);
         } else {
@@ -275,7 +269,7 @@ void EnBoom_Draw(Actor* thisx, PlayState* play) {
         EffectBlure_AddVertex(Effect_GetByIndex(this->effectIndex), &vec1, &vec2);
     }
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_RotateY((this->activeTimer * 12000) * (M_PI / 0x8000), MTXMODE_APPLY);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),

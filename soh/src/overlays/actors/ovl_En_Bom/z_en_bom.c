@@ -107,8 +107,6 @@ void EnBom_Init(Actor* thisx, PlayState* play) {
         this->bombCollider.info.bumper.dmgFlags |= 1;
     }
 
-    this->bombCollider.info.bumper.dmgFlags |= 16; //makes boomerang interact with it
-
     thisx->shape.rot.z &= 0xFF;
     if (thisx->shape.rot.z & 0x80) {
         thisx->shape.rot.z |= 0xFF00;
@@ -272,11 +270,8 @@ void EnBom_Update(Actor* thisx, PlayState* play2) {
 
         if ((this->bombCollider.base.acFlags & AC_HIT) || ((this->bombCollider.base.ocFlags1 & OC1_HIT) &&
                                                            (this->bombCollider.base.oc->category == ACTORCAT_ENEMY))) {
-            if (this->bombCollider.base.ac != NULL &&              //no segfault pls
-                this->bombCollider.base.ac->id != ACTOR_EN_BOOM) { //makes sure boomerang won't explode it
-                this->timer = 0;
-                thisx->shape.rot.z = 0;
-            }
+            this->timer = 0;
+            thisx->shape.rot.z = 0;
         } else {
             // if a lit stick touches the bomb, set timer to 100
             // these bombs never have a timer over 70, so this isnt used
@@ -371,7 +366,7 @@ void EnBom_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     if (thisx->params == BOMB_BODY) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         Matrix_ReplaceRotation(&play->billboardMtxF);
         func_8002EBCC(thisx, play, 0);
 

@@ -403,7 +403,7 @@ void EnFw_Draw(Actor* thisx, PlayState* play) {
     Matrix_Push();
     EnFw_DrawDust(this, play);
     Matrix_Pop();
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnFw_OverrideLimbDraw, EnFw_PostLimbDraw, this);
 }
@@ -463,14 +463,14 @@ void EnFw_DrawDust(EnFw* this, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     firstDone = false;
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->effects); i++, eff++) {
         FrameInterpolation_RecordOpenChild(eff, eff->epoch);
 
         if (eff->type != 0) {
             if (!firstDone) {
-                POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0U);
+                POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0U);
                 gSPDisplayList(POLY_XLU_DISP++, gFlareDancerDL_7928);
                 gDPSetEnvColor(POLY_XLU_DISP++, 100, 60, 20, 0);
                 firstDone = true;

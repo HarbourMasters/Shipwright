@@ -526,7 +526,7 @@ void DemoIm_DrawTranslucent(DemoIm* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTex));
     gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTex));
@@ -915,7 +915,7 @@ void GivePlayerRandoRewardImpa(Actor* impa, PlayState* play, RandomizerCheck che
         gSaveContext.eventChkInf[5] |= 0x200;
         play->sceneLoadFlag = 0x14;
         play->fadeTransition = 3;
-        gSaveContext.nextTransition = 3;
+        gSaveContext.nextTransitionType = 3;
         // In entrance rando have impa bring link back to the front of castle grounds
         if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
             play->nextEntranceIndex = 0x0138;
@@ -1221,7 +1221,7 @@ void DemoIm_DrawSolid(DemoIm* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTexture));

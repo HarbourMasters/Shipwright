@@ -508,7 +508,7 @@ void BgMizuBwall_Draw(Actor* thisx, PlayState* play2) {
     OPEN_DISPS(play->state.gfxCtx);
     frames = play->gameplayFrames;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08,
                Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, 1 * frames, 0, 0x20, 0x20, 1, 0, 0, 0x20, 0x20, 0,
                                         0, 0, this->scrollAlpha1));

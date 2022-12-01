@@ -220,7 +220,7 @@ void ArrowFire_Draw(Actor* thisx, PlayState* play2) {
 
         // Draw red effect over the screen when arrow hits
         if (this->unk_15C > 0) {
-            POLY_XLU_DISP = func_800937C0(POLY_XLU_DISP);
+            POLY_XLU_DISP = Gfx_SetupDL_57(POLY_XLU_DISP);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 
                 (s32)((secondaryColor.r / 6) * this->unk_15C) & 0xFF,
                 (s32)((secondaryColor.g / 6) * this->unk_15C) & 0xFF, 
@@ -232,7 +232,7 @@ void ArrowFire_Draw(Actor* thisx, PlayState* play2) {
         }
 
         // Draw fire on the arrow
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, primaryColor.r, primaryColor.g, primaryColor.b, this->alpha);
         gDPSetEnvColor(POLY_XLU_DISP++, secondaryColor.r, secondaryColor.g, secondaryColor.b, 128);
         Matrix_RotateZYX(0x4000, 0x0, 0x0, MTXMODE_APPLY);

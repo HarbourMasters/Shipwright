@@ -566,7 +566,7 @@ void func_80967FFC(Actor* thisx, PlayState* play) {
     u16 timer1 = this->timer1;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     Matrix_RotateX(-M_PI / 2, MTXMODE_APPLY);
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0x7FFF - ((timer1 * 8) & 0x7FFF), 16, 512, 1, 0,
@@ -618,12 +618,12 @@ void func_80968298(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     alpha = (s32)(this->unk_170 * 255.0f);
-    POLY_XLU_DISP = func_800937C0(POLY_XLU_DISP);
+    POLY_XLU_DISP = Gfx_SetupDL_57(POLY_XLU_DISP);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, alpha);
     gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_DISABLE);
     gDPSetColorDither(POLY_XLU_DISP++, G_CD_DISABLE);
     gDPFillRectangle(POLY_XLU_DISP++, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     alpha = (s32)(this->unk_16C * 255.0f);
     for (i2 = 0, i = 0; i < 63; i++) {
@@ -646,7 +646,7 @@ void func_80968298(Actor* thisx, PlayState* play) {
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
     gDPSetEnvColor(POLY_XLU_DISP++, 50, 50, 50, 255);
     gSPDisplayList(POLY_XLU_DISP++, object_demo_6k_DL_001040);
@@ -668,7 +668,7 @@ void func_8096865C(Actor* thisx, PlayState* play) {
             displayList = gEffFlash2DL;
         }
 
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 255, 255);
         gDPSetEnvColor(POLY_XLU_DISP++, sEnvColors[this->unk_293].r, sEnvColors[this->unk_293].g,
                        sEnvColors[this->unk_293].b, 255);
@@ -698,7 +698,7 @@ void func_809688C4(Actor* thisx, PlayState* play2) {
         (play->csCtx.npcActions[1]->action != 1)) {
         OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 255, 255);
         Matrix_RotateY((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x8000) * (M_PI / 0x8000), MTXMODE_APPLY);
 
@@ -737,7 +737,7 @@ void func_80968B70(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
     Matrix_RotateX(M_PI / 2, MTXMODE_APPLY);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -785,7 +785,7 @@ void func_80968FB0(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     scaleFactor = ((s16)D_809693CC[(frames * 4) & 0xF] * 0.01f) + 1.0f;
     Matrix_Scale(this->actor.scale.x * scaleFactor, this->actor.scale.y * scaleFactor,
                  this->actor.scale.z * scaleFactor, MTXMODE_APPLY);

@@ -162,11 +162,11 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
             gSaveContext.respawnFlag = 2;
             nextEntranceIndex = grotto.entranceIndex;
             gPlayState->fadeTransition = 3;
-            gSaveContext.nextTransition = 3;
+            gSaveContext.nextTransitionType = 3;
         } else if (gPlayState == NULL) { // Handle spawn position when loading from a save file
             gSaveContext.respawnFlag = 2;
             nextEntranceIndex = grotto.entranceIndex;
-            gSaveContext.nextTransition = 3;
+            gSaveContext.nextTransitionType = 3;
         // Otherwise return 0x7FFF and let the game handle it
         } else {
             nextEntranceIndex = 0x7FFF;

@@ -1140,7 +1140,7 @@ void BossDodongo_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if ((this->unk_1C0 >= 2) && (this->unk_1C0 & 1)) {
         POLY_OPA_DISP = Gfx_SetFog(POLY_OPA_DISP, 255, 255, 255, 0, 900, 1099);
@@ -1700,7 +1700,7 @@ void BossDodongo_DrawEffects(PlayState* play) {
 
     OPEN_DISPS(gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     unkMtx = &play->billboardMtxF;
 
     // OTRTODO: This call causes the whole texture cache to be cleaned up, which causes an important slowdown on switch so we need to find a way to avoid it.

@@ -1188,7 +1188,7 @@ void BossGanon_SetupTowerCutscene(BossGanon* this, PlayState* play) {
         this->csTimer = 0;
         this->csState = 100;
         this->unk_198 = 1;
-        gSaveContext.magic = gSaveContext.unk_13F4;
+        gSaveContext.magic = gSaveContext.magicCapacity;
         gSaveContext.health = gSaveContext.healthCapacity;
     } else {
         this->actionFunc = BossGanon_SetupTowerCutscene;
@@ -3362,7 +3362,7 @@ void BossGanon_DrawShock(BossGanon* this, PlayState* play) {
     OPEN_DISPS(gfxCtx);
 
     if ((this->unk_2E8 != 0) || (this->unk_2E6 != 0)) {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 0, 0);
         gSPDisplayList(POLY_XLU_DISP++, gGanondorfLightBallMaterialDL);
@@ -3426,7 +3426,7 @@ void BossGanon_DrawHandLightBall(BossGanon* this, PlayState* play) {
     OPEN_DISPS(gfxCtx);
 
     if (this->handLightBallScale > 0.0f) {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
 
         if ((this->unk_1A2 % 2) != 0) {
@@ -3467,7 +3467,7 @@ void BossGanon_DrawBigMagicCharge(BossGanon* this, PlayState* play) {
     OPEN_DISPS(gfxCtx);
 
     if (this->unk_284 > 0.0f) {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
         // light flecks
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 170, (s8)this->unk_290);
@@ -3786,7 +3786,7 @@ void BossGanon_DrawShadowTexture(void* tex, BossGanon* this, PlayState* play) {
 
     OPEN_DISPS(gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, 50);
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
@@ -3824,8 +3824,8 @@ void BossGanon_Draw(Actor* thisx, PlayState* play) {
         gSPInvalidateTexCache(POLY_OPA_DISP++, ganon_boss_sceneTex_007418);
     }
 
-    func_80093D18(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     if ((this->unk_1A6 & 2) != 0) {
         POLY_OPA_DISP = Gfx_SetFog(POLY_OPA_DISP, 255, 50, 0, 0, 900, 1099);
@@ -3962,7 +3962,7 @@ void BossGanon_LightBall_Update(Actor* thisx, PlayState* play2) {
 
         switch (this->unk_1C2) {
             case 0:
-                if ((player->stateFlags1 & 2) &&
+                if ((player->stateFlags1 & PLAYER_STATE1_SWINGING_BOTTLE) &&
                     (ABS((s16)(player->actor.shape.rot.y - (s16)(ganondorf->actor.yawTowardsPlayer + 0x8000))) <
                      0x2000) &&
                     (sqrtf(SQ(xDistFromLink) + SQ(yDistFromLink) + SQ(zDistFromLink)) <= 25.0f)) {
@@ -4003,7 +4003,7 @@ void BossGanon_LightBall_Update(Actor* thisx, PlayState* play2) {
                             }
 
                             // if a spin attack is used
-                            if (player->swordAnimation >= 0x18) {
+                            if (player->meleeWeaponAnimation >= 0x18) {
                                 this->actor.speedXZ = 20.0f;
                             }
                             break;
@@ -4166,7 +4166,7 @@ void BossGanon_LightBall_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     alpha = ((this->unk_1A2 % 2) != 0) ? this->fwork[GDF_FWORK_1] * 0.4f : this->fwork[GDF_FWORK_1] * 0.35f;
 
@@ -4315,7 +4315,7 @@ void func_808E229C(Actor* thisx, PlayState* play2) {
     s32 temp;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 0, 0);
     gSPDisplayList(POLY_XLU_DISP++, gGanondorfLightBallMaterialDL);
@@ -4447,7 +4447,7 @@ void func_808E2544(Actor* thisx, PlayState* play) {
             this->actor.world.rot.x = (Math_CosS(this->unk_1A2 * 0x3400) * sp84 * 0.1f) + this->actor.shape.rot.x;
             this->actor.world.rot.y = (Math_SinS(this->unk_1A2 * 0x1A00) * sp84) + this->actor.shape.rot.y;
 
-            if ((player->swordState != 0) && (player->swordAnimation >= 0x18) && (this->actor.xzDistToPlayer < 80.0f)) {
+            if ((player->swordState != 0) && (player->meleeWeaponAnimation >= 0x18) && (this->actor.xzDistToPlayer < 80.0f)) {
                 this->unk_1C2 = 0xC;
                 this->actor.speedXZ = -30.0f;
                 func_8002D908(&this->actor);
@@ -4597,7 +4597,7 @@ void func_808E324C(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, 255, (s8)this->fwork[GDF_FWORK_1]);
     gDPSetEnvColor(POLY_XLU_DISP++, 150, 255, 0, 128);
     gSPSegment(POLY_XLU_DISP++, 0x0D, mtx);
@@ -4853,7 +4853,7 @@ void BossGanon_DrawEffects(PlayState* play) {
     GanondorfEffect* effFirst = eff;
 
     OPEN_DISPS(gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     for (i = 0; i < 200; i++, eff++) {
         if (eff->type == GDF_EFF_WINDOW_SHARD) {
