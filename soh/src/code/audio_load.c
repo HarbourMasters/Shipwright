@@ -1214,6 +1214,12 @@ void AudioLoad_InitSwapFont(void) {
 
 #undef BASE_ROM_OFFSET
 
+int strcmp_sort( const void *str1, const void *str2 ) {
+    char *const *pp1 = str1;
+    char *const *pp2 = str2;
+    return strcmp(*pp1, *pp2);
+}
+
 void AudioLoad_Init(void* heap, size_t heapSize) {
     char pad[0x48];
     s32 numFonts;
@@ -1315,6 +1321,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     int customSeqListSize = 0;
     int startingSeqNum = 110; // 109 is the highest vanilla sequence
     char** customSeqList = ResourceMgr_ListFiles("custom/music/*", &customSeqListSize);
+    qsort(customSeqList, customSeqListSize, sizeof(char*), strcmp_sort);
 
     for (size_t i = startingSeqNum; i < startingSeqNum + customSeqListSize; i++) {
         int j = i - startingSeqNum;
