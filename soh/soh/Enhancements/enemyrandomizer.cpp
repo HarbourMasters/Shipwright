@@ -361,7 +361,7 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
         // becoming impossible to kill.
         // Ganon's Tower.
         case SCENE_GANON:
-            return (!(enemiesToExcludeClearRooms || enemy.id != ACTOR_EN_VALI || (enemy.id == ACTOR_EN_ZF && enemy.params == -1)));
+            return (!(enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI || (enemy.id == ACTOR_EN_ZF && enemy.params == -1)));
         // Ganon's Tower Escape.
         case SCENE_GANON_SONOGO:
             return (!((enemiesToExcludeTimedRooms || (enemy.id == ACTOR_EN_ZF && enemy.params == -1)) && roomNum == 1));
