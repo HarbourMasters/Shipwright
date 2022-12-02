@@ -338,18 +338,6 @@ extern "C" u16 SfxEditor_GetReplacementSeq(u16 seqId) {
     return static_cast<u16>(replacementSeq);
 }
 
-extern "C" u16 SfxEditor_GetReverseReplacementSeq(u16 seqId) {
-    for (const auto& [id, nameAndsfxKey] : sfxEditorSequenceMap) {
-        const auto& [name, sfxKey, seqType] = sfxEditorSequenceMap.at(id);
-        const std::string cvarKey = "gSfxEditor_" + sfxKey;
-        if (CVar_GetS32(cvarKey.c_str(), id) == seqId){
-            return static_cast<u16>(id);
-        }
-    }
-
-    return static_cast<u16>(seqId);
-}
-
 void DrawSfxEditor(bool& open) {
     if (!open) {
         CVar_SetS32("gSfxEditor", 0);
