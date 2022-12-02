@@ -133,7 +133,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gPauseLiveLinkRotation",
     "gPauseLiveLink",
     "gMinFrameCount",
-    "gN64Mode",
+    "gLowResMode",
     "gNewDrops",
     "gDisableBlackBars",
     "gDynamicWalletIcon",

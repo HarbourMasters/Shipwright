@@ -623,6 +623,17 @@ namespace GameMenuBar {
 
             if (ImGui::BeginMenu("Graphics"))
             {
+                if (ImGui::BeginMenu("Low-res Mode")) {
+                    UIWidgets::EnhancementRadioButton("Disabled", "gLowResMode", 0);
+                    UIWidgets::EnhancementRadioButton("N64 Mode", "gLowResMode", 1);
+                    UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
+                    UIWidgets::EnhancementRadioButton("240p Widescreen", "gLowResMode", 2);
+                    UIWidgets::Tooltip("Lowers vertical resolution to the N64's 240p, while retaining a widescreen aspect ratio.");
+                    UIWidgets::EnhancementRadioButton("480p Widescreen", "gLowResMode", 3);
+                    UIWidgets::Tooltip("Lowers vertical resolution to the Gamecube's 480p, while retaining a widescreen aspect ratio.");
+                    ImGui::EndMenu();
+                }
+
                 if (ImGui::BeginMenu("Animated Link in Pause Menu")) {
                     ImGui::Text("Rotation");
                     UIWidgets::EnhancementRadioButton("Disabled", "gPauseLiveLinkRotation", 0);
@@ -666,8 +677,6 @@ namespace GameMenuBar {
 
                     ImGui::EndMenu();
                 }
-                UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gN64Mode", true, false);
-                UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
                 UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", "gDrawLineupTick", true, false);
                 UIWidgets::Tooltip("Displays a tick in the top center of the screen to help with glitch line-ups in SoH, as traditional UI based line-ups do not work outside of 4:3");
                 UIWidgets::PaddedEnhancementCheckbox("Enable 3D Dropped items/projectiles", "gNewDrops", true, false);
