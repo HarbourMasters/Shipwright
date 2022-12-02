@@ -238,6 +238,8 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
 
 bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, int16_t params, float posX) {
 
+    uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(sceneNum);
+
     for (int i = 0; i < ARRAY_COUNT(enemiesToRandomize); i++) {
 
         if (actorId == enemiesToRandomize[i]) {
@@ -259,8 +261,10 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                 case ACTOR_EN_SW:
                     return (params == 0);
                 // Don't randomize Nabooru because it'll break the cutscene and the door.
+                // Don't randomize Iron Knuckle in MQ Spirit Trial because it's needed to
+                // break the thrones in the room to access a button.
                 case ACTOR_EN_IK:
-                    return (params != 1280);
+                    return (params != 1280 && !(isMQ && sceneNum == SCENE_GANONTIKA && roomNum == 17));
                 // Only randomize the intitial spawn of the huge jellyfish. It spawns another copy when hit with a sword.
                 case ACTOR_EN_VALI:
                     return (params == -1);
@@ -283,7 +287,7 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                 // most other enemies underwater with just hookshot and they're required to be killed for a grate to open.
                 case ACTOR_EN_SB:
                 case ACTOR_EN_NY:
-                    return (!(sceneNum == SCENE_MIZUSIN && roomNum == 2));
+                    return (!(!isMQ && sceneNum == SCENE_MIZUSIN && roomNum == 2));
                 default:
                     return 1;
             }
@@ -349,6 +353,10 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
         case SCENE_ICE_DOUKUTO:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 7)) &&
                     !(isMQ && enemiesToExcludeClearRooms && (roomNum == 3 || roomNum == 7)));
+        // Bottom of the Well
+        // Exclude Dark Link from room with holes in the floor because it can pull you in a like-like making the player fall down.
+        case SCENE_HAKADANCH:
+            return (!(!isMQ && enemy.id == ACTOR_EN_TORCH2 && roomNum == 3));
         // Don't allow Dark Link in areas with lava void out zones as it voids out the player as well.
         // Gerudo Training Ground.
         case SCENE_MEN:
