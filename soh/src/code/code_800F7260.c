@@ -127,8 +127,6 @@ void Audio_PlaySoundGeneral(u16 sfxId, Vec3f* pos, u8 token, f32* freqScale, f32
     size_t i;
     SoundRequest* req;
 
-    sfxId = SfxEditor_GetReplacementSeq(sfxId);
-
     if (!gSoundBankMuted[SFX_BANK_SHIFT(sfxId)]) {
         req = &sSoundRequests[sSoundRequestWriteIndex];
         if (!gAudioSfxSwapOff) {
