@@ -174,6 +174,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gChestSizeDependsStoneOfAgony",
     "gSkipArrowAnimation",
     "gSeparateArrows",
+    "gRocsFeather",
     "gCustomizeShootingGallery",
     "gInstantShootingGalleryWin",
     "gConstantAdultGallery",
