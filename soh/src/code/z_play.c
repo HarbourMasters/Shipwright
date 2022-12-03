@@ -1087,6 +1087,14 @@ void Play_Update(PlayState* play) {
                 // Gameplay stat tracking
                 if (!gSaveContext.sohStats.gameComplete) {
                       gSaveContext.sohStats.playTimer++;
+                      // Use ITEM_KEY_BOSS for Ganon's boss key
+                      if ((gSaveContext.inventory.dungeonItems[10] & 1) &&
+                          gSaveContext.sohStats.timestamp[ITEM_KEY_BOSS] == 0) {
+                          gSaveContext.sohStats.timestamp[ITEM_KEY_BOSS] = GAMEPLAYSTAT_TOTAL_TIME;
+                      }
+                      if (CVar_GetS32("gMMBunnyHood", 0) && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
+                          gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD]++;
+                      }
                 }
 
                 func_800AA178(1);

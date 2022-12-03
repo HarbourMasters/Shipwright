@@ -1618,7 +1618,9 @@ void func_80084BF4(PlayState* play, u16 flag) {
 // (special cases for some duplicate items)
 void GameplayStats_SetTimestamp(u8 item) {
 
-    if (gSaveContext.sohStats.timestamp[item] != 0) {
+    // If the item already has a timestamp or if it's a boss key, do nothing
+    // ITEM_KEY_BOSS is used to timestamp Ganon's boss key. Handled in z_play.c
+    if (gSaveContext.sohStats.timestamp[item] != 0 || item == ITEM_KEY_BOSS) {
         return;
     }
 

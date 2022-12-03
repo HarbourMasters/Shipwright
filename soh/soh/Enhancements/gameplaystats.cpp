@@ -193,6 +193,7 @@ void DrawStatsTracker(bool& open) {
 
             DisplayStatIfNonZero("Anubis:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ANUBIS]);
             DisplayStatIfNonZero("Armos:              ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ARMOS]);
+            DisplayStatIfNonZero("Arwing:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ARWING]);
             DisplayStatIfNonZero("Bari:               ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BARI]);
             DisplayStatIfNonZero("Biri:               ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BIRI]);
             DisplayStatIfNonZero("Beamos:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BEAMOS]);
@@ -323,6 +324,10 @@ void DrawStatsTracker(bool& open) {
             ImGui::TreePop();
         }
     }
+    // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
+    if (CVar_GetS32("gMMBunnyHood", 0)) {
+        DisplayTimeHHMMSS(gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] / 2, "Bunny Hood Time:    ", COLOR_WHITE);
+    }
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
@@ -393,6 +398,7 @@ void SetupDisplayNames() {
     strcpy(timestampDisplayName[ITEM_KOKIRI_EMERALD],   "Kokiri's Emerald:   ");
     strcpy(timestampDisplayName[ITEM_GORON_RUBY],       "Goron's Ruby:       ");
     strcpy(timestampDisplayName[ITEM_ZORA_SAPPHIRE],    "Zora's Sapphire:    ");
+    strcpy(timestampDisplayName[ITEM_KEY_BOSS],         "Ganon's Boss Key:   ");
     strcpy(timestampDisplayName[ITEM_SINGLE_MAGIC],     "Magic:              ");
     strcpy(timestampDisplayName[ITEM_DOUBLE_DEFENSE],   "Double Defense:     ");
 
