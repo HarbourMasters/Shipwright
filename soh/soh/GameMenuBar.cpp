@@ -422,6 +422,11 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Explosions are now a static size, like in Majora's Mask and OoT3D. Makes bombchu hovering much easier.");
                     UIWidgets::PaddedEnhancementCheckbox("Prevent Bombchus Forcing First-Person", "gDisableFirstPersonChus", true, false);
                     UIWidgets::Tooltip("Prevent bombchus from forcing the camera into first-person mode when released.");
+                    UIWidgets::PaddedEnhancementCheckbox("Turn Nayru's Love into Roc's Feather", "gRocsFeather", true, false);
+                    UIWidgets::Tooltip(
+                        "Nayru's Love acts like Roc's Feather from the Indigo romhack instead. Grants a jump that can even be used in the air, "
+                        "but needs to recharge by touching the ground afterwards. Does not require magic to use."
+                    );
                     ImGui::EndMenu();
                 }
 

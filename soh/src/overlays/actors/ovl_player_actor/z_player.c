@@ -2116,7 +2116,7 @@ void func_80833DF8(Player* this, PlayState* play) {
             if ((item < ITEM_NONE_FE) && (Player_ItemToActionParam(item) == this->heldItemAction)) {
                 D_80853618 = true;
             }
-        } else if (item != ITEM_NAYRUS_LOVE) {
+        } else if (item != ITEM_NAYRUS_LOVE || !CVar_GetS32("gRocsFeather", 0)) {
             this->heldItemButton = i;
             func_80835F44(play, this, item);
         } else if (this->rocUseCount == 0) {
