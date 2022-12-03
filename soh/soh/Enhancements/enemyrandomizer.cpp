@@ -118,6 +118,8 @@ static int enemiesToRandomize[] = {
 extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *posX, f32 *posY, f32 *posZ, int16_t *rotX,
                                       int16_t *rotY, int16_t *rotZ, int16_t *params) {
 
+    uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(play->sceneNum);
+
     // Hack to remove enemies that wrongfully spawn because of bypassing object dependency with enemy randomizer on.
     // This should probably be handled on OTR generation in the future when object dependency is fully removed.
     // Remove bats and skulltulas from graveyard.
@@ -132,6 +134,12 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
     // This Deku Shield doesn't normally spawn in authentic gameplay because of object dependency.
     if (*actorId == ACTOR_OBJ_TSUBO && *params == 24597) {
         *params = 24067;
+    }
+
+    // Lengthen timer in non-MQ Jabu Jabu bubble room.
+    if (!isMQ && *actorId == ACTOR_OBJ_ROOMTIMER && *params == 30760 && play->sceneNum == SCENE_BDAN &&
+        play->roomCtx.curRoom.num == 12) {
+        *params = 92280;
     }
 
     if (IsEnemyFoundToRandomize(play->sceneNum, play->roomCtx.curRoom.num, *actorId, *params, *posX)) {
@@ -305,10 +313,10 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
     // Freezard, Beamos, Shell Blade, Spike, Arwing, Wallmaster
     bool enemiesToExcludeClearRooms = enemy.id == ACTOR_EN_FZ || enemy.id == ACTOR_EN_VM || enemy.id == ACTOR_EN_SB ||
                                       enemy.id == ACTOR_EN_NY || enemy.id == ACTOR_EN_CLEAR_TAG ||
-                                      enemy.id == ACTOR_EN_WALLMAS;
+                                      enemy.id == ACTOR_EN_WALLMAS || enemy.id == ACTOR_EN_TORCH2;
 
     // Bari (big jellyfish), Dark Link
-    bool enemiesToExcludeTimedRooms = enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI || enemy.id == ACTOR_EN_TORCH2;
+    bool enemiesToExcludeTimedRooms = enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI;
 
     switch (sceneNum) {
         // Deku Tree
@@ -373,10 +381,10 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
         // Ganon's Tower Escape.
         case SCENE_GANON_SONOGO:
             return (!((enemiesToExcludeTimedRooms || (enemy.id == ACTOR_EN_ZF && enemy.params == -1)) && roomNum == 1));
-        // Don't allow big stalchildren and big peahats during the Gohma fight because they can clip into Gohma
+        // Don't allow big stalchildren, big peahats and the large Bari (jellyfish) during the Gohma fight because they can clip into Gohma
         // and it crashes the game. Likely because Gohma on the ceilling can't handle collision with other enemies.
         case SCENE_YDAN_BOSS:
-            return (!enemiesToExcludeClearRooms && !(enemy.id == ACTOR_EN_SKB && enemy.params == 20) &&
+            return (!enemiesToExcludeTimedRooms && !(enemy.id == ACTOR_EN_SKB && enemy.params == 20) &&
                     !(enemy.id == ACTOR_EN_PEEHAT && enemy.params == -1));
         // Grottos.
         case SCENE_KAKUSIANA:

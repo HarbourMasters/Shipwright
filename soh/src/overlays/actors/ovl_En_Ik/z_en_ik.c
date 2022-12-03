@@ -231,7 +231,8 @@ void func_80A74398(Actor* thisx, PlayState* play) {
     func_80A74714(this);
 
     if (this->switchFlags != 0xFF) {
-        if (Flags_GetSwitch(play, this->switchFlags)) {
+        if ((Flags_GetSwitch(play, this->switchFlags) && !CVar_GetS32("gRandomizedEnemies", 0)) ||
+            (thisx->params != 0 && Flags_GetClear(play, play->roomCtx.curRoom.num) && CVar_GetS32("gRandomizedEnemies", 0))) {
             Actor_Kill(thisx);
         }
     } else if (thisx->params != 0 && Flags_GetClear(play, play->roomCtx.curRoom.num)) {
@@ -1472,10 +1473,6 @@ void EnIk_Init(Actor* thisx, PlayState* play) {
 
     // Immediately trigger Iron Knuckle for enemy randomizer
     if (CVar_GetS32("gRandomizedEnemies", 0) && (thisx->params == 2 || thisx->params == 3)) {
-        Vec3f sp24;
-        sp24 = this->actor.world.pos;
-        sp24.y += 30.0f;
-        func_8003424C(play, &sp24);
         this->skelAnime.playSpeed = 1.0f;
     }
 }
