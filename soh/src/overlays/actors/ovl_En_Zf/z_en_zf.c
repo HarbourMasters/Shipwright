@@ -2001,7 +2001,9 @@ void EnZf_UpdateDamage(EnZf* this, PlayState* play) {
                 }
             } else {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIZA_CRY);
-                Actor_SetColorFilter(&this->actor, 0x4000, 255, 0, 8);
+                if (!CVar_GetS32("gPhotosensitiveMode", 0)) {
+                    Actor_SetColorFilter(&this->actor, 0x4000, 255, 0, 8);
+                }
 
                 if (Actor_ApplyDamage(&this->actor) == 0) {
                     dropParams = 0x40;
