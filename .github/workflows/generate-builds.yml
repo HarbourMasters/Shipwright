@@ -17,7 +17,7 @@ jobs:
         cp ../../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
         cmake --no-warn-unused-cli -S . -Bbuild-cmake -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE:STRING=Release
         cmake --build build-cmake --target ExtractAssets --config Release
-        zip -r assets.zip soh/assets
+        Compress-Archive soh/assets assets.zip
     - uses: actions/upload-artifact@v3
       with:
         name: assets
