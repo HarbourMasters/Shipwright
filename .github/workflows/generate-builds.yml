@@ -15,7 +15,7 @@ jobs:
     - name: Extract assets
       run: |
         cp ../../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
-        cmake --no-warn-unused-cli -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
         cmake --build build-cmake --target ExtractAssets --config Release
         zip -r assets.zip soh/assets
     - uses: actions/upload-artifact@v3
