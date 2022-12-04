@@ -371,10 +371,24 @@ void EnDog_FollowPlayer(EnDog* this, PlayState* play) {
         return;
     }
 
-    // If the dog is too far away it's usually because they are stuck in a hole or on a different floor, this gives them a push
-    if (this->actor.xyzDistToPlayerSq > 250000.0f && CVar_GetS32("gDogFollowsEverywhere", 0)) {
-        Player* player = GET_PLAYER(play);
-        if (PlayerGrounded(player)) this->actor.world.pos.y = player->actor.world.pos.y;
+    if (CVar_GetS32("gDogFollowsEverywhere", 0)) {
+        // If the dog is too far away it's usually because they are stuck in a hole or on a different floor, this gives them a push
+        if (this->actor.xyzDistToPlayerSq > 250000.0f) {
+            Player* player = GET_PLAYER(play);
+            if (PlayerGrounded(player)) this->actor.world.pos.y = player->actor.world.pos.y;
+        }
+
+        // If doggo is in the water make sure it's floating
+        if (this->actor.bgCheckFlags & 0x20) {
+            this->actor.gravity = 0.0f;
+            if (this->actor.yDistToWater > 11.0f) {
+                this->actor.world.pos.y += 2.0f;
+            } else if (this->actor.yDistToWater < 8.0f) {
+                this->actor.world.pos.y -= 2.0f;
+            }
+        } else {
+            this->actor.gravity = -1.0f;
+        }
     }
 
     if (this->actor.xzDistToPlayer > 400.0f) {
