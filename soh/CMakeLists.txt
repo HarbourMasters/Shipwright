@@ -299,6 +299,12 @@ set(Source_Files__soh__Enhancements
 )
 source_group("Source Files\\soh\\Enhancements" FILES ${Source_Files__soh__Enhancements})
 
+set(Source_Files__soh__Enhancements__online
+    "soh/Enhancements/online/Client.cpp"
+	"soh/Enhancements/online/Server.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\online" FILES ${Source_Files__soh__Enhancements__online})
+
 set(Source_Files__soh__Enhancements__controls
     "soh/Enhancements/controls/GameControlEditor.cpp"
 )
@@ -415,11 +421,6 @@ set(Source_Files__soh__Enhancements__crowd_control
 )
 source_group("Source Files\\soh\\Enhancements\\crowd-control" FILES ${Source_Files__soh__Enhancements__crowd_control})
 endif()
-
-set(Source_Files__soh__Enhancements__online
-    "soh/Enhancements/online/Online.cpp"
-)
-source_group("Source Files\\soh\\Enhancements\\online" FILES ${Source_Files__soh__Enhancements__online})
 
 set(Source_Files__src__boot
     "src/boot/assert.c"
@@ -1638,6 +1639,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements__crowd_control}
     ${Source_Files__soh}
     ${Source_Files__soh__Enhancements}
+	${Source_Files__soh__Enhancements__online}
     ${Source_Files__soh__Enhancements__controls}
     ${Source_Files__soh__Enhancements__cosmetics}
     ${Source_Files__soh__Enhancements__sfx_editor}
@@ -1649,7 +1651,6 @@ set(ALL_FILES
     ${Source_Files__soh__Enhancements__item_tables}
     ${Source_Files__soh__Enhancements__custom_message}
     ${Source_Files__soh__Enhancements__crowd_control}
-    ${Source_Files__soh__Enhancements__online}
     ${Source_Files__src__boot}
     ${Source_Files__src__buffers}
     ${Source_Files__src__code}
