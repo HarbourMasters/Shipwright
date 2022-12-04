@@ -155,6 +155,7 @@ void EnMs_Sell(EnMs* this, PlayState* play) {
         this->actionFunc =
             (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) ? EnMs_Wait : EnMs_TalkAfterPurchase;
     } else {
+        gSaveContext.pendingSale = 1;
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) {
             GiveItemEntryFromActor(&this->actor, play,
                                    Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_BEAN), 90.0f, 10.0f);

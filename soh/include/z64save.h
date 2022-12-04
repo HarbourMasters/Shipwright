@@ -197,6 +197,7 @@ typedef struct {
     u16 adultTradeItems;
     u8 pendingIceTrapCount;
     u8 mqDungeonCount;
+    u8 pendingSale;
     SohStats sohStats;
 } SaveContext; // size = 0x1428
 

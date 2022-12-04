@@ -399,6 +399,7 @@ void EnDns_Talk(EnDns* this, PlayState* play) {
 }
 
 void func_809EFDD0(EnDns* this, PlayState* play) {
+    gSaveContext.pendingSale = 1;
     if (!gSaveContext.n64ddFlag || !this->scrubIdentity.isShuffled) {
         if (this->actor.params == 0x9) {
             if (CUR_UPG_VALUE(UPG_STICKS) < 2) {

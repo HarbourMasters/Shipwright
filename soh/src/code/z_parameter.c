@@ -2631,8 +2631,9 @@ u8 Item_CheckObtainability(u8 item) {
     return gSaveContext.inventory.items[slot];
 }
 
+// Save when receiving an item, unless it's purchased from a shop
 void PerformAutosave(PlayState* play, u8 item) {
-    if (CVar_GetS32("gAutosave", 0)) {
+    if ((CVar_GetS32("gAutosave", 0)) && (!gSaveContext.pendingSale)) {
         if (CVar_GetS32("gAutosaveAllItems", 0)) {
             Play_PerformSave(play);
         } else if (CVar_GetS32("gAutosaveMajorItems", 1)) {
@@ -6195,6 +6196,9 @@ void Interface_Update(PlayState* play) {
                 gSaveContext.rupeeAccumulator++;
                 gSaveContext.rupees--;
                 Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            }
+            if (gSaveContext.rupeeAccumulator == 0) {
+                gSaveContext.pendingSale = 0;
             }
         } else {
             gSaveContext.rupeeAccumulator = 0;

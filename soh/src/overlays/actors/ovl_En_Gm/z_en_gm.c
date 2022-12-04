@@ -250,6 +250,7 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
                     Message_ContinueTextbox(play, 0xC8);
                     this->actionFunc = func_80A3DD7C;
                 } else {
+                    gSaveContext.pendingSale = 1;
                     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) &&
                         !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
                             GiveItemEntryFromActor(&this->actor, play,
@@ -276,6 +277,7 @@ void func_80A3DF00(EnGm* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = func_80A3DF60;
     } else {
+        gSaveContext.pendingSale = 1;
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) &&
         !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
             GiveItemEntryFromActor(&this->actor, play,

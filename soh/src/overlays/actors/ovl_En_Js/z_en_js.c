@@ -129,6 +129,7 @@ void func_80A89160(EnJs* this, PlayState* play) {
         this->actor.parent = NULL;
         En_Js_SetupAction(this, func_80A8910C);
     } else {
+        gSaveContext.pendingSale = 1;
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) && 
             !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)) {
             GiveItemEntryFromActor(&this->actor, play,
