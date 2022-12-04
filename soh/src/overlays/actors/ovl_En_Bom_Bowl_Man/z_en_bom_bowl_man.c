@@ -69,15 +69,8 @@ void EnBomBowlMan_Init(Actor* thisx, PlayState* play2) {
     Actor_SetScale(&this->actor, 0.013f);
 
     for (i = 0; i < 2; i++) {
-        if(i == 0) {
-            if(CVar_GetS32("gCustomizeBombchuBowling", 0) && CVar_GetS32("gBombchuBowlingNoSmallCucco", 0)) {
-                continue;
-            }
-        }
-        else {
-            if(CVar_GetS32("gCustomizeBombchuBowling", 0) && CVar_GetS32("gBombchuBowlingNoBigCucco", 0)) {
-                continue;
-            }
+        if(CVar_GetS32("gCustomizeBombchuBowling", 0) && CVar_GetS32(i == 0 ? "gBombchuBowlingNoSmallCucco" : "gBombchuBowlingNoBigCucco", 0)) {
+            continue;
         }
 
         cucco = (EnSyatekiNiw*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SYATEKI_NIW, cuccoSpawnPos[i].x,
