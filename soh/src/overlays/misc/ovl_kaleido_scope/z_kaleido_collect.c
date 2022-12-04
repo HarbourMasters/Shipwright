@@ -122,7 +122,7 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                     }
                 }
             }
-
+            
             if ((pauseCtx->stickRelY < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
                 phi_s0 = D_8082A1AC[phi_s3][1];
                 while (phi_s0 >= 0) {
@@ -217,6 +217,25 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                     (sp216 < QUEST_KOKIRI_EMERALD)) {
                     pauseCtx->unk_1E4 = 9;
                     D_8082A120 = 10;
+                }
+            }
+
+            u16 buttonsToCheck = BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
+            if (CVar_GetS32("gDpadEquips", 0) && (!CVar_GetS32("gDpadPause", 0))) {
+                buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
+            }
+
+            if (CHECK_BTN_ANY(input->press.button, buttonsToCheck)) {
+
+                u16 cursor = pauseCtx->cursorPoint[PAUSE_QUEST];
+                u16 item = cursor + ITEM_MEDALLION_FOREST;
+                u16 slot = pauseCtx->cursorSlot[pauseCtx->pageIndex];
+
+                if (CHECK_QUEST_ITEM(pauseCtx->cursorPoint[PAUSE_QUEST])) {
+
+                    KaleidoScope_SetupItemEquip(play, item, slot,
+                                                pauseCtx->equipVtx[cursor * 4].v.ob[0] * 10,
+                                                pauseCtx->equipVtx[cursor * 4].v.ob[1] * 10);
                 }
             }
         } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {
