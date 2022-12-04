@@ -261,6 +261,12 @@ typedef struct {
     /*        */ char adultAltarText[750];
     /*        */ char ganonHintText[150];
     /*        */ char ganonText[250];
+    /*        */ char warpMinuetText[100];
+    /*        */ char warpBoleroText[100];
+    /*        */ char warpSerenadeText[100];
+    /*        */ char warpRequiemText[100];
+    /*        */ char warpNocturneText[100];
+    /*        */ char warpPreludeText[100];
     /*        */ u8 seedIcons[5];
     /*        */ u16 randomizerInf[9];
     /*        */ u16 adultTradeItems;
