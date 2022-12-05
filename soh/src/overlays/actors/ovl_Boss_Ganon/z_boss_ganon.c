@@ -1082,7 +1082,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
 
                 if (!(gSaveContext.eventChkInf[7] & 0x100)) {
                     TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
-                                           SEGMENTED_TO_VIRTUAL(gGanondorfTitleCardTex), 160, 180, 128, 40, false);
+                                           SEGMENTED_TO_VIRTUAL(gGanondorfTitleCardTex), 160, 180, 128, 40, true);
                 }
 
                 gSaveContext.eventChkInf[7] |= 0x100;
