@@ -231,6 +231,9 @@ void func_80A74398(Actor* thisx, PlayState* play) {
     func_80A74714(this);
 
     if (this->switchFlags != 0xFF) {
+        // In vanilla gameplay, Iron Knuckles are despawned based on specific flags in specific scenarios.
+        // In Enemy Randomizer, this made the Iron Knuckles despawn when the same flag was set by other objects.
+        // Instead, rely on the "Clear enemy room" flag when in Enemy Randomizer for Iron Knuckles that aren't Nabooru.
         if ((Flags_GetSwitch(play, this->switchFlags) && !CVar_GetS32("gRandomizedEnemies", 0)) ||
             (thisx->params != 0 && Flags_GetClear(play, play->roomCtx.curRoom.num) && CVar_GetS32("gRandomizedEnemies", 0))) {
             Actor_Kill(thisx);
