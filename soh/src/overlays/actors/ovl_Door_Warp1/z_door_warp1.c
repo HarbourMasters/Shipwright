@@ -589,7 +589,7 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
         osSyncPrintf("\n\n\nおわりおわり");
         play->sceneLoadFlag = 0x14;
         play->fadeTransition = 7;
-        gSaveContext.nextTransition = 3;
+        gSaveContext.nextTransitionType = 3;
     }
 
     Math_StepToF(&this->unk_194, 2.0f, 0.01f);
@@ -907,7 +907,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
 
         play->sceneLoadFlag = 0x14;
         play->fadeTransition = 3;
-        gSaveContext.nextTransition = 7;
+        gSaveContext.nextTransitionType = 7;
     }
     if (this->warpTimer >= 141) {
         f32 screenFillAlpha;
@@ -1009,7 +1009,7 @@ void DoorWarp1_DrawBlueCrystal(DoorWarp1* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0xFF, 0xFF, 200, 255, 255, (u8)this->crystalAlpha);
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, (u8)this->crystalAlpha);
@@ -1032,7 +1032,7 @@ void DoorWarp1_DrawPurpleCrystal(DoorWarp1* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     func_8002EB44(&this->actor.world.pos, &eye, &eye, play->state.gfxCtx);
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, (u8)this->crystalAlpha);
@@ -1065,7 +1065,7 @@ void DoorWarp1_DrawWarp(DoorWarp1* this, PlayState* play) {
     if (this->actor.params == WARP_DESTINATION) {
         this->unk_19C -= (s16)(temp_f0 * 2.0f);
     }
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     switch (this->actor.params) {
         case WARP_YELLOW:

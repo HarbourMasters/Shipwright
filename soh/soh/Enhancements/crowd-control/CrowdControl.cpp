@@ -347,18 +347,18 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uin
             if (dryRun == 0) CMD_EXECUTE(EFFECT_REMOVE_HEART_CONTAINER);
             return EffectResult::Success;
         } else if (effectId == EFFECT_FILL_MAGIC) {
-            if (!gSaveContext.magicAcquired) {
+            if (!gSaveContext.isMagicAcquired) {
                 return EffectResult::Failure;
             }
 
-            if (gSaveContext.magic >= (gSaveContext.doubleMagic + 1) + 0x30) {
+            if (gSaveContext.magic >= (gSaveContext.isDoubleMagicAcquired + 1) + 0x30) {
                 return EffectResult::Failure;
             }
 
             if (dryRun == 0) CMD_EXECUTE(EFFECT_FILL_MAGIC);
             return EffectResult::Success;
         } else if (effectId == EFFECT_EMPTY_MAGIC) {
-            if (!gSaveContext.magicAcquired || gSaveContext.magic <= 0) {
+            if (!gSaveContext.isMagicAcquired || gSaveContext.magic <= 0) {
                 return EffectResult::Failure;
             }
 

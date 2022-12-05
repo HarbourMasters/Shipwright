@@ -406,6 +406,12 @@ void EnDekubaba_SetupPrunedSomersault(EnDekubaba* this) {
     this->actor.speedXZ = this->size * 3.0f;
     this->actor.flags |= ACTOR_FLAG_4 | ACTOR_FLAG_5;
     this->actionFunc = EnDekubaba_PrunedSomersault;
+
+    if (this->actor.params == DEKUBABA_BIG) {
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]++;
+    } else {
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]++;
+    }
 }
 
 void EnDekubaba_SetupShrinkDie(EnDekubaba* this) {
@@ -413,6 +419,12 @@ void EnDekubaba_SetupShrinkDie(EnDekubaba* this) {
                      0.0f, ANIMMODE_ONCE, -3.0f);
     this->collider.base.acFlags &= ~AC_ON;
     this->actionFunc = EnDekubaba_ShrinkDie;
+
+    if (this->actor.params == DEKUBABA_BIG) {
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]++;
+    } else {
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]++;
+    }
 }
 
 void EnDekubaba_SetupStunnedVertical(EnDekubaba* this) {
@@ -1251,7 +1263,7 @@ void EnDekubaba_DrawBaseShadow(EnDekubaba* this, PlayState* play) {
     f32 horizontalScale;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80094044(play->state.gfxCtx);
+    Gfx_SetupDL_44Xlu(play->state.gfxCtx);
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, 255);
 
@@ -1279,7 +1291,7 @@ void EnDekubaba_Draw(Actor* thisx, PlayState* play) {
     f32 scale;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if (this->actionFunc != EnDekubaba_DeadStickDrop) {
         SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL,

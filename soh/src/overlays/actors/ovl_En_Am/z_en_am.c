@@ -883,6 +883,8 @@ void EnAm_Update(Actor* thisx, PlayState* play) {
                     dustPosScale += 60.0f;
                 }
 
+                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ARMOS]++;
+
                 Actor_Kill(&this->dyna.actor);
                 return;
             }
@@ -954,7 +956,7 @@ void EnAm_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, this->textureBlend);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, EnAm_PostLimbDraw, this);
 

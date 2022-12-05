@@ -272,7 +272,7 @@ void EffDust_DrawFunc_8099E4F4(Actor* thisx, PlayState* play2) {
 
     OPEN_DISPS(gfxCtx);
 
-    func_80093D18(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
 
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 128, 128, 128, 255);
@@ -322,7 +322,7 @@ void EffDust_DrawFunc_8099E784(Actor* thisx, PlayState* play2) {
 
     OPEN_DISPS(gfxCtx);
 
-    func_80093D18(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
 
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);

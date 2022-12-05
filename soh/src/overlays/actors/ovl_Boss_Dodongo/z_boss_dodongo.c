@@ -118,7 +118,10 @@ void func_808C12C4(u8* arg1, s16 arg2) {
 }
 
 void func_808C1554(void* arg0, void* floorTex, s32 arg2, f32 arg3) {
-    arg0 = ResourceMgr_LoadTexByName(arg0);
+    // Entering the King Dodongo boss battle was crashing when using only an mq otr
+    // because it was trying to load a texture from a non-mq path 
+    // HACK: LoadTexByName doesn't account for mq vs non-mq paths, LoadTexOrDListByName does. 
+    arg0 = ResourceMgr_LoadTexOrDListByName(arg0);
     floorTex = ResourceMgr_LoadTexByName(floorTex);
 
     u16* temp_s3 = SEGMENTED_TO_VIRTUAL(arg0);
@@ -1137,7 +1140,7 @@ void BossDodongo_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if ((this->unk_1C0 >= 2) && (this->unk_1C0 & 1)) {
         POLY_OPA_DISP = Gfx_SetFog(POLY_OPA_DISP, 255, 255, 255, 0, 900, 1099);
@@ -1330,6 +1333,7 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
             this->cameraAt.x = camera->at.x;
             this->cameraAt.y = camera->at.y;
             this->cameraAt.z = camera->at.z;
+            gSaveContext.sohStats.timestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
             break;
         case 5:
             tempSin = Math_SinS(this->actor.shape.rot.y - 0x1388) * 150.0f;
@@ -1696,7 +1700,7 @@ void BossDodongo_DrawEffects(PlayState* play) {
 
     OPEN_DISPS(gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     unkMtx = &play->billboardMtxF;
 
     // OTRTODO: This call causes the whole texture cache to be cleaned up, which causes an important slowdown on switch so we need to find a way to avoid it.

@@ -329,6 +329,9 @@ endif()
 # Compile and link options
 ################################################################################
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	set(CMAKE_FIND_FRAMEWORK LAST)
+endif()
 find_package(PNG REQUIRED)
 
 target_include_directories(${PROJECT_NAME} PRIVATE

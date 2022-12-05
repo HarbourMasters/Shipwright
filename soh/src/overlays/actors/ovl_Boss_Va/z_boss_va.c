@@ -1394,6 +1394,7 @@ void BossVa_BodyPhase4(BossVa* this, PlayState* play) {
                         if (sFightPhase >= PHASE_DEATH) {
                             BossVa_SetupBodyDeath(this, play);
                             Enemy_StartFinishingBlow(play, &this->actor);
+                            gSaveContext.sohStats.timestamp[TIMESTAMP_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
                             return;
                         }
                         this->actor.speedXZ = -10.0f;
@@ -3192,9 +3193,9 @@ void BossVa_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     paramsPtr = &this->actor.params;
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     switch (this->actor.params) {
         case BOSSVA_BODY:
@@ -3525,7 +3526,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, PlayState* play) {
         if (effect->type == VA_LARGE_SPARK) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
-                func_80093D84(play->state.gfxCtx);
+                Gfx_SetupDL_25Xlu(play->state.gfxCtx);
                 gDPSetEnvColor(POLY_XLU_DISP++, 130, 130, 30, 0);
                 gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_0156A0);
                 flag++;
@@ -3548,7 +3549,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, PlayState* play) {
         if (effect->type == VA_SPARK_BALL) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
-                func_80093D84(play->state.gfxCtx);
+                Gfx_SetupDL_25Xlu(play->state.gfxCtx);
                 gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_011738);
                 flag++;
             }
@@ -3576,7 +3577,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, PlayState* play) {
         if (effect->type == VA_BLOOD) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
-                func_80093D84(play->state.gfxCtx);
+                Gfx_SetupDL_25Xlu(play->state.gfxCtx);
                 gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_009430);
                 gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gEffBubble1Tex));
                 flag++;
@@ -3610,7 +3611,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, PlayState* play) {
 
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
-                func_80093D18(play->state.gfxCtx);
+                Gfx_SetupDL_25Opa(play->state.gfxCtx);
                 gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, effect->envColor[3]);
                 gSPDisplayList(POLY_OPA_DISP++, gBarinadeDL_0128B8);
                 flag++;
@@ -3634,7 +3635,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, PlayState* play) {
         if (effect->type == VA_GORE) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
-                func_80093D18(play->state.gfxCtx);
+                Gfx_SetupDL_25Opa(play->state.gfxCtx);
                 gSPDisplayList(POLY_OPA_DISP++, gBarinadeDL_012BA0);
                 flag++;
             }
@@ -3667,7 +3668,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, PlayState* play) {
         if (effect->type == VA_ZAP_CHARGE) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
-                func_80093D84(play->state.gfxCtx);
+                Gfx_SetupDL_25Xlu(play->state.gfxCtx);
                 gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_0135B0);
                 flag++;
             }
@@ -3692,7 +3693,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, PlayState* play) {
         if (effect->type == VA_BLAST_SPARK) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
-                func_80093C14(play->state.gfxCtx);
+                Gfx_SetupDL_25Xlu2(play->state.gfxCtx);
                 gDPSetEnvColor(POLY_XLU_DISP++, 130, 130, 30, 0);
                 gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_0156A0);
                 flag++;
@@ -3716,7 +3717,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, PlayState* play) {
         if (effect->type == VA_SMALL_SPARK) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
-                func_80093D84(play->state.gfxCtx);
+                Gfx_SetupDL_25Xlu(play->state.gfxCtx);
                 gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 100, 0);
                 gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_008F08);
                 flag++;

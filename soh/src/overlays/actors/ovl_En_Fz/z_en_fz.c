@@ -363,6 +363,7 @@ void EnFz_ApplyDamage(EnFz* this, PlayState* play) {
                         vec.z = this->actor.world.pos.z;
                         EnFz_Damaged(this, play, &vec, 30, 10.0f);
                         EnFz_SetupDespawn(this, play);
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FREEZARD]++;
                     }
                 }
             } else {
@@ -726,7 +727,7 @@ void EnFz_Draw(Actor* thisx, PlayState* play) {
 
     if (this->isActive) {
         func_8002ED80(&this->actor, play, 0);
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, play->state.frames & 0x7F, 32, 32, 1, 0,
                                     (2 * play->state.frames) & 0x7F, 32, 32));
@@ -864,7 +865,7 @@ void EnFz_DrawIceSmoke(EnFz* this, PlayState* play) {
 
     OPEN_DISPS(gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->iceSmoke); i++) {
         FrameInterpolation_RecordOpenChild(iceSmoke, iceSmoke->epoch);

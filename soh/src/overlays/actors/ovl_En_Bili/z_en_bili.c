@@ -231,6 +231,7 @@ void EnBili_SetupDie(EnBili* this) {
     this->actor.flags &= ~ACTOR_FLAG_0;
     this->actionFunc = EnBili_Die;
     this->actor.speedXZ = 0.0f;
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BIRI]++;
 }
 
 /**
@@ -752,7 +753,7 @@ void EnBili_Draw(Actor* thisx, PlayState* play) {
     EnBili* this = (EnBili*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     this->tentaclesTexIndex = CLAMP_MAX(this->tentaclesTexIndex, 7);
 

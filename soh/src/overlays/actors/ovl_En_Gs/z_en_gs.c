@@ -574,7 +574,7 @@ void EnGs_Draw(Actor* thisx, PlayState* play) {
         OPEN_DISPS(play->state.gfxCtx);
 
         frames = play->gameplayFrames;
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         Matrix_Push();
         if (this->unk_19E & 1) {
             Matrix_RotateY(this->unk_1A0[0].y * (M_PI / 0x8000), MTXMODE_APPLY);
@@ -602,7 +602,7 @@ void EnGs_Draw(Actor* thisx, PlayState* play) {
 
         Matrix_Pop();
         if (this->unk_19E & 2) {
-            func_80093D84(play->state.gfxCtx);
+            Gfx_SetupDL_25Xlu(play->state.gfxCtx);
             Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_Scale(0.05f, -0.05f, 1.0f, MTXMODE_APPLY);
 
