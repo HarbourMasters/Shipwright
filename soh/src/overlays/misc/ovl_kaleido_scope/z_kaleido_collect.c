@@ -83,8 +83,23 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
     s16 phi_s0_2;
     s16 sp208[3];
     bool dpad = CVar_GetS32("gDpadPause", 0);
+    u16 i;
+    u16 j;
 
     OPEN_DISPS(gfxCtx);
+
+    gDPPipeSync(POLY_KAL_DISP++);
+    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, ZREG(39), ZREG(40), ZREG(41), pauseCtx->alpha);
+    gDPSetEnvColor(POLY_KAL_DISP++, ZREG(43), ZREG(44), ZREG(45), 0);
+
+    for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); i++) {
+        s16 currentItem = gSaveContext.equips.buttonItems[i + 1];
+        if (currentItem != ITEM_NONE && currentItem >= ITEM_MEDALLION_FOREST && currentItem <= ITEM_MEDALLION_LIGHT) {
+            gDPPipeSync(POLY_KAL_DISP++);
+            gSPVertex(POLY_KAL_DISP++, &pauseCtx->questVtx[(currentItem - ITEM_MEDALLION_FOREST) * 4], 4, 0);
+            POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, gEquippedItemOutlineTex, 24, 24, 0);
+        }
+    }
 
     if ((!pauseCtx->unk_1E4 || (pauseCtx->unk_1E4 == 5) || (pauseCtx->unk_1E4 == 8)) &&
         (pauseCtx->pageIndex == PAUSE_QUEST)) {
@@ -226,16 +241,39 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
             }
 
             if (CHECK_BTN_ANY(input->press.button, buttonsToCheck)) {
-
                 u16 cursor = pauseCtx->cursorPoint[PAUSE_QUEST];
-                u16 item = cursor + ITEM_MEDALLION_FOREST;
-                u16 slot = pauseCtx->cursorSlot[pauseCtx->pageIndex];
 
-                if (CHECK_QUEST_ITEM(pauseCtx->cursorPoint[PAUSE_QUEST])) {
+                if (CHECK_QUEST_ITEM(cursor)) {
+                    u16 slot;
+                    u16 cursorSlot = pauseCtx->cursorSlot[PAUSE_QUEST];
+                    u16 cursorItem = cursor + ITEM_MEDALLION_FOREST;
 
-                    KaleidoScope_SetupItemEquip(play, item, slot,
-                                                pauseCtx->equipVtx[cursor * 4].v.ob[0] * 10,
-                                                pauseCtx->equipVtx[cursor * 4].v.ob[1] * 10);
+                    switch (cursorItem) {
+                        case ITEM_MEDALLION_FOREST:
+                            slot = SLOT_MEDALLION_FOREST;
+                            break;
+                        case ITEM_MEDALLION_FIRE:
+                            slot = SLOT_MEDALLION_FIRE;
+                            break;
+                        case ITEM_MEDALLION_WATER:
+                            slot = SLOT_MEDALLION_WATER;
+                            break;
+                        case ITEM_MEDALLION_SPIRIT:
+                            slot = SLOT_MEDALLION_SPIRIT;
+                            break;
+                        case ITEM_MEDALLION_SHADOW:
+                            slot = SLOT_MEDALLION_SHADOW;
+                            break;
+                        case ITEM_MEDALLION_LIGHT:
+                            slot = SLOT_MEDALLION_LIGHT;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    KaleidoScope_SetupQuestEquip(play, cursorItem, slot,
+                                                pauseCtx->questVtx[cursorSlot * 4].v.ob[0] * 10,
+                                                pauseCtx->questVtx[cursorSlot * 4].v.ob[1] * 10);
                 }
             }
         } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {

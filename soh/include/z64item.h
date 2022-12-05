@@ -84,6 +84,12 @@ typedef enum {
     /* 0x1B */ SLOT_BOOTS_KOKIRI,
     /* 0x1C */ SLOT_BOOTS_IRON,
     /* 0x1D */ SLOT_BOOTS_HOVER,
+    /* 0x1E */ SLOT_MEDALLION_FOREST,
+    /* 0x1F */ SLOT_MEDALLION_FIRE,
+    /* 0x20 */ SLOT_MEDALLION_WATER,
+    /* 0x21 */ SLOT_MEDALLION_SPIRIT,
+    /* 0x22 */ SLOT_MEDALLION_SHADOW,
+    /* 0x23 */ SLOT_MEDALLION_LIGHT,
     /* 0xFF */ SLOT_NONE = 0xFF
 } InventorySlot;
 
