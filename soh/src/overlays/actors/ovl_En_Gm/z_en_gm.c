@@ -97,7 +97,8 @@ s32 func_80A3D7C8(void) {
         return 1;
     } else if (gBitFlags[3] & gSaveContext.inventory.equipment) {
         return 2;
-    } else if ((gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS)) && (gBitFlags[2] & gSaveContext.inventory.equipment)){
+    } else if ((gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF) &&
+               (gBitFlags[2] & gSaveContext.inventory.equipment)) {
         return 1;
     } else {
         return 3;
@@ -211,7 +212,7 @@ void func_80A3DC44(EnGm* this, PlayState* play) {
                 return;
             case 1:
                 gSaveContext.infTable[11] |= 2;
-                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) &&
+                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
                     !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
                         //Resets "Talked to Medigoron" flag in infTable to restore initial conversation state
                         gSaveContext.infTable[11] &= ~2;
@@ -250,7 +251,7 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
                     Message_ContinueTextbox(play, 0xC8);
                     this->actionFunc = func_80A3DD7C;
                 } else {
-                    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) &&
+                    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
                         !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
                             GiveItemEntryFromActor(&this->actor, play,
                             Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE), 415.0f, 10.0f);
@@ -276,7 +277,7 @@ void func_80A3DF00(EnGm* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = func_80A3DF60;
     } else {
-        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) &&
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
         !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
             GiveItemEntryFromActor(&this->actor, play,
             Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE), 415.0f, 10.0f);
