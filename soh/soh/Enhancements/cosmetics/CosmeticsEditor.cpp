@@ -38,6 +38,9 @@ extern PlayState* gPlayState;
 #include "objects/object_gi_bomb_2/object_gi_bomb_2.h"
 #include "objects/object_gla/object_gla.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
+#include "objects/object_gi_pachinko/object_gi_pachinko.h"
+#include "objects/object_trap/object_trap.h"
+#include "overlays/ovl_Boss_Ganon2/ovl_Boss_Ganon2.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
@@ -124,6 +127,8 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     
     COSMETIC_OPTION("Equipment_BoomerangBody",       "Boomerang Body",       BOX_EQUIPMENT,    ImVec4(160, 100,   0, 255), false, true, false),
     COSMETIC_OPTION("Equipment_BoomerangGem",        "Boomerang Gem",        BOX_EQUIPMENT,    ImVec4(255,  50, 150, 255), false, true, true),
+    COSMETIC_OPTION("Equipment_SlingshotBody",       "Slingshot Body",       BOX_EQUIPMENT,    ImVec4(160, 100,   0, 255), false, true, true),
+    COSMETIC_OPTION("Equipment_SlingshotString",     "Slingshot String",     BOX_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Equipment_HammerHead",          "Hammer Head",          BOX_EQUIPMENT,    ImVec4(155, 192, 201, 255), false, true, false),
     COSMETIC_OPTION("Equipment_HammerHandle",        "Hammer Handle",        BOX_EQUIPMENT,    ImVec4(110,  60,   0, 255), false, true, true),
     COSMETIC_OPTION("Equipment_HookshotChain",       "Hookshot Chain",       BOX_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true),
@@ -133,13 +138,12 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Equipment_BowString",           "Bow String",           BOX_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Equipment_BowBody",             "Bow Body",             BOX_EQUIPMENT,    ImVec4(140,  90,  10, 255), false, true, false),
     COSMETIC_OPTION("Equipment_BowHandle",           "Bow Handle",           BOX_EQUIPMENT,    ImVec4( 50, 150, 255, 255), false, true, true),
-    // Todo (Cosmetics): Slingshot
     // Todo (Cosmetics): Hookshot
     COSMETIC_OPTION("Equipment_ChuFace",             "Bombchu Face",         BOX_EQUIPMENT,    ImVec4(  0, 100, 150, 255), false, true, true),
     COSMETIC_OPTION("Equipment_ChuBody",             "Bombchu Body",         BOX_EQUIPMENT,    ImVec4(180, 130,  50, 255), false, true, true), 
 
     COSMETIC_OPTION("Consumable_Hearts",             "Hearts",               BOX_CONSUMABLE,   ImVec4(255,  70,  50, 255), false, true, false),
-    COSMETIC_OPTION("Consumable_HeartBorder",        "HeartBorder",          BOX_CONSUMABLE,   ImVec4( 50,  40,  60, 255), false, true, true),
+    COSMETIC_OPTION("Consumable_HeartBorder",        "Heart Border",         BOX_CONSUMABLE,   ImVec4( 50,  40,  60, 255), false, true, true),
     COSMETIC_OPTION("Consumable_DDHearts",           "DD Hearts",            BOX_CONSUMABLE,   ImVec4(200,   0,   0, 255), false, true, false),
     COSMETIC_OPTION("Consumable_DDHeartBorder",      "DD Heart Border",      BOX_CONSUMABLE,   ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Consumable_Magic",              "Magic",                BOX_CONSUMABLE,   ImVec4(  0, 200,   0, 255), false, true, false),
@@ -203,10 +207,13 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("World_BlockOfTime",             "Block of Time",        BOX_WORLD,        ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("World_Moon",                    "Moon",                 BOX_WORLD,        ImVec4(240, 255, 180, 255), false, true, true),
     COSMETIC_OPTION("World_GossipStone",             "Gossip Stone",         BOX_WORLD,        ImVec4(200, 200, 200, 255), false, true, true),
+    COSMETIC_OPTION("World_RedIce",                  "Red Ice",              BOX_WORLD,        ImVec4(255,   0,   0, 255), false, true, false),
 
     /* NPCs */
     // Navi
     // Other fairies
+    // Ganon Swords
+    // Ganon Eyes
     COSMETIC_OPTION("NPC_FireKeesePrimary",          "Fire Keese Primary",   BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("NPC_FireKeeseSecondary",        "Fire Keese Secondary", BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("NPC_IceKeesePrimary",           "Ice Keese Primary",    BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
@@ -216,6 +223,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("NPC_GoldenSkulltula",           "Golden Skulltula",     BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("NPC_Kokiri",                    "Kokiri",               BOX_NPC,          ImVec4(  0, 130,  70, 255), false, true, false),
     COSMETIC_OPTION("NPC_Gerudo",                    "Gerudo",               BOX_NPC,          ImVec4( 90,   0, 140, 255), false, true, false),
+    COSMETIC_OPTION("NPC_MetalTrap",                 "Metal Trap",           BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
     // Cucco
 };
 
@@ -481,7 +489,7 @@ void ApplyOrResetCustomGfxPatches(bool rainbowTick = false) {
         PATCH_GFX(gLinkChildLeftFistAndKokiriSwordNearDL,         "Swords_KokiriBlade1",      swordsKokiriBlade.changedCvar,      158, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gLinkChildLeftFistAndKokiriSwordFarDL,          "Swords_KokiriBlade2",      swordsKokiriBlade.changedCvar,      150, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiKokiriSwordDL,                               "Swords_KokiriBlade3",      swordsKokiriBlade.changedCvar,       10, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiKokiriSwordDL,                               "Swords_KokiriBlade4",      swordsKokiriBlade.changedCvar,       12, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gGiKokiriSwordDL,                               "Swords_KokiriBlade4",      swordsKokiriBlade.changedCvar,       12, gsDPSetEnvColor(color.r / 4, color.g / 4, color.b / 4, 255));
     }
     static CosmeticOption& swordsKokiriHilt = cosmeticOptions.at("Swords_KokiriHilt");
     if (rainbowTick == false || CVar_GetS32(swordsKokiriHilt.rainbowCvar, 0)) {
@@ -495,29 +503,33 @@ void ApplyOrResetCustomGfxPatches(bool rainbowTick = false) {
         PATCH_GFX(gLinkChildDekuShieldSwordAndSheathFarDL,        "Swords_KokiriHilt6",       swordsKokiriHilt.changedCvar,         4,  gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
         PATCH_GFX(gLinkChildHylianShieldSwordAndSheathNearDL,     "Swords_KokiriHilt7",       swordsKokiriHilt.changedCvar,         4,  gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
         PATCH_GFX(gLinkChildHylianShieldSwordAndSheathFarDL,      "Swords_KokiriHilt8",       swordsKokiriHilt.changedCvar,         4,  gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiKokiriSwordDL,                               "Swords_KokiriHilt9",       swordsKokiriHilt.changedCvar,        64,  gsDPSetPrimColor(0, 0, MAX(color.r - 50, 0), MAX(color.g - 50, 0), MAX(color.b - 50, 0), 255));
+        PATCH_GFX(gGiKokiriSwordDL,                               "Swords_KokiriHilt10",      swordsKokiriHilt.changedCvar,        66,  gsDPSetEnvColor(MAX(color.r - 50, 0) / 3, MAX(color.g - 50, 0) / 3, MAX(color.b - 50, 0) / 3, 255));
+        PATCH_GFX(gGiKokiriSwordDL,                               "Swords_KokiriHilt11",      swordsKokiriHilt.changedCvar,       162,  gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiKokiriSwordDL,                               "Swords_KokiriHilt12",      swordsKokiriHilt.changedCvar,       164,  gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
 
         if (!rainbowTick) {
-        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordNearDL,         "Swords_KokiriHilt9",       swordsKokiriHilt.changedCvar,       108, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordNearDL,         "Swords_KokiriHilt10",      swordsKokiriHilt.changedCvar,       134, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordFarDL,          "Swords_KokiriHilt12",      swordsKokiriHilt.changedCvar,       106, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordFarDL,          "Swords_KokiriHilt13",      swordsKokiriHilt.changedCvar,       126, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildSwordAndSheathNearDL,                 "Swords_KokiriHilt18",      swordsKokiriHilt.changedCvar,       100, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildSwordAndSheathNearDL,                 "Swords_KokiriHilt19",      swordsKokiriHilt.changedCvar,       126, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildSwordAndSheathNearDL,                 "Swords_KokiriHilt20",      swordsKokiriHilt.changedCvar,       128, gsSPEndDisplayList());
-        PATCH_GFX(gLinkChildSwordAndSheathFarDL,                  "Swords_KokiriHilt21",      swordsKokiriHilt.changedCvar,        98, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildSwordAndSheathFarDL,                  "Swords_KokiriHilt22",      swordsKokiriHilt.changedCvar,       118, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildSwordAndSheathFarDL,                  "Swords_KokiriHilt23",      swordsKokiriHilt.changedCvar,       120, gsSPEndDisplayList());
-        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathNearDL,       "Swords_KokiriHilt24",      swordsKokiriHilt.changedCvar,       166, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathNearDL,       "Swords_KokiriHilt25",      swordsKokiriHilt.changedCvar,       192, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathNearDL,       "Swords_KokiriHilt26",      swordsKokiriHilt.changedCvar,       194, gsSPEndDisplayList());
-        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathFarDL,        "Swords_KokiriHilt27",      swordsKokiriHilt.changedCvar,       156, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathFarDL,        "Swords_KokiriHilt28",      swordsKokiriHilt.changedCvar,       176, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathFarDL,        "Swords_KokiriHilt29",      swordsKokiriHilt.changedCvar,       178, gsSPEndDisplayList());
-        PATCH_GFX(gLinkChildHylianShieldSwordAndSheathNearDL,     "Swords_KokiriHilt30",      swordsKokiriHilt.changedCvar,       162, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildHylianShieldSwordAndSheathNearDL,     "Swords_KokiriHilt31",      swordsKokiriHilt.changedCvar,       188, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildHylianShieldSwordAndSheathNearDL,     "Swords_KokiriHilt32",      swordsKokiriHilt.changedCvar,       190, gsSPEndDisplayList());
-        PATCH_GFX(gLinkChildHylianShieldSwordAndSheathFarDL,      "Swords_KokiriHilt33",      swordsKokiriHilt.changedCvar,        98, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildHylianShieldSwordAndSheathFarDL,      "Swords_KokiriHilt34",      swordsKokiriHilt.changedCvar,       118, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordNearDL,         "Swords_KokiriHilt13",      swordsKokiriHilt.changedCvar,       108, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordNearDL,         "Swords_KokiriHilt14",      swordsKokiriHilt.changedCvar,       134, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordFarDL,          "Swords_KokiriHilt15",      swordsKokiriHilt.changedCvar,       106, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordFarDL,          "Swords_KokiriHilt16",      swordsKokiriHilt.changedCvar,       126, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildSwordAndSheathNearDL,                 "Swords_KokiriHilt17",      swordsKokiriHilt.changedCvar,       100, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildSwordAndSheathNearDL,                 "Swords_KokiriHilt18",      swordsKokiriHilt.changedCvar,       126, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildSwordAndSheathNearDL,                 "Swords_KokiriHilt19",      swordsKokiriHilt.changedCvar,       128, gsSPEndDisplayList());
+        PATCH_GFX(gLinkChildSwordAndSheathFarDL,                  "Swords_KokiriHilt20",      swordsKokiriHilt.changedCvar,        98, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildSwordAndSheathFarDL,                  "Swords_KokiriHilt21",      swordsKokiriHilt.changedCvar,       118, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildSwordAndSheathFarDL,                  "Swords_KokiriHilt22",      swordsKokiriHilt.changedCvar,       120, gsSPEndDisplayList());
+        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathNearDL,       "Swords_KokiriHilt23",      swordsKokiriHilt.changedCvar,       166, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathNearDL,       "Swords_KokiriHilt24",      swordsKokiriHilt.changedCvar,       192, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathNearDL,       "Swords_KokiriHilt25",      swordsKokiriHilt.changedCvar,       194, gsSPEndDisplayList());
+        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathFarDL,        "Swords_KokiriHilt26",      swordsKokiriHilt.changedCvar,       156, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathFarDL,        "Swords_KokiriHilt27",      swordsKokiriHilt.changedCvar,       176, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildDekuShieldSwordAndSheathFarDL,        "Swords_KokiriHilt28",      swordsKokiriHilt.changedCvar,       178, gsSPEndDisplayList());
+        PATCH_GFX(gLinkChildHylianShieldSwordAndSheathNearDL,     "Swords_KokiriHilt29",      swordsKokiriHilt.changedCvar,       162, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildHylianShieldSwordAndSheathNearDL,     "Swords_KokiriHilt30",      swordsKokiriHilt.changedCvar,       188, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildHylianShieldSwordAndSheathNearDL,     "Swords_KokiriHilt31",      swordsKokiriHilt.changedCvar,       190, gsSPEndDisplayList());
+        PATCH_GFX(gLinkChildHylianShieldSwordAndSheathFarDL,      "Swords_KokiriHilt32",      swordsKokiriHilt.changedCvar,        98, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildHylianShieldSwordAndSheathFarDL,      "Swords_KokiriHilt33",      swordsKokiriHilt.changedCvar,       118, gsSPGrayscale(false));
         }
     }
     static CosmeticOption& swordsMasterBlade = cosmeticOptions.at("Swords_MasterBlade");
@@ -528,6 +540,8 @@ void ApplyOrResetCustomGfxPatches(bool rainbowTick = false) {
         PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordNearDL,     "Swords_MasterBlade2",      swordsMasterBlade.changedCvar,       34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterBlade3",      swordsMasterBlade.changedCvar,       26, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterBlade4",      swordsMasterBlade.changedCvar,       28, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(ovl_Boss_Ganon2_DL_0103A8,                      "Swords_MasterBlade5",      swordsMasterBlade.changedCvar,       26, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(ovl_Boss_Ganon2_DL_0103A8,                      "Swords_MasterBlade6",      swordsMasterBlade.changedCvar,       28, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
     }
     static CosmeticOption& swordsMasterHilt = cosmeticOptions.at("Swords_MasterHilt");
     if (rainbowTick == false || CVar_GetS32(swordsMasterHilt.rainbowCvar, 0)) {
@@ -536,15 +550,44 @@ void ApplyOrResetCustomGfxPatches(bool rainbowTick = false) {
         PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordNearDL,     "Swords_MasterHilt1",       swordsMasterHilt.changedCvar,        20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
         PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordFarDL,      "Swords_MasterHilt2",       swordsMasterHilt.changedCvar,        20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
         PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterHilt3",       swordsMasterHilt.changedCvar,        16, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultMasterSwordAndSheathNearDL,           "Swords_MasterHilt4",       swordsMasterHilt.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultMasterSwordAndSheathFarDL,            "Swords_MasterHilt5",       swordsMasterHilt.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "Swords_MasterHilt6",       swordsMasterHilt.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "Swords_MasterHilt7",       swordsMasterHilt.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultHylianShieldSwordAndSheathNearDL,     "Swords_MasterHilt8",       swordsMasterHilt.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultHylianShieldSwordAndSheathFarDL,      "Swords_MasterHilt9",       swordsMasterHilt.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(ovl_Boss_Ganon2_DL_0103A8,                      "Swords_MasterHilt10",      swordsMasterHilt.changedCvar,        16, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
 
         if (!rainbowTick) {
-        PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordFarDL,      "Swords_MasterHilt4",       swordsMasterHilt.changedCvar,        38, gsSPGrayscale(true));
-        PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordFarDL,      "Swords_MasterHilt5",       swordsMasterHilt.changedCvar,       112, gsSPGrayscale(false));
-        PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordNearDL,     "Swords_MasterHilt6",       swordsMasterHilt.changedCvar,        86, gsSPGrayscale(true));
-        PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordNearDL,     "Swords_MasterHilt7",       swordsMasterHilt.changedCvar,       208, gsSPGrayscale(false));
-        PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterHilt8",       swordsMasterHilt.changedCvar,       112, gsSPGrayscale(true));
-        PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterHilt9",       swordsMasterHilt.changedCvar,       278, gsSPGrayscale(false));
-        PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterHilt10",      swordsMasterHilt.changedCvar,       280, gsSPEndDisplayList());
+        PATCH_GFX(gLinkAdultMasterSwordAndSheathFarDL,            "Swords_MasterHilt11",      swordsMasterHilt.changedCvar,        38, gsSPGrayscale(true));
+        PATCH_GFX(gLinkAdultMasterSwordAndSheathFarDL,            "Swords_MasterHilt12",      swordsMasterHilt.changedCvar,        64, gsSPGrayscale(false));
+        PATCH_GFX(gLinkAdultMasterSwordAndSheathFarDL,            "Swords_MasterHilt13",      swordsMasterHilt.changedCvar,       106, gsSPGrayscale(true));
+        PATCH_GFX(gLinkAdultMasterSwordAndSheathFarDL,            "Swords_MasterHilt14",      swordsMasterHilt.changedCvar,       120, gsSPGrayscale(false));
+        PATCH_GFX(gLinkAdultMasterSwordAndSheathNearDL,           "Swords_MasterHilt15",      swordsMasterHilt.changedCvar,       104, gsSPGrayscale(true));
+        PATCH_GFX(gLinkAdultMasterSwordAndSheathNearDL,           "Swords_MasterHilt16",      swordsMasterHilt.changedCvar,       182, gsSPGrayscale(false));
+        PATCH_GFX(gLinkAdultMasterSwordAndSheathNearDL,           "Swords_MasterHilt17",      swordsMasterHilt.changedCvar,       184, gsSPEndDisplayList());
+        PATCH_GFX(gLinkAdultHylianShieldSwordAndSheathFarDL,      "Swords_MasterHilt18",      swordsMasterHilt.changedCvar,        80, gsSPGrayscale(true));
+        PATCH_GFX(gLinkAdultHylianShieldSwordAndSheathFarDL,      "Swords_MasterHilt19",      swordsMasterHilt.changedCvar,        94, gsSPGrayscale(false));
+        PATCH_GFX(gLinkAdultHylianShieldSwordAndSheathFarDL,      "Swords_MasterHilt20",      swordsMasterHilt.changedCvar,       162, gsSPGrayscale(true));
+        PATCH_GFX(gLinkAdultHylianShieldSwordAndSheathFarDL,      "Swords_MasterHilt21",      swordsMasterHilt.changedCvar,       180, gsSPGrayscale(false));
+        PATCH_GFX(gLinkAdultHylianShieldSwordAndSheathNearDL,     "Swords_MasterHilt22",      swordsMasterHilt.changedCvar,       154, gsSPGrayscale(true));
+        PATCH_GFX(gLinkAdultHylianShieldSwordAndSheathNearDL,     "Swords_MasterHilt23",      swordsMasterHilt.changedCvar,       232, gsSPGrayscale(false));
+        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "Swords_MasterHilt24",      swordsMasterHilt.changedCvar,       112, gsSPGrayscale(true));
+        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "Swords_MasterHilt25",      swordsMasterHilt.changedCvar,       130, gsSPGrayscale(false));
+        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "Swords_MasterHilt26",      swordsMasterHilt.changedCvar,       172, gsSPGrayscale(true));
+        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "Swords_MasterHilt27",      swordsMasterHilt.changedCvar,       186, gsSPGrayscale(false));
+        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "Swords_MasterHilt28",      swordsMasterHilt.changedCvar,       220, gsSPGrayscale(true));
+        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "Swords_MasterHilt29",      swordsMasterHilt.changedCvar,       298, gsSPGrayscale(false));
+        PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordFarDL,      "Swords_MasterHilt30",      swordsMasterHilt.changedCvar,        38, gsSPGrayscale(true));
+        PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordFarDL,      "Swords_MasterHilt31",      swordsMasterHilt.changedCvar,       112, gsSPGrayscale(false));
+        PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordNearDL,     "Swords_MasterHilt32",      swordsMasterHilt.changedCvar,        86, gsSPGrayscale(true));
+        PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordNearDL,     "Swords_MasterHilt33",      swordsMasterHilt.changedCvar,       208, gsSPGrayscale(false));
+        PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterHilt34",      swordsMasterHilt.changedCvar,       112, gsSPGrayscale(true));
+        PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterHilt35",      swordsMasterHilt.changedCvar,       278, gsSPGrayscale(false));
+        PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterHilt36",      swordsMasterHilt.changedCvar,       280, gsSPEndDisplayList());
+        PATCH_GFX(ovl_Boss_Ganon2_DL_0103A8,                      "Swords_MasterHilt37",      swordsMasterHilt.changedCvar,       112, gsSPGrayscale(true));
+        PATCH_GFX(ovl_Boss_Ganon2_DL_0103A8,                      "Swords_MasterHilt38",      swordsMasterHilt.changedCvar,       278, gsSPGrayscale(false));
+        PATCH_GFX(ovl_Boss_Ganon2_DL_0103A8,                      "Swords_MasterHilt39",      swordsMasterHilt.changedCvar,       280, gsSPEndDisplayList());
         }
     }
     static CosmeticOption& swordsBiggoronBlade = cosmeticOptions.at("Swords_BiggoronBlade");
@@ -635,6 +678,39 @@ void ApplyOrResetCustomGfxPatches(bool rainbowTick = false) {
         PATCH_GFX(gBoomerangDL,                                   "Equipment_BoomerangGem4",  equipmentBoomerangGem.changedCvar,   46, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         // No gem rendered on far?
         // PATCH_GFX(gLinkChildLeftFistAndBoomerangFarDL,  "Equipment_BoomerangGem5",  equipmentBoomerangGem.changedCvar,  32, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+    }
+
+    static CosmeticOption& equipmentSlingshotBody = cosmeticOptions.at("Equipment_SlingshotBody");
+    if (rainbowTick == false || CVar_GetS32(equipmentSlingshotBody.rainbowCvar, 0)) {
+        static Color_RGBA8 defaultColor = {equipmentSlingshotBody.defaultColor.x, equipmentSlingshotBody.defaultColor.y, equipmentSlingshotBody.defaultColor.z, equipmentSlingshotBody.defaultColor.w};
+        Color_RGBA8 color = CVar_GetRGBA(equipmentSlingshotBody.cvar, defaultColor);
+        PATCH_GFX(gGiSlingshotDL,                                       "Equipment_SlingshotBody1",       equipmentSlingshotBody.changedCvar,        10, gsDPSetPrimColor(0, 0, MAX(color.r - 100, 0), MAX(color.g - 100, 0), MAX(color.b - 100, 0), 255));
+        PATCH_GFX(gGiSlingshotDL,                                       "Equipment_SlingshotBody2",       equipmentSlingshotBody.changedCvar,        12, gsDPSetEnvColor(MAX(color.r - 100, 0) / 3, MAX(color.g - 100, 0) / 3, MAX(color.b - 100, 0) / 3, 255));
+        PATCH_GFX(gGiSlingshotDL,                                       "Equipment_SlingshotBody3",       equipmentSlingshotBody.changedCvar,        74, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiSlingshotDL,                                       "Equipment_SlingshotBody4",       equipmentSlingshotBody.changedCvar,        76, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gGiSlingshotDL,                                       "Equipment_SlingshotBody5",       equipmentSlingshotBody.changedCvar,       128, gsDPSetPrimColor(0, 0, MAX(color.r - 100, 0), MAX(color.g - 100, 0), MAX(color.b - 100, 0), 255));
+        PATCH_GFX(gGiSlingshotDL,                                       "Equipment_SlingshotBody6",       equipmentSlingshotBody.changedCvar,       130, gsDPSetEnvColor(MAX(color.r - 100, 0) / 3, MAX(color.g - 100, 0) / 3, MAX(color.b - 100, 0) / 3, 255));
+        PATCH_GFX(gLinkChildRightArmStretchedSlingshotDL,               "Equipment_SlingshotBody7",       equipmentSlingshotBody.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildRightHandHoldingSlingshotNearDL,            "Equipment_SlingshotBody8",       equipmentSlingshotBody.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildRightHandHoldingSlingshotFarDL,             "Equipment_SlingshotBody9",       equipmentSlingshotBody.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+
+        if (!rainbowTick) {
+        PATCH_GFX(gLinkChildRightArmStretchedSlingshotDL,               "Equipment_SlingshotBody10",      equipmentSlingshotBody.changedCvar,        20, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildRightArmStretchedSlingshotDL,               "Equipment_SlingshotBody11",      equipmentSlingshotBody.changedCvar,        74, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildRightHandHoldingSlingshotFarDL,             "Equipment_SlingshotBody12",      equipmentSlingshotBody.changedCvar,        20, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildRightHandHoldingSlingshotFarDL,             "Equipment_SlingshotBody13",      equipmentSlingshotBody.changedCvar,        66, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildRightHandHoldingSlingshotNearDL,            "Equipment_SlingshotBody14",      equipmentSlingshotBody.changedCvar,        96, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildRightHandHoldingSlingshotNearDL,            "Equipment_SlingshotBody15",      equipmentSlingshotBody.changedCvar,       136, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildRightHandHoldingSlingshotNearDL,            "Equipment_SlingshotBody16",      equipmentSlingshotBody.changedCvar,       138, gsSPEndDisplayList());
+        }
+    }
+    static CosmeticOption& equipmentSlingshotString = cosmeticOptions.at("Equipment_SlingshotString");
+    if (rainbowTick == false || CVar_GetS32(equipmentSlingshotString.rainbowCvar, 0)) {
+        static Color_RGBA8 defaultColor = {equipmentSlingshotString.defaultColor.x, equipmentSlingshotString.defaultColor.y, equipmentSlingshotString.defaultColor.z, equipmentSlingshotString.defaultColor.w};
+        Color_RGBA8 color = CVar_GetRGBA(equipmentSlingshotString.cvar, defaultColor);
+        PATCH_GFX(gGiSlingshotDL,                                       "Equipment_SlingshotString1",     equipmentSlingshotString.changedCvar,     150, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiSlingshotDL,                                       "Equipment_SlingshotString2",     equipmentSlingshotString.changedCvar,     152, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gLinkChildSlinghotStringDL,                           "Equipment_SlingshotString3",     equipmentSlingshotString.changedCvar,      18, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& equipmentBowTips = cosmeticOptions.at("Equipment_BowTips");
@@ -818,6 +894,13 @@ void ApplyOrResetCustomGfxPatches(bool rainbowTick = false) {
         PATCH_GFX(gGerudoPurpleRightShinDL,                       "NPC_Gerudo6",              npcGerudo.changedCvar,               22, gsDPSetEnvColor(color.r, color.g, color.b, 255));
         PATCH_GFX(gGerudoPurpleLeftHandDL,                        "NPC_Gerudo7",              npcGerudo.changedCvar,               34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGerudoPurpleRightHandDL,                       "NPC_Gerudo8",              npcGerudo.changedCvar,               34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+    }
+
+    static CosmeticOption& npcMetalTrap = cosmeticOptions.at("NPC_MetalTrap");
+    if (rainbowTick == false || CVar_GetS32(npcMetalTrap.rainbowCvar, 0)) {
+        static Color_RGBA8 defaultColor = {npcMetalTrap.defaultColor.x, npcMetalTrap.defaultColor.y, npcMetalTrap.defaultColor.z, npcMetalTrap.defaultColor.w};
+        Color_RGBA8 color = CVar_GetRGBA(npcMetalTrap.cvar, defaultColor);
+        PATCH_GFX(gSlidingBladeTrapDL,                            "NPC_MetalTrap1",           npcMetalTrap.changedCvar,           118, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& n64LogoRed = cosmeticOptions.at("Title_N64LogoRed");
