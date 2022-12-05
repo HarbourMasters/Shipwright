@@ -602,6 +602,8 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Injects item counts in pickup messages, like golden skulltula tokens and heart pieces");
                 UIWidgets::PaddedEnhancementCheckbox("Pull grave during the day", "gDayGravePull", true, false);
                 UIWidgets::Tooltip("Allows graves to be pulled when child during the day");
+                UIWidgets::PaddedEnhancementCheckbox("Dogs follow you everywhere", "gDogFollowsEverywhere", true, false);
+                UIWidgets::Tooltip("Allows dogs to follow you anywhere you go, even if you leave the market");
 
                 // Blue Fire Arrows
                 bool forceEnableBlueFireArrows = gSaveContext.n64ddFlag &&
