@@ -105,6 +105,4 @@ namespace RandomizerCheckObjects {
     std::map<SceneID, RandomizerCheckArea> GetAllRCAreaBySceneID();
     RandomizerCheckArea GetRCAreaBySceneID(SceneID sceneId);
     void UpdateImGuiVisibility();
-    void UpdateTrackerImGuiVisibility();
-    bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj);
     }
