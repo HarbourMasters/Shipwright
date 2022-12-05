@@ -2673,6 +2673,13 @@ void PerformAutosave(PlayState* play, u8 item) {
                     if (play->sceneNum == SCENE_GANON_DEMO) {
                         break;
                     }
+                case ITEM_BOMBCHU:
+                case ITEM_BOMBCHUS_5:
+                case ITEM_BOMBCHUS_20:
+                    if (!CVar_GetS32("gBombchuDrops", 0)) {
+                        Play_PerformSave(play);
+                    }
+                    break;
                 default:
                     Play_PerformSave(play);
                     break;
