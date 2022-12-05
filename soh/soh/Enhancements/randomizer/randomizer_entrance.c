@@ -582,7 +582,7 @@ void Entrance_OverrideGeurdoGuardCapture(void) {
 }
 
 void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == 2) { // Shuffle Ganon's Castle
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON) {
         // Move Hyrule's Castle Courtyard exit spawn to be before the crates so players don't skip Talon
         if (sceneNum == 95 && spawn == 1) {
             gPlayState->linkActorEntry->pos.x = 0x033A;
