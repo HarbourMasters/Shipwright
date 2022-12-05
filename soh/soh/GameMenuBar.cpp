@@ -392,6 +392,11 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Makes nuts explode bombs, similar to how they interact with bombchus. This does not affect bombflowers.");
                     UIWidgets::PaddedEnhancementCheckbox("Equip Multiple Arrows at Once", "gSeparateArrows", true, false);
                     UIWidgets::Tooltip("Allow the bow and magic arrows to be equipped at the same time on different slots");
+                    UIWidgets::PaddedEnhancementCheckbox("Turn Nayru's Love into Roc's Feather", "gRocsFeather", true, false);
+                    UIWidgets::Tooltip(
+                        "Nayru's Love acts like Roc's Feather from the Indigo romhack instead. Grants a jump that can even be used in the air, "
+                        "but needs to recharge by touching the ground afterwards. Does not require magic to use."
+                    );
                     ImGui::EndMenu();
                 }
 
