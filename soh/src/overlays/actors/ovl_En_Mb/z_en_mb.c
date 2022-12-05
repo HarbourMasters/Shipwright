@@ -507,8 +507,8 @@ void EnMb_SetupClubAttack(EnMb* this) {
     f32 frames = Animation_GetLastFrame(&gEnMbClubLiftClubAnim);
     s16 relYawFromPlayer;
 
-    // Rotate Club Moblin towards player in Enemy Randomizer because they're borderline
-    // useless otherwise in most scenarios.
+    // Rotate Club Moblin towards player in Enemy Randomizer because they're
+    // borderline useless otherwise in most scenarios.
     if (CVar_GetS32("gRandomizedEnemies", 0)) {
         Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
         Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
@@ -712,8 +712,8 @@ void EnMb_SpearEndChargeQuick(EnMb* this, PlayState* play) {
 
 void EnMb_ClubWaitAfterAttack(EnMb* this, PlayState* play) {
 
-    // Rotate Club Moblin towards player in Enemy Randomizer because they're borderline
-    // useless otherwise in most scenarios.
+    // Rotate Club Moblin towards player in Enemy Randomizer because they're
+    // borderline useless otherwise in most scenarios.
     if (CVar_GetS32("gRandomizedEnemies", 0)) {
         Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
         Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
@@ -839,8 +839,8 @@ void EnMb_ClubAttack(EnMb* this, PlayState* play) {
     s16 flamesUnused[] = { 20, 40, 0 };
     s16 relYawTarget[] = { -0x9C4, 0, 0xDAC };
 
-    // Rotate Club Moblin towards player in Enemy Randomizer because they're borderline
-    // useless otherwise in most scenarios.
+    // Rotate Club Moblin towards player in Enemy Randomizer because they're
+    // borderline useless otherwise in most scenarios.
     if (!CVar_GetS32("gRandomizedEnemies", 0)) {
         Math_SmoothStepToS(&this->actor.shape.rot.y, relYawTarget[this->attack - 1] + this->actor.world.rot.y, 1, 0x2EE, 0);
     } else {
@@ -885,7 +885,9 @@ void EnMb_ClubAttack(EnMb* this, PlayState* play) {
             EffectSsBlast_SpawnWhiteShockwave(play, &effSpawnPos, &effWhiteShockwaveDynamics,
                                               &effWhiteShockwaveDynamics);
             func_80033480(play, &effSpawnPos, 2.0f, 3, 0x12C, 0xB4, 1);
-            // Disable camera shake with Enemy Randomizer enabled.
+            // Disable camera shake when the Moblin attacks with Enemy Randomizer enabled.
+            // This camera shake gets very annoying as these Moblins can spawn in many rooms,
+            // and also often (initially) out of reach for the player.
             if (!CVar_GetS32("gRandomizedEnemies", 0)) {
                 Camera_AddQuake(&play->mainCamera, 2, 0x19, 5);
             }
@@ -1260,8 +1262,8 @@ void EnMb_ClubWaitPlayerNear(EnMb* this, PlayState* play) {
     s32 pad;
     s16 relYawFromPlayer = this->actor.world.rot.y - this->actor.yawTowardsPlayer;
 
-    // Rotate Club Moblin towards player in Enemy Randomizer because they're borderline
-    // useless otherwise in most scenarios.
+    // Rotate Club Moblin towards player in Enemy Randomizer because they're
+    // borderline useless otherwise in most scenarios.
     if (CVar_GetS32("gRandomizedEnemies", 0)) {
         Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
         Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
@@ -1271,6 +1273,8 @@ void EnMb_ClubWaitPlayerNear(EnMb* this, PlayState* play) {
     if (Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) < this->playerDetectionRange &&
         !(player->stateFlags1 & 0x4000000) && ABS(relYawFromPlayer) < 0x3E80) {
         // Add a height check to the Moblin's Club attack when Enemy Randomizer is on.
+        // Without the height check, the Moblin will attack (and play the sound effect) a lot even though
+        // the Moblin is very far away from the player in vertical rooms (like the first room in Deku Tree).
         s8 enemyRando = CVar_GetS32("gRandomizedEnemies", 0);
         if (!enemyRando || (enemyRando && this->actor.yDistToPlayer <= 100.0f && this->actor.yDistToPlayer >= -100.0f)) {
             EnMb_SetupClubAttack(this);

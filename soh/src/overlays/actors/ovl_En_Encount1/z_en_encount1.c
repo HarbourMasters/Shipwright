@@ -237,8 +237,10 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
 
     this->outOfRangeTimer = 0;
     spawnPos = this->actor.world.pos;
-    // With Enemy Randomizer on, keep spawning enemies regardless of enemies spawned so enemies keep spawning.
-    // Instead, it relies on the timer to spawn an enemy every once in a while.
+    // In authentic gameplay, the game checks how many Stalchildren were spawned and only spawns new ones
+    // when the old ones are despawned and a timer is reached.
+    // With Enemy Randomizer on, this will keep spawning enemies solely on the timer because it's much
+    // more difficult tracking how many enemies have been spawned/killed. It's also fun. :)
     if ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || CVar_GetS32("gRandomizedEnemies", 0)) {
         while ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || CVar_GetS32("gRandomizedEnemies", 0)) {
             if (play->sceneNum == SCENE_SPOT00) {
