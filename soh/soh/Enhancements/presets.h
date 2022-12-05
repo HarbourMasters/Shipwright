@@ -573,7 +573,7 @@ const std::vector<PresetEntry> s6PresetEntries = {
     PRESET_ENTRY_S32("gRandomizeStartingAge", 2),
     PRESET_ENTRY_S32("gRandomizeStartingConsumables", 1),
     PRESET_ENTRY_S32("gRandomizeStartingDekuShield", 1),
-    PRESET_ENTRY_S32("gRandomizeStartingMapsCompasses", 0),
+    PRESET_ENTRY_S32("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_STARTWITH),
     PRESET_ENTRY_S32("gRandomizeStartingOcarina", 1),
     PRESET_ENTRY_S32("gRandomizeZorasFountain", 0),
 };
@@ -622,7 +622,7 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32("gRandomizeSkipScarecrowsSong", 1),
     PRESET_ENTRY_S32("gRandomizeSkipTowerEscape", 1),
     PRESET_ENTRY_S32("gRandomizeStartingAge", 2),
-    PRESET_ENTRY_S32("gRandomizeStartingMapsCompasses", 5),
+    PRESET_ENTRY_S32("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_ANYWHERE),
     PRESET_ENTRY_S32("gRandomizeSunlightArrows", 1),
     PRESET_ENTRY_S32("gRandomizeZorasFountain", 2),
 };
