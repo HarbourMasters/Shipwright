@@ -253,7 +253,7 @@ namespace GameControlEditor {
         UIWidgets::Spacer(0);
         SohImGui::BeginGroupPanel("Third-Person Camera", ImGui::GetContentRegionAvail());
 
-        UIWidgets::PaddedEnhancementCheckbox("Right Stick Camera", "gFreeCamera");
+        UIWidgets::PaddedEnhancementCheckbox("Free Camera", "gFreeCamera");
         DrawHelpIcon("Enables free camera control\nNote: You must remap C buttons off of the right stick in the "
                             "controller config menu, and map the camera stick to the right stick.");
         UIWidgets::PaddedEnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
