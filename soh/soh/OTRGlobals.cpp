@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <filesystem>
 #include <fstream>
+#include <regex>
+
 
 #include <ResourceMgr.h>
 #include <DisplayList.h>
@@ -409,6 +411,21 @@ extern "C" void VanillaItemTable_Init() {
     }
 }
 
+extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath, size_t* size) {
+    FILE* file = fopen(filePath, "r");
+    fseek(file, 0, SEEK_END);
+    int fSize = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+    char* data = (char*)malloc(fSize);
+    fread(data, 1, fSize, file);
+
+    fclose(file);
+    *size = fSize;
+
+    return data;
+}
+
 extern "C" void OTRExtScanner() {
     auto lst = *OTRGlobals::Instance->context->GetResourceManager()->ListFiles("*.*").get();
 
@@ -419,6 +436,22 @@ extern "C" void OTRExtScanner() {
         replace(nPath.begin(), nPath.end(), '\\', '/');
 
         ExtensionCache[nPath] = { rPath, ext };
+    }
+
+    std::filesystem::path overridesFilePath = Ship::Window::GetPathRelativeToAppDirectory("mods/overrides.txt");
+    if (std::filesystem::exists(overridesFilePath)){
+        size_t s;
+        bool regexResult;
+        std::regex regex("\"(.+)\"\\s+\"(.+\\.(.+))\"");
+        std::smatch match;
+        //char* line = ResourceMgr_LoadFileFromDisk(overridesFilePath.string().c_str(), &s);
+        std::ifstream input(overridesFilePath.string().c_str());
+        for (std::string line; getline( input, line );) {
+            regexResult = std::regex_search(line, match, regex);
+            if (regexResult) {
+                ExtensionCache[match[1].str()] = { match[2].str(), match[3].str()};
+            }
+        }
     }
 }
 
@@ -738,20 +771,6 @@ extern "C" char* ResourceMgr_LoadFileRaw(const char* resName) {
     return OTRGlobals::Instance->context->GetResourceManager()->LoadFile(resName)->Buffer.get();
 }
 
-extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
-    FILE* file = fopen(filePath, "r");
-    fseek(file, 0, SEEK_END);
-    int fSize = ftell(file);
-    fseek(file, 0, SEEK_SET);
-
-    char* data = (char*)malloc(fSize);
-    fread(data, 1, fSize, file);
-
-    fclose(file);
-
-    return data;
-}
-
 extern "C" char* ResourceMgr_LoadJPEG(char* data, int dataSize)
 {
     static char* finalBuffer = 0;
@@ -1040,8 +1059,9 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
 
     ExtensionEntry entry = ExtensionCache[path];
 
-    auto sampleRaw = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(entry.path);
-    uint32_t* strem = (uint32_t*)sampleRaw->Buffer.get();
+    size_t sampleSize;
+    auto sampleRaw = ResourceMgr_LoadFileFromDisk(entry.path.c_str(), &sampleSize); //OTRGlobals::Instance->context->GetResourceManager()->LoadFile(entry.path);
+    uint32_t* strem = (uint32_t*)sampleRaw;//->Buffer.get();
     uint8_t* strem2 = (uint8_t*)strem;
 
     SoundFontSample* sampleC = new SoundFontSample;
@@ -1051,7 +1071,7 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
         drwav_uint32 sampleRate;
         drwav_uint64 totalPcm;
         drmp3_int16* pcmData =
-            drwav_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->BufferSize, &channels, &sampleRate, &totalPcm, NULL);
+            drwav_open_memory_and_read_pcm_frames_s16(strem2, sampleSize, &channels, &sampleRate, &totalPcm, NULL);
         sampleC->size = totalPcm;
         sampleC->sampleAddr = (uint8_t*)pcmData;
         sampleC->codec = CODEC_S16;
@@ -1069,7 +1089,7 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
         drmp3_config mp3Info;
         drmp3_uint64 totalPcm;
         drmp3_int16* pcmData =
-            drmp3_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->BufferSize, &mp3Info, &totalPcm, NULL);
+            drmp3_open_memory_and_read_pcm_frames_s16(strem2, sampleSize, &mp3Info, &totalPcm, NULL);
 
         sampleC->size = totalPcm * mp3Info.channels * sizeof(short);
         sampleC->sampleAddr = (uint8_t*)pcmData;
