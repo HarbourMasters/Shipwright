@@ -330,6 +330,17 @@ void EnItem00_SetupAction(EnItem00* this, EnItem00ActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
+void EnItem00_SetObjectDependency(EnItem00* this, PlayState* play, s16 objectIndex) {
+    // Remove object dependency for Enemy Randomizer and Crowd Control to allow Like-likes to
+    // drop equipment correctly in rooms where Like-likes normally don't spawn.
+    if (CVar_GetS32("gRandomizedEnemies", 0) || CVar_GetS32("gCrowdControl", 0)) {
+        this->actor.objBankIndex = 0;
+    } else {
+        this->actor.objBankIndex = Object_GetIndex(&play->objectCtx, objectIndex);
+        Actor_SetObjectDependency(play, &this->actor);
+    }
+}
+
 void EnItem00_Init(Actor* thisx, PlayState* play) {
     EnItem00* this = (EnItem00*)thisx;
     s32 pad;
@@ -397,14 +408,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             this->scale = 0.01f;
             break;
         case ITEM00_SHIELD_DEKU:
-            // Remove object dependency for Enemy Randomizer and Crowd Control to allow Like-likes to
-            // drop equipment correctly in rooms where Like-likes normally don't spawn.
-            if (CVar_GetS32("gRandomizedEnemies", 0) || CVar_GetS32("gCrowdControl", 0)) {
-                this->actor.objBankIndex = 0;
-            } else {
-                this->actor.objBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_GI_SHIELD_1);
-                Actor_SetObjectDependency(play, &this->actor);
-            }
+            EnItem00_SetObjectDependency(this, play, OBJECT_GI_SHIELD_1);
             Actor_SetScale(&this->actor, 0.5f);
             this->scale = 0.5f;
             yOffset = 0.0f;
@@ -412,14 +416,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             this->actor.world.rot.x = 0x4000;
             break;
         case ITEM00_SHIELD_HYLIAN:
-            // Remove object dependency for Enemy Randomizer and Crowd Control to allow Like-likes to
-            // drop equipment correctly in rooms where Like-likes normally don't spawn.
-            if (CVar_GetS32("gRandomizedEnemies", 0) || CVar_GetS32("gCrowdControl", 0)) {
-                this->actor.objBankIndex = 0;
-            } else {
-                this->actor.objBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_GI_SHIELD_2);
-                Actor_SetObjectDependency(play, &this->actor);
-            }
+            EnItem00_SetObjectDependency(this, play, OBJECT_GI_SHIELD_2);
             Actor_SetScale(&this->actor, 0.5f);
             this->scale = 0.5f;
             yOffset = 0.0f;
@@ -428,14 +425,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             break;
         case ITEM00_TUNIC_ZORA:
         case ITEM00_TUNIC_GORON:
-            // Remove object dependency for Enemy Randomizer and Crowd Control to allow Like-likes to
-            // drop equipment correctly in rooms where Like-likes normally don't spawn.
-            if (CVar_GetS32("gRandomizedEnemies", 0) || CVar_GetS32("gCrowdControl", 0)) {
-                this->actor.objBankIndex = 0;
-            } else {
-                this->actor.objBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_GI_CLOTHES);
-                Actor_SetObjectDependency(play, &this->actor);
-            }
+            EnItem00_SetObjectDependency(this, play, OBJECT_GI_CLOTHES);
             Actor_SetScale(&this->actor, 0.5f);
             this->scale = 0.5f;
             yOffset = 0.0f;
