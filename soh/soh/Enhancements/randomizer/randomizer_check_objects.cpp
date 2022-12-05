@@ -903,9 +903,9 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (locationIt.rcType != RCTYPE_LINKS_POCKET) &&
             (locationIt.rcType != RCTYPE_CHEST_GAME) && // don't show non final reward chest game checks until we support shuffling them
             ((locationIt.rcType != RCTYPE_SKULL_TOKEN) ||
-            (CVar_GetS32("gRandomizeShuffleTokens", 0) == 3) || // all tokens
-            ((CVar_GetS32("gRandomizeShuffleTokens", 0) == 2) && RandomizerCheckObjects::AreaIsOverworld(locationIt.rcArea)) || // overworld tokens
-            ((CVar_GetS32("gRandomizeShuffleTokens", 0) == 1) && RandomizerCheckObjects::AreaIsDungeon(locationIt.rcArea)) // dungeon tokens
+            (CVar_GetS32("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_ALL) ||
+            ((CVar_GetS32("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_OVERWORLD) && RandomizerCheckObjects::AreaIsOverworld(locationIt.rcArea)) ||
+            ((CVar_GetS32("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_DUNGEONS) && RandomizerCheckObjects::AreaIsDungeon(locationIt.rcArea))
             ) &&
             ((locationIt.rcType != RCTYPE_COW) || CVar_GetS32("gRandomizeShuffleCows", 0)) &&
             ((locationIt.rcType != RCTYPE_ADULT_TRADE) || CVar_GetS32("gRandomizeShuffleAdultTrade", 0)) &&
