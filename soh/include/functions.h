@@ -394,7 +394,7 @@ void Flags_UnsetTempClear(PlayState* play, s32 flag);
 s32 Flags_GetCollectible(PlayState* play, s32 flag);
 void Flags_SetCollectible(PlayState* play, s32 flag);
 void TitleCard_InitBossName(PlayState* play, TitleCardContext* titleCtx, void* texture, s16 x, s16 y, u8 width,
-                            u8 height, s16 hastranslation);
+                            u8 height, s16 hasTranslation);
 void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* texture, s32 x, s32 y,
                              s32 width, s32 height, s32 delay);
 s32 func_8002D53C(PlayState* play, TitleCardContext* titleCtx);
