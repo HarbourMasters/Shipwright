@@ -4345,6 +4345,11 @@ void Interface_DrawItemIconTexture(PlayState* play, void* texture, s16 button) {
     OPEN_DISPS(play->state.gfxCtx);
     GraphicsContext* gfxCtx = play->state.gfxCtx;
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
+
+    s16 buttonWidth = gItemIconWidth[button];
+    s16 buttonDD = gItemIconDD[button];
+    s16 textureSize = 32;
+
     s16 X_Margins_CL;
     s16 X_Margins_CR;
     s16 X_Margins_CD;
@@ -4529,18 +4534,28 @@ void Interface_DrawItemIconTexture(PlayState* play, void* texture, s16 button) {
         ItemIconPos[3][1] = ItemIconPos_ori[3][1];
     }
 
-    if (texture == gItemIcons[102] || texture == gItemIcons[103]) {
-        gDPLoadTextureBlock(OVERLAY_DISP++, texture, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 24, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    } else {
-        gDPLoadTextureBlock(OVERLAY_DISP++, texture, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    if (texture == gItemIcons[102] || texture == gItemIcons[103] || texture == gItemIcons[104] ||
+        texture == gItemIcons[105] || texture == gItemIcons[106] || texture == gItemIcons[107]) {
+        textureSize = 24;
+        buttonWidth = buttonWidth * 1.25;
+        buttonDD = buttonDD / 1.25;
+
+        if (button >= 4 && button <= 7) {
+            ItemIconPos[button][0] += 1;
+            ItemIconPos[button][1] += 1;
+        } else {
+            ItemIconPos[button][0] += 2;
+            ItemIconPos[button][1] += 2;
+        }
     }
 
+    gDPLoadTextureBlock(OVERLAY_DISP++, texture, G_IM_FMT_RGBA, G_IM_SIZ_32b, textureSize, textureSize, 0,
+                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                        G_TX_NOLOD);
     gSPWideTextureRectangle(OVERLAY_DISP++, ItemIconPos[button][0] << 2, ItemIconPos[button][1] << 2,
-                        (ItemIconPos[button][0] + gItemIconWidth[button]) << 2,
-                        (ItemIconPos[button][1] + gItemIconWidth[button]) << 2, G_TX_RENDERTILE, 0, 0,
-                        gItemIconDD[button] << 1, gItemIconDD[button] << 1);
+                            (ItemIconPos[button][0] + buttonWidth) << 2,
+                            (ItemIconPos[button][1] + buttonWidth) << 2, G_TX_RENDERTILE, 0, 0,
+                            buttonDD << 1, buttonDD << 1);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
