@@ -913,7 +913,7 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             ((locationIt.rc != RC_HC_MALON_EGG) || CVar_GetS32("gRandomizeShuffleWeirdEgg", 0)) &&
             ((locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) || CVar_GetS32("gRandomizeShuffleGerudoToken", 0)) &&
             ((locationIt.rcType != RCTYPE_FROG_SONG) || CVar_GetS32("gRandomizeShuffleFrogSongRupees", 0)) &&
-            ((locationIt.rcType != RCTYPE_MAP_COMPASS) || CVar_GetS32("gRandomizeStartingMapsCompasses", 0) != 1) && // 1 is the value for "vanilla" maps/compasses
+            ((locationIt.rcType != RCTYPE_MAP_COMPASS) || CVar_GetS32("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_STARTWITH) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
             ((locationIt.rcType != RCTYPE_SMALL_KEY) || CVar_GetS32("gRandomizeKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
             ((locationIt.rcType != RCTYPE_GF_KEY) || CVar_GetS32("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA) &&
             ((locationIt.rcType != RCTYPE_BOSS_KEY) || CVar_GetS32("gRandomizeBossKeysanity", 0) != 1) && // 1 is the value for "vanilla" boss keys
