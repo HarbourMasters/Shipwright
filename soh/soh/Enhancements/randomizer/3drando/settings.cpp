@@ -2547,9 +2547,9 @@ namespace Settings {
     } else {
         GanonsTrialsCount.SetSelectedIndex(cvarSettings[RSK_TRIAL_COUNT]);
     }
-    if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == 2) {
+    if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_RANDOM_NUMBER) {
         MQDungeonCount.SetSelectedIndex(13);
-    } else if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == 0) {
+    } else if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_NONE) {
         MQDungeonCount.SetSelectedIndex(0);
     } else {
         MQDungeonCount.SetSelectedIndex(cvarSettings[RSK_MQ_DUNGEON_COUNT]);
