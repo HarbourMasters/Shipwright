@@ -916,7 +916,7 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             ((locationIt.rcType != RCTYPE_MAP_COMPASS) || CVar_GetS32("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_STARTWITH) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
             ((locationIt.rcType != RCTYPE_SMALL_KEY) || CVar_GetS32("gRandomizeKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
             ((locationIt.rcType != RCTYPE_GF_KEY) || CVar_GetS32("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA) &&
-            ((locationIt.rcType != RCTYPE_BOSS_KEY) || CVar_GetS32("gRandomizeBossKeysanity", 0) != 1) && // 1 is the value for "vanilla" boss keys
+            ((locationIt.rcType != RCTYPE_BOSS_KEY) || CVar_GetS32("gRandomizeBossKeysanity", RO_DUNGEON_ITEM_LOC_STARTWITH) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
             ((locationIt.rcType != RCTYPE_GANON_BOSS_KEY) || CVar_GetS32("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) != RO_GANON_BOSS_KEY_VANILLA)
         );
     }
