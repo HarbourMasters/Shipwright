@@ -3,6 +3,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/do_action_static/do_action_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
+#include "textures/icon_item_24_static/icon_item_24_static.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
@@ -4528,8 +4529,13 @@ void Interface_DrawItemIconTexture(PlayState* play, void* texture, s16 button) {
         ItemIconPos[3][1] = ItemIconPos_ori[3][1];
     }
 
-    gDPLoadTextureBlock(OVERLAY_DISP++, texture, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    if (texture == gItemIcons[102] || texture == gItemIcons[103]) {
+        gDPLoadTextureBlock(OVERLAY_DISP++, texture, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 24, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    } else {
+        gDPLoadTextureBlock(OVERLAY_DISP++, texture, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    }
 
     gSPWideTextureRectangle(OVERLAY_DISP++, ItemIconPos[button][0] << 2, ItemIconPos[button][1] << 2,
                         (ItemIconPos[button][0] + gItemIconWidth[button]) << 2,
