@@ -116,7 +116,7 @@ void BgHakaHuta_SpawnEnemies(BgHakaHuta* this, PlayState* play) {
                         this->dyna.actor.world.pos.y - 10.0f,
                         (this->dyna.actor.world.pos.z - (-25.0f) * Math_SinS(this->dyna.actor.shape.rot.y) +
                          Math_CosS(this->dyna.actor.shape.rot.y) * 40.0f),
-                        0, this->dyna.actor.shape.rot.y + 0x8000, 0, 2);
+                        0, this->dyna.actor.shape.rot.y + 0x8000, 0, 2, true);
 
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_FIREFLY,
                         (this->dyna.actor.world.pos.x + (-25.0f) * (Math_CosS(this->dyna.actor.shape.rot.y)) +
@@ -124,7 +124,7 @@ void BgHakaHuta_SpawnEnemies(BgHakaHuta* this, PlayState* play) {
                         this->dyna.actor.world.pos.y - 10.0f,
                         (this->dyna.actor.world.pos.z - (-25.0f) * (Math_SinS(this->dyna.actor.shape.rot.y)) +
                          Math_CosS(this->dyna.actor.shape.rot.y) * 80.0f),
-                        0, this->dyna.actor.shape.rot.y, 0, 2);
+                        0, this->dyna.actor.shape.rot.y, 0, 2, true);
 
         } else if (this->unk_16A == 1) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_RD,
@@ -133,7 +133,7 @@ void BgHakaHuta_SpawnEnemies(BgHakaHuta* this, PlayState* play) {
                         this->dyna.actor.home.pos.y - 40.0f,
                         (this->dyna.actor.home.pos.z - (-25.0f) * (Math_SinS(this->dyna.actor.shape.rot.y)) +
                          Math_CosS(this->dyna.actor.shape.rot.y) * 100.0f),
-                        0, this->dyna.actor.shape.rot.y, 0, 0xFD);
+                        0, this->dyna.actor.shape.rot.y, 0, 0xFD, true);
         }
     }
 }

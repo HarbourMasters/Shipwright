@@ -461,7 +461,7 @@ void BgMizuBwall_SpawnDebris(BgMizuBwall* this, PlayState* play) {
         rand2 = (s16)(Rand_ZeroOne() * 240.0f) + 20;
         func_80033480(play, &debrisPos, 50.0f, 2, rand1, rand2, 0);
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_A_OBJ, debrisPos.x, debrisPos.y, debrisPos.z, 0, 0, 0,
-                    0xB);
+                    0xB, true);
     }
 }
 

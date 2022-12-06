@@ -7,6 +7,7 @@
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_bdoor/object_bdoor.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/enemyrandomizer.h"
 
 #if defined(_MSC_VER) || defined(__GNUC__)
 #include <string.h>
@@ -2506,7 +2507,7 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
         refActor = &GET_PLAYER(play)->actor;
         KREG(0) = 0;
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, refActor->world.pos.x,
-                    refActor->world.pos.y + 100.0f, refActor->world.pos.z, 0, 0, 0, 1);
+                    refActor->world.pos.y + 100.0f, refActor->world.pos.z, 0, 0, 0, 1, true);
     }
 
     sp80 = &D_80116068[0];
@@ -3141,7 +3142,16 @@ void Actor_FreeOverlay(ActorOverlay* actorOverlay) {
 int gMapLoading = 0;
 
 Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ,
-                   s16 rotX, s16 rotY, s16 rotZ, s16 params) {
+                   s16 rotX, s16 rotY, s16 rotZ, s16 params, s16 canRandomize) {
+
+    uint8_t tryRandomizeEnemy = CVar_GetS32("gRandomizedEnemies", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2 && canRandomize;
+
+    if (tryRandomizeEnemy) {
+        if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
+            return NULL;
+        }
+    }
+
     s32 pad;
     Actor* actor;
     ActorInit* actorInit;
@@ -3226,8 +3236,9 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
 
     objBankIndex = Object_GetIndex(&play->objectCtx, actorInit->objectId);
 
-    if (objBankIndex < 0 && !gMapLoading)
+    if (objBankIndex < 0 && (!gMapLoading || CVar_GetS32("gRandomizedEnemies", 0))) {
         objBankIndex = 0;
+    }
 
     if ((objBankIndex < 0) ||
         ((actorInit->category == ACTORCAT_ENEMY) && Flags_GetClear(play, play->roomCtx.curRoom.num))) {
@@ -3293,7 +3304,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
 
 Actor* Actor_SpawnAsChild(ActorContext* actorCtx, Actor* parent, PlayState* play, s16 actorId, f32 posX,
                           f32 posY, f32 posZ, s16 rotX, s16 rotY, s16 rotZ, s16 params) {
-    Actor* spawnedActor = Actor_Spawn(actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
+    Actor* spawnedActor = Actor_Spawn(actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, true);
 
     if (spawnedActor == NULL) {
         return NULL;
@@ -3327,7 +3338,7 @@ void Actor_SpawnTransitionActors(PlayState* play, ActorContext* actorCtx) {
                   (transitionActor->sides[1].room == play->roomCtx.prevRoom.num)))) {
                 Actor_Spawn(actorCtx, play, (s16)(transitionActor->id & 0x1FFF), transitionActor->pos.x,
                             transitionActor->pos.y, transitionActor->pos.z, 0, transitionActor->rotY, 0,
-                            (i << 0xA) + transitionActor->params);
+                            (i << 0xA) + transitionActor->params, true);
 
                 transitionActor->id = -transitionActor->id;
                 numActors = play->transiActorCtx.numActors;
@@ -3340,7 +3351,7 @@ void Actor_SpawnTransitionActors(PlayState* play, ActorContext* actorCtx) {
 Actor* Actor_SpawnEntry(ActorContext* actorCtx, ActorEntry* actorEntry, PlayState* play) {
     gMapLoading = 1;
     Actor* ret = Actor_Spawn(actorCtx, play, actorEntry->id, actorEntry->pos.x, actorEntry->pos.y, actorEntry->pos.z,
-                       actorEntry->rot.x, actorEntry->rot.y, actorEntry->rot.z, actorEntry->params);
+                       actorEntry->rot.x, actorEntry->rot.y, actorEntry->rot.z, actorEntry->params, true);
     gMapLoading = 0;
 
     return ret;

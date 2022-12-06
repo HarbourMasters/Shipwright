@@ -446,7 +446,7 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, PlayState* play, ShopItem* shopI
                     &play->actorCtx, play, ACTOR_EN_GIRLA, shelves->actor.world.pos.x + shopItems->xOffset,
                     shelves->actor.world.pos.y + shopItems->yOffset, shelves->actor.world.pos.z + shopItems->zOffset,
                     shelves->actor.shape.rot.x, shelves->actor.shape.rot.y + sItemShelfRot[i],
-                    shelves->actor.shape.rot.z, itemParams);
+                    shelves->actor.shape.rot.z, itemParams, true);
                 if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_OFF) {
                     this->shelfSlots[i]->randoSlotIndex = i;
                 }
@@ -473,7 +473,7 @@ void EnOssan_UpdateShopOfferings(EnOssan* this, PlayState* play) {
                         this->shelves->actor.world.pos.x + shopItem->xOffset,
                         this->shelves->actor.world.pos.y + shopItem->yOffset,
                         this->shelves->actor.world.pos.z + shopItem->zOffset, this->shelves->actor.shape.rot.x,
-                        this->shelves->actor.shape.rot.y + sItemShelfRot[i], this->shelves->actor.shape.rot.z, params);
+                        this->shelves->actor.shape.rot.y + sItemShelfRot[i], this->shelves->actor.shape.rot.z, params, true);
                 }
             }
         }
