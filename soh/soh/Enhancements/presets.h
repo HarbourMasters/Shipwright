@@ -593,7 +593,7 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32("gRandomizeForest", RO_FOREST_OPEN),
     PRESET_ENTRY_S32("gRandomizeGanonTrial", RO_GANONS_TRIALS_SET_NUMBER),
     PRESET_ENTRY_S32("gRandomizeGanonTrialCount", 6),
-    PRESET_ENTRY_S32("gRandomizeGerudoKeys", 3),
+    PRESET_ENTRY_S32("gRandomizeGerudoKeys", RO_GERUDO_KEYS_ANYWHERE),
     PRESET_ENTRY_S32("gRandomizeGsExpectSunsSong", 1),
     PRESET_ENTRY_S32("gRandomizeIceTraps", RO_ICE_TRAPS_ONSLAUGHT),
     PRESET_ENTRY_S32("gRandomizeItemPool", RO_ITEM_POOL_MINIMAL),
