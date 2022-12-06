@@ -482,10 +482,13 @@ void AudioLoad_AsyncLoadFont(s32 fontId, s32 arg1, s32 retData, OSMesgQueue* ret
 u8* AudioLoad_GetFontsForSequence(s32 seqId, u32* outNumFonts) {
     s32 index;
 
-    // if (seqId == 255)
-    //     return NULL;
+     if (seqId == NA_BGM_DISABLED)
+         return NULL;
 
     u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
+    if (!sequenceMap[newSeqId]){
+        return NULL;
+    }
     SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[newSeqId]);
 
     if (sDat.numFonts == 0)
