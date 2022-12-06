@@ -610,7 +610,7 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32("gRandomizeShuffleFrogSongRupees", 1),
     PRESET_ENTRY_S32("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_LACS_DUNGEONS),
     PRESET_ENTRY_S32("gRandomizeShuffleGerudoToken", 1),
-    PRESET_ENTRY_S32("gRandomizeShuffleKeyRings", 1),
+    PRESET_ENTRY_S32("gRandomizeShuffleKeyRings", RO_KEYRINGS_RANDOM),
     PRESET_ENTRY_S32("gRandomizeShuffleKokiriSword", 1),
     PRESET_ENTRY_S32("gRandomizeShuffleOcarinas", 1),
     PRESET_ENTRY_S32("gRandomizeShuffleScrubs", RO_SCRUBS_RANDOM),
