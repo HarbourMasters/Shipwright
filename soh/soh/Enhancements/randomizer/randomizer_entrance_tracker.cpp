@@ -26,10 +26,10 @@ extern PlayState* gPlayState;
 #define COLOR_GREEN IM_COL32(0, 158, 115, 255)
 #define COLOR_GRAY IM_COL32(155, 155, 155, 255)
 
-EntranceOverride srcList[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
-EntranceOverride destList[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
-EntranceOverride srcTypeList[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
-EntranceOverride destTypeList[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
+EntranceOverride srcListSortedByArea[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
+EntranceOverride destListSortedByArea[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
+EntranceOverride srcTypeListSortedByType[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
+EntranceOverride destTypeListSortedByType[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
 EntranceTrackingData gEntranceTrackingData = {0};
 
 static const EntranceOverride emptyOverride = {0};
@@ -358,10 +358,15 @@ const EntranceData entranceData[] = {
 s8 LinkIsInArea(const EntranceData* entrance) {
     bool result = false;
 
+    if (gPlayState == nullptr) {
+        return -1;
+    }
+
     // Handle detecting the current grotto
-    if (gPlayState != nullptr && (gPlayState->sceneNum == SCENE_YOUSEI_IZUMI_TATE || gPlayState->sceneNum == SCENE_KAKUSIANA) &&
+    if ((gPlayState->sceneNum == SCENE_YOUSEI_IZUMI_TATE || gPlayState->sceneNum == SCENE_KAKUSIANA) &&
         entrance->type == ENTRANCE_TYPE_GROTTO) {
-        if (entrance->index == (0x0800 + currentGrottoId)) {
+        if (entrance->index == (ENTRANCE_RANDO_GROTTO_EXIT_START + currentGrottoId)) {
+            // Return the grotto entrance for tracking
             return entrance->index;
         } else {
             return -1;
@@ -369,13 +374,16 @@ s8 LinkIsInArea(const EntranceData* entrance) {
     }
 
     // Otherwise check all scenes/spawns
+    // Not all areas require a spawn position to differeniate between another area
     for (auto info : entrance->scenes) {
+        // When a spawn position is specified, check that combination
         if (info.spawn != -1) {
             result = Entrance_SceneAndSpawnAre(info.scene, info.spawn);
-        } else {
-            result = gPlayState != nullptr && gPlayState->sceneNum == info.scene;
+        } else { // Otherwise just check the current scene
+            result = gPlayState->sceneNum == info.scene;
         }
 
+        // Return the scene for tracking
         if (result) {
             return info.scene;
         }
@@ -436,7 +444,7 @@ void SortEntranceListByType(EntranceOverride* entranceList, u8 byDest) {
     }
 }
 
-void SortEntranceList(EntranceOverride* entranceList, u8 byDest) {
+void SortEntranceListByArea(EntranceOverride* entranceList, u8 byDest) {
     EntranceOverride tempList[ENTRANCE_OVERRIDES_MAX_COUNT] = { 0 };
 
     // Store to temp
@@ -535,7 +543,7 @@ void InitEntranceTrackingData() {
     gEntranceTrackingData = {0};
 
     // Check if entrance randomization is disabled
-    if (Entrance_EntranceIsNull(&gSaveContext.entranceOverrides[0])) {
+    if (!OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         return;
     }
 
@@ -561,35 +569,41 @@ void InitEntranceTrackingData() {
         gEntranceTrackingData.EntranceCount++;
     }
 
-    // Set offset
+    // The entrance data is sorted and grouped in a one dimensional array, so we need to track offsets
+    // Set offsets for areas starting at 0
     u16 srcOffsetTotal = 0;
     u16 dstOffsetTotal = 0;
     for (size_t i = 0; i < SPOILER_ENTRANCE_GROUP_COUNT; i++) {
+        // Set the offset for the current group
         gEntranceTrackingData.GroupOffsets[ENTRANCE_SOURCE_AREA][i] = srcOffsetTotal;
-        srcOffsetTotal += gEntranceTrackingData.GroupEntranceCounts[ENTRANCE_SOURCE_AREA][i];
         gEntranceTrackingData.GroupOffsets[ENTRANCE_DESTINATION_AREA][i] = dstOffsetTotal;
+        // Increment the offset by the areas entrance count
+        srcOffsetTotal += gEntranceTrackingData.GroupEntranceCounts[ENTRANCE_SOURCE_AREA][i];
         dstOffsetTotal += gEntranceTrackingData.GroupEntranceCounts[ENTRANCE_DESTINATION_AREA][i];
     }
+    // Set offsets for types starting at 0
     srcOffsetTotal = 0;
     dstOffsetTotal = 0;
     for (size_t i = 0; i < ENTRANCE_TYPE_COUNT; i++) {
+        // Set the offset for the current group
         gEntranceTrackingData.GroupOffsets[ENTRANCE_SOURCE_TYPE][i] = srcOffsetTotal;
-        srcOffsetTotal += gEntranceTrackingData.GroupEntranceCounts[ENTRANCE_SOURCE_TYPE][i];
         gEntranceTrackingData.GroupOffsets[ENTRANCE_DESTINATION_TYPE][i] = dstOffsetTotal;
+        // Increment the offset by the areas entrance count
+        srcOffsetTotal += gEntranceTrackingData.GroupEntranceCounts[ENTRANCE_SOURCE_TYPE][i];
         dstOffsetTotal += gEntranceTrackingData.GroupEntranceCounts[ENTRANCE_DESTINATION_TYPE][i];
     }
 
     // Sort entrances by group and type in entranceData
     for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
-        srcList[i] = gSaveContext.entranceOverrides[i];
-        destList[i] = gSaveContext.entranceOverrides[i];
-        srcTypeList[i] = gSaveContext.entranceOverrides[i];
-        destTypeList[i] = gSaveContext.entranceOverrides[i];
+        srcListSortedByArea[i] = gSaveContext.entranceOverrides[i];
+        destListSortedByArea[i] = gSaveContext.entranceOverrides[i];
+        srcTypeListSortedByType[i] = gSaveContext.entranceOverrides[i];
+        destTypeListSortedByType[i] = gSaveContext.entranceOverrides[i];
     }
-    SortEntranceList(srcList, 0);
-    SortEntranceList(destList, 1);
-    SortEntranceListByType(srcTypeList, 0);
-    SortEntranceListByType(destTypeList, 1);
+    SortEntranceListByArea(srcListSortedByArea, 0);
+    SortEntranceListByArea(destListSortedByArea, 1);
+    SortEntranceListByType(srcTypeListSortedByType, 0);
+    SortEntranceListByType(destTypeListSortedByType, 1);
 }
 
 void DrawEntranceTracker(bool& open) {
@@ -598,7 +612,7 @@ void DrawEntranceTracker(bool& open) {
         return;
     }
 
-    ImGui::SetNextWindowSize(ImVec2(600,375), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
 
     if (!ImGui::Begin("Entrance Tracker", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
@@ -707,6 +721,7 @@ void DrawEntranceTracker(bool& open) {
     uint8_t destToggle = CVar_GetS32("gEntranceTrackerSortBy", 0);
     uint8_t groupToggle = CVar_GetS32("gEntranceTrackerGroupBy", 0);
 
+    // Combine destToggle and groupToggle to get a range of 0-3
     uint8_t groupType = destToggle + (groupToggle * 2);
     size_t groupCount = groupToggle ? ENTRANCE_TYPE_COUNT : SPOILER_ENTRANCE_GROUP_COUNT;
     auto groupNames = groupToggle ? groupTypeNames : spoilerEntranceGroupNames;
@@ -715,16 +730,16 @@ void DrawEntranceTracker(bool& open) {
 
     switch (groupType) {
         case ENTRANCE_SOURCE_AREA:
-            entranceList = srcList;
+            entranceList = srcListSortedByArea;
             break;
         case ENTRANCE_DESTINATION_AREA:
-            entranceList = destList;
+            entranceList = destListSortedByArea;
             break;
         case ENTRANCE_SOURCE_TYPE:
-            entranceList = srcTypeList;
+            entranceList = srcTypeListSortedByType;
             break;
         case ENTRANCE_DESTINATION_TYPE:
-            entranceList = destTypeList;
+            entranceList = destTypeListSortedByType;
             break;
     }
 
