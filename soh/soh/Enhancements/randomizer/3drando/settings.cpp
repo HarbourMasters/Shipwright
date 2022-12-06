@@ -2625,10 +2625,10 @@ namespace Settings {
     // RANDTODO: Switch this back once all logic options are implemented
     // Logic.SetSelectedIndex(cvarSettings[RSK_LOGIC_RULES]);
     switch (cvarSettings[RSK_LOGIC_RULES]) {
-        case 0:
+        case RO_LOGIC_GLITCHLESS:
             Logic.SetSelectedIndex(0);
             break;
-        case 1:
+        case RO_LOGIC_NO_LOGIC:
             Logic.SetSelectedIndex(2);
             break;
     }
@@ -2665,9 +2665,9 @@ namespace Settings {
     } else {
         GanonsTrialsCount.SetSelectedIndex(cvarSettings[RSK_TRIAL_COUNT]);
     }
-    if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == 2) {
+    if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_RANDOM_NUMBER) {
         MQDungeonCount.SetSelectedIndex(13);
-    } else if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == 0) {
+    } else if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_NONE) {
         MQDungeonCount.SetSelectedIndex(0);
     } else {
         MQDungeonCount.SetSelectedIndex(cvarSettings[RSK_MQ_DUNGEON_COUNT]);

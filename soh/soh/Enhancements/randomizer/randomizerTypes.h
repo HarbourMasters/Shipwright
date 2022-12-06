@@ -1359,6 +1359,14 @@ typedef enum {
     RO_LOGIC_MAX,
 } RandoOptionLogic;
 
+// MQ Dungeons
+typedef enum {
+    RO_MQ_DUNGEONS_NONE,
+    RO_MQ_DUNGEONS_SET_NUMBER,
+    RO_MQ_DUNGEONS_RANDOM_NUMBER,
+    RO_MQ_DUNGEONS_MAX,
+} RandoOptionMQDungeons;
+
 typedef enum {
     CAN_OBTAIN,
     CANT_OBTAIN_MISC,

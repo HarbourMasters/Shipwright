@@ -376,12 +376,12 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
         int startingAge = Randomizer_GetSettingValue(RSK_STARTING_AGE);
         switch (startingAge) {
-            case 1: //Adult
+            case RO_AGE_ADULT: //Adult
                 gSaveContext.linkAge = 0;
                 gSaveContext.entranceIndex = 0x5F4;
                 gSaveContext.savedSceneNum = SCENE_SPOT20; //Set scene num manually to ToT
                 break;
-            case 0: //Child
+            case RO_AGE_CHILD: //Child
                 gSaveContext.linkAge = 1;
                 gSaveContext.savedSceneNum = -1;
                 break;
@@ -418,8 +418,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
         }
 
-        // "Start with" == 0 for Maps and Compasses
-        if(Randomizer_GetSettingValue(RSK_STARTING_MAPS_COMPASSES) == 0) {
+        if(Randomizer_GetSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
             uint32_t mapBitMask = 1 << 1;
             uint32_t compassBitMask = 1 << 2;
             uint32_t startingDungeonItemsBitMask = mapBitMask | compassBitMask;
@@ -491,8 +490,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.sohStats.dungeonKeys[SCENE_GANONTIKA]     = GANONS_CASTLE_SMALL_KEY_MAX; // Ganon
         }
 
-        // "Start with" == 0 for Boss Kesanity
-        if(Randomizer_GetSettingValue(RSK_BOSS_KEYSANITY) == 0) {
+        if(Randomizer_GetSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
             gSaveContext.inventory.dungeonItems[SCENE_BMORI1] |= 1; // Forest
             gSaveContext.inventory.dungeonItems[SCENE_HIDAN] |= 1; // Fire
             gSaveContext.inventory.dungeonItems[SCENE_MIZUSIN] |= 1; // Water
