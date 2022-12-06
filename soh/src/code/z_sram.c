@@ -491,8 +491,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.sohStats.dungeonKeys[SCENE_GANONTIKA]     = GANONS_CASTLE_SMALL_KEY_MAX; // Ganon
         }
 
-        // "Start with" == 0 for Boss Kesanity
-        if(Randomizer_GetSettingValue(RSK_BOSS_KEYSANITY) == 0) {
+        if(Randomizer_GetSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
             gSaveContext.inventory.dungeonItems[SCENE_BMORI1] |= 1; // Forest
             gSaveContext.inventory.dungeonItems[SCENE_HIDAN] |= 1; // Fire
             gSaveContext.inventory.dungeonItems[SCENE_MIZUSIN] |= 1; // Water

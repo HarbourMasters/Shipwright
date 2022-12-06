@@ -584,7 +584,7 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32("gMMBunnyHood", 2),
     PRESET_ENTRY_S32("gRandomizeBigPoeTargetCount", 1),
     PRESET_ENTRY_S32("gRandomizeBlueFireArrows", 1),
-    PRESET_ENTRY_S32("gRandomizeBossKeysanity", 5),
+    PRESET_ENTRY_S32("gRandomizeBossKeysanity", RO_DUNGEON_ITEM_LOC_ANYWHERE),
     PRESET_ENTRY_S32("gRandomizeCompleteMaskQuest", 1),
     PRESET_ENTRY_S32("gRandomizeCuccosToReturn", 1),
     PRESET_ENTRY_S32("gRandomizeDoorOfTime", RO_DOOROFTIME_OPEN),
