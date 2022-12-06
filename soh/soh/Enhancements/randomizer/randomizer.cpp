@@ -476,7 +476,7 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
     //Carpet Salesman
     //RANDOTODO: Implement obscure/ambiguous hints
     std::vector<std::string> cgBoxTwoText;
-    if (Randomizer::GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) == 2) { //If merchant hints are clear... 
+    if (Randomizer::GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ON_HINT) {
         cgBoxTwoText = {
             "!%w&It's real, I promise!&A lonely man such as myself&wouldn't %rlie%w to you, hmm?^",
             "!%w&Ich kann versichern es ist ein&aufrichtiges Angebot!^Ein einsamer Mann wie ich würde dich&doch nicht %ranlügen%w, oder?^",
@@ -2592,7 +2592,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_COWS] = CVar_GetS32("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVar_GetS32("gRandomizeShuffleAdultTrade", 0);
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVar_GetS32("gRandomizeShuffleBeans", 0);
-    cvarSettings[RSK_SHUFFLE_MERCHANTS] = CVar_GetS32("gRandomizeShuffleMerchants", 0);
+    cvarSettings[RSK_SHUFFLE_MERCHANTS] = CVar_GetS32("gRandomizeShuffleMerchants", RO_SHUFFLE_MERCHANTS_OFF);
     cvarSettings[RSK_ENABLE_BOMBCHU_DROPS] = CVar_GetS32("gRandomizeEnableBombchuDrops", 0);
     cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = CVar_GetS32("gRandomizeBombchusInLogic", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
