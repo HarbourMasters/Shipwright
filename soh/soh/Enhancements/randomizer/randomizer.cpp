@@ -4379,7 +4379,7 @@ void Randomizer::CreateCustomMessages() {
 			"Vous obtenez une %rPetite Clé %w&du %pPuits%w!"),
         GIMESSAGE(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %yGerudo Training &Grounds %wSmall Key!",
-			"Du erhältst einen %rKleinen&Schlüssel%w für die %yGerudo Trainingsarena%w!",
+			"Du erhältst einen %rKleinen&Schlüssel%w für die %yGerudo&Trainingsarena%w!",
 			"Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
         GIMESSAGE(RG_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL,
 			"You found a %rGanon's Castle &%wSmall Key!",
