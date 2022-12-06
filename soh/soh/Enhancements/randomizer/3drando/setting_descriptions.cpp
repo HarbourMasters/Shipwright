@@ -194,6 +194,52 @@ string_view grottoEntrancesDesc       = "Shuffle the pool of grotto entrances, i
                                         "all graves, small Fairy Fountains and the Lost\n" //
                                         "Woods Stage.";                                    //
 /*------------------------------                                                           //
+|          OWL DROPS           |                                                           //
+------------------------------*/                                                           //
+string_view owlDropsDesc              = "Randomize where Kaepora Gaebora (the Owl) drops\n"//
+                                        "you at when you talk to him at Lake Hylia or at\n"//
+                                        "the top of Death Mountain Trail.";                //
+/*------------------------------                                                           //
+|          WARP SONGS          |                                                           //
+------------------------------*/                                                           //
+string_view warpSongsDesc             = "Randomize where each of the 6 warp songs leads to.";
+                                                                                           //
+/*------------------------------                                                           //
+|       OVERWORLD SPAWNS       |                                                           //
+------------------------------*/                                                           //
+string_view overworldSpawnsDesc       = "Randomize where you start as Child or Adult when\n"
+                                        "loading a save in the Overworld. This means you\n"//
+                                        "may not necessarily spawn inside Link's House or\n"
+                                        "Temple of Time.\n"                                //
+                                        "\n"                                               //
+                                        "This stays consistent after saving and loading the"
+                                        "game again.";                                     //
+/*------------------------------                                                           //
+|     MIXED ENTRANCE POOLS     |                                                           //
+------------------------------*/                                                           //
+string_view mixedPoolsDesc            = "Shuffle entrances into a mixed pool instead of\n" //
+                                        "separate ones. For example, enabling the settings\n"
+                                        "to shuffle grotto, dungeon, and overworld\n"      //
+                                        "entrances and selecting grotto and dungeon\n"     //
+                                        "entrances here will allow a dungeon to be inside a"
+                                        "grotto or vice versa, while overworld entrances\n"//
+                                        "are shuffled in their own separate pool and\n"    //
+                                        "indoors stay vanilla.";                           //
+string_view mixDungeonsDesc           = "Dungeon entrances will be part of the mixed pool.";
+string_view mixOverworldDesc          = "Overworld entrances will be part of the mixed\n"  //
+                                        "pool.";                                           //
+string_view mixInteriorsDesc          = "Interior entrances will be part of the mixed pool.";
+string_view mixGrottosDesc            = "Grotto entrances will be part of the mixed pool.";//
+/*------------------------------                                                           //
+|      DECOUPLED ENTRANCES     |                                                           //
+------------------------------*/                                                           //
+string_view decoupledEntrancesDesc    = "Decouple entrances when shuffling them. This means"
+                                        "you are no longer guaranteed to end up back where "
+                                        "you came from when you go back through an\n"      //
+                                        "entrance. This also adds the one-way entrance from"
+                                        "Gerudo Valley to Lake Hylia in the pool of\n"     //
+                                        "overworld entrances when they are shuffled.";     //
+/*------------------------------                                                           //
 |      BOMBCHUS IN LOGIC       |                                                           //
 ------------------------------*/                                                           //
 string_view bombchuLogicDesc          = "Bombchus are properly considered in logic.\n"     //

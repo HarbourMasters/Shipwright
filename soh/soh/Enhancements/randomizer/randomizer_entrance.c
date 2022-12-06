@@ -59,6 +59,14 @@ static void Entrance_SeparateOGCFairyFountainExit(void) {
     }
 }
 
+static void Entrance_SeparateAdultSpawnAndPrelude() {
+    // Overwrite unused entrance 0x0282 with values from 0x05F4 to use it as the
+    // Adult Spawn index and separate it from Prelude of Light
+    for (size_t i = 0; i < 4; ++i) {
+        gEntranceTable[0x282 + i] = gEntranceTable[0x5F4 + i];
+    }
+}
+
 void Entrance_CopyOriginalEntranceTable(void) {
     if (!hasCopiedEntranceTable) {
         memcpy(originalEntranceTable, gEntranceTable, sizeof(EntranceInfo) * 1556);
@@ -91,6 +99,7 @@ void Entrance_Init(void) {
     }
 
     Entrance_SeparateOGCFairyFountainExit();
+    Entrance_SeparateAdultSpawnAndPrelude();
 
     // Initialize the entrance override table with each index leading to itself. An
     // index referring to itself means that the entrance is not currently shuffled.
@@ -188,7 +197,7 @@ s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
 
     // Exiting through the crawl space from Hyrule Castle courtyard is the same exit as leaving Ganon's castle
     // If we came from the Castle courtyard, then don't override the entrance to keep Link in Hyrule Castle area
-    if (gPlayState->sceneNum == 69 && nextEntranceIndex == 0x023D) {
+    if (gPlayState != NULL && gPlayState->sceneNum == 69 && nextEntranceIndex == 0x023D) {
         return nextEntranceIndex;
     }
 
@@ -279,15 +288,58 @@ void Entrance_SetSavewarpEntrance(void) {
     } else if (scene == SCENE_GERUDOWAY) { // Theives hideout
         gSaveContext.entranceIndex = 0x0486; // Gerudo Fortress -> Thieve's Hideout spawn 0
     } else if (scene == SCENE_LINK_HOME) {
-        gSaveContext.entranceIndex = LINK_HOUSE_SAVEWARP_ENTRANCE;
+        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(LINK_HOUSE_SAVEWARP_ENTRANCE);
     } else if (LINK_IS_CHILD) {
-        gSaveContext.entranceIndex = Entrance_GetOverride(LINK_HOUSE_SAVEWARP_ENTRANCE);
+        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(LINK_HOUSE_SAVEWARP_ENTRANCE); // Child Overworld Spawn
     } else {
-        gSaveContext.entranceIndex = Entrance_GetOverride(0x05F4); // Temple of Time Adult Spawn
+        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(0x0282); // Adult Overworld Spawn (Normally 0x5F4, but 0x282 has been repurposed to differentiate from Prelude which also uses 0x5F4)
+    }
+}
+
+void Entrance_SetWarpSongEntrance(void) {
+    gPlayState->sceneLoadFlag = 0x14;
+    gPlayState->fadeTransition = 5;
+    switch (gPlayState->msgCtx.lastPlayedSong) {
+        case 0:
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0600); // Minuet
+            break;
+        case 1:
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x04F6); // Bolero
+            break;
+        case 2:
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0604); // Serenade
+            break;
+        case 3:
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x01F1); // Requiem
+            break;
+        case 4:
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0568); // Nocturne
+            break;
+        case 5:
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x05F4); // Prelude
+            break;
+        default:
+            gPlayState->sceneLoadFlag = 0; // if something goes wrong, the animation plays normally
+    }
+
+    // If one of the warp songs happens to lead to a grotto return, then we
+    // have to force the grotto return afterwards
+    Grotto_ForceGrottoReturnOnSpecialEntrance();
+
+    if (gSaveContext.gameMode != 0) {
+        // During DHWW the cutscene must play at the destination
+        gSaveContext.respawnFlag = -3;
+    } else if (gSaveContext.respawnFlag == -3) {
+        // Unset Zoneout Type -3 to avoid cutscene at destination (technically it's not needed)
+        gSaveContext.respawnFlag = 0;
     }
 }
 
 void Entrance_OverrideBlueWarp(void) {
+    // Set nextEntranceIndex as a flag so that Grotto_CheckSpecialEntrance
+    // won't return index 0x7FFF, which can't work to override blue warps.
+    gPlayState->nextEntranceIndex = 0;
+
     switch (gPlayState->sceneNum) {
         case SCENE_YDAN_BOSS: // Ghoma boss room
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0457);
@@ -322,6 +374,8 @@ void Entrance_OverrideCutsceneEntrance(u16 cutsceneCmd) {
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(newJabuJabusBellyEntrance);
             gPlayState->sceneLoadFlag = 0x14;
             gPlayState->fadeTransition = 2;
+            // In case Jabu's mouth leads to a grotto return
+            Grotto_ForceGrottoReturnOnSpecialEntrance();
             break;
     }
 }
@@ -506,7 +560,7 @@ void Entrance_OverrideGeurdoGuardCapture(void) {
 }
 
 void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == 2) { // Shuffle Ganon's Castle
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON) {
         // Move Hyrule's Castle Courtyard exit spawn to be before the crates so players don't skip Talon
         if (sceneNum == 95 && spawn == 1) {
             gPlayState->linkActorEntry->pos.x = 0x033A;

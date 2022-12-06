@@ -39,7 +39,7 @@ void AreaTable_Init_HyruleField() {
                                         /*Glitched*/[]{return Sticks && IsChild && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED);}}),
   });
 
-  areaTable[HF_SOUTHEAST_GROTTO] = Area("HF Southeast Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
+  areaTable[HF_SOUTHEAST_GROTTO] = Area("HF Southeast Grotto", "HF Southeast Grotto", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(HF_SOUTHEAST_GROTTO_CHEST,        {[]{return true;}}),
                   LocationAccess(HF_SOUTHEAST_GROTTO_GOSSIP_STONE, {[]{return true;}}),
@@ -48,7 +48,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(HYRULE_FIELD, {[]{return true;}}),
   });
 
-  areaTable[HF_OPEN_GROTTO] = Area("HF Open Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
+  areaTable[HF_OPEN_GROTTO] = Area("HF Open Grotto", "HF Open Grotto", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(HF_OPEN_GROTTO_CHEST,        {[]{return true;}}),
                   LocationAccess(HF_OPEN_GROTTO_GOSSIP_STONE, {[]{return true;}}),
@@ -57,7 +57,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(HYRULE_FIELD, {[]{return true;}}),
   });
 
-  areaTable[HF_INSIDE_FENCE_GROTTO] = Area("HF Inside Fence Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[HF_INSIDE_FENCE_GROTTO] = Area("HF Inside Fence Grotto", "HF Inside Fence Grotto", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(HF_DEKU_SCRUB_GROTTO, {[]{return CanStunDeku;}}),
                 }, {
@@ -65,7 +65,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(HYRULE_FIELD, {[]{return true;}}),
   });
 
-  areaTable[HF_COW_GROTTO] = Area("HF Cow Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
+  areaTable[HF_COW_GROTTO] = Area("HF Cow Grotto", "HF Cow Grotto", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(HF_GS_COW_GROTTO,           {[]{return HasFireSource && HookshotOrBoomerang;},
                                                   /*Glitched*/[]{return (CanUse(STICKS) && Bombs && CanSurviveDamage && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE)) && HookshotOrBoomerang;}}),
@@ -79,7 +79,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(HYRULE_FIELD, {[]{return true;}}),
   });
 
-  areaTable[HF_NEAR_MARKET_GROTTO] = Area("HF Near Market Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
+  areaTable[HF_NEAR_MARKET_GROTTO] = Area("HF Near Market Grotto", "HF Near Market Grotto", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(HF_NEAR_MARKET_GROTTO_CHEST,        {[]{return true;}}),
                   LocationAccess(HF_NEAR_MARKET_GROTTO_GOSSIP_STONE, {[]{return true;}}),
@@ -88,7 +88,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(HYRULE_FIELD, {[]{return true;}}),
   });
 
-  areaTable[HF_FAIRY_GROTTO] = Area("HF Fairy Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, {
+  areaTable[HF_FAIRY_GROTTO] = Area("HF Fairy Grotto", "HF Fairy Grotto", NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&FreeFairies, {[]{return true;}}),
                 }, {}, {
@@ -96,7 +96,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(HYRULE_FIELD, {[]{return true;}}),
   });
 
-  areaTable[HF_NEAR_KAK_GROTTO] = Area("HF Near Kak Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[HF_NEAR_KAK_GROTTO] = Area("HF Near Kak Grotto", "HF Near Kak Grotto", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(HF_GS_NEAR_KAK_GROTTO, {[]{return HookshotOrBoomerang;}}),
                 }, {
@@ -104,7 +104,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(HYRULE_FIELD, {[]{return true;}}),
   });
 
-  areaTable[HF_TEKTITE_GROTTO] = Area("HF Tektite Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[HF_TEKTITE_GROTTO] = Area("HF Tektite Grotto", "HF Tektite Grotto", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(HF_TEKTITE_GROTTO_FREESTANDING_POH, {[]{return ProgressiveScale >= 2 || CanUse(IRON_BOOTS);}}),
                 }, {
@@ -163,7 +163,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(HYRULE_FIELD, {[]{return true;}}),
   });
 
-  areaTable[LH_LAB] = Area("LH Lab", "", NONE, NO_DAY_NIGHT_CYCLE, {
+  areaTable[LH_LAB] = Area("LH Lab", "LH Lab", NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&EyedropsAccess, {[]{return EyedropsAccess || (IsAdult && (EyeballFrogAccess || (EyeballFrog && DisableTradeRevert)));}}),
                 }, {
@@ -182,7 +182,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(LAKE_HYLIA, {[]{return true;}}),
   });
 
-  areaTable[LH_FISHING_HOLE] = Area("LH Fishing Hole", "", NONE, DAY_NIGHT_CYCLE, {}, {
+  areaTable[LH_FISHING_HOLE] = Area("LH Fishing Hole", "LH Fishing Hole", NONE, DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(LH_CHILD_FISHING, {[]{return IsChild;}}),
                   LocationAccess(LH_ADULT_FISHING, {[]{return IsAdult;}}),
@@ -191,7 +191,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(LH_FISHING_ISLAND, {[]{return true;}}),
   });
 
-  areaTable[LH_GROTTO] = Area("LH Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[LH_GROTTO] = Area("LH Grotto", "LH Grotto", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(LH_DEKU_SCRUB_GROTTO_LEFT,   {[]{return CanStunDeku;}}),
                   LocationAccess(LH_DEKU_SCRUB_GROTTO_RIGHT,  {[]{return CanStunDeku;}}),
@@ -224,7 +224,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(LLR_GROTTO,       {[]{return IsChild;}}),
   });
 
-  areaTable[LLR_TALONS_HOUSE] = Area("LLR Talons House", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[LLR_TALONS_HOUSE] = Area("LLR Talons House", "LLR Talons House", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(LLR_TALONS_CHICKENS, {[]{return IsChild && AtDay && ZeldasLetter;}}),
                 }, {
@@ -232,7 +232,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(LON_LON_RANCH, {[]{return true;}}),
   });
 
-  areaTable[LLR_STABLES] = Area("LLR Stables", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[LLR_STABLES] = Area("LLR Stables", "LLR Stables", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(LLR_STABLES_LEFT_COW,  {[]{return CanPlay(EponasSong);},
                                              /*Glitched*/[]{return (CanDoGlitch(GlitchType::IndoorBombOI, GlitchDifficulty::EXPERT) || ((Bugs || Fish) && CanShield && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED) && CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE))) && EponasSong;}}),
@@ -243,7 +243,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(LON_LON_RANCH, {[]{return true;}}),
   });
 
-  areaTable[LLR_TOWER] = Area("LLR Tower", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[LLR_TOWER] = Area("LLR Tower", "LLR Tower", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(LLR_FREESTANDING_POH, {[]{return IsChild;}}),
                   LocationAccess(LLR_TOWER_LEFT_COW,   {[]{return CanPlay(EponasSong);},
@@ -255,7 +255,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(LON_LON_RANCH, {[]{return true;}}),
   });
 
-  areaTable[LLR_GROTTO] = Area("LLR Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[LLR_GROTTO] = Area("LLR Grotto", "LLR Grotto", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(LLR_DEKU_SCRUB_GROTTO_LEFT,   {[]{return CanStunDeku;}}),
                   LocationAccess(LLR_DEKU_SCRUB_GROTTO_RIGHT,  {[]{return CanStunDeku;}}),

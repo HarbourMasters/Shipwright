@@ -175,6 +175,24 @@ void SaveManager::LoadRandomizerVersion2() {
     std::string ganonText;
     SaveManager::Instance->LoadData("ganonText", ganonText);
     memcpy(gSaveContext.ganonText, ganonText.c_str(), ganonText.length());
+    std::string warpMinuetText;
+    SaveManager::Instance->LoadData("warpMinuetText", warpMinuetText);
+    memcpy(gSaveContext.warpMinuetText, warpMinuetText.c_str(), warpMinuetText.length());
+    std::string warpBoleroText;
+    SaveManager::Instance->LoadData("warpBoleroText", warpBoleroText);
+    memcpy(gSaveContext.warpBoleroText, warpBoleroText.c_str(), warpBoleroText.length());
+    std::string warpSerenadeText;
+    SaveManager::Instance->LoadData("warpSerenadeText", warpSerenadeText);
+    memcpy(gSaveContext.warpSerenadeText, warpSerenadeText.c_str(), warpSerenadeText.length());
+    std::string warpRequiemText;
+    SaveManager::Instance->LoadData("warpRequiemText", warpRequiemText);
+    memcpy(gSaveContext.warpRequiemText, warpRequiemText.c_str(), warpRequiemText.length());
+    std::string warpNocturneText;
+    SaveManager::Instance->LoadData("warpNocturneText", warpNocturneText);
+    memcpy(gSaveContext.warpNocturneText, warpNocturneText.c_str(), warpNocturneText.length());
+    std::string warpPreludeText;
+    SaveManager::Instance->LoadData("warpPreludeText", warpPreludeText);
+    memcpy(gSaveContext.warpPreludeText, warpPreludeText.c_str(), warpPreludeText.length());
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
 
@@ -246,6 +264,12 @@ void SaveManager::SaveRandomizer() {
     SaveManager::Instance->SaveData("adultAltarText", gSaveContext.adultAltarText);
     SaveManager::Instance->SaveData("ganonHintText", gSaveContext.ganonHintText);
     SaveManager::Instance->SaveData("ganonText", gSaveContext.ganonText);
+    SaveManager::Instance->SaveData("warpMinuetText", gSaveContext.warpMinuetText);
+    SaveManager::Instance->SaveData("warpBoleroText", gSaveContext.warpBoleroText);
+    SaveManager::Instance->SaveData("warpSerenadeText", gSaveContext.warpSerenadeText);
+    SaveManager::Instance->SaveData("warpRequiemText", gSaveContext.warpRequiemText);
+    SaveManager::Instance->SaveData("warpNocturneText", gSaveContext.warpNocturneText);
+    SaveManager::Instance->SaveData("warpPreludeText", gSaveContext.warpPreludeText);
 
     SaveManager::Instance->SaveData("adultTradeItems", gSaveContext.adultTradeItems);
 
