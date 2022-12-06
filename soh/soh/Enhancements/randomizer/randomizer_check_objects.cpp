@@ -904,7 +904,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
                 locationIt.vOrMQ == RCVORMQ_VANILLA && (CVar_GetS32("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_NONE || CVar_GetS32("gRandomizeMqDungeonCount", 0) < 12) //at least one vanilla dungeon
             ) &&
             (locationIt.rcType != RCTYPE_SHOP || CVar_GetS32("gRandomizeShopsanity", RO_SHOPSANITY_OFF) > RO_SHOPSANITY_ZERO_ITEMS) &&
-            (locationIt.rcType != RCTYPE_SCRUB || CVar_GetS32("gRandomizeShuffleScrubs", RO_SCRUBS_OFF) != RO_SCRUBS_OFF) &&
+            (locationIt.rcType != RCTYPE_SCRUB || CVar_GetS32("gRandomizeShuffleScrubs", RO_SCRUBS_OFF) != RO_SCRUBS_OFF ||
+              locationIt.rc == RC_HF_DEKU_SCRUB_GROTTO || locationIt.rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT || locationIt.rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE) && //The 3 scrubs that are always randomized
             (locationIt.rcType != RCTYPE_MERCHANT || CVar_GetS32("gRandomizeShuffleMerchants", RO_SHUFFLE_MERCHANTS_OFF) != RO_SHUFFLE_MERCHANTS_OFF) &&
             (locationIt.rcType != RCTYPE_GOSSIP_STONE) && // don't show gossip stones (maybe gossipsanity will be a thing eventually?)
             (locationIt.rcType != RCTYPE_LINKS_POCKET) &&
