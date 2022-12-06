@@ -240,7 +240,7 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                 buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
             }
 
-            if (CHECK_BTN_ANY(input->press.button, buttonsToCheck)) {
+            if (CHECK_BTN_ANY(input->press.button, buttonsToCheck) && CVar_GetS32("gMedallionItems", 0)) {
                 u16 cursor = pauseCtx->cursorPoint[PAUSE_QUEST];
 
                 if (CHECK_QUEST_ITEM(cursor)) {
