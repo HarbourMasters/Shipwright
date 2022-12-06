@@ -341,7 +341,7 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
         "Warp to&{{location}}?\x1B&%gOK&No%w\x02",
         "Warp to&{{location}}?\x1B&%gOK&No%w\x02", // TODO: German translation
-        "Warp to&{{location}}?\x1B&%gOK&No%w\x02" }); // TODO: French translation
+        "Se téléporter vers&{{location}}?\x1B&%gOK!&Non%w\x02" });
 }
 
 std::vector<RandomizerCheck> shopItemRandomizerChecks = {
@@ -4156,7 +4156,7 @@ CustomMessageEntry Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
         std::vector<std::string> locationName ={
             "a mysterious place",
             "a mysterious place", // TODO: German translation
-            "a mysterious place", // TODO: French translation
+            "un endroit mystérieux",
         };
 
         CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{location}}", locationName[0],
