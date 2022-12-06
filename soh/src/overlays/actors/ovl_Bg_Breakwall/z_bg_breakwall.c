@@ -208,7 +208,7 @@ Actor* BgBreakwall_SpawnFragments(PlayState* play, BgBreakwall* this, Vec3f* pos
                 actor =
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_A_OBJ, Rand_CenteredFloat(20.0f) + actorPos.x,
                                 Rand_CenteredFloat(20.0f) + actorPos.y, Rand_CenteredFloat(20.0f) + actorPos.z,
-                                actorRotList[k].x, actorRotList[k].y + angle1, actorRotList[k].z, 0x000B);
+                                actorRotList[k].x, actorRotList[k].y + angle1, actorRotList[k].z, 0x000B, true);
 
                 if ((j & 1) == 0) {
                     func_80033480(play, &actorPos, velocity * 200.0f, 1, 650, 150, 1);
@@ -343,7 +343,7 @@ void BgBreakwall_Draw(Actor* thisx, PlayState* play) {
     if (this->bombableWallDList != NULL) {
         OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, this->bombableWallDList);

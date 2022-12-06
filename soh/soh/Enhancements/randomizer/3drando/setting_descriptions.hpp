@@ -22,8 +22,8 @@ extern string_view kakGateOpen;
 extern string_view kakGateClosed;
 
 extern string_view doorOfTimeOpen;
+extern string_view doorOfTimeSongOnly;
 extern string_view doorOfTimeClosed;
-extern string_view doorOfTimeIntended;
 
 extern string_view fountainNormal;
 extern string_view fountainAdult;

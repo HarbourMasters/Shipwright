@@ -46,7 +46,7 @@ void EnArowTrap_Update(Actor* thisx, PlayState* play) {
         if (this->attackTimer == 0) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, this->actor.world.pos.x,
                         this->actor.world.pos.y, this->actor.world.pos.z, this->actor.shape.rot.x,
-                        this->actor.shape.rot.y, this->actor.shape.rot.z, ARROW_NORMAL_SILENT);
+                        this->actor.shape.rot.y, this->actor.shape.rot.z, ARROW_NORMAL_SILENT, true);
             this->attackTimer = 80;
         }
     }

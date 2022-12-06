@@ -121,7 +121,7 @@ void ObjMure2_SpawnActors(ObjMure2* this, PlayState* play) {
         if (((this->currentActorNum >> i) & 1) == 0) {
             this->actorSpawnPtrList[i] =
                 Actor_Spawn(&play->actorCtx, play, sActorSpawnIDs[actorNum], spawnPos[i].x, spawnPos[i].y,
-                            spawnPos[i].z, this->actor.world.rot.x, 0, this->actor.world.rot.z, params);
+                            spawnPos[i].z, this->actor.world.rot.x, 0, this->actor.world.rot.z, params, true);
             if (this->actorSpawnPtrList[i] != NULL) {
                 this->actorSpawnPtrList[i]->room = this->actor.room;
             }

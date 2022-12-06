@@ -258,6 +258,13 @@ void EnClearTag_Init(Actor* thisx, PlayState* play) {
         Collider_SetCylinder(play, &this->collider, &this->actor, &sLaserCylinderInit);
         Audio_PlayActorSound2(&this->actor, NA_SE_IT_SWORD_REFLECT_MG);
     } else { // Initialize the Arwing.
+
+        // Change Arwing to regular enemy instead of boss with enemy randomizer and crowd control.
+        // This way Arwings will be considered for "clear enemy" rooms properly.
+        if (CVar_GetS32("gRandomizedEnemies", 0) || CVar_GetS32("gCrowdControl", 0)) {
+            Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_ENEMY);
+        }
+
         this->actor.flags |= ACTOR_FLAG_0;
         this->actor.targetMode = 5;
         Collider_SetCylinder(play, &this->collider, &this->actor, &sArwingCylinderInit);
@@ -495,7 +502,7 @@ void EnClearTag_Update(Actor* thisx, PlayState* play2) {
                     this->shouldShootLaser = false;
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, this->actor.world.pos.x,
                                 this->actor.world.pos.y, this->actor.world.pos.z, this->actor.world.rot.x,
-                                this->actor.world.rot.y, this->actor.world.rot.z, CLEAR_TAG_STATE_LASER);
+                                this->actor.world.rot.y, this->actor.world.rot.z, CLEAR_TAG_STATE_LASER, true);
                 }
             }
             case CLEAR_TAG_STATE_CRASHING:
@@ -691,7 +698,7 @@ void EnClearTag_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     if (this->drawMode != CLEAR_TAG_DRAW_MODE_EFFECT) {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
         if (this->state >= CLEAR_TAG_STATE_LASER) {
             // Draw Arwing lasers.
@@ -708,7 +715,7 @@ void EnClearTag_Draw(Actor* thisx, PlayState* play) {
             gSPDisplayList(POLY_XLU_DISP++, gArwingLaserDL);
         } else {
             // Draw the Arwing itself.
-            func_80093D18(play->state.gfxCtx);
+            Gfx_SetupDL_25Opa(play->state.gfxCtx);
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
             if (this->crashingTimer != 0) {
                 f32 xRotation;
@@ -900,8 +907,8 @@ void EnClearTag_DrawEffects(PlayState* play) {
     EnClearTagEffect* firstEffect = effect;
 
     OPEN_DISPS(gfxCtx);
-    func_80093D18(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     // Draw all Debris effects.
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
