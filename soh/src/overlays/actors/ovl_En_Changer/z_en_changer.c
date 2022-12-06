@@ -114,7 +114,7 @@ void EnChanger_Init(Actor* thisx, PlayState* play2) {
                                                                      : (ITEM_ETC_HEART_PIECE_CHEST_GAME)) &
                                0xFF;
                 Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_ETCETERA, 20.0f, 20.0f, -2500.0f, 0, 0, 0,
-                            ((sTreasureFlags[5] & 0x1F) << 8) + rewardParams);
+                            ((sTreasureFlags[5] & 0x1F) << 8) + rewardParams, true);
                 // "Central treasure instance/occurrence (GREAT)"
                 osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ 中央宝発生(ＧＲＥＡＴ) ☆☆☆☆☆ %x\n" VT_RST, rewardChestParams);
                 this->actionFunc = EnChanger_SetHeartPieceFlag;
@@ -169,7 +169,7 @@ void EnChanger_Init(Actor* thisx, PlayState* play2) {
             Actor_Spawn(
                 &play->actorCtx, play, ACTOR_ITEM_ETCETERA, sLeftChestPos[play->roomCtx.curRoom.num].x,
                 sLeftChestPos[play->roomCtx.curRoom.num].y, sLeftChestPos[play->roomCtx.curRoom.num].z, 0, 0,
-                0, ((this->leftChestNum & 0x1F) << 8) + (leftChestItem & 0xFF));
+                0, ((this->leftChestNum & 0x1F) << 8) + (leftChestItem & 0xFF), true);
         }
     }
 
@@ -198,7 +198,7 @@ void EnChanger_Init(Actor* thisx, PlayState* play2) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_ETCETERA,
                     sRightChestPos[play->roomCtx.curRoom.num].x, sRightChestPos[play->roomCtx.curRoom.num].y,
                     sRightChestPos[play->roomCtx.curRoom.num].z, 0, 0, 0,
-                    ((this->rightChestNum & 0x1F) << 8) + (rightChestItem & 0xFF));
+                    ((this->rightChestNum & 0x1F) << 8) + (rightChestItem & 0xFF), true);
     }
 
     this->actor.flags &= ~ACTOR_FLAG_0;
@@ -241,14 +241,14 @@ void EnChanger_OpenChests(EnChanger* this, PlayState* play) {
                 zPos = right->dyna.actor.world.pos.z;
 
                 if (this->rightChestGetItemId == GI_DOOR_KEY) {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0, 0xF);
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0, 0xF, true);
                     Flags_SetSwitch(play, 0x32);
                 } else {
                     temp_s0_2 = (s16)(this->rightChestGetItemId - GI_RUPEE_GREEN_LOSE) + EXITEM_CHEST;
                     // "Open right treasure (chest)"
                     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 右宝開く ☆☆☆☆☆ %d\n" VT_RST, temp_s0_2);
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0,
-                                temp_s0_2);
+                                temp_s0_2, true);
                 }
                 break;
             case CHEST_RIGHT:
@@ -257,14 +257,14 @@ void EnChanger_OpenChests(EnChanger* this, PlayState* play) {
                 zPos = left->dyna.actor.world.pos.z;
 
                 if (this->leftChestGetItemId == GI_DOOR_KEY) {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0, 0xF);
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0, 0xF, true);
                     Flags_SetSwitch(play, 0x32);
                 } else {
                     temp_s0_2 = (s16)(this->leftChestGetItemId - 0x72) + 0xA;
                     // "Open left treasure (chest)"
                     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 左宝開く ☆☆☆☆☆ %d\n" VT_RST, temp_s0_2);
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0,
-                                temp_s0_2);
+                                temp_s0_2, true);
                 }
                 break;
         }
