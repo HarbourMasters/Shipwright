@@ -622,7 +622,7 @@ void EnDntNomal_StageHide(EnDntNomal* this, PlayState* play) {
             case DNT_ACTION_HIGH_RUPEES:
                 rupee =
                     (EnExRuppy*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_RUPPY, this->actor.world.pos.x,
-                                            this->actor.world.pos.y + 20.0f, this->actor.world.pos.z, 0, 0, 0, 3);
+                                            this->actor.world.pos.y + 20.0f, this->actor.world.pos.z, 0, 0, 0, 3, true);
                 if (rupee != NULL) {
                     rupeeColor = this->action - DNT_ACTION_LOW_RUPEES;
                     rupee->colorIdx = rupeeColor;
@@ -702,7 +702,7 @@ void EnDntNomal_StageAttack(EnDntNomal* this, PlayState* play) {
         spawnZ = this->mouthPos.z + spawnOffset.z;
 
         nut = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_NUTSBALL, spawnX, spawnY, spawnZ,
-                          this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z, 4);
+                          this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z, 4, true);
         if (nut != NULL) {
             nut->velocity.y = spawnOffset.y * 0.5f;
         }

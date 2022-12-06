@@ -156,6 +156,7 @@ set(Header_Files__soh__Enhancements
     "soh/Enhancements/bootcommands.h"
     #"soh/Enhancements/cvar.h"
     "soh/Enhancements/debugconsole.h"
+    "soh/Enhancements/enemyrandomizer.h"
     "soh/Enhancements/gameconsole.h"
     "soh/Enhancements/presets.h"
     "soh/Enhancements/savestates.h"
@@ -288,6 +289,7 @@ source_group("Source Files\\soh" FILES ${Source_Files__soh})
 set(Source_Files__soh__Enhancements
     "soh/Enhancements/bootcommands.c"
     "soh/Enhancements/debugconsole.cpp"
+    "soh/Enhancements/enemyrandomizer.cpp"
     "soh/Enhancements/gameconsole.c"
     "soh/Enhancements/presets.cpp"
     "soh/Enhancements/savestates.cpp"
@@ -1840,6 +1842,7 @@ if(MSVC)
             ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
             ${DEFAULT_CXX_EXCEPTION_HANDLING}
         )
+        target_compile_options(${PROJECT_NAME} PRIVATE  $<$<CONFIG:Debug>:/ZI;>)
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         target_compile_options(${PROJECT_NAME} PRIVATE
             $<$<CONFIG:Debug>:
@@ -1866,11 +1869,11 @@ if(MSVC)
             $<$<CONFIG:Release>:
                 /OPT:REF;
                 /OPT:ICF;
-                /INCREMENTAL:NO
+                /INCREMENTAL:NO;
+                /FORCE:MULTIPLE
             >
             /DEBUG;
-            /SUBSYSTEM:WINDOWS;
-            /FORCE:MULTIPLE
+            /SUBSYSTEM:WINDOWS           
         )
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         target_link_options(${PROJECT_NAME} PRIVATE

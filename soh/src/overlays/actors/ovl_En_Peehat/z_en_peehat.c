@@ -323,7 +323,9 @@ void EnPeehat_Ground_SetStateGround(EnPeehat* this) {
 }
 
 void EnPeehat_Ground_StateGround(EnPeehat* this, PlayState* play) {
-    if (IS_DAY) {
+    // Keep the peahat as the version that doesn't spawn extra enemies and can actually be killed
+    // when Enemy Randomizer is on.
+    if (IS_DAY || CVar_GetS32("gRandomizedEnemies", 0)) {
         this->actor.flags |= ACTOR_FLAG_0;
         if (this->riseDelayTimer == 0) {
             if (this->actor.xzDistToPlayer < this->xzDistToRise) {
@@ -866,7 +868,7 @@ void EnPeehat_StateExplode(EnPeehat* this, PlayState* play) {
 
     if (this->animTimer == 5) {
         bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0x602, 0);
+                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0x602, 0, true);
         if (bomb != NULL) {
             bomb->timer = 0;
         }

@@ -163,7 +163,7 @@ void ObjKibako2_Kill(ObjKibako2* this, PlayState* play) {
     if ((params & 0x8000) == 0) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, this->dyna.actor.world.pos.x,
                     this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, this->dyna.actor.shape.rot.y, 0,
-                    params | 0x8000);
+                    params | 0x8000, true);
     }
     ObjKibako2_SpawnCollectible(this, play);
     Actor_Kill(&this->dyna.actor);

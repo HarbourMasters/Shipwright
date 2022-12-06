@@ -165,11 +165,11 @@ void BgMoriHineri_DoNothing(BgMoriHineri* this, PlayState* play) {
 void BgMoriHineri_SpawnBossKeyChest(BgMoriHineri* this, PlayState* play) {
     if (this->dyna.actor.params == 0) {
         Object_Spawn(&play->objectCtx, OBJECT_BOX);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOX, -1515.0f, 1440.0f,  -3475.0f, -0x4000, 0x4000, 0, 0x27EE);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOX, -1515.0f, 1440.0f,  -3475.0f, -0x4000, 0x4000, 0, 0x27EE, true);
         this->actionFunc = func_808A3C8C;
     } else {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOX, this->dyna.actor.world.pos.x + 147.0f,
-                    this->dyna.actor.world.pos.y + -245.0f, this->dyna.actor.world.pos.z + -453.0f, 0, 0x4000, 0, 0x27EE);
+                    this->dyna.actor.world.pos.y + -245.0f, this->dyna.actor.world.pos.z + -453.0f, 0, 0x4000, 0, 0x27EE, true);
         this->actionFunc = BgMoriHineri_DoNothing;
     }
 }

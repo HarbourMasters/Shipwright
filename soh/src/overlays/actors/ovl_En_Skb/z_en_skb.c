@@ -188,7 +188,8 @@ void EnSkb_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_80AFCD60(EnSkb* this) {
-    if (IS_DAY) {
+    // Don't despawn stallchildren during daytime when enemy randomizer is enabled.
+    if (IS_DAY && !CVar_GetS32("gRandomizedEnemies", 0)) {
         func_80AFCF48(this);
     } else if (Actor_IsFacingPlayer(&this->actor, 0x11C7) &&
                (this->actor.xzDistToPlayer < (60.0f + (this->actor.params * 6.0f)))) {
@@ -285,7 +286,8 @@ void EnSkb_Advance(EnSkb* this, PlayState* play) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_STALKID_WALK);
         }
     }
-    if (Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) > 800.0f || IS_DAY) {
+    // Don't despawn stallchildren during daytime or when a stalchildren walks too far away from his "home" when enemy randomizer is enabled.
+    if ((Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) > 800.0f || IS_DAY) && !CVar_GetS32("gRandomizedEnemies", 0)) {
         func_80AFCF48(this);
     } else if (Actor_IsFacingPlayer(&this->actor, 0x11C7) &&
                (this->actor.xzDistToPlayer < (60.0f + (this->actor.params * 6.0f)))) {

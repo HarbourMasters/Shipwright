@@ -91,7 +91,7 @@ void EnBlkobj_SpawnDarkLink(EnBlkobj* this, PlayState* play) {
     if (!(this->dyna.actor.flags & ACTOR_FLAG_6)) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TORCH2, this->dyna.actor.world.pos.x,
                     this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, this->dyna.actor.yawTowardsPlayer, 0,
-                    0);
+                    0, true);
         EnBlkobj_SetupAction(this, EnBlkobj_DarkLinkFight);
     }
 }
@@ -100,7 +100,13 @@ void EnBlkobj_DarkLinkFight(EnBlkobj* this, PlayState* play) {
     s32 alphaMod;
 
     if (this->timer == 0) {
-        if (Actor_Find(&play->actorCtx, ACTOR_EN_TORCH2, ACTORCAT_BOSS) == NULL) {
+        // Dark Link room completed.
+        // Check for if Dark Link is defeated in authentic gameplay.
+        // Check for if all enemies are defeated with enemy randomizer or crowd control on.
+        uint8_t roomCleared = 
+            (!CVar_GetS32("gRandomizedEnemies", 0) && !CVar_GetS32("gCrowdControl", 0) && Actor_Find(&play->actorCtx, ACTOR_EN_TORCH2, ACTORCAT_BOSS) == NULL) ||
+            ((CVar_GetS32("gRandomizedEnemies", 0) || CVar_GetS32("gCrowdControl", 0)) && Flags_GetTempClear(play, this->dyna.actor.room));
+        if (roomCleared) {
             Flags_SetClear(play, this->dyna.actor.room);
             this->timer++;
         }

@@ -1340,14 +1340,6 @@ typedef enum {
     RO_TOKENSANITY_MAX,
 } RandoOptionTokensanity;
 
-//MQ Dungeon settings (none, set number, random number)
-typedef enum {
-    RO_MQ_DUNGEONS_NONE,
-    RO_MQ_DUNGEONS_SET_NUMBER,
-    RO_MQ_DUNGEONS_RANDOM_NUMBER,
-    RO_MQ_DUNGEONS_MAX,
-} RandoOptionMqDungeons;
-
 //Link's Pocket Settings (dungeon reward, advancement, anything, nothing)
 typedef enum {
     RO_LINKS_POCKET_DUNGEON_REWARD,
@@ -1363,6 +1355,14 @@ typedef enum {
     RO_LOGIC_NO_LOGIC,
     RO_LOGIC_MAX,
 } RandoOptionLogic;
+
+// MQ Dungeons
+typedef enum {
+    RO_MQ_DUNGEONS_NONE,
+    RO_MQ_DUNGEONS_SET_NUMBER,
+    RO_MQ_DUNGEONS_RANDOM_NUMBER,
+    RO_MQ_DUNGEONS_MAX,
+} RandoOptionMQDungeons;
 
 typedef enum {
     CAN_OBTAIN,

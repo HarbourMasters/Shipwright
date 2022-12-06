@@ -742,7 +742,7 @@ void func_809865F8(DemoIm* this, PlayState* play, s32 arg2) {
                 f32 spawnPosZ = thisPos->z + (Math_CosS(shapeRotY) * 30.0f);
 
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, spawnPosX, spawnPosY, spawnPosZ, 0xFA0,
-                            this->actor.shape.rot.y, 0, ARROW_CS_NUT);
+                            this->actor.shape.rot.y, 0, ARROW_CS_NUT, true);
                 this->unk_27C = 1;
             }
         } else {
