@@ -2507,10 +2507,10 @@ namespace Settings {
     // RANDTODO: Switch this back once all logic options are implemented
     // Logic.SetSelectedIndex(cvarSettings[RSK_LOGIC_RULES]);
     switch (cvarSettings[RSK_LOGIC_RULES]) {
-        case 0:
+        case RO_LOGIC_GLITCHLESS:
             Logic.SetSelectedIndex(0);
             break;
-        case 1:
+        case RO_LOGIC_NO_LOGIC:
             Logic.SetSelectedIndex(2);
             break;
     }
