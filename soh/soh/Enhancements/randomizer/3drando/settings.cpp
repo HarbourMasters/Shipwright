@@ -2611,8 +2611,8 @@ namespace Settings {
     ShuffleMerchants.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_MERCHANTS]);
 
     // Force 100 GS Shuffle if that's where Ganon's Boss Key is
-    if (cvarSettings[RSK_GANONS_BOSS_KEY] == 12) {
-      Shuffle100GSReward.SetSelectedIndex(0);
+    if (cvarSettings[RSK_GANONS_BOSS_KEY] == RO_GANON_BOSS_KEY_KAK_TOKENS) {
+      Shuffle100GSReward.SetSelectedIndex(1);
     } else {
       Shuffle100GSReward.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_100_GS_REWARD]);
     }
