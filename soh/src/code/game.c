@@ -458,8 +458,7 @@ void GameState_Update(GameState* gameState) {
         }
     }
 
-    //since our CVar is same value and properly default to 0 there is not problems doing this in single line.
-    gSaveContext.language = CVar_GetS32("gLanguages", 0);
+    gSaveContext.language = CVar_GetS32("gLanguages", LANGUAGE_ENG);
 
     gameState->frames++;
 }
