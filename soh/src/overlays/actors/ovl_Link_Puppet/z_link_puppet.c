@@ -117,9 +117,15 @@ void LinkPuppet_Destroy(Actor* thisx, PlayState* play) {
 void LinkPuppet_Update(Actor* thisx, PlayState* play) {
     LinkPuppet* this = (LinkPuppet*)thisx;
 
-    Actor_SetFocus(this, 60.0f);
+    if (this->packet.initialized == 0) {
+        return;
+    }
 
-    Actor_UpdateBgCheckInfo(play, &this->actor, 15.0f, 30.0f, 60.0f, 0x1D);
+    f32 puppetHeight = this->packet.puppet_age == 0 ? 60.0f : 30.0f;
+
+    Actor_SetFocus(this, puppetHeight);
+
+    Actor_UpdateBgCheckInfo(play, &this->actor, 15.0f, 30.0f, puppetHeight, 0x1D);
 
     if (this->damageTimer > 0) {
         this->damageTimer--;
@@ -176,13 +182,13 @@ void LinkPuppet_Update(Actor* thisx, PlayState* play) {
 
     if (this->collider.base.acFlags & AC_HIT && this->damageTimer <= 0) {
         this->collider.base.acFlags &= ~AC_HIT;
-        gPacket.damageValue = this->actor.colChkInfo.damage;
-        gPacket.damageEffect = this->actor.colChkInfo.damageEffect;
+        gPacket.puppetPacket.damageValue = this->actor.colChkInfo.damage;
+        gPacket.puppetPacket.damageEffect = this->actor.colChkInfo.damageEffect;
 
-        if (gPacket.damageEffect == PUPPET_DMGEFF_STUN) {
+        if (gPacket.puppetPacket.damageEffect == PUPPET_DMGEFF_STUN) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOMA_JR_FREEZE);
             Actor_SetColorFilter(&this->actor, 0, 0xFF, 0, 40);
-        } else if (gPacket.damageEffect != PUPPET_DMGEFF_NONE) {
+        } else if (gPacket.puppetPacket.damageEffect != PUPPET_DMGEFF_NONE) {
             Actor_SetColorFilter(&this->actor, 0x4000, 255, 0, 24);
         }
 
@@ -214,7 +220,8 @@ void LinkPuppet_Update(Actor* thisx, PlayState* play) {
     }
 
     if (this->packet.sound_id != 0) {
-        Audio_PlaySoundGeneral(this->packet.sound_id, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(this->packet.sound_id, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
+                               &D_801333E8);
         this->packet.sound_id = 0;
     }
 }
@@ -229,6 +236,10 @@ extern Gfx* D_80125D28[];
 
 s32 Puppet_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     LinkPuppet* this = (LinkPuppet*)thisx;
+
+    if (this->packet.initialized == 0) {
+        return;
+    }
 
      if (limbIndex == PLAYER_LIMB_ROOT) {
         if (this->packet.puppet_age == 1) {
@@ -272,12 +283,20 @@ s32 Puppet_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* 
 void Puppet_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     LinkPuppet* this = (LinkPuppet*)thisx;
 
+    if (this->packet.initialized == 0) {
+        return;
+    }
+
     Vec3f* vec = &FEET_POS[((void)0, this->packet.puppet_age)];
     Actor_SetFeetPos(&this->actor, limbIndex, PLAYER_LIMB_L_FOOT, vec, PLAYER_LIMB_R_FOOT, vec);
 }
 
 void LinkPuppet_Draw(Actor* thisx, PlayState* play) {
     LinkPuppet* this = (LinkPuppet*)thisx;
+
+    if (this->packet.initialized == 0) {
+        return;
+    }
 
     if (this->initialized) {
         func_8008F470(play, this->linkSkeleton.skeleton, this->linkSkeleton.jointTable,

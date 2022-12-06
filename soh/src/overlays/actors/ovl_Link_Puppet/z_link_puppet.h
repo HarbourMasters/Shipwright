@@ -7,7 +7,7 @@ typedef struct LinkPuppet {
     Actor actor;
     SkelAnime linkSkeleton;
     ColliderCylinder collider;
-    OnlinePacketZ64 packet;
+    PuppetPacketZ64 packet;
     ColliderQuad swordQuads[2];
     ColliderQuad shieldQuad;
     uint8_t damageTimer;

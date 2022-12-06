@@ -28,7 +28,7 @@ u64 D_801614D0[0xA00];
 #endif
 
 PlayState* gPlayState;
-LinkPuppet* puppets[32];
+LinkPuppet* puppets[4];
 
 void func_800BC450(PlayState* play) {
     Camera_ChangeDataIdx(GET_ACTIVE_CAM(play), play->unk_1242B - 1);
@@ -640,9 +640,9 @@ void Play_Init(GameState* thisx) {
         play->unk_1242B = 0;
     }
 
-    for (size_t i = 0; i < 32; i++) {
-        puppets[i] = Actor_Spawn(&play->actorCtx, gPlayState, ACTOR_LINK_PUPPET, -32000.0f, -32000.0f, -32000.0f,
-                                 0, 0, 0, 0);
+    for (size_t i = 0; i < 4; i++) {
+        puppets[i] =
+            Actor_Spawn(&play->actorCtx, gPlayState, ACTOR_LINK_PUPPET, -16000.0f, -16000.0f, -16000.0f, 0, 0, 0, 0);
     }
 
     Interface_SetSceneRestrictions(play);
@@ -1684,23 +1684,24 @@ void Play_Main(GameState* thisx) {
         Play_Update(play);
     }
 
-    gPacket.posRot.pos = GET_PLAYER(play)->actor.world.pos;
-    gPacket.posRot.rot = GET_PLAYER(play)->actor.shape.rot;
-    memcpy(gPacket.jointTable, GET_PLAYER(play)->skelAnime.jointTable, 6 * PLAYER_LIMB_MAX);
-    gPacket.biggoron_broken = (gSaveContext.swordHealth <= 0.0f);
+    gPacket.puppetPacket.posRot.pos = GET_PLAYER(play)->actor.world.pos;
+    gPacket.puppetPacket.posRot.rot = GET_PLAYER(play)->actor.shape.rot;
+    memcpy(gPacket.puppetPacket.jointTable, GET_PLAYER(play)->skelAnime.jointTable, 6 * PLAYER_LIMB_MAX);
+    gPacket.puppetPacket.biggoron_broken = (gSaveContext.swordHealth <= 0.0f);
 
-    gPacket.shieldType = GET_PLAYER(play)->currentShield;
-    gPacket.sheathType = GET_PLAYER(play)->sheathType;
-    gPacket.leftHandType = GET_PLAYER(play)->leftHandType;
-    gPacket.rightHandType = GET_PLAYER(play)->rightHandType;
+    gPacket.puppetPacket.shieldType = GET_PLAYER(play)->currentShield;
+    gPacket.puppetPacket.sheathType = GET_PLAYER(play)->sheathType;
+    gPacket.puppetPacket.leftHandType = GET_PLAYER(play)->leftHandType;
+    gPacket.puppetPacket.rightHandType = GET_PLAYER(play)->rightHandType;
 
-    gPacket.tunicType = GET_PLAYER(play)->currentTunic;
-    gPacket.bootsType = GET_PLAYER(play)->currentBoots;
-    gPacket.faceType = GET_PLAYER(play)->actor.shape.face;
-    gPacket.scene_id = play->sceneNum;
-    gPacket.puppet_age = gSaveContext.linkAge;
+    gPacket.puppetPacket.tunicType = GET_PLAYER(play)->currentTunic;
+    gPacket.puppetPacket.bootsType = GET_PLAYER(play)->currentBoots;
+    gPacket.puppetPacket.faceType = GET_PLAYER(play)->actor.shape.face;
+    gPacket.puppetPacket.scene_id = play->sceneNum;
+    gPacket.puppetPacket.puppet_age = gSaveContext.linkAge;
 
-    OTRSendPacketToClients();
+    gPacket.inventoryPacket.inventory = gSaveContext.inventory;
+
     OTRSendPacketToServer();
 
     if (1 && HREG(63)) {
@@ -2218,8 +2219,29 @@ void Play_PerformSave(PlayState* play) {
     }
 }
 
-void SetLinkPuppetData(OnlinePacketZ64* packet, u8 player_id) {
-    if (puppets[player_id] != NULL) {
-        memcpy(&puppets[player_id]->packet, packet, sizeof(OnlinePacketZ64));
+void SetOnlinePlayerID(uint8_t player_id) {
+    gPacket.player_id = player_id;
+}
+
+void SetLinkPuppetData(PuppetPacketZ64* packet, u8 player_id) {
+    if (puppets[player_id] != NULL && player_id != gPacket.player_id) {
+        memcpy(&puppets[player_id]->packet, packet, sizeof(PuppetPacketZ64));
+    }
+}
+
+void SetOnlineInventoryData(InventoryPacketZ64* packet) {
+    Inventory* newInventory = &packet->inventory;
+
+    if (packet->initialized == 1) {
+        for (size_t i = 0; i < 24; i++) {
+            if (newInventory->items[i] > gSaveContext.inventory.items[i] && newInventory->items[i] != 0xFF &&
+                gSaveContext.inventory.items[i] != newInventory->items[i]) {
+                gSaveContext.inventory.items[i] = newInventory->items[i];
+            }
+        }
+
+        if (newInventory->gsTokens > gSaveContext.inventory.gsTokens) {
+            gSaveContext.inventory.gsTokens = newInventory->gsTokens;
+        }
     }
 }

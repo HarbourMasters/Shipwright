@@ -71,9 +71,8 @@ extern "C"
 {
 #endif
 
-typedef struct OnlinePacketZ64 {
-    uint8_t player_id;
-
+typedef struct PuppetPacketZ64 {
+    uint8_t initialized;
     PosRot posRot;
     uint8_t biggoron_broken;
     uint16_t scene_id;
@@ -94,6 +93,18 @@ typedef struct OnlinePacketZ64 {
 
     uint8_t damageEffect;
     uint8_t damageValue;
+} PuppetPacketZ64;
+
+typedef struct InventoryPacketZ64 {
+    uint8_t initialized;
+    Inventory inventory;
+} InventoryPacketZ64;
+
+typedef struct OnlinePacketZ64 {
+    uint8_t player_id;
+    uint8_t is_you;
+    PuppetPacketZ64 puppetPacket;
+    InventoryPacketZ64 inventoryPacket;
 } OnlinePacketZ64;
 
 OnlinePacketZ64 gPacket;

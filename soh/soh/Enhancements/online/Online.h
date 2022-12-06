@@ -4,8 +4,10 @@
 #include <thread>
 #include <SDL_net.h>
 
+#define MAX_PLAYERS 4
+
 typedef struct {
-    float x, y, z;
+    float_t x, y, z;
 } Vec3float; // size = 0x0C
 
 typedef struct {
@@ -17,9 +19,8 @@ typedef struct {
     Vec3short rot;
 } PosRotOnline;
 
-typedef struct OnlinePacket {
-    uint8_t player_id;
-
+typedef struct PuppetPacket {
+    uint8_t initialized;
     PosRotOnline posRot;
     uint8_t biggoron_broken;
     uint16_t scene_id;
@@ -40,13 +41,37 @@ typedef struct OnlinePacket {
 
     uint8_t damageEffect;
     uint8_t damageValue;
+} PuppetPacket;
+
+typedef struct {
+    /* 0x00 */ uint8_t items[24];
+    /* 0x18 */ int8_t ammo[16];
+    /* 0x28 */ uint16_t equipment; // a mask where each nibble corresponds to a type of equipment `EquipmentType`, and each
+                              // bit to an owned piece `EquipInv*`
+    /* 0x2C */ uint32_t upgrades;
+    /* 0x30 */ uint32_t questItems;
+    /* 0x34 */ uint8_t dungeonItems[20];
+    /* 0x48 */ int8_t dungeonKeys[19];
+    /* 0x5B */ int8_t defenseHearts;
+    /* 0x5C */ int16_t gsTokens;
+} InventoryZ64; // size = 0x5E
+
+typedef struct InventoryPacket {
+    uint8_t initialized;
+    InventoryZ64 inventory;
+} InventoryPacket;
+
+typedef struct OnlinePacket {
+    uint8_t player_id;
+    uint8_t is_you;
+    PuppetPacket puppetPacket;
+    InventoryPacket inventoryPacket;
 } OnlinePacket;
 
 class OnlineServer {
   public:
     bool running = false;
-    int maxPlayers = 32;
-    TCPsocket clients[32];
+    TCPsocket clients[MAX_PLAYERS];
 
     void InitServer(int port);
     void SendPacketMessage(OnlinePacket* packet, TCPsocket* sendTo);
@@ -55,7 +80,8 @@ class OnlineServer {
 
   private:
     void WaitForClientConnections();
-    void RunServerReceive(TCPsocket receiveClient);
+    void RunServerSend(int player_id);
+    void RunServerReceive(int player_id);
     void CloseServer();
 
 };

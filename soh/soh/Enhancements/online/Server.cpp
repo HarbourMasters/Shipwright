@@ -7,16 +7,11 @@
 
 TCPsocket server;
 
-std::jthread clientThreads[32];
+OnlinePacket clientPackets[MAX_PLAYERS] = {};
+
+std::jthread clientSendThreads[MAX_PLAYERS];
+std::jthread clientReceiveThreads[MAX_PLAYERS];
 std::jthread connectionThread;
-
-extern "C" void SetLinkPuppetData(OnlinePacket* packet, uint8_t player_id);
-
-void OnlineServer::SendPacketMessage(OnlinePacket* packet, TCPsocket* sendTo) {
-    if (*sendTo != nullptr) {
-        SDLNet_TCP_Send(*sendTo, packet, sizeof(OnlinePacket));
-    }
-}
 
 void OnlineServer::InitServer(int port) {
     SDLNet_Init();
@@ -32,40 +27,43 @@ void OnlineServer::InitServer(int port) {
 
 void OnlineServer::WaitForClientConnections() {
     while (running) {
-        for (size_t i = 0; i < maxPlayers; i++) {
+        for (size_t i = 0; i < MAX_PLAYERS; i++) {
             if (clients[i] == NULL) {
                 while (clients[i] == NULL) {
                     TCPsocket newClient = SDLNet_TCP_Accept(server);
 
                     if (newClient != NULL) {
                         clients[i] = newClient;
-                        clientThreads[i] = std::jthread(&OnlineServer::RunServerReceive, this, clients[i]);
+                        clientSendThreads[i] = std::jthread(&OnlineServer::RunServerSend, this, i);
+                        clientReceiveThreads[i] = std::jthread(&OnlineServer::RunServerReceive, this, i);
                         break;
                     }
-
-                    Sleep(200);
                 }
             }
         }
     }
 }
 
-void OnlineServer::RunServerReceive(TCPsocket receiveClient) {
-    OnlinePacket packet;
+void OnlineServer::RunServerSend(int player_id) {
+    while (clients[player_id] != NULL) {
+        clientPackets[player_id].inventoryPacket.initialized = 1;
+        clientPackets[player_id].puppetPacket.initialized = 1;
+        clientPackets[player_id].player_id = player_id;
 
-    while (running) {
-        if (receiveClient != NULL) {
-            int len = SDLNet_TCP_Recv(receiveClient, &packet, sizeof(OnlinePacket));
+        clientPackets[player_id].is_you = 1;
+        SDLNet_TCP_Send(clients[player_id], &clientPackets, sizeof(OnlinePacket[MAX_PLAYERS]));
+        clientPackets[player_id].is_you = 0;
+    }
+}
 
-            if (len > 0) {
-                SetLinkPuppetData(&packet, packet.player_id);
-            }
-        }
+void OnlineServer::RunServerReceive(int player_id) {
+    while (clients[player_id] != NULL) {
+        SDLNet_TCP_Recv(clients[player_id], &clientPackets[player_id], sizeof(OnlinePacket));
     }
 }
 
 void OnlineServer::CloseServer() {
-    for (size_t i = 0; i < maxPlayers; i++) {
+    for (size_t i = 0; i < MAX_PLAYERS; i++) {
         if (clients[i] != NULL) {
             SDLNet_TCP_Close(clients[i]);
         }

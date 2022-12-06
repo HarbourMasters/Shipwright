@@ -7,7 +7,9 @@
 std::thread initThread;
 std::jthread receiveThread;
 
-extern "C" void SetLinkPuppetData(OnlinePacket* packet, uint8_t player_id);
+extern "C" void SetOnlinePlayerID(uint8_t player_id);
+extern "C" void SetLinkPuppetData(PuppetPacket* packet, uint8_t player_id);
+extern "C" void SetOnlineInventoryData(InventoryPacket* packet);
 
 void OnlineClient::SendPacketMessage(OnlinePacket* packet, TCPsocket* sendTo) {
     if (*sendTo != nullptr) {
@@ -41,13 +43,22 @@ void OnlineClient::WaitForServerConnection(IPaddress ip) {
 }
 
 void OnlineClient::RunClientReceive() {
-    OnlinePacket packet;
+    OnlinePacket packet[MAX_PLAYERS];
 
     while (running) {
-        int len = SDLNet_TCP_Recv(client, &packet, sizeof(OnlinePacket));
+        int len = SDLNet_TCP_Recv(client, &packet, sizeof(OnlinePacket[MAX_PLAYERS]));
 
         if (len > 0) {
-            SetLinkPuppetData(&packet, packet.player_id);
+            for (size_t i = 0; i < MAX_PLAYERS; i++) {
+                if (packet[i].puppetPacket.initialized == 1) {
+                    if (packet[i].is_you == 1) {
+                        SetOnlinePlayerID(packet[i].player_id);
+                    }
+
+                    SetLinkPuppetData(&packet[i].puppetPacket, packet[i].player_id);
+                    SetOnlineInventoryData(&packet[i].inventoryPacket);
+                }
+            }
         }
     }
 }

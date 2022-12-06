@@ -2043,24 +2043,9 @@ extern "C" void Overlay_DisplayText(float duration, const char* text) {
     SohImGui::GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
-extern "C" void OTRSendPacketToClients() {
-    if (server.running) {
-        for (size_t i = 0; i < server.maxPlayers; i++) {
-            if (server.clients[i] != NULL) {
-                gPacket.player_id = 0;
-                server.SendPacketMessage((OnlinePacket*)&gPacket, &server.clients[i]);
-            }
-        }
-
-        memset(&gPacket, 0, sizeof(gPacket));
-    }
-}
-
 extern "C" void OTRSendPacketToServer() {
     if (client.running) {
-        gPacket.player_id = 1;
         client.SendPacketMessage((OnlinePacket*)&gPacket, &client.client);
-
-        memset(&gPacket, 0, sizeof(gPacket));
+        gPacket.puppetPacket.sound_id = 0;
     }
 }
