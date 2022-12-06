@@ -1508,7 +1508,7 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
             gSaveContext.equips.equipment &= 0xFFF0;
             gSaveContext.equips.equipment |= 0x0001;
-        } else if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_STARTING_AGE)) {
+        } else if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_STARTING_AGE) == RO_AGE_ADULT) {
             /*If in rando and starting age is adult, childEquips is not initialized and buttonItems[0]
             will be ITEM_NONE. When changing age from adult -> child, reset equips to "default"
             (only kokiri tunic/boots equipped, no sword, no C-button items, no D-Pad items).

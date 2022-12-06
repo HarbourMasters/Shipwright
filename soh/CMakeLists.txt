@@ -1840,6 +1840,7 @@ if(MSVC)
             ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
             ${DEFAULT_CXX_EXCEPTION_HANDLING}
         )
+        target_compile_options(${PROJECT_NAME} PRIVATE  $<$<CONFIG:Debug>:/ZI;>)
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         target_compile_options(${PROJECT_NAME} PRIVATE
             $<$<CONFIG:Debug>:
@@ -1866,11 +1867,11 @@ if(MSVC)
             $<$<CONFIG:Release>:
                 /OPT:REF;
                 /OPT:ICF;
-                /INCREMENTAL:NO
+                /INCREMENTAL:NO;
+                /FORCE:MULTIPLE
             >
             /DEBUG;
-            /SUBSYSTEM:WINDOWS;
-            /FORCE:MULTIPLE
+            /SUBSYSTEM:WINDOWS           
         )
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         target_link_options(${PROJECT_NAME} PRIVATE

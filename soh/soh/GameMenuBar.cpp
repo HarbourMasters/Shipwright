@@ -291,9 +291,9 @@ namespace GameMenuBar {
             UIWidgets::Spacer(0);
 
             if (ImGui::BeginMenu("Languages")) {
-                UIWidgets::EnhancementRadioButton("English", "gLanguages", 0);
-                UIWidgets::EnhancementRadioButton("German", "gLanguages", 1);
-                UIWidgets::EnhancementRadioButton("French", "gLanguages", 2);
+                UIWidgets::EnhancementRadioButton("English", "gLanguages", LANGUAGE_ENG);
+                UIWidgets::EnhancementRadioButton("German", "gLanguages", LANGUAGE_GER);
+                UIWidgets::EnhancementRadioButton("French", "gLanguages", LANGUAGE_FRA);
                 ImGui::EndMenu();
             }
             ImGui::EndMenu();
@@ -382,7 +382,10 @@ namespace GameMenuBar {
                     UIWidgets::PaddedText("Bunny Hood Effect", true, false);
                     const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run"};
                     UIWidgets::EnhancementCombobox("gMMBunnyHood", bunnyHoodOptions, 3, 0);
-                    UIWidgets::Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask. The longer jump option is not accounted for in randomizer logic.");
+                    UIWidgets::Tooltip(
+                        "Wearing the Bunny Hood grants a speed increase like in Majora's Mask. The longer jump option is not accounted for in randomizer logic.\n\n"
+                        "Also disables NPC's reactions to wearing the Bunny Hood."
+                    );
                     UIWidgets::PaddedEnhancementCheckbox("Mask Select in Inventory", "gMaskSelect", true, false);
                     UIWidgets::Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
                     UIWidgets::PaddedEnhancementCheckbox("Nuts explode bombs", "gNutsExplodeBombs", true, false);
@@ -1190,8 +1193,10 @@ namespace GameMenuBar {
                 if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON ||
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
-                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS) > 0 ||
-                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) > 2 ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
                     (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_VANILLA &&
                      OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_OWN_DUNGEON &&
                      OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_STARTWITH) || 
