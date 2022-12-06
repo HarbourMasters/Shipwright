@@ -636,7 +636,7 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
 
                 if ((gSaveContext.n64ddFlag || CVar_GetS32("gDampeWin", 0)) && this->currentReward == 4) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, rewardPos.x, rewardPos.y, rewardPos.z, 0,
-                                0, 0, 0x1F06);
+                                0, 0, 0x1F06, true);
                     this->heartPieceSpawned = 1;
                 } else {
                     Item_DropCollectible(play, &rewardPos, rewardParams[this->currentReward]);

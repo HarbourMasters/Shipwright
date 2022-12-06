@@ -278,7 +278,7 @@ void BossSst_Init(Actor* thisx, PlayState* play2) {
     Flags_SetSwitch(play, 0x14);
     if (this->actor.params == BONGO_HEAD) {
         sFloor = (BgSstFloor*)Actor_Spawn(&play->actorCtx, play, ACTOR_BG_SST_FLOOR, sRoomCenter.x,
-                                          sRoomCenter.y, sRoomCenter.z, 0, 0, 0, BONGOFLOOR_REST);
+                                          sRoomCenter.y, sRoomCenter.z, 0, 0, 0, BONGOFLOOR_REST, true);
         SkelAnime_InitFlex(play, &this->skelAnime, &gBongoHeadSkel, &gBongoHeadEyeOpenIdleAnim, this->jointTable,
                            this->morphTable, 45);
         ActorShape_Init(&this->actor.shape, 70000.0f, ActorShadow_DrawCircle, 95.0f);
@@ -292,19 +292,19 @@ void BossSst_Init(Actor* thisx, PlayState* play2) {
         this->actor.shape.rot.y = 0;
         if (Flags_GetClear(play, play->roomCtx.curRoom.num)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, ROOM_CENTER_X, ROOM_CENTER_Y,
-                        ROOM_CENTER_Z + 400.0f, 0, 0, 0, WARP_DUNGEON_ADULT);
+                        ROOM_CENTER_Z + 400.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
             Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, ROOM_CENTER_X, ROOM_CENTER_Y,
-                        ROOM_CENTER_Z - 200.0f, 0, 0, 0, 0);
+                        ROOM_CENTER_Z - 200.0f, 0, 0, 0, 0, true);
             Actor_Kill(&this->actor);
         } else {
             sHands[LEFT] =
                 (BossSst*)Actor_Spawn(&play->actorCtx, play, ACTOR_BOSS_SST, this->actor.world.pos.x + 200.0f,
                                       this->actor.world.pos.y, this->actor.world.pos.z + 400.0f, 0,
-                                      this->actor.shape.rot.y, 0, BONGO_LEFT_HAND);
+                                      this->actor.shape.rot.y, 0, BONGO_LEFT_HAND, true);
             sHands[RIGHT] = (BossSst*)Actor_Spawn(&play->actorCtx, play, ACTOR_BOSS_SST,
                                                   this->actor.world.pos.x + (-200.0f), this->actor.world.pos.y,
                                                   this->actor.world.pos.z + 400.0f, 0, this->actor.shape.rot.y, 0,
-                                                  BONGO_RIGHT_HAND);
+                                                  BONGO_RIGHT_HAND, true);
             sHands[LEFT]->actor.child = &sHands[RIGHT]->actor;
             sHands[RIGHT]->actor.child = &sHands[LEFT]->actor;
 
@@ -1190,10 +1190,10 @@ void BossSst_HeadFinish(BossSst* this, PlayState* play) {
         }
     } else if (this->effects[0].alpha == 0) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, ROOM_CENTER_X, ROOM_CENTER_Y, ROOM_CENTER_Z, 0,
-                    0, 0, WARP_DUNGEON_ADULT);
+                    0, 0, WARP_DUNGEON_ADULT, true);
         Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART,
                     (Math_SinS(this->actor.shape.rot.y) * 200.0f) + ROOM_CENTER_X, ROOM_CENTER_Y,
-                    Math_CosS(this->actor.shape.rot.y) * 200.0f + ROOM_CENTER_Z, 0, 0, 0, 0);
+                    Math_CosS(this->actor.shape.rot.y) * 200.0f + ROOM_CENTER_Z, 0, 0, 0, 0, true);
         BossSst_SetCameraTargets(1.0f, 7);
         this->effectMode = BONGO_NULL;
     } else if (this->timer == 0) {
