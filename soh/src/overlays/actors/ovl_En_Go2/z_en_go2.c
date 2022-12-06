@@ -1930,7 +1930,7 @@ void EnGo2_BiggoronEyedrops(EnGo2* this, PlayState* play) {
                     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
                     Randomizer_ConsumeAdultTradeItem(play, ITEM_EYEDROPS);
                     EnGo2_GetItemEntry(this, play, getItemEntry);
-                    Flags_SetTreasure(play, 0x1E);
+                    Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS);
                 } else {
                     u32 getItemId = GI_CLAIM_CHECK;
                     EnGo2_GetItem(this, play, getItemId);
