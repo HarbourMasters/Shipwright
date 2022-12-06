@@ -293,8 +293,14 @@ void DrawStatsTracker(bool& open) {
     DisplayStat("Damage Taken:          ", gSaveContext.sohStats.count[COUNT_DAMAGE_TAKEN]);
     DisplayStat("Sword Swings:          ", gSaveContext.sohStats.count[COUNT_SWORD_SWINGS]);
     DisplayStat("Steps Taken:           ", gSaveContext.sohStats.count[COUNT_STEPS]);
+    // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
+    if (CVar_GetS32("gMMBunnyHood", 0)) {
+        DisplayTimeHHMMSS(gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] / 2, "Bunny Hood Time:    ", COLOR_WHITE);
+    }
     DisplayStat("Rolls:                 ", gSaveContext.sohStats.count[COUNT_ROLLS]);
     DisplayStat("Bonks:                 ", gSaveContext.sohStats.count[COUNT_BONKS]);
+    DisplayStat("Sidehops:              ", gSaveContext.sohStats.count[COUNT_SIDEHOPS]);
+    DisplayStat("Backflips:             ", gSaveContext.sohStats.count[COUNT_BACKFLIPS]);
     DisplayStat("Ice Traps:             ", gSaveContext.sohStats.count[COUNT_ICE_TRAPS]);
     DisplayStat("Pauses:                ", gSaveContext.sohStats.count[COUNT_PAUSES]);
     DisplayStat("Pots Smashed:          ", gSaveContext.sohStats.count[COUNT_POTS_BROKEN]);
@@ -323,10 +329,6 @@ void DrawStatsTracker(bool& open) {
             ImGui::NewLine();
             ImGui::TreePop();
         }
-    }
-    // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
-    if (CVar_GetS32("gMMBunnyHood", 0)) {
-        DisplayTimeHHMMSS(gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] / 2, "Bunny Hood Time:    ", COLOR_WHITE);
     }
 
     ImGui::PopStyleVar(1);

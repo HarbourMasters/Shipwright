@@ -133,6 +133,8 @@ typedef enum {
     COUNT_POTS_BROKEN,      // z_obj_tsubo.c
     COUNT_BUSHES_CUT,       // z_en_kusa.c
     COUNT_SWORD_SWINGS,     // z_player.c
+    COUNT_SIDEHOPS,         // z_player.c
+    COUNT_BACKFLIPS,        // z_player.c
     COUNT_TIME_BUNNY_HOOD,  // z_play.c
 
     COUNT_MAX
