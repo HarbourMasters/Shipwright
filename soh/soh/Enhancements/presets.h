@@ -165,6 +165,10 @@ const std::vector<const char*> enhancementsCvars = {
     "gConstantAdultGallery",
     "gChildShootingGalleryAmmunition",
     "gAdultShootingGalleryAmmunition",
+    "gCustomizeBombchuBowling",
+    "gBombchuBowlingNoSmallCucco",
+    "gBombchuBowlingNoBigCucco",
+    "gBombchuBowlingAmmunition",
     "gCreditsFix",
 };
 

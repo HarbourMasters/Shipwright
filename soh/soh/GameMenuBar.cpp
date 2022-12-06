@@ -546,6 +546,22 @@ namespace GameMenuBar {
 
                     UIWidgets::Spacer(0);
 
+                    if (ImGui::BeginMenu("Bombchu Bowling")) {
+                        UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeBombchuBowling");
+                        UIWidgets::Tooltip("Turn on/off changes to the bombchu bowling behavior");
+                        bool disabled = CVar_GetS32("gCustomizeBombchuBowling", 0) == 0;
+                        const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
+                        UIWidgets::EnhancementCheckbox("Remove Small Cucco", "gBombchuBowlingNoSmallCucco", disabled, disabledTooltip);
+                        UIWidgets::Tooltip("Prevents the small cucco from appearing in the bombchu bowling minigame");
+                        UIWidgets::EnhancementCheckbox("Remove Big Cucco", "gBombchuBowlingNoBigCucco", disabled, disabledTooltip);
+                        UIWidgets::Tooltip("Prevents the big cucco from appearing in the bombchu bowling minigame");
+                        UIWidgets::PaddedEnhancementSliderInt("Bombchu Count: %d", "##cBombchuBowlingAmmunition", "gBombchuBowlingAmmunition", 3, 20, "", 10, false, true, false, disabled, disabledTooltip);
+                        UIWidgets::Tooltip("The number of bombchus available at the start of the bombchu bowling minigame");
+                        ImGui::EndMenu();
+                    }
+
+                    UIWidgets::Spacer(0);
+
                     if (ImGui::BeginMenu("Fishing")) {
                         UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeFishing");
                         UIWidgets::Tooltip("Turn on/off changes to the fishing behavior");
