@@ -843,6 +843,8 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 if (gSaveContext.n64ddFlag) {
                     play->nextEntranceIndex = 0x60C;
                     gSaveContext.nextCutsceneIndex = 0;
+                    // Set "raised lake hylia water" since we aren't warping to the cutscene
+                    gSaveContext.eventChkInf[6] |= 0x200;
                 } else {
                     Item_Give(play, ITEM_MEDALLION_WATER);
                     play->nextEntranceIndex = 0x6B;
