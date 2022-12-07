@@ -250,7 +250,7 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
                     Message_ContinueTextbox(play, 0xC8);
                     this->actionFunc = func_80A3DD7C;
                 } else {
-                    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) && 
+                    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) &&
                         !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
                         GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE);
                         gSaveContext.pendingSale = itemEntry.itemId;

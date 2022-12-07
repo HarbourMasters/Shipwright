@@ -1697,7 +1697,7 @@ void EnOssan_State_GiveItemWithFanfare(EnOssan* this, PlayState* play, Player* p
         // en_ossan/en_girla are also used for the happy mask shop, which never has randomized items
         // and returns RC_UNKNOWN_CHECK, in which case we should fall back to vanilla logic
         if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
-            GetItemEntry getItemEntry = 
+            GetItemEntry getItemEntry =
                 Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 120.0f, 120.0f);
         } else {
