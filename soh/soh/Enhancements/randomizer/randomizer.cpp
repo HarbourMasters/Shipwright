@@ -342,6 +342,19 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         "Warp to&{{location}}?\x1B&%gOK&No%w\x02",
         "Warp to&{{location}}?\x1B&%gOK&No%w\x02", // TODO: German translation
         "Se téléporter vers&{{location}}?\x1B&%gOK!&Non%w\x02" });
+
+    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN,
+        { TEXTBOX_TYPE_WOODEN, TEXTBOX_POS_BOTTOM,
+            "Water level control system.&Keep away!",
+            "Wasserstand Kontrollsystem&Finger weg!",
+            "Contrôle du niveau d'eau.&Ne pas toucher!"
+        });
+    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI,
+        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+            "This switch is rustier than you think.^Something must be wrong with the&pipe system in the Water Temple.",
+            "Dieser Schalter scheint rostiger zu&sein als er aussieht.^Etwas muss mit dem Leitungssystem&im Wassertempel nicht stimmen.",
+            "Cet interrupteur est très rouillé.^Quelque chose ne va pas avec&la tuyauterie du Temple de l'Eau."
+        });
 }
 
 std::vector<RandomizerCheck> shopItemRandomizerChecks = {
