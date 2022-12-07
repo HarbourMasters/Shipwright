@@ -26,7 +26,7 @@ s16 dynamicExitList[] = { 0x045B, 0x0482, 0x03E8, 0x044B, 0x02A2, 0x0201, 0x03B8
 
 static s16 entranceOverrideTable[ENTRANCE_TABLE_SIZE] = {0};
 
-EntranceInfo originalEntranceTable[1556] = {0};
+EntranceInfo originalEntranceTable[ENTRANCE_TABLE_SIZE] = {0};
 
 //These variables store the new entrance indices for dungeons so that
 //savewarping and game overs respawn players at the proper entrance.
@@ -45,6 +45,8 @@ static s16 newIceCavernEntrance             = ICE_CAVERN_ENTRANCE;
 
 static s8 hasCopiedEntranceTable = 0;
 static s8 hasModifiedEntranceTable = 0;
+
+void Entrance_SetEntranceDiscovered(u16 entranceIndex);
 
 u8 Entrance_EntranceIsNull(EntranceOverride* entranceOverride) {
     return entranceOverride->index == 0 && entranceOverride->destination == 0 && entranceOverride->blueWarp == 0
@@ -69,14 +71,14 @@ static void Entrance_SeparateAdultSpawnAndPrelude() {
 
 void Entrance_CopyOriginalEntranceTable(void) {
     if (!hasCopiedEntranceTable) {
-        memcpy(originalEntranceTable, gEntranceTable, sizeof(EntranceInfo) * 1556);
+        memcpy(originalEntranceTable, gEntranceTable, sizeof(EntranceInfo) * ENTRANCE_TABLE_SIZE);
         hasCopiedEntranceTable = 1;
     }
 }
 
 void Entrance_ResetEntranceTable(void) {
     if (hasCopiedEntranceTable && hasModifiedEntranceTable) {
-        memcpy(gEntranceTable, originalEntranceTable, sizeof(EntranceInfo) * 1556);
+        memcpy(gEntranceTable, originalEntranceTable, sizeof(EntranceInfo) * ENTRANCE_TABLE_SIZE);
         hasModifiedEntranceTable = 0;
     }
 }
@@ -122,12 +124,12 @@ void Entrance_Init(void) {
         s16 overrideIndex = gSaveContext.entranceOverrides[i].override;
 
         //Overwrite grotto related indices
-        if (originalIndex >= 0x0800) {
+        if (originalIndex >= ENTRANCE_RANDO_GROTTO_EXIT_START) {
             Grotto_SetExitOverride(originalIndex, overrideIndex);
             continue;
         }
 
-        if (originalIndex >= 0x0700 && originalIndex < 0x0800) {
+        if (originalIndex >= ENTRANCE_RANDO_GROTTO_LOAD_START && originalIndex < ENTRANCE_RANDO_GROTTO_EXIT_START) {
             Grotto_SetLoadOverride(originalIndex, overrideIndex);
             continue;
         }
@@ -201,15 +203,36 @@ s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
         return nextEntranceIndex;
     }
 
+    Entrance_SetEntranceDiscovered(nextEntranceIndex);
+    EntranceTracker_SetLastEntranceOverride(nextEntranceIndex);
     return Grotto_OverrideSpecialEntrance(Entrance_GetOverride(nextEntranceIndex));
 }
 
 s16 Entrance_OverrideDynamicExit(s16 dynamicExitIndex) {
+    Entrance_SetEntranceDiscovered(dynamicExitList[dynamicExitIndex]);
+    EntranceTracker_SetLastEntranceOverride(dynamicExitList[dynamicExitIndex]);
     return Grotto_OverrideSpecialEntrance(Entrance_GetOverride(dynamicExitList[dynamicExitIndex]));
 }
 
 u32 Entrance_SceneAndSpawnAre(u8 scene, u8 spawn) {
-    EntranceInfo currentEntrance = gEntranceTable[gSaveContext.entranceIndex];
+    s16 computedEntranceIndex;
+
+    // Adjust the entrance to acount for the exact scene/spawn combination for child/adult and day/night
+    if (!IS_DAY) {
+        if (!LINK_IS_ADULT) {
+            computedEntranceIndex = gSaveContext.entranceIndex + 1;
+        } else {
+            computedEntranceIndex = gSaveContext.entranceIndex + 3;
+        }
+    } else {
+        if (!LINK_IS_ADULT) {
+            computedEntranceIndex = gSaveContext.entranceIndex;
+        } else {
+            computedEntranceIndex = gSaveContext.entranceIndex + 2;
+        }
+    }
+
+    EntranceInfo currentEntrance = gEntranceTable[computedEntranceIndex];
     return currentEntrance.scene == scene && currentEntrance.spawn == spawn;
 }
 
@@ -575,6 +598,61 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
             gPlayState->linkActorEntry->pos.z = 0x0290;
             gPlayState->linkActorEntry->rot.y = 0x0700;
             gPlayState->linkActorEntry->params = 0x0DFF; // stationary spawn
+        }
+    }
+}
+
+u8 Entrance_GetIsSceneDiscovered(u8 sceneNum) {
+    u16 bitsPerIndex = sizeof(u32) * 8;
+    u32 idx = sceneNum / bitsPerIndex;
+    if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
+        u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
+        return (gSaveContext.sohStats.scenesDiscovered[idx] & sceneBit) != 0;
+    }
+    return 0;
+}
+
+void Entrance_SetSceneDiscovered(u8 sceneNum) {
+    if (Entrance_GetIsSceneDiscovered(sceneNum)) {
+        return;
+    }
+
+    u16 bitsPerIndex = sizeof(u32) * 8;
+    u32 idx = sceneNum / bitsPerIndex;
+    if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
+        u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
+        gSaveContext.sohStats.scenesDiscovered[idx] |= sceneBit;
+    }
+}
+
+u8 Entrance_GetIsEntranceDiscovered(u16 entranceIndex) {
+    u16 bitsPerIndex = sizeof(u32) * 8;
+    u32 idx = entranceIndex / bitsPerIndex;
+    if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
+        u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
+        return (gSaveContext.sohStats.entrancesDiscovered[idx] & entranceBit) != 0;
+    }
+    return 0;
+}
+
+void Entrance_SetEntranceDiscovered(u16 entranceIndex) {
+    // Skip if already set to save time from setting the connected entrance or
+    // if this entrance is outside of the randomized entrance range (i.e. is a dynamic entrance)
+    if (entranceIndex > MAX_ENTRANCE_RANDO_USED_INDEX || Entrance_GetIsEntranceDiscovered(entranceIndex)) {
+        return;
+    }
+
+    u16 bitsPerIndex = sizeof(u32) * 8;
+    u32 idx = entranceIndex / bitsPerIndex;
+    if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
+        u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
+        gSaveContext.sohStats.entrancesDiscovered[idx] |= entranceBit;
+        // Set connected
+        for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
+            if (entranceIndex == gSaveContext.entranceOverrides[i].index) {
+                Entrance_SetEntranceDiscovered(gSaveContext.entranceOverrides[i].overrideDestination);
+                break;
+            }
         }
     }
 }
