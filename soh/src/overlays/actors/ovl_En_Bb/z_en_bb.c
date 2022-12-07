@@ -268,7 +268,7 @@ void EnBb_SpawnFlameTrail(PlayState* play, EnBb* this, s16 startAtZero) {
 
     for (i = 0; i < 5; i++) {
         next = (EnBb*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BB, this->actor.world.pos.x,
-                                  this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
+                                  this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
         if (next != NULL) {
             now->actor.child = &next->actor;
             next->actor.parent = &now->actor;
@@ -462,6 +462,19 @@ void EnBb_SetupDeath(EnBb* this, PlayState* play) {
     }
     this->action = BB_KILL;
     EnBb_SetupAction(this, EnBb_Death);
+
+    if (this->actor.params == ENBB_GREEN || this->actor.params == ENBB_GREEN_BIG) {
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN]++;
+    }
+    if (this->actor.params == ENBB_BLUE) {
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_BLUE]++;
+    }
+    if (this->actor.params == ENBB_WHITE) {
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_WHITE]++;
+    }
+    if (this->actor.params == ENBB_RED) {
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_RED]++;
+    }
 }
 
 void EnBb_Death(EnBb* this, PlayState* play) {
@@ -1286,7 +1299,7 @@ void EnBb_Draw(Actor* thisx, PlayState* play) {
     blureBase2.z = this->maxSpeed * 80.0f;
     if (this->moveMode != BBMOVE_HIDDEN) {
         if (this->actor.params <= ENBB_BLUE) {
-            func_80093D18(play->state.gfxCtx);
+            Gfx_SetupDL_25Opa(play->state.gfxCtx);
             SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, EnBb_PostLimbDraw,
                               this);
 
@@ -1320,7 +1333,7 @@ void EnBb_Draw(Actor* thisx, PlayState* play) {
             Matrix_Translate(0.0f, -40.0f, 0.0f, MTXMODE_APPLY);
         }
         if (this->actor.params != ENBB_WHITE) {
-            func_80093D84(play->state.gfxCtx);
+            Gfx_SetupDL_25Xlu(play->state.gfxCtx);
             gSPSegment(POLY_XLU_DISP++, 0x08,
                        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
                                         ((play->gameplayFrames + (this->flameScrollMod * 10)) *

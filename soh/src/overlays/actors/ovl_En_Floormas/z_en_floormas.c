@@ -151,7 +151,7 @@ void EnFloormas_Init(Actor* thisx, PlayState* play2) {
         // spawn first small floormaster
         this->actor.parent =
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_FLOORMAS, this->actor.world.pos.x,
-                        this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, invisble + SPAWN_SMALL);
+                        this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, invisble + SPAWN_SMALL, true);
         if (this->actor.parent == NULL) {
             Actor_Kill(&this->actor);
             return;
@@ -159,7 +159,7 @@ void EnFloormas_Init(Actor* thisx, PlayState* play2) {
         // spawn 2nd small floormaster
         this->actor.child =
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_FLOORMAS, this->actor.world.pos.x,
-                        this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, invisble + SPAWN_SMALL);
+                        this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, invisble + SPAWN_SMALL, true);
         if (this->actor.child == NULL) {
             Actor_Kill(this->actor.parent);
             Actor_Kill(&this->actor);
@@ -439,6 +439,7 @@ void EnFloormas_Die(EnFloormas* this, PlayState* play) {
         // Die
         Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x90);
         EnFloormas_SetupSmShrink(this, play);
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLOORMASTER]++;
     }
 }
 
@@ -1111,7 +1112,7 @@ void EnFloormas_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     if (this->collider.base.colType == COLTYPE_HARD) {
         func_80026230(play, &sMergeColor, this->actionTarget % 0x28, 0x28);
     }
@@ -1131,7 +1132,7 @@ void EnFloormas_DrawHighlighted(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     if (this->collider.base.colType == COLTYPE_HARD) {
         func_80026690(play, &sMergeColor, this->actionTarget % 0x28, 0x28);
     }

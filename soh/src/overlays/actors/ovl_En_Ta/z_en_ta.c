@@ -185,13 +185,13 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
                         this->unk_2C4[0] = this->unk_2C4[1] = this->unk_2C4[2] = 7;
                         this->superCuccos[0] = (EnNiw*)Actor_Spawn(
                             &play->actorCtx, play, ACTOR_EN_NIW, this->actor.world.pos.x + 5.0f,
-                            this->actor.world.pos.y + 3.0f, this->actor.world.pos.z + 26.0f, 0, 0, 0, 0xD);
+                            this->actor.world.pos.y + 3.0f, this->actor.world.pos.z + 26.0f, 0, 0, 0, 0xD, true);
                         this->superCuccos[1] = (EnNiw*)Actor_Spawn(
                             &play->actorCtx, play, ACTOR_EN_NIW, this->actor.world.pos.x - 20.0f,
-                            this->actor.world.pos.y + 40.0f, this->actor.world.pos.z - 30.0f, 0, 0, 0, 0xD);
+                            this->actor.world.pos.y + 40.0f, this->actor.world.pos.z - 30.0f, 0, 0, 0, 0xD, true);
                         this->superCuccos[2] = (EnNiw*)Actor_Spawn(
                             &play->actorCtx, play, ACTOR_EN_NIW, this->actor.world.pos.x + 20.0f,
-                            this->actor.world.pos.y + 40.0f, this->actor.world.pos.z - 30.0f, 0, 0, 0, 0xD);
+                            this->actor.world.pos.y + 40.0f, this->actor.world.pos.z - 30.0f, 0, 0, 0, 0xD, true);
                         func_80B13AAC(this, play);
 
                         if (gSaveContext.eventInf[0] & 0x400) {
@@ -671,10 +671,10 @@ void func_80B15424(EnTa* this, PlayState* play) {
 
         if (gSaveContext.eventInf[0] & 0x100) {
             play->fadeTransition = 46;
-            gSaveContext.nextTransition = 3;
+            gSaveContext.nextTransitionType = 3;
         } else {
             play->fadeTransition = 38;
-            gSaveContext.nextTransition = 2;
+            gSaveContext.nextTransitionType = 2;
         }
 
         play->sceneLoadFlag = 0x14;
@@ -1226,7 +1226,7 @@ void EnTa_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_800943C8(play->state.gfxCtx);
+    Gfx_SetupDL_37Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x8, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
     gSPSegment(POLY_OPA_DISP++, 0x9, SEGMENTED_TO_VIRTUAL(gTalonHeadSkinTex));

@@ -372,6 +372,7 @@ void EnBubble_Pop(EnBubble* this, PlayState* play) {
     if (EnBubble_Explosion(this, play) >= 0) {
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 60, NA_SE_EN_AWA_BREAK);
         Actor_Kill(&this->actor);
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SHABOM]++;
     }
 }
 
@@ -412,7 +413,7 @@ void EnBubble_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     if (this->actionFunc != EnBubble_Disappear) {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         Math_SmoothStepToF(&this->graphicRotSpeed, 16.0f, 0.2f, 1000.0f, 0.0f);
         Math_SmoothStepToF(&this->graphicEccentricity, 0.08f, 0.2f, 1000.0f, 0.0f);
         Matrix_ReplaceRotation(&play->billboardMtxF);

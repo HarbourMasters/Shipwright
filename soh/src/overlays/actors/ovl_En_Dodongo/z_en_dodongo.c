@@ -666,6 +666,7 @@ void EnDodongo_SetupDeath(EnDodongo* this, PlayState* play) {
     this->actor.flags &= ~ACTOR_FLAG_0;
     this->actor.speedXZ = 0.0f;
     EnDodongo_SetupAction(this, EnDodongo_Death);
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DODONGO]++;
 }
 
 void EnDodongo_Death(EnDodongo* this, PlayState* play) {
@@ -681,7 +682,7 @@ void EnDodongo_Death(EnDodongo* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime) != 0) {
         if (this->timer == 0) {
             bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 6, BOMB_BODY);
+                                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 6, BOMB_BODY, true);
             if (bomb != NULL) {
                 bomb->timer = 0;
                 this->timer = 8;
@@ -918,7 +919,7 @@ void EnDodongo_Draw(Actor* thisx, PlayState* play2) {
     EnDodongo* this = (EnDodongo*)thisx;
     s32 index;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDodongo_OverrideLimbDraw,
                       EnDodongo_PostLimbDraw, this);
 

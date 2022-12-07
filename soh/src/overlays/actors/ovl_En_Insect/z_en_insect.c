@@ -205,7 +205,7 @@ void EnInsect_Init(Actor* thisx, PlayState* play2) {
             for (count = 0; count < 2; count++) {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_INSECT, this->actor.world.pos.x,
                             this->actor.world.pos.y, this->actor.world.pos.z, this->actor.shape.rot.x,
-                            this->actor.shape.rot.y, this->actor.shape.rot.z, 3);
+                            this->actor.shape.rot.y, this->actor.shape.rot.z, 3, true);
             }
         }
 
@@ -789,7 +789,7 @@ void EnInsect_Update(Actor* thisx, PlayState* play) {
 void EnInsect_Draw(Actor* thisx, PlayState* play) {
     EnInsect* this = (EnInsect*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL, NULL);
     Collider_UpdateSpheres(0, &this->collider);
     D_80A7DEB4 = 0;

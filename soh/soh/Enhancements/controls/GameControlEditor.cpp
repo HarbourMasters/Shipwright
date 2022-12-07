@@ -245,6 +245,52 @@ namespace GameControlEditor {
         UIWidgets::EnhancementSliderFloat("Camera Sensitivity: %d %%", "##Sensitivity", "gCameraSensitivity", 0.01f, 5.0f, "", 1.0f, true, true);
     }
 
+    void DrawDpadControlPanel() {
+        if (!ImGui::CollapsingHeader("D-Pad Controls")) {
+            return;
+        }
+
+        ImVec2 cursor = ImGui::GetCursorPos();
+        ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
+        SohImGui::BeginGroupPanel("D-Pad Options", ImGui::GetContentRegionAvail());
+        UIWidgets::PaddedEnhancementCheckbox("D-pad Support on Pause Screen", "gDpadPause");
+        DrawHelpIcon("Navigate Pause with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate\n"
+                    "To make the cursor only move a single space no matter how long a direction is held, manually set gDpadHoldChange to 0");
+        UIWidgets::PaddedEnhancementCheckbox("D-pad Support in Text Boxes", "gDpadText");
+        DrawHelpIcon("Navigate choices in text boxes, shop item selection, and the file select / name entry screens with the D-pad\n"
+                    "To make the cursor only move a single space during name entry no matter how long a direction is held, manually set gDpadHoldChange to 0");
+        UIWidgets::PaddedEnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
+        DrawHelpIcon("Equip items and equipment on the D-pad\nIf used with D-pad on Pause Screen, you must hold C-Up to equip instead of navigate");
+        SohImGui::EndGroupPanel();
+    }
+
+    void DrawMiscControlPanel() {
+        if (!ImGui::CollapsingHeader("Miscellaneous Controls")) {
+            return;
+        }
+
+        ImVec2 cursor = ImGui::GetCursorPos();
+        ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
+        SohImGui::BeginGroupPanel("Misc Controls", ImGui::GetContentRegionAvail());
+        UIWidgets::PaddedEnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify", true, false);
+        DrawHelpIcon("Hold the assigned button to change the maximum walking speed\nTo change the assigned button, go into the Ports tabs above");
+         if (CVar_GetS32("gEnableWalkModify", 0)) {
+            UIWidgets::Spacer(5);
+            SohImGui::BeginGroupPanel("Walk Modifier", ImGui::GetContentRegionAvail());
+            UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding", "gWalkSpeedToggle", true, false);
+            UIWidgets::EnhancementSliderFloat("Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true);
+            UIWidgets::EnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true);
+            SohImGui::EndGroupPanel();
+        }
+        UIWidgets::Spacer(0);
+        UIWidgets::PaddedEnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor");
+        DrawHelpIcon("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
+        UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");
+        DrawHelpIcon("Speak to Navi with L but enter first-person camera with C-Up");
+        SohImGui::EndGroupPanel();
+
+    }
+
     void DrawUI(bool& open) {
         if (!open) {
             CVar_SetS32("gGameControlEditorEnabled", false);
@@ -271,6 +317,8 @@ namespace GameControlEditor {
             if (CurrentPort == 0) {
                 DrawOcarinaControlPanel();
                 DrawCameraControlPanel();
+                DrawDpadControlPanel();
+                DrawMiscControlPanel();
             } else {
                 DrawCustomButtons();
             }

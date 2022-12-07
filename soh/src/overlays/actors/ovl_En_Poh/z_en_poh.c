@@ -636,6 +636,11 @@ void func_80ADF15C(EnPoh* this, PlayState* play) {
                              0, 0, 255, 1, 9, 1);
         if (this->unk_198 == 1) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_EXTINCT);
+            if (this->actor.params == EN_POH_FLAT || this->actor.params == EN_POH_SHARP) {
+                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_COMPOSER]++;
+            } else {
+                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE]++;
+            }
         }
     } else if (this->unk_198 == 28) {
         EnPoh_SetupDeath(this, play);
@@ -1076,8 +1081,8 @@ void EnPoh_DrawRegular(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     func_80AE067C(this);
-    func_80093D18(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     if (this->lightColor.a == 255 || this->lightColor.a == 0) {
         gDPSetEnvColor(POLY_OPA_DISP++, this->lightColor.r, this->lightColor.g, this->lightColor.b, this->lightColor.a);
         gSPSegment(POLY_OPA_DISP++, 0x08, D_80116280 + 2);
@@ -1113,7 +1118,7 @@ void EnPoh_DrawComposer(Actor* thisx, PlayState* play) {
         phi_t0 = &D_80AE1B58;
     }
     if (this->lightColor.a == 255 || this->lightColor.a == 0) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08,
                    Gfx_EnvColor(play->state.gfxCtx, this->lightColor.r, this->lightColor.g, this->lightColor.b,
                                 this->lightColor.a));
@@ -1126,8 +1131,8 @@ void EnPoh_DrawComposer(Actor* thisx, PlayState* play) {
                                            this->skelAnime.dListCount, EnPoh_OverrideLimbDraw, EnPoh_PostLimbDraw,
                                            &this->actor, POLY_OPA_DISP);
     } else {
-        func_80093D18(play->state.gfxCtx);
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_EnvColor(play->state.gfxCtx, this->lightColor.r, this->lightColor.g, this->lightColor.b,
                                 this->lightColor.a));
@@ -1169,7 +1174,7 @@ void EnPoh_DrawSoul(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     if (this->actionFunc == EnPoh_Death) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gDPSetEnvColor(POLY_OPA_DISP++, this->envColor.r, this->envColor.g, this->envColor.b, 255);
         Lights_PointGlowSetInfo(&this->lightInfo, this->actor.world.pos.x, this->actor.world.pos.y,
                                 this->actor.world.pos.z, this->envColor.r, this->envColor.g, this->envColor.b, 200);
@@ -1186,7 +1191,7 @@ void EnPoh_DrawSoul(Actor* thisx, PlayState* play) {
             gSPDisplayList(POLY_OPA_DISP++, gPoeComposerLanternTopDL);
         }
     } else {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
                                     (this->visibilityTimer * this->info->unk_8) % 512U, 0x20, 0x80));
