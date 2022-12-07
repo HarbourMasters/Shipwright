@@ -153,7 +153,7 @@ void ObjMure_SpawnActors0(ObjMure* this, PlayState* play) {
                 ObjMure_GetSpawnPos(&pos, &this->actor.world.pos, this->ptn, i);
                 this->children[i] =
                     Actor_Spawn(ac, play, sSpawnActorIds[this->type], pos.x, pos.y, pos.z, this->actor.world.rot.x,
-                                this->actor.world.rot.y, this->actor.world.rot.z, sSpawnParams[this->type]);
+                                this->actor.world.rot.y, this->actor.world.rot.z, sSpawnParams[this->type], true);
                 if (this->children[i] != NULL) {
                     this->children[i]->flags |= ACTOR_FLAG_ENKUSA_CUT;
                     this->children[i]->room = this->actor.room;
@@ -166,7 +166,7 @@ void ObjMure_SpawnActors0(ObjMure* this, PlayState* play) {
                 ObjMure_GetSpawnPos(&pos, &this->actor.world.pos, this->ptn, i);
                 this->children[i] =
                     Actor_Spawn(ac, play, sSpawnActorIds[this->type], pos.x, pos.y, pos.z, this->actor.world.rot.x,
-                                this->actor.world.rot.y, this->actor.world.rot.z, sSpawnParams[this->type]);
+                                this->actor.world.rot.y, this->actor.world.rot.z, sSpawnParams[this->type], true);
                 if (this->children[i] != NULL) {
                     this->children[i]->room = this->actor.room;
                 } else {
@@ -192,7 +192,7 @@ void ObjMure_SpawnActors1(ObjMure* this, PlayState* play) {
         ObjMure_GetSpawnPos(&spawnPos, &actor->world.pos, this->ptn, i);
         this->children[i] = Actor_Spawn(ac, play, sSpawnActorIds[this->type], spawnPos.x, spawnPos.y, spawnPos.z,
                                         actor->world.rot.x, actor->world.rot.y, actor->world.rot.z,
-                                        (this->type == 4 && i == 0) ? 1 : sSpawnParams[this->type]);
+                                        (this->type == 4 && i == 0) ? 1 : sSpawnParams[this->type], true);
         if (this->children[i] != NULL) {
             this->childrenStates[i] = OBJMURE_CHILD_STATE_0;
             this->children[i]->room = actor->room;

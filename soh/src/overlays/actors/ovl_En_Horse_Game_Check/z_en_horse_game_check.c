@@ -89,7 +89,7 @@ s32 EnHorseGameCheck_InitIngoRace(EnHorseGameCheckBase* base, PlayState* play) {
         this->playerCheck[i] = 0;
     }
     this->ingoHorse =
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, -250.0f, 1.0f, -1650.0f, 0, 0x4000, 0, 0x8003);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, -250.0f, 1.0f, -1650.0f, 0, 0x4000, 0, 0x8003, true);
 
     if (this->ingoHorse == NULL) {
         LOG_HUNGUP_THREAD();

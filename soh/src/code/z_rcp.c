@@ -1,8 +1,8 @@
 #include "global.h"
 
-Gfx sSetupDL[][6] = {
+Gfx sSetupDL[SETUPDL_MAX][6] = {
     {
-        /* 0x00 */
+        /* SETUPDL_0 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineLERP(PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, PRIMITIVE, 0, TEXEL0, 0, 0, 0, 0, COMBINED, 0,
@@ -14,7 +14,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x01 */
+        /* SETUPDL_1 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
         gsDPSetCombineMode(G_CC_SHADE, G_CC_PASS2),
@@ -25,7 +25,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x02 */
+        /* SETUPDL_2 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
         gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
@@ -36,7 +36,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x03 */
+        /* SETUPDL_3 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
         gsDPSetCombineMode(G_CC_SHADE, G_CC_PASS2),
@@ -47,7 +47,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x04 */
+        /* SETUPDL_4 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
         gsDPSetCombineLERP(PRIMITIVE, 0, SHADE, 0, 0, 0, 0, PRIMITIVE, PRIMITIVE, 0, SHADE, 0, 0, 0, 0, PRIMITIVE),
@@ -58,7 +58,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x05 */
+        /* SETUPDL_5 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM),
@@ -69,7 +69,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x06 */
+        /* SETUPDL_6 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_PASS2),
@@ -80,7 +80,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x07 */
+        /* SETUPDL_7 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM),
@@ -91,7 +91,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x08 */
+        /* SETUPDL_8 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
         gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
@@ -102,7 +102,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x09 */
+        /* SETUPDL_9 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA, G_CC_MODULATEIA2),
@@ -113,7 +113,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x0A */
+        /* SETUPDL_10 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIDECALA, G_CC_MODULATEIDECALA),
@@ -124,7 +124,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x0B */
+        /* SETUPDL_11 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIDECALA, G_CC_MODULATEIA_PRIM2),
@@ -135,7 +135,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x0C */
+        /* SETUPDL_12 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM),
@@ -146,7 +146,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x0D */
+        /* SETUPDL_13 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM),
@@ -157,7 +157,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x0E */
+        /* SETUPDL_14 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
@@ -168,7 +168,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x0F */
+        /* SETUPDL_15 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_PASS2),
@@ -179,7 +179,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x10 */
+        /* SETUPDL_16 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM2),
@@ -190,7 +190,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x11 */
+        /* SETUPDL_17 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIDECALA, G_CC_MODULATEIDECALA),
@@ -201,7 +201,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x12 */
+        /* SETUPDL_18 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIDECALA, G_CC_PASS2),
@@ -212,7 +212,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x13 */
+        /* SETUPDL_19 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM),
@@ -225,7 +225,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x14 */
+        /* SETUPDL_20 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM),
@@ -236,7 +236,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x15 */
+        /* SETUPDL_21 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA, G_CC_MODULATEIA),
@@ -247,7 +247,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x16 */
+        /* SETUPDL_22 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA, G_CC_MODULATEIA2),
@@ -258,7 +258,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x17 */
+        /* SETUPDL_23 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIDECALA, G_CC_MODULATEIDECALA),
@@ -269,7 +269,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x18 */
+        /* SETUPDL_24 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIDECALA, G_CC_MODULATEIA2),
@@ -280,7 +280,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x19 */
+        /* SETUPDL_25 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIDECALA, G_CC_MODULATEIA_PRIM2),
@@ -291,7 +291,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x1A */
+        /* SETUPDL_26 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM),
@@ -302,7 +302,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x1B */
+        /* SETUPDL_27 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM),
@@ -313,7 +313,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x1C */
+        /* SETUPDL_28 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIDECALA_PRIM, G_CC_MODULATEIDECALA_PRIM),
@@ -324,7 +324,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x1D */
+        /* SETUPDL_29 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, TEXEL0, 0, SHADE, 0, NOISE, 0, COMBINED, 0, 0, 0, 0, COMBINED),
@@ -335,7 +335,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x1E */
+        /* SETUPDL_30 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
         gsDPSetCombineMode(G_CC_PRIMITIVE, G_CC_PRIMITIVE),
@@ -346,7 +346,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x1F */
+        /* SETUPDL_31 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_HILITERGBA, G_CC_HILITERGBA),
@@ -357,7 +357,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x20 */
+        /* SETUPDL_32 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_HILITERGBA, G_CC_HILITERGBA),
@@ -369,7 +369,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x21 */
+        /* SETUPDL_33 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE, SHADE, 1, 0, TEXEL0, SHADE, ENVIRONMENT, COMBINED, TEXEL0, COMBINED,
@@ -382,7 +382,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x22 */
+        /* SETUPDL_34 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_DECALRGB, G_CC_DECALRGB),
@@ -393,7 +393,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x23 */
+        /* SETUPDL_35 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
@@ -404,7 +404,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x24 */
+        /* SETUPDL_36 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
         gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
@@ -415,7 +415,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x25 */
+        /* SETUPDL_37 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
         gsDPSetCombineLERP(PRIMITIVE, 0, SHADE, 0, 0, 0, 0, PRIMITIVE, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED),
@@ -426,7 +426,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x26 */
+        /* SETUPDL_38 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
         gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
@@ -437,7 +437,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x27 */
+        /* SETUPDL_39 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM),
@@ -448,7 +448,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x28 */
+        /* SETUPDL_40 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineLERP(TEXEL1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, TEXEL1, TEXEL0, PRIMITIVE, TEXEL0, 0, 0, 0,
@@ -460,7 +460,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x29 */
+        /* SETUPDL_41 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA, G_CC_MODULATEIA),
@@ -471,7 +471,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x2A */
+        /* SETUPDL_42 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIDECALA, G_CC_MODULATEIDECALA),
@@ -482,7 +482,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x2B */
+        /* SETUPDL_43 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIDECALA_PRIM, G_CC_MODULATEIDECALA_PRIM),
@@ -493,7 +493,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x2C */
+        /* SETUPDL_44 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_PASS2),
@@ -504,7 +504,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x2D */
+        /* SETUPDL_45 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineLERP(0, 0, 0, PRIMITIVE, 0, 0, 0, TEXEL0, 0, 0, 0, PRIMITIVE, 0, 0, 0, TEXEL0),
@@ -515,7 +515,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x2E */
+        /* SETUPDL_46 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineLERP(0, 0, 0, PRIMITIVE, 0, 0, 0, TEXEL0, 0, 0, 0, PRIMITIVE, 0, 0, 0, TEXEL0),
@@ -526,7 +526,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x2F */
+        /* SETUPDL_47 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM),
@@ -537,7 +537,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x30 */
+        /* SETUPDL_48 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
         gsDPSetCombineMode(G_CC_PRIMITIVE, G_CC_PRIMITIVE),
@@ -548,7 +548,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x31 */
+        /* SETUPDL_49 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
         gsDPSetCombineLERP(PRIMITIVE, 0, SHADE, 0, 0, 0, 0, PRIMITIVE, PRIMITIVE, 0, SHADE, 0, 0, 0, 0, PRIMITIVE),
@@ -559,7 +559,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x32 */
+        /* SETUPDL_50 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM),
@@ -570,7 +570,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x33 */
+        /* SETUPDL_51 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM),
@@ -581,7 +581,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x34 */
+        /* SETUPDL_52 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM),
@@ -592,7 +592,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x35 */
+        /* SETUPDL_53 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineLERP(TEXEL1, TEXEL0, ENV_ALPHA, TEXEL0, TEXEL1, TEXEL0, ENVIRONMENT, TEXEL0, PRIMITIVE,
@@ -604,7 +604,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x36 */
+        /* SETUPDL_54 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineLERP(TEXEL1, TEXEL0, ENV_ALPHA, TEXEL0, TEXEL1, TEXEL0, ENVIRONMENT, TEXEL0, PRIMITIVE,
@@ -616,7 +616,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x37 */
+        /* SETUPDL_55 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineLERP(TEXEL1, TEXEL0, ENV_ALPHA, TEXEL0, TEXEL1, TEXEL0, ENVIRONMENT, TEXEL0, PRIMITIVE,
@@ -628,7 +628,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x38 */
+        /* SETUPDL_56 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM),
@@ -639,7 +639,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x39 */
+        /* SETUPDL_57 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
         gsDPSetCombineMode(G_CC_PRIMITIVE, G_CC_PRIMITIVE),
@@ -650,7 +650,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x3A */
+        /* SETUPDL_58 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
         gsDPSetCombineLERP(PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, SHADE,
@@ -662,7 +662,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x3B */
+        /* SETUPDL_59 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE, SHADE, 1, 0, TEXEL0, SHADE, ENVIRONMENT, COMBINED, TEXEL0, COMBINED,
@@ -675,7 +675,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x3C */
+        /* SETUPDL_60 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineLERP(PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, ENVIRONMENT,
@@ -687,7 +687,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x3D */
+        /* SETUPDL_61 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineLERP(PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, ENVIRONMENT,
@@ -699,7 +699,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x3E */
+        /* SETUPDL_62 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIDECALA, G_CC_MODULATEIA_PRIM2),
@@ -710,7 +710,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x3F */
+        /* SETUPDL_63 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM),
@@ -723,7 +723,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x40 */
+        /* SETUPDL_64 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
         gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_PASS2),
@@ -734,7 +734,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x41 */
+        /* SETUPDL_65 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM),
@@ -745,7 +745,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x42 */
+        /* SETUPDL_66 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
@@ -757,7 +757,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x43 */
+        /* SETUPDL_67 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM),
@@ -769,7 +769,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x44 */
+        /* SETUPDL_68 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
@@ -782,7 +782,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x45 */
+        /* SETUPDL_69 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM),
@@ -795,7 +795,7 @@ Gfx sSetupDL[][6] = {
         gsSPEndDisplayList(),
     },
     {
-        /* 0x46 */
+        /* SETUPDL_70 */
         gsDPPipeSync(),
         gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
         gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
@@ -895,7 +895,7 @@ Gfx* Gfx_SetFog2(Gfx* gfx, s32 r, s32 g, s32 b, s32 a, s32 near, s32 far) {
     return Gfx_SetFog(gfx, r, g, b, a, near, far);
 }
 
-Gfx* Gfx_CallSetupDLImpl(Gfx* gfx, u32 i) {
+Gfx* Gfx_SetupDLImpl(Gfx* gfx, u32 i) {
     s32 dListIndex = 6 * i;
 
     gSPDisplayList(gfx++, &((Gfx*)sSetupDL)[dListIndex]);
@@ -903,106 +903,106 @@ Gfx* Gfx_CallSetupDLImpl(Gfx* gfx, u32 i) {
     return gfx;
 }
 
-Gfx* Gfx_CallSetupDL(Gfx* gfx, u32 i) {
-    return Gfx_CallSetupDLImpl(gfx, i);
+Gfx* Gfx_SetupDL(Gfx* gfx, u32 i) {
+    return Gfx_SetupDLImpl(gfx, i);
 }
 
-void Gfx_CallSetupDLAtPtr(Gfx** gfxp, u32 i) {
-    *gfxp = Gfx_CallSetupDL(*gfxp, i);
+void Gfx_SetupDLAtPtr(Gfx** gfxp, u32 i) {
+    *gfxp = Gfx_SetupDL(*gfxp, i);
 }
 
-Gfx* func_800937C0(Gfx* gfx) {
-    gSPDisplayList(gfx++, sSetupDL[0x39]);
+Gfx* Gfx_SetupDL_57(Gfx* gfx) {
+    gSPDisplayList(gfx++, sSetupDL[SETUPDL_57]);
     return gfx;
 }
 
-Gfx* func_800937E4(Gfx* gfx) {
-    gSPDisplayList(gfx++, sSetupDL[0x39]);
+Gfx* Gfx_SetupDL_57b(Gfx* gfx) {
+    gSPDisplayList(gfx++, sSetupDL[SETUPDL_57]);
     return gfx;
 }
 
-Gfx* func_80093808(Gfx* gfx) {
-    gSPDisplayList(gfx++, sSetupDL[0x34]);
+Gfx* Gfx_SetupDL_52NoCD(Gfx* gfx) {
+    gSPDisplayList(gfx++, sSetupDL[SETUPDL_52]);
     gDPSetColorDither(gfx++, G_CD_DISABLE);
     return gfx;
 }
 
-void func_80093848(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_58Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x3A]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_58]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_800938B4(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_57Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x39]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_57]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80093920(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_50Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x32]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_50]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_8009398C(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_51Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x33]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_51]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_800939F8(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_52Xlu(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[0x34]);
+    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[SETUPDL_52]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80093A64(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_53Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x35]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_53]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80093AD0(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_54Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x36]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_54]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80093B3C(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_55Xlu(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[0x37]);
+    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[SETUPDL_55]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80093BA8(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_26Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x1A]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_26]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80093C14(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_25Xlu2(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[0x19]);
+    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[SETUPDL_25]);
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -1010,7 +1010,7 @@ void func_80093C14(GraphicsContext* gfxCtx) {
 void func_80093C80(PlayState* play) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
 
-    func_80093D18(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
 
     if (play->roomCtx.curRoom.behaviorType1 == ROOM_BEHAVIOR_TYPE1_3) {
         OPEN_DISPS(gfxCtx);
@@ -1021,240 +1021,241 @@ void func_80093C80(PlayState* play) {
     }
 }
 
-void func_80093D18(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_25Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x19]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_25]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80093D84(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_25Xlu(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[0x19]);
+    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[SETUPDL_25]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80093DF0(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_31Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x1F]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_31]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80093E5C(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_32Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x20]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_32]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80093EC8(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_33Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x21]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_33]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-Gfx* func_80093F34(Gfx* gfx) {
-    gSPDisplayList(gfx++, sSetupDL[0x40]);
+Gfx* Gfx_SetupDL_64(Gfx* gfx) {
+    gSPDisplayList(gfx++, sSetupDL[SETUPDL_64]);
     return gfx;
 }
 
-Gfx* func_80093F58(Gfx* gfx) {
-    gSPDisplayList(gfx++, sSetupDL[0x22]);
+Gfx* Gfx_SetupDL_34(Gfx* gfx) {
+    gSPDisplayList(gfx++, sSetupDL[SETUPDL_34]);
     return gfx;
 }
 
-void func_80093F7C(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_34Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    POLY_OPA_DISP = func_80093F58(POLY_OPA_DISP);
+    POLY_OPA_DISP = Gfx_SetupDL_34(POLY_OPA_DISP);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80093FD8(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_35Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x23]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_35]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80094044(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_44Xlu(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[0x2C]);
+    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[SETUPDL_44]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_800940B0(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_36Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x24]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_36]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-Gfx* func_8009411C(Gfx* gfx) {
-    gSPDisplayList(gfx++, sSetupDL[0x1C]);
+Gfx* Gfx_SetupDL_28(Gfx* gfx) {
+    gSPDisplayList(gfx++, sSetupDL[SETUPDL_28]);
     return gfx;
 }
 
-void func_80094140(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_28Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x1C]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_28]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_800941AC(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_43Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x2B]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_43]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80094218(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_45Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x2D]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_45]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80094284(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_46Overlay(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(OVERLAY_DISP++, sSetupDL[0x2E]);
+    gSPDisplayList(OVERLAY_DISP++, sSetupDL[SETUPDL_46]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_800942F0(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_38Xlu(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[0x26]);
+    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[SETUPDL_38]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_8009435C(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_4Xlu(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[0x04]);
+    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[SETUPDL_4]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_800943C8(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_37Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x25]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_37]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80094434(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_2Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x02]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_2]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-Gfx* func_800944A0(Gfx* gfx) {
-    gSPDisplayList(gfx++, sSetupDL[0x27]);
+Gfx* Gfx_SetupDL_39(Gfx* gfx) {
+    gSPDisplayList(gfx++, sSetupDL[SETUPDL_39]);
     return gfx;
 }
 
-void func_800944C4(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_39Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    POLY_OPA_DISP = func_800944A0(POLY_OPA_DISP);
+    POLY_OPA_DISP = Gfx_SetupDL_39(POLY_OPA_DISP);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_800944C4_KAL(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_39Kal(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    POLY_KAL_DISP = func_800944A0(POLY_KAL_DISP);
+    POLY_KAL_DISP = Gfx_SetupDL_39(POLY_KAL_DISP);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80094520(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_39Overlay(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    OVERLAY_DISP = func_800944A0(OVERLAY_DISP);
+    OVERLAY_DISP = Gfx_SetupDL_39(OVERLAY_DISP);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_8009457C(Gfx** gfxp) {
+void Gfx_SetupDL_39Ptr(Gfx** gfxp) {
     Gfx* gfx = *gfxp;
-    gSPDisplayList(gfx++, sSetupDL[0x27]);
+
+    gSPDisplayList(gfx++, sSetupDL[SETUPDL_39]);
     *gfxp = gfx;
 }
 
-void func_800945A0(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_40Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x28]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_40]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_8009460C(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_41Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x29]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_41]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80094678(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_47Xlu(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[0x2F]);
+    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[SETUPDL_47]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-Gfx* func_800946E4(Gfx* gfx) {
-    gSPDisplayList(gfx++, sSetupDL[0x42]);
+Gfx* Gfx_SetupDL_66(Gfx* gfx) {
+    gSPDisplayList(gfx++, sSetupDL[SETUPDL_66]);
     return gfx;
 }
 
-Gfx* func_80094708(Gfx* gfx) {
-    gSPDisplayList(gfx++, sSetupDL[0x43]);
+Gfx* Gfx_SetupDL_67(Gfx* gfx) {
+    gSPDisplayList(gfx++, sSetupDL[SETUPDL_67]);
     return gfx;
 }
 
-Gfx* func_8009472C(Gfx* gfx) {
-    gSPDisplayList(gfx++, sSetupDL[0x44]);
+Gfx* Gfx_SetupDL_68NoCD(Gfx* gfx) {
+    gSPDisplayList(gfx++, sSetupDL[SETUPDL_68]);
     gDPSetColorDither(gfx++, G_CD_DISABLE);
     return gfx;
 }
 
-Gfx* func_8009476C(Gfx* gfx) {
-    gSPDisplayList(gfx++, sSetupDL[0x45]);
+Gfx* Gfx_SetupDL_69NoCD(Gfx* gfx) {
+    gSPDisplayList(gfx++, sSetupDL[SETUPDL_69]);
     gDPSetColorDither(gfx++, G_CD_DISABLE);
     return gfx;
 }
 
 Gfx* func_800947AC(Gfx* gfx) {
-    gSPDisplayList(gfx++, sSetupDL[0x41]);
+    gSPDisplayList(gfx++, sSetupDL[SETUPDL_65]);
     gDPSetColorDither(gfx++, G_CD_DISABLE);
 
     // clang-format off
@@ -1276,102 +1277,102 @@ Gfx* func_800947AC(Gfx* gfx) {
     return gfx;
 }
 
-Gfx* func_80094944(Gfx* gfx) {
-    gSPDisplayList(gfx++, sSetupDL[0x46]);
+Gfx* Gfx_SetupDL_70(Gfx* gfx) {
+    gSPDisplayList(gfx++, sSetupDL[SETUPDL_70]);
     return gfx;
 }
 
-Gfx* func_80094968(Gfx* gfx) {
-    gSPDisplayList(gfx++, sSetupDL[0x14]);
+Gfx* Gfx_SetupDL_20NoCD(Gfx* gfx) {
+    gSPDisplayList(gfx++, sSetupDL[SETUPDL_20]);
     gDPSetColorDither(gfx++, G_CD_DISABLE);
     return gfx;
 }
 
-void func_800949A8(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_42Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x2A]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_42]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_800949A8_KAL(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_42Kal(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_KAL_DISP++, sSetupDL[0x2A]);
+    gSPDisplayList(POLY_KAL_DISP++, sSetupDL[SETUPDL_42]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80094A14(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_42Overlay(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(OVERLAY_DISP++, sSetupDL[0x2A]);
+    gSPDisplayList(OVERLAY_DISP++, sSetupDL[SETUPDL_42]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80094A80(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_48Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x30]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_48]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80094AEC(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_49Xlu(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[0x31]);
+    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[SETUPDL_49]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80094B58(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_27Xlu(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[0x1B]);
+    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[SETUPDL_27]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80094BC4(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_60NoCDXlu(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[0x3C]);
+    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[SETUPDL_60]);
     gDPSetColorDither(POLY_XLU_DISP++, G_CD_DISABLE);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80094C50(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_61Xlu(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[0x3D]);
+    gSPDisplayList(POLY_XLU_DISP++, sSetupDL[SETUPDL_61]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80094CBC(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_56Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x38]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_56]);
 
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_80094D28(Gfx** gfxp) {
+void Gfx_SetupDL_56Ptr(Gfx** gfxp) {
     Gfx* gfx = *gfxp;
 
-    gSPDisplayList(gfx++, sSetupDL[0x38]);
+    gSPDisplayList(gfx++, sSetupDL[SETUPDL_56]);
 
     *gfxp = gfx;
 }
 
-void func_80094D4C(GraphicsContext* gfxCtx) {
+void Gfx_SetupDL_59Opa(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[0x3B]);
+    gSPDisplayList(POLY_OPA_DISP++, sSetupDL[SETUPDL_59]);
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -1380,7 +1381,7 @@ Gfx* Gfx_BranchTexScroll(Gfx** gfxp, u32 x, u32 y, s32 width, s32 height) {
     Gfx* displayList = Graph_DlistAlloc(gfxp, 3 * sizeof(Gfx));
 
     gDPTileSync(displayList);
-    gDPSetTileSize(displayList + 1, 0, x, y, (x + ((width - 1) << 2)), (y + ((height - 1) << 2)));
+    gDPSetTileSize(displayList + 1, G_TX_RENDERTILE, x, y, x + ((width - 1) << 2), y + ((height - 1) << 2));
     gSPEndDisplayList(displayList + 2);
 
     return displayList;
@@ -1397,11 +1398,11 @@ Gfx* func_80094E78(GraphicsContext* gfxCtx, u32 x, u32 y) {
 Gfx* Gfx_TexScroll(GraphicsContext* gfxCtx, u32 x, u32 y, s32 width, s32 height) {
     Gfx* displayList = Graph_Alloc(gfxCtx, 3 * sizeof(Gfx));
 
-    x %= 2048;
-    y %= 2048;
+    x %= 512 << 2;
+    y %= 512 << 2;
 
     gDPTileSync(displayList);
-    gDPSetTileSize(displayList + 1, 0, x, y, (x + ((width - 1) << 2)), (y + ((height - 1) << 2)));
+    gDPSetTileSize(displayList + 1, G_TX_RENDERTILE, x, y, x + ((width - 1) << 2), y + ((height - 1) << 2));
     gSPEndDisplayList(displayList + 2);
 
     return displayList;
@@ -1411,15 +1412,15 @@ Gfx* Gfx_TwoTexScroll(GraphicsContext* gfxCtx, s32 tile1, u32 x1, u32 y1, s32 wi
                       u32 y2, s32 width2, s32 height2) {
     Gfx* displayList = Graph_Alloc(gfxCtx, 5 * sizeof(Gfx));
 
-    x1 %= 2048;
-    y1 %= 2048;
-    x2 %= 2048;
-    y2 %= 2048;
+    x1 %= 512 << 2;
+    y1 %= 512 << 2;
+    x2 %= 512 << 2;
+    y2 %= 512 << 2;
 
     gDPTileSync(displayList);
-    gDPSetTileSize(displayList + 1, tile1, x1, y1, (x1 + ((width1 - 1) << 2)), (y1 + ((height1 - 1) << 2)));
+    gDPSetTileSize(displayList + 1, tile1, x1, y1, x1 + ((width1 - 1) << 2), y1 + ((height1 - 1) << 2));
     gDPTileSync(displayList + 2);
-    gDPSetTileSize(displayList + 3, tile2, x2, y2, (x2 + ((width2 - 1) << 2)), (y2 + ((height2 - 1) << 2)));
+    gDPSetTileSize(displayList + 3, tile2, x2, y2, x2 + ((width2 - 1) << 2), y2 + ((height2 - 1) << 2));
     gSPEndDisplayList(displayList + 4);
 
     return displayList;
@@ -1429,15 +1430,15 @@ Gfx* Gfx_TwoTexScrollEnvColor(GraphicsContext* gfxCtx, s32 tile1, u32 x1, u32 y1
                               u32 x2, u32 y2, s32 width2, s32 height2, s32 r, s32 g, s32 b, s32 a) {
     Gfx* displayList = Graph_Alloc(gfxCtx, 6 * sizeof(Gfx));
 
-    x1 %= 2048;
-    y1 %= 2048;
-    x2 %= 2048;
-    y2 %= 2048;
+    x1 %= 512 << 2;
+    y1 %= 512 << 2;
+    x2 %= 512 << 2;
+    y2 %= 512 << 2;
 
     gDPTileSync(displayList);
-    gDPSetTileSize(displayList + 1, tile1, x1, y1, (x1 + ((width1 - 1) << 2)), (y1 + ((height1 - 1) << 2)));
+    gDPSetTileSize(displayList + 1, tile1, x1, y1, x1 + ((width1 - 1) << 2), y1 + ((height1 - 1) << 2));
     gDPTileSync(displayList + 2);
-    gDPSetTileSize(displayList + 3, tile2, x2, y2, (x2 + ((width2 - 1) << 2)), (y2 + ((height2 - 1) << 2)));
+    gDPSetTileSize(displayList + 3, tile2, x2, y2, x2 + ((width2 - 1) << 2), y2 + ((height2 - 1) << 2));
     gDPSetEnvColor(displayList + 4, r, g, b, a);
     gSPEndDisplayList(displayList + 5);
 
@@ -1453,32 +1454,43 @@ Gfx* Gfx_EnvColor(GraphicsContext* gfxCtx, s32 r, s32 g, s32 b, s32 a) {
     return displayList;
 }
 
-void func_80095248(GraphicsContext* gfxCtx, u8 r, u8 g, u8 b) {
+/**
+ * Sets up the frame for drawing.
+ * Initializes the scissor region to full screen.
+ * Set up the framebuffer and z-buffer.
+ * The whole screen is filled with the color supplied as arguments.
+ * Letterbox is also applied here, and will share the color of the screen base.
+ */
+void Gfx_SetupFrame(GraphicsContext* gfxCtx, u8 r, u8 g, u8 b) {
     OPEN_DISPS(gfxCtx);
 
+    // Set up the RDP render state for rectangles in FILL mode
     gSPDisplayList(POLY_OPA_DISP++, sFillSetupDL);
     gSPDisplayList(POLY_XLU_DISP++, sFillSetupDL);
     gSPDisplayList(POLY_KAL_DISP++, sFillSetupDL);
     gSPDisplayList(OVERLAY_DISP++, sFillSetupDL);
 
+    // Set the scissor region to the full screen
     gDPSetScissor(POLY_OPA_DISP++, G_SC_NON_INTERLACE, 0, 0, gScreenWidth, gScreenHeight);
     gDPSetScissor(POLY_XLU_DISP++, G_SC_NON_INTERLACE, 0, 0, gScreenWidth, gScreenHeight);
     gDPSetScissor(POLY_KAL_DISP++, G_SC_NON_INTERLACE, 0, 0, gScreenWidth, gScreenHeight);
     gDPSetScissor(OVERLAY_DISP++, G_SC_NON_INTERLACE, 0, 0, gScreenWidth, gScreenHeight);
 
+    // Set up the framebuffer, primitives will be drawn here
     gDPSetColorImage(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, gScreenWidth, gfxCtx->curFrameBuffer);
     gDPSetColorImage(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, gScreenWidth, gfxCtx->curFrameBuffer);
     gDPSetColorImage(POLY_XLU_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, gScreenWidth, gfxCtx->curFrameBuffer);
     gDPSetColorImage(POLY_KAL_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, gScreenWidth, gfxCtx->curFrameBuffer);
     gDPSetColorImage(OVERLAY_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, gScreenWidth, gfxCtx->curFrameBuffer);
 
+    // Set up the z-buffer
     gDPSetDepthImage(POLY_OPA_DISP++, gZBuffer);
     gDPSetDepthImage(POLY_XLU_DISP++, gZBuffer);
     gDPSetDepthImage(POLY_KAL_DISP++, gZBuffer);
     gDPSetDepthImage(OVERLAY_DISP++, gZBuffer);
 
     if ((R_PAUSE_MENU_MODE < 2) && (gTrnsnUnkState < 2)) {
-        s32 ret = ShrinkWindow_GetCurrentVal();
+        s32 letterboxSize = ShrinkWindow_GetCurrentVal(); // Upstream TODO: Letterbox
 
         if (HREG(80) == 16) {
             if (HREG(95) != 16) {
@@ -1500,7 +1512,7 @@ void func_80095248(GraphicsContext* gfxCtx, u8 r, u8 g, u8 b) {
             }
 
             if (HREG(81) & 1) {
-                HREG(83) = ret;
+                HREG(83) = letterboxSize;
             }
 
             if (HREG(81) & 2) {
@@ -1510,7 +1522,7 @@ void func_80095248(GraphicsContext* gfxCtx, u8 r, u8 g, u8 b) {
             }
 
             if (HREG(82) & 1) {
-                ret = HREG(83);
+                letterboxSize = HREG(83);
             }
 
             if (HREG(82) & 2) {
@@ -1520,27 +1532,32 @@ void func_80095248(GraphicsContext* gfxCtx, u8 r, u8 g, u8 b) {
             }
         }
 
+        // Set the whole z buffer to maximum depth
+        // Don't bother with pixels that are being covered by the letterbox
         gDPSetColorImage(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, gScreenWidth, gZBuffer);
         gDPSetCycleType(POLY_OPA_DISP++, G_CYC_FILL);
         gDPSetRenderMode(POLY_OPA_DISP++, G_RM_NOOP, G_RM_NOOP2);
-        gDPSetFillColor(POLY_OPA_DISP++, (GPACK_RGBA5551(255, 255, 240, 0) << 16) | GPACK_RGBA5551(255, 255, 240, 0));
-        gDPFillRectangle(POLY_OPA_DISP++, 0, ret, gScreenWidth - 1, gScreenHeight - ret - 1);
+        gDPSetFillColor(POLY_OPA_DISP++, (GPACK_ZDZ(G_MAXFBZ, 0) << 16) | GPACK_ZDZ(G_MAXFBZ, 0));
+        gDPFillRectangle(POLY_OPA_DISP++, 0, letterboxSize, gScreenWidth - 1, gScreenHeight - letterboxSize - 1);
         gDPPipeSync(POLY_OPA_DISP++);
 
+        // Fill the whole screen with the base color
+        // Don't bother with pixels that are being covered by the letterbox
         gDPSetColorImage(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, gScreenWidth, gfxCtx->curFrameBuffer);
         gDPSetCycleType(POLY_OPA_DISP++, G_CYC_FILL);
         gDPSetRenderMode(POLY_OPA_DISP++, G_RM_NOOP, G_RM_NOOP2);
         gDPSetFillColor(POLY_OPA_DISP++, (GPACK_RGBA5551(r, g, b, 1) << 16) | GPACK_RGBA5551(r, g, b, 1));
-        gDPFillRectangle(POLY_OPA_DISP++, 0, ret, gScreenWidth - 1, gScreenHeight - ret - 1);
+        gDPFillRectangle(POLY_OPA_DISP++, 0, letterboxSize, gScreenWidth - 1, gScreenHeight - letterboxSize - 1);
         gDPPipeSync(POLY_OPA_DISP++);
 
-        if (ret > 0) {
+        // Draw the letterbox if applicable (uses the same color as the screen base)
+        if (letterboxSize > 0) {
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetCycleType(OVERLAY_DISP++, G_CYC_FILL);
             gDPSetRenderMode(OVERLAY_DISP++, G_RM_NOOP, G_RM_NOOP2);
             gDPSetFillColor(OVERLAY_DISP++, (GPACK_RGBA5551(r, g, b, 1) << 16) | GPACK_RGBA5551(r, g, b, 1));
-            gDPFillRectangle(OVERLAY_DISP++, 0, 0, gScreenWidth - 1, ret - 1);
-            gDPFillRectangle(OVERLAY_DISP++, 0, gScreenHeight - ret, gScreenWidth - 1, gScreenHeight - 1);
+            gDPFillRectangle(OVERLAY_DISP++, 0, 0, gScreenWidth - 1, letterboxSize - 1);
+            gDPFillRectangle(OVERLAY_DISP++, 0, gScreenHeight - letterboxSize, gScreenWidth - 1, gScreenHeight - 1);
             gDPPipeSync(OVERLAY_DISP++);
         }
     }

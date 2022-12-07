@@ -109,7 +109,7 @@ void func_808B29F0(BgSpot11Oasis* this, PlayState* play) {
     if (Math_StepToF(&this->actor.world.pos.y, 0.0f, 0.7f)) {
         func_808B2AA8(this);
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, this->actor.world.pos.x,
-                    this->actor.world.pos.y + 40.0f, this->actor.world.pos.z, 0, 0, 0, FAIRY_SPAWNER);
+                    this->actor.world.pos.y + 40.0f, this->actor.world.pos.z, 0, 0, 0, FAIRY_SPAWNER, true);
         func_80078884(NA_SE_SY_CORRECT_CHIME);
     }
     func_808B27F0(play, this->actor.world.pos.y);
@@ -152,7 +152,7 @@ void BgSpot11Oasis_Draw(Actor* thisx, PlayState* play) {
     u32 gameplayFrames = play->gameplayFrames;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_XLU_DISP++, 0x08,

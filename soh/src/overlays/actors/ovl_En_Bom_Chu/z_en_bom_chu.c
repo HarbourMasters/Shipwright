@@ -108,7 +108,7 @@ void EnBomChu_Explode(EnBomChu* this, PlayState* play) {
     s32 i;
 
     bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                               this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, BOMB_BODY);
+                               this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, BOMB_BODY, true);
     if (bomb != NULL) {
         bomb->timer = 0;
     }
@@ -495,7 +495,7 @@ void EnBomChu_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     func_8002EBCC(&this->actor, play, 0);
 
     if (this->timer >= 40) {

@@ -37,6 +37,7 @@
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
 #include "Enhancements/randomizer/randomizer.h"
+#include "Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
 #include "Enhancements/randomizer/3drando/random.hpp"
 #include "Enhancements/gameplaystats.h"
@@ -439,6 +440,7 @@ extern "C" void InitOTR() {
     Debug_Init();
     Rando_Init();
     InitItemTracker();
+    InitEntranceTracker();
     InitStatTracker();
     OTRExtScanner();
     VanillaItemTable_Init();
@@ -709,19 +711,29 @@ extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize)
     return result;
 }
 
-extern "C" void ResourceMgr_LoadFile(const char* resName) {
-    OTRGlobals::Instance->context->GetResourceManager()->LoadResource(resName);
-}
-
-std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path) {
+std::string GetName(const char* path) {
     std::string Path = path;
-    if (ResourceMgr_IsGameMasterQuest()) {
+    if (IsGameMasterQuest()) {
         size_t pos = 0;
         if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
             Path.replace(pos, 7, "/mq/");
         }
     }
-    return OTRGlobals::Instance->context->GetResourceManager()->LoadResource(Path.c_str());
+    return Path;
+}
+
+extern "C" const char* ResourceMgr_GetName(const char* path) {
+    auto s = new std::string(GetName(path));
+    const char* name = s->c_str();
+    return name;
+}
+
+extern "C" void ResourceMgr_LoadFile(const char* resName) {
+    OTRGlobals::Instance->context->GetResourceManager()->LoadResource(resName);
+}
+
+std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path) {
+    return OTRGlobals::Instance->context->GetResourceManager()->LoadResource(ResourceMgr_GetName(path));
 }
 
 extern "C" char* ResourceMgr_LoadFileRaw(const char* resName) {
@@ -796,14 +808,7 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     else if (res->ResType == Ship::ResourceType::Array)
         return (char*)(std::static_pointer_cast<Ship::Array>(res))->vertices.data();
     else {
-        std::string Path = filePath;
-        if (ResourceMgr_IsGameMasterQuest()) {
-            size_t pos = 0;
-            if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
-                Path.replace(pos, 7, "/mq/");
-            }
-        }
-        return ResourceMgr_LoadTexByName(Path.c_str());
+        return ResourceMgr_LoadTexByName(ResourceMgr_GetName(filePath));
     }
 }
 
@@ -1920,11 +1925,11 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             } else {
                 messageEntry = Randomizer_GetCustomGetItemMessage(player);
             }
-        } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
-            (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
-             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
+        } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != RO_GOSSIP_STONES_NONE &&
+            (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_NOTHING ||
+             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_TRUTH &&
               Player_GetMask(play) == PLAYER_MASK_TRUTH) ||
-             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 3 && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_STONE && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
 
             s16 actorParams = msgCtx->talkActor->params;
 
@@ -1984,14 +1989,17 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
         } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS) && textId == TEXT_BEAN_SALESMAN) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN);
-        } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) && (textId == TEXT_MEDIGORON || 
+        } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF && (textId == TEXT_MEDIGORON || 
           (textId == TEXT_CARPET_SALESMAN_1 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)) ||
           (textId == TEXT_CARPET_SALESMAN_2 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)))) {
             RandomizerInf randoInf = (RandomizerInf)(textId == TEXT_MEDIGORON ? RAND_INF_MERCHANTS_MEDIGORON : RAND_INF_MERCHANTS_CARPET_SALESMAN);
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, textId, Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != 2);            
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, textId, Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_ON_HINT);            
         } else if (Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
                    (textId == TEXT_BUY_BOMBCHU_10_DESC || textId == TEXT_BUY_BOMBCHU_10_PROMPT)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
+        } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS) &&
+                   (textId >= TEXT_WARP_MINUET_OF_FOREST && textId <= TEXT_WARP_PRELUDE_OF_LIGHT)) {
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetWarpSongMessage(textId, false);
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
@@ -2004,7 +2012,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             // RANDOTODO: Implement a way to determine if an item came from a skulltula and
             // inject the auto-dismiss control code if it did.
             if (CVar_GetS32("gSkulltulaFreeze", 0) != 0 &&
-                !(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) > 0)) {
+                !(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
                 textId = TEXT_GS_NO_FREEZE;
             } else {
                 textId = TEXT_GS_FREEZE;
@@ -2041,4 +2049,20 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
 
 extern "C" void Overlay_DisplayText(float duration, const char* text) {
     SohImGui::GetGameOverlay()->TextDrawNotification(duration, true, text);
+}
+
+extern "C" void Entrance_ClearEntranceTrackingData(void) {
+    ClearEntranceTrackingData();
+}
+
+extern "C" void Entrance_InitEntranceTrackingData(void) {
+    InitEntranceTrackingData();
+}
+
+extern "C" void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex) {
+    SetCurrentGrottoIDForTracker(entranceIndex);
+}
+
+extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
+    SetLastEntranceOverrideForTracker(entranceIndex);
 }

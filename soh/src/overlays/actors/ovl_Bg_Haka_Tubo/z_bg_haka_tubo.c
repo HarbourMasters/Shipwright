@@ -177,7 +177,7 @@ void BgHakaTubo_DropCollectible(BgHakaTubo* this, PlayState* play) {
                 collectibleParams = -1;
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_FIREFLY, this->dyna.actor.world.pos.x,
                             this->dyna.actor.world.pos.y + 80.0f, this->dyna.actor.world.pos.z, 0,
-                            this->dyna.actor.shape.rot.y, 0, 2);
+                            this->dyna.actor.shape.rot.y, 0, 2, true);
                 func_80078884(NA_SE_SY_ERROR);
             } else {
                 // Random rewards
@@ -231,7 +231,7 @@ void BgHakaTubo_DrawFlameCircle(BgHakaTubo* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     Matrix_Translate(this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y + 235.0f, this->dyna.actor.world.pos.z,
                      MTXMODE_NEW);
     Matrix_RotateY(this->dyna.actor.shape.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);

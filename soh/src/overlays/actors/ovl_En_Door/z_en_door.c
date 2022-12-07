@@ -342,7 +342,7 @@ void EnDoor_Draw(Actor* thisx, PlayState* play) {
     if (this->actor.objBankIndex == this->requiredObjBankIndex) {
         OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDoor_OverrideLimbDraw,
                           NULL, &this->actor);
         if (this->actor.world.rot.y != 0) {

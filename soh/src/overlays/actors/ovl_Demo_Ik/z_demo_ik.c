@@ -284,8 +284,8 @@ void DemoIk_Type1Draw(DemoIk* this, PlayState* play) {
 
     OPEN_DISPS(gfxCtx);
     func_8002EBCC(&this->actor, play, 0);
-    func_80093D18(gfxCtx);
-    func_80093D84(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
+    Gfx_SetupDL_25Xlu(gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, DemoIk_SetColors(gfxCtx, 245, 225, 155, 30, 30, 0));
     gSPSegment(POLY_OPA_DISP++, 0x09, DemoIk_SetColors(gfxCtx, 255, 40, 0, 40, 0, 0));
     gSPSegment(POLY_OPA_DISP++, 0x0A, DemoIk_SetColors(gfxCtx, 255, 255, 255, 20, 40, 30));
@@ -452,8 +452,8 @@ void DemoIk_Type2Draw(DemoIk* this, PlayState* play) {
 
     OPEN_DISPS(gfxCtx);
     func_8002EBCC(&this->actor, play, 0);
-    func_80093D18(gfxCtx);
-    func_80093D84(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
+    Gfx_SetupDL_25Xlu(gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, DemoIk_SetColors(gfxCtx, 245, 225, 155, 30, 30, 0));
     gSPSegment(POLY_OPA_DISP++, 0x09, DemoIk_SetColors(gfxCtx, 255, 40, 0, 40, 0, 0));
     gSPSegment(POLY_OPA_DISP++, 0x0A, DemoIk_SetColors(gfxCtx, 255, 255, 255, 20, 40, 30));

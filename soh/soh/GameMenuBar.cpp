@@ -291,9 +291,9 @@ namespace GameMenuBar {
             UIWidgets::Spacer(0);
 
             if (ImGui::BeginMenu("Languages")) {
-                UIWidgets::EnhancementRadioButton("English", "gLanguages", 0);
-                UIWidgets::EnhancementRadioButton("German", "gLanguages", 1);
-                UIWidgets::EnhancementRadioButton("French", "gLanguages", 2);
+                UIWidgets::EnhancementRadioButton("English", "gLanguages", LANGUAGE_ENG);
+                UIWidgets::EnhancementRadioButton("German", "gLanguages", LANGUAGE_GER);
+                UIWidgets::EnhancementRadioButton("French", "gLanguages", LANGUAGE_FRA);
                 ImGui::EndMenu();
             }
             ImGui::EndMenu();
@@ -304,48 +304,6 @@ namespace GameMenuBar {
         if (ImGui::BeginMenu("Enhancements"))
         {
             DrawPresetSelector(PRESET_TYPE_ENHANCEMENTS);
-
-            UIWidgets::Spacer(0);
-
-            if (ImGui::BeginMenu("Controls")) {
-                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
-                ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
-                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-                float availableWidth = ImGui::GetContentRegionAvail().x;
-                if (ImGui::Button(
-                    GetWindowButtonText("Customize Game Controls", CVar_GetS32("gGameControlEditorEnabled", 0)).c_str(),
-                    ImVec2(availableWidth, 0)
-                )) {
-                    bool currentValue = CVar_GetS32("gGameControlEditorEnabled", 0);
-                    CVar_SetS32("gGameControlEditorEnabled", !currentValue);
-                    SohImGui::RequestCvarSaveOnNextTick();
-                    SohImGui::EnableWindow("Game Control Editor", CVar_GetS32("gGameControlEditorEnabled", 0));
-                }
-                ImGui::PopStyleVar(3);
-                ImGui::PopStyleColor(1);
-
-                UIWidgets::PaddedEnhancementCheckbox("D-pad Support on Pause Screen", "gDpadPause", true, false);
-                UIWidgets::Tooltip("Navigate Pause with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate\n"
-                    "To make the cursor only move a single space no matter how long a direction is held, manually set gDpadHoldChange to 0");
-                UIWidgets::PaddedEnhancementCheckbox("D-pad Support in Text Boxes", "gDpadText", true, false);
-                UIWidgets::Tooltip("Navigate choices in text boxes, shop item selection, and the file select / name entry screens with the D-pad\n"
-                    "To make the cursor only move a single space during name entry no matter how long a direction is held, manually set gDpadHoldChange to 0");
-                UIWidgets::PaddedEnhancementCheckbox("D-pad as Equip Items", "gDpadEquips", true, false);
-                UIWidgets::Tooltip("Equip items and equipment on the D-pad\nIf used with D-pad on Pause Screen, you must hold C-Up to equip instead of navigate");
-                UIWidgets::PaddedEnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor", true, false);
-                UIWidgets::Tooltip("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
-                UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL", true, false);
-                UIWidgets::Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
-                UIWidgets::PaddedEnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify", true, false);
-                UIWidgets::Tooltip("Hold the assigned button to change the maximum walking speed\nTo change the assigned button, click Customize Game Controls");
-                if (CVar_GetS32("gEnableWalkModify", 0)) {
-                    UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding", "gWalkSpeedToggle", true, false);
-                    UIWidgets::EnhancementSliderFloat("Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true);
-                    UIWidgets::EnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true);
-                }
-                ImGui::EndMenu();
-            }
 
             UIWidgets::Spacer(0);
 
@@ -424,7 +382,10 @@ namespace GameMenuBar {
                     UIWidgets::PaddedText("Bunny Hood Effect", true, false);
                     const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run"};
                     UIWidgets::EnhancementCombobox("gMMBunnyHood", bunnyHoodOptions, 3, 0);
-                    UIWidgets::Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask. The longer jump option is not accounted for in randomizer logic.");
+                    UIWidgets::Tooltip(
+                        "Wearing the Bunny Hood grants a speed increase like in Majora's Mask. The longer jump option is not accounted for in randomizer logic.\n\n"
+                        "Also disables NPC's reactions to wearing the Bunny Hood."
+                    );
                     UIWidgets::PaddedEnhancementCheckbox("Mask Select in Inventory", "gMaskSelect", true, false);
                     UIWidgets::Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
                     UIWidgets::PaddedEnhancementCheckbox("Nuts explode bombs", "gNutsExplodeBombs", true, false);
@@ -580,6 +541,22 @@ namespace GameMenuBar {
                         UIWidgets::Tooltip("The ammunition at the start of the shooting gallery minigame as a child");
                         UIWidgets::PaddedEnhancementSliderInt("Adult Starting Ammunition: %d", "##aShootingGalleryAmmunition", "gAdultShootingGalleryAmmunition", 10, 30, "", 15, false, true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("The ammunition at the start of the shooting gallery minigame as an adult");
+                        ImGui::EndMenu();
+                    }
+
+                    UIWidgets::Spacer(0);
+
+                    if (ImGui::BeginMenu("Bombchu Bowling")) {
+                        UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeBombchuBowling");
+                        UIWidgets::Tooltip("Turn on/off changes to the bombchu bowling behavior");
+                        bool disabled = CVar_GetS32("gCustomizeBombchuBowling", 0) == 0;
+                        const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
+                        UIWidgets::EnhancementCheckbox("Remove Small Cucco", "gBombchuBowlingNoSmallCucco", disabled, disabledTooltip);
+                        UIWidgets::Tooltip("Prevents the small cucco from appearing in the bombchu bowling minigame");
+                        UIWidgets::EnhancementCheckbox("Remove Big Cucco", "gBombchuBowlingNoBigCucco", disabled, disabledTooltip);
+                        UIWidgets::Tooltip("Prevents the big cucco from appearing in the bombchu bowling minigame");
+                        UIWidgets::PaddedEnhancementSliderInt("Bombchu Count: %d", "##cBombchuBowlingAmmunition", "gBombchuBowlingAmmunition", 3, 20, "", 10, false, true, false, disabled, disabledTooltip);
+                        UIWidgets::Tooltip("The number of bombchus available at the start of the bombchu bowling minigame");
                         ImGui::EndMenu();
                     }
 
@@ -792,6 +769,14 @@ namespace GameMenuBar {
             ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+
+            if (ImGui::Button(GetWindowButtonText("Customize Game Controls", CVar_GetS32("gGameControlEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
+            {
+                bool currentValue = CVar_GetS32("gGameControlEditorEnabled", 0);
+                CVar_SetS32("gGameControlEditorEnabled", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("Game Control Editor", CVar_GetS32("gGameControlEditorEnabled", 0));
+            }
             if (ImGui::Button(GetWindowButtonText("Cosmetics Editor", CVar_GetS32("gCosmeticsEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
                 bool currentValue = CVar_GetS32("gCosmeticsEditorEnabled", 0);
@@ -1183,6 +1168,14 @@ namespace GameMenuBar {
                 SohImGui::EnableWindow("Item Tracker", CVar_GetS32("gItemTrackerEnabled", 0));
             }
             ImGui::Dummy(ImVec2(0.0f, 0.0f));
+            if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVar_GetS32("gEntranceTrackerEnabled", 0)).c_str(), buttonSize))
+            {
+                bool currentValue = CVar_GetS32("gEntranceTrackerEnabled", 0);
+                CVar_SetS32("gEntranceTrackerEnabled", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("Entrance Tracker", CVar_GetS32("gEntranceTrackerEnabled", 0));
+            }
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
             if (ImGui::Button(GetWindowButtonText("Item Tracker Settings", CVar_GetS32("gItemTrackerSettingsEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVar_GetS32("gItemTrackerSettingsEnabled", 0);
@@ -1192,16 +1185,6 @@ namespace GameMenuBar {
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
-#ifdef ENABLE_CROWD_CONTROL
-            UIWidgets::PaddedEnhancementCheckbox("Crowd Control", "gCrowdControl", true, false);
-            UIWidgets::Tooltip("Requires a full SoH restart to take effect!\n\nEnables CrowdControl. Will attempt to connect to the local Crowd Control server.");
-
-            if (CVar_GetS32("gCrowdControl", 0)) {
-                CrowdControl::Instance->Enable();
-            } else {
-                CrowdControl::Instance->Disable();
-            }
-#endif
 
             UIWidgets::PaddedSeparator();
 
@@ -1219,10 +1202,16 @@ namespace GameMenuBar {
                 // Only disable the key colors checkbox when none of the keysanity settings are set to "Any Dungeon", "Overworld" or "Anywhere"
                 bool disableKeyColors = true;
 
-                if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) > 2 ||
-                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS) > 0 ||
-                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) > 2 ||
-                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) > 2 || 
+                if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
+                    (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_VANILLA &&
+                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_OWN_DUNGEON &&
+                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_STARTWITH) || 
                     !gSaveContext.n64ddFlag) {
                     disableKeyColors = false;
                 }
@@ -1243,6 +1232,38 @@ namespace GameMenuBar {
                     "(medallions/stones/songs). Note that these fanfares are longer than usual."
                 );
                 ImGui::EndMenu();
+            }
+
+            UIWidgets::PaddedSeparator();
+
+        #ifdef ENABLE_CROWD_CONTROL
+            UIWidgets::EnhancementCheckbox("Crowd Control", "gCrowdControl");
+            UIWidgets::Tooltip("Will attempt to connect to the Crowd Control server. Check out crowdcontrol.live for more information.");
+
+            if (CVar_GetS32("gCrowdControl", 0)) {
+                CrowdControl::Instance->Enable();
+            } else {
+                CrowdControl::Instance->Disable();
+            }
+
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+        #endif
+
+            UIWidgets::EnhancementCheckbox("Enemy Randomizer", "gRandomizedEnemies");
+            UIWidgets::Tooltip(
+                "Randomizes regular enemies every time you load a room. Bosses, mini-bosses and a few specific regular enemies are excluded.\n\n"
+                "Enemies that need more than Deku Nuts + either Deku Sticks or a sword to kill are excluded from spawning in \"clear enemy\" rooms."
+            );
+
+            if (CVar_GetS32("gRandomizedEnemies", 0)) {
+
+                bool disableSeededEnemies = !gSaveContext.n64ddFlag && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
+                const char* disableSeededEnemiesText = "This setting is disabled because it relies on a randomizer savefile.";
+
+                UIWidgets::PaddedEnhancementCheckbox("Seeded Enemy Spawns", "gSeededRandomizedEnemies", true, false, disableSeededEnemies, disableSeededEnemiesText);
+                UIWidgets::Tooltip(
+                    "Enemy spawns will stay consistent throughout room reloads. Enemy spawns are based on randomizer seeds, so this only works with randomizer savefiles."
+                );
             }
 
             ImGui::EndMenu();

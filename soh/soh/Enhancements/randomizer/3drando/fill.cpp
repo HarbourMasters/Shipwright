@@ -296,7 +296,7 @@ std::vector<uint32_t> GetAccessibleLocations(const std::vector<uint32_t>& allowe
           entranceSphere.push_back(&exit);
           exit.AddToPool();
           // Don't list a coupled entrance from both directions
-          if (exit.GetReplacement()->GetReverse() != nullptr /*&& !DecoupleEntrances*/) {
+          if (exit.GetReplacement()->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
             exit.GetReplacement()->GetReverse()->AddToPool();
           }
         }

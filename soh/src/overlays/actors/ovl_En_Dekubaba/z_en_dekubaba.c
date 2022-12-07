@@ -1263,7 +1263,7 @@ void EnDekubaba_DrawBaseShadow(EnDekubaba* this, PlayState* play) {
     f32 horizontalScale;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80094044(play->state.gfxCtx);
+    Gfx_SetupDL_44Xlu(play->state.gfxCtx);
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, 255);
 
@@ -1291,7 +1291,7 @@ void EnDekubaba_Draw(Actor* thisx, PlayState* play) {
     f32 scale;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if (this->actionFunc != EnDekubaba_DeadStickDrop) {
         SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL,
