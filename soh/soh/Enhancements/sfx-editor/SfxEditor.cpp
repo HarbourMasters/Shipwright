@@ -208,7 +208,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
             const auto& [name, sfxKey, seqType] = seqData;
             const std::string cvarKey = "gSfxEditor_" + sfxKey;
             if (seqType & type) {
-                if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue >= 110) {
+                if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue > MAX_AUTHENTIC_SEQID) {
                     continue;
                 }
                 const int randomValue = values.back();
@@ -229,7 +229,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         if (~(seqType) & type) {
             continue;
         }
-        if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue >= 110) {
+        if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue > MAX_AUTHENTIC_SEQID) {
             continue;
         }
 
