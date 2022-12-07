@@ -90,9 +90,9 @@ void EffectSsGMagma2_Draw(PlayState* play, u32 index, EffectSs* this) {
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->rDrawMode == 0) {
-        POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x3D);
+        POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x3D);
     } else {
-        POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
+        POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0);
     }
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, this->rPrimColorR, this->rPrimColorG, 0, this->rPrimColorA);

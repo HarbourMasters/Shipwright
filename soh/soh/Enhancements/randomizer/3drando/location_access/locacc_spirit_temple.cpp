@@ -12,9 +12,9 @@ void AreaTable_Init_SpiritTemple() {
   ---------------------------*/
   areaTable[SPIRIT_TEMPLE_ENTRYWAY] = Area("Spirit Temple Entryway", "Spirit Temple", SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(SPIRIT_TEMPLE_LOBBY,    {[]{return Dungeon::SpiritTemple.IsVanilla();}}),
-                  Entrance(SPIRIT_TEMPLE_MQ_LOBBY, {[]{return Dungeon::SpiritTemple.IsMQ();}}),
-                  Entrance(DESERT_COLOSSUS,        {[]{return true;}}),
+                  Entrance(SPIRIT_TEMPLE_LOBBY,                  {[]{return Dungeon::SpiritTemple.IsVanilla();}}),
+                  Entrance(SPIRIT_TEMPLE_MQ_LOBBY,               {[]{return Dungeon::SpiritTemple.IsMQ();}}),
+                  Entrance(DESERT_COLOSSUS_FROM_SPIRIT_ENTRYWAY, {[]{return true;}}),
   });
 
   /*--------------------------

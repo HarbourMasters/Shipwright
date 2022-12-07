@@ -75,6 +75,10 @@ u16 EnKz_GetTextNoMaskChild(PlayState* play, EnKz* this) {
 
     if ((gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY)) ||
         (!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE))) {
+        // Allow turning in Ruto's letter even if you have already rescued her
+        if (gSaveContext.n64ddFlag && !(gSaveContext.eventChkInf[3] & 8)) {
+            player->exchangeItemId = EXCH_ITEM_LETTER_RUTO;
+        }
         return 0x402B;
     } else if (gSaveContext.eventChkInf[3] & 8) {
         return 0x401C;
@@ -547,7 +551,7 @@ void EnKz_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeSegments[this->eyeIdx]));
-    func_800943C8(play->state.gfxCtx);
+    Gfx_SetupDL_37Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelanime.skeleton, this->skelanime.jointTable, this->skelanime.dListCount,
                           EnKz_OverrideLimbDraw, EnKz_PostLimbDraw, this);
 
