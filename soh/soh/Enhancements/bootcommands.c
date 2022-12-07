@@ -25,7 +25,6 @@ void BootCommands_Init()
     CVar_RegisterS32("gDebugEnabled", 0);
     CVar_RegisterS32("gLanguages", LANGUAGE_ENG);
     CVar_RegisterS32("gInvertYAxis", 1);
-    CVar_RegisterS32("gTrailDuration", 4); // 4 = Default trail duration
     CVar_SetS32("gRandoGenerating", 0); // Clear when a crash happened during rando seed generation
 #if defined(__SWITCH__) || defined(__WIIU__)
     CVar_RegisterS32("gControlNav", 1); // always enable controller nav on switch/wii u

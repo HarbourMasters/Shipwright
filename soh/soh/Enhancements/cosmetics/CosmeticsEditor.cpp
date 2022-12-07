@@ -62,6 +62,7 @@ typedef enum {
     BOX_MAGIC,
     BOX_ARROWS,
     BOX_SPIN_ATTACK,
+    BOX_TRAILS,
     BOX_NAVI,
 } CosmeticBox;
 
@@ -79,6 +80,7 @@ std::map<CosmeticBox, const char*> boxLabels = {
     { BOX_MAGIC, "Magic Effects" },
     { BOX_ARROWS, "Arrow Effects" },
     { BOX_SPIN_ATTACK, "Spin Attack" },
+    { BOX_TRAILS, "Trails" },
     { BOX_NAVI, "Navi" },
 };
 
@@ -203,15 +205,20 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("SpinAttack_Level1Secondary",    "Level 1 Secondary",    BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Replace gCharged1ColEnv
     COSMETIC_OPTION("SpinAttack_Level2Primary",      "Level 2 Primary",      BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Replace gCharged2Col
     COSMETIC_OPTION("SpinAttack_Level2Secondary",    "Level 2 Secondary",    BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Replace gCharged2ColEnv
-    // Todo (Cosmetics): Sword Trails
 
-    /* World */
+    COSMETIC_OPTION("Trails_Bombchu",                "Bombchu",              BOX_TRAILS,       ImVec4(250,   0,   0, 255), false, true, true),
+    COSMETIC_OPTION("Trails_Boomerang",              "Boomerang",            BOX_TRAILS,       ImVec4(255, 255, 100, 255), false, true, true),
+    COSMETIC_OPTION("Trails_KokiriSword",            "Kokiri Sword",         BOX_TRAILS,       ImVec4(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Trails_MasterSword",            "Master Sword",         BOX_TRAILS,       ImVec4(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Trails_BiggoronSword",          "Biggoron Sword",       BOX_TRAILS,       ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Trails_Stick",                  "Stick",                BOX_TRAILS,       ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("Trails_Hammer",                 "Hammer",               BOX_TRAILS,       ImVec4(255, 255, 255, 255), false, true, true),
+
     COSMETIC_OPTION("World_BlockOfTime",             "Block of Time",        BOX_WORLD,        ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("World_Moon",                    "Moon",                 BOX_WORLD,        ImVec4(240, 255, 180, 255), false, true, true),
     COSMETIC_OPTION("World_GossipStone",             "Gossip Stone",         BOX_WORLD,        ImVec4(200, 200, 200, 255), false, true, true),
     COSMETIC_OPTION("World_RedIce",                  "Red Ice",              BOX_WORLD,        ImVec4(255,   0,   0, 255), false, true, false),
 
-    /* NPCs */
     COSMETIC_OPTION("Navi_IdlePrimary",              "Idle Primary",         BOX_NAVI,         ImVec4(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("Navi_IdleSecondary",            "Idle Secondary",       BOX_NAVI,         ImVec4(  0,   0, 255,   0), false, true, true),
     COSMETIC_OPTION("Navi_NPCPrimary",               "NPC Primary",          BOX_NAVI,         ImVec4(150, 150, 255, 255), false, true, false),
@@ -220,6 +227,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Navi_EnemySecondary",           "Enemy Secondary",      BOX_NAVI,         ImVec4(200, 155,   0,   0), false, true, true),
     COSMETIC_OPTION("Navi_PropsPrimary",             "Props Primary",        BOX_NAVI,         ImVec4(  0, 255,   0, 255), false, true, false),
     COSMETIC_OPTION("Navi_PropsSecondary",           "Props Secondary",      BOX_NAVI,         ImVec4(  0, 255,   0,   0), false, true, true),
+
     COSMETIC_OPTION("NPC_FireKeesePrimary",          "Fire Keese Primary",   BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("NPC_FireKeeseSecondary",        "Fire Keese Secondary", BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("NPC_IceKeesePrimary",           "Ice Keese Primary",    BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
@@ -1512,6 +1520,16 @@ void DrawCosmeticsEditor(bool& open) {
             DrawCosmeticBox(BOX_MAGIC);
             DrawCosmeticBox(BOX_ARROWS);
             DrawCosmeticBox(BOX_SPIN_ATTACK);
+            DrawCosmeticBox(BOX_TRAILS);
+            if (UIWidgets::EnhancementSliderInt("Trails Duration: %d", "##Trails_Duration", "gCosmetics.Trails_Duration.Value", 2, 20, "", 4, false)) {
+                CVar_SetS32("gCosmetics.Trails_Duration.Changed", 1);
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Reset##Trails_Duration")) {
+                CVar_Clear("gCosmetics.Trails_Duration.Value");
+                CVar_Clear("gCosmetics.Trails_Duration.Changed");
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("World & NPCs")) {

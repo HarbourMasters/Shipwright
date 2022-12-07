@@ -292,7 +292,8 @@ namespace UIWidgets {
         ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
     }
 
-    void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool disabled, const char* disabledTooltipText) {
+    bool EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool disabled, const char* disabledTooltipText) {
+        bool changed = false;
         int val = CVar_GetS32(cvarName, defaultValue);
 
         float alpha;
@@ -316,6 +317,7 @@ namespace UIWidgets {
                 val--;
                 CVar_SetS32(cvarName, val);
                 SohImGui::RequestCvarSaveOnNextTick();
+                changed = true;
             }
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
@@ -337,6 +339,7 @@ namespace UIWidgets {
         {
             CVar_SetS32(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
+            changed = true;
         }
         if (PlusMinusButton) {
             ImGui::PopItemWidth();
@@ -354,6 +357,7 @@ namespace UIWidgets {
                 val++;
                 CVar_SetS32(cvarName, val);
                 SohImGui::RequestCvarSaveOnNextTick();
+                changed = true;
             }
         }
 
@@ -370,6 +374,7 @@ namespace UIWidgets {
             val = min;
             CVar_SetS32(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
+            changed = true;
         }
 
         if (val > max)
@@ -377,7 +382,10 @@ namespace UIWidgets {
             val = max;
             CVar_SetS32(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
+            changed = true;
         }
+
+        return changed;
     }
 
     bool EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton, bool disabled, const char* disabledTooltipText) {
