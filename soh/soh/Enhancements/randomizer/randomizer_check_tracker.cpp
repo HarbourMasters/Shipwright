@@ -67,6 +67,41 @@ Color_RGBA8 Color_Scummed_Extra      = { 255, 255, 255, 255 }; //TODO
 Color_RGBA8 Color_Saved_Main         = { 255, 255, 255, 255 }; //White
 Color_RGBA8 Color_Saved_Extra        = {   0, 185,   0, 255 }; //Green
 
+static const SceneID dungeonSceneLookupByArea[] = {
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //| Non-Dungeon Areas
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_YDAN, //Deku Tree
+    SCENE_DDAN, //DC
+    SCENE_BDAN, //JJB
+    SCENE_BMORI1, //Forest
+    SCENE_HIDAN, //Fire
+    SCENE_MIZUSIN, //Water
+    SCENE_JYASINZOU, //Spirit
+    SCENE_HAKADAN, //Shadow
+    SCENE_HAKADANCH, //BOTW
+    SCENE_ICE_DOUKUTO, //Ice
+    SCENE_MEN, //GTG
+    SCENE_GANONTIKA, //GC
+};
+
 // persistent during gameplay
 bool initialized = false;
 bool doInitialize = false;
@@ -269,7 +304,7 @@ void DrawCheckTracker(bool& open) {
 
                 if (isThisAreaSpoiled) {
                     if (showVOrMQ && RandomizerCheckObjects::AreaIsDungeon(obj.rcArea)) {
-                        if (OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(obj.sceneId))
+                        if (OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(dungeonSceneLookupByArea[obj.rcArea]))
                             ImGui::Text("(%d/%d) - MQ", areaChecksGotten[obj.rcArea], areaChecksTotal[obj.rcArea]);
                         else
                             ImGui::Text("(%d/%d) - Vanilla", areaChecksGotten[obj.rcArea], areaChecksTotal[obj.rcArea]);
