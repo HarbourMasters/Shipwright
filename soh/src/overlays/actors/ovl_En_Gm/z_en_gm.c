@@ -278,7 +278,6 @@ void func_80A3DF00(EnGm* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = func_80A3DF60;
     } else {
-        gSaveContext.pendingSale = 1;
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) &&
             !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE);

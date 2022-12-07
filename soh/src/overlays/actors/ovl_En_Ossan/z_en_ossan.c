@@ -1690,18 +1690,18 @@ void EnOssan_State_GiveItemWithFanfare(EnOssan* this, PlayState* play, Player* p
         this->stateFlag = OSSAN_STATE_ITEM_PURCHASED;
         return;
     }
-    u16 pendingGetItemId = this->shelfSlots[this->cursorIndex]->getItemId;
     if (!gSaveContext.n64ddFlag) {
-        func_8002F434(&this->actor, play, pendingGetItemId, 120.0f, 120.0f);
+        func_8002F434(&this->actor, play, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
     } else {
         ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->cursorIndex);
         // en_ossan/en_girla are also used for the happy mask shop, which never has randomized items
         // and returns RC_UNKNOWN_CHECK, in which case we should fall back to vanilla logic
         if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+            GetItemEntry getItemEntry = 
+                Randomizer_GetItemFromKnownCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 120.0f, 120.0f);
         } else {
-            func_8002F434(&this->actor, play, pendingGetItemId, 120.0f, 120.0f);
+            func_8002F434(&this->actor, play, this->shelfSlots[this->cursorIndex]->getItemId, 120.0f, 120.0f);
         }
     }
 }
