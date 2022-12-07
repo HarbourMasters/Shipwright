@@ -37,6 +37,7 @@
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
 #include "Enhancements/randomizer/randomizer.h"
+#include "Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
 #include "Enhancements/randomizer/3drando/random.hpp"
 #include "Enhancements/gameplaystats.h"
@@ -439,6 +440,7 @@ extern "C" void InitOTR() {
     Debug_Init();
     Rando_Init();
     InitItemTracker();
+    InitEntranceTracker();
     InitStatTracker();
     OTRExtScanner();
     VanillaItemTable_Init();
@@ -2047,4 +2049,20 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
 
 extern "C" void Overlay_DisplayText(float duration, const char* text) {
     SohImGui::GetGameOverlay()->TextDrawNotification(duration, true, text);
+}
+
+extern "C" void Entrance_ClearEntranceTrackingData(void) {
+    ClearEntranceTrackingData();
+}
+
+extern "C" void Entrance_InitEntranceTrackingData(void) {
+    InitEntranceTrackingData();
+}
+
+extern "C" void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex) {
+    SetCurrentGrottoIDForTracker(entranceIndex);
+}
+
+extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
+    SetLastEntranceOverrideForTracker(entranceIndex);
 }
