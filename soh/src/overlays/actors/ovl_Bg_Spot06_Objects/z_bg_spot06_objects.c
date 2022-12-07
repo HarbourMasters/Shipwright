@@ -461,9 +461,6 @@ void BgSpot06Objects_Update(Actor* thisx, PlayState* play) {
         } else {
             // Frozen rusty switch, same flag as above. It's glitched and can't be pressed
             switchParams = 0x3E81;
-            // Flatten the switch to match the water being low
-            play->actorCtx.flags.tempSwch |= (0x40 << 24);
-            prevSwitchState = 1;
         }
 
         // Spawn a floor switch
