@@ -88,7 +88,7 @@ Randomizer::Randomizer() {
     SpoilerfileCheckNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
     SpoilerfileCheckNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
 
-    for (auto item: *RandoMain::GetFullItemTable()) {
+    for (auto& item: *RandoMain::GetFullItemTable()) {
         // Easiest way to filter out all the empty values from the array, since we still technically want the 0/RG_NONE entry
         if (item.GetName().english.empty()) continue;
         SpoilerfileGetNameToEnum[item.GetName().english] = item.GetRandomizerGet();
@@ -343,73 +343,6 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         "Warp to&{{location}}?\x1B&%gOK&No%w\x02", // TODO: German translation
         "Se téléporter vers&{{location}}?\x1B&%gOK!&Non%w\x02" });
 }
-
-std::vector<RandomizerCheck> shopItemRandomizerChecks = {
-    RC_KF_SHOP_ITEM_1,
-    RC_KF_SHOP_ITEM_2,
-    RC_KF_SHOP_ITEM_3,
-    RC_KF_SHOP_ITEM_4,
-    RC_KF_SHOP_ITEM_5,
-    RC_KF_SHOP_ITEM_6,
-    RC_KF_SHOP_ITEM_7,
-    RC_KF_SHOP_ITEM_8,
-    RC_GC_SHOP_ITEM_1,
-    RC_GC_SHOP_ITEM_2,
-    RC_GC_SHOP_ITEM_3,
-    RC_GC_SHOP_ITEM_4,
-    RC_GC_SHOP_ITEM_5,
-    RC_GC_SHOP_ITEM_6,
-    RC_GC_SHOP_ITEM_7,
-    RC_GC_SHOP_ITEM_8,
-    RC_ZD_SHOP_ITEM_1,
-    RC_ZD_SHOP_ITEM_2,
-    RC_ZD_SHOP_ITEM_3,
-    RC_ZD_SHOP_ITEM_4,
-    RC_ZD_SHOP_ITEM_5,
-    RC_ZD_SHOP_ITEM_6,
-    RC_ZD_SHOP_ITEM_7,
-    RC_ZD_SHOP_ITEM_8,
-    RC_KAK_BAZAAR_ITEM_1,
-    RC_KAK_BAZAAR_ITEM_2,
-    RC_KAK_BAZAAR_ITEM_3,
-    RC_KAK_BAZAAR_ITEM_4,
-    RC_KAK_BAZAAR_ITEM_5,
-    RC_KAK_BAZAAR_ITEM_6,
-    RC_KAK_BAZAAR_ITEM_7,
-    RC_KAK_BAZAAR_ITEM_8,
-    RC_KAK_POTION_SHOP_ITEM_1,
-    RC_KAK_POTION_SHOP_ITEM_2,
-    RC_KAK_POTION_SHOP_ITEM_3,
-    RC_KAK_POTION_SHOP_ITEM_4,
-    RC_KAK_POTION_SHOP_ITEM_5,
-    RC_KAK_POTION_SHOP_ITEM_6,
-    RC_KAK_POTION_SHOP_ITEM_7,
-    RC_KAK_POTION_SHOP_ITEM_8,
-    RC_MARKET_BAZAAR_ITEM_1,
-    RC_MARKET_BAZAAR_ITEM_2,
-    RC_MARKET_BAZAAR_ITEM_3,
-    RC_MARKET_BAZAAR_ITEM_4,
-    RC_MARKET_BAZAAR_ITEM_5,
-    RC_MARKET_BAZAAR_ITEM_6,
-    RC_MARKET_BAZAAR_ITEM_7,
-    RC_MARKET_BAZAAR_ITEM_8,
-    RC_MARKET_POTION_SHOP_ITEM_1,
-    RC_MARKET_POTION_SHOP_ITEM_2,
-    RC_MARKET_POTION_SHOP_ITEM_3,
-    RC_MARKET_POTION_SHOP_ITEM_4,
-    RC_MARKET_POTION_SHOP_ITEM_5,
-    RC_MARKET_POTION_SHOP_ITEM_6,
-    RC_MARKET_POTION_SHOP_ITEM_7,
-    RC_MARKET_POTION_SHOP_ITEM_8,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_1,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_2,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_3,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_4,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_5,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_6,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_7,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_8,
-};
 
 // Reference soh/src/overlays/actors/ovl_En_GirlA/z_en_girla.h
 std::unordered_map<RandomizerGet, EnGirlAShopItem> randomizerGetToEnGirlShopItem = {
@@ -2782,60 +2715,60 @@ void DrawRandoEditor(bool& open) {
 
     // Randomizer settings
     // Logic Settings
-    const char* randoLogicRules[2] = { "Glitchless", "No logic" };
+    static const char* randoLogicRules[2] = { "Glitchless", "No logic" };
 
     // Open Settings
-    const char* randoForest[3] = { "Closed", "Closed Deku", "Open" };
-    const char* randoKakarikoGate[2] = { "Closed", "Open" };
-    const char* randoDoorOfTime[3] = { "Closed", "Song only", "Open" };
-    const char* randoZorasFountain[3] = { "Closed", "Closed as child", "Open" };
-    const char* randoGerudoFortress[3] = { "Normal", "Fast", "Open" };
-    const char* randoRainbowBridge[7] = { "Vanilla",         "Always open", "Stones", "Medallions",
+    static const char* randoForest[3] = { "Closed", "Closed Deku", "Open" };
+    static const char* randoKakarikoGate[2] = { "Closed", "Open" };
+    static const char* randoDoorOfTime[3] = { "Closed", "Song only", "Open" };
+    static const char* randoZorasFountain[3] = { "Closed", "Closed as child", "Open" };
+    static const char* randoGerudoFortress[3] = { "Normal", "Fast", "Open" };
+    static const char* randoRainbowBridge[7] = { "Vanilla",         "Always open", "Stones", "Medallions",
                                           "Dungeon rewards", "Dungeons",    "Tokens" };
-    const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
-    const char* randoMqDungeons[3] = { "None", "Set Number", "Random Number" };
+    static const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
+    static const char* randoMqDungeons[3] = { "None", "Set Number", "Random Number" };
 
     // World Settings
-    const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
-    const char* randoShuffleDungeonsEntrances[3] = { "Off", "On", "On + Ganon" };
-    const char* randoShuffleInteriorsEntrances[3] = { "Off", "Simple", "All" };
-    const char* randoBombchusInLogic[2] = { "Off", "On" };
-    const char* randoAmmoDrops[3] = { "On + Bombchu", "Off", "On" };
-    const char* randoHeartDropsAndRefills[4] = { "On", "No Drop", "No Refill", "Off" };
+    static const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
+    static const char* randoShuffleDungeonsEntrances[3] = { "Off", "On", "On + Ganon" };
+    static const char* randoShuffleInteriorsEntrances[3] = { "Off", "Simple", "All" };
+    static const char* randoBombchusInLogic[2] = { "Off", "On" };
+    static const char* randoAmmoDrops[3] = { "On + Bombchu", "Off", "On" };
+    static const char* randoHeartDropsAndRefills[4] = { "On", "No Drop", "No Refill", "Off" };
 
     // Shuffle Settings
-    const char* randoShuffleDungeonRewards[4] = { "End of dungeons", "Any dungeon", "Overworld", "Anywhere" };
-    const char* randoLinksPocket[4] = { "Dungeon Reward", "Advancement", "Anything", "Nothing" };
-    const char* randoShuffleSongs[3] = { "Song Locations", "Dungeon Rewards", "Anywhere" };
-    const char* randoShopsanity[7] = { "Off", "0 Items", "1 Item", "2 Items", "3 Items", "4 Items", "Random" };
-    const char* randoTokensanity[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
-    const char* randoShuffleScrubs[4] = { "Off", "Affordable", "Expensive", "Random Prices" };
-    const char* randoShuffleMerchants[3] = { "Off", "On (no hints)", "On (with hints)" };
+    static const char* randoShuffleDungeonRewards[4] = { "End of dungeons", "Any dungeon", "Overworld", "Anywhere" };
+    static const char* randoLinksPocket[4] = { "Dungeon Reward", "Advancement", "Anything", "Nothing" };
+    static const char* randoShuffleSongs[3] = { "Song Locations", "Dungeon Rewards", "Anywhere" };
+    static const char* randoShopsanity[7] = { "Off", "0 Items", "1 Item", "2 Items", "3 Items", "4 Items", "Random" };
+    static const char* randoTokensanity[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
+    static const char* randoShuffleScrubs[4] = { "Off", "Affordable", "Expensive", "Random Prices" };
+    static const char* randoShuffleMerchants[3] = { "Off", "On (no hints)", "On (with hints)" };
 
     // Shuffle Dungeon Items Settings
-    const char* randoShuffleMapsAndCompasses[6] = { "Start With",  "Vanilla",   "Own Dungeon",
+    static const char* randoShuffleMapsAndCompasses[6] = { "Start With",  "Vanilla",   "Own Dungeon",
                                                     "Any Dungeon", "Overworld", "Anywhere" };
-    const char* randoShuffleSmallKeys[6] = { "Start With",  "Vanilla",   "Own Dungeon",
+    static const char* randoShuffleSmallKeys[6] = { "Start With",  "Vanilla",   "Own Dungeon",
                                              "Any Dungeon", "Overworld", "Anywhere" };
-    const char* randoShuffleGerudoFortressKeys[4] = { "Vanilla", "Any Dungeon", "Overworld", "Anywhere" };
-    const char* randoShuffleBossKeys[6] = { "Start With",  "Vanilla",   "Own Dungeon",
+    static const char* randoShuffleGerudoFortressKeys[4] = { "Vanilla", "Any Dungeon", "Overworld", "Anywhere" };
+    static const char* randoShuffleBossKeys[6] = { "Start With",  "Vanilla",   "Own Dungeon",
                                             "Any Dungeon", "Overworld", "Anywhere" };
-    const char* randoShuffleGanonsBossKey[12] = {"Vanilla", "Own dungeon", "Start with", 
+    static const char* randoShuffleGanonsBossKey[12] = {"Vanilla", "Own dungeon", "Start with", 
                                                 "Any Dungeon", "Overworld", "Anywhere", 
                                                 "LACS-Vanilla", "LACS-Medallions", "LACS-Stones", 
                                                 "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens"};
-    const char* randoShuffleKeyRings[4] = { "Off", "Random", "Count", "Selection" };
+    static const char* randoShuffleKeyRings[4] = { "Off", "Random", "Count", "Selection" };
 
     // Misc Settings
-    const char* randoGossipStoneHints[4] = { "No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony" };
-    const char* randoHintClarity[3] = { "Obscure", "Ambiguous", "Clear" };
-    const char* randoHintDistribution[4] = { "Useless", "Balanced", "Strong", "Very Strong" };
-    const char* randoStartingTime[2] = { "Day", "Night" };
-    const char* randoRandomTrapDamage[3] = { "Basic", "Advanced", "Off" };
+    static const char* randoGossipStoneHints[4] = { "No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony" };
+    static const char* randoHintClarity[3] = { "Obscure", "Ambiguous", "Clear" };
+    static const char* randoHintDistribution[4] = { "Useless", "Balanced", "Strong", "Very Strong" };
+    static const char* randoStartingTime[2] = { "Day", "Night" };
+    static const char* randoRandomTrapDamage[3] = { "Basic", "Advanced", "Off" };
 
     // Item Pool Settings
-    const char* randoItemPool[4] = { "Plentiful", "Balanced", "Scarce", "Minimal" };
-    const char* randoIceTraps[5] = { "Off", "Normal", "Extra", "Mayhem", "Onslaught" };
+    static const char* randoItemPool[4] = { "Plentiful", "Balanced", "Scarce", "Minimal" };
+    static const char* randoIceTraps[5] = { "Off", "Normal", "Extra", "Mayhem", "Onslaught" };
 
     ImGui::SetNextWindowSize(ImVec2(920, 600), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
@@ -2965,7 +2898,7 @@ void DrawRandoEditor(bool& open) {
                  ((CVar_GetS32("gRandomizeDoorOfTime", RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED) &&
                  (CVar_GetS32("gRandomizeShuffleOcarinas", 0) == 0)));  // ocarinas not shuffled
                     
-                const char* disableRandoStartingAgeText = "This option is disabled due to other options making the game unbeatable.";
+                static const char* disableRandoStartingAgeText = "This option is disabled due to other options making the game unbeatable.";
                 ImGui::Text(Settings::StartingAge.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Choose which age Link will start as.\n\n"
@@ -3323,7 +3256,7 @@ void DrawRandoEditor(bool& open) {
                 // Shuffle Kokiri Sword
                 // Disabled when Start with Kokiri Sword is active
                 bool disableShuffleKokiriSword = CVar_GetS32("gRandomizeStartingKokiriSword", 0);
-                const char* disableShuffleKokiriSwordText = "This option is disabled because \"Start with Kokiri Sword\" is enabled.";
+                static const char* disableShuffleKokiriSwordText = "This option is disabled because \"Start with Kokiri Sword\" is enabled.";
                 UIWidgets::EnhancementCheckbox(Settings::ShuffleKokiriSword.GetName().c_str(), "gRandomizeShuffleKokiriSword",
                                                 disableShuffleKokiriSword, disableShuffleKokiriSwordText);
                 UIWidgets::InsertHelpHoverText(
@@ -3337,7 +3270,7 @@ void DrawRandoEditor(bool& open) {
                 // Shuffle Ocarinas
                 // Disabled when Start with Ocarina is active
                 bool disableShuffleOcarinas = CVar_GetS32("gRandomizeStartingOcarina", 0);
-                const char* disableShuffleOcarinasText = "This option is disabled because \"Start with Fairy Ocarina\" is enabled.";
+                static const char* disableShuffleOcarinasText = "This option is disabled because \"Start with Fairy Ocarina\" is enabled.";
                 UIWidgets::EnhancementCheckbox(Settings::ShuffleOcarinas.GetName().c_str(), "gRandomizeShuffleOcarinas",
                                               disableShuffleOcarinas, disableShuffleOcarinasText);
                 UIWidgets::InsertHelpHoverText(
@@ -3351,7 +3284,7 @@ void DrawRandoEditor(bool& open) {
                 // Shuffle Weird Egg
                 // Disabled when Skip Child Zelda is active
                 bool disableShuffleWeirdEgg = CVar_GetS32("gRandomizeSkipChildZelda", 0);
-                const char* disableShuffleWeirdEggText = "This option is disabled because \"Skip Child Zelda\" is enabled.";
+                static const char* disableShuffleWeirdEggText = "This option is disabled because \"Skip Child Zelda\" is enabled.";
                 UIWidgets::EnhancementCheckbox(Settings::ShuffleWeirdEgg.GetName().c_str(), "gRandomizeShuffleWeirdEgg",
                                               disableShuffleWeirdEgg, disableShuffleWeirdEggText);
                 UIWidgets::InsertHelpHoverText(
@@ -3710,7 +3643,7 @@ void DrawRandoEditor(bool& open) {
                 // Skip child stealth
                 // Disabled when Skip Child Zelda is active
                 bool disableChildStealth = CVar_GetS32("gRandomizeSkipChildZelda", 0);
-                const char* disableChildStealthText = "This option is disabled because \"Skip Child Zelda\" is enabled";
+                static const char* disableChildStealthText = "This option is disabled because \"Skip Child Zelda\" is enabled";
                 UIWidgets::EnhancementCheckbox(Settings::SkipChildStealth.GetName().c_str(), "gRandomizeSkipChildStealth", disableChildStealth, disableChildStealthText);
                 UIWidgets::InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.");
 
@@ -4232,7 +4165,7 @@ CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u
     return messageEntry;
 }
 
-std::vector<std::vector<const char*>> mapGetItemHints = {
+const char* mapGetItemHints[3][2] = {
     { " It's ordinary.", " It's masterful!" },
     { "&Sieht aus wie immer.", " &Man kann darauf die Worte&%r\"Master Quest\"%w entziffern..." },
     { "&Elle vous semble %rordinaire%w.", "&Étrange... les mots %r\"Master&Quest\"%w sont gravés dessus." },
@@ -4288,7 +4221,7 @@ CustomMessageEntry Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEnt
 void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::getItemMessageTableID);
-    for (GetItemMessage messageEntry : messageEntries) {
+    for (const GetItemMessage& messageEntry : messageEntries) {
         customMessageManager->CreateGetItemMessage(Randomizer::getItemMessageTableID, messageEntry.giid, messageEntry.iid,
                                                     { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, messageEntry.english,
                                                         messageEntry.german, messageEntry.french });
@@ -4415,7 +4348,7 @@ CustomMessageMinimal NaviMessages[NUM_NAVI_MESSAGES] = {
 void CreateNaviRandoMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::NaviRandoMessageTableID);
-    for (u8 i = 0; i <= (NUM_NAVI_MESSAGES - 1); i++) {
+    for (unsigned int i = 0; i <= (NUM_NAVI_MESSAGES - 1); i++) {
         customMessageManager->CreateMessage(Randomizer::NaviRandoMessageTableID, i,
                                             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, NaviMessages[i].english,
                                               NaviMessages[i].german, NaviMessages[i].french });
@@ -4778,7 +4711,7 @@ class ExtendedVanillaTableInvalidItemIdException: public std::exception {
 
 void InitRandoItemTable() {
     // These entries have ItemIDs from vanilla, but not GetItemIDs or entries in the old sGetItemTable
-    GetItemEntry extendedVanillaGetItemTable[] = {
+    static GetItemEntry extendedVanillaGetItemTable[] = {
         GET_ITEM(ITEM_MEDALLION_LIGHT,                 OBJECT_GI_MEDAL,    GID_MEDALLION_LIGHT,  0x40,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_LIGHT_MEDALLION),
         GET_ITEM(ITEM_MEDALLION_FOREST,                OBJECT_GI_MEDAL,    GID_MEDALLION_FOREST, 0x3E,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_FOREST_MEDALLION),
         GET_ITEM(ITEM_MEDALLION_FIRE,                  OBJECT_GI_MEDAL,    GID_MEDALLION_FIRE,   0x3C,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_FIRE_MEDALLION),
@@ -4807,7 +4740,7 @@ void InitRandoItemTable() {
 
     // These do not have ItemIDs or GetItemIDs from vanilla, so I'm using their
     // RandomizerGet enum values for both.
-    GetItemEntry randoGetItemTable[] = {
+    static GetItemEntry randoGetItemTable[] = {
         GET_ITEM(RG_ICE_TRAP,                          OBJECT_GI_RUPY,     GID_RUPEE_GOLD,       TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_ICE_TRAP),
         GET_ITEM(RG_MAGIC_SINGLE,                      OBJECT_GI_MAGICPOT, GID_MAGIC_SMALL,      0xE4,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MAGIC_SINGLE),
         GET_ITEM(RG_MAGIC_DOUBLE,                      OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE,      0xE8,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_MAGIC_DOUBLE),
