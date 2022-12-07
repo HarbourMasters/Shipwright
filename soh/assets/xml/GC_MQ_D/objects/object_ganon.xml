@@ -68,7 +68,7 @@
         <DList Name="gGanondorfRightHandOpenDL" Offset="0xC9E8"/>
 
         <!-- Ganondorf Title Card Texture -->
-        <Texture Name="gGanondorfTitleCardTex" OutName="ganondorf_title_card" Format="i8" Width="128" Height="40" Offset="0xCF00"/>
+        <Texture Name="gGanondorfTitleCardTex" OutName="ganondorf_title_card" Format="i8" Width="128" Height="120" Offset="0xCF00"/>
 
         <!-- Ganondorf Animation -->
         <Animation Name="gGanondorfEndingFloatAnim" Offset="0x11348"/> <!-- Original name is "ONOLEE" (lit. "Curse you!" from his in-game dialogue) -->
