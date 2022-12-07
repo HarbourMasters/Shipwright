@@ -347,7 +347,7 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         { TEXTBOX_TYPE_WOODEN, TEXTBOX_POS_BOTTOM,
             "Water level control system.&Keep away!",
             "Wasserstand Kontrollsystem&Finger weg!",
-            "Contrôle du niveau d'eau.&Ne pas toucher!"
+            "Contrôle du niveau de l'eau.&Ne pas toucher!"
         });
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI,
         { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
