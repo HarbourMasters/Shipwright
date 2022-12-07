@@ -224,6 +224,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("NPC_Kokiri",                    "Kokiri",               BOX_NPC,          ImVec4(  0, 130,  70, 255), false, true, false),
     COSMETIC_OPTION("NPC_Gerudo",                    "Gerudo",               BOX_NPC,          ImVec4( 90,   0, 140, 255), false, true, false),
     COSMETIC_OPTION("NPC_MetalTrap",                 "Metal Trap",           BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("NPC_IronKnuckles",              "Iron Knuckles",        BOX_NPC,          ImVec4(245, 255, 205, 255), false, true, false),
     // Cucco
 };
 
@@ -1497,6 +1498,11 @@ void DrawCosmeticsEditor(bool& open) {
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Silly")) {
+            if (CVar_GetS32("gLetItSnow", 0)) {
+                if (UIWidgets::EnhancementCheckbox("Let It Snow", "gLetItSnow")) {
+                    SohImGui::RequestCvarSaveOnNextTick();
+                }
+            }
             if (UIWidgets::EnhancementSliderFloat("Link Body Scale: %f", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, false)) {
                 CVar_SetS32("gCosmetics.Link_BodyScale.Changed", 1);
             }

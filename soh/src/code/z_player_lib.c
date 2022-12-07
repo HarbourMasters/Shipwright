@@ -1181,14 +1181,12 @@ void Player_DrawGetItemImpl(PlayState* play, Player* this, Vec3f* refPos, s32 dr
     Matrix_RotateZYX(0, play->gameplayFrames * 1000, 0, MTXMODE_APPLY);
     Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
 
-    if (!(this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId == RG_ICE_TRAP)) {
-        // RANDOTODO: Make this more flexible for easier toggling of individual item recolors in the future.
-        if (this->getItemEntry.drawFunc != NULL &&
-            (CVar_GetS32("gRandoMatchKeyColors", 0) || this->getItemEntry.getItemId == RG_DOUBLE_DEFENSE)) {
-            this->getItemEntry.drawFunc(play, &this->getItemEntry);
-        } else {
-            GetItem_Draw(play, drawIdPlusOne - 1);
-        }
+    // RANDOTODO: Make this more flexible for easier toggling of individual item recolors in the future.
+    if (this->getItemEntry.drawFunc != NULL &&
+        (CVar_GetS32("gRandoMatchKeyColors", 0) || this->getItemEntry.getItemId == RG_DOUBLE_DEFENSE || this->getItemEntry.getItemId == RG_ICE_TRAP)) {
+        this->getItemEntry.drawFunc(play, &this->getItemEntry);
+    } else {
+        GetItem_Draw(play, drawIdPlusOne - 1);
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

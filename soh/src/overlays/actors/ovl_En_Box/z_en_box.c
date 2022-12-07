@@ -77,9 +77,13 @@ GetItemEntry sItem;
 Gfx gSkullTreasureChestChestSideAndLidDL[116] = {0};
 Gfx gGoldTreasureChestChestSideAndLidDL[116] = {0};
 Gfx gKeyTreasureChestChestSideAndLidDL[116] = {0};
+Gfx gChristmasRedTreasureChestChestSideAndLidDL[116] = {0};
+Gfx gChristmasGreenTreasureChestChestSideAndLidDL[116] = {0};
 Gfx gSkullTreasureChestChestFrontDL[128] = {0};
 Gfx gGoldTreasureChestChestFrontDL[128] = {0};
 Gfx gKeyTreasureChestChestFrontDL[128] = {0};
+Gfx gChristmasRedTreasureChestChestFrontDL[128] = {0};
+Gfx gChristmasGreenTreasureChestChestFrontDL[128] = {0};
 u8 hasCreatedRandoChestTextures = 0;
 
 void EnBox_SetupAction(EnBox* this, EnBoxActionFunc actionFunc) {
@@ -702,6 +706,16 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
             this->boxLidDL = gTreasureChestBossKeyChestSideAndTopDL;
         }
     }
+
+    if (CVar_GetS32("gLetItSnow", 0)) {
+        if (this->dyna.actor.scale.x == 0.01f) {
+            this->boxBodyDL = gChristmasRedTreasureChestChestFrontDL;
+            this->boxLidDL = gChristmasRedTreasureChestChestSideAndLidDL;
+        } else {
+            this->boxBodyDL = gChristmasGreenTreasureChestChestFrontDL;
+            this->boxLidDL = gChristmasGreenTreasureChestChestSideAndLidDL;
+        }
+    }
 }
 
 void EnBox_CreateExtraChestTextures() {
@@ -713,6 +727,10 @@ void EnBox_CreateExtraChestTextures() {
         gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, ResourceMgr_LoadFileRaw("assets/objects/object_box/gGoldTreasureChestSideAndTopTex")),
         gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, ResourceMgr_LoadFileRaw("assets/objects/object_box/gKeyTreasureChestFrontTex")),
         gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, ResourceMgr_LoadFileRaw("assets/objects/object_box/gKeyTreasureChestSideAndTopTex")),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, ResourceMgr_LoadFileRaw("assets/objects/object_box/gChristmasRedTreasureChestFrontTex")),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, ResourceMgr_LoadFileRaw("assets/objects/object_box/gChristmasRedTreasureChestSideAndTopTex")),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, ResourceMgr_LoadFileRaw("assets/objects/object_box/gChristmasGreenTreasureChestFrontTex")),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, ResourceMgr_LoadFileRaw("assets/objects/object_box/gChristmasGreenTreasureChestSideAndTopTex")),
     };
 
     Gfx* frontCmd = ResourceMgr_LoadGfxByName(gTreasureChestChestFrontDL);
@@ -721,12 +739,16 @@ void EnBox_CreateExtraChestTextures() {
         gSkullTreasureChestChestFrontDL[frontIndex] = *frontCmd;
         gGoldTreasureChestChestFrontDL[frontIndex] = *frontCmd;
         gKeyTreasureChestChestFrontDL[frontIndex] = *frontCmd;
+        gChristmasRedTreasureChestChestFrontDL[frontIndex] = *frontCmd;
+        gChristmasGreenTreasureChestChestFrontDL[frontIndex] = *frontCmd;
         frontIndex++;
         ++frontCmd;
     }
     gSkullTreasureChestChestFrontDL[frontIndex] = *frontCmd;
     gGoldTreasureChestChestFrontDL[frontIndex] = *frontCmd;
     gKeyTreasureChestChestFrontDL[frontIndex] = *frontCmd;
+    gChristmasRedTreasureChestChestFrontDL[frontIndex] = *frontCmd;
+    gChristmasGreenTreasureChestChestFrontDL[frontIndex] = *frontCmd;
 
     gSkullTreasureChestChestFrontDL[5] = gTreasureChestChestTextures[0];
     gSkullTreasureChestChestFrontDL[23] = gTreasureChestChestTextures[1];
@@ -740,6 +762,14 @@ void EnBox_CreateExtraChestTextures() {
     gKeyTreasureChestChestFrontDL[23] = gTreasureChestChestTextures[5];
     gKeyTreasureChestChestFrontDL[37] = gTreasureChestChestTextures[4];
     gKeyTreasureChestChestFrontDL[50] = gTreasureChestChestTextures[5];
+    gChristmasRedTreasureChestChestFrontDL[5] = gTreasureChestChestTextures[6];
+    gChristmasRedTreasureChestChestFrontDL[23] = gTreasureChestChestTextures[7];
+    gChristmasRedTreasureChestChestFrontDL[37] = gTreasureChestChestTextures[6];
+    gChristmasRedTreasureChestChestFrontDL[50] = gTreasureChestChestTextures[7];
+    gChristmasGreenTreasureChestChestFrontDL[5] = gTreasureChestChestTextures[8];
+    gChristmasGreenTreasureChestChestFrontDL[23] = gTreasureChestChestTextures[9];
+    gChristmasGreenTreasureChestChestFrontDL[37] = gTreasureChestChestTextures[8];
+    gChristmasGreenTreasureChestChestFrontDL[50] = gTreasureChestChestTextures[9];
 
     Gfx* sideCmd = ResourceMgr_LoadGfxByName(gTreasureChestChestSideAndLidDL);
     int sideIndex = 0;
@@ -747,12 +777,16 @@ void EnBox_CreateExtraChestTextures() {
         gSkullTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
         gGoldTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
         gKeyTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
+        gChristmasRedTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
+        gChristmasGreenTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
         sideIndex++;
         ++sideCmd;
     }
     gSkullTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
     gGoldTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
     gKeyTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
+    gChristmasRedTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
+    gChristmasGreenTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
 
     gSkullTreasureChestChestSideAndLidDL[5] = gTreasureChestChestTextures[0];
     gSkullTreasureChestChestSideAndLidDL[29] = gTreasureChestChestTextures[1];
@@ -763,6 +797,12 @@ void EnBox_CreateExtraChestTextures() {
     gKeyTreasureChestChestSideAndLidDL[5] = gTreasureChestChestTextures[4];
     gKeyTreasureChestChestSideAndLidDL[29] = gTreasureChestChestTextures[5];
     gKeyTreasureChestChestSideAndLidDL[45] = gTreasureChestChestTextures[4];
+    gChristmasRedTreasureChestChestSideAndLidDL[5] = gTreasureChestChestTextures[6];
+    gChristmasRedTreasureChestChestSideAndLidDL[29] = gTreasureChestChestTextures[7];
+    gChristmasRedTreasureChestChestSideAndLidDL[45] = gTreasureChestChestTextures[6];
+    gChristmasGreenTreasureChestChestSideAndLidDL[5] = gTreasureChestChestTextures[8];
+    gChristmasGreenTreasureChestChestSideAndLidDL[29] = gTreasureChestChestTextures[9];
+    gChristmasGreenTreasureChestChestSideAndLidDL[45] = gTreasureChestChestTextures[8];
 
     hasCreatedRandoChestTextures = 1;
 }
