@@ -35,7 +35,7 @@ modules:
       url: https://github.com/th-2021/Shipwright-cmake
       branch: flatpak
     - type: file 
-      path: ../../../ZELOOTD.z64
+      path: OTRExporter/baserom_non_mq.z64
       dest: OTRExporter
 
 rename-desktop-file: soh.desktop
