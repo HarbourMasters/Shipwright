@@ -465,6 +465,7 @@ void InitializeChecks() {
         checkStatusMap.emplace(RC_LINKS_POCKET, RCSHOW_SAVED);
         count++;
         areaChecksTotal[startingArea]++;
+        areaChecksGotten[startingArea]++;
     }
 
     for (auto& [rcCheck, rcObj] : RandomizerCheckObjects::GetAllRCObjects()) {
