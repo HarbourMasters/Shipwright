@@ -201,10 +201,10 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Magic_NayrusPrimary",           "Nayru's Primary",      BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Replace gNL_Diamond_Col / gNL_Orb_Col
     COSMETIC_OPTION("Magic_NayrusSecondary",         "Nayru's Secondary",    BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Replace gNL_Diamond_Env / gNL_Orb_Env
 
-    COSMETIC_OPTION("SpinAttack_Level1Primary",      "Level 1 Primary",      BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Replace gCharged1Col
-    COSMETIC_OPTION("SpinAttack_Level1Secondary",    "Level 1 Secondary",    BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Replace gCharged1ColEnv
-    COSMETIC_OPTION("SpinAttack_Level2Primary",      "Level 2 Primary",      BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Replace gCharged2Col
-    COSMETIC_OPTION("SpinAttack_Level2Secondary",    "Level 2 Secondary",    BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Replace gCharged2ColEnv
+    COSMETIC_OPTION("SpinAttack_Level1Primary",      "Level 1 Primary",      BOX_SPIN_ATTACK,  ImVec4(170, 255, 255, 255), false, true, true),
+    COSMETIC_OPTION("SpinAttack_Level1Secondary",    "Level 1 Secondary",    BOX_SPIN_ATTACK,  ImVec4(  0, 100, 255, 255), false, true, false),
+    COSMETIC_OPTION("SpinAttack_Level2Primary",      "Level 2 Primary",      BOX_SPIN_ATTACK,  ImVec4(255, 255, 170, 255), false, true, true),
+    COSMETIC_OPTION("SpinAttack_Level2Secondary",    "Level 2 Secondary",    BOX_SPIN_ATTACK,  ImVec4(255, 100,   0, 255), false, true, false),
 
     COSMETIC_OPTION("Trails_Bombchu",                "Bombchu",              BOX_TRAILS,       ImVec4(250,   0,   0, 255), false, true, true),
     COSMETIC_OPTION("Trails_Boomerang",              "Boomerang",            BOX_TRAILS,       ImVec4(255, 255, 100, 255), false, true, true),
@@ -1353,7 +1353,11 @@ void RandomizeColor(CosmeticOption& cosmeticOption) {
         CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_NPCSecondary"), 1.0f);
     } else if (cosmeticOption.label == "Props Primary") {
         CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_PropsSecondary"), 1.0f);
-    } 
+    } else if (cosmeticOption.label == "Level 1 Secondary") {
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("SpinAttack_Level1Primary"), 2.0f);
+    } else if (cosmeticOption.label == "Level 2 Secondary") {
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("SpinAttack_Level2Primary"), 2.0f);
+    }
 }
 
 void ResetColor(CosmeticOption& cosmeticOption) {
@@ -1384,6 +1388,10 @@ void ResetColor(CosmeticOption& cosmeticOption) {
         ResetColor(cosmeticOptions.at("Navi_NPCSecondary"));
     } else if (cosmeticOption.label == "Props Primary") {
         ResetColor(cosmeticOptions.at("Navi_PropsSecondary"));
+    } else if (cosmeticOption.label == "Level 1 Secondary") {
+        ResetColor(cosmeticOptions.at("SpinAttack_Level1Primary"));
+    } else if (cosmeticOption.label == "Level 2 Secondary") {
+        ResetColor(cosmeticOptions.at("SpinAttack_Level2Primary"));
     }
 }
 
