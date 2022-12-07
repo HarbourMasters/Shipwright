@@ -6,7 +6,7 @@
 
 #include "z_bg_spot06_objects.h"
 #include "objects/object_spot06_objects/object_spot06_objects.h"
-#include "../../../../soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 
 #define FLAGS ACTOR_FLAG_9
 
@@ -467,15 +467,15 @@ void BgSpot06Objects_Update(Actor* thisx, PlayState* play) {
         }
 
         // Spawn a floor switch
-        lakeControlFloorSwitch = Actor_Spawn(&play->actorCtx, play, ACTOR_OBJ_SWITCH, -896.0f, -1243.0f, 6953.0f, 0, 0, 0, switchParams);
+        lakeControlFloorSwitch = Actor_Spawn(&play->actorCtx, play, ACTOR_OBJ_SWITCH, -896.0f, -1243.0f, 6953.0f, 0, 0, 0, switchParams, false);
         // Spawn a sign
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_KANBAN, -970.0f, -1242.0f, 6954.0f, 0, 0, 0,
-            0x0000 | (TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN & 0xFF));
+            0x0000 | (TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN & 0xFF), false);
 
         // Spawn a Navi check spot when Water Temple isn't cleared
         if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_ELF_MSG2, -896.0f, -1243.0f, 6953.0f, 0, 0, 0,
-                0x3D00 | (TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI & 0xFF));
+                0x3D00 | (TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI & 0xFF), false);
         }
 
         actionCounter++;
