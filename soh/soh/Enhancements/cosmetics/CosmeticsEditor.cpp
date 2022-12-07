@@ -133,9 +133,9 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Equipment_SlingshotString",     "Slingshot String",     BOX_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Equipment_HammerHead",          "Hammer Head",          BOX_EQUIPMENT,    ImVec4(155, 192, 201, 255), false, true, false),
     COSMETIC_OPTION("Equipment_HammerHandle",        "Hammer Handle",        BOX_EQUIPMENT,    ImVec4(110,  60,   0, 255), false, true, true),
-    COSMETIC_OPTION("Equipment_HookshotChain",       "Hookshot Chain",       BOX_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("Equipment_HookshotReticle",     "Hookshot Reticle",     BOX_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true),
-    COSMETIC_OPTION("Equipment_HookshotTip",         "Hookshot Tip",         BOX_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Equipment_HookshotChain",       "Hookshot Chain",       BOX_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Implement
+    COSMETIC_OPTION("Equipment_HookshotReticle",     "Hookshot Reticle",     BOX_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Implement
+    COSMETIC_OPTION("Equipment_HookshotTip",         "Hookshot Tip",         BOX_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Implement
     COSMETIC_OPTION("Equipment_BowTips",             "Bow Tips",             BOX_EQUIPMENT,    ImVec4(200,   0,   0, 255), false, true, true),
     COSMETIC_OPTION("Equipment_BowString",           "Bow String",           BOX_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Equipment_BowBody",             "Bow Body",             BOX_EQUIPMENT,    ImVec4(140,  90,  10, 255), false, true, false),
@@ -192,17 +192,17 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Arrows_LightPrimary",           "Light Primary",        BOX_ARROWS,       ImVec4(255, 255,   0, 255), false, true, false),
     COSMETIC_OPTION("Arrows_LightSecondary",         "Light Secondary",      BOX_ARROWS,       ImVec4(255, 255, 170,   0), false, true, true),
 
-    COSMETIC_OPTION("Magic_DinsPrimary",             "Din's Primary",        BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false), // gDF_Col
-    COSMETIC_OPTION("Magic_DinsSecondary",           "Din's Secondary",      BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true), // gDF_Env
-    COSMETIC_OPTION("Magic_FaroresPrimary",          "Farore's Primary",     BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics)
-    COSMETIC_OPTION("Magic_FaroresSecondary",        "Farore's Secondary",   BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics)
-    COSMETIC_OPTION("Magic_NayrusPrimary",           "Nayru's Primary",      BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false), // gNL_Diamond_Col / gNL_Orb_Col
-    COSMETIC_OPTION("Magic_NayrusSecondary",         "Nayru's Secondary",    BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true), // gNL_Diamond_Env / gNL_Orb_Env
+    COSMETIC_OPTION("Magic_DinsPrimary",             "Din's Primary",        BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Replace gDF_Col
+    COSMETIC_OPTION("Magic_DinsSecondary",           "Din's Secondary",      BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Replace gDF_Env
+    COSMETIC_OPTION("Magic_FaroresPrimary",          "Farore's Primary",     BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Implement
+    COSMETIC_OPTION("Magic_FaroresSecondary",        "Farore's Secondary",   BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Implement
+    COSMETIC_OPTION("Magic_NayrusPrimary",           "Nayru's Primary",      BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Replace gNL_Diamond_Col / gNL_Orb_Col
+    COSMETIC_OPTION("Magic_NayrusSecondary",         "Nayru's Secondary",    BOX_MAGIC,        ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Replace gNL_Diamond_Env / gNL_Orb_Env
 
-    COSMETIC_OPTION("SpinAttack_Level1Primary",      "Level 1 Primary",      BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, false), // gCharged1Col
-    COSMETIC_OPTION("SpinAttack_Level1Secondary",    "Level 1 Secondary",    BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, true), // gCharged1ColEnv
-    COSMETIC_OPTION("SpinAttack_Level2Primary",      "Level 2 Primary",      BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, false), // gCharged2Col
-    COSMETIC_OPTION("SpinAttack_Level2Secondary",    "Level 2 Secondary",    BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, true), // gCharged2ColEnv
+    COSMETIC_OPTION("SpinAttack_Level1Primary",      "Level 1 Primary",      BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Replace gCharged1Col
+    COSMETIC_OPTION("SpinAttack_Level1Secondary",    "Level 1 Secondary",    BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Replace gCharged1ColEnv
+    COSMETIC_OPTION("SpinAttack_Level2Primary",      "Level 2 Primary",      BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Replace gCharged2Col
+    COSMETIC_OPTION("SpinAttack_Level2Secondary",    "Level 2 Secondary",    BOX_SPIN_ATTACK,  ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Replace gCharged2ColEnv
     // Todo (Cosmetics): Sword Trails
 
     /* World */
@@ -212,9 +212,6 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("World_RedIce",                  "Red Ice",              BOX_WORLD,        ImVec4(255,   0,   0, 255), false, true, false),
 
     /* NPCs */
-    // Other fairies
-    // Ganon Swords
-    // Ganon Eyes
     COSMETIC_OPTION("Navi_IdlePrimary",              "Idle Primary",         BOX_NAVI,         ImVec4(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("Navi_IdleSecondary",            "Idle Secondary",       BOX_NAVI,         ImVec4(  0,   0, 255,   0), false, true, true),
     COSMETIC_OPTION("Navi_NPCPrimary",               "NPC Primary",          BOX_NAVI,         ImVec4(150, 150, 255, 255), false, true, false),
@@ -227,6 +224,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("NPC_FireKeeseSecondary",        "Fire Keese Secondary", BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("NPC_IceKeesePrimary",           "Ice Keese Primary",    BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("NPC_IceKeeseSecondary",         "Ice Keese Secondary",  BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
+    // Health fairy
     COSMETIC_OPTION("NPC_Dog1",                      "Dog 1",                BOX_NPC,          ImVec4(255, 255, 200, 255), false, true, true),
     COSMETIC_OPTION("NPC_Dog2",                      "Dog 2",                BOX_NPC,          ImVec4(150, 100,  50, 255), false, true, true),
     COSMETIC_OPTION("NPC_GoldenSkulltula",           "Golden Skulltula",     BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
@@ -234,7 +232,6 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("NPC_Gerudo",                    "Gerudo",               BOX_NPC,          ImVec4( 90,   0, 140, 255), false, true, false),
     COSMETIC_OPTION("NPC_MetalTrap",                 "Metal Trap",           BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("NPC_IronKnuckles",              "Iron Knuckles",        BOX_NPC,          ImVec4(245, 255, 205, 255), false, true, false),
-    // Cucco
 };
 
 const char* MarginCvarList[] {
@@ -694,33 +691,33 @@ void ApplyOrResetCustomGfxPatches(bool rainbowTick = false) {
     if (rainbowTick == false || CVar_GetS32(equipmentSlingshotBody.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {equipmentSlingshotBody.defaultColor.x, equipmentSlingshotBody.defaultColor.y, equipmentSlingshotBody.defaultColor.z, equipmentSlingshotBody.defaultColor.w};
         Color_RGBA8 color = CVar_GetRGBA(equipmentSlingshotBody.cvar, defaultColor);
-        PATCH_GFX(gGiSlingshotDL,                                       "Equipment_SlingshotBody1",       equipmentSlingshotBody.changedCvar,        10, gsDPSetPrimColor(0, 0, MAX(color.r - 100, 0), MAX(color.g - 100, 0), MAX(color.b - 100, 0), 255));
-        PATCH_GFX(gGiSlingshotDL,                                       "Equipment_SlingshotBody2",       equipmentSlingshotBody.changedCvar,        12, gsDPSetEnvColor(MAX(color.r - 100, 0) / 3, MAX(color.g - 100, 0) / 3, MAX(color.b - 100, 0) / 3, 255));
-        PATCH_GFX(gGiSlingshotDL,                                       "Equipment_SlingshotBody3",       equipmentSlingshotBody.changedCvar,        74, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiSlingshotDL,                                       "Equipment_SlingshotBody4",       equipmentSlingshotBody.changedCvar,        76, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
-        PATCH_GFX(gGiSlingshotDL,                                       "Equipment_SlingshotBody5",       equipmentSlingshotBody.changedCvar,       128, gsDPSetPrimColor(0, 0, MAX(color.r - 100, 0), MAX(color.g - 100, 0), MAX(color.b - 100, 0), 255));
-        PATCH_GFX(gGiSlingshotDL,                                       "Equipment_SlingshotBody6",       equipmentSlingshotBody.changedCvar,       130, gsDPSetEnvColor(MAX(color.r - 100, 0) / 3, MAX(color.g - 100, 0) / 3, MAX(color.b - 100, 0) / 3, 255));
-        PATCH_GFX(gLinkChildRightArmStretchedSlingshotDL,               "Equipment_SlingshotBody7",       equipmentSlingshotBody.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkChildRightHandHoldingSlingshotNearDL,            "Equipment_SlingshotBody8",       equipmentSlingshotBody.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkChildRightHandHoldingSlingshotFarDL,             "Equipment_SlingshotBody9",       equipmentSlingshotBody.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotBody1", equipmentSlingshotBody.changedCvar,  10, gsDPSetPrimColor(0, 0, MAX(color.r - 100, 0), MAX(color.g - 100, 0), MAX(color.b - 100, 0), 255));
+        PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotBody2", equipmentSlingshotBody.changedCvar,  12, gsDPSetEnvColor(MAX(color.r - 100, 0) / 3, MAX(color.g - 100, 0) / 3, MAX(color.b - 100, 0) / 3, 255));
+        PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotBody3", equipmentSlingshotBody.changedCvar,  74, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotBody4", equipmentSlingshotBody.changedCvar,  76, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotBody5", equipmentSlingshotBody.changedCvar, 128, gsDPSetPrimColor(0, 0, MAX(color.r - 100, 0), MAX(color.g - 100, 0), MAX(color.b - 100, 0), 255));
+        PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotBody6", equipmentSlingshotBody.changedCvar, 130, gsDPSetEnvColor(MAX(color.r - 100, 0) / 3, MAX(color.g - 100, 0) / 3, MAX(color.b - 100, 0) / 3, 255));
+        PATCH_GFX(gLinkChildRightArmStretchedSlingshotDL,         "Equipment_SlingshotBody7", equipmentSlingshotBody.changedCvar,   4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildRightHandHoldingSlingshotNearDL,      "Equipment_SlingshotBody8", equipmentSlingshotBody.changedCvar,   4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildRightHandHoldingSlingshotFarDL,       "Equipment_SlingshotBody9", equipmentSlingshotBody.changedCvar,   4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
 
         if (!rainbowTick) {
-        PATCH_GFX(gLinkChildRightArmStretchedSlingshotDL,               "Equipment_SlingshotBody10",      equipmentSlingshotBody.changedCvar,        20, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildRightArmStretchedSlingshotDL,               "Equipment_SlingshotBody11",      equipmentSlingshotBody.changedCvar,        74, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildRightHandHoldingSlingshotFarDL,             "Equipment_SlingshotBody12",      equipmentSlingshotBody.changedCvar,        20, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildRightHandHoldingSlingshotFarDL,             "Equipment_SlingshotBody13",      equipmentSlingshotBody.changedCvar,        66, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildRightHandHoldingSlingshotNearDL,            "Equipment_SlingshotBody14",      equipmentSlingshotBody.changedCvar,        96, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildRightHandHoldingSlingshotNearDL,            "Equipment_SlingshotBody15",      equipmentSlingshotBody.changedCvar,       136, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildRightHandHoldingSlingshotNearDL,            "Equipment_SlingshotBody16",      equipmentSlingshotBody.changedCvar,       138, gsSPEndDisplayList());
+        PATCH_GFX(gLinkChildRightArmStretchedSlingshotDL,         "Equipment_SlingshotBody10",equipmentSlingshotBody.changedCvar,  20, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildRightArmStretchedSlingshotDL,         "Equipment_SlingshotBody11",equipmentSlingshotBody.changedCvar,  74, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildRightHandHoldingSlingshotFarDL,       "Equipment_SlingshotBody12",equipmentSlingshotBody.changedCvar,  20, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildRightHandHoldingSlingshotFarDL,       "Equipment_SlingshotBody13",equipmentSlingshotBody.changedCvar,  66, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildRightHandHoldingSlingshotNearDL,      "Equipment_SlingshotBody14",equipmentSlingshotBody.changedCvar,  96, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildRightHandHoldingSlingshotNearDL,      "Equipment_SlingshotBody15",equipmentSlingshotBody.changedCvar, 136, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildRightHandHoldingSlingshotNearDL,      "Equipment_SlingshotBody16",equipmentSlingshotBody.changedCvar, 138, gsSPEndDisplayList());
         }
     }
     static CosmeticOption& equipmentSlingshotString = cosmeticOptions.at("Equipment_SlingshotString");
     if (rainbowTick == false || CVar_GetS32(equipmentSlingshotString.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {equipmentSlingshotString.defaultColor.x, equipmentSlingshotString.defaultColor.y, equipmentSlingshotString.defaultColor.z, equipmentSlingshotString.defaultColor.w};
         Color_RGBA8 color = CVar_GetRGBA(equipmentSlingshotString.cvar, defaultColor);
-        PATCH_GFX(gGiSlingshotDL,                                       "Equipment_SlingshotString1",     equipmentSlingshotString.changedCvar,     150, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiSlingshotDL,                                       "Equipment_SlingshotString2",     equipmentSlingshotString.changedCvar,     152, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gLinkChildSlinghotStringDL,                           "Equipment_SlingshotString3",     equipmentSlingshotString.changedCvar,      18, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotString1",equipmentSlingshotString.changedCvar,150, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotString2",equipmentSlingshotString.changedCvar,152, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gLinkChildSlinghotStringDL,                     "Equipment_SlingshotString3",equipmentSlingshotString.changedCvar, 18, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& equipmentBowTips = cosmeticOptions.at("Equipment_BowTips");
