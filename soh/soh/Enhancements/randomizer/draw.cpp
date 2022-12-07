@@ -1,10 +1,10 @@
+#include <Cvar.h>
 #include "draw.h"
 #include "z64.h"
 #include "macros.h"
 #include "functions.h"
 #include "randomizerTypes.h"
 #include <array>
-#include <Cvar.h>
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
