@@ -1631,7 +1631,7 @@ namespace GameMenuBar {
             ImGui::PopStyleColor(1);
 #ifdef ENABLE_CROWD_CONTROL
             UIWidgets::PaddedEnhancementCheckbox("Crowd Control", "gCrowdControl", true, false);
-            UIWidgets::Tooltip("Requires a full SoH restart to take effect!\n\nEnables CrowdControl. Will attempt to connect to the local Crowd Control server.");
+            UIWidgets::Tooltip("Will attempt to connect to the Crowd Control server. Check out crowdcontrol.live for more information.");
 
             if (CVar_GetS32("gCrowdControl", 0)) {
                 CrowdControl::Instance->Enable();
