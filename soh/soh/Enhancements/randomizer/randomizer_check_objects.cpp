@@ -944,10 +944,10 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             ((locationIt.rcType != RCTYPE_BOSS_KEY) || CVar_GetS32("gRandomizeBossKeysanity", RO_DUNGEON_ITEM_LOC_STARTWITH) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
             ((locationIt.rcType != RCTYPE_GANON_BOSS_KEY) || CVar_GetS32("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) != RO_GANON_BOSS_KEY_VANILLA) &&
             ((!RC_IS_CARPENTER(locationIt.rc) && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) ||
-              (CVar_GetS32("gRandomizeGerudoFortress", 0) == 2 && !RC_IS_CARPENTER(locationIt.rc) && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) || //2 is the value for "open" gerudo's fortress
-              (CVar_GetS32("gRandomizeGerudoFortress", 0) == 1 && (locationIt.rc == RC_GF_NORTH_F1_CARPENTER || locationIt.rc == RC_GF_GERUDO_MEMBERSHIP_CARD)) || //1 is the value for "fast" gerudo's fortress
-              (CVar_GetS32("gRandomizeGerudoFortress", 0) == 0) //0 is the value for "normal" gerudo's fortress
-            )
+                (CVar_GetS32("gRandomizeGerudoFortress", 0) == 2 && !RC_IS_CARPENTER(locationIt.rc) && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) || //2 is the value for "open" gerudo's fortress
+                (CVar_GetS32("gRandomizeGerudoFortress", 0) == 1 && (locationIt.rc == RC_GF_NORTH_F1_CARPENTER || locationIt.rc == RC_GF_GERUDO_MEMBERSHIP_CARD)) || //1 is the value for "fast" gerudo's fortress
+                (CVar_GetS32("gRandomizeGerudoFortress", 0) == 0) //0 is the value for "normal" gerudo's fortress
+                )
         );
     }
 }

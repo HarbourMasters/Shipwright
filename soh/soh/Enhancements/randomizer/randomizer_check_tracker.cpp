@@ -67,6 +67,41 @@ Color_RGBA8 Color_Scummed_Extra      = { 255, 255, 255, 255 }; //TODO
 Color_RGBA8 Color_Saved_Main         = { 255, 255, 255, 255 }; //White
 Color_RGBA8 Color_Saved_Extra        = {   0, 185,   0, 255 }; //Green
 
+static const SceneID dungeonSceneLookupByArea[] = {
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //| Non-Dungeon Areas
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_ID_MAX, //|
+    SCENE_YDAN, //Deku Tree
+    SCENE_DDAN, //DC
+    SCENE_BDAN, //JJB
+    SCENE_BMORI1, //Forest
+    SCENE_HIDAN, //Fire
+    SCENE_MIZUSIN, //Water
+    SCENE_JYASINZOU, //Spirit
+    SCENE_HAKADAN, //Shadow
+    SCENE_HAKADANCH, //BOTW
+    SCENE_ICE_DOUKUTO, //Ice
+    SCENE_MEN, //GTG
+    SCENE_GANONTIKA, //GC
+};
+
 // persistent during gameplay
 bool initialized = false;
 bool doInitialize = false;
@@ -269,7 +304,7 @@ void DrawCheckTracker(bool& open) {
 
                 if (isThisAreaSpoiled) {
                     if (showVOrMQ && RandomizerCheckObjects::AreaIsDungeon(obj.rcArea)) {
-                        if (OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(obj.sceneId))
+                        if (OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(dungeonSceneLookupByArea[obj.rcArea]))
                             ImGui::Text("(%d/%d) - MQ", areaChecksGotten[obj.rcArea], areaChecksTotal[obj.rcArea]);
                         else
                             ImGui::Text("(%d/%d) - Vanilla", areaChecksGotten[obj.rcArea], areaChecksTotal[obj.rcArea]);
@@ -376,23 +411,23 @@ void SetVanillaSettings() {
 }
 
 void SetRandomizerSettings() {
-    uint8_t gRandomizeShopsanity =              OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY);
-    uint8_t gRandomizeShuffleTokens =           OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS);
-    uint8_t gRandomizeShuffleBeans =            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MAGIC_BEANS);
-    uint8_t gRandomizeShuffleScrubs =           OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS);
-    uint8_t gRandomizeShuffleMerchants =        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS);
-    uint8_t gRandomizeShuffleCows =             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_COWS);
-    uint8_t gRandomizeShuffleAdultTrade =       OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE);
-    uint8_t gRandomizeShuffleKokiriSword =      OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_KOKIRI_SWORD);
-    uint8_t gRandomizeShuffleWeirdEgg =         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_WEIRD_EGG);
-    uint8_t gRandomizeShuffleGerudoCard =       OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD);
-    uint8_t gRandomizeShuffleFrogSongRupees =   OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FROG_SONG_RUPEES);
-    uint8_t gRandomizeStartingMapsCompasses =   OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES);
-    uint8_t gRandomizeKeysanity =               OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY);
-    uint8_t gRandomizeGerudoFortressKeys =      OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS);
-    uint8_t gRandomizeBossKeysanity =           OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY);
-    uint8_t gRandomizeShuffleGanonBossKey =     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY);
-    uint8_t gRandomizeGerudoFortress =          OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS);
+    gRandomizeShopsanity =              OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY);
+    gRandomizeShuffleTokens =           OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS);
+    gRandomizeShuffleBeans =            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MAGIC_BEANS);
+    gRandomizeShuffleScrubs =           OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS);
+    gRandomizeShuffleMerchants =        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS);
+    gRandomizeShuffleCows =             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_COWS);
+    gRandomizeShuffleAdultTrade =       OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE);
+    gRandomizeShuffleKokiriSword =      OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_KOKIRI_SWORD);
+    gRandomizeShuffleWeirdEgg =         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_WEIRD_EGG);
+    gRandomizeShuffleGerudoCard =       OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD);
+    gRandomizeShuffleFrogSongRupees =   OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FROG_SONG_RUPEES);
+    gRandomizeStartingMapsCompasses =   OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES);
+    gRandomizeKeysanity =               OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY);
+    gRandomizeGerudoFortressKeys =      OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS);
+    gRandomizeBossKeysanity =           OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY);
+    gRandomizeShuffleGanonBossKey =     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY);
+    gRandomizeGerudoFortress =          OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS);
 }
 
 bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
@@ -465,6 +500,7 @@ void InitializeChecks() {
         checkStatusMap.emplace(RC_LINKS_POCKET, RCSHOW_SAVED);
         count++;
         areaChecksTotal[startingArea]++;
+        areaChecksGotten[startingArea]++;
     }
 
     for (auto& [rcCheck, rcObj] : RandomizerCheckObjects::GetAllRCObjects()) {
