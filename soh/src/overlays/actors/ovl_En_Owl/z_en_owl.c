@@ -958,7 +958,11 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                     osSyncPrintf("SPOT 06 の デモがはしった\n"); // "Demo of SPOT 06 has been completed"
                     osSyncPrintf(VT_RST);
                     if (gSaveContext.n64ddFlag) {
-                        play->nextEntranceIndex = 0x027E;
+                        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
+                            play->nextEntranceIndex = Entrance_OverrideNextIndex(0x027E);
+                        } else {
+                            play->nextEntranceIndex = 0x027E;
+                        }
                         play->sceneLoadFlag = 0x14;
                         play->fadeTransition = 2;
                         break;
@@ -969,7 +973,11 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                 case 8:
                 case 9:
                     if (gSaveContext.n64ddFlag) {
-                        play->nextEntranceIndex = 0x0554;
+                        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
+                            play->nextEntranceIndex = Entrance_OverrideNextIndex(0x0554);
+                        } else {
+                            play->nextEntranceIndex = 0x0554;
+                        }
                         play->sceneLoadFlag = 0x14;
                         play->fadeTransition = 2;
                         break;
