@@ -161,7 +161,7 @@ jobs:
         flatpak install --user -y --noninteractive flathub org.flatpak.Builder
         dbus-run-session ~/.local/share/flatpak/exports/bin/org.flatpak.Builder build -v --install-deps-from=flathub --force-clean --ccache --install --user scripts/linux/flatpak/com.shipofharkinian.soh.yaml
 
-        flatpak build-bundle ~/.local/share/flatpak/repo/ soh.flatpak com.shipofharkinian.soh Stable
+        flatpak build-bundle ~/.local/share/flatpak/repo/ soh.flatpak com.shipofharkinian.soh stable
         mv README.md readme.txt
     - name: Upload build
       uses: actions/upload-artifact@v3
