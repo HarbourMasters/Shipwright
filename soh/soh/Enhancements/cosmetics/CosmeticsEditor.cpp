@@ -62,6 +62,7 @@ typedef enum {
     BOX_MAGIC,
     BOX_ARROWS,
     BOX_SPIN_ATTACK,
+    BOX_NAVI,
 } CosmeticBox;
 
 std::map<CosmeticBox, const char*> boxLabels = {
@@ -78,6 +79,7 @@ std::map<CosmeticBox, const char*> boxLabels = {
     { BOX_MAGIC, "Magic Effects" },
     { BOX_ARROWS, "Arrow Effects" },
     { BOX_SPIN_ATTACK, "Spin Attack" },
+    { BOX_NAVI, "Navi" },
 };
 
 typedef struct {
@@ -210,10 +212,17 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("World_RedIce",                  "Red Ice",              BOX_WORLD,        ImVec4(255,   0,   0, 255), false, true, false),
 
     /* NPCs */
-    // Navi
     // Other fairies
     // Ganon Swords
     // Ganon Eyes
+    COSMETIC_OPTION("Navi_IdlePrimary",              "Idle Primary",         BOX_NAVI,         ImVec4(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Navi_IdleSecondary",            "Idle Secondary",       BOX_NAVI,         ImVec4(  0,   0, 255,   0), false, true, true),
+    COSMETIC_OPTION("Navi_NPCPrimary",               "NPC Primary",          BOX_NAVI,         ImVec4(150, 150, 255, 255), false, true, false),
+    COSMETIC_OPTION("Navi_NPCSecondary",             "NPC Secondary",        BOX_NAVI,         ImVec4(150, 150, 255,   0), false, true, true),
+    COSMETIC_OPTION("Navi_EnemyPrimary",             "Enemy Primary",        BOX_NAVI,         ImVec4(255, 255,   0, 255), false, true, false),
+    COSMETIC_OPTION("Navi_EnemySecondary",           "Enemy Secondary",      BOX_NAVI,         ImVec4(200, 155,   0,   0), false, true, true),
+    COSMETIC_OPTION("Navi_PropsPrimary",             "Props Primary",        BOX_NAVI,         ImVec4(  0, 255,   0, 255), false, true, false),
+    COSMETIC_OPTION("Navi_PropsSecondary",           "Props Secondary",      BOX_NAVI,         ImVec4(  0, 255,   0,   0), false, true, true),
     COSMETIC_OPTION("NPC_FireKeesePrimary",          "Fire Keese Primary",   BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("NPC_FireKeeseSecondary",        "Fire Keese Secondary", BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("NPC_IceKeesePrimary",           "Ice Keese Primary",    BOX_NPC,          ImVec4(255, 255, 255, 255), false, true, false),
@@ -1327,11 +1336,19 @@ void RandomizeColor(CosmeticOption& cosmeticOption) {
     CVar_SetS32((cosmeticOption.rainbowCvar), 0);
     CVar_SetS32((cosmeticOption.changedCvar), 1);
 
-    if (cosmeticOption.cvar == "gCosmetics.Equipment_BowBody") {
+    if (cosmeticOption.label == "Bow Body") {
         CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Equipment_BowTips"), 0.5f);
         CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Equipment_BowHandle"), 1.0f);
         CopyMultipliedColor(cosmeticOption, cosmeticOption, 4.0f);
-    }
+    } else if (cosmeticOption.label == "Idle Primary") {
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_IdleSecondary"), 0.5f);
+    } else if (cosmeticOption.label == "Enemy Primary") {
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_EnemySecondary"), 0.5f);
+    } else if (cosmeticOption.label == "NPC Primary") {
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_NPCSecondary"), 1.0f);
+    } else if (cosmeticOption.label == "Props Primary") {
+        CopyMultipliedColor(cosmeticOption, cosmeticOptions.at("Navi_PropsSecondary"), 1.0f);
+    } 
 }
 
 void ResetColor(CosmeticOption& cosmeticOption) {
@@ -1351,9 +1368,17 @@ void ResetColor(CosmeticOption& cosmeticOption) {
     CVar_Clear((std::string(cosmeticOption.cvar) + ".A").c_str());
     CVar_Clear((std::string(cosmeticOption.cvar) + ".Type").c_str());
 
-    if (cosmeticOption.cvar == "gCosmetics.Equipment_BowBody") {
+    if (cosmeticOption.label == "Bow Body") {
         ResetColor(cosmeticOptions.at("Equipment_BowTips"));
         ResetColor(cosmeticOptions.at("Equipment_BowHandle"));
+    } else if (cosmeticOption.label == "Idle Primary") {
+        ResetColor(cosmeticOptions.at("Navi_IdleSecondary"));
+    } else if (cosmeticOption.label == "Enemy Primary") {
+        ResetColor(cosmeticOptions.at("Navi_EnemySecondary"));
+    } else if (cosmeticOption.label == "NPC Primary") {
+        ResetColor(cosmeticOptions.at("Navi_NPCSecondary"));
+    } else if (cosmeticOption.label == "Props Primary") {
+        ResetColor(cosmeticOptions.at("Navi_PropsSecondary"));
     }
 }
 
@@ -1494,6 +1519,7 @@ void DrawCosmeticsEditor(bool& open) {
         }
         if (ImGui::BeginTabItem("World & NPCs")) {
             DrawCosmeticBox(BOX_WORLD);
+            DrawCosmeticBox(BOX_NAVI);
             DrawCosmeticBox(BOX_NPC);
             ImGui::EndTabItem();
         }
