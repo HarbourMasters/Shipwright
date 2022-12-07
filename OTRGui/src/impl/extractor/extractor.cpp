@@ -49,17 +49,18 @@ void BuildOTR(const std::string output, RomVersion version) {
 
 	setCurrentStep("Done!");
 
-	if (output == ".") {
-		if (version.isMQ) {
-			MoonUtils::move("oot.otr", "oot-mq.otr");
-		}
-	} else {
-		const std::string otrName = version.isMQ ? "oot-mq.otr" : "oot.otr";
-		const std::string outputPath = MoonUtils::join(output, otrName);
-		if(MoonUtils::exists(outputPath)) MoonUtils::rm(outputPath);
-
-		MoonUtils::copy("oot.otr", outputPath);
+	// If a custom SoH folder was not selected, or the custom SOH folder is the same location as OTRGui,
+	// then the otr file should already be where it is expected
+	if (output == "." || output == MoonUtils::absolute(".")) {
+		return;
 	}
+
+	// Otherwise an outside SoH folder was selected so we need to copy the exported otr to the correct folder
+	const std::string otrName = version.isMQ ? "oot-mq.otr" : "oot.otr";
+	const std::string outputPath = MoonUtils::join(output, otrName);
+	if (MoonUtils::exists(outputPath)) MoonUtils::rm(outputPath);
+
+	MoonUtils::copy(otrName, outputPath);
 }
 
 void ExtractFile(std::string xmlPath, std::string outPath, std::string outSrcPath, RomVersion version) {
@@ -116,8 +117,9 @@ void startWorker(RomVersion version) {
 	}
 	else
 	{
+		std::string otrExporterArgs = Util::format("--otrfile %s", version.isMQ ? "oot-mq.otr" : "oot.otr");
 		std::string execStr = Util::format("assets/extractor/%s", isWindows() ? "ZAPD.exe" : "ZAPD.out");
-		std::string args = Util::format(" ed -eh -i %s -b tmp/rom.z64 -fl assets/extractor/filelists -o %s -osf %s -gsf 1 -rconf assets/extractor/Config_%s.xml -se OTR %s", path.c_str(), (path + "/../").c_str(), (path + "/../").c_str(), GetXMLVersion(version).c_str(), "");
+		std::string args = Util::format(" ed -eh -i %s -b tmp/rom.z64 -fl assets/extractor/filelists -o %s -osf %s -gsf 1 -rconf assets/extractor/Config_%s.xml -se OTR %s", path.c_str(), (path + "/../").c_str(), (path + "/../").c_str(), GetXMLVersion(version).c_str(), otrExporterArgs.c_str());
 		ProcessResult result = NativeFS->LaunchProcess(execStr + args);
 
 		if (result.exitCode != 0) {
