@@ -34,6 +34,10 @@ modules:
     - type: git
       url: https://github.com/th-2021/Shipwright-cmake
       branch: flatpak
+    - type: file 
+      path: ../../../ZELOOTD.z64
+      dest: OTRExporter
+
 rename-desktop-file: soh.desktop
 rename-icon: sohIcon
 runtime: "org.freedesktop.Platform"
