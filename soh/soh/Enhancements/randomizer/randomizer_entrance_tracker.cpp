@@ -28,8 +28,8 @@ extern PlayState* gPlayState;
 
 EntranceOverride srcListSortedByArea[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
 EntranceOverride destListSortedByArea[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
-EntranceOverride srcTypeListSortedByType[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
-EntranceOverride destTypeListSortedByType[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
+EntranceOverride srcListSortedByType[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
+EntranceOverride destListSortedByType[ENTRANCE_OVERRIDES_MAX_COUNT] = {0};
 EntranceTrackingData gEntranceTrackingData = {0};
 
 static const EntranceOverride emptyOverride = {0};
@@ -596,13 +596,13 @@ void InitEntranceTrackingData() {
     for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
         srcListSortedByArea[i] = gSaveContext.entranceOverrides[i];
         destListSortedByArea[i] = gSaveContext.entranceOverrides[i];
-        srcTypeListSortedByType[i] = gSaveContext.entranceOverrides[i];
-        destTypeListSortedByType[i] = gSaveContext.entranceOverrides[i];
+        srcListSortedByType[i] = gSaveContext.entranceOverrides[i];
+        destListSortedByType[i] = gSaveContext.entranceOverrides[i];
     }
     SortEntranceListByArea(srcListSortedByArea, 0);
     SortEntranceListByArea(destListSortedByArea, 1);
-    SortEntranceListByType(srcTypeListSortedByType, 0);
-    SortEntranceListByType(destTypeListSortedByType, 1);
+    SortEntranceListByType(srcListSortedByType, 0);
+    SortEntranceListByType(destListSortedByType, 1);
 }
 
 void DrawEntranceTracker(bool& open) {
@@ -735,10 +735,10 @@ void DrawEntranceTracker(bool& open) {
             entranceList = destListSortedByArea;
             break;
         case ENTRANCE_SOURCE_TYPE:
-            entranceList = srcTypeListSortedByType;
+            entranceList = srcListSortedByType;
             break;
         case ENTRANCE_DESTINATION_TYPE:
-            entranceList = destTypeListSortedByType;
+            entranceList = destListSortedByType;
             break;
     }
 

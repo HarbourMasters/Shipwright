@@ -603,10 +603,10 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
 }
 
 u8 Entrance_GetIsSceneDiscovered(u8 sceneNum) {
-    u16 divizor = sizeof(u32) * 8;
-    u32 idx = sceneNum / divizor;
+    u16 bitsPerIndex = sizeof(u32) * 8;
+    u32 idx = sceneNum / bitsPerIndex;
     if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
-        u32 sceneBit = 1 << (sceneNum - (idx * divizor));
+        u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
         return (gSaveContext.sohStats.scenesDiscovered[idx] & sceneBit) != 0;
     }
     return 0;
@@ -617,19 +617,19 @@ void Entrance_SetSceneDiscovered(u8 sceneNum) {
         return;
     }
 
-    u16 divizor = sizeof(u32) * 8;
-    u32 idx = sceneNum / divizor;
+    u16 bitsPerIndex = sizeof(u32) * 8;
+    u32 idx = sceneNum / bitsPerIndex;
     if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
-        u32 sceneBit = 1 << (sceneNum - (idx * divizor));
+        u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
         gSaveContext.sohStats.scenesDiscovered[idx] |= sceneBit;
     }
 }
 
 u8 Entrance_GetIsEntranceDiscovered(u16 entranceIndex) {
-    u16 divizor = sizeof(u32) * 8;
-    u32 idx = entranceIndex / divizor;
+    u16 bitsPerIndex = sizeof(u32) * 8;
+    u32 idx = entranceIndex / bitsPerIndex;
     if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
-        u32 entranceBit = 1 << (entranceIndex - (idx * divizor));
+        u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
         return (gSaveContext.sohStats.entrancesDiscovered[idx] & entranceBit) != 0;
     }
     return 0;
@@ -642,10 +642,10 @@ void Entrance_SetEntranceDiscovered(u16 entranceIndex) {
         return;
     }
 
-    u16 divizor = sizeof(u32) * 8;
-    u32 idx = entranceIndex / divizor;
+    u16 bitsPerIndex = sizeof(u32) * 8;
+    u32 idx = entranceIndex / bitsPerIndex;
     if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
-        u32 entranceBit = 1 << (entranceIndex - (idx * divizor));
+        u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
         gSaveContext.sohStats.entrancesDiscovered[idx] |= entranceBit;
         // Set connected
         for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
