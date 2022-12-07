@@ -47,6 +47,7 @@ int16_t  Entrance_OverrideNextIndex(int16_t nextEntranceIndex);
 int16_t  Entrance_OverrideDynamicExit(int16_t dynamicExitIndex);
 uint32_t Entrance_SceneAndSpawnAre(uint8_t scene, uint8_t spawn);
 void Entrance_SetSavewarpEntrance(void);
+void Entrance_SetWarpSongEntrance(void);
 void Entrance_OverrideBlueWarp(void);
 void Entrance_OverrideCutsceneEntrance(uint16_t cutsceneCmd);
 void Entrance_HandleEponaState(void);

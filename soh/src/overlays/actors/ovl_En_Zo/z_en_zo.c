@@ -180,7 +180,7 @@ void EnZo_DrawRipples(EnZo* this, PlayState* play) {
     effect = this->effects;
     OPEN_DISPS(play->state.gfxCtx);
     setup = false;
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->effects); i++) {
         if (effect->type == ENZO_EFFECT_RIPPLE) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
@@ -211,7 +211,7 @@ void EnZo_DrawBubbles(EnZo* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     setup = false;
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->effects); i++) {
         if (effect->type == ENZO_EFFECT_BUBBLE) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
@@ -246,7 +246,7 @@ void EnZo_DrawSplashes(EnZo* this, PlayState* play) {
     effect = this->effects;
     OPEN_DISPS(play->state.gfxCtx);
     setup = false;
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->effects); i++) {
         if (effect->type == ENZO_EFFECT_SPLASH) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);

@@ -359,7 +359,11 @@ void EnCrow_Die(EnCrow* this, PlayState* play) {
         } else {
             Item_DropCollectible(play, &this->actor.world.pos, ITEM00_RUPEE_RED);
         }
-        EnCrow_SetupRespawn(this);
+        if (!CVar_GetS32("gRandomizedEnemies", 0)) {
+            EnCrow_SetupRespawn(this);
+        } else {
+            Actor_Kill(this);
+        }
     }
 
     this->actor.scale.z = this->actor.scale.y = this->actor.scale.x;
@@ -505,7 +509,7 @@ void EnCrow_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot
 void EnCrow_Draw(Actor* thisx, PlayState* play) {
     EnCrow* this = (EnCrow*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnCrow_OverrideLimbDraw, EnCrow_PostLimbDraw, this);
 }

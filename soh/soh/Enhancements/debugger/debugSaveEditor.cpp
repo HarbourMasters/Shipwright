@@ -341,11 +341,11 @@ void DrawInfoTab() {
     ImGui::SliderScalar("Health", ImGuiDataType_S16, &gSaveContext.health, &healthMin, &healthMax);
     UIWidgets::InsertHelpHoverText("Current health. 16 units per full heart");
 
-    bool doubleDefense = gSaveContext.doubleDefense != 0;
-    if (ImGui::Checkbox("Double Defense", &doubleDefense)) {
-        gSaveContext.doubleDefense = doubleDefense;
+    bool isDoubleDefenseAcquired = gSaveContext.isDoubleDefenseAcquired != 0;
+    if (ImGui::Checkbox("Double Defense", &isDoubleDefenseAcquired)) {
+        gSaveContext.isDoubleDefenseAcquired = isDoubleDefenseAcquired;
         gSaveContext.inventory.defenseHearts =
-            gSaveContext.doubleDefense ? 20 : 0; // Set to get the border drawn in the UI
+            gSaveContext.isDoubleDefenseAcquired ? 20 : 0; // Set to get the border drawn in the UI
     }
     UIWidgets::InsertHelpHoverText("Is double defense unlocked?");
 
@@ -361,30 +361,30 @@ void DrawInfoTab() {
     if (ImGui::BeginCombo("Magic Level", magicName.c_str())) {
         if (ImGui::Selectable("Double")) {
             gSaveContext.magicLevel = 2;
-            gSaveContext.magicAcquired = true;
-            gSaveContext.doubleMagic = true;
+            gSaveContext.isMagicAcquired = true;
+            gSaveContext.isDoubleMagicAcquired = true;
         }
         if (ImGui::Selectable("Single")) {
             gSaveContext.magicLevel = 1;
-            gSaveContext.magicAcquired = true;
-            gSaveContext.doubleMagic = false;
+            gSaveContext.isMagicAcquired = true;
+            gSaveContext.isDoubleMagicAcquired = false;
         }
         if (ImGui::Selectable("None")) {
             gSaveContext.magicLevel = 0;
-            gSaveContext.magicAcquired = false;
-            gSaveContext.doubleMagic = false;
+            gSaveContext.isMagicAcquired = false;
+            gSaveContext.isDoubleMagicAcquired = false;
         }
 
         ImGui::EndCombo();
     }
     UIWidgets::InsertHelpHoverText("Current magic level");
-    gSaveContext.unk_13F4 = gSaveContext.magicLevel * 0x30; // Set to get the bar drawn in the UI
-    if (gSaveContext.magic > gSaveContext.unk_13F4) {
-        gSaveContext.magic = gSaveContext.unk_13F4; // Clamp magic to new max
+    gSaveContext.magicCapacity = gSaveContext.magicLevel * 0x30; // Set to get the bar drawn in the UI
+    if (gSaveContext.magic > gSaveContext.magicCapacity) {
+        gSaveContext.magic = gSaveContext.magicCapacity; // Clamp magic to new max
     }
 
     const uint8_t magicMin = 0;
-    const uint8_t magicMax = gSaveContext.unk_13F4;
+    const uint8_t magicMax = gSaveContext.magicCapacity;
     ImGui::SetNextItemWidth(ImGui::GetFontSize() * 15);
     ImGui::SliderScalar("Magic", ImGuiDataType_S8, &gSaveContext.magic, &magicMin, &magicMax);
     UIWidgets::InsertHelpHoverText("Current magic. 48 units per magic level");
@@ -1001,7 +1001,7 @@ void DrawFlagsTab() {
 
         // If playing a Randomizer Save with Shuffle Skull Tokens on anything other than "Off" we don't want to keep
         // GS Token Count updated, since Gold Skulltulas killed will not correlate to GS Tokens Collected.
-        if (!(gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS))) {
+        if (!(gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
             static bool keepGsCountUpdated = true;
             ImGui::Checkbox("Keep GS Count Updated", &keepGsCountUpdated);
             UIWidgets::InsertHelpHoverText("Automatically adjust the number of gold skulltula tokens acquired based on set flags.");
@@ -1211,7 +1211,7 @@ void DrawEquipmentTab() {
         "Giant (500)",
     };
     // only display Tycoon wallet if you're in a save file that would allow it.
-    if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > 1) {
+    if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS) {
         const std::string walletName = "Tycoon (999)";
         walletNamesImpl.push_back(walletName);
     }
@@ -1392,7 +1392,7 @@ void DrawPlayerTab() {
         const char* curTunic;
         const char* curBoots;
 
-        switch (player->currentSwordItem) {
+        switch (player->currentSwordItemId) {
             case ITEM_SWORD_KOKIRI:
                 curSword = "Kokiri Sword"; 
                 break;
@@ -1521,17 +1521,17 @@ void DrawPlayerTab() {
         ImGui::PushItemWidth(ImGui::GetFontSize() * 15);
         if (ImGui::BeginCombo("Sword", curSword)) {
             if (ImGui::Selectable("None")) {
-                player->currentSwordItem = ITEM_NONE;
+                player->currentSwordItemId = ITEM_NONE;
                 gSaveContext.equips.buttonItems[0] = ITEM_NONE;
                 Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
             }
             if (ImGui::Selectable("Kokiri Sword")) {
-                player->currentSwordItem = ITEM_SWORD_KOKIRI;
+                player->currentSwordItemId = ITEM_SWORD_KOKIRI;
                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
                 Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
             }
             if (ImGui::Selectable("Master Sword")) {
-                player->currentSwordItem = ITEM_SWORD_MASTER;
+                player->currentSwordItemId = ITEM_SWORD_MASTER;
                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
                 Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_MASTER);
             }
@@ -1540,20 +1540,20 @@ void DrawPlayerTab() {
                     if (gSaveContext.swordHealth < 8) {
                         gSaveContext.swordHealth = 8;
                     }
-                    player->currentSwordItem = ITEM_SWORD_BGS;
+                    player->currentSwordItemId = ITEM_SWORD_BGS;
                     gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
                 } else {
                     if (gSaveContext.swordHealth < 8) {
                         gSaveContext.swordHealth = 8;
                     }
-                    player->currentSwordItem = ITEM_SWORD_BGS;
+                    player->currentSwordItemId = ITEM_SWORD_BGS;
                     gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KNIFE;
                 }
                 
                 Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_BGS);
             }
             if (ImGui::Selectable("Fishing Pole")) {
-                player->currentSwordItem = ITEM_FISHING_POLE;
+                player->currentSwordItemId = ITEM_FISHING_POLE;
                 gSaveContext.equips.buttonItems[0] = ITEM_FISHING_POLE;
                 Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_MASTER);
             }

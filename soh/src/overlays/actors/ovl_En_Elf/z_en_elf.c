@@ -400,7 +400,7 @@ void EnElf_Init(Actor* thisx, PlayState* play) {
 
             for (i = 0; i < 8; i++) {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, thisx->world.pos.x,
-                            thisx->world.pos.y - 30.0f, thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL);
+                            thisx->world.pos.y - 30.0f, thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL, true);
             }
             break;
         default:
@@ -1515,7 +1515,7 @@ void EnElf_Draw(Actor* thisx, PlayState* play) {
 
             OPEN_DISPS(play->state.gfxCtx);
 
-            func_80094B58(play->state.gfxCtx);
+            Gfx_SetupDL_27Xlu(play->state.gfxCtx);
 
             envAlpha = (this->timer * 50) & 0x1FF;
             envAlpha = (envAlpha > 255) ? 511 - envAlpha : envAlpha;

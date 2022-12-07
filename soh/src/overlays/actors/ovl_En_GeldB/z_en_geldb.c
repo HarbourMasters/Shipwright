@@ -283,7 +283,7 @@ s32 EnGeldB_ReactToPlayer(PlayState* play, EnGeldB* this, s16 arg2) {
     angleToLink = ABS(angleToLink);
 
     if (func_800354B4(play, thisx, 100.0f, 0x2710, 0x3E80, thisx->shape.rot.y)) {
-        if (player->swordAnimation == 0x11) {
+        if (player->meleeWeaponAnimation == 0x11) {
             EnGeldB_SetupSpinDodge(this, play);
             return true;
         } else if (play->gameplayFrames & 1) {
@@ -296,7 +296,7 @@ s32 EnGeldB_ReactToPlayer(PlayState* play, EnGeldB* this, s16 arg2) {
         if ((thisx->bgCheckFlags & 8) && (ABS(angleToWall) < 0x2EE0) && (thisx->xzDistToPlayer < 90.0f)) {
             EnGeldB_SetupJump(this);
             return true;
-        } else if (player->swordAnimation == 0x11) {
+        } else if (player->meleeWeaponAnimation == 0x11) {
             EnGeldB_SetupSpinDodge(this, play);
             return true;
         } else if ((thisx->xzDistToPlayer < 90.0f) && (play->gameplayFrames & 1)) {
@@ -1138,7 +1138,7 @@ void EnGeldB_Block(EnGeldB* this, PlayState* play) {
         if ((ABS(angleToLink) <= 0x4000) && (this->actor.xzDistToPlayer < 40.0f) &&
             (ABS(this->actor.yDistToPlayer) < 50.0f)) {
             if (func_800354B4(play, &this->actor, 100.0f, 0x2710, 0x4000, this->actor.shape.rot.y)) {
-                if (player->swordAnimation == 0x11) {
+                if (player->meleeWeaponAnimation == 0x11) {
                     EnGeldB_SetupSpinDodge(this, play);
                 } else if (play->gameplayFrames & 1) {
                     EnGeldB_SetupBlock(this);
@@ -1159,7 +1159,7 @@ void EnGeldB_Block(EnGeldB* this, PlayState* play) {
         }
     } else if ((this->timer == 0) &&
                func_800354B4(play, &this->actor, 100.0f, 0x2710, 0x4000, this->actor.shape.rot.y)) {
-        if (player->swordAnimation == 0x11) {
+        if (player->meleeWeaponAnimation == 0x11) {
             EnGeldB_SetupSpinDodge(this, play);
         } else if (!EnGeldB_DodgeRanged(play, this)) {
             if ((play->gameplayFrames & 1)) {
@@ -1577,7 +1577,7 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
     }
 
     if ((this->action != GELDB_WAIT) || !this->invisible) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->blinkState]));
         SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
                               this->skelAnime.dListCount, EnGeldB_OverrideLimbDraw, EnGeldB_PostLimbDraw, this);

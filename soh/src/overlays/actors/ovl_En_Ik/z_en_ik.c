@@ -231,7 +231,11 @@ void func_80A74398(Actor* thisx, PlayState* play) {
     func_80A74714(this);
 
     if (this->switchFlags != 0xFF) {
-        if (Flags_GetSwitch(play, this->switchFlags)) {
+        // In vanilla gameplay, Iron Knuckles are despawned based on specific flags in specific scenarios.
+        // In Enemy Randomizer, this made the Iron Knuckles despawn when the same flag was set by other objects.
+        // Instead, rely on the "Clear enemy room" flag when in Enemy Randomizer for Iron Knuckles that aren't Nabooru.
+        if ((Flags_GetSwitch(play, this->switchFlags) && !CVar_GetS32("gRandomizedEnemies", 0)) ||
+            (thisx->params != 0 && Flags_GetClear(play, play->roomCtx.curRoom.num) && CVar_GetS32("gRandomizedEnemies", 0))) {
             Actor_Kill(thisx);
         }
     } else if (thisx->params != 0 && Flags_GetClear(play, play->roomCtx.curRoom.num)) {
@@ -292,7 +296,11 @@ void func_80A747C0(EnIk* this, PlayState* play) {
         sp24.y += 30.0f;
         func_8003424C(play, &sp24);
         this->skelAnime.playSpeed = 1.0f;
-        func_800F5ACC(NA_BGM_MINI_BOSS);
+        // Disable miniboss music with Enemy Randomizer because the music would keep
+        // playing if the enemy was never defeated, which is common with Enemy Randomizer.
+        if (!CVar_GetS32("gRandomizedEnemies", 0)) {
+            func_800F5ACC(NA_BGM_MINI_BOSS);
+        }
     }
     if (this->skelAnime.curFrame == 5.0f) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_IRONNACK_WAKEUP);
@@ -930,8 +938,8 @@ void func_80A76798(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     if (this->actor.params == 0) {
         gSPSegment(POLY_OPA_DISP++, 0x08, func_80A761B0(play->state.gfxCtx, 245, 225, 155, 30, 30, 0));
@@ -1215,8 +1223,8 @@ void func_80A77844(EnIk* this, PlayState* play) {
     OPEN_DISPS(gfxCtx);
 
     func_8002EBCC(&this->actor, play, 0);
-    func_80093D18(gfxCtx);
-    func_80093D84(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
+    Gfx_SetupDL_25Xlu(gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, func_80A761B0(gfxCtx, 245, 225, 155, 30, 30, 0));
     gSPSegment(POLY_OPA_DISP++, 0x09, func_80A761B0(gfxCtx, 255, 40, 0, 40, 0, 0));
     gSPSegment(POLY_OPA_DISP++, 0x0A, func_80A761B0(gfxCtx, 255, 255, 255, 20, 40, 30));
@@ -1369,8 +1377,8 @@ void func_80A77EDC(EnIk* this, PlayState* play) {
     OPEN_DISPS(gfxCtx);
 
     func_8002EBCC(&this->actor, play, 0);
-    func_80093D18(gfxCtx);
-    func_80093D84(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
+    Gfx_SetupDL_25Xlu(gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, func_80A761B0(gfxCtx, 245, 225, 155, 30, 30, 0));
     gSPSegment(POLY_OPA_DISP++, 0x09, func_80A761B0(gfxCtx, 255, 40, 0, 40, 0, 0));
     gSPSegment(POLY_OPA_DISP++, 0x0A, func_80A761B0(gfxCtx, 255, 255, 255, 20, 40, 30));
@@ -1464,6 +1472,11 @@ void EnIk_Init(Actor* thisx, PlayState* play) {
                            this->jointTable, this->morphTable, 30);
         func_80A74398(&this->actor, play);
         func_80A780D0(this, play);
+    }
+
+    // Immediately trigger Iron Knuckle for enemy randomizer
+    if (CVar_GetS32("gRandomizedEnemies", 0) && (thisx->params == 2 || thisx->params == 3)) {
+        this->skelAnime.playSpeed = 1.0f;
     }
 }
 

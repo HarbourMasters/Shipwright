@@ -180,13 +180,13 @@ void func_80A8F660(EnKakasi* this, PlayState* play) {
     this->unk_196 = TEXT_STATE_DONE;
     if (!LINK_IS_ADULT) {
         this->unk_194 = false;
-        if (gSaveContext.scarecrowCustomSongSet) {
+        if (gSaveContext.scarecrowLongSongSet) {
             this->actor.textId = 0x407A;
             this->unk_196 = TEXT_STATE_EVENT;
         }
     } else {
         this->unk_194 = true;
-        if (gSaveContext.scarecrowCustomSongSet) {
+        if (gSaveContext.scarecrowLongSongSet) {
             this->actor.textId = 0x4079;
             this->unk_196 = TEXT_STATE_EVENT;
         }
@@ -342,9 +342,9 @@ void EnKakasi_Draw(Actor* thisx, PlayState* play) {
     if (BREG(3) != 0) {
         osSyncPrintf("\n\n");
         // "flag!"
-        osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ フラグ！ ☆☆☆☆☆ %d\n" VT_RST, gSaveContext.scarecrowCustomSongSet);
+        osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ フラグ！ ☆☆☆☆☆ %d\n" VT_RST, gSaveContext.scarecrowLongSongSet);
     }
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelanime.skeleton, this->skelanime.jointTable, this->skelanime.dListCount,
                           NULL, NULL, this);
 }
