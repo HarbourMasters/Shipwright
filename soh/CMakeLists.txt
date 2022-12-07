@@ -83,7 +83,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Sub-projects
 ################################################################################
 if (NOT TARGET libultraship)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship ${CMAKE_BINARY_DIR}/libultraship)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../libultraship ${CMAKE_BINARY_DIR}/libultraship)
 endif()
 
 if (NOT TARGET ZAPDUtils)
@@ -156,9 +156,12 @@ set(Header_Files__soh__Enhancements
     "soh/Enhancements/bootcommands.h"
     #"soh/Enhancements/cvar.h"
     "soh/Enhancements/debugconsole.h"
+    "soh/Enhancements/enemyrandomizer.h"
     "soh/Enhancements/gameconsole.h"
+    "soh/Enhancements/presets.h"
     "soh/Enhancements/savestates.h"
     "soh/Enhancements/savestates_extern.inc"
+    "soh/Enhancements/gameplaystats.h"
 )
 source_group("Header Files\\soh\\Enhancements" FILES ${Header_Files__soh__Enhancements})
 
@@ -188,6 +191,8 @@ source_group("Header Files\\soh\\Enhancements\\debugger" FILES ${Header_Files__s
 
 set(Header_Files__soh__Enhancements__randomizer
     "soh/Enhancements/randomizer/randomizer.h"
+    "soh/Enhancements/randomizer/randomizer_entrance.h"
+    "soh/Enhancements/randomizer/randomizer_grotto.h"
     "soh/Enhancements/randomizer/randomizer_inf.h"
     "soh/Enhancements/randomizer/randomizer_item_tracker.h"
     "soh/Enhancements/randomizer/adult_trade_shuffle.h"
@@ -284,8 +289,11 @@ source_group("Source Files\\soh" FILES ${Source_Files__soh})
 set(Source_Files__soh__Enhancements
     "soh/Enhancements/bootcommands.c"
     "soh/Enhancements/debugconsole.cpp"
+    "soh/Enhancements/enemyrandomizer.cpp"
     "soh/Enhancements/gameconsole.c"
+    "soh/Enhancements/presets.cpp"
     "soh/Enhancements/savestates.cpp"
+    "soh/Enhancements/gameplaystats.cpp"
 )
 source_group("Source Files\\soh\\Enhancements" FILES ${Source_Files__soh__Enhancements})
 
@@ -314,6 +322,8 @@ source_group("Source Files\\soh\\Enhancements\\debugger" FILES ${Source_Files__s
 
 set(Source_Files__soh__Enhancements__randomizer
     "soh/Enhancements/randomizer/randomizer.cpp"
+    "soh/Enhancements/randomizer/randomizer_entrance.c"
+    "soh/Enhancements/randomizer/randomizer_grotto.c"
     "soh/Enhancements/randomizer/randomizer_item_tracker.cpp"
     "soh/Enhancements/randomizer/adult_trade_shuffle.c"
     "soh/Enhancements/randomizer/randomizer_check_objects.cpp"
@@ -1719,10 +1729,24 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
 	${CMAKE_CURRENT_SOURCE_DIR}/include/
 	${CMAKE_CURRENT_SOURCE_DIR}/src/
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/binarytools
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/log
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/debug
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/menu
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/misc
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/resource
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/resource/types
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/audio
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/extern
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/extern/Mercury
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/extern/tinyxml2
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/
 	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/libjpeg/include/
 	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/spdlog/include/
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64/PR
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/graphic/Fast3D/U64/PR
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/graphic
 	${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils
 	${SDL2-INCLUDE}
     ${SDL2-NET-INCLUDE}
@@ -1818,6 +1842,7 @@ if(MSVC)
             ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
             ${DEFAULT_CXX_EXCEPTION_HANDLING}
         )
+        target_compile_options(${PROJECT_NAME} PRIVATE  $<$<CONFIG:Debug>:/ZI;>)
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         target_compile_options(${PROJECT_NAME} PRIVATE
             $<$<CONFIG:Debug>:
@@ -1844,11 +1869,11 @@ if(MSVC)
             $<$<CONFIG:Release>:
                 /OPT:REF;
                 /OPT:ICF;
-                /INCREMENTAL:NO
+                /INCREMENTAL:NO;
+                /FORCE:MULTIPLE
             >
             /DEBUG;
-            /SUBSYSTEM:WINDOWS;
-            /FORCE:MULTIPLE
+            /SUBSYSTEM:WINDOWS           
         )
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         target_link_options(${PROJECT_NAME} PRIVATE

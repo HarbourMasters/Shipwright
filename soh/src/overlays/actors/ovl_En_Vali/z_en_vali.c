@@ -239,8 +239,15 @@ void EnVali_SetupDivideAndDie(EnVali* this, PlayState* play) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
+
+        // Offset small jellyfish with Enemy Randomizer, otherwise it gets
+        // stuck in a loop spawning more big jellyfish with seeded spawns.
+        if (CVar_GetS32("gRandomizedEnemies", 0)) {
+            this->actor.world.rot.y += rand() % 50;
+        }
+
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BILI, this->actor.world.pos.x, this->actor.world.pos.y,
-                    this->actor.world.pos.z, 0, this->actor.world.rot.y, 0, 0);
+                    this->actor.world.pos.z, 0, this->actor.world.rot.y, 0, 0, true);
 
         this->actor.world.rot.y += 0x10000 / 3;
     }
@@ -252,6 +259,7 @@ void EnVali_SetupDivideAndDie(EnVali* this, PlayState* play) {
     this->actor.flags &= ~ACTOR_FLAG_0;
     this->actor.draw = NULL;
     this->actionFunc = EnVali_DivideAndDie;
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BARI]++;
 }
 
 void EnVali_SetupStunned(EnVali* this) {
@@ -789,7 +797,7 @@ void EnVali_Draw(Actor* thisx, PlayState* play) {
     EnVali* this = (EnVali*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TexScroll(play->state.gfxCtx, 0, (127 - (play->gameplayFrames * 12)) % 128, 32, 32));

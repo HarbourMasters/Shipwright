@@ -98,12 +98,12 @@ void EnTkEff_Draw(EnTk* this, PlayState* play) {
 
     gfxSetup = 0;
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->eff); i++) {
         if (eff->active != 0) {
             if (gfxSetup == 0) {
-                POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
+                POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0);
                 gSPDisplayList(POLY_XLU_DISP++, gDampeEff1DL);
                 gDPSetEnvColor(POLY_XLU_DISP++, 100, 60, 20, 0);
                 gfxSetup = 1;
@@ -636,7 +636,7 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
 
                 if ((gSaveContext.n64ddFlag || CVar_GetS32("gDampeWin", 0)) && this->currentReward == 4) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, rewardPos.x, rewardPos.y, rewardPos.z, 0,
-                                0, 0, 0x1F06);
+                                0, 0, 0x1F06, true);
                     this->heartPieceSpawned = 1;
                 } else {
                     Item_DropCollectible(play, &rewardPos, rewardParams[this->currentReward]);
@@ -776,7 +776,7 @@ void EnTk_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyesSegments[this->eyeTextureIdx]));
 

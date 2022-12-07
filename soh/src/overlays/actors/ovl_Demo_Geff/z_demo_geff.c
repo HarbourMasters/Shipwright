@@ -75,7 +75,7 @@ void func_80977EA8(PlayState* play, Gfx* dlist) {
 
     OPEN_DISPS(gfxCtx);
 
-    func_80093D18(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

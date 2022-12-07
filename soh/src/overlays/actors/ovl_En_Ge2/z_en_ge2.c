@@ -7,6 +7,7 @@
 #include "z_en_ge2.h"
 #include "vt.h"
 #include "objects/object_gla/object_gla.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
 
@@ -253,6 +254,10 @@ void EnGe2_CaptureClose(EnGe2* this, PlayState* play) {
             play->nextEntranceIndex = 0x3B4;
         }
 
+        if (gSaveContext.n64ddFlag) {
+            Entrance_OverrideGeurdoGuardCapture();
+        }
+
         play->fadeTransition = 0x26;
         play->sceneLoadFlag = 0x14;
     }
@@ -277,6 +282,10 @@ void EnGe2_CaptureCharge(EnGe2* this, PlayState* play) {
             play->nextEntranceIndex = 0x5F8;
         } else {
             play->nextEntranceIndex = 0x3B4;
+        }
+
+        if (gSaveContext.n64ddFlag) {
+            Entrance_OverrideGeurdoGuardCapture();
         }
 
         play->fadeTransition = 0x26;
@@ -666,7 +675,7 @@ void EnGe2_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_800943C8(play->state.gfxCtx);
+    Gfx_SetupDL_37Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
     func_8002EBCC(&this->actor, play, 0);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,

@@ -4,6 +4,7 @@
 #include <string.h>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include <soh/Enhancements/randomizer/randomizer_inf.h>
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define NUM_DUNGEONS 8
@@ -96,7 +97,7 @@ void GiveLinkDekuNuts(int howManyNuts) {
 }
 
 void GiveLinksPocketItem() {
-    if (Randomizer_GetSettingValue(RSK_LINKS_POCKET) < 3)  {
+    if (Randomizer_GetSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING)  {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
 
         if (getItemEntry.modIndex == MOD_NONE) {
@@ -196,6 +197,11 @@ void Sram_OpenSave() {
         }
     }
 
+    // Setup the modified entrance table and entrance shuffle table for rando
+    if (gSaveContext.n64ddFlag) {
+        Entrance_Init();
+    }
+
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);
     osSyncPrintf(VT_RST);
 
@@ -203,14 +209,14 @@ void Sram_OpenSave() {
         gSaveContext.health = 0x30;
     }
 
-    if (gSaveContext.scarecrowCustomSongSet) {
+    if (gSaveContext.scarecrowLongSongSet) {
         osSyncPrintf(VT_FGCOL(BLUE));
         osSyncPrintf("\n====================================================================\n");
 
-        memcpy(gScarecrowCustomSongPtr, gSaveContext.scarecrowCustomSong, sizeof(gSaveContext.scarecrowCustomSong));
+        memcpy(gScarecrowCustomSongPtr, gSaveContext.scarecrowLongSong, sizeof(gSaveContext.scarecrowLongSong));
 
         ptr = (u8*)gScarecrowCustomSongPtr;
-        for (i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowCustomSong); i++, ptr++) {
+        for (i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowLongSong); i++, ptr++) {
             osSyncPrintf("%d, ", *ptr);
         }
 
@@ -310,12 +316,10 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.randomizerInf[i] = 0;
         }
 
-        // Set all trials to cleared if trial count is random or anything other than 6
-        if (Randomizer_GetSettingValue(RSK_RANDOM_TRIALS) || (Randomizer_GetSettingValue(RSK_TRIAL_COUNT) != 6)) {
-            for (u16 i = RAND_INF_TRIALS_DONE_LIGHT_TRIAL; i <= RAND_INF_TRIALS_DONE_SHADOW_TRIAL; i++) {
-                if (!Randomizer_IsTrialRequired(i)) {
-                    Flags_SetRandomizerInf(i);
-                }
+        // If any trials aren't required, set them as completed
+        for (u16 i = RAND_INF_TRIALS_DONE_LIGHT_TRIAL; i <= RAND_INF_TRIALS_DONE_SHADOW_TRIAL; i++) {
+            if (!Randomizer_IsTrialRequired(i)) {
+                Flags_SetRandomizerInf(i);
             }
         }
 
@@ -358,54 +362,62 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
         int openForest = Randomizer_GetSettingValue(RSK_FOREST);
         switch (openForest) {
-            case 0: // closed
+            case RO_FOREST_CLOSED:
                 break;
-            case 1: // open
+            case RO_FOREST_CLOSED_DEKU:
+                Flags_SetEventChkInf(7);
+                break;
+            case RO_FOREST_OPEN:
                 Flags_SetEventChkInf(7);
                 gSaveContext.eventChkInf[0] |= 0x10;
-                break;
-            case 2: // closed deku
-                Flags_SetEventChkInf(7);
                 break;
         }
 
         int startingAge = Randomizer_GetSettingValue(RSK_STARTING_AGE);
         switch (startingAge) {
-            case 1: //Adult
+            case RO_AGE_ADULT: //Adult
                 gSaveContext.linkAge = 0;
                 gSaveContext.entranceIndex = 0x5F4;
                 gSaveContext.savedSceneNum = SCENE_SPOT20; //Set scene num manually to ToT
                 break;
-            case 0: //Child
+            case RO_AGE_CHILD: //Child
                 gSaveContext.linkAge = 1;
+                gSaveContext.savedSceneNum = -1;
                 break;
             default:
                 break;
         }
 
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS)) {
+            // Override the spawn entrance so entrance rando can take control,
+            // and to prevent remember save location from breaking inital spawn
+            gSaveContext.entranceIndex = -1;
+        }
+
         int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);
         switch (doorOfTime) {
-            case 0: // open
+            case RO_DOOROFTIME_OPEN:
                 gSaveContext.eventChkInf[4] |= 0x800;
                 break;
         }
 
-        int kakGate = Randomizer_GetSettingValue(RSK_KAK_GATE);
-        switch (kakGate) {
-            case 1: // open
-                gSaveContext.infTable[7] |= 0x40;
-                break;
+        if (Randomizer_GetSettingValue(RSK_KAK_GATE) == RO_KAK_GATE_OPEN) {
+            gSaveContext.infTable[7] |= 0x40;
         }
       
         if(Randomizer_GetSettingValue(RSK_STARTING_KOKIRI_SWORD)) Item_Give(NULL, ITEM_SWORD_KOKIRI);
         if(Randomizer_GetSettingValue(RSK_STARTING_DEKU_SHIELD)) Item_Give(NULL, ITEM_SHIELD_DEKU);
 
+        if(Randomizer_GetSettingValue(RSK_STARTING_SKULLTULA_TOKEN)) {
+            gSaveContext.inventory.questItems |= gBitFlags[QUEST_SKULL_TOKEN];
+            gSaveContext.inventory.gsTokens = Randomizer_GetSettingValue(RSK_STARTING_SKULLTULA_TOKEN);
+        }
+
         if(Randomizer_GetSettingValue(RSK_STARTING_OCARINA)) {
             INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
         }
 
-        // "Start with" == 0 for Maps and Compasses
-        if(Randomizer_GetSettingValue(RSK_STARTING_MAPS_COMPASSES) == 0) {
+        if(Randomizer_GetSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
             uint32_t mapBitMask = 1 << 1;
             uint32_t compassBitMask = 1 << 2;
             uint32_t startingDungeonItemsBitMask = mapBitMask | compassBitMask;
@@ -457,8 +469,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             GiveLinkRupees(9001);
         }
 
-        // "Start with" == 0 for Keysanity
-        if(Randomizer_GetSettingValue(RSK_KEYSANITY) == 0) {
+        if(Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
             // TODO: If master quest there are different key counts
             gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] = FOREST_TEMPLE_SMALL_KEY_MAX; // Forest
             gSaveContext.sohStats.dungeonKeys[SCENE_BMORI1]     = FOREST_TEMPLE_SMALL_KEY_MAX; // Forest
@@ -478,8 +489,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.sohStats.dungeonKeys[SCENE_GANONTIKA]     = GANONS_CASTLE_SMALL_KEY_MAX; // Ganon
         }
 
-        // "Start with" == 0 for Boss Kesanity
-        if(Randomizer_GetSettingValue(RSK_BOSS_KEYSANITY) == 0) {
+        if(Randomizer_GetSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
             gSaveContext.inventory.dungeonItems[SCENE_BMORI1] |= 1; // Forest
             gSaveContext.inventory.dungeonItems[SCENE_HIDAN] |= 1; // Fire
             gSaveContext.inventory.dungeonItems[SCENE_MIZUSIN] |= 1; // Water
@@ -487,8 +497,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.inventory.dungeonItems[SCENE_HAKADAN] |= 1; // Shadow
         }
 
-        // "Start with" == 2 for Ganon's Boss Key
-        if(Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY) == 2) {
+        if(Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_STARTWITH) {
             gSaveContext.inventory.dungeonItems[SCENE_GANON] |= 1;
         }
 
@@ -520,8 +529,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // skip verbose lake owl, skip to "i'm on my way back to the castle"
         gSaveContext.infTable[25] |= 0x20;
 
-        // fast gerudo fortress
-        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == 1 || Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == 2) {
+        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_FAST ||
+            Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_OPEN) {
             gSaveContext.eventChkInf[9] |= 2;
             gSaveContext.eventChkInf[9] |= 4;
             gSaveContext.eventChkInf[9] |= 8;
@@ -539,8 +548,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.sceneFlags[12].collect |= (1 << 0x0F);
         }
 
-        // open gerudo fortress
-        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == 2) {
+        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_OPEN) {
             gSaveContext.eventChkInf[9] |= 1;
             gSaveContext.sceneFlags[12].swch |= (1 << 0x01);
             gSaveContext.sceneFlags[12].swch |= (1 << 0x05);
@@ -571,4 +579,8 @@ void Sram_InitSram(GameState* gameState) {
     Save_Init();
 
     func_800F6700(gSaveContext.audioSetting);
+
+    // When going from a rando save to a vanilla save within the same game instance
+    // we need to reset the entrance table back to its vanilla state
+    Entrance_ResetEntranceTable();
 }

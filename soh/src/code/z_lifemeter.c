@@ -594,14 +594,14 @@ void HealthMeter_Draw(PlayState* play) {
             if ((ddHeartCountMinusOne < 0) || (i > ddHeartCountMinusOne)) {
                 if (curCombineModeSet != 1) {
                     curCombineModeSet = 1;
-                    func_80094520(gfxCtx);
+                    Gfx_SetupDL_39Overlay(gfxCtx);
                     gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE,
                                       0, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
                 }
             } else {
                 if (curCombineModeSet != 3) {
                     curCombineModeSet = 3;
-                    func_80094520(gfxCtx);
+                    Gfx_SetupDL_39Overlay(gfxCtx);
                     gDPSetCombineLERP(OVERLAY_DISP++, ENVIRONMENT, PRIMITIVE, TEXEL0, PRIMITIVE, TEXEL0, 0, PRIMITIVE,
                                       0, ENVIRONMENT, PRIMITIVE, TEXEL0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
                 }
@@ -632,14 +632,14 @@ void HealthMeter_Draw(PlayState* play) {
             if ((ddHeartCountMinusOne < 0) || (i > ddHeartCountMinusOne)) {
                 if (curCombineModeSet != 2) {
                     curCombineModeSet = 2;
-                    func_80094A14(gfxCtx);
+                    Gfx_SetupDL_42Overlay(gfxCtx);
                     gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE,
                                       0, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
                 }
             } else {
                 if (curCombineModeSet != 4) {
                     curCombineModeSet = 4;
-                    func_80094A14(gfxCtx);
+                    Gfx_SetupDL_42Overlay(gfxCtx);
                     gDPSetCombineLERP(OVERLAY_DISP++, ENVIRONMENT, PRIMITIVE, TEXEL0, PRIMITIVE, TEXEL0, 0, PRIMITIVE,
                                       0, ENVIRONMENT, PRIMITIVE, TEXEL0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
                 }

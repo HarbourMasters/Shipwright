@@ -1,13 +1,13 @@
 #include "actorViewer.h"
 #include "../../util.h"
 #include "../../UIWidgets.hpp"
-#include <libultraship/ImGuiImpl.h>
+#include <ImGuiImpl.h>
 
 #include <array>
 #include <bit>
 #include <map>
 #include <string>
-#include <libultraship/Cvar.h>
+#include <Cvar.h>
 
 extern "C" {
 #include <z64.h>
@@ -732,7 +732,7 @@ void DrawActorViewer(bool& open) {
             if (ImGui::Button("Spawn")) {
                 if (newActor.id >= 0 && newActor.id < ACTOR_ID_MAX && gActorOverlayTable[newActor.id].initInfo != NULL) {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, newActor.id, newActor.pos.x, newActor.pos.y,
-                                newActor.pos.z, newActor.rot.x, newActor.rot.y, newActor.rot.z, newActor.params);
+                                newActor.pos.z, newActor.rot.x, newActor.rot.y, newActor.rot.z, newActor.params, 0);
                 } else {
                     func_80078884(NA_SE_SY_ERROR);
                 }

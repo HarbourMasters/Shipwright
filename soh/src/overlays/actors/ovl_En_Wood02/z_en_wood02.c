@@ -349,7 +349,7 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
                     this->actor.home.rot.z &= 0x1FFF;
                     this->actor.home.rot.z |= 0xE000;
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, dropsSpawnPt.x, dropsSpawnPt.y,
-                                dropsSpawnPt.z, 0, this->actor.world.rot.y, 0, this->actor.home.rot.z);
+                                dropsSpawnPt.z, 0, this->actor.world.rot.y, 0, this->actor.home.rot.z, true);
                     this->actor.home.rot.z = 0;
                 }
             }
@@ -366,7 +366,7 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
 
                 for (i = 3; i >= 0; i--) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_WOOD02, dropsSpawnPt.x, dropsSpawnPt.y,
-                                dropsSpawnPt.z, 0, Rand_CenteredFloat(65535.0f), 0, leavesParams);
+                                dropsSpawnPt.z, 0, Rand_CenteredFloat(65535.0f), 0, leavesParams, true);
                 }
             }
             this->unk_14C = -0x15;
@@ -441,10 +441,10 @@ void EnWood02_Draw(Actor* thisx, PlayState* play) {
         red = green = blue = 255;
     }
 
-    func_80093D84(gfxCtx);
+    Gfx_SetupDL_25Xlu(gfxCtx);
 
     if ((this->actor.params == WOOD_LEAF_GREEN) || (this->actor.params == WOOD_LEAF_YELLOW)) {
-        func_80093D18(gfxCtx);
+        Gfx_SetupDL_25Opa(gfxCtx);
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, red, green, blue, 127);
         Gfx_DrawDListOpa(play, object_wood02_DL_000700);
     } else if (D_80B3BF70[this->drawType & 0xF] != NULL) {
@@ -454,7 +454,7 @@ void EnWood02_Draw(Actor* thisx, PlayState* play) {
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, D_80B3BF70[this->drawType & 0xF]);
     } else {
-        func_80093D84(gfxCtx);
+        Gfx_SetupDL_25Xlu(gfxCtx);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, D_80B3BF54[this->drawType & 0xF]);

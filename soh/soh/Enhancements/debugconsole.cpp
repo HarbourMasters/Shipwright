@@ -1,8 +1,8 @@
 #include "debugconsole.h"
-#include <libultraship/ImGuiImpl.h>
-#include <libultraship/Utils.h>
+#include <ImGuiImpl.h>
+#include <Utils.h>
 #include "savestates.h"
-#include <libultraship/Console.h>
+#include <Console.h>
 
 #include <vector>
 #include <string>
@@ -14,7 +14,7 @@
 #define PATH_HACK
 #include <Utils/StringHelper.h>
 
-#include <libultraship/Window.h>
+#include <Window.h>
 #include <ImGui/imgui_internal.h>
 #undef PATH_HACK
 #undef Path
@@ -27,7 +27,7 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-#include <libultraship/Cvar.h>
+#include <Cvar.h>
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 
 #define CMD_REGISTER SohImGui::GetConsole()->AddCommand
@@ -88,7 +88,7 @@ static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std:
     }
 
     if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, spawnPoint.pos.x, spawnPoint.pos.y, spawnPoint.pos.z,
-                    spawnPoint.rot.x, spawnPoint.rot.y, spawnPoint.rot.z, params) == NULL) {
+                    spawnPoint.rot.x, spawnPoint.rot.y, spawnPoint.rot.z, params, 0) == NULL) {
         SohImGui::GetConsole()->SendErrorMessage("Failed to spawn actor. Actor_Spawn returned NULL");
         return CMD_FAILED;
     }
@@ -355,7 +355,7 @@ static bool EntranceHandler(std::shared_ptr<Ship::Console> Console, const std::v
     gPlayState->nextEntranceIndex = entrance;
     gPlayState->sceneLoadFlag = 0x14;
     gPlayState->fadeTransition = 11;
-    gSaveContext.nextTransition = 11;
+    gSaveContext.nextTransitionType = 11;
 }
 
 static bool VoidHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
@@ -366,7 +366,7 @@ static bool VoidHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
             gPlayState->sceneLoadFlag = 0x14;
             gPlayState->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
             gPlayState->fadeTransition = 2;
-            gSaveContext.nextTransition = 2;
+            gSaveContext.nextTransitionType = 2;
     } else {
         SohImGui::GetConsole()->SendErrorMessage("gPlayState == nullptr");
         return CMD_FAILED;
@@ -379,7 +379,7 @@ static bool ReloadHandler(std::shared_ptr<Ship::Console> Console, const std::vec
         gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
         gPlayState->sceneLoadFlag = 0x14;
         gPlayState->fadeTransition = 11;
-        gSaveContext.nextTransition = 11;
+        gSaveContext.nextTransitionType = 11;
     } else {
         SohImGui::GetConsole()->SendErrorMessage("gPlayState == nullptr");
         return CMD_FAILED;
@@ -901,7 +901,7 @@ static bool BurnHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
 static bool CuccoStormHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     Player* player = GET_PLAYER(gPlayState);
     EnNiw* cucco = (EnNiw*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_NIW, player->actor.world.pos.x,
-                                       player->actor.world.pos.y + 2200, player->actor.world.pos.z, 0, 0, 0, 0);
+                                       player->actor.world.pos.y + 2200, player->actor.world.pos.z, 0, 0, 0, 0, 0);
     cucco->actionFunc = func_80AB70A0_nocutscene;
     return CMD_SUCCESS;
 }
@@ -974,14 +974,14 @@ static bool GetCVarHandler(std::shared_ptr<Ship::Console> Console, const std::ve
 
     if (cvar != nullptr)
     {
-        if (cvar->type == CVarType::S32)
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %i", args[1].c_str(), cvar->value.valueS32);
-        else if (cvar->type == CVarType::Float)
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %f", args[1].c_str(), cvar->value.valueFloat);
-        else if (cvar->type == CVarType::String)
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %s", args[1].c_str(), cvar->value.valueStr);
-        else if (cvar->type == CVarType::RGBA)
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %08X", args[1].c_str(), cvar->value.valueRGBA);
+        if (cvar->Type == CVarType::S32)
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %i", args[1].c_str(), cvar->value.ValueS32);
+        else if (cvar->Type == CVarType::Float)
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %f", args[1].c_str(), cvar->value.ValueFloat);
+        else if (cvar->Type == CVarType::String)
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %s", args[1].c_str(), cvar->value.ValueStr);
+        else if (cvar->Type == CVarType::RGBA)
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %08X", args[1].c_str(), cvar->value.ValueRGBA);
     }
     else
     {

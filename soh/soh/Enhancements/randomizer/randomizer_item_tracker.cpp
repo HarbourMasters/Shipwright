@@ -1,14 +1,14 @@
 #include "randomizer_item_tracker.h"
 #include "../../util.h"
 #include "../../OTRGlobals.h"
-#include <libultraship/ImGuiImpl.h>
+#include <ImGuiImpl.h>
 #include "../../UIWidgets.hpp"
 
 #include <map>
 #include <string>
 #include <vector>
-#include <libultraship/Cvar.h>
-#include <libultraship/Hooks.h>
+#include <Cvar.h>
+#include <Hooks.h>
 
 extern "C" {
 #include <z64.h>
@@ -280,7 +280,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
         case ITEM_WALLET_ADULT:
         case ITEM_WALLET_GIANT:
             result.currentCapacity = CUR_CAPACITY(UPG_WALLET);
-            result.maxCapacity = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > 1 ? 999 : 500;
+            result.maxCapacity = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 999 : 500;
             result.currentAmmo = gSaveContext.rupees;
             break;
         case ITEM_BOMBCHU:

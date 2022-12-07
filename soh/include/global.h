@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
@@ -6,17 +8,12 @@
 #include "macros.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/gameconsole.h"
-#include <libultraship/Cvar.h>
-
-
-
-
-
+#include "soh/Enhancements/gameplaystats.h"
+#include <Cvar.h>
 
 #define _AudioseqSegmentRomStart "Audioseq"
 #define _AudiobankSegmentRomStart "Audiobank"
 #define _AudiotableSegmentRomStart "Audiotable"
-
 
 #define _icon_item_staticSegmentRomStart 0
 #define _icon_item_staticSegmentRomEnd 0

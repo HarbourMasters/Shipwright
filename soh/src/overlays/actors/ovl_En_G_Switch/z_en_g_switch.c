@@ -475,7 +475,7 @@ void EnGSwitch_DrawPot(Actor* thisx, PlayState* play) {
 
     if (!this->broken) {
         OPEN_DISPS(play->state.gfxCtx);
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_tsubo_DL_0017C0);
@@ -495,7 +495,7 @@ void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play) {
 
     if (!this->broken) {
         OPEN_DISPS(play->state.gfxCtx);
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         func_8002EBCC(&this->actor, play, 0);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         if (CVar_GetS32("gNewDrops", 0) !=0) {
@@ -503,15 +503,15 @@ void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play) {
             if (this->type == ENGSWITCH_TARGET_RUPEE) {
                 GetItem_Draw(play, sRupeeTexturesNew[this->colorIdx]);
             } else {
-                gsDPSetGrayscaleColor(POLY_OPA_DISP++, 255, 255, 255, 255);
-                gsSPGrayscale(POLY_OPA_DISP++, true);
-                func_80093D18(play->state.gfxCtx);
+                gDPSetGrayscaleColor(POLY_OPA_DISP++, 255, 255, 255, 255);
+                gSPGrayscale(POLY_OPA_DISP++, true);
+                Gfx_SetupDL_25Opa(play->state.gfxCtx);
                 gSPDisplayList(POLY_OPA_DISP++, gGiRupeeInnerDL);
                 gSPDisplayList(POLY_OPA_DISP++, gGiGoldRupeeInnerColorDL);
-                func_80093D84(play->state.gfxCtx);
+                Gfx_SetupDL_25Xlu(play->state.gfxCtx);
                 gSPDisplayList(POLY_OPA_DISP++, gGiRupeeOuterDL);
                 gSPDisplayList(POLY_OPA_DISP++, gGiGoldRupeeOuterColorDL);
-                gsSPGrayscale(POLY_OPA_DISP++, false);
+                gSPGrayscale(POLY_OPA_DISP++, false);
             }
         } else {
             gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTextures[this->colorIdx]));
@@ -589,7 +589,7 @@ void EnGSwitch_DrawEffects(EnGSwitch* this, PlayState* play) {
     s32 pad;
 
     OPEN_DISPS(gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     for (i = 0; i < this->numEffects; i++, effect++) {
         if (effect->flag) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);

@@ -104,7 +104,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_800949A8(play->state.gfxCtx);
+    Gfx_SetupDL_42Opa(play->state.gfxCtx);
 
     gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
@@ -516,12 +516,12 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
             int itemId = gSaveContext.inventory.items[i];
             bool not_acquired = !CHECK_ITEM_AGE(itemId);
             if (not_acquired) {
-                gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
-                gsSPGrayscale(POLY_KAL_DISP++, true);
+                gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
+                gSPGrayscale(POLY_KAL_DISP++, true);
             }
             KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[itemId], 32,
                                                32, 0);
-            gsSPGrayscale(POLY_KAL_DISP++, false);
+            gSPGrayscale(POLY_KAL_DISP++, false);
         }
     }
 
@@ -577,18 +577,22 @@ void KaleidoScope_SetupItemEquip(PlayState* play, u16 item, u16 slot, s16 animX,
     sEquipMoveTimer = 10;
     if ((pauseCtx->equipTargetItem == ITEM_ARROW_FIRE) || (pauseCtx->equipTargetItem == ITEM_ARROW_ICE) ||
         (pauseCtx->equipTargetItem == ITEM_ARROW_LIGHT)) {
-        u16 index = 0;
-        if (pauseCtx->equipTargetItem == ITEM_ARROW_ICE) {
-            index = 1;
+        if (CVar_GetS32("gSkipArrowAnimation", 0)) {
+            Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        } else {
+            u16 index = 0;
+            if (pauseCtx->equipTargetItem == ITEM_ARROW_ICE) {
+                index = 1;
+            }
+            if (pauseCtx->equipTargetItem == ITEM_ARROW_LIGHT) {
+                index = 2;
+            }
+            Audio_PlaySoundGeneral(NA_SE_SY_SET_FIRE_ARROW + index, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            pauseCtx->equipTargetItem = 0xBF + index;
+            sEquipState = 0;
+            pauseCtx->equipAnimAlpha = 0;
+            sEquipMoveTimer = 6;
         }
-        if (pauseCtx->equipTargetItem == ITEM_ARROW_LIGHT) {
-            index = 2;
-        }
-        Audio_PlaySoundGeneral(NA_SE_SY_SET_FIRE_ARROW + index, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        pauseCtx->equipTargetItem = 0xBF + index;
-        sEquipState = 0;
-        pauseCtx->equipAnimAlpha = 0;
-        sEquipMoveTimer = 6;
     } else {
         Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
     }
@@ -784,7 +788,9 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
 
         if (D_8082A488 == 0) {
             pauseCtx->equipTargetItem -= 0xBF - ITEM_BOW_ARROW_FIRE;
-            pauseCtx->equipTargetSlot = SLOT_BOW;
+            if (!CVar_GetS32("gSeparateArrows", 0)) {
+                pauseCtx->equipTargetSlot = SLOT_BOW;
+            }
             sEquipMoveTimer = 6;
             WREG(90) = 320;
             WREG(87) = WREG(91);
@@ -853,6 +859,26 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
 
             osSyncPrintf("\n＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝\n");
 
+			// Skipping the arrow animation: need to change the item's type and
+            // slot when it hits the button since it didn't get set earlier
+            if (pauseCtx->equipTargetItem == ITEM_ARROW_FIRE || pauseCtx->equipTargetItem == ITEM_ARROW_ICE ||
+                pauseCtx->equipTargetItem == ITEM_ARROW_LIGHT) {
+                switch (pauseCtx->equipTargetItem) {
+                    case ITEM_ARROW_FIRE:
+                        pauseCtx->equipTargetItem = ITEM_BOW_ARROW_FIRE;
+                        break;
+                    case ITEM_ARROW_ICE:
+                        pauseCtx->equipTargetItem = ITEM_BOW_ARROW_ICE;
+                        break;
+                    case ITEM_ARROW_LIGHT:
+                        pauseCtx->equipTargetItem = ITEM_BOW_ARROW_LIGHT;
+                        break;
+                }
+                if (!CVar_GetS32("gSeparateArrows", 0)) {
+                    pauseCtx->equipTargetSlot = SLOT_BOW;
+                }
+            }
+            
             // If the item is on another button already, swap the two
             uint16_t targetButtonIndex = pauseCtx->equipTargetCBtn + 1;
             for (uint16_t otherSlotIndex = 0; otherSlotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots);

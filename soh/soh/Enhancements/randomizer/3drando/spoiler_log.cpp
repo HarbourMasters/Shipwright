@@ -27,7 +27,7 @@
 #include <filesystem>
 #include <variables.h>
 
-#include <libultraship/Window.h>
+#include <Window.h>
 
 using json = nlohmann::json;
 
@@ -296,26 +296,52 @@ static void WriteLocation(
 }
 
 //Writes a shuffled entrance to the specified node
-static void WriteShuffledEntrance(
-  tinyxml2::XMLElement* parentNode,
-  Entrance* entrance,
-  const bool withPadding = false
-) {
-  auto node = parentNode->InsertNewChildElement("entrance");
-  node->SetAttribute("name", entrance->GetName().c_str());
-  auto text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
-  node->SetText(text.c_str());
+static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) {
+  int16_t originalIndex = entrance->GetIndex();
+  int16_t destinationIndex = -1;
+  int16_t originalBlueWarp = entrance->GetBlueWarp();
+  int16_t replacementBlueWarp = -1;
+  int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
+  int16_t replacementDestinationIndex = -1;
+  std::string name = entrance->GetName();
+  std::string text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
 
-  if (withPadding) {
-    constexpr int16_t LONGEST_NAME = 56; //The longest name of a vanilla entrance
-
-    //Insert padding so we get a kind of table in the XML document
-    int16_t requiredPadding = LONGEST_NAME - entrance->GetName().length();
-    if (requiredPadding > 0) {
-      std::string padding(requiredPadding, ' ');
-      node->SetAttribute("_", padding.c_str());
-    }
+  if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+    destinationIndex = entrance->GetReverse()->GetIndex();
+    replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+    replacementBlueWarp = entrance->GetReplacement()->GetReverse()->GetBlueWarp();
   }
+
+  json entranceJson = json::object({
+    {"index", originalIndex},
+    {"destination", destinationIndex},
+    {"blueWarp", originalBlueWarp},
+    {"override", replacementIndex},
+    {"overrideDestination", replacementDestinationIndex},
+  });
+
+  jsonData["entrances"].push_back(entranceJson);
+
+  // When decoupled entrances is off, handle saving reverse entrances with blue warps
+  if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+    json reverseEntranceJson = json::object({
+      {"index", replacementDestinationIndex},
+      {"destination", replacementIndex},
+      {"blueWarp", replacementBlueWarp},
+      {"override", destinationIndex},
+      {"overrideDestination", originalIndex},
+    });
+
+    jsonData["entrances"].push_back(reverseEntranceJson);
+  }
+
+  switch (gSaveContext.language) {
+        case LANGUAGE_ENG:
+        case LANGUAGE_FRA:
+        default:
+            jsonData["entrancesMap"][sphereString][name] = text;
+            break;
+    }
 }
 
 // Writes the settings (without excluded locations, starting inventory and tricks) to the spoilerLog document.
@@ -420,6 +446,7 @@ static void WriteStartingInventory() {
       // to see if the name is one of the 3 we're using rn
       if (setting->GetName() == "Start with Consumables" ||
           setting->GetName() == "Start with Max Rupees" ||
+          setting->GetName() == "Gold Skulltula Tokens" ||
           setting->GetName() == "Start with Fairy Ocarina" ||
           setting->GetName() == "Start with Kokiri Sword" ||
           setting->GetName() == "Start with Deku Shield") {
@@ -512,7 +539,7 @@ static void WritePlaythrough() {
   for (uint32_t i = 0; i < playthroughLocations.size(); ++i) {
     auto sphereNum = std::to_string(i);
     std::string sphereString =  "sphere ";
-    if (sphereNum.length() == 1) sphereString += "0";
+    if (i < 10) sphereString += "0";
     sphereString += sphereNum;
     for (const uint32_t key : playthroughLocations[i]) {
       WriteLocation(sphereString, key, true);
@@ -523,23 +550,16 @@ static void WritePlaythrough() {
 }
 
 //Write the randomized entrance playthrough to the spoiler log, if applicable
-static void WriteShuffledEntrances(tinyxml2::XMLDocument& spoilerLog) {
-    if (!Settings::ShuffleEntrances || noRandomEntrances) {
-        return;
+static void WriteShuffledEntrances() {
+  for (uint32_t i = 0; i < playthroughEntrances.size(); ++i) {
+    auto sphereNum = std::to_string(i);
+    std::string sphereString = "sphere ";
+    if (i < 10) sphereString += "0";
+    sphereString += sphereNum;
+    for (Entrance* entrance : playthroughEntrances[i]) {
+      WriteShuffledEntrance(sphereString, entrance);
     }
-
-    auto playthroughNode = spoilerLog.NewElement("entrance-playthrough");
-
-    for (uint32_t i = 0; i < playthroughEntrances.size(); ++i) {
-        auto sphereNode = playthroughNode->InsertNewChildElement("sphere");
-        sphereNode->SetAttribute("level", i + 1);
-
-        for (Entrance* entrance : playthroughEntrances[i]) {
-            WriteShuffledEntrance(sphereNode, entrance, true);
-        }
-    }
-
-    spoilerLog.RootElement()->InsertEndChild(playthroughNode);
+  }
 }
 
 // Writes the WOTH locations to the spoiler log, if there are any.
@@ -614,12 +634,24 @@ static void WriteHints(int language) {
         default:
             unformattedGanonText = GetGanonText().GetEnglish();
             unformattedGanonHintText = GetGanonHintText().GetEnglish();
+            jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
+            jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
+            jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetEnglish();
+            jsonData["warpRequiemText"] = GetWarpRequiemText().GetEnglish();
+            jsonData["warpNocturne"] = GetWarpNocturneText().GetEnglish();
+            jsonData["warpPreludeText"] = GetWarpPreludeText().GetEnglish();
             jsonData["childAltarText"] = GetChildAltarText().GetEnglish();
             jsonData["adultAltarText"] = GetAdultAltarText().GetEnglish();
             break;
         case 2:
             unformattedGanonText = GetGanonText().GetFrench();
             unformattedGanonHintText = GetGanonHintText().GetFrench();
+            jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
+            jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
+            jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetFrench();
+            jsonData["warpRequiemText"] = GetWarpRequiemText().GetFrench();
+            jsonData["warpNocturne"] = GetWarpNocturneText().GetFrench();
+            jsonData["warpPreludeText"] = GetWarpPreludeText().GetFrench();
             jsonData["childAltarText"] = GetChildAltarText().GetFrench();
             jsonData["adultAltarText"] = GetAdultAltarText().GetFrench();
             break;
@@ -744,7 +776,7 @@ const char* SpoilerLog_Write(int language) {
     wothLocations.clear();
 
     WriteHints(language);
-    //WriteShuffledEntrances(spoilerLog);
+    WriteShuffledEntrances();
     WriteAllLocations(language);
 
     if (!std::filesystem::exists(Ship::Window::GetPathRelativeToAppDirectory("Randomizer"))) {

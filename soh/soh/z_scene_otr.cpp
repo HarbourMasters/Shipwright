@@ -1,22 +1,22 @@
 #include "OTRGlobals.h"
-#include <libultraship/ResourceMgr.h>
-#include <libultraship/Scene.h>
+#include <ResourceMgr.h>
+#include <Scene.h>
 #include <Utils/StringHelper.h>
 #include "global.h"
 #include "vt.h"
-#include <libultraship/CollisionHeader.h>
-#include <libultraship/DisplayList.h>
-#include <libultraship/Cutscene.h>
-#include <libultraship/Path.h>
-#include <libultraship/Text.h>
-#include <libultraship/Blob.h>
+#include <CollisionHeader.h>
+#include <DisplayList.h>
+#include <Cutscene.h>
+#include <Path.h>
+#include <Text.h>
+#include <Blob.h>
 
 extern Ship::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName);
 extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 extern "C" RomFile sNaviMsgFiles[];
 s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* scene);
 
-std::shared_ptr<Ship::File> ResourceMgr_LoadFile(const char* path) {
+std::shared_ptr<Ship::OtrFile> ResourceMgr_LoadFile(const char* path) {
     std::string Path = path;
     if (IsGameMasterQuest()) {
         size_t pos = 0;
@@ -121,8 +121,8 @@ bool Scene_CommandCollisionHeader(PlayState* play, Ship::SceneCommand* cmd)
 
     CollisionHeader* colHeader = nullptr;
 
-    if (colRes->cachedGameAsset != nullptr)
-        colHeader = (CollisionHeader*)colRes->cachedGameAsset;
+    if (colRes->CachedGameAsset != nullptr)
+        colHeader = (CollisionHeader*)colRes->CachedGameAsset;
     else
     {
         colHeader = (CollisionHeader*)malloc(sizeof(CollisionHeader));
@@ -211,7 +211,7 @@ bool Scene_CommandCollisionHeader(PlayState* play, Ship::SceneCommand* cmd)
             colHeader->waterBoxes[i].properties = colRes->waterBoxes[i].properties;
         }
 
-        colRes->cachedGameAsset = colHeader;
+        colRes->CachedGameAsset = colHeader;
     }
 
     BgCheck_Allocate(&play->colCtx, play, colHeader);
@@ -365,7 +365,7 @@ bool Scene_CommandMeshHeader(PlayState* play, Ship::SceneCommand* cmd)
                     play->roomCtx.curRoom.meshHeader->polygon1.single.source =
                         (void*)(ResourceMgr_LoadFile(otrMesh->meshes[0].images[0].sourceBackground.c_str()))
                         .get()
-                        ->buffer.get();
+                        ->Buffer.get();
                     play->roomCtx.curRoom.meshHeader->polygon1.single.siz = otrMesh->meshes[0].images[0].siz;
                     play->roomCtx.curRoom.meshHeader->polygon1.single.width = otrMesh->meshes[0].images[0].width;
                     play->roomCtx.curRoom.meshHeader->polygon1.single.height = otrMesh->meshes[0].images[0].height;
@@ -385,7 +385,7 @@ bool Scene_CommandMeshHeader(PlayState* play, Ship::SceneCommand* cmd)
                         play->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].source =
                             (void*)(ResourceMgr_LoadFile(otrMesh->meshes[0].images[i].sourceBackground.c_str()))
                             .get()
-                            ->buffer.get();
+                            ->Buffer.get();
                         play->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].siz = otrMesh->meshes[0].images[i].siz;
                         play->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].width = otrMesh->meshes[0].images[i].width;
                         play->roomCtx.curRoom.meshHeader->polygon1.multi.list[i].height =

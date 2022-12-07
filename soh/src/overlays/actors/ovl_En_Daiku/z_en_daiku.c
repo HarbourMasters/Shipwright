@@ -497,7 +497,7 @@ void EnDaiku_EscapeSuccess(EnDaiku* this, PlayState* play) {
         Matrix_MultVec3f(&D_809E4148, &vec);
         gerudoGuard =
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_GE3, this->initPos.x + vec.x, this->initPos.y + vec.y,
-                        this->initPos.z + vec.z, 0, Math_FAtan2F(-vec.x, -vec.z) * (0x8000 / M_PI), 0, 2);
+                        this->initPos.z + vec.z, 0, Math_FAtan2F(-vec.x, -vec.z) * (0x8000 / M_PI), 0, 2, true);
 
         if (gerudoGuard == NULL) {
             Actor_Kill(&this->actor);
@@ -588,7 +588,7 @@ void EnDaiku_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if ((thisx->params & 3) == 0) {
         gDPSetEnvColor(POLY_OPA_DISP++, 170, 10, 70, 255);

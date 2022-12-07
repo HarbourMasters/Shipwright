@@ -620,7 +620,7 @@ s32 EnHorseLinkChild_OverrideLimbDraw(Actor* thisx, PlayState* play, s32 arg2, S
 void EnHorseLinkChild_Draw(Actor* thisx, PlayState* play) {
     EnHorseLinkChild* this = (EnHorseLinkChild*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     func_800A6360(&this->actor, play, &this->skin, EnHorseLinkChild_PostDraw, EnHorseLinkChild_OverrideLimbDraw,
                   true);
 }

@@ -305,9 +305,9 @@ void BgHeavyBlock_SpawnPieces(BgHeavyBlock* this, PlayState* play) {
         pos.z = this->dyna.actor.world.pos.z + (spA4[i].x * -sinYaw) + (cosYaw * pos.z);
 
         Actor_Spawn(&play->actorCtx, play, ACTOR_BG_HEAVY_BLOCK, pos.x, pos.y, pos.z,
-                    this->dyna.actor.shape.rot.x, this->dyna.actor.shape.rot.y, 0, 2);
+                    this->dyna.actor.shape.rot.x, this->dyna.actor.shape.rot.y, 0, 2, true);
         Actor_Spawn(&play->actorCtx, play, ACTOR_BG_HEAVY_BLOCK, pos.x, pos.y, pos.z,
-                    this->dyna.actor.shape.rot.x, this->dyna.actor.shape.rot.y, 0, 3);
+                    this->dyna.actor.shape.rot.x, this->dyna.actor.shape.rot.y, 0, 3, true);
 
         BgHeavyBlock_SpawnDust(play, pos.x, pos.y, pos.z, 0.0f, 0.0f, 0.0f, 0);
     }
@@ -509,7 +509,7 @@ void BgHeavyBlock_Draw(Actor* thisx, PlayState* play) {
 
     Matrix_MultVec3f(&D_80884EC8, &thisx->world.pos);
     Matrix_MultVec3f(&D_80884ED4, &thisx->home.pos);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

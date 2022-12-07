@@ -67,14 +67,14 @@ void TransitionWipe_Update(void* thisx, s32 updateRate) {
     u8 unk1419;
 
     if (this->direction != 0) {
-        unk1419 = gSaveContext.unk_1419;
+        unk1419 = gSaveContext.transWipeSpeed;
         this->texY += (unk1419 * 3) / updateRate;
         if (this->texY >= 0x264) {
             this->texY = 0x264;
             this->isDone = 1;
         }
     } else {
-        unk1419 = gSaveContext.unk_1419;
+        unk1419 = gSaveContext.transWipeSpeed;
         this->texY -= (unk1419 * 3) / updateRate;
         if (this->texY < 0x14E) {
             this->texY = 0x14D;

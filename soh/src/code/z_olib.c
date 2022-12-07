@@ -76,12 +76,22 @@ Vec3f* OLib_Vec3fDistNormalize(Vec3f* dest, Vec3f* a, Vec3f* b) {
 Vec3f* OLib_VecSphToVec3f(Vec3f* dest, VecSph* sph) {
     Vec3f v;
     f32 sinPitch;
-    f32 cosPitch = Math_CosS(sph->pitch);
+    f32 cosPitch;
     f32 sinYaw;
-    f32 cosYaw = Math_CosS(sph->yaw);
+    f32 cosYaw;
 
-    sinPitch = Math_SinS(sph->pitch);
-    sinYaw = Math_SinS(sph->yaw);
+    if (CVar_GetS32("gFixCameraDrift", 0)) {
+        cosPitch = Math_AccurateCosS(sph->pitch);
+        cosYaw = Math_AccurateCosS(sph->yaw);
+        sinPitch = Math_AccurateSinS(sph->pitch);
+        sinYaw = Math_AccurateSinS(sph->yaw);
+    } else {
+        cosPitch = Math_CosS(sph->pitch);
+        cosYaw = Math_CosS(sph->yaw);
+        sinPitch = Math_SinS(sph->pitch);
+        sinYaw = Math_SinS(sph->yaw);
+    }
+    
 
     v.x = sph->r * sinPitch * sinYaw;
     v.y = sph->r * cosPitch;

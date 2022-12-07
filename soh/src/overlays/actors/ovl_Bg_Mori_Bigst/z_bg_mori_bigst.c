@@ -214,7 +214,10 @@ void BgMoriBigst_SetupStalfosPairFight(BgMoriBigst* this, PlayState* play) {
 }
 
 void BgMoriBigst_StalfosPairFight(BgMoriBigst* this, PlayState* play) {
-    if ((this->dyna.actor.home.rot.z == 0) && !Player_InCsMode(play)) {
+    if ((this->dyna.actor.home.rot.z == 0 || 
+        // Check if all enemies are defeated instead of the regular stalfos when enemy randomizer or crowd control is on.
+        (Flags_GetTempClear(play, this->dyna.actor.room) && (CVar_GetS32("gRandomizedEnemies", 0) || (CVar_GetS32("gCrowdControl", 0))))) && 
+        !Player_InCsMode(play)) {
         Flags_SetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F);
         BgMoriBigst_SetupDone(this, play);
     }
@@ -245,7 +248,7 @@ void BgMoriBigst_Draw(Actor* thisx, PlayState* play) {
     BgMoriBigst* this = (BgMoriBigst*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, play->objectCtx.status[this->moriTexObjIndex].segment);
 
