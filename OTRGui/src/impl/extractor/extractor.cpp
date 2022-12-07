@@ -64,8 +64,13 @@ void BuildOTR(const std::string output, RomVersion version) {
 }
 
 void ExtractFile(std::string xmlPath, std::string outPath, std::string outSrcPath, RomVersion version) {
+	std::string otrExporterArgs = Util::format("--otrfile %s", version.isMQ ? "oot-mq.otr" : "oot.otr");
+	if (xmlPath.find("overlays") != std::string::npos) {
+		otrExporterArgs += " --static";
+	}
+
 	std::string execStr = Util::format("assets/extractor/%s", isWindows() ? "ZAPD.exe" : "ZAPD.out");
-	std::string args = Util::format(" e -eh -i %s -b tmp/baserom/ -o %s -osf %s -gsf 1 -rconf assets/extractor/Config_%s.xml -se OTR %s", xmlPath.c_str(), outPath.c_str(), outSrcPath.c_str(), GetXMLVersion(version).c_str(), xmlPath.find("overlays") != std::string::npos ? "--static" : "");
+	std::string args = Util::format(" e -eh -i %s -b tmp/baserom/ -o %s -osf %s -gsf 1 -rconf assets/extractor/Config_%s.xml -se OTR %s", xmlPath.c_str(), outPath.c_str(), outSrcPath.c_str(), GetXMLVersion(version).c_str(), otrExporterArgs);
 	ProcessResult result = NativeFS->LaunchProcess(execStr + args);
 
 	if (result.exitCode != 0) {
