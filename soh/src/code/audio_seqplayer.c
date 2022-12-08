@@ -3,7 +3,7 @@
 #include "ultra64.h"
 #include "global.h"
 
-extern char* sequenceMap[1024];
+extern char* sequenceMap[MAX_SEQUENCES];
 
 #define PORTAMENTO_IS_SPECIAL(x) ((x).mode & 0x80)
 #define PORTAMENTO_MODE(x) ((x).mode & ~0x80)

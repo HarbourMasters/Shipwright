@@ -42,7 +42,6 @@ std::map<u16, std::tuple<std::string, std::string, SeqType>> sfxEditorSequenceMa
     {NA_BGM_GANON_TOWER,           {"Ganondorf's Theme",                   "NA_BGM_GANON_TOWER",             SEQ_BGM_WORLD}},
     {NA_BGM_LONLON,                {"Lon Lon Ranch",                       "NA_BGM_LONLON",                  SEQ_BGM_WORLD}},
     {NA_BGM_GORON_CITY,            {"Goron City",                          "NA_BGM_GORON_CITY",              SEQ_BGM_WORLD}},
-    //{NA_BGM_FIELD_MORNING,         {"Hyrule Field Morning Theme",          "NA_BGM_FIELD_MORNING",           SEQ_BGM_WORLD}},
     {NA_BGM_SPIRITUAL_STONE,       {"Spiritual Stone Get",                 "NA_BGM_SPIRITUAL_STONE",         SEQ_FANFARE}},
     {NA_BGM_OCA_BOLERO,            {"Bolero of Fire",                      "NA_BGM_OCA_BOLERO",              SEQ_OCARINA}},
     {NA_BGM_OCA_MINUET,            {"Minuet of Forest",                    "NA_BGM_OCA_MINUET",              SEQ_OCARINA}},
@@ -208,7 +207,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
             const auto& [name, sfxKey, seqType] = seqData;
             const std::string cvarKey = "gSfxEditor_" + sfxKey;
             if (seqType & type) {
-                if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue >= 110) {
+                if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue > MAX_AUTHENTIC_SEQID) {
                     continue;
                 }
                 const int randomValue = values.back();
@@ -229,7 +228,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         if (~(seqType) & type) {
             continue;
         }
-        if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue >= 110) {
+        if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue > MAX_AUTHENTIC_SEQID) {
             continue;
         }
 
