@@ -451,7 +451,7 @@ void BgSpot06Objects_Update(Actor* thisx, PlayState* play) {
     // Begin setup for Lake Hylia water control system
     if (actionCounter == 0) {
         // Object containing floor switch data (and ice block data)
-        Object_Spawn(play->objectCtx, 0x3);
+        Object_Spawn(&play->objectCtx, OBJECT_GAMEPLAY_DANGEON_KEEP);
 
         s16 switchParams;
         if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
