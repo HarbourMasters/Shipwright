@@ -188,8 +188,6 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
         COMMAND ${ImageMagick_convert_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/soh/macosx/sohIcon.png -resize 256x256 ${CMAKE_BINARY_DIR}/hicolor/256x256/apps/sohIcon.png
         COMMAND mkdir -p ${CMAKE_BINARY_DIR}/hicolor/512x512/apps
         COMMAND ${ImageMagick_convert_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/soh/macosx/sohIcon.png -resize 512x512 ${CMAKE_BINARY_DIR}/hicolor/512x512/apps/sohIcon.png
-        COMMAND mkdir -p ${CMAKE_BINARY_DIR}/hicolor/1024x1024/apps
-        COMMAND ${ImageMagick_convert_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/soh/macosx/sohIcon.png -resize 1024x1024 ${CMAKE_BINARY_DIR}/hicolor/1024x1024/apps/sohIcon.png
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         COMMENT "Creating Linux icons ..."
     )
