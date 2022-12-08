@@ -159,6 +159,11 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: assets
+    - name: Cache flatpak-builder
+      uses: actions/cache@v3
+      with:
+        path: .flatpak-builder/cache
+        key: ${{ runner.OS }}-flatpak
     - name: Build SoH
       run: |
         flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
