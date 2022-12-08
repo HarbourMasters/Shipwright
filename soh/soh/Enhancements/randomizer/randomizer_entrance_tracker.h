@@ -44,6 +44,7 @@ typedef struct {
 
 typedef struct {
     int16_t index;
+    int16_t reverseIndex;
     std::vector<EntranceDataSceneAndSpawn> scenes;
     std::string source;
     std::string destination;

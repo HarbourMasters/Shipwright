@@ -598,4 +598,6 @@ void Sram_InitSram(GameState* gameState) {
     // When going from a rando save to a vanilla save within the same game instance
     // we need to reset the entrance table back to its vanilla state
     Entrance_ResetEntranceTable();
+    // Clear out the entrance tracker
+    Entrance_ClearEntranceTrackingData();
 }

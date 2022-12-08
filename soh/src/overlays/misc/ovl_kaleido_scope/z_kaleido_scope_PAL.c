@@ -1938,7 +1938,7 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
                 } else {//baguettes
                     PosX = 98;
                 }
-                s16 PosY = 200; //General Pos of C button icon
+                s16 PosY = 200 - pauseCtx->infoPanelOffsetY; //General Pos of C button icon
                 s16 icon_w = 46; // Original texture size
                 s16 icon_h = 16;
                 s32 icon_x_offset;

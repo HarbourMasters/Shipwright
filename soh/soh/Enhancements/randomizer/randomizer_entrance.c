@@ -124,12 +124,12 @@ void Entrance_Init(void) {
         s16 overrideIndex = gSaveContext.entranceOverrides[i].override;
 
         //Overwrite grotto related indices
-        if (originalIndex >= 0x0800) {
+        if (originalIndex >= ENTRANCE_RANDO_GROTTO_EXIT_START) {
             Grotto_SetExitOverride(originalIndex, overrideIndex);
             continue;
         }
 
-        if (originalIndex >= 0x0700 && originalIndex < 0x0800) {
+        if (originalIndex >= ENTRANCE_RANDO_GROTTO_LOAD_START && originalIndex < ENTRANCE_RANDO_GROTTO_EXIT_START) {
             Grotto_SetLoadOverride(originalIndex, overrideIndex);
             continue;
         }
@@ -217,6 +217,7 @@ s16 Entrance_OverrideDynamicExit(s16 dynamicExitIndex) {
 u32 Entrance_SceneAndSpawnAre(u8 scene, u8 spawn) {
     s16 computedEntranceIndex;
 
+    // Adjust the entrance to acount for the exact scene/spawn combination for child/adult and day/night
     if (!IS_DAY) {
         if (!LINK_IS_ADULT) {
             computedEntranceIndex = gSaveContext.entranceIndex + 1;
@@ -602,11 +603,11 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
 }
 
 u8 Entrance_GetIsSceneDiscovered(u8 sceneNum) {
-    u32 numBits = sizeof(u32) * 8;
-    u32 idx = sceneNum / numBits;
+    u16 bitsPerIndex = sizeof(u32) * 8;
+    u32 idx = sceneNum / bitsPerIndex;
     if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
-        u32 bit = 1 << (sceneNum - (idx * numBits));
-        return (gSaveContext.sohStats.scenesDiscovered[idx] & bit) != 0;
+        u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
+        return (gSaveContext.sohStats.scenesDiscovered[idx] & sceneBit) != 0;
     }
     return 0;
 }
@@ -616,43 +617,40 @@ void Entrance_SetSceneDiscovered(u8 sceneNum) {
         return;
     }
 
-    u16 numBits = sizeof(u32) * 8;
-    u32 idx = sceneNum / numBits;
+    u16 bitsPerIndex = sizeof(u32) * 8;
+    u32 idx = sceneNum / bitsPerIndex;
     if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
-        u32 sceneBit = 1 << (sceneNum - (idx * numBits));
+        u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
         gSaveContext.sohStats.scenesDiscovered[idx] |= sceneBit;
     }
 }
 
 u8 Entrance_GetIsEntranceDiscovered(u16 entranceIndex) {
-    u32 numBits = sizeof(u32) * 8;
-    u32 idx = entranceIndex / numBits;
+    u16 bitsPerIndex = sizeof(u32) * 8;
+    u32 idx = entranceIndex / bitsPerIndex;
     if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
-        u32 bit = 1 << (entranceIndex - (idx * numBits));
-        return (gSaveContext.sohStats.entrancesDiscovered[idx] & bit) != 0;
+        u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
+        return (gSaveContext.sohStats.entrancesDiscovered[idx] & entranceBit) != 0;
     }
     return 0;
 }
 
 void Entrance_SetEntranceDiscovered(u16 entranceIndex) {
-
-    // Skip if already set to save time from setting the connected or
-    // if this is a dynamic entrance
-    if (entranceIndex > 0x0820 || Entrance_GetIsEntranceDiscovered(entranceIndex)) {
+    // Skip if already set to save time from setting the connected entrance or
+    // if this entrance is outside of the randomized entrance range (i.e. is a dynamic entrance)
+    if (entranceIndex > MAX_ENTRANCE_RANDO_USED_INDEX || Entrance_GetIsEntranceDiscovered(entranceIndex)) {
         return;
     }
 
-    u16 numBits = sizeof(u32) * 8;
-    u32 idx = entranceIndex / numBits;
+    u16 bitsPerIndex = sizeof(u32) * 8;
+    u32 idx = entranceIndex / bitsPerIndex;
     if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
-        u32 entranceBit = 1 << (entranceIndex - (idx * numBits));
+        u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
         gSaveContext.sohStats.entrancesDiscovered[idx] |= entranceBit;
         // Set connected
         for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
             if (entranceIndex == gSaveContext.entranceOverrides[i].index) {
-                if (!Entrance_GetIsEntranceDiscovered(gSaveContext.entranceOverrides[i].overrideDestination)) {
-                    Entrance_SetEntranceDiscovered(gSaveContext.entranceOverrides[i].overrideDestination);
-                }
+                Entrance_SetEntranceDiscovered(gSaveContext.entranceOverrides[i].overrideDestination);
                 break;
             }
         }

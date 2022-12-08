@@ -37,6 +37,7 @@ private:
 };
 
 uint32_t IsGameMasterQuest();
+std::string GetName(const char* path);
 #endif
 
 #ifndef __cplusplus
@@ -59,6 +60,7 @@ uint32_t ResourceMgr_GetNumGameVersions();
 uint32_t ResourceMgr_GetGameVersion(int index);
 void ResourceMgr_CacheDirectory(const char* resName);
 char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
+const char* ResourceMgr_GetName(const char* path);
 void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
 char* ResourceMgr_LoadJPEG(char* data, int dataSize);
