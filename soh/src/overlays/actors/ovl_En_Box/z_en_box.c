@@ -85,6 +85,7 @@ Gfx gKeyTreasureChestChestFrontDL[128] = {0};
 Gfx gChristmasRedTreasureChestChestFrontDL[128] = {0};
 Gfx gChristmasGreenTreasureChestChestFrontDL[128] = {0};
 u8 hasCreatedRandoChestTextures = 0;
+u8 hasChristmasChestTexturesAvailable = 0;
 
 void EnBox_SetupAction(EnBox* this, EnBoxActionFunc actionFunc) {
     this->actionFunc = actionFunc;
@@ -707,7 +708,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
         }
     }
 
-    if (CVar_GetS32("gLetItSnow", 0)) {
+    if (CVar_GetS32("gLetItSnow", 0) && hasChristmasChestTexturesAvailable) {
         if (this->dyna.actor.scale.x == 0.01f) {
             this->boxBodyDL = gChristmasRedTreasureChestChestFrontDL;
             this->boxLidDL = gChristmasRedTreasureChestChestSideAndLidDL;
@@ -804,6 +805,7 @@ void EnBox_CreateExtraChestTextures() {
     gChristmasGreenTreasureChestChestSideAndLidDL[29] = gTreasureChestChestTextures[9];
     gChristmasGreenTreasureChestChestSideAndLidDL[45] = gTreasureChestChestTextures[8];
 
+    ResourceMgr_ListFiles("assets/objects/object_box/gChristmas*", &hasChristmasChestTexturesAvailable);
     hasCreatedRandoChestTextures = 1;
 }
 
