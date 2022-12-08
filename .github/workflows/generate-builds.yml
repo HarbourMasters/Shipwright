@@ -145,6 +145,7 @@ jobs:
           soh.appimage
           readme.txt
   build-flatpak:
+    needs: extract-assets
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v3
