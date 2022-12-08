@@ -39,4 +39,4 @@ rename-icon: sohIcon
 runtime: "org.freedesktop.Platform"
 runtime-version: "22.08"
 sdk: "org.freedesktop.Sdk"
-default-branch: "Stable"
+default-branch: "stable"
