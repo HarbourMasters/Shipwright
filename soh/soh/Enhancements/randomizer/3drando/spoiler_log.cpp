@@ -639,7 +639,7 @@ static void WriteHints(int language) {
             jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
             jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetEnglish();
             jsonData["warpRequiemText"] = GetWarpRequiemText().GetEnglish();
-            jsonData["warpNocturne"] = GetWarpNocturneText().GetEnglish();
+            jsonData["warpNocturneText"] = GetWarpNocturneText().GetEnglish();
             jsonData["warpPreludeText"] = GetWarpPreludeText().GetEnglish();
             jsonData["childAltarText"] = GetChildAltarText().GetEnglish();
             jsonData["adultAltarText"] = GetAdultAltarText().GetEnglish();
@@ -651,7 +651,7 @@ static void WriteHints(int language) {
             jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
             jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetFrench();
             jsonData["warpRequiemText"] = GetWarpRequiemText().GetFrench();
-            jsonData["warpNocturne"] = GetWarpNocturneText().GetFrench();
+            jsonData["warpNocturneText"] = GetWarpNocturneText().GetFrench();
             jsonData["warpPreludeText"] = GetWarpPreludeText().GetFrench();
             jsonData["childAltarText"] = GetChildAltarText().GetFrench();
             jsonData["adultAltarText"] = GetAdultAltarText().GetFrench();

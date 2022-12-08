@@ -2712,7 +2712,7 @@ u8 Item_CheckObtainability(u8 item) {
 }
 
 void PerformAutosave(PlayState* play, u8 item) {
-    if (CVar_GetS32("gAutosave", 0) && (play->sceneNum != SCENE_KENJYANOMA)) {
+    if (CVar_GetS32("gAutosave", 0) && (play && play->sceneNum != SCENE_KENJYANOMA)) {
         if (CVar_GetS32("gAutosaveAllItems", 0)) {
             Play_PerformSave(play);
         } else if (CVar_GetS32("gAutosaveMajorItems", 1)) {
