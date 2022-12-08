@@ -959,6 +959,12 @@ s32 func_8008FCC8(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
             rot->x += this->unk_6BA;
             rot->y -= this->unk_6B8;
             rot->z += this->unk_6B6;
+        } else if (limbIndex == PLAYER_LIMB_L_HAND) {
+            if (CVar_GetS32("gCosmetics.Link_SwordScale.Changed", 0)) {
+                f32 scale = CVar_GetFloat("gCosmetics.Link_SwordScale.Value", 1.0f);
+                Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
+                Matrix_Translate(-((LINK_IS_ADULT ? 320.0f : 200.0f) * scale), 0.0f, 0.0f, MTXMODE_APPLY);
+            }
         } else if (limbIndex == PLAYER_LIMB_UPPER) {
             if (this->unk_6B0 != 0) {
                 Matrix_RotateZ(0x44C * (M_PI / 0x8000), MTXMODE_APPLY);

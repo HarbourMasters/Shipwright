@@ -1573,6 +1573,15 @@ void DrawCosmeticsEditor(bool& open) {
                 CVar_Clear("gCosmetics.Link_HeadScale.Changed");
                 SohImGui::RequestCvarSaveOnNextTick();
             }
+            if (UIWidgets::EnhancementSliderFloat("Link Sword Scale: %f", "##Link_SwordScale", "gCosmetics.Link_SwordScale.Value", 1.0f, 2.5f, "", 1.0f, false)) {
+                CVar_SetS32("gCosmetics.Link_SwordScale.Changed", 1);
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Reset##Link_SwordScale")) {
+                CVar_Clear("gCosmetics.Link_SwordScale.Value");
+                CVar_Clear("gCosmetics.Link_SwordScale.Changed");
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
             UIWidgets::EnhancementSliderFloat("Bunny Hood Length: %f", "##BunnyHood_EarLength", "gCosmetics.BunnyHood_EarLength", -300.0f, 1000.0f, "", 0.0f, false);
             ImGui::SameLine();
             if (ImGui::Button("Reset##BunnyHood_EarLength")) {
@@ -1608,6 +1617,15 @@ void DrawCosmeticsEditor(bool& open) {
             ImGui::SameLine();
             if (ImGui::Button("Reset##Moon_Size")) {
                 CVar_Clear("gCosmetics.Moon_Size");
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
+            if (UIWidgets::EnhancementSliderFloat("Kak Windmill Speed: %f", "##Kak_Windmill_Speed", "gCosmetics.Kak_Windmill_Speed.Value", 100.0f, 6000.0f, "", 100.0f, false)) {
+                CVar_SetS32("gCosmetics.Kak_Windmill_Speed.Changed", 1);
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Reset##Kak_Windmill_Speed")) {
+                CVar_Clear("gCosmetics.Kak_Windmill_Speed.Value");
+                CVar_Clear("gCosmetics.Kak_Windmill_Speed.Changed");
                 SohImGui::RequestCvarSaveOnNextTick();
             }
             ImGui::EndTabItem();
