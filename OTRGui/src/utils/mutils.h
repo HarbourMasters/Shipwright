@@ -37,6 +37,7 @@ namespace MoonUtils {
     bool exists(std::string path);
     void mkdir(std::string path);
     void rm(std::string path);
+    std::string absolute(std::string path);
     std::string relative(std::string parent, std::string child);
     void move(std::string src, std::string dst);
     void copy(std::string src, std::string dst);

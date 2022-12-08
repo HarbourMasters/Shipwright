@@ -987,7 +987,7 @@ typedef enum {
     RSK_RAINBOW_BRIDGE_REWARD_COUNT,
     RSK_RAINBOW_BRIDGE_DUNGEON_COUNT,
     RSK_RAINBOW_BRIDGE_TOKEN_COUNT,
-    RSK_RANDOM_TRIALS,
+    RSK_GANONS_TRIALS,
     RSK_TRIAL_COUNT,
     RSK_STARTING_OCARINA,
     RSK_SHUFFLE_OCARINA,
@@ -1069,6 +1069,300 @@ typedef enum {
     RSK_STARTING_SKULLTULA_TOKEN,
     RSK_MAX
 } RandomizerSettingKey;
+
+//Generic Settings (any binary option can use this)
+// off/on
+typedef enum {
+    RO_GENERIC_OFF,
+    RO_GENERIC_ON,
+    RO_GENERIC_ON_OFF_MAX,
+} RandoOptionGenericOffOn;
+
+// no/yes
+typedef enum {
+    RO_GENERIC_NO,
+    RO_GENERIC_YES,
+    RO_GENERIC_NO_YES_MAX,
+} RandoOptionGenericNoYes;
+
+// don't skip/skip
+typedef enum {
+    RO_GENERIC_DONT_SKIP,
+    RO_GENERIC_SKIP,
+    RO_GENERIC_SKIP_MAX,
+} RandoOptionGenericSkip;
+
+//Forest settings (closed, closed deku, open)
+typedef enum {
+    RO_FOREST_CLOSED,
+    RO_FOREST_CLOSED_DEKU,
+    RO_FOREST_OPEN,
+    RO_FOREST_MAX,
+} RandoOptionForest;
+
+//Door of Time settings (closed, song only, open)
+typedef enum {
+    RO_DOOROFTIME_CLOSED,
+    RO_DOOROFTIME_SONGONLY,
+    RO_DOOROFTIME_OPEN,
+    RO_DOOROFTIME_MAX,
+} RandoOptionDoorOfTime;
+
+//Zora's Fountain settings (closed, closed as child, open)
+typedef enum {
+    RO_ZF_CLOSED,
+    RO_ZF_CLOSED_CHILD,
+    RO_ZF_OPEN,
+    RO_ZF_MAX,
+} RandoOptionZorasFountain;
+
+//Starting Age settings (child, adult, random)
+typedef enum {
+    RO_AGE_CHILD,
+    RO_AGE_ADULT,
+    RO_AGE_RANDOM,
+    RO_AGE_MAX,
+} RandoOptionStartingAge;
+
+//Gerudo Fortress settings (normal, fast, open)
+typedef enum {
+    RO_GF_NORMAL,
+    RO_GF_FAST,
+    RO_GF_OPEN,
+    RO_GF_MAX,
+} RandoOptionGerudoFortress;
+
+//Kakariko Gate settings (closed/open)
+typedef enum {
+    RO_KAK_GATE_CLOSED,
+    RO_KAK_GATE_OPEN,
+    RO_KAK_GATE_MAX,
+} RandoOptionKakarikoGate;
+
+//Rainbow Bridge settings (vanilla, always open, stones, medallions, dungeon rewards, dungeons, tokens)
+typedef enum {
+    RO_BRIDGE_VANILLA = 0,
+    RO_BRIDGE_ALWAYS_OPEN,
+    RO_BRIDGE_STONES,
+    RO_BRIDGE_MEDALLIONS,
+    RO_BRIDGE_DUNGEON_REWARDS,
+    RO_BRIDGE_DUNGEONS,
+    RO_BRIDGE_TOKENS,
+    RO_BRIDGE_MAX,
+} RandoOptionRainbowBridge;
+
+//Shopsanity settings (off, 0-4 items, random)
+typedef enum {
+    RO_SHOPSANITY_OFF,
+    RO_SHOPSANITY_ZERO_ITEMS,
+    RO_SHOPSANITY_ONE_ITEM,
+    RO_SHOPSANITY_TWO_ITEMS,
+    RO_SHOPSANITY_THREE_ITEMS,
+    RO_SHOPSANITY_FOUR_ITEMS,
+    RO_SHOPSANITY_RANDOM,
+    RO_SHOPSANITY_MAX,
+} RandoOptionShopsanity;
+
+//Scrubsanity settings (off, affordable, expensive, random)
+typedef enum {
+    RO_SCRUBS_OFF,
+    RO_SCRUBS_AFFORDABLE,
+    RO_SCRUBS_EXPENSIVE,
+    RO_SCRUBS_RANDOM,
+    RO_SCRUBS_MAX,
+} RandoOptionScrubsanity;
+
+//Ammo drop settings (on, "on+bombchu", off)
+typedef enum {
+    RO_AMMO_DROPS_ON,
+    RO_AMMO_DROPS_ON_PLUS_BOMBCHU,
+    RO_AMMO_DROPS_OFF,
+    RO_AMMO_DROPS_MAX,
+} RandoOptionAmmoDrops;
+
+//Any Dungeon Item (start with, vanilla, own dungeon, any dungeon,
+//overworld, anywhere)
+typedef enum {
+    RO_DUNGEON_ITEM_LOC_STARTWITH,
+    RO_DUNGEON_ITEM_LOC_VANILLA,
+    RO_DUNGEON_ITEM_LOC_OWN_DUNGEON,
+    RO_DUNGEON_ITEM_LOC_ANY_DUNGEON,
+    RO_DUNGEON_ITEM_LOC_OVERWORLD,
+    RO_DUNGEON_ITEM_LOC_ANYWHERE,
+    RO_DUNGEON_ITEM_LOC_MAX,
+} RandoOptionDungeonItemLocation;
+
+//Dungeon reward settings
+typedef enum {
+    RO_DUNGEON_REWARDS_END_OF_DUNGEON,
+    RO_DUNGEON_REWARDS_ANY_DUNGEON,
+    RO_DUNGEON_REWARDS_OVERWORLD,
+    RO_DUNGEON_REWARDS_ANYWHERE,
+    RO_DUNGEON_REWARDS_MAX,
+} RandoOptionDungeonRewards;
+
+//Keyring Settings
+typedef enum {
+    RO_KEYRINGS_OFF,
+    RO_KEYRINGS_RANDOM,
+    RO_KEYRINGS_COUNT,
+    RO_KEYRINGS_SELECTION,
+    RO_KEYRINGS_MAX,
+} RandoOptionKeyrings;
+
+//Ganon's Boss Key Settings (vanilla, own dungeon, start with,
+//overworld, anywhere)
+typedef enum {
+    RO_GANON_BOSS_KEY_VANILLA,
+    RO_GANON_BOSS_KEY_OWN_DUNGEON,
+    RO_GANON_BOSS_KEY_STARTWITH,
+    RO_GANON_BOSS_KEY_ANY_DUNGEON,
+    RO_GANON_BOSS_KEY_OVERWORLD,
+    RO_GANON_BOSS_KEY_ANYWHERE,
+    RO_GANON_BOSS_KEY_LACS_VANILLA,
+    RO_GANON_BOSS_KEY_LACS_MEDALLIONS,
+    RO_GANON_BOSS_KEY_LACS_STONES,
+    RO_GANON_BOSS_KEY_LACS_REWARDS,
+    RO_GANON_BOSS_KEY_LACS_DUNGEONS,
+    RO_GANON_BOSS_KEY_LACS_TOKENS,
+    RO_GANON_BOSS_KEY_MAX,
+} RandoOptionGanonsBossKey;
+
+//Ganon's Trials
+typedef enum {
+    RO_GANONS_TRIALS_SKIP,
+    RO_GANONS_TRIALS_SET_NUMBER,
+    RO_GANONS_TRIALS_RANDOM_NUMBER,
+    RO_GANONS_TRIALS_MAX,
+} RandoOptionGanonsTrials;
+
+//Shuffle Dungeon Entrance Settings (Off, on, plus ganon)
+typedef enum {
+    RO_DUNGEON_ENTRANCE_SHUFFLE_OFF,
+    RO_DUNGEON_ENTRANCE_SHUFFLE_ON,
+    RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON,
+    RO_DUNGEON_ENTRANCE_SHUFFLE_MAX,
+} RandoOptionDungeonEntranceShuffle;
+
+//Shuffle Interior Entrance Settings (Off, simple, all)
+typedef enum {
+    RO_INTERIOR_ENTRANCE_SHUFFLE_OFF,
+    RO_INTERIOR_ENTRANCE_SHUFFLE_SIMPLE,
+    RO_INTERIOR_ENTRANCE_SHUFFLE_ALL,
+    RO_INTERIOR_ENTRANCE_SHUFFLE_MAX,
+} RandoOptionInteriorEntranceShuffle;
+
+//Song shuffle Settings (Song locations, Dungeon rewards, anywhere)
+typedef enum {
+    RO_SONG_SHUFFLE_SONG_LOCATIONS,
+    RO_SONG_SHUFFLE_DUNGEON_REWARDS,
+    RO_SONG_SHUFFLE_ANYWHERE,
+    RO_SONG_SHUFFLE_MAX,
+} RandoOptionSongShuffle;
+
+//Shuffle Merchants Settings (Off, On no hint, on with wint)
+typedef enum {
+    RO_SHUFFLE_MERCHANTS_OFF,
+    RO_SHUFFLE_MERCHANTS_ON_NO_HINT,
+    RO_SHUFFLE_MERCHANTS_ON_HINT,
+    RO_SHUFFLE_MERCHANTS_MAX,
+} RandoOptionShuffleMerchants;
+
+//Starting Ocarina Settings (off, fairy)
+typedef enum {
+    RO_STARTING_OCARINA_OFF,
+    RO_STARTING_OCARINA_FAIRY,
+    RO_STARTING_OCARINA_MAX,
+} RandoOptionStartingOcarina;
+
+//Item Pool Settings
+typedef enum {
+    RO_ITEM_POOL_PLENTIFUL,
+    RO_ITEM_POOL_BALANCED,
+    RO_ITEM_POOL_SCARCE,
+    RO_ITEM_POOL_MINIMAL,
+    RO_ITEM_POOL_MAX,
+} RandoOptionItemPool;
+
+//Ice Trap Settings
+typedef enum {
+    RO_ICE_TRAPS_OFF,
+    RO_ICE_TRAPS_NORMAL,
+    RO_ICE_TRAPS_EXTRA,
+    RO_ICE_TRAPS_MAYHEM,
+    RO_ICE_TRAPS_ONSLAUGHT,
+    RO_ICE_TRAPS_MAX,
+} RandoOptionIceTraps;
+
+//Gossip Stone Hint Settings (no hints, needs nothing,
+//needs mask of truth, needs stone of agony)
+typedef enum {
+    RO_GOSSIP_STONES_NONE,
+    RO_GOSSIP_STONES_NEED_NOTHING,
+    RO_GOSSIP_STONES_NEED_TRUTH,
+    RO_GOSSIP_STONES_NEED_STONE,
+    RO_GOSSIP_STONES_MAX,
+} RandoOptionGossipStones;
+
+//Hint Clarity Settings (obscure, ambiguous, clear)
+typedef enum {
+    RO_HINT_CLARITY_OBSCURE,
+    RO_HINT_CLARITY_AMBIGUOUS,
+    RO_HINT_CLARITY_CLEAR,
+    RO_HINT_CLARITY_MAX,
+} RandoOptionHintClarity;
+
+//Hint Distribution Settings (useless, balanced, strong, very strong)
+typedef enum {
+    RO_HINT_DIST_USELESS,
+    RO_HINT_DIST_BALANCED,
+    RO_HINT_DIST_STRONG,
+    RO_HINT_DIST_VERY_STRONG,
+    RO_HINT_DIST_MAX,
+} RandoOptionHintDistribution;
+
+//Gerudo Fortress Key Settings (vanilla, any dungeon, overworld,
+//anywhere)
+typedef enum {
+    RO_GERUDO_KEYS_VANILLA,
+    RO_GERUDO_KEYS_ANY_DUNGEON,
+    RO_GERUDO_KEYS_OVERWORLD,
+    RO_GERUDO_KEYS_ANYWHERE,
+    RO_GERUDO_KEYS_MAX,
+} RandoOptionGerudoKeys;
+
+//Tokensanity settings (off, dungeons, overworld, all)
+typedef enum {
+    RO_TOKENSANITY_OFF,
+    RO_TOKENSANITY_DUNGEONS,
+    RO_TOKENSANITY_OVERWORLD,
+    RO_TOKENSANITY_ALL,
+    RO_TOKENSANITY_MAX,
+} RandoOptionTokensanity;
+
+//Link's Pocket Settings (dungeon reward, advancement, anything, nothing)
+typedef enum {
+    RO_LINKS_POCKET_DUNGEON_REWARD,
+    RO_LINKS_POCKET_ADVANCEMENT,
+    RO_LINKS_POCKET_ANYTHING,
+    RO_LINKS_POCKET_NOTHING,
+    RO_LINKS_POCKET_MAX,
+} RandoOptionLinksPocket;
+
+// Logic (glitchless/no logic)
+typedef enum {
+    RO_LOGIC_GLITCHLESS,
+    RO_LOGIC_NO_LOGIC,
+    RO_LOGIC_MAX,
+} RandoOptionLogic;
+
+// MQ Dungeons
+typedef enum {
+    RO_MQ_DUNGEONS_NONE,
+    RO_MQ_DUNGEONS_SET_NUMBER,
+    RO_MQ_DUNGEONS_RANDOM_NUMBER,
+    RO_MQ_DUNGEONS_MAX,
+} RandoOptionMQDungeons;
 
 typedef enum {
     CAN_OBTAIN,

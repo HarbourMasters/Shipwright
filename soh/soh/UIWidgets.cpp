@@ -75,8 +75,26 @@ namespace UIWidgets {
         }
     }
 
+    void SetLastItemHoverText(const char* text) {
+        if (ImGui::IsItemHovered()) {
+            ImGui::BeginTooltip();
+            ImGui::Text("%s", WrappedText(text, 60));
+            ImGui::EndTooltip();
+        }
+    }
+
     // Adds a "?" next to the previous ImGui item with a custom tooltip
     void InsertHelpHoverText(const std::string& text) {
+        ImGui::SameLine();
+        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "?");
+        if (ImGui::IsItemHovered()) {
+            ImGui::BeginTooltip();
+            ImGui::Text("%s", WrappedText(text, 60));
+            ImGui::EndTooltip();
+        }
+    }
+
+    void InsertHelpHoverText(const char* text) {
         ImGui::SameLine();
         ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "?");
         if (ImGui::IsItemHovered()) {
@@ -285,6 +303,7 @@ namespace UIWidgets {
         }
 
         ImGui::Text(text, val);
+        Spacer(0);
 
         if (disabled) {
             DisableComponentSwitch(disabledTooltipText, alpha);
@@ -305,13 +324,23 @@ namespace UIWidgets {
                 DisableComponentSwitch(disabledTooltipText, alpha);
             }
         }
-
+        if (PlusMinusButton) {
+#ifdef __SWITCH__
+            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
+#elif defined(__WIIU__)
+            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
+#else
+            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
+#endif
+        }
         if (ImGui::SliderInt(id, &val, min, max, format))
         {
             CVar_SetS32(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
         }
-
+        if (PlusMinusButton) {
+            ImGui::PopItemWidth();
+        }
         if(PlusMinusButton) {
             if (disabled) {
                 DisableComponentSwitch(disabledTooltipText, alpha);
@@ -364,9 +393,7 @@ namespace UIWidgets {
         } else {
             ImGui::Text(text, static_cast<int>(100 * val));
         }
-
         Spacer(0);
-
         if(PlusMinusButton) {
             std::string MinusBTNName = " - ##";
             MinusBTNName += cvarName;
@@ -456,9 +483,9 @@ namespace UIWidgets {
         Second is the cvar name where MyID will be saved.
         Note: the CVar name should be the same to each Buddies.
         Example :
-            EnhancementRadioButton("English", "gLanguages", 0);
-            EnhancementRadioButton("German", "gLanguages", 1);
-            EnhancementRadioButton("French", "gLanguages", 2);
+            EnhancementRadioButton("English", "gLanguages", LANGUAGE_ENG);
+            EnhancementRadioButton("German", "gLanguages", LANGUAGE_GER);
+            EnhancementRadioButton("French", "gLanguages", LANGUAGE_FRA);
         */
         std::string make_invisible = "##";
         make_invisible += text;
