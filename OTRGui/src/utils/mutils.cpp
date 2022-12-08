@@ -102,6 +102,10 @@ namespace MoonUtils {
         else fs::remove(path);
     }
 
+    string absolute(string path) {
+        return normalize(fs::absolute(path).string());
+    }
+
     string relative(string parent, string child){
         return normalize(fs::relative(child, parent).string());
     }

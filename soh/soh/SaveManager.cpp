@@ -175,6 +175,24 @@ void SaveManager::LoadRandomizerVersion2() {
     std::string ganonText;
     SaveManager::Instance->LoadData("ganonText", ganonText);
     memcpy(gSaveContext.ganonText, ganonText.c_str(), ganonText.length());
+    std::string warpMinuetText;
+    SaveManager::Instance->LoadData("warpMinuetText", warpMinuetText);
+    memcpy(gSaveContext.warpMinuetText, warpMinuetText.c_str(), warpMinuetText.length());
+    std::string warpBoleroText;
+    SaveManager::Instance->LoadData("warpBoleroText", warpBoleroText);
+    memcpy(gSaveContext.warpBoleroText, warpBoleroText.c_str(), warpBoleroText.length());
+    std::string warpSerenadeText;
+    SaveManager::Instance->LoadData("warpSerenadeText", warpSerenadeText);
+    memcpy(gSaveContext.warpSerenadeText, warpSerenadeText.c_str(), warpSerenadeText.length());
+    std::string warpRequiemText;
+    SaveManager::Instance->LoadData("warpRequiemText", warpRequiemText);
+    memcpy(gSaveContext.warpRequiemText, warpRequiemText.c_str(), warpRequiemText.length());
+    std::string warpNocturneText;
+    SaveManager::Instance->LoadData("warpNocturneText", warpNocturneText);
+    memcpy(gSaveContext.warpNocturneText, warpNocturneText.c_str(), warpNocturneText.length());
+    std::string warpPreludeText;
+    SaveManager::Instance->LoadData("warpPreludeText", warpPreludeText);
+    memcpy(gSaveContext.warpPreludeText, warpPreludeText.c_str(), warpPreludeText.length());
 
     SaveManager::Instance->LoadData("adultTradeItems", gSaveContext.adultTradeItems);
 
@@ -246,6 +264,12 @@ void SaveManager::SaveRandomizer() {
     SaveManager::Instance->SaveData("adultAltarText", gSaveContext.adultAltarText);
     SaveManager::Instance->SaveData("ganonHintText", gSaveContext.ganonHintText);
     SaveManager::Instance->SaveData("ganonText", gSaveContext.ganonText);
+    SaveManager::Instance->SaveData("warpMinuetText", gSaveContext.warpMinuetText);
+    SaveManager::Instance->SaveData("warpBoleroText", gSaveContext.warpBoleroText);
+    SaveManager::Instance->SaveData("warpSerenadeText", gSaveContext.warpSerenadeText);
+    SaveManager::Instance->SaveData("warpRequiemText", gSaveContext.warpRequiemText);
+    SaveManager::Instance->SaveData("warpNocturneText", gSaveContext.warpNocturneText);
+    SaveManager::Instance->SaveData("warpPreludeText", gSaveContext.warpPreludeText);
 
     SaveManager::Instance->SaveData("adultTradeItems", gSaveContext.adultTradeItems);
 
@@ -448,6 +472,12 @@ void SaveManager::InitFileNormal() {
         gSaveContext.sohStats.count[count] = 0;
     }
     gSaveContext.sohStats.gameComplete = false;
+    for (int scenesIdx = 0; scenesIdx < ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered); scenesIdx++) {
+        gSaveContext.sohStats.scenesDiscovered[scenesIdx] = 0;
+    }
+    for (int entrancesIdx = 0; entrancesIdx < ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered); entrancesIdx++) {
+        gSaveContext.sohStats.entrancesDiscovered[entrancesIdx] = 0;
+    }
     for (int scene = 0; scene < ARRAY_COUNT(gSaveContext.sceneFlags); scene++) {
         gSaveContext.sceneFlags[scene].chest = 0;
         gSaveContext.sceneFlags[scene].swch = 0;
@@ -1006,6 +1036,12 @@ void SaveManager::LoadBaseVersion2() {
         SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.count[i]);
         });
+        SaveManager::Instance->LoadArray("scenesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.sohStats.scenesDiscovered[i]);
+        });
+        SaveManager::Instance->LoadArray("entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.sohStats.entrancesDiscovered[i]);
+        });
     });
     SaveManager::Instance->LoadArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&i]() {
@@ -1174,6 +1210,12 @@ void SaveManager::SaveBase() {
         });
         SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
             SaveManager::Instance->SaveData("", gSaveContext.sohStats.count[i]);
+        });
+        SaveManager::Instance->SaveArray("scenesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered), [](size_t i) {
+            SaveManager::Instance->SaveData("", gSaveContext.sohStats.scenesDiscovered[i]);
+        });
+        SaveManager::Instance->SaveArray("entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered), [](size_t i) {
+            SaveManager::Instance->SaveData("", gSaveContext.sohStats.entrancesDiscovered[i]);
         });
     });
     SaveManager::Instance->SaveArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {

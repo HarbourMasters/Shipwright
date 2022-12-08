@@ -924,7 +924,7 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Holding down B skips text");
             UIWidgets::PaddedEnhancementCheckbox("Free Camera", "gFreeCamera", true, false);
             UIWidgets::Tooltip("Enables camera control\nNote: You must remap C buttons off of the right stick in the controller config menu, and map the camera stick to the right stick.");
-            
+
          #ifdef __SWITCH__
             UIWidgets::Spacer(0);
             int slot = CVar_GetS32("gSwitchPerfMode", (int)Ship::SwitchProfiles::STOCK);
@@ -1170,6 +1170,14 @@ namespace GameMenuBar {
                 SohImGui::EnableWindow("Item Tracker", CVar_GetS32("gItemTrackerEnabled", 0));
             }
             ImGui::Dummy(ImVec2(0.0f, 0.0f));
+            if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVar_GetS32("gEntranceTrackerEnabled", 0)).c_str(), buttonSize))
+            {
+                bool currentValue = CVar_GetS32("gEntranceTrackerEnabled", 0);
+                CVar_SetS32("gEntranceTrackerEnabled", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("Entrance Tracker", CVar_GetS32("gEntranceTrackerEnabled", 0));
+            }
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
             if (ImGui::Button(GetWindowButtonText("Item Tracker Settings", CVar_GetS32("gItemTrackerSettingsEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVar_GetS32("gItemTrackerSettingsEnabled", 0);
@@ -1232,7 +1240,7 @@ namespace GameMenuBar {
 
         #ifdef ENABLE_CROWD_CONTROL
             UIWidgets::EnhancementCheckbox("Crowd Control", "gCrowdControl");
-            UIWidgets::Tooltip("Requires a full SoH restart to take effect!\n\nEnables CrowdControl. Will attempt to connect to the local Crowd Control server.");
+            UIWidgets::Tooltip("Will attempt to connect to the Crowd Control server. Check out crowdcontrol.live for more information.");
 
             if (CVar_GetS32("gCrowdControl", 0)) {
                 CrowdControl::Instance->Enable();

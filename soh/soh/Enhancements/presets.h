@@ -570,6 +570,7 @@ const std::vector<PresetEntry> s6PresetEntries = {
     PRESET_ENTRY_S32("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON),
     PRESET_ENTRY_S32("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_STARTWITH),
     PRESET_ENTRY_S32("gRandomizeShuffleKokiriSword", 1),
+    PRESET_ENTRY_S32("gRandomizeShuffleOverworldSpawns", RO_GENERIC_ON),
     PRESET_ENTRY_S32("gRandomizeSkipChildStealth", 1),
     PRESET_ENTRY_S32("gRandomizeSkipChildZelda", 1),
     PRESET_ENTRY_S32("gRandomizeSkipEponaRace", 1),
@@ -674,7 +675,7 @@ const std::map<PresetType, PresetTypeDefinition> presetTypes = {
         { RANDOMIZER_PRESET_S6, {
             "S6 Tournament (Adapted)",
             "Matches OOTR S6 tournament settings as close as we can get with the options available in SoH. The following differences are notable:\n" \
-            "- Child overworld spawn not randomized\n" \
+            "- Both child and adult overworld spawns are randomized" \
             "- Dungeon rewards are shuffled at the end of dungeons, rather than at the end of their own dungeon\n" \
             "- Full adult trade sequence is shuffled instead of the selected 4\n" \
             "- Hint distribution no \"tournament\" mode, falling back to balanced",

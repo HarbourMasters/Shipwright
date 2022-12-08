@@ -67,7 +67,7 @@ void OTRGame::init(){
 		mat.shader = shader;
 	}
 
-	if((fs::exists("soh.exe") || fs::exists("soh.elf")) && !fs::exists("oot.otr")) {
+	if (fs::exists("soh.exe") || fs::exists("soh.elf")) {
 		hide_second_btn = true;
 		sohFolder = ".";
 	}
@@ -83,7 +83,8 @@ void ExtractRom()
 		result.error = NULLSTR;
 
 	if (result.error == NULLSTR) {
-		if (MoonUtils::exists("oot.otr")) MoonUtils::rm("oot.otr");
+		if (MoonUtils::exists("oot.otr") && !version.isMQ) MoonUtils::rm("oot.otr");
+		if (MoonUtils::exists("oot-mq.otr") && version.isMQ) MoonUtils::rm("oot-mq.otr");
 		if (MoonUtils::exists("Extract")) MoonUtils::rm("Extract");
 
 		MoonUtils::mkdir("Extract");
@@ -100,7 +101,7 @@ void ExtractRom()
 }
 
 void OTRGame::update(){
-	updateWorker(sohFolder);
+	updateWorker(sohFolder, version);
 	this->ModelRotation += 50 * GetFrameTime();
 	UpdateLightValues(shader, light);
 
