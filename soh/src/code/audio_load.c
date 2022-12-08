@@ -1536,7 +1536,16 @@ s32 AudioLoad_SlowLoadSeq(s32 seqId, u8* ramAddr, s8* isDone) {
     if (seqId != newSeqId) {
         gAudioContext.seqToPlay[SEQ_PLAYER_BGM_MAIN] = newSeqId;
         gAudioContext.seqReplaced[SEQ_PLAYER_BGM_MAIN] = 1;
-        Audio_QueueSeqCmd(0x00000000 | ((u8)SEQ_PLAYER_BGM_MAIN << 24) | ((u8)(0) << 0x10) | (u16)seqId);
+        // This sequence command starts playing a sequence specified by seqId on the main BGM seq player.
+        // The sequence command is a bitpacked u32 where different bits of the number indicated different parameters.
+        // What those parameters are is dependent on the first 8 bits which represent an operation.
+        // First two digits (bits 31-24) - Sequence Command Operation (0x0 = play sequence immediately)
+        // Next two digits (bits 23-16) - Index of the SeqPlayer to operate on. (0, which is the main BGM player.)
+        // Next two digits (bits 15-8) - Fade Timer (0 in this case, we don't want any fade-in or out here.)
+        // Last two digits (bits 7-0) - the sequence ID to play. Not actually sure why it is cast to u16 instead of u8,
+        // copied this from authentic game code and adapted it. I think it might be so that you can choose to encode the
+        // fade timer into the seqId if you want to for some reason.
+        Audio_QueueSeqCmd(0x00000000 | ((u8)SEQ_PLAYER_BGM_MAIN << 24) | ((u8)(0) << 16) | (u16)seqId);
         return 0;
     }
     seqTable = AudioLoad_GetLoadTable(SEQUENCE_TABLE);
