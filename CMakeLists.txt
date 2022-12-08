@@ -138,6 +138,15 @@ endif()
 
 find_package(Python3 COMPONENTS Interpreter)
 
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/assets.zip)
+add_custom_target(
+    ExtractAssets
+    # CMake versions prior to 3.17 do not have the rm command, use remove instead for older versions
+    COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_CURRENT_SOURCE_DIR}/assets.zip
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMENT "Unpacking assets..."
+)
+else()
 add_custom_target(
     ExtractAssets
     # CMake versions prior to 3.17 do not have the rm command, use remove instead for older versions
@@ -149,6 +158,7 @@ add_custom_target(
     DEPENDS ZAPD
     BYPRODUCTS oot.otr ${CMAKE_SOURCE_DIR}/oot.otr oot-mq.otr ${CMAKE_SOURCE_DIR}/oot-mq.otr
 )
+endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     find_package(ImageMagick COMPONENTS convert)
