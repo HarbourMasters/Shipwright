@@ -77,6 +77,7 @@ class Randomizer {
     GetItemID GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId);
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
+    CustomMessageEntry GetWarpSongMessage(u16 textId, bool mysterious = false);
     CustomMessageEntry GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
     CustomMessageEntry GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
     static void CreateCustomMessages();

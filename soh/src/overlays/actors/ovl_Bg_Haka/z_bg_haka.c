@@ -108,7 +108,7 @@ void func_8087B938(BgHaka* this, PlayState* play) {
         } else if (!IS_DAY && play->sceneNum == SCENE_SPOT02) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_POH, this->dyna.actor.home.pos.x,
                         this->dyna.actor.home.pos.y, this->dyna.actor.home.pos.z, 0, this->dyna.actor.shape.rot.y, 0,
-                        1);
+                        1, true);
         }
         this->actionFunc = func_8087BAAC;
     }
@@ -150,8 +150,8 @@ void BgHaka_Update(Actor* thisx, PlayState* play) {
 void BgHaka_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

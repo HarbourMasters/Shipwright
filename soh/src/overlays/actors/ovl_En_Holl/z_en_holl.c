@@ -338,7 +338,7 @@ void EnHoll_Draw(Actor* thisx, PlayState* play) {
             gfxP = POLY_XLU_DISP;
             setupDlIdx = 0;
         }
-        gfxP = Gfx_CallSetupDL(gfxP, setupDlIdx);
+        gfxP = Gfx_SetupDL(gfxP, setupDlIdx);
         if (this->side == 0) {
             Matrix_RotateY(M_PI, MTXMODE_APPLY);
         }

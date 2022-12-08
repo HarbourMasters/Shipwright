@@ -8,4 +8,4 @@ enum Platforms {
 struct RomVersion;
 
 void startWorker(RomVersion version);
-void updateWorker(const std::string& output);
+void updateWorker(const std::string& output, RomVersion version);

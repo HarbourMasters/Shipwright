@@ -225,3 +225,10 @@ Text& GetChildAltarText();
 Text& GetAdultAltarText();
 Text& GetGanonText();
 Text& GetGanonHintText();
+
+Text& GetWarpMinuetText();
+Text& GetWarpBoleroText();
+Text& GetWarpSerenadeText();
+Text& GetWarpRequiemText();
+Text& GetWarpNocturneText();
+Text& GetWarpPreludeText();
