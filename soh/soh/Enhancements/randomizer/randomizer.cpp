@@ -4459,6 +4459,7 @@ void CreateIceTrapRandoMessages() {
                                               IceTrapMessages[i].german, IceTrapMessages[i].french });
     }
 
+    // We only use this ice trap message for christmas, so we don't want it in the normal ice trap messages rotation
     customMessageManager->CreateMessage(Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1,
                                             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
                                               "This year for Christmas, all&you get is %BCOAL",
