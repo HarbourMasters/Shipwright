@@ -4505,6 +4505,12 @@ void CreateIceTrapRandoMessages() {
                                             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, IceTrapMessages[i].english,
                                               IceTrapMessages[i].german, IceTrapMessages[i].french });
     }
+
+    customMessageManager->CreateMessage(Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1,
+                                            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+                                              "This year for Christmas, all&you get is %BCOAL",
+                                              "This year for Christmas, all&you get is %BCOAL",
+                                              "This year for Christmas, all&you get is %BCOAL" });
 }
 
 void Randomizer::CreateCustomMessages() {
@@ -4862,6 +4868,8 @@ void InitRandoItemTable() {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawBossKey;
         } else if (randoGetItemTable[i].itemId == RG_DOUBLE_DEFENSE) {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawDoubleDefense;
+        } else if (randoGetItemTable[i].itemId == RG_ICE_TRAP) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawIceTrap;
         }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }
