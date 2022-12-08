@@ -60,86 +60,103 @@ RomVersion GetVersion(FILE* rom) {
         version.version = "N64 NTSC 1.0";
         version.listPath = "ntsc_oot.txt";
         version.offset = OOT_OFF_NTSC_10;
+        version.isMQ = false;
         break;
     case OOT_NTSC_11:
         version.version = "N64 NTSC 1.1";
         version.listPath = "ntsc_oot.txt";
         version.offset = OOT_OFF_NTSC_11;
+        version.isMQ = false;
         break;
     case OOT_NTSC_12:
         version.version = "N64 NTSC 1.2";
         version.listPath = "ntsc_oot.txt";
         version.offset = OOT_OFF_NTSC_12;
+        version.isMQ = false;
         break;
     case OOT_PAL_10:
         version.version = "N64 PAL 1.0";
         version.listPath = "pal_oot.txt";
         version.offset = OOT_OFF_PAL_10;
+        version.isMQ = false;
         break;
     case OOT_PAL_11:
         version.version = "N64 PAL 1.1";
         version.listPath = "pal_oot.txt";
         version.offset = OOT_OFF_PAL_11;
+        version.isMQ = false;
         break;
     case OOT_NTSC_JP_GC:
         version.version = "JP GameCube (MQ Disk)";
         version.listPath = "gamecube.txt";
         version.offset = OOT_OFF_JP_GC;
+        version.isMQ = true;
         break;
     case OOT_NTSC_JP_GC_CE:
         version.version = "GameCube (Collectors Edition Disk)";
         version.listPath = "gamecube.txt";
         version.offset = OOT_OFF_JP_GC_CE;
+        version.isMQ = false;
         break;
     case OOT_NTSC_JP_MQ:
         version.version = "JP Master Quest";
         version.listPath = "gamecube.txt";
         version.offset = OOT_OFF_JP_MQ;
+        version.isMQ = true;
         break;
     case OOT_NTSC_US_MQ:
         version.version = "NTSC Master Quest";
         version.listPath = "gamecube.txt";
         version.offset = OOT_OFF_JP_MQ;
+        version.isMQ = true;
         break;
     case OOT_NTSC_US_GC:
         version.version = "NTSC GameCube";
         version.listPath = "gamecube.txt";
         version.offset = OOT_OFF_US_MQ;
+        version.isMQ = true;
         break;
     case OOT_PAL_GC:
         version.version = "PAL GameCube";
         version.listPath = "gamecube_pal.txt";
         version.offset = OOT_OFF_PAL_GC;
+        version.isMQ = false;
         break;
     case OOT_PAL_MQ:
         version.version = "PAL Master Quest";
         version.listPath = "gamecube_pal.txt";
         version.offset = OOT_OFF_PAL_MQ;
+        version.isMQ = true;
         break;
     case OOT_PAL_GC_DBG1:
         version.version = "GameCube Debug 1.0";
         version.listPath = "dbg.txt";
         version.offset = OOT_OFF_PAL_GC_DBG1;
+        version.isMQ = false;
         break;
     case OOT_PAL_GC_DBG2:
         version.version = "GameCube Debug 2.0";
         version.listPath = "dbg.txt";
         version.offset = OOT_OFF_PAL_GC_DBG2;
+        version.isMQ = false;
         break;
     case OOT_PAL_GC_MQ_DBG:
         version.version = "GameCube MQ-Debug";
         version.listPath = "dbg.txt";
         version.offset = OOT_OFF_PAL_MQ_DBG;
+        version.isMQ = true;
         break;
     case OOT_IQUE_CN:
         version.version = "OoT IQue";
         version.listPath = "ique.txt";
         version.offset = OOT_OFF_CN_IQUE;
+        version.isMQ = false;
         break;
     case OOT_IQUE_TW:
         version.version = "TW IQue";
         version.listPath = "ique.txt";
         version.offset = OOT_OFF_TW_IQUE;
+        version.isMQ = false;
         break;
     default:
         version.error = MoonUtils::format("Unknown CRC %x given: ", version.crc);
