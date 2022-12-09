@@ -3978,7 +3978,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, RO_LOGIC_MAX, RO_LOGIC_GLITCHLESS);
                 if (CVar_GetS32("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHLESS) {
                     ImGui::SameLine();
-                    UIWidgets::EnhancementCheckbox(Settings::LocationsReachable.GetName().c_str(), "gRandomizeAllLocationsReachable", false, "", UIWidgets::CheckboxGraphics::Cross, true);
+                    UIWidgets::EnhancementCheckbox(Settings::LocationsReachable.GetName().c_str(), "gRandomizeAllLocationsReachable", false, "", UIWidgets::CheckboxGraphics::Cross, RO_ALL_LOCATIONS_REACHABLE_ON);
                     UIWidgets::InsertHelpHoverText(
                         "When this options is enabled, the randomizer will "
                         "guarantee that every item is obtainable and every "
