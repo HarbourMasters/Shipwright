@@ -121,7 +121,7 @@ Once you have prepared your sequences folder:
 1. Choose the "Create OTR" option 
 1. Choose the "Custom Sequences" option
 1. Using the file select, choose the sequences folder you prepared in the previous instructions.
-1. Click the "Stage Files" button
+1. Click the "Stage Files" button (Reminder: SoH can handle 1024 custom sequence in total, this number include the count of the original music with it so be sure to take this into account)
 1. Click the "Finalize OTR" text in the green footer.
 1. Finally click "Generate OTR" and for the source destination it needs to go in the `mods` folder of your SoH installation.
     - This `mods` folder should be a sibling of your `oot.otr` file.
