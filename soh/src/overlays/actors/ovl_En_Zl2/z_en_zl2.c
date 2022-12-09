@@ -632,7 +632,7 @@ void EnZl2_GiveLightArrows(EnZl2* this, PlayState* play) {
         posX = player->actor.world.pos.x;
         posY = player->actor.world.pos.y + 80.0f;
         posZ = player->actor.world.pos.z;
-        Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0, 0x17);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0, 0x17, true);
         Item_Give(play, ITEM_ARROW_LIGHT);
         this->unk_244 = 1;
     }
@@ -648,7 +648,7 @@ void func_80B4FF84(EnZl2* this, PlayState* play) {
         posY = this->actor.world.pos.y;
         posZ = this->actor.world.pos.z;
 
-        Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0, WARP_YELLOW);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0, WARP_YELLOW, true);
         this->unk_250 = 1;
     }
 }
@@ -1184,7 +1184,7 @@ void func_80B513A8(EnZl2* this, PlayState* play) {
         posX = player->actor.world.pos.x;
         posY = player->actor.world.pos.y;
         posZ = player->actor.world.pos.z;
-        Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0, WARP_UNK_7);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0, WARP_UNK_7, true);
         this->unk_250 = 1;
     }
 }

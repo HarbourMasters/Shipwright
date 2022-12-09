@@ -390,7 +390,7 @@ void func_809B75A0(EnBa* this, PlayState* play2) {
 
     for (i = 7; i < 14; i++) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BA, this->unk_158[i].x, this->unk_158[i].y,
-                    this->unk_158[i].z, 0, 0, 0, EN_BA_DEAD_BLOB);
+                    this->unk_158[i].z, 0, 0, 0, EN_BA_DEAD_BLOB, true);
     }
     unk_temp = Math_Vec3f_Pitch(&this->actor.world.pos, &this->unk_158[0]) + 0x8000;
     Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 1, this->unk_31C, 0);

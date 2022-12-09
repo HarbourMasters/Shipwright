@@ -62,6 +62,8 @@ typedef struct {
     /*      */ bool gameComplete;
     /*      */ u32 timestamp[TIMESTAMP_MAX];
     /*      */ u32 count[COUNT_MAX];
+    /*      */ u32 entrancesDiscovered[SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT];
+    /*      */ u32 scenesDiscovered[SAVEFILE_SCENES_DISCOVERED_IDX_COUNT];
 } SohStats;
 
 typedef struct {
@@ -261,6 +263,12 @@ typedef struct {
     /*        */ char adultAltarText[750];
     /*        */ char ganonHintText[150];
     /*        */ char ganonText[250];
+    /*        */ char warpMinuetText[100];
+    /*        */ char warpBoleroText[100];
+    /*        */ char warpSerenadeText[100];
+    /*        */ char warpRequiemText[100];
+    /*        */ char warpNocturneText[100];
+    /*        */ char warpPreludeText[100];
     /*        */ u8 seedIcons[5];
     /*        */ u16 randomizerInf[9];
     /*        */ u16 adultTradeItems;

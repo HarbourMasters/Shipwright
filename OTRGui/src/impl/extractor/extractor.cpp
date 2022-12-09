@@ -36,7 +36,7 @@ std::string GetXMLVersion(RomVersion version)
 	return "ERROR";
 }
 
-void BuildOTR(const std::string output) {
+void BuildOTR(const std::string output, RomVersion version) {
 	if (oldExtractMode)
 	{
 		std::string execStr = Util::format("assets/extractor/%s", isWindows() ? "ZAPD.exe" : "ZAPD.out") + " botr -se OTR";
@@ -49,16 +49,28 @@ void BuildOTR(const std::string output) {
 
 	setCurrentStep("Done!");
 
-	if (output == ".") return;
-	const std::string outputPath = MoonUtils::join(output, "oot.otr");
-	if(MoonUtils::exists(outputPath)) MoonUtils::rm(outputPath);
+	// If a custom SoH folder was not selected, or the custom SOH folder is the same location as OTRGui,
+	// then the otr file should already be where it is expected
+	if (output == "." || output == MoonUtils::absolute(".")) {
+		return;
+	}
 
-	MoonUtils::copy("oot.otr", outputPath);
+	// Otherwise an outside SoH folder was selected so we need to copy the exported otr to the correct folder
+	const std::string otrName = version.isMQ ? "oot-mq.otr" : "oot.otr";
+	const std::string outputPath = MoonUtils::join(output, otrName);
+	if (MoonUtils::exists(outputPath)) MoonUtils::rm(outputPath);
+
+	MoonUtils::copy(otrName, outputPath);
 }
 
 void ExtractFile(std::string xmlPath, std::string outPath, std::string outSrcPath, RomVersion version) {
+	std::string otrExporterArgs = Util::format("--otrfile %s", version.isMQ ? "oot-mq.otr" : "oot.otr");
+	if (xmlPath.find("overlays") != std::string::npos) {
+		otrExporterArgs += " --static";
+	}
+
 	std::string execStr = Util::format("assets/extractor/%s", isWindows() ? "ZAPD.exe" : "ZAPD.out");
-	std::string args = Util::format(" e -eh -i %s -b tmp/baserom/ -o %s -osf %s -gsf 1 -rconf assets/extractor/Config_%s.xml -se OTR %s", xmlPath.c_str(), outPath.c_str(), outSrcPath.c_str(), GetXMLVersion(version).c_str(), xmlPath.find("overlays") != std::string::npos ? "--static" : "");
+	std::string args = Util::format(" e -eh -i %s -b tmp/baserom/ -o %s -osf %s -gsf 1 -rconf assets/extractor/Config_%s.xml -se OTR %s", xmlPath.c_str(), outPath.c_str(), outSrcPath.c_str(), GetXMLVersion(version).c_str(), otrExporterArgs);
 	ProcessResult result = NativeFS->LaunchProcess(execStr + args);
 
 	if (result.exitCode != 0) {
@@ -110,8 +122,9 @@ void startWorker(RomVersion version) {
 	}
 	else
 	{
+		std::string otrExporterArgs = Util::format("--otrfile %s", version.isMQ ? "oot-mq.otr" : "oot.otr");
 		std::string execStr = Util::format("assets/extractor/%s", isWindows() ? "ZAPD.exe" : "ZAPD.out");
-		std::string args = Util::format(" ed -eh -i %s -b tmp/rom.z64 -fl assets/extractor/filelists -o %s -osf %s -gsf 1 -rconf assets/extractor/Config_%s.xml -se OTR %s", path.c_str(), (path + "/../").c_str(), (path + "/../").c_str(), GetXMLVersion(version).c_str(), "");
+		std::string args = Util::format(" ed -eh -i %s -b tmp/rom.z64 -fl assets/extractor/filelists -o %s -osf %s -gsf 1 -rconf assets/extractor/Config_%s.xml -se OTR %s", path.c_str(), (path + "/../").c_str(), (path + "/../").c_str(), GetXMLVersion(version).c_str(), otrExporterArgs.c_str());
 		ProcessResult result = NativeFS->LaunchProcess(execStr + args);
 
 		if (result.exitCode != 0) {
@@ -127,7 +140,7 @@ void startWorker(RomVersion version) {
 	}
 }
 
-void updateWorker(const std::string& output) {
+void updateWorker(const std::string& output, RomVersion version) {
 	if (maxResources > 0 && !buildingOtr && (extractedResources >= maxResources || !oldExtractMode)) 
 	{
 		setCurrentStep("Building OTR...");
@@ -138,10 +151,10 @@ void updateWorker(const std::string& output) {
 		buildingOtr = true;
 		
 		if (single_thread || !oldExtractMode){
-			BuildOTR(output);
+			BuildOTR(output, version);
 			return;
 		}
-		std::thread otr(BuildOTR, output);
+		std::thread otr(BuildOTR, output, version);
 		otr.detach();
 	}
 }

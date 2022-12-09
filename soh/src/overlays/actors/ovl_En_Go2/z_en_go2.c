@@ -1416,7 +1416,7 @@ void EnGo2_StopRolling(EnGo2* this, PlayState* play) {
     if (((this->actor.params & 0x1F) != GORON_CITY_ROLLING_BIG) && ((this->actor.params & 0x1F) != GORON_CITY_LINK)) {
         if ((this->actor.params & 0x1F) == GORON_DMT_ROLLING_SMALL) {
             bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
+                                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
             if (bomb != NULL) {
                 bomb->timer = 0;
             }

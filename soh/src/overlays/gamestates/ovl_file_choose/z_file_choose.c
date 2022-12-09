@@ -2197,6 +2197,15 @@ void FileChoose_LoadGame(GameState* thisx) {
             gSaveContext.inventory.equipment ^= (gBitFlags[swordEquipMask - 1] << BOMSWAP16(gEquipShifts[EQUIP_SWORD]));
         }
     }
+
+    // Handle randomized spawn positions after the save context has been setup from load
+    // When remeber save location is on, set save warp if the save was in an a grotto, or
+    // the entrance index is -1 from shuffle overwarld spawn
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) && ((!CVar_GetS32("gRememberSaveLocation", 0) ||
+        gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE || gSaveContext.savedSceneNum == SCENE_KAKUSIANA) ||
+        (CVar_GetS32("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == -1))) {
+        Entrance_SetSavewarpEntrance();
+    }
 }
 
 static void (*gSelectModeUpdateFuncs[])(GameState*) = {

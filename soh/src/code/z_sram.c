@@ -200,14 +200,7 @@ void Sram_OpenSave() {
     // Setup the modified entrance table and entrance shuffle table for rando
     if (gSaveContext.n64ddFlag) {
         Entrance_Init();
-        if (!CVar_GetS32("gRememberSaveLocation", 0) || gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE ||
-            gSaveContext.savedSceneNum == SCENE_KAKUSIANA) {
-            Entrance_SetSavewarpEntrance();
-        }
-    } else {
-        // When going from a rando save to a vanilla save within the same game instance
-        // we need to reset the entrance table back to its vanilla state
-        Entrance_ResetEntranceTable();
+        Entrance_InitEntranceTrackingData();
     }
 
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);
@@ -383,16 +376,23 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
         int startingAge = Randomizer_GetSettingValue(RSK_STARTING_AGE);
         switch (startingAge) {
-            case 1: //Adult
+            case RO_AGE_ADULT: //Adult
                 gSaveContext.linkAge = 0;
                 gSaveContext.entranceIndex = 0x5F4;
                 gSaveContext.savedSceneNum = SCENE_SPOT20; //Set scene num manually to ToT
                 break;
-            case 0: //Child
+            case RO_AGE_CHILD: //Child
                 gSaveContext.linkAge = 1;
+                gSaveContext.savedSceneNum = -1;
                 break;
             default:
                 break;
+        }
+
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS)) {
+            // Override the spawn entrance so entrance rando can take control,
+            // and to prevent remember save location from breaking inital spawn
+            gSaveContext.entranceIndex = -1;
         }
 
         int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);
@@ -418,8 +418,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
         }
 
-        // "Start with" == 0 for Maps and Compasses
-        if(Randomizer_GetSettingValue(RSK_STARTING_MAPS_COMPASSES) == 0) {
+        if(Randomizer_GetSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
             uint32_t mapBitMask = 1 << 1;
             uint32_t compassBitMask = 1 << 2;
             uint32_t startingDungeonItemsBitMask = mapBitMask | compassBitMask;
@@ -491,8 +490,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.sohStats.dungeonKeys[SCENE_GANONTIKA]     = GANONS_CASTLE_SMALL_KEY_MAX; // Ganon
         }
 
-        // "Start with" == 0 for Boss Kesanity
-        if(Randomizer_GetSettingValue(RSK_BOSS_KEYSANITY) == 0) {
+        if(Randomizer_GetSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
             gSaveContext.inventory.dungeonItems[SCENE_BMORI1] |= 1; // Forest
             gSaveContext.inventory.dungeonItems[SCENE_HIDAN] |= 1; // Fire
             gSaveContext.inventory.dungeonItems[SCENE_MIZUSIN] |= 1; // Water
@@ -582,4 +580,10 @@ void Sram_InitSram(GameState* gameState) {
     Save_Init();
 
     func_800F6700(gSaveContext.audioSetting);
+
+    // When going from a rando save to a vanilla save within the same game instance
+    // we need to reset the entrance table back to its vanilla state
+    Entrance_ResetEntranceTable();
+    // Clear out the entrance tracker
+    Entrance_ClearEntranceTrackingData();
 }
