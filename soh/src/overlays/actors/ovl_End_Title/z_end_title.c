@@ -110,9 +110,8 @@ void EndTitle_DrawFull(Actor* thisx, PlayState* play) {
                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 0, 0, 0, 0);
     gSPTextureRectangle(OVERLAY_DISP++, 104 << 2, 177 << 2, 216 << 2, 192 << 2, G_TX_RENDERTILE, 0, 0, 1 << 10,
                         1 << 10);
-    if (D_801614B0.a > 0) {
+    if (D_801614B0.a > 0)
         gSPGrayscale(OVERLAY_DISP++, true);
-    }
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
