@@ -4464,7 +4464,7 @@ void CreateIceTrapRandoMessages() {
                                             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
                                               "This year for Christmas, all&you get is %BCOAL",
                                               "This year for Christmas, all&you get is %BCOAL",
-                                              "Pour Noël, cette année, tu&n'auras que du %BCHARBON!&%rJoyeux Noël!" });
+                                              "Pour Noël, cette année, tu&n'auras que du %BCHARBON!&%rJoyeux Noël%w!" });
 }
 
 void Randomizer::CreateCustomMessages() {
