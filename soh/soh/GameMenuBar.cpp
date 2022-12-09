@@ -687,6 +687,23 @@ namespace GameMenuBar {
                 }
                 UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gN64Mode", true, false);
                 UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
+                UIWidgets::EnhancementCheckbox("Disable LOD", "gDisableLOD");
+                UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly "
+                                   "variants at any distance");
+                if (UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance", true,
+                                                         false)) {
+                    if (CVar_GetS32("gDisableDrawDistance", 0) == 0) {
+                        CVar_SetS32("gDisableKokiriDrawDistance", 0);
+                    }
+                }
+                UIWidgets::Tooltip(
+                    "Turns off the objects draw distance, making objects being visible from a longer range");
+                if (CVar_GetS32("gDisableDrawDistance", 0) == 1) {
+                    UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance", true,
+                                                         false);
+                    UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling "
+                                       "this will remove their draw distance");
+                }
                 UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", "gDrawLineupTick", true, false);
                 UIWidgets::Tooltip("Displays a tick in the top center of the screen to help with glitch line-ups in SoH, as traditional UI based line-ups do not work outside of 4:3");
                 UIWidgets::PaddedEnhancementCheckbox("Enable 3D Dropped items/projectiles", "gNewDrops", true, false);
@@ -907,18 +924,6 @@ namespace GameMenuBar {
                 }
                 ImGui::PopStyleVar(1);
                 UIWidgets::Spacer(0);
-            }
-            UIWidgets::EnhancementCheckbox("Disable LOD", "gDisableLOD");
-            UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
-            if (UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance", true, false)) {
-                if (CVar_GetS32("gDisableDrawDistance", 0) == 0) {
-                    CVar_SetS32("gDisableKokiriDrawDistance", 0);
-                }
-            }
-            UIWidgets::Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
-            if (CVar_GetS32("gDisableDrawDistance", 0) == 1) {
-                UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance", true, false);
-                UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this will remove their draw distance");
             }
             UIWidgets::PaddedEnhancementCheckbox("Skip Text", "gSkipText", true, false);
             UIWidgets::Tooltip("Holding down B skips text");
