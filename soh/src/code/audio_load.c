@@ -486,7 +486,7 @@ u8* AudioLoad_GetFontsForSequence(s32 seqId, u32* outNumFonts) {
          return NULL;
 
     u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
-    if (!sequenceMap[newSeqId]){
+    if (newSeqId > MAX_SEQUENCES || !sequenceMap[newSeqId]) {
         return NULL;
     }
     SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[newSeqId]);
