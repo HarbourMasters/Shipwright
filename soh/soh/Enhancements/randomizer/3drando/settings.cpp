@@ -2632,6 +2632,7 @@ namespace Settings {
             Logic.SetSelectedIndex(2);
             break;
     }
+    LocationsReachable.SetSelectedIndex(cvarSettings[RSK_ALL_LOCATIONS_REACHABLE]);
 
     AddExcludedOptions();
     for (auto locationKey : everyPossibleLocation) {
