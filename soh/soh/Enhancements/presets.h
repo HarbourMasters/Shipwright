@@ -170,7 +170,9 @@ const std::vector<const char*> enhancementsCvars = {
     "gBombchuBowlingNoBigCucco",
     "gBombchuBowlingAmmunition",
     "gCreditsFix",
-};
+    "gDisableLOD",
+    "gDisableDrawDistance",
+    "gDisableKokiriDrawDistance" };
 
 const std::vector<const char*> randomizerCvars = {
     "gChestSizeAndTextureMatchesContents",
@@ -289,6 +291,11 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     PRESET_ENTRY_S32("gBombchusOOB", 1),
     // Skip save confirmation
     PRESET_ENTRY_S32("gSkipSaveConfirmation", 1),
+
+    // Disable LOD
+    PRESET_ENTRY_S32("gDisableLOD", 1),
+    // Disable Draw Distance
+    PRESET_ENTRY_S32("gDisableDrawDistance", 1),
 };
 
 const std::vector<PresetEntry> enhancedPresetEntries = {

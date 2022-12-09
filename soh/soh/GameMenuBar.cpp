@@ -687,7 +687,7 @@ namespace GameMenuBar {
                 }
                 UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gN64Mode", true, false);
                 UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
-                UIWidgets::EnhancementCheckbox("Disable LOD", "gDisableLOD");
+                UIWidgets::PaddedEnhancementCheckbox("Disable LOD", "gDisableLOD");
                 UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly "
                                    "variants at any distance");
                 if (UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance", true,
