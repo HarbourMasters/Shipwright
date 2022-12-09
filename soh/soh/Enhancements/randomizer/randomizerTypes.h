@@ -1067,6 +1067,7 @@ typedef enum {
     RSK_MIX_GROTTO_ENTRANCES,
     RSK_DECOUPLED_ENTRANCES,
     RSK_STARTING_SKULLTULA_TOKEN,
+    RSK_ALL_LOCATIONS_REACHABLE,
     RSK_MAX
 } RandomizerSettingKey;
 
@@ -1355,6 +1356,12 @@ typedef enum {
     RO_LOGIC_NO_LOGIC,
     RO_LOGIC_MAX,
 } RandoOptionLogic;
+
+typedef enum {
+    RO_ALL_LOCATIONS_REACHABLE_OFF,
+    RO_ALL_LOCATIONS_REACHABLE_ON,
+    RO_ALL_LOCATIONS_REACHABLE_MAX,
+} RandoOptionAllLocationsReachable;
 
 // MQ Dungeons
 typedef enum {
