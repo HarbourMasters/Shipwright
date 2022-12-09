@@ -228,7 +228,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         if (~(seqType) & type) {
             continue;
         }
-        if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue > MAX_AUTHENTIC_SEQID) {
+        if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue >= MAX_AUTHENTIC_SEQID) {
             continue;
         }
 
