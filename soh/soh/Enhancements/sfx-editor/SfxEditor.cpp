@@ -430,7 +430,12 @@ extern "C" void SfxEditor_AddSequence(char *otrPath, uint16_t seqNum) {
     std::vector<std::string> splitFileName = StringHelper::Split(fileName, "_");
     std::string sequenceName = splitFileName[0];
     SeqType type = SEQ_BGM_CUSTOM;
-    if (splitFileName[splitFileName.size() - 1] == "fanfare" || splitFileName[splitFileName.size() - 1] == "Fanfare") {
+    std::string typeString = splitFileName[splitFileName.size() - 1];
+    std::locale loc;
+    for (int i = 0; i < typeString.length(); i++) {
+        typeString[i] = std::tolower(typeString[i], loc);
+    }
+    if (typeString == "fanfare") {
         type = SEQ_FANFARE;
     }
     auto tuple = std::make_tuple(
