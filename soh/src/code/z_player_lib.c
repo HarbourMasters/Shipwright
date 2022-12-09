@@ -747,28 +747,16 @@ void func_8008F470(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dLis
 #endif
 
     Color_RGB8 sTemp;
-    Color_RGB8 sOriginalTunicColors[] = {
-        { 30, 105, 27 },
-        { 100, 20, 0 },
-        { 0, 60, 100 },
-    };
-    color = &sTemp;
-    if (tunic == PLAYER_TUNIC_KOKIRI && CVar_GetS32("gUseTunicsCol",0)) {
-        *color = CVar_GetRGB("gTunic_Kokiri", sTunicColors[PLAYER_TUNIC_KOKIRI]);
-    } else if (tunic == PLAYER_TUNIC_GORON && CVar_GetS32("gUseTunicsCol",0)) {
-        *color = CVar_GetRGB("gTunic_Goron", sTunicColors[PLAYER_TUNIC_GORON]);
-    } else if (tunic == PLAYER_TUNIC_ZORA && CVar_GetS32("gUseTunicsCol",0)) {
-        *color = CVar_GetRGB("gTunic_Zora", sTunicColors[PLAYER_TUNIC_ZORA]);
-    } else if (!CVar_GetS32("gUseTunicsCol",0)){
-        if (tunic >= 3) {
-            color->r = sOriginalTunicColors[0].r;
-            color->g = sOriginalTunicColors[0].g;
-            color->b = sOriginalTunicColors[0].b;
-        } else {
-            color->r = sOriginalTunicColors[tunic].r;
-            color->g = sOriginalTunicColors[tunic].g;
-            color->b = sOriginalTunicColors[tunic].b;   
-        }
+    color = &sTunicColors[tunic];
+    if (tunic == PLAYER_TUNIC_KOKIRI && CVar_GetS32("gCosmetics.Link_KokiriTunic.Changed", 0)) {
+        sTemp = CVar_GetRGB("gCosmetics.Link_KokiriTunic.Value", sTunicColors[PLAYER_TUNIC_KOKIRI]);
+        color = &sTemp;
+    } else if (tunic == PLAYER_TUNIC_GORON && CVar_GetS32("gCosmetics.Link_GoronTunic.Changed", 0)) {
+        sTemp = CVar_GetRGB("gCosmetics.Link_GoronTunic.Value", sTunicColors[PLAYER_TUNIC_GORON]);
+        color = &sTemp;
+    } else if (tunic == PLAYER_TUNIC_ZORA && CVar_GetS32("gCosmetics.Link_ZoraTunic.Changed", 0)) {
+        sTemp = CVar_GetRGB("gCosmetics.Link_ZoraTunic.Value", sTunicColors[PLAYER_TUNIC_ZORA]);
+        color = &sTemp;
     }
 
     gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
@@ -784,14 +772,14 @@ void func_8008F470(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dLis
             if (strengthUpgrade >= 2) { // silver or gold gauntlets
                 gDPPipeSync(POLY_OPA_DISP++);
 
-                if (!CVar_GetS32("gUseGauntletsCol", 0)) {
-                    color = &sGauntletColors[strengthUpgrade - 2];
-                } else if (strengthUpgrade == PLAYER_STR_SILVER_G) {
-                    *color = CVar_GetRGB("gGauntlets_Silver", sGauntletColors[PLAYER_STR_SILVER_G - 2]);
-                } else if (strengthUpgrade == PLAYER_STR_GOLD_G) {
-                    *color = CVar_GetRGB("gGauntlets_Golden", sGauntletColors[PLAYER_STR_GOLD_G - 2]);
+                color = &sGauntletColors[strengthUpgrade - 2];
+                if (strengthUpgrade == PLAYER_STR_SILVER_G && CVar_GetS32("gCosmetics.Gloves_SilverGauntlets.Changed", 0)) {
+                    sTemp = CVar_GetRGB("gCosmetics.Gloves_SilverGauntlets.Value", sGauntletColors[PLAYER_STR_SILVER_G - 2]);
+                    color = &sTemp;
+                } else if (strengthUpgrade == PLAYER_STR_GOLD_G && CVar_GetS32("gCosmetics.Gloves_GoldenGauntlets.Changed", 0)) {
+                    sTemp = CVar_GetRGB("gCosmetics.Gloves_GoldenGauntlets.Value", sGauntletColors[PLAYER_STR_GOLD_G - 2]);
+                    color = &sTemp;
                 }
-                
                 gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
 
                 gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftGauntletPlate1DL);
@@ -959,9 +947,24 @@ s32 func_8008FCC8(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
         }
 
         if (limbIndex == PLAYER_LIMB_HEAD) {
+            if (CVar_GetS32("gCosmetics.Link_HeadScale.Changed", 0)) {
+                f32 scale = CVar_GetFloat("gCosmetics.Link_HeadScale.Value", 1.0f);
+                Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
+                if (scale > 1.2f) {
+                    Matrix_Translate(-((LINK_IS_ADULT ? 320.0f : 200.0f) * scale), 0.0f, 0.0f, MTXMODE_APPLY);
+                } else if (scale < 1.0f) {
+                    Matrix_Translate((LINK_IS_ADULT ? 3600.0f : 2900.0f) * ABS(scale - 1.0f), 0.0f, 0.0f, MTXMODE_APPLY);
+                }
+            }
             rot->x += this->unk_6BA;
             rot->y -= this->unk_6B8;
             rot->z += this->unk_6B6;
+        } else if (limbIndex == PLAYER_LIMB_L_HAND) {
+            if (CVar_GetS32("gCosmetics.Link_SwordScale.Changed", 0)) {
+                f32 scale = CVar_GetFloat("gCosmetics.Link_SwordScale.Value", 1.0f);
+                Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
+                Matrix_Translate(-((LINK_IS_ADULT ? 320.0f : 200.0f) * scale), 0.0f, 0.0f, MTXMODE_APPLY);
+            }
         } else if (limbIndex == PLAYER_LIMB_UPPER) {
             if (this->unk_6B0 != 0) {
                 Matrix_RotateZ(0x44C * (M_PI / 0x8000), MTXMODE_APPLY);
@@ -1184,14 +1187,12 @@ void Player_DrawGetItemImpl(PlayState* play, Player* this, Vec3f* refPos, s32 dr
     Matrix_RotateZYX(0, play->gameplayFrames * 1000, 0, MTXMODE_APPLY);
     Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
 
-    if (!(this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId == RG_ICE_TRAP)) {
-        // RANDOTODO: Make this more flexible for easier toggling of individual item recolors in the future.
-        if (this->getItemEntry.drawFunc != NULL &&
-            (CVar_GetS32("gRandoMatchKeyColors", 0) || this->getItemEntry.getItemId == RG_DOUBLE_DEFENSE)) {
-            this->getItemEntry.drawFunc(play, &this->getItemEntry);
-        } else {
-            GetItem_Draw(play, drawIdPlusOne - 1);
-        }
+    // RANDOTODO: Make this more flexible for easier toggling of individual item recolors in the future.
+    if (this->getItemEntry.drawFunc != NULL &&
+        (CVar_GetS32("gRandoMatchKeyColors", 0) || this->getItemEntry.getItemId == RG_DOUBLE_DEFENSE || this->getItemEntry.getItemId == RG_ICE_TRAP)) {
+        this->getItemEntry.drawFunc(play, &this->getItemEntry);
+    } else {
+        GetItem_Draw(play, drawIdPlusOne - 1);
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -1330,7 +1331,7 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                 D_80126080.x = this->unk_85C * 5000.0f;
                 func_80090A28(this, sp124);
                 if (this->swordState != 0) {
-                    EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex), 7); // default sword type
+                    EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex), 7); // stick sword type
                     func_800906D4(play, this, sp124);
                 } else {
                     Math_Vec3f_Copy(&this->meleeWeaponInfo[0].tip, &sp124[0]);
@@ -1353,10 +1354,7 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                 D_80126080.x = 1500.0f;
             } else {
                 D_80126080.x = sSwordLengths[Player_GetSwordHeld(this)];
-                if (CVar_GetS32("gSeperateSwords", 0) != 0)
-                    EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex), sSwordTypes[Player_GetSwordHeld(this)]);
-                else
-                    EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex),1); //default sword type
+                EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex), sSwordTypes[Player_GetSwordHeld(this)]);
             }
 
             func_80090A28(this, spE4);
