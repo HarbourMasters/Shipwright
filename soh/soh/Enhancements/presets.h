@@ -172,7 +172,8 @@ const std::vector<const char*> enhancementsCvars = {
     "gCreditsFix",
     "gDisableLOD",
     "gDisableDrawDistance",
-    "gDisableKokiriDrawDistance" };
+    "gDisableKokiriDrawDistance" 
+};
 
 const std::vector<const char*> randomizerCvars = {
     "gChestSizeAndTextureMatchesContents",
