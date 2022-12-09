@@ -191,24 +191,27 @@ void DrawCheckTracker(bool& open) {
 #endif
     ImVec2 size = ImGui::GetContentRegionMax();
     size.y -= headerHeight;
-    if (ImGui::BeginTable("Check Tracker", 1, 0, size)) {
-        ImGui::TableNextRow(0, headerHeight);
-        ImGui::TableNextColumn();
-        UIWidgets::EnhancementCheckbox(
-            "Show Hidden Items", "gCheckTrackerOptionShowHidden", false,
-            "When active, items will show hidden checks by default when updated to this state.");
-        ImGui::SameLine();
-        if (ImGui::Button("Expand All")) {
-            optCollapseAll = false;
-            optExpandAll = true;
-        }
-        ImGui::SameLine();
-        if (ImGui::Button("Collapse All")) {
-            optExpandAll = false;
-            optCollapseAll = true;
-        }
-        UIWidgets::PaddedSeparator();
+    if (!ImGui::BeginTable("Check Tracker", 1, 0, size)) {
+        EndFloatWindows();
+        return;
     }
+
+    ImGui::TableNextRow(0, headerHeight);
+    ImGui::TableNextColumn();
+    UIWidgets::EnhancementCheckbox(
+        "Show Hidden Items", "gCheckTrackerOptionShowHidden", false,
+        "When active, items will show hidden checks by default when updated to this state.");
+    ImGui::SameLine();
+    if (ImGui::Button("Expand All")) {
+        optCollapseAll = false;
+        optExpandAll = true;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Collapse All")) {
+        optExpandAll = false;
+        optCollapseAll = true;
+    }
+    UIWidgets::PaddedSeparator();
 
     //Checks Section Lead-in
     ImGui::TableNextRow();
