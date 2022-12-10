@@ -469,8 +469,8 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
             TEXTBOX_TYPE_BLACK,
             TEXTBOX_POS_BOTTOM,
             "You look bored. Wanna go out for a&walk?\x1B&%gYes&No%w",
-            "Du siehst gelangweilt aus.&Willst du einen Spaziergang machen?\x1B&%gYes&No%w",
-            "Tu as l'air de t'ennuyer. Tu veux&aller faire une promenade?\x1B&%gYes&No%w",
+            "Du siehst gelangweilt aus.&Willst du einen Spaziergang machen?\x1B&%gJa&Nein%w",
+            "Tu as l'air de t'ennuyer. Tu veux&aller faire une promenade?\x1B&%gOui&Non%w",
         }
     );
 
