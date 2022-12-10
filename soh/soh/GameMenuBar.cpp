@@ -1233,6 +1233,11 @@ namespace GameMenuBar {
                     "Play unique fanfares when obtaining quest items "
                     "(medallions/stones/songs). Note that these fanfares are longer than usual."
                 );
+                UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", "gRandoMarketSneak", true, false);
+                UIWidgets::Tooltip(
+                    "Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking "
+                    "to the guard next to the gate."
+                );
                 ImGui::EndMenu();
             }
 
