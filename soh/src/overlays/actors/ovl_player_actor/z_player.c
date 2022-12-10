@@ -2182,7 +2182,7 @@ void func_80834298(Player* this, PlayState* play) {
 
 // Determine projectile type for bow or slingshot
 s32 Player_ModifyProjectileType(PlayState* play, Player* this, s32* itemPtr, s32* typePtr) {
-    if (this->heldItemActionParam != PLAYER_AP_SLINGSHOT) {
+    if (this->heldItemAction != PLAYER_IA_SLINGSHOT) {
         *itemPtr = ITEM_BOW;
         if (this->stateFlags1 & PLAYER_STATE1_23) {
             *typePtr = ARROW_NORMAL_HORSE;
@@ -4916,7 +4916,7 @@ s32 Camera_UpdateCameraMode(PlayState* play, Player* this) {
 
     if (this->unk_6AD == 2) {
         if (func_8002DD6C(this)) {
-            if (this->heldItemActionParam == PLAYER_AP_SLINGSHOT) {
+            if (this->heldItemAction == PLAYER_IA_SLINGSHOT) {
                 cameraMode = CAM_MODE_SLINGSHOT;
             } else {
                 cameraMode = CAM_MODE_BOWARROW;

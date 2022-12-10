@@ -564,11 +564,11 @@ s32 Player_HoldsHookshot(Player* this) {
 }
 
 s32 Player_HoldsBow(Player* this) {
-    switch(this->heldItemActionParam){
-        case PLAYER_AP_BOW:
-        case PLAYER_AP_BOW_FIRE:
-        case PLAYER_AP_BOW_ICE:
-        case PLAYER_AP_BOW_LIGHT:
+    switch(this->heldItemAction){
+        case PLAYER_IA_BOW:
+        case PLAYER_IA_BOW_FIRE:
+        case PLAYER_IA_BOW_ICE:
+        case PLAYER_IA_BOW_LIGHT:
             return true;
         default:
             return false;
@@ -576,7 +576,7 @@ s32 Player_HoldsBow(Player* this) {
 }
 
 s32 Player_HoldsSlingshot(Player* this) {
-    return this->heldItemActionParam == PLAYER_AP_SLINGSHOT;
+    return this->heldItemAction == PLAYER_IA_SLINGSHOT;
 }
 
 s32 func_8008F128(Player* this) {
