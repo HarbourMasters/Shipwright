@@ -1623,8 +1623,10 @@ void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
         return;
     }
     // Use ITEM_KEY_BOSS only for Ganon's boss key - not any other boss keys
-    if (item == ITEM_KEY_BOSS && play->sceneNum != 13 && play->sceneNum != 10) {
-        return;
+    if (play != NULL) {
+        if (item == ITEM_KEY_BOSS && play->sceneNum != 13 && play->sceneNum != 10) {
+            return;
+        }
     }
 
     u32 time = GAMEPLAYSTAT_TOTAL_TIME;
