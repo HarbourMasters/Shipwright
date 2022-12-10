@@ -10,6 +10,7 @@
 #include <Window.h>
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
+#include <vector>
 
 const std::string customMessageTableID = "BaseGameOverrides";
 
@@ -27,6 +28,7 @@ public:
 
     bool HasMasterQuest();
     bool HasOriginal();
+    std::shared_ptr<std::vector<std::string>> ListFiles(std::string path);
 
 private:
 	void CheckSaveFile(size_t sramSize) const;

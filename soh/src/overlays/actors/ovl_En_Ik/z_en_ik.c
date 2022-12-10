@@ -803,7 +803,12 @@ Gfx* func_80A761B0(GraphicsContext* gfxCtx, u8 primR, u8 primG, u8 primB, u8 env
     displayListHead = displayList;
 
     gDPPipeSync(displayListHead++);
-    gDPSetPrimColor(displayListHead++, 0, 0, primR, primG, primB, 255);
+    if (CVar_GetS32("gCosmetics.NPC_IronKnuckles.Changed", 0)) {
+        Color_RGB8 color = CVar_GetRGB("gCosmetics.NPC_IronKnuckles.Value", (Color_RGB8){primR, primG, primB});
+        gDPSetPrimColor(displayListHead++, 0, 0, color.r, color.g, color.b, 255);
+    } else {
+        gDPSetPrimColor(displayListHead++, 0, 0, primR, primG, primB, 255);
+    }
     gDPSetEnvColor(displayListHead++, envR, envG, envB, 255);
     gSPEndDisplayList(displayListHead++);
 

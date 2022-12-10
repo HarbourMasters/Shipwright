@@ -177,6 +177,10 @@ bool OTRGlobals::HasOriginal() {
     return hasOriginal;
 }
 
+std::shared_ptr<std::vector<std::string>> OTRGlobals::ListFiles(std::string path) {
+    return context->GetResourceManager()->ListFiles(path);
+}
+
 struct ExtensionEntry {
     std::string path;
     std::string ext;
@@ -445,6 +449,13 @@ extern "C" void InitOTR() {
     OTRExtScanner();
     VanillaItemTable_Init();
 
+    time_t now = time(NULL);
+    tm *tm_now = localtime(&now);
+    if (tm_now->tm_mon == 11 && tm_now->tm_mday >= 24 && tm_now->tm_mday <= 25) {
+        CVar_RegisterS32("gLetItSnow", 1);
+    } else {
+        CVar_Clear("gLetItSnow");
+    }
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance = new CrowdControl();
     CrowdControl::Instance->Init();
@@ -1920,6 +1931,9 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
                 u16 iceTrapTextId = Random(0, NUM_ICE_TRAP_MESSAGES);
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, iceTrapTextId);
+                if (CVar_GetS32("gLetItSnow", 0)) {
+                    messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1);
+                }
             } else if (player->getItemEntry.getItemId >= RG_DEKU_TREE_MAP && player->getItemEntry.getItemId <= RG_ICE_CAVERN_MAP) {
                 messageEntry = OTRGlobals::Instance->gRandomizer->GetMapGetItemMessageWithHint(player->getItemEntry);
             } else {
