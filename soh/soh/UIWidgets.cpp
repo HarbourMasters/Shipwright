@@ -628,10 +628,10 @@ namespace UIWidgets {
             if (ImGui::ColorEdit4(text, (float*)&ColorRGBA, flags))
             {
                 Color_RGBA8 colors;
-                colors.r = ColorRGBA.x / 255;
-                colors.g = ColorRGBA.y / 255;
-                colors.b = ColorRGBA.z / 255;
-                colors.a = ColorRGBA.w / 255;
+                colors.r = ColorRGBA.x * 255.0;
+                colors.g = ColorRGBA.y * 255.0;
+                colors.b = ColorRGBA.z * 255.0;
+                colors.a = ColorRGBA.w * 255.0;
 
                 CVar_SetRGBA(cvarName, colors);
                 SohImGui::RequestCvarSaveOnNextTick();
