@@ -5,6 +5,7 @@
 
 #include <string>
 #include <vector>
+#include <set>
 #include <Cvar.h>
 #include <Hooks.h>
 #include "3drando/item_location.hpp"
@@ -28,6 +29,7 @@ void UpdateOrdering(bool init = false);
 bool ShouldUpdateChecks();
 bool CompareCheckObject(RandomizerCheckObject i, RandomizerCheckObject j);
 bool HasItemBeenCollected(RandomizerCheckObject obj);
+void RainbowTick();
 ImVec4 Color_RGBA8_to_ImVec4(Color_RGBA8& color);
 Color_RGBA8 ImVec4_to_Color_RGBA8(ImVec4& color);
 RandomizerCheckShow GetCheckStatus(RandomizerCheckObject rcObj, int idx);
@@ -225,6 +227,7 @@ void DrawCheckTracker(bool& open) {
     ImGui::TableNextColumn();
 
     //Prep for loop
+    RainbowTick();
     bool doDraw = false;
     bool thisAreaFullyChecked = false;
     bool showHidden = CVar_GetS32("gCheckTrackerOptionShowHidden", 0);
@@ -820,6 +823,36 @@ void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckSta
 
 }
 
+static std::set<std::string> rainbowCVars = {
+    "gCheckTrackerAreaMainIncompleteColor", "gCheckTrackerAreaExtraIncompleteColor",
+    "gCheckTrackerAreaMainCompleteColor",   "gCheckTrackerAreaExtraCompleteColor",
+    "gCheckTrackerUncheckedMainColor",      "gCheckTrackerUncheckedExtraColor",
+    "gCheckTrackerSkippedMainColor",        "gCheckTrackerSkippedExtraColor",
+    "gCheckTrackerSeenMainColor",           "gCheckTrackerSeenExtraColor",
+    "gCheckTrackerHintedMainColor",         "gCheckTrackerHintedExtraColor",
+    "gCheckTrackerCheckedMainColor",        "gCheckTrackerCheckedExtraColor",
+    "gCheckTrackerScummedMainColor",        "gCheckTrackerScummedExtraColor",
+    "gCheckTrackerSavedMainColor",          "gCheckTrackerSavedExtraColor",
+};
+static int hue = 0;
+void RainbowTick() {
+    float freqHue = hue * 2 * M_PI / (360 * CVar_GetFloat("gCosmetics.RainbowSpeed", 0.6f));
+    for (auto cvar : rainbowCVars) {
+        if (CVar_GetS32((cvar + "RBM").c_str(), 0) == 0)
+            continue;
+        
+        Color_RGBA8 newColor;
+        newColor.r = sin(freqHue +              0) * 127 + 128;
+        newColor.g = sin(freqHue + (2 * M_PI / 3)) * 127 + 128;
+        newColor.b = sin(freqHue + (4 * M_PI / 3)) * 127 + 128;
+        newColor.a = 255;
+            
+        CVar_SetRGBA(cvar.c_str(), newColor);
+    }
+
+    hue++;
+    hue %= 360;
+}
 
 inline void SaveColorToCVar(std::string cvarname, ImVec4 color) {
     CVar_SetFloat((cvarname + "R").c_str(), color.x);
@@ -966,7 +999,7 @@ void DrawCheckTrackerOptions(bool& open) {
     ImGuiDrawTwoColorPickerSection("Checked (WIP)",    "gCheckTrackerCheckedMainColor",          "gCheckTrackerCheckedExtraColor",         Color_Checked_Main,           Color_Checked_Extra,          Color_Main_Default, Color_Checked_Extra_Default,         "gCheckTrackerCheckedHide"        );
     ImGuiDrawTwoColorPickerSection("Scummed (WIP)",    "gCheckTrackerScummedMainColor",          "gCheckTrackerScummedExtraColor",         Color_Scummed_Main,           Color_Scummed_Extra,          Color_Main_Default, Color_Scummed_Extra_Default,         "gCheckTrackerScummedHide"        );
     ImGuiDrawTwoColorPickerSection("Saved",            "gCheckTrackerSavedMainColor",            "gCheckTrackerSavedExtraColor",           Color_Saved_Main,             Color_Saved_Extra,            Color_Main_Default, Color_Saved_Extra_Default,           "gCheckTrackerSavedHide"          );
-    
+
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
     ImGui::End();
