@@ -462,6 +462,18 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
         }
     );
 
+    //Temporary thing, not actually a merchant
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, 0x7003,
+        {
+            TEXTBOX_TYPE_BLACK,
+            TEXTBOX_POS_BOTTOM,
+            "You look bored. Wanna go out for a&walk?\x1B&%gYes&No%w",
+            "Du siehst gelangweilt aus.&Willst du einen Spaziergang machen?\x1B&%gYes&No%w",
+            "Tu as l'air de t'ennuyer. Tu veux&aller faire une promenade?\x1B&%gYes&No%w",
+        }
+    );
+
     // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
     // prompted buy/don't buy
     CustomMessageManager::Instance->CreateMessage(
