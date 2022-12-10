@@ -921,9 +921,9 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             ((locationIt.rc != RC_ZR_MAGIC_BEAN_SALESMAN) || CVar_GetS32("gRandomizeShuffleBeans", RO_GENERIC_NO) == RO_GENERIC_YES) &&
             ((locationIt.rc != RC_HC_MALON_EGG) || CVar_GetS32("gRandomizeShuffleWeirdEgg", RO_GENERIC_NO)) &&
             ((locationIt.rcType != RCTYPE_FROG_SONG) || CVar_GetS32("gRandomizeShuffleFrogSongRupees", RO_GENERIC_NO)) &&
-            ((locationIt.rcType != RCTYPE_MAP_COMPASS) || CVar_GetS32("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_VANILLA) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
-            ((locationIt.rcType != RCTYPE_SMALL_KEY) || CVar_GetS32("gRandomizeKeysanity", RO_DUNGEON_ITEM_LOC_VANILLA) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
-            ((locationIt.rcType != RCTYPE_BOSS_KEY) || CVar_GetS32("gRandomizeBossKeysanity", RO_DUNGEON_ITEM_LOC_VANILLA) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
+            ((locationIt.rcType != RCTYPE_MAP_COMPASS) || CVar_GetS32("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
+            ((locationIt.rcType != RCTYPE_SMALL_KEY) || CVar_GetS32("gRandomizeKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
+            ((locationIt.rcType != RCTYPE_BOSS_KEY) || CVar_GetS32("gRandomizeBossKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
             ((locationIt.rcType != RCTYPE_GANON_BOSS_KEY) || CVar_GetS32("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) != RO_GANON_BOSS_KEY_VANILLA) &&
             (locationIt.rcType != RCTYPE_GF_KEY && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD ||
                 (CVar_GetS32("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_OPEN && locationIt.rcType != RCTYPE_GF_KEY && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) ||
