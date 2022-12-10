@@ -114,7 +114,6 @@ s8 areaChecksGotten[32];  //|     "Kokiri Forest (4/9)"
 std::vector<RandomizerCheckObject> checks;
 bool optCollapseAll; // A bool that will collapse all checks once
 bool optExpandAll;   // A bool that will expand all checks once
-s32 lastSaveCount = -1;
 RandomizerCheck lastLocationChecked = RC_UNKNOWN_CHECK;
 RandomizerCheckArea previousArea = RCAREA_INVALID;
 RandomizerCheckArea currentArea = RCAREA_INVALID;
@@ -155,7 +154,7 @@ void DrawCheckTracker(bool& open) {
     BeginFloatWindows("Check Tracker", ImGuiWindowFlags_NoScrollbar);
 
     if (!initialized) {
-        ImGui::Text("Waiting for file load...");
+        ImGui::Text("Waiting for file load..."); //TODO Language
         EndFloatWindows();
         return;
     }
@@ -247,13 +246,6 @@ void DrawCheckTracker(bool& open) {
     // Logic for each check
     for (auto& obj : checks)
     {
-        // Second Column mode
-        //  if (twoColumnMode && areaChecksGotten[obj.rcArea] != areaChecksTotal[obj.rcArea]) {
-        //      //TODO draw left column
-        //      ImGui::TableNextColumn();
-        //      //TODO draw right column
-        //  }
-        //
 
         //New Area to be drawn
         if (obj.rcArea != lastArea)
@@ -463,8 +455,8 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
            (rcObj.rcType != RCTYPE_GF_KEY || gRandomizeGerudoFortressKeys != RO_GERUDO_KEYS_VANILLA) &&
         (rcObj.rcType != RCTYPE_BOSS_KEY || gRandomizeBossKeysanity != RO_DUNGEON_ITEM_LOC_VANILLA) &&
         (rcObj.rcType != RCTYPE_GANON_BOSS_KEY || gRandomizeShuffleGanonBossKey != RO_GANON_BOSS_KEY_VANILLA) &&
-        (!RC_IS_CARPENTER(rcObj.rc) && rcObj.rc != RC_GF_GERUDO_MEMBERSHIP_CARD ||
-            (gRandomizeGerudoFortress == RO_GF_OPEN && !RC_IS_CARPENTER(rcObj.rc) && rcObj.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) ||
+        (rcObj.rcType != RCTYPE_GF_KEY && rcObj.rc != RC_GF_GERUDO_MEMBERSHIP_CARD ||
+            (gRandomizeGerudoFortress == RO_GF_OPEN && rcObj.rcType != RCTYPE_GF_KEY && rcObj.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) ||
             (gRandomizeGerudoFortress == RO_GF_FAST && (rcObj.rc == RC_GF_NORTH_F1_CARPENTER || rcObj.rc == RC_GF_GERUDO_MEMBERSHIP_CARD)) ||
             (gRandomizeGerudoFortress == RO_GF_NORMAL)
         );
@@ -497,7 +489,7 @@ void InitializeChecks() {
                 startingArea = RCAREA_KOKIRI_FOREST;
                 break;
         }
-        RandomizerCheckObject linksPocket = { RC_LINKS_POCKET, RCVORMQ_BOTH, RCTYPE_LINKS_POCKET, startingArea, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, false, true, "Link's Pocket", "Link's Pocket" };
+        RandomizerCheckObject linksPocket = { RC_LINKS_POCKET, RCVORMQ_BOTH, RCTYPE_LINKS_POCKET, startingArea, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, false, "Link's Pocket", "Link's Pocket" };
 
         checks.push_back(linksPocket);
         checkStatusMap.emplace(RC_LINKS_POCKET, RCSHOW_SAVED);
@@ -537,7 +529,6 @@ void Teardown() {
     areasFullyChecked = 0;
     areasSpoiled = 0;
     checks.clear();
-    lastSaveCount = -1;
     lastLocationChecked = RC_UNKNOWN_CHECK;
     for (int i = 0; i < sizeof(areaChecksTotal); i++) {
         areaChecksTotal[i] = 0;
@@ -567,11 +558,6 @@ bool SlowUpdateCheck() {
 
 bool ShouldUpdateChecks() {
     // TODO eventually will need to be hooked into game elements rather than just save file
-    // TODO, saveCount isn't actually a thing. If not allowed to add it, will need to iterate over save bits and see if any changed 
-    // TODO, or enhance hooks, but that is a LUS change
-    //return lastSaveCount != gSaveContext.sohStats.saveCount;
-
-
     if (CVar_GetS32("gCheckTrackerOptionPerformanceMode", 0))
         return SlowUpdateCheck();
     else
@@ -614,9 +600,6 @@ void UpdateChecks() {
 
         idx++;
     }
-
-    //TODO for when using saveCount as a basis
-    //lastSaveCount = gSaveContext.sohStats.saveCount;
 }
 
 void UpdateOrdering(bool init) {
@@ -625,7 +608,6 @@ void UpdateOrdering(bool init) {
         std::sort(checks.begin(), checks.end(), CompareCheckObject);
         return;
     }
-    //TODO benchmark the full sort over the individual sorts, it might just make sense to always sort all?
     
     //sort each area individually
     int startOffset = 0;
@@ -658,7 +640,7 @@ bool CompareCheckObject(RandomizerCheckObject i, RandomizerCheckObject j) {
 
 RandomizerCheckShow GetCheckStatus(RandomizerCheckObject rcObj, int idx) {
     if (HasItemBeenCollected(rcObj))
-        return RCSHOW_SAVED; // TODO: use SAVED until we hook into game elements without requiring a save
+        return RCSHOW_SAVED; // TODO: use SAVED until we hook into game elements without requiring a save. Then we'll use CHECKED
 
     //If the status hasn't updated, keep showing as skipped
     if (checkStatusMap.find(rcObj.rc)->second == RCSHOW_SKIPPED)
@@ -671,11 +653,6 @@ RandomizerCheckShow GetCheckStatus(RandomizerCheckObject rcObj, int idx) {
 
 
 bool HasItemBeenCollected(RandomizerCheckObject obj) {
-    // TODO doesn't consider vanilla/MQ?
-
-    // TODO move all the code to a static function in item_location?
-    // return Location(obj.rc)->GetCollectionCheck().IsChecked(gSaveContext);
-
     ItemLocation* x = Location(obj.rc);
     SpoilerCollectionCheck check = x->GetCollectionCheck();
     auto flag = check.flag;
@@ -785,10 +762,6 @@ void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckSta
     if (lastLocationChecked == rcObj.rc)
         txt = "* " + txt;
     
-    //Second Column mode
-    //TODO
-    // if (twoColumnMode) ImGui::TableNextColumn();
-
     // Draw button - for Skipped/Unchecked only
     if (*thisCheckStatus == RCSHOW_UNCHECKED || *thisCheckStatus == RCSHOW_SKIPPED) {
         bool skipped = (*thisCheckStatus == RCSHOW_SKIPPED);

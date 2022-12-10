@@ -73,13 +73,7 @@ typedef enum {
 #define TWO_ACTOR_PARAMS(a, b) (abs(a) << 16) | abs(b)
 
 #define RC_OBJECT(rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, rc_shortname, rc_spoilername) \
-    { rc, {rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, false, false, rc_shortname, rc_spoilername} }
-
-#define RC_IS_CARPENTER(a) \
-    (a == RC_GF_NORTH_F1_CARPENTER || \
-    a == RC_GF_NORTH_F2_CARPENTER || \
-    a == RC_GF_SOUTH_F1_CARPENTER || \
-    a == RC_GF_SOUTH_F2_CARPENTER)
+    { rc, {rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, false, rc_shortname, rc_spoilername} }
 
 typedef struct {
     RandomizerCheck rc;
@@ -91,7 +85,6 @@ typedef struct {
     int32_t actorParams;
     GetItemID ogItemId;
     bool visibleInImgui;
-    bool visibleInTrackerImgui;
     std::string rcShortName;
     std::string rcSpoilerName;
 } RandomizerCheckObject;
