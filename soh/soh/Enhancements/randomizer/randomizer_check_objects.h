@@ -98,4 +98,4 @@ namespace RandomizerCheckObjects {
     std::map<SceneID, RandomizerCheckArea> GetAllRCAreaBySceneID();
     RandomizerCheckArea GetRCAreaBySceneID(SceneID sceneId);
     void UpdateImGuiVisibility();
-    }
+}

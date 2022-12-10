@@ -3,7 +3,6 @@
 #include <string>
 #include <Cvar.h>
 #include "z64.h"
-#include "../../OTRGlobals.h"
 
 /*
 typedef struct {
@@ -950,6 +949,3 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
         );
     }
 }
-
-
-
