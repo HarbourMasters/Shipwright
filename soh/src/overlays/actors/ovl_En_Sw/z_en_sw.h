@@ -43,7 +43,7 @@ typedef struct EnSw {
     /* 0x0448 */ Vec3f unk_448;
     /* 0x0454 */ Vec3f unk_454;
     /* 0x0460 */ Vec3f unk_460;
-    /* 0x046C */ Vec3f unk_46C;
+    /* 0x046C */ Vec3f subCamId;
     /* 0x0478 */ Vec3f unk_478;
     /* 0x0484 */ Vec3f unk_484;
     /* 0x0490 */ char unk_490[0x48];

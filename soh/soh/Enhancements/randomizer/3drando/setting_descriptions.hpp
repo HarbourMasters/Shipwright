@@ -22,8 +22,8 @@ extern string_view kakGateOpen;
 extern string_view kakGateClosed;
 
 extern string_view doorOfTimeOpen;
+extern string_view doorOfTimeSongOnly;
 extern string_view doorOfTimeClosed;
-extern string_view doorOfTimeIntended;
 
 extern string_view fountainNormal;
 extern string_view fountainAdult;
@@ -60,6 +60,20 @@ extern string_view dungeonEntrancesDesc;
 extern string_view overworldEntrancesDesc;
 
 extern string_view grottoEntrancesDesc;
+
+extern string_view owlDropsDesc;
+
+extern string_view warpSongsDesc;
+
+extern string_view overworldSpawnsDesc;
+
+extern string_view mixedPoolsDesc;
+extern string_view mixDungeonsDesc;
+extern string_view mixOverworldDesc;
+extern string_view mixInteriorsDesc;
+extern string_view mixGrottosDesc;
+
+extern string_view decoupledEntrancesDesc;
 
 extern string_view interiorEntrancesOff;
 extern string_view interiorEntrancesSimple;

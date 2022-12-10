@@ -439,6 +439,7 @@ void func_80AE5A9C(EnReeba* this, PlayState* play) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIVA_DEAD);
         Enemy_StartFinishingBlow(play, &this->actor);
         this->actionfunc = func_80AE5C38;
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
     }
 }
 
@@ -493,6 +494,11 @@ void func_80AE5C38(EnReeba* this, PlayState* play) {
                 }
 
                 Actor_Kill(&this->actor);
+                if (this->isBig) {
+                    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER_BIG]++;
+                } else {
+                    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
+                }
             }
         }
     }
@@ -654,7 +660,7 @@ void EnReeba_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if (this->isBig) {
         gDPSetPrimColor(POLY_OPA_DISP++, 0x0, 0x01, 155, 55, 255, 255);

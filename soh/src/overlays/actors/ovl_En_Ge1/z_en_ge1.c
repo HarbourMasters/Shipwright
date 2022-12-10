@@ -99,7 +99,7 @@ void EnGe1_Init(Actor* thisx, PlayState* play) {
         Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) && (this->actor.params & 0xFF) == GE1_TYPE_GATE_OPERATOR) {
         // Spawn the extra gaurd with params matching the custom type added (0x0300 + 0x02)
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0, 0x95B0, 0,
-                    0x0300 | GE1_TYPE_EXTRA_GATE_OPERATOR);
+                    0x0300 | GE1_TYPE_EXTRA_GATE_OPERATOR, true);
     }
 
     // Convert the "extra" gate operator into a normal one so it matches the same params
@@ -876,7 +876,7 @@ void EnGe1_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_800943C8(play->state.gfxCtx);
+    Gfx_SetupDL_37Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeIndex]));
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnGe1_OverrideLimbDraw, EnGe1_PostLimbDraw, this);

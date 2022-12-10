@@ -159,7 +159,7 @@ void EnTp_Init(Actor* thisx, PlayState* play2) {
 
         for (i = 0; i <= 6; i++) {
             next = (EnTp*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TP, this->actor.world.pos.x,
-                                      this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0 * i);
+                                      this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0 * i, true);
 
             if (0 * i) {} // Very fake, but needed to get the s registers right
             if (next != NULL) {
@@ -289,6 +289,9 @@ void EnTp_SetupDie(EnTp* this) {
     }
     this->actionIndex = TAILPASARAN_ACTION_DIE;
     EnTp_SetupAction(this, EnTp_Die);
+    if (this->actor.params == TAILPASARAN_HEAD) {  // Only count the head, otherwise each body segment will increment
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TAILPASARAN]++;
+    }
 }
 
 /**
@@ -321,7 +324,7 @@ void EnTp_Die(EnTp* this, PlayState* play) {
             for (i = 0; i < 1; i++) {
                 now =
                     (EnTp*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TP, this->actor.world.pos.x,
-                                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, TAILPASARAN_FRAGMENT);
+                                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, TAILPASARAN_FRAGMENT, true);
 
                 if (now != NULL) {
                     Actor_SetScale(&now->actor, this->actor.scale.z * 0.5f);
@@ -734,7 +737,7 @@ void EnTp_Draw(Actor* thisx, PlayState* play) {
 
     if (this->unk_150 != 2) {
         if ((thisx->params <= TAILPASARAN_HEAD) || (thisx->params == TAILPASARAN_HEAD_DYING)) {
-            func_80093D18(play->state.gfxCtx);
+            Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -742,7 +745,7 @@ void EnTp_Draw(Actor* thisx, PlayState* play) {
 
             Matrix_Translate(0.0f, 0.0f, 8.0f, MTXMODE_APPLY);
         } else {
-            func_80093D84(play->state.gfxCtx);
+            Gfx_SetupDL_25Xlu(play->state.gfxCtx);
             Matrix_ReplaceRotation(&play->billboardMtxF);
 
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, this->red, 0, 255, this->alpha);

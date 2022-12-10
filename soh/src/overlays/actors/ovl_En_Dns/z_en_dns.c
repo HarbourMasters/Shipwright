@@ -172,7 +172,9 @@ void EnDns_Init(Actor* thisx, PlayState* play) {
         s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
         this->scrubIdentity = Randomizer_IdentifyScrub(play->sceneNum, this->actor.params, respawnData);
 
-        if ((Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == 1 || Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == 3) && this->scrubIdentity.itemPrice != -1) {
+        if ((Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_AFFORDABLE ||
+             Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_RANDOM) &&
+            this->scrubIdentity.itemPrice != -1) {
             this->dnsItemEntry->itemPrice = this->scrubIdentity.itemPrice;
         }
 
@@ -504,6 +506,7 @@ void EnDns_Burrow(EnDns* this, PlayState* play) {
             }
         }
         Actor_Kill(&this->actor);
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUSINESS_SCRUB]++;
     }
 }
 
@@ -533,7 +536,7 @@ void EnDns_Update(Actor* thisx, PlayState* play) {
 void EnDns_Draw(Actor* thisx, PlayState* play) {
     EnDns* this = (EnDns*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, NULL, &this->actor);
 }

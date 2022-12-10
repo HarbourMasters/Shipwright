@@ -469,7 +469,7 @@ std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
     RC_OBJECT(RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER,                    RCVORMQ_VANILLA, RCTYPE_SKULL_TOKEN,  RCAREA_JABU_JABUS_BELLY,       ACTOR_EN_SI,        SCENE_BDAN,                           8705,                        GI_SKULL_TOKEN,      "GS Lobby Basement Lower", "Jabu Jabus Belly GS Lobby Basement Lower"),
     RC_OBJECT(RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_UPPER,                    RCVORMQ_VANILLA, RCTYPE_SKULL_TOKEN,  RCAREA_JABU_JABUS_BELLY,       ACTOR_EN_SI,        SCENE_BDAN,                           8706,                        GI_SKULL_TOKEN,      "GS Lobby Basement Upper", "Jabu Jabus Belly GS Lobby Basement Upper"),
     RC_OBJECT(RC_JABU_JABUS_BELLY_GS_NEAR_BOSS,                               RCVORMQ_VANILLA, RCTYPE_SKULL_TOKEN,  RCAREA_JABU_JABUS_BELLY,       ACTOR_EN_SI,        SCENE_BDAN,                           8708,                        GI_SKULL_TOKEN,      "GS Near Boss", "Jabu Jabus Belly GS Near Boss"),
-    RC_OBJECT(RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM,                       RCVORMQ_MQ,      RCTYPE_SKULL_TOKEN,  RCAREA_JABU_JABUS_BELLY,       ACTOR_EN_SI,        SCENE_BDAN,                           8712,                        GI_SKULL_TOKEN,      "GS Water Switch Room", "Jabu Jabus Belly GS Water Switch Room"),
+    RC_OBJECT(RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM,                       RCVORMQ_VANILLA, RCTYPE_SKULL_TOKEN,  RCAREA_JABU_JABUS_BELLY,       ACTOR_EN_SI,        SCENE_BDAN,                           8712,                        GI_SKULL_TOKEN,      "GS Water Switch Room", "Jabu Jabus Belly GS Water Switch Room"),
     RC_OBJECT(RC_JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM,                     RCVORMQ_MQ,      RCTYPE_SKULL_TOKEN,  RCAREA_JABU_JABUS_BELLY,       ACTOR_EN_SI,        SCENE_BDAN,                           8708,                        GI_SKULL_TOKEN,      "MQ GS Tail Parasan Room", "Jabu Jabus Belly MQ GS Tail Parasan Room"),
     RC_OBJECT(RC_JABU_JABUS_BELLY_MQ_GS_INVISIBLE_ENEMIES_ROOM,               RCVORMQ_MQ,      RCTYPE_SKULL_TOKEN,  RCAREA_JABU_JABUS_BELLY,       ACTOR_EN_SI,        SCENE_BDAN,                           8712,                        GI_SKULL_TOKEN,      "MQ GS Invisible Enemies Room", "Jabu Jabus Belly MQ GS Invisible Enemies Room"),
     RC_OBJECT(RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,                 RCVORMQ_MQ,      RCTYPE_SKULL_TOKEN,  RCAREA_JABU_JABUS_BELLY,       ACTOR_EN_SI,        SCENE_BDAN,                           8705,                        GI_SKULL_TOKEN,      "MQ GS Boomerang Chest Room", "Jabu Jabus Belly MQ GS Boomerang Chest Room"),
@@ -903,9 +903,9 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (locationIt.rcType != RCTYPE_LINKS_POCKET) &&
             (locationIt.rcType != RCTYPE_CHEST_GAME) && // don't show non final reward chest game checks until we support shuffling them
             ((locationIt.rcType != RCTYPE_SKULL_TOKEN) ||
-            (CVar_GetS32("gRandomizeShuffleTokens", 0) == 3) || // all tokens
-            ((CVar_GetS32("gRandomizeShuffleTokens", 0) == 2) && RandomizerCheckObjects::AreaIsOverworld(locationIt.rcArea)) || // overworld tokens
-            ((CVar_GetS32("gRandomizeShuffleTokens", 0) == 1) && RandomizerCheckObjects::AreaIsDungeon(locationIt.rcArea)) // dungeon tokens
+            (CVar_GetS32("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_ALL) ||
+            ((CVar_GetS32("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_OVERWORLD) && RandomizerCheckObjects::AreaIsOverworld(locationIt.rcArea)) ||
+            ((CVar_GetS32("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_DUNGEONS) && RandomizerCheckObjects::AreaIsDungeon(locationIt.rcArea))
             ) &&
             ((locationIt.rcType != RCTYPE_COW) || CVar_GetS32("gRandomizeShuffleCows", 0)) &&
             ((locationIt.rcType != RCTYPE_ADULT_TRADE) || CVar_GetS32("gRandomizeShuffleAdultTrade", 0)) &&
@@ -913,11 +913,11 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             ((locationIt.rc != RC_HC_MALON_EGG) || CVar_GetS32("gRandomizeShuffleWeirdEgg", 0)) &&
             ((locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) || CVar_GetS32("gRandomizeShuffleGerudoToken", 0)) &&
             ((locationIt.rcType != RCTYPE_FROG_SONG) || CVar_GetS32("gRandomizeShuffleFrogSongRupees", 0)) &&
-            ((locationIt.rcType != RCTYPE_MAP_COMPASS) || CVar_GetS32("gRandomizeStartingMapsCompasses", 0) != 1) && // 1 is the value for "vanilla" maps/compasses
-            ((locationIt.rcType != RCTYPE_SMALL_KEY) || CVar_GetS32("gRandomizeKeysanity", 0) != 1) && // 1 is the value for "vanilla" small keys
-            ((locationIt.rcType != RCTYPE_GF_KEY) || CVar_GetS32("randoShuffleGerudoFortressKeys", 0) != 0) && // 0 is the value for "vanilla" gf keys
-            ((locationIt.rcType != RCTYPE_BOSS_KEY) || CVar_GetS32("gRandomizeBossKeysanity", 0) != 1) && // 1 is the value for "vanilla" boss keys
-            ((locationIt.rcType != RCTYPE_GANON_BOSS_KEY) || CVar_GetS32("gRandomizeShuffleGanonBossKey", 0) != 0) // 0 is the value for "vanilla" ganon's boss key
+            ((locationIt.rcType != RCTYPE_MAP_COMPASS) || CVar_GetS32("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_STARTWITH) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
+            ((locationIt.rcType != RCTYPE_SMALL_KEY) || CVar_GetS32("gRandomizeKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
+            ((locationIt.rcType != RCTYPE_GF_KEY) || CVar_GetS32("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA) &&
+            ((locationIt.rcType != RCTYPE_BOSS_KEY) || CVar_GetS32("gRandomizeBossKeysanity", RO_DUNGEON_ITEM_LOC_STARTWITH) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
+            ((locationIt.rcType != RCTYPE_GANON_BOSS_KEY) || CVar_GetS32("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) != RO_GANON_BOSS_KEY_VANILLA)
         );
     }
 }

@@ -465,6 +465,11 @@ s32 EnSt_CheckHitBackside(EnSt* this, PlayState* play) {
     this->deathTimer = 20;
     this->actor.gravity = -1.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_STALWALL_DEAD);
+    if (this->actor.params == 1) {
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_BIG]++;
+    } else {
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA]++;
+    }
 
     if (flags & 0x1F820) {
         // arrow, fire arrow, ice arrow, light arrow,
@@ -1083,7 +1088,7 @@ void EnSt_Draw(Actor* thisx, PlayState* play) {
     EnSt* this = (EnSt*)thisx;
 
     EnSt_CheckBodyStickHit(this, play);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnSt_OverrideLimbDraw,
                       EnSt_PostLimbDraw, this);
 }

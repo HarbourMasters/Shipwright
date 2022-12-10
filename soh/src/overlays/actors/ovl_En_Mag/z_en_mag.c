@@ -109,8 +109,8 @@ void EnMag_InitMq(Actor* thisx, PlayState* play) {
         gSaveContext.unk_13E7 = 0;
         this->globalState = MAG_STATE_DISPLAY;
         sDelayTimer = 20;
-        gSaveContext.fadeDuration = 1;
-        gSaveContext.unk_1419 = 255;
+        gSaveContext.transFadeDuration = 1;
+        gSaveContext.transWipeSpeed = 255;
     }
 
     Font_LoadOrderedFont(&this->font);
@@ -123,8 +123,6 @@ void EnMag_InitMq(Actor* thisx, PlayState* play) {
 
 void EnMag_InitVanilla(Actor* thisx, PlayState* play) {
     EnMag* this = (EnMag*)thisx;
-    Color_RGB8 Original_Prim = { 255, 255, 170 };
-    Color_RGB8 Original_Env = { 255, 100, 0 };
 
     YREG(1) = 63;
     YREG(3) = 80;
@@ -151,21 +149,12 @@ void EnMag_InitVanilla(Actor* thisx, PlayState* play) {
     this->effectScroll = 0;
     this->unk_E30C = 0;
 
-    if (CVar_GetS32("gHudColors",0) == 2 ){
-        this->effectPrimColor[0] = (float)CVar_GetRGB("gCCTCFirePrim", Original_Prim).r;
-        this->effectPrimColor[1] = (float)CVar_GetRGB("gCCTCFirePrim", Original_Prim).g;
-        this->effectPrimColor[2] = (float)CVar_GetRGB("gCCTCFirePrim", Original_Prim).b;
-        this->effectEnvColor[0] = (float)CVar_GetRGB("gCCTCFireEnv", Original_Env).r;
-        this->effectEnvColor[1] = (float)CVar_GetRGB("gCCTCFireEnv", Original_Env).g;
-        this->effectEnvColor[2] = (float)CVar_GetRGB("gCCTCFireEnv", Original_Env).b;
-    } else {
-        this->effectPrimColor[0] = 0.0f;
-        this->effectPrimColor[1] = 100.0f;
-        this->effectPrimColor[2] = 170.0f;
-        this->effectEnvColor[0] = 0.0f;
-        this->effectEnvColor[1] = 100.0f;
-        this->effectEnvColor[2] = 0.0f;
-    }
+    this->effectPrimColor[0] = 0.0f;
+    this->effectPrimColor[1] = 100.0f;
+    this->effectPrimColor[2] = 170.0f;
+    this->effectEnvColor[0] = 0.0f;
+    this->effectEnvColor[1] = 100.0f;
+    this->effectEnvColor[2] = 0.0f;
 
     this->effectFadeInTimer = 40;
 
@@ -180,27 +169,18 @@ void EnMag_InitVanilla(Actor* thisx, PlayState* play) {
         this->effectPrimLodFrac = 128.0f;
         this->effectAlpha = 255.0f;
 
-        if (CVar_GetS32("gHudColors",0) == 2 ){
-            this->effectPrimColor[0] = (float)CVar_GetRGB("gCCTCFirePrim", Original_Prim).r;
-            this->effectPrimColor[1] = (float)CVar_GetRGB("gCCTCFirePrim", Original_Prim).g;
-            this->effectPrimColor[2] = (float)CVar_GetRGB("gCCTCFirePrim", Original_Prim).b;
-            this->effectEnvColor[0] = (float)CVar_GetRGB("gCCTCFireEnv", Original_Env).r;
-            this->effectEnvColor[1] = (float)CVar_GetRGB("gCCTCFireEnv", Original_Env).g;
-            this->effectEnvColor[2] = (float)CVar_GetRGB("gCCTCFireEnv", Original_Env).b;
-        } else {
-            this->effectPrimColor[0] = (float)Original_Prim.r;
-            this->effectPrimColor[1] = (float)Original_Prim.g;
-            this->effectPrimColor[2] = (float)Original_Prim.b;
-            this->effectEnvColor[0] = (float)Original_Env.r;
-            this->effectEnvColor[1] = (float)Original_Env.g;
-            this->effectEnvColor[2] = (float)Original_Env.b;
-        }
+        this->effectPrimColor[0] = 255.0f;
+        this->effectPrimColor[1] = 255.0f;
+        this->effectPrimColor[2] = 170.0f;
+        this->effectEnvColor[0] = 255.0f;
+        this->effectEnvColor[1] = 100.0f;
+        this->effectEnvColor[2] = 0.0f;
 
         gSaveContext.unk_13E7 = 0;
         this->globalState = MAG_STATE_DISPLAY;
         sDelayTimer = 20;
-        gSaveContext.fadeDuration = 1;
-        gSaveContext.unk_1419 = 255;
+        gSaveContext.transFadeDuration = 1;
+        gSaveContext.transWipeSpeed = 255;
     }
 
     Font_LoadOrderedFont(&this->font);
@@ -242,8 +222,8 @@ void EnMag_UpdateMq(Actor* thisx, PlayState* play) {
 
                 this->globalState = MAG_STATE_DISPLAY;
                 sDelayTimer = 20;
-                gSaveContext.fadeDuration = 1;
-                gSaveContext.unk_1419 = 255;
+                gSaveContext.transFadeDuration = 1;
+                gSaveContext.transWipeSpeed = 255;
             }
         } else if (this->globalState >= MAG_STATE_DISPLAY) {
             if (sDelayTimer == 0) {
@@ -377,8 +357,6 @@ void EnMag_UpdateMq(Actor* thisx, PlayState* play) {
 void EnMag_UpdateVanilla(Actor* thisx, PlayState* play) {
     s32 pad[2];
     EnMag* this = (EnMag*)thisx;
-    Color_RGB8 Original_Prim = { 255, 255, 170 };
-    Color_RGB8 Original_Env = { 255, 100, 0 };
 
     if (gSaveContext.fileNum != 0xFEDC) {
         if (this->globalState < MAG_STATE_DISPLAY) {
@@ -395,26 +373,17 @@ void EnMag_UpdateVanilla(Actor* thisx, PlayState* play) {
                 this->effectPrimLodFrac = 128.0f;
                 this->effectAlpha = 255.0f;
 
-                if (CVar_GetS32("gHudColors",0) == 2 ){
-                    this->effectPrimColor[0] = (float)CVar_GetRGB("gCCTCFirePrim", Original_Prim).r;
-                    this->effectPrimColor[1] = (float)CVar_GetRGB("gCCTCFirePrim", Original_Prim).g;
-                    this->effectPrimColor[2] = (float)CVar_GetRGB("gCCTCFirePrim", Original_Prim).b;
-                    this->effectEnvColor[0] = (float)CVar_GetRGB("gCCTCFireEnv", Original_Env).r;
-                    this->effectEnvColor[1] = (float)CVar_GetRGB("gCCTCFireEnv", Original_Env).g;
-                    this->effectEnvColor[2] = (float)CVar_GetRGB("gCCTCFireEnv", Original_Env).b;
-                } else {
-                    this->effectPrimColor[0] = (float)Original_Prim.r;
-                    this->effectPrimColor[1] = (float)Original_Prim.g;
-                    this->effectPrimColor[2] = (float)Original_Prim.b;
-                    this->effectEnvColor[0] = (float)Original_Env.r;
-                    this->effectEnvColor[1] = (float)Original_Env.g;
-                    this->effectEnvColor[2] = (float)Original_Env.b;
-                }
+                this->effectPrimColor[0] = 255.0f;
+                this->effectPrimColor[1] = 255.0f;
+                this->effectPrimColor[2] = 170.0f;
+                this->effectEnvColor[0] = 255.0f;
+                this->effectEnvColor[1] = 100.0f;
+                this->effectEnvColor[2] = 0.0f;
 
                 this->globalState = MAG_STATE_DISPLAY;
                 sDelayTimer = 20;
-                gSaveContext.fadeDuration = 1;
-                gSaveContext.unk_1419 = 255;
+                gSaveContext.transFadeDuration = 1;
+                gSaveContext.transWipeSpeed = 255;
             }
         } else if (this->globalState >= MAG_STATE_DISPLAY) {
             if (sDelayTimer == 0) {
@@ -448,13 +417,11 @@ void EnMag_UpdateVanilla(Actor* thisx, PlayState* play) {
             this->effectAlpha += 6.375f;
             this->effectPrimLodFrac += 0.8f;
 
-            if (CVar_GetS32("gHudColors",0) != 2 ){
-                this->effectPrimColor[0] += 6.375f;
-                this->effectPrimColor[1] += 3.875f;
-                this->effectPrimColor[2] += 2.125f;
-                this->effectEnvColor[0] += 6.375f;
-                this->effectEnvColor[1] += 3.875f;
-            }
+            this->effectPrimColor[0] += 6.375f;
+            this->effectPrimColor[1] += 3.875f;
+            this->effectPrimColor[2] += 2.125f;
+            this->effectEnvColor[0] += 6.375f;
+            this->effectEnvColor[1] += 3.875f;
 
             this->effectFadeInTimer--;
 
@@ -462,22 +429,18 @@ void EnMag_UpdateVanilla(Actor* thisx, PlayState* play) {
                 this->effectPrimLodFrac = 32.0f;
                 this->effectAlpha = 255.0f;
 
-                if (CVar_GetS32("gHudColors",0) != 2 ){
-                    this->effectPrimColor[0] = 255.0f;
-                    this->effectPrimColor[1] = 255.0f;
-                    this->effectPrimColor[2] = 255.0f;
-                    this->effectEnvColor[0] = 255.0f;
-                    this->effectEnvColor[1] = 255.0f;
-                }
+                this->effectPrimColor[0] = 255.0f;
+                this->effectPrimColor[1] = 255.0f;
+                this->effectPrimColor[2] = 255.0f;
+                this->effectEnvColor[0] = 255.0f;
+                this->effectEnvColor[1] = 255.0f;
 
                 this->effectFadeInTimer = 40;
                 this->effectFadeInState = 1;
             }
         } else if (this->effectFadeInState == 1) {
-            if (CVar_GetS32("gHudColors",0) != 2 ){
-                this->effectPrimColor[2] += -2.125f;
-                this->effectEnvColor[1] += -3.875f;
-            }
+            this->effectPrimColor[2] += -2.125f;
+            this->effectEnvColor[1] += -3.875f;
 
             this->effectPrimLodFrac += 2.4f;
 
@@ -485,18 +448,9 @@ void EnMag_UpdateVanilla(Actor* thisx, PlayState* play) {
 
             if (this->effectFadeInTimer == 0) {
                 this->effectPrimLodFrac = 128.0f;
-
-                if (CVar_GetS32("gHudColors",0) == 2 ){
-                    this->effectPrimColor[0] = (float)CVar_GetRGB("gCCTCFirePrim", Original_Prim).r;
-                    this->effectPrimColor[1] = (float)CVar_GetRGB("gCCTCFirePrim", Original_Prim).g;
-                    this->effectPrimColor[2] = (float)CVar_GetRGB("gCCTCFirePrim", Original_Prim).b;
-                    this->effectEnvColor[0] = (float)CVar_GetRGB("gCCTCFireEnv", Original_Env).r;
-                    this->effectEnvColor[1] = (float)CVar_GetRGB("gCCTCFireEnv", Original_Env).g;
-                    this->effectEnvColor[2] = (float)CVar_GetRGB("gCCTCFireEnv", Original_Env).b;
-                } else {
-                    this->effectPrimColor[2] = 170.0f;
-                    this->effectEnvColor[1] = 100.0f;
-                }
+                
+                this->effectPrimColor[2] = 170.0f;
+                this->effectEnvColor[1] = 100.0f;
 
                 this->effectFadeInTimer = 32;
                 this->effectFadeInState = 2;
@@ -608,7 +562,7 @@ void EnMag_DrawImageRGBA32(Gfx** gfxp, s16 centerX, s16 centerY, const char* sou
 
     source = ResourceMgr_LoadTexByName(source);
 
-    func_80094D28(&gfx);
+    Gfx_SetupDL_56Ptr(&gfx);
 
     curTexture = source;
     rectLeft = centerX - (width / 2);
@@ -696,7 +650,7 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
 
     gSPSegment(gfx++, 0x06, play->objectCtx.status[this->actor.objBankIndex].segment);
 
-    func_8009457C(&gfx);
+    Gfx_SetupDL_39Ptr(&gfx);
 
     this->effectScroll -= 2;
 
@@ -726,7 +680,7 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
         EnMag_DrawImageRGBA32(&gfx, 152, 100, (u8*)gTitleZeldaShieldLogoMQTex, 160, 160);
     }
 
-    func_8009457C(&gfx);
+    Gfx_SetupDL_39Ptr(&gfx);
 
     gDPPipeSync(gfx++);
     gDPSetAlphaCompare(gfx++, G_AC_NONE);
@@ -758,7 +712,7 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
         EnMag_DrawImageRGBA32(&gfx, 174, 145, "__OTR__objects/object_mag/gTitleMasterQuestSubtitleTex", 128, 32);
     }
 
-    func_8009457C(&gfx);
+    Gfx_SetupDL_39Ptr(&gfx);
 
     gDPSetAlphaCompare(gfx++, G_AC_NONE);
     gDPSetCombineMode(gfx++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
@@ -886,7 +840,7 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
 
     gSPSegment(gfx++, 0x06, play->objectCtx.status[this->actor.objBankIndex].segment);
 
-    func_8009457C(&gfx);
+    Gfx_SetupDL_39Ptr(&gfx);
 
     this->effectScroll -= 2;
 
@@ -916,7 +870,7 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
         EnMag_DrawImageRGBA32(&gfx, 160, 100, (u8*)gTitleZeldaShieldLogoTex, 160, 160);
     }
 
-    func_8009457C(&gfx);
+    Gfx_SetupDL_39Ptr(&gfx);
 
     gDPPipeSync(gfx++);
     gDPSetAlphaCompare(gfx++, G_AC_NONE);
@@ -945,7 +899,7 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
 
     }
 
-    func_8009457C(&gfx);
+    Gfx_SetupDL_39Ptr(&gfx);
 
     gDPSetAlphaCompare(gfx++, G_AC_NONE);
     gDPSetCombineMode(gfx++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);

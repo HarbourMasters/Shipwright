@@ -349,7 +349,7 @@ void EnAObj_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if (type >= A_OBJ_MAX) {
         type = A_OBJ_BOULDER_FRAGMENT;

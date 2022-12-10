@@ -106,7 +106,7 @@ void Audio_ProcessSeqCmd(u32 cmd) {
     u8 op;
     u8 subOp;
     u8 playerIdx;
-    u8 seqId;
+    u16 seqId;
     u8 seqArgs;
     u8 found;
     u8 port;
@@ -369,14 +369,14 @@ extern f32 D_80130F28;
 void Audio_QueueSeqCmd(u32 cmd) 
 {
     u8 op = cmd >> 28;
-    if (op == 0 || op == 2 || op == 12){
-        u16 oldSeqId = cmd & 0xFFFF;
-        u16 newSeqId = SfxEditor_GetReplacementSeq(oldSeqId);
-        if (newSeqId != oldSeqId) {
-            cmd &= ~0xFFFF;
-            cmd |= newSeqId;
+    if (op == 0 || op == 2 || op == 12) {
+        u8 seqId = cmd & 0xFF;
+        u8 playerIdx = (cmd >> 24) & 0xFF;
+        u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
+            gAudioContext.seqReplaced[playerIdx] = (seqId != newSeqId);
+            gAudioContext.seqToPlay[playerIdx] = newSeqId;
+            cmd |= (seqId & 0xFF);
         }
-    }
 
     sAudioSeqCmds[sSeqCmdWrPos++] = cmd;
 }
