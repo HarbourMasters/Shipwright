@@ -471,34 +471,22 @@ void EnDog_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
 
 void EnDog_Draw(Actor* thisx, PlayState* play) {
     EnDog* this = (EnDog*)thisx;
-    Color_RGBA8 colors[] = { { 255, 255, 200, 0 }, { 150, 100, 50, 0 } };
-    Color_RGB8 Dog1_ori = {colors[0].r, colors[0].g, colors[0].b};
-    Color_RGB8 Dog2_ori = {colors[1].r, colors[1].g, colors[1].b};
-    Color_RGB8 Dog1 = CVar_GetRGB("gDog1Col", Dog1_ori);
-    Color_RGB8 Dog2 = CVar_GetRGB("gDog2Col", Dog2_ori);
+    Color_RGB8 colors[] = { { 255, 255, 200 }, { 150, 100, 50 } };
+
+    if (CVar_GetS32("gCosmetics.NPC_Dog1.Changed", 0)) {
+        colors[0] = CVar_GetRGB("gCosmetics.NPC_Dog1.Value", colors[0]);
+    }
+    if (CVar_GetS32("gCosmetics.NPC_Dog2.Changed", 0)) {
+        colors[1] = CVar_GetRGB("gCosmetics.NPC_Dog2.Value", colors[1]);
+    }
 
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gDPPipeSync(POLY_OPA_DISP++);
-    if (CVar_GetS32("gUseDogsCol",0)) {
-        colors[0].r = Dog1.r;
-        colors[0].g = Dog1.g;
-        colors[0].b = Dog1.b;
-        colors[1].r = Dog2.r;
-        colors[1].g = Dog2.g;
-        colors[1].b = Dog2.b;
-    } else {
-        colors[0].r = Dog1_ori.r;
-        colors[0].g = Dog1_ori.g;
-        colors[0].b = Dog1_ori.b;
-        colors[1].r = Dog2_ori.r;
-        colors[1].g = Dog2_ori.g;
-        colors[1].b = Dog2_ori.b;
-    }
     gDPSetEnvColor(POLY_OPA_DISP++, colors[this->actor.params & 0xF].r, colors[this->actor.params & 0xF].g,
-                   colors[this->actor.params & 0xF].b, colors[this->actor.params & 0xF].a);
+                   colors[this->actor.params & 0xF].b, 0);
 
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnDog_OverrideLimbDraw, EnDog_PostLimbDraw, this);
