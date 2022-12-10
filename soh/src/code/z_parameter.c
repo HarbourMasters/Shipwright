@@ -1616,11 +1616,14 @@ void func_80084BF4(PlayState* play, u16 flag) {
 
 // Gameplay stat tracking: Update time the item was acquired
 // (special cases for some duplicate items)
-void GameplayStats_SetTimestamp(u8 item) {
+void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
 
-    // If the item already has a timestamp or if it's a boss key, do nothing
-    // ITEM_KEY_BOSS is used to timestamp Ganon's boss key. Handled in z_play.c
-    if (gSaveContext.sohStats.timestamp[item] != 0 || item == ITEM_KEY_BOSS) {
+    // If we already have a timestamp for this item, do nothing
+    if (gSaveContext.sohStats.timestamp[item] != 0){
+        return;
+    }
+    // Use ITEM_KEY_BOSS only for Ganon's boss key - not any other boss keys
+    if (item == ITEM_KEY_BOSS && play->sceneNum != 13 && play->sceneNum != 10) {
         return;
     }
 
@@ -1658,6 +1661,11 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
     // Have items in Link's pocket shown as being obtained at 0.1 seconds
     if (time == 0) {
         time = 1;
+    }
+
+    // Use ITEM_KEY_BOSS to timestamp Ganon's boss key
+    if (item == RG_GANONS_CASTLE_BOSS_KEY) {
+        gSaveContext.sohStats.timestamp[ITEM_KEY_BOSS] = time;
     }
 
     // Count any bottled item as a bottle
@@ -1700,7 +1708,7 @@ u8 Item_Give(PlayState* play, u8 item) {
     s16 temp;
 
     // Gameplay stats: Update the time the item was obtained
-    GameplayStats_SetTimestamp(item);
+    GameplayStats_SetTimestamp(play, item);
 
     slot = SLOT(item);
     if (item >= ITEM_STICKS_5) {
