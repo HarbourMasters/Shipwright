@@ -902,8 +902,9 @@ std::map<SceneID, RandomizerCheckArea> RandomizerCheckObjects::GetAllRCAreaBySce
             rcAreaBySceneID[rcObject.sceneId] = rcObject.rcArea;
         }
         //Add checkless Hyrule Market areas to the area return
-        for (int id = (int)SCENE_ENTRA; id <= (int)SCENE_MARKET_RUINS; id++)
+        for (int id = (int)SCENE_ENTRA; id <= (int)SCENE_MARKET_RUINS; id++) {
             rcAreaBySceneID[(SceneID)id] = RCAREA_MARKET;
+        }
     }
     return rcAreaBySceneID;
 }
