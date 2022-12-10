@@ -5350,6 +5350,13 @@ s32 func_8083BDBC(Player* this, PlayState* play) {
             }
         } else {
             func_8083BCD0(this, play, sp2C);
+            if (sp2C == 1 || sp2C == 3) {
+                gSaveContext.sohStats.count[COUNT_SIDEHOPS]++;
+            }
+            if (sp2C == 2) {
+                gSaveContext.sohStats.count[COUNT_BACKFLIPS]++;
+            }
+            
             return 1;
         }
     }
