@@ -633,9 +633,9 @@ bool CompareCheckObject(RandomizerCheckObject i, RandomizerCheckObject j) {
     else if (checkStatusMap.find(i.rc)->second > checkStatusMap.find(j.rc)->second)
         return false;
 
-    if (i.rcShortName < j.rcShortName)
+    if (i.rc < j.rc)
         return true;
-    if (i.rcShortName > j.rcShortName)
+    else if (i.rc > j.rc)
         return false;
 
     return false;
