@@ -794,11 +794,13 @@ s32 EnGirlA_CanBuy_Randomizer(PlayState* play, EnGirlA* this) {
 }
 
 void EnGirlA_ItemGive_Arrows(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     Inventory_ChangeAmmo(ITEM_BOW, this->itemCount);
     Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_ItemGive_Bombs(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     switch (this->itemCount) {
         case 5:
             Item_Give(play, ITEM_BOMBS_5);
@@ -817,6 +819,7 @@ void EnGirlA_ItemGive_Bombs(PlayState* play, EnGirlA* this) {
 }
 
 void EnGirlA_ItemGive_DekuNuts(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     switch (this->itemCount) {
         case 5:
             Item_Give(play, ITEM_NUTS_5);
@@ -829,65 +832,78 @@ void EnGirlA_ItemGive_DekuNuts(PlayState* play, EnGirlA* this) {
 }
 
 void EnGirlA_ItemGive_DekuSticks(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     Item_Give(play, ITEM_STICK);
     Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_ItemGive_Longsword(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     func_800849EC(play);
     gSaveContext.swordHealth = 8;
     Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_ItemGive_HylianShield(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     Item_Give(play, ITEM_SHIELD_HYLIAN);
     Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_ItemGive_DekuShield(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     Item_Give(play, ITEM_SHIELD_DEKU);
     Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_ItemGive_GoronTunic(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     Item_Give(play, ITEM_TUNIC_GORON);
     Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_ItemGive_ZoraTunic(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     Item_Give(play, ITEM_TUNIC_ZORA);
     Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_ItemGive_Health(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     Health_ChangeBy(play, this->itemCount);
     Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_ItemGive_MilkBottle(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     Item_Give(play, ITEM_MILK_BOTTLE);
     Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_ItemGive_WeirdEgg(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     Item_Give(play, ITEM_WEIRD_EGG);
     Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_ItemGive_Unk19(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_ItemGive_Unk20(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_ItemGive_DekuSeeds(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     Item_Give(play, ITEM_SEEDS_30);
     Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_ItemGive_BottledItem(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     switch (this->actor.params) {
         case SI_FISH:
             Item_Give(play, ITEM_FISH);
@@ -927,6 +943,7 @@ void EnGirlA_ItemGive_Randomizer(PlayState* play, EnGirlA* this) {
     ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
 
+    gSaveContext.pendingSale = getItemEntry.itemId;
     if (getItemEntry.modIndex == MOD_NONE) {
         // RANDOTOD: Move this into Item_Give() or some other more central location
         if (getItemEntry.getItemId == GI_SWORD_BGS) {
@@ -942,6 +959,7 @@ void EnGirlA_ItemGive_Randomizer(PlayState* play, EnGirlA* this) {
 }
 
 void EnGirlA_BuyEvent_ShieldDiscount(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     if (this->actor.params == SI_HYLIAN_SHIELD) {
         if (gSaveContext.infTable[7] & 0x40) {
             Rupees_ChangeBy(-(this->basePrice - sShieldDiscounts[(s32)Rand_ZeroFloat(7.9f)]));
@@ -952,14 +970,17 @@ void EnGirlA_BuyEvent_ShieldDiscount(PlayState* play, EnGirlA* this) {
 }
 
 void EnGirlA_BuyEvent_GoronTunic(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_BuyEvent_ZoraTunic(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     Rupees_ChangeBy(-this->basePrice);
 }
 
 void EnGirlA_BuyEvent_ObtainBombchuPack(PlayState* play, EnGirlA* this) {
+    gSaveContext.pendingSale = ItemTable_Retrieve(this->getItemId).itemId;
     Rupees_ChangeBy(-this->basePrice);
 
 	// Normally, buying a bombchu pack sets a flag indicating the pack is now sold out
@@ -1000,6 +1021,8 @@ void EnGirlA_BuyEvent_ObtainBombchuPack(PlayState* play, EnGirlA* this) {
 // The giving of the item is handled in ossan.c, and a fanfare is played
 void EnGirlA_BuyEvent_Randomizer(PlayState* play, EnGirlA* this) {
     ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
+    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+    gSaveContext.pendingSale = getItemEntry.itemId;
     Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);
     Rupees_ChangeBy(-this->basePrice);
 }

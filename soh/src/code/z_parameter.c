@@ -2715,8 +2715,9 @@ u8 Item_CheckObtainability(u8 item) {
     return gSaveContext.inventory.items[slot];
 }
 
+// Save when receiving an item, unless it's purchased from a shop
 void PerformAutosave(PlayState* play, u8 item) {
-    if (CVar_GetS32("gAutosave", 0) && (play && play->sceneNum != SCENE_KENJYANOMA)) {
+    if (CVar_GetS32("gAutosave", 0) && (play != NULL) && (play->sceneNum != SCENE_KENJYANOMA) && (gSaveContext.pendingSale == ITEM_NONE)) {
         if (CVar_GetS32("gAutosaveAllItems", 0)) {
             Play_PerformSave(play);
         } else if (CVar_GetS32("gAutosaveMajorItems", 1)) {
@@ -6300,6 +6301,11 @@ void Interface_Update(PlayState* play) {
                 gSaveContext.rupeeAccumulator++;
                 gSaveContext.rupees--;
                 Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            }
+            if (gSaveContext.rupeeAccumulator == 0) {
+                u16 tempSaleItem = gSaveContext.pendingSale;
+                gSaveContext.pendingSale = ITEM_NONE;
+                PerformAutosave(play, tempSaleItem);
             }
         } else {
             gSaveContext.rupeeAccumulator = 0;

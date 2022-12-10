@@ -1716,7 +1716,9 @@ void EnOssan_State_ItemPurchased(EnOssan* this, PlayState* play, Player* player)
     } else {
         getItemEntry = ItemTable_Retrieve(this->shelfSlots[this->cursorIndex]->getItemId);
     }
-    
+    if (gSaveContext.pendingSale == ITEM_NONE) {
+        gSaveContext.pendingSale = getItemEntry.itemId;
+    }
 
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         if (this->actor.params == OSSAN_TYPE_MASK) {
