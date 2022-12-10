@@ -366,6 +366,9 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Skip Magic Arrow Equip Animation", "gSkipArrowAnimation", true, false);
                     UIWidgets::PaddedEnhancementCheckbox("Skip save confirmation", "gSkipSaveConfirmation", true, false);
                     UIWidgets::Tooltip("Skip the \"Game saved.\" confirmation screen");
+                    UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", "gRMarketSneak", true, false);
+                    UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking "
+                    "to the guard next to the gate.");
                     ImGui::EndMenu();
                 }
 
@@ -1232,11 +1235,6 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip(
                     "Play unique fanfares when obtaining quest items "
                     "(medallions/stones/songs). Note that these fanfares are longer than usual."
-                );
-                UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", "gRandoMarketSneak", true, false);
-                UIWidgets::Tooltip(
-                    "Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking "
-                    "to the guard next to the gate."
                 );
                 ImGui::EndMenu();
             }
