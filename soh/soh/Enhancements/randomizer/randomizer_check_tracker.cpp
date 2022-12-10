@@ -662,9 +662,6 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
     auto scene = check.scene;
     auto type = check.type;
 
-    int shift;
-    int mask;
-
     switch (type) {
         case SpoilerCollectionCheckType::SPOILER_CHK_ALWAYS_COLLECTED:
             return true;
@@ -687,15 +684,9 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
         case SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA:
             return GET_GS_FLAGS(scene) & flag;
         case SpoilerCollectionCheckType::SPOILER_CHK_INF_TABLE:
-            // Magic to flip an index `flag` to a lookup for 16bit big endian integers. Probably an easier way.....
-            shift = 7 - (flag % 8) + ((flag % 16) / 8) * 8;
-            mask = 0x8000 >> shift;
-            return gSaveContext.infTable[scene] & mask;
+            return gSaveContext.infTable[scene] & INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(flag);
         case SpoilerCollectionCheckType::SPOILER_CHK_ITEM_GET_INF:
-            // Magic to flip an index `flag` to a lookup for 16bit big endian integers. Probably an easier way.....
-            shift = 7 - (flag % 8) + ((flag % 16) / 8) * 8;
-            mask = 0x8000 >> shift;
-            return gSaveContext.itemGetInf[flag / 16] & mask;
+            return gSaveContext.itemGetInf[flag / 16] & INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(flag);
         case SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS:
             return BEANS_BOUGHT >= 10;
         case SpoilerCollectionCheckType::SPOILER_CHK_MINIGAME:
