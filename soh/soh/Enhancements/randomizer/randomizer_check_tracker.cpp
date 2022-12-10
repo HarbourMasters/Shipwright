@@ -535,6 +535,7 @@ void Teardown() {
     initialized = false;
     checkStatusMap.clear();
     areasFullyChecked = 0;
+    areasSpoiled = 0;
     checks.clear();
     lastSaveCount = -1;
     lastLocationChecked = RC_UNKNOWN_CHECK;
