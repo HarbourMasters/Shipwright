@@ -131,7 +131,7 @@ void DrawCheckTracker(bool& open) {
 
     if (doInitialize)
         InitializeChecks();
-    else if (gPlayState == nullptr || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2) {
+    else if (initialized && (gPlayState == nullptr || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2)) {
         Teardown();
         return;
     }
