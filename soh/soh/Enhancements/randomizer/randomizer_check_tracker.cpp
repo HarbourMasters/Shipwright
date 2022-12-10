@@ -32,8 +32,6 @@ bool ShouldUpdateChecks();
 bool CompareCheckObject(RandomizerCheckObject i, RandomizerCheckObject j);
 bool HasItemBeenCollected(RandomizerCheckObject obj);
 void RainbowTick();
-ImVec4 Color_RGBA8_to_ImVec4(Color_RGBA8& color);
-Color_RGBA8 ImVec4_to_Color_RGBA8(ImVec4& color);
 RandomizerCheckShow GetCheckStatus(RandomizerCheckObject rcObj, int idx);
 
 
@@ -50,7 +48,7 @@ Color_RGBA8 Color_Checked_Extra_Default             = { 255, 255, 255, 255 };   
 Color_RGBA8 Color_Scummed_Extra_Default             = { 255, 255, 255, 255 };   // TODO
 Color_RGBA8 Color_Saved_Extra_Default               = {   0, 185,   0, 255 };   // Green
 
-ImVec4 Color_Background  = { 0, 0, 0, 0 };
+Color_RGBA8 Color_Background = { 0, 0, 0, 255 };
 
 Color_RGBA8 Color_Area_Incomplete_Main  = { 255, 255, 255, 255 }; //White
 Color_RGBA8 Color_Area_Incomplete_Extra = { 255, 255, 255, 255 }; //White
@@ -273,7 +271,8 @@ void DrawCheckTracker(bool& open) {
                     }
                 }
                 stemp = RandomizerCheckObjects::GetRCAreaName(obj.rcArea) + "##TreeNode";
-                ImGui::PushStyleColor(ImGuiCol_Text, Color_RGBA8_to_ImVec4(mainColor));
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(mainColor.r / 255.0f, mainColor.g / 255.0f,
+                                                            mainColor.b / 255.0f, mainColor.a / 255.0f));
                 if (doingCollapseOrExpand)
                     ImGui::SetNextItemOpen(collapseLogic, ImGuiCond_Always);
                 else
@@ -281,7 +280,8 @@ void DrawCheckTracker(bool& open) {
                 doDraw = ImGui::TreeNode(stemp.c_str());
                 ImGui::PopStyleColor();
                 ImGui::SameLine();
-                ImGui::PushStyleColor(ImGuiCol_Text, Color_RGBA8_to_ImVec4(extraColor));
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(extraColor.r / 255.0f, extraColor.g / 255.0f,
+                                                            extraColor.b / 255.0f, extraColor.a / 255.0f));
 
                 isThisAreaSpoiled = areasSpoiled & areaMask || CVar_GetS32("gCheckTrackerOptionMQSpoilers", 0);
 
@@ -343,7 +343,8 @@ void BeginFloatWindows(std::string UniqueName, ImGuiWindowFlags flags) {
             windowFlags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
         }
     }
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, Color_Background);
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(Color_Background.r / 255.0f, Color_Background.g / 255.0f,
+                                                    Color_Background.b / 255.0f, Color_Background.a / 255.0f));
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
     ImGui::Begin(UniqueName.c_str(), nullptr, windowFlags);
@@ -756,7 +757,7 @@ void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckSta
     ImGui::SameLine();
 
     //Draw
-    ImGui::PushStyleColor(ImGuiCol_Text, Color_RGBA8_to_ImVec4(mainColor));
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(mainColor.r / 255.0f, mainColor.g / 255.0f, mainColor.b / 255.0f, mainColor.a / 255.0f));
     ImGui::Text("%s", txt.c_str());
     ImGui::PopStyleColor();
 
@@ -791,7 +792,7 @@ void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckSta
                 break;
         }
 
-        ImGui::PushStyleColor(ImGuiCol_Text, Color_RGBA8_to_ImVec4(extraColor));
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(extraColor.r / 255.0f, extraColor.g / 255.0f, extraColor.b / 255.0f, extraColor.a / 255.0f));
         ImGui::SameLine();
         ImGui::Text(" (%s)", txt.c_str());
         ImGui::PopStyleColor();
@@ -831,37 +832,6 @@ void RainbowTick() {
     hue %= 360;
 }
 
-inline void SaveColorToCVar(std::string cvarname, ImVec4 color) {
-    CVar_SetFloat((cvarname + "R").c_str(), color.x);
-    CVar_SetFloat((cvarname + "G").c_str(), color.y);
-    CVar_SetFloat((cvarname + "B").c_str(), color.z);
-    CVar_SetFloat((cvarname + "A").c_str(), color.w);
-    SohImGui::RequestCvarSaveOnNextTick();
-}
-inline ImVec4 GetColorFromCVar(std::string cvarname) {
-    float R = CVar_GetFloat((cvarname + "R").c_str(), 255);
-    float G = CVar_GetFloat((cvarname + "G").c_str(), 255);
-    float B = CVar_GetFloat((cvarname + "B").c_str(), 255);
-    float A = CVar_GetFloat((cvarname + "A").c_str(), 255);
-    return ImVec4(R, G, B, A);
-}
-inline Color_RGBA8 ImVec4_to_Color_RGBA8(ImVec4& color) {
-    Color_RGBA8 ret;
-    ret.r = color.x * 255.0f;
-    ret.g = color.y * 255.0f;
-    ret.b = color.z * 255.0f;
-    ret.a = color.w * 255.0f;
-    return ret;
-}
-inline ImVec4 Color_RGBA8_to_ImVec4(Color_RGBA8& color) {
-    ImVec4 ret;
-    ret.x = color.r / 255.0f;
-    ret.y = color.g / 255.0f;
-    ret.z = color.b / 255.0f;
-    ret.w = color.a;
-    return ret;
-}
-
 void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, const char* cvarExtraName,
                                  Color_RGBA8& main_color, Color_RGBA8& extra_color, Color_RGBA8& main_default_color,
                                  Color_RGBA8& extra_default_color, const char* cvarHideName) {
@@ -884,7 +854,10 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
             ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-            if (UIWidgets::EnhancementColor("Check", cvarMainName, Color_RGBA8_to_ImVec4(main_color), Color_RGBA8_to_ImVec4(main_default_color))) {
+            if (UIWidgets::EnhancementColor("Check", cvarMainName, 
+                ImVec4(main_color.r / 255.0f, main_color.g / 255.0f, main_color.b / 255.0f, main_color.a / 255.0f), 
+                ImVec4(main_default_color.r / 255.0f, main_default_color.g / 255.0f, main_default_color.b / 255.0f, main_default_color.a / 255.0f))) 
+            {
                 main_color = CVar_GetRGBA(cvarMainName, main_default_color);
             };
             ImGui::PopItemWidth();
@@ -892,9 +865,11 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
             ImGui::TableNextColumn();
             ImGui::AlignTextToFramePadding();
             ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-            if (UIWidgets::EnhancementColor("Details", cvarExtraName, Color_RGBA8_to_ImVec4(extra_color),
-                                            Color_RGBA8_to_ImVec4(extra_default_color))) {
-                main_color = CVar_GetRGBA(cvarExtraName, extra_default_color);
+            if (UIWidgets::EnhancementColor("Details", cvarExtraName,
+                ImVec4(extra_color.r / 255.0f, extra_color.g / 255.0f, extra_color.b / 255.0f, extra_color.a / 255.0f),
+                ImVec4(extra_default_color.r / 255.0f, extra_default_color.g / 255.0f, extra_default_color.b / 255.0f, extra_default_color.a / 255.0f))) 
+            {
+                extra_color = CVar_GetRGBA(cvarExtraName, extra_default_color);
             }
             ImGui::PopItemWidth();
 
@@ -932,12 +907,12 @@ void DrawCheckTrackerOptions(bool& open) {
     ImGui::Text("BG Color");
     ImGui::SameLine();
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-    if (ImGui::ColorEdit4("BG Color##gCheckTrackerBgColor", (float*)&Color_Background, ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoLabel)) {
-        CVar_SetFloat("gCheckTrackerBgColorR", Color_Background.x);
-        CVar_SetFloat("gCheckTrackerBgColorG", Color_Background.y);
-        CVar_SetFloat("gCheckTrackerBgColorB", Color_Background.z);
-        CVar_SetFloat("gCheckTrackerBgColorA", Color_Background.w);
-        SohImGui::RequestCvarSaveOnNextTick();
+    if (UIWidgets::EnhancementColor("BG Color##gCheckTrackerBgColor", "gCheckTrackerBgColor",
+        ImVec4(Color_Background.r / 255.0f, Color_Background.g / 255.0f, Color_Background.b / 255.0f, Color_Background.a / 255.0f),
+        ImVec4(Color_Bg_Default.r / 255.0f, Color_Bg_Default.g / 255.0f, Color_Bg_Default.b / 255.0f, Color_Bg_Default.a / 255.0f),
+        false, true)) 
+    {
+        Color_Background = CVar_GetRGBA("gCheckTrackerBgColor", Color_Bg_Default);
     }
     ImGui::PopItemWidth();
 
@@ -985,11 +960,7 @@ void DrawCheckTrackerOptions(bool& open) {
 void InitCheckTracker() {
     SohImGui::AddWindow("Randomizer", "Check Tracker", DrawCheckTracker, CVar_GetS32("gCheckTrackerEnabled", 0) == 1);
     SohImGui::AddWindow("Randomizer", "Check Tracker Settings", DrawCheckTrackerOptions);
-    float trackerBgR = CVar_GetFloat("gCheckTrackerBgColorR", 0);
-    float trackerBgG = CVar_GetFloat("gCheckTrackerBgColorG", 0);
-    float trackerBgB = CVar_GetFloat("gCheckTrackerBgColorB", 0);
-    float trackerBgA = CVar_GetFloat("gCheckTrackerBgColorA", 1);
-    Color_Background = { trackerBgR, trackerBgG, trackerBgB, trackerBgA }; // Float value, 1 = 255 in rgb value.
+    Color_Background = CVar_GetRGBA("gCheckTrackerBgColor", Color_Bg_Default);
     Color_Area_Incomplete_Main  = CVar_GetRGBA("gCheckTrackerAreaMainIncompleteColor",    Color_Main_Default);
     Color_Area_Incomplete_Extra = CVar_GetRGBA("gCheckTrackerAreaExtraIncompleteColor",   Color_Area_Incomplete_Extra_Default);
     Color_Area_Complete_Main    = CVar_GetRGBA("gCheckTrackerAreaMainCompleteColor",      Color_Main_Default);
