@@ -18,6 +18,8 @@ extern PlayState* gPlayState;
 }
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
+namespace CheckTracker {
+
 void Teardown();
 void InitializeChecks();
 void UpdateChecks();
@@ -825,7 +827,8 @@ static std::set<std::string> rainbowCVars = {
     "gCheckTrackerScummedMainColor",        "gCheckTrackerScummedExtraColor",
     "gCheckTrackerSavedMainColor",          "gCheckTrackerSavedExtraColor",
 };
-static int hue = 0;
+
+int hue = 0;
 void RainbowTick() {
     float freqHue = hue * 2 * M_PI / (360 * CVar_GetFloat("gCosmetics.RainbowSpeed", 0.6f));
     for (auto cvar : rainbowCVars) {
@@ -1035,3 +1038,4 @@ void InitCheckTracker() {
     LocationTable_Init();
 }
 
+} // namespace CheckTracker

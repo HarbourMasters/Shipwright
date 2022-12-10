@@ -447,7 +447,7 @@ extern "C" void InitOTR() {
     InitItemTracker();
     InitEntranceTracker();
     InitStatTracker();
-    InitCheckTracker();
+    CheckTracker::InitCheckTracker();
     OTRExtScanner();
     VanillaItemTable_Init();
 

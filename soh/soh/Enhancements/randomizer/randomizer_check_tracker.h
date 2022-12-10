@@ -1,5 +1,7 @@
 #pragma once
 
+namespace CheckTracker {
+
 // Check tracker check visibility categories
 typedef enum {
     RCSHOW_UNCHECKED,
@@ -27,3 +29,5 @@ typedef enum {
 
 void InitCheckTracker();
 void DrawCheckTracker(bool& open);
+
+} // namespace CheckTracker
