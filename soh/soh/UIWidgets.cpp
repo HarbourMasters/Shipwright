@@ -625,6 +625,7 @@ namespace UIWidgets {
         }
         else
         {
+            flags |= ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreview;
             if (ImGui::ColorEdit4(text, (float*)&ColorRGBA, flags))
             {
                 Color_RGBA8 colors;
