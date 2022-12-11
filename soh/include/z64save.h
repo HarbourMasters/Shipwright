@@ -245,6 +245,7 @@ typedef struct {
     /* 0x1420 */ s16 worldMapArea;
     /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
     /* 0x1424 */ s16 healthAccumulator;
+    /* 0x1426 */ u16 pendingSale;
     // #region SOH [General]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to SoH
     /*        */ uint32_t isMasterQuest;

@@ -457,70 +457,84 @@ namespace GameMenuBar {
                     {
                         UIWidgets::EnhancementCheckbox("Change Red Potion Effect", "gRedPotionEffect");
                         UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Red Potions");
-                        UIWidgets::EnhancementSliderInt("Red Potion Health: %d", "##REDPOTIONHEALTH", "gRedPotionHealth", 1, 100, "", 0, true);
+                        bool disabledRedPotion = !CVar_GetS32("gRedPotionEffect", 0);
+                        const char* disabledTooltipRedPotion = "This option is disabled because \"Change Red Potion Effect\" is turned off";
+                        UIWidgets::EnhancementSliderInt("Red Potion Health: %d", "##REDPOTIONHEALTH", "gRedPotionHealth", 1, 100, "", 0, true, disabledRedPotion, disabledTooltipRedPotion);
                         UIWidgets::Tooltip("Changes the amount of health restored by Red Potions");
-                        UIWidgets::EnhancementCheckbox("Red Potion Percent Restore", "gRedPercentRestore");
+                        UIWidgets::EnhancementCheckbox("Red Potion Percent Restore", "gRedPercentRestore", disabledRedPotion, disabledTooltipRedPotion);
                         UIWidgets::Tooltip("Toggles from Red Potions restoring a fixed amount of health to a percent of the player's current max health");
 
                         ImGui::Separator();
 
                         UIWidgets::EnhancementCheckbox("Change Green Potion Effect", "gGreenPotionEffect");
                         UIWidgets::Tooltip("Enable the following changes to the amount of mana restored by Green Potions");
-                        UIWidgets::EnhancementSliderInt("Green Potion Mana: %d", "##GREENPOTIONMANA", "gGreenPotionMana", 1, 100, "", 0, true);
+                        bool disabledGreenPotion = !CVar_GetS32("gGreenPotionEffect", 0);
+                        const char* disabledTooltipGreenPotion = "This option is disabled because \"Change Green Potion Effect\" is turned off";
+                        UIWidgets::EnhancementSliderInt("Green Potion Mana: %d", "##GREENPOTIONMANA", "gGreenPotionMana", 1, 100, "", 0, true, disabledGreenPotion, disabledTooltipGreenPotion);
                         UIWidgets::Tooltip("Changes the amount of mana restored by Green Potions, base max mana is 48, max upgraded mana is 96");
-                        UIWidgets::EnhancementCheckbox("Green Potion Percent Restore", "gGreenPercentRestore");
+                        UIWidgets::EnhancementCheckbox("Green Potion Percent Restore", "gGreenPercentRestore", disabledGreenPotion, disabledTooltipGreenPotion);
                         UIWidgets::Tooltip("Toggles from Green Potions restoring a fixed amount of mana to a percent of the player's current max mana");
 
                         ImGui::Separator();
 
                         UIWidgets::EnhancementCheckbox("Change Blue Potion Effects", "gBluePotionEffects");
                         UIWidgets::Tooltip("Enable the following changes to the amount of health and mana restored by Blue Potions");
-                        UIWidgets::EnhancementSliderInt("Blue Potion Health: %d", "##BLUEPOTIONHEALTH", "gBluePotionHealth", 1, 100, "", 0, true);
+                        bool disabledBluePotion = !CVar_GetS32("gBluePotionEffects", 0);
+                        const char* disabledTooltipBluePotion = "This option is disabled because \"Change Blue Potion Effects\" is turned off";
+                        UIWidgets::EnhancementSliderInt("Blue Potion Health: %d", "##BLUEPOTIONHEALTH", "gBluePotionHealth", 1, 100, "", 0, true, disabledBluePotion, disabledTooltipBluePotion);
                         UIWidgets::Tooltip("Changes the amount of health restored by Blue Potions");
-                        UIWidgets::EnhancementCheckbox("Blue Potion Health Percent Restore", "gBlueHealthPercentRestore");
+                        UIWidgets::EnhancementCheckbox("Blue Potion Health Percent Restore", "gBlueHealthPercentRestore", disabledBluePotion, disabledTooltipBluePotion);
                         UIWidgets::Tooltip("Toggles from Blue Potions restoring a fixed amount of health to a percent of the player's current max health");
 
                         ImGui::Separator();
 
-                        UIWidgets::EnhancementSliderInt("Blue Potion Mana: %d", "##BLUEPOTIONMANA", "gBluePotionMana", 1, 100, "", 0, true);
+                        UIWidgets::EnhancementSliderInt("Blue Potion Mana: %d", "##BLUEPOTIONMANA", "gBluePotionMana", 1, 100, "", 0, true, disabledBluePotion, disabledTooltipBluePotion);
                         UIWidgets::Tooltip("Changes the amount of mana restored by Blue Potions, base max mana is 48, max upgraded mana is 96");
-                        UIWidgets::EnhancementCheckbox("Blue Potion Mana Percent Restore", "gBlueManaPercentRestore");
+                        UIWidgets::EnhancementCheckbox("Blue Potion Mana Percent Restore", "gBlueManaPercentRestore", disabledBluePotion, disabledTooltipBluePotion);
                         UIWidgets::Tooltip("Toggles from Blue Potions restoring a fixed amount of mana to a percent of the player's current max mana");
 
                         ImGui::Separator();
 
                         UIWidgets::EnhancementCheckbox("Change Milk Effect", "gMilkEffect");
                         UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Milk");
-                        UIWidgets::EnhancementSliderInt("Milk Health: %d", "##MILKHEALTH", "gMilkHealth", 1, 100, "", 0, true);
+                        bool disabledMilk = !CVar_GetS32("gMilkEffect", 0);
+                        const char* disabledTooltipMilk = "This option is disabled because \"Change Milk Effect\" is turned off";
+                        UIWidgets::EnhancementSliderInt("Milk Health: %d", "##MILKHEALTH", "gMilkHealth", 1, 100, "", 0, true, disabledMilk, disabledTooltipMilk);
                         UIWidgets::Tooltip("Changes the amount of health restored by Milk");
-                        UIWidgets::EnhancementCheckbox("Milk Percent Restore", "gMilkPercentRestore");
+                        UIWidgets::EnhancementCheckbox("Milk Percent Restore", "gMilkPercentRestore", disabledMilk, disabledTooltipMilk);
                         UIWidgets::Tooltip("Toggles from Milk restoring a fixed amount of health to a percent of the player's current max health");
 
                         ImGui::Separator();
 
-                        UIWidgets::EnhancementCheckbox("Separate Half Milk Effect", "gSeparateHalfMilkEffect");
+                        UIWidgets::EnhancementCheckbox("Separate Half Milk Effect", "gSeparateHalfMilkEffect", disabledMilk, disabledTooltipMilk);
                         UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Half Milk\nIf this is disabled, Half Milk will behave the same as Full Milk.");
-                        UIWidgets::EnhancementSliderInt("Half Milk Health: %d", "##HALFMILKHEALTH", "gHalfMilkHealth", 1, 100, "", 0, true);
+                        bool disabledHalfMilk = disabledMilk || !CVar_GetS32("gSeparateHalfMilkEffect", 0);
+                        const char* disabledTooltipHalfMilk = "This option is disabled because \"Separate Half Milk Effect\" is turned off";
+                        UIWidgets::EnhancementSliderInt("Half Milk Health: %d", "##HALFMILKHEALTH", "gHalfMilkHealth", 1, 100, "", 0, true, disabledHalfMilk, disabledTooltipHalfMilk);
                         UIWidgets::Tooltip("Changes the amount of health restored by Half Milk");
-                        UIWidgets::EnhancementCheckbox("Half Milk Percent Restore", "gHalfMilkPercentRestore");
+                        UIWidgets::EnhancementCheckbox("Half Milk Percent Restore", "gHalfMilkPercentRestore", disabledHalfMilk, disabledTooltipHalfMilk);
                         UIWidgets::Tooltip("Toggles from Half Milk restoring a fixed amount of health to a percent of the player's current max health");
 
                         ImGui::Separator();
 
                         UIWidgets::EnhancementCheckbox("Change Fairy Effect", "gFairyEffect");
                         UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Fairies");
-                        UIWidgets::EnhancementSliderInt("Fairy: %d", "##FAIRYHEALTH", "gFairyHealth", 1, 100, "", 0, true);
+                        bool disabledFairy = !CVar_GetS32("gFairyEffect", 0);
+                        const char* disabledTooltipFairy = "This option is disabled because \"Change Fairy Effect\" is turned off";
+                        UIWidgets::EnhancementSliderInt("Fairy: %d", "##FAIRYHEALTH", "gFairyHealth", 1, 100, "", 0, true, disabledFairy, disabledTooltipFairy);
                         UIWidgets::Tooltip("Changes the amount of health restored by Fairies");
-                        UIWidgets::EnhancementCheckbox("Fairy Percent Restore", "gFairyPercentRestore");
+                        UIWidgets::EnhancementCheckbox("Fairy Percent Restore", "gFairyPercentRestore", disabledFairy, disabledTooltipFairy);
                         UIWidgets::Tooltip("Toggles from Fairies restoring a fixed amount of health to a percent of the player's current max health");
 
                         ImGui::Separator();
 
                         UIWidgets::EnhancementCheckbox("Change Fairy Revive Effect", "gFairyReviveEffect");
                         UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Fairy Revivals");
-                        UIWidgets::EnhancementSliderInt("Fairy Revival: %d", "##FAIRYREVIVEHEALTH", "gFairyReviveHealth", 1, 100, "", 0, true);
+                        bool disabledFairyRevive = !CVar_GetS32("gFairyReviveEffect", 0);
+                        const char* disabledTooltipFairyRevive = "This option is disabled because \"Change Fairy Revive Effect\" is turned off";
+                        UIWidgets::EnhancementSliderInt("Fairy Revival: %d", "##FAIRYREVIVEHEALTH", "gFairyReviveHealth", 1, 100, "", 0, true, disabledFairyRevive, disabledTooltipFairyRevive);
                         UIWidgets::Tooltip("Changes the amount of health restored by Fairy Revivals");
-                        UIWidgets::EnhancementCheckbox("Fairy Revive Percent Restore", "gFairyRevivePercentRestore");
+                        UIWidgets::EnhancementCheckbox("Fairy Revive Percent Restore", "gFairyRevivePercentRestore", disabledFairyRevive, disabledTooltipFairyRevive);
                         UIWidgets::Tooltip("Toggles from Fairy Revivals restoring a fixed amount of health to a percent of the player's current max health");
 
                         ImGui::EndMenu();

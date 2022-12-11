@@ -196,13 +196,13 @@ namespace UIWidgets {
         return pressed;
     }
 
-    bool EnhancementCheckbox(const char* text, const char* cvarName, bool disabled, const char* disabledTooltipText, CheckboxGraphics disabledGraphic) {
+    bool EnhancementCheckbox(const char* text, const char* cvarName, bool disabled, const char* disabledTooltipText, CheckboxGraphics disabledGraphic, bool defaultValue) {
         bool changed = false;
         if (disabled) {
             ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
             ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
         }
-        bool val = (bool)CVar_GetS32(cvarName, 0);
+        bool val = (bool)CVar_GetS32(cvarName, defaultValue);
         if (CustomCheckbox(text, &val, disabled, disabledGraphic)) {
             CVar_SetS32(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
@@ -219,11 +219,11 @@ namespace UIWidgets {
         return changed;
     }
 
-    bool PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText, CheckboxGraphics disabledGraphic) {
+    bool PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText, CheckboxGraphics disabledGraphic, bool defaultValue) {
         bool changed = false;
         if (padTop) Spacer(0);
 
-        if (EnhancementCheckbox(text, cvarName, disabled, disabledTooltipText, disabledGraphic)) {
+        if (EnhancementCheckbox(text, cvarName, disabled, disabledTooltipText, disabledGraphic, defaultValue)) {
             changed = true;
         }
 

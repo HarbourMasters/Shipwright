@@ -1087,6 +1087,10 @@ void Play_Update(PlayState* play) {
                 // Gameplay stat tracking
                 if (!gSaveContext.sohStats.gameComplete) {
                       gSaveContext.sohStats.playTimer++;
+
+                      if (CVar_GetS32("gMMBunnyHood", 0) && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
+                          gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD]++;
+                      }
                 }
 
                 func_800AA178(1);

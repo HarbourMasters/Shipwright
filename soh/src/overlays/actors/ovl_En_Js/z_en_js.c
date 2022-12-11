@@ -131,13 +131,14 @@ void func_80A89160(EnJs* this, PlayState* play) {
     } else {
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF && 
             !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)) {
-            GiveItemEntryFromActor(&this->actor, play,
-                Randomizer_GetItemFromKnownCheck(RC_WASTELAND_BOMBCHU_SALESMAN, GI_BOMBCHUS_10), 90.0f, 10.0f);
-                Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
+            GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_WASTELAND_BOMBCHU_SALESMAN, GI_BOMBCHUS_10);
+            gSaveContext.pendingSale = itemEntry.itemId;
+            GiveItemEntryFromActor(&this->actor, play, itemEntry, 90.0f, 10.0f);
+            Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
         } else {
-        func_8002F434(&this->actor, play, GI_BOMBCHUS_10, 10000.0f, 50.0f);
+            gSaveContext.pendingSale = ItemTable_Retrieve(GI_BOMBCHUS_10).itemId;
+            func_8002F434(&this->actor, play, GI_BOMBCHUS_10, 10000.0f, 50.0f);
         }
-
     }
 }
 
