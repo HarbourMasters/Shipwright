@@ -103,6 +103,7 @@ void func_80AACA94(EnMk* this, PlayState* play) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_FROG);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
+            Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
         } else {
             s32 getItemID = GI_EYEDROPS;
             func_8002F434(&this->actor, play, getItemID, 10000.0f, 50.0f);
@@ -117,6 +118,7 @@ void func_80AACB14(EnMk* this, PlayState* play) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_FROG);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
+            Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
         } else {
             s32 getItemID = GI_EYEDROPS;
             func_8002F434(&this->actor, play, getItemID, 10000.0f, 50.0f);

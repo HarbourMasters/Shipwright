@@ -66,6 +66,7 @@ typedef enum {
     RCAREA_ICE_CAVERN,
     RCAREA_GERUDO_TRAINING_GROUND,
     RCAREA_GANONS_CASTLE,
+    //If adding any more areas, Check Tracker will need a refactor
     RCAREA_INVALID
 } RandomizerCheckArea;
 
@@ -94,5 +95,7 @@ namespace RandomizerCheckObjects {
     std::string GetRCAreaName(RandomizerCheckArea area);
     std::map<RandomizerCheck, RandomizerCheckObject> GetAllRCObjects();
     std::map<RandomizerCheckArea, std::map<RandomizerCheck, RandomizerCheckObject>> GetAllRCObjectsByArea();
+    std::map<SceneID, RandomizerCheckArea> GetAllRCAreaBySceneID();
+    RandomizerCheckArea GetRCAreaBySceneID(SceneID sceneId);
     void UpdateImGuiVisibility();
 }
