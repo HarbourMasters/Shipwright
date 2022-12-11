@@ -59,7 +59,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gInvertXAxis",
     "gInvertYAxis",
     "gRightStickAiming",
-    "gDisableAutoCenterView",
+    "gDisableAutoCenterViewFirstPerson",
     "gTextSpeed",
     "gMweepSpeed",
     "gForgeTime",
