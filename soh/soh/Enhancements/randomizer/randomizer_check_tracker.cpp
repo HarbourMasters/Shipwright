@@ -950,10 +950,8 @@ void DrawCheckTrackerOptions(bool& open) {
     ImGui::TableHeadersRow();
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
-    ImGui::Text("BG Color");
-    ImGui::SameLine();
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-    if (UIWidgets::EnhancementColor("BG Color##gCheckTrackerBgColor", "gCheckTrackerBgColor",
+    if (UIWidgets::EnhancementColor("BG Color", "gCheckTrackerBgColor",
         ImVec4(Color_Background.r / 255.0f, Color_Background.g / 255.0f, Color_Background.b / 255.0f, Color_Background.a / 255.0f),
         ImVec4(Color_Bg_Default.r / 255.0f, Color_Bg_Default.g / 255.0f, Color_Bg_Default.b / 255.0f, Color_Bg_Default.a / 255.0f),
         false, true))
