@@ -149,8 +149,8 @@ extern "C" void OTRMessage_Init()
         {
             TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
             "You look bored. Wanna go out for a&walk?\x1B&%gYes&No%w",
-            "Du siehst gelangweilt aus.&Willst du einen Spaziergang machen?\x1B&%gJa&Nein%w",
-            "Tu as l'air de t'ennuyer. Tu veux&aller faire une promenade?\x1B&%gOui&Non%w",
+            "Du siehst gelangweilt aus.&Willst du einen Spaziergang machen?\x1B&%gJa&Nein%w", //TODO: AI translated, replace with actual translation
+            "Tu as l'air de t'ennuyer. Tu veux&aller faire une promenade?\x1B&%gOui&Non%w", //TODO: AI translated, replace with actual translation
         }
     );
 }
