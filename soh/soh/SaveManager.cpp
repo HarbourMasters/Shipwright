@@ -1822,6 +1822,6 @@ extern "C" void Save_DeleteFile(int fileNum) {
     Ship::ExecuteHooks<Ship::DeleteFile>(fileNum);
 }
 
-extern "C" bool Save_Exist(int fileNum) {
+extern "C" u32 Save_Exist(int fileNum) {
     return SaveManager::Instance->SaveFile_Exist(fileNum);
 }
