@@ -351,7 +351,7 @@ void EnHeishi4_MarketSneak(EnHeishi4* this, PlayState* play) {
         switch (play->msgCtx.choiceIndex) {
             case 0: //yes
                 if (gSaveContext.n64ddFlag){
-                    play->nextEntranceIndex = Entrance_OverrideNextIndex(play->nextEntranceIndex);
+                    play->nextEntranceIndex = Entrance_OverrideNextIndex(0xCD);
                 } else {
                     play->nextEntranceIndex = 0xCD;
                 } 
