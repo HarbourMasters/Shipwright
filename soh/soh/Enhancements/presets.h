@@ -526,6 +526,8 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Allow the cursor to be on any slot
     PRESET_ENTRY_S32("gPauseAnyCursor", 1),
 
+    // Customize Fishing Behaviour
+    PRESET_ENTRY_S32("gCustomizeFishing", 1),
     // Guarantee Bite
     PRESET_ENTRY_S32("gGuaranteeFishingBite", 1),
     // Fish Never Escape
