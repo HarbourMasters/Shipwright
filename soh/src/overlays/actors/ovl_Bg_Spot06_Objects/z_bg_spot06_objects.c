@@ -213,7 +213,7 @@ void BgSpot06Objects_Destroy(Actor* thisx, PlayState* play) {
     if (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
         // For randomizer when leaving lake hylia while the water level is lowered,
         // reset the "raise lake hylia water" flag back to on if the water temple is cleared
-        gSaveContext.eventChkInf[6] |= 0x200;
+        Flags_SetEventChkInf(0x69);
     }
 
     actionCounter = 0;
@@ -488,7 +488,7 @@ void BgSpot06Objects_Update(Actor* thisx, PlayState* play) {
     }
 
     // Detect when the switch is pressed
-    if (prevSwitchState != ((play->actorCtx.flags.tempSwch & (0x40 << 24)) != 0)) {
+    if (prevSwitchState != (Flags_GetSwitch(play, 0x3E) != 0)) {
         prevSwitchState = !prevSwitchState;
         switchPressed = 1;
     }
@@ -591,7 +591,7 @@ void BgSpot06Objects_WaterPlaneCutsceneRise(BgSpot06Objects* this, PlayState* pl
         // On rando, this is used with the water control system switch to finalize raising the water
         if (gSaveContext.n64ddFlag) {
             this->lakeHyliaWaterLevel = 0;
-            gSaveContext.eventChkInf[6] |= 0x200; // Set the "raise lake hylia water" flag
+            Flags_SetEventChkInf(0x69); // Set the "raise lake hylia water" flag
             play->roomCtx.unk_74[0] = 0; // Apply the moving under water texture to lake hylia ground
         }
     } else {
