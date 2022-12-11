@@ -350,7 +350,11 @@ void EnHeishi4_MarketSneak(EnHeishi4* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         switch (play->msgCtx.choiceIndex) {
             case 0: //yes
-                play->nextEntranceIndex = 0xCD;
+                if (gSaveContext.n64ddFlag){
+                    play->nextEntranceIndex = Entrance_OverrideNextIndex(play->nextEntranceIndex);
+                } else {
+                    play->nextEntranceIndex = 0xCD;
+                } 
                 play->sceneLoadFlag = 0x14;
                 play->fadeTransition = 0x2E;
                 gSaveContext.nextTransitionType = 0x2E;
