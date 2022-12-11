@@ -291,6 +291,7 @@ namespace GameMenuBar {
             UIWidgets::Spacer(0);
 
             if (ImGui::BeginMenu("Languages")) {
+                UIWidgets::PaddedEnhancementCheckbox("Translate Title Screen", "gTitleScreenTranslation");
                 UIWidgets::EnhancementRadioButton("English", "gLanguages", LANGUAGE_ENG);
                 UIWidgets::EnhancementRadioButton("German", "gLanguages", LANGUAGE_GER);
                 UIWidgets::EnhancementRadioButton("French", "gLanguages", LANGUAGE_FRA);
