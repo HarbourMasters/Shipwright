@@ -49,8 +49,8 @@ std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
 
     RC_OBJECT(RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST,                              RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LOST_WOODS,             ACTOR_EN_BOX,       SCENE_KAKUSIANA,                      22964,                       GI_RUPEE_BLUE,       "Near Shortcuts Grotto Chest", "LW Near Shortcuts Grotto Chest"),
     RC_OBJECT(RC_LW_SKULL_KID,                                                RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LOST_WOODS,             ACTOR_ID_MAX,       SCENE_SPOT10,                         0x00,                        GI_NONE,             "Skull Kid", "LW Skull Kid"),
-    RC_OBJECT(RC_LW_TRADE_COJIRO,                                             RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LOST_WOODS,             ACTOR_ID_MAX,       SCENE_SPOT10,                         0x00,                        GI_NONE,             "Trade Cojiro", "LW Trade Cojiro"),
-    RC_OBJECT(RC_LW_TRADE_ODD_POTION,                                         RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LOST_WOODS,             ACTOR_ID_MAX,       SCENE_SPOT10,                         0x00,                        GI_NONE,             "Trade Odd Potion", "LW Trade Odd Potion"),
+    RC_OBJECT(RC_LW_TRADE_COJIRO,                                             RCVORMQ_BOTH,    RCTYPE_ADULT_TRADE,  RCAREA_LOST_WOODS,             ACTOR_ID_MAX,       SCENE_SPOT10,                         0x00,                        GI_NONE,             "Trade Cojiro", "LW Trade Cojiro"),
+    RC_OBJECT(RC_LW_TRADE_ODD_POTION,                                         RCVORMQ_BOTH,    RCTYPE_ADULT_TRADE,  RCAREA_LOST_WOODS,             ACTOR_ID_MAX,       SCENE_SPOT10,                         0x00,                        GI_NONE,             "Trade Odd Potion", "LW Trade Odd Potion"),
     RC_OBJECT(RC_LW_OCARINA_MEMORY_GAME,                                      RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LOST_WOODS,             ACTOR_ID_MAX,       SCENE_SPOT10,                         0x00,                        GI_NONE,             "Ocarina Memory Game", "LW Ocarina Memory Game"),
     RC_OBJECT(RC_LW_TARGET_IN_WOODS,                                          RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LOST_WOODS,             ACTOR_ID_MAX,       SCENE_SPOT10,                         0x00,                        GI_NONE,             "Target in Woods", "LW Target in Woods"),
     RC_OBJECT(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT,                       RCVORMQ_BOTH,    RCTYPE_SCRUB,        RCAREA_LOST_WOODS,             ACTOR_EN_DNS,       SCENE_SPOT10,                         0x00,                        GI_NUTS_5_2,         "Deku Scrub Near Deku Theater Right", "LW Deku Scrub Near Deku Theater Right"),
@@ -98,7 +98,7 @@ std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
     RC_OBJECT(RC_LH_CHILD_FISHING,                                            RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LAKE_HYLIA,             ACTOR_ID_MAX,       SCENE_TURIBORI,                       0x00,                        GI_NONE,             "Child Fishing", "LH Child Fishing"),
     RC_OBJECT(RC_LH_ADULT_FISHING,                                            RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LAKE_HYLIA,             ACTOR_ID_MAX,       SCENE_TURIBORI,                       0x00,                        GI_NONE,             "Adult Fishing", "LH Adult Fishing"),
     RC_OBJECT(RC_LH_LAB_DIVE,                                                 RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LAKE_HYLIA,             ACTOR_ID_MAX,       SCENE_HYLIA_LABO,                     0x00,                        GI_NONE,             "Lab Dive", "LH Lab Dive"),
-    RC_OBJECT(RC_LH_TRADE_FROG,                                               RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LAKE_HYLIA,             ACTOR_ID_MAX,       SCENE_HYLIA_LABO,                     0x00,                        GI_NONE,             "Lab Trade Eyeball Frog", "LH Lab Trade Eyeball Frog"),
+    RC_OBJECT(RC_LH_TRADE_FROG,                                               RCVORMQ_BOTH,    RCTYPE_ADULT_TRADE,  RCAREA_LAKE_HYLIA,             ACTOR_ID_MAX,       SCENE_HYLIA_LABO,                     0x00,                        GI_NONE,             "Lab Trade Eyeball Frog", "LH Lab Trade Eyeball Frog"),
     RC_OBJECT(RC_LH_UNDERWATER_ITEM,                                          RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LAKE_HYLIA,             ACTOR_ID_MAX,       SCENE_SPOT06,                         0x00,                        GI_NONE,             "Underwater Item", "LH Underwater Item"),
     RC_OBJECT(RC_LH_SUN,                                                      RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LAKE_HYLIA,             ACTOR_ID_MAX,       SCENE_SPOT06,                         0x00,                        GI_NONE,             "Sun", "LH Sun"),
     RC_OBJECT(RC_LH_FREESTANDING_POH,                                         RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LAKE_HYLIA,             ACTOR_EN_ITEM00,    SCENE_SPOT06,                         7686,                        GI_HEART_PIECE,      "Freestanding PoH", "LH Freestanding PoH"),
@@ -116,7 +116,7 @@ std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
 
 
     RC_OBJECT(RC_GV_CHEST,                                                    RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_GERUDO_VALLEY,          ACTOR_EN_BOX,       SCENE_SPOT09,                         23200,                       GI_RUPEE_PURPLE,     "Chest", "GV Chest"),
-    RC_OBJECT(RC_GV_TRADE_SAW,                                                RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_GERUDO_VALLEY,          ACTOR_ID_MAX,       SCENE_SPOT09,                         0x00,                        GI_NONE,             "Trade Saw", "GV Trade Saw"),
+    RC_OBJECT(RC_GV_TRADE_SAW,                                                RCVORMQ_BOTH,    RCTYPE_ADULT_TRADE,  RCAREA_GERUDO_VALLEY,          ACTOR_ID_MAX,       SCENE_SPOT09,                         0x00,                        GI_NONE,             "Trade Saw", "GV Trade Saw"),
     RC_OBJECT(RC_GV_WATERFALL_FREESTANDING_POH,                               RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_GERUDO_VALLEY,          ACTOR_EN_ITEM00,    SCENE_SPOT09,                         262,                         GI_HEART_PIECE,      "Waterfall Freestanding PoH", "GV Waterfall Freestanding PoH"),
     RC_OBJECT(RC_GV_CRATE_FREESTANDING_POH,                                   RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_GERUDO_VALLEY,          ACTOR_EN_ITEM00,    SCENE_SPOT09,                         518,                         GI_HEART_PIECE,      "Crate Freestanding PoH", "GV Crate Freestanding PoH"),
     RC_OBJECT(RC_GV_DEKU_SCRUB_GROTTO_REAR,                                   RCVORMQ_BOTH,    RCTYPE_SCRUB,        RCAREA_GERUDO_VALLEY,          ACTOR_EN_DNS,       SCENE_KAKUSIANA,                      TWO_ACTOR_PARAMS(0x07,0xF0), GI_POTION_RED,       "Deku Scrub Grotto Rear", "GV Deku Scrub Grotto Rear"),
@@ -133,10 +133,10 @@ std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
     RC_OBJECT(RC_GF_HBA_1000_POINTS,                                          RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_GERUDO_FORTRESS,        ACTOR_ID_MAX,       SCENE_SPOT12,                         0x00,                        GI_NONE,             "GF HBA 1000 Points", "GF HBA 1000 Points"),
     RC_OBJECT(RC_GF_HBA_1500_POINTS,                                          RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_GERUDO_FORTRESS,        ACTOR_ID_MAX,       SCENE_SPOT12,                         0x00,                        GI_NONE,             "GF HBA 1500 Points", "GF HBA 1500 Points"),
     RC_OBJECT(RC_GF_GERUDO_MEMBERSHIP_CARD,                                   RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_GERUDO_FORTRESS,        ACTOR_ID_MAX,       SCENE_GERUDOWAY,                      0x00,                        GI_NONE,             "GF Gerudo Membership Card", "GF Gerudo Membership Card"),
-    RC_OBJECT(RC_GF_NORTH_F1_CARPENTER,                                       RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_GERUDO_FORTRESS,        ACTOR_EN_ITEM00,    SCENE_GERUDOWAY,                      3089,                        GI_KEY_SMALL,        "GF North F1 Carpenter", "GF North F1 Carpenter"),
-    RC_OBJECT(RC_GF_NORTH_F2_CARPENTER,                                       RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_GERUDO_FORTRESS,        ACTOR_EN_ITEM00,    SCENE_GERUDOWAY,                      2577,                        GI_KEY_SMALL,        "GF North F2 Carpenter", "GF North F2 Carpenter"),
-    RC_OBJECT(RC_GF_SOUTH_F1_CARPENTER,                                       RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_GERUDO_FORTRESS,        ACTOR_EN_ITEM00,    SCENE_GERUDOWAY,                      3601,                        GI_KEY_SMALL,        "GF South F1 Carpenter", "GF South F1 Carpenter"),
-    RC_OBJECT(RC_GF_SOUTH_F2_CARPENTER,                                       RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_GERUDO_FORTRESS,        ACTOR_EN_ITEM00,    SCENE_GERUDOWAY,                      3857,                        GI_KEY_SMALL,        "GF South F2 Carpenter", "GF South F2 Carpenter"),
+    RC_OBJECT(RC_GF_NORTH_F1_CARPENTER,                                       RCVORMQ_BOTH,    RCTYPE_GF_KEY,       RCAREA_GERUDO_FORTRESS,        ACTOR_EN_ITEM00,    SCENE_GERUDOWAY,                      3089,                        GI_KEY_SMALL,        "GF North F1 Carpenter", "GF North F1 Carpenter"),
+    RC_OBJECT(RC_GF_NORTH_F2_CARPENTER,                                       RCVORMQ_BOTH,    RCTYPE_GF_KEY,       RCAREA_GERUDO_FORTRESS,        ACTOR_EN_ITEM00,    SCENE_GERUDOWAY,                      2577,                        GI_KEY_SMALL,        "GF North F2 Carpenter", "GF North F2 Carpenter"),
+    RC_OBJECT(RC_GF_SOUTH_F1_CARPENTER,                                       RCVORMQ_BOTH,    RCTYPE_GF_KEY,       RCAREA_GERUDO_FORTRESS,        ACTOR_EN_ITEM00,    SCENE_GERUDOWAY,                      3601,                        GI_KEY_SMALL,        "GF South F1 Carpenter", "GF South F1 Carpenter"),
+    RC_OBJECT(RC_GF_SOUTH_F2_CARPENTER,                                       RCVORMQ_BOTH,    RCTYPE_GF_KEY,       RCAREA_GERUDO_FORTRESS,        ACTOR_EN_ITEM00,    SCENE_GERUDOWAY,                      3857,                        GI_KEY_SMALL,        "GF South F2 Carpenter", "GF South F2 Carpenter"),
     RC_OBJECT(RC_GF_GS_ARCHERY_RANGE,                                         RCVORMQ_BOTH,    RCTYPE_SKULL_TOKEN,  RCAREA_GERUDO_FORTRESS,        ACTOR_EN_SI,        SCENE_SPOT12,                         21505,                       GI_SKULL_TOKEN,      "GS Archery Range", "GF GS Archery Range"),
     RC_OBJECT(RC_GF_GS_TOP_FLOOR,                                             RCVORMQ_BOTH,    RCTYPE_SKULL_TOKEN,  RCAREA_GERUDO_FORTRESS,        ACTOR_EN_SI,        SCENE_SPOT12,                         21506,                       GI_SKULL_TOKEN,      "GS Top Floor", "GF GS Top Floor"),
 
@@ -224,10 +224,10 @@ std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
     RC_OBJECT(RC_KAK_100_GOLD_SKULLTULA_REWARD,                               RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_KAKARIKO_VILLAGE,       ACTOR_ID_MAX,       SCENE_KINSUTA,                        0x00,                        GI_NONE,             "100 Gold Skulltula Reward", "Kak 100 Gold Skulltula Reward"),
     RC_OBJECT(RC_KAK_MAN_ON_ROOF,                                             RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_KAKARIKO_VILLAGE,       ACTOR_ID_MAX,       SCENE_SPOT01,                         0x00,                        GI_NONE,             "Man on Roof", "Kak Man on Roof"),
     RC_OBJECT(RC_KAK_SHOOTING_GALLERY_REWARD,                                 RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_KAKARIKO_VILLAGE,       ACTOR_ID_MAX,       SCENE_SYATEKIJYOU,                    0x00,                        GI_NONE,             "Shooting Gallery Reward", "Kak Shooting Gallery Reward"),
-    RC_OBJECT(RC_KAK_TRADE_ODD_MUSHROOM,                                      RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_KAKARIKO_VILLAGE,       ACTOR_ID_MAX,       SCENE_MAHOUYA,                        0x00,                        GI_NONE,             "Trade Odd Mushroom", "Kak Trade Odd Mushroom"),
-    RC_OBJECT(RC_KAK_ANJU_AS_ADULT,                                           RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_KAKARIKO_VILLAGE,       ACTOR_ID_MAX,       SCENE_SPOT01,                         0x00,                        GI_NONE,             "Anju as Adult", "Kak Anju as Adult"),
+    RC_OBJECT(RC_KAK_TRADE_ODD_MUSHROOM,                                      RCVORMQ_BOTH,    RCTYPE_ADULT_TRADE,  RCAREA_KAKARIKO_VILLAGE,       ACTOR_ID_MAX,       SCENE_MAHOUYA,                        0x00,                        GI_NONE,             "Trade Odd Mushroom", "Kak Trade Odd Mushroom"),
+    RC_OBJECT(RC_KAK_ANJU_AS_ADULT,                                           RCVORMQ_BOTH,    RCTYPE_ADULT_TRADE,  RCAREA_KAKARIKO_VILLAGE,       ACTOR_ID_MAX,       SCENE_SPOT01,                         0x00,                        GI_NONE,             "Anju as Adult", "Kak Anju as Adult"),
     RC_OBJECT(RC_KAK_ANJU_AS_CHILD,                                           RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_KAKARIKO_VILLAGE,       ACTOR_ID_MAX,       SCENE_SPOT01,                         0x00,                        GI_NONE,             "Anju as Child", "Kak Anju as Child"),
-    RC_OBJECT(RC_KAK_TRADE_POCKET_CUCCO,                                      RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_KAKARIKO_VILLAGE,       ACTOR_ID_MAX,       SCENE_SPOT01,                         0x00,                        GI_NONE,             "Trade Pocket Cucco", "Kak Trade Pocket Cucco"),
+    RC_OBJECT(RC_KAK_TRADE_POCKET_CUCCO,                                      RCVORMQ_BOTH,    RCTYPE_ADULT_TRADE,  RCAREA_KAKARIKO_VILLAGE,       ACTOR_ID_MAX,       SCENE_SPOT01,                         0x00,                        GI_NONE,             "Trade Pocket Cucco", "Kak Trade Pocket Cucco"),
     RC_OBJECT(RC_KAK_IMPAS_HOUSE_FREESTANDING_POH,                            RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_KAKARIKO_VILLAGE,       ACTOR_EN_ITEM00,    SCENE_LABO,                           262,                         GI_HEART_PIECE,      "Impas House Freestanding PoH", "Kak Impas House Freestanding PoH"),
     RC_OBJECT(RC_KAK_WINDMILL_FREESTANDING_POH,                               RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_KAKARIKO_VILLAGE,       ACTOR_EN_ITEM00,    SCENE_HAKASITARELAY,                  262,                         GI_HEART_PIECE,      "Windmill Freestanding PoH", "Kak Windmill Freestanding PoH"),
     RC_OBJECT(RC_KAK_GS_HOUSE_UNDER_CONSTRUCTION,                             RCVORMQ_BOTH,    RCTYPE_SKULL_TOKEN,  RCAREA_KAKARIKO_VILLAGE,       ACTOR_EN_SI,        SCENE_SPOT01,                         20488,                       GI_SKULL_TOKEN,      "GS House Under Construction", "Kak GS House Under Construction"),
@@ -273,9 +273,9 @@ std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
 
     RC_OBJECT(RC_DMT_CHEST,                                                   RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_DEATH_MOUNTAIN_TRAIL,   ACTOR_EN_BOX,       SCENE_SPOT16,                         23201,                       GI_RUPEE_PURPLE,     "Chest", "DMT Chest"),
     RC_OBJECT(RC_DMT_STORMS_GROTTO_CHEST,                                     RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_DEATH_MOUNTAIN_TRAIL,   ACTOR_EN_BOX,       SCENE_KAKUSIANA,                      23255,                       GI_RUPEE_GOLD,       "Storms Grotto Chest", "DMT Storms Grotto Chest"),
-    RC_OBJECT(RC_DMT_TRADE_BROKEN_SWORD,                                      RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_DEATH_MOUNTAIN_TRAIL,   ACTOR_ID_MAX,       SCENE_SPOT16,                         0x00,                        GI_NONE,             "Trade Broken Sword", "DMT Trade Broken Sword"),
-    RC_OBJECT(RC_DMT_TRADE_EYEDROPS,                                          RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_DEATH_MOUNTAIN_TRAIL,   ACTOR_ID_MAX,       SCENE_SPOT16,                         0x00,                        GI_NONE,             "Trade Eyedrops", "DMT Trade Eyedrops"),
-    RC_OBJECT(RC_DMT_TRADE_CLAIM_CHECK,                                       RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_DEATH_MOUNTAIN_TRAIL,   ACTOR_ID_MAX,       SCENE_SPOT16,                         0x00,                        GI_NONE,             "Trade Claim Check", "DMT Trade Claim Check"),
+    RC_OBJECT(RC_DMT_TRADE_BROKEN_SWORD,                                      RCVORMQ_BOTH,    RCTYPE_ADULT_TRADE,  RCAREA_DEATH_MOUNTAIN_TRAIL,   ACTOR_ID_MAX,       SCENE_SPOT16,                         0x00,                        GI_NONE,             "Trade Broken Sword", "DMT Trade Broken Sword"),
+    RC_OBJECT(RC_DMT_TRADE_EYEDROPS,                                          RCVORMQ_BOTH,    RCTYPE_ADULT_TRADE,  RCAREA_DEATH_MOUNTAIN_TRAIL,   ACTOR_ID_MAX,       SCENE_SPOT16,                         0x00,                        GI_NONE,             "Trade Eyedrops", "DMT Trade Eyedrops"),
+    RC_OBJECT(RC_DMT_TRADE_CLAIM_CHECK,                                       RCVORMQ_BOTH,    RCTYPE_ADULT_TRADE,  RCAREA_DEATH_MOUNTAIN_TRAIL,   ACTOR_ID_MAX,       SCENE_SPOT16,                         0x00,                        GI_NONE,             "Trade Claim Check", "DMT Trade Claim Check"),
     RC_OBJECT(RC_DMT_FREESTANDING_POH,                                        RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_DEATH_MOUNTAIN_TRAIL,   ACTOR_EN_ITEM00,    SCENE_SPOT16,                         7686,                        GI_HEART_PIECE,      "Freestanding PoH", "DMT Freestanding PoH"),
     RC_OBJECT(RC_DMT_GS_BEAN_PATCH,                                           RCVORMQ_BOTH,    RCTYPE_SKULL_TOKEN,  RCAREA_DEATH_MOUNTAIN_TRAIL,   ACTOR_EN_SI,        SCENE_SPOT16,                         28418,                       GI_SKULL_TOKEN,      "GS Bean Patch", "DMT GS Bean Patch"),
     RC_OBJECT(RC_DMT_GS_NEAR_KAK,                                             RCVORMQ_BOTH,    RCTYPE_SKULL_TOKEN,  RCAREA_DEATH_MOUNTAIN_TRAIL,   ACTOR_EN_SI,        SCENE_SPOT16,                         12036,                       GI_SKULL_TOKEN,      "GS Near Kak", "DMT GS Near Kak"),
@@ -352,7 +352,7 @@ std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
     RC_OBJECT(RC_ZD_CHEST,                                                    RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_ZORAS_DOMAIN,           ACTOR_EN_BOX,       SCENE_SPOT07,                         -18496,                      GI_HEART_PIECE,      "Chest", "ZD Chest"),
     RC_OBJECT(RC_ZD_DIVING_MINIGAME,                                          RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_ZORAS_DOMAIN,           ACTOR_ID_MAX,       SCENE_SPOT07,                         0x00,                        GI_NONE,             "Diving Minigame", "ZD Diving Minigame"),
     RC_OBJECT(RC_ZD_KING_ZORA_THAWED,                                         RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_ZORAS_DOMAIN,           ACTOR_ID_MAX,       SCENE_SPOT07,                         0x00,                        GI_NONE,             "King Zora Thawed", "ZD King Zora Thawed"),
-    RC_OBJECT(RC_ZD_TRADE_PRESCRIPTION,                                       RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_ZORAS_DOMAIN,           ACTOR_ID_MAX,       SCENE_SPOT07,                         0x00,                        GI_NONE,             "Trade Prescription", "ZD Trade Prescription"),
+    RC_OBJECT(RC_ZD_TRADE_PRESCRIPTION,                                       RCVORMQ_BOTH,    RCTYPE_ADULT_TRADE,  RCAREA_ZORAS_DOMAIN,           ACTOR_ID_MAX,       SCENE_SPOT07,                         0x00,                        GI_NONE,             "Trade Prescription", "ZD Trade Prescription"),
     RC_OBJECT(RC_ZD_GS_FROZEN_WATERFALL,                                      RCVORMQ_BOTH,    RCTYPE_SKULL_TOKEN,  RCAREA_ZORAS_DOMAIN,           ACTOR_EN_SI,        SCENE_SPOT07,                         20800,                       GI_SKULL_TOKEN,      "GS Frozen Waterfall", "ZD GS Frozen Waterfall"),
     RC_OBJECT(RC_ZD_SHOP_ITEM_1,                                              RCVORMQ_BOTH,    RCTYPE_SHOP,         RCAREA_ZORAS_DOMAIN,           ACTOR_EN_GIRLA,     SCENE_ZOORA,                          0x00,                        GI_TUNIC_ZORA,       "Shop Item 1", "ZD Shop Item 1"),
     RC_OBJECT(RC_ZD_SHOP_ITEM_2,                                              RCVORMQ_BOTH,    RCTYPE_SHOP,         RCAREA_ZORAS_DOMAIN,           ACTOR_EN_GIRLA,     SCENE_ZOORA,                          0x01,                        GI_ARROWS_SMALL,     "Shop Item 2", "ZD Shop Item 2"),
@@ -904,8 +904,9 @@ std::map<SceneID, RandomizerCheckArea> RandomizerCheckObjects::GetAllRCAreaBySce
             rcAreaBySceneID[rcObject.sceneId] = rcObject.rcArea;
         }
         //Add checkless Hyrule Market areas to the area return
-        for (int id = (int)SCENE_ENTRA; id <= (int)SCENE_MARKET_RUINS; id++)
+        for (int id = (int)SCENE_ENTRA; id <= (int)SCENE_MARKET_RUINS; id++) {
             rcAreaBySceneID[(SceneID)id] = RCAREA_MARKET;
+        }
     }
     return rcAreaBySceneID;
 }
@@ -922,32 +923,45 @@ RandomizerCheckArea RandomizerCheckObjects::GetRCAreaBySceneID(SceneID sceneId) 
 void RandomizerCheckObjects::UpdateImGuiVisibility() {
     for (auto& [randomizerCheck, locationIt] : rcObjects) {
         locationIt.visibleInImgui = (
-            (locationIt.vOrMQ != RCVORMQ_MQ) && // don't show MQ checks until we support MQ
-            ((locationIt.rcType != RCTYPE_SHOP) || CVar_GetS32("gRandomizeShopsanity", 0) > 1) && // 1 is the value for "0 random items" for shop
+            (locationIt.rc != RC_UNKNOWN_CHECK) &&
+            (!RandomizerCheckObjects::AreaIsDungeon(locationIt.rcArea) || 
+                locationIt.vOrMQ == RCVORMQ_BOTH ||
+                locationIt.vOrMQ == RCVORMQ_MQ && CVar_GetS32("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_NONE && CVar_GetS32("gRandomizeMqDungeonCount", 0) > 0 || //at least one MQ dungeon
+                locationIt.vOrMQ == RCVORMQ_VANILLA && (CVar_GetS32("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_NONE || CVar_GetS32("gRandomizeMqDungeonCount", 0) < 12) //at least one vanilla dungeon
+            ) &&
+            (locationIt.rcType != RCTYPE_SHOP || CVar_GetS32("gRandomizeShopsanity", RO_SHOPSANITY_OFF) > RO_SHOPSANITY_ZERO_ITEMS) &&
+            (locationIt.rcType != RCTYPE_SCRUB || CVar_GetS32("gRandomizeShuffleScrubs", RO_SCRUBS_OFF) != RO_SCRUBS_OFF ||
+              locationIt.rc == RC_HF_DEKU_SCRUB_GROTTO || locationIt.rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT || locationIt.rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE) && //The 3 scrubs that are always randomized
+            (locationIt.rcType != RCTYPE_MERCHANT || CVar_GetS32("gRandomizeShuffleMerchants", RO_SHUFFLE_MERCHANTS_OFF) != RO_SHUFFLE_MERCHANTS_OFF) &&
             (locationIt.rcType != RCTYPE_GOSSIP_STONE) && // don't show gossip stones (maybe gossipsanity will be a thing eventually?)
             (locationIt.rcType != RCTYPE_LINKS_POCKET) &&
             (locationIt.rcType != RCTYPE_CHEST_GAME) && // don't show non final reward chest game checks until we support shuffling them
             ((locationIt.rcType != RCTYPE_SKULL_TOKEN) ||
-            (CVar_GetS32("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_ALL) ||
-            ((CVar_GetS32("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_OVERWORLD) && RandomizerCheckObjects::AreaIsOverworld(locationIt.rcArea)) ||
-            ((CVar_GetS32("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_DUNGEONS) && RandomizerCheckObjects::AreaIsDungeon(locationIt.rcArea))
+                (CVar_GetS32("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_ALL) ||
+                ((CVar_GetS32("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_OVERWORLD) && RandomizerCheckObjects::AreaIsOverworld(locationIt.rcArea)) ||
+                ((CVar_GetS32("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_DUNGEONS) && RandomizerCheckObjects::AreaIsDungeon(locationIt.rcArea))
             ) &&
-            ((locationIt.rcType != RCTYPE_COW) || CVar_GetS32("gRandomizeShuffleCows", 0)) &&
-            ((locationIt.rcType != RCTYPE_ADULT_TRADE) || CVar_GetS32("gRandomizeShuffleAdultTrade", 0)) &&
-            ((locationIt.rc != RC_KF_KOKIRI_SWORD_CHEST) || CVar_GetS32("gRandomizeShuffleKokiriSword", 0)) &&
-            ((locationIt.rc != RC_HC_MALON_EGG) || CVar_GetS32("gRandomizeShuffleWeirdEgg", 0)) &&
-            ((locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) || CVar_GetS32("gRandomizeShuffleGerudoToken", 0)) &&
-            ((locationIt.rcType != RCTYPE_FROG_SONG) || CVar_GetS32("gRandomizeShuffleFrogSongRupees", 0)) &&
-            ((locationIt.rcType != RCTYPE_MAP_COMPASS) || CVar_GetS32("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_STARTWITH) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
+            ((locationIt.rcType != RCTYPE_COW) || CVar_GetS32("gRandomizeShuffleCows", RO_GENERIC_NO)) &&
+            ((locationIt.rcType != RCTYPE_ADULT_TRADE) || CVar_GetS32("gRandomizeShuffleAdultTrade", RO_GENERIC_NO)) &&
+            ((locationIt.rc != RC_KF_KOKIRI_SWORD_CHEST) || CVar_GetS32("gRandomizeShuffleKokiriSword", RO_GENERIC_NO)) &&
+            ((locationIt.rc != RC_ZR_MAGIC_BEAN_SALESMAN) || CVar_GetS32("gRandomizeShuffleBeans", RO_GENERIC_NO) == RO_GENERIC_YES) &&
+            ((locationIt.rc != RC_HC_MALON_EGG) || CVar_GetS32("gRandomizeShuffleWeirdEgg", RO_GENERIC_NO)) &&
+            ((locationIt.rcType != RCTYPE_FROG_SONG) || CVar_GetS32("gRandomizeShuffleFrogSongRupees", RO_GENERIC_NO)) &&
+            ((locationIt.rcType != RCTYPE_MAP_COMPASS) || CVar_GetS32("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
             ((locationIt.rcType != RCTYPE_SMALL_KEY) || CVar_GetS32("gRandomizeKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
-            ((locationIt.rcType != RCTYPE_GF_KEY) || CVar_GetS32("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA) &&
-            ((locationIt.rcType != RCTYPE_BOSS_KEY) || CVar_GetS32("gRandomizeBossKeysanity", RO_DUNGEON_ITEM_LOC_STARTWITH) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
+            ((locationIt.rcType != RCTYPE_BOSS_KEY) || CVar_GetS32("gRandomizeBossKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
             ((locationIt.rcType != RCTYPE_GANON_BOSS_KEY) || CVar_GetS32("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) != RO_GANON_BOSS_KEY_VANILLA) &&
-            ((!RC_IS_CARPENTER(locationIt.rc) && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) ||
-                (CVar_GetS32("gRandomizeGerudoFortress", 0) == 2 && !RC_IS_CARPENTER(locationIt.rc) && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) || //2 is the value for "open" gerudo's fortress
-                (CVar_GetS32("gRandomizeGerudoFortress", 0) == 1 && (locationIt.rc == RC_GF_NORTH_F1_CARPENTER || locationIt.rc == RC_GF_GERUDO_MEMBERSHIP_CARD)) || //1 is the value for "fast" gerudo's fortress
-                (CVar_GetS32("gRandomizeGerudoFortress", 0) == 0) //0 is the value for "normal" gerudo's fortress
+            (locationIt.rcType != RCTYPE_GF_KEY && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD ||
+                (CVar_GetS32("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_OPEN && locationIt.rcType != RCTYPE_GF_KEY && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) ||
+                (CVar_GetS32("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_FAST && 
+                    ((locationIt.rc == RC_GF_GERUDO_MEMBERSHIP_CARD && CVar_GetS32("gRandomizeShuffleGerudoToken", RO_GENERIC_NO) == RO_GENERIC_YES) ||
+                    (locationIt.rc == RC_GF_NORTH_F1_CARPENTER && CVar_GetS32("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA))
+                ) ||
+                (CVar_GetS32("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
+                    ((locationIt.rc == RC_GF_GERUDO_MEMBERSHIP_CARD && CVar_GetS32("gRandomizeShuffleGerudoToken", RO_GENERIC_NO) == RO_GENERIC_YES) ||
+                    (locationIt.rcType == RCTYPE_GF_KEY && CVar_GetS32("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA))
                 )
+            )
         );
     }
 }
