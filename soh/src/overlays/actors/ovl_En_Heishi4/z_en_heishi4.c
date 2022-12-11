@@ -200,7 +200,7 @@ void func_80A56614(EnHeishi4* this, PlayState* play) {
             this->actor.textId = 0x709A;
         }
     } else if (play->sceneNum != SCENE_MARKET_NIGHT) {
-         if (IS_DAY) {
+        if (IS_DAY) {
             this->actor.textId = 0x7002;
         } else {
             this->actor.textId = 0x7003;
@@ -335,16 +335,15 @@ void func_80A56B40(EnHeishi4* this, PlayState* play) {
             if (CVar_GetS32("gRandoMarketSneak", 0)) {
                 this->actionFunc = EnHeishi4_MarketSneak;
             } else {
-            this->actionFunc = func_80A56614;
-            return;
+                this->actionFunc = func_80A56614;
+                return;
             }
         }
     }
     func_8002F2F4(&this->actor, play);
 }
 
-/*
-Rando-specific hack function that allows child Link to exit from Market entrance to Hyrule Field
+/*Function that allows child Link to exit from Market entrance to Hyrule Field
 at night.
 */
 void EnHeishi4_MarketSneak(EnHeishi4* this, PlayState* play) {
