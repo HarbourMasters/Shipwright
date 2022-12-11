@@ -152,7 +152,7 @@ void BgSpot06Objects_Init(Actor* thisx, PlayState* play) {
             Actor_ProcessInitChain(thisx, sInitChainWaterPlane);
             thisx->flags = ACTOR_FLAG_4 | ACTOR_FLAG_5;
 
-            if (LINK_IS_ADULT && !(gSaveContext.eventChkInf[6] & 0x200)) {
+            if (LINK_IS_ADULT && !(Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER))) {
                 if (gSaveContext.sceneSetupIndex < 4) {
                     this->lakeHyliaWaterLevel = -681.0f;
                     play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface =
@@ -213,7 +213,7 @@ void BgSpot06Objects_Destroy(Actor* thisx, PlayState* play) {
     if (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
         // For randomizer when leaving lake hylia while the water level is lowered,
         // reset the "raise lake hylia water" flag back to on if the water temple is cleared
-        Flags_SetEventChkInf(0x69);
+        Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
     }
 
     actionCounter = 0;
@@ -571,7 +571,7 @@ void BgSpot06Objects_Draw(Actor* thisx, PlayState* play) {
  * cleared.
  */
 void BgSpot06Objects_WaterPlaneCutsceneWait(BgSpot06Objects* this, PlayState* play) {
-    if (gSaveContext.eventChkInf[6] & 0x200) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER)) {
         this->actionFunc = BgSpot06Objects_WaterPlaneCutsceneRise;
     }
 }
@@ -591,7 +591,7 @@ void BgSpot06Objects_WaterPlaneCutsceneRise(BgSpot06Objects* this, PlayState* pl
         // On rando, this is used with the water control system switch to finalize raising the water
         if (gSaveContext.n64ddFlag) {
             this->lakeHyliaWaterLevel = 0;
-            Flags_SetEventChkInf(0x69); // Set the "raise lake hylia water" flag
+            Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER); // Set the "raise lake hylia water" flag
             play->roomCtx.unk_74[0] = 0; // Apply the moving under water texture to lake hylia ground
         }
     } else {
