@@ -2045,6 +2045,9 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE);
         CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{heartPieceCount}}", std::to_string(gSaveContext.sohStats.heartPieces + 1));
     }
+    if (textId == TEXT_MARKET_GUARD_NIGHT && CVar_GetS32("gMarketSneak", 0) && play->sceneNum == SCENE_ENTRA_N) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT);
+    }
     if (messageEntry.textBoxType != -1) {
         font->charTexBuf[0] = (messageEntry.textBoxType << 4) | messageEntry.textBoxPos;
         switch (gSaveContext.language) {
