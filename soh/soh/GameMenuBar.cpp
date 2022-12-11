@@ -551,9 +551,9 @@ namespace GameMenuBar {
                         UIWidgets::Tooltip("Turn on/off changes to the shooting gallery behavior");
                         bool disabled = !CVar_GetS32("gCustomizeShootingGallery", 0);
                         const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
-                        UIWidgets::EnhancementCheckbox("Instant Win", "gInstantShootingGalleryWin", disabled, disabledTooltip);
+                        UIWidgets::PaddedEnhancementCheckbox("Instant Win", "gInstantShootingGalleryWin", true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("Skips the shooting gallery minigame");
-                        UIWidgets::EnhancementCheckbox("No Rupee Randomization", "gConstantAdultGallery", disabled, disabledTooltip);
+                        UIWidgets::PaddedEnhancementCheckbox("No Rupee Randomization", "gConstantAdultGallery", true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("Forces the rupee order to not be randomized as adult, making it the same as chlid");
                         UIWidgets::PaddedEnhancementSliderInt("Child Starting Ammunition: %d", "##cShootingGalleryAmmunition", "gChildShootingGalleryAmmunition", 10, 30, "", 15, false, true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("The ammunition at the start of the shooting gallery minigame as a child");
@@ -569,9 +569,9 @@ namespace GameMenuBar {
                         UIWidgets::Tooltip("Turn on/off changes to the bombchu bowling behavior");
                         bool disabled = CVar_GetS32("gCustomizeBombchuBowling", 0) == 0;
                         const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
-                        UIWidgets::EnhancementCheckbox("Remove Small Cucco", "gBombchuBowlingNoSmallCucco", disabled, disabledTooltip);
+                        UIWidgets::PaddedEnhancementCheckbox("Remove Small Cucco", "gBombchuBowlingNoSmallCucco", true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("Prevents the small cucco from appearing in the bombchu bowling minigame");
-                        UIWidgets::EnhancementCheckbox("Remove Big Cucco", "gBombchuBowlingNoBigCucco", disabled, disabledTooltip);
+                        UIWidgets::PaddedEnhancementCheckbox("Remove Big Cucco", "gBombchuBowlingNoBigCucco", true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("Prevents the big cucco from appearing in the bombchu bowling minigame");
                         UIWidgets::PaddedEnhancementSliderInt("Bombchu Count: %d", "##cBombchuBowlingAmmunition", "gBombchuBowlingAmmunition", 3, 20, "", 10, false, true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("The number of bombchus available at the start of the bombchu bowling minigame");
@@ -585,7 +585,7 @@ namespace GameMenuBar {
                         UIWidgets::Tooltip("Turn on/off changes to the fishing behavior");
                         bool disabled = !CVar_GetS32("gCustomizeFishing", 0);
                         const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
-                        UIWidgets::EnhancementCheckbox("Instant Fishing", "gInstantFishing", disabled, disabledTooltip);
+                        UIWidgets::PaddedEnhancementCheckbox("Instant Fishing", "gInstantFishing", true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("All fish will be caught instantly");
                         UIWidgets::PaddedEnhancementCheckbox("Guarantee Bite", "gGuaranteeFishingBite", true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("When a line is stable, guarantee bite. Otherwise use default logic");
