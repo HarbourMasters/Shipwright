@@ -330,6 +330,17 @@ void EnItem00_SetupAction(EnItem00* this, EnItem00ActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
+void EnItem00_SetObjectDependency(EnItem00* this, PlayState* play, s16 objectIndex) {
+    // Remove object dependency for Enemy Randomizer and Crowd Control to allow Like-likes to
+    // drop equipment correctly in rooms where Like-likes normally don't spawn.
+    if (CVar_GetS32("gRandomizedEnemies", 0) || CVar_GetS32("gCrowdControl", 0)) {
+        this->actor.objBankIndex = 0;
+    } else {
+        this->actor.objBankIndex = Object_GetIndex(&play->objectCtx, objectIndex);
+        Actor_SetObjectDependency(play, &this->actor);
+    }
+}
+
 void EnItem00_Init(Actor* thisx, PlayState* play) {
     EnItem00* this = (EnItem00*)thisx;
     s32 pad;
@@ -397,8 +408,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             this->scale = 0.01f;
             break;
         case ITEM00_SHIELD_DEKU:
-            this->actor.objBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_GI_SHIELD_1);
-            Actor_SetObjectDependency(play, &this->actor);
+            EnItem00_SetObjectDependency(this, play, OBJECT_GI_SHIELD_1);
             Actor_SetScale(&this->actor, 0.5f);
             this->scale = 0.5f;
             yOffset = 0.0f;
@@ -406,8 +416,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             this->actor.world.rot.x = 0x4000;
             break;
         case ITEM00_SHIELD_HYLIAN:
-            this->actor.objBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_GI_SHIELD_2);
-            Actor_SetObjectDependency(play, &this->actor);
+            EnItem00_SetObjectDependency(this, play, OBJECT_GI_SHIELD_2);
             Actor_SetScale(&this->actor, 0.5f);
             this->scale = 0.5f;
             yOffset = 0.0f;
@@ -416,8 +425,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             break;
         case ITEM00_TUNIC_ZORA:
         case ITEM00_TUNIC_GORON:
-            this->actor.objBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_GI_CLOTHES);
-            Actor_SetObjectDependency(play, &this->actor);
+            EnItem00_SetObjectDependency(this, play, OBJECT_GI_CLOTHES);
             Actor_SetScale(&this->actor, 0.5f);
             this->scale = 0.5f;
             yOffset = 0.0f;
@@ -1337,21 +1345,19 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
     Color_RGBA8 envColor = { colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 0 };
     Vec3f pos;
 
-    // velocity.x = Rand_CenteredFloat(3.0f);
-    // velocity.z = Rand_CenteredFloat(3.0f);
-    velocity.y = -0.05f;
-    accel.y = -0.025f;
-    pos.x = Rand_CenteredFloat(32.0f) + Parent->world.pos.x;
+    velocity.y = -0.00f;
+    accel.y = -0.0f;
+    pos.x = Rand_CenteredFloat(15.0f) + Parent->world.pos.x;
     // Shop items are rendered at a different height than the rest, so a different y offset is required
     if (Parent->id == ACTOR_EN_GIRLA) {
-        pos.y = (Rand_ZeroOne() * 6.0f) + Parent->world.pos.y + 5;
+        pos.y = (Rand_ZeroOne() * 10.0f) + Parent->world.pos.y + 3;
     } else {
-        pos.y = (Rand_ZeroOne() * 6.0f) + Parent->world.pos.y + 25;
+        pos.y = (Rand_ZeroOne() * 10.0f) + Parent->world.pos.y + 25;
     }
-    pos.z = Rand_CenteredFloat(32.0f) + Parent->world.pos.z;
+    pos.z = Rand_CenteredFloat(15.0f) + Parent->world.pos.z;
 
 
-    EffectSsKiraKira_SpawnDispersed(play, &pos, &velocity, &accel, &primColor, &envColor, 1000, 50);
+    EffectSsKiraKira_SpawnFocused(play, &pos, &velocity, &accel, &primColor, &envColor, 1000, 30);
 }
 
 /**
@@ -1375,9 +1381,41 @@ void EnItem00_DrawRupee(EnItem00* this, PlayState* play) {
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTex[texIndex]));
+    Color_RGB8 rupeeColor;
+    u8 shouldColor = 0;
+    switch (texIndex) {
+        case 0:
+            rupeeColor = CVar_GetRGB("gCosmetics.Consumable_GreenRupee.Value", (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVar_GetS32("gCosmetics.Consumable_GreenRupee.Changed", 0);
+            break;
+        case 1:
+            rupeeColor = CVar_GetRGB("gCosmetics.Consumable_BlueRupee.Value", (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVar_GetS32("gCosmetics.Consumable_BlueRupee.Changed", 0);
+            break;
+        case 2:
+            rupeeColor = CVar_GetRGB("gCosmetics.Consumable_RedRupee.Value", (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVar_GetS32("gCosmetics.Consumable_RedRupee.Changed", 0);
+            break;
+        case 3:
+            rupeeColor = CVar_GetRGB("gCosmetics.Consumable_PurpleRupee.Value", (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVar_GetS32("gCosmetics.Consumable_PurpleRupee.Changed", 0);
+            break;
+        case 4:
+            rupeeColor = CVar_GetRGB("gCosmetics.Consumable_GoldRupee.Value", (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVar_GetS32("gCosmetics.Consumable_GoldRupee.Changed", 0);
+            break;
+    }
 
-    gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+    if (shouldColor) {
+        gDPSetGrayscaleColor(POLY_OPA_DISP++, rupeeColor.r, rupeeColor.g, rupeeColor.b, 255);
+        gSPGrayscale(POLY_OPA_DISP++, true);
+        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTex[texIndex]));
+        gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+        gSPGrayscale(POLY_OPA_DISP++, false);
+    } else {
+        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTex[texIndex]));
+        gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+    }
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1552,7 +1590,7 @@ EnItem00* Item_DropCollectible(PlayState* play, Vec3f* spawnPos, s16 params) {
     if (((params & 0x00FF) == ITEM00_FLEXIBLE) && !param4000) {
         // TODO: Prevent the cast to EnItem00 here since this is a different actor (En_Elf)
         spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, spawnPos->x,
-                                              spawnPos->y + 40.0f, spawnPos->z, 0, 0, 0, FAIRY_HEAL_TIMED);
+                                              spawnPos->y + 40.0f, spawnPos->z, 0, 0, 0, FAIRY_HEAL_TIMED, true);
         EffectSsDeadSound_SpawnStationary(play, spawnPos, NA_SE_EV_BUTTERFRY_TO_FAIRY, true,
                                           DEADSOUND_REPEAT_MODE_OFF, 40);
     } else {
@@ -1562,7 +1600,7 @@ EnItem00* Item_DropCollectible(PlayState* play, Vec3f* spawnPos, s16 params) {
 
         if (params != -1) {
             spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, spawnPos->x,
-                                                  spawnPos->y, spawnPos->z, 0, 0, 0, params | param8000 | param3F00);
+                                                  spawnPos->y, spawnPos->z, 0, 0, 0, params | param8000 | param3F00, true);
             if ((spawnedActor != NULL) && !param8000) {
                 spawnedActor->actor.velocity.y = !param4000 ? 8.0f : -2.0f;
                 spawnedActor->actor.speedXZ = 2.0f;
@@ -1597,14 +1635,14 @@ EnItem00* Item_DropCollectible2(PlayState* play, Vec3f* spawnPos, s16 params) {
     if (((params & 0x00FF) == ITEM00_FLEXIBLE) && !param4000) {
         // TODO: Prevent the cast to EnItem00 here since this is a different actor (En_Elf)
         spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, spawnPos->x,
-                                              spawnPos->y + 40.0f, spawnPos->z, 0, 0, 0, FAIRY_HEAL_TIMED);
+                                              spawnPos->y + 40.0f, spawnPos->z, 0, 0, 0, FAIRY_HEAL_TIMED, true);
         EffectSsDeadSound_SpawnStationary(play, spawnPos, NA_SE_EV_BUTTERFRY_TO_FAIRY, true,
                                           DEADSOUND_REPEAT_MODE_OFF, 40);
     } else {
         params = func_8001F404(params & 0x00FF);
         if (params != -1) {
             spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, spawnPos->x,
-                                                  spawnPos->y, spawnPos->z, 0, 0, 0, params | param8000 | param3F00);
+                                                  spawnPos->y, spawnPos->z, 0, 0, 0, params | param8000 | param3F00, true);
             if ((spawnedActor != NULL) && !param8000) {
                 spawnedActor->actor.velocity.y = 0.0f;
                 spawnedActor->actor.speedXZ = 0.0f;
@@ -1668,7 +1706,7 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
     if (dropId == ITEM00_FLEXIBLE) {
         if (gSaveContext.health <= 0x10) { // 1 heart or less
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, spawnPos->x, spawnPos->y + 40.0f, spawnPos->z, 0,
-                        0, 0, FAIRY_HEAL_TIMED);
+                        0, 0, FAIRY_HEAL_TIMED, true);
             EffectSsDeadSound_SpawnStationary(play, spawnPos, NA_SE_EV_BUTTERFRY_TO_FAIRY, true,
                                               DEADSOUND_REPEAT_MODE_OFF, 40);
             return;
@@ -1716,7 +1754,7 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
                 dropId = func_8001F404(dropId);
                 if (dropId != 0xFF) {
                     spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, spawnPos->x,
-                                                          spawnPos->y, spawnPos->z, 0, 0, 0, dropId);
+                                                          spawnPos->y, spawnPos->z, 0, 0, 0, dropId, true);
                     if ((spawnedActor != NULL) && (dropId != 0xFF)) {
                         spawnedActor->actor.velocity.y = 8.0f;
                         spawnedActor->actor.speedXZ = 2.0f;

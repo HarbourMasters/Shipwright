@@ -640,9 +640,9 @@ void BossVa_Init(Actor* thisx, PlayState* play2) {
                 }
                 Actor_Spawn(&play->actorCtx, play, warpId, this->actor.world.pos.x, this->actor.world.pos.y,
                             this->actor.world.pos.z, 0, 0, 0,
-                            0); //! params could be WARP_DUNGEON_CHILD however this can also spawn Ru1
+                            0, true); //! params could be WARP_DUNGEON_CHILD however this can also spawn Ru1
                 Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x + 160.0f,
-                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
+                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
                 sDoorState = 100;
                 Actor_Kill(&this->actor);
             } else {
@@ -1650,7 +1650,7 @@ void BossVa_BodyDeath(BossVa* this, PlayState* play) {
                 sCsState++;
 
                 Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
-                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
+                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
 
                 for (i = 2, sp7C = 2; i > 0; i--) {
                     if (Math_Vec3f_DistXYZ(&sWarpPos[i], &player->actor.world.pos) <
@@ -1660,7 +1660,7 @@ void BossVa_BodyDeath(BossVa* this, PlayState* play) {
                 }
 
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_RU1, sWarpPos[sp7C].x, sWarpPos[sp7C].y,
-                            sWarpPos[sp7C].z, 0, 0, 0, 0);
+                            sWarpPos[sp7C].z, 0, 0, 0, 0, true);
             }
         case DEATH_FINISH:
             Rand_CenteredFloat(0.5f);
@@ -1769,7 +1769,7 @@ void BossVa_SetupSupportCut(BossVa* this, PlayState* play) {
     sBodyState++;
     sFightPhase++;
     Actor_Spawn(&play->actorCtx, play, ACTOR_BOSS_VA, this->armTip.x, this->armTip.y + 20.0f, this->armTip.z,
-                0, this->actor.shape.rot.y, 0, stumpParams);
+                0, this->actor.shape.rot.y, 0, stumpParams, true);
     Camera_AddQuake(&play->mainCamera, 2, 11, 8);
     this->burst = false;
     this->timer2 = 0;

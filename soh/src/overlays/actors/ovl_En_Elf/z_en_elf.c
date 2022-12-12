@@ -400,7 +400,7 @@ void EnElf_Init(Actor* thisx, PlayState* play) {
 
             for (i = 0; i < 8; i++) {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, thisx->world.pos.x,
-                            thisx->world.pos.y - 30.0f, thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL);
+                            thisx->world.pos.y - 30.0f, thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL, true);
             }
             break;
         default:
@@ -1483,6 +1483,7 @@ s32 EnElf_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
         if (this->fairyFlags & FAIRY_FLAG_BIG) {
             scale *= 2.0f;
         }
+        scale *= CVar_GetFloat("gCosmetics.Fairies_Size", 1.0f);
 
         scale *= (this->actor.scale.x * 124.99999f);
         Matrix_MultVec3f(&zeroVec, &mtxMult);

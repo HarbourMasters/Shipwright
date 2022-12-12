@@ -26,7 +26,7 @@ s16 dynamicExitList[] = { 0x045B, 0x0482, 0x03E8, 0x044B, 0x02A2, 0x0201, 0x03B8
 
 static s16 entranceOverrideTable[ENTRANCE_TABLE_SIZE] = {0};
 
-EntranceInfo originalEntranceTable[1556] = {0};
+EntranceInfo originalEntranceTable[ENTRANCE_TABLE_SIZE] = {0};
 
 //These variables store the new entrance indices for dungeons so that
 //savewarping and game overs respawn players at the proper entrance.
@@ -46,6 +46,8 @@ static s16 newIceCavernEntrance             = ICE_CAVERN_ENTRANCE;
 static s8 hasCopiedEntranceTable = 0;
 static s8 hasModifiedEntranceTable = 0;
 
+void Entrance_SetEntranceDiscovered(u16 entranceIndex);
+
 u8 Entrance_EntranceIsNull(EntranceOverride* entranceOverride) {
     return entranceOverride->index == 0 && entranceOverride->destination == 0 && entranceOverride->blueWarp == 0
         && entranceOverride->override == 0 && entranceOverride->overrideDestination == 0;
@@ -59,16 +61,24 @@ static void Entrance_SeparateOGCFairyFountainExit(void) {
     }
 }
 
+static void Entrance_SeparateAdultSpawnAndPrelude() {
+    // Overwrite unused entrance 0x0282 with values from 0x05F4 to use it as the
+    // Adult Spawn index and separate it from Prelude of Light
+    for (size_t i = 0; i < 4; ++i) {
+        gEntranceTable[0x282 + i] = gEntranceTable[0x5F4 + i];
+    }
+}
+
 void Entrance_CopyOriginalEntranceTable(void) {
     if (!hasCopiedEntranceTable) {
-        memcpy(originalEntranceTable, gEntranceTable, sizeof(EntranceInfo) * 1556);
+        memcpy(originalEntranceTable, gEntranceTable, sizeof(EntranceInfo) * ENTRANCE_TABLE_SIZE);
         hasCopiedEntranceTable = 1;
     }
 }
 
 void Entrance_ResetEntranceTable(void) {
     if (hasCopiedEntranceTable && hasModifiedEntranceTable) {
-        memcpy(gEntranceTable, originalEntranceTable, sizeof(EntranceInfo) * 1556);
+        memcpy(gEntranceTable, originalEntranceTable, sizeof(EntranceInfo) * ENTRANCE_TABLE_SIZE);
         hasModifiedEntranceTable = 0;
     }
 }
@@ -91,6 +101,7 @@ void Entrance_Init(void) {
     }
 
     Entrance_SeparateOGCFairyFountainExit();
+    Entrance_SeparateAdultSpawnAndPrelude();
 
     // Initialize the entrance override table with each index leading to itself. An
     // index referring to itself means that the entrance is not currently shuffled.
@@ -113,12 +124,12 @@ void Entrance_Init(void) {
         s16 overrideIndex = gSaveContext.entranceOverrides[i].override;
 
         //Overwrite grotto related indices
-        if (originalIndex >= 0x0800) {
+        if (originalIndex >= ENTRANCE_RANDO_GROTTO_EXIT_START) {
             Grotto_SetExitOverride(originalIndex, overrideIndex);
             continue;
         }
 
-        if (originalIndex >= 0x0700 && originalIndex < 0x0800) {
+        if (originalIndex >= ENTRANCE_RANDO_GROTTO_LOAD_START && originalIndex < ENTRANCE_RANDO_GROTTO_EXIT_START) {
             Grotto_SetLoadOverride(originalIndex, overrideIndex);
             continue;
         }
@@ -188,19 +199,40 @@ s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
 
     // Exiting through the crawl space from Hyrule Castle courtyard is the same exit as leaving Ganon's castle
     // If we came from the Castle courtyard, then don't override the entrance to keep Link in Hyrule Castle area
-    if (gPlayState->sceneNum == 69 && nextEntranceIndex == 0x023D) {
+    if (gPlayState != NULL && gPlayState->sceneNum == 69 && nextEntranceIndex == 0x023D) {
         return nextEntranceIndex;
     }
 
+    Entrance_SetEntranceDiscovered(nextEntranceIndex);
+    EntranceTracker_SetLastEntranceOverride(nextEntranceIndex);
     return Grotto_OverrideSpecialEntrance(Entrance_GetOverride(nextEntranceIndex));
 }
 
 s16 Entrance_OverrideDynamicExit(s16 dynamicExitIndex) {
+    Entrance_SetEntranceDiscovered(dynamicExitList[dynamicExitIndex]);
+    EntranceTracker_SetLastEntranceOverride(dynamicExitList[dynamicExitIndex]);
     return Grotto_OverrideSpecialEntrance(Entrance_GetOverride(dynamicExitList[dynamicExitIndex]));
 }
 
 u32 Entrance_SceneAndSpawnAre(u8 scene, u8 spawn) {
-    EntranceInfo currentEntrance = gEntranceTable[gSaveContext.entranceIndex];
+    s16 computedEntranceIndex;
+
+    // Adjust the entrance to acount for the exact scene/spawn combination for child/adult and day/night
+    if (!IS_DAY) {
+        if (!LINK_IS_ADULT) {
+            computedEntranceIndex = gSaveContext.entranceIndex + 1;
+        } else {
+            computedEntranceIndex = gSaveContext.entranceIndex + 3;
+        }
+    } else {
+        if (!LINK_IS_ADULT) {
+            computedEntranceIndex = gSaveContext.entranceIndex;
+        } else {
+            computedEntranceIndex = gSaveContext.entranceIndex + 2;
+        }
+    }
+
+    EntranceInfo currentEntrance = gEntranceTable[computedEntranceIndex];
     return currentEntrance.scene == scene && currentEntrance.spawn == spawn;
 }
 
@@ -279,15 +311,58 @@ void Entrance_SetSavewarpEntrance(void) {
     } else if (scene == SCENE_GERUDOWAY) { // Theives hideout
         gSaveContext.entranceIndex = 0x0486; // Gerudo Fortress -> Thieve's Hideout spawn 0
     } else if (scene == SCENE_LINK_HOME) {
-        gSaveContext.entranceIndex = LINK_HOUSE_SAVEWARP_ENTRANCE;
+        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(LINK_HOUSE_SAVEWARP_ENTRANCE);
     } else if (LINK_IS_CHILD) {
-        gSaveContext.entranceIndex = Entrance_GetOverride(LINK_HOUSE_SAVEWARP_ENTRANCE);
+        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(LINK_HOUSE_SAVEWARP_ENTRANCE); // Child Overworld Spawn
     } else {
-        gSaveContext.entranceIndex = Entrance_GetOverride(0x05F4); // Temple of Time Adult Spawn
+        gSaveContext.entranceIndex = Entrance_OverrideNextIndex(0x0282); // Adult Overworld Spawn (Normally 0x5F4, but 0x282 has been repurposed to differentiate from Prelude which also uses 0x5F4)
+    }
+}
+
+void Entrance_SetWarpSongEntrance(void) {
+    gPlayState->sceneLoadFlag = 0x14;
+    gPlayState->fadeTransition = 5;
+    switch (gPlayState->msgCtx.lastPlayedSong) {
+        case 0:
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0600); // Minuet
+            break;
+        case 1:
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x04F6); // Bolero
+            break;
+        case 2:
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0604); // Serenade
+            break;
+        case 3:
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x01F1); // Requiem
+            break;
+        case 4:
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0568); // Nocturne
+            break;
+        case 5:
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x05F4); // Prelude
+            break;
+        default:
+            gPlayState->sceneLoadFlag = 0; // if something goes wrong, the animation plays normally
+    }
+
+    // If one of the warp songs happens to lead to a grotto return, then we
+    // have to force the grotto return afterwards
+    Grotto_ForceGrottoReturnOnSpecialEntrance();
+
+    if (gSaveContext.gameMode != 0) {
+        // During DHWW the cutscene must play at the destination
+        gSaveContext.respawnFlag = -3;
+    } else if (gSaveContext.respawnFlag == -3) {
+        // Unset Zoneout Type -3 to avoid cutscene at destination (technically it's not needed)
+        gSaveContext.respawnFlag = 0;
     }
 }
 
 void Entrance_OverrideBlueWarp(void) {
+    // Set nextEntranceIndex as a flag so that Grotto_CheckSpecialEntrance
+    // won't return index 0x7FFF, which can't work to override blue warps.
+    gPlayState->nextEntranceIndex = 0;
+
     switch (gPlayState->sceneNum) {
         case SCENE_YDAN_BOSS: // Ghoma boss room
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0457);
@@ -322,6 +397,8 @@ void Entrance_OverrideCutsceneEntrance(u16 cutsceneCmd) {
             gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(newJabuJabusBellyEntrance);
             gPlayState->sceneLoadFlag = 0x14;
             gPlayState->fadeTransition = 2;
+            // In case Jabu's mouth leads to a grotto return
+            Grotto_ForceGrottoReturnOnSpecialEntrance();
             break;
     }
 }
@@ -506,7 +583,7 @@ void Entrance_OverrideGeurdoGuardCapture(void) {
 }
 
 void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == 2) { // Shuffle Ganon's Castle
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON) {
         // Move Hyrule's Castle Courtyard exit spawn to be before the crates so players don't skip Talon
         if (sceneNum == 95 && spawn == 1) {
             gPlayState->linkActorEntry->pos.x = 0x033A;
@@ -521,6 +598,61 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
             gPlayState->linkActorEntry->pos.z = 0x0290;
             gPlayState->linkActorEntry->rot.y = 0x0700;
             gPlayState->linkActorEntry->params = 0x0DFF; // stationary spawn
+        }
+    }
+}
+
+u8 Entrance_GetIsSceneDiscovered(u8 sceneNum) {
+    u16 bitsPerIndex = sizeof(u32) * 8;
+    u32 idx = sceneNum / bitsPerIndex;
+    if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
+        u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
+        return (gSaveContext.sohStats.scenesDiscovered[idx] & sceneBit) != 0;
+    }
+    return 0;
+}
+
+void Entrance_SetSceneDiscovered(u8 sceneNum) {
+    if (Entrance_GetIsSceneDiscovered(sceneNum)) {
+        return;
+    }
+
+    u16 bitsPerIndex = sizeof(u32) * 8;
+    u32 idx = sceneNum / bitsPerIndex;
+    if (idx < SAVEFILE_SCENES_DISCOVERED_IDX_COUNT) {
+        u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
+        gSaveContext.sohStats.scenesDiscovered[idx] |= sceneBit;
+    }
+}
+
+u8 Entrance_GetIsEntranceDiscovered(u16 entranceIndex) {
+    u16 bitsPerIndex = sizeof(u32) * 8;
+    u32 idx = entranceIndex / bitsPerIndex;
+    if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
+        u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
+        return (gSaveContext.sohStats.entrancesDiscovered[idx] & entranceBit) != 0;
+    }
+    return 0;
+}
+
+void Entrance_SetEntranceDiscovered(u16 entranceIndex) {
+    // Skip if already set to save time from setting the connected entrance or
+    // if this entrance is outside of the randomized entrance range (i.e. is a dynamic entrance)
+    if (entranceIndex > MAX_ENTRANCE_RANDO_USED_INDEX || Entrance_GetIsEntranceDiscovered(entranceIndex)) {
+        return;
+    }
+
+    u16 bitsPerIndex = sizeof(u32) * 8;
+    u32 idx = entranceIndex / bitsPerIndex;
+    if (idx < SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT) {
+        u32 entranceBit = 1 << (entranceIndex - (idx * bitsPerIndex));
+        gSaveContext.sohStats.entrancesDiscovered[idx] |= entranceBit;
+        // Set connected
+        for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
+            if (entranceIndex == gSaveContext.entranceOverrides[i].index) {
+                Entrance_SetEntranceDiscovered(gSaveContext.entranceOverrides[i].overrideDestination);
+                break;
+            }
         }
     }
 }

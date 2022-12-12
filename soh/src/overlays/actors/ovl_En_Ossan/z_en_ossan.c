@@ -446,7 +446,7 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, PlayState* play, ShopItem* shopI
                     &play->actorCtx, play, ACTOR_EN_GIRLA, shelves->actor.world.pos.x + shopItems->xOffset,
                     shelves->actor.world.pos.y + shopItems->yOffset, shelves->actor.world.pos.z + shopItems->zOffset,
                     shelves->actor.shape.rot.x, shelves->actor.shape.rot.y + sItemShelfRot[i],
-                    shelves->actor.shape.rot.z, itemParams);
+                    shelves->actor.shape.rot.z, itemParams, true);
                 if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_OFF) {
                     this->shelfSlots[i]->randoSlotIndex = i;
                 }
@@ -473,7 +473,7 @@ void EnOssan_UpdateShopOfferings(EnOssan* this, PlayState* play) {
                         this->shelves->actor.world.pos.x + shopItem->xOffset,
                         this->shelves->actor.world.pos.y + shopItem->yOffset,
                         this->shelves->actor.world.pos.z + shopItem->zOffset, this->shelves->actor.shape.rot.x,
-                        this->shelves->actor.shape.rot.y + sItemShelfRot[i], this->shelves->actor.shape.rot.z, params);
+                        this->shelves->actor.shape.rot.y + sItemShelfRot[i], this->shelves->actor.shape.rot.z, params, true);
                 }
             }
         }
@@ -1716,7 +1716,9 @@ void EnOssan_State_ItemPurchased(EnOssan* this, PlayState* play, Player* player)
     } else {
         getItemEntry = ItemTable_Retrieve(this->shelfSlots[this->cursorIndex]->getItemId);
     }
-    
+    if (gSaveContext.pendingSale == ITEM_NONE) {
+        gSaveContext.pendingSale = getItemEntry.itemId;
+    }
 
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         if (this->actor.params == OSSAN_TYPE_MASK) {
@@ -1927,8 +1929,12 @@ void EnOssan_UpdateItemSelectedProperty(EnOssan* this) {
 }
 
 void EnOssan_UpdateCursorAnim(EnOssan* this) {
-    Color_RGB8 A_button_ori = {0,255,80};
-    Color_RGB8 A_button = CVar_GetRGB("gCCABtnPrim", A_button_ori);
+    Color_RGB8 aButtonColor = { 0, 80, 255 };
+    if (CVar_GetS32("gCosmetics.Hud_AButton.Changed", 0)) {
+        aButtonColor = CVar_GetRGB("gCosmetics.Hud_AButton.Value", aButtonColor);
+    } else if (CVar_GetS32("gCosmetics.DefaultColorScheme", 0)) {
+        aButtonColor = (Color_RGB8){ 0, 255, 80 };
+    }
     f32 t;
 
     t = this->cursorAnimTween;
@@ -1945,19 +1951,9 @@ void EnOssan_UpdateCursorAnim(EnOssan* this) {
             this->cursorAnimState = 0;
         }
     }
-    if (CVar_GetS32("gHudColors", 1) == 0) {
-        this->cursorColorR = ColChanMix(0, 0.0f, t);
-        this->cursorColorG = ColChanMix(80, 80.0f, t);
-        this->cursorColorB = ColChanMix(255, 0.0f, t);
-    } else if (CVar_GetS32("gHudColors", 1) == 1) {
-        this->cursorColorR = ColChanMix(A_button_ori.r, 0.0f, t);
-        this->cursorColorG = ColChanMix(A_button_ori.b, 80.0f, t);
-        this->cursorColorB = ColChanMix(A_button_ori.r, 0.0f, t);
-    } else if (CVar_GetS32("gHudColors", 1) == 2) {
-        this->cursorColorR = ColChanMix(A_button.r, ((A_button.r/255)*100), t);
-        this->cursorColorG = ColChanMix(A_button.g, ((A_button.g/255)*100), t);
-        this->cursorColorB = ColChanMix(A_button.b, ((A_button.b/255)*100), t);
-    }
+    this->cursorColorR = ColChanMix(aButtonColor.r, 0.0f, t);
+    this->cursorColorG = ColChanMix(aButtonColor.g, 80.0f, t);
+    this->cursorColorB = ColChanMix(aButtonColor.b, 0.0f, t);
     this->cursorColorA = ColChanMix(255, 0.0f, t);
     this->cursorAnimTween = t;
 }
