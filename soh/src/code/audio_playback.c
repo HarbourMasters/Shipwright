@@ -376,7 +376,7 @@ Drum* Audio_GetDrum(s32 fontId, s32 drumId) {
 }
 
 SoundFontSound* Audio_GetSfx(s32 fontId, s32 sfxId) {
-    SoundFontSound* sfx;
+    SoundFontSound* sfx = NULL;
 
     if (fontId == 0xFF) {
         return NULL;
@@ -388,13 +388,15 @@ SoundFontSound* Audio_GetSfx(s32 fontId, s32 sfxId) {
     }
 
     SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
-    sfx = &sf->soundEffects[sfxId];
+    if (sfxId < sf->numSfx) {
+        sfx = &sf->soundEffects[sfxId];
+    }
 
     if (sfx == NULL) {
         gAudioContext.audioErrorFlags = ((fontId << 8) + sfxId) + 0x5000000;
     }
 
-    if (sfx->sample == NULL) {
+    if (sfx != NULL && sfx->sample == NULL) {
         return NULL;
     }
 
