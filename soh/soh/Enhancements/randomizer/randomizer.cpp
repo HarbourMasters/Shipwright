@@ -2716,7 +2716,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_MIX_OVERWORLD_ENTRANCES] = CVar_GetS32("gRandomizeMixOverworld", RO_GENERIC_OFF);
     cvarSettings[RSK_MIX_INTERIOR_ENTRANCES] = CVar_GetS32("gRandomizeMixInteriors", RO_GENERIC_OFF);
     cvarSettings[RSK_MIX_GROTTO_ENTRANCES] = CVar_GetS32("gRandomizeMixGrottos", RO_GENERIC_OFF);
-    cvarSettings[RSK_DECOUPLED_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDecoupledEntrances", RO_GENERIC_OFF);
+    cvarSettings[RSK_DECOUPLED_ENTRANCES] = CVar_GetS32("gRandomizeDecoupleEntrances", RO_GENERIC_OFF);
 
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
@@ -3167,8 +3167,8 @@ void DrawRandoEditor(bool& open) {
 
                 UIWidgets::PaddedSeparator();
 
-                // Shuffle Decoupled Entrances
-                UIWidgets::EnhancementCheckbox("Shuffle Decoupled Entrances", "gRandomizeShuffleDecoupledEntrances");
+                // Decouple Entrances
+                UIWidgets::EnhancementCheckbox("Decouple Entrances", "gRandomizeDecoupleEntrances");
                 UIWidgets::InsertHelpHoverText(
                     "Decouple entrances when shuffling them. This means you are no longer guaranteed "
                     "to end up back where you came from when you go back through an entrance.\n"
