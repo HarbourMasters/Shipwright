@@ -185,7 +185,9 @@ std::map<u16, std::tuple<std::string, std::string, SeqType>> sfxEditorSequenceMa
 // which will lookup the proper override, or reset back to vanilla
 void ReplayCurrentBGM() {
     u16 curSeqId = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
-    Audio_QueueSeqCmd(0x00000000 | curSeqId); // TODO: replace with Audio_StartSeq when the macro is shared
+    // TODO: replace with Audio_StartSeq when the macro is shared
+    // The fade time and audio player flags will always be 0 in the case of replaying the BGM, so they are not set here
+    Audio_QueueSeqCmd(0x00000000 | curSeqId);
 }
 
 // Attempt to update the BGM if it matches the current sequence that is being played
