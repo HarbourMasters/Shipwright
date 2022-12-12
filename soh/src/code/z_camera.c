@@ -1316,6 +1316,7 @@ s16 Camera_CalcDefaultYaw(Camera* camera, s16 cur, s16 target, f32 arg3, f32 acc
     return cur + (s16)(angDelta * velocity * velFactor * yawUpdRate);
 }
 
+//Follow player with collision
 void func_80046E20(Camera* camera, VecSph* eyeAdjustment, f32 minDist, f32 arg3, f32* arg4, SwingAnimation* anim) {
     static CamColChk atEyeColChk;
     static CamColChk eyeAtColChk;
@@ -1699,6 +1700,7 @@ s32 Camera_Normal1(Camera* camera) {
     Camera_Vec3fVecSphGeoAdd(eyeNext, at, &eyeAdjustment);
     if ((camera->status == CAM_STAT_ACTIVE) && (!(norm1->interfaceFlags & 0x10))) {
         anim->swingYawTarget = BINANG_ROT180(camera->playerPosRot.rot.y);
+        if (!CVar_GetS32("gFixCameraSwing", 0)) {
         if (anim->startSwingTimer > 0) {
             func_80046E20(camera, &eyeAdjustment, norm1->distMin, norm1->unk_0C, &sp98, &anim->swing);
         } else {
@@ -1712,7 +1714,13 @@ s32 Camera_Normal1(Camera* camera) {
             }
             anim->swing.unk_18 = 0;
         }
-
+        } else {
+            if (anim->startSwingTimer <= 0) {
+                anim->swing.swingUpdateRate = camera->yawUpdateRateInv = norm1->unk_0C * 2.0f;
+                anim->swing.unk_18 = 0;
+            }
+            func_80046E20(camera, &eyeAdjustment, norm1->distMin, norm1->unk_0C, &sp98, &anim->swing);
+        }
         if (anim->swing.unk_18 != 0) {
             camera->inputDir.y =
                 Camera_LERPCeilS(camera->inputDir.y + BINANG_SUB(BINANG_ROT180(anim->swing.unk_16), camera->inputDir.y),
@@ -4710,7 +4718,7 @@ s32 Camera_Unique1(Camera* camera) {
         anim->timer--;
     }
 
-    sp8C.yaw = Camera_LERPFloorS(anim->yawTarget, eyeNextAtOffset.yaw, 0.5f, 0x2710);
+    sp8C.yaw = Camera_LERPFloorS(anim->yawTarget, eyeNextAtOffset.yaw, 0.5f, CVar_GetS32("gFixHangingLedgeSwingRate", 0) ? 0xA : 0x2710);
     Camera_Vec3fVecSphGeoAdd(eyeNext, at, &sp8C);
     *eye = *eyeNext;
     Camera_BGCheck(camera, at, eye);
