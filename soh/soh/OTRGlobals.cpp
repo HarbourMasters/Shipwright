@@ -2045,7 +2045,10 @@ extern "C" void Overlay_DisplayText(float duration, const char* text) {
 
 extern "C" void OTRSendPacketToServer() {
     if (client.running) {
-        client.SendPacketMessage((OnlinePacket*)&gPacket, &client.client);
+        gPacket.initialized = 1;
+        client.SendPacketMessage((OnlinePacket*)&gPacket);
         gPacket.puppetPacket.sound_id = 0;
+        gPacket.puppetPacket.damageValue = 0;
+        gPacket.puppetPacket.damageEffect = 0;
     }
 }

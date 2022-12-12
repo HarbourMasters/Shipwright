@@ -20,7 +20,6 @@ typedef struct {
 } PosRotOnline;
 
 typedef struct PuppetPacket {
-    uint8_t initialized;
     PosRotOnline posRot;
     uint8_t biggoron_broken;
     uint16_t scene_id;
@@ -57,47 +56,27 @@ typedef struct {
 } InventoryZ64; // size = 0x5E
 
 typedef struct InventoryPacket {
-    uint8_t initialized;
     InventoryZ64 inventory;
 } InventoryPacket;
 
 typedef struct OnlinePacket {
+    uint8_t initialized;
     uint8_t player_id;
     uint8_t is_you;
     PuppetPacket puppetPacket;
     InventoryPacket inventoryPacket;
 } OnlinePacket;
 
-class OnlineServer {
-  public:
-    bool running = false;
-    TCPsocket clients[MAX_PLAYERS];
-
-    void InitServer(int port);
-    void SendPacketMessage(OnlinePacket* packet, TCPsocket* sendTo);
-
-    ~OnlineServer();
-
-  private:
-    void WaitForClientConnections();
-    void RunServerSend(int player_id);
-    void RunServerReceive(int player_id);
-    void CloseServer();
-
-};
-
 class OnlineClient {
   public:
-    TCPsocket client;
     bool running = false;
 
     void InitClient(char* ipAddr, int port);
-    void SendPacketMessage(OnlinePacket* packet, TCPsocket* sendTo);
+    void SendPacketMessage(OnlinePacket* packet);
 
     ~OnlineClient();
 
   private:
-    void WaitForServerConnection(IPaddress ip);
     void RunClientReceive();
     void CloseClient();
 

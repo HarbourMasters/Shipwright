@@ -117,10 +117,6 @@ void LinkPuppet_Destroy(Actor* thisx, PlayState* play) {
 void LinkPuppet_Update(Actor* thisx, PlayState* play) {
     LinkPuppet* this = (LinkPuppet*)thisx;
 
-    if (this->packet.initialized == 0) {
-        return;
-    }
-
     f32 puppetHeight = this->packet.puppet_age == 0 ? 60.0f : 30.0f;
 
     Actor_SetFocus(this, puppetHeight);
@@ -237,10 +233,6 @@ extern Gfx* D_80125D28[];
 s32 Puppet_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     LinkPuppet* this = (LinkPuppet*)thisx;
 
-    if (this->packet.initialized == 0) {
-        return;
-    }
-
      if (limbIndex == PLAYER_LIMB_ROOT) {
         if (this->packet.puppet_age == 1) {
             if (!(this->linkSkeleton.moveFlags & 4) || (this->linkSkeleton.moveFlags & 1)) {
@@ -283,20 +275,12 @@ s32 Puppet_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* 
 void Puppet_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     LinkPuppet* this = (LinkPuppet*)thisx;
 
-    if (this->packet.initialized == 0) {
-        return;
-    }
-
     Vec3f* vec = &FEET_POS[((void)0, this->packet.puppet_age)];
     Actor_SetFeetPos(&this->actor, limbIndex, PLAYER_LIMB_L_FOOT, vec, PLAYER_LIMB_R_FOOT, vec);
 }
 
 void LinkPuppet_Draw(Actor* thisx, PlayState* play) {
     LinkPuppet* this = (LinkPuppet*)thisx;
-
-    if (this->packet.initialized == 0) {
-        return;
-    }
 
     if (this->initialized) {
         func_8008F470(play, this->linkSkeleton.skeleton, this->linkSkeleton.jointTable,

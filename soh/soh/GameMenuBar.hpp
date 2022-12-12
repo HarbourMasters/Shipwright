@@ -26,7 +26,6 @@ namespace GameMenuBar {
     void Draw();
 }
 
-OnlineServer server;
 OnlineClient client;
 
 #endif /* GameMenuBar_hpp */

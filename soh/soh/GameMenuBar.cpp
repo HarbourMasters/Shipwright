@@ -1125,44 +1125,16 @@ namespace GameMenuBar {
         ImGui::SetCursorPosY(0.0f);
 
         if (ImGui::BeginMenu("Online")) {
-            if (ImGui::BeginMenu("Server")) {
-                int newPort = CVar_GetS32("gOnlineServerPort", 7777);
-                ImGui::InputInt("Port", &newPort);
-                CVar_SetS32("gOnlineServerPort", newPort);
+            const char* ipAddr = CVar_GetString("gOnlineClientIPAddress", "127.0.0.1");
+            ImGui::InputText("IP Address", (char*)ipAddr, 32);
+            CVar_SetString("gOnlineClientIPAddress", ipAddr);
 
-                if (ImGui::Button("Host Game")) {
-                    server.InitServer(newPort);
-                }
+            int newPort = CVar_GetS32("gOnlineClientPort", 7777);
+            ImGui::InputInt("Port", &newPort);
+            CVar_SetS32("gOnlineClientPort", newPort);
 
-                ImGui::EndMenu();
-            }
-
-            if (ImGui::BeginMenu("Client")) {
-                const char* ipAddr = CVar_GetString("gOnlineClientIPAddress", "127.0.0.1");
-                ImGui::InputText("IP Address", (char*)ipAddr, 32);
-                CVar_SetString("gOnlineClientIPAddress", ipAddr);
-
-                int newPort = CVar_GetS32("gOnlineClientPort", 7777);
-                ImGui::InputInt("Port", &newPort);
-                CVar_SetS32("gOnlineClientPort", newPort);
-
-                if (ImGui::Button("Connect to Game")) {
-                    client.InitClient((char*)ipAddr, newPort);
-                }
-
-                ImGui::EndMenu();
-            }
-
-            if (ImGui::BeginMenu("Character Info")) {
-                const char* nickname = CVar_GetString("gOnlineName", "Link");
-                ImGui::InputText("Nickname", (char*)nickname, 32);
-                CVar_SetString("gOnlineName", nickname);
-
-                const char* bio = CVar_GetString("gOnlineBio", "This is a test bio");
-                ImGui::InputText("Description", (char*)bio, 128);
-                CVar_SetString("gOnlineBio", bio);
-
-                ImGui::EndMenu();
+            if (ImGui::Button("Connect to Game")) {
+                client.InitClient((char*)ipAddr, newPort);
             }
 
             ImGui::EndMenu();

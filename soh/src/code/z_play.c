@@ -2219,29 +2219,23 @@ void Play_PerformSave(PlayState* play) {
     }
 }
 
-void SetOnlinePlayerID(uint8_t player_id) {
-    gPacket.player_id = player_id;
-}
-
 void SetLinkPuppetData(PuppetPacketZ64* packet, u8 player_id) {
-    if (puppets[player_id] != NULL && player_id != gPacket.player_id) {
+    if (puppets[player_id] != NULL) {
         memcpy(&puppets[player_id]->packet, packet, sizeof(PuppetPacketZ64));
+        osSyncPrintf("\nSCENE_NO=%d", packet->scene_id);
     }
 }
 
 void SetOnlineInventoryData(InventoryPacketZ64* packet) {
     Inventory* newInventory = &packet->inventory;
 
-    if (packet->initialized == 1) {
-        for (size_t i = 0; i < 24; i++) {
-            if (newInventory->items[i] > gSaveContext.inventory.items[i] && newInventory->items[i] != 0xFF &&
-                gSaveContext.inventory.items[i] != newInventory->items[i]) {
-                gSaveContext.inventory.items[i] = newInventory->items[i];
-            }
+    for (size_t i = 0; i < 24; i++) {
+        if (newInventory->items[i] != 0xFF && gSaveContext.inventory.items[i] != newInventory->items[i]) {
+            gSaveContext.inventory.items[i] = newInventory->items[i];
         }
+    }
 
-        if (newInventory->gsTokens > gSaveContext.inventory.gsTokens) {
-            gSaveContext.inventory.gsTokens = newInventory->gsTokens;
-        }
+    if (newInventory->gsTokens > gSaveContext.inventory.gsTokens) {
+        gSaveContext.inventory.gsTokens = newInventory->gsTokens;
     }
 }
