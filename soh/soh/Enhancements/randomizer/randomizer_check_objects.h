@@ -19,7 +19,9 @@ typedef enum {
     RCTYPE_GF_KEY, // Gerudo Fortress Keys
     RCTYPE_BOSS_KEY, // Boss Keys
     RCTYPE_GANON_BOSS_KEY, // Ganon's boss key
-    RCTYPE_SHOP, // shops/scrubs
+    RCTYPE_SHOP, // shops
+    RCTYPE_SCRUB, // scrubs
+    RCTYPE_MERCHANT, // merchants
     RCTYPE_CHEST_GAME, //todo replace this once we implement it, just using it to exclude for now
     RCTYPE_LINKS_POCKET, //todo this feels hacky
     RCTYPE_GOSSIP_STONE,
@@ -64,6 +66,7 @@ typedef enum {
     RCAREA_ICE_CAVERN,
     RCAREA_GERUDO_TRAINING_GROUND,
     RCAREA_GANONS_CASTLE,
+    //If adding any more areas, Check Tracker will need a refactor
     RCAREA_INVALID
 } RandomizerCheckArea;
 
@@ -92,5 +95,7 @@ namespace RandomizerCheckObjects {
     std::string GetRCAreaName(RandomizerCheckArea area);
     std::map<RandomizerCheck, RandomizerCheckObject> GetAllRCObjects();
     std::map<RandomizerCheckArea, std::map<RandomizerCheck, RandomizerCheckObject>> GetAllRCObjectsByArea();
+    std::map<SceneID, RandomizerCheckArea> GetAllRCAreaBySceneID();
+    RandomizerCheckArea GetRCAreaBySceneID(SceneID sceneId);
     void UpdateImGuiVisibility();
 }

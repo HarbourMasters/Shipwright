@@ -245,6 +245,7 @@ typedef struct {
     /* 0x1420 */ s16 worldMapArea;
     /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
     /* 0x1424 */ s16 healthAccumulator;
+    /* 0x1426 */ u16 pendingSale;
     // #region SOH [General]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to SoH
     /*        */ uint32_t isMasterQuest;
@@ -414,7 +415,7 @@ typedef enum {
 #define EVENTCHKINF_65 0x65
 #define EVENTCHKINF_67 0x67
 #define EVENTCHKINF_68 0x68
-#define EVENTCHKINF_69 0x69
+#define EVENTCHKINF_RAISED_LAKE_HYLIA_WATER 0x69
 #define EVENTCHKINF_TALON_WOKEN_IN_KAKARIKO 0x6A
 
 // 0x6B

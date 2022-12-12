@@ -542,6 +542,7 @@ void SaveManager::InitFileNormal() {
     gSaveContext.magicLevel = 0;
     gSaveContext.infTable[29] = 1;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
+    gSaveContext.pendingSale = ITEM_NONE;
     //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
 
@@ -1821,6 +1822,6 @@ extern "C" void Save_DeleteFile(int fileNum) {
     Ship::ExecuteHooks<Ship::DeleteFile>(fileNum);
 }
 
-extern "C" bool Save_Exist(int fileNum) {
+extern "C" u32 Save_Exist(int fileNum) {
     return SaveManager::Instance->SaveFile_Exist(fileNum);
 }

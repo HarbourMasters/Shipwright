@@ -20,6 +20,7 @@ void func_80A56900(EnHeishi4* this, PlayState* play);
 void func_80A56994(EnHeishi4* this, PlayState* play);
 void func_80A56A50(EnHeishi4* this, PlayState* play);
 void func_80A56ACC(EnHeishi4* this, PlayState* play);
+void EnHeishi4_MarketSneak(EnHeishi4* this, PlayState* play);
 
 const ActorInit En_Heishi4_InitVars = {
     ACTOR_EN_HEISHI4,
@@ -331,11 +332,39 @@ void func_80A56B40(EnHeishi4* this, PlayState* play) {
             return;
         }
         if (this->type == HEISHI4_AT_MARKET_NIGHT) {
-            this->actionFunc = func_80A56614;
-            return;
+            if (CVar_GetS32("gMarketSneak", 0)) {
+                this->actionFunc = EnHeishi4_MarketSneak;
+            } else {
+                this->actionFunc = func_80A56614;
+                return;
+            }
         }
     }
     func_8002F2F4(&this->actor, play);
+}
+
+/*Function that allows child Link to exit from Market entrance to Hyrule Field
+at night.
+*/
+void EnHeishi4_MarketSneak(EnHeishi4* this, PlayState* play) {
+    if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
+        switch (play->msgCtx.choiceIndex) {
+            case 0: //yes
+                if (gSaveContext.n64ddFlag){
+                    play->nextEntranceIndex = Entrance_OverrideNextIndex(0xCD);
+                } else {
+                    play->nextEntranceIndex = 0xCD;
+                } 
+                play->sceneLoadFlag = 0x14;
+                play->fadeTransition = 0x2E;
+                gSaveContext.nextTransitionType = 0x2E;
+                this->actionFunc = func_80A56614;
+                break;
+            case 1: //no
+                this->actionFunc = func_80A56614;
+                break;
+        }
+    }
 }
 
 void EnHeishi4_Update(Actor* thisx, PlayState* play) {

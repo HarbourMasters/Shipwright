@@ -181,6 +181,7 @@ void func_80A6E740(EnHs* this, PlayState* play) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TRADE_COJIRO, GI_ODD_MUSHROOM);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_COJIRO);
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
+            Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LW_TRADE_COJIRO);
         } else {
             s32 itemId = GI_ODD_MUSHROOM;
             func_8002F434(&this->actor, play, itemId, 10000.0f, 50.0f);
@@ -199,6 +200,7 @@ void func_80A6E7BC(EnHs* this, PlayState* play) {
                     GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TRADE_COJIRO, GI_ODD_MUSHROOM);
                     Randomizer_ConsumeAdultTradeItem(play, ITEM_COJIRO);
                     GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
+                    Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LW_TRADE_COJIRO);
                 } else {
                     s32 itemId = GI_ODD_MUSHROOM;
                     func_8002F434(&this->actor, play, itemId, 10000.0f, 50.0f);

@@ -59,7 +59,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gInvertXAxis",
     "gInvertYAxis",
     "gRightStickAiming",
-    "gDisableAutoCenterView",
+    "gDisableAutoCenterViewFirstPerson",
     "gTextSpeed",
     "gMweepSpeed",
     "gForgeTime",
@@ -149,6 +149,9 @@ const std::vector<const char*> enhancementsCvars = {
     "gCrouchStabHammerFix",
     "gCrouchStabFix",
     "gGerudoWarriorClothingFix",
+    "gFixCameraDrift",
+    "gFixCameraSwing",
+    "gFixHangingLedgeSwingRate",
     "gRedGanonBlood",
     "gHoverFishing",
     "gN64WeirdFrames",
@@ -526,6 +529,8 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Allow the cursor to be on any slot
     PRESET_ENTRY_S32("gPauseAnyCursor", 1),
 
+    // Customize Fishing Behaviour
+    PRESET_ENTRY_S32("gCustomizeFishing", 1),
     // Guarantee Bite
     PRESET_ENTRY_S32("gGuaranteeFishingBite", 1),
     // Fish Never Escape

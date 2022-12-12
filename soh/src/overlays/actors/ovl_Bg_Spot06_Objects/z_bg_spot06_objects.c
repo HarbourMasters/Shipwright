@@ -6,6 +6,7 @@
 
 #include "z_bg_spot06_objects.h"
 #include "objects/object_spot06_objects/object_spot06_objects.h"
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 
 #define FLAGS ACTOR_FLAG_9
 
@@ -43,6 +44,7 @@ void BgSpot06Objects_LockSwimToSurface(BgSpot06Objects* this, PlayState* play);
 void BgSpot06Objects_LockFloat(BgSpot06Objects* this, PlayState* play);
 void BgSpot06Objects_WaterPlaneCutsceneWait(BgSpot06Objects* this, PlayState* play);
 void BgSpot06Objects_WaterPlaneCutsceneRise(BgSpot06Objects* this, PlayState* play);
+void BgSpot06Objects_WaterPlaneCutsceneLower(BgSpot06Objects* this, PlayState* play);
 
 const ActorInit Bg_Spot06_Objects_InitVars = {
     ACTOR_BG_SPOT06_OBJECTS,
@@ -150,9 +152,7 @@ void BgSpot06Objects_Init(Actor* thisx, PlayState* play) {
             Actor_ProcessInitChain(thisx, sInitChainWaterPlane);
             thisx->flags = ACTOR_FLAG_4 | ACTOR_FLAG_5;
 
-            if (LINK_IS_ADULT &&
-                ((!gSaveContext.n64ddFlag && !(gSaveContext.eventChkInf[6] & 0x200)) ||
-                 (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE))))  {
+            if (LINK_IS_ADULT && !(Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER))) {
                 if (gSaveContext.sceneSetupIndex < 4) {
                     this->lakeHyliaWaterLevel = -681.0f;
                     play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface =
@@ -189,6 +189,12 @@ void BgSpot06Objects_Init(Actor* thisx, PlayState* play) {
     }
 }
 
+static u8 actionCounter = 0; // Used to perform some actions on subsequent frames
+static s8 waterMovement = 0; // Used to control the water change direction
+static u8 switchPressed = 0; // Used to track when the water fill switch is pressed/depressed
+static u8 prevSwitchState = 0; // Used to track the previous state of the water fill switch
+static Actor* lakeControlFloorSwitch;
+
 void BgSpot06Objects_Destroy(Actor* thisx, PlayState* play) {
     BgSpot06Objects* this = (BgSpot06Objects*)thisx;
 
@@ -203,6 +209,17 @@ void BgSpot06Objects_Destroy(Actor* thisx, PlayState* play) {
         case LHO_WATER_PLANE:
             break;
     }
+
+    if (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
+        // For randomizer when leaving lake hylia while the water level is lowered,
+        // reset the "raise lake hylia water" flag back to on if the water temple is cleared
+        Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
+    }
+
+    actionCounter = 0;
+    waterMovement = 0;
+    switchPressed = 0;
+    prevSwitchState = 0;
 }
 
 /**
@@ -425,6 +442,71 @@ void BgSpot06Objects_Update(Actor* thisx, PlayState* play) {
     if (thisx->params == LHO_WATER_TEMPLE_ENTRANCE_LOCK) {
         CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
     }
+
+    // Bail early for water control system for child or non-rando
+    if (LINK_IS_CHILD || !gSaveContext.n64ddFlag) {
+        return;
+    }
+
+    // Begin setup for Lake Hylia water control system
+    if (actionCounter == 0) {
+        // Object containing floor switch data (and ice block data)
+        Object_Spawn(&play->objectCtx, OBJECT_GAMEPLAY_DANGEON_KEEP);
+
+        s16 switchParams;
+        if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
+            // Toggle-able floor switch,
+            // linked to temp_switch 0x1E (room temporary, cleared when room unloads)
+            switchParams = 0x3E10;
+        } else {
+            // Frozen rusty switch, same flag as above. It's glitched and can't be pressed
+            switchParams = 0x3E81;
+        }
+
+        // Spawn a floor switch
+        lakeControlFloorSwitch = Actor_Spawn(&play->actorCtx, play, ACTOR_OBJ_SWITCH, -896.0f, -1243.0f, 6953.0f, 0, 0, 0, switchParams, false);
+        // Spawn a sign
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_KANBAN, -970.0f, -1242.0f, 6954.0f, 0, 0, 0,
+            0x0000 | (TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN & 0xFF), false);
+
+        // Spawn a Navi check spot when Water Temple isn't cleared
+        if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
+            Actor_Spawn(&play->actorCtx, play, ACTOR_ELF_MSG2, -896.0f, -1243.0f, 6953.0f, 0, 0, 0,
+                0x3D00 | (TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI & 0xFF), false);
+        }
+
+        actionCounter++;
+        return;
+    } else if (actionCounter == 1) {
+        if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
+            // Remove the link to ice block so melting it doesn't set the flag
+            lakeControlFloorSwitch->params = 0x3E01;
+        }
+
+        actionCounter++;
+        return;
+    }
+
+    // Detect when the switch is pressed
+    if (prevSwitchState != (Flags_GetSwitch(play, 0x3E) != 0)) {
+        prevSwitchState = !prevSwitchState;
+        switchPressed = 1;
+    }
+
+    // When pressed, assign the corresponding action func to the water plane and water movement direction
+    if (switchPressed == 1 && thisx->params == LHO_WATER_PLANE) {
+        // Lower water
+        if (waterMovement >= 0) {
+            waterMovement = -1;
+            this->actionFunc = BgSpot06Objects_WaterPlaneCutsceneLower;
+        // Raise water
+        } else {
+            waterMovement = 1;
+            this->actionFunc = BgSpot06Objects_WaterPlaneCutsceneRise;
+        }
+
+        switchPressed = 0;
+    }
 }
 
 /**
@@ -489,7 +571,7 @@ void BgSpot06Objects_Draw(Actor* thisx, PlayState* play) {
  * cleared.
  */
 void BgSpot06Objects_WaterPlaneCutsceneWait(BgSpot06Objects* this, PlayState* play) {
-    if (gSaveContext.eventChkInf[6] & 0x200) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER)) {
         this->actionFunc = BgSpot06Objects_WaterPlaneCutsceneRise;
     }
 }
@@ -505,11 +587,47 @@ void BgSpot06Objects_WaterPlaneCutsceneRise(BgSpot06Objects* this, PlayState* pl
     if (this->lakeHyliaWaterLevel >= 0.0001f) {
         this->dyna.actor.world.pos.y = WATER_LEVEL_RAISED;
         this->actionFunc = BgSpot06Objects_DoNothing;
+
+        // On rando, this is used with the water control system switch to finalize raising the water
+        if (gSaveContext.n64ddFlag) {
+            this->lakeHyliaWaterLevel = 0;
+            Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER); // Set the "raise lake hylia water" flag
+            play->roomCtx.unk_74[0] = 0; // Apply the moving under water texture to lake hylia ground
+        }
     } else {
         Math_SmoothStepToF(&this->lakeHyliaWaterLevel, 1.0f, 0.1f, 1.0f, 0.001f);
         play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface = WATER_LEVEL_RIVER_LOWERED;
         play->colCtx.colHeader->waterBoxes[LHWB_MAIN_1].ySurface = this->dyna.actor.world.pos.y;
         play->colCtx.colHeader->waterBoxes[LHWB_MAIN_2].ySurface = this->dyna.actor.world.pos.y;
+    }
+
+    func_8002F948(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
+}
+
+/**
+ * Custom action func to lower the Laker Hylia water plane from a switch.
+ */
+void BgSpot06Objects_WaterPlaneCutsceneLower(BgSpot06Objects* this, PlayState* play) {
+    f32 yPos = this->dyna.actor.world.pos.y = this->lakeHyliaWaterLevel + WATER_LEVEL_RAISED;
+
+    // A slightly smaller number thatn -680 (which is when textures change)
+    // Then we change the position since the "low water" texture has a different height
+    if (this->lakeHyliaWaterLevel <= -679.9f) {
+        this->dyna.actor.world.pos.y = (this->lakeHyliaWaterLevel + 680.0f) + WATER_LEVEL_RAISED;
+    }
+
+    gSaveContext.eventChkInf[6] &= ~0x200; // Unset the "raised lake hylia water" flag
+    play->roomCtx.unk_74[0] = 87; // Remove the moving under water texture from lake hylia ground
+
+    if (this->lakeHyliaWaterLevel <= -681.0f) {
+        this->dyna.actor.world.pos.y = WATER_LEVEL_RAISED;
+        this->actionFunc = BgSpot06Objects_DoNothing;
+    } else {
+        // Go slightly beyond -681 so the smoothing doesn't slow down too much (matches the reverse of water rise func)
+        Math_SmoothStepToF(&this->lakeHyliaWaterLevel, -682.0f, 0.1f, 1.0f, 0.001f);
+        play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface = WATER_LEVEL_RIVER_LOWERED;
+        play->colCtx.colHeader->waterBoxes[LHWB_MAIN_1].ySurface = yPos;
+        play->colCtx.colHeader->waterBoxes[LHWB_MAIN_2].ySurface = yPos;
     }
 
     func_8002F948(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
