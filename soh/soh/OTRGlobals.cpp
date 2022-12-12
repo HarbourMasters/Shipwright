@@ -121,6 +121,7 @@ OTRGlobals::OTRGlobals() {
     context = Ship::Window::CreateInstance("Ship of Harkinian", OTRFiles);
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
+    gOnlineClient = std::make_shared<OnlineClient>();
 
     hasMasterQuest = hasOriginal = false;
 
@@ -166,6 +167,7 @@ OTRGlobals::OTRGlobals() {
 }
 
 OTRGlobals::~OTRGlobals() {
+    gOnlineClient->CloseClient();
 }
 
 bool OTRGlobals::HasMasterQuest() {
@@ -2043,12 +2045,20 @@ extern "C" void Overlay_DisplayText(float duration, const char* text) {
     SohImGui::GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
+extern "C" void CloseClient() {
+    if (OTRGlobals::Instance->gOnlineClient->running) {
+        OTRGlobals::Instance->gOnlineClient->CloseClient();
+    }
+}
+
 extern "C" void OTRSendPacketToServer() {
-    if (client.running) {
-        gPacket.initialized = 1;
-        client.SendPacketMessage((OnlinePacket*)&gPacket);
-        gPacket.puppetPacket.sound_id = 0;
-        gPacket.puppetPacket.damageValue = 0;
-        gPacket.puppetPacket.damageEffect = 0;
+    if (OTRGlobals::Instance->gOnlineClient->running) {
+        OTRGlobals::Instance->gOnlineClient->SendPuppetPacketMessage((PuppetPacket*)&gPuppetPacket);
+        gPuppetPacket.sound_id[0] = 0;
+        gPuppetPacket.sound_id[1] = 0;
+        gPuppetPacket.sound_id[2] = 0;
+        gPuppetPacket.sound_id[3] = 0;
+        gPuppetPacket.damageValue = 0;
+        gPuppetPacket.damageEffect = 0;
     }
 }

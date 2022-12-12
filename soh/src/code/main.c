@@ -143,5 +143,7 @@ void Main(void* arg) {
     func_800FBFD8();
     osSyncPrintf("mainproc 実行終了\n"); // "End of execution"
 
+    CloseClient();
+
     Heaps_Free();
 }

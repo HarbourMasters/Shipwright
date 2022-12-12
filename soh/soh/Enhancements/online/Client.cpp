@@ -8,7 +8,6 @@ std::thread initThread;
 std::jthread receiveThread;
 
 UDPsocket client;
-UDPpacket* p;
 IPaddress srvadd;
 
 extern "C" void SetLinkPuppetData(PuppetPacket* packet, uint8_t player_id);
@@ -16,55 +15,78 @@ extern "C" void SetOnlineInventoryData(InventoryPacket* packet);
 
 uint8_t player_id = -1;
 
-void OnlineClient::SendPacketMessage(OnlinePacket* packet) {
+void OnlineClient::SendPuppetPacketMessage(PuppetPacket* packet) {
     if (client != nullptr) {
+        UDPpacket* newPacket;
+
+        newPacket = SDLNet_AllocPacket(sizeof(PuppetPacket));
+
         packet->player_id = player_id;
-        memcpy(p->data, packet, sizeof(OnlinePacket));
-        p->len = sizeof(OnlinePacket);
-        SDLNet_UDP_Send(client, -1, p);
+        packet->packet_type = 1;
+
+        newPacket->address.host = srvadd.host;
+        newPacket->address.port = srvadd.port;
+        newPacket->len = sizeof(PuppetPacket);
+
+        memcpy(newPacket->data, packet, sizeof(PuppetPacket));
+
+        SDLNet_UDP_Send(client, -1, newPacket);
+
+        SDLNet_FreePacket(newPacket);
+    }
+}
+
+void OnlineClient::CloseClient() {
+    if (running) {
+        running = false;
+        SDLNet_UDP_Close(client);
+        SDLNet_Quit();
     }
 }
 
 void OnlineClient::InitClient(char* ipAddr, int port) {
-    SDLNet_Init();
+    CloseClient();
 
-    p = SDLNet_AllocPacket(sizeof(OnlinePacket));
+    SDLNet_Init();
 
     SDLNet_ResolveHost(&srvadd, ipAddr, port);
     client = SDLNet_UDP_Open(0);
-
-    p->address.host = srvadd.host;
-    p->address.port = srvadd.port;
 
     running = true;
     receiveThread = std::jthread(&OnlineClient::RunClientReceive, this);
 }
 
-uint8_t binded = 0;
-
 void OnlineClient::RunClientReceive() {
 
     while (running) {
+        UDPpacket* p;
+
+        p = SDLNet_AllocPacket(1024);
+        p->address.host = srvadd.host;
+        p->address.port = srvadd.port;
+
         if (SDLNet_UDP_Recv(client, p)) {
-            OnlinePacket onlinePacket;
-            memcpy(&onlinePacket, p->data, sizeof(OnlinePacket));
+            ConnectionPacket* connectionPacket = new ConnectionPacket();
+            memcpy(connectionPacket, p->data, sizeof(ConnectionPacket));
 
-            if (p->len == 1 && binded == 0) {
-                memcpy(&player_id, p->data, 1);
+            // Connection Packet
+            if (connectionPacket->packet_type == 0) {
+                SDLNet_UDP_Unbind(client, player_id);
+
+                memcpy(&player_id, &connectionPacket->player_id, sizeof(connectionPacket->player_id));
                 SDLNet_UDP_Bind(client, player_id, &srvadd);
-                binded = 1;
-            } else if (binded == 1 && onlinePacket.is_you == 0) {
-                SetLinkPuppetData(&onlinePacket.puppetPacket, onlinePacket.player_id);
-                SetOnlineInventoryData(&onlinePacket.inventoryPacket);
             }
+            
+            // Puppet Packet
+            if (connectionPacket->packet_type == 1) {
+                PuppetPacket* puppetPacket = new PuppetPacket();
+                memcpy(puppetPacket, p->data, sizeof(PuppetPacket));
+                SetLinkPuppetData(puppetPacket, puppetPacket->player_id);
+            }
+
+            delete connectionPacket;
         }
+
+        SDLNet_FreePacket(p);
     }
-}
-
-void OnlineClient::CloseClient() {
-    SDLNet_Quit();
-}
-
-OnlineClient::~OnlineClient() {
-    running = false;
 }

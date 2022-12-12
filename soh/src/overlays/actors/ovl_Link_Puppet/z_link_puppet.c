@@ -123,6 +123,7 @@ void LinkPuppet_Update(Actor* thisx, PlayState* play) {
 
     Actor_UpdateBgCheckInfo(play, &this->actor, 15.0f, 30.0f, puppetHeight, 0x1D);
 
+    /*
     if (this->damageTimer > 0) {
         this->damageTimer--;
     }
@@ -190,6 +191,7 @@ void LinkPuppet_Update(Actor* thisx, PlayState* play) {
 
         this->damageTimer = 18;
     }
+    */
 
     Collider_UpdateCylinder(thisx, &this->collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
@@ -215,10 +217,12 @@ void LinkPuppet_Update(Actor* thisx, PlayState* play) {
         this->linkSkeleton.jointTable = this->packet.jointTable;
     }
 
-    if (this->packet.sound_id != 0) {
-        Audio_PlaySoundGeneral(this->packet.sound_id, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
-                               &D_801333E8);
-        this->packet.sound_id = 0;
+    for (size_t i = 0; i < 4; i++) {
+        if (this->packet.sound_id[i] != 0) {
+            Audio_PlaySoundGeneral(this->packet.sound_id[i], &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
+                                   &D_801333E8);
+            this->packet.sound_id[i] = 0;
+        }
     }
 }
 

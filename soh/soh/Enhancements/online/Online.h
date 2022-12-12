@@ -20,10 +20,14 @@ typedef struct {
 } PosRotOnline;
 
 typedef struct PuppetPacket {
+    uint8_t packet_type;
+
+    uint8_t player_id;
+
     PosRotOnline posRot;
     uint8_t biggoron_broken;
     uint16_t scene_id;
-    uint16_t sound_id;
+    uint16_t sound_id[4];
     uint8_t puppet_age;
 
     // SkelAnime Data
@@ -45,8 +49,8 @@ typedef struct PuppetPacket {
 typedef struct {
     /* 0x00 */ uint8_t items[24];
     /* 0x18 */ int8_t ammo[16];
-    /* 0x28 */ uint16_t equipment; // a mask where each nibble corresponds to a type of equipment `EquipmentType`, and each
-                              // bit to an owned piece `EquipInv*`
+    /* 0x28 */ uint16_t equipment; // a mask where each nibble corresponds to a type of equipment `EquipmentType`, and
+                                   // each bit to an owned piece `EquipInv*`
     /* 0x2C */ uint32_t upgrades;
     /* 0x30 */ uint32_t questItems;
     /* 0x34 */ uint8_t dungeonItems[20];
@@ -56,28 +60,24 @@ typedef struct {
 } InventoryZ64; // size = 0x5E
 
 typedef struct InventoryPacket {
+    uint8_t packet_type;
     InventoryZ64 inventory;
 } InventoryPacket;
 
-typedef struct OnlinePacket {
-    uint8_t initialized;
+typedef struct ConnectionPacket {
+    uint8_t packet_type;
     uint8_t player_id;
-    uint8_t is_you;
-    PuppetPacket puppetPacket;
-    InventoryPacket inventoryPacket;
-} OnlinePacket;
+} ConnectionPacket;
 
 class OnlineClient {
   public:
     bool running = false;
 
     void InitClient(char* ipAddr, int port);
-    void SendPacketMessage(OnlinePacket* packet);
+    void SendPuppetPacketMessage(PuppetPacket* packet);
 
-    ~OnlineClient();
+    void CloseClient();
 
   private:
     void RunClientReceive();
-    void CloseClient();
-
 };

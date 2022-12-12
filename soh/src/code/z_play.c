@@ -1684,23 +1684,21 @@ void Play_Main(GameState* thisx) {
         Play_Update(play);
     }
 
-    gPacket.puppetPacket.posRot.pos = GET_PLAYER(play)->actor.world.pos;
-    gPacket.puppetPacket.posRot.rot = GET_PLAYER(play)->actor.shape.rot;
-    memcpy(gPacket.puppetPacket.jointTable, GET_PLAYER(play)->skelAnime.jointTable, 6 * PLAYER_LIMB_MAX);
-    gPacket.puppetPacket.biggoron_broken = (gSaveContext.swordHealth <= 0.0f);
+    gPuppetPacket.posRot.pos = GET_PLAYER(play)->actor.world.pos;
+    gPuppetPacket.posRot.rot = GET_PLAYER(play)->actor.shape.rot;
+    memcpy(gPuppetPacket.jointTable, GET_PLAYER(play)->skelAnime.jointTable, 6 * PLAYER_LIMB_MAX);
+    gPuppetPacket.biggoron_broken = (gSaveContext.swordHealth <= 0.0f);
 
-    gPacket.puppetPacket.shieldType = GET_PLAYER(play)->currentShield;
-    gPacket.puppetPacket.sheathType = GET_PLAYER(play)->sheathType;
-    gPacket.puppetPacket.leftHandType = GET_PLAYER(play)->leftHandType;
-    gPacket.puppetPacket.rightHandType = GET_PLAYER(play)->rightHandType;
+    gPuppetPacket.shieldType = GET_PLAYER(play)->currentShield;
+    gPuppetPacket.sheathType = GET_PLAYER(play)->sheathType;
+    gPuppetPacket.leftHandType = GET_PLAYER(play)->leftHandType;
+    gPuppetPacket.rightHandType = GET_PLAYER(play)->rightHandType;
 
-    gPacket.puppetPacket.tunicType = GET_PLAYER(play)->currentTunic;
-    gPacket.puppetPacket.bootsType = GET_PLAYER(play)->currentBoots;
-    gPacket.puppetPacket.faceType = GET_PLAYER(play)->actor.shape.face;
-    gPacket.puppetPacket.scene_id = play->sceneNum;
-    gPacket.puppetPacket.puppet_age = gSaveContext.linkAge;
-
-    gPacket.inventoryPacket.inventory = gSaveContext.inventory;
+    gPuppetPacket.tunicType = GET_PLAYER(play)->currentTunic;
+    gPuppetPacket.bootsType = GET_PLAYER(play)->currentBoots;
+    gPuppetPacket.faceType = GET_PLAYER(play)->actor.shape.face;
+    gPuppetPacket.scene_id = play->sceneNum;
+    gPuppetPacket.puppet_age = gSaveContext.linkAge;
 
     OTRSendPacketToServer();
 

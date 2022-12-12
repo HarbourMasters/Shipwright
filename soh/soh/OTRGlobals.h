@@ -21,6 +21,7 @@ public:
 
     std::shared_ptr<Ship::Window> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
+    std::shared_ptr<OnlineClient> gOnlineClient;
     std::shared_ptr<Randomizer> gRandomizer;
 
     OTRGlobals();

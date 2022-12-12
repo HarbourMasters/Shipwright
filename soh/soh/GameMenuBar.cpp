@@ -1134,7 +1134,7 @@ namespace GameMenuBar {
             CVar_SetS32("gOnlineClientPort", newPort);
 
             if (ImGui::Button("Connect to Game")) {
-                client.InitClient((char*)ipAddr, newPort);
+                OTRGlobals::Instance->gOnlineClient->InitClient((char*)ipAddr, newPort);
             }
 
             ImGui::EndMenu();

@@ -72,10 +72,14 @@ extern "C"
 #endif
 
 typedef struct PuppetPacketZ64 {
+    uint8_t packet_type;
+
+    uint8_t player_id;
+
     PosRot posRot;
     uint8_t biggoron_broken;
     uint16_t scene_id;
-    uint16_t sound_id;
+    uint16_t sound_id[4];
     uint8_t puppet_age;
 
     // SkelAnime Data
@@ -95,18 +99,16 @@ typedef struct PuppetPacketZ64 {
 } PuppetPacketZ64;
 
 typedef struct InventoryPacketZ64 {
+    uint8_t packet_type;
     Inventory inventory;
 } InventoryPacketZ64;
 
-typedef struct OnlinePacketZ64 {
-    uint8_t initialized;
+typedef struct ConnectionPacketZ64 {
+    uint8_t packet_type;
     uint8_t player_id;
-    uint8_t is_you;
-    PuppetPacketZ64 puppetPacket;
-    InventoryPacketZ64 inventoryPacket;
-} OnlinePacketZ64;
+} ConnectionPacketZ64;
 
-OnlinePacketZ64 gPacket;
+PuppetPacketZ64 gPuppetPacket;
 
 typedef struct{
     /* 0x00 */ char unk[0x4];
