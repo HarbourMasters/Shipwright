@@ -3211,7 +3211,7 @@ void DrawRandoEditor(bool& open) {
                     if (CVar_GetS32("gRandomizeShuffleGrottosEntrances", RO_GENERIC_OFF)) {
                         UIWidgets::Spacer(0);
                         ImGui::SetCursorPosX(20);
-                        UIWidgets::EnhancementCheckbox("Mix Grotts", "gRandomizeMixGrottos");
+                        UIWidgets::EnhancementCheckbox("Mix Grottos", "gRandomizeMixGrottos");
                         UIWidgets::InsertHelpHoverText("Grotto entrances will be part of the mixed pool");
                     }
                 }
