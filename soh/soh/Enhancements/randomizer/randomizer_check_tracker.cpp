@@ -485,7 +485,11 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
             (showDungeonTokens && RandomizerCheckObjects::AreaIsDungeon(rcObj.rcArea))
         ) &&
         (rcObj.rcType != RCTYPE_COW                 || showCows) &&
-        (rcObj.rcType != RCTYPE_ADULT_TRADE         || showAdultTrade) &&
+        (rcObj.rcType != RCTYPE_ADULT_TRADE ||
+         showAdultTrade ||
+         rcObj.rc == RC_KAK_ANJU_AS_ADULT ||  // adult trade checks that are always shuffled
+         rcObj.rc == RC_DMT_TRADE_CLAIM_CHECK // even when shuffle adult trade is off
+        ) &&
         (rcObj.rc != RC_KF_KOKIRI_SWORD_CHEST       || showKokiriSword) &&
         (rcObj.rc != RC_ZR_MAGIC_BEAN_SALESMAN      || showBeans) &&
         (rcObj.rc != RC_HC_MALON_EGG                || showWeirdEgg) &&
