@@ -478,7 +478,12 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
             rcObj.vOrMQ == RCVORMQ_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId)
         ) &&
         (rcObj.rcType != RCTYPE_SHOP                || showShops) &&
-        (rcObj.rcType != RCTYPE_SCRUB               || showScrubs) &&
+        (rcObj.rcType != RCTYPE_SCRUB ||
+         showScrubs || 
+         rcObj.rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
+         rcObj.rc == RC_HF_DEKU_SCRUB_GROTTO ||
+         rcObj.rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT
+        ) &&
         (rcObj.rcType != RCTYPE_MERCHANT            || showMerchants) &&
         (rcObj.rcType != RCTYPE_SKULL_TOKEN ||
             (showOverworldTokens && RandomizerCheckObjects::AreaIsOverworld(rcObj.rcArea)) ||
