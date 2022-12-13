@@ -630,7 +630,7 @@ void func_80ACB274(EnOwl* this, PlayState* play) {
 void EnOwl_WaitDeathMountainShortcut(EnOwl* this, PlayState* play) {
     EnOwl_LookAtLink(this, play);
 
-    if (!gSaveContext.magicAcquired && !gSaveContext.n64ddFlag) {
+    if (!gSaveContext.isMagicAcquired && !gSaveContext.n64ddFlag) {
         if (func_80ACA558(this, play, 0x3062)) {
             Audio_PlayFanfare(NA_BGM_OWL);
             this->actionFunc = func_80ACB274;
@@ -958,7 +958,11 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                     osSyncPrintf("SPOT 06 の デモがはしった\n"); // "Demo of SPOT 06 has been completed"
                     osSyncPrintf(VT_RST);
                     if (gSaveContext.n64ddFlag) {
-                        play->nextEntranceIndex = 0x027E;
+                        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
+                            play->nextEntranceIndex = Entrance_OverrideNextIndex(0x027E);
+                        } else {
+                            play->nextEntranceIndex = 0x027E;
+                        }
                         play->sceneLoadFlag = 0x14;
                         play->fadeTransition = 2;
                         break;
@@ -969,7 +973,11 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                 case 8:
                 case 9:
                     if (gSaveContext.n64ddFlag) {
-                        play->nextEntranceIndex = 0x0554;
+                        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
+                            play->nextEntranceIndex = Entrance_OverrideNextIndex(0x0554);
+                        } else {
+                            play->nextEntranceIndex = 0x0554;
+                        }
                         play->sceneLoadFlag = 0x14;
                         play->fadeTransition = 2;
                         break;
@@ -1349,7 +1357,7 @@ void EnOwl_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_800943C8(play->state.gfxCtx);
+    Gfx_SetupDL_37Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 8, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeTexIndex]));
     SkelAnime_DrawFlexOpa(play, this->curSkelAnime->skeleton, this->curSkelAnime->jointTable,
                           this->curSkelAnime->dListCount, EnOwl_OverrideLimbDraw, EnOwl_PostLimbUpdate, this);

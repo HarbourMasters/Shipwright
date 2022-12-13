@@ -183,6 +183,7 @@ void func_809F6A20(EnDodojr* this) {
         this->unk_1FC = 3;
         this->actor.velocity.y = 10.0f;
     }
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DODONGO_BABY]++;
 }
 
 void func_809F6AC4(EnDodojr* this) {
@@ -580,7 +581,7 @@ void func_809F7B3C(EnDodojr* this, PlayState* play) {
         }
     } else {
         bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, BOMB_BODY);
+                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, BOMB_BODY, true);
 
         if (bomb != NULL) {
             bomb->timer = 0;
@@ -643,7 +644,7 @@ void EnDodojr_Draw(Actor* thisx, PlayState* play) {
     EnDodojr* this = (EnDodojr*)thisx;
 
     if ((this->actionFunc != func_809F73AC) && (this->actionFunc != func_809F7BE4)) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, func_809F7D50, func_809F7DFC,
                           &this->actor);
     }

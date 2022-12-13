@@ -246,11 +246,18 @@ void func_80AE2744(EnRd* this, PlayState* play) {
         }
 
         this->unk_305 = 0;
-        if ((this->actor.xzDistToPlayer <= 150.0f) && func_8002DDE4(play)) {
-            if ((this->actor.params != 2) && (this->unk_305 == 0)) {
-                func_80AE37BC(this);
-            } else {
-                func_80AE392C(this);
+
+        if (this->actor.xzDistToPlayer <= 150.0f && func_8002DDE4(play)) {
+            // Add a height check to redeads/gibdos freeze when Enemy Randomizer is on.
+            // Without the height check, redeads/gibdos can freeze the player from insane distances in
+            // vertical rooms (like the first room in Deku Tree), making these rooms nearly unplayable.
+            s8 enemyRando = CVar_GetS32("gRandomizedEnemies", 0);
+            if (!enemyRando || (enemyRando && this->actor.yDistToPlayer <= 100.0f && this->actor.yDistToPlayer >= -100.0f)) {
+                if ((this->actor.params != 2) && (this->unk_305 == 0)) {
+                    func_80AE37BC(this);
+                } else {
+                    func_80AE392C(this);
+                }
             }
         }
     }
@@ -639,6 +646,11 @@ void func_80AE3C20(EnRd* this) {
     this->actor.speedXZ = 0.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_REDEAD_DEAD);
     EnRd_SetupAction(this, func_80AE3C98);
+    if (this->actor.params >= -1) {
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_REDEAD]++;
+    } else {
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GIBDO]++;
+    }
 }
 
 void func_80AE3C98(EnRd* this, PlayState* play) {
@@ -897,7 +909,7 @@ void EnRd_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     if (this->unk_314 == 0xFF) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, this->unk_314);
         gSPSegment(POLY_OPA_DISP++, 8, &D_80116280[2]);
         POLY_OPA_DISP = SkelAnime_DrawFlex(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
@@ -913,7 +925,7 @@ void EnRd_Draw(Actor* thisx, PlayState* play) {
             }
         }
     } else {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, this->unk_314);
         gSPSegment(POLY_XLU_DISP++, 8, &D_80116280[0]);
         POLY_XLU_DISP =

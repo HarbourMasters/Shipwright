@@ -286,7 +286,7 @@ void EnAnubice_ShootFireball(EnAnubice* this, PlayState* play) {
 
     if (curFrame == 12.0f) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ANUBICE_FIRE, this->fireballPos.x,
-                    this->fireballPos.y + 15.0f, this->fireballPos.z, this->fireballRot.x, this->fireballRot.y, 0, 0);
+                    this->fireballPos.y + 15.0f, this->fireballPos.z, this->fireballRot.x, this->fireballRot.y, 0, 0, true);
     }
 
     if (this->animLastFrame <= curFrame) {
@@ -312,6 +312,7 @@ void EnAnubice_SetupDie(EnAnubice* this, PlayState* play) {
     }
 
     this->actionFunc = EnAnubice_Die;
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ANUBIS]++;
 }
 
 void EnAnubice_Die(EnAnubice* this, PlayState* play) {
@@ -492,7 +493,7 @@ void EnAnubice_PostLimbDraw(struct PlayState* play, s32 limbIndex, Gfx** dList, 
 void EnAnubice_Draw(Actor* thisx, PlayState* play) {
     EnAnubice* this = (EnAnubice*)thisx;
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnAnubice_OverrideLimbDraw,
                       EnAnubice_PostLimbDraw, this);
 }

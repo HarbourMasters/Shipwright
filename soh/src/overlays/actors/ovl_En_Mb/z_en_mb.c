@@ -507,6 +507,13 @@ void EnMb_SetupClubAttack(EnMb* this) {
     f32 frames = Animation_GetLastFrame(&gEnMbClubLiftClubAnim);
     s16 relYawFromPlayer;
 
+    // Rotate Club Moblin towards player in Enemy Randomizer because they're
+    // borderline useless otherwise in most scenarios.
+    if (CVar_GetS32("gRandomizedEnemies", 0)) {
+        Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
+        Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
+    }
+
     this->state = ENMB_STATE_ATTACK;
     Animation_Change(&this->skelAnime, &gEnMbClubLiftClubAnim, 3.0f, 0.0f, frames, ANIMMODE_ONCE_INTERP, 0.0f);
     this->timer3 = 1;
@@ -704,6 +711,14 @@ void EnMb_SpearEndChargeQuick(EnMb* this, PlayState* play) {
 }
 
 void EnMb_ClubWaitAfterAttack(EnMb* this, PlayState* play) {
+
+    // Rotate Club Moblin towards player in Enemy Randomizer because they're
+    // borderline useless otherwise in most scenarios.
+    if (CVar_GetS32("gRandomizedEnemies", 0)) {
+        Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
+        Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
+    }
+
     this->attack = ENMB_ATTACK_NONE;
     if (SkelAnime_Update(&this->skelAnime)) {
         EnMb_SetupClubWaitPlayerNear(this);
@@ -824,8 +839,15 @@ void EnMb_ClubAttack(EnMb* this, PlayState* play) {
     s16 flamesUnused[] = { 20, 40, 0 };
     s16 relYawTarget[] = { -0x9C4, 0, 0xDAC };
 
-    Math_SmoothStepToS(&this->actor.shape.rot.y, relYawTarget[this->attack - 1] + this->actor.world.rot.y, 1, 0x2EE, 0);
-
+    // Rotate Club Moblin towards player in Enemy Randomizer because they're
+    // borderline useless otherwise in most scenarios.
+    if (!CVar_GetS32("gRandomizedEnemies", 0)) {
+        Math_SmoothStepToS(&this->actor.shape.rot.y, relYawTarget[this->attack - 1] + this->actor.world.rot.y, 1, 0x2EE, 0);
+    } else {
+        Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
+        Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
+    }
+    
     if (this->attackCollider.base.atFlags & AT_HIT) {
         this->attackCollider.base.atFlags &= ~AT_HIT;
         if (this->attackCollider.base.at == &player->actor) {
@@ -863,7 +885,12 @@ void EnMb_ClubAttack(EnMb* this, PlayState* play) {
             EffectSsBlast_SpawnWhiteShockwave(play, &effSpawnPos, &effWhiteShockwaveDynamics,
                                               &effWhiteShockwaveDynamics);
             func_80033480(play, &effSpawnPos, 2.0f, 3, 0x12C, 0xB4, 1);
-            Camera_AddQuake(&play->mainCamera, 2, 0x19, 5);
+            // Disable camera shake when the Moblin attacks with Enemy Randomizer enabled.
+            // This camera shake gets very annoying as these Moblins can spawn in many rooms,
+            // and also often (initially) out of reach for the player.
+            if (!CVar_GetS32("gRandomizedEnemies", 0)) {
+                Camera_AddQuake(&play->mainCamera, 2, 0x19, 5);
+            }
             func_800358DC(&this->actor, &effSpawnPos, &this->actor.world.rot, flamesParams, 20, flamesUnused, play,
                           -1, 0);
             EnMb_SetupClubWaitAfterAttack(this);
@@ -1235,10 +1262,23 @@ void EnMb_ClubWaitPlayerNear(EnMb* this, PlayState* play) {
     s32 pad;
     s16 relYawFromPlayer = this->actor.world.rot.y - this->actor.yawTowardsPlayer;
 
+    // Rotate Club Moblin towards player in Enemy Randomizer because they're
+    // borderline useless otherwise in most scenarios.
+    if (CVar_GetS32("gRandomizedEnemies", 0)) {
+        Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
+        Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
+    }
+
     SkelAnime_Update(&this->skelAnime);
     if (Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) < this->playerDetectionRange &&
         !(player->stateFlags1 & 0x4000000) && ABS(relYawFromPlayer) < 0x3E80) {
-        EnMb_SetupClubAttack(this);
+        // Add a height check to the Moblin's Club attack when Enemy Randomizer is on.
+        // Without the height check, the Moblin will attack (and play the sound effect) a lot even though
+        // the Moblin is very far away from the player in vertical rooms (like the first room in Deku Tree).
+        s8 enemyRando = CVar_GetS32("gRandomizedEnemies", 0);
+        if (!enemyRando || (enemyRando && this->actor.yDistToPlayer <= 100.0f && this->actor.yDistToPlayer >= -100.0f)) {
+            EnMb_SetupClubAttack(this);
+        }
     }
 }
 
@@ -1400,12 +1440,14 @@ void EnMb_CheckColliding(EnMb* this, PlayState* play) {
                 if (this->actor.params == ENMB_TYPE_CLUB) {
                     if (this->actor.colChkInfo.health == 0) {
                         EnMb_SetupClubDead(this);
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MOBLIN_CLUB]++;
                     } else if (this->state != ENMB_STATE_CLUB_KNEELING) {
                         EnMb_SetupClubDamaged(this);
                     }
                 } else {
                     if (this->actor.colChkInfo.health == 0) {
                         EnMb_SetupSpearDead(this);
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MOBLIN]++;
                     } else {
                         EnMb_SetupSpearDamaged(this);
                     }
@@ -1523,7 +1565,7 @@ void EnMb_Draw(Actor* thisx, PlayState* play) {
     s32 bodyPartIdx;
     EnMb* this = (EnMb*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, EnMb_PostLimbDraw, thisx);
 

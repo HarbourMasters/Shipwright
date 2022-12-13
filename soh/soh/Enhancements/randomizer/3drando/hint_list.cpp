@@ -2838,7 +2838,7 @@ void HintTable_Init() {
               /*spanish*/ "Para aquel que se convierta en el héroe...&La puerta al futuro está a su disposición..." },
     });
 
-    hintTable[CHILD_ALTAR_TEXT_END_DOTCLOSED] = HintText::Altar({
+    hintTable[CHILD_ALTAR_TEXT_END_DOTSONGONLY] = HintText::Altar({
         // obscure text
         Text{
             "Ye who may become a Hero...&Stand with the Ocarina and&play the Song of Time.",
@@ -2846,7 +2846,7 @@ void HintTable_Init() {
             /*spanish*/ "Para aquel que se convierta en el héroe...&Tome la ocarina y&entone la Canción del Tiempo." },
     });
 
-    hintTable[CHILD_ALTAR_TEXT_END_DOTINTENDED] = HintText::Altar({
+    hintTable[CHILD_ALTAR_TEXT_END_DOTCLOSED] = HintText::Altar({
         // obscure text
         Text{ "Ye who may become a Hero...&Offer the spiritual stones and&play the Song of Time.",
               /*french*/

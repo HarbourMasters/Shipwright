@@ -216,7 +216,7 @@ void EnKusa_SpawnBugs(EnKusa* this, PlayState* play) {
 
     for (i = 0; i < 3; i++) {
         Actor* bug = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_INSECT, this->actor.world.pos.x,
-                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, Rand_ZeroOne() * 0xFFFF, 0, 1);
+                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, Rand_ZeroOne() * 0xFFFF, 0, 1, true);
 
         if (bug == NULL) {
             break;
@@ -310,6 +310,7 @@ void EnKusa_Main(EnKusa* this, PlayState* play) {
         EnKusa_SpawnFragments(this, play);
         EnKusa_DropCollectible(this, play);
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 20, NA_SE_EV_PLANT_BROKEN);
+        gSaveContext.sohStats.count[COUNT_BUSHES_CUT]++;
 
         if ((this->actor.params >> 4) & 1) {
             EnKusa_SpawnBugs(this, play);
@@ -378,6 +379,7 @@ void EnKusa_Fall(EnKusa* this, PlayState* play) {
     if (this->actor.bgCheckFlags & 0xB) {
         if (!(this->actor.bgCheckFlags & 0x20)) {
             SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 20, NA_SE_EV_PLANT_BROKEN);
+            gSaveContext.sohStats.count[COUNT_BUSHES_CUT]++;
         }
         EnKusa_SpawnFragments(this, play);
         EnKusa_DropCollectible(this, play);

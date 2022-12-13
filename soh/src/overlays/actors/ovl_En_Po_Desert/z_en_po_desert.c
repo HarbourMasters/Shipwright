@@ -255,7 +255,7 @@ void EnPoDesert_Draw(Actor* thisx, PlayState* play) {
     EnPoDesert* this = (EnPoDesert*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x0A, Gfx_EnvColor(play->state.gfxCtx, 255, 85, 0, 255));
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_EnvColor(play->state.gfxCtx, this->lightColor.r, this->lightColor.g, this->lightColor.b,

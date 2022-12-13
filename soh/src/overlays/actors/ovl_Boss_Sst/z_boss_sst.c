@@ -278,7 +278,7 @@ void BossSst_Init(Actor* thisx, PlayState* play2) {
     Flags_SetSwitch(play, 0x14);
     if (this->actor.params == BONGO_HEAD) {
         sFloor = (BgSstFloor*)Actor_Spawn(&play->actorCtx, play, ACTOR_BG_SST_FLOOR, sRoomCenter.x,
-                                          sRoomCenter.y, sRoomCenter.z, 0, 0, 0, BONGOFLOOR_REST);
+                                          sRoomCenter.y, sRoomCenter.z, 0, 0, 0, BONGOFLOOR_REST, true);
         SkelAnime_InitFlex(play, &this->skelAnime, &gBongoHeadSkel, &gBongoHeadEyeOpenIdleAnim, this->jointTable,
                            this->morphTable, 45);
         ActorShape_Init(&this->actor.shape, 70000.0f, ActorShadow_DrawCircle, 95.0f);
@@ -292,19 +292,19 @@ void BossSst_Init(Actor* thisx, PlayState* play2) {
         this->actor.shape.rot.y = 0;
         if (Flags_GetClear(play, play->roomCtx.curRoom.num)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, ROOM_CENTER_X, ROOM_CENTER_Y,
-                        ROOM_CENTER_Z + 400.0f, 0, 0, 0, WARP_DUNGEON_ADULT);
+                        ROOM_CENTER_Z + 400.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
             Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, ROOM_CENTER_X, ROOM_CENTER_Y,
-                        ROOM_CENTER_Z - 200.0f, 0, 0, 0, 0);
+                        ROOM_CENTER_Z - 200.0f, 0, 0, 0, 0, true);
             Actor_Kill(&this->actor);
         } else {
             sHands[LEFT] =
                 (BossSst*)Actor_Spawn(&play->actorCtx, play, ACTOR_BOSS_SST, this->actor.world.pos.x + 200.0f,
                                       this->actor.world.pos.y, this->actor.world.pos.z + 400.0f, 0,
-                                      this->actor.shape.rot.y, 0, BONGO_LEFT_HAND);
+                                      this->actor.shape.rot.y, 0, BONGO_LEFT_HAND, true);
             sHands[RIGHT] = (BossSst*)Actor_Spawn(&play->actorCtx, play, ACTOR_BOSS_SST,
                                                   this->actor.world.pos.x + (-200.0f), this->actor.world.pos.y,
                                                   this->actor.world.pos.z + 400.0f, 0, this->actor.shape.rot.y, 0,
-                                                  BONGO_RIGHT_HAND);
+                                                  BONGO_RIGHT_HAND, true);
             sHands[LEFT]->actor.child = &sHands[RIGHT]->actor;
             sHands[RIGHT]->actor.child = &sHands[LEFT]->actor;
 
@@ -1190,10 +1190,10 @@ void BossSst_HeadFinish(BossSst* this, PlayState* play) {
         }
     } else if (this->effects[0].alpha == 0) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, ROOM_CENTER_X, ROOM_CENTER_Y, ROOM_CENTER_Z, 0,
-                    0, 0, WARP_DUNGEON_ADULT);
+                    0, 0, WARP_DUNGEON_ADULT, true);
         Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART,
                     (Math_SinS(this->actor.shape.rot.y) * 200.0f) + ROOM_CENTER_X, ROOM_CENTER_Y,
-                    Math_CosS(this->actor.shape.rot.y) * 200.0f + ROOM_CENTER_Z, 0, 0, 0, 0);
+                    Math_CosS(this->actor.shape.rot.y) * 200.0f + ROOM_CENTER_Z, 0, 0, 0, 0, true);
         BossSst_SetCameraTargets(1.0f, 7);
         this->effectMode = BONGO_NULL;
     } else if (this->timer == 0) {
@@ -2548,6 +2548,7 @@ void BossSst_HeadCollisionCheck(BossSst* this, PlayState* play) {
                 if (Actor_ApplyDamage(&this->actor) == 0) {
                     Enemy_StartFinishingBlow(play, &this->actor);
                     BossSst_HeadSetupDeath(this, play);
+                    gSaveContext.sohStats.timestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
                 } else {
                     BossSst_HeadSetupDamage(this);
                 }
@@ -2709,7 +2710,7 @@ void BossSst_DrawHand(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x80, sBodyColor.r, sBodyColor.g, sBodyColor.b, 255);
 
@@ -2730,7 +2731,7 @@ void BossSst_DrawHand(Actor* thisx, PlayState* play) {
         s32 end;
         s32 pad;
 
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
         end = this->trailCount >> 1;
         idx = (this->trailIndex + 4) % 7;
@@ -2866,7 +2867,7 @@ void BossSst_DrawHead(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_7)) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x80, sBodyColor.r, sBodyColor.g, sBodyColor.b, 255);
         if (!sBodyStatic) {
             gSPSegment(POLY_OPA_DISP++, 0x08, &D_80116280[2]);
@@ -2875,7 +2876,7 @@ void BossSst_DrawHead(Actor* thisx, PlayState* play) {
             gSPSegment(POLY_OPA_DISP++, 0x08, sBodyStaticDList);
         }
     } else {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0x00, 0x80, 255, 255, 255, 255);
         gSPSegment(POLY_XLU_DISP++, 0x08, &D_80116280[2]);
     }
@@ -2907,7 +2908,7 @@ void BossSst_DrawHead(Actor* thisx, PlayState* play) {
         Vec3f vanishMaskPos;
         Vec3f vanishMaskOffset;
 
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0x00, 0x00, 0, 0, 18, 255);
 
         yOffset = 113 * 8 - this->timer * 8;
@@ -3167,7 +3168,7 @@ void BossSst_DrawEffect(Actor* thisx, PlayState* play) {
     if (this->effectMode != BONGO_NULL) {
         OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         if (this->effectMode == BONGO_ICE) {
             gSPSegment(POLY_XLU_DISP++, 0x08,
                        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, play->gameplayFrames % 256, 0x20, 0x10, 1,

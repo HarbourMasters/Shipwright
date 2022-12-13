@@ -965,7 +965,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
         Fishing_InitPondProps(this, play);
         Actor_SpawnAsChild(&play->actorCtx, thisx, play, ACTOR_EN_KANBAN, 53.0f, -17.0f, 982.0f, 0, 0, 0,
                            ENKANBAN_FISHING);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, 0.0f, 0.0f, 0.0f, 0, 0, 0, 200);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, 0.0f, 0.0f, 0.0f, 0, 0, 0, 200, true);
 
         if ((KREG(1) == 1) || ((D_80B7E07D & 3) == 3)) {
             if (sLinkAge != 1) {
@@ -979,7 +979,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
 
         for (i = 0; i < fishCount; i++) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, sFishInits[i].pos.x, sFishInits[i].pos.y,
-                        sFishInits[i].pos.z, 0, Rand_ZeroFloat(0x10000), 0, 100 + i);
+                        sFishInits[i].pos.z, 0, Rand_ZeroFloat(0x10000), 0, 100 + i, true);
         }
     } else {
         if ((thisx->params < 115) || (thisx->params == 200)) {
@@ -1305,7 +1305,7 @@ void Fishing_DrawEffects(FishingEffect* effect, PlayState* play) {
         if (effect->type == FS_EFF_RAIN_DROP) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
-                POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x14);
+                POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x14);
                 gDPSetCombineMode(POLY_XLU_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 150, 255, 255, 30);
                 flag++;
@@ -1326,7 +1326,7 @@ void Fishing_DrawEffects(FishingEffect* effect, PlayState* play) {
         effect++;
     }
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     effect = firstEffect + 30;
     flag = 0;
@@ -1772,7 +1772,7 @@ void Fishing_DrawSinkingLure(PlayState* play) {
     Fishing_UpdateSinkingLure(play);
 
     if (sLurePos.y < WATER_SURFACE_Y(play)) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
         gSPDisplayList(POLY_OPA_DISP++, gFishingSinkingLureSegmentMaterialDL);
 
@@ -1791,7 +1791,7 @@ void Fishing_DrawSinkingLure(PlayState* play) {
             }
         }
     } else {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
         gSPDisplayList(POLY_XLU_DISP++, gFishingSinkingLureSegmentMaterialDL);
 
@@ -1825,7 +1825,7 @@ void Fishing_DrawLureAndLine(PlayState* play, Vec3f* linePos, Vec3f* lineRot) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_Push();
 
     if (D_80B7A6D4 != 0) {
@@ -1867,7 +1867,7 @@ void Fishing_DrawLureAndLine(PlayState* play, Vec3f* linePos, Vec3f* lineRot) {
         Matrix_RotateZ(M_PI / 2, MTXMODE_APPLY);
         Matrix_RotateY(M_PI / 2, MTXMODE_APPLY);
 
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -1889,7 +1889,7 @@ void Fishing_DrawLureAndLine(PlayState* play, Vec3f* linePos, Vec3f* lineRot) {
         Fishing_DrawLureHook(play, &hookPos[1], &sLureHookRefPos[1], 1);
     }
 
-    POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x14);
+    POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x14);
 
     gDPSetCombineMode(POLY_XLU_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 55);
@@ -1963,7 +1963,7 @@ void Fishing_DrawLureAndLine(PlayState* play, Vec3f* linePos, Vec3f* lineRot) {
     }
 
     Matrix_Pop();
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -2058,7 +2058,7 @@ void Fishing_DrawRod(PlayState* play) {
         }
     }
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPDisplayList(POLY_OPA_DISP++, gFishingRodMaterialDL);
 
@@ -2900,24 +2900,24 @@ f32 Fishing_GetMinimumRequiredScore() {
     // RANDOTODO: update the enhancement sliders to not allow
     // values above rando fish weight values when rando'd
     if(sLinkAge == 1) {
-        weight = CVar_GetS32("gChildMinimumWeightFish", 10);
+        weight = CVar_GetS32("gCustomizeFishing", 0) ? CVar_GetS32("gChildMinimumWeightFish", 10) : 10;
     } else {
-        weight = CVar_GetS32("gAdultMinimumWeightFish", 13);     
+        weight = CVar_GetS32("gCustomizeFishing", 0) ? CVar_GetS32("gAdultMinimumWeightFish", 13) : 13;     
     }
 
     return sqrt(((f32)weight - 0.5f) / 0.0036f);
 }
 
 bool getInstantFish() {
-    return CVar_GetS32("gInstantFishing", 0);
+    return CVar_GetS32("gCustomizeFishing", 0) && CVar_GetS32("gInstantFishing", 0);
 }
 
 bool getGuaranteeBite() {
-    return CVar_GetS32("gGuaranteeFishingBite", 0);
+    return CVar_GetS32("gCustomizeFishing", 0) && CVar_GetS32("gGuaranteeFishingBite", 0);
 }
 
 bool getFishNeverEscape() {
-    return CVar_GetS32("gFishNeverEscape", 0);
+    return CVar_GetS32("gCustomizeFishing", 0) && CVar_GetS32("gFishNeverEscape", 0);
 }
 
 void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
@@ -4316,7 +4316,7 @@ void Fishing_LoachPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3
 void Fishing_DrawFish(Actor* thisx, PlayState* play) {
     Fishing* this = (Fishing*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     Matrix_Translate(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, MTXMODE_NEW);
     Matrix_RotateY(((this->unk_162 + this->actor.shape.rot.y) / 32768.0f) * M_PI, MTXMODE_APPLY);
@@ -5122,7 +5122,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                 Player* player = GET_PLAYER(play);
 
                 if (gSaveContext.temporaryWeapon) {
-                    player->currentSwordItem = ITEM_NONE;
+                    player->currentSwordItemId = ITEM_NONE;
                     gSaveContext.equips.buttonItems[0] = ITEM_NONE;
                     Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
                     gSaveContext.temporaryWeapon = false;
@@ -5824,8 +5824,8 @@ void Fishing_DrawOwner(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     if ((this->actor.projectedPos.z < 1500.0f) &&
         (fabsf(this->actor.projectedPos.x) < (100.0f + this->actor.projectedPos.z))) {

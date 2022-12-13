@@ -10,6 +10,7 @@
 #include <Window.h>
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
+#include <vector>
 
 const std::string customMessageTableID = "BaseGameOverrides";
 
@@ -27,6 +28,7 @@ public:
 
     bool HasMasterQuest();
     bool HasOriginal();
+    std::shared_ptr<std::vector<std::string>> ListFiles(std::string path);
 
 private:
 	void CheckSaveFile(size_t sramSize) const;
@@ -134,6 +136,10 @@ int CustomMessage_RetrieveIfExists(PlayState* play);
 void Overlay_DisplayText(float duration, const char* text);
 GetItemEntry ItemTable_Retrieve(int16_t getItemID);
 GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
+void Entrance_ClearEntranceTrackingData(void);
+void Entrance_InitEntranceTrackingData(void);
+void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex);
+void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex);
 #endif
 
 #endif

@@ -221,7 +221,11 @@ void Audio_ProcessSoundRequest(void)
     if (req->sfxId == 0) {
         return;
     }
-    req->sfxId = SfxEditor_GetReplacementSeq(req->sfxId);
+    u16 newSfxId = SfxEditor_GetReplacementSeq(req->sfxId);
+    if (req->sfxId != newSfxId) {
+        gAudioContext.seqReplaced[SEQ_PLAYER_SFX] = 1;
+        req->sfxId = newSfxId;
+    }
     bankId = SFX_BANK(req->sfxId);
     if ((1 << bankId) & D_801333F0) {
         AudioDebug_ScrPrt((const s8*)D_80133340, req->sfxId);

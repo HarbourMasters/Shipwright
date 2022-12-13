@@ -447,7 +447,7 @@ void BgIceShelter_Draw(Actor* thisx, PlayState* play2) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -461,7 +461,12 @@ void BgIceShelter_Draw(Actor* thisx, PlayState* play2) {
             break;
     }
 
-    gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, this->alpha);
+    if (CVar_GetS32("gCosmetics.World_RedIce.Changed", 0)) {
+        Color_RGB8 color = CVar_GetRGB("gCosmetics.World_RedIce.Value", (Color_RGB8){ 255, 0, 0});
+        gDPSetEnvColor(POLY_XLU_DISP++, color.r, color.g, color.b, this->alpha);
+    } else {
+        gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, this->alpha);
+    }
 
     switch ((this->dyna.actor.params >> 8) & 7) {
         case 0:

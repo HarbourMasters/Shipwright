@@ -1,3 +1,4 @@
+#include <Cvar.h>
 #include "draw.h"
 #include "z64.h"
 #include "macros.h"
@@ -7,6 +8,7 @@
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
+#include "objects/gameplay_field_keep/gameplay_field_keep.h"
 
 extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {
     s32 pad;
@@ -26,7 +28,7 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
@@ -56,7 +58,7 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
@@ -72,7 +74,7 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
         gSPGrayscale(POLY_OPA_DISP++, false);
     }
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
@@ -106,7 +108,7 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gDPSetGrayscaleColor(POLY_OPA_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
     gSPGrayscale(POLY_OPA_DISP++, true);
@@ -140,7 +142,7 @@ extern "C" void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry getIt
     s32 pad;
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
    
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
 
@@ -152,6 +154,28 @@ extern "C" void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry getIt
     gSPGrayscale(POLY_XLU_DISP++, false);
 
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiHeartContainerDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+
+extern "C" void Randomizer_DrawIceTrap(PlayState* play, GetItemEntry getItemEntry) {
+    s32 pad;
+    OPEN_DISPS(play->state.gfxCtx);
+
+    if (CVar_GetS32("gLetItSnow", 0)) {
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+        Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
+
+        gDPSetGrayscaleColor(POLY_OPA_DISP++, 100, 100, 100, 255);
+        gSPGrayscale(POLY_OPA_DISP++, true);
+
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gSilverRockDL);
+
+        gSPGrayscale(POLY_OPA_DISP++, false);
+    }
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

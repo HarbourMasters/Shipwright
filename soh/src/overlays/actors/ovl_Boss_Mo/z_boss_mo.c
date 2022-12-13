@@ -364,7 +364,7 @@ void BossMo_Init(Actor* thisx, PlayState* play2) {
             Actor_Kill(&this->actor);
             Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, -280.0f, 0.0f, 0,
                                0, 0, WARP_DUNGEON_ADULT);
-            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -200.0f, -280.0f, 0.0f, 0, 0, 0, 0);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -200.0f, -280.0f, 0.0f, 0, 0, 0, 0, true);
             play->roomCtx.unk_74[0] = 0xFF;
             MO_WATER_LEVEL(play) = -500;
             return;
@@ -956,7 +956,7 @@ void BossMo_Tentacle(BossMo* this, PlayState* play) {
             if ((this == sMorphaTent1) && (sMorphaCore->hitCount >= 3) && (sMorphaTent2 == NULL)) {
                 sMorphaTent2 =
                     (BossMo*)Actor_Spawn(&play->actorCtx, play, ACTOR_BOSS_MO, this->actor.world.pos.x,
-                                         this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, BOSSMO_TENTACLE);
+                                         this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, BOSSMO_TENTACLE, true);
 
                 sMorphaTent2->tentSpawnPos = this->tentSpawnPos;
                 if (sMorphaTent2->tentSpawnPos > 10) {
@@ -1112,7 +1112,7 @@ void BossMo_Tentacle(BossMo* this, PlayState* play) {
                                        this->actor.world.pos.x, -280.0f, this->actor.world.pos.z, 0, 0, 0,
                                        WARP_DUNGEON_ADULT);
                     Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x + 200.0f,
-                                -280.0f, this->actor.world.pos.z, 0, 0, 0, 0);
+                                -280.0f, this->actor.world.pos.z, 0, 0, 0, 0, true);
                     Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS_CLEAR);
                     Flags_SetClear(play, play->roomCtx.curRoom.num);
                 }
@@ -1780,6 +1780,7 @@ void BossMo_CoreCollisionCheck(BossMo* this, PlayState* play) {
                     if (((sMorphaTent1->csCamera == 0) && (sMorphaTent2 == NULL)) ||
                         ((sMorphaTent1->csCamera == 0) && (sMorphaTent2 != NULL) && (sMorphaTent2->csCamera == 0))) {
                         Enemy_StartFinishingBlow(play, &this->actor);
+                        gSaveContext.sohStats.timestamp[TIMESTAMP_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
                         Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x100FF);
                         this->csState = MO_DEATH_START;
                         sMorphaTent1->drawActor = false;
@@ -2576,7 +2577,7 @@ void BossMo_DrawWater(BossMo* this, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     Matrix_Push();
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     Matrix_Translate(0.0f, MO_WATER_LEVEL(play), 0.0f, MTXMODE_NEW);
 
     gSPSegment(POLY_XLU_DISP++, 0x0D,
@@ -2608,7 +2609,7 @@ void BossMo_DrawCore(Actor* thisx, PlayState* play) {
         BossMo_DrawWater(this, play);
     }
     if (this->drawActor) {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, sMorphaTent1->work[MO_TENT_VAR_TIMER] * 3,
@@ -2653,7 +2654,7 @@ void BossMo_DrawCore(Actor* thisx, PlayState* play) {
                 shadowAlpha = 160;
             }
 
-            func_80094044(play->state.gfxCtx);
+            Gfx_SetupDL_44Xlu(play->state.gfxCtx);
 
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, shadowAlpha);
 
@@ -2680,7 +2681,7 @@ void BossMo_DrawCore(Actor* thisx, PlayState* play) {
         Vec3f sp6C;
         Vec3f sp60;
 
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
         gDPSetPrimColor(POLY_XLU_DISP++, 0xFF, 0xFF, 200, 255, 255, (s8)this->fwork[MO_CORE_INTRO_WATER_ALPHA]);
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, (s8)this->fwork[MO_CORE_INTRO_WATER_ALPHA]);
@@ -2733,11 +2734,11 @@ void BossMo_DrawTent(Actor* thisx, PlayState* play) {
     u16 scroll;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, (s8)(this->baseAlpha * 1.5f));
     gDPSetEnvColor(POLY_OPA_DISP++, 150, 150, 150, 0);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, this->work[MO_TENT_BASE_TEX1_X],
                                 this->work[MO_TENT_BASE_TEX1_Y], 32, 32, 1, this->work[MO_TENT_BASE_TEX2_X],
@@ -2920,7 +2921,7 @@ void BossMo_DrawEffects(BossMoEffect* effect, PlayState* play) {
         if (effect->type == MO_FX_BIG_RIPPLE) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
-                func_80094BC4(gfxCtx);
+                Gfx_SetupDL_60NoCDXlu(gfxCtx);
 
                 gDPSetEnvColor(POLY_XLU_DISP++, 155, 155, 255, 0);
 
@@ -2945,7 +2946,7 @@ void BossMo_DrawEffects(BossMoEffect* effect, PlayState* play) {
         if (effect->type == MO_FX_SMALL_RIPPLE) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
-                func_80093D84(play->state.gfxCtx);
+                Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
                 gDPSetEnvColor(POLY_XLU_DISP++, 155, 155, 255, 0);
 
@@ -2971,7 +2972,7 @@ void BossMo_DrawEffects(BossMoEffect* effect, PlayState* play) {
             (effect->type == MO_FX_SPLASH_TRAIL)) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
-                POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
+                POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0);
 
                 gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gDust1Tex));
                 gSPDisplayList(POLY_XLU_DISP++, gMorphaDropletMaterialDL);
@@ -3001,7 +3002,7 @@ void BossMo_DrawEffects(BossMoEffect* effect, PlayState* play) {
         if (effect->type == MO_FX_WET_SPOT) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
-                func_80094044(gfxCtx);
+                Gfx_SetupDL_44Xlu(gfxCtx);
 
                 gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gDust1Tex));
                 gDPSetEnvColor(POLY_XLU_DISP++, 250, 250, 255, 0);
@@ -3029,7 +3030,7 @@ void BossMo_DrawEffects(BossMoEffect* effect, PlayState* play) {
         if (effect->type == MO_FX_BUBBLE) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
-                func_80093D18(play->state.gfxCtx);
+                Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
                 gDPSetEnvColor(POLY_OPA_DISP++, 150, 150, 150, 0);
 
