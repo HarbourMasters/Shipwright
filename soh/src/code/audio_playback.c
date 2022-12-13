@@ -120,7 +120,11 @@ void Audio_NoteSetResamplingRate(NoteSubEu* noteSubEu, f32 resamplingRateInput) 
     } else {
         noteSubEu->bitField1.hasTwoParts = true;
         if (3.99996f < resamplingRateInput) {
-            resamplingRate = 1.99998f;
+            if (CVar_GetS32("gExperimentalOctaveDrop", 0)) {
+                resamplingRate = resamplingRateInput * 0.25;
+            } else {
+                resamplingRate = 1.99998f;
+            }
         } else {
             resamplingRate = resamplingRateInput * 0.5f;
         }
@@ -347,7 +351,7 @@ Instrument* Audio_GetInstrumentInner(s32 fontId, s32 instId) {
 }
 
 Drum* Audio_GetDrum(s32 fontId, s32 drumId) {
-    Drum* drum;
+    Drum* drum = NULL;
 
     if (fontId == 0xFF) {
         return NULL;
@@ -360,7 +364,9 @@ Drum* Audio_GetDrum(s32 fontId, s32 drumId) {
 
     
     SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
-    drum = sf->drums[drumId];
+    if (drumId < sf->numDrums) {
+        drum = sf->drums[drumId];
+    }
     
     if (drum == NULL) {
         gAudioContext.audioErrorFlags = ((fontId << 8) + drumId) + 0x5000000;
@@ -370,7 +376,7 @@ Drum* Audio_GetDrum(s32 fontId, s32 drumId) {
 }
 
 SoundFontSound* Audio_GetSfx(s32 fontId, s32 sfxId) {
-    SoundFontSound* sfx;
+    SoundFontSound* sfx = NULL;
 
     if (fontId == 0xFF) {
         return NULL;
@@ -382,13 +388,15 @@ SoundFontSound* Audio_GetSfx(s32 fontId, s32 sfxId) {
     }
 
     SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
-    sfx = &sf->soundEffects[sfxId];
+    if (sfxId < sf->numSfx) {
+        sfx = &sf->soundEffects[sfxId];
+    }
 
     if (sfx == NULL) {
         gAudioContext.audioErrorFlags = ((fontId << 8) + sfxId) + 0x5000000;
     }
 
-    if (sfx->sample == NULL) {
+    if (sfx != NULL && sfx->sample == NULL) {
         return NULL;
     }
 
@@ -537,6 +545,9 @@ s32 Audio_BuildSyntheticWave(Note* note, SequenceLayer* layer, s32 waveId) {
 
     if (waveId < 128) {
         waveId = 128;
+    }
+    if (waveId > 136) {
+        waveId = 136;
     }
 
     freqScale = layer->freqScale;

@@ -64,22 +64,26 @@ while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
                     echo -e "\n$romfile - $ROMHASH rom hash does not match\n"
                     continue;;
                 esac
-                cp -r "$ASSETDIR"/assets/game "$ASSETDIR"/Extract/assets
-                if [ -n "$ZENITY" ]; then
-                    (echo "# 25%"; echo "25"; sleep 2; echo "# 50%"; echo "50"; sleep 3; echo "# 75%"; echo "75"; sleep 2; echo "# 100%"; echo "100"; sleep 3) |
-                    zenity --progress --title="OTR Generating..." --timeout=10 --percentage=0 --icon-name=soh --window-icon=soh.png --height=80 --width=400 &
-                else
-                    echo "Processing..."
+                if [[ ! -e "$SHIP_HOME"/"$OTRNAME" ]]; then
+                    cp -r "$ASSETDIR"/assets/game "$ASSETDIR"/Extract/assets
+                    if [ -n "$ZENITY" ]; then
+                        (echo "# 25%"; echo "25"; sleep 2; echo "# 50%"; echo "50"; sleep 3; echo "# 75%"; echo "75"; sleep 2; echo "# 100%"; echo "100"; sleep 3) |
+                        zenity --progress --title="OTR Generating..." --timeout=10 --percentage=0 --icon-name=soh --window-icon=soh.png --height=80 --width=400 &
+                    else
+                        echo "Processing..."
+                    fi
+                    assets/extractor/ZAPD.out ed -eh -i assets/extractor/xmls/"${ROM}" -b tmp/rom.z64 -fl assets/extractor/filelists -o placeholder -osf placeholder -gsf 1 -rconf assets/extractor/Config_"${ROM}".xml -se OTR --otrfile "${OTRNAME}" > /dev/null 2>&1
+                    cp "$ASSETDIR"/"$OTRNAME" "$SHIP_HOME"
                 fi
-                assets/extractor/ZAPD.out ed -eh -i assets/extractor/xmls/"${ROM}" -b tmp/rom.z64 -fl assets/extractor/filelists -o placeholder -osf placeholder -gsf 1 -rconf assets/extractor/Config_"${ROM}".xml -se OTR --otrfile "${OTRNAME}" > /dev/null 2>&1
-                cp "$ASSETDIR"/"$OTRNAME" "$SHIP_HOME"
             else
-                if [ -n "$ZENITY" ]; then
-                    zenity --error --timeout=5 --text="Place ROM in $SHIP_HOME" --title="Missing ROM file" --width=500 --width=200
-                else
-                    echo -e "\nPlace ROM in this folder\n"
-                fi	
-                exit
+                if [[ (! -e "$SHIP_HOME"/oot.otr) && (! -e "$SHIP_HOME"/oot-mq.otr) ]]; then
+                    if [ -n "$ZENITY" ]; then
+                        zenity --error --timeout=5 --text="Place ROM in $SHIP_HOME" --title="Missing ROM file" --width=500 --width=200
+                    else
+                        echo -e "\nPlace ROM in this folder\n"
+                    fi	
+                    exit
+                fi
             fi
         done
         if [[ (! -e "$SHIP_HOME"/oot.otr) && (! -e "$SHIP_HOME"/oot-mq.otr) ]]; then

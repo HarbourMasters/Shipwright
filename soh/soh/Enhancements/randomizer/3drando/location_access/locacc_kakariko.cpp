@@ -23,8 +23,6 @@ void AreaTable_Init_Kakariko() {
                   LocationAccess(KAK_GS_TREE,                     {[]{return IsChild && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(KAK_GS_WATCHTOWER,               {[]{return IsChild && (Slingshot || HasBombchus || CanUse(BOW) || CanUse(LONGSHOT)) && AtNight && CanGetNightTimeGS;},
                                                        /*Glitched*/[]{return IsChild && AtNight && CanGetNightTimeGS && (CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::SuperStab, GlitchDifficulty::NOVICE) || (Sticks && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::INTERMEDIATE)));}}),
-                  LocationAccess(KAK_GS_ABOVE_IMPAS_HOUSE,        {[]{return IsAdult && CanUse(HOOKSHOT) && AtNight && CanGetNightTimeGS;},
-                                                       /*Glitched*/[]{return IsAdult && AtNight && CanGetNightTimeGS && ((HoverBoots && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE)) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE));}}),
                 }, {
                   //Exits
                   Entrance(HYRULE_FIELD,                {[]{return true;}}),
@@ -45,6 +43,8 @@ void AreaTable_Init_Kakariko() {
                                              /*Glitched*/[]{return IsAdult && ((HoverBoots && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE)) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE));}}),
                   Entrance(KAK_ROOFTOP,                 {[]{return CanUse(HOOKSHOT) || (LogicManOnRoof && (IsAdult || AtDay || Slingshot || HasBombchus || CanUse(BOW) || CanUse(LONGSHOT)));},
                                              /*Glitched*/[]{return LogicManOnRoof && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE);}}),
+                  Entrance(KAK_IMPAS_ROOFTOP,           {[]{return CanUse(HOOKSHOT);},
+                                             /*Glitched*/[]{return (HoverBoots && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE)) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE);}}),
                   Entrance(THE_GRAVEYARD,               {[]{return true;}}),
                   Entrance(KAK_BEHIND_GATE,             {[]{return IsAdult || (KakarikoVillageGateOpen);},
                                              /*Glitched*/[]{return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);}}),
@@ -54,6 +54,15 @@ void AreaTable_Init_Kakariko() {
                   //Exits
                   Entrance(KAK_IMPAS_HOUSE_BACK, {[]{return true;}}),
                   Entrance(KAKARIKO_VILLAGE,     {[]{return true;}}),
+  });
+
+  areaTable[KAK_IMPAS_ROOFTOP] = Area("Kak Impas Rooftop", "Kakariko Village", KAKARIKO_VILLAGE, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LocationAccess(KAK_GS_ABOVE_IMPAS_HOUSE, {[]{return IsAdult && AtNight && CanGetNightTimeGS && (CanJumpslash || CanUseProjectile);}}),
+                }, {
+                  //Exits
+                  Entrance(KAK_IMPAS_LEDGE,  {[]{return true;}}),
+                  Entrance(KAKARIKO_VILLAGE, {[]{return true;}}),
   });
 
   areaTable[KAK_ROOFTOP] = Area("Kak Rooftop", "Kakariko Village", KAKARIKO_VILLAGE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -73,7 +82,7 @@ void AreaTable_Init_Kakariko() {
                                            /*Glitched*/[]{return CanDoGlitch(GlitchType::TripleSlashClip, GlitchDifficulty::NOVICE);}}),
   });
 
-  areaTable[KAK_CARPENTER_BOSS_HOUSE] = Area("Kak Carpenter Boss House", "", NONE, NO_DAY_NIGHT_CYCLE, {
+  areaTable[KAK_CARPENTER_BOSS_HOUSE] = Area("Kak Carpenter Boss House", "Kak Carpenter Boss House", NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&WakeUpAdultTalon, {[]{return WakeUpAdultTalon || (IsAdult && PocketEgg);}}),
                 }, {}, {
@@ -81,7 +90,7 @@ void AreaTable_Init_Kakariko() {
                   Entrance(KAKARIKO_VILLAGE, {[]{return true;}}),
   });
 
-  areaTable[KAK_HOUSE_OF_SKULLTULA] = Area("Kak House of Skulltula", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[KAK_HOUSE_OF_SKULLTULA] = Area("Kak House of Skulltula", "Kak House of Skulltula", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(KAK_10_GOLD_SKULLTULA_REWARD, {[]{return GoldSkulltulaTokens >= 10;}}),
                   LocationAccess(KAK_20_GOLD_SKULLTULA_REWARD, {[]{return GoldSkulltulaTokens >= 20;}}),
@@ -93,13 +102,13 @@ void AreaTable_Init_Kakariko() {
                   Entrance(KAKARIKO_VILLAGE, {[]{return true;}}),
   });
 
-  areaTable[KAK_IMPAS_HOUSE] = Area("Kak Impas House", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[KAK_IMPAS_HOUSE] = Area("Kak Impas House", "Kak Impas House", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(KAK_IMPAS_HOUSE_NEAR_COW, {[]{return true;}}),
                   Entrance(KAKARIKO_VILLAGE,         {[]{return true;}}),
   });
 
-  areaTable[KAK_IMPAS_HOUSE_BACK] = Area("Kak Impas House Back", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[KAK_IMPAS_HOUSE_BACK] = Area("Kak Impas House Back", "Kak Impas House", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(KAK_IMPAS_HOUSE_FREESTANDING_POH, {[]{return true;}}),
                 }, {
@@ -108,13 +117,13 @@ void AreaTable_Init_Kakariko() {
                   Entrance(KAK_IMPAS_HOUSE_NEAR_COW, {[]{return true;}}),
   });
 
-  areaTable[KAK_IMPAS_HOUSE_NEAR_COW] = Area("Kak Impas House Near Cow", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[KAK_IMPAS_HOUSE_NEAR_COW] = Area("Kak Impas House Near Cow", "Kak Impas House", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(KAK_IMPAS_HOUSE_COW, {[]{return CanPlay(EponasSong);},
                                            /*Glitched*/[]{return (CanDoGlitch(GlitchType::IndoorBombOI, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && CanShield && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED))) && EponasSong;}}),
   }, {});
 
-  areaTable[KAK_WINDMILL] = Area("Kak Windmill", "", NONE, NO_DAY_NIGHT_CYCLE, {
+  areaTable[KAK_WINDMILL] = Area("Kak Windmill", "Windmill and Dampes Grave", NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&DrainWell, {[]{return DrainWell || (IsChild && CanPlay(SongOfStorms));},
                                /*Glitched*/[]{return IsChild && SongOfStorms && (CanDoGlitch(GlitchType::WindmillBombOI, GlitchDifficulty::ADVANCED) || ((Fish || Bugs) && CanShield && ((Bombs && (CanSurviveDamage || (Fairy && NumBottles >= 2))) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE)) &&
@@ -131,7 +140,7 @@ void AreaTable_Init_Kakariko() {
                   Entrance(KAKARIKO_VILLAGE, {[]{return true;}}),
   });
 
-  areaTable[KAK_BAZAAR] = Area("Kak Bazaar", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[KAK_BAZAAR] = Area("Kak Bazaar", "Kak Bazaar", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(KAK_BAZAAR_ITEM_1, {[]{return true;}}),
                   LocationAccess(KAK_BAZAAR_ITEM_2, {[]{return true;}}),
@@ -146,7 +155,7 @@ void AreaTable_Init_Kakariko() {
                   Entrance(KAKARIKO_VILLAGE, {[]{return true;}}),
   });
 
-  areaTable[KAK_SHOOTING_GALLERY] = Area("Kak Shooting Gallery", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[KAK_SHOOTING_GALLERY] = Area("Kak Shooting Gallery", "Kak Shooting Gallery", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(KAK_SHOOTING_GALLERY_REWARD, {[]{return IsAdult && Bow;}}),
                 }, {
@@ -154,7 +163,7 @@ void AreaTable_Init_Kakariko() {
                   Entrance(KAKARIKO_VILLAGE, {[]{return true;}}),
   });
 
-  areaTable[KAK_POTION_SHOP_FRONT] = Area("Kak Potion Shop Front", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[KAK_POTION_SHOP_FRONT] = Area("Kak Potion Shop Front", "Kak Potion Shop", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(KAK_POTION_SHOP_ITEM_1, {[]{return IsAdult;}}),
                   LocationAccess(KAK_POTION_SHOP_ITEM_2, {[]{return IsAdult;}}),
@@ -170,13 +179,13 @@ void AreaTable_Init_Kakariko() {
                   Entrance(KAK_POTION_SHOP_BACK, {[]{return IsAdult;}}),
   });
 
-  areaTable[KAK_POTION_SHOP_BACK] = Area("Kak Potion Shop Back", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[KAK_POTION_SHOP_BACK] = Area("Kak Potion Shop Back", "Kak Potion Shop", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(KAK_BACKYARD,          {[]{return IsAdult;}}),
                   Entrance(KAK_POTION_SHOP_FRONT, {[]{return true;}}),
   });
 
-  areaTable[KAK_ODD_POTION_BUILDING] = Area("Kak Granny's Potion Shop", "", NONE, NO_DAY_NIGHT_CYCLE, {
+  areaTable[KAK_ODD_POTION_BUILDING] = Area("Kak Granny's Potion Shop", "Kak Granny's Potion Shop", NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&OddPoulticeAccess, {[]{return OddPoulticeAccess || (IsAdult && (OddMushroomAccess || (OddMushroom && DisableTradeRevert)));}}),
                 }, {
@@ -186,7 +195,7 @@ void AreaTable_Init_Kakariko() {
                   Entrance(KAK_BACKYARD, {[]{return true;}}),
   });
 
-  areaTable[KAK_REDEAD_GROTTO] = Area("Kak Redead Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[KAK_REDEAD_GROTTO] = Area("Kak Redead Grotto", "Kak Redead Grotto", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(KAK_REDEAD_GROTTO_CHEST, {[]{return IsAdult || (Sticks || KokiriSword || CanUse(DINS_FIRE) || CanUse(MEGATON_HAMMER) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD));}}),
                 }, {
@@ -194,7 +203,7 @@ void AreaTable_Init_Kakariko() {
                   Entrance(KAKARIKO_VILLAGE, {[]{return true;}}),
   });
 
-  areaTable[KAK_OPEN_GROTTO] = Area("Kak Open Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
+  areaTable[KAK_OPEN_GROTTO] = Area("Kak Open Grotto", "Kak Open Grotto", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(KAK_OPEN_GROTTO_CHEST,        {[]{return true;}}),
                   LocationAccess(KAK_OPEN_GROTTO_GOSSIP_STONE, {[]{return true;}}),
@@ -230,7 +239,7 @@ void AreaTable_Init_Kakariko() {
                                               /*Glitched*/[]{return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HookshotJump_Bonk, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::NOVICE);}}),
   });
 
-  areaTable[GRAVEYARD_SHIELD_GRAVE] = Area("Graveyard Shield Grave", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[GRAVEYARD_SHIELD_GRAVE] = Area("Graveyard Shield Grave", "Graveyard Shield Grave", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(GRAVEYARD_SHIELD_GRAVE_CHEST, {[]{return true;}}),
                   //Free Fairies
@@ -239,7 +248,7 @@ void AreaTable_Init_Kakariko() {
                   Entrance(THE_GRAVEYARD, {[]{return true;}}),
   });
 
-  areaTable[GRAVEYARD_HEART_PIECE_GRAVE] = Area("Graveyard Heart Piece Grave", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[GRAVEYARD_HEART_PIECE_GRAVE] = Area("Graveyard Heart Piece Grave", "Graveyard Heart Piece Grave", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(GRAVEYARD_HEART_PIECE_GRAVE_CHEST, {[]{return CanPlay(SunsSong);},
                                                          /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::NOVICE) || ((Bugs || Fish) && CanShield && (Bombs && (CanSurviveDamage || (Fairy && NumBottles >= 2))) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && SunsSong;}}),
@@ -248,7 +257,7 @@ void AreaTable_Init_Kakariko() {
                   Entrance(THE_GRAVEYARD, {[]{return true;}}),
   });
 
-  areaTable[GRAVEYARD_COMPOSERS_GRAVE] = Area("Graveyard Composers Grave", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[GRAVEYARD_COMPOSERS_GRAVE] = Area("Graveyard Composers Grave", "Graveyard Composers Grave", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(GRAVEYARD_COMPOSERS_GRAVE_CHEST, {[]{return HasFireSource;},
                                                        /*Glitched*/[]{return CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::INTERMEDIATE);}}),
@@ -258,7 +267,7 @@ void AreaTable_Init_Kakariko() {
                   Entrance(THE_GRAVEYARD, {[]{return true;}}),
   });
 
-  areaTable[GRAVEYARD_DAMPES_GRAVE] = Area("Graveyard Dampes Grave", "", NONE, NO_DAY_NIGHT_CYCLE, {
+  areaTable[GRAVEYARD_DAMPES_GRAVE] = Area("Graveyard Dampes Grave", "Windmill and Dampes Grave", NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&NutPot,               {[]{return true;}}),
                   EventAccess(&DampesWindmillAccess, {[]{return DampesWindmillAccess || (IsAdult && CanPlay(SongOfTime));},
@@ -276,7 +285,7 @@ void AreaTable_Init_Kakariko() {
                                                      ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsAdult && SongOfTime;}}),
   });
 
-  areaTable[GRAVEYARD_DAMPES_HOUSE] = Area("Graveyard Dampes House", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[GRAVEYARD_DAMPES_HOUSE] = Area("Graveyard Dampes House", "Graveyard Dampes House", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(THE_GRAVEYARD, {[]{return true;}}),
   });

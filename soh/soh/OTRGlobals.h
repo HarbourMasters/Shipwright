@@ -29,6 +29,7 @@ public:
 
     bool HasMasterQuest();
     bool HasOriginal();
+    std::shared_ptr<std::vector<std::string>> ListFiles(std::string path);
 
 private:
 	void CheckSaveFile(size_t sramSize) const;
@@ -37,6 +38,7 @@ private:
 };
 
 uint32_t IsGameMasterQuest();
+std::string GetName(const char* path);
 #endif
 
 #ifndef __cplusplus
@@ -59,6 +61,7 @@ uint32_t ResourceMgr_GetNumGameVersions();
 uint32_t ResourceMgr_GetGameVersion(int index);
 void ResourceMgr_CacheDirectory(const char* resName);
 char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
+const char* ResourceMgr_GetName(const char* path);
 void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
 char* ResourceMgr_LoadJPEG(char* data, int dataSize);
@@ -134,6 +137,10 @@ int CustomMessage_RetrieveIfExists(PlayState* play);
 void Overlay_DisplayText(float duration, const char* text);
 GetItemEntry ItemTable_Retrieve(int16_t getItemID);
 GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
+void Entrance_ClearEntranceTrackingData(void);
+void Entrance_InitEntranceTrackingData(void);
+void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex);
+void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex);
 void OTRSendPuppetPacketToServer();
 void OTRSendGetItemPacketToServer(int16_t itemId);
 #endif

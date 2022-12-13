@@ -212,8 +212,14 @@ void Title_Draw(TitleContext* this) {
     gDPSetRenderMode(POLY_OPA_DISP++, G_RM_XLU_SURF2, G_RM_OPA_CI | CVG_DST_WRAP);
     gDPSetCombineLERP(POLY_OPA_DISP++, TEXEL1, PRIMITIVE, ENV_ALPHA, TEXEL0, 0, 0, 0, TEXEL0, PRIMITIVE, ENVIRONMENT,
         COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
-    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 170, 255, 255, 255);
-    gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 255, 128);
+    if (CVar_GetS32("gCosmetics.Title_NintendoLogo.Changed", 0)) {
+        Color_RGB8 nintendoLogoColor = CVar_GetRGB("gCosmetics.Title_NintendoLogo.Value", (Color_RGB8){0, 0, 255});
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
+        gDPSetEnvColor(POLY_OPA_DISP++, nintendoLogoColor.r, nintendoLogoColor.g, nintendoLogoColor.b, 128);
+    } else {
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 170, 255, 255, 255);
+        gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 255, 128);
+    }
 
     gDPLoadMultiBlock(POLY_OPA_DISP++, nintendo_rogo_static_Tex_001800, 0x100, 1, G_IM_FMT_I, G_IM_SIZ_8b, 32, 32, 0,
         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 2, 11);
@@ -230,7 +236,7 @@ void Title_Draw(TitleContext* this) {
 
     Environment_FillScreen(this->state.gfxCtx, 0, 0, 0, (s16)this->coverAlpha, FILL_SCREEN_XLU);
 
-    sTitleRotY += 300;
+    sTitleRotY += (300 * CVar_GetFloat("gCosmetics.N64Logo_SpinSpeed", 1.0f));
 
     CLOSE_DISPS(this->state.gfxCtx);
 }

@@ -228,21 +228,45 @@ namespace GameControlEditor {
         if (!ImGui::CollapsingHeader("Camera Controls")) {
             return;
         }
-        
-        ImVec2 cursor = ImGui::GetCursorPos();
-        ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
-        UIWidgets::PaddedEnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
-        DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
-        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-        UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
-        DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera\n-C-Up view\n-Weapon Aiming");
-        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+
+        UIWidgets::Spacer(0);
+        SohImGui::BeginGroupPanel("Aiming/First-Person Camera", ImGui::GetContentRegionAvail());
         UIWidgets::PaddedEnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
-        DrawHelpIcon("Allows for aiming with the right stick when:\n-Aiming in the C-Up view\n-Aiming with weapons");
+        DrawHelpIcon("Allows for aiming with the right stick in:\n-First-Person/C-Up view\n-Weapon Aiming");
+        UIWidgets::PaddedEnhancementCheckbox("Invert Aiming X Axis", "gInvertAimingXAxis");
+        DrawHelpIcon("Inverts the Camera X Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-        UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First Person View", "gDisableAutoCenterView");
+        UIWidgets::PaddedEnhancementCheckbox("Invert Aiming Y Axis", "gInvertAimingYAxis");
+        DrawHelpIcon("Inverts the Camera Y Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+        UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First-Person View", "gDisableAutoCenterViewFirstPerson");
         DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
-        UIWidgets::EnhancementSliderFloat("Camera Sensitivity: %d %%", "##Sensitivity", "gCameraSensitivity", 0.01f, 5.0f, "", 1.0f, true, true);
+        UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", "gEnableFirstPersonSensitivity", true, false);
+        if (CVar_GetS32("gEnableFirstPersonSensitivity", 0)) {
+            UIWidgets::EnhancementSliderFloat("Aiming/First-Person Sensitivity: %d %%", "##FirstPersonSensitivity",
+                                                "gFirstPersonCameraSensitivity", 0.01f, 5.0f, "", 1.0f, true, true);
+        } else {
+            CVar_SetFloat("gFirstPersonCameraSensitivity", 1.0f);
+        }
+        SohImGui::EndGroupPanel();
+
+        UIWidgets::Spacer(0);
+        SohImGui::BeginGroupPanel("Third-Person Camera", ImGui::GetContentRegionAvail());
+
+        UIWidgets::PaddedEnhancementCheckbox("Free Camera", "gFreeCamera");
+        DrawHelpIcon("Enables free camera control\nNote: You must remap C buttons off of the right stick in the "
+                            "controller config menu, and map the camera stick to the right stick.");
+        UIWidgets::PaddedEnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
+        DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera");
+        UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
+        DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera");
+        UIWidgets::EnhancementSliderFloat("Third-Person Sensitivity: %d %%", "##ThirdPersonSensitivity",
+                                            "gThirdPersonCameraSensitivity", 0.01f, 5.0f, "", 1.0f, true, true);
+        UIWidgets::EnhancementSliderInt("Camera Distance: %d", "##CamDist",
+                                        "gFreeCameraDistMax", 100, 900, "", 185, true);
+        UIWidgets::EnhancementSliderInt("Camera Transition Speed: %d", "##CamTranSpeed",
+                                        "gFreeCameraTransitionSpeed", 0, 900, "", 25, true);
+        SohImGui::EndGroupPanel();
     }
 
     void DrawDpadControlPanel() {

@@ -84,34 +84,48 @@ void EnArrow_Init(Actor* thisx, PlayState* play) {
     };
     EnArrow* this = (EnArrow*)thisx;
 
-    Color_RGBA8 Arrow_env_ori = { 0, 150, 0, 0 };
-    Color_RGBA8 Arrow_col_ori = { 255, 255, 170, 255 };
-    Color_RGBA8 Light_env_ori = { 255, 255, 0, 255 };
-    Color_RGBA8 Light_col_ori = { 255, 255, 170, 0 };
-    Color_RGBA8 Fire_env_ori = { 255, 0, 0, 255 };
-    Color_RGBA8 Fire_col_ori = { 255, 200, 0, 0 };
-    Color_RGBA8 Ice_env_ori = { 0, 0, 255, 255 };
-    Color_RGBA8 Ice_col_ori = { 170, 255, 255, 0 };
+    if (CVar_GetS32("gCosmetics.Arrows_NormalPrimary.Changed", 0)) {
+        blureNormal.altEnvColor = CVar_GetRGBA("gCosmetics.Arrows_NormalPrimary.Value", (Color_RGBA8){ 0, 150, 0, 0 });
+    } else {
+        blureNormal.altEnvColor = (Color_RGBA8){ 0, 150, 0, 0 };
+    }
+    if (CVar_GetS32("gCosmetics.Arrows_NormalSecondary.Changed", 0)) {
+        blureNormal.altPrimColor = CVar_GetRGBA("gCosmetics.Arrows_NormalSecondary.Value", (Color_RGBA8){ 255, 255, 170, 255 });
+    } else {
+        blureNormal.altPrimColor = (Color_RGBA8){ 255, 255, 170, 255 };
+    }
 
-    if (CVar_GetS32("gUseArrowsCol", 0) != 0) {
-        blureNormal.altPrimColor = CVar_GetRGBA("gNormalArrowCol", Arrow_col_ori);
-        blureNormal.altEnvColor = CVar_GetRGBA("gNormalArrowColEnv", Arrow_env_ori);
-        blureFire.altPrimColor = CVar_GetRGBA("gFireArrowCol", Fire_col_ori);
-        blureFire.altEnvColor = CVar_GetRGBA("gFireArrowColEnv", Fire_env_ori);
-        blureIce.altPrimColor = CVar_GetRGBA("gIceArrowCol", Ice_col_ori);
-        blureIce.altEnvColor = CVar_GetRGBA("gIceArrowColEnv", Ice_env_ori);
-        blureLight.altPrimColor = CVar_GetRGBA("gLightArrowCol", Light_col_ori);
-        blureLight.altEnvColor = CVar_GetRGBA("gLightArrowColEnv", Light_env_ori);
+    if (CVar_GetS32("gCosmetics.Arrows_FirePrimary.Changed", 0)) {
+        blureFire.altEnvColor = CVar_GetRGBA("gCosmetics.Arrows_FirePrimary.Value", (Color_RGBA8){ 255, 200, 0, 0 });
+    } else {
+        blureFire.altEnvColor = (Color_RGBA8){ 255, 200, 0, 0 };
+    }
+    if (CVar_GetS32("gCosmetics.Arrows_FireSecondary.Changed", 0)) {
+        blureFire.altPrimColor = CVar_GetRGBA("gCosmetics.Arrows_FireSecondary.Value", (Color_RGBA8){ 255, 0, 0, 255 });
+    } else {
+        blureFire.altPrimColor = (Color_RGBA8){ 255, 0, 0, 255 };
+    }
 
-        //make sure the alpha values are correct.
-        blureNormal.altPrimColor.a = 255;
-        blureNormal.altEnvColor.a = 0;
-        blureFire.altPrimColor.a = 255;
-        blureFire.altEnvColor.a = 0;
-        blureIce.altPrimColor.a = 255;
-        blureIce.altEnvColor.a = 0;
-        blureLight.altPrimColor.a = 255;
-        blureLight.altEnvColor.a = 0;
+    if (CVar_GetS32("gCosmetics.Arrows_IcePrimary.Changed", 0)) {
+        blureIce.altEnvColor = CVar_GetRGBA("gCosmetics.Arrows_IcePrimary.Value", (Color_RGBA8){ 0, 0, 255, 255 });
+    } else {
+        blureIce.altEnvColor = (Color_RGBA8){ 0, 0, 255, 255 };
+    }
+    if (CVar_GetS32("gCosmetics.Arrows_IceSecondary.Changed", 0)) {
+        blureIce.altPrimColor = CVar_GetRGBA("gCosmetics.Arrows_IceSecondary.Value", (Color_RGBA8){ 170, 255, 255, 0 });
+    } else {
+        blureIce.altPrimColor = (Color_RGBA8){ 170, 255, 255, 0 };
+    }
+
+    if (CVar_GetS32("gCosmetics.Arrows_LightPrimary.Changed", 0)) {
+        blureLight.altEnvColor = CVar_GetRGBA("gCosmetics.Arrows_LightPrimary.Value", (Color_RGBA8){ 255, 255, 0, 255 });
+    } else {
+        blureLight.altEnvColor = (Color_RGBA8){ 255, 255, 0, 255 };
+    }
+    if (CVar_GetS32("gCosmetics.Arrows_LightSecondary.Changed", 0)) {
+        blureLight.altPrimColor = CVar_GetRGBA("gCosmetics.Arrows_LightSecondary.Value", (Color_RGBA8){ 255, 255, 170, 0 });
+    } else {
+        blureLight.altPrimColor = (Color_RGBA8){ 255, 255, 170, 0 };
     }
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
@@ -303,7 +317,7 @@ void EnArrow_Fly(EnArrow* this, PlayState* play) {
             if (this->actor.params == ARROW_NUT) {
                 iREG(50) = -1;
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_M_FIRE1, this->actor.world.pos.x,
-                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
+                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
                 sfxId = NA_SE_IT_DEKU;
             } else {
                 sfxId = NA_SE_IT_SLING_REFLECT;
