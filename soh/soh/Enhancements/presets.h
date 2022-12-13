@@ -176,9 +176,6 @@ const std::vector<const char*> enhancementsCvars = {
 };
 
 const std::vector<const char*> randomizerCvars = {
-    "gChestSizeAndTextureMatchesContents",
-    "gFastChests",
-    "gMMBunnyHood",
     "gRandomizeAllLocationsReachable",
     "gRandomizeBigPoeTargetCount",
     "gRandomizeBlueFireArrows",
