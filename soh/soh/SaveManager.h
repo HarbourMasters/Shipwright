@@ -122,6 +122,7 @@ public:
 
     static void LoadBaseVersion1();
     static void LoadBaseVersion2();
+    static void LoadBaseVersion3();
     static void SaveBase();
 
     std::vector<InitFunc> initFuncs;
