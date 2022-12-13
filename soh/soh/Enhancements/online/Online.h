@@ -46,23 +46,11 @@ typedef struct PuppetPacket {
     uint8_t damageValue;
 } PuppetPacket;
 
-typedef struct {
-    /* 0x00 */ uint8_t items[24];
-    /* 0x18 */ int8_t ammo[16];
-    /* 0x28 */ uint16_t equipment; // a mask where each nibble corresponds to a type of equipment `EquipmentType`, and
-                                   // each bit to an owned piece `EquipInv*`
-    /* 0x2C */ uint32_t upgrades;
-    /* 0x30 */ uint32_t questItems;
-    /* 0x34 */ uint8_t dungeonItems[20];
-    /* 0x48 */ int8_t dungeonKeys[19];
-    /* 0x5B */ int8_t defenseHearts;
-    /* 0x5C */ int16_t gsTokens;
-} InventoryZ64; // size = 0x5E
-
-typedef struct InventoryPacket {
+typedef struct GetItemPacket {
     uint8_t packet_type;
-    InventoryZ64 inventory;
-} InventoryPacket;
+    uint8_t player_id;
+    int16_t get_item;
+} GetItemPacket;
 
 typedef struct ConnectionPacket {
     uint8_t packet_type;
@@ -75,6 +63,7 @@ class OnlineClient {
 
     void InitClient(char* ipAddr, int port);
     void SendPuppetPacketMessage(PuppetPacket* packet);
+    void SendGetItemPacketMessage(int16_t itemId);
 
     void CloseClient();
 

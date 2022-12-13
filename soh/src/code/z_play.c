@@ -1700,7 +1700,7 @@ void Play_Main(GameState* thisx) {
     gPuppetPacket.scene_id = play->sceneNum;
     gPuppetPacket.puppet_age = gSaveContext.linkAge;
 
-    OTRSendPacketToServer();
+    OTRSendPuppetPacketToServer();
 
     if (1 && HREG(63)) {
         LOG_NUM("1", 1);
@@ -2220,20 +2220,10 @@ void Play_PerformSave(PlayState* play) {
 void SetLinkPuppetData(PuppetPacketZ64* packet, u8 player_id) {
     if (puppets[player_id] != NULL) {
         memcpy(&puppets[player_id]->packet, packet, sizeof(PuppetPacketZ64));
-        osSyncPrintf("\nSCENE_NO=%d", packet->scene_id);
     }
 }
 
-void SetOnlineInventoryData(InventoryPacketZ64* packet) {
-    Inventory* newInventory = &packet->inventory;
-
-    for (size_t i = 0; i < 24; i++) {
-        if (newInventory->items[i] != 0xFF && gSaveContext.inventory.items[i] != newInventory->items[i]) {
-            gSaveContext.inventory.items[i] = newInventory->items[i];
-        }
-    }
-
-    if (newInventory->gsTokens > gSaveContext.inventory.gsTokens) {
-        gSaveContext.inventory.gsTokens = newInventory->gsTokens;
-    }
+void SetGetItemData(int16_t itemId) {
+    Player* player = GET_PLAYER(gPlayState);
+    Item_Give_Online(NULL, itemId);
 }

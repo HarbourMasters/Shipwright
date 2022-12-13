@@ -1065,6 +1065,7 @@ void Interface_LoadItemIcon1(PlayState* play, u16 button);
 void Interface_LoadItemIcon2(PlayState* play, u16 button);
 void func_80084BF4(PlayState* play, u16 flag);
 u8 Item_Give(PlayState* play, u8 item);
+u8 Item_Give_Online(PlayState* play, u8 item);
 u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry);
 u8 Item_CheckObtainability(u8 item);
 void PerformAutosave(PlayState* play, u8 item);

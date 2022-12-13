@@ -2021,6 +2021,7 @@ s32 GiveItemEntryFromActor(Actor* actor, PlayState* play, GetItemEntry getItemEn
                     player->getItemId = getItemEntry.getItemId;
                     player->interactRangeActor = actor;
                     player->getItemDirection = absYawDiff;
+
                     return true;
                 }
             }

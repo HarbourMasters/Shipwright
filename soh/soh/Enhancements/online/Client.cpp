@@ -11,7 +11,7 @@ UDPsocket client;
 IPaddress srvadd;
 
 extern "C" void SetLinkPuppetData(PuppetPacket* packet, uint8_t player_id);
-extern "C" void SetOnlineInventoryData(InventoryPacket* packet);
+extern "C" void SetGetItemData(int16_t itemId);
 
 uint8_t player_id = -1;
 
@@ -33,6 +33,31 @@ void OnlineClient::SendPuppetPacketMessage(PuppetPacket* packet) {
         SDLNet_UDP_Send(client, -1, newPacket);
 
         SDLNet_FreePacket(newPacket);
+    }
+}
+
+void OnlineClient::SendGetItemPacketMessage(int16_t itemId) {
+    if (client != nullptr) {
+        UDPpacket* newPacket;
+        newPacket = SDLNet_AllocPacket(sizeof(GetItemPacket));
+
+        GetItemPacket* getItemPacket = new GetItemPacket();
+
+        getItemPacket->player_id = player_id;
+        getItemPacket->packet_type = 2;
+        getItemPacket->get_item = itemId;
+
+        newPacket->address.host = srvadd.host;
+        newPacket->address.port = srvadd.port;
+        newPacket->len = sizeof(GetItemPacket);
+
+        memcpy(newPacket->data, getItemPacket, sizeof(GetItemPacket));
+
+        SDLNet_UDP_Send(client, -1, newPacket);
+
+        SDLNet_FreePacket(newPacket);
+
+        delete getItemPacket;
     }
 }
 
@@ -82,6 +107,15 @@ void OnlineClient::RunClientReceive() {
                 PuppetPacket* puppetPacket = new PuppetPacket();
                 memcpy(puppetPacket, p->data, sizeof(PuppetPacket));
                 SetLinkPuppetData(puppetPacket, puppetPacket->player_id);
+                delete puppetPacket;
+            }
+
+            // Get Item Packet
+            if (connectionPacket->packet_type == 2) {
+                GetItemPacket* getItemPacket = new GetItemPacket();
+                memcpy(getItemPacket, p->data, sizeof(GetItemPacket));
+                SetGetItemData(getItemPacket->get_item);
+                delete getItemPacket;
             }
 
             delete connectionPacket;

@@ -98,10 +98,11 @@ typedef struct PuppetPacketZ64 {
     uint8_t damageValue;
 } PuppetPacketZ64;
 
-typedef struct InventoryPacketZ64 {
+typedef struct GetItemPacketZ64 {
     uint8_t packet_type;
-    Inventory inventory;
-} InventoryPacketZ64;
+    uint8_t player_id;
+    int16_t get_item;
+} GetItemPacketZ64;
 
 typedef struct ConnectionPacketZ64 {
     uint8_t packet_type;
