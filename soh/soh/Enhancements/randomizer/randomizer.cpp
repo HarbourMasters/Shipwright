@@ -47,7 +47,7 @@ const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
 const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
 
-static const char* englishRupeeNames[80] = {
+static const char* englishRupeeNames[81] = {
     "Rupees",       "Bitcoin",       "Bananas",      "Cornflakes", "Gummybears",   "Floopies",    "Dollars",
     "Lemmings",     "Emeralds",      "Bucks",        "Rubles",     "Diamonds",     "Moons",       "Stars",
     "Mana",         "Doll Hairs",    "Dogecoin",     "Mushrooms",  "Experience",   "Friends",     "Coins",
@@ -59,7 +59,7 @@ static const char* englishRupeeNames[80] = {
     "Dollarydoos",  "Copper",        "Silver",       "Platinum",   "Gems",         "Minerals",    "Vespene Gas",
     "Lumber",       "Jiggies",       "Mumbo Tokens", "KF7 Ammo",   "Remote Mines", "Credits",     "Doubloons",
     "Ether",        "Doge",          "Cards",        "Talent",     "Poko",         "Lira",        "Kroner",
-    "Store Credit", "Social Credit", "Cocoa Beans"
+    "Store Credit", "Social Credit", "Cocoa Beans",  "Strawbs"
 };
 
 static const char* germanRupeeNames[41] = {
