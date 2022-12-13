@@ -356,8 +356,8 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
             Randomizer::randoMiscHintsTableID, TEXT_SSH,
             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, 
                 "Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you my&%b{{check}}%w!",
-                "{{check}}",
-                "{{check}}"
+                "Yeaaarrgh! Je suis maudit!^Détruit encore %r{{params}} Araignées de la Malédiction%w et j'aurai quelque chose à te donner {{check}}!",
+                "Yeaaarrgh! Ein Fluch liegt auf mir!^Bitte rette mich, indem du %r{{params}} Spinnen des Fluches%w zerstörst und ich werde dir {{check}} geben!"
             }
         );
         CustomMessageManager::Instance->CreateMessage(

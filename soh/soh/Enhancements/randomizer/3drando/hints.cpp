@@ -142,7 +142,8 @@ Text& GetGanonHintText() {
 
 Text& GetDampeHintText() {
   return dampesText;
-  
+}
+
 Text& GetWarpMinuetText() {
   return warpMinuetText;
 }
@@ -755,7 +756,8 @@ void CreateDampesDiaryText() {
   };
   
   dampesText = temp1 + area + temp2;
-=======
+}
+
 void CreateWarpSongTexts() {
   auto warpSongEntrances = GetShuffleableEntrances(EntranceType::WarpSong, false);
 
