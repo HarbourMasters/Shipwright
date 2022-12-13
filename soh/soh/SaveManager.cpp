@@ -1137,19 +1137,19 @@ void SaveManager::LoadBaseVersion2() {
     }
     if (!gSaveContext.scarecrowLongSongSet) {
         SaveManager::Instance->LoadData("scarecrowLongSongSet", gSaveContext.scarecrowLongSongSet);
-    }
-    if (!ARRAY_COUNT(gSaveContext.scarecrowLongSong)) {
-        SaveManager::Instance->LoadArray("scarecrowLongSong", ARRAY_COUNT(gSaveContext.scarecrowLongSong), [](size_t i) {
-            SaveManager::Instance->LoadStruct("", [&i]() {
-                SaveManager::Instance->LoadData("noteIdx", gSaveContext.scarecrowLongSong[i].noteIdx);
-                SaveManager::Instance->LoadData("unk_01", gSaveContext.scarecrowLongSong[i].unk_01);
-                SaveManager::Instance->LoadData("unk_02", gSaveContext.scarecrowLongSong[i].unk_02);
-                SaveManager::Instance->LoadData("volume", gSaveContext.scarecrowLongSong[i].volume);
-                SaveManager::Instance->LoadData("vibrato", gSaveContext.scarecrowLongSong[i].vibrato);
-                SaveManager::Instance->LoadData("tone", gSaveContext.scarecrowLongSong[i].tone);
-                SaveManager::Instance->LoadData("semitone", gSaveContext.scarecrowLongSong[i].semitone);
+        if (gSaveContext.scarecrowLongSongSet) {
+            SaveManager::Instance->LoadArray("scarecrowLongSong", ARRAY_COUNT(gSaveContext.scarecrowLongSong), [](size_t i) {
+                SaveManager::Instance->LoadStruct("", [&i]() {
+                    SaveManager::Instance->LoadData("noteIdx", gSaveContext.scarecrowLongSong[i].noteIdx);
+                    SaveManager::Instance->LoadData("unk_01", gSaveContext.scarecrowLongSong[i].unk_01);
+                    SaveManager::Instance->LoadData("unk_02", gSaveContext.scarecrowLongSong[i].unk_02);
+                    SaveManager::Instance->LoadData("volume", gSaveContext.scarecrowLongSong[i].volume);
+                    SaveManager::Instance->LoadData("vibrato", gSaveContext.scarecrowLongSong[i].vibrato);
+                    SaveManager::Instance->LoadData("tone", gSaveContext.scarecrowLongSong[i].tone);
+                    SaveManager::Instance->LoadData("semitone", gSaveContext.scarecrowLongSong[i].semitone);
+                });
             });
-        });
+        }
     }
 }
 
