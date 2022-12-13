@@ -732,8 +732,9 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
             return gSaveContext.highScores[HS_POE_POINTS] >= 1000;
         case SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER:
             // Gravedigger has a fix in place that means one of two save locations. Check both.
-            return (gSaveContext.itemGetInf[1] & 0x1000) ||
-                   CVar_GetS32("gGravediggingTourFix", 0) && gSaveContext.sceneFlags[scene].collect & (1 << flag);
+            return (gSaveContext.itemGetInf[1] & 0x1000) || // vanilla flag
+                   ((gSaveContext.n64ddFlag || CVar_GetS32("gGravediggingTourFix", 0)) &&
+                        gSaveContext.sceneFlags[scene].collect & (1 << flag)); // rando/fix flag
         default:
             return false;
     }
