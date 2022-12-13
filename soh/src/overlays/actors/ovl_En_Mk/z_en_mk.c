@@ -103,6 +103,7 @@ void func_80AACA94(EnMk* this, PlayState* play) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_FROG);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
+            Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
         } else {
             s32 getItemID = GI_EYEDROPS;
             func_8002F434(&this->actor, play, getItemID, 10000.0f, 50.0f);
@@ -117,6 +118,7 @@ void func_80AACB14(EnMk* this, PlayState* play) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_FROG);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
+            Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
         } else {
             s32 getItemID = GI_EYEDROPS;
             func_8002F434(&this->actor, play, getItemID, 10000.0f, 50.0f);
@@ -251,7 +253,9 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
             player->actor.textId = this->actor.textId;
             this->actionFunc = func_80AACA40;
         } else {
-            if (INV_CONTENT(ITEM_ODD_MUSHROOM) == ITEM_EYEDROPS) {
+            // Skip eye drop text on rando if Link went in the water, so you can still receive the dive check
+            if (INV_CONTENT(ITEM_ODD_MUSHROOM) == ITEM_EYEDROPS &&
+                (!gSaveContext.n64ddFlag || this->swimFlag == 0)) {
                 player->actor.textId = 0x4032;
                 this->actionFunc = func_80AACA40;
             } else {

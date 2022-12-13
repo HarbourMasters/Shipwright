@@ -226,3 +226,10 @@ Text& GetAdultAltarText();
 Text& GetGanonText();
 Text& GetGanonHintText();
 Text& GetDampeHintText();
+
+Text& GetWarpMinuetText();
+Text& GetWarpBoleroText();
+Text& GetWarpSerenadeText();
+Text& GetWarpRequiemText();
+Text& GetWarpNocturneText();
+Text& GetWarpPreludeText();

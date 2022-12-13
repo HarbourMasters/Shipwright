@@ -870,7 +870,7 @@ void Play_Update(PlayState* play) {
                             // Don't autosave in grottos or cutscenes
                             // Also don't save when you first load a file
                             if (CVar_GetS32("gAutosave", 0) && (gSaveContext.cutsceneIndex == 0) && (play->gameplayFrames > 60) &&
-                                (play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA)) {
+                                (play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA) && (play->sceneNum != SCENE_KENJYANOMA)) {
                                 Play_PerformSave(play);
                             }
                         }
@@ -1087,6 +1087,10 @@ void Play_Update(PlayState* play) {
                 // Gameplay stat tracking
                 if (!gSaveContext.sohStats.gameComplete) {
                       gSaveContext.sohStats.playTimer++;
+
+                      if (CVar_GetS32("gMMBunnyHood", 0) && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
+                          gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD]++;
+                      }
                 }
 
                 func_800AA178(1);
@@ -1646,6 +1650,10 @@ void Play_Main(GameState* thisx) {
     }
     if (CVar_GetS32("gPauseBufferBlockInputFrame", 0)) {
         CVar_SetS32("gPauseBufferBlockInputFrame", CVar_GetS32("gPauseBufferBlockInputFrame", 0) - 1);
+    }
+    if (play->envCtx.unk_EE[2] == 0 && CVar_GetS32("gLetItSnow", 0)) {
+        play->envCtx.unk_EE[3] = 64;
+        Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_OBJECT_KANKYO, 0, 0, 0, 0, 0, 0, 3, 0);
     }
 
     D_8012D1F8 = &play->state.input[0];

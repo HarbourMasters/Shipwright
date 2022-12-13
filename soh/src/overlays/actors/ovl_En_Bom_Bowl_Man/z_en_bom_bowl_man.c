@@ -69,8 +69,12 @@ void EnBomBowlMan_Init(Actor* thisx, PlayState* play2) {
     Actor_SetScale(&this->actor, 0.013f);
 
     for (i = 0; i < 2; i++) {
+        if(CVar_GetS32("gCustomizeBombchuBowling", 0) && CVar_GetS32(i == 0 ? "gBombchuBowlingNoSmallCucco" : "gBombchuBowlingNoBigCucco", 0)) {
+            continue;
+        }
+
         cucco = (EnSyatekiNiw*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SYATEKI_NIW, cuccoSpawnPos[i].x,
-                                           cuccoSpawnPos[i].y, cuccoSpawnPos[i].z, 0, 0, 0, 1);
+                                           cuccoSpawnPos[i].y, cuccoSpawnPos[i].z, 0, 0, 0, 1, true);
 
         if (cucco != NULL) {
             cucco->unk_2F4 = cuccoScales[i];
@@ -320,7 +324,12 @@ void EnBomBowlMan_HandlePlayChoice(EnBomBowlMan* this, PlayState* play) {
                     Rupees_ChangeBy(-30);
                     this->minigamePlayStatus = 1;
                     this->wallStatus[0] = this->wallStatus[1] = 0;
-                    play->bombchuBowlingStatus = 10;
+                    if(CVar_GetS32("gCustomizeBombchuBowling", 0)) {
+                        play->bombchuBowlingStatus = CVar_GetS32("gBombchuBowlingAmmunition", 10);
+                    }
+                    else {
+                        play->bombchuBowlingStatus = 10;
+                    }
                     Flags_SetSwitch(play, 0x38);
 
                     if (!this->startedPlaying && !this->playingAgain) {

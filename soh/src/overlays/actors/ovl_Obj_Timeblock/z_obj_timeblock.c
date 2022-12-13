@@ -86,7 +86,7 @@ u32 ObjTimeblock_CalculateIsVisible(ObjTimeblock* this) {
 void ObjTimeblock_SpawnDemoEffect(ObjTimeblock* this, PlayState* play) {
     Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, this->dyna.actor.world.pos.x,
                 this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, 0, 0,
-                sSizeOptions[(this->dyna.actor.params >> 8) & 1].demoEffectParams);
+                sSizeOptions[(this->dyna.actor.params >> 8) & 1].demoEffectParams, true);
 }
 
 void ObjTimeblock_ToggleSwitchFlag(PlayState* play, s32 flag) {
@@ -340,7 +340,13 @@ void ObjTimeblock_Draw(Actor* thisx, PlayState* play) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, primColor->r, primColor->g, primColor->b, 255);
+        if (CVar_GetS32("gCosmetics.World_BlockOfTime.Changed", 0)) {
+            Color_RGB8 color = CVar_GetRGB("gCosmetics.World_BlockOfTime.Value", *primColor);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, color.r, color.g, color.b, 255);
+        } else {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, primColor->r, primColor->g, primColor->b, 255);
+        }
+
         gSPDisplayList(POLY_OPA_DISP++, gSongOfTimeBlockDL);
 
         CLOSE_DISPS(play->state.gfxCtx);

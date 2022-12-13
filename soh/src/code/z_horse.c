@@ -50,7 +50,7 @@ void func_8006D0EC(PlayState* play, Player* player) {
     if ((AREG(6) != 0) && (Flags_GetEventChkInf(0x18) || (DREG(1) != 0))) {
         player->rideActor = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, player->actor.world.pos.x,
                                         player->actor.world.pos.y, player->actor.world.pos.z, player->actor.shape.rot.x,
-                                        player->actor.shape.rot.y, player->actor.shape.rot.z, 9);
+                                        player->actor.shape.rot.y, player->actor.shape.rot.z, 9, true);
 
         ASSERT(player->rideActor != NULL);
 
@@ -65,11 +65,11 @@ void func_8006D0EC(PlayState* play, Player* player) {
         Actor* horseActor;
         gSaveContext.minigameState = 0;
         horseActor =
-            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, 3586.0f, 1413.0f, -402.0f, 0, 0x4000, 0, 1);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, 3586.0f, 1413.0f, -402.0f, 0, 0x4000, 0, 1, true);
         horseActor->room = -1;
     } else if ((gSaveContext.entranceIndex == 1230) && (gSaveContext.eventChkInf[1] & 0x100)) {
         Actor* horseActor =
-            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, -25.0f, 0.0f, -1600.0f, 0, -0x4000, 0, 1);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, -25.0f, 0.0f, -1600.0f, 0, -0x4000, 0, 1, true);
         ASSERT(horseActor != NULL);
     } else if ((play->sceneNum == gSaveContext.horseData.scene) &&
                (((Flags_GetEventChkInf(0x18) != 0) && (!gSaveContext.n64ddFlag ||
@@ -82,7 +82,7 @@ void func_8006D0EC(PlayState* play, Player* player) {
         if (func_8006CFC0(gSaveContext.horseData.scene)) {
             Actor* horseActor = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE,
                                             gSaveContext.horseData.pos.x, gSaveContext.horseData.pos.y,
-                                            gSaveContext.horseData.pos.z, 0, gSaveContext.horseData.angle, 0, 1);
+                                            gSaveContext.horseData.pos.z, 0, gSaveContext.horseData.angle, 0, 1, true);
             ASSERT(horseActor != NULL);
             if (play->sceneNum == SCENE_SPOT12) {
                 horseActor->room = -1;
@@ -96,7 +96,7 @@ void func_8006D0EC(PlayState* play, Player* player) {
         }
     } else if ((play->sceneNum == SCENE_SPOT20) && !Flags_GetEventChkInf(0x18) && (DREG(1) == 0)) {
         Actor* horseActor =
-            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, 0.0f, 0.0f, -500.0f, 0, 0, 0, 1);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, 0.0f, 0.0f, -500.0f, 0, 0, 0, 1, true);
         ASSERT(horseActor != NULL);
     } else if (Flags_GetEventChkInf(0x18) || (DREG(1) != 0)) {
         for (i = 0; i < ARRAY_COUNT(horseSpawns); i++) {
@@ -104,7 +104,7 @@ void func_8006D0EC(PlayState* play, Player* player) {
             if (horseSpawn->scene == play->sceneNum) {
                 Actor* horseActor =
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, horseSpawn->pos.x, horseSpawn->pos.y,
-                                horseSpawn->pos.z, 0, horseSpawn->angle, 0, horseSpawn->type);
+                                horseSpawn->pos.z, 0, horseSpawn->angle, 0, horseSpawn->type, true);
                 ASSERT(horseActor != NULL);
                 if (play->sceneNum == SCENE_SPOT12) {
                     horseActor->room = -1;
@@ -115,7 +115,7 @@ void func_8006D0EC(PlayState* play, Player* player) {
         }
     } else if (!Flags_GetEventChkInf(0x18)) {
         if ((DREG(1) == 0) && (play->sceneNum == SCENE_SOUKO) && !IS_DAY) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, 0.0f, 0.0f, -60.0f, 0, 0x7360, 0, 1);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, 0.0f, 0.0f, -60.0f, 0, 0x7360, 0, 1, true);
         }
     }
 }
@@ -154,7 +154,7 @@ void func_8006D684(PlayState* play, Player* player) {
         }
 
         player->rideActor = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, spawnPos.x, spawnPos.y,
-                                        spawnPos.z, 0, player->actor.world.rot.y, 0, 7);
+                                        spawnPos.z, 0, player->actor.world.rot.y, 0, 7, true);
         ASSERT(player->rideActor != NULL);
 
         Actor_MountHorse(play, player, player->rideActor);
@@ -163,7 +163,7 @@ void func_8006D684(PlayState* play, Player* player) {
     } else if ((play->sceneNum == SCENE_SPOT20) && ((gSaveContext.eventInf[0] & 0xF) == 6) &&
                (Flags_GetEventChkInf(0x18) == 0) && (DREG(1) == 0)) {
         player->rideActor =
-            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, 894.0f, 0.0f, -2084.0f, 0, -0x7FFF, 0, 5);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, 894.0f, 0.0f, -2084.0f, 0, -0x7FFF, 0, 5, true);
         ASSERT(player->rideActor != NULL);
 
         Actor_MountHorse(play, player, player->rideActor);
@@ -193,7 +193,7 @@ void func_8006D684(PlayState* play, Player* player) {
 
                     player->rideActor = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE,
                                                     D_8011F9B8[i].pos.x, D_8011F9B8[i].pos.y, D_8011F9B8[i].pos.z, 0,
-                                                    player->actor.world.rot.y, 0, D_8011F9B8[i].type);
+                                                    player->actor.world.rot.y, 0, D_8011F9B8[i].type, true);
                     ASSERT(player->rideActor != NULL);
 
                     Actor_MountHorse(play, player, player->rideActor);
@@ -208,7 +208,7 @@ void func_8006D684(PlayState* play, Player* player) {
 
                     player->rideActor = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE,
                                                     D_8011F9B8[i].pos.x, D_8011F9B8[i].pos.y, D_8011F9B8[i].pos.z, 0,
-                                                    D_8011F9B8[i].angle, 0, D_8011F9B8[i].type | temp);
+                                                    D_8011F9B8[i].angle, 0, D_8011F9B8[i].type | temp, true);
                     ASSERT(player->rideActor != NULL);
 
                     player->actor.world.pos.x = D_8011F9B8[i].pos.x;
@@ -228,7 +228,7 @@ void func_8006D684(PlayState* play, Player* player) {
                 } else {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, D_8011F9B8[i].pos.x,
                                 D_8011F9B8[i].pos.y, D_8011F9B8[i].pos.z, 0, D_8011F9B8[i].angle, 0,
-                                D_8011F9B8[i].type);
+                                D_8011F9B8[i].type, true);
                 }
                 break;
             }

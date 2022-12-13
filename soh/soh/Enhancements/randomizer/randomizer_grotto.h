@@ -25,8 +25,10 @@ void Grotto_InitExitAndLoadLists(void);
 void Grotto_SetExitOverride(s16 originalIndex, s16 overrideIndex);
 void Grotto_SetLoadOverride(s16 originalIndex, s16 overrideIndex);
 s16  Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex);
+void Grotto_ForceGrottoReturnOnSpecialEntrance(void);
 void Grotto_ForceGrottoReturn(void);
 void Grotto_ForceRegularVoidOut(void);
+void Grotto_SanitizeEntranceType(void);
 s16 Grotto_GetRenamedGrottoIndexFromOriginal(s8 content, s8 scene);
 
 #endif //_RANDO_GROTTO_H_

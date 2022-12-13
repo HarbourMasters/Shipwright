@@ -363,7 +363,7 @@ void BossGoma_Init(Actor* thisx, PlayState* play) {
         Actor_Kill(&this->actor);
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, -640.0f, 0.0f, 0, 0,
                            0, WARP_DUNGEON_CHILD);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 141.0f, -640.0f, -84.0f, 0, 0, 0, 0);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 141.0f, -640.0f, -84.0f, 0, 0, 0, 0, true);
     }
 }
 
@@ -450,6 +450,11 @@ void BossGoma_SetupCeilingIdle(BossGoma* this) {
  * When the player killed all children gohmas
  */
 void BossGoma_SetupFallJump(BossGoma* this) {
+    // When in Enemy Randomizer, reset the state of the spawned Gohma Larva because it's not done
+    // by the (non-existent) Larva themselves.
+    if (CVar_GetS32("gRandomizedEnemies", 0)) {
+        this->childrenGohmaState[0] = this->childrenGohmaState[1] = this->childrenGohmaState[2] = 0;
+    }
     Animation_Change(&this->skelanime, &gGohmaLandAnim, 1.0f, 0.0f, 0.0f, ANIMMODE_ONCE, -5.0f);
     this->actionFunc = BossGoma_FallJump;
     this->actor.speedXZ = 0.0f;
@@ -1121,7 +1126,7 @@ void BossGoma_Defeated(BossGoma* this, PlayState* play) {
                 this->decayingProgress = 0;
                 this->subCameraFollowSpeed = 0.0f;
                 Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
-                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
+                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
             }
             break;
 
@@ -1553,12 +1558,16 @@ void BossGoma_CeilingIdle(BossGoma* this, PlayState* play) {
     Math_ApproachZeroF(&this->actor.speedXZ, 0.5f, 2.0f);
 
     if (this->framesUntilNextAction == 0) {
+        Actor* nearbyEnTest = NULL;
+        if (CVar_GetS32("gRandomizedEnemies", 0)) {
+            nearbyEnTest = Actor_FindNearby(play, &this->actor, -1, ACTORCAT_ENEMY, 8000.0f);
+        }
         if (this->childrenGohmaState[0] == 0 && this->childrenGohmaState[1] == 0 && this->childrenGohmaState[2] == 0) {
             // if no child gohma has been spawned
             BossGoma_SetupCeilingPrepareSpawnGohmas(this);
-        } else if (this->childrenGohmaState[0] < 0 && this->childrenGohmaState[1] < 0 &&
-                   this->childrenGohmaState[2] < 0) {
-            // if all children gohmas are dead
+        } else if ((this->childrenGohmaState[0] < 0 && this->childrenGohmaState[1] < 0 && this->childrenGohmaState[2] < 0) ||
+                   (nearbyEnTest == NULL && CVar_GetS32("gRandomizedEnemies", 0))) {
+            // In authentic gameplay, check if all baby Ghomas are dead. In Enemy Randomizer, check if there's no enemies alive.
             BossGoma_SetupFallJump(this);
         } else {
             for (i = 0; i < ARRAY_COUNT(this->childrenGohmaState); i++) {

@@ -186,6 +186,7 @@ const std::vector<FlagTable> flagTables = {
         { 0x18, "Obtained Farore's Wind" },
         { 0x19, "Obtained Din's Fire" },
         { 0x1A, "Obtained Nayru's Love" },
+        { 0x1B, "Obtained Treasure Chest Game Reward" },
         { 0x1C, "Obtained Grave-Dig Heart Piece" },
         { 0x1D, "Obtained Bullet Bag Upgrade (Woods)" },
         { 0x1E, "Obtained Deku Stick Upgrade (Stage)" },
@@ -488,5 +489,11 @@ const std::vector<FlagTable> flagTables = {
         
         { RAND_INF_MERCHANTS_MEDIGORON, "RAND_INF_MERCHANTS_MEDIGORON" },
         { RAND_INF_MERCHANTS_CARPET_SALESMAN, "RAND_INF_MERCHANTS_CARPET_SALESMAN" },
+
+        { RAND_INF_ADULT_TRADES_LW_TRADE_COJIRO, "ADULT_TRADES_LW_TRADE_COJIRO" },
+        { RAND_INF_ADULT_TRADES_GV_TRADE_SAW, "ADULT_TRADES_GV_TRADE_SAW" },
+        { RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD, "ADULT_TRADES_DMT_TRADE_BROKEN_SWORD" },
+        { RAND_INF_ADULT_TRADES_LH_TRADE_FROG, "ADULT_TRADES_LH_TRADE_FROG" },
+        { RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS, "ADULT_TRADES_DMT_TRADE_EYEDROPS" },
     } },
 };
