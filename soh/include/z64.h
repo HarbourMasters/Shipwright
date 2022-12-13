@@ -109,8 +109,6 @@ typedef struct ConnectionPacketZ64 {
     uint8_t player_id;
 } ConnectionPacketZ64;
 
-PuppetPacketZ64 gPuppetPacket;
-
 typedef struct{
     /* 0x00 */ char unk[0x4];
     /* 0x04 */ MtxF mf;

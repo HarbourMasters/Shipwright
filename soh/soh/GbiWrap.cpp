@@ -33,7 +33,6 @@ int ResourceMgr_OTRSigCheck(char* imgData);
 
 }
 
-
 extern "C" void gSPSegment(void* value, int segNum, uintptr_t target) {
     char* imgData = (char*)target;
 

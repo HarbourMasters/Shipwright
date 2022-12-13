@@ -82,7 +82,6 @@ void OnlineClient::InitClient(char* ipAddr, int port) {
 }
 
 void OnlineClient::RunClientReceive() {
-
     while (running) {
         UDPpacket* p;
 

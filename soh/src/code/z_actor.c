@@ -2181,8 +2181,8 @@ void func_8002F7A0(PlayState* play, Actor* actor, f32 arg2, s16 arg3, f32 arg4) 
 void func_8002F7DC(Actor* actor, u16 sfxId) {
     if (actor->id == ACTOR_PLAYER) {
         for (size_t i = 0; i < 4; i++) {
-            if (gPuppetPacket.sound_id[i] == 0) {
-                gPuppetPacket.sound_id[i] = sfxId;
+            if (onlineSfxBuffer[i] == 0) {
+                onlineSfxBuffer[i] = sfxId;
                 break;
             }
         }

@@ -2096,15 +2096,9 @@ extern "C" void CloseClient() {
     }
 }
 
-extern "C" void OTRSendPuppetPacketToServer() {
+extern "C" void OTRSendPuppetPacketToServer(PuppetPacketZ64* puppetPacket) {
     if (OTRGlobals::Instance->gOnlineClient->running) {
-        OTRGlobals::Instance->gOnlineClient->SendPuppetPacketMessage((PuppetPacket*)&gPuppetPacket);
-        gPuppetPacket.sound_id[0] = 0;
-        gPuppetPacket.sound_id[1] = 0;
-        gPuppetPacket.sound_id[2] = 0;
-        gPuppetPacket.sound_id[3] = 0;
-        gPuppetPacket.damageValue = 0;
-        gPuppetPacket.damageEffect = 0;
+        OTRGlobals::Instance->gOnlineClient->SendPuppetPacketMessage((PuppetPacket*)&puppetPacket);
     }
 }
 

@@ -30,6 +30,7 @@ typedef struct ConsoleCommand
 } ConsoleCommand;
 
 extern PlayState* gPlayState;
+extern uint16_t onlineSfxBuffer[4];
 
 void GameConsole_Init();
 

@@ -28,6 +28,7 @@ u64 D_801614D0[0xA00];
 #endif
 
 PlayState* gPlayState;
+uint16_t onlineSfxBuffer[4];
 LinkPuppet* puppets[4];
 
 void func_800BC450(PlayState* play) {
@@ -641,8 +642,7 @@ void Play_Init(GameState* thisx) {
     }
 
     for (size_t i = 0; i < 4; i++) {
-        puppets[i] =
-            Actor_Spawn(&play->actorCtx, gPlayState, ACTOR_LINK_PUPPET, -16000.0f, -16000.0f, -16000.0f, 0, 0, 0, 0, 0);
+        puppets[i] = Actor_Spawn(&play->actorCtx, gPlayState, ACTOR_LINK_PUPPET, -16000.0f, -16000.0f, -16000.0f, 0, 0, 0, 0, 0);
     }
 
     Interface_SetSceneRestrictions(play);
@@ -1692,23 +1692,29 @@ void Play_Main(GameState* thisx) {
         Play_Update(play);
     }
 
-    gPuppetPacket.posRot.pos = GET_PLAYER(play)->actor.world.pos;
-    gPuppetPacket.posRot.rot = GET_PLAYER(play)->actor.shape.rot;
-    memcpy(gPuppetPacket.jointTable, GET_PLAYER(play)->skelAnime.jointTable, 6 * PLAYER_LIMB_MAX);
-    gPuppetPacket.biggoron_broken = (gSaveContext.swordHealth <= 0.0f);
+    PuppetPacketZ64 puppetPacket;
+    puppetPacket.posRot.pos = GET_PLAYER(play)->actor.world.pos;
+    puppetPacket.posRot.rot = GET_PLAYER(play)->actor.shape.rot;
 
-    gPuppetPacket.shieldType = GET_PLAYER(play)->currentShield;
-    gPuppetPacket.sheathType = GET_PLAYER(play)->sheathType;
-    gPuppetPacket.leftHandType = GET_PLAYER(play)->leftHandType;
-    gPuppetPacket.rightHandType = GET_PLAYER(play)->rightHandType;
+    memcpy(puppetPacket.jointTable, GET_PLAYER(play)->skelAnime.jointTable, 6 * PLAYER_LIMB_MAX);
 
-    gPuppetPacket.tunicType = GET_PLAYER(play)->currentTunic;
-    gPuppetPacket.bootsType = GET_PLAYER(play)->currentBoots;
-    gPuppetPacket.faceType = GET_PLAYER(play)->actor.shape.face;
-    gPuppetPacket.scene_id = play->sceneNum;
-    gPuppetPacket.puppet_age = gSaveContext.linkAge;
+    puppetPacket.biggoron_broken = (gSaveContext.swordHealth <= 0.0f);
+    puppetPacket.shieldType = GET_PLAYER(play)->currentShield;
+    puppetPacket.sheathType = GET_PLAYER(play)->sheathType;
+    puppetPacket.leftHandType = GET_PLAYER(play)->leftHandType;
+    puppetPacket.rightHandType = GET_PLAYER(play)->rightHandType;
+                
+    puppetPacket.tunicType = GET_PLAYER(play)->currentTunic;
+    puppetPacket.bootsType = GET_PLAYER(play)->currentBoots;
+    puppetPacket.faceType = GET_PLAYER(play)->actor.shape.face;
+    puppetPacket.scene_id = play->sceneNum;
+    puppetPacket.puppet_age = gSaveContext.linkAge;
 
-    OTRSendPuppetPacketToServer();
+    memcpy(puppetPacket.sound_id, onlineSfxBuffer, sizeof(onlineSfxBuffer));
+
+    OTRSendPuppetPacketToServer(&puppetPacket);
+
+    free(&puppetPacket);
 
     if (1 && HREG(63)) {
         LOG_NUM("1", 1);
