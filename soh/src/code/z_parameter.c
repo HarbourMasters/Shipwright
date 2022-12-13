@@ -2754,10 +2754,6 @@ void PerformAutosave(PlayState* play, u8 item) {
                 case ITEM_ARROWS_LARGE:
                 case ITEM_SEEDS_30:
                     break;
-                case ITEM_SWORD_MASTER:
-                    if (play->sceneNum == SCENE_GANON_DEMO) {
-                        break;
-                    }
                 case ITEM_BOMBCHU:
                 case ITEM_BOMBCHUS_5:
                 case ITEM_BOMBCHUS_20:
