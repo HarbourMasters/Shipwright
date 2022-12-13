@@ -2233,5 +2233,5 @@ void SetLinkPuppetData(PuppetPacketZ64* packet, u8 player_id) {
 
 void SetGetItemData(int16_t itemId) {
     Player* player = GET_PLAYER(gPlayState);
-    Item_Give_Online(NULL, itemId);
+    Item_Give_Online(gPlayState, itemId);
 }
