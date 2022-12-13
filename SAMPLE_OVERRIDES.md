@@ -22,4 +22,4 @@ If you use a relative path, it will be relative to the directory in which your s
 [Here's a list with all the sample names as seen in the OTR](https://gist.github.com/RaelCappra/77f4651343c61b1d6f6b662e6a87e434)
 
 ## Tips for making a good sample
-TODOe
+TODO
