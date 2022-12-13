@@ -11098,6 +11098,7 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
                 D_8085486C = D_8085486C * (sp5C * (1.0f / 9.0f));
             }
 
+            FrameInterpolation_RecordActorPosRotMatrix();
             Matrix_SetTranslateRotateYXZ(this->actor.world.pos.x, this->actor.world.pos.y + 2.0f,
                                          this->actor.world.pos.z, &D_80854864);
             Matrix_Scale(4.0f, 4.0f, 4.0f, MTXMODE_APPLY);
