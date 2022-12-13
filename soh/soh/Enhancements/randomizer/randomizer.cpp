@@ -371,9 +371,6 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
             }
         );
 
-
-}
-
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT,
         { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
         "Warp to&{{location}}?\x1B&%gOK&No%w\x02",
