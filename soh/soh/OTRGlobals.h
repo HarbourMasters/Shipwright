@@ -141,7 +141,7 @@ void Entrance_ClearEntranceTrackingData(void);
 void Entrance_InitEntranceTrackingData(void);
 void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex);
 void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex);
-void OTRSendPuppetPacketToServer();
+void OTRSendPuppetPacketToServer(PuppetPacketZ64* puppetPacket);
 void OTRSendGetItemPacketToServer(int16_t itemId);
 #endif
 

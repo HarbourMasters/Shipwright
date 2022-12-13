@@ -2098,7 +2098,7 @@ extern "C" void CloseClient() {
 
 extern "C" void OTRSendPuppetPacketToServer(PuppetPacketZ64* puppetPacket) {
     if (OTRGlobals::Instance->gOnlineClient->running) {
-        OTRGlobals::Instance->gOnlineClient->SendPuppetPacketMessage((PuppetPacket*)&puppetPacket);
+        OTRGlobals::Instance->gOnlineClient->SendPuppetPacketMessage((PuppetPacket*)puppetPacket);
     }
 }
 
