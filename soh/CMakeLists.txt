@@ -305,7 +305,6 @@ source_group("Source Files\\soh\\Enhancements" FILES ${Source_Files__soh__Enhanc
 
 set(Source_Files__soh__Enhancements__online
     "soh/Enhancements/online/Client.cpp"
-	"soh/Enhancements/online/Server.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\online" FILES ${Source_Files__soh__Enhancements__online})
 

@@ -642,7 +642,7 @@ void Play_Init(GameState* thisx) {
 
     for (size_t i = 0; i < 4; i++) {
         puppets[i] =
-            Actor_Spawn(&play->actorCtx, gPlayState, ACTOR_LINK_PUPPET, -16000.0f, -16000.0f, -16000.0f, 0, 0, 0, 0);
+            Actor_Spawn(&play->actorCtx, gPlayState, ACTOR_LINK_PUPPET, -16000.0f, -16000.0f, -16000.0f, 0, 0, 0, 0, 0);
     }
 
     Interface_SetSceneRestrictions(play);
