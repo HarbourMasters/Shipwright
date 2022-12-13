@@ -1124,6 +1124,33 @@ void SaveManager::LoadBaseVersion2() {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
     SaveManager::Instance->LoadData("isMasterQuest", gSaveContext.isMasterQuest);
+
+    // Workaround for breaking save compatibility from 5.0.2 -> 5.1.0 in commit d7c35221421bf712b5ead56a360f81f624aca4bc
+    if (!gSaveContext.isMagicAcquired) {
+        SaveManager::Instance->LoadData("isMagicAcquired", gSaveContext.isMagicAcquired);
+    }
+    if (!gSaveContext.isDoubleMagicAcquired) {
+        SaveManager::Instance->LoadData("isDoubleMagicAcquired", gSaveContext.isDoubleMagicAcquired);
+    }
+    if (!gSaveContext.isDoubleDefenseAcquired) {
+        SaveManager::Instance->LoadData("isDoubleDefenseAcquired", gSaveContext.isDoubleDefenseAcquired);
+    }
+    if (!gSaveContext.scarecrowLongSongSet) {
+        SaveManager::Instance->LoadData("scarecrowLongSongSet", gSaveContext.scarecrowLongSongSet);
+    }
+    if (!ARRAY_COUNT(gSaveContext.scarecrowLongSong)) {
+        SaveManager::Instance->LoadArray("scarecrowLongSong", ARRAY_COUNT(gSaveContext.scarecrowLongSong), [](size_t i) {
+            SaveManager::Instance->LoadStruct("", [&i]() {
+                SaveManager::Instance->LoadData("noteIdx", gSaveContext.scarecrowLongSong[i].noteIdx);
+                SaveManager::Instance->LoadData("unk_01", gSaveContext.scarecrowLongSong[i].unk_01);
+                SaveManager::Instance->LoadData("unk_02", gSaveContext.scarecrowLongSong[i].unk_02);
+                SaveManager::Instance->LoadData("volume", gSaveContext.scarecrowLongSong[i].volume);
+                SaveManager::Instance->LoadData("vibrato", gSaveContext.scarecrowLongSong[i].vibrato);
+                SaveManager::Instance->LoadData("tone", gSaveContext.scarecrowLongSong[i].tone);
+                SaveManager::Instance->LoadData("semitone", gSaveContext.scarecrowLongSong[i].semitone);
+            });
+        });
+    }
 }
 
 void SaveManager::LoadBaseVersion3() {
