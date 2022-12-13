@@ -2717,7 +2717,7 @@ u8 Item_CheckObtainability(u8 item) {
 
 // Save when receiving an item, unless it's purchased from a shop
 void PerformAutosave(PlayState* play, u8 item) {
-    if (CVar_GetS32("gAutosave", 0) && (play != NULL) && (play->sceneNum != SCENE_KENJYANOMA) && (gSaveContext.pendingSale == ITEM_NONE)) {
+    if (CVar_GetS32("gAutosave", 0) && (play != NULL) && (play->sceneNum != SCENE_KENJYANOMA) && (gSaveContext.pendingSale == ITEM_NONE) && (play->sceneNum != SCENE_GANON_DEMO)) {
         if (CVar_GetS32("gAutosaveAllItems", 0)) {
             Play_PerformSave(play);
         } else if (CVar_GetS32("gAutosaveMajorItems", 1)) {
@@ -2754,10 +2754,6 @@ void PerformAutosave(PlayState* play, u8 item) {
                 case ITEM_ARROWS_LARGE:
                 case ITEM_SEEDS_30:
                     break;
-                case ITEM_SWORD_MASTER:
-                    if (play->sceneNum == SCENE_GANON_DEMO) {
-                        break;
-                    }
                 case ITEM_BOMBCHU:
                 case ITEM_BOMBCHUS_5:
                 case ITEM_BOMBCHUS_20:
