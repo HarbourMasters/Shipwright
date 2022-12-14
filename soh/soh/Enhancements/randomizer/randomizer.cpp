@@ -247,6 +247,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Misc Settings:40 GS Hint", RSK_KAK_40_SKULLS_HINT },
     { "Misc Settings:50 GS Hint", RSK_KAK_50_SKULLS_HINT },
     { "Misc Settings:Warp Song Hint", RSK_WARP_SONGS_HINT },
+    { "Misc Settings:Scrub Text Hint", RSK_SCRUB_TEXT_HINT },
     { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
     { "Misc Settings:Blue Fire Arrows", RSK_BLUE_FIRE_ARROWS },
     { "Misc Settings:Sunlight Arrows", RSK_SUNLIGHT_ARROWS },
@@ -721,6 +722,8 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_KAK_30_SKULLS_HINT:
                     case RSK_KAK_40_SKULLS_HINT:
                     case RSK_KAK_50_SKULLS_HINT:
+                    case RSK_WARP_SONGS_HINT:
+                    case RSK_SCRUB_TEXT_HINT:
                     case RSK_SHUFFLE_ENTRANCES:
                     case RSK_SHUFFLE_OVERWORLD_ENTRANCES:
                     case RSK_SHUFFLE_GROTTO_ENTRANCES:
@@ -3904,6 +3907,9 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedEnhancementCheckbox("Warp Song text", "gRandomizeWarpSongText", true, false, !CVar_GetS32("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF),
                  "This option is disabled since warp songs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::InsertHelpHoverText("Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)");
+                UIWidgets::PaddedEnhancementCheckbox("Scrub Item text", "gRandomizeWarpSongText", true, false, CVar_GetS32("gRandomizeShuffleScrubs", RO_GENERIC_ON),
+                 "This option is disabled since scrubs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
+                UIWidgets::InsertHelpHoverText("Business scrubs will reveal the identity of what they're selling.");
                 UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 10", "gRandomize10GSHint", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 20", "gRandomize20GSHint", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 30", "gRandomize30GSHint", true, false);                
