@@ -478,14 +478,23 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
             rcObj.vOrMQ == RCVORMQ_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId)
         ) &&
         (rcObj.rcType != RCTYPE_SHOP                || showShops) &&
-        (rcObj.rcType != RCTYPE_SCRUB               || showScrubs) &&
+        (rcObj.rcType != RCTYPE_SCRUB ||
+         showScrubs || 
+         rcObj.rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
+         rcObj.rc == RC_HF_DEKU_SCRUB_GROTTO ||
+         rcObj.rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT
+        ) &&
         (rcObj.rcType != RCTYPE_MERCHANT            || showMerchants) &&
         (rcObj.rcType != RCTYPE_SKULL_TOKEN ||
             (showOverworldTokens && RandomizerCheckObjects::AreaIsOverworld(rcObj.rcArea)) ||
             (showDungeonTokens && RandomizerCheckObjects::AreaIsDungeon(rcObj.rcArea))
         ) &&
         (rcObj.rcType != RCTYPE_COW                 || showCows) &&
-        (rcObj.rcType != RCTYPE_ADULT_TRADE         || showAdultTrade) &&
+        (rcObj.rcType != RCTYPE_ADULT_TRADE ||
+         showAdultTrade ||
+         rcObj.rc == RC_KAK_ANJU_AS_ADULT ||  // adult trade checks that are always shuffled
+         rcObj.rc == RC_DMT_TRADE_CLAIM_CHECK // even when shuffle adult trade is off
+        ) &&
         (rcObj.rc != RC_KF_KOKIRI_SWORD_CHEST       || showKokiriSword) &&
         (rcObj.rc != RC_ZR_MAGIC_BEAN_SALESMAN      || showBeans) &&
         (rcObj.rc != RC_HC_MALON_EGG                || showWeirdEgg) &&
@@ -732,8 +741,9 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
             return gSaveContext.highScores[HS_POE_POINTS] >= 1000;
         case SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER:
             // Gravedigger has a fix in place that means one of two save locations. Check both.
-            return (gSaveContext.itemGetInf[1] & 0x1000) ||
-                   CVar_GetS32("gGravediggingTourFix", 0) && gSaveContext.sceneFlags[scene].collect & (1 << flag);
+            return (gSaveContext.itemGetInf[1] & 0x1000) || // vanilla flag
+                   ((gSaveContext.n64ddFlag || CVar_GetS32("gGravediggingTourFix", 0)) &&
+                        gSaveContext.sceneFlags[scene].collect & (1 << flag)); // rando/fix flag
         default:
             return false;
     }
