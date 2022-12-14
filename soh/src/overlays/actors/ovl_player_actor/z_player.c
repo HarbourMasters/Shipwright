@@ -1710,7 +1710,7 @@ s32 func_808332E4(Player* this) {
 
 void func_808332F4(Player* this, PlayState* play) {
     GetItemEntry giEntry;
-    if (this->getItemEntry.objectId == OBJECT_INVALID) {
+    if (this->getItemEntry.objectId == OBJECT_INVALID || (this->getItemId != this->getItemEntry.getItemId)) {
         giEntry = ItemTable_Retrieve(this->getItemId);
     } else {
         giEntry = this->getItemEntry;
