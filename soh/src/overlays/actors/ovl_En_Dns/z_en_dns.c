@@ -178,6 +178,13 @@ void EnDns_Init(Actor* thisx, PlayState* play) {
             this->dnsItemEntry->itemPrice = this->scrubIdentity.itemPrice;
         }
 
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_EXPENSIVE) {
+            // temporary workaround: always use 40 rupees as price instead of 70
+            if (this->actor.params == 0x0006) {
+                this->dnsItemEntry->itemPrice = 40;
+            }
+        }
+
         if (this->scrubIdentity.isShuffled) {
             this->dnsItemEntry->getItemId = this->scrubIdentity.getItemId;
             this->dnsItemEntry->purchaseableCheck = EnDns_RandomizerPurchaseableCheck;

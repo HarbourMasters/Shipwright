@@ -31,6 +31,7 @@ class Randomizer {
     void ParseEntranceDataFile(const char* spoilerFileName, bool silent);
     bool IsItemVanilla(RandomizerGet randoGet);
     GetItemEntry GetItemEntryFromRGData(RandomizerGetData rgData, GetItemID ogItemId, bool checkObtainability = true);
+    int16_t GetVanillaMerchantPrice(RandomizerCheck check);
 
   public:
     Randomizer();
