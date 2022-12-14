@@ -29,6 +29,9 @@ u64 D_801614D0[0xA00];
 
 PlayState* gPlayState;
 uint16_t onlineSfxBuffer[4];
+f32 ocarina_freqScale;
+f32 ocarina_vol;
+uint8_t ocarina_pitch;
 LinkPuppet* puppets[4];
 
 void func_800BC450(PlayState* play) {
@@ -1711,6 +1714,10 @@ void Play_Main(GameState* thisx) {
         puppetPacket.faceType = GET_PLAYER(play)->actor.shape.face;
         puppetPacket.scene_id = play->sceneNum;
         puppetPacket.puppet_age = gSaveContext.linkAge;
+
+        puppetPacket.ocarina_freqScale = ocarina_freqScale;
+        puppetPacket.ocarina_vol = ocarina_vol;
+        puppetPacket.ocarina_pitch = ocarina_pitch;
 
         memcpy(puppetPacket.sound_id, onlineSfxBuffer, sizeof(onlineSfxBuffer));
 

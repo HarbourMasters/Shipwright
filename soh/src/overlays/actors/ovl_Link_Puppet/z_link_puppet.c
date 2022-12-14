@@ -224,6 +224,15 @@ void LinkPuppet_Update(Actor* thisx, PlayState* play) {
             this->packet.sound_id[i] = 0;
         }
     }
+
+    if (this->packet.ocarina_freqScale != 0 || this->packet.ocarina_vol != 0 || this->packet.ocarina_pitch != 0) {
+        Audio_QueueCmdS8(0x6 << 24 | SEQ_PLAYER_SFX << 16 | 0xD07, 0);
+        Audio_QueueCmdS8(0x6 << 24 | SEQ_PLAYER_SFX << 16 | 0xD05, this->packet.ocarina_pitch);
+        Audio_PlaySoundGeneral(NA_SE_OC_OCARINA, &this->actor.projectedPos, 4, &this->packet.ocarina_freqScale,
+                               &this->packet.ocarina_vol, &D_801333E8);
+    } else {
+        Audio_StopSfxById(NA_SE_OC_OCARINA);
+    }
 }
 
 Vec3f FEET_POS[] = {

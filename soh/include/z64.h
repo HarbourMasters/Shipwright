@@ -80,6 +80,11 @@ typedef struct PuppetPacketZ64 {
     uint8_t biggoron_broken;
     uint16_t scene_id;
     uint16_t sound_id[4];
+
+    f32 ocarina_freqScale;
+    f32 ocarina_vol;
+    uint8_t ocarina_pitch;
+
     uint8_t puppet_age;
 
     // SkelAnime Data

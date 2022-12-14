@@ -1684,7 +1684,13 @@ void func_800ED458(s32 arg0) {
             Audio_QueueCmdS8(0x6 << 24 | SEQ_PLAYER_SFX << 16 | 0xD07, D_80130F10 - 1);
             Audio_QueueCmdS8(0x6 << 24 | SEQ_PLAYER_SFX << 16 | 0xD05, sCurOcarinaBtnVal);
             Audio_PlaySoundGeneral(NA_SE_OC_OCARINA, &D_801333D4, 4, &D_80130F24, &D_80130F28, &D_801333E8);
+            ocarina_freqScale = D_80130F24;
+            ocarina_vol = D_80130F28;
+            ocarina_pitch = sCurOcarinaBtnVal;
         } else if ((sPrevOcarinaNoteVal != 0xFF) && (sCurOcarinaBtnVal == 0xFF)) {
+            ocarina_freqScale = 0;
+            ocarina_vol = 0;
+            ocarina_pitch = 0;
             Audio_StopSfxById(NA_SE_OC_OCARINA);
         }
     }

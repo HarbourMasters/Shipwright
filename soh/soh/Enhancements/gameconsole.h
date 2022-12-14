@@ -30,6 +30,10 @@ typedef struct ConsoleCommand
 } ConsoleCommand;
 
 extern PlayState* gPlayState;
+
+extern f32 ocarina_freqScale;
+extern f32 ocarina_vol;
+extern uint8_t ocarina_pitch;
 extern uint16_t onlineSfxBuffer[4];
 
 void GameConsole_Init();
