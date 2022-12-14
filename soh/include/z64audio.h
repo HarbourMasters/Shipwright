@@ -26,6 +26,8 @@
 
 extern char* fontMap[256];
 
+#define MAX_AUTHENTIC_SEQID 110
+
 typedef enum {
     /* 0 */ ADSR_STATE_DISABLED,
     /* 1 */ ADSR_STATE_INITIAL,
