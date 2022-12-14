@@ -2698,6 +2698,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT] = CVar_GetS32("gRandomizeLAHint", RO_GENERIC_ON);
     cvarSettings[RSK_DAMPES_DIARY_HINT] = CVar_GetS32("gRandomizeDampeHint", RO_GENERIC_OFF);
     cvarSettings[RSK_WARP_SONGS_HINT] = CVar_GetS32("gRandomizeWarpSongText", RO_GENERIC_OFF);
+    cvarSettings[RSK_SCRUB_TEXT_HINT] = CVar_GetS32("gRandomizeScrubText", RO_GENERIC_OFF);
     cvarSettings[RSK_KAK_10_SKULLS_HINT] = CVar_GetS32("gRandomize10GSHint", RO_GENERIC_OFF);
     cvarSettings[RSK_KAK_20_SKULLS_HINT] = CVar_GetS32("gRandomize20GSHint", RO_GENERIC_OFF);
     cvarSettings[RSK_KAK_30_SKULLS_HINT] = CVar_GetS32("gRandomize30GSHint", RO_GENERIC_OFF);
@@ -3907,7 +3908,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedEnhancementCheckbox("Warp Song text", "gRandomizeWarpSongText", true, false, !CVar_GetS32("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF),
                  "This option is disabled since warp songs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::InsertHelpHoverText("Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)");
-                UIWidgets::PaddedEnhancementCheckbox("Scrub Item text", "gRandomizeWarpSongText", true, false, CVar_GetS32("gRandomizeShuffleScrubs", RO_GENERIC_ON),
+                UIWidgets::PaddedEnhancementCheckbox("Scrub Item text", "gRandomizeScrubText", true, false, CVar_GetS32("gRandomizeShuffleScrubs", RO_GENERIC_ON),
                  "This option is disabled since scrubs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::InsertHelpHoverText("Business scrubs will reveal the identity of what they're selling.");
                 UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 10", "gRandomize10GSHint", true, false);
