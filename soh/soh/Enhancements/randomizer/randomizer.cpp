@@ -3908,7 +3908,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedEnhancementCheckbox("Warp Song text", "gRandomizeWarpSongText", true, false, !CVar_GetS32("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF),
                  "This option is disabled since warp songs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::InsertHelpHoverText("Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)");
-                UIWidgets::PaddedEnhancementCheckbox("Scrub Item text", "gRandomizeScrubText", true, false, CVar_GetS32("gRandomizeShuffleScrubs", RO_GENERIC_ON),
+                UIWidgets::PaddedEnhancementCheckbox("Scrub Item text", "gRandomizeScrubText", true, false, !CVar_GetS32("gRandomizeShuffleScrubs", RO_GENERIC_ON),
                  "This option is disabled since scrubs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::InsertHelpHoverText("Business scrubs will reveal the identity of what they're selling.");
                 UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 10", "gRandomize10GSHint", true, false);
