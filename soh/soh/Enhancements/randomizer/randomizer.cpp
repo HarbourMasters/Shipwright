@@ -1162,6 +1162,65 @@ void Randomizer::ParseMasterQuestDungeonsFile(const char* spoilerFileName) {
     }
 }
 
+int16_t Randomizer::GetVanillaMerchantPrice(RandomizerCheck check) {
+    switch (check) { 
+        case RC_HF_DEKU_SCRUB_GROTTO:
+            return 10;    
+        case RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT:
+        case RC_DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS:
+        case RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR:
+            return 15;    
+        case RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT:
+        case RC_LH_DEKU_SCRUB_GROTTO_LEFT:
+        case RC_GC_DEKU_SCRUB_GROTTO_LEFT:
+        case RC_DMC_DEKU_SCRUB_GROTTO_LEFT:
+        case RC_LLR_DEKU_SCRUB_GROTTO_LEFT:
+        case RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT:
+        case RC_JABU_JABUS_BELLY_DEKU_SCRUB:
+        case RC_GANONS_CASTLE_MQ_DEKU_SCRUB_RIGHT:
+            return 20;
+        case RC_LW_DEKU_SCRUB_NEAR_BRIDGE:
+        case RC_LW_DEKU_SCRUB_GROTTO_REAR:
+        case RC_LW_DEKU_SCRUB_GROTTO_FRONT:
+        case RC_SFM_DEKU_SCRUB_GROTTO_REAR:
+        case RC_SFM_DEKU_SCRUB_GROTTO_FRONT:
+        case RC_LH_DEKU_SCRUB_GROTTO_RIGHT:
+        case RC_LH_DEKU_SCRUB_GROTTO_CENTER:
+        case RC_GV_DEKU_SCRUB_GROTTO_REAR:
+        case RC_GV_DEKU_SCRUB_GROTTO_FRONT:
+        case RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR:
+        case RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT:
+        case RC_GC_DEKU_SCRUB_GROTTO_RIGHT:
+        case RC_GC_DEKU_SCRUB_GROTTO_CENTER:
+        case RC_DMC_DEKU_SCRUB:
+        case RC_DMC_DEKU_SCRUB_GROTTO_RIGHT:
+        case RC_DMC_DEKU_SCRUB_GROTTO_CENTER:
+        case RC_ZR_DEKU_SCRUB_GROTTO_REAR:
+        case RC_ZR_DEKU_SCRUB_GROTTO_FRONT:
+        case RC_LLR_DEKU_SCRUB_GROTTO_RIGHT:
+        case RC_LLR_DEKU_SCRUB_GROTTO_CENTER:
+        case RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT:
+        case RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_FRONT:
+        case RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_SIDE_ROOM_NEAR_LOWER_LIZALFOS:
+        case RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT:
+        case RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT:
+        case RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT:
+        case RC_GANONS_CASTLE_DEKU_SCRUB_LEFT:
+        case RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_LEFT:
+        case RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER:
+        case RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_RIGHT:
+        case RC_GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT:
+            return 40;
+        case RC_DEKU_TREE_MQ_DEKU_SCRUB:
+        case RC_DODONGOS_CAVERN_DEKU_SCRUB_LOBBY:
+        case RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_STAIRCASE:
+            return 50;
+        default:
+            // we check for -1 when calling this to know if we don't have a price
+            return -1;
+    }
+}
+
 void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent) {
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream)
@@ -1186,7 +1245,6 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
             if (it->is_structured()) {
                 json itemJson = *it;
                 for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
-                    // todo handle prices
                     if (itemit.key() == "item") {
                         gSaveContext.itemLocations[randomizerCheck].check = randomizerCheck;
                         gSaveContext.itemLocations[randomizerCheck].get.rgID = SpoilerfileGetNameToEnum[itemit.value()];
@@ -1204,6 +1262,10 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
                 gSaveContext.itemLocations[randomizerCheck].check = SpoilerfileCheckNameToEnum[it.key()];
                 gSaveContext.itemLocations[randomizerCheck].get.rgID = SpoilerfileGetNameToEnum[it.value()];
                 gSaveContext.itemLocations[randomizerCheck].get.fakeRgID = RG_NONE;
+                int16_t price = GetVanillaMerchantPrice(randomizerCheck);
+                if (price != -1) {
+                    merchantPrices[gSaveContext.itemLocations[randomizerCheck].check] = price;
+                }
             }
         }
 
