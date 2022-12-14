@@ -14,6 +14,7 @@
 
 #define NUM_NAVI_MESSAGES 19
 #define NUM_ICE_TRAP_MESSAGES 23
+#define NUM_GORON_MESSAGES 9
 class Randomizer {
   private:
     std::unordered_map<RandomizerCheck, RandomizerGetData> itemLocations;
@@ -86,6 +87,7 @@ class Randomizer {
     CustomMessageEntry GetWarpSongMessage(u16 textId, bool mysterious = false);
     CustomMessageEntry GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
     CustomMessageEntry GetSshMessage(s16 params);
+    CustomMessageEntry GetGoronMessage(u16 index);
     CustomMessageEntry GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
     static void CreateCustomMessages();
     static CustomMessageEntry GetRupeeMessage(u16 rupeeTextId);

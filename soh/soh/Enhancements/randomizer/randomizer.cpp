@@ -246,6 +246,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Misc Settings:30 GS Hint", RSK_KAK_30_SKULLS_HINT },
     { "Misc Settings:40 GS Hint", RSK_KAK_40_SKULLS_HINT },
     { "Misc Settings:50 GS Hint", RSK_KAK_50_SKULLS_HINT },
+    { "Misc Settings:Warp Song Hint", RSK_WARP_SONGS_HINT },
     { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
     { "Misc Settings:Blue Fire Arrows", RSK_BLUE_FIRE_ARROWS },
     { "Misc Settings:Sunlight Arrows", RSK_SUNLIGHT_ARROWS },
@@ -3892,16 +3893,16 @@ void DrawRandoEditor(bool& open) {
                 
                 ImGui::Indent();
                 //Altar, Light Arrows, and Warp Songs are enabled by default
-                UIWidgets::PaddedEnhancementCheckbox("Altar Text", "gRandomizeAltarHint", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Altar Text", "gRandomizeAltarHint", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::InsertHelpHoverText("Reading the Temple of Time altar as child will tell you the locations of the Spiritual Stones.\n"
                     "Reading the Temple of Time altar as adult will tell you the locations of the Medallions, as well as the conditions for building the Rainbow Bridge and getting the Boss Key for Ganon's Castle.");
-                UIWidgets::PaddedEnhancementCheckbox("Ganondorf (Light Arrows)", "gRandomizeLAHint", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Ganondorf (Light Arrows)", "gRandomizeLAHint", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::InsertHelpHoverText("Talking to Ganondorf in his boss room will tell you the location of the Light Arrows. If this option is enabled and Ganondorf is reachable without Light Arrows, Gossip Stones will never hint the Light Arrows.");
                 UIWidgets::PaddedEnhancementCheckbox("Dampe's Diary (Hookshot)", "gRandomizeDampeHint", true, false);
                 UIWidgets::InsertHelpHoverText("Reading the diary of Dampé the gravekeeper as adult will tell you the location of one of the Hookshots.");
-                //RANDOTODO: Add this when randomized warp songs are implemented
-                //UIWidgets::PaddedEnhancementCheckbox("Warp Song text", "gRandomizeWarpSongText", true, false, true, "Coming soon");
-                //UIWidgets::InsertHelpHoverText("Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)");
+                UIWidgets::PaddedEnhancementCheckbox("Warp Song text", "gRandomizeWarpSongText", true, false, !CVar_GetS32("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF),
+                 "This option is disabled since warp songs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
+                UIWidgets::InsertHelpHoverText("Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)");
                 UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 10", "gRandomize10GSHint", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 20", "gRandomize20GSHint", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 30", "gRandomize30GSHint", true, false);                
@@ -4238,7 +4239,7 @@ CustomMessageEntry Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
     if (mysterious) {
         std::vector<std::string> locationName ={
             "a mysterious place",
-            "a mysterious place", // TODO: German translation
+            "ein mysteriöser Ort,", // TODO: AI-translated
             "un endroit mystérieux",
         };
 
@@ -4629,6 +4630,77 @@ void CreateIceTrapRandoMessages() {
                                               "Pour Noël, cette année, tu&n'auras que du %BCHARBON!&%rJoyeux Noël%w!" });
 }
 
+CustomMessageMinimal FireTempleGoronMessages[NUM_GORON_MESSAGES] = {
+    {
+        "Are you the one they call @?^You look really weird for %rDarunia's kid.%w&Are you adopted?",
+        "",
+        "",
+    },
+    {
+        "Thank Hylia! I was so worried about&when my teacher would let me get&out of detention.^I gotta go home and see my parents.",
+        "",
+        "",
+    },
+    {
+        "How long has it been, do you know?^%r{{days}}%w days!?^Oh no, and it's %r\x1F%w?&I have to check on my cake!!",
+        "",
+        "",
+    },
+    {
+        //0x39C7 - ganon laugh
+        //0x38FC - goron "wake up"
+        "\x12\x39\xC7You fell into my %rtrap!%w&Foolish boy, it was me, Ganondorf!!!^\x12\x38\xFC...whoa, where am I?&What happened?^Weird.",
+        "",
+        "",
+    },
+    {
+        "Thanks, but I don't know if I wanna go&just yet...^Hmm...^...^...^...^...^...maybe I can come back later.&Bye bye.",
+        "",
+        "",
+    },
+    {
+        
+        "Do you know about \x9f?&It's this weird symbol that's been&in my dreams lately...^Apparently, you pressed it %b{{a_btn}}%w times.^Wow."
+        "",
+        "",
+    },
+    {
+        "\x13\x1A""Boy, you must be hot!&Get yourself a bottle of&%rLon Lon Milk%w right away and cool&down, for only %g30%w rupees!",
+        "",
+        "",
+    },
+    {
+        "In that case, I'll help you out!^They say that %rthe thing you're&looking for%w can only be found%g when&you're not looking for it.%w^Hope that helps!",
+        "",
+        "",
+    },
+    {
+        "I dunno why I was thrown in here,&truth be told.&I'm just a %g\"PR\" person.%w",
+        "",
+        "",
+    },
+};
+
+static int goronIDs[9] = {0x3052, 0x3069, 0x306A, 0x306B, 0x306C, 0x306D, 0x306E, 0x306F, 0x3070};
+
+void CreateFireTempleGoronMessages() {
+    
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(customMessageTableID);
+    for (u8 i = 0; i <= NUM_GORON_MESSAGES - 1; i++) {
+        customMessageManager->CreateMessage(customMessageTableID, goronIDs[i], {
+            TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+            FireTempleGoronMessages[i].english, FireTempleGoronMessages[i].french, FireTempleGoronMessages[i].german
+        });
+    }
+}
+
+CustomMessageEntry Randomizer::GetGoronMessage(u16 index) {
+    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, goronIDs[index]);
+    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{days}}", std::to_string(gSaveContext.totalDays));
+    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{a_btn}}", std::to_string(gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]));
+    return messageEntry;
+}
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
@@ -4864,6 +4936,7 @@ void Randomizer::CreateCustomMessages() {
     CreateRupeeMessages();
     CreateNaviRandoMessages();
     CreateIceTrapRandoMessages();
+    CreateFireTempleGoronMessages();
 }
 
 class ExtendedVanillaTableInvalidItemIdException: public std::exception {
