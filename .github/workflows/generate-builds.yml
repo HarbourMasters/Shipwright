@@ -223,8 +223,39 @@ jobs:
           soh.rpx
           soh.wuhb
           readme.txt
-  build-windows:
+  build-windows-selfhosted:
+    continue-on-error: true
     needs: extract-assets
+    runs-on: [self-hosted, Windows, x64]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: Restore assets
+      id: restore-assets
+      uses: actions/download-artifact@v3
+      with:
+        name: assets
+    - name: Setup 7-Zip
+      run: |
+        "C:\Program Files\7-Zip" >> $env:GITHUB_PATH
+    - name: Build SoH
+      run: |
+        7z x assets.zip -aoa
+
+        cmake -S . -B build-windows -G "Visual Studio 17 2022" -T v142 -A x64 -DCMAKE_BUILD_TYPE:STRING=Release
+        cmake --build build-windows --target OTRGui --config Release --parallel 10
+        cmake --build build-windows --config Release --parallel 10
+        cd build-windows
+        cpack -G ZIP
+    - name: Upload build
+      uses: actions/upload-artifact@v3
+      with:
+        name: soh-windows
+        path: _packages/*.zip
+  build-windows:
+    if: jobs.build-windows-selfhosted.conclusion == 'failure' && jobs.build-windows-selfhosted.steps.restore-assets != 'success'
+    needs: [extract-assets, build-windows-selfhosted]
     runs-on: windows-latest
     steps:
     - name: Install dependencies
