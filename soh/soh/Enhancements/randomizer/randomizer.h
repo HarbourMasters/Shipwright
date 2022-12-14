@@ -86,7 +86,7 @@ class Randomizer {
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
     CustomMessageEntry GetWarpSongMessage(u16 textId, bool mysterious = false);
     CustomMessageEntry GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
-    CustomMessageEntry GetSshMessage(s16 params);
+    CustomMessageEntry GetCursedSkullMessage(s16 params);
     CustomMessageEntry GetGoronMessage(u16 index);
     CustomMessageEntry GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
     static void CreateCustomMessages();

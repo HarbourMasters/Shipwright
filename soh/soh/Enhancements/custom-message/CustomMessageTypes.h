@@ -1,7 +1,7 @@
 #pragma once
 
 typedef enum {
-    TEXT_SSH = 0x22,
+    TEXT_CURSED_SKULLTULA_PEOPLE = 0x22,
     TEXT_DAMPES_DIARY = 0x5003,
     TEXT_BUY_BOMBCHU_10_PROMPT = 0x8C,
     TEXT_BUY_BOMBCHU_10_DESC = 0xBC,

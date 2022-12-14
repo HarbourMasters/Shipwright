@@ -2015,11 +2015,11 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } else if (Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
                    (textId == TEXT_BUY_BOMBCHU_10_DESC || textId == TEXT_BUY_BOMBCHU_10_PROMPT)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
-        } else if (textId == TEXT_SSH) {
+        } else if (textId == TEXT_CURSED_SKULLTULA_PEOPLE) {
             actorParams = GET_PLAYER(play)->targetActor->params;
             RandomizerSettingKey rsk = (RandomizerSettingKey)(RSK_KAK_10_SKULLS_HINT + (actorParams - 1));
             if (Randomizer_GetSettingValue(rsk)) {
-                messageEntry = OTRGlobals::Instance->gRandomizer->GetSshMessage(actorParams);
+                messageEntry = OTRGlobals::Instance->gRandomizer->GetCursedSkullMessage(actorParams);
             }
         } else if (Randomizer_GetSettingValue(RSK_DAMPES_DIARY_HINT) && textId == TEXT_DAMPES_DIARY) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY);

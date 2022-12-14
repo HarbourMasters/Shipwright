@@ -354,7 +354,7 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::randoMiscHintsTableID);
 
     CustomMessageManager::Instance->CreateMessage(
-            Randomizer::randoMiscHintsTableID, TEXT_SSH,
+            Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE,
             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, 
                 "Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you my&%b{{check}}%w!",
                 "Yeaaarrgh! Ein Fluch liegt auf mir!^Bitte rette mich, indem du&%r{{params}} Spinnen des Fluches%w&zerstörst und ich werde dir&%b{{check}} geben%w!",
@@ -2691,14 +2691,15 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES] = CVar_GetS32("gRandomizeShuffleFrogSongRupees", 0);
     cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", RO_ITEM_POOL_BALANCED);
     cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", RO_ICE_TRAPS_NORMAL);
-    cvarSettings[RSK_TOT_ALTAR_HINT] = CVar_GetS32("gRandomizeAltarHint", 1); //Altar Text is enabled by default
-    cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT] = CVar_GetS32("gRandomizeLAHint", 1); //Light arrow hint is enabled by default
-    cvarSettings[RSK_DAMPES_DIARY_HINT] = CVar_GetS32("gRandomizeDampeHint", 0);
-    cvarSettings[RSK_KAK_10_SKULLS_HINT] = CVar_GetS32("gRandomize10GSHint", 0);
-    cvarSettings[RSK_KAK_20_SKULLS_HINT] = CVar_GetS32("gRandomize20GSHint", 0);
-    cvarSettings[RSK_KAK_30_SKULLS_HINT] = CVar_GetS32("gRandomize30GSHint", 0);
-    cvarSettings[RSK_KAK_40_SKULLS_HINT] = CVar_GetS32("gRandomize40GSHint", 0);
-    cvarSettings[RSK_KAK_50_SKULLS_HINT] = CVar_GetS32("gRandomize50GSHint", 0);
+    cvarSettings[RSK_TOT_ALTAR_HINT] = CVar_GetS32("gRandomizeAltarHint", RO_GENERIC_ON);
+    cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT] = CVar_GetS32("gRandomizeLAHint", RO_GENERIC_ON);
+    cvarSettings[RSK_DAMPES_DIARY_HINT] = CVar_GetS32("gRandomizeDampeHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_WARP_SONGS_HINT] = CVar_GetS32("gRandomizeWarpSongText", RO_GENERIC_OFF);
+    cvarSettings[RSK_KAK_10_SKULLS_HINT] = CVar_GetS32("gRandomize10GSHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_KAK_20_SKULLS_HINT] = CVar_GetS32("gRandomize20GSHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_KAK_30_SKULLS_HINT] = CVar_GetS32("gRandomize30GSHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_KAK_40_SKULLS_HINT] = CVar_GetS32("gRandomize40GSHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_KAK_50_SKULLS_HINT] = CVar_GetS32("gRandomize50GSHint", RO_GENERIC_OFF);
     cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", RO_GOSSIP_STONES_NEED_NOTHING);
     cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", RO_HINT_CLARITY_CLEAR);
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", RO_HINT_DIST_BALANCED);
@@ -4307,8 +4308,8 @@ CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u
     return messageEntry;
 }
 
-CustomMessageEntry Randomizer::GetSshMessage(s16 params) {
-    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_SSH);
+CustomMessageEntry Randomizer::GetCursedSkullMessage(s16 params) {
+    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE);
     RandomizerCheck rc = GetCheckFromActor(ACTOR_EN_SSH, SCENE_KINSUTA, params);
     RandomizerGet itemGet = this->itemLocations[rc].rgID;
     std::vector<std::string> itemName;
@@ -4631,53 +4632,54 @@ void CreateIceTrapRandoMessages() {
 }
 
 CustomMessageMinimal FireTempleGoronMessages[NUM_GORON_MESSAGES] = {
+    //TODO: French/German translations for all of these
     {
         "Are you the one they call @?^You look really weird for %rDarunia's kid.%w&Are you adopted?",
-        "",
-        "",
+        "Are you the one they call @?^You look really weird for %rDarunia's kid.%w&Are you adopted?",
+        "Are you the one they call @?^You look really weird for %rDarunia's kid.%w&Are you adopted?",
     },
     {
         "Thank Hylia! I was so worried about&when my teacher would let me get&out of detention.^I gotta go home and see my parents.",
-        "",
-        "",
+        "Thank Hylia! I was so worried about&when my teacher would let me get&out of detention.^I gotta go home and see my parents.",
+        "Thank Hylia! I was so worried about&when my teacher would let me get&out of detention.^I gotta go home and see my parents.",
     },
     {
         "How long has it been, do you know?^%r{{days}}%w days!?^Oh no, and it's %r\x1F%w?&I have to check on my cake!!",
-        "",
-        "",
+        "How long has it been, do you know?^%r{{days}}%w days!?^Oh no, and it's %r\x1F%w?&I have to check on my cake!!",
+        "How long has it been, do you know?^%r{{days}}%w days!?^Oh no, and it's %r\x1F%w?&I have to check on my cake!!",
     },
     {
         //0x39C7 - ganon laugh
         //0x38FC - goron "wake up"
-        "\x12\x39\xC7You fell into my %rtrap!%w&Foolish boy, it was me, Ganondorf!!!^\x12\x38\xFC...whoa, where am I?&What happened?^Weird.",
-        "",
-        "",
+        "\x12\x39\xC7You fell into my %rtrap!%w&Foolish boy, it was me, Ganondorf!!!^...whoa, where am I?&What happened?^Weird.",
+        "\x12\x39\xC7You fell into my %rtrap!%w&Foolish boy, it was me, Ganondorf!!!^...whoa, where am I?&What happened?^Weird.",
+        "\x12\x39\xC7You fell into my %rtrap!%w&Foolish boy, it was me, Ganondorf!!!^...whoa, where am I?&What happened?^Weird.",
     },
     {
         "Thanks, but I don't know if I wanna go&just yet...^Hmm...^...^...^...^...^...maybe I can come back later.&Bye bye.",
-        "",
-        "",
+        "Thanks, but I don't know if I wanna go&just yet...^Hmm...^...^...^...^...^...maybe I can come back later.&Bye bye.",
+        "Thanks, but I don't know if I wanna go&just yet...^Hmm...^...^...^...^...^...maybe I can come back later.&Bye bye.",
     },
     {
         
         "Do you know about \x9f?&It's this weird symbol that's been&in my dreams lately...^Apparently, you pressed it %b{{a_btn}}%w times.^Wow."
-        "",
-        "",
+        "Do you know about \x9f?&It's this weird symbol that's been&in my dreams lately...^Apparently, you pressed it %b{{a_btn}}%w times.^Wow."
+        "Do you know about \x9f?&It's this weird symbol that's been&in my dreams lately...^Apparently, you pressed it %b{{a_btn}}%w times.^Wow."
     },
     {
         "\x13\x1A""Boy, you must be hot!&Get yourself a bottle of&%rLon Lon Milk%w right away and cool&down, for only %g30%w rupees!",
-        "",
-        "",
+        "\x13\x1A""Boy, you must be hot!&Get yourself a bottle of&%rLon Lon Milk%w right away and cool&down, for only %g30%w rupees!",
+        "\x13\x1A""Boy, you must be hot!&Get yourself a bottle of&%rLon Lon Milk%w right away and cool&down, for only %g30%w rupees!",
     },
     {
         "In that case, I'll help you out!^They say that %rthe thing you're&looking for%w can only be found%g when&you're not looking for it.%w^Hope that helps!",
-        "",
-        "",
+        "In that case, I'll help you out!^They say that %rthe thing you're&looking for%w can only be found%g when&you're not looking for it.%w^Hope that helps!",
+        "In that case, I'll help you out!^They say that %rthe thing you're&looking for%w can only be found%g when&you're not looking for it.%w^Hope that helps!",
     },
     {
         "I dunno why I was thrown in here,&truth be told.&I'm just a %g\"PR\" person.%w",
-        "",
-        "",
+        "I dunno why I was thrown in here,&truth be told.&I'm just a %g\"PR\" person.%w",
+        "I dunno why I was thrown in here,&truth be told.&I'm just a %g\"PR\" person.%w",
     },
 };
 
