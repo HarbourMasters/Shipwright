@@ -12,6 +12,8 @@ IPaddress srvadd;
 
 extern "C" void SetLinkPuppetData(PuppetPacket* packet, uint8_t player_id);
 extern "C" void SetGetItemData(int16_t itemId);
+extern "C" void Online_DamagePlayer(uint8_t damageValue, uint8_t damageEffect, int16_t knockbackRotation);
+extern "C" void Online_SetSceneFlag(uint8_t scene_num, uint8_t flag_type, int32_t flag_value);
 
 uint8_t player_id = -1;
 
@@ -61,6 +63,49 @@ void OnlineClient::SendGetItemPacketMessage(int16_t itemId) {
     }
 }
 
+void OnlineClient::SendDamagePacketMessage(DamagePacket* packet) {
+    if (client != nullptr) {
+        UDPpacket* newPacket;
+        newPacket = SDLNet_AllocPacket(sizeof(DamagePacket));
+
+        packet->packet_type = 3;
+
+        newPacket->address.host = srvadd.host;
+        newPacket->address.port = srvadd.port;
+        newPacket->len = sizeof(DamagePacket);
+
+        memcpy(newPacket->data, packet, sizeof(DamagePacket));
+
+        SDLNet_UDP_Send(client, -1, newPacket);
+
+        SDLNet_FreePacket(newPacket);
+    }
+}
+
+void OnlineClient::SendSceneFlagPacketMessage(uint8_t scene_num, uint8_t flag_type, int32_t flag_value) {
+    if (client != nullptr) {
+        UDPpacket* newPacket;
+        newPacket = SDLNet_AllocPacket(sizeof(SceneFlagPacket));
+
+        SceneFlagPacket* sceneFlagPacket = new SceneFlagPacket();
+
+        sceneFlagPacket->packet_type = 4;
+        sceneFlagPacket->scene_id = scene_num;
+        sceneFlagPacket->flag_type = flag_type;
+        sceneFlagPacket->flag_value = flag_value;
+
+        newPacket->address.host = srvadd.host;
+        newPacket->address.port = srvadd.port;
+        newPacket->len = sizeof(SceneFlagPacket);
+
+        memcpy(newPacket->data, sceneFlagPacket, sizeof(SceneFlagPacket));
+
+        SDLNet_UDP_Send(client, -1, newPacket);
+
+        SDLNet_FreePacket(newPacket);
+    }
+}
+
 void OnlineClient::CloseClient() {
     if (running) {
         running = false;
@@ -100,7 +145,7 @@ void OnlineClient::RunClientReceive() {
                 memcpy(&player_id, &connectionPacket->player_id, sizeof(connectionPacket->player_id));
                 SDLNet_UDP_Bind(client, player_id, &srvadd);
             }
-            
+
             // Puppet Packet
             if (connectionPacket->packet_type == 1) {
                 PuppetPacket* puppetPacket = new PuppetPacket();
@@ -115,6 +160,23 @@ void OnlineClient::RunClientReceive() {
                 memcpy(getItemPacket, p->data, sizeof(GetItemPacket));
                 SetGetItemData(getItemPacket->get_item);
                 delete getItemPacket;
+            }
+
+            // Damage Packet
+            if (connectionPacket->packet_type == 3) {
+                DamagePacket* damagePacket = new DamagePacket();
+                memcpy(damagePacket, p->data, sizeof(DamagePacket));
+                Online_DamagePlayer(damagePacket->damageValue, damagePacket->damageEffect,
+                                    damagePacket->knockbackRotation);
+                delete damagePacket;
+            }
+
+            // Scene Flag Packet
+            if (connectionPacket->packet_type == 4) {
+                SceneFlagPacket* sceneFlagPacket = new SceneFlagPacket();
+                memcpy(sceneFlagPacket, p->data, sizeof(SceneFlagPacket));
+                Online_SetSceneFlag(sceneFlagPacket->scene_id, sceneFlagPacket->flag_type, sceneFlagPacket->flag_value);
+                delete sceneFlagPacket;
             }
 
             delete connectionPacket;

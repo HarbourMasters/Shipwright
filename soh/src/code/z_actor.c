@@ -658,6 +658,8 @@ void Flags_SetSwitch(PlayState* play, s32 flag) {
     } else {
         play->actorCtx.flags.tempSwch |= (1 << (flag - 0x20));
     }
+
+    OTRSendSceneFlagPacketToServer(play->sceneNum, 1, flag);
 }
 
 /**
@@ -716,6 +718,8 @@ s32 Flags_GetTreasure(PlayState* play, s32 flag) {
  */
 void Flags_SetTreasure(PlayState* play, s32 flag) {
     play->actorCtx.flags.chest |= (1 << flag);
+
+    OTRSendSceneFlagPacketToServer(play->sceneNum, 0, flag);
 }
 
 /**
@@ -730,6 +734,8 @@ s32 Flags_GetClear(PlayState* play, s32 flag) {
  */
 void Flags_SetClear(PlayState* play, s32 flag) {
     play->actorCtx.flags.clear |= (1 << flag);
+
+    OTRSendSceneFlagPacketToServer(play->sceneNum, 2, flag);
 }
 
 /**
@@ -782,6 +788,8 @@ void Flags_SetCollectible(PlayState* play, s32 flag) {
             play->actorCtx.flags.tempCollect |= (1 << (flag - 0x20));
         }
     }
+
+    OTRSendSceneFlagPacketToServer(play->sceneNum, 3, flag);
 }
 
 void func_8002CDE4(PlayState* play, TitleCardContext* titleCtx) {

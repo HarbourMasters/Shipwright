@@ -2249,11 +2249,103 @@ void Play_PerformSave(PlayState* play) {
 
 void SetLinkPuppetData(PuppetPacketZ64* packet, u8 player_id) {
     if (puppets[player_id] != NULL) {
-        memcpy(&puppets[player_id]->packet, packet, sizeof(PuppetPacketZ64));
+        memcpy(&puppets[player_id]->puppetPacket, packet, sizeof(PuppetPacketZ64));
     }
 }
 
 void SetGetItemData(int16_t itemId) {
     Player* player = GET_PLAYER(gPlayState);
     Item_Give_Online(gPlayState, itemId);
+}
+
+typedef enum {
+    PUPPET_DMGEFF_NONE,
+    PUPPET_DMGEFF_NORMAL,
+    PUPPET_DMGEFF_ICE,
+    PUPPET_DMGEFF_FIRE,
+    PUPPET_DMGEFF_THUNDER,
+    PUPPET_DMGEFF_KNOCKBACK,
+    PUPPET_DMGEFF_STUN,
+} PuppetDamageEffect;
+
+void Online_DamagePlayer(uint8_t damageValue, uint8_t damageEffect, int16_t knockbackRotation) {
+    PlayState* play = gPlayState;
+    Player* player = GET_PLAYER(play);
+
+    if (player->invincibilityTimer <= 0 && !Player_InBlockingCsMode(play, player)) {
+        switch (damageEffect) {
+            case PUPPET_DMGEFF_NORMAL:
+                Player_InflictDamage(play, damageValue * -4);
+                func_80837C0C(play, player, 0, 0, 0, 0, 0);
+                player->invincibilityTimer = 18;
+                player->actor.freezeTimer = 0;
+                break;
+
+            case PUPPET_DMGEFF_ICE:
+                player->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
+                func_80837C0C(play, player, 3, 0.0f, 0.0f, 0, 20);
+                player->invincibilityTimer = 18;
+                player->actor.freezeTimer = 0;
+                break;
+
+            case PUPPET_DMGEFF_FIRE:
+                for (int i = 0; i < 18; i++) {
+                    player->flameTimers[i] = Rand_S16Offset(0, 200);
+                }
+                player->isBurning = true;
+                func_80837C0C(play, player, 0, 0, 0, 0, 0);
+                player->invincibilityTimer = 18;
+                player->actor.freezeTimer = 0;
+                break;
+
+            case PUPPET_DMGEFF_THUNDER:
+                func_80837C0C(play, player, 4, 0.0f, 0.0f, 0, 20);
+                player->invincibilityTimer = 18;
+                player->actor.freezeTimer = 0;
+                break;
+
+            case PUPPET_DMGEFF_KNOCKBACK:
+                func_8002F71C(play, &player, 12.0f, knockbackRotation, 12.0f);
+                player->invincibilityTimer = 28;
+                player->actor.freezeTimer = 0;
+                break;
+
+            case PUPPET_DMGEFF_STUN:
+                player->actor.freezeTimer = 20;
+                Actor_SetColorFilter(&player->actor, 0, 0xFF, 0, 10);
+                break;
+        }
+    }
+}
+
+void Online_SetSceneFlag(uint8_t scene_num, uint8_t flag_type, int32_t flag_value) {
+    PlayState* play = gPlayState;
+
+    switch (flag_type) {
+        case 0:
+            gSaveContext.sceneFlags[scene_num].chest |= (1 << flag_value);
+            break;
+        case 1:
+            if (flag_value < 0x20) {
+                gSaveContext.sceneFlags[scene_num].swch|= (1 << flag_value);
+            }
+            break;
+        case 2:
+            gSaveContext.sceneFlags[scene_num].clear |= (1 << flag_value);
+            break;
+        case 3:
+            if (flag_value != 0) {
+                if (flag_value < 0x20) {
+                    gSaveContext.sceneFlags[scene_num].collect |= (1 << flag_value);
+                }
+            }
+            break;
+    }
+
+    if (play->sceneNum == scene_num) {
+        play->actorCtx.flags.chest = gSaveContext.sceneFlags[scene_num].chest;
+        play->actorCtx.flags.swch = gSaveContext.sceneFlags[scene_num].swch;
+        play->actorCtx.flags.clear = gSaveContext.sceneFlags[scene_num].clear;
+        play->actorCtx.flags.collect = gSaveContext.sceneFlags[scene_num].collect;
+    }
 }

@@ -109,6 +109,21 @@ typedef struct GetItemPacketZ64 {
     int16_t get_item;
 } GetItemPacketZ64;
 
+typedef struct DamagePacketZ64 {
+    uint8_t packet_type;
+    uint8_t hit_player_id;
+    uint8_t damageEffect;
+    uint8_t damageValue;
+    int16_t knockbackRotation;
+} DamagePacketZ64;
+
+typedef struct SceneFlagPacketZ64 {
+    uint8_t packet_type;
+    uint8_t scene_id;
+    uint8_t flag_type;
+    int32_t flag_value;
+} SceneFlagPacketZ64;
+
 typedef struct ConnectionPacketZ64 {
     uint8_t packet_type;
     uint8_t player_id;

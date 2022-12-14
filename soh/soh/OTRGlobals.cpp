@@ -2107,3 +2107,16 @@ extern "C" void OTRSendGetItemPacketToServer(int16_t itemId) {
         OTRGlobals::Instance->gOnlineClient->SendGetItemPacketMessage(itemId);
     }
 }
+
+extern "C" void OTRSendDamagePacketToServer(DamagePacketZ64* damagePacket) {
+    if (OTRGlobals::Instance->gOnlineClient->running) {
+        OTRGlobals::Instance->gOnlineClient->SendDamagePacketMessage((DamagePacket*)damagePacket);
+    }
+}
+
+extern "C" void OTRSendSceneFlagPacketToServer(uint8_t scene_num, uint8_t flag_type, int32_t flag_value)
+{
+    if (OTRGlobals::Instance->gOnlineClient->running) {
+        OTRGlobals::Instance->gOnlineClient->SendSceneFlagPacketMessage(scene_num, flag_type, flag_value);
+    }
+}

@@ -57,6 +57,21 @@ typedef struct GetItemPacket {
     int16_t get_item;
 } GetItemPacket;
 
+typedef struct DamagePacket {
+    uint8_t packet_type;
+    uint8_t hit_player_id;
+    uint8_t damageEffect;
+    uint8_t damageValue;
+    int16_t knockbackRotation;
+} DamagePacket;
+
+typedef struct SceneFlagPacket {
+    uint8_t packet_type;
+    uint8_t scene_id;
+    uint8_t flag_type;
+    int32_t flag_value;
+} SceneFlagPacket;
+
 typedef struct ConnectionPacket {
     uint8_t packet_type;
     uint8_t player_id;
@@ -69,6 +84,8 @@ class OnlineClient {
     void InitClient(char* ipAddr, int port);
     void SendPuppetPacketMessage(PuppetPacket* packet);
     void SendGetItemPacketMessage(int16_t itemId);
+    void SendDamagePacketMessage(DamagePacket* packet);
+    void SendSceneFlagPacketMessage(uint8_t scene_num, uint8_t flag_type, int32_t flag_value);
 
     void CloseClient();
 
