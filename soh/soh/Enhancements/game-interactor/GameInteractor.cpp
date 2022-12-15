@@ -7,7 +7,10 @@
 
 #include "GameInteractor.h"
 
-GameInteractor::EffectQueryResult GameInteractor::CanApplyEffect(GameInteractionEffect effect) {
-    return GameInteractor::EffectQueryResult::NotPossible;
+GameInteractionEffectQueryResult GameInteractor::CanApplyEffect(GameInteractionEffect effect) {
+    return effect.CanBeApplied();
 }
 
+void GameInteractor::ApplyEffect(GameInteractionEffect effect) {
+    return effect.Apply();
+}

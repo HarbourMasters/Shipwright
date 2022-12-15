@@ -1,4 +1,4 @@
-﻿#include "OTRGlobals.h"
+#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
 #include <algorithm>
@@ -77,10 +77,13 @@
 CrowdControl* CrowdControl::Instance;
 #endif
 
+#include "Enhancements/game-interactor/GameInteractor.h"
+
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
 ItemTableManager* ItemTableManager::Instance;
+GameInteractor* GameInteractor::Instance;
 
 OTRGlobals::OTRGlobals() {
     std::vector<std::string> OTRFiles;
@@ -429,6 +432,7 @@ extern "C" void InitOTR() {
     SaveManager::Instance = new SaveManager();
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
+    GameInteractor::Instance = new GameInteractor();
 
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
