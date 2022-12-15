@@ -30,6 +30,21 @@ typedef struct {
     int16_t blueWarp;
 } EntranceLinkInfo;
 
+typedef struct {
+  int16_t dungeonIndex;
+  int16_t exitIndex;
+  int16_t exitBlueWarp;
+} DungeonEntranceInfo;
+
+typedef struct {
+  EntranceType type;
+  AreaKey bossDoor;
+  AreaKey bossRoom;
+  AreaKey dungeon;
+  int16_t index;
+  int16_t exitIndex;
+} EntranceBossRoomInfo;
+
 EntranceLinkInfo NO_RETURN_ENTRANCE = {EntranceType::None, NONE, NONE, -1};
 
 typedef struct {
@@ -40,6 +55,7 @@ typedef struct {
 using EntranceInfoPair = std::pair<EntranceLinkInfo, EntranceLinkInfo>;
 using EntrancePair = std::pair<Entrance*, Entrance*>;
 using EntrancePools = std::map<EntranceType, std::vector<Entrance*>>;
+using DungeonData = std::map<AreaKey, DungeonEntranceInfo>;
 
 //The entrance randomization algorithm used here is a direct copy of
 //the algorithm used in the original N64 randomizer (except now in C++ instead
@@ -81,12 +97,25 @@ void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
     forwardEntrance->SetBlueWarp(forwardEntry.blueWarp);
     forwardEntrance->SetType(forwardEntry.type);
     forwardEntrance->SetAsPrimary();
+
+    // When decouple entrances is on, mark it for everything except boss rooms so 
+    if (Settings::DecoupleEntrances && forwardEntry.type != EntranceType::ChildBoss &&
+      forwardEntry.type != EntranceType::AdultBoss) {
+      forwardEntrance->SetDecoupled();
+    }
+
     if (returnEntry.parentRegion != NONE) {
       Entrance* returnEntrance = AreaTable(returnEntry.parentRegion)->GetExit(returnEntry.connectedRegion);
       returnEntrance->SetIndex(returnEntry.index);
       returnEntrance->SetBlueWarp(returnEntry.blueWarp);
       returnEntrance->SetType(returnEntry.type);
       forwardEntrance->BindTwoWay(returnEntrance);
+
+      // Mark reverse entrance as decoupled
+      if (Settings::DecoupleEntrances && returnEntry.type != EntranceType::ChildBoss &&
+        returnEntry.type != EntranceType::AdultBoss) {
+        returnEntrance->SetDecoupled();
+      }
     }
   }
 }
@@ -96,7 +125,7 @@ static std::vector<Entrance*> AssumeEntrancePool(std::vector<Entrance*>& entranc
   for (Entrance* entrance : entrancePool) {
     totalRandomizableEntrances++;
     Entrance* assumedForward = entrance->AssumeReachable();
-    if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+    if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
       Entrance* assumedReturn = entrance->GetReverse()->AssumeReachable();
       if (!(Settings::MixedEntrancePools && (Settings::ShuffleOverworldEntrances || Settings::ShuffleInteriorEntrances.Is(SHUFFLEINTERIORS_ALL)))) {
         auto type = entrance->GetType();
@@ -218,7 +247,7 @@ static void ChangeConnections(Entrance* entrance, Entrance* targetEntrance) {
   SPDLOG_DEBUG(message);
   entrance->Connect(targetEntrance->Disconnect());
   entrance->SetReplacement(targetEntrance->GetReplacement());
-  if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+  if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
     targetEntrance->GetReplacement()->GetReverse()->Connect(entrance->GetReverse()->GetAssumed()->Disconnect());
     targetEntrance->GetReplacement()->GetReverse()->SetReplacement(entrance->GetReverse());
   }
@@ -229,7 +258,7 @@ static void ChangeConnections(Entrance* entrance, Entrance* targetEntrance) {
 static void RestoreConnections(Entrance* entrance, Entrance* targetEntrance) {
   targetEntrance->Connect(entrance->Disconnect());
   entrance->SetReplacement(nullptr);
-  if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+  if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
     entrance->GetReverse()->GetAssumed()->Connect(targetEntrance->GetReplacement()->GetReverse()->Disconnect());
     targetEntrance->GetReplacement()->GetReverse()->SetReplacement(nullptr);
   }
@@ -247,7 +276,7 @@ static void DeleteTargetEntrance(Entrance* targetEntrance) {
 
 static void ConfirmReplacement(Entrance* entrance, Entrance* targetEntrance) {
   DeleteTargetEntrance(targetEntrance);
-  if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+  if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
     auto replacedReverse = targetEntrance->GetReplacement()->GetReverse();
     DeleteTargetEntrance(replacedReverse->GetReverse()->GetAssumed());
   }
@@ -786,9 +815,9 @@ int ShuffleAllEntrances() {
      {EntranceType::SpecialInterior, KAK_POTION_SHOP_BACK,             KAK_BACKYARD,                         0x04FF}},
 
      // Grotto Loads use an entrance index of 0x0700 + their grotto id. The id is used as index for the
-     // grottoLoadTable in src/grotto.c
+     // grottoLoadTable in soh/soh/Enhancements/randomizer/randomizer_grotto.c
      // Grotto Returns use an entrance index of 0x0800 + their grotto id. The id is used as index for the
-     // grottoReturnTable in src/grotto.c
+     // grottoReturnTable in soh/soh/Enhancements/randomizer/randomizer_grotto.c
     {{EntranceType::GrottoGrave,     DESERT_COLOSSUS,                  COLOSSUS_GROTTO,                      0x0700},
      {EntranceType::GrottoGrave,     COLOSSUS_GROTTO,                  DESERT_COLOSSUS,                      0x0800}},
     {{EntranceType::GrottoGrave,     LAKE_HYLIA,                       LH_GROTTO,                            0x0701},
@@ -935,6 +964,37 @@ int ShuffleAllEntrances() {
     {{EntranceType::WarpSong,        PRELUDE_OF_LIGHT_WARP,            TEMPLE_OF_TIME,                       0x05F4}, NO_RETURN_ENTRANCE},
   };
 
+  DungeonData dungeonData = {};
+
+  // Grab dungeon info from above to avoid having it written out twice
+  for (auto entrance : entranceShuffleTable) {
+    if (entrance.first.type != EntranceType::Dungeon || entrance.second.type == EntranceType::None ||
+      entrance.second.blueWarp == -1) {
+      continue;
+    }
+
+    dungeonData[entrance.second.parentRegion] = {entrance.first.index, entrance.second.index, entrance.second.blueWarp};
+  }
+
+  std::vector<EntranceBossRoomInfo> bossRoomTable = {
+    {EntranceType::ChildBoss, DEKU_TREE_BOSS_ENTRYWAY,        DEKU_TREE_BOSS_ROOM,        DEKU_TREE_ENTRYWAY,        0x040F, 0x0252},
+    {EntranceType::ChildBoss, DODONGOS_CAVERN_BOSS_ENTRYWAY,  DODONGOS_CAVERN_BOSS_ROOM,  DODONGOS_CAVERN_ENTRYWAY,  0x040B, 0x00C5},
+    {EntranceType::ChildBoss, JABU_JABUS_BELLY_BOSS_ENTRYWAY, JABU_JABUS_BELLY_BOSS_ROOM, JABU_JABUS_BELLY_ENTRYWAY, 0x0301, 0x0407},
+    {EntranceType::AdultBoss, FOREST_TEMPLE_BOSS_ENTRYWAY,    FOREST_TEMPLE_BOSS_ROOM,    FOREST_TEMPLE_ENTRYWAY,    0x000C, 0x024E},
+    {EntranceType::AdultBoss, FIRE_TEMPLE_BOSS_ENTRYWAY,      FIRE_TEMPLE_BOSS_ROOM,      FIRE_TEMPLE_ENTRYWAY,      0x0305, 0x0175},
+    {EntranceType::AdultBoss, WATER_TEMPLE_BOSS_ENTRYWAY,     WATER_TEMPLE_BOSS_ROOM,     WATER_TEMPLE_ENTRYWAY,     0x0417, 0x0423},
+    {EntranceType::AdultBoss, SPIRIT_TEMPLE_BOSS_ENTRYWAY,    SPIRIT_TEMPLE_BOSS_ROOM,    SPIRIT_TEMPLE_ENTRYWAY,    0x008D, 0x02F5},
+    {EntranceType::AdultBoss, SHADOW_TEMPLE_BOSS_ENTRYWAY,    SHADOW_TEMPLE_BOSS_ROOM,    SHADOW_TEMPLE_ENTRYWAY,    0x0413, 0x02B2},
+  };
+
+  // Add in boss room entrances and their reverse entrances with the bluewarp index
+  for (auto bossRoomInfo : bossRoomTable) {
+    entranceShuffleTable.push_back({
+      {bossRoomInfo.type, bossRoomInfo.bossDoor, bossRoomInfo.bossRoom, bossRoomInfo.index},
+      {bossRoomInfo.type, bossRoomInfo.bossRoom, bossRoomInfo.bossDoor, bossRoomInfo.exitIndex, dungeonData[bossRoomInfo.dungeon].exitBlueWarp},
+    });
+  }
+
   std::map<std::string, PriorityEntrance> priorityEntranceTable = {
     {"Bolero",   {{DMC_CENTRAL_LOCAL},                                     {EntranceType::OwlDrop, EntranceType::WarpSong}}},
     {"Nocturne", {{GRAVEYARD_WARP_PAD_REGION},                             {EntranceType::OwlDrop, EntranceType::Spawn, EntranceType::WarpSong}}},
@@ -968,6 +1028,17 @@ int ShuffleAllEntrances() {
       if (!Settings::ShuffleDungeonEntrances && !Settings::ShuffleOverworldEntrances) {
         oneWayPriorities["Requiem"] = priorityEntranceTable["Requiem"];
       }
+    }
+  }
+
+  // Shuffle Bosses
+  if (Settings::ShuffleBossEntrances.IsNot(SHUFFLEBOSSES_OFF)) {
+    if (Settings::ShuffleBossEntrances.Is(SHUFFLEBOSSES_AGE_RESTRICTED)) {
+      entrancePools[EntranceType::ChildBoss] = GetShuffleableEntrances(EntranceType::ChildBoss);
+      entrancePools[EntranceType::AdultBoss] = GetShuffleableEntrances(EntranceType::AdultBoss);
+    } else {
+      entrancePools[EntranceType::Boss] = GetShuffleableEntrances(EntranceType::ChildBoss);
+      AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::AdultBoss));
     }
   }
 

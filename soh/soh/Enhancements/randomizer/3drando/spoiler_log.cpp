@@ -306,7 +306,7 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
   std::string name = entrance->GetName();
   std::string text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
 
-  if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+  if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
     destinationIndex = entrance->GetReverse()->GetIndex();
     replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
     replacementBlueWarp = entrance->GetReplacement()->GetReverse()->GetBlueWarp();
@@ -323,7 +323,7 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
   jsonData["entrances"].push_back(entranceJson);
 
   // When decoupled entrances is off, handle saving reverse entrances with blue warps
-  if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+  if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
     json reverseEntranceJson = json::object({
       {"index", replacementDestinationIndex},
       {"destination", replacementIndex},
