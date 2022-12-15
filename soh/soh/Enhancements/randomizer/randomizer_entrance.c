@@ -29,6 +29,7 @@ s16 dynamicExitList[] = { 0x045B, 0x0482, 0x03E8, 0x044B, 0x02A2, 0x0201, 0x03B8
 static s16 entranceOverrideTable[ENTRANCE_TABLE_SIZE] = {0};
 // Boss scenes (normalize boss scene range to 0 on lookup) to the replaced dungeon scene it is connected to
 static s16 dungeonBossSceneOverrides[NUM_BOSSES] = {0};
+static ActorEntry modifiedLinkActorEntry = {0};
 
 EntranceInfo originalEntranceTable[ENTRANCE_TABLE_SIZE] = {0};
 
@@ -202,8 +203,8 @@ void Entrance_Init(void) {
                     blueWarpRemapIdx++;
                 }
             } else {
-            entranceOverrideTable[blueWarpIndex] = overrideIndex;
-        }
+                entranceOverrideTable[blueWarpIndex] = overrideIndex;
+            }
         }
 
         //Override both land and water entrances for Hyrule Field -> ZR Front and vice versa
@@ -673,23 +674,71 @@ void Entrance_OverrideGeurdoGuardCapture(void) {
 }
 
 void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
+    // Copy the actorentry properties to avoid modifying the original cached pointer
+    // The assign a pointer of our modified actoreEntry back
+    modifiedLinkActorEntry.id = gPlayState->linkActorEntry->id;
+    modifiedLinkActorEntry.pos = gPlayState->linkActorEntry->pos;
+    modifiedLinkActorEntry.rot = gPlayState->linkActorEntry->rot;
+    modifiedLinkActorEntry.params = gPlayState->linkActorEntry->params;
+
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON) {
         // Move Hyrule's Castle Courtyard exit spawn to be before the crates so players don't skip Talon
         if (sceneNum == 95 && spawn == 1) {
-            gPlayState->linkActorEntry->pos.x = 0x033A;
-            gPlayState->linkActorEntry->pos.y = 0x0623;
-            gPlayState->linkActorEntry->pos.z = 0xFF22;
+            modifiedLinkActorEntry.pos.x = 0x033A;
+            modifiedLinkActorEntry.pos.y = 0x0623;
+            modifiedLinkActorEntry.pos.z = 0xFF22;
+            gPlayState->linkActorEntry = &modifiedLinkActorEntry;
         }
 
         // Move Ganon's Castle exit spawn to be on the small ledge near the castle and not over the void
+        // to prevent Link from falling if the bridge isn't spawned
         if (sceneNum == 100 && spawn == 1) {
-            gPlayState->linkActorEntry->pos.x = 0xFEA8;
-            gPlayState->linkActorEntry->pos.y = 0x065C;
-            gPlayState->linkActorEntry->pos.z = 0x0290;
-            gPlayState->linkActorEntry->rot.y = 0x0700;
-            gPlayState->linkActorEntry->params = 0x0DFF; // stationary spawn
+            modifiedLinkActorEntry.pos.x = 0xFEA8;
+            modifiedLinkActorEntry.pos.y = 0x065C;
+            modifiedLinkActorEntry.pos.z = 0x0290;
+            modifiedLinkActorEntry.rot.y = 0x0700;
+            modifiedLinkActorEntry.params = 0x0DFF; // stationary spawn
+            gPlayState->linkActorEntry = &modifiedLinkActorEntry;
         }
     }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
+        // Repair the authentically bugged entrance when leaving Barniades boss room -> JabuJabu's belly
+        // Link's position needs to be adjusted to prevent him from falling through the floor
+        if (sceneNum == SCENE_BDAN && spawn == 1) {
+            modifiedLinkActorEntry.pos.z = 0xF7F4;
+            gPlayState->linkActorEntry = &modifiedLinkActorEntry;
+        }
+
+        // Repair the authentically bugged entrance when leaving Morpha's boass room -> Water Temple
+        // Link's position was at the start of the Water Temple entrance
+        // This updates it to place him in the hallway outside of Morpha's boss room.
+        if (sceneNum == SCENE_MIZUSIN && spawn == 1) {
+            modifiedLinkActorEntry.pos.x = 0xFF4C;
+            modifiedLinkActorEntry.pos.y = 0x0406;
+            modifiedLinkActorEntry.pos.z = 0xF828;
+            modifiedLinkActorEntry.rot.y = 0x0;
+            gPlayState->linkActorEntry = &modifiedLinkActorEntry;
+        }
+    }
+}
+
+s32 Entrance_OverrideSpawnSceneRoom(s32 sceneNum, s32 spawn, s32 roomNum) {
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
+        // Repair the scene/spawn info for leaving Barinade's boss room -> JabuJabu's belly
+        // The game authentically loads the wrong room number, here we fix it for boss shuffle
+        if (sceneNum == SCENE_BDAN && spawn == 1) {
+            return 5;
+        }
+
+        // Repair the authentically bugged scene/spawn info for leaving Morhpa's boss room -> Water Temple
+        // to load the correct room for the hallway before Morpha's boss room
+        if (sceneNum == SCENE_MIZUSIN && spawn == 1) {
+            return 11;
+        }
+    }
+
+    return roomNum;
 }
 
 u8 Entrance_GetIsSceneDiscovered(u8 sceneNum) {
