@@ -528,13 +528,13 @@ namespace UIWidgets {
             colors->x = defaultcolors.x;
             colors->y = defaultcolors.y;
             colors->z = defaultcolors.z;
-            if (has_alpha) { colors->w = defaultcolors.w; };
+            colors->w = has_alpha ? defaultcolors.w : 255.0f;
 
             Color_RGBA8 colorsRGBA;
             colorsRGBA.r = defaultcolors.x;
             colorsRGBA.g = defaultcolors.y;
             colorsRGBA.b = defaultcolors.z;
-            if (has_alpha) { colorsRGBA.a = defaultcolors.w; };
+            colorsRGBA.a = has_alpha ? defaultcolors.w : 255.0f;
 
             CVar_SetRGBA(cvarName, colorsRGBA);
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
@@ -616,7 +616,7 @@ namespace UIWidgets {
                 colors.r = ColorRGBA.x * 255.0;
                 colors.g = ColorRGBA.y * 255.0;
                 colors.b = ColorRGBA.z * 255.0;
-                colors.a = ColorRGBA.w * 255.0;
+                colors.a = 255.0;
 
                 CVar_SetRGBA(cvarName, colors);
                 SohImGui::RequestCvarSaveOnNextTick();
