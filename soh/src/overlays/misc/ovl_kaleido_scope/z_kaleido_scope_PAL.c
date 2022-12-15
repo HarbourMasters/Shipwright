@@ -4082,50 +4082,55 @@ void KaleidoScope_Update(PlayState* play)
                                            &D_801333E8);
                     Play_SaveSceneFlags(play);
 
-                    switch (gSaveContext.entranceIndex) {
-                        case 0x0000:
-                        case 0x0004:
-                        case 0x0028:
-                        case 0x0169:
-                        case 0x0165:
-                        case 0x0010:
-                        case 0x0082:
-                        case 0x0037:
-                        case 0x041B:
-                        case 0x0008:
-                        case 0x0088:
-                        case 0x0486:
-                        case 0x0098:
-                        case 0x0467:
-                        case 0x0179:
-                            break;
-                        case 0x040F:
-                            gSaveContext.entranceIndex = 0x0000;
-                            break;
-                        case 0x040B:
-                            gSaveContext.entranceIndex = 0x0004;
-                            break;
-                        case 0x0301:
-                            gSaveContext.entranceIndex = 0x0028;
-                            break;
-                        case 0x000C:
-                            gSaveContext.entranceIndex = 0x0169;
-                            break;
-                        case 0x0305:
-                            gSaveContext.entranceIndex = 0x0165;
-                            break;
-                        case 0x0417:
-                            gSaveContext.entranceIndex = 0x0010;
-                            break;
-                        case 0x008D:
-                            gSaveContext.entranceIndex = 0x0082;
-                            break;
-                        case 0x0413:
-                            gSaveContext.entranceIndex = 0x0037;
-                            break;
-                        case 0x041F:
-                            gSaveContext.entranceIndex = 0x041B;
-                            break;
+                    // In ER, handle overriding the game over respawn entrance
+                    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+                        Entrance_SetGameOverEntrance();
+                    } else {
+                        switch (gSaveContext.entranceIndex) {
+                            case 0x0000:
+                            case 0x0004:
+                            case 0x0028:
+                            case 0x0169:
+                            case 0x0165:
+                            case 0x0010:
+                            case 0x0082:
+                            case 0x0037:
+                            case 0x041B:
+                            case 0x0008:
+                            case 0x0088:
+                            case 0x0486:
+                            case 0x0098:
+                            case 0x0467:
+                            case 0x0179:
+                                break;
+                            case 0x040F:
+                                gSaveContext.entranceIndex = 0x0000;
+                                break;
+                            case 0x040B:
+                                gSaveContext.entranceIndex = 0x0004;
+                                break;
+                            case 0x0301:
+                                gSaveContext.entranceIndex = 0x0028;
+                                break;
+                            case 0x000C:
+                                gSaveContext.entranceIndex = 0x0169;
+                                break;
+                            case 0x0305:
+                                gSaveContext.entranceIndex = 0x0165;
+                                break;
+                            case 0x0417:
+                                gSaveContext.entranceIndex = 0x0010;
+                                break;
+                            case 0x008D:
+                                gSaveContext.entranceIndex = 0x0082;
+                                break;
+                            case 0x0413:
+                                gSaveContext.entranceIndex = 0x0037;
+                                break;
+                            case 0x041F:
+                                gSaveContext.entranceIndex = 0x041B;
+                                break;
+                        }
                     }
                 } else {
                     Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);

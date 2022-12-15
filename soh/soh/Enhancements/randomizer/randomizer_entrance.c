@@ -13,6 +13,8 @@
 
 #include "global.h"
 
+#define NUM_BOSSES 8
+
 extern PlayState* gPlayState;
 
 //Overwrite the dynamic exit for the OGC Fairy Fountain to be 0x3E8 instead
@@ -25,8 +27,37 @@ s16 dynamicExitList[] = { 0x045B, 0x0482, 0x03E8, 0x044B, 0x02A2, 0x0201, 0x03B8
 // Owl Flights : 0x492064 and 0x492080
 
 static s16 entranceOverrideTable[ENTRANCE_TABLE_SIZE] = {0};
+// Boss scenes (normalize boss scene range to 0 on lookup) to the replaced dungeon scene it is connected to
+static s16 dungeonBossSceneOverrides[NUM_BOSSES] = {0};
 
 EntranceInfo originalEntranceTable[ENTRANCE_TABLE_SIZE] = {0};
+
+typedef struct {
+    s16 blueWarp;
+    s16 destination;
+} BlueWarpReplacement;
+
+typedef struct {
+    s16 entryway;
+    s16 exit;
+    s16 bossDoor;
+    s16 bossDoorReverse;
+    s16 blueWarp;
+    s16 scene;
+    s16 bossScene;
+} DungeonEntranceInfo;
+
+static DungeonEntranceInfo dungeons[] = {
+    //entryway                   exit,   boss,   reverse,bluewarp,dungeon scene,   boss scene
+    { DEKU_TREE_ENTRANCE,        0x0209, 0x040F, 0x0252, 0x0457,  SCENE_YDAN,      SCENE_YDAN_BOSS },
+    { DODONGOS_CAVERN_ENTRANCE,  0x0242, 0x040B, 0x00C5, 0x047A,  SCENE_DDAN,      SCENE_DDAN_BOSS },
+    { JABU_JABUS_BELLY_ENTRANCE, 0x0221, 0x0301, 0x0407, 0x010E,  SCENE_BDAN,      SCENE_BDAN_BOSS },
+    { FOREST_TEMPLE_ENTRANCE,    0x0215, 0x000C, 0x024E, 0x0608,  SCENE_BMORI1,    SCENE_MORIBOSSROOM },
+    { FIRE_TEMPLE_ENTRANCE,      0x024A, 0x0305, 0x0175, 0x0564,  SCENE_HIDAN,     SCENE_FIRE_BS },
+    { WATER_TEMPLE_ENTRANCE,     0x021D, 0x0417, 0x0423, 0x060C,  SCENE_MIZUSIN,   SCENE_MIZUSIN_BS },
+    { SPIRIT_TEMPLE_ENTRANCE,    0x01E1, 0x008D, 0x02F5, 0x0610,  SCENE_JYASINZOU, SCENE_JYASINBOSS },
+    { SHADOW_TEMPLE_ENTRANCE,    0x0205, 0x0413, 0x02B2, 0x0580,  SCENE_HAKADAN,   SCENE_HAKADAN_BS },
+};
 
 //These variables store the new entrance indices for dungeons so that
 //savewarping and game overs respawn players at the proper entrance.
@@ -86,6 +117,9 @@ void Entrance_ResetEntranceTable(void) {
 void Entrance_Init(void) {
     s32 index;
 
+    size_t blueWarpRemapIdx = 0;
+    BlueWarpReplacement bluewarps[NUM_BOSSES] = {0};
+
     Entrance_CopyOriginalEntranceTable();
 
     // Skip Child Stealth if given by settings
@@ -107,6 +141,11 @@ void Entrance_Init(void) {
     // index referring to itself means that the entrance is not currently shuffled.
     for (s16 i = 0; i < ENTRANCE_TABLE_SIZE; i++) {
         entranceOverrideTable[i] = i;
+    }
+
+    // Initialize all boss rooms connected to their vanilla dungeon
+    for (s16 i = 1; i < NUM_BOSSES; i++) {
+        dungeonBossSceneOverrides[i] = i;
     }
 
     // Initialize the grotto exit and load lists
@@ -138,7 +177,33 @@ void Entrance_Init(void) {
         entranceOverrideTable[originalIndex] = overrideIndex;
 
         if (blueWarpIndex != 0) {
+            // When boss shuffle is enabled, we need to know what dungeon the boss room is connected to for
+            // death/save warping, and for the blue warp
+            if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
+                s16 bossScene = -1;
+                s16 replacedDungeonScene = -1;
+                s16 replacedDungeonExit = -1;
+                // Search for the boss scene and replaced blue warp exits
+                for (s16 j = 0; j <= NUM_BOSSES; j++) {
+                    if (blueWarpIndex == dungeons[j].blueWarp) {
+                        bossScene = dungeons[j].bossScene;
+                    }
+                    if (overrideIndex == dungeons[j].bossDoorReverse) {
+                        replacedDungeonScene = dungeons[j].scene;
+                        replacedDungeonExit = dungeons[j].exit;
+                    }
+                }
+
+                // asign the boss scene override
+                if (bossScene != -1 && replacedDungeonScene != -1 && replacedDungeonExit != -1) {
+                    dungeonBossSceneOverrides[bossScene - SCENE_YDAN_BOSS] = replacedDungeonScene;
+                    bluewarps[blueWarpRemapIdx].blueWarp = blueWarpIndex;
+                    bluewarps[blueWarpRemapIdx].destination = replacedDungeonExit;
+                    blueWarpRemapIdx++;
+                }
+            } else {
             entranceOverrideTable[blueWarpIndex] = overrideIndex;
+        }
         }
 
         //Override both land and water entrances for Hyrule Field -> ZR Front and vice versa
@@ -146,6 +211,14 @@ void Entrance_Init(void) {
             entranceOverrideTable[0x01D9] = overrideIndex;
         } else if (originalIndex == 0x0181) { //ZR Front -> Hyrule Field land entrance
             entranceOverrideTable[0x0311] = overrideIndex;
+        }
+    }
+
+    // If we have remapped blue warps from boss shuffle, handle setting those and grabbing the override for
+    // the replaced dungeons exit in the event that dungeon shuffle is also turned on
+    for (size_t i = 0; i < ARRAY_COUNT(bluewarps); i++) {
+        if (bluewarps[i].blueWarp != 0 && bluewarps[i].destination != 0) {
+            entranceOverrideTable[bluewarps[i].blueWarp] = Entrance_GetOverride(bluewarps[i].destination);
         }
     }
 
@@ -241,6 +314,15 @@ u32 Entrance_SceneAndSpawnAre(u8 scene, u8 spawn) {
 //dance for just the boss rooms. Entrance Indexes can be found here:
 //https://wiki.cloudmodding.com/oot/Entrance_Table_(Data)
 void Entrance_SetGameOverEntrance(void) {
+    s16 scene = gPlayState->sceneNum;
+
+    // When in a boss room and boss shuffle is on, reuse the savewarp location to get to the right location
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF &&
+        scene >= SCENE_YDAN_BOSS && scene <= SCENE_HAKADAN_BS) {
+
+        Entrance_SetSavewarpEntrance();
+        return;
+    }
 
     //Set the current entrance depending on which entrance the player last came through
     switch (gSaveContext.entranceIndex) {
@@ -281,6 +363,14 @@ void Entrance_SetGameOverEntrance(void) {
 void Entrance_SetSavewarpEntrance(void) {
 
     s16 scene = gSaveContext.savedSceneNum;
+
+    // When in a boss room and boss suffle is on, use the boss scene override to remap to its
+    // connected dungeon and use that for the final entrance
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF &&
+        scene >= SCENE_YDAN_BOSS && scene <= SCENE_HAKADAN_BS) {
+        // Normalize boss scene range to 0 on lookup
+        scene = dungeonBossSceneOverrides[scene - SCENE_YDAN_BOSS];
+    }
 
     if (scene == SCENE_YDAN || scene == SCENE_YDAN_BOSS) {
         gSaveContext.entranceIndex = newDekuTreeEntrance;

@@ -330,9 +330,10 @@ void EnIshi_Init(Actor* thisx, PlayState* play) {
         Actor_Kill(&this->actor);
         return;
     }
-    // If dungeon entrance randomizer is on, remove the grey boulders that normally
+    // If dungeon or boss entrance randomizer is on, remove the grey boulders that normally
     // block child Link from reaching the Fire Temple entrance.
-    if (type == ROCK_LARGE && gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) &&
+    if (type == ROCK_LARGE && gSaveContext.n64ddFlag && (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
+        Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) &&
         play->sceneNum == 0x061) { // Death Mountain Creater
         Actor_Kill(&this->actor);
     }

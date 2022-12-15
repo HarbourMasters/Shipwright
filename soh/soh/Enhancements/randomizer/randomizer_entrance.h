@@ -26,7 +26,7 @@
 #define ENTRANCE_RANDO_GROTTO_EXIT_START 0x0800
 #define MAX_ENTRANCE_RANDO_USED_INDEX 0x0820
 
-#define ENTRANCE_OVERRIDES_MAX_COUNT 256
+#define ENTRANCE_OVERRIDES_MAX_COUNT 259 // 11 one-way entrances + 124 two-way entrances (x2)
 
 #define SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT 66 // Max entrance rando index is 0x0820, (2080 / 32 == 65) + 1
 #define SAVEFILE_SCENES_DISCOVERED_IDX_COUNT 4 // Max scene ID is 0x6E, (110 / 32 == 3) + 1
@@ -46,6 +46,7 @@ int16_t  Entrance_GetOverride(int16_t index);
 int16_t  Entrance_OverrideNextIndex(int16_t nextEntranceIndex);
 int16_t  Entrance_OverrideDynamicExit(int16_t dynamicExitIndex);
 uint32_t Entrance_SceneAndSpawnAre(uint8_t scene, uint8_t spawn);
+void Entrance_SetGameOverEntrance(void);
 void Entrance_SetSavewarpEntrance(void);
 void Entrance_SetWarpSongEntrance(void);
 void Entrance_OverrideBlueWarp(void);
