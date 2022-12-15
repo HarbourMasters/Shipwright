@@ -2637,6 +2637,8 @@ namespace Settings {
             break;
         case RO_LOGIC_NO_LOGIC:
             Logic.SetSelectedIndex(2);
+        case RO_LOGIC_VANILLA:
+            Logic.SetSelectedIndex(3);
             break;
     }
     LocationsReachable.SetSelectedIndex(cvarSettings[RSK_ALL_LOCATIONS_REACHABLE]);
