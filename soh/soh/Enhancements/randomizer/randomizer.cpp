@@ -355,7 +355,7 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
             "%cThis switch is rustier than you think.^%cSomething must be wrong with the&pipe system in the %bWater Temple%c.",
             "%cDieser Schalter scheint rostiger zu&sein als er aussieht.^%cEtwas muss mit dem Leitungssystem&im %bWassertempel%c nicht stimmen.",
-            "%cCet interrupteur est très rouillé.^%cIl doit y avoir un problème avec&la tuyauterie du %bTemple de l'Eau%w."
+            "%cCet interrupteur est très rouillé.^%cIl doit y avoir un problème avec&la tuyauterie du %bTemple de l'Eau%c."
         });
 }
 
