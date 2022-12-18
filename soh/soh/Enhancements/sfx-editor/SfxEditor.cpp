@@ -181,7 +181,7 @@ std::map<u16, std::tuple<std::string, std::string, SeqType>> sfxEditorSequenceMa
     {NA_SE_EV_CHICKEN_CRY_A,       {"Chicken Cry",                         "NA_SE_EV_CHICKEN_CRY_A",         SEQ_SFX}},
 };
 
-void Draw_SfxTab(const std::string& tabId, std::map<u16, std::tuple<std::string, std::string, SeqType>>& map, SeqType type) {
+void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::string, std::string, SeqType>>& map, SeqType type) {
     const std::string hiddenTabId = "##" + tabId;
     const std::string resetAllButton = "Reset All" + hiddenTabId;
     const std::string randomizeAllButton = "Randomize All" + hiddenTabId;
