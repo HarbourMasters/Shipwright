@@ -1132,7 +1132,7 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
         sampleC->unk_bit26 = sample->unk_bit26;
         sampleC->unk_bit25 = sample->unk_bit25;
 
-        sampleC->book = new AdpcmBook[sample->book.books.size() * sizeof(int16_t)];
+        sampleC->book = (AdpcmBook*) malloc(sizeof(AdpcmBook) + sample->book.books.size() * sizeof(int16_t));
         sampleC->book->npredictors = sample->book.npredictors;
         sampleC->book->order = sample->book.order;
 
