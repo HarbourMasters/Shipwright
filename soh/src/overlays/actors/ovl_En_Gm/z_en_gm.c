@@ -93,13 +93,13 @@ void EnGm_Destroy(Actor* thisx, PlayState* play) {
 s32 func_80A3D7C8(void) {
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         return 0;
-    } else if (!(gBitFlags[2] & gSaveContext.inventory.equipment)) {
-        return 1;
-    } else if (gBitFlags[3] & gSaveContext.inventory.equipment) {
-        return 2;
     } else if ((gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF) &&
-               (gBitFlags[2] & gSaveContext.inventory.equipment)) {
+               !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
         return 1;
+    } else if (!(gBitFlags[2] & gSaveContext.inventory.equipment)) { // Don't have giant's knife
+        return 1;
+    } else if (gBitFlags[3] & gSaveContext.inventory.equipment) { // Have broken giant's knife
+        return 2;
     } else {
         return 3;
     }
@@ -256,7 +256,6 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
                         GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE);
                         gSaveContext.pendingSale = itemEntry.itemId;
                         GiveItemEntryFromActor(&this->actor, play, itemEntry, 415.0f, 10.0f);
-                        Flags_SetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
                         gSaveContext.infTable[11] |= 2;
                         this->actionFunc = func_80A3DF00;
                     } else {
@@ -276,6 +275,11 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
 
 void func_80A3DF00(EnGm* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
+            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
+            Flags_SetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
+        }
+
         this->actor.parent = NULL;
         this->actionFunc = func_80A3DF60;
     } else {
@@ -284,14 +288,12 @@ void func_80A3DF00(EnGm* this, PlayState* play) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE);
             gSaveContext.pendingSale = itemEntry.itemId;
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 415.0f, 10.0f);
-            Flags_SetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
             gSaveContext.infTable[11] |= 2;
         }
         else {
             gSaveContext.pendingSale = ItemTable_Retrieve(GI_SWORD_KNIFE).itemId;
             func_8002F434(&this->actor, play, GI_SWORD_KNIFE, 415.0f, 10.0f);
         }
-
     }
 }
 
