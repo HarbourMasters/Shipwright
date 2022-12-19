@@ -170,6 +170,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gBombchuBowlingNoBigCucco",
     "gBombchuBowlingAmmunition",
     "gCreditsFix",
+    "gNumQuestPages",
 };
 
 const std::vector<const char*> randomizerCvars = {
@@ -406,6 +407,9 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
 
     // Autosave
     PRESET_ENTRY_S32("gAutosave", 1),
+
+    // Number of quest pages
+    PRESET_ENTRY_S32("gNumQuestPages", 3),
 };
 
 const std::vector<PresetEntry> randomizerPresetEntries = {

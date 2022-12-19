@@ -40,6 +40,7 @@ public:
 
     void Init();
     void InitFile(bool isDebug);
+    void InitPage();
     void SaveFile(int fileNum);
     void SaveGlobal();
     void LoadFile(int fileNum);
@@ -146,6 +147,7 @@ typedef void (*Save_LoadFunc)(void);
 typedef void (*Save_SaveFunc)(void);
 
 void Save_Init(void);
+void Save_InitPage();
 void Save_InitFile(int isDebug);
 void Save_SaveFile(void);
 void Save_SaveGlobal(void);

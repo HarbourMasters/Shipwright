@@ -61,6 +61,10 @@ typedef enum {
     CM_START_QUEST_MENU,
     CM_QUEST_TO_MAIN,
     CM_NAME_ENTRY_TO_QUEST_MENU,
+    CM_PAGE_NEXT,
+    CM_PAGE_PREVIOUS,
+    CM_PAGE_NEXT_TO_MAIN,
+    CM_PAGE_PREV_TO_MAIN,
 } ConfigMode;
 
 typedef enum {

@@ -18,7 +18,7 @@ extern "C" SaveContext gSaveContext;
 
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
     const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
-    return sSavePath / ("file" + std::to_string(fileNum + 1) + ".sav");
+    return sSavePath / ("file" + std::to_string(fileNum + 3 * CVar_GetS32("gQuestSelectPage", 0) + 1) + ".sav");
 }
 
 SaveManager::SaveManager() {
@@ -348,11 +348,20 @@ void SaveManager::Init() {
     }
 
     // Load files to initialize metadata
+    if (CVar_GetS32("gQuestSelectPage", 0) > CVar_GetS32("gNumQuestPages", 1)) {
+        CVar_SetS32("gQuestSelectPage", 0);
+    }
+    SaveManager::InitPage();
+}
+
+void SaveManager::InitPage() {
     for (int fileNum = 0; fileNum < MaxFiles; fileNum++) {
         if (std::filesystem::exists(GetFileName(fileNum))) {
             LoadFile(fileNum);
+        } else {
+            fileMetaInfo[fileNum].valid = false;
+            fileMetaInfo[fileNum].randoSave = false;
         }
-
     }
 }
 
@@ -1781,6 +1790,10 @@ void SaveManager::ConvertFromUnversioned() {
 
 extern "C" void Save_Init(void) {
     SaveManager::Instance->Init();
+}
+
+extern "C" void Save_InitPage() {
+    SaveManager::Instance->InitPage();
 }
 
 extern "C" void Save_InitFile(int isDebug) {

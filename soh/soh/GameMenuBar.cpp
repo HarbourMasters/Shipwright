@@ -763,6 +763,9 @@ namespace GameMenuBar {
                 "gAutosaveAllItems takes priority over gAutosaveMajorItems if both are set to 1\n"
                 "gAutosaveMajorItems excludes rupees and health/magic/ammo refills (but includes bombchus)");
 
+            UIWidgets::PaddedEnhancementSliderInt("File Select Screen Pages", "##gNumQuestPages", "gNumQuestPages",
+                1, 5, "%d", 1, true);
+
             UIWidgets::Spacer(0);
 
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));

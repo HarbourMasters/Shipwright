@@ -540,6 +540,13 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             }
         }
+    } else if (CVar_GetS32("gNumQuestPages", 1) > 1 && CHECK_BTN_ANY(input->press.button, BTN_Z | BTN_R)) {
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        if (CHECK_BTN_ALL(input->press.button, BTN_Z)) {
+            this->configMode = CM_PAGE_PREVIOUS;
+        } else {
+            this->configMode = CM_PAGE_NEXT;
+        }
     } else {
         if ((ABS(this->stickRelY) > 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -822,6 +829,66 @@ void FileChoose_RotateToQuest(GameState* thisx) {
     }
 }
 
+FileChoose_ChangePage(FileChooseContext* this, s32 page) {
+    if (page < 0) {
+        page = CVar_GetS32("gNumQuestPages", 1) - 1;
+    } else if (page >= CVar_GetS32("gNumQuestPages", 1)) {
+        page = 0;
+    }
+    CVar_SetS32("gQuestSelectPage", page);
+
+    Save_InitPage();
+    for (int i = 0; i < 3; i++) {
+        this->nameBoxAlpha[i] = this->nameAlpha[i] = this->connectorAlpha[i] =
+            Save_GetSaveMetaInfo(i)->valid ? this->windowAlpha : 0;
+    }
+    fileSelectSpoilerFileLoaded = false;
+}
+
+void FileChoose_RotateToPage(GameState* thisx) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+    s32 questSelectPage = CVar_GetS32("gQuestSelectPage", 0);
+    if (this->configMode == CM_PAGE_PREVIOUS) {
+        this->windowRot -= VREG(16);
+
+        if (this->windowRot <= -314.0f) {
+            this->windowRot = -314.0f;
+            this->configMode = CM_PAGE_PREV_TO_MAIN;
+            questSelectPage--;
+            FileChoose_ChangePage(this, questSelectPage);
+        }
+    } else {
+        this->windowRot += VREG(16);
+
+        if (this->windowRot >= 314.0f) {
+            this->windowRot = 314.0f;
+            this->configMode = CM_PAGE_NEXT_TO_MAIN;
+            questSelectPage++;
+            FileChoose_ChangePage(this, questSelectPage);
+        }
+    }
+}
+
+void FileChoose_RotateFromPage(GameState* thisx) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+
+    if (this->configMode == CM_PAGE_PREV_TO_MAIN) {
+        this->windowRot -= VREG(16);
+
+        if (this->windowRot <= -628.0f) {
+            this->windowRot = 0.0f;
+            this->configMode = CM_MAIN_MENU;
+        }
+    } else {
+        this->windowRot += VREG(16);
+
+        if (this->windowRot >= 628.0f) {
+            this->windowRot = 0.0f;
+            this->configMode = CM_MAIN_MENU;
+        }
+    }
+}
+
 static void (*gConfigModeUpdateFuncs[])(GameState*) = {
     FileChoose_StartFadeIn,        FileChoose_FinishFadeIn,
     FileChoose_UpdateMainMenu,     FileChoose_SetupCopySource,
@@ -846,6 +913,8 @@ static void (*gConfigModeUpdateFuncs[])(GameState*) = {
     FileChoose_UnusedCMDelay,      FileChoose_RotateToQuest,
     FileChoose_UpdateQuestMenu,    FileChoose_StartQuestMenu,
     FileChoose_RotateToMain,       FileChoose_RotateToQuest,
+    FileChoose_RotateToPage,       FileChoose_RotateToPage,
+    FileChoose_RotateFromPage,     FileChoose_RotateFromPage,
 };
 
 /**
@@ -1726,6 +1795,8 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
                 (this->configMode >= CM_MAIN_TO_OPTIONS && this->configMode <= CM_OPTIONS_TO_MAIN) ||
                 MIN_QUEST == MAX_QUEST || this->configMode == CM_QUEST_TO_MAIN) {
                 Matrix_RotateX(this->windowRot / 100.0f, MTXMODE_APPLY);
+            } else if (this->configMode >= CM_PAGE_NEXT && this->configMode <= CM_PAGE_PREV_TO_MAIN) {
+                Matrix_RotateY(this->windowRot / 100.0f, MTXMODE_APPLY);
             } else {
                 Matrix_RotateX((this->windowRot - 942.0f) / 100.0f, MTXMODE_APPLY);
             }
