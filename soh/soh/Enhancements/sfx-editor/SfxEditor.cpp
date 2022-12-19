@@ -297,19 +297,17 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         ImGui::SameLine();
         ImGui::PushItemWidth(-FLT_MIN);
         if (ImGui::Button(randomizeButton.c_str())) {
-            bool valid = false;
-            uint32_t value;
-            while (!valid) {
-                value = Random(2, map.end()->first);
-                if (map.contains(value)) {
-                    auto [name, sfxKey, seqType] = map.at(value);
-                    if (seqType & type) {
-                        valid = true;
-                    }
+            while (true) {
+                auto it = map.begin();
+                std::advance(it, rand() % map.size());
+                const auto& [value, seqData] = *it;
+                const auto& [name, sfxKey, seqType] = seqData;
+                if (seqType & type) {
+                    CVar_SetS32(cvarKey.c_str(), value);
+                    SohImGui::RequestCvarSaveOnNextTick();
+                    break;
                 }
             }
-            CVar_SetS32(cvarKey.c_str(), value);
-            SohImGui::RequestCvarSaveOnNextTick();
         }
     }
     ImGui::EndTable();
