@@ -353,7 +353,7 @@ void DrawSfxEditor(bool& open) {
         CVar_SetS32("gSfxEditor", 0);
         return;
     }
-    ImGui::SetNextWindowSize(ImVec2(465, 630), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(900, 630), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("SFX Editor", &open)) {
         ImGui::End();
         return;
