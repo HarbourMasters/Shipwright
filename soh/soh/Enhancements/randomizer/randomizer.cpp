@@ -30,6 +30,9 @@
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
+// Used for animating the ice trap on the "Get Item" model.
+f32 iceTrapScale;
+
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
 
@@ -2605,6 +2608,7 @@ GetItemEntry Randomizer::GetItemEntryFromRGData(RandomizerGetData rgData, GetIte
         } else {
             modIndex = MOD_RANDOMIZER;
         }
+        iceTrapScale = 0.0f;
         GetItemEntry fakeGiEntry = ItemTableManager::Instance->RetrieveItemEntry(modIndex, GetItemIdFromRandomizerGet(rgData.fakeRgID, ogItemId));
         giEntry.gid = fakeGiEntry.gid;
         giEntry.gi = fakeGiEntry.gi;
@@ -4568,8 +4572,8 @@ void CreateIceTrapRandoMessages() {
     // We only use this ice trap message for christmas, so we don't want it in the normal ice trap messages rotation
     customMessageManager->CreateMessage(Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1,
                                             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-                                              "This year for Christmas, all&you get is %BCOAL",
-                                              "This year for Christmas, all&you get is %BCOAL",
+                                              "This year for Christmas, all&you get is %BCOAL%w!",
+                                              "This year for Christmas, all&you get is %BCOAL%w!",
                                               "Pour Noël, cette année, tu&n'auras que du %BCHARBON!&%rJoyeux Noël%w!" });
 }
 
@@ -4928,8 +4932,6 @@ void InitRandoItemTable() {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawBossKey;
         } else if (randoGetItemTable[i].itemId == RG_DOUBLE_DEFENSE) {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawDoubleDefense;
-        } else if (randoGetItemTable[i].itemId == RG_ICE_TRAP) {
-            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawIceTrap;
         }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }
