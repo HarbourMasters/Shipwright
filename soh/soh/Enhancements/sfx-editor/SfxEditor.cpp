@@ -291,7 +291,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
                 if (ImGui::Selectable(std::get<0>(seqData).c_str())) {
                     CVar_SetS32(cvarKey.c_str(), value);
                     SohImGui::RequestCvarSaveOnNextTick();
-                    UpdateCurrentBGM(defaultValue, seqType);
+                    UpdateCurrentBGM(defaultValue, type);
                 }
             }
 
@@ -340,7 +340,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
                 if (seqType & type) {
                     CVar_SetS32(cvarKey.c_str(), value);
                     SohImGui::RequestCvarSaveOnNextTick();
-                    UpdateCurrentBGM(defaultValue, seqType);
+                    UpdateCurrentBGM(defaultValue, type);
                     break;
                 }
             }
