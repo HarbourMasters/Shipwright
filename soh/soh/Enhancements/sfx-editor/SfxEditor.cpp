@@ -189,6 +189,10 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         for (const auto& [defaultValue, seqData] : map) {
             const auto& [name, sfxKey, seqType] = seqData;
             if (seqType == type) {
+                // Only save authentic sequence CVars
+                if (seqType == SEQ_FANFARE && defaultValue >= MAX_AUTHENTIC_SEQID) {
+                    continue;
+                }
                 const std::string cvarKey = "gSfxEditor_" + sfxKey;
                 CVar_SetS32(cvarKey.c_str(), defaultValue);
             }
@@ -208,7 +212,8 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
             const auto& [name, sfxKey, seqType] = seqData;
             const std::string cvarKey = "gSfxEditor_" + sfxKey;
             if (seqType & type) {
-                if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue > MAX_AUTHENTIC_SEQID) {
+                // Only save authentic sequence CVars
+                if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue >= MAX_AUTHENTIC_SEQID) {
                     continue;
                 }
                 const int randomValue = values.back();
@@ -229,6 +234,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         if (~(seqType) & type) {
             continue;
         }
+        // Do not display custom sequences in the list
         if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue >= MAX_AUTHENTIC_SEQID) {
             continue;
         }
