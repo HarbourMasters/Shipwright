@@ -246,7 +246,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Misc Settings:30 GS Hint", RSK_KAK_30_SKULLS_HINT },
     { "Misc Settings:40 GS Hint", RSK_KAK_40_SKULLS_HINT },
     { "Misc Settings:50 GS Hint", RSK_KAK_50_SKULLS_HINT },
-    { "Misc Settings:Warp Song Hint", RSK_WARP_SONGS_HINT },
+    { "Misc Settings:Warp Song Hints", RSK_WARP_SONG_HINTS },
     { "Misc Settings:Scrub Text Hint", RSK_SCRUB_TEXT_HINT },
     { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
     { "Misc Settings:Blue Fire Arrows", RSK_BLUE_FIRE_ARROWS },
@@ -722,7 +722,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_KAK_30_SKULLS_HINT:
                     case RSK_KAK_40_SKULLS_HINT:
                     case RSK_KAK_50_SKULLS_HINT:
-                    case RSK_WARP_SONGS_HINT:
+                    case RSK_WARP_SONG_HINTS:
                     case RSK_SCRUB_TEXT_HINT:
                     case RSK_SHUFFLE_ENTRANCES:
                     case RSK_SHUFFLE_OVERWORLD_ENTRANCES:
@@ -2759,7 +2759,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_TOT_ALTAR_HINT] = CVar_GetS32("gRandomizeAltarHint", RO_GENERIC_ON);
     cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT] = CVar_GetS32("gRandomizeLAHint", RO_GENERIC_ON);
     cvarSettings[RSK_DAMPES_DIARY_HINT] = CVar_GetS32("gRandomizeDampeHint", RO_GENERIC_OFF);
-    cvarSettings[RSK_WARP_SONGS_HINT] = CVar_GetS32("gRandomizeWarpSongText", RO_GENERIC_OFF);
+    cvarSettings[RSK_WARP_SONG_HINTS] = CVar_GetS32("gRandomizeWarpSongText", RO_GENERIC_OFF);
     cvarSettings[RSK_SCRUB_TEXT_HINT] = CVar_GetS32("gRandomizeScrubText", RO_GENERIC_OFF);
     cvarSettings[RSK_KAK_10_SKULLS_HINT] = CVar_GetS32("gRandomize10GSHint", RO_GENERIC_OFF);
     cvarSettings[RSK_KAK_20_SKULLS_HINT] = CVar_GetS32("gRandomize20GSHint", RO_GENERIC_OFF);
@@ -4398,7 +4398,7 @@ CustomMessageEntry Randomizer::GetCursedSkullMessage(s16 params) {
     return messageEntry;
 }
 
-std::vector<std::vector<const char*>> mapGetItemHints = {
+const char* mapGetItemHints[3][2] = {
     { " It's ordinary.", " It's masterful!" },
     { "&Sieht aus wie immer.", " &Man kann darauf die Worte&%r\"Master Quest\"%w entziffern..." },
     { "&Elle vous semble %rordinaire%w.", "&Étrange... les mots %r\"Master&Quest\"%w sont gravés dessus." },
@@ -4718,7 +4718,6 @@ CustomMessageMinimal FireTempleGoronMessages[NUM_GORON_MESSAGES] = {
     },
     {
         //0x39C7 - ganon laugh
-        //0x38FC - goron "wake up"
         "\x12\x39\xC7You fell into my %rtrap!%w&Foolish boy, it was me, Ganondorf!!!^...whoa, where am I?&What happened?^Weird.",
         "\x12\x39\xC7You fell into my %rtrap!%w&Foolish boy, it was me, Ganondorf!!!^...whoa, where am I?&What happened?^Weird.",
         "\x12\x39\xC7Tu es tombé dans mon %rpiège%w!&Tu croyais que j'étais un Goron mais,&c'était moi! %rGanondorf%w!^...Hein? Où suis-je?&Que s'est-il passé?",
@@ -4771,6 +4770,7 @@ CustomMessageEntry Randomizer::GetGoronMessage(u16 index) {
     CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{a_btn}}", std::to_string(gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]));
     return messageEntry;
 }
+
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
