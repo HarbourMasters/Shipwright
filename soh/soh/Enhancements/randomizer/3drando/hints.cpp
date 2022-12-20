@@ -551,7 +551,7 @@ static void CreateTrialHints() {
   }
 }
 
-static void CreateGanonText() {
+void CreateGanonText() {
 
   //funny ganon line
   ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
@@ -685,7 +685,7 @@ static Text BuildGanonBossKeyText() {
   return Text()+"$b"+ganonBossKeyText+"^";
 }
 
-static void CreateAltarText() {
+void CreateAltarText() {
 
   //Child Altar Text
   childAltarText = Hint(SPIRITUAL_STONE_TEXT_START).GetText()+"^"+
