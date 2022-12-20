@@ -1704,7 +1704,7 @@ void BossDodongo_DrawEffects(PlayState* play) {
     unkMtx = &play->billboardMtxF;
 
     // OTRTODO: This call causes the whole texture cache to be cleaned up, which causes an important slowdown on switch so we need to find a way to avoid it.
-#ifndef __SWITCH__
+#if !defined(__SWITCH__) && !defined(__WIIU__)
     gSPInvalidateTexCache(POLY_XLU_DISP++, 0);
 #endif
 
