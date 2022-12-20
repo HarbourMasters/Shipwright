@@ -297,10 +297,9 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         ImGui::SameLine();
         ImGui::PushItemWidth(-FLT_MIN);
         if (ImGui::Button(randomizeButton.c_str())) {
+            auto it = map.begin();
             while (true) {
-                auto it = map.begin();
-                std::advance(it, rand() % map.size());
-                const auto& [value, seqData] = *it;
+                const auto& [value, seqData] = *std::next(it, rand() % map.size());
                 const auto& [name, sfxKey, seqType] = seqData;
                 if (seqType & type) {
                     CVar_SetS32(cvarKey.c_str(), value);
