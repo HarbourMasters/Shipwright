@@ -747,12 +747,15 @@ void CreateDampesDiaryText() {
   uint32_t location = FilterFromPool(allLocations, [item](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == item;})[0];
   Text area = GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText();
   Text temp1 = Text{
-    "Whoever reads this, please enter %g", "", ""
+    "Whoever reads this, please enter %g", 
+    "Toi le petit curieux qui lit ce&journal, rends-toi dans&%g",
+    "Wer immer dies liest, der möge folgenden Ort aufsuchen: %g"
   };
 
   Text temp2 = {
     "%w. I will let you have my stretching, shrinking keepsake.^I'm waiting for you.&--Dampé",
-    "", ""
+    "^Et peut-être auras-tu droit à mon&précieux %rtrésor%w.Je t'attends...&--Igor",
+    "%w. Ihm gebe ich meinen langen, kurzen Schatz. Ich warte!&Boris"
   };
   
   dampesText = temp1 + area + temp2;

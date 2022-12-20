@@ -358,8 +358,8 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
             Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE,
             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, 
                 "Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you my&%b{{check}}%w!",
-                "Yeaaarrgh! Ein Fluch liegt auf mir!^Bitte rette mich, indem du&%r{{params}} Spinnen des Fluches%w&zerstörst und ich werde dir&%b{{check}} geben%w!",
-                "Yeaaarrgh! Je suis maudit!^Détruit encore&%r{{params}} Araignées de la Malédiction%w&et j'aurai quelque chose à te donner&%b{{check}}%w!",
+                "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du %r{{params}} Skulltulas%w zerstörst und ich werde dir dafür %b{{check}} geben%w!",
+                "Yeaaarrgh! Je suis maudit!^Détruit encore&%r{{params}} Araignées de la Malédiction%w&et j'aurai quelque chose à te donner&%(b{{check}}%w)!",
             }
         );
         CustomMessageManager::Instance->CreateMessage(
@@ -4701,54 +4701,53 @@ void CreateIceTrapRandoMessages() {
 }
 
 CustomMessageMinimal FireTempleGoronMessages[NUM_GORON_MESSAGES] = {
-    //TODO: French/German translations for all of these
     {
-        "Are you the one they call @?^You look really weird for %rDarunia's kid.%w&Are you adopted?",
-        "Are you the one they call @?^You look really weird for %rDarunia's kid.%w&Are you adopted?",
-        "Are you the one they call @?^You look really weird for %rDarunia's kid.%w&Are you adopted?",
+        "Are you the one they call %g@%w?^You look really weird for %rDarunia's kid.%w&Are you adopted?",
+        "Are you the one they call %g@%w?^You look really weird for %rDarunia's kid.%w&Are you adopted?",
+        "C'est toi qu'on appelle %g@%w?^Tu es vraiment bizarre pour être&le %rfils du Chef%w. Tu as été adopté?",
     },
     {
+        "Par les déesses! I was so worried about&when my teacher would let me get&out of detention.^I gotta go home and see my parents.",
         "Thank Hylia! I was so worried about&when my teacher would let me get&out of detention.^I gotta go home and see my parents.",
-        "Thank Hylia! I was so worried about&when my teacher would let me get&out of detention.^I gotta go home and see my parents.",
-        "Thank Hylia! I was so worried about&when my teacher would let me get&out of detention.^I gotta go home and see my parents.",
+        "Par les déesses!&Mon Frère?!&C'est bien toi?&Comment ça on ne se connaît pas?^Tu trouves vraiment que je&ressemble à n'importe quel Goron?",
     },
     {
         "How long has it been, do you know?^%r{{days}}%w days!?^Oh no, and it's %r\x1F%w?&I have to check on my cake!!",
         "How long has it been, do you know?^%r{{days}}%w days!?^Oh no, and it's %r\x1F%w?&I have to check on my cake!!",
-        "How long has it been, do you know?^%r{{days}}%w days!?^Oh no, and it's %r\x1F%w?&I have to check on my cake!!",
+        "Cela fait combien de temps que&je suis enfermé ici?&Non mais je ne vais pas crier.^COMBIEN?! %r{{days}}%w JOURS!?^En plus il est %r\x1F%w...&Il faut vraiment que je rentre...",
     },
     {
         //0x39C7 - ganon laugh
         //0x38FC - goron "wake up"
         "\x12\x39\xC7You fell into my %rtrap!%w&Foolish boy, it was me, Ganondorf!!!^...whoa, where am I?&What happened?^Weird.",
         "\x12\x39\xC7You fell into my %rtrap!%w&Foolish boy, it was me, Ganondorf!!!^...whoa, where am I?&What happened?^Weird.",
-        "\x12\x39\xC7You fell into my %rtrap!%w&Foolish boy, it was me, Ganondorf!!!^...whoa, where am I?&What happened?^Weird.",
+        "\x12\x39\xC7Tu es tombé dans mon %rpiège%w!&Tu croyais que j'étais un Goron mais,&c'était moi! %rGanondorf%w!^...Hein? Où suis-je?&Que s'est-il passé?",
     },
     {
         "Thanks, but I don't know if I wanna go&just yet...^Hmm...^...^...^...^...^...maybe I can come back later.&Bye bye.",
         "Thanks, but I don't know if I wanna go&just yet...^Hmm...^...^...^...^...^...maybe I can come back later.&Bye bye.",
-        "Thanks, but I don't know if I wanna go&just yet...^Hmm...^...^...^...^...^...maybe I can come back later.&Bye bye.",
+        "Merci, mais je me sens plus en&sécurité ici...^...^...^...^...^Hmm...^...Tout compte fait, je vais y aller.&A plus tard.",
     },
     {
         
-        "Do you know about \x9f?&It's this weird symbol that's been&in my dreams lately...^Apparently, you pressed it %b{{a_btn}}%w times.^Wow."
-        "Do you know about \x9f?&It's this weird symbol that's been&in my dreams lately...^Apparently, you pressed it %b{{a_btn}}%w times.^Wow."
-        "Do you know about \x9f?&It's this weird symbol that's been&in my dreams lately...^Apparently, you pressed it %b{{a_btn}}%w times.^Wow."
+        "Do you know about %b\x9f%w?&It's this weird symbol that's been&in my dreams lately...^Apparently, you pressed it %b{{a_btn}}%w times.^Wow."
+        "Do you know about %b\x9f%w?&It's this weird symbol that's been&in my dreams lately...^Apparently, you pressed it %b{{a_btn}}%w times.^Wow."
+        "Tu as déjà entendu parler du&symbole %b\x9f%w?&C'est un symbole bizarre qui est&apparu dans mes rêves dernièrement...^Apparemment, tu as appuyé dessus&%b{{a_btn}}%w fois.^Wow..."
     },
     {
         "\x13\x1A""Boy, you must be hot!&Get yourself a bottle of&%rLon Lon Milk%w right away and cool&down, for only %g30%w rupees!",
         "\x13\x1A""Boy, you must be hot!&Get yourself a bottle of&%rLon Lon Milk%w right away and cool&down, for only %g30%w rupees!",
-        "\x13\x1A""Boy, you must be hot!&Get yourself a bottle of&%rLon Lon Milk%w right away and cool&down, for only %g30%w rupees!",
+        "\x13\x1A""Woah! Tu dois avoir chaud!&Tu savais que tu pouvais acheter&du %rLait de Lon Lon%w pour&seulement %g30 rubis%w?^Il n'y a rien de mieux pour s'hydrater!",
     },
     {
         "In that case, I'll help you out!^They say that %rthe thing you're&looking for%w can only be found%g when&you're not looking for it.%w^Hope that helps!",
         "In that case, I'll help you out!^They say that %rthe thing you're&looking for%w can only be found%g when&you're not looking for it.%w^Hope that helps!",
-        "In that case, I'll help you out!^They say that %rthe thing you're&looking for%w can only be found%g when&you're not looking for it.%w^Hope that helps!",
+        "Dans ce cas, je vais t'aider!&On dit que l'objet que tu cherches&ne peut être trouvé que lorsque&tu ne le cherches pas.",
     },
     {
+        "I dunno why I was thrown in here,&truth be told.&I'm just a %g\"PR\"%w person.",
         "I dunno why I was thrown in here,&truth be told.&I'm just a %g\"PR\" person.%w",
-        "I dunno why I was thrown in here,&truth be told.&I'm just a %g\"PR\" person.%w",
-        "I dunno why I was thrown in here,&truth be told.&I'm just a %g\"PR\" person.%w",
+        "Je ne sais pas comment on m'a jeté&ici. Il faut croire que je dors comme&une pierre.",
     },
 };
 
@@ -4761,7 +4760,7 @@ void CreateFireTempleGoronMessages() {
     for (u8 i = 0; i <= NUM_GORON_MESSAGES - 1; i++) {
         customMessageManager->CreateMessage(customMessageTableID, goronIDs[i], {
             TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-            FireTempleGoronMessages[i].english, FireTempleGoronMessages[i].french, FireTempleGoronMessages[i].german
+            FireTempleGoronMessages[i].english, FireTempleGoronMessages[i].german, FireTempleGoronMessages[i].french
         });
     }
 }
