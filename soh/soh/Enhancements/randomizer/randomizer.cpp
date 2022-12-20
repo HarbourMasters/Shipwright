@@ -4217,37 +4217,40 @@ void DrawRandoEditor(bool& open) {
 
                 UIWidgets::EnhancementCheckbox(Settings::StartingZeldasLullaby.GetName().c_str(),
                                                "gRandomizeStartingZeldasLullaby");
-                UIWidgets::PaddedSeparator();
+                
                 UIWidgets::EnhancementCheckbox(Settings::StartingEponasSong.GetName().c_str(),
                                                "gRandomizeStartingEponasSong");
-                UIWidgets::PaddedSeparator();
+                
                 UIWidgets::EnhancementCheckbox(Settings::StartingSariasSong.GetName().c_str(),
                                                "gRandomizeStartingSariasSong");
-                UIWidgets::PaddedSeparator();
+                
                 UIWidgets::EnhancementCheckbox(Settings::StartingSunsSong.GetName().c_str(), 
                                                "gRandomizeStartingSunsSong");
-                UIWidgets::PaddedSeparator();
+                
                 UIWidgets::EnhancementCheckbox(Settings::StartingSongOfTime.GetName().c_str(), 
                                                "gRandomizeStartingSongOfTime");
-                UIWidgets::PaddedSeparator();
+                
                 UIWidgets::EnhancementCheckbox(Settings::StartingSongOfStorms.GetName().c_str(), 
                                                "gRandomizeStartingSongOfStorms");
                 UIWidgets::PaddedSeparator();
+                ImGui::Text("Warp Songs");
+                UIWidgets::PaddedSeparator();
+                
                 UIWidgets::EnhancementCheckbox(Settings::StartingMinuetOfForest.GetName().c_str(), 
                                                "gRandomizeStartingMinuetOfForest");
-                UIWidgets::PaddedSeparator();
+                
                 UIWidgets::EnhancementCheckbox(Settings::StartingBoleroOfFire.GetName().c_str(),
                                                "gRandomizeStartingBoleroOfFire");
-                UIWidgets::PaddedSeparator();
+                
                 UIWidgets::EnhancementCheckbox(Settings::StartingSerenadeOfWater.GetName().c_str(),
                                                "gRandomizeStartingSerenadeOfWater");
-                UIWidgets::PaddedSeparator();
+                
                 UIWidgets::EnhancementCheckbox(Settings::StartingRequiemOfSpirit.GetName().c_str(),
                                                "gRandomizeStartingRequiemOfSpirit");
-                UIWidgets::PaddedSeparator();
+                
                 UIWidgets::EnhancementCheckbox(Settings::StartingNocturneOfShadow.GetName().c_str(),
                                                "gRandomizeStartingNocturneOfShadow");
-                UIWidgets::PaddedSeparator();
+                
                 UIWidgets::EnhancementCheckbox(Settings::StartingPreludeOfLight.GetName().c_str(),
                                                "gRandomizeStartingPreludeOfLight");
 
