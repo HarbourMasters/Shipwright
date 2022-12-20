@@ -435,10 +435,30 @@ static void WriteStartingInventory() {
     &Settings::startingOthersOptions
   };
 
+  for (std::vector<Option*>* menu : startingInventoryOptions) {
+      for (size_t i = 0; i < menu->size(); ++i) {
+          const auto setting = menu->at(i);
+          // Starting Songs
+          if (setting->GetName() == "Zelda's Lullaby" || 
+              setting->GetName() == "Epona's Song" ||
+              setting->GetName() == "Saria's Song" || 
+              setting->GetName() == "Sun's Song" ||
+              setting->GetName() == "Song of Time" || 
+              setting->GetName() == "Song of Storms" ||
+              setting->GetName() == "Minuet of Forest" || 
+              setting->GetName() == "Bolero of Fire" ||
+              setting->GetName() == "Serenade of Water" || 
+              setting->GetName() == "Requiem of Spirit" ||
+              setting->GetName() == "Nocturne of Shadow" || 
+              setting->GetName() == "Prelude of Light") {
+              jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
+          }
+      }
+  }
   for (std::vector<Option *>* menu : startingInventoryOptions) {
     for (size_t i = 0; i < menu->size(); ++i) {
       const auto setting = menu->at(i);
-
+   
       // we need to write these every time because we're not clearing jsondata, so
       // the default logic of only writing it when we aren't using the default value
       // doesn't work, and because it'd be bad to set every single possible starting
@@ -449,20 +469,7 @@ static void WriteStartingInventory() {
           setting->GetName() == "Gold Skulltula Tokens" ||
           setting->GetName() == "Start with Fairy Ocarina" ||
           setting->GetName() == "Start with Kokiri Sword" || 
-          setting->GetName() == "Start with Deku Shield" || 
-     //Starting Songs
-          setting->GetName() == "Zelda's Lullaby" ||
-          setting->GetName() == "Epona's Song" ||
-          setting->GetName() == "Saria's Song" || 
-          setting->GetName() == "Sun's Song" ||
-          setting->GetName() == "Song of Time" || 
-          setting->GetName() == "Song of Storms" ||
-          setting->GetName() == "Minuet of Forest" || 
-          setting->GetName() == "Bolero of Fire" || 
-          setting->GetName() == "Serenade of Water" || 
-          setting->GetName() == "Requiem of Spirit" || 
-          setting->GetName() == "Nocturne of Shadow" ||
-          setting->GetName() == "Prelude of Light") {
+          setting->GetName() == "Start with Deku Shield") {
         jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
       }
     }
