@@ -239,10 +239,14 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
     spawnPos = this->actor.world.pos;
     // In authentic gameplay, the game checks how many Stalchildren were spawned and only spawns new ones
     // when the old ones are despawned and a timer is reached.
-    // With Enemy Randomizer on, this will keep spawning enemies solely on the timer because it's much
-    // more difficult tracking how many enemies have been spawned/killed. It's also fun. :)
-    if ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || CVar_GetS32("gRandomizedEnemies", 0)) {
-        while ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || CVar_GetS32("gRandomizedEnemies", 0)) {
+    // With Enemy Randomizer on, this will keep spawning enemies based on the timer and the total amount of existing
+    // enemies because it's much more difficult tracking how many enemies specifically spawned by this spawner have
+    // been spawned and/or killed.
+    int8_t enemyCount = play->actorCtx.actorLists[ACTORCAT_ENEMY].length;
+    if ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || 
+            (CVar_GetS32("gRandomizedEnemies", 0) && enemyCount < 15)) {
+        while ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || 
+                (CVar_GetS32("gRandomizedEnemies", 0) && enemyCount < 15)) {
             if (play->sceneNum == SCENE_SPOT00) {
                 if ((player->unk_89E == 0) || (player->actor.floorBgId != BGCHECK_SCENE) ||
                     !(player->actor.bgCheckFlags & 1) || (player->stateFlags1 & 0x08000000)) {
