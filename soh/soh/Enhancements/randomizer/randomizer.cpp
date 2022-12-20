@@ -30,9 +30,6 @@
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
-// Used for animating the ice trap on the "Get Item" model.
-f32 iceTrapScale;
-
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
 
@@ -2608,7 +2605,6 @@ GetItemEntry Randomizer::GetItemEntryFromRGData(RandomizerGetData rgData, GetIte
         } else {
             modIndex = MOD_RANDOMIZER;
         }
-        iceTrapScale = 0.0f;
         GetItemEntry fakeGiEntry = ItemTableManager::Instance->RetrieveItemEntry(modIndex, GetItemIdFromRandomizerGet(rgData.fakeRgID, ogItemId));
         giEntry.gid = fakeGiEntry.gid;
         giEntry.gi = fakeGiEntry.gi;

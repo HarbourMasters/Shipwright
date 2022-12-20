@@ -400,9 +400,7 @@ void GetItem_Draw(PlayState* play, s16 drawId) {
  * Uses the Custom Draw Function if it exists, or just calls `GetItem_Draw`
  */
 void GetItemEntry_Draw(PlayState* play, GetItemEntry getItemEntry) {
-    // RANDOTODO: Make this more flexible for easier toggling of individual item recolors in the future.
-    if (getItemEntry.drawFunc != NULL && 
-        (CVar_GetS32("gRandoMatchKeyColors", 0) || getItemEntry.getItemId == RG_DOUBLE_DEFENSE)) {
+    if (getItemEntry.drawFunc != NULL) {
         getItemEntry.drawFunc(play, &getItemEntry);
     } else {
         GetItem_Draw(play, getItemEntry.gid);
