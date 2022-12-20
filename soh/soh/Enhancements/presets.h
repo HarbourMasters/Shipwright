@@ -276,6 +276,7 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeStoneCount",
     "gRandomizeSunlightArrows",
     "gRandomizeTokenCount",
+    "gRandomizeWarpSongText",
     "gRandomizeZorasFountain",
 };
 

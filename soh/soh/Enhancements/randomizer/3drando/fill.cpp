@@ -1074,6 +1074,15 @@ int Fill() {
       if (ShuffleMerchants.Is(SHUFFLEMERCHANTS_HINTS)) {
         CreateMerchantsHints();
       }
+      if (GanondorfHintText) {
+        CreateGanonText();
+      }
+      if (AltarHintText) {
+        CreateAltarText();
+      }
+      if (DampeHintText) {
+        CreateDampesDiaryText();
+      }
       if (ShuffleWarpSongs) {
         CreateWarpSongTexts();
       }
