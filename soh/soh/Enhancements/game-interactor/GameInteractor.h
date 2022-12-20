@@ -14,9 +14,11 @@
 class GameInteractor {
 public:
     static GameInteractor* Instance;
-    static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffect effect);
-    static void ApplyEffect(GameInteractionEffect effect);
+
+    static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase effect);
+    static void ApplyEffect(GameInteractionEffectBase effect);
     static void RemoveEffect();
+
     static bool CanSpawnEnemy();
     static void SpawnEnemy();
 };

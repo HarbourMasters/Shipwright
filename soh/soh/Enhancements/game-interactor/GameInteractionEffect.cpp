@@ -22,45 +22,47 @@ uint32_t GameInteractor_NoUI;
 
 // AddHeartContainer
 
-GameInteractionEffectQueryResult AddHeartContainer::CanBeApplied() {
-    return gSaveContext.healthCapacity >= 0x140
+namespace GameInteractionEffect {
+    GameInteractionEffectQueryResult AddHeartContainer::CanBeApplied() {
+        return gSaveContext.healthCapacity >= 0x140
         ? GameInteractionEffectQueryResult::NotPossibe
         : GameInteractionEffectQueryResult::Possible;
-}
+    }
 
-void AddHeartContainer::Apply() {
-    Health_GiveHearts(1);
-}
+    void AddHeartContainer::Apply() {
+        Health_GiveHearts(1);
+    }
 
-// RemoveHeartContainer
+    // RemoveHeartContainer
 
-GameInteractionEffectQueryResult RemoveHeartContainer::CanBeApplied() {
-    return ((gSaveContext.healthCapacity - 0x10) <= 0)
+    GameInteractionEffectQueryResult RemoveHeartContainer::CanBeApplied() {
+        return ((gSaveContext.healthCapacity - 0x10) <= 0)
         ? GameInteractionEffectQueryResult::NotPossibe
         : GameInteractionEffectQueryResult::Possible;
-}
+    }
 
-void RemoveHeartContainer::Apply() {
-    Health_RemoveHearts(1);
-}
+    void RemoveHeartContainer::Apply() {
+        Health_RemoveHearts(1);
+    }
 
-// GiveRupees
+    // GiveRupees
 
-GameInteractionEffectQueryResult GiveRupees::CanBeApplied() {
-    return GameInteractionEffectQueryResult::Possible;
-}
+    GameInteractionEffectQueryResult GiveRupees::CanBeApplied() {
+        return GameInteractionEffectQueryResult::Possible;
+    }
 
-void GiveRupees::Apply() {
-    Rupees_ChangeBy(amount);
-}
+    void GiveRupees::Apply() {
+        Rupees_ChangeBy(amount);
+    }
 
 
-// NoUIEffect
+    // NoUIEffect
 
-GameInteractionEffectQueryResult NoUIEffect::CanBeApplied() {
-    return GameInteractionEffectQueryResult::Possible;
-}
+    GameInteractionEffectQueryResult NoUI::CanBeApplied() {
+        return GameInteractionEffectQueryResult::Possible;
+    }
 
-void NoUIEffect::Apply() {
-    GameInteractor_NoUI = 1;
+    void NoUI::Apply() {
+        GameInteractor_NoUI = 1;
+    }
 }
