@@ -359,7 +359,7 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, 
                 "Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you my&%b{{check}}%w!",
                 "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du %r{{params}} Skulltulas%w zerstörst und ich werde dir dafür %b{{check}} geben%w!",
-                "Yeaaarrgh! Je suis maudit!^Détruit encore&%r{{params}} Araignées de la Malédiction%w&et j'aurai quelque chose à te donner&%(b{{check}}%w)!",
+                "Yeaaarrgh! Je suis maudit!^Détruit encore %r{{params}} Araignées de&la Malédiction%w et j'aurai quelque&chose à te donner!&%b({{check}})",
             }
         );
         CustomMessageManager::Instance->CreateMessage(
