@@ -4707,7 +4707,7 @@ CustomMessageMinimal FireTempleGoronMessages[NUM_GORON_MESSAGES] = {
         "C'est toi qu'on appelle %g@%w?^Tu es vraiment bizarre pour être&le %rfils du Chef%w. Tu as été adopté?",
     },
     {
-        "Par les déesses! I was so worried about&when my teacher would let me get&out of detention.^I gotta go home and see my parents.",
+        "Thank Hylia! I was so worried about&when my teacher would let me get&out of detention.^I gotta go home and see my parents.",
         "Thank Hylia! I was so worried about&when my teacher would let me get&out of detention.^I gotta go home and see my parents.",
         "Par les déesses!&Mon Frère?!&C'est bien toi?&Comment ça on ne se connaît pas?^Tu trouves vraiment que je&ressemble à n'importe quel Goron?",
     },
