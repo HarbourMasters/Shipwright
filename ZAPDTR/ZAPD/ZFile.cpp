@@ -433,7 +433,7 @@ void ZFile::AddResource(ZResource* res)
 	resources.push_back(res);
 }
 
-ZResource* ZFile::FindResource(uint32_t rawDataIndex)
+ZResource* ZFile::FindResource(offset_t rawDataIndex)
 {
 	for (ZResource* res : resources)
 	{
@@ -447,6 +447,7 @@ ZResource* ZFile::FindResource(uint32_t rawDataIndex)
 std::vector<ZResource*> ZFile::GetResourcesOfType(ZResourceType resType)
 {
 	std::vector<ZResource*> resList;
+	resList.reserve(resources.size());
 
 	for (ZResource* res : resources)
 	{
@@ -722,7 +723,7 @@ bool ZFile::GetDeclarationArrayIndexedName(segptr_t segAddress, size_t elementSi
 	return true;
 }
 
-Declaration* ZFile::GetDeclaration(uint32_t address) const
+Declaration* ZFile::GetDeclaration(offset_t address) const
 {
 	if (declarations.find(address) != declarations.end())
 		return declarations.at(address);
@@ -730,7 +731,7 @@ Declaration* ZFile::GetDeclaration(uint32_t address) const
 	return nullptr;
 }
 
-Declaration* ZFile::GetDeclarationRanged(uint32_t address) const
+Declaration* ZFile::GetDeclarationRanged(offset_t address) const
 {
 	for (const auto decl : declarations)
 	{
@@ -741,7 +742,7 @@ Declaration* ZFile::GetDeclarationRanged(uint32_t address) const
 	return nullptr;
 }
 
-bool ZFile::HasDeclaration(uint32_t address)
+bool ZFile::HasDeclaration(offset_t address)
 {
 	assert(GETSEGNUM(address) == 0);
 	return declarations.find(address) != declarations.end();
@@ -826,6 +827,8 @@ void ZFile::GenerateSourceHeaderFiles()
 	}
 
 	formatter.Write(ProcessExterns());
+
+	formatter.Write("#endif\n");
 
 	fs::path headerFilename = GetSourceOutputFolderPath() / outName.stem().concat(".h");
 
@@ -1244,6 +1247,7 @@ void ZFile::HandleUnaccountedData()
 	uint32_t lastSize = 0;
 	std::vector<offset_t> declsAddresses;
 
+	declsAddresses.reserve(declarations.size());
 	if (Globals::Instance->otrMode)
 		return;
 

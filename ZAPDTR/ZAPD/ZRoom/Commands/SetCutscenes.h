@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ZCutscene.h"
-#include "ZCutsceneMM.h"
 #include "ZRoom/ZRoomCommand.h"
 
 class CutsceneEntry
@@ -9,7 +8,7 @@ class CutsceneEntry
 public:
 	CutsceneEntry(const std::vector<uint8_t>& rawData, uint32_t rawDataIndex);
 
-	uint32_t segmentOffset;
+	segptr_t segmentPtr;
 	uint16_t exit;
 	uint8_t entrance;
 	uint8_t flag;
@@ -18,14 +17,13 @@ public:
 class SetCutscenes : public ZRoomCommand
 {
 public:
-	std::vector<ZCutsceneBase*> cutscenes;
 	std::vector<CutsceneEntry> cutsceneEntries;  // (MM Only)
 	uint8_t numCutscenes;                        // (MM Only)
 
 	SetCutscenes(ZFile* nParent);
-	~SetCutscenes();
 
 	void ParseRawData() override;
+	void DeclareReferences(const std::string& prefix) override;
 
 	std::string GetBodySourceCode() const override;
 

@@ -15,8 +15,9 @@ void SetMinimapChests::ParseRawData()
 	ZRoomCommand::ParseRawData();
 	int numChests = cmdArg1;
 
-	int32_t currentPtr = segmentOffset;
+	offset_t currentPtr = segmentOffset;
 
+	chests.reserve(numChests);
 	for (int32_t i = 0; i < numChests; i++)
 	{
 		MinimapChest chest(parent->GetRawData(), currentPtr);

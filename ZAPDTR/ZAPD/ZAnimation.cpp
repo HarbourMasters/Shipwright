@@ -67,7 +67,7 @@ void ZNormalAnimation::ParseRawData()
 {
 	ZAnimation::ParseRawData();
 
-	const uint8_t* data = parent->GetRawData().data();
+	auto& data = parent->GetRawData();
 
 	rotationValuesSeg = BitConverter::ToInt32BE(data, rawDataIndex + 4);
 	rotationIndicesSeg = BitConverter::ToInt32BE(data, rawDataIndex + 8);

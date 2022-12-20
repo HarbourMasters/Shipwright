@@ -17,6 +17,7 @@ set(Header_Files
     "ImageBackend.h"
     "OutputFormatter.h"
     "WarningHandler.h"
+    "CrashHandler.h"
 )
 source_group("Header Files" FILES ${Header_Files})
 
@@ -26,22 +27,6 @@ set(Header_Files__Libraries
     "ctpl_stl.h"
 )
 source_group("Header Files\\Libraries" FILES ${Header_Files__Libraries})
-
-set(Header_Files__Libraries__elfio
-    "../lib/elfio/elfio/elf_types.hpp"
-    "../lib/elfio/elfio/elfio.hpp"
-    "../lib/elfio/elfio/elfio_dump.hpp"
-    "../lib/elfio/elfio/elfio_dynamic.hpp"
-    "../lib/elfio/elfio/elfio_header.hpp"
-    "../lib/elfio/elfio/elfio_note.hpp"
-    "../lib/elfio/elfio/elfio_relocation.hpp"
-    "../lib/elfio/elfio/elfio_section.hpp"
-    "../lib/elfio/elfio/elfio_segment.hpp"
-    "../lib/elfio/elfio/elfio_strings.hpp"
-    "../lib/elfio/elfio/elfio_symbols.hpp"
-    "../lib/elfio/elfio/elfio_utils.hpp"
-)
-source_group("Header Files\\Libraries\\elfio" FILES ${Header_Files__Libraries__elfio})
 
 set(Header_Files__Libraries__libgfxd
     "../lib/libgfxd/gbi.h"
@@ -58,7 +43,6 @@ source_group("Header Files\\Yaz0" FILES ${Header_Files__Yaz0})
 
 set(Header_Files__Z64
     "OtherStructs/SkinLimbStructs.h"
-    "Overlays/ZOverlay.h"
     "ZAnimation.h"
     "ZArray.h"
     "ZAudio.h"
@@ -136,6 +120,7 @@ set(Resource_Files
 source_group("Resource Files" FILES ${Resource_Files})
 
 set(Source_Files
+    "CrashHandler.cpp"
     "Declaration.cpp"
     "FileWorker.cpp"
     "GameConfig.cpp"
@@ -165,7 +150,6 @@ source_group("Source Files\\Yaz0" FILES ${Source_Files__Yaz0})
 
 set(Source_Files__Z64
     "OtherStructs/SkinLimbStructs.cpp"
-    "Overlays/ZOverlay.cpp"
     "ZAnimation.cpp"
     "ZArray.cpp"
     "ZAudio.cpp"
@@ -241,7 +225,6 @@ source_group("Source Files\\Z64\\ZRoom\\Commands" FILES ${Source_Files__Z64__ZRo
 set(ALL_FILES
     ${Header_Files}
     ${Header_Files__Libraries}
-    ${Header_Files__Libraries__elfio}
     ${Header_Files__Libraries__libgfxd}
     ${Header_Files__Yaz0}
     ${Header_Files__Z64}

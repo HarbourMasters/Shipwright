@@ -61,9 +61,18 @@ pipeline {
                             sh 'cp ../ZAPD.out tools/ZAPD/'
                             sh 'python3 tools/fixbaserom.py'
                             sh 'python3 tools/extract_baserom.py'
-                            sh 'python3 extract_assets.py -t$(nproc)'
+                            sh 'python3 extract_assets.py -j $(nproc)'
                         }
                     }
+                }
+            }
+        }
+
+        // INSTALL PYTHON DEPENDENCIES, currently MM only
+        stage('Install Python dependencies') {
+            steps {
+                dir('mm') {
+                    sh 'python3 -m pip install -r requirements.txt'
                 }
             }
         }
@@ -82,7 +91,7 @@ pipeline {
                     steps {
                         dir('mm') {
                             sh 'make -j disasm'
-                            sh 'make -j all'
+                            sh 'make -j'
                         }
                     }
                 }

@@ -1,5 +1,4 @@
 #include "Globals.h"
-#include "Overlays/ZOverlay.h"
 #include "Utils/Directory.h"
 #include "Utils/File.h"
 #include "Utils/Path.h"
@@ -72,15 +71,7 @@ ZRoom room(nullptr);
 #include "ZFile.h"
 #include "ZTexture.h"
 
-#ifdef __linux__
-#include <csignal>
-#include <cstdlib>
-#include <ctime>
-#include <cxxabi.h>  // for __cxa_demangle
-#include <dlfcn.h>   // for dladdr
-#include <execinfo.h>
-#include <unistd.h>
-#endif
+#include "CrashHandler.h"
 
 #include <string>
 #include <string_view>
@@ -91,7 +82,28 @@ ZRoom room(nullptr);
 const char gBuildHash[] = "";
 
 // LINUX_TODO: remove, those are because of soh <-> lus dependency problems
+float divisor_num = 0.0f;
 
+extern "C" void Audio_SetGameVolume(int player_id, float volume)
+{
+
+}
+
+
+extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
+{
+	return 0;
+}
+
+void DebugConsole_SaveCVars()
+{
+
+}
+
+void DebugConsole_LoadCVars()
+{
+
+}
 bool Parse(const fs::path& xmlFilePath, const fs::path& basePath, const fs::path& outPath,
            ZFileMode fileMode, int workerID);
 
@@ -246,12 +258,6 @@ extern "C" int zapd_main(int argc, char* argv[])
 		{
 			Globals::Instance->texType = ZTexture::GetTextureTypeFromString(argv[++i]);
 		}
-		else if (arg == "-cfg")  // Set cfg path (for overlays)
-		                         // TODO: Change the name of this to something else so it doesn't
-		                         // get confused with XML config files.
-		{
-			Globals::Instance->cfgPath = argv[++i];
-		}
 		else if (arg == "-fl")  // Set baserom filelist path
 		{
 			Globals::Instance->fileListPath = argv[++i];
@@ -262,16 +268,7 @@ extern "C" int zapd_main(int argc, char* argv[])
 		}
 		else if (arg == "-eh")  // Enable Error Handler
 		{
-#ifdef __linux__
-			signal(SIGSEGV, ErrorHandler);
-			signal(SIGABRT, ErrorHandler);
-#else
-			// HANDLE_WARNING(WarningType::Always,
-			//                "tried to set error handler, but this ZAPD build lacks support for one",
-			//                "");
-#endif
-
-
+			CrashHandler_Init();
 		}
 		else if (arg == "-v")  // Verbose
 		{
@@ -326,8 +323,6 @@ extern "C" int zapd_main(int argc, char* argv[])
 		fileMode = ZFileMode::BuildTexture;
 	else if (buildMode == "bren")
 		fileMode = ZFileMode::BuildBackground;
-	else if (buildMode == "bovl")
-		fileMode = ZFileMode::BuildOverlay;
 	else if (buildMode == "bsf")
 		fileMode = ZFileMode::BuildSourceFile;
 	else if (buildMode == "bblb")
