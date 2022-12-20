@@ -448,8 +448,21 @@ static void WriteStartingInventory() {
           setting->GetName() == "Start with Max Rupees" ||
           setting->GetName() == "Gold Skulltula Tokens" ||
           setting->GetName() == "Start with Fairy Ocarina" ||
-          setting->GetName() == "Start with Kokiri Sword" ||
-          setting->GetName() == "Start with Deku Shield") {
+          setting->GetName() == "Start with Kokiri Sword" || 
+          setting->GetName() == "Start with Deku Shield" || 
+     //Starting Songs
+          setting->GetName() == "Zelda's Lullaby" ||
+          setting->GetName() == "Epona's Song" ||
+          setting->GetName() == "Saria's Song" || 
+          setting->GetName() == "Sun's Song" ||
+          setting->GetName() == "Song of Time" || 
+          setting->GetName() == "Song of Storms" ||
+          setting->GetName() == "Minuet of Forest" || 
+          setting->GetName() == "Bolero of Fire" || 
+          setting->GetName() == "Serenade of Water" || 
+          setting->GetName() == "Requiem of Spirit" || 
+          setting->GetName() == "Nocturne of Shadow" ||
+          setting->GetName() == "Prelude of Light") {
         jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
       }
     }
