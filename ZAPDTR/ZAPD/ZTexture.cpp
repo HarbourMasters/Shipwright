@@ -424,7 +424,7 @@ void ZTexture::PrepareRawDataFromFile(const fs::path& pngFilePath)
 	height = textureData.GetHeight();
 
 	textureDataRaw.clear();
-	textureDataRaw.resize(ALIGN8(GetRawDataSize()));
+	textureDataRaw.resize(GetRawDataSize());
 
 	switch (format)
 	{

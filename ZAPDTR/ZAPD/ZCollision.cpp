@@ -164,9 +164,13 @@ void ZCollisionHeader::DeclareReferences(const std::string& prefix)
 
 		if (!Globals::Instance->otrMode)
 		{
-			declaration += StringHelper::Sprintf("\t%s,", polygons[i].GetBodySourceCode().c_str());
-			if (i + 1 < polygons.size())
-				declaration += "\n";
+			for (size_t i = 0; i < polygons.size(); i++)
+			{
+				declaration +=
+					StringHelper::Sprintf("\t%s,", polygons[i].GetBodySourceCode().c_str());
+				if (i + 1 < polygons.size())
+					declaration += "\n";
+			}
 		}
 
 		parent->AddDeclarationArray(polySegmentOffset, DeclarationAlignment::Align4,

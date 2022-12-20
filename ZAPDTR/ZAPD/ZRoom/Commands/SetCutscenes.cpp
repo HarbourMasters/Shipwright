@@ -60,7 +60,7 @@ void SetCutscenes::DeclareReferences(const std::string& prefix)
 
 			std::string csName;
 			Globals::Instance->GetSegmentedPtrName(entry.segmentPtr, parent, "CutsceneData",
-			                                       csName);
+			                                       csName, parent->workerID);
 
 			declaration +=
 				StringHelper::Sprintf("    { %s, 0x%04X, 0x%02X, 0x%02X },", csName.c_str(),
@@ -99,20 +99,20 @@ void SetCutscenes::DeclareReferences(const std::string& prefix)
 std::string SetCutscenes::GetBodySourceCode() const
 {
 	std::string listName;
-<<<<<<< HEAD
-=======
+
 	Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "CutsceneData", listName,
 	                                       parent->workerID);
->>>>>>> e55b9ea (Create test.txt)
 
 	if (Globals::Instance->game == ZGame::MM_RETAIL)
 	{
-		Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "CutsceneEntry", listName);
+		Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "CutsceneEntry", listName,
+		                                       parent->workerID);
 		return StringHelper::Sprintf("SCENE_CMD_CUTSCENE_LIST(%i, %s)", numCutscenes,
 		                             listName.c_str());
 	}
 
-	Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "CutsceneData", listName);
+	Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "CutsceneData", listName,
+	                                       parent->workerID);
 	return StringHelper::Sprintf("SCENE_CMD_CUTSCENE_DATA(%s)", listName.c_str());
 }
 
