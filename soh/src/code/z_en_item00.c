@@ -1264,9 +1264,9 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
 
 void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry giEntry) {
     s16 color_slot;
-    switch (giEntry.modIndex) {
+    switch (giEntry.drawModIndex) {
         case MOD_NONE:
-            switch (giEntry.itemId) {
+            switch (giEntry.drawItemId) {
                 case ITEM_SONG_MINUET:
                     color_slot = 0;
                     break;
@@ -1298,7 +1298,7 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
             }
             break;
         case MOD_RANDOMIZER:
-            switch (giEntry.itemId) {
+            switch (giEntry.drawItemId) {
                 case RG_MAGIC_SINGLE:
                 case RG_MAGIC_DOUBLE:
                 case RG_MAGIC_BEAN_PACK:

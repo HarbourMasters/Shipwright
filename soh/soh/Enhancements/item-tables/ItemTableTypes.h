@@ -52,5 +52,7 @@ typedef struct GetItemEntry {
     /* 0x0C */ uint16_t collectable; // determines whether the item can be collected on the overworld. Will be true in most cases.
     /* 0x0E */ GetItemFrom getItemFrom;
     /* 0x0F */ GetItemCategory getItemCategory; // Primarily made and used for chest size/texture matches contents
+    /* 0x10 */ uint16_t drawItemId; // Will be a copy of itemId unless the item is an ice trap. Needed for particles to function on ice traps.
+    /* 0x11 */ uint16_t drawModIndex; // Will be a copy of modIndex unless the item is an ice trap. Needed for particles to function on ice traps.
     CustomDrawFunc drawFunc;
-};                   // size = 0x0F
+}; // size = 0x11
