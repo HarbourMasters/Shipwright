@@ -44,6 +44,8 @@ typedef struct PresetEntry {
     { cvar, PRESET_ENTRY_TYPE_STRING, value }
 
 void DrawPresetSelector(PresetType presetType);
+void clearCvars(std::vector<const char*> cvarsToClear);
+void applyPreset(std::vector<PresetEntry> entries);
 
 // TODO: Ideally everything below this point will come from one/many JSON files
 
@@ -674,6 +676,41 @@ const std::vector<PresetEntry> hellModePresetEntries = {
     PRESET_ENTRY_S32("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_ANYWHERE),
     PRESET_ENTRY_S32("gRandomizeSunlightArrows", 1),
     PRESET_ENTRY_S32("gRandomizeZorasFountain", 2),
+};
+
+const std::vector<PresetEntry> glitchlessAnyShipPresetEntries = {
+    PRESET_ENTRY_S32("gTextSpeed", 5),
+    PRESET_ENTRY_S32("gMweepSpeed", 5),
+    PRESET_ENTRY_S32("gClimbSpeed", 7),
+    PRESET_ENTRY_S32("gFasterBlockPush", 5),
+    PRESET_ENTRY_S32("gFasterHeavyBlockLift", 1),
+    PRESET_ENTRY_S32("gFasterHeavyBlockLift", 1),
+    PRESET_ENTRY_S32("gNoForcedNavi", 1),
+    PRESET_ENTRY_S32("gFastChests", 1),
+    PRESET_ENTRY_S32("gFastDrops", 1),
+    PRESET_ENTRY_S32("gFastOcarinaPlayback", 1),
+    PRESET_ENTRY_S32("gSkipScarecrow", 1),
+    PRESET_ENTRY_S32("gMarketSneak", 1),
+    PRESET_ENTRY_S32("gInstantPutaway", 1),
+    PRESET_ENTRY_S32("gFastBoomerang", 1),
+    PRESET_ENTRY_S32("gDpadNoDropOcarinaInput", 1),
+    PRESET_ENTRY_S32("gMMBunnyHood", 2),
+    PRESET_ENTRY_S32("gSeparateArrows", 1),
+    PRESET_ENTRY_S32("gAssignableTunicsAndBoots", 1),
+    PRESET_ENTRY_S32("gEquipmentCanBeRemoved", 1),
+    PRESET_ENTRY_S32("gDayGravePull", 1),
+    PRESET_ENTRY_S32("gDrawLineupTick", 1),
+    PRESET_ENTRY_S32("gNewDrops", 1),
+    PRESET_ENTRY_S32("gCreditsFix", 1),
+    PRESET_ENTRY_S32("gSkipText", 1),
+    PRESET_ENTRY_S32("gHideBuildInfo", 1),
+    PRESET_ENTRY_S32("gSkipLogoTitle", 1),
+    PRESET_ENTRY_S32("gSaveFileID", 4),
+    PRESET_ENTRY_S32("gRandomizeLogicRules", 2),
+    PRESET_ENTRY_S32("gRandomizeSkipChildStealth", 1),
+    PRESET_ENTRY_S32("gRandomizeSkipTowerEscape", 1),
+    PRESET_ENTRY_S32("gRandomizeCompleteMaskQuest", 1),
+    PRESET_ENTRY_S32("gRandomizeSkipScarecrowsSong", 1),
 };
 
 typedef struct PresetDefinition {
