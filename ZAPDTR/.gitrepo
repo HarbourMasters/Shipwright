@@ -4,9 +4,9 @@
 ; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
 ;
 [subrepo]
-	remote = https://github.com/HarbourMasters/ZAPDTR.git
+	remote = C:/ZeldaStuff/ZAPDTR/
 	branch = rebase2
-	commit = 88b012240bfe69ac8af3a1035b2bc4fac9284169
-	parent = 7c074bdedac5d11f8ee1b83e037703622e0882e2
+	commit = b7b6e1c823c690b4fd0d4a8182af9fcf6d0e618e
+	parent = bb0e9c98c1d3e991affd23314a6207a30e613898
 	method = rebase
 	cmdver = 0.4.3
