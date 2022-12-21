@@ -736,8 +736,9 @@ std::string GetName(const char* path) {
 }
 
 extern "C" const char* ResourceMgr_GetName(const char* path) {
-    auto s = new std::string(GetName(path));
-    const char* name = s->c_str();
+    std::string s = GetName(path);
+    char* name = new char[s.size() + 1];
+    std::strcpy(name, s.c_str());
     return name;
 }
 
@@ -746,7 +747,7 @@ extern "C" void ResourceMgr_LoadFile(const char* resName) {
 }
 
 std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path) {
-    return OTRGlobals::Instance->context->GetResourceManager()->LoadResource(ResourceMgr_GetName(path));
+    return OTRGlobals::Instance->context->GetResourceManager()->LoadResource(GetName(path).c_str());
 }
 
 extern "C" char* ResourceMgr_LoadFileRaw(const char* resName) {
@@ -821,7 +822,7 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     else if (res->ResType == Ship::ResourceType::Array)
         return (char*)(std::static_pointer_cast<Ship::Array>(res))->vertices.data();
     else {
-        return ResourceMgr_LoadTexByName(ResourceMgr_GetName(filePath));
+        return ResourceMgr_LoadTexByName(GetName(filePath).c_str());
     }
 }
 
