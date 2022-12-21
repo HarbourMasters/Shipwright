@@ -27,6 +27,19 @@ void SetCutscenes::ParseRawData()
 			cutsceneEntries.push_back(entry);
 			currentPtr += 8;
 		}
+	} 
+	else if (Globals::Instance->game == ZGame::OOT_RETAIL || Globals::Instance->game == ZGame::OOT_SW97)
+	{
+		ZCutscene* cutscene = new ZCutscene(parent);
+		cutscene->ExtractFromFile(segmentOffset);
+
+		auto decl = parent->GetDeclaration(segmentOffset);
+		if (decl == nullptr)
+		{
+			cutscene->DeclareVar(zRoom->GetName().c_str(), "");
+		}
+
+		cutscenes.push_back(cutscene);
 	}
 }
 

@@ -438,20 +438,20 @@ void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWrite
 			break;
 		case RoomCommand::SetCutscenes:
 		{
-			//SetCutscenes* cmdSetCutscenes = (SetCutscenes*)cmd;
-			//
-			//std::string listName;
-			//Globals::Instance->GetSegmentedPtrName(cmdSetCutscenes->cmdArg2, room->parent, "CutsceneData", listName, res->parent->workerID);
-			//std::string fName = OTRExporter_DisplayList::GetPathToRes(room, listName);
-			////std::string fName = StringHelper::Sprintf("%s\\%s", OTRExporter_DisplayList::GetParentFolderName(room).c_str(), listName.c_str());
-			//writer->Write(fName);
-			//
-			//MemoryStream* csStream = new MemoryStream();
-			//BinaryWriter csWriter = BinaryWriter(csStream);
-			//OTRExporter_Cutscene cs;
-			//cs.Save(cmdSetCutscenes->cutscenes[0], "", &csWriter);
-			//
-			//AddFile(fName, csStream->ToVector());
+			SetCutscenes* cmdSetCutscenes = (SetCutscenes*)cmd;
+			
+			std::string listName;
+			Globals::Instance->GetSegmentedPtrName(cmdSetCutscenes->cmdArg2, room->parent, "CutsceneData", listName, res->parent->workerID);
+			std::string fName = OTRExporter_DisplayList::GetPathToRes(room, listName);
+			//std::string fName = StringHelper::Sprintf("%s\\%s", OTRExporter_DisplayList::GetParentFolderName(room).c_str(), listName.c_str());
+			writer->Write(fName);
+			
+			MemoryStream* csStream = new MemoryStream();
+			BinaryWriter csWriter = BinaryWriter(csStream);
+			OTRExporter_Cutscene cs;
+			cs.Save(cmdSetCutscenes->cutscenes[0], "", &csWriter);
+			
+			AddFile(fName, csStream->ToVector());
 		}
 			break;
 		case RoomCommand::SetPathways:

@@ -26,14 +26,12 @@ class ZFile;
 enum class ZResourceType
 {
 	Error,
-	ActorList,
 	Animation,
 	Array,
 	AltHeader,
 	Background,
 	Blob,
 	CollisionHeader,
-	CollisionPoly,
 	Cutscene,
 	DisplayList,
 	Limb,
@@ -41,14 +39,12 @@ enum class ZResourceType
 	Mtx,
 	Path,
 	PlayerAnimationData,
-	Pointer,
 	Room,
 	RoomCommand,
 	Scalar,
 	Scene,
 	Skeleton,
 	String,
-	SurfaceType,
 	Symbol,
 	Texture,
 	TextureAnimation,
@@ -56,7 +52,11 @@ enum class ZResourceType
 	Vector,
 	Vertex,
 	Text,
-	Audio
+	Audio,
+	ActorList,
+	CollisionPoly,
+	Pointer,
+	SurfaceType,
 };
 
 class ResourceAttribute
