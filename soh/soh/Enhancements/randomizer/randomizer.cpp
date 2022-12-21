@@ -4568,8 +4568,8 @@ void CreateIceTrapRandoMessages() {
     // We only use this ice trap message for christmas, so we don't want it in the normal ice trap messages rotation
     customMessageManager->CreateMessage(Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1,
                                             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-                                              "This year for Christmas, all&you get is %BCOAL",
-                                              "This year for Christmas, all&you get is %BCOAL",
+                                              "This year for Christmas, all&you get is %BCOAL%w!",
+                                              "This year for Christmas, all&you get is %BCOAL%w!",
                                               "Pour Noël, cette année, tu&n'auras que du %BCHARBON!&%rJoyeux Noël%w!" });
 }
 
@@ -4928,8 +4928,6 @@ void InitRandoItemTable() {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawBossKey;
         } else if (randoGetItemTable[i].itemId == RG_DOUBLE_DEFENSE) {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawDoubleDefense;
-        } else if (randoGetItemTable[i].itemId == RG_ICE_TRAP) {
-            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawIceTrap;
         }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }
