@@ -84,8 +84,8 @@ extern "C" void gSPInvalidateTexCache(Gfx* pkt, uintptr_t texAddr)
 {
     char* imgData = (char*)texAddr;
 
-    if (texAddr != 0 && ResourceMgr_OTRSigCheck(imgData))
-        texAddr = (uintptr_t)ResourceMgr_LoadTexByName(imgData);
+    if (texAddr != 0 && ResourceMgr_OTRSigCheck(imgData)) // FIXME: Temp fix!
+        texAddr = (uintptr_t)ResourceMgr_LoadTexOrDListByName(imgData);
 
     __gSPInvalidateTexCache(pkt, texAddr);
  }

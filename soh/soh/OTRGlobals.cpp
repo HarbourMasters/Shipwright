@@ -735,13 +735,6 @@ std::string GetName(const char* path) {
     return Path;
 }
 
-extern "C" const char* ResourceMgr_GetName(const char* path) {
-    std::string s = GetName(path);
-    char* name = new char[s.size() + 1];
-    std::strcpy(name, s.c_str());
-    return name;
-}
-
 extern "C" void ResourceMgr_LoadFile(const char* resName) {
     OTRGlobals::Instance->context->GetResourceManager()->LoadResource(resName);
 }
@@ -1288,7 +1281,7 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
 
 extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 {
-	uintptr_t i = (uintptr_t)(imgData);
+    uintptr_t i = (uintptr_t)(imgData);
 
 // if (i == 0xD9000000 || i == 0xE7000000 || (i & 1) == 1)
     if ((i & 1) == 1)
