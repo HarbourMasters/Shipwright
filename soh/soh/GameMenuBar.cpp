@@ -1169,11 +1169,8 @@ namespace GameMenuBar {
 
         ImGui::SetCursorPosY(0.0f);
 
-        */
         if (ImGui::BeginMenu("Randomizer"))
         {
-            DrawRandoSmall();
-            /*
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
             ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
@@ -1313,8 +1310,8 @@ namespace GameMenuBar {
                 );
             }
 
-            */
             ImGui::EndMenu();
         }
+        */
     }
 }

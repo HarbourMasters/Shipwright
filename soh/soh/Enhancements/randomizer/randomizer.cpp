@@ -2799,22 +2799,6 @@ void GenerateRandomizerImgui() {
     generated = 1;
 }
 
-void DrawRandoSmall() {
-    bool disableEditingRandoSettings = CVar_GetS32("gRandoGenerating", 0) || CVar_GetS32("gOnFileSelectNameEntry", 0);
-    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableEditingRandoSettings);
-    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * (disableEditingRandoSettings ? 0.5f : 1.0f));
-
-    ImGui::Dummy(ImVec2(0.0f, 0.0f));
-    if (ImGui::Button("Generate Seed")) {
-        if (CVar_GetS32("gRandoGenerating", 0) == 0) {
-            randoThread = std::thread(&GenerateRandomizerImgui);
-        }
-    }
-
-    ImGui::PopItemFlag();
-    ImGui::PopStyleVar();
-}
-
 void DrawRandoEditor(bool& open) {
     if (generated) {
         generated = 0;

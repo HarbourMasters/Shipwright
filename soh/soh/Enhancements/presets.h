@@ -681,7 +681,7 @@ const std::vector<PresetEntry> hellModePresetEntries = {
 const std::vector<PresetEntry> glitchlessAnyShipPresetEntries = {
     PRESET_ENTRY_S32("gTextSpeed", 5),
     PRESET_ENTRY_S32("gMweepSpeed", 5),
-    PRESET_ENTRY_S32("gClimbSpeed", 7),
+    PRESET_ENTRY_S32("gClimbSpeed", 4),
     PRESET_ENTRY_S32("gFasterBlockPush", 5),
     PRESET_ENTRY_S32("gFasterHeavyBlockLift", 1),
     PRESET_ENTRY_S32("gFasterHeavyBlockLift", 1),
@@ -707,10 +707,8 @@ const std::vector<PresetEntry> glitchlessAnyShipPresetEntries = {
     PRESET_ENTRY_S32("gSkipLogoTitle", 1),
     PRESET_ENTRY_S32("gSaveFileID", 4),
     PRESET_ENTRY_S32("gRandomizeLogicRules", 2),
-    PRESET_ENTRY_S32("gRandomizeSkipChildStealth", 1),
-    PRESET_ENTRY_S32("gRandomizeSkipTowerEscape", 1),
     PRESET_ENTRY_S32("gRandomizeCompleteMaskQuest", 1),
-    PRESET_ENTRY_S32("gRandomizeSkipScarecrowsSong", 1),
+    PRESET_ENTRY_S32("gCheatEasyPauseBufferEnabled", 1),
 };
 
 typedef struct PresetDefinition {

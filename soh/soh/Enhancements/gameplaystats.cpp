@@ -158,6 +158,9 @@ void DrawStatsTracker(bool& open) {
     ImGui::TableSetupColumn("Timers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
     ImGui::TableNextColumn();
 
+    ImGui::Text("Speedrun Build:     ");
+    ImGui::SameLine();
+    ImGui::Text("0.0.2");
     DisplayTimeHHMMSS(totalTimer, "Total Game Time:    ", COLOR_WHITE);
     UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
     DisplayTimeHHMMSS(gSaveContext.sohStats.playTimer / 2, "Gameplay Time:      ", COLOR_WHITE);
@@ -168,10 +171,12 @@ void DrawStatsTracker(bool& open) {
     ImGui::EndTable();
 
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
-    ImGui::BeginTable("gameStatsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
+    ImGui::BeginTable("gameStatsTable", CVar_GetS32("gGameplayStatsHideCounts", 0) ? 1 : 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
 
     ImGui::TableSetupColumn("Timestamps", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+    if (!CVar_GetS32("gGameplayStatsHideCounts", 0)) {
     ImGui::TableSetupColumn("Counts", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+    }
     ImGui::TableHeadersRow();
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
@@ -184,6 +189,7 @@ void DrawStatsTracker(bool& open) {
         }
     }
 
+    if (!CVar_GetS32("gGameplayStatsHideCounts", 0)) {
     ImGui::TableNextColumn();
 
     DisplayStat("Enemies Defeated:      ", enemiesDefeated);
@@ -330,11 +336,13 @@ void DrawStatsTracker(bool& open) {
             ImGui::TreePop();
         }
     }
+    }
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
 
     ImGui::Text("Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving.");
+    UIWidgets::EnhancementCheckbox("Hide Counts", "gGameplayStatsHideCounts");
 
     ImGui::End();
 }

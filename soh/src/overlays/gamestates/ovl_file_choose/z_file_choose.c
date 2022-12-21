@@ -13,7 +13,7 @@
 #define NORMAL_QUEST 0
 #define MASTER_QUEST 1
 #define RANDOMIZER_QUEST 2
-#define MIN_QUEST (ResourceMgr_GameHasOriginal() ? NORMAL_QUEST : MASTER_QUEST)
+#define MIN_QUEST RANDOMIZER_QUEST
 u8 getMaxQuest() {
     if ((strnlen(CVar_GetString("gSpoilerLog", ""), 1) != 0)) {
         return RANDOMIZER_QUEST;
@@ -2654,4 +2654,8 @@ void FileChoose_Init(GameState* thisx) {
     Font_LoadOrderedFont(&this->font);
     Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
     func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
+
+    if ((strnlen(CVar_GetString("gSpoilerLog", ""), 1) == 0)) {
+        GenerateRandomizerImgui();
+    }
 }

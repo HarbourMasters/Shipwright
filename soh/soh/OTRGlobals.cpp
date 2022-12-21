@@ -518,7 +518,7 @@ extern "C" void Graph_StartFrame() {
     int32_t dwScancode = OTRGlobals::Instance->context->GetLastScancode();
     OTRGlobals::Instance->context->SetLastScancode(-1);
 
-    switch (dwScancode - 1) {
+    switch (0) {
         case SDL_SCANCODE_F5: {
             const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
             const SaveStateReturn stateReturn =
