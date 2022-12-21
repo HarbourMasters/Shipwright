@@ -1197,8 +1197,9 @@ void BossGanon_SetupTowerCutscene(BossGanon* this, PlayState* play) {
 
 void BossGanon_ShatterWindows(u8 windowShatterState) {
     s16 i;
-    u8* tex1 = ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_006C18));
-    u8* tex2 = ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_007418));
+    // Temporary solution: using LoadTexOrDList to 
+    u8* tex1 = ResourceMgr_LoadTexOrDListByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_006C18));
+    u8* tex2 = ResourceMgr_LoadTexOrDListByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_007418));
     u8* templateTex = ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGanondorfWindowShatterTemplateTex));
 
     for (i = 0; i < 2048; i++) {
