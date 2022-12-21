@@ -21,7 +21,7 @@
         <Array Name="ovl_Boss_Ganon2_Vtx_00CC98" Count="4" Offset="0x00C958">
             <Vtx/>
         </Array>
-        <DList Name="ovl_Boss_Ganon2_DL_00CCD8" Offset="0x00CA98"/>
+        <DList Name="ovl_Boss_Ganon2_DL_00CCD8" Offset="0x00C998"/>
         <Texture Name="ovl_Boss_Ganon2_Tex_00CD58" OutName="tex_0000CD58" Format="i4" Width="32" Height="160" Offset="0x00CA18"/>
         <Array Name="ovl_Boss_Ganon2_Vtx_00D758" Count="4" Offset="0x00D418">
             <Vtx/>

@@ -342,20 +342,20 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT,
         { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
         "Warp to&{{location}}?\x1B&%gOK&No%w\x02",
-        "Warp to&{{location}}?\x1B&%gOK&No%w\x02", // TODO: German translation
+        "Zu {{location}}?\x1B&%gOK&No%w\x02",
         "Se téléporter vers&{{location}}?\x1B&%gOK!&Non%w\x02" });
 
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN,
         { TEXTBOX_TYPE_WOODEN, TEXTBOX_POS_BOTTOM,
             "Water level control system.&Keep away!",
             "Wasserstand Kontrollsystem&Finger weg!",
-            "Contrôle du niveau de l'eau.&Ne pas toucher!"
+            "Système de contrôle du niveau&d'eau.&Ne pas toucher!"
         });
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI,
-        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-            "This switch is rustier than you think.^Something must be wrong with the&pipe system in the Water Temple.",
-            "Dieser Schalter scheint rostiger zu&sein als er aussieht.^Etwas muss mit dem Leitungssystem&im Wassertempel nicht stimmen.",
-            "Cet interrupteur est très rouillé.^Quelque chose ne va pas avec&la tuyauterie du Temple de l'Eau."
+        { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
+            "%cThis switch is rustier than you think.^%cSomething must be wrong with the&pipe system in the %bWater Temple%c.",
+            "%cDieser Schalter scheint rostiger zu&sein als er aussieht.^%cEtwas muss mit dem Leitungssystem&im %bWassertempel%c nicht stimmen.",
+            "%cCet interrupteur est très rouillé.^%cIl doit y avoir un problème avec&la tuyauterie du %bTemple de l'Eau%c."
         });
 }
 
@@ -471,9 +471,9 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
         {
             TEXTBOX_TYPE_BLACK,
             TEXTBOX_POS_TOP,
-            "Finally! Now I can go back to being &an %rarms dealer!%w",
+            "Finally! Now I can go back to being &an %rarms dealer%w!",
             "Endlich! Schon bald kann ich wieder &%rKrabbelminen-Händler%w sein!",
-            "Squalala! Je vais enfin pouvoir &%rprendre des vacances!%w"
+            "Squalala! Je vais enfin pouvoir &%rprendre des vacances%w!"
         }
     );
 
@@ -4203,7 +4203,7 @@ CustomMessageEntry Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
     if (mysterious) {
         std::vector<std::string> locationName ={
             "a mysterious place",
-            "a mysterious place", // TODO: German translation
+            "ein mysteriöser Ort",
             "un endroit mystérieux",
         };
 
@@ -4568,8 +4568,8 @@ void CreateIceTrapRandoMessages() {
     // We only use this ice trap message for christmas, so we don't want it in the normal ice trap messages rotation
     customMessageManager->CreateMessage(Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1,
                                             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-                                              "This year for Christmas, all&you get is %BCOAL",
-                                              "This year for Christmas, all&you get is %BCOAL",
+                                              "This year for Christmas, all&you get is %BCOAL%w!",
+                                              "This year for Christmas, all&you get is %BCOAL%w!",
                                               "Pour Noël, cette année, tu&n'auras que du %BCHARBON!&%rJoyeux Noël%w!" });
 }
 
@@ -4928,8 +4928,6 @@ void InitRandoItemTable() {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawBossKey;
         } else if (randoGetItemTable[i].itemId == RG_DOUBLE_DEFENSE) {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawDoubleDefense;
-        } else if (randoGetItemTable[i].itemId == RG_ICE_TRAP) {
-            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawIceTrap;
         }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }

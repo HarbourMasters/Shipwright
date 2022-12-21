@@ -189,6 +189,10 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         for (const auto& [defaultValue, seqData] : map) {
             const auto& [name, sfxKey, seqType] = seqData;
             if (seqType == type) {
+                // Only save authentic sequence CVars
+                if (seqType == SEQ_FANFARE && defaultValue >= MAX_AUTHENTIC_SEQID) {
+                    continue;
+                }
                 const std::string cvarKey = "gSfxEditor_" + sfxKey;
                 CVar_SetS32(cvarKey.c_str(), defaultValue);
             }
@@ -208,7 +212,8 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
             const auto& [name, sfxKey, seqType] = seqData;
             const std::string cvarKey = "gSfxEditor_" + sfxKey;
             if (seqType & type) {
-                if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue > MAX_AUTHENTIC_SEQID) {
+                // Only save authentic sequence CVars
+                if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue >= MAX_AUTHENTIC_SEQID) {
                     continue;
                 }
                 const int randomValue = values.back();
@@ -229,6 +234,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         if (~(seqType) & type) {
             continue;
         }
+        // Do not display custom sequences in the list
         if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue >= MAX_AUTHENTIC_SEQID) {
             continue;
         }
@@ -297,19 +303,16 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         ImGui::SameLine();
         ImGui::PushItemWidth(-FLT_MIN);
         if (ImGui::Button(randomizeButton.c_str())) {
-            bool valid = false;
-            uint32_t value;
-            while (!valid) {
-                value = Random(2, map.size());
-                if (map.contains(value)) {
-                    auto [name, sfxKey, seqType] = map.at(value);
-                    if (seqType & type) {
-                        valid = true;
-                    }
+            auto it = map.begin();
+            while (true) {
+                const auto& [value, seqData] = *std::next(it, rand() % map.size());
+                const auto& [name, sfxKey, seqType] = seqData;
+                if (seqType & type) {
+                    CVar_SetS32(cvarKey.c_str(), value);
+                    SohImGui::RequestCvarSaveOnNextTick();
+                    break;
                 }
             }
-            CVar_SetS32(cvarKey.c_str(), value);
-            SohImGui::RequestCvarSaveOnNextTick();
         }
     }
     ImGui::EndTable();
@@ -355,7 +358,7 @@ void DrawSfxEditor(bool& open) {
         CVar_SetS32("gSfxEditor", 0);
         return;
     }
-    ImGui::SetNextWindowSize(ImVec2(465, 630), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(900, 630), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("SFX Editor", &open)) {
         ImGui::End();
         return;

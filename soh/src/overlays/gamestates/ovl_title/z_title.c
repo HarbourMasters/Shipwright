@@ -9,6 +9,7 @@
 #include "global.h"
 #include "alloca.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
+#include "assets/objects/gameplay_keep/gameplay_keep.h"
 #include <soh/Enhancements/bootcommands.h>
 #include <GameVersions.h>
 #include <soh/SaveManager.h>
@@ -232,6 +233,22 @@ void Title_Draw(TitleContext* this) {
 
         gDPSetTileSize(POLY_OPA_DISP++, 1, this->uls, (this->ult & 0x7F) - idx * 4, 0, 0);
         gSPTextureRectangle(POLY_OPA_DISP++, 388, y << 2, 1156, (y + 2) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+    }
+
+    // Draw ice cube around N64 logo.
+    if (CVar_GetS32("gLetItSnow", 0)) {
+        f32 scale = 0.4f;
+
+        gSPSegment(POLY_OPA_DISP++, 0x08,
+                    Gfx_TwoTexScroll(this->state.gfxCtx, 0, 0, (0 - 1) % 128, 32, 32, 1,
+                                    0, (1 * -2) % 128, 32, 32));
+
+        Matrix_Translate(0.0f, -10.0f, 0.0f, MTXMODE_APPLY);
+        Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx),
+                    G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gDPSetEnvColor(POLY_OPA_DISP++, 0, 50, 100, 255);
+        gSPDisplayList(POLY_OPA_DISP++, gEffIceFragment3DL);
     }
 
     Environment_FillScreen(this->state.gfxCtx, 0, 0, 0, (s16)this->coverAlpha, FILL_SCREEN_XLU);
