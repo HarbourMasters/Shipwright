@@ -1074,9 +1074,8 @@ int Fill() {
       if (ShuffleMerchants.Is(SHUFFLEMERCHANTS_HINTS)) {
         CreateMerchantsHints();
       }
-      if (GanondorfHintText) {
-        CreateGanonText();
-      }
+      //Always execute ganon hint generation for the funny line  
+      CreateGanonText();
       if (AltarHintText) {
         CreateAltarText();
       }
