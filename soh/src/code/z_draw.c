@@ -400,9 +400,7 @@ void GetItem_Draw(PlayState* play, s16 drawId) {
  * Uses the Custom Draw Function if it exists, or just calls `GetItem_Draw`
  */
 void GetItemEntry_Draw(PlayState* play, GetItemEntry getItemEntry) {
-    // RANDOTODO: Make this more flexible for easier toggling of individual item recolors in the future.
-    if (getItemEntry.drawFunc != NULL && 
-        (CVar_GetS32("gRandoMatchKeyColors", 0) || getItemEntry.getItemId == RG_DOUBLE_DEFENSE)) {
+    if (getItemEntry.drawFunc != NULL) {
         getItemEntry.drawFunc(play, &getItemEntry);
     } else {
         GetItem_Draw(play, getItemEntry.gid);
@@ -759,8 +757,15 @@ void GetItem_DrawRecoveryHeart(PlayState* play, s16 drawId) {
                                 1 * -(play->state.frames * 2), 32, 32));
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
+    if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
+        Color_RGB8 color = CVar_GetRGB("gCosmetics.Consumable_Hearts.Value", (Color_RGB8) { 255, 70, 50 });
+        gDPSetGrayscaleColor(POLY_XLU_DISP++, color.r, color.g, color.b, 255);
+        gSPGrayscale(POLY_XLU_DISP++, true);
+    }
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[0]);
-
+    if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
+        gSPGrayscale(POLY_XLU_DISP++, false);
+    }
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
