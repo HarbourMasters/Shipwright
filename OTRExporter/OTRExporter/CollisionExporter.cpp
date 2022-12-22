@@ -38,11 +38,11 @@ void OTRExporter_Collision::Save(ZResource* res, const fs::path& outPath, Binary
 		writer->Write(col->polygons[i].dist);
 	}
 
-	writer->Write((uint32_t)col->polygonTypes.size());
+	writer->Write((uint32_t)col->PolygonTypes.size());
 
-	for (uint16_t i = 0; i < col->polygonTypes.size(); i++) {
-		writer->Write(col->polygonTypes[i].data[0]);
-		writer->Write(col->polygonTypes[i].data[1]);
+	for (uint16_t i = 0; i < col->PolygonTypes.size(); i++) {
+		writer->Write(col->PolygonTypes[i].data[0]);
+		writer->Write(col->PolygonTypes[i].data[1]);
 	}
 
 	writer->Write((uint32_t)col->camData->entries.size());

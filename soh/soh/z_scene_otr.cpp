@@ -133,12 +133,12 @@ bool Scene_CommandCollisionHeader(PlayState* play, Ship::SceneCommand* cmd)
             colHeader->polyList[i].dist = colRes->polygons[i].d;
         }
 
-        colHeader->surfaceTypeList = (SurfaceType*)malloc(colRes->polygonTypes.size() * sizeof(SurfaceType));
+        colHeader->surfaceTypeList = (SurfaceType*)malloc(colRes->PolygonTypes.size() * sizeof(SurfaceType));
 
-        for (int i = 0; i < colRes->polygonTypes.size(); i++)
+        for (int i = 0; i < colRes->PolygonTypes.size(); i++)
         {
-            colHeader->surfaceTypeList[i].data[0] = colRes->polygonTypes[i][0];
-            colHeader->surfaceTypeList[i].data[1] = colRes->polygonTypes[i][1];
+            colHeader->surfaceTypeList[i].data[0] = colRes->PolygonTypes[i][0];
+            colHeader->surfaceTypeList[i].data[1] = colRes->PolygonTypes[i][1];
         }
 
         colHeader->cameraDataList = (CamData*)malloc(sizeof(CamData) * colRes->camData->entries.size());

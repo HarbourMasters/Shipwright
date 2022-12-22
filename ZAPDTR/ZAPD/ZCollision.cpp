@@ -84,7 +84,7 @@ void ZCollisionHeader::ParseRawData()
 		ZSurfaceType surfaceType(parent);
 		surfaceType.SetRawDataIndex(polyTypeDefSegmentOffset + (i * 8));
 		surfaceType.ParseRawData();
-		polygonTypes.push_back(surfaceType);
+		PolygonTypes.push_back(surfaceType);
 	}
 	// polygonTypes.push_back(
 	//	BitConverter::ToUInt64BE(rawData, polyTypeDefSegmentOffset + (i * 8)));
@@ -180,17 +180,17 @@ void ZCollisionHeader::DeclareReferences(const std::string& prefix)
 	}
 
 	declaration.clear();
-	for (const auto& polyType : polygonTypes)
+	for (const auto& polyType : PolygonTypes)
 	{
 		declaration += StringHelper::Sprintf("\t%s,", polyType.GetBodySourceCode().c_str());
 	}
 
 	if (polyTypeDefAddress != SEGMENTED_NULL)
 		parent->AddDeclarationArray(polyTypeDefSegmentOffset, DeclarationAlignment::Align4,
-		                            polygonTypes.size() * 8,
-		                            polygonTypes[0].GetSourceTypeName().c_str(),
+		                            PolygonTypes.size() * 8,
+		                            PolygonTypes[0].GetSourceTypeName().c_str(),
 		                            StringHelper::Sprintf("%sSurfaceType", auxName.c_str()),
-		                            polygonTypes.size(), declaration);
+		                            PolygonTypes.size(), declaration);
 
 	declaration.clear();
 

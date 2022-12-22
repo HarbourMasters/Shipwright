@@ -70,7 +70,7 @@ public:
 
 	std::vector<ZVector> vertices;
 	std::vector<ZCollisionPoly> polygons;
-	std::vector<ZSurfaceType> polygonTypes;
+	std::vector<ZSurfaceType> PolygonTypes;
 	std::vector<WaterBoxHeader> waterBoxes;
 	CameraDataList* camData = nullptr;
 
