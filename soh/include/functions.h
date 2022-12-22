@@ -2416,6 +2416,9 @@ void func_801109B0(PlayState* play);
 void Message_Init(PlayState* play);
 void func_80112098(PlayState* play);
 
+char z2ASCII(int code);
+char ASCII2z(int code);
+
 void Title_Init(GameState* thisx);
 void Title_PrintBuildInfo(Gfx** gfxp);
 void Title_Destroy(GameState* thisx);

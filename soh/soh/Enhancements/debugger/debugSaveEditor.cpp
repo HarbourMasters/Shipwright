@@ -283,21 +283,38 @@ void DrawGroupWithBorder(T&& drawFunc) {
 
 char z2ASCII(int code) {
     int ret;
-    if (code < 10) { //Digits
+    if (code < 10) { // Digits
         ret = code + 0x30;
-    } else if (code >= 10 && code < 36) { //Uppercase letters
+    } else if (code >= 10 && code < 36) { // Uppercase letters
         ret = code + 0x37;
-    } else if (code >= 36 && code < 62) { //Lowercase letters
+    } else if (code >= 36 && code < 62) { // Lowercase letters
         ret = code + 0x3D;
-    } else if (code == 62) { //Space
+    } else if (code == 62) { // Space
         ret = code - 0x1E;
-    } else if (code == 63 || code == 64) { // _ and .
+    } else if (code == 63 || code == 64) { // - and .
         ret = code - 0x12;
     } else {
-        ret = code;
+        ret = 0x20; // Fallback to space
     }
     return char(ret);
+}
 
+char ASCII2z(int code) {
+    int ret = 0;
+    if (code >= 0x30 && code <= 0x39) { // Digits
+        ret = code - 0x30;
+    } else if (code >= 0x41 && code <= 0x5A) { // Uppercase letters
+        ret = code - 0x37;
+    } else if (code >= 0x61 && code <= 0x7A) { // Lowercase letters
+        ret = code - 0x3D;
+    } else if (code == 0x20) { // Space
+        ret = code + 0x1E;
+    } else if (code == 0x2D || code == 0x2E) { // - and .
+        ret = code + 0x12;
+    } else {
+        ret = 0x20 + 0x1E; // Fallback to space
+    }
+    return char(ret);
 }
 
 void DrawInfoTab() {
