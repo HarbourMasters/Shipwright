@@ -317,28 +317,38 @@ char ASCII2z(int code) {
     return char(ret);
 }
 
-void DrawInfoTab() {
-    // TODO Needs a better method for name changing but for now this will work.
+std::string GetPlayerName() {
     std::string name;
-    ImU16 one = 1;
     for (int i = 0; i < 8; i++) {
-        char letter = z2ASCII(gSaveContext.playerName[i]);
-        name += letter;
+        name += z2ASCII(gSaveContext.playerName[i]);
+    }
+    if (const size_t lastNonSpace = name.find_last_not_of(' '); lastNonSpace != std::string::npos) {
+        name.erase(lastNonSpace + 1);
     }
     name += '\0';
+    return name;
+}
 
+void SetPlayerName(const char* newName, char* to) {
+    for (int i = 0; i < 8; i++) {
+        if (i < strlen(newName)) {
+            to[i] = ASCII2z(newName[i]);
+        } else {
+            to[i] = char(0x20 + 0x1E);
+        }
+    }
+}
+
+void DrawInfoTab() {
+    ImU16 one = 1;
     ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
 
-    ImGui::Text("Name: %s", name.c_str());
-    UIWidgets::InsertHelpHoverText("Player Name");
-    std::string nameID;
-    for (int i = 0; i < 8; i++) {
-        nameID = z2ASCII(i);
-        if (i % 4 != 0) {
-            ImGui::SameLine();
-        }
-        ImGui::InputScalar(nameID.c_str(), ImGuiDataType_U8, &gSaveContext.playerName[i], &one, NULL);
+    char* name = (char*)calloc(8 + 1, sizeof(char));
+    strcpy(name, GetPlayerName().c_str());
+    if (ImGui::InputText("Name", name, 8 + 1)) {
+        SetPlayerName(name, gSaveContext.playerName);
     }
+    UIWidgets::InsertHelpHoverText("Player Name");
 
     // Use an intermediary to keep the health from updating (and potentially killing the player)
     // until it is done being edited
