@@ -663,4 +663,52 @@ namespace UIWidgets {
 
         return changed;
     }
+
+    void PaddedEnhancementInputText(const char* text, const char* id, const char* cvarName, const size_t bufferSize, const char* defaultValue, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText) {
+        if (padTop)
+            Spacer(0);
+
+        EnhancementInputText(text, id, cvarName, bufferSize, defaultValue, disabled, disabledTooltipText);
+
+        if (padBottom)
+            Spacer(0);
+    }
+
+    bool EnhancementInputText(const char* text, const char* id, const char* cvarName, const size_t bufferSize, const char* defaultValue, bool disabled, const char* disabledTooltipText) {
+        bool changed = false;
+        const char* val = CVar_GetString(cvarName, defaultValue);
+
+        float alpha;
+        if (disabled) {
+            alpha = ImGui::GetStyle().Alpha * 0.5f;
+            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
+        }
+
+        ImGui::Text(text);
+        Spacer(0);
+
+        if (disabled) {
+            DisableComponentSwitch(disabledTooltipText, alpha);
+        }
+
+        char* bText = (char*)calloc(bufferSize, sizeof(char));
+        strcpy(bText, val);
+
+        if (ImGui::InputText(id, bText, bufferSize)) {
+            CVar_SetString(cvarName, bText);
+            SohImGui::RequestCvarSaveOnNextTick();
+            changed = true;
+        }
+
+        if (disabled) {
+            ImGui::PopStyleVar(1);
+            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(disabledTooltipText, "") != 0) {
+                ImGui::SetTooltip("%s", disabledTooltipText);
+            }
+            ImGui::PopItemFlag();
+        }
+
+        return changed;
+    }
 }

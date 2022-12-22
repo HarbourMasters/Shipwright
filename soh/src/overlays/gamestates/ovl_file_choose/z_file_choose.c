@@ -472,7 +472,7 @@ void FileChoose_UpdateRandomizer() {
  * Update function for `CM_MAIN_MENU`
  */
 void FileChoose_UpdateMainMenu(GameState* thisx) {
-    static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
+    const char* defName = CVar_GetString("gDefaultPlayerName", "");
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     bool dpad = CVarGetInteger("gDpadText", 0);
@@ -497,10 +497,10 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
                     this->kbdY = 0;
                     this->charIndex = 0;
                     this->charBgAlpha = 0;
-                    this->newFileNameCharCount = 0;
+                    this->newFileNameCharCount = strlen(defName) >= NAME_MAX ? NAME_MAX - 1 : strlen(defName);
                     this->nameEntryBoxPosX = 120;
                     this->nameEntryBoxAlpha = 0;
-                    memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, &emptyName, 8);
+                    SetPlayerName(defName, Save_GetSaveMetaInfo(this->buttonIndex)->playerName);
                 }
                 this->logoAlpha = 0;
             } else if(!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(this->buttonIndex))) {
@@ -653,7 +653,7 @@ void FileChoose_StartQuestMenu(GameState* thisx) {
 }
 
 void FileChoose_UpdateQuestMenu(GameState* thisx) {
-    static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
+    const char* defName = CVar_GetString("gDefaultPlayerName", "");
     FileChoose_UpdateStickDirectionPromptAnim(thisx);
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
@@ -707,10 +707,10 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         this->kbdY = 0;
         this->charIndex = 0;
         this->charBgAlpha = 0;
-        this->newFileNameCharCount = 0;
+        this->newFileNameCharCount = strlen(defName) >= NAME_MAX ? NAME_MAX - 1 : strlen(defName);
         this->nameEntryBoxPosX = 120;
         this->nameEntryBoxAlpha = 0;
-        memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, &emptyName, 8);
+        SetPlayerName(defName, Save_GetSaveMetaInfo(this->buttonIndex)->playerName);
         return;
     }
 

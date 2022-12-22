@@ -60,6 +60,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gInvertYAxis",
     "gRightStickAiming",
     "gDisableAutoCenterViewFirstPerson",
+    "gDefaultPlayerName",
     "gTextSpeed",
     "gMweepSpeed",
     "gForgeTime",
@@ -284,6 +285,8 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     // Right Stick Aiming
     PRESET_ENTRY_S32("gRightStickAiming", 1),
 
+    // Default Player Name
+    PRESET_ENTRY_STRING("gDefaultPlayerName", "Link"),
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32("gTextSpeed", 5),
     // King Zora Speed (1 to 5)
@@ -347,6 +350,8 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     // Right Stick Aiming
     PRESET_ENTRY_S32("gRightStickAiming", 1),
 
+    // Default Player Name
+    PRESET_ENTRY_STRING("gDefaultPlayerName", "Link"),
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32("gTextSpeed", 5),
     // King Zora Speed (1 to 5)

@@ -2418,6 +2418,7 @@ void func_80112098(PlayState* play);
 
 char z2ASCII(int code);
 char ASCII2z(int code);
+void SetPlayerName(const char* newName, char* to);
 
 void Title_Init(GameState* thisx);
 void Title_PrintBuildInfo(Gfx** gfxp);

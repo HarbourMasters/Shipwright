@@ -47,6 +47,9 @@ namespace UIWidgets {
     void EnhancementRadioButton(const char* text, const char* cvarName, int id);
 
     bool EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow = true, bool has_alpha=false, bool TitleSameLine=false);
+
+    void PaddedEnhancementInputText(const char* text, const char* id, const char* cvarName, const size_t bufferSize, const char* defaultValue = "", bool padTop = true, bool padBottom = true, bool disabled = false, const char* disabledTooltipText = "");
+    bool EnhancementInputText(const char* text, const char* id, const char* cvarName, const size_t bufferSize, const char* defaultValue = "", bool disabled = false, const char* disabledTooltipText = "");
 }
 
 #endif /* UIWidgets_hpp */
