@@ -220,6 +220,7 @@ extern std::array<ConditionalAlwaysHint, 9> conditionalAlwaysHints;
 extern uint32_t GetHintRegionHintKey(const uint32_t area);
 extern void CreateAllHints();
 extern void CreateMerchantsHints();
+extern void CreateWarpSongTexts();
 
 Text& GetChildAltarText();
 Text& GetAdultAltarText();
