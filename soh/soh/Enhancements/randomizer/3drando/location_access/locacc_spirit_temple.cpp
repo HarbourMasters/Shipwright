@@ -255,7 +255,7 @@ void AreaTable_Init_SpiritTemple() {
         });
 
     areaTable[SPIRIT_TEMPLE_BOSS_ROOM] = Area(
-        "Spirit Temple Boss Room", "Spirit Temple", SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE,
+        "Spirit Temple Boss Room", "Spirit Temple", NONE, NO_DAY_NIGHT_CYCLE,
         {
             // Events
             EventAccess(&SpiritTempleClear, { [] {

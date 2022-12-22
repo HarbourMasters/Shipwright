@@ -344,7 +344,7 @@ void AreaTable_Init_WaterTemple() {
              });
 
     areaTable[WATER_TEMPLE_BOSS_ROOM] = Area(
-        "Water Temple Boss Room", "Water Temple", WATER_TEMPLE, NO_DAY_NIGHT_CYCLE,
+        "Water Temple Boss Room", "Water Temple", NONE, NO_DAY_NIGHT_CYCLE,
         {
             // Events
             EventAccess(&WaterTempleClear, { [] {

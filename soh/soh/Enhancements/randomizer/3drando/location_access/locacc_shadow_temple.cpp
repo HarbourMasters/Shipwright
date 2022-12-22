@@ -194,7 +194,7 @@ void AreaTable_Init_ShadowTemple() {
              });
 
     areaTable[SHADOW_TEMPLE_BOSS_ROOM] =
-        Area("Shadow Temple Boss Room", "Shadow Temple", SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE,
+        Area("Shadow Temple Boss Room", "Shadow Temple", NONE, NO_DAY_NIGHT_CYCLE,
              {
                  // Events
                  EventAccess(&ShadowTempleClear, { [] {

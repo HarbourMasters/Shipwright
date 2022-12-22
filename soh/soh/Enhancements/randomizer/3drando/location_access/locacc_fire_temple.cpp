@@ -444,7 +444,7 @@ void AreaTable_Init_FireTemple() {
              });
 
     areaTable[FIRE_TEMPLE_BOSS_ROOM] =
-        Area("Fire Temple Boss Room", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE,
+        Area("Fire Temple Boss Room", "Fire Temple", NONE, NO_DAY_NIGHT_CYCLE,
              {
                  // Events
                  EventAccess(&FireTempleClear,

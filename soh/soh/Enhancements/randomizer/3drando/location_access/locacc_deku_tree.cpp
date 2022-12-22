@@ -274,7 +274,7 @@ void AreaTable_Init_DekuTree() {
              });
 
     areaTable[DEKU_TREE_BOSS_ROOM] =
-        Area("Deku Tree Boss Room", "Deku Tree", DEKU_TREE, NO_DAY_NIGHT_CYCLE,
+        Area("Deku Tree Boss Room", "Deku Tree", NONE, NO_DAY_NIGHT_CYCLE,
              {
                  // Events
                  EventAccess(&DekuTreeClear, { [] {

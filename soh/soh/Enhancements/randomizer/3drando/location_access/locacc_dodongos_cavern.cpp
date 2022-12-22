@@ -318,7 +318,7 @@ void AreaTable_Init_DodongosCavern() {
              });
 
     areaTable[DODONGOS_CAVERN_BOSS_ROOM] =
-        Area("Dodongos Cavern Boss Room", "Dodongos Cavern", DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE,
+        Area("Dodongos Cavern Boss Room", "Dodongos Cavern", NONE, NO_DAY_NIGHT_CYCLE,
              {
                  // Events
                  EventAccess(&DodongosCavernClear,
