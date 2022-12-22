@@ -95,7 +95,7 @@ extern "C" void OTRMessage_Init()
         { 
             TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
             "You got a %rGold Skulltula Token%w!&You've collected %r{{gsCount}}%w tokens&in total!\x0E\x3C",
-            "Du erhälst ein %rGoldene&Skulltula-Symbol%w! Du hast&insgesamt %r{{gsCount}}%w symbol gesammelt!\x0E\x3C",
+            "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r{{gsCount}}%w Golende&Skulltula-Symbole gesammelt!\x0E\x3C",
             "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r{{gsCount}}%w symboles en tout!\x0E\x3C"
         }
     );
@@ -104,7 +104,7 @@ extern "C" void OTRMessage_Init()
         { 
           TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
           "You got a %rGold Skulltula Token%w!&You've collected %r{{gsCount}}%w tokens&in total!",
-          "Du erhälst ein %rGoldene&Skulltula-Symbol%w! Du hast&insgesamt %r{{gsCount}}%w symbol gesammelt!",
+          "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r{{gsCount}}%w Golende&Skulltula-Symbole gesammelt!",
           "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r{{gsCount}}%w symboles en tout!"
         }
     );
@@ -131,7 +131,7 @@ extern "C" void OTRMessage_Init()
         {
             TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
             "You got a %rHeart Container%w!&You've collected %r{{heartContainerCount}}%w containers&in total!",
-            "Du erhältst ein %rHerzgefäß%w! Du&hast insgesamt %r{{heartContainerCount}}%w Gefäße&gesammelt!",
+            "Ein %rHerzcontainer%w!&Du hast nun insgesamt %r{{heartContainerCount}}%w&Herzcontainer gesammelt!",
             "Vous obtenez un %rCoeur&d'Energie%w! Vous en avez&collecté %r{{heartContainerCount}}%w en tout!"
         }
     );
@@ -140,7 +140,7 @@ extern "C" void OTRMessage_Init()
         {
             TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
             "You got a %rHeart Piece%w!&You've collected %r{{heartPieceCount}}%w pieces&in total!",
-            "Du erhältst ein %rHerzteil%w! Du hast&insgesamt %r{{heartPieceCount}}%w Teile&gesammelt!",
+            "Ein %rHerzteil%w!&Du hast nun insgesamt %r{{heartPieceCount}}%w&Herteile gesammelt!",
             "Vous obtenez un %rQuart de&Coeur%w! Vous en avez collecté&%r{{heartPieceCount}}%w en tout!"
         }
     );
@@ -149,8 +149,8 @@ extern "C" void OTRMessage_Init()
         {
             TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
             "You look bored. Wanna go out for a&walk?\x1B&%gYes&No%w",
-            "Du siehst gelangweilt aus.&Willst du einen Spaziergang machen?\x1B&%gJa&Nein%w", //TODO: AI translated, replace with actual translation
-            "Tu as l'air de t'ennuyer. Tu veux&aller faire une promenade?\x1B&%gOui&Non%w", //TODO: AI translated, replace with actual translation
+            "Du siehst gelangweilt aus.&Willst du einen Spaziergang machen?\x1B&%gJa&Nein%w",
+            "Tu as l'air de t'ennuyer. Tu veux&aller faire un tour?\x1B&%gOui&Non%w",
         }
     );
 }

@@ -724,29 +724,19 @@ extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize)
     return result;
 }
 
-std::string GetName(const char* path) {
-    std::string Path = path;
-    if (IsGameMasterQuest()) {
-        size_t pos = 0;
-        if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
-            Path.replace(pos, 7, "/mq/");
-        }
-    }
-    return Path;
-}
-
-extern "C" const char* ResourceMgr_GetName(const char* path) {
-    auto s = new std::string(GetName(path));
-    const char* name = s->c_str();
-    return name;
-}
-
 extern "C" void ResourceMgr_LoadFile(const char* resName) {
     OTRGlobals::Instance->context->GetResourceManager()->LoadResource(resName);
 }
 
 std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path) {
-    return OTRGlobals::Instance->context->GetResourceManager()->LoadResource(ResourceMgr_GetName(path));
+    std::string Path = path;
+    if (ResourceMgr_IsGameMasterQuest()) {
+        size_t pos = 0;
+        if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
+            Path.replace(pos, 7, "/mq/");
+        }
+    }
+    return OTRGlobals::Instance->context->GetResourceManager()->LoadResource(Path.c_str());
 }
 
 extern "C" char* ResourceMgr_LoadFileRaw(const char* resName) {
@@ -821,7 +811,14 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     else if (res->ResType == Ship::ResourceType::Array)
         return (char*)(std::static_pointer_cast<Ship::Array>(res))->vertices.data();
     else {
-        return ResourceMgr_LoadTexByName(ResourceMgr_GetName(filePath));
+        std::string Path = filePath;
+        if (ResourceMgr_IsGameMasterQuest()) {
+            size_t pos = 0;
+            if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
+                Path.replace(pos, 7, "/mq/");
+            }
+        }
+        return ResourceMgr_LoadTexByName(Path.c_str());
     }
 }
 
@@ -866,6 +863,11 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
             }
         }
     }*/
+
+    // Index refers to individual gfx words, which are half the size on 32-bit
+    if (sizeof(uintptr_t) < 8) {
+        index /= 2;
+    }
 
     Gfx* gfx = (Gfx*)&res->instructions[index];
 
@@ -1132,7 +1134,7 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
         sampleC->unk_bit26 = sample->unk_bit26;
         sampleC->unk_bit25 = sample->unk_bit25;
 
-        sampleC->book = new AdpcmBook[sample->book.books.size() * sizeof(int16_t)];
+        sampleC->book = (AdpcmBook*) malloc(sizeof(AdpcmBook) + sample->book.books.size() * sizeof(int16_t));
         sampleC->book->npredictors = sample->book.npredictors;
         sampleC->book->order = sample->book.order;
 
