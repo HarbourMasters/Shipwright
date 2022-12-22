@@ -209,7 +209,7 @@ void FileChoose_SetNameEntryVtx(GameState* thisx) {
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->nameEntryBoxAlpha);
 
     for (phi_v0 = 0, phi_s0 = 0; phi_s0 < 0x20; phi_s0 += 4, phi_v0++) {
-        FileChoose_DrawCharacter(this->state.gfxCtx, font->fontBuf + filename[phi_v0] * FONT_CHAR_TEX_SIZE,
+        FileChoose_DrawCharacter(this->state.gfxCtx, font->fontBuf + z2ASCII(filename[phi_v0]) * FONT_CHAR_TEX_SIZE,
                                  phi_s0);
     }
 
@@ -246,14 +246,14 @@ void FileChoose_DrawKeyboard(GameState* thisx) {
         gSPVertex(POLY_OPA_DISP++, &this->keyboardVtx[vtx], 32, 0);
 
         for (tmp = 0; tmp < 32; i++, tmp += 4) {
-            FileChoose_DrawCharacter(this->state.gfxCtx, font->fontBuf + D_808123F0[i] * FONT_CHAR_TEX_SIZE, tmp);
+            FileChoose_DrawCharacter(this->state.gfxCtx, font->fontBuf + z2ASCII(D_808123F0[i]) * FONT_CHAR_TEX_SIZE, tmp);
         }
 
         vtx += 32;
     }
 
     gSPVertex(POLY_OPA_DISP++, &this->keyboardVtx[0x100], 4, 0);
-    FileChoose_DrawCharacter(this->state.gfxCtx, font->fontBuf + D_808123F0[i] * FONT_CHAR_TEX_SIZE, 0);
+    FileChoose_DrawCharacter(this->state.gfxCtx, font->fontBuf + z2ASCII(D_808123F0[i]) * FONT_CHAR_TEX_SIZE, 0);
 
     CLOSE_DISPS(this->state.gfxCtx);
 }
@@ -392,7 +392,7 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                     gSPVertex(POLY_OPA_DISP++, &this->keyboardVtx[this->charIndex * 4], 4, 0);
 
                     FileChoose_DrawCharacter(this->state.gfxCtx,
-                                             font->fontBuf + D_808123F0[this->charIndex] * FONT_CHAR_TEX_SIZE, 0);
+                                             font->fontBuf + z2ASCII(D_808123F0[this->charIndex]) * FONT_CHAR_TEX_SIZE, 0);
 
                     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
                         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_S, &D_801333D4, 4, &D_801333E0, &D_801333E0,

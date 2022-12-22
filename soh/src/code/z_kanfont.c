@@ -187,40 +187,12 @@ void Font_LoadMessageBoxIcon(Font* font, u16 icon) {
 }
 
 /**
- * Loads a full set of character textures based on their ordering in the message with text id 0xFFFC into
+ * Loads a full set of character textures based on their ordering in fntTbl into
  * the font buffer.
  */
 void Font_LoadOrderedFont(Font* font) {
-    size_t len;
-    size_t jj;
-    s32 fontStatic;
-    u8* fontBuf;
-    s32 codePointIndex;
-    s32 fontBufIndex;
-    s32 offset;
-
-    len = strlen(_message_0xFFFC_nes);
-    memcpy(font->msgBuf, _message_0xFFFC_nes, len);
-
-    osSyncPrintf("msg_data=%x,  msg_data0=%x   jj=%x\n", font->msgOffset, font->msgLength, jj = len);
-
-    len = jj;
-    for (fontBufIndex = 0, codePointIndex = 0; font->msgBuf[codePointIndex] != MESSAGE_END; codePointIndex++) {
-        if (codePointIndex > len) {
-            osSyncPrintf("ＥＲＲＯＲ！！  エラー！！！  error───！！！！\n");
-            return;
-        }
-
-        if (font->msgBuf[codePointIndex] != MESSAGE_NEWLINE) {
-            fontBuf = font->fontBuf + fontBufIndex * 8;
-            fontStatic = _nes_font_staticSegmentRomStart;
-
-            osSyncPrintf("nes_mes_buf[%d]=%d\n", codePointIndex, font->msgBuf[codePointIndex]);
-
-            offset = (font->msgBuf[codePointIndex] - '\x20') * FONT_CHAR_TEX_SIZE;
-            memcpy(fontBuf, GetResourceDataByName(fntTbl[offset / FONT_CHAR_TEX_SIZE], false), FONT_CHAR_TEX_SIZE);
-            //DmaMgr_SendRequest1(fontBuf, fontStatic + offset, FONT_CHAR_TEX_SIZE, __FILE__, __LINE__);
-            fontBufIndex += FONT_CHAR_TEX_SIZE / 8;
-        }
+    int i;
+    for (i = 0; i < sizeof(fntTbl) / sizeof(char*); i++) {
+        memcpy(font->fontBuf + (FONT_CHAR_TEX_SIZE * (i + 0x20)), fntTbl[i], FONT_CHAR_TEX_SIZE);
     }
 }

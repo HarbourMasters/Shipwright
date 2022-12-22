@@ -1270,7 +1270,7 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
 
         for (i = 0, vtxOffset = 0; vtxOffset < 0x20; i++, vtxOffset += 4) {
             FileChoose_DrawCharacter(
-                this->state.gfxCtx, sp54->fontBuf + Save_GetSaveMetaInfo(fileIndex)->playerName[i] * FONT_CHAR_TEX_SIZE,
+                this->state.gfxCtx, sp54->fontBuf + z2ASCII(Save_GetSaveMetaInfo(fileIndex)->playerName[i]) * FONT_CHAR_TEX_SIZE,
                 vtxOffset);
         }
     }
@@ -1287,7 +1287,7 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
 
         // draw death count
         for (i = 0, vtxOffset = 0; i < 3; i++, vtxOffset += 4) {
-            FileChoose_DrawCharacter(this->state.gfxCtx, sp54->fontBuf + deathCountSplit[i] * FONT_CHAR_TEX_SIZE,
+            FileChoose_DrawCharacter(this->state.gfxCtx, sp54->fontBuf + z2ASCII(deathCountSplit[i]) * FONT_CHAR_TEX_SIZE,
                                      vtxOffset);
         }
 

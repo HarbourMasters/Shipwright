@@ -294,12 +294,12 @@ char z2ASCII(int code) {
     } else if (code == 63 || code == 64) { // - and .
         ret = code - 0x12;
     } else {
-        ret = 0x20; // Fallback to space
+        ret = code;
     }
     return char(ret);
 }
 
-char ASCII2z(int code) {
+unsigned char ASCII2z(int code) {
     int ret = 0;
     if (code >= 0x30 && code <= 0x39) { // Digits
         ret = code - 0x30;
@@ -312,9 +312,9 @@ char ASCII2z(int code) {
     } else if (code == 0x2D || code == 0x2E) { // - and .
         ret = code + 0x12;
     } else {
-        ret = 0x20 + 0x1E; // Fallback to space
+        ret = code;
     }
-    return char(ret);
+    return ret;
 }
 
 std::string GetPlayerName() {
