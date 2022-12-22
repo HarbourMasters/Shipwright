@@ -612,6 +612,9 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     seqPlayer->playerIdx = playerIdx;
     AudioSeq_SkipForwardSequence(seqPlayer);
     //! @bug missing return (but the return value is not used so it's not UB)
+    if (CVar_GetS32("gSeqNameOverlay", 0) && playerIdx == SEQ_PLAYER_BGM_MAIN) {
+        Overlay_DisplayText(5.0f, SfxEditor_GetSequenceName(seqId));
+    }
 }
 
 u8* AudioLoad_SyncLoadSeq(s32 seqId) {
