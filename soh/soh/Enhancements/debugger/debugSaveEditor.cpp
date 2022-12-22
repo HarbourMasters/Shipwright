@@ -319,7 +319,7 @@ char ASCII2z(int code) {
 
 std::string GetPlayerName() {
     std::string name;
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < NAME_MAX; i++) {
         name += z2ASCII(gSaveContext.playerName[i]);
     }
     if (const size_t lastNonSpace = name.find_last_not_of(' '); lastNonSpace != std::string::npos) {
@@ -330,7 +330,7 @@ std::string GetPlayerName() {
 }
 
 void SetPlayerName(const char* newName, char* to) {
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < NAME_MAX; i++) {
         if (i < strlen(newName)) {
             to[i] = ASCII2z(newName[i]);
         } else {
@@ -343,9 +343,9 @@ void DrawInfoTab() {
     ImU16 one = 1;
     ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
 
-    char* name = (char*)calloc(8 + 1, sizeof(char));
+    char* name = (char*)calloc(NAME_MAX + 1, sizeof(char));
     strcpy(name, GetPlayerName().c_str());
-    if (ImGui::InputText("Name", name, 8 + 1)) {
+    if (ImGui::InputText("Name", name, NAME_MAX + 1)) {
         SetPlayerName(name, gSaveContext.playerName);
     }
     UIWidgets::InsertHelpHoverText("Player Name");
