@@ -6,7 +6,7 @@
 [subrepo]
 	remote = C:/ZeldaStuff/ZAPDTR/
 	branch = rebase2
-	commit = c5cfebeee732537b09e931d89d6403fe3f59ed1a
-	parent = f934bf69538f353f97b8de9d46b82f1138c58124
+	commit = d5f4769b88d73b84090b9d943cee796950b080c5
+	parent = b0ecfd289d2ec0fae1cad0e5f9195f28f579d8b3
 	method = rebase
 	cmdver = 0.4.3

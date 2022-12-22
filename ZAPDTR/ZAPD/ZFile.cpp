@@ -1259,6 +1259,9 @@ void ZFile::HandleUnaccountedData()
 	uint32_t lastSize = 0;
 	std::vector<offset_t> declsAddresses;
 
+	if (Globals::Instance->otrMode)
+		return;
+
 	declsAddresses.reserve(declarations.size());
 	if (Globals::Instance->otrMode)
 		return;

@@ -17,8 +17,8 @@ ZTexture::ZTexture(ZFile* nParent) : ZResource(nParent)
 	width = 0;
 	height = 0;
 	dWordAligned = true;
-	splitTlut = false;
 	genOTRDef = true;
+	splitTlut = false;
 
 	RegisterRequiredAttribute("Width");
 	RegisterRequiredAttribute("Height");

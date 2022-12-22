@@ -14,6 +14,8 @@ ZSkeleton::ZSkeleton(ZFile* nParent) : ZResource(nParent)
 {
 	RegisterRequiredAttribute("Type");
 	RegisterRequiredAttribute("LimbType");
+	genOTRDef = true;
+
 	RegisterOptionalAttribute("EnumName");
 	RegisterOptionalAttribute("LimbNone");
 	RegisterOptionalAttribute("LimbMax");
