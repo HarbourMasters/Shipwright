@@ -127,7 +127,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s32 order;
     /* 0x04 */ s32 npredictors;
-    /* 0x08 */ s16 book[1]; // size 8 * order * npredictors. 8-byte aligned
+    /* 0x08 */ s16 book[]; // size 8 * order * npredictors. 8-byte aligned
 } AdpcmBook; // size >= 0x8
 
 typedef struct 
