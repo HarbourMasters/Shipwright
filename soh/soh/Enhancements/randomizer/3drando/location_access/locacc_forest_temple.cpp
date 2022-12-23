@@ -449,7 +449,7 @@ void AreaTable_Init_ForestTemple() {
              });
 
     areaTable[FOREST_TEMPLE_BOSS_ROOM] = Area(
-        "Forest Temple Boss Room", "Forest Temple", FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE,
+        "Forest Temple Boss Room", "Forest Temple", NONE, NO_DAY_NIGHT_CYCLE,
         {
             // Events
             EventAccess(&ForestTempleClear, { [] {
