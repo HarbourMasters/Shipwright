@@ -604,7 +604,7 @@ namespace Settings {
   };
 
   Menu startingItems            = Menu::SubMenu("Items",                &startingItemsOptions, false);
-  Menu startingSongs            = Menu::SubMenu("Ocarina Songs",        &startingSongsOptions, false);
+  Menu startingSongs            = Menu::SubMenu("Starting Songs",       &startingSongsOptions, true);
   Menu startingEquipment        = Menu::SubMenu("Equipment & Upgrades", &startingEquipmentOptions, false);
   Menu startingStonesMedallions = Menu::SubMenu("Stones & Medallions",  &startingStonesMedallionsOptions, false);
   Menu startingOthers           = Menu::SubMenu("Other",                &startingOthersOptions, false);
@@ -2748,6 +2748,19 @@ namespace Settings {
     StartingSkulltulaToken.SetSelectedIndex(cvarSettings[RSK_STARTING_SKULLTULA_TOKEN]);
 
     MapsAndCompasses.SetSelectedIndex(cvarSettings[RSK_STARTING_MAPS_COMPASSES]);
+
+    StartingZeldasLullaby.SetSelectedIndex(cvarSettings[RSK_STARTING_ZELDAS_LULLABY]);
+    StartingEponasSong.SetSelectedIndex(cvarSettings[RSK_STARTING_EPONAS_SONG]);
+    StartingSariasSong.SetSelectedIndex(cvarSettings[RSK_STARTING_SARIAS_SONG]);
+    StartingSunsSong.SetSelectedIndex(cvarSettings[RSK_STARTING_SUNS_SONG]);
+    StartingSongOfTime.SetSelectedIndex(cvarSettings[RSK_STARTING_SONG_OF_TIME]);
+    StartingSongOfStorms.SetSelectedIndex(cvarSettings[RSK_STARTING_SONG_OF_STORMS]);
+    StartingMinuetOfForest.SetSelectedIndex(cvarSettings[RSK_STARTING_MINUET_OF_FOREST]);
+    StartingBoleroOfFire.SetSelectedIndex(cvarSettings[RSK_STARTING_BOLERO_OF_FIRE]);
+    StartingSerenadeOfWater.SetSelectedIndex(cvarSettings[RSK_STARTING_SERENADE_OF_WATER]);
+    StartingRequiemOfSpirit.SetSelectedIndex(cvarSettings[RSK_STARTING_REQUIEM_OF_SPIRIT]);
+    StartingNocturneOfShadow.SetSelectedIndex(cvarSettings[RSK_STARTING_NOCTURNE_OF_SHADOW]);
+    StartingPreludeOfLight.SetSelectedIndex(cvarSettings[RSK_STARTING_PRELUDE_OF_LIGHT]);
 
     // RANDOTODO: Implement disabling ammo drops. Currently only "On" (index 0) or "On + Bombchus" (index 1) is implemented.
     AmmoDrops.SetSelectedIndex(cvarSettings[RSK_ENABLE_BOMBCHU_DROPS]);
