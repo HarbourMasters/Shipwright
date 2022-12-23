@@ -154,10 +154,10 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			}
 			break;
 		}
-#if 0
-		case 0x15:
-		case (uint32_t)CutsceneCommands::Unknown:
+		case 0x15://Both unused in OoT
+		case 0x1A://(uint32_t)CutsceneCommands::Unknown: 
 		{
+#if 0
 			CutsceneCommandUnknown* cmdUnk = (CutsceneCommandUnknown*)cs->commands[i];
 			writer->Write((uint32_t)cs->commands[i]->commandID);
 			writer->Write((uint32_t)cmdUnk->entries.size());
@@ -177,8 +177,8 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 				writer->Write(CMD_W(e->unused10));
 				writer->Write(CMD_W(e->unused11));
 			}
-		}
 #endif
+		}
 		break;
 		case (uint32_t)CutsceneCommands::Textbox:
 		{
@@ -203,6 +203,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			}
 			break;
 		}
+		case 10: //ActorAction0
 		case (uint32_t)CutsceneCommands::SetActorAction1:
 		case 17:
 		case 18:
