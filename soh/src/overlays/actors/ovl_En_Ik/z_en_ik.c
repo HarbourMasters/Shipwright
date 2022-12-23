@@ -656,7 +656,9 @@ void func_80A75A38(EnIk* this, PlayState* play) {
             }
             if (this->unk_2F9 == 0) {
                 Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xB0);
-                if (this->switchFlags != 0xFF) {
+                // Don't set flag when Iron Knuckle is spawned by Enemy Rando.
+                // Instead Iron Knuckles rely on the "clear room" flag when Enemy Rando is on.
+                if (this->switchFlags != 0xFF && !CVar_GetS32("gRandomizedEnemies",0)) {
                     Flags_SetSwitch(play, this->switchFlags);
                 }
                 Actor_Kill(&this->actor);
