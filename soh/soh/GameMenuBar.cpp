@@ -757,6 +757,10 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Fixes camera getting stuck on collision when standing still, also fixes slight shift back in camera when stop moving");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Hanging Ledge Swing Rate", "gFixHangingLedgeSwingRate", true, false);
                 UIWidgets::Tooltip("Fixes camera swing rate when player falls of a ledge and camera swings around");
+                UIWidgets::PaddedEnhancementCheckbox("Extend Silver Rupee Jingle", "gSilverRupeeJingleExtend", true, false);
+                UIWidgets::Tooltip(
+                    "Adds 5 higher pitches for the Silver Rupee Jingle for the rooms with 10 Silver Rupees. "
+                    "Currently only relevant in Master Quest.");
 
                 ImGui::EndMenu();
             }
