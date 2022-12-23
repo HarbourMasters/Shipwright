@@ -7,10 +7,9 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 
 	WriteHeader(cs, outPath, writer, Ship::ResourceType::SOH_Cutscene);
 
-	//writer->Write((uint32_t)cs->commands.size() + 2 + 2);
 	writer->Write((uint32_t)0);
 
-	int currentStream = writer->GetBaseAddress();
+	const auto currentStream = writer->GetBaseAddress();
 
 	writer->Write(CS_BEGIN_CUTSCENE(cs->numCommands, cs->endFrame));
 
@@ -26,7 +25,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			writer->Write(CMD_HH(0x0001, ((CutsceneCommandSetCameraPos*)cs->commands[i])->startFrame));
 			writer->Write(CMD_HH(cmdCamPos->endFrame, 0x0000));
 
-			for (auto& e : cs->commands[i]->entries)
+			for (const auto& e : cs->commands[i]->entries)
 			{
 				CutsceneCameraPoint* point = (CutsceneCameraPoint*)e;
 				writer->Write(CMD_BBH(point->continueFlag, point->cameraRoll, point->nextPointFrame));
@@ -44,7 +43,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			writer->Write(CMD_HH(0x0001, cmdCamPos->startFrame));
 			writer->Write(CMD_HH(cmdCamPos->endFrame, 0x0000));
 
-			for (auto& e : cs->commands[i]->entries)
+			for (const auto& e : cs->commands[i]->entries)
 			{
 				CutsceneCameraPoint* point = (CutsceneCameraPoint*)e;
 				writer->Write(CMD_BBH(point->continueFlag, point->cameraRoll, point->nextPointFrame));
@@ -58,7 +57,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 		{
 			writer->Write(CS_CMD_MISC);
 			writer->Write((uint32_t)CMD_W((cs->commands[i])->entries.size()));
-			for (auto& e : cs->commands[i]->entries) //All in OOT seem to only have 1 entry
+			for (const auto& e : cs->commands[i]->entries) //All in OOT seem to only have 1 entry
 			{
 				CutsceneSubCommandEntry_GenericCmd* cmd = (CutsceneSubCommandEntry_GenericCmd*)e;
 				writer->Write(CMD_HH(cmd->base, cmd->startFrame));
@@ -80,7 +79,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 		{
 			writer->Write(CS_CMD_SET_LIGHTING);
 			writer->Write((uint32_t)CMD_W((cs->commands[i])->entries.size()));
-			for (auto& e : cs->commands[i]->entries)
+			for (const auto& e : cs->commands[i]->entries)
 			{
 				CutsceneSubCommandEntry_GenericCmd* cmd = (CutsceneSubCommandEntry_GenericCmd*)e;
 				writer->Write(CMD_HH(cmd->base, cmd->startFrame));
@@ -106,7 +105,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			writer->Write(CMD_HH(0x0001, ((CutsceneCommandSetCameraPos*)cs->commands[i])->startFrame));
 			writer->Write(CMD_HH(cmdCamPos->endFrame, 0x0000));
 
-			for (auto& e : cs->commands[i]->entries)
+			for (const auto& e : cs->commands[i]->entries)
 			{
 				CutsceneCameraPoint* point = (CutsceneCameraPoint*)e;
 				writer->Write(CMD_BBH(point->continueFlag, point->cameraRoll, point->nextPointFrame));
@@ -124,7 +123,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			writer->Write(CMD_HH(0x0001, ((CutsceneCommandSetCameraPos*)cs->commands[i])->startFrame));
 			writer->Write(CMD_HH(cmdCamPos->endFrame, 0x0000));
 
-			for (auto& e : cs->commands[i]->entries)
+			for (const auto& e : cs->commands[i]->entries)
 			{
 				CutsceneCameraPoint* point = (CutsceneCameraPoint*)e;
 				writer->Write(CMD_BBH(point->continueFlag, point->cameraRoll, point->nextPointFrame));
@@ -145,7 +144,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			writer->Write(CS_CMD_09);
 			writer->Write((uint32_t)CMD_W(((CutsceneCommand_Rumble*)cs->commands[i])->entries.size()));
 
-			for (auto& e : cs->commands[i]->entries)
+			for (const auto& e : cs->commands[i]->entries)
 			{
 				CutsceneSubCommandEntry_Rumble* r = (CutsceneSubCommandEntry_Rumble*)e;
 				writer->Write(CMD_HH(r->base, r->startFrame));
@@ -162,7 +161,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			writer->Write((uint32_t)cs->commands[i]->commandID);
 			writer->Write((uint32_t)cmdUnk->entries.size());
 
-			for (auto e : cmdUnk->entries)
+			for (const auto e : cmdUnk->entries)
 			{
 				writer->Write(CMD_W(e->unused0));
 				writer->Write(CMD_W(e->unused1));
@@ -185,7 +184,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			writer->Write(CS_CMD_TEXTBOX);
 			writer->Write((uint32_t)CMD_W((cs->commands[i])->entries.size()));
 
-			for (auto& e : cs->commands[i]->entries)
+			for (const auto& e : cs->commands[i]->entries)
 			{
 				CutsceneSubCommandEntry_TextBox* textBox = (CutsceneSubCommandEntry_TextBox*)e;
 				if (textBox->base == 0xFFFF) // CS_TEXT_NONE
@@ -304,7 +303,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			writer->Write((uint32_t)(CutsceneCommands)cs->commands[i]->commandID);
 			writer->Write((uint32_t)CMD_W(cs->commands[i]->entries.size()));
 
-			for (auto& e : cs->commands[i]->entries)
+			for (const auto& e : cs->commands[i]->entries)
 			{
 				CutsceneSubCommandEntry_ActorAction* actorAct = (CutsceneSubCommandEntry_ActorAction*)e;
 				writer->Write(CMD_HH(actorAct->base, actorAct->startFrame));
@@ -338,7 +337,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			writer->Write(CS_CMD_PLAYBGM);
 			writer->Write((uint32_t)CMD_W(cs->commands[i]->entries.size()));
 
-			for (auto& e : cs->commands[i]->entries)
+			for (const auto& e : cs->commands[i]->entries)
 			{
 				CutsceneSubCommandEntry_GenericCmd* cmd = (CutsceneSubCommandEntry_GenericCmd*)e;
 				writer->Write(CMD_HH(cmd->base, cmd->startFrame));
@@ -361,7 +360,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			writer->Write(CS_CMD_STOPBGM);
 			writer->Write((uint32_t)CMD_W(cs->commands[i]->entries.size()));
 
-			for (auto& e : cs->commands[i]->entries)
+			for (const auto& e : cs->commands[i]->entries)
 			{
 				CutsceneSubCommandEntry_GenericCmd* cmd = (CutsceneSubCommandEntry_GenericCmd*)e;
 				writer->Write(CMD_HH(cmd->base, cmd->startFrame));
@@ -384,7 +383,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			writer->Write(CS_CMD_FADEBGM);
 			writer->Write((uint32_t)CMD_W(cs->commands[i]->entries.size()));
 
-			for (auto& e : cs->commands[i]->entries)
+			for (const auto& e : cs->commands[i]->entries)
 			{
 				CutsceneSubCommandEntry_GenericCmd* cmd = (CutsceneSubCommandEntry_GenericCmd*)e;
 				writer->Write(CMD_HH(cmd->base, cmd->startFrame));
@@ -407,7 +406,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			writer->Write(CS_CMD_SETTIME);
 			writer->Write((uint32_t)CMD_W(cs->commands[i]->entries.size()));
 
-			for (auto& e : cs->commands[i]->entries)
+			for (const auto& e : cs->commands[i]->entries)
 			{
 				CutsceneSubCommandEntry_SetTime* t = (CutsceneSubCommandEntry_SetTime*)e;
 				writer->Write(CMD_HH(t->base, t->startFrame));
@@ -438,8 +437,8 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 	writer->Write(0xFFFFFFFF);
 	writer->Write((uint32_t)0);
 
-	int endStream = writer->GetBaseAddress();
-	writer->Seek(currentStream - 4, SeekOffsetType::Start);
+	const auto endStream = writer->GetBaseAddress();
+	writer->Seek((uint32_t)currentStream - 4, SeekOffsetType::Start);
 	writer->Write((uint32_t)((endStream - currentStream) / 4));
-	writer->Seek(endStream, SeekOffsetType::Start);
+	writer->Seek((uint32_t)endStream, SeekOffsetType::Start);
 }
