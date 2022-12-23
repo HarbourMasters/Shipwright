@@ -509,18 +509,18 @@ namespace Settings {
     &StartingRutoBottle,
   };
 
-  Option StartingZeldasLullaby    = Option::U8  ("Zelda's Lullaby",      {"Off",             "On"},                                                       {""});
-  Option StartingEponasSong       = Option::U8  ("Epona's Song",         {"Off",             "On"},                                                       {""});
-  Option StartingSariasSong       = Option::U8  ("Saria's Song",         {"Off",             "On"},                                                       {""});
-  Option StartingSunsSong         = Option::U8  ("Sun's Song",           {"Off",             "On"},                                                       {""});
-  Option StartingSongOfTime       = Option::U8  ("Song of Time",         {"Off",             "On"},                                                       {""});
-  Option StartingSongOfStorms     = Option::U8  ("Song of Storms",       {"Off",             "On"},                                                       {""});
-  Option StartingMinuetOfForest   = Option::U8  ("Minuet of Forest",     {"Off",             "On"},                                                       {""});
-  Option StartingBoleroOfFire     = Option::U8  ("Bolero of Fire",       {"Off",             "On"},                                                       {""});
-  Option StartingSerenadeOfWater  = Option::U8  ("Serenade of Water",    {"Off",             "On"},                                                       {""});
-  Option StartingRequiemOfSpirit  = Option::U8  ("Requiem of Spirit",    {"Off",             "On"},                                                       {""});
-  Option StartingNocturneOfShadow = Option::U8  ("Nocturne of Shadow",   {"Off",             "On"},                                                       {""});
-  Option StartingPreludeOfLight   = Option::U8  ("Prelude of Light",     {"Off",             "On"},                                                       {""});
+  Option StartingZeldasLullaby    = Option::U8  ("Start with Zelda's Lullaby",      {"Off",             "On"},                                                       {""});
+  Option StartingEponasSong       = Option::U8  ("Start with Epona's Song",         {"Off",             "On"},                                                       {""});
+  Option StartingSariasSong       = Option::U8  ("Start with Saria's Song",         {"Off",             "On"},                                                       {""});
+  Option StartingSunsSong         = Option::U8  ("Start with Sun's Song",           {"Off",             "On"},                                                       {""});
+  Option StartingSongOfTime       = Option::U8  ("Start with Song of Time",         {"Off",             "On"},                                                       {""});
+  Option StartingSongOfStorms     = Option::U8  ("Start with Song of Storms",       {"Off",             "On"},                                                       {""});
+  Option StartingMinuetOfForest   = Option::U8  ("Start with Minuet of Forest",     {"Off",             "On"},                                                       {""});
+  Option StartingBoleroOfFire     = Option::U8  ("Start with Bolero of Fire",       {"Off",             "On"},                                                       {""});
+  Option StartingSerenadeOfWater  = Option::U8  ("Start with Serenade of Water",    {"Off",             "On"},                                                       {""});
+  Option StartingRequiemOfSpirit  = Option::U8  ("Start with Requiem of Spirit",    {"Off",             "On"},                                                       {""});
+  Option StartingNocturneOfShadow = Option::U8  ("Start with Nocturne of Shadow",   {"Off",             "On"},                                                       {""});
+  Option StartingPreludeOfLight   = Option::U8  ("Start with Prelude of Light",     {"Off",             "On"},                                                       {""});
   std::vector<Option *> startingSongsOptions = {
     &StartingZeldasLullaby,
     &StartingEponasSong,
@@ -598,7 +598,7 @@ namespace Settings {
   };
 
   Menu startingItems            = Menu::SubMenu("Items",                &startingItemsOptions, false);
-  Menu startingSongs            = Menu::SubMenu("Starting Songs",       &startingSongsOptions, true);
+  Menu startingSongs            = Menu::SubMenu("Ocarina Songs",        &startingSongsOptions, false);
   Menu startingEquipment        = Menu::SubMenu("Equipment & Upgrades", &startingEquipmentOptions, false);
   Menu startingStonesMedallions = Menu::SubMenu("Stones & Medallions",  &startingStonesMedallionsOptions, false);
   Menu startingOthers           = Menu::SubMenu("Other",                &startingOthersOptions, false);

@@ -439,18 +439,18 @@ static void WriteStartingInventory() {
       for (size_t i = 0; i < menu->size(); ++i) {
           const auto setting = menu->at(i);
           // Starting Songs
-          if (setting->GetName() == "Zelda's Lullaby" || 
-              setting->GetName() == "Epona's Song" ||
-              setting->GetName() == "Saria's Song" || 
-              setting->GetName() == "Sun's Song" ||
-              setting->GetName() == "Song of Time" || 
-              setting->GetName() == "Song of Storms" ||
-              setting->GetName() == "Minuet of Forest" || 
-              setting->GetName() == "Bolero of Fire" ||
-              setting->GetName() == "Serenade of Water" || 
-              setting->GetName() == "Requiem of Spirit" ||
-              setting->GetName() == "Nocturne of Shadow" || 
-              setting->GetName() == "Prelude of Light") {
+          if (setting->GetName() == "Start with Zelda's Lullaby" || 
+              setting->GetName() == "Start with Epona's Song" ||
+              setting->GetName() == "Start with Saria's Song" || 
+              setting->GetName() == "Start with Sun's Song" ||
+              setting->GetName() == "Start with Song of Time" || 
+              setting->GetName() == "Start with Song of Storms" ||
+              setting->GetName() == "Start with Minuet of Forest" || 
+              setting->GetName() == "Start with Bolero of Fire" ||
+              setting->GetName() == "Start with Serenade of Water" || 
+              setting->GetName() == "Start with Requiem of Spirit" ||
+              setting->GetName() == "Start with Nocturne of Shadow" || 
+              setting->GetName() == "Start with Prelude of Light") {
               jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
           }
       }
