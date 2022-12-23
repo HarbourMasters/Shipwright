@@ -83,9 +83,12 @@ extern "C" void gSPVertex(Gfx* pkt, uintptr_t v, int n, int v0) {
 extern "C" void gSPInvalidateTexCache(Gfx* pkt, uintptr_t texAddr)
 {
     char* imgData = (char*)texAddr;
-
-    if (texAddr != 0 && ResourceMgr_OTRSigCheck(imgData))
-        texAddr = (uintptr_t)ResourceMgr_LoadTexByName(imgData);
+    
+    if (texAddr != 0 && ResourceMgr_OTRSigCheck(imgData)) {
+        // Temporary solution to the mq/nonmq issue, this will be
+        // handled better with LUS 1.0
+        texAddr = (uintptr_t)ResourceMgr_LoadTexOrDListByName(imgData); 
+    }
 
     __gSPInvalidateTexCache(pkt, texAddr);
  }
