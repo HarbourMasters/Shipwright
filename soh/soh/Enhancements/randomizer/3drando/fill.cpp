@@ -914,6 +914,9 @@ void VanillaFill() {
   CreateItemOverrides();
   CreateEntranceOverrides();
   CreateAlwaysIncludedMessages();
+  if (ShuffleWarpSongs) {
+    CreateWarpSongTexts();
+  }
 }
 
 void ClearProgress() {
@@ -1075,6 +1078,9 @@ int Fill() {
       }
       if (ShuffleMerchants.Is(SHUFFLEMERCHANTS_HINTS)) {
         CreateMerchantsHints();
+      }
+      if (ShuffleWarpSongs) {
+        CreateWarpSongTexts();
       }
       return 1;
     }

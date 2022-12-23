@@ -782,7 +782,6 @@ void CreateAllHints() {
 
   CreateGanonText();
   CreateAltarText();
-  CreateWarpSongTexts();
 
   SPDLOG_DEBUG("\nNOW CREATING HINTS\n");
   const HintSetting& hintSetting = hintSettingTable[Settings::HintDistribution.Value<uint8_t>()];

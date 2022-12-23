@@ -8,6 +8,8 @@ typedef struct {
     u8 unk_1; // importance?
 } Struct_8016E320;
 
+#define GET_PLAYER_IDX(cmd) (cmd & 0xF000000) >> 24
+
 Struct_8016E320 D_8016E320[4][5];
 u8 D_8016E348[4];
 u32 sAudioSeqCmds[0x100];
@@ -122,7 +124,7 @@ void Audio_ProcessSeqCmd(u32 cmd) {
     }
 
     op = cmd >> 28;
-    playerIdx = (cmd & 0xF000000) >> 24;
+    playerIdx = GET_PLAYER_IDX(cmd);
 
     switch (op) {
         case 0x0:
@@ -371,12 +373,12 @@ void Audio_QueueSeqCmd(u32 cmd)
     u8 op = cmd >> 28;
     if (op == 0 || op == 2 || op == 12) {
         u8 seqId = cmd & 0xFF;
-        u8 playerIdx = (cmd >> 24) & 0xFF;
+        u8 playerIdx = GET_PLAYER_IDX(cmd);
         u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
-            gAudioContext.seqReplaced[playerIdx] = (seqId != newSeqId);
-            gAudioContext.seqToPlay[playerIdx] = newSeqId;
-            cmd |= (seqId & 0xFF);
-        }
+        gAudioContext.seqReplaced[playerIdx] = (seqId != newSeqId);
+        gAudioContext.seqToPlay[playerIdx] = newSeqId;
+        cmd |= (seqId & 0xFF);
+    }
 
     sAudioSeqCmds[sSeqCmdWrPos++] = cmd;
 }

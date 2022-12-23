@@ -1703,10 +1703,7 @@ void BossDodongo_DrawEffects(PlayState* play) {
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     unkMtx = &play->billboardMtxF;
 
-    // OTRTODO: This call causes the whole texture cache to be cleaned up, which causes an important slowdown on switch so we need to find a way to avoid it.
-#ifndef __SWITCH__
-    gSPInvalidateTexCache(POLY_XLU_DISP++, 0);
-#endif
+    gSPInvalidateTexCache(POLY_XLU_DISP++, gDodongosCavernBossLavaFloorTex);
 
     for (i = 0; i < 80; i++, eff++) {
         FrameInterpolation_RecordOpenChild(eff, eff->epoch);
