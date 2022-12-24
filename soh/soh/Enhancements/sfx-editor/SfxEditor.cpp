@@ -181,6 +181,28 @@ std::map<u16, std::tuple<std::string, std::string, SeqType>> sfxEditorSequenceMa
     {NA_SE_EV_CHICKEN_CRY_A,       {"Chicken Cry",                         "NA_SE_EV_CHICKEN_CRY_A",         SEQ_SFX}},
 };
 
+// Grabs the current BGM sequence ID and replays it
+// which will lookup the proper override, or reset back to vanilla
+void ReplayCurrentBGM() {
+    u16 curSeqId = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+    // TODO: replace with Audio_StartSeq when the macro is shared
+    // The fade time and audio player flags will always be 0 in the case of replaying the BGM, so they are not set here
+    Audio_QueueSeqCmd(0x00000000 | curSeqId);
+}
+
+// Attempt to update the BGM if it matches the current sequence that is being played
+// The seqKey that is passed in should be the vanilla ID, not the override ID
+void UpdateCurrentBGM(u16 seqKey, SeqType seqType) {
+    if (seqType != SEQ_BGM_WORLD) {
+        return;
+    }
+
+    u16 curSeqId = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+    if (curSeqId == seqKey) {
+        ReplayCurrentBGM();
+    }
+}
+
 void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::string, std::string, SeqType>>& map, SeqType type) {
     const std::string hiddenTabId = "##" + tabId;
     const std::string resetAllButton = "Reset All" + hiddenTabId;
@@ -198,6 +220,9 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
             }
         }
         SohImGui::RequestCvarSaveOnNextTick();
+        if (type == SEQ_BGM_WORLD) {
+            ReplayCurrentBGM();
+        }
     }
     ImGui::SameLine();
     if (ImGui::Button(randomizeAllButton.c_str())) {
@@ -222,6 +247,9 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
             }
         }
         SohImGui::RequestCvarSaveOnNextTick();
+        if (type == SEQ_BGM_WORLD) {
+            ReplayCurrentBGM();
+        }
     }
 
     ImGui::BeginTable(tabId.c_str(), 3, ImGuiTableFlags_SizingFixedFit);
@@ -263,6 +291,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
                 if (ImGui::Selectable(std::get<0>(seqData).c_str())) {
                     CVar_SetS32(cvarKey.c_str(), value);
                     SohImGui::RequestCvarSaveOnNextTick();
+                    UpdateCurrentBGM(defaultValue, type);
                 }
             }
 
@@ -299,6 +328,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
         if (ImGui::Button(resetButton.c_str())) {
             CVar_SetS32(cvarKey.c_str(), defaultValue);
             SohImGui::RequestCvarSaveOnNextTick();
+            UpdateCurrentBGM(defaultValue, seqType);
         }
         ImGui::SameLine();
         ImGui::PushItemWidth(-FLT_MIN);
@@ -310,6 +340,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
                 if (seqType & type) {
                     CVar_SetS32(cvarKey.c_str(), value);
                     SohImGui::RequestCvarSaveOnNextTick();
+                    UpdateCurrentBGM(defaultValue, type);
                     break;
                 }
             }

@@ -422,10 +422,10 @@ void EnGirlA_InitItem(EnGirlA* this, PlayState* play) {
             objectId = getItemEntry.objectId;
         }
 
-        // Weird edge case here, sold out object reports as loaded for Kokiri shop but doesn't render so we force it to load here
-        if (Object_IsLoaded(&play->objectCtx, objectId) && (params != SI_SOLD_OUT && play->sceneNum == SCENE_KOKIRI_SHOP)) {
-            this->objBankIndex = Object_GetIndex(&play->objectCtx, objectId);
-        } else {
+        this->objBankIndex = Object_GetIndex(&play->objectCtx, objectId);
+
+        // If the object isn't normally spawned by the shop scene, then spawn it now
+        if (this->objBankIndex < 0) {
             this->objBankIndex = Object_Spawn(&play->objectCtx, objectId);
         }
     }
