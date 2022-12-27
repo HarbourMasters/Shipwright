@@ -9727,12 +9727,6 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     MREG(64) = 0;
 
     sLinkCape = (EnGanonMant*)Actor_SpawnAsChild(&play->actorCtx, thisx, play, ACTOR_EN_GANON_MANT, 0.0f, 0.0f, 0.0f, 0, 0, 0, 1);
-
-    sLinkCape->backPush = -9.0f;
-    sLinkCape->backSwayMagnitude = 0.0f;
-    sLinkCape->sideSwayMagnitude = 0.0f;
-    sLinkCape->minDist = CVar_GetFloat("gLinkCapeWidth", 0);
-    sLinkCape->gravity = -2.5f;
 }
 
 void func_808471F4(s16* pValue) {
@@ -11123,6 +11117,12 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
             gSPDisplayList(POLY_XLU_DISP++, gHoverBootsCircleDL);
         }
     }
+
+    sLinkCape->backPush = -9.0f;
+    sLinkCape->backSwayMagnitude = 0.0f;
+    sLinkCape->sideSwayMagnitude = 0.0f;
+    sLinkCape->minDist = CVar_GetFloat("gLinkCapeWidth", 10.0f);
+    sLinkCape->gravity = -2.5f;
 
     sLinkCape->actor.world.pos = this->actor.world.pos;
 
