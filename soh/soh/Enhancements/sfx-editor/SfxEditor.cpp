@@ -203,22 +203,49 @@ void UpdateCurrentBGM(u16 seqKey, SeqType seqType) {
     }
 }
 
+void RandomizeGroup(const std::map<u16, std::tuple<std::string, std::string, SeqType>>& map, SeqType type) {
+    std::vector<u16> values;
+    for (const auto& [value, seqData] : map) {
+        if (std::get<2>(seqData) & type) {
+            values.push_back(value);
+        }
+    }
+    Shuffle(values);
+    for (const auto& [defaultValue, seqData] : map) {
+        const auto& [name, sfxKey, seqType] = seqData;
+        const std::string cvarKey = "gSfxEditor_" + sfxKey;
+        if (seqType & type) {
+            // Only save authentic sequence CVars
+            if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue >= MAX_AUTHENTIC_SEQID) {
+                continue;
+            }
+            const int randomValue = values.back();
+            CVar_SetS32(cvarKey.c_str(), randomValue);
+            values.pop_back();
+        }
+    }
+}
+
+void ResetGroup(const std::map<u16, std::tuple<std::string, std::string, SeqType>>& map, SeqType type) {
+    for (const auto& [defaultValue, seqData] : map) {
+        const auto& [name, sfxKey, seqType] = seqData;
+        if (seqType == type) {
+            // Only save authentic sequence CVars
+            if (seqType == SEQ_FANFARE && defaultValue >= MAX_AUTHENTIC_SEQID) {
+                continue;
+            }
+            const std::string cvarKey = "gSfxEditor_" + sfxKey;
+            CVar_SetS32(cvarKey.c_str(), defaultValue);
+        }
+    }
+}
+
 void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::string, std::string, SeqType>>& map, SeqType type) {
     const std::string hiddenTabId = "##" + tabId;
     const std::string resetAllButton = "Reset All" + hiddenTabId;
     const std::string randomizeAllButton = "Randomize All" + hiddenTabId;
     if (ImGui::Button(resetAllButton.c_str())) {
-        for (const auto& [defaultValue, seqData] : map) {
-            const auto& [name, sfxKey, seqType] = seqData;
-            if (seqType == type) {
-                // Only save authentic sequence CVars
-                if (seqType == SEQ_FANFARE && defaultValue >= MAX_AUTHENTIC_SEQID) {
-                    continue;
-                }
-                const std::string cvarKey = "gSfxEditor_" + sfxKey;
-                CVar_SetS32(cvarKey.c_str(), defaultValue);
-            }
-        }
+        ResetGroup(map, type);
         SohImGui::RequestCvarSaveOnNextTick();
         if (type == SEQ_BGM_WORLD) {
             ReplayCurrentBGM();
@@ -226,26 +253,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
     }
     ImGui::SameLine();
     if (ImGui::Button(randomizeAllButton.c_str())) {
-        std::vector<u16> values;
-        for (const auto& [value, seqData] : map) {
-            if (std::get<2>(seqData) & type) {
-                values.push_back(value);
-            }
-        }
-        Shuffle(values);
-        for (const auto& [defaultValue, seqData] : map) {
-            const auto& [name, sfxKey, seqType] = seqData;
-            const std::string cvarKey = "gSfxEditor_" + sfxKey;
-            if (seqType & type) {
-                // Only save authentic sequence CVars
-                if (((seqType & SEQ_BGM_CUSTOM) || seqType == SEQ_FANFARE) && defaultValue >= MAX_AUTHENTIC_SEQID) {
-                    continue;
-                }
-                const int randomValue = values.back();
-                CVar_SetS32(cvarKey.c_str(), randomValue);
-                values.pop_back();
-            }
-        }
+        RandomizeGroup(map, type);
         SohImGui::RequestCvarSaveOnNextTick();
         if (type == SEQ_BGM_WORLD) {
             ReplayCurrentBGM();
@@ -457,6 +465,26 @@ void DrawSfxEditor(bool& open) {
 void InitSfxEditor() {
     //Draw the bar in the menu.
     SohImGui::AddWindow("Enhancements", "SFX Editor", DrawSfxEditor);
+}
+
+std::vector<SeqType> allTypes = { SEQ_BGM_WORLD, SEQ_BGM_EVENT, SEQ_BGM_BATTLE, SEQ_OCARINA, SEQ_FANFARE, SEQ_INSTRUMENT, SEQ_SFX };
+
+void SfxEditor_RandomizeAll() {
+    for (auto type : allTypes) {
+        RandomizeGroup(sfxEditorSequenceMap, type);
+    }
+
+    SohImGui::RequestCvarSaveOnNextTick();
+    ReplayCurrentBGM();
+}
+
+void SfxEditor_ResetAll() {
+    for (auto type : allTypes) {
+        ResetGroup(sfxEditorSequenceMap, type);
+    }
+
+    SohImGui::RequestCvarSaveOnNextTick();
+    ReplayCurrentBGM();
 }
 
 extern "C" void SfxEditor_AddSequence(char *otrPath, uint16_t seqNum) {
