@@ -310,57 +310,7 @@ u32 Entrance_SceneAndSpawnAre(u8 scene, u8 spawn) {
     return currentEntrance.scene == scene && currentEntrance.spawn == spawn;
 }
 
-//Properly respawn the player after a game over, accounding for dungeon entrance
-//randomizer. It's easier to rewrite this entirely compared to performing an ASM
-//dance for just the boss rooms. Entrance Indexes can be found here:
-//https://wiki.cloudmodding.com/oot/Entrance_Table_(Data)
-void Entrance_SetGameOverEntrance(void) {
-    s16 scene = gPlayState->sceneNum;
-
-    // When in a boss room and boss shuffle is on, reuse the savewarp location to get to the right location
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF &&
-        scene >= SCENE_YDAN_BOSS && scene <= SCENE_HAKADAN_BS) {
-
-        Entrance_SetSavewarpEntrance();
-        return;
-    }
-
-    //Set the current entrance depending on which entrance the player last came through
-    switch (gSaveContext.entranceIndex) {
-        case 0x040F : //Deku Tree Boss Room
-            gSaveContext.entranceIndex = newDekuTreeEntrance;
-            return;
-        case 0x040B : //Dodongos Cavern Boss Room
-            gSaveContext.entranceIndex = newDodongosCavernEntrance;
-            return;
-        case 0x0301 : //Jabu Jabus Belly Boss Room
-            gSaveContext.entranceIndex = newJabuJabusBellyEntrance;
-            return;
-        case 0x000C : //Forest Temple Boss Room
-            gSaveContext.entranceIndex = newForestTempleEntrance;
-            return;
-        case 0x0305 : //Fire Temple Boss Room
-            gSaveContext.entranceIndex = newFireTempleEntrance;
-            return;
-        case 0x0417 : //Water Temple Boss Room
-            gSaveContext.entranceIndex = newWaterTempleEntrance;
-            return;
-        case 0x008D : //Spirit Temple Boss Room
-            gSaveContext.entranceIndex = newSpiritTempleEntrance;
-            return;
-        case 0x0413 : //Shadow Temple Boss Room
-            gSaveContext.entranceIndex = newShadowTempleEntrance;
-            return;
-        case 0x041F : //Ganondorf Boss Room
-            gSaveContext.entranceIndex = 0x041B; // Inside Ganon's Castle -> Ganon's Tower Climb
-            return;
-    }
-}
-
-//Properly savewarp the player accounting for dungeon entrance randomizer.
-//It's easier to rewrite this entirely compared to performing an ASM
-//dance for just the boss rooms.
-//https://wiki.cloudmodding.com/oot/Entrance_Table_(Data)
+// Properly savewarp the player accounting for dungeon entrance randomizer.
 void Entrance_SetSavewarpEntrance(void) {
 
     s16 scene = gSaveContext.savedSceneNum;
@@ -407,6 +357,50 @@ void Entrance_SetSavewarpEntrance(void) {
         gSaveContext.entranceIndex = Entrance_OverrideNextIndex(LINK_HOUSE_SAVEWARP_ENTRANCE); // Child Overworld Spawn
     } else {
         gSaveContext.entranceIndex = Entrance_OverrideNextIndex(0x0282); // Adult Overworld Spawn (Normally 0x5F4, but 0x282 has been repurposed to differentiate from Prelude which also uses 0x5F4)
+    }
+}
+
+// Properly respawn the player after a game over, accounding for dungeon entrance randomizer
+void Entrance_SetGameOverEntrance(void) {
+    s16 scene = gPlayState->sceneNum;
+
+    // When in a boss room and boss shuffle is on, reuse the savewarp location to get to the right location
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF &&
+        scene >= SCENE_YDAN_BOSS && scene <= SCENE_HAKADAN_BS) {
+
+        Entrance_SetSavewarpEntrance();
+        return;
+    }
+
+    //Set the current entrance depending on which entrance the player last came through
+    switch (gSaveContext.entranceIndex) {
+        case 0x040F : //Deku Tree Boss Room
+            gSaveContext.entranceIndex = newDekuTreeEntrance;
+            return;
+        case 0x040B : //Dodongos Cavern Boss Room
+            gSaveContext.entranceIndex = newDodongosCavernEntrance;
+            return;
+        case 0x0301 : //Jabu Jabus Belly Boss Room
+            gSaveContext.entranceIndex = newJabuJabusBellyEntrance;
+            return;
+        case 0x000C : //Forest Temple Boss Room
+            gSaveContext.entranceIndex = newForestTempleEntrance;
+            return;
+        case 0x0305 : //Fire Temple Boss Room
+            gSaveContext.entranceIndex = newFireTempleEntrance;
+            return;
+        case 0x0417 : //Water Temple Boss Room
+            gSaveContext.entranceIndex = newWaterTempleEntrance;
+            return;
+        case 0x008D : //Spirit Temple Boss Room
+            gSaveContext.entranceIndex = newSpiritTempleEntrance;
+            return;
+        case 0x0413 : //Shadow Temple Boss Room
+            gSaveContext.entranceIndex = newShadowTempleEntrance;
+            return;
+        case 0x041F : //Ganondorf Boss Room
+            gSaveContext.entranceIndex = 0x041B; // Inside Ganon's Castle -> Ganon's Tower Climb
+            return;
     }
 }
 
