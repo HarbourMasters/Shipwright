@@ -190,6 +190,7 @@ void EnGanonMant_UpdateStrand(PlayState* play, EnGanonMant* this, Vec3f* root, V
             (pos + i)->x += posStep.x;
             (pos + i)->z += posStep.z;
         }
+        // Set length
         jointLength; 
     } else {
         jointLength; 
