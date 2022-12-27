@@ -24,6 +24,7 @@
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/Enhancements/debugconsole.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include <overlays/actors/ovl_En_Ganon_Mant/z_en_ganon_mant.h>
 
 typedef enum {
     /* 0x00 */ KNOB_ANIM_ADULT_L,
@@ -9588,6 +9589,7 @@ static void (*D_80854738[])(PlayState* play, Player* this) = {
 };
 
 static Vec3f D_80854778 = { 0.0f, 50.0f, 0.0f };
+EnGanonMant* sBossGanonCape;
 
 void Player_Init(Actor* thisx, PlayState* play2) {
     Player* this = (Player*)thisx;
@@ -9723,6 +9725,14 @@ void Player_Init(Actor* thisx, PlayState* play2) {
 
     Map_SavePlayerInitialInfo(play);
     MREG(64) = 0;
+
+    (EnGanonMant*)sBossGanonCape = Actor_SpawnAsChild(&play->actorCtx, thisx, play, ACTOR_EN_GANON_MANT, 0.0f, 0.0f, 0.0f, 0, 0, 0, 1);
+
+    sBossGanonCape->backPush = -9.0f;
+    sBossGanonCape->backSwayMagnitude = 0.0f;
+    sBossGanonCape->sideSwayMagnitude = 0.0f;
+    sBossGanonCape->minDist = 0.0f;
+    sBossGanonCape->gravity = -2.5f;
 }
 
 void func_808471F4(s16* pValue) {
@@ -11113,6 +11123,21 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
             gSPDisplayList(POLY_XLU_DISP++, gHoverBootsCircleDL);
         }
     }
+
+    sBossGanonCape->actor.world.pos = this->actor.world.pos;
+
+    if (CVar_GetS32("gLinkCape", 0) == 1) {
+        sBossGanonCape->rightForearmPos = this->bodyPartsPos[PLAYER_BODYPART_R_SHOULDER];
+        sBossGanonCape->leftForearmPos = this->bodyPartsPos[PLAYER_BODYPART_L_SHOULDER];
+    } else if (CVar_GetS32("gLinkCape", 0) == 2) {
+        sBossGanonCape->rightForearmPos = this->bodyPartsPos[PLAYER_BODYPART_R_SHOULDER];
+        sBossGanonCape->leftForearmPos = this->bodyPartsPos[PLAYER_BODYPART_HEAD];
+    }
+    
+    sBossGanonCape->rightForearmPos.y += 2;
+    sBossGanonCape->leftForearmPos.y += 2;
+
+    sBossGanonCape->minY = this->actor.world.pos.y - 0.1f;
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
