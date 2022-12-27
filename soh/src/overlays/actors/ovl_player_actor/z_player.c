@@ -11120,9 +11120,9 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
 
     sLinkCape->backPush = -9.0f;
     sLinkCape->backSwayMagnitude = 0.0f;
-    sLinkCape->sideSwayMagnitude = 0.0f;
+    sLinkCape->sideSwayMagnitude = CVar_GetFloat("gLinkCapesideSwayMagnitude", 0.0f);
     sLinkCape->minDist = CVar_GetFloat("gLinkCapeWidth", 10.0f);
-    sLinkCape->gravity = -2.5f;
+    sLinkCape->gravity = CVar_GetFloat("gLinkCapeGravity", -2.5f);
 
     sLinkCape->actor.world.pos = this->actor.world.pos;
 
