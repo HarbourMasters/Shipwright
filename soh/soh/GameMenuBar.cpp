@@ -956,6 +956,7 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Gives Link Ganondorf's cape\nTime to get some drip");
             if (CVar_GetS32("gLinkCape", 0) != 0) {
                 UIWidgets::EnhancementSliderFloat("Cape Length: %d", "##Cape_Length", "gLinkCapeLength", 0.0f, 9.5f, "", 3.5f, true);
+                UIWidgets::EnhancementSliderFloat("Cape Width: %d (Need reload)", "##Cape_Width", "gLinkCapeWidth", 10.0f, 20.0f, "", 10.0f, true);
             }
             
 

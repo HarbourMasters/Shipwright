@@ -9731,7 +9731,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     sLinkCape->backPush = -9.0f;
     sLinkCape->backSwayMagnitude = 0.0f;
     sLinkCape->sideSwayMagnitude = 0.0f;
-    sLinkCape->minDist = 0.0f;
+    sLinkCape->minDist = CVar_GetFloat("gLinkCapeWidth", 0);
     sLinkCape->gravity = -2.5f;
 }
 
