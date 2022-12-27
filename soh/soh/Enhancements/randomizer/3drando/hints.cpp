@@ -414,16 +414,15 @@ static void CreateRandomLocationHint(const bool goodItem = false) {
 
   //form hint text
   Text itemText = Location(hintedLocation)->GetPlacedItem().GetHint().GetText();
+  Text locationText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
+  // RANDOTODO: reconsider dungeon vs non-dungeon item location hints when boss shuffle mixed pools happens
   if (Location(hintedLocation)->IsDungeon()) {
-    uint32_t parentRegion = Location(hintedLocation)->GetParentRegionKey();
-    Text locationText = AreaTable(parentRegion)->GetHint().GetText();
     Text finalHint = Hint(PREFIX).GetText()+"#"+locationText+"# "+Hint(HOARDS).GetText()+" #"+itemText+"#.";
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalHint.english);
     SPDLOG_DEBUG("\n\n");
     AddHint(finalHint, gossipStone, {QM_GREEN, QM_RED});
   } else {
-    Text locationText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
     Text finalHint = Hint(PREFIX).GetText()+"#"+itemText+"# "+Hint(CAN_BE_FOUND_AT).GetText()+" #"+locationText+"#.";
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalHint.english);
