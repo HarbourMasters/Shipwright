@@ -190,13 +190,6 @@ void EnGanonMant_UpdateStrand(PlayState* play, EnGanonMant* this, Vec3f* root, V
             (pos + i)->x += posStep.x;
             (pos + i)->z += posStep.z;
         }
-        /*
-        // Set length
-        if (CVar_GetS32("gLinkCape", 0) == 1) {
-            jLength = 3.5f; 
-        } else if (CVar_GetS32("gLinkCape", 0) == 0) {
-            jLength = 0.0f; 
-        }*/
         jointLength; 
     } else {
         jointLength; 
