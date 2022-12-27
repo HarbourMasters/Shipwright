@@ -161,6 +161,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/ZAPDUtils
 	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/lib/tinyxml2
 	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/include
     ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src
     ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src/resource
     ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src/resource/types
