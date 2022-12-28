@@ -2,6 +2,7 @@
 #define Z64MATH_H
 
 #include <libultraship/libultra.h>
+#include <include/libc/math.h>
 
 #define VEC_SET(V,X,Y,Z) (V).x=(X);(V).y=(Y);(V).z=(Z)
 

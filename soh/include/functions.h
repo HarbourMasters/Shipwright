@@ -2,6 +2,7 @@
 #define FUNCTIONS_H
 
 #include "z64.h"
+#include <stdarg.h>
 
 #ifdef __cplusplus
 #define this thisx
