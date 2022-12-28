@@ -8,13 +8,12 @@
 #include "Color3b.h"
 
 namespace Ship {
-class PlayerAnimationV0 : public Resource {
-  public:
-    void ParseFileBinary(BinaryReader* reader, Resource* res) override;
-};
 
 class PlayerAnimation : public Resource {
   public:
+    void* GetPointer();
+    size_t GetPointerSize();
+
     std::vector<int16_t> limbRotData;
 };
 } // namespace Ship
