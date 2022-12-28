@@ -18,7 +18,7 @@ std::shared_ptr<Resource> PlayerAnimationFactory::ReadResource(std::shared_ptr<B
 
 	if (factory == nullptr)
 	{
-		SPDLOG_ERROR("Failed to load Blob with version {}", version);
+		SPDLOG_ERROR("Failed to load PlayerAnimation with version {}", version);
 		return nullptr;
 	}
 
