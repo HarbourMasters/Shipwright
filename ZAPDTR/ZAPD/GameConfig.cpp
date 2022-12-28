@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <string_view>
+#include <unordered_map>
 
 #include "Utils/Directory.h"
 #include "Utils/File.h"
