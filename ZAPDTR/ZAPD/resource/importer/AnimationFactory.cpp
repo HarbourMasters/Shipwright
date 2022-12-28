@@ -15,7 +15,7 @@ std::shared_ptr<Resource> AnimationFactory::ReadResource(std::shared_ptr<BinaryR
     }
 
     if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load Blob with version {}", version);
+        SPDLOG_ERROR("Failed to load Animation with version {}", version);
         return nullptr;
     }
 
