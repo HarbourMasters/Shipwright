@@ -82,13 +82,30 @@ void Ship::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
 
     collisionHeader->camDataCount = reader->ReadUInt32();
     collisionHeader->camData.reserve(collisionHeader->camDataCount);
+    collisionHeader->camPosDataIndices.reserve(collisionHeader->camDataCount);
+    collisionHeader->camPosData.reserve(collisionHeader->camDataCount);
     for (uint32_t i = 0; i < collisionHeader->camDataCount; i++) {
         CamData camDataEntry;
-        camDataEntry->cameraSType = reader->ReadUInt16();
-        camDataEntry->numData = reader->ReadInt16();
-        entry->cameraPosDataIdx = reader->ReadInt32();
-        col->camData->entries.push_back(entry); //TODO this isn't correct, fix this
+        camDataEntry.cameraSType = reader->ReadUInt16();
+        camDataEntry.numCameras = reader->ReadInt16();
+        int32_t camPosDataIdx = reader->ReadInt32();
+        collisionHeader->camPosDataIndices.push_back(camPosDataIdx);
+        camDataEntry.camPosData = collisionHeader->camPosData[i].data();
+        collisionHeader->camData.push_back(camDataEntry);
     }
+
+    // TODO: still not sure what's going on here
+    //  
+    // uint32_t camPosCnt = reader->ReadInt32();
+    // col->camData->cameraPositionData.reserve(camPosCnt);
+
+    // for (uint32_t i = 0; i < camPosCnt; i++) {
+    //     Ship::CameraPositionData* entry = new Ship::CameraPositionData();
+    //     entry->x = reader->ReadInt16();
+    //     entry->y = reader->ReadInt16();
+    //     entry->z = reader->ReadInt16();
+    //     col->camData->cameraPositionData.push_back(entry);
+    // }
 
 }
 } // namespace Ship
@@ -96,16 +113,7 @@ void Ship::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
 
 
 
-//     uint32_t camPosCnt = reader->ReadInt32();
-//     col->camData->cameraPositionData.reserve(camPosCnt);
 
-//     for (uint32_t i = 0; i < camPosCnt; i++) {
-//         Ship::CameraPositionData* entry = new Ship::CameraPositionData();
-//         entry->x = reader->ReadInt16();
-//         entry->y = reader->ReadInt16();
-//         entry->z = reader->ReadInt16();
-//         col->camData->cameraPositionData.push_back(entry);
-//     }
 
 //     uint32_t waterBoxCnt = reader->ReadInt32();
 //     col->waterBoxes.reserve(waterBoxCnt);
