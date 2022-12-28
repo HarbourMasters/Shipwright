@@ -2,7 +2,7 @@
 
 namespace Ship {
 void* Text::GetPointer() {
-    return &animationData;
+    return messages.data();
 }
 
 size_t Text::GetPointerSize() {
