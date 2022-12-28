@@ -2,10 +2,23 @@
 
 namespace Ship {
 void* SkeletonLimb::GetPointer() {
-    return nullptr;
+    return &limbData;
 }
 
 size_t SkeletonLimb::GetPointerSize() {
-	return 0;
+    switch(limbType) {
+        case LimbType::Standard:
+            return sizeof(limbData.standardLimb);
+        case LimbType::LOD:
+            return sizeof(limbData.lodLimb);
+        case LimbType::Skin:
+            return sizeof(limbData.skinLimb);
+        case LimbType::Curve:
+            return sizeof(limbData.skelCurveLimb);
+        case LimbType::Invalid:
+        case LimbType::Legacy:
+        default:
+            return 0;
+    }
 }
 } // namespace Ship

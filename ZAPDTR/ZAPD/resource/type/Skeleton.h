@@ -49,6 +49,8 @@ union SkeletonData {
 
 class Skeleton : public Resource {
   public:
+    void* GetPointer();
+    size_t GetPointerSize();
 
     SkeletonType type;
     SkeletonData skeletonData;

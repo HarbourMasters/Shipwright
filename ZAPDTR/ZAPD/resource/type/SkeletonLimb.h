@@ -53,14 +53,59 @@ typedef struct {
     /* 0x0C */ SkinTransformation* limbTransformations;
 } SkinLimbModif; // size = 0x10
 
+typedef struct {
+    /* 0x00 */ Vec3s jointPos; // Root is position in model space, children are relative to parent
+    /* 0x06 */ u8 child;
+    /* 0x07 */ u8 sibling;
+    /* 0x08 */ Gfx* dLists[2]; // Near and far
+} LodLimb; // size = 0x10
+
+typedef struct {
+    /* 0x00 */ Vec3s jointPos; // Root is position in model space, children are relative to parent
+    /* 0x06 */ u8 child;
+    /* 0x07 */ u8 sibling;
+    /* 0x08 */ Gfx* dList;
+} StandardLimb; // size = 0xC
+
+typedef struct {
+    /* 0x0000 */ u8 firstChildIdx;
+    /* 0x0001 */ u8 nextLimbIdx;
+    /* 0x0004 */ Gfx* dList[2];
+} SkelCurveLimb; // size = 0xC
+
+typedef struct {
+    /* 0x00 */ Vec3s jointPos; // Root is position in model space, children are relative to parent
+    /* 0x06 */ u8 child;
+    /* 0x07 */ u8 sibling;
+    /* 0x08 */ s32 segmentType; // Type of data contained in segment
+    /* 0x0C */ void* segment; // Gfx* if segmentType is SKIN_LIMB_TYPE_NORMAL, SkinAnimatedLimbData* if segmentType is SKIN_LIMB_TYPE_ANIMATED, NULL otherwise
+} SkinLimb; // size = 0x10
+
+typedef struct {
+    /* 0x00 */ u16 totalVtxCount; // total vertex count for all modif entries
+    /* 0x02 */ u16 limbModifCount;
+    /* 0x04 */ SkinLimbModif* limbModifications;
+    /* 0x08 */ Gfx* dlist;
+} SkinAnimatedLimbData; // size = 0xC
+
+union SkeletonLimbData {
+  LodLimb lodLimb;
+  StandardLimb standardLimb;
+  SkelCurveLimb skelCurveLimb;
+  SkinLimb skinLimb;
+};
+
 class SkeletonLimb : public Resource {
 public:
   void* GetPointer();
   size_t GetPointerSize();
 
   LimbType limbType;
+  SkeletonLimbData limbData;
+
   ZLimbSkinType skinSegmentType;
   uint16_t skinVtxCnt;
+  SkinAnimatedLimbData skinAnimLimbData;
 
   std::string skinDataDList;
   std::string skinDList;

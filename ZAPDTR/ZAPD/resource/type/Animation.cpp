@@ -14,6 +14,7 @@ size_t Animation::GetPointerSize() {
         case AnimationType::Curve:
             return sizeof(animationData.transformUpdateIndex);
         case AnimationType::Legacy:
+        default:
             return 0;
     }
 }
