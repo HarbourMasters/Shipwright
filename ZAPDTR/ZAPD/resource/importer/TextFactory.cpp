@@ -33,10 +33,10 @@ void Ship::TextFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<Text> text = std::static_pointer_cast<Text>(resource);
-	ResourceFile::ParseFileBinary(reader, txt);
+	ResourceFile::ParseFileBinary(reader, text);
 
 	uint32_t msgCount = reader->ReadUInt32();
-	txt->messages.reserve(msgCount);
+	text->messages.reserve(msgCount);
 
 	for (uint32_t i = 0; i < msgCount; i++)
 	{
@@ -46,7 +46,7 @@ void Ship::TextFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
 		entry.textboxYPos = reader->ReadUByte();
 		entry.msg = reader->ReadString();
 
-		txt->messages.push_back(entry);
+		text->messages.push_back(entry);
 	}
 }
 } // namespace Ship
