@@ -12,62 +12,72 @@ enum class LimbType {
     Legacy,
 };
 
-enum class ZLimbSkinType {
-    SkinType_0,          // Segment = 0
-    SkinType_4 = 4,      // Segment = segmented address // Struct_800A5E28
-    SkinType_5 = 5,      // Segment = 0
-    SkinType_DList = 11, // Segment = DList address
-};
-
-class Struct_800A57C0 // SkinVertex
+enum class ZLimbSkinType
 {
-  public:
-    uint16_t unk_0;
-    int16_t unk_2;
-    int16_t unk_4;
-    int8_t unk_6;
-    int8_t unk_7;
-    int8_t unk_8;
-    uint8_t unk_9;
+	SkinType_0,           // Segment = 0
+	SkinType_4 = 4,       // Segment = segmented address // Struct_800A5E28
+	SkinType_5 = 5,       // Segment = 0
+	SkinType_DList = 11,  // Segment = DList address
 };
 
-class Struct_800A598C_2 // SkinTransformation
-{
-  public:
-    uint8_t unk_0;
-    int16_t x;
-    int16_t y;
-    int16_t z;
-    uint8_t unk_8;
-};
+/**
+ * Holds a compact version of a vertex used in the Skin system
+ * It is used to initialise the Vtx used by an animated limb
+ */
+typedef struct {
+    /* 0x00 */ u16 index;
+    /* 0x02 */ s16 s; // s and t are texture coordinates (also known as u and v)
+    /* 0x04 */ s16 t;
+    /* 0x06 */ s8 normX;
+    /* 0x07 */ s8 normY;
+    /* 0x08 */ s8 normZ;
+    /* 0x09 */ u8 alpha;
+} SkinVertex; // size = 0xA
 
-class Struct_800A598C // SkinLimbModif
-{
-  public:
-    uint16_t unk_0; // Length of unk_8
-    uint16_t unk_2; // Length of unk_C
-    uint16_t unk_4; // 0 or 1 // Used as an index for unk_C
+/**
+ * Describes a position displacement and a scale to be applied to a limb at index `limbIndex`
+ */
+typedef struct {
+    /* 0x00 */ u8 limbIndex;
+    /* 0x02 */ s16 x;
+    /* 0x04 */ s16 y;
+    /* 0x06 */ s16 z;
+    /* 0x08 */ u8 scale;
+} SkinTransformation; // size = 0xA
 
-    std::vector<Struct_800A57C0> unk_8_arr;
-    std::vector<Struct_800A598C_2> unk_C_arr;
-};
+typedef struct {
+    /* 0x00 */ u16 vtxCount; // number of vertices in this modif entry
+    /* 0x02 */ u16 transformCount;
+    /* 0x04 */ u16 unk_4; // index of limbTransformations?
+    /* 0x08 */ SkinVertex* skinVertices;
+    /* 0x0C */ SkinTransformation* limbTransformations;
+} SkinLimbModif; // size = 0x10
 
 class SkeletonLimb : public Resource {
-  public:
-    LimbType limbType;
-    ZLimbSkinType skinSegmentType;
-    uint16_t skinVtxCnt;                   // Struct_800A5E28
-    std::vector<Struct_800A598C> skinData; // SkinLimbModif
-    std::string skinDataDList;
-    std::string skinDList;
-    std::string skinDList2;
+public:
+  void* GetPointer();
+  size_t GetPointerSize();
 
-    float legTransX, legTransY, legTransZ; // Vec3f
-    uint16_t rotX, rotY, rotZ;             // Vec3s
+  LimbType limbType;
+  ZLimbSkinType skinSegmentType;
+  uint16_t skinVtxCnt;
 
-    std::string childPtr, siblingPtr, dListPtr, dList2Ptr;
+  std::string skinDataDList;
+  std::string skinDList;
+  std::string skinDList2;
 
-    int16_t transX, transY, transZ;
-    uint8_t childIndex, siblingIndex;
+  float legTransX, legTransY, legTransZ; // Vec3f
+  uint16_t rotX, rotY, rotZ;             // Vec3s
+
+  std::string childPtr, siblingPtr, dListPtr, dList2Ptr;
+
+  int16_t transX, transY, transZ;
+  uint8_t childIndex, siblingIndex;
+
+  uint32_t skinLimbModifCount;
+  std::vector<SkinLimbModif> skinLimbModifArray;
+
+  std::vector<std::vector<SkinVertex>> skinLimbModifVertexArrays;
+  std::vector<std::vector<SkinTransformation>> skinLimbModifTransformationArrays;
 };
 } // namespace Ship
