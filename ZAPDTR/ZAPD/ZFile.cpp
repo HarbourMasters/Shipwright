@@ -219,11 +219,11 @@ void ZFile::ParseXML(tinyxml2::XMLElement* reader, const std::string& filename)
 	{
 		const char* nameXml = child->Attribute("Name");
 		const char* outNameXml = child->Attribute("OutName");
-		std::string_view offsetXml = child->Attribute("Offset");
 
 		// Check for repeated attributes.
-		if (offsetXml != nullptr)
+		if (child->Attribute("Offset") != nullptr)
 		{
+		std::string_view offsetXml = child->Attribute("Offset");
 			std::string_view offsetStr = StringHelper::Split(offsetXml, "0x")[1];
 			if (0)
 			{
