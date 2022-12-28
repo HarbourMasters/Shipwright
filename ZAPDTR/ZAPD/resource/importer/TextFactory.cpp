@@ -25,8 +25,6 @@ std::shared_ptr<Resource> TextFactory::ReadResource(std::shared_ptr<BinaryReader
 	factory->ParseFileBinary(reader, resource);
 
 	return resource;
-
-    return resource;
 }
 
 void Ship::TextFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
