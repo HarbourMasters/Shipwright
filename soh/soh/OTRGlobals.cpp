@@ -15,7 +15,7 @@
 #include "z64animation.h"
 #include "z64bgcheck.h"
 #include "Enhancements/gameconsole.h"
-#include <ultra64/gbi.h>
+#include <libultraship/libultra/gbi.h>
 #include <Animation.h>
 #ifdef _WIN32
 #include <Windows.h>
