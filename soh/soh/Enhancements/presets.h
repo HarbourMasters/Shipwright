@@ -625,6 +625,7 @@ const std::vector<PresetEntry> s6PresetEntries = {
     PRESET_ENTRY_S32("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_STARTWITH),
     PRESET_ENTRY_S32("gRandomizeStartingOcarina", 1),
     PRESET_ENTRY_S32("gRandomizeZorasFountain", 0),
+    PRESET_ENTRY_S32("gRandomizeShuffleOcarinas", 0),
 };
 
 const std::vector<PresetEntry> hellModePresetEntries = {
