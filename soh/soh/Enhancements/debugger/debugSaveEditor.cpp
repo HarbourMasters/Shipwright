@@ -283,15 +283,15 @@ void DrawGroupWithBorder(T&& drawFunc) {
 
 char z2ASCII(int code) {
     int ret;
-    if (code < 10) { // Digits
+    if (code < 0x0A) { // Digits
         ret = code + 0x30;
-    } else if (code >= 10 && code < 36) { // Uppercase letters
+    } else if (code >= 0x0A && code < 0x24) { // Uppercase letters
         ret = code + 0x37;
-    } else if (code >= 36 && code < 62) { // Lowercase letters
+    } else if (code >= 0x24 && code < 0x3E) { // Lowercase letters
         ret = code + 0x3D;
-    } else if (code == 62) { // Space
-        ret = code - 0x1E;
-    } else if (code == 63 || code == 64) { // - and .
+    } else if (code == 0x3E) { // Space
+        ret = ' ';
+    } else if (code == 0x3F || code == 0x40) { // - .
         ret = code - 0x12;
     } else {
         ret = code;
@@ -301,15 +301,15 @@ char z2ASCII(int code) {
 
 unsigned char ASCII2z(int code) {
     int ret = 0;
-    if (code >= 0x30 && code <= 0x39) { // Digits
+    if (code >= '0' && code <= '9') {
         ret = code - 0x30;
-    } else if (code >= 0x41 && code <= 0x5A) { // Uppercase letters
+    } else if (code >= 'A' && code <= 'Z') {
         ret = code - 0x37;
-    } else if (code >= 0x61 && code <= 0x7A) { // Lowercase letters
+    } else if (code >= 'a' && code <= 'z') {
         ret = code - 0x3D;
-    } else if (code == 0x20) { // Space
-        ret = code + 0x1E;
-    } else if (code == 0x2D || code == 0x2E) { // - and .
+    } else if (code == ' ') {
+        ret = 0x3E;
+    } else if (code == '-' || code == '.') {
         ret = code + 0x12;
     } else {
         ret = code;
@@ -334,7 +334,7 @@ void SetPlayerName(const char* newName, char* to) {
         if (i < strlen(newName)) {
             to[i] = ASCII2z(newName[i]);
         } else {
-            to[i] = char(0x20 + 0x1E);
+            to[i] = char(0x3E); // Fill with PAL spaces
         }
     }
 }
