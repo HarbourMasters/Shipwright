@@ -456,7 +456,7 @@ extern "C" void InitOTR() {
     if (tm_now->tm_mon == 11 && tm_now->tm_mday >= 24 && tm_now->tm_mday <= 25) {
         CVar_RegisterS32("gLetItSnow", 1);
     } else {
-        CVar_Clear("gLetItSnow");
+        CVarClear("gLetItSnow");
     }
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance = new CrowdControl();
@@ -586,7 +586,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     audio.cv_to_thread.notify_one();
     std::vector<std::unordered_map<Mtx*, MtxF>> mtx_replacements;
-    int target_fps = CVar_GetS32("gInterpolationFPS", 20);
+    int target_fps = CVarGetInteger("gInterpolationFPS", 20);
     static int last_fps;
     static int last_update_rate;
     static int time;
@@ -617,7 +617,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     OTRGlobals::Instance->context->SetTargetFps(fps);
 
-    int threshold = CVar_GetS32("gExtraLatencyThreshold", 80);
+    int threshold = CVarGetInteger("gExtraLatencyThreshold", 80);
     OTRGlobals::Instance->context->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
 
     RunCommands(commands, mtx_replacements);
@@ -1936,7 +1936,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
                 u16 iceTrapTextId = Random(0, NUM_ICE_TRAP_MESSAGES);
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, iceTrapTextId);
-                if (CVar_GetS32("gLetItSnow", 0)) {
+                if (CVarGetInteger("gLetItSnow", 0)) {
                     messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1);
                 }
             } else if (player->getItemEntry.getItemId >= RG_DEKU_TREE_MAP && player->getItemEntry.getItemId <= RG_ICE_CAVERN_MAP) {
@@ -1998,12 +1998,12 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 RandomizerInf randoInf = (RandomizerInf)((textId - (TEXT_SHOP_ITEM_RANDOM + NUM_SHOP_ITEMS)) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
                 messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, TEXT_SHOP_ITEM_RANDOM_CONFIRM);
             }
-        } else if (CVar_GetS32("gRandomizeRupeeNames", 0) &&
+        } else if (CVarGetInteger("gRandomizeRupeeNames", 0) &&
                    (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
                    textId == TEXT_HUGE_RUPEE)) {
             messageEntry = Randomizer::GetRupeeMessage(textId);
             // In rando, replace Navi's general overworld hints with rando-related gameplay tips
-        } else if (CVar_GetS32("gRandoRelevantNavi", 1) && textId >= 0x0140 && textId <= 0x015F) {
+        } else if (CVarGetInteger("gRandoRelevantNavi", 1) && textId >= 0x0140 && textId <= 0x015F) {
             u16 naviTextId = Random(0, NUM_NAVI_MESSAGES);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
         } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS) && textId == TEXT_BEAN_SALESMAN) {
@@ -2024,7 +2024,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
-        if (CVar_GetS32("gInjectItemCounts", 0) != 0) {
+        if (CVarGetInteger("gInjectItemCounts", 0) != 0) {
             // The freeze text cannot be manually dismissed and must be auto-dismissed.
             // This is fine and even wanted when skull tokens are not shuffled, but when
             // when they are shuffled we don't want to be able to manually dismiss the box.
@@ -2032,7 +2032,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             // animation until the text box auto-dismisses.
             // RANDOTODO: Implement a way to determine if an item came from a skulltula and
             // inject the auto-dismiss control code if it did.
-            if (CVar_GetS32("gSkulltulaFreeze", 0) != 0 &&
+            if (CVarGetInteger("gSkulltulaFreeze", 0) != 0 &&
                 !(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
                 textId = TEXT_GS_NO_FREEZE;
             } else {
@@ -2042,15 +2042,15 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{gsCount}}", std::to_string(gSaveContext.inventory.gsTokens + 1));
         }
     }
-    if (textId == TEXT_HEART_CONTAINER && CVar_GetS32("gInjectItemCounts", 0)) {
+    if (textId == TEXT_HEART_CONTAINER && CVarGetInteger("gInjectItemCounts", 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_CONTAINER);
         CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{heartContainerCount}}", std::to_string(gSaveContext.sohStats.heartContainers + 1));
     }
-    if (textId == TEXT_HEART_PIECE && CVar_GetS32("gInjectItemCounts", 0)) {
+    if (textId == TEXT_HEART_PIECE && CVarGetInteger("gInjectItemCounts", 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE);
         CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{heartPieceCount}}", std::to_string(gSaveContext.sohStats.heartPieces + 1));
     }
-    if (textId == TEXT_MARKET_GUARD_NIGHT && CVar_GetS32("gMarketSneak", 0) && play->sceneNum == SCENE_ENTRA_N) {
+    if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger("gMarketSneak", 0) && play->sceneNum == SCENE_ENTRA_N) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT);
     }
     if (messageEntry.textBoxType != -1) {

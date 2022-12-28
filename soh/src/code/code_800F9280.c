@@ -1,4 +1,4 @@
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include <ultra64/abi.h>
 #include <mixer.h>

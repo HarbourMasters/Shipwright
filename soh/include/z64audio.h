@@ -819,7 +819,7 @@ typedef struct {
     /* 0x0E */ u8 ttl;        // duration after which the DMA can be discarded
 } SampleDma; // size = 0x10
 
-#include <ultra64/abi.h>
+#include <libultraship/libultra/abi.h>
 
 typedef struct {
     /* 0x0000 */ char unk_0000;

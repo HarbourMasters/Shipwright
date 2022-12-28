@@ -1216,7 +1216,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
     static Color_RGBA8 bloodPrimColor = { 0, 120, 0, 255 };
     static Color_RGBA8 bloodEnvColor = { 0, 120, 0, 255 };
 
-    if(CVar_GetS32("gRedGanonBlood", 0)) {
+    if(CVarGetInteger("gRedGanonBlood", 0)) {
         bloodPrimColor.r = 120;
         bloodPrimColor.g = 0;
 

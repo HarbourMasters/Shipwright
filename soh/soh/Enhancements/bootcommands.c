@@ -2,15 +2,15 @@
 #include "gameconsole.h"
 #include <macros.h>
 #include <z64.h>
-#include <ultra64.h>
+#include <libultraship/libultra.h>
 #include <functions.h>
 #include <variables.h>
 #include <string.h>
 #include <stdarg.h>
 #include <z64.h>
-#include <ultra64/gbi.h>
-#include <ultra64/gs2dex.h>
-#include <ultra64/controller.h>
+#include <libultraship/libultra/gbi.h>
+#include <libultraship/libultra/gs2dex.h>
+#include <libultraship/libultra/controller.h>
 
 uint8_t gLoadFileSelect = 0, gSkipLogoTest = 0;
 
@@ -25,7 +25,7 @@ void BootCommands_Init()
     CVar_RegisterS32("gDebugEnabled", 0);
     CVar_RegisterS32("gLanguages", LANGUAGE_ENG);
     CVar_RegisterS32("gInvertYAxis", 1);
-    CVar_SetS32("gRandoGenerating", 0); // Clear when a crash happened during rando seed generation
+    CVarSetInteger("gRandoGenerating", 0); // Clear when a crash happened during rando seed generation
 #if defined(__SWITCH__) || defined(__WIIU__)
     CVar_RegisterS32("gControlNav", 1); // always enable controller nav on switch/wii u
 #endif

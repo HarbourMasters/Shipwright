@@ -1,7 +1,7 @@
 #ifndef Z_MAGIC_DARK_H
 #define Z_MAGIC_DARK_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct MagicDark;

@@ -624,8 +624,8 @@ void EnBox_Update(Actor* thisx, PlayState* play) {
 
 void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     EnBox_CreateExtraChestTextures();
-    int cvar = CVar_GetS32("gChestSizeAndTextureMatchesContents", 0);
-    int agonyCVar = CVar_GetS32("gChestSizeDependsStoneOfAgony", 0);
+    int cvar = CVarGetInteger("gChestSizeAndTextureMatchesContents", 0);
+    int agonyCVar = CVarGetInteger("gChestSizeDependsStoneOfAgony", 0);
     int stoneCheck = CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY);
     GetItemCategory getItemCategory;
 
@@ -708,7 +708,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
         }
     }
 
-    if (CVar_GetS32("gLetItSnow", 0) && hasChristmasChestTexturesAvailable) {
+    if (CVarGetInteger("gLetItSnow", 0) && hasChristmasChestTexturesAvailable) {
         if (this->dyna.actor.scale.x == 0.01f) {
             this->boxBodyDL = gChristmasRedTreasureChestChestFrontDL;
             this->boxLidDL = gChristmasRedTreasureChestChestSideAndLidDL;

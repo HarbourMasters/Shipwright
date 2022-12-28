@@ -123,7 +123,7 @@ set(Header_Files__include
     #"include/stdbool_n64.h"
     #"include/stddef_n64.h"
     #"include/stdlib_n64.h"
-    "include/ultra64.h"
+    # "include/ultra64.h"
     "include/unk.h"
     "include/variables.h"
     "include/vt.h"
@@ -1741,7 +1741,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/misc
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/core
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/resource
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/resource/types
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/resource/type
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/audio
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/extern
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/extern/Mercury

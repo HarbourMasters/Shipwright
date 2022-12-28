@@ -628,15 +628,15 @@ void func_80A0329C(EnElf* this, PlayState* play) {
 
         if ((heightDiff > 0.0f) && (heightDiff < 60.0f)) {
             if (!func_80A01F90(&this->actor.world.pos, &refActor->actor.world.pos, 10.0f)) {
-                if (CVar_GetS32("gFairyEffect", 0) && !(this->fairyFlags & FAIRY_FLAG_BIG))
+                if (CVarGetInteger("gFairyEffect", 0) && !(this->fairyFlags & FAIRY_FLAG_BIG))
                 {
-                    if (CVar_GetS32("gFairyPercentRestore", 0))
+                    if (CVarGetInteger("gFairyPercentRestore", 0))
                     {
-                        Health_ChangeBy(play, (gSaveContext.healthCapacity * CVar_GetS32("gFairyHealth", 100) / 100 + 15) / 16 * 16);
+                        Health_ChangeBy(play, (gSaveContext.healthCapacity * CVarGetInteger("gFairyHealth", 100) / 100 + 15) / 16 * 16);
                     }
                     else
                     {
-                        Health_ChangeBy(play, CVar_GetS32("gFairyHealth", 8) * 16);
+                        Health_ChangeBy(play, CVarGetInteger("gFairyHealth", 8) * 16);
                     }
                 }
                 else
@@ -1483,7 +1483,7 @@ s32 EnElf_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
         if (this->fairyFlags & FAIRY_FLAG_BIG) {
             scale *= 2.0f;
         }
-        scale *= CVar_GetFloat("gCosmetics.Fairies_Size", 1.0f);
+        scale *= CVarGetFloat("gCosmetics.Fairies_Size", 1.0f);
 
         scale *= (this->actor.scale.x * 124.99999f);
         Matrix_MultVec3f(&zeroVec, &mtxMult);

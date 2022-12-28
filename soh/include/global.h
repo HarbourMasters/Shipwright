@@ -9,7 +9,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/gameconsole.h"
 #include "soh/Enhancements/gameplaystats.h"
-#include <Cvar.h>
+#include <libultraship/bridge.h>
 
 #define _AudioseqSegmentRomStart "Audioseq"
 #define _AudiobankSegmentRomStart "Audiobank"
