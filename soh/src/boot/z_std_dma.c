@@ -168,7 +168,7 @@ void DmaMgr_Error(DmaRequest* req, const char* file, const char* errorName, cons
     char buff1[80];
     char buff2[80];
 
-    osSyncPrintf("%c", 7);
+    osSyncPrintf("%c", BEL);
     osSyncPrintf(VT_FGCOL(RED));
     osSyncPrintf("DMA致命的エラー(%s)\nROM:%X RAM:%X SIZE:%X %s\n",
                  errorDesc != NULL ? errorDesc : (errorName != NULL ? errorName : "???"), vrom, ram, size,
@@ -348,7 +348,7 @@ s32 DmaMgr_SendRequestImpl(DmaRequest* req, uintptr_t ram, uintptr_t vrom, size_
     if (1) {
         if ((sDmaMgrQueueFullLogged == 0) && (sDmaMgrMsgQueue.validCount >= sDmaMgrMsgQueue.msgCount)) {
             sDmaMgrQueueFullLogged++;
-            osSyncPrintf("%c", 7);
+            osSyncPrintf("%c", BEL);
             osSyncPrintf(VT_FGCOL(RED));
             osSyncPrintf("dmaEntryMsgQが一杯です。キューサイズの再検討をおすすめします。");
             LOG_NUM("(sizeof(dmaEntryMsgBufs) / sizeof(dmaEntryMsgBufs[0]))", ARRAY_COUNT(sDmaMgrMsgs));
