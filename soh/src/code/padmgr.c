@@ -338,7 +338,7 @@ void PadMgr_HandleRetraceMsg(PadMgr* padMgr) {
     osContGetReadData(padMgr->pads);
 
     for (i = 0; i < __osMaxControllers; i++) {
-        padMgr->padStatus[i].status = CVar_GetS32("gRumbleEnabled", 0) && Controller_ShouldRumble(i);
+        padMgr->padStatus[i].status = Controller_ShouldRumble(i);
     }
 
     if (padMgr->preNMIShutdown) {

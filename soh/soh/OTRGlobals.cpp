@@ -1783,12 +1783,13 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
     }
 }
 
-extern "C" int Controller_ShouldRumble(size_t i) {
+extern "C" int Controller_ShouldRumble(size_t slot) {
     auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
-
-    for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
-        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
-        if (physicalDevice->CanRumble()) {
+    
+    if (slot < controlDeck->GetNumVirtualDevices()) {
+        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(slot);
+        
+        if (physicalDevice->getProfile(slot)->UseRumble && physicalDevice->CanRumble()) {
             return 1;
         }
     }

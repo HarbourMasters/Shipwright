@@ -358,7 +358,7 @@ extern "C" u16 SfxEditor_GetReplacementSeq(u16 seqId) {
             seqId = NA_BGM_FIELD_LOGIC;
         }
     }
-    
+
     if (sfxEditorSequenceMap.find(seqId) == sfxEditorSequenceMap.end()) {
         return seqId;
     }
@@ -448,7 +448,7 @@ void InitSfxEditor() {
 }
 
 extern "C" void SfxEditor_AddSequence(char *otrPath, uint16_t seqNum) {
-    std::vector<std::string> splitName = StringHelper::Split(otrPath, "/");
+    std::vector<std::string> splitName = StringHelper::Split(std::string(otrPath), "/");
     std::string fileName = splitName[splitName.size() - 1];
     std::vector<std::string> splitFileName = StringHelper::Split(fileName, "_");
     std::string sequenceName = splitFileName[0];
