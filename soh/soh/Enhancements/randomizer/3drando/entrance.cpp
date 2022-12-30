@@ -30,21 +30,6 @@ typedef struct {
     int16_t blueWarp;
 } EntranceLinkInfo;
 
-typedef struct {
-  int16_t dungeonIndex;
-  int16_t exitIndex;
-  int16_t exitBlueWarp;
-} DungeonEntranceInfo;
-
-typedef struct {
-  EntranceType type;
-  AreaKey bossDoor;
-  AreaKey bossRoom;
-  AreaKey dungeon;
-  int16_t index;
-  int16_t exitIndex;
-} EntranceBossRoomInfo;
-
 EntranceLinkInfo NO_RETURN_ENTRANCE = {EntranceType::None, NONE, NONE, -1};
 
 typedef struct {
@@ -55,7 +40,6 @@ typedef struct {
 using EntranceInfoPair = std::pair<EntranceLinkInfo, EntranceLinkInfo>;
 using EntrancePair = std::pair<Entrance*, Entrance*>;
 using EntrancePools = std::map<EntranceType, std::vector<Entrance*>>;
-using DungeonData = std::map<AreaKey, DungeonEntranceInfo>;
 
 //The entrance randomization algorithm used here is a direct copy of
 //the algorithm used in the original N64 randomizer (except now in C++ instead
@@ -962,38 +946,24 @@ int ShuffleAllEntrances() {
     {{EntranceType::WarpSong,        REQUIEM_OF_SPIRIT_WARP,           DESERT_COLOSSUS,                      0x01F1}, NO_RETURN_ENTRANCE},
     {{EntranceType::WarpSong,        NOCTURNE_OF_SHADOW_WARP,          GRAVEYARD_WARP_PAD_REGION,            0x0568}, NO_RETURN_ENTRANCE},
     {{EntranceType::WarpSong,        PRELUDE_OF_LIGHT_WARP,            TEMPLE_OF_TIME,                       0x05F4}, NO_RETURN_ENTRANCE},
+
+    {{EntranceType::ChildBoss, DEKU_TREE_BOSS_ENTRYWAY,        DEKU_TREE_BOSS_ROOM,            0x040F},
+     {EntranceType::ChildBoss, DEKU_TREE_BOSS_ROOM,            DEKU_TREE_BOSS_ENTRYWAY,        0x0252, 0x0457}},
+    {{EntranceType::ChildBoss, DODONGOS_CAVERN_BOSS_ENTRYWAY,  DODONGOS_CAVERN_BOSS_ROOM,      0x040B},
+     {EntranceType::ChildBoss, DODONGOS_CAVERN_BOSS_ROOM,      DODONGOS_CAVERN_BOSS_ENTRYWAY,  0x00C5, 0x047A}},
+    {{EntranceType::ChildBoss, JABU_JABUS_BELLY_BOSS_ENTRYWAY, JABU_JABUS_BELLY_BOSS_ROOM,     0x0301},
+     {EntranceType::ChildBoss, JABU_JABUS_BELLY_BOSS_ROOM,     JABU_JABUS_BELLY_BOSS_ENTRYWAY, 0x0407, 0x010E}},
+    {{EntranceType::AdultBoss, FOREST_TEMPLE_BOSS_ENTRYWAY,    FOREST_TEMPLE_BOSS_ROOM,        0x000C},
+     {EntranceType::AdultBoss, FOREST_TEMPLE_BOSS_ROOM,        FOREST_TEMPLE_BOSS_ENTRYWAY,    0x024E, 0x0608}},
+    {{EntranceType::AdultBoss, FIRE_TEMPLE_BOSS_ENTRYWAY,      FIRE_TEMPLE_BOSS_ROOM,          0x0305},
+     {EntranceType::AdultBoss, FIRE_TEMPLE_BOSS_ROOM,          FIRE_TEMPLE_BOSS_ENTRYWAY,      0x0175, 0x0564}},
+    {{EntranceType::AdultBoss, WATER_TEMPLE_BOSS_ENTRYWAY,     WATER_TEMPLE_BOSS_ROOM,         0x0417},
+     {EntranceType::AdultBoss, WATER_TEMPLE_BOSS_ROOM,         WATER_TEMPLE_BOSS_ENTRYWAY,     0x0423, 0x060C}},
+    {{EntranceType::AdultBoss, SPIRIT_TEMPLE_BOSS_ENTRYWAY,    SPIRIT_TEMPLE_BOSS_ROOM,        0x008D},
+     {EntranceType::AdultBoss, SPIRIT_TEMPLE_BOSS_ROOM,        SPIRIT_TEMPLE_BOSS_ENTRYWAY,    0x02F5, 0x0610}},
+    {{EntranceType::AdultBoss, SHADOW_TEMPLE_BOSS_ENTRYWAY,    SHADOW_TEMPLE_BOSS_ROOM,        0x0413},
+     {EntranceType::AdultBoss, SHADOW_TEMPLE_BOSS_ROOM,        SHADOW_TEMPLE_BOSS_ENTRYWAY,    0x02B2, 0x0580}},
   };
-
-  DungeonData dungeonData = {};
-
-  // Grab dungeon info from above to avoid having it written out twice
-  for (auto entrance : entranceShuffleTable) {
-    if (entrance.first.type != EntranceType::Dungeon || entrance.second.type == EntranceType::None ||
-      entrance.second.blueWarp == -1) {
-      continue;
-    }
-
-    dungeonData[entrance.second.parentRegion] = {entrance.first.index, entrance.second.index, entrance.second.blueWarp};
-  }
-
-  std::vector<EntranceBossRoomInfo> bossRoomTable = {
-    {EntranceType::ChildBoss, DEKU_TREE_BOSS_ENTRYWAY,        DEKU_TREE_BOSS_ROOM,        DEKU_TREE_ENTRYWAY,        0x040F, 0x0252},
-    {EntranceType::ChildBoss, DODONGOS_CAVERN_BOSS_ENTRYWAY,  DODONGOS_CAVERN_BOSS_ROOM,  DODONGOS_CAVERN_ENTRYWAY,  0x040B, 0x00C5},
-    {EntranceType::ChildBoss, JABU_JABUS_BELLY_BOSS_ENTRYWAY, JABU_JABUS_BELLY_BOSS_ROOM, JABU_JABUS_BELLY_ENTRYWAY, 0x0301, 0x0407},
-    {EntranceType::AdultBoss, FOREST_TEMPLE_BOSS_ENTRYWAY,    FOREST_TEMPLE_BOSS_ROOM,    FOREST_TEMPLE_ENTRYWAY,    0x000C, 0x024E},
-    {EntranceType::AdultBoss, FIRE_TEMPLE_BOSS_ENTRYWAY,      FIRE_TEMPLE_BOSS_ROOM,      FIRE_TEMPLE_ENTRYWAY,      0x0305, 0x0175},
-    {EntranceType::AdultBoss, WATER_TEMPLE_BOSS_ENTRYWAY,     WATER_TEMPLE_BOSS_ROOM,     WATER_TEMPLE_ENTRYWAY,     0x0417, 0x0423},
-    {EntranceType::AdultBoss, SPIRIT_TEMPLE_BOSS_ENTRYWAY,    SPIRIT_TEMPLE_BOSS_ROOM,    SPIRIT_TEMPLE_ENTRYWAY,    0x008D, 0x02F5},
-    {EntranceType::AdultBoss, SHADOW_TEMPLE_BOSS_ENTRYWAY,    SHADOW_TEMPLE_BOSS_ROOM,    SHADOW_TEMPLE_ENTRYWAY,    0x0413, 0x02B2},
-  };
-
-  // Add in boss room entrances and their reverse entrances with the bluewarp index
-  for (auto bossRoomInfo : bossRoomTable) {
-    entranceShuffleTable.push_back({
-      {bossRoomInfo.type, bossRoomInfo.bossDoor, bossRoomInfo.bossRoom, bossRoomInfo.index},
-      {bossRoomInfo.type, bossRoomInfo.bossRoom, bossRoomInfo.bossDoor, bossRoomInfo.exitIndex, dungeonData[bossRoomInfo.dungeon].exitBlueWarp},
-    });
-  }
 
   std::map<std::string, PriorityEntrance> priorityEntranceTable = {
     {"Bolero",   {{DMC_CENTRAL_LOCAL},                                     {EntranceType::OwlDrop, EntranceType::WarpSong}}},
@@ -1033,12 +1003,22 @@ int ShuffleAllEntrances() {
 
   // Shuffle Bosses
   if (Settings::ShuffleBossEntrances.IsNot(SHUFFLEBOSSES_OFF)) {
-    if (Settings::ShuffleBossEntrances.Is(SHUFFLEBOSSES_AGE_RESTRICTED)) {
-      entrancePools[EntranceType::ChildBoss] = GetShuffleableEntrances(EntranceType::ChildBoss);
-      entrancePools[EntranceType::AdultBoss] = GetShuffleableEntrances(EntranceType::AdultBoss);
-    } else {
+    if (Settings::ShuffleBossEntrances.Is(SHUFFLEBOSSES_FULL)) {
       entrancePools[EntranceType::Boss] = GetShuffleableEntrances(EntranceType::ChildBoss);
       AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::AdultBoss));
+      // If forest is closed, ensure Ghoma is inside the Deku tree
+      if (Settings::OpenForest.Is(OPENFOREST_CLOSED) && !(Settings::ShuffleOverworldEntrances || Settings::ShuffleInteriorEntrances)) {
+        FilterAndEraseFromPool(entrancePools[EntranceType::Boss], [](const Entrance* entrance){return entrance->GetParentRegionKey()    == DEKU_TREE_BOSS_ENTRYWAY &&
+                                                                                                      entrance->GetConnectedRegionKey() == DEKU_TREE_BOSS_ROOM;});
+      }
+    } else {
+      entrancePools[EntranceType::ChildBoss] = GetShuffleableEntrances(EntranceType::ChildBoss);
+      entrancePools[EntranceType::AdultBoss] = GetShuffleableEntrances(EntranceType::AdultBoss);
+      // If forest is closed, ensure Ghoma is inside the Deku tree
+      if (Settings::OpenForest.Is(OPENFOREST_CLOSED) && !(Settings::ShuffleOverworldEntrances || Settings::ShuffleInteriorEntrances)) {
+        FilterAndEraseFromPool(entrancePools[EntranceType::ChildBoss], [](const Entrance* entrance){return entrance->GetParentRegionKey()    == DEKU_TREE_BOSS_ENTRYWAY &&
+                                                                                                           entrance->GetConnectedRegionKey() == DEKU_TREE_BOSS_ROOM;});
+      }
     }
   }
 
