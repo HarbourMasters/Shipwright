@@ -1081,30 +1081,18 @@ void Better_Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
 }
 
 static const char* sLoadingMessages[] = {
-    // "Please wait a minute"
-    GFXP_HIRAGANA "ｼﾊﾞﾗｸｵﾏﾁｸﾀﾞｻｲ",
-    // "Hold on a sec"
-    GFXP_HIRAGANA "ﾁｮｯﾄ ﾏｯﾃﾈ",
-    // "Wait a moment"
-    GFXP_KATAKANA "ｳｪｲﾄ ｱ ﾓｰﾒﾝﾄ",
-    // "Loading"
-    GFXP_KATAKANA "ﾛｰﾄﾞ" GFXP_HIRAGANA "ﾁｭｳ",
-    // "Now working"
-    GFXP_HIRAGANA "ﾅｳ ﾜｰｷﾝｸﾞ",
-    // "Now creating"
-    GFXP_HIRAGANA "ｲﾏ ﾂｸｯﾃﾏｽ",
-    // "It's not broken"
-    GFXP_HIRAGANA "ｺｼｮｳｼﾞｬﾅｲﾖ",
-    // "Coffee Break"
-    GFXP_KATAKANA "ｺｰﾋｰ ﾌﾞﾚｲｸ",
-    // "Please set B side"
-    GFXP_KATAKANA "Bﾒﾝｦｾｯﾄｼﾃｸﾀﾞｻｲ",
-    // "Be patient, now"
-    GFXP_HIRAGANA "ｼﾞｯﾄ" GFXP_KATAKANA "ｶﾞﾏﾝ" GFXP_HIRAGANA "ﾉ" GFXP_KATAKANA "ｺ" GFXP_HIRAGANA "ﾃﾞｱｯﾀ",
-    // "Please wait just a minute"
-    GFXP_HIRAGANA "ｲﾏｼﾊﾞﾗｸｵﾏﾁｸﾀﾞｻｲ",
-    // "Don't worry, don't worry. Take a break, take a break."
-    GFXP_HIRAGANA "ｱﾜﾃﾅｲｱﾜﾃﾅｲ｡ﾋﾄﾔｽﾐﾋﾄﾔｽﾐ｡",
+    "Please wait a minute",
+    "Hold on a sec",
+    "Wait a moment",
+    "Loading",
+    "Now working",
+    "Now creating",
+    "It's not broken",
+    "Coffee Break",
+    "Please set B side",
+    "Be patient, now",
+    "Please wait just a minute",
+    "Don't panic, don't panic. Take a break, take a break.",
 };
 
 void Select_PrintLoadingMessage(SelectContext* this, GfxPrint* printer) {
@@ -1117,8 +1105,8 @@ void Select_PrintLoadingMessage(SelectContext* this, GfxPrint* printer) {
 }
 
 static const char* sAgeLabels[] = {
-    GFXP_HIRAGANA "17(ﾜｶﾓﾉ)", // "17(young)"
-    GFXP_HIRAGANA "5(ﾜｶｽｷﾞ)", // "5(very young)"
+    "17(Adult)",
+    "5(Young)",
 };
 static const char* sBetterAgeLabels[] = {
     "Adult",
@@ -1147,48 +1135,48 @@ void Select_PrintCutsceneSetting(SelectContext* this, GfxPrint* printer, u16 csI
 
     switch (csIndex) {
         case 0:
-            label = GFXP_HIRAGANA " ﾖﾙ " GFXP_KATAKANA "ｺﾞﾛﾝ";
+            label = "Night-goron";
             gSaveContext.dayTime = 0;
             break;
         case 0x8000:
             // clang-format off
-            gSaveContext.dayTime = 0x8000; label = GFXP_HIRAGANA "ｵﾋﾙ " GFXP_KATAKANA "ｼﾞｬﾗ";
+            gSaveContext.dayTime = 0x8000; label = "Noon-jara";
             // clang-format on
             break;
         case 0xFFF0:
             // clang-format off
-            gSaveContext.dayTime = 0x8000; label = "ﾃﾞﾓ00";
+            gSaveContext.dayTime = 0x8000; label = "Demo00";
             // clang-format on
             break;
         case 0xFFF1:
-            label = "ﾃﾞﾓ01";
+            label = "Demo01";
             break;
         case 0xFFF2:
-            label = "ﾃﾞﾓ02";
+            label = "Demo02";
             break;
         case 0xFFF3:
-            label = "ﾃﾞﾓ03";
+            label = "Demo03";
             break;
         case 0xFFF4:
-            label = "ﾃﾞﾓ04";
+            label = "Demo04";
             break;
         case 0xFFF5:
-            label = "ﾃﾞﾓ05";
+            label = "Demo05";
             break;
         case 0xFFF6:
-            label = "ﾃﾞﾓ06";
+            label = "Demo06";
             break;
         case 0xFFF7:
-            label = "ﾃﾞﾓ07";
+            label = "Demo07";
             break;
         case 0xFFF8:
-            label = "ﾃﾞﾓ08";
+            label = "Demo08";
             break;
         case 0xFFF9:
-            label = "ﾃﾞﾓ09";
+            label = "Demo09";
             break;
         case 0xFFFA:
-            label = "ﾃﾞﾓ0A";
+            label = "Demo0A";
             break;
     };
 
