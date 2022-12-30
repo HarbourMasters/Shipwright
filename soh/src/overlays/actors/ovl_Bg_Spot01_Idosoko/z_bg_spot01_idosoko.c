@@ -47,10 +47,10 @@ void BgSpot01Idosoko_Init(Actor* thisx, PlayState* play) {
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     CollisionHeader_GetVirtual(&gKakarikoBOTWStoneCol, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
-    // If dungeon or boss entrance randomizer is on, remove the well stone as adult Link when
+    // If dungeon entrance randomizer is on, remove the well stone as adult Link when
     // child Link has drained the water to the well
-    if (!LINK_IS_ADULT || (gSaveContext.n64ddFlag && (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
-        Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) &&
+    if (!LINK_IS_ADULT || (gSaveContext.n64ddFlag &&
+        Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF &&
         Flags_GetEventChkInf(0x67))) {
         Actor_Kill(&this->dyna.actor);
     } else {

@@ -719,8 +719,8 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
 
 s32 Entrance_OverrideSpawnSceneRoom(s32 sceneNum, s32 spawn, s32 roomNum) {
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
-        // Repair the scene/spawn info for leaving Barinade's boss room -> JabuJabu's belly
-        // The game authentically loads the wrong room number, here we fix it for boss shuffle
+        // Repair the authentically bugged scene/spawn info for leaving Barinade's boss room -> JabuJabu's belly
+        // to load the correct room outside Barniade's boss room
         if (sceneNum == SCENE_BDAN && spawn == 1) {
             return 5;
         }
