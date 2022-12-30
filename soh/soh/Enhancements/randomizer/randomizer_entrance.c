@@ -13,8 +13,6 @@
 
 #include "global.h"
 
-#define NUM_BOSSES 8
-
 extern PlayState* gPlayState;
 
 //Overwrite the dynamic exit for the OGC Fairy Fountain to be 0x3E8 instead
@@ -28,7 +26,7 @@ s16 dynamicExitList[] = { 0x045B, 0x0482, 0x03E8, 0x044B, 0x02A2, 0x0201, 0x03B8
 
 static s16 entranceOverrideTable[ENTRANCE_TABLE_SIZE] = {0};
 // Boss scenes (normalize boss scene range to 0 on lookup) to the replaced dungeon scene it is connected to
-static s16 dungeonBossSceneOverrides[NUM_BOSSES] = {0};
+static s16 dungeonBossSceneOverrides[SHUFFLEABLE_BOSS_COUNT] = {0};
 static ActorEntry modifiedLinkActorEntry = {0};
 
 EntranceInfo originalEntranceTable[ENTRANCE_TABLE_SIZE] = {0};
@@ -119,7 +117,7 @@ void Entrance_Init(void) {
     s32 index;
 
     size_t blueWarpRemapIdx = 0;
-    BlueWarpReplacement bluewarps[NUM_BOSSES] = {0};
+    BlueWarpReplacement bluewarps[SHUFFLEABLE_BOSS_COUNT] = {0};
 
     Entrance_CopyOriginalEntranceTable();
 
@@ -145,7 +143,7 @@ void Entrance_Init(void) {
     }
 
     // Initialize all boss rooms connected to their vanilla dungeon
-    for (s16 i = 1; i < NUM_BOSSES; i++) {
+    for (s16 i = 1; i < SHUFFLEABLE_BOSS_COUNT; i++) {
         dungeonBossSceneOverrides[i] = i;
     }
 
@@ -185,7 +183,7 @@ void Entrance_Init(void) {
                 s16 replacedDungeonScene = -1;
                 s16 replacedDungeonExit = -1;
                 // Search for the boss scene and replaced blue warp exits
-                for (s16 j = 0; j <= NUM_BOSSES; j++) {
+                for (s16 j = 0; j <= SHUFFLEABLE_BOSS_COUNT; j++) {
                     if (blueWarpIndex == dungeons[j].blueWarp) {
                         bossScene = dungeons[j].bossScene;
                     }
@@ -195,7 +193,7 @@ void Entrance_Init(void) {
                     }
                 }
 
-                // asign the boss scene override
+                // assign the boss scene override
                 if (bossScene != -1 && replacedDungeonScene != -1 && replacedDungeonExit != -1) {
                     dungeonBossSceneOverrides[bossScene - SCENE_YDAN_BOSS] = replacedDungeonScene;
                     bluewarps[blueWarpRemapIdx].blueWarp = blueWarpIndex;
@@ -310,12 +308,58 @@ u32 Entrance_SceneAndSpawnAre(u8 scene, u8 spawn) {
     return currentEntrance.scene == scene && currentEntrance.spawn == spawn;
 }
 
+// Properly respawn the player after a game over, accounting for dungeon entrance randomizer
+void Entrance_SetGameOverEntrance(void) {
+
+    s16 scene = gPlayState->sceneNum;
+
+    // When in a boss room and boss shuffle is on, get the connected dungeon's original boss room entrance
+    // then run the normal game over overrides on it
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF &&
+        scene >= SCENE_YDAN_BOSS && scene <= SCENE_HAKADAN_BS) {
+        // Normalize boss scene range to 0 on lookup
+        scene = dungeonBossSceneOverrides[scene - SCENE_YDAN_BOSS];
+        gSaveContext.entranceIndex = dungeons[scene].bossDoor;
+    }
+
+    //Set the current entrance depending on which entrance the player last came through
+    switch (gSaveContext.entranceIndex) {
+        case 0x040F : //Deku Tree Boss Room
+            gSaveContext.entranceIndex = newDekuTreeEntrance;
+            return;
+        case 0x040B : //Dodongos Cavern Boss Room
+            gSaveContext.entranceIndex = newDodongosCavernEntrance;
+            return;
+        case 0x0301 : //Jabu Jabus Belly Boss Room
+            gSaveContext.entranceIndex = newJabuJabusBellyEntrance;
+            return;
+        case 0x000C : //Forest Temple Boss Room
+            gSaveContext.entranceIndex = newForestTempleEntrance;
+            return;
+        case 0x0305 : //Fire Temple Boss Room
+            gSaveContext.entranceIndex = newFireTempleEntrance;
+            return;
+        case 0x0417 : //Water Temple Boss Room
+            gSaveContext.entranceIndex = newWaterTempleEntrance;
+            return;
+        case 0x008D : //Spirit Temple Boss Room
+            gSaveContext.entranceIndex = newSpiritTempleEntrance;
+            return;
+        case 0x0413 : //Shadow Temple Boss Room
+            gSaveContext.entranceIndex = newShadowTempleEntrance;
+            return;
+        case 0x041F : //Ganondorf Boss Room
+            gSaveContext.entranceIndex = 0x041B; // Inside Ganon's Castle -> Ganon's Tower Climb
+            return;
+    }
+}
+
 // Properly savewarp the player accounting for dungeon entrance randomizer.
 void Entrance_SetSavewarpEntrance(void) {
 
     s16 scene = gSaveContext.savedSceneNum;
 
-    // When in a boss room and boss suffle is on, use the boss scene override to remap to its
+    // When in a boss room and boss shuffle is on, use the boss scene override to remap to its
     // connected dungeon and use that for the final entrance
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF &&
         scene >= SCENE_YDAN_BOSS && scene <= SCENE_HAKADAN_BS) {
@@ -357,50 +401,6 @@ void Entrance_SetSavewarpEntrance(void) {
         gSaveContext.entranceIndex = Entrance_OverrideNextIndex(LINK_HOUSE_SAVEWARP_ENTRANCE); // Child Overworld Spawn
     } else {
         gSaveContext.entranceIndex = Entrance_OverrideNextIndex(0x0282); // Adult Overworld Spawn (Normally 0x5F4, but 0x282 has been repurposed to differentiate from Prelude which also uses 0x5F4)
-    }
-}
-
-// Properly respawn the player after a game over, accounding for dungeon entrance randomizer
-void Entrance_SetGameOverEntrance(void) {
-    s16 scene = gPlayState->sceneNum;
-
-    // When in a boss room and boss shuffle is on, reuse the savewarp location to get to the right location
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF &&
-        scene >= SCENE_YDAN_BOSS && scene <= SCENE_HAKADAN_BS) {
-
-        Entrance_SetSavewarpEntrance();
-        return;
-    }
-
-    //Set the current entrance depending on which entrance the player last came through
-    switch (gSaveContext.entranceIndex) {
-        case 0x040F : //Deku Tree Boss Room
-            gSaveContext.entranceIndex = newDekuTreeEntrance;
-            return;
-        case 0x040B : //Dodongos Cavern Boss Room
-            gSaveContext.entranceIndex = newDodongosCavernEntrance;
-            return;
-        case 0x0301 : //Jabu Jabus Belly Boss Room
-            gSaveContext.entranceIndex = newJabuJabusBellyEntrance;
-            return;
-        case 0x000C : //Forest Temple Boss Room
-            gSaveContext.entranceIndex = newForestTempleEntrance;
-            return;
-        case 0x0305 : //Fire Temple Boss Room
-            gSaveContext.entranceIndex = newFireTempleEntrance;
-            return;
-        case 0x0417 : //Water Temple Boss Room
-            gSaveContext.entranceIndex = newWaterTempleEntrance;
-            return;
-        case 0x008D : //Spirit Temple Boss Room
-            gSaveContext.entranceIndex = newSpiritTempleEntrance;
-            return;
-        case 0x0413 : //Shadow Temple Boss Room
-            gSaveContext.entranceIndex = newShadowTempleEntrance;
-            return;
-        case 0x041F : //Ganondorf Boss Room
-            gSaveContext.entranceIndex = 0x041B; // Inside Ganon's Castle -> Ganon's Tower Climb
-            return;
     }
 }
 
