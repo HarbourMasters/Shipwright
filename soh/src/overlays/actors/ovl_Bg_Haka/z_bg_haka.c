@@ -113,9 +113,17 @@ void func_8087B938(BgHaka* this, PlayState* play) {
             actor = actor->next;
         }
         player->stateFlags2 &= ~0x10;
+
         if (this->dyna.actor.params == 1) {
             func_80078884(NA_SE_SY_CORRECT_CHIME);
-        } else if (play->sceneNum == SCENE_SPOT02 && allPulled) {
+        } else if (!IS_DAY && play->sceneNum == SCENE_SPOT02) {
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_POH, this->dyna.actor.home.pos.x,
+                        this->dyna.actor.home.pos.y, this->dyna.actor.home.pos.z, 0, this->dyna.actor.shape.rot.y, 0,
+                        1, true);
+        }
+
+        // un tss un tss
+        if (play->sceneNum == SCENE_SPOT02 && allPulled) {
             func_80078884(NA_SE_SY_CORRECT_CHIME);
             func_800F5ACC(NA_BGM_STAFF_2);
             Actor* actor2 = play->actorCtx.actorLists[ACTORCAT_BG].head;
@@ -126,11 +134,8 @@ void func_8087B938(BgHaka* this, PlayState* play) {
                 }
                 actor2 = actor2->next;
             }
-        } else if (!IS_DAY && play->sceneNum == SCENE_SPOT02) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_POH, this->dyna.actor.home.pos.x,
-                        this->dyna.actor.home.pos.y, this->dyna.actor.home.pos.z, 0, this->dyna.actor.shape.rot.y, 0,
-                        1, true);
         }
+
         this->actionFunc = func_8087BAAC;
     }
     func_8002F974(&this->dyna.actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);
