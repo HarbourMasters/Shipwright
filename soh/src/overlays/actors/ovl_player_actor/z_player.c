@@ -1680,7 +1680,6 @@ void func_8083315C(PlayState* play, Player* this) {
 
     //MOUSE (RR)
 
-
     this->unk_A7C = D_808535D4;
     this->unk_A80 = D_808535D8;
 
