@@ -69,10 +69,6 @@ jobs:
         brew uninstall --ignore-dependencies libpng
         sudo port install $(cat .github/workflows/macports-deps.txt)
         brew install ninja
-    - name: Restore assets
-      uses: actions/download-artifact@v3
-      with:
-        name: assets
     - name: Build SoH
       run: |
         #unzip -o assets.zip
@@ -126,10 +122,6 @@ jobs:
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
-    - name: Restore assets
-      uses: actions/download-artifact@v3
-      with:
-        name: assets
     - name: Build SoH
       run: |
         #unzip -o assets.zip
@@ -169,10 +161,6 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ runner.os }}-switch-ccache
-    - name: Restore assets
-      uses: actions/download-artifact@v3
-      with:
-        name: assets
     - name: Build SoH
       run: |
         #unzip -o assets.zip
@@ -206,10 +194,6 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ runner.os }}-wiiu-ccache
-    - name: Restore assets
-      uses: actions/download-artifact@v3
-      with:
-        name: assets
     - name: Build SoH
       run: |
         #unzip -o assets.zip
@@ -246,10 +230,6 @@ jobs:
       uses: dcvz/ccache-action@27b9f33213c0079872f064f6b6ba0233dfa16ba2
       with:
         key: ${{ runner.os }}-ccache
-    - name: Restore assets
-      uses: actions/download-artifact@v3
-      with:
-        name: assets
     - uses: ilammy/msvc-dev-cmd@v1
     - name: Setup 7-Zip
       run: |
