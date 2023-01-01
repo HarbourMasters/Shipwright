@@ -50,10 +50,6 @@ void applyPreset(std::vector<PresetEntry> entries);
 // TODO: Ideally everything below this point will come from one/many JSON files
 
 const std::vector<const char*> enhancementsCvars = {
-    "gDpadText",
-    "gDpadOcarina",
-    "gRStickOcarina",
-    "gDpadEquips",
     "gDpadNoDropOcarinaInput",
     "gTextSpeed",
     "gMweepSpeed",
@@ -679,6 +675,7 @@ const std::vector<PresetEntry> glitchlessAnyShipPresetEntries = {
     PRESET_ENTRY_S32("gFasterHeavyBlockLift", 1),
     PRESET_ENTRY_S32("gFasterHeavyBlockLift", 1),
     PRESET_ENTRY_S32("gNoForcedNavi", 1),
+    PRESET_ENTRY_S32("gDisableNaviCallAudio", 1),
     PRESET_ENTRY_S32("gFastChests", 1),
     PRESET_ENTRY_S32("gFastDrops", 1),
     PRESET_ENTRY_S32("gDpadText", 1),

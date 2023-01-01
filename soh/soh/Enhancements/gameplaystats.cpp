@@ -160,7 +160,7 @@ void DrawStatsTracker(bool& open) {
 
     ImGui::Text("Speedrun Build:     ");
     ImGui::SameLine();
-    ImGui::Text("0.0.2");
+    ImGui::Text("0.0.3");
     DisplayTimeHHMMSS(totalTimer, "Total Game Time:    ", COLOR_WHITE);
     UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
     DisplayTimeHHMMSS(gSaveContext.sohStats.playTimer / 2, "Gameplay Time:      ", COLOR_WHITE);
