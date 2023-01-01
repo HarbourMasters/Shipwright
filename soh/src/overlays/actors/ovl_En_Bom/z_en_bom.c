@@ -175,9 +175,14 @@ void EnBom_Explode(EnBom* this, PlayState* play) {
     if (this->explosionCollider.elements[0].dim.modelSphere.radius == 0) {
         this->actor.flags |= ACTOR_FLAG_5;
         func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
-    }
+    }    
 
-    this->explosionCollider.elements[0].dim.worldSphere.radius += this->actor.shape.rot.z + 8;
+    if (CVar_GetS32("gStaticExplosionRadius", 1)) {
+        this->explosionCollider.elements[0].dim.worldSphere.radius = 40;
+    } else {
+        this->explosionCollider.elements[0].dim.worldSphere.radius += this->actor.shape.rot.z + 8;
+    }
+        
 
     if (this->actor.params == BOMB_EXPLOSION) {
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->explosionCollider.base);

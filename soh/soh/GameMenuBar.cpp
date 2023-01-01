@@ -396,6 +396,8 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Makes nuts explode bombs, similar to how they interact with bombchus. This does not affect bombflowers.");
                     UIWidgets::PaddedEnhancementCheckbox("Equip Multiple Arrows at Once", "gSeparateArrows", true, false);
                     UIWidgets::Tooltip("Allow the bow and magic arrows to be equipped at the same time on different slots");
+                    UIWidgets::PaddedEnhancementCheckbox("Static Explosion Radius", "gStaticExplosionRadius", true, false);
+                    UIWidgets::Tooltip("Explosions are now a static size, like in Majora's Mask and OoT3D. Makes bombchu hovering much easier.");
                     ImGui::EndMenu();
                 }
 

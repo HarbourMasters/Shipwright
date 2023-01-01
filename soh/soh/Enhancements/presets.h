@@ -173,6 +173,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gBombchuBowlingNoBigCucco",
     "gBombchuBowlingAmmunition",
     "gCreditsFix",
+    "gStaticExplosionRadius"
 };
 
 const std::vector<const char*> randomizerCvars = {
