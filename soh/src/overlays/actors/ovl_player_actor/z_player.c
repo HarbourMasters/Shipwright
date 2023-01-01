@@ -4969,7 +4969,10 @@ void func_8083AF44(PlayState* play, Player* this, s32 magicSpell) {
     this->unk_84F = magicSpell - 3;
     func_80087708(play, sMagicSpellCosts[magicSpell], 4);
 
-    LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, &gPlayerAnim_link_magic_tame, 0.83f);
+    LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, &gPlayerAnim_link_magic_tame, 0.83f * 2);
+
+    // Return early for faster magics
+    return;
 
     if (magicSpell == 5) {
         this->subCamId = OnePointCutscene_Init(play, 1100, -101, NULL, MAIN_CAM);
@@ -13776,7 +13779,7 @@ static LinkAnimationHeader* D_80854A70[] = {
     &gPlayerAnim_link_magic_tamashii3,
 };
 
-static u8 D_80854A7C[] = { 70, 10, 10 };
+static u8 D_80854A7C[] = { 10, 10, 10 };
 
 static struct_80832924 D_80854A80[] = {
     { NA_SE_PL_SKIP, 0x814 },
@@ -13802,13 +13805,13 @@ static struct_80832924 D_80854A8C[][2] = {
 void func_808507F4(Player* this, PlayState* play) {
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         if (this->unk_84F < 0) {
-            if ((this->itemAction == PLAYER_IA_NAYRUS_LOVE) || (gSaveContext.magicState == 0)) {
+            if ((this->itemAction == PLAYER_IA_NAYRUS_LOVE) || (this->itemAction == PLAYER_IA_FARORES_WIND) || (this->itemAction == PLAYER_IA_DINS_FIRE) || (gSaveContext.magicState == 0)) {
                 func_80839FFC(this, play);
                 func_8005B1A4(Play_GetCamera(play, 0));
             }
         } else {
             if (this->unk_850 == 0) {
-                LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, D_80854A58[this->unk_84F], 0.83f);
+                LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, D_80854A58[this->unk_84F], 0.83f * 2);
 
                 if (func_80846A00(play, this, this->unk_84F) != NULL) {
                     this->stateFlags1 |= PLAYER_STATE1_28 | PLAYER_STATE1_29;
@@ -13819,7 +13822,7 @@ void func_808507F4(Player* this, PlayState* play) {
                     func_800876C8(play);
                 }
             } else {
-                LinkAnimation_PlayLoopSetSpeed(play, &this->skelAnime, D_80854A64[this->unk_84F], 0.83f);
+                LinkAnimation_PlayLoopSetSpeed(play, &this->skelAnime, D_80854A64[this->unk_84F], 0.83f * 2);
 
                 if (this->unk_84F == 0) {
                     this->unk_850 = -10;
@@ -13856,7 +13859,7 @@ void func_808507F4(Player* this, PlayState* play) {
                     this->stateFlags1 &= ~(PLAYER_STATE1_28 | PLAYER_STATE1_29);
                 }
             } else if (D_80854A7C[this->unk_84F] < this->unk_850++) {
-                LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, D_80854A70[this->unk_84F], 0.83f);
+                LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, D_80854A70[this->unk_84F], 0.83f * 2);
                 this->currentYaw = this->actor.shape.rot.y;
                 this->unk_84F = -1;
             }
