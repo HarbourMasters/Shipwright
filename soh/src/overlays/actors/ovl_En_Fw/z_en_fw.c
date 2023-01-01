@@ -258,7 +258,7 @@ void EnFw_Run(EnFw* this, PlayState* play) {
 
         if (this->explosionTimer == 0) {
             bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->bompPos.x, this->bompPos.y,
-                                       this->bompPos.z, 0, 0, 0x600, 0);
+                                       this->bompPos.z, 0, 0, 0x600, 0, true);
             if (bomb != NULL) {
                 bomb->timer = 0;
             }

@@ -9,6 +9,7 @@
 #include "global.h"
 #include "alloca.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
+#include "assets/objects/gameplay_keep/gameplay_keep.h"
 #include <soh/Enhancements/bootcommands.h>
 #include <GameVersions.h>
 #include <soh/SaveManager.h>
@@ -212,8 +213,14 @@ void Title_Draw(TitleContext* this) {
     gDPSetRenderMode(POLY_OPA_DISP++, G_RM_XLU_SURF2, G_RM_OPA_CI | CVG_DST_WRAP);
     gDPSetCombineLERP(POLY_OPA_DISP++, TEXEL1, PRIMITIVE, ENV_ALPHA, TEXEL0, 0, 0, 0, TEXEL0, PRIMITIVE, ENVIRONMENT,
         COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
-    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 170, 255, 255, 255);
-    gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 255, 128);
+    if (CVar_GetS32("gCosmetics.Title_NintendoLogo.Changed", 0)) {
+        Color_RGB8 nintendoLogoColor = CVar_GetRGB("gCosmetics.Title_NintendoLogo.Value", (Color_RGB8){0, 0, 255});
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
+        gDPSetEnvColor(POLY_OPA_DISP++, nintendoLogoColor.r, nintendoLogoColor.g, nintendoLogoColor.b, 128);
+    } else {
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 170, 255, 255, 255);
+        gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 255, 128);
+    }
 
     gDPLoadMultiBlock(POLY_OPA_DISP++, nintendo_rogo_static_Tex_001800, 0x100, 1, G_IM_FMT_I, G_IM_SIZ_8b, 32, 32, 0,
         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 2, 11);
@@ -228,9 +235,25 @@ void Title_Draw(TitleContext* this) {
         gSPTextureRectangle(POLY_OPA_DISP++, 388, y << 2, 1156, (y + 2) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
     }
 
+    // Draw ice cube around N64 logo.
+    if (CVar_GetS32("gLetItSnow", 0)) {
+        f32 scale = 0.4f;
+
+        gSPSegment(POLY_OPA_DISP++, 0x08,
+                    Gfx_TwoTexScroll(this->state.gfxCtx, 0, 0, (0 - 1) % 128, 32, 32, 1,
+                                    0, (1 * -2) % 128, 32, 32));
+
+        Matrix_Translate(0.0f, -10.0f, 0.0f, MTXMODE_APPLY);
+        Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx),
+                    G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gDPSetEnvColor(POLY_OPA_DISP++, 0, 50, 100, 255);
+        gSPDisplayList(POLY_OPA_DISP++, gEffIceFragment3DL);
+    }
+
     Environment_FillScreen(this->state.gfxCtx, 0, 0, 0, (s16)this->coverAlpha, FILL_SCREEN_XLU);
 
-    sTitleRotY += 300;
+    sTitleRotY += (300 * CVar_GetFloat("gCosmetics.N64Logo_SpinSpeed", 1.0f));
 
     CLOSE_DISPS(this->state.gfxCtx);
 }

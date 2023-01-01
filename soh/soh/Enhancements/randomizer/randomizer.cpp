@@ -35,7 +35,6 @@ using namespace std::literals::string_literals;
 
 std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum;
 std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum;
-std::unordered_map<RandomizerGet, std::vector<std::string>> EnumToSpoilerfileGetName;
 std::multimap<std::tuple<s16, s16, s32>, RandomizerCheckObject> checkFromActorMultimap;
 std::set<RandomizerCheck> excludedLocations;
 
@@ -49,7 +48,7 @@ const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
 const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
 
-static const char* englishRupeeNames[80] = {
+static const char* englishRupeeNames[81] = {
     "Rupees",       "Bitcoin",       "Bananas",      "Cornflakes", "Gummybears",   "Floopies",    "Dollars",
     "Lemmings",     "Emeralds",      "Bucks",        "Rubles",     "Diamonds",     "Moons",       "Stars",
     "Mana",         "Doll Hairs",    "Dogecoin",     "Mushrooms",  "Experience",   "Friends",     "Coins",
@@ -61,7 +60,7 @@ static const char* englishRupeeNames[80] = {
     "Dollarydoos",  "Copper",        "Silver",       "Platinum",   "Gems",         "Minerals",    "Vespene Gas",
     "Lumber",       "Jiggies",       "Mumbo Tokens", "KF7 Ammo",   "Remote Mines", "Credits",     "Doubloons",
     "Ether",        "Doge",          "Cards",        "Talent",     "Poko",         "Lira",        "Kroner",
-    "Store Credit", "Social Credit", "Cocoa Beans"
+    "Store Credit", "Social Credit", "Cocoa Beans",  "Strawbs"
 };
 
 static const char* germanRupeeNames[41] = {
@@ -89,7 +88,7 @@ Randomizer::Randomizer() {
     SpoilerfileCheckNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
     SpoilerfileCheckNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
 
-    for (auto item: *RandoMain::GetFullItemTable()) {
+    for (auto& item: *RandoMain::GetFullItemTable()) {
         // Easiest way to filter out all the empty values from the array, since we still technically want the 0/RG_NONE entry
         if (item.GetName().english.empty()) continue;
         SpoilerfileGetNameToEnum[item.GetName().english] = item.GetRandomizerGet();
@@ -203,6 +202,9 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
     { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
+    { "Shuffle Settings:Shuffle Kokiri Sword", RSK_SHUFFLE_KOKIRI_SWORD },
+    { "Shuffle Settings:Shuffle Weird Egg", RSK_SHUFFLE_WEIRD_EGG },
+    { "Shuffle Settings:Shuffle Frog Song Rupees", RSK_SHUFFLE_FROG_SONG_RUPEES },
     { "Shuffle Settings:Shuffle Merchants", RSK_SHUFFLE_MERCHANTS },
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
@@ -225,6 +227,15 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "World Settings:Overworld Entrances", RSK_SHUFFLE_OVERWORLD_ENTRANCES },
     { "World Settings:Interior Entrances", RSK_SHUFFLE_INTERIOR_ENTRANCES },
     { "World Settings:Grottos Entrances", RSK_SHUFFLE_GROTTO_ENTRANCES },
+    { "World Settings:Owl Drops", RSK_SHUFFLE_OWL_DROPS },
+    { "World Settings:Warp Songs", RSK_SHUFFLE_WARP_SONGS },
+    { "World Settings:Overworld Spawns", RSK_SHUFFLE_OVERWORLD_SPAWNS },
+    { "World Settings:Mixed Entrance Pools", RSK_MIXED_ENTRANCE_POOLS },
+    { "World Settings:Mix Dungeons", RSK_MIX_DUNGEON_ENTRANCES },
+    { "World Settings:Mix Overworld", RSK_MIX_OVERWORLD_ENTRANCES },
+    { "World Settings:Mix Interiors", RSK_MIX_INTERIOR_ENTRANCES },
+    { "World Settings:Mix Grottos", RSK_MIX_GROTTO_ENTRANCES },
+    { "World Settings:Decouple Entrances", RSK_DECOUPLED_ENTRANCES },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
     { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
@@ -328,74 +339,26 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::hintMessageTableID, hintLocation.check, { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, hintLocation.hintText, hintLocation.hintText, hintLocation.hintText });
     }
-}
 
-std::vector<RandomizerCheck> shopItemRandomizerChecks = {
-    RC_KF_SHOP_ITEM_1,
-    RC_KF_SHOP_ITEM_2,
-    RC_KF_SHOP_ITEM_3,
-    RC_KF_SHOP_ITEM_4,
-    RC_KF_SHOP_ITEM_5,
-    RC_KF_SHOP_ITEM_6,
-    RC_KF_SHOP_ITEM_7,
-    RC_KF_SHOP_ITEM_8,
-    RC_GC_SHOP_ITEM_1,
-    RC_GC_SHOP_ITEM_2,
-    RC_GC_SHOP_ITEM_3,
-    RC_GC_SHOP_ITEM_4,
-    RC_GC_SHOP_ITEM_5,
-    RC_GC_SHOP_ITEM_6,
-    RC_GC_SHOP_ITEM_7,
-    RC_GC_SHOP_ITEM_8,
-    RC_ZD_SHOP_ITEM_1,
-    RC_ZD_SHOP_ITEM_2,
-    RC_ZD_SHOP_ITEM_3,
-    RC_ZD_SHOP_ITEM_4,
-    RC_ZD_SHOP_ITEM_5,
-    RC_ZD_SHOP_ITEM_6,
-    RC_ZD_SHOP_ITEM_7,
-    RC_ZD_SHOP_ITEM_8,
-    RC_KAK_BAZAAR_ITEM_1,
-    RC_KAK_BAZAAR_ITEM_2,
-    RC_KAK_BAZAAR_ITEM_3,
-    RC_KAK_BAZAAR_ITEM_4,
-    RC_KAK_BAZAAR_ITEM_5,
-    RC_KAK_BAZAAR_ITEM_6,
-    RC_KAK_BAZAAR_ITEM_7,
-    RC_KAK_BAZAAR_ITEM_8,
-    RC_KAK_POTION_SHOP_ITEM_1,
-    RC_KAK_POTION_SHOP_ITEM_2,
-    RC_KAK_POTION_SHOP_ITEM_3,
-    RC_KAK_POTION_SHOP_ITEM_4,
-    RC_KAK_POTION_SHOP_ITEM_5,
-    RC_KAK_POTION_SHOP_ITEM_6,
-    RC_KAK_POTION_SHOP_ITEM_7,
-    RC_KAK_POTION_SHOP_ITEM_8,
-    RC_MARKET_BAZAAR_ITEM_1,
-    RC_MARKET_BAZAAR_ITEM_2,
-    RC_MARKET_BAZAAR_ITEM_3,
-    RC_MARKET_BAZAAR_ITEM_4,
-    RC_MARKET_BAZAAR_ITEM_5,
-    RC_MARKET_BAZAAR_ITEM_6,
-    RC_MARKET_BAZAAR_ITEM_7,
-    RC_MARKET_BAZAAR_ITEM_8,
-    RC_MARKET_POTION_SHOP_ITEM_1,
-    RC_MARKET_POTION_SHOP_ITEM_2,
-    RC_MARKET_POTION_SHOP_ITEM_3,
-    RC_MARKET_POTION_SHOP_ITEM_4,
-    RC_MARKET_POTION_SHOP_ITEM_5,
-    RC_MARKET_POTION_SHOP_ITEM_6,
-    RC_MARKET_POTION_SHOP_ITEM_7,
-    RC_MARKET_POTION_SHOP_ITEM_8,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_1,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_2,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_3,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_4,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_5,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_6,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_7,
-    RC_MARKET_BOMBCHU_SHOP_ITEM_8,
-};
+    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT,
+        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+        "Warp to&{{location}}?\x1B&%gOK&No%w\x02",
+        "Zu {{location}}?\x1B&%gOK&No%w\x02",
+        "Se téléporter vers&{{location}}?\x1B&%gOK!&Non%w\x02" });
+
+    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN,
+        { TEXTBOX_TYPE_WOODEN, TEXTBOX_POS_BOTTOM,
+            "Water level control system.&Keep away!",
+            "Wasserstand Kontrollsystem&Finger weg!",
+            "Système de contrôle du niveau&d'eau.&Ne pas toucher!"
+        });
+    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI,
+        { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
+            "%cThis switch is rustier than you think.^%cSomething must be wrong with the&pipe system in the %bWater Temple%c.",
+            "%cDieser Schalter scheint rostiger zu&sein als er aussieht.^%cEtwas muss mit dem Leitungssystem&im %bWassertempel%c nicht stimmen.",
+            "%cCet interrupteur est très rouillé.^%cIl doit y avoir un problème avec&la tuyauterie du %bTemple de l'Eau%c."
+        });
+}
 
 // Reference soh/src/overlays/actors/ovl_En_GirlA/z_en_girla.h
 std::unordered_map<RandomizerGet, EnGirlAShopItem> randomizerGetToEnGirlShopItem = {
@@ -477,7 +440,7 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
     //Carpet Salesman
     //RANDOTODO: Implement obscure/ambiguous hints
     std::vector<std::string> cgBoxTwoText;
-    if (Randomizer::GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) == 2) { //If merchant hints are clear... 
+    if (Randomizer::GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) == RO_SHUFFLE_MERCHANTS_ON_HINT) {
         cgBoxTwoText = {
             "!%w&It's real, I promise!&A lonely man such as myself&wouldn't %rlie%w to you, hmm?^",
             "!%w&Ich kann versichern es ist ein&aufrichtiges Angebot!^Ein einsamer Mann wie ich würde dich&doch nicht %ranlügen%w, oder?^",
@@ -509,9 +472,9 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
         {
             TEXTBOX_TYPE_BLACK,
             TEXTBOX_POS_TOP,
-            "Finally! Now I can go back to being &an %rarms dealer!%w",
+            "Finally! Now I can go back to being &an %rarms dealer%w!",
             "Endlich! Schon bald kann ich wieder &%rKrabbelminen-Händler%w sein!",
-            "Squalala! Je vais enfin pouvoir &%rprendre des vacances!%w"
+            "Squalala! Je vais enfin pouvoir &%rprendre des vacances%w!"
         }
     );
 
@@ -676,19 +639,19 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         break;
                     case RSK_SHOPSANITY:
                         if(it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = SHOPSANITY_OFF;         
+                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_OFF;         
                         } else if(it.value() == "0 Items") {
-                            gSaveContext.randoSettings[index].value = SHOPSANITY_ZERO;
+                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_ZERO_ITEMS;
                         } else if(it.value() == "1 Item") {
-                            gSaveContext.randoSettings[index].value = SHOPSANITY_ONE;
+                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_ONE_ITEM;
                         } else if(it.value() == "2 Items") {
-                            gSaveContext.randoSettings[index].value = SHOPSANITY_TWO;
+                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_TWO_ITEMS;
                         } else if(it.value() == "3 Items") {
-                            gSaveContext.randoSettings[index].value = SHOPSANITY_THREE;
+                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_THREE_ITEMS;
                         } else if(it.value() == "4 Items") {
-                            gSaveContext.randoSettings[index].value = SHOPSANITY_FOUR;
+                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_FOUR_ITEMS;
                         } else if(it.value() == "Random") {
-                            gSaveContext.randoSettings[index].value = SHOPSANITY_RANDOM;
+                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_RANDOM;
                         }
                         break;
                     case RSK_SHUFFLE_SCRUBS:
@@ -706,6 +669,9 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_COWS:
                     case RSK_SHUFFLE_ADULT_TRADE:
                     case RSK_SHUFFLE_MAGIC_BEANS:
+                    case RSK_SHUFFLE_KOKIRI_SWORD:
+                    case RSK_SHUFFLE_WEIRD_EGG:
+                    case RSK_SHUFFLE_FROG_SONG_RUPEES:
                     case RSK_RANDOM_MQ_DUNGEONS:
                     case RSK_STARTING_DEKU_SHIELD:
                     case RSK_STARTING_KOKIRI_SWORD:
@@ -718,6 +684,15 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_ENTRANCES:
                     case RSK_SHUFFLE_OVERWORLD_ENTRANCES:
                     case RSK_SHUFFLE_GROTTO_ENTRANCES:
+                    case RSK_SHUFFLE_OWL_DROPS:
+                    case RSK_SHUFFLE_WARP_SONGS:
+                    case RSK_SHUFFLE_OVERWORLD_SPAWNS:
+                    case RSK_MIXED_ENTRANCE_POOLS:
+                    case RSK_MIX_DUNGEON_ENTRANCES:
+                    case RSK_MIX_OVERWORLD_ENTRANCES:
+                    case RSK_MIX_INTERIOR_ENTRANCES:
+                    case RSK_MIX_GROTTO_ENTRANCES:
+                    case RSK_DECOUPLED_ENTRANCES:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = RO_GENERIC_OFF;            
                         } else if(it.value() == "On") {
@@ -1103,6 +1078,30 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         strncpy(gSaveContext.ganonText, formattedGanonJsonText.c_str(), sizeof(gSaveContext.ganonText) - 1);
         gSaveContext.ganonText[sizeof(gSaveContext.ganonText) - 1] = 0;
 
+        std::string warpMinuetJsonText = spoilerFileJson["warpMinuetText"].get<std::string>();
+        strncpy(gSaveContext.warpMinuetText, warpMinuetJsonText.c_str(), sizeof(gSaveContext.warpMinuetText) - 1);
+        gSaveContext.warpMinuetText[sizeof(gSaveContext.warpMinuetText) - 1] = 0;
+
+        std::string warpBoleroJsonText = spoilerFileJson["warpBoleroText"].get<std::string>();
+        strncpy(gSaveContext.warpBoleroText, warpBoleroJsonText.c_str(), sizeof(gSaveContext.warpBoleroText) - 1);
+        gSaveContext.warpBoleroText[sizeof(gSaveContext.warpBoleroText) - 1] = 0;
+
+        std::string warpSerenadeJsonText = spoilerFileJson["warpSerenadeText"].get<std::string>();
+        strncpy(gSaveContext.warpSerenadeText, warpSerenadeJsonText.c_str(), sizeof(gSaveContext.warpSerenadeText) - 1);
+        gSaveContext.warpSerenadeText[sizeof(gSaveContext.warpSerenadeText) - 1] = 0;
+
+        std::string warpRequiemJsonText = spoilerFileJson["warpRequiemText"].get<std::string>();
+        strncpy(gSaveContext.warpRequiemText, warpRequiemJsonText.c_str(), sizeof(gSaveContext.warpRequiemText) - 1);
+        gSaveContext.warpRequiemText[sizeof(gSaveContext.warpRequiemText) - 1] = 0;
+
+        std::string warpNocturneJsonText = spoilerFileJson["warpNocturneText"].get<std::string>();
+        strncpy(gSaveContext.warpNocturneText, warpNocturneJsonText.c_str(), sizeof(gSaveContext.warpNocturneText) - 1);
+        gSaveContext.warpNocturneText[sizeof(gSaveContext.warpNocturneText) - 1] = 0;
+
+        std::string warpPreludeJsonText = spoilerFileJson["warpPreludeText"].get<std::string>();
+        strncpy(gSaveContext.warpPreludeText, warpPreludeJsonText.c_str(), sizeof(gSaveContext.warpPreludeText) - 1);
+        gSaveContext.warpPreludeText[sizeof(gSaveContext.warpPreludeText) - 1] = 0;
+
         json hintsJson = spoilerFileJson["hints"];
         int index = 0;
         for (auto it = hintsJson.begin(); it != hintsJson.end(); ++it) {
@@ -1164,6 +1163,65 @@ void Randomizer::ParseMasterQuestDungeonsFile(const char* spoilerFileName) {
     }
 }
 
+int16_t Randomizer::GetVanillaMerchantPrice(RandomizerCheck check) {
+    switch (check) { 
+        case RC_HF_DEKU_SCRUB_GROTTO:
+            return 10;    
+        case RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT:
+        case RC_DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS:
+        case RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR:
+            return 15;    
+        case RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT:
+        case RC_LH_DEKU_SCRUB_GROTTO_LEFT:
+        case RC_GC_DEKU_SCRUB_GROTTO_LEFT:
+        case RC_DMC_DEKU_SCRUB_GROTTO_LEFT:
+        case RC_LLR_DEKU_SCRUB_GROTTO_LEFT:
+        case RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT:
+        case RC_JABU_JABUS_BELLY_DEKU_SCRUB:
+        case RC_GANONS_CASTLE_MQ_DEKU_SCRUB_RIGHT:
+            return 20;
+        case RC_LW_DEKU_SCRUB_NEAR_BRIDGE:
+        case RC_LW_DEKU_SCRUB_GROTTO_REAR:
+        case RC_LW_DEKU_SCRUB_GROTTO_FRONT:
+        case RC_SFM_DEKU_SCRUB_GROTTO_REAR:
+        case RC_SFM_DEKU_SCRUB_GROTTO_FRONT:
+        case RC_LH_DEKU_SCRUB_GROTTO_RIGHT:
+        case RC_LH_DEKU_SCRUB_GROTTO_CENTER:
+        case RC_GV_DEKU_SCRUB_GROTTO_REAR:
+        case RC_GV_DEKU_SCRUB_GROTTO_FRONT:
+        case RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR:
+        case RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT:
+        case RC_GC_DEKU_SCRUB_GROTTO_RIGHT:
+        case RC_GC_DEKU_SCRUB_GROTTO_CENTER:
+        case RC_DMC_DEKU_SCRUB:
+        case RC_DMC_DEKU_SCRUB_GROTTO_RIGHT:
+        case RC_DMC_DEKU_SCRUB_GROTTO_CENTER:
+        case RC_ZR_DEKU_SCRUB_GROTTO_REAR:
+        case RC_ZR_DEKU_SCRUB_GROTTO_FRONT:
+        case RC_LLR_DEKU_SCRUB_GROTTO_RIGHT:
+        case RC_LLR_DEKU_SCRUB_GROTTO_CENTER:
+        case RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT:
+        case RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_FRONT:
+        case RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_SIDE_ROOM_NEAR_LOWER_LIZALFOS:
+        case RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT:
+        case RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT:
+        case RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT:
+        case RC_GANONS_CASTLE_DEKU_SCRUB_LEFT:
+        case RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_LEFT:
+        case RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER:
+        case RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_RIGHT:
+        case RC_GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT:
+            return 40;
+        case RC_DEKU_TREE_MQ_DEKU_SCRUB:
+        case RC_DODONGOS_CAVERN_DEKU_SCRUB_LOBBY:
+        case RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_STAIRCASE:
+            return 50;
+        default:
+            // we check for -1 when calling this to know if we don't have a price
+            return -1;
+    }
+}
+
 void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent) {
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream)
@@ -1188,7 +1246,6 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
             if (it->is_structured()) {
                 json itemJson = *it;
                 for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
-                    // todo handle prices
                     if (itemit.key() == "item") {
                         gSaveContext.itemLocations[randomizerCheck].check = randomizerCheck;
                         gSaveContext.itemLocations[randomizerCheck].get.rgID = SpoilerfileGetNameToEnum[itemit.value()];
@@ -1206,6 +1263,10 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
                 gSaveContext.itemLocations[randomizerCheck].check = SpoilerfileCheckNameToEnum[it.key()];
                 gSaveContext.itemLocations[randomizerCheck].get.rgID = SpoilerfileGetNameToEnum[it.value()];
                 gSaveContext.itemLocations[randomizerCheck].get.fakeRgID = RG_NONE;
+                int16_t price = GetVanillaMerchantPrice(randomizerCheck);
+                if (price != -1) {
+                    merchantPrices[gSaveContext.itemLocations[randomizerCheck].check] = price;
+                }
             }
         }
 
@@ -1288,7 +1349,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
     // Shopsanity with at least one item shuffled allows for a third wallet upgrade.
     // This is needed since Plentiful item pool also adds a third progressive wallet
     // but we should *not* get Tycoon's Wallet in that mode.
-    u8 numWallets = GetRandoSettingValue(RSK_SHOPSANITY) > 1 ? 3 : 2;
+    u8 numWallets = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 3 : 2;
     switch (randoGet) {
         case RG_NONE:
         case RG_TRIFORCE:
@@ -1886,7 +1947,9 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_SHADOW_TEMPLE_MAP:
         case RG_BOTTOM_OF_THE_WELL_MAP:
         case RG_ICE_CAVERN_MAP:
-            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) < 3) {
+            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
+                GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_VANILLA ||
+                GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) {
                 return GI_MAP;
             } else {
                 return (GetItemID)randoGet;
@@ -1902,7 +1965,9 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_SHADOW_TEMPLE_COMPASS:
         case RG_BOTTOM_OF_THE_WELL_COMPASS:
         case RG_ICE_CAVERN_COMPASS:
-            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) < 3) {
+            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
+                GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_VANILLA ||
+                GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) {
                 return GI_COMPASS;
             } else {
                 return (GetItemID)randoGet;
@@ -1913,7 +1978,9 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_WATER_TEMPLE_BOSS_KEY:
         case RG_SPIRIT_TEMPLE_BOSS_KEY:
         case RG_SHADOW_TEMPLE_BOSS_KEY:
-            if (GetRandoSettingValue(RSK_BOSS_KEYSANITY) < 3) {
+            if (GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
+                GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA ||
+                GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) {
                 return GI_KEY_BOSS;
             } else {
                 return (GetItemID)randoGet;
@@ -1943,7 +2010,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 return (GetItemID)randoGet;
             }
         case RG_GERUDO_FORTRESS_SMALL_KEY:
-            if (GetRandoSettingValue(RSK_GERUDO_KEYS) == 0) {
+            if (GetRandoSettingValue(RSK_GERUDO_KEYS) == RO_GERUDO_KEYS_VANILLA) {
                 return GI_KEY_SMALL;
             } else {
                 return (GetItemID)randoGet;
@@ -2120,7 +2187,7 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
             }
             return true;
         case RG_GERUDO_FORTRESS_SMALL_KEY:
-            if (GetRandoSettingValue(RSK_GERUDO_KEYS) != 0) {
+            if (GetRandoSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA) {
                 return false;
             }
             return true;
@@ -2129,10 +2196,12 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_WATER_TEMPLE_BOSS_KEY:
         case RG_SPIRIT_TEMPLE_BOSS_KEY:
         case RG_SHADOW_TEMPLE_BOSS_KEY:
-            if (GetRandoSettingValue(RSK_BOSS_KEYSANITY) > 2) {
-                return false;
+            if (GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
+                GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA ||
+                GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) {
+                return true;
             }
-            return true;
+            return false;
         case RG_GANONS_CASTLE_BOSS_KEY:
             if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_VANILLA ||
                 GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_OWN_DUNGEON ||
@@ -2160,10 +2229,12 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_SHADOW_TEMPLE_MAP:
         case RG_BOTTOM_OF_THE_WELL_MAP:
         case RG_ICE_CAVERN_MAP:
-            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) > 2) {
-                return false;
+            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
+                GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_VANILLA ||
+                GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) {
+                return true;
             }
-            return true;
+            return false;
         default:
             return false;
     }
@@ -2315,6 +2386,11 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_MARKET_BOMBCHU_SHOP_ITEM_8,                                  RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8 },
     { RC_GC_MEDIGORON,                                                RAND_INF_MERCHANTS_MEDIGORON                   },
     { RC_WASTELAND_BOMBCHU_SALESMAN,                                  RAND_INF_MERCHANTS_CARPET_SALESMAN              },
+    { RC_LW_TRADE_COJIRO,                                             RAND_INF_ADULT_TRADES_LW_TRADE_COJIRO },
+    { RC_GV_TRADE_SAW,                                                RAND_INF_ADULT_TRADES_GV_TRADE_SAW },
+    { RC_DMT_TRADE_BROKEN_SWORD,                                      RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD },
+    { RC_LH_TRADE_FROG,                                               RAND_INF_ADULT_TRADES_LH_TRADE_FROG },
+    { RC_DMT_TRADE_EYEDROPS,                                          RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS },
 
 };
 
@@ -2436,7 +2512,7 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
         scrubIdentity.randomizerInf = rcToRandomizerInf[rcObject.rc];
         scrubIdentity.randomizerCheck = rcObject.rc;
         scrubIdentity.getItemId = rcObject.ogItemId;
-        scrubIdentity.isShuffled = GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) > 0;
+        scrubIdentity.isShuffled = GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) != RO_SCRUBS_OFF;
 
         if (rcObject.rc == RC_HF_DEKU_SCRUB_GROTTO || rcObject.rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT || rcObject.rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE) {
             scrubIdentity.isShuffled = true;
@@ -2533,6 +2609,8 @@ GetItemEntry Randomizer::GetItemEntryFromRGData(RandomizerGetData rgData, GetIte
         GetItemEntry fakeGiEntry = ItemTableManager::Instance->RetrieveItemEntry(modIndex, GetItemIdFromRandomizerGet(rgData.fakeRgID, ogItemId));
         giEntry.gid = fakeGiEntry.gid;
         giEntry.gi = fakeGiEntry.gi;
+        giEntry.drawItemId = fakeGiEntry.drawItemId;
+        giEntry.drawModIndex = fakeGiEntry.drawModIndex;
         giEntry.drawFunc = fakeGiEntry.drawFunc;
     }
     return giEntry;
@@ -2545,6 +2623,14 @@ GetItemEntry Randomizer::GetItemFromKnownCheck(RandomizerCheck randomizerCheck, 
 
 RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, s16 sceneNum, s16 actorParams) {
     return GetCheckObjectFromActor(actorId, sceneNum, actorParams).rc;
+}
+
+RandomizerInf Randomizer::GetRandomizerInfFromCheck(RandomizerCheck rc) {
+    auto rcIt = rcToRandomizerInf.find(rc);
+    if (rcIt == rcToRandomizerInf.end())
+        return RAND_INF_MAX;
+    
+    return rcIt->second;
 }
 
 RandomizerCheck Randomizer::GetCheckFromRandomizerInf(RandomizerInf randomizerInf) {
@@ -2562,14 +2648,15 @@ void GenerateRandomizerImgui() {
     CVar_Save();
 
     std::unordered_map<RandomizerSettingKey, u8> cvarSettings;
-    cvarSettings[RSK_LOGIC_RULES] = CVar_GetS32("gRandomizeLogicRules", 0);
+    cvarSettings[RSK_LOGIC_RULES] = CVar_GetS32("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS);
+    cvarSettings[RSK_ALL_LOCATIONS_REACHABLE] = CVar_GetS32("gRandomizeAllLocationsReachable", RO_GENERIC_ON);
     cvarSettings[RSK_FOREST] = CVar_GetS32("gRandomizeForest", RO_FOREST_CLOSED);
     cvarSettings[RSK_KAK_GATE] = CVar_GetS32("gRandomizeKakarikoGate", RO_KAK_GATE_CLOSED);
     cvarSettings[RSK_DOOR_OF_TIME] = CVar_GetS32("gRandomizeDoorOfTime", RO_DOOROFTIME_CLOSED);
     cvarSettings[RSK_ZORAS_FOUNTAIN] = CVar_GetS32("gRandomizeZorasFountain", 0);
-    cvarSettings[RSK_STARTING_AGE] = CVar_GetS32("gRandomizeStartingAge", 0);
+    cvarSettings[RSK_STARTING_AGE] = CVar_GetS32("gRandomizeStartingAge", RO_AGE_CHILD);
     cvarSettings[RSK_GERUDO_FORTRESS] = CVar_GetS32("gRandomizeGerudoFortress", RO_GF_NORMAL);
-    cvarSettings[RSK_RAINBOW_BRIDGE] = CVar_GetS32("gRandomizeRainbowBridge", 0);
+    cvarSettings[RSK_RAINBOW_BRIDGE] = CVar_GetS32("gRandomizeRainbowBridge", RO_BRIDGE_VANILLA);
     cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] = CVar_GetS32("gRandomizeStoneCount", 3);
     cvarSettings[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] = CVar_GetS32("gRandomizeMedallionCount", 6);
     cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = CVar_GetS32("gRandomizeRewardCount", 9);
@@ -2585,16 +2672,16 @@ void GenerateRandomizerImgui() {
                                              CVar_GetS32("gRandomizeStartingKokiriSword", 0);
     cvarSettings[RSK_STARTING_DEKU_SHIELD] = CVar_GetS32("gRandomizeStartingDekuShield", 0);
     cvarSettings[RSK_STARTING_SKULLTULA_TOKEN] = CVar_GetS32("gRandomizeStartingSkulltulaToken", 0);
-    cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVar_GetS32("gRandomizeStartingMapsCompasses", 2);
+    cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVar_GetS32("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON);
-    cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
-    cvarSettings[RSK_SHUFFLE_TOKENS] = CVar_GetS32("gRandomizeShuffleTokens", 0);
-    cvarSettings[RSK_SHOPSANITY] = CVar_GetS32("gRandomizeShopsanity", 0);
-    cvarSettings[RSK_SHUFFLE_SCRUBS] = CVar_GetS32("gRandomizeShuffleScrubs", 0);
+    cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", RO_SONG_SHUFFLE_SONG_LOCATIONS);
+    cvarSettings[RSK_SHUFFLE_TOKENS] = CVar_GetS32("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF);
+    cvarSettings[RSK_SHOPSANITY] = CVar_GetS32("gRandomizeShopsanity", RO_SHOPSANITY_OFF);
+    cvarSettings[RSK_SHUFFLE_SCRUBS] = CVar_GetS32("gRandomizeShuffleScrubs", RO_SCRUBS_OFF);
     cvarSettings[RSK_SHUFFLE_COWS] = CVar_GetS32("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVar_GetS32("gRandomizeShuffleAdultTrade", 0);
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVar_GetS32("gRandomizeShuffleBeans", 0);
-    cvarSettings[RSK_SHUFFLE_MERCHANTS] = CVar_GetS32("gRandomizeShuffleMerchants", 0);
+    cvarSettings[RSK_SHUFFLE_MERCHANTS] = CVar_GetS32("gRandomizeShuffleMerchants", RO_SHUFFLE_MERCHANTS_OFF);
     cvarSettings[RSK_ENABLE_BOMBCHU_DROPS] = CVar_GetS32("gRandomizeEnableBombchuDrops", 0);
     cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = CVar_GetS32("gRandomizeBombchusInLogic", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
@@ -2608,14 +2695,14 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES] = CVar_GetS32("gRandomizeShuffleFrogSongRupees", 0);
     cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", RO_ITEM_POOL_BALANCED);
     cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", RO_ICE_TRAPS_NORMAL);
-    cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 1);
-    cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", 2);
-    cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 1);
+    cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", RO_GOSSIP_STONES_NEED_NOTHING);
+    cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", RO_HINT_CLARITY_CLEAR);
+    cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", RO_HINT_DIST_BALANCED);
     cvarSettings[RSK_BLUE_FIRE_ARROWS] = CVar_GetS32("gRandomizeBlueFireArrows", 0);
     cvarSettings[RSK_SUNLIGHT_ARROWS] = CVar_GetS32("gRandomizeSunlightArrows", 0);
     cvarSettings[RSK_KEYSANITY] = CVar_GetS32("gRandomizeKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
-    cvarSettings[RSK_GERUDO_KEYS] = CVar_GetS32("gRandomizeGerudoKeys", 0);
-    cvarSettings[RSK_KEYRINGS] = CVar_GetS32("gRandomizeShuffleKeyRings", 0);
+    cvarSettings[RSK_GERUDO_KEYS] = CVar_GetS32("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA);
+    cvarSettings[RSK_KEYRINGS] = CVar_GetS32("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF);
     cvarSettings[RSK_KEYRINGS_RANDOM_COUNT] = CVar_GetS32("gRandomizeShuffleKeyRingsRandomCount", 8);
     cvarSettings[RSK_KEYRINGS_FOREST_TEMPLE] = CVar_GetS32("gRandomizeShuffleKeyRingsForestTemple", 0);
     cvarSettings[RSK_KEYRINGS_FIRE_TEMPLE] = CVar_GetS32("gRandomizeShuffleKeyRingsFireTemple", 0);
@@ -2625,7 +2712,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_KEYRINGS_BOTTOM_OF_THE_WELL] = CVar_GetS32("gRandomizeShuffleKeyRingsBottomOfTheWell", 0);
     cvarSettings[RSK_KEYRINGS_GTG] = CVar_GetS32("gRandomizeShuffleKeyRingsGTG", 0);
     cvarSettings[RSK_KEYRINGS_GANONS_CASTLE] = CVar_GetS32("gRandomizeShuffleKeyRingsGanonsCastle", 0);
-    cvarSettings[RSK_BOSS_KEYSANITY] = CVar_GetS32("gRandomizeBossKeysanity", 2);
+    cvarSettings[RSK_BOSS_KEYSANITY] = CVar_GetS32("gRandomizeBossKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     cvarSettings[RSK_GANONS_BOSS_KEY] = CVar_GetS32("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA);
     cvarSettings[RSK_LACS_STONE_COUNT] = CVar_GetS32("gRandomizeLacsStoneCount", 3);
     cvarSettings[RSK_LACS_MEDALLION_COUNT] = CVar_GetS32("gRandomizeLacsMedallionCount", 6);
@@ -2661,28 +2748,40 @@ void GenerateRandomizerImgui() {
 
     if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
         // If both OTRs are loaded.
-        cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = CVar_GetS32("gRandomizeMqDungeons", 0);
+        cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = CVar_GetS32("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE);
         cvarSettings[RSK_MQ_DUNGEON_COUNT] = CVar_GetS32("gRandomizeMqDungeonCount", 12);
     } else if (OTRGlobals::Instance->HasMasterQuest()) {
         // If only Master Quest is loaded.
-        cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = 1;
+        cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = RO_MQ_DUNGEONS_SET_NUMBER;
         cvarSettings[RSK_MQ_DUNGEON_COUNT] = 12;
     } else {
         // If only Original Quest is loaded.
-        cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = 1;
+        cvarSettings[RSK_RANDOM_MQ_DUNGEONS] = RO_MQ_DUNGEONS_NONE;
         cvarSettings[RSK_MQ_DUNGEON_COUNT] = 0;
     }
 
     // Enable if any of the entrance rando options are enabled.
-    cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0) ||
-                                          CVar_GetS32("gRandomizeShuffleOverworldEntrances", 0) ||
-                                          CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0) ||
-                                          CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0);
+    cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
+                                          CVar_GetS32("gRandomizeShuffleOverworldEntrances", RO_GENERIC_OFF) ||
+                                          CVar_GetS32("gRandomizeShuffleInteriorsEntrances", RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) ||
+                                          CVar_GetS32("gRandomizeShuffleGrottosEntrances", RO_GENERIC_OFF) ||
+                                          CVar_GetS32("gRandomizeShuffleOwlDrops", RO_GENERIC_OFF) ||
+                                          CVar_GetS32("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF) ||
+                                          CVar_GetS32("gRandomizeShuffleOverworldSpawns", RO_GENERIC_OFF);
 
-    cvarSettings[RSK_SHUFFLE_DUNGEON_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", 0);
-    cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = CVar_GetS32("gRandomizeShuffleOverworldEntrances", 0);
-    cvarSettings[RSK_SHUFFLE_INTERIOR_ENTRANCES] = CVar_GetS32("gRandomizeShuffleInteriorsEntrances", 0);
-    cvarSettings[RSK_SHUFFLE_GROTTO_ENTRANCES] = CVar_GetS32("gRandomizeShuffleGrottosEntrances", 0);
+    cvarSettings[RSK_SHUFFLE_DUNGEON_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
+    cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = CVar_GetS32("gRandomizeShuffleOverworldEntrances", RO_GENERIC_OFF);
+    cvarSettings[RSK_SHUFFLE_INTERIOR_ENTRANCES] = CVar_GetS32("gRandomizeShuffleInteriorsEntrances", RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
+    cvarSettings[RSK_SHUFFLE_GROTTO_ENTRANCES] = CVar_GetS32("gRandomizeShuffleGrottosEntrances", RO_GENERIC_OFF);
+    cvarSettings[RSK_SHUFFLE_OWL_DROPS] = CVar_GetS32("gRandomizeShuffleOwlDrops", RO_GENERIC_OFF);
+    cvarSettings[RSK_SHUFFLE_WARP_SONGS] = CVar_GetS32("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF);
+    cvarSettings[RSK_SHUFFLE_OVERWORLD_SPAWNS] = CVar_GetS32("gRandomizeShuffleOverworldSpawns", RO_GENERIC_OFF);
+    cvarSettings[RSK_MIXED_ENTRANCE_POOLS] = CVar_GetS32("gRandomizeMixedEntrances", RO_GENERIC_OFF);
+    cvarSettings[RSK_MIX_DUNGEON_ENTRANCES] = CVar_GetS32("gRandomizeMixDungeons", RO_GENERIC_OFF);
+    cvarSettings[RSK_MIX_OVERWORLD_ENTRANCES] = CVar_GetS32("gRandomizeMixOverworld", RO_GENERIC_OFF);
+    cvarSettings[RSK_MIX_INTERIOR_ENTRANCES] = CVar_GetS32("gRandomizeMixInteriors", RO_GENERIC_OFF);
+    cvarSettings[RSK_MIX_GROTTO_ENTRANCES] = CVar_GetS32("gRandomizeMixGrottos", RO_GENERIC_OFF);
+    cvarSettings[RSK_DECOUPLED_ENTRANCES] = CVar_GetS32("gRandomizeDecoupleEntrances", RO_GENERIC_OFF);
 
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
@@ -2716,60 +2815,60 @@ void DrawRandoEditor(bool& open) {
 
     // Randomizer settings
     // Logic Settings
-    const char* randoLogicRules[2] = { "Glitchless", "No logic" };
+    static const char* randoLogicRules[2] = { "Glitchless", "No logic" };
 
     // Open Settings
-    const char* randoForest[3] = { "Closed", "Closed Deku", "Open" };
-    const char* randoKakarikoGate[2] = { "Closed", "Open" };
-    const char* randoDoorOfTime[3] = { "Closed", "Song only", "Open" };
-    const char* randoZorasFountain[3] = { "Closed", "Closed as child", "Open" };
-    const char* randoGerudoFortress[3] = { "Normal", "Fast", "Open" };
-    const char* randoRainbowBridge[7] = { "Vanilla",         "Always open", "Stones", "Medallions",
+    static const char* randoForest[3] = { "Closed", "Closed Deku", "Open" };
+    static const char* randoKakarikoGate[2] = { "Closed", "Open" };
+    static const char* randoDoorOfTime[3] = { "Closed", "Song only", "Open" };
+    static const char* randoZorasFountain[3] = { "Closed", "Closed as child", "Open" };
+    static const char* randoGerudoFortress[3] = { "Normal", "Fast", "Open" };
+    static const char* randoRainbowBridge[7] = { "Vanilla",         "Always open", "Stones", "Medallions",
                                           "Dungeon rewards", "Dungeons",    "Tokens" };
-    const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
-    const char* randoMqDungeons[3] = { "None", "Set Number", "Random Number" };
+    static const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
+    static const char* randoMqDungeons[3] = { "None", "Set Number", "Random Number" };
 
     // World Settings
-    const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
-    const char* randoShuffleDungeonsEntrances[3] = { "Off", "On", "On + Ganon" };
-    const char* randoShuffleInteriorsEntrances[3] = { "Off", "Simple", "All" };
-    const char* randoBombchusInLogic[2] = { "Off", "On" };
-    const char* randoAmmoDrops[3] = { "On + Bombchu", "Off", "On" };
-    const char* randoHeartDropsAndRefills[4] = { "On", "No Drop", "No Refill", "Off" };
+    static const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
+    static const char* randoShuffleDungeonsEntrances[3] = { "Off", "On", "On + Ganon" };
+    static const char* randoShuffleInteriorsEntrances[3] = { "Off", "Simple", "All" };
+    static const char* randoBombchusInLogic[2] = { "Off", "On" };
+    static const char* randoAmmoDrops[3] = { "On + Bombchu", "Off", "On" };
+    static const char* randoHeartDropsAndRefills[4] = { "On", "No Drop", "No Refill", "Off" };
 
     // Shuffle Settings
-    const char* randoShuffleDungeonRewards[4] = { "End of dungeons", "Any dungeon", "Overworld", "Anywhere" };
-    const char* randoLinksPocket[4] = { "Dungeon Reward", "Advancement", "Anything", "Nothing" };
-    const char* randoShuffleSongs[3] = { "Song Locations", "Dungeon Rewards", "Anywhere" };
-    const char* randoShopsanity[7] = { "Off", "0 Items", "1 Item", "2 Items", "3 Items", "4 Items", "Random" };
-    const char* randoTokensanity[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
-    const char* randoShuffleScrubs[4] = { "Off", "Affordable", "Expensive", "Random Prices" };
-    const char* randoShuffleMerchants[3] = { "Off", "On (no hints)", "On (with hints)" };
+    static const char* randoShuffleDungeonRewards[4] = { "End of dungeons", "Any dungeon", "Overworld", "Anywhere" };
+    static const char* randoLinksPocket[4] = { "Dungeon Reward", "Advancement", "Anything", "Nothing" };
+    static const char* randoShuffleSongs[3] = { "Song Locations", "Dungeon Rewards", "Anywhere" };
+    static const char* randoShopsanity[7] = { "Off", "0 Items", "1 Item", "2 Items", "3 Items", "4 Items", "Random" };
+    static const char* randoTokensanity[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
+    static const char* randoShuffleScrubs[4] = { "Off", "Affordable", "Expensive", "Random Prices" };
+    static const char* randoShuffleMerchants[3] = { "Off", "On (no hints)", "On (with hints)" };
 
     // Shuffle Dungeon Items Settings
-    const char* randoShuffleMapsAndCompasses[6] = { "Start With",  "Vanilla",   "Own Dungeon",
+    static const char* randoShuffleMapsAndCompasses[6] = { "Start With",  "Vanilla",   "Own Dungeon",
                                                     "Any Dungeon", "Overworld", "Anywhere" };
-    const char* randoShuffleSmallKeys[6] = { "Start With",  "Vanilla",   "Own Dungeon",
+    static const char* randoShuffleSmallKeys[6] = { "Start With",  "Vanilla",   "Own Dungeon",
                                              "Any Dungeon", "Overworld", "Anywhere" };
-    const char* randoShuffleGerudoFortressKeys[4] = { "Vanilla", "Any Dungeon", "Overworld", "Anywhere" };
-    const char* randoShuffleBossKeys[6] = { "Start With",  "Vanilla",   "Own Dungeon",
+    static const char* randoShuffleGerudoFortressKeys[4] = { "Vanilla", "Any Dungeon", "Overworld", "Anywhere" };
+    static const char* randoShuffleBossKeys[6] = { "Start With",  "Vanilla",   "Own Dungeon",
                                             "Any Dungeon", "Overworld", "Anywhere" };
-    const char* randoShuffleGanonsBossKey[12] = {"Vanilla", "Own dungeon", "Start with", 
+    static const char* randoShuffleGanonsBossKey[12] = {"Vanilla", "Own dungeon", "Start with", 
                                                 "Any Dungeon", "Overworld", "Anywhere", 
                                                 "LACS-Vanilla", "LACS-Medallions", "LACS-Stones", 
                                                 "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens"};
-    const char* randoShuffleKeyRings[4] = { "Off", "Random", "Count", "Selection" };
+    static const char* randoShuffleKeyRings[4] = { "Off", "Random", "Count", "Selection" };
 
     // Misc Settings
-    const char* randoGossipStoneHints[4] = { "No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony" };
-    const char* randoHintClarity[3] = { "Obscure", "Ambiguous", "Clear" };
-    const char* randoHintDistribution[4] = { "Useless", "Balanced", "Strong", "Very Strong" };
-    const char* randoStartingTime[2] = { "Day", "Night" };
-    const char* randoRandomTrapDamage[3] = { "Basic", "Advanced", "Off" };
+    static const char* randoGossipStoneHints[4] = { "No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony" };
+    static const char* randoHintClarity[3] = { "Obscure", "Ambiguous", "Clear" };
+    static const char* randoHintDistribution[4] = { "Useless", "Balanced", "Strong", "Very Strong" };
+    static const char* randoStartingTime[2] = { "Day", "Night" };
+    static const char* randoRandomTrapDamage[3] = { "Basic", "Advanced", "Off" };
 
     // Item Pool Settings
-    const char* randoItemPool[4] = { "Plentiful", "Balanced", "Scarce", "Minimal" };
-    const char* randoIceTraps[5] = { "Off", "Normal", "Extra", "Mayhem", "Onslaught" };
+    static const char* randoItemPool[4] = { "Plentiful", "Balanced", "Scarce", "Minimal" };
+    static const char* randoIceTraps[5] = { "Off", "Normal", "Extra", "Mayhem", "Onslaught" };
 
     ImGui::SetNextWindowSize(ImVec2(920, 600), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
@@ -2851,7 +2950,7 @@ void DrawRandoEditor(bool& open) {
                     "Open - Mido no longer blocks the path to the Deku Tree. Kokiri "
                     "boy no longer blocks the path out of the forest."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeForest", randoForest, 3, RO_FOREST_CLOSED);
+                UIWidgets::EnhancementCombobox("gRandomizeForest", randoForest, RO_FOREST_MAX, RO_FOREST_CLOSED);
 
                 UIWidgets::PaddedSeparator();
 
@@ -2864,7 +2963,7 @@ void DrawRandoEditor(bool& open) {
                     "Open - The gate is always open. The happy mask shop "
                     "will open immediately after obtaining Zelda's letter."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, RO_KAK_GATE_CLOSED);
+                UIWidgets::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, RO_KAK_GATE_MAX, RO_KAK_GATE_CLOSED);
 
                 UIWidgets::PaddedSeparator();
 
@@ -2879,7 +2978,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Open - The Door of Time is permanently open with no requirements."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeDoorOfTime", randoDoorOfTime, 3, RO_DOOROFTIME_CLOSED);
+                UIWidgets::EnhancementCombobox("gRandomizeDoorOfTime", randoDoorOfTime, RO_DOOROFTIME_MAX, RO_DOOROFTIME_CLOSED);
 
                 UIWidgets::PaddedSeparator();
 
@@ -2896,7 +2995,7 @@ void DrawRandoEditor(bool& open) {
                     "Open - King Zora has already mweeped out of the way in both "
                     "time periods. Ruto's Letter is removed from the item pool."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeZorasFountain", randoZorasFountain, 3, RO_ZF_CLOSED);
+                UIWidgets::EnhancementCombobox("gRandomizeZorasFountain", randoZorasFountain, RO_ZF_MAX, RO_ZF_CLOSED);
 
                 UIWidgets::PaddedSeparator();
 
@@ -2911,12 +3010,12 @@ void DrawRandoEditor(bool& open) {
                 //Starting Age
                 //Disabled when Forest is set to Closed or under very specific conditions
                 //RANDOTODO: Replace magic number checks with enums
-                bool disableRandoStartingAge =  (CVar_GetS32("gRandomizeLogicRules", 0) == 0) && // glitchless logic
+                bool disableRandoStartingAge =  (CVar_GetS32("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHLESS) &&
                 ((CVar_GetS32("gRandomizeForest", RO_FOREST_CLOSED) == RO_FOREST_CLOSED) ||
                  ((CVar_GetS32("gRandomizeDoorOfTime", RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED) &&
                  (CVar_GetS32("gRandomizeShuffleOcarinas", 0) == 0)));  // ocarinas not shuffled
                     
-                const char* disableRandoStartingAgeText = "This option is disabled due to other options making the game unbeatable.";
+                static const char* disableRandoStartingAgeText = "This option is disabled due to other options making the game unbeatable.";
                 ImGui::Text(Settings::StartingAge.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Choose which age Link will start as.\n\n"
@@ -2927,7 +3026,7 @@ void DrawRandoEditor(bool& open) {
                     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                     ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
                 }    
-                UIWidgets::EnhancementCombobox("gRandomizeStartingAge", randoStartingAge, 3, RO_AGE_CHILD);
+                UIWidgets::EnhancementCombobox("gRandomizeStartingAge", randoStartingAge, RO_AGE_MAX, RO_AGE_CHILD);
                 if (disableRandoStartingAge) {
                     if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
                        ImGui::SetTooltip("%s", disableRandoStartingAgeText);
@@ -2951,7 +3050,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Open - The bridge is repaired from the start."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, 3, RO_GF_NORMAL);
+                UIWidgets::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, RO_GF_MAX, RO_GF_NORMAL);
 
                 UIWidgets::PaddedSeparator();
 
@@ -2978,34 +3077,34 @@ void DrawRandoEditor(bool& open) {
                     "Tokens - Obtain the specified amount of Skulltula tokens."
                 );
 
-                UIWidgets::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, 7, RO_BRIDGE_VANILLA);
+                UIWidgets::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, RO_BRIDGE_MAX, RO_BRIDGE_VANILLA);
                 ImGui::PopItemWidth();
-                switch (CVar_GetS32("gRandomizeRainbowBridge", 0)) {
-                    case 0:
+                switch (CVar_GetS32("gRandomizeRainbowBridge", RO_BRIDGE_VANILLA)) {
+                    case RO_BRIDGE_ALWAYS_OPEN:
                         break;
-                    case 1:
+                    case RO_BRIDGE_VANILLA:
                         break;
-                    case 2:
+                    case RO_BRIDGE_STONES:
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
                                                         "gRandomizeStoneCount", 1, 3, "", 3, true);
                         break;
-                    case 3:
+                    case RO_BRIDGE_MEDALLIONS:
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
                                                         "gRandomizeMedallionCount", 1, 6, "", 6, true);
                         break;
-                    case 4:
+                    case RO_BRIDGE_DUNGEON_REWARDS:
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
                                                         "gRandomizeRewardCount", 1, 9, "", 9, true);
                         break;
-                    case 5:
+                    case RO_BRIDGE_DUNGEONS:
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
                                                         "gRandomizeDungeonCount", 1, 8, "", 8, true);
                         break;
-                    case 6:
+                    case RO_BRIDGE_TOKENS:
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
                                                         "gRandomizeTokenCount", 1, 100, "", 100, true);
@@ -3027,7 +3126,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Random Number - A Random number and set of trials will be required."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 3, RO_GANONS_TRIALS_SET_NUMBER);
+                UIWidgets::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, RO_GANONS_TRIALS_MAX, RO_GANONS_TRIALS_SET_NUMBER);
                 ImGui::PopItemWidth();
                 if (CVar_GetS32("gRandomizeGanonTrial", RO_GANONS_TRIALS_SET_NUMBER) == RO_GANONS_TRIALS_SET_NUMBER) {
                     ImGui::Dummy(ImVec2(0.0f, 0.0f));
@@ -3051,9 +3150,9 @@ void DrawRandoEditor(bool& open) {
                         "\n"
                         "Random Number - A Random number and set of dungeons will be their Master Quest varieties."
                     );
-                    UIWidgets::EnhancementCombobox("gRandomizeMqDungeons", randoMqDungeons, 3, CVar_GetS32("gRandomizeMqDungeons", 0));
+                    UIWidgets::EnhancementCombobox("gRandomizeMqDungeons", randoMqDungeons, RO_MQ_DUNGEONS_MAX, RO_MQ_DUNGEONS_NONE);
                     ImGui::PopItemWidth();
-                    if (CVar_GetS32("gRandomizeMqDungeons", 0) == 1) {
+                    if (CVar_GetS32("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SET_NUMBER) {
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Master Quest Dungeon Count: %d", "##RandoMqDungeonCount",
                             "gRandomizeMqDungeonCount", 1, 12, "", CVar_GetS32("gRandomizeMqDungeonCount", 12), true);
@@ -3081,7 +3180,7 @@ void DrawRandoEditor(bool& open) {
                     "- Bottom of the Well will be open for adult after playing Song of Storms to the Windmill guy as child.\n"
                     "- Gerudo Training Ground will be open for child after adult has paid to open the gate once."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonsEntrances", randoShuffleDungeonsEntrances, 3, RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonsEntrances", randoShuffleDungeonsEntrances, RO_DUNGEON_ENTRANCE_SHUFFLE_MAX, RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3109,7 +3208,7 @@ void DrawRandoEditor(bool& open) {
                     "- Temple of Time\n"
                     "- Kakariko Potion Shop"
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleInteriorsEntrances", randoShuffleInteriorsEntrances, 3, RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleInteriorsEntrances", randoShuffleInteriorsEntrances, RO_INTERIOR_ENTRANCE_SHUFFLE_MAX, RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3118,6 +3217,88 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::InsertHelpHoverText(
                     "Shuffle the pool of grotto entrances, including all graves, small Fairy fountains and the Deku Theatre."
                 );
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle Owl Drops
+                UIWidgets::EnhancementCheckbox("Shuffle Owl Drops", "gRandomizeShuffleOwlDrops");
+                UIWidgets::InsertHelpHoverText(
+                    "Randomize where Kaepora Gaebora (the Owl) drops you at when you talk "
+                    "to him at Lake Hylia or at the top of Death Mountain Trail."
+                );
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle Warp Songs
+                UIWidgets::EnhancementCheckbox("Shuffle Warp Songs", "gRandomizeShuffleWarpSongs");
+                UIWidgets::InsertHelpHoverText(
+                    "Randomize where each of the 6 warp songs leads to."
+                );
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle Overworld Spawns
+                UIWidgets::EnhancementCheckbox("Shuffle Overworld Spawns", "gRandomizeShuffleOverworldSpawns");
+                UIWidgets::InsertHelpHoverText(
+                    "Randomize where you start as Child or Adult when loading a save in the Overworld. This "
+                    "means you may not necessarily spawn inside Link's House or Temple of Time.\n"
+                    "\n"
+                    "This stays consistent after saving and loading the game again.\n"
+                    "\n"
+                    "Keep in mind you may need to temporarily disable the \"Remember Save Location\" time saver to "
+                    "be able use the spawn positions, especially if they are the only logical way to get to certain areas."
+                );
+
+                UIWidgets::PaddedSeparator();
+
+                // Decouple Entrances
+                UIWidgets::EnhancementCheckbox("Decouple Entrances", "gRandomizeDecoupleEntrances");
+                UIWidgets::InsertHelpHoverText(
+                    "Decouple entrances when shuffling them. This means you are no longer guaranteed "
+                    "to end up back where you came from when you go back through an entrance.\n"
+                    "\n"
+                    "This also adds the one-way entrance from Gerudo Valley to Lake Hylia in the pool of "
+                    "overworld entrances when they are shuffled."
+                );
+
+                UIWidgets::PaddedSeparator();
+
+                // Mixed Entrance Pools
+                UIWidgets::EnhancementCheckbox("Mixed Entrance Pools", "gRandomizeMixedEntrances");
+                UIWidgets::InsertHelpHoverText(
+                    "Shuffle entrances into a mixed pool instead of separate ones.\n"
+                    "\n"
+                    "For example, enabling the settings to shuffle grotto, dungeon, and overworld entrances and "
+                    "selecting grotto and dungeon entrances here will allow a dungeon to be inside a grotto or "
+                    "vice versa, while overworld entrances are shuffled in their own separate pool and indoors stay vanilla."
+                );
+
+                if (CVar_GetS32("gRandomizeMixedEntrances", RO_GENERIC_OFF)) {
+                    if (CVar_GetS32("gRandomizeShuffleDungeonsEntrances", RO_GENERIC_OFF)) {
+                        UIWidgets::Spacer(0);
+                        ImGui::SetCursorPosX(20);
+                        UIWidgets::EnhancementCheckbox("Mix Dungeons", "gRandomizeMixDungeons");
+                        UIWidgets::InsertHelpHoverText("Dungeon entrances will be part of the mixed pool");
+                    }
+                    if (CVar_GetS32("gRandomizeShuffleOverworldEntrances", RO_GENERIC_OFF)) {
+                        UIWidgets::Spacer(0);
+                        ImGui::SetCursorPosX(20);
+                        UIWidgets::EnhancementCheckbox("Mix Overworld", "gRandomizeMixOverworld");
+                        UIWidgets::InsertHelpHoverText("Overworld entrances will be part of the mixed pool");
+                    }
+                    if (CVar_GetS32("gRandomizeShuffleInteriorsEntrances", RO_GENERIC_OFF)) {
+                        UIWidgets::Spacer(0);
+                        ImGui::SetCursorPosX(20);
+                        UIWidgets::EnhancementCheckbox("Mix Interiors", "gRandomizeMixInteriors");
+                        UIWidgets::InsertHelpHoverText("Interior entrances will be part of the mixed pool");
+                    }
+                    if (CVar_GetS32("gRandomizeShuffleGrottosEntrances", RO_GENERIC_OFF)) {
+                        UIWidgets::Spacer(0);
+                        ImGui::SetCursorPosX(20);
+                        UIWidgets::EnhancementCheckbox("Mix Grottos", "gRandomizeMixGrottos");
+                        UIWidgets::InsertHelpHoverText("Grotto entrances will be part of the mixed pool");
+                    }
+                }
 
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
@@ -3159,7 +3340,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Anywhere - Songs can appear at any location."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, RO_SONG_SHUFFLE_SONG_LOCATIONS);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, RO_SONG_SHUFFLE_MAX, RO_SONG_SHUFFLE_SONG_LOCATIONS);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3177,7 +3358,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "All Tokens - Shuffle all 100 GS tokens."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleTokens", randoTokensanity, 4, RO_TOKENSANITY_OFF);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleTokens", randoTokensanity, RO_TOKENSANITY_MAX, RO_TOKENSANITY_OFF);
 
                 ImGui::Dummy(ImVec2(0,0));
 
@@ -3192,7 +3373,7 @@ void DrawRandoEditor(bool& open) {
                 // Shuffle Kokiri Sword
                 // Disabled when Start with Kokiri Sword is active
                 bool disableShuffleKokiriSword = CVar_GetS32("gRandomizeStartingKokiriSword", 0);
-                const char* disableShuffleKokiriSwordText = "This option is disabled because \"Start with Kokiri Sword\" is enabled.";
+                static const char* disableShuffleKokiriSwordText = "This option is disabled because \"Start with Kokiri Sword\" is enabled.";
                 UIWidgets::EnhancementCheckbox(Settings::ShuffleKokiriSword.GetName().c_str(), "gRandomizeShuffleKokiriSword",
                                                 disableShuffleKokiriSword, disableShuffleKokiriSwordText);
                 UIWidgets::InsertHelpHoverText(
@@ -3206,7 +3387,7 @@ void DrawRandoEditor(bool& open) {
                 // Shuffle Ocarinas
                 // Disabled when Start with Ocarina is active
                 bool disableShuffleOcarinas = CVar_GetS32("gRandomizeStartingOcarina", 0);
-                const char* disableShuffleOcarinasText = "This option is disabled because \"Start with Fairy Ocarina\" is enabled.";
+                static const char* disableShuffleOcarinasText = "This option is disabled because \"Start with Fairy Ocarina\" is enabled.";
                 UIWidgets::EnhancementCheckbox(Settings::ShuffleOcarinas.GetName().c_str(), "gRandomizeShuffleOcarinas",
                                               disableShuffleOcarinas, disableShuffleOcarinasText);
                 UIWidgets::InsertHelpHoverText(
@@ -3220,7 +3401,7 @@ void DrawRandoEditor(bool& open) {
                 // Shuffle Weird Egg
                 // Disabled when Skip Child Zelda is active
                 bool disableShuffleWeirdEgg = CVar_GetS32("gRandomizeSkipChildZelda", 0);
-                const char* disableShuffleWeirdEggText = "This option is disabled because \"Skip Child Zelda\" is enabled.";
+                static const char* disableShuffleWeirdEggText = "This option is disabled because \"Skip Child Zelda\" is enabled.";
                 UIWidgets::EnhancementCheckbox(Settings::ShuffleWeirdEgg.GetName().c_str(), "gRandomizeShuffleWeirdEgg",
                                               disableShuffleWeirdEgg, disableShuffleWeirdEggText);
                 UIWidgets::InsertHelpHoverText(
@@ -3269,7 +3450,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Random - Vanilla shop items will be shuffled among different shops, and each shop will contain a random number(1-4) of non-vanilla shop items.\n"
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, 7, RO_SHOPSANITY_OFF);
+                UIWidgets::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, RO_SHOPSANITY_MAX, RO_SHOPSANITY_OFF);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3284,7 +3465,7 @@ void DrawRandoEditor(bool& open) {
                     "Expensive - Scrubs will be shuffled and their item will cost the vanilla price.\n"
                     "\n"
                     "Random - Scrubs will be shuffled and their item will cost will be between 0-95 rupees.\n");
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, 4, RO_SCRUBS_OFF);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, RO_SCRUBS_MAX, RO_SCRUBS_OFF);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3311,7 +3492,7 @@ void DrawRandoEditor(bool& open) {
                     "On (no hints) - Salesmen will be included but won't tell you what you'll get.\n"
                     "On (with hints) - Salesmen will be included and you'll know what you're buying."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleMerchants", randoShuffleMerchants, 3, RO_SHUFFLE_MERCHANTS_OFF);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleMerchants", randoShuffleMerchants, RO_SHUFFLE_MERCHANTS_MAX, RO_SHUFFLE_MERCHANTS_OFF);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3366,7 +3547,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Anywhere - Spiritual stones and medallions can appear anywhere."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4, RO_DUNGEON_REWARDS_END_OF_DUNGEON);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, RO_DUNGEON_REWARDS_MAX, RO_DUNGEON_REWARDS_END_OF_DUNGEON);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3385,7 +3566,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Anywhere - Maps & Compasses can appear anywhere in the world."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses, 6, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
+                UIWidgets::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses, RO_DUNGEON_ITEM_LOC_MAX, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3404,7 +3585,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Anywhere - Small Keys can appear anywhere in the world."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeKeysanity", randoShuffleSmallKeys, 6, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
+                UIWidgets::EnhancementCombobox("gRandomizeKeysanity", randoShuffleSmallKeys, RO_DUNGEON_ITEM_LOC_MAX, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3421,7 +3602,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Selection - Hand select which dungeons will have their keys replaced with keyrings."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleKeyRings", randoShuffleKeyRings, 4, RO_KEYRINGS_OFF);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleKeyRings", randoShuffleKeyRings, RO_KEYRINGS_MAX, RO_KEYRINGS_OFF);
                 ImGui::PopItemWidth();
                 switch (CVar_GetS32("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF)) {
                     case RO_KEYRINGS_COUNT:
@@ -3457,7 +3638,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Anywhere - Thieve's Hideout Keys can appear anywhere in the world."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeGerudoKeys", randoShuffleGerudoFortressKeys, 4, RO_GERUDO_KEYS_VANILLA);
+                UIWidgets::EnhancementCombobox("gRandomizeGerudoKeys", randoShuffleGerudoFortressKeys, RO_GERUDO_KEYS_MAX, RO_GERUDO_KEYS_VANILLA);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3476,7 +3657,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Anywhere - Boss Keys can appear anywhere in the world."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeBossKeysanity", randoShuffleBossKeys, 6, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
+                UIWidgets::EnhancementCombobox("gRandomizeBossKeysanity", randoShuffleBossKeys, RO_DUNGEON_ITEM_LOC_MAX, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3503,7 +3684,7 @@ void DrawRandoEditor(bool& open) {
                     "- Dungeons: Complete the specified amount of dungeons. Dungeons are considered complete after stepping in to the blue warp after the boss.\n"
                     "- Tokens: Obtain the specified amount of Skulltula tokens."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 12, RO_GANON_BOSS_KEY_VANILLA);
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, RO_GANON_BOSS_KEY_MAX, RO_GANON_BOSS_KEY_VANILLA);
                 ImGui::PopItemWidth();
                 switch (CVar_GetS32("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA)) {
                     case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
@@ -3579,7 +3760,7 @@ void DrawRandoEditor(bool& open) {
                 // Skip child stealth
                 // Disabled when Skip Child Zelda is active
                 bool disableChildStealth = CVar_GetS32("gRandomizeSkipChildZelda", 0);
-                const char* disableChildStealthText = "This option is disabled because \"Skip Child Zelda\" is enabled";
+                static const char* disableChildStealthText = "This option is disabled because \"Skip Child Zelda\" is enabled";
                 UIWidgets::EnhancementCheckbox(Settings::SkipChildStealth.GetName().c_str(), "gRandomizeSkipChildStealth", disableChildStealth, disableChildStealthText);
                 UIWidgets::InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.");
 
@@ -3641,7 +3822,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Minimal - Most excess items are removed."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, RO_ITEM_POOL_BALANCED);
+                UIWidgets::EnhancementCombobox("gRandomizeItemPool", randoItemPool, RO_ITEM_POOL_MAX, RO_ITEM_POOL_BALANCED);
                 UIWidgets::PaddedSeparator();
 
                 // Ice Traps
@@ -3660,7 +3841,7 @@ void DrawRandoEditor(bool& open) {
                     "Onslaught - All junk items will be replaced by Ice Traps, even those "
                     "in the base pool."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, RO_ICE_TRAPS_NORMAL);
+                UIWidgets::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, RO_ICE_TRAPS_MAX, RO_ICE_TRAPS_NORMAL);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3678,8 +3859,8 @@ void DrawRandoEditor(bool& open) {
                     "Need Stone of Agony - Hints are only available after obtaining the Stone of Agony.\n"
                     "\n"
                     "Need Mask of Truth - Hints are only available whilst wearing the Mask of Truth.\n");
-                UIWidgets::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, RO_GOSSIP_STONES_NEED_NOTHING);
-                if (CVar_GetS32("gRandomizeGossipStoneHints", 1) != 0) {
+                UIWidgets::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, RO_GOSSIP_STONES_MAX, RO_GOSSIP_STONES_NEED_NOTHING);
+                if (CVar_GetS32("gRandomizeGossipStoneHints", RO_GOSSIP_STONES_NEED_NOTHING) != RO_GOSSIP_STONES_NONE) {
                     // Hint Clarity
                     ImGui::Dummy(ImVec2(0.0f, 0.0f));
                     ImGui::Indent();
@@ -3696,7 +3877,7 @@ void DrawRandoEditor(bool& open) {
                         "Clear - Hints are clearly written and are unique for each item.\n"
                         "Ex: Kokiri Sword > the Kokiri Sword"
                     );
-                    UIWidgets::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, RO_HINT_CLARITY_CLEAR);
+                    UIWidgets::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, RO_HINT_CLARITY_MAX, RO_HINT_CLARITY_CLEAR);
 
                     // Hint Distribution
                     ImGui::Dummy(ImVec2(0.0f, 0.0f));
@@ -3712,7 +3893,7 @@ void DrawRandoEditor(bool& open) {
                         "\n"
                         "Very Strong - Many powerful hints."
                     );
-                    UIWidgets::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, RO_HINT_DIST_BALANCED);
+                    UIWidgets::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, RO_HINT_DIST_MAX, RO_HINT_DIST_BALANCED);
                     ImGui::Unindent();
                 }
 
@@ -3910,7 +4091,18 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, 2, RO_GENERIC_OFF);
+                UIWidgets::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, RO_LOGIC_MAX, RO_LOGIC_GLITCHLESS);
+                if (CVar_GetS32("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHLESS) {
+                    ImGui::SameLine();
+                    UIWidgets::EnhancementCheckbox(Settings::LocationsReachable.GetName().c_str(), "gRandomizeAllLocationsReachable", false, "", UIWidgets::CheckboxGraphics::Cross, RO_GENERIC_ON);
+                    UIWidgets::InsertHelpHoverText(
+                        "When this options is enabled, the randomizer will "
+                        "guarantee that every item is obtainable and every "
+                        "location is reachable. When disabled, only "
+                        "required items and locations to beat the game "
+                        "will be guaranteed reachable."
+                    );
+                }
 
                 UIWidgets::PaddedSeparator();
 
@@ -3975,7 +4167,7 @@ void DrawRandoEditor(bool& open) {
                 // TODO: Show this but disabled when we have options for disabled Comboboxes.
                 if (CVar_GetS32("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) != RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
                     ImGui::Text(Settings::LinksPocketItem.GetName().c_str());
-                    UIWidgets::EnhancementCombobox("gRandomizeLinksPocket", randoLinksPocket, 4, RO_LINKS_POCKET_DUNGEON_REWARD);
+                    UIWidgets::EnhancementCombobox("gRandomizeLinksPocket", randoLinksPocket, RO_LINKS_POCKET_MAX, RO_LINKS_POCKET_DUNGEON_REWARD);
                     UIWidgets::PaddedSeparator();
                 }
 
@@ -4027,6 +4219,47 @@ void DrawRandoEditor(bool& open) {
     ImGui::End();
 }
 
+CustomMessageEntry Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
+    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(
+        Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT);
+    if (mysterious) {
+        std::vector<std::string> locationName ={
+            "a mysterious place",
+            "ein mysteriöser Ort",
+            "un endroit mystérieux",
+        };
+
+        CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{location}}", locationName[0],
+            locationName[1], locationName[2]);
+        return messageEntry;
+    }
+
+    std::string locationName;
+    switch (textId) {
+        case TEXT_WARP_MINUET_OF_FOREST:
+            locationName = std::string(gSaveContext.warpMinuetText);
+            break;
+        case TEXT_WARP_BOLERO_OF_FIRE:
+            locationName = std::string(gSaveContext.warpBoleroText);
+            break;
+        case TEXT_WARP_SERENADE_OF_WATER:
+            locationName = std::string(gSaveContext.warpSerenadeText);
+            break;
+        case TEXT_WARP_REQUIEM_OF_SPIRIT:
+            locationName = std::string(gSaveContext.warpRequiemText);
+            break;
+        case TEXT_WARP_NOCTURNE_OF_SHADOW:
+            locationName = std::string(gSaveContext.warpNocturneText);
+            break;
+        case TEXT_WARP_PRELUDE_OF_LIGHT:
+            locationName = std::string(gSaveContext.warpPreludeText);
+            break;
+    }
+
+    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{location}}", locationName);
+    return messageEntry;
+}
+
 CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious) {
     CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
     RandomizerCheck rc = GetCheckFromRandomizerInf(randomizerInf);
@@ -4060,9 +4293,9 @@ CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u
     return messageEntry;
 }
 
-std::vector<std::vector<const char*>> mapGetItemHints = {
+const char* mapGetItemHints[3][2] = {
     { " It's ordinary.", " It's masterful!" },
-    { " It's ordinary.", " It's masterful!" }, // TODO: German Translation (when map items are also translated)
+    { "&Sieht aus wie immer.", " &Man kann darauf die Worte&%r\"Master Quest\"%w entziffern..." },
     { "&Elle vous semble %rordinaire%w.", "&Étrange... les mots %r\"Master&Quest\"%w sont gravés dessus." },
 };
 
@@ -4116,7 +4349,7 @@ CustomMessageEntry Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEnt
 void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::getItemMessageTableID);
-    for (GetItemMessage messageEntry : messageEntries) {
+    for (const GetItemMessage& messageEntry : messageEntries) {
         customMessageManager->CreateGetItemMessage(Randomizer::getItemMessageTableID, messageEntry.giid, messageEntry.iid,
                                                     { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, messageEntry.english,
                                                         messageEntry.german, messageEntry.french });
@@ -4243,7 +4476,7 @@ CustomMessageMinimal NaviMessages[NUM_NAVI_MESSAGES] = {
 void CreateNaviRandoMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::NaviRandoMessageTableID);
-    for (u8 i = 0; i <= (NUM_NAVI_MESSAGES - 1); i++) {
+    for (unsigned int i = 0; i <= (NUM_NAVI_MESSAGES - 1); i++) {
         customMessageManager->CreateMessage(Randomizer::NaviRandoMessageTableID, i,
                                             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, NaviMessages[i].english,
                                               NaviMessages[i].german, NaviMessages[i].french });
@@ -4353,156 +4586,245 @@ void CreateIceTrapRandoMessages() {
                                             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, IceTrapMessages[i].english,
                                               IceTrapMessages[i].german, IceTrapMessages[i].french });
     }
+
+    // We only use this ice trap message for christmas, so we don't want it in the normal ice trap messages rotation
+    customMessageManager->CreateMessage(Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1,
+                                            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+                                              "This year for Christmas, all&you get is %BCOAL%w!",
+                                              "This year for Christmas, all&you get is %BCOAL%w!",
+                                              "Pour Noël, cette année, tu&n'auras que du %BCHARBON!&%rJoyeux Noël%w!" });
 }
 
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
     const std::vector<GetItemMessage> getItemMessages = {
-        GIMESSAGE_NO_GERMAN(
-            RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE, "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
+        GIMESSAGE(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE, 
+			"You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
+			"Du erhältst eine %rFlasche mit&blauem Feuer%w! Nutze es um&%rRotes Eis%w zu schmelzen!",
             "Vous obtenez une %rBouteille avec&une Flamme Bleue%w! Utilisez-la&pour faire fondre la %rGlace&Rouge%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
-                            "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!",
-                            "Vous obtenez une %rBouteille avec&une Âme%w! Vendez-la au Marchand&d'Âme"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
-                            "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!",
-                            "Vous obtenez une %rBouteille avec&une Potion Bleue%w! Buvez-la pour&restaurer votre "
-                            "%rénergie vitale%w&ainsi que votre %gmagie%w!"),
-        GIMESSAGE_NO_GERMAN(
-            RG_BOTTLE_WITH_FISH, ITEM_FISH,
+        GIMESSAGE(RG_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
+			"You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!",
+			"Du hast einen %rNachtschwärmer%w&in einer Flasche gefangen!&Gehe zum %rGespenstermarkt%w&und verkaufe ihn!",
+			"Vous obtenez une %rBouteille avec&une Âme%w! Vendez-la au Marchand&d'Âme"),
+        GIMESSAGE(RG_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
+			"You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!",
+			"Du erhältst ein %rBlaues Elexier%w!&Nutze es, um deine %rMagie- und&Energieleiste%w komplett&aufzufüllen!",
+			"Vous obtenez une %rBouteille avec&une Potion Bleue%w! Buvez-la pour&restaurer votre %rénergie vitale%w&ainsi que votre %gmagie%w!"),
+        GIMESSAGE(RG_BOTTLE_WITH_FISH, ITEM_FISH,
             "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!",
-            "Vous obtenez une %rBouteille avec&un Poisson%w! Il a l'air délicieux!&Il paraîtrait que %bJabu-Jabu "
-            "%wen&serait friand!"),
-        GIMESSAGE_NO_GERMAN(
-            RG_BOTTLE_WITH_BUGS, ITEM_BUG, "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!",
+			"Du hast jetzt einen %rFisch in&einer Flasche%w! Er sieht richtig&frisch aus! Man sagt,&Lord Jabu-Jabu liebt Fische!",
+            "Vous obtenez une %rBouteille avec&un Poisson%w! Il a l'air délicieux!&Il paraîtrait que %bJabu-Jabu %wen&serait friand!"),
+        GIMESSAGE(RG_BOTTLE_WITH_BUGS, ITEM_BUG,
+			"You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!",
+			"Du hast jetzt %rKäfer in einer&Flasche&%w!&Sie graben gerne&in Erdlöchern.",
             "Vous obtenez une %rBouteille avec&des Insectes%w! Ils adorent creuser&dans la terre meuble!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTLE_WITH_FAIRY, ITEM_FAIRY, "You got a %rFairy in a Bottle%w!&Use it wisely!",
-                            "Vous obtenez une %rBouteille avec&une Fée%w! Faites-en bon usage!"),
-        GIMESSAGE_NO_GERMAN(
-            RG_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
+        GIMESSAGE(RG_BOTTLE_WITH_FAIRY, ITEM_FAIRY,
+			"You got a %rFairy in a Bottle%w!&Use it wisely!",
+			"Du hast jetzt eine %rFee in einer&Flasche%w! Nutze sie weise!",
+			"Vous obtenez une %rBouteille avec&une Fée%w! Faites-en bon usage!"),
+        GIMESSAGE(RG_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
             "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!",
+			"Du erhältst ein %rRotes Elexier%w!&Nutze es, um deine %rEnergieleiste&%weinmalig komplett aufzufüllen!",
             "Vous obtenez une %rBouteille avec&une Potion Rouge%w! Buvez-la pour&restaurer votre %rénergie vitale%w!"),
-        GIMESSAGE_NO_GERMAN(
-            RG_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
+        GIMESSAGE(RG_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
             "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!",
+			"Du erhältst ein %rGrünes Elexier%w!&Nutze es, um deine %bMagieleiste&%weinmalig komplett aufzufüllen!",
             "Vous obtenez une %rBouteille avec&une Potion Verte%w! Buvez-la pour&restaurer votre %gmagie%w!"),
-        GIMESSAGE_NO_GERMAN(
-            RG_BOTTLE_WITH_POE, ITEM_POE,
+        GIMESSAGE(RG_BOTTLE_WITH_POE, ITEM_POE,
             "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this...",
+			"Du hast jetzt ein %rIrrlicht in einer&Flasche%w! Der %rGespenstermarkt%w&interessiert sich für vielleicht&dafür...",
             "Vous obtenez une %rBouteille avec&un Esprit%w! Ça intéresserait&peut-être le vendeur d'Âme "),
 
-        GIMESSAGE_NO_GERMAN(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL, "You found a %yThieves Hideout &%wSmall Key!",
-                            "Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %gForest Temple &%wSmall Key!",
-                            "Vous obtenez une %rPetite Clé %w&du %gTemple de la Forêt%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rFire Temple &%wSmall Key!",
-                            "Vous obtenez une %rPetite Clé %w&du %rTemple du Feu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %bWater Temple &%wSmall Key!",
-                            "Vous obtenez une %rPetite Clé %w&du %bTemple de l'Eau%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %ySpirit Temple &%wSmall Key!",
-                            "Vous obtenez une %rPetite Clé %w&du %yTemple de l'Esprit%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %pShadow Temple &%wSmall Key!",
-                            "Vous obtenez une %rPetite Clé %w&du %pTemple de l'Ombre%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_KEY_SMALL,
-                            "You found a %pBottom of the &Well %wSmall Key!",
-                            "Vous obtenez une %rPetite Clé %w&du %pPuits%w!"),
-        GIMESSAGE_NO_GERMAN(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, ITEM_KEY_SMALL,
-                            "You found a %yGerudo Training &Grounds %wSmall Key!",
-                            "Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL, "You found a %rGanon's Castle &%wSmall Key!",
-                            "Vous obtenez une %rPetite Clé %w&du %rChâteau de Ganon%w!"),
+        GIMESSAGE(RG_GERUDO_FORTRESS_SMALL_KEY, ITEM_KEY_SMALL,
+			"You found a %yThieves Hideout &%wSmall Key!",
+			"Du erhältst einen %rKleinen&Schlüssel%w für das %yDiebesversteck%w!",
+			"Vous obtenez une %rPetite Clé %w&du %yRepaire des Voleurs%w!"),
+        GIMESSAGE(RG_FOREST_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
+			"You found a %gForest Temple &%wSmall Key!",
+			"Du erhältst einen %rKleinen&Schlüssel%w für den %gWaldtempel%w!",
+			"Vous obtenez une %rPetite Clé %w&du %gTemple de la Forêt%w!"),
+        GIMESSAGE(RG_FIRE_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
+			"You found a %rFire Temple &%wSmall Key!",
+			"Du erhältst einen %rKleinen&Schlüssel%w für den %rFeuertempel%w!",
+			"Vous obtenez une %rPetite Clé %w&du %rTemple du Feu%w!"),
+        GIMESSAGE(RG_WATER_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
+			"You found a %bWater Temple &%wSmall Key!",
+			"Du erhältst einen %rKleinen&Schlüssel%w für den %bWassertempel%w!",
+			"Vous obtenez une %rPetite Clé %w&du %bTemple de l'Eau%w!"),
+        GIMESSAGE(RG_SPIRIT_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
+			"You found a %ySpirit Temple &%wSmall Key!",
+			"Du erhältst einen %rKleinen&Schlüssel%w für den %yGeistertempel%w!",
+			"Vous obtenez une %rPetite Clé %w&du %yTemple de l'Esprit%w!"),
+        GIMESSAGE(RG_SHADOW_TEMPLE_SMALL_KEY, ITEM_KEY_SMALL,
+			"You found a %pShadow Temple &%wSmall Key!",
+			"Du erhältst einen %rKleinen&Schlüssel%w für den %pSchattentempel%w!",
+			"Vous obtenez une %rPetite Clé %w&du %pTemple de l'Ombre%w!"),
+        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_SMALL_KEY, ITEM_KEY_SMALL,
+			"You found a %pBottom of the &Well %wSmall Key!",
+			"Du erhältst einen %rKleinen&Schlüssel%w für den %pGrund des Brunnens%w!",
+			"Vous obtenez une %rPetite Clé %w&du %pPuits%w!"),
+        GIMESSAGE(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, ITEM_KEY_SMALL,
+			"You found a %yGerudo Training &Grounds %wSmall Key!",
+			"Du erhältst einen %rKleinen&Schlüssel%w für die %yGerudo&Trainingsarena%w!",
+			"Vous obtenez une %rPetite Clé %w&du %yGymnase Gerudo%w!"),
+        GIMESSAGE(RG_GANONS_CASTLE_SMALL_KEY, ITEM_KEY_SMALL,
+			"You found a %rGanon's Castle &%wSmall Key!",
+			"Du erhältst einen %rKleinen&Schlüssel%w für die %rGanons Schloß%w!",
+			"Vous obtenez une %rPetite Clé %w&du %rChâteau de Ganon%w!"),
 
-        GIMESSAGE_NO_GERMAN(RG_GERUDO_FORTRESS_KEY_RING, ITEM_KEY_SMALL,
-                            "You found a %yThieves Hideout &%wKeyring!",
-                            "Vous obtenez un trousseau de&clés du %yRepaire des Voleurs%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
-                            "You found a %gForest Temple &%wKeyring!",
-                            "Vous obtenez un trousseau de&clés du %gTemple de la Forêt%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
-                            "You found a %rFire Temple &%wKeyring!",
-                            "Vous obtenez un trousseau de&clés du %rTemple du Feu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
-                            "You found a %bWater Temple &%wKeyring!",
-                            "Vous obtenez un trousseau de&clés du %bTemple de l'Eau%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
-                            "You found a %ySpirit Temple &%wKeyring!",
-                            "Vous obtenez un trousseau de&clés du %yTemple de l'Esprit%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
-                            "You found a %pShadow Temple &%wKeyring!",
-                            "Vous obtenez un trousseau de&clés du %pTemple de l'Ombre%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_KEY_RING, ITEM_KEY_SMALL,
-                            "You found a %pBottom of the &Well %wKeyring!",
-                            "Vous obtenez un trousseau de&clés du %pPuits%w!"),
-        GIMESSAGE_NO_GERMAN(RG_GERUDO_TRAINING_GROUNDS_KEY_RING, ITEM_KEY_SMALL,
-                            "You found a %yGerudo Training &Grounds %wKeyring!",
-                            "Vous obtenez un trousseau de&clés du %yGymnase Gerudo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_GANONS_CASTLE_KEY_RING, ITEM_KEY_SMALL, 
-                            "You found a %rGanon's Castle &%wKeyring!",
-                            "Vous obtenez un trousseau de&clés du %rChâteau de Ganon%w!"),
+        GIMESSAGE(RG_GERUDO_FORTRESS_KEY_RING, ITEM_KEY_SMALL,
+			"You found a %yThieves Hideout &%wKeyring!",
+			"Du erhältst ein %rSchlüsselbund%w&für das %yDiebesversteck%w!",
+			"Vous obtenez un trousseau de&clés du %yRepaire des Voleurs%w!"),
+        GIMESSAGE(RG_FOREST_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
+			"You found a %gForest Temple &%wKeyring!",
+			"Du erhältst ein %rSchlüsselbund%w&für den %gWaldtempel%w!",
+			"Vous obtenez un trousseau de&clés du %gTemple de la Forêt%w!"),
+        GIMESSAGE(RG_FIRE_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
+			"You found a %rFire Temple &%wKeyring!",
+			"Du erhältst ein %rSchlüsselbund%w&für den %rFeuertempel%w!",
+			"Vous obtenez un trousseau de&clés du %rTemple du Feu%w!"),
+        GIMESSAGE(RG_WATER_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
+			"You found a %bWater Temple &%wKeyring!",
+			"Du erhältst ein %rSchlüsselbund%w&für den %bWassertempel%w!",
+			"Vous obtenez un trousseau de&clés du %bTemple de l'Eau%w!"),
+        GIMESSAGE(RG_SPIRIT_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
+			"You found a %ySpirit Temple &%wKeyring!",
+			"Du erhältst ein %rSchlüsselbund%w&für den %yGeistertempel%w!",
+			"Vous obtenez un trousseau de&clés du %yTemple de l'Esprit%w!"),
+        GIMESSAGE(RG_SHADOW_TEMPLE_KEY_RING, ITEM_KEY_SMALL,
+			"You found a %pShadow Temple &%wKeyring!",
+			"Du erhältst ein %rSchlüsselbund%w&für den %pSchattentempel%w!",
+			"Vous obtenez un trousseau de&clés du %pTemple de l'Ombre%w!"),
+        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_KEY_RING, ITEM_KEY_SMALL,
+			"You found a %pBottom of the &Well %wKeyring!",
+			"Du erhältst ein %rSchlüsselbund%w&für den %pGrund des Brunnens%w!",
+			"Vous obtenez un trousseau de&clés du %pPuits%w!"),
+        GIMESSAGE(RG_GERUDO_TRAINING_GROUNDS_KEY_RING, ITEM_KEY_SMALL,
+			"You found a %yGerudo Training &Grounds %wKeyring!",
+			"Du erhältst ein %rSchlüsselbund%w&für die %yGerudo Trainingsarena%w!",
+			"Vous obtenez un trousseau de&clés du %yGymnase Gerudo%w!"),
+        GIMESSAGE(RG_GANONS_CASTLE_KEY_RING, ITEM_KEY_SMALL, 
+			"You found a %rGanon's Castle &%wKeyring!",
+			"Du erhältst ein %rSchlüsselbund%w&für %rGanons Schloß%w!",
+			"Vous obtenez un trousseau de&clés du %rChâteau de Ganon%w!"),
 
-        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %gForest Temple &%wBoss Key!",
-                            "Vous obtenez la %rClé d'or %wdu&%gTemple de la Forêt%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rFire Temple &%wBoss Key!",
-                            "Vous obtenez la %rClé d'or %wdu&%rTemple du Feu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %bWater Temple &%wBoss Key!",
-                            "Vous obtenez la %rClé d'or %wdu&%bTemple de l'Eau%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %ySpirit Temple &%wBoss Key!",
-                            "Vous obtenez la %rClé d'or %wdu&%yTemple de l'Esprit%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %pShadow Temple &%wBoss Key!",
-                            "Vous obtenez la %rClé d'or %wdu&%pTemple de l'Ombre%w!"),
-        GIMESSAGE_NO_GERMAN(RG_GANONS_CASTLE_BOSS_KEY, ITEM_KEY_BOSS, "You found the %rGanon's Castle &%wBoss Key!",
-                            "Vous obtenez la %rClé d'or %wdu&%rChâteau de Ganon%w!"),
+        GIMESSAGE(RG_FOREST_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
+			"You found the %gForest Temple &%wBoss Key!",
+			"Du erhältst den %rMaster-Schlüssel%w&für den %gWaldtempel%w!",
+			"Vous obtenez la %rClé d'or %wdu&%gTemple de la Forêt%w!"),
+        GIMESSAGE(RG_FIRE_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
+			"You found the %rFire Temple &%wBoss Key!",
+			"Du erhältst den %rMaster-Schlüssel%w&für den %rFeuertempel%w!",
+			"Vous obtenez la %rClé d'or %wdu&%rTemple du Feu%w!"),
+        GIMESSAGE(RG_WATER_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
+			"You found the %bWater Temple &%wBoss Key!",
+			"Du erhältst den %rMaster-Schlüssel%w&für den %bWassertempel%w!",
+			"Vous obtenez la %rClé d'or %wdu&%bTemple de l'Eau%w!"),
+        GIMESSAGE(RG_SPIRIT_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
+			"You found the %ySpirit Temple &%wBoss Key!",
+			"Du erhältst den %rMaster-Schlüssel%w&für den %yGeistertempel%w!",
+			"Vous obtenez la %rClé d'or %wdu&%yTemple de l'Esprit%w!"),
+        GIMESSAGE(RG_SHADOW_TEMPLE_BOSS_KEY, ITEM_KEY_BOSS,
+			"You found the %pShadow Temple &%wBoss Key!",
+			"Du erhältst den %rMaster-Schlüssel%w&für den %pSchattentempel%w!",
+			"Vous obtenez la %rClé d'or %wdu&%pTemple de l'Ombre%w!"),
+        GIMESSAGE(RG_GANONS_CASTLE_BOSS_KEY, ITEM_KEY_BOSS,
+			"You found the %rGanon's Castle &%wBoss Key!",
+			"Du erhältst den %rMaster-Schlüssel%w&für %rGanons Schloß%w!",
+			"Vous obtenez la %rClé d'or %wdu&%rChâteau de Ganon%w!"),
 
-        GIMESSAGE_NO_GERMAN(RG_DEKU_TREE_MAP, ITEM_DUNGEON_MAP, "You found the %gDeku Tree &%wMap!{{typeHint}}",
-                            "Vous obtenez la %rCarte %wde&l'%gArbre Mojo%w!{{typeHint}}"),
-        GIMESSAGE_NO_GERMAN(RG_DODONGOS_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %rDodongo's Cavern &%wMap!{{typeHint}}",
-                            "Vous obtenez la %rCarte %wde la&%rCaverne Dodongo%w!{{typeHint}}"),
-        GIMESSAGE_NO_GERMAN(RG_JABU_JABUS_BELLY_MAP, ITEM_DUNGEON_MAP, "You found the %bJabu Jabu's Belly &%wMap!{{typeHint}}",
-                            "Vous obtenez la %rCarte %wdu &%bVentre de Jabu-Jabu%w!{{typeHint}}"),
-        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %gForest Temple &%wMap!{{typeHint}}",
-                            "Vous obtenez la %rCarte %wdu &%gTemple de la Forêt%w!{{typeHint}}"),
-        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %rFire Temple &%wMap!{{typeHint}}",
-                            "Vous obtenez la %rCarte %wdu &%rTemple du Feu%w!{{typeHint}}"),
-        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %bWater Temple &%wMap!{{typeHint}}",
-                            "Vous obtenez la %rCarte %wdu &%bTemple de l'Eau%w!{{typeHint}}"),
-        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %ySpirit Temple &%wMap!{{typeHint}}",
-                            "Vous obtenez la %rCarte %wdu &%yTemple de l'Esprit%w!{{typeHint}}"),
-        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_MAP, ITEM_DUNGEON_MAP, "You found the %pShadow Temple &%wMap!{{typeHint}}",
-                            "Vous obtenez la %rCarte %wdu &%pTemple de l'Ombre%w!{{typeHint}}"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_MAP, ITEM_DUNGEON_MAP, "You found the %pBottom of the &Well %wMap!{{typeHint}}",
-                            "Vous obtenez la %rCarte %wdu &%pPuits%w!{{typeHint}}"),
-        GIMESSAGE_NO_GERMAN(RG_ICE_CAVERN_MAP, ITEM_DUNGEON_MAP, "You found the %cIce Cavern &%wMap!{{typeHint}}",
-                            "Vous obtenez la %rCarte %wde &la %cCaverne Polaire%w!{{typeHint}}"),
+        GIMESSAGE(RG_DEKU_TREE_MAP, ITEM_DUNGEON_MAP,
+			"You found the %gDeku Tree &%wMap!{{typeHint}}",
+			"Du erhältst die %rKarte%w für den&%gDeku-Baum%w!{{typeHint}}",
+			"Vous obtenez la %rCarte %wde&l'%gArbre Mojo%w!{{typeHint}}"),
+        GIMESSAGE(RG_DODONGOS_CAVERN_MAP, ITEM_DUNGEON_MAP,
+			"You found the %rDodongo's Cavern &%wMap!{{typeHint}}",
+			"Du erhältst die %rKarte%w für&%rDodongos Höhle%w!{{typeHint}}",
+			"Vous obtenez la %rCarte %wde la&%rCaverne Dodongo%w!{{typeHint}}"),
+        GIMESSAGE(RG_JABU_JABUS_BELLY_MAP, ITEM_DUNGEON_MAP,
+			"You found the %bJabu Jabu's Belly &%wMap!{{typeHint}}",
+			"Du erhältst die %rKarte%w für&%bJabu-Jabus Bauch%w!{{typeHint}}",
+			"Vous obtenez la %rCarte %wdu &%bVentre de Jabu-Jabu%w!{{typeHint}}"),
+        GIMESSAGE(RG_FOREST_TEMPLE_MAP, ITEM_DUNGEON_MAP,
+			"You found the %gForest Temple &%wMap!{{typeHint}}",
+			"Du erhältst die %rKarte%w für den&%gWaldtempel%w!{{typeHint}}",
+			"Vous obtenez la %rCarte %wdu &%gTemple de la Forêt%w!{{typeHint}}"),
+        GIMESSAGE(RG_FIRE_TEMPLE_MAP, ITEM_DUNGEON_MAP,
+			"You found the %rFire Temple &%wMap!{{typeHint}}",
+			"Du erhältst die %rKarte%w für den&%rFeuertempel%w!{{typeHint}}",
+			"Vous obtenez la %rCarte %wdu &%rTemple du Feu%w!{{typeHint}}"),
+        GIMESSAGE(RG_WATER_TEMPLE_MAP, ITEM_DUNGEON_MAP,
+			"You found the %bWater Temple &%wMap!{{typeHint}}",
+			"Du erhältst die %rKarte%w für den&%bWassertempel%w!{{typeHint}}",
+			"Vous obtenez la %rCarte %wdu &%bTemple de l'Eau%w!{{typeHint}}"),
+        GIMESSAGE(RG_SPIRIT_TEMPLE_MAP, ITEM_DUNGEON_MAP,
+			"You found the %ySpirit Temple &%wMap!{{typeHint}}",
+			"Du erhältst die %rKarte%w für den&%yGeistertempel%w!{{typeHint}}",
+			"Vous obtenez la %rCarte %wdu &%yTemple de l'Esprit%w!{{typeHint}}"),
+        GIMESSAGE(RG_SHADOW_TEMPLE_MAP, ITEM_DUNGEON_MAP,
+			"You found the %pShadow Temple &%wMap!{{typeHint}}",
+			"Du erhältst die %rKarte%w für den&%pSchattentempel%w!{{typeHint}}",
+			"Vous obtenez la %rCarte %wdu &%pTemple de l'Ombre%w!{{typeHint}}"),
+        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_MAP, ITEM_DUNGEON_MAP,
+			"You found the %pBottom of the &Well %wMap!{{typeHint}}",
+			"Du erhältst die %rKarte%w für den&%pGrund des Brunnens%w!{{typeHint}}",
+			"Vous obtenez la %rCarte %wdu &%pPuits%w!{{typeHint}}"),
+        GIMESSAGE(RG_ICE_CAVERN_MAP, ITEM_DUNGEON_MAP,
+			"You found the %cIce Cavern &%wMap!{{typeHint}}",
+			"Du erhältst die %rKarte%w für die&%cEishöhle%w!{{typeHint}}",
+			"Vous obtenez la %rCarte %wde &la %cCaverne Polaire%w!{{typeHint}}"),
 
-        GIMESSAGE_NO_GERMAN(RG_DEKU_TREE_COMPASS, ITEM_COMPASS, "You found the %gDeku Tree &%wCompass!",
-                            "Vous obtenez la %rBoussole %wde&l'%gArbre Mojo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_DODONGOS_CAVERN_COMPASS, ITEM_COMPASS, "You found the %rDodongo's Cavern &%wCompass!",
-                            "Vous obtenez la %rBoussole %wde la&%rCaverne Dodongo%w!"),
-        GIMESSAGE_NO_GERMAN(RG_JABU_JABUS_BELLY_COMPASS, ITEM_COMPASS, "You found the %bJabu Jabu's Belly &%wCompass!",
-                            "Vous obtenez la %rBoussole %wdu &%bVentre de Jabu-Jabu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FOREST_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %gForest Temple &%wCompass!",
-                            "Vous obtenez la %rBoussole %wdu &%gTemple de la Forêt%w!"),
-        GIMESSAGE_NO_GERMAN(RG_FIRE_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %rFire Temple &%wCompass!",
-                            "Vous obtenez la %rBoussole %wdu &%rTemple du Feu%w!"),
-        GIMESSAGE_NO_GERMAN(RG_WATER_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %bWater Temple &%wCompass!",
-                            "Vous obtenez la %rBoussole %wdu &%bTemple de l'Eau%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SPIRIT_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %ySpirit Temple &%wCompass!",
-                            "Vous obtenez la %rBoussole %wdu &%yTemple de l'Esprit%w!"),
-        GIMESSAGE_NO_GERMAN(RG_SHADOW_TEMPLE_COMPASS, ITEM_COMPASS, "You found the %pShadow Temple &%wCompass!",
-                            "Vous obtenez la %rBoussole %wdu &%pTemple de l'Ombre%w!"),
-        GIMESSAGE_NO_GERMAN(RG_BOTTOM_OF_THE_WELL_COMPASS, ITEM_COMPASS,
-                            "You found the %pBottom of the &Well %wCompass!",
-                            "Vous obtenez la %rBoussole %wdu &%pPuits%w!"),
-        GIMESSAGE_NO_GERMAN(RG_ICE_CAVERN_COMPASS, ITEM_COMPASS, "You found the %cIce Cavern &%wCompass!",
-                            "Vous obtenez la %rBoussole %wde &la %cCaverne Polaire%w!"),
+        GIMESSAGE(RG_DEKU_TREE_COMPASS, ITEM_COMPASS,
+			"You found the %gDeku Tree &%wCompass!",
+			"Du erhältst den %rKompaß%w für den&%gDeku-Baum%w!",
+			"Vous obtenez la %rBoussole %wde&l'%gArbre Mojo%w!"),
+        GIMESSAGE(RG_DODONGOS_CAVERN_COMPASS, ITEM_COMPASS,
+			"You found the %rDodongo's Cavern &%wCompass!",
+			"Du erhältst den %rKompaß%w für&%rDodongos Höhle%w!",
+			"Vous obtenez la %rBoussole %wde la&%rCaverne Dodongo%w!"),
+        GIMESSAGE(RG_JABU_JABUS_BELLY_COMPASS, ITEM_COMPASS,
+			"You found the %bJabu Jabu's Belly &%wCompass!",
+			"Du erhältst den %rKompaß%w für den&%bJabu-Jabus Bauch%w!",
+			"Vous obtenez la %rBoussole %wdu &%bVentre de Jabu-Jabu%w!"),
+        GIMESSAGE(RG_FOREST_TEMPLE_COMPASS, ITEM_COMPASS,
+			"You found the %gForest Temple &%wCompass!",
+			"Du erhältst den %rKompaß%w für den&%gWaldtempel%w!",
+			"Vous obtenez la %rBoussole %wdu &%gTemple de la Forêt%w!"),
+        GIMESSAGE(RG_FIRE_TEMPLE_COMPASS, ITEM_COMPASS,
+			"You found the %rFire Temple &%wCompass!",
+			"Du erhältst den %rKompaß%w für den&%rFeuertempel%w!",
+			"Vous obtenez la %rBoussole %wdu &%rTemple du Feu%w!"),
+        GIMESSAGE(RG_WATER_TEMPLE_COMPASS, ITEM_COMPASS,
+			"You found the %bWater Temple &%wCompass!",
+			"Du erhältst den %rKompaß%w für den&%bWassertempel%w!",
+			"Vous obtenez la %rBoussole %wdu &%bTemple de l'Eau%w!"),
+        GIMESSAGE(RG_SPIRIT_TEMPLE_COMPASS, ITEM_COMPASS,
+			"You found the %ySpirit Temple &%wCompass!",
+			"Du erhältst den %rKompaß%w für den&%yGeistertempel%w!",
+			"Vous obtenez la %rBoussole %wdu &%yTemple de l'Esprit%w!"),
+        GIMESSAGE(RG_SHADOW_TEMPLE_COMPASS, ITEM_COMPASS,
+			"You found the %pShadow Temple &%wCompass!",
+			"Du erhältst den %rKompaß%w für den&%pSchattentempel%w!",
+			"Vous obtenez la %rBoussole %wdu &%pTemple de l'Ombre%w!"),
+        GIMESSAGE(RG_BOTTOM_OF_THE_WELL_COMPASS, ITEM_COMPASS,
+			"You found the %pBottom of the &Well %wCompass!",
+			"Du erhältst den %rKompaß%w für den&%pGrund des Brunnens%w!",
+			"Vous obtenez la %rBoussole %wdu &%pPuits%w!"),
+        GIMESSAGE(RG_ICE_CAVERN_COMPASS, ITEM_COMPASS,
+			"You found the %cIce Cavern &%wCompass!",
+			"Du erhältst den %rKompaß%w für die&%cEishöhle%w!",
+			"Vous obtenez la %rBoussole %wde &la %cCaverne Polaire%w!"),
+
         GIMESSAGE(RG_MAGIC_BEAN_PACK, ITEM_BEAN,
-                            "You got a %rPack of Magic Beans%w!&Find a suitable spot for a garden&and plant them. Then, wait for&something fun to happen!",
-                            "Du hast eine %rPackung&Magic Beans%w! Finde&einen geeigneten Platz fur einen&Garten und pflanze sie. Dann^warte auf etwas Lustiges passiert!",
-                            "Vous obtenez un %rPaquet de&Haricots Magiques%w! Trouvez&un endroit approprié pour un&jardin et plantez-les.^Attendez ensuite que quelque&chose d'amusant se produise!"),
-        GIMESSAGE_NO_GERMAN(RG_TYCOON_WALLET, ITEM_WALLET_GIANT,
-                            "You got a %rTycoon's Wallet%w!&It's gigantic! Now you can carry&up to %y999 rupees%w!",
-                            "Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!")
+			"You got a %rPack of Magic Beans%w!&Find a suitable spot for a garden&and plant them. Then, wait for&something fun to happen!",
+			"Du erhältst eine %rPackung&Wundererbsen%w! Suche nach einer&Stelle um sie einzupflanzen.&Warte ab, was passiert!",
+			"Vous obtenez un %rPaquet de&Haricots Magiques%w! Trouvez&un endroit approprié pour un&jardin et plantez-les.^Attendez ensuite que quelque&chose d'amusant se produise!"),
+        GIMESSAGE(RG_TYCOON_WALLET, ITEM_WALLET_GIANT,
+			"You got a %rTycoon's Wallet%w!&It's gigantic! Now you can carry&up to %y999 rupees%w!",
+			"Du erhältst die %rGoldene&Geldbörse%w! Die größte aller&Geldbörsen! Jetzt kannst Du bis&zu %y999 Rubine%w mit dir führen!",
+			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!")
     };
     CreateGetItemMessages(getItemMessages);
     CreateRupeeMessages();
@@ -4524,7 +4846,7 @@ class ExtendedVanillaTableInvalidItemIdException: public std::exception {
 
 void InitRandoItemTable() {
     // These entries have ItemIDs from vanilla, but not GetItemIDs or entries in the old sGetItemTable
-    GetItemEntry extendedVanillaGetItemTable[] = {
+    static GetItemEntry extendedVanillaGetItemTable[] = {
         GET_ITEM(ITEM_MEDALLION_LIGHT,                 OBJECT_GI_MEDAL,    GID_MEDALLION_LIGHT,  0x40,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_LIGHT_MEDALLION),
         GET_ITEM(ITEM_MEDALLION_FOREST,                OBJECT_GI_MEDAL,    GID_MEDALLION_FOREST, 0x3E,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_FOREST_MEDALLION),
         GET_ITEM(ITEM_MEDALLION_FIRE,                  OBJECT_GI_MEDAL,    GID_MEDALLION_FIRE,   0x3C,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR, MOD_NONE,       RG_FIRE_MEDALLION),
@@ -4553,7 +4875,7 @@ void InitRandoItemTable() {
 
     // These do not have ItemIDs or GetItemIDs from vanilla, so I'm using their
     // RandomizerGet enum values for both.
-    GetItemEntry randoGetItemTable[] = {
+    static GetItemEntry randoGetItemTable[] = {
         GET_ITEM(RG_ICE_TRAP,                          OBJECT_GI_RUPY,     GID_RUPEE_GOLD,       TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_ICE_TRAP),
         GET_ITEM(RG_MAGIC_SINGLE,                      OBJECT_GI_MAGICPOT, GID_MAGIC_SMALL,      0xE4,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MAGIC_SINGLE),
         GET_ITEM(RG_MAGIC_DOUBLE,                      OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE,      0xE8,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_MAGIC_DOUBLE),

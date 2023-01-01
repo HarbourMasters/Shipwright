@@ -291,9 +291,10 @@ namespace GameMenuBar {
             UIWidgets::Spacer(0);
 
             if (ImGui::BeginMenu("Languages")) {
-                UIWidgets::EnhancementRadioButton("English", "gLanguages", 0);
-                UIWidgets::EnhancementRadioButton("German", "gLanguages", 1);
-                UIWidgets::EnhancementRadioButton("French", "gLanguages", 2);
+                UIWidgets::PaddedEnhancementCheckbox("Translate Title Screen", "gTitleScreenTranslation");
+                UIWidgets::EnhancementRadioButton("English", "gLanguages", LANGUAGE_ENG);
+                UIWidgets::EnhancementRadioButton("German", "gLanguages", LANGUAGE_GER);
+                UIWidgets::EnhancementRadioButton("French", "gLanguages", LANGUAGE_FRA);
                 ImGui::EndMenu();
             }
             ImGui::EndMenu();
@@ -366,6 +367,9 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Skip Magic Arrow Equip Animation", "gSkipArrowAnimation", true, false);
                     UIWidgets::PaddedEnhancementCheckbox("Skip save confirmation", "gSkipSaveConfirmation", true, false);
                     UIWidgets::Tooltip("Skip the \"Game saved.\" confirmation screen");
+                    UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", "gMarketSneak", true, false);
+                    UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking "
+                    "to the guard next to the gate.");
                     ImGui::EndMenu();
                 }
 
@@ -382,7 +386,10 @@ namespace GameMenuBar {
                     UIWidgets::PaddedText("Bunny Hood Effect", true, false);
                     const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run"};
                     UIWidgets::EnhancementCombobox("gMMBunnyHood", bunnyHoodOptions, 3, 0);
-                    UIWidgets::Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask. The longer jump option is not accounted for in randomizer logic.");
+                    UIWidgets::Tooltip(
+                        "Wearing the Bunny Hood grants a speed increase like in Majora's Mask. The longer jump option is not accounted for in randomizer logic.\n\n"
+                        "Also disables NPC's reactions to wearing the Bunny Hood."
+                    );
                     UIWidgets::PaddedEnhancementCheckbox("Mask Select in Inventory", "gMaskSelect", true, false);
                     UIWidgets::Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
                     UIWidgets::PaddedEnhancementCheckbox("Nuts explode bombs", "gNutsExplodeBombs", true, false);
@@ -454,70 +461,84 @@ namespace GameMenuBar {
                     {
                         UIWidgets::EnhancementCheckbox("Change Red Potion Effect", "gRedPotionEffect");
                         UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Red Potions");
-                        UIWidgets::EnhancementSliderInt("Red Potion Health: %d", "##REDPOTIONHEALTH", "gRedPotionHealth", 1, 100, "", 0, true);
+                        bool disabledRedPotion = !CVar_GetS32("gRedPotionEffect", 0);
+                        const char* disabledTooltipRedPotion = "This option is disabled because \"Change Red Potion Effect\" is turned off";
+                        UIWidgets::EnhancementSliderInt("Red Potion Health: %d", "##REDPOTIONHEALTH", "gRedPotionHealth", 1, 100, "", 0, true, disabledRedPotion, disabledTooltipRedPotion);
                         UIWidgets::Tooltip("Changes the amount of health restored by Red Potions");
-                        UIWidgets::EnhancementCheckbox("Red Potion Percent Restore", "gRedPercentRestore");
+                        UIWidgets::EnhancementCheckbox("Red Potion Percent Restore", "gRedPercentRestore", disabledRedPotion, disabledTooltipRedPotion);
                         UIWidgets::Tooltip("Toggles from Red Potions restoring a fixed amount of health to a percent of the player's current max health");
 
                         ImGui::Separator();
 
                         UIWidgets::EnhancementCheckbox("Change Green Potion Effect", "gGreenPotionEffect");
                         UIWidgets::Tooltip("Enable the following changes to the amount of mana restored by Green Potions");
-                        UIWidgets::EnhancementSliderInt("Green Potion Mana: %d", "##GREENPOTIONMANA", "gGreenPotionMana", 1, 100, "", 0, true);
+                        bool disabledGreenPotion = !CVar_GetS32("gGreenPotionEffect", 0);
+                        const char* disabledTooltipGreenPotion = "This option is disabled because \"Change Green Potion Effect\" is turned off";
+                        UIWidgets::EnhancementSliderInt("Green Potion Mana: %d", "##GREENPOTIONMANA", "gGreenPotionMana", 1, 100, "", 0, true, disabledGreenPotion, disabledTooltipGreenPotion);
                         UIWidgets::Tooltip("Changes the amount of mana restored by Green Potions, base max mana is 48, max upgraded mana is 96");
-                        UIWidgets::EnhancementCheckbox("Green Potion Percent Restore", "gGreenPercentRestore");
+                        UIWidgets::EnhancementCheckbox("Green Potion Percent Restore", "gGreenPercentRestore", disabledGreenPotion, disabledTooltipGreenPotion);
                         UIWidgets::Tooltip("Toggles from Green Potions restoring a fixed amount of mana to a percent of the player's current max mana");
 
                         ImGui::Separator();
 
                         UIWidgets::EnhancementCheckbox("Change Blue Potion Effects", "gBluePotionEffects");
                         UIWidgets::Tooltip("Enable the following changes to the amount of health and mana restored by Blue Potions");
-                        UIWidgets::EnhancementSliderInt("Blue Potion Health: %d", "##BLUEPOTIONHEALTH", "gBluePotionHealth", 1, 100, "", 0, true);
+                        bool disabledBluePotion = !CVar_GetS32("gBluePotionEffects", 0);
+                        const char* disabledTooltipBluePotion = "This option is disabled because \"Change Blue Potion Effects\" is turned off";
+                        UIWidgets::EnhancementSliderInt("Blue Potion Health: %d", "##BLUEPOTIONHEALTH", "gBluePotionHealth", 1, 100, "", 0, true, disabledBluePotion, disabledTooltipBluePotion);
                         UIWidgets::Tooltip("Changes the amount of health restored by Blue Potions");
-                        UIWidgets::EnhancementCheckbox("Blue Potion Health Percent Restore", "gBlueHealthPercentRestore");
+                        UIWidgets::EnhancementCheckbox("Blue Potion Health Percent Restore", "gBlueHealthPercentRestore", disabledBluePotion, disabledTooltipBluePotion);
                         UIWidgets::Tooltip("Toggles from Blue Potions restoring a fixed amount of health to a percent of the player's current max health");
 
                         ImGui::Separator();
 
-                        UIWidgets::EnhancementSliderInt("Blue Potion Mana: %d", "##BLUEPOTIONMANA", "gBluePotionMana", 1, 100, "", 0, true);
+                        UIWidgets::EnhancementSliderInt("Blue Potion Mana: %d", "##BLUEPOTIONMANA", "gBluePotionMana", 1, 100, "", 0, true, disabledBluePotion, disabledTooltipBluePotion);
                         UIWidgets::Tooltip("Changes the amount of mana restored by Blue Potions, base max mana is 48, max upgraded mana is 96");
-                        UIWidgets::EnhancementCheckbox("Blue Potion Mana Percent Restore", "gBlueManaPercentRestore");
+                        UIWidgets::EnhancementCheckbox("Blue Potion Mana Percent Restore", "gBlueManaPercentRestore", disabledBluePotion, disabledTooltipBluePotion);
                         UIWidgets::Tooltip("Toggles from Blue Potions restoring a fixed amount of mana to a percent of the player's current max mana");
 
                         ImGui::Separator();
 
                         UIWidgets::EnhancementCheckbox("Change Milk Effect", "gMilkEffect");
                         UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Milk");
-                        UIWidgets::EnhancementSliderInt("Milk Health: %d", "##MILKHEALTH", "gMilkHealth", 1, 100, "", 0, true);
+                        bool disabledMilk = !CVar_GetS32("gMilkEffect", 0);
+                        const char* disabledTooltipMilk = "This option is disabled because \"Change Milk Effect\" is turned off";
+                        UIWidgets::EnhancementSliderInt("Milk Health: %d", "##MILKHEALTH", "gMilkHealth", 1, 100, "", 0, true, disabledMilk, disabledTooltipMilk);
                         UIWidgets::Tooltip("Changes the amount of health restored by Milk");
-                        UIWidgets::EnhancementCheckbox("Milk Percent Restore", "gMilkPercentRestore");
+                        UIWidgets::EnhancementCheckbox("Milk Percent Restore", "gMilkPercentRestore", disabledMilk, disabledTooltipMilk);
                         UIWidgets::Tooltip("Toggles from Milk restoring a fixed amount of health to a percent of the player's current max health");
 
                         ImGui::Separator();
 
-                        UIWidgets::EnhancementCheckbox("Separate Half Milk Effect", "gSeparateHalfMilkEffect");
+                        UIWidgets::EnhancementCheckbox("Separate Half Milk Effect", "gSeparateHalfMilkEffect", disabledMilk, disabledTooltipMilk);
                         UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Half Milk\nIf this is disabled, Half Milk will behave the same as Full Milk.");
-                        UIWidgets::EnhancementSliderInt("Half Milk Health: %d", "##HALFMILKHEALTH", "gHalfMilkHealth", 1, 100, "", 0, true);
+                        bool disabledHalfMilk = disabledMilk || !CVar_GetS32("gSeparateHalfMilkEffect", 0);
+                        const char* disabledTooltipHalfMilk = "This option is disabled because \"Separate Half Milk Effect\" is turned off";
+                        UIWidgets::EnhancementSliderInt("Half Milk Health: %d", "##HALFMILKHEALTH", "gHalfMilkHealth", 1, 100, "", 0, true, disabledHalfMilk, disabledTooltipHalfMilk);
                         UIWidgets::Tooltip("Changes the amount of health restored by Half Milk");
-                        UIWidgets::EnhancementCheckbox("Half Milk Percent Restore", "gHalfMilkPercentRestore");
+                        UIWidgets::EnhancementCheckbox("Half Milk Percent Restore", "gHalfMilkPercentRestore", disabledHalfMilk, disabledTooltipHalfMilk);
                         UIWidgets::Tooltip("Toggles from Half Milk restoring a fixed amount of health to a percent of the player's current max health");
 
                         ImGui::Separator();
 
                         UIWidgets::EnhancementCheckbox("Change Fairy Effect", "gFairyEffect");
                         UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Fairies");
-                        UIWidgets::EnhancementSliderInt("Fairy: %d", "##FAIRYHEALTH", "gFairyHealth", 1, 100, "", 0, true);
+                        bool disabledFairy = !CVar_GetS32("gFairyEffect", 0);
+                        const char* disabledTooltipFairy = "This option is disabled because \"Change Fairy Effect\" is turned off";
+                        UIWidgets::EnhancementSliderInt("Fairy: %d", "##FAIRYHEALTH", "gFairyHealth", 1, 100, "", 0, true, disabledFairy, disabledTooltipFairy);
                         UIWidgets::Tooltip("Changes the amount of health restored by Fairies");
-                        UIWidgets::EnhancementCheckbox("Fairy Percent Restore", "gFairyPercentRestore");
+                        UIWidgets::EnhancementCheckbox("Fairy Percent Restore", "gFairyPercentRestore", disabledFairy, disabledTooltipFairy);
                         UIWidgets::Tooltip("Toggles from Fairies restoring a fixed amount of health to a percent of the player's current max health");
 
                         ImGui::Separator();
 
                         UIWidgets::EnhancementCheckbox("Change Fairy Revive Effect", "gFairyReviveEffect");
                         UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Fairy Revivals");
-                        UIWidgets::EnhancementSliderInt("Fairy Revival: %d", "##FAIRYREVIVEHEALTH", "gFairyReviveHealth", 1, 100, "", 0, true);
+                        bool disabledFairyRevive = !CVar_GetS32("gFairyReviveEffect", 0);
+                        const char* disabledTooltipFairyRevive = "This option is disabled because \"Change Fairy Revive Effect\" is turned off";
+                        UIWidgets::EnhancementSliderInt("Fairy Revival: %d", "##FAIRYREVIVEHEALTH", "gFairyReviveHealth", 1, 100, "", 0, true, disabledFairyRevive, disabledTooltipFairyRevive);
                         UIWidgets::Tooltip("Changes the amount of health restored by Fairy Revivals");
-                        UIWidgets::EnhancementCheckbox("Fairy Revive Percent Restore", "gFairyRevivePercentRestore");
+                        UIWidgets::EnhancementCheckbox("Fairy Revive Percent Restore", "gFairyRevivePercentRestore", disabledFairyRevive, disabledTooltipFairyRevive);
                         UIWidgets::Tooltip("Toggles from Fairy Revivals restoring a fixed amount of health to a percent of the player's current max health");
 
                         ImGui::EndMenu();
@@ -530,9 +551,9 @@ namespace GameMenuBar {
                         UIWidgets::Tooltip("Turn on/off changes to the shooting gallery behavior");
                         bool disabled = !CVar_GetS32("gCustomizeShootingGallery", 0);
                         const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
-                        UIWidgets::EnhancementCheckbox("Instant Win", "gInstantShootingGalleryWin", disabled, disabledTooltip);
+                        UIWidgets::PaddedEnhancementCheckbox("Instant Win", "gInstantShootingGalleryWin", true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("Skips the shooting gallery minigame");
-                        UIWidgets::EnhancementCheckbox("No Rupee Randomization", "gConstantAdultGallery", disabled, disabledTooltip);
+                        UIWidgets::PaddedEnhancementCheckbox("No Rupee Randomization", "gConstantAdultGallery", true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("Forces the rupee order to not be randomized as adult, making it the same as chlid");
                         UIWidgets::PaddedEnhancementSliderInt("Child Starting Ammunition: %d", "##cShootingGalleryAmmunition", "gChildShootingGalleryAmmunition", 10, 30, "", 15, false, true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("The ammunition at the start of the shooting gallery minigame as a child");
@@ -543,12 +564,28 @@ namespace GameMenuBar {
 
                     UIWidgets::Spacer(0);
 
+                    if (ImGui::BeginMenu("Bombchu Bowling")) {
+                        UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeBombchuBowling");
+                        UIWidgets::Tooltip("Turn on/off changes to the bombchu bowling behavior");
+                        bool disabled = CVar_GetS32("gCustomizeBombchuBowling", 0) == 0;
+                        const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
+                        UIWidgets::PaddedEnhancementCheckbox("Remove Small Cucco", "gBombchuBowlingNoSmallCucco", true, false, disabled, disabledTooltip);
+                        UIWidgets::Tooltip("Prevents the small cucco from appearing in the bombchu bowling minigame");
+                        UIWidgets::PaddedEnhancementCheckbox("Remove Big Cucco", "gBombchuBowlingNoBigCucco", true, false, disabled, disabledTooltip);
+                        UIWidgets::Tooltip("Prevents the big cucco from appearing in the bombchu bowling minigame");
+                        UIWidgets::PaddedEnhancementSliderInt("Bombchu Count: %d", "##cBombchuBowlingAmmunition", "gBombchuBowlingAmmunition", 3, 20, "", 10, false, true, false, disabled, disabledTooltip);
+                        UIWidgets::Tooltip("The number of bombchus available at the start of the bombchu bowling minigame");
+                        ImGui::EndMenu();
+                    }
+
+                    UIWidgets::Spacer(0);
+
                     if (ImGui::BeginMenu("Fishing")) {
                         UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeFishing");
                         UIWidgets::Tooltip("Turn on/off changes to the fishing behavior");
                         bool disabled = !CVar_GetS32("gCustomizeFishing", 0);
                         const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
-                        UIWidgets::EnhancementCheckbox("Instant Fishing", "gInstantFishing", disabled, disabledTooltip);
+                        UIWidgets::PaddedEnhancementCheckbox("Instant Fishing", "gInstantFishing", true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("All fish will be caught instantly");
                         UIWidgets::PaddedEnhancementCheckbox("Guarantee Bite", "gGuaranteeFishingBite", true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("When a line is stable, guarantee bite. Otherwise use default logic");
@@ -716,6 +753,10 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Prevent the Gerudo Warrior's clothes changing color when changing Link's tunic or using bombs in front of her");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Camera Drift", "gFixCameraDrift", true, false);
                 UIWidgets::Tooltip("Fixes camera slightly drifting to the left when standing still due to a math error");
+                UIWidgets::PaddedEnhancementCheckbox("Fix Camera Swing", "gFixCameraSwing", true, false);
+                UIWidgets::Tooltip("Fixes camera getting stuck on collision when standing still, also fixes slight shift back in camera when stop moving");
+                UIWidgets::PaddedEnhancementCheckbox("Fix Hanging Ledge Swing Rate", "gFixHangingLedgeSwingRate", true, false);
+                UIWidgets::Tooltip("Fixes camera swing rate when player falls of a ledge and camera swings around");
 
                 ImGui::EndMenu();
             }
@@ -903,9 +944,7 @@ namespace GameMenuBar {
             }
             UIWidgets::PaddedEnhancementCheckbox("Skip Text", "gSkipText", true, false);
             UIWidgets::Tooltip("Holding down B skips text");
-            UIWidgets::PaddedEnhancementCheckbox("Free Camera", "gFreeCamera", true, false);
-            UIWidgets::Tooltip("Enables camera control\nNote: You must remap C buttons off of the right stick in the controller config menu, and map the camera stick to the right stick.");
-            
+
          #ifdef __SWITCH__
             UIWidgets::Spacer(0);
             int slot = CVar_GetS32("gSwitchPerfMode", (int)Ship::SwitchProfiles::STOCK);
@@ -1158,18 +1197,32 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Item Tracker Settings", CVar_GetS32("gItemTrackerSettingsEnabled", 0));
             }
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+            if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVar_GetS32("gEntranceTrackerEnabled", 0)).c_str(), buttonSize))
+            {
+                bool currentValue = CVar_GetS32("gEntranceTrackerEnabled", 0);
+                CVar_SetS32("gEntranceTrackerEnabled", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("Entrance Tracker", CVar_GetS32("gEntranceTrackerEnabled", 0));
+            }
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+            if (ImGui::Button(GetWindowButtonText("Check Tracker", CVar_GetS32("gCheckTrackerEnabled", 0)).c_str(), buttonSize))
+            {
+                bool currentValue = CVar_GetS32("gCheckTrackerEnabled", 0);
+                CVar_SetS32("gCheckTrackerEnabled", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("Check Tracker", CVar_GetS32("gCheckTrackerEnabled", 0));
+            }
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+            if (ImGui::Button(GetWindowButtonText("Check Tracker Settings", CVar_GetS32("gCheckTrackerSettingsEnabled", 0)).c_str(), buttonSize))
+            {
+                bool currentValue = CVar_GetS32("gCheckTrackerSettingsEnabled", 0);
+                CVar_SetS32("gCheckTrackerSettingsEnabled", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("Check Tracker Settings", CVar_GetS32("gCheckTrackerSettingsEnabled", 0));
+            }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
-#ifdef ENABLE_CROWD_CONTROL
-            UIWidgets::PaddedEnhancementCheckbox("Crowd Control", "gCrowdControl", true, false);
-            UIWidgets::Tooltip("Requires a full SoH restart to take effect!\n\nEnables CrowdControl. Will attempt to connect to the local Crowd Control server.");
-
-            if (CVar_GetS32("gCrowdControl", 0)) {
-                CrowdControl::Instance->Enable();
-            } else {
-                CrowdControl::Instance->Disable();
-            }
-#endif
 
             UIWidgets::PaddedSeparator();
 
@@ -1190,8 +1243,10 @@ namespace GameMenuBar {
                 if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON ||
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
-                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS) > 0 ||
-                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) > 2 ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
                     (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_VANILLA &&
                      OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_OWN_DUNGEON &&
                      OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_STARTWITH) || 
@@ -1215,6 +1270,38 @@ namespace GameMenuBar {
                     "(medallions/stones/songs). Note that these fanfares are longer than usual."
                 );
                 ImGui::EndMenu();
+            }
+
+            UIWidgets::PaddedSeparator();
+
+        #ifdef ENABLE_CROWD_CONTROL
+            UIWidgets::EnhancementCheckbox("Crowd Control", "gCrowdControl");
+            UIWidgets::Tooltip("Will attempt to connect to the Crowd Control server. Check out crowdcontrol.live for more information.");
+
+            if (CVar_GetS32("gCrowdControl", 0)) {
+                CrowdControl::Instance->Enable();
+            } else {
+                CrowdControl::Instance->Disable();
+            }
+
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+        #endif
+
+            UIWidgets::EnhancementCheckbox("Enemy Randomizer", "gRandomizedEnemies");
+            UIWidgets::Tooltip(
+                "Randomizes regular enemies every time you load a room. Bosses, mini-bosses and a few specific regular enemies are excluded.\n\n"
+                "Enemies that need more than Deku Nuts + either Deku Sticks or a sword to kill are excluded from spawning in \"clear enemy\" rooms."
+            );
+
+            if (CVar_GetS32("gRandomizedEnemies", 0)) {
+
+                bool disableSeededEnemies = !gSaveContext.n64ddFlag && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
+                const char* disableSeededEnemiesText = "This setting is disabled because it relies on a randomizer savefile.";
+
+                UIWidgets::PaddedEnhancementCheckbox("Seeded Enemy Spawns", "gSeededRandomizedEnemies", true, false, disableSeededEnemies, disableSeededEnemiesText);
+                UIWidgets::Tooltip(
+                    "Enemy spawns will stay consistent throughout room reloads. Enemy spawns are based on randomizer seeds, so this only works with randomizer savefiles."
+                );
             }
 
             ImGui::EndMenu();

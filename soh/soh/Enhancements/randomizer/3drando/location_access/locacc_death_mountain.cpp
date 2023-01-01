@@ -55,10 +55,10 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[DMT_OWL_FLIGHT] = Area("DMT Owl Flight", "Death Mountain", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(KAK_IMPAS_LEDGE, {[]{return true;}}),
+                  Entrance(KAK_IMPAS_ROOFTOP, {[]{return true;}}),
   });
 
-  areaTable[DMT_COW_GROTTO] = Area("DMT Cow Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[DMT_COW_GROTTO] = Area("DMT Cow Grotto", "DMT Cow Grotto", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(DMT_COW_GROTTO_COW, {[]{return CanPlay(EponasSong);},
                                           /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) ||
@@ -69,7 +69,7 @@ void AreaTable_Init_DeathMountain() {
 
   });
 
-  areaTable[DMT_STORMS_GROTTO] = Area("DMT Storms Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
+  areaTable[DMT_STORMS_GROTTO] = Area("DMT Storms Grotto", "DMT Storms Grotto", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(DMT_STORMS_GROTTO_CHEST,        {[]{return true;}}),
                   LocationAccess(DMT_STORMS_GROTTO_GOSSIP_STONE, {[]{return true;}}),
@@ -78,7 +78,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(DEATH_MOUNTAIN_TRAIL, {[]{return true;}}),
   });
 
-  areaTable[DMT_GREAT_FAIRY_FOUNTAIN] = Area("DMT Great Fairy Fountain", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[DMT_GREAT_FAIRY_FOUNTAIN] = Area("DMT Great Fairy Fountain", "DMT Great Fairy Fountain", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(DMT_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby);},
                                               /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) ||
@@ -156,7 +156,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(GORON_CITY, {[]{return EffectiveHealth > 2 || CanUse(GORON_TUNIC) || CanUse(NAYRUS_LOVE) || ((IsChild || CanPlay(SongOfTime)) && CanUse(LONGSHOT));}}),
   });
 
-  areaTable[GC_SHOP] = Area("GC Shop", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[GC_SHOP] = Area("GC Shop", "GC Shop", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(GC_SHOP_ITEM_1, {[]{return true;}}),
                   LocationAccess(GC_SHOP_ITEM_2, {[]{return true;}}),
@@ -171,7 +171,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(GORON_CITY, {[]{return true;}}),
   });
 
-  areaTable[GC_GROTTO] = Area("GC Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[GC_GROTTO] = Area("GC Grotto", "GC Grotto", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(GC_DEKU_SCRUB_GROTTO_LEFT,   {[]{return CanStunDeku;}}),
                   LocationAccess(GC_DEKU_SCRUB_GROTTO_RIGHT,  {[]{return CanStunDeku;}}),
@@ -262,7 +262,7 @@ void AreaTable_Init_DeathMountain() {
                                       /*Glitched*/[]{return CanDoGlitch(GlitchType::ASlide, GlitchDifficulty::INTERMEDIATE) && FireTimer >= 48;}}),
   });
 
-  areaTable[DMC_GREAT_FAIRY_FOUNTAIN] = Area("DMC Great Fairy Fountain", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[DMC_GREAT_FAIRY_FOUNTAIN] = Area("DMC Great Fairy Fountain", "DMC Great Fairy Fountain", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(DMC_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby);},
                                               /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && (CanTakeDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) ||
@@ -272,7 +272,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(DMC_LOWER_LOCAL, {[]{return true;}}),
   });
 
-  areaTable[DMC_UPPER_GROTTO] = Area("DMC Upper Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
+  areaTable[DMC_UPPER_GROTTO] = Area("DMC Upper Grotto", "DMC Upper Grotto", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(DMC_UPPER_GROTTO_CHEST,        {[]{return true;}}),
                   LocationAccess(DMC_UPPER_GROTTO_GOSSIP_STONE, {[]{return true;}}),
@@ -281,7 +281,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(DMC_UPPER_LOCAL, {[]{return true;}}),
   });
 
-  areaTable[DMC_HAMMER_GROTTO] = Area("DMC Hammer Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[DMC_HAMMER_GROTTO] = Area("DMC Hammer Grotto", "DMC Hammer Grotto", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(DMC_DEKU_SCRUB_GROTTO_LEFT,   {[]{return CanStunDeku;}}),
                   LocationAccess(DMC_DEKU_SCRUB_GROTTO_RIGHT,  {[]{return CanStunDeku;}}),

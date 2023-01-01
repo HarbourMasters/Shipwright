@@ -75,8 +75,26 @@ namespace UIWidgets {
         }
     }
 
+    void SetLastItemHoverText(const char* text) {
+        if (ImGui::IsItemHovered()) {
+            ImGui::BeginTooltip();
+            ImGui::Text("%s", WrappedText(text, 60));
+            ImGui::EndTooltip();
+        }
+    }
+
     // Adds a "?" next to the previous ImGui item with a custom tooltip
     void InsertHelpHoverText(const std::string& text) {
+        ImGui::SameLine();
+        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "?");
+        if (ImGui::IsItemHovered()) {
+            ImGui::BeginTooltip();
+            ImGui::Text("%s", WrappedText(text, 60));
+            ImGui::EndTooltip();
+        }
+    }
+
+    void InsertHelpHoverText(const char* text) {
         ImGui::SameLine();
         ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "?");
         if (ImGui::IsItemHovered()) {
@@ -178,13 +196,13 @@ namespace UIWidgets {
         return pressed;
     }
 
-    bool EnhancementCheckbox(const char* text, const char* cvarName, bool disabled, const char* disabledTooltipText, CheckboxGraphics disabledGraphic) {
+    bool EnhancementCheckbox(const char* text, const char* cvarName, bool disabled, const char* disabledTooltipText, CheckboxGraphics disabledGraphic, bool defaultValue) {
         bool changed = false;
         if (disabled) {
             ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
             ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
         }
-        bool val = (bool)CVar_GetS32(cvarName, 0);
+        bool val = (bool)CVar_GetS32(cvarName, defaultValue);
         if (CustomCheckbox(text, &val, disabled, disabledGraphic)) {
             CVar_SetS32(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
@@ -201,11 +219,11 @@ namespace UIWidgets {
         return changed;
     }
 
-    bool PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText, CheckboxGraphics disabledGraphic) {
+    bool PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText, CheckboxGraphics disabledGraphic, bool defaultValue) {
         bool changed = false;
         if (padTop) Spacer(0);
 
-        if (EnhancementCheckbox(text, cvarName, disabled, disabledTooltipText, disabledGraphic)) {
+        if (EnhancementCheckbox(text, cvarName, disabled, disabledTooltipText, disabledGraphic, defaultValue)) {
             changed = true;
         }
 
@@ -274,7 +292,8 @@ namespace UIWidgets {
         ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
     }
 
-    void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool disabled, const char* disabledTooltipText) {
+    bool EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool disabled, const char* disabledTooltipText) {
+        bool changed = false;
         int val = CVar_GetS32(cvarName, defaultValue);
 
         float alpha;
@@ -298,6 +317,7 @@ namespace UIWidgets {
                 val--;
                 CVar_SetS32(cvarName, val);
                 SohImGui::RequestCvarSaveOnNextTick();
+                changed = true;
             }
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
@@ -319,6 +339,7 @@ namespace UIWidgets {
         {
             CVar_SetS32(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
+            changed = true;
         }
         if (PlusMinusButton) {
             ImGui::PopItemWidth();
@@ -336,6 +357,7 @@ namespace UIWidgets {
                 val++;
                 CVar_SetS32(cvarName, val);
                 SohImGui::RequestCvarSaveOnNextTick();
+                changed = true;
             }
         }
 
@@ -352,6 +374,7 @@ namespace UIWidgets {
             val = min;
             CVar_SetS32(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
+            changed = true;
         }
 
         if (val > max)
@@ -359,10 +382,14 @@ namespace UIWidgets {
             val = max;
             CVar_SetS32(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
+            changed = true;
         }
+
+        return changed;
     }
 
-    void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton, bool disabled, const char* disabledTooltipText) {
+    bool EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton, bool disabled, const char* disabledTooltipText) {
+        bool changed = false;
         float val = CVar_GetFloat(cvarName, defaultValue);
 
         if (disabled) {
@@ -387,6 +414,7 @@ namespace UIWidgets {
                 }
                 CVar_SetFloat(cvarName, val);
                 SohImGui::RequestCvarSaveOnNextTick();
+                changed = true;
             }
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
@@ -407,6 +435,7 @@ namespace UIWidgets {
                 CVar_SetFloat(cvarName, val);
             }
             SohImGui::RequestCvarSaveOnNextTick();
+            changed = true;
         }
         if (PlusMinusButton) {
             ImGui::PopItemWidth();
@@ -424,6 +453,7 @@ namespace UIWidgets {
                 }
                 CVar_SetFloat(cvarName, val);
                 SohImGui::RequestCvarSaveOnNextTick();
+                changed = true;
             }
         }
 
@@ -439,13 +469,17 @@ namespace UIWidgets {
             val = min;
             CVar_SetFloat(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
+            changed = true;
         }
 
         if (val > max) {
             val = max;
             CVar_SetFloat(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
+            changed = true;
         }
+
+        return changed;
     }
 
     void PaddedEnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText) {
@@ -465,9 +499,9 @@ namespace UIWidgets {
         Second is the cvar name where MyID will be saved.
         Note: the CVar name should be the same to each Buddies.
         Example :
-            EnhancementRadioButton("English", "gLanguages", 0);
-            EnhancementRadioButton("German", "gLanguages", 1);
-            EnhancementRadioButton("French", "gLanguages", 2);
+            EnhancementRadioButton("English", "gLanguages", LANGUAGE_ENG);
+            EnhancementRadioButton("German", "gLanguages", LANGUAGE_GER);
+            EnhancementRadioButton("French", "gLanguages", LANGUAGE_FRA);
         */
         std::string make_invisible = "##";
         make_invisible += text;
@@ -494,13 +528,13 @@ namespace UIWidgets {
             colors->x = defaultcolors.x;
             colors->y = defaultcolors.y;
             colors->z = defaultcolors.z;
-            if (has_alpha) { colors->w = defaultcolors.w; };
+            colors->w = has_alpha ? defaultcolors.w : 255.0f;
 
             Color_RGBA8 colorsRGBA;
             colorsRGBA.r = defaultcolors.x;
             colorsRGBA.g = defaultcolors.y;
             colorsRGBA.b = defaultcolors.z;
-            if (has_alpha) { colorsRGBA.a = defaultcolors.w; };
+            colorsRGBA.a = has_alpha ? defaultcolors.w : 255.0f;
 
             CVar_SetRGBA(cvarName, colorsRGBA);
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
@@ -582,7 +616,7 @@ namespace UIWidgets {
                 colors.r = ColorRGBA.x * 255.0;
                 colors.g = ColorRGBA.y * 255.0;
                 colors.b = ColorRGBA.z * 255.0;
-                colors.a = ColorRGBA.w * 255.0;
+                colors.a = 255.0;
 
                 CVar_SetRGBA(cvarName, colors);
                 SohImGui::RequestCvarSaveOnNextTick();
@@ -591,13 +625,14 @@ namespace UIWidgets {
         }
         else
         {
+            flags |= ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_AlphaPreview;
             if (ImGui::ColorEdit4(text, (float*)&ColorRGBA, flags))
             {
                 Color_RGBA8 colors;
-                colors.r = ColorRGBA.x / 255;
-                colors.g = ColorRGBA.y / 255;
-                colors.b = ColorRGBA.z / 255;
-                colors.a = ColorRGBA.w / 255;
+                colors.r = ColorRGBA.x * 255.0;
+                colors.g = ColorRGBA.y * 255.0;
+                colors.b = ColorRGBA.z * 255.0;
+                colors.a = ColorRGBA.w * 255.0;
 
                 CVar_SetRGBA(cvarName, colors);
                 SohImGui::RequestCvarSaveOnNextTick();

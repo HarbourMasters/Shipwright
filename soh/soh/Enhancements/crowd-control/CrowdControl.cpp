@@ -458,7 +458,7 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uin
             if (dryRun == 0) CMD_EXECUTE(fmt::format("defense_modifier {}", value));
             return EffectResult::Success;
         } else if (effectId == EFFECT_DAMAGE) {
-            if ((gSaveContext.healthCapacity - 0x10) <= 0) {
+            if ((gSaveContext.health - (16 * value)) <= 0) {
                 return EffectResult::Failure;
             }
             
@@ -482,6 +482,14 @@ bool CrowdControl::SpawnEnemy(std::string effectId) {
     if (effectId == EFFECT_SPAWN_WALLMASTER) {
         enemyId = 17;
     } else if (effectId == EFFECT_SPAWN_ARWING) {
+        // Don't allow Arwings in certain areas because they cause issues.
+        // Locations: King dodongo room, Morpha room, Twinrova room, Ganondorf room, Fishing pond, Ganon's room
+        // TODO: Swap this to disabling the option in CC options menu instead.
+        if (gPlayState->sceneNum == SCENE_DDAN_BOSS || gPlayState->sceneNum == SCENE_MIZUSIN_BS ||
+            gPlayState->sceneNum == SCENE_JYASINBOSS || gPlayState->sceneNum == SCENE_GANON_BOSS ||
+            gPlayState->sceneNum == SCENE_TURIBORI || gPlayState->sceneNum == SCENE_GANON_DEMO) {
+            return 0;
+        }
         enemyId = 315;
         enemyParams = 1;
         posYOffset = 100;
@@ -528,7 +536,7 @@ bool CrowdControl::SpawnEnemy(std::string effectId) {
     }
 
     return Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, player->actor.world.pos.x + posXOffset,
-        player->actor.world.pos.y + posYOffset, player->actor.world.pos.z + posZOffset, 0, 0, 0, enemyParams);
+        player->actor.world.pos.y + posYOffset, player->actor.world.pos.z + posZOffset, 0, 0, 0, enemyParams, 0);
 
 }
 

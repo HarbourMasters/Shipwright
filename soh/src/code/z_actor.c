@@ -7,6 +7,7 @@
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_bdoor/object_bdoor.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/enemyrandomizer.h"
 
 #if defined(_MSC_VER) || defined(__GNUC__)
 #include <string.h>
@@ -76,6 +77,9 @@
 
 static CollisionPoly* sCurCeilingPoly;
 static s32 sCurCeilingBgId;
+
+// Used for animating the ice trap on the "Get Item" model.
+f32 iceTrapScale;
 
 void ActorShape_Init(ActorShape* shape, f32 yOffset, ActorShadowFunc shadowDraw, f32 shadowScale) {
     shape->yOffset = yOffset;
@@ -300,6 +304,15 @@ NaviColor sNaviColorList[] = {
     { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },
 };
 
+static Color_RGBA8 defaultIdlePrimaryColor = { 255, 255, 255, 255 };
+static Color_RGBA8 defaultIdleSecondaryColor = { 0, 0, 255, 0 };
+static Color_RGBA8 defaultNPCPrimaryColor = { 150, 150, 255, 255 };
+static Color_RGBA8 defaultNPCSecondaryColor = { 150, 150, 255, 0 };
+static Color_RGBA8 defaultEnemyPrimaryColor = { 255, 255, 0, 255 };
+static Color_RGBA8 defaultEnemySecondaryColor = { 200, 155, 0, 0 };
+static Color_RGBA8 defaultPropsPrimaryColor = { 0, 255, 0, 255 };
+static Color_RGBA8 defaultPropsSecondaryColor = { 0, 255, 0, 0 };
+
 // unused
 Gfx D_80115FF0[] = {
     gsSPEndDisplayList(),
@@ -334,52 +347,55 @@ void func_8002BE98(TargetContext* targetCtx, s32 actorCategory, PlayState* play)
 }
 
 void func_8002BF60(TargetContext* targetCtx, Actor* actor, s32 actorCategory, PlayState* play) {
-    NaviColor* naviColor = &sNaviColorList[actorCategory];
-    Color_RGB8 customInnerNaviColor;
-    Color_RGB8 customOuterNaviColor;
-
-    if (!CVar_GetS32("gUseNaviCol",0)) {
-        if (actorCategory == ACTORCAT_PLAYER) {
-            naviColor->inner.r = 255; naviColor->inner.g = 255; naviColor->inner.b = 255;
-            naviColor->outer.r = 0; naviColor->outer.g = 0; naviColor->outer.b = 255;
-        }
-        if (actorCategory == ACTORCAT_NPC) {
-            naviColor->inner.r = 150; naviColor->inner.g = 150; naviColor->inner.b = 255;
-            naviColor->outer.r = 150; naviColor->outer.g = 150; naviColor->outer.b = 255;
-        }
-        if (actorCategory == ACTORCAT_BOSS || actorCategory == ACTORCAT_ENEMY) {
-            naviColor->inner.r = 255; naviColor->inner.g = 255; naviColor->inner.b = 0;
-            naviColor->outer.r = 220; naviColor->outer.g = 155; naviColor->outer.b = 0;
-        }
-        if (actorCategory == ACTORCAT_PROP) {
-            naviColor->inner.r = 0; naviColor->inner.g = 255; naviColor->inner.b = 0;
-            naviColor->outer.r = 0; naviColor->outer.g = 255; naviColor->outer.b = 0;
-        }
+    if (CVar_GetS32("gCosmetics.Navi_IdlePrimary.Changed", 0)) {
+        sNaviColorList[ACTORCAT_PLAYER].inner = CVar_GetRGBA("gCosmetics.Navi_IdlePrimary.Value", defaultIdlePrimaryColor);
     } else {
-        if (actorCategory == ACTORCAT_PLAYER) {
-            customInnerNaviColor = CVar_GetRGB("gNavi_Idle_Inner", (Color_RGB8){ 0, 0, 0 });
-            customOuterNaviColor = CVar_GetRGB("gNavi_Idle_Outer", (Color_RGB8){ 0, 0, 0 });
-        }
-        if (actorCategory == ACTORCAT_NPC) {
-            customInnerNaviColor = CVar_GetRGB("gNavi_NPC_Inner", (Color_RGB8){ 0, 0, 0 });
-            customOuterNaviColor = CVar_GetRGB("gNavi_NPC_Outer", (Color_RGB8){ 0, 0, 0 });
-        }
-        if (actorCategory == ACTORCAT_BOSS || actorCategory == ACTORCAT_ENEMY) {
-            customInnerNaviColor = CVar_GetRGB("gNavi_Enemy_Inner", (Color_RGB8){ 0, 0, 0 });
-            customOuterNaviColor = CVar_GetRGB("gNavi_Enemy_Outer", (Color_RGB8){ 0, 0, 0 });
-        }
-        if (actorCategory == ACTORCAT_PROP) {
-            customInnerNaviColor = CVar_GetRGB("gNavi_Prop_Inner", (Color_RGB8){ 0, 0, 0 });
-            customOuterNaviColor = CVar_GetRGB("gNavi_Prop_Outer", (Color_RGB8){ 0, 0, 0 });
-        }
-        naviColor->inner.r = customInnerNaviColor.r;
-        naviColor->inner.g = customInnerNaviColor.g;
-        naviColor->inner.b = customInnerNaviColor.b;
-        naviColor->outer.r = customOuterNaviColor.r;
-        naviColor->outer.g = customOuterNaviColor.g;
-        naviColor->outer.b = customOuterNaviColor.b;
+        sNaviColorList[ACTORCAT_PLAYER].inner = defaultIdlePrimaryColor;
+    }
+    if (CVar_GetS32("gCosmetics.Navi_IdleSecondary.Changed", 0)) {
+        sNaviColorList[ACTORCAT_PLAYER].outer = CVar_GetRGBA("gCosmetics.Navi_IdleSecondary.Value", defaultIdleSecondaryColor);
+    } else {
+        sNaviColorList[ACTORCAT_PLAYER].outer = defaultIdleSecondaryColor;
     }
     
+    if (CVar_GetS32("gCosmetics.Navi_NPCPrimary.Changed", 0)) {
+        sNaviColorList[ACTORCAT_NPC].inner = CVar_GetRGBA("gCosmetics.Navi_NPCPrimary.Value", defaultNPCPrimaryColor);
+    } else {
+        sNaviColorList[ACTORCAT_NPC].inner = defaultNPCPrimaryColor;
+    }
+    if (CVar_GetS32("gCosmetics.Navi_NPCSecondary.Changed", 0)) {
+        sNaviColorList[ACTORCAT_NPC].outer = CVar_GetRGBA("gCosmetics.Navi_NPCSecondary.Value", defaultNPCSecondaryColor);
+    } else {
+        sNaviColorList[ACTORCAT_NPC].outer = defaultNPCSecondaryColor;
+    }
+
+    if (CVar_GetS32("gCosmetics.Navi_EnemyPrimary.Changed", 0)) {
+        sNaviColorList[ACTORCAT_ENEMY].inner = CVar_GetRGBA("gCosmetics.Navi_EnemyPrimary.Value", defaultEnemyPrimaryColor);
+        sNaviColorList[ACTORCAT_BOSS].inner = CVar_GetRGBA("gCosmetics.Navi_EnemyPrimary.Value", defaultEnemyPrimaryColor);
+    } else {
+        sNaviColorList[ACTORCAT_ENEMY].inner = defaultEnemyPrimaryColor;
+        sNaviColorList[ACTORCAT_BOSS].inner = defaultEnemyPrimaryColor;
+    }
+    if (CVar_GetS32("gCosmetics.Navi_EnemySecondary.Changed", 0)) {
+        sNaviColorList[ACTORCAT_ENEMY].outer = CVar_GetRGBA("gCosmetics.Navi_EnemySecondary.Value", defaultEnemySecondaryColor);
+        sNaviColorList[ACTORCAT_BOSS].outer = CVar_GetRGBA("gCosmetics.Navi_EnemySecondary.Value", defaultEnemySecondaryColor);
+    } else {
+        sNaviColorList[ACTORCAT_ENEMY].outer = defaultEnemySecondaryColor;
+        sNaviColorList[ACTORCAT_BOSS].outer = defaultEnemySecondaryColor;
+    }
+
+    if (CVar_GetS32("gCosmetics.Navi_PropsPrimary.Changed", 0)) {
+        sNaviColorList[ACTORCAT_PROP].inner = CVar_GetRGBA("gCosmetics.Navi_PropsPrimary.Value", defaultPropsPrimaryColor);
+    } else {
+        sNaviColorList[ACTORCAT_PROP].inner = defaultPropsPrimaryColor;
+    }
+    if (CVar_GetS32("gCosmetics.Navi_PropsSecondary.Changed", 0)) {
+        sNaviColorList[ACTORCAT_PROP].outer = CVar_GetRGBA("gCosmetics.Navi_PropsSecondary.Value", defaultPropsSecondaryColor);
+    } else {
+        sNaviColorList[ACTORCAT_PROP].outer = defaultPropsSecondaryColor;
+    }
+
+    NaviColor* naviColor = &sNaviColorList[actorCategory];
     targetCtx->naviRefPos.x = actor->focus.pos.x;
     targetCtx->naviRefPos.y = actor->focus.pos.y + (actor->targetArrowOffset * actor->scale.y);
     targetCtx->naviRefPos.z = actor->focus.pos.z;
@@ -2017,6 +2033,7 @@ s32 GiveItemEntryFromActor(Actor* actor, PlayState* play, GetItemEntry getItemEn
                 s32 absYawDiff = ABS(yawDiff);
 
                 if ((getItemEntry.getItemId != GI_NONE) || (player->getItemDirection < absYawDiff)) {
+                    iceTrapScale = 0.0f;
                     player->getItemEntry = getItemEntry;
                     player->getItemId = getItemEntry.getItemId;
                     player->interactRangeActor = actor;
@@ -2506,7 +2523,7 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
         refActor = &GET_PLAYER(play)->actor;
         KREG(0) = 0;
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, refActor->world.pos.x,
-                    refActor->world.pos.y + 100.0f, refActor->world.pos.z, 0, 0, 0, 1);
+                    refActor->world.pos.y + 100.0f, refActor->world.pos.z, 0, 0, 0, 1, true);
     }
 
     sp80 = &D_80116068[0];
@@ -3141,7 +3158,16 @@ void Actor_FreeOverlay(ActorOverlay* actorOverlay) {
 int gMapLoading = 0;
 
 Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ,
-                   s16 rotX, s16 rotY, s16 rotZ, s16 params) {
+                   s16 rotX, s16 rotY, s16 rotZ, s16 params, s16 canRandomize) {
+
+    uint8_t tryRandomizeEnemy = CVar_GetS32("gRandomizedEnemies", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2 && canRandomize;
+
+    if (tryRandomizeEnemy) {
+        if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
+            return NULL;
+        }
+    }
+
     s32 pad;
     Actor* actor;
     ActorInit* actorInit;
@@ -3226,8 +3252,9 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
 
     objBankIndex = Object_GetIndex(&play->objectCtx, actorInit->objectId);
 
-    if (objBankIndex < 0 && !gMapLoading)
+    if (objBankIndex < 0 && (!gMapLoading || CVar_GetS32("gRandomizedEnemies", 0))) {
         objBankIndex = 0;
+    }
 
     if ((objBankIndex < 0) ||
         ((actorInit->category == ACTORCAT_ENEMY) && Flags_GetClear(play, play->roomCtx.curRoom.num))) {
@@ -3293,10 +3320,19 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
 
 Actor* Actor_SpawnAsChild(ActorContext* actorCtx, Actor* parent, PlayState* play, s16 actorId, f32 posX,
                           f32 posY, f32 posZ, s16 rotX, s16 rotY, s16 rotZ, s16 params) {
-    Actor* spawnedActor = Actor_Spawn(actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
+    Actor* spawnedActor = Actor_Spawn(actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params, true);
 
     if (spawnedActor == NULL) {
         return NULL;
+    }
+
+    // The following enemies break when the parent actor isn't the same as what would happen in authentic gameplay.
+    // As such, don't assign a parent to them at all when spawned with Enemy Randomizer.
+    // Gohma (z_boss_goma.c), the Stalchildren spawner (z_en_encount1.c) and the falling platform spawning Stalfos in
+    // Forest Temple (z_bg_mori_bigst.c) that normally rely on this behaviour are changed when
+    // Enemy Rando is on so they still work properly even without assigning a parent.
+    if (CVar_GetS32("gRandomizedEnemies", 0) && (spawnedActor->id == ACTOR_EN_FLOORMAS || spawnedActor->id == ACTOR_EN_PEEHAT)) {
+        return spawnedActor;
     }
 
     parent->child = spawnedActor;
@@ -3327,7 +3363,7 @@ void Actor_SpawnTransitionActors(PlayState* play, ActorContext* actorCtx) {
                   (transitionActor->sides[1].room == play->roomCtx.prevRoom.num)))) {
                 Actor_Spawn(actorCtx, play, (s16)(transitionActor->id & 0x1FFF), transitionActor->pos.x,
                             transitionActor->pos.y, transitionActor->pos.z, 0, transitionActor->rotY, 0,
-                            (i << 0xA) + transitionActor->params);
+                            (i << 0xA) + transitionActor->params, true);
 
                 transitionActor->id = -transitionActor->id;
                 numActors = play->transiActorCtx.numActors;
@@ -3340,7 +3376,7 @@ void Actor_SpawnTransitionActors(PlayState* play, ActorContext* actorCtx) {
 Actor* Actor_SpawnEntry(ActorContext* actorCtx, ActorEntry* actorEntry, PlayState* play) {
     gMapLoading = 1;
     Actor* ret = Actor_Spawn(actorCtx, play, actorEntry->id, actorEntry->pos.x, actorEntry->pos.y, actorEntry->pos.z,
-                       actorEntry->rot.x, actorEntry->rot.y, actorEntry->rot.z, actorEntry->params);
+                       actorEntry->rot.x, actorEntry->rot.y, actorEntry->rot.z, actorEntry->params, true);
     gMapLoading = 0;
 
     return ret;

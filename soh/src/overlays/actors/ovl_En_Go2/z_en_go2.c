@@ -658,6 +658,7 @@ s16 EnGo2_GetStateGoronDmtBiggoron(PlayState* play, EnGo2* this) {
                             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_BROKEN_SWORD, GI_PRESCRIPTION);
                             Randomizer_ConsumeAdultTradeItem(play, ITEM_SWORD_BROKEN);
                             EnGo2_GetItemEntry(this, play, getItemEntry);
+                            Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD);
                         } else {
                             u32 getItemId = GI_PRESCRIPTION;
                             EnGo2_GetItem(this, play, getItemId);
@@ -1416,7 +1417,7 @@ void EnGo2_StopRolling(EnGo2* this, PlayState* play) {
     if (((this->actor.params & 0x1F) != GORON_CITY_ROLLING_BIG) && ((this->actor.params & 0x1F) != GORON_CITY_LINK)) {
         if ((this->actor.params & 0x1F) == GORON_DMT_ROLLING_SMALL) {
             bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
+                                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
             if (bomb != NULL) {
                 bomb->timer = 0;
             }
@@ -1929,6 +1930,7 @@ void EnGo2_BiggoronEyedrops(EnGo2* this, PlayState* play) {
                     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DMT_TRADE_EYEDROPS, GI_CLAIM_CHECK);
                     Randomizer_ConsumeAdultTradeItem(play, ITEM_EYEDROPS);
                     EnGo2_GetItemEntry(this, play, getItemEntry);
+                    Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS);
                 } else {
                     u32 getItemId = GI_CLAIM_CHECK;
                     EnGo2_GetItem(this, play, getItemId);
@@ -2099,13 +2101,13 @@ s32 EnGo2_OverrideLimbDraw(PlayState* play, s32 limb, Gfx** dList, Vec3f* pos, V
     f32 float1;
 
     if (limb == 17) {
-        Matrix_Translate(2800.0f, 0.0f, 0.0f, MTXMODE_APPLY);
+        Matrix_Translate(2800.0f + CVar_GetFloat("gCosmetics.Goron_NeckLength", 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
         vec1 = this->unk_194.unk_08;
         float1 = (vec1.y / (f32)0x8000) * M_PI;
         Matrix_RotateX(float1, MTXMODE_APPLY);
         float1 = (vec1.x / (f32)0x8000) * M_PI;
         Matrix_RotateZ(float1, MTXMODE_APPLY);
-        Matrix_Translate(-2800.0f, 0.0f, 0.0f, MTXMODE_APPLY);
+        Matrix_Translate(-2800.0f + CVar_GetFloat("gCosmetics.Goron_NeckLength", 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
     }
     if (limb == 10) {
         vec1 = this->unk_194.unk_0E;

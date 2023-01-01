@@ -1082,7 +1082,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
 
                 if (!(gSaveContext.eventChkInf[7] & 0x100)) {
                     TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
-                                           SEGMENTED_TO_VIRTUAL(gGanondorfTitleCardTex), 160, 180, 128, 40, false);
+                                           SEGMENTED_TO_VIRTUAL(gGanondorfTitleCardTex), 160, 180, 128, 40, true);
                 }
 
                 gSaveContext.eventChkInf[7] |= 0x100;
@@ -1197,8 +1197,10 @@ void BossGanon_SetupTowerCutscene(BossGanon* this, PlayState* play) {
 
 void BossGanon_ShatterWindows(u8 windowShatterState) {
     s16 i;
-    u8* tex1 = ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_006C18));
-    u8* tex2 = ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_007418));
+    // Temporary solution: using LoadTexOrDList to ensure we actually have the texture available
+    // based on mq/nonmq. This will be handled properly with LUS 1.0
+    u8* tex1 = ResourceMgr_LoadTexOrDListByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_006C18));
+    u8* tex2 = ResourceMgr_LoadTexOrDListByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_007418));
     u8* templateTex = ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGanondorfWindowShatterTemplateTex));
 
     for (i = 0; i < 2048; i++) {

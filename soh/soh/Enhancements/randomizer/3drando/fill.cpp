@@ -296,7 +296,7 @@ std::vector<uint32_t> GetAccessibleLocations(const std::vector<uint32_t>& allowe
           entranceSphere.push_back(&exit);
           exit.AddToPool();
           // Don't list a coupled entrance from both directions
-          if (exit.GetReplacement()->GetReverse() != nullptr /*&& !DecoupleEntrances*/) {
+          if (exit.GetReplacement()->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
             exit.GetReplacement()->GetReverse()->AddToPool();
           }
         }
@@ -909,6 +909,9 @@ void VanillaFill() {
   CreateItemOverrides();
   CreateEntranceOverrides();
   CreateAlwaysIncludedMessages();
+  if (ShuffleWarpSongs) {
+    CreateWarpSongTexts();
+  }
 }
 
 void ClearProgress() {
@@ -1070,6 +1073,9 @@ int Fill() {
       }
       if (ShuffleMerchants.Is(SHUFFLEMERCHANTS_HINTS)) {
         CreateMerchantsHints();
+      }
+      if (ShuffleWarpSongs) {
+        CreateWarpSongTexts();
       }
       return 1;
     }

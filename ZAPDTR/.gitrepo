@@ -6,7 +6,7 @@
 [subrepo]
 	remote = https://github.com/HarbourMasters/ZAPDTR.git
 	branch = master
-	commit = a53a53ea4216b926253dde2c942ae0ca6e2f2ccd
-	parent = f52a2a6406eb1bbd2b631c65923d879a83983ccb
+	commit = e23b125d89bd973998d2eb00896bcbaf1b53a329
+	parent = 17b1a8e7fd5517f9232e531da0fed6ef80a87f04
 	method = rebase
-	cmdver = 0.4.1
+	cmdver = 0.4.3

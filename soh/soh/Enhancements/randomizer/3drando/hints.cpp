@@ -116,6 +116,12 @@ Text childAltarText;
 Text adultAltarText;
 Text ganonText;
 Text ganonHintText;
+Text warpMinuetText;
+Text warpBoleroText;
+Text warpSerenadeText;
+Text warpRequiemText;
+Text warpNocturneText;
+Text warpPreludeText;
 
 Text& GetChildAltarText() {
   return childAltarText;
@@ -131,6 +137,30 @@ Text& GetGanonText() {
 
 Text& GetGanonHintText() {
   return ganonHintText;
+}
+
+Text& GetWarpMinuetText() {
+  return warpMinuetText;
+}
+
+Text& GetWarpBoleroText() {
+  return warpBoleroText;
+}
+
+Text& GetWarpSerenadeText() {
+  return warpSerenadeText;
+}
+
+Text& GetWarpRequiemText() {
+  return warpRequiemText;
+}
+
+Text& GetWarpNocturneText() {
+  return warpNocturneText;
+}
+
+Text& GetWarpPreludeText() {
+  return warpPreludeText;
 }
 
 static Area* GetHintRegion(const uint32_t area) {
@@ -705,6 +735,44 @@ void CreateMerchantsHints() {
   CreateMessageFromTextObject(0x9120, 0, 2, 3, AddColorsAndFormat(medigoronText, {QM_RED, QM_GREEN}));
   CreateMessageFromTextObject(0x6077, 0, 2, 3, AddColorsAndFormat(carpetSalesmanTextOne, {QM_RED, QM_GREEN}));
   CreateMessageFromTextObject(0x6078, 0, 2, 3, AddColorsAndFormat(carpetSalesmanTextTwo, {QM_RED, QM_YELLOW, QM_RED}));
+}
+
+void CreateWarpSongTexts() {
+  auto warpSongEntrances = GetShuffleableEntrances(EntranceType::WarpSong, false);
+
+  for (auto entrance : warpSongEntrances) {
+    Text resolvedHint;
+    // Start with entrance location text
+    auto region = entrance->GetConnectedRegion()->regionName;
+    resolvedHint = Text{"","",""} + region;
+
+    auto destination = entrance->GetConnectedRegion()->GetHint().GetText();
+    // Prefer hint location when available
+    if (destination.GetEnglish() != "No Hint") {
+      resolvedHint = destination;
+    }
+
+    switch (entrance->GetIndex()) {
+      case 0x0600: // minuet
+        warpMinuetText = resolvedHint;
+        break;
+      case 0x04F6: // bolero
+        warpBoleroText = resolvedHint;
+        break;
+      case 0x0604: // serenade
+        warpSerenadeText = resolvedHint;
+        break;
+      case 0x01F1: // requiem
+        warpRequiemText = resolvedHint;
+        break;
+      case 0x0568: // nocturne
+        warpNocturneText = resolvedHint;
+        break;
+      case 0x05F4: // prelude
+        warpPreludeText = resolvedHint;
+        break;
+    }
+  }
 }
 
 void CreateAllHints() {

@@ -1001,7 +1001,7 @@ void DrawFlagsTab() {
 
         // If playing a Randomizer Save with Shuffle Skull Tokens on anything other than "Off" we don't want to keep
         // GS Token Count updated, since Gold Skulltulas killed will not correlate to GS Tokens Collected.
-        if (!(gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS))) {
+        if (!(gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
             static bool keepGsCountUpdated = true;
             ImGui::Checkbox("Keep GS Count Updated", &keepGsCountUpdated);
             UIWidgets::InsertHelpHoverText("Automatically adjust the number of gold skulltula tokens acquired based on set flags.");
@@ -1211,7 +1211,7 @@ void DrawEquipmentTab() {
         "Giant (500)",
     };
     // only display Tycoon wallet if you're in a save file that would allow it.
-    if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > 1) {
+    if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS) {
         const std::string walletName = "Tycoon (999)";
         walletNamesImpl.push_back(walletName);
     }

@@ -1710,7 +1710,7 @@ s32 func_808332E4(Player* this) {
 
 void func_808332F4(Player* this, PlayState* play) {
     GetItemEntry giEntry;
-    if (this->getItemEntry.objectId == OBJECT_INVALID) {
+    if (this->getItemEntry.objectId == OBJECT_INVALID || (this->getItemId != this->getItemEntry.getItemId)) {
         giEntry = ItemTable_Retrieve(this->getItemId);
     } else {
         giEntry = this->getItemEntry;
@@ -2776,7 +2776,7 @@ s32 func_808359FC(Player* this, PlayState* play) {
         s32 yaw = (this->unk_664 != NULL) ? this->actor.shape.rot.y + 14000 : this->actor.shape.rot.y;
         EnBoom* boomerang =
             (EnBoom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOOM, posX, this->actor.world.pos.y + 30.0f,
-                                 posZ, this->actor.focus.rot.x, yaw, 0, 0);
+                                 posZ, this->actor.focus.rot.x, yaw, 0, 0, true);
 
         this->boomerangActor = &boomerang->actor;
         if (boomerang != NULL) {
@@ -3464,7 +3464,7 @@ void func_80837530(PlayState* play, Player* this, s32 arg2) {
     if (this->actor.category == ACTORCAT_PLAYER) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_M_THUNDER, this->bodyPartsPos[PLAYER_BODYPART_WAIST].x,
                     this->bodyPartsPos[PLAYER_BODYPART_WAIST].y, this->bodyPartsPos[PLAYER_BODYPART_WAIST].z, 0, 0, 0,
-                    Player_GetSwordHeld(this) | arg2);
+                    Player_GetSwordHeld(this) | arg2, true);
     }
 }
 
@@ -3844,7 +3844,7 @@ s32 func_8083816C(s32 arg0) {
 void func_8083819C(Player* this, PlayState* play) {
     if (this->currentShield == PLAYER_SHIELD_DEKU && (CVar_GetS32("gFireproofDekuShield", 0) == 0)) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_SHIELD, this->actor.world.pos.x,
-                    this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 1);
+                    this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 1, true);
         Inventory_DeleteEquipment(play, EQUIP_SHIELD);
         Message_StartTextbox(play, 0x305F, NULL);
     }
@@ -4363,7 +4363,7 @@ Actor* Player_SpawnFairy(PlayState* play, Player* this, Vec3f* arg2, Vec3f* arg3
 
     func_808395DC(this, arg2, arg3, &pos);
 
-    return Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, pos.x, pos.y, pos.z, 0, 0, 0, type);
+    return Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, pos.x, pos.y, pos.z, 0, 0, 0, type, true);
 }
 
 f32 func_808396F4(PlayState* play, Player* this, Vec3f* arg2, Vec3f* arg3, CollisionPoly** arg4, s32* arg5) {
@@ -5350,6 +5350,13 @@ s32 func_8083BDBC(Player* this, PlayState* play) {
             }
         } else {
             func_8083BCD0(this, play, sp2C);
+            if (sp2C == 1 || sp2C == 3) {
+                gSaveContext.sohStats.count[COUNT_SIDEHOPS]++;
+            }
+            if (sp2C == 2) {
+                gSaveContext.sohStats.count[COUNT_BACKFLIPS]++;
+            }
+            
             return 1;
         }
     }
@@ -9526,7 +9533,7 @@ static s16 D_80854700[] = { ACTOR_MAGIC_WIND, ACTOR_MAGIC_DARK, ACTOR_MAGIC_FIRE
 
 Actor* func_80846A00(PlayState* play, Player* this, s32 arg2) {
     return Actor_Spawn(&play->actorCtx, play, D_80854700[arg2], this->actor.world.pos.x,
-                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
+                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
 }
 
 void func_80846A68(PlayState* play, Player* this) {
@@ -9590,6 +9597,11 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     s32 initMode;
     s32 sp50;
     s32 sp4C;
+
+    // In ER, once Link has spawned we know the scene has loaded, so we can sanitize the last known entrance type
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+        Grotto_SanitizeEntranceType();
+    }
 
     play->shootingGalleryStatus = play->bombchuBowlingStatus = 0;
 
@@ -10266,7 +10278,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
             seqMode = SEQ_MODE_STILL;
         }
 
-        if (play->actorCtx.targetCtx.bgmEnemy != NULL) {
+        if (play->actorCtx.targetCtx.bgmEnemy != NULL && !CVar_GetS32("gEnemyBGMDisable", 0)) {
             seqMode = SEQ_MODE_ENEMY;
             Audio_SetBgmEnemyVolume(sqrtf(play->actorCtx.targetCtx.bgmEnemy->xyzDistToPlayerSq));
         }
@@ -10413,7 +10425,10 @@ void func_80848EF8(Player* this, PlayState* play) {
 
         /*Prevent it on horse, while jumping and on title screen.
         If you fly around no stone of agony for you! */
-        Color_RGB8 StoneOfAgony_ori = { 255, 255, 255 };
+        Color_RGB8 stoneOfAgonyColor = { 255, 255, 255 };
+        if (CVar_GetS32("gCosmetics.Hud_StoneOfAgony.Changed", 0)) {
+            stoneOfAgonyColor = CVar_GetRGB("gCosmetics.Hud_StoneOfAgony.Value", stoneOfAgonyColor);
+        }
         if (CVar_GetS32("gVisualAgony", 0) != 0 && !this->stateFlags1) {
             s16 Top_Margins = (CVar_GetS32("gHUDMargin_T", 0) * -1);
             s16 Left_Margins = CVar_GetS32("gHUDMargin_L", 0);
@@ -10464,48 +10479,20 @@ void func_80848EF8(Player* this, PlayState* play) {
             OPEN_DISPS(play->state.gfxCtx);
             gDPPipeSync(OVERLAY_DISP++);
 
-            if (CVar_GetS32("gHudColors", 1) == 2) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).r,
-                                CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).g,
-                                CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).b, DefaultIconA);
-            } else {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, StoneOfAgony_ori.r, StoneOfAgony_ori.g, StoneOfAgony_ori.b,
-                                DefaultIconA);
-            }
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, stoneOfAgonyColor.r, stoneOfAgonyColor.g, stoneOfAgonyColor.b, DefaultIconA);
 
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
             if (this->unk_6A0 > 4000000.0f) {
-                if (CVar_GetS32("gHudColors", 1) == 2) {
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).r,
-                                    CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).g,
-                                    CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).b, 255);
-                } else {
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, StoneOfAgony_ori.r, StoneOfAgony_ori.g, StoneOfAgony_ori.b,
-                                    255);
-                }
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, stoneOfAgonyColor.r, stoneOfAgonyColor.g, stoneOfAgonyColor.b, 255);
             } else {
-                if (CVar_GetS32("gHudColors", 1) == 2) {
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).r,
-                                    CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).g,
-                                    CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).b, DefaultIconA);
-                } else {
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, StoneOfAgony_ori.r, StoneOfAgony_ori.g, StoneOfAgony_ori.b,
-                                    DefaultIconA);
-                }
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, stoneOfAgonyColor.r, stoneOfAgonyColor.g, stoneOfAgonyColor.b, DefaultIconA);
             }
             if (temp == 0 || temp <= 0.1f) {
                 /*Fail check, it is used to draw off the icon when
                 link is standing out range but do not refresh unk_6A0.
                 Also used to make a default value in my case.*/
-                if (CVar_GetS32("gHudColors", 1) == 2) {
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).r,
-                                    CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).g,
-                                    CVar_GetRGB("gCCVSOAPrim", StoneOfAgony_ori).b, DefaultIconA);
-                } else {
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, StoneOfAgony_ori.r, StoneOfAgony_ori.g, StoneOfAgony_ori.b,
-                                    DefaultIconA);
-                }
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, stoneOfAgonyColor.r, stoneOfAgonyColor.g, stoneOfAgonyColor.b, DefaultIconA);
             }
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
             gDPSetOtherMode(OVERLAY_DISP++,
@@ -10963,7 +10950,7 @@ void Player_Update(Actor* thisx, PlayState* play) {
                 dogParams = gSaveContext.dogParams;
 
                 dog = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_DOG, sDogSpawnPos.x, sDogSpawnPos.y,
-                                  sDogSpawnPos.z, 0, this->actor.shape.rot.y, 0, dogParams | 0x8000);
+                                  sDogSpawnPos.z, 0, this->actor.shape.rot.y, 0, dogParams | 0x8000, true);
                 if (dog != NULL) {
                     dog->room = 0;
                 }
@@ -11076,13 +11063,13 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
             sp68.x = D_80858AC8.unk_02 + 0x3E2;
             sp68.y = D_80858AC8.unk_04 + 0xDBE;
             sp68.z = D_80858AC8.unk_00 - 0x348A;
-            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f, -240.0f, &sp68);
+            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVar_GetFloat("gCosmetics.BunnyHood_EarLength", 0.0f), -240.0f - CVar_GetFloat("gCosmetics.BunnyHood_EarSpread", 0.0f), &sp68);
             MATRIX_TOMTX(sp70++);
 
             sp68.x = D_80858AC8.unk_02 - 0x3E2;
             sp68.y = -0xDBE - D_80858AC8.unk_04;
             sp68.z = D_80858AC8.unk_00 - 0x348A;
-            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f, 240.0f, &sp68);
+            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVar_GetFloat("gCosmetics.BunnyHood_EarLength", 0.0f), 240.0f + CVar_GetFloat("gCosmetics.BunnyHood_EarSpread", 0.0f), &sp68);
             MATRIX_TOMTX(sp70);
         }
 
@@ -11111,6 +11098,7 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
                 D_8085486C = D_8085486C * (sp5C * (1.0f / 9.0f));
             }
 
+            FrameInterpolation_RecordActorPosRotMatrix();
             Matrix_SetTranslateRotateYXZ(this->actor.world.pos.x, this->actor.world.pos.y + 2.0f,
                                          this->actor.world.pos.z, &D_80854864);
             Matrix_Scale(4.0f, 4.0f, 4.0f, MTXMODE_APPLY);
@@ -11269,60 +11257,24 @@ void Player_Destroy(Actor* thisx, PlayState* play) {
     gSaveContext.linkAge = play->linkAgeOnLoad;
 }
 
+//first person manipulate player actor
 s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
     s32 temp1;
     s16 temp2;
     s16 temp3;
 
-    if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) {
-        if (!CVar_GetS32("gDisableAutoCenterView", 0)) {
-            temp2 = sControlInput->rel.stick_y * 240.0f * (CVar_GetS32("gInvertYAxis", 1) ? 1 : -1); // Sensitivity not applied here because higher than default sensitivies will allow the camera to escape the autocentering, and glitch out massively
-            Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
+    if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0) && !CVar_GetS32("gDisableAutoCenterViewFirstPerson", 0)) {
+        temp2 = sControlInput->rel.stick_y * 240.0f * (CVar_GetS32("gInvertAimingYAxis", 1) ? 1 : -1); // Sensitivity not applied here because higher than default sensitivies will allow the camera to escape the autocentering, and glitch out massively
+        Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
 
-            temp2 = sControlInput->rel.stick_x * -16.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
-            temp2 = CLAMP(temp2, -3000, 3000);
-            this->actor.focus.rot.y += temp2;
-        } else {
-            temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
-            temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
-                    (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f *
-                          (CVar_GetS32("gInvertYAxis", 1) ? 1 : -1)) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
-            this->actor.focus.rot.x += temp3;
-
-            if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
-                this->actor.focus.rot.x -= (sControlInput->cur.gyro_x) * 750.0f;
-            }
-
-            if (fabsf(sControlInput->cur.right_stick_y) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
-                this->actor.focus.rot.x -=
-                    (sControlInput->cur.right_stick_y) * 10.0f * (CVar_GetS32("gInvertYAxis", 1) ? -1 : 1) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
-            }
-
-            this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
-
-            temp1 = 19114;
-            temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
-            temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
-                    (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f *
-                          (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1)) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
-            temp2 += temp3;
-
-            this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
-
-            if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
-                this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
-            }
-
-            if (fabsf(sControlInput->cur.right_stick_x) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
-                this->actor.focus.rot.y +=
-                    (sControlInput->cur.right_stick_x) * 10.0f * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
-            }
-        }
+        temp2 = sControlInput->rel.stick_x * -16.0f * (CVar_GetS32("gInvertAimingXAxis", 0) ? -1 : 1) * (CVar_GetFloat("gFirstPersonCameraSensitivity", 1.0f));
+        temp2 = CLAMP(temp2, -3000, 3000);
+        this->actor.focus.rot.y += temp2;
     } else {
         temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
-        temp3 =
-            ((sControlInput->rel.stick_y >= 0) ? 1 : -1) * (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) *
-                                                                 1500.0f * (CVar_GetS32("gInvertYAxis", 1) ? 1 : -1)) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
+        temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
+                (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f *
+                        (CVar_GetS32("gInvertAimingYAxis", 1) ? 1 : -1)) * (CVar_GetFloat("gFirstPersonCameraSensitivity", 1.0f));
         this->actor.focus.rot.x += temp3;
 
         if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
@@ -11331,16 +11283,16 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
 
         if (fabsf(sControlInput->cur.right_stick_y) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
             this->actor.focus.rot.x -=
-                (sControlInput->cur.right_stick_y) * 10.0f * (CVar_GetS32("gInvertYAxis", 1) ? -1 : 1) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
+                (sControlInput->cur.right_stick_y) * 10.0f * (CVar_GetS32("gInvertAimingYAxis", 1) ? -1 : 1) * (CVar_GetFloat("gFirstPersonCameraSensitivity", 1.0f));
         }
 
         this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
 
         temp1 = 19114;
         temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
-        temp3 =
-            ((sControlInput->rel.stick_x >= 0) ? 1 : -1) * (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) *
-                                                                 -1500.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1)) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
+        temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
+                (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f *
+                        (CVar_GetS32("gInvertAimingXAxis", 0) ? -1 : 1)) * (CVar_GetFloat("gFirstPersonCameraSensitivity", 1.0f));
         temp2 += temp3;
 
         this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
@@ -11351,7 +11303,7 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
 
         if (fabsf(sControlInput->cur.right_stick_x) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
             this->actor.focus.rot.y +=
-                (sControlInput->cur.right_stick_x) * 10.0f * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
+                (sControlInput->cur.right_stick_x) * 10.0f * (CVar_GetS32("gInvertAimingXAxis", 0) ? 1 : -1) * (CVar_GetFloat("gFirstPersonCameraSensitivity", 1.0f));
         }
     }
 
@@ -12624,7 +12576,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
     }
 
     if (this->unk_84F == 0) {
-        if (this->getItemEntry.objectId == OBJECT_INVALID) {
+        if (this->getItemEntry.objectId == OBJECT_INVALID || (this->getItemId != this->getItemEntry.getItemId)) {
             giEntry = ItemTable_Retrieve(this->getItemId);
         } else {
             giEntry = this->getItemEntry;
@@ -12830,7 +12782,7 @@ void func_8084E3C4(Player* this, PlayState* play) {
         this->stateFlags1 |= PLAYER_STATE1_28 | PLAYER_STATE1_29;
         this->stateFlags2 |= PLAYER_STATE2_27;
 
-        if (Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, 0.0f, 0.0f, 0.0f, 0, 0, 0, 0xF) == NULL) {
+        if (Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, 0.0f, 0.0f, 0.0f, 0, 0, 0, 0xF, true) == NULL) {
             Environment_WarpSongLeave(play);
         }
 
@@ -12846,7 +12798,7 @@ void func_8084E604(Player* this, PlayState* play) {
         Inventory_ChangeAmmo(ITEM_NUT, -1);
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, this->bodyPartsPos[PLAYER_BODYPART_R_HAND].x,
                     this->bodyPartsPos[PLAYER_BODYPART_R_HAND].y, this->bodyPartsPos[PLAYER_BODYPART_R_HAND].z, 4000,
-                    this->actor.shape.rot.y, 0, ARROW_NUT);
+                    this->actor.shape.rot.y, 0, ARROW_NUT, true);
         func_80832698(this, NA_SE_VO_LI_SWORD_N);
     }
 
@@ -12896,7 +12848,7 @@ void func_8084E6D4(Player* this, PlayState* play) {
                 if ((this->getItemId != GI_ICE_TRAP && !gSaveContext.n64ddFlag) ||
                     (gSaveContext.n64ddFlag && (this->getItemId != RG_ICE_TRAP || this->getItemEntry.getItemId != RG_ICE_TRAP))) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, this->actor.world.pos.x,
-                                this->actor.world.pos.y + 100.0f, this->actor.world.pos.z, 0, 0, 0, 0);
+                                this->actor.world.pos.y + 100.0f, this->actor.world.pos.z, 0, 0, 0, 0, true);
                     func_8083C0E8(this, play);
                 } else {
                     this->actor.colChkInfo.damage = 0;
@@ -13232,7 +13184,7 @@ void func_8084EFC0(Player* this, PlayState* play) {
         Actor_Spawn(&play->actorCtx, play, dropInfo->actorId,
                     (Math_SinS(this->actor.shape.rot.y) * 5.0f) + this->leftHandPos.x, this->leftHandPos.y,
                     (Math_CosS(this->actor.shape.rot.y) * 5.0f) + this->leftHandPos.z, 0x4000, this->actor.shape.rot.y,
-                    0, dropInfo->actorParams);
+                    0, dropInfo->actorParams, true);
 
         Player_UpdateBottleHeld(play, this, ITEM_BOTTLE, PLAYER_IA_BOTTLE);
         return;
@@ -13388,7 +13340,7 @@ void func_8084F608(Player* this, PlayState* play) {
 void func_8084F698(Player* this, PlayState* play) {
     func_80835C58(play, this, func_8084F608, 0);
     this->unk_850 = 40;
-    Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, 0.0f, 0.0f, 0.0f, 0, 0, 0, 0x10);
+    Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, 0.0f, 0.0f, 0.0f, 0, 0, 0, 0x10, true);
 }
 
 void func_8084F710(Player* this, PlayState* play) {

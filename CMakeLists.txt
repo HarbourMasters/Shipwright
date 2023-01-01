@@ -7,8 +7,8 @@ set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version" FORCE)
 
 project(Ship LANGUAGES C CXX
-	VERSION 5.0.1)
-set(PROJECT_BUILD_NAME "FLYNN BRAVO" CACHE STRING "")
+	VERSION 5.1.3)
+set(PROJECT_BUILD_NAME "BRADLEY DELTA" CACHE STRING "")
 set(PROJECT_TEAM "github.com/harbourmasters" CACHE STRING "")
 
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
@@ -49,8 +49,8 @@ endif()
 # Global configuration types
 ################################################################################
 if (CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
-set(CMAKE_C_FLAGS_DEBUG "-O3 -ffast-math")
-set(CMAKE_CXX_FLAGS_DEBUG "-O3 -ffast-math")
+set(CMAKE_C_FLAGS_DEBUG "-g -ffast-math -DDEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -ffast-math -DDEBUG")
 set(CMAKE_C_FLAGS_RELEASE "-O3 -ffast-math -DNDEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -ffast-math -DNDEBUG")
 else()
