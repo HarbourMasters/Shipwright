@@ -108,533 +108,533 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
 }
 
 static SceneSelectEntry sScenes[] = {
-    { " 1:Hyrule Field", Select_LoadGame, 0x00CD },
-    { " 2:Kakariko Village", Select_LoadGame, 0x00DB },
-    { " 3:Graveyard", Select_LoadGame, 0x00E4 },
-    { " 4:Zora's River", Select_LoadGame, 0x00EA },
-    { " 5:Kokiri Forest", Select_LoadGame, 0x00EE },
-    { " 6:Sacred Forest Meadow", Select_LoadGame, 0x00FC },
-    { " 7:Lake Hylia", Select_LoadGame, 0x0102 },
-    { " 8:Zora's Domain", Select_LoadGame, 0x0108 },
-    { " 9:Zora's Fountain", Select_LoadGame, 0x010E },
-    { "10:Gerudo Valley", Select_LoadGame, 0x0117 },
-    { "11:Lost Woods", Select_LoadGame, 0x011E },
-    { "12:Desert Colossus", Select_LoadGame, 0x0123 },
-    { "13:Gerudo's Fortress", Select_LoadGame, 0x0129 },
-    { "14:Haunted Wasteland", Select_LoadGame, 0x0130 },
-    { "15:Hyrule Castle", Select_LoadGame, 0x0138 },
-    { "16:Death Mountain Trail", Select_LoadGame, 0x013D },
-    { "17:Death Mountain Crater", Select_LoadGame, 0x0147 },
-    { "18:Goron City", Select_LoadGame, 0x014D },
-    { "19:Lon Lon Ranch", Select_LoadGame, 0x0157 },
-    { "20:Temple Of Time", Select_LoadGame, 0x0053 },
-    { "21:Chamber of Sages", Select_LoadGame, 0x006B },
-    { "22:Shooting Gallery", Select_LoadGame, 0x003B },
-    { "23:Castle Courtyard Game", Select_LoadGame, 0x007A },
-    { "24:Grave 1", Select_LoadGame, 0x031C },
-    { "25:Grave 2", Select_LoadGame, 0x004B },
-    { "26:Royal Family's Tomb", Select_LoadGame, 0x002D },
-    { "27:Great Fairy's Fountain (Upgrades)", Select_LoadGame, 0x0315 },
-    { "28:Fairy's Fountain (Grotto)", Select_LoadGame, 0x036D },
-    { "29:Great Fairy's Fountain (Magic)", Select_LoadGame, 0x0371 },
-    { "30:Ganon's Tower - Collapsing", Select_LoadGame, 0x043F },
-    { "31:Castle Courtyard", Select_LoadGame, 0x0400 },
-    { "32:Fishing Pond", Select_LoadGame, 0x045F },
-    { "33:Bombchu Bowling Alley", Select_LoadGame, 0x0507 },
-    { "34:Lon Lon Ranch House", Select_LoadGame, 0x004F },
-    { "35:Lon Lon Ranch Silo", Select_LoadGame, 0x05D0 },
-    { "36:Guard House", Select_LoadGame, 0x007E },
-    { "37:Potion Shop", Select_LoadGame, 0x0072 },
-    { "38:Treasure Chest Game", Select_LoadGame, 0x0063 },
-    { "39:House Of Skulltula", Select_LoadGame, 0x0550 },
-    { "40:Entrance to Market", Select_LoadGame, 0x0033 },
-    { "41:Market", Select_LoadGame, 0x00B1 },
-    { "42:Back Alley", Select_LoadGame, 0x00AD },
-    { "43:Temple of Time Exterior", Select_LoadGame, 0x0171 },
-    { "44:Link's House", Select_LoadGame, 0x00BB },
-    { "45:Kakariko House 1", Select_LoadGame, 0x02FD },
-    { "46:Back Alley House 1", Select_LoadGame, 0x043B },
-    { "47:House of the Know-it-All Brothers", Select_LoadGame, 0x00C9 },
-    { "48:House of Twins", Select_LoadGame, 0x009C },
-    { "49:Mido's House", Select_LoadGame, 0x0433 },
-    { "50:Saria's House", Select_LoadGame, 0x0437 },
-    { "51:Stable", Select_LoadGame, 0x02F9 },
-    { "52:Grave Keeper's Hut", Select_LoadGame, 0x030D },
-    { "53:Dog Lady's House", Select_LoadGame, 0x0398 },
-    { "54:Impa's House", Select_LoadGame, 0x039C },
-    { "55:Lakeside Laboratory", Select_LoadGame, 0x0043 },
-    { "56:Running Man's Tent", Select_LoadGame, 0x03A0 },
-    { "57:Bazaar", Select_LoadGame, 0x00B7 },
-    { "58:Kokiri Shop", Select_LoadGame, 0x00C1 },
-    { "59:Goron Shop", Select_LoadGame, 0x037C },
-    { "60:Zora Shop", Select_LoadGame, 0x0380 },
-    { "61:Closed Shop", Select_LoadGame, 0x0384 },
-    { "62:Potion Shop", Select_LoadGame, 0x0388 },
-    { "63:Bombchu Shop ", Select_LoadGame, 0x0390 },
-    { "64:Happy Mask Shop", Select_LoadGame, 0x0530 },
-    { "65:Gerudo Training Ground", Select_LoadGame, 0x0008 },
-    { "66:Inside the Deku Tree", Select_LoadGame, 0x0000 },
-    { "67:Gohma's Lair", Select_LoadGame, 0x040F },
-    { "68:Dodongo's Cavern", Select_LoadGame, 0x0004 },
-    { "69:King Dodongo's Lair", Select_LoadGame, 0x040B },
-    { "70:Inside Jabu-Jabu's Belly", Select_LoadGame, 0x0028 },
-    { "71:Barinade's Lair", Select_LoadGame, 0x0301 },
-    { "72:Forest Temple", Select_LoadGame, 0x0169 },
-    { "73:Phantom Ganon's Lair", Select_LoadGame, 0x000C },
-    { "74:Bottom of the Well", Select_LoadGame, 0x0098 },
-    { "75:Shadow Temple", Select_LoadGame, 0x0037 },
-    { "76:Bongo Bongo's Lair", Select_LoadGame, 0x0413 },
-    { "77:Fire Temple", Select_LoadGame, 0x0165 },
-    { "78:Volvagia's Lair", Select_LoadGame, 0x0305 },
-    { "79:Water Temple", Select_LoadGame, 0x0010 },
-    { "80:Morpha's Lair", Select_LoadGame, 0x0417 },
-    { "81:Spirit Temple", Select_LoadGame, 0x0082 },
-    { "82:Iron Knuckle's Lair", Select_LoadGame, 0x008D },
-    { "83:Twinrova's Lair", Select_LoadGame, 0x05EC },
-    { "84:Stairs to Ganondorf's Lair", Select_LoadGame, 0x041B },
-    { "85:Ganondorf's Lair", Select_LoadGame, 0x041F },
-    { "86:Ice Cavern", Select_LoadGame, 0x0088 },
-    { "87:Dampe Grave Relay Game", Select_LoadGame, 0x044F },
-    { "88:Inside Ganon's Castle", Select_LoadGame, 0x0467 },
-    { "89:Ganon's Lair", Select_LoadGame, 0x0517 },
-    { "90:Escaping Ganon's Castle 1", Select_LoadGame, 0x0179 },
-    { "91:Escaping Ganon's Castle 2", Select_LoadGame, 0x01B5 },
-    { "92:Escaping Ganon's Castle 3", Select_LoadGame, 0x03DC },
-    { "93:Escaping Ganon's Castle 4", Select_LoadGame, 0x03E4 },
-    { "94:Escaping Ganon's Castle 5", Select_LoadGame, 0x056C },
-    { "95:Thieves' Hideout 1-2", Select_LoadGame, 0x0486 },
-    { "96:Thieves' Hideout 3-4 9-10", Select_LoadGame, 0x048E },
-    { "97:Thieves' Hideout 5-6", Select_LoadGame, 0x0496 },
-    { "98:Thieves' Hideout 7-8", Select_LoadGame, 0x049E },
-    { "99:Thieves' Hideout 11-12", Select_LoadGame, 0x04AE },
-    { "100:Thieves' Hideout 13", Select_LoadGame, 0x0570 },
-    { "101:Grotto 0", Select_LoadGame, 0x003F },
-    { "102:Grotto 1", Select_LoadGame, 0x0598 },
-    { "103:Grotto 2", Select_LoadGame, 0x059C },
-    { "104:Grotto 3", Select_LoadGame, 0x05A0 },
-    { "105:Grotto 4", Select_LoadGame, 0x05A4 },
-    { "106:Grotto 5", Select_LoadGame, 0x05A8 },
-    { "107:Grotto 6", Select_LoadGame, 0x05AC },
-    { "108:Grotto 7", Select_LoadGame, 0x05B0 },
-    { "109:Grotto 8", Select_LoadGame, 0x05B4 },
-    { "110:Grotto 9", Select_LoadGame, 0x05B8 },
-    { "111:Grotto 10", Select_LoadGame, 0x05BC },
-    { "112:Grotto 11", Select_LoadGame, 0x05C0 },
-    { "113:Grotto 12", Select_LoadGame, 0x05C4 },
-    { "114:Grotto 13", Select_LoadGame, 0x05FC },
-    { "115:Goddess Cutscene Environment", Select_LoadGame, 0x00A0 },
-    { "116:Test Room", Select_LoadGame, 0x0520 },
-    { "117:SRD Map", Select_LoadGame, 0x0018 },
-    { "118:Test Map", Select_LoadGame, 0x0094 },
-    { "119:Treasure Chest Warp", Select_LoadGame, 0x0024 },
-    { "120:Stalfos Miniboss Room", Select_LoadGame, 0x001C },
-    { "121:Stalfos Boss Room", Select_LoadGame, 0x0020 },
-    { "122:Dark Link Room", Select_LoadGame, 0x0047 },
-    { "123:Shooting Gallery Duplicate", Select_LoadGame, 0x02EA },
-    { "124:depth test", Select_LoadGame, 0x00B6 },
-    { "125:Hyrule Garden Game (Broken)", Select_LoadGame, 0x0076 },
-    { "title", Select_LoadTitle, 0x0000 },
+    { " 1:Hyrule Field", " 1:Hylianische Steppe", " 1:Plaine d'Hyrule", Select_LoadGame, 0x00CD },
+    { " 2:Kakariko Village", " 2:Kakariko", " 2:Village Cocorico", Select_LoadGame, 0x00DB },
+    { " 3:Graveyard", " 3:Friedhof", " 3:Cimetiere", Select_LoadGame, 0x00E4 },
+    { " 4:Zora's River", " 4:Zora-Fluß", " 4:Riviere Zora", Select_LoadGame, 0x00EA },
+    { " 5:Kokiri Forest", " 5:Kokiri-Wald", " 5:Foret Kokiri", Select_LoadGame, 0x00EE },
+    { " 6:Sacred Forest Meadow", " 6:Heilige Lichtung", " 6:Bosquet Sacre", Select_LoadGame, 0x00FC },
+    { " 7:Lake Hylia", " 7:Hylia-See", " 7:Lac Hylia", Select_LoadGame, 0x0102 },
+    { " 8:Zora's Domain", " 8:Zoras Reich", " 8:Domaine Zora", Select_LoadGame, 0x0108 },
+    { " 9:Zora's Fountain", " 9:Zoras Quelle", " 9:Fontaine Zora", Select_LoadGame, 0x010E },
+    { "10:Gerudo Valley", "10:Gerudotal", "10:Vallee Gerudo", Select_LoadGame, 0x0117 },
+    { "11:Lost Woods", "11:Verlorene Walder", "11:Bois Perdus", Select_LoadGame, 0x011E },
+    { "12:Desert Colossus", "12:Wustenkoloss", "12:Colosse du Desert", Select_LoadGame, 0x0123 },
+    { "13:Gerudo's Fortress", "13:Gerudo-Festung", "13:Forteresse Gerudo", Select_LoadGame, 0x0129 },
+    { "14:Haunted Wasteland", "14:Gespensterwuste", "14:Desert Hante", Select_LoadGame, 0x0130 },
+    { "15:Hyrule Castle", "15:Schloß Hyrule", "15:Chateau d'Hyrule", Select_LoadGame, 0x0138 },
+    { "16:Death Mountain Trail", "16:Pfad zum Todesberg", "16:Chemin du Peril", Select_LoadGame, 0x013D },
+    { "17:Death Mountain Crater", "17:Todeskrater", "17:Cratere du Peril", Select_LoadGame, 0x0147 },
+    { "18:Goron City", "18:Goronia", "18:Village Goron", Select_LoadGame, 0x014D },
+    { "19:Lon Lon Ranch", "19:Lon Lon-Farm", "19:Ranch Lon Lon", Select_LoadGame, 0x0157 },
+    { "20:Temple Of Time", "20:Zitadelle der Zeit", "20:Temple du Temps", Select_LoadGame, 0x0053 },
+    { "21:Chamber of Sages", "21:Halle der Weisen", "21:Sanctuaire des Sages", Select_LoadGame, 0x006B },
+    { "22:Shooting Gallery", "22:Schießbude ", "22:Jeu d'adresse", Select_LoadGame, 0x003B },
+    { "23:Castle Courtyard Game", "23:Burghof", "23:Cour du Chateau (Infilration)", Select_LoadGame, 0x007A },
+    { "24:Grave 1", "24:Grave 1", "24:Tombe 1", Select_LoadGame, 0x031C },
+    { "25:Grave 2", "25:Grave 2", "25:Tombe 2", Select_LoadGame, 0x004B },
+    { "26:Royal Family's Tomb", "26:Royal Family's Tomb", "26:Tombe Royale", Select_LoadGame, 0x002D },
+    { "27:Great Fairy's Fountain (Upgrades)", "27:Great Fairy's Fountain (Upgrades)", "27:Fontaine Royale des Fees (Amelioration)", Select_LoadGame, 0x0315 },
+    { "28:Fairy's Fountain (Grotto)", "28:Fairy's Fountain (Grotto)", "28:Fontaines des Fees (Grotte)", Select_LoadGame, 0x036D },
+    { "29:Great Fairy's Fountain (Magic)", "29:Great Fairy's Fountain (Magic)", "29:Fontaine Royale des Fees (Magie)", Select_LoadGame, 0x0371 },
+    { "30:Ganon's Tower - Collapsing", "30:Ganon's Tower - Collapsing", "30:Tour de Ganon - Effondrement", Select_LoadGame, 0x043F },
+    { "31:Castle Courtyard", "31:Castle Courtyard", "31:Cour du Chateau", Select_LoadGame, 0x0400 },
+    { "32:Fishing Pond", "32:Fishing Pond", "32:Etang", Select_LoadGame, 0x045F },
+    { "33:Bombchu Bowling Alley", "33:Bombchu Bowling Alley", "33:Bowling Teigneux", Select_LoadGame, 0x0507 },
+    { "34:Lon Lon Ranch House", "34:Lon Lon Ranch House", "34:Maison du Ranch Lon Lon", Select_LoadGame, 0x004F },
+    { "35:Lon Lon Ranch Silo", "35:Lon Lon Ranch Silo", "35:Silo du Ranch Lon Lon", Select_LoadGame, 0x05D0 },
+    { "36:Guard House", "36:Guard House", "36:Maison de Garde", Select_LoadGame, 0x007E },
+    { "37:Potion Shop", "37:Potion Shop", "37:Apothicaire", Select_LoadGame, 0x0072 },
+    { "38:Treasure Chest Game", "38:Treasure Chest Game", "38:Chasse aux Tresors", Select_LoadGame, 0x0063 },
+    { "39:House Of Skulltula", "39:House Of Skulltula", "39:Maison des Skulltulas", Select_LoadGame, 0x0550 },
+    { "40:Entrance to Market", "40:Entrance to Market", "40:Entree de la Place du Marche", Select_LoadGame, 0x0033 },
+    { "41:Market", "41:Market", "41:Place du Marche", Select_LoadGame, 0x00B1 },
+    { "42:Back Alley", "42:Back Alley", "42:Ruelle", Select_LoadGame, 0x00AD },
+    { "43:Temple of Time Exterior", "43:Temple of Time Exterior", "43:Exterieur du Temple du Temps", Select_LoadGame, 0x0171 },
+    { "44:Link's House", "44:Link's House", "44:Cabane de Link", Select_LoadGame, 0x00BB },
+    { "45:Kakariko House 1", "45:Kakariko House 1", "45:Maison du Village Cocorico 1", Select_LoadGame, 0x02FD },
+    { "46:Back Alley House 1", "46:Back Alley House 1", "46:Maison de la Ruelle 1", Select_LoadGame, 0x043B },
+    { "47:House of the Know-it-All Brothers", "47:House of the Know-it-All Brothers", "47:Cabane des Freres Je-Sais-Tout", Select_LoadGame, 0x00C9 },
+    { "48:House of Twins", "48:House of Twins", "48:Cabane des Jumeaux", Select_LoadGame, 0x009C },
+    { "49:Mido's House", "49:Mido's House", "49:Cabane du Grand Mido", Select_LoadGame, 0x0433 },
+    { "50:Saria's House", "50:Saria's House", "50:Cabane de Saria", Select_LoadGame, 0x0437 },
+    { "51:Stable", "51:Stable", "51:Etable", Select_LoadGame, 0x02F9 },
+    { "52:Grave Keeper's Hut", "52:Grave Keeper's Hut", "52:Cabane du Fossoyeur", Select_LoadGame, 0x030D },
+    { "53:Dog Lady's House", "53:Dog Lady's House", "53:Maison de la Dame du Chien", Select_LoadGame, 0x0398 },
+    { "54:Impa's House", "54:Impa's House", "54:Maison d'Impa", Select_LoadGame, 0x039C },
+    { "55:Lakeside Laboratory", "55:Lakeside Laboratory", "55:Laboratoire du Lac", Select_LoadGame, 0x0043 },
+    { "56:Running Man's Tent", "56:Running Man's Tent", "56:Tente du Marathonien", Select_LoadGame, 0x03A0 },
+    { "57:Bazaar", "57:Bazaar", "57:Bazar", Select_LoadGame, 0x00B7 },
+    { "58:Kokiri Shop", "58:Kokiri Shop", "58:Boutique Kokiri", Select_LoadGame, 0x00C1 },
+    { "59:Goron Shop", "59:Goron Shop", "59:Boutique Goron", Select_LoadGame, 0x037C },
+    { "60:Zora Shop", "60:Zora Shop", "60:Boutique Zora", Select_LoadGame, 0x0380 },
+    { "61:Closed Shop", "61:Closed Shop", "61:Boutique Fermee", Select_LoadGame, 0x0384 },
+    { "62:Potion Shop", "62:Potion Shop", "62:Apothicaire (Boutique)", Select_LoadGame, 0x0388 },
+    { "63:Bombchu Shop", "63:Bombchu Shop", "63:Boutique de Missiles Teigneux", Select_LoadGame, 0x0390 },
+    { "64:Happy Mask Shop", "64:Happy Mask Shop", "64:Foire aux Masques", Select_LoadGame, 0x0530 },
+    { "65:Gerudo Training Ground", "65:Gerudo Training Ground", "65:Gymnase Gerudo", Select_LoadGame, 0x0008 },
+    { "66:Inside the Deku Tree", "66:Inside the Deku Tree", "66:Arbre Mojo", Select_LoadGame, 0x0000 },
+    { "67:Gohma's Lair", "67:Gohma's Lair", "67:Repaire de Gohma", Select_LoadGame, 0x040F },
+    { "68:Dodongo's Cavern", "68:Dodongo's Cavern", "68:Caverne Dodongo", Select_LoadGame, 0x0004 },
+    { "69:King Dodongo's Lair", "69:King Dodongo's Lair", "69:Repaire du Roi Dodongo", Select_LoadGame, 0x040B },
+    { "70:Inside Jabu-Jabu's Belly", "70:Inside Jabu-Jabu's Belly", "70:Ventre de Jabu-Jabu", Select_LoadGame, 0x0028 },
+    { "71:Barinade's Lair", "71:Barinade's Lair", "71:Repaire de Barinade", Select_LoadGame, 0x0301 },
+    { "72:Forest Temple", "72:Forest Temple", "72:Temple de la Foret", Select_LoadGame, 0x0169 },
+    { "73:Phantom Ganon's Lair", "73:Phantom Ganon's Lair", "73:Repaire de Ganon Spectral", Select_LoadGame, 0x000C },
+    { "74:Bottom of the Well", "74:Bottom of the Well", "74:Puits", Select_LoadGame, 0x0098 },
+    { "75:Shadow Temple", "75:Shadow Temple", "75:Temple de l'Ombre", Select_LoadGame, 0x0037 },
+    { "76:Bongo Bongo's Lair", "76:Bongo Bongo's Lair", "76:Repaire de Bongo Bongo", Select_LoadGame, 0x0413 },
+    { "77:Fire Temple", "77:Fire Temple", "77:Temple du Feu", Select_LoadGame, 0x0165 },
+    { "78:Volvagia's Lair", "78:Volvagia's Lair", "78:Repai de Volvagia", Select_LoadGame, 0x0305 },
+    { "79:Water Temple", "79:Water Temple", "79:Temple de l'Eau", Select_LoadGame, 0x0010 },
+    { "80:Morpha's Lair", "80:Morpha's Lair", "80:Repaire de Morpha", Select_LoadGame, 0x0417 },
+    { "81:Spirit Temple", "81:Spirit Temple", "81:Temple de l'Esprit", Select_LoadGame, 0x0082 },
+    { "82:Iron Knuckle's Lair", "82:Iron Knuckle's Lair", "82:Repaire du Hache Viande", Select_LoadGame, 0x008D },
+    { "83:Twinrova's Lair", "83:Twinrova's Lair", "83:Repaire du Duo Malefique", Select_LoadGame, 0x05EC },
+    { "84:Stairs to Ganondorf's Lair", "84:Stairs to Ganondorf's Lair", "84:Repaire de Ganondorf (Escaliers)", Select_LoadGame, 0x041B },
+    { "85:Ganondorf's Lair", "85:Ganondorf's Lair", "85:Repaire de Ganondorf", Select_LoadGame, 0x041F },
+    { "86:Ice Cavern", "86:Ice Cavern", "86:Caverne Polaire", Select_LoadGame, 0x0088 },
+    { "87:Dampe Grave Relay Game", "87:Dampe Grave Relay Game", "87:Dampe Grave Relay Game", Select_LoadGame, 0x044F },
+    { "88:Inside Ganon's Castle", "88:Inside Ganon's Castle", "88:Tour de Ganon", Select_LoadGame, 0x0467 },
+    { "89:Ganon's Lair", "89:Ganon's Lair", "89:Repaire de Ganon", Select_LoadGame, 0x0517 },
+    { "90:Escaping Ganon's Castle 1", "90:Escaping Ganon's Castle 1", "90:Fuite du Chateau de Ganon 1", Select_LoadGame, 0x0179 },
+    { "91:Escaping Ganon's Castle 2", "91:Escaping Ganon's Castle 2", "91:Fuite du Chateau de Ganon 2", Select_LoadGame, 0x01B5 },
+    { "92:Escaping Ganon's Castle 3", "92:Escaping Ganon's Castle 3", "92:Fuite du Chateau de Ganon 3", Select_LoadGame, 0x03DC },
+    { "93:Escaping Ganon's Castle 4", "93:Escaping Ganon's Castle 4", "93:Fuite du Chateau de Ganon 4", Select_LoadGame, 0x03E4 },
+    { "94:Escaping Ganon's Castle 5", "94:Escaping Ganon's Castle 5", "94:Fuite du Chateau de Ganon 5", Select_LoadGame, 0x056C },
+    { "95:Thieves' Hideout 1-2", "95:Thieves' Hideout 1-2", "95:Repaire des Voleurs 1-2", Select_LoadGame, 0x0486 },
+    { "96:Thieves' Hideout 3-4 9-10", "96:Thieves' Hideout 3-4 9-10", "96:Repaire des Voleurs 3-4 9-10", Select_LoadGame, 0x048E },
+    { "97:Thieves' Hideout 5-6", "97:Thieves' Hideout 5-6", "97:Repaire des Voleurs 5-6", Select_LoadGame, 0x0496 },
+    { "98:Thieves' Hideout 7-8", "98:Thieves' Hideout 7-8", "98:Repaire des Voleurs 7-8", Select_LoadGame, 0x049E },
+    { "99:Thieves' Hideout 11-12", "99:Thieves' Hideout 11-12", "99:Repaire des Voleurs 11-12", Select_LoadGame, 0x04AE },
+    { "100:Thieves' Hideout 13", "100:Thieves' Hideout 13", "100:Repaire des Voleurs 13", Select_LoadGame, 0x0570 },
+    { "101:Grotto 0", "101:Grotto 0", "101:Grotte 0", Select_LoadGame, 0x003F },
+    { "102:Grotto 1", "102:Grotto 1", "102:Grotte 1", Select_LoadGame, 0x0598 },
+    { "103:Grotto 2", "103:Grotto 2", "103:Grotte 2", Select_LoadGame, 0x059C },
+    { "104:Grotto 3", "104:Grotto 3", "104:Grotte 3", Select_LoadGame, 0x05A0 },
+    { "105:Grotto 4", "105:Grotto 4", "105:Grotte 4", Select_LoadGame, 0x05A4 },
+    { "106:Grotto 5", "106:Grotto 5", "106:Grotte 5", Select_LoadGame, 0x05A8 },
+    { "107:Grotto 6", "107:Grotto 6", "107:Grotte 6", Select_LoadGame, 0x05AC },
+    { "108:Grotto 7", "108:Grotto 7", "108:Grotte 7", Select_LoadGame, 0x05B0 },
+    { "109:Grotto 8", "109:Grotto 8", "109:Grotte 8", Select_LoadGame, 0x05B4 },
+    { "110:Grotto 9", "110:Grotto 9", "110:Grotte 9", Select_LoadGame, 0x05B8 },
+    { "111:Grotto 10", "111:Grotto 10", "111:Grotte 10", Select_LoadGame, 0x05BC },
+    { "112:Grotto 11", "112:Grotto 11", "112:Grotte 11", Select_LoadGame, 0x05C0 },
+    { "113:Grotto 12", "113:Grotto 12", "113:Grotte 12", Select_LoadGame, 0x05C4 },
+    { "114:Grotto 13", "114:Grotto 13", "114:Grotte 13", Select_LoadGame, 0x05FC },
+    { "115:Goddess Cutscene Environment", "115:Goddess Cutscene Environment", "115:Goddess Cutscene Environment", Select_LoadGame, 0x00A0 },
+    { "116:Test Room", "116:Test Room", "116:Salle de Test", Select_LoadGame, 0x0520 },
+    { "117:SRD Map", "117:SRD Map", "117:Carte SRD", Select_LoadGame, 0x0018 },
+    { "118:Test Map", "118:Test Map", "118:Carte de Test", Select_LoadGame, 0x0094 },
+    { "119:Treasure Chest Warp", "119:Treasure Chest Warp", "119:Treasure Chest Warp", Select_LoadGame, 0x0024 },
+    { "120:Stalfos Miniboss Room", "120:Stalfos Miniboss Room", "120:Stalfos Miniboss Room", Select_LoadGame, 0x001C },
+    { "121:Stalfos Boss Room", "121:Stalfos Boss Room", "121:Stalfos Boss Room", Select_LoadGame, 0x0020 },
+    { "122:Dark Link Room", "122:Dark Link Room", "122:Dark Link Room", Select_LoadGame, 0x0047 },
+    { "123:Shooting Gallery Duplicate", "123:Shooting Gallery Duplicate", "123:Jeu d'adresse (Duplicatas)", Select_LoadGame, 0x02EA },
+    { "124:depth test", "124:depth test", "124:Test de Profondeur", Select_LoadGame, 0x00B6 },
+    { "125:Hyrule Garden Game (Broken)", "125:Hyrule Garden Game (Broken)", "125:Hyrule Garden Game (Broken)", Select_LoadGame, 0x0076 },
+    { "title", "title", "Ecran-titre", Select_LoadTitle, 0x0000 },
 };
 
 static BetterSceneSelectEntry sBetterScenes[] = {
-    { " 1:Hyrule Field", Select_LoadGame, 8, { 
-        { "Near Drawbridge", 0x00CD },
-        { "From Drawbridge", 0x01FD },
-        { "From Kakariko Village", 0x017D },
-        { "From Zora River", 0x0181 },
-        { "From Lost Woods", 0x0185 },
-        { "From Lake Hylia", 0x0189 },
-        { "From Gerudo Valley", 0x018D },
-        { "From Lon Lon Ranch", 0x01F9 },
+    { " 1:Hyrule Field", " 1:Hyrule Field", " 1:Plaine d'Hyrule", Select_LoadGame, 8, { 
+        { "Near Drawbridge", "Near Drawbridge", "Pres du Pont-levis", 0x00CD },
+        { "From Drawbridge", "From Drawbridge", "Depuis le Pont-levis", 0x01FD },
+        { "From Kakariko Village", "From Kakariko Village", "Depuis le Village Cocorico", 0x017D },
+        { "From Zora River", "From Zora River", "Depuis la Riviere Zora", 0x0181 },
+        { "From Lost Woods", "From Lost Woods", "Depuis les Bois Perdus", 0x0185 },
+        { "From Lake Hylia", "From Lake Hylia", "Depuis le Lac Hylia", 0x0189 },
+        { "From Gerudo Valley", "From Gerudo Valley", "Depuis la Vallee Gerudo", 0x018D },
+        { "From Lon Lon Ranch", "From Lon Lon Ranch", "Depuis le Ranch Lon Lon", 0x01F9 },
     }},
-    { " 2:Kokiri Forest", Select_LoadGame, 9, {
-        { "From Links House", 0x0211 },
-        { "From Bridge", 0x020D },
-        { "From Lost Woods", 0x0286 },
-        { "From Deku Tree", 0x0209 },
-        { "From Kokiri Shop", 0x0266 },
-        { "From Know-It-All Brothers House", 0x026A },
-        { "From Twins House", 0x033C },
-        { "From Midos House", 0x0443 },
-        { "From Sarias House", 0x0447 },
+    { " 2:Kokiri Forest", " 2:Kokiri Forest", " 2:Foret Kokiri", Select_LoadGame, 9, {
+        { "From Links House", "From Links House", "Depuis la Cabane de Link", 0x0211 },
+        { "From Bridge", "From Bridge", "Depuis le Pont", 0x020D },
+        { "From Lost Woods", "From Lost Woods", "Depuis les Bois Perdus", 0x0286 },
+        { "From Deku Tree", "From Deku Tree", "Depuis l'Arbre Mojo", 0x0209 },
+        { "From Kokiri Shop", "From Kokiri Shop", "Depuis la Boutique Kokiri", 0x0266 },
+        { "From Know-It-All Brothers House", "From Know-It-All Brothers House", "Depuis la Cabane des Freres Je-Sais-Tout", 0x026A },
+        { "From Twins House", "From Twins House", "Depuis la Cabane des Jumeaux", 0x033C },
+        { "From Midos House", "From Midos House", "Depuis la Cabane du Grand Mido", 0x0443 },
+        { "From Sarias House", "From Sarias House", "Depuis la Cabane de Saria", 0x0447 },
     }},
-    { " 3:Kokiri Buildings", Select_LoadGame, 6, {
-        { "Links Bed", 0x00BB },
-        { "Kokiri Shop", 0x00C1 },
-        { "Twins House", 0x009C },
-        { "Know-It-All Brothers House", 0x00C9 },
-        { "Midos House", 0x0433 },
-        { "Sarias House", 0x0437 },
+    { " 3:Kokiri Buildings", " 3:Kokiri Buildings", " 3:Cabanes des Kokiris", Select_LoadGame, 6, {
+        { "Links Bed", "Links Bed", "Lit de Link", 0x00BB },
+        { "Kokiri Shop", "Kokiri Shop", "Boutique Kokiri", 0x00C1 },
+        { "Twins House", "Twins House", "Cabane des Jumeaux", 0x009C },
+        { "Know-It-All Brothers House", "Know-It-All Brothers House", "Cabane des Freres Je-Sais-Tout", 0x00C9 },
+        { "Midos House", "Midos House", "Cabane du Grand Mido", 0x0433 },
+        { "Sarias House", "Sarias House", "Cabane de Sara", 0x0437 },
     }},
-    { " 4:Lost Woods", Select_LoadGame, 5, { 
-        { "From Kokiri Forest", 0x011E },
-        { "From Sacred Meadow", 0x01A9 },
-        { "From Goron City", 0x04D6 },
-        { "From Zora River", 0x04DA },
-        { "Bridge", 0x05E0 },
+    { " 4:Lost Woods", " 4:Lost Woods", " 4:Bois Perdus", Select_LoadGame, 5, { 
+        { "From Kokiri Forest", "From Kokiri Forest", "Depuis la Foret Kokiri", 0x011E },
+        { "From Sacred Meadow", "From Sacred Meadow", "Depuis le Bosquet Sacre", 0x01A9 },
+        { "From Goron City", "From Goron City", "Depuis le Village Goron", 0x04D6 },
+        { "From Zora River", "From Zora River", "Depuis la Riviere Zora", 0x04DA },
+        { "Bridge", "Bridge", "Pont", 0x05E0 },
     }},
-    { " 5:Sacred Forest Meadow", Select_LoadGame, 3, { 
-        { "From Lost Woods", 0x00FC },
-        { "From Forest Temple", 0x0215 },
-        { "Minuet of Forest Warp", 0x0600 },
+    { " 5:Sacred Forest Meadow", " 5:Sacred Forest Meadow", " 5:Bosquet Sacre", Select_LoadGame, 3, { 
+        { "From Lost Woods", "From Lost Woods", "Depuis les Bois Perdus", 0x00FC },
+        { "From Forest Temple", "From Forest Temple", "Depuis le Temple de la Foret", 0x0215 },
+        { "Minuet of Forest Warp", "Minuet of Forest Warp", "Teleporteur du Menuet des Bois", 0x0600 },
     }},
-    { " 6:Castle Town Entrance", Select_LoadGame, 3, {
-        { "From Hyrule Field", 0x0276 },
-        { "From Market", 0x0033 },
-        { "From Pot House", 0x026E },
+    { " 6:Castle Town Entrance", " 6:Castle Town Entrance", " 6:Entree du Bourg d'Hyrule", Select_LoadGame, 3, {
+        { "From Hyrule Field", "From Hyrule Field", "Depuis la Plaine d'Hyrule", 0x0276 },
+        { "From Market", "From Market", "Depuis la Place du Marche", 0x0033 },
+        { "From Pot House", "From Pot House", "Depuis la Maison des Jarres", 0x026E },
     }},
-    { " 7:Market", Select_LoadGame, 11, {
-        { "From Castle Town Entrance", 0x00B1 },
-        { "From Shooting Gallery", 0x01CD },
-        { "From Happy Mask Shop", 0x01D1 },
-        { "From Treasure Box Minigame", 0x01D5 },
-        { "From Castle", 0x025A },
-        { "From Temple of Time", 0x025E },
-        { "From Back Alley (Right)", 0x0262 },
-        { "From Back Alley (Left)", 0x029E },
-        { "From Potion Shop", 0x02A2 },
-        { "From Bazaar Shop", 0x03B8 },
-        { "From Bomchu Bowling Minigame", 0x03BC },
+    { " 7:Market", " 7:Market", " 7:Place du Marche", Select_LoadGame, 11, {
+        { "From Castle Town Entrance", "From Castle Town Entrance", "Depuis l'Entree du Bourg d'Hyrule", 0x00B1 },
+        { "From Shooting Gallery", "From Shooting Gallery", "Depuis le Jeu d'adresse", 0x01CD },
+        { "From Happy Mask Shop", "From Happy Mask Shop", "Depuis la Foire aux Masques", 0x01D1 },
+        { "From Treasure Box Minigame", "From Treasure Box Minigame", "Depuis le Bowling Teigneux", 0x01D5 },
+        { "From Castle", "From Castle", "Depuis le Chateau d'Hyrule", 0x025A },
+        { "From Temple of Time", "From Temple of Time", "Depuis le Temple du Temps", 0x025E },
+        { "From Back Alley (Right)", "From Back Alley (Right)", "Depuis la Ruelle (Droite)", 0x0262 },
+        { "From Back Alley (Left)", "From Back Alley (Left)", "Depuis la Ruelle (Gauche)", 0x029E },
+        { "From Potion Shop", "From Potion Shop", "Depuis l'Apothicaire", 0x02A2 },
+        { "From Bazaar Shop", "From Bazaar Shop", "Depuis le Bazar", 0x03B8 },
+        { "From Bomchu Bowling Minigame", "From Bomchu Bowling Minigame", "Depuis le Bowling Teigneux", 0x03BC },
     }},
-    { " 8:Castle Town Alley", Select_LoadGame, 5, { 
-        { "From Market (Right)", 0x00AD },
-        { "From Market (Left)", 0x029A }, 
-        { "From Alley House", 0x0067 },
-        { "From Dog House", 0x038C }, 
-        { "From Bombchu Shop", 0x03C0 },
+    { " 8:Castle Town Alley", " 8:Castle Town Alley", " 8:Ruelle du Bourg d'Hyrule", Select_LoadGame, 5, { 
+        { "From Market (Right)", "From Market (Right)", "Depuis la Place du Marche (Droite)", 0x00AD },
+        { "From Market (Left)", "From Market (Left)", "Depuis la Place du Marche (Gauche)", 0x029A }, 
+        { "From Alley House", "From Alley House", "Depuis la Maison de la Ruelle", 0x0067 },
+        { "From Dog House", "From Dog House", "Depuis la Maison du Chien", 0x038C }, 
+        { "From Bombchu Shop", "From Bombchu Shop", "Depuis le Magasin de Missiles", 0x03C0 },
     }},
-    { " 9:Castle Town Buildings", Select_LoadGame, 10, { 
-        { "Pot House", 0x007E },
-        { "Shooting Gallery Minigame", 0x016D },
-        { "Treasure Box Minigame", 0x0063 },
-        { "Potion Shop", 0x0388 },
-        { "Bombchu Bowling Minigame", 0x0507 },
-        { "Bazaar Shop", 0x052C },
-        { "Happy Mask Shop", 0x0530 },
-        { "Bombchu Shop", 0x0528 },
-        { "Dog House", 0x0398 },
-        { "Alley House", 0x043B },
+    { " 9:Castle Town Buildings", " 9:Castle Town Buildings", " 9:Batiments du Bourg d'Hyrule", Select_LoadGame, 10, { 
+        { "Pot House", "Pot House", "Maison des Jarres", 0x007E },
+        { "Shooting Gallery Minigame", "Shooting Gallery Minigame", "Jeu d'adresse", 0x016D },
+        { "Treasure Box Minigame", "Treasure Box Minigame", "Chasse aux Tresors", 0x0063 },
+        { "Potion Shop", "Potion Shop", "Apothicaire", 0x0388 },
+        { "Bombchu Bowling Minigame", "Bombchu Bowling Minigame", "Bowling Teigneux", 0x0507 },
+        { "Bazaar Shop", "Bazaar Shop", "Bazar", 0x052C },
+        { "Happy Mask Shop", "Happy Mask Shop", "Foire aux Masques", 0x0530 },
+        { "Bombchu Shop", "Bombchu Shop", "Boutique de Missiles", 0x0528 },
+        { "Dog House", "Dog House", "Maison du Chien", 0x0398 },
+        { "Alley House", "Alley House", "Maison de la Ruelle", 0x043B },
     }},
-    { "10:Temple of Time", Select_LoadGame, 5, { 
-        { "From Outside", 0x053 },
-        { "From Master Sword Pedestal", 0x02CA },
-        { "Prelude of Light Warp", 0x05F4 },
-        { "Outside Temple of Time - From Market", 0x0171 },
-        { "Outside Temple of Time - From Temple of Time", 0x0472 },
+    { "10:Temple of Time", "10:Temple of Time", "10:Temple du Temps", Select_LoadGame, 5, { 
+        { "From Outside", "From Outside", "Depuis l'Entree", 0x053 },
+        { "From Master Sword Pedestal", "From Master Sword Pedestal", "Depuis le Piedestal de l'Epee de Legende", 0x02CA },
+        { "Prelude of Light Warp", "Prelude of Light Warp", "Teleporteur du Prelude de la Lumiere", 0x05F4 },
+        { "Outside Temple of Time - From Market", "Outside Temple of Time - From Market", "Exterieur du Temple - Depuis la Place du Marche", 0x0171 },
+        { "Outside Temple of Time - From Temple of Time", "Outside Temple of Time - From Temple of Time", "Exterieur du Temple - Depuis le Temple", 0x0472 },
     }},
-    { "11:Hyrule Castle", Select_LoadGame, 5, {
-        { "From Market", 0x0138 },
-        { "From Castle Courtyard", 0x023D },
-        { "From Great Fairy", 0x0340 },
-        { "From Courtyard Guard Capture", 0x04FA },
-        { "Great Fairy", 0x04C2 },
+    { "11:Hyrule Castle", "11:Hyrule Castle", "11:Chateau d'Hyrule", Select_LoadGame, 5, {
+        { "From Market", "From Market", "Depuis la Place du Marche", 0x0138 },
+        { "From Castle Courtyard", "From Castle Courtyard", "Depuis la Cour du Chateau", 0x023D },
+        { "From Great Fairy", "From Great Fairy", "Depuis la Grande Fee", 0x0340 },
+        { "From Courtyard Guard Capture", "From Courtyard Guard Capture", "Depuis la capture d'un Garde de la Cour", 0x04FA },
+        { "Great Fairy", "Great Fairy", "Great Fairy", 0x04C2 },
     }},
-    { "12:Hyrule Castle Courtyard", Select_LoadGame, 3, {
-        { "From Crawlspace", 0x007A },
-        { "From Zelda", 0x0296 },
-        { "Zeldas Courtyard", 0x0400 },
+    { "12:Hyrule Castle Courtyard", "12:Hyrule Castle Courtyard", "12:Cour du Chateau", Select_LoadGame, 3, {
+        { "From Crawlspace", "From Crawlspace", "Depuis l'Entree", 0x007A },
+        { "From Zelda", "From Zelda", "Depuis Zelda", 0x0296 },
+        { "Zeldas Courtyard", "Zeldas Courtyard", "Depuis la Cour de Zelda", 0x0400 },
     }},
-    { "13:Lon Lon Ranch", Select_LoadGame, 4, { 
-        { "From Hyrule Field", 0x0157 },
-        { "From Ranch House", 0x0378 },
-        { "From Stables", 0x042F },
-        { "Epona Song Cutscene", 0x02AE },
+    { "13:Lon Lon Ranch", "13:Lon Lon Ranch", "13:Ranch Lon Lon", Select_LoadGame, 4, { 
+        { "From Hyrule Field", "From Hyrule Field", "Depuis la Plaine d'Hyrule", 0x0157 },
+        { "From Ranch House", "From Ranch House", "Depuis la Maison du Ranch", 0x0378 },
+        { "From Stables", "From Stables", "Depuis l'Etable", 0x042F },
+        { "Epona Song Cutscene", "Epona Song Cutscene", "Cinematique du Chant d'Epona", 0x02AE },
     }},
-    { "14:Lon Lon Ranch Buildings", Select_LoadGame, 3, {
-        { "Ranch House", 0x004F },
-        { "Stables", 0x02F9 },
-        { "Back Tower", 0x05D0 },
+    { "14:Lon Lon Ranch Buildings", "14:Lon Lon Ranch Buildings", "14:Batiments du Ranch Lon Lon", Select_LoadGame, 3, {
+        { "Ranch House", "Ranch House", "Maison du Ranch", 0x004F },
+        { "Stables", "Stables", "Etable du Ranch", 0x02F9 },
+        { "Back Tower", "Back Tower", "Silo du Ranch", 0x05D0 },
     }},
-    { "15:Kakariko Village", Select_LoadGame, 15, {
-        { "From Hyrule Field", 0x00DB },
-        { "From Death Mountain", 0x0191 },
-        { "From Graveyard", 0x0195 },
-        { "From Bazaar", 0x0201 },
-        { "From Bottom of Well", 0x02A6 },
-        { "From Boss House", 0x0349 },
-        { "From Potion Shop", 0x044B },
-        { "From Potion Shop (Back Entrance)", 0x04FF },
-        { "From Grannys Potion Shop", 0x034D },
-        { "From Impas House", 0x0345 },
-        { "From Impas House (Cow)", 0x05DC },
-        { "From Windmill", 0x0351 },
-        { "From Shooting Gallery", 0x0463 },
-        { "From Skulltula House", 0x04EE },
-        { "Owl Drop Spot from Death Mountain", 0x0554 },
+    { "15:Kakariko Village", "15:Kakariko Village", "15:Village Cocorico", Select_LoadGame, 15, {
+        { "From Hyrule Field", "From Hyrule Field", "Depuis la Plaine d'Hyrule", 0x00DB },
+        { "From Death Mountain", "From Death Mountain", "Depuis le Mont du Peril", 0x0191 },
+        { "From Graveyard", "From Graveyard", "Depuis le Cimetiere", 0x0195 },
+        { "From Bazaar", "From Bazaar", "Depuis le Bazar", 0x0201 },
+        { "From Bottom of Well", "From Bottom of Well", "Depuis le Puits", 0x02A6 },
+        { "From Boss House", "From Boss House", "Depuis la Maison du Boss", 0x0349 },
+        { "From Potion Shop", "From Potion Shop", "Depuis l'Apothicaire", 0x044B },
+        { "From Potion Shop (Back Entrance)", "From Potion Shop (Back Entrance)", "Depuis l'Apothicaire (Entree Arriere)", 0x04FF },
+        { "From Grannys Potion Shop", "From Grannys Potion Shop", "Depuis l'Apothicaire (Vieille Femme)", 0x034D },
+        { "From Impas House", "From Impas House", "Depuis la Maison d'Impa", 0x0345 },
+        { "From Impas House (Cow)", "From Impas House (Cow)", "Depuis la Maison d'Impa (Vache)", 0x05DC },
+        { "From Windmill", "From Windmill", "Depuis le Moulin", 0x0351 },
+        { "From Shooting Gallery", "From Shooting Gallery", "Depuis le Jeu d'adresse", 0x0463 },
+        { "From Skulltula House", "From Skulltula House", "Depuis la Maison des Skulltulas", 0x04EE },
+        { "Owl Drop Spot from Death Mountain", "Owl Drop Spot from Death Mountain", "Point de chute du Hibou depuis le Mont du Peril", 0x0554 },
     }},
-    { "16:Kakariko Buildings", Select_LoadGame, 9, {
-        { "Shooting Gallery Minigame", 0x003B },
-        { "Grannys Potion Shop", 0x0072 },
-        { "Bazaar Shop", 0x00B7 },
-        { "Potion Shop", 0x0384 },
-        { "Impas House", 0x039C },
-        { "Impas House (Near Cow)", 0x05C8 },
-        { "Boss House", 0x02FD },
-        { "Windmill", 0x0453 },
-        { "Skulltula House", 0x0550 },
+    { "16:Kakariko Buildings", "16:Kakariko Buildings", "16:Batiments du Village Cocorico", Select_LoadGame, 9, {
+        { "Shooting Gallery Minigame", "Shooting Gallery Minigame", "Jeu d'adresse", 0x003B },
+        { "Grannys Potion Shop", "Grannys Potion Shop", "Apothicaire (Vieille Femme)", 0x0072 },
+        { "Bazaar Shop", "Bazaar Shop", "Bazar", 0x00B7 },
+        { "Potion Shop", "Potion Shop", "Apothicaire", 0x0384 },
+        { "Impas House", "Impas House", "Maison d'Impa", 0x039C },
+        { "Impas House (Near Cow)", "Impas House (Near Cow)", "Maison d'Impa (Vache)", 0x05C8 },
+        { "Boss House", "Boss House", "Maison du Boss", 0x02FD },
+        { "Windmill", "Windmill", "Moulin", 0x0453 },
+        { "Skulltula House", "Skulltula House", "Maison des SKulltulas", 0x0550 },
     }}, 
-    { "17:Graveyard", Select_LoadGame, 9, {
-        { "From Kakariko", 0x00E4 },
-        { "From Shadow Temple", 0x0205 },
-        { "From Gravekeepers Hut", 0x0355 },
-        { "From Dampes Grave", 0x0359 },
-        { "From Shield Grave", 0x035D },
-        { "From Redead Grave", 0x0361 },
-        { "From Royal Familys Tomb", 0x050B },
-        { "Inside Dampe's Hut", 0x030D },
-        { "Nocturne of Shadow Warp", 0x0568 },
+    { "17:Graveyard", "17:Graveyard", "17:Cimetiere", Select_LoadGame, 9, {
+        { "From Kakariko", "From Kakariko", "Depuis l'Apothicaire", 0x00E4 },
+        { "From Shadow Temple", "From Shadow Temple", "Depuis le Temple de l'Ombre", 0x0205 },
+        { "From Gravekeepers Hut", "From Gravekeepers Hut", "Depuis la Cabane du Fossoyeur", 0x0355 },
+        { "From Dampes Grave", "From Dampes Grave", "Depuis la Tombe d'Igor", 0x0359 },
+        { "From Shield Grave", "From Shield Grave", "Depuis la Tombe au Bouclier", 0x035D },
+        { "From Redead Grave", "From Redead Grave", "Depuis la Tombe au Effrois", 0x0361 },
+        { "From Royal Familys Tomb", "From Royal Familys Tomb", "Depuis la Tombe Royale", 0x050B },
+        { "Inside Dampe's Hut", "Inside Dampe's Hut", "A l'interieur de la Cabane du Fossoyeur", 0x030D },
+        { "Nocturne of Shadow Warp", "Nocturne of Shadow Warp", "Teleporteur du Nocturne de l'Ombre", 0x0568 },
     }},
-    { "18:Graves", Select_LoadGame, 5, {
-        { "Dampes Grave Minigame", 0x044F },
-        { "Royal Familys Tomb", 0x002D },
-        { "Royal Familys Tomb, Suns Song Cutscene", 0x0574 },
-        { "Treasure Chest Grave", 0x004B },
-        { "ReDead Grave", 0x031C },
+    { "18:Graves", "18:Graves", "18:Tombes", Select_LoadGame, 5, {
+        { "Dampes Grave Minigame", "Dampes Grave Minigame", "Tour du Cimetiere d'Igor", 0x044F },
+        { "Royal Familys Tomb", "Royal Familys Tomb", "Tombe Royale", 0x002D },
+        { "Royal Familys Tomb, Suns Song Cutscene", "Royal Familys Tomb, Suns Song Cutscene", "Tombe Royale, Cinematique du Chant du Soleil", 0x0574 },
+        { "Treasure Chest Grave", "Treasure Chest Grave", "Tombe au Coffre", 0x004B },
+        { "ReDead Grave", "ReDead Grave", "Tombe au Effrois", 0x031C },
     }},
-    { "19:Death Mountain Trail", Select_LoadGame, 6, {
-        { "From Kakariko Village", 0x013D },
-        { "From Goron City", 0x01B9 },
-        { "From Death Mountain Crater", 0x01BD },
-        { "From Dodongos Cavern", 0x0242 },
-        { "From Great Fairy", 0x045B },
-        { "Great Fairy", 0x0315 },
+    { "19:Death Mountain Trail", "19:Death Mountain Trail", "19:Mont du Peril", Select_LoadGame, 6, {
+        { "From Kakariko Village", "From Kakariko Village", "Depuis le Village Cocorico", 0x013D },
+        { "From Goron City", "From Goron City", "Depuis le Village Goron", 0x01B9 },
+        { "From Death Mountain Crater", "From Death Mountain Crater", "Depuis le Cratere du Peril", 0x01BD },
+        { "From Dodongos Cavern", "From Dodongos Cavern", "Depuis la Caverne Dodongo", 0x0242 },
+        { "From Great Fairy", "From Great Fairy", "Depuis la Grande Fee", 0x045B },
+        { "Great Fairy", "Great Fairy", "Grande Fee", 0x0315 },
     }},
-    { "20:Goron City", Select_LoadGame, 5, {
-        { "From Death Mountain Trail", 0x014D },
-        { "From Death Mountain Crater", 0x01C1 },
-        { "From Goron City Shop", 0x03FC },
-        { "From Lost Woods", 0x04E2 },
-        { "Goron City Shop", 0x037C },
+    { "20:Goron City", "20:Goron City", "20:Village Goron", Select_LoadGame, 5, {
+        { "From Death Mountain Trail", "From Death Mountain Trail", "Depuis le Mont du Peril", 0x014D },
+        { "From Death Mountain Crater", "From Death Mountain Crater", "Depuis le Cratere du Peril", 0x01C1 },
+        { "From Goron City Shop", "From Goron City Shop", "Depuis la Boutique Goron", 0x03FC },
+        { "From Lost Woods", "From Lost Woods", "Depuis les Bois Perdus", 0x04E2 },
+        { "Goron City Shop", "Goron City Shop", "Boutique Goron", 0x037C },
     }},
-    { "21:Death Mountain Crater", Select_LoadGame, 6, {
-        { "From Death Mountain Trail", 0x0147 },
-        { "From Goron City", 0x0246 },
-        { "From Fire Temple", 0x024A },
-        { "From Fairy Fountain", 0x0482 },
-        { "Great Fairy", 0x04BE },
-        { "Bolero of Fire Warp", 0x04F6 },
+    { "21:Death Mountain Crater", "21:Death Mountain Crater", "21:Cratere du Peril", Select_LoadGame, 6, {
+        { "From Death Mountain Trail", "From Death Mountain Trail", "Depuis le Mont du Peril", 0x0147 },
+        { "From Goron City", "From Goron City", "Depuis le Village Goron", 0x0246 },
+        { "From Fire Temple", "From Fire Temple", "Depuis le Temple du Feu", 0x024A },
+        { "From Fairy Fountain", "From Fairy Fountain", "Depuis la Fontaine des Fees", 0x0482 },
+        { "Great Fairy", "Great Fairy", "Depuis la Grande Fee", 0x04BE },
+        { "Bolero of Fire Warp", "Bolero of Fire Warp", "Teleporteur du Bolero du Feu", 0x04F6 },
     }},
-    { "22:Zora River", Select_LoadGame, 3, {
-        { "From Hyrule Field", 0x00EA },
-        { "From Zoras Domain", 0x019D },
-        { "From Lost Woods", 0x01DD },
+    { "22:Zora River", "22:Zora River", "22:Riviere Zora", Select_LoadGame, 3, {
+        { "From Hyrule Field", "From Hyrule Field", "Depuis la Plaine d'Hyrule", 0x00EA },
+        { "From Zoras Domain", "From Zoras Domain", "Depuis le Domaine Zora", 0x019D },
+        { "From Lost Woods", "From Lost Woods", "Depuis les Bois Perdus", 0x01DD },
     }},
-    { "23:Zoras Domain", Select_LoadGame, 5, {
-        { "From Zora River", 0x0108 },
-        { "From Zoras Fountain", 0x01A1 },
-        { "From Lake Hylia", 0x0328 },
-        { "From Zora Shop", 0x03C4 },
-        { "Zora Shop", 0x0380 },
+    { "23:Zoras Domain", "23:Zoras Domain", "23:Domaine Zora", Select_LoadGame, 5, {
+        { "From Zora River", "From Zora River", "Depuis la Riviere Zora", 0x0108 },
+        { "From Zoras Fountain", "From Zoras Fountain", "Depuis la Fontaine Zora", 0x01A1 },
+        { "From Lake Hylia", "From Lake Hylia", "Depuis le Lac Hylia", 0x0328 },
+        { "From Zora Shop", "From Zora Shop", "Depuis la Boutique Zora", 0x03C4 },
+        { "Zora Shop", "Zora Shop", "Boutique Zora", 0x0380 },
     }},
-    { "24:Zoras Fountain", Select_LoadGame, 5, {
-        { "From Zoras Domain", 0x0225 },
-        { "From Jabu Jabu", 0x0221 },
-        { "From Ice Cavern", 0x03D4 },
-        { "From Fairy Fountain", 0x0394 },
-        { "Great Fairy", 0x0371 },
+    { "24:Zoras Fountain", "24:Zoras Fountain", "24:Fontaine Zora", Select_LoadGame, 5, {
+        { "From Zoras Domain", "From Zoras Domain", "Depuis le Domaine Zora", 0x0225 },
+        { "From Jabu Jabu", "From Jabu Jabu", "Depuis Jabu-Jabu", 0x0221 },
+        { "From Ice Cavern", "From Ice Cavern", "Depuis la Caverne Polaire", 0x03D4 },
+        { "From Fairy Fountain", "From Fairy Fountain", "Depuis la Fontaine des Fees", 0x0394 },
+        { "Great Fairy", "Great Fairy", "Grande Fee", 0x0371 },
     }},
-    { "25:Lake Hylia", Select_LoadGame, 7, {
-        { "From Hyrule Field", 0x0102 },
-        { "From Gerudo Valley", 0x0219 },
-        { "From Water Temple", 0x021D },
-        { "From Fishing Pond", 0x0309 },
-        { "From Laboratory", 0x03CC },
-        { "From Zoras Domain", 0x0560 },
-        { "Serenade Of Water Warp", 0x0604 },
+    { "25:Lake Hylia", "25:Lake Hylia", "25:Lac Hylia", Select_LoadGame, 7, {
+        { "From Hyrule Field", "From Hyrule Field", "Depuis la Plaine d'Hyrule", 0x0102 },
+        { "From Gerudo Valley", "From Gerudo Valley", "Depuis la Vallee Gerudo", 0x0219 },
+        { "From Water Temple", "From Water Temple", "Depuis le Temple de l'Eau", 0x021D },
+        { "From Fishing Pond", "From Fishing Pond", "Depuis l'Etang", 0x0309 },
+        { "From Laboratory", "From Laboratory", "Depuis le Laboratoire du Lac", 0x03CC },
+        { "From Zoras Domain", "From Zoras Domain", "Depuis le Domaine Zora", 0x0560 },
+        { "Serenade Of Water Warp", "Serenade Of Water Warp", "Teleporteur de la Serenade de l'Eau", 0x0604 },
     }},
-    { "26:Lake Hylia Buildings", Select_LoadGame, 2, { 
-        { "Laboratory", 0x0043 }, 
-        { "Fishing Pond Minigame", 0x045F },
+    { "26:Lake Hylia Buildings", "26:Lake Hylia Buildings", "26:Batiments du Lac Hylia", Select_LoadGame, 2, { 
+        { "Laboratory", "Laboratory", "Laboratoire du Lac", 0x0043 }, 
+        { "Fishing Pond Minigame", "Fishing Pond Minigame", "Etang", 0x045F },
     }},
-    { "27:Gerudo Valley", Select_LoadGame, 5, {
-        { "From Hyrule Field", 0x0117 },
-        { "From Gerudo Fortress", 0x022D },
-        { "From Carpenter's Tent", 0x03D0 },
-        { "Carpenter's Tent/ Running Man Minigame", 0x03A0 },
-        { "Thrown out of Fortress", 0x01A5 },
+    { "27:Gerudo Valley", "27:Gerudo Valley", "27:Vallee Gerudo", Select_LoadGame, 5, {
+        { "From Hyrule Field", "From Hyrule Field", "Depuis la Plaine d'Hyrule", 0x0117 },
+        { "From Gerudo Fortress", "From Gerudo Fortress", "Depuis la Forteresse Gerudo", 0x022D },
+        { "From Carpenter's Tent", "From Carpenter's Tent", "Depuis la Tente du Charpentier", 0x03D0 },
+        { "Carpenter's Tent/ Running Man Minigame", "Carpenter's Tent/ Running Man Minigame", "Tente du Charpentier/ Marathonien", 0x03A0 },
+        { "Thrown out of Fortress", "Thrown out of Fortress", "Expulsé de la Forteresse", 0x01A5 },
     }},
-    { "28:Gerudo Fortress", Select_LoadGame, 18, {
-        { "From Gerudo Valley", 0x0129 },
-        { "From Traning Grounds", 0x03A8 },
-        { "From Haunted Wasteland", 0x03AC },
-        { "Horseback Riding Minigame", 0x03B0 },
-        { "Gerudo Fortress Jail", 0x03B4 },
-        { "From Thieves Hideout (1)", 0x0231 },
-        { "From Thieves Hideout (2)", 0x0235 },
-        { "From Thieves Hideout (3)", 0x0239 },
-        { "From Thieves Hideout (4)", 0x02AA },
-        { "From Thieves Hideout (5)", 0x02BA },
-        { "From Thieves Hideout (6)", 0x02BE },
-        { "From Thieves Hideout (7)", 0x02C2 },
-        { "From Thieves Hideout (8)", 0x02C6 },
-        { "From Thieves Hideout (9)", 0x02D2 },
-        { "From Thieves Hideout (10)", 0x02D6 },
-        { "From Thieves Hideout (11)", 0x02DA },
-        { "From Thieves Hideout (12)", 0x02DE },
-        { "From Thieves Hideout (13)", 0x03A4 },
+    { "28:Gerudo Fortress", "28:Gerudo Fortress", "28:Forteresse Gerudo", Select_LoadGame, 18, {
+        { "From Gerudo Valley", "From Gerudo Valley", "Depuis la Vallee Gerudo", 0x0129 },
+        { "From Traning Grounds", "From Traning Grounds", "Depuis le Gymnase Gerudo", 0x03A8 },
+        { "From Haunted Wasteland", "From Haunted Wasteland", "Depuis le Desert Hante", 0x03AC },
+        { "Horseback Riding Minigame", "Horseback Riding Minigame", "Archerie Montee", 0x03B0 },
+        { "Gerudo Fortress Jail", "Gerudo Fortress Jail", "Prison de la Forteresse Gerudo", 0x03B4 },
+        { "From Thieves Hideout (1)", "From Thieves Hideout (1)", "Depuis le Repaire des Voleurs (1)", 0x0231 },
+        { "From Thieves Hideout (2)", "From Thieves Hideout (2)", "Depuis le Repaire des Voleurs (2)", 0x0235 },
+        { "From Thieves Hideout (3)", "From Thieves Hideout (3)", "Depuis le Repaire des Voleurs (3)", 0x0239 },
+        { "From Thieves Hideout (4)", "From Thieves Hideout (4)", "Depuis le Repaire des Voleurs (4)", 0x02AA },
+        { "From Thieves Hideout (5)", "From Thieves Hideout (5)", "Depuis le Repaire des Voleurs (5)", 0x02BA },
+        { "From Thieves Hideout (6)", "From Thieves Hideout (6)", "Depuis le Repaire des Voleurs (6)", 0x02BE },
+        { "From Thieves Hideout (7)", "From Thieves Hideout (7)", "Depuis le Repaire des Voleurs (7)", 0x02C2 },
+        { "From Thieves Hideout (8)", "From Thieves Hideout (8)", "Depuis le Repaire des Voleurs (8)", 0x02C6 },
+        { "From Thieves Hideout (9)", "From Thieves Hideout (9)", "Depuis le Repaire des Voleurs (9)", 0x02D2 },
+        { "From Thieves Hideout (10)", "From Thieves Hideout (10)", "Depuis le Repaire des Voleurs (10)", 0x02D6 },
+        { "From Thieves Hideout (11)", "From Thieves Hideout (11)", "Depuis le Repaire des Voleurs (11)", 0x02DA },
+        { "From Thieves Hideout (12)", "From Thieves Hideout (12)", "Depuis le Repaire des Voleurs (12)", 0x02DE },
+        { "From Thieves Hideout (13)", "From Thieves Hideout (13)", "Depuis le Repaire des Voleurs (13)", 0x03A4 },
     }},
-    { "29:Thieves Hideout", Select_LoadGame, 13, {
-        { "From Gerudo Fortress (1)", 0x0486 },
-        { "From Gerudo Fortress (2)", 0x048A },
-        { "From Gerudo Fortress (3)", 0x048E },
-        { "From Gerudo Fortress (4)", 0x0492 },
-        { "From Gerudo Fortress (5)", 0x0496 },
-        { "From Gerudo Fortress (6)", 0x049A },
-        { "From Gerudo Fortress (7)", 0x049E },
-        { "From Gerudo Fortress (8)", 0x04A2 },
-        { "From Gerudo Fortress (9)", 0x04A6 },
-        { "From Gerudo Fortress (10)", 0x04AA },
-        { "From Gerudo Fortress (11)", 0x04AE },
-        { "From Gerudo Fortress (12)", 0x04B2 },
-        { "From Gerudo Fortress (13)", 0x0570 },
+    { "29:Thieves Hideout", "29:Thieves Hideout", "29:Repaire des Voleurs", Select_LoadGame, 13, {
+        { "From Gerudo Fortress (1)", "From Gerudo Fortress (1)", "Depuis la Forteresse Gerudo (1)", 0x0486 },
+        { "From Gerudo Fortress (2)", "From Gerudo Fortress (2)", "Depuis la Forteresse Gerudo (2)", 0x048A },
+        { "From Gerudo Fortress (3)", "From Gerudo Fortress (3)", "Depuis la Forteresse Gerudo (3)", 0x048E },
+        { "From Gerudo Fortress (4)", "From Gerudo Fortress (4)", "Depuis la Forteresse Gerudo (4)", 0x0492 },
+        { "From Gerudo Fortress (5)", "From Gerudo Fortress (5)", "Depuis la Forteresse Gerudo (5)", 0x0496 },
+        { "From Gerudo Fortress (6)", "From Gerudo Fortress (6)", "Depuis la Forteresse Gerudo (6)", 0x049A },
+        { "From Gerudo Fortress (7)", "From Gerudo Fortress (7)", "Depuis la Forteresse Gerudo (7)", 0x049E },
+        { "From Gerudo Fortress (8)", "From Gerudo Fortress (8)", "Depuis la Forteresse Gerudo (8)", 0x04A2 },
+        { "From Gerudo Fortress (9)", "From Gerudo Fortress (9)", "Depuis la Forteresse Gerudo (9)", 0x04A6 },
+        { "From Gerudo Fortress (10)", "From Gerudo Fortress (10)", "Depuis la Forteresse Gerudo (10)", 0x04AA },
+        { "From Gerudo Fortress (11)", "From Gerudo Fortress (11)", "Depuis la Forteresse Gerudo (11)", 0x04AE },
+        { "From Gerudo Fortress (12)", "From Gerudo Fortress (12)", "Depuis la Forteresse Gerudo (12)", 0x04B2 },
+        { "From Gerudo Fortress (13)", "From Gerudo Fortress (13)", "Depuis la Forteresse Gerudo (13)", 0x0570 },
     }},
-    { "30:Haunted Wasteland", Select_LoadGame, 2, {
-        { "From Gerudo Fortress", 0x0130 },
-        { "From Desert Colossus", 0x0365 },
+    { "30:Haunted Wasteland", "30:Haunted Wasteland", "30:Desert Hante", Select_LoadGame, 2, {
+        { "From Gerudo Fortress", "From Gerudo Fortress", "Depuis la Forteresse Gerudo", 0x0130 },
+        { "From Desert Colossus", "From Desert Colossus", "Depuis le Colosse du Desert", 0x0365 },
     }},
-    { "31:Desert Colossus", Select_LoadGame, 7, {
-        { "From Haunted Wasteland", 0x0123 },
-        { "From Spirit Temple", 0x01E1 },
-        { "From Spirit Temple (Left Hand)", 0x01E5 },
-        { "From Spirit Temple (Right Hand)", 0x01E9 },
-        { "From Fairy Fountain", 0x057C },
-        { "Great Fairy", 0x0588 },
-        { "Requiem of Spirit Warp", 0x01F1 },
+    { "31:Desert Colossus", "31:Desert Colossus", "31:Colosse du Desert", Select_LoadGame, 7, {
+        { "From Haunted Wasteland", "From Haunted Wasteland", "Depuis le Desert Hante", 0x0123 },
+        { "From Spirit Temple", "From Spirit Temple", "Depuis le Temple de l'Esprit", 0x01E1 },
+        { "From Spirit Temple (Left Hand)", "From Spirit Temple (Left Hand)", "Depuis le Temple de l'Esprit (Main Gauche)", 0x01E5 },
+        { "From Spirit Temple (Right Hand)", "From Spirit Temple (Right Hand)", "Depuis le Temple de l'Esprit (Main Droite)", 0x01E9 },
+        { "From Fairy Fountain", "From Fairy Fountain", "Depuis la Fontaine des Fees", 0x057C },
+        { "Great Fairy", "Great Fairy", "Grande Fee", 0x0588 },
+        { "Requiem of Spirit Warp", "Requiem of Spirit Warp", "Teleporteur du Requiem de l'Esprit", 0x01F1 },
     }},
-    { "32:Deku Tree", Select_LoadGame, 3, {
-        { "Entrance", 0x0001 },
-        { "From Gohma Fight", 0x0252 },
-        { "Gohma Fight", 0x040F },
+    { "32:Deku Tree", "32:Deku Tree", "32:Arbre Mojo", Select_LoadGame, 3, {
+        { "Entrance", "Entrance", "Entree", 0x0001 },
+        { "From Gohma Fight", "From Gohma Fight", "Depuis le Repaire de Gohma", 0x0252 },
+        { "Gohma Fight", "Gohma Fight", "Combat contre Gohma", 0x040F },
     }},
-    { "33:Dodongos Cavern", Select_LoadGame, 3, {
-        { "Entrance", 0x0004 },
-        { "From King Dodongo", 0x00C5 },
-        { "King Dodongo", 0x040B },
+    { "33:Dodongos Cavern", "33:Dodongos Cavern", "33:Caverne Dodongo", Select_LoadGame, 3, {
+        { "Entrance", "Entrance", "Entree", 0x0004 },
+        { "From King Dodongo", "From King Dodongo", "Depuis le Repaire du Roi Dodongo", 0x00C5 },
+        { "King Dodongo", "King Dodongo", "Combat contre le Roi Dodongo", 0x040B },
     }},
-    { "34:Jabu Jabu", Select_LoadGame, 2, {
-        { "Entrance", 0x0028 },
-        { "Barinade Fight", 0x0301 },
+    { "34:Jabu Jabu", "34:Jabu Jabu", "34:Jabu-Jabu", Select_LoadGame, 2, {
+        { "Entrance", "Entrance", "Entree", 0x0028 },
+        { "Barinade Fight", "Barinade Fight", "Repaire de Barinade", 0x0301 },
     }},
-    { "35:Forest Temple", Select_LoadGame, 4, {
-        { "Entrance", 0x0169 },
-        { "Crushing Room", 0x0584 },
-        { "Before Phantom Ganon", 0x024E },
-        { "Phantom Ganon Fight", 0x000C },
+    { "35:Forest Temple", "35:Forest Temple", "35:Temple de la Foret", Select_LoadGame, 4, {
+        { "Entrance", "Entrance", "Entree", 0x0169 },
+        { "Crushing Room", "Crushing Room", "Salle de Broyage", 0x0584 },
+        { "Before Phantom Ganon", "Before Phantom Ganon", "Avant Ganon Spectral", 0x024E },
+        { "Phantom Ganon Fight", "Phantom Ganon Fight", "Combat contre Ganon Spectral", 0x000C },
     }},
-    { "36:Fire Temple", Select_LoadGame, 3, {
-        { "Entrance", 0x0165 },
-        { "Before Volvagia", 0x0175 },
-        { "Volvagia", 0x0305 },
+    { "36:Fire Temple", "36:Fire Temple", "36:Temple du Feu", Select_LoadGame, 3, {
+        { "Entrance", "Entrance", "Entrance", 0x0165 },
+        { "Before Volvagia", "Before Volvagia", "Avant Volvagia", 0x0175 },
+        { "Volvagia", "Volvagia", "Volvagia", 0x0305 },
     }},
-    { "37:Water Temple", Select_LoadGame, 2, { 
-        { "Entrance", 0x0010 },
-        { "Barinade", 0x0417 },
+    { "37:Water Temple", "37:Water Temple", "37:Temple de l'Eau", Select_LoadGame, 2, { 
+        { "Entrance", "Entrance", "Entree", 0x0010 },
+        { "Morpha", "Morpha", "Morpha", 0x0417 },
     }},
-    { "38:Shadow Temple", Select_LoadGame, 3, {
-        { "Entrance", 0x0037 },
-        { "Outside Bongo Bongo", 0x02B2 },
-        { "Bongo Bongo", 0x0413 },
+    { "38:Shadow Temple", "38:Shadow Temple", "38:Temple de l'Ombre", Select_LoadGame, 3, {
+        { "Entrance", "Entrance", "Entree", 0x0037 },
+        { "Outside Bongo Bongo", "Outside Bongo Bongo", "Avant Bongo Bongo", 0x02B2 },
+        { "Bongo Bongo", "Bongo Bongo", "Bongo Bongo", 0x0413 },
     }},
-    { "39:Spirit Temple", Select_LoadGame, 6, {
-        { "Entrance", 0x0082 },
-        { "From Left Hand", 0x03F0 },
-        { "From Right Hand", 0x03F4 },
-        { "Before Twinrova", 0x02F5 },
-        { "Naboora Fight", 0x008D },
-        { "Twinrova", 0x05EC },
+    { "39:Spirit Temple", "39:Spirit Temple", "39:Temple de l'Esprit", Select_LoadGame, 6, {
+        { "Entrance", "Entrance", "Entree", 0x0082 },
+        { "From Left Hand", "From Left Hand", "Depuis la Main Gauche", 0x03F0 },
+        { "From Right Hand", "From Right Hand", "Depuis la Main Droite", 0x03F4 },
+        { "Before Twinrova", "Before Twinrova", "Avant le Duo Malefique", 0x02F5 },
+        { "Naboora Fight", "Naboora Fight", "Combat contre Nabooru", 0x008D },
+        { "Twinrova", "Twinrova", "Twinrova", 0x05EC },
     }},
-    { "40:Ganons Castle", Select_LoadGame, 9, {
-        { "Entrance", 0x0467 },
-        { "From Tower", 0x0534 },
-        { "Stairs to Lair - From Castle", 0x041B },
-        { "Stairs to Lair - From Ganondorf's Lair", 0x0427 },
-        { "Ganondorf's Lair", 0x041F },
-        { "Ganondorf Defeated", 0x01C9 },
-        { "Ganondorf Defeated (2)", 0x04BA },
-        { "Ganon Battle", 0x0517 },
-        { "Ganon Death Cutscene", 0x043F },
+    { "40:Ganons Castle", "40:Ganons Castle", "40:Chateau de Ganon", Select_LoadGame, 9, {
+        { "Entrance", "Entrance", "Entree", 0x0467 },
+        { "From Tower", "From Tower", "Depuis la Tour", 0x0534 },
+        { "Stairs to Lair - From Castle", "Stairs to Lair - From Castle", "Escaliers vers Repaire - Depuis le Chateau", 0x041B },
+        { "Stairs to Lair - From Ganondorf's Lair", "Stairs to Lair - From Ganondorf's Lair", "Escaliers vers Repaire - Depuis le Repaire de Ganondorf", 0x0427 },
+        { "Ganondorf's Lair", "Ganondorf's Lair", "Repaire de Ganondorf", 0x041F },
+        { "Ganondorf Defeated", "Ganondorf Defeated", "Ganondorf Vaincu", 0x01C9 },
+        { "Ganondorf Defeated (2)", "Ganondorf Defeated (2)", "Ganondorf Vaincu (2)", 0x04BA },
+        { "Ganon Battle", "Ganon Battle", "Combat contre Ganon", 0x0517 },
+        { "Ganon Death Cutscene", "Ganon Death Cutscene", "Cinematique de la Mort de Ganon", 0x043F },
     }},
-    { "41:Bottom of the Well", Select_LoadGame, 1, {
-        { "Entrance", 0x0098 },
+    { "41:Bottom of the Well", "41:Bottom of the Well", "41:Puits", Select_LoadGame, 1, {
+        { "Entrance", "Entrance", "Entree", 0x0098 },
     }},
-    { "42:Ice Cavern", Select_LoadGame, 1, {
-        { "Entrance", 0x0088 },
+    { "42:Ice Cavern", "42:Ice Cavern", "42:Caverne Polaire", Select_LoadGame, 1, {
+        { "Entrance", "Entrance", "Entree", 0x0088 },
     }},
-    { "43:Gerudo Training Grounds", Select_LoadGame, 1, {
-        { "Entrance", 0x0008 },
+    { "43:Gerudo Training Grounds", "43:Gerudo Training Grounds", "43:Gymnase Gerudo", Select_LoadGame, 1, {
+        { "Entrance", "Entrance", "Entree", 0x0008 },
     }},
-    { "44:Warps", Select_LoadGame, 6, {
-        { "Prelude of Light Warp", 0x05F4 },
-        { "Minuet of Forest Warp", 0x0600 },
-        { "Bolero of Fire Warp", 0x04F6 },
-        { "Serenade Of Water Warp", 0x0604 },
-        { "Nocturne of Shadow Warp", 0x0568 },
-        { "Requiem of Spirit Warp", 0x01F1 },
+    { "44:Warps", "44:Warps", "44:Teleporteurs", Select_LoadGame, 6, {
+        { "Prelude of Light Warp", "Prelude of Light Warp", "Teleporteur du Prelude de la Lumiere", 0x05F4 },
+        { "Minuet of Forest Warp", "Minuet of Forest Warp", "Teleporteur du Menuet des Bois", 0x0600 },
+        { "Bolero of Fire Warp", "Bolero of Fire Warp", "Teleporteur du Bolero du Feu", 0x04F6 },
+        { "Serenade Of Water Warp", "Serenade Of Water Warp", "Teleporteur de la Serenade de l'Eau", 0x0604 },
+        { "Nocturne of Shadow Warp", "Nocturne of Shadow Warp", "Teleporteur du Nocturne de l'Ombre", 0x0568 },
+        { "Requiem of Spirit Warp", "Requiem of Spirit Warp", "Teleporteur du Requiem de l'Esprit", 0x01F1 },
     }},
-    { "45:Shops", Select_LoadGame, 9, {
-        { "Kokiri Shop", 0x00C1 },
-        { "Potion Shop (Market)", 0x0388 },
-        { "Bazaar Shop (Market)", 0x052C },
-        { "Happy Mask Shop", 0x0530 },
-        { "Bombchu Shop", 0x0528 },
-        { "Bazaar Shop (Kakariko)", 0x00B7 },
-        { "Potion Shop (Kakariko)", 0x0384 },
-        { "Goron City Shop", 0x037C },
-        { "Zora Shop", 0x0380 },
+    { "45:Shops", "45:Shops", "45:Boutiques", Select_LoadGame, 9, {
+        { "Kokiri Shop", "Kokiri Shop", "Boutique Kokiri", 0x00C1 },
+        { "Potion Shop (Market)", "Potion Shop (Market)", "Apothicaire (Place du Marche)", 0x0388 },
+        { "Bazaar Shop (Market)", "Bazaar Shop (Market)", "Bazar (Place du Marche)", 0x052C },
+        { "Happy Mask Shop", "Happy Mask Shop", "Foire aux Masques", 0x0530 },
+        { "Bombchu Shop", "Bombchu Shop", "Boutique de Missiles", 0x0528 },
+        { "Bazaar Shop (Kakariko)", "Bazaar Shop (Kakariko)", "Bazar (Village Cocorico)", 0x00B7 },
+        { "Potion Shop (Kakariko)", "Potion Shop (Kakariko)", "Apothicaire (Village Cocorico)", 0x0384 },
+        { "Goron City Shop", "Goron City Shop", "Boutique Goron", 0x037C },
+        { "Zora Shop", "Zora Shop", "Boutique Zora", 0x0380 },
     }},
-    { "46:Great Fairies", Select_LoadGame, 6, {
-        { "Hyrule Castle (Child)", 0x0578 },
-        { "Hyrule Castle (Adult)", 0x04C2 },
-        { "Death Mountain Trail", 0x0315 },
-        { "Death Mountain Crater", 0x04BE },
-        { "Zoras Fountain", 0x0371 },
-        { "Desert Colossus", 0x0588 },
+    { "46:Great Fairies", "46:Great Fairies", "46:Grandes Fees", Select_LoadGame, 6, {
+        { "Hyrule Castle (Child)", "Hyrule Castle (Child)", "Chateau d'Hyrule (Enfant)", 0x0578 },
+        { "Hyrule Castle (Adult)", "Hyrule Castle (Adult)", "Chateau d'Hyrule (Adult)", 0x04C2 },
+        { "Death Mountain Trail", "Death Mountain Trail", "Mont du Peril", 0x0315 },
+        { "Death Mountain Crater", "Death Mountain Crater", "Cratere du Peril", 0x04BE },
+        { "Zoras Fountain", "Zoras Fountain", "Fontaine Zora", 0x0371 },
+        { "Desert Colossus", "Desert Colossus", "Colosse du Desert", 0x0588 },
     }},
-    { "47:Chest Grottos", Select_Grotto_LoadGame, 11, {
-        { "Kokiri Forest (Song of Storms)", 0x00 },
-        { "Lost Woods", 0x01 },
-        { "Sacred Forest Meadow", 0x02 },
-        { "Hyrule Field (Near Market)", 0x03 },
-        { "Hyrule Field (Open Near Lake)", 0x04 },
-        { "Hyrule Field (SE Boulder)", 0x05 },
-        { "Kakariko (Open)", 0x06 },
-        { "Kakariko (Redead)", 0x07 },
-        { "Death Mountain Trail (Song of Storms)", 0x08 },
-        { "Death Mountain Crater", 0x09 },
-        { "Zora River (Open)", 0x0A },
+    { "47:Chest Grottos", "47:Chest Grottos", "47:Grottes a Coffres", Select_Grotto_LoadGame, 11, {
+        { "Kokiri Forest (Song of Storms)", "Kokiri Forest (Song of Storms)", "Foret Kokiri (Chant des Tempetes)", 0x00 },
+        { "Lost Woods", "Lost Woods", "Bois Perdus", 0x01 },
+        { "Sacred Forest Meadow", "Sacred Forest Meadow", "Bosquet Sacre", 0x02 },
+        { "Hyrule Field (Near Market)", "Hyrule Field (Near Market)", "Plaine d'Hyrule (Pres de la Place du Marche)", 0x03 },
+        { "Hyrule Field (Open Near Lake)", "Hyrule Field (Open Near Lake)", "Plaine d'Hyrule (Deja ouverte pres du Lac)", 0x04 },
+        { "Hyrule Field (SE Boulder)", "Hyrule Field (SE Boulder)", "Plaine d'Hyrule (Rocher a Gantelets)", 0x05 },
+        { "Kakariko (Open)", "Kakariko (Open)", "Village Cocorico (Deja Ouverte)", 0x06 },
+        { "Kakariko (Redead)", "Kakariko (Redead)", "Village Cocorico (Effrois)", 0x07 },
+        { "Death Mountain Trail (Song of Storms)", "Death Mountain Trail (Song of Storms)", "Mont du Peril (Chant des Tempetes)", 0x08 },
+        { "Death Mountain Crater", "Death Mountain Crater", "Cratere du Peril", 0x09 },
+        { "Zora River (Open)", "Zora River (Open)", "Riviere Zora (Deja Ouverte)", 0x0A },
     }},
-    { "48:Scrub Grottos", Select_Grotto_LoadGame, 10, {
-        { "Hyrule Field (Near Lake)", 0x0B },
-        { "Death Mountain Crater", 0x0C },
-        { "Goron City", 0x0D },
-        { "Lon Lon Ranch", 0x0E },
-        { "Lake Hylia", 0x0F },
-        { "Lost Woods", 0x10 },
-        { "Zora River (Song of Storms)", 0x11 },
-        { "Sacred Forest Meadow (Song of Storms)", 0x12 },
-        { "Gerudo Valley (Song of Storms)", 0x13 },
-        { "Desert Colossus", 0x14 },
+    { "48:Scrub Grottos", "48:Scrub Grottos", "48:Grottes des Pestes Marchandes", Select_Grotto_LoadGame, 10, {
+        { "Hyrule Field (Near Lake)", "Hyrule Field (Near Lake)", "Plaine d'Hyrule (Pres du Lac)", 0x0B },
+        { "Death Mountain Crater", "Death Mountain Crater", "Cratere du Peril", 0x0C },
+        { "Goron City", "Goron City", "Village Goron", 0x0D },
+        { "Lon Lon Ranch", "Lon Lon Ranch", "Ranch Lon Lon", 0x0E },
+        { "Lake Hylia", "Lake Hylia", "Lac Hylia", 0x0F },
+        { "Lost Woods", "Lost Woods", "Bois Perdus", 0x10 },
+        { "Zora River (Song of Storms)", "Zora River (Song of Storms)", "Rivere Zora (Chant des Tempetes)", 0x11 },
+        { "Sacred Forest Meadow (Song of Storms)", "Sacred Forest Meadow (Song of Storms)", "Bosquet Scare (Chant des Tempetes)", 0x12 },
+        { "Gerudo Valley (Song of Storms)", "Gerudo Valley (Song of Storms)", "Vallee Gerudo (Chant des Tempetes)", 0x13 },
+        { "Desert Colossus", "Desert Colossus", "Colosse du Desert", 0x14 },
     }},
-    { "49:Other Grottos", Select_Grotto_LoadGame, 7, {
-        { "Scrub Theatre", 0x15 },
-        { "Spider Grotto (Hyrule Field)", 0x16 },
-        { "Spider Grotto (Hyrule Castle)", 0x17 },
-        { "Cow Grotto (Hyrule Field)", 0x18 },
-        { "Cow Grotto (Death Mountain Trail)", 0x19 },
-        { "Flooded Grotto (Gerudo Valley)", 0x1A },
-        { "Flooded Grotto (Hyrule Field)", 0x1B },
+    { "49:Other Grottos", "49:Other Grottos", "49:Autres Grottes", Select_Grotto_LoadGame, 7, {
+        { "Scrub Theatre", "Scrub Theatre", "Theatre Mojo", 0x15 },
+        { "Spider Grotto (Hyrule Field)", "Spider Grotto (Hyrule Field)", "Spider Grotto (Hyrule Field)", 0x16 },
+        { "Spider Grotto (Hyrule Castle)", "Spider Grotto (Hyrule Castle)", "Spider Grotto (Hyrule Castle)", 0x17 },
+        { "Cow Grotto (Hyrule Field)", "Cow Grotto (Hyrule Field)", "Cow Grotto (Hyrule Field)", 0x18 },
+        { "Cow Grotto (Death Mountain Trail)", "Cow Grotto (Death Mountain Trail)", "Cow Grotto (Death Mountain Trail)", 0x19 },
+        { "Flooded Grotto (Gerudo Valley)", "Flooded Grotto (Gerudo Valley)", "Flooded Grotto (Gerudo Valley)", 0x1A },
+        { "Flooded Grotto (Hyrule Field)", "Flooded Grotto (Hyrule Field)", "Flooded Grotto (Hyrule Field)", 0x1B },
     }},
-    { "50:Debug (Use with caution)", Select_LoadGame, 10, {
-        { "Test Room", 0x0520 },
-        { "SRD Map", 0x0018 },
-        { "Test Map", 0x0094 },
-        { "Treasure Chest Warp", 0x0024 },
-        { "Stalfos Miniboss Room", 0x001C },
-        { "Stalfos Boss Room", 0x001C },
-        { "Dark Link Room", 0x0047 },
-        { "Shooting Gallery Duplicate", 0x02EA },
-        { "Depth Test", 0x00B6 },
-        { "Hyrule Garden Game (Broken)", 0x0076 },
+    { "50:Debug (Use with caution)", "50:Debug (Use with caution)", "50:Debug (A utiliser avec prudence)", Select_LoadGame, 10, {
+        { "Test Room", "Test Room", "Test Room", 0x0520 },
+        { "SRD Map", "SRD Map", "SRD Map", 0x0018 },
+        { "Test Map", "Test Map", "Test Map", 0x0094 },
+        { "Treasure Chest Warp", "Treasure Chest Warp", "Treasure Chest Warp", 0x0024 },
+        { "Stalfos Miniboss Room", "Stalfos Miniboss Room", "Stalfos Miniboss Room", 0x001C },
+        { "Stalfos Boss Room", "Stalfos Boss Room", "Stalfos Boss Room", 0x001C },
+        { "Dark Link Room", "Dark Link Room", "Dark Link Room", 0x0047 },
+        { "Shooting Gallery Duplicate", "Shooting Gallery Duplicate", "Shooting Gallery Duplicate", 0x02EA },
+        { "Depth Test", "Depth Test", "Depth Test", 0x00B6 },
+        { "Hyrule Garden Game (Broken)", "Hyrule Garden Game (Broken)", "Hyrule Garden Game (Broken)", 0x0076 },
     }},
 };
 
@@ -1034,7 +1034,23 @@ void Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
             GfxPrint_SetColor(printer, 200, 200, 55, 255);
         }
 
-        name = this->scenes[scene].name;
+        if (CVar_GetS32("gDebugWarpScreenTranslation", 0)) {
+            switch (gSaveContext.language) {
+                case LANGUAGE_ENG:
+                default:
+                    name = this->scenes[scene].englishName;
+                    break;
+                case LANGUAGE_GER:
+                    name = this->scenes[scene].germanName;
+                    break;
+                case LANGUAGE_FRA:
+                    name = this->scenes[scene].frenchName;
+                    break;
+            }
+        } else {
+            name = this->scenes[scene].englishName;
+        }
+        //name = this->scenes[scene].name;
         if (name == NULL) {
             name = "**Null**";
         }
@@ -1066,8 +1082,23 @@ void Better_Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
         } else {
             GfxPrint_SetColor(printer, 175, 175, 175, 255);
         }
-
-        name = this->betterScenes[scene].name;
+        
+        if (CVar_GetS32("gDebugWarpScreenTranslation", 0)) {
+            switch (gSaveContext.language) {
+                case LANGUAGE_ENG:
+                default:
+                    name = this->betterScenes[scene].englishName;
+                    break;
+                case LANGUAGE_GER:
+                    name = this->betterScenes[scene].germanName;
+                    break;
+                case LANGUAGE_FRA:
+                    name = this->betterScenes[scene].frenchName;
+                    break;
+            }
+        } else {
+            name = this->betterScenes[scene].englishName;
+        }
         if (name == NULL) {
             name = "**Null**";
         }
@@ -1077,7 +1108,23 @@ void Better_Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
 
     GfxPrint_SetColor(printer, 205, 100, 200, 255);
     GfxPrint_SetPos(printer, 3, 26);
-    GfxPrint_Printf(printer, "%s", this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].name);
+
+    if (CVar_GetS32("gDebugWarpScreenTranslation", 0)) {
+        switch (gSaveContext.language) {
+            case LANGUAGE_ENG:
+            default:
+                GfxPrint_Printf(printer, "%s", this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].englishName);
+                break;
+            case LANGUAGE_GER:
+                GfxPrint_Printf(printer, "%s", this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].germanName);
+                break;
+            case LANGUAGE_FRA:
+                GfxPrint_Printf(printer, "%s", this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].frenchName);
+                break;
+        }
+    } else {
+        GfxPrint_Printf(printer, "%s", this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].englishName);
+    }
 }
 
 static const char* sLoadingMessages[] = {
@@ -1105,18 +1152,41 @@ void Select_PrintLoadingMessage(SelectContext* this, GfxPrint* printer) {
 }
 
 static const char* sAgeLabels[] = {
-    "17(Adult)",
-    "5(Young)",
+    GFXP_HIRAGANA "17(ﾜｶﾓﾉ)", // "17(young)"
+    GFXP_HIRAGANA "5(ﾜｶｽｷﾞ)", // "5(very young)"
+    GFXP_HIRAGANA "17(ﾜｶﾓﾉ)", // "17(young) German"
+    GFXP_HIRAGANA "5(ﾜｶｽｷﾞ)", // "5(very young) German"
+    GFXP_HIRAGANA "17(Adulte)", // "17(young) French"
+    GFXP_HIRAGANA "10(Enfant)", // "5(very young) French"
 };
 static const char* sBetterAgeLabels[] = {
     "Adult",
     "Child",
+    "Adult",
+    "Child",
+    "Adulte",
+    "Enfant",
 };
 
 void Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 age) {
     GfxPrint_SetPos(printer, 4, 26);
     GfxPrint_SetColor(printer, 255, 255, 55, 255);
-    GfxPrint_Printf(printer, "Age:%s", sAgeLabels[age]);
+    if (CVar_GetS32("gDebugWarpScreenTranslation", 0)) {
+        switch (gSaveContext.language) {
+            case LANGUAGE_ENG:
+            default:
+                GfxPrint_Printf(printer, "Age:%s", sAgeLabels[age]);
+                break;
+            case LANGUAGE_GER:
+                GfxPrint_Printf(printer, "Age:%s", sAgeLabels[age + 2]);
+                break;
+            case LANGUAGE_FRA:
+                GfxPrint_Printf(printer, "Age:%s", sAgeLabels[age + 4]);
+                break;
+        }
+    } else {
+        GfxPrint_Printf(printer, "Age:%s", sAgeLabels[age]);
+    }
 }
 
 void Better_Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 age) {
@@ -1124,7 +1194,22 @@ void Better_Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 a
     GfxPrint_SetColor(printer, 100, 100, 100, 255);
     GfxPrint_Printf(printer, "(B)Age:");
     GfxPrint_SetColor(printer, 55, 200, 50, 255);
-    GfxPrint_Printf(printer, "%s", sBetterAgeLabels[age]);
+    if (CVar_GetS32("gDebugWarpScreenTranslation", 0)) {
+        switch (gSaveContext.language) {
+            case LANGUAGE_ENG:
+            default:
+                GfxPrint_Printf(printer, "%s", sBetterAgeLabels[age]);
+                break;
+            case LANGUAGE_GER:
+                GfxPrint_Printf(printer, "%s", sBetterAgeLabels[age + 2]);
+                break;
+            case LANGUAGE_FRA:
+                GfxPrint_Printf(printer, "%s", sBetterAgeLabels[age + 4]);
+                break;
+        }
+    } else {
+        GfxPrint_Printf(printer, "%s", sBetterAgeLabels[age]);
+    }
 }
 
 void Select_PrintCutsceneSetting(SelectContext* this, GfxPrint* printer, u16 csIndex) {
@@ -1191,11 +1276,57 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
     GfxPrint_SetColor(printer, 100, 100, 100, 255);
 
     if (gSaveContext.dayTime > 0xC000 || gSaveContext.dayTime < 0x4555) {
-        label = "Night";
+        if (CVar_GetS32("gDebugWarpScreenTranslation", 0)) {
+            switch (gSaveContext.language) {
+                case LANGUAGE_ENG:
+                default:
+                    label = "Night";
+                    break;
+                case LANGUAGE_GER:
+                    label = "Night";
+                    break;
+                case LANGUAGE_FRA:
+                    label = "Nuit";
+                    break;
+            }
+        } else {
+            label = "Night";
+        }
     } else {
-        label = "Day";
+        if (CVar_GetS32("gDebugWarpScreenTranslation", 0)) {
+            switch (gSaveContext.language) {
+                case LANGUAGE_ENG:
+                default:
+                    label = "Day";
+                    break;
+                case LANGUAGE_GER:
+                    label = "Night";
+                    break;
+                case LANGUAGE_FRA:
+                    label = "Jour";
+                    break;
+            }
+        } else {
+            label = "Day";
+        }
     }
-    GfxPrint_Printf(printer, "(Z/R)Time:");
+    if (CVar_GetS32("gDebugWarpScreenTranslation", 0)) {
+        switch (gSaveContext.language) {
+            case LANGUAGE_ENG:
+            default:
+                GfxPrint_Printf(printer, "(Z/R)Time:");
+                break;
+            case LANGUAGE_GER:
+                GfxPrint_Printf(printer, "(Z/R)Time:");
+                break;
+            case LANGUAGE_FRA:
+                GfxPrint_Printf(printer, "(Z/R)Temps:");
+                break;
+        }
+    } else {
+        GfxPrint_Printf(printer, "(Z/R)Time:");
+    }
+
     GfxPrint_SetColor(printer, 200, 200, 55, 255);
     GfxPrint_Printf(printer, "%s", label);
 }

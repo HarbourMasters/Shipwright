@@ -1235,18 +1235,24 @@ typedef struct {
 struct SelectContext;
 
 typedef struct {
-    /* 0x00 */ char* name;
+    /* 0x00 */char* englishName;
+    /*      */char* germanName;
+    /*      */ char* frenchName;
     /* 0x04 */ void (*loadFunc)(struct SelectContext*, s32);
     /* 0x08 */ s32 entranceIndex;
 } SceneSelectEntry; // size = 0xC
 
 typedef struct {
-  /*      */ char* name;
+  /*      */ char* englishName;
+  /*      */ char* germanName;
+  /*      */ char* frenchName;
   /*      */ s32 entranceIndex;
 } BetterSceneSelectEntrancePair;
 
 typedef struct {
-    /*      */ char* name;
+    /*      */ char* englishName;
+    /*      */ char* germanName;
+    /*      */ char* frenchName;
     /*      */ void (*loadFunc)(struct SelectContext*, s32);
     /*      */ s32 count;
     /*      */ BetterSceneSelectEntrancePair entrancePairs[18];
