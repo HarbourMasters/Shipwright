@@ -1264,9 +1264,9 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
 
 void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry giEntry) {
     s16 color_slot;
-    switch (giEntry.modIndex) {
+    switch (giEntry.drawModIndex) {
         case MOD_NONE:
-            switch (giEntry.itemId) {
+            switch (giEntry.drawItemId) {
                 case ITEM_SONG_MINUET:
                     color_slot = 0;
                     break;
@@ -1298,7 +1298,7 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
             }
             break;
         case MOD_RANDOMIZER:
-            switch (giEntry.itemId) {
+            switch (giEntry.drawItemId) {
                 case RG_MAGIC_SINGLE:
                 case RG_MAGIC_DOUBLE:
                 case RG_MAGIC_BEAN_PACK:
@@ -1339,25 +1339,26 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
         { 154, 154, 154 } // White Color placeholder
     };
 
-    static Vec3f velocity = { 0.0f, 0.2f, 0.0f };
-    static Vec3f accel = { 0.0f, 0.05f, 0.0f };
+    static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
+    static Vec3f accel = { 0.0f, 0.0f, 0.0f };
     Color_RGBA8 primColor = { colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 0 };
     Color_RGBA8 envColor = { colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 0 };
     Vec3f pos;
 
-    velocity.y = -0.00f;
-    accel.y = -0.0f;
-    pos.x = Rand_CenteredFloat(15.0f) + Parent->world.pos.x;
-    // Shop items are rendered at a different height than the rest, so a different y offset is required
+    // Make particles more compact for shop items and use a different height offset for them.
     if (Parent->id == ACTOR_EN_GIRLA) {
+        pos.x = Rand_CenteredFloat(15.0f) + Parent->world.pos.x;
         pos.y = (Rand_ZeroOne() * 10.0f) + Parent->world.pos.y + 3;
+        pos.z = Rand_CenteredFloat(15.0f) + Parent->world.pos.z;
+        EffectSsKiraKira_SpawnFocused(play, &pos, &velocity, &accel, &primColor, &envColor, 1000, 30);
     } else {
-        pos.y = (Rand_ZeroOne() * 10.0f) + Parent->world.pos.y + 25;
+        pos.x = Rand_CenteredFloat(32.0f) + Parent->world.pos.x;
+        pos.y = (Rand_ZeroOne() * 6.0f) + Parent->world.pos.y + 25;
+        pos.z = Rand_CenteredFloat(32.0f) + Parent->world.pos.z;
+        velocity.y = -0.05f;
+        accel.y = -0.025f;
+        EffectSsKiraKira_SpawnDispersed(play, &pos, &velocity, &accel, &primColor, &envColor, 1000, 30);
     }
-    pos.z = Rand_CenteredFloat(15.0f) + Parent->world.pos.z;
-
-
-    EffectSsKiraKira_SpawnFocused(play, &pos, &velocity, &accel, &primColor, &envColor, 1000, 30);
 }
 
 /**
