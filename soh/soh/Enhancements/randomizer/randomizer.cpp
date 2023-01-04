@@ -55,7 +55,7 @@ static const char* englishRupeeNames[165] = {
     "Cards",                "Chaos Orbs",           "Clams",                "Coal",                 "Cocoa Beans",
     "Coins",                "Cookies",              "Copper",               "Cor",                  "Cornflakes",
     "Credits",              "Crimebucks",           "Crystal Shards",       "Cubits",               "DNA",
-    "Dalmations",           "Dampécoin",            "Dark Elixer",          "Darseks",              "Dead Memes",
+    "Dalmations",           "Dampécoin",            "Dark Elixir",          "Darseks",              "Dead Memes",
     "Diamonds",             "Doge",                 "Dogecoin",             "Doll Hairs",           "Dollars",
     "Dollerydoos",          "Dosh",                 "Doubloons",            "Dwarfbucks",           "Emeralds",
     "Energon",              "Eris",                 "Ether",                "Eurodollars",          "Experience",
