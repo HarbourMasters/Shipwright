@@ -1059,7 +1059,14 @@ void Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
     };
 
     GfxPrint_SetColor(printer, 155, 55, 150, 255);
-    GfxPrint_SetPos(printer, 20, 26);
+
+    // Small position hack of the OPT=X text since german Link's Age overlap if translated
+    if (CVar_GetS32("gDebugWarpScreenTranslation", 0) && gSaveContext.language == LANGUAGE_GER) {
+        GfxPrint_SetPos(printer, 26, 26);
+    } else {
+        GfxPrint_SetPos(printer, 20, 26);
+    }
+    
     GfxPrint_Printf(printer, "OPT=%d", this->opt);
 }
 
