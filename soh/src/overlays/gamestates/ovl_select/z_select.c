@@ -1243,7 +1243,7 @@ void Better_Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 a
 }
 
 void Select_PrintCutsceneSetting(SelectContext* this, GfxPrint* printer, u16 csIndex) {
-    char* translations[13][4] = {
+    char* cutsceneLabels[13][4] = {
         { GFXP_HIRAGANA " ﾖﾙ " GFXP_KATAKANA "ｺﾞﾛﾝ", "Day", "Nacht", "Jour" },
         { GFXP_HIRAGANA "ｵﾋﾙ " GFXP_KATAKANA "ｼﾞｬﾗ", "Night", "Tag", "Nuit" },
         { "ﾃﾞﾓ00", "Demo00", "Demo00", "Demo00" },
@@ -1267,48 +1267,48 @@ void Select_PrintCutsceneSetting(SelectContext* this, GfxPrint* printer, u16 csI
 
     switch (csIndex) {
         case 0:
-            label = translations[1][lang];
+            label = cutsceneLabels[1][lang];
             gSaveContext.dayTime = 0;
             break;
         case 0x8000:
             // clang-format off
-            gSaveContext.dayTime = 0x8000; label = translations[0][lang];
+            gSaveContext.dayTime = 0x8000; label = cutsceneLabels[0][lang];
             // clang-format on
             break;
         case 0xFFF0:
             // clang-format off
-            gSaveContext.dayTime = 0x8000; label = translations[2][lang];
+            gSaveContext.dayTime = 0x8000; label = cutsceneLabels[2][lang];
             // clang-format on
             break;
         case 0xFFF1:
-            label = translations[3][lang];
+            label = cutsceneLabels[3][lang];
             break;
         case 0xFFF2:
-            label = translations[4][lang];
+            label = cutsceneLabels[4][lang];
             break;
         case 0xFFF3:
-            label = translations[5][lang];
+            label = cutsceneLabels[5][lang];
             break;
         case 0xFFF4:
-            label = translations[6][lang];
+            label = cutsceneLabels[6][lang];
             break;
         case 0xFFF5:
-            label = translations[7][lang];
+            label = cutsceneLabels[7][lang];
             break;
         case 0xFFF6:
-            label = translations[8][lang];
+            label = cutsceneLabels[8][lang];
             break;
         case 0xFFF7:
-            label = translations[9][lang];
+            label = cutsceneLabels[9][lang];
             break;
         case 0xFFF8:
-            label = translations[10][lang];
+            label = cutsceneLabels[10][lang];
             break;
         case 0xFFF9:
-            label = translations[11][lang];
+            label = cutsceneLabels[11][lang];
             break;
         case 0xFFFA:
-            label = translations[12][lang];
+            label = cutsceneLabels[12][lang];
             break;
     };
 
