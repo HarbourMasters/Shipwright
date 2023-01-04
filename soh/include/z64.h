@@ -1235,8 +1235,9 @@ typedef struct {
 struct SelectContext;
 
 typedef struct {
-    /* 0x00 */char* englishName;
-    /*      */char* germanName;
+    /* 0x00 */ char* japaneseName;
+    /*      */ char* englishName;
+    /*      */ char* germanName;
     /*      */ char* frenchName;
     /* 0x04 */ void (*loadFunc)(struct SelectContext*, s32);
     /* 0x08 */ s32 entranceIndex;
