@@ -1127,19 +1127,20 @@ void Better_Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
     }
 }
 
-static const char* sLoadingMessages[] = {
-    "Please wait a minute",
-    "Hold on a sec",
-    "Wait a moment",
-    "Loading",
-    "Now working",
-    "Now creating",
-    "It's not broken",
-    "Coffee Break",
-    "Please set B side",
-    "Be patient, now",
-    "Please wait just a minute",
-    "Don't panic, don't panic. Take a break, take a break.",
+static SceneSelectLoadingMessages sLoadingMessages[] = {
+    { GFXP_HIRAGANA "ｼﾊﾞﾗｸｵﾏﾁｸﾀﾞｻｲ", "Please wait a minute", "Please wait a minute", "Veuillez patienter une minute" },
+    { GFXP_HIRAGANA "ﾁｮｯﾄ ﾏｯﾃﾈ", "Hold on a sec", "Hold on a sec" "Une seconde, ça arrive" },
+    { GFXP_KATAKANA "ｳｪｲﾄ ｱ ﾓｰﾒﾝﾄ", "Wait a moment", "Wait a moment", "Patientez un instant" },
+    { GFXP_KATAKANA "ﾛｰﾄﾞ" GFXP_HIRAGANA "ﾁｭｳ", "Loading", "Loading", "Chargement" },
+    { GFXP_HIRAGANA "ﾅｳ ﾜｰｷﾝｸﾞ", "Now working", "Now working", "Au travail" },
+    { GFXP_HIRAGANA "ｲﾏ ﾂｸｯﾃﾏｽ", "Now creating", "Now creating", "En cours de creation" },
+    { GFXP_HIRAGANA "ｺｼｮｳｼﾞｬﾅｲﾖ", "It's not broken", "It's not broken", "C'est pas casse!" },
+    { GFXP_KATAKANA "ｺｰﾋｰ ﾌﾞﾚｲｸ", "Coffee Break", "Coffee Break", "Pause Cafe" },
+    { GFXP_KATAKANA "Bﾒﾝｦｾｯﾄｼﾃｸﾀﾞｻｲ", "Please set B side", "Please set B side", "Please set B side" },
+    { GFXP_HIRAGANA "ｼﾞｯﾄ" GFXP_KATAKANA "ｶﾞﾏﾝ" GFXP_HIRAGANA "ﾉ" GFXP_KATAKANA "ｺ" GFXP_HIRAGANA "ﾃﾞｱｯﾀ", "Be patient, now", "", "Veuillez patientez" },
+    { GFXP_HIRAGANA "ｲﾏｼﾊﾞﾗｸｵﾏﾁｸﾀﾞｻｲ", "Please wait just a minute", "", "Patientez un peu" },
+    { GFXP_HIRAGANA "ｱﾜﾃﾅｲｱﾜﾃﾅｲ｡ﾋﾄﾔｽﾐﾋﾄﾔｽﾐ｡", "Don't panic, don't panic. Take a break, take a break.", "", "Pas de panique. Prenez une pause." },
+    { "Enough! My ship sails in the morning!", "Enough! My ship sails in the morning!", "Enough! My ship sails in the morning!", "Enough! My ship sails in the morning!" },
 };
 
 void Select_PrintLoadingMessage(SelectContext* this, GfxPrint* printer) {
@@ -1148,7 +1149,22 @@ void Select_PrintLoadingMessage(SelectContext* this, GfxPrint* printer) {
     GfxPrint_SetPos(printer, 10, 15);
     GfxPrint_SetColor(printer, 255, 255, 255, 255);
     randomMsg = Rand_ZeroOne() * ARRAY_COUNT(sLoadingMessages);
-    GfxPrint_Printf(printer, "%s", sLoadingMessages[randomMsg]);
+    if (CVar_GetS32("gDebugWarpScreenTranslation", 0)) {
+        switch (gSaveContext.language) {
+            case LANGUAGE_ENG:
+            default:
+                GfxPrint_Printf(printer, "%s", sLoadingMessages[randomMsg].englishMessage);
+                break;
+            case LANGUAGE_GER:
+                GfxPrint_Printf(printer, "%s", sLoadingMessages[randomMsg].germanMessage);
+                break;
+            case LANGUAGE_FRA:
+                GfxPrint_Printf(printer, "%s", sLoadingMessages[randomMsg].frenchMessage);
+                break;
+        }
+    } else {
+        GfxPrint_Printf(printer, "%s", sLoadingMessages[randomMsg].japaneseMessage);
+    }
 }
 
 
