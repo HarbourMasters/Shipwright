@@ -1169,8 +1169,8 @@ void Select_PrintLoadingMessage(SelectContext* this, GfxPrint* printer) {
 
 
 static SceneSelectAgeLabels sAgeLabels[] = {
-    { GFXP_HIRAGANA "17(ﾜｶﾓﾉ)", "17(Adult)", "17(Adult)", "17(Adulte)" }, // "17(young)
-    { GFXP_HIRAGANA "5(ﾜｶｽｷﾞ)", "10(Child)", "10(Child)", "10(Enfant)" }, // "5(very young)
+    { GFXP_HIRAGANA "17(ﾜｶﾓﾉ)", "17(Adult)", "17(Erwachsene)", "17(Adulte)" }, // "17(young)
+    { GFXP_HIRAGANA "5(ﾜｶｽｷﾞ)", "10(Child)", "10(Kind)", "10(Enfant)" }, // "5(very young)
 };
 
 
@@ -1238,55 +1238,72 @@ void Better_Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 a
 }
 
 void Select_PrintCutsceneSetting(SelectContext* this, GfxPrint* printer, u16 csIndex) {
+    char* translations[13][4] = {
+        { GFXP_HIRAGANA " ﾖﾙ " GFXP_KATAKANA "ｺﾞﾛﾝ", "Day", "Nacht", "Jour" },
+        { GFXP_HIRAGANA "ｵﾋﾙ " GFXP_KATAKANA "ｼﾞｬﾗ", "Night", "Tag", "Nuit" },
+        { "ﾃﾞﾓ00", "Demo00", "Demo00", "Demo00" },
+        { "ﾃﾞﾓ01", "Demo01", "Demo01", "Demo01" },
+        { "ﾃﾞﾓ02", "Demo02", "Demo02", "Demo02" },
+        { "ﾃﾞﾓ03", "Demo03", "Demo03", "Demo03" },
+        { "ﾃﾞﾓ04", "Demo04", "Demo04", "Demo04" },
+        { "ﾃﾞﾓ05", "Demo05", "Demo05", "Demo05" },
+        { "ﾃﾞﾓ06", "Demo06", "Demo06", "Demo06" },
+        { "ﾃﾞﾓ07", "Demo07", "Demo07", "Demo07" },
+        { "ﾃﾞﾓ08", "Demo08", "Demo08", "Demo08" },
+        { "ﾃﾞﾓ09", "Demo09", "Demo09", "Demo09" },
+        { "ﾃﾞﾓ0A", "Demo0A", "Demo0A", "Demo0A" },
+    };
+    
     char* label;
+    int lang = CVar_GetS32("gDebugWarpScreenTranslation", 0) ? gSaveContext.language + 1 : 0;
 
     GfxPrint_SetPos(printer, 4, 25);
     GfxPrint_SetColor(printer, 255, 255, 55, 255);
 
     switch (csIndex) {
         case 0:
-            label = "Night-goron";
+            label = translations[1][lang];
             gSaveContext.dayTime = 0;
             break;
         case 0x8000:
             // clang-format off
-            gSaveContext.dayTime = 0x8000; label = "Noon-jara";
+            gSaveContext.dayTime = 0x8000; label = translations[0][lang];
             // clang-format on
             break;
         case 0xFFF0:
             // clang-format off
-            gSaveContext.dayTime = 0x8000; label = "Demo00";
+            gSaveContext.dayTime = 0x8000; label = translations[2][lang];
             // clang-format on
             break;
         case 0xFFF1:
-            label = "Demo01";
+            label = translations[3][lang];
             break;
         case 0xFFF2:
-            label = "Demo02";
+            label = translations[4][lang];
             break;
         case 0xFFF3:
-            label = "Demo03";
+            label = translations[5][lang];
             break;
         case 0xFFF4:
-            label = "Demo04";
+            label = translations[6][lang];
             break;
         case 0xFFF5:
-            label = "Demo05";
+            label = translations[7][lang];
             break;
         case 0xFFF6:
-            label = "Demo06";
+            label = translations[8][lang];
             break;
         case 0xFFF7:
-            label = "Demo07";
+            label = translations[9][lang];
             break;
         case 0xFFF8:
-            label = "Demo08";
+            label = translations[10][lang];
             break;
         case 0xFFF9:
-            label = "Demo09";
+            label = translations[11][lang];
             break;
         case 0xFFFA:
-            label = "Demo0A";
+            label = translations[12][lang];
             break;
     };
 

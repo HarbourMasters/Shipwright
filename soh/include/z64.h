@@ -1251,6 +1251,13 @@ typedef struct {
 } SceneSelectAgeLabels;
 
 typedef struct {
+    /*      */ char* japaneseMessage;
+    /*      */ char* englishMessage;
+    /*      */ char* germanMessage;
+    /*      */ char* frenchMessage;
+} SceneSelectLoadingMessages;
+
+typedef struct {
     /*      */ char* englishAge;
     /*      */ char* germanAge;
     /*      */ char* frenchAge;
