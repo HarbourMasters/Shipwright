@@ -504,12 +504,12 @@ static BetterSceneSelectEntry sBetterScenes[] = {
     { "32:Deku Tree", "32:Deku Tree", "32:Arbre Mojo", Select_LoadGame, 3, {
         { "Entrance", "Entrance", "Entree", 0x0001 },
         { "From Gohma Fight", "From Gohma Fight", "Depuis le Repaire de Gohma", 0x0252 },
-        { "Gohma Fight", "Gohma Fight", "Combat contre Gohma", 0x040F },
+        { "Gohma Fight", "Gohma Fight", "Repaire de Gohma", 0x040F },
     }},
     { "33:Dodongos Cavern", "33:Dodongos Cavern", "33:Caverne Dodongo", Select_LoadGame, 3, {
         { "Entrance", "Entrance", "Entree", 0x0004 },
         { "From King Dodongo", "From King Dodongo", "Depuis le Repaire du Roi Dodongo", 0x00C5 },
-        { "King Dodongo", "King Dodongo", "Combat contre le Roi Dodongo", 0x040B },
+        { "King Dodongo", "King Dodongo", "Repaire du Roi Dodongo", 0x040B },
     }},
     { "34:Jabu Jabu", "34:Jabu Jabu", "34:Jabu-Jabu", Select_LoadGame, 2, {
         { "Entrance", "Entrance", "Entree", 0x0028 },
@@ -519,21 +519,21 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Entrance", "Entrance", "Entree", 0x0169 },
         { "Crushing Room", "Crushing Room", "Salle de Broyage", 0x0584 },
         { "Before Phantom Ganon", "Before Phantom Ganon", "Avant Ganon Spectral", 0x024E },
-        { "Phantom Ganon Fight", "Phantom Ganon Fight", "Combat contre Ganon Spectral", 0x000C },
+        { "Phantom Ganon Fight", "Phantom Ganon Fight", "Repaire de Ganon Spectral", 0x000C },
     }},
     { "36:Fire Temple", "36:Fire Temple", "36:Temple du Feu", Select_LoadGame, 3, {
         { "Entrance", "Entrance", "Entrance", 0x0165 },
         { "Before Volvagia", "Before Volvagia", "Avant Volvagia", 0x0175 },
-        { "Volvagia", "Volvagia", "Volvagia", 0x0305 },
+        { "Volvagia", "Volvagia", "Repaire de Volvagia", 0x0305 },
     }},
     { "37:Water Temple", "37:Water Temple", "37:Temple de l'Eau", Select_LoadGame, 2, { 
         { "Entrance", "Entrance", "Entree", 0x0010 },
-        { "Morpha", "Morpha", "Morpha", 0x0417 },
+        { "Morpha", "Morpha", "Repaire de Morpha", 0x0417 },
     }},
     { "38:Shadow Temple", "38:Shadow Temple", "38:Temple de l'Ombre", Select_LoadGame, 3, {
         { "Entrance", "Entrance", "Entree", 0x0037 },
         { "Outside Bongo Bongo", "Outside Bongo Bongo", "Avant Bongo Bongo", 0x02B2 },
-        { "Bongo Bongo", "Bongo Bongo", "Bongo Bongo", 0x0413 },
+        { "Bongo Bongo", "Bongo Bongo", "Repaire de Bongo Bongo", 0x0413 },
     }},
     { "39:Spirit Temple", "39:Spirit Temple", "39:Temple de l'Esprit", Select_LoadGame, 6, {
         { "Entrance", "Entrance", "Entree", 0x0082 },
@@ -541,7 +541,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Right Hand", "From Right Hand", "Depuis la Main Droite", 0x03F4 },
         { "Before Twinrova", "Before Twinrova", "Avant le Duo Malefique", 0x02F5 },
         { "Naboora Fight", "Naboora Fight", "Combat contre Nabooru", 0x008D },
-        { "Twinrova", "Twinrova", "Twinrova", 0x05EC },
+        { "Twinrova", "Twinrova", "Repaire du Duo Malefique", 0x05EC },
     }},
     { "40:Ganons Castle", "40:Ganons Castle", "40:Chateau de Ganon", Select_LoadGame, 9, {
         { "Entrance", "Entrance", "Entree", 0x0467 },
@@ -551,7 +551,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Ganondorf's Lair", "Ganondorf's Lair", "Repaire de Ganondorf", 0x041F },
         { "Ganondorf Defeated", "Ganondorf Defeated", "Ganondorf Vaincu", 0x01C9 },
         { "Ganondorf Defeated (2)", "Ganondorf Defeated (2)", "Ganondorf Vaincu (2)", 0x04BA },
-        { "Ganon Battle", "Ganon Battle", "Combat contre Ganon", 0x0517 },
+        { "Ganon Battle", "Ganon Battle", "Repaire de Ganon", 0x0517 },
         { "Ganon Death Cutscene", "Ganon Death Cutscene", "Cinematique de la Mort de Ganon", 0x043F },
     }},
     { "41:Bottom of the Well", "41:Bottom of the Well", "41:Puits", Select_LoadGame, 1, {
@@ -1151,21 +1151,16 @@ void Select_PrintLoadingMessage(SelectContext* this, GfxPrint* printer) {
     GfxPrint_Printf(printer, "%s", sLoadingMessages[randomMsg]);
 }
 
-static const char* sAgeLabels[] = {
-    GFXP_HIRAGANA "17(ﾜｶﾓﾉ)", // "17(young)"
-    GFXP_HIRAGANA "5(ﾜｶｽｷﾞ)", // "5(very young)"
-    GFXP_HIRAGANA "17(ﾜｶﾓﾉ)", // "17(young) German"
-    GFXP_HIRAGANA "5(ﾜｶｽｷﾞ)", // "5(very young) German"
-    GFXP_HIRAGANA "17(Adulte)", // "17(young) French"
-    GFXP_HIRAGANA "10(Enfant)", // "5(very young) French"
+
+static SceneSelectAgeLabels sAgeLabels[] = {
+    { GFXP_HIRAGANA "17(ﾜｶﾓﾉ)", "17(Adult)", "17(Adult)", "17(Adulte)" }, // "17(young)
+    { GFXP_HIRAGANA "5(ﾜｶｽｷﾞ)", "10(Child)", "10(Child)", "10(Enfant)" }, // "5(very young)
 };
-static const char* sBetterAgeLabels[] = {
-    "Adult",
-    "Child",
-    "Adult",
-    "Child",
-    "Adulte",
-    "Enfant",
+
+
+static BetterSceneSelectAgeLabels sBetterAgeLabels[] = {
+    { "Adult", "Erwachsene", "Adulte" }, 
+    { "Child", "Kind", "Enfant" },
 };
 
 void Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 age) {
@@ -1175,40 +1170,54 @@ void Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 age) {
         switch (gSaveContext.language) {
             case LANGUAGE_ENG:
             default:
-                GfxPrint_Printf(printer, "Age:%s", sAgeLabels[age]);
+                GfxPrint_Printf(printer, "Age:%s", sAgeLabels[age].englishAge);
                 break;
             case LANGUAGE_GER:
-                GfxPrint_Printf(printer, "Age:%s", sAgeLabels[age + 2]);
+                GfxPrint_Printf(printer, "Alter:%s", sAgeLabels[age].germanAge);
                 break;
             case LANGUAGE_FRA:
-                GfxPrint_Printf(printer, "Age:%s", sAgeLabels[age + 4]);
+                GfxPrint_Printf(printer, "Age:%s", sAgeLabels[age].frenchAge);
                 break;
         }
     } else {
-        GfxPrint_Printf(printer, "Age:%s", sAgeLabels[age]);
+        GfxPrint_Printf(printer, "Age:%s", sAgeLabels[age].japaneseAge);
     }
 }
 
 void Better_Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 age) {
     GfxPrint_SetPos(printer, 25, 25);
     GfxPrint_SetColor(printer, 100, 100, 100, 255);
-    GfxPrint_Printf(printer, "(B)Age:");
+    if (CVar_GetS32("gDebugWarpScreenTranslation", 0)) {
+        switch (gSaveContext.language) {
+            case LANGUAGE_ENG:
+            case LANGUAGE_FRA:
+            default:
+                GfxPrint_Printf(printer, "(B)Age:");
+                break;
+            case LANGUAGE_GER:
+                GfxPrint_Printf(printer, "(B)Alter:");
+                break;
+        }
+    } else {
+        GfxPrint_Printf(printer, "(B)Age:");
+    }
+    
     GfxPrint_SetColor(printer, 55, 200, 50, 255);
     if (CVar_GetS32("gDebugWarpScreenTranslation", 0)) {
         switch (gSaveContext.language) {
             case LANGUAGE_ENG:
             default:
-                GfxPrint_Printf(printer, "%s", sBetterAgeLabels[age]);
+                GfxPrint_Printf(printer, "%s", sBetterAgeLabels[age].englishAge);
                 break;
             case LANGUAGE_GER:
-                GfxPrint_Printf(printer, "%s", sBetterAgeLabels[age + 2]);
+                GfxPrint_Printf(printer, "%s", sBetterAgeLabels[age].germanAge);
                 break;
             case LANGUAGE_FRA:
-                GfxPrint_Printf(printer, "%s", sBetterAgeLabels[age + 4]);
+                GfxPrint_Printf(printer, "%s", sBetterAgeLabels[age].frenchAge);
                 break;
         }
     } else {
-        GfxPrint_Printf(printer, "%s", sBetterAgeLabels[age]);
+        GfxPrint_Printf(printer, "%s", sBetterAgeLabels[age].englishAge);
     }
 }
 
@@ -1283,7 +1292,7 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
                     label = "Night";
                     break;
                 case LANGUAGE_GER:
-                    label = "Night";
+                    label = "Nacht";
                     break;
                 case LANGUAGE_FRA:
                     label = "Nuit";
@@ -1300,7 +1309,7 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
                     label = "Day";
                     break;
                 case LANGUAGE_GER:
-                    label = "Night";
+                    label = "Tag";
                     break;
                 case LANGUAGE_FRA:
                     label = "Jour";
@@ -1317,7 +1326,7 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
                 GfxPrint_Printf(printer, "(Z/R)Time:");
                 break;
             case LANGUAGE_GER:
-                GfxPrint_Printf(printer, "(Z/R)Time:");
+                GfxPrint_Printf(printer, "(Z/R)Zeit:");
                 break;
             case LANGUAGE_FRA:
                 GfxPrint_Printf(printer, "(Z/R)Temps:");

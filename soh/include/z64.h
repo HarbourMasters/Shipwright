@@ -1244,6 +1244,19 @@ typedef struct {
 } SceneSelectEntry; // size = 0xC
 
 typedef struct {
+    /*      */ char* japaneseAge;
+    /*      */ char* englishAge;
+    /*      */ char* germanAge;
+    /*      */ char* frenchAge;
+} SceneSelectAgeLabels;
+
+typedef struct {
+    /*      */ char* englishAge;
+    /*      */ char* germanAge;
+    /*      */ char* frenchAge;
+} BetterSceneSelectAgeLabels;
+
+typedef struct {
   /*      */ char* englishName;
   /*      */ char* germanName;
   /*      */ char* frenchName;
