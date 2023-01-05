@@ -47,8 +47,9 @@ void Ship::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
         float x = reader->ReadInt16();
         float y = reader->ReadInt16();
         float z = reader->ReadInt16();
-        collisionHeader->vertices.push_back(Vec3f(x, y, z));
+        collisionHeader->vertices.push_back(Vec3s(x, y, z));
     }
+    collisionHeader->collisionHeaderData.vtxList = collisionHeader->vertices.data();
 
     collisionHeader->polygonCount = reader->ReadUInt32();
     collisionHeader->polygons.reserve(collisionHeader->polygonCount);
@@ -69,77 +70,72 @@ void Ship::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
         polygon.dist = reader->ReadUInt16();
 
         collisionHeader->polygons.push_back(polygon);
+        
     }
+    collisionHeader->collisionHeaderData.polyList = collisionHeader->polygons.data();
 
-    collisionHeader->polygonTypesCount = reader->ReadUInt32();
-    collisionHeader->PolygonTypes.reserve(collisionHeader->polygonTypesCount);
-    for (uint32_t i = 0; i < collisionHeader->polygonTypesCount; i++) {
-        uint32_t col1 = reader->ReadUInt32();
-        uint32_t col2 = reader->ReadUInt32();
+    collisionHeader->surfaceTypesCount = reader->ReadUInt32();
+    collisionHeader->surfaceTypes.reserve(collisionHeader->surfaceTypesCount);
+    for (uint32_t i = 0; i < collisionHeader->surfaceTypesCount; i++) {
+        SurfaceType surfaceType;
 
-        collisionHeader->PolygonTypes.push_back({ col1, col2 });
+        surfaceType.data[0] = reader->ReadUInt32();
+        surfaceType.data[1] = reader->ReadUInt32();
+        
+        collisionHeader->surfaceTypes.push_back(surfaceType);
     }
+    collisionHeader->collisionHeaderData.surfaceTypeList = collisionHeader->surfaceTypes.data();
 
     collisionHeader->camDataCount = reader->ReadUInt32();
     collisionHeader->camData.reserve(collisionHeader->camDataCount);
     collisionHeader->camPosDataIndices.reserve(collisionHeader->camDataCount);
-    collisionHeader->camPosData.reserve(collisionHeader->camDataCount);
     for (uint32_t i = 0; i < collisionHeader->camDataCount; i++) {
         CamData camDataEntry;
         camDataEntry.cameraSType = reader->ReadUInt16();
         camDataEntry.numCameras = reader->ReadInt16();
+        collisionHeader->camData.push_back(camDataEntry);
+        
         int32_t camPosDataIdx = reader->ReadInt32();
         collisionHeader->camPosDataIndices.push_back(camPosDataIdx);
-        camDataEntry.camPosData = collisionHeader->camPosData[i].data();
-        collisionHeader->camData.push_back(camDataEntry);
     }
 
-    // TODO: still not sure what's going on here
-    //  
-    // uint32_t camPosCnt = reader->ReadInt32();
-    // col->camData->cameraPositionData.reserve(camPosCnt);
+    collisionHeader->camPosCount = reader->ReadInt32();
+    collisionHeader->camPosData.reserve(collisionHeader->camPosCount);
+    for (uint32_t i = 0; i < collisionHeader->camPosCount; i++) {
+        int16_t x = reader->ReadInt16();
+        int16_t y = reader->ReadInt16();
+        int16_t z = reader->ReadInt16();
+        collisionHeader->camPosData.push_back(Vec3s(x, y, z));
+    }
 
-    // for (uint32_t i = 0; i < camPosCnt; i++) {
-    //     Ship::CameraPositionData* entry = new Ship::CameraPositionData();
-    //     entry->x = reader->ReadInt16();
-    //     entry->y = reader->ReadInt16();
-    //     entry->z = reader->ReadInt16();
-    //     col->camData->cameraPositionData.push_back(entry);
-    // }
+    for (size_t i = 0; i < collisionHeader->camDataCount; i++) {
+        int32_t idx = collisionHeader->camPosDataIndices[i];
 
+        if (collisionHeader->camPosCount > 0) {
+            collisionHeader->camData[i].camPosData->x = collisionHeader->camPosData[idx].x;
+            collisionHeader->camData[i].camPosData->y = collisionHeader->camPosData[idx].y;
+            collisionHeader->camData[i].camPosData->z = collisionHeader->camPosData[idx].z;
+        } else {
+            collisionHeader->camData[i].camPosData->x = 0;
+            collisionHeader->camData[i].camPosData->y = 0;
+            collisionHeader->camData[i].camPosData->z = 0;
+        }
+    }
+    collisionHeader->collisionHeaderData.cameraDataList = collisionHeader->camData.data();
+    collisionHeader->collisionHeaderData.cameraDataListLen = collisionHeader->camDataCount;
+
+    collisionHeader->waterBoxCount = reader->ReadInt32();
+    collisionHeader->waterBoxes.reserve(collisionHeader->waterBoxCount);
+    for (uint32_t i = 0; i < collisionHeader->waterBoxCount; i++) {
+        WaterBox waterBox;
+        waterBox.xMin = reader->ReadInt16();
+        waterBox.ySurface = reader->ReadInt16();
+        waterBox.zMin = reader->ReadInt16();
+        waterBox.xLength = reader->ReadInt16();
+        waterBox.zLength = reader->ReadInt16();
+        waterBox.properties = reader->ReadInt32();
+
+        collisionHeader->waterBoxes.push_back(waterBox);
+    }
+    collisionHeader->collisionHeaderData.waterBoxes = collisionHeader->waterBoxes.data();
 }
-} // namespace Ship
-
-
-
-
-
-
-//     uint32_t waterBoxCnt = reader->ReadInt32();
-//     col->waterBoxes.reserve(waterBoxCnt);
-
-//     for (uint32_t i = 0; i < waterBoxCnt; i++) {
-//         Ship::WaterBoxHeader waterBox;
-//         waterBox.xMin = reader->ReadInt16();
-//         waterBox.ySurface = reader->ReadInt16();
-//         waterBox.zMin = reader->ReadInt16();
-//         waterBox.xLength = reader->ReadInt16();
-//         waterBox.zLength = reader->ReadInt16();
-//         waterBox.properties = reader->ReadInt32();
-
-//         col->waterBoxes.push_back(waterBox);
-//     }
-// }
-
-// Ship::PolygonEntry::PolygonEntry(BinaryReader* reader) {
-//     type = reader->ReadUInt16();
-
-//     vtxA = reader->ReadUInt16();
-//     vtxB = reader->ReadUInt16();
-//     vtxC = reader->ReadUInt16();
-
-//     a = reader->ReadUInt16();
-//     b = reader->ReadUInt16();
-//     c = reader->ReadUInt16();
-//     d = reader->ReadUInt16();
-// }

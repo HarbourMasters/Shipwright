@@ -45,6 +45,14 @@ typedef struct {
 } CamData;
 
 typedef struct {
+    u32 data[2];
+
+    // Type 1
+    // 0x0800_0000 = wall damage
+} SurfaceType;
+
+
+typedef struct {
     /* 0x00 */ Vec3s minBounds; // minimum coordinates of poly bounding box
     /* 0x06 */ Vec3s maxBounds; // maximum coordinates of poly bounding box
     /* 0x0C */ u16 numVertices;
@@ -69,18 +77,22 @@ public:
     int16_t absMaxX, absMaxY, absMaxZ;
 
     int32_t vertexCount;
-    std::vector<Vec3f> vertices;
+    std::vector<Vec3s> vertices;
 
     uint32_t polygonCount;
     std::vector<CollisionPoly> polygons;
 
-    uint32_t polygonTypesCount;
-    std::vector<std::array<uint32_t, 2>> PolygonTypes;
+    uint32_t surfaceTypesCount;
+    std::vector<SurfaceType> surfaceTypes;
 
     uint32_t camDataCount;
     std::vector<CamData> camData;
-    std::vector<std::vector<Vec3s>> camPosData;
+    std::vector<int32_t> camPosDataIndices;
 
+    int32_t camPosCount;
+    std::vector<Vec3s> camPosData;
+
+    int32_t waterBoxCount;
     std::vector<WaterBox> waterBoxes;
 };
 }; // namespace Ship
