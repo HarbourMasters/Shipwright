@@ -812,13 +812,38 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
     if (this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF) {
         if (gSaveContext.isBossRush) {
             if (play->sceneNum == SCENE_KENJYANOMA) {
-                u32 warpPosX = (int)this->actor.world.pos.x;
-                switch (warpPosX) {
-                    case 200:
+                f32 warpPosX = this->actor.world.pos.x;
+                f32 warpPosZ = this->actor.world.pos.z;
+                // Gohma & Phantom Ganon
+                if (warpPosX == -100 && warpPosZ == -170) {
+                    if (gSaveContext.linkAge == LINK_AGE_CHILD) {
+                        play->nextEntranceIndex = 0x040F;
+                    } else {
+                        play->nextEntranceIndex = 0x000C;
+                    }
+                // King Dodongo & Volvagia
+                } else if (warpPosX == 100 && warpPosZ == -170) {
+                    if (gSaveContext.linkAge == LINK_AGE_CHILD) {
                         play->nextEntranceIndex = 0x040B;
-                        break;
-                    default:
-                        break;
+                    } else {
+                        play->nextEntranceIndex = 0x0305;
+                    }
+                // Barinade & Morb
+                } else if (warpPosX == 199 && warpPosZ == 0) {
+                    if (gSaveContext.linkAge == LINK_AGE_CHILD) {
+                        play->nextEntranceIndex = 0x0301;
+                    } else {
+                        play->nextEntranceIndex = 0x0417;
+                    }
+                // Twinrova
+                } else if (warpPosX == 100 && warpPosZ == 170) {
+                    play->nextEntranceIndex = 0x05EC;
+                // Bongo Bongo
+                } else if (warpPosX == -100 && warpPosZ == 170) {
+                    play->nextEntranceIndex = 0x0413;
+                // Ganondork
+                } else if (warpPosX == -199 && warpPosZ == 0) {
+                    play->nextEntranceIndex = 0x041F;
                 }
             } else {
                 play->nextEntranceIndex = SCENE_HAIRAL_NIWA2;

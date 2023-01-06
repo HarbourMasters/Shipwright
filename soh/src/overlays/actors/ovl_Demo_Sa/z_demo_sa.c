@@ -261,8 +261,27 @@ void func_8098E960(DemoSa* this, PlayState* play) {
             player->actor.world.rot.y = player->actor.shape.rot.y = this->actor.world.rot.y + 0x8000;
         } else {
             this->action = 1;
-            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 200, 0, 0, 0, 0, 0, WARP_DUNGEON_ADULT, false);
-            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -200, 0, 0, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+            if (gSaveContext.linkAge == LINK_AGE_CHILD) {
+                // Forest Medallion (Gohma)
+                Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -100, 6, -170, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                // Fire Medallion (King Dodongo)
+                Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 100, 6, -170, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                // Water Medallion (Barinade)
+                Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 199, 6, 0, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+            } else {
+                // Light Medallion (Ganondorf)
+                Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -199, 6, 0, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                // Forest Medallion (Phantom Ganondorf)
+                Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -100, 6, -170, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                // Fire Medallion (Volvagia)
+                Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 100, 6, -170, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                // Water Medallion (Morpha)
+                Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 199, 6, 0, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                // Spirit Medallion (Twinrova)
+                Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 100, 6, 170, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                // Shadow Medallion (Bongo Bongo)
+                Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -100, 6, 170, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+            }
         }
     }
 }
