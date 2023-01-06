@@ -549,6 +549,7 @@ void SaveManager::InitFileNormal() {
     if (gSaveContext.isBossRush) {
         gSaveContext.linkAge = LINK_AGE_CHILD;
         gSaveContext.entranceIndex = 107;
+        gSaveContext.cutsceneIndex = 0x8000;
         gSaveContext.healthCapacity = 48;
         gSaveContext.health = 48;
         gSaveContext.magicLevel = 0;
@@ -582,7 +583,7 @@ void SaveManager::InitFileNormal() {
             gSaveContext.inventory.items[item] = sItems[item];
         }
 
-        static std::array<s8, 16> sAmmo = { 5, 5, 0, 30, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        static std::array<s8, 16> sAmmo = { 5, 5, 5, 30, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         for (int ammo = 0; ammo < ARRAY_COUNT(gSaveContext.inventory.ammo); ammo++) {
             gSaveContext.inventory.ammo[ammo] = sAmmo[ammo];
         }
