@@ -1125,8 +1125,10 @@ void BossGoma_Defeated(BossGoma* this, PlayState* play) {
                 this->timer = 70;
                 this->decayingProgress = 0;
                 this->subCameraFollowSpeed = 0.0f;
-                Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
-                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                if (!gSaveContext.isBossRush) {
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
+                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                }
             }
             break;
 
@@ -1157,8 +1159,13 @@ void BossGoma_Defeated(BossGoma* this, PlayState* play) {
                     }
                 }
 
-                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, childPos.x,
-                                   this->actor.world.pos.y, childPos.z, 0, 0, 0, WARP_DUNGEON_CHILD);
+                if (!gSaveContext.isBossRush) {
+                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, childPos.x,
+                                       this->actor.world.pos.y, childPos.z, 0, 0, 0, WARP_DUNGEON_CHILD);
+                } else {
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, childPos.x, this->actor.world.pos.y,
+                                childPos.z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                }
                 Flags_SetClear(play, play->roomCtx.curRoom.num);
             }
 

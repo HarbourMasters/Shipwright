@@ -1108,11 +1108,16 @@ void BossMo_Tentacle(BossMo* this, PlayState* play) {
                         BossMo_SpawnDroplet(MO_FX_DROPLET, (BossMoEffect*)play->specialEffects, &spD4, &spE0,
                                             ((300 - indS1) * .0015f) + 0.13f);
                     }
-                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1,
-                                       this->actor.world.pos.x, -280.0f, this->actor.world.pos.z, 0, 0, 0,
-                                       WARP_DUNGEON_ADULT);
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x + 200.0f,
-                                -280.0f, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                    if (!gSaveContext.isBossRush) {
+                        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1,
+                                           this->actor.world.pos.x, -280.0f, this->actor.world.pos.z, 0, 0, 0,
+                                           WARP_DUNGEON_ADULT);
+                        Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x + 200.0f,
+                                    -280.0f, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                    } else {
+                        Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, this->actor.world.pos.x, -280.0f,
+                                    this->actor.world.pos.z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                    }
                     Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS_CLEAR);
                     Flags_SetClear(play, play->roomCtx.curRoom.num);
                 }
