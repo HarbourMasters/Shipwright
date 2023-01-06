@@ -757,7 +757,8 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Fixes camera getting stuck on collision when standing still, also fixes slight shift back in camera when stop moving");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Hanging Ledge Swing Rate", "gFixHangingLedgeSwingRate", true, false);
                 UIWidgets::Tooltip("Fixes camera swing rate when player falls of a ledge and camera swings around");
-
+                UIWidgets::PaddedEnhancementCheckbox("Fix OGC Respawn Softlock", "gOGCSoftlockFix", true, false);
+                UIWidgets::Tooltip("Fixes a softlock where exiting Ganon's Castle without the rainbow bridge present repeatedly respawns Link over the lava");
                 ImGui::EndMenu();
             }
 

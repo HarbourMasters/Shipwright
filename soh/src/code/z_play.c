@@ -2091,6 +2091,14 @@ void Play_SetupRespawnPoint(PlayState* play, s32 respawnMode, s32 playerParams) 
     if ((play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA)) {
         roomIndex = play->roomCtx.curRoom.num;
         entranceIndex = gSaveContext.entranceIndex;
+
+        // OGC Respawn Softlock Fix
+        if (CVar_GetS32("gOGCSoftlockFix", 0) && !Flags_GetEventChkInf(0x4D)
+            && entranceIndex == 0x023D && LINK_IS_ADULT) {
+            player->actor.world.pos.z = 652.0f;
+            gSaveContext.entranceSpeed = 0.0f;
+        }
+
         Play_SetRespawnData(play, respawnMode, entranceIndex, roomIndex, playerParams,
                                 &player->actor.world.pos, player->actor.shape.rot.y);
     }
