@@ -31,6 +31,10 @@ void Sram_InitDebugSave(void) {
     Save_InitFile(true);
 }
 
+void Sram_InitBossRushSave(void) {
+    Save_InitFile(false);
+}
+
 // RANDOTODO replace most of these GiveLink functions with calls to
 // Item_Give in z_parameter, we'll need to update Item_Give to ensure
 // nothing breaks when calling it without a valid play first

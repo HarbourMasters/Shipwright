@@ -897,7 +897,7 @@ void func_80083108(PlayState* play) {
                     Interface_ChangeAlpha(12);
                 }
             }
-        } else if (play->sceneNum == SCENE_KENJYANOMA) {
+        } else if (play->sceneNum == SCENE_KENJYANOMA && !gSaveContext.isBossRush) {
             Interface_ChangeAlpha(1);
         } else if (play->sceneNum == SCENE_TURIBORI) {
             gSaveContext.unk_13E7 = 2;

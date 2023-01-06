@@ -13,19 +13,15 @@
 #define NORMAL_QUEST 0
 #define MASTER_QUEST 1
 #define RANDOMIZER_QUEST 2
+#define BOSSRUSH_QUEST 3
 #define MIN_QUEST (ResourceMgr_GameHasOriginal() ? NORMAL_QUEST : MASTER_QUEST)
-u8 getMaxQuest() {
-    if ((strnlen(CVar_GetString("gSpoilerLog", ""), 1) != 0)) {
-        return RANDOMIZER_QUEST;
+#define MAX_QUEST BOSSRUSH_QUEST
+u8 hasRandomizerQuest() {
+    if (strnlen(CVar_GetString("gSpoilerLog", ""), 1) != 0) {
+        return 1;
     }
-
-    if (ResourceMgr_GameHasMasterQuest()) {
-        return MASTER_QUEST;
-    }
-
-    return NORMAL_QUEST;
+    return 0;
 }
-#define MAX_QUEST getMaxQuest()
 
 void FileChoose_DrawTextureI8(GraphicsContext* gfxCtx, const void* texture, s16 texWidth, s16 texHeight, s16 rectLeft, s16 rectTop,
                          s16 rectWidth, s16 rectHeight, u16 dsdx, u16 dtdy) {
@@ -484,24 +480,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
             if (!Save_GetSaveMetaInfo(this->buttonIndex)->valid) {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                 this->prevConfigMode = this->configMode;
-                if (MIN_QUEST != MAX_QUEST) {
-                    this->configMode = CM_ROTATE_TO_QUEST_MENU;
-                } else {
-                    this->configMode = CM_ROTATE_TO_NAME_ENTRY;
-                    gSaveContext.isMasterQuest = MIN_QUEST == MASTER_QUEST;
-                    this->questType[this->buttonIndex] = MIN_QUEST;
-                    CVar_SetS32("gOnFileSelectNameEntry", 1);
-                    this->kbdButton = FS_KBD_BTN_NONE;
-                    this->charPage = FS_CHAR_PAGE_ENG;
-                    this->kbdX = 0;
-                    this->kbdY = 0;
-                    this->charIndex = 0;
-                    this->charBgAlpha = 0;
-                    this->newFileNameCharCount = 0;
-                    this->nameEntryBoxPosX = 120;
-                    this->nameEntryBoxAlpha = 0;
-                    memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, &emptyName, 8);
-                }
+                this->configMode = CM_ROTATE_TO_QUEST_MENU;
                 this->logoAlpha = 0;
             } else if(!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(this->buttonIndex))) {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -665,24 +644,23 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
             this->questType[this->buttonIndex] += 1;
-            if (this->questType[this->buttonIndex] == MASTER_QUEST && !ResourceMgr_GameHasMasterQuest()) {
-                // the only case not handled by the MIN/MAX_QUEST logic below. This will either put it at 
-                // above MAX_QUEST in which case it will wrap back around, or it will put it on MAX_QUEST
-                // in which case if MAX_QUEST even is that number it will be a valid selection that won't
-                // crash.
+            if ((this->questType[this->buttonIndex] == MASTER_QUEST && !ResourceMgr_GameHasMasterQuest()) || 
+                (this->questType[this->buttonIndex] == RANDOMIZER_QUEST && !hasRandomizerQuest())) {
+                // If Master Quest is selected without a Master Quest OTR present or when Randomizer Quest is
+                // selected without a loaded Randomizer seed, skip past it.
                 this->questType[this->buttonIndex] += 1;
             }
         } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
             this->questType[this->buttonIndex] -= 1;
-            if (this->questType[this->buttonIndex] == MASTER_QUEST && !ResourceMgr_GameHasMasterQuest()) {
-                // the only case not handled by the MIN/MAX_QUEST logic below. This will either put it at
-                // below MIN_QUEST in which case it will wrap back around, or it will put it on MIN_QUEST
-                // in which case if MIN_QUEST even is that number it will be a valid selection that won't
-                // crash.
+            if ((this->questType[this->buttonIndex] == MASTER_QUEST && !ResourceMgr_GameHasMasterQuest()) ||
+                (this->questType[this->buttonIndex] == RANDOMIZER_QUEST && !hasRandomizerQuest())) {
+                // If Master Quest is selected without a Master Quest OTR present or when Randomizer Quest is
+                // selected without a loaded Randomizer seed, skip past it.
                 this->questType[this->buttonIndex] -= 1;
             }
         }
 
+        // If current buttonIndex is higher or lower than the min/max value, wrap around.
         if (this->questType[this->buttonIndex] > MAX_QUEST) {
             this->questType[this->buttonIndex] = MIN_QUEST;
         } else if (this->questType[this->buttonIndex] < MIN_QUEST) {
@@ -693,25 +671,37 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+
         gSaveContext.isMasterQuest = this->questType[this->buttonIndex] == MASTER_QUEST;
         gSaveContext.n64ddFlag = this->questType[this->buttonIndex] == RANDOMIZER_QUEST;
-        osSyncPrintf("Selected Dungeon Quest: %d\n", gSaveContext.isMasterQuest);
-        this->prevConfigMode = this->configMode;
-        this->configMode = CM_ROTATE_TO_NAME_ENTRY;
-        this->logoAlpha = 0;
-        CVar_SetS32("gOnFileSelectNameEntry", 1);
-        this->kbdButton = FS_KBD_BTN_NONE;
-        this->charPage = FS_CHAR_PAGE_ENG;
-        this->kbdX = 0;
-        this->kbdY = 0;
-        this->charIndex = 0;
-        this->charBgAlpha = 0;
-        this->newFileNameCharCount = 0;
-        this->nameEntryBoxPosX = 120;
-        this->nameEntryBoxAlpha = 0;
-        memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, &emptyName, 8);
-        return;
+        gSaveContext.isBossRush = this->questType[this->buttonIndex] == BOSSRUSH_QUEST;
+
+        if (this->questType[this->buttonIndex] == BOSSRUSH_QUEST) {
+            this->buttonIndex = 0xFE;
+            this->menuMode = FS_MENU_MODE_SELECT;
+            this->selectMode = SM_FADE_OUT;
+            this->prevConfigMode = this->configMode;
+            this->configMode = CM_FADE_IN_START;
+            return;
+        } else {
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            osSyncPrintf("Selected Dungeon Quest: %d\n", gSaveContext.isMasterQuest);
+            this->prevConfigMode = this->configMode;
+            this->configMode = CM_ROTATE_TO_NAME_ENTRY;
+            this->logoAlpha = 0;
+            CVar_SetS32("gOnFileSelectNameEntry", 1);
+            this->kbdButton = FS_KBD_BTN_NONE;
+            this->charPage = FS_CHAR_PAGE_ENG;
+            this->kbdX = 0;
+            this->kbdY = 0;
+            this->charIndex = 0;
+            this->charBgAlpha = 0;
+            this->newFileNameCharCount = 0;
+            this->nameEntryBoxPosX = 120;
+            this->nameEntryBoxAlpha = 0;
+            memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, &emptyName, 8);
+            return;
+        }
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
@@ -1485,6 +1475,14 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, ResourceMgr_GameHasOriginal() ? gTitleZeldaShieldLogoTex : gTitleZeldaShieldLogoMQTex, 160, 160);
                 FileChoose_DrawRawImageRGBA32(this->state.gfxCtx, 182, 180, "assets/objects/object_mag/gTitleRandomizerSubtitleTex", 128, 32);
                 break;
+
+            case BOSSRUSH_QUEST:
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
+                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, ResourceMgr_GameHasOriginal() ? gTitleZeldaShieldLogoTex : gTitleZeldaShieldLogoMQTex, 160, 160);
+                FileChoose_DrawRawImageRGBA32(this->state.gfxCtx, 182, 180, "assets/objects/object_mag/gTitleBossRushSubtitleTex", 128, 32);
+                break;
         }
     } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY) {
         gDPPipeSync(POLY_OPA_DISP++);
@@ -2055,25 +2053,27 @@ void FileChoose_LoadGame(GameState* thisx) {
     u16 swordEquipMask;
     s32 pad;
 
+    Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+    gSaveContext.fileNum = this->buttonIndex;
+    gSaveContext.gameMode = 0;
+
     if ((this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVar_GetS32("gDebugEnabled", 0)) || this->buttonIndex == 0xFF) {
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        gSaveContext.fileNum = this->buttonIndex;
         if (this->buttonIndex == 0xFF) {
             Sram_InitDebugSave();
         } else {
             Sram_OpenSave();
         }
-        gSaveContext.gameMode = 0;
         SET_NEXT_GAMESTATE(&this->state, Select_Init, SelectContext);
-        this->state.running = false;
     } else {
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        gSaveContext.fileNum = this->buttonIndex;
-        Sram_OpenSave();
-        gSaveContext.gameMode = 0;
+        if (this->buttonIndex == 0xFE) {
+            Sram_InitBossRushSave();
+        } else {
+            Sram_OpenSave();
+        }
         SET_NEXT_GAMESTATE(&this->state, Play_Init, PlayState);
-        this->state.running = false;
     }
+
+    this->state.running = false;
 
     Randomizer_LoadSettings("");
     Randomizer_LoadHintLocations("");

@@ -544,7 +544,53 @@ void SaveManager::InitFileNormal() {
     gSaveContext.infTable[29] = 1;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
     gSaveContext.pendingSale = ITEM_NONE;
-    //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
+    // RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
+
+    if (gSaveContext.isBossRush) {
+        gSaveContext.linkAge = LINK_AGE_CHILD;
+        gSaveContext.entranceIndex = 107;
+        gSaveContext.healthCapacity = 48;
+        gSaveContext.health = 48;
+        gSaveContext.magicLevel = 0;
+        gSaveContext.magic = 0x30;
+        gSaveContext.isMagicAcquired = 1;
+
+        static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
+        for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
+            gSaveContext.playerName[i] = sPlayerName[i];
+        }
+
+        static std::array<u8, 8> sButtonItems = { ITEM_SWORD_KOKIRI, ITEM_STICK,  ITEM_BOMB, ITEM_NUT,
+                                                  ITEM_NONE,         ITEM_NONE, ITEM_NONE, ITEM_NONE };
+        for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.buttonItems); button++) {
+            gSaveContext.equips.buttonItems[button] = sButtonItems[button];
+        }
+
+        static std::array<u8, 7> sCButtonSlots = { SLOT_STICK,  SLOT_BOMB, SLOT_NUT, SLOT_NONE,
+                                                   SLOT_NONE, SLOT_NONE, SLOT_NONE };
+        for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); button++) {
+            gSaveContext.equips.cButtonSlots[button] = sCButtonSlots[button];
+        }
+
+        static std::array<u8, 24> sItems = {
+            ITEM_STICK,     ITEM_NUT,  ITEM_BOMB, ITEM_BOW,      ITEM_NONE,        ITEM_NONE,
+            ITEM_SLINGSHOT, ITEM_NONE, ITEM_NONE, ITEM_LONGSHOT, ITEM_NONE,        ITEM_NONE,
+            ITEM_BOOMERANG, ITEM_LENS, ITEM_NONE, ITEM_HAMMER,   ITEM_ARROW_LIGHT, ITEM_NONE,
+            ITEM_NONE,      ITEM_NONE, ITEM_NONE, ITEM_NONE,     ITEM_NONE,        ITEM_NONE,
+        };
+        for (int item = 0; item < ARRAY_COUNT(gSaveContext.inventory.items); item++) {
+            gSaveContext.inventory.items[item] = sItems[item];
+        }
+
+        static std::array<s8, 16> sAmmo = { 5, 5, 0, 30, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        for (int ammo = 0; ammo < ARRAY_COUNT(gSaveContext.inventory.ammo); ammo++) {
+            gSaveContext.inventory.ammo[ammo] = sAmmo[ammo];
+        }
+
+        gSaveContext.equips.equipment = 4369;
+        gSaveContext.inventory.equipment = 4947;
+        gSaveContext.inventory.upgrades = 1196105;
+    }
 }
 
 void SaveManager::InitFileDebug() {
@@ -658,7 +704,7 @@ void SaveManager::InitFileDebug() {
 }
 
 void SaveManager::SaveFile(int fileNum) {
-    if (fileNum == 0xFF) {
+    if (fileNum == 0xFF || fileNum == 0xFE) {
         return;
     }
 

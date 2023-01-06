@@ -1618,10 +1618,12 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
 
             if (this->unk_1DA == 820) {
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS_CLEAR);
-                Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART,
-                            Math_SinS(this->actor.shape.rot.y) * -50.0f + this->actor.world.pos.x,
-                            this->actor.world.pos.y,
-                            Math_CosS(this->actor.shape.rot.y) * -50.0f + this->actor.world.pos.z, 0, 0, 0, 0, true);
+                if (!gSaveContext.isBossRush) {
+                    Actor_Spawn(
+                        &play->actorCtx, play, ACTOR_ITEM_B_HEART,
+                        Math_SinS(this->actor.shape.rot.y) * -50.0f + this->actor.world.pos.x, this->actor.world.pos.y,
+                        Math_CosS(this->actor.shape.rot.y) * -50.0f + this->actor.world.pos.z, 0, 0, 0, 0, true);
+                }
             }
             if (this->unk_1DA == 600) {
                 camera = Play_GetCamera(play, MAIN_CAM);
@@ -1635,8 +1637,11 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
                 func_80064534(play, &play->csCtx);
                 func_8002DF54(play, &this->actor, 7);
-                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, -890.0f, -1523.76f,
-                                   -3304.0f, 0, 0, 0, WARP_DUNGEON_CHILD);
+                if (!gSaveContext.isBossRush) {
+                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, WARP_DUNGEON_CHILD);
+                } else {
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                }
                 this->skelAnime.playSpeed = 0.0f;
                 Flags_SetClear(play, play->roomCtx.curRoom.num);
             }
