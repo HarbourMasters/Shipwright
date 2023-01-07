@@ -55,6 +55,12 @@ enum SeqPlayers {
     /* 4 */ SEQ_MAX
 };
 
+const char* capeTypes[3] = {
+    "None",
+    "Cape", 
+    "Scarf",
+};
+
 namespace GameMenuBar {
 
     // MARK: - Properties
@@ -944,6 +950,17 @@ namespace GameMenuBar {
             }
             UIWidgets::PaddedEnhancementCheckbox("Skip Text", "gSkipText", true, false);
             UIWidgets::Tooltip("Holding down B skips text");
+            ImGui::Separator();
+            ImGui::Text("Link's Cape");
+            UIWidgets::EnhancementCombobox("gLinkCape", capeTypes, 3, 0);
+            UIWidgets::Tooltip("Gives Link Ganondorf's cape\nTime to get some drip");
+            if (CVar_GetS32("gLinkCape", 0) != 0) {
+                UIWidgets::EnhancementSliderFloat("Cape Length: %d", "##Cape_Length", "gLinkCapeLength", 0.5f, 9.5f, "", 3.5f, true);
+                UIWidgets::EnhancementSliderFloat("Cape Shoulders Width: %d", "##Cape_Width", "gLinkCapeWidth", 1.0f, 20.0f, "", 10.0f, true);
+                UIWidgets::EnhancementSliderFloat("Cape Side Sway Magnitude: %d", "##Cape_sideSwayMagnitude", "gLinkCapesideSwayMagnitude", -20.0f, 0.0f, "", 0.0f, true);
+                UIWidgets::EnhancementSliderFloat("Cape Gravity: %d", "##Cape_Gravity", "gLinkCapeGravity", -15.0f, -0.5f, "", -2.5f, true);
+            }
+            
 
          #ifdef __SWITCH__
             UIWidgets::Spacer(0);

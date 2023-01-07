@@ -172,20 +172,26 @@ void EnGanonMant_UpdateStrand(PlayState* play, EnGanonMant* this, Vec3f* root, V
     Vec3f sideSwayOffset;
 
     delta.y = 0;
+
+    if (CVar_GetS32("gLinkCape", 0) != 0) {
+        jointLength = CVar_GetFloat("gLinkCapeLength", 3.5f);
+    }
+
     if (this->actor.params == 0x23) {
         // Pushes all the strands away from the actor
         delta.x = 0.0f;
         delta.z = -30.0f;
         Matrix_RotateY(BINANG_TO_RAD(this->actor.shape.rot.y), MTXMODE_NEW);
         Matrix_MultVec3f(&delta, &posStep);
+
         for (i = 0; i < GANON_MANT_NUM_JOINTS; i++) {
             (pos + i)->x += posStep.x;
             (pos + i)->z += posStep.z;
         }
         // Set length
-        jointLength = 6.5f;
+        jointLength; 
     } else {
-        jointLength = 9.5f;
+        jointLength; 
     }
 
     for (i = 0; i < GANON_MANT_NUM_JOINTS; i++, pos++, vel++, rot++, nextPos++) {
@@ -352,7 +358,7 @@ void EnGanonMant_Update(Actor* thisx, PlayState* play) {
         this->attachShouldersTimer -= 1.0f;
     }
 
-    this->actor.shape.rot.y = ganon->actor.shape.rot.y;
+    this->actor.shape.rot.y = GET_PLAYER(play)->actor.shape.rot.y;
 
     if (this->tearTimer != 0) {
         this->tearTimer--;
