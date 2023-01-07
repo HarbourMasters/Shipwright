@@ -8,6 +8,7 @@
 #include "overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "objects/object_sa/object_sa.h"
+#include "soh/Enhancements/bossrush.h"
 
 #include "vt.h"
 
@@ -261,45 +262,7 @@ void func_8098E960(DemoSa* this, PlayState* play) {
             player->actor.world.rot.y = player->actor.shape.rot.y = this->actor.world.rot.y + 0x8000;
         } else {
             this->action = 1;
-            if (gSaveContext.linkAge == LINK_AGE_CHILD) {
-                // Forest Medallion (Gohma)
-                if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE)) {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -100, 6, -170, 0, 0, 0, WARP_DUNGEON_ADULT, false);
-                }
-                // Fire Medallion (King Dodongo)
-                if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN)) {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 100, 6, -170, 0, 0, 0, WARP_DUNGEON_ADULT, false);
-                }
-                // Water Medallion (Barinade)
-                if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY)) {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 199, 6, 0, 0, 0, 0, WARP_DUNGEON_ADULT, false);
-                }
-            } else {
-                // Light Medallion (Ganondorf)
-                if (CheckDungeonCount() == 8) {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -199, 6, 0, 0, 0, 0, WARP_DUNGEON_ADULT, false);
-                }
-                // Forest Medallion (Phantom Ganondorf)
-                if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE)) {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -100, 6, -170, 0, 0, 0, WARP_DUNGEON_ADULT, false);
-                }
-                // Fire Medallion (Volvagia)
-                if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE)) {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 100, 6, -170, 0, 0, 0, WARP_DUNGEON_ADULT, false);
-                }
-                // Water Medallion (Morpha)
-                if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 199, 6, 0, 0, 0, 0, WARP_DUNGEON_ADULT, false);
-                }
-                // Spirit Medallion (Twinrova)
-                if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE)) {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 100, 6, 170, 0, 0, 0, WARP_DUNGEON_ADULT, false);
-                }
-                // Shadow Medallion (Bongo Bongo)
-                if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE)) {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -100, 6, 170, 0, 0, 0, WARP_DUNGEON_ADULT, false);
-                }
-            }
+            BossRush_SpawnBlueWarps(play);
         }
     }
 }

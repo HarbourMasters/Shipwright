@@ -6,6 +6,7 @@
 #include "macros.h"
 #include <Hooks.h>
 #include <Cvar.h>
+#include "soh/Enhancements/bossrush.h"
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
 #include <spdlog/spdlog.h>
@@ -547,60 +548,7 @@ void SaveManager::InitFileNormal() {
     // RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 
     if (gSaveContext.isBossRush) {
-        gSaveContext.linkAge = LINK_AGE_CHILD;
-        gSaveContext.entranceIndex = 107;
-        gSaveContext.cutsceneIndex = 0x8000;
-        gSaveContext.healthCapacity = 48;
-        gSaveContext.health = 48;
-        gSaveContext.magicLevel = 0;
-        gSaveContext.magic = 0x30;
-        gSaveContext.isMagicAcquired = 1;
-
-        // Skip boss cutscenes
-        gSaveContext.eventChkInf[7] |= 1;    // gohma
-        gSaveContext.eventChkInf[7] |= 2;    // dodongo
-        gSaveContext.eventChkInf[7] |= 4;    // phantom ganon
-        gSaveContext.eventChkInf[7] |= 8;    // volvagia
-        gSaveContext.eventChkInf[7] |= 0x10; // morpha
-        gSaveContext.eventChkInf[7] |= 0x20; // twinrova
-        gSaveContext.eventChkInf[7] |= 0x40; // barinade
-        gSaveContext.eventChkInf[7] |= 0x80; // bongo bongo
-
-        static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
-        for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
-            gSaveContext.playerName[i] = sPlayerName[i];
-        }
-
-        static std::array<u8, 8> sButtonItems = { ITEM_SWORD_KOKIRI, ITEM_STICK,  ITEM_BOMB, ITEM_NUT,
-                                                  ITEM_NONE,         ITEM_NONE, ITEM_NONE, ITEM_NONE };
-        for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.buttonItems); button++) {
-            gSaveContext.equips.buttonItems[button] = sButtonItems[button];
-        }
-
-        static std::array<u8, 7> sCButtonSlots = { SLOT_STICK,  SLOT_BOMB, SLOT_NUT, SLOT_NONE,
-                                                   SLOT_NONE, SLOT_NONE, SLOT_NONE };
-        for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); button++) {
-            gSaveContext.equips.cButtonSlots[button] = sCButtonSlots[button];
-        }
-
-        static std::array<u8, 24> sItems = {
-            ITEM_STICK,     ITEM_NUT,  ITEM_BOMB, ITEM_BOW,      ITEM_NONE,        ITEM_NONE,
-            ITEM_SLINGSHOT, ITEM_NONE, ITEM_NONE, ITEM_LONGSHOT, ITEM_NONE,        ITEM_NONE,
-            ITEM_BOOMERANG, ITEM_LENS, ITEM_NONE, ITEM_HAMMER,   ITEM_ARROW_LIGHT, ITEM_NONE,
-            ITEM_NONE,      ITEM_NONE, ITEM_NONE, ITEM_NONE,     ITEM_NONE,        ITEM_NONE,
-        };
-        for (int item = 0; item < ARRAY_COUNT(gSaveContext.inventory.items); item++) {
-            gSaveContext.inventory.items[item] = sItems[item];
-        }
-
-        static std::array<s8, 16> sAmmo = { 5, 5, 5, 30, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-        for (int ammo = 0; ammo < ARRAY_COUNT(gSaveContext.inventory.ammo); ammo++) {
-            gSaveContext.inventory.ammo[ammo] = sAmmo[ammo];
-        }
-
-        gSaveContext.equips.equipment = 4369;
-        gSaveContext.inventory.equipment = 4947;
-        gSaveContext.inventory.upgrades = 1196105;
+        BossRush_InitSave();
     }
 }
 

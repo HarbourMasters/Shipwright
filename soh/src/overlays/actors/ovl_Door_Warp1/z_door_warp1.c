@@ -2,6 +2,7 @@
 #include "z_door_warp1.h"
 #include "objects/object_warp1/object_warp1.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/bossrush.h"
 
 #define FLAGS 0
 
@@ -811,75 +812,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
 
     if (this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF) {
         if (gSaveContext.isBossRush) {
-            if (play->sceneNum == SCENE_KENJYANOMA) {
-                f32 warpPosX = this->actor.world.pos.x;
-                f32 warpPosZ = this->actor.world.pos.z;
-                // Gohma & Phantom Ganon
-                if (warpPosX == -100 && warpPosZ == -170) {
-                    if (gSaveContext.linkAge == LINK_AGE_CHILD) {
-                        play->nextEntranceIndex = 0x040F;
-                    } else {
-                        play->nextEntranceIndex = 0x000C;
-                    }
-                // King Dodongo & Volvagia
-                } else if (warpPosX == 100 && warpPosZ == -170) {
-                    if (gSaveContext.linkAge == LINK_AGE_CHILD) {
-                        play->nextEntranceIndex = 0x040B;
-                    } else {
-                        play->nextEntranceIndex = 0x0305;
-                    }
-                // Barinade & Morb
-                } else if (warpPosX == 199 && warpPosZ == 0) {
-                    if (gSaveContext.linkAge == LINK_AGE_CHILD) {
-                        play->nextEntranceIndex = 0x0301;
-                    } else {
-                        play->nextEntranceIndex = 0x0417;
-                    }
-                // Twinrova
-                } else if (warpPosX == 100 && warpPosZ == 170) {
-                    play->nextEntranceIndex = 0x05EC;
-                // Bongo Bongo
-                } else if (warpPosX == -100 && warpPosZ == 170) {
-                    play->nextEntranceIndex = 0x0413;
-                // Ganondork
-                } else if (warpPosX == -199 && warpPosZ == 0) {
-                    play->nextEntranceIndex = 0x041F;
-                }
-            } else {
-                play->nextEntranceIndex = SCENE_HAIRAL_NIWA2;
-                switch (play->sceneNum) { 
-                    case SCENE_YDAN_BOSS:
-                        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE);
-                        break;
-                    case SCENE_DDAN_BOSS:
-                        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN);
-                        break;
-                    case SCENE_BDAN_BOSS:
-                        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY);
-                        break;
-                    case SCENE_MORIBOSSROOM:
-                        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE);
-                        break;
-                    case SCENE_FIRE_BS:
-                        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE);
-                        break;
-                    case SCENE_MIZUSIN_BS:
-                        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE);
-                        break;
-                    case SCENE_JYASINBOSS:
-                        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
-                        break;
-                    case SCENE_HAKADAN_BS:
-                        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
-                        break;
-                    default:
-                        break;
-                }
-
-                if (CheckDungeonCount() == 3) {
-                    play->linkAgeOnLoad = LINK_AGE_ADULT;
-                }
-            }
+            BossRush_HandleBlueWarp(this, play);
         } else if (play->sceneNum == SCENE_MORIBOSSROOM) {
             if (!(gSaveContext.eventChkInf[4] & 0x100)) {
                 gSaveContext.eventChkInf[4] |= 0x100;
