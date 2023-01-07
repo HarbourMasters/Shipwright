@@ -663,7 +663,8 @@ void func_80AE3C98(EnRd* this, PlayState* play) {
 
     if (SkelAnime_Update(&this->skelAnime)) {
         if (this->unk_30C == 0) {
-            if (!Flags_GetSwitch(play, this->unk_312 & 0x7F)) {
+            // Don't set this flag in Enemy Rando as it can overlap with other objects using the same flag.
+            if (!Flags_GetSwitch(play, this->unk_312 & 0x7F) && !CVar_GetS32("gRandomizedEnemies", 0)) {
                 Flags_SetSwitch(play, this->unk_312 & 0x7F);
             }
             if (this->unk_314 != 0) {
