@@ -255,6 +255,5 @@ void AreaTable_Init_JabuJabusBelly() {
              {
                  // Exits
                  Entrance(JABU_JABUS_BELLY_BOSS_ENTRYWAY, { [] { return false; } }),
-                 Entrance(JABU_JABUS_BELLY_ENTRYWAY, { [] { return JabuJabusBellyClear; } }),
              });
 }

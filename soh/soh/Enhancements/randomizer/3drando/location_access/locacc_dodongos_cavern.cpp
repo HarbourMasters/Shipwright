@@ -347,6 +347,5 @@ void AreaTable_Init_DodongosCavern() {
              {
                  // Exits
                  Entrance(DODONGOS_CAVERN_BOSS_ENTRYWAY, { [] { return true; } }),
-                 Entrance(DODONGOS_CAVERN_ENTRYWAY, { [] { return DodongosCavernClear; } }),
              });
 }

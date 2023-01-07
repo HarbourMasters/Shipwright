@@ -360,6 +360,5 @@ void AreaTable_Init_WaterTemple() {
         {
             // Exits
             Entrance(WATER_TEMPLE_BOSS_ENTRYWAY, { [] { return false; } }),
-            Entrance(WATER_TEMPLE_ENTRYWAY, { [] { return WaterTempleClear; } }),
         });
 }

@@ -465,6 +465,5 @@ void AreaTable_Init_FireTemple() {
              {
                  // Exits
                  Entrance(FIRE_TEMPLE_BOSS_ENTRYWAY, { [] { return false; } }),
-                 Entrance(FIRE_TEMPLE_ENTRYWAY, { [] { return FireTempleClear; } }),
              });
 }

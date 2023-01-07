@@ -465,6 +465,5 @@ void AreaTable_Init_ForestTemple() {
         {
             // Exits
             Entrance(FOREST_TEMPLE_BOSS_ENTRYWAY, { [] { return false; } }),
-            Entrance(FOREST_TEMPLE_ENTRYWAY, { [] { return ForestTempleClear; } }),
         });
 }

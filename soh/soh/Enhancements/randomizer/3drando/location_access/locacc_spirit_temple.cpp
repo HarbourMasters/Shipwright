@@ -271,6 +271,5 @@ void AreaTable_Init_SpiritTemple() {
         {
             // Exits
             Entrance(SPIRIT_TEMPLE_BOSS_ENTRYWAY, { [] { return false; } }),
-            Entrance(SPIRIT_TEMPLE_ENTRYWAY, { [] { return SpiritTempleClear; } }),
         });
 }
