@@ -164,6 +164,17 @@ string_view dungeonEntrancesDesc      = "Shuffle the pool of dungeon entrances, 
                                         "Temple, Bottom of the Well and Gerudo Training\n" //
                                         "Ground are opened for both adult and child.";     //
 /*------------------------------                                                           //
+|       BOSS ENTRANCES         |                                                           //
+------------------------------*/                                                           //
+string_view bossEntrancesDesc         = "Shuffle the pool of dungeon boss entrances.\n"    //
+                                        "This affects the boss rooms of all stone and\n"   //
+                                        "medallion dungeons.\n"                            //
+                                        "\n"                                               //
+                                        "Child and adult boss rooms can be shuffled\n"     //
+                                        "separately.\n"                                    //
+                                        "Child may be expected to defeat Phantom Ganon\n"  //
+                                        "and/or Bongo Bongo.";                             //
+/*------------------------------                                                           //
 |      OVERWORLD ENTRANCES     |                                                           //
 ------------------------------*/                                                           //
 string_view overworldEntrancesDesc    = "Shuffle the pool of Overworld entrances, which\n" //
@@ -238,7 +249,9 @@ string_view decoupledEntrancesDesc    = "Decouple entrances when shuffling them.
                                         "you came from when you go back through an\n"      //
                                         "entrance. This also adds the one-way entrance from"
                                         "Gerudo Valley to Lake Hylia in the pool of\n"     //
-                                        "overworld entrances when they are shuffled.";     //
+                                        "overworld entrances when they are shuffled.\n"    //
+                                        "Boss entrances are currently excluded from this\n"//
+                                        "and remain coupled regardless.";                  //
 /*------------------------------                                                           //
 |      BOMBCHUS IN LOGIC       |                                                           //
 ------------------------------*/                                                           //

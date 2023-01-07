@@ -1068,6 +1068,7 @@ typedef enum {
     RSK_DECOUPLED_ENTRANCES,
     RSK_STARTING_SKULLTULA_TOKEN,
     RSK_ALL_LOCATIONS_REACHABLE,
+    RSK_SHUFFLE_BOSS_ENTRANCES,
     RSK_MAX
 } RandomizerSettingKey;
 
@@ -1244,6 +1245,14 @@ typedef enum {
     RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON,
     RO_DUNGEON_ENTRANCE_SHUFFLE_MAX,
 } RandoOptionDungeonEntranceShuffle;
+
+//Shuffle Boss Room Entrance Settings (Off, Age Restricted, Full)
+typedef enum {
+    RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF,
+    RO_BOSS_ROOM_ENTRANCE_SHUFFLE_AGE_RESTRICTED,
+    RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL,
+    RO_BOSS_ROOM_ENTRANCE_SHUFFLE_MAX,
+} RandoOptionBossRoomEntranceShuffle;
 
 //Shuffle Interior Entrance Settings (Off, simple, all)
 typedef enum {

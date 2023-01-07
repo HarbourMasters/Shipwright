@@ -93,6 +93,12 @@ typedef enum {
 } ShuffleDungeonEntrancesSetting;
 
 typedef enum {
+    SHUFFLEBOSSES_OFF,
+    SHUFFLEBOSSES_AGE_RESTRICTED,
+    SHUFFLEBOSSES_FULL,
+} ShuffleBossEntrancesSetting;
+
+typedef enum {
     SHUFFLEINTERIORS_OFF,
     SHUFFLEINTERIORS_SIMPLE,
     SHUFFLEINTERIORS_ALL,
@@ -392,6 +398,7 @@ typedef struct {
     uint8_t startingAge;
     uint8_t resolvedStartingAge;
     uint8_t shuffleDungeonEntrances;
+    uint8_t shuffleBossEntrances;
     uint8_t shuffleOverworldEntrances;
     uint8_t shuffleInteriorEntrances;
     uint8_t shuffleGrottoEntrances;
@@ -908,6 +915,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern uint8_t ResolvedStartingAge;
   extern Option ShuffleEntrances;
   extern Option ShuffleDungeonEntrances;
+  extern Option ShuffleBossEntrances;
   extern Option ShuffleOverworldEntrances;
   extern Option ShuffleInteriorEntrances;
   extern Option ShuffleGrottoEntrances;
