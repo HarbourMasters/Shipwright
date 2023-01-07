@@ -49,6 +49,7 @@
 #include <Utils/StringHelper.h>
 #include <Hooks.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
+#include "Enhancements/presets.h"
 
 #include <Fast3D/gfx_pc.h>
 #include <Fast3D/gfx_rendering_api.h>
@@ -460,6 +461,10 @@ extern "C" void InitOTR() {
     } else {
         CVar_Clear("gLetItSnow");
     }
+
+    clearCvars(enhancementsCvars);
+    clearCvars(randomizerCvars);
+    applyPreset(glitchlessAnyShipPresetEntries);
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance = new CrowdControl();
     CrowdControl::Instance->Init();
@@ -515,7 +520,7 @@ extern "C" void Graph_StartFrame() {
     int32_t dwScancode = OTRGlobals::Instance->context->GetLastScancode();
     OTRGlobals::Instance->context->SetLastScancode(-1);
 
-    switch (dwScancode - 1) {
+    switch (0) {
         case SDL_SCANCODE_F5: {
             const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
             const SaveStateReturn stateReturn =

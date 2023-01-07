@@ -296,6 +296,7 @@ namespace GameControlEditor {
         ImVec2 cursor = ImGui::GetCursorPos();
         ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
         SohImGui::BeginGroupPanel("Misc Controls", ImGui::GetContentRegionAvail());
+        /*
         UIWidgets::PaddedEnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify", true, false);
         DrawHelpIcon("Hold the assigned button to change the maximum walking speed\nTo change the assigned button, go into the Ports tabs above");
          if (CVar_GetS32("gEnableWalkModify", 0)) {
@@ -307,6 +308,7 @@ namespace GameControlEditor {
             SohImGui::EndGroupPanel();
         }
         UIWidgets::Spacer(0);
+        */
         UIWidgets::PaddedEnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor");
         DrawHelpIcon("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
         UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");

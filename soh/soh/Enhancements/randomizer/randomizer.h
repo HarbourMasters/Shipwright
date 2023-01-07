@@ -94,6 +94,7 @@ extern "C" {
 #endif
 
 void Rando_Init(void);
+void GenerateRandomizerImgui();
 
 #ifdef __cplusplus
 }

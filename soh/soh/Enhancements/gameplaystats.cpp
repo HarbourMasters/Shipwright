@@ -158,6 +158,9 @@ void DrawStatsTracker(bool& open) {
     ImGui::TableSetupColumn("Timers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
     ImGui::TableNextColumn();
 
+    ImGui::Text("Speedrun Build:     ");
+    ImGui::SameLine();
+    ImGui::Text("0.0.3");
     DisplayTimeHHMMSS(totalTimer, "Total Game Time:    ", COLOR_WHITE);
     UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
     DisplayTimeHHMMSS(gSaveContext.sohStats.playTimer / 2, "Gameplay Time:      ", COLOR_WHITE);
@@ -168,10 +171,12 @@ void DrawStatsTracker(bool& open) {
     ImGui::EndTable();
 
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
-    ImGui::BeginTable("gameStatsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
+    ImGui::BeginTable("gameStatsTable", CVar_GetS32("gGameplayStatsHideCounts", 0) ? 1 : 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
 
     ImGui::TableSetupColumn("Timestamps", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+    if (!CVar_GetS32("gGameplayStatsHideCounts", 0)) {
     ImGui::TableSetupColumn("Counts", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+    }
     ImGui::TableHeadersRow();
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
@@ -184,6 +189,7 @@ void DrawStatsTracker(bool& open) {
         }
     }
 
+    if (!CVar_GetS32("gGameplayStatsHideCounts", 0)) {
     ImGui::TableNextColumn();
 
     DisplayStat("Enemies Defeated:      ", enemiesDefeated);
@@ -330,11 +336,13 @@ void DrawStatsTracker(bool& open) {
             ImGui::TreePop();
         }
     }
+    }
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
 
     ImGui::Text("Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving.");
+    UIWidgets::EnhancementCheckbox("Hide Counts", "gGameplayStatsHideCounts");
 
     ImGui::End();
 }
@@ -379,6 +387,22 @@ void SetupDisplayNames() {
     strcpy(timestampDisplayName[ITEM_SCALE_GOLDEN],     "Gold Scale:         ");
     strcpy(timestampDisplayName[ITEM_WALLET_ADULT],     "Adult's Wallet:     ");
     strcpy(timestampDisplayName[ITEM_WALLET_GIANT],     "Giant's Wallet:     ");
+    strcpy(timestampDisplayName[ITEM_WEIRD_EGG],        "Weird Egg:          ");
+    strcpy(timestampDisplayName[ITEM_GERUDO_CARD],      "Gerudo's Card:      ");
+    strcpy(timestampDisplayName[ITEM_COJIRO],           "Cojiro:             ");
+    strcpy(timestampDisplayName[ITEM_POCKET_EGG],       "Pocket Egg:         ");
+    strcpy(timestampDisplayName[ITEM_MASK_SKULL],       "Skull Mask:         ");
+    strcpy(timestampDisplayName[ITEM_MASK_SPOOKY],      "Spooky Mask:        ");
+    strcpy(timestampDisplayName[ITEM_MASK_KEATON],      "Keaton Mask:        ");
+    strcpy(timestampDisplayName[ITEM_MASK_BUNNY],       "Bunny Hood:         ");
+    strcpy(timestampDisplayName[ITEM_ODD_MUSHROOM],     "Odd Mushroom:       ");
+    strcpy(timestampDisplayName[ITEM_ODD_POTION],       "Odd Potion:         ");
+    strcpy(timestampDisplayName[ITEM_SAW],              "Poacher's Saw:      ");
+    strcpy(timestampDisplayName[ITEM_SWORD_BROKEN],     "Goron Sword (Broke):");
+    strcpy(timestampDisplayName[ITEM_PRESCRIPTION],     "Prescription:       ");
+    strcpy(timestampDisplayName[ITEM_FROG],             "Eyeball Frog:       ");
+    strcpy(timestampDisplayName[ITEM_EYEDROPS],         "Eye Drops:          ");
+    strcpy(timestampDisplayName[ITEM_CLAIM_CHECK],      "Claim Check:        ");
     strcpy(timestampDisplayName[ITEM_SONG_MINUET],      "Minuet of Forest:   ");
     strcpy(timestampDisplayName[ITEM_SONG_BOLERO],      "Bolero of Fire:     ");
     strcpy(timestampDisplayName[ITEM_SONG_SERENADE],    "Serenade of Water:  ");

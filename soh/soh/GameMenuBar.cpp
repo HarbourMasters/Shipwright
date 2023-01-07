@@ -310,6 +310,7 @@ namespace GameMenuBar {
 
         if (ImGui::BeginMenu("Enhancements"))
         {
+            /*
             DrawPresetSelector(PRESET_TYPE_ENHANCEMENTS);
 
             UIWidgets::Spacer(0);
@@ -793,6 +794,8 @@ namespace GameMenuBar {
 
             UIWidgets::Spacer(0);
 
+            */
+
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
             ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
@@ -936,6 +939,7 @@ namespace GameMenuBar {
                 ImGui::PopStyleVar(1);
                 UIWidgets::Spacer(0);
             }
+            /*
             UIWidgets::EnhancementCheckbox("Disable LOD", "gDisableLOD");
             UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
             if (UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance", true, false)) {
@@ -962,6 +966,7 @@ namespace GameMenuBar {
             }
             
 
+            */
          #ifdef __SWITCH__
             UIWidgets::Spacer(0);
             int slot = CVar_GetS32("gSwitchPerfMode", (int)Ship::SwitchProfiles::STOCK);
@@ -985,6 +990,7 @@ namespace GameMenuBar {
 
         ImGui::SetCursorPosY(0.0f);
 
+        /*
         if (ImGui::BeginMenu("Cheats"))
         {
             if (ImGui::BeginMenu("Infinite...")) {
@@ -1341,5 +1347,6 @@ namespace GameMenuBar {
 
             ImGui::EndMenu();
         }
+        */
     }
 }
