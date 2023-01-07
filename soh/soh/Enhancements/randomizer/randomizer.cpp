@@ -46,6 +46,7 @@ const std::string Randomizer::merchantMessageTableID = "RandomizerMerchants";
 const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
 const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
+const std::string Randomizer::randoMiscHintsTableID = "RandomizerMiscHints";
 
 static const char* englishRupeeNames[81] = {
     "Rupees",       "Bitcoin",       "Bananas",      "Cornflakes", "Gummybears",   "Floopies",    "Dollars",
@@ -238,6 +239,16 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "World Settings:Decouple Entrances", RSK_DECOUPLED_ENTRANCES },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
+    { "Misc Settings:ToT Altar Hint", RSK_TOT_ALTAR_HINT },
+    { "Misc Settings:Ganondorf LA Hint", RSK_GANONDORF_LIGHT_ARROWS_HINT },
+    { "Misc Settings:Dampe's Diary Hint", RSK_DAMPES_DIARY_HINT },
+    { "Misc Settings:10 GS Hint", RSK_KAK_10_SKULLS_HINT },
+    { "Misc Settings:20 GS Hint", RSK_KAK_20_SKULLS_HINT },
+    { "Misc Settings:30 GS Hint", RSK_KAK_30_SKULLS_HINT },
+    { "Misc Settings:40 GS Hint", RSK_KAK_40_SKULLS_HINT },
+    { "Misc Settings:50 GS Hint", RSK_KAK_50_SKULLS_HINT },
+    { "Misc Settings:Warp Song Hints", RSK_WARP_SONG_HINTS },
+    { "Misc Settings:Scrub Text Hint", RSK_SCRUB_TEXT_HINT },
     { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
     { "Misc Settings:Blue Fire Arrows", RSK_BLUE_FIRE_ARROWS },
     { "Misc Settings:Sunlight Arrows", RSK_SUNLIGHT_ARROWS },
@@ -339,6 +350,29 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::hintMessageTableID, hintLocation.check, { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, hintLocation.hintText, hintLocation.hintText, hintLocation.hintText });
     }
+
+    //Extra Hints
+    CustomMessageManager::Instance->ClearMessageTable(Randomizer::randoMiscHintsTableID);
+    CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::randoMiscHintsTableID);
+
+    CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE,
+            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, 
+                "Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you my&%b{{check}}%w!",
+                "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du %r{{params}} Skulltulas&%wzerstörst und ich werde dir dafür&%b{{check}} %wgeben!",
+                "Yeaaarrgh! Je suis maudit!^Détruit encore %r{{params}} Araignées de&la Malédiction%w et j'aurai quelque&chose à te donner!&%b({{check}})",
+            }
+        );
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY,
+            {
+                TEXTBOX_TYPE_BLUE,
+                TEXTBOX_POS_TOP,
+                gSaveContext.dampeText,
+                gSaveContext.dampeText,
+                gSaveContext.dampeText
+            }
+        );
 
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT,
         { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
@@ -681,6 +715,16 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_BLUE_FIRE_ARROWS:
                     case RSK_SUNLIGHT_ARROWS:
                     case RSK_BOMBCHUS_IN_LOGIC:
+                    case RSK_TOT_ALTAR_HINT:
+                    case RSK_GANONDORF_LIGHT_ARROWS_HINT:
+                    case RSK_DAMPES_DIARY_HINT:
+                    case RSK_KAK_10_SKULLS_HINT:
+                    case RSK_KAK_20_SKULLS_HINT:
+                    case RSK_KAK_30_SKULLS_HINT:
+                    case RSK_KAK_40_SKULLS_HINT:
+                    case RSK_KAK_50_SKULLS_HINT:
+                    case RSK_WARP_SONG_HINTS:
+                    case RSK_SCRUB_TEXT_HINT:
                     case RSK_SHUFFLE_ENTRANCES:
                     case RSK_SHUFFLE_OVERWORLD_ENTRANCES:
                     case RSK_SHUFFLE_GROTTO_ENTRANCES:
@@ -1086,6 +1130,11 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         std::string formattedGanonJsonText = FormatJsonHintText(ganonJsonText);
         strncpy(gSaveContext.ganonText, formattedGanonJsonText.c_str(), sizeof(gSaveContext.ganonText) - 1);
         gSaveContext.ganonText[sizeof(gSaveContext.ganonText) - 1] = 0;
+
+        std::string dampeJsonText = spoilerFileJson["dampeText"].get<std::string>();
+        std::string formattedDampeJsonText = FormatJsonHintText(dampeJsonText);
+        strncpy(gSaveContext.dampeText, formattedDampeJsonText.c_str(), sizeof(gSaveContext.dampeText) - 1);
+        gSaveContext.dampeText[sizeof(gSaveContext.dampeText) - 1] = 0;
 
         std::string warpMinuetJsonText = spoilerFileJson["warpMinuetText"].get<std::string>();
         strncpy(gSaveContext.warpMinuetText, warpMinuetJsonText.c_str(), sizeof(gSaveContext.warpMinuetText) - 1);
@@ -2270,6 +2319,10 @@ std::string Randomizer::GetGanonHintText() const {
     return ganonHintText;
 }
 
+std::string Randomizer::GetDampeText() const {
+    return dampeText;
+}
+
 // There has been some talk about potentially just using the RC identifier to store flags rather than randomizer inf, so
 // for now we're not going to store randomzierInf in the randomizer check objects, we're just going to map them 1:1 here
 std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
@@ -2438,6 +2491,17 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                 case 15120:
                     specialRc = RC_TOT_RIGHT_GOSSIP_STONE;
                     break;
+            }
+            break;
+        case SCENE_KINSUTA:
+            if (actorId == ACTOR_EN_SSH) {
+                switch (actorParams) { // actor params are used to differentiate between textboxes
+                    case 1: specialRc = RC_KAK_10_GOLD_SKULLTULA_REWARD; break;
+                    case 2: specialRc = RC_KAK_20_GOLD_SKULLTULA_REWARD; break;
+                    case 3: specialRc = RC_KAK_30_GOLD_SKULLTULA_REWARD; break;
+                    case 4: specialRc = RC_KAK_40_GOLD_SKULLTULA_REWARD; break;
+                    case 5: specialRc = RC_KAK_50_GOLD_SKULLTULA_REWARD; break;
+                }
             }
             break;
         case SCENE_SPOT01:
@@ -2704,6 +2768,16 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES] = CVar_GetS32("gRandomizeShuffleFrogSongRupees", 0);
     cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", RO_ITEM_POOL_BALANCED);
     cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", RO_ICE_TRAPS_NORMAL);
+    cvarSettings[RSK_TOT_ALTAR_HINT] = CVar_GetS32("gRandomizeAltarHint", RO_GENERIC_ON);
+    cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT] = CVar_GetS32("gRandomizeLAHint", RO_GENERIC_ON);
+    cvarSettings[RSK_DAMPES_DIARY_HINT] = CVar_GetS32("gRandomizeDampeHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_WARP_SONG_HINTS] = CVar_GetS32("gRandomizeWarpSongText", RO_GENERIC_OFF);
+    cvarSettings[RSK_SCRUB_TEXT_HINT] = CVar_GetS32("gRandomizeScrubText", RO_GENERIC_OFF);
+    cvarSettings[RSK_KAK_10_SKULLS_HINT] = CVar_GetS32("gRandomize10GSHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_KAK_20_SKULLS_HINT] = CVar_GetS32("gRandomize20GSHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_KAK_30_SKULLS_HINT] = CVar_GetS32("gRandomize30GSHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_KAK_40_SKULLS_HINT] = CVar_GetS32("gRandomize40GSHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_KAK_50_SKULLS_HINT] = CVar_GetS32("gRandomize50GSHint", RO_GENERIC_OFF);
     cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", RO_GOSSIP_STONES_NEED_NOTHING);
     cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", RO_HINT_CLARITY_CLEAR);
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", RO_HINT_DIST_BALANCED);
@@ -3904,6 +3978,38 @@ void DrawRandoEditor(bool& open) {
                 }
 
                 UIWidgets::PaddedSeparator();
+                
+                //Extra Hints
+                ImGui::Text("Extra Hints");
+                UIWidgets::InsertHelpHoverText(
+                    "This setting adds some hints at locations other than Gossip Stones.\n\n"
+                    "House of Skulltula: # - Talking to a cursed House of Skulltula resident will tell you the reward they will give you for obtaining that many tokens."
+                );
+                
+                ImGui::Indent();
+                //Altar, Light Arrows, and Warp Songs are enabled by default
+                UIWidgets::PaddedEnhancementCheckbox("Altar Text", "gRandomizeAltarHint", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+                UIWidgets::InsertHelpHoverText("Reading the Temple of Time altar as child will tell you the locations of the Spiritual Stones.\n"
+                    "Reading the Temple of Time altar as adult will tell you the locations of the Medallions, as well as the conditions for building the Rainbow Bridge and getting the Boss Key for Ganon's Castle.");
+                UIWidgets::PaddedEnhancementCheckbox("Ganondorf (Light Arrows)", "gRandomizeLAHint", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+                UIWidgets::InsertHelpHoverText("Talking to Ganondorf in his boss room will tell you the location of the Light Arrows. If this option is enabled and Ganondorf is reachable without Light Arrows, Gossip Stones will never hint the Light Arrows.");
+                UIWidgets::PaddedEnhancementCheckbox("Dampe's Diary (Hookshot)", "gRandomizeDampeHint", true, false);
+                UIWidgets::InsertHelpHoverText("Reading the diary of Dampé the gravekeeper as adult will tell you the location of one of the Hookshots.");
+                UIWidgets::PaddedEnhancementCheckbox("Warp Song text", "gRandomizeWarpSongText", true, false, !CVar_GetS32("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF),
+                 "This option is disabled since warp songs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
+                UIWidgets::InsertHelpHoverText("Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)");
+                UIWidgets::PaddedEnhancementCheckbox("Scrub Item text", "gRandomizeScrubText", true, false, !CVar_GetS32("gRandomizeShuffleScrubs", RO_GENERIC_ON),
+                 "This option is disabled since scrubs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
+                UIWidgets::InsertHelpHoverText("Business scrubs will reveal the identity of what they're selling.");
+                UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 10", "gRandomize10GSHint", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 20", "gRandomize20GSHint", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 30", "gRandomize30GSHint", true, false);                
+                UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 40", "gRandomize40GSHint", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 50", "gRandomize50GSHint", true, false);
+                ImGui::Unindent();
+
+
+                UIWidgets::PaddedSeparator();
 
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
@@ -4301,6 +4407,27 @@ CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u
     return messageEntry;
 }
 
+CustomMessageEntry Randomizer::GetCursedSkullMessage(s16 params) {
+    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE);
+    RandomizerCheck rc = GetCheckFromActor(ACTOR_EN_SSH, SCENE_KINSUTA, params);
+    RandomizerGet itemGet = this->itemLocations[rc].rgID;
+    std::vector<std::string> itemName;
+    if (itemGet == RG_ICE_TRAP) {
+        itemGet = this->itemLocations[rc].fakeRgID;
+        itemName = {
+            std::string(this->itemLocations[rc].trickName),
+            std::string(this->itemLocations[rc].trickName),
+            std::string(this->itemLocations[rc].trickName)
+        };
+    } else {
+        itemName = EnumToSpoilerfileGetName[itemGet];
+    }
+
+    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{params}}", std::to_string(params*10));
+    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{check}}", itemName[0], itemName[1], itemName[2]);
+    return messageEntry;
+}
+
 const char* mapGetItemHints[3][2] = {
     { " It's ordinary.", " It's masterful!" },
     { "&Sieht aus wie immer.", " &Man kann darauf die Worte&%r\"Master Quest\"%w entziffern..." },
@@ -4603,6 +4730,76 @@ void CreateIceTrapRandoMessages() {
                                               "Pour Noël, cette année, tu&n'auras que du %BCHARBON!&%rJoyeux Noël%w!" });
 }
 
+CustomMessageMinimal FireTempleGoronMessages[NUM_GORON_MESSAGES] = {
+    {
+        "Are you the one they call %g@%w?^You look really weird for %rDarunia's kid.%w&Are you adopted?",
+        "Du bist also der, den sie @ nennen?^Du siehst nicht aus als wärst du&%rDarunias Kind.%w Bist du adoptiert?",
+        "C'est toi qu'on appelle %g@%w?^Tu es vraiment bizarre pour être&le %rfils du Chef%w. Tu as été adopté?",
+    },
+    {
+        "Thank Hylia! I was so worried about&when my teacher would let me get&out of detention.^I gotta go home and see my parents.",
+        "Ich wollte nur dieses Ding hier wieder&in seine Truhe zurücklegen, weil...^...gehört mir ja eigentlich nicht,&weißt du?^Doch dann ging plötzlich dieses&Tor hinter mir zu.&Danke für die Rettung.",
+        "Par les déesses!&Mon Frère?!&C'est bien toi?&Comment ça on ne se connaît pas?^Tu trouves vraiment que je&ressemble à n'importe quel Goron?",
+    },
+    {
+        "How long has it been, do you know?^%r{{days}}%w days!?^Oh no, and it's %r\x1F%w?&I have to check on my cake!!",
+        "Weißt du zufällig, wie viele Tage&vergangen sind?^%r{{days}}%w Tage!?^Oh je, und es ist %r\x1F%w Uhr? Ich&muss dringend nach meinem Kuchen&sehen!!!",
+        "Cela fait combien de temps que&je suis enfermé ici?&Non mais je ne vais pas crier.^COMBIEN?! %r{{days}}%w JOURS!?^En plus il est %r\x1F%w...&Il faut vraiment que je rentre...",
+    },
+    {
+        //0x39C7 - ganon laugh
+        "\x12\x39\xC7You fell into my %rtrap!%w&Foolish boy, it was me, Ganondorf!!!^...whoa, where am I?&What happened?^Weird.",
+        "\x12\x39\xC7""Du bist mir in die %rFalle%w gegangen!&Du Narr, ich bin es, %rGanondorf%w!!!^...Huch? Wo bin ich? Was ist passiert?^Seltsam...",
+        "\x12\x39\xC7Tu es tombé dans mon %rpiège%w!&Tu croyais que j'étais un Goron mais,&c'était moi! %rGanondorf%w!^...Hein? Où suis-je?&Que s'est-il passé?",
+    },
+    {
+        "Thanks, but I don't know if I wanna go&just yet...^Hmm...^...^...^...^...^...maybe I can come back later.&Bye bye.",
+        "Danke für die Rettung, aber&eigentlich finde ich es hier ganz&nett...^Hmm...^...^...^...^...^...Naja, ich kann ja jederzeit&wiederkommen. Man sieht sich.",
+        "Merci, mais je me sens plus en&sécurité ici...^...^...^...^...^Hmm...^...Tout compte fait, je vais y aller.&A plus tard.",
+    },
+    {
+        "Do you know about %b\x9f%w?&It's this weird symbol that's been&in my dreams lately...^Apparently, you pressed it %b{{a_btn}}%w times.^Wow."
+        "Weißt du über %b\x9f%w bescheid?&Es sind Symbole, die mir&in letzter Zeit öfter in&meinen Träumen erschienen sind...^Es scheint, dass du sie schon&%b{{a_btn}}%w mal betätigt hast.^Faszinierend..."
+        "Tu as déjà entendu parler du&symbole %b\x9f%w?&C'est un symbole bizarre qui est&apparu dans mes rêves dernièrement...^Apparemment, tu as appuyé dessus&%b{{a_btn}}%w fois.^Wow..."
+    },
+    {
+        "\x13\x1A""Boy, you must be hot!&Get yourself a bottle of&%rLon Lon Milk%w right away and cool&down, for only %g30%w rupees!",
+        "\x13\x1A""Hey, ist dir nicht zu warm?&Besorg dir doch eine Flasche&%rLon Lon-Milch%w, um dich&abzukühlen.^Kostet dich auch nur %g30%w Rubine!",
+        "\x13\x1A""Woah! Tu dois avoir chaud!&Tu savais que tu pouvais acheter&du %rLait de Lon Lon%w pour&seulement %g30 rubis%w?^Il n'y a rien de mieux pour s'hydrater!",
+    },
+    {
+        "In that case, I'll help you out!^They say that %rthe thing you're&looking for%w can only be found%g when&you're not looking for it.%w^Hope that helps!",
+        "Pass auf, ich geb dir einen Tipp!^Man sagt, man findet %rdas was&man sucht%w nur, und wirklich nur&dann, %gwenn man gerade nicht danach&sucht%w.^Du kannst mich jederzeit wieder für&mehr hilfreiche Tipps aufsuchen!",
+        "Dans ce cas, je vais t'aider!&On dit que l'objet que tu cherches&ne peut être trouvé que lorsque&tu ne le cherches pas.",
+    },
+    {
+        "I dunno why I was thrown in here,&truth be told.&I'm just a %g\"PR\"%w person.",
+        "Wat weiß'n ich, wieso ich hier&eingepfercht wurd. Ich mach&doch nur %g\"Pull&Requests\"%w.",
+        "Je ne sais pas comment on m'a jeté&ici. Il faut croire que je dors comme&une pierre.",
+    },
+};
+
+static int goronIDs[9] = {0x3052, 0x3069, 0x306A, 0x306B, 0x306C, 0x306D, 0x306E, 0x306F, 0x3070};
+
+void CreateFireTempleGoronMessages() {
+    
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(customMessageTableID);
+    for (u8 i = 0; i <= NUM_GORON_MESSAGES - 1; i++) {
+        customMessageManager->CreateMessage(customMessageTableID, goronIDs[i], {
+            TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+            FireTempleGoronMessages[i].english, FireTempleGoronMessages[i].german, FireTempleGoronMessages[i].french
+        });
+    }
+}
+
+CustomMessageEntry Randomizer::GetGoronMessage(u16 index) {
+    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, goronIDs[index]);
+    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{days}}", std::to_string(gSaveContext.totalDays));
+    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{a_btn}}", std::to_string(gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]));
+    return messageEntry;
+}
+
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
@@ -4838,6 +5035,7 @@ void Randomizer::CreateCustomMessages() {
     CreateRupeeMessages();
     CreateNaviRandoMessages();
     CreateIceTrapRandoMessages();
+    CreateFireTempleGoronMessages();
 }
 
 class ExtendedVanillaTableInvalidItemIdException: public std::exception {

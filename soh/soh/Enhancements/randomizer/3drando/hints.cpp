@@ -116,6 +116,7 @@ Text childAltarText;
 Text adultAltarText;
 Text ganonText;
 Text ganonHintText;
+Text dampesText;
 Text warpMinuetText;
 Text warpBoleroText;
 Text warpSerenadeText;
@@ -137,6 +138,10 @@ Text& GetGanonText() {
 
 Text& GetGanonHintText() {
   return ganonHintText;
+}
+
+Text& GetDampeHintText() {
+  return dampesText;
 }
 
 Text& GetWarpMinuetText() {
@@ -545,7 +550,7 @@ static void CreateTrialHints() {
   }
 }
 
-static void CreateGanonText() {
+void CreateGanonText() {
 
   //funny ganon line
   ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
@@ -679,7 +684,7 @@ static Text BuildGanonBossKeyText() {
   return Text()+"$b"+ganonBossKeyText+"^";
 }
 
-static void CreateAltarText() {
+void CreateAltarText() {
 
   //Child Altar Text
   childAltarText = Hint(SPIRITUAL_STONE_TEXT_START).GetText()+"^"+
@@ -736,6 +741,25 @@ void CreateMerchantsHints() {
   CreateMessageFromTextObject(0x6078, 0, 2, 3, AddColorsAndFormat(carpetSalesmanTextTwo, {QM_RED, QM_YELLOW, QM_RED}));
 }
 
+void CreateDampesDiaryText() {
+  uint32_t item = PROGRESSIVE_HOOKSHOT;
+  uint32_t location = FilterFromPool(allLocations, [item](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == item;})[0];
+  Text area = GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText();
+  Text temp1 = Text{
+    "Whoever reads this, please enter %g", 
+    "Toi qui lit ce journal, rends-toi dans %g",
+    "Wer immer dies liest, der möge folgenden Ort aufsuchen: %g"
+  };
+
+  Text temp2 = {
+    "%w. I will let you have my stretching, shrinking keepsake.^I'm waiting for you.&--Dampé",
+    "%w. Et peut-être auras-tu droit à mon précieux %rtrésor%w.^Je t'attends...&--Igor",
+    "%w. Ihm gebe ich meinen langen, kurzen Schatz.^Ich warte!&Boris"
+  };
+  
+  dampesText = temp1 + area + temp2;
+}
+
 void CreateWarpSongTexts() {
   auto warpSongEntrances = GetShuffleableEntrances(EntranceType::WarpSong, false);
 
@@ -775,9 +799,6 @@ void CreateWarpSongTexts() {
 }
 
 void CreateAllHints() {
-
-  CreateGanonText();
-  CreateAltarText();
 
   SPDLOG_DEBUG("\nNOW CREATING HINTS\n");
   const HintSetting& hintSetting = hintSettingTable[Settings::HintDistribution.Value<uint8_t>()];
