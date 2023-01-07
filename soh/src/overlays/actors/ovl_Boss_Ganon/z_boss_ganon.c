@@ -915,7 +915,9 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
 
             this->csState = 19;
             this->csTimer = 0;
-            Message_StartTextbox(play, 0x70CC, NULL);
+            if (!gSaveContext.isBossRush) {
+                Message_StartTextbox(play, 0x70CC, NULL);
+            }
             Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfRaiseHandStartAnim, -5.0f);
             this->triforceType = GDF_TRIFORCE_DORF;
             this->fwork[GDF_TRIFORCE_SCALE] = 10.0f;
@@ -957,7 +959,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
 
             if ((this->csTimer > 80) && (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE)) {
                 // In rando, skip past dark waves section straight to title card phase of the cutscene.
-                if (gSaveContext.n64ddFlag) {
+                if (gSaveContext.n64ddFlag || gSaveContext.isBossRush) {
                     this->timers[2] = 30;
                     this->csCamAt.x = this->unk_1FC.x - 10.0f;
                     this->csCamAt.y = this->unk_1FC.y + 30.0f;
@@ -1269,7 +1271,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
 
             this->actor.shape.rot.y = 0;
             // In rando, skip Ganondorf dying and go straight to next scene.
-            if (!gSaveContext.n64ddFlag) {
+            if (!gSaveContext.n64ddFlag && !gSaveContext.isBossRush) {
                 this->csState = 1;
                 this->csTimer = 0;
             } else {
@@ -1549,7 +1551,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
             sBossGanonZelda = (EnZl3*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_ZL3, 0.0f,
                                                 6000.0f, 0.0f, 0, 0, 0, 0x2000);
 
-            if (!gSaveContext.n64ddFlag) {
+            if (!gSaveContext.n64ddFlag && !gSaveContext.isBossRush) {
                 this->csState = 101;
             } else {
                 this->skelAnime.playSpeed = 1.0f;
@@ -1677,7 +1679,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
             // fallthrough
         case 104:
             // In rando, fade out the white here as the earlier part is skipped.
-            if (gSaveContext.n64ddFlag) {
+            if (gSaveContext.n64ddFlag || gSaveContext.isBossRush) {
                 Math_ApproachZeroF(&this->whiteFillAlpha, 1.0f, 10.0f);
             }
 
@@ -1699,7 +1701,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
 
             if (this->csTimer == 50) {
                 // In rando, skip the rest of the cutscene after the crystal around Zelda dissapears.
-                if (!gSaveContext.n64ddFlag) {
+                if (!gSaveContext.n64ddFlag && !gSaveContext.isBossRush) {
                     sBossGanonZelda->unk_3C8 = 4;
                 } else {
                     this->csState = 108;
