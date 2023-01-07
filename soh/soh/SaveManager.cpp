@@ -556,6 +556,16 @@ void SaveManager::InitFileNormal() {
         gSaveContext.magic = 0x30;
         gSaveContext.isMagicAcquired = 1;
 
+        // Skip boss cutscenes
+        gSaveContext.eventChkInf[7] |= 1;    // gohma
+        gSaveContext.eventChkInf[7] |= 2;    // dodongo
+        gSaveContext.eventChkInf[7] |= 4;    // phantom ganon
+        gSaveContext.eventChkInf[7] |= 8;    // volvagia
+        gSaveContext.eventChkInf[7] |= 0x10; // morpha
+        gSaveContext.eventChkInf[7] |= 0x20; // twinrova
+        gSaveContext.eventChkInf[7] |= 0x40; // barinade
+        gSaveContext.eventChkInf[7] |= 0x80; // bongo bongo
+
         static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];

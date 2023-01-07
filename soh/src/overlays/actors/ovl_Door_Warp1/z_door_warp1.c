@@ -847,6 +847,38 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 }
             } else {
                 play->nextEntranceIndex = SCENE_HAIRAL_NIWA2;
+                switch (play->sceneNum) { 
+                    case SCENE_YDAN_BOSS:
+                        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE);
+                        break;
+                    case SCENE_DDAN_BOSS:
+                        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN);
+                        break;
+                    case SCENE_BDAN_BOSS:
+                        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY);
+                        break;
+                    case SCENE_MORIBOSSROOM:
+                        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE);
+                        break;
+                    case SCENE_FIRE_BS:
+                        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE);
+                        break;
+                    case SCENE_MIZUSIN_BS:
+                        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE);
+                        break;
+                    case SCENE_JYASINBOSS:
+                        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
+                        break;
+                    case SCENE_HAKADAN_BS:
+                        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
+                        break;
+                    default:
+                        break;
+                }
+
+                if (CheckDungeonCount() == 3) {
+                    play->linkAgeOnLoad = LINK_AGE_ADULT;
+                }
             }
         } else if (play->sceneNum == SCENE_MORIBOSSROOM) {
             if (!(gSaveContext.eventChkInf[4] & 0x100)) {

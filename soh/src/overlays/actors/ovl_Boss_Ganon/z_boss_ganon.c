@@ -559,7 +559,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
             Play_ChangeCameraStatus(play, this->csCamIndex, CAM_STAT_ACTIVE);
             this->csCamFov = 60.0f;
 
-            if (gSaveContext.eventChkInf[7] & 0x100 || gSaveContext.n64ddFlag) {
+            if (gSaveContext.eventChkInf[7] & 0x100 || gSaveContext.n64ddFlag || gSaveContext.isBossRush) {
                 // watched cutscene already, skip most of it
                 this->csState = 17;
                 this->csTimer = 0;
@@ -891,7 +891,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
                     this->csTimer = 0;
                     this->csCamFov = 60.0f;
                     BossGanon_SetIntroCsCamera(this, 12);
-                    if (!gSaveContext.n64ddFlag) {
+                    if (!gSaveContext.n64ddFlag && !gSaveContext.isBossRush) {
                         Message_StartTextbox(play, 0x70CB, NULL);
                     }
                 }
@@ -1507,7 +1507,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
 
             if (this->csTimer == 180) {
                 play->sceneLoadFlag = 0x14;
-                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE)) {
+                if ((gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE) || gSaveContext.isBossRush)) {
                     Flags_SetEventChkInf(0xC7);
                     play->nextEntranceIndex = 0x517;
                 }
