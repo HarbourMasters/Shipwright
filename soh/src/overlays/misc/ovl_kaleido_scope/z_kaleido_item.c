@@ -465,7 +465,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
     for (i = 0, j = 24 * 4; i < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); i++, j += 4) {
         if ((gSaveContext.equips.buttonItems[i + 1] != ITEM_NONE) &&
             !((gSaveContext.equips.buttonItems[i + 1] >= ITEM_SHIELD_DEKU) &&
-              (gSaveContext.equips.buttonItems[i + 1] <= ITEM_BOOTS_HOVER))) {
+              (gSaveContext.equips.buttonItems[i + 1] <= ITEM_MEDALLION_LIGHT))) {
             gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[j], 4, 0);
             POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, gEquippedItemOutlineTex, 32, 32, 0);
         }
@@ -596,6 +596,41 @@ void KaleidoScope_SetupItemEquip(PlayState* play, u16 item, u16 slot, s16 animX,
     } else {
         Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
     }
+}
+
+void KaleidoScope_SetupQuestEquip(PlayState* play, u16 item, u16 slot, s16 animX, s16 animY) {
+    Input* input = &play->state.input[0];
+    PauseContext* pauseCtx = &play->pauseCtx;
+
+    if (CHECK_BTN_ALL(input->press.button, BTN_CLEFT)) {
+        pauseCtx->equipTargetCBtn = 0;
+    } else if (CHECK_BTN_ALL(input->press.button, BTN_CDOWN)) {
+        pauseCtx->equipTargetCBtn = 1;
+    } else if (CHECK_BTN_ALL(input->press.button, BTN_CRIGHT)) {
+        pauseCtx->equipTargetCBtn = 2;
+    } else if (CVar_GetS32("gDpadEquips", 0)) {
+        if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
+            pauseCtx->equipTargetCBtn = 3;
+        } else if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
+            pauseCtx->equipTargetCBtn = 4;
+        } else if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
+            pauseCtx->equipTargetCBtn = 5;
+        } else if (CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
+            pauseCtx->equipTargetCBtn = 6;
+        }
+    }
+
+    pauseCtx->equipTargetItem = item;
+    pauseCtx->equipTargetSlot = slot;
+    pauseCtx->unk_1E4 = 3;
+    pauseCtx->equipAnimX = animX;
+    pauseCtx->equipAnimY = animY;
+    pauseCtx->equipAnimAlpha = 255;
+    sEquipAnimTimer = 0;
+    sEquipState = 3;
+    sEquipMoveTimer = 10;
+    
+    Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
 }
 
 // TODO update for final positions

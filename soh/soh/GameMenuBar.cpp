@@ -403,6 +403,8 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Makes nuts explode bombs, similar to how they interact with bombchus. This does not affect bombflowers.");
                     UIWidgets::PaddedEnhancementCheckbox("Equip Multiple Arrows at Once", "gSeparateArrows", true, false);
                     UIWidgets::Tooltip("Allow the bow and magic arrows to be equipped at the same time on different slots");
+                    UIWidgets::PaddedEnhancementCheckbox("Use medallions as items", "gMedallionItems", true, false);
+                    UIWidgets::Tooltip("Equip medallions as usable items.");
                     ImGui::EndMenu();
                 }
 
