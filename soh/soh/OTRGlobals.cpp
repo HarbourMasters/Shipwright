@@ -123,6 +123,7 @@ OTRGlobals::OTRGlobals() {
     context = Ship::Window::CreateInstance("Ship of Harkinian", OTRFiles);
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
+    gOnlineClient = std::make_shared<OnlineClient>();
 
     hasMasterQuest = hasOriginal = false;
 
@@ -168,6 +169,7 @@ OTRGlobals::OTRGlobals() {
 }
 
 OTRGlobals::~OTRGlobals() {
+    gOnlineClient->CloseClient();
 }
 
 bool OTRGlobals::HasMasterQuest() {
@@ -2089,4 +2091,35 @@ extern "C" void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex) {
 
 extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
     SetLastEntranceOverrideForTracker(entranceIndex);
+}
+
+extern "C" void CloseClient() {
+    if (OTRGlobals::Instance->gOnlineClient->running) {
+        OTRGlobals::Instance->gOnlineClient->CloseClient();
+    }
+}
+
+extern "C" void OTRSendPuppetPacketToServer(PuppetPacketZ64* puppetPacket) {
+    if (OTRGlobals::Instance->gOnlineClient->running) {
+        OTRGlobals::Instance->gOnlineClient->SendPuppetPacketMessage((PuppetPacket*)puppetPacket);
+    }
+}
+
+extern "C" void OTRSendGetItemPacketToServer(int16_t itemId) {
+    if (OTRGlobals::Instance->gOnlineClient->running) {
+        OTRGlobals::Instance->gOnlineClient->SendGetItemPacketMessage(itemId);
+    }
+}
+
+extern "C" void OTRSendDamagePacketToServer(DamagePacketZ64* damagePacket) {
+    if (OTRGlobals::Instance->gOnlineClient->running) {
+        OTRGlobals::Instance->gOnlineClient->SendDamagePacketMessage((DamagePacket*)damagePacket);
+    }
+}
+
+extern "C" void OTRSendSceneFlagPacketToServer(uint8_t scene_num, uint8_t flag_type, int32_t flag_value)
+{
+    if (OTRGlobals::Instance->gOnlineClient->running) {
+        OTRGlobals::Instance->gOnlineClient->SendSceneFlagPacketMessage(scene_num, flag_type, flag_value);
+    }
 }

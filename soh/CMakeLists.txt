@@ -170,6 +170,10 @@ set(Header_Files__soh__Enhancements__controls
 )
 source_group("Header Files\\soh\\Enhancements\\controls" FILES ${Header_Files__soh__Enhancements__controls})
 
+set(Header_Files__soh__Enhancements__online
+    "soh/Enhancements/online/Online.h"
+)
+source_group("Header Files\\soh\\Enhancements\\online" FILES ${Header_Files__soh__Enhancements__online})
 
 set(Header_Files__soh__Enhancements__cosmetics
     "soh/Enhancements/cosmetics/CosmeticsEditor.h"
@@ -298,6 +302,11 @@ set(Source_Files__soh__Enhancements
     "soh/Enhancements/gameplaystats.cpp"
 )
 source_group("Source Files\\soh\\Enhancements" FILES ${Source_Files__soh__Enhancements})
+
+set(Source_Files__soh__Enhancements__online
+    "soh/Enhancements/online/Client.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\online" FILES ${Source_Files__soh__Enhancements__online})
 
 set(Source_Files__soh__Enhancements__controls
     "soh/Enhancements/controls/GameControlEditor.cpp"
@@ -1495,6 +1504,8 @@ set(Source_Files__src__overlays__actors
     "src/overlays/actors/ovl_player_actor/z_player.c"
     "src/overlays/actors/ovl_Shot_Sun/z_shot_sun.c"
     "src/overlays/actors/ovl_Shot_Sun/z_shot_sun.h"
+    "src/overlays/actors/ovl_Link_Puppet/z_link_puppet.c"
+    "src/overlays/actors/ovl_Link_Puppet/z_link_puppet.h"
 )
 source_group("Source Files\\src\\overlays\\actors" FILES ${Source_Files__src__overlays__actors})
 
@@ -1622,6 +1633,7 @@ set(ALL_FILES
     ${Header_Files__include}
     ${Header_Files__soh__Enhancements}
     ${Header_Files__soh__Enhancements__controls}
+    ${Header_Files__soh__Enhancements__online}
     ${Header_Files__soh__Enhancements__cosmetics}
     ${Header_Files__soh__Enhancements__sfx_editor}
     ${Header_Files__soh__Enhancements__debugger}
@@ -1632,6 +1644,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements__crowd_control}
     ${Source_Files__soh}
     ${Source_Files__soh__Enhancements}
+	${Source_Files__soh__Enhancements__online}
     ${Source_Files__soh__Enhancements__controls}
     ${Source_Files__soh__Enhancements__cosmetics}
     ${Source_Files__soh__Enhancements__sfx_editor}

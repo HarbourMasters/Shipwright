@@ -10,7 +10,7 @@
 #include <Window.h>
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
-#include <vector>
+#include "Enhancements/online/Online.h"
 
 const std::string customMessageTableID = "BaseGameOverrides";
 
@@ -21,6 +21,7 @@ public:
 
     std::shared_ptr<Ship::Window> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
+    std::shared_ptr<OnlineClient> gOnlineClient;
     std::shared_ptr<Randomizer> gRandomizer;
 
     OTRGlobals();
@@ -138,6 +139,10 @@ void Entrance_ClearEntranceTrackingData(void);
 void Entrance_InitEntranceTrackingData(void);
 void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex);
 void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex);
+void OTRSendPuppetPacketToServer(PuppetPacketZ64* puppetPacket);
+void OTRSendGetItemPacketToServer(int16_t itemId);
+void OTRSendDamagePacketToServer(DamagePacketZ64* damagePacket);
+void OTRSendSceneFlagPacketToServer(uint8_t scene_num, uint8_t flag_type, int32_t flag_value);
 #endif
 
 #endif

@@ -71,6 +71,64 @@ extern "C"
 {
 #endif
 
+typedef struct PuppetPacketZ64 {
+    uint8_t packet_type;
+
+    uint8_t player_id;
+
+    PosRot posRot;
+    uint8_t biggoron_broken;
+    uint16_t scene_id;
+    uint16_t sound_id[4];
+
+    f32 ocarina_freqScale;
+    f32 ocarina_vol;
+    uint8_t ocarina_pitch;
+
+    uint8_t puppet_age;
+
+    // SkelAnime Data
+    Vec3s jointTable[24];
+
+    uint8_t sheathType;
+    uint8_t shieldType;
+    uint8_t leftHandType;
+    uint8_t rightHandType;
+
+    int16_t faceType;
+    uint8_t tunicType;
+    uint8_t bootsType;
+
+    uint8_t damageEffect;
+    uint8_t damageValue;
+} PuppetPacketZ64;
+
+typedef struct GetItemPacketZ64 {
+    uint8_t packet_type;
+    uint8_t player_id;
+    int16_t get_item;
+} GetItemPacketZ64;
+
+typedef struct DamagePacketZ64 {
+    uint8_t packet_type;
+    uint8_t hit_player_id;
+    uint8_t damageEffect;
+    uint8_t damageValue;
+    int16_t knockbackRotation;
+} DamagePacketZ64;
+
+typedef struct SceneFlagPacketZ64 {
+    uint8_t packet_type;
+    uint8_t scene_id;
+    uint8_t flag_type;
+    int32_t flag_value;
+} SceneFlagPacketZ64;
+
+typedef struct ConnectionPacketZ64 {
+    uint8_t packet_type;
+    uint8_t player_id;
+} ConnectionPacketZ64;
+
 typedef struct{
     /* 0x00 */ char unk[0x4];
     /* 0x04 */ MtxF mf;

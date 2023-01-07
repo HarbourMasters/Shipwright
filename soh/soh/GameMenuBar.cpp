@@ -1163,6 +1163,24 @@ namespace GameMenuBar {
 
         ImGui::SetCursorPosY(0.0f);
 
+        if (ImGui::BeginMenu("Online")) {
+            const char* ipAddr = CVar_GetString("gOnlineClientIPAddress", "127.0.0.1");
+            ImGui::InputText("IP Address", (char*)ipAddr, 32);
+            CVar_SetString("gOnlineClientIPAddress", ipAddr);
+
+            int newPort = CVar_GetS32("gOnlineClientPort", 7777);
+            ImGui::InputInt("Port", &newPort);
+            CVar_SetS32("gOnlineClientPort", newPort);
+
+            if (ImGui::Button("Connect to Game")) {
+                OTRGlobals::Instance->gOnlineClient->InitClient((char*)ipAddr, newPort);
+            }
+
+            ImGui::EndMenu();
+        }
+
+        ImGui::SetCursorPosY(0.0f);
+
         if (ImGui::BeginMenu("Randomizer"))
         {
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));

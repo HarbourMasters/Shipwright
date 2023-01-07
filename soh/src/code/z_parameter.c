@@ -1703,11 +1703,23 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
  * @param item 
  * @return u8 
  */
+
+uint8_t is_online_item = 0;
+
+u8 Item_Give_Online(PlayState* play, u8 item) {
+    is_online_item = 1;
+    Item_Give(play, item);
+}
+
 u8 Item_Give(PlayState* play, u8 item) {
     static s16 sAmmoRefillCounts[] = { 5, 10, 20, 30, 5, 10, 30, 0, 5, 20, 1, 5, 20, 50, 200, 10 };
     s16 i;
     s16 slot;
     s16 temp;
+
+    if (is_online_item == 0) {
+        OTRSendGetItemPacketToServer(item);
+    }
 
     // Gameplay stats: Update the time the item was obtained
     GameplayStats_SetTimestamp(play, item);
@@ -2361,6 +2373,8 @@ u8 Item_Give(PlayState* play, u8 item) {
     temp = gSaveContext.inventory.items[slot];
     osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, temp);
     INV_CONTENT(item) = item;
+    
+    is_online_item = 0;
 
     PerformAutosave(play, item);
     return temp;

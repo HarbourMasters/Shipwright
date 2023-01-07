@@ -9,6 +9,7 @@
 #include "soh/Enhancements/debugconsole.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
+#include <overlays/actors/ovl_Link_Puppet/z_link_puppet.h>
 
 #include <time.h>
 
@@ -27,6 +28,11 @@ u64 D_801614D0[0xA00];
 #endif
 
 PlayState* gPlayState;
+uint16_t onlineSfxBuffer[4];
+f32 ocarina_freqScale;
+f32 ocarina_vol;
+uint8_t ocarina_pitch;
+LinkPuppet* puppets[4];
 
 void func_800BC450(PlayState* play) {
     Camera_ChangeDataIdx(GET_ACTIVE_CAM(play), play->unk_1242B - 1);
@@ -636,6 +642,10 @@ void Play_Init(GameState* thisx) {
         play->unk_1242B = 1;
     } else {
         play->unk_1242B = 0;
+    }
+
+    for (size_t i = 0; i < 4; i++) {
+        puppets[i] = Actor_Spawn(&play->actorCtx, gPlayState, ACTOR_LINK_PUPPET, -16000.0f, -16000.0f, -16000.0f, 0, 0, 0, 0, 0);
     }
 
     Interface_SetSceneRestrictions(play);
@@ -1642,6 +1652,8 @@ time_t Play_GetRealTime() {
     return t1 - t2;
 }
 
+PuppetPacketZ64 puppetPacket;
+
 void Play_Main(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
 
@@ -1683,6 +1695,41 @@ void Play_Main(GameState* thisx) {
 
     if ((HREG(80) != 10) || (HREG(81) != 0)) {
         Play_Update(play);
+    }
+
+    if (GET_PLAYER(play) != NULL) {
+        puppetPacket.posRot.pos = GET_PLAYER(play)->actor.world.pos;
+        puppetPacket.posRot.rot = GET_PLAYER(play)->actor.shape.rot;
+
+        memcpy(puppetPacket.jointTable, GET_PLAYER(play)->skelAnime.jointTable, 6 * PLAYER_LIMB_MAX);
+
+        puppetPacket.biggoron_broken = (gSaveContext.swordHealth <= 0.0f);
+        puppetPacket.shieldType = GET_PLAYER(play)->currentShield;
+        puppetPacket.sheathType = GET_PLAYER(play)->sheathType;
+        puppetPacket.leftHandType = GET_PLAYER(play)->leftHandType;
+        puppetPacket.rightHandType = GET_PLAYER(play)->rightHandType;
+                    
+        puppetPacket.tunicType = GET_PLAYER(play)->currentTunic;
+        puppetPacket.bootsType = GET_PLAYER(play)->currentBoots;
+        puppetPacket.faceType = GET_PLAYER(play)->actor.shape.face;
+        puppetPacket.scene_id = play->sceneNum;
+        puppetPacket.puppet_age = gSaveContext.linkAge;
+
+        puppetPacket.ocarina_freqScale = ocarina_freqScale;
+        puppetPacket.ocarina_vol = ocarina_vol;
+        puppetPacket.ocarina_pitch = ocarina_pitch;
+
+        memcpy(puppetPacket.sound_id, onlineSfxBuffer, sizeof(onlineSfxBuffer));
+
+        OTRSendPuppetPacketToServer(&puppetPacket);
+
+        for (size_t i = 0; i < 4; i++) {
+            puppetPacket.sound_id[i] = 0;
+            onlineSfxBuffer[i] = 0;
+        }
+
+        puppetPacket.damageEffect = 0;
+        puppetPacket.damageValue = 0;
     }
 
     if (1 && HREG(63)) {
@@ -2197,5 +2244,108 @@ void Play_PerformSave(PlayState* play) {
         if (CVar_GetS32("gAutosave", 0)) {
             Overlay_DisplayText(3.0f, "Game Saved");
         }
+    }
+}
+
+void SetLinkPuppetData(PuppetPacketZ64* packet, u8 player_id) {
+    if (puppets[player_id] != NULL) {
+        memcpy(&puppets[player_id]->puppetPacket, packet, sizeof(PuppetPacketZ64));
+    }
+}
+
+void SetGetItemData(int16_t itemId) {
+    Player* player = GET_PLAYER(gPlayState);
+    Item_Give_Online(gPlayState, itemId);
+}
+
+typedef enum {
+    PUPPET_DMGEFF_NONE,
+    PUPPET_DMGEFF_NORMAL,
+    PUPPET_DMGEFF_ICE,
+    PUPPET_DMGEFF_FIRE,
+    PUPPET_DMGEFF_THUNDER,
+    PUPPET_DMGEFF_KNOCKBACK,
+    PUPPET_DMGEFF_STUN,
+} PuppetDamageEffect;
+
+void Online_DamagePlayer(uint8_t damageValue, uint8_t damageEffect, int16_t knockbackRotation) {
+    PlayState* play = gPlayState;
+    Player* player = GET_PLAYER(play);
+
+    if (player->invincibilityTimer <= 0 && !Player_InBlockingCsMode(play, player)) {
+        switch (damageEffect) {
+            case PUPPET_DMGEFF_NORMAL:
+                Player_InflictDamage(play, damageValue * -4);
+                func_80837C0C(play, player, 0, 0, 0, 0, 0);
+                player->invincibilityTimer = 18;
+                player->actor.freezeTimer = 0;
+                break;
+
+            case PUPPET_DMGEFF_ICE:
+                player->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
+                func_80837C0C(play, player, 3, 0.0f, 0.0f, 0, 20);
+                player->invincibilityTimer = 18;
+                player->actor.freezeTimer = 0;
+                break;
+
+            case PUPPET_DMGEFF_FIRE:
+                for (int i = 0; i < 18; i++) {
+                    player->flameTimers[i] = Rand_S16Offset(0, 200);
+                }
+                player->isBurning = true;
+                func_80837C0C(play, player, 0, 0, 0, 0, 0);
+                player->invincibilityTimer = 18;
+                player->actor.freezeTimer = 0;
+                break;
+
+            case PUPPET_DMGEFF_THUNDER:
+                func_80837C0C(play, player, 4, 0.0f, 0.0f, 0, 20);
+                player->invincibilityTimer = 18;
+                player->actor.freezeTimer = 0;
+                break;
+
+            case PUPPET_DMGEFF_KNOCKBACK:
+                func_8002F71C(play, &player, 12.0f, knockbackRotation, 12.0f);
+                player->invincibilityTimer = 28;
+                player->actor.freezeTimer = 0;
+                break;
+
+            case PUPPET_DMGEFF_STUN:
+                player->actor.freezeTimer = 20;
+                Actor_SetColorFilter(&player->actor, 0, 0xFF, 0, 10);
+                break;
+        }
+    }
+}
+
+void Online_SetSceneFlag(uint8_t scene_num, uint8_t flag_type, int32_t flag_value) {
+    PlayState* play = gPlayState;
+
+    switch (flag_type) {
+        case 0:
+            gSaveContext.sceneFlags[scene_num].chest |= (1 << flag_value);
+            break;
+        case 1:
+            if (flag_value < 0x20) {
+                gSaveContext.sceneFlags[scene_num].swch|= (1 << flag_value);
+            }
+            break;
+        case 2:
+            gSaveContext.sceneFlags[scene_num].clear |= (1 << flag_value);
+            break;
+        case 3:
+            if (flag_value != 0) {
+                if (flag_value < 0x20) {
+                    gSaveContext.sceneFlags[scene_num].collect |= (1 << flag_value);
+                }
+            }
+            break;
+    }
+
+    if (play->sceneNum == scene_num) {
+        play->actorCtx.flags.chest = gSaveContext.sceneFlags[scene_num].chest;
+        play->actorCtx.flags.swch = gSaveContext.sceneFlags[scene_num].swch;
+        play->actorCtx.flags.clear = gSaveContext.sceneFlags[scene_num].clear;
+        play->actorCtx.flags.collect = gSaveContext.sceneFlags[scene_num].collect;
     }
 }
