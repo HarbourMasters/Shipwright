@@ -540,7 +540,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Left Hand", 0x03F0 },
         { "From Right Hand", 0x03F4 },
         { "Before Twinrova", 0x02F5 },
-        { "Naboora Fight", 0x008D },
+        { "Nabooru Fight", 0x008D },
         { "Twinrova", 0x05EC },
     }},
     { "40:Ganons Castle", Select_LoadGame, 9, {
