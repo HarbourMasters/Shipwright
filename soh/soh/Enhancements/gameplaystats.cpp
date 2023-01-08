@@ -415,6 +415,16 @@ void SetupDisplayNames() {
     strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_TWINROVA],      "Twinrova Defeated:  ");
     strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_GANONDORF],     "Ganondorf Defeated: ");
     strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:     ");
+    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_GOHMA],           "Gohma Completed:    ");
+    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_KING_DODONGO],    "KD Completed:       ");
+    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_BARINADE],        "Barinade Completed: ");
+    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_PHANTOM_GANON],   "PG Completed:       ");
+    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_VOLVAGIA],        "Volvagia Completed: ");
+    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_MORPHA],          "Morpha Completed:   ");
+    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_BONGO_BONGO],     "Bongo Completed:    ");
+    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_TWINROVA],        "Twinrova Completed: ");
+    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_GANONDORF],       "Ganondorf Completed:");
+    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_GANON],           "Boss Rush Finished: ");
 }
 
 void SetupDisplayColors() {
@@ -424,38 +434,48 @@ void SetupDisplayColors() {
             case ITEM_KOKIRI_EMERALD:
             case ITEM_SONG_SARIA:
             case ITEM_MEDALLION_FOREST:
+            case TIMESTAMP_BOSSRUSH_DEFEAT_GOHMA:
+            case TIMESTAMP_BOSSRUSH_DEFEAT_PHANTOM_GANON:
                 timestampDisplayColor[i] = COLOR_GREEN;
                 break;
             case ITEM_SONG_BOLERO:
             case ITEM_GORON_RUBY:
             case ITEM_MEDALLION_FIRE:
+            case TIMESTAMP_BOSSRUSH_DEFEAT_KING_DODONGO:
+            case TIMESTAMP_BOSSRUSH_DEFEAT_VOLVAGIA:
                 timestampDisplayColor[i] = COLOR_RED;
                 break;
             case ITEM_SONG_SERENADE:
             case ITEM_ZORA_SAPPHIRE:
             case ITEM_MEDALLION_WATER:
+            case TIMESTAMP_BOSSRUSH_DEFEAT_BARINADE:
+            case TIMESTAMP_BOSSRUSH_DEFEAT_MORPHA:
                 timestampDisplayColor[i] = COLOR_BLUE;
                 break;
             case ITEM_SONG_LULLABY:
             case ITEM_SONG_NOCTURNE:
             case ITEM_MEDALLION_SHADOW:
+            case TIMESTAMP_BOSSRUSH_DEFEAT_BONGO_BONGO:
                 timestampDisplayColor[i] = COLOR_PURPLE;
                 break;
             case ITEM_SONG_EPONA:
             case ITEM_SONG_REQUIEM:
             case ITEM_MEDALLION_SPIRIT:
+            case TIMESTAMP_BOSSRUSH_DEFEAT_TWINROVA:
                 timestampDisplayColor[i] = COLOR_ORANGE;
                 break;
             case ITEM_SONG_SUN:
             case ITEM_SONG_PRELUDE:
             case ITEM_MEDALLION_LIGHT:
             case ITEM_ARROW_LIGHT:
+            case TIMESTAMP_BOSSRUSH_DEFEAT_GANONDORF:
                 timestampDisplayColor[i] = COLOR_YELLOW;
                 break;
             case ITEM_SONG_STORMS:
                 timestampDisplayColor[i] = COLOR_GREY;
                 break;
             case ITEM_SONG_TIME:
+            case TIMESTAMP_BOSSRUSH_DEFEAT_GANON:
                 timestampDisplayColor[i] = COLOR_LIGHT_BLUE;
                 break;
             default:

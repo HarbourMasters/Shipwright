@@ -250,6 +250,7 @@ typedef struct {
     // Upstream TODO: Move these to their own struct or name to more obviously specific to SoH
     /*        */ uint32_t isMasterQuest;
     /*        */ uint32_t isBossRush;
+    /*        */ uint32_t isBossRushPaused;
     /*        */ u8 mqDungeonCount;
     /*        */ u8 pendingIceTrapCount;
     /*        */ SohStats sohStats;

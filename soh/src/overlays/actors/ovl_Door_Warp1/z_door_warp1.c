@@ -1,4 +1,3 @@
-#include "global.h"
 #include "z_door_warp1.h"
 #include "objects/object_warp1/object_warp1.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
@@ -750,6 +749,11 @@ void DoorWarp1_AdultWarpIdle(DoorWarp1* this, PlayState* play) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EV_WARP_HOLE - SFX_FLAG);
 
     if (DoorWarp1_PlayerInRange(this, play)) {
+        // Pause timer and set boss timestamp as soon as player steps into the blue warp.
+        if (gSaveContext.isBossRush && play->sceneNum != SCENE_KENJYANOMA) {
+            BossRush_HandleCompleteBoss(play);
+        }
+
         player = GET_PLAYER(play);
 
         if (gSaveContext.n64ddFlag) {

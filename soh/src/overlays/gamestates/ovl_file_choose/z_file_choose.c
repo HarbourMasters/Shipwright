@@ -675,8 +675,10 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         gSaveContext.isMasterQuest = this->questType[this->buttonIndex] == MASTER_QUEST;
         gSaveContext.n64ddFlag = this->questType[this->buttonIndex] == RANDOMIZER_QUEST;
         gSaveContext.isBossRush = this->questType[this->buttonIndex] == BOSSRUSH_QUEST;
+        gSaveContext.isBossRushPaused = false;
 
         if (this->questType[this->buttonIndex] == BOSSRUSH_QUEST) {
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             this->buttonIndex = 0xFE;
             this->menuMode = FS_MENU_MODE_SELECT;
             this->selectMode = SM_FADE_OUT;

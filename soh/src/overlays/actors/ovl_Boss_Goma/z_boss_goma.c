@@ -1848,7 +1848,9 @@ void BossGoma_UpdateHit(BossGoma* this, PlayState* play) {
                 } else {
                     BossGoma_SetupDefeated(this, play);
                     Enemy_StartFinishingBlow(play, &this->actor);
-                    gSaveContext.sohStats.timestamp[TIMESTAMP_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
+                    if (!gSaveContext.isBossRush) {
+                        gSaveContext.sohStats.timestamp[TIMESTAMP_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
+                    }
                 }
 
                 this->invincibilityFrames = 10;

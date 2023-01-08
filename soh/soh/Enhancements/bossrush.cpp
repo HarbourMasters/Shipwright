@@ -51,6 +51,7 @@ extern "C" void BossRush_HandleBlueWarp(DoorWarp1* warp, PlayState* play) {
 
     // If warping from Chamber of Sages, choose the correct boss room to teleport to.
     if (play->sceneNum == SCENE_KENJYANOMA) {
+        gSaveContext.isBossRushPaused = 0;
         f32 warpPosX = warp->actor.world.pos.x;
         f32 warpPosZ = warp->actor.world.pos.z;
         // Gohma & Phantom Ganon
@@ -125,7 +126,39 @@ extern "C" void BossRush_HandleBlueWarp(DoorWarp1* warp, PlayState* play) {
     }
 }
 
-void BossRush_InitSave() {
+extern "C" void BossRush_HandleCompleteBoss(PlayState* play) {
+    gSaveContext.isBossRushPaused = 1;
+    switch (play->sceneNum) {
+        case SCENE_YDAN_BOSS:
+            gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
+            break;
+        case SCENE_DDAN_BOSS:
+            gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+            break;
+        case SCENE_BDAN_BOSS:
+            gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
+            break;
+        case SCENE_MORIBOSSROOM:
+            gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_PHANTOM_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+            break;
+        case SCENE_FIRE_BS:
+            gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
+            break;
+        case SCENE_MIZUSIN_BS:
+            gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
+            break;
+        case SCENE_JYASINBOSS:
+            gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
+            break;
+        case SCENE_HAKADAN_BS:
+            gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+            break;
+        default:
+            break;
+    }
+}
+
+extern "C" void BossRush_InitSave() {
 
     // Set player name to Link just in case it'll be used in textboxes. Player can't input their own name.
     static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
@@ -133,6 +166,7 @@ void BossRush_InitSave() {
         gSaveContext.playerName[i] = sPlayerName[i];
     }
 
+    gSaveContext.isBossRushPaused = 1;
     gSaveContext.linkAge = LINK_AGE_CHILD;
     gSaveContext.entranceIndex = 107;
     gSaveContext.cutsceneIndex = 0x8000;
@@ -159,7 +193,7 @@ void BossRush_InitSave() {
         ITEM_NONE,      ITEM_NONE, ITEM_NONE, ITEM_NONE,     ITEM_NONE,        ITEM_NONE,
     };
 
-    static std::array<s8, 16> sAmmo = { 5, 5, 10, 30, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    static std::array<s8, 16> sAmmo = { 5, 5, 10, 10, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     for (int item = 0; item < ARRAY_COUNT(gSaveContext.inventory.items); item++) {
         gSaveContext.inventory.items[item] = sItems[item];

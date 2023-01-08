@@ -1085,7 +1085,8 @@ void Play_Update(PlayState* play) {
 
                 play->gameplayFrames++;
                 // Gameplay stat tracking
-                if (!gSaveContext.sohStats.gameComplete) {
+                if (!gSaveContext.sohStats.gameComplete &&
+                    (!gSaveContext.isBossRush || (gSaveContext.isBossRush && !gSaveContext.isBossRushPaused))) {
                       gSaveContext.sohStats.playTimer++;
 
                       if (CVar_GetS32("gMMBunnyHood", 0) && Player_GetMask(play) == PLAYER_MASK_BUNNY) {

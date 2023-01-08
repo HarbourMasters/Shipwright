@@ -9,6 +9,7 @@ void BossRush_SpawnBlueWarps(PlayState* play);
 void BossRush_HandleBlueWarp(DoorWarp1* warp, PlayState* play);
 void BossRush_InitSave();
 void BossRush_SetEquipment(uint8_t linkAge);
+void BossRush_HandleCompleteBoss(PlayState* play);
 #ifdef __cplusplus
 };
 #endif
