@@ -528,7 +528,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
     }},
     { "37:Water Temple", Select_LoadGame, 2, { 
         { "Entrance", 0x0010 },
-        { "Barinade", 0x0417 },
+        { "Morpha", 0x0417 },
     }},
     { "38:Shadow Temple", Select_LoadGame, 3, {
         { "Entrance", 0x0037 },
