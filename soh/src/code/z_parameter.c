@@ -4980,6 +4980,7 @@ void Interface_Draw(PlayState* play) {
     if (pauseCtx->debugState == 0) {
         Interface_InitVertices(play);
         func_8008A994(interfaceCtx);
+
         if (fullUi || gSaveContext.health != gSaveContext.healthCapacity) {
             HealthMeter_Draw(play);
         }
@@ -5059,7 +5060,9 @@ void Interface_Draw(PlayState* play) {
                 PosX_RC = PosX_RC_ori;
             }
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor.r, rColor.g, rColor.b, interfaceCtx->magicAlpha);
-            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16, 1 << 10, 1 << 10);
+            if (!gSaveContext.isBossRush) {
+                OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16, 1 << 10, 1 << 10);
+            }
 
             switch (play->sceneNum) {
                 case SCENE_BMORI1:
@@ -5151,8 +5154,8 @@ void Interface_Draw(PlayState* play) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 100, 100, interfaceCtx->magicAlpha);
             }
 
-            gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
-                              PRIMITIVE, 0);
+            gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE,
+                                TEXEL0, 0, PRIMITIVE, 0);
 
             interfaceCtx->counterDigits[0] = interfaceCtx->counterDigits[1] = 0;
             interfaceCtx->counterDigits[2] = gSaveContext.rupees;
@@ -5174,10 +5177,72 @@ void Interface_Draw(PlayState* play) {
             svar2 = rupeeDigitsFirst[CUR_UPG_VALUE(UPG_WALLET)];
             svar5 = rupeeDigitsCount[CUR_UPG_VALUE(UPG_WALLET)];
 
-            for (svar1 = 0, svar3 = 16; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
-                OVERLAY_DISP =
-                    Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]), 8, 16,
-                        PosX_RC+svar3, PosY_RC, 8, 16, 1 << 10, 1 << 10);
+            if (!gSaveContext.isBossRush) {
+                for (svar1 = 0, svar3 = 16; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
+                    OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]),
+                                                 8, 16, PosX_RC + svar3, PosY_RC, 8, 16, 1 << 10, 1 << 10);
+                }
+            }
+
+            // Draw Boss Rush Timer
+            if (gSaveContext.isBossRush) {
+                s32 totalTimer = GAMEPLAYSTAT_TOTAL_TIME;
+                s32 bossRushTimer[6];
+                s32 sec = totalTimer / 10;
+                s32 hh = sec / 3600;
+                s32 mm = (sec - (hh * 3600)) / 60;
+                s32 ss = sec - (hh * 3600) - (mm * 60);
+                s32 ds = totalTimer % 10;
+
+                // Hours
+                bossRushTimer[0] = hh;
+
+                // Minutes
+                if (mm >= 10) {
+                    bossRushTimer[1] = mm;
+                    while (bossRushTimer[1] >= 10) {
+                        bossRushTimer[1] = bossRushTimer[1] / 10;
+                    }
+                } else {
+                    bossRushTimer[1] = 0;
+                }
+                bossRushTimer[2] = mm % 10;
+
+                // Seconds
+                if (ss >= 10) {
+                    bossRushTimer[3] = ss;
+                    while (bossRushTimer[3] >= 10) {
+                        bossRushTimer[3] = bossRushTimer[3] / 10;
+                    }
+                } else {
+                    bossRushTimer[3] = 0;
+                }
+                bossRushTimer[4] = ss % 10;
+
+                // Deciseconds
+                bossRushTimer[5] = ds;
+
+                if (gSaveContext.sohStats.gameComplete) {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, play->interfaceCtx.magicAlpha);
+                } else if (gSaveContext.isBossRushPaused) {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 150, 150, 150, play->interfaceCtx.magicAlpha);
+                } else {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, play->interfaceCtx.magicAlpha);
+                }
+
+                gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE,
+                                  TEXEL0, 0, PRIMITIVE, 0);
+
+                for (int i = 0; i < 6; i++) {
+
+                    s16 rectLeft = OTRGetRectDimensionFromLeftEdge(26);
+                    s16 rectTop = 200;
+                    s16 rectWidth = 8;
+                    s16 rectHeight = 16;
+
+                    OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[bossRushTimer[i]]), 8, 16,
+                                                 rectLeft + (i * 8), rectTop, 8, 16, 1 << 10, 1 << 10);
+                }
             }
         }
         else {
