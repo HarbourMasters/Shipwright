@@ -274,7 +274,8 @@ void ObjOshihiki_Init(Actor* thisx, PlayState* play2) {
 
     // In MQ Spirit, remove the large silver block in the hole as child so the chest in the silver block hallway
     // can be guaranteed accessible
-    if (gSaveContext.n64ddFlag && LINK_IS_CHILD && play->sceneNum == 6 && ResourceMgr_IsGameMasterQuest() &&
+    if (gSaveContext.n64ddFlag && LINK_IS_CHILD && ResourceMgr_IsGameMasterQuest() &&
+        play->sceneNum == 6 && thisx->room == 6 && // Spirit Temple silver block hallway
         thisx->params == 0x9C7) { // Silver block that is marked as in the hole
         Actor_Kill(thisx);
         return;
