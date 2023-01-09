@@ -580,40 +580,7 @@ bool Scene_CommandTransitionActorList(PlayState* play, Ship::SceneCommand* cmd) 
 
 bool Scene_CommandLightSettingsList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetLightingSettings* otrLight = (Ship::SetLightingSettings*)cmd;
-
-    play->envCtx.numLightSettings = otrLight->settings.size();
-    play->envCtx.lightSettingsList = (EnvLightSettings*)malloc(play->envCtx.numLightSettings * sizeof(EnvLightSettings));
-
-    for (int i = 0; i < otrLight->settings.size(); i++)
-    {
-        play->envCtx.lightSettingsList[i].ambientColor[0] = otrLight->settings[i].ambientClrR;
-        play->envCtx.lightSettingsList[i].ambientColor[1] = otrLight->settings[i].ambientClrG;
-        play->envCtx.lightSettingsList[i].ambientColor[2] = otrLight->settings[i].ambientClrB;
-
-        play->envCtx.lightSettingsList[i].light1Color[0] = otrLight->settings[i].diffuseClrA_R;
-        play->envCtx.lightSettingsList[i].light1Color[1] = otrLight->settings[i].diffuseClrA_G;
-        play->envCtx.lightSettingsList[i].light1Color[2] = otrLight->settings[i].diffuseClrA_B;
-
-        play->envCtx.lightSettingsList[i].light1Dir[0] = otrLight->settings[i].diffuseDirA_X;
-        play->envCtx.lightSettingsList[i].light1Dir[1] = otrLight->settings[i].diffuseDirA_Y;
-        play->envCtx.lightSettingsList[i].light1Dir[2] = otrLight->settings[i].diffuseDirA_Z;
-
-        play->envCtx.lightSettingsList[i].light2Color[0] = otrLight->settings[i].diffuseClrB_R;
-        play->envCtx.lightSettingsList[i].light2Color[1] = otrLight->settings[i].diffuseClrB_G;
-        play->envCtx.lightSettingsList[i].light2Color[2] = otrLight->settings[i].diffuseClrB_B;
-
-        play->envCtx.lightSettingsList[i].light2Dir[0] = otrLight->settings[i].diffuseDirB_X;
-        play->envCtx.lightSettingsList[i].light2Dir[1] = otrLight->settings[i].diffuseDirB_Y;
-        play->envCtx.lightSettingsList[i].light2Dir[2] = otrLight->settings[i].diffuseDirB_Z;
-
-        play->envCtx.lightSettingsList[i].fogColor[0] = otrLight->settings[i].fogClrR;
-        play->envCtx.lightSettingsList[i].fogColor[1] = otrLight->settings[i].fogClrG;
-        play->envCtx.lightSettingsList[i].fogColor[2] = otrLight->settings[i].fogClrB;
-
-        play->envCtx.lightSettingsList[i].fogNear = otrLight->settings[i].fogNear;
-        play->envCtx.lightSettingsList[i].fogFar = otrLight->settings[i].fogFar;
-    }
+    play->envCtx.lightSettingsList = cmd->GetPointer();
 
     return false;
 }
@@ -642,15 +609,15 @@ bool Scene_CommandSkyboxDisables(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandTimeSettings(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetTimeSettings* cmdTime = (Ship::SetTimeSettings*)cmd;
+    Ship::SetTimeSettings* cmdTime = static_pointer_cast<Ship::SetTimeSettings>(cmd);
 
-    if ((cmdTime->hour != 0xFF) && (cmdTime->min != 0xFF)) {
+    if ((cmdTime->settings.hour != 0xFF) && (cmdTime->settings.min != 0xFF)) {
         gSaveContext.skyboxTime = gSaveContext.dayTime =
-            ((cmdTime->hour + (cmdTime->min / 60.0f)) * 60.0f) / ((f32)(24 * 60) / 0x10000);
+            ((cmdTime->settings.hour + (cmdTime->settings.min / 60.0f)) * 60.0f) / ((f32)(24 * 60) / 0x10000);
     }
 
-    if (cmdTime->unk != 0xFF) {
-        play->envCtx.timeIncrement = cmdTime->unk;
+    if (cmdTime->settings.unk != 0xFF) {
+        play->envCtx.timeIncrement = cmdTime->settings.unk;
     }
     else {
         play->envCtx.timeIncrement = 0;
@@ -685,29 +652,20 @@ bool Scene_CommandTimeSettings(PlayState* play, Ship::SceneCommand* cmd)
 }
 
 bool Scene_CommandWindSettings(PlayState* play, Ship::SceneCommand* cmd) {
-    Ship::SetWind* cmdWind = (Ship::SetWind*)cmd;
+    Ship::SetWind* cmdWind = std::static_pointer_cast<Ship::SetWind>(cmd);
 
-    s8 x = cmdWind->windWest;
-    s8 y = cmdWind->windVertical;
-    s8 z = cmdWind->windSouth;
+    play->envCtx.windDirection.x = cmdWind->settings.windWest;
+    play->envCtx.windDirection.y = cmdWind->settings.windVertical;
+    play->envCtx.windDirection.z = cmdWind->settings.windSouth;
 
-    play->envCtx.windDirection.x = x;
-    play->envCtx.windDirection.y = y;
-    play->envCtx.windDirection.z = z;
-
-    play->envCtx.windSpeed = cmdWind->clothFlappingStrength;
+    play->envCtx.windSpeed = cmdWind->settings.windSpeed;
 
     return false;
 }
 
 bool Scene_CommandExitList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::ExitList* cmdExit = (Ship::ExitList*)cmd;
-
-    play->setupExitList = (int16_t*)malloc(cmdExit->exits.size() * sizeof(int16_t));
-
-    for (int i = 0; i < cmdExit->exits.size(); i++)
-        play->setupExitList[i] = cmdExit->exits[i];
+    play->setupExitList = cmd->GetPointer();
 
     return false;
 }
