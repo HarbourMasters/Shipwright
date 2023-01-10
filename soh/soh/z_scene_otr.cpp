@@ -276,12 +276,12 @@ bool Scene_CommandSpecialFiles(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandRoomBehavior(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetRoomBehavior* cmdRoom = (Ship::SetRoomBehavior*)cmd;
+    Ship::SetRoomBehavior* cmdRoom = static_pointer_cast<Ship::SetRoomBehavior>(cmd);
 
-    play->roomCtx.curRoom.behaviorType1 = cmdRoom->gameplayFlags;
-    play->roomCtx.curRoom.behaviorType2 = cmdRoom->gameplayFlags2 & 0xFF;
-    play->roomCtx.curRoom.lensMode = (cmdRoom->gameplayFlags2 >> 8) & 1;
-    play->msgCtx.disableWarpSongs = (cmdRoom->gameplayFlags2 >> 0xA) & 1;
+    play->roomCtx.curRoom.behaviorType1 = cmdRoom->roomBehavior.gameplayFlags;
+    play->roomCtx.curRoom.behaviorType2 = cmdRoom->roomBehavior.gameplayFlags2 & 0xFF;
+    play->roomCtx.curRoom.lensMode = (cmdRoom->roomBehavior.gameplayFlags2 >> 8) & 1;
+    play->msgCtx.disableWarpSongs = (cmdRoom->roomBehavior.gameplayFlags2 >> 0xA) & 1;
 
     return false;
 }
