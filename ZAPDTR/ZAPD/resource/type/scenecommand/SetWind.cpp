@@ -1,11 +1,11 @@
 #include "SetWind.h"
 
 namespace Ship {
-void* SetLightingSettings::GetPointer() {
+void* SetWindSettings::GetPointer() {
     return &settings;
 }
 
-size_t SetLightingSettings::GetPointerSize() {
+size_t SetWindSettings::GetPointerSize() {
 	return sizeof(WindSettings);
 }
 } // namespace Ship
