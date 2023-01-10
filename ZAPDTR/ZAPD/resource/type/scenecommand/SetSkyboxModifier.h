@@ -11,13 +11,13 @@ namespace Ship {
 typedef struct {
   uint8_t skyboxDisabled;
   uint8_t sunMoonDisabled;
-} SkyboxSettings;
+} SkyboxModifier;
 
-class SetSkyboxSettings : public SceneCommand {
+class SetSkyboxModifier : public SceneCommand {
   public:
     void* GetPointer();
     size_t GetPointerSize();
 
-    SkyboxSettings settings;
+    SkyboxModifier modifier;
 };
 }; // namespace Ship

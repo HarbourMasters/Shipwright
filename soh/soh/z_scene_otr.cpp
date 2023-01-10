@@ -601,8 +601,8 @@ bool Scene_CommandSkyboxDisables(PlayState* play, Ship::SceneCommand* cmd)
 {
     Ship::SetSkyboxModifier* cmdSky = static_pointer_cast<Ship::SetSkyboxModifier>(cmd);
 
-    play->envCtx.sunMoonDisabled = cmdSky->settings.sunMoonDisabled;
-    play->envCtx.skyboxDisabled = cmdSky->settings.skyboxDisabled;
+    play->envCtx.sunMoonDisabled = cmdSky->modifier.sunMoonDisabled;
+    play->envCtx.skyboxDisabled = cmdSky->modifier.skyboxDisabled;
 
     return false;
 }
