@@ -221,6 +221,10 @@ void ObjTsubo_WaterBreak(ObjTsubo* this, PlayState* play) {
 }
 
 void ObjTsubo_SetupWaitForObject(ObjTsubo* this) {
+    if (gSaveContext.isBossRush) {
+        Actor_Kill(this);
+    }
+
     this->actionFunc = ObjTsubo_WaitForObject;
 }
 

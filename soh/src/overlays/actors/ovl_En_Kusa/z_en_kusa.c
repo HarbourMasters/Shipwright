@@ -277,6 +277,10 @@ void EnKusa_Destroy(Actor* thisx, PlayState* play2) {
 }
 
 void EnKusa_SetupWaitObject(EnKusa* this) {
+    if (gSaveContext.isBossRush) {
+        Actor_Kill(this);
+    }
+
     EnKusa_SetupAction(this, EnKusa_WaitObject);
 }
 

@@ -342,6 +342,13 @@ void BossGoma_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BossGoma* this = (BossGoma*)thisx;
 
+    if (gSaveContext.isBossRush) {
+        Player* player = GET_PLAYER(play);
+        player->actor.world.pos.x = 180.0f;
+        player->actor.world.pos.y = -630.0f;
+        player->actor.world.pos.z = 400.0f;
+    }
+
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 4000.0f, ActorShadow_DrawCircle, 150.0f);
     SkelAnime_Init(play, &this->skelanime, &gGohmaSkel, &gGohmaIdleCrouchedAnim, NULL, NULL, 0);
