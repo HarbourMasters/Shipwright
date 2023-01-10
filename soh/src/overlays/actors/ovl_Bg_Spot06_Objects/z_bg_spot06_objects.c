@@ -30,6 +30,8 @@ typedef enum {
 #define WATER_LEVEL_LOWERED (WATER_LEVEL_RAISED - 680)
 #define WATER_LEVEL_RIVER_LOWERED (WATER_LEVEL_RIVER_RAISED - 80)
 
+#define WATER_LEVEL_RIVER_LOWER_Z 2203
+
 void BgSpot06Objects_Init(Actor* thisx, PlayState* play);
 void BgSpot06Objects_Destroy(Actor* thisx, PlayState* play);
 void BgSpot06Objects_Update(Actor* thisx, PlayState* play);
@@ -209,6 +211,9 @@ void BgSpot06Objects_Destroy(Actor* thisx, PlayState* play) {
         case LHO_WATER_PLANE:
             break;
     }
+
+    // Due to Ships resource caching, the water box collisions for the river have to be manually reset
+    play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].zMin = WATER_LEVEL_RIVER_LOWER_Z;
 
     if (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
         // For randomizer when leaving lake hylia while the water level is lowered,
