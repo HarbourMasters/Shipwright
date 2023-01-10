@@ -6,6 +6,7 @@
 #include <libultraship/libultra/types.h>
 
 namespace Ship {
+// TODO: we've moved away from using classes for this stuff
 class MessageEntry
 {
 public:
