@@ -689,9 +689,9 @@ bool Scene_CommandSoundSettings(PlayState* play, Ship::SceneCommand* cmd) {
 
 bool Scene_CommandEchoSettings(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetEchoSettings* cmdEcho = (Ship::SetEchoSettings*)cmd;
+    Ship::SetEchoSettings* cmdEcho = static_pointer_cast<Ship::SetEchoSettings*>(cmd);
 
-    play->roomCtx.curRoom.echo = cmdEcho->echo;
+    play->roomCtx.curRoom.echo = cmdEcho->settings.echo;
 
     return false;
 }
