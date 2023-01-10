@@ -1,4 +1,4 @@
-#include "SetWind.h"
+#include "SetSkyboxSettings.h"
 
 namespace Ship {
 void* SetSkyboxSettings::GetPointer() {

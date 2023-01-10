@@ -33,7 +33,7 @@ void Ship::SetSkyboxSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRea
 	std::shared_ptr<SetSkyboxSettings> setSkyboxSettings = std::static_pointer_cast<SetSkyboxSettings>(resource);
 	ResourceFile::ParseFileBinary(reader, text);
 
-	ReadCommandId(setWind, reader);
+	ReadCommandId(setSkyboxSettings, reader);
 	
     setSkyboxSettings->settings.skyboxDisabled = reader->ReadInt8();
     setSkyboxSettings->settings.sunMoonDisabled = reader->ReadInt8();

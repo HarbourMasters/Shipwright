@@ -107,7 +107,7 @@ bool Scene_CommandActorList(PlayState* play, Ship::SceneCommand* cmd) {
 
 bool Scene_CommandUnused2(PlayState* play, Ship::SceneCommand* cmd)
 {
-    // Do we need to implement this?
+    // OTRTODO: Do we need to implement this?
     //play->unk_11DFC = SEGMENTED_TO_VIRTUAL(cmd->unused02.segment);
 
     return false;
@@ -675,13 +675,13 @@ bool Scene_CommandUndefined9(PlayState* play, Ship::SceneCommand* cmd) {
 }
 
 bool Scene_CommandSoundSettings(PlayState* play, Ship::SceneCommand* cmd) {
-    Ship::SetSoundSettings* cmdSnd = (Ship::SetSoundSettings*)cmd;
+    Ship::SetSoundSettings* cmdSnd = static_pointer_cast<Ship::SetSoundSettings>(cmd);
 
-    play->sequenceCtx.seqId = cmdSnd->musicSequence;
-    play->sequenceCtx.natureAmbienceId = cmdSnd->nightTimeSFX;
+    play->sequenceCtx.seqId = cmdSnd->settings.seqId;
+    play->sequenceCtx.natureAmbienceId = cmdSnd->settings.natureAmbienceId;
 
     if (gSaveContext.seqId == 0xFF) {
-        Audio_QueueSeqCmd(cmdSnd->reverb | 0xF0000000);
+        Audio_QueueSeqCmd(cmdSnd->settings.reverb | 0xF0000000);
     }
 
     return false;
@@ -689,7 +689,7 @@ bool Scene_CommandSoundSettings(PlayState* play, Ship::SceneCommand* cmd) {
 
 bool Scene_CommandEchoSettings(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetEchoSettings* cmdEcho = static_pointer_cast<Ship::SetEchoSettings*>(cmd);
+    Ship::SetEchoSettings* cmdEcho = static_pointer_cast<Ship::SetEchoSettings>(cmd);
 
     play->roomCtx.curRoom.echo = cmdEcho->settings.echo;
 

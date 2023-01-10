@@ -27,7 +27,7 @@ std::shared_ptr<Resource> SetEchoSettingsFactory::ReadResource(std::shared_ptr<B
 	return resource;
 }
 
-void Ship::SetSkyboxSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void Ship::SetEchoSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetEchoSettings> setEchoSettings = std::static_pointer_cast<SetEchoSettings>(resource);

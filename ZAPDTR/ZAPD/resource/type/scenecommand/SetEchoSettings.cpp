@@ -1,4 +1,4 @@
-#include "SetWind.h"
+#include "SetEchoSettings.h"
 
 namespace Ship {
 void* SetEchoSettings::GetPointer() {

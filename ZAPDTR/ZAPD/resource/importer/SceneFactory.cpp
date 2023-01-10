@@ -8,6 +8,7 @@
 #include "resource/importer/SetTimeSettingsFactory.h"
 #include "resource/importer/SetSkyboxSettingsFactory.h"
 #include "resource/importer/SetEchoSettingsFactory.h"
+#include "resource/importer/SetSoundSettingsFactory.h"
 
 namespace Ship {
 std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
@@ -19,6 +20,7 @@ std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReade
         SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetTimeSettingsFactory>();
         SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetSkyboxSettingsFactory>();
         SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetEchoSettingsFactory>();
+        SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetSoundSettingsFactory>();
         // TODO: Do the rest...
     }
 
