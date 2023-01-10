@@ -470,7 +470,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             GiveLinkRupees(9001);
         }
 
-        if(Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
+        if (Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
             gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] = FOREST_TEMPLE_SMALL_KEY_MAX; // Forest
             gSaveContext.sohStats.dungeonKeys[SCENE_BMORI1]     = FOREST_TEMPLE_SMALL_KEY_MAX; // Forest
             gSaveContext.inventory.dungeonKeys[SCENE_HIDAN] = FIRE_TEMPLE_SMALL_KEY_MAX; // Fire
@@ -487,6 +487,16 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.sohStats.dungeonKeys[SCENE_MEN]     = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX; // GTG
             gSaveContext.inventory.dungeonKeys[SCENE_GANONTIKA] = GANONS_CASTLE_SMALL_KEY_MAX; // Ganon
             gSaveContext.sohStats.dungeonKeys[SCENE_GANONTIKA]     = GANONS_CASTLE_SMALL_KEY_MAX; // Ganon
+        } else if (Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA) {
+            // Logic cannot handle vanilla key layout in some dungeons
+            // this is because vanilla expects the dungeon major item to be
+            // locked behind the keys, which is not always true in rando.
+            // We can resolve this by starting with some extra keys
+            if (ResourceMgr_IsSceneMasterQuest(SCENE_JYASINZOU)) {
+                // MQ Spirit needs 3 keys
+                gSaveContext.inventory.dungeonKeys[SCENE_JYASINZOU] = 3;
+                gSaveContext.sohStats.dungeonKeys[SCENE_JYASINZOU] = 3;
+            }
         }
 
         if(Randomizer_GetSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
