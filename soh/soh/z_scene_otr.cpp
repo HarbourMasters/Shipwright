@@ -221,17 +221,10 @@ bool Scene_CommandCollisionHeader(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandRoomList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetRoomList* cmdRoomList = (Ship::SetRoomList*)cmd;
+    Ship::SetRoomList* cmdRoomList = static_pointer_cast<Ship::SetRoomList>(cmd);
 
-    play->numRooms = cmdRoomList->rooms.size();
-    play->roomList = (RomFile*)malloc(play->numRooms * sizeof(RomFile));
-
-    for (int i = 0; i < cmdRoomList->rooms.size(); i++)
-    {
-        play->roomList[i].fileName = (char*)cmdRoomList->rooms[i].name.c_str();
-        play->roomList[i].vromStart = cmdRoomList->rooms[i].vromStart;
-        play->roomList[i].vromEnd = cmdRoomList->rooms[i].vromEnd;
-    }
+    play->numRooms = cmdRoomList->numRooms;
+    play->roomList = cmdRoomList->GetPointer();
 
     return false;
 }
