@@ -74,6 +74,9 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     gSaveContext.worldMapArea = 0;
     OTRScene_ExecuteCommands(play, play->sceneSegment);
     Play_InitEnvironment(play, play->skyboxId);
+    if (gSaveContext.isBossRush && play->sceneNum != SCENE_KENJYANOMA) {
+        gSaveContext.isBossRushPaused = 0;
+    }
     /* auto data = static_cast<Ship::Vertex*>(Ship::Window::GetInstance()
                                                ->GetResourceManager()
                                                ->LoadResource("object_link_child\\object_link_childVtx_01FE08")

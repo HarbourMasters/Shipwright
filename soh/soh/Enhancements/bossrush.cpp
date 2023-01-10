@@ -51,7 +51,6 @@ extern "C" void BossRush_HandleBlueWarp(DoorWarp1* warp, PlayState* play) {
 
     // If warping from Chamber of Sages, choose the correct boss room to teleport to.
     if (play->sceneNum == SCENE_KENJYANOMA) {
-        gSaveContext.isBossRushPaused = 0;
         f32 warpPosX = warp->actor.world.pos.x;
         f32 warpPosZ = warp->actor.world.pos.z;
         // Gohma & Phantom Ganon

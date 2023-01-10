@@ -5183,67 +5183,6 @@ void Interface_Draw(PlayState* play) {
                                                  8, 16, PosX_RC + svar3, PosY_RC, 8, 16, 1 << 10, 1 << 10);
                 }
             }
-
-            // Draw Boss Rush Timer
-            if (gSaveContext.isBossRush) {
-                s32 totalTimer = GAMEPLAYSTAT_TOTAL_TIME;
-                s32 bossRushTimer[6];
-                s32 sec = totalTimer / 10;
-                s32 hh = sec / 3600;
-                s32 mm = (sec - (hh * 3600)) / 60;
-                s32 ss = sec - (hh * 3600) - (mm * 60);
-                s32 ds = totalTimer % 10;
-
-                // Hours
-                bossRushTimer[0] = hh;
-
-                // Minutes
-                if (mm >= 10) {
-                    bossRushTimer[1] = mm;
-                    while (bossRushTimer[1] >= 10) {
-                        bossRushTimer[1] = bossRushTimer[1] / 10;
-                    }
-                } else {
-                    bossRushTimer[1] = 0;
-                }
-                bossRushTimer[2] = mm % 10;
-
-                // Seconds
-                if (ss >= 10) {
-                    bossRushTimer[3] = ss;
-                    while (bossRushTimer[3] >= 10) {
-                        bossRushTimer[3] = bossRushTimer[3] / 10;
-                    }
-                } else {
-                    bossRushTimer[3] = 0;
-                }
-                bossRushTimer[4] = ss % 10;
-
-                // Deciseconds
-                bossRushTimer[5] = ds;
-
-                if (gSaveContext.sohStats.gameComplete) {
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, play->interfaceCtx.magicAlpha);
-                } else if (gSaveContext.isBossRushPaused) {
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 150, 150, 150, play->interfaceCtx.magicAlpha);
-                } else {
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, play->interfaceCtx.magicAlpha);
-                }
-
-                gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE,
-                                  TEXEL0, 0, PRIMITIVE, 0);
-
-                for (int i = 0; i < 6; i++) {
-
-                    s16 rectLeft = OTRGetRectDimensionFromLeftEdge(26);
-                    s16 rectTop = 200;
-                    s16 rectWidth = 8;
-                    s16 rectHeight = 16;
-
-                    OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[bossRushTimer[i]]), 8, 16,
-                                                 rectLeft + (i * 8), rectTop, 8, 16, 1 << 10, 1 << 10);
-                }
-            }
         }
         else {
             // Make sure item counts have black backgrounds
