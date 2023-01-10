@@ -11,20 +11,22 @@
 #include "resource/importer/SetSoundSettingsFactory.h"
 #include "resource/importer/SetSkyboxSettingsFactory.h"
 #include "resource/importer/SetRoomBehaviorFactory.h"
+#include "resource/importer/SetCsCameraFactory.h"
 
 namespace Ship {
 std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
 {
     if (SceneFactory::sceneCommandFactories.empty()) {
-        SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetLightingSettingsFactory>();
-        SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetWindFactory>();
-        SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetExitListFactory>();
-        SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetTimeSettingsFactory>();
-		SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetSkyboxModifierFactory>();
-        SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetEchoSettingsFactory>();
-        SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetSoundSettingsFactory>();
-        SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetSkyboxSettingsFactory>();
-        SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetRoomBehaviorFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetLightingSettings] = std::make_shared<SetLightingSettingsFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetWind] = std::make_shared<SetWindFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetExitList] = std::make_shared<SetExitListFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetTimeSettings] = std::make_shared<SetTimeSettingsFactory>();
+		SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetSkyboxModifier] = std::make_shared<SetSkyboxModifierFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetEchoSettings] = std::make_shared<SetEchoSettingsFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetSoundSettings] = std::make_shared<SetSoundSettingsFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetSkyboxSettings] = std::make_shared<SetSkyboxSettingsFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetRoomBehavior] = std::make_shared<SetRoomBehaviorFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetCsCamera] = std::make_shared<SetCsCameraFactory>();
         // TODO: Do the rest...
     }
 
