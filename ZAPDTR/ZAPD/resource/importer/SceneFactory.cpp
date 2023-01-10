@@ -12,6 +12,7 @@
 #include "resource/importer/SetSkyboxSettingsFactory.h"
 #include "resource/importer/SetRoomBehaviorFactory.h"
 #include "resource/importer/SetCsCameraFactory.h"
+#include "resource/importer/SetCameraSettingsFactory.h"
 
 namespace Ship {
 std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
@@ -27,6 +28,7 @@ std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReade
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetSkyboxSettings] = std::make_shared<SetSkyboxSettingsFactory>();
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetRoomBehavior] = std::make_shared<SetRoomBehaviorFactory>();
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetCsCamera] = std::make_shared<SetCsCameraFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetCameraSettings] = std::make_shared<SetCameraSettingsFactory>();
         // TODO: Do the rest...
     }
 

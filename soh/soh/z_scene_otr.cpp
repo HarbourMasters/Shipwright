@@ -761,10 +761,10 @@ bool Scene_CommandCutsceneData(PlayState* play, Ship::SceneCommand* cmd)
 // Camera & World Map Area
 bool Scene_CommandMiscSettings(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetCameraSettings* cmdCam = (Ship::SetCameraSettings*)cmd;
+    Ship::SetCameraSettings* cmdCam = static_pointer_cast<Ship::SetCameraSettings>(cmd);
 
-    YREG(15) = cmdCam->cameraMovement;
-    gSaveContext.worldMapArea = cmdCam->mapHighlights;
+    YREG(15) = cmdCam->settings.cameraMovement;
+    gSaveContext.worldMapArea = cmdCam->settings.worldMapArea;
 
     if ((play->sceneNum == SCENE_SHOP1) || (play->sceneNum == SCENE_SYATEKIJYOU)) {
         if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
