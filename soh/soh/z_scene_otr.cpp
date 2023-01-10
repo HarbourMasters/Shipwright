@@ -588,11 +588,11 @@ bool Scene_CommandLightSettingsList(PlayState* play, Ship::SceneCommand* cmd)
 // Scene Command 0x11: Skybox Settings
 bool Scene_CommandSkyboxSettings(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetSkyboxSettings* cmdSky = (Ship::SetSkyboxSettings*)cmd;
+    Ship::SetSkyboxSettings* cmdSky = static_pointer_cast<Ship::SetSkyboxSettings>(cmd);
 
-    play->skyboxId = cmdSky->skyboxNumber;
-    play->envCtx.unk_17 = play->envCtx.unk_18 = cmdSky->cloudsType;
-    play->envCtx.indoors = cmdSky->isIndoors;
+    play->skyboxId = cmdSky->settings.skyboxId;
+    play->envCtx.unk_17 = play->envCtx.unk_18 = cmdSky->settings.weather;
+    play->envCtx.indoors = cmdSky->settings.indoors;
 
     return false;
 }

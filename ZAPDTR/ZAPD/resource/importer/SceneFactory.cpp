@@ -6,9 +6,10 @@
 #include "resource/importer/SetWindFactory.h"
 #include "resource/importer/SetExitListFactory.h"
 #include "resource/importer/SetTimeSettingsFactory.h"
-#include "resource/importer/SetSkyboxSettingsFactory.h"
+#include "resource/importer/SetSkyboxModifierFactory.h"
 #include "resource/importer/SetEchoSettingsFactory.h"
 #include "resource/importer/SetSoundSettingsFactory.h"
+#include "resource/importer/SetSkyboxSettingsFactory.h"
 
 namespace Ship {
 std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
@@ -18,9 +19,10 @@ std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReade
         SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetWindFactory>();
         SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetExitListFactory>();
         SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetTimeSettingsFactory>();
-        SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetSkyboxSettingsFactory>();
+		SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetSkyboxModifierFactory>();
         SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetEchoSettingsFactory>();
         SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetSoundSettingsFactory>();
+        SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetSkyboxSettingsFactory>();
         // TODO: Do the rest...
     }
 
