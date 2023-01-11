@@ -1,7 +1,6 @@
 #pragma once
 
-#include "ultra64.h"
-#include "global.h"
+#include "variables.h"
 
 #ifdef __cplusplus
 extern "C" {

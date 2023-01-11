@@ -1,6 +1,5 @@
 #include "bossrush.h"
-
-#include <Cvar.h>
+#include "global.h"
 
 extern "C" void BossRush_SpawnBlueWarps(PlayState* play) {
 
