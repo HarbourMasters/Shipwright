@@ -66,8 +66,6 @@
 #endif
 
 
-
-#include <Audio.h>
 #include "Enhancements/custom-message/CustomMessageTypes.h"
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
@@ -77,6 +75,8 @@
 #include "Enhancements/crowd-control/CrowdControl.h"
 CrowdControl* CrowdControl::Instance;
 #endif
+
+#include "libultraship/src/core/bridge/resourcebridge.h"
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
@@ -454,7 +454,7 @@ extern "C" void InitOTR() {
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);
     if (tm_now->tm_mon == 11 && tm_now->tm_mday >= 24 && tm_now->tm_mday <= 25) {
-        CVar_RegisterS32("gLetItSnow", 1);
+        CVarRegisterInteger("gLetItSnow", 1);
     } else {
         CVarClear("gLetItSnow");
     }
@@ -1023,6 +1023,7 @@ extern "C" Vtx* ResourceMgr_LoadVtxByName(const char* path)
 
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path)
 {
+    GetResourceDataByName(path);
     auto file = std::static_pointer_cast<Ship::AudioSequence>(OTRGlobals::Instance->context->GetResourceManager()
                     ->LoadResource(path));
 
