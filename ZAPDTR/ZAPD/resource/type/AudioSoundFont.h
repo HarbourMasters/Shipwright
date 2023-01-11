@@ -54,9 +54,24 @@ typedef struct {
 
 class AudioSoundFont : public Resource {
 public:
-  void* GetPointer();
-  size_t GetPointerSize();
+    void* GetPointer();
+    size_t GetPointerSize();
 
-  SoundFont soundFont;
+    int8_t medium;
+    int8_t cachePolicy;
+    uint16_t data1;
+    uint16_t data2;
+    uint16_t data3;
+
+    std::vector<Drum> drums;
+    std::vector<Drum*> drumAddresses;
+    std::vector<uint32_t> drumEnvelopeCounts;
+    std::vector<std::vector<AdsrEnvelope>> drumEnvelopeArrays;
+
+    std::vector<Instrument> instruments;
+
+    std::vector<SoundFontSound> soundEffects; 
+
+    SoundFont soundFont;
 };
 }; // namespace Ship
