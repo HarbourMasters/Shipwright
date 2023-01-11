@@ -17,6 +17,11 @@
 #include "resource/importer/SetCollisionHeaderFactory.h"
 #include "resource/importer/SetEntranceListFactory.h"
 #include "resource/importer/SetSpecialObjectsFactory.h"
+#include "resource/importer/SetObjectListFactory.h"
+#include "resource/importer/SetStartPositionListFactory.h"
+#include "resource/importer/SetActorList.h"
+#include "resource/importer/SetTransitionActorList.h"
+#include "resource/importer/EndMarker.h"
 
 namespace Ship {
 std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
@@ -41,6 +46,7 @@ std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReade
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetStartPositionList] = std::make_shared<SetStartPositionListFactory>();
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetActorList] = std::make_shared<SetActorList>();
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetTransitionActorList] = std::make_shared<SetTransitionActorList>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::EndMarker] = std::make_shared<EndMarker>();
         // TODO: Do the rest...
     }
 
