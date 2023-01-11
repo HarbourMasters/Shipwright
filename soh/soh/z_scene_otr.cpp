@@ -133,22 +133,8 @@ bool Scene_CommandRoomList(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandEntranceList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetEntranceList* otrEntrance = (Ship::SetEntranceList*)cmd;
-
-    if (otrEntrance->cachedGameData != nullptr)
-        play->setupEntranceList = (EntranceEntry*)otrEntrance->cachedGameData;
-    else
-    {
-        play->setupEntranceList = (EntranceEntry*)malloc(otrEntrance->entrances.size() * sizeof(EntranceEntry));
-
-        for (int i = 0; i < otrEntrance->entrances.size(); i++)
-        {
-            play->setupEntranceList[i].room = otrEntrance->entrances[i].roomToLoad;
-            play->setupEntranceList[i].spawn = otrEntrance->entrances[i].startPositionIndex;
-        }
-
-        otrEntrance->cachedGameData = play->setupEntranceList;
-    }
+    Ship::SetEntranceList* otrEntrance = static_pointer_cast<Ship::SetEntranceList>(cmd);
+    play->setupEntranceList = otrEntrance->GetPointer();
 
     return false;
 }
