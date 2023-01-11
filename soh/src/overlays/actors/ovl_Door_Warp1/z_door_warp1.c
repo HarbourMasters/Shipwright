@@ -359,8 +359,6 @@ void DoorWarp1_FloatPlayer(DoorWarp1* this, PlayState* play) {
 
     if (!gSaveContext.isBossRush) {
         player->actor.gravity = -0.1f;
-    } else {
-        player->actor.gravity = -1.0f;
     }
 }
 
@@ -815,7 +813,9 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
     this->warpTimer++;
 
     if (this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF) {
-        if (play->sceneNum == SCENE_MORIBOSSROOM) {
+        if (gSaveContext.isBossRush) {
+            BossRush_HandleBlueWarp(this, play);
+        } else if (play->sceneNum == SCENE_MORIBOSSROOM) {
             if (!(gSaveContext.eventChkInf[4] & 0x100)) {
                 gSaveContext.eventChkInf[4] |= 0x100;
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE);
@@ -949,10 +949,6 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
         play->envCtx.screenFillColor[3] = (u32)(255.0f * screenFillAlpha);
 
         osSyncPrintf("\nparcent=[%f]", screenFillAlpha);
-
-        if (gSaveContext.isBossRush && screenFillAlpha == 1.0f) {
-            BossRush_HandleBlueWarp(this, play);
-        }
     }
     Lights_PointNoGlowSetInfo(&this->upperLightInfo, (s16)player->actor.world.pos.x + 10.0f,
                               (s16)player->actor.world.pos.y + 10.0f, (s16)player->actor.world.pos.z + 10.0f, 235, 255,
