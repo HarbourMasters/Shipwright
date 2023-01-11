@@ -46,7 +46,7 @@ void Ship::SetRoomListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
 		room.vromStart = reader->ReadUint32();
 		room.vromEnd = reader->ReadUint32();
 		
-        setRoomList->exits.push_back(room);
+        setRoomList->rooms.push_back(room);
     }
 }
 

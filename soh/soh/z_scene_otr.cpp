@@ -322,7 +322,7 @@ extern "C" void* func_800982FC(ObjectContext * objectCtx, s32 bankIndex, s16 obj
 
 bool Scene_CommandObjectList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetObjectList* cmdObj = (Ship::SetObjectList*)cmd;
+    Ship::SetObjectList* cmdObj = static_pointer_cast<Ship::SetObjectList>(cmd);
 
     s32 i;
     s32 j;
@@ -331,7 +331,7 @@ bool Scene_CommandObjectList(PlayState* play, Ship::SceneCommand* cmd)
     ObjectStatus* status2;
     ObjectStatus* firstStatus;
     //s16* objectEntry = SEGMENTED_TO_VIRTUAL(cmd->objectList.segment);
-    s16* objectEntry = (s16*)cmdObj->objects.data();
+    s16* objectEntry = (s16*)cmdObj->GetPointer();
     void* nextPtr;
 
     k = 0;
