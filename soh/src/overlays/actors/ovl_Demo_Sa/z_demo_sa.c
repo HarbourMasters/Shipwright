@@ -262,6 +262,9 @@ void func_8098E960(DemoSa* this, PlayState* play) {
             player->actor.world.rot.y = player->actor.shape.rot.y = this->actor.world.rot.y + 0x8000;
         } else {
             this->action = 1;
+            if (gSaveContext.linkAge == LINK_AGE_CHILD) {
+                player->actor.world.rot.y = player->actor.shape.rot.y = -5461 + 0x8000;
+            }
             BossRush_SpawnBlueWarps(play);
         }
     }
