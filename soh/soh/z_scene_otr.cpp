@@ -34,7 +34,7 @@ bool Scene_CommandSpawnList(PlayState* play, Ship::SceneCommand* cmd)
 {
     Ship::SetStartPositionList* cmdStartPos = static_pointer_cast<Ship::SetStartPositionList>(cmd);
     ActorEntry* entries = cmdStartPos->GetPointer();
-
++-
     play->linkActorEntry = &entries[play->setupEntranceList[play->curSpawn].spawn];;
     play->linkAgeOnLoad = ((void)0, gSaveContext.linkAge);
     s16 linkObjectId = gLinkObjectIds[((void)0, gSaveContext.linkAge)];
@@ -45,31 +45,10 @@ bool Scene_CommandSpawnList(PlayState* play, Ship::SceneCommand* cmd)
 }
 
 bool Scene_CommandActorList(PlayState* play, Ship::SceneCommand* cmd) {
-    Ship::SetActorList* cmdActor = (Ship::SetActorList*)cmd;
+    Ship::SetActorList* cmdActor = static_pointer_cast<Ship::SetActorList>(cmd);
 
-    play->numSetupActors = cmdActor->entries.size();
-
-    if (cmdActor->cachedGameData != nullptr)
-        play->setupActorList = (ActorEntry*)cmdActor->cachedGameData;
-    else
-    {
-        ActorEntry* entries = (ActorEntry*)malloc(cmdActor->entries.size() * sizeof(ActorEntry));
-
-        for (int i = 0; i < cmdActor->entries.size(); i++)
-        {
-            entries[i].id = cmdActor->entries[i].actorNum;
-            entries[i].pos.x = cmdActor->entries[i].posX;
-            entries[i].pos.y = cmdActor->entries[i].posY;
-            entries[i].pos.z = cmdActor->entries[i].posZ;
-            entries[i].rot.x = cmdActor->entries[i].rotX;
-            entries[i].rot.y = cmdActor->entries[i].rotY;
-            entries[i].rot.z = cmdActor->entries[i].rotZ;
-            entries[i].params = cmdActor->entries[i].initVar;
-        }
-
-        cmdActor->cachedGameData = entries;
-        play->setupActorList = entries;
-    }
+    play->numSetupActors = cmdActor->numActors;
+    play->setupActorList = cmdActor->GetPointer();
 
     return false;
 }
