@@ -141,14 +141,14 @@ bool Scene_CommandEntranceList(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandSpecialFiles(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetSpecialObjects* otrSpecial = (Ship::SetSpecialObjects*)cmd;
+    Ship::SetSpecialObjects* specialCmd = static_pointer_cast<Ship::SetSpecialObjects>(cmd);
 
-    if (otrSpecial->globalObject != 0)
-        play->objectCtx.subKeepIndex = Object_Spawn(&play->objectCtx, otrSpecial->globalObject);
+    if (specialCmd->globalObject != 0) {
+        play->objectCtx.subKeepIndex = Object_Spawn(&play->objectCtx, specialCmd->specialObjects.globalObject);
+    }
 
-    if (otrSpecial->elfMessage != 0)
-    {
-        auto res = (Ship::Blob*)OTRPlay_LoadFile(play, sNaviMsgFiles[otrSpecial->elfMessage - 1].fileName);
+    if (specialCmd->elfMessage != 0) {
+        auto res = (Ship::Blob*)OTRPlay_LoadFile(play, sNaviMsgFiles[specialCmd->specialObjects.elfMessage - 1].fileName);
         play->cUpElfMsgs = (ElfMessage*)res->data.data();
     }
 

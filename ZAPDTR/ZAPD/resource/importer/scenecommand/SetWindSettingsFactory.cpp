@@ -1,11 +1,11 @@
-#include "resource/importer/SetWindFactory.h"
-#include "resource/type/SetWind.h"
+#include "resource/importer/SetWindSettingsFactory.h"
+#include "resource/type/SetWindSettings.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {
-std::shared_ptr<Resource> SetWindFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
+std::shared_ptr<Resource> SetWindSettingsFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
 {
-	auto resource = std::make_shared<SetWind>();
+	auto resource = std::make_shared<SetWindSettings>();
 	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
 	uint32_t version = reader->ReadUInt32();
@@ -18,7 +18,7 @@ std::shared_ptr<Resource> SetWindFactory::ReadResource(std::shared_ptr<BinaryRea
 
 	if (factory == nullptr)
 	{
-		SPDLOG_ERROR("Failed to load SetWind with version {}", version);
+		SPDLOG_ERROR("Failed to load SetWindSettings with version {}", version);
 		return nullptr;
 	}
 
@@ -27,7 +27,7 @@ std::shared_ptr<Resource> SetWindFactory::ReadResource(std::shared_ptr<BinaryRea
 	return resource;
 }
 
-void Ship::SetWindFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void Ship::SetWindSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetWind> setWind = std::static_pointer_cast<SetWind>(resource);

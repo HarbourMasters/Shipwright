@@ -9,17 +9,15 @@
 
 namespace Ship {
 typedef struct {
-  int8_t windWest;
-  int8_t windVertical;
-  int8_t windSouth;
-  int8_t windSpeed;
-} WindSettings;
+  int8_t elfMessage;
+  int16_t globalObject;
+} SpecialObjects;
 
-class SetWind : public SceneCommand {
+class SetSpecialObjects : public SceneCommand {
   public:
     void* GetPointer();
     size_t GetPointerSize();
 
-    WindSettings settings;
+    SpecialObjects specialObjects;
 };
 }; // namespace Ship
