@@ -10923,7 +10923,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
         s32 ds = totalTimer % 10;
 
         // Hours
-        bossRushTimer[0] = hh;
+        bossRushTimer[0] = hh % 10;
 
         // Minutes
         if (mm >= 10) {
