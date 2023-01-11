@@ -32,44 +32,13 @@ std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path);
 
 bool Scene_CommandSpawnList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetStartPositionList* cmdStartPos = (Ship::SetStartPositionList*)cmd;
+    Ship::SetStartPositionList* cmdStartPos = static_pointer_cast<Ship::SetStartPositionList>(cmd);
+    ActorEntry* entries = cmdStartPos->GetPointer();
 
-    ActorEntry* linkSpawnEntry = nullptr;
-
-    if (cmdStartPos->cachedGameData != nullptr)
-    {
-        ActorEntry* entries = (ActorEntry*)cmdStartPos->cachedGameData;
-        linkSpawnEntry = &entries[play->setupEntranceList[play->curSpawn].spawn];
-    }
-    else
-    {
-        ActorEntry* entries = (ActorEntry*)malloc(sizeof(ActorEntry) * cmdStartPos->entries.size());
-
-        for (int i = 0; i < cmdStartPos->entries.size(); i++)
-        {
-            entries[i].id = cmdStartPos->entries[i].actorNum;
-            entries[i].params = cmdStartPos->entries[i].initVar;
-            entries[i].pos.x = cmdStartPos->entries[i].posX;
-            entries[i].pos.y = cmdStartPos->entries[i].posY;
-            entries[i].pos.z = cmdStartPos->entries[i].posZ;
-            entries[i].rot.x = cmdStartPos->entries[i].rotX;
-            entries[i].rot.y = cmdStartPos->entries[i].rotY;
-            entries[i].rot.z = cmdStartPos->entries[i].rotZ;
-        }
-
-        linkSpawnEntry = &entries[play->setupEntranceList[play->curSpawn].spawn];
-        cmdStartPos->cachedGameData = entries;
-    }
-
-    ActorEntry* linkEntry = play->linkActorEntry = linkSpawnEntry;
-
-    s16 linkObjectId;
-
+    play->linkActorEntry = &entries[play->setupEntranceList[play->curSpawn].spawn];;
     play->linkAgeOnLoad = ((void)0, gSaveContext.linkAge);
+    s16 linkObjectId = gLinkObjectIds[((void)0, gSaveContext.linkAge)];
 
-    linkObjectId = gLinkObjectIds[((void)0, gSaveContext.linkAge)];
-
-    //gActorOverlayTable[linkEntry->id].initInfo->objectId = linkObjectId;
     Object_Spawn(&play->objectCtx, linkObjectId);
 
     return false;

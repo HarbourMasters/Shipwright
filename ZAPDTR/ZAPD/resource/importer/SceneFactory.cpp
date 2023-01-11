@@ -38,6 +38,7 @@ std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReade
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetEntranceList] = std::make_shared<SetEntranceListFactory>();
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetSpecialObjects] = std::make_shared<SetSpecialObjectsFactory>();
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetObjectList] = std::make_shared<SetObjectListFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetStartPositionList] = std::make_shared<SetStartPositionListFactory>();
         // TODO: Do the rest...
     }
 
