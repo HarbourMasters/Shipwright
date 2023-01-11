@@ -1,4 +1,4 @@
-#include "SetWind.h"
+#include "SetTimeSettings.h"
 
 namespace Ship {
 void* SetLightingSettings::GetPointer() {

@@ -5,7 +5,7 @@
 namespace Ship {
 std::shared_ptr<Resource> SetLightingsSettingsFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
 {
-	auto resource = std::make_shared<Scene>();
+	auto resource = std::make_shared<SetLightingsSettings>();
 	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
 	uint32_t version = reader->ReadUInt32();

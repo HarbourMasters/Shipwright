@@ -45,6 +45,7 @@ namespace Ship
     class Scene;
     class DisplayList;
 };
+#include <memory>
 #endif
 
 #define SCREEN_WIDTH  320
@@ -1089,7 +1090,7 @@ typedef struct {
     /* 0x74 */ s16 unk_74[2]; // context-specific data used by the current scene draw config
 
 #ifdef __cplusplus
-    Ship::Scene* roomToLoad;
+    std::shared_ptr<Ship::Scene> roomToLoad;
 #else
     void* roomToLoad;
 #endif

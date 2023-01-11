@@ -1,4 +1,4 @@
-#include "SetWind.h"
+#include "SetExitList.h"
 
 namespace Ship {
 void* SetExitList::GetPointer() {

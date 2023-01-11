@@ -10,11 +10,12 @@
 #include <Path.h>
 #include <Text.h>
 #include <Blob.h>
+#include <memory>
 
 extern Ship::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName);
 extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 extern "C" RomFile sNaviMsgFiles[];
-s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* scene);
+s32 OTRScene_ExecuteCommands(PlayState* play, std::shared_ptr<Ship::Scene> scene);
 
 std::shared_ptr<Ship::OtrFile> ResourceMgr_LoadFile(const char* path) {
     std::string Path = path;
@@ -32,82 +33,30 @@ std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path);
 
 bool Scene_CommandSpawnList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetStartPositionList* cmdStartPos = (Ship::SetStartPositionList*)cmd;
+    Ship::SetStartPositionList* cmdStartPos = static_pointer_cast<Ship::SetStartPositionList>(cmd);
+    ActorEntry* entries = cmdStartPos->GetPointer();
 
-    ActorEntry* linkSpawnEntry = nullptr;
-
-    if (cmdStartPos->cachedGameData != nullptr)
-    {
-        ActorEntry* entries = (ActorEntry*)cmdStartPos->cachedGameData;
-        linkSpawnEntry = &entries[play->setupEntranceList[play->curSpawn].spawn];
-    }
-    else
-    {
-        ActorEntry* entries = (ActorEntry*)malloc(sizeof(ActorEntry) * cmdStartPos->entries.size());
-
-        for (int i = 0; i < cmdStartPos->entries.size(); i++)
-        {
-            entries[i].id = cmdStartPos->entries[i].actorNum;
-            entries[i].params = cmdStartPos->entries[i].initVar;
-            entries[i].pos.x = cmdStartPos->entries[i].posX;
-            entries[i].pos.y = cmdStartPos->entries[i].posY;
-            entries[i].pos.z = cmdStartPos->entries[i].posZ;
-            entries[i].rot.x = cmdStartPos->entries[i].rotX;
-            entries[i].rot.y = cmdStartPos->entries[i].rotY;
-            entries[i].rot.z = cmdStartPos->entries[i].rotZ;
-        }
-
-        linkSpawnEntry = &entries[play->setupEntranceList[play->curSpawn].spawn];
-        cmdStartPos->cachedGameData = entries;
-    }
-
-    ActorEntry* linkEntry = play->linkActorEntry = linkSpawnEntry;
-
-    s16 linkObjectId;
-
+    play->linkActorEntry = &entries[play->setupEntranceList[play->curSpawn].spawn];;
     play->linkAgeOnLoad = ((void)0, gSaveContext.linkAge);
+    s16 linkObjectId = gLinkObjectIds[((void)0, gSaveContext.linkAge)];
 
-    linkObjectId = gLinkObjectIds[((void)0, gSaveContext.linkAge)];
-
-    //gActorOverlayTable[linkEntry->id].initInfo->objectId = linkObjectId;
     Object_Spawn(&play->objectCtx, linkObjectId);
 
     return false;
 }
 
 bool Scene_CommandActorList(PlayState* play, Ship::SceneCommand* cmd) {
-    Ship::SetActorList* cmdActor = (Ship::SetActorList*)cmd;
+    Ship::SetActorList* cmdActor = static_pointer_cast<Ship::SetActorList>(cmd);
 
-    play->numSetupActors = cmdActor->entries.size();
-
-    if (cmdActor->cachedGameData != nullptr)
-        play->setupActorList = (ActorEntry*)cmdActor->cachedGameData;
-    else
-    {
-        ActorEntry* entries = (ActorEntry*)malloc(cmdActor->entries.size() * sizeof(ActorEntry));
-
-        for (int i = 0; i < cmdActor->entries.size(); i++)
-        {
-            entries[i].id = cmdActor->entries[i].actorNum;
-            entries[i].pos.x = cmdActor->entries[i].posX;
-            entries[i].pos.y = cmdActor->entries[i].posY;
-            entries[i].pos.z = cmdActor->entries[i].posZ;
-            entries[i].rot.x = cmdActor->entries[i].rotX;
-            entries[i].rot.y = cmdActor->entries[i].rotY;
-            entries[i].rot.z = cmdActor->entries[i].rotZ;
-            entries[i].params = cmdActor->entries[i].initVar;
-        }
-
-        cmdActor->cachedGameData = entries;
-        play->setupActorList = entries;
-    }
+    play->numSetupActors = cmdActor->numActors;
+    play->setupActorList = cmdActor->GetPointer();
 
     return false;
 }
 
 bool Scene_CommandUnused2(PlayState* play, Ship::SceneCommand* cmd)
 {
-    // Do we need to implement this?
+    // OTRTODO: Do we need to implement this?
     //play->unk_11DFC = SEGMENTED_TO_VIRTUAL(cmd->unused02.segment);
 
     return false;
@@ -115,159 +64,40 @@ bool Scene_CommandUnused2(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandCollisionHeader(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetCollisionHeader* cmdCol = (Ship::SetCollisionHeader*)cmd;
-
-    auto colRes = std::static_pointer_cast<Ship::CollisionHeader>(ResourceMgr_LoadResource(cmdCol->filePath.c_str()));
-
-    CollisionHeader* colHeader = nullptr;
-
-    if (colRes->CachedGameAsset != nullptr)
-        colHeader = (CollisionHeader*)colRes->CachedGameAsset;
-    else
-    {
-        colHeader = (CollisionHeader*)malloc(sizeof(CollisionHeader));
-
-        colHeader->minBounds.x = colRes->absMinX;
-        colHeader->minBounds.y = colRes->absMinY;
-        colHeader->minBounds.z = colRes->absMinZ;
-
-        colHeader->maxBounds.x = colRes->absMaxX;
-        colHeader->maxBounds.y = colRes->absMaxY;
-        colHeader->maxBounds.z = colRes->absMaxZ;
-
-        colHeader->vtxList = (Vec3s*)malloc(sizeof(Vec3s) * colRes->vertices.size());
-        colHeader->numVertices = colRes->vertices.size();
-
-        for (int i = 0; i < colRes->vertices.size(); i++)
-        {
-            colHeader->vtxList[i].x = colRes->vertices[i].x;
-            colHeader->vtxList[i].y = colRes->vertices[i].y;
-            colHeader->vtxList[i].z = colRes->vertices[i].z;
-        }
-
-        colHeader->polyList = (CollisionPoly*)malloc(sizeof(CollisionPoly) * colRes->polygons.size());
-        colHeader->numPolygons = colRes->polygons.size();
-
-        for (int i = 0; i < colRes->polygons.size(); i++)
-        {
-            colHeader->polyList[i].type = colRes->polygons[i].type;
-            colHeader->polyList[i].flags_vIA = colRes->polygons[i].vtxA;
-            colHeader->polyList[i].flags_vIB = colRes->polygons[i].vtxB;
-            colHeader->polyList[i].vIC = colRes->polygons[i].vtxC;
-            colHeader->polyList[i].normal.x = colRes->polygons[i].a;
-            colHeader->polyList[i].normal.y = colRes->polygons[i].b;
-            colHeader->polyList[i].normal.z = colRes->polygons[i].c;
-            colHeader->polyList[i].dist = colRes->polygons[i].d;
-        }
-
-        colHeader->surfaceTypeList = (SurfaceType*)malloc(colRes->polygonTypes.size() * sizeof(SurfaceType));
-
-        for (int i = 0; i < colRes->polygonTypes.size(); i++)
-        {
-            colHeader->surfaceTypeList[i].data[0] = colRes->polygonTypes[i] >> 32;
-            colHeader->surfaceTypeList[i].data[1] = colRes->polygonTypes[i] & 0xFFFFFFFF;
-        }
-
-        colHeader->cameraDataList = (CamData*)malloc(sizeof(CamData) * colRes->camData->entries.size());
-        colHeader->cameraDataListLen = colRes->camData->entries.size();
-
-        for (int i = 0; i < colRes->camData->entries.size(); i++)
-        {
-            colHeader->cameraDataList[i].cameraSType = colRes->camData->entries[i]->cameraSType;
-            colHeader->cameraDataList[i].numCameras = colRes->camData->entries[i]->numData;
-
-            int idx = colRes->camData->entries[i]->cameraPosDataIdx;
-
-            colHeader->cameraDataList[i].camPosData = (Vec3s*)malloc(sizeof(Vec3s) * colRes->camData->entries[i]->numData);
-
-            for (int j = 0; j < colRes->camData->entries[i]->numData; j++)
-            {
-                if (colRes->camData->cameraPositionData.size() > 0)
-                {
-                    colHeader->cameraDataList[i].camPosData[j].x = colRes->camData->cameraPositionData[idx + j]->x;
-                    colHeader->cameraDataList[i].camPosData[j].y = colRes->camData->cameraPositionData[idx + j]->y;
-                    colHeader->cameraDataList[i].camPosData[j].z = colRes->camData->cameraPositionData[idx + j]->z;
-                }
-                else
-                {
-                    colHeader->cameraDataList[i].camPosData->x = 0;
-                    colHeader->cameraDataList[i].camPosData->y = 0;
-                    colHeader->cameraDataList[i].camPosData->z = 0;
-                }
-            }
-        }
-
-        colHeader->numWaterBoxes = colRes->waterBoxes.size();
-        colHeader->waterBoxes = (WaterBox*)malloc(sizeof(WaterBox) * colHeader->numWaterBoxes);
-
-        for (int i = 0; i < colHeader->numWaterBoxes; i++)
-        {
-            colHeader->waterBoxes[i].xLength = colRes->waterBoxes[i].xLength;
-            colHeader->waterBoxes[i].ySurface = colRes->waterBoxes[i].ySurface;
-            colHeader->waterBoxes[i].xMin = colRes->waterBoxes[i].xMin;
-            colHeader->waterBoxes[i].zMin = colRes->waterBoxes[i].zMin;
-            colHeader->waterBoxes[i].xLength = colRes->waterBoxes[i].xLength;
-            colHeader->waterBoxes[i].zLength = colRes->waterBoxes[i].zLength;
-            colHeader->waterBoxes[i].properties = colRes->waterBoxes[i].properties;
-        }
-
-        colRes->CachedGameAsset = colHeader;
-    }
-
-    BgCheck_Allocate(&play->colCtx, play, colHeader);
+    Ship::SetCollisionHeader* cmdCol = static_pointer_cast<Ship::SetCollisionHeader>(cmd);
+    BgCheck_Allocate(&play->colCtx, play, cmdCol->GetPointer());
 
     return false;
 }
 
 bool Scene_CommandRoomList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetRoomList* cmdRoomList = (Ship::SetRoomList*)cmd;
+    Ship::SetRoomList* cmdRoomList = static_pointer_cast<Ship::SetRoomList>(cmd);
 
-    play->numRooms = cmdRoomList->rooms.size();
-    play->roomList = (RomFile*)malloc(play->numRooms * sizeof(RomFile));
-
-    for (int i = 0; i < cmdRoomList->rooms.size(); i++)
-    {
-        play->roomList[i].fileName = (char*)cmdRoomList->rooms[i].name.c_str();
-        play->roomList[i].vromStart = cmdRoomList->rooms[i].vromStart;
-        play->roomList[i].vromEnd = cmdRoomList->rooms[i].vromEnd;
-    }
+    play->numRooms = cmdRoomList->numRooms;
+    play->roomList = cmdRoomList->GetPointer();
 
     return false;
 }
 
 bool Scene_CommandEntranceList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetEntranceList* otrEntrance = (Ship::SetEntranceList*)cmd;
-
-    if (otrEntrance->cachedGameData != nullptr)
-        play->setupEntranceList = (EntranceEntry*)otrEntrance->cachedGameData;
-    else
-    {
-        play->setupEntranceList = (EntranceEntry*)malloc(otrEntrance->entrances.size() * sizeof(EntranceEntry));
-
-        for (int i = 0; i < otrEntrance->entrances.size(); i++)
-        {
-            play->setupEntranceList[i].room = otrEntrance->entrances[i].roomToLoad;
-            play->setupEntranceList[i].spawn = otrEntrance->entrances[i].startPositionIndex;
-        }
-
-        otrEntrance->cachedGameData = play->setupEntranceList;
-    }
+    Ship::SetEntranceList* otrEntrance = static_pointer_cast<Ship::SetEntranceList>(cmd);
+    play->setupEntranceList = otrEntrance->GetPointer();
 
     return false;
 }
 
 bool Scene_CommandSpecialFiles(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetSpecialObjects* otrSpecial = (Ship::SetSpecialObjects*)cmd;
+    Ship::SetSpecialObjects* specialCmd = static_pointer_cast<Ship::SetSpecialObjects>(cmd);
 
-    if (otrSpecial->globalObject != 0)
-        play->objectCtx.subKeepIndex = Object_Spawn(&play->objectCtx, otrSpecial->globalObject);
+    if (specialCmd->globalObject != 0) {
+        play->objectCtx.subKeepIndex = Object_Spawn(&play->objectCtx, specialCmd->specialObjects.globalObject);
+    }
 
-    if (otrSpecial->elfMessage != 0)
-    {
-        auto res = (Ship::Blob*)OTRPlay_LoadFile(play, sNaviMsgFiles[otrSpecial->elfMessage - 1].fileName);
+    if (specialCmd->elfMessage != 0) {
+        auto res = (Ship::Blob*)OTRPlay_LoadFile(play, sNaviMsgFiles[specialCmd->specialObjects.elfMessage - 1].fileName);
         play->cUpElfMsgs = (ElfMessage*)res->data.data();
     }
 
@@ -276,12 +106,12 @@ bool Scene_CommandSpecialFiles(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandRoomBehavior(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetRoomBehavior* cmdRoom = (Ship::SetRoomBehavior*)cmd;
+    Ship::SetRoomBehavior* cmdRoom = static_pointer_cast<Ship::SetRoomBehavior>(cmd);
 
-    play->roomCtx.curRoom.behaviorType1 = cmdRoom->gameplayFlags;
-    play->roomCtx.curRoom.behaviorType2 = cmdRoom->gameplayFlags2 & 0xFF;
-    play->roomCtx.curRoom.lensMode = (cmdRoom->gameplayFlags2 >> 8) & 1;
-    play->msgCtx.disableWarpSongs = (cmdRoom->gameplayFlags2 >> 0xA) & 1;
+    play->roomCtx.curRoom.behaviorType1 = cmdRoom->roomBehavior.gameplayFlags;
+    play->roomCtx.curRoom.behaviorType2 = cmdRoom->roomBehavior.gameplayFlags2 & 0xFF;
+    play->roomCtx.curRoom.lensMode = (cmdRoom->roomBehavior.gameplayFlags2 >> 8) & 1;
+    play->msgCtx.disableWarpSongs = (cmdRoom->roomBehavior.gameplayFlags2 >> 0xA) & 1;
 
     return false;
 }
@@ -441,7 +271,7 @@ extern "C" void* func_800982FC(ObjectContext * objectCtx, s32 bankIndex, s16 obj
 
 bool Scene_CommandObjectList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetObjectList* cmdObj = (Ship::SetObjectList*)cmd;
+    Ship::SetObjectList* cmdObj = static_pointer_cast<Ship::SetObjectList>(cmd);
 
     s32 i;
     s32 j;
@@ -450,7 +280,7 @@ bool Scene_CommandObjectList(PlayState* play, Ship::SceneCommand* cmd)
     ObjectStatus* status2;
     ObjectStatus* firstStatus;
     //s16* objectEntry = SEGMENTED_TO_VIRTUAL(cmd->objectList.segment);
-    s16* objectEntry = (s16*)cmdObj->objects.data();
+    s16* objectEntry = (s16*)cmdObj->GetPointer();
     void* nextPtr;
 
     k = 0;
@@ -552,24 +382,10 @@ bool Scene_CommandPathList(PlayState* play, Ship::SceneCommand* cmd)
 }
 
 bool Scene_CommandTransitionActorList(PlayState* play, Ship::SceneCommand* cmd) {
-    Ship::SetTransitionActorList* cmdActor = (Ship::SetTransitionActorList*)cmd;
+    Ship::SetTransitionActorList* cmdActor = static_pointer_cast<Ship::SetTransitionActorList>(cmd);
 
-    play->transiActorCtx.numActors = cmdActor->entries.size();
-    play->transiActorCtx.list = (TransitionActorEntry*)malloc(cmdActor->entries.size() * sizeof(TransitionActorEntry));
-
-    for (int i = 0; i < cmdActor->entries.size(); i++)
-    {
-        play->transiActorCtx.list[i].sides[0].room = cmdActor->entries[i].frontObjectRoom;
-        play->transiActorCtx.list[i].sides[0].effects = cmdActor->entries[i].frontTransitionReaction;
-        play->transiActorCtx.list[i].sides[1].room = cmdActor->entries[i].backObjectRoom;
-        play->transiActorCtx.list[i].sides[1].effects = cmdActor->entries[i].backTransitionReaction;
-        play->transiActorCtx.list[i].id = cmdActor->entries[i].actorNum;
-        play->transiActorCtx.list[i].pos.x = cmdActor->entries[i].posX;
-        play->transiActorCtx.list[i].pos.y = cmdActor->entries[i].posY;
-        play->transiActorCtx.list[i].pos.z = cmdActor->entries[i].posZ;
-        play->transiActorCtx.list[i].rotY = cmdActor->entries[i].rotY;
-        play->transiActorCtx.list[i].params = cmdActor->entries[i].initVar;
-    }
+    play->transiActorCtx.numActors = cmdActor->numTransitionActors;
+    play->transiActorCtx.list = cmdActor->GetPointer();
 
     return false;
 }
@@ -588,21 +404,21 @@ bool Scene_CommandLightSettingsList(PlayState* play, Ship::SceneCommand* cmd)
 // Scene Command 0x11: Skybox Settings
 bool Scene_CommandSkyboxSettings(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetSkyboxSettings* cmdSky = (Ship::SetSkyboxSettings*)cmd;
+    Ship::SetSkyboxSettings* cmdSky = static_pointer_cast<Ship::SetSkyboxSettings>(cmd);
 
-    play->skyboxId = cmdSky->skyboxNumber;
-    play->envCtx.unk_17 = play->envCtx.unk_18 = cmdSky->cloudsType;
-    play->envCtx.indoors = cmdSky->isIndoors;
+    play->skyboxId = cmdSky->settings.skyboxId;
+    play->envCtx.unk_17 = play->envCtx.unk_18 = cmdSky->settings.weather;
+    play->envCtx.indoors = cmdSky->settings.indoors;
 
     return false;
 }
 
 bool Scene_CommandSkyboxDisables(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetSkyboxModifier* cmdSky = (Ship::SetSkyboxModifier*)cmd;
+    Ship::SetSkyboxModifier* cmdSky = static_pointer_cast<Ship::SetSkyboxModifier>(cmd);
 
-    play->envCtx.sunMoonDisabled = cmdSky->disableSunMoon;
-    play->envCtx.skyboxDisabled = cmdSky->disableSky;
+    play->envCtx.sunMoonDisabled = cmdSky->modifier.sunMoonDisabled;
+    play->envCtx.skyboxDisabled = cmdSky->modifier.skyboxDisabled;
 
     return false;
 }
@@ -675,13 +491,13 @@ bool Scene_CommandUndefined9(PlayState* play, Ship::SceneCommand* cmd) {
 }
 
 bool Scene_CommandSoundSettings(PlayState* play, Ship::SceneCommand* cmd) {
-    Ship::SetSoundSettings* cmdSnd = (Ship::SetSoundSettings*)cmd;
+    Ship::SetSoundSettings* cmdSnd = static_pointer_cast<Ship::SetSoundSettings>(cmd);
 
-    play->sequenceCtx.seqId = cmdSnd->musicSequence;
-    play->sequenceCtx.natureAmbienceId = cmdSnd->nightTimeSFX;
+    play->sequenceCtx.seqId = cmdSnd->settings.seqId;
+    play->sequenceCtx.natureAmbienceId = cmdSnd->settings.natureAmbienceId;
 
     if (gSaveContext.seqId == 0xFF) {
-        Audio_QueueSeqCmd(cmdSnd->reverb | 0xF0000000);
+        Audio_QueueSeqCmd(cmdSnd->settings.reverb | 0xF0000000);
     }
 
     return false;
@@ -689,16 +505,16 @@ bool Scene_CommandSoundSettings(PlayState* play, Ship::SceneCommand* cmd) {
 
 bool Scene_CommandEchoSettings(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetEchoSettings* cmdEcho = (Ship::SetEchoSettings*)cmd;
+    Ship::SetEchoSettings* cmdEcho = static_pointer_cast<Ship::SetEchoSettings>(cmd);
 
-    play->roomCtx.curRoom.echo = cmdEcho->echo;
+    play->roomCtx.curRoom.echo = cmdEcho->settings.echo;
 
     return false;
 }
 
 bool Scene_CommandAlternateHeaderList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetAlternateHeaders* cmdHeaders = (Ship::SetAlternateHeaders*)cmd;
+    Ship::SetAlternateHeaders* cmdHeaders = static_pointer_cast<Ship::SetAlternateHeaders>(cmd);
 
     //s32 pad;
     //SceneCmd* altHeader;
@@ -709,15 +525,11 @@ bool Scene_CommandAlternateHeaderList(PlayState* play, Ship::SceneCommand* cmd)
 
     if (gSaveContext.sceneSetupIndex != 0)
     {
-        std::string desiredHeader = cmdHeaders->headers[gSaveContext.sceneSetupIndex - 1];
-        Ship::Scene* headerData = nullptr;
-        if (desiredHeader != "") {
-            headerData = (Ship::Scene*)ResourceMgr_LoadResource(desiredHeader.c_str()).get();
-        }
+        std::shared_ptr<Scene> desiredHeader = static_pointer_cast<Scene>(cmdHeaders->headers[gSaveContext.sceneSetupIndex - 1]);
 
-        if (headerData != nullptr)
+        if (desiredHeader != nullptr)
         {
-            OTRScene_ExecuteCommands(play, headerData);
+            OTRScene_ExecuteCommands(play, desiredHeader);
             return true;
         }
         else
@@ -727,18 +539,14 @@ bool Scene_CommandAlternateHeaderList(PlayState* play, Ship::SceneCommand* cmd)
 
             if (gSaveContext.sceneSetupIndex == 3)
             {
-                std::string desiredHeader = cmdHeaders->headers[gSaveContext.sceneSetupIndex - 2];
-                Ship::Scene* headerData = nullptr;
-                if (desiredHeader != "") {
-                    headerData = (Ship::Scene*)ResourceMgr_LoadResource(desiredHeader.c_str()).get();
-                }
+                std::shared_ptr<Scene> desiredHeader = static_pointer_cast<Scene>(cmdHeaders->headers[gSaveContext.sceneSetupIndex - 2]);
 
                 // "Using adult day data there!"
                 osSyncPrintf("\nそこで、大人の昼データを使用するでええっす！！");
 
-                if (headerData != nullptr)
+                if (desiredHeader != nullptr)
                 {
-                    OTRScene_ExecuteCommands(play, headerData);
+                    OTRScene_ExecuteCommands(play, desiredHeader);
                     return true;
                 }
             }
@@ -761,10 +569,10 @@ bool Scene_CommandCutsceneData(PlayState* play, Ship::SceneCommand* cmd)
 // Camera & World Map Area
 bool Scene_CommandMiscSettings(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetCameraSettings* cmdCam = (Ship::SetCameraSettings*)cmd;
+    Ship::SetCameraSettings* cmdCam = static_pointer_cast<Ship::SetCameraSettings>(cmd);
 
-    YREG(15) = cmdCam->cameraMovement;
-    gSaveContext.worldMapArea = cmdCam->mapHighlights;
+    YREG(15) = cmdCam->settings.cameraMovement;
+    gSaveContext.worldMapArea = cmdCam->settings.worldMapArea;
 
     if ((play->sceneNum == SCENE_SHOP1) || (play->sceneNum == SCENE_SYATEKIJYOU)) {
         if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
@@ -813,7 +621,7 @@ bool (*sceneCommands[])(PlayState*, Ship::SceneCommand*) =
     Scene_CommandMiscSettings,        // SCENE_CMD_ID_MISC_SETTINGS
 };
 
-s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* scene)
+s32 OTRScene_ExecuteCommands(PlayState* play, std::shared_ptr<Ship::Scene> scene)
 {
     Ship::SceneCommandID cmdCode;
 
@@ -890,9 +698,9 @@ extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomN
         //DmaMgr_SendRequest2(&roomCtx->dmaRequest, roomCtx->unk_34, play->roomList[roomNum].vromStart, size, 0,
                             //&roomCtx->loadQueue, NULL, __FILE__, __LINE__);
 
-        auto roomData = ResourceMgr_LoadResource(play->roomList[roomNum].fileName);
+        auto roomData = static_pointer_cast<Ship::Scene>(ResourceMgr_LoadResource(play->roomList[roomNum].fileName));
         roomCtx->status = 1;
-        roomCtx->roomToLoad = (Ship::Scene*)roomData.get();
+        roomCtx->roomToLoad = roomData;
 
         roomCtx->unk_30 ^= 1;
 

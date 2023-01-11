@@ -6,15 +6,49 @@
 #include "resource/importer/SetWindFactory.h"
 #include "resource/importer/SetExitListFactory.h"
 #include "resource/importer/SetTimeSettingsFactory.h"
+#include "resource/importer/SetSkyboxModifierFactory.h"
+#include "resource/importer/SetEchoSettingsFactory.h"
+#include "resource/importer/SetSoundSettingsFactory.h"
+#include "resource/importer/SetSkyboxSettingsFactory.h"
+#include "resource/importer/SetRoomBehaviorFactory.h"
+#include "resource/importer/SetCsCameraFactory.h"
+#include "resource/importer/SetCameraSettingsFactory.h"
+#include "resource/importer/SetRoomListFactory.h"
+#include "resource/importer/SetCollisionHeaderFactory.h"
+#include "resource/importer/SetEntranceListFactory.h"
+#include "resource/importer/SetSpecialObjectsFactory.h"
+#include "resource/importer/SetObjectListFactory.h"
+#include "resource/importer/SetStartPositionListFactory.h"
+#include "resource/importer/SetActorList.h"
+#include "resource/importer/SetTransitionActorList.h"
+#include "resource/importer/EndMarker.h"
+#include "resource/importer/SetAlternateHeaders.h"
 
 namespace Ship {
 std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
 {
     if (SceneFactory::sceneCommandFactories.empty()) {
-        SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetLightingSettingsFactory>();
-        SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetWindFactory>();
-        SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetExitListFactory>();
-        SceneFactory::sceneCommandFactories[cmdID] = std::make_shared<SetTimeSettingsFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetLightingSettings] = std::make_shared<SetLightingSettingsFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetWind] = std::make_shared<SetWindFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetExitList] = std::make_shared<SetExitListFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetTimeSettings] = std::make_shared<SetTimeSettingsFactory>();
+		SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetSkyboxModifier] = std::make_shared<SetSkyboxModifierFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetEchoSettings] = std::make_shared<SetEchoSettingsFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetSoundSettings] = std::make_shared<SetSoundSettingsFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetSkyboxSettings] = std::make_shared<SetSkyboxSettingsFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetRoomBehavior] = std::make_shared<SetRoomBehaviorFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetCsCamera] = std::make_shared<SetCsCameraFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetCameraSettings] = std::make_shared<SetCameraSettingsFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetRoomList] = std::make_shared<SetRoomListFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetCollisionHeader] = std::make_shared<SetCollisionHeaderFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetEntranceList] = std::make_shared<SetEntranceListFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetSpecialObjects] = std::make_shared<SetSpecialObjectsFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetObjectList] = std::make_shared<SetObjectListFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetStartPositionList] = std::make_shared<SetStartPositionListFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetActorList] = std::make_shared<SetActorList>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetTransitionActorList] = std::make_shared<SetTransitionActorList>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::EndMarker] = std::make_shared<EndMarker>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetAlternateHeaders] = std::make_shared<SetAlternateHeaders>();
         // TODO: Do the rest...
     }
 
