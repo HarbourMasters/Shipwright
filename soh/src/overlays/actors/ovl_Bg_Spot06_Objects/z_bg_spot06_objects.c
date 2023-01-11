@@ -596,6 +596,8 @@ void BgSpot06Objects_WaterPlaneCutsceneRise(BgSpot06Objects* this, PlayState* pl
         // On rando, this is used with the water control system switch to finalize raising the water
         if (gSaveContext.n64ddFlag) {
             this->lakeHyliaWaterLevel = 0;
+            play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface = WATER_LEVEL_RIVER_RAISED;
+            play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].zMin = WATER_LEVEL_RIVER_LOWER_Z;
             Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER); // Set the "raise lake hylia water" flag
             play->roomCtx.unk_74[0] = 0; // Apply the moving under water texture to lake hylia ground
         }
@@ -625,12 +627,14 @@ void BgSpot06Objects_WaterPlaneCutsceneLower(BgSpot06Objects* this, PlayState* p
     play->roomCtx.unk_74[0] = 87; // Remove the moving under water texture from lake hylia ground
 
     if (this->lakeHyliaWaterLevel <= -681.0f) {
+        this->lakeHyliaWaterLevel = -681.0f;
         this->dyna.actor.world.pos.y = WATER_LEVEL_RAISED;
         this->actionFunc = BgSpot06Objects_DoNothing;
     } else {
         // Go slightly beyond -681 so the smoothing doesn't slow down too much (matches the reverse of water rise func)
         Math_SmoothStepToF(&this->lakeHyliaWaterLevel, -682.0f, 0.1f, 1.0f, 0.001f);
         play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface = WATER_LEVEL_RIVER_LOWERED;
+        play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].zMin = WATER_LEVEL_RIVER_LOWER_Z - 50;
         play->colCtx.colHeader->waterBoxes[LHWB_MAIN_1].ySurface = yPos;
         play->colCtx.colHeader->waterBoxes[LHWB_MAIN_2].ySurface = yPos;
     }
