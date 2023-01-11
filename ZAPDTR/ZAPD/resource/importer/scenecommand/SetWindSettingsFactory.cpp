@@ -30,8 +30,8 @@ std::shared_ptr<Resource> SetWindSettingsFactory::ReadResource(std::shared_ptr<B
 void Ship::SetWindSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource)
 {
-	std::shared_ptr<SetWind> setWind = std::static_pointer_cast<SetWind>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	std::shared_ptr<SetWindSettings> setWind = std::static_pointer_cast<SetWindSettings>(resource);
+	ResourceFile::ParseFileBinary(reader, setWind);
 
 	ReadCommandId(setWind, reader);
 	

@@ -31,7 +31,7 @@ void Ship::SetTimeSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetTimeSettings> setTimeSettings = std::static_pointer_cast<SetTimeSettings>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	ResourceFile::ParseFileBinary(reader, setTimeSettings);
 
 	ReadCommandId(setTimeSettings, reader);
 	

@@ -30,10 +30,10 @@ std::shared_ptr<Resource> SetCsCameraFactory::ReadResource(std::shared_ptr<Binar
 void Ship::SetCsCameraFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource)
 {
-	std::shared_ptr<SetCsCamera> SetCsCamera = std::static_pointer_cast<SetCsCamera>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	std::shared_ptr<SetCsCamera> setCsCamera = std::static_pointer_cast<SetCsCamera>(resource);
+	ResourceFile::ParseFileBinary(reader, setCsCamera);
 
-	ReadCommandId(SetCsCamera, reader);
+	ReadCommandId(setCsCamera, reader);
 	
     reader->ReadInt8();  // camSize
     reader->ReadInt32(); // segOffset

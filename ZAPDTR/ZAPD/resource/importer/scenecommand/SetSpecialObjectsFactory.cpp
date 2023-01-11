@@ -31,7 +31,7 @@ void Ship::SetSpecialObjectsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRea
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetSpecialObjects> setSpecialObjects = std::static_pointer_cast<SetSpecialObjects>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	ResourceFile::ParseFileBinary(reader, setSpecialObjects);
 
 	ReadCommandId(setSpecialObjects, reader);
 	

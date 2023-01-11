@@ -31,7 +31,7 @@ void Ship::SetRoomBehaviorFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetRoomBehavior> setRoomBehavior = std::static_pointer_cast<SetRoomBehavior>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	ResourceFile::ParseFileBinary(reader, setRoomBehavior);
 
 	ReadCommandId(setRoomBehavior, reader);
 	

@@ -31,7 +31,7 @@ void Ship::SetSkyboxSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRea
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetSkyboxSettings> setSkyboxSettings = std::static_pointer_cast<SetSkyboxSettings>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	ResourceFile::ParseFileBinary(reader, setSkyboxSettings);
 
 	ReadCommandId(setSkyboxSettings, reader);
 	

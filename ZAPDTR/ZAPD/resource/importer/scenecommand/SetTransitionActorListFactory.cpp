@@ -31,7 +31,7 @@ void Ship::SetTransitionActorListFactoryV0::ParseFileBinary(std::shared_ptr<Bina
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetTransitionActorList> setTransitionActorList = std::static_pointer_cast<SetTransitionActorList>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	ResourceFile::ParseFileBinary(reader, setTransitionActorList);
 
 	ReadCommandId(SetTransitionActorList, reader);
 	

@@ -8,7 +8,7 @@ class SetTimeSettingsFactory : public SceneCommandFactory {
     std::shared_ptr<Resource> ReadResource(std::shared_ptr<BinaryReader> reader);
 };
 
-class SetTimeSettingsV0 : public SceneCommandVersionFactory {
+class SetTimeSettingsFactoryV0 : public SceneCommandVersionFactory {
   public:
     void ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<Resource> resource) override;
 };

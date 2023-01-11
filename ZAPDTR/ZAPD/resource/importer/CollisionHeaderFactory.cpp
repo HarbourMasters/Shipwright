@@ -139,3 +139,4 @@ void Ship::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
     }
     collisionHeader->collisionHeaderData.waterBoxes = collisionHeader->waterBoxes.data();
 }
+}

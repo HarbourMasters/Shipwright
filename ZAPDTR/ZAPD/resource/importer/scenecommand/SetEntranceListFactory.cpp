@@ -31,14 +31,14 @@ void Ship::SetEntranceListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetEntranceListList> setEntranceList = std::static_pointer_cast<SetEntranceList>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	ResourceFile::ParseFileBinary(reader, setEntranceList);
 
 	ReadCommandId(setEntranceList, reader);
 	
     setEntranceList->numEntrances = reader->ReadUInt32();
     setEntranceList->rooms.reserve(setEntranceList->numEntrances);
     for (uint32_t i = 0; i < setEntranceList->numExits; i++) {
-		EntrancyEntry entranceEntry;
+		EntranceEntry entranceEntry;
 
 		entranceEntry->spawn = reader->ReadUByte();
 		entranceEntry->room = reader->ReadUByte();

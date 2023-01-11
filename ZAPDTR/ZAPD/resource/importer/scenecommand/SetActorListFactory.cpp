@@ -31,7 +31,7 @@ void Ship::SetActorListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetActorList> setActorList = std::static_pointer_cast<SetActorList>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	ResourceFile::ParseFileBinary(reader, setActorList);
 
 	ReadCommandId(setActorList, reader);
 	

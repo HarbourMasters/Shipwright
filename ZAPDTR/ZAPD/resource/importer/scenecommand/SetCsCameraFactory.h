@@ -8,7 +8,7 @@ class SetCsCameraFactory : public SceneCommandFactory {
     std::shared_ptr<Resource> ReadResource(std::shared_ptr<BinaryReader> reader);
 };
 
-class SetCsCameraV0 : public SceneCommandVersionFactory {
+class SetCsCameraFactoryV0 : public SceneCommandVersionFactory {
   public:
     void ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<Resource> resource) override;
 };

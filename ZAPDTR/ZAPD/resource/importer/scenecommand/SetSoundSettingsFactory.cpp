@@ -31,7 +31,7 @@ void Ship::SetSoundSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRead
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetSoundSettings> setSoundSettings = std::static_pointer_cast<SetSoundSettings>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	ResourceFile::ParseFileBinary(reader, setSoundSettings);
 
 	ReadCommandId(setSoundSettings, reader);
 	

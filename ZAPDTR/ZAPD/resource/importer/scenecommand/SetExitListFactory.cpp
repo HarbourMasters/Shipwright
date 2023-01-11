@@ -31,7 +31,7 @@ void Ship::SetExitListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetExitList> setExitList = std::static_pointer_cast<SetExitList>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	ResourceFile::ParseFileBinary(reader, setExitList);
 
 	ReadCommandId(setExitList, reader);
 	

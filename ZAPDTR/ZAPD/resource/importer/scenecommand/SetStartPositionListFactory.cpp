@@ -31,7 +31,7 @@ void Ship::SetStartPositionListFactoryV0::ParseFileBinary(std::shared_ptr<Binary
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetStartPositionList> setStartPositionList = std::static_pointer_cast<SetStartPositionList>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	ResourceFile::ParseFileBinary(reader, setStartPositionList);
 
 	ReadCommandId(setStartPositionList, reader);
 	

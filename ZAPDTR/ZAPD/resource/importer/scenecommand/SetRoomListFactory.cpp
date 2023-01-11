@@ -31,7 +31,7 @@ void Ship::SetRoomListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetRoomList> setRoomList = std::static_pointer_cast<SetRoomList>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	ResourceFile::ParseFileBinary(reader, setRoomList);
 
 	ReadCommandId(setRoomList, reader);
 	

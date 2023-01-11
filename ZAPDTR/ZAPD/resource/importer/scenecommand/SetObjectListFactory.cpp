@@ -31,9 +31,9 @@ void Ship::SetObjectListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetObjectList> setObjectList = std::static_pointer_cast<SetObjectList>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	ResourceFile::ParseFileBinary(reader, setObjectList);
 
-	ReadCommandId(SetObjectList, reader);
+	ReadCommandId(setObjectList, reader);
 	
     setObjectList->numObjects = reader->ReadUInt32();
     setObjectList->objects.reserve(setObjectList->numObjects);

@@ -30,10 +30,10 @@ std::shared_ptr<Resource> EndMarkerFactory::ReadResource(std::shared_ptr<BinaryR
 void Ship::EndMarkerFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource)
 {
-	std::shared_ptr<EndMarker> EndMarker = std::static_pointer_cast<EndMarker>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	std::shared_ptr<EndMarker> endMarker = std::static_pointer_cast<EndMarker>(resource);
+	ResourceFile::ParseFileBinary(reader, endMarker);
 
-	ReadCommandId(EndMarker, reader);
+	ReadCommandId(endMarker, reader);
 	
     // This has no data.
 }

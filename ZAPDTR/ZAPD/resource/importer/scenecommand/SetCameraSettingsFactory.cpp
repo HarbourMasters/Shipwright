@@ -30,13 +30,13 @@ std::shared_ptr<Resource> SetCameraSettingsFactory::ReadResource(std::shared_ptr
 void Ship::SetCameraSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource)
 {
-	std::shared_ptr<SetCameraSettings> SetCameraSettings = std::static_pointer_cast<SetCameraSettings>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	std::shared_ptr<SetCameraSettings> setCameraSettings = std::static_pointer_cast<SetCameraSettings>(resource);
+	ResourceFile::ParseFileBinary(reader, setCameraSettings);
 
-	ReadCommandId(SetCameraSettings, reader);
+	ReadCommandId(setCameraSettings, reader);
 	
-    cmdCam->settings.cameraMovement = reader->ReadInt8();
-    cmdCam->settings.worldMapArea = reader->ReadInt32();
+    setCameraSettings->settings.cameraMovement = reader->ReadInt8();
+    setCameraSettings->settings.worldMapArea = reader->ReadInt32();
 }
 
 } // namespace Ship

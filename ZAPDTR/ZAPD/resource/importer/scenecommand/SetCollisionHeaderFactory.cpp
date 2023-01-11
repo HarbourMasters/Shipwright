@@ -32,7 +32,7 @@ void Ship::SetCollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRe
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetCollisionHeader> setCollisionHeader = std::static_pointer_cast<SetCollisionHeader>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	ResourceFile::ParseFileBinary(reader, setCollisionHeader);
 
 	ReadCommandId(setCollisionHeader, reader);
 	

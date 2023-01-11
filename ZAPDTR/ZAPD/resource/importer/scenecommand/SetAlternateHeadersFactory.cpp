@@ -32,7 +32,7 @@ void Ship::SetAlternateHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRe
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetAlternateHeader> setAlternateHeader = std::static_pointer_cast<SetAlternateHeader>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	ResourceFile::ParseFileBinary(reader, setAlternateHeader);
 
 	ReadCommandId(setAlternateHeader, reader);
 	

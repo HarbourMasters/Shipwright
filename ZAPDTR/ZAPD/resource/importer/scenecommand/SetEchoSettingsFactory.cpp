@@ -31,7 +31,7 @@ void Ship::SetEchoSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetEchoSettings> setEchoSettings = std::static_pointer_cast<SetEchoSettings>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	ResourceFile::ParseFileBinary(reader, setEchoSettings);
 
 	ReadCommandId(setEchoSettings, reader);
 	

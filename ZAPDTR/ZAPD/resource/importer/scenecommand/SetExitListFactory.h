@@ -8,7 +8,7 @@ class SetExitListFactory : public SceneCommandFactory {
     std::shared_ptr<Resource> ReadResource(std::shared_ptr<BinaryReader> reader);
 };
 
-class SetExitListV0 : public SceneCommandVersionFactory {
+class SetExitListFactoryV0 : public SceneCommandVersionFactory {
   public:
     void ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<Resource> resource) override;
 };

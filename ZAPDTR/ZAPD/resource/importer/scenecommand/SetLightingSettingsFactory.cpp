@@ -31,12 +31,12 @@ void Ship::SetLightingsSettingsFactoryV0::ParseFileBinary(std::shared_ptr<Binary
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetLightingsSettings> setLightingsSettings = std::static_pointer_cast<SetLightingsSettings>(resource);
-	ResourceFile::ParseFileBinary(reader, text);
+	ResourceFile::ParseFileBinary(reader, setLightingsSettings);
 
 	ReadCommandId(setLightingsSettings, reader);
 
 	uint32_t count = reader->ReadInt32();
-    setLightingsSettings->settings.reserve(cnt);
+    setLightingsSettings->settings.reserve(count);
 
 	for (uint32_t i = 0; i < count; i++) {
 		EnvLightSettings lightSettings;
