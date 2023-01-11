@@ -50,5 +50,6 @@ enum class SceneCommandID : uint8_t {
 class SceneCommand : public Resource {
 public:
   SceneCommandID cmdId;
-}
+};
+
 }; // namespace Ship

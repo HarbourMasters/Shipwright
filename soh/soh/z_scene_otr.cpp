@@ -33,7 +33,7 @@ std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path);
 
 bool Scene_CommandSpawnList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetStartPositionList* cmdStartPos = static_pointer_cast<Ship::SetStartPositionList>(cmd);
+    Ship::SetStartPositionList* cmdStartPos = std::static_pointer_cast<Ship::SetStartPositionList>(cmd);
     ActorEntry* entries = cmdStartPos->GetPointer();
 
     play->linkActorEntry = &entries[play->setupEntranceList[play->curSpawn].spawn];;
@@ -46,7 +46,7 @@ bool Scene_CommandSpawnList(PlayState* play, Ship::SceneCommand* cmd)
 }
 
 bool Scene_CommandActorList(PlayState* play, Ship::SceneCommand* cmd) {
-    Ship::SetActorList* cmdActor = static_pointer_cast<Ship::SetActorList>(cmd);
+    Ship::SetActorList* cmdActor = std::static_pointer_cast<Ship::SetActorList>(cmd);
 
     play->numSetupActors = cmdActor->numActors;
     play->setupActorList = cmdActor->GetPointer();
@@ -64,7 +64,7 @@ bool Scene_CommandUnused2(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandCollisionHeader(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetCollisionHeader* cmdCol = static_pointer_cast<Ship::SetCollisionHeader>(cmd);
+    Ship::SetCollisionHeader* cmdCol = std::static_pointer_cast<Ship::SetCollisionHeader>(cmd);
     BgCheck_Allocate(&play->colCtx, play, cmdCol->GetPointer());
 
     return false;
@@ -72,7 +72,7 @@ bool Scene_CommandCollisionHeader(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandRoomList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetRoomList* cmdRoomList = static_pointer_cast<Ship::SetRoomList>(cmd);
+    Ship::SetRoomList* cmdRoomList = std::static_pointer_cast<Ship::SetRoomList>(cmd);
 
     play->numRooms = cmdRoomList->numRooms;
     play->roomList = cmdRoomList->GetPointer();
@@ -82,7 +82,7 @@ bool Scene_CommandRoomList(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandEntranceList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetEntranceList* otrEntrance = static_pointer_cast<Ship::SetEntranceList>(cmd);
+    Ship::SetEntranceList* otrEntrance = std::static_pointer_cast<Ship::SetEntranceList>(cmd);
     play->setupEntranceList = otrEntrance->GetPointer();
 
     return false;
@@ -90,7 +90,7 @@ bool Scene_CommandEntranceList(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandSpecialFiles(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetSpecialObjects* specialCmd = static_pointer_cast<Ship::SetSpecialObjects>(cmd);
+    Ship::SetSpecialObjects* specialCmd = std::static_pointer_cast<Ship::SetSpecialObjects>(cmd);
 
     if (specialCmd->globalObject != 0) {
         play->objectCtx.subKeepIndex = Object_Spawn(&play->objectCtx, specialCmd->specialObjects.globalObject);
@@ -106,7 +106,7 @@ bool Scene_CommandSpecialFiles(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandRoomBehavior(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetRoomBehavior* cmdRoom = static_pointer_cast<Ship::SetRoomBehavior>(cmd);
+    Ship::SetRoomBehavior* cmdRoom = std::static_pointer_cast<Ship::SetRoomBehavior>(cmd);
 
     play->roomCtx.curRoom.behaviorType1 = cmdRoom->roomBehavior.gameplayFlags;
     play->roomCtx.curRoom.behaviorType2 = cmdRoom->roomBehavior.gameplayFlags2 & 0xFF;
