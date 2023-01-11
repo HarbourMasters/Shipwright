@@ -10,7 +10,7 @@
 extern "C" void Play_InitScene(PlayState * play, s32 spawn);
 extern "C" void Play_InitEnvironment(PlayState * play, s16 skyboxId);
 void OTRPlay_InitScene(PlayState* play, s32 spawn);
-s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* sceneCmd);
+s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* scene);
 
 //Ship::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
 Ship::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName)

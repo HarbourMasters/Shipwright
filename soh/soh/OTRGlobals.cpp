@@ -1,4 +1,4 @@
-﻿#include "OTRGlobals.h"
+#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
 #include <algorithm>
@@ -795,13 +795,11 @@ extern "C" char* ResourceMgr_LoadJPEG(char* data, int dataSize)
     return (char*)finalBuffer;
 }
 
-extern "C" char* ResourceMgr_LoadTexByName(const char* texPath);
-
 extern "C" uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
 
 extern "C" uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 
-extern "C" uint32_t ResourceMgr_LoadTexSizeByName(const char* texPath);
+extern "C" size_t GetResourceTexSizeByName(const char* texPath);
 
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = ResourceMgr_LoadResource(filePath);
@@ -818,7 +816,7 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
                 Path.replace(pos, 7, "/mq/");
             }
         }
-        return ResourceMgr_LoadTexByName(Path.c_str());
+        return (char*)GetResourceDataByName(Path.c_str());
     }
 }
 
@@ -922,11 +920,11 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
 }
 
 extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path) {
-    return GetResourceDataByName(path);
+    return (CollisionHeader*)GetResourceDataByName(path);
 }
 
-extern "C" Vtx* ResourceMgr_LoadVtxByName(const char* path) {
-    return GetResourceDataByName(path);
+extern "C" Vtx* ResourceMgr_LoadVtxByName(char* path) {
+    return (Vtx*)GetResourceDataByName(path);
 }
 
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path) {
@@ -995,11 +993,11 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
 }
 
 extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path) {
-    return GetResourceDataByName(path);
+    return (SoundFontSample*)GetResourceDataByName(path);
 }
 
 extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
-    return GetResourceDataByName(path);
+    return (SoundFont*)GetResourceDataByName(path);
 }
 
 extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
@@ -1021,15 +1019,15 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 }
 
 extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
-    return GetResourceDataByName(path);
+    return (AnimationHeaderCommon*)GetResourceDataByName(path);
 }
 
 extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
-    return GetResourceDataByName(path);
+    return (SkeletonHeader*)GetResourceDataByName(path);
 }
 
 extern "C" s32* ResourceMgr_LoadCSByName(const char* path) {
-    return GetResourceDataByName(path);
+    return (s32*)GetResourceDataByName(path);
 }
 
 std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {

@@ -3,14 +3,12 @@
 #include <macros.h>
 #include <z64.h>
 #include <libultraship/libultra.h>
+#include <libultraship/bridge.h>
 #include <functions.h>
 #include <variables.h>
 #include <string.h>
 #include <stdarg.h>
 #include <z64.h>
-#include <libultraship/libultra/gbi.h>
-#include <libultraship/libultra/gs2dex.h>
-#include <libultraship/libultra/controller.h>
 
 uint8_t gLoadFileSelect = 0, gSkipLogoTest = 0;
 
@@ -22,12 +20,12 @@ static BootCommand sCommands[] = { { "--skiplogo", BootCommands_Command_SkipLogo
 
 void BootCommands_Init()
 {
-    CVar_RegisterS32("gDebugEnabled", 0);
-    CVar_RegisterS32("gLanguages", LANGUAGE_ENG);
-    CVar_RegisterS32("gInvertYAxis", 1);
+    CVarRegisterInteger("gDebugEnabled", 0);
+    CVarRegisterInteger("gLanguages", LANGUAGE_ENG);
+    CVarRegisterInteger("gInvertYAxis", 1);
     CVarSetInteger("gRandoGenerating", 0); // Clear when a crash happened during rando seed generation
 #if defined(__SWITCH__) || defined(__WIIU__)
-    CVar_RegisterS32("gControlNav", 1); // always enable controller nav on switch/wii u
+    CVarRegisterInteger("gControlNav", 1); // always enable controller nav on switch/wii u
 #endif
 }
 

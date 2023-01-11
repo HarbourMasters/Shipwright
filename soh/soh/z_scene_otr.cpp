@@ -36,7 +36,7 @@
 extern Ship::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName);
 extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 extern "C" RomFile sNaviMsgFiles[];
-s32 OTRScene_ExecuteCommands(PlayState* play, std::shared_ptr<Ship::Scene> scene);
+s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* scene);
 
 std::shared_ptr<Ship::OtrFile> ResourceMgr_LoadFile(const char* path) {
     std::string Path = path;
@@ -392,7 +392,7 @@ bool Scene_CommandAlternateHeaderList(PlayState* play, Ship::SceneCommand* cmd)
 
     if (gSaveContext.sceneSetupIndex != 0)
     {
-        std::shared_ptr<Ship::Scene> desiredHeader = std::static_pointer_cast<Ship::Scene>(cmdHeaders->headers[gSaveContext.sceneSetupIndex - 1]);
+        Ship::Scene* desiredHeader = std::static_pointer_cast<Ship::Scene>(cmdHeaders->headers[gSaveContext.sceneSetupIndex - 1]).get();
 
         if (desiredHeader != nullptr)
         {
@@ -406,7 +406,7 @@ bool Scene_CommandAlternateHeaderList(PlayState* play, Ship::SceneCommand* cmd)
 
             if (gSaveContext.sceneSetupIndex == 3)
             {
-                std::shared_ptr<Ship::Scene> desiredHeader = std::static_pointer_cast<Ship::Scene>(cmdHeaders->headers[gSaveContext.sceneSetupIndex - 2]);
+                Ship::Scene* desiredHeader = std::static_pointer_cast<Ship::Scene>(cmdHeaders->headers[gSaveContext.sceneSetupIndex - 2]).get();
 
                 // "Using adult day data there!"
                 osSyncPrintf("\nそこで、大人の昼データを使用するでええっす！！");
@@ -489,7 +489,7 @@ bool (*sceneCommands[])(PlayState*, Ship::SceneCommand*) =
     Scene_CommandMiscSettings,        // SCENE_CMD_ID_MISC_SETTINGS
 };
 
-s32 OTRScene_ExecuteCommands(PlayState* play, std::shared_ptr<Ship::Scene> scene)
+s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* scene)
 {
     Ship::SceneCommandID cmdCode;
 
@@ -532,7 +532,7 @@ extern "C" s32 OTRfunc_800973FC(PlayState* play, RoomContext* roomCtx) {
             roomCtx->curRoom.segment = roomCtx->unk_34;
             gSegments[3] = VIRTUAL_TO_PHYSICAL(roomCtx->unk_34);
 
-            OTRScene_ExecuteCommands(play, roomCtx->roomToLoad);
+            OTRScene_ExecuteCommands(play, roomCtx->roomToLoad.get());
             Player_SetBootData(play, GET_PLAYER(play));
             Actor_SpawnTransitionActors(play, &play->actorCtx);
 

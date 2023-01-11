@@ -572,7 +572,7 @@ void EnMag_DrawImageRGBA32(Gfx** gfxp, s16 centerX, s16 centerY, const char* sou
     s32 pad;
     s32 i;
 
-    source = ResourceMgr_LoadTexByName(source);
+    source = GetResourceDataByName(source);
 
     Gfx_SetupDL_56Ptr(&gfx);
 
