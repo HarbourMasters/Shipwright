@@ -23,6 +23,7 @@
 #include "resource/importer/SetTransitionActorList.h"
 #include "resource/importer/EndMarker.h"
 #include "resource/importer/SetAlternateHeaders.h"
+#include "resource/importer/SetMesh.h"
 
 namespace Ship {
 std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
@@ -49,6 +50,7 @@ std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReade
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetTransitionActorList] = std::make_shared<SetTransitionActorList>();
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::EndMarker] = std::make_shared<EndMarker>();
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetAlternateHeaders] = std::make_shared<SetAlternateHeaders>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetMesh] = std::make_shared<SetMesh>();
         // TODO: Do the rest...
     }
 
