@@ -14,6 +14,7 @@
 #include "resource/importer/SetCsCameraFactory.h"
 #include "resource/importer/SetCameraSettingsFactory.h"
 #include "resource/importer/SetRoomListFactory.h"
+#include "resource/importer/SetCollisionHeaderFactory.h"
 
 namespace Ship {
 std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
@@ -31,6 +32,7 @@ std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReade
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetCsCamera] = std::make_shared<SetCsCameraFactory>();
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetCameraSettings] = std::make_shared<SetCameraSettingsFactory>();
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetRoomList] = std::make_shared<SetRoomListFactory>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetRoomList] = std::make_shared<SetCollisionHeaderFactory>();
         // TODO: Do the rest...
     }
 

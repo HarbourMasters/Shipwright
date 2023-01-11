@@ -6,23 +6,17 @@
 #include <string>
 #include "Resource.h"
 #include "SceneCommand.h"
+#include "resource/type/CollisionHeader.h"
 #include <libultraship/libultra/types.h>
 
-typedef struct {
-    /* 0x00 */ uintptr_t vromStart;
-    /* 0x04 */ uintptr_t vromEnd;
-    char* fileName;
-} RomFile; // size = 0x8
-
 namespace Ship {
-class SetRoomList : public SceneCommand {
+class SetCollisionHeader : public SceneCommand {
   public:
     void* GetPointer();
     size_t GetPointerSize();
 
-    uint32_t numRooms;
+    std::string fileName;
 
-    std::vector<std::string> fileNames;
-    std::vector<RomFile> rooms;
+    std::shared_ptr<CollisionHeader> collisionHeader;
 };
 }; // namespace Ship

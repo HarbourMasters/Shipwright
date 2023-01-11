@@ -1,11 +1,11 @@
-#include "SetExitList.h"
+#include "SetRoomList.h"
 
 namespace Ship {
-void* SetExitList::GetPointer() {
+void* SetRoomList::GetPointer() {
     return rooms.data();
 }
 
-size_t SetExitList::GetPointerSize() {
+size_t SetRoomList::GetPointerSize() {
 	return rooms.size() * sizeof(RomFile);
 }
 } // namespace Ship
