@@ -357,26 +357,8 @@ bool Scene_CommandLightList(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandPathList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetPathways* cmdPath = (Ship::SetPathways*)cmd;
-
-    Ship::Path* path = (Ship::Path*)ResourceMgr_LoadResource(cmdPath->paths[0].c_str()).get();
-    play->setupPathList = (Path*)malloc(path->paths.size() * sizeof(Path));
-
-    //for (int i = 0; i < cmdPath->paths.size(); i++)
-    {
-        for (int j = 0; j < path->paths.size(); j++)
-        {
-            play->setupPathList[j].count = path->paths[j].size();
-            play->setupPathList[j].points = (Vec3s*)malloc(sizeof(Vec3s) * path->paths[j].size());
-
-            for (int k = 0; k < path->paths[j].size(); k++)
-            {
-                play->setupPathList[j].points[k].x = path->paths[j][k].x;
-                play->setupPathList[j].points[k].y = path->paths[j][k].y;
-                play->setupPathList[j].points[k].z = path->paths[j][k].z;
-            }
-        }
-    }
+    Ship::SetPathways* cmdPath = static_pointer_cast<Ship::SetPathways>(cmd);
+    play->setupPathList = cmdPath->paths[0]->GetPointer();
 
     return false;
 }
