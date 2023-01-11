@@ -69,8 +69,11 @@ public:
     std::vector<std::vector<AdsrEnvelope>> drumEnvelopeArrays;
 
     std::vector<Instrument> instruments;
+    std::vector<Instrument*> instrumentAddresses;
+    std::vector<uint32_t> instrumentEnvelopeCounts;
+    std::vector<std::vector<AdsrEnvelope>> instrumentEnvelopeArrays;
 
-    std::vector<SoundFontSound> soundEffects; 
+    std::vector<SoundFontSound> soundEffects;
 
     SoundFont soundFont;
 };

@@ -54,6 +54,7 @@ void Ship::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
     uint32_t soundEffectCount = reader->ReadUInt32();
     audioSoundFont->soundFont.numSfx = soundEffectCount;
 
+    // 🥁 DRUMS 🥁
     audioSoundFont->drums.reserve(audioSoundFont->soundFont.numDrums);
     audioSoundFont->drumAddresses.reserve(audioSoundFont->soundFont.numDrums);
     for (uint32_t i = 0; i < audioSoundFont->soundFont.numDrums; i++) {
@@ -67,7 +68,7 @@ void Ship::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
         audioSoundFont->drumEnvelopeCounts.push_back(envelopeCount);
         std::vector<AdsrEnvelope> drumEnvelopes;
         drumEnvelopes.reserve(audioSoundFont->drumEnvelopeCounts[i]);
-        for (uint32_t j = 0; j < audioSoundFont->drumEnvelopeCounts[i]; j++) {
+        for (uint32_t j = 0; j < audioSoundFont->drumEnvelopeCounts.back(); j++) {
             AdsrEnvelope env;
             
             int16_t delay = reader->ReadInt16();
@@ -79,7 +80,7 @@ void Ship::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
             drumEnvelopes.push_back(env);
         }
         audioSoundFont->drumEnvelopeArrays.push_back(drumEnvelopes);
-        drum.envelope = audioSoundFont->drumEnvelopeArrays[i].data();
+        drum.envelope = audioSoundFont->drumEnvelopeArrays.back().data();
 
         bool hasSample = reader->ReadInt8();
         std::string sampleFileName = reader->ReadString();
@@ -91,140 +92,97 @@ void Ship::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
     }
     audioSoundFont->soundFont.drums = audioSoundFont->drumAddresses.data();
 
-    audioSoundFont->instruments.reserve(audioSoundFont->instrumentCount);
+    // 🎺🎻🎷🎸🎹 INSTRUMENTS 🎹🎸🎷🎻🎺
+    audioSoundFont->instruments.reserve(audioSoundFont->soundFont.numInstruments);
+    for (uint32_t i = 0; i < audioSoundFont->soundFont.numInstruments; i++) {
+        Instrument instrument;
 
-    audioSoundFont->soundEffects.reserve(audioSoundFont->soundEffectCount);
+        uint8_t isValidEntry = reader->ReadUByte();
+        instrument.loaded = reader->ReadUByte();
+        instrument.loaded = 0; // this was always getting set to zero in ResourceMgr_LoadAudioSoundFont
+
+        instrument.normalRangeLo = reader->ReadUByte();
+        instrument.normalRangeHi = reader->ReadUByte();
+        instrument.releaseRate = reader->ReadUByte();
+
+        uint32_t envelopeCount = reader->ReadInt32();
+        audioSoundFont->instrumentEnvelopeCounts.push_back(envelopeCount);
+        std::vector<AdsrEnvelope> instrumentEnvelopes;
+        for (uint32_t j = 0; j < audioSoundFont->instrumentEnvelopeCounts.back(); j++) {
+            AdsrEnvelope env;
+
+            int16_t delay = reader->ReadInt16();
+            int16_t arg = reader->ReadInt16();
+
+            env.delay = BE16SWAP(delay);
+            env.arg = BE16SWAP(arg);
+
+            instrumentEnvelopes.push_back(env);
+        }
+        audioSoundFont->instrumentEnvelopeArrays.push_back(instrumentEnvelopes);
+        instrument.envelope = audioSoundFont->instrumentEnvelopeArrays.back().data();
+
+        bool hasLowNoteSoundFontEntry = reader->ReadInt8();
+        if (hasLowNoteSoundFontEntry) {
+            bool hasSampleRef = reader->ReadInt8();
+            std::string sampleFileName = reader->ReadString();
+            instrument.lowNotesSound.tuning = reader->ReadFloat();
+            instrument.lowNotesSound.sample = static_cast<Sample*>(GetResourceDataByName(sampleFileName.c_str()));
+        } else {
+            instrument.lowNotesSound.sample = nullptr;
+            instrument.lowNotesSound.tuning = 0;
+        }
+
+        bool hasNormalNoteSoundFontEntry = reader->ReadInt8();
+        if (hasNormalNoteSoundFontEntry) {
+            bool hasSampleRef = reader->ReadInt8();
+            std::string sampleFileName = reader->ReadString();
+            instrument.normalNotesSound.tuning = reader->ReadFloat();
+            instrument.normalNotesSound.sample = static_cast<Sample*>(GetResourceDataByName(sampleFileName.c_str()));
+        } else {
+            instrument.normalNotesSound.sample = nullptr;
+            instrument.normalNotesSound.tuning = 0;
+        }
+
+        bool hasHighNoteSoundFontEntry = reader->ReadInt8();
+        if (hasHighNoteSoundFontEntry) {
+            bool hasSampleRef = reader->ReadInt8();
+            std::string sampleFileName = reader->ReadString();
+            instrument.highNotesSound.tuning = reader->ReadFloat();
+            instrument.highNotesSound.sample = static_cast<Sample*>(GetResourceDataByName(sampleFileName.c_str()));
+        } else {
+            instrument.highNotesSound.sample = nullptr;
+            instrument.highNotesSound.tuning = 0;
+        }
+
+        
+        audioSoundFont->instruments.push_back(instrument);
+        audioSoundFont->instrumentAddresses.push_back(isValidEntry ? 
+                                                      &audioSoundFont->instruments.back() :
+                                                      nullptr);
+    }
+    audioSoundFont->soundFont.instruments = audioSoundFont->instrumentAddresses.data();
+
+    // 🔊 SOUND EFFECTS 🔊
+    audioSoundFont->soundEffects.reserve(audioSoundFont->soundFont.numSfx);
+    // for (uint32_t i = 0; i < sfxCnt; i++) {
+    //     SoundFontEntry* entry = new SoundFontEntry();
+
+    //     bool hasSFEntry = reader->ReadInt8();
+
+    //     if (hasSFEntry) {
+    //         bool hasSampleRef = reader->ReadInt8();
+    //         entry->sampleFileName = reader->ReadString();
+    //         entry->tuning = reader->ReadFloat();
+    //     }
+
+    //     soundFont->soundEffects.push_back(entry);
+    // }
 }
 } // namespace Ship
 
 /*
-    
 
-
-    for (uint32_t i = 0; i < instrumentCnt; i++) {
-        InstrumentEntry entry;
-
-        entry.isValidEntry = reader->ReadUByte();
-        entry.loaded = reader->ReadUByte();
-        entry.normalRangeLo = reader->ReadUByte();
-        entry.normalRangeHi = reader->ReadUByte();
-        entry.releaseRate = reader->ReadUByte();
-
-        entry.env = ReadEnvelopeData(reader);
-
-        {
-            bool hasSFEntry = reader->ReadInt8();
-
-            if (hasSFEntry) {
-                entry.lowNotesSound = new SoundFontEntry();
-                bool hasSampleRef = reader->ReadInt8();
-                entry.lowNotesSound->sampleFileName = reader->ReadString();
-                entry.lowNotesSound->tuning = reader->ReadFloat();
-            }
-        }
-
-        {
-            bool hasSFEntry = reader->ReadInt8();
-
-            if (hasSFEntry) {
-                entry.normalNotesSound = new SoundFontEntry();
-                bool hasSampleRef = reader->ReadInt8();
-                entry.normalNotesSound->sampleFileName = reader->ReadString();
-                entry.normalNotesSound->tuning = reader->ReadFloat();
-            }
-        }
-
-        {
-            bool hasSFEntry = reader->ReadInt8();
-
-            if (hasSFEntry) {
-                entry.highNotesSound = new SoundFontEntry();
-                bool hasSampleRef = reader->ReadInt8();
-                entry.highNotesSound->sampleFileName = reader->ReadString();
-                entry.highNotesSound->tuning = reader->ReadFloat();
-            }
-        }
-
-        soundFont->instruments.push_back(entry);
-    }
-
-    for (uint32_t i = 0; i < sfxCnt; i++) {
-        SoundFontEntry* entry = new SoundFontEntry();
-
-        bool hasSFEntry = reader->ReadInt8();
-
-        if (hasSFEntry) {
-            bool hasSampleRef = reader->ReadInt8();
-            entry->sampleFileName = reader->ReadString();
-            entry->tuning = reader->ReadFloat();
-        }
-
-        soundFont->soundEffects.push_back(entry);
-    }
-
-*/
-
-/*
-
-        SoundFont* soundFontC = (SoundFont*)malloc(sizeof(SoundFont));
-
-        soundFontC->drums = (Drum**)malloc(sizeof(Drum*) * soundFont->drums.size());
-
-
-
-        soundFontC->instruments = (Instrument**)malloc(sizeof(Instrument*) * soundFont->instruments.size());
-
-        for (size_t i = 0; i < soundFont->instruments.size(); i++) {
-
-            if (soundFont->instruments[i].isValidEntry)
-            {
-                Instrument* inst = (Instrument*)malloc(sizeof(Instrument));
-
-                inst->loaded = 0;
-                inst->releaseRate = soundFont->instruments[i].releaseRate;
-                inst->normalRangeLo = soundFont->instruments[i].normalRangeLo;
-                inst->normalRangeHi = soundFont->instruments[i].normalRangeHi;
-
-                if (soundFont->instruments[i].env.size() == 0)
-                    inst->envelope = NULL;
-                else
-                {
-                    inst->envelope = (AdsrEnvelope*)malloc(sizeof(AdsrEnvelope) * soundFont->instruments[i].env.size());
-
-                    for (int k = 0; k < soundFont->instruments[i].env.size(); k++)
-                    {
-                        inst->envelope[k].delay = BE16SWAP(soundFont->instruments[i].env[k]->delay);
-                        inst->envelope[k].arg = BE16SWAP(soundFont->instruments[i].env[k]->arg);
-                    }
-                }
-                if (soundFont->instruments[i].lowNotesSound != nullptr)
-                {
-                    inst->lowNotesSound.sample =
-                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].lowNotesSound->sampleFileName.c_str());
-                    inst->lowNotesSound.tuning = soundFont->instruments[i].lowNotesSound->tuning;
-                } else {
-                    inst->lowNotesSound.sample = NULL;
-                    inst->lowNotesSound.tuning = 0;
-                }
-
-                if (soundFont->instruments[i].normalNotesSound != nullptr) {
-                    inst->normalNotesSound.sample =
-                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].normalNotesSound->sampleFileName.c_str());
-                    inst->normalNotesSound.tuning = soundFont->instruments[i].normalNotesSound->tuning;
-
-                } else {
-                    inst->normalNotesSound.sample = NULL;
-                    inst->normalNotesSound.tuning = 0;
-                }
-
-                if (soundFont->instruments[i].highNotesSound != nullptr) {
-                    inst->highNotesSound.sample =
-                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].highNotesSound->sampleFileName.c_str());
-                    inst->highNotesSound.tuning = soundFont->instruments[i].highNotesSound->tuning;
-                } else {
-                    inst->highNotesSound.sample = NULL;
-                    inst->highNotesSound.tuning = 0;
-                }
 
                 soundFontC->instruments[i] = inst;
             }
