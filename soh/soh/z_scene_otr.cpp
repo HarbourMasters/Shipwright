@@ -381,24 +381,10 @@ bool Scene_CommandPathList(PlayState* play, Ship::SceneCommand* cmd)
 }
 
 bool Scene_CommandTransitionActorList(PlayState* play, Ship::SceneCommand* cmd) {
-    Ship::SetTransitionActorList* cmdActor = (Ship::SetTransitionActorList*)cmd;
+    Ship::SetTransitionActorList* cmdActor = static_pointer_cast<Ship::SetTransitionActorList>(cmd);
 
-    play->transiActorCtx.numActors = cmdActor->entries.size();
-    play->transiActorCtx.list = (TransitionActorEntry*)malloc(cmdActor->entries.size() * sizeof(TransitionActorEntry));
-
-    for (int i = 0; i < cmdActor->entries.size(); i++)
-    {
-        play->transiActorCtx.list[i].sides[0].room = cmdActor->entries[i].frontObjectRoom;
-        play->transiActorCtx.list[i].sides[0].effects = cmdActor->entries[i].frontTransitionReaction;
-        play->transiActorCtx.list[i].sides[1].room = cmdActor->entries[i].backObjectRoom;
-        play->transiActorCtx.list[i].sides[1].effects = cmdActor->entries[i].backTransitionReaction;
-        play->transiActorCtx.list[i].id = cmdActor->entries[i].actorNum;
-        play->transiActorCtx.list[i].pos.x = cmdActor->entries[i].posX;
-        play->transiActorCtx.list[i].pos.y = cmdActor->entries[i].posY;
-        play->transiActorCtx.list[i].pos.z = cmdActor->entries[i].posZ;
-        play->transiActorCtx.list[i].rotY = cmdActor->entries[i].rotY;
-        play->transiActorCtx.list[i].params = cmdActor->entries[i].initVar;
-    }
+    play->transiActorCtx.numActors = cmdActor->numTransitionActors;
+    play->transiActorCtx.list = cmdActor->GetPointer();
 
     return false;
 }
