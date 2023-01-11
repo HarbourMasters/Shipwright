@@ -25,6 +25,7 @@
 #include "resource/importer/SetAlternateHeaders.h"
 #include "resource/importer/SetPathways.h"
 #include "resource/importer/SetCutscenes.h"
+#include "resource/importer/SetLightList.h"
 
 namespace Ship {
 std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
@@ -53,6 +54,7 @@ std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReade
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetAlternateHeaders] = std::make_shared<SetAlternateHeaders>();
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetPathways] = std::make_shared<SetPathways>();
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetCutscenes] = std::make_shared<SetCutscenes>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetLightList] = std::make_shared<SetLightList>();
         // TODO: Do the rest...
     }
 

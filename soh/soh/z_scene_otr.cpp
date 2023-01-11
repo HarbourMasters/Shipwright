@@ -333,23 +333,11 @@ bool Scene_CommandObjectList(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandLightList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetLightList* cmdLight = (Ship::SetLightList*)cmd;
+    Ship::SetLightList* cmdLight = static_pointer_cast<Ship::SetLightList>(cmd);
 
-    LightInfo* lightInfo = (LightInfo*)malloc(cmdLight->lights.size() * sizeof(LightInfo));
-
-    for (int i = 0; i < cmdLight->lights.size(); i++)
+    for (int i = 0; i < cmdLight->lightList.size(); i++)
     {
-        lightInfo[i].type = cmdLight->lights[i].type;
-        lightInfo[i].params.point.x = cmdLight->lights[i].x;
-        lightInfo[i].params.point.y = cmdLight->lights[i].y;
-        lightInfo[i].params.point.z = cmdLight->lights[i].z;
-        lightInfo[i].params.point.radius = cmdLight->lights[i].radius;
-        lightInfo[i].params.point.drawGlow = cmdLight->lights[i].drawGlow;
-        lightInfo[i].params.point.color[0] = cmdLight->lights[i].r;
-        lightInfo[i].params.point.color[1] = cmdLight->lights[i].g;
-        lightInfo[i].params.point.color[2] = cmdLight->lights[i].b;
-
-        LightContext_InsertLight(play, &play->lightCtx, &lightInfo[i]);
+        LightContext_InsertLight(play, &play->lightCtx, &cmdLight->lightList[i]);
     }
 
     return false;
