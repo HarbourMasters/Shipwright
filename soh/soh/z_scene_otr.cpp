@@ -539,10 +539,9 @@ bool Scene_CommandAlternateHeaderList(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandCutsceneData(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetCutscenes* cmdCS = (Ship::SetCutscenes*)cmd;
+    Ship::SetCutscenes* cmdCS = static_pointer_cast<Ship::SetCutscenes>(cmd);
 
-    Ship::Cutscene* csData = (Ship::Cutscene*)ResourceMgr_LoadResource(cmdCS->cutscenePath.c_str()).get();
-    play->csCtx.segment = csData->commands.data();
+    play->csCtx.segment = cmdCS->cutscene->commands.data();
 
     //osSyncPrintf("\ngame_play->demo_play.data=[%x]", play->csCtx.segment);
     return false;

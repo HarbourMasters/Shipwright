@@ -24,6 +24,7 @@
 #include "resource/importer/EndMarker.h"
 #include "resource/importer/SetAlternateHeaders.h"
 #include "resource/importer/SetPathways.h"
+#include "resource/importer/SetCutscenes.h"
 
 namespace Ship {
 std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
@@ -51,6 +52,7 @@ std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReade
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::EndMarker] = std::make_shared<EndMarker>();
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetAlternateHeaders] = std::make_shared<SetAlternateHeaders>();
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetPathways] = std::make_shared<SetPathways>();
+        SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetCutscenes] = std::make_shared<SetCutscenes>();
         // TODO: Do the rest...
     }
 
