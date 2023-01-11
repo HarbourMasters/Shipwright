@@ -949,14 +949,6 @@ typedef struct {
 typedef struct {
     /* 0x00 */ Gfx* opa;
     /* 0x04 */ Gfx* xlu;
-
-#ifdef __cplusplus
-    Ship::DisplayList* opaDL;
-    Ship::DisplayList* xluDL;
-#else
-void* opaDL;
-void* xluDL;
-#endif
 } PolygonDlist; // size = 0x8
 
 
@@ -1017,14 +1009,6 @@ typedef struct {
     /* 0x06 */ s16   unk_06;
     /* 0x08 */ Gfx*  opa;
     /* 0x0C */ Gfx*  xlu;
-
-#ifdef __cplusplus
-    Ship::DisplayList* opaDL;
-    Ship::DisplayList* xluDL;
-#else
-    void* opaDL;
-    void* xluDL;
-#endif
 } PolygonDlist2; // size = 0x8
 
 typedef struct {
