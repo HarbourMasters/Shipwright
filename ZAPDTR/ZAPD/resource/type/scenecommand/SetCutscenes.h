@@ -6,7 +6,7 @@
 #include <string>
 #include "Resource.h"
 #include "SceneCommand.h"
-#include "resource/type/Cutscene.h"
+#include "Cutscene.h"
 #include <libultraship/libultra/types.h>
 
 namespace Ship {

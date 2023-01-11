@@ -11,6 +11,27 @@
 #include <Text.h>
 #include <Blob.h>
 #include <memory>
+#include "scenecommand/SetCameraSettings.h"
+#include "scenecommand/SetCutscenes.h"
+#include "scenecommand/SetStartPositionList.h"
+#include "scenecommand/SetActorList.h"
+#include "scenecommand/SetCollisionHeader.h"
+#include "scenecommand/SetRoomList.h"
+#include "scenecommand/SetEntranceList.h"
+#include "scenecommand/SetSpecialObjects.h"
+#include "scenecommand/SetRoomBehavior.h"
+#include "scenecommand/SetMesh.h"
+#include "scenecommand/SetObjectList.h"
+#include "scenecommand/SetLightList.h"
+#include "scenecommand/SetPathways.h"
+#include "scenecommand/SetTransitionActorList.h"
+#include "scenecommand/SetSkyboxSettings.h"
+#include "scenecommand/SetSkyboxModifier.h"
+#include "scenecommand/SetTimeSettings.h"
+#include "scenecommand/SetWindSettings.h"
+#include "scenecommand/SetSoundSettings.h"
+#include "scenecommand/SetEchoSettings.h"
+#include "scenecommand/SetAlternateHeaders.h"
 
 extern Ship::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName);
 extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
@@ -33,8 +54,9 @@ std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path);
 
 bool Scene_CommandSpawnList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetStartPositionList* cmdStartPos = std::static_pointer_cast<Ship::SetStartPositionList>(cmd);
-    ActorEntry* entries = cmdStartPos->GetPointer();
+    // Ship::SetStartPositionList* cmdStartPos = std::static_pointer_cast<Ship::SetStartPositionList>(cmd);
+    Ship::SetStartPositionList* cmdStartPos = (Ship::SetStartPositionList*)cmd;
+    ActorEntry* entries = (ActorEntry*)cmdStartPos->GetPointer();
 
     play->linkActorEntry = &entries[play->setupEntranceList[play->curSpawn].spawn];;
     play->linkAgeOnLoad = ((void)0, gSaveContext.linkAge);
@@ -46,10 +68,11 @@ bool Scene_CommandSpawnList(PlayState* play, Ship::SceneCommand* cmd)
 }
 
 bool Scene_CommandActorList(PlayState* play, Ship::SceneCommand* cmd) {
-    Ship::SetActorList* cmdActor = std::static_pointer_cast<Ship::SetActorList>(cmd);
+    // Ship::SetActorList* cmdActor = std::static_pointer_cast<Ship::SetActorList>(cmd);
+    Ship::SetActorList* cmdActor = (Ship::SetActorList*)cmd;
 
     play->numSetupActors = cmdActor->numActors;
-    play->setupActorList = cmdActor->GetPointer();
+    play->setupActorList = (ActorEntry*)cmdActor->GetPointer();
 
     return false;
 }
@@ -64,41 +87,45 @@ bool Scene_CommandUnused2(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandCollisionHeader(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetCollisionHeader* cmdCol = std::static_pointer_cast<Ship::SetCollisionHeader>(cmd);
-    BgCheck_Allocate(&play->colCtx, play, cmdCol->GetPointer());
+    // Ship::SetCollisionHeader* cmdCol = std::static_pointer_cast<Ship::SetCollisionHeader>(cmd);
+    Ship::SetCollisionHeader* cmdCol = (Ship::SetCollisionHeader*)cmd;
+    BgCheck_Allocate(&play->colCtx, play, (CollisionHeader*)cmdCol->GetPointer());
 
     return false;
 }
 
 bool Scene_CommandRoomList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetRoomList* cmdRoomList = std::static_pointer_cast<Ship::SetRoomList>(cmd);
+    // Ship::SetRoomList* cmdRoomList = std::static_pointer_cast<Ship::SetRoomList>(cmd);
+    Ship::SetRoomList* cmdRoomList = (Ship::SetRoomList*)cmd;
 
     play->numRooms = cmdRoomList->numRooms;
-    play->roomList = cmdRoomList->GetPointer();
+    play->roomList = (RomFile*)cmdRoomList->GetPointer();
 
     return false;
 }
 
 bool Scene_CommandEntranceList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetEntranceList* otrEntrance = std::static_pointer_cast<Ship::SetEntranceList>(cmd);
-    play->setupEntranceList = otrEntrance->GetPointer();
+    // Ship::SetEntranceList* otrEntrance = std::static_pointer_cast<Ship::SetEntranceList>(cmd);
+    Ship::SetEntranceList* otrEntrance = (Ship::SetEntranceList*)cmd;
+    play->setupEntranceList = (EntranceEntry*)otrEntrance->GetPointer();
 
     return false;
 }
 
 bool Scene_CommandSpecialFiles(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetSpecialObjects* specialCmd = std::static_pointer_cast<Ship::SetSpecialObjects>(cmd);
+    // Ship::SetSpecialObjects* specialCmd = std::static_pointer_cast<Ship::SetSpecialObjects>(cmd);
+    Ship::SetSpecialObjects* specialCmd = (Ship::SetSpecialObjects*)cmd;
 
-    if (specialCmd->globalObject != 0) {
+    if (specialCmd->specialObjects.globalObject != 0) {
         play->objectCtx.subKeepIndex = Object_Spawn(&play->objectCtx, specialCmd->specialObjects.globalObject);
     }
 
-    if (specialCmd->elfMessage != 0) {
+    if (specialCmd->specialObjects.elfMessage != 0) {
         auto res = (Ship::Blob*)OTRPlay_LoadFile(play, sNaviMsgFiles[specialCmd->specialObjects.elfMessage - 1].fileName);
-        play->cUpElfMsgs = (ElfMessage*)res->data.data();
+        play->cUpElfMsgs = (ElfMessage*)res->Data.data();
     }
 
     return false;
@@ -106,7 +133,8 @@ bool Scene_CommandSpecialFiles(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandRoomBehavior(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetRoomBehavior* cmdRoom = std::static_pointer_cast<Ship::SetRoomBehavior>(cmd);
+    // Ship::SetRoomBehavior* cmdRoom = std::static_pointer_cast<Ship::SetRoomBehavior>(cmd);
+    Ship::SetRoomBehavior* cmdRoom = (Ship::SetRoomBehavior*)cmd;
 
     play->roomCtx.curRoom.behaviorType1 = cmdRoom->roomBehavior.gameplayFlags;
     play->roomCtx.curRoom.behaviorType2 = cmdRoom->roomBehavior.gameplayFlags2 & 0xFF;
@@ -118,8 +146,9 @@ bool Scene_CommandRoomBehavior(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandMeshHeader(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetMesh* otrMesh = static_pointer_cast<Ship::SetMesh>(cmd);
-    play->roomCtx.curRoom.meshHeader = otrMesh->GetPointer();
+    // Ship::SetMesh* otrMesh = static_pointer_cast<Ship::SetMesh>(cmd);
+    Ship::SetMesh* otrMesh = (Ship::SetMesh*)cmd;
+    play->roomCtx.curRoom.meshHeader = (MeshHeader*)otrMesh->GetPointer();
 
     return false;
 }
@@ -128,7 +157,8 @@ extern "C" void* func_800982FC(ObjectContext * objectCtx, s32 bankIndex, s16 obj
 
 bool Scene_CommandObjectList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetObjectList* cmdObj = static_pointer_cast<Ship::SetObjectList>(cmd);
+    // Ship::SetObjectList* cmdObj = static_pointer_cast<Ship::SetObjectList>(cmd);
+    Ship::SetObjectList* cmdObj = (Ship::SetObjectList*)cmd;
 
     s32 i;
     s32 j;
@@ -190,11 +220,12 @@ bool Scene_CommandObjectList(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandLightList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetLightList* cmdLight = static_pointer_cast<Ship::SetLightList>(cmd);
+    // Ship::SetLightList* cmdLight = static_pointer_cast<Ship::SetLightList>(cmd);
+    Ship::SetLightList* cmdLight = (Ship::SetLightList*)cmd;
 
-    for (int i = 0; i < cmdLight->lightList.size(); i++)
+    for (size_t i = 0; i < cmdLight->lightList.size(); i++)
     {
-        LightContext_InsertLight(play, &play->lightCtx, &cmdLight->lightList[i]);
+        LightContext_InsertLight(play, &play->lightCtx, (LightInfo*)&cmdLight->lightList[i]);
     }
 
     return false;
@@ -202,17 +233,19 @@ bool Scene_CommandLightList(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandPathList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetPathways* cmdPath = static_pointer_cast<Ship::SetPathways>(cmd);
-    play->setupPathList = cmdPath->paths[0]->GetPointer();
+    // Ship::SetPathways* cmdPath = static_pointer_cast<Ship::SetPathways>(cmd);
+    Ship::SetPathways* cmdPath = (Ship::SetPathways*)cmd;
+    play->setupPathList = (Path*)cmdPath->paths[0]->GetPointer();
 
     return false;
 }
 
 bool Scene_CommandTransitionActorList(PlayState* play, Ship::SceneCommand* cmd) {
-    Ship::SetTransitionActorList* cmdActor = static_pointer_cast<Ship::SetTransitionActorList>(cmd);
+    // Ship::SetTransitionActorList* cmdActor = static_pointer_cast<Ship::SetTransitionActorList>(cmd);
+    Ship::SetTransitionActorList* cmdActor = (Ship::SetTransitionActorList*)cmd;
 
     play->transiActorCtx.numActors = cmdActor->numTransitionActors;
-    play->transiActorCtx.list = cmdActor->GetPointer();
+    play->transiActorCtx.list = (TransitionActorEntry*)cmdActor->GetPointer();
 
     return false;
 }
@@ -223,7 +256,7 @@ bool Scene_CommandTransitionActorList(PlayState* play, Ship::SceneCommand* cmd) 
 
 bool Scene_CommandLightSettingsList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    play->envCtx.lightSettingsList = cmd->GetPointer();
+    play->envCtx.lightSettingsList = (EnvLightSettings*)cmd->GetPointer();
 
     return false;
 }
@@ -231,7 +264,8 @@ bool Scene_CommandLightSettingsList(PlayState* play, Ship::SceneCommand* cmd)
 // Scene Command 0x11: Skybox Settings
 bool Scene_CommandSkyboxSettings(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetSkyboxSettings* cmdSky = static_pointer_cast<Ship::SetSkyboxSettings>(cmd);
+    // Ship::SetSkyboxSettings* cmdSky = static_pointer_cast<Ship::SetSkyboxSettings>(cmd);
+    Ship::SetSkyboxSettings* cmdSky = (Ship::SetSkyboxSettings*)cmd;
 
     play->skyboxId = cmdSky->settings.skyboxId;
     play->envCtx.unk_17 = play->envCtx.unk_18 = cmdSky->settings.weather;
@@ -242,7 +276,8 @@ bool Scene_CommandSkyboxSettings(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandSkyboxDisables(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetSkyboxModifier* cmdSky = static_pointer_cast<Ship::SetSkyboxModifier>(cmd);
+    // Ship::SetSkyboxModifier* cmdSky = static_pointer_cast<Ship::SetSkyboxModifier>(cmd);
+    Ship::SetSkyboxModifier* cmdSky = (Ship::SetSkyboxModifier*)cmd;
 
     play->envCtx.sunMoonDisabled = cmdSky->modifier.sunMoonDisabled;
     play->envCtx.skyboxDisabled = cmdSky->modifier.skyboxDisabled;
@@ -252,15 +287,16 @@ bool Scene_CommandSkyboxDisables(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandTimeSettings(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetTimeSettings* cmdTime = static_pointer_cast<Ship::SetTimeSettings>(cmd);
+    // Ship::SetTimeSettings* cmdTime = static_pointer_cast<Ship::SetTimeSettings>(cmd);
+    Ship::SetTimeSettings* cmdTime = (Ship::SetTimeSettings*)cmd;
 
-    if ((cmdTime->settings.hour != 0xFF) && (cmdTime->settings.min != 0xFF)) {
+    if ((cmdTime->settings.hour != 0xFF) && (cmdTime->settings.minute != 0xFF)) {
         gSaveContext.skyboxTime = gSaveContext.dayTime =
-            ((cmdTime->settings.hour + (cmdTime->settings.min / 60.0f)) * 60.0f) / ((f32)(24 * 60) / 0x10000);
+            ((cmdTime->settings.hour + (cmdTime->settings.minute / 60.0f)) * 60.0f) / ((f32)(24 * 60) / 0x10000);
     }
 
-    if (cmdTime->settings.unk != 0xFF) {
-        play->envCtx.timeIncrement = cmdTime->settings.unk;
+    if (cmdTime->settings.timeIncrement != 0xFF) {
+        play->envCtx.timeIncrement = cmdTime->settings.timeIncrement;
     }
     else {
         play->envCtx.timeIncrement = 0;
@@ -295,7 +331,8 @@ bool Scene_CommandTimeSettings(PlayState* play, Ship::SceneCommand* cmd)
 }
 
 bool Scene_CommandWindSettings(PlayState* play, Ship::SceneCommand* cmd) {
-    Ship::SetWind* cmdWind = std::static_pointer_cast<Ship::SetWind>(cmd);
+    // Ship::SetWind* cmdWind = std::static_pointer_cast<Ship::SetWind>(cmd);
+    Ship::SetWindSettings* cmdWind = (Ship::SetWindSettings*)cmd;
 
     play->envCtx.windDirection.x = cmdWind->settings.windWest;
     play->envCtx.windDirection.y = cmdWind->settings.windVertical;
@@ -308,7 +345,7 @@ bool Scene_CommandWindSettings(PlayState* play, Ship::SceneCommand* cmd) {
 
 bool Scene_CommandExitList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    play->setupExitList = cmd->GetPointer();
+    play->setupExitList = (s16*)cmd->GetPointer();
 
     return false;
 }
@@ -318,7 +355,8 @@ bool Scene_CommandUndefined9(PlayState* play, Ship::SceneCommand* cmd) {
 }
 
 bool Scene_CommandSoundSettings(PlayState* play, Ship::SceneCommand* cmd) {
-    Ship::SetSoundSettings* cmdSnd = static_pointer_cast<Ship::SetSoundSettings>(cmd);
+    // Ship::SetSoundSettings* cmdSnd = static_pointer_cast<Ship::SetSoundSettings>(cmd);
+    Ship::SetSoundSettings* cmdSnd = (Ship::SetSoundSettings*)cmd;
 
     play->sequenceCtx.seqId = cmdSnd->settings.seqId;
     play->sequenceCtx.natureAmbienceId = cmdSnd->settings.natureAmbienceId;
@@ -332,7 +370,8 @@ bool Scene_CommandSoundSettings(PlayState* play, Ship::SceneCommand* cmd) {
 
 bool Scene_CommandEchoSettings(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetEchoSettings* cmdEcho = static_pointer_cast<Ship::SetEchoSettings>(cmd);
+    // Ship::SetEchoSettings* cmdEcho = static_pointer_cast<Ship::SetEchoSettings>(cmd);
+    Ship::SetEchoSettings* cmdEcho = (Ship::SetEchoSettings*)cmd;
 
     play->roomCtx.curRoom.echo = cmdEcho->settings.echo;
 
@@ -341,7 +380,8 @@ bool Scene_CommandEchoSettings(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandAlternateHeaderList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetAlternateHeaders* cmdHeaders = static_pointer_cast<Ship::SetAlternateHeaders>(cmd);
+    // Ship::SetAlternateHeaders* cmdHeaders = static_pointer_cast<Ship::SetAlternateHeaders>(cmd);
+    Ship::SetAlternateHeader* cmdHeaders = (Ship::SetAlternateHeader*)cmd;
 
     //s32 pad;
     //SceneCmd* altHeader;
@@ -352,7 +392,7 @@ bool Scene_CommandAlternateHeaderList(PlayState* play, Ship::SceneCommand* cmd)
 
     if (gSaveContext.sceneSetupIndex != 0)
     {
-        std::shared_ptr<Scene> desiredHeader = static_pointer_cast<Scene>(cmdHeaders->headers[gSaveContext.sceneSetupIndex - 1]);
+        std::shared_ptr<Ship::Scene> desiredHeader = std::static_pointer_cast<Ship::Scene>(cmdHeaders->headers[gSaveContext.sceneSetupIndex - 1]);
 
         if (desiredHeader != nullptr)
         {
@@ -366,7 +406,7 @@ bool Scene_CommandAlternateHeaderList(PlayState* play, Ship::SceneCommand* cmd)
 
             if (gSaveContext.sceneSetupIndex == 3)
             {
-                std::shared_ptr<Scene> desiredHeader = static_pointer_cast<Scene>(cmdHeaders->headers[gSaveContext.sceneSetupIndex - 2]);
+                std::shared_ptr<Ship::Scene> desiredHeader = std::static_pointer_cast<Ship::Scene>(cmdHeaders->headers[gSaveContext.sceneSetupIndex - 2]);
 
                 // "Using adult day data there!"
                 osSyncPrintf("\nそこで、大人の昼データを使用するでええっす！！");
@@ -384,7 +424,8 @@ bool Scene_CommandAlternateHeaderList(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandCutsceneData(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetCutscenes* cmdCS = static_pointer_cast<Ship::SetCutscenes>(cmd);
+    // Ship::SetCutscenes* cmdCS = std::static_pointer_cast<Ship::SetCutscenes>(cmd);
+    Ship::SetCutscenes* cmdCS = (Ship::SetCutscenes*)cmd;
 
     play->csCtx.segment = cmdCS->cutscene->commands.data();
 
@@ -395,7 +436,8 @@ bool Scene_CommandCutsceneData(PlayState* play, Ship::SceneCommand* cmd)
 // Camera & World Map Area
 bool Scene_CommandMiscSettings(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetCameraSettings* cmdCam = static_pointer_cast<Ship::SetCameraSettings>(cmd);
+    // Ship::SetCameraSettings* cmdCam = std::static_pointer_cast<Ship::SetCameraSettings>(cmd);
+    Ship::SetCameraSettings* cmdCam = (Ship::SetCameraSettings*)cmd;
 
     YREG(15) = cmdCam->settings.cameraMovement;
     gSaveContext.worldMapArea = cmdCam->settings.worldMapArea;
@@ -459,7 +501,7 @@ s32 OTRScene_ExecuteCommands(PlayState* play, std::shared_ptr<Ship::Scene> scene
             continue;
 
 
-        cmdCode = sceneCmd->cmdID;
+        cmdCode = sceneCmd->cmdId;
         //osSyncPrintf("*** Scene_Word = { code=%d, data1=%02x, data2=%04x } ***\n", cmdCode, sceneCmd->base.data1, sceneCmd->base.data2);
 
         if ((int)cmdCode == 0x14) {
@@ -467,7 +509,7 @@ s32 OTRScene_ExecuteCommands(PlayState* play, std::shared_ptr<Ship::Scene> scene
         }
 
         if ((int)cmdCode <= 0x19) {
-            if (sceneCommands[(int)cmdCode](play, sceneCmd))
+            if (sceneCommands[(int)cmdCode](play, (Ship::SceneCommand*)sceneCmd->GetPointer()))
                 break;
         }
         else {
@@ -524,7 +566,7 @@ extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomN
         //DmaMgr_SendRequest2(&roomCtx->dmaRequest, roomCtx->unk_34, play->roomList[roomNum].vromStart, size, 0,
                             //&roomCtx->loadQueue, NULL, __FILE__, __LINE__);
 
-        auto roomData = static_pointer_cast<Ship::Scene>(ResourceMgr_LoadResource(play->roomList[roomNum].fileName));
+        auto roomData = std::static_pointer_cast<Ship::Scene>(ResourceMgr_LoadResource(play->roomList[roomNum].fileName));
         roomCtx->status = 1;
         roomCtx->roomToLoad = roomData;
 

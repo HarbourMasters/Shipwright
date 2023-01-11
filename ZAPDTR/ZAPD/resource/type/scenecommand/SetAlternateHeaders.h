@@ -7,15 +7,16 @@
 #include "Resource.h"
 #include "SceneCommand.h"
 #include "Scene.h"
+#include "RomFile.h"
 #include <libultraship/libultra/types.h>
 
 
 namespace Ship {
-typedef struct {
-    /* 0x00 */ uintptr_t vromStart;
-    /* 0x04 */ uintptr_t vromEnd;
-    char* fileName;
-} RomFile; // size = 0x8
+// typedef struct {
+//     /* 0x00 */ uintptr_t vromStart;
+//     /* 0x04 */ uintptr_t vromEnd;
+//     char* fileName;
+// } RomFile; // size = 0x8
 
 class SetAlternateHeader : public SceneCommand {
   public:

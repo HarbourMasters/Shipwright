@@ -806,10 +806,10 @@ extern "C" uint32_t ResourceMgr_LoadTexSizeByName(const char* texPath);
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = ResourceMgr_LoadResource(filePath);
 
-    if (res->ResType == Ship::ResourceType::DisplayList)
-        return (char*)&((std::static_pointer_cast<Ship::DisplayList>(res))->instructions[0]);
-    else if (res->ResType == Ship::ResourceType::Array)
-        return (char*)(std::static_pointer_cast<Ship::Array>(res))->vertices.data();
+    if (res->Type == Ship::ResourceType::DisplayList)
+        return (char*)&((std::static_pointer_cast<Ship::DisplayList>(res))->Instructions[0]);
+    else if (res->Type == Ship::ResourceType::Array)
+        return (char*)(std::static_pointer_cast<Ship::Array>(res))->Vertices.data();
     else {
         std::string Path = filePath;
         if (ResourceMgr_IsGameMasterQuest()) {
@@ -835,7 +835,7 @@ extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
 extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
 {
     auto res = std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(path));
-    return (Gfx*)&res->instructions[0];
+    return (Gfx*)&res->Instructions[0];
 }
 
 typedef struct {
@@ -869,7 +869,7 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
         index /= 2;
     }
 
-    Gfx* gfx = (Gfx*)&res->instructions[index];
+    Gfx* gfx = (Gfx*)&res->Instructions[index];
 
     if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
         originalGfx[path][patchName] = {
@@ -886,7 +886,7 @@ extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patch
         auto res = std::static_pointer_cast<Ship::DisplayList>(
             OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 
-        Gfx* gfx = (Gfx*)&res->instructions[originalGfx[path][patchName].index];
+        Gfx* gfx = (Gfx*)&res->Instructions[originalGfx[path][patchName].index];
         *gfx = originalGfx[path][patchName].instruction;
 
         originalGfx[path].erase(patchName);
@@ -897,28 +897,28 @@ extern "C" char* ResourceMgr_LoadArrayByName(const char* path)
 {
     auto res = std::static_pointer_cast<Ship::Array>(ResourceMgr_LoadResource(path));
 
-    return (char*)res->scalars.data();
+    return (char*)res->Scalars.data();
 }
 
 extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
     auto res = std::static_pointer_cast<Ship::Array>(ResourceMgr_LoadResource(path));
 
-    if (res->CachedGameAsset != nullptr)
-        return (char*)res->CachedGameAsset;
-    else
-    {
-        Vec3s* data = (Vec3s*)malloc(sizeof(Vec3s) * res->scalars.size());
+    // if (res->CachedGameAsset != nullptr)
+    //     return (char*)res->CachedGameAsset;
+    // else
+    // {
+        Vec3s* data = (Vec3s*)malloc(sizeof(Vec3s) * res->Scalars.size());
 
-        for (size_t i = 0; i < res->scalars.size(); i += 3) {
-            data[(i / 3)].x = res->scalars[i + 0].s16;
-            data[(i / 3)].y = res->scalars[i + 1].s16;
-            data[(i / 3)].z = res->scalars[i + 2].s16;
+        for (size_t i = 0; i < res->Scalars.size(); i += 3) {
+            data[(i / 3)].x = res->Scalars[i + 0].s16;
+            data[(i / 3)].y = res->Scalars[i + 1].s16;
+            data[(i / 3)].z = res->Scalars[i + 2].s16;
         }
 
-        res->CachedGameAsset = data;
+        // res->CachedGameAsset = data;
 
         return (char*)data;
-    }
+    // }
 }
 
 extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path) {
