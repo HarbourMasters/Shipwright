@@ -1,5 +1,8 @@
 #include "bossrush.h"
-#include "global.h"
+#include "functions.h"
+#include "macros.h"
+
+#include <array>
 
 extern "C" void BossRush_SpawnBlueWarps(PlayState* play) {
 
@@ -156,9 +159,9 @@ extern "C" void BossRush_HandleCompleteBoss(PlayState* play) {
 extern "C" void BossRush_InitSave() {
 
     // Set player name to Link just in case it'll be used in textboxes. Player can't input their own name.
-    static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
+    static std::array<char, 8> brPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
-        gSaveContext.playerName[i] = sPlayerName[i];
+        gSaveContext.playerName[i] = brPlayerName[i];
     }
 
     gSaveContext.isBossRushPaused = 1;
@@ -181,21 +184,21 @@ extern "C" void BossRush_InitSave() {
     gSaveContext.eventChkInf[7] |= 0x40; // barinade
     gSaveContext.eventChkInf[7] |= 0x80; // bongo bongo
 
-    static std::array<u8, 24> sItems = {
+    static std::array<u8, 24> brItems = {
         ITEM_STICK,     ITEM_NUT,  ITEM_BOMB, ITEM_BOW,      ITEM_NONE,        ITEM_NONE,
         ITEM_SLINGSHOT, ITEM_NONE, ITEM_NONE, ITEM_LONGSHOT, ITEM_NONE,        ITEM_NONE,
         ITEM_BOOMERANG, ITEM_LENS, ITEM_NONE, ITEM_HAMMER,   ITEM_ARROW_LIGHT, ITEM_NONE,
         ITEM_NONE,      ITEM_NONE, ITEM_NONE, ITEM_NONE,     ITEM_NONE,        ITEM_NONE,
     };
 
-    static std::array<s8, 16> sAmmo = { 5, 5, 10, 10, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    static std::array<s8, 16> brAmmo = { 5, 5, 10, 10, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     for (int item = 0; item < ARRAY_COUNT(gSaveContext.inventory.items); item++) {
-        gSaveContext.inventory.items[item] = sItems[item];
+        gSaveContext.inventory.items[item] = brItems[item];
     }
 
     for (int ammo = 0; ammo < ARRAY_COUNT(gSaveContext.inventory.ammo); ammo++) {
-        gSaveContext.inventory.ammo[ammo] = sAmmo[ammo];
+        gSaveContext.inventory.ammo[ammo] = brAmmo[ammo];
     }
 
     gSaveContext.inventory.equipment = 4947;
@@ -206,36 +209,36 @@ extern "C" void BossRush_InitSave() {
 
 void BossRush_SetEquipment(uint8_t linkAge) {
 
-    static std::array<u8, 8> sButtonItems;
-    static std::array<u8, 7> sCButtonSlots;
+    static std::array<u8, 8> brButtonItems;
+    static std::array<u8, 7> brCButtonSlots;
 
     // Set Child Equipment. Used on save init.
     if (linkAge == LINK_AGE_CHILD) {
-        sButtonItems = {
+        brButtonItems = {
             ITEM_SWORD_KOKIRI, ITEM_STICK, ITEM_NUT, ITEM_BOMB, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE
         };
 
-        sCButtonSlots = { SLOT_STICK, SLOT_NUT, SLOT_BOMB, SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE };
+        brCButtonSlots = { SLOT_STICK, SLOT_NUT, SLOT_BOMB, SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE };
 
         gSaveContext.equips.equipment = 4369;
     // Set Adult equipment. Used when first 3 bosses are defeated and the player is set to adult.
     } else {
-        sButtonItems = {
+        brButtonItems = {
             ITEM_SWORD_MASTER, ITEM_BOW, ITEM_LONGSHOT, ITEM_HAMMER, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE
         };
 
-        sCButtonSlots = { SLOT_BOW, SLOT_HOOKSHOT, SLOT_HAMMER, SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE };
+        brCButtonSlots = { SLOT_BOW, SLOT_HOOKSHOT, SLOT_HAMMER, SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE };
 
         gSaveContext.equips.equipment = 4658;
     }
 
     // Button Items
     for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.buttonItems); button++) {
-        gSaveContext.equips.buttonItems[button] = sButtonItems[button];
+        gSaveContext.equips.buttonItems[button] = brButtonItems[button];
     }
 
     // C buttons
     for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); button++) {
-        gSaveContext.equips.cButtonSlots[button] = sCButtonSlots[button];
+        gSaveContext.equips.cButtonSlots[button] = brCButtonSlots[button];
     }
 }
