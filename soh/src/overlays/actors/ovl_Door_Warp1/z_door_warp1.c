@@ -814,7 +814,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
 
     if (this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF) {
         if (gSaveContext.isBossRush) {
-            BossRush_HandleBlueWarp(this, play);
+            BossRush_HandleBlueWarp(play, this->actor.world.pos.x, this->actor.world.pos.z);
         } else if (play->sceneNum == SCENE_MORIBOSSROOM) {
             if (!(gSaveContext.eventChkInf[4] & 0x100)) {
                 gSaveContext.eventChkInf[4] |= 0x100;

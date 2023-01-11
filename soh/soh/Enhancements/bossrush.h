@@ -1,12 +1,13 @@
 #pragma once
 
-#include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
+#include "ultra64.h"
+#include "global.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 void BossRush_SpawnBlueWarps(PlayState* play);
-void BossRush_HandleBlueWarp(DoorWarp1* warp, PlayState* play);
+void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ);
 void BossRush_InitSave();
 void BossRush_SetEquipment(uint8_t linkAge);
 void BossRush_HandleCompleteBoss(PlayState* play);
