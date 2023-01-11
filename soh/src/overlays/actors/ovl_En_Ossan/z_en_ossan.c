@@ -1931,7 +1931,7 @@ void EnOssan_UpdateItemSelectedProperty(EnOssan* this) {
 void EnOssan_UpdateCursorAnim(EnOssan* this) {
     Color_RGB8 aButtonColor = { 0, 80, 255 };
     if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        aButtonColor = CVarGetRGB("gCosmetics.Hud_AButton.Value", aButtonColor);
+        aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
     } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
         aButtonColor = (Color_RGB8){ 0, 255, 80 };
     }

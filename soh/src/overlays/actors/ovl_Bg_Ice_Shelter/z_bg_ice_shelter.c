@@ -462,7 +462,7 @@ void BgIceShelter_Draw(Actor* thisx, PlayState* play2) {
     }
 
     if (CVarGetInteger("gCosmetics.World_RedIce.Changed", 0)) {
-        Color_RGB8 color = CVarGetRGB("gCosmetics.World_RedIce.Value", (Color_RGB8){ 255, 0, 0});
+        Color_RGB8 color = CVarGetColor24("gCosmetics.World_RedIce.Value", (Color_RGB8){ 255, 0, 0});
         gDPSetEnvColor(POLY_XLU_DISP++, color.r, color.g, color.b, this->alpha);
     } else {
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, this->alpha);

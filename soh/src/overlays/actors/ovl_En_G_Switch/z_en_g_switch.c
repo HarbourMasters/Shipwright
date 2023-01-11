@@ -503,7 +503,7 @@ void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play) {
             if (this->type == ENGSWITCH_TARGET_RUPEE) {
                 GetItem_Draw(play, sRupeeTexturesNew[this->colorIdx]);
             } else {
-                Color_RGB8 silverRupeeColor = CVarGetRGB("gCosmetics.Consumable_SilverRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                Color_RGB8 silverRupeeColor = CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", (Color_RGB8){ 255, 255, 255 });
                 Gfx_SetupDL_25Opa(play->state.gfxCtx);
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                         G_MTX_MODELVIEW | G_MTX_LOAD);
@@ -522,27 +522,27 @@ void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play) {
             u8 shouldColor = 0;
             switch (this->colorIdx) {
                 case 0:
-                    rupeeColor = CVarGetRGB("gCosmetics.Consumable_GreenRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_GreenRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_GreenRupee.Changed", 0);
                     break;
                 case 1:
-                    rupeeColor = CVarGetRGB("gCosmetics.Consumable_BlueRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_BlueRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_BlueRupee.Changed", 0);
                     break;
                 case 2:
-                    rupeeColor = CVarGetRGB("gCosmetics.Consumable_RedRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_RedRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_RedRupee.Changed", 0);
                     break;
                 case 3:
-                    rupeeColor = CVarGetRGB("gCosmetics.Consumable_PurpleRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_PurpleRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_PurpleRupee.Changed", 0);
                     break;
                 case 4:
-                    rupeeColor = CVarGetRGB("gCosmetics.Consumable_GoldRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_GoldRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_GoldRupee.Changed", 0);
                     break;
                 case 5:
-                    rupeeColor = CVarGetRGB("gCosmetics.Consumable_SilverRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_SilverRupee.Changed", 0);
                     break;
             }
@@ -646,27 +646,27 @@ void EnGSwitch_DrawEffects(EnGSwitch* this, PlayState* play) {
             u8 shouldColor = 0;
             switch (effect->colorIdx) {
                 case 0:
-                    rupeeColor = CVarGetRGB("gCosmetics.Consumable_GreenRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_GreenRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_GreenRupee.Changed", 0);
                     break;
                 case 1:
-                    rupeeColor = CVarGetRGB("gCosmetics.Consumable_BlueRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_BlueRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_BlueRupee.Changed", 0);
                     break;
                 case 2:
-                    rupeeColor = CVarGetRGB("gCosmetics.Consumable_RedRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_RedRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_RedRupee.Changed", 0);
                     break;
                 case 3:
-                    rupeeColor = CVarGetRGB("gCosmetics.Consumable_PurpleRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_PurpleRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_PurpleRupee.Changed", 0);
                     break;
                 case 4:
-                    rupeeColor = CVarGetRGB("gCosmetics.Consumable_GoldRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_GoldRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_GoldRupee.Changed", 0);
                     break;
                 case 5:
-                    rupeeColor = CVarGetRGB("gCosmetics.Consumable_SilverRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_SilverRupee.Changed", 0);
                     break;
             }

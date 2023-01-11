@@ -10427,7 +10427,7 @@ void func_80848EF8(Player* this, PlayState* play) {
         If you fly around no stone of agony for you! */
         Color_RGB8 stoneOfAgonyColor = { 255, 255, 255 };
         if (CVarGetInteger("gCosmetics.Hud_StoneOfAgony.Changed", 0)) {
-            stoneOfAgonyColor = CVarGetRGB("gCosmetics.Hud_StoneOfAgony.Value", stoneOfAgonyColor);
+            stoneOfAgonyColor = CVarGetColor24("gCosmetics.Hud_StoneOfAgony.Value", stoneOfAgonyColor);
         }
         if (CVarGetInteger("gVisualAgony", 0) != 0 && !this->stateFlags1) {
             s16 Top_Margins = (CVarGetInteger("gHUDMargin_T", 0) * -1);

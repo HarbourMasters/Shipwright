@@ -200,8 +200,8 @@ void MagicDark_DiamondDraw(Actor* thisx, PlayState* play) {
     u16 gameplayFrames = play->gameplayFrames;
     Color_RGB8 Spell_env_ori = {0, 100, 255};
     Color_RGB8 Spell_col_ori = {170, 255, 255};
-    Color_RGB8 Spell_env = CVarGetRGB("gNL_Diamond_Env", Spell_env_ori);
-    Color_RGB8 Spell_col = CVarGetRGB("gNL_Diamond_Col", Spell_col_ori);
+    Color_RGB8 Spell_env = CVarGetColor24("gNL_Diamond_Env", Spell_env_ori);
+    Color_RGB8 Spell_col = CVarGetColor24("gNL_Diamond_Col", Spell_col_ori);
 
     OPEN_DISPS(play->state.gfxCtx);
 

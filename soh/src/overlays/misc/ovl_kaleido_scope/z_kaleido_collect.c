@@ -7,30 +7,30 @@ extern const char* digitTextures[];
 void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
     Color_RGB8 aButtonColor = { 80, 150, 255 };
     if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        aButtonColor = CVarGetRGB("gCosmetics.Hud_AButton.Value", aButtonColor);
+        aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
     } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
         aButtonColor = (Color_RGB8){ 80, 255, 150 };
     }
 
     Color_RGB8 cButtonsColor = {255, 255, 50};
     if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
-        cButtonsColor = CVarGetRGB("gCosmetics.Hud_CButtons.Value", cButtonsColor);
+        cButtonsColor = CVarGetColor24("gCosmetics.Hud_CButtons.Value", cButtonsColor);
     }
     Color_RGB8 cUpButtonColor = cButtonsColor;
     if (CVarGetInteger("gCosmetics.Hud_CUpButton.Changed", 0)) {
-        cUpButtonColor = CVarGetRGB("gCosmetics.Hud_CUpButton.Value", cUpButtonColor);
+        cUpButtonColor = CVarGetColor24("gCosmetics.Hud_CUpButton.Value", cUpButtonColor);
     }
     Color_RGB8 cDownButtonColor = cButtonsColor;
     if (CVarGetInteger("gCosmetics.Hud_CDownButton.Changed", 0)) {
-        cDownButtonColor = CVarGetRGB("gCosmetics.Hud_CDownButton.Value", cDownButtonColor);
+        cDownButtonColor = CVarGetColor24("gCosmetics.Hud_CDownButton.Value", cDownButtonColor);
     }
     Color_RGB8 cLeftButtonColor = cButtonsColor;
     if (CVarGetInteger("gCosmetics.Hud_CLeftButton.Changed", 0)) {
-        cLeftButtonColor = CVarGetRGB("gCosmetics.Hud_CLeftButton.Value", cLeftButtonColor);
+        cLeftButtonColor = CVarGetColor24("gCosmetics.Hud_CLeftButton.Value", cLeftButtonColor);
     }
     Color_RGB8 cRightButtonColor = cButtonsColor;
     if (CVarGetInteger("gCosmetics.Hud_CRightButton.Changed", 0)) {
-        cRightButtonColor = CVarGetRGB("gCosmetics.Hud_CRightButton.Value", cRightButtonColor);
+        cRightButtonColor = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", cRightButtonColor);
     }
 
     static s16 D_8082A070[][4] = {

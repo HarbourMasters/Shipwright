@@ -801,7 +801,7 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
     };
 
     if (CVarGetInteger("gCosmetics.Title_FileChoose.Changed", 0)) {
-        Color_RGB8 backgroundColor = CVarGetRGB("gCosmetics.Title_FileChoose.Value", (Color_RGB8){ 100, 150, 255 });
+        Color_RGB8 backgroundColor = CVarGetColor24("gCosmetics.Title_FileChoose.Value", (Color_RGB8){ 100, 150, 255 });
         cursorPrimColors[1][0] = MIN(backgroundColor.r + 100, 255);
         cursorPrimColors[1][1] = MIN(backgroundColor.g + 100, 255);
         cursorPrimColors[1][2] = MIN(backgroundColor.b + 100, 255);

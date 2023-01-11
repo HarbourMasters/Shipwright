@@ -197,11 +197,11 @@ void ArrowFire_Draw(Actor* thisx, PlayState* play2) {
 
     Color_RGB8 primaryColor = {255, 200, 0};
     if (CVarGetInteger("gCosmetics.Arrows_FirePrimary.Changed", 0)) {
-        primaryColor = CVarGetRGB("gCosmetics.Arrows_FirePrimary.Value", primaryColor);
+        primaryColor = CVarGetColor24("gCosmetics.Arrows_FirePrimary.Value", primaryColor);
     }
     Color_RGB8 secondaryColor = {255, 0, 0};
     if (CVarGetInteger("gCosmetics.Arrows_FireSecondary.Changed", 0)) {
-        secondaryColor = CVarGetRGB("gCosmetics.Arrows_FireSecondary.Value", secondaryColor);
+        secondaryColor = CVarGetColor24("gCosmetics.Arrows_FireSecondary.Value", secondaryColor);
     }
 
     stateFrames = play->state.frames;

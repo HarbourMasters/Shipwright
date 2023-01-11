@@ -806,7 +806,7 @@ Gfx* func_80A761B0(GraphicsContext* gfxCtx, u8 primR, u8 primG, u8 primB, u8 env
 
     gDPPipeSync(displayListHead++);
     if (CVarGetInteger("gCosmetics.NPC_IronKnuckles.Changed", 0)) {
-        Color_RGB8 color = CVarGetRGB("gCosmetics.NPC_IronKnuckles.Value", (Color_RGB8){primR, primG, primB});
+        Color_RGB8 color = CVarGetColor24("gCosmetics.NPC_IronKnuckles.Value", (Color_RGB8){primR, primG, primB});
         gDPSetPrimColor(displayListHead++, 0, 0, color.r, color.g, color.b, 255);
     } else {
         gDPSetPrimColor(displayListHead++, 0, 0, primR, primG, primB, 255);

@@ -121,19 +121,19 @@ void HealthMeter_Init(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
     Color_RGB8 mainColor = {HEARTS_PRIM_R, HEARTS_PRIM_G, HEARTS_PRIM_B};
     if (CVarGetInteger("gCosmetics.Consumable_Hearts.Changed", 0)) {
-        mainColor = CVarGetRGB("gCosmetics.Consumable_Hearts.Value", mainColor);
+        mainColor = CVarGetColor24("gCosmetics.Consumable_Hearts.Value", mainColor);
     }
     Color_RGB8 mainBorder = {HEARTS_ENV_R, HEARTS_ENV_G, HEARTS_ENV_B};
     if (CVarGetInteger("gCosmetics.Consumable_HeartBorder.Changed", 0)) {
-        mainBorder = CVarGetRGB("gCosmetics.Consumable_HeartBorder.Value", mainBorder);
+        mainBorder = CVarGetColor24("gCosmetics.Consumable_HeartBorder.Value", mainBorder);
     }
     Color_RGB8 ddColor = {HEARTS_DD_ENV_R, HEARTS_DD_ENV_G, HEARTS_DD_ENV_B};
     if (CVarGetInteger("gCosmetics.Consumable_DDHearts.Changed", 0)) {
-        ddColor = CVarGetRGB("gCosmetics.Consumable_DDHearts.Value", ddColor);
+        ddColor = CVarGetColor24("gCosmetics.Consumable_DDHearts.Value", ddColor);
     }
     Color_RGB8 ddBorder = {HEARTS_DD_PRIM_R, HEARTS_DD_PRIM_G, HEARTS_DD_PRIM_B};
     if (CVarGetInteger("gCosmetics.Consumable_DDHeartBorder.Changed", 0)) {
-        ddBorder = CVarGetRGB("gCosmetics.Consumable_DDHeartBorder.Value", ddBorder);
+        ddBorder = CVarGetColor24("gCosmetics.Consumable_DDHeartBorder.Value", ddBorder);
     }
 
     interfaceCtx->unk_228 = 0x140;
@@ -183,19 +183,19 @@ void HealthMeter_Update(PlayState* play) {
 
     Color_RGB8 mainColor = {HEARTS_PRIM_R, HEARTS_PRIM_G, HEARTS_PRIM_B};
     if (CVarGetInteger("gCosmetics.Consumable_Hearts.Changed", 0)) {
-        mainColor = CVarGetRGB("gCosmetics.Consumable_Hearts.Value", mainColor);
+        mainColor = CVarGetColor24("gCosmetics.Consumable_Hearts.Value", mainColor);
     }
     Color_RGB8 mainBorder = {HEARTS_ENV_R, HEARTS_ENV_G, HEARTS_ENV_B};
     if (CVarGetInteger("gCosmetics.Consumable_HeartBorder.Changed", 0)) {
-        mainBorder = CVarGetRGB("gCosmetics.Consumable_HeartBorder.Value", mainBorder);
+        mainBorder = CVarGetColor24("gCosmetics.Consumable_HeartBorder.Value", mainBorder);
     }
     Color_RGB8 ddColor = {HEARTS_DD_ENV_R, HEARTS_DD_ENV_G, HEARTS_DD_ENV_B};
     if (CVarGetInteger("gCosmetics.Consumable_DDHearts.Changed", 0)) {
-        ddColor = CVarGetRGB("gCosmetics.Consumable_DDHearts.Value", ddColor);
+        ddColor = CVarGetColor24("gCosmetics.Consumable_DDHearts.Value", ddColor);
     }
     Color_RGB8 ddBorder = {HEARTS_DD_PRIM_R, HEARTS_DD_PRIM_G, HEARTS_DD_PRIM_B};
     if (CVarGetInteger("gCosmetics.Consumable_DDHeartBorder.Changed", 0)) {
-        ddBorder = CVarGetRGB("gCosmetics.Consumable_DDHeartBorder.Value", ddBorder);
+        ddBorder = CVarGetColor24("gCosmetics.Consumable_DDHeartBorder.Value", ddBorder);
     }
 
     if (interfaceCtx->unk_200 != 0) {

@@ -198,11 +198,11 @@ void ArrowIce_Draw(Actor* thisx, PlayState* play) {
 
     Color_RGB8 primaryColor = {170, 255, 255};
     if (CVarGetInteger("gCosmetics.Arrows_IcePrimary.Changed", 0)) {
-        primaryColor = CVarGetRGB("gCosmetics.Arrows_IcePrimary.Value", primaryColor);
+        primaryColor = CVarGetColor24("gCosmetics.Arrows_IcePrimary.Value", primaryColor);
     }
     Color_RGB8 secondaryColor = {0, 0, 255};
     if (CVarGetInteger("gCosmetics.Arrows_IceSecondary.Changed", 0)) {
-        secondaryColor = CVarGetRGB("gCosmetics.Arrows_IceSecondary.Value", secondaryColor);
+        secondaryColor = CVarGetColor24("gCosmetics.Arrows_IceSecondary.Value", secondaryColor);
     }
 
     if ((arrow != NULL) && (arrow->actor.update != NULL) && (this->timer < 255)) {

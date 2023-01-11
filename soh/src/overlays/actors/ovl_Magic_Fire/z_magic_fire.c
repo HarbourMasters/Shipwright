@@ -218,8 +218,8 @@ void MagicFire_Draw(Actor* thisx, PlayState* play) {
     u8 alpha;
     Color_RGB8 Spell_env_ori = {255, 0, 0};
     Color_RGB8 Spell_col_ori = {255, 200, 0};
-    Color_RGB8 Spell_env = CVarGetRGB("gDF_Env", Spell_env_ori);
-    Color_RGB8 Spell_col = CVarGetRGB("gDF_Col", Spell_col_ori);
+    Color_RGB8 Spell_env = CVarGetColor24("gDF_Env", Spell_env_ori);
+    Color_RGB8 Spell_col = CVarGetColor24("gDF_Col", Spell_col_ori);
 
     if (this->action > 0) {
         OPEN_DISPS(play->state.gfxCtx);

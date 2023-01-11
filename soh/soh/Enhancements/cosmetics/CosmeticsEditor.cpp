@@ -162,7 +162,7 @@ typedef struct {
 
     // with cosmetics change
     if (CVarGetInteger("gCosmetics.World_Moon.Changed", 0)) {
-        Color_RGB8 moonColor = CVarGetRGB("gCosmetics.World_Moon.Value", (Color_RGB8){ 0, 0, 240 });
+        Color_RGB8 moonColor = CVarGetColor24("gCosmetics.World_Moon.Value", (Color_RGB8){ 0, 0, 240 });
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, moonColor.r, moonColor.g, moonColor.b, alpha);
         gDPSetEnvColor(POLY_OPA_DISP++, moonColor.r / 2, moonColor.g / 2, moonColor.b / 2, alpha);
     } else {

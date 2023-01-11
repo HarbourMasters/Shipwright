@@ -995,13 +995,13 @@ void KaleidoScope_DrawCursor(PlayState* play, u16 pageIndex) {
     temp = pauseCtx->unk_1E4;
 
     if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        sCursorColors[2] = CVarGetRGB("gCosmetics.Hud_AButton.Value", sCursorColors[2]);
+        sCursorColors[2] = CVarGetColor24("gCosmetics.Hud_AButton.Value", sCursorColors[2]);
     } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
         sCursorColors[2] = (Color_RGB8){ 0, 255, 50 };
     }
 
     if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
-        sCursorColors[1] = CVarGetRGB("gCosmetics.Hud_CButtons.Value", sCursorColors[1]);
+        sCursorColors[1] = CVarGetColor24("gCosmetics.Hud_CButtons.Value", sCursorColors[1]);
     }
 
     if ((((pauseCtx->unk_1E4 == 0) || (temp == 8)) && (pauseCtx->state == 6)) ||
@@ -1076,9 +1076,9 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
     };
     Color_RGB8 aButtonColor = { 100, 100, 255 };
     if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        aButtonColor = CVarGetRGB("gCosmetics.Hud_AButton.Value", aButtonColor);
-        D_8082ACF4[8] = CVarGetRGB("gCosmetics.Hud_AButton.Value", D_8082ACF4[8]);
-        D_8082ACF4[11] = CVarGetRGB("gCosmetics.Hud_AButton.Value", D_8082ACF4[11]);
+        aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
+        D_8082ACF4[8] = CVarGetColor24("gCosmetics.Hud_AButton.Value", D_8082ACF4[8]);
+        D_8082ACF4[11] = CVarGetColor24("gCosmetics.Hud_AButton.Value", D_8082ACF4[11]);
     } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
         aButtonColor = (Color_RGB8){ 100, 255, 100 };
         D_8082ACF4[8] = (Color_RGB8){ 0, 255, 50 };
@@ -1086,8 +1086,8 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
     }
 
     if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
-        D_8082ACF4[4] = CVarGetRGB("gCosmetics.Hud_CButtons.Value", D_8082ACF4[4]);
-        D_8082ACF4[7] = CVarGetRGB("gCosmetics.Hud_CButtons.Value", D_8082ACF4[7]);
+        D_8082ACF4[4] = CVarGetColor24("gCosmetics.Hud_CButtons.Value", D_8082ACF4[4]);
+        D_8082ACF4[7] = CVarGetColor24("gCosmetics.Hud_CButtons.Value", D_8082ACF4[7]);
     }
 
     static s16 D_8082AD3C = 20;
@@ -1530,30 +1530,30 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
 void KaleidoScope_DrawInfoPanel(PlayState* play) {
     Color_RGB8 aButtonColor = { 0, 100, 255 };
     if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        aButtonColor = CVarGetRGB("gCosmetics.Hud_AButton.Value", aButtonColor);
+        aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
     } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
         aButtonColor = (Color_RGB8){ 0, 255, 100 };
     }
 
     Color_RGB8 cButtonsColor = {255, 160, 0};
     if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
-        cButtonsColor = CVarGetRGB("gCosmetics.Hud_CButtons.Value", cButtonsColor);
+        cButtonsColor = CVarGetColor24("gCosmetics.Hud_CButtons.Value", cButtonsColor);
     }
     Color_RGB8 cUpButtonColor = cButtonsColor;
     if (CVarGetInteger("gCosmetics.Hud_CUpButton.Changed", 0)) {
-        cUpButtonColor = CVarGetRGB("gCosmetics.Hud_CUpButton.Value", cUpButtonColor);
+        cUpButtonColor = CVarGetColor24("gCosmetics.Hud_CUpButton.Value", cUpButtonColor);
     }
     Color_RGB8 cDownButtonColor = cButtonsColor;
     if (CVarGetInteger("gCosmetics.Hud_CDownButton.Changed", 0)) {
-        cDownButtonColor = CVarGetRGB("gCosmetics.Hud_CDownButton.Value", cDownButtonColor);
+        cDownButtonColor = CVarGetColor24("gCosmetics.Hud_CDownButton.Value", cDownButtonColor);
     }
     Color_RGB8 cLeftButtonColor = cButtonsColor;
     if (CVarGetInteger("gCosmetics.Hud_CLeftButton.Changed", 0)) {
-        cLeftButtonColor = CVarGetRGB("gCosmetics.Hud_CLeftButton.Value", cLeftButtonColor);
+        cLeftButtonColor = CVarGetColor24("gCosmetics.Hud_CLeftButton.Value", cLeftButtonColor);
     }
     Color_RGB8 cRightButtonColor = cButtonsColor;
     if (CVarGetInteger("gCosmetics.Hud_CRightButton.Changed", 0)) {
-        cRightButtonColor = CVarGetRGB("gCosmetics.Hud_CRightButton.Value", cRightButtonColor);
+        cRightButtonColor = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", cRightButtonColor);
     }
 
     static const void* sToEquipTextures[3] = {
