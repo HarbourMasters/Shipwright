@@ -10,11 +10,12 @@
 #include <Path.h>
 #include <Text.h>
 #include <Blob.h>
+#include <memory>
 
 extern Ship::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName);
 extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 extern "C" RomFile sNaviMsgFiles[];
-s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* scene);
+s32 OTRScene_ExecuteCommands(PlayState* play, std::shared_ptr<Ship::Scene> scene);
 
 std::shared_ptr<Ship::OtrFile> ResourceMgr_LoadFile(const char* path) {
     std::string Path = path;
@@ -34,7 +35,7 @@ bool Scene_CommandSpawnList(PlayState* play, Ship::SceneCommand* cmd)
 {
     Ship::SetStartPositionList* cmdStartPos = static_pointer_cast<Ship::SetStartPositionList>(cmd);
     ActorEntry* entries = cmdStartPos->GetPointer();
-+-
+
     play->linkActorEntry = &entries[play->setupEntranceList[play->curSpawn].spawn];;
     play->linkAgeOnLoad = ((void)0, gSaveContext.linkAge);
     s16 linkObjectId = gLinkObjectIds[((void)0, gSaveContext.linkAge)];
@@ -513,7 +514,7 @@ bool Scene_CommandEchoSettings(PlayState* play, Ship::SceneCommand* cmd)
 
 bool Scene_CommandAlternateHeaderList(PlayState* play, Ship::SceneCommand* cmd)
 {
-    Ship::SetAlternateHeaders* cmdHeaders = (Ship::SetAlternateHeaders*)cmd;
+    Ship::SetAlternateHeaders* cmdHeaders = static_pointer_cast<Ship::SetAlternateHeaders>(cmd);
 
     //s32 pad;
     //SceneCmd* altHeader;
@@ -524,15 +525,11 @@ bool Scene_CommandAlternateHeaderList(PlayState* play, Ship::SceneCommand* cmd)
 
     if (gSaveContext.sceneSetupIndex != 0)
     {
-        std::string desiredHeader = cmdHeaders->headers[gSaveContext.sceneSetupIndex - 1];
-        Ship::Scene* headerData = nullptr;
-        if (desiredHeader != "") {
-            headerData = (Ship::Scene*)ResourceMgr_LoadResource(desiredHeader.c_str()).get();
-        }
+        std::shared_ptr<Scene> desiredHeader = static_pointer_cast<Scene>(cmdHeaders->headers[gSaveContext.sceneSetupIndex - 1]);
 
-        if (headerData != nullptr)
+        if (desiredHeader != nullptr)
         {
-            OTRScene_ExecuteCommands(play, headerData);
+            OTRScene_ExecuteCommands(play, desiredHeader);
             return true;
         }
         else
@@ -542,18 +539,14 @@ bool Scene_CommandAlternateHeaderList(PlayState* play, Ship::SceneCommand* cmd)
 
             if (gSaveContext.sceneSetupIndex == 3)
             {
-                std::string desiredHeader = cmdHeaders->headers[gSaveContext.sceneSetupIndex - 2];
-                Ship::Scene* headerData = nullptr;
-                if (desiredHeader != "") {
-                    headerData = (Ship::Scene*)ResourceMgr_LoadResource(desiredHeader.c_str()).get();
-                }
+                std::shared_ptr<Scene> desiredHeader = static_pointer_cast<Scene>(cmdHeaders->headers[gSaveContext.sceneSetupIndex - 2]);
 
                 // "Using adult day data there!"
                 osSyncPrintf("\nそこで、大人の昼データを使用するでええっす！！");
 
-                if (headerData != nullptr)
+                if (desiredHeader != nullptr)
                 {
-                    OTRScene_ExecuteCommands(play, headerData);
+                    OTRScene_ExecuteCommands(play, desiredHeader);
                     return true;
                 }
             }
@@ -628,7 +621,7 @@ bool (*sceneCommands[])(PlayState*, Ship::SceneCommand*) =
     Scene_CommandMiscSettings,        // SCENE_CMD_ID_MISC_SETTINGS
 };
 
-s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* scene)
+s32 OTRScene_ExecuteCommands(PlayState* play, std::shared_ptr<Ship::Scene> scene)
 {
     Ship::SceneCommandID cmdCode;
 
@@ -705,9 +698,9 @@ extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomN
         //DmaMgr_SendRequest2(&roomCtx->dmaRequest, roomCtx->unk_34, play->roomList[roomNum].vromStart, size, 0,
                             //&roomCtx->loadQueue, NULL, __FILE__, __LINE__);
 
-        auto roomData = ResourceMgr_LoadResource(play->roomList[roomNum].fileName);
+        auto roomData = static_pointer_cast<Ship::Scene>(ResourceMgr_LoadResource(play->roomList[roomNum].fileName));
         roomCtx->status = 1;
-        roomCtx->roomToLoad = (Ship::Scene*)roomData.get();
+        roomCtx->roomToLoad = roomData;
 
         roomCtx->unk_30 ^= 1;
 
