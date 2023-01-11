@@ -165,42 +165,19 @@ void Ship::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
 
     // 🔊 SOUND EFFECTS 🔊
     audioSoundFont->soundEffects.reserve(audioSoundFont->soundFont.numSfx);
-    // for (uint32_t i = 0; i < sfxCnt; i++) {
-    //     SoundFontEntry* entry = new SoundFontEntry();
+    for (uint32_t i = 0; i < audioSoundFont->soundFont.numSfx; i++) {
+        SoundFontSound soundEffect;
 
-    //     bool hasSFEntry = reader->ReadInt8();
-
-    //     if (hasSFEntry) {
-    //         bool hasSampleRef = reader->ReadInt8();
-    //         entry->sampleFileName = reader->ReadString();
-    //         entry->tuning = reader->ReadFloat();
-    //     }
-
-    //     soundFont->soundEffects.push_back(entry);
-    // }
+        bool hasSFEntry = reader->ReadInt8();
+        if (hasSFEntry) {
+            bool hasSampleRef = reader->ReadInt8();
+            std::string sampleFileName = reader->ReadString();
+            soundEffect.tuning = reader->ReadFloat();
+            soundEffect.sample = static_cast<Sample*>(GetResourceDataByName(sampleFileName.c_str()));
+        }
+        
+        audioSoundFont->soundEffects.push_back(soundEffect);
+    }
+    audioSoundFont->soundFont.soundEffects = audioSoundFont->soundEffects.data();
 }
 } // namespace Ship
-
-/*
-
-
-                soundFontC->instruments[i] = inst;
-            }
-            else
-            {
-                soundFontC->instruments[i] = nullptr;
-            }
-        }
-
-        soundFontC->soundEffects = (SoundFontSound*)malloc(sizeof(SoundFontSound) * soundFont->soundEffects.size());
-
-        for (size_t i = 0; i < soundFont->soundEffects.size(); i++)
-        {
-            soundFontC->soundEffects[i].sample = ResourceMgr_LoadAudioSample(soundFont->soundEffects[i]->sampleFileName.c_str());
-            soundFontC->soundEffects[i].tuning = soundFont->soundEffects[i]->tuning;
-        }
-
-        soundFont->CachedGameAsset = soundFontC;
-        return soundFontC;
-
-*/
