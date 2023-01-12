@@ -81,7 +81,7 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
 }
 
 // used for generating a lot of seeds at once
-int Playthrough_Repeat(int count /*= 1*/) {
+int Playthrough_Repeat(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, int count /*= 1*/) {
     printf("\x1b[0;0HGENERATING %d SEEDS", count);
     uint32_t repeatedSeed = 0;
     for (int i = 0; i < count; i++) {
@@ -89,7 +89,7 @@ int Playthrough_Repeat(int count /*= 1*/) {
         Settings::seed = std::to_string(repeatedSeed);
         CitraPrint("testing seed: " + Settings::seed);
         ClearProgress();
-        // Playthrough_Init(std::hash<std::string>{}(Settings::seed));
+        Playthrough_Init(std::hash<std::string>{}(Settings::seed), cvarSettings, excludedLocations);
         printf("\x1b[15;15HSeeds Generated: %d\n", i + 1);
     }
 

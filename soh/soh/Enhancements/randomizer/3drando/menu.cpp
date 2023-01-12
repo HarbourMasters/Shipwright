@@ -520,10 +520,21 @@ void PrintOptionDescription() {
 std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations,
     std::string seedInput) {
 
+    srand(time(NULL));
     // if a blank seed was entered, make a random one
     if (seedInput.empty()) {
-        srand(time(NULL));
         Settings::seed = std::to_string(rand());
+    } else if (seedInput.rfind("seed_testing_count", 0) == 0 && seedInput.length() > 18) {
+        int count;
+        try {
+            count = std::stoi(seedInput.substr(18), nullptr);
+        } catch (std::invalid_argument &e) {
+            count = 1;
+        } catch (std::out_of_range &e) {
+            count = 1;
+        }
+        Playthrough::Playthrough_Repeat(cvarSettings, excludedLocations, count);
+        return "";
     } else {
         Settings::seed = seedInput;
     }
