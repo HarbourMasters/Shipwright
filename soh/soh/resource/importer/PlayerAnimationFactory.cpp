@@ -3,12 +3,11 @@
 #include "spdlog/spdlog.h"
 
 namespace Ship {
-std::shared_ptr<Resource> PlayerAnimationFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
+std::shared_ptr<Resource> PlayerAnimationFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader)
 {
 	auto resource = std::make_shared<PlayerAnimation>();
 	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-	uint32_t version = reader->ReadUInt32();
 	switch (version)
 	{
 	case 0:

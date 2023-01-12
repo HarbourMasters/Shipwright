@@ -4,12 +4,11 @@
 #include "libultraship/bridge.h"
 
 namespace Ship {
-std::shared_ptr<Resource> SkeletonLimbFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
+std::shared_ptr<Resource> SkeletonLimbFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader)
 {
 	auto resource = std::make_shared<SkeletonLimb>();
 	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-	uint32_t version = reader->ReadUInt32();
 	switch (version)
 	{
 	case 0:

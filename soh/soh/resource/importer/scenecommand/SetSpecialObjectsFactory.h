@@ -5,7 +5,7 @@
 namespace Ship {
 class SetSpecialObjectsFactory : public SceneCommandFactory {
   public:
-    std::shared_ptr<Resource> ReadResource(std::shared_ptr<BinaryReader> reader);
+    std::shared_ptr<Resource> ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader);
 };
 
 class SetSpecialObjectsFactoryV0 : public SceneCommandVersionFactory {

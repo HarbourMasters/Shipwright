@@ -1,15 +1,14 @@
 #include "soh/resource/importer/SkeletonFactory.h"
 #include "soh/resource/type/Skeleton.h"
-#include "spdlog/spdlog.h"
-#include "libultraship/bridge.h"
+#include <spdlog/spdlog.h>
+#include <libultraship/bridge.h>
 
 namespace Ship {
-std::shared_ptr<Resource> SkeletonFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
+std::shared_ptr<Resource> SkeletonFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader)
 {
 	auto resource = std::make_shared<Skeleton>();
 	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-	uint32_t version = reader->ReadUInt32();
 	switch (version)
 	{
 	case 0:
@@ -73,7 +72,8 @@ void SkeletonFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
         } else if (skeleton->type == Ship::SkeletonType::Curve) {
             skeleton->skeletonData.skelCurveLimbList.limbs[i] = (SkelCurveLimb*)limb;
         } else {
-            SPDLOG_ERROR("unknown skeleton type {}", skeleton->type);
+            // TODO: Fix type to be logged
+//            SPDLOG_ERROR("unknown skeleton type {}", skeleton->type);
         }
     }
 }

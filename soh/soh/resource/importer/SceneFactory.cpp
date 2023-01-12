@@ -29,7 +29,8 @@
 #include "soh/resource/importer/scenecommand/SetMeshFactory.h"
 
 namespace Ship {
-std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
+
+std::shared_ptr<Resource> SceneFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader)
 {
     if (SceneFactory::sceneCommandFactories.empty()) {
         SceneFactory::sceneCommandFactories[Ship::SceneCommandID::SetLightingSettings] = std::make_shared<SetLightingSettingsFactory>();
@@ -61,8 +62,8 @@ std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReade
 
 	auto resource = std::make_shared<Scene>();
 	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
+    resource->ResourceVersion = version;
 
-	uint32_t version = reader->ReadUInt32();
 	switch (version)
 	{
 	case 0:
@@ -81,7 +82,7 @@ std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<BinaryReade
 	return resource;
 }
 
-void Ship::SceneFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void SceneFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<Scene> scene = std::static_pointer_cast<Scene>(resource);
@@ -91,11 +92,11 @@ void Ship::SceneFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
 	scene->commands.reserve(commandCount);
 
 	for (uint32_t i = 0; i < commandCount; i++) {
-		scene->commands.push_back(ParseSceneCommand(reader));
+		scene->commands.push_back(ParseSceneCommand(resource->ResourceVersion, reader));
 	}
 }
 
-std::shared_ptr<SceneCommand> Ship::ParseSceneCommand(std::shared_ptr<BinaryReader> reader) {
+std::shared_ptr<SceneCommand> SceneFactoryV0::ParseSceneCommand(uint32_t version, std::shared_ptr<BinaryReader> reader) {
     SceneCommandID cmdID = (SceneCommandID)reader->ReadInt32();
 
     reader->Seek(-sizeof(int32_t), SeekOffsetType::Current);
@@ -104,7 +105,7 @@ std::shared_ptr<SceneCommand> Ship::ParseSceneCommand(std::shared_ptr<BinaryRead
     auto commandFactory = SceneFactory::sceneCommandFactories[cmdID];
 
     if (commandFactory != nullptr) {
-        commandFactory->ReadResource(reader);
+        commandFactory->ReadResource(version, reader);
     }
 
     if (result == nullptr) {

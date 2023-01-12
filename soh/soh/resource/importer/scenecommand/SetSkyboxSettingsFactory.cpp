@@ -3,12 +3,11 @@
 #include "spdlog/spdlog.h"
 
 namespace Ship {
-std::shared_ptr<Resource> SetSkyboxSettingsFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
+std::shared_ptr<Resource> SetSkyboxSettingsFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader)
 {
 	auto resource = std::make_shared<SetSkyboxSettings>();
 	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-	uint32_t version = reader->ReadUInt32();
 	switch (version)
 	{
 	case 0:
@@ -27,7 +26,7 @@ std::shared_ptr<Resource> SetSkyboxSettingsFactory::ReadResource(std::shared_ptr
 	return resource;
 }
 
-void Ship::SetSkyboxSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void SetSkyboxSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource)
 {
 	std::shared_ptr<SetSkyboxSettings> setSkyboxSettings = std::static_pointer_cast<SetSkyboxSettings>(resource);

@@ -3,15 +3,14 @@
 #include "spdlog/spdlog.h"
 
 namespace Ship {
-std::shared_ptr<Resource> AudioSampleFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
+std::shared_ptr<Resource> AudioSampleFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader)
 {
 	auto resource = std::make_shared<AudioSample>();
 	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-	uint32_t version = reader->ReadUInt32();
 	switch (version)
 	{
-	case 0:
+	case 2:
 		factory = std::make_shared<AudioSampleFactoryV0>();
 		break;
 	}

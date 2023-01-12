@@ -5,7 +5,7 @@
 namespace Ship {
 class SetMeshFactory : public SceneCommandFactory {
   public:
-    std::shared_ptr<Resource> ReadResource(std::shared_ptr<BinaryReader> reader);
+    std::shared_ptr<Resource> ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader);
 };
 
 class SetMeshFactoryV0 : public SceneCommandVersionFactory {

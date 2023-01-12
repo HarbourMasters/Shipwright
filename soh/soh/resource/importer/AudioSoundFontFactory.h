@@ -7,7 +7,7 @@ namespace Ship {
 class AudioSoundFontFactory : public ResourceFactory
 {
   public:
-    std::shared_ptr<Resource> ReadResource(std::shared_ptr<BinaryReader> reader);
+    std::shared_ptr<Resource> ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader);
 };
 
 class AudioSoundFontFactoryV0 : public ResourceVersionFactory
