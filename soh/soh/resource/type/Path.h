@@ -4,7 +4,7 @@
 #include <vector>
 #include "Resource.h"
 #include <libultraship/libultra/types.h>
-
+#include "z64math.h"
 
 namespace Ship {
 

@@ -1,10 +1,10 @@
 #include "OTRGlobals.h"
 #include <ResourceMgr.h>
-#include <Scene.h>
+#include "soh/resource/type/Scene.h"
 #include <Utils/StringHelper.h>
 #include "global.h"
 #include "vt.h"
-#include <Text.h>
+#include "soh/resource/type/Text.h"
 #include <message_data_static.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 #include "Enhancements/custom-message/CustomMessageTypes.h"
@@ -24,7 +24,7 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
     // Allocate room for an additional message
     MessageTableEntry* table = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * (file->messages.size() + 1));
 
-    for (int i = 0; i < file->messages.size(); i++) {
+    for (size_t i = 0; i < file->messages.size(); i++) {
         // Look for Owl Text
         if (file->messages[i].id == 0x2066) {
             // Create a new message based on the Owl Text
@@ -81,7 +81,7 @@ extern "C" void OTRMessage_Init()
 
     sStaffMessageEntryTablePtr = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * file2->messages.size());
 
-    for (int i = 0; i < file2->messages.size(); i++)
+    for (size_t i = 0; i < file2->messages.size(); i++)
     {
 	    sStaffMessageEntryTablePtr[i].textId = file2->messages[i].id;
 	    sStaffMessageEntryTablePtr[i].typePos = (file2->messages[i].textboxType << 4) | file2->messages[i].textboxYPos;

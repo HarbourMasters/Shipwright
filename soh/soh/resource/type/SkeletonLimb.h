@@ -2,6 +2,7 @@
 
 #include "Resource.h"
 #include "libultraship/libultra.h"
+#include "z64math.h"
 
 namespace Ship {
 enum class LimbType {

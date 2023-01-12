@@ -6,6 +6,7 @@
 #include "Resource.h"
 #include "SceneCommand.h"
 #include "libultraship/libultra.h"
+#include "z64math.h"
 
 namespace Ship {
 typedef struct {

@@ -44,7 +44,7 @@ void Ship::PathFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
             int16_t y = reader->ReadInt16();
             int16_t z = reader->ReadInt16();
 
-            points.push_back(Vec3s(x, y, z));
+            points.push_back(Vec3s{x, y, z});
         }
 
         PathData pathDataEntry;

@@ -44,10 +44,10 @@ void Ship::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
     collisionHeader->vertexCount = reader->ReadInt32();
     collisionHeader->vertices.reserve(collisionHeader->vertexCount);
     for (int32_t i = 0; i < collisionHeader->vertexCount; i++) {
-        float x = reader->ReadInt16();
-        float y = reader->ReadInt16();
-        float z = reader->ReadInt16();
-        collisionHeader->vertices.push_back(Vec3s(x, y, z));
+        int16_t x = reader->ReadInt16();
+        int16_t y = reader->ReadInt16();
+        int16_t z = reader->ReadInt16();
+        collisionHeader->vertices.push_back(Vec3s{x, y, z});
     }
     collisionHeader->collisionHeaderData.vtxList = collisionHeader->vertices.data();
 
@@ -62,10 +62,10 @@ void Ship::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
         polygon.flags_vIB = reader->ReadUInt16();
         polygon.vIC = reader->ReadUInt16();
 
-        int16_t a = reader->ReadUInt16();
-        int16_t b = reader->ReadUInt16();
-        int16_t c = reader->ReadUInt16();
-        polygon.normal = Vec3s(a, b, c);
+        int16_t a = reader->ReadInt16();
+        int16_t b = reader->ReadInt16();
+        int16_t c = reader->ReadInt16();
+        polygon.normal = Vec3s{a, b, c};
 
         polygon.dist = reader->ReadUInt16();
 
@@ -101,11 +101,11 @@ void Ship::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
 
     collisionHeader->camPosCount = reader->ReadInt32();
     collisionHeader->camPosData.reserve(collisionHeader->camPosCount);
-    for (uint32_t i = 0; i < collisionHeader->camPosCount; i++) {
+    for (int32_t i = 0; i < collisionHeader->camPosCount; i++) {
         int16_t x = reader->ReadInt16();
         int16_t y = reader->ReadInt16();
         int16_t z = reader->ReadInt16();
-        collisionHeader->camPosData.push_back(Vec3s(x, y, z));
+        collisionHeader->camPosData.push_back(Vec3s{x, y, z});
     }
 
     for (size_t i = 0; i < collisionHeader->camDataCount; i++) {
@@ -126,7 +126,7 @@ void Ship::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
 
     collisionHeader->waterBoxCount = reader->ReadInt32();
     collisionHeader->waterBoxes.reserve(collisionHeader->waterBoxCount);
-    for (uint32_t i = 0; i < collisionHeader->waterBoxCount; i++) {
+    for (int32_t i = 0; i < collisionHeader->waterBoxCount; i++) {
         WaterBox waterBox;
         waterBox.xMin = reader->ReadInt16();
         waterBox.ySurface = reader->ReadInt16();
