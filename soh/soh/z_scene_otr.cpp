@@ -1,37 +1,37 @@
 #include "OTRGlobals.h"
 #include <ResourceMgr.h>
-#include <Scene.h>
+#include "soh/resource/type/Scene.h"
 #include <Utils/StringHelper.h>
 #include "global.h"
 #include "vt.h"
-#include <CollisionHeader.h>
+#include "soh/resource/type/CollisionHeader.h"
 #include <DisplayList.h>
-#include <Cutscene.h>
-#include <Path.h>
-#include <Text.h>
+#include "soh/resource/type/Cutscene.h"
+#include "soh/resource/type/Path.h"
+#include "soh/resource/type/Text.h"
 #include <Blob.h>
 #include <memory>
-#include "scenecommand/SetCameraSettings.h"
-#include "scenecommand/SetCutscenes.h"
-#include "scenecommand/SetStartPositionList.h"
-#include "scenecommand/SetActorList.h"
-#include "scenecommand/SetCollisionHeader.h"
-#include "scenecommand/SetRoomList.h"
-#include "scenecommand/SetEntranceList.h"
-#include "scenecommand/SetSpecialObjects.h"
-#include "scenecommand/SetRoomBehavior.h"
-#include "scenecommand/SetMesh.h"
-#include "scenecommand/SetObjectList.h"
-#include "scenecommand/SetLightList.h"
-#include "scenecommand/SetPathways.h"
-#include "scenecommand/SetTransitionActorList.h"
-#include "scenecommand/SetSkyboxSettings.h"
-#include "scenecommand/SetSkyboxModifier.h"
-#include "scenecommand/SetTimeSettings.h"
-#include "scenecommand/SetWindSettings.h"
-#include "scenecommand/SetSoundSettings.h"
-#include "scenecommand/SetEchoSettings.h"
-#include "scenecommand/SetAlternateHeaders.h"
+#include "soh/resource/type/scenecommand/SetCameraSettings.h"
+#include "soh/resource/type/scenecommand/SetCutscenes.h"
+#include "soh/resource/type/scenecommand/SetStartPositionList.h"
+#include "soh/resource/type/scenecommand/SetActorList.h"
+#include "soh/resource/type/scenecommand/SetCollisionHeader.h"
+#include "soh/resource/type/scenecommand/SetRoomList.h"
+#include "soh/resource/type/scenecommand/SetEntranceList.h"
+#include "soh/resource/type/scenecommand/SetSpecialObjects.h"
+#include "soh/resource/type/scenecommand/SetRoomBehavior.h"
+#include "soh/resource/type/scenecommand/SetMesh.h"
+#include "soh/resource/type/scenecommand/SetObjectList.h"
+#include "soh/resource/type/scenecommand/SetLightList.h"
+#include "soh/resource/type/scenecommand/SetPathways.h"
+#include "soh/resource/type/scenecommand/SetTransitionActorList.h"
+#include "soh/resource/type/scenecommand/SetSkyboxSettings.h"
+#include "soh/resource/type/scenecommand/SetSkyboxModifier.h"
+#include "soh/resource/type/scenecommand/SetTimeSettings.h"
+#include "soh/resource/type/scenecommand/SetWindSettings.h"
+#include "soh/resource/type/scenecommand/SetSoundSettings.h"
+#include "soh/resource/type/scenecommand/SetEchoSettings.h"
+#include "soh/resource/type/scenecommand/SetAlternateHeaders.h"
 
 extern Ship::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName);
 extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
@@ -381,7 +381,7 @@ bool Scene_CommandEchoSettings(PlayState* play, Ship::SceneCommand* cmd)
 bool Scene_CommandAlternateHeaderList(PlayState* play, Ship::SceneCommand* cmd)
 {
     // Ship::SetAlternateHeaders* cmdHeaders = static_pointer_cast<Ship::SetAlternateHeaders>(cmd);
-    Ship::SetAlternateHeader* cmdHeaders = (Ship::SetAlternateHeader*)cmd;
+    Ship::SetAlternateHeaders* cmdHeaders = (Ship::SetAlternateHeaders*)cmd;
 
     //s32 pad;
     //SceneCmd* altHeader;
