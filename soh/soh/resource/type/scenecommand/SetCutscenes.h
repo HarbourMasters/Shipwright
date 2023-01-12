@@ -5,9 +5,9 @@
 #include <memory>
 #include <string>
 #include "Resource.h"
-#include "SceneCommand.h"
-#include "Cutscene.h"
-#include <libultraship/libultra/types.h>
+#include "soh/resource/type/scenecommand/SceneCommand.h"
+#include "soh/resource/type/Cutscene.h"
+// #include <libultraship/libultra.h>
 
 namespace Ship {
 class SetCutscenes : public SceneCommand {

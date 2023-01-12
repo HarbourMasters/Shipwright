@@ -5,7 +5,7 @@
 #include <memory>
 #include "Resource.h"
 #include "SceneCommand.h"
-#include <libultraship/libultra/types.h>
+#include "libultraship/libultra.h"
 
 namespace Ship {
 typedef struct {
@@ -18,6 +18,20 @@ typedef struct {
     /* 0x04 */ void* start;
     /* 0x08 */ void* end;
 } PolygonType0; // size = 0xC
+
+typedef struct {
+    /* 0x00 */ u16   unk_00;
+    /* 0x02 */ u8    id;
+    /* 0x04 */ void* source;
+    /* 0x08 */ u32   unk_0C;
+    /* 0x0C */ u32   tlut;
+    /* 0x10 */ u16   width;
+    /* 0x12 */ u16   height;
+    /* 0x14 */ u8    fmt;
+    /* 0x15 */ u8    siz;
+    /* 0x16 */ u16   mode0;
+    /* 0x18 */ u16   tlutCount;
+} BgImage; // size = 0x1C
 
 typedef struct {
     /* 0x00 */ PolygonBase base;
@@ -67,20 +81,6 @@ typedef struct {
     /* 0x00 */ Gfx* opa;
     /* 0x04 */ Gfx* xlu;
 } PolygonDlist; // size = 0x8
-
-typedef struct {
-    /* 0x00 */ u16   unk_00;
-    /* 0x02 */ u8    id;
-    /* 0x04 */ void* source;
-    /* 0x08 */ u32   unk_0C;
-    /* 0x0C */ u32   tlut;
-    /* 0x10 */ u16   width;
-    /* 0x12 */ u16   height;
-    /* 0x14 */ u8    fmt;
-    /* 0x15 */ u8    siz;
-    /* 0x16 */ u16   mode0;
-    /* 0x18 */ u16   tlutCount;
-} BgImage; // size = 0x1C
 
 class SetMesh : public SceneCommand {
   public:

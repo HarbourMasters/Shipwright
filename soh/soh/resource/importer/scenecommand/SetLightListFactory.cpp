@@ -1,18 +1,18 @@
-#include "resource/importer/SetLightListFactory.h"
-#include "resource/type/SetLightList.h"
+#include "soh/resource/importer/scenecommand/SetLightListFactory.h"
+#include "soh/resource/type/scenecommand/SetLightList.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {
 std::shared_ptr<Resource> SetLightListFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
 {
-	auto resource = std::make_shared<SetActorList>();
+	auto resource = std::make_shared<SetLightList>();
 	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
 	uint32_t version = reader->ReadUInt32();
 	switch (version)
 	{
 	case 0:
-		factory = std::make_shared<SetActorListFactoryV0>();
+		factory = std::make_shared<SetLightListFactoryV0>();
 		break;
 	}
 

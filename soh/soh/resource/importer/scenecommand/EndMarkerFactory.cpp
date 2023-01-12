@@ -1,5 +1,5 @@
-#include "soh/resource/importer/EndMarkerFactory.h"
-#include "soh/resource/type/EndMarker.h"
+#include "soh/resource/importer/scenecommand/EndMarkerFactory.h"
+#include "soh/resource/type/scenecommand/EndMarker.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {

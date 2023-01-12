@@ -1,4 +1,4 @@
-#include "SetWind.h"
+#include "SetMesh.h"
 
 namespace Ship {
 void* SetMesh::GetPointer() {

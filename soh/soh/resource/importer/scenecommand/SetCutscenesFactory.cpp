@@ -1,7 +1,6 @@
-#include "resource/importer/scenecommand/SetCutscenesFactory.h"
-
-#include "resource/type/SetCutscenes.h"
-#include "resourcebridge.h"
+#include "soh/resource/importer/scenecommand/SetCutscenesFactory.h"
+#include "soh/resource/type/scenecommand/SetCutscenes.h"
+#include <libultraship/bridge.h>
 #include "spdlog/spdlog.h"
 
 namespace Ship {
@@ -38,7 +37,7 @@ void Ship::SetCutscenesFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
 	ReadCommandId(setCutscenes, reader);
 	
 	setCutscenes->fileName = reader->ReadString();
-	setCutscenes->cutscene = LoadResource(setCutscenes->fileName.c_str());
+	setCutscenes->cutscene = std::static_pointer_cast<Cutscene>(LoadResource(setCutscenes->fileName.c_str()));
 }
 
 } // namespace Ship

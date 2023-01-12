@@ -1,5 +1,5 @@
-#include "resource/importer/SetSkyboxModifierFactory.h"
-#include "resource/type/SetSkyboxModifier.h"
+#include "soh/resource/importer/scenecommand/SetSkyboxModifierFactory.h"
+#include "soh/resource/type/scenecommand/SetSkyboxModifier.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {

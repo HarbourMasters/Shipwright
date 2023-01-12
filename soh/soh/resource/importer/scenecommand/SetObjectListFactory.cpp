@@ -1,5 +1,5 @@
-#include "resource/importer/SetObjectListFactory.h"
-#include "resource/type/SetObjectList.h"
+#include "soh/resource/importer/scenecommand/SetObjectListFactory.h"
+#include "soh/resource/type/scenecommand/SetObjectList.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {
@@ -37,7 +37,7 @@ void Ship::SetObjectListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
 	
     setObjectList->numObjects = reader->ReadUInt32();
     setObjectList->objects.reserve(setObjectList->numObjects);
-    for (uint32_t i = 0; i < setObjectList->numExits; i++) {
+    for (uint32_t i = 0; i < setObjectList->numObjects; i++) {
         setObjectList->objects.push_back(reader->ReadInt16());
     }
 }

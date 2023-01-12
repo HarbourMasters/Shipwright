@@ -1,7 +1,7 @@
-#include "resource/importer/SetPathwaysFactory.h"
-#include "resource/type/SetPathways.h"
+#include "soh/resource/importer/scenecommand/SetPathwaysFactory.h"
+#include "soh/resource/type/scenecommand/SetPathways.h"
 #include "spdlog/spdlog.h"
-#include "libultraship/src/core/bridge/resourcebridge.h"
+#include <libultraship/bridge.h>
 
 namespace Ship {
 std::shared_ptr<Resource> SetPathwaysFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
@@ -40,7 +40,7 @@ void Ship::SetPathwaysFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
     setPathways->paths.reserve(setPathways->numPaths);
     for (uint32_t i = 0; i < setPathways->numPaths; i++) {
         std::string pathFileName = reader->ReadString();
-        setPathways->paths.push_back(LoadResource(pathFileName.c_str()));
+        setPathways->paths.push_back(std::static_pointer_cast<Path>(LoadResource(pathFileName.c_str())));
     }
 }
 

@@ -1,5 +1,5 @@
-#include "resource/importer/SetWindSettingsFactory.h"
-#include "resource/type/SetWindSettings.h"
+#include "soh/resource/importer/scenecommand/SetWindSettingsFactory.h"
+#include "soh/resource/type/scenecommand/SetWindSettings.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {
@@ -12,7 +12,7 @@ std::shared_ptr<Resource> SetWindSettingsFactory::ReadResource(std::shared_ptr<B
 	switch (version)
 	{
 	case 0:
-		factory = std::make_shared<SetWindFactoryV0>();
+		factory = std::make_shared<SetWindSettingsFactoryV0>();
 		break;
 	}
 
@@ -38,7 +38,7 @@ void Ship::SetWindSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
 	setWind->settings.windWest = reader->ReadInt8();
     setWind->settings.windVertical = reader->ReadInt8();
     setWind->settings.windSouth = reader->ReadInt8();
-    setWind->settings.clothFlappingStrength = reader->ReadInt8();
+    setWind->settings.windSpeed = reader->ReadInt8();
 }
 
 } // namespace Ship

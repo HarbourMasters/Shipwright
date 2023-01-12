@@ -1,5 +1,5 @@
-#include "resource/importer/SetSkyboxSettingsFactory.h"
-#include "resource/type/SetSkyboxSettings.h"
+#include "soh/resource/importer/scenecommand/SetSkyboxSettingsFactory.h"
+#include "soh/resource/type/scenecommand/SetSkyboxSettings.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {
@@ -35,10 +35,10 @@ void Ship::SetSkyboxSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRea
 
 	ReadCommandId(setSkyboxSettings, reader);
 	
-    setSkyboxModifier->settings.unk = reader->ReadUByte();
-	setSkyboxModifier->settings.skyboxId = reader->ReadUByte();
-    setSkyboxModifier->settings.weather = reader->ReadUByte();
-    setSkyboxModifier->settings.indoors = reader->ReadUByte();
+    setSkyboxSettings->settings.unk = reader->ReadUByte();
+	setSkyboxSettings->settings.skyboxId = reader->ReadUByte();
+    setSkyboxSettings->settings.weather = reader->ReadUByte();
+    setSkyboxSettings->settings.indoors = reader->ReadUByte();
 }
 
 } // namespace Ship

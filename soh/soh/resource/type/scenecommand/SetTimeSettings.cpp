@@ -1,11 +1,11 @@
 #include "SetTimeSettings.h"
 
 namespace Ship {
-void* SetLightingSettings::GetPointer() {
+void* SetTimeSettings::GetPointer() {
     return &settings;
 }
 
-size_t SetLightingSettings::GetPointerSize() {
+size_t SetTimeSettings::GetPointerSize() {
 	return sizeof(TimeSettings);
 }
 } // namespace Ship

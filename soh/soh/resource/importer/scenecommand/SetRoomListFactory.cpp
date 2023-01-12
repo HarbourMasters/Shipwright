@@ -1,5 +1,5 @@
-#include "resource/importer/SetRoomListFactory.h"
-#include "resource/type/SetRoomList.h"
+#include "soh/resource/importer/scenecommand/SetRoomListFactory.h"
+#include "soh/resource/type/scenecommand/SetRoomList.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {
@@ -37,14 +37,14 @@ void Ship::SetRoomListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
 	
     setRoomList->numRooms = reader->ReadUInt32();
     setRoomList->rooms.reserve(setRoomList->numRooms);
-    for (uint32_t i = 0; i < setRoomList->numExits; i++) {
+    for (uint32_t i = 0; i < setRoomList->numRooms; i++) {
 		RomFile room;
 
 		setRoomList->fileNames.push_back(reader->ReadString());
 
-		room.fileName = setRoomList->fileNames.back().c_str();
-		room.vromStart = reader->ReadUint32();
-		room.vromEnd = reader->ReadUint32();
+		room.fileName = (char*)setRoomList->fileNames.back().c_str();
+		room.vromStart = reader->ReadUInt32();
+		room.vromEnd = reader->ReadUInt32();
 		
         setRoomList->rooms.push_back(room);
     }

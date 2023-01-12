@@ -1,5 +1,5 @@
-#include "resource/importer/SetExitListFactory.h"
-#include "resource/type/SetExitList.h"
+#include "soh/resource/importer/scenecommand/SetExitListFactory.h"
+#include "soh/resource/type/scenecommand/SetExitList.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {

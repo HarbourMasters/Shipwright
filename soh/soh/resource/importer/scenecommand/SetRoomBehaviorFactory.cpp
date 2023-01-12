@@ -1,5 +1,5 @@
-#include "resource/importer/SetRoomBehaviorFactory.h"
-#include "resource/type/SetRoomBehavior.h"
+#include "soh/resource/importer/scenecommand/SetRoomBehaviorFactory.h"
+#include "soh/resource/type/scenecommand/SetRoomBehavior.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {

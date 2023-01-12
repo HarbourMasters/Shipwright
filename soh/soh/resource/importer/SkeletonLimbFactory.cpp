@@ -176,7 +176,7 @@ void Ship::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
             skeletonLimb->skinAnimLimbData.totalVtxCount = skeletonLimb->skinVtxCnt;
             skeletonLimb->skinAnimLimbData.limbModifCount = skeletonLimb->skinLimbModifCount;
             skeletonLimb->skinAnimLimbData.limbModifications = skeletonLimb->skinLimbModifArray.data();
-            skeletonLimb->skinAnimLimbData.dlist = GetResourceDataByName(skeletonLimb->skinDList2.c_str());
+            skeletonLimb->skinAnimLimbData.dlist = (Gfx*)GetResourceDataByName(skeletonLimb->skinDList2.c_str());
 
             for (size_t i = 0; i < skeletonLimb->skinLimbModifArray.size(); i++)
             {

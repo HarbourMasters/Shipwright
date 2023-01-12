@@ -2,10 +2,10 @@
 
 namespace Ship {
 void* SetSkyboxModifier::GetPointer() {
-    return &settings;
+    return &modifier;
 }
 
 size_t SetSkyboxModifier::GetPointerSize() {
-	return sizeof(SkyboxSettings);
+	return sizeof(SkyboxModifier);
 }
 } // namespace Ship

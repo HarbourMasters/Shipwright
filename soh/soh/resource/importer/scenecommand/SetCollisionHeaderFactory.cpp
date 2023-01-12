@@ -1,6 +1,6 @@
-#include "resource/importer/SetCollisionHeaderFactory.h"
-#include "resource/type/SetCollisionHeader.h"
-#include "resourcebridge.h"
+#include "soh/resource/importer/scenecommand/SetCollisionHeaderFactory.h"
+#include "soh/resource/type/scenecommand/SetCollisionHeader.h"
+#include "libultraship/bridge.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {
@@ -37,7 +37,7 @@ void Ship::SetCollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRe
 	ReadCommandId(setCollisionHeader, reader);
 	
 	setCollisionHeader->fileName = reader->ReadString();
-	setCollisionHeader->collisionHeader = LoadResource(setCollisionHeader->fileName.c_str());
+	setCollisionHeader->collisionHeader = std::static_pointer_cast<CollisionHeader>(LoadResource(setCollisionHeader->fileName.c_str()));
 }
 
 } // namespace Ship

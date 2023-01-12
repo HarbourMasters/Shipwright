@@ -1,5 +1,5 @@
-#include "resource/importer/SetStartPositionListFactory.h"
-#include "resource/type/SetStartPositionList.h"
+#include "soh/resource/importer/scenecommand/SetStartPositionListFactory.h"
+#include "soh/resource/type/scenecommand/SetStartPositionList.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {
@@ -37,7 +37,7 @@ void Ship::SetStartPositionListFactoryV0::ParseFileBinary(std::shared_ptr<Binary
 	
     setStartPositionList->numStartPositions = reader->ReadUInt32();
     setStartPositionList->startPositions.reserve(setStartPositionList->numStartPositions);
-    for (uint32_t i = 0; i < setStartPositionList->numExits; i++) {
+    for (uint32_t i = 0; i < setStartPositionList->numStartPositions; i++) {
 		ActorEntry entry;
 
 		entry.id = reader->ReadInt16();
@@ -49,7 +49,7 @@ void Ship::SetStartPositionListFactoryV0::ParseFileBinary(std::shared_ptr<Binary
 		entry.rot.z = reader->ReadInt16();
 		entry.params = reader->ReadInt16();
 
-        setStartPositionList->objects.push_back(entry);
+        setStartPositionList->startPositions.push_back(entry);
     }
 }
 

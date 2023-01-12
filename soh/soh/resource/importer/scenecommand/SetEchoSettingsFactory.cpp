@@ -1,5 +1,5 @@
-#include "resource/importer/SetEchoSettingsFactory.h"
-#include "resource/type/SetEchoSettings.h"
+#include "soh/resource/importer/scenecommand/SetEchoSettingsFactory.h"
+#include "soh/resource/type/scenecommand/SetEchoSettings.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {
@@ -35,7 +35,7 @@ void Ship::SetEchoSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
 
 	ReadCommandId(setEchoSettings, reader);
 	
-    setEchoSettings->settings.echo = read->ReadInt8();
+    setEchoSettings->settings.echo = reader->ReadInt8();
 }
 
 } // namespace Ship

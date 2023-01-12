@@ -1,5 +1,5 @@
-#include "resource/importer/SetTimeSettingsFactory.h"
-#include "resource/type/SetTimeSettings.h"
+#include "soh/resource/importer/scenecommand/SetTimeSettingsFactory.h"
+#include "soh/resource/type/scenecommand/SetTimeSettings.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {

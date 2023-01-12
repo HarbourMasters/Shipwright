@@ -1,5 +1,5 @@
-#include "resource/importer/SetSpecialObjectsFactory.h"
-#include "resource/type/SetSpecialObjects.h"
+#include "soh/resource/importer/scenecommand/SetSpecialObjectsFactory.h"
+#include "soh/resource/type/scenecommand/SetSpecialObjects.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {

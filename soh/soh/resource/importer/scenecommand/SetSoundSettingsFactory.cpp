@@ -1,5 +1,5 @@
-#include "resource/importer/SetSoundSettingsFactory.h"
-#include "resource/type/SetSoundSettings.h"
+#include "soh/resource/importer/scenecommand/SetSoundSettingsFactory.h"
+#include "soh/resource/type/scenecommand/SetSoundSettings.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {

@@ -1,4 +1,4 @@
-#include "SetWind.h"
+#include "SetCsCamera.h"
 
 namespace Ship {
 void* SetCsCamera::GetPointer() {

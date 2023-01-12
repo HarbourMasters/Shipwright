@@ -1,5 +1,5 @@
-#include "resource/importer/SetTransitionActorListFactory.h"
-#include "resource/type/SetTransitionActorList.h"
+#include "soh/resource/importer/scenecommand/SetTransitionActorListFactory.h"
+#include "soh/resource/type/scenecommand/SetTransitionActorList.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {
@@ -33,11 +33,11 @@ void Ship::SetTransitionActorListFactoryV0::ParseFileBinary(std::shared_ptr<Bina
 	std::shared_ptr<SetTransitionActorList> setTransitionActorList = std::static_pointer_cast<SetTransitionActorList>(resource);
 	ResourceVersionFactory::ParseFileBinary(reader, setTransitionActorList);
 
-	ReadCommandId(SetTransitionActorList, reader);
+	ReadCommandId(setTransitionActorList, reader);
 	
     setTransitionActorList->numTransitionActors = reader->ReadUInt32();
     setTransitionActorList->transitionActorList.reserve(setTransitionActorList->numTransitionActors);
-    for (uint32_t i = 0; i < setTransitionActorList->numExits; i++) {
+    for (uint32_t i = 0; i < setTransitionActorList->numTransitionActors; i++) {
 		TransitionActorEntry entry;
 
         entry.sides[0].room = reader->ReadInt8();

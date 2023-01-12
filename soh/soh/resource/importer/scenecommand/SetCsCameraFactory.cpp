@@ -1,5 +1,5 @@
-#include "resource/importer/SetCsCameraFactory.h"
-#include "resource/type/SetCsCamera.h"
+#include "soh/resource/importer/scenecommand/SetCsCameraFactory.h"
+#include "soh/resource/type/scenecommand/SetCsCamera.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {

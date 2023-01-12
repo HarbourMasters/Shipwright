@@ -1,18 +1,18 @@
-#include "resource/importer/SetEntranceListFactory.h"
-#include "resource/type/SetEntranceList.h"
+#include "soh/resource/importer/scenecommand/SetEntranceListFactory.h"
+#include "soh/resource/type/scenecommand/SetEntranceList.h"
 #include "spdlog/spdlog.h"
 
 namespace Ship {
 std::shared_ptr<Resource> SetEntranceListFactory::ReadResource(std::shared_ptr<BinaryReader> reader)
 {
-	auto resource = std::make_shared<SetEntranceListList>();
+	auto resource = std::make_shared<SetEntranceList>();
 	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
 	uint32_t version = reader->ReadUInt32();
 	switch (version)
 	{
 	case 0:
-		factory = std::make_shared<SetEntranceListListFactoryV0>();
+		factory = std::make_shared<SetEntranceListFactoryV0>();
 		break;
 	}
 
@@ -30,20 +30,20 @@ std::shared_ptr<Resource> SetEntranceListFactory::ReadResource(std::shared_ptr<B
 void Ship::SetEntranceListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource)
 {
-	std::shared_ptr<SetEntranceListList> setEntranceList = std::static_pointer_cast<SetEntranceList>(resource);
+	std::shared_ptr<SetEntranceList> setEntranceList = std::static_pointer_cast<SetEntranceList>(resource);
 	ResourceVersionFactory::ParseFileBinary(reader, setEntranceList);
 
 	ReadCommandId(setEntranceList, reader);
 	
     setEntranceList->numEntrances = reader->ReadUInt32();
-    setEntranceList->rooms.reserve(setEntranceList->numEntrances);
-    for (uint32_t i = 0; i < setEntranceList->numExits; i++) {
+    setEntranceList->entrances.reserve(setEntranceList->numEntrances);
+    for (uint32_t i = 0; i < setEntranceList->numEntrances; i++) {
 		EntranceEntry entranceEntry;
 
-		entranceEntry->spawn = reader->ReadUByte();
-		entranceEntry->room = reader->ReadUByte();
+		entranceEntry.spawn = reader->ReadUByte();
+		entranceEntry.room = reader->ReadUByte();
 		
-        setEntranceList->exits.push_back(room);
+        setEntranceList->entrances.push_back(entranceEntry);
     }
 }
 

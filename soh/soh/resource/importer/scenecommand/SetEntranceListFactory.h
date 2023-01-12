@@ -1,6 +1,6 @@
 #pragma once
 
-#include "resource/importer/scenecommand/SceneCommandFactory.h"
+#include "soh/resource/importer/scenecommand/SceneCommandFactory.h"
 
 namespace Ship {
 class SetEntranceListFactory : public SceneCommandFactory {
