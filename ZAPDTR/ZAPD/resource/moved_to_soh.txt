@@ -1,2 +1,3 @@
-we used to have resources in here, they have been moved to:
-soh/soh/resource
+resources duplicated in soh/soh/resource
+
+OTRTODO: DRY up this copypasta sauce
