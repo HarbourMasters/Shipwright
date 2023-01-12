@@ -7,8 +7,6 @@
 
 #include <ResourceMgr.h>
 #include <DisplayList.h>
-#include <PlayerAnimation.h>
-#include <Skeleton.h>
 #include <Window.h>
 #include <GameVersions.h>
 
@@ -16,15 +14,12 @@
 #include "z64bgcheck.h"
 #include "Enhancements/gameconsole.h"
 #include <libultraship/libultra/gbi.h>
-#include <Animation.h>
 #ifdef _WIN32
 #include <Windows.h>
 #else
 #include <time.h>
 #endif
-#include <CollisionHeader.h>
 #include <Array.h>
-#include <Cutscene.h>
 #include <stb/stb_image.h>
 #define DRMP3_IMPLEMENTATION
 #include <dr_libs/mp3.h>
@@ -78,6 +73,32 @@ CrowdControl* CrowdControl::Instance;
 
 #include "libultraship/libultraship.h"
 
+// Resource Types/Factories
+#include "soh/resource/type/Animation.h"
+#include "soh/resource/type/AudioSample.h"
+#include "soh/resource/type/AudioSequence.h"
+#include "soh/resource/type/AudioSoundFont.h"
+#include "soh/resource/type/CollisionHeader.h"
+#include "soh/resource/type/Cutscene.h"
+#include "soh/resource/type/Path.h"
+#include "soh/resource/type/PlayerAnimation.h"
+#include "soh/resource/type/Scene.h"
+#include "soh/resource/type/Skeleton.h"
+#include "soh/resource/type/SkeletonLimb.h"
+#include "soh/resource/type/Text.h"
+#include "soh/resource/importer/AnimationFactory.h"
+#include "soh/resource/importer/AudioSampleFactory.h"
+#include "soh/resource/importer/AudioSequenceFactory.h"
+#include "soh/resource/importer/AudioSoundFontFactory.h"
+#include "soh/resource/importer/CollisionHeaderFactory.h"
+#include "soh/resource/importer/CutsceneFactory.h"
+#include "soh/resource/importer/PathFactory.h"
+#include "soh/resource/importer/PlayerAnimationFactory.h"
+#include "soh/resource/importer/SceneFactory.h"
+#include "soh/resource/importer/SkeletonFactory.h"
+#include "soh/resource/importer/SkeletonLimbFactory.h"
+#include "soh/resource/importer/TextFactory.h"
+
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
@@ -121,6 +142,8 @@ OTRGlobals::OTRGlobals() {
         OOT_PAL_GC_DBG2
     };
     context = Ship::Window::CreateInstance("Ship of Harkinian", OTRFiles);
+    // TODO ALL OF THE THINGS
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory();
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
 

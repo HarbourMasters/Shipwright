@@ -1,0 +1,2 @@
+we used to have resources in here, they have been moved to:
+soh/soh/resource
