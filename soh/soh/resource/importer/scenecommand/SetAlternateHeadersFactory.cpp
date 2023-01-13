@@ -41,6 +41,8 @@ void Ship::SetAlternateHeadersFactoryV0::ParseFileBinary(std::shared_ptr<BinaryR
 		auto headerName = reader->ReadString();
 		if (!headerName.empty()) {
 			setAlternateHeaders->headers.push_back(std::static_pointer_cast<Ship::Scene>(LoadResource(headerName.c_str(), true)));
+		} else {
+			setAlternateHeaders->headers.push_back(nullptr);
 		}
     }
 }
