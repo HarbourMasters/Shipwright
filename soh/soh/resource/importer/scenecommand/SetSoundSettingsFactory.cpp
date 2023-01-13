@@ -34,9 +34,9 @@ void Ship::SetSoundSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRead
 
 	ReadCommandId(setSoundSettings, reader);
 	
-	setSoundSettings->settings.seqId = reader->ReadUByte();
-    setSoundSettings->settings.natureAmbienceId = reader->ReadUByte();
-    setSoundSettings->settings.reverb = reader->ReadUByte();
+    setSoundSettings->settings.reverb = reader->ReadInt8();
+    setSoundSettings->settings.natureAmbienceId = reader->ReadInt8();
+    setSoundSettings->settings.seqId = reader->ReadInt8();
 }
 
 } // namespace Ship
