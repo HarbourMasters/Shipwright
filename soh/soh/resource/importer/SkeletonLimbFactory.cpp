@@ -113,14 +113,14 @@ void Ship::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
         skeletonLimb->limbData.lodLimb.sibling = skeletonLimb->siblingIndex;
 
         if (skeletonLimb->dListPtr != "") {
-            auto dList = GetResourceDataByName(skeletonLimb->dListPtr.c_str());
+            auto dList = GetResourceDataByName(skeletonLimb->dListPtr.c_str(), true);
             skeletonLimb->limbData.lodLimb.dLists[0] = (Gfx*)dList;
         } else {
             skeletonLimb->limbData.lodLimb.dLists[0] = nullptr;
         }
 
         if (skeletonLimb->dList2Ptr != "") {
-            auto dList = GetResourceDataByName(skeletonLimb->dList2Ptr.c_str());
+            auto dList = GetResourceDataByName(skeletonLimb->dList2Ptr.c_str(), true);
             skeletonLimb->limbData.lodLimb.dLists[1] = (Gfx*)dList;
         } else {
             skeletonLimb->limbData.lodLimb.dLists[1] = nullptr;
@@ -134,7 +134,7 @@ void Ship::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
         skeletonLimb->limbData.standardLimb.dList = nullptr;
 
         if (!skeletonLimb->dListPtr.empty()) {
-            const auto dList = GetResourceDataByName(skeletonLimb->dListPtr.c_str());
+            const auto dList = GetResourceDataByName(skeletonLimb->dListPtr.c_str(), true);
             skeletonLimb->limbData.standardLimb.dList = (Gfx*)dList;
         }
     } else if (skeletonLimb->limbType == Ship::LimbType::Curve) {
@@ -144,12 +144,12 @@ void Ship::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
         skeletonLimb->limbData.skelCurveLimb.dList[1] = nullptr;
 
         if (!skeletonLimb->dListPtr.empty()) {
-            const auto dList = GetResourceDataByName(skeletonLimb->dListPtr.c_str());
+            const auto dList = GetResourceDataByName(skeletonLimb->dListPtr.c_str(), true);
             skeletonLimb->limbData.skelCurveLimb.dList[0] = (Gfx*)dList;
         }
 
         if (!skeletonLimb->dList2Ptr.empty()) {
-            const auto dList = GetResourceDataByName(skeletonLimb->dList2Ptr.c_str());
+            const auto dList = GetResourceDataByName(skeletonLimb->dList2Ptr.c_str(), true);
             skeletonLimb->limbData.skelCurveLimb.dList[1] = (Gfx*)dList;
         }
     } else if (skeletonLimb->limbType == Ship::LimbType::Skin) {
@@ -170,12 +170,12 @@ void Ship::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
         }
 
         if (skeletonLimb->skinSegmentType == Ship::ZLimbSkinType::SkinType_DList) {
-            skeletonLimb->limbData.skinLimb.segment = GetResourceDataByName(skeletonLimb->skinDList.c_str());
+            skeletonLimb->limbData.skinLimb.segment = GetResourceDataByName(skeletonLimb->skinDList.c_str(), true);
         } else if (skeletonLimb->skinSegmentType == Ship::ZLimbSkinType::SkinType_4) {
             skeletonLimb->skinAnimLimbData.totalVtxCount = skeletonLimb->skinVtxCnt;
             skeletonLimb->skinAnimLimbData.limbModifCount = skeletonLimb->skinLimbModifCount;
             skeletonLimb->skinAnimLimbData.limbModifications = skeletonLimb->skinLimbModifArray.data();
-            skeletonLimb->skinAnimLimbData.dlist = (Gfx*)GetResourceDataByName(skeletonLimb->skinDList2.c_str());
+            skeletonLimb->skinAnimLimbData.dlist = (Gfx*)GetResourceDataByName(skeletonLimb->skinDList2.c_str(), true);
 
             for (size_t i = 0; i < skeletonLimb->skinLimbModifArray.size(); i++)
             {

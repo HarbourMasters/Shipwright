@@ -2,10 +2,10 @@
 
 namespace Ship {
 void* AudioSoundFont::GetPointer() {
-    // return messages.data();
+    return &soundFont;
 }
 
 size_t AudioSoundFont::GetPointerSize() {
-	// return messages.size() * sizeof(MessageEntry);
+    return sizeof(SoundFont);
 }
 } // namespace Ship

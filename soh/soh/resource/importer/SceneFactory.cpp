@@ -102,10 +102,10 @@ std::shared_ptr<SceneCommand> SceneFactoryV0::ParseSceneCommand(uint32_t version
     reader->Seek(-sizeof(int32_t), SeekOffsetType::Current);
 
     std::shared_ptr<SceneCommand> result = nullptr;
-    auto commandFactory = SceneFactory::sceneCommandFactories[cmdID];
+    std::shared_ptr<SceneCommandFactory> commandFactory = SceneFactory::sceneCommandFactories[cmdID];
 
     if (commandFactory != nullptr) {
-        commandFactory->ReadResource(version, reader);
+        result = std::static_pointer_cast<SceneCommand>(commandFactory->ReadResource(version, reader));
     }
 
     if (result == nullptr) {

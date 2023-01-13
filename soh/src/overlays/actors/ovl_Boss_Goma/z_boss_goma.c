@@ -323,13 +323,13 @@ void BossGoma_ClearPixels32x32Rgba16(s16* rgba16image, u8* clearPixelTable, s16 
  * Clear pixels from Gohma's textures
  */
 void BossGoma_ClearPixels(u8* clearPixelTable, s16 i) {
-    BossGoma_ClearPixels16x16Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaBodyTex)), clearPixelTable, i);
-    BossGoma_ClearPixels16x16Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaShellUndersideTex)), clearPixelTable, i);
-    BossGoma_ClearPixels16x16Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaDarkShellTex)), clearPixelTable, i);
-    BossGoma_ClearPixels16x16Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaEyeTex)), clearPixelTable, i);
+    BossGoma_ClearPixels16x16Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaBodyTex), false), clearPixelTable, i);
+    BossGoma_ClearPixels16x16Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaShellUndersideTex), false), clearPixelTable, i);
+    BossGoma_ClearPixels16x16Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaDarkShellTex), false), clearPixelTable, i);
+    BossGoma_ClearPixels16x16Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaEyeTex), false), clearPixelTable, i);
 
-    BossGoma_ClearPixels32x32Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaShellTex)), clearPixelTable, i);
-    BossGoma_ClearPixels32x32Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaIrisTex)), clearPixelTable, i);
+    BossGoma_ClearPixels32x32Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaShellTex), false), clearPixelTable, i);
+    BossGoma_ClearPixels32x32Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaIrisTex), false), clearPixelTable, i);
 }
 
 static InitChainEntry sInitChain[] = {

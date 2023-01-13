@@ -64,17 +64,18 @@ void SkeletonFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
 
     for (size_t i = 0; i < skeleton->limbTable.size(); i++) {
         std::string limbStr = skeleton->limbTable[i];
-        auto limb = GetResourceDataByName(limbStr.c_str());
-        if (skeleton->type == Ship::SkeletonType::Normal) {
-            skeleton->skeletonData.skeletonHeader.segment[i] = limb;
-        } else if (skeleton->type == Ship::SkeletonType::Flex) {
-            skeleton->skeletonData.flexSkeletonHeader.sh.segment[i] = limb;
-        } else if (skeleton->type == Ship::SkeletonType::Curve) {
-            skeleton->skeletonData.skelCurveLimbList.limbs[i] = (SkelCurveLimb*)limb;
-        } else {
-            // TODO: Fix type to be logged
-//            SPDLOG_ERROR("unknown skeleton type {}", skeleton->type);
-        }
+        auto limb = GetResourceDataByName(limbStr.c_str(), true);
+        skeleton->skeletonHeaderSegments.push_back(limb);
+    }
+
+    if (skeleton->type == Ship::SkeletonType::Normal) {
+        skeleton->skeletonData.skeletonHeader.segment = (void**)skeleton->skeletonHeaderSegments.data();
+    } else if (skeleton->type == Ship::SkeletonType::Flex) {
+        skeleton->skeletonData.flexSkeletonHeader.sh.segment = (void**)skeleton->skeletonHeaderSegments.data();
+    } else if (skeleton->type == Ship::SkeletonType::Curve) {
+        skeleton->skeletonData.skelCurveLimbList.limbs = (SkelCurveLimb**)skeleton->skeletonHeaderSegments.data();
+    } else {
+        SPDLOG_ERROR("unknown skeleton type {}", (uint32_t)skeleton->type);
     }
 }
 } // namespace Ship

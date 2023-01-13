@@ -414,7 +414,7 @@ void Map_InitData(PlayState* play, s16 room) {
 
             if (sEntranceIconMapIndex < 24) {
                 const char* textureName = minimapTableOW[sEntranceIconMapIndex];
-                memcpy(play->interfaceCtx.mapSegment, GetResourceDataByName(textureName), GetResourceTexSizeByName(textureName));
+                memcpy(play->interfaceCtx.mapSegment, GetResourceDataByName(textureName, false), GetResourceTexSizeByName(textureName, false));
             }
 
             interfaceCtx->unk_258 = mapIndex;
@@ -448,7 +448,7 @@ void Map_InitData(PlayState* play, s16 room) {
                                 //0xFF0, __FILE__, __LINE__);
 
             const char* textureName = minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room];
-            memcpy(play->interfaceCtx.mapSegment, GetResourceDataByName(textureName), GetResourceTexSizeByName(textureName));
+            memcpy(play->interfaceCtx.mapSegment, GetResourceDataByName(textureName, false), GetResourceTexSizeByName(textureName, false));
 
             R_COMPASS_OFFSET_X = gMapData->roomCompassOffsetX[mapIndex][room];
             R_COMPASS_OFFSET_Y = gMapData->roomCompassOffsetY[mapIndex][room];

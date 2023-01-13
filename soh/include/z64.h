@@ -1072,12 +1072,7 @@ typedef struct {
     /* 0x58 */ OSMesgQueue loadQueue;
     /* 0x70 */ OSMesg loadMsg;
     /* 0x74 */ s16 unk_74[2]; // context-specific data used by the current scene draw config
-
-#ifdef __cplusplus
-    std::shared_ptr<Ship::Scene> roomToLoad;
-#else
     void* roomToLoad;
-#endif
 } RoomContext; // size = 0x78
 
 typedef struct {
@@ -1295,13 +1290,7 @@ typedef struct PlayState {
     /* 0x000A4 */ s16 sceneNum;
     /* 0x000A6 */ u8 sceneConfig;
     /* 0x000A7 */ char unk_A7[0x9];
-
-#ifdef __cplusplus
-    Ship::Scene* sceneSegment;
-#else
     /* 0x000B0 */ void* sceneSegment;
-#endif
-
     /* 0x000B8 */ View view;
     /* 0x001E0 */ Camera mainCamera;
     /* 0x0034C */ Camera subCameras[NUM_CAMS - SUBCAM_FIRST];
