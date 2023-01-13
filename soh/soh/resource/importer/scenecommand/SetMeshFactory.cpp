@@ -40,16 +40,14 @@ void Ship::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reade
 	setMesh->meshHeader.base.type = reader->ReadInt8();
     setMesh->meshHeader.polygon0.num = 1;
 
-    if (setMesh->meshHeaderType != 1) {
+    if (setMesh->meshHeader.base.type != 1) {
         setMesh->meshHeader.polygon0.num = reader->ReadInt8();
     }
 
-	if (setMesh->meshHeaderType == 2) {
-		setMesh->dlists2.reserve(setMesh->numPoly);
-		setMesh->meshHeader.polygon0.start = setMesh->dlists2.data();
+	if (setMesh->meshHeader.base.type == 2) {
+		setMesh->dlists2.reserve(setMesh->meshHeader.polygon0.num);
 	} else {
-		setMesh->dlists.reserve(setMesh->numPoly);
-		setMesh->meshHeader.polygon0.start = setMesh->dlists.data();
+		setMesh->dlists.reserve(setMesh->meshHeader.polygon0.num);
 	}
 
 	for (int32_t i = 0; i < setMesh->meshHeader.polygon0.num; i++) {
@@ -60,11 +58,10 @@ void Ship::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reade
 			std::string meshOpa = reader->ReadString();
 			std::string meshXlu = reader->ReadString();
 
-			dlist.opa = meshOpa != "" ? (Gfx*)GetResourceDataByName(meshOpa.c_str()) : 0;
-			dlist.xlu = meshXlu != "" ? (Gfx*)GetResourceDataByName(meshXlu.c_str()) : 0;
+			dlist.opa = meshOpa != "" ? (Gfx*)GetResourceDataByName(meshOpa.c_str(), true) : 0;
+			dlist.xlu = meshXlu != "" ? (Gfx*)GetResourceDataByName(meshXlu.c_str(), true) : 0;
 
 			setMesh->dlists.push_back(dlist);
-			setMesh->meshHeader.polygon0.start = &setMesh->dlists.back();
 		} else if (setMesh->meshHeader.base.type == 1) {
 			PolygonDlist pType;
 
@@ -72,8 +69,8 @@ void Ship::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reade
 			std::string imgOpa = reader->ReadString();
 			std::string imgXlu = reader->ReadString();
 
-			pType.opa = imgOpa != "" ? (Gfx*)GetResourceDataByName(imgOpa.c_str()) : 0;
-			pType.xlu = imgXlu != "" ? (Gfx*)GetResourceDataByName(imgXlu.c_str()) : 0;
+			pType.opa = imgOpa != "" ? (Gfx*)GetResourceDataByName(imgOpa.c_str(), true) : 0;
+			pType.xlu = imgXlu != "" ? (Gfx*)GetResourceDataByName(imgXlu.c_str(), true) : 0;
 
 			uint32_t imageCount = reader->ReadUInt32();
 			setMesh->images.reserve(imageCount);
@@ -82,7 +79,7 @@ void Ship::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reade
 				BgImage image;
 				image.unk_00 = reader->ReadUInt16();
 				image.id = reader->ReadUByte();
-				image.source = GetResourceDataByName(reader->ReadString().c_str());
+				image.source = GetResourceDataByName(reader->ReadString().c_str(), true);
 				image.unk_0C = reader->ReadUInt32();
 				image.tlut = reader->ReadUInt32();
 				image.width = reader->ReadUInt16();
@@ -114,8 +111,8 @@ void Ship::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reade
 			std::string meshOpa = reader->ReadString();
 			std::string meshXlu = reader->ReadString();
 
-			pType.opa = meshOpa != "" ? (Gfx*)GetResourceDataByName(meshOpa.c_str()) : 0;
-			pType.xlu = meshXlu != "" ? (Gfx*)GetResourceDataByName(meshXlu.c_str()) : 0;
+			pType.opa = meshOpa != "" ? (Gfx*)GetResourceDataByName(meshOpa.c_str(), true) : 0;
+			pType.xlu = meshXlu != "" ? (Gfx*)GetResourceDataByName(meshXlu.c_str(), true) : 0;
 
 			setMesh->dlists.push_back(pType);
 			setMesh->meshHeader.polygon1.dlist = (Gfx*)&setMesh->dlists.back();
@@ -131,14 +128,19 @@ void Ship::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reade
 			std::string meshOpa = reader->ReadString();
 			std::string meshXlu = reader->ReadString();
 
-			dlist.opa = meshOpa != "" ? (Gfx*)GetResourceDataByName(meshOpa.c_str()) : 0;
-			dlist.xlu = meshXlu != "" ? (Gfx*)GetResourceDataByName(meshXlu.c_str()) : 0;
+			dlist.opa = meshOpa != "" ? (Gfx*)GetResourceDataByName(meshOpa.c_str(), true) : 0;
+			dlist.xlu = meshXlu != "" ? (Gfx*)GetResourceDataByName(meshXlu.c_str(), true) : 0;
 
 			setMesh->dlists2.push_back(dlist);
-			setMesh->meshHeader.polygon0.start = &setMesh->dlists2.back();
 		} else {
 			SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
 		}
+	}
+
+	if (setMesh->meshHeader.base.type == 2) {
+		setMesh->meshHeader.polygon2.start = setMesh->dlists2.data();
+	} else {
+		setMesh->meshHeader.polygon0.start = setMesh->dlists.data();
 	}
 }
 

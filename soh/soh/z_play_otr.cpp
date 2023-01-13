@@ -37,7 +37,7 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
     }
     std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), scene->sceneFile.fileName, scene->sceneFile.fileName);
 
-    play->sceneSegment = (Ship::Scene*)OTRPlay_LoadFile(play, scenePath.c_str());
+    play->sceneSegment = OTRPlay_LoadFile(play, scenePath.c_str());
 
     // Failed to load scene... default to doodongs cavern
     if (play->sceneSegment == nullptr) 
@@ -54,8 +54,9 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
     //gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
 
     OTRPlay_InitScene(play, spawn);
+    auto roomSize = func_80096FE8(play, &play->roomCtx);
 
-    osSyncPrintf("ROOM SIZE=%fK\n", func_80096FE8(play, &play->roomCtx) / 1024.0f);
+    osSyncPrintf("ROOM SIZE=%fK\n", roomSize / 1024.0f);
 }
 
 void OTRPlay_InitScene(PlayState* play, s32 spawn) {
@@ -73,7 +74,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     func_80096FD4(play, &play->roomCtx.curRoom);
     YREG(15) = 0;
     gSaveContext.worldMapArea = 0;
-    OTRScene_ExecuteCommands(play, play->sceneSegment);
+    OTRScene_ExecuteCommands(play, (Ship::Scene*)play->sceneSegment);
     Play_InitEnvironment(play, play->skyboxId);
     /* auto data = static_cast<Ship::Vertex*>(Ship::Window::GetInstance()
                                                ->GetResourceManager()

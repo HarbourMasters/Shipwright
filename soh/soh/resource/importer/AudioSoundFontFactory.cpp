@@ -84,7 +84,12 @@ void Ship::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
         bool hasSample = reader->ReadInt8();
         std::string sampleFileName = reader->ReadString();
         drum.sound.tuning = reader->ReadFloat();
-        drum.sound.sample = static_cast<Sample*>(GetResourceDataByName(sampleFileName.c_str()));
+
+        if (sampleFileName.empty()) {
+            drum.sound.sample = nullptr;
+        } else {
+            drum.sound.sample = static_cast<Sample*>(GetResourceDataByName(sampleFileName.c_str(), true));
+        }
 
         audioSoundFont->drums.push_back(drum);
         audioSoundFont->drumAddresses.push_back(&audioSoundFont->drums.back());
@@ -126,7 +131,7 @@ void Ship::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
             bool hasSampleRef = reader->ReadInt8();
             std::string sampleFileName = reader->ReadString();
             instrument.lowNotesSound.tuning = reader->ReadFloat();
-            instrument.lowNotesSound.sample = static_cast<Sample*>(GetResourceDataByName(sampleFileName.c_str()));
+            instrument.lowNotesSound.sample = static_cast<Sample*>(GetResourceDataByName(sampleFileName.c_str(), true));
         } else {
             instrument.lowNotesSound.sample = nullptr;
             instrument.lowNotesSound.tuning = 0;
@@ -137,7 +142,7 @@ void Ship::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
             bool hasSampleRef = reader->ReadInt8();
             std::string sampleFileName = reader->ReadString();
             instrument.normalNotesSound.tuning = reader->ReadFloat();
-            instrument.normalNotesSound.sample = static_cast<Sample*>(GetResourceDataByName(sampleFileName.c_str()));
+            instrument.normalNotesSound.sample = static_cast<Sample*>(GetResourceDataByName(sampleFileName.c_str(), true));
         } else {
             instrument.normalNotesSound.sample = nullptr;
             instrument.normalNotesSound.tuning = 0;
@@ -148,7 +153,7 @@ void Ship::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
             bool hasSampleRef = reader->ReadInt8();
             std::string sampleFileName = reader->ReadString();
             instrument.highNotesSound.tuning = reader->ReadFloat();
-            instrument.highNotesSound.sample = static_cast<Sample*>(GetResourceDataByName(sampleFileName.c_str()));
+            instrument.highNotesSound.sample = static_cast<Sample*>(GetResourceDataByName(sampleFileName.c_str(), true));
         } else {
             instrument.highNotesSound.sample = nullptr;
             instrument.highNotesSound.tuning = 0;
@@ -172,7 +177,7 @@ void Ship::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
             bool hasSampleRef = reader->ReadInt8();
             std::string sampleFileName = reader->ReadString();
             soundEffect.tuning = reader->ReadFloat();
-            soundEffect.sample = static_cast<Sample*>(GetResourceDataByName(sampleFileName.c_str()));
+            soundEffect.sample = static_cast<Sample*>(GetResourceDataByName(sampleFileName.c_str(), true));
         }
         
         audioSoundFont->soundEffects.push_back(soundEffect);

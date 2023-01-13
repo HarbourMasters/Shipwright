@@ -38,7 +38,10 @@ void Ship::SetAlternateHeadersFactoryV0::ParseFileBinary(std::shared_ptr<BinaryR
     setAlternateHeaders->numHeaders = reader->ReadUInt32();
     setAlternateHeaders->headers.reserve(setAlternateHeaders->numHeaders);
     for (uint32_t i = 0; i < setAlternateHeaders->numHeaders; i++) {
-		setAlternateHeaders->headers.push_back(std::static_pointer_cast<Ship::Scene>(LoadResource(reader->ReadString().c_str())));
+		auto headerName = reader->ReadString();
+		if (!headerName.empty()) {
+			setAlternateHeaders->headers.push_back(std::static_pointer_cast<Ship::Scene>(LoadResource(headerName.c_str(), true)));
+		}
     }
 }
 

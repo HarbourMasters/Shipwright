@@ -36,7 +36,7 @@ void Ship::SetCutscenesFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
 	ReadCommandId(setCutscenes, reader);
 	
 	setCutscenes->fileName = reader->ReadString();
-	setCutscenes->cutscene = std::static_pointer_cast<Cutscene>(LoadResource(setCutscenes->fileName.c_str()));
+	setCutscenes->cutscene = std::static_pointer_cast<Cutscene>(LoadResource(setCutscenes->fileName.c_str(), true));
 }
 
 } // namespace Ship

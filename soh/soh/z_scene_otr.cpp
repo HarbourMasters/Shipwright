@@ -509,7 +509,7 @@ s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* scene)
         }
 
         if ((int)cmdCode <= 0x19) {
-            if (sceneCommands[(int)cmdCode](play, (Ship::SceneCommand*)sceneCmd->GetPointer()))
+            if (sceneCommands[(int)cmdCode](play, sceneCmd.get()))
                 break;
         }
         else {
@@ -532,7 +532,7 @@ extern "C" s32 OTRfunc_800973FC(PlayState* play, RoomContext* roomCtx) {
             roomCtx->curRoom.segment = roomCtx->unk_34;
             gSegments[3] = VIRTUAL_TO_PHYSICAL(roomCtx->unk_34);
 
-            OTRScene_ExecuteCommands(play, roomCtx->roomToLoad.get());
+            OTRScene_ExecuteCommands(play, (Ship::Scene*)roomCtx->roomToLoad);
             Player_SetBootData(play, GET_PLAYER(play));
             Actor_SpawnTransitionActors(play, &play->actorCtx);
 
@@ -568,7 +568,7 @@ extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomN
 
         auto roomData = std::static_pointer_cast<Ship::Scene>(ResourceMgr_LoadResource(play->roomList[roomNum].fileName));
         roomCtx->status = 1;
-        roomCtx->roomToLoad = roomData;
+        roomCtx->roomToLoad = roomData.get();
 
         roomCtx->unk_30 ^= 1;
 

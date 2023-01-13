@@ -111,7 +111,7 @@ void FileChoose_DrawImageRGBA32(GraphicsContext* gfxCtx, s16 centerX, s16 center
 
     OPEN_DISPS(gfxCtx);
 
-    source = GetResourceDataByName(source);
+    source = GetResourceDataByName(source, false);
 
     curTexture = source;
     rectLeft = centerX - (width / 2);

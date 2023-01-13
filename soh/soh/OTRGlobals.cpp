@@ -834,8 +834,6 @@ extern "C" uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
 
 extern "C" uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 
-extern "C" size_t GetResourceTexSizeByName(const char* texPath);
-
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = ResourceMgr_LoadResource(filePath);
 
@@ -851,7 +849,7 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
                 Path.replace(pos, 7, "/mq/");
             }
         }
-        return (char*)GetResourceDataByName(Path.c_str());
+        return (char*)GetResourceDataByName(Path.c_str(), false);
     }
 }
 
@@ -955,15 +953,15 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
 }
 
 extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path) {
-    return (CollisionHeader*)GetResourceDataByName(path);
+    return (CollisionHeader*)GetResourceDataByName(path, false);
 }
 
 extern "C" Vtx* ResourceMgr_LoadVtxByName(char* path) {
-    return (Vtx*)GetResourceDataByName(path);
+    return (Vtx*)GetResourceDataByName(path, false);
 }
 
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path) {
-    SequenceData* sequence = (SequenceData*)GetResourceDataByName(path);
+    SequenceData* sequence = (SequenceData*)GetResourceDataByName(path, false);
     return *sequence;
 }
 
@@ -1028,11 +1026,11 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
 }
 
 extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path) {
-    return (SoundFontSample*)GetResourceDataByName(path);
+    return (SoundFontSample*)GetResourceDataByName(path, false);
 }
 
 extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
-    return (SoundFont*)GetResourceDataByName(path);
+    return (SoundFont*)GetResourceDataByName(path, false);
 }
 
 extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
@@ -1054,15 +1052,15 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 }
 
 extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
-    return (AnimationHeaderCommon*)GetResourceDataByName(path);
+    return (AnimationHeaderCommon*)GetResourceDataByName(path, false);
 }
 
 extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
-    return (SkeletonHeader*)GetResourceDataByName(path);
+    return (SkeletonHeader*)GetResourceDataByName(path, false);
 }
 
 extern "C" s32* ResourceMgr_LoadCSByName(const char* path) {
-    return (s32*)GetResourceDataByName(path);
+    return (s32*)GetResourceDataByName(path, false);
 }
 
 std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
