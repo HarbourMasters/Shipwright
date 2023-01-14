@@ -34,7 +34,7 @@ void Ship::SetRoomListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
 
 	ReadCommandId(setRoomList, reader);
 	
-    setRoomList->numRooms = reader->ReadUInt32();
+    setRoomList->numRooms = reader->ReadInt32();
     setRoomList->rooms.reserve(setRoomList->numRooms);
     for (uint32_t i = 0; i < setRoomList->numRooms; i++) {
 		RomFile room;
@@ -42,8 +42,8 @@ void Ship::SetRoomListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
 		setRoomList->fileNames.push_back(reader->ReadString());
 
 		room.fileName = (char*)setRoomList->fileNames.back().c_str();
-		room.vromStart = reader->ReadUInt32();
-		room.vromEnd = reader->ReadUInt32();
+		room.vromStart = reader->ReadInt32();
+		room.vromEnd = reader->ReadInt32();
 		
         setRoomList->rooms.push_back(room);
     }

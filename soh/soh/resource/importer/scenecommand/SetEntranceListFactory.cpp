@@ -39,8 +39,8 @@ void Ship::SetEntranceListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
     for (uint32_t i = 0; i < setEntranceList->numEntrances; i++) {
 		EntranceEntry entranceEntry;
 
-		entranceEntry.spawn = reader->ReadUByte();
-		entranceEntry.room = reader->ReadUByte();
+		entranceEntry.spawn = reader->ReadInt8();
+		entranceEntry.room = reader->ReadInt8();
 		
         setEntranceList->entrances.push_back(entranceEntry);
     }
