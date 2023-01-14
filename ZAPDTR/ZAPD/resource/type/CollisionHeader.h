@@ -74,13 +74,8 @@ public:
 
     CollisionHeaderData collisionHeaderData;
 
-    int16_t absMinX, absMinY, absMinZ;
-    int16_t absMaxX, absMaxY, absMaxZ;
-
-    int32_t vertexCount;
     std::vector<Vec3s> vertices;
 
-    uint32_t polygonCount;
     std::vector<CollisionPoly> polygons;
 
     uint32_t surfaceTypesCount;
@@ -91,9 +86,9 @@ public:
     std::vector<int32_t> camPosDataIndices;
 
     int32_t camPosCount;
+    Vec3s camPosDataZero;
     std::vector<Vec3s> camPosData;
 
-    int32_t waterBoxCount;
     std::vector<WaterBox> waterBoxes;
 };
 }; // namespace Ship

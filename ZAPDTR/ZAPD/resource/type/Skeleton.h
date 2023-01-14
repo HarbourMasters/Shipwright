@@ -64,5 +64,6 @@ class Skeleton : public Resource {
     std::vector<StandardLimb> standardLimbArray;
     std::vector<SkelCurveLimb> curveLimbArray;
     std::vector<std::string> limbTable;
+    std::vector<void*> skeletonHeaderSegments;
 };
 } // namespace Ship

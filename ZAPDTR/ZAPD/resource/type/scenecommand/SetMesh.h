@@ -88,7 +88,9 @@ class SetMesh : public SceneCommand {
     void* GetPointer();
     size_t GetPointerSize();
 
+    uint32_t numPoly;
     uint8_t data;
+    uint8_t meshHeaderType;
 
     std::vector<PolygonDlist> dlists;
     std::vector<PolygonDlist2> dlists2;

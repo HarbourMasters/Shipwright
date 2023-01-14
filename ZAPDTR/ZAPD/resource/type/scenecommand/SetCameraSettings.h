@@ -9,8 +9,8 @@
 
 namespace Ship {
 typedef struct {
-  int8_t cameraMovement;
-  int32_t worldMapArea;
+  uint8_t cameraMovement;
+  uint32_t worldMapArea;
 } CameraSettings;
 
 class SetCameraSettings : public SceneCommand {
