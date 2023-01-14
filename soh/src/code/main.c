@@ -1,3 +1,7 @@
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
 #include "global.h"
 #include "vt.h"
 #include <soh/Enhancements/bootcommands.h>
