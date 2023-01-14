@@ -85,7 +85,7 @@ void Ship::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reade
 				image.width = reader->ReadUInt16();
 				image.height = reader->ReadUInt16();
 				image.fmt = reader->ReadUByte();
-				image.siz = reader->ReadUInt16();
+				image.siz = reader->ReadUByte();
 				image.mode0 = reader->ReadUInt16();
 				image.tlutCount = reader->ReadUInt16();
 
