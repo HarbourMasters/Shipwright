@@ -34,10 +34,10 @@ void SetSkyboxSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
 
 	ReadCommandId(setSkyboxSettings, reader);
 	
-    setSkyboxSettings->settings.unk = reader->ReadUByte();
-	setSkyboxSettings->settings.skyboxId = reader->ReadUByte();
-    setSkyboxSettings->settings.weather = reader->ReadUByte();
-    setSkyboxSettings->settings.indoors = reader->ReadUByte();
+    setSkyboxSettings->settings.unk = reader->ReadInt8();
+	setSkyboxSettings->settings.skyboxId = reader->ReadInt8();
+    setSkyboxSettings->settings.weather = reader->ReadInt8();
+    setSkyboxSettings->settings.indoors = reader->ReadInt8();
 }
 
 } // namespace Ship

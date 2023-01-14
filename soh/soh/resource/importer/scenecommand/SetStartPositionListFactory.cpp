@@ -39,14 +39,14 @@ void Ship::SetStartPositionListFactoryV0::ParseFileBinary(std::shared_ptr<Binary
     for (uint32_t i = 0; i < setStartPositionList->numStartPositions; i++) {
 		ActorEntry entry;
 
-		entry.id = reader->ReadInt16();
+		entry.id = reader->ReadUInt16();
 		entry.pos.x = reader->ReadInt16();
 		entry.pos.y = reader->ReadInt16();
 		entry.pos.z = reader->ReadInt16();
 		entry.rot.x = reader->ReadInt16();
 		entry.rot.y = reader->ReadInt16();
 		entry.rot.z = reader->ReadInt16();
-		entry.params = reader->ReadInt16();
+		entry.params = reader->ReadUInt16();
 
         setStartPositionList->startPositions.push_back(entry);
     }

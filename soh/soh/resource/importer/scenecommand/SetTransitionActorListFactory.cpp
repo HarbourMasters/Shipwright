@@ -39,16 +39,16 @@ void Ship::SetTransitionActorListFactoryV0::ParseFileBinary(std::shared_ptr<Bina
     for (uint32_t i = 0; i < setTransitionActorList->numTransitionActors; i++) {
 		TransitionActorEntry entry;
 
-        entry.sides[0].room = reader->ReadInt8();
-        entry.sides[0].effects = reader->ReadInt8();
-        entry.sides[1].room = reader->ReadInt8();
-        entry.sides[1].effects = reader->ReadInt8();
+        entry.sides[0].room = reader->ReadUByte();
+        entry.sides[0].effects = reader->ReadUByte();
+        entry.sides[1].room = reader->ReadUByte();
+        entry.sides[1].effects = reader->ReadUByte();
         entry.id = reader->ReadInt16();
         entry.pos.x = reader->ReadInt16();
         entry.pos.y = reader->ReadInt16();
         entry.pos.z = reader->ReadInt16();
         entry.rotY = reader->ReadInt16();
-        entry.params = reader->ReadInt16();
+        entry.params = reader->ReadUInt16();
 
         setTransitionActorList->transitionActorList.push_back(entry);
     }
