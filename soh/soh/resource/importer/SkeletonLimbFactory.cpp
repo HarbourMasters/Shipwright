@@ -54,7 +54,7 @@ void Ship::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
         for (int32_t k = 0; k < skinVertexCount; k++) {
             SkinVertex skinVertex;
 
-            skinVertex.index = reader->ReadUInt16();
+            skinVertex.index = reader->ReadInt16();
             skinVertex.s = reader->ReadInt16();
             skinVertex.t = reader->ReadInt16();
             skinVertex.normX = reader->ReadInt8();
