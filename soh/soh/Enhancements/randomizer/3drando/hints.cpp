@@ -261,7 +261,7 @@ static void CreateLocationHint(const std::vector<uint32_t>& possibleHintLocation
   Location(hintedLocation)->SetAsHinted();
 
   //make hint text
-  Text locationHintText = Location(hintedLocation)->GetHint().GetText();
+  Text locationHintText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
   Text itemHintText = Location(hintedLocation)->GetPlacedItem().GetHint().GetText();
   Text prefix = Hint(PREFIX).GetText();
 
@@ -312,17 +312,12 @@ static void CreateWothHint(uint8_t* remainingDungeonWothHints) {
     Location(hintedLocation)->SetAsHinted();
     uint32_t gossipStone = RandomElement(gossipStoneLocations);
 
-    // form hint text
-    Text locationText;
     if (Location(hintedLocation)->IsDungeon()) {
         *remainingDungeonWothHints -= 1;
-        uint32_t parentRegion = Location(hintedLocation)->GetParentRegionKey();
-        locationText = AreaTable(parentRegion)->GetHint().GetText();
-
-    } else {
-        uint32_t parentRegion = Location(hintedLocation)->GetParentRegionKey();
-        locationText = GetHintRegion(parentRegion)->GetHint().GetText();
     }
+
+    // form hint text
+    Text locationText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
     Text finalWothHint = Hint(PREFIX).GetText() + "#" + locationText + "#" + Hint(WAY_OF_THE_HERO).GetText();
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalWothHint.english);
@@ -360,16 +355,12 @@ static void CreateBarrenHint(uint8_t* remainingDungeonBarrenHints, std::vector<u
     Location(hintedLocation)->SetAsHinted();
     uint32_t gossipStone = RandomElement(gossipStoneLocations);
 
-    // form hint text
-    Text locationText;
     if (Location(hintedLocation)->IsDungeon()) {
         *remainingDungeonBarrenHints -= 1;
-        uint32_t parentRegion = Location(hintedLocation)->GetParentRegionKey();
-        locationText = Hint(AreaTable(parentRegion)->hintKey).GetText();
-    } else {
-        uint32_t parentRegion = Location(hintedLocation)->GetParentRegionKey();
-        locationText = Hint(GetHintRegion(parentRegion)->hintKey).GetText();
     }
+
+    // form hint text
+    Text locationText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
     Text finalBarrenHint =
         Hint(PREFIX).GetText() + Hint(PLUNDERING).GetText() + "#" + locationText + "#" + Hint(FOOLISH).GetText();
     SPDLOG_DEBUG("\tMessage: ");
