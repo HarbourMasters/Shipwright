@@ -63,6 +63,7 @@ class CrowdControl {
 
         typedef struct Effect {
             uint32_t id;
+            uint32_t value;
             std::string category;
             long timeRemaining;
             GameInteractionEffectBase *giEffect;
@@ -91,7 +92,7 @@ class CrowdControl {
 
         void EmitMessage(TCPsocket socket, uint32_t eventId, long timeRemaining, EffectResult status);
         Effect* ParseMessage(char payload[512]);
-        EffectResult RetrieveCCEffectResult(Effect* effect);
+        EffectResult CanApplyEffect(Effect* effect);
         bool SpawnEnemy(std::string effectId);
 
     public:
