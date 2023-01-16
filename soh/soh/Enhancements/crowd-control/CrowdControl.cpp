@@ -142,7 +142,10 @@ void CrowdControl::ListenToServer() {
 
             // If effect is a one off run, let's execute
             if (!incomingEffect->timeRemaining) {
-                EffectResult result = ExecuteEffect(incomingEffect);
+                EffectResult result = CrowdControl::RetrieveCCEffectResult(incomingEffect);
+                if (result == EffectResult::Success) {
+                    GameInteractor::ApplyEffect(incomingEffect->giEffect);
+                }
                 EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
             } else {
                 // check if a conflicting event is already active
@@ -159,8 +162,8 @@ void CrowdControl::ListenToServer() {
                 }
 
                 // check if effect can be executed
-                GameInteractionEffectQueryResult result = incomingEffect->giEffect->CanBeApplied();
-                if (result == GameInteractionEffectQueryResult::TemporarilyNotPossible || result == GameInteractionEffectQueryResult::NotPossibe) {
+                EffectResult result = CrowdControl::RetrieveCCEffectResult(incomingEffect);
+                if (result == EffectResult::Retry || result == EffectResult::Failure) {
                     EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
                     continue;
                 }
@@ -190,13 +193,14 @@ void CrowdControl::ProcessActiveEffects() {
 
         while (it != activeEffects.end()) {
             Effect *effect = *it;
-            EffectResult result = ExecuteEffect(effect);
+            EffectResult result = CrowdControl::RetrieveCCEffectResult(effect);
+
             if (result == EffectResult::Success) {
                 // If time remaining has reached 0, we have finished the effect
                 if (effect->timeRemaining <= 0) {
                     it = activeEffects.erase(std::remove(activeEffects.begin(), activeEffects.end(), effect),
                                         activeEffects.end());
-                    RemoveEffect(effect);
+                    GameInteractor::RemoveEffect(effect->giEffect);
 
                     delete effect;
                 } else {
@@ -211,7 +215,7 @@ void CrowdControl::ProcessActiveEffects() {
                             EmitMessage(tcpsock, effect->id, effect->timeRemaining, EffectResult::Success);
                         }
                     }
-
+                    GameInteractor::ApplyEffect(effect->giEffect);
                     it++;
                 }
             } else { // Timed effects only do Success or Retry
@@ -245,18 +249,6 @@ void CrowdControl::EmitMessage(TCPsocket socket, uint32_t eventId, long timeRema
     SDLNet_TCP_Send(socket, jsonPayload.c_str(), jsonPayload.size() + 1);
 }
 
-void CrowdControl::EmitMessage(TCPsocket socket, uint32_t eventId, long timeRemaining, GameInteractionEffectQueryResult status) {
-    nlohmann::json payload;
-
-    payload["id"] = eventId;
-    payload["type"] = 0;
-    payload["timeRemaining"] = timeRemaining;
-    payload["status"] = status;
-
-    std::string jsonPayload = payload.dump();
-    SDLNet_TCP_Send(socket, jsonPayload.c_str(), jsonPayload.size() + 1);
-}
-
 CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     nlohmann::json dataReceived = nlohmann::json::parse(payload, nullptr, false);
     if (dataReceived.is_discarded()) {
@@ -274,8 +266,9 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         effect->category = "ui";
         effect->timeRemaining = 60000;
         effect->giEffect = new GameInteractionEffect::NoUI();
-    } else if (effectName == EFFECT_ADD_HEART_CONTAINER || effectName == EFFECT_REMOVE_HEART_CONTAINER) {
+    } else if (effectName == EFFECT_ADD_HEART_CONTAINER) {
         effect->category = "heart_container";
+        effect->giEffect = new GameInteractionEffect::AddHeartContainer();
     } else {
         effect->category = "none";
         effect->timeRemaining = 0;
@@ -348,8 +341,19 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     return effect;
 }
 
-CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect *effect) {
-    return CrowdControl::EffectResult::Retry;
+CrowdControl::EffectResult CrowdControl::RetrieveCCEffectResult(Effect* effect) {
+    EffectResult result;
+    GameInteractionEffectQueryResult queryResult = GameInteractor::CanApplyEffect(effect->giEffect);
+
+    if (queryResult == GameInteractionEffectQueryResult::Possible) {
+        result = EffectResult::Success;
+    } else if (queryResult == GameInteractionEffectQueryResult::TemporarilyNotPossible) {
+        result = EffectResult::Retry;
+    } else {
+        result = EffectResult::Failure;
+    }
+
+    return result;
 }
 
 //CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uint32_t value, bool dryRun) {
@@ -570,10 +574,6 @@ bool CrowdControl::SpawnEnemy(std::string effectId) {
 
     return Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, player->actor.world.pos.x + posXOffset,
         player->actor.world.pos.y + posYOffset, player->actor.world.pos.z + posZOffset, 0, 0, 0, enemyParams, 0);
-
-}
-
-void CrowdControl::RemoveEffect(Effect* effect) {
 
 }
 

@@ -1,10 +1,3 @@
-//
-//  GameInteractor.h
-//  soh
-//
-//  Created by David Chavez on 07.12.22.
-//
-
 #ifndef GameInteractor_h
 #define GameInteractor_h
 
@@ -15,13 +8,15 @@ class GameInteractor {
 public:
     static GameInteractor* Instance;
 
-    static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase effect);
-    static void ApplyEffect(GameInteractionEffectBase effect);
-    static void RemoveEffect();
+    static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase* effect);
+    static void ApplyEffect(GameInteractionEffectBase* effect);
+    static void RemoveEffect(GameInteractionEffectBase* effect);
+    static bool IsSaveLoaded();
+    static bool IsGameplayPaused();
 
     static bool CanSpawnEnemy();
     static void SpawnEnemy();
 };
 
-#endif
+#endif /* __cplusplus */
 #endif /* GameInteractor_h */

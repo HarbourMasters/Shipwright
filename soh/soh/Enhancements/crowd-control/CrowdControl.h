@@ -90,12 +90,8 @@ class CrowdControl {
         void ProcessActiveEffects();
 
         void EmitMessage(TCPsocket socket, uint32_t eventId, long timeRemaining, EffectResult status);
-    void EmitMessage(TCPsocket socket, uint32_t eventId, long timeRemaining, GameInteractionEffectQueryResult status);
         Effect* ParseMessage(char payload[512]);
-        EffectResult ExecuteEffect(Effect* effect);
-        void RemoveEffect(Effect* effect);
-//        EffectResult ExecuteEffect(std::string effectId, uint32_t value, bool dryRun);
-//        void RemoveEffect(std::string effectId);
+        EffectResult RetrieveCCEffectResult(Effect* effect);
         bool SpawnEnemy(std::string effectId);
 
     public:

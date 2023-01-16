@@ -1,10 +1,3 @@
-//
-//  GameInteractionEffect.h
-//  soh
-//
-//  Created by David Chavez on 15.12.22.
-//
-
 #ifndef GameInteractionEffect_h
 #define GameInteractionEffect_h
 
@@ -22,31 +15,27 @@ extern uint32_t GameInteractor_NoUI;
 enum GameInteractionEffectQueryResult {
     Possible                = 0x00,
     TemporarilyNotPossible  = 0x01,
-    NotPossibe              = 0xFF
+    NotPossible             = 0xFF
 };
 
 class GameInteractionEffectBase {
 public:
     virtual GameInteractionEffectQueryResult CanBeApplied() = 0;
     virtual void Apply() = 0;
+    virtual void Remove() = 0;
 };
 
 namespace GameInteractionEffect {
     class AddHeartContainer: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
+        void Remove() override;
     };
 
     class RemoveHeartContainer: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
-    };
-
-    class AddOrRemoveHeartContainer: public GameInteractionEffectBase {
-        int32_t amount;
-
-        GameInteractionEffectQueryResult CanBeApplied() override;
-        void Apply() override;
+        void Remove() override;
     };
 
     class GiveRupees: public GameInteractionEffectBase {
@@ -55,11 +44,13 @@ namespace GameInteractionEffect {
 
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
+        void Remove() override;
     };
 
     class NoUI: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
+        void Remove() override;
     };
 }
 

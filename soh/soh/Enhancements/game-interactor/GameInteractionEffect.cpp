@@ -1,10 +1,3 @@
-//
-//  GameInteractionEffect.cpp
-//  soh
-//
-//  Created by David Chavez on 15.12.22.
-//
-
 #include "GameInteractionEffect.h"
 #include "GameInteractor.h"
 
@@ -23,30 +16,53 @@ uint32_t GameInteractor_NoUI;
 // AddHeartContainer
 
 namespace GameInteractionEffect {
-    GameInteractionEffectQueryResult AddHeartContainer::CanBeApplied() {
-        return gSaveContext.healthCapacity >= 0x140
-        ? GameInteractionEffectQueryResult::NotPossibe
-        : GameInteractionEffectQueryResult::Possible;
-    }
 
+    // Add Heart Container
+    GameInteractionEffectQueryResult AddHeartContainer::CanBeApplied() {
+        if (gSaveContext.healthCapacity >= 0x140) {
+            return GameInteractionEffectQueryResult::NotPossible;
+        } else if (!GameInteractor::IsSaveLoaded()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
     void AddHeartContainer::Apply() {
         Health_GiveHearts(1);
     }
+    void AddHeartContainer::Remove() {}
+    // End Add Heart Container
+
+    // No UI
+    GameInteractionEffectQueryResult NoUI::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void NoUI::Apply() {
+        GameInteractor_NoUI = 1;
+    }
+
+    void NoUI::Remove() {
+        GameInteractor_NoUI = 0;
+    }
+    // End No UI
 
     // RemoveHeartContainer
-
     GameInteractionEffectQueryResult RemoveHeartContainer::CanBeApplied() {
         return ((gSaveContext.healthCapacity - 0x10) <= 0)
-        ? GameInteractionEffectQueryResult::NotPossibe
+        ? GameInteractionEffectQueryResult::NotPossible
         : GameInteractionEffectQueryResult::Possible;
     }
 
     void RemoveHeartContainer::Apply() {
         Health_RemoveHearts(1);
     }
+    void RemoveHeartContainer::Remove() {}
 
     // GiveRupees
-
     GameInteractionEffectQueryResult GiveRupees::CanBeApplied() {
         return GameInteractionEffectQueryResult::Possible;
     }
@@ -54,15 +70,5 @@ namespace GameInteractionEffect {
     void GiveRupees::Apply() {
         Rupees_ChangeBy(amount);
     }
-
-
-    // NoUIEffect
-
-    GameInteractionEffectQueryResult NoUI::CanBeApplied() {
-        return GameInteractionEffectQueryResult::Possible;
-    }
-
-    void NoUI::Apply() {
-        GameInteractor_NoUI = 1;
-    }
+    void GiveRupees::Remove() {}
 }
