@@ -1159,5 +1159,10 @@ void DebugConsole_Init(void) {
 
     CMD_REGISTER("cucco_storm", { CuccoStormHandler, "Cucco Storm" });
 
-    CVarLoad();
+    // OTRTODO: Figure out if this is something we should
+    //          keep or something we should remove
+    //          
+    //          If we keep it uncommented we get crashes 
+    //          in nlohmann every other time we load
+    // CVarLoad();
 }
