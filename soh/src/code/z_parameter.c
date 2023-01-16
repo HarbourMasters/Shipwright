@@ -13,6 +13,7 @@
 #endif
 
 #include "soh/Enhancements/debugconsole.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 
 static uint16_t _doActionTexWidth, _doActionTexHeight = -1;
@@ -4962,7 +4963,7 @@ void Interface_Draw(PlayState* play) {
     s16 svar6;
     bool fullUi = !CVar_GetS32("gMinimalUI", 0) || !R_MINIMAP_DISABLED || play->pauseCtx.state != 0;
 
-    if (chaosEffectNoUI) {
+    if (GameInteractor_NoUI) {
         return;
     }
 

@@ -257,6 +257,12 @@ set(Header_Files__soh__Enhancements__item_tables
 
 source_group("Header Files\\soh\\Enhancements\\item-tables" FILES ${Header_Files__soh__Enhancements__item_tables})
 
+set(Header_Files__soh__Enhancements__game_interactor
+    "soh/Enhancements/game-interactor/GameInteractor.h"
+    "soh/Enhancements/game-interactor/GameInteractionEffect.h"
+)
+source_group("Header Files\\soh\\Enhancements\\game-interactor" FILES ${Header_Files__soh__Enhancements__game_interactor})
+
 if (BUILD_CROWD_CONTROL)
 set(Header_Files__soh__Enhancements__crowd_control
     "soh/Enhancements/crowd-control/CrowdControl.h"
@@ -410,6 +416,12 @@ set(Source_Files__soh__Enhancements__item_tables
 )
 
 source_group("Source Files\\soh\\Enhancements\\item-tables" FILES ${Source_Files__soh__Enhancements__item_tables})
+
+set(Source_Files__soh__Enhancements__game_interactor
+    "soh/Enhancements/game-interactor/GameInteractor.cpp"
+    "soh/Enhancements/game-interactor/GameInteractionEffect.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\game-interactor" FILES ${Source_Files__soh__Enhancements__game_interactor})
 
 if (BUILD_CROWD_CONTROL)
 set(Source_Files__soh__Enhancements__crowd_control
@@ -1629,6 +1641,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements__randomizer__3drando}
     ${Header_Files__soh__Enhancements__item_tables}
     ${Header_Files__soh__Enhancements__custom_message}
+    ${Header_Files__soh__Enhancements__game_interactor}
     ${Header_Files__soh__Enhancements__crowd_control}
     ${Source_Files__soh}
     ${Source_Files__soh__Enhancements}
@@ -1642,6 +1655,7 @@ set(ALL_FILES
     ${Source_Files__soh__Enhancements__randomizer__3drando__location_access}
     ${Source_Files__soh__Enhancements__item_tables}
     ${Source_Files__soh__Enhancements__custom_message}
+    ${Source_Files__soh__Enhancements__game_interactor}
     ${Source_Files__soh__Enhancements__crowd_control}
     ${Source_Files__src__boot}
     ${Source_Files__src__buffers}
