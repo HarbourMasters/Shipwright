@@ -78,12 +78,9 @@ void Ship::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
     for (uint32_t i = 0; i < collisionHeader->surfaceTypesCount; i++) {
         SurfaceType surfaceType;
 
-        uint32_t col1 = reader->ReadUInt32();
-        uint32_t col2 = reader->ReadUInt32();
+        surfaceType.data[1] = reader->ReadUInt32();
+        surfaceType.data[0] = reader->ReadUInt32();
 
-        surfaceType.data[0] = col1 >> 32;
-        surfaceType.data[1] = col2 & 0xFFFFFFFF;
-        
         collisionHeader->surfaceTypes.push_back(surfaceType);
     }
     collisionHeader->collisionHeaderData.surfaceTypeList = collisionHeader->surfaceTypes.data();
