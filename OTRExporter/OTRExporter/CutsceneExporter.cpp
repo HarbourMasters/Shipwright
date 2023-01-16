@@ -1,5 +1,5 @@
 #include "CutsceneExporter.h"
-#include <Resource.h>
+#include <libultraship/bridge.h>
 
 void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)
 {

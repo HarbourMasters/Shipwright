@@ -1,5 +1,5 @@
 #include "PlayerAnimationExporter.h"
-#include <Resource.h>
+#include <libultraship/bridge.h>
 
 void OTRExporter_PlayerAnimationExporter::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)
 {

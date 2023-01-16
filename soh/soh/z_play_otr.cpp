@@ -1,6 +1,5 @@
 #include "OTRGlobals.h"
 #include <ResourceMgr.h>
-//#include <libultraship/classes.h>
 #include "soh/resource/type/Scene.h"
 #include <Utils/StringHelper.h>
 #include "global.h"

@@ -23,7 +23,7 @@
 #include <ZRoom/Commands/SetAlternateHeaders.h>
 #include "CollisionExporter.h"
 #include "DisplayListExporter.h"
-#include "Resource.h"
+#include <libultraship/bridge.h>
 #include <Globals.h>
 #include <ZRoom/Commands/SetExitList.h>
 #include <ZRoom/Commands/SetPathways.h>

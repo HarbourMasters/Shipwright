@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Resource.h"
+#include <libultraship/bridge.h>
 #include <libultraship/libultra/types.h>
 
 namespace Ship {

@@ -1,6 +1,6 @@
 #include "SkeletonLimbExporter.h"
 #include "DisplayListExporter.h"
-#include <Resource.h>
+#include <libultraship/bridge.h>
 #include <Globals.h>
 
 void OTRExporter_SkeletonLimb::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)

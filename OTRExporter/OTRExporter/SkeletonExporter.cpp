@@ -1,5 +1,5 @@
 #include "SkeletonExporter.h"
-#include <Resource.h>
+#include <libultraship/bridge.h>
 #include <Globals.h>
 #include "DisplayListExporter.h"
 
