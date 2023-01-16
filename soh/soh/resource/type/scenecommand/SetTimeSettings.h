@@ -9,9 +9,9 @@
 
 namespace Ship {
 typedef struct {
-  int8_t hour;
-  int8_t minute;
-  int8_t timeIncrement;
+  uint8_t hour;
+  uint8_t minute;
+  uint8_t timeIncrement;
 } TimeSettings;
 
 class SetTimeSettings : public SceneCommand {
