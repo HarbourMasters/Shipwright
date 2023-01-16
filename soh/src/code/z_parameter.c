@@ -5,6 +5,7 @@
 #include "textures/icon_item_static/icon_item_static.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "libultraship/bridge.h"
 
 #ifdef _MSC_VER
 #include <stdlib.h>
@@ -21,7 +22,7 @@ static uint16_t DO_ACTION_TEX_WIDTH() {
 
     // TODO: Figure out why Ship::Texture is not returning a valid width
     if (_doActionTexWidth == -1)
-        _doActionTexWidth = ResourceMgr_LoadTexWidthByName(gCheckDoActionENGTex);
+        _doActionTexWidth = GetResourceTexWidthByName(gCheckDoActionENGTex, false);
     return _doActionTexWidth;
 }
 static uint16_t DO_ACTION_TEX_HEIGHT() {
@@ -29,7 +30,7 @@ static uint16_t DO_ACTION_TEX_HEIGHT() {
 
     // TODO: Figure out why Ship::Texture is not returning a valid height
     if (_doActionTexHeight == -1)
-        _doActionTexHeight = ResourceMgr_LoadTexHeightByName(gCheckDoActionENGTex);
+        _doActionTexHeight = GetResourceTexHeightByName(gCheckDoActionENGTex, false);
     return _doActionTexHeight;
 }
 
