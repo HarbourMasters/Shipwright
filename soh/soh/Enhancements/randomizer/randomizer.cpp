@@ -2893,12 +2893,15 @@ void DrawRandoEditor(bool& open) {
     UIWidgets::Spacer(0);
 
     ImGui::Text("Seed");
-    ImGui::InputText("##RandomizerSeed", seedInputBuffer, MAX_SEED_BUFFER_SIZE, ImGuiInputTextFlags_None);
-    UIWidgets::Tooltip("Leaving this field blank will use a random seed value automatically");
-
+    if (ImGui::InputText("##RandomizerSeed", seedInputBuffer, MAX_SEED_BUFFER_SIZE, ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterNumbers)) {
+        uint32_t seedInput;
+        ImGui::DataTypeApplyFromText(seedInputBuffer, ImGuiDataType_U32, &seedInput, "%u");
+        strncpy(seedInputBuffer, std::to_string(seedInput).c_str(), MAX_SEED_BUFFER_SIZE);
+    }
+    UIWidgets::Tooltip("Leaving this field blank will use a random seed value automatically\nSeed range is 0 - 4,294,967,295");
     ImGui::SameLine();
     if (ImGui::Button("New Seed")) {
-        strncpy(seedInputBuffer, std::to_string(rand()).c_str(), MAX_SEED_BUFFER_SIZE);
+        strncpy(seedInputBuffer, std::to_string(rand() & 0xFFFFFFFF).c_str(), MAX_SEED_BUFFER_SIZE);
     }
     UIWidgets::Tooltip("Creates a new random seed value to be used when generating a randomizer");
     ImGui::SameLine();
@@ -4976,4 +4979,3 @@ void Rando_Init(void) {
 }
 
 }
-

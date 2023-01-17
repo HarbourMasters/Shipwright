@@ -15,6 +15,15 @@
 
 namespace UIWidgets {
 
+    struct TextFilters {
+        static int FilterNumbers(ImGuiInputTextCallbackData* data) {
+            if (data->EventChar < 256 && strchr("1234567890", (char)data->EventChar)) {
+                return 0;
+            }
+            return 1;
+        }
+    };
+
     // MARK: - Enums
 
     enum class CheckboxGraphics {

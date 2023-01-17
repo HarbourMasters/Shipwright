@@ -14,7 +14,7 @@
 
 #define NUM_NAVI_MESSAGES 19
 #define NUM_ICE_TRAP_MESSAGES 23
-#define MAX_SEED_BUFFER_SIZE 255
+#define MAX_SEED_BUFFER_SIZE 11 // digits for uint32
 
 class Randomizer {
   private:
