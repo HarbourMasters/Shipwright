@@ -1669,11 +1669,11 @@ void DrawCosmeticsEditor(bool& open) {
     ImGui::SameLine();
     UIWidgets::EnhancementCombobox("gCosmetics.DefaultColorScheme", colorSchemes, 2, 0);
     UIWidgets::EnhancementCheckbox("Advanced Mode", "gCosmetics.AdvancedMode");
-    if (CVar_GetS32("gCosmetics.AdvancedMode", 0)) {
+    if (CVarGetInteger("gCosmetics.AdvancedMode", 0)) {
         if (ImGui::Button("Lock All Advanced", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
             for (auto& [id, cosmeticOption] : cosmeticOptions) {
                 if (cosmeticOption.advancedOption) {
-                    CVar_SetS32(cosmeticOption.lockedCvar, 1);
+                    CVarSetInteger(cosmeticOption.lockedCvar, 1);
                 }
             }
             SohImGui::RequestCvarSaveOnNextTick();
@@ -1682,7 +1682,7 @@ void DrawCosmeticsEditor(bool& open) {
         if (ImGui::Button("Unlock All Advanced", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
             for (auto& [id, cosmeticOption] : cosmeticOptions) {
                 if (cosmeticOption.advancedOption) {
-                    CVar_SetS32(cosmeticOption.lockedCvar, 0);
+                    CVarSetInteger(cosmeticOption.lockedCvar, 0);
                 }
             }
             SohImGui::RequestCvarSaveOnNextTick();
@@ -1712,8 +1712,8 @@ void DrawCosmeticsEditor(bool& open) {
 
     if (ImGui::Button("Lock All", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
-            if (!cosmeticOption.advancedOption || CVar_GetS32("gCosmetics.AdvancedMode", 0)) {
-                CVar_SetS32(cosmeticOption.lockedCvar, 1);
+            if (!cosmeticOption.advancedOption || CVarGetInteger("gCosmetics.AdvancedMode", 0)) {
+                CVarSetInteger(cosmeticOption.lockedCvar, 1);
             }
         }
         SohImGui::RequestCvarSaveOnNextTick();
@@ -1721,8 +1721,8 @@ void DrawCosmeticsEditor(bool& open) {
     ImGui::SameLine();
     if (ImGui::Button("Unlock All", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
-            if (!cosmeticOption.advancedOption || CVar_GetS32("gCosmetics.AdvancedMode", 0)) {
-                CVar_SetS32(cosmeticOption.lockedCvar, 0);
+            if (!cosmeticOption.advancedOption || CVarGetInteger("gCosmetics.AdvancedMode", 0)) {
+                CVarSetInteger(cosmeticOption.lockedCvar, 0);
             }
         }
         SohImGui::RequestCvarSaveOnNextTick();
