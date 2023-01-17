@@ -1,7 +1,7 @@
 #include "randomizer_check_objects.h"
 #include <map>
 #include <string>
-#include <Cvar.h>
+#include <libultraship/bridge.h>
 #include "z64.h"
 
 /*
@@ -924,40 +924,40 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (locationIt.rc != RC_UNKNOWN_CHECK) &&
             (!RandomizerCheckObjects::AreaIsDungeon(locationIt.rcArea) || 
                 locationIt.vOrMQ == RCVORMQ_BOTH ||
-                locationIt.vOrMQ == RCVORMQ_MQ && CVar_GetS32("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_NONE && CVar_GetS32("gRandomizeMqDungeonCount", 0) > 0 || //at least one MQ dungeon
-                locationIt.vOrMQ == RCVORMQ_VANILLA && (CVar_GetS32("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_NONE || CVar_GetS32("gRandomizeMqDungeonCount", 0) < 12) //at least one vanilla dungeon
+                locationIt.vOrMQ == RCVORMQ_MQ && CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_NONE && CVarGetInteger("gRandomizeMqDungeonCount", 0) > 0 || //at least one MQ dungeon
+                locationIt.vOrMQ == RCVORMQ_VANILLA && (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_NONE || CVarGetInteger("gRandomizeMqDungeonCount", 0) < 12) //at least one vanilla dungeon
             ) &&
-            (locationIt.rcType != RCTYPE_SHOP || CVar_GetS32("gRandomizeShopsanity", RO_SHOPSANITY_OFF) > RO_SHOPSANITY_ZERO_ITEMS) &&
-            (locationIt.rcType != RCTYPE_SCRUB || CVar_GetS32("gRandomizeShuffleScrubs", RO_SCRUBS_OFF) != RO_SCRUBS_OFF ||
+            (locationIt.rcType != RCTYPE_SHOP || CVarGetInteger("gRandomizeShopsanity", RO_SHOPSANITY_OFF) > RO_SHOPSANITY_ZERO_ITEMS) &&
+            (locationIt.rcType != RCTYPE_SCRUB || CVarGetInteger("gRandomizeShuffleScrubs", RO_SCRUBS_OFF) != RO_SCRUBS_OFF ||
               locationIt.rc == RC_HF_DEKU_SCRUB_GROTTO || locationIt.rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT || locationIt.rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE) && //The 3 scrubs that are always randomized
-            (locationIt.rcType != RCTYPE_MERCHANT || CVar_GetS32("gRandomizeShuffleMerchants", RO_SHUFFLE_MERCHANTS_OFF) != RO_SHUFFLE_MERCHANTS_OFF) &&
+            (locationIt.rcType != RCTYPE_MERCHANT || CVarGetInteger("gRandomizeShuffleMerchants", RO_SHUFFLE_MERCHANTS_OFF) != RO_SHUFFLE_MERCHANTS_OFF) &&
             (locationIt.rcType != RCTYPE_GOSSIP_STONE) && // don't show gossip stones (maybe gossipsanity will be a thing eventually?)
             (locationIt.rcType != RCTYPE_LINKS_POCKET) &&
             (locationIt.rcType != RCTYPE_CHEST_GAME) && // don't show non final reward chest game checks until we support shuffling them
             ((locationIt.rcType != RCTYPE_SKULL_TOKEN) ||
-                (CVar_GetS32("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_ALL) ||
-                ((CVar_GetS32("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_OVERWORLD) && RandomizerCheckObjects::AreaIsOverworld(locationIt.rcArea)) ||
-                ((CVar_GetS32("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_DUNGEONS) && RandomizerCheckObjects::AreaIsDungeon(locationIt.rcArea))
+                (CVarGetInteger("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_ALL) ||
+                ((CVarGetInteger("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_OVERWORLD) && RandomizerCheckObjects::AreaIsOverworld(locationIt.rcArea)) ||
+                ((CVarGetInteger("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF) == RO_TOKENSANITY_DUNGEONS) && RandomizerCheckObjects::AreaIsDungeon(locationIt.rcArea))
             ) &&
-            ((locationIt.rcType != RCTYPE_COW) || CVar_GetS32("gRandomizeShuffleCows", RO_GENERIC_NO)) &&
-            ((locationIt.rcType != RCTYPE_ADULT_TRADE) || CVar_GetS32("gRandomizeShuffleAdultTrade", RO_GENERIC_NO)) &&
-            ((locationIt.rc != RC_KF_KOKIRI_SWORD_CHEST) || CVar_GetS32("gRandomizeShuffleKokiriSword", RO_GENERIC_NO)) &&
-            ((locationIt.rc != RC_ZR_MAGIC_BEAN_SALESMAN) || CVar_GetS32("gRandomizeShuffleBeans", RO_GENERIC_NO) == RO_GENERIC_YES) &&
-            ((locationIt.rc != RC_HC_MALON_EGG) || CVar_GetS32("gRandomizeShuffleWeirdEgg", RO_GENERIC_NO)) &&
-            ((locationIt.rcType != RCTYPE_FROG_SONG) || CVar_GetS32("gRandomizeShuffleFrogSongRupees", RO_GENERIC_NO)) &&
-            ((locationIt.rcType != RCTYPE_MAP_COMPASS) || CVar_GetS32("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
-            ((locationIt.rcType != RCTYPE_SMALL_KEY) || CVar_GetS32("gRandomizeKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
-            ((locationIt.rcType != RCTYPE_BOSS_KEY) || CVar_GetS32("gRandomizeBossKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
-            ((locationIt.rcType != RCTYPE_GANON_BOSS_KEY) || CVar_GetS32("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) != RO_GANON_BOSS_KEY_VANILLA) &&
+            ((locationIt.rcType != RCTYPE_COW) || CVarGetInteger("gRandomizeShuffleCows", RO_GENERIC_NO)) &&
+            ((locationIt.rcType != RCTYPE_ADULT_TRADE) || CVarGetInteger("gRandomizeShuffleAdultTrade", RO_GENERIC_NO)) &&
+            ((locationIt.rc != RC_KF_KOKIRI_SWORD_CHEST) || CVarGetInteger("gRandomizeShuffleKokiriSword", RO_GENERIC_NO)) &&
+            ((locationIt.rc != RC_ZR_MAGIC_BEAN_SALESMAN) || CVarGetInteger("gRandomizeShuffleBeans", RO_GENERIC_NO) == RO_GENERIC_YES) &&
+            ((locationIt.rc != RC_HC_MALON_EGG) || CVarGetInteger("gRandomizeShuffleWeirdEgg", RO_GENERIC_NO)) &&
+            ((locationIt.rcType != RCTYPE_FROG_SONG) || CVarGetInteger("gRandomizeShuffleFrogSongRupees", RO_GENERIC_NO)) &&
+            ((locationIt.rcType != RCTYPE_MAP_COMPASS) || CVarGetInteger("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
+            ((locationIt.rcType != RCTYPE_SMALL_KEY) || CVarGetInteger("gRandomizeKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
+            ((locationIt.rcType != RCTYPE_BOSS_KEY) || CVarGetInteger("gRandomizeBossKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) != RO_DUNGEON_ITEM_LOC_VANILLA) &&
+            ((locationIt.rcType != RCTYPE_GANON_BOSS_KEY) || CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) != RO_GANON_BOSS_KEY_VANILLA) &&
             (locationIt.rcType != RCTYPE_GF_KEY && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD ||
-                (CVar_GetS32("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_OPEN && locationIt.rcType != RCTYPE_GF_KEY && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) ||
-                (CVar_GetS32("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_FAST && 
-                    ((locationIt.rc == RC_GF_GERUDO_MEMBERSHIP_CARD && CVar_GetS32("gRandomizeShuffleGerudoToken", RO_GENERIC_NO) == RO_GENERIC_YES) ||
-                    (locationIt.rc == RC_GF_NORTH_F1_CARPENTER && CVar_GetS32("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA))
+                (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_OPEN && locationIt.rcType != RCTYPE_GF_KEY && locationIt.rc != RC_GF_GERUDO_MEMBERSHIP_CARD) ||
+                (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_FAST && 
+                    ((locationIt.rc == RC_GF_GERUDO_MEMBERSHIP_CARD && CVarGetInteger("gRandomizeShuffleGerudoToken", RO_GENERIC_NO) == RO_GENERIC_YES) ||
+                    (locationIt.rc == RC_GF_NORTH_F1_CARPENTER && CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA))
                 ) ||
-                (CVar_GetS32("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
-                    ((locationIt.rc == RC_GF_GERUDO_MEMBERSHIP_CARD && CVar_GetS32("gRandomizeShuffleGerudoToken", RO_GENERIC_NO) == RO_GENERIC_YES) ||
-                    (locationIt.rcType == RCTYPE_GF_KEY && CVar_GetS32("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA))
+                (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
+                    ((locationIt.rc == RC_GF_GERUDO_MEMBERSHIP_CARD && CVarGetInteger("gRandomizeShuffleGerudoToken", RO_GENERIC_NO) == RO_GENERIC_YES) ||
+                    (locationIt.rcType == RCTYPE_GF_KEY && CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA))
                 )
             )
         );
