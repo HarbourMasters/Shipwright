@@ -8,7 +8,7 @@
 #include <string>
 #include "soh/OTRGlobals.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
-
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define Path _Path
 #define PATH_HACK
@@ -31,20 +31,6 @@ extern PlayState* gPlayState;
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 
 #define CMD_REGISTER SohImGui::GetConsole()->AddCommand
-
-uint32_t chaosEffectNoUI;
-uint32_t chaosEffectGiantLink;
-uint32_t chaosEffectMinishLink;
-uint32_t chaosEffectPaperLink;
-uint32_t chaosEffectResetLinkScale;
-uint32_t chaosEffectInvisibleLink;
-uint32_t chaosEffectOneHitKO;
-uint32_t chaosEffectPacifistMode;
-int32_t chaosEffectDefenseModifier;
-uint32_t chaosEffectNoZ;
-uint32_t chaosEffectReverseControls;
-uint32_t chaosEffectGravityLevel = GRAVITY_LEVEL_NORMAL;
-int32_t chaosEffectSpeedModifier;
 
 static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if ((args.size() != 9) && (args.size() != 3) && (args.size() != 6)) {
@@ -488,8 +474,8 @@ static bool InvisibleHandler(std::shared_ptr<Ship::Console> Console, const std::
     }
 
     try {
-        chaosEffectInvisibleLink = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        if (!chaosEffectInvisibleLink) {
+        GameInteractor_InvisibleLinkActive = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        if (!GameInteractor_InvisibleLinkActive) {
             Player* player = GET_PLAYER(gPlayState);
             player->actor.shape.shadowDraw = ActorShadow_DrawFeet;
         }
@@ -508,12 +494,12 @@ static bool GiantLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
     }
 
     try {
-        chaosEffectGiantLink = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        if (chaosEffectGiantLink) {
-            chaosEffectPaperLink = 0;
-            chaosEffectMinishLink = 0;
+        GameInteractor_GiantLinkActive = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        if (GameInteractor_GiantLinkActive) {
+            GameInteractor_PaperLinkActive = 0;
+            GameInteractor_MinishLinkActive = 0;
         } else {
-            chaosEffectResetLinkScale = 1;
+            GameInteractor_ResetLinkScale = 1;
         }
 
         return CMD_SUCCESS;
@@ -530,12 +516,12 @@ static bool MinishLinkHandler(std::shared_ptr<Ship::Console> Console, const std:
     }
 
     try {
-        chaosEffectMinishLink = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        if (chaosEffectMinishLink) {
-            chaosEffectPaperLink = 0;
-            chaosEffectGiantLink = 0;
+        GameInteractor_MinishLinkActive = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        if (GameInteractor_MinishLinkActive) {
+            GameInteractor_PaperLinkActive = 0;
+            GameInteractor_GiantLinkActive = 0;
         } else {
-            chaosEffectResetLinkScale = 1;
+            GameInteractor_ResetLinkScale = 1;
         }
 
         return CMD_SUCCESS;
@@ -568,7 +554,7 @@ static bool GravityHandler(std::shared_ptr<Ship::Console> Console, const std::ve
     }
 
     try {
-        chaosEffectGravityLevel = Ship::Math::clamp(std::stoi(args[1], nullptr, 10), GRAVITY_LEVEL_LIGHT, GRAVITY_LEVEL_HEAVY);
+        GameInteractor_GravityLevel = Ship::Math::clamp(std::stoi(args[1], nullptr, 10), GRAVITY_LEVEL_LIGHT, GRAVITY_LEVEL_HEAVY);
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Minish value must be a number.");
@@ -583,7 +569,7 @@ static bool NoUIHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
     }
 
     try {
-        chaosEffectNoUI = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        GameInteractor_NoUIActive = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] No UI value must be a number.");
@@ -603,7 +589,7 @@ static bool DefenseModifierHandler(std::shared_ptr<Ship::Console> Console, const
     }
 
     try {
-        chaosEffectDefenseModifier = std::stoi(args[1], nullptr, 10);
+        GameInteractor_DefenseModifier = std::stoi(args[1], nullptr, 10);
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Defense modifier value must be a number.");
@@ -675,7 +661,7 @@ static bool NoZHandler(std::shared_ptr<Ship::Console> Console, const std::vector
     }
 
     try {
-        chaosEffectNoZ = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        GameInteractor_DisableZTargetingActive = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] NoZ value must be a number.");
@@ -690,7 +676,7 @@ static bool OneHitKOHandler(std::shared_ptr<Ship::Console> Console, const std::v
     }
 
     try {
-        chaosEffectOneHitKO = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        GameInteractor_OneHitKOActive = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] One-hit KO value must be a number.");
@@ -705,7 +691,7 @@ static bool PacifistHandler(std::shared_ptr<Ship::Console> Console, const std::v
     }
 
     try {
-        chaosEffectPacifistMode = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        GameInteractor_PacifistModeActive = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
         // Force interface to update to make the buttons transparent
         gSaveContext.unk_13E8 = 50;
         Interface_Update(gPlayState);
@@ -723,12 +709,12 @@ static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
     }
 
     try {
-        chaosEffectPaperLink = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        if (chaosEffectPaperLink) {
-            chaosEffectMinishLink = 0;
-            chaosEffectGiantLink = 0;
+        GameInteractor_PaperLinkActive = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        if (GameInteractor_PaperLinkActive) {
+            GameInteractor_MinishLinkActive = 0;
+            GameInteractor_GiantLinkActive = 0;
         } else {
-            chaosEffectResetLinkScale = 1;
+            GameInteractor_ResetLinkScale = 1;
         }
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
@@ -787,7 +773,7 @@ static bool ReverseControlsHandler(std::shared_ptr<Ship::Console> Console, const
     }
 
     try {
-        chaosEffectReverseControls = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        GameInteractor_ReverseControlsActive = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Reverse controls value must be a number.");
@@ -818,7 +804,7 @@ static bool SpeedModifierHandler(std::shared_ptr<Ship::Console> Console, const s
     }
 
     try {
-        chaosEffectSpeedModifier = std::stoi(args[1], nullptr, 10);
+        GameInteractor_RunSpeedModifier = std::stoi(args[1], nullptr, 10);
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Speed modifier value must be a number.");

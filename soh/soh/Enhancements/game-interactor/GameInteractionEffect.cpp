@@ -9,11 +9,19 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-// Effect State
-
-uint32_t GameInteractor_NoUI;
-
-// AddHeartContainer
+uint32_t GameInteractor_NoUIActive;
+uint32_t GameInteractor_GiantLinkActive;
+uint32_t GameInteractor_MinishLinkActive;
+uint32_t GameInteractor_PaperLinkActive;
+uint32_t GameInteractor_InvisibleLinkActive;
+uint32_t GameInteractor_ResetLinkScale;
+uint32_t GameInteractor_OneHitKOActive;
+uint32_t GameInteractor_PacifistModeActive;
+uint32_t GameInteractor_DefenseModifier;
+uint32_t GameInteractor_DisableZTargetingActive;
+uint32_t GameInteractor_ReverseControlsActive;
+uint32_t GameInteractor_RunSpeedModifier;
+uint32_t GameInteractor_GravityLevel = GRAVITY_LEVEL_NORMAL;
 
 namespace GameInteractionEffect {
 
@@ -49,53 +57,57 @@ namespace GameInteractionEffect {
 
     // FillMagic
     GameInteractionEffectQueryResult FillMagic::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+        if (!gSaveContext.isMagicAcquired || gSaveContext.magic >= (gSaveContext.isDoubleMagicAcquired + 1) + 0x30) {
+            return GameInteractionEffectQueryResult::NotPossible;
+        } else if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
     void FillMagic::Apply() {
-        
+        Magic_Fill(gPlayState);
     }
     void FillMagic::Remove() {}
 
     // EmptyMagic
     GameInteractionEffectQueryResult EmptyMagic::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+        if (!gSaveContext.isMagicAcquired || gSaveContext.magic <= 0) {
+            return GameInteractionEffectQueryResult::NotPossible;
+        } else if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
     void EmptyMagic::Apply() {
-        
+        gSaveContext.magic = 0;
     }
     void EmptyMagic::Remove() {}
 
     // GiveRupees
     GameInteractionEffectQueryResult GiveRupees::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+        if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
     void GiveRupees::Apply() {
-        
+        Rupees_ChangeBy(value);
     }
     void GiveRupees::Remove() {}
 
     // TakeRupees
     GameInteractionEffectQueryResult TakeRupees::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+        if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
     void TakeRupees::Apply() {
-        
+        Rupees_ChangeBy(-value);
     }
     void TakeRupees::Remove() {}
 
@@ -108,10 +120,10 @@ namespace GameInteractionEffect {
         }
     }
     void NoUI::Apply() {
-        GameInteractor_NoUI = 1;
+        GameInteractor_NoUIActive = 1;
     }
     void NoUI::Remove() {
-        GameInteractor_NoUI = 0;
+        GameInteractor_NoUIActive = 0;
     }
 
     // HighGravity
@@ -123,9 +135,11 @@ namespace GameInteractionEffect {
         }
     }
     void HighGravity::Apply() {
-        
+        GameInteractor_GravityLevel = GRAVITY_LEVEL_HEAVY;
     }
-    void HighGravity::Remove() {}
+    void HighGravity::Remove() {
+        GameInteractor_GravityLevel = GRAVITY_LEVEL_NORMAL;
+    }
 
     // LowGravity
     GameInteractionEffectQueryResult LowGravity::CanBeApplied() {
@@ -136,9 +150,11 @@ namespace GameInteractionEffect {
         }
     }
     void LowGravity::Apply() {
-        
+        GameInteractor_GravityLevel = GRAVITY_LEVEL_LIGHT;
     }
-    void LowGravity::Remove() {}
+    void LowGravity::Remove() {
+        GameInteractor_GravityLevel = GRAVITY_LEVEL_NORMAL;
+    }
 
     // KillPlayer
     GameInteractionEffectQueryResult KillPlayer::CanBeApplied() {
@@ -207,7 +223,7 @@ namespace GameInteractionEffect {
 
     // GiveHealth
     GameInteractionEffectQueryResult GiveHealth::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+        if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
@@ -220,7 +236,7 @@ namespace GameInteractionEffect {
 
     // TakeHealth
     GameInteractionEffectQueryResult TakeHealth::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+        if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
@@ -240,9 +256,12 @@ namespace GameInteractionEffect {
         }
     }
     void GiantLink::Apply() {
-        
+        GameInteractor_GiantLinkActive = 1;
     }
-    void GiantLink::Remove() {}
+    void GiantLink::Remove() { 
+        GameInteractor_GiantLinkActive = 0;
+        GameInteractor_ResetLinkScale = 1;
+    }
 
     // MinishLink
     GameInteractionEffectQueryResult MinishLink::CanBeApplied() {
@@ -253,9 +272,12 @@ namespace GameInteractionEffect {
         }
     }
     void MinishLink::Apply() {
-        
+        GameInteractor_MinishLinkActive = 1;
     }
-    void MinishLink::Remove() {}
+    void MinishLink::Remove() {
+        GameInteractor_MinishLinkActive = 0;
+        GameInteractor_ResetLinkScale = 1;
+    }
 
     // InvisibleLink
     GameInteractionEffectQueryResult InvisibleLink::CanBeApplied() {
@@ -266,9 +288,11 @@ namespace GameInteractionEffect {
         }
     }
     void InvisibleLink::Apply() {
-        
+        GameInteractor_InvisibleLinkActive = 1;
     }
-    void InvisibleLink::Remove() {}
+    void InvisibleLink::Remove() {
+        GameInteractor_InvisibleLinkActive = 0;
+    }
 
     // PaperLink
     GameInteractionEffectQueryResult PaperLink::CanBeApplied() {
@@ -279,9 +303,12 @@ namespace GameInteractionEffect {
         }
     }
     void PaperLink::Apply() {
-        
+        GameInteractor_PaperLinkActive = 1;
     }
-    void PaperLink::Remove() {}
+    void PaperLink::Remove() {
+        GameInteractor_PaperLinkActive = 0;
+        GameInteractor_ResetLinkScale = 1;
+    }
 
     // DisableZTargeting
     GameInteractionEffectQueryResult DisableZTargeting::CanBeApplied() {
@@ -292,9 +319,11 @@ namespace GameInteractionEffect {
         }
     }
     void DisableZTargeting::Apply() {
-        
+        GameInteractor_DisableZTargetingActive = 1;
     }
-    void DisableZTargeting::Remove() {}
+    void DisableZTargeting::Remove() {
+        GameInteractor_DisableZTargetingActive = 0;
+    }
 
     // PacifistMode
     GameInteractionEffectQueryResult PacifistMode::CanBeApplied() {
@@ -305,9 +334,11 @@ namespace GameInteractionEffect {
         }
     }
     void PacifistMode::Apply() {
-        
+        GameInteractor_PacifistModeActive = 1;
     }
-    void PacifistMode::Remove() {}
+    void PacifistMode::Remove() {
+        GameInteractor_PacifistModeActive = 0;
+    }
 
     // WeatherRainstorm
     GameInteractionEffectQueryResult WeatherRainstorm::CanBeApplied() {
@@ -324,16 +355,18 @@ namespace GameInteractionEffect {
 
     // ReverseControls
     GameInteractionEffectQueryResult ReverseControls::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+        if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
     void ReverseControls::Apply() {
-        
+        GameInteractor_ReverseControlsActive = 1;
     }
-    void ReverseControls::Remove() {}
+    void ReverseControls::Remove() {
+        GameInteractor_ReverseControlsActive = 0;
+    }
 
     // ForceIronBoots
     GameInteractionEffectQueryResult ForceIronBoots::CanBeApplied() {
@@ -363,7 +396,7 @@ namespace GameInteractionEffect {
 
     // GiveDekuShield
     GameInteractionEffectQueryResult GiveDekuShield::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+        if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
@@ -383,9 +416,11 @@ namespace GameInteractionEffect {
         }
     }
     void IncreaseRunSpeed::Apply() {
-        
+        GameInteractor_RunSpeedModifier = 2;
     }
-    void IncreaseRunSpeed::Remove() {}
+    void IncreaseRunSpeed::Remove() {
+        GameInteractor_RunSpeedModifier = 0;
+    }
 
     // DecreaseRunSpeed
     GameInteractionEffectQueryResult DecreaseRunSpeed::CanBeApplied() {
@@ -396,9 +431,11 @@ namespace GameInteractionEffect {
         }
     }
     void DecreaseRunSpeed::Apply() {
-        
+        GameInteractor_RunSpeedModifier = -2;
     }
-    void DecreaseRunSpeed::Remove() {}
+    void DecreaseRunSpeed::Remove() {
+        GameInteractor_RunSpeedModifier = 0;
+    }
 
     // OneHitKO
     GameInteractionEffectQueryResult OneHitKO::CanBeApplied() {
@@ -409,8 +446,11 @@ namespace GameInteractionEffect {
         }
     }
     void OneHitKO::Apply() {
+        GameInteractor_OneHitKOActive = 1;
     }
-    void OneHitKO::Remove() {}
+    void OneHitKO::Remove() {
+        GameInteractor_OneHitKOActive = 0;
+    }
 
     // IncreaseDamageTaken
     GameInteractionEffectQueryResult IncreaseDamageTaken::CanBeApplied() {
@@ -421,9 +461,11 @@ namespace GameInteractionEffect {
         }
     }
     void IncreaseDamageTaken::Apply() {
-        
+        GameInteractor_DefenseModifier = -value;
     }
-    void IncreaseDamageTaken::Remove() {}
+    void IncreaseDamageTaken::Remove() {
+        GameInteractor_DefenseModifier = 0;
+    }
 
     // DecreaseDamageTaken
     GameInteractionEffectQueryResult DecreaseDamageTaken::CanBeApplied() {
@@ -434,9 +476,11 @@ namespace GameInteractionEffect {
         }
     }
     void DecreaseDamageTaken::Apply() {
-        
+        GameInteractor_DefenseModifier = value;
     }
-    void DecreaseDamageTaken::Remove() {}
+    void DecreaseDamageTaken::Remove() {
+        GameInteractor_DefenseModifier = 0;
+    }
 
     // SpawnEnemy
     GameInteractionEffectQueryResult SpawnEnemy::CanBeApplied() {

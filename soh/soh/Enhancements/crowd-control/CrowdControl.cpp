@@ -393,6 +393,10 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         effect->giEffect = new GameInteractionEffect::SpawnEnemy();
     }
 
+    if (!effect->giEffect->value && effect->value) {
+        effect->giEffect->value = effect->value;
+    }
+
     if (effect->category == "") {
         effect->category = "none";
     }

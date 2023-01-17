@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef GameInteractor_h
 #define GameInteractor_h
 
@@ -13,9 +15,6 @@ public:
     static void RemoveEffect(GameInteractionEffectBase* effect);
     static bool IsSaveLoaded();
     static bool IsGameplayPaused();
-
-    static bool CanSpawnEnemy();
-    static void SpawnEnemy();
 };
 
 #endif /* __cplusplus */

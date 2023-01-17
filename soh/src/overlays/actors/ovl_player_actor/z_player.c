@@ -22,7 +22,7 @@
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
-#include "soh/Enhancements/debugconsole.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 typedef enum {
@@ -6073,11 +6073,11 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
     if (this->swordState == 0) {
         float maxSpeed = R_RUN_SPEED_LIMIT / 100.0f;
 
-        if (chaosEffectSpeedModifier != 0) {
-            if (chaosEffectSpeedModifier > 0) {
-                maxSpeed *= chaosEffectSpeedModifier;
+        if (GameInteractor_RunSpeedModifier != 0) {
+            if (GameInteractor_RunSpeedModifier > 0) {
+                maxSpeed *= GameInteractor_RunSpeedModifier;
             } else {
-                maxSpeed /= abs(chaosEffectSpeedModifier);
+                maxSpeed /= abs(GameInteractor_RunSpeedModifier);
             }
         }
 
@@ -7718,11 +7718,11 @@ void func_80842180(Player* this, PlayState* play) {
         func_80837268(this, &sp2C, &sp2A, 0.018f, play);
 
         if (!func_8083C484(this, &sp2C, &sp2A)) {
-            if (chaosEffectSpeedModifier != 0) {
-                if (chaosEffectSpeedModifier > 0) {
-                    sp2C *= chaosEffectSpeedModifier;
+            if (GameInteractor_RunSpeedModifier != 0) {
+                if (GameInteractor_RunSpeedModifier > 0) {
+                    sp2C *= GameInteractor_RunSpeedModifier;
                 } else {
-                    sp2C /= abs(chaosEffectSpeedModifier);
+                    sp2C /= abs(GameInteractor_RunSpeedModifier);
                 }
             }
 
@@ -10992,36 +10992,36 @@ void Player_Update(Actor* thisx, PlayState* play) {
     MREG(54) = this->actor.world.pos.z;
     MREG(55) = this->actor.world.rot.y;
 
-    if (chaosEffectGiantLink) {
+    if (GameInteractor_GiantLinkActive) {
         this->actor.scale.x = 0.02f;
         this->actor.scale.y = 0.02f;
         this->actor.scale.z = 0.02f;
     }
 
-    if (chaosEffectMinishLink) {
+    if (GameInteractor_MinishLinkActive) {
         this->actor.scale.x = 0.001f;
         this->actor.scale.y = 0.001f;
         this->actor.scale.z = 0.001f;
     }
 
-    if (chaosEffectPaperLink) {
+    if (GameInteractor_PaperLinkActive) {
         this->actor.scale.x = 0.001f;
         this->actor.scale.y = 0.01f;
         this->actor.scale.z = 0.01f;
     }
 
-    if (chaosEffectResetLinkScale) {
+    if (GameInteractor_ResetLinkScale) {
         this->actor.scale.x = 0.01f;
         this->actor.scale.y = 0.01f;
         this->actor.scale.z = 0.01f;
-        chaosEffectResetLinkScale = 0;
+        GameInteractor_ResetLinkScale = 0;
     }
 
-    if (chaosEffectGravityLevel == GRAVITY_LEVEL_HEAVY) {
+    if (GameInteractor_GravityLevel == GRAVITY_LEVEL_HEAVY) {
         this->actor.gravity = -4.0f;
     }
 
-    if (chaosEffectGravityLevel == GRAVITY_LEVEL_LIGHT) {
+    if (GameInteractor_GravityLevel == GRAVITY_LEVEL_LIGHT) {
         this->actor.gravity = -0.3f;
     }
 }

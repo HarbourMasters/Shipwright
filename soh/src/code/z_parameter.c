@@ -12,7 +12,6 @@
 #include <assert.h>
 #endif
 
-#include "soh/Enhancements/debugconsole.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 
@@ -939,7 +938,7 @@ void func_80083108(PlayState* play) {
                 Interface_ChangeAlpha(50);
             }
         } else if (msgCtx->msgMode == MSGMODE_NONE) {
-            if (chaosEffectPacifistMode) {
+            if (GameInteractor_PacifistModeActive) {
                 gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
                 gSaveContext.buttonStatus[3] = gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] =
                 gSaveContext.buttonStatus[7] = gSaveContext.buttonStatus[8] = BTN_DISABLED;
@@ -3069,7 +3068,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
     }
 
     // If one-hit ko mode is on, any damage kills you and you cannot gain health.
-    if (chaosEffectOneHitKO) {
+    if (GameInteractor_OneHitKOActive) {
         if (healthChange < 0) {
             gSaveContext.health = 0;
         }
@@ -3086,11 +3085,11 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
     }
     // clang-format on
 
-    if (chaosEffectDefenseModifier != 0 && healthChange < 0) {
-        if (chaosEffectDefenseModifier > 0) {
-            healthChange /= chaosEffectDefenseModifier;
+    if (GameInteractor_DefenseModifier != 0 && healthChange < 0) {
+        if (GameInteractor_DefenseModifier > 0) {
+            healthChange /= GameInteractor_DefenseModifier;
         } else {
-            healthChange *= abs(chaosEffectDefenseModifier);
+            healthChange *= abs(GameInteractor_DefenseModifier);
         }
     }
 
@@ -4963,7 +4962,7 @@ void Interface_Draw(PlayState* play) {
     s16 svar6;
     bool fullUi = !CVar_GetS32("gMinimalUI", 0) || !R_MINIMAP_DISABLED || play->pauseCtx.state != 0;
 
-    if (GameInteractor_NoUI) {
+    if (GameInteractor_NoUIActive) {
         return;
     }
 
