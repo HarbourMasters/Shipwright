@@ -3555,9 +3555,11 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::InsertHelpHoverText(
                     "Start with - You will start with all Small Keys from all dungeons.\n"
                     "\n"
-                    "Vanilla - Small Keys will appear in their vanilla locations.\n"
+                    "Vanilla - Small Keys will appear in their vanilla locations. "
+                    "You start with 3 keys in Spirit Temple MQ because the vanilla key layout is not beatable in logic.\n"
                     "\n"
-                    "Own dungeon - Small Keys can only appear in their respective dungeon.\n"
+                    "Own dungeon - Small Keys can only appear in their respective dungeon. "
+                    "If Fire Temple is not a Master Quest dungeon, the door to the Boss Key chest will be unlocked.\n"
                     "\n"
                     "Any dungeon - Small Keys can only appear inside of any dungon.\n"
                     "\n"
