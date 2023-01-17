@@ -38,4 +38,8 @@
 #define _z_select_staticSegmentRomStart 0
 #define _z_select_staticSegmentRomEnd 0
 
+// TODO: POSIX/BSD Bug, this is a hack to fix the build compilation on any BSD system (Switch, Wii-U, Vita, etc)
+// <sys/types.h> defines quad as a macro, which conflicts with the quad parameter on z_collision_check.c
+#undef quad
+
 #endif
