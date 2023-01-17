@@ -301,6 +301,7 @@ set(Header_Files__soh__resourceTypes
     "soh/resource/type/Skeleton.h"
     "soh/resource/type/SkeletonLimb.h"
     "soh/resource/type/Text.h"
+    "soh/resource/type/Background.h"
 )
 source_group("Header Files\\soh\\resource\\type" FILES ${Header_Files__soh__resourceTypes})
 
@@ -317,6 +318,7 @@ set(Source_Files__soh__resourceTypes
     "soh/resource/type/Skeleton.cpp"
     "soh/resource/type/SkeletonLimb.cpp"
     "soh/resource/type/Text.cpp"
+    "soh/resource/type/Background.cpp"
 )
 source_group("Source Files\\soh\\resource\\type" FILES ${Source_Files__soh__resourceTypes})
 
@@ -333,6 +335,7 @@ set(Header_Files__soh__resourceFactories
     "soh/resource/importer/SkeletonFactory.h"
     "soh/resource/importer/SkeletonLimbFactory.h"
     "soh/resource/importer/TextFactory.h"
+    "soh/resource/importer/BackgroundFactory.h"
 )
 source_group("Header Files\\soh\\resource\\importer" FILES ${Header_Files__soh__resourceFactories})
 
@@ -349,6 +352,7 @@ set(Source_Files__soh__resourceFactories
     "soh/resource/importer/SkeletonFactory.cpp"
     "soh/resource/importer/SkeletonLimbFactory.cpp"
     "soh/resource/importer/TextFactory.cpp"
+    "soh/resource/importer/BackgroundFactory.cpp"
 )
 source_group("Source Files\\soh\\resource\\importer" FILES ${Source_Files__soh__resourceFactories})
 
