@@ -1,7 +1,7 @@
 #ifdef ENABLE_CROWD_CONTROL
 
 #include "CrowdControl.h"
-#include <Cvar.h>
+#include <libultraship/bridge.h>
 #include <Console.h>
 #include <ImGuiImpl.h>
 #include <nlohmann/json.hpp>

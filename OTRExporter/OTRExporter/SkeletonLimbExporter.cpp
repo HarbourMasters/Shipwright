@@ -1,13 +1,13 @@
 #include "SkeletonLimbExporter.h"
 #include "DisplayListExporter.h"
-#include <Resource.h>
+#include <libultraship/bridge.h>
 #include <Globals.h>
 
 void OTRExporter_SkeletonLimb::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)
 {
 	ZLimb* limb = (ZLimb*)res;
 
-	WriteHeader(res, outPath, writer, Ship::ResourceType::SkeletonLimb);
+	WriteHeader(res, outPath, writer, Ship::ResourceType::SOH_SkeletonLimb);
 
 	writer->Write((uint8_t)limb->type);
 	writer->Write((uint8_t)limb->skinSegmentType);

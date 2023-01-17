@@ -37,7 +37,6 @@ private:
 };
 
 uint32_t IsGameMasterQuest();
-std::string GetName(const char* path);
 #endif
 
 #ifndef __cplusplus
@@ -60,14 +59,11 @@ uint32_t ResourceMgr_GetNumGameVersions();
 uint32_t ResourceMgr_GetGameVersion(int index);
 void ResourceMgr_CacheDirectory(const char* resName);
 char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
-const char* ResourceMgr_GetName(const char* path);
 void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
 char* ResourceMgr_LoadJPEG(char* data, int dataSize);
-char* ResourceMgr_LoadTexByName(const char* texPath);
 uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
 uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
-uint32_t ResourceMgr_LoadTexSizeByName(char* texPath);
 char* ResourceMgr_LoadTexOrDListByName(const char* filePath);
 char* ResourceMgr_LoadPlayerAnimByName(const char* animPath);
 AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path);
@@ -79,7 +75,7 @@ void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path);
 Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
 
-Vtx* ResourceMgr_LoadVtxByName(const char* path);
+Vtx* ResourceMgr_LoadVtxByName(char* path);
 SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path);
 SequenceData ResourceMgr_LoadSeqByName(const char* path);
 SoundFontSample* ResourceMgr_LoadAudioSample(const char* path);
@@ -106,7 +102,7 @@ int AudioPlayer_Buffered(void);
 int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
-int Controller_ShouldRumble(size_t i);
+int Controller_ShouldRumble(size_t slot);
 void Controller_BlockGameInput();
 void Controller_UnblockGameInput();
 void Hooks_ExecuteAudioInit();

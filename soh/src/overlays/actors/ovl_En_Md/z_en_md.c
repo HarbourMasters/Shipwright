@@ -624,7 +624,7 @@ void func_80AAB5A4(EnMd* this, PlayState* play) {
     f32 temp;
 
     if (play->sceneNum != SCENE_KOKIRI_HOME4) {
-        if (CVar_GetS32("gDisableKokiriDrawDistance", 0) != 0) {
+        if (CVarGetInteger("gDisableKokiriDrawDistance", 0) != 0) {
             temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
                     (play->sceneNum == SCENE_SPOT04))
                        ? 100.0f
