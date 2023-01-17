@@ -102,7 +102,7 @@ void CrowdControl::Disable() {
 
 void CrowdControl::ListenToServer() {
     while (isEnabled) {
-        while (!connected) {
+        while (!connected && isEnabled) {
             SPDLOG_TRACE("[CrowdControl] Attempting to make connection to server...");
             tcpsock = SDLNet_TCP_Open(&ip);
 
@@ -113,8 +113,10 @@ void CrowdControl::ListenToServer() {
             }
         }
 
-        auto socketSet = SDLNet_AllocSocketSet(1);
-        SDLNet_TCP_AddSocket(socketSet, tcpsock);
+        SDLNet_SocketSet socketSet = SDLNet_AllocSocketSet(1);
+        if (tcpsock) {
+            SDLNet_TCP_AddSocket(socketSet, tcpsock);
+        }
 
         // Listen to socket messages
         while (connected && tcpsock && isEnabled) {
@@ -368,29 +370,40 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::DecreaseDamageTaken();
     } else if (effectName == EFFECT_SPAWN_CUCCO_STORM) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemy();
+        effect->giEffect = new GameInteractionEffect::SpawnCuccoStorm();
     } else if (effectName == EFFECT_SPAWN_WALLMASTER) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemy();
+        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
+        effect->giEffect->value = ACTOR_EN_WALLMAS;
     } else if (effectName == EFFECT_SPAWN_ARWING) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemy();
+        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
+        effect->giEffect->value = ACTOR_EN_CLEAR_TAG;
     } else if (effectName == EFFECT_SPAWN_DARK_LINK) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemy();
+        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
+        effect->giEffect->value = ACTOR_EN_TORCH2;
     } else if (effectName == EFFECT_SPAWN_STALFOS) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemy();
+        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
+        effect->giEffect->value = ACTOR_EN_TEST;
     } else if (effectName == EFFECT_SPAWN_WOLFOS) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemy();
+        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
+        effect->giEffect->value = ACTOR_EN_WF;
     } else if (effectName == EFFECT_SPAWN_FREEZARD) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemy();
+        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
+        effect->giEffect->value = ACTOR_EN_FZ;
     } else if (effectName == EFFECT_SPAWN_KEESE) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemy();
+        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
+        effect->giEffect->value = ACTOR_EN_FIREFLY;
     } else if (effectName == EFFECT_SPAWN_ICE_KEESE) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemy();
+        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
+        effect->giEffect->value = ACTOR_EN_FIREFLY;
     } else if (effectName == EFFECT_SPAWN_FIRE_KEESE) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemy();
+        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
+        effect->giEffect->value = ACTOR_EN_FIREFLY;
     } else if (effectName == EFFECT_SPAWN_TEKTITE) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemy();
+        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
+        effect->giEffect->value = ACTOR_EN_TITE;
     } else if (effectName == EFFECT_SPAWN_LIKE_LIKE) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemy();
+        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
+        effect->giEffect->value = ACTOR_EN_RR;
     }
 
     if (!effect->giEffect->value && effect->value) {

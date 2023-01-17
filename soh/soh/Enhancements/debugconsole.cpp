@@ -28,7 +28,6 @@ extern PlayState* gPlayState;
 }
 
 #include <Cvar.h>
-#include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 
 #define CMD_REGISTER SohImGui::GetConsole()->AddCommand
 
@@ -82,13 +81,7 @@ static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std:
 }
 
 static bool GiveDekuShieldHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&) {
-    // Give Deku Shield to the player, and automatically equip it when they're child and have no shield currently equiped.
-    Player* player = GET_PLAYER(gPlayState);
-    Item_Give(gPlayState, ITEM_SHIELD_DEKU);
-    if (LINK_IS_CHILD && player->currentShield == PLAYER_SHIELD_NONE) {
-        player->currentShield = PLAYER_SHIELD_DEKU;
-        Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_DEKU);
-    }
+    GameInteractor::GiveDekuShield();
     SohImGui::GetConsole()->SendInfoMessage("[SOH] Gave Deku Shield");
     return CMD_SUCCESS;
 }
@@ -535,7 +528,7 @@ static bool AddHeartContainerHandler(std::shared_ptr<Ship::Console> Console, con
     if (gSaveContext.healthCapacity >= 0x140)
         return CMD_FAILED;
 
-    Health_GiveHearts(1);
+    GameInteractor::AddOrRemoveHealthContainers(1);
     return CMD_SUCCESS;
 }
 
@@ -543,7 +536,7 @@ static bool RemoveHeartContainerHandler(std::shared_ptr<Ship::Console> Console, 
     if ((gSaveContext.healthCapacity - 0x10) < 3)
         return CMD_FAILED;
 
-    Health_RemoveHearts(1);
+    GameInteractor::AddOrRemoveHealthContainers(-1);
     return CMD_SUCCESS;
 }
 
@@ -578,7 +571,7 @@ static bool NoUIHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
 }
 
 static bool FreezeHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    gSaveContext.pendingIceTrapCount++;
+    GameInteractor::FreezePlayer();
     return CMD_SUCCESS;
 }
 
@@ -610,11 +603,7 @@ static bool DamageHandler(std::shared_ptr<Ship::Console> Console, const std::vec
             return CMD_FAILED;
         }
 
-        Player* player = GET_PLAYER(gPlayState);
-
-        Health_ChangeBy(gPlayState, -value * 0x10);
-        func_80837C0C(gPlayState, player, 0, 0, 0, 0, 0);
-        player->invincibilityTimer = 28;
+        GameInteractor::HealOrDamagePlayer(-value);
 
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
@@ -636,7 +625,7 @@ static bool HealHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
             return CMD_FAILED;
         }
 
-        Health_ChangeBy(gPlayState, value * 0x10);
+        GameInteractor::HealOrDamagePlayer(value);
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Heal value must be a number.");
@@ -645,12 +634,12 @@ static bool HealHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
 }
 
 static bool FillMagicHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    Magic_Fill(gPlayState);
+    GameInteractor::AddOrRemoveMagic(96);
     return CMD_SUCCESS;
 }
 
 static bool EmptyMagicHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    gSaveContext.magic = 0;
+    GameInteractor::AddOrRemoveMagic(-96);
     return CMD_SUCCESS;
 }
 
@@ -691,10 +680,8 @@ static bool PacifistHandler(std::shared_ptr<Ship::Console> Console, const std::v
     }
 
     try {
-        GameInteractor_PacifistModeActive = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        // Force interface to update to make the buttons transparent
-        gSaveContext.unk_13E8 = 50;
-        Interface_Update(gPlayState);
+        uint8_t state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        GameInteractor::SetPacifistMode(state);
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Pacifist value must be a number.");
@@ -730,34 +717,8 @@ static bool RainstormHandler(std::shared_ptr<Ship::Console> Console, const std::
     }
 
     try {
-        uint32_t rainstorm = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        if (rainstorm) {
-            gPlayState->envCtx.unk_F2[0] = 20;    // rain intensity target
-            gPlayState->envCtx.gloomySkyMode = 1; // start gloomy sky
-            if ((gWeatherMode != 0) || gPlayState->envCtx.unk_17 != 0) {
-                gPlayState->envCtx.unk_DE = 1;
-            }
-            gPlayState->envCtx.lightningMode = LIGHTNING_MODE_ON;
-            Environment_PlayStormNatureAmbience(gPlayState);
-        } else {
-            gPlayState->envCtx.unk_F2[0] = 0;
-            if (gPlayState->csCtx.state == CS_STATE_IDLE) {
-                Environment_StopStormNatureAmbience(gPlayState);
-            } else if (func_800FA0B4(SEQ_PLAYER_BGM_MAIN) == NA_BGM_NATURE_AMBIENCE) {
-                Audio_SetNatureAmbienceChannelIO(NATURE_CHANNEL_LIGHTNING, CHANNEL_IO_PORT_1, 0);
-                Audio_SetNatureAmbienceChannelIO(NATURE_CHANNEL_RAIN, CHANNEL_IO_PORT_1, 0);
-            }
-            osSyncPrintf("\n\n\nE_wether_flg=[%d]", gWeatherMode);
-            osSyncPrintf("\nrain_evt_trg=[%d]\n\n", gPlayState->envCtx.gloomySkyMode);
-            if (gWeatherMode == 0 && (gPlayState->envCtx.gloomySkyMode == 1)) {
-                gPlayState->envCtx.gloomySkyMode = 2; // end gloomy sky
-            } else {
-                gPlayState->envCtx.gloomySkyMode = 0;
-                gPlayState->envCtx.unk_DE = 0;
-            }
-            gPlayState->envCtx.lightningMode = LIGHTNING_MODE_LAST;
-        }
-
+        uint32_t state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        GameInteractor::SetWeatherStorm(state);
 
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
@@ -830,11 +791,7 @@ static bool BootsHandler(std::shared_ptr<Ship::Console> Console, const std::vect
         return CMD_FAILED;
     }
 
-    Player* player = GET_PLAYER(gPlayState);
-    player->currentBoots = it->second;
-    Inventory_ChangeEquipment(EQUIP_BOOTS, it->second + 1);
-    Player_SetBootData(gPlayState, player);
-
+    GameInteractor::ForceEquipBoots(it->second);
     return CMD_SUCCESS;
 }
 
@@ -851,9 +808,7 @@ static bool KnockbackHandler(std::shared_ptr<Ship::Console> Console, const std::
             return CMD_FAILED;
         }
 
-        Player* player = GET_PLAYER(gPlayState);
-        func_8002F71C(gPlayState, &player->actor, value * 5, player->actor.world.rot.y + 0x8000, value * 5);
-    
+        GameInteractor::KnockbackPlayer(value);
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Knockback value must be a number.");
@@ -864,7 +819,7 @@ static bool KnockbackHandler(std::shared_ptr<Ship::Console> Console, const std::
 static bool ElectrocuteHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     Player* player = GET_PLAYER(gPlayState);
     if (PlayerGrounded(player)) {
-        func_80837C0C(gPlayState, player, 4, 0, 0, 0, 0);
+        GameInteractor::ElectrocutePlayer();
         return CMD_SUCCESS;
     }
 
@@ -874,21 +829,14 @@ static bool ElectrocuteHandler(std::shared_ptr<Ship::Console> Console, const std
 static bool BurnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     Player* player = GET_PLAYER(gPlayState);
     if (PlayerGrounded(player)) {
-        for (int i = 0; i < 18; i++) {
-            player->flameTimers[i] = Rand_S16Offset(0, 200);
-        }
-        player->isBurning = true;
-        func_80837C0C(gPlayState, player, 0, 0, 0, 0, 0);
+        GameInteractor::BurnPlayer();
         return CMD_FAILED;
     }
     return CMD_SUCCESS;
 }
 
 static bool CuccoStormHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    Player* player = GET_PLAYER(gPlayState);
-    EnNiw* cucco = (EnNiw*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_NIW, player->actor.world.pos.x,
-                                       player->actor.world.pos.y + 2200, player->actor.world.pos.z, 0, 0, 0, 0, 0);
-    cucco->actionFunc = func_80AB70A0_nocutscene;
+    GameInteractor::SpawnCuccoStorm();
     return CMD_SUCCESS;
 }
 

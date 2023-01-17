@@ -17,71 +17,71 @@ uint32_t GameInteractor_InvisibleLinkActive;
 uint32_t GameInteractor_ResetLinkScale;
 uint32_t GameInteractor_OneHitKOActive;
 uint32_t GameInteractor_PacifistModeActive;
-uint32_t GameInteractor_DefenseModifier;
 uint32_t GameInteractor_DisableZTargetingActive;
 uint32_t GameInteractor_ReverseControlsActive;
-uint32_t GameInteractor_RunSpeedModifier;
+int32_t GameInteractor_DefenseModifier;
+int32_t GameInteractor_RunSpeedModifier;
 uint32_t GameInteractor_GravityLevel = GRAVITY_LEVEL_NORMAL;
 
 namespace GameInteractionEffect {
 
     // AddHeartContainer
     GameInteractionEffectQueryResult AddHeartContainer::CanBeApplied() {
-        if (gSaveContext.healthCapacity >= 0x140) {
-            return GameInteractionEffectQueryResult::NotPossible;
-        } else if (!GameInteractor::IsSaveLoaded()) {
+        if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else if (gSaveContext.healthCapacity >= 0x140) {
+            return GameInteractionEffectQueryResult::NotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
     void AddHeartContainer::Apply() {
-        Health_GiveHearts(1);
+        GameInteractor::AddOrRemoveHealthContainers(1);
     }
     void AddHeartContainer::Remove() {}
 
     // RemoveHeartContainer
     GameInteractionEffectQueryResult RemoveHeartContainer::CanBeApplied() {
-        if (gSaveContext.healthCapacity <= 0x10) {
-            return GameInteractionEffectQueryResult::NotPossible;
-        } else if (!GameInteractor::IsSaveLoaded()) {
+        if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else if (gSaveContext.healthCapacity <= 0x10) {
+            return GameInteractionEffectQueryResult::NotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
     void RemoveHeartContainer::Apply() {
-        Health_RemoveHearts(1);
+        GameInteractor::AddOrRemoveHealthContainers(-1);
     }
     void RemoveHeartContainer::Remove() {}
 
     // FillMagic
     GameInteractionEffectQueryResult FillMagic::CanBeApplied() {
-        if (!gSaveContext.isMagicAcquired || gSaveContext.magic >= (gSaveContext.isDoubleMagicAcquired + 1) + 0x30) {
-            return GameInteractionEffectQueryResult::NotPossible;
-        } else if (!GameInteractor::IsSaveLoaded()) {
+        if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else if (!gSaveContext.isMagicAcquired || gSaveContext.magic >= ((gSaveContext.isDoubleMagicAcquired + 1) * 48)) {
+            return GameInteractionEffectQueryResult::NotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
     void FillMagic::Apply() {
-        Magic_Fill(gPlayState);
+        GameInteractor::AddOrRemoveMagic(96);
     }
     void FillMagic::Remove() {}
 
     // EmptyMagic
     GameInteractionEffectQueryResult EmptyMagic::CanBeApplied() {
-        if (!gSaveContext.isMagicAcquired || gSaveContext.magic <= 0) {
-            return GameInteractionEffectQueryResult::NotPossible;
-        } else if (!GameInteractor::IsSaveLoaded()) {
+        if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else if (!gSaveContext.isMagicAcquired || gSaveContext.magic <= 0) {
+            return GameInteractionEffectQueryResult::NotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
     void EmptyMagic::Apply() {
-        gSaveContext.magic = 0;
+        GameInteractor::AddOrRemoveMagic(-96);
     }
     void EmptyMagic::Remove() {}
 
@@ -102,6 +102,8 @@ namespace GameInteractionEffect {
     GameInteractionEffectQueryResult TakeRupees::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else if (gSaveContext.rupees <= 0) {
+            return GameInteractionEffectQueryResult::NotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
@@ -111,7 +113,7 @@ namespace GameInteractionEffect {
     }
     void TakeRupees::Remove() {}
 
-    // No UI
+    // NoUI
     GameInteractionEffectQueryResult NoUI::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
@@ -156,21 +158,54 @@ namespace GameInteractionEffect {
         GameInteractor_GravityLevel = GRAVITY_LEVEL_NORMAL;
     }
 
+    // GiveHealth
+    GameInteractionEffectQueryResult GiveHealth::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else if (gSaveContext.health == gSaveContext.healthCapacity) {
+            return GameInteractionEffectQueryResult::NotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void GiveHealth::Apply() {
+        GameInteractor::HealOrDamagePlayer(value);
+    }
+    void GiveHealth::Remove() {}
+
+    // TakeHealth
+    GameInteractionEffectQueryResult TakeHealth::CanBeApplied() {
+        int32_t healthAfterEffect = (gSaveContext.health - (16 * value));
+        if (!GameInteractor::IsSaveLoaded()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else if (healthAfterEffect <= 0) {
+            return GameInteractionEffectQueryResult::NotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void TakeHealth::Apply() {
+        GameInteractor::HealOrDamagePlayer(-value);
+    }
+    void TakeHealth::Remove() {}
+
     // KillPlayer
     GameInteractionEffectQueryResult KillPlayer::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+        Player* player = GET_PLAYER(gPlayState);
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused() || !PlayerGrounded(player)) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
     void KillPlayer::Apply() {
-        
+        GameInteractor::HealOrDamagePlayer(-50);
     }
     void KillPlayer::Remove() {}
 
     // FreezePlayer
     GameInteractionEffectQueryResult FreezePlayer::CanBeApplied() {
+        Player* player = GET_PLAYER(gPlayState);
         if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
@@ -178,33 +213,35 @@ namespace GameInteractionEffect {
         }
     }
     void FreezePlayer::Apply() {
-        
+        GameInteractor::FreezePlayer();
     }
     void FreezePlayer::Remove() {}
 
     // BurnPlayer
     GameInteractionEffectQueryResult BurnPlayer::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+        Player* player = GET_PLAYER(gPlayState);
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused() || !PlayerGrounded(player)) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
     void BurnPlayer::Apply() {
-        
+        GameInteractor::BurnPlayer();
     }
     void BurnPlayer::Remove() {}
 
     // ElectrocutePlayer
     GameInteractionEffectQueryResult ElectrocutePlayer::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+        Player* player = GET_PLAYER(gPlayState);
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused() || !PlayerGrounded(player)) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
     void ElectrocutePlayer::Apply() {
-        
+        GameInteractor::ElectrocutePlayer();
     }
     void ElectrocutePlayer::Remove() {}
 
@@ -217,35 +254,9 @@ namespace GameInteractionEffect {
         }
     }
     void KnockbackPlayer::Apply() {
-        
+        GameInteractor::KnockbackPlayer(value);
     }
     void KnockbackPlayer::Remove() {}
-
-    // GiveHealth
-    GameInteractionEffectQueryResult GiveHealth::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded()) {
-            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else {
-            return GameInteractionEffectQueryResult::Possible;
-        }
-    }
-    void GiveHealth::Apply() {
-        
-    }
-    void GiveHealth::Remove() {}
-
-    // TakeHealth
-    GameInteractionEffectQueryResult TakeHealth::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded()) {
-            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else {
-            return GameInteractionEffectQueryResult::Possible;
-        }
-    }
-    void TakeHealth::Apply() {
-        
-    }
-    void TakeHealth::Remove() {}
 
     // GiantLink
     GameInteractionEffectQueryResult GiantLink::CanBeApplied() {
@@ -334,10 +345,10 @@ namespace GameInteractionEffect {
         }
     }
     void PacifistMode::Apply() {
-        GameInteractor_PacifistModeActive = 1;
+        GameInteractor::SetPacifistMode(1);
     }
     void PacifistMode::Remove() {
-        GameInteractor_PacifistModeActive = 0;
+        GameInteractor::SetPacifistMode(0);
     }
 
     // WeatherRainstorm
@@ -349,9 +360,11 @@ namespace GameInteractionEffect {
         }
     }
     void WeatherRainstorm::Apply() {
-        
+        GameInteractor::SetWeatherStorm(1);
     }
-    void WeatherRainstorm::Remove() {}
+    void WeatherRainstorm::Remove() {
+        GameInteractor::SetWeatherStorm(0);
+    }
 
     // ReverseControls
     GameInteractionEffectQueryResult ReverseControls::CanBeApplied() {
@@ -377,9 +390,11 @@ namespace GameInteractionEffect {
         }
     }
     void ForceIronBoots::Apply() {
-        
+        GameInteractor::ForceEquipBoots(PLAYER_BOOTS_IRON);
     }
-    void ForceIronBoots::Remove() {}
+    void ForceIronBoots::Remove() {
+        GameInteractor::ForceEquipBoots(PLAYER_BOOTS_KOKIRI);
+    }
 
     // ForceHoverBoots
     GameInteractionEffectQueryResult ForceHoverBoots::CanBeApplied() {
@@ -390,22 +405,11 @@ namespace GameInteractionEffect {
         }
     }
     void ForceHoverBoots::Apply() {
-        
+        GameInteractor::ForceEquipBoots(PLAYER_BOOTS_HOVER);
     }
-    void ForceHoverBoots::Remove() {}
-
-    // GiveDekuShield
-    GameInteractionEffectQueryResult GiveDekuShield::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded()) {
-            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else {
-            return GameInteractionEffectQueryResult::Possible;
-        }
+    void ForceHoverBoots::Remove() {
+        GameInteractor::ForceEquipBoots(PLAYER_BOOTS_KOKIRI);
     }
-    void GiveDekuShield::Apply() {
-        
-    }
-    void GiveDekuShield::Remove() {}
 
     // IncreaseRunSpeed
     GameInteractionEffectQueryResult IncreaseRunSpeed::CanBeApplied() {
@@ -482,16 +486,42 @@ namespace GameInteractionEffect {
         GameInteractor_DefenseModifier = 0;
     }
 
-    // SpawnEnemy
-    GameInteractionEffectQueryResult SpawnEnemy::CanBeApplied() {
+    // GiveDekuShield
+    GameInteractionEffectQueryResult GiveDekuShield::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void GiveDekuShield::Apply() {
+        GameInteractor::GiveDekuShield();
+    }
+    void GiveDekuShield::Remove() {}
+
+    // SpawnCuccoStorm
+    GameInteractionEffectQueryResult SpawnCuccoStorm::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
-    void SpawnEnemy::Apply() {
-        
+    void SpawnCuccoStorm::Apply() {
+        GameInteractor::SpawnCuccoStorm();
     }
-    void SpawnEnemy::Remove() {}
+    void SpawnCuccoStorm::Remove() {}
+
+    // SpawnEnemy
+    GameInteractionEffectQueryResult SpawnEnemyWithOffset::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void SpawnEnemyWithOffset::Apply() {
+        GameInteractor::SpawnEnemyWithOffset(value);
+    }
+    void SpawnEnemyWithOffset::Remove() {}
 }

@@ -15,6 +15,19 @@ public:
     static void RemoveEffect(GameInteractionEffectBase* effect);
     static bool IsSaveLoaded();
     static bool IsGameplayPaused();
+    static void AddOrRemoveHealthContainers(int32_t amount);
+    static void AddOrRemoveMagic(int32_t amount);
+    static void HealOrDamagePlayer(int32_t hearts);
+    static void SetPacifistMode(uint8_t effectState);
+    static void SetWeatherStorm(uint8_t effectState);
+    static void ForceEquipBoots(uint8_t boots);
+    static void FreezePlayer();
+    static void BurnPlayer();
+    static void ElectrocutePlayer();
+    static void KnockbackPlayer(uint8_t strength);
+    static void GiveDekuShield();
+    static void SpawnCuccoStorm();
+    static void SpawnEnemyWithOffset(uint32_t enemyId);
 };
 
 #endif /* __cplusplus */

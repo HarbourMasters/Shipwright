@@ -3123,14 +3123,6 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
     }
 }
 
-void Health_GiveHearts(s16 hearts) {
-    gSaveContext.healthCapacity += hearts * 0x10;
-}
-
-void Health_RemoveHearts(s16 hearts) {
-    gSaveContext.healthCapacity -= hearts * 0x10;
-}
-
 void Rupees_ChangeBy(s16 rupeeChange) {
     gSaveContext.rupeeAccumulator += rupeeChange;
 

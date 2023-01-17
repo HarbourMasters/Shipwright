@@ -20,10 +20,10 @@ extern uint32_t GameInteractor_InvisibleLinkActive;
 extern uint32_t GameInteractor_ResetLinkScale;
 extern uint32_t GameInteractor_OneHitKOActive;
 extern uint32_t GameInteractor_PacifistModeActive;
-extern uint32_t GameInteractor_DefenseModifier;
 extern uint32_t GameInteractor_DisableZTargetingActive;
 extern uint32_t GameInteractor_ReverseControlsActive;
-extern uint32_t GameInteractor_RunSpeedModifier;
+extern int32_t GameInteractor_DefenseModifier;
+extern int32_t GameInteractor_RunSpeedModifier;
 extern uint32_t GameInteractor_GravityLevel;
 #ifdef __cplusplus
 }
@@ -99,6 +99,18 @@ namespace GameInteractionEffect {
         void Remove() override;
     };
 
+    class GiveHealth : public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void Apply() override;
+        void Remove() override;
+    };
+
+    class TakeHealth : public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void Apply() override;
+        void Remove() override;
+    };
+
     class KillPlayer: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
@@ -124,18 +136,6 @@ namespace GameInteractionEffect {
     };
 
     class KnockbackPlayer: public GameInteractionEffectBase {
-        GameInteractionEffectQueryResult CanBeApplied() override;
-        void Apply() override;
-        void Remove() override;
-    };
-
-    class GiveHealth: public GameInteractionEffectBase {
-        GameInteractionEffectQueryResult CanBeApplied() override;
-        void Apply() override;
-        void Remove() override;
-    };
-
-    class TakeHealth: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
         void Remove() override;
@@ -201,12 +201,6 @@ namespace GameInteractionEffect {
         void Remove() override;
     };
 
-    class GiveDekuShield: public GameInteractionEffectBase {
-        GameInteractionEffectQueryResult CanBeApplied() override;
-        void Apply() override;
-        void Remove() override;
-    };
-
     class IncreaseRunSpeed: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
@@ -237,7 +231,19 @@ namespace GameInteractionEffect {
         void Remove() override;
     };
 
-    class SpawnEnemy: public GameInteractionEffectBase {
+    class GiveDekuShield: public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void Apply() override;
+        void Remove() override;
+    };
+
+    class SpawnCuccoStorm: public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void Apply() override;
+        void Remove() override;
+    };
+
+    class SpawnEnemyWithOffset: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
         void Remove() override;
