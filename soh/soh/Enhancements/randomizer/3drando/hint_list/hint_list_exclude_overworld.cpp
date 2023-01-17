@@ -418,6 +418,10 @@ void HintTable_Init_Exclude_Overworld() {
                        Text{"a #carpet guru# sells", /*french*/"#un marchand du désert# vend", /*spanish*/"el #genio de una alfombra# vende"},
   });
 
+    hintTable[GC_MEDIGORON] = HintText::Exclude({
+                       //obscure text
+                       Text{"#Medigoron# sells", /*french*/"#Medigoron# vend", /*spanish*/"#Medigoron# vende"},
+  });
 
     hintTable[KAK_IMPAS_HOUSE_FREESTANDING_POH] = HintText::Exclude({
                        //obscure text
