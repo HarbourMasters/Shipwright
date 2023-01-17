@@ -2308,9 +2308,9 @@ void Environment_PatchSandstorm(PlayState* play) {
         gsSPWideTextureRectangle(OTRGetRectDimensionFromLeftEdge(0) << 2, 0,
             OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH) << 2, 0x03C0, G_TX_RENDERTILE, 0, 0, 0x008C, -0x008C),
     };
-    ResourceMgr_PatchGfxByName(gFieldSandstormDL, "gfxPatchSandstormRect0", 48, gfxPatchSandstormRect[0]);
-    ResourceMgr_PatchGfxByName(gFieldSandstormDL, "gfxPatchSandstormRect1", 50, gfxPatchSandstormRect[1]);
-    ResourceMgr_PatchGfxByName(gFieldSandstormDL, "gfxPatchSandstormRect2", 52, gfxPatchSandstormRect[2]);
+    ResourceMgr_PatchGfxByName(gFieldSandstormDL, "gfxPatchSandstormRect0", 24, gfxPatchSandstormRect[0]);
+    ResourceMgr_PatchGfxByName(gFieldSandstormDL, "gfxPatchSandstormRect1", 25, gfxPatchSandstormRect[1]);
+    ResourceMgr_PatchGfxByName(gFieldSandstormDL, "gfxPatchSandstormRect2", 26, gfxPatchSandstormRect[2]);
 
     previousPatchedSandstormScreenSize = ABS(OTRGetRectDimensionFromLeftEdge(0)) + ABS(OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH));
 }
