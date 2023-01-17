@@ -898,9 +898,9 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
     }*/
 
     // Index refers to individual gfx words, which are half the size on 32-bit
-    if (sizeof(uintptr_t) < 8) {
-        index /= 2;
-    }
+    // if (sizeof(uintptr_t) < 8) {
+    // index /= 2;
+    // }
 
     Gfx* gfx = (Gfx*)&res->Instructions[index];
 
