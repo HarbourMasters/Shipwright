@@ -1,7 +1,7 @@
 #ifndef Z64_ANIMATION_H
 #define Z64_ANIMATION_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "z64dma.h"
 #include "z64math.h"
 

@@ -309,7 +309,7 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
     }
 
     OTRControllerCallback(&controllerCallback);
-    if (CVar_GetS32("gPauseBufferBlockInputFrame", 0)) {
+    if (CVarGetInteger("gPauseBufferBlockInputFrame", 0)) {
         Controller_BlockGameInput();
     } else {
         Controller_UnblockGameInput();
@@ -331,7 +331,7 @@ void PadMgr_HandleRetraceMsg(PadMgr* padMgr) {
     osContGetReadData(padMgr->pads);
 
     for (i = 0; i < __osMaxControllers; i++) {
-        padMgr->padStatus[i].status = CVar_GetS32("gRumbleEnabled", 0) && Controller_ShouldRumble(i);
+        padMgr->padStatus[i].status = Controller_ShouldRumble(i);
     }
 
     if (padMgr->preNMIShutdown) {

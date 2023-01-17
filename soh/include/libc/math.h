@@ -1,7 +1,7 @@
 #ifndef MATH_H
 #define MATH_H
 
-#include "ultra64/types.h"
+#include <libultraship/libultra.h>
 
 #define M_PI 3.14159265358979323846f
 #define M_SQRT2 1.41421356237309504880f

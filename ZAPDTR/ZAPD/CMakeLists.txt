@@ -336,6 +336,8 @@ find_package(PNG REQUIRED)
 
 target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/ZAPDUtils
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src/resource
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/include
 	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/lib/tinyxml2
 	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/lib/libgfxd
 	${PNG_PNG_INCLUDE_DIR}/

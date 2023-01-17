@@ -23,7 +23,10 @@ bool ItemTableManager::AddItemEntry(uint16_t tableID, uint16_t getItemID, GetIte
 GetItemEntry ItemTableManager::RetrieveItemEntry(uint16_t tableID, uint16_t itemID) {
     try {
         ItemTable* itemTable = RetrieveItemTable(tableID);
-        return itemTable->at(itemID);
+        GetItemEntry getItemEntry = itemTable->at(itemID);
+        getItemEntry.drawItemId = getItemEntry.itemId;
+        getItemEntry.drawModIndex = getItemEntry.modIndex;
+        return getItemEntry;
     } catch (std::out_of_range& oor) { return GET_ITEM_NONE; }
 }
 

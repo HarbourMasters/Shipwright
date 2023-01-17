@@ -572,7 +572,7 @@ void EnMag_DrawImageRGBA32(Gfx** gfxp, s16 centerX, s16 centerY, const char* sou
     s32 pad;
     s32 i;
 
-    source = ResourceMgr_LoadTexByName(source);
+    source = GetResourceDataByName(source, false);
 
     Gfx_SetupDL_56Ptr(&gfx);
 
@@ -666,7 +666,7 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
     u16 rectTop;
     u16 length;
     int lang = LANGUAGE_ENG;
-    if (CVar_GetS32("gTitleScreenTranslation", 0)) {
+    if (CVarGetInteger("gTitleScreenTranslation", 0)) {
         lang = gSaveContext.language;
     }
 
@@ -861,7 +861,7 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
     u16 rectTop;
     u16 length;
     int lang = LANGUAGE_ENG;
-    if (CVar_GetS32("gTitleScreenTranslation", 0)) {
+    if (CVarGetInteger("gTitleScreenTranslation", 0)) {
         lang = gSaveContext.language;
     }
 

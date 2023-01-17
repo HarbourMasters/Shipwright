@@ -323,13 +323,13 @@ void BossGoma_ClearPixels32x32Rgba16(s16* rgba16image, u8* clearPixelTable, s16 
  * Clear pixels from Gohma's textures
  */
 void BossGoma_ClearPixels(u8* clearPixelTable, s16 i) {
-    BossGoma_ClearPixels16x16Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaBodyTex)), clearPixelTable, i);
-    BossGoma_ClearPixels16x16Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaShellUndersideTex)), clearPixelTable, i);
-    BossGoma_ClearPixels16x16Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaDarkShellTex)), clearPixelTable, i);
-    BossGoma_ClearPixels16x16Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaEyeTex)), clearPixelTable, i);
+    BossGoma_ClearPixels16x16Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaBodyTex), false), clearPixelTable, i);
+    BossGoma_ClearPixels16x16Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaShellUndersideTex), false), clearPixelTable, i);
+    BossGoma_ClearPixels16x16Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaDarkShellTex), false), clearPixelTable, i);
+    BossGoma_ClearPixels16x16Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaEyeTex), false), clearPixelTable, i);
 
-    BossGoma_ClearPixels32x32Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaShellTex)), clearPixelTable, i);
-    BossGoma_ClearPixels32x32Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaIrisTex)), clearPixelTable, i);
+    BossGoma_ClearPixels32x32Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaShellTex), false), clearPixelTable, i);
+    BossGoma_ClearPixels32x32Rgba16(GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGohmaIrisTex), false), clearPixelTable, i);
 }
 
 static InitChainEntry sInitChain[] = {
@@ -452,7 +452,7 @@ void BossGoma_SetupCeilingIdle(BossGoma* this) {
 void BossGoma_SetupFallJump(BossGoma* this) {
     // When in Enemy Randomizer, reset the state of the spawned Gohma Larva because it's not done
     // by the (non-existent) Larva themselves.
-    if (CVar_GetS32("gRandomizedEnemies", 0)) {
+    if (CVarGetInteger("gRandomizedEnemies", 0)) {
         this->childrenGohmaState[0] = this->childrenGohmaState[1] = this->childrenGohmaState[2] = 0;
     }
     Animation_Change(&this->skelanime, &gGohmaLandAnim, 1.0f, 0.0f, 0.0f, ANIMMODE_ONCE, -5.0f);
@@ -1559,14 +1559,14 @@ void BossGoma_CeilingIdle(BossGoma* this, PlayState* play) {
 
     if (this->framesUntilNextAction == 0) {
         Actor* nearbyEnTest = NULL;
-        if (CVar_GetS32("gRandomizedEnemies", 0)) {
+        if (CVarGetInteger("gRandomizedEnemies", 0)) {
             nearbyEnTest = Actor_FindNearby(play, &this->actor, -1, ACTORCAT_ENEMY, 8000.0f);
         }
         if (this->childrenGohmaState[0] == 0 && this->childrenGohmaState[1] == 0 && this->childrenGohmaState[2] == 0) {
             // if no child gohma has been spawned
             BossGoma_SetupCeilingPrepareSpawnGohmas(this);
         } else if ((this->childrenGohmaState[0] < 0 && this->childrenGohmaState[1] < 0 && this->childrenGohmaState[2] < 0) ||
-                   (nearbyEnTest == NULL && CVar_GetS32("gRandomizedEnemies", 0))) {
+                   (nearbyEnTest == NULL && CVarGetInteger("gRandomizedEnemies", 0))) {
             // In authentic gameplay, check if all baby Ghomas are dead. In Enemy Randomizer, check if there's no enemies alive.
             BossGoma_SetupFallJump(this);
         } else {

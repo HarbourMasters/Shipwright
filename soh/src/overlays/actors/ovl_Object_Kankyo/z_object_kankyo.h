@@ -1,7 +1,7 @@
 #ifndef Z_OBJECT_KANKYO_H
 #define Z_OBJECT_KANKYO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ObjectKankyo;

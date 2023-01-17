@@ -2,11 +2,11 @@
 #include <ImGuiImpl.h>
 
 #include <string>
-#include <Cvar.h>
+#include <libultraship/bridge.h>
 #include <random>
 #include <math.h>
 #include <algorithm>
-#include <ultra64/types.h>
+#include <libultraship/libultra/types.h>
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 
 #include "soh/UIWidgets.hpp"
@@ -161,8 +161,8 @@ typedef struct {
     gDPSetEnvColor(POLY_OPA_DISP++, 80, 70, 20, alpha);
 
     // with cosmetics change
-    if (CVar_GetS32("gCosmetics.World_Moon.Changed", 0)) {
-        Color_RGB8 moonColor = CVar_GetRGB("gCosmetics.World_Moon.Value", (Color_RGB8){ 0, 0, 240 });
+    if (CVarGetInteger("gCosmetics.World_Moon.Changed", 0)) {
+        Color_RGB8 moonColor = CVarGetColor24("gCosmetics.World_Moon.Value", (Color_RGB8){ 0, 0, 240 });
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, moonColor.r, moonColor.g, moonColor.b, alpha);
         gDPSetEnvColor(POLY_OPA_DISP++, moonColor.r / 2, moonColor.g / 2, moonColor.b / 2, alpha);
     } else {
@@ -350,18 +350,18 @@ void SetMarginAll(const char* ButtonName, bool SetActivated) {
             std::string cvarName = MarginCvarList[s];
             std::string cvarPosType = cvarName+"PosType";
             std::string cvarNameMargins = cvarName+"UseMargins";
-            if (CVar_GetS32(cvarPosType.c_str(),0) <= 2 && SetActivated) { //Our element is not Hidden or Non anchor
+            if (CVarGetInteger(cvarPosType.c_str(),0) <= 2 && SetActivated) { //Our element is not Hidden or Non anchor
                 for(int i = 0; i < arrayLengthNonMargin; i++){
-                    if(MarginCvarNonAnchor[i] == cvarName && CVar_GetS32(cvarPosType.c_str(),0) == 0){ //Our element is both in original position and do not have anchor by default so we skip it.
-                        CVar_SetS32(cvarNameMargins.c_str(), false); //force set off
-                    } else if(MarginCvarNonAnchor[i] == cvarName && CVar_GetS32(cvarPosType.c_str(),0) != 0){ //Our element is not in original position regarless it has no anchor by default since player made it anchored we can toggle margins
-                        CVar_SetS32(cvarNameMargins.c_str(), SetActivated);
+                    if(MarginCvarNonAnchor[i] == cvarName && CVarGetInteger(cvarPosType.c_str(),0) == 0){ //Our element is both in original position and do not have anchor by default so we skip it.
+                        CVarSetInteger(cvarNameMargins.c_str(), false); //force set off
+                    } else if(MarginCvarNonAnchor[i] == cvarName && CVarGetInteger(cvarPosType.c_str(),0) != 0){ //Our element is not in original position regarless it has no anchor by default since player made it anchored we can toggle margins
+                        CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
                     } else if(MarginCvarNonAnchor[i] != cvarName){ //Our elements has an anchor by default so regarless of it's position right now that okay to toggle margins.
-                        CVar_SetS32(cvarNameMargins.c_str(), SetActivated);
+                        CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
                     }
                 }
             } else { //Since the user requested to turn all margin off no need to do any check there.
-                CVar_SetS32(cvarNameMargins.c_str(), SetActivated);
+                CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
             }
         }
     }
@@ -373,8 +373,8 @@ void ResetPositionAll() {
             std::string cvarName = MarginCvarList[s];
             std::string cvarPosType = cvarName+"PosType";
             std::string cvarNameMargins = cvarName+"UseMargins";
-            CVar_SetS32(cvarPosType.c_str(), 0);
-            CVar_SetS32(cvarNameMargins.c_str(), false); //Turn margin off to everythings as that original position.
+            CVarSetInteger(cvarPosType.c_str(), 0);
+            CVarSetInteger(cvarNameMargins.c_str(), false); //Turn margin off to everythings as that original position.
         }
     }
 }
@@ -385,8 +385,8 @@ int hue = 0;
 void CosmeticsUpdateTick(bool& open) {
     int index = 0;
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
-        if (cosmeticOption.supportsRainbow && CVar_GetS32(cosmeticOption.rainbowCvar, 0)) {
-            float frequency = 2 * M_PI / (360 * CVar_GetFloat("gCosmetics.RainbowSpeed", 0.6f));
+        if (cosmeticOption.supportsRainbow && CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
+            float frequency = 2 * M_PI / (360 * CVarGetFloat("gCosmetics.RainbowSpeed", 0.6f));
             Color_RGBA8 newColor;
             newColor.r = sin(frequency * ((hue + index)) + 0) * 127 + 128;
             newColor.g = sin(frequency * ((hue + index)) + (2 * M_PI / 3)) * 127 + 128;
@@ -398,13 +398,13 @@ void CosmeticsUpdateTick(bool& open) {
             cosmeticOption.currentColor.z = newColor.b / 255.0;
             cosmeticOption.currentColor.w = newColor.a / 255.0;
 
-            CVar_SetRGBA(cosmeticOption.cvar, newColor);
+            CVarSetColor(cosmeticOption.cvar, newColor);
         }
         // If we don't want the rainbow color on items to be synced, offset the index for each item in the loop.
         // Technically this would work if you replaced "60" with 1 but the hue would be so close it's 
         // indistinguishable, 60 gives us a big enough gap to notice the difference.
-        if (!CVar_GetS32("gCosmetics.RainbowSync", 0)) {
-            index+= (60 * CVar_GetFloat("gCosmetics.RainbowSpeed", 0.6f));
+        if (!CVarGetInteger("gCosmetics.RainbowSync", 0)) {
+            index+= (60 * CVarGetFloat("gCosmetics.RainbowSpeed", 0.6f));
         }
     }
     ApplyOrResetCustomGfxPatches(false);
@@ -423,180 +423,180 @@ void CosmeticsUpdateTick(bool& open) {
 */
 void ApplyOrResetCustomGfxPatches(bool manualChange = true) {
     static CosmeticOption& linkGoronTunic = cosmeticOptions.at("Link_GoronTunic");
-    if (manualChange || CVar_GetS32(linkGoronTunic.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(linkGoronTunic.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {linkGoronTunic.defaultColor.x, linkGoronTunic.defaultColor.y, linkGoronTunic.defaultColor.z, linkGoronTunic.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(linkGoronTunic.cvar, defaultColor);
-        PATCH_GFX(gGiGoronTunicColorDL,                           "Link_GoronTunic1",         linkGoronTunic.changedCvar,           6, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiGoronCollarColorDL,                          "Link_GoronTunic2",         linkGoronTunic.changedCvar,           6, gsDPSetPrimColor(0, 0, color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gGiGoronTunicColorDL,                           "Link_GoronTunic3",         linkGoronTunic.changedCvar,           8, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gGiGoronCollarColorDL,                          "Link_GoronTunic4",         linkGoronTunic.changedCvar,           8, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        Color_RGBA8 color = CVarGetColor(linkGoronTunic.cvar, defaultColor);
+        PATCH_GFX(gGiGoronTunicColorDL,                           "Link_GoronTunic1",         linkGoronTunic.changedCvar,           3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiGoronCollarColorDL,                          "Link_GoronTunic2",         linkGoronTunic.changedCvar,           3, gsDPSetPrimColor(0, 0, color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gGiGoronTunicColorDL,                           "Link_GoronTunic3",         linkGoronTunic.changedCvar,           4, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gGiGoronCollarColorDL,                          "Link_GoronTunic4",         linkGoronTunic.changedCvar,           4, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
     }
 
     static CosmeticOption& linkZoraTunic = cosmeticOptions.at("Link_ZoraTunic");
-    if (manualChange || CVar_GetS32(linkZoraTunic.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(linkZoraTunic.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {linkZoraTunic.defaultColor.x, linkZoraTunic.defaultColor.y, linkZoraTunic.defaultColor.z, linkZoraTunic.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(linkZoraTunic.cvar, defaultColor);
-        PATCH_GFX(gGiZoraTunicColorDL,                            "Link_ZoraTunic1",          linkZoraTunic.changedCvar,            6, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiZoraCollarColorDL,                           "Link_ZoraTunic2",          linkZoraTunic.changedCvar,            6, gsDPSetPrimColor(0, 0, color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gGiZoraTunicColorDL,                            "Link_ZoraTunic3",          linkZoraTunic.changedCvar,            8, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gGiZoraCollarColorDL,                           "Link_ZoraTunic4",          linkZoraTunic.changedCvar,            8, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        Color_RGBA8 color = CVarGetColor(linkZoraTunic.cvar, defaultColor);
+        PATCH_GFX(gGiZoraTunicColorDL,                            "Link_ZoraTunic1",          linkZoraTunic.changedCvar,            3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiZoraCollarColorDL,                           "Link_ZoraTunic2",          linkZoraTunic.changedCvar,            3, gsDPSetPrimColor(0, 0, color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gGiZoraTunicColorDL,                            "Link_ZoraTunic3",          linkZoraTunic.changedCvar,            4, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gGiZoraCollarColorDL,                           "Link_ZoraTunic4",          linkZoraTunic.changedCvar,            4, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
     }
 
     static CosmeticOption& linkHair = cosmeticOptions.at("Link_Hair");
-    if (manualChange || CVar_GetS32(linkHair.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(linkHair.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {linkHair.defaultColor.x, linkHair.defaultColor.y, linkHair.defaultColor.z, linkHair.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(linkHair.cvar, defaultColor);
-        PATCH_GFX(gLinkChildHeadNearDL,                           "Link_Hair1",               linkHair.changedCvar,                20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkChildHeadFarDL,                            "Link_Hair2",               linkHair.changedCvar,                20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultHeadNearDL,                           "Link_Hair3",               linkHair.changedCvar,                20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultHeadFarDL,                            "Link_Hair4",               linkHair.changedCvar,                20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(linkHair.cvar, defaultColor);
+        PATCH_GFX(gLinkChildHeadNearDL,                           "Link_Hair1",               linkHair.changedCvar,                10, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildHeadFarDL,                            "Link_Hair2",               linkHair.changedCvar,                10, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultHeadNearDL,                           "Link_Hair3",               linkHair.changedCvar,                10, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultHeadFarDL,                            "Link_Hair4",               linkHair.changedCvar,                10, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
     
         if (manualChange) {
-        PATCH_GFX(gLinkChildHeadNearDL,                           "Link_Hair5",               linkHair.changedCvar,                92, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildHeadNearDL,                           "Link_Hair6",               linkHair.changedCvar,               108, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildHeadNearDL,                           "Link_Hair7",               linkHair.changedCvar,               272, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildHeadNearDL,                           "Link_Hair8",               linkHair.changedCvar,               324, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildHeadFarDL,                            "Link_Hair9",               linkHair.changedCvar,               202, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildHeadFarDL,                            "Link_Hair10",              linkHair.changedCvar,               236, gsSPGrayscale(false));
-        PATCH_GFX(gLinkAdultHeadNearDL,                           "Link_Hair11",              linkHair.changedCvar,               250, gsSPGrayscale(true));
-        PATCH_GFX(gLinkAdultHeadNearDL,                           "Link_Hair12",              linkHair.changedCvar,               318, gsSPGrayscale(false));
-        PATCH_GFX(gLinkAdultHeadFarDL,                            "Link_Hair13",              linkHair.changedCvar,               204, gsSPGrayscale(true));
-        PATCH_GFX(gLinkAdultHeadFarDL,                            "Link_Hair14",              linkHair.changedCvar,               244, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildHeadNearDL,                           "Link_Hair5",               linkHair.changedCvar,                46, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildHeadNearDL,                           "Link_Hair6",               linkHair.changedCvar,               54, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildHeadNearDL,                           "Link_Hair7",               linkHair.changedCvar,               136, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildHeadNearDL,                           "Link_Hair8",               linkHair.changedCvar,               162, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildHeadFarDL,                            "Link_Hair9",               linkHair.changedCvar,               101, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildHeadFarDL,                            "Link_Hair10",              linkHair.changedCvar,               118, gsSPGrayscale(false));
+        PATCH_GFX(gLinkAdultHeadNearDL,                           "Link_Hair11",              linkHair.changedCvar,               125, gsSPGrayscale(true));
+        PATCH_GFX(gLinkAdultHeadNearDL,                           "Link_Hair12",              linkHair.changedCvar,               159, gsSPGrayscale(false));
+        PATCH_GFX(gLinkAdultHeadFarDL,                            "Link_Hair13",              linkHair.changedCvar,               102, gsSPGrayscale(true));
+        PATCH_GFX(gLinkAdultHeadFarDL,                            "Link_Hair14",              linkHair.changedCvar,               122, gsSPGrayscale(false));
         }
     }
 
     static CosmeticOption& linkLinen = cosmeticOptions.at("Link_Linen");
-    if (manualChange || CVar_GetS32(linkLinen.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(linkLinen.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {linkLinen.defaultColor.x, linkLinen.defaultColor.y, linkLinen.defaultColor.z, linkLinen.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(linkLinen.cvar, defaultColor);
-        PATCH_GFX(gLinkAdultLeftArmNearDL,                        "Link_Linen1",              linkLinen.changedCvar,               60, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultLeftArmNearDL,                        "Link_Linen2",              linkLinen.changedCvar,              166, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultLeftArmOutNearDL,                     "Link_Linen3",              linkLinen.changedCvar,               50, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultLeftArmFarDL,                         "Link_Linen4",              linkLinen.changedCvar,               60, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultLeftArmFarDL,                         "Link_Linen5",              linkLinen.changedCvar,              140, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightArmFarDL,                        "Link_Linen6",              linkLinen.changedCvar,               60, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightArmFarDL,                        "Link_Linen7",              linkLinen.changedCvar,              140, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightArmNearDL,                       "Link_Linen8",              linkLinen.changedCvar,               60, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultLeftShoulderFarDL,                    "Link_Linen9",              linkLinen.changedCvar,              110, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultLeftShoulderNearDL,                   "Link_Linen10",             linkLinen.changedCvar,              114, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightShoulderNearDL,                  "Link_Linen11",             linkLinen.changedCvar,              114, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightShoulderFarDL,                   "Link_Linen12",             linkLinen.changedCvar,              110, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultTorsoNearDL,                          "Link_Linen13",             linkLinen.changedCvar,              132, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultTorsoFarDL,                           "Link_Linen14",             linkLinen.changedCvar,              114, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightThighNearDL,                     "Link_Linen15",             linkLinen.changedCvar,              106, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultLeftThighNearDL,                      "Link_Linen16",             linkLinen.changedCvar,              106, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightThighFarDL,                      "Link_Linen17",             linkLinen.changedCvar,              108, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultLeftThighFarDL,                       "Link_Linen18",             linkLinen.changedCvar,              108, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightLegNearDL,                       "Link_Linen19",             linkLinen.changedCvar,               60, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultLeftLegNearDL,                        "Link_Linen20",             linkLinen.changedCvar,               60, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightLegFarDL,                        "Link_Linen21",             linkLinen.changedCvar,               60, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultLeftLegFarDL,                         "Link_Linen22",             linkLinen.changedCvar,               60, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(linkLinen.cvar, defaultColor);
+        PATCH_GFX(gLinkAdultLeftArmNearDL,                        "Link_Linen1",              linkLinen.changedCvar,               30, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultLeftArmNearDL,                        "Link_Linen2",              linkLinen.changedCvar,               83, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultLeftArmOutNearDL,                     "Link_Linen3",              linkLinen.changedCvar,               25, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultLeftArmFarDL,                         "Link_Linen4",              linkLinen.changedCvar,               30, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultLeftArmFarDL,                         "Link_Linen5",              linkLinen.changedCvar,               70, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightArmFarDL,                        "Link_Linen6",              linkLinen.changedCvar,               30, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightArmFarDL,                        "Link_Linen7",              linkLinen.changedCvar,               70, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightArmNearDL,                       "Link_Linen8",              linkLinen.changedCvar,               30, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultLeftShoulderFarDL,                    "Link_Linen9",              linkLinen.changedCvar,               55, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultLeftShoulderNearDL,                   "Link_Linen10",             linkLinen.changedCvar,               57, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightShoulderNearDL,                  "Link_Linen11",             linkLinen.changedCvar,               57, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightShoulderFarDL,                   "Link_Linen12",             linkLinen.changedCvar,               55, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultTorsoNearDL,                          "Link_Linen13",             linkLinen.changedCvar,               66, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultTorsoFarDL,                           "Link_Linen14",             linkLinen.changedCvar,               57, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightThighNearDL,                     "Link_Linen15",             linkLinen.changedCvar,               53, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultLeftThighNearDL,                      "Link_Linen16",             linkLinen.changedCvar,               53, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightThighFarDL,                      "Link_Linen17",             linkLinen.changedCvar,               54, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultLeftThighFarDL,                       "Link_Linen18",             linkLinen.changedCvar,               54, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightLegNearDL,                       "Link_Linen19",             linkLinen.changedCvar,               30, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultLeftLegNearDL,                        "Link_Linen20",             linkLinen.changedCvar,               30, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightLegFarDL,                        "Link_Linen21",             linkLinen.changedCvar,               30, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultLeftLegFarDL,                         "Link_Linen22",             linkLinen.changedCvar,               30, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
 
         if (manualChange) {
-        PATCH_GFX(gLinkAdultLeftArmFarDL,                         "Link_Linen23",             linkLinen.changedCvar,               70, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
-        PATCH_GFX(gLinkAdultLeftArmOutNearDL,                     "Link_Linen24",             linkLinen.changedCvar,               90, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
-        PATCH_GFX(gLinkAdultLeftArmNearDL,                        "Link_Linen25",             linkLinen.changedCvar,               80, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
-        PATCH_GFX(gLinkAdultLeftArmFarDL,                         "Link_Linen26",             linkLinen.changedCvar,              154, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
-        PATCH_GFX(gLinkAdultRightArmFarDL,                        "Link_Linen27",             linkLinen.changedCvar,               70, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
-        PATCH_GFX(gLinkAdultRightArmFarDL,                        "Link_Linen28",             linkLinen.changedCvar,              154, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
-        PATCH_GFX(gLinkAdultRightArmNearDL,                       "Link_Linen29",             linkLinen.changedCvar,               84, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
-        PATCH_GFX(gLinkAdultRightLegNearDL,                       "Link_Linen30",             linkLinen.changedCvar,               86, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
-        PATCH_GFX(gLinkAdultLeftLegNearDL,                        "Link_Linen31",             linkLinen.changedCvar,               86, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
-        PATCH_GFX(gLinkAdultRightLegFarDL,                        "Link_Linen32",             linkLinen.changedCvar,               76, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
-        PATCH_GFX(gLinkAdultLeftLegFarDL,                         "Link_Linen33",             linkLinen.changedCvar,               76, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+        PATCH_GFX(gLinkAdultLeftArmFarDL,                         "Link_Linen23",             linkLinen.changedCvar,               35, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+        PATCH_GFX(gLinkAdultLeftArmOutNearDL,                     "Link_Linen24",             linkLinen.changedCvar,               45, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+        PATCH_GFX(gLinkAdultLeftArmNearDL,                        "Link_Linen25",             linkLinen.changedCvar,               40, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+        PATCH_GFX(gLinkAdultLeftArmFarDL,                         "Link_Linen26",             linkLinen.changedCvar,               77, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+        PATCH_GFX(gLinkAdultRightArmFarDL,                        "Link_Linen27",             linkLinen.changedCvar,               35, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+        PATCH_GFX(gLinkAdultRightArmFarDL,                        "Link_Linen28",             linkLinen.changedCvar,               77, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+        PATCH_GFX(gLinkAdultRightArmNearDL,                       "Link_Linen29",             linkLinen.changedCvar,               42, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+        PATCH_GFX(gLinkAdultRightLegNearDL,                       "Link_Linen30",             linkLinen.changedCvar,               43, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+        PATCH_GFX(gLinkAdultLeftLegNearDL,                        "Link_Linen31",             linkLinen.changedCvar,               43, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+        PATCH_GFX(gLinkAdultRightLegFarDL,                        "Link_Linen32",             linkLinen.changedCvar,               38, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
+        PATCH_GFX(gLinkAdultLeftLegFarDL,                         "Link_Linen33",             linkLinen.changedCvar,               38, gsDPSetPrimColor(0, 0, 255, 255, 255, 255));
         }
     }
 
     static CosmeticOption& linkBoots = cosmeticOptions.at("Link_Boots");
-    if (manualChange || CVar_GetS32(linkBoots.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(linkBoots.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {linkBoots.defaultColor.x, linkBoots.defaultColor.y, linkBoots.defaultColor.z, linkBoots.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(linkBoots.cvar, defaultColor);
-        PATCH_GFX(gLinkChildRightShinNearDL,                      "Link_Boots1",              linkBoots.changedCvar,               20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkChildRightShinFarDL,                       "Link_Boots2",              linkBoots.changedCvar,               20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightLegNearDL,                       "Link_Boots3",              linkBoots.changedCvar,               20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightLegFarDL,                        "Link_Boots4",              linkBoots.changedCvar,               20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(linkBoots.cvar, defaultColor);
+        PATCH_GFX(gLinkChildRightShinNearDL,                      "Link_Boots1",              linkBoots.changedCvar,               10, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildRightShinFarDL,                       "Link_Boots2",              linkBoots.changedCvar,               10, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightLegNearDL,                       "Link_Boots3",              linkBoots.changedCvar,               10, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightLegFarDL,                        "Link_Boots4",              linkBoots.changedCvar,               10, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
 
         if (manualChange) {
-        PATCH_GFX(gLinkChildRightShinNearDL,                      "Link_Boots5",              linkBoots.changedCvar,              106, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildRightShinNearDL,                      "Link_Boots6",              linkBoots.changedCvar,              138, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildRightShinFarDL,                       "Link_Boots7",              linkBoots.changedCvar,              104, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildRightShinFarDL,                       "Link_Boots8",              linkBoots.changedCvar,              122, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildLeftShinNearDL,                       "Link_Boots9",              linkBoots.changedCvar,              106, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildLeftShinNearDL,                       "Link_Boots10",             linkBoots.changedCvar,              138, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildLeftShinFarDL,                        "Link_Boots11",             linkBoots.changedCvar,              104, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildLeftShinFarDL,                        "Link_Boots12",             linkBoots.changedCvar,              122, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildRightFootNearDL,                      "Link_Boots13",             linkBoots.changedCvar,               60, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildRightFootFarDL,                       "Link_Boots14",             linkBoots.changedCvar,               60, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildLeftFootNearDL,                       "Link_Boots15",             linkBoots.changedCvar,               60, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildLeftFootFarDL,                        "Link_Boots16",             linkBoots.changedCvar,               60, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildLeftThighNearDL,                      "Link_Boots17",             linkBoots.changedCvar,               20, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildLeftThighFarDL,                       "Link_Boots18",             linkBoots.changedCvar,               20, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildHeadNearDL,                           "Link_Boots19",             linkBoots.changedCvar,               40, gsSPGrayscale(false));
-        PATCH_GFX(gLinkChildHeadFarDL,                            "Link_Boots20",             linkBoots.changedCvar,               40, gsSPGrayscale(false));
-        PATCH_GFX(gLinkAdultRightLegNearDL,                       "Link_Boots21",             linkBoots.changedCvar,              114, gsSPGrayscale(true));
-        PATCH_GFX(gLinkAdultRightLegFarDL,                        "Link_Boots22",             linkBoots.changedCvar,              104, gsSPGrayscale(true));
-        PATCH_GFX(gLinkAdultLeftLegNearDL,                        "Link_Boots23",             linkBoots.changedCvar,              114, gsSPGrayscale(true));
-        PATCH_GFX(gLinkAdultLeftLegFarDL,                         "Link_Boots24",             linkBoots.changedCvar,              104, gsSPGrayscale(true));
-        PATCH_GFX(gLinkAdultLeftThighNearDL,                      "Link_Boots25",             linkBoots.changedCvar,               20, gsSPGrayscale(false));
-        PATCH_GFX(gLinkAdultLeftThighFarDL,                       "Link_Boots26",             linkBoots.changedCvar,               20, gsSPGrayscale(false));
-        PATCH_GFX(gLinkAdultHeadNearDL,                           "Link_Boots27",             linkBoots.changedCvar,               40, gsSPGrayscale(false));
-        PATCH_GFX(gLinkAdultHeadFarDL,                            "Link_Boots28",             linkBoots.changedCvar,               40, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildRightShinNearDL,                      "Link_Boots5",              linkBoots.changedCvar,               53, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildRightShinNearDL,                      "Link_Boots6",              linkBoots.changedCvar,               69, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildRightShinFarDL,                       "Link_Boots7",              linkBoots.changedCvar,               52, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildRightShinFarDL,                       "Link_Boots8",              linkBoots.changedCvar,               61, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildLeftShinNearDL,                       "Link_Boots9",              linkBoots.changedCvar,               53, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildLeftShinNearDL,                       "Link_Boots10",             linkBoots.changedCvar,               69, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildLeftShinFarDL,                        "Link_Boots11",             linkBoots.changedCvar,               52, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildLeftShinFarDL,                        "Link_Boots12",             linkBoots.changedCvar,               61, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildRightFootNearDL,                      "Link_Boots13",             linkBoots.changedCvar,               30, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildRightFootFarDL,                       "Link_Boots14",             linkBoots.changedCvar,               30, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildLeftFootNearDL,                       "Link_Boots15",             linkBoots.changedCvar,               30, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildLeftFootFarDL,                        "Link_Boots16",             linkBoots.changedCvar,               30, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildLeftThighNearDL,                      "Link_Boots17",             linkBoots.changedCvar,               10, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildLeftThighFarDL,                       "Link_Boots18",             linkBoots.changedCvar,               10, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildHeadNearDL,                           "Link_Boots19",             linkBoots.changedCvar,               20, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildHeadFarDL,                            "Link_Boots20",             linkBoots.changedCvar,               20, gsSPGrayscale(false));
+        PATCH_GFX(gLinkAdultRightLegNearDL,                       "Link_Boots21",             linkBoots.changedCvar,               57, gsSPGrayscale(true));
+        PATCH_GFX(gLinkAdultRightLegFarDL,                        "Link_Boots22",             linkBoots.changedCvar,               52, gsSPGrayscale(true));
+        PATCH_GFX(gLinkAdultLeftLegNearDL,                        "Link_Boots23",             linkBoots.changedCvar,               57, gsSPGrayscale(true));
+        PATCH_GFX(gLinkAdultLeftLegFarDL,                         "Link_Boots24",             linkBoots.changedCvar,               52, gsSPGrayscale(true));
+        PATCH_GFX(gLinkAdultLeftThighNearDL,                      "Link_Boots25",             linkBoots.changedCvar,               10, gsSPGrayscale(false));
+        PATCH_GFX(gLinkAdultLeftThighFarDL,                       "Link_Boots26",             linkBoots.changedCvar,               10, gsSPGrayscale(false));
+        PATCH_GFX(gLinkAdultHeadNearDL,                           "Link_Boots27",             linkBoots.changedCvar,               20, gsSPGrayscale(false));
+        PATCH_GFX(gLinkAdultHeadFarDL,                            "Link_Boots28",             linkBoots.changedCvar,               20, gsSPGrayscale(false));
         }
     }
 
     static CosmeticOption& mirrorShieldBody = cosmeticOptions.at("MirrorShield_Body");
-    if (manualChange || CVar_GetS32(mirrorShieldBody.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(mirrorShieldBody.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {mirrorShieldBody.defaultColor.x, mirrorShieldBody.defaultColor.y, mirrorShieldBody.defaultColor.z, mirrorShieldBody.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(mirrorShieldBody.cvar, defaultColor);
-        PATCH_GFX(gGiMirrorShieldDL,                              "MirrorShield_Body1",       mirrorShieldBody.changedCvar,        10, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiMirrorShieldDL,                              "MirrorShield_Body2",       mirrorShieldBody.changedCvar,        12, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
-        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "MirrorShield_Body3",       mirrorShieldBody.changedCvar,        56, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "MirrorShield_Body4",       mirrorShieldBody.changedCvar,        34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultMirrorShieldAndSheathNearDL,          "MirrorShield_Body5",       mirrorShieldBody.changedCvar,        56, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultMirrorShieldAndSheathFarDL,           "MirrorShield_Body6",       mirrorShieldBody.changedCvar,        34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "MirrorShield_Body7",       mirrorShieldBody.changedCvar,        56, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "MirrorShield_Body8",       mirrorShieldBody.changedCvar,       190, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(mirrorShieldBody.cvar, defaultColor);
+        PATCH_GFX(gGiMirrorShieldDL,                              "MirrorShield_Body1",       mirrorShieldBody.changedCvar,         5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiMirrorShieldDL,                              "MirrorShield_Body2",       mirrorShieldBody.changedCvar,         6, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "MirrorShield_Body3",       mirrorShieldBody.changedCvar,        28, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "MirrorShield_Body4",       mirrorShieldBody.changedCvar,        17, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultMirrorShieldAndSheathNearDL,          "MirrorShield_Body5",       mirrorShieldBody.changedCvar,        28, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultMirrorShieldAndSheathFarDL,           "MirrorShield_Body6",       mirrorShieldBody.changedCvar,        17, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "MirrorShield_Body7",       mirrorShieldBody.changedCvar,        28, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "MirrorShield_Body8",       mirrorShieldBody.changedCvar,        95, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
     static CosmeticOption& mirrorShieldMirror = cosmeticOptions.at("MirrorShield_Mirror");
-    if (manualChange || CVar_GetS32(mirrorShieldMirror.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(mirrorShieldMirror.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {mirrorShieldMirror.defaultColor.x, mirrorShieldMirror.defaultColor.y, mirrorShieldMirror.defaultColor.z, mirrorShieldMirror.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(mirrorShieldMirror.cvar, defaultColor);
-        PATCH_GFX(gGiMirrorShieldDL,                              "MirrorShield_Mirror1",     mirrorShieldMirror.changedCvar,      94, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiMirrorShieldDL,                              "MirrorShield_Mirror2",     mirrorShieldMirror.changedCvar,      96, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
-        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "MirrorShield_Mirror3",     mirrorShieldMirror.changedCvar,      34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "MirrorShield_Mirror4",     mirrorShieldMirror.changedCvar,      66, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultMirrorShieldAndSheathNearDL,          "MirrorShield_Mirror5",     mirrorShieldMirror.changedCvar,      34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultMirrorShieldAndSheathFarDL,           "MirrorShield_Mirror6",     mirrorShieldMirror.changedCvar,      66, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "MirrorShield_Mirror7",     mirrorShieldMirror.changedCvar,      34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "MirrorShield_Mirror8",     mirrorShieldMirror.changedCvar,     222, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(mirrorShieldMirror.cvar, defaultColor);
+        PATCH_GFX(gGiMirrorShieldDL,                              "MirrorShield_Mirror1",     mirrorShieldMirror.changedCvar,      47, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiMirrorShieldDL,                              "MirrorShield_Mirror2",     mirrorShieldMirror.changedCvar,      48, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "MirrorShield_Mirror3",     mirrorShieldMirror.changedCvar,      17, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "MirrorShield_Mirror4",     mirrorShieldMirror.changedCvar,      33, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultMirrorShieldAndSheathNearDL,          "MirrorShield_Mirror5",     mirrorShieldMirror.changedCvar,      17, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultMirrorShieldAndSheathFarDL,           "MirrorShield_Mirror6",     mirrorShieldMirror.changedCvar,      33, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "MirrorShield_Mirror7",     mirrorShieldMirror.changedCvar,      17, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "MirrorShield_Mirror8",     mirrorShieldMirror.changedCvar,     111, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
     static CosmeticOption& mirrorShieldEmblem = cosmeticOptions.at("MirrorShield_Emblem");
-    if (manualChange || CVar_GetS32(mirrorShieldEmblem.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(mirrorShieldEmblem.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {mirrorShieldEmblem.defaultColor.x, mirrorShieldEmblem.defaultColor.y, mirrorShieldEmblem.defaultColor.z, mirrorShieldEmblem.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(mirrorShieldEmblem.cvar, defaultColor);
-        PATCH_GFX(gGiMirrorShieldSymbolDL,                        "MirrorShield_Emblem1",     mirrorShieldEmblem.changedCvar,      10, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 140));
-        PATCH_GFX(gGiMirrorShieldSymbolDL,                        "MirrorShield_Emblem2",     mirrorShieldEmblem.changedCvar,      12, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
-        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "MirrorShield_Emblem3",     mirrorShieldEmblem.changedCvar,     330, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "MirrorShield_Emblem4",     mirrorShieldEmblem.changedCvar,     270, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultMirrorShieldAndSheathNearDL,          "MirrorShield_Emblem5",     mirrorShieldEmblem.changedCvar,     258, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultMirrorShieldAndSheathFarDL,           "MirrorShield_Emblem6",     mirrorShieldEmblem.changedCvar,     206, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "MirrorShield_Emblem7",     mirrorShieldEmblem.changedCvar,     324, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "MirrorShield_Emblem8",     mirrorShieldEmblem.changedCvar,     266, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(mirrorShieldEmblem.cvar, defaultColor);
+        PATCH_GFX(gGiMirrorShieldSymbolDL,                        "MirrorShield_Emblem1",     mirrorShieldEmblem.changedCvar,       5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 140));
+        PATCH_GFX(gGiMirrorShieldSymbolDL,                        "MirrorShield_Emblem2",     mirrorShieldEmblem.changedCvar,       6, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathNearDL,     "MirrorShield_Emblem3",     mirrorShieldEmblem.changedCvar,     165, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultMirrorShieldSwordAndSheathFarDL,      "MirrorShield_Emblem4",     mirrorShieldEmblem.changedCvar,     135, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultMirrorShieldAndSheathNearDL,          "MirrorShield_Emblem5",     mirrorShieldEmblem.changedCvar,     129, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultMirrorShieldAndSheathFarDL,           "MirrorShield_Emblem6",     mirrorShieldEmblem.changedCvar,     103, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldNearDL,   "MirrorShield_Emblem7",     mirrorShieldEmblem.changedCvar,     162, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightHandHoldingMirrorShieldFarDL,    "MirrorShield_Emblem8",     mirrorShieldEmblem.changedCvar,     133, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& swordsKokiriBlade = cosmeticOptions.at("Swords_KokiriBlade");
-    if (manualChange || CVar_GetS32(swordsKokiriBlade.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(swordsKokiriBlade.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {swordsKokiriBlade.defaultColor.x, swordsKokiriBlade.defaultColor.y, swordsKokiriBlade.defaultColor.z, swordsKokiriBlade.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(swordsKokiriBlade.cvar, defaultColor);
-        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordNearDL,         "Swords_KokiriBlade1",      swordsKokiriBlade.changedCvar,      158, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordFarDL,          "Swords_KokiriBlade2",      swordsKokiriBlade.changedCvar,      150, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiKokiriSwordDL,                               "Swords_KokiriBlade3",      swordsKokiriBlade.changedCvar,       10, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiKokiriSwordDL,                               "Swords_KokiriBlade4",      swordsKokiriBlade.changedCvar,       12, gsDPSetEnvColor(color.r / 4, color.g / 4, color.b / 4, 255));
+        Color_RGBA8 color = CVarGetColor(swordsKokiriBlade.cvar, defaultColor);
+        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordNearDL,         "Swords_KokiriBlade1",      swordsKokiriBlade.changedCvar,       79, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildLeftFistAndKokiriSwordFarDL,          "Swords_KokiriBlade2",      swordsKokiriBlade.changedCvar,       75, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiKokiriSwordDL,                               "Swords_KokiriBlade3",      swordsKokiriBlade.changedCvar,        5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiKokiriSwordDL,                               "Swords_KokiriBlade4",      swordsKokiriBlade.changedCvar,        6, gsDPSetEnvColor(color.r / 4, color.g / 4, color.b / 4, 255));
     }
     // static CosmeticOption& swordsKokiriHilt = cosmeticOptions.at("Swords_KokiriHilt");
-    // if (manualChange || CVar_GetS32(swordsKokiriHilt.rainbowCvar, 0)) {
+    // if (manualChange || CVarGetInteger(swordsKokiriHilt.rainbowCvar, 0)) {
     //     static Color_RGBA8 defaultColor = {swordsKokiriHilt.defaultColor.x, swordsKokiriHilt.defaultColor.y, swordsKokiriHilt.defaultColor.z, swordsKokiriHilt.defaultColor.w};
-    //     Color_RGBA8 color = CVar_GetRGBA(swordsKokiriHilt.cvar, defaultColor);
+    //     Color_RGBA8 color = CVarGetColor(swordsKokiriHilt.cvar, defaultColor);
     //     PATCH_GFX(gLinkChildLeftFistAndKokiriSwordNearDL,         "Swords_KokiriHilt1",       swordsKokiriHilt.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
     //     PATCH_GFX(gLinkChildLeftFistAndKokiriSwordFarDL,          "Swords_KokiriHilt2",       swordsKokiriHilt.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
     //     PATCH_GFX(gLinkChildSwordAndSheathNearDL,                 "Swords_KokiriHilt3",       swordsKokiriHilt.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
@@ -635,20 +635,20 @@ void ApplyOrResetCustomGfxPatches(bool manualChange = true) {
     //     }
     // }
     static CosmeticOption& swordsMasterBlade = cosmeticOptions.at("Swords_MasterBlade");
-    if (manualChange || CVar_GetS32(swordsMasterBlade.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(swordsMasterBlade.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {swordsMasterBlade.defaultColor.x, swordsMasterBlade.defaultColor.y, swordsMasterBlade.defaultColor.z, swordsMasterBlade.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(swordsMasterBlade.cvar, defaultColor);
-        PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordFarDL,      "Swords_MasterBlade1",      swordsMasterBlade.changedCvar,      120, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordNearDL,     "Swords_MasterBlade2",      swordsMasterBlade.changedCvar,       34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterBlade3",      swordsMasterBlade.changedCvar,       26, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterBlade4",      swordsMasterBlade.changedCvar,       28, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(ovl_Boss_Ganon2_DL_0103A8,                      "Swords_MasterBlade5",      swordsMasterBlade.changedCvar,       26, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(ovl_Boss_Ganon2_DL_0103A8,                      "Swords_MasterBlade6",      swordsMasterBlade.changedCvar,       28, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        Color_RGBA8 color = CVarGetColor(swordsMasterBlade.cvar, defaultColor);
+        PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordFarDL,      "Swords_MasterBlade1",      swordsMasterBlade.changedCvar,       60, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordNearDL,     "Swords_MasterBlade2",      swordsMasterBlade.changedCvar,       17, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterBlade3",      swordsMasterBlade.changedCvar,       13, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterBlade4",      swordsMasterBlade.changedCvar,       14, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(ovl_Boss_Ganon2_DL_0103A8,                      "Swords_MasterBlade5",      swordsMasterBlade.changedCvar,       13, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(ovl_Boss_Ganon2_DL_0103A8,                      "Swords_MasterBlade6",      swordsMasterBlade.changedCvar,       14, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
     }
     // static CosmeticOption& swordsMasterHilt = cosmeticOptions.at("Swords_MasterHilt");
-    // if (manualChange || CVar_GetS32(swordsMasterHilt.rainbowCvar, 0)) {
+    // if (manualChange || CVarGetInteger(swordsMasterHilt.rainbowCvar, 0)) {
     //     static Color_RGBA8 defaultColor = {swordsMasterHilt.defaultColor.x, swordsMasterHilt.defaultColor.y, swordsMasterHilt.defaultColor.z, swordsMasterHilt.defaultColor.w};
-    //     Color_RGBA8 color = CVar_GetRGBA(swordsMasterHilt.cvar, defaultColor);
+    //     Color_RGBA8 color = CVarGetColor(swordsMasterHilt.cvar, defaultColor);
     //     PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordNearDL,     "Swords_MasterHilt1",       swordsMasterHilt.changedCvar,        20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
     //     PATCH_GFX(gLinkAdultLeftHandHoldingMasterSwordFarDL,      "Swords_MasterHilt2",       swordsMasterHilt.changedCvar,        20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
     //     PATCH_GFX(object_toki_objects_DL_001BD0,                  "Swords_MasterHilt3",       swordsMasterHilt.changedCvar,        16, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
@@ -693,18 +693,18 @@ void ApplyOrResetCustomGfxPatches(bool manualChange = true) {
     //     }
     // }
     static CosmeticOption& swordsBiggoronBlade = cosmeticOptions.at("Swords_BiggoronBlade");
-    if (manualChange || CVar_GetS32(swordsBiggoronBlade.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(swordsBiggoronBlade.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {swordsBiggoronBlade.defaultColor.x, swordsBiggoronBlade.defaultColor.y, swordsBiggoronBlade.defaultColor.z, swordsBiggoronBlade.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(swordsBiggoronBlade.cvar, defaultColor);
-        PATCH_GFX(gLinkAdultLeftHandHoldingBgsFarDL,              "Swords_BiggoronBlade1",    swordsBiggoronBlade.changedCvar,    216, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultLeftHandHoldingBgsNearDL,             "Swords_BiggoronBlade2",    swordsBiggoronBlade.changedCvar,    126, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiBiggoronSwordDL,                             "Swords_BiggoronBlade3",    swordsBiggoronBlade.changedCvar,     10, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiBiggoronSwordDL,                             "Swords_BiggoronBlade4",    swordsBiggoronBlade.changedCvar,     12, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        Color_RGBA8 color = CVarGetColor(swordsBiggoronBlade.cvar, defaultColor);
+        PATCH_GFX(gLinkAdultLeftHandHoldingBgsFarDL,              "Swords_BiggoronBlade1",    swordsBiggoronBlade.changedCvar,    108, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultLeftHandHoldingBgsNearDL,             "Swords_BiggoronBlade2",    swordsBiggoronBlade.changedCvar,     63, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiBiggoronSwordDL,                             "Swords_BiggoronBlade3",    swordsBiggoronBlade.changedCvar,      5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiBiggoronSwordDL,                             "Swords_BiggoronBlade4",    swordsBiggoronBlade.changedCvar,      6, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
     }
     // static CosmeticOption& swordsBiggoronHilt = cosmeticOptions.at("Swords_BiggoronHilt");
-    // if (manualChange || CVar_GetS32(swordsBiggoronHilt.rainbowCvar, 0)) {
+    // if (manualChange || CVarGetInteger(swordsBiggoronHilt.rainbowCvar, 0)) {
     //     static Color_RGBA8 defaultColor = {swordsBiggoronHilt.defaultColor.x, swordsBiggoronHilt.defaultColor.y, swordsBiggoronHilt.defaultColor.z, swordsBiggoronHilt.defaultColor.w};
-    //     Color_RGBA8 color = CVar_GetRGBA(swordsBiggoronHilt.cvar, defaultColor);
+    //     Color_RGBA8 color = CVarGetColor(swordsBiggoronHilt.cvar, defaultColor);
     //     PATCH_GFX(gLinkAdultLeftHandHoldingBgsNearDL,             "Swords_BiggoronHilt1",     swordsBiggoronHilt.changedCvar,      20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
     //     PATCH_GFX(gLinkAdultLeftHandHoldingBgsFarDL,              "Swords_BiggoronHilt2",     swordsBiggoronHilt.changedCvar,      20, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
     //     PATCH_GFX(gGiBiggoronSwordDL,                             "Swords_BiggoronHilt3",     swordsBiggoronHilt.changedCvar,      74, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
@@ -722,70 +722,70 @@ void ApplyOrResetCustomGfxPatches(bool manualChange = true) {
     // }   
 
     static CosmeticOption& glovesGoronBracelet = cosmeticOptions.at("Gloves_GoronBracelet");
-    if (manualChange || CVar_GetS32(glovesGoronBracelet.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(glovesGoronBracelet.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {glovesGoronBracelet.defaultColor.x, glovesGoronBracelet.defaultColor.y, glovesGoronBracelet.defaultColor.z, glovesGoronBracelet.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(glovesGoronBracelet.cvar, defaultColor);
-        PATCH_GFX(gGiGoronBraceletDL,                             "Gloves_GoronBracelet1",    glovesGoronBracelet.changedCvar,     10, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiGoronBraceletDL,                             "Gloves_GoronBracelet2",    glovesGoronBracelet.changedCvar,     12, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
-        PATCH_GFX(gLinkChildGoronBraceletDL,                      "Gloves_GoronBracelet3",    glovesGoronBracelet.changedCvar,      6, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(glovesGoronBracelet.cvar, defaultColor);
+        PATCH_GFX(gGiGoronBraceletDL,                             "Gloves_GoronBracelet1",    glovesGoronBracelet.changedCvar,      5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiGoronBraceletDL,                             "Gloves_GoronBracelet2",    glovesGoronBracelet.changedCvar,      6, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gLinkChildGoronBraceletDL,                      "Gloves_GoronBracelet3",    glovesGoronBracelet.changedCvar,      3, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
 
         if (manualChange) {
-        PATCH_GFX(gLinkChildGoronBraceletDL,                      "Gloves_GoronBracelet4",    glovesGoronBracelet.changedCvar,     22, gsSPGrayscale(true));
-        PATCH_GFX(gLinkChildGoronBraceletDL,                      "Gloves_GoronBracelet5",    glovesGoronBracelet.changedCvar,     78, gsSPGrayscale(false));
+        PATCH_GFX(gLinkChildGoronBraceletDL,                      "Gloves_GoronBracelet4",    glovesGoronBracelet.changedCvar,     11, gsSPGrayscale(true));
+        PATCH_GFX(gLinkChildGoronBraceletDL,                      "Gloves_GoronBracelet5",    glovesGoronBracelet.changedCvar,     39, gsSPGrayscale(false));
         }
     }
     static CosmeticOption& glovesSilverGauntlets = cosmeticOptions.at("Gloves_SilverGauntlets");
-    if (manualChange || CVar_GetS32(glovesSilverGauntlets.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(glovesSilverGauntlets.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {glovesSilverGauntlets.defaultColor.x, glovesSilverGauntlets.defaultColor.y, glovesSilverGauntlets.defaultColor.z, glovesSilverGauntlets.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(glovesSilverGauntlets.cvar, defaultColor);
-        PATCH_GFX(gGiSilverGauntletsColorDL,                      "Gloves_SilverGauntlets1",  glovesSilverGauntlets.changedCvar,    6, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiSilverGauntletsColorDL,                      "Gloves_SilverGauntlets2",  glovesSilverGauntlets.changedCvar,    8, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        Color_RGBA8 color = CVarGetColor(glovesSilverGauntlets.cvar, defaultColor);
+        PATCH_GFX(gGiSilverGauntletsColorDL,                      "Gloves_SilverGauntlets1",  glovesSilverGauntlets.changedCvar,    3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiSilverGauntletsColorDL,                      "Gloves_SilverGauntlets2",  glovesSilverGauntlets.changedCvar,    4, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
     }
     static CosmeticOption& glovesGoldenGauntlets = cosmeticOptions.at("Gloves_GoldenGauntlets");
-    if (manualChange || CVar_GetS32(glovesGoldenGauntlets.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(glovesGoldenGauntlets.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {glovesGoldenGauntlets.defaultColor.x, glovesGoldenGauntlets.defaultColor.y, glovesGoldenGauntlets.defaultColor.z, glovesGoldenGauntlets.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(glovesGoldenGauntlets.cvar, defaultColor);
-        PATCH_GFX(gGiGoldenGauntletsColorDL,                      "Gloves_GoldenGauntlets1",  glovesGoldenGauntlets.changedCvar,    6, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiGoldenGauntletsColorDL,                      "Gloves_GoldenGauntlets2",  glovesGoldenGauntlets.changedCvar,    8, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        Color_RGBA8 color = CVarGetColor(glovesGoldenGauntlets.cvar, defaultColor);
+        PATCH_GFX(gGiGoldenGauntletsColorDL,                      "Gloves_GoldenGauntlets1",  glovesGoldenGauntlets.changedCvar,    3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiGoldenGauntletsColorDL,                      "Gloves_GoldenGauntlets2",  glovesGoldenGauntlets.changedCvar,    4, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
     }
     static CosmeticOption& glovesGauntletsGem = cosmeticOptions.at("Gloves_GauntletsGem");
-    if (manualChange || CVar_GetS32(glovesGauntletsGem.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(glovesGauntletsGem.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {glovesGauntletsGem.defaultColor.x, glovesGauntletsGem.defaultColor.y, glovesGauntletsGem.defaultColor.z, glovesGauntletsGem.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(glovesGauntletsGem.cvar, defaultColor);
-        PATCH_GFX(gGiGauntletsDL,                                 "Gloves_GauntletsGem1",     glovesGauntletsGem.changedCvar,     168, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiGauntletsDL,                                 "Gloves_GauntletsGem2",     glovesGauntletsGem.changedCvar,     170, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
-        PATCH_GFX(gLinkAdultLeftGauntletPlate2DL,                 "Gloves_GauntletsGem3",     glovesGauntletsGem.changedCvar,      84, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightGauntletPlate2DL,                "Gloves_GauntletsGem4",     glovesGauntletsGem.changedCvar,      84, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultLeftGauntletPlate3DL,                 "Gloves_GauntletsGem5",     glovesGauntletsGem.changedCvar,      84, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightGauntletPlate3DL,                "Gloves_GauntletsGem6",     glovesGauntletsGem.changedCvar,      84, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(glovesGauntletsGem.cvar, defaultColor);
+        PATCH_GFX(gGiGauntletsDL,                                 "Gloves_GauntletsGem1",     glovesGauntletsGem.changedCvar,      84, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiGauntletsDL,                                 "Gloves_GauntletsGem2",     glovesGauntletsGem.changedCvar,      85, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gLinkAdultLeftGauntletPlate2DL,                 "Gloves_GauntletsGem3",     glovesGauntletsGem.changedCvar,      42, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightGauntletPlate2DL,                "Gloves_GauntletsGem4",     glovesGauntletsGem.changedCvar,      42, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultLeftGauntletPlate3DL,                 "Gloves_GauntletsGem5",     glovesGauntletsGem.changedCvar,      42, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightGauntletPlate3DL,                "Gloves_GauntletsGem6",     glovesGauntletsGem.changedCvar,      42, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& equipmentBoomerangBody = cosmeticOptions.at("Equipment_BoomerangBody");
-    if (manualChange || CVar_GetS32(equipmentBoomerangBody.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(equipmentBoomerangBody.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {equipmentBoomerangBody.defaultColor.x, equipmentBoomerangBody.defaultColor.y, equipmentBoomerangBody.defaultColor.z, equipmentBoomerangBody.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(equipmentBoomerangBody.cvar, defaultColor);
-        PATCH_GFX(gGiBoomerangDL,                                 "Equipment_BoomerangBody1", equipmentBoomerangBody.changedCvar,  10, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiBoomerangDL,                                 "Equipment_BoomerangBody2", equipmentBoomerangBody.changedCvar,  12, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
-        PATCH_GFX(gLinkChildLeftFistAndBoomerangNearDL,           "Equipment_BoomerangBody3", equipmentBoomerangBody.changedCvar,  68, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkChildLeftFistAndBoomerangFarDL,            "Equipment_BoomerangBody4", equipmentBoomerangBody.changedCvar,  18, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gBoomerangDL,                                   "Equipment_BoomerangBody5", equipmentBoomerangBody.changedCvar,  78, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(equipmentBoomerangBody.cvar, defaultColor);
+        PATCH_GFX(gGiBoomerangDL,                                 "Equipment_BoomerangBody1", equipmentBoomerangBody.changedCvar,   5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiBoomerangDL,                                 "Equipment_BoomerangBody2", equipmentBoomerangBody.changedCvar,   6, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gLinkChildLeftFistAndBoomerangNearDL,           "Equipment_BoomerangBody3", equipmentBoomerangBody.changedCvar,  34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkChildLeftFistAndBoomerangFarDL,            "Equipment_BoomerangBody4", equipmentBoomerangBody.changedCvar,   9, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gBoomerangDL,                                   "Equipment_BoomerangBody5", equipmentBoomerangBody.changedCvar,  39, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
     static CosmeticOption& equipmentBoomerangGem = cosmeticOptions.at("Equipment_BoomerangGem");
-    if (manualChange || CVar_GetS32(equipmentBoomerangGem.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(equipmentBoomerangGem.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {equipmentBoomerangGem.defaultColor.x, equipmentBoomerangGem.defaultColor.y, equipmentBoomerangGem.defaultColor.z, equipmentBoomerangGem.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(equipmentBoomerangGem.cvar, defaultColor);
-        PATCH_GFX(gGiBoomerangDL,                                 "Equipment_BoomerangGem1",  equipmentBoomerangGem.changedCvar,  168, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiBoomerangDL,                                 "Equipment_BoomerangGem2",  equipmentBoomerangGem.changedCvar,  170, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
-        PATCH_GFX(gLinkChildLeftFistAndBoomerangNearDL,           "Equipment_BoomerangGem3",  equipmentBoomerangGem.changedCvar,   32, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gBoomerangDL,                                   "Equipment_BoomerangGem4",  equipmentBoomerangGem.changedCvar,   46, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(equipmentBoomerangGem.cvar, defaultColor);
+        PATCH_GFX(gGiBoomerangDL,                                 "Equipment_BoomerangGem1",  equipmentBoomerangGem.changedCvar,   84, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiBoomerangDL,                                 "Equipment_BoomerangGem2",  equipmentBoomerangGem.changedCvar,   85, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gLinkChildLeftFistAndBoomerangNearDL,           "Equipment_BoomerangGem3",  equipmentBoomerangGem.changedCvar,   16, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gBoomerangDL,                                   "Equipment_BoomerangGem4",  equipmentBoomerangGem.changedCvar,   23, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         // There appears to be no gem rendered on the far LOD variant, not sure if this is an SOH bug or what.
         // PATCH_GFX(gLinkChildLeftFistAndBoomerangFarDL,  "Equipment_BoomerangGem5",  equipmentBoomerangGem.changedCvar,  32, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     // static CosmeticOption& equipmentSlingshotBody = cosmeticOptions.at("Equipment_SlingshotBody");
-    // if (manualChange || CVar_GetS32(equipmentSlingshotBody.rainbowCvar, 0)) {
+    // if (manualChange || CVarGetInteger(equipmentSlingshotBody.rainbowCvar, 0)) {
     //     static Color_RGBA8 defaultColor = {equipmentSlingshotBody.defaultColor.x, equipmentSlingshotBody.defaultColor.y, equipmentSlingshotBody.defaultColor.z, equipmentSlingshotBody.defaultColor.w};
-    //     Color_RGBA8 color = CVar_GetRGBA(equipmentSlingshotBody.cvar, defaultColor);
+    //     Color_RGBA8 color = CVarGetColor(equipmentSlingshotBody.cvar, defaultColor);
     //     PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotBody1", equipmentSlingshotBody.changedCvar,  10, gsDPSetPrimColor(0, 0, MAX(color.r - 100, 0), MAX(color.g - 100, 0), MAX(color.b - 100, 0), 255));
     //     PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotBody2", equipmentSlingshotBody.changedCvar,  12, gsDPSetEnvColor(MAX(color.r - 100, 0) / 3, MAX(color.g - 100, 0) / 3, MAX(color.b - 100, 0) / 3, 255));
     //     PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotBody3", equipmentSlingshotBody.changedCvar,  74, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
@@ -807,237 +807,237 @@ void ApplyOrResetCustomGfxPatches(bool manualChange = true) {
     //     }
     // }
     static CosmeticOption& equipmentSlingshotString = cosmeticOptions.at("Equipment_SlingshotString");
-    if (manualChange || CVar_GetS32(equipmentSlingshotString.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(equipmentSlingshotString.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {equipmentSlingshotString.defaultColor.x, equipmentSlingshotString.defaultColor.y, equipmentSlingshotString.defaultColor.z, equipmentSlingshotString.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(equipmentSlingshotString.cvar, defaultColor);
-        PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotString1",equipmentSlingshotString.changedCvar,150, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotString2",equipmentSlingshotString.changedCvar,152, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gLinkChildSlinghotStringDL,                     "Equipment_SlingshotString3",equipmentSlingshotString.changedCvar, 18, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(equipmentSlingshotString.cvar, defaultColor);
+        PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotString1",equipmentSlingshotString.changedCvar, 75, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiSlingshotDL,                                 "Equipment_SlingshotString2",equipmentSlingshotString.changedCvar, 76, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gLinkChildSlinghotStringDL,                     "Equipment_SlingshotString3",equipmentSlingshotString.changedCvar,  9, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& equipmentBowTips = cosmeticOptions.at("Equipment_BowTips");
-    if (manualChange || CVar_GetS32(equipmentBowTips.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(equipmentBowTips.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {equipmentBowTips.defaultColor.x, equipmentBowTips.defaultColor.y, equipmentBowTips.defaultColor.z, equipmentBowTips.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(equipmentBowTips.cvar, defaultColor);
-        PATCH_GFX(gGiBowDL,                                       "Equipment_BowTips1",       equipmentBowTips.changedCvar,       172, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiBowDL,                                       "Equipment_BowTips2",       equipmentBowTips.changedCvar,       174, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
-        PATCH_GFX(gLinkAdultRightHandHoldingBowFirstPersonDL,     "Equipment_BowTips3",       equipmentBowTips.changedCvar,        68, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightHandHoldingBowNearDL,            "Equipment_BowTips4",       equipmentBowTips.changedCvar,        52, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightHandHoldingBowFarDL,             "Equipment_BowTips5",       equipmentBowTips.changedCvar,        50, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(equipmentBowTips.cvar, defaultColor);
+        PATCH_GFX(gGiBowDL,                                       "Equipment_BowTips1",       equipmentBowTips.changedCvar,        86, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiBowDL,                                       "Equipment_BowTips2",       equipmentBowTips.changedCvar,        87, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gLinkAdultRightHandHoldingBowFirstPersonDL,     "Equipment_BowTips3",       equipmentBowTips.changedCvar,        34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightHandHoldingBowNearDL,            "Equipment_BowTips4",       equipmentBowTips.changedCvar,        26, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightHandHoldingBowFarDL,             "Equipment_BowTips5",       equipmentBowTips.changedCvar,        25, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
     static CosmeticOption& equipmentBowString = cosmeticOptions.at("Equipment_BowString");
-    if (manualChange || CVar_GetS32(equipmentBowString.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(equipmentBowString.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {equipmentBowString.defaultColor.x, equipmentBowString.defaultColor.y, equipmentBowString.defaultColor.z, equipmentBowString.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(equipmentBowString.cvar, defaultColor);
-        PATCH_GFX(gGiBowDL,                                       "Equipment_BowString1",     equipmentBowString.changedCvar,     210, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiBowDL,                                       "Equipment_BowString2",     equipmentBowString.changedCvar,     212, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
-        PATCH_GFX(gLinkAdultBowStringDL,                          "Equipment_BowString3",     equipmentBowString.changedCvar,      18, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(equipmentBowString.cvar, defaultColor);
+        PATCH_GFX(gGiBowDL,                                       "Equipment_BowString1",     equipmentBowString.changedCvar,     105, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiBowDL,                                       "Equipment_BowString2",     equipmentBowString.changedCvar,     106, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gLinkAdultBowStringDL,                          "Equipment_BowString3",     equipmentBowString.changedCvar,       9, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
     static CosmeticOption& equipmentBowBody = cosmeticOptions.at("Equipment_BowBody");
-    if (manualChange || CVar_GetS32(equipmentBowBody.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(equipmentBowBody.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {equipmentBowBody.defaultColor.x, equipmentBowBody.defaultColor.y, equipmentBowBody.defaultColor.z, equipmentBowBody.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(equipmentBowBody.cvar, defaultColor);
-        PATCH_GFX(gGiBowDL,                                       "Equipment_BowBody1",       equipmentBowBody.changedCvar,        10, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiBowDL,                                       "Equipment_BowBody2",       equipmentBowBody.changedCvar,        12, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
-        PATCH_GFX(gLinkAdultRightHandHoldingBowFirstPersonDL,     "Equipment_BowBody3",       equipmentBowBody.changedCvar,        84, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightHandHoldingBowNearDL,            "Equipment_BowBody4",       equipmentBowBody.changedCvar,        66, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightHandHoldingBowFarDL,             "Equipment_BowBody5",       equipmentBowBody.changedCvar,        62, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(equipmentBowBody.cvar, defaultColor);
+        PATCH_GFX(gGiBowDL,                                       "Equipment_BowBody1",       equipmentBowBody.changedCvar,         5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiBowDL,                                       "Equipment_BowBody2",       equipmentBowBody.changedCvar,         6, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gLinkAdultRightHandHoldingBowFirstPersonDL,     "Equipment_BowBody3",       equipmentBowBody.changedCvar,        42, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightHandHoldingBowNearDL,            "Equipment_BowBody4",       equipmentBowBody.changedCvar,        33, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightHandHoldingBowFarDL,             "Equipment_BowBody5",       equipmentBowBody.changedCvar,        31, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
     static CosmeticOption& equipmentBowHandle = cosmeticOptions.at("Equipment_BowHandle");
-    if (manualChange || CVar_GetS32(equipmentBowHandle.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(equipmentBowHandle.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {equipmentBowHandle.defaultColor.x, equipmentBowHandle.defaultColor.y, equipmentBowHandle.defaultColor.z, equipmentBowHandle.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(equipmentBowHandle.cvar, defaultColor);
-        PATCH_GFX(gGiBowDL,                                       "Equipment_BowHandle1",     equipmentBowHandle.changedCvar,     102, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiBowDL,                                       "Equipment_BowHandle2",     equipmentBowHandle.changedCvar,     104, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
-        PATCH_GFX(gLinkAdultRightHandHoldingBowFirstPersonDL,     "Equipment_BowHandle3",     equipmentBowHandle.changedCvar,      36, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightHandHoldingBowNearDL,            "Equipment_BowHandle4",     equipmentBowHandle.changedCvar,      36, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultRightHandHoldingBowFarDL,             "Equipment_BowHandle5",     equipmentBowHandle.changedCvar,      36, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(equipmentBowHandle.cvar, defaultColor);
+        PATCH_GFX(gGiBowDL,                                       "Equipment_BowHandle1",     equipmentBowHandle.changedCvar,      51, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiBowDL,                                       "Equipment_BowHandle2",     equipmentBowHandle.changedCvar,      52, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gLinkAdultRightHandHoldingBowFirstPersonDL,     "Equipment_BowHandle3",     equipmentBowHandle.changedCvar,      18, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightHandHoldingBowNearDL,            "Equipment_BowHandle4",     equipmentBowHandle.changedCvar,      18, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultRightHandHoldingBowFarDL,             "Equipment_BowHandle5",     equipmentBowHandle.changedCvar,      18, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& equipmentHammerHead = cosmeticOptions.at("Equipment_HammerHead");
-    if (manualChange || CVar_GetS32(equipmentHammerHead.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(equipmentHammerHead.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {equipmentHammerHead.defaultColor.x, equipmentHammerHead.defaultColor.y, equipmentHammerHead.defaultColor.z, equipmentHammerHead.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(equipmentHammerHead.cvar, defaultColor);
-        PATCH_GFX(gGiHammerDL,                                    "Equipment_HammerHead1",    equipmentHammerHead.changedCvar,     10, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiHammerDL,                                    "Equipment_HammerHead2",    equipmentHammerHead.changedCvar,     12, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
-        PATCH_GFX(gGiHammerDL,                                    "Equipment_HammerHead3",    equipmentHammerHead.changedCvar,    136, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiHammerDL,                                    "Equipment_HammerHead4",    equipmentHammerHead.changedCvar,    138, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
-        PATCH_GFX(gLinkAdultLeftHandHoldingHammerNearDL,          "Equipment_HammerHead5",    equipmentHammerHead.changedCvar,     76, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultLeftHandHoldingHammerFarDL,           "Equipment_HammerHead6",    equipmentHammerHead.changedCvar,     76, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(equipmentHammerHead.cvar, defaultColor);
+        PATCH_GFX(gGiHammerDL,                                    "Equipment_HammerHead1",    equipmentHammerHead.changedCvar,      5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiHammerDL,                                    "Equipment_HammerHead2",    equipmentHammerHead.changedCvar,      6, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
+        PATCH_GFX(gGiHammerDL,                                    "Equipment_HammerHead3",    equipmentHammerHead.changedCvar,     68, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiHammerDL,                                    "Equipment_HammerHead4",    equipmentHammerHead.changedCvar,     69, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
+        PATCH_GFX(gLinkAdultLeftHandHoldingHammerNearDL,          "Equipment_HammerHead5",    equipmentHammerHead.changedCvar,     38, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultLeftHandHoldingHammerFarDL,           "Equipment_HammerHead6",    equipmentHammerHead.changedCvar,     38, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
     static CosmeticOption& equipmentHammerHandle = cosmeticOptions.at("Equipment_HammerHandle");
-    if (manualChange || CVar_GetS32(equipmentHammerHandle.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(equipmentHammerHandle.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {equipmentHammerHandle.defaultColor.x, equipmentHammerHandle.defaultColor.y, equipmentHammerHandle.defaultColor.z, equipmentHammerHandle.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(equipmentHammerHandle.cvar, defaultColor);
-        PATCH_GFX(gGiHammerDL,                                    "Equipment_HammerHandle1",  equipmentHammerHandle.changedCvar,  168, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiHammerDL,                                    "Equipment_HammerHandle2",  equipmentHammerHandle.changedCvar,  170, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gLinkAdultLeftHandHoldingHammerNearDL,          "Equipment_HammerHandle5",  equipmentHammerHandle.changedCvar,   36, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gLinkAdultLeftHandHoldingHammerFarDL,           "Equipment_HammerHandle6",  equipmentHammerHandle.changedCvar,   36, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(equipmentHammerHandle.cvar, defaultColor);
+        PATCH_GFX(gGiHammerDL,                                    "Equipment_HammerHandle1",  equipmentHammerHandle.changedCvar,   84, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiHammerDL,                                    "Equipment_HammerHandle2",  equipmentHammerHandle.changedCvar,   85, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gLinkAdultLeftHandHoldingHammerNearDL,          "Equipment_HammerHandle5",  equipmentHammerHandle.changedCvar,   18, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gLinkAdultLeftHandHoldingHammerFarDL,           "Equipment_HammerHandle6",  equipmentHammerHandle.changedCvar,   18, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& equipmentChuFace = cosmeticOptions.at("Equipment_ChuFace");
-    if (manualChange || CVar_GetS32(equipmentChuFace.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(equipmentChuFace.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {equipmentChuFace.defaultColor.x, equipmentChuFace.defaultColor.y, equipmentChuFace.defaultColor.z, equipmentChuFace.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(equipmentChuFace.cvar, defaultColor);
-        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuFace1",       equipmentChuFace.changedCvar,        10, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuFace2",       equipmentChuFace.changedCvar,        12, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
-        PATCH_GFX(gBombchuDL,                                     "Equipment_ChuFace3",       equipmentChuFace.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(equipmentChuFace.cvar, defaultColor);
+        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuFace1",       equipmentChuFace.changedCvar,         5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuFace2",       equipmentChuFace.changedCvar,         6, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gBombchuDL,                                     "Equipment_ChuFace3",       equipmentChuFace.changedCvar,         2, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
 
         if (manualChange) {
-        PATCH_GFX(gBombchuDL,                                     "Equipment_ChuFace4",       equipmentChuFace.changedCvar,        20, gsSPGrayscale(true));
-        PATCH_GFX(gBombchuDL,                                     "Equipment_ChuFace5",       equipmentChuFace.changedCvar,        54, gsSPGrayscale(false));
+        PATCH_GFX(gBombchuDL,                                     "Equipment_ChuFace4",       equipmentChuFace.changedCvar,        10, gsSPGrayscale(true));
+        PATCH_GFX(gBombchuDL,                                     "Equipment_ChuFace5",       equipmentChuFace.changedCvar,        27, gsSPGrayscale(false));
         }
     }
     static CosmeticOption& equipmentChuBody = cosmeticOptions.at("Equipment_ChuBody");
-    if (manualChange || CVar_GetS32(equipmentChuBody.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(equipmentChuBody.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {equipmentChuBody.defaultColor.x, equipmentChuBody.defaultColor.y, equipmentChuBody.defaultColor.z, equipmentChuBody.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(equipmentChuBody.cvar, defaultColor);
-        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuBody1",       equipmentChuBody.changedCvar,        78, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuBody2",       equipmentChuBody.changedCvar,        80, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
-        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuBody3",       equipmentChuBody.changedCvar,       120, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuBody4",       equipmentChuBody.changedCvar,       122, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
-        PATCH_GFX(gBombchuDL,                                     "Equipment_ChuBody5",       equipmentChuBody.changedCvar,        92, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(equipmentChuBody.cvar, defaultColor);
+        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuBody1",       equipmentChuBody.changedCvar,        39, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuBody2",       equipmentChuBody.changedCvar,        40, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuBody3",       equipmentChuBody.changedCvar,        60, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiBombchuDL,                                   "Equipment_ChuBody4",       equipmentChuBody.changedCvar,        61, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gBombchuDL,                                     "Equipment_ChuBody5",       equipmentChuBody.changedCvar,        46, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& consumableGreenRupee = cosmeticOptions.at("Consumable_GreenRupee");
-    if (manualChange || CVar_GetS32(consumableGreenRupee.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(consumableGreenRupee.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {consumableGreenRupee.defaultColor.x, consumableGreenRupee.defaultColor.y, consumableGreenRupee.defaultColor.z, consumableGreenRupee.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(consumableGreenRupee.cvar, defaultColor);
-        PATCH_GFX(gGiGreenRupeeInnerColorDL,                      "Consumable_GreenRupee1",   consumableGreenRupee.changedCvar,     6, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiGreenRupeeInnerColorDL,                      "Consumable_GreenRupee2",   consumableGreenRupee.changedCvar,     8, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
-        PATCH_GFX(gGiGreenRupeeOuterColorDL,                      "Consumable_GreenRupee3",   consumableGreenRupee.changedCvar,     6, gsDPSetPrimColor(0, 0, MIN(color.r + 100, 255), MIN(color.g + 100, 255), MIN(color.b + 100, 255), 255));
-        PATCH_GFX(gGiGreenRupeeOuterColorDL,                      "Consumable_GreenRupee4",   consumableGreenRupee.changedCvar,     8, gsDPSetEnvColor(color.r * 0.75f, color.g * 0.75f, color.b * 0.75f, 255));
+        Color_RGBA8 color = CVarGetColor(consumableGreenRupee.cvar, defaultColor);
+        PATCH_GFX(gGiGreenRupeeInnerColorDL,                      "Consumable_GreenRupee1",   consumableGreenRupee.changedCvar,     3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiGreenRupeeInnerColorDL,                      "Consumable_GreenRupee2",   consumableGreenRupee.changedCvar,     4, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
+        PATCH_GFX(gGiGreenRupeeOuterColorDL,                      "Consumable_GreenRupee3",   consumableGreenRupee.changedCvar,     3, gsDPSetPrimColor(0, 0, MIN(color.r + 100, 255), MIN(color.g + 100, 255), MIN(color.b + 100, 255), 255));
+        PATCH_GFX(gGiGreenRupeeOuterColorDL,                      "Consumable_GreenRupee4",   consumableGreenRupee.changedCvar,     4, gsDPSetEnvColor(color.r * 0.75f, color.g * 0.75f, color.b * 0.75f, 255));
     }
     static CosmeticOption& consumableBlueRupee = cosmeticOptions.at("Consumable_BlueRupee");
-    if (manualChange || CVar_GetS32(consumableBlueRupee.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(consumableBlueRupee.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {consumableBlueRupee.defaultColor.x, consumableBlueRupee.defaultColor.y, consumableBlueRupee.defaultColor.z, consumableBlueRupee.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(consumableBlueRupee.cvar, defaultColor);
-        PATCH_GFX(gGiBlueRupeeInnerColorDL,                       "Consumable_BlueRupee1",    consumableBlueRupee.changedCvar,      6, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiBlueRupeeInnerColorDL,                       "Consumable_BlueRupee2",    consumableBlueRupee.changedCvar,      8, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
-        PATCH_GFX(gGiBlueRupeeOuterColorDL,                       "Consumable_BlueRupee3",    consumableBlueRupee.changedCvar,      6, gsDPSetPrimColor(0, 0, MIN(color.r + 100, 255), MIN(color.g + 100, 255), MIN(color.b + 100, 255), 255));
-        PATCH_GFX(gGiBlueRupeeOuterColorDL,                       "Consumable_BlueRupee4",    consumableBlueRupee.changedCvar,      8, gsDPSetEnvColor(color.r * 0.75f, color.g * 0.75f, color.b * 0.75f, 255));
+        Color_RGBA8 color = CVarGetColor(consumableBlueRupee.cvar, defaultColor);
+        PATCH_GFX(gGiBlueRupeeInnerColorDL,                       "Consumable_BlueRupee1",    consumableBlueRupee.changedCvar,      3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiBlueRupeeInnerColorDL,                       "Consumable_BlueRupee2",    consumableBlueRupee.changedCvar,      4, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
+        PATCH_GFX(gGiBlueRupeeOuterColorDL,                       "Consumable_BlueRupee3",    consumableBlueRupee.changedCvar,      3, gsDPSetPrimColor(0, 0, MIN(color.r + 100, 255), MIN(color.g + 100, 255), MIN(color.b + 100, 255), 255));
+        PATCH_GFX(gGiBlueRupeeOuterColorDL,                       "Consumable_BlueRupee4",    consumableBlueRupee.changedCvar,      4, gsDPSetEnvColor(color.r * 0.75f, color.g * 0.75f, color.b * 0.75f, 255));
     }
     static CosmeticOption& consumableRedRupee = cosmeticOptions.at("Consumable_RedRupee");
-    if (manualChange || CVar_GetS32(consumableRedRupee.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(consumableRedRupee.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {consumableRedRupee.defaultColor.x, consumableRedRupee.defaultColor.y, consumableRedRupee.defaultColor.z, consumableRedRupee.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(consumableRedRupee.cvar, defaultColor);
-        PATCH_GFX(gGiRedRupeeInnerColorDL,                        "Consumable_RedRupee1",     consumableRedRupee.changedCvar,       6, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiRedRupeeInnerColorDL,                        "Consumable_RedRupee2",     consumableRedRupee.changedCvar,       8, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
-        PATCH_GFX(gGiRedRupeeOuterColorDL,                        "Consumable_RedRupee3",     consumableRedRupee.changedCvar,       6, gsDPSetPrimColor(0, 0, MIN(color.r + 100, 255), MIN(color.g + 100, 255), MIN(color.b + 100, 255), 255));
-        PATCH_GFX(gGiRedRupeeOuterColorDL,                        "Consumable_RedRupee4",     consumableRedRupee.changedCvar,       8, gsDPSetEnvColor(color.r * 0.75f, color.g * 0.75f, color.b * 0.75f, 255));
+        Color_RGBA8 color = CVarGetColor(consumableRedRupee.cvar, defaultColor);
+        PATCH_GFX(gGiRedRupeeInnerColorDL,                        "Consumable_RedRupee1",     consumableRedRupee.changedCvar,       3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiRedRupeeInnerColorDL,                        "Consumable_RedRupee2",     consumableRedRupee.changedCvar,       4, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
+        PATCH_GFX(gGiRedRupeeOuterColorDL,                        "Consumable_RedRupee3",     consumableRedRupee.changedCvar,       3, gsDPSetPrimColor(0, 0, MIN(color.r + 100, 255), MIN(color.g + 100, 255), MIN(color.b + 100, 255), 255));
+        PATCH_GFX(gGiRedRupeeOuterColorDL,                        "Consumable_RedRupee4",     consumableRedRupee.changedCvar,       4, gsDPSetEnvColor(color.r * 0.75f, color.g * 0.75f, color.b * 0.75f, 255));
     }
     static CosmeticOption& consumablePurpleRupee = cosmeticOptions.at("Consumable_PurpleRupee");
-    if (manualChange || CVar_GetS32(consumablePurpleRupee.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(consumablePurpleRupee.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {consumablePurpleRupee.defaultColor.x, consumablePurpleRupee.defaultColor.y, consumablePurpleRupee.defaultColor.z, consumablePurpleRupee.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(consumablePurpleRupee.cvar, defaultColor);
-        PATCH_GFX(gGiPurpleRupeeInnerColorDL,                     "Consumable_PurpleRupee1",  consumablePurpleRupee.changedCvar,    6, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiPurpleRupeeInnerColorDL,                     "Consumable_PurpleRupee2",  consumablePurpleRupee.changedCvar,    8, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
-        PATCH_GFX(gGiPurpleRupeeOuterColorDL,                     "Consumable_PurpleRupee3",  consumablePurpleRupee.changedCvar,    6, gsDPSetPrimColor(0, 0, MIN(color.r + 100, 255), MIN(color.g + 100, 255), MIN(color.b + 100, 255), 255));
-        PATCH_GFX(gGiPurpleRupeeOuterColorDL,                     "Consumable_PurpleRupee4",  consumablePurpleRupee.changedCvar,    8, gsDPSetEnvColor(color.r * 0.75f, color.g * 0.75f, color.b * 0.75f, 255));
+        Color_RGBA8 color = CVarGetColor(consumablePurpleRupee.cvar, defaultColor);
+        PATCH_GFX(gGiPurpleRupeeInnerColorDL,                     "Consumable_PurpleRupee1",  consumablePurpleRupee.changedCvar,    3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiPurpleRupeeInnerColorDL,                     "Consumable_PurpleRupee2",  consumablePurpleRupee.changedCvar,    4, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
+        PATCH_GFX(gGiPurpleRupeeOuterColorDL,                     "Consumable_PurpleRupee3",  consumablePurpleRupee.changedCvar,    3, gsDPSetPrimColor(0, 0, MIN(color.r + 100, 255), MIN(color.g + 100, 255), MIN(color.b + 100, 255), 255));
+        PATCH_GFX(gGiPurpleRupeeOuterColorDL,                     "Consumable_PurpleRupee4",  consumablePurpleRupee.changedCvar,    4, gsDPSetEnvColor(color.r * 0.75f, color.g * 0.75f, color.b * 0.75f, 255));
     }
     static CosmeticOption& consumableGoldRupee = cosmeticOptions.at("Consumable_GoldRupee");
-    if (manualChange || CVar_GetS32(consumableGoldRupee.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(consumableGoldRupee.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {consumableGoldRupee.defaultColor.x, consumableGoldRupee.defaultColor.y, consumableGoldRupee.defaultColor.z, consumableGoldRupee.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(consumableGoldRupee.cvar, defaultColor);
-        PATCH_GFX(gGiGoldRupeeInnerColorDL,                       "Consumable_GoldRupee1",    consumableGoldRupee.changedCvar,      6, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiGoldRupeeInnerColorDL,                       "Consumable_GoldRupee2",    consumableGoldRupee.changedCvar,      8, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
-        PATCH_GFX(gGiGoldRupeeOuterColorDL,                       "Consumable_GoldRupee3",    consumableGoldRupee.changedCvar,      6, gsDPSetPrimColor(0, 0, MIN(color.r + 100, 255), MIN(color.g + 100, 255), MIN(color.b + 100, 255), 255));
-        PATCH_GFX(gGiGoldRupeeOuterColorDL,                       "Consumable_GoldRupee4",    consumableGoldRupee.changedCvar,      8, gsDPSetEnvColor(color.r * 0.75f, color.g * 0.75f, color.b * 0.75f, 255));
+        Color_RGBA8 color = CVarGetColor(consumableGoldRupee.cvar, defaultColor);
+        PATCH_GFX(gGiGoldRupeeInnerColorDL,                       "Consumable_GoldRupee1",    consumableGoldRupee.changedCvar,      3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiGoldRupeeInnerColorDL,                       "Consumable_GoldRupee2",    consumableGoldRupee.changedCvar,      4, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
+        PATCH_GFX(gGiGoldRupeeOuterColorDL,                       "Consumable_GoldRupee3",    consumableGoldRupee.changedCvar,      3, gsDPSetPrimColor(0, 0, MIN(color.r + 100, 255), MIN(color.g + 100, 255), MIN(color.b + 100, 255), 255));
+        PATCH_GFX(gGiGoldRupeeOuterColorDL,                       "Consumable_GoldRupee4",    consumableGoldRupee.changedCvar,      4, gsDPSetEnvColor(color.r * 0.75f, color.g * 0.75f, color.b * 0.75f, 255));
     }
 
     static CosmeticOption& consumableHearts = cosmeticOptions.at("Consumable_Hearts");
-    if (manualChange || CVar_GetS32(consumableHearts.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(consumableHearts.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {consumableHearts.defaultColor.x, consumableHearts.defaultColor.y, consumableHearts.defaultColor.z, consumableHearts.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(consumableHearts.cvar, defaultColor);
+        Color_RGBA8 color = CVarGetColor(consumableHearts.cvar, defaultColor);
         // PATCH_GFX(gGiRecoveryHeartDL,                             "Consumable_Hearts1",       consumableHearts.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
         // PATCH_GFX(gGiRecoveryHeartDL,                             "Consumable_Hearts2",       consumableHearts.changedCvar,        26, gsSPGrayscale(true));
         // PATCH_GFX(gGiRecoveryHeartDL,                             "Consumable_Hearts3",       consumableHearts.changedCvar,        72, gsSPGrayscale(false));
         // PATCH_GFX(gGiRecoveryHeartDL,                             "Consumable_Hearts4",       consumableHearts.changedCvar,        74, gsSPEndDisplayList());
-        PATCH_GFX(gGiHeartPieceDL,                                "Consumable_Hearts5",       consumableHearts.changedCvar,         4, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiHeartPieceDL,                                "Consumable_Hearts6",       consumableHearts.changedCvar,        12, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gGiHeartContainerDL,                            "Consumable_Hearts7",       consumableHearts.changedCvar,         4, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiHeartContainerDL,                            "Consumable_Hearts8",       consumableHearts.changedCvar,        12, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gGiRedPotColorDL,                               "Consumable_Hearts9",       consumableHearts.changedCvar,         6, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiRedPotColorDL,                               "Consumable_Hearts10",      consumableHearts.changedCvar,         8, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gGiHeartPieceDL,                                "Consumable_Hearts5",       consumableHearts.changedCvar,         2, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiHeartPieceDL,                                "Consumable_Hearts6",       consumableHearts.changedCvar,         6, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gGiHeartContainerDL,                            "Consumable_Hearts7",       consumableHearts.changedCvar,         2, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiHeartContainerDL,                            "Consumable_Hearts8",       consumableHearts.changedCvar,         6, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gGiRedPotColorDL,                               "Consumable_Hearts9",       consumableHearts.changedCvar,         3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiRedPotColorDL,                               "Consumable_Hearts10",      consumableHearts.changedCvar,         4, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
     }
     static CosmeticOption& consumableMagic = cosmeticOptions.at("Consumable_Magic");
-    if (manualChange || CVar_GetS32(consumableMagic.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(consumableMagic.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {consumableMagic.defaultColor.x, consumableMagic.defaultColor.y, consumableMagic.defaultColor.z, consumableMagic.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(consumableMagic.cvar, defaultColor);
-        PATCH_GFX(gGiMagicJarSmallDL,                             "Consumable_Magic1",        consumableMagic.changedCvar,         62, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiMagicJarSmallDL,                             "Consumable_Magic2",        consumableMagic.changedCvar,         64, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gGiMagicJarLargeDL,                             "Consumable_Magic3",        consumableMagic.changedCvar,         62, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiMagicJarLargeDL,                             "Consumable_Magic4",        consumableMagic.changedCvar,         64, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gGiGreenPotColorDL,                             "Consumable_Magic5",        consumableMagic.changedCvar,          6, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiGreenPotColorDL,                             "Consumable_Magic6",        consumableMagic.changedCvar,          8, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        Color_RGBA8 color = CVarGetColor(consumableMagic.cvar, defaultColor);
+        PATCH_GFX(gGiMagicJarSmallDL,                             "Consumable_Magic1",        consumableMagic.changedCvar,         31, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiMagicJarSmallDL,                             "Consumable_Magic2",        consumableMagic.changedCvar,         32, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gGiMagicJarLargeDL,                             "Consumable_Magic3",        consumableMagic.changedCvar,         31, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiMagicJarLargeDL,                             "Consumable_Magic4",        consumableMagic.changedCvar,         32, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gGiGreenPotColorDL,                             "Consumable_Magic5",        consumableMagic.changedCvar,          3, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiGreenPotColorDL,                             "Consumable_Magic6",        consumableMagic.changedCvar,          4, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
     }
 
     static CosmeticOption& npcGoldenSkulltula = cosmeticOptions.at("NPC_GoldenSkulltula");
-    if (manualChange || CVar_GetS32(npcGoldenSkulltula.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(npcGoldenSkulltula.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {npcGoldenSkulltula.defaultColor.x, npcGoldenSkulltula.defaultColor.y, npcGoldenSkulltula.defaultColor.z, npcGoldenSkulltula.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(npcGoldenSkulltula.cvar, defaultColor);
-        PATCH_GFX(gGiSkulltulaTokenDL,                            "NPC_GoldenSkulltula1",     npcGoldenSkulltula.changedCvar,      10, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiSkulltulaTokenDL,                            "NPC_GoldenSkulltula2",     npcGoldenSkulltula.changedCvar,      12, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(gGiSkulltulaTokenFlameDL,                       "NPC_GoldenSkulltula3",     npcGoldenSkulltula.changedCvar,      64, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGiSkulltulaTokenFlameDL,                       "NPC_GoldenSkulltula4",     npcGoldenSkulltula.changedCvar,      66, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
-        PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula5",     npcGoldenSkulltula.changedCvar,     236, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula6",     npcGoldenSkulltula.changedCvar,     238, gsDPSetEnvColor(color.r / 4, color.g / 4, color.b / 4, 255));
+        Color_RGBA8 color = CVarGetColor(npcGoldenSkulltula.cvar, defaultColor);
+        PATCH_GFX(gGiSkulltulaTokenDL,                            "NPC_GoldenSkulltula1",     npcGoldenSkulltula.changedCvar,       5, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiSkulltulaTokenDL,                            "NPC_GoldenSkulltula2",     npcGoldenSkulltula.changedCvar,       6, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(gGiSkulltulaTokenFlameDL,                       "NPC_GoldenSkulltula3",     npcGoldenSkulltula.changedCvar,      32, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGiSkulltulaTokenFlameDL,                       "NPC_GoldenSkulltula4",     npcGoldenSkulltula.changedCvar,      33, gsDPSetEnvColor(color.r / 2, color.g / 2, color.b / 2, 255));
+        PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula5",     npcGoldenSkulltula.changedCvar,     118, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(object_st_DL_003FB0,                            "NPC_GoldenSkulltula6",     npcGoldenSkulltula.changedCvar,     119, gsDPSetEnvColor(color.r / 4, color.g / 4, color.b / 4, 255));
     }
 
     static CosmeticOption& npcGerudo = cosmeticOptions.at("NPC_Gerudo");
-    if (manualChange || CVar_GetS32(npcGerudo.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(npcGerudo.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {npcGerudo.defaultColor.x, npcGerudo.defaultColor.y, npcGerudo.defaultColor.z, npcGerudo.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(npcGerudo.cvar, defaultColor);
-        PATCH_GFX(gGerudoPurpleTorsoDL,                           "NPC_Gerudo1",              npcGerudo.changedCvar,              278, gsDPSetEnvColor( color.r, color.g, color.b, 255));
-        PATCH_GFX(gGerudoPurpleRightThighDL,                      "NPC_Gerudo2",              npcGerudo.changedCvar,               22, gsDPSetEnvColor(color.r, color.g, color.b, 255));
-        PATCH_GFX(gGerudoPurpleLeftThighDL,                       "NPC_Gerudo3",              npcGerudo.changedCvar,               22, gsDPSetEnvColor(color.r, color.g, color.b, 255));
-        PATCH_GFX(gGerudoPurpleVeilDL,                            "NPC_Gerudo4",              npcGerudo.changedCvar,               34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGerudoPurpleLeftShinDL,                        "NPC_Gerudo5",              npcGerudo.changedCvar,               22, gsDPSetEnvColor(color.r, color.g, color.b, 255));
-        PATCH_GFX(gGerudoPurpleRightShinDL,                       "NPC_Gerudo6",              npcGerudo.changedCvar,               22, gsDPSetEnvColor(color.r, color.g, color.b, 255));
-        PATCH_GFX(gGerudoPurpleLeftHandDL,                        "NPC_Gerudo7",              npcGerudo.changedCvar,               34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
-        PATCH_GFX(gGerudoPurpleRightHandDL,                       "NPC_Gerudo8",              npcGerudo.changedCvar,               34, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(npcGerudo.cvar, defaultColor);
+        PATCH_GFX(gGerudoPurpleTorsoDL,                           "NPC_Gerudo1",              npcGerudo.changedCvar,              139, gsDPSetEnvColor( color.r, color.g, color.b, 255));
+        PATCH_GFX(gGerudoPurpleRightThighDL,                      "NPC_Gerudo2",              npcGerudo.changedCvar,               11, gsDPSetEnvColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gGerudoPurpleLeftThighDL,                       "NPC_Gerudo3",              npcGerudo.changedCvar,               11, gsDPSetEnvColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gGerudoPurpleVeilDL,                            "NPC_Gerudo4",              npcGerudo.changedCvar,               17, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGerudoPurpleLeftShinDL,                        "NPC_Gerudo5",              npcGerudo.changedCvar,               11, gsDPSetEnvColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gGerudoPurpleRightShinDL,                       "NPC_Gerudo6",              npcGerudo.changedCvar,               11, gsDPSetEnvColor(color.r, color.g, color.b, 255));
+        PATCH_GFX(gGerudoPurpleLeftHandDL,                        "NPC_Gerudo7",              npcGerudo.changedCvar,               17, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        PATCH_GFX(gGerudoPurpleRightHandDL,                       "NPC_Gerudo8",              npcGerudo.changedCvar,               17, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& npcMetalTrap = cosmeticOptions.at("NPC_MetalTrap");
-    if (manualChange || CVar_GetS32(npcMetalTrap.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(npcMetalTrap.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {npcMetalTrap.defaultColor.x, npcMetalTrap.defaultColor.y, npcMetalTrap.defaultColor.z, npcMetalTrap.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(npcMetalTrap.cvar, defaultColor);
-        PATCH_GFX(gSlidingBladeTrapDL,                            "NPC_MetalTrap1",           npcMetalTrap.changedCvar,           118, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
+        Color_RGBA8 color = CVarGetColor(npcMetalTrap.cvar, defaultColor);
+        PATCH_GFX(gSlidingBladeTrapDL,                            "NPC_MetalTrap1",           npcMetalTrap.changedCvar,            59, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     }
 
     static CosmeticOption& n64LogoRed = cosmeticOptions.at("Title_N64LogoRed");
-    if (manualChange || CVar_GetS32(n64LogoRed.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(n64LogoRed.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {n64LogoRed.defaultColor.x, n64LogoRed.defaultColor.y, n64LogoRed.defaultColor.z, n64LogoRed.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(n64LogoRed.cvar, defaultColor);
-        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoRed1",          n64LogoRed.changedCvar,              34, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
-        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoRed2",          n64LogoRed.changedCvar,              36, gsDPSetEnvColor(color.r, color.g, color.b, 128));
+        Color_RGBA8 color = CVarGetColor(n64LogoRed.cvar, defaultColor);
+        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoRed1",          n64LogoRed.changedCvar,              17, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
+        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoRed2",          n64LogoRed.changedCvar,              18, gsDPSetEnvColor(color.r, color.g, color.b, 128));
     }
     static CosmeticOption& n64LogoBlue = cosmeticOptions.at("Title_N64LogoBlue");
-    if (manualChange || CVar_GetS32(n64LogoBlue.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(n64LogoBlue.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {n64LogoBlue.defaultColor.x, n64LogoBlue.defaultColor.y, n64LogoBlue.defaultColor.z, n64LogoBlue.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(n64LogoBlue.cvar, defaultColor);
-        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoBlue1",         n64LogoBlue.changedCvar,             58, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
-        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoBlue2",         n64LogoBlue.changedCvar,             60, gsDPSetEnvColor(color.r, color.g, color.b, 128));
+        Color_RGBA8 color = CVarGetColor(n64LogoBlue.cvar, defaultColor);
+        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoBlue1",         n64LogoBlue.changedCvar,             29, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
+        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoBlue2",         n64LogoBlue.changedCvar,             30, gsDPSetEnvColor(color.r, color.g, color.b, 128));
     }
     static CosmeticOption& n64LogoGreen = cosmeticOptions.at("Title_N64LogoGreen");
-    if (manualChange || CVar_GetS32(n64LogoGreen.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(n64LogoGreen.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {n64LogoGreen.defaultColor.x, n64LogoGreen.defaultColor.y, n64LogoGreen.defaultColor.z, n64LogoGreen.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(n64LogoGreen.cvar, defaultColor);
-        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoGreen1",        n64LogoGreen.changedCvar,           112, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
-        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoGreen2",        n64LogoGreen.changedCvar,           114, gsDPSetEnvColor(color.r, color.g, color.b, 128));
+        Color_RGBA8 color = CVarGetColor(n64LogoGreen.cvar, defaultColor);
+        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoGreen1",        n64LogoGreen.changedCvar,            56, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
+        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoGreen2",        n64LogoGreen.changedCvar,            57, gsDPSetEnvColor(color.r, color.g, color.b, 128));
     }
     static CosmeticOption& n64LogoYellow = cosmeticOptions.at("Title_N64LogoYellow");
-    if (manualChange || CVar_GetS32(n64LogoYellow.rainbowCvar, 0)) {
+    if (manualChange || CVarGetInteger(n64LogoYellow.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {n64LogoYellow.defaultColor.x, n64LogoYellow.defaultColor.y, n64LogoYellow.defaultColor.z, n64LogoYellow.defaultColor.w};
-        Color_RGBA8 color = CVar_GetRGBA(n64LogoYellow.cvar, defaultColor);
-        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoYellow1",       n64LogoYellow.changedCvar,          162, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
-        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoYellow2",       n64LogoYellow.changedCvar,          164, gsDPSetEnvColor(color.r, color.g, color.b, 128));
+        Color_RGBA8 color = CVarGetColor(n64LogoYellow.cvar, defaultColor);
+        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoYellow1",       n64LogoYellow.changedCvar,           81, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
+        PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoYellow2",       n64LogoYellow.changedCvar,           82, gsDPSetEnvColor(color.r, color.g, color.b, 128));
     }
 
     if (gPlayState != nullptr) {
-        if (CVar_GetS32("gCosmetics.Link_BodyScale.Changed", 0)) {
+        if (CVarGetInteger("gCosmetics.Link_BodyScale.Changed", 0)) {
             static Player* player = GET_PLAYER(gPlayState);
-            float scale = CVar_GetFloat("gCosmetics.Link_BodyScale.Value", 0.01f);
+            float scale = CVarGetFloat("gCosmetics.Link_BodyScale.Value", 0.01f);
             player->actor.scale.x = scale;
             player->actor.scale.y = scale;
             player->actor.scale.z = scale;
@@ -1139,7 +1139,7 @@ void Draw_Placements(){
             ImGui::EndTable();
         }
     }
-    if (CVar_GetS32("gVisualAgony",0) && ImGui::CollapsingHeader("Visual stone of agony position")) {
+    if (CVarGetInteger("gVisualAgony",0) && ImGui::CollapsingHeader("Visual stone of agony position")) {
         if (ImGui::BeginTable("tabledvisualstoneofagony", 1, FlagsTable)) {
             ImGui::TableSetupColumn("Visual stone of agony settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
@@ -1147,9 +1147,9 @@ void Draw_Placements(){
             DrawPositionsRadioBoxes("gVSOA");
             s16 Min_X_VSOA = 0;
             s16 Max_X_VSOA = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVar_GetS32("gVSOAPosType",0) == 2){
+            if(CVarGetInteger("gVSOAPosType",0) == 2){
                 Max_X_VSOA = 290;
-            } else if(CVar_GetS32("gVSOAPosType",0) == 4){
+            } else if(CVarGetInteger("gVSOAPosType",0) == 4){
                 Min_X_VSOA = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
             DrawPositionSlider("gVSOA", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_VSOA, Max_X_VSOA);
@@ -1202,11 +1202,11 @@ void Draw_Placements(){
             DrawPositionsRadioBoxes("gCBtnU");
             s16 Min_X_CU = 0;
             s16 Max_X_CU = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVar_GetS32("gCBtnUPosType",0) == 2){
+            if(CVarGetInteger("gCBtnUPosType",0) == 2){
                 Max_X_CU = 294;
-            } else if(CVar_GetS32("gCBtnUPosType",0) == 3){
+            } else if(CVarGetInteger("gCBtnUPosType",0) == 3){
                 Max_X_CU = ImGui::GetWindowViewport()->Size.x/2;
-            } else if(CVar_GetS32("gCBtnUPosType",0) == 4){
+            } else if(CVarGetInteger("gCBtnUPosType",0) == 4){
                 Min_X_CU = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
             DrawPositionSlider("gCBtnU", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CU, Max_X_CU);
@@ -1223,11 +1223,11 @@ void Draw_Placements(){
             DrawPositionsRadioBoxes("gCBtnD");
             s16 Min_X_CD = 0;
             s16 Max_X_CD = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVar_GetS32("gCBtnDPosType",0) == 2){
+            if(CVarGetInteger("gCBtnDPosType",0) == 2){
                 Max_X_CD = 294;
-            } else if(CVar_GetS32("gCBtnDPosType",0) == 3){
+            } else if(CVarGetInteger("gCBtnDPosType",0) == 3){
                 Max_X_CD = ImGui::GetWindowViewport()->Size.x/2;
-            } else if(CVar_GetS32("gCBtnDPosType",0) == 4){
+            } else if(CVarGetInteger("gCBtnDPosType",0) == 4){
                 Min_X_CD = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
             DrawPositionSlider("gCBtnD", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CD, Max_X_CD);
@@ -1244,11 +1244,11 @@ void Draw_Placements(){
             DrawPositionsRadioBoxes("gCBtnL");
             s16 Min_X_CL = 0;
             s16 Max_X_CL = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVar_GetS32("gCBtnLPosType",0) == 2){
+            if(CVarGetInteger("gCBtnLPosType",0) == 2){
                 Max_X_CL = 294;
-            } else if(CVar_GetS32("gCBtnLPosType",0) == 3){
+            } else if(CVarGetInteger("gCBtnLPosType",0) == 3){
                 Max_X_CL = ImGui::GetWindowViewport()->Size.x/2;
-            } else if(CVar_GetS32("gCBtnLPosType",0) == 4){
+            } else if(CVarGetInteger("gCBtnLPosType",0) == 4){
                 Min_X_CL = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
             DrawPositionSlider("gCBtnL", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CL, Max_X_CL);
@@ -1265,11 +1265,11 @@ void Draw_Placements(){
             DrawPositionsRadioBoxes("gCBtnR");
             s16 Min_X_CR = 0;
             s16 Max_X_CR = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVar_GetS32("gCBtnRPosType",0) == 2){
+            if(CVarGetInteger("gCBtnRPosType",0) == 2){
                 Max_X_CR = 294;
-            } else if(CVar_GetS32("gCBtnRPosType",0) == 3){
+            } else if(CVarGetInteger("gCBtnRPosType",0) == 3){
                 Max_X_CR = ImGui::GetWindowViewport()->Size.x/2;
-            } else if(CVar_GetS32("gCBtnRPosType",0) == 4){
+            } else if(CVarGetInteger("gCBtnRPosType",0) == 4){
                 Min_X_CR = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
             DrawPositionSlider("gCBtnR", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_CR, Max_X_CR);
@@ -1278,7 +1278,7 @@ void Draw_Placements(){
             ImGui::EndTable();
         }
     }
-    if (CVar_GetS32("gDpadEquips",0) && ImGui::CollapsingHeader("DPad items position")) {
+    if (CVarGetInteger("gDpadEquips",0) && ImGui::CollapsingHeader("DPad items position")) {
         if (ImGui::BeginTable("tabledpaditems", 1, FlagsTable)) {
             ImGui::TableSetupColumn("DPad items settings", FlagsCell, TablesCellsWidth);
             Table_InitHeader(false);
@@ -1286,9 +1286,9 @@ void Draw_Placements(){
             DrawPositionsRadioBoxes("gDPad");
             s16 Min_X_Dpad = 0;
             s16 Max_X_Dpad = ImGui::GetWindowViewport()->Size.x/2;
-            if(CVar_GetS32("gDPadPosType",0) == 2){
+            if(CVarGetInteger("gDPadPosType",0) == 2){
                 Max_X_Dpad = 290;
-            } else if(CVar_GetS32("gDPadPosType",0) == 4){
+            } else if(CVarGetInteger("gDPadPosType",0) == 4){
                 Min_X_Dpad = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
             DrawPositionSlider("gDPad", 0, ImGui::GetWindowViewport()->Size.y/2, Min_X_Dpad, Max_X_Dpad);
@@ -1396,18 +1396,18 @@ void Draw_Placements(){
 }
 
 void DrawSillyTab() {
-    if (CVar_GetS32("gLetItSnow", 0)) {
+    if (CVarGetInteger("gLetItSnow", 0)) {
         if (UIWidgets::EnhancementCheckbox("Let It Snow", "gLetItSnow")) {
             SohImGui::RequestCvarSaveOnNextTick();
         }
     }
     if (UIWidgets::EnhancementSliderFloat("Link Body Scale: %f", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, false)) {
-        CVar_SetS32("gCosmetics.Link_BodyScale.Changed", 1);
+        CVarSetInteger("gCosmetics.Link_BodyScale.Changed", 1);
     }
     ImGui::SameLine();
     if (ImGui::Button("Reset##Link_BodyScale")) {
-        CVar_Clear("gCosmetics.Link_BodyScale.Value");
-        CVar_Clear("gCosmetics.Link_BodyScale.Changed");
+        CVarClear("gCosmetics.Link_BodyScale.Value");
+        CVarClear("gCosmetics.Link_BodyScale.Changed");
         SohImGui::RequestCvarSaveOnNextTick();
         static Player* player = GET_PLAYER(gPlayState);
         player->actor.scale.x = 0.01f;
@@ -1415,67 +1415,67 @@ void DrawSillyTab() {
         player->actor.scale.z = 0.01f;
     }
     if (UIWidgets::EnhancementSliderFloat("Link Head Scale: %f", "##Link_HeadScale", "gCosmetics.Link_HeadScale.Value", 0.4f, 4.0f, "", 1.0f, false)) {
-        CVar_SetS32("gCosmetics.Link_HeadScale.Changed", 1);
+        CVarSetInteger("gCosmetics.Link_HeadScale.Changed", 1);
     }
     ImGui::SameLine();
     if (ImGui::Button("Reset##Link_HeadScale")) {
-        CVar_Clear("gCosmetics.Link_HeadScale.Value");
-        CVar_Clear("gCosmetics.Link_HeadScale.Changed");
+        CVarClear("gCosmetics.Link_HeadScale.Value");
+        CVarClear("gCosmetics.Link_HeadScale.Changed");
         SohImGui::RequestCvarSaveOnNextTick();
     }
     if (UIWidgets::EnhancementSliderFloat("Link Sword Scale: %f", "##Link_SwordScale", "gCosmetics.Link_SwordScale.Value", 1.0f, 2.5f, "", 1.0f, false)) {
-        CVar_SetS32("gCosmetics.Link_SwordScale.Changed", 1);
+        CVarSetInteger("gCosmetics.Link_SwordScale.Changed", 1);
     }
     ImGui::SameLine();
     if (ImGui::Button("Reset##Link_SwordScale")) {
-        CVar_Clear("gCosmetics.Link_SwordScale.Value");
-        CVar_Clear("gCosmetics.Link_SwordScale.Changed");
+        CVarClear("gCosmetics.Link_SwordScale.Value");
+        CVarClear("gCosmetics.Link_SwordScale.Changed");
         SohImGui::RequestCvarSaveOnNextTick();
     }
     UIWidgets::EnhancementSliderFloat("Bunny Hood Length: %f", "##BunnyHood_EarLength", "gCosmetics.BunnyHood_EarLength", -300.0f, 1000.0f, "", 0.0f, false);
     ImGui::SameLine();
     if (ImGui::Button("Reset##BunnyHood_EarLength")) {
-        CVar_Clear("gCosmetics.BunnyHood_EarLength");
+        CVarClear("gCosmetics.BunnyHood_EarLength");
         SohImGui::RequestCvarSaveOnNextTick();
     }
     UIWidgets::EnhancementSliderFloat("Bunny Hood Spread: %f", "##BunnyHood_EarSpread", "gCosmetics.BunnyHood_EarSpread", -300.0f, 500.0f, "", 0.0f, false);
     ImGui::SameLine();
     if (ImGui::Button("Reset##BunnyHood_EarSpread")) {
-        CVar_Clear("gCosmetics.BunnyHood_EarSpread");
+        CVarClear("gCosmetics.BunnyHood_EarSpread");
         SohImGui::RequestCvarSaveOnNextTick();
     }
     UIWidgets::EnhancementSliderFloat("Goron Neck Length: %f", "##Goron_NeckLength", "gCosmetics.Goron_NeckLength", 0.0f, 1000.0f, "", 0.0f, false);
     ImGui::SameLine();
     if (ImGui::Button("Reset##Goron_NeckLength")) {
-        CVar_Clear("gCosmetics.Goron_NeckLength");
+        CVarClear("gCosmetics.Goron_NeckLength");
         SohImGui::RequestCvarSaveOnNextTick();
     }
     UIWidgets::EnhancementCheckbox("Unfix Goron Spin", "gUnfixGoronSpin");
     UIWidgets::EnhancementSliderFloat("Fairies Size: %f", "##Fairies_Size", "gCosmetics.Fairies_Size", 0.25f, 5.0f, "", 1.0f, false);
     ImGui::SameLine();
     if (ImGui::Button("Reset##Fairies_Size")) {
-        CVar_Clear("gCosmetics.Fairies_Size");
+        CVarClear("gCosmetics.Fairies_Size");
         SohImGui::RequestCvarSaveOnNextTick();
     }
     UIWidgets::EnhancementSliderFloat("N64 Logo Spin Speed: %f", "##N64Logo_SpinSpeed", "gCosmetics.N64Logo_SpinSpeed", 0.25f, 5.0f, "", 1.0f, false);
     ImGui::SameLine();
     if (ImGui::Button("Reset##N64Logo_SpinSpeed")) {
-        CVar_Clear("gCosmetics.N64Logo_SpinSpeed");
+        CVarClear("gCosmetics.N64Logo_SpinSpeed");
         SohImGui::RequestCvarSaveOnNextTick();
     }
     UIWidgets::EnhancementSliderFloat("Moon Size: %f", "##Moon_Size", "gCosmetics.Moon_Size", 0.5f, 2.0f, "", 1.0f, false);
     ImGui::SameLine();
     if (ImGui::Button("Reset##Moon_Size")) {
-        CVar_Clear("gCosmetics.Moon_Size");
+        CVarClear("gCosmetics.Moon_Size");
         SohImGui::RequestCvarSaveOnNextTick();
     }
     if (UIWidgets::EnhancementSliderFloat("Kak Windmill Speed: %f", "##Kak_Windmill_Speed", "gCosmetics.Kak_Windmill_Speed.Value", 100.0f, 6000.0f, "", 100.0f, false)) {
-        CVar_SetS32("gCosmetics.Kak_Windmill_Speed.Changed", 1);
+        CVarSetInteger("gCosmetics.Kak_Windmill_Speed.Changed", 1);
     }
     ImGui::SameLine();
     if (ImGui::Button("Reset##Kak_Windmill_Speed")) {
-        CVar_Clear("gCosmetics.Kak_Windmill_Speed.Value");
-        CVar_Clear("gCosmetics.Kak_Windmill_Speed.Changed");
+        CVarClear("gCosmetics.Kak_Windmill_Speed.Value");
+        CVarClear("gCosmetics.Kak_Windmill_Speed.Changed");
         SohImGui::RequestCvarSaveOnNextTick();
     }
 }
@@ -1494,9 +1494,9 @@ void CopyMultipliedColor(CosmeticOption& cosmeticOptionSrc, CosmeticOption& cosm
     cosmeticOptionTarget.currentColor.z = newColor.b / 255.0;
     cosmeticOptionTarget.currentColor.w = newColor.a / 255.0;
 
-    CVar_SetRGBA(cosmeticOptionTarget.cvar, newColor);
-    CVar_SetS32((cosmeticOptionTarget.rainbowCvar), 0);
-    CVar_SetS32((cosmeticOptionTarget.changedCvar), 1);
+    CVarSetColor(cosmeticOptionTarget.cvar, newColor);
+    CVarSetInteger((cosmeticOptionTarget.rainbowCvar), 0);
+    CVarSetInteger((cosmeticOptionTarget.changedCvar), 1);
 }
 
 void RandomizeColor(CosmeticOption& cosmeticOption) {
@@ -1511,9 +1511,9 @@ void RandomizeColor(CosmeticOption& cosmeticOption) {
     cosmeticOption.currentColor.z = newColor.b / 255.0;
     cosmeticOption.currentColor.w = newColor.a / 255.0;
 
-    CVar_SetRGBA(cosmeticOption.cvar, newColor);
-    CVar_SetS32((cosmeticOption.rainbowCvar), 0);
-    CVar_SetS32((cosmeticOption.changedCvar), 1);
+    CVarSetColor(cosmeticOption.cvar, newColor);
+    CVarSetInteger((cosmeticOption.rainbowCvar), 0);
+    CVarSetInteger((cosmeticOption.changedCvar), 1);
 
     // This bit is kind of experimental, not sure how I feel about it yet, but it allows for
     // advanced cosmetic options to be changed based on a non-advanced option.
@@ -1543,15 +1543,15 @@ void ResetColor(CosmeticOption& cosmeticOption) {
     cosmeticOption.currentColor.z = defaultColor.b / 255.0;
     cosmeticOption.currentColor.w = defaultColor.a / 255.0;
 
-    CVar_Clear(cosmeticOption.changedCvar);
-    CVar_Clear(cosmeticOption.rainbowCvar);
-    CVar_Clear(cosmeticOption.lockedCvar);
-    CVar_Clear(cosmeticOption.cvar);
-    CVar_Clear((std::string(cosmeticOption.cvar) + ".R").c_str());
-    CVar_Clear((std::string(cosmeticOption.cvar) + ".G").c_str());
-    CVar_Clear((std::string(cosmeticOption.cvar) + ".B").c_str());
-    CVar_Clear((std::string(cosmeticOption.cvar) + ".A").c_str());
-    CVar_Clear((std::string(cosmeticOption.cvar) + ".Type").c_str());
+    CVarClear(cosmeticOption.changedCvar);
+    CVarClear(cosmeticOption.rainbowCvar);
+    CVarClear(cosmeticOption.lockedCvar);
+    CVarClear(cosmeticOption.cvar);
+    CVarClear((std::string(cosmeticOption.cvar) + ".R").c_str());
+    CVarClear((std::string(cosmeticOption.cvar) + ".G").c_str());
+    CVarClear((std::string(cosmeticOption.cvar) + ".B").c_str());
+    CVarClear((std::string(cosmeticOption.cvar) + ".A").c_str());
+    CVarClear((std::string(cosmeticOption.cvar) + ".Type").c_str());
 
     // This portion should match 1:1 the multiplied colors in `RandomizeColor()`
     if (cosmeticOption.label == "Bow Body") {
@@ -1580,9 +1580,9 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
         color.b = cosmeticOption.currentColor.z * 255.0;
         color.a = cosmeticOption.currentColor.w * 255.0;
 
-        CVar_SetRGBA(cosmeticOption.cvar, color);
-        CVar_SetS32((cosmeticOption.rainbowCvar), 0);
-        CVar_SetS32((cosmeticOption.changedCvar), 1);
+        CVarSetColor(cosmeticOption.cvar, color);
+        CVarSetInteger((cosmeticOption.rainbowCvar), 0);
+        CVarSetInteger((cosmeticOption.changedCvar), 1);
         ApplyOrResetCustomGfxPatches();
         SohImGui::RequestCvarSaveOnNextTick();
     }
@@ -1595,20 +1595,20 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
         SohImGui::RequestCvarSaveOnNextTick();
     }
     ImGui::SameLine();
-    bool isRainbow = (bool)CVar_GetS32((cosmeticOption.rainbowCvar), 0);
+    bool isRainbow = (bool)CVarGetInteger((cosmeticOption.rainbowCvar), 0);
     if (ImGui::Checkbox(("Rainbow##" + cosmeticOption.label).c_str(), &isRainbow)) {
-        CVar_SetS32((cosmeticOption.rainbowCvar), isRainbow);
-        CVar_SetS32((cosmeticOption.changedCvar), 1);
+        CVarSetInteger((cosmeticOption.rainbowCvar), isRainbow);
+        CVarSetInteger((cosmeticOption.changedCvar), 1);
         ApplyOrResetCustomGfxPatches();
         SohImGui::RequestCvarSaveOnNextTick();
     }
     ImGui::SameLine();
-    bool isLocked = (bool)CVar_GetS32((cosmeticOption.lockedCvar), 0);
+    bool isLocked = (bool)CVarGetInteger((cosmeticOption.lockedCvar), 0);
     if (ImGui::Checkbox(("Locked##" + cosmeticOption.label).c_str(), &isLocked)) {
-        CVar_SetS32((cosmeticOption.lockedCvar), isLocked);
+        CVarSetInteger((cosmeticOption.lockedCvar), isLocked);
         SohImGui::RequestCvarSaveOnNextTick();
     }
-    if (CVar_GetS32((cosmeticOption.changedCvar), 0)) {
+    if (CVarGetInteger((cosmeticOption.changedCvar), 0)) {
         ImGui::SameLine();
         if (ImGui::Button(("Reset##" + cosmeticOption.label).c_str())) {
             ResetColor(cosmeticOption);
@@ -1624,7 +1624,7 @@ void DrawCosmeticGroup(CosmeticGroup cosmeticGroup) {
     ImGui::SameLine((ImGui::CalcTextSize("Mirror Shield Mirror").x * 1.0f) + 60.0f);
     if (ImGui::Button(("Random##" + label).c_str())) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
-            if (cosmeticOption.group == cosmeticGroup && (!cosmeticOption.advancedOption || CVar_GetS32("gCosmetics.AdvancedMode", 0)) && !CVar_GetS32(cosmeticOption.lockedCvar, 0)) {
+            if (cosmeticOption.group == cosmeticGroup && (!cosmeticOption.advancedOption || CVarGetInteger("gCosmetics.AdvancedMode", 0)) && !CVarGetInteger(cosmeticOption.lockedCvar, 0)) {
                 RandomizeColor(cosmeticOption);
             }
         }
@@ -1634,7 +1634,7 @@ void DrawCosmeticGroup(CosmeticGroup cosmeticGroup) {
     ImGui::SameLine();
     if (ImGui::Button(("Reset##" + label).c_str())) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
-            if (cosmeticOption.group == cosmeticGroup && !CVar_GetS32(cosmeticOption.lockedCvar, 0)) {
+            if (cosmeticOption.group == cosmeticGroup && !CVarGetInteger(cosmeticOption.lockedCvar, 0)) {
                 ResetColor(cosmeticOption);
             }
         }
@@ -1642,7 +1642,7 @@ void DrawCosmeticGroup(CosmeticGroup cosmeticGroup) {
         SohImGui::RequestCvarSaveOnNextTick();
     }
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
-        if (cosmeticOption.group == cosmeticGroup && (!cosmeticOption.advancedOption || CVar_GetS32("gCosmetics.AdvancedMode", 0))) {
+        if (cosmeticOption.group == cosmeticGroup && (!cosmeticOption.advancedOption || CVarGetInteger("gCosmetics.AdvancedMode", 0))) {
             DrawCosmeticRow(cosmeticOption);
         }
     }
@@ -1655,7 +1655,7 @@ const char* colorSchemes[2] = {
 
 void DrawCosmeticsEditor(bool& open) {
     if (!open) {
-        CVar_SetS32("gCosmeticsEditorEnabled", 0);
+        CVarSetInteger("gCosmeticsEditorEnabled", 0);
         return;
     }
 
@@ -1673,7 +1673,7 @@ void DrawCosmeticsEditor(bool& open) {
     UIWidgets::EnhancementSliderFloat("Rainbow Speed: %f", "##rainbowSpeed", "gCosmetics.RainbowSpeed", 0.03f, 1.0f, "", 0.6f, false);
     if (ImGui::Button("Randomize All", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
-            if (!CVar_GetS32(cosmeticOption.lockedCvar, 0) && (!cosmeticOption.advancedOption || CVar_GetS32("gCosmetics.AdvancedMode", 0))) {
+            if (!CVarGetInteger(cosmeticOption.lockedCvar, 0) && (!cosmeticOption.advancedOption || CVarGetInteger("gCosmetics.AdvancedMode", 0))) {
                 RandomizeColor(cosmeticOption);
             }
         }
@@ -1683,7 +1683,7 @@ void DrawCosmeticsEditor(bool& open) {
     ImGui::SameLine();
     if (ImGui::Button("Reset All", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
-            if (!CVar_GetS32(cosmeticOption.lockedCvar, 0)) {
+            if (!CVarGetInteger(cosmeticOption.lockedCvar, 0)) {
                 ResetColor(cosmeticOption);
             }
         }
@@ -1707,12 +1707,12 @@ void DrawCosmeticsEditor(bool& open) {
             DrawCosmeticGroup(GROUP_SPIN_ATTACK);
             DrawCosmeticGroup(GROUP_TRAILS);
             if (UIWidgets::EnhancementSliderInt("Trails Duration: %d", "##Trails_Duration", "gCosmetics.Trails_Duration.Value", 2, 20, "", 4, false)) {
-                CVar_SetS32("gCosmetics.Trails_Duration.Changed", 1);
+                CVarSetInteger("gCosmetics.Trails_Duration.Changed", 1);
             }
             ImGui::SameLine();
             if (ImGui::Button("Reset##Trails_Duration")) {
-                CVar_Clear("gCosmetics.Trails_Duration.Value");
-                CVar_Clear("gCosmetics.Trails_Duration.Changed");
+                CVarClear("gCosmetics.Trails_Duration.Value");
+                CVarClear("gCosmetics.Trails_Duration.Changed");
                 SohImGui::RequestCvarSaveOnNextTick();
             }
             ImGui::EndTabItem();
@@ -1751,7 +1751,7 @@ void InitCosmeticsEditor() {
     // Convert the `current color` into the format that the ImGui color picker expects
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
         Color_RGBA8 defaultColor = {cosmeticOption.defaultColor.x, cosmeticOption.defaultColor.y, cosmeticOption.defaultColor.z, cosmeticOption.defaultColor.w};
-        Color_RGBA8 cvarColor = CVar_GetRGBA(cosmeticOption.cvar, defaultColor);
+        Color_RGBA8 cvarColor = CVarGetColor(cosmeticOption.cvar, defaultColor);
 
         cosmeticOption.currentColor.x = cvarColor.r / 255.0;
         cosmeticOption.currentColor.y = cvarColor.g / 255.0;
