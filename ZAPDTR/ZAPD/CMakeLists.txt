@@ -432,10 +432,16 @@ endif()
 ################################################################################
 # Dependencies
 ################################################################################
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    set(LUS libultraship)
+else()
+    set(LUS ultraship)
+endif()
+
 add_dependencies(${PROJECT_NAME}
     OTRExporter
     ZAPDUtils
-    libultraship
+    "${LUS}"
 )
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -482,7 +488,7 @@ else()
 	set(ADDITIONAL_LIBRARY_DEPENDENCIES
 		"ZAPDUtils;"
 		-Wl,--whole-archive $<TARGET_LINKER_FILE_DIR:OTRExporter>/$<TARGET_LINKER_FILE_NAME:OTRExporter> -Wl,--no-whole-archive
-		"libultraship;"
+		"${LUS};"
 		PNG::PNG
 		${CMAKE_DL_LIBS}
 		Threads::Threads

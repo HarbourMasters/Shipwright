@@ -236,8 +236,14 @@ endif()
 ################################################################################
 # Dependencies
 ################################################################################
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    set(LUS libultraship)
+else()
+    set(LUS ultraship)
+endif()
+
 add_dependencies(${PROJECT_NAME}
-    libultraship
+    "${LUS}"
 )
 
 # Link with other targets.

@@ -82,7 +82,14 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
-if (NOT TARGET libultraship)
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    set(LUS libultraship)
+else()
+    set(LUS ultraship)
+endif()
+
+
+if (NOT TARGET "${LUS}")
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../libultraship ${CMAKE_BINARY_DIR}/libultraship)
 endif()
 
@@ -2199,9 +2206,15 @@ endif()
 ################################################################################
 # Dependencies
 ################################################################################
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    set(LUS libultraship)
+else()
+    set(LUS ultraship)
+endif()
+
 add_dependencies(${PROJECT_NAME}
     ZAPDUtils
-    libultraship
+    "${LUS}"
 )
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")

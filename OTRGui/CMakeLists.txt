@@ -18,7 +18,14 @@ include_directories(src)
 include_directories(src/game)
 include_directories(include)
 
-if (NOT TARGET libultraship)
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    set(LUS libultraship)
+else()
+    set(LUS ultraship)
+endif()
+
+
+if (NOT TARGET "${LUS}")
     add_subdirectory(../libultraship ${CMAKE_BINARY_DIR}/libultraship)
 endif()
 if (NOT TARGET ZAPD)
