@@ -7,7 +7,7 @@
 #include <bit>
 #include <map>
 #include <string>
-#include <Cvar.h>
+#include <libultraship/bridge.h>
 
 extern "C" {
 #include <z64.h>
@@ -531,7 +531,7 @@ void PopulateActorDropdown(int i, std::vector<Actor*>& data) {
 
 void DrawActorViewer(bool& open) {
     if (!open) {
-        CVar_SetS32("gActorViewerEnabled", 0);
+        CVarSetInteger("gActorViewerEnabled", 0);
         return;
     }
 

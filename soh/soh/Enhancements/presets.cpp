@@ -3,12 +3,12 @@
 #include <string>
 #include <cstdint>
 #include <ImGuiImpl.h>
-#include <Cvar.h>
+#include <libultraship/bridge.h>
 #include "soh/UIWidgets.hpp"
 
 void clearCvars(std::vector<const char*> cvarsToClear) {
     for(const char* cvar : cvarsToClear) {
-        CVar_Clear(cvar);
+        CVarClear(cvar);
     }
 }
 
@@ -16,13 +16,13 @@ void applyPreset(std::vector<PresetEntry> entries) {
     for(auto& [cvar, type, value] : entries) {
         switch (type) {
             case PRESET_ENTRY_TYPE_S32:
-                CVar_SetS32(cvar, std::get<int32_t>(value));
+                CVarSetInteger(cvar, std::get<int32_t>(value));
                 break;
             case PRESET_ENTRY_TYPE_FLOAT:
-                CVar_SetFloat(cvar, std::get<float>(value));
+                CVarSetFloat(cvar, std::get<float>(value));
                 break;
             case PRESET_ENTRY_TYPE_STRING:
-                CVar_SetString(cvar, std::get<const char*>(value));
+                CVarSetString(cvar, std::get<const char*>(value));
                 break;
         }
     }
@@ -31,7 +31,7 @@ void applyPreset(std::vector<PresetEntry> entries) {
 void DrawPresetSelector(PresetType presetTypeId) {
     const std::string presetTypeCvar = "gPreset" + std::to_string(presetTypeId);
     const PresetTypeDefinition presetTypeDef = presetTypes.at(presetTypeId);
-    const uint16_t selectedPresetId = CVar_GetS32(presetTypeCvar.c_str(), 0);
+    const uint16_t selectedPresetId = CVarGetInteger(presetTypeCvar.c_str(), 0);
     const PresetDefinition selectedPresetDef = presetTypeDef.presets.at(selectedPresetId);
     std::string comboboxTooltip = "";
     for ( auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter ) {
@@ -43,7 +43,7 @@ void DrawPresetSelector(PresetType presetTypeId) {
     if (ImGui::BeginCombo("##PresetsComboBox", selectedPresetDef.label)) {
         for ( auto iter = presetTypeDef.presets.begin(); iter != presetTypeDef.presets.end(); ++iter ) {
             if (ImGui::Selectable(iter->second.label, iter->first == selectedPresetId)) {
-                CVar_SetS32(presetTypeCvar.c_str(), iter->first);
+                CVarSetInteger(presetTypeCvar.c_str(), iter->first);
             }
         }
 

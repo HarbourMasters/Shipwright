@@ -141,7 +141,7 @@ void ObjComb_ChooseItemDrop(ObjComb* this, PlayState* play) {
         } else if (Rand_ZeroOne() < 0.5f) {
             params = -1;
         }
-        if (params >= 0 && !CVar_GetS32("gNoRandomDrops", 0)) {
+        if (params >= 0 && !CVarGetInteger("gNoRandomDrops", 0)) {
             Item_DropCollectible(play, &this->actor.world.pos, params);
         }
     }

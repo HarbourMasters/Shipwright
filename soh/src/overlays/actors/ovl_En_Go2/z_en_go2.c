@@ -1073,7 +1073,7 @@ void EnGo2_BiggoronSetTextId(EnGo2* this, PlayState* play, Player* player) {
             if (func_8002F368(play) == EXCH_ITEM_CLAIM_CHECK) {
                 if (gSaveContext.n64ddFlag && Flags_GetTreasure(play, 0x1F)) {
                     textId = 0x3003;
-                } else if (Environment_GetBgsDayCount() >= CVar_GetS32("gForgeTime", 3)) {
+                } else if (Environment_GetBgsDayCount() >= CVarGetInteger("gForgeTime", 3)) {
                     textId = 0x305E;
                 } else {
                     textId = 0x305D;
@@ -1082,7 +1082,7 @@ void EnGo2_BiggoronSetTextId(EnGo2* this, PlayState* play, Player* player) {
             } else {
                 if (gSaveContext.n64ddFlag && Flags_GetTreasure(play, 0x1F)) {
                     textId = 0x305E;
-                } else if (Environment_GetBgsDayCount() >= CVar_GetS32("gForgeTime", 3)) {
+                } else if (Environment_GetBgsDayCount() >= CVarGetInteger("gForgeTime", 3)) {
                     textId = 0x3002;
                 } else {
                     textId = 0x305D;
@@ -1350,7 +1350,7 @@ void EnGo2_RollingAnimation(EnGo2* this, PlayState* play) {
 }
 
 void EnGo2_WakeUp(EnGo2* this, PlayState* play) {
-    if (CVar_GetS32("gUnfixGoronSpin", 0)) {
+    if (CVarGetInteger("gUnfixGoronSpin", 0)) {
         // Trick SkelAnime into thinking the current animation is changing so that it morphs between the same position,
         // making the goron do a spin
         this->skelAnime.animation = NULL;
@@ -1371,14 +1371,14 @@ void EnGo2_WakeUp(EnGo2* this, PlayState* play) {
         // which uses the same frame data as ANIM_1/10 but no morph frames, but only when the
         // current animation frame is at 0, meaning no morphing is necessary anyway.
         // ANIM_13 is ANIM_0 but with the startFrame and mode adjusted for biggoron.
-        if (this->skelAnime.curFrame == 0.0f && !CVar_GetS32("gUnfixGoronSpin", 0)) {
+        if (this->skelAnime.curFrame == 0.0f && !CVarGetInteger("gUnfixGoronSpin", 0)) {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_13);
         } else {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_10);
         }
         this->skelAnime.playSpeed = 0.5f;
     } else {
-        if (this->skelAnime.curFrame == 0.0f && !CVar_GetS32("gUnfixGoronSpin", 0)) {
+        if (this->skelAnime.curFrame == 0.0f && !CVarGetInteger("gUnfixGoronSpin", 0)) {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_0);
         } else {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_1);
@@ -2101,13 +2101,13 @@ s32 EnGo2_OverrideLimbDraw(PlayState* play, s32 limb, Gfx** dList, Vec3f* pos, V
     f32 float1;
 
     if (limb == 17) {
-        Matrix_Translate(2800.0f + CVar_GetFloat("gCosmetics.Goron_NeckLength", 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
+        Matrix_Translate(2800.0f + CVarGetFloat("gCosmetics.Goron_NeckLength", 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
         vec1 = this->unk_194.unk_08;
         float1 = (vec1.y / (f32)0x8000) * M_PI;
         Matrix_RotateX(float1, MTXMODE_APPLY);
         float1 = (vec1.x / (f32)0x8000) * M_PI;
         Matrix_RotateZ(float1, MTXMODE_APPLY);
-        Matrix_Translate(-2800.0f + CVar_GetFloat("gCosmetics.Goron_NeckLength", 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
+        Matrix_Translate(-2800.0f + CVarGetFloat("gCosmetics.Goron_NeckLength", 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
     }
     if (limb == 10) {
         vec1 = this->unk_194.unk_0E;

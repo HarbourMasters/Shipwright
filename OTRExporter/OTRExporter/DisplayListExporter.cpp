@@ -5,7 +5,7 @@
 #include <Utils/BitConverter.h>
 #include "StrHash64/StrHash64.h"
 #include "spdlog/spdlog.h"
-#include "PR/ultra64/gbi.h"
+#include <libultraship/libultra/gbi.h>
 #include <Globals.h>
 #include <iostream>
 #include <string>

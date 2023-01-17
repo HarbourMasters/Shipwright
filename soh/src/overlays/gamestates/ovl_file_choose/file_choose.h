@@ -1,7 +1,7 @@
 #ifndef _FILE_CHOOSE_H_
 #define _FILE_CHOOSE_H_
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "vt.h"
 

@@ -1,7 +1,7 @@
 #ifndef Z64ELF_MESSAGE_H
 #define Z64ELF_MESSAGE_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 
 // Checks the condition and exits the script if the check passes
 #define ELF_MSG_TYPE_CHECK  0

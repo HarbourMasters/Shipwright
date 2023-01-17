@@ -1,7 +1,7 @@
 #ifndef Z_EN_NIW_GIRL_H
 #define Z_EN_NIW_GIRL_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "../ovl_En_Niw/z_en_niw.h"
 

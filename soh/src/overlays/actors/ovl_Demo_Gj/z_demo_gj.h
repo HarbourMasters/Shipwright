@@ -1,7 +1,7 @@
 #ifndef Z_DEMO_GJ_H
 #define Z_DEMO_GJ_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 #include "overlays/actors/ovl_Boss_Ganon2/z_boss_ganon2.h"
