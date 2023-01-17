@@ -501,7 +501,7 @@ void EnOkuta_ProjectileFly(EnOkuta* this, PlayState* play) {
             pos.x = this->actor.world.pos.x;
             pos.y = this->actor.world.pos.y + 11.0f;
             pos.z = this->actor.world.pos.z;
-            if (CVar_GetS32("gNewDrops", 0) != 0) {
+            if (CVarGetInteger("gNewDrops", 0) != 0) {
                 static s16 sEffectScales[] = {
                     145, 135, 115, 85, 75, 53, 45, 40, 35,
                 };
@@ -758,7 +758,7 @@ void EnOkuta_Draw(Actor* thisx, PlayState* play) {
     } else {
         OPEN_DISPS(play->state.gfxCtx);
 
-        if (CVar_GetS32("gNewDrops", 0) != 0) {
+        if (CVarGetInteger("gNewDrops", 0) != 0) {
             Gfx_SetupDL_25Opa(play->state.gfxCtx);
             gSPSegment(POLY_OPA_DISP++, 0x08,
                     Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 6),

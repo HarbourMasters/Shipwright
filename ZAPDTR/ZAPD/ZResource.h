@@ -7,8 +7,8 @@
 #include <string>
 #include <vector>
 #include "Declaration.h"
-#include "Utils/BinaryWriter.h"
-#include "Utils/Directory.h"
+#include <Utils/BinaryWriter.h>
+#include <Utils/Directory.h>
 #include "tinyxml2.h"
 
 #define SEGMENT_SCENE 2

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ultra64/gbi.h>
+#include <libultraship/libultra/gbi.h>
 
 typedef struct {
     u8 valid;

@@ -1,7 +1,7 @@
 #ifndef Z_DEMO_GEFF_H
 #define Z_DEMO_GEFF_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 #include "../ovl_Demo_Gt/z_demo_gt.h"

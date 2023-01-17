@@ -205,8 +205,10 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Shuffle Weird Egg", RSK_SHUFFLE_WEIRD_EGG },
     { "Shuffle Settings:Shuffle Frog Song Rupees", RSK_SHUFFLE_FROG_SONG_RUPEES },
     { "Shuffle Settings:Shuffle Merchants", RSK_SHUFFLE_MERCHANTS },
+    { "Shuffle Settings:Shuffle 100 GS Reward", RSK_SHUFFLE_100_GS_REWARD },
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
+    { "Start with Bunny Hood", RSK_STARTING_BUNNY_HOOD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
     { "Start with Zelda's Lullaby", RSK_STARTING_ZELDAS_LULLABY },
     { "Start with Epona's Song", RSK_STARTING_EPONAS_SONG },
@@ -235,6 +237,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "World Settings:Bombchus in Logic", RSK_BOMBCHUS_IN_LOGIC },
     { "World Settings:Shuffle Entrances", RSK_SHUFFLE_ENTRANCES },
     { "World Settings:Dungeon Entrances", RSK_SHUFFLE_DUNGEON_ENTRANCES },
+    { "World Settings:Boss Entrances", RSK_SHUFFLE_BOSS_ENTRANCES },
     { "World Settings:Overworld Entrances", RSK_SHUFFLE_OVERWORLD_ENTRANCES },
     { "World Settings:Interior Entrances", RSK_SHUFFLE_INTERIOR_ENTRANCES },
     { "World Settings:Grottos Entrances", RSK_SHUFFLE_GROTTO_ENTRANCES },
@@ -680,12 +683,15 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_COWS:
                     case RSK_SHUFFLE_ADULT_TRADE:
                     case RSK_SHUFFLE_MAGIC_BEANS:
+                    case RSK_SHUFFLE_100_GS_REWARD:
                     case RSK_SHUFFLE_KOKIRI_SWORD:
                     case RSK_SHUFFLE_WEIRD_EGG:
                     case RSK_SHUFFLE_FROG_SONG_RUPEES:
+                    case RSK_GANONS_TRIALS:
                     case RSK_RANDOM_MQ_DUNGEONS:
                     case RSK_STARTING_DEKU_SHIELD:
                     case RSK_STARTING_KOKIRI_SWORD:
+                    case RSK_STARTING_BUNNY_HOOD:
                     case RSK_STARTING_ZELDAS_LULLABY:
                     case RSK_STARTING_EPONAS_SONG:
                     case RSK_STARTING_SARIAS_SONG:
@@ -882,6 +888,8 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_DUNGEONS;
                         } else if(it.value() == "LACS-Tokens") {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_TOKENS;
+                        } else if(it.value() == "100 GS Reward") {
+                            gSaveContext.randoSettings[index].value = 12;
                         }
                         break;
                     case RSK_SKIP_CHILD_ZELDA:
@@ -941,6 +949,15 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_DUNGEON_ENTRANCE_SHUFFLE_ON;
                         } else if (it.value() == "On + Ganon") {
                             gSaveContext.randoSettings[index].value = RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON;
+                        }
+                        break;
+                    case RSK_SHUFFLE_BOSS_ENTRANCES:
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF;
+                        } else if (it.value() == "Age Restricted") {
+                            gSaveContext.randoSettings[index].value = RO_BOSS_ROOM_ENTRANCE_SHUFFLE_AGE_RESTRICTED;
+                        } else if (it.value() == "Full") {
+                            gSaveContext.randoSettings[index].value = RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL;
                         }
                         break;
                     case RSK_SHUFFLE_INTERIOR_ENTRANCES:
@@ -2690,6 +2707,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_STARTING_OCARINA] = CVar_GetS32("gRandomizeStartingOcarina", 0);
     cvarSettings[RSK_SHUFFLE_OCARINA] = CVar_GetS32("gRandomizeShuffleOcarinas", 0) ||
                                         CVar_GetS32("gRandomizeStartingOcarina", 0);
+    cvarSettings[RSK_STARTING_BUNNY_HOOD] = CVar_GetS32("gRandomizeStartingBunnyHood", 0);
     cvarSettings[RSK_STARTING_KOKIRI_SWORD] = CVar_GetS32("gRandomizeStartingKokiriSword", 0);
     cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD] = CVar_GetS32("gRandomizeShuffleKokiriSword", 0) ||
                                              CVar_GetS32("gRandomizeStartingKokiriSword", 0);
@@ -2716,7 +2734,8 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_COWS] = CVar_GetS32("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVar_GetS32("gRandomizeShuffleAdultTrade", 0);
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVar_GetS32("gRandomizeShuffleBeans", 0);
-    cvarSettings[RSK_SHUFFLE_MERCHANTS] = CVar_GetS32("gRandomizeShuffleMerchants", RO_SHUFFLE_MERCHANTS_OFF);
+    cvarSettings[RSK_SHUFFLE_MERCHANTS] = CVar_GetS32("gRandomizeShuffleMerchants", 0);
+    cvarSettings[RSK_SHUFFLE_100_GS_REWARD] = CVar_GetS32("gRandomizeShuffle100GSReward", 0);
     cvarSettings[RSK_ENABLE_BOMBCHU_DROPS] = CVar_GetS32("gRandomizeEnableBombchuDrops", 0);
     cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = CVar_GetS32("gRandomizeBombchusInLogic", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
@@ -2797,6 +2816,7 @@ void GenerateRandomizerImgui() {
 
     // Enable if any of the entrance rando options are enabled.
     cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
+                                          CVar_GetS32("gRandomizeShuffleBossEntrances", RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) ||
                                           CVar_GetS32("gRandomizeShuffleOverworldEntrances", RO_GENERIC_OFF) ||
                                           CVar_GetS32("gRandomizeShuffleInteriorsEntrances", RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) ||
                                           CVar_GetS32("gRandomizeShuffleGrottosEntrances", RO_GENERIC_OFF) ||
@@ -2805,6 +2825,7 @@ void GenerateRandomizerImgui() {
                                           CVar_GetS32("gRandomizeShuffleOverworldSpawns", RO_GENERIC_OFF);
 
     cvarSettings[RSK_SHUFFLE_DUNGEON_ENTRANCES] = CVar_GetS32("gRandomizeShuffleDungeonsEntrances", RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
+    cvarSettings[RSK_SHUFFLE_BOSS_ENTRANCES] = CVar_GetS32("gRandomizeShuffleBossEntrances", RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
     cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = CVar_GetS32("gRandomizeShuffleOverworldEntrances", RO_GENERIC_OFF);
     cvarSettings[RSK_SHUFFLE_INTERIOR_ENTRANCES] = CVar_GetS32("gRandomizeShuffleInteriorsEntrances", RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
     cvarSettings[RSK_SHUFFLE_GROTTO_ENTRANCES] = CVar_GetS32("gRandomizeShuffleGrottosEntrances", RO_GENERIC_OFF);
@@ -2848,7 +2869,7 @@ void DrawRandoEditor(bool& open) {
 
     // Randomizer settings
     // Logic Settings
-    static const char* randoLogicRules[2] = { "Glitchless", "No logic" };
+    static const char* randoLogicRules[3] = { "Glitchless", "No logic", "Vanilla" };
 
     // Open Settings
     static const char* randoForest[3] = { "Closed", "Closed Deku", "Open" };
@@ -2864,6 +2885,7 @@ void DrawRandoEditor(bool& open) {
     // World Settings
     static const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
     static const char* randoShuffleDungeonsEntrances[3] = { "Off", "On", "On + Ganon" };
+    static const char* randoShuffleBossEntrances[3] = { "Off", "Age Restricted", "Full" };
     static const char* randoShuffleInteriorsEntrances[3] = { "Off", "Simple", "All" };
     static const char* randoBombchusInLogic[2] = { "Off", "On" };
     static const char* randoAmmoDrops[3] = { "On + Bombchu", "Off", "On" };
@@ -2886,11 +2908,12 @@ void DrawRandoEditor(bool& open) {
     static const char* randoShuffleGerudoFortressKeys[4] = { "Vanilla", "Any Dungeon", "Overworld", "Anywhere" };
     static const char* randoShuffleBossKeys[6] = { "Start With",  "Vanilla",   "Own Dungeon",
                                             "Any Dungeon", "Overworld", "Anywhere" };
-    static const char* randoShuffleGanonsBossKey[12] = {"Vanilla", "Own dungeon", "Start with", 
+    const char* randoShuffleGanonsBossKey[13] = {"Vanilla", "Own dungeon", "Start with", 
                                                 "Any Dungeon", "Overworld", "Anywhere", 
                                                 "LACS-Vanilla", "LACS-Medallions", "LACS-Stones", 
-                                                "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens"};
-    static const char* randoShuffleKeyRings[4] = { "Off", "Random", "Count", "Selection" };
+                                                "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens",
+                                                "100 GS Reward"};
+    const char* randoShuffleKeyRings[4] = { "Off", "Random", "Count", "Selection" };
 
     // Misc Settings
     static const char* randoGossipStoneHints[4] = { "No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony" };
@@ -3197,6 +3220,19 @@ void DrawRandoEditor(bool& open) {
                     "- Gerudo Training Ground will be open for child after adult has paid to open the gate once."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonsEntrances", randoShuffleDungeonsEntrances, RO_DUNGEON_ENTRANCE_SHUFFLE_MAX, RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle Boss Entrances
+                ImGui::Text("Shuffle Boss Entrances");
+                UIWidgets::InsertHelpHoverText(
+                    "Shuffle the pool of dungeon boss entrances. This affects the boss rooms of all stone and medallion dungeons.\n"
+                    "\n"
+                    "Age Restricted - Shuffle the entrances of child and adult boss rooms separately.\n"
+                    "\n"
+                    "Full - Shuffle the entrances of all boss rooms together. Child may be expected to defeat Phantom Ganon and/or Bongo Bongo."
+                );
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleBossEntrances", randoShuffleBossEntrances, RO_BOSS_ROOM_ENTRANCE_SHUFFLE_MAX, RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3540,6 +3576,21 @@ void DrawRandoEditor(bool& open) {
 
                 UIWidgets::PaddedSeparator();
 
+                // Shuffle 100 GS Reward
+                // Forcefully enabled if Ganon's Boss Key is on the cursed man
+                bool forceEnable100GSShuffle = (CVar_GetS32("gRandomizeShuffleGanonBossKey", 1) == 12);
+                const char* disable100GSRewardText = "This option is forcefully enabled because \"Ganon's Boss Key\" is set to \"100 GS Reward.\"";
+                UIWidgets::EnhancementCheckbox(Settings::Shuffle100GSReward.GetName().c_str(), "gRandomizeShuffle100GSReward",
+                    forceEnable100GSShuffle, disable100GSRewardText, UIWidgets::CheckboxGraphics::Checkmark);
+                UIWidgets::InsertHelpHoverText(
+                    "Shuffle the item the cursed rich man in the House of Skulltula gives when you "
+                    "have collected all 100 Gold Skulltula Tokens.\n"
+                    "\n"
+                    "You can still talk to him multiple times to get Huge Rupees."
+                );
+
+                UIWidgets::PaddedSeparator();
+
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
 
@@ -3698,7 +3749,9 @@ void DrawRandoEditor(bool& open) {
                     "- Stones: Obtain the specified amount of spiritual stones.\n"
                     "- Dungeon rewards: Obtain the specified total sum of spiritual stones or medallions.\n"
                     "- Dungeons: Complete the specified amount of dungeons. Dungeons are considered complete after stepping in to the blue warp after the boss.\n"
-                    "- Tokens: Obtain the specified amount of Skulltula tokens."
+                    "- Tokens: Obtain the specified amount of Skulltula tokens.\n"
+                    "\n"
+                    "100 GS Reward - Ganon's Boss Key will be awarded by the cursed rich man after you collect 100 Gold Skulltula Tokens."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, RO_GANON_BOSS_KEY_MAX, RO_GANON_BOSS_KEY_VANILLA);
                 ImGui::PopItemWidth();
@@ -4105,7 +4158,9 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::InsertHelpHoverText(
                     "Glitchless - No glitches are required, but may require some minor tricks.\n"
                     "\n"
-                    "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT."
+                    "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.\n"
+                    "\n"
+                    "Vanilla - Places all items and dungeon rewards in their vanilla locations."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, RO_LOGIC_MAX, RO_LOGIC_GLITCHLESS);
                 if (CVar_GetS32("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHLESS) {
@@ -4208,6 +4263,7 @@ void DrawRandoEditor(bool& open) {
                                               "gRandomizeStartingConsumables");
                 UIWidgets::PaddedSeparator();
                 UIWidgets::EnhancementSliderInt("Gold Skulltula Tokens: %d", "##RandoStartingSkulltulaToken", "gRandomizeStartingSkulltulaToken", 0, 100, "", 0, true);
+                UIWidgets::EnhancementCheckbox(Settings::StartingBunnyHood.GetName().c_str(), "gRandomizeStartingBunnyHood");
                 UIWidgets::PaddedSeparator();
 
                 ImGui::EndChild();

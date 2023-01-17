@@ -2,7 +2,7 @@
 #include <ImGuiImpl.h>
 
 #define PATCH_GFX(path, name, cvar, index, instruction) \
-    if (CVar_GetS32(cvar, 0)) { \
+    if (CVarGetInteger(cvar, 0)) { \
         ResourceMgr_PatchGfxByName(path, name, index, instruction); \
     } else { \
         ResourceMgr_UnpatchGfxByName(path, name); \
