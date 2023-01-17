@@ -676,7 +676,7 @@ namespace UIWidgets {
 
     bool EnhancementInputText(const char* text, const char* id, const char* cvarName, const size_t bufferSize, const char* defaultValue, bool disabled, const char* disabledTooltipText) {
         bool changed = false;
-        const char* val = CVar_GetString(cvarName, defaultValue);
+        const char* val = CVarGetString(cvarName, defaultValue);
 
         float alpha;
         if (disabled) {
@@ -696,7 +696,7 @@ namespace UIWidgets {
         strcpy(bText, val);
 
         if (ImGui::InputText(id, bText, bufferSize)) {
-            CVar_SetString(cvarName, bText);
+            CVarSetString(cvarName, bText);
             SohImGui::RequestCvarSaveOnNextTick();
             changed = true;
         }

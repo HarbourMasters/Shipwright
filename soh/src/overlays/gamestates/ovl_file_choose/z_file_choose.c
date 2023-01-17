@@ -472,7 +472,7 @@ void FileChoose_UpdateRandomizer() {
  * Update function for `CM_MAIN_MENU`
  */
 void FileChoose_UpdateMainMenu(GameState* thisx) {
-    const char* defName = CVar_GetString("gDefaultPlayerName", "");
+    const char* defName = CVarGetString("gDefaultPlayerName", "");
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     bool dpad = CVarGetInteger("gDpadText", 0);
@@ -497,7 +497,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
                     this->kbdY = 0;
                     this->charIndex = 0;
                     this->charBgAlpha = 0;
-                    this->newFileNameCharCount = strlen(defName) >= NAME_MAX ? NAME_MAX - 1 : strlen(defName);
+                    this->newFileNameCharCount = strlen(defName) >= PLAYER_NAME_MAX ? PLAYER_NAME_MAX - 1 : strlen(defName);
                     this->nameEntryBoxPosX = 120;
                     this->nameEntryBoxAlpha = 0;
                     SetPlayerName(defName, Save_GetSaveMetaInfo(this->buttonIndex)->playerName);
@@ -653,7 +653,7 @@ void FileChoose_StartQuestMenu(GameState* thisx) {
 }
 
 void FileChoose_UpdateQuestMenu(GameState* thisx) {
-    const char* defName = CVar_GetString("gDefaultPlayerName", "");
+    const char* defName = CVarGetString("gDefaultPlayerName", "");
     FileChoose_UpdateStickDirectionPromptAnim(thisx);
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
@@ -707,7 +707,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         this->kbdY = 0;
         this->charIndex = 0;
         this->charBgAlpha = 0;
-        this->newFileNameCharCount = strlen(defName) >= NAME_MAX ? NAME_MAX - 1 : strlen(defName);
+        this->newFileNameCharCount = strlen(defName) >= PLAYER_NAME_MAX ? PLAYER_NAME_MAX - 1 : strlen(defName);
         this->nameEntryBoxPosX = 120;
         this->nameEntryBoxAlpha = 0;
         SetPlayerName(defName, Save_GetSaveMetaInfo(this->buttonIndex)->playerName);

@@ -312,7 +312,7 @@ namespace GameMenuBar {
             {
                 if (ImGui::BeginMenu("Time Savers"))
                 {
-                    UIWidgets::PaddedEnhancementInputText("Default Player Name", "##DEFNAME", "gDefaultPlayerName", NAME_MAX + 1, "", false, true);
+                    UIWidgets::PaddedEnhancementInputText("Default Player Name", "##DEFNAME", "gDefaultPlayerName", PLAYER_NAME_MAX + 1, "", false, true);
                     UIWidgets::PaddedEnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "", 1, false, false, true);
                     UIWidgets::PaddedEnhancementSliderInt("King Zora Speed: %dx", "##MWEEPSPEED", "gMweepSpeed", 1, 5, "", 1, false, false, true);
                     UIWidgets::EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "", 3);
