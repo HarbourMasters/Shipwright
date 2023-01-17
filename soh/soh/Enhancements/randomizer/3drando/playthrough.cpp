@@ -1,5 +1,6 @@
 #include "playthrough.hpp"
 
+#include <boost/container_hash/hash_32.hpp>
 #include "custom_messages.hpp"
 #include "fill.hpp"
 #include "location_access.hpp"
@@ -37,7 +38,8 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
             }
         }
     }
-    unsigned int finalHash = std::hash<std::string>{}(Settings::seed + settingsStr);
+
+    uint32_t finalHash = boost::hash_32<std::string>{}(std::to_string(Settings::seed) + settingsStr);
     Random_Init(finalHash);
     Settings::hash = std::to_string(finalHash);
 
@@ -86,10 +88,10 @@ int Playthrough_Repeat(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSet
     uint32_t repeatedSeed = 0;
     for (int i = 0; i < count; i++) {
         repeatedSeed = rand() % 0xFFFFFFFF;
-        Settings::seed = std::to_string(repeatedSeed);
-        CitraPrint("testing seed: " + Settings::seed);
+        Settings::seed = repeatedSeed;
+        CitraPrint("testing seed: " + std::to_string(Settings::seed));
         ClearProgress();
-        Playthrough_Init(std::hash<std::string>{}(Settings::seed), cvarSettings, excludedLocations);
+        Playthrough_Init(Settings::seed, cvarSettings, excludedLocations);
         printf("\x1b[15;15HSeeds Generated: %d\n", i + 1);
     }
 

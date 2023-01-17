@@ -819,7 +819,7 @@ bool PlacementLog_Write() {
     placementLog.InsertEndChild(rootNode);
 
     rootNode->SetAttribute("version", Settings::version.c_str());
-    rootNode->SetAttribute("seed", Settings::seed.c_str());
+    rootNode->SetAttribute("seed", Settings::seed);
 
     // WriteSettings(placementLog, true); // Include hidden settings.
     // WriteExcludedLocations(placementLog);

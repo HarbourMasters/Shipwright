@@ -19,7 +19,7 @@ using namespace Music;
 using namespace SFX;
 
 namespace Settings {
-  std::string seed;
+  uint32_t seed;
   std::string hash;
   std::string version = RANDOMIZER_VERSION "-" COMMIT_NUMBER;
   std::array<uint8_t, 5> hashIconIndexes;

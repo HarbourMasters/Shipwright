@@ -33,14 +33,13 @@ void PrintTopScreen() {
     SPDLOG_DEBUG("            Select: Exit to Homebrew Menu\n");
     SPDLOG_DEBUG("                 Y: New Random Seed\n");
     SPDLOG_DEBUG("                 X: Input Custom Seed\n");
-    SPDLOG_DEBUG("\x1b[11;7HCurrent Seed: %s", Settings::seed.c_str());
+    SPDLOG_DEBUG("\x1b[11;7HCurrent Seed: %u", Settings::seed);
 }
 
 void MenuInit() {
     Settings::InitSettings();
 
     seedChanged = false;
-    pastSeedLength = Settings::seed.length();
 
     Menu* main = new Menu("Main", MenuType::MainMenu, &Settings::mainMenu, MAIN_MENU);
     menuList.push_back(main);
@@ -191,24 +190,19 @@ void MenuUpdate(uint32_t kDown, bool updatedByHeld) {
 
         // New Random Seed
         if (kDown & KEY_Y) {
-            pastSeedLength = Settings::seed.length();
-            Settings::seed = std::to_string(rand());
+            Settings::seed = rand();
             seedChanged = true;
         }
 
         // Input Custom Seed
         if (kDown & KEY_X) {
-            pastSeedLength = Settings::seed.length();
-            Settings::seed = GetInput("Enter Seed");
+            // Settings::seed = GetInput("Enter Seed");
             seedChanged = true;
         }
 
         // Reprint seed if it changed
         if (seedChanged) {
-            std::string spaces = "";
-            spaces.append(pastSeedLength, ' ');
-            printf("\x1b[11;21H%s", spaces.c_str());
-            printf("\x1b[11;21H%s", Settings::seed.c_str());
+            printf("\x1b[11;21H%u", Settings::seed);
             seedChanged = false;
         }
     }
@@ -523,7 +517,7 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
     srand(time(NULL));
     // if a blank seed was entered, make a random one
     if (seedInput.empty()) {
-        Settings::seed = std::to_string(rand());
+        Settings::seed = rand() & 0xFFFFFFFF;
     } else if (seedInput.rfind("seed_testing_count", 0) == 0 && seedInput.length() > 18) {
         int count;
         try {
@@ -536,10 +530,15 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
         Playthrough::Playthrough_Repeat(cvarSettings, excludedLocations, count);
         return "";
     } else {
-        Settings::seed = seedInput;
+        try {
+            int seed = std::stoi(seedInput, nullptr);
+            Settings::seed = seed;
+        } catch (...) {
+            return "";
+        }
     }
 
-    int ret = Playthrough::Playthrough_Init(std::hash<std::string>{}(Settings::seed), cvarSettings, excludedLocations);
+    int ret = Playthrough::Playthrough_Init(Settings::seed, cvarSettings, excludedLocations);
     if (ret < 0) {
         if (ret == -1) { // Failed to generate after 5 tries
             printf("\n\nFailed to generate after 5 tries.\nPress B to go back to the menu.\nA different seed might be "
