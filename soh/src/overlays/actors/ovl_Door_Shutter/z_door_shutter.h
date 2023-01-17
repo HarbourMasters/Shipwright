@@ -1,7 +1,7 @@
 #ifndef Z_DOOR_SHUTTER_H
 #define Z_DOOR_SHUTTER_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 /**

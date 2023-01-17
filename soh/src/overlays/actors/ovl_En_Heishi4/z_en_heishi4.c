@@ -332,7 +332,7 @@ void func_80A56B40(EnHeishi4* this, PlayState* play) {
             return;
         }
         if (this->type == HEISHI4_AT_MARKET_NIGHT) {
-            if (CVar_GetS32("gMarketSneak", 0)) {
+            if (CVarGetInteger("gMarketSneak", 0)) {
                 this->actionFunc = EnHeishi4_MarketSneak;
             } else {
                 this->actionFunc = func_80A56614;

@@ -5,7 +5,7 @@
 
 #include <map>
 #include <string>
-#include <Cvar.h>
+#include <libultraship/bridge.h>
 #include <Hooks.h>
 
 extern "C" {
@@ -110,7 +110,7 @@ void DisplayStatIfNonZero(const char* text, uint32_t value) {
 
 void DrawStatsTracker(bool& open) {
     if (!open) {
-        CVar_SetS32("gGameplayStatsEnabled", 0);
+        CVarSetInteger("gGameplayStatsEnabled", 0);
         return;
     }
 
@@ -294,7 +294,7 @@ void DrawStatsTracker(bool& open) {
     DisplayStat("Sword Swings:          ", gSaveContext.sohStats.count[COUNT_SWORD_SWINGS]);
     DisplayStat("Steps Taken:           ", gSaveContext.sohStats.count[COUNT_STEPS]);
     // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
-    if (CVar_GetS32("gMMBunnyHood", 0) || gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
+    if (CVarGetInteger("gMMBunnyHood", 0) || gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
         DisplayTimeHHMMSS(gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] / 2, "Bunny Hood Time:    ", COLOR_WHITE);
     }
     DisplayStat("Rolls:                 ", gSaveContext.sohStats.count[COUNT_ROLLS]);

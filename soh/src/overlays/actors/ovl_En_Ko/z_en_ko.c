@@ -1094,7 +1094,7 @@ void func_80A98DB4(EnKo* this, PlayState* play) {
         dist = this->actor.xzDistToPlayer;
     }
 
-    if (CVar_GetS32("gDisableKokiriDrawDistance", 0) != 0) {
+    if (CVarGetInteger("gDisableKokiriDrawDistance", 0) != 0) {
         this->appearDist = 32767.0f;
         Math_SmoothStepToF(&this->modelAlpha, (this->appearDist < dist) ? 0.0f : 255.0f, 0.3f, 40.0f, 1.0f);
         f32 test = this->appearDist;
@@ -1375,9 +1375,9 @@ void EnKo_Draw(Actor* thisx, PlayState* play) {
     Color_RGBA8 tunicColor = sModelInfo[ENKO_TYPE].tunicColor;
     Color_RGBA8 bootsColor = sModelInfo[ENKO_TYPE].bootsColor;
 
-    if (CVar_GetS32("gCosmetics.NPC_Kokiri.Changed", 0)) {
-        tunicColor = CVar_GetRGBA("gCosmetics.NPC_Kokiri.Value", sModelInfo[ENKO_TYPE].tunicColor);
-        bootsColor = CVar_GetRGBA("gCosmetics.NPC_Kokiri.Value", sModelInfo[ENKO_TYPE].bootsColor);
+    if (CVarGetInteger("gCosmetics.NPC_Kokiri.Changed", 0)) {
+        tunicColor = CVarGetColor("gCosmetics.NPC_Kokiri.Value", sModelInfo[ENKO_TYPE].tunicColor);
+        bootsColor = CVarGetColor("gCosmetics.NPC_Kokiri.Value", sModelInfo[ENKO_TYPE].bootsColor);
     }
 
     this->actor.shape.shadowAlpha = this->modelAlpha;

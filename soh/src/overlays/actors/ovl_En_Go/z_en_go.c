@@ -98,7 +98,7 @@ u16 EnGo_GetTextID(PlayState* play, Actor* thisx) {
             if (!gSaveContext.n64ddFlag && gSaveContext.bgsFlag) {
                 return 0x305E;
             } else if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_CLAIM_CHECK) {
-                if (Environment_GetBgsDayCount() >= CVar_GetS32("gForgeTime", 3)) {
+                if (Environment_GetBgsDayCount() >= CVarGetInteger("gForgeTime", 3)) {
                     return 0x305E;
                 } else {
                     return 0x305D;

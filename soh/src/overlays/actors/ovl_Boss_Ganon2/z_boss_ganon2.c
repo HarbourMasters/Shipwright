@@ -1468,7 +1468,7 @@ void func_8090109C(BossGanon2* this, PlayState* play) {
     static Color_RGBA8 sPrimColor = { 0, 120, 0, 255 };
     static Color_RGBA8 sEnvColor = { 0, 120, 0, 255 };
 
-    if(CVar_GetS32("gRedGanonBlood", 0)) {
+    if(CVarGetInteger("gRedGanonBlood", 0)) {
         sPrimColor.r = 120;
         sPrimColor.g = 0;
 
