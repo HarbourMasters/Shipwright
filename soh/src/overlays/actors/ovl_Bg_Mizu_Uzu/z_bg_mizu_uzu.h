@@ -1,7 +1,7 @@
 #ifndef Z_BG_MIZU_UZU_H
 #define Z_BG_MIZU_UZU_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgMizuUzu;

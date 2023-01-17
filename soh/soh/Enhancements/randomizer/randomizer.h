@@ -4,8 +4,8 @@
 #include <unordered_set>
 #include <string>
 #include <vector>
-#include "../../../include/ultra64.h"
-#include "../../../include/z64item.h"
+#include <libultraship/libultra.h>
+#include "z64item.h"
 #include <memory>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"

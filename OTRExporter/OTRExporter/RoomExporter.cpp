@@ -23,7 +23,7 @@
 #include <ZRoom/Commands/SetAlternateHeaders.h>
 #include "CollisionExporter.h"
 #include "DisplayListExporter.h"
-#include "Resource.h"
+#include <libultraship/bridge.h>
 #include <Globals.h>
 #include <ZRoom/Commands/SetExitList.h>
 #include <ZRoom/Commands/SetPathways.h>
@@ -39,7 +39,7 @@ void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWrite
 {
 	ZRoom* room = (ZRoom*)res;
 
-	WriteHeader(res, outPath, writer, Ship::ResourceType::Room);
+	WriteHeader(res, outPath, writer, Ship::ResourceType::SOH_Room);
 
 	writer->Write((uint32_t)room->commands.size());
 

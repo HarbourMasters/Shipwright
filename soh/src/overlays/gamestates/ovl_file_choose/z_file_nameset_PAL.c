@@ -373,7 +373,7 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                         this->configMode = CM_NAME_ENTRY_TO_MAIN;
                     }
                     this->prevConfigMode = CM_NAME_ENTRY;
-                    CVar_SetS32("gOnFileSelectNameEntry", 0);
+                    CVarSetInteger("gOnFileSelectNameEntry", 0);
                 } else {
                     for (i = this->newFileNameCharCount; i < 7; i++) {
                         filename[i] = filename[i + 1];
@@ -448,8 +448,8 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                             gSaveContext.dayTime = dayTime;
                             this->prevConfigMode = CM_MAIN_MENU;
                             this->configMode = CM_NAME_ENTRY_TO_MAIN;
-                            CVar_SetS32("gOnFileSelectNameEntry", 0);
-                            CVar_SetS32("gNewFileDropped", 0);
+                            CVarSetInteger("gOnFileSelectNameEntry", 0);
+                            CVarSetInteger("gNewFileDropped", 0);
                             this->nameBoxAlpha[this->buttonIndex] = this->nameAlpha[this->buttonIndex] = 200;
                             this->connectorAlpha[this->buttonIndex] = 255;
                             func_800AA000(300.0f, 0xB4, 0x14, 0x64);
@@ -521,7 +521,7 @@ void FileChoose_UpdateKeyboardCursor(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     s16 prevKbdX;
-    bool dpad = CVar_GetS32("gDpadText", 0);
+    bool dpad = CVarGetInteger("gDpadText", 0);
 
     this->kbdButton = 99;
 
@@ -666,7 +666,7 @@ static u8 sSelectedSetting;
 void FileChoose_UpdateOptionsMenu(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-    bool dpad = CVar_GetS32("gDpadText", 0);
+    bool dpad = CVarGetInteger("gDpadText", 0);
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -800,8 +800,8 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
         { 0, 150, 150 },
     };
 
-    if (CVar_GetS32("gCosmetics.Title_FileChoose.Changed", 0)) {
-        Color_RGB8 backgroundColor = CVar_GetRGB("gCosmetics.Title_FileChoose.Value", (Color_RGB8){ 100, 150, 255 });
+    if (CVarGetInteger("gCosmetics.Title_FileChoose.Changed", 0)) {
+        Color_RGB8 backgroundColor = CVarGetColor24("gCosmetics.Title_FileChoose.Value", (Color_RGB8){ 100, 150, 255 });
         cursorPrimColors[1][0] = MIN(backgroundColor.r + 100, 255);
         cursorPrimColors[1][1] = MIN(backgroundColor.g + 100, 255);
         cursorPrimColors[1][2] = MIN(backgroundColor.b + 100, 255);

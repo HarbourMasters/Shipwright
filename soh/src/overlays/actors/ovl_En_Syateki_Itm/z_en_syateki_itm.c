@@ -111,8 +111,8 @@ void EnSyatekiItm_Idle(EnSyatekiItm* this, PlayState* play) {
         player->actor.world.rot.x = player->actor.shape.rot.x = player->actor.world.rot.z = player->actor.shape.rot.z =
             0;
         s32 ammunition = 15;
-        if(CVar_GetS32("gCustomizeShootingGallery", 0)) {
-            ammunition = CVar_GetS32(LINK_IS_ADULT ? "gAdultShootingGalleryAmmunition" : "gChildShootingGalleryAmmunition", 15);
+        if(CVarGetInteger("gCustomizeShootingGallery", 0)) {
+            ammunition = CVarGetInteger(LINK_IS_ADULT ? "gAdultShootingGalleryAmmunition" : "gChildShootingGalleryAmmunition", 15);
         }
         func_8008EF44(play, ammunition);
         this->roundNum = this->hitCount = 0;
@@ -132,7 +132,7 @@ void EnSyatekiItm_StartRound(EnSyatekiItm* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (this->unkTimer == 0) {
-        if (LINK_IS_ADULT && !(CVar_GetS32("gCustomizeShootingGallery", 0) && CVar_GetS32("gConstantAdultGallery", 0))) {
+        if (LINK_IS_ADULT && !(CVarGetInteger("gCustomizeShootingGallery", 0) && CVarGetInteger("gConstantAdultGallery", 0))) {
             for (i = 0, j = 0; i < SYATEKI_ROUND_MAX; i++) {
                 if (this->roundFlags[i]) {
                     j++;
