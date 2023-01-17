@@ -127,7 +127,7 @@ void EnGanonMant_Tear(EnGanonMant* this) {
     s16 count = shape->count;
     s16* tearAreaSizes = shape->tearAreaSizes;
 
-    u8* gMantTexProper = ResourceMgr_LoadTexByName(gMantTex);
+    u8* gMantTexProper = GetResourceDataByName(gMantTex, false);
 
     for (i = 0; i < count; i++) {
         if ((0 <= tx && tx < MANT_TEX_WIDTH) && (0 <= ty && ty < MANT_TEX_HEIGHT)) {

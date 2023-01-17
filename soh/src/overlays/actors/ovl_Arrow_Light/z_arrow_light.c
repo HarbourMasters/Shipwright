@@ -195,12 +195,12 @@ void ArrowLight_Draw(Actor* thisx, PlayState* play) {
     Actor* tranform;
 
     Color_RGB8 primaryColor = {255, 255, 170};
-    if (CVar_GetS32("gCosmetics.Arrows_LightPrimary.Changed", 0)) {
-        primaryColor = CVar_GetRGB("gCosmetics.Arrows_LightPrimary.Value", primaryColor);
+    if (CVarGetInteger("gCosmetics.Arrows_LightPrimary.Changed", 0)) {
+        primaryColor = CVarGetColor24("gCosmetics.Arrows_LightPrimary.Value", primaryColor);
     }
     Color_RGB8 secondaryColor = {255, 255, 0};
-    if (CVar_GetS32("gCosmetics.Arrows_LightSecondary.Changed", 0)) {
-        secondaryColor = CVar_GetRGB("gCosmetics.Arrows_LightSecondary.Value", secondaryColor);
+    if (CVarGetInteger("gCosmetics.Arrows_LightSecondary.Changed", 0)) {
+        secondaryColor = CVarGetColor24("gCosmetics.Arrows_LightSecondary.Value", secondaryColor);
     }
 
     if ((arrow != NULL) && (arrow->actor.update != NULL) && (this->timer < 255)) {

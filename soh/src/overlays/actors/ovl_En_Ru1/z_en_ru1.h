@@ -1,7 +1,7 @@
 #ifndef Z_EN_RU1_H
 #define Z_EN_RU1_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 #include "overlays/actors/ovl_Bg_Bdan_Objects/z_bg_bdan_objects.h"

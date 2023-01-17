@@ -1,7 +1,7 @@
 #ifndef Z_OBJ_ICE_POLY_H
 #define Z_OBJ_ICE_POLY_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ObjIcePoly;

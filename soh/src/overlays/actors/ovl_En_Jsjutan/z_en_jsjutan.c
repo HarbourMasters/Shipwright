@@ -397,7 +397,7 @@ void EnJsjutan_Draw(Actor* thisx, PlayState* play2) {
 
     if (this->unk_164) {
         this->unk_164 = false;
-        u8* carpTex = ResourceMgr_LoadTexByName(sCarpetTex);
+        u8* carpTex = GetResourceDataByName(sCarpetTex, false);
         u8* shadTex = sShadowTex;
         for (i = 0; i < ARRAY_COUNT(sShadowTex); i++) {
             if (((u16*)carpTex)[i] != 0) { // Hack to bypass ZAPD exporting textures as u64.

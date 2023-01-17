@@ -234,8 +234,8 @@ void func_80A74398(Actor* thisx, PlayState* play) {
         // In vanilla gameplay, Iron Knuckles are despawned based on specific flags in specific scenarios.
         // In Enemy Randomizer, this made the Iron Knuckles despawn when the same flag was set by other objects.
         // Instead, rely on the "Clear enemy room" flag when in Enemy Randomizer for Iron Knuckles that aren't Nabooru.
-        if ((Flags_GetSwitch(play, this->switchFlags) && !CVar_GetS32("gRandomizedEnemies", 0)) ||
-            (thisx->params != 0 && Flags_GetClear(play, play->roomCtx.curRoom.num) && CVar_GetS32("gRandomizedEnemies", 0))) {
+        if ((Flags_GetSwitch(play, this->switchFlags) && !CVarGetInteger("gRandomizedEnemies", 0)) ||
+            (thisx->params != 0 && Flags_GetClear(play, play->roomCtx.curRoom.num) && CVarGetInteger("gRandomizedEnemies", 0))) {
             Actor_Kill(thisx);
         }
     } else if (thisx->params != 0 && Flags_GetClear(play, play->roomCtx.curRoom.num)) {
@@ -298,7 +298,7 @@ void func_80A747C0(EnIk* this, PlayState* play) {
         this->skelAnime.playSpeed = 1.0f;
         // Disable miniboss music with Enemy Randomizer because the music would keep
         // playing if the enemy was never defeated, which is common with Enemy Randomizer.
-        if (!CVar_GetS32("gRandomizedEnemies", 0)) {
+        if (!CVarGetInteger("gRandomizedEnemies", 0)) {
             func_800F5ACC(NA_BGM_MINI_BOSS);
         }
     }
@@ -658,7 +658,7 @@ void func_80A75A38(EnIk* this, PlayState* play) {
                 Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xB0);
                 // Don't set flag when Iron Knuckle is spawned by Enemy Rando.
                 // Instead Iron Knuckles rely on the "clear room" flag when Enemy Rando is on.
-                if (this->switchFlags != 0xFF && !CVar_GetS32("gRandomizedEnemies",0)) {
+                if (this->switchFlags != 0xFF && !CVarGetInteger("gRandomizedEnemies",0)) {
                     Flags_SetSwitch(play, this->switchFlags);
                 }
                 Actor_Kill(&this->actor);
@@ -805,8 +805,8 @@ Gfx* func_80A761B0(GraphicsContext* gfxCtx, u8 primR, u8 primG, u8 primB, u8 env
     displayListHead = displayList;
 
     gDPPipeSync(displayListHead++);
-    if (CVar_GetS32("gCosmetics.NPC_IronKnuckles.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.NPC_IronKnuckles.Value", (Color_RGB8){primR, primG, primB});
+    if (CVarGetInteger("gCosmetics.NPC_IronKnuckles.Changed", 0)) {
+        Color_RGB8 color = CVarGetColor24("gCosmetics.NPC_IronKnuckles.Value", (Color_RGB8){primR, primG, primB});
         gDPSetPrimColor(displayListHead++, 0, 0, color.r, color.g, color.b, 255);
     } else {
         gDPSetPrimColor(displayListHead++, 0, 0, primR, primG, primB, 255);
@@ -1482,7 +1482,7 @@ void EnIk_Init(Actor* thisx, PlayState* play) {
     }
 
     // Immediately trigger Iron Knuckle for enemy randomizer
-    if (CVar_GetS32("gRandomizedEnemies", 0) && (thisx->params == 2 || thisx->params == 3)) {
+    if (CVarGetInteger("gRandomizedEnemies", 0) && (thisx->params == 2 || thisx->params == 3)) {
         this->skelAnime.playSpeed = 1.0f;
     }
 }

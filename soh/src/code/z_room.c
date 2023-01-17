@@ -401,7 +401,7 @@ BgImage* func_80096A74(PolygonType1* polygon1, PlayState* play) {
 
     camera = GET_ACTIVE_CAM(play);
     camId = camera->camDataIdx;
-    if (camId == -1 && CVar_GetS32("gNoRestrictItems", 0)) {
+    if (camId == -1 && CVarGetInteger("gNoRestrictItems", 0)) {
         // This prevents a crash when using items that change the
         // camera (such as din's fire) on scenes with prerendered backgrounds
         return NULL;

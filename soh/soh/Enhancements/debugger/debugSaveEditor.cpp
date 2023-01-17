@@ -9,7 +9,7 @@
 #include <bit>
 #include <map>
 #include <string>
-#include <Cvar.h>
+#include <libultraship/bridge.h>
 
 extern "C" {
 #include <z64.h>
@@ -1622,7 +1622,7 @@ void DrawPlayerTab() {
             ImGui::SameLine();
             ImGui::InputScalar("C Right", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[3], &one, NULL);
 
-            if (CVar_GetS32("gDpadEquips", 0)) {
+            if (CVarGetInteger("gDpadEquips", 0)) {
                 ImGui::NewLine();
                 ImGui::Text("Current D-pad Equips");
                 ImGui::InputScalar("D-pad Up  ", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[4], &one, NULL); // Two spaces at the end for aligning, not elegant but it's working
@@ -1663,7 +1663,7 @@ void DrawPlayerTab() {
 
 void DrawSaveEditor(bool& open) {
     if (!open) {
-        CVar_SetS32("gSaveEditorEnabled", 0);
+        CVarSetInteger("gSaveEditorEnabled", 0);
         return;
     }
 
