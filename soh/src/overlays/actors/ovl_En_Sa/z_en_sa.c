@@ -745,7 +745,7 @@ void EnSa_Update(Actor* thisx, PlayState* play) {
     }
 
     if (this->actionFunc != func_80AF68E4) {
-        if (CVar_GetS32("gDisableKokiriDrawDistance", 0) != 0) {
+        if (CVarGetInteger("gDisableKokiriDrawDistance", 0) != 0) {
             this->alpha = func_80034DD4(&this->actor, play, this->alpha, 32767);
         }
         else {

@@ -244,9 +244,9 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
     // been spawned and/or killed.
     int8_t enemyCount = play->actorCtx.actorLists[ACTORCAT_ENEMY].length;
     if ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || 
-            (CVar_GetS32("gRandomizedEnemies", 0) && enemyCount < 15)) {
+            (CVarGetInteger("gRandomizedEnemies", 0) && enemyCount < 15)) {
         while ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || 
-                (CVar_GetS32("gRandomizedEnemies", 0) && enemyCount < 15)) {
+                (CVarGetInteger("gRandomizedEnemies", 0) && enemyCount < 15)) {
             if (play->sceneNum == SCENE_SPOT00) {
                 if ((player->unk_89E == 0) || (player->actor.floorBgId != BGCHECK_SCENE) ||
                     !(player->actor.bgCheckFlags & 1) || (player->stateFlags1 & 0x08000000)) {

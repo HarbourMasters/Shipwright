@@ -137,7 +137,7 @@ void func_8088B268(BgHidanRock* this, PlayState* play) {
                 }
             }
 
-            this->dyna.actor.speedXZ = this->dyna.actor.speedXZ + (CVar_GetS32("gFasterBlockPush", 0) * 0.3) + 0.5f;
+            this->dyna.actor.speedXZ = this->dyna.actor.speedXZ + (CVarGetInteger("gFasterBlockPush", 0) * 0.3) + 0.5f;
             this->dyna.actor.speedXZ = CLAMP_MAX(this->dyna.actor.speedXZ, 2.0f);
 
             if (D_8088BFC0 > 0.0f) {
@@ -156,7 +156,7 @@ void func_8088B268(BgHidanRock* this, PlayState* play) {
                 this->dyna.actor.home.pos.z = this->dyna.actor.world.pos.z;
                 D_8088BFC0 = 0.0f;
                 this->dyna.actor.speedXZ = 0.0f;
-                this->timer = 5 - ((CVar_GetS32("gFasterBlockPush", 0) * 3) / 5);
+                this->timer = 5 - ((CVarGetInteger("gFasterBlockPush", 0) * 3) / 5);
             }
 
             func_8002F974(&this->dyna.actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);

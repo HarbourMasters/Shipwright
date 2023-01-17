@@ -5,7 +5,7 @@
 #include "functions.h"
 #include "macros.h"
 #include <Hooks.h>
-#include <Cvar.h>
+#include <libultraship/bridge.h>
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
 #include <spdlog/spdlog.h>
@@ -801,7 +801,7 @@ void SaveManager::AddPostFunction(const std::string& name, PostFunc func) {
 void SaveManager::CreateDefaultGlobal() {
     gSaveContext.audioSetting = 0;
     gSaveContext.zTargetSetting = 0;
-    gSaveContext.language = CVar_GetS32("gLanguages", LANGUAGE_ENG);
+    gSaveContext.language = CVarGetInteger("gLanguages", LANGUAGE_ENG);
 
     SaveGlobal();
 }
@@ -1962,7 +1962,7 @@ void SaveManager::ConvertFromUnversioned() {
     gSaveContext.zTargetSetting = data[SRAM_HEADER_ZTARGET] & 1;
     gSaveContext.language = data[SRAM_HEADER_LANGUAGE];
     if (gSaveContext.language >= LANGUAGE_MAX) {
-        gSaveContext.language = CVar_GetS32("gLanguages", LANGUAGE_ENG);
+        gSaveContext.language = CVarGetInteger("gLanguages", LANGUAGE_ENG);
     }
     SaveGlobal();
 

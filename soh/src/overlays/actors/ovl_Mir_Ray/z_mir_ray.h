@@ -1,7 +1,7 @@
 #ifndef Z_MIR_RAY_H
 #define Z_MIR_RAY_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct MirRay;

@@ -1,7 +1,7 @@
 #ifndef Z_EFF_SS_DEAD_SOUND_H
 #define Z_EFF_SS_DEAD_SOUND_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef struct {

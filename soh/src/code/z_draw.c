@@ -757,13 +757,13 @@ void GetItem_DrawRecoveryHeart(PlayState* play, s16 drawId) {
                                 1 * -(play->state.frames * 2), 32, 32));
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
-    if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.Consumable_Hearts.Value", (Color_RGB8) { 255, 70, 50 });
+    if (CVarGetInteger("gCosmetics.Consumable_Hearts.Changed", 0)) {
+        Color_RGB8 color = CVarGetColor24("gCosmetics.Consumable_Hearts.Value", (Color_RGB8) { 255, 70, 50 });
         gDPSetGrayscaleColor(POLY_XLU_DISP++, color.r, color.g, color.b, 255);
         gSPGrayscale(POLY_XLU_DISP++, true);
     }
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[0]);
-    if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
+    if (CVarGetInteger("gCosmetics.Consumable_Hearts.Changed", 0)) {
         gSPGrayscale(POLY_XLU_DISP++, false);
     }
     CLOSE_DISPS(play->state.gfxCtx);
