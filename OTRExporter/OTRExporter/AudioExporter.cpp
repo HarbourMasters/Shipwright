@@ -1,6 +1,5 @@
 #include "AudioExporter.h"
 #include "Main.h"
-#include <resource/type/Animation.h>
 #include <Utils/MemoryStream.h>
 #include <Globals.h>
 #include <Utils/File.h>

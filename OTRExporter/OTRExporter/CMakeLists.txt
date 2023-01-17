@@ -169,6 +169,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/StormLib/src
     ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/spdlog/include
     ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/nlohmann-json/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src/resource
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../soh/soh
 	.
 )
 
