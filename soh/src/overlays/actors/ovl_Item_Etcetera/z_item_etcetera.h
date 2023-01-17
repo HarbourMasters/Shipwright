@@ -1,7 +1,7 @@
 #ifndef Z_ITEM_ETC_H
 #define Z_ITEM_ETC_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ItemEtcetera;

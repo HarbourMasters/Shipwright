@@ -158,16 +158,19 @@ endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/ZAPD/
-	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/ZAPDUtils
-	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/lib/tinyxml2
-	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/include
+    # TODO: these should no longer be necessary if we were to link against LUS
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship
     ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src/resource
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src/resource/types
     ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern
-	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/spdlog/include
-	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src/graphic/Fast3D/U64
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/Mercury
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/tinyxml2
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/ZAPDUtils
 	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/StormLib/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/spdlog/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/nlohmann-json/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src/resource
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../soh/soh
 	.
 )
 

@@ -48,11 +48,11 @@ void func_801109B0(PlayState* play) {
 
     ASSERT(interfaceCtx->doActionSegment != NULL);
 
-    uint32_t attackDoActionTexSize = ResourceMgr_LoadTexSizeByName(gAttackDoActionENGTex);
-    memcpy(interfaceCtx->doActionSegment, ResourceMgr_LoadTexByName(gAttackDoActionENGTex), attackDoActionTexSize);
-    memcpy(interfaceCtx->doActionSegment + (attackDoActionTexSize / 2), ResourceMgr_LoadTexByName(gCheckDoActionENGTex), attackDoActionTexSize);
+    uint32_t attackDoActionTexSize = GetResourceTexSizeByName(gAttackDoActionENGTex, false);
+    memcpy(interfaceCtx->doActionSegment, GetResourceDataByName(gAttackDoActionENGTex, false), attackDoActionTexSize);
+    memcpy(interfaceCtx->doActionSegment + (attackDoActionTexSize / 2), GetResourceDataByName(gCheckDoActionENGTex, false), attackDoActionTexSize);
 
-    memcpy(interfaceCtx->doActionSegment + attackDoActionTexSize, ResourceMgr_LoadTexByName(gReturnDoActionENGTex), ResourceMgr_LoadTexSizeByName(gReturnDoActionENGTex));
+    memcpy(interfaceCtx->doActionSegment + attackDoActionTexSize, GetResourceDataByName(gReturnDoActionENGTex, false), GetResourceTexSizeByName(gReturnDoActionENGTex, false));
 
     interfaceCtx->iconItemSegment = GAMESTATE_ALLOC_MC(
         &play->state, 0x1000 * ARRAY_COUNT(gSaveContext.equips.buttonItems));
@@ -431,7 +431,7 @@ void func_80111070(void) {
     WREG(28) = 0;
     R_OW_MINIMAP_X = 238;
     R_OW_MINIMAP_Y = 164;
-    R_MINIMAP_DISABLED = CVar_GetS32("gMinimalUI", 0);
+    R_MINIMAP_DISABLED = CVarGetInteger("gMinimalUI", 0);
     WREG(32) = 122;
     WREG(33) = 60;
     WREG(35) = 0;

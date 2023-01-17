@@ -1,5 +1,5 @@
 #include <math.h>
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 #define ROUND(num) floorf((num) * 100) / 100;

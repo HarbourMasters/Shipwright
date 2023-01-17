@@ -7,24 +7,19 @@
 
 #include <ResourceMgr.h>
 #include <DisplayList.h>
-#include <PlayerAnimation.h>
-#include <Skeleton.h>
 #include <Window.h>
 #include <GameVersions.h>
 
 #include "z64animation.h"
 #include "z64bgcheck.h"
 #include "Enhancements/gameconsole.h"
-#include <ultra64/gbi.h>
-#include <Animation.h>
+#include <libultraship/libultra/gbi.h>
 #ifdef _WIN32
 #include <Windows.h>
 #else
 #include <time.h>
 #endif
-#include <CollisionHeader.h>
 #include <Array.h>
-#include <Cutscene.h>
 #include <stb/stb_image.h>
 #define DRMP3_IMPLEMENTATION
 #include <dr_libs/mp3.h>
@@ -66,8 +61,6 @@
 #endif
 
 
-
-#include <Audio.h>
 #include "Enhancements/custom-message/CustomMessageTypes.h"
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
@@ -77,6 +70,35 @@
 #include "Enhancements/crowd-control/CrowdControl.h"
 CrowdControl* CrowdControl::Instance;
 #endif
+
+#include "libultraship/libultraship.h"
+
+// Resource Types/Factories
+#include "soh/resource/type/Animation.h"
+#include "soh/resource/type/AudioSample.h"
+#include "soh/resource/type/AudioSequence.h"
+#include "soh/resource/type/AudioSoundFont.h"
+#include "soh/resource/type/CollisionHeader.h"
+#include "soh/resource/type/Cutscene.h"
+#include "soh/resource/type/Path.h"
+#include "soh/resource/type/PlayerAnimation.h"
+#include "soh/resource/type/Scene.h"
+#include "soh/resource/type/Skeleton.h"
+#include "soh/resource/type/SkeletonLimb.h"
+#include "soh/resource/type/Text.h"
+#include "soh/resource/importer/AnimationFactory.h"
+#include "soh/resource/importer/AudioSampleFactory.h"
+#include "soh/resource/importer/AudioSequenceFactory.h"
+#include "soh/resource/importer/AudioSoundFontFactory.h"
+#include "soh/resource/importer/CollisionHeaderFactory.h"
+#include "soh/resource/importer/CutsceneFactory.h"
+#include "soh/resource/importer/PathFactory.h"
+#include "soh/resource/importer/PlayerAnimationFactory.h"
+#include "soh/resource/importer/SceneFactory.h"
+#include "soh/resource/importer/SkeletonFactory.h"
+#include "soh/resource/importer/SkeletonLimbFactory.h"
+#include "soh/resource/importer/TextFactory.h"
+#include "soh/resource/importer/BackgroundFactory.h"
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
@@ -121,6 +143,21 @@ OTRGlobals::OTRGlobals() {
         OOT_PAL_GC_DBG2
     };
     context = Ship::Window::CreateInstance("Ship of Harkinian", OTRFiles);
+
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Animation, std::make_shared<Ship::AnimationFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_PlayerAnimation, std::make_shared<Ship::PlayerAnimationFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Room, std::make_shared<Ship::SceneFactory>()); // Is room scene? maybe?
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_CollisionHeader, std::make_shared<Ship::CollisionHeaderFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Skeleton, std::make_shared<Ship::SkeletonFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_SkeletonLimb, std::make_shared<Ship::SkeletonLimbFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Path, std::make_shared<Ship::PathFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Cutscene, std::make_shared<Ship::CutsceneFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Text, std::make_shared<Ship::TextFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_AudioSample, std::make_shared<Ship::AudioSampleFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_AudioSoundFont, std::make_shared<Ship::AudioSoundFontFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_AudioSequence, std::make_shared<Ship::AudioSequenceFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Background, std::make_shared<Ship::BackgroundFactory>());
+
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
 
@@ -454,9 +491,9 @@ extern "C" void InitOTR() {
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);
     if (tm_now->tm_mon == 11 && tm_now->tm_mday >= 24 && tm_now->tm_mday <= 25) {
-        CVar_RegisterS32("gLetItSnow", 1);
+        CVarRegisterInteger("gLetItSnow", 1);
     } else {
-        CVar_Clear("gLetItSnow");
+        CVarClear("gLetItSnow");
     }
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance = new CrowdControl();
@@ -586,7 +623,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     audio.cv_to_thread.notify_one();
     std::vector<std::unordered_map<Mtx*, MtxF>> mtx_replacements;
-    int target_fps = CVar_GetS32("gInterpolationFPS", 20);
+    int target_fps = CVarGetInteger("gInterpolationFPS", 20);
     static int last_fps;
     static int last_update_rate;
     static int time;
@@ -617,7 +654,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     OTRGlobals::Instance->context->SetTargetFps(fps);
 
-    int threshold = CVar_GetS32("gExtraLatencyThreshold", 80);
+    int threshold = CVarGetInteger("gExtraLatencyThreshold", 80);
     OTRGlobals::Instance->context->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
 
     RunCommands(commands, mtx_replacements);
@@ -795,21 +832,17 @@ extern "C" char* ResourceMgr_LoadJPEG(char* data, int dataSize)
     return (char*)finalBuffer;
 }
 
-extern "C" char* ResourceMgr_LoadTexByName(const char* texPath);
-
 extern "C" uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
 
 extern "C" uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 
-extern "C" uint32_t ResourceMgr_LoadTexSizeByName(const char* texPath);
-
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = ResourceMgr_LoadResource(filePath);
 
-    if (res->ResType == Ship::ResourceType::DisplayList)
-        return (char*)&((std::static_pointer_cast<Ship::DisplayList>(res))->instructions[0]);
-    else if (res->ResType == Ship::ResourceType::Array)
-        return (char*)(std::static_pointer_cast<Ship::Array>(res))->vertices.data();
+    if (res->Type == Ship::ResourceType::DisplayList)
+        return (char*)&((std::static_pointer_cast<Ship::DisplayList>(res))->Instructions[0]);
+    else if (res->Type == Ship::ResourceType::Array)
+        return (char*)(std::static_pointer_cast<Ship::Array>(res))->Vertices.data();
     else {
         std::string Path = filePath;
         if (ResourceMgr_IsGameMasterQuest()) {
@@ -818,7 +851,7 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
                 Path.replace(pos, 7, "/mq/");
             }
         }
-        return ResourceMgr_LoadTexByName(Path.c_str());
+        return (char*)GetResourceDataByName(Path.c_str(), false);
     }
 }
 
@@ -835,7 +868,7 @@ extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
 extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
 {
     auto res = std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(path));
-    return (Gfx*)&res->instructions[0];
+    return (Gfx*)&res->Instructions[0];
 }
 
 typedef struct {
@@ -865,11 +898,11 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
     }*/
 
     // Index refers to individual gfx words, which are half the size on 32-bit
-    if (sizeof(uintptr_t) < 8) {
-        index /= 2;
-    }
+    // if (sizeof(uintptr_t) < 8) {
+    // index /= 2;
+    // }
 
-    Gfx* gfx = (Gfx*)&res->instructions[index];
+    Gfx* gfx = (Gfx*)&res->Instructions[index];
 
     if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
         originalGfx[path][patchName] = {
@@ -886,7 +919,7 @@ extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patch
         auto res = std::static_pointer_cast<Ship::DisplayList>(
             OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 
-        Gfx* gfx = (Gfx*)&res->instructions[originalGfx[path][patchName].index];
+        Gfx* gfx = (Gfx*)&res->Instructions[originalGfx[path][patchName].index];
         *gfx = originalGfx[path][patchName].instruction;
 
         originalGfx[path].erase(patchName);
@@ -897,154 +930,48 @@ extern "C" char* ResourceMgr_LoadArrayByName(const char* path)
 {
     auto res = std::static_pointer_cast<Ship::Array>(ResourceMgr_LoadResource(path));
 
-    return (char*)res->scalars.data();
+    return (char*)res->Scalars.data();
 }
 
 extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
     auto res = std::static_pointer_cast<Ship::Array>(ResourceMgr_LoadResource(path));
 
-    if (res->CachedGameAsset != nullptr)
-        return (char*)res->CachedGameAsset;
-    else
-    {
-        Vec3s* data = (Vec3s*)malloc(sizeof(Vec3s) * res->scalars.size());
+    // if (res->CachedGameAsset != nullptr)
+    //     return (char*)res->CachedGameAsset;
+    // else
+    // {
+        Vec3s* data = (Vec3s*)malloc(sizeof(Vec3s) * res->Scalars.size());
 
-        for (size_t i = 0; i < res->scalars.size(); i += 3) {
-            data[(i / 3)].x = res->scalars[i + 0].s16;
-            data[(i / 3)].y = res->scalars[i + 1].s16;
-            data[(i / 3)].z = res->scalars[i + 2].s16;
+        for (size_t i = 0; i < res->Scalars.size(); i += 3) {
+            data[(i / 3)].x = res->Scalars[i + 0].s16;
+            data[(i / 3)].y = res->Scalars[i + 1].s16;
+            data[(i / 3)].z = res->Scalars[i + 2].s16;
         }
 
-        res->CachedGameAsset = data;
+        // res->CachedGameAsset = data;
 
         return (char*)data;
-    }
+    // }
 }
 
-extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path)
-{
-    auto colRes = std::static_pointer_cast<Ship::CollisionHeader>(ResourceMgr_LoadResource(path));
-
-    if (colRes->CachedGameAsset != nullptr)
-        return (CollisionHeader*)colRes->CachedGameAsset;
-
-    CollisionHeader* colHeader = (CollisionHeader*)malloc(sizeof(CollisionHeader));
-
-    colHeader->minBounds.x = colRes->absMinX;
-    colHeader->minBounds.y = colRes->absMinY;
-    colHeader->minBounds.z = colRes->absMinZ;
-
-    colHeader->maxBounds.x = colRes->absMaxX;
-    colHeader->maxBounds.y = colRes->absMaxY;
-    colHeader->maxBounds.z = colRes->absMaxZ;
-
-    colHeader->vtxList = (Vec3s*)malloc(sizeof(Vec3s) * colRes->vertices.size());
-    colHeader->numVertices = colRes->vertices.size();
-
-    for (size_t i = 0; i < colRes->vertices.size(); i++)
-    {
-        colHeader->vtxList[i].x = colRes->vertices[i].x;
-        colHeader->vtxList[i].y = colRes->vertices[i].y;
-        colHeader->vtxList[i].z = colRes->vertices[i].z;
-    }
-
-    colHeader->polyList = (CollisionPoly*)malloc(sizeof(CollisionPoly) * colRes->polygons.size());
-    colHeader->numPolygons = colRes->polygons.size();
-
-    for (size_t i = 0; i < colRes->polygons.size(); i++)
-    {
-        colHeader->polyList[i].type = colRes->polygons[i].type;
-        colHeader->polyList[i].flags_vIA = colRes->polygons[i].vtxA;
-        colHeader->polyList[i].flags_vIB = colRes->polygons[i].vtxB;
-        colHeader->polyList[i].vIC = colRes->polygons[i].vtxC;
-        colHeader->polyList[i].normal.x = colRes->polygons[i].a;
-        colHeader->polyList[i].normal.y = colRes->polygons[i].b;
-        colHeader->polyList[i].normal.z = colRes->polygons[i].c;
-        colHeader->polyList[i].dist = colRes->polygons[i].d;
-    }
-
-    colHeader->surfaceTypeList = (SurfaceType*)malloc(colRes->polygonTypes.size() * sizeof(SurfaceType));
-
-    for (size_t i = 0; i < colRes->polygonTypes.size(); i++)
-    {
-        colHeader->surfaceTypeList[i].data[0] = colRes->polygonTypes[i] >> 32;
-        colHeader->surfaceTypeList[i].data[1] = colRes->polygonTypes[i] & 0xFFFFFFFF;
-    }
-
-    colHeader->cameraDataList = (CamData*)malloc(sizeof(CamData) * colRes->camData->entries.size());
-
-    for (size_t i = 0; i < colRes->camData->entries.size(); i++)
-    {
-        colHeader->cameraDataList[i].cameraSType = colRes->camData->entries[i]->cameraSType;
-        colHeader->cameraDataList[i].numCameras = colRes->camData->entries[i]->numData;
-
-        int idx = colRes->camData->entries[i]->cameraPosDataIdx;
-
-        colHeader->cameraDataList[i].camPosData = (Vec3s*)malloc(sizeof(Vec3s));
-
-        if (colRes->camData->cameraPositionData.size() > 0)
-        {
-            colHeader->cameraDataList[i].camPosData->x = colRes->camData->cameraPositionData[idx]->x;
-            colHeader->cameraDataList[i].camPosData->y = colRes->camData->cameraPositionData[idx]->y;
-            colHeader->cameraDataList[i].camPosData->z = colRes->camData->cameraPositionData[idx]->z;
-        }
-        else
-        {
-            colHeader->cameraDataList[i].camPosData->x = 0;
-            colHeader->cameraDataList[i].camPosData->y = 0;
-            colHeader->cameraDataList[i].camPosData->z = 0;
-        }
-    }
-
-    colHeader->numWaterBoxes = colRes->waterBoxes.size();
-    colHeader->waterBoxes = (WaterBox*)malloc(sizeof(WaterBox) * colHeader->numWaterBoxes);
-
-    for (int i = 0; i < colHeader->numWaterBoxes; i++)
-    {
-        colHeader->waterBoxes[i].xLength = colRes->waterBoxes[i].xLength;
-        colHeader->waterBoxes[i].ySurface = colRes->waterBoxes[i].ySurface;
-        colHeader->waterBoxes[i].xMin = colRes->waterBoxes[i].xMin;
-        colHeader->waterBoxes[i].zMin = colRes->waterBoxes[i].zMin;
-        colHeader->waterBoxes[i].xLength = colRes->waterBoxes[i].xLength;
-        colHeader->waterBoxes[i].zLength = colRes->waterBoxes[i].zLength;
-        colHeader->waterBoxes[i].properties = colRes->waterBoxes[i].properties;
-    }
-
-    colRes->CachedGameAsset = colHeader;
-
-    return (CollisionHeader*)colHeader;
+extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path) {
+    return (CollisionHeader*)GetResourceDataByName(path, false);
 }
 
-extern "C" Vtx* ResourceMgr_LoadVtxByName(const char* path)
-{
-    auto res = std::static_pointer_cast<Ship::Array>(ResourceMgr_LoadResource(path));
-    return (Vtx*)res->vertices.data();
+extern "C" Vtx* ResourceMgr_LoadVtxByName(char* path) {
+    return (Vtx*)GetResourceDataByName(path, false);
 }
 
-extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path)
-{
-    auto file = std::static_pointer_cast<Ship::AudioSequence>(OTRGlobals::Instance->context->GetResourceManager()
-                    ->LoadResource(path));
-
-    SequenceData seqData;
-    seqData.seqNumber = file->seqNumber;
-    seqData.medium = file->medium;
-    seqData.cachePolicy = file->cachePolicy;
-    seqData.numFonts = file->fonts.size();
-
-    for (int i = 0; i < seqData.numFonts; i++)
-        seqData.fonts[i] = file->fonts[i];
-
-    seqData.seqData = file->seqData.data();
-    seqData.seqDataSize = file->seqData.size();
-
-    return seqData;
+extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path) {
+    SequenceData* sequence = (SequenceData*)GetResourceDataByName(path, false);
+    return *sequence;
 }
 
 std::map<std::string, SoundFontSample*> cachedCustomSFs;
 
 extern "C" SoundFontSample* ReadCustomSample(const char* path) {
-
+    return nullptr;
+/*
     if (!ExtensionCache.contains(path))
         return nullptr;
 
@@ -1097,189 +1024,15 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
     }
 
     return nullptr;
+*/
 }
 
-extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
-{
-    if (std::string(path) == "")
-        return nullptr;
-
-    if (cachedCustomSFs.find(path) != cachedCustomSFs.end())
-        return cachedCustomSFs[path];
-
-    SoundFontSample* cSample = ReadCustomSample(path);
-
-    if (cSample != nullptr)
-        return cSample;
-
-    auto sample = std::static_pointer_cast<Ship::AudioSample>(ResourceMgr_LoadResource(path));
-
-    if (sample == nullptr)
-        return NULL;
-
-    if (sample->CachedGameAsset != nullptr)
-    {
-        SoundFontSample* sampleC = (SoundFontSample*)sample->CachedGameAsset;
-        return (SoundFontSample*)sample->CachedGameAsset;
-    }
-    else
-    {
-        SoundFontSample* sampleC = new SoundFontSample;
-
-        sampleC->sampleAddr = sample->data.data();
-
-        sampleC->size = sample->data.size();
-        sampleC->codec = sample->codec;
-        sampleC->medium = sample->medium;
-        sampleC->unk_bit26 = sample->unk_bit26;
-        sampleC->unk_bit25 = sample->unk_bit25;
-
-        sampleC->book = (AdpcmBook*) malloc(sizeof(AdpcmBook) + sample->book.books.size() * sizeof(int16_t));
-        sampleC->book->npredictors = sample->book.npredictors;
-        sampleC->book->order = sample->book.order;
-
-        for (size_t i = 0; i < sample->book.books.size(); i++)
-            sampleC->book->book[i] = sample->book.books[i];
-
-        sampleC->loop = new AdpcmLoop;
-        sampleC->loop->start = sample->loop.start;
-        sampleC->loop->end = sample->loop.end;
-        sampleC->loop->count = sample->loop.count;
-
-        for (int i = 0; i < 16; i++)
-            sampleC->loop->state[i] = 0;
-
-        for (size_t i = 0; i < sample->loop.states.size(); i++)
-            sampleC->loop->state[i] = sample->loop.states[i];
-
-        sample->CachedGameAsset = sampleC;
-        return sampleC;
-    }
+extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path) {
+    return (SoundFontSample*)GetResourceDataByName(path, false);
 }
 
 extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
-    auto soundFont = std::static_pointer_cast<Ship::AudioSoundFont>(ResourceMgr_LoadResource(path));
-
-    if (soundFont == nullptr)
-        return NULL;
-
-    if (soundFont->CachedGameAsset != nullptr)
-    {
-        return (SoundFont*)soundFont->CachedGameAsset;
-    }
-    else
-    {
-        SoundFont* soundFontC = (SoundFont*)malloc(sizeof(SoundFont));
-
-        soundFontC->fntIndex = soundFont->id;
-        soundFontC->numDrums = soundFont->drums.size();
-        soundFontC->numInstruments = soundFont->instruments.size();
-        soundFontC->numSfx = soundFont->soundEffects.size();
-        soundFontC->sampleBankId1 = soundFont->data1 >> 8;
-        soundFontC->sampleBankId2 = soundFont->data1 & 0xFF;
-
-        soundFontC->drums = (Drum**)malloc(sizeof(Drum*) * soundFont->drums.size());
-
-        for (size_t i = 0; i < soundFont->drums.size(); i++)
-        {
-            Drum* drum = (Drum*)malloc(sizeof(Drum));
-
-            drum->releaseRate = soundFont->drums[i].releaseRate;
-            drum->pan = soundFont->drums[i].pan;
-            drum->loaded = 0;
-
-            if (soundFont->drums[i].env.size() == 0)
-                drum->envelope = NULL;
-            else
-            {
-                drum->envelope = (AdsrEnvelope*)malloc(sizeof(AdsrEnvelope) * soundFont->drums[i].env.size());
-
-                for (size_t k = 0; k < soundFont->drums[i].env.size(); k++)
-                {
-                    drum->envelope[k].delay = BE16SWAP(soundFont->drums[i].env[k]->delay);
-                    drum->envelope[k].arg = BE16SWAP(soundFont->drums[i].env[k]->arg);
-                }
-            }
-
-            drum->sound.sample = ResourceMgr_LoadAudioSample(soundFont->drums[i].sampleFileName.c_str());
-            drum->sound.tuning = soundFont->drums[i].tuning;
-
-            soundFontC->drums[i] = drum;
-        }
-
-        soundFontC->instruments = (Instrument**)malloc(sizeof(Instrument*) * soundFont->instruments.size());
-
-        for (size_t i = 0; i < soundFont->instruments.size(); i++) {
-
-            if (soundFont->instruments[i].isValidEntry)
-            {
-                Instrument* inst = (Instrument*)malloc(sizeof(Instrument));
-
-                inst->loaded = 0;
-                inst->releaseRate = soundFont->instruments[i].releaseRate;
-                inst->normalRangeLo = soundFont->instruments[i].normalRangeLo;
-                inst->normalRangeHi = soundFont->instruments[i].normalRangeHi;
-
-                if (soundFont->instruments[i].env.size() == 0)
-                    inst->envelope = NULL;
-                else
-                {
-                    inst->envelope = (AdsrEnvelope*)malloc(sizeof(AdsrEnvelope) * soundFont->instruments[i].env.size());
-
-                    for (int k = 0; k < soundFont->instruments[i].env.size(); k++)
-                    {
-                        inst->envelope[k].delay = BE16SWAP(soundFont->instruments[i].env[k]->delay);
-                        inst->envelope[k].arg = BE16SWAP(soundFont->instruments[i].env[k]->arg);
-                    }
-                }
-                if (soundFont->instruments[i].lowNotesSound != nullptr)
-                {
-                    inst->lowNotesSound.sample =
-                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].lowNotesSound->sampleFileName.c_str());
-                    inst->lowNotesSound.tuning = soundFont->instruments[i].lowNotesSound->tuning;
-                } else {
-                    inst->lowNotesSound.sample = NULL;
-                    inst->lowNotesSound.tuning = 0;
-                }
-
-                if (soundFont->instruments[i].normalNotesSound != nullptr) {
-                    inst->normalNotesSound.sample =
-                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].normalNotesSound->sampleFileName.c_str());
-                    inst->normalNotesSound.tuning = soundFont->instruments[i].normalNotesSound->tuning;
-
-                } else {
-                    inst->normalNotesSound.sample = NULL;
-                    inst->normalNotesSound.tuning = 0;
-                }
-
-                if (soundFont->instruments[i].highNotesSound != nullptr) {
-                    inst->highNotesSound.sample =
-                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].highNotesSound->sampleFileName.c_str());
-                    inst->highNotesSound.tuning = soundFont->instruments[i].highNotesSound->tuning;
-                } else {
-                    inst->highNotesSound.sample = NULL;
-                    inst->highNotesSound.tuning = 0;
-                }
-
-                soundFontC->instruments[i] = inst;
-            }
-            else
-            {
-                soundFontC->instruments[i] = nullptr;
-            }
-        }
-
-        soundFontC->soundEffects = (SoundFontSound*)malloc(sizeof(SoundFontSound) * soundFont->soundEffects.size());
-
-        for (size_t i = 0; i < soundFont->soundEffects.size(); i++)
-        {
-            soundFontC->soundEffects[i].sample = ResourceMgr_LoadAudioSample(soundFont->soundEffects[i]->sampleFileName.c_str());
-            soundFontC->soundEffects[i].tuning = soundFont->soundEffects[i]->tuning;
-        }
-
-        soundFont->CachedGameAsset = soundFontC;
-        return soundFontC;
-    }
+    return (SoundFont*)GetResourceDataByName(path, false);
 }
 
 extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
@@ -1301,263 +1054,15 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 }
 
 extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
-    auto res = std::static_pointer_cast<Ship::Animation>(ResourceMgr_LoadResource(path));
-
-    if (res->CachedGameAsset != nullptr)
-        return (AnimationHeaderCommon*)res->CachedGameAsset;
-
-    AnimationHeaderCommon* anim = nullptr;
-
-    if (res->type == Ship::AnimationType::Normal) {
-        AnimationHeader* animNormal = (AnimationHeader*)malloc(sizeof(AnimationHeader));
-
-        animNormal->common.frameCount = res->frameCount;
-        animNormal->frameData = (int16_t*)malloc(res->rotationValues.size() * sizeof(int16_t));
-
-        for (size_t i = 0; i < res->rotationValues.size(); i++)
-            animNormal->frameData[i] = res->rotationValues[i];
-
-        animNormal->jointIndices = (JointIndex*)malloc(res->rotationIndices.size() * sizeof(Vec3s));
-
-        for (size_t i = 0; i < res->rotationIndices.size(); i++) {
-            animNormal->jointIndices[i].x = res->rotationIndices[i].x;
-            animNormal->jointIndices[i].y = res->rotationIndices[i].y;
-            animNormal->jointIndices[i].z = res->rotationIndices[i].z;
-        }
-
-        animNormal->staticIndexMax = res->limit;
-
-        anim = (AnimationHeaderCommon*)animNormal;
-    }
-    else if (res->type == Ship::AnimationType::Curve)
-    {
-        TransformUpdateIndex* animCurve = (TransformUpdateIndex*)malloc(sizeof(TransformUpdateIndex));
-
-        animCurve->copyValues = (s16*)malloc(res->copyValuesArr.size() * sizeof(s16));
-
-        for (size_t i = 0; i < res->copyValuesArr.size(); i++)
-            animCurve->copyValues[i] = res->copyValuesArr[i];
-
-        animCurve->transformData = (TransformData*)malloc(res->transformDataArr.size() * sizeof(TransformData));
-
-        for (size_t i = 0; i < res->transformDataArr.size(); i++)
-        {
-            animCurve->transformData[i].unk_00 = res->transformDataArr[i].unk_00;
-            animCurve->transformData[i].unk_02 = res->transformDataArr[i].unk_02;
-            animCurve->transformData[i].unk_04 = res->transformDataArr[i].unk_04;
-            animCurve->transformData[i].unk_06 = res->transformDataArr[i].unk_06;
-            animCurve->transformData[i].unk_08 = res->transformDataArr[i].unk_08;
-        }
-
-        animCurve->refIndex = (u8*)malloc(res->refIndexArr.size());
-        for (size_t i = 0; i < res->refIndexArr.size(); i++)
-            animCurve->refIndex[i] = res->refIndexArr[i];
-
-        anim = (AnimationHeaderCommon*)animCurve;
-    }
-    else {
-        LinkAnimationHeader* animLink = (LinkAnimationHeader*)malloc(sizeof(LinkAnimationHeader));
-        animLink->common.frameCount = res->frameCount;
-        animLink->segment = (void*)res->segPtr;
-
-        anim = (AnimationHeaderCommon*)animLink;
-    }
-
-    res->CachedGameAsset = anim;
-
-    return anim;
+    return (AnimationHeaderCommon*)GetResourceDataByName(path, false);
 }
 
 extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
-    auto res = std::static_pointer_cast<Ship::Skeleton>(ResourceMgr_LoadResource(path));
-
-    if (res->CachedGameAsset != nullptr)
-        return (SkeletonHeader*)res->CachedGameAsset;
-
-    SkeletonHeader* baseHeader = nullptr;
-
-    if (res->type == Ship::SkeletonType::Normal)
-    {
-        baseHeader = (SkeletonHeader*)malloc(sizeof(SkeletonHeader));
-    }
-    else if (res->type == Ship::SkeletonType::Curve)
-    {
-        SkelCurveLimbList* curve = (SkelCurveLimbList*)malloc(sizeof(SkelCurveLimbList));
-        curve->limbCount = res->limbCount;
-        curve->limbs = (SkelCurveLimb**)malloc(res->limbCount * sizeof(SkelCurveLimb*));
-        baseHeader = (SkeletonHeader*)curve;
-    }
-    else {
-        FlexSkeletonHeader* flex = (FlexSkeletonHeader*)malloc(sizeof(FlexSkeletonHeader));
-        flex->dListCount = res->dListCount;
-
-        baseHeader = (SkeletonHeader*)flex;
-    }
-
-    if (res->type != Ship::SkeletonType::Curve)
-    {
-        baseHeader->limbCount = res->limbCount;
-        baseHeader->segment = (void**)malloc(sizeof(StandardLimb*) * res->limbTable.size());
-    }
-
-    for (size_t i = 0; i < res->limbTable.size(); i++) {
-        std::string limbStr = res->limbTable[i];
-        auto limb = std::static_pointer_cast<Ship::SkeletonLimb>(ResourceMgr_LoadResource(limbStr.c_str()));
-
-        if (limb->limbType == Ship::LimbType::LOD) {
-            LodLimb* limbC = (LodLimb*)malloc(sizeof(LodLimb));
-            limbC->jointPos.x = limb->transX;
-            limbC->jointPos.y = limb->transY;
-            limbC->jointPos.z = limb->transZ;
-            limbC->child = limb->childIndex;
-            limbC->sibling = limb->siblingIndex;
-
-            if (limb->dListPtr != "") {
-                auto dList = ResourceMgr_LoadGfxByName(limb->dListPtr.c_str());
-                limbC->dLists[0] = dList;
-            } else {
-                limbC->dLists[0] = nullptr;
-            }
-
-            if (limb->dList2Ptr != "") {
-                auto dList = ResourceMgr_LoadGfxByName(limb->dList2Ptr.c_str());
-                limbC->dLists[1] = dList;
-            } else {
-                limbC->dLists[1] = nullptr;
-            }
-
-            baseHeader->segment[i] = limbC;
-        }
-        else if (limb->limbType == Ship::LimbType::Standard)
-        {
-            const auto limbC = new StandardLimb;
-            limbC->jointPos.x = limb->transX;
-            limbC->jointPos.y = limb->transY;
-            limbC->jointPos.z = limb->transZ;
-            limbC->child = limb->childIndex;
-            limbC->sibling = limb->siblingIndex;
-            limbC->dList = nullptr;
-
-            if (!limb->dListPtr.empty()) {
-                const auto dList = ResourceMgr_LoadGfxByName(limb->dListPtr.c_str());
-                limbC->dList = dList;
-            }
-
-            baseHeader->segment[i] = limbC;
-        }
-        else if (limb->limbType == Ship::LimbType::Curve)
-        {
-            const auto limbC = new SkelCurveLimb;
-
-            limbC->firstChildIdx = limb->childIndex;
-            limbC->nextLimbIdx = limb->siblingIndex;
-            limbC->dList[0] = nullptr;
-            limbC->dList[1] = nullptr;
-
-            if (!limb->dListPtr.empty()) {
-                const auto dList = ResourceMgr_LoadGfxByName(limb->dListPtr.c_str());
-                limbC->dList[0] = dList;
-            }
-
-            if (!limb->dList2Ptr.empty()) {
-                const auto dList = ResourceMgr_LoadGfxByName(limb->dList2Ptr.c_str());
-                limbC->dList[1] = dList;
-            }
-
-            const auto curve = reinterpret_cast<SkelCurveLimbList*>(baseHeader);
-            curve->limbs[i] = limbC;
-        }
-        else if (limb->limbType == Ship::LimbType::Skin)
-        {
-            const auto limbC = new SkinLimb;
-            limbC->jointPos.x = limb->transX;
-            limbC->jointPos.y = limb->transY;
-            limbC->jointPos.z = limb->transZ;
-            limbC->child = limb->childIndex;
-            limbC->sibling = limb->siblingIndex;
-
-            if (limb->skinSegmentType == Ship::ZLimbSkinType::SkinType_DList)
-                limbC->segmentType = static_cast<int32_t>(limb->skinSegmentType);
-            else if (limb->skinSegmentType == Ship::ZLimbSkinType::SkinType_4)
-                limbC->segmentType = 4;
-            else if (limb->skinSegmentType == Ship::ZLimbSkinType::SkinType_5)
-                limbC->segmentType = 5;
-            else
-                limbC->segmentType = 0;
-
-            if (limb->skinSegmentType == Ship::ZLimbSkinType::SkinType_DList)
-                limbC->segment = ResourceMgr_LoadGfxByName(limb->skinDList.c_str());
-            else if (limb->skinSegmentType == Ship::ZLimbSkinType::SkinType_4) {
-                const auto animData = new SkinAnimatedLimbData;
-                const int skinDataSize = limb->skinData.size();
-
-                animData->totalVtxCount = limb->skinVtxCnt;
-                animData->limbModifCount = skinDataSize;
-                animData->limbModifications = new SkinLimbModif[animData->limbModifCount];
-                animData->dlist = ResourceMgr_LoadGfxByName(limb->skinDList2.c_str());
-
-                for (size_t i = 0; i < skinDataSize; i++)
-                {
-                    animData->limbModifications[i].vtxCount = limb->skinData[i].unk_8_arr.size();
-                    animData->limbModifications[i].transformCount = limb->skinData[i].unk_C_arr.size();
-                    animData->limbModifications[i].unk_4 = limb->skinData[i].unk_4;
-
-                    animData->limbModifications[i].skinVertices = new SkinVertex[limb->skinData[i].unk_8_arr.size()];
-
-                    for (int k = 0; k < limb->skinData[i].unk_8_arr.size(); k++)
-                    {
-                        animData->limbModifications[i].skinVertices[k].index = limb->skinData[i].unk_8_arr[k].unk_0;
-                        animData->limbModifications[i].skinVertices[k].s = limb->skinData[i].unk_8_arr[k].unk_2;
-                        animData->limbModifications[i].skinVertices[k].t = limb->skinData[i].unk_8_arr[k].unk_4;
-                        animData->limbModifications[i].skinVertices[k].normX = limb->skinData[i].unk_8_arr[k].unk_6;
-                        animData->limbModifications[i].skinVertices[k].normY = limb->skinData[i].unk_8_arr[k].unk_7;
-                        animData->limbModifications[i].skinVertices[k].normZ = limb->skinData[i].unk_8_arr[k].unk_8;
-                        animData->limbModifications[i].skinVertices[k].alpha = limb->skinData[i].unk_8_arr[k].unk_9;
-                    }
-
-                    animData->limbModifications[i].limbTransformations =
-                        new SkinTransformation[limb->skinData[i].unk_C_arr.size()];
-
-                    for (int k = 0; k < limb->skinData[i].unk_C_arr.size(); k++)
-                    {
-                        animData->limbModifications[i].limbTransformations[k].limbIndex = limb->skinData[i].unk_C_arr[k].unk_0;
-                        animData->limbModifications[i].limbTransformations[k].x = limb->skinData[i].unk_C_arr[k].x;
-                        animData->limbModifications[i].limbTransformations[k].y = limb->skinData[i].unk_C_arr[k].y;
-                        animData->limbModifications[i].limbTransformations[k].z = limb->skinData[i].unk_C_arr[k].z;
-                        animData->limbModifications[i].limbTransformations[k].scale = limb->skinData[i].unk_C_arr[k].unk_8;
-                    }
-                }
-
-                limbC->segment = animData;
-
-                //limbC->segment = nullptr;
-            }
-
-            /*if (limb->dListPtr != "") {
-                auto dList = ResourceMgr_LoadGfxByName((char*)limb->dListPtr.c_str());
-                limbC->unk_8 = dList;
-            }
-            else {
-                limbC->unk_8 = nullptr;
-            }*/
-
-            baseHeader->segment[i] = limbC;
-        }
-        else
-        {
-            // OTRTODO: Print error here...
-        }
-    }
-
-    res->CachedGameAsset = baseHeader;
-
-    return baseHeader;
+    return (SkeletonHeader*)GetResourceDataByName(path, false);
 }
 
-extern "C" s32* ResourceMgr_LoadCSByName(const char* path)
-{
-    auto res = std::static_pointer_cast<Ship::Cutscene>(ResourceMgr_LoadResource(path));
-    return (s32*)res->commands.data();
+extern "C" s32* ResourceMgr_LoadCSByName(const char* path) {
+    return (s32*)GetResourceDataByName(path, false);
 }
 
 std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
@@ -1936,7 +1441,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
                 u16 iceTrapTextId = Random(0, NUM_ICE_TRAP_MESSAGES);
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, iceTrapTextId);
-                if (CVar_GetS32("gLetItSnow", 0)) {
+                if (CVarGetInteger("gLetItSnow", 0)) {
                     messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1);
                 }
             } else if (player->getItemEntry.getItemId >= RG_DEKU_TREE_MAP && player->getItemEntry.getItemId <= RG_ICE_CAVERN_MAP) {
@@ -1998,12 +1503,12 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 RandomizerInf randoInf = (RandomizerInf)((textId - (TEXT_SHOP_ITEM_RANDOM + NUM_SHOP_ITEMS)) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
                 messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, TEXT_SHOP_ITEM_RANDOM_CONFIRM);
             }
-        } else if (CVar_GetS32("gRandomizeRupeeNames", 0) &&
+        } else if (CVarGetInteger("gRandomizeRupeeNames", 0) &&
                    (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
                    textId == TEXT_HUGE_RUPEE)) {
             messageEntry = Randomizer::GetRupeeMessage(textId);
             // In rando, replace Navi's general overworld hints with rando-related gameplay tips
-        } else if (CVar_GetS32("gRandoRelevantNavi", 1) && textId >= 0x0140 && textId <= 0x015F) {
+        } else if (CVarGetInteger("gRandoRelevantNavi", 1) && textId >= 0x0140 && textId <= 0x015F) {
             u16 naviTextId = Random(0, NUM_NAVI_MESSAGES);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
         } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS) && textId == TEXT_BEAN_SALESMAN) {
@@ -2024,7 +1529,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
-        if (CVar_GetS32("gInjectItemCounts", 0) != 0) {
+        if (CVarGetInteger("gInjectItemCounts", 0) != 0) {
             // The freeze text cannot be manually dismissed and must be auto-dismissed.
             // This is fine and even wanted when skull tokens are not shuffled, but when
             // when they are shuffled we don't want to be able to manually dismiss the box.
@@ -2032,7 +1537,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             // animation until the text box auto-dismisses.
             // RANDOTODO: Implement a way to determine if an item came from a skulltula and
             // inject the auto-dismiss control code if it did.
-            if (CVar_GetS32("gSkulltulaFreeze", 0) != 0 &&
+            if (CVarGetInteger("gSkulltulaFreeze", 0) != 0 &&
                 !(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
                 textId = TEXT_GS_NO_FREEZE;
             } else {
@@ -2042,15 +1547,15 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{gsCount}}", std::to_string(gSaveContext.inventory.gsTokens + 1));
         }
     }
-    if (textId == TEXT_HEART_CONTAINER && CVar_GetS32("gInjectItemCounts", 0)) {
+    if (textId == TEXT_HEART_CONTAINER && CVarGetInteger("gInjectItemCounts", 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_CONTAINER);
         CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{heartContainerCount}}", std::to_string(gSaveContext.sohStats.heartContainers + 1));
     }
-    if (textId == TEXT_HEART_PIECE && CVar_GetS32("gInjectItemCounts", 0)) {
+    if (textId == TEXT_HEART_PIECE && CVarGetInteger("gInjectItemCounts", 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE);
         CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{heartPieceCount}}", std::to_string(gSaveContext.sohStats.heartPieces + 1));
     }
-    if (textId == TEXT_MARKET_GUARD_NIGHT && CVar_GetS32("gMarketSneak", 0) && play->sceneNum == SCENE_ENTRA_N) {
+    if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger("gMarketSneak", 0) && play->sceneNum == SCENE_ENTRA_N) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT);
     }
     if (messageEntry.textBoxType != -1) {

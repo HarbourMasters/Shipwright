@@ -395,7 +395,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
         sGraphUpdateTime = time;
     }
 
-    if (CVar_GetS32("gDebugEnabled", 0))
+    if (CVarGetInteger("gDebugEnabled", 0))
     {
         if (CHECK_BTN_ALL(gameState->input[0].press.button, BTN_Z) &&
             CHECK_BTN_ALL(gameState->input[0].cur.button, BTN_L | BTN_R)) {
