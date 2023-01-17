@@ -1,3 +1,0 @@
-resources duplicated in soh/soh/resource
-
-OTRTODO: DRY up this copypasta sauce
