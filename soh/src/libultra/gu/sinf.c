@@ -1,5 +1,5 @@
 #include "global.h"
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 
 static const du P[] = {
     { 0x3FF00000, 0x00000000 }, { 0xBFC55554, 0xBC83656D }, { 0x3F8110ED, 0x3804C2A0 },

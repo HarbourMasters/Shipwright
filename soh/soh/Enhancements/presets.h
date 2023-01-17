@@ -350,7 +350,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32("gTextSpeed", 5),
     // King Zora Speed (1 to 5)
-    PRESET_ENTRY_S32("gMweepSpeed", 2),
+    PRESET_ENTRY_S32("gMweepSpeed", 5),
     // Faster Block Push (+0 to +5)
     PRESET_ENTRY_S32("gFasterBlockPush", 5),
     // Better Owl
@@ -394,8 +394,6 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32("gBombchusOOB", 1),
     // Skip save confirmation
     PRESET_ENTRY_S32("gSkipSaveConfirmation", 1),
-    // King Zora Speed (1 to 5)
-    PRESET_ENTRY_S32("gMweepSpeed", 5),
     // Biggoron Forge Time (0 to 3)
     PRESET_ENTRY_S32("gForgeTime", 0),
     // Vine/Ladder Climb speed (+0 to +12)
@@ -467,7 +465,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32("gTextSpeed", 5),
     // King Zora Speed (1 to 5)
-    PRESET_ENTRY_S32("gMweepSpeed", 2),
+    PRESET_ENTRY_S32("gMweepSpeed", 5),
     // Faster Block Push (+0 to +5)
     PRESET_ENTRY_S32("gFasterBlockPush", 5),
     // Better Owl
@@ -479,9 +477,6 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gTimeFlowFileSelect", 1),
     // Inject Item Counts in messages
     PRESET_ENTRY_S32("gInjectItemCounts", 1),
-
-    // Pause link animation (0 to 16)
-    PRESET_ENTRY_S32("gPauseLiveLink", 1),
 
     // Dynamic Wallet Icon
     PRESET_ENTRY_S32("gDynamicWalletIcon", 1),
@@ -511,8 +506,6 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gBombchusOOB", 1),
     // Skip save confirmation
     PRESET_ENTRY_S32("gSkipSaveConfirmation", 1),
-    // King Zora Speed (1 to 5)
-    PRESET_ENTRY_S32("gMweepSpeed", 5),
     // Biggoron Forge Time (0 to 3)
     PRESET_ENTRY_S32("gForgeTime", 0),
     // Vine/Ladder Climb speed (+0 to +12)

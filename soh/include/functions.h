@@ -2,6 +2,7 @@
 #define FUNCTIONS_H
 
 #include "z64.h"
+#include <stdarg.h>
 
 #ifdef __cplusplus
 #define this thisx
@@ -97,8 +98,6 @@ void LogUtils_CheckValidPointer(const char* exp, void* ptr, const char* file, s3
 void LogUtils_LogThreadId(const char* name, s32 line);
 void LogUtils_HungupThread(const char* name, s32 line);
 void LogUtils_ResetHungup(void);
-s32 vsprintf(char* dst, const char* fmt, va_list args);
-s32 sprintf(char* dst, const char* fmt, ...);
 void __osPiCreateAccessQueue(void);
 void __osPiGetAccess(void);
 void __osPiRelAccess(void);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Cvar.h>
+#include <libultraship/bridge.h>
 
 typedef struct EnemyEntry {
     int16_t id;

@@ -8,7 +8,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <Cvar.h>
+#include <libultraship/bridge.h>
 #include <Hooks.h>
 
 extern "C" {
@@ -607,7 +607,7 @@ void InitEntranceTrackingData() {
 
 void DrawEntranceTracker(bool& open) {
     if (!open) {
-        CVar_SetS32("gEntranceTrackerEnabled", 0);
+        CVarSetInteger("gEntranceTrackerEnabled", 0);
         return;
     }
 
@@ -717,8 +717,8 @@ void DrawEntranceTracker(bool& open) {
         nextTreeState = 2;
     }
 
-    uint8_t destToggle = CVar_GetS32("gEntranceTrackerSortBy", 0);
-    uint8_t groupToggle = CVar_GetS32("gEntranceTrackerGroupBy", 0);
+    uint8_t destToggle = CVarGetInteger("gEntranceTrackerSortBy", 0);
+    uint8_t groupToggle = CVarGetInteger("gEntranceTrackerGroupBy", 0);
 
     // Combine destToggle and groupToggle to get a range of 0-3
     uint8_t groupType = destToggle + (groupToggle * 2);
@@ -765,8 +765,8 @@ void DrawEntranceTracker(bool& open) {
 
             bool isDiscovered = IsEntranceDiscovered(entrance.index);
 
-            bool showOriginal = (!destToggle ? CVar_GetS32("gEntranceTrackerShowTo", 0) : CVar_GetS32("gEntranceTrackerShowFrom", 0)) || isDiscovered;
-            bool showOverride = (!destToggle ? CVar_GetS32("gEntranceTrackerShowFrom", 0) : CVar_GetS32("gEntranceTrackerShowTo", 0)) || isDiscovered;
+            bool showOriginal = (!destToggle ? CVarGetInteger("gEntranceTrackerShowTo", 0) : CVarGetInteger("gEntranceTrackerShowFrom", 0)) || isDiscovered;
+            bool showOverride = (!destToggle ? CVarGetInteger("gEntranceTrackerShowFrom", 0) : CVarGetInteger("gEntranceTrackerShowTo", 0)) || isDiscovered;
 
             const char* origSrcAreaName = spoilerEntranceGroupNames[original->srcGroup].c_str();
             const char* origTypeName = groupTypeNames[original->type].c_str();
@@ -779,7 +779,7 @@ void DrawEntranceTracker(bool& open) {
             const char* rplcDstName = showOverride ? override->destination.c_str() : "";
 
             // Filter for entrances by group name, type, source/destination names, and meta tags
-            if ((!locationSearch.IsActive() && (showOriginal || showOverride || !CVar_GetS32("gEntranceTrackerCollapseUndiscovered", 0))) ||
+            if ((!locationSearch.IsActive() && (showOriginal || showOverride || !CVarGetInteger("gEntranceTrackerCollapseUndiscovered", 0))) ||
                 ((showOriginal && (locationSearch.PassFilter(origSrcName) ||
                 locationSearch.PassFilter(origDstName) || locationSearch.PassFilter(origSrcAreaName) ||
                 locationSearch.PassFilter(origTypeName) || locationSearch.PassFilter(original->metaTag.c_str()))) ||
@@ -817,8 +817,8 @@ void DrawEntranceTracker(bool& open) {
 
                     bool isDiscovered = IsEntranceDiscovered(entrance.index);
 
-                    bool showOriginal = (!destToggle ? CVar_GetS32("gEntranceTrackerShowTo", 0) : CVar_GetS32("gEntranceTrackerShowFrom", 0)) || isDiscovered;
-                    bool showOverride = (!destToggle ? CVar_GetS32("gEntranceTrackerShowFrom", 0) : CVar_GetS32("gEntranceTrackerShowTo", 0)) || isDiscovered;
+                    bool showOriginal = (!destToggle ? CVarGetInteger("gEntranceTrackerShowTo", 0) : CVarGetInteger("gEntranceTrackerShowFrom", 0)) || isDiscovered;
+                    bool showOverride = (!destToggle ? CVarGetInteger("gEntranceTrackerShowFrom", 0) : CVarGetInteger("gEntranceTrackerShowTo", 0)) || isDiscovered;
 
                     const char* unknown = "???";
 
@@ -831,18 +831,18 @@ void DrawEntranceTracker(bool& open) {
 
                     // Handle highlighting and auto scroll
                     if (LinkIsInArea(original) != -1) {
-                        if (CVar_GetS32("gEntranceTrackerHighlightAvailable", 0)) {
+                        if (CVarGetInteger("gEntranceTrackerHighlightAvailable", 0)) {
                             color = COLOR_GREEN;
                         }
 
                         if (doAreaScroll) {
                             doAreaScroll = false;
-                            if (CVar_GetS32("gEntranceTrackerAutoScroll", 0)) {
+                            if (CVarGetInteger("gEntranceTrackerAutoScroll", 0)) {
                                 ImGui::SetScrollHereY(0.0f);
                             }
                         }
                     } else if (original->index == lastEntranceIndex) {
-                        if (CVar_GetS32("gEntranceTrackerHighlightPrevious", 0)) {
+                        if (CVarGetInteger("gEntranceTrackerHighlightPrevious", 0)) {
                             color = COLOR_ORANGE;
                         }
                     }
@@ -887,5 +887,5 @@ void DrawEntranceTracker(bool& open) {
 }
 
 void InitEntranceTracker() {
-    SohImGui::AddWindow("Randomizer", "Entrance Tracker", DrawEntranceTracker, CVar_GetS32("gEntranceTrackerEnabled", 0) == 1);
+    SohImGui::AddWindow("Randomizer", "Entrance Tracker", DrawEntranceTracker, CVarGetInteger("gEntranceTrackerEnabled", 0) == 1);
 }

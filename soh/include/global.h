@@ -9,7 +9,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/gameconsole.h"
 #include "soh/Enhancements/gameplaystats.h"
-#include <Cvar.h>
+#include <libultraship/bridge.h>
 
 #define _AudioseqSegmentRomStart "Audioseq"
 #define _AudiobankSegmentRomStart "Audiobank"
@@ -37,5 +37,9 @@
 #define _title_staticSegmentRomEnd 0
 #define _z_select_staticSegmentRomStart 0
 #define _z_select_staticSegmentRomEnd 0
+
+// TODO: POSIX/BSD Bug, this is a hack to fix the build compilation on any BSD system (Switch, Wii-U, Vita, etc)
+// <sys/types.h> defines quad as a macro, which conflicts with the quad parameter on z_collision_check.c
+#undef quad
 
 #endif

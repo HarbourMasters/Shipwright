@@ -211,20 +211,20 @@ static Vec3f sAudioVec = { 0.0f, 0.0f, 50.0f };
 void BossGanondrof_ClearPixels8x8(s16* texture, u8* mask, s16 index)
 {
     if (mask[index]) {
-        ResourceMgr_WriteTexS16ByName(texture, index / 4, 0);
+        WriteTextureDataInt16ByName(texture, index / 4, 0, true);
     }
 }
 
 void BossGanondrof_ClearPixels16x8(s16* texture, u8* mask, s16 index) {
     if (mask[index]) {
-        ResourceMgr_WriteTexS16ByName(texture, index / 2, 0);
+        WriteTextureDataInt16ByName(texture, index / 2, 0, false);
 
     }
 }
 
 void BossGanondrof_ClearPixels16x16(s16* texture, u8* mask, s16 index, s16 bpp) {
     if (mask[index]) {
-        ResourceMgr_WriteTexS16ByName(texture, index, 0);
+        WriteTextureDataInt16ByName(texture, index, 0, false);
     }
 }
 
@@ -232,8 +232,8 @@ void BossGanondrof_ClearPixels32x16(s16* texture, u8* mask, s16 index) {
     if (mask[index]) {
         s16 i = (index & 0xF) + ((index & 0xF0) << 1);
 
-        ResourceMgr_WriteTexS16ByName(texture, i + 0x10, 0);
-        ResourceMgr_WriteTexS16ByName(texture, i, 0);
+        WriteTextureDataInt16ByName(texture, i + 0x10, 0, false);
+        WriteTextureDataInt16ByName(texture, i, 0, false);
     }
 }
 
@@ -241,8 +241,8 @@ void BossGanondrof_ClearPixels16x32(s16* texture, u8* mask, s16 index) {
     if (mask[index]) {
         s16 i = ((index & 0xF) * 2) + ((index & 0xF0) * 2);
 
-        ResourceMgr_WriteTexS16ByName(texture, i + 1, 0);
-        ResourceMgr_WriteTexS16ByName(texture, i, 0);
+        WriteTextureDataInt16ByName(texture, i + 1, 0, false);
+        WriteTextureDataInt16ByName(texture, i, 0, false);
     }
 
 }
