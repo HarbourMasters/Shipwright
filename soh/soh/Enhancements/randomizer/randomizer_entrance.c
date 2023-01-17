@@ -198,8 +198,8 @@ s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
     }
 
     // Exiting through the crawl space from Hyrule Castle courtyard is the same exit as leaving Ganon's castle
-    // If we came from the Castle courtyard, then don't override the entrance to keep Link in Hyrule Castle area
-    if (gPlayState != NULL && gPlayState->sceneNum == 69 && nextEntranceIndex == 0x023D) {
+    // Don't override the entrance if we came from the Castle courtyard (day and night scenes)
+    if (gPlayState != NULL && (gPlayState->sceneNum == 69 || gPlayState->sceneNum == 70) && nextEntranceIndex == 0x023D) {
         return nextEntranceIndex;
     }
 
