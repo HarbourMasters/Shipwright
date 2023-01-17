@@ -27,7 +27,6 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-#include <Cvar.h>
 #include <libultraship/bridge.h>
 
 #define CMD_REGISTER SohImGui::GetConsole()->AddCommand

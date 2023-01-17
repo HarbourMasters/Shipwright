@@ -17,8 +17,6 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-#include "../debugconsole.h"
-
 #define CMD_EXECUTE SohImGui::GetConsole()->Dispatch
 
 #define EFFECT_HIGH_GRAVITY "high_gravity"
