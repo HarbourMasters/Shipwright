@@ -101,7 +101,7 @@ void CrowdControl::Disable() {
 
 void CrowdControl::ListenToServer() {
     while (isEnabled) {
-        while (!connected) {
+        while (!connected && isEnabled) {
             SPDLOG_TRACE("[CrowdControl] Attempting to make connection to server...");
             tcpsock = SDLNet_TCP_Open(&ip);
 
@@ -112,8 +112,10 @@ void CrowdControl::ListenToServer() {
             }
         }
 
-        auto socketSet = SDLNet_AllocSocketSet(1);
-        SDLNet_TCP_AddSocket(socketSet, tcpsock);
+        SDLNet_SocketSet socketSet = SDLNet_AllocSocketSet(1);
+        if (tcpsock) {
+            SDLNet_TCP_AddSocket(socketSet, tcpsock);
+        }
 
         // Listen to socket messages
         while (connected && tcpsock && isEnabled) {
