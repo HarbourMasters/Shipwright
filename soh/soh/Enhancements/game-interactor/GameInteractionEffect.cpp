@@ -521,8 +521,6 @@ namespace GameInteractionEffect {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
-    void SpawnEnemyWithOffset::Apply() {
-        GameInteractor::SpawnEnemyWithOffset(value);
-    }
+    void SpawnEnemyWithOffset::Apply() {}
     void SpawnEnemyWithOffset::Remove() {}
 }

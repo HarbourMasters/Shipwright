@@ -41,7 +41,8 @@ public:
     virtual GameInteractionEffectQueryResult CanBeApplied() = 0;
     virtual void Apply() = 0;
     virtual void Remove() = 0;
-    uint32_t value;
+    int32_t value = 0;
+    int32_t value2 = 0;
 };
 
 namespace GameInteractionEffect {

@@ -27,7 +27,7 @@ public:
     static void KnockbackPlayer(uint8_t strength);
     static void GiveDekuShield();
     static void SpawnCuccoStorm();
-    static void SpawnEnemyWithOffset(uint32_t enemyId);
+    static uint8_t SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
 };
 
 #endif /* __cplusplus */

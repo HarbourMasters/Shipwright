@@ -17,8 +17,6 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-#define CMD_EXECUTE SohImGui::GetConsole()->Dispatch
-
 #define EFFECT_HIGH_GRAVITY "high_gravity"
 #define EFFECT_LOW_GRAVITY "low_gravity"
 #define EFFECT_DAMAGE_MULTIPLIER "damage_multiplier"
@@ -145,7 +143,14 @@ void CrowdControl::ListenToServer() {
             if (!incomingEffect->timeRemaining) {
                 EffectResult result = CrowdControl::CanApplyEffect(incomingEffect);
                 if (result == EffectResult::Success) {
-                    GameInteractor::ApplyEffect(incomingEffect->giEffect);
+                    if (incomingEffect->category != "spawn_enemy") {
+                        GameInteractor::ApplyEffect(incomingEffect->giEffect);
+                    } else {
+                        if (!GameInteractor::SpawnEnemyWithOffset(incomingEffect->giEffect->value, incomingEffect->giEffect->value2)) {
+                            result = EffectResult::Retry;
+                        }
+                    }
+                    
                 }
                 EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
             } else {
@@ -372,40 +377,62 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     } else if (effectName == EFFECT_SPAWN_WALLMASTER) {
         effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
         effect->giEffect->value = ACTOR_EN_WALLMAS;
+        effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_ARWING) {
         effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
         effect->giEffect->value = ACTOR_EN_CLEAR_TAG;
+        // Parameter for no cutscene Arwing
+        effect->giEffect->value2 = 1;
+        effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_DARK_LINK) {
         effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
         effect->giEffect->value = ACTOR_EN_TORCH2;
+        effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_STALFOS) {
         effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
         effect->giEffect->value = ACTOR_EN_TEST;
+        // Parameter for gravity-obeying Stalfos
+        effect->giEffect->value2 = 2;
+        effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_WOLFOS) {
         effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
         effect->giEffect->value = ACTOR_EN_WF;
+        effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_FREEZARD) {
         effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
         effect->giEffect->value = ACTOR_EN_FZ;
+        effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_KEESE) {
         effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
         effect->giEffect->value = ACTOR_EN_FIREFLY;
+        effect->giEffect->value2 = 2;
+        effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_ICE_KEESE) {
         effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
         effect->giEffect->value = ACTOR_EN_FIREFLY;
+        effect->giEffect->value2 = 4;
+        effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_FIRE_KEESE) {
         effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
         effect->giEffect->value = ACTOR_EN_FIREFLY;
+        effect->giEffect->value2 = 1;
+        effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_TEKTITE) {
         effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
         effect->giEffect->value = ACTOR_EN_TITE;
+        effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_LIKE_LIKE) {
         effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
         effect->giEffect->value = ACTOR_EN_RR;
+        effect->category = "spawn_enemy";
     }
 
     if (!effect->giEffect->value && effect->value) {
         effect->giEffect->value = effect->value;
+    }
+
+    if (!effect->giEffect->value2) {
+        effect->giEffect->value2 = 0;
     }
 
     if (effect->category == "") {

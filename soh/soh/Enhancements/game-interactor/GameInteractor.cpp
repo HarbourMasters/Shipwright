@@ -154,10 +154,9 @@ void GameInteractor::SpawnCuccoStorm() {
     cucco->actionFunc = func_80AB70A0_nocutscene;
 }
 
-void GameInteractor::SpawnEnemyWithOffset(uint32_t enemyId) {
+uint8_t GameInteractor::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {
     Player* player = GET_PLAYER(gPlayState);
 
-    int enemyParams = 0;
     float posXOffset = 0;
     float posYOffset = 0;
     float posZOffset = 0;
@@ -171,15 +170,13 @@ void GameInteractor::SpawnEnemyWithOffset(uint32_t enemyId) {
         if (gPlayState->sceneNum == SCENE_DDAN_BOSS || gPlayState->sceneNum == SCENE_MIZUSIN_BS ||
             gPlayState->sceneNum == SCENE_JYASINBOSS || gPlayState->sceneNum == SCENE_GANON_BOSS ||
             gPlayState->sceneNum == SCENE_TURIBORI || gPlayState->sceneNum == SCENE_GANON_DEMO) {
-            /*return 0;*/
+            return 0;
         }
-        enemyParams = 1;
         posYOffset = 100;
     } else if (enemyId == ACTOR_EN_TORCH2) {
         posXOffset = 75;
         posYOffset = 50;
     } else if (enemyId == ACTOR_EN_TEST) {
-        enemyParams = 2;
         posXOffset = 75;
         posYOffset = 50;
     } else if (enemyId == ACTOR_EN_WF) {
@@ -189,17 +186,6 @@ void GameInteractor::SpawnEnemyWithOffset(uint32_t enemyId) {
         posXOffset = 75;
         posYOffset = 50;
     } else if (enemyId == ACTOR_EN_FIREFLY) {
-        enemyParams = 2;
-        posXOffset = 75;
-        posYOffset = 50;
-        // ice cheese
-    } else if (enemyId == ACTOR_EN_FIREFLY) {
-        enemyParams = 4;
-        posXOffset = 75;
-        posYOffset = 50;
-        // fire cheese
-    } else if (enemyId == ACTOR_EN_FIREFLY) {
-        enemyParams = 1;
         posXOffset = 75;
         posYOffset = 50;
     } else if (enemyId == ACTOR_EN_TITE) {
@@ -210,7 +196,12 @@ void GameInteractor::SpawnEnemyWithOffset(uint32_t enemyId) {
         posYOffset = 50;
     }
 
-    /*return */Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, player->actor.world.pos.x + posXOffset,
-        player->actor.world.pos.y + posYOffset, player->actor.world.pos.z + posZOffset, 0, 0, 0, enemyParams, 0);
+    if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, player->actor.world.pos.x + posXOffset,
+        player->actor.world.pos.y + posYOffset, player->actor.world.pos.z + posZOffset, 0, 0, 0,
+        enemyParams, 0) != NULL) {
+        return 1;
+    }
+
+    return 0;
 
 }
