@@ -509,18 +509,18 @@ namespace Settings {
     &StartingRutoBottle,
   };
 
-  Option StartingZeldasLullaby    = Option::U8  ("Zelda's Lullaby",      {"Off",             "On"},                                                       {""});
-  Option StartingEponasSong       = Option::U8  ("Epona's Song",         {"Off",             "On"},                                                       {""});
-  Option StartingSariasSong       = Option::U8  ("Saria's Song",         {"Off",             "On"},                                                       {""});
-  Option StartingSunsSong         = Option::U8  ("Sun's Song",           {"Off",             "On"},                                                       {""});
-  Option StartingSongOfTime       = Option::U8  ("Song of Time",         {"Off",             "On"},                                                       {""});
-  Option StartingSongOfStorms     = Option::U8  ("Song of Storms",       {"Off",             "On"},                                                       {""});
-  Option StartingMinuetOfForest   = Option::U8  ("Minuet of Forest",     {"Off",             "On"},                                                       {""});
-  Option StartingBoleroOfFire     = Option::U8  ("Bolero of Fire",       {"Off",             "On"},                                                       {""});
-  Option StartingSerenadeOfWater  = Option::U8  ("Serenade of Water",    {"Off",             "On"},                                                       {""});
-  Option StartingRequiemOfSpirit  = Option::U8  ("Requiem of Spirit",    {"Off",             "On"},                                                       {""});
-  Option StartingNocturneOfShadow = Option::U8  ("Nocturne of Shadow",   {"Off",             "On"},                                                       {""});
-  Option StartingPreludeOfLight   = Option::U8  ("Prelude of Light",     {"Off",             "On"},                                                       {""});
+  Option StartingZeldasLullaby    = Option::U8  ("Start with Zelda's Lullaby",      {"Off",             "On"},                                                       {""});
+  Option StartingEponasSong       = Option::U8  ("Start with Epona's Song",         {"Off",             "On"},                                                       {""});
+  Option StartingSariasSong       = Option::U8  ("Start with Saria's Song",         {"Off",             "On"},                                                       {""});
+  Option StartingSunsSong         = Option::U8  ("Start with Sun's Song",           {"Off",             "On"},                                                       {""});
+  Option StartingSongOfTime       = Option::U8  ("Start with Song of Time",         {"Off",             "On"},                                                       {""});
+  Option StartingSongOfStorms     = Option::U8  ("Start with Song of Storms",       {"Off",             "On"},                                                       {""});
+  Option StartingMinuetOfForest   = Option::U8  ("Start with Minuet of Forest",     {"Off",             "On"},                                                       {""});
+  Option StartingBoleroOfFire     = Option::U8  ("Start with Bolero of Fire",       {"Off",             "On"},                                                       {""});
+  Option StartingSerenadeOfWater  = Option::U8  ("Start with Serenade of Water",    {"Off",             "On"},                                                       {""});
+  Option StartingRequiemOfSpirit  = Option::U8  ("Start with Requiem of Spirit",    {"Off",             "On"},                                                       {""});
+  Option StartingNocturneOfShadow = Option::U8  ("Start with Nocturne of Shadow",   {"Off",             "On"},                                                       {""});
+  Option StartingPreludeOfLight   = Option::U8  ("Start with Prelude of Light",     {"Off",             "On"},                                                       {""});
   std::vector<Option *> startingSongsOptions = {
     &StartingZeldasLullaby,
     &StartingEponasSong,
@@ -2702,6 +2702,19 @@ namespace Settings {
     StartingSkulltulaToken.SetSelectedIndex(cvarSettings[RSK_STARTING_SKULLTULA_TOKEN]);
 
     MapsAndCompasses.SetSelectedIndex(cvarSettings[RSK_STARTING_MAPS_COMPASSES]);
+
+    StartingZeldasLullaby.SetSelectedIndex(cvarSettings[RSK_STARTING_ZELDAS_LULLABY]);
+    StartingEponasSong.SetSelectedIndex(cvarSettings[RSK_STARTING_EPONAS_SONG]);
+    StartingSariasSong.SetSelectedIndex(cvarSettings[RSK_STARTING_SARIAS_SONG]);
+    StartingSunsSong.SetSelectedIndex(cvarSettings[RSK_STARTING_SUNS_SONG]);
+    StartingSongOfTime.SetSelectedIndex(cvarSettings[RSK_STARTING_SONG_OF_TIME]);
+    StartingSongOfStorms.SetSelectedIndex(cvarSettings[RSK_STARTING_SONG_OF_STORMS]);
+    StartingMinuetOfForest.SetSelectedIndex(cvarSettings[RSK_STARTING_MINUET_OF_FOREST]);
+    StartingBoleroOfFire.SetSelectedIndex(cvarSettings[RSK_STARTING_BOLERO_OF_FIRE]);
+    StartingSerenadeOfWater.SetSelectedIndex(cvarSettings[RSK_STARTING_SERENADE_OF_WATER]);
+    StartingRequiemOfSpirit.SetSelectedIndex(cvarSettings[RSK_STARTING_REQUIEM_OF_SPIRIT]);
+    StartingNocturneOfShadow.SetSelectedIndex(cvarSettings[RSK_STARTING_NOCTURNE_OF_SHADOW]);
+    StartingPreludeOfLight.SetSelectedIndex(cvarSettings[RSK_STARTING_PRELUDE_OF_LIGHT]);
 
     // RANDOTODO: Implement disabling ammo drops. Currently only "On" (index 0) or "On + Bombchus" (index 1) is implemented.
     AmmoDrops.SetSelectedIndex(cvarSettings[RSK_ENABLE_BOMBCHU_DROPS]);
