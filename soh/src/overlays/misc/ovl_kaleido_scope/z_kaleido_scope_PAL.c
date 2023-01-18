@@ -4127,6 +4127,11 @@ void KaleidoScope_Update(PlayState* play)
                             gSaveContext.entranceIndex = 0x041B;
                             break;
                     }
+
+                    // In ER, handle overriding the game over respawn entrance
+                    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+                        Entrance_SetGameOverEntrance();
+                    }
                 } else {
                     Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                 }
