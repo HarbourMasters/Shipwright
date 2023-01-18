@@ -4214,7 +4214,7 @@ void DrawRandoEditor(bool& open) {
 
                 ImGui::EndChild();
 
-                 // COLUMN 3 - STARTING SONGS
+                // COLUMN 3 - STARTING SONGS
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildStartingSongs", ImVec2(0, -8));
