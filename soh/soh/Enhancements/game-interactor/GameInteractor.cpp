@@ -1,4 +1,5 @@
 #include "GameInteractor.h"
+#include <libultraship/bridge.h>
 
 extern "C" {
 #include "variables.h"

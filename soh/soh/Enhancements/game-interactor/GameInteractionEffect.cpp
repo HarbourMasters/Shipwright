@@ -1,5 +1,6 @@
 #include "GameInteractionEffect.h"
 #include "GameInteractor.h"
+#include <libultraship/bridge.h>
 
 extern "C" {
 #include <z64.h>
