@@ -271,7 +271,7 @@ namespace GameMenuBar {
                     ImGui::PopStyleVar(1);
                 }
 
-                if (currentRenderingBackend.first == "sdl") {
+                if (SohImGui::supportsWindowedFullscreen()) {
                     UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", "gSdlWindowedFullscreen", true, false);
                 }
 
