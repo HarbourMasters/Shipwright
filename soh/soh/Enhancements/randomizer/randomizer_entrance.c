@@ -198,8 +198,8 @@ s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
     }
 
     // Exiting through the crawl space from Hyrule Castle courtyard is the same exit as leaving Ganon's castle
-    // If we came from the Castle courtyard, then don't override the entrance to keep Link in Hyrule Castle area
-    if (gPlayState != NULL && gPlayState->sceneNum == 69 && nextEntranceIndex == 0x023D) {
+    // Don't override the entrance if we came from the Castle courtyard (day and night scenes)
+    if (gPlayState != NULL && (gPlayState->sceneNum == 69 || gPlayState->sceneNum == 70) && nextEntranceIndex == 0x023D) {
         return nextEntranceIndex;
     }
 
@@ -433,6 +433,10 @@ void Entrance_HandleEponaState(void) {
     //If Link is riding Epona but he's about to go through an entrance where she can't spawn,
     //unset the Epona flag to avoid Master glitch, and restore temp B.
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) && (player->stateFlags1 & PLAYER_STATE1_23)) {
+        // Allow Master glitch to be performed on the Thieves Hideout entrance
+        if (entrance == Entrance_GetOverride(0x0496)) { // Gerudo Fortress -> Theives Hideout
+            return;
+        }
 
         static const s16 validEponaEntrances[] = {
             0x0102, // Hyrule Field -> Lake Hylia
@@ -444,12 +448,11 @@ void Entrance_HandleEponaState(void) {
             0x0157, // Hyrule Field -> Lon Lon Ranch
             0x01F9, // Lon Lon Ranch -> Hyrule Field
             0x01FD, // Market Entrance -> Hyrule Field
-            0x00EA, // ZR Front -> Hyrule Field
-            0x0181, // LW Bridge -> Hyrule Field
+            0x0181, // ZR Front -> Hyrule Field
+            0x0185, // LW Bridge -> Hyrule Field
             0x0129, // GV Fortress Side -> Gerudo Fortress
             0x022D, // Gerudo Fortress -> GV Fortress Side
             0x03D0, // GV Carpenter Tent -> GV Fortress Side
-            0x0496, // Gerudo Fortress -> Thieves Hideout
             0x042F, // LLR Stables -> Lon Lon Ranch
             0x05D4, // LLR Tower -> Lon Lon Ranch
             0x0378, // LLR Talons House -> Lon Lon Ranch

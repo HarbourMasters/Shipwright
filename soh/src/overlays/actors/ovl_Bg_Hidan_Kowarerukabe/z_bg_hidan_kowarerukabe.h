@@ -1,7 +1,7 @@
 #ifndef Z_BG_HIDAN_KOWARERUKABE_H
 #define Z_BG_HIDAN_KOWARERUKABE_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgHidanKowarerukabe;

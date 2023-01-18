@@ -1,7 +1,7 @@
 #ifndef Z_EN_OSSAN_H
 #define Z_EN_OSSAN_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "overlays/actors/ovl_En_Tana/z_en_tana.h"
 #include "overlays/actors/ovl_En_GirlA/z_en_girla.h"

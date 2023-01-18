@@ -232,7 +232,7 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
 }
 
 EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
-    if (CVar_GetS32("gSeededRandomizedEnemies", 0) && gSaveContext.n64ddFlag) {
+    if (CVarGetInteger("gSeededRandomizedEnemies", 0) && gSaveContext.n64ddFlag) {
         uint32_t finalSeed = seed + gSaveContext.seedIcons[0] + gSaveContext.seedIcons[1] + gSaveContext.seedIcons[2] +
                         gSaveContext.seedIcons[3] + gSaveContext.seedIcons[4];
         Random_Init(finalSeed);
@@ -259,6 +259,10 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                 // Only randomize the initial deku scrub actor (single and triple attack), not the flower they spawn.
                 case ACTOR_EN_DEKUNUTS:
                     return (params == -256 || params == 768);
+                // Don't randomize the OoB wallmaster in the silver rupee room because it's only there to
+                // not trigger unlocking the door after killing the other wallmaster in authentic gameplay.
+                case ACTOR_EN_WALLMAS:
+                    return (!(!isMQ && sceneNum == SCENE_MEN && roomNum == 2 && posX == -2345));
                 // Only randomize initial floormaster actor (it can split and does some spawning on init).
                 case ACTOR_EN_FLOORMAS:
                     return (params == 0 || params == -32768);

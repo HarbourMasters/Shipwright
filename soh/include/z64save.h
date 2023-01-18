@@ -1,7 +1,7 @@
 #ifndef Z64SAVE_H
 #define Z64SAVE_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "z64math.h"
 #include "z64audio.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"

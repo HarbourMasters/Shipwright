@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 #include <set>
-#include <Cvar.h>
+#include <libultraship/bridge.h>
 #include <Hooks.h>
 #include "3drando/item_location.hpp"
 
@@ -109,7 +109,7 @@ std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT,
 
 void DrawCheckTracker(bool& open) {
     if (!open) {
-        CVar_SetS32("gCheckTrackerEnabled", 0);
+        CVarSetInteger("gCheckTrackerEnabled", 0);
         return;
     }
 
@@ -120,14 +120,14 @@ void DrawCheckTracker(bool& open) {
         return;
     }
 
-    if (CVar_GetS32("gCheckTrackerWindowType", 1) == 0) {
-        if (CVar_GetS32("gCheckTrackerShowOnlyPaused", 0) == 1)
+    if (CVarGetInteger("gCheckTrackerWindowType", 1) == 0) {
+        if (CVarGetInteger("gCheckTrackerShowOnlyPaused", 0) == 1)
             if (gPlayState == nullptr || gPlayState->pauseCtx.state == 0)
                 return;
 
-        if (CVar_GetS32("gCheckTrackerDisplayType", 0) == 1) {
-            int comboButton1Mask = buttons[CVar_GetS32("gCheckTrackerComboButton1", 6)];
-            int comboButton2Mask = buttons[CVar_GetS32("gCheckTrackerComboButton2", 8)];
+        if (CVarGetInteger("gCheckTrackerDisplayType", 0) == 1) {
+            int comboButton1Mask = buttons[CVarGetInteger("gCheckTrackerComboButton1", 6)];
+            int comboButton2Mask = buttons[CVarGetInteger("gCheckTrackerComboButton2", 8)];
             bool comboButtonsHeld = trackerButtonsPressed != nullptr &&
                                     trackerButtonsPressed[0].button & comboButton1Mask &&
                                     trackerButtonsPressed[0].button & comboButton2Mask;
@@ -213,17 +213,17 @@ void DrawCheckTracker(bool& open) {
     RainbowTick();
     bool doDraw = false;
     bool thisAreaFullyChecked = false;
-    bool showHidden = CVar_GetS32("gCheckTrackerOptionShowHidden", 0);
-    bool hideIncomplete = CVar_GetS32("gCheckTrackerAreaIncompleteHide", 0);
-    bool hideComplete = CVar_GetS32("gCheckTrackerAreaCompleteHide", 0);
+    bool showHidden = CVarGetInteger("gCheckTrackerOptionShowHidden", 0);
+    bool hideIncomplete = CVarGetInteger("gCheckTrackerAreaIncompleteHide", 0);
+    bool hideComplete = CVarGetInteger("gCheckTrackerAreaCompleteHide", 0);
     bool collapseLogic;
     bool doingCollapseOrExpand = optExpandAll || optCollapseAll;
     bool isThisAreaSpoiled;
     RandomizerCheckArea lastArea = RCAREA_INVALID;
-    Color_RGBA8 areaCompleteColor = CVar_GetRGBA("gCheckTrackerAreaMainCompleteColor", Color_Main_Default);
-    Color_RGBA8 areaIncompleteColor = CVar_GetRGBA("gCheckTrackerAreaMainIncompleteColor", Color_Main_Default);
-    Color_RGBA8 extraCompleteColor = CVar_GetRGBA("gCheckTrackerAreaExtraCompleteColor", Color_Area_Complete_Extra_Default);
-    Color_RGBA8 extraIncompleteColor = CVar_GetRGBA("gCheckTrackerAreaExtraIncompleteColor", Color_Area_Incomplete_Extra_Default);
+    Color_RGBA8 areaCompleteColor = CVarGetColor("gCheckTrackerAreaMainCompleteColor", Color_Main_Default);
+    Color_RGBA8 areaIncompleteColor = CVarGetColor("gCheckTrackerAreaMainIncompleteColor", Color_Main_Default);
+    Color_RGBA8 extraCompleteColor = CVarGetColor("gCheckTrackerAreaExtraCompleteColor", Color_Area_Complete_Extra_Default);
+    Color_RGBA8 extraIncompleteColor = CVarGetColor("gCheckTrackerAreaExtraIncompleteColor", Color_Area_Incomplete_Extra_Default);
     Color_RGBA8 mainColor;
     Color_RGBA8 extraColor;
     std::string stemp;
@@ -283,7 +283,7 @@ void DrawCheckTracker(bool& open) {
                 ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(extraColor.r / 255.0f, extraColor.g / 255.0f,
                                                             extraColor.b / 255.0f, extraColor.a / 255.0f));
 
-                isThisAreaSpoiled = areasSpoiled & areaMask || CVar_GetS32("gCheckTrackerOptionMQSpoilers", 0);
+                isThisAreaSpoiled = areasSpoiled & areaMask || CVarGetInteger("gCheckTrackerOptionMQSpoilers", 0);
 
                 if (isThisAreaSpoiled) {
                     if (showVOrMQ && RandomizerCheckObjects::AreaIsDungeon(obj.rcArea)) {
@@ -334,12 +334,12 @@ void BeginFloatWindows(std::string UniqueName, ImGuiWindowFlags flags) {
             ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoFocusOnAppearing;
     }
 
-    if (!CVar_GetS32("gCheckTrackerWindowType", 1)) {
+    if (!CVarGetInteger("gCheckTrackerWindowType", 1)) {
         ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
         windowFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoTitleBar |
                        ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
 
-        if (!CVar_GetS32("gCheckTrackerHudEditMode", 0)) {
+        if (!CVarGetInteger("gCheckTrackerHudEditMode", 0)) {
             windowFlags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
         }
     }
@@ -602,7 +602,7 @@ bool SlowUpdateCheck() {
 
 bool ShouldUpdateChecks() {
     // TODO eventually will need to be hooked into game elements rather than just save file
-    if (CVar_GetS32("gCheckTrackerOptionPerformanceMode", 0))
+    if (CVarGetInteger("gCheckTrackerOptionPerformanceMode", 0))
         return SlowUpdateCheck();
     else
         return true;
@@ -742,7 +742,7 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
         case SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER:
             // Gravedigger has a fix in place that means one of two save locations. Check both.
             return (gSaveContext.itemGetInf[1] & 0x1000) || // vanilla flag
-                   ((gSaveContext.n64ddFlag || CVar_GetS32("gGravediggingTourFix", 0)) &&
+                   ((gSaveContext.n64ddFlag || CVarGetInteger("gGravediggingTourFix", 0)) &&
                         gSaveContext.sceneFlags[scene].collect & (1 << flag)); // rando/fix flag
         default:
             return false;
@@ -754,43 +754,43 @@ void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckSta
     Color_RGBA8 mainColor;
     Color_RGBA8 extraColor;
     std::string txt;
-    bool showHidden = CVar_GetS32("gCheckTrackerOptionShowHidden", 0);
+    bool showHidden = CVarGetInteger("gCheckTrackerOptionShowHidden", 0);
 
     if (*thisCheckStatus == RCSHOW_UNCHECKED) {
-        if (!showHidden && CVar_GetS32("gCheckTrackerUncheckedHide", 0))
+        if (!showHidden && CVarGetInteger("gCheckTrackerUncheckedHide", 0))
             return;
-        mainColor = CVar_GetRGBA("gCheckTrackerUncheckedMainColor", Color_Main_Default);
-        extraColor = CVar_GetRGBA("gCheckTrackerUncheckedExtraColor",  Color_Unchecked_Extra_Default);
+        mainColor = CVarGetColor("gCheckTrackerUncheckedMainColor", Color_Main_Default);
+        extraColor = CVarGetColor("gCheckTrackerUncheckedExtraColor",  Color_Unchecked_Extra_Default);
     } else if (*thisCheckStatus == RCSHOW_SKIPPED) {
-        if (!showHidden && CVar_GetS32("gCheckTrackerSkippedHide", 0))
+        if (!showHidden && CVarGetInteger("gCheckTrackerSkippedHide", 0))
             return;
-        mainColor = CVar_GetRGBA("gCheckTrackerSkippedMainColor", Color_Main_Default);
-        extraColor = CVar_GetRGBA("gCheckTrackerSkippedExtraColor", Color_Skipped_Extra_Default);
+        mainColor = CVarGetColor("gCheckTrackerSkippedMainColor", Color_Main_Default);
+        extraColor = CVarGetColor("gCheckTrackerSkippedExtraColor", Color_Skipped_Extra_Default);
     } else if (*thisCheckStatus == RCSHOW_SEEN) {
-        if (!showHidden && CVar_GetS32("gCheckTrackerSeenHide", 0))
+        if (!showHidden && CVarGetInteger("gCheckTrackerSeenHide", 0))
             return;
-        mainColor = CVar_GetRGBA("gCheckTrackerSeenMainColor", Color_Main_Default);
-        extraColor = CVar_GetRGBA("gCheckTrackerSeenExtraColor", Color_Seen_Extra_Default);
+        mainColor = CVarGetColor("gCheckTrackerSeenMainColor", Color_Main_Default);
+        extraColor = CVarGetColor("gCheckTrackerSeenExtraColor", Color_Seen_Extra_Default);
     } else if (*thisCheckStatus == RCSHOW_HINTED) {
-        if (!showHidden && CVar_GetS32("gCheckTrackerHintedHide", 0))
+        if (!showHidden && CVarGetInteger("gCheckTrackerHintedHide", 0))
             return;
-        mainColor = CVar_GetRGBA("gCheckTrackerHintedMainColor", Color_Main_Default);
-        extraColor = CVar_GetRGBA("gCheckTrackerHintedExtraColor", Color_Hinted_Extra_Default);
+        mainColor = CVarGetColor("gCheckTrackerHintedMainColor", Color_Main_Default);
+        extraColor = CVarGetColor("gCheckTrackerHintedExtraColor", Color_Hinted_Extra_Default);
     } else if (*thisCheckStatus == RCSHOW_CHECKED) {
-        if (!showHidden && CVar_GetS32("gCheckTrackerCheckedHide", 0))
+        if (!showHidden && CVarGetInteger("gCheckTrackerCheckedHide", 0))
             return;
-        mainColor = CVar_GetRGBA("gCheckTrackerCheckedMainColor", Color_Main_Default);
-        extraColor = CVar_GetRGBA("gCheckTrackerCheckedExtraColor", Color_Checked_Extra_Default);
+        mainColor = CVarGetColor("gCheckTrackerCheckedMainColor", Color_Main_Default);
+        extraColor = CVarGetColor("gCheckTrackerCheckedExtraColor", Color_Checked_Extra_Default);
     } else if (*thisCheckStatus == RCSHOW_SCUMMED) {
-        if (!showHidden && CVar_GetS32("gCheckTrackerScummedHide", 0))
+        if (!showHidden && CVarGetInteger("gCheckTrackerScummedHide", 0))
             return;
-        mainColor = CVar_GetRGBA("gCheckTrackerScummedMainColor", Color_Main_Default);
-        extraColor = CVar_GetRGBA("gCheckTrackerScummedExtraColor", Color_Scummed_Extra_Default);
+        mainColor = CVarGetColor("gCheckTrackerScummedMainColor", Color_Main_Default);
+        extraColor = CVarGetColor("gCheckTrackerScummedExtraColor", Color_Scummed_Extra_Default);
     } else if (*thisCheckStatus == RCSHOW_SAVED) {
-        if (!showHidden && CVar_GetS32("gCheckTrackerSavedHide", 0))
+        if (!showHidden && CVarGetInteger("gCheckTrackerSavedHide", 0))
             return;
-        mainColor = CVar_GetRGBA("gCheckTrackerSavedMainColor", Color_Main_Default);
-        extraColor = CVar_GetRGBA("gCheckTrackerSavedExtraColor", Color_Saved_Extra_Default);
+        mainColor = CVarGetColor("gCheckTrackerSavedMainColor", Color_Main_Default);
+        extraColor = CVarGetColor("gCheckTrackerSavedExtraColor", Color_Saved_Extra_Default);
     }
  
     //Main Text
@@ -870,9 +870,9 @@ static std::set<std::string> rainbowCVars = {
 
 int hue = 0;
 void RainbowTick() {
-    float freqHue = hue * 2 * M_PI / (360 * CVar_GetFloat("gCosmetics.RainbowSpeed", 0.6f));
+    float freqHue = hue * 2 * M_PI / (360 * CVarGetFloat("gCosmetics.RainbowSpeed", 0.6f));
     for (auto cvar : rainbowCVars) {
-        if (CVar_GetS32((cvar + "RBM").c_str(), 0) == 0)
+        if (CVarGetInteger((cvar + "RBM").c_str(), 0) == 0)
             continue;
      
         Color_RGBA8 newColor;
@@ -881,7 +881,7 @@ void RainbowTick() {
         newColor.b = sin(freqHue + (4 * M_PI / 3)) * 127 + 128;
         newColor.a = 255;
          
-        CVar_SetRGBA(cvar.c_str(), newColor);
+        CVarSetColor(cvar.c_str(), newColor);
     }
 
     hue++;
@@ -891,8 +891,8 @@ void RainbowTick() {
 void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, const char* cvarExtraName,
                                  Color_RGBA8& main_color, Color_RGBA8& extra_color, Color_RGBA8& main_default_color,
                                  Color_RGBA8& extra_default_color, const char* cvarHideName) {
-    Color_RGBA8 cvarMainColor = CVar_GetRGBA(cvarMainName, main_default_color);
-    Color_RGBA8 cvarExtraColor = CVar_GetRGBA(cvarExtraName, extra_default_color);
+    Color_RGBA8 cvarMainColor = CVarGetColor(cvarMainName, main_default_color);
+    Color_RGBA8 cvarExtraColor = CVarGetColor(cvarExtraName, extra_default_color);
     main_color = cvarMainColor;
     extra_color = cvarExtraColor;
 
@@ -914,7 +914,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
                 ImVec4(main_color.r, main_color.g, main_color.b, main_color.a),
                 ImVec4(main_default_color.r, main_default_color.g, main_default_color.b, main_default_color.a)))
             {
-                main_color = CVar_GetRGBA(cvarMainName, main_default_color);
+                main_color = CVarGetColor(cvarMainName, main_default_color);
             };
             ImGui::PopItemWidth();
          
@@ -925,7 +925,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
                 ImVec4(extra_color.r, extra_color.g, extra_color.b, extra_color.a),
                 ImVec4(extra_default_color.r, extra_default_color.g, extra_default_color.b, extra_default_color.a)))
             {
-                extra_color = CVar_GetRGBA(cvarExtraName, extra_default_color);
+                extra_color = CVarGetColor(cvarExtraName, extra_default_color);
             }
             ImGui::PopItemWidth();
 
@@ -942,7 +942,7 @@ const char* buttonStrings[] = { "A Button", "B Button", "C-Up",  "C-Down", "C-Le
                                 "Z Button", "R Button", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
 void DrawCheckTrackerOptions(bool& open) {
     if (!open) {
-        CVar_SetS32("gCheckTrackerSettingsEnabled", 0);
+        CVarSetInteger("gCheckTrackerSettingsEnabled", 0);
         return;
     }
 
@@ -966,7 +966,7 @@ void DrawCheckTrackerOptions(bool& open) {
         ImVec4(Color_Bg_Default.r, Color_Bg_Default.g, Color_Bg_Default.b, Color_Bg_Default.a),
         false, true))
     {
-        Color_Background = CVar_GetRGBA("gCheckTrackerBgColor", Color_Bg_Default);
+        Color_Background = CVarGetColor("gCheckTrackerBgColor", Color_Bg_Default);
     }
     ImGui::PopItemWidth();
 
@@ -974,13 +974,13 @@ void DrawCheckTrackerOptions(bool& open) {
     ImGui::SameLine();
     UIWidgets::EnhancementCombobox("gCheckTrackerWindowType", windowType, 2, 1);
 
-    if (CVar_GetS32("gCheckTrackerWindowType", 1) == 0) {
+    if (CVarGetInteger("gCheckTrackerWindowType", 1) == 0) {
         UIWidgets::EnhancementCheckbox("Enable Dragging", "gCheckTrackerHudEditMode");
         UIWidgets::EnhancementCheckbox("Only enable while paused", "gCheckTrackerShowOnlyPaused");
         ImGui::Text("Display Mode");
         ImGui::SameLine();
         UIWidgets::EnhancementCombobox("gCheckTrackerDisplayType", displayType, 2, 0);
-        if (CVar_GetS32("gCheckTrackerDisplayType", 0) > 0) {
+        if (CVarGetInteger("gCheckTrackerDisplayType", 0) > 0) {
             ImGui::Text("Combo Button 1");
             ImGui::SameLine();
             UIWidgets::EnhancementCombobox("gCheckTrackerComboButton1", buttonStrings, 14, 6);
@@ -1012,27 +1012,27 @@ void DrawCheckTrackerOptions(bool& open) {
 }
 
 void InitCheckTracker() {
-    SohImGui::AddWindow("Randomizer", "Check Tracker", DrawCheckTracker, CVar_GetS32("gCheckTrackerEnabled", 0) == 1);
+    SohImGui::AddWindow("Randomizer", "Check Tracker", DrawCheckTracker, CVarGetInteger("gCheckTrackerEnabled", 0) == 1);
     SohImGui::AddWindow("Randomizer", "Check Tracker Settings", DrawCheckTrackerOptions);
-    Color_Background = CVar_GetRGBA("gCheckTrackerBgColor", Color_Bg_Default);
-    Color_Area_Incomplete_Main  = CVar_GetRGBA("gCheckTrackerAreaMainIncompleteColor",    Color_Main_Default);
-    Color_Area_Incomplete_Extra = CVar_GetRGBA("gCheckTrackerAreaExtraIncompleteColor",   Color_Area_Incomplete_Extra_Default);
-    Color_Area_Complete_Main    = CVar_GetRGBA("gCheckTrackerAreaMainCompleteColor",      Color_Main_Default);
-    Color_Area_Complete_Extra   = CVar_GetRGBA("gCheckTrackerAreaExtraCompleteColor",     Color_Area_Complete_Extra_Default);
-    Color_Unchecked_Main        = CVar_GetRGBA("gCheckTrackerUncheckedMainColor",         Color_Main_Default);
-    Color_Unchecked_Extra       = CVar_GetRGBA("gCheckTrackerUncheckedExtraColor",        Color_Unchecked_Extra_Default);
-    Color_Skipped_Main          = CVar_GetRGBA("gCheckTrackerSkippedMainColor",           Color_Main_Default);
-    Color_Skipped_Extra         = CVar_GetRGBA("gCheckTrackerSkippedExtraColor",          Color_Skipped_Extra_Default);
-    Color_Seen_Main             = CVar_GetRGBA("gCheckTrackerSeenMainColor",              Color_Main_Default);
-    Color_Seen_Extra            = CVar_GetRGBA("gCheckTrackerSeenExtraColor",             Color_Seen_Extra_Default);
-    Color_Hinted_Main           = CVar_GetRGBA("gCheckTrackerHintedMainColor",            Color_Main_Default);
-    Color_Hinted_Extra          = CVar_GetRGBA("gCheckTrackerHintedExtraColor",           Color_Hinted_Extra_Default);
-    Color_Checked_Main          = CVar_GetRGBA("gCheckTrackerCheckedMainColor",           Color_Main_Default);
-    Color_Checked_Extra         = CVar_GetRGBA("gCheckTrackerCheckedExtraColor",          Color_Checked_Extra_Default);
-    Color_Scummed_Main          = CVar_GetRGBA("gCheckTrackerScummedMainColor",           Color_Main_Default);
-    Color_Scummed_Extra         = CVar_GetRGBA("gCheckTrackerScummedExtraColor",          Color_Scummed_Extra_Default);
-    Color_Saved_Main            = CVar_GetRGBA("gCheckTrackerSavedMainColor",             Color_Main_Default);
-    Color_Saved_Extra           = CVar_GetRGBA("gCheckTrackerSavedExtraColor",            Color_Saved_Extra_Default);
+    Color_Background = CVarGetColor("gCheckTrackerBgColor", Color_Bg_Default);
+    Color_Area_Incomplete_Main  = CVarGetColor("gCheckTrackerAreaMainIncompleteColor",    Color_Main_Default);
+    Color_Area_Incomplete_Extra = CVarGetColor("gCheckTrackerAreaExtraIncompleteColor",   Color_Area_Incomplete_Extra_Default);
+    Color_Area_Complete_Main    = CVarGetColor("gCheckTrackerAreaMainCompleteColor",      Color_Main_Default);
+    Color_Area_Complete_Extra   = CVarGetColor("gCheckTrackerAreaExtraCompleteColor",     Color_Area_Complete_Extra_Default);
+    Color_Unchecked_Main        = CVarGetColor("gCheckTrackerUncheckedMainColor",         Color_Main_Default);
+    Color_Unchecked_Extra       = CVarGetColor("gCheckTrackerUncheckedExtraColor",        Color_Unchecked_Extra_Default);
+    Color_Skipped_Main          = CVarGetColor("gCheckTrackerSkippedMainColor",           Color_Main_Default);
+    Color_Skipped_Extra         = CVarGetColor("gCheckTrackerSkippedExtraColor",          Color_Skipped_Extra_Default);
+    Color_Seen_Main             = CVarGetColor("gCheckTrackerSeenMainColor",              Color_Main_Default);
+    Color_Seen_Extra            = CVarGetColor("gCheckTrackerSeenExtraColor",             Color_Seen_Extra_Default);
+    Color_Hinted_Main           = CVarGetColor("gCheckTrackerHintedMainColor",            Color_Main_Default);
+    Color_Hinted_Extra          = CVarGetColor("gCheckTrackerHintedExtraColor",           Color_Hinted_Extra_Default);
+    Color_Checked_Main          = CVarGetColor("gCheckTrackerCheckedMainColor",           Color_Main_Default);
+    Color_Checked_Extra         = CVarGetColor("gCheckTrackerCheckedExtraColor",          Color_Checked_Extra_Default);
+    Color_Scummed_Main          = CVarGetColor("gCheckTrackerScummedMainColor",           Color_Main_Default);
+    Color_Scummed_Extra         = CVarGetColor("gCheckTrackerScummedExtraColor",          Color_Scummed_Extra_Default);
+    Color_Saved_Main            = CVarGetColor("gCheckTrackerSavedMainColor",             Color_Main_Default);
+    Color_Saved_Extra           = CVarGetColor("gCheckTrackerSavedExtraColor",            Color_Saved_Extra_Default);
 
     Ship::RegisterHook<Ship::ControllerRead>([](OSContPad* cont_pad) {
         trackerButtonsPressed = cont_pad;

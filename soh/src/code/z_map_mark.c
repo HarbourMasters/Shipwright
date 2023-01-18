@@ -113,15 +113,15 @@ void MapMark_DrawForDungeon(PlayState* play) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->minimapAlpha);
         gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, interfaceCtx->minimapAlpha);
 
-        s32 Top_MC_Margin = CVar_GetS32("gHUDMargin_T", 0);
-        s32 Left_MC_Margin = CVar_GetS32("gHUDMargin_L", 0);
-        s32 Right_MC_Margin = CVar_GetS32("gHUDMargin_R", 0);
-        s32 Bottom_MC_Margin = CVar_GetS32("gHUDMargin_B", 0);
+        s32 Top_MC_Margin = CVarGetInteger("gHUDMargin_T", 0);
+        s32 Left_MC_Margin = CVarGetInteger("gHUDMargin_L", 0);
+        s32 Right_MC_Margin = CVarGetInteger("gHUDMargin_R", 0);
+        s32 Bottom_MC_Margin = CVarGetInteger("gHUDMargin_B", 0);
 
         s32 X_Margins_Minimap_ic;
         s32 Y_Margins_Minimap_ic;
-        if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {
-            if (CVar_GetS32("gMinimapPosType", 0) == 0) {X_Margins_Minimap_ic = Right_MC_Margin;};
+        if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {
+            if (CVarGetInteger("gMinimapPosType", 0) == 0) {X_Margins_Minimap_ic = Right_MC_Margin;};
             Y_Margins_Minimap_ic = Bottom_MC_Margin;
         } else {
             X_Margins_Minimap_ic = 0;
@@ -135,24 +135,24 @@ void MapMark_DrawForDungeon(PlayState* play) {
                 //Minimap chest / boss icon 
                 const s32 PosX_Minimap_ori = GREG(94) + OTRGetRectDimensionFromRightEdge(markPoint->x+X_Margins_Minimap_ic) + 204;
                 const s32 PosY_Minimap_ori = GREG(95) + markPoint->y + Y_Margins_Minimap_ic + 140;
-                if (CVar_GetS32("gMinimapPosType", 0) != 0) {
-                    rectTop = (markPoint->y + Y_Margins_Minimap_ic + 140 + CVar_GetS32("gMinimapPosY", 0));
-                    if (CVar_GetS32("gMinimapPosType", 0) == 1) {//Anchor Left
-                        if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap_ic = Left_MC_Margin;};
+                if (CVarGetInteger("gMinimapPosType", 0) != 0) {
+                    rectTop = (markPoint->y + Y_Margins_Minimap_ic + 140 + CVarGetInteger("gMinimapPosY", 0));
+                    if (CVarGetInteger("gMinimapPosType", 0) == 1) {//Anchor Left
+                        if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap_ic = Left_MC_Margin;};
                         if (play->sceneNum == SCENE_YDAN || play->sceneNum == SCENE_DDAN || play->sceneNum == SCENE_BDAN || 
                             play->sceneNum == SCENE_BMORI1 || play->sceneNum == SCENE_HIDAN || play->sceneNum == SCENE_MIZUSIN || 
                             play->sceneNum == SCENE_JYASINZOU || play->sceneNum == SCENE_HAKADAN || play->sceneNum == SCENE_HAKADANCH || 
                             play->sceneNum == SCENE_ICE_DOUKUTO) {
-                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPoint->x+CVar_GetS32("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
+                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPoint->x+CVarGetInteger("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
                         } else {
-                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPoint->x+CVar_GetS32("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
+                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPoint->x+CVarGetInteger("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
                         }
-                    } else if (CVar_GetS32("gMinimapPosType", 0) == 2) {//Anchor Right
-                        if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap_ic = Right_MC_Margin;};
-                        rectLeft = OTRGetRectDimensionFromRightEdge(markPoint->x+CVar_GetS32("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
-                    } else if (CVar_GetS32("gMinimapPosType", 0) == 3) {//Anchor None
-                        rectLeft = markPoint->x+CVar_GetS32("gMinimapPosX", 0)+204+X_Margins_Minimap_ic;
-                    } else if (CVar_GetS32("gMinimapPosType", 0) == 4) {//Hidden
+                    } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
+                        if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap_ic = Right_MC_Margin;};
+                        rectLeft = OTRGetRectDimensionFromRightEdge(markPoint->x+CVarGetInteger("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
+                    } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
+                        rectLeft = markPoint->x+CVarGetInteger("gMinimapPosX", 0)+204+X_Margins_Minimap_ic;
+                    } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
                         rectLeft = -9999;
                     }
                 } else {
