@@ -43,7 +43,7 @@ void Main_LogSystemHeap(void) {
     osSyncPrintf(VT_RST);
 }
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__llvm__)
 int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow) 
 #else
 int main(int argc, char** argv)

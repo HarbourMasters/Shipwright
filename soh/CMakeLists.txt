@@ -2094,6 +2094,9 @@ if(MSVC)
 endif()
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
+    target_compile_options(${PROJECT_NAME} PRIVATE
+        -Wno-int-conversion
+    )
     if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         target_compile_options(${PROJECT_NAME} PRIVATE
             -Wall -Wextra -Wno-error
@@ -2173,16 +2176,20 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             -Wno-narrowing
             -Wno-missing-braces
             -Wno-incompatible-pointer-types
+            -Wno-int-conversion
+            -Wno-return-type
             $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
             $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
             -pthread
 	    ${CPU_OPTION}
         )
 
+        if(NOT(CMAKE_SYSTEM_NAME STREQUAL "Windows"))
         target_link_options(${PROJECT_NAME} PRIVATE
             -pthread
             -Wl,-export-dynamic
         )
+        endif()
     endif()
 endif()
 ################################################################################
