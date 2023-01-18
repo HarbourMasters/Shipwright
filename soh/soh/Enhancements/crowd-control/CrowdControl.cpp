@@ -272,6 +272,8 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         effect->value = dataReceived["parameters"][0];
     }
 
+    // Assign GameInteractionEffect + values to CC effect.
+    // Categories are mostly used for checking for conflicting timed effects.
     if (effectName == EFFECT_ADD_HEART_CONTAINER) {
         effect->giEffect = new GameInteractionEffect::AddHeartContainer();
     } else if (effectName == EFFECT_REMOVE_HEART_CONTAINER) {
@@ -405,16 +407,19 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     } else if (effectName == EFFECT_SPAWN_KEESE) {
         effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
         effect->giEffect->value = ACTOR_EN_FIREFLY;
+        // Parameter for normal keese
         effect->giEffect->value2 = 2;
         effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_ICE_KEESE) {
         effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
         effect->giEffect->value = ACTOR_EN_FIREFLY;
+        // Parameter for ice keese
         effect->giEffect->value2 = 4;
         effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_FIRE_KEESE) {
         effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
         effect->giEffect->value = ACTOR_EN_FIREFLY;
+        // Parameter for fire keese
         effect->giEffect->value2 = 1;
         effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_TEKTITE) {
@@ -427,10 +432,12 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         effect->category = "spawn_enemy";
     }
 
+    // If no value is specifically set, default to using whatever CC sends us.
     if (!effect->giEffect->value && effect->value) {
         effect->giEffect->value = effect->value;
     }
 
+    // Default value to 0 (currently only used for setting parameters for enemy spawns)
     if (!effect->giEffect->value2) {
         effect->giEffect->value2 = 0;
     }
@@ -443,6 +450,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 }
 
 CrowdControl::EffectResult CrowdControl::CanApplyEffect(Effect* effect) {
+    // Get result for any given effect, and transform that into CC's own enums.
     EffectResult result;
     GameInteractionEffectQueryResult queryResult = GameInteractor::CanApplyEffect(effect->giEffect);
 
@@ -457,224 +465,4 @@ CrowdControl::EffectResult CrowdControl::CanApplyEffect(Effect* effect) {
     return result;
 }
 
-//CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uint32_t value, bool dryRun) {
-//    // Don't execute effect and don't advance timer when the player is not in a proper loaded savefile
-//    // and when they're busy dying.
-//    if (gPlayState == NULL || gPlayState->gameOverCtx.state > 0 || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2) {
-//        return EffectResult::Retry;
-//    }
-//
-//    Player* player = GET_PLAYER(gPlayState);
-//
-//    if (player != NULL) {
-//        if (effectId == EFFECT_ADD_HEART_CONTAINER) {
-//            if (gSaveContext.healthCapacity >= 0x140) {
-//                return EffectResult::Failure;
-//            }
-//
-//            if (dryRun == 0) CMD_EXECUTE(EFFECT_ADD_HEART_CONTAINER);
-//            return EffectResult::Success;
-//        } else if (effectId == EFFECT_REMOVE_HEART_CONTAINER) {
-//            if ((gSaveContext.healthCapacity - 0x10) <= 0) {
-//                return EffectResult::Failure;
-//            }
-//
-//            if (dryRun == 0) CMD_EXECUTE(EFFECT_REMOVE_HEART_CONTAINER);
-//            return EffectResult::Success;
-//        } else if (effectId == EFFECT_FILL_MAGIC) {
-//            if (!gSaveContext.isMagicAcquired) {
-//                return EffectResult::Failure;
-//            }
-//
-//            if (gSaveContext.magic >= (gSaveContext.isDoubleMagicAcquired + 1) + 0x30) {
-//                return EffectResult::Failure;
-//            }
-//
-//            if (dryRun == 0) CMD_EXECUTE(EFFECT_FILL_MAGIC);
-//            return EffectResult::Success;
-//        } else if (effectId == EFFECT_EMPTY_MAGIC) {
-//            if (!gSaveContext.isMagicAcquired || gSaveContext.magic <= 0) {
-//                return EffectResult::Failure;
-//            }
-//
-//            if (dryRun == 0) CMD_EXECUTE(EFFECT_EMPTY_MAGIC);
-//            return EffectResult::Success;
-//        } else if (effectId == EFFECT_ADD_RUPEES) {
-//            if (dryRun == 0) CMD_EXECUTE(fmt::format("update_rupees {}", value));
-//            return EffectResult::Success;
-//        } else if (effectId == EFFECT_REMOVE_RUPEES) {
-//            if (gSaveContext.rupees - value < 0) {
-//                return EffectResult::Failure;
-//            }
-//
-//            if (dryRun == 0) CMD_EXECUTE(fmt::format("update_rupees -{}", value));
-//            return EffectResult::Success;
-//        }
-//    }
-//
-//    if (player != NULL && !Player_InBlockingCsMode(gPlayState, player) && gPlayState->pauseCtx.state == 0
-//                                                                       && gPlayState->msgCtx.msgMode == 0) {
-//        if (effectId == EFFECT_NO_UI) {
-//            if (dryRun == 0) {
-//                GameInteractor::Instance->ApplyEffect(<#GameInteractionEffect effect#>)
-//            }
-//        } else if (effectId == EFFECT_HIGH_GRAVITY) {
-//            if (dryRun == 0) CMD_EXECUTE("gravity 2");
-//            return EffectResult::Success;
-//        } else if (effectId == EFFECT_LOW_GRAVITY) {
-//            if (dryRun == 0) CMD_EXECUTE("gravity 0");
-//            return EffectResult::Success;
-//        } else if (effectId == EFFECT_KILL
-//                    || effectId == EFFECT_FREEZE
-//                    || effectId == EFFECT_BURN
-//                    || effectId == EFFECT_ELECTROCUTE
-//                    || effectId == EFFECT_SPAWN_CUCCO_STORM
-//        ) {
-//            if (PlayerGrounded(player)) {
-//                if (dryRun == 0) CMD_EXECUTE(fmt::format("{}", effectId));
-//                return EffectResult::Success;
-//            }
-//            return EffectResult::Failure;
-//        } else if (effectId == EFFECT_HEAL
-//                    || effectId == EFFECT_KNOCKBACK
-//        ) {
-//            if (dryRun == 0) CMD_EXECUTE(fmt::format("{} {}", effectId, value));
-//            return EffectResult::Success;
-//        } else if (effectId == EFFECT_GIANT_LINK
-//                    || effectId == EFFECT_MINISH_LINK
-//                    || effectId == EFFECT_INVISIBLE_LINK
-//                    || effectId == EFFECT_PAPER_LINK
-//                    || effectId == EFFECT_NO_Z_TARGETING
-//                    || effectId == EFFECT_OHKO
-//                    || effectId == EFFECT_PACIFIST
-//                    || effectId == EFFECT_RAINSTORM
-//        ) {
-//            if (dryRun == 0) CMD_EXECUTE(fmt::format("{} 1", effectId));
-//            return EffectResult::Success;
-//        } else if (effectId == EFFECT_REVERSE_CONTROLS) {
-//            if (dryRun == 0) CMD_EXECUTE("reverse_controls 1");
-//            return EffectResult::Success;
-//        } else if (effectId == EFFECT_IRON_BOOTS) {
-//            if (dryRun == 0) CMD_EXECUTE("boots iron");
-//            return EffectResult::Success;
-//        } else if (effectId == EFFECT_HOVER_BOOTS) {
-//            if (dryRun == 0) CMD_EXECUTE("boots hover");
-//            return EffectResult::Success;
-//        } else if (effectId == "give_dekushield") {
-//            if (dryRun == 0) CMD_EXECUTE("givedekushield");
-//            return EffectResult::Success;
-//        } else if (effectId == EFFECT_SPAWN_WALLMASTER
-//            || effectId == EFFECT_SPAWN_ARWING
-//            || effectId == EFFECT_SPAWN_DARK_LINK
-//            || effectId == EFFECT_SPAWN_STALFOS
-//            || effectId == EFFECT_SPAWN_WOLFOS
-//            || effectId == EFFECT_SPAWN_FREEZARD
-//            || effectId == EFFECT_SPAWN_KEESE
-//            || effectId == EFFECT_SPAWN_ICE_KEESE
-//            || effectId == EFFECT_SPAWN_FIRE_KEESE
-//            || effectId == EFFECT_SPAWN_TEKTITE
-//            || effectId == EFFECT_SPAWN_LIKE_LIKE
-//        ) {
-//            if (dryRun == 0) {
-//                if (CrowdControl::SpawnEnemy(effectId)) {
-//                    return EffectResult::Success;
-//                } else {
-//                    return EffectResult::Failure;
-//                }
-//            }
-//            return EffectResult::Success;
-//        } else if (effectId == EFFECT_INCREASE_SPEED) {
-//           if (dryRun == 0) CMD_EXECUTE("speed_modifier 2");
-//            return EffectResult::Success;
-//        } else if (effectId == EFFECT_DECREASE_SPEED) {
-//           if (dryRun == 0) CMD_EXECUTE("speed_modifier -2");
-//            return EffectResult::Success;
-//        } else if (effectId == EFFECT_DAMAGE_MULTIPLIER) {
-//            if (dryRun == 0) CMD_EXECUTE(fmt::format("defense_modifier -{}", value));
-//            return EffectResult::Success;
-//        } else if (effectId == EFFECT_DEFENSE_MULTIPLIER) {
-//            if (dryRun == 0) CMD_EXECUTE(fmt::format("defense_modifier {}", value));
-//            return EffectResult::Success;
-//        } else if (effectId == EFFECT_DAMAGE) {
-//            if ((gSaveContext.health - (16 * value)) <= 0) {
-//                return EffectResult::Failure;
-//            }
-//
-//            if (dryRun == 0) CMD_EXECUTE(fmt::format("{} {}", effectId, value));
-//            return EffectResult::Success;
-//        }
-//    }
-//
-//    return EffectResult::Retry;
-//}
-
-bool CrowdControl::SpawnEnemy(std::string effectId) {
-    Player* player = GET_PLAYER(gPlayState);
-
-    int enemyId = 0;
-    int enemyParams = 0;
-    float posXOffset = 0;
-    float posYOffset = 0;
-    float posZOffset = 0;
-
-    if (effectId == EFFECT_SPAWN_WALLMASTER) {
-        enemyId = 17;
-    } else if (effectId == EFFECT_SPAWN_ARWING) {
-        // Don't allow Arwings in certain areas because they cause issues.
-        // Locations: King dodongo room, Morpha room, Twinrova room, Ganondorf room, Fishing pond, Ganon's room
-        // TODO: Swap this to disabling the option in CC options menu instead.
-        if (gPlayState->sceneNum == SCENE_DDAN_BOSS || gPlayState->sceneNum == SCENE_MIZUSIN_BS ||
-            gPlayState->sceneNum == SCENE_JYASINBOSS || gPlayState->sceneNum == SCENE_GANON_BOSS ||
-            gPlayState->sceneNum == SCENE_TURIBORI || gPlayState->sceneNum == SCENE_GANON_DEMO) {
-            return 0;
-        }
-        enemyId = 315;
-        enemyParams = 1;
-        posYOffset = 100;
-    } else if (effectId == EFFECT_SPAWN_DARK_LINK) {
-        enemyId = 51;
-        posXOffset = 75;
-        posYOffset = 50;
-    } else if (effectId == EFFECT_SPAWN_STALFOS) {
-        enemyId = 2;
-        enemyParams = 2;
-        posXOffset = 75;
-        posYOffset = 50;
-    } else if (effectId == EFFECT_SPAWN_WOLFOS) {
-        enemyId = 431;
-        posXOffset = 75;
-        posYOffset = 50;
-    } else if (effectId == EFFECT_SPAWN_FREEZARD) {
-        enemyId = 289;
-        posXOffset = 75;
-        posYOffset = 50;
-    } else if (effectId == EFFECT_SPAWN_KEESE) {
-        enemyId = 19;
-        enemyParams = 2;
-        posXOffset = 75;
-        posYOffset = 50;
-    } else if (effectId == EFFECT_SPAWN_ICE_KEESE) {
-        enemyId = 19;
-        enemyParams = 4;
-        posXOffset = 75;
-        posYOffset = 50;
-    } else if (effectId == EFFECT_SPAWN_FIRE_KEESE) {
-        enemyId = 19;
-        enemyParams = 1;
-        posXOffset = 75;
-        posYOffset = 50;
-    } else if (effectId == EFFECT_SPAWN_TEKTITE) {
-        enemyId = 27;
-        posXOffset = 75;
-        posYOffset = 50;
-    } else if (effectId == EFFECT_SPAWN_LIKE_LIKE) {
-        enemyId = 221;
-        posXOffset = 75;
-        posYOffset = 50;
-    }
-
-    return Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, player->actor.world.pos.x + posXOffset,
-        player->actor.world.pos.y + posYOffset, player->actor.world.pos.z + posZOffset, 0, 0, 0, enemyParams, 0);
-
-}
 #endif
