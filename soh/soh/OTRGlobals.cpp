@@ -234,6 +234,7 @@ extern "C" int AudioPlayer_Buffered(void);
 extern "C" int AudioPlayer_GetDesiredBuffered(void);
 extern "C" void ResourceMgr_CacheDirectory(const char* resName);
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path);
+extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
 void OTRAudio_Thread() {
@@ -1330,6 +1331,70 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
         return copiedCharLen;
     }
     return 0;
+}
+
+extern "C" u8 GetNextChildTradeItem(u8 forward) {
+    std::vector<u8> possibleItems;
+
+    // If talon has not be woken up
+    if (!(gSaveContext.eventChkInf[1] & 0x8)) {
+        if (gSaveContext.sohStats.weirdEggHasHatched) {
+            possibleItems.push_back(ITEM_CHICKEN);
+        // If weird egg hasn't hatched yet but been obtained
+        } else if (gSaveContext.sohStats.hasObtainedWeirdEgg) {
+            possibleItems.push_back(ITEM_WEIRD_EGG);
+        }
+    }
+
+    // Obtained Zelda's Letter
+    if (gSaveContext.eventChkInf[4] & 1) possibleItems.push_back(ITEM_LETTER_ZELDA);
+
+    if (CVar_GetS32("gMaskSelect", 0)) {
+        // If Zelda's letter has been shown to Kak guard or Complete Mask Quest is enabled
+        if (gSaveContext.infTable[7] & 0x80 || Randomizer_GetSettingValue(RSK_COMPLETE_MASK_QUEST)) {
+            // Obtained Keaton Mask
+            if (gSaveContext.itemGetInf[2] & 0x8) possibleItems.push_back(ITEM_MASK_KEATON);
+            // Obtained Skull Mask
+            if (gSaveContext.itemGetInf[2] & 0x10) possibleItems.push_back(ITEM_MASK_SKULL);
+            // Obtained Spooky Mask
+            if (gSaveContext.itemGetInf[2] & 0x20) possibleItems.push_back(ITEM_MASK_SPOOKY);
+            // Obtained Bunny Hood
+            if (gSaveContext.itemGetInf[2] & 0x40) possibleItems.push_back(ITEM_MASK_BUNNY);
+            // Sold All Masks
+            if (gSaveContext.itemGetInf[3] & 0x8000) {
+                possibleItems.push_back(ITEM_MASK_GORON);
+                possibleItems.push_back(ITEM_MASK_ZORA);
+                possibleItems.push_back(ITEM_MASK_GERUDO);
+                possibleItems.push_back(ITEM_MASK_TRUTH);
+            }
+        // Special case for bunny hood, if we want to start with it we don't care about happy mask shop status
+        } else if (Randomizer_GetSettingValue(RSK_STARTING_BUNNY_HOOD)) {
+            if (gSaveContext.itemGetInf[2] & 0x40) possibleItems.push_back(ITEM_MASK_BUNNY);
+        }
+    } else {
+        // If gMaskSelect is disabled and there is an activeMaskItemId, we only want to add that one mask
+        if (gSaveContext.sohStats.activeMaskItemId != 0) possibleItems.push_back(gSaveContext.sohStats.activeMaskItemId);
+    }
+
+    if (possibleItems.size() == 0) {
+        return ITEM_NONE;
+    }
+
+    auto it = find(possibleItems.begin(), possibleItems.end(), INV_CONTENT(ITEM_TRADE_CHILD));
+    // Fall back to 0 if they happen to have an item they aren't supposed to
+    s8 itemIndex = it == possibleItems.end() ? 0 : (it - possibleItems.begin());
+    s8 maxIndex = possibleItems.size() - 1;
+    
+    if (forward) itemIndex++;
+    else itemIndex--;
+
+    if (itemIndex > maxIndex) {
+        itemIndex = 0;
+    } else if (itemIndex < 0) {
+        itemIndex = maxIndex;
+    }
+
+    return possibleItems[itemIndex];
 }
 
 extern "C" void Randomizer_LoadSettings(const char* spoilerFileName) {

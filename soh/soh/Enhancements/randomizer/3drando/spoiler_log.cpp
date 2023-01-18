@@ -439,17 +439,17 @@ static void WriteStartingInventory() {
       for (size_t i = 0; i < menu->size(); ++i) {
           const auto setting = menu->at(i);
           // Starting Songs
-          if (setting->GetName() == "Start with Zelda's Lullaby" || 
+          if (setting->GetName() == "Start with Zelda's Lullaby" ||
               setting->GetName() == "Start with Epona's Song" ||
-              setting->GetName() == "Start with Saria's Song" || 
+              setting->GetName() == "Start with Saria's Song" ||
               setting->GetName() == "Start with Sun's Song" ||
-              setting->GetName() == "Start with Song of Time" || 
+              setting->GetName() == "Start with Song of Time" ||
               setting->GetName() == "Start with Song of Storms" ||
-              setting->GetName() == "Start with Minuet of Forest" || 
+              setting->GetName() == "Start with Minuet of Forest" ||
               setting->GetName() == "Start with Bolero of Fire" ||
-              setting->GetName() == "Start with Serenade of Water" || 
+              setting->GetName() == "Start with Serenade of Water" ||
               setting->GetName() == "Start with Requiem of Spirit" ||
-              setting->GetName() == "Start with Nocturne of Shadow" || 
+              setting->GetName() == "Start with Nocturne of Shadow" ||
               setting->GetName() == "Start with Prelude of Light") {
               jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
           }
@@ -458,7 +458,7 @@ static void WriteStartingInventory() {
   for (std::vector<Option *>* menu : startingInventoryOptions) {
     for (size_t i = 0; i < menu->size(); ++i) {
       const auto setting = menu->at(i);
-   
+
       // we need to write these every time because we're not clearing jsondata, so
       // the default logic of only writing it when we aren't using the default value
       // doesn't work, and because it'd be bad to set every single possible starting
@@ -468,7 +468,8 @@ static void WriteStartingInventory() {
           setting->GetName() == "Start with Max Rupees" ||
           setting->GetName() == "Gold Skulltula Tokens" ||
           setting->GetName() == "Start with Fairy Ocarina" ||
-          setting->GetName() == "Start with Kokiri Sword" || 
+          setting->GetName() == "Start with Kokiri Sword" ||
+          setting->GetName() == "Start with Bunny Hood" ||
           setting->GetName() == "Start with Deku Shield") {
         jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
       }

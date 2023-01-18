@@ -1204,13 +1204,13 @@ void Randomizer::ParseMasterQuestDungeonsFile(const char* spoilerFileName) {
 }
 
 int16_t Randomizer::GetVanillaMerchantPrice(RandomizerCheck check) {
-    switch (check) { 
+    switch (check) {
         case RC_HF_DEKU_SCRUB_GROTTO:
-            return 10;    
+            return 10;
         case RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT:
         case RC_DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS:
         case RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR:
-            return 15;    
+            return 15;
         case RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT:
         case RC_LH_DEKU_SCRUB_GROTTO_LEFT:
         case RC_GC_DEKU_SCRUB_GROTTO_LEFT:
@@ -2669,7 +2669,7 @@ RandomizerInf Randomizer::GetRandomizerInfFromCheck(RandomizerCheck rc) {
     auto rcIt = rcToRandomizerInf.find(rc);
     if (rcIt == rcToRandomizerInf.end())
         return RAND_INF_MAX;
-    
+
     return rcIt->second;
 }
 
@@ -2908,7 +2908,7 @@ void DrawRandoEditor(bool& open) {
     static const char* randoShuffleGerudoFortressKeys[4] = { "Vanilla", "Any Dungeon", "Overworld", "Anywhere" };
     static const char* randoShuffleBossKeys[6] = { "Start With",  "Vanilla",   "Own Dungeon",
                                             "Any Dungeon", "Overworld", "Anywhere" };
-    const char* randoShuffleGanonsBossKey[13] = {"Vanilla", "Own dungeon", "Start with", 
+    const char* randoShuffleGanonsBossKey[13] = {"Vanilla", "Own dungeon", "Start with",
                                                 "Any Dungeon", "Overworld", "Anywhere", 
                                                 "LACS-Vanilla", "LACS-Medallions", "LACS-Stones", 
                                                 "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens",
@@ -4277,40 +4277,40 @@ void DrawRandoEditor(bool& open) {
 
                 UIWidgets::EnhancementCheckbox(Settings::StartingZeldasLullaby.GetName().c_str(),
                                                "gRandomizeStartingZeldasLullaby");
-                
+
                 UIWidgets::EnhancementCheckbox(Settings::StartingEponasSong.GetName().c_str(),
                                                "gRandomizeStartingEponasSong");
-                
+
                 UIWidgets::EnhancementCheckbox(Settings::StartingSariasSong.GetName().c_str(),
                                                "gRandomizeStartingSariasSong");
-                
-                UIWidgets::EnhancementCheckbox(Settings::StartingSunsSong.GetName().c_str(), 
+
+                UIWidgets::EnhancementCheckbox(Settings::StartingSunsSong.GetName().c_str(),
                                                "gRandomizeStartingSunsSong");
-                
-                UIWidgets::EnhancementCheckbox(Settings::StartingSongOfTime.GetName().c_str(), 
+
+                UIWidgets::EnhancementCheckbox(Settings::StartingSongOfTime.GetName().c_str(),
                                                "gRandomizeStartingSongOfTime");
-                
-                UIWidgets::EnhancementCheckbox(Settings::StartingSongOfStorms.GetName().c_str(), 
+
+                UIWidgets::EnhancementCheckbox(Settings::StartingSongOfStorms.GetName().c_str(),
                                                "gRandomizeStartingSongOfStorms");
                 UIWidgets::PaddedSeparator();
                 ImGui::Text("Warp Songs");
                 UIWidgets::PaddedSeparator();
-                
-                UIWidgets::EnhancementCheckbox(Settings::StartingMinuetOfForest.GetName().c_str(), 
+
+                UIWidgets::EnhancementCheckbox(Settings::StartingMinuetOfForest.GetName().c_str(),
                                                "gRandomizeStartingMinuetOfForest");
-                
+
                 UIWidgets::EnhancementCheckbox(Settings::StartingBoleroOfFire.GetName().c_str(),
                                                "gRandomizeStartingBoleroOfFire");
-                
+
                 UIWidgets::EnhancementCheckbox(Settings::StartingSerenadeOfWater.GetName().c_str(),
                                                "gRandomizeStartingSerenadeOfWater");
-                
+
                 UIWidgets::EnhancementCheckbox(Settings::StartingRequiemOfSpirit.GetName().c_str(),
                                                "gRandomizeStartingRequiemOfSpirit");
-                
+
                 UIWidgets::EnhancementCheckbox(Settings::StartingNocturneOfShadow.GetName().c_str(),
                                                "gRandomizeStartingNocturneOfShadow");
-                
+
                 UIWidgets::EnhancementCheckbox(Settings::StartingPreludeOfLight.GetName().c_str(),
                                                "gRandomizeStartingPreludeOfLight");
 

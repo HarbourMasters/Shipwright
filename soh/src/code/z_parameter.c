@@ -2331,6 +2331,14 @@ u8 Item_Give(PlayState* play, u8 item) {
             gSaveContext.itemGetInf[1] |= 0x8000;
         }
 
+        if (item == ITEM_WEIRD_EGG) {
+            gSaveContext.sohStats.hasObtainedWeirdEgg = 1;
+        }
+
+        if (item >= ITEM_MASK_KEATON && item <= ITEM_MASK_TRUTH) {
+            gSaveContext.sohStats.activeMaskItemId = item;
+        }
+
         if (item >= ITEM_POCKET_EGG) {
             gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(item);
         }
