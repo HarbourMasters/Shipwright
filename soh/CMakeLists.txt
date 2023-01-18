@@ -269,6 +269,8 @@ set(Source_Files__soh
     "soh/OTRAudio.h"
     "soh/OTRGlobals.cpp"
     "soh/OTRGlobals.h"
+    "soh/mixer.c"
+    "soh/mixer.h"
     "soh/SaveManager.h"
     "soh/SaveManager.cpp"
     "soh/frame_interpolation.h"

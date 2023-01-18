@@ -897,21 +897,18 @@ void Minimap_Draw(PlayState* play) {
                             //No idea why and how Original value work but this does actually fix them all.
                             PosY = PosY+1024;
                         }
-                        if ((gMapData->owEntranceFlag[sEntranceIconMapIndex] == 0xFFFF) ||
-                            ((gMapData->owEntranceFlag[sEntranceIconMapIndex] != 0xFFFF) &&
-                             (gSaveContext.infTable[26] & gBitFlags[gMapData->owEntranceFlag[mapIndex]]))) {
+                        
+                        if (((gMapData->owEntranceFlag[sEntranceIconMapIndex] == 0xFFFF) ||
+                             ((gMapData->owEntranceFlag[sEntranceIconMapIndex] != 0xFFFF) &&
+                              (gSaveContext.infTable[26] & gBitFlags[gMapData->owEntranceFlag[mapIndex]])
+                             )) || CVarGetInteger("gAlwaysShowDungeonMinimapIcon", 0)) {
                             if (!Map0 || !CVarGetInteger("gFixDungeonMinimapIcon", 0)) {
                                 gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
                                                     IconSize, IconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                                     G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                                 gSPWideTextureRectangle(OVERLAY_DISP++, TopLeftX, TopLeftY, TopLeftW, TopLeftH, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                             }
-                        } else if (CVarGetInteger("gAlwaysShowDungeonMinimapIcon", 0) != 0){ //Ability to show entrance Before beating the dungeon itself
-                            gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                                                IconSize, IconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
-                                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-                            gSPWideTextureRectangle(OVERLAY_DISP++, TopLeftX, TopLeftY, TopLeftW, TopLeftH, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-                        } 
+                        }
                     }
 
                     s16 entranceX = OTRGetRectDimensionFromRightEdge(270 + X_Margins_Minimap);
