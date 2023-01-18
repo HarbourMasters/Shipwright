@@ -1301,11 +1301,11 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
     std::string postfix;
 
     if (gSaveContext.language == LANGUAGE_FRA) {
-        postfix = "\x04\x1A\x08" "Désirez-vous l'équiper maintenant?" "\x09&&"
+        postfix = "\x04\x1A\x08" "D\x96sirez-vous l'\x96quiper maintenant?" "\x09&&"
                   "\x1B%g" "Oui" "&"
                            "Non" "%w\x02";
     } else if (gSaveContext.language == LANGUAGE_GER) {
-        postfix = "\x04\x1A\x08" "Möchtest Du es jetzt ausrüsten?" "\x09&&"
+        postfix = "\x04\x1A\x08" "M""\x9A""chtest Du es jetzt ausr\x9Esten?" "\x09&&"
                   "\x1B%g" "Ja!" "&"
                            "Nein!" "%w\x02";
     } else {
