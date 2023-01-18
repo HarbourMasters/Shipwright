@@ -23,7 +23,10 @@ void GameInteractor::RemoveEffect(GameInteractionEffectBase* effect) {
 }
 
 bool GameInteractor::IsSaveLoaded() {
-    Player* player = GET_PLAYER(gPlayState);
+    Player* player;
+    if (gPlayState != NULL) {
+        player = GET_PLAYER(gPlayState);
+    }
     return (gPlayState == NULL || player == NULL || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2) ? false : true;
 }
 

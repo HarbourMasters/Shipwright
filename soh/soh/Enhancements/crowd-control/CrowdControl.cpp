@@ -437,11 +437,6 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         effect->giEffect->value = effect->value;
     }
 
-    // Default value to 0 (currently only used for setting parameters for enemy spawns)
-    if (!effect->giEffect->value2) {
-        effect->giEffect->value2 = 0;
-    }
-
     if (effect->category == "") {
         effect->category = "none";
     }
