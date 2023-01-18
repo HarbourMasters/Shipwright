@@ -320,22 +320,22 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         effect->category = "link_size";
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::MinishLink();
-    } else if (effectName == EFFECT_INVISIBLE_LINK) {
-        effect->category = "link_size";
-        effect->timeRemaining = 30000;
-        effect->giEffect = new GameInteractionEffect::InvisibleLink();
     } else if (effectName == EFFECT_PAPER_LINK) {
         effect->category = "link_size";
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::PaperLink();
-    } else if (effectName == EFFECT_NO_Z_TARGETING) {
-        effect->category = "no_z";
+    } else if (effectName == EFFECT_INVISIBLE_LINK) {
+        effect->category = "link_size";
         effect->timeRemaining = 30000;
-        effect->giEffect = new GameInteractionEffect::DisableZTargeting();
+        effect->giEffect = new GameInteractionEffect::InvisibleLink();
     } else if (effectName == EFFECT_PACIFIST) {
         effect->category = "pacifist";
         effect->timeRemaining = 15000;
         effect->giEffect = new GameInteractionEffect::PacifistMode();
+    } else if (effectName == EFFECT_NO_Z_TARGETING) {
+        effect->category = "no_z";
+        effect->timeRemaining = 30000;
+        effect->giEffect = new GameInteractionEffect::DisableZTargeting();
     } else if (effectName == EFFECT_RAINSTORM) {
         effect->category = "weather";
         effect->timeRemaining = 30000;

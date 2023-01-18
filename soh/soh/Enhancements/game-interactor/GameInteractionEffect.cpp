@@ -268,11 +268,10 @@ namespace GameInteractionEffect {
         }
     }
     void GiantLink::Apply() {
-        GameInteractor_GiantLinkActive = 1;
+        GameInteractor::SetLinkSize(GI_LINK_SIZE_GIANT);
     }
     void GiantLink::Remove() { 
-        GameInteractor_GiantLinkActive = 0;
-        GameInteractor_ResetLinkScale = 1;
+        GameInteractor::SetLinkSize(GI_LINK_SIZE_NORMAL);
     }
 
     // MinishLink
@@ -284,26 +283,10 @@ namespace GameInteractionEffect {
         }
     }
     void MinishLink::Apply() {
-        GameInteractor_MinishLinkActive = 1;
+        GameInteractor::SetLinkSize(GI_LINK_SIZE_MINISH);
     }
     void MinishLink::Remove() {
-        GameInteractor_MinishLinkActive = 0;
-        GameInteractor_ResetLinkScale = 1;
-    }
-
-    // InvisibleLink
-    GameInteractionEffectQueryResult InvisibleLink::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
-            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else {
-            return GameInteractionEffectQueryResult::Possible;
-        }
-    }
-    void InvisibleLink::Apply() {
-        GameInteractor_InvisibleLinkActive = 1;
-    }
-    void InvisibleLink::Remove() {
-        GameInteractor_InvisibleLinkActive = 0;
+        GameInteractor::SetLinkSize(GI_LINK_SIZE_NORMAL);
     }
 
     // PaperLink
@@ -315,26 +298,25 @@ namespace GameInteractionEffect {
         }
     }
     void PaperLink::Apply() {
-        GameInteractor_PaperLinkActive = 1;
+        GameInteractor::SetLinkSize(GI_LINK_SIZE_PAPER);
     }
     void PaperLink::Remove() {
-        GameInteractor_PaperLinkActive = 0;
-        GameInteractor_ResetLinkScale = 1;
+        GameInteractor::SetLinkSize(GI_LINK_SIZE_NORMAL);
     }
 
-    // DisableZTargeting
-    GameInteractionEffectQueryResult DisableZTargeting::CanBeApplied() {
+    // InvisibleLink
+    GameInteractionEffectQueryResult InvisibleLink::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
-    void DisableZTargeting::Apply() {
-        GameInteractor_DisableZTargetingActive = 1;
+    void InvisibleLink::Apply() {
+        GameInteractor::SetLinkInvisibility(1);
     }
-    void DisableZTargeting::Remove() {
-        GameInteractor_DisableZTargetingActive = 0;
+    void InvisibleLink::Remove() {
+        GameInteractor::SetLinkInvisibility(0);
     }
 
     // PacifistMode
@@ -350,6 +332,21 @@ namespace GameInteractionEffect {
     }
     void PacifistMode::Remove() {
         GameInteractor::SetPacifistMode(0);
+    }
+
+    // DisableZTargeting
+    GameInteractionEffectQueryResult DisableZTargeting::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void DisableZTargeting::Apply() {
+        GameInteractor_DisableZTargetingActive = 1;
+    }
+    void DisableZTargeting::Remove() {
+        GameInteractor_DisableZTargetingActive = 0;
     }
 
     // WeatherRainstorm

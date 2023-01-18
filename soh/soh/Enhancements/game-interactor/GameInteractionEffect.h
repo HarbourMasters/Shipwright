@@ -154,25 +154,25 @@ namespace GameInteractionEffect {
         void Remove() override;
     };
 
-    class InvisibleLink: public GameInteractionEffectBase {
-        GameInteractionEffectQueryResult CanBeApplied() override;
-        void Apply() override;
-        void Remove() override;
-    };
-
     class PaperLink: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
         void Remove() override;
     };
 
-    class DisableZTargeting: public GameInteractionEffectBase {
+    class InvisibleLink : public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
         void Remove() override;
     };
 
-    class PacifistMode: public GameInteractionEffectBase {
+    class PacifistMode : public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void Apply() override;
+        void Remove() override;
+    };
+
+    class DisableZTargeting: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
         void Remove() override;

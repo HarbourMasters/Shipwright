@@ -5,6 +5,13 @@
 
 #include "GameInteractionEffect.h"
 
+enum {
+    GI_LINK_SIZE_NORMAL,
+    GI_LINK_SIZE_GIANT,
+    GI_LINK_SIZE_MINISH,
+    GI_LINK_SIZE_PAPER
+};
+
 #ifdef __cplusplus
 class GameInteractor {
 public:
@@ -18,6 +25,8 @@ public:
     static void AddOrRemoveHealthContainers(int32_t amount);
     static void AddOrRemoveMagic(int32_t amount);
     static void HealOrDamagePlayer(int32_t hearts);
+    static void SetLinkSize(uint8_t size);
+    static void SetLinkInvisibility(uint8_t effectState);
     static void SetPacifistMode(uint8_t effectState);
     static void SetWeatherStorm(uint8_t effectState);
     static void ForceEquipBoots(uint8_t boots);

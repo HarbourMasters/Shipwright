@@ -71,6 +71,30 @@ void GameInteractor::HealOrDamagePlayer(int32_t hearts) {
     }
 }
 
+void GameInteractor::SetLinkSize(uint8_t size) {
+    GameInteractor_GiantLinkActive = 0;
+    GameInteractor_MinishLinkActive = 0;
+    GameInteractor_PaperLinkActive = 0;
+
+    if (size == GI_LINK_SIZE_NORMAL) {
+        GameInteractor_ResetLinkScale = 1;
+    } else if (size == GI_LINK_SIZE_GIANT) {
+        GameInteractor_GiantLinkActive = 1;
+    } else if (size == GI_LINK_SIZE_MINISH) {
+        GameInteractor_MinishLinkActive = 1;
+    } else if (size == GI_LINK_SIZE_PAPER) {
+        GameInteractor_PaperLinkActive = 1;
+    }
+}
+
+void GameInteractor::SetLinkInvisibility(uint8_t effectState) {
+    GameInteractor_InvisibleLinkActive = effectState;
+    if (!effectState) {
+        Player* player = GET_PLAYER(gPlayState);
+        player->actor.shape.shadowDraw = ActorShadow_DrawFeet;
+    }
+}
+
 void GameInteractor::SetPacifistMode(uint8_t effectState) {
     GameInteractor_PacifistModeActive = effectState;
     // Force interface update to update the button's transparency.

@@ -467,11 +467,8 @@ static bool InvisibleHandler(std::shared_ptr<Ship::Console> Console, const std::
     }
 
     try {
-        GameInteractor_InvisibleLinkActive = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        if (!GameInteractor_InvisibleLinkActive) {
-            Player* player = GET_PLAYER(gPlayState);
-            player->actor.shape.shadowDraw = ActorShadow_DrawFeet;
-        }
+        uint8_t state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        GameInteractor::SetLinkInvisibility(state);
 
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
@@ -487,12 +484,11 @@ static bool GiantLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
     }
 
     try {
-        GameInteractor_GiantLinkActive = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        if (GameInteractor_GiantLinkActive) {
-            GameInteractor_PaperLinkActive = 0;
-            GameInteractor_MinishLinkActive = 0;
+        uint8_t state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        if (state) {
+            GameInteractor::SetLinkSize(GI_LINK_SIZE_GIANT);
         } else {
-            GameInteractor_ResetLinkScale = 1;
+            GameInteractor::SetLinkSize(GI_LINK_SIZE_NORMAL);
         }
 
         return CMD_SUCCESS;
@@ -509,12 +505,11 @@ static bool MinishLinkHandler(std::shared_ptr<Ship::Console> Console, const std:
     }
 
     try {
-        GameInteractor_MinishLinkActive = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        if (GameInteractor_MinishLinkActive) {
-            GameInteractor_PaperLinkActive = 0;
-            GameInteractor_GiantLinkActive = 0;
+        uint8_t state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        if (state) {
+            GameInteractor::SetLinkSize(GI_LINK_SIZE_MINISH);
         } else {
-            GameInteractor_ResetLinkScale = 1;
+            GameInteractor::SetLinkSize(GI_LINK_SIZE_NORMAL);
         }
 
         return CMD_SUCCESS;
@@ -696,13 +691,13 @@ static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
     }
 
     try {
-        GameInteractor_PaperLinkActive = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        if (GameInteractor_PaperLinkActive) {
-            GameInteractor_MinishLinkActive = 0;
-            GameInteractor_GiantLinkActive = 0;
+        uint8_t state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        if (state) {
+            GameInteractor::SetLinkSize(GI_LINK_SIZE_PAPER);
         } else {
-            GameInteractor_ResetLinkScale = 1;
+            GameInteractor::SetLinkSize(GI_LINK_SIZE_NORMAL);
         }
+
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Paper Link value must be a number.");
