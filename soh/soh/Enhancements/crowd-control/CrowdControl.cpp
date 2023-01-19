@@ -141,17 +141,18 @@ void CrowdControl::ListenToServer() {
 
             // If effect is a one off run, let's execute
             if (!incomingEffect->timeRemaining) {
-                EffectResult result = CrowdControl::CanApplyEffect(incomingEffect);
-                if (result == EffectResult::Success) {
-                    if (incomingEffect->category != "spawn_enemy") {
-                        GameInteractor::ApplyEffect(incomingEffect->giEffect);
-                    } else {
-                        if (!GameInteractor::SpawnEnemyWithOffset(incomingEffect->giEffect->value, incomingEffect->giEffect->value2)) {
-                            result = EffectResult::Retry;
-                        }
+                EffectResult result = EffectResult::Retry;
+                if (incomingEffect->category == "spawn_enemy") {
+                    if (GameInteractor::Actions::CanSpawnEnemy() && GameInteractor::Actions::SpawnEnemyWithOffset(incomingEffect->giEffect->parameters[0], incomingEffect->giEffect->parameters[1])) {
+                        result = EffectResult::Success;
                     }
-                    
+                } else {
+                    result = CrowdControl::CanApplyEffect(incomingEffect);
+                    if (result == EffectResult::Success) {
+                        GameInteractor::ApplyEffect(incomingEffect->giEffect);
+                    }
                 }
+
                 EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
             } else {
                 // check if a conflicting event is already active
@@ -377,64 +378,53 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     } else if (effectName == EFFECT_SPAWN_CUCCO_STORM) {
         effect->giEffect = new GameInteractionEffect::SpawnCuccoStorm();
     } else if (effectName == EFFECT_SPAWN_WALLMASTER) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
-        effect->giEffect->value = ACTOR_EN_WALLMAS;
+        effect->giEffect->parameters[0] = ACTOR_EN_WALLMAS;
         effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_ARWING) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
-        effect->giEffect->value = ACTOR_EN_CLEAR_TAG;
+        effect->giEffect->parameters[0] = ACTOR_EN_CLEAR_TAG;
         // Parameter for no cutscene Arwing
-        effect->giEffect->value2 = 1;
+        effect->giEffect->parameters[0] = 1;
         effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_DARK_LINK) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
-        effect->giEffect->value = ACTOR_EN_TORCH2;
+        effect->giEffect->parameters[0] = ACTOR_EN_TORCH2;
         effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_STALFOS) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
-        effect->giEffect->value = ACTOR_EN_TEST;
+        effect->giEffect->parameters[0] = ACTOR_EN_TEST;
         // Parameter for gravity-obeying Stalfos
-        effect->giEffect->value2 = 2;
+        effect->giEffect->parameters[1] = 2;
         effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_WOLFOS) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
-        effect->giEffect->value = ACTOR_EN_WF;
+        effect->giEffect->parameters[0] = ACTOR_EN_WF;
         effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_FREEZARD) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
-        effect->giEffect->value = ACTOR_EN_FZ;
+        effect->giEffect->parameters[0] = ACTOR_EN_FZ;
         effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_KEESE) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
-        effect->giEffect->value = ACTOR_EN_FIREFLY;
+        effect->giEffect->parameters[0] = ACTOR_EN_FIREFLY;
         // Parameter for normal keese
-        effect->giEffect->value2 = 2;
+        effect->giEffect->parameters[1] = 2;
         effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_ICE_KEESE) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
-        effect->giEffect->value = ACTOR_EN_FIREFLY;
+        effect->giEffect->parameters[0] = ACTOR_EN_FIREFLY;
         // Parameter for ice keese
-        effect->giEffect->value2 = 4;
+        effect->giEffect->parameters[1] = 4;
         effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_FIRE_KEESE) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
-        effect->giEffect->value = ACTOR_EN_FIREFLY;
+        effect->giEffect->parameters[0] = ACTOR_EN_FIREFLY;
         // Parameter for fire keese
-        effect->giEffect->value2 = 1;
+        effect->giEffect->parameters[1] = 1;
         effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_TEKTITE) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
-        effect->giEffect->value = ACTOR_EN_TITE;
+        effect->giEffect->parameters[0] = ACTOR_EN_TITE;
         effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_LIKE_LIKE) {
-        effect->giEffect = new GameInteractionEffect::SpawnEnemyWithOffset();
-        effect->giEffect->value = ACTOR_EN_RR;
+        effect->giEffect->parameters[0] = ACTOR_EN_RR;
         effect->category = "spawn_enemy";
     }
 
     // If no value is specifically set, default to using whatever CC sends us.
-    if (!effect->giEffect->value && effect->value) {
-        effect->giEffect->value = effect->value;
+    if (!effect->giEffect->parameters[0] && effect->value) {
+        effect->giEffect->parameters[0] = effect->value;
     }
 
     if (effect->category == "") {

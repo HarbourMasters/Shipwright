@@ -41,8 +41,7 @@ public:
     virtual GameInteractionEffectQueryResult CanBeApplied() = 0;
     virtual void Apply() = 0;
     virtual void Remove() = 0;
-    int32_t value = 0;
-    int32_t value2 = 0;
+    int32_t parameters[2];
 };
 
 namespace GameInteractionEffect {
@@ -239,12 +238,6 @@ namespace GameInteractionEffect {
     };
 
     class SpawnCuccoStorm: public GameInteractionEffectBase {
-        GameInteractionEffectQueryResult CanBeApplied() override;
-        void Apply() override;
-        void Remove() override;
-    };
-
-    class SpawnEnemyWithOffset: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
         void Remove() override;
