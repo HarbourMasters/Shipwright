@@ -261,7 +261,7 @@ static void CreateLocationHint(const std::vector<uint32_t>& possibleHintLocation
   Location(hintedLocation)->SetAsHinted();
 
   //make hint text
-  Text locationHintText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
+  Text locationHintText = Location(hintedLocation)->GetHint().GetText();
   Text itemHintText = Location(hintedLocation)->GetPlacedItem().GetHint().GetText();
   Text prefix = Hint(PREFIX).GetText();
 
