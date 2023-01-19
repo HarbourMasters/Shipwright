@@ -498,7 +498,7 @@ extern "C" void InitOTR() {
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance = new CrowdControl();
     CrowdControl::Instance->Init();
-    if (CVar_GetS32("gCrowdControl", 0)) {
+    if (CVarGetInteger("gCrowdControl", 0)) {
         CrowdControl::Instance->Enable();
     } else {
         CrowdControl::Instance->Disable();
