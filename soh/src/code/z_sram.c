@@ -470,8 +470,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             GiveLinkRupees(9001);
         }
 
-        if(Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
-            // TODO: If master quest there are different key counts
+        if (Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
             gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] = FOREST_TEMPLE_SMALL_KEY_MAX; // Forest
             gSaveContext.sohStats.dungeonKeys[SCENE_BMORI1]     = FOREST_TEMPLE_SMALL_KEY_MAX; // Forest
             gSaveContext.inventory.dungeonKeys[SCENE_HIDAN] = FIRE_TEMPLE_SMALL_KEY_MAX; // Fire
@@ -488,6 +487,16 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.sohStats.dungeonKeys[SCENE_MEN]     = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX; // GTG
             gSaveContext.inventory.dungeonKeys[SCENE_GANONTIKA] = GANONS_CASTLE_SMALL_KEY_MAX; // Ganon
             gSaveContext.sohStats.dungeonKeys[SCENE_GANONTIKA]     = GANONS_CASTLE_SMALL_KEY_MAX; // Ganon
+        } else if (Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA) {
+            // Logic cannot handle vanilla key layout in some dungeons
+            // this is because vanilla expects the dungeon major item to be
+            // locked behind the keys, which is not always true in rando.
+            // We can resolve this by starting with some extra keys
+            if (ResourceMgr_IsSceneMasterQuest(SCENE_JYASINZOU)) {
+                // MQ Spirit needs 3 keys
+                gSaveContext.inventory.dungeonKeys[SCENE_JYASINZOU] = 3;
+                gSaveContext.sohStats.dungeonKeys[SCENE_JYASINZOU] = 3;
+            }
         }
 
         if(Randomizer_GetSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
@@ -516,12 +525,23 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.infTable[20] |= 4;
 
         // Go away ruto (water temple first cutscene)
-        gSaveContext.sceneFlags[05].swch |= (1 << 0x10);
+        gSaveContext.sceneFlags[SCENE_MIZUSIN].swch |= (1 << 0x10);
 
-        // Opens locked Water Temple door to prevent softlocks
+        // Open lowest Vanilla Fire Temple locked door (to prevent key logic lockouts)
+        // Not done on keysanity since this lockout is a non issue when Fire keys can be found outside the temple
+        u8 keysanity = Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
+                       Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
+                       Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON;
+        if (!ResourceMgr_IsSceneMasterQuest(SCENE_HIDAN) && !keysanity) {
+            gSaveContext.sceneFlags[SCENE_HIDAN].swch |= (1 << 0x17);
+        }
+
+        // Opens locked Water Temple door in vanilla to prevent softlocks
         // West door on the middle level that leads to the water raising thing
         // Happens in 3DS rando and N64 rando as well
-        gSaveContext.sceneFlags[05].swch |= (1 << 0x15);
+        if (!ResourceMgr_IsSceneMasterQuest(SCENE_MIZUSIN)) {
+            gSaveContext.sceneFlags[SCENE_MIZUSIN].swch |= (1 << 0x15);
+        }
 
         // Skip intro cutscene when bombing mud wall in Dodongo's cavern
         // this also makes the lower jaw render, and the eyes react to explosives

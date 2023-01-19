@@ -221,7 +221,7 @@ void ZFile::ParseXML(tinyxml2::XMLElement* reader, const std::string& filename)
 		// Check for repeated attributes.
 		if (offsetXml != nullptr)
 		{
-			rawDataIndex = strtol(StringHelper::Split(offsetXml, "0x")[1].c_str(), NULL, 16);
+			rawDataIndex = strtol(StringHelper::Split(std::string(offsetXml), "0x")[1].c_str(), NULL, 16);
 
 			if (offsetSet.find(offsetXml) != offsetSet.end())
 			{
@@ -831,7 +831,7 @@ void ZFile::GenerateSourceHeaderFiles()
 		xmlPath = StringHelper::Replace(xmlPath, "\\", "/");
 		auto pathList = StringHelper::Split(xmlPath, "/");
 		std::string outPath = "";
-		
+
 		for (int i = 0; i < 3; i++)
 			outPath += pathList[i] + "/";
 
@@ -1192,7 +1192,7 @@ std::string ZFile::ProcessTextureIntersections([[maybe_unused]] const std::strin
 
 				if (declarations.find(currentOffset) != declarations.end())
 					declarations.at(currentOffset)->size = currentTex->GetRawDataSize();
-				
+
 				currentTex->DeclareVar(GetName(), "");
 			}
 			else

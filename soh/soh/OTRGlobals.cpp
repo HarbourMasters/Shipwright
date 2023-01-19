@@ -461,6 +461,11 @@ extern "C" void InitOTR() {
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance = new CrowdControl();
     CrowdControl::Instance->Init();
+    if (CVar_GetS32("gCrowdControl", 0)) {
+        CrowdControl::Instance->Enable();
+    } else {
+        CrowdControl::Instance->Disable();
+    }
 #endif
 }
 
@@ -1757,12 +1762,13 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
     }
 }
 
-extern "C" int Controller_ShouldRumble(size_t i) {
+extern "C" int Controller_ShouldRumble(size_t slot) {
     auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
-
-    for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
-        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
-        if (physicalDevice->CanRumble()) {
+    
+    if (slot < controlDeck->GetNumVirtualDevices()) {
+        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(slot);
+        
+        if (physicalDevice->getProfile(slot)->UseRumble && physicalDevice->CanRumble()) {
             return 1;
         }
     }
@@ -1795,11 +1801,11 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
     std::string postfix;
 
     if (gSaveContext.language == LANGUAGE_FRA) {
-        postfix = "\x04\x1A\x08" "Désirez-vous l'équiper maintenant?" "\x09&&"
+        postfix = "\x04\x1A\x08" "D\x96sirez-vous l'\x96quiper maintenant?" "\x09&&"
                   "\x1B%g" "Oui" "&"
                            "Non" "%w\x02";
     } else if (gSaveContext.language == LANGUAGE_GER) {
-        postfix = "\x04\x1A\x08" "Möchtest Du es jetzt ausrüsten?" "\x09&&"
+        postfix = "\x04\x1A\x08" "M""\x9A""chtest Du es jetzt ausr\x9Esten?" "\x09&&"
                   "\x1B%g" "Ja!" "&"
                            "Nein!" "%w\x02";
     } else {
