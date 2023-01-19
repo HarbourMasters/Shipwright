@@ -31,7 +31,7 @@ typedef struct EnHeishi4 {
     /* 0x0282 */ s16 unk_282;
     /* 0x0284 */ s16 unk_284;
     /* 0x0288 */ f32 unk_288;
-    /* 0x028C */ struct_80034A14_arg1 unk_28C;
+    /* 0x028C */ NpcInteractInfo interactInfo;
     /* 0x02B4 */ u8 unk_2B4;
     /* 0x02B6 */ char unk_2B6[7];
     /* 0x02BC */ ColliderCylinder collider;

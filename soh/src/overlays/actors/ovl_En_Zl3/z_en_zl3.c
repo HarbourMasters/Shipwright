@@ -151,8 +151,8 @@ void func_80B536B4(EnZl3* this) {
 
 void func_80B536C4(EnZl3* this) {
     s32 pad[2];
-    Vec3s* vec1 = &this->unk_3F8.unk_08;
-    Vec3s* vec2 = &this->unk_3F8.unk_0E;
+    Vec3s* vec1 = &this->interactInfo.headRot;
+    Vec3s* vec2 = &this->interactInfo.torsoRot;
 
     Math_SmoothStepToS(&vec1->x, 0, 20, 6200, 100);
     Math_SmoothStepToS(&vec1->y, 0, 20, 6200, 100);
@@ -163,9 +163,9 @@ void func_80B536C4(EnZl3* this) {
 void func_80B53764(EnZl3* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    this->unk_3F8.unk_18 = player->actor.world.pos;
-    this->unk_3F8.unk_14 = kREG(16) - 16.0f;
-    func_80034A14(&this->actor, &this->unk_3F8, kREG(17) + 0xC, 2);
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.yOffset = kREG(16) - 16.0f;
+    Npc_TrackPoint(&this->actor, &this->interactInfo, kREG(17) + 0xC, NPC_TRACKING_HEAD_AND_TORSO);
 }
 
 s32 func_80B537E8(EnZl3* this) {
@@ -603,8 +603,8 @@ s32 func_80B5458C(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
     Mtx* sp78;
     MtxF sp38;
     Vec3s sp30;
-    Vec3s* unk_3F8_unk_08 = &this->unk_3F8.unk_08;
-    Vec3s* unk_3F8_unk_0E = &this->unk_3F8.unk_0E;
+    Vec3s* unk_3F8_unk_08 = &this->interactInfo.headRot;
+    Vec3s* unk_3F8_unk_0E = &this->interactInfo.torsoRot;
 
     if (limbIndex == 14) {
         sp78 = Graph_Alloc(play->state.gfxCtx, sizeof(Mtx) * 7);
@@ -1968,18 +1968,18 @@ void func_80B57D60(EnZl3* this, PlayState* play) {
 s32 func_80B57D80(EnZl3* this, PlayState* play) {
     s32 pad;
     s16* sp32 = &this->actor.shape.rot.y;
-    struct_80034A14_arg1* unk_3F8 = &this->unk_3F8;
+    NpcInteractInfo* interactInfo = &this->interactInfo;
     Player* player = GET_PLAYER(play);
     s32 unk_314 = this->unk_314;
     s16 temp_v0 = func_80B57104(this, unk_314);
     s32 pad2;
     s16 phi_v1;
 
-    unk_3F8->unk_18.y = player->actor.world.pos.y;
-    unk_3F8->unk_18.x = (Math_SinS(temp_v0) * this->actor.xzDistToPlayer) + this->actor.world.pos.x;
-    unk_3F8->unk_18.z = (Math_CosS(temp_v0) * this->actor.xzDistToPlayer) + this->actor.world.pos.z;
-    unk_3F8->unk_14 = kREG(16) - 16.0f;
-    func_80034A14(&this->actor, unk_3F8, kREG(17) + 0xC, 4);
+    interactInfo->trackPos.y = player->actor.world.pos.y;
+    interactInfo->trackPos.x = (Math_SinS(temp_v0) * this->actor.xzDistToPlayer) + this->actor.world.pos.x;
+    interactInfo->trackPos.z = (Math_CosS(temp_v0) * this->actor.xzDistToPlayer) + this->actor.world.pos.z;
+    interactInfo->yOffset = kREG(16) - 16.0f;
+    Npc_TrackPoint(&this->actor, interactInfo, kREG(17) + 0xC, NPC_TRACKING_FULL_BODY);
 
     phi_v1 = ABS(temp_v0 - *sp32);
     if (phi_v1 <= 0x320) {
@@ -2446,7 +2446,7 @@ s32 func_80B5944C(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
     if (limbIndex == 14) {
         Mtx* mtx = Graph_Alloc(play->state.gfxCtx, sizeof(Mtx) * 7);
         EnZl3* this = (EnZl3*)thisx;
-        Vec3s* vec = &this->unk_3F8.unk_08;
+        Vec3s* vec = &this->interactInfo.headRot;
 
         gSPSegment(gfx[0]++, 0x0C, mtx);
 
