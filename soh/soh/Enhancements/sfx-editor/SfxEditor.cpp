@@ -384,6 +384,14 @@ extern "C" u16 SfxEditor_GetReverseReplacementSeq(u16 seqId) {
     return static_cast<u16>(seqId);
 }
 
+extern "C" const char* SfxEditor_GetSequenceName(u16 seqId) {
+    if (sfxEditorSequenceMap.contains(seqId)) {
+        const char *name = std::get<0>(sfxEditorSequenceMap.at(seqId)).c_str();
+        return name;
+    }
+    return NULL;
+}
+
 void DrawSfxEditor(bool& open) {
     if (!open) {
         CVarSetInteger("gSfxEditor", 0);
@@ -435,6 +443,11 @@ void DrawSfxEditor(bool& open) {
                 UIWidgets::InsertHelpHoverText(
                     "Disables the music change when getting close to enemies. Useful for hearing "
                     "your custom music for each scene more often.");
+                UIWidgets::EnhancementCheckbox("Display Sequence Name on Overlay", "gSeqNameOverlay");
+                UIWidgets::InsertHelpHoverText(
+                    "Displays the name of the current sequence in the corner of the screen whenever a new sequence "
+                    "is loaded to the main sequence player (does not apply to fanfares or enemy BGM)."
+                );
                 UIWidgets::PaddedSeparator();
                 UIWidgets::PaddedText("The following options are experimental and may cause music\nto sound odd or have other undesireable effects.");
                 UIWidgets::EnhancementCheckbox("Lower Octaves of Unplayable High Notes", "gExperimentalOctaveDrop");
