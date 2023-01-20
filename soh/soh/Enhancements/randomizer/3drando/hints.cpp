@@ -317,17 +317,12 @@ static void CreateWothHint(uint8_t* remainingDungeonWothHints) {
     Location(hintedLocation)->SetAsHinted();
     uint32_t gossipStone = RandomElement(gossipStoneLocations);
 
-    // form hint text
-    Text locationText;
     if (Location(hintedLocation)->IsDungeon()) {
         *remainingDungeonWothHints -= 1;
-        uint32_t parentRegion = Location(hintedLocation)->GetParentRegionKey();
-        locationText = AreaTable(parentRegion)->GetHint().GetText();
-
-    } else {
-        uint32_t parentRegion = Location(hintedLocation)->GetParentRegionKey();
-        locationText = GetHintRegion(parentRegion)->GetHint().GetText();
     }
+
+    // form hint text
+    Text locationText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
     Text finalWothHint = Hint(PREFIX).GetText() + "#" + locationText + "#" + Hint(WAY_OF_THE_HERO).GetText();
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalWothHint.english);
@@ -365,16 +360,12 @@ static void CreateBarrenHint(uint8_t* remainingDungeonBarrenHints, std::vector<u
     Location(hintedLocation)->SetAsHinted();
     uint32_t gossipStone = RandomElement(gossipStoneLocations);
 
-    // form hint text
-    Text locationText;
     if (Location(hintedLocation)->IsDungeon()) {
         *remainingDungeonBarrenHints -= 1;
-        uint32_t parentRegion = Location(hintedLocation)->GetParentRegionKey();
-        locationText = Hint(AreaTable(parentRegion)->hintKey).GetText();
-    } else {
-        uint32_t parentRegion = Location(hintedLocation)->GetParentRegionKey();
-        locationText = Hint(GetHintRegion(parentRegion)->hintKey).GetText();
     }
+
+    // form hint text
+    Text locationText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
     Text finalBarrenHint =
         Hint(PREFIX).GetText() + Hint(PLUNDERING).GetText() + "#" + locationText + "#" + Hint(FOOLISH).GetText();
     SPDLOG_DEBUG("\tMessage: ");
@@ -419,16 +410,15 @@ static void CreateRandomLocationHint(const bool goodItem = false) {
 
   //form hint text
   Text itemText = Location(hintedLocation)->GetPlacedItem().GetHint().GetText();
+  Text locationText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
+  // RANDOTODO: reconsider dungeon vs non-dungeon item location hints when boss shuffle mixed pools happens
   if (Location(hintedLocation)->IsDungeon()) {
-    uint32_t parentRegion = Location(hintedLocation)->GetParentRegionKey();
-    Text locationText = AreaTable(parentRegion)->GetHint().GetText();
     Text finalHint = Hint(PREFIX).GetText()+"#"+locationText+"# "+Hint(HOARDS).GetText()+" #"+itemText+"#.";
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalHint.english);
     SPDLOG_DEBUG("\n\n");
     AddHint(finalHint, gossipStone, {QM_GREEN, QM_RED});
   } else {
-    Text locationText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
     Text finalHint = Hint(PREFIX).GetText()+"#"+itemText+"# "+Hint(CAN_BE_FOUND_AT).GetText()+" #"+locationText+"#.";
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalHint.english);

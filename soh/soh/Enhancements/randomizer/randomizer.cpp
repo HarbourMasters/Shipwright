@@ -236,6 +236,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "World Settings:Bombchus in Logic", RSK_BOMBCHUS_IN_LOGIC },
     { "World Settings:Shuffle Entrances", RSK_SHUFFLE_ENTRANCES },
     { "World Settings:Dungeon Entrances", RSK_SHUFFLE_DUNGEON_ENTRANCES },
+    { "World Settings:Boss Entrances", RSK_SHUFFLE_BOSS_ENTRANCES },
     { "World Settings:Overworld Entrances", RSK_SHUFFLE_OVERWORLD_ENTRANCES },
     { "World Settings:Interior Entrances", RSK_SHUFFLE_INTERIOR_ENTRANCES },
     { "World Settings:Grottos Entrances", RSK_SHUFFLE_GROTTO_ENTRANCES },
@@ -985,6 +986,15 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_DUNGEON_ENTRANCE_SHUFFLE_ON;
                         } else if (it.value() == "On + Ganon") {
                             gSaveContext.randoSettings[index].value = RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON;
+                        }
+                        break;
+                    case RSK_SHUFFLE_BOSS_ENTRANCES:
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF;
+                        } else if (it.value() == "Age Restricted") {
+                            gSaveContext.randoSettings[index].value = RO_BOSS_ROOM_ENTRANCE_SHUFFLE_AGE_RESTRICTED;
+                        } else if (it.value() == "Full") {
+                            gSaveContext.randoSettings[index].value = RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL;
                         }
                         break;
                     case RSK_SHUFFLE_INTERIOR_ENTRANCES:
@@ -2870,6 +2880,7 @@ void GenerateRandomizerImgui() {
 
     // Enable if any of the entrance rando options are enabled.
     cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVarGetInteger("gRandomizeShuffleDungeonsEntrances", RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
+                                          CVarGetInteger("gRandomizeShuffleBossEntrances", RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) ||
                                           CVarGetInteger("gRandomizeShuffleOverworldEntrances", RO_GENERIC_OFF) ||
                                           CVarGetInteger("gRandomizeShuffleInteriorsEntrances", RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) ||
                                           CVarGetInteger("gRandomizeShuffleGrottosEntrances", RO_GENERIC_OFF) ||
@@ -2878,6 +2889,7 @@ void GenerateRandomizerImgui() {
                                           CVarGetInteger("gRandomizeShuffleOverworldSpawns", RO_GENERIC_OFF);
 
     cvarSettings[RSK_SHUFFLE_DUNGEON_ENTRANCES] = CVarGetInteger("gRandomizeShuffleDungeonsEntrances", RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
+    cvarSettings[RSK_SHUFFLE_BOSS_ENTRANCES] = CVarGetInteger("gRandomizeShuffleBossEntrances", RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
     cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = CVarGetInteger("gRandomizeShuffleOverworldEntrances", RO_GENERIC_OFF);
     cvarSettings[RSK_SHUFFLE_INTERIOR_ENTRANCES] = CVarGetInteger("gRandomizeShuffleInteriorsEntrances", RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
     cvarSettings[RSK_SHUFFLE_GROTTO_ENTRANCES] = CVarGetInteger("gRandomizeShuffleGrottosEntrances", RO_GENERIC_OFF);
@@ -2937,6 +2949,7 @@ void DrawRandoEditor(bool& open) {
     // World Settings
     static const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
     static const char* randoShuffleDungeonsEntrances[3] = { "Off", "On", "On + Ganon" };
+    static const char* randoShuffleBossEntrances[3] = { "Off", "Age Restricted", "Full" };
     static const char* randoShuffleInteriorsEntrances[3] = { "Off", "Simple", "All" };
     static const char* randoBombchusInLogic[2] = { "Off", "On" };
     static const char* randoAmmoDrops[3] = { "On + Bombchu", "Off", "On" };
@@ -3270,6 +3283,19 @@ void DrawRandoEditor(bool& open) {
                     "- Gerudo Training Ground will be open for child after adult has paid to open the gate once."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonsEntrances", randoShuffleDungeonsEntrances, RO_DUNGEON_ENTRANCE_SHUFFLE_MAX, RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle Boss Entrances
+                ImGui::Text("Shuffle Boss Entrances");
+                UIWidgets::InsertHelpHoverText(
+                    "Shuffle the pool of dungeon boss entrances. This affects the boss rooms of all stone and medallion dungeons.\n"
+                    "\n"
+                    "Age Restricted - Shuffle the entrances of child and adult boss rooms separately.\n"
+                    "\n"
+                    "Full - Shuffle the entrances of all boss rooms together. Child may be expected to defeat Phantom Ganon and/or Bongo Bongo."
+                );
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleBossEntrances", randoShuffleBossEntrances, RO_BOSS_ROOM_ENTRANCE_SHUFFLE_MAX, RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
 
                 UIWidgets::PaddedSeparator();
 
