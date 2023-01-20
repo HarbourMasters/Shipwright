@@ -2793,16 +2793,16 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES] = CVarGetInteger("gRandomizeShuffleFrogSongRupees", 0);
     cvarSettings[RSK_ITEM_POOL] = CVarGetInteger("gRandomizeItemPool", RO_ITEM_POOL_BALANCED);
     cvarSettings[RSK_ICE_TRAPS] = CVarGetInteger("gRandomizeIceTraps", RO_ICE_TRAPS_NORMAL);
-    cvarSettings[RSK_TOT_ALTAR_HINT] = CvarGetInteger("gRandomizeAltarHint", RO_GENERIC_ON);
-    cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT] = CvarGetInteger("gRandomizeLAHint", RO_GENERIC_ON);
-    cvarSettings[RSK_DAMPES_DIARY_HINT] = CvarGetInteger("gRandomizeDampeHint", RO_GENERIC_OFF);
-    cvarSettings[RSK_WARP_SONG_HINTS] = CvarGetInteger("gRandomizeWarpSongText", RO_GENERIC_OFF);
-    cvarSettings[RSK_SCRUB_TEXT_HINT] = CvarGetInteger("gRandomizeScrubText", RO_GENERIC_OFF);
-    cvarSettings[RSK_KAK_10_SKULLS_HINT] = CvarGetInteger("gRandomize10GSHint", RO_GENERIC_OFF);
-    cvarSettings[RSK_KAK_20_SKULLS_HINT] = CvarGetInteger("gRandomize20GSHint", RO_GENERIC_OFF);
-    cvarSettings[RSK_KAK_30_SKULLS_HINT] = CvarGetInteger("gRandomize30GSHint", RO_GENERIC_OFF);
-    cvarSettings[RSK_KAK_40_SKULLS_HINT] = CvarGetInteger("gRandomize40GSHint", RO_GENERIC_OFF);
-    cvarSettings[RSK_KAK_50_SKULLS_HINT] = CvarGetInteger("gRandomize50GSHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_TOT_ALTAR_HINT] = CVarGetInteger("gRandomizeAltarHint", RO_GENERIC_ON);
+    cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT] = CVarGetInteger("gRandomizeLAHint", RO_GENERIC_ON);
+    cvarSettings[RSK_DAMPES_DIARY_HINT] = CVarGetInteger("gRandomizeDampeHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_WARP_SONG_HINTS] = CVarGetInteger("gRandomizeWarpSongText", RO_GENERIC_OFF);
+    cvarSettings[RSK_SCRUB_TEXT_HINT] = CVarGetInteger("gRandomizeScrubText", RO_GENERIC_OFF);
+    cvarSettings[RSK_KAK_10_SKULLS_HINT] = CVarGetInteger("gRandomize10GSHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_KAK_20_SKULLS_HINT] = CVarGetInteger("gRandomize20GSHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_KAK_30_SKULLS_HINT] = CVarGetInteger("gRandomize30GSHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_KAK_40_SKULLS_HINT] = CVarGetInteger("gRandomize40GSHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_KAK_50_SKULLS_HINT] = CVarGetInteger("gRandomize50GSHint", RO_GENERIC_OFF);
     cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVarGetInteger("gRandomizeGossipStoneHints", RO_GOSSIP_STONES_NEED_NOTHING);
     cvarSettings[RSK_HINT_CLARITY] = CVarGetInteger("gRandomizeHintClarity", RO_HINT_CLARITY_CLEAR);
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVarGetInteger("gRandomizeHintDistribution", RO_HINT_DIST_BALANCED);
@@ -4006,10 +4006,10 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::InsertHelpHoverText("Talking to Ganondorf in his boss room will tell you the location of the Light Arrows. If this option is enabled and Ganondorf is reachable without Light Arrows, Gossip Stones will never hint the Light Arrows.");
                 UIWidgets::PaddedEnhancementCheckbox("Dampe's Diary (Hookshot)", "gRandomizeDampeHint", true, false);
                 UIWidgets::InsertHelpHoverText("Reading the diary of Dampé the gravekeeper as adult will tell you the location of one of the Hookshots.");
-                UIWidgets::PaddedEnhancementCheckbox("Warp Song text", "gRandomizeWarpSongText", true, false, !CvarGetInteger("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF),
+                UIWidgets::PaddedEnhancementCheckbox("Warp Song text", "gRandomizeWarpSongText", true, false, !CVarGetInteger("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF),
                  "This option is disabled since warp songs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::InsertHelpHoverText("Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)");
-                UIWidgets::PaddedEnhancementCheckbox("Scrub Item text", "gRandomizeScrubText", true, false, !CvarGetInteger("gRandomizeShuffleScrubs", RO_GENERIC_ON),
+                UIWidgets::PaddedEnhancementCheckbox("Scrub Item text", "gRandomizeScrubText", true, false, !CVarGetInteger("gRandomizeShuffleScrubs", RO_GENERIC_ON),
                  "This option is disabled since scrubs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::InsertHelpHoverText("Business scrubs will reveal the identity of what they're selling.");
                 UIWidgets::PaddedEnhancementCheckbox("House of Skulltula: 10", "gRandomize10GSHint", true, false);
