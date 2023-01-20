@@ -181,7 +181,7 @@ void BgJyaBombchuiwa_SpawnLightRay(BgJyaBombchuiwa* this, PlayState* play) {
     this->lightRayIntensity = 153.0f;
     BgJyaBombchuiwa_SetDrawFlags(this, 4);
     if (Actor_Spawn(&play->actorCtx, play, ACTOR_MIR_RAY, this->actor.world.pos.x, this->actor.world.pos.y,
-                    this->actor.world.pos.z, 0, 0, 0, 0) == NULL) {
+                    this->actor.world.pos.z, 0, 0, 0, 0, true) == NULL) {
         // "Occurrence failure"
         osSyncPrintf("Ｅｒｒｏｒ : Mir_Ray 発生失敗(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->actor.params);
@@ -198,7 +198,7 @@ void BgJyaBombchuiwa_Update(Actor* thisx, PlayState* play) {
 
 void BgJyaBombchuiwa_DrawRock(PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gBombchuiwa2DL);
@@ -209,7 +209,7 @@ void BgJyaBombchuiwa_DrawLight(Actor* thisx, PlayState* play) {
     BgJyaBombchuiwa* this = (BgJyaBombchuiwa*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, CLAMP_MAX((u32)(this->lightRayIntensity * 153.0f), 153));

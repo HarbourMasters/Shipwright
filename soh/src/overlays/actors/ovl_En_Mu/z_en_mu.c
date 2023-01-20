@@ -15,7 +15,7 @@ void EnMu_Update(Actor* thisx, PlayState* play);
 void EnMu_Draw(Actor* thisx, PlayState* play);
 
 void EnMu_Pose(EnMu* this, PlayState* play);
-s16 EnMu_CheckDialogState(PlayState* play, Actor* thisx);
+s16 EnMu_UpdateTalkState(PlayState* play, Actor* thisx);
 
 static ColliderCylinderInit D_80AB0BD0 = {
     {
@@ -105,7 +105,7 @@ u16 EnMu_GetFaceReaction(PlayState* play, Actor* thisx) {
     return this->defFaceReaction;
 }
 
-s16 EnMu_CheckDialogState(PlayState* play, Actor* thisx) {
+s16 EnMu_UpdateTalkState(PlayState* play, Actor* thisx) {
     EnMu* this = (EnMu*)thisx;
 
     switch (Message_GetState(&play->msgCtx)) {
@@ -118,12 +118,12 @@ s16 EnMu_CheckDialogState(PlayState* play, Actor* thisx) {
         case TEXT_STATE_SONG_DEMO_DONE:
         case TEXT_STATE_8:
         case TEXT_STATE_9:
-            return 1;
+            return NPC_TALK_STATE_TALKING;
         case TEXT_STATE_CLOSING:
             EnMu_Interact(this, play);
-            return 0;
+            return NPC_TALK_STATE_IDLE;
         default:
-            return 1;
+            return NPC_TALK_STATE_TALKING;
     }
 }
 
@@ -169,8 +169,8 @@ void EnMu_Update(Actor* thisx, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
     this->actionFunc(this, play);
     talkDist = this->collider.dim.radius + 30.0f;
-    func_800343CC(play, &this->actor, &this->npcInfo.unk_00, talkDist, EnMu_GetFaceReaction,
-                  EnMu_CheckDialogState);
+    Npc_UpdateTalking(play, &this->actor, &this->npcInfo.talkState, talkDist, EnMu_GetFaceReaction,
+                      EnMu_UpdateTalkState);
 
     this->actor.focus.pos = this->actor.world.pos;
     this->actor.focus.pos.y += 60.0f;

@@ -98,12 +98,12 @@ void EnTkEff_Draw(EnTk* this, PlayState* play) {
 
     gfxSetup = 0;
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->eff); i++) {
         if (eff->active != 0) {
             if (gfxSetup == 0) {
-                POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
+                POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0);
                 gSPDisplayList(POLY_XLU_DISP++, gDampeEff1DL);
                 gDPSetEnvColor(POLY_XLU_DISP++, 100, 60, 20, 0);
                 gfxSetup = 1;
@@ -355,7 +355,7 @@ u16 func_80B1C54C(PlayState* play, Actor* thisx) {
 }
 
 s16 func_80B1C5A0(PlayState* play, Actor* thisx) {
-    s32 ret = 1;
+    s32 ret = NPC_TALK_STATE_TALKING;
 
     switch (Message_GetState(&play->msgCtx)) {
         case TEXT_STATE_NONE:
@@ -366,7 +366,7 @@ s16 func_80B1C5A0(PlayState* play, Actor* thisx) {
             if (thisx->textId == 0x5028) {
                 gSaveContext.infTable[13] |= 0x0100;
             }
-            ret = 0;
+            ret = NPC_TALK_STATE_IDLE;
             break;
         case TEXT_STATE_DONE_FADING:
             break;
@@ -382,7 +382,7 @@ s16 func_80B1C5A0(PlayState* play, Actor* thisx) {
                     play->msgCtx.msgMode = MSGMODE_PAUSED;
                     Rupees_ChangeBy(-10);
                     gSaveContext.infTable[13] |= 0x0200;
-                    return 2;
+                    return NPC_TALK_STATE_ACTION;
                 }
                 Message_ContinueTextbox(play, thisx->textId);
                 gSaveContext.infTable[13] |= 0x0200;
@@ -391,7 +391,7 @@ s16 func_80B1C5A0(PlayState* play, Actor* thisx) {
         case TEXT_STATE_EVENT:
             if (Message_ShouldAdvance(play) && (thisx->textId == 0x0084 || thisx->textId == 0x0085)) {
                 Message_CloseTextbox(play);
-                ret = 0;
+                ret = NPC_TALK_STATE_IDLE;
             }
             break;
         case TEXT_STATE_DONE:
@@ -408,7 +408,7 @@ s32 EnTk_ChooseReward(EnTk* this) {
     f32 luck;
     s32 reward;
 
-    if ((gSaveContext.n64ddFlag || CVar_GetS32("gDampeWin", 0)) && !Flags_GetCollectible(gPlayState, 0x1F) && this->heartPieceSpawned == 0) {
+    if ((gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) && !Flags_GetCollectible(gPlayState, 0x1F) && this->heartPieceSpawned == 0) {
         return 3;
     }
 
@@ -528,35 +528,35 @@ void EnTk_Rest(EnTk* this, PlayState* play) {
     s16 v1;
     s16 a1_;
 
-    if (this->h_1E0 != 0) {
+    if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         v1 = this->actor.shape.rot.y;
         v1 -= this->h_21E;
         v1 = this->actor.yawTowardsPlayer - v1;
 
-        if (this->h_1E0 == 2) {
+        if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
             EnTk_DigAnim(this, play);
-            this->h_1E0 = 0;
+            this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
             this->actionFunc = EnTk_Dig;
             return;
         }
 
-        func_800343CC(play, &this->actor, &this->h_1E0, this->collider.dim.radius + 30.0f, func_80B1C54C,
-                      func_80B1C5A0);
+        Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 30.0f,
+                          func_80B1C54C, func_80B1C5A0);
     } else if (EnTk_CheckFacingPlayer(this)) {
         v1 = this->actor.shape.rot.y;
         v1 -= this->h_21E;
         v1 = this->actor.yawTowardsPlayer - v1;
 
         this->actionCountdown = 0;
-        func_800343CC(play, &this->actor, &this->h_1E0, this->collider.dim.radius + 30.0f, func_80B1C54C,
-                      func_80B1C5A0);
+        Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 30.0f,
+                          func_80B1C54C, func_80B1C5A0);
     } else if (Actor_ProcessTalkRequest(&this->actor, play)) {
         v1 = this->actor.shape.rot.y;
         v1 -= this->h_21E;
         v1 = this->actor.yawTowardsPlayer - v1;
 
         this->actionCountdown = 0;
-        this->h_1E0 = 1;
+        this->interactInfo.talkState = NPC_TALK_STATE_TALKING;
     } else if (DECR(this->actionCountdown) == 0) {
         EnTk_WalkAnim(this, play);
         this->actionFunc = EnTk_Walk;
@@ -571,9 +571,9 @@ void EnTk_Rest(EnTk* this, PlayState* play) {
 }
 
 void EnTk_Walk(EnTk* this, PlayState* play) {
-    if (this->h_1E0 == 2) {
+    if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         EnTk_DigAnim(this, play);
-        this->h_1E0 = 0;
+        this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         this->actionFunc = EnTk_Dig;
     } else {
         this->actor.speedXZ = EnTk_Step(this, play);
@@ -604,7 +604,7 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
 
         this->rewardTimer = 0;
 
-        if (this->validDigHere == 1 || gSaveContext.n64ddFlag || CVar_GetS32("gDampeWin", 0)) {
+        if (this->validDigHere == 1 || gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) {
             rewardOrigin.x = 0.0f;
             rewardOrigin.y = 0.0f;
             rewardOrigin.z = -40.0f;
@@ -620,23 +620,23 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
 
             // merging in dampe tour fix seems messy, so i'm just wrapping this whole thing
             // in an n64dd check for now
-            if (gSaveContext.n64ddFlag || CVar_GetS32("gDampeWin", 0)) {
+            if (gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) {
                 if (this->currentReward == 3) {
                     /*
                     * Upgrade the purple rupee reward to the heart piece if this
                     * is the first grand prize dig.
                     */
-                    if (!(gSaveContext.itemGetInf[1] & 0x1000) && !(gSaveContext.n64ddFlag || CVar_GetS32("gDampeWin", 0))) {
+                    if (!(gSaveContext.itemGetInf[1] & 0x1000) && !(gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0))) {
                         gSaveContext.itemGetInf[1] |= 0x1000;
                         this->currentReward = 4;
-                    } else if ((gSaveContext.n64ddFlag || CVar_GetS32("gDampeWin", 0)) && !Flags_GetCollectible(gPlayState, 0x1F) && this->heartPieceSpawned == 0) {
+                    } else if ((gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) && !Flags_GetCollectible(gPlayState, 0x1F) && this->heartPieceSpawned == 0) {
                         this->currentReward = 4;
                     }
                 }
 
-                if ((gSaveContext.n64ddFlag || CVar_GetS32("gDampeWin", 0)) && this->currentReward == 4) {
+                if ((gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) && this->currentReward == 4) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, rewardPos.x, rewardPos.y, rewardPos.z, 0,
-                                0, 0, 0x1F06);
+                                0, 0, 0x1F06, true);
                     this->heartPieceSpawned = 1;
                 } else {
                     Item_DropCollectible(play, &rewardPos, rewardParams[this->currentReward]);
@@ -652,7 +652,7 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
                     // If true, spawn the heart piece and set the vanilla itemGetInf flag and new temp clear flag.
                     if (!heartPieceSpawned &&
                         (!(gSaveContext.itemGetInf[1] & ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE) ||
-                        CVar_GetS32("gGravediggingTourFix", 0) &&
+                        CVarGetInteger("gGravediggingTourFix", 0) &&
                             !Flags_GetCollectible(play, COLLECTFLAG_GRAVEDIGGING_HEART_PIECE))) {
                         this->currentReward = 4;
                         gSaveContext.itemGetInf[1] |= ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE;
@@ -670,7 +670,7 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
 
     if (this->skelAnime.curFrame >= 32.0f && this->rewardTimer == 10) {
         /* Play a reward sound shortly after digging */
-        if (!(gSaveContext.n64ddFlag || CVar_GetS32("gDampeWin", 0)) && this->validDigHere == 0) {
+        if (!(gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) && this->validDigHere == 0) {
             /* Bad dig spot */
             Audio_PlayActorSound2(&this->actor, NA_SE_SY_ERROR);
         } else if (this->currentReward == 4) {
@@ -776,7 +776,7 @@ void EnTk_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyesSegments[this->eyeTextureIdx]));
 

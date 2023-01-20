@@ -1,4 +1,5 @@
 #include "global.h"
+#include <math.h>
 
 f32 Math_CosS(s16 angle) {
     return coss(angle) * SHT_MINV;
@@ -6,6 +7,14 @@ f32 Math_CosS(s16 angle) {
 
 f32 Math_SinS(s16 angle) {
     return sins(angle) * SHT_MINV;
+}
+
+f32 Math_AccurateCosS(s16 angle) {
+    return cosf(DEG_TO_RAD((f32)(angle & 0xFFFC) / SHT_MAX) * 180.0f);
+}
+
+f32 Math_AccurateSinS(s16 angle) {
+    return sinf(DEG_TO_RAD((f32)(angle & 0xFFFC) / SHT_MAX) * 180.0f);
 }
 
 /**

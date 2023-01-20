@@ -1,7 +1,7 @@
 #ifdef ENABLE_CROWD_CONTROL
 
 #include "CrowdControl.h"
-#include <Cvar.h>
+#include <libultraship/bridge.h>
 #include <Console.h>
 #include <ImGuiImpl.h>
 #include <nlohmann/json.hpp>
@@ -101,7 +101,7 @@ void CrowdControl::Disable() {
 
 void CrowdControl::ListenToServer() {
     while (isEnabled) {
-        while (!connected) {
+        while (!connected && isEnabled) {
             SPDLOG_TRACE("[CrowdControl] Attempting to make connection to server...");
             tcpsock = SDLNet_TCP_Open(&ip);
 
@@ -112,8 +112,10 @@ void CrowdControl::ListenToServer() {
             }
         }
 
-        auto socketSet = SDLNet_AllocSocketSet(1);
-        SDLNet_TCP_AddSocket(socketSet, tcpsock);
+        SDLNet_SocketSet socketSet = SDLNet_AllocSocketSet(1);
+        if (tcpsock) {
+            SDLNet_TCP_AddSocket(socketSet, tcpsock);
+        }
 
         // Listen to socket messages
         while (connected && tcpsock && isEnabled) {
@@ -347,18 +349,18 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uin
             if (dryRun == 0) CMD_EXECUTE(EFFECT_REMOVE_HEART_CONTAINER);
             return EffectResult::Success;
         } else if (effectId == EFFECT_FILL_MAGIC) {
-            if (!gSaveContext.magicAcquired) {
+            if (!gSaveContext.isMagicAcquired) {
                 return EffectResult::Failure;
             }
 
-            if (gSaveContext.magic >= (gSaveContext.doubleMagic + 1) + 0x30) {
+            if (gSaveContext.magic >= (gSaveContext.isDoubleMagicAcquired + 1) + 0x30) {
                 return EffectResult::Failure;
             }
 
             if (dryRun == 0) CMD_EXECUTE(EFFECT_FILL_MAGIC);
             return EffectResult::Success;
         } else if (effectId == EFFECT_EMPTY_MAGIC) {
-            if (!gSaveContext.magicAcquired || gSaveContext.magic <= 0) {
+            if (!gSaveContext.isMagicAcquired || gSaveContext.magic <= 0) {
                 return EffectResult::Failure;
             }
 
@@ -458,7 +460,7 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(std::string effectId, uin
             if (dryRun == 0) CMD_EXECUTE(fmt::format("defense_modifier {}", value));
             return EffectResult::Success;
         } else if (effectId == EFFECT_DAMAGE) {
-            if ((gSaveContext.healthCapacity - 0x10) <= 0) {
+            if ((gSaveContext.health - (16 * value)) <= 0) {
                 return EffectResult::Failure;
             }
             
@@ -482,6 +484,14 @@ bool CrowdControl::SpawnEnemy(std::string effectId) {
     if (effectId == EFFECT_SPAWN_WALLMASTER) {
         enemyId = 17;
     } else if (effectId == EFFECT_SPAWN_ARWING) {
+        // Don't allow Arwings in certain areas because they cause issues.
+        // Locations: King dodongo room, Morpha room, Twinrova room, Ganondorf room, Fishing pond, Ganon's room
+        // TODO: Swap this to disabling the option in CC options menu instead.
+        if (gPlayState->sceneNum == SCENE_DDAN_BOSS || gPlayState->sceneNum == SCENE_MIZUSIN_BS ||
+            gPlayState->sceneNum == SCENE_JYASINBOSS || gPlayState->sceneNum == SCENE_GANON_BOSS ||
+            gPlayState->sceneNum == SCENE_TURIBORI || gPlayState->sceneNum == SCENE_GANON_DEMO) {
+            return 0;
+        }
         enemyId = 315;
         enemyParams = 1;
         posYOffset = 100;
@@ -528,7 +538,7 @@ bool CrowdControl::SpawnEnemy(std::string effectId) {
     }
 
     return Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, player->actor.world.pos.x + posXOffset,
-        player->actor.world.pos.y + posYOffset, player->actor.world.pos.z + posZOffset, 0, 0, 0, enemyParams);
+        player->actor.world.pos.y + posYOffset, player->actor.world.pos.z + posZOffset, 0, 0, 0, enemyParams, 0);
 
 }
 

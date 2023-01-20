@@ -289,7 +289,12 @@ void EnSyatekiMan_StartGame(EnSyatekiMan* this, PlayState* play) {
         Message_CloseTextbox(play);
         gallery = ((EnSyatekiItm*)this->actor.parent);
         if (gallery->actor.update != NULL) {
-            gallery->signal = ENSYATEKI_START;
+            if(CVarGetInteger("gCustomizeShootingGallery", 0) && CVarGetInteger("gInstantShootingGalleryWin", 0)) {
+                gallery->hitCount = 10;
+                gallery->signal = ENSYATEKI_END;
+            } else {
+                gallery->signal = ENSYATEKI_START;
+            }
             this->actionFunc = EnSyatekiMan_WaitForGame;
         }
     }
@@ -395,7 +400,11 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                     break;
                 case SYATEKI_RESULT_ALMOST:
                     this->timer = 20;
-                    func_8008EF44(play, 15);
+                    s32 ammunition = 15;
+                    if(CVarGetInteger("gCustomizeShootingGallery", 0)) {
+                        ammunition = CVarGetInteger(LINK_IS_ADULT ? "gAdultShootingGalleryAmmunition" : "gChildShootingGalleryAmmunition", 15);
+                    }
+                    func_8008EF44(play, ammunition);
                     this->actionFunc = EnSyatekiMan_RestartGame;
                     break;
                 default:
@@ -527,7 +536,7 @@ void EnSyatekiMan_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     EnSyatekiMan* this = (EnSyatekiMan*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnSyatekiMan_OverrideLimbDraw, NULL, this);
 }

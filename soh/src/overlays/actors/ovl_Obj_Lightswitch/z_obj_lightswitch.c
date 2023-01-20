@@ -123,7 +123,7 @@ void ObjLightswitch_InitCollider(ObjLightswitch* this, PlayState* play) {
     s32 pad;
 
     // Initialize this with the sun switch, so it can't be affected by toggling while the actor is loaded
-    sunLightArrowsEnabledOnSunSwitchLoad = CVar_GetS32("gSunlightArrows", 0) || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SUNLIGHT_ARROWS));
+    sunLightArrowsEnabledOnSunSwitchLoad = CVarGetInteger("gSunlightArrows", 0) || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SUNLIGHT_ARROWS));
 
     Collider_InitJntSph(play, &this->collider);
     // If "Sunlight Arrows" is enabled, set up the collider to allow Light Arrow hits
@@ -484,7 +484,7 @@ void ObjLightswitch_DrawOpa(ObjLightswitch* this, PlayState* play) {
     Vec3s rot;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gDPSetEnvColor(POLY_OPA_DISP++, (u8)(this->color[0] >> 6), (u8)(this->color[1] >> 6), (u8)(this->color[2] >> 6),
                    (u8)(this->alpha >> 6));
@@ -534,7 +534,7 @@ void ObjLightswitch_DrawXlu(ObjLightswitch* this, PlayState* play) {
     Vec3s sp60;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gDPSetEnvColor(POLY_XLU_DISP++, (u8)(this->color[0] >> 6), (u8)(this->color[1] >> 6), (u8)(this->color[2] >> 6),
                    (u8)(this->alpha >> 6));

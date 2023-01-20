@@ -867,7 +867,7 @@ void EnHorse_Init(Actor* thisx, PlayState* play2) {
         EnHorse_InitIngoHorse(this);
         this->rider =
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_IN, this->actor.world.pos.x, this->actor.world.pos.y,
-                        this->actor.world.pos.z, this->actor.shape.rot.x, this->actor.shape.rot.y, 1, 1);
+                        this->actor.world.pos.z, this->actor.shape.rot.x, this->actor.shape.rot.y, 1, 1, true);
         if (this->rider == NULL) {
             //__assert("this->race.rider != NULL");
             ASSERT(this->rider == NULL);
@@ -3312,7 +3312,7 @@ void EnHorse_CheckBoost(EnHorse* thisx, PlayState* play2) {
                     this->stateFlags |= ENHORSE_BOOST;
                     this->stateFlags |= ENHORSE_FIRST_BOOST_REGEN;
                     this->stateFlags |= ENHORSE_FLAG_8;
-                    if (!CVar_GetS32("gInfiniteEpona", 0)) { this->numBoosts--; }
+                    if (!CVarGetInteger("gInfiniteEpona", 0)) { this->numBoosts--; }
                     this->boostTimer = 0;
                     if (this->numBoosts == 0) {
                         this->boostRegenTime = 140;
@@ -3825,7 +3825,7 @@ void EnHorse_Draw(Actor* thisx, PlayState* play) {
     EnHorse* this = (EnHorse*)thisx;
 
     if (!(this->stateFlags & ENHORSE_INACTIVE)) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         this->stateFlags |= ENHORSE_DRAW;
         if (this->stateFlags & ENHORSE_JUMPING) {
             func_800A6360(thisx, play, &this->skin, EnHorse_PostDraw, EnHorse_OverrideLimbDraw, false);

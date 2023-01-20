@@ -1,7 +1,7 @@
 #ifndef Z_ELF_MSG_H
 #define Z_ELF_MSG_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ElfMsg;

@@ -110,7 +110,7 @@ void ElfMsg_Destroy(Actor* thisx, PlayState* play) {
 
 s32 ElfMsg_GetMessageId(ElfMsg* this) {
     // Negative message ID forces link to talk to Navi
-    if (this->actor.params & 0x8000 || CVar_GetS32("gNoForcedNavi", 0) != 0) {
+    if (this->actor.params & 0x8000 || CVarGetInteger("gNoForcedNavi", 0) != 0) {
         return (this->actor.params & 0xFF) + 0x100;
     } else {
         return -((this->actor.params & 0xFF) + 0x100);
@@ -181,7 +181,7 @@ void ElfMsg_Draw(Actor* thisx, PlayState* play)
         return;
     }
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     if (thisx->params & 0x8000) {
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 100, 100, R_NAVI_MSG_REGION_ALPHA);
     } else {

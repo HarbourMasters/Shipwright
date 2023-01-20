@@ -303,7 +303,7 @@ void EnRr_SetupReleasePlayer(EnRr* this, PlayState* play) {
             this->retreat = true;
         }
     }
-    if (CUR_EQUIP_VALUE(EQUIP_TUNIC) != 1 /* Kokiri tunic */) {
+    if (CUR_EQUIP_VALUE(EQUIP_TUNIC) != 1 /* Kokiri tunic */ && !gSaveContext.n64ddFlag /* Randomizer Save File */) {
         tunic = Inventory_DeleteEquipment(play, EQUIP_TUNIC);
         if (tunic != 0) {
             this->eatenTunic = tunic;
@@ -381,6 +381,7 @@ void EnRr_SetupDeath(EnRr* this) {
     this->actionFunc = EnRr_Death;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_LIKE_DEAD);
     this->actor.flags &= ~ACTOR_FLAG_0;
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LIKE_LIKE]++;
 }
 
 void EnRr_SetupStunned(EnRr* this) {
@@ -846,7 +847,7 @@ void EnRr_Draw(Actor* thisx, PlayState* play) {
     Mtx* segMtx = Graph_Alloc(play->state.gfxCtx, 4 * sizeof(Mtx));
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x0C, segMtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, (this->scrollTimer * 0) & 0x7F,

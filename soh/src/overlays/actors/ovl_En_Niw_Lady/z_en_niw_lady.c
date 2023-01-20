@@ -527,13 +527,13 @@ void EnNiwLady_Update(Actor* thisx, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     Actor_SetFocus(thisx, 60.0f);
-    this->unk_288.unk_18 = player->actor.world.pos;
+    this->interactInfo.trackPos = player->actor.world.pos;
     if (!LINK_IS_ADULT) {
-        this->unk_288.unk_18.y = player->actor.world.pos.y - 10.0f;
+        this->interactInfo.trackPos.y = player->actor.world.pos.y - 10.0f;
     }
-    func_80034A14(thisx, &this->unk_288, 2, 4);
-    this->unk_254 = this->unk_288.unk_08;
-    this->unk_25A = this->unk_288.unk_0E;
+    Npc_TrackPoint(thisx, &this->interactInfo, 2, NPC_TRACKING_FULL_BODY);
+    this->unk_254 = this->interactInfo.headRot;
+    this->unk_25A = this->interactInfo.torsoRot;
     if (this->unk_276 == 0) {
         Math_SmoothStepToS(&this->unk_254.y, 0, 5, 3000, 0);
     }
@@ -607,7 +607,7 @@ void EnNiwLady_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     if (this->unk_27E != 0) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->faceState]));
         gSPSegment(POLY_OPA_DISP++, 0x0C, func_80ABB0A0(play->state.gfxCtx));

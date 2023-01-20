@@ -366,6 +366,7 @@ void EnVm_SetupDie(EnVm* this) {
     this->actor.speedXZ = Rand_ZeroOne() + 1.0f;
     this->actor.world.rot.y = Rand_CenteredFloat(65535.0f);
     EnVm_SetupAction(this, EnVm_Die);
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BEAMOS]++;
 }
 
 void EnVm_Die(EnVm* this, PlayState* play) {
@@ -377,7 +378,7 @@ void EnVm_Die(EnVm* this, PlayState* play) {
 
     if (--this->timer == 0) {
         bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0x6FF, BOMB_BODY);
+                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0x6FF, BOMB_BODY, true);
 
         if (bomb != NULL) {
             bomb->timer = 0;
@@ -406,7 +407,7 @@ void EnVm_CheckHealth(EnVm* this, PlayState* play) {
         EnVm_SetupStun(this);
     } else {
         bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                                   this->actor.world.pos.y + 20.0f, this->actor.world.pos.z, 0, 0, 0x601, BOMB_BODY);
+                                   this->actor.world.pos.y + 20.0f, this->actor.world.pos.z, 0, 0, 0x601, BOMB_BODY, true);
 
         if (bomb != NULL) {
             bomb->timer = 0;
@@ -522,8 +523,8 @@ void EnVm_Draw(Actor* thisx, PlayState* play2) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnVm_OverrideLimbDraw,
                       EnVm_PostLimbDraw, this);
     actorPos = this->actor.world.pos;
@@ -535,7 +536,7 @@ void EnVm_Draw(Actor* thisx, PlayState* play2) {
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 168);
-        func_80094BC4(play->state.gfxCtx);
+        Gfx_SetupDL_60NoCDXlu(play->state.gfxCtx);
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 255, 0);
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_80B2EB88[play->gameplayFrames % 8]));
         gSPDisplayList(POLY_XLU_DISP++, gEffEnemyDeathFlameDL);

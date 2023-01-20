@@ -298,41 +298,47 @@ static void WriteLocation(
 //Writes a shuffled entrance to the specified node
 static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) {
   int16_t originalIndex = entrance->GetIndex();
-  int16_t destinationIndex = entrance->GetReverse()->GetIndex();
+  int16_t destinationIndex = -1;
   int16_t originalBlueWarp = entrance->GetBlueWarp();
-  int16_t replacementBlueWarp = entrance->GetReplacement()->GetReverse()->GetBlueWarp();
+  int16_t replacementBlueWarp = -1;
   int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
-  int16_t replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+  int16_t replacementDestinationIndex = -1;
   std::string name = entrance->GetName();
   std::string text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
+
+  if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+    destinationIndex = entrance->GetReverse()->GetIndex();
+    replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+    replacementBlueWarp = entrance->GetReplacement()->GetReverse()->GetBlueWarp();
+  }
+
+  json entranceJson = json::object({
+    {"index", originalIndex},
+    {"destination", destinationIndex},
+    {"blueWarp", originalBlueWarp},
+    {"override", replacementIndex},
+    {"overrideDestination", replacementDestinationIndex},
+  });
+
+  jsonData["entrances"].push_back(entranceJson);
+
+  // When decoupled entrances is off, handle saving reverse entrances with blue warps
+  if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+    json reverseEntranceJson = json::object({
+      {"index", replacementDestinationIndex},
+      {"destination", replacementIndex},
+      {"blueWarp", replacementBlueWarp},
+      {"override", destinationIndex},
+      {"overrideDestination", originalIndex},
+    });
+
+    jsonData["entrances"].push_back(reverseEntranceJson);
+  }
 
   switch (gSaveContext.language) {
         case LANGUAGE_ENG:
         case LANGUAGE_FRA:
         default:
-            json entranceJson = json::object({
-              {"index", originalIndex},
-              {"destination", destinationIndex},
-              {"blueWarp", originalBlueWarp},
-              {"override", replacementIndex},
-              {"overrideDestination", replacementDestinationIndex},
-            });
-
-            jsonData["entrances"].push_back(entranceJson);
-
-             // When decoupled entrances is off, handle saving reverse entrances with blue warps
-            if (!false) { // RANDOTODO: add check for decoupled entrances
-              json reverseEntranceJson = json::object({
-                {"index", replacementDestinationIndex},
-                {"destination", replacementIndex},
-                {"blueWarp", replacementBlueWarp},
-                {"override", destinationIndex},
-                {"overrideDestination", originalIndex},
-              });
-
-              jsonData["entrances"].push_back(reverseEntranceJson);
-            }
-
             jsonData["entrancesMap"][sphereString][name] = text;
             break;
     }
@@ -429,10 +435,30 @@ static void WriteStartingInventory() {
     &Settings::startingOthersOptions
   };
 
+  for (std::vector<Option*>* menu : startingInventoryOptions) {
+      for (size_t i = 0; i < menu->size(); ++i) {
+          const auto setting = menu->at(i);
+          // Starting Songs
+          if (setting->GetName() == "Start with Zelda's Lullaby" || 
+              setting->GetName() == "Start with Epona's Song" ||
+              setting->GetName() == "Start with Saria's Song" || 
+              setting->GetName() == "Start with Sun's Song" ||
+              setting->GetName() == "Start with Song of Time" || 
+              setting->GetName() == "Start with Song of Storms" ||
+              setting->GetName() == "Start with Minuet of Forest" || 
+              setting->GetName() == "Start with Bolero of Fire" ||
+              setting->GetName() == "Start with Serenade of Water" || 
+              setting->GetName() == "Start with Requiem of Spirit" ||
+              setting->GetName() == "Start with Nocturne of Shadow" || 
+              setting->GetName() == "Start with Prelude of Light") {
+              jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
+          }
+      }
+  }
   for (std::vector<Option *>* menu : startingInventoryOptions) {
     for (size_t i = 0; i < menu->size(); ++i) {
       const auto setting = menu->at(i);
-
+   
       // we need to write these every time because we're not clearing jsondata, so
       // the default logic of only writing it when we aren't using the default value
       // doesn't work, and because it'd be bad to set every single possible starting
@@ -440,6 +466,7 @@ static void WriteStartingInventory() {
       // to see if the name is one of the 3 we're using rn
       if (setting->GetName() == "Start with Consumables" ||
           setting->GetName() == "Start with Max Rupees" ||
+          setting->GetName() == "Gold Skulltula Tokens" ||
           setting->GetName() == "Start with Fairy Ocarina" ||
           setting->GetName() == "Start with Kokiri Sword" ||
           setting->GetName() == "Start with Deku Shield") {
@@ -621,18 +648,33 @@ std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
 static void WriteHints(int language) {
     std::string unformattedGanonText;
     std::string unformattedGanonHintText;
+    std::string unformattedDampesText;
 
     switch (language) {
         case 0:
         default:
             unformattedGanonText = GetGanonText().GetEnglish();
             unformattedGanonHintText = GetGanonHintText().GetEnglish();
+            unformattedDampesText = GetDampeHintText().GetEnglish();
+            jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
+            jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
+            jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetEnglish();
+            jsonData["warpRequiemText"] = GetWarpRequiemText().GetEnglish();
+            jsonData["warpNocturneText"] = GetWarpNocturneText().GetEnglish();
+            jsonData["warpPreludeText"] = GetWarpPreludeText().GetEnglish();
             jsonData["childAltarText"] = GetChildAltarText().GetEnglish();
             jsonData["adultAltarText"] = GetAdultAltarText().GetEnglish();
             break;
         case 2:
             unformattedGanonText = GetGanonText().GetFrench();
             unformattedGanonHintText = GetGanonHintText().GetFrench();
+            unformattedDampesText = GetDampeHintText().GetFrench();
+            jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
+            jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
+            jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetFrench();
+            jsonData["warpRequiemText"] = GetWarpRequiemText().GetFrench();
+            jsonData["warpNocturneText"] = GetWarpNocturneText().GetFrench();
+            jsonData["warpPreludeText"] = GetWarpPreludeText().GetFrench();
             jsonData["childAltarText"] = GetChildAltarText().GetFrench();
             jsonData["adultAltarText"] = GetAdultAltarText().GetFrench();
             break;
@@ -640,9 +682,11 @@ static void WriteHints(int language) {
 
     std::string ganonText = AutoFormatHintTextString(unformattedGanonText);
     std::string ganonHintText = AutoFormatHintTextString(unformattedGanonHintText);
+    std::string dampesText = AutoFormatHintTextString(unformattedDampesText);
 
     jsonData["ganonText"] = ganonText;
     jsonData["ganonHintText"] = ganonHintText;
+    jsonData["dampeText"] = dampesText;
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;

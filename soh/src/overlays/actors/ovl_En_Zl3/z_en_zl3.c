@@ -138,7 +138,7 @@ void func_80B5357C(EnZl3* this, PlayState* play) {
 }
 
 void func_80B53614(EnZl3* this, PlayState* play) {
-    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_RIVER_SOUND, -442.0f, 4102.0f, -371.0f, 0, 0, 0, 0x12);
+    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_RIVER_SOUND, -442.0f, 4102.0f, -371.0f, 0, 0, 0, 0x12, true);
 }
 
 void func_80B5366C(EnZl3* this, PlayState* play) {
@@ -151,8 +151,8 @@ void func_80B536B4(EnZl3* this) {
 
 void func_80B536C4(EnZl3* this) {
     s32 pad[2];
-    Vec3s* vec1 = &this->unk_3F8.unk_08;
-    Vec3s* vec2 = &this->unk_3F8.unk_0E;
+    Vec3s* vec1 = &this->interactInfo.headRot;
+    Vec3s* vec2 = &this->interactInfo.torsoRot;
 
     Math_SmoothStepToS(&vec1->x, 0, 20, 6200, 100);
     Math_SmoothStepToS(&vec1->y, 0, 20, 6200, 100);
@@ -163,9 +163,9 @@ void func_80B536C4(EnZl3* this) {
 void func_80B53764(EnZl3* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    this->unk_3F8.unk_18 = player->actor.world.pos;
-    this->unk_3F8.unk_14 = kREG(16) - 16.0f;
-    func_80034A14(&this->actor, &this->unk_3F8, kREG(17) + 0xC, 2);
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.yOffset = kREG(16) - 16.0f;
+    Npc_TrackPoint(&this->actor, &this->interactInfo, kREG(17) + 0xC, NPC_TRACKING_HEAD_AND_TORSO);
 }
 
 s32 func_80B537E8(EnZl3* this) {
@@ -603,8 +603,8 @@ s32 func_80B5458C(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
     Mtx* sp78;
     MtxF sp38;
     Vec3s sp30;
-    Vec3s* unk_3F8_unk_08 = &this->unk_3F8.unk_08;
-    Vec3s* unk_3F8_unk_0E = &this->unk_3F8.unk_0E;
+    Vec3s* unk_3F8_unk_08 = &this->interactInfo.headRot;
+    Vec3s* unk_3F8_unk_0E = &this->interactInfo.torsoRot;
 
     if (limbIndex == 14) {
         sp78 = Graph_Alloc(play->state.gfxCtx, sizeof(Mtx) * 7);
@@ -770,7 +770,7 @@ void func_80B54EA4(EnZl3* this, PlayState* play) {
     f32 posY = this->actor.world.pos.y;
     f32 posZ = this->actor.world.pos.z;
 
-    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EG, posX, posY, posZ, 0, 0, 0, 0);
+    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EG, posX, posY, posZ, 0, 0, 0, 0, true);
 }
 
 void func_80B54EF4(EnZl3* this) {
@@ -1808,9 +1808,9 @@ void func_80B5772C(EnZl3* this, PlayState* play) {
 }
 
 void func_80B57754(EnZl3* this, PlayState* play) {
-    if (gSaveContext.unk_13F0 == 0) {
+    if (gSaveContext.magicState == 0) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_OCEFF_WIPE4, this->actor.world.pos.x,
-                    this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 1);
+                    this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 1, true);
         func_80B56DA4(this);
     }
 }
@@ -1824,7 +1824,7 @@ void func_80B577BC(PlayState* play, Vec3f* vec) {
     f32 posZ = vec->z;
 
     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TEST, posX, posY, posZ, 0,
-                (Math_FAtan2F(playerPos->x - posX, playerPos->z - posZ) * (0x8000 / M_PI)), 0, 5);
+                (Math_FAtan2F(playerPos->x - posX, playerPos->z - posZ) * (0x8000 / M_PI)), 0, 5, true);
 }
 
 void func_80B57858(PlayState* play) {
@@ -1968,18 +1968,18 @@ void func_80B57D60(EnZl3* this, PlayState* play) {
 s32 func_80B57D80(EnZl3* this, PlayState* play) {
     s32 pad;
     s16* sp32 = &this->actor.shape.rot.y;
-    struct_80034A14_arg1* unk_3F8 = &this->unk_3F8;
+    NpcInteractInfo* interactInfo = &this->interactInfo;
     Player* player = GET_PLAYER(play);
     s32 unk_314 = this->unk_314;
     s16 temp_v0 = func_80B57104(this, unk_314);
     s32 pad2;
     s16 phi_v1;
 
-    unk_3F8->unk_18.y = player->actor.world.pos.y;
-    unk_3F8->unk_18.x = (Math_SinS(temp_v0) * this->actor.xzDistToPlayer) + this->actor.world.pos.x;
-    unk_3F8->unk_18.z = (Math_CosS(temp_v0) * this->actor.xzDistToPlayer) + this->actor.world.pos.z;
-    unk_3F8->unk_14 = kREG(16) - 16.0f;
-    func_80034A14(&this->actor, unk_3F8, kREG(17) + 0xC, 4);
+    interactInfo->trackPos.y = player->actor.world.pos.y;
+    interactInfo->trackPos.x = (Math_SinS(temp_v0) * this->actor.xzDistToPlayer) + this->actor.world.pos.x;
+    interactInfo->trackPos.z = (Math_CosS(temp_v0) * this->actor.xzDistToPlayer) + this->actor.world.pos.z;
+    interactInfo->yOffset = kREG(16) - 16.0f;
+    Npc_TrackPoint(&this->actor, interactInfo, kREG(17) + 0xC, NPC_TRACKING_FULL_BODY);
 
     phi_v1 = ABS(temp_v0 - *sp32);
     if (phi_v1 <= 0x320) {
@@ -2109,7 +2109,7 @@ void func_80B584B4(EnZl3* this, PlayState* play) {
     s32 pad;
     Player* player = GET_PLAYER(play);
     s8 invincibilityTimer = player->invincibilityTimer;
-    Actor* nearbyEnTest = Actor_FindNearby(play, &this->actor, ACTOR_EN_TEST, ACTORCAT_ENEMY, 8000.0f);
+    Actor* nearbyEnTest = Actor_FindNearby(play, &this->actor, -1, ACTORCAT_ENEMY, 8000.0f);
 
     if (D_80B5A4BC == 0) {
         if ((nearbyEnTest == NULL) && (!Play_InCsMode(play))) {
@@ -2446,7 +2446,7 @@ s32 func_80B5944C(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
     if (limbIndex == 14) {
         Mtx* mtx = Graph_Alloc(play->state.gfxCtx, sizeof(Mtx) * 7);
         EnZl3* this = (EnZl3*)thisx;
-        Vec3s* vec = &this->unk_3F8.unk_08;
+        Vec3s* vec = &this->interactInfo.headRot;
 
         gSPSegment(gfx[0]++, 0x0C, mtx);
 
@@ -2537,7 +2537,7 @@ void func_80B59828(EnZl3* this, PlayState* play) {
         Magic_Fill(play);
         if (Flags_GetSwitch(play, 0x20)) {
             Flags_UnsetSwitch(play, 0x20);
-            Actor_Spawn(&play->actorCtx, play, ACTOR_BG_ZG, -144.0f, 3544.0f, -43.0f, 0, 0x2000, 0, 0x2000);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_BG_ZG, -144.0f, 3544.0f, -43.0f, 0, 0x2000, 0, 0x2000, true);
         }
         Flags_UnsetSwitch(play, 0x21);
         Flags_UnsetSwitch(play, 0x22);
@@ -2704,7 +2704,7 @@ void func_80B59FF4(EnZl3* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x8, SEGMENTED_TO_VIRTUAL(eyeTex));
     gSPSegment(POLY_OPA_DISP++, 0x9, SEGMENTED_TO_VIRTUAL(eyeTex));
@@ -2729,7 +2729,7 @@ void func_80B5A1D0(EnZl3* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 8, SEGMENTED_TO_VIRTUAL(eyeTex));
     gSPSegment(POLY_XLU_DISP++, 9, SEGMENTED_TO_VIRTUAL(eyeTex));

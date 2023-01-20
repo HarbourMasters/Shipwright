@@ -404,10 +404,10 @@ void EnCs_Talk(EnCs* this, PlayState* play) {
     }
 
     this->flag |= 1;
-    this->npcInfo.unk_18.x = player->actor.focus.pos.x;
-    this->npcInfo.unk_18.y = player->actor.focus.pos.y;
-    this->npcInfo.unk_18.z = player->actor.focus.pos.z;
-    func_80034A14(&this->actor, &this->npcInfo, 0, 4);
+    this->interactInfo.trackPos.x = player->actor.focus.pos.x;
+    this->interactInfo.trackPos.y = player->actor.focus.pos.y;
+    this->interactInfo.trackPos.z = player->actor.focus.pos.z;
+    Npc_TrackPoint(&this->actor, &this->interactInfo, 0, NPC_TRACKING_FULL_BODY);
 
     if (this->talkState == 0) {
         EnCs_ChangeAnim(this, ENCS_ANIM_0, &this->currentAnimIndex);
@@ -464,7 +464,7 @@ void EnCs_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
 
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
@@ -495,12 +495,12 @@ s32 EnCs_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
     if (this->flag & 1) {
         switch (limbIndex) {
             case 8:
-                rot->x += this->npcInfo.unk_0E.y;
-                rot->y -= this->npcInfo.unk_0E.x;
+                rot->x += this->interactInfo.torsoRot.y;
+                rot->y -= this->interactInfo.torsoRot.x;
                 break;
             case 15:
-                rot->x += this->npcInfo.unk_08.y;
-                rot->z += this->npcInfo.unk_08.x;
+                rot->x += this->interactInfo.headRot.y;
+                rot->z += this->interactInfo.headRot.x;
                 break;
         }
     }

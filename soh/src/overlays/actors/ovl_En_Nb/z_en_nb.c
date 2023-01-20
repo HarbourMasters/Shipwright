@@ -152,17 +152,17 @@ void EnNb_Destroy(Actor* thisx, PlayState* play) {
 void func_80AB0FBC(EnNb* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    this->unk_300.unk_18 = player->actor.world.pos;
-    this->unk_300.unk_14 = kREG(16) + 9.0f;
-    func_80034A14(&this->actor, &this->unk_300, kREG(17) + 0xC, 2);
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.yOffset = kREG(16) + 9.0f;
+    Npc_TrackPoint(&this->actor, &this->interactInfo, kREG(17) + 0xC, NPC_TRACKING_HEAD_AND_TORSO);
 }
 
 void func_80AB1040(EnNb* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    this->unk_300.unk_18 = player->actor.world.pos;
-    this->unk_300.unk_14 = kREG(16) + 9.0f;
-    func_80034A14(&this->actor, &this->unk_300, kREG(17) + 0xC, 4);
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.yOffset = kREG(16) + 9.0f;
+    Npc_TrackPoint(&this->actor, &this->interactInfo, kREG(17) + 0xC, NPC_TRACKING_FULL_BODY);
 }
 
 void func_80AB10C4(EnNb* this) {
@@ -170,10 +170,10 @@ void func_80AB10C4(EnNb* this) {
     Vec3s* tempPtr;
     Vec3s* tempPtr2;
 
-    tempPtr = &this->unk_300.unk_08;
+    tempPtr = &this->interactInfo.headRot;
     Math_SmoothStepToS(&tempPtr->x, 0, 20, 6200, 100);
     Math_SmoothStepToS(&tempPtr->y, 0, 20, 6200, 100);
-    tempPtr2 = &this->unk_300.unk_0E;
+    tempPtr2 = &this->interactInfo.torsoRot;
     Math_SmoothStepToS(&tempPtr2->x, 0, 20, 6200, 100);
     Math_SmoothStepToS(&tempPtr2->y, 0, 20, 6200, 100);
 }
@@ -549,7 +549,7 @@ void EnNb_DrawTransparency(EnNb* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTex));
     gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTex));
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, this->alpha);
@@ -733,7 +733,7 @@ void EnNb_PlayLookLeftSFX(EnNb* this) {
 
 void EnNb_InitDemo6KInConfrontation(EnNb* this, PlayState* play) {
     Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_6K, this->actor.world.pos.x,
-                kREG(21) + 22.0f + this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0xB);
+                kREG(21) + 22.0f + this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0xB, true);
 }
 
 void func_80AB2688(EnNb* this, PlayState* play) {
@@ -957,7 +957,7 @@ void func_80AB2E70(EnNb* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gNabooruEyeWideTex));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gNabooruEyeWideTex));
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
@@ -987,7 +987,7 @@ void func_80AB2FE4(EnNb* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
@@ -1455,17 +1455,17 @@ void EnNb_Init(Actor* thisx, PlayState* play) {
 
 s32 EnNb_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnNb* this = (EnNb*)thisx;
-    struct_80034A14_arg1* unk_300 = &this->unk_300;
+    NpcInteractInfo* interactInfo = &this->interactInfo;
     s32 ret = false;
 
     if (this->headTurnFlag != 0) {
         if (limbIndex == NB_LIMB_TORSO) {
-            rot->x += unk_300->unk_0E.y;
-            rot->y -= unk_300->unk_0E.x;
+            rot->x += interactInfo->torsoRot.y;
+            rot->y -= interactInfo->torsoRot.x;
             ret = false;
         } else if (limbIndex == NB_LIMB_HEAD) {
-            rot->x += unk_300->unk_08.y;
-            rot->z += unk_300->unk_08.x;
+            rot->x += interactInfo->headRot.y;
+            rot->z += interactInfo->headRot.x;
             ret = false;
         }
     }
@@ -1502,7 +1502,7 @@ void EnNb_DrawDefault(EnNb* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);

@@ -93,12 +93,13 @@ void EnGm_Destroy(Actor* thisx, PlayState* play) {
 s32 func_80A3D7C8(void) {
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         return 0;
-    } else if (!(gBitFlags[2] & gSaveContext.inventory.equipment)) {
+    } else if ((gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF) &&
+               !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
         return 1;
-    } else if (gBitFlags[3] & gSaveContext.inventory.equipment) {
+    } else if (!(gBitFlags[2] & gSaveContext.inventory.equipment)) { // Don't have giant's knife
+        return 1;
+    } else if (gBitFlags[3] & gSaveContext.inventory.equipment) { // Have broken giant's knife
         return 2;
-    } else if ((gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS)) && (gBitFlags[2] & gSaveContext.inventory.equipment)){
-        return 1;
     } else {
         return 3;
     }
@@ -211,7 +212,7 @@ void func_80A3DC44(EnGm* this, PlayState* play) {
                 return;
             case 1:
                 gSaveContext.infTable[11] |= 2;
-                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) &&
+                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
                     !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
                         //Resets "Talked to Medigoron" flag in infTable to restore initial conversation state
                         gSaveContext.infTable[11] &= ~2;
@@ -250,16 +251,17 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
                     Message_ContinueTextbox(play, 0xC8);
                     this->actionFunc = func_80A3DD7C;
                 } else {
-                    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) &&
+                    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
                         !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
-                            GiveItemEntryFromActor(&this->actor, play,
-                            Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE), 415.0f, 10.0f);
-                            Flags_SetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
-                            gSaveContext.infTable[11] |= 2;
-                            this->actionFunc = func_80A3DF00;
+                        GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE);
+                        gSaveContext.pendingSale = itemEntry.itemId;
+                        GiveItemEntryFromActor(&this->actor, play, itemEntry, 415.0f, 10.0f);
+                        gSaveContext.infTable[11] |= 2;
+                        this->actionFunc = func_80A3DF00;
                     } else {
-                    func_8002F434(&this->actor, play, GI_SWORD_KNIFE, 415.0f, 10.0f);
-                    this->actionFunc = func_80A3DF00;
+                        gSaveContext.pendingSale = ItemTable_Retrieve(GI_SWORD_KNIFE).itemId;
+                        func_8002F434(&this->actor, play, GI_SWORD_KNIFE, 415.0f, 10.0f);
+                        this->actionFunc = func_80A3DF00;
                     }
                 }
                 break;
@@ -273,20 +275,25 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
 
 void func_80A3DF00(EnGm* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
+            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
+            Flags_SetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
+        }
+
         this->actor.parent = NULL;
         this->actionFunc = func_80A3DF60;
     } else {
-        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) &&
-        !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
-            GiveItemEntryFromActor(&this->actor, play,
-            Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE), 415.0f, 10.0f);
-            Flags_SetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON);
+        if (gSaveContext.n64ddFlag && (Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF) &&
+            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
+            GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE);
+            gSaveContext.pendingSale = itemEntry.itemId;
+            GiveItemEntryFromActor(&this->actor, play, itemEntry, 415.0f, 10.0f);
             gSaveContext.infTable[11] |= 2;
         }
         else {
+            gSaveContext.pendingSale = ItemTable_Retrieve(GI_SWORD_KNIFE).itemId;
             func_8002F434(&this->actor, play, GI_SWORD_KNIFE, 415.0f, 10.0f);
         }
-
     }
 }
 
@@ -348,7 +355,7 @@ void EnGm_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeTexIndex]));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gGoronCsMouthNeutralTex));
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,

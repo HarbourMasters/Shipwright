@@ -205,6 +205,7 @@ void EnDs_OfferBluePotion(EnDs* this, PlayState* play) {
                     case 2: // have 100 rupees and empty bottle
                         Rupees_ChangeBy(-100);
                         this->actor.flags &= ~ACTOR_FLAG_16;
+                        gSaveContext.pendingSale = ItemTable_Retrieve(GI_POTION_BLUE).itemId;
                         func_8002F434(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
                         this->actionFunc = EnDs_GiveBluePotion;
                         return;
@@ -289,7 +290,7 @@ void EnDs_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, 
 void EnDs_Draw(Actor* thisx, PlayState* play) {
     EnDs* this = (EnDs*)thisx;
 
-    func_800943C8(play->state.gfxCtx);
+    Gfx_SetupDL_37Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnDs_OverrideLimbDraw, EnDs_PostLimbDraw, this);
 }

@@ -120,7 +120,7 @@ void EnGSwitch_Init(Actor* thisx, PlayState* play) {
             this->actor.draw = EnGSwitch_DrawRupee;
             this->actor.shape.yOffset = 700.0f;
 
-            if (CVar_GetS32("gNewDrops", 0) !=0) {
+            if (CVarGetInteger("gNewDrops", 0) !=0) {
                 this->actor.shape.yOffset = 35.0f;
             } else {
                 this->actor.shape.yOffset = 700.0f;
@@ -130,7 +130,7 @@ void EnGSwitch_Init(Actor* thisx, PlayState* play) {
                 osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Ｙｏｕ ａｒｅ Ｓｈｏｃｋ！  ☆☆☆☆☆ %d\n" VT_RST, this->switchFlag);
                 Actor_Kill(&this->actor);
             } else {
-                if (CVar_GetS32("gNewDrops", 0) !=0) {
+                if (CVarGetInteger("gNewDrops", 0) !=0) {
                     Actor_SetScale(&this->actor, 0.6f);
                 } else {
                     Actor_SetScale(&this->actor, 0.03f);
@@ -165,7 +165,7 @@ void EnGSwitch_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = EnGSwitch_WaitForObject;
             break;
         case ENGSWITCH_TARGET_RUPEE:
-            if (CVar_GetS32("gNewDrops", 0) !=0) {
+            if (CVarGetInteger("gNewDrops", 0) !=0) {
                 this->actor.shape.yOffset = 35.0f;
                 Actor_SetScale(&this->actor, 0.9f);
             } else {
@@ -226,10 +226,10 @@ void EnGSwitch_WaitForObject(EnGSwitch* this, PlayState* play) {
 }
 
 void EnGSwitch_SilverRupeeTracker(EnGSwitch* this, PlayState* play) {
-    static s8 majorScale[] = { 0, 2, 4, 5, 7 };
+    static s8 majorScale[] = { 0, 2, 4, 5, 7, 9, 11, 13, 15, 17 };
 
     if (this->noteIndex < sCollectedCount) {
-        if (sCollectedCount < 5) {
+        if (sCollectedCount < (CVarGetInteger("gSilverRupeeJingleExtend", 0) ? 10 : 5)) {
             // "sound?"
             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 音？ ☆☆☆☆☆ %d\n" VT_RST, this->noteIndex);
             Audio_PlaySoundTransposed(&D_801333D4, NA_SE_EV_FIVE_COUNT_LUPY, majorScale[this->noteIndex]);
@@ -475,7 +475,7 @@ void EnGSwitch_DrawPot(Actor* thisx, PlayState* play) {
 
     if (!this->broken) {
         OPEN_DISPS(play->state.gfxCtx);
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_tsubo_DL_0017C0);
@@ -495,27 +495,68 @@ void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play) {
 
     if (!this->broken) {
         OPEN_DISPS(play->state.gfxCtx);
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         func_8002EBCC(&this->actor, play, 0);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        if (CVar_GetS32("gNewDrops", 0) !=0) {
+        if (CVarGetInteger("gNewDrops", 0) !=0) {
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
             if (this->type == ENGSWITCH_TARGET_RUPEE) {
                 GetItem_Draw(play, sRupeeTexturesNew[this->colorIdx]);
             } else {
-                gDPSetGrayscaleColor(POLY_OPA_DISP++, 255, 255, 255, 255);
-                gSPGrayscale(POLY_OPA_DISP++, true);
-                func_80093D18(play->state.gfxCtx);
+                Color_RGB8 silverRupeeColor = CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                Gfx_SetupDL_25Opa(play->state.gfxCtx);
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                        G_MTX_MODELVIEW | G_MTX_LOAD);
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0x80, silverRupeeColor.r, silverRupeeColor.g, silverRupeeColor.b, 255);
+                gDPSetEnvColor(POLY_OPA_DISP++, silverRupeeColor.r / 5, silverRupeeColor.g / 5, silverRupeeColor.b / 5, 255);
                 gSPDisplayList(POLY_OPA_DISP++, gGiRupeeInnerDL);
-                gSPDisplayList(POLY_OPA_DISP++, gGiGoldRupeeInnerColorDL);
-                func_80093D84(play->state.gfxCtx);
-                gSPDisplayList(POLY_OPA_DISP++, gGiRupeeOuterDL);
-                gSPDisplayList(POLY_OPA_DISP++, gGiGoldRupeeOuterColorDL);
-                gSPGrayscale(POLY_OPA_DISP++, false);
+                Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                        G_MTX_MODELVIEW | G_MTX_LOAD);
+                gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, 255, 255);
+                gDPSetEnvColor(POLY_XLU_DISP++, silverRupeeColor.r * 0.75f, silverRupeeColor.g * 0.75f, silverRupeeColor.b * 0.75f, 255);
+                gSPDisplayList(POLY_XLU_DISP++, gGiRupeeOuterDL);
             }
         } else {
-            gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTextures[this->colorIdx]));
-            gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+            Color_RGB8 rupeeColor;
+            u8 shouldColor = 0;
+            switch (this->colorIdx) {
+                case 0:
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_GreenRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    shouldColor = CVarGetInteger("gCosmetics.Consumable_GreenRupee.Changed", 0);
+                    break;
+                case 1:
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_BlueRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    shouldColor = CVarGetInteger("gCosmetics.Consumable_BlueRupee.Changed", 0);
+                    break;
+                case 2:
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_RedRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    shouldColor = CVarGetInteger("gCosmetics.Consumable_RedRupee.Changed", 0);
+                    break;
+                case 3:
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_PurpleRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    shouldColor = CVarGetInteger("gCosmetics.Consumable_PurpleRupee.Changed", 0);
+                    break;
+                case 4:
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_GoldRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    shouldColor = CVarGetInteger("gCosmetics.Consumable_GoldRupee.Changed", 0);
+                    break;
+                case 5:
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    shouldColor = CVarGetInteger("gCosmetics.Consumable_SilverRupee.Changed", 0);
+                    break;
+            }
+
+            if (shouldColor) {
+                gDPSetGrayscaleColor(POLY_OPA_DISP++, rupeeColor.r, rupeeColor.g, rupeeColor.b, 255);
+                gSPGrayscale(POLY_OPA_DISP++, true);
+                gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTextures[this->colorIdx]));
+                gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+                gSPGrayscale(POLY_OPA_DISP++, false);
+            } else {
+                gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTextures[this->colorIdx]));
+                gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+            }
         }
         CLOSE_DISPS(play->state.gfxCtx);
     }
@@ -589,7 +630,7 @@ void EnGSwitch_DrawEffects(EnGSwitch* this, PlayState* play) {
     s32 pad;
 
     OPEN_DISPS(gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     for (i = 0; i < this->numEffects; i++, effect++) {
         if (effect->flag) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
@@ -601,8 +642,45 @@ void EnGSwitch_DrawEffects(EnGSwitch* this, PlayState* play) {
             Matrix_RotateZ(effect->rot.z, MTXMODE_APPLY);
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTextures[effect->colorIdx]));
-            gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+            Color_RGB8 rupeeColor;
+            u8 shouldColor = 0;
+            switch (effect->colorIdx) {
+                case 0:
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_GreenRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    shouldColor = CVarGetInteger("gCosmetics.Consumable_GreenRupee.Changed", 0);
+                    break;
+                case 1:
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_BlueRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    shouldColor = CVarGetInteger("gCosmetics.Consumable_BlueRupee.Changed", 0);
+                    break;
+                case 2:
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_RedRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    shouldColor = CVarGetInteger("gCosmetics.Consumable_RedRupee.Changed", 0);
+                    break;
+                case 3:
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_PurpleRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    shouldColor = CVarGetInteger("gCosmetics.Consumable_PurpleRupee.Changed", 0);
+                    break;
+                case 4:
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_GoldRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    shouldColor = CVarGetInteger("gCosmetics.Consumable_GoldRupee.Changed", 0);
+                    break;
+                case 5:
+                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    shouldColor = CVarGetInteger("gCosmetics.Consumable_SilverRupee.Changed", 0);
+                    break;
+            }
+
+            if (shouldColor) {
+                gDPSetGrayscaleColor(POLY_OPA_DISP++, rupeeColor.r, rupeeColor.g, rupeeColor.b, 255);
+                gSPGrayscale(POLY_OPA_DISP++, true);
+                gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTextures[effect->colorIdx]));
+                gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+                gSPGrayscale(POLY_OPA_DISP++, false);
+            } else {
+                gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTextures[effect->colorIdx]));
+                gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+            }
             FrameInterpolation_RecordCloseChild();
         }
     }

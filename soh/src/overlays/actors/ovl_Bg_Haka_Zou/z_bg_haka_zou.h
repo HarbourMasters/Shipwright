@@ -1,7 +1,7 @@
 #ifndef Z_BG_HAKA_ZOU_H
 #define Z_BG_HAKA_ZOU_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgHakaZou;

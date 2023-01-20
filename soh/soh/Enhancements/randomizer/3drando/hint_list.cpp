@@ -974,7 +974,7 @@ void HintTable_Init() {
 
     hintTable[KOKIRI_FOREST] = HintText::Exclude({
         // obscure text
-        Text{ "Kokiri Forest", /*french*/ "la forêt Kokiri", /*spanish*/ "el Bosque Kokiri" },
+        Text{ "Kokiri Forest", /*french*/ "la Forêt Kokiri", /*spanish*/ "el Bosque Kokiri" },
     });
 
     hintTable[THE_LOST_WOODS] = HintText::Exclude({
@@ -1004,7 +1004,7 @@ void HintTable_Init() {
 
     hintTable[GERUDO_FORTRESS] = HintText::Exclude({
         // obscure text
-        Text{ "Gerudo's Fortress", /*french*/ "la Repaire des Voleurs", /*spanish*/ "la Fortaleza Gerudo" },
+        Text{ "Gerudo's Fortress", /*french*/ "le Repaire des Voleurs", /*spanish*/ "la Fortaleza Gerudo" },
     });
 
     hintTable[HAUNTED_WASTELAND] = HintText::Exclude({
@@ -1102,22 +1102,22 @@ void HintTable_Init() {
 
     hintTable[KF_MIDOS_HOUSE] = HintText::Region({
         // obscure text
-        Text{ "Mido's house", /*french*/ "la #Cabane du Grand Mido#", /*spanish*/ "la casa de Mido" },
+        Text{ "Mido's house", /*french*/ "la Cabane du Grand Mido", /*spanish*/ "la casa de Mido" },
     });
 
     hintTable[KF_SARIAS_HOUSE] = HintText::Region({
         // obscure text
-        Text{ "Saria's House", /*french*/ "la #Cabane de Saria#", /*spanish*/ "la casa de Saria" },
+        Text{ "Saria's House", /*french*/ "la Cabane de Saria", /*spanish*/ "la casa de Saria" },
     });
 
     hintTable[KF_HOUSE_OF_TWINS] = HintText::Region({
         // obscure text
-        Text{ "the #House of Twins#", /*french*/ "la #Cabane des Jumelles#", /*spanish*/ "la casa de las gemelas" },
+        Text{ "the #House of Twins#", /*french*/ "la Cabane des Jumelles", /*spanish*/ "la casa de las gemelas" },
     });
 
     hintTable[KF_KNOW_IT_ALL_HOUSE] = HintText::Region({
         // obscure text
-        Text{ "Know-It-All Brothers' House", /*french*/ "la #Cabane des frères Je-Sais-Tout#",
+        Text{ "Know-It-All Brothers' House", /*french*/ "la Cabane des frères Je-Sais-Tout",
               /*spanish*/ "la casa de los hermanos Sabelotodo" },
     });
 
@@ -2838,7 +2838,7 @@ void HintTable_Init() {
               /*spanish*/ "Para aquel que se convierta en el héroe...&La puerta al futuro está a su disposición..." },
     });
 
-    hintTable[CHILD_ALTAR_TEXT_END_DOTCLOSED] = HintText::Altar({
+    hintTable[CHILD_ALTAR_TEXT_END_DOTSONGONLY] = HintText::Altar({
         // obscure text
         Text{
             "Ye who may become a Hero...&Stand with the Ocarina and&play the Song of Time.",
@@ -2846,7 +2846,7 @@ void HintTable_Init() {
             /*spanish*/ "Para aquel que se convierta en el héroe...&Tome la ocarina y&entone la Canción del Tiempo." },
     });
 
-    hintTable[CHILD_ALTAR_TEXT_END_DOTINTENDED] = HintText::Altar({
+    hintTable[CHILD_ALTAR_TEXT_END_DOTCLOSED] = HintText::Altar({
         // obscure text
         Text{ "Ye who may become a Hero...&Offer the spiritual stones and&play the Song of Time.",
               /*french*/

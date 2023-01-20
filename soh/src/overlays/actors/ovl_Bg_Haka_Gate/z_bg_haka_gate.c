@@ -211,9 +211,9 @@ void BgHakaGate_StatueTurn(BgHakaGate* this, PlayState* play) {
     if (turnFinished) {
         player->stateFlags2 &= ~0x10;
         this->vRotYDeg10 = (this->vRotYDeg10 + turnAngle) % 3600;
-        this->vTurnRateDeg10 = CVar_GetS32("gFasterBlockPush", 0) * 2;
+        this->vTurnRateDeg10 = CVarGetInteger("gFasterBlockPush", 0) * 2;
         this->vTurnAngleDeg10 = 0;
-        this->vTimer = 5 - ((CVar_GetS32("gFasterBlockPush", 0) * 3) / 5);
+        this->vTimer = 5 - ((CVarGetInteger("gFasterBlockPush", 0) * 3) / 5);
         this->actionFunc = BgHakaGate_StatueIdle;
         this->dyna.unk_150 = 0.0f;
     }
@@ -317,7 +317,7 @@ void BgHakaGate_DrawFlame(BgHakaGate* this, PlayState* play) {
     if (this->vFlameScale > 0) {
         OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
                                     (this->vScrollTimer * -20) & 0x1FF, 0x20, 0x80));
@@ -348,7 +348,7 @@ void BgHakaGate_Draw(Actor* thisx, PlayState* play) {
     if (CHECK_FLAG_ALL(thisx->flags, ACTOR_FLAG_7)) {
         Gfx_DrawDListXlu(play, object_haka_objects_DL_00F1B0);
     } else {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         if (thisx->params == BGHAKAGATE_FLOOR) {
             OPEN_DISPS(play->state.gfxCtx);
             Matrix_Get(&currentMtxF);

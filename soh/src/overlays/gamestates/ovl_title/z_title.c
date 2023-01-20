@@ -9,13 +9,14 @@
 #include "global.h"
 #include "alloca.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
+#include "assets/objects/gameplay_keep/gameplay_keep.h"
 #include <soh/Enhancements/bootcommands.h>
 #include <GameVersions.h>
 #include <soh/SaveManager.h>
 
 #include "time.h"
 
-const char* GetGameVersionString();
+const char* GetGameVersionString(s32 index);
 char* quote;
 
 void Title_PrintBuildInfo(Gfx** gfxp) {
@@ -23,10 +24,8 @@ void Title_PrintBuildInfo(Gfx** gfxp) {
     //GfxPrint* printer;
     GfxPrint printer;
 
-    const char* gameVersionStr = GetGameVersionString();
-
     g = *gfxp;
-    g = func_8009411C(g);
+    g = Gfx_SetupDL_28(g);
     //printer = alloca(sizeof(GfxPrint));
     GfxPrint_Init(&printer);
     GfxPrint_Open(&printer, g);
@@ -41,9 +40,22 @@ void Title_PrintBuildInfo(Gfx** gfxp) {
     GfxPrint_Printf(&printer, "GCC SHIP");
 #endif
 
-    GfxPrint_SetPos(&printer, 1, 4);
-    GfxPrint_Printf(&printer, "Game Version: %s", gameVersionStr);
-    GfxPrint_SetPos(&printer, 1, 5);
+    s32 pos = 4;
+    GfxPrint_SetPos(&printer, 1, pos);
+    GfxPrint_Printf(&printer, "Game Versions:");
+
+    u32 numVersions = ResourceMgr_GetNumGameVersions();
+    if (!numVersions) {
+        GfxPrint_SetPos(&printer, 16, pos++);
+        GfxPrint_Printf(&printer, "Unknown");
+    } else {
+        for (u32 i = 0; i < numVersions; i++) {
+            GfxPrint_SetPos(&printer, 16, pos++);
+            GfxPrint_Printf(&printer, "%s", GetGameVersionString(i));
+        }
+    }
+
+    GfxPrint_SetPos(&printer, 1, pos);
     GfxPrint_Printf(&printer, "Release Version: %s", gBuildVersion);
 
     GfxPrint_SetColor(&printer, 255, 255, 255, 255);
@@ -78,8 +90,8 @@ const char* SetQuote() {
     return quotes[randomQuote];
 }
 
-const char* GetGameVersionString() {
-    uint32_t gameVersion = ResourceMgr_GetGameVersion();
+const char* GetGameVersionString(s32 index) {
+    uint32_t gameVersion = ResourceMgr_GetGameVersion(index);
     switch (gameVersion) {
         case OOT_NTSC_10:
             return "N64 NTSC 1.0";
@@ -183,26 +195,32 @@ void Title_Draw(TitleContext* this) {
     v1.z = 0;
     v2.z = 1119.0837;
 
-    char* n64LogoTex = ResourceMgr_LoadTexByName(nintendo_rogo_static_Tex_000000);
+    char* n64LogoTex = GetResourceDataByName(nintendo_rogo_static_Tex_000000, false);
 
     func_8002EABC(&v1, &v2, &v3, this->state.gfxCtx);
     gSPSetLights1(POLY_OPA_DISP++, sTitleLights);
     Title_SetupView(this, 0, 150.0, 300.0);
-    func_80093D18(this->state.gfxCtx);
+    Gfx_SetupDL_25Opa(this->state.gfxCtx);
     Matrix_Translate(-53.0, -5.0, 0, MTXMODE_NEW);
     Matrix_Scale(1.0, 1.0, 1.0, MTXMODE_APPLY);
     Matrix_RotateZYX(0, sTitleRotY, 0, MTXMODE_APPLY);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx), G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, gNintendo64LogoDL);
-    func_800944C4(this->state.gfxCtx);
+    Gfx_SetupDL_39Opa(this->state.gfxCtx);
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetCycleType(POLY_OPA_DISP++, G_CYC_2CYCLE);
     gDPSetRenderMode(POLY_OPA_DISP++, G_RM_XLU_SURF2, G_RM_OPA_CI | CVG_DST_WRAP);
     gDPSetCombineLERP(POLY_OPA_DISP++, TEXEL1, PRIMITIVE, ENV_ALPHA, TEXEL0, 0, 0, 0, TEXEL0, PRIMITIVE, ENVIRONMENT,
         COMBINED, ENVIRONMENT, COMBINED, 0, PRIMITIVE, 0);
-    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 170, 255, 255, 255);
-    gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 255, 128);
+    if (CVarGetInteger("gCosmetics.Title_NintendoLogo.Changed", 0)) {
+        Color_RGB8 nintendoLogoColor = CVarGetColor24("gCosmetics.Title_NintendoLogo.Value", (Color_RGB8){0, 0, 255});
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
+        gDPSetEnvColor(POLY_OPA_DISP++, nintendoLogoColor.r, nintendoLogoColor.g, nintendoLogoColor.b, 128);
+    } else {
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 170, 255, 255, 255);
+        gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 255, 128);
+    }
 
     gDPLoadMultiBlock(POLY_OPA_DISP++, nintendo_rogo_static_Tex_001800, 0x100, 1, G_IM_FMT_I, G_IM_SIZ_8b, 32, 32, 0,
         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 2, 11);
@@ -217,9 +235,25 @@ void Title_Draw(TitleContext* this) {
         gSPTextureRectangle(POLY_OPA_DISP++, 388, y << 2, 1156, (y + 2) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
     }
 
+    // Draw ice cube around N64 logo.
+    if (CVarGetInteger("gLetItSnow", 0)) {
+        f32 scale = 0.4f;
+
+        gSPSegment(POLY_OPA_DISP++, 0x08,
+                    Gfx_TwoTexScroll(this->state.gfxCtx, 0, 0, (0 - 1) % 128, 32, 32, 1,
+                                    0, (1 * -2) % 128, 32, 32));
+
+        Matrix_Translate(0.0f, -10.0f, 0.0f, MTXMODE_APPLY);
+        Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx),
+                    G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gDPSetEnvColor(POLY_OPA_DISP++, 0, 50, 100, 255);
+        gSPDisplayList(POLY_OPA_DISP++, gEffIceFragment3DL);
+    }
+
     Environment_FillScreen(this->state.gfxCtx, 0, 0, 0, (s16)this->coverAlpha, FILL_SCREEN_XLU);
 
-    sTitleRotY += 300;
+    sTitleRotY += (300 * CVarGetFloat("gCosmetics.N64Logo_SpinSpeed", 1.0f));
 
     CLOSE_DISPS(this->state.gfxCtx);
 }
@@ -231,11 +265,11 @@ void Title_Main(GameState* thisx) {
 
     gSPSegment(POLY_OPA_DISP++, 0, NULL);
     gSPSegment(POLY_OPA_DISP++, 1, this->staticSegment);
-    func_80095248(this->state.gfxCtx, 0, 0, 0);
+    Gfx_SetupFrame(this->state.gfxCtx, 0, 0, 0);
     Title_Calc(this);
     Title_Draw(this);
 
-    if (1) {
+    if (!CVarGetInteger("gHideBuildInfo", 0)) {
         Gfx* gfx = POLY_OPA_DISP;
         s32 pad;
 
@@ -243,13 +277,13 @@ void Title_Main(GameState* thisx) {
         POLY_OPA_DISP = gfx;
     }
 
-    if (this->exit || CVar_GetS32("gSkipLogoTitle", 0)) {
+    if (this->exit || CVarGetInteger("gSkipLogoTitle", 0)) {
         gSaveContext.seqId = (u8)NA_BGM_DISABLED;
         gSaveContext.natureAmbienceId = 0xFF;
         gSaveContext.gameMode = 1;
         this->state.running = false;
 
-        if (gLoadFileSelect || CVar_GetS32("gSkipLogoTitle", 0))
+        if (gLoadFileSelect || CVarGetInteger("gSkipLogoTitle", 0))
             SET_NEXT_GAMESTATE(&this->state, FileChoose_Init, FileChooseContext);
         else
             SET_NEXT_GAMESTATE(&this->state, Opening_Init, OpeningContext);

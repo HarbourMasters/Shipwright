@@ -181,6 +181,7 @@ void func_80A6E740(EnHs* this, PlayState* play) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TRADE_COJIRO, GI_ODD_MUSHROOM);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_COJIRO);
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
+            Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LW_TRADE_COJIRO);
         } else {
             s32 itemId = GI_ODD_MUSHROOM;
             func_8002F434(&this->actor, play, itemId, 10000.0f, 50.0f);
@@ -199,6 +200,7 @@ void func_80A6E7BC(EnHs* this, PlayState* play) {
                     GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TRADE_COJIRO, GI_ODD_MUSHROOM);
                     Randomizer_ConsumeAdultTradeItem(play, ITEM_COJIRO);
                     GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
+                    Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LW_TRADE_COJIRO);
                 } else {
                     s32 itemId = GI_ODD_MUSHROOM;
                     func_8002F434(&this->actor, play, itemId, 10000.0f, 50.0f);
@@ -329,7 +331,7 @@ void EnHs_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, 
 void EnHs_Draw(Actor* thisx, PlayState* play) {
     EnHs* this = (EnHs*)thisx;
 
-    func_800943C8(play->state.gfxCtx);
+    Gfx_SetupDL_37Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnHs_OverrideLimbDraw, EnHs_PostLimbDraw, this);
 }

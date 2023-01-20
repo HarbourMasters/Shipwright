@@ -232,7 +232,7 @@ std::vector<std::string> itemNames = {
     "Gold Skulltula Token",
     "Heart Container",
     "Piece of Heart",
-    "Big Key",
+    "Boss Key",
     "Compass",
     "Dungeon Map",
     "Small Key",

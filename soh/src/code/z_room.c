@@ -49,7 +49,7 @@ void func_80095AB4(PlayState* play, Room* room, u32 flags) {
     if (flags & 2) {
         func_8003435C(&D_801270A0, play);
         gSPSegment(POLY_XLU_DISP++, 0x03, room->segment);
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPMatrix(POLY_XLU_DISP++, &gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD);
     }
 
@@ -109,7 +109,7 @@ void func_80095D04(PlayState* play, Room* room, u32 flags) {
     if (flags & 2) {
         func_8003435C(&D_801270A0, play);
         //gSPSegment(POLY_XLU_DISP++, 0x03, room->segment);
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPMatrix(POLY_XLU_DISP++, &gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD);
     }
 
@@ -356,7 +356,7 @@ void func_80096680(PlayState* play, Room* room, u32 flags) {
         gSPSegment(POLY_OPA_DISP++, 0x03, room->segment);
 
         if (sp94) {
-            func_80093D18(play->state.gfxCtx);
+            Gfx_SetupDL_25Opa(play->state.gfxCtx);
             gSPMatrix(POLY_OPA_DISP++, &gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD);
             gSPDisplayList(POLY_OPA_DISP++, polygonDlist->opa);
         }
@@ -383,7 +383,7 @@ void func_80096680(PlayState* play, Room* room, u32 flags) {
 
     if (sp90) {
         gSPSegment(POLY_XLU_DISP++, 0x03, room->segment);
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPMatrix(POLY_XLU_DISP++, &gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_XLU_DISP++, polygonDlist->xlu);
     }
@@ -401,7 +401,7 @@ BgImage* func_80096A74(PolygonType1* polygon1, PlayState* play) {
 
     camera = GET_ACTIVE_CAM(play);
     camId = camera->camDataIdx;
-    if (camId == -1 && CVar_GetS32("gNoRestrictItems", 0)) {
+    if (camId == -1 && CVarGetInteger("gNoRestrictItems", 0)) {
         // This prevents a crash when using items that change the
         // camera (such as din's fire) on scenes with prerendered backgrounds
         return NULL;
@@ -458,7 +458,7 @@ void func_80096B6C(PlayState* play, Room* room, u32 flags) {
         gSPSegment(POLY_OPA_DISP++, 0x03, room->segment);
 
         if (sp90) {
-            func_80093D18(play->state.gfxCtx);
+            Gfx_SetupDL_25Opa(play->state.gfxCtx);
             gSPMatrix(POLY_OPA_DISP++, &gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD);
             gSPDisplayList(POLY_OPA_DISP++, polygonDlist->opa);
         }
@@ -484,7 +484,7 @@ void func_80096B6C(PlayState* play, Room* room, u32 flags) {
 
     if (sp8C) {
         gSPSegment(POLY_XLU_DISP++, 0x03, room->segment);
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPMatrix(POLY_XLU_DISP++, &gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_XLU_DISP++, polygonDlist->xlu);
     }

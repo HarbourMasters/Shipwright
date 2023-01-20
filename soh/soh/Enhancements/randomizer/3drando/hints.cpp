@@ -116,6 +116,13 @@ Text childAltarText;
 Text adultAltarText;
 Text ganonText;
 Text ganonHintText;
+Text dampesText;
+Text warpMinuetText;
+Text warpBoleroText;
+Text warpSerenadeText;
+Text warpRequiemText;
+Text warpNocturneText;
+Text warpPreludeText;
 
 Text& GetChildAltarText() {
   return childAltarText;
@@ -131,6 +138,34 @@ Text& GetGanonText() {
 
 Text& GetGanonHintText() {
   return ganonHintText;
+}
+
+Text& GetDampeHintText() {
+  return dampesText;
+}
+
+Text& GetWarpMinuetText() {
+  return warpMinuetText;
+}
+
+Text& GetWarpBoleroText() {
+  return warpBoleroText;
+}
+
+Text& GetWarpSerenadeText() {
+  return warpSerenadeText;
+}
+
+Text& GetWarpRequiemText() {
+  return warpRequiemText;
+}
+
+Text& GetWarpNocturneText() {
+  return warpNocturneText;
+}
+
+Text& GetWarpPreludeText() {
+  return warpPreludeText;
 }
 
 static Area* GetHintRegion(const uint32_t area) {
@@ -516,7 +551,7 @@ static void CreateTrialHints() {
   }
 }
 
-static void CreateGanonText() {
+void CreateGanonText() {
 
   //funny ganon line
   ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
@@ -555,13 +590,13 @@ static Text BuildDoorOfTimeText() {
     itemObtained = "$o";
     doorOfTimeText = Hint(CHILD_ALTAR_TEXT_END_DOTOPEN).GetText();
 
-  } else if (OpenDoorOfTime.Is(OPENDOOROFTIME_CLOSED)) {
+  } else if (OpenDoorOfTime.Is(OPENDOOROFTIME_SONGONLY)) {
     itemObtained = "$c";
-    doorOfTimeText = Hint(CHILD_ALTAR_TEXT_END_DOTCLOSED).GetText();
+    doorOfTimeText = Hint(CHILD_ALTAR_TEXT_END_DOTSONGONLY).GetText();
 
-  } else if (OpenDoorOfTime.Is(OPENDOOROFTIME_INTENDED)) {
+  } else if (OpenDoorOfTime.Is(OPENDOOROFTIME_CLOSED)) {
     itemObtained = "$i";
-    doorOfTimeText = Hint(CHILD_ALTAR_TEXT_END_DOTINTENDED).GetText();
+    doorOfTimeText = Hint(CHILD_ALTAR_TEXT_END_DOTCLOSED).GetText();
   }
 
   return Text()+itemObtained+doorOfTimeText;
@@ -650,7 +685,7 @@ static Text BuildGanonBossKeyText() {
   return Text()+"$b"+ganonBossKeyText+"^";
 }
 
-static void CreateAltarText() {
+void CreateAltarText() {
 
   //Child Altar Text
   childAltarText = Hint(SPIRITUAL_STONE_TEXT_START).GetText()+"^"+
@@ -707,10 +742,64 @@ void CreateMerchantsHints() {
   CreateMessageFromTextObject(0x6078, 0, 2, 3, AddColorsAndFormat(carpetSalesmanTextTwo, {QM_RED, QM_YELLOW, QM_RED}));
 }
 
-void CreateAllHints() {
+void CreateDampesDiaryText() {
+  uint32_t item = PROGRESSIVE_HOOKSHOT;
+  uint32_t location = FilterFromPool(allLocations, [item](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == item;})[0];
+  Text area = GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText();
+  Text temp1 = Text{
+    "Whoever reads this, please enter %g", 
+    "Toi qui lit ce journal, rends-toi dans %g",
+    "Wer immer dies liest, der möge folgenden Ort aufsuchen: %g"
+  };
 
-  CreateGanonText();
-  CreateAltarText();
+  Text temp2 = {
+    "%w. I will let you have my stretching, shrinking keepsake.^I'm waiting for you.&--Dampé",
+    "%w. Et peut-être auras-tu droit à mon précieux %rtrésor%w.^Je t'attends...&--Igor",
+    "%w. Ihm gebe ich meinen langen, kurzen Schatz.^Ich warte!&Boris"
+  };
+  
+  dampesText = temp1 + area + temp2;
+}
+
+void CreateWarpSongTexts() {
+  auto warpSongEntrances = GetShuffleableEntrances(EntranceType::WarpSong, false);
+
+  for (auto entrance : warpSongEntrances) {
+    Text resolvedHint;
+    // Start with entrance location text
+    auto region = entrance->GetConnectedRegion()->regionName;
+    resolvedHint = Text{"","",""} + region;
+
+    auto destination = entrance->GetConnectedRegion()->GetHint().GetText();
+    // Prefer hint location when available
+    if (destination.GetEnglish() != "No Hint") {
+      resolvedHint = destination;
+    }
+
+    switch (entrance->GetIndex()) {
+      case 0x0600: // minuet
+        warpMinuetText = resolvedHint;
+        break;
+      case 0x04F6: // bolero
+        warpBoleroText = resolvedHint;
+        break;
+      case 0x0604: // serenade
+        warpSerenadeText = resolvedHint;
+        break;
+      case 0x01F1: // requiem
+        warpRequiemText = resolvedHint;
+        break;
+      case 0x0568: // nocturne
+        warpNocturneText = resolvedHint;
+        break;
+      case 0x05F4: // prelude
+        warpPreludeText = resolvedHint;
+        break;
+    }
+  }
+}
+
+void CreateAllHints() {
 
   SPDLOG_DEBUG("\nNOW CREATING HINTS\n");
   const HintSetting& hintSetting = hintSettingTable[Settings::HintDistribution.Value<uint8_t>()];

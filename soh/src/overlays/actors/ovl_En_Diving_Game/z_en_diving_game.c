@@ -521,11 +521,11 @@ void EnDivingGame_Update(Actor* thisx, PlayState* play2) {
     }
     this->actionFunc(this, play);
     Actor_SetFocus(&this->actor, 80.0f);
-    this->unk_324.unk_18 = player->actor.world.pos;
-    this->unk_324.unk_18.y = player->actor.world.pos.y;
-    func_80034A14(&this->actor, &this->unk_324, 2, 4);
-    this->vec_284 = this->unk_324.unk_08;
-    this->vec_28A = this->unk_324.unk_0E;
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.trackPos.y = player->actor.world.pos.y;
+    Npc_TrackPoint(&this->actor, &this->interactInfo, 2, NPC_TRACKING_FULL_BODY);
+    this->vec_284 = this->interactInfo.headRot;
+    this->vec_28A = this->interactInfo.torsoRot;
     if ((play->gameplayFrames % 16) == 0) {
         pos = this->actor.world.pos;
         pos.y += 20.0f;
@@ -571,7 +571,7 @@ void EnDivingGame_Draw(Actor* thisx, PlayState* play) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, EnDivingGame_EmptyDList(play->state.gfxCtx));
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeTexIndex]));

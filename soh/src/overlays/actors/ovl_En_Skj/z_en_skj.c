@@ -507,7 +507,7 @@ s32 EnSkj_ShootNeedle(EnSkj* this, PlayState* play) {
     pos2.y = this->actor.world.pos.y + 27.0f;
 
     needle = (EnSkjneedle*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SKJNEEDLE, pos2.x, pos2.y, pos2.z,
-                                       this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z, 0);
+                                       this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z, 0, true);
     if (needle != NULL) {
         needle->killTimer = 100;
         needle->actor.speedXZ = 24.0f;
@@ -733,6 +733,7 @@ void EnSkj_SariasSongKidIdle(EnSkj* this, PlayState* play) {
 void EnSkj_SetupDie(EnSkj* this) {
     EnSkj_ChangeAnim(this, SKJ_ANIM_DIE);
     EnSkj_SetupAction(this, SKJ_ACTION_WAIT_FOR_DEATH_ANIM);
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULL_KID]++;
 }
 
 void EnSkj_WaitForDeathAnim(EnSkj* this, PlayState* play) {
@@ -1628,7 +1629,7 @@ void EnSkj_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
     OPEN_DISPS(play->state.gfxCtx);
 
     if ((limbIndex == 11) && (gSaveContext.itemGetInf[3] & 0x200)) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         Matrix_Push();
         Matrix_RotateZYX(-0x4000, 0, 0, MTXMODE_APPLY);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -1671,7 +1672,7 @@ void EnSkj_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if (this->alpha < 255) {
         gSPSegment(POLY_OPA_DISP++, 0x0C, EnSkj_TranslucentDL(play->state.gfxCtx, this->alpha));

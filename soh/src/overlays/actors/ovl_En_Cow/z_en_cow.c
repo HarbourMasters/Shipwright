@@ -123,7 +123,7 @@ void EnCow_Init(Actor* thisx, PlayState* play) {
             func_809DEE9C(this);
             this->actionFunc = func_809DF96C;
             if (play->sceneNum == SCENE_LINK_HOME) {
-                if (!LINK_IS_ADULT && !CVar_GetS32("gCowOfTime", 0)) {
+                if (!LINK_IS_ADULT && !CVarGetInteger("gCowOfTime", 0)) {
                     Actor_Kill(&this->actor);
                     return;
                 }
@@ -439,7 +439,7 @@ void EnCow_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
 void EnCow_Draw(Actor* thisx, PlayState* play) {
     EnCow* this = (EnCow*)thisx;
 
-    func_800943C8(play->state.gfxCtx);
+    Gfx_SetupDL_37Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnCow_OverrideLimbDraw, EnCow_PostLimbDraw, this);
 }
@@ -447,7 +447,7 @@ void EnCow_Draw(Actor* thisx, PlayState* play) {
 void func_809E0070(Actor* thisx, PlayState* play) {
     EnCow* this = (EnCow*)thisx;
 
-    func_800943C8(play->state.gfxCtx);
+    Gfx_SetupDL_37Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, NULL, this);
 }

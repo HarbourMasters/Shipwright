@@ -119,7 +119,7 @@ void func_80A90264(EnKakasi2* this, PlayState* play) {
     this->unk_194++;
     
     bool skipScarecrow = play->msgCtx.msgMode == MSGMODE_OCARINA_PLAYING &&
-                            ((CVar_GetS32("gSkipScarecrow", 0) && gSaveContext.scarecrowSpawnSongSet) ||
+                            ((CVarGetInteger("gSkipScarecrow", 0) && gSaveContext.scarecrowSpawnSongSet) ||
                             (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_SCARECROWS_SONG)));
 
     if ((BREG(1) != 0) || skipScarecrow && (this->actor.xzDistToPlayer < this->maxSpawnDistance.x) &&
@@ -245,7 +245,7 @@ void EnKakasi2_Update(Actor* thisx, PlayState* play2) {
 void func_80A90948(Actor* thisx, PlayState* play) {
     EnKakasi2* this = (EnKakasi2*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, NULL, this);
 }

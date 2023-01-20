@@ -79,9 +79,9 @@ void EnXc_Destroy(Actor* thisx, PlayState* play) {
 void EnXc_CalculateHeadTurn(EnXc* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    this->npcInfo.unk_18 = player->actor.world.pos;
-    this->npcInfo.unk_14 = kREG(16) - 3.0f;
-    func_80034A14(&this->actor, &this->npcInfo, kREG(17) + 0xC, 2);
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.yOffset = kREG(16) - 3.0f;
+    Npc_TrackPoint(&this->actor, &this->interactInfo, kREG(17) + 0xC, NPC_TRACKING_HEAD_AND_TORSO);
 }
 
 void EnXc_SetEyePattern(EnXc* this) {
@@ -108,7 +108,7 @@ void EnXc_SpawnNut(EnXc* this, PlayState* play) {
     f32 z = (Math_CosS(angle) * 30.0f) + pos->z;
 
     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, x, y, z, 0xFA0, this->actor.shape.rot.y, 0,
-                ARROW_CS_NUT);
+                ARROW_CS_NUT, true);
 }
 
 void EnXc_BgCheck(EnXc* this, PlayState* play) {
@@ -537,7 +537,7 @@ void EnXc_SpawnFlame(EnXc* this, PlayState* play) {
         f32 yPos = npcAction->startPos.y;
         f32 zPos = npcAction->startPos.z;
 
-        this->flameActor = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_LIGHT, xPos, yPos, zPos, 0, 0, 0, 5);
+        this->flameActor = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_LIGHT, xPos, yPos, zPos, 0, 0, 0, 5, true);
         sEnXcFlameSpawned = true;
     }
 }
@@ -1128,7 +1128,7 @@ void EnXc_DrawPullingOutHarp(Actor* thisx, PlayState* play) {
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 20, 0);
     gDPSetEnvColor(POLY_OPA_DISP++, 60, 0, 0, 0);
 
-    func_80093D18(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
     func_8002EBCC(&this->actor, play, 0);
     SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                           EnXc_PullingOutHarpOverrideLimbDraw, NULL, this);
@@ -1151,7 +1151,7 @@ void EnXc_DrawHarp(Actor* thisx, PlayState* play) {
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 20, 0);
     gDPSetEnvColor(POLY_OPA_DISP++, 60, 0, 0, 0);
 
-    func_80093D18(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
     func_8002EBCC(&this->actor, play, 0);
     SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                           EnXc_HarpOverrideLimbDraw, NULL, this);
@@ -1442,7 +1442,7 @@ void func_80B3F534(PlayState* play) {
 
     if (frameCount == 310) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -1044.0f, -1243.0f, 7458.0f, 0, 0, 0,
-                    WARP_DESTINATION);
+                    WARP_DESTINATION, true);
     }
 }
 
@@ -1770,7 +1770,7 @@ void EnXc_DrawTriforce(Actor* thisx, PlayState* play) {
         Matrix_Scale(scale[0], scale[1], scale[2], MTXMODE_APPLY);
         MATRIX_TOMTX(mtx);
         Matrix_Pop();
-        func_80093D84(gfxCtx);
+        Gfx_SetupDL_25Xlu(gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, primColor[2], primColor[3]);
         gDPSetEnvColor(POLY_XLU_DISP++, 255, envColor[1], 0, 128);
         gSPMatrix(POLY_XLU_DISP++, mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -1778,7 +1778,7 @@ void EnXc_DrawTriforce(Actor* thisx, PlayState* play) {
     }
 
     func_8002EBCC(thisx, play, 0);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTexture));
     SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
@@ -2180,7 +2180,7 @@ void EnXc_DrawSquintingEyes(Actor* thisx, PlayState* play) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
 
     OPEN_DISPS(gfxCtx);
-    func_80093D18(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gSheikEyeSquintingTex));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gSheikEyeSquintingTex));
     SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL,
@@ -2410,11 +2410,11 @@ s32 EnXc_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
 
     if (this->unk_30C != 0) {
         if (limbIndex == 9) {
-            rot->x += this->npcInfo.unk_0E.y;
-            rot->y -= this->npcInfo.unk_0E.x;
+            rot->x += this->interactInfo.torsoRot.y;
+            rot->y -= this->interactInfo.torsoRot.x;
         } else if (limbIndex == 16) {
-            rot->x += this->npcInfo.unk_08.y;
-            rot->z += this->npcInfo.unk_08.x;
+            rot->x += this->interactInfo.headRot.y;
+            rot->z += this->interactInfo.headRot.x;
         }
     }
     return 0;
@@ -2450,7 +2450,7 @@ void EnXc_DrawDefault(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(gfxCtx);
     func_8002EBCC(&this->actor, play, 0);
-    func_80093D18(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeSegment));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeSegment));
     SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,

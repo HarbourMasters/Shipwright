@@ -159,13 +159,6 @@ void EnDoor_SetupType(EnDoor* this, PlayState* play) {
         }
         this->actor.world.rot.y = 0x0000;
         if (doorType == DOOR_LOCKED) {
-            // unlock the door behind the hammer blocks
-            // in the fire temple entryway when rando'd
-            if (gSaveContext.n64ddFlag && play->sceneNum == 4) {
-                // RANDOTODO don't do this when keysanity is enabled
-                Flags_SetSwitch(play, 0x17);
-            }
-
             if (!Flags_GetSwitch(play, this->actor.params & 0x3F)) {
                 this->lockTimer = 10;
             }
@@ -342,7 +335,7 @@ void EnDoor_Draw(Actor* thisx, PlayState* play) {
     if (this->actor.objBankIndex == this->requiredObjBankIndex) {
         OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDoor_OverrideLimbDraw,
                           NULL, &this->actor);
         if (this->actor.world.rot.y != 0) {

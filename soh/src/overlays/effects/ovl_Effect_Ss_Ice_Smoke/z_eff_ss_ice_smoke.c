@@ -65,7 +65,7 @@ void EffectSsIceSmoke_Draw(PlayState* play, u32 index, EffectSs* this) {
 
     if ((objBankIdx > -1) && Object_IsLoaded(&play->objectCtx, objBankIdx)) {
         gDPPipeSync(POLY_XLU_DISP++);
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSegments[6] = VIRTUAL_TO_PHYSICAL(object);
         gSPSegment(POLY_XLU_DISP++, 0x06, object);
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gFreezardSteamStartDL));

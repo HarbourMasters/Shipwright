@@ -4,6 +4,10 @@ A PC port of OoT allowing you to enjoy the game with modern controls, widescreen
 
 The Ship does not include assets and as such requires a prior copy of the game to play.
 
+## Discord
+
+Official Discord: https://discord.com/invite/BtBmd55HVH
+
 ## Quick Start (Windows)
 
 1) Download The Ship of Harkinian from [Discord](https://discord.com/invite/BtBmd55HVH).
@@ -104,32 +108,40 @@ Other shortcuts:
 
 Currently, DirectX 11 and OpenGL are supported. Change the renderer by opening the `shipofharkinian.json` configuration file in notepad and add `sdl` to the quotes in `"GfxBackend": ""` for OpenGL or leave blank for DirectX.
 
-## Take The Survey
-Want to use cartridge readers in tandem with the OTRGui?
-Take [this survey](https://retroarchopenhardware.com/survey.php) to increase chances of this becoming reality.
+### Custom Music
 
-## Discord
+We support importing custom [Seq64](https://github.com/sauraen/seq64) files to replace the in game music and fanfares (Not sound effects yet currently).
 
-Official Discord: https://discord.com/invite/BtBmd55HVH
+First you will need to prepare a folder with the desired sequences, in which every sequence will have two files with the same name and different extensions, a `.seq` Seq64 file and a `.meta` plaintext file. These files can be categorically nested in folders if desired, they will still be consumed as if they were all at the top level.
+
+The meta file will have two lines, the first line is the name that will be displayed in the SFX editor, and the second line will be the instrument set number, in base 16. For example, if there is a sequence file `Foo.seq` then you need a meta file `Foo.meta` that could contain:
+```
+Awesome Name
+C
+```
+
+Once you have prepared your sequences folder:
+1. Download and open [Retro](https://github.com/HarbourMasters/retro/releases). 
+1. Choose the "Create OTR" option 
+1. Choose the "Custom Sequences" option
+1. Using the file select, choose the sequences folder you prepared in the previous instructions.
+1. Click the "Stage Files" button (Reminder: SoH can handle 1024 custom sequence in total, this number include the count of the original music with it so be sure to take this into account)
+1. Click the "Finalize OTR" text in the green footer.
+1. Finally click "Generate OTR" and for the source destination it needs to go in the `mods` folder of your SoH installation.
+    - This `mods` folder should be a sibling of your `oot.otr` file.
+
+Assuming you have done everything correctly, boot up SoH and open up the SFX Editor (In the Enhancements dropdown). You should now be able to swap out any of the in game sequences/fanfares for the sequences added in your newly generated OTR file. If you have any trouble with this process please reach out in the support section of the Discord
 
 ## Building The Ship of Harkinian
 
 Refer to the [building instructions](BUILDING.md) to compile SoH.
 
-## Getting CI to work on your fork
-
-The CI works via [Github Actions](https://github.com/features/actions) where we mostly make use of machines hosted by Github; except for the very first step of the CI process called "Extract assets". This steps extracts assets from the game file and generates an "assets" folder in `soh/`.
-
-To get this step working on your fork, you'll need to add a machine to your own repository as a self-hosted runner via "Settings > Actions > Runners" in your repository settings. If you're on macOS or Linux take a look at `macports-deps.txt` or `apt-deps.txt` to see the dependencies expected to be on your machine. For Windows, deps get installed as part of the CI process. To setup your runner as a service read the docs [here](https://docs.github.com/en/actions/hosting-your-own-runners/configuring-the-self-hosted-runner-application-as-a-service?platform=linux).
-
-
-## Troubleshooting The Exporter
-- Confirm that you have an `/assets` folder filled with XMLs in the same directory as OTRGui.exe
-- Confirm that `zapd.exe` exists in the `/assets/extractor` folder
-
 ## Nightly Builds
 Nightly builds of Ship of Harkinian are available here: [Windows](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-windows.zip), [macOS](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-mac.zip), [Linux](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-linux.zip), [Switch](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-switch.zip), [Wii U](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-wiiu.zip)
 
+## Take The Survey
+Want to use cartridge readers in tandem with the OTRGui?
+Take [this survey](https://retroarchopenhardware.com/survey.php) to increase chances of this becoming reality.
 
 ## The Harbour Masters Are...
 

@@ -111,6 +111,7 @@ void EnYukabyun_Break(EnYukabyun* this, PlayState* play) {
     EffectSsHahen_SpawnBurst(play, &this->actor.world.pos, 8.0f, 0, 1300, 300, 15, OBJECT_YUKABYUN, 10,
                              gFloorTileEnemyFragmentDL);
     Actor_Kill(&this->actor);
+    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLOOR_TILE]++;
 }
 
 void EnYukabyun_Update(Actor* thisx, PlayState* play) {
@@ -149,7 +150,7 @@ void EnYukabyun_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_80B43F64[this->unk_152]));
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

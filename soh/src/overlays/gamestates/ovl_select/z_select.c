@@ -4,7 +4,7 @@
  * Description: Debug Scene Select Menu
  */
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "vt.h"
 #include "alloca.h"
@@ -22,9 +22,9 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
     osSyncPrintf(VT_RST);
     if (gSaveContext.fileNum == 0xFF) {
         Sram_InitDebugSave();
-        gSaveContext.unk_13F6 = gSaveContext.magic;
+        gSaveContext.magicFillTarget = gSaveContext.magic;
         gSaveContext.magic = 0;
-        gSaveContext.unk_13F4 = 0;
+        gSaveContext.magicCapacity = 0;
         gSaveContext.magicLevel = gSaveContext.magic;
     }
     for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
@@ -40,11 +40,11 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
         Grotto_OverrideSpecialEntrance(Entrance_GetOverride(entranceIndex));
     }
 
-    if (CVar_GetS32("gBetterDebugWarpScreen", 0)) {
-        CVar_SetS32("gBetterDebugWarpScreenCurrentScene", this->currentScene);
-        CVar_SetS32("gBetterDebugWarpScreenTopDisplayedScene", this->topDisplayedScene);
-        CVar_SetS32("gBetterDebugWarpScreenPageDownIndex", this->pageDownIndex);
-        CVar_Save();
+    if (CVarGetInteger("gBetterDebugWarpScreen", 0)) {
+        CVarSetInteger("gBetterDebugWarpScreenCurrentScene", this->currentScene);
+        CVarSetInteger("gBetterDebugWarpScreenTopDisplayedScene", this->topDisplayedScene);
+        CVarSetInteger("gBetterDebugWarpScreenPageDownIndex", this->pageDownIndex);
+        CVarSave();
     }
 
     gSaveContext.respawnFlag = 0;
@@ -63,9 +63,9 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
     osSyncPrintf(VT_RST);
     if (gSaveContext.fileNum == 0xFF) {
         Sram_InitDebugSave();
-        gSaveContext.unk_13F6 = gSaveContext.magic;
+        gSaveContext.magicFillTarget = gSaveContext.magic;
         gSaveContext.magic = 0;
-        gSaveContext.unk_13F4 = 0;
+        gSaveContext.magicCapacity = 0;
         gSaveContext.magicLevel = gSaveContext.magic;
     }
     for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
@@ -90,11 +90,11 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
         Grotto_OverrideSpecialEntrance(Entrance_GetOverride(grottoEntrance));
     }
 
-    if (CVar_GetS32("gBetterDebugWarpScreen", 0)) {
-        CVar_SetS32("gBetterDebugWarpScreenCurrentScene", this->currentScene);
-        CVar_SetS32("gBetterDebugWarpScreenTopDisplayedScene", this->topDisplayedScene);
-        CVar_SetS32("gBetterDebugWarpScreenPageDownIndex", this->pageDownIndex);
-        CVar_Save();
+    if (CVarGetInteger("gBetterDebugWarpScreen", 0)) {
+        CVarSetInteger("gBetterDebugWarpScreenCurrentScene", this->currentScene);
+        CVarSetInteger("gBetterDebugWarpScreenTopDisplayedScene", this->topDisplayedScene);
+        CVarSetInteger("gBetterDebugWarpScreenPageDownIndex", this->pageDownIndex);
+        CVarSave();
     }
 
     gSaveContext.respawnFlag = 0;
@@ -1219,15 +1219,15 @@ void Select_DrawMenu(SelectContext* this) {
     OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
-    func_80095248(gfxCtx, 0, 0, 0);
+    Gfx_SetupFrame(gfxCtx, 0, 0, 0);
     SET_FULLSCREEN_VIEWPORT(&this->view);
     func_800AAA50(&this->view, 0xF);
-    func_80094140(gfxCtx);
+    Gfx_SetupDL_28Opa(gfxCtx);
 
     printer = alloca(sizeof(GfxPrint));
     GfxPrint_Init(printer);
     GfxPrint_Open(printer, POLY_OPA_DISP);
-    if (CVar_GetS32("gBetterDebugWarpScreen", 0)) {
+    if (CVarGetInteger("gBetterDebugWarpScreen", 0)) {
         Better_Select_PrintMenu(this, printer);
         Better_Select_PrintAgeSetting(this, printer, ((void)0, gSaveContext.linkAge));
         Better_Select_PrintTimeSetting(this, printer);
@@ -1249,10 +1249,10 @@ void Select_DrawLoadingScreen(SelectContext* this) {
     OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
-    func_80095248(gfxCtx, 0, 0, 0);
+    Gfx_SetupFrame(gfxCtx, 0, 0, 0);
     SET_FULLSCREEN_VIEWPORT(&this->view);
     func_800AAA50(&this->view, 0xF);
-    func_80094140(gfxCtx);
+    Gfx_SetupDL_28Opa(gfxCtx);
 
     printer = alloca(sizeof(GfxPrint));
     GfxPrint_Init(printer);
@@ -1270,7 +1270,7 @@ void Select_Draw(SelectContext* this) {
     OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
-    func_80095248(gfxCtx, 0, 0, 0);
+    Gfx_SetupFrame(gfxCtx, 0, 0, 0);
     SET_FULLSCREEN_VIEWPORT(&this->view);
     func_800AAA50(&this->view, 0xF);
 
@@ -1286,7 +1286,7 @@ void Select_Draw(SelectContext* this) {
 void Select_Main(GameState* thisx) {
     SelectContext* this = (SelectContext*)thisx;
 
-    if (CVar_GetS32("gBetterDebugWarpScreen", 0)) {
+    if (CVarGetInteger("gBetterDebugWarpScreen", 0)) {
         Better_Select_UpdateMenu(this);
     } else {
         Select_UpdateMenu(this);
@@ -1295,7 +1295,7 @@ void Select_Main(GameState* thisx) {
 }
 
 void Select_Destroy(GameState* thisx) {
-    osSyncPrintf("%c", '\a'); // ASCII BEL character, plays an alert tone
+    osSyncPrintf("%c", BEL);
     // "view_cleanup will hang, so it won't be called"
     osSyncPrintf("*** view_cleanupはハングアップするので、呼ばない ***\n");
 }
@@ -1321,7 +1321,7 @@ void Select_Init(GameState* thisx) {
     this->pageDownStops[6] = 91; // Escaping Ganon's Tower 3
     this->pageDownIndex = 0;
     this->opt = 0;
-    this->count = CVar_GetS32("gBetterDebugWarpScreen", 0) ? ARRAY_COUNT(sBetterScenes) : ARRAY_COUNT(sScenes);
+    this->count = CVarGetInteger("gBetterDebugWarpScreen", 0) ? ARRAY_COUNT(sBetterScenes) : ARRAY_COUNT(sScenes);
     View_Init(&this->view, this->state.gfxCtx);
     this->view.flags = (0x08 | 0x02);
     this->verticalInputAccumulator = 0;
@@ -1339,10 +1339,10 @@ void Select_Init(GameState* thisx) {
         this->topDisplayedScene = dREG(81);
         this->pageDownIndex = dREG(82);
     }
-    if (CVar_GetS32("gBetterDebugWarpScreen", 0)) {
-        this->currentScene = CVar_GetS32("gBetterDebugWarpScreenCurrentScene", 0);
-        this->topDisplayedScene = CVar_GetS32("gBetterDebugWarpScreenTopDisplayedScene", 0);
-        this->pageDownIndex = CVar_GetS32("gBetterDebugWarpScreenPageDownIndex", 0);
+    if (CVarGetInteger("gBetterDebugWarpScreen", 0)) {
+        this->currentScene = CVarGetInteger("gBetterDebugWarpScreenCurrentScene", 0);
+        this->topDisplayedScene = CVarGetInteger("gBetterDebugWarpScreenTopDisplayedScene", 0);
+        this->pageDownIndex = CVarGetInteger("gBetterDebugWarpScreenPageDownIndex", 0);
     }
     R_UPDATE_RATE = 1;
 #if !defined(_MSC_VER) && !defined(__GNUC__)

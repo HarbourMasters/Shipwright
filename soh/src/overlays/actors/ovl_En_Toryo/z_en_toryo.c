@@ -318,6 +318,7 @@ void func_80B20768(EnToryo* this, PlayState* play) {
                 GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_GV_TRADE_SAW, GI_SWORD_BROKEN);
                 Randomizer_ConsumeAdultTradeItem(play, ITEM_SAW);
                 GiveItemEntryFromActor(&this->actor, play, itemEntry, 100.0f, 10.0f);
+                Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_GV_TRADE_SAW);
             } else {
                 s32 itemId = GI_SWORD_BROKEN;
                 func_8002F434(&this->actor, play, itemId, 100.0f, 10.0f);
@@ -367,20 +368,20 @@ void EnToryo_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if ((this->stateFlags & 8)) {
-        this->unk_1EC.unk_18.x = player->actor.focus.pos.x;
-        this->unk_1EC.unk_18.y = player->actor.focus.pos.y;
-        this->unk_1EC.unk_18.z = player->actor.focus.pos.z;
+        this->interactInfo.trackPos.x = player->actor.focus.pos.x;
+        this->interactInfo.trackPos.y = player->actor.focus.pos.y;
+        this->interactInfo.trackPos.z = player->actor.focus.pos.z;
 
         if ((this->stateFlags & 0x10)) {
-            func_80034A14(thisx, &this->unk_1EC, 0, 4);
+            Npc_TrackPoint(thisx, &this->interactInfo, 0, NPC_TRACKING_FULL_BODY);
             return;
         }
 
         rot = thisx->yawTowardsPlayer - thisx->shape.rot.y;
         if ((rot < 14563.0f) && (rot > -14563.0f)) {
-            func_80034A14(thisx, &this->unk_1EC, 0, 2);
+            Npc_TrackPoint(thisx, &this->interactInfo, 0, NPC_TRACKING_HEAD_AND_TORSO);
         } else {
-            func_80034A14(thisx, &this->unk_1EC, 0, 1);
+            Npc_TrackPoint(thisx, &this->interactInfo, 0, NPC_TRACKING_NONE);
         }
     }
 }
@@ -388,7 +389,7 @@ void EnToryo_Update(Actor* thisx, PlayState* play) {
 void EnToryo_Draw(Actor* thisx, PlayState* play) {
     EnToryo* this = (EnToryo*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnToryo_OverrideLimbDraw, EnToryo_PostLimbDraw, this);
 }
@@ -400,12 +401,12 @@ s32 EnToryo_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f*
     if ((this->stateFlags & 8)) {
         switch (limbIndex) {
             case 8:
-                rot->x += this->unk_1EC.unk_0E.y;
-                rot->y -= this->unk_1EC.unk_0E.x;
+                rot->x += this->interactInfo.torsoRot.y;
+                rot->y -= this->interactInfo.torsoRot.x;
                 break;
             case 15:
-                rot->x += this->unk_1EC.unk_08.y;
-                rot->z += this->unk_1EC.unk_08.x;
+                rot->x += this->interactInfo.headRot.y;
+                rot->z += this->interactInfo.headRot.x;
                 break;
         }
     }

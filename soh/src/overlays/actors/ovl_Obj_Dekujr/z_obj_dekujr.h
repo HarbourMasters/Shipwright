@@ -1,7 +1,7 @@
 #ifndef Z_OBJ_DEKUJR_H
 #define Z_OBJ_DEKUJR_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ObjDekujr;

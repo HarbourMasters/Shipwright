@@ -764,8 +764,10 @@ void EnTite_FallApart(EnTite* this, PlayState* play) {
     if (BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, this->actor.params + 0xB)) {
         if (this->actor.params == TEKTITE_BLUE) {
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xE0);
+            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_BLUE]++;
         } else {
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x40);
+            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_RED]++;
         }
         Actor_Kill(&this->actor);
     }
@@ -980,7 +982,7 @@ void EnTite_Draw(Actor* thisx, PlayState* play) {
     EnTite* this = (EnTite*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Collider_UpdateSpheres(0, &this->collider);
     if (this->actor.params == TEKTITE_BLUE) {
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(object_tite_Tex_001300));

@@ -1,8 +1,8 @@
 #ifndef Z64_H
 #define Z64_H
 
-#include "ultra64.h"
-#include "ultra64/gs2dex.h"
+#include <libultraship/libultra.h>
+#include "unk.h" // this used to get pulled in via ultra64.h
 #include "z64save.h"
 #include "z64light.h"
 #include "z64bgcheck.h"
@@ -24,9 +24,10 @@
 #include "z64skin.h"
 #include "z64transition.h"
 #include "z64interface.h"
+#include "alignment.h"
 #include "sequence.h"
 #include "sfx.h"
-#include <color.h>
+#include <libultraship/color.h>
 #include "ichain.h"
 #include "regs.h"
 
@@ -44,6 +45,7 @@ namespace Ship
     class Scene;
     class DisplayList;
 };
+#include <memory>
 #endif
 
 #define SCREEN_WIDTH  320
@@ -211,6 +213,81 @@ typedef struct {
     /* 0x0120 */ s32    flags;
     /* 0x0124 */ s32    unk_124;
 } View; // size = 0x128
+
+typedef enum {
+    /*  0 */ SETUPDL_0,
+    /*  1 */ SETUPDL_1,
+    /*  2 */ SETUPDL_2,
+    /*  3 */ SETUPDL_3,
+    /*  4 */ SETUPDL_4,
+    /*  5 */ SETUPDL_5,
+    /*  6 */ SETUPDL_6,
+    /*  7 */ SETUPDL_7,
+    /*  8 */ SETUPDL_8,
+    /*  9 */ SETUPDL_9,
+    /* 10 */ SETUPDL_10,
+    /* 11 */ SETUPDL_11,
+    /* 12 */ SETUPDL_12,
+    /* 13 */ SETUPDL_13,
+    /* 14 */ SETUPDL_14,
+    /* 15 */ SETUPDL_15,
+    /* 16 */ SETUPDL_16,
+    /* 17 */ SETUPDL_17,
+    /* 18 */ SETUPDL_18,
+    /* 19 */ SETUPDL_19,
+    /* 20 */ SETUPDL_20,
+    /* 21 */ SETUPDL_21,
+    /* 22 */ SETUPDL_22,
+    /* 23 */ SETUPDL_23,
+    /* 24 */ SETUPDL_24,
+    /* 25 */ SETUPDL_25,
+    /* 26 */ SETUPDL_26,
+    /* 27 */ SETUPDL_27,
+    /* 28 */ SETUPDL_28,
+    /* 29 */ SETUPDL_29,
+    /* 30 */ SETUPDL_30,
+    /* 31 */ SETUPDL_31,
+    /* 32 */ SETUPDL_32,
+    /* 33 */ SETUPDL_33,
+    /* 34 */ SETUPDL_34,
+    /* 35 */ SETUPDL_35,
+    /* 36 */ SETUPDL_36,
+    /* 37 */ SETUPDL_37,
+    /* 38 */ SETUPDL_38,
+    /* 39 */ SETUPDL_39,
+    /* 40 */ SETUPDL_40,
+    /* 41 */ SETUPDL_41,
+    /* 42 */ SETUPDL_42,
+    /* 43 */ SETUPDL_43,
+    /* 44 */ SETUPDL_44,
+    /* 45 */ SETUPDL_45,
+    /* 46 */ SETUPDL_46,
+    /* 47 */ SETUPDL_47,
+    /* 48 */ SETUPDL_48,
+    /* 49 */ SETUPDL_49,
+    /* 50 */ SETUPDL_50,
+    /* 51 */ SETUPDL_51,
+    /* 52 */ SETUPDL_52,
+    /* 53 */ SETUPDL_53,
+    /* 54 */ SETUPDL_54,
+    /* 55 */ SETUPDL_55,
+    /* 56 */ SETUPDL_56,
+    /* 57 */ SETUPDL_57,
+    /* 58 */ SETUPDL_58,
+    /* 59 */ SETUPDL_59,
+    /* 60 */ SETUPDL_60,
+    /* 61 */ SETUPDL_61,
+    /* 62 */ SETUPDL_62,
+    /* 63 */ SETUPDL_63,
+    /* 64 */ SETUPDL_64,
+    /* 65 */ SETUPDL_65,
+    /* 66 */ SETUPDL_66,
+    /* 67 */ SETUPDL_67,
+    /* 68 */ SETUPDL_68,
+    /* 69 */ SETUPDL_69,
+    /* 70 */ SETUPDL_70,
+    /* 71 */ SETUPDL_MAX
+} SetupDL;
 
 typedef struct {
     /* 0x00 */ u8   seqId;
@@ -872,14 +949,6 @@ typedef struct {
 typedef struct {
     /* 0x00 */ Gfx* opa;
     /* 0x04 */ Gfx* xlu;
-
-#ifdef __cplusplus
-    Ship::DisplayList* opaDL;
-    Ship::DisplayList* xluDL;
-#else
-void* opaDL;
-void* xluDL;
-#endif
 } PolygonDlist; // size = 0x8
 
 
@@ -940,14 +1009,6 @@ typedef struct {
     /* 0x06 */ s16   unk_06;
     /* 0x08 */ Gfx*  opa;
     /* 0x0C */ Gfx*  xlu;
-
-#ifdef __cplusplus
-    Ship::DisplayList* opaDL;
-    Ship::DisplayList* xluDL;
-#else
-    void* opaDL;
-    void* xluDL;
-#endif
 } PolygonDlist2; // size = 0x8
 
 typedef struct {
@@ -1011,12 +1072,7 @@ typedef struct {
     /* 0x58 */ OSMesgQueue loadQueue;
     /* 0x70 */ OSMesg loadMsg;
     /* 0x74 */ s16 unk_74[2]; // context-specific data used by the current scene draw config
-
-#ifdef __cplusplus
-    Ship::Scene* roomToLoad;
-#else
     void* roomToLoad;
-#endif
 } RoomContext; // size = 0x78
 
 typedef struct {
@@ -1234,13 +1290,7 @@ typedef struct PlayState {
     /* 0x000A4 */ s16 sceneNum;
     /* 0x000A6 */ u8 sceneConfig;
     /* 0x000A7 */ char unk_A7[0x9];
-
-#ifdef __cplusplus
-    Ship::Scene* sceneSegment;
-#else
     /* 0x000B0 */ void* sceneSegment;
-#endif
-
     /* 0x000B8 */ View view;
     /* 0x001E0 */ Camera mainCamera;
     /* 0x0034C */ Camera subCameras[NUM_CAMS - SUBCAM_FIRST];
@@ -1455,18 +1505,6 @@ typedef struct {
     /* 0x04 */ u8 mode;
     /* 0x08 */ f32 morphFrames;
 } AnimationMinimalInfo; // size = 0xC
-
-typedef struct {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
-    /* 0x06 */ s16 unk_06;
-    /* 0x08 */ Vec3s unk_08;
-    /* 0x0E */ Vec3s unk_0E;
-    /* 0x14 */ f32 unk_14;
-    /* 0x18 */ Vec3f unk_18;
-    /* 0x24 */ s16 unk_24;
-} struct_80034A14_arg1; // size = 0x28
 
 typedef struct {
     /* 0x00 */ s8  scene;

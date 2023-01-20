@@ -443,7 +443,7 @@ void func_80896950(BgJyaCobra* this, PlayState* play) {
 
     if (this->dyna.unk_150 > 0.001f) {
         this->unk_168++;
-        if (this->unk_168 >= (15 - CVar_GetS32("gFasterBlockPush", 0) * 2)) {
+        if (this->unk_168 >= (15 - CVarGetInteger("gFasterBlockPush", 0) * 2)) {
             func_808969F8(this, play);
         }
     } else {
@@ -478,7 +478,7 @@ void func_808969F8(BgJyaCobra* this, PlayState* play) {
     this->unk_174.z = player->actor.world.pos.z - this->dyna.actor.world.pos.z;
     this->unk_170 = 0;
     this->unk_172 = true;
-    this->unk_16E = CVar_GetS32("gFasterBlockPush", 0) * 20;
+    this->unk_16E = CVarGetInteger("gFasterBlockPush", 0) * 20;
 }
 
 void func_80896ABC(BgJyaCobra* this, PlayState* play) {
@@ -531,7 +531,7 @@ void BgJyaCobra_Update(Actor* thisx, PlayState* play2) {
 void func_80896CB4(PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gCobra2DL);
@@ -544,7 +544,7 @@ void func_80896D78(BgJyaCobra* this, PlayState* play) {
     Vec3s sp44;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     sp44.x = D_80897308[this->dyna.actor.params & 3] + this->dyna.actor.shape.rot.x;
     sp44.y = this->dyna.actor.shape.rot.y;
@@ -568,7 +568,7 @@ void BgJyaCobra_DrawShadow(BgJyaCobra* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80094044(play->state.gfxCtx);
+    Gfx_SetupDL_44Xlu(play->state.gfxCtx);
 
     if (params == 0) {
         sp64.x = this->dyna.actor.world.pos.x - 50.0f;
