@@ -981,6 +981,16 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option GossipStoneHints;
   extern Option ClearerHints;
   extern Option HintDistribution;
+  extern Option AltarHintText;
+  extern Option GanondorfHintText;
+  extern Option DampeHintText;
+  extern Option Kak10GSHintText;
+  extern Option Kak20GSHintText;
+  extern Option Kak30GSHintText;
+  extern Option Kak40GSHintText;
+  extern Option Kak50GSHintText;
+  extern Option ScrubHintText;
+  extern Option WarpSongHints;
   extern Option DamageMultiplier;
   extern Option StartingTime;
   extern Option ChestAnimations;

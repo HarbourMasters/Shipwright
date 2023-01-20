@@ -177,13 +177,20 @@ const std::vector<const char*> enhancementsCvars = {
 };
 
 const std::vector<const char*> randomizerCvars = {
+    "gRandomize10GSHint",
+    "gRandomize20GSHint",
+    "gRandomize30GSHint",
+    "gRandomize40GSHint",
+    "gRandomize50GSHint",
     "gRandomizeAllLocationsReachable",
+    "gRandomizeAltarHint",
     "gRandomizeBigPoeTargetCount",
     "gRandomizeBlueFireArrows",
     "gRandomizeBombchusInLogic",
     "gRandomizeBossKeysanity",
     "gRandomizeCompleteMaskQuest",
     "gRandomizeCuccosToReturn",
+    "gRandomizeDampeHint",
     "gRandomizeDecoupleEntrances",
     "gRandomizeDoorOfTime",
     "gRandomizeDungeonCount",
@@ -209,6 +216,7 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeLacsRewardCount",
     "gRandomizeLacsStoneCount",
     "gRandomizeLacsTokenCount",
+    "gRandomizeLAHint",
     "gRandomizeLinksPocket",
     "gRandomizeLogicRules",
     "gRandomizeMedallionCount",
@@ -221,6 +229,7 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeMqDungeons",
     "gRandomizeRainbowBridge",
     "gRandomizeRewardCount",
+    "gRandomizeScrubText",
     "gRandomizeShopsanity",
     "gRandomizeShuffleAdultTrade",
     "gRandomizeShuffleBeans",
@@ -280,6 +289,7 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeStoneCount",
     "gRandomizeSunlightArrows",
     "gRandomizeTokenCount",
+    "gRandomizeWarpSongText",
     "gRandomizeZorasFountain",
 };
 
