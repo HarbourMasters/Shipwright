@@ -426,8 +426,10 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     }
 
     // If no value is specifically set, default to using whatever CC sends us.
-    if (!effect->giEffect->parameter && effect->value[0]) {
-        effect->giEffect->parameter = effect->value[0];
+    if (effect->giEffect != NULL) {
+        if (!effect->giEffect->parameter && effect->value[0]) {
+            effect->giEffect->parameter = effect->value[0];
+        }
     }
 
     if (effect->category == "") {
