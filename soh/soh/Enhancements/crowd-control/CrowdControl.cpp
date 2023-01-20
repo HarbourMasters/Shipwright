@@ -383,7 +383,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     } else if (effectName == EFFECT_SPAWN_ARWING) {
         effect->giEffect->parameters[0] = ACTOR_EN_CLEAR_TAG;
         // Parameter for no cutscene Arwing
-        effect->giEffect->parameters[0] = 1;
+        effect->giEffect->parameters[1] = 1;
         effect->category = "spawn_enemy";
     } else if (effectName == EFFECT_SPAWN_DARK_LINK) {
         effect->giEffect->parameters[0] = ACTOR_EN_TORCH2;
