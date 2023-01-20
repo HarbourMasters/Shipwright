@@ -1,7 +1,7 @@
 #ifndef Z_EN_BDFIRE_H
 #define Z_EN_BDFIRE_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "overlays/actors/ovl_Boss_Dodongo/z_boss_dodongo.h"
 

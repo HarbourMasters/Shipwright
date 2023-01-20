@@ -1,5 +1,5 @@
 #include "VtxExporter.h"
-#include "Resource.h"
+#include <libultraship/bridge.h>
 #include "VersionInfo.h"
 
 

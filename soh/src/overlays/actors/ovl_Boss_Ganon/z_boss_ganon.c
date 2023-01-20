@@ -1197,9 +1197,11 @@ void BossGanon_SetupTowerCutscene(BossGanon* this, PlayState* play) {
 
 void BossGanon_ShatterWindows(u8 windowShatterState) {
     s16 i;
-    u8* tex1 = ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(ResourceMgr_GetName(ganon_boss_sceneTex_006C18)));
-    u8* tex2 = ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(ResourceMgr_GetName(ganon_boss_sceneTex_007418)));
-    u8* templateTex = ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGanondorfWindowShatterTemplateTex));
+    // Temporary solution: using LoadTexOrDList to ensure we actually have the texture available
+    // based on mq/nonmq. This will be handled properly with LUS 1.0
+    u8* tex1 = ResourceMgr_LoadTexOrDListByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_006C18));
+    u8* tex2 = ResourceMgr_LoadTexOrDListByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_007418));
+    u8* templateTex = GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGanondorfWindowShatterTemplateTex), false);
 
     for (i = 0; i < 2048; i++) {
         if ((tex1[i] != 0) && (Rand_ZeroOne() < 0.03f)) {
@@ -1214,7 +1216,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
     static Color_RGBA8 bloodPrimColor = { 0, 120, 0, 255 };
     static Color_RGBA8 bloodEnvColor = { 0, 120, 0, 255 };
 
-    if(CVar_GetS32("gRedGanonBlood", 0)) {
+    if(CVarGetInteger("gRedGanonBlood", 0)) {
         bloodPrimColor.r = 120;
         bloodPrimColor.g = 0;
 
@@ -3820,8 +3822,8 @@ void BossGanon_Draw(Actor* thisx, PlayState* play) {
 
     // Invalidate textures if they have changed
     if (this->windowShatterState != GDF_WINDOW_SHATTER_OFF) {
-        gSPInvalidateTexCache(POLY_OPA_DISP++, ResourceMgr_GetName(ganon_boss_sceneTex_006C18));
-        gSPInvalidateTexCache(POLY_OPA_DISP++, ResourceMgr_GetName(ganon_boss_sceneTex_007418));
+        gSPInvalidateTexCache(POLY_OPA_DISP++, ganon_boss_sceneTex_006C18);
+        gSPInvalidateTexCache(POLY_OPA_DISP++, ganon_boss_sceneTex_007418);
     }
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);

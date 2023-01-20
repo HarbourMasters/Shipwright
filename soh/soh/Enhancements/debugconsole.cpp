@@ -27,7 +27,7 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-#include <Cvar.h>
+#include <libultraship/bridge.h>
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 
 #define CMD_REGISTER SohImGui::GetConsole()->AddCommand
@@ -944,9 +944,9 @@ static bool SetCVarHandler(std::shared_ptr<Ship::Console> Console, const std::ve
     int vType = CheckVarType(args[2]);
 
     if (vType == VARTYPE_STRING)
-        CVar_SetString(args[1].c_str(), args[2].c_str());
+        CVarSetString(args[1].c_str(), args[2].c_str());
     else if (vType == VARTYPE_FLOAT)
-        CVar_SetFloat((char*)args[1].c_str(), std::stof(args[2]));
+        CVarSetFloat((char*)args[1].c_str(), std::stof(args[2]));
     else if (vType == VARTYPE_RGBA)
     {
         uint32_t val = std::stoul(&args[2].c_str()[1], nullptr, 16);
@@ -955,12 +955,12 @@ static bool SetCVarHandler(std::shared_ptr<Ship::Console> Console, const std::ve
         clr.g = val >> 16;
         clr.b = val >> 8;
         clr.a = val & 0xFF;
-        CVar_SetRGBA((char*)args[1].c_str(), clr);
+        CVarSetColor((char*)args[1].c_str(), clr);
     }
     else
-        CVar_SetS32(args[1].c_str(), std::stoi(args[2]));
+        CVarSetInteger(args[1].c_str(), std::stoi(args[2]));
 
-    CVar_Save();
+    CVarSave();
 
     //SohImGui::GetConsole()->SendInfoMessage("[SOH] Updated player position to [ %.2f, %.2f, %.2f ]", pos.x, pos.y, pos.z);
     return CMD_SUCCESS;
@@ -970,18 +970,18 @@ static bool GetCVarHandler(std::shared_ptr<Ship::Console> Console, const std::ve
     if (args.size() < 2)
         return CMD_FAILED;
 
-    CVar* cvar = CVar_Get(args[1].c_str());
+    auto cvar = CVarGet(args[1].c_str());
 
     if (cvar != nullptr)
     {
-        if (cvar->Type == CVarType::S32)
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %i", args[1].c_str(), cvar->value.ValueS32);
-        else if (cvar->Type == CVarType::Float)
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %f", args[1].c_str(), cvar->value.ValueFloat);
-        else if (cvar->Type == CVarType::String)
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %s", args[1].c_str(), cvar->value.ValueStr);
-        else if (cvar->Type == CVarType::RGBA)
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %08X", args[1].c_str(), cvar->value.ValueRGBA);
+        if (cvar->Type == Ship::ConsoleVariableType::Integer)
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %i", args[1].c_str(), cvar->Integer);
+        else if (cvar->Type == Ship::ConsoleVariableType::Float)
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %f", args[1].c_str(), cvar->Float);
+        else if (cvar->Type == Ship::ConsoleVariableType::String)
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %s", args[1].c_str(), cvar->String.c_str());
+        else if (cvar->Type == Ship::ConsoleVariableType::Color)
+            SohImGui::GetConsole()->SendInfoMessage("[SOH] Variable %s is %08X", args[1].c_str(), cvar->Color);
     }
     else
     {
@@ -1159,5 +1159,5 @@ void DebugConsole_Init(void) {
 
     CMD_REGISTER("cucco_storm", { CuccoStormHandler, "Cucco Storm" });
 
-    CVar_Load();
+    CVarLoad();
 }

@@ -1,7 +1,7 @@
 #ifndef Z_EFC_ERUPC_H
 #define Z_EFC_ERUPC_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EfcErupc;

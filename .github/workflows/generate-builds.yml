@@ -109,9 +109,9 @@ jobs:
     - name: Install latest SDL
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        wget https://www.libsdl.org/release/SDL2-2.24.1.tar.gz
-        tar -xzf SDL2-2.24.1.tar.gz
-        cd SDL2-2.24.1
+        wget https://www.libsdl.org/release/SDL2-2.26.1.tar.gz
+        tar -xzf SDL2-2.26.1.tar.gz
+        cd SDL2-2.26.1
         ./configure
         make -j 10
         sudo make install

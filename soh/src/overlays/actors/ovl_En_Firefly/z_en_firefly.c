@@ -744,10 +744,10 @@ void EnFirefly_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* 
     static Color_RGBA8 fireAuraEnvColor = { 255, 50, 0, 0 };
     static Color_RGBA8 iceAuraPrimColor = { 100, 200, 255, 255 };
     static Color_RGBA8 iceAuraEnvColor = { 0, 0, 255, 0 };
-    Color_RGBA8 customFireAuraPrimColor = CVar_GetRGBA("gCosmetics.NPC_FireKeesePrimary.Value", fireAuraPrimColor);
-    Color_RGBA8 customFireAuraEnvColor = CVar_GetRGBA("gCosmetics.NPC_FireKeeseSecondary.Value", fireAuraEnvColor);
-    Color_RGBA8 customIceAuraPrimColor = CVar_GetRGBA("gCosmetics.NPC_IceKeesePrimary.Value", iceAuraPrimColor);
-    Color_RGBA8 customIceAuraEnvColor = CVar_GetRGBA("gCosmetics.NPC_IceKeeseSecondary.Value", iceAuraEnvColor);
+    Color_RGBA8 customFireAuraPrimColor = CVarGetColor("gCosmetics.NPC_FireKeesePrimary.Value", fireAuraPrimColor);
+    Color_RGBA8 customFireAuraEnvColor = CVarGetColor("gCosmetics.NPC_FireKeeseSecondary.Value", fireAuraEnvColor);
+    Color_RGBA8 customIceAuraPrimColor = CVarGetColor("gCosmetics.NPC_IceKeesePrimary.Value", iceAuraPrimColor);
+    Color_RGBA8 customIceAuraEnvColor = CVarGetColor("gCosmetics.NPC_IceKeeseSecondary.Value", iceAuraEnvColor);
     static Vec3f effVelocity = { 0.0f, 0.5f, 0.0f };
     static Vec3f effAccel = { 0.0f, 0.5f, 0.0f };
     static Vec3f limbSrc = { 0.0f, 0.0f, 0.0f };
@@ -787,23 +787,23 @@ void EnFirefly_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* 
                 }
 
                 if (this->auraType == KEESE_AURA_FIRE) {
-                    if (CVar_GetS32("gCosmetics.NPC_FireKeesePrimary.Changed", 0)) {
+                    if (CVarGetInteger("gCosmetics.NPC_FireKeesePrimary.Changed", 0)) {
                         effPrimColor = &customFireAuraPrimColor;
                     } else {
                         effPrimColor = &fireAuraPrimColor;
                     }
-                    if (CVar_GetS32("gCosmetics.NPC_FireKeeseSecondary.Changed", 0)) {
+                    if (CVarGetInteger("gCosmetics.NPC_FireKeeseSecondary.Changed", 0)) {
                         effEnvColor = &customFireAuraEnvColor;
                     } else {
                         effEnvColor = &fireAuraEnvColor;
                     }
                 } else {
-                    if (CVar_GetS32("gCosmetics.NPC_IceKeesePrimary.Changed", 0)) {
+                    if (CVarGetInteger("gCosmetics.NPC_IceKeesePrimary.Changed", 0)) {
                         effPrimColor = &customIceAuraPrimColor;
                     } else {
                         effPrimColor = &iceAuraPrimColor;
                     }
-                    if (CVar_GetS32("gCosmetics.NPC_IceKeeseSecondary.Changed", 0)) {
+                    if (CVarGetInteger("gCosmetics.NPC_IceKeeseSecondary.Changed", 0)) {
                         effEnvColor = &customIceAuraEnvColor;
                     } else {
                         effEnvColor = &iceAuraEnvColor;

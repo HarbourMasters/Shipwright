@@ -1,11 +1,11 @@
 #include "CutsceneExporter.h"
-#include <Resource.h>
+#include <libultraship/bridge.h>
 
 void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)
 {
 	ZCutscene* cs = (ZCutscene*)res;
 
-	WriteHeader(cs, outPath, writer, Ship::ResourceType::Cutscene);
+	WriteHeader(cs, outPath, writer, Ship::ResourceType::SOH_Cutscene);
 
 	//writer->Write((uint32_t)cs->commands.size() + 2 + 2);
 	writer->Write((uint32_t)0);
