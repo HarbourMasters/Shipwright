@@ -253,6 +253,8 @@ typedef struct {
     /*        */ u8 pendingIceTrapCount;
     /*        */ SohStats sohStats;
     /*        */ u8 temporaryWeapon;
+    /*        */ FaroresWindData adultFW;
+    /*        */ FaroresWindData childFW;
     // #endregion
     // #region SOH [Randomizer]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to Randomizer
