@@ -1,6 +1,6 @@
 #ifndef FP_H
 #define FP_H
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 
 extern f32 qNaN0x3FFFFF;
 extern f32 qNaN0x10000;

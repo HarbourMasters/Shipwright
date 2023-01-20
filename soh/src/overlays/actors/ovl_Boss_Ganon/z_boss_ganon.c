@@ -1201,7 +1201,7 @@ void BossGanon_ShatterWindows(u8 windowShatterState) {
     // based on mq/nonmq. This will be handled properly with LUS 1.0
     u8* tex1 = ResourceMgr_LoadTexOrDListByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_006C18));
     u8* tex2 = ResourceMgr_LoadTexOrDListByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_007418));
-    u8* templateTex = ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGanondorfWindowShatterTemplateTex));
+    u8* templateTex = GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGanondorfWindowShatterTemplateTex), false);
 
     for (i = 0; i < 2048; i++) {
         if ((tex1[i] != 0) && (Rand_ZeroOne() < 0.03f)) {
@@ -1216,7 +1216,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
     static Color_RGBA8 bloodPrimColor = { 0, 120, 0, 255 };
     static Color_RGBA8 bloodEnvColor = { 0, 120, 0, 255 };
 
-    if(CVar_GetS32("gRedGanonBlood", 0)) {
+    if(CVarGetInteger("gRedGanonBlood", 0)) {
         bloodPrimColor.r = 120;
         bloodPrimColor.g = 0;
 

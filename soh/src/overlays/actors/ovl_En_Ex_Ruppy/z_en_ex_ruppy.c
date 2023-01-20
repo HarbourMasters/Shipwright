@@ -56,7 +56,7 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
     switch (this->type) {
         case 0:
             
-            if (CVar_GetS32("gNewDrops", 0) !=0) {
+            if (CVarGetInteger("gNewDrops", 0) !=0) {
                 this->unk_160 = 0.3f;
             } else {
                 this->unk_160 = 0.01f;
@@ -105,7 +105,7 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
                     }
                 }
             }
-            if (CVar_GetS32("gNewDrops", 0) !=0) {
+            if (CVarGetInteger("gNewDrops", 0) !=0) {
                 this->actor.shape.shadowScale = 0.3f;
                 this->actor.shape.yOffset = 35.0f;
             } else {
@@ -123,14 +123,14 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
         case 2: // Giant pink ruppe that explodes when you touch it
             if (this->type == 1) {
                 this->colorIdx = 4;
-                if (CVar_GetS32("gNewDrops", 0) !=0) {
+                if (CVarGetInteger("gNewDrops", 0) !=0) {
                     Actor_SetScale(&this->actor, 2.0f);
                 } else {
                     Actor_SetScale(&this->actor, 0.1f);
                 }
             } else {
                 this->colorIdx = (s16)Rand_ZeroFloat(3.99f) + 1;
-                if (CVar_GetS32("gNewDrops", 0) !=0) {
+                if (CVarGetInteger("gNewDrops", 0) !=0) {
                     Actor_SetScale(thisx, 0.4f);
                 } else {
                     Actor_SetScale(thisx, 0.02f);
@@ -139,7 +139,7 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
             this->actor.gravity = -3.0f;
             // "Wow Coin"
             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ わーなーコイン ☆☆☆☆☆ \n" VT_RST);
-            if (CVar_GetS32("gNewDrops", 0) !=0) {
+            if (CVarGetInteger("gNewDrops", 0) !=0) {
                 this->actor.shape.shadowScale = 0.3f;
                 this->actor.shape.yOffset = 35.0f;
             } else {
@@ -151,7 +151,7 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
             break;
 
         case 3: // Spawned by the guard in Hyrule courtyard
-            if (CVar_GetS32("gNewDrops", 0) !=0) {
+            if (CVarGetInteger("gNewDrops", 0) !=0) {
                 Actor_SetScale(&this->actor, 0.4f);
             } else {
                 Actor_SetScale(&this->actor, 0.02f);
@@ -170,7 +170,7 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
             this->actor.gravity = -3.0f;
             // "Normal rupee"
             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ ノーマルルピー ☆☆☆☆☆ \n" VT_RST);
-            if (CVar_GetS32("gNewDrops", 0) !=0) {
+            if (CVarGetInteger("gNewDrops", 0) !=0) {
                 this->actor.shape.shadowScale = 0.3f;
                 this->actor.shape.yOffset = 35.0f;
             } else {
@@ -184,7 +184,7 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
         case 4: // Progress markers in the shooting gallery
             this->actor.gravity = -3.0f;
             this->actor.flags &= ~ACTOR_FLAG_0;
-            if (CVar_GetS32("gNewDrops", 0) !=0) {
+            if (CVarGetInteger("gNewDrops", 0) !=0) {
                 Actor_SetScale(&this->actor, 0.3f);
                 this->actor.shape.shadowScale = 0.3f;
                 this->actor.shape.yOffset = -1365.0f;
@@ -393,7 +393,7 @@ void EnExRuppy_WaitAsCollectible(EnExRuppy* this, PlayState* play) {
 }
 
 void EnExRuppy_GalleryTarget(EnExRuppy* this, PlayState* play) {
-    if (CVar_GetS32("gNewDrops", 0) !=0) {
+    if (CVarGetInteger("gNewDrops", 0) !=0) {
         if (this->galleryFlag) {
             Math_ApproachF(&this->actor.shape.yOffset, 35.0f, 0.5f, 200.0f);
         } else {
@@ -436,7 +436,7 @@ void EnExRuppy_Draw(Actor* thisx, PlayState* play) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         func_8002EBCC(thisx, play, 0);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        if (CVar_GetS32("gNewDrops", 0) !=0) {
+        if (CVarGetInteger("gNewDrops", 0) !=0) {
             if (this->type == 4 && this->colorIdx >= 3) {
                 //For some reason the red rupee target become purple.
                 //when using new drops it will show as Gold and that wrong it need to be red.

@@ -1,4 +1,4 @@
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "sintable.c"
 
 s16 sins(u16 x) {

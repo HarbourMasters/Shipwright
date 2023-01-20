@@ -1,7 +1,7 @@
 #ifndef Z_EN_GO_H
 #define Z_EN_GO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnGo;
@@ -42,7 +42,7 @@ typedef struct EnGo {
     /* 0x014C */ SkelAnime skelAnime;
     /* 0x0190 */ EnGoActionFunc actionFunc;
     /* 0x0194 */ ColliderCylinder collider;
-    /* 0x01E0 */ struct_80034A14_arg1 unk_1E0;
+    /* 0x01E0 */ NpcInteractInfo interactInfo;
     /* 0x0208 */ char unk_208[0x4];
     /* 0x020C */ s16 unk_20C;
     /* 0x020E */ s16 unk_20E;

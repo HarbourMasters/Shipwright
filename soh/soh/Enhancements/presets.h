@@ -173,17 +173,25 @@ const std::vector<const char*> enhancementsCvars = {
     "gBombchuBowlingNoBigCucco",
     "gBombchuBowlingAmmunition",
     "gCreditsFix",
+    "gSilverRupeeJingleExtend",
     "gStaticExplosionRadius"
 };
 
 const std::vector<const char*> randomizerCvars = {
+    "gRandomize10GSHint",
+    "gRandomize20GSHint",
+    "gRandomize30GSHint",
+    "gRandomize40GSHint",
+    "gRandomize50GSHint",
     "gRandomizeAllLocationsReachable",
+    "gRandomizeAltarHint",
     "gRandomizeBigPoeTargetCount",
     "gRandomizeBlueFireArrows",
     "gRandomizeBombchusInLogic",
     "gRandomizeBossKeysanity",
     "gRandomizeCompleteMaskQuest",
     "gRandomizeCuccosToReturn",
+    "gRandomizeDampeHint",
     "gRandomizeDecoupleEntrances",
     "gRandomizeDoorOfTime",
     "gRandomizeDungeonCount",
@@ -209,6 +217,7 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeLacsRewardCount",
     "gRandomizeLacsStoneCount",
     "gRandomizeLacsTokenCount",
+    "gRandomizeLAHint",
     "gRandomizeLinksPocket",
     "gRandomizeLogicRules",
     "gRandomizeMedallionCount",
@@ -221,9 +230,11 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeMqDungeons",
     "gRandomizeRainbowBridge",
     "gRandomizeRewardCount",
+    "gRandomizeScrubText",
     "gRandomizeShopsanity",
     "gRandomizeShuffleAdultTrade",
     "gRandomizeShuffleBeans",
+    "gRandomizeShuffleBossEntrances",
     "gRandomizeShuffleCows",
     "gRandomizeShuffleDungeonReward",
     "gRandomizeShuffleDungeonsEntrances",
@@ -260,14 +271,27 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeSkipTowerEscape",
     "gRandomizeStartingAge",
     "gRandomizeStartingConsumables",
+    "gRandomizeStartingBoleroOfFire",
     "gRandomizeStartingDekuShield",
+    "gRandomizeStartingEponasSong",
     "gRandomizeStartingKokiriSword",
     "gRandomizeStartingMapsCompasses",
+    "gRandomizeStartingMinuetOfForest",
+    "gRandomizeStartingNocturneOfShadow",
     "gRandomizeStartingOcarina",
+    "gRandomizeStartingPreludeOfLight",
+    "gRandomizeStartingRequiemOfSpirit",
+    "gRandomizeStartingSariasSong",
+    "gRandomizeStartingSerenadeOfWater",
     "gRandomizeStartingSkulltulaToken",
+    "gRandomizeStartingSongOfStorms",
+    "gRandomizeStartingSongOfTime",
+    "gRandomizeStartingSunsSong",
+    "gRandomizeStartingZeldasLullaby",
     "gRandomizeStoneCount",
     "gRandomizeSunlightArrows",
     "gRandomizeTokenCount",
+    "gRandomizeWarpSongText",
     "gRandomizeZorasFountain",
 };
 
@@ -321,6 +345,8 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     PRESET_ENTRY_S32("gDekuNutUpgradeFix", 1),
     // Fix Navi text HUD position
     PRESET_ENTRY_S32("gNaviTextFix", 1),
+    // Extend Silver Rupee Jingle
+    PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
@@ -351,7 +377,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32("gTextSpeed", 5),
     // King Zora Speed (1 to 5)
-    PRESET_ENTRY_S32("gMweepSpeed", 2),
+    PRESET_ENTRY_S32("gMweepSpeed", 5),
     // Faster Block Push (+0 to +5)
     PRESET_ENTRY_S32("gFasterBlockPush", 5),
     // Better Owl
@@ -384,6 +410,8 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32("gDekuNutUpgradeFix", 1),
     // Fix Navi text HUD position
     PRESET_ENTRY_S32("gNaviTextFix", 1),
+    // Extend Silver Rupee Jingle
+    PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
@@ -395,8 +423,6 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32("gBombchusOOB", 1),
     // Skip save confirmation
     PRESET_ENTRY_S32("gSkipSaveConfirmation", 1),
-    // King Zora Speed (1 to 5)
-    PRESET_ENTRY_S32("gMweepSpeed", 5),
     // Biggoron Forge Time (0 to 3)
     PRESET_ENTRY_S32("gForgeTime", 0),
     // Vine/Ladder Climb speed (+0 to +12)
@@ -468,7 +494,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Text Speed (1 to 5)
     PRESET_ENTRY_S32("gTextSpeed", 5),
     // King Zora Speed (1 to 5)
-    PRESET_ENTRY_S32("gMweepSpeed", 2),
+    PRESET_ENTRY_S32("gMweepSpeed", 5),
     // Faster Block Push (+0 to +5)
     PRESET_ENTRY_S32("gFasterBlockPush", 5),
     // Better Owl
@@ -480,9 +506,6 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gTimeFlowFileSelect", 1),
     // Inject Item Counts in messages
     PRESET_ENTRY_S32("gInjectItemCounts", 1),
-
-    // Pause link animation (0 to 16)
-    PRESET_ENTRY_S32("gPauseLiveLink", 1),
 
     // Dynamic Wallet Icon
     PRESET_ENTRY_S32("gDynamicWalletIcon", 1),
@@ -501,6 +524,8 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gDekuNutUpgradeFix", 1),
     // Fix Navi text HUD position
     PRESET_ENTRY_S32("gNaviTextFix", 1),
+    // Extend Silver Rupee Jingle
+    PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
@@ -512,8 +537,6 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gBombchusOOB", 1),
     // Skip save confirmation
     PRESET_ENTRY_S32("gSkipSaveConfirmation", 1),
-    // King Zora Speed (1 to 5)
-    PRESET_ENTRY_S32("gMweepSpeed", 5),
     // Biggoron Forge Time (0 to 3)
     PRESET_ENTRY_S32("gForgeTime", 0),
     // Vine/Ladder Climb speed (+0 to +12)

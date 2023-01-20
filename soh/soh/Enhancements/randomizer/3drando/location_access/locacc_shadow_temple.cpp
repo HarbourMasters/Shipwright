@@ -81,18 +81,16 @@ void AreaTable_Init_ShadowTemple() {
                   Entrance(SHADOW_TEMPLE_BEYOND_BOAT, {[]{return CanPlay(ZeldasLullaby) && SmallKeys(SHADOW_TEMPLE, 4, 5);}}),
   });
 
-  areaTable[SHADOW_TEMPLE_BEYOND_BOAT] = Area("Shadow Temple Beyond Boat", "Shadow Temple", SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {
-                  //Events
-                  EventAccess(&ShadowTempleClear, {[]{return ShadowTempleClear || (SmallKeys(SHADOW_TEMPLE, 5) && BossKeyShadowTemple && (Bow || CanUse(DISTANT_SCARECROW) || (LogicShadowStatue && HasBombchus)));}}),
-  }, {
+  areaTable[SHADOW_TEMPLE_BEYOND_BOAT] = Area("Shadow Temple Beyond Boat", "Shadow Temple", SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(SHADOW_TEMPLE_SPIKE_WALLS_LEFT_CHEST,      {[]{return CanUse(DINS_FIRE);}}),
                   LocationAccess(SHADOW_TEMPLE_BOSS_KEY_CHEST,              {[]{return CanUse(DINS_FIRE);}}),
                   LocationAccess(SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST, {[]{return true;}}),
-                  LocationAccess(SHADOW_TEMPLE_BONGO_BONGO_HEART,           {[]{return SmallKeys(SHADOW_TEMPLE, 5) && BossKeyShadowTemple && (Bow || CanUse(DISTANT_SCARECROW) || (LogicShadowStatue && HasBombchus));}}),
-                  LocationAccess(BONGO_BONGO,                               {[]{return SmallKeys(SHADOW_TEMPLE, 5) && BossKeyShadowTemple && (Bow || CanUse(DISTANT_SCARECROW) || (LogicShadowStatue && HasBombchus));}}),
                   LocationAccess(SHADOW_TEMPLE_GS_TRIPLE_GIANT_POT,         {[]{return true;}}),
-  }, {});
+  }, {
+                  //Exits
+                  Entrance(SHADOW_TEMPLE_BOSS_ENTRYWAY, {[]{return (CanUse(BOW) || CanUse(DISTANT_SCARECROW) || (LogicShadowStatue && HasBombchus)) && SmallKeys(SHADOW_TEMPLE, 5) && CanUse(HOVER_BOOTS) && BossKeyShadowTemple;}})
+  });
   }
 
   /*---------------------------
@@ -164,18 +162,14 @@ void AreaTable_Init_ShadowTemple() {
                   Entrance(SHADOW_TEMPLE_MQ_BEYOND_BOAT, {[]{return CanPlay(ZeldasLullaby) && SmallKeys(SHADOW_TEMPLE, 5);}}),
   });
 
-  areaTable[SHADOW_TEMPLE_MQ_BEYOND_BOAT] = Area("Shadow Temple MQ Beyond Boat", "Shadow Temple", SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {
-                  //Events
-                  EventAccess(&ShadowTempleClear, {[]{return ShadowTempleClear || ((Bow || (LogicShadowStatue && HasBombchus)) && BossKeyShadowTemple);}}),
-  }, {
+  areaTable[SHADOW_TEMPLE_MQ_BEYOND_BOAT] = Area("Shadow Temple MQ Beyond Boat", "Shadow Temple", SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(SHADOW_TEMPLE_BONGO_BONGO_HEART, {[]{return (Bow || (LogicShadowStatue && HasBombchus)) && BossKeyShadowTemple;}}),
-                  LocationAccess(BONGO_BONGO,                     {[]{return (Bow || (LogicShadowStatue && HasBombchus)) && BossKeyShadowTemple;}}),
                   LocationAccess(SHADOW_TEMPLE_MQ_GS_AFTER_SHIP,  {[]{return true;}}),
                   LocationAccess(SHADOW_TEMPLE_MQ_GS_NEAR_BOSS,   {[]{return Bow || (LogicShadowStatue && HasBombchus);}}),
   }, {
                   //Exits
                   Entrance(SHADOW_TEMPLE_MQ_INVISIBLE_MAZE, {[]{return Bow && CanPlay(SongOfTime) && IsAdult && CanUse(LONGSHOT);}}),
+                  Entrance(SHADOW_TEMPLE_BOSS_ENTRYWAY,     {[]{return (CanUse(BOW) || (LogicShadowStatue && HasBombchus)) && CanUse(HOVER_BOOTS) && BossKeyShadowTemple;}}),
   });
 
   areaTable[SHADOW_TEMPLE_MQ_INVISIBLE_MAZE] = Area("Shadow Temple MQ Invisible Maze", "Shadow Temple", SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -186,4 +180,37 @@ void AreaTable_Init_ShadowTemple() {
                   LocationAccess(SHADOW_TEMPLE_MQ_FREESTANDING_KEY,       {[]{return true;}}),
   }, {});
   }
+
+    /*---------------------------
+    |         BOSS ROOM         |
+    ---------------------------*/
+    areaTable[SHADOW_TEMPLE_BOSS_ENTRYWAY] =
+        Area("Shadow Temple Boss Entryway", "Shadow Temple", SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {},
+             {
+                 // Exits
+                 Entrance(SHADOW_TEMPLE_BEYOND_BOAT, { [] { return Dungeon::ShadowTemple.IsVanilla() && false; } }),
+                 Entrance(SHADOW_TEMPLE_MQ_BEYOND_BOAT, { [] { return Dungeon::ShadowTemple.IsMQ() && false; } }),
+                 Entrance(SHADOW_TEMPLE_BOSS_ROOM, { [] { return true; } }),
+             });
+
+    areaTable[SHADOW_TEMPLE_BOSS_ROOM] =
+        Area("Shadow Temple Boss Room", "Shadow Temple", NONE, NO_DAY_NIGHT_CYCLE,
+             {
+                 // Events
+                 EventAccess(&ShadowTempleClear, { [] {
+                     return ShadowTempleClear ||
+                            ((CanUse(LENS_OF_TRUTH) || ((Dungeon::ShadowTemple.IsVanilla() && LogicLensShadowBack) ||
+                                                        (Dungeon::ShadowTemple.IsMQ() && LogicLensShadowMQBack))) &&
+                             (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)));
+                 } }),
+             },
+             {
+                 // Locations
+                 LocationAccess(SHADOW_TEMPLE_BONGO_BONGO_HEART, { [] { return ShadowTempleClear; } }),
+                 LocationAccess(BONGO_BONGO, { [] { return ShadowTempleClear; } }),
+             },
+             {
+                 // Exits
+                 Entrance(SHADOW_TEMPLE_BOSS_ENTRYWAY, { [] { return false; } }),
+             });
 }

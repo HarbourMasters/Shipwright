@@ -32,17 +32,16 @@ def main():
     parser.add_argument("-z", "--zapd", help="Path to ZAPD executable", dest="zapd_exe", type=str)
     parser.add_argument("rom", help="Path to the rom", type=str, nargs="?")
     parser.add_argument("--non-interactive", help="Runs the script non-interactively for use in build scripts.", dest="non_interactive", action="store_true")
+    parser.add_argument("-v", "--verbose", help="Display rom's header checksums and their corresponding xml folder", dest="verbose", action="store_true")
 
     args = parser.parse_args()
 
-    rom_paths = [ args.rom ] if args.rom else rom_chooser.chooseROM(args.non_interactive)
-    for rom_path in rom_paths:
-        rom = Z64Rom(rom_path)
-
+    roms = [ Z64Rom(args.rom) ] if args.rom else rom_chooser.chooseROM(args.verbose, args.non_interactive)
+    for rom in roms:
         if (os.path.exists("Extract")):
             shutil.rmtree("Extract")
 
-        BuildOTR("../soh/assets/xml/" + rom.version.xml_ver + "/", rom_path, zapd_exe=args.zapd_exe)
+        BuildOTR("../soh/assets/xml/" + rom.version.xml_ver + "/", rom.file_path, zapd_exe=args.zapd_exe)
 
 if __name__ == "__main__":
     main()

@@ -1,4 +1,4 @@
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 // TODO: can these macros be shared between files? code_800F9280 seems to use
@@ -1258,11 +1258,11 @@ void Audio_PlayFanfare_Rando(GetItemEntry getItem);
 // Function originally not called, so repurposing for control mapping
 void Audio_OcaUpdateBtnMap(bool customControls, bool dpad, bool rStick) {
     if (customControls) {
-        sOcarinaD5BtnMap = CVar_GetS32("gOcarinaD5BtnMap", BTN_CUP);
-        sOcarinaB4BtnMap = CVar_GetS32("gOcarinaB4BtnMap", BTN_CLEFT);
-        sOcarinaA4BtnMap = CVar_GetS32("gOcarinaA4BtnMap", BTN_CRIGHT);
-        sOcarinaF4BtnMap = CVar_GetS32("gOcarinaF4BtnMap", BTN_CDOWN);
-        sOcarinaD4BtnMap = CVar_GetS32("gOcarinaD4BtnMap", BTN_A);
+        sOcarinaD5BtnMap = CVarGetInteger("gOcarinaD5BtnMap", BTN_CUP);
+        sOcarinaB4BtnMap = CVarGetInteger("gOcarinaB4BtnMap", BTN_CLEFT);
+        sOcarinaA4BtnMap = CVarGetInteger("gOcarinaA4BtnMap", BTN_CRIGHT);
+        sOcarinaF4BtnMap = CVarGetInteger("gOcarinaF4BtnMap", BTN_CDOWN);
+        sOcarinaD4BtnMap = CVarGetInteger("gOcarinaD4BtnMap", BTN_A);
     } else {
         sOcarinaD5BtnMap = BTN_CUP;
         sOcarinaB4BtnMap = BTN_CLEFT;
@@ -1539,8 +1539,8 @@ void func_800ED200(void) {
     u8 k;
 
     u32 disableSongBtnMap;
-    if (CVar_GetS32("gCustomOcarinaControls", 0)) {
-        disableSongBtnMap = CVar_GetS32("gOcarinaDisableBtnMap", BTN_L);
+    if (CVarGetInteger("gCustomOcarinaControls", 0)) {
+        disableSongBtnMap = CVarGetInteger("gOcarinaDisableBtnMap", BTN_L);
     } else {
         disableSongBtnMap = BTN_L;
     }
@@ -1601,13 +1601,13 @@ void func_800ED200(void) {
 
 void func_800ED458(s32 arg0) {
     u32 phi_v1_2;
-    bool customControls = CVar_GetS32("gCustomOcarinaControls", 0);
-    bool dpad = CVar_GetS32("gDpadOcarina", 0);
-    bool rStick = CVar_GetS32("gRStickOcarina", 0);
+    bool customControls = CVarGetInteger("gCustomOcarinaControls", 0);
+    bool dpad = CVarGetInteger("gDpadOcarina", 0);
+    bool rStick = CVarGetInteger("gRStickOcarina", 0);
 
     if (D_80130F3C != 0 && sOcarinaDropInputTimer != 0) {
         sOcarinaDropInputTimer--;
-        if (!CVar_GetS32("gDpadNoDropOcarinaInput", 0)) {
+        if (!CVarGetInteger("gDpadNoDropOcarinaInput", 0)) {
             return;
         }
     }
@@ -1649,7 +1649,7 @@ void func_800ED458(s32 arg0) {
 
         u32 noteSharpBtnMap;
         if (customControls) {
-            noteSharpBtnMap = CVar_GetS32("gOcarinaSharpBtnMap", BTN_R);
+            noteSharpBtnMap = CVarGetInteger("gOcarinaSharpBtnMap", BTN_R);
         } else {
             noteSharpBtnMap = BTN_R;
         }
@@ -1660,7 +1660,7 @@ void func_800ED458(s32 arg0) {
 
         u32 noteFlatBtnMap;
         if (customControls) {
-            noteFlatBtnMap = CVar_GetS32("gOcarinaFlatBtnMap", BTN_Z);
+            noteFlatBtnMap = CVarGetInteger("gOcarinaFlatBtnMap", BTN_Z);
         } else {
             noteFlatBtnMap = BTN_Z;
         }
@@ -3987,7 +3987,7 @@ void Audio_PlayFanfare_Rando(GetItemEntry getItem) {
                 temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
             }
             // If the setting is toggled on and we get special quest items (longer fanfares):
-            if (CVar_GetS32("gRandoQuestItemFanfares", 0) != 0) {
+            if (CVarGetInteger("gRandoQuestItemFanfares", 0) != 0) {
                 // If we get a medallion, play the "get a medallion" fanfare
                 if ((itemId >= ITEM_MEDALLION_FOREST) && (itemId <= ITEM_MEDALLION_LIGHT)) {
                     temp1 = NA_BGM_MEDALLION_GET | 0x900;

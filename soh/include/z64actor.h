@@ -20,8 +20,8 @@ struct Lights;
 typedef void (*ActorFunc)(struct Actor*, struct PlayState*);
 typedef void (*ActorResetFunc)(void);
 typedef void (*ActorShadowFunc)(struct Actor*, struct Lights*, struct PlayState*);
-typedef u16 (*callback1_800343CC)(struct PlayState*, struct Actor*);
-typedef s16 (*callback2_800343CC)(struct PlayState*, struct Actor*);
+typedef u16 (*NpcGetTextIdFunc)(struct PlayState*, struct Actor*);
+typedef s16 (*NpcUpdateTalkStateFunc)(struct PlayState*, struct Actor*);
 
 typedef struct {
     Vec3f pos;
@@ -368,5 +368,32 @@ typedef enum {
     DOORLOCK_BOSS,
     DOORLOCK_NORMAL_SPIRIT
 } DoorLockType;
+
+typedef enum {
+    /* 0x0 */ NPC_TALK_STATE_IDLE, // NPC not currently talking to player
+    /* 0x1 */ NPC_TALK_STATE_TALKING, // NPC is currently talking to player
+    /* 0x2 */ NPC_TALK_STATE_ACTION, // An NPC-defined action triggered in the conversation
+    /* 0x3 */ NPC_TALK_STATE_ITEM_GIVEN // NPC finished giving an item and text box is done
+} NpcTalkState;
+
+typedef enum {
+    /* 0x0 */ NPC_TRACKING_PLAYER_AUTO_TURN, // Determine tracking mode based on player position, see Npc_UpdateAutoTurn
+    /* 0x1 */ NPC_TRACKING_NONE, // Don't track the target (usually the player)
+    /* 0x2 */ NPC_TRACKING_HEAD_AND_TORSO, // Track target by turning the head and the torso
+    /* 0x3 */ NPC_TRACKING_HEAD, // Track target by turning the head
+    /* 0x4 */ NPC_TRACKING_FULL_BODY // Track target by turning the body, torso and head
+} NpcTrackingMode;
+
+typedef struct {
+    /* 0x00 */ s16 talkState;
+    /* 0x02 */ s16 trackingMode;
+    /* 0x04 */ s16 autoTurnTimer;
+    /* 0x06 */ s16 autoTurnState;
+    /* 0x08 */ Vec3s headRot;
+    /* 0x0E */ Vec3s torsoRot;
+    /* 0x14 */ f32 yOffset; // Y position offset to add to actor position when calculating angle to target
+    /* 0x18 */ Vec3f trackPos;
+    /* 0x24 */ char unk_24[0x4];
+} NpcInteractInfo; // size = 0x28
 
 #endif

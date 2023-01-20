@@ -103,7 +103,7 @@ void EnBom_Init(Actor* thisx, PlayState* play) {
     Collider_SetCylinder(play, &this->bombCollider, thisx, &sCylinderInit);
     Collider_SetJntSph(play, &this->explosionCollider, thisx, &sJntSphInit, &this->explosionColliderItems[0]);
     this->explosionColliderItems[0].info.toucher.damage += (thisx->shape.rot.z & 0xFF00) >> 8;
-    if (CVar_GetS32("gNutsExplodeBombs", 0)) {
+    if (CVarGetInteger("gNutsExplodeBombs", 0)) {
         this->bombCollider.info.bumper.dmgFlags |= 1;
     }
 

@@ -456,13 +456,13 @@ s16 func_80B61298(PlayState* play, Actor* thisx) {
         case TEXT_STATE_SONG_DEMO_DONE:
         case TEXT_STATE_8:
         case TEXT_STATE_9:
-            return 1;
+            return NPC_TALK_STATE_TALKING;
 
         case TEXT_STATE_CLOSING:
             switch (thisx->textId) {
                 case 0x4020:
                 case 0x4021:
-                    return 0;
+                    return NPC_TALK_STATE_IDLE;
                 case 0x4008:
                     gSaveContext.infTable[18] |= 0x10;
                     break;
@@ -471,12 +471,12 @@ s16 func_80B61298(PlayState* play, Actor* thisx) {
                     break;
             }
             gSaveContext.eventChkInf[3] |= 1;
-            return 0;
+            return NPC_TALK_STATE_IDLE;
 
         case TEXT_STATE_CHOICE:
             switch (Message_ShouldAdvance(play)) {
                 case 0:
-                    return 1;
+                    return NPC_TALK_STATE_TALKING;
                 default:
                     if (thisx->textId == 0x400C) {
                         thisx->textId = (play->msgCtx.choiceIndex == 0) ? 0x400D : 0x400E;
@@ -484,18 +484,18 @@ s16 func_80B61298(PlayState* play, Actor* thisx) {
                     }
                     break;
             }
-            return 1;
+            return NPC_TALK_STATE_TALKING;
 
         case TEXT_STATE_EVENT:
             switch (Message_ShouldAdvance(play)) {
                 case 0:
-                    return 1;
+                    return NPC_TALK_STATE_TALKING;
                 default:
-                    return 2;
+                    return NPC_TALK_STATE_ACTION;
             }
     }
 
-    return 1;
+    return NPC_TALK_STATE_TALKING;
 }
 
 void EnZo_Blink(EnZo* this) {
@@ -511,16 +511,17 @@ void EnZo_Blink(EnZo* this) {
 void EnZo_Dialog(EnZo* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    this->unk_194.unk_18 = player->actor.world.pos;
+    this->interactInfo.trackPos = player->actor.world.pos;
     if (this->actionFunc == EnZo_Standing) {
         // Look down at link if young, look up if old
-        this->unk_194.unk_14 = !LINK_IS_ADULT ? 10.0f : -10.0f;
+        this->interactInfo.yOffset = !LINK_IS_ADULT ? 10.0f : -10.0f;
     } else {
-        this->unk_194.unk_18.y = this->actor.world.pos.y;
+        this->interactInfo.trackPos.y = this->actor.world.pos.y;
     }
-    func_80034A14(&this->actor, &this->unk_194, 11, this->unk_64C);
+    Npc_TrackPoint(&this->actor, &this->interactInfo, 11, this->trackingMode);
     if (this->canSpeak == true) {
-        func_800343CC(play, &this->actor, &this->unk_194.unk_00, this->dialogRadius, func_80B61024, func_80B61298);
+        Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->dialogRadius, func_80B61024,
+                          func_80B61298);
     }
 }
 
@@ -548,7 +549,7 @@ void EnZo_SetAnimation(EnZo* this) {
 
     if (this->skelAnime.animation == &gZoraHandsOnHipsTappingFootAnim ||
         this->skelAnime.animation == &gZoraOpenArmsAnim) {
-        if (this->unk_194.unk_00 == 0) {
+        if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
             if (this->actionFunc == EnZo_Standing) {
                 animId = ENZO_ANIM_0;
             } else {
@@ -557,12 +558,13 @@ void EnZo_SetAnimation(EnZo* this) {
         }
     }
 
-    if (this->unk_194.unk_00 != 0 && this->actor.textId == 0x4006 &&
+    if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE && this->actor.textId == 0x4006 &&
         this->skelAnime.animation != &gZoraHandsOnHipsTappingFootAnim) {
         animId = ENZO_ANIM_6;
     }
 
-    if (this->unk_194.unk_00 != 0 && this->actor.textId == 0x4007 && this->skelAnime.animation != &gZoraOpenArmsAnim) {
+    if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE && this->actor.textId == 0x4007 &&
+        this->skelAnime.animation != &gZoraOpenArmsAnim) {
         animId = ENZO_ANIM_7;
     }
 
@@ -593,9 +595,9 @@ void EnZo_Init(Actor* thisx, PlayState* play) {
     Actor_SetScale(&this->actor, 0.01f);
     this->actor.targetMode = 6;
     this->dialogRadius = this->collider.dim.radius + 30.0f;
-    this->unk_64C = 1;
+    this->trackingMode = NPC_TRACKING_NONE;
     this->canSpeak = false;
-    this->unk_194.unk_00 = 0;
+    this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
     Actor_UpdateBgCheckInfo(play, &this->actor, this->collider.dim.height * 0.5f, this->collider.dim.radius, 0.0f,
                             5);
 
@@ -620,20 +622,20 @@ void EnZo_Standing(EnZo* this, PlayState* play) {
 
     func_80034F54(play, this->unk_656, this->unk_67E, 20);
     EnZo_SetAnimation(this);
-    if (this->unk_194.unk_00 != 0) {
-        this->unk_64C = 4;
+    if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
+        this->trackingMode = NPC_TRACKING_FULL_BODY;
         return;
     }
 
     angle = ABS((s16)((f32)this->actor.yawTowardsPlayer - (f32)this->actor.shape.rot.y));
     if (angle < 0x4718) {
         if (EnZo_PlayerInProximity(this, play)) {
-            this->unk_64C = 2;
+            this->trackingMode = NPC_TRACKING_HEAD_AND_TORSO;
         } else {
-            this->unk_64C = 1;
+            this->trackingMode = NPC_TRACKING_NONE;
         }
     } else {
-        this->unk_64C = 1;
+        this->trackingMode = NPC_TRACKING_NONE;
     }
 }
 
@@ -663,7 +665,7 @@ void EnZo_TreadWater(EnZo* this, PlayState* play) {
     func_80034F54(play, this->unk_656, this->unk_67E, 20);
     if (Animation_OnFrame(&this->skelAnime, this->skelAnime.endFrame)) {
         this->canSpeak = true;
-        this->unk_64C = 4;
+        this->trackingMode = NPC_TRACKING_FULL_BODY;
         this->skelAnime.playSpeed = 0.0f;
     }
     EnZo_SetAnimation(this);
@@ -685,7 +687,7 @@ void EnZo_TreadWater(EnZo* this, PlayState* play) {
         f32 startFrame;
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENZO_ANIM_4);
         this->canSpeak = false;
-        this->unk_64C = 1;
+        this->trackingMode = NPC_TRACKING_NONE;
         this->actionFunc = EnZo_Dive;
         startFrame = this->skelAnime.startFrame;
         this->skelAnime.startFrame = this->skelAnime.endFrame;
@@ -763,14 +765,14 @@ s32 EnZo_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
 
     if (limbIndex == 15) {
         Matrix_Translate(1800.0f, 0.0f, 0.0f, MTXMODE_APPLY);
-        vec = this->unk_194.unk_08;
+        vec = this->interactInfo.headRot;
         Matrix_RotateX((vec.y / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_RotateZ((vec.x / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_Translate(-1800.0f, 0.0f, 0.0f, MTXMODE_APPLY);
     }
 
     if (limbIndex == 8) {
-        vec = this->unk_194.unk_0E;
+        vec = this->interactInfo.torsoRot;
         Matrix_RotateX((-vec.y / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_RotateZ((vec.x / 32768.0f) * M_PI, MTXMODE_APPLY);
     }

@@ -127,7 +127,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s32 order;
     /* 0x04 */ s32 npredictors;
-    /* 0x08 */ s16 book[]; // size 8 * order * npredictors. 8-byte aligned
+    /* 0x08 */ s16* book; // size 8 * order * npredictors. 8-byte aligned
 } AdpcmBook; // size >= 0x8
 
 typedef struct 
@@ -137,7 +137,7 @@ typedef struct
             /* 0x00 */ u32 codec : 4;
             /* 0x00 */ u32 medium : 2;
             /* 0x00 */ u32 unk_bit26 : 1;
-            /* 0x00 */ u32 unk_bit25 : 1;
+            /* 0x00 */ u32 unk_bit25 : 1; // this has been named isRelocated in zret
             /* 0x01 */ u32 size : 24;
         };
         u32 asU32;
@@ -819,7 +819,7 @@ typedef struct {
     /* 0x0E */ u8 ttl;        // duration after which the DMA can be discarded
 } SampleDma; // size = 0x10
 
-#include <ultra64/abi.h>
+#include <libultraship/libultra/abi.h>
 
 typedef struct {
     /* 0x0000 */ char unk_0000;

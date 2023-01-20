@@ -1,7 +1,7 @@
 #ifndef Z_BG_JYA_BIGMIRROR_H
 #define Z_BG_JYA_BIGMIRROR_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "overlays/actors/ovl_Bg_Jya_Cobra/z_bg_jya_cobra.h"
 

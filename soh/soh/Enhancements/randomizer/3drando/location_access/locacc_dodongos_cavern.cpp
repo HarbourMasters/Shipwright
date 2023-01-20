@@ -50,7 +50,7 @@ void AreaTable_Init_DodongosCavern() {
                   Entrance(DODONGOS_CAVERN_FAR_BRIDGE,   {[]{return HasAccessTo(DODONGOS_CAVERN_FAR_BRIDGE);},
                                               /*Glitched*/[]{return CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::INTERMEDIATE);}}),
                   Entrance(DODONGOS_CAVERN_BOSS_AREA,    {[]{return Here(DODONGOS_CAVERN_FAR_BRIDGE, []{return HasExplosives;});}}),
-                  Entrance(DODONGOS_CAVERN_BOSS_ROOM,    {[]{return false;},
+                  Entrance(DODONGOS_CAVERN_BOSS_ENTRYWAY,{[]{return false;},
                                               /*Glitched*/[]{return CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::ADVANCED);}}),
   });
 
@@ -220,7 +220,7 @@ void AreaTable_Init_DodongosCavern() {
                   Entrance(DODONGOS_CAVERN_LOBBY, {[]{return true;}}),
                   Entrance(DODONGOS_CAVERN_BACK_ROOM, {[]{return Here(DODONGOS_CAVERN_BOSS_AREA, []{return CanBlastOrSmash;});},
                                            /*Glitched*/[]{return Here(DODONGOS_CAVERN_BOSS_AREA, []{return (GlitchBlueFireWall && BlueFire) || (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED));});}}),
-                  Entrance(DODONGOS_CAVERN_BOSS_ROOM, {[]{return true;}}),
+                  Entrance(DODONGOS_CAVERN_BOSS_ENTRYWAY, {[]{return true;}}),
   });
 
   areaTable[DODONGOS_CAVERN_BACK_ROOM] = Area("Dodongos Cavern Back Room", "Dodongos Cavern", DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {
@@ -230,21 +230,6 @@ void AreaTable_Init_DodongosCavern() {
                 }, {
                   //Exits
                   Entrance(DODONGOS_CAVERN_BOSS_AREA, {[]{return true;}}),
-  });
-
-  areaTable[DODONGOS_CAVERN_BOSS_ROOM] = Area("Dodongos Cavern Boss Room", "Dodongos Cavern", DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {
-                  //Events
-                  EventAccess(&DodongosCavernClear, {[]{return DodongosCavernClear || (Here(DODONGOS_CAVERN_BOSS_ROOM, []{return HasExplosives || (CanUse(MEGATON_HAMMER) && CanShield);}) && (Bombs || GoronBracelet) && (IsAdult || Sticks || KokiriSword));},
-                                         /*Glitched*/[]{return Here(DODONGOS_CAVERN_BOSS_ROOM, []{return HasExplosives || (CanUse(MEGATON_HAMMER) && CanShield) || (GlitchBlueFireWall && HasBottle && BlueFireAccess);}) && (HasExplosives || GoronBracelet) && (IsAdult || Sticks || KokiriSword || CanUse(MEGATON_HAMMER));}}),
-                }, {
-                  //Locations
-                  LocationAccess(DODONGOS_CAVERN_BOSS_ROOM_CHEST,    {[]{return true;}}),
-                  LocationAccess(DODONGOS_CAVERN_KING_DODONGO_HEART, {[]{return DodongosCavernClear;}}),
-                  LocationAccess(KING_DODONGO,                       {[]{return DodongosCavernClear;}}),
-                }, {
-                  //Exits
-                  Entrance(DODONGOS_CAVERN_BOSS_AREA, {[]{return true;}}),
-                  Entrance(DODONGOS_CAVERN_ENTRYWAY,  {[]{return DodongosCavernClear;}}),
   });
   }
 
@@ -314,6 +299,53 @@ void AreaTable_Init_DodongosCavern() {
                   LocationAccess(DODONGOS_CAVERN_KING_DODONGO_HEART,   {[]{return CanBlastOrSmash && (Bombs || GoronBracelet) && (IsAdult || Sticks || KokiriSword);}}),
                   LocationAccess(KING_DODONGO,                         {[]{return CanBlastOrSmash && (Bombs || GoronBracelet) && (IsAdult || Sticks || KokiriSword);}}),
                   LocationAccess(DODONGOS_CAVERN_MQ_GS_BACK_AREA,      {[]{return true;}}),
-  }, {});
+  }, {
+                  //Exits
+                  Entrance(DODONGOS_CAVERN_BOSS_ENTRYWAY, {[]{return true;}}),
+  });
   }
+
+    /*---------------------------
+    |         BOSS ROOM         |
+    ---------------------------*/
+    areaTable[DODONGOS_CAVERN_BOSS_ENTRYWAY] =
+        Area("Dodongos Cavern Boss Entryway", "Dodongos Cavern", DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {},
+             {
+                 // Exits
+                 Entrance(DODONGOS_CAVERN_BOSS_AREA, { [] { return Dungeon::DodongosCavern.IsVanilla(); } }),
+                 Entrance(DODONGOS_CAVERN_MQ_BOSS_AREA, { [] { return Dungeon::DodongosCavern.IsMQ(); } }),
+                 Entrance(DODONGOS_CAVERN_BOSS_ROOM, { [] { return true; } }),
+             });
+
+    areaTable[DODONGOS_CAVERN_BOSS_ROOM] =
+        Area("Dodongos Cavern Boss Room", "Dodongos Cavern", NONE, NO_DAY_NIGHT_CYCLE,
+             {
+                 // Events
+                 EventAccess(&DodongosCavernClear,
+                             { [] {
+                                  return DodongosCavernClear ||
+                                         (Here(DODONGOS_CAVERN_BOSS_ROOM,
+                                               [] { return HasExplosives || (CanUse(MEGATON_HAMMER) && CanShield); }) &&
+                                          (Bombs || GoronBracelet) && CanJumpslash);
+                              },
+                               /*Glitched*/
+                               [] {
+                                   return Here(DODONGOS_CAVERN_BOSS_ROOM,
+                                               [] {
+                                                   return HasExplosives || (CanUse(MEGATON_HAMMER) && CanShield) ||
+                                                          (GlitchBlueFireWall && BlueFire);
+                                               }) &&
+                                          (HasExplosives || GoronBracelet) && CanJumpslash;
+                               } }),
+             },
+             {
+                 // Locations
+                 LocationAccess(DODONGOS_CAVERN_BOSS_ROOM_CHEST, { [] { return true; } }),
+                 LocationAccess(DODONGOS_CAVERN_KING_DODONGO_HEART, { [] { return DodongosCavernClear; } }),
+                 LocationAccess(KING_DODONGO, { [] { return DodongosCavernClear; } }),
+             },
+             {
+                 // Exits
+                 Entrance(DODONGOS_CAVERN_BOSS_ENTRYWAY, { [] { return true; } }),
+             });
 }
