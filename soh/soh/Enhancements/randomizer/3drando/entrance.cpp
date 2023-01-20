@@ -82,7 +82,7 @@ void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
     forwardEntrance->SetType(forwardEntry.type);
     forwardEntrance->SetAsPrimary();
 
-    // When decouple entrances is on, mark it for everything except boss rooms so 
+    // When decouple entrances is on, mark it for entrances except boss rooms
     if (Settings::DecoupleEntrances && forwardEntry.type != EntranceType::ChildBoss &&
       forwardEntry.type != EntranceType::AdultBoss) {
       forwardEntrance->SetDecoupled();
@@ -1007,6 +1007,7 @@ int ShuffleAllEntrances() {
       entrancePools[EntranceType::Boss] = GetShuffleableEntrances(EntranceType::ChildBoss);
       AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::AdultBoss));
       // If forest is closed, ensure Ghoma is inside the Deku tree
+      // Deku tree being in its vanilla location is handled below
       if (Settings::OpenForest.Is(OPENFOREST_CLOSED) && !(Settings::ShuffleOverworldEntrances || Settings::ShuffleInteriorEntrances)) {
         FilterAndEraseFromPool(entrancePools[EntranceType::Boss], [](const Entrance* entrance){return entrance->GetParentRegionKey()    == DEKU_TREE_BOSS_ENTRYWAY &&
                                                                                                       entrance->GetConnectedRegionKey() == DEKU_TREE_BOSS_ROOM;});

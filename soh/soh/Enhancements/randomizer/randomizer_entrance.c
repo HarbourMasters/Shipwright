@@ -671,8 +671,8 @@ void Entrance_OverrideGeurdoGuardCapture(void) {
 }
 
 void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
-    // Copy the actorentry properties to avoid modifying the original cached pointer
-    // The assign a pointer of our modified actoreEntry back
+    // Copy the actorEntry properties to avoid modifying the original cached pointer
+    // Then assign a pointer of our modified actoreEntry back
     modifiedLinkActorEntry.id = gPlayState->linkActorEntry->id;
     modifiedLinkActorEntry.pos = gPlayState->linkActorEntry->pos;
     modifiedLinkActorEntry.rot = gPlayState->linkActorEntry->rot;
