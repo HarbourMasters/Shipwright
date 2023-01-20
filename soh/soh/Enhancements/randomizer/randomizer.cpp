@@ -209,6 +209,18 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
+    { "Start with Zelda's Lullaby", RSK_STARTING_ZELDAS_LULLABY },
+    { "Start with Epona's Song", RSK_STARTING_EPONAS_SONG },
+    { "Start with Saria's Song", RSK_STARTING_SARIAS_SONG },
+    { "Start with Sun's Song", RSK_STARTING_SUNS_SONG },
+    { "Start with Song of Time", RSK_STARTING_SONG_OF_TIME },
+    { "Start with Song of Storms", RSK_STARTING_SONG_OF_STORMS },
+    { "Start with Minuet of Forest", RSK_STARTING_MINUET_OF_FOREST },
+    { "Start with Bolero of Fire", RSK_STARTING_BOLERO_OF_FIRE },
+    { "Start with Serenade of Water", RSK_STARTING_SERENADE_OF_WATER },
+    { "Start with Requiem of Spirit", RSK_STARTING_REQUIEM_OF_SPIRIT },
+    { "Start with Nocturne of Shadow", RSK_STARTING_NOCTURNE_OF_SHADOW },
+    { "Start with Prelude of Light", RSK_STARTING_PRELUDE_OF_LIGHT },
     { "Shuffle Dungeon Items:Maps/Compasses", RSK_STARTING_MAPS_COMPASSES },
     { "Shuffle Dungeon Items:Small Keys", RSK_KEYSANITY },
     { "Shuffle Dungeon Items:Gerudo Fortress Keys", RSK_GERUDO_KEYS },
@@ -708,6 +720,18 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_RANDOM_MQ_DUNGEONS:
                     case RSK_STARTING_DEKU_SHIELD:
                     case RSK_STARTING_KOKIRI_SWORD:
+                    case RSK_STARTING_ZELDAS_LULLABY:
+                    case RSK_STARTING_EPONAS_SONG:
+                    case RSK_STARTING_SARIAS_SONG:
+                    case RSK_STARTING_SUNS_SONG:
+                    case RSK_STARTING_SONG_OF_TIME:
+                    case RSK_STARTING_SONG_OF_STORMS:
+                    case RSK_STARTING_MINUET_OF_FOREST:
+                    case RSK_STARTING_BOLERO_OF_FIRE:
+                    case RSK_STARTING_SERENADE_OF_WATER:
+                    case RSK_STARTING_REQUIEM_OF_SPIRIT:
+                    case RSK_STARTING_NOCTURNE_OF_SHADOW:
+                    case RSK_STARTING_PRELUDE_OF_LIGHT:
                     case RSK_COMPLETE_MASK_QUEST:
                     case RSK_SKIP_SCARECROWS_SONG:
                     case RSK_ENABLE_GLITCH_CUTSCENES:
@@ -2734,6 +2758,18 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD] = CVarGetInteger("gRandomizeShuffleKokiriSword", 0) ||
                                              CVarGetInteger("gRandomizeStartingKokiriSword", 0);
     cvarSettings[RSK_STARTING_DEKU_SHIELD] = CVarGetInteger("gRandomizeStartingDekuShield", 0);
+    cvarSettings[RSK_STARTING_ZELDAS_LULLABY] = CVarGetInteger("gRandomizeStartingZeldasLullaby", 0);
+    cvarSettings[RSK_STARTING_EPONAS_SONG] = CVarGetInteger("gRandomizeStartingEponasSong", 0);
+    cvarSettings[RSK_STARTING_SARIAS_SONG] = CVarGetInteger("gRandomizeStartingSariasSong", 0);
+    cvarSettings[RSK_STARTING_SUNS_SONG] = CVarGetInteger("gRandomizeStartingSunsSong", 0);
+    cvarSettings[RSK_STARTING_SONG_OF_TIME] = CVarGetInteger("gRandomizeStartingSongOfTime", 0);
+    cvarSettings[RSK_STARTING_SONG_OF_STORMS] = CVarGetInteger("gRandomizeStartingSongOfStorms", 0);
+    cvarSettings[RSK_STARTING_MINUET_OF_FOREST] = CVarGetInteger("gRandomizeStartingMinuetOfForest", 0);
+    cvarSettings[RSK_STARTING_BOLERO_OF_FIRE] = CVarGetInteger("gRandomizeStartingBoleroOfFire", 0);
+    cvarSettings[RSK_STARTING_SERENADE_OF_WATER] = CVarGetInteger("gRandomizeStartingSerenadeOfWater", 0);
+    cvarSettings[RSK_STARTING_REQUIEM_OF_SPIRIT] = CVarGetInteger("gRandomizeStartingRequiemOfSpirit", 0);
+    cvarSettings[RSK_STARTING_NOCTURNE_OF_SHADOW] = CVarGetInteger("gRandomizeStartingNocturneOfShadow", 0);
+    cvarSettings[RSK_STARTING_PRELUDE_OF_LIGHT] = CVarGetInteger("gRandomizeStartingPreludeOfLight", 0);
     cvarSettings[RSK_STARTING_SKULLTULA_TOKEN] = CVarGetInteger("gRandomizeStartingSkulltulaToken", 0);
     cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVarGetInteger("gRandomizeStartingMapsCompasses", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVarGetInteger("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON);
@@ -4288,7 +4324,44 @@ void DrawRandoEditor(bool& open) {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildStartingSongs", ImVec2(0, -8));
 
-                ImGui::Text("Coming soon");
+                UIWidgets::EnhancementCheckbox(Settings::StartingZeldasLullaby.GetName().c_str(),
+                                               "gRandomizeStartingZeldasLullaby");
+
+                UIWidgets::EnhancementCheckbox(Settings::StartingEponasSong.GetName().c_str(),
+                                               "gRandomizeStartingEponasSong");
+
+                UIWidgets::EnhancementCheckbox(Settings::StartingSariasSong.GetName().c_str(),
+                                               "gRandomizeStartingSariasSong");
+
+                UIWidgets::EnhancementCheckbox(Settings::StartingSunsSong.GetName().c_str(),
+                                               "gRandomizeStartingSunsSong");
+
+                UIWidgets::EnhancementCheckbox(Settings::StartingSongOfTime.GetName().c_str(),
+                                               "gRandomizeStartingSongOfTime");
+
+                UIWidgets::EnhancementCheckbox(Settings::StartingSongOfStorms.GetName().c_str(),
+                                               "gRandomizeStartingSongOfStorms");
+                UIWidgets::PaddedSeparator();
+                ImGui::Text("Warp Songs");
+                UIWidgets::PaddedSeparator();
+
+                UIWidgets::EnhancementCheckbox(Settings::StartingMinuetOfForest.GetName().c_str(),
+                                               "gRandomizeStartingMinuetOfForest");
+
+                UIWidgets::EnhancementCheckbox(Settings::StartingBoleroOfFire.GetName().c_str(),
+                                               "gRandomizeStartingBoleroOfFire");
+
+                UIWidgets::EnhancementCheckbox(Settings::StartingSerenadeOfWater.GetName().c_str(),
+                                               "gRandomizeStartingSerenadeOfWater");
+
+                UIWidgets::EnhancementCheckbox(Settings::StartingRequiemOfSpirit.GetName().c_str(),
+                                               "gRandomizeStartingRequiemOfSpirit");
+
+                UIWidgets::EnhancementCheckbox(Settings::StartingNocturneOfShadow.GetName().c_str(),
+                                               "gRandomizeStartingNocturneOfShadow");
+
+                UIWidgets::EnhancementCheckbox(Settings::StartingPreludeOfLight.GetName().c_str(),
+                                               "gRandomizeStartingPreludeOfLight");
 
                 UIWidgets::PaddedSeparator();
 

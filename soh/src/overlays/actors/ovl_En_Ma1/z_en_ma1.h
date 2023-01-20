@@ -17,7 +17,7 @@ typedef struct EnMa1 {
     /* 0x01E2 */ s16 blinkTimer;
     /* 0x01E4 */ s16 eyeIndex;
     /* 0x01E6 */ s16 mouthIndex;
-    /* 0x01E8 */ struct_80034A14_arg1 unk_1E8;
+    /* 0x01E8 */ NpcInteractInfo interactInfo;
 } EnMa1; // size = 0x0210
 
 #endif

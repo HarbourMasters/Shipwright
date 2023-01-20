@@ -173,6 +173,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gBombchuBowlingNoBigCucco",
     "gBombchuBowlingAmmunition",
     "gCreditsFix",
+    "gSilverRupeeJingleExtend"
 };
 
 const std::vector<const char*> randomizerCvars = {
@@ -268,11 +269,23 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeSkipTowerEscape",
     "gRandomizeStartingAge",
     "gRandomizeStartingConsumables",
+    "gRandomizeStartingBoleroOfFire",
     "gRandomizeStartingDekuShield",
+    "gRandomizeStartingEponasSong",
     "gRandomizeStartingKokiriSword",
     "gRandomizeStartingMapsCompasses",
+    "gRandomizeStartingMinuetOfForest",
+    "gRandomizeStartingNocturneOfShadow",
     "gRandomizeStartingOcarina",
+    "gRandomizeStartingPreludeOfLight",
+    "gRandomizeStartingRequiemOfSpirit",
+    "gRandomizeStartingSariasSong",
+    "gRandomizeStartingSerenadeOfWater",
     "gRandomizeStartingSkulltulaToken",
+    "gRandomizeStartingSongOfStorms",
+    "gRandomizeStartingSongOfTime",
+    "gRandomizeStartingSunsSong",
+    "gRandomizeStartingZeldasLullaby",
     "gRandomizeStoneCount",
     "gRandomizeSunlightArrows",
     "gRandomizeTokenCount",
@@ -330,6 +343,8 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     PRESET_ENTRY_S32("gDekuNutUpgradeFix", 1),
     // Fix Navi text HUD position
     PRESET_ENTRY_S32("gNaviTextFix", 1),
+    // Extend Silver Rupee Jingle
+    PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
@@ -393,6 +408,8 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32("gDekuNutUpgradeFix", 1),
     // Fix Navi text HUD position
     PRESET_ENTRY_S32("gNaviTextFix", 1),
+    // Extend Silver Rupee Jingle
+    PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
@@ -505,6 +522,8 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gDekuNutUpgradeFix", 1),
     // Fix Navi text HUD position
     PRESET_ENTRY_S32("gNaviTextFix", 1),
+    // Extend Silver Rupee Jingle
+    PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
