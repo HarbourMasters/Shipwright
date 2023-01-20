@@ -2384,6 +2384,13 @@ void Actor_DrawFaroresWindPointer(PlayState* play) {
 
             if (alpha < 0) {
                 gSaveContext.fw.set = 0;
+                if (CVarGetInteger("gBetterFW", 0)) {
+                    if (LINK_IS_ADULT) {
+                        gSaveContext.adultFW.set = 0;
+                    } else {
+                        gSaveContext.childFW.set = 0;
+                    }
+                }
                 gSaveContext.respawn[RESPAWN_MODE_TOP].data = 0;
                 alpha = 0;
             } else {

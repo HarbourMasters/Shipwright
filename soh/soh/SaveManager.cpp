@@ -26,7 +26,7 @@ SaveManager::SaveManager() {
     AddLoadFunction("base", 2, LoadBaseVersion2);
     AddLoadFunction("base", 3, LoadBaseVersion3);
     AddLoadFunction("base", 4, LoadBaseVersion4);
-    AddSaveFunction("base", 3, SaveBase);
+    AddSaveFunction("base", 4, SaveBase);
 
     AddLoadFunction("randomizer", 1, LoadRandomizerVersion1);
     AddLoadFunction("randomizer", 2, LoadRandomizerVersion2);
