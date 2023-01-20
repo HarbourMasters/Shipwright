@@ -5,10 +5,10 @@
 #define BOOST_FUNCTIONAL_HASH_HASH_32_HPP
 
 #include <boost/container_hash/hash.hpp>
-#include <boost/container_hash/hash_fwd_32.hpp>
-#include <boost/container_hash/detail/hash_mix_32.hpp>
-#include <boost/container_hash/detail/hash_range_32.hpp>
-#include <boost/container_hash/version.hpp>
+#include <boost_custom/container_hash/hash_fwd_32.hpp>
+#include <boost_custom/container_hash/detail/hash_mix_32.hpp>
+#include <boost_custom/container_hash/detail/hash_range_32.hpp>
+#include <boost_custom/container_hash/version.hpp>
 
 #if !BOOST_VERSION_HAS_HASH_RANGE
 #include <boost/type_traits/is_unsigned.hpp>

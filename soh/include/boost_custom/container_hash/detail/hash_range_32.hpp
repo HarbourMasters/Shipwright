@@ -4,8 +4,8 @@
 #ifndef BOOST_HASH_DETAIL_HASH_RANGE_32_HPP
 #define BOOST_HASH_DETAIL_HASH_RANGE_32_HPP
 
-#include <boost/container_hash/hash_fwd_32.hpp>
-#include <boost/container_hash/version.hpp>
+#include <boost_custom/container_hash/hash_fwd_32.hpp>
+#include <boost_custom/container_hash/version.hpp>
 
 #if BOOST_VERSION_HAS_HASH_RANGE
 #include <boost/container_hash/detail/hash_range.hpp>
