@@ -131,7 +131,7 @@ s16 func_809FDCDC(PlayState* play, Actor* actor) {
                     break;
                 case 0x301C:
                 case 0x301F:
-                    return 2;
+                    return NPC_TALK_STATE_ACTION;
                 case 0x3020:
                     gSaveContext.eventChkInf[0x2] |= 4;
                     break;
@@ -143,7 +143,7 @@ s16 func_809FDCDC(PlayState* play, Actor* actor) {
             break;
         case TEXT_STATE_DONE:
             if (Message_ShouldAdvance(play)) {
-                return 3;
+                return NPC_TALK_STATE_ITEM_GIVEN;
             }
             break;
         case TEXT_STATE_SONG_DEMO_DONE:
@@ -151,7 +151,7 @@ s16 func_809FDCDC(PlayState* play, Actor* actor) {
         case TEXT_STATE_9:
             break;
     }
-    return 1;
+    return NPC_TALK_STATE_TALKING;
 }
 
 s32 func_809FDDB4(EnDu* this, PlayState* play) {
@@ -165,17 +165,17 @@ s32 func_809FDDB4(EnDu* this, PlayState* play) {
 
 void func_809FDE24(EnDu* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 phi_a3 = 0;
+    s16 trackingMode = NPC_TRACKING_PLAYER_AUTO_TURN;
 
-    if (this->unk_1F4.unk_00 == 0) {
-        phi_a3 = 1;
+    if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
+        trackingMode = NPC_TRACKING_NONE;
     }
     if (this->actionFunc == func_809FE890) {
-        phi_a3 = 1;
+        trackingMode = NPC_TRACKING_NONE;
     }
-    this->unk_1F4.unk_18 = player->actor.world.pos;
-    this->unk_1F4.unk_14 = 10.0f;
-    func_80034A14(&this->actor, &this->unk_1F4, 3, phi_a3);
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.yOffset = 10.0f;
+    Npc_TrackPoint(&this->actor, &this->interactInfo, 3, trackingMode);
 }
 
 void func_809FDE9C(EnDu* this) {
@@ -293,7 +293,7 @@ void EnDu_Init(Actor* thisx, PlayState* play) {
     Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENDU_ANIM_0);
     Actor_SetScale(&this->actor, 0.01f);
     this->actor.targetMode = 1;
-    this->unk_1F4.unk_00 = 0;
+    this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
 
     if (gSaveContext.cutsceneIndex >= 0xFFF0) {
         play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDarunia01Cs);
@@ -328,9 +328,9 @@ void func_809FE3C0(EnDu* this, PlayState* play) {
         EnDu_SetupAction(this, func_809FE4A4);
         return;
     }
-    if (this->unk_1F4.unk_00 == 2) {
+    if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         func_8002DF54(play, &this->actor, 7);
-        this->unk_1F4.unk_00 = 0;
+        this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
     }
     if (this->actor.xzDistToPlayer < 116.0f + this->collider.dim.radius) {
         player->stateFlags2 |= 0x800000;
@@ -389,13 +389,13 @@ void func_809FE6CC(EnDu* this, PlayState* play) {
     if (phi_v1 == 0) {
         this->actor.textId = 0x3039;
         Message_StartTextbox(play, this->actor.textId, NULL);
-        this->unk_1F4.unk_00 = 1;
+        this->interactInfo.talkState = NPC_TALK_STATE_TALKING;
         EnDu_SetupAction(this, func_809FE740);
     }
 }
 
 void func_809FE740(EnDu* this, PlayState* play) {
-    if (this->unk_1F4.unk_00 == 0) {
+    if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
         func_8005B1A4(GET_ACTIVE_CAM(play));
         this->unk_1E2 = 0x5A;
         EnDu_SetupAction(this, func_809FE798);
@@ -531,11 +531,11 @@ void func_809FEB08(EnDu* this, PlayState* play) {
     }
     Message_StartTextbox(play, this->actor.textId, NULL);
     Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENDU_ANIM_14);
-    this->unk_1F4.unk_00 = 1;
+    this->interactInfo.talkState = NPC_TALK_STATE_TALKING;
 }
 
 void func_809FEC14(EnDu* this, PlayState* play) {
-    if (this->unk_1F4.unk_00 == 2) {
+    if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         func_8002DF54(play, &this->actor, 7);
         EnDu_SetupAction(this, func_809FEC70);
         func_809FEC70(this, play);
@@ -558,8 +558,8 @@ void func_809FEC70(EnDu* this, PlayState* play) {
 }
 
 void func_809FECE4(EnDu* this, PlayState* play) {
-    if (this->unk_1F4.unk_00 == 3) {
-        this->unk_1F4.unk_00 = 0;
+    if (this->interactInfo.talkState == NPC_TALK_STATE_ITEM_GIVEN) {
+        this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         EnDu_SetupAction(this, func_809FE3C0);
     }
 }
@@ -591,8 +591,8 @@ void EnDu_Update(Actor* thisx, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
 
     if (this->actionFunc != func_809FE4A4) {
-        func_800343CC(play, &this->actor, &this->unk_1F4.unk_00, this->collider.dim.radius + 116.0f, func_809FDC38,
-                      func_809FDCDC);
+        Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 116.0f,
+                          func_809FDC38, func_809FDCDC);
     }
     this->actionFunc(this, play);
 }
@@ -604,13 +604,13 @@ s32 EnDu_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
 
     if (limbIndex == 16) {
         Matrix_Translate(2400.0f, 0.0f, 0.0f, MTXMODE_APPLY);
-        sp1C = this->unk_1F4.unk_08;
+        sp1C = this->interactInfo.headRot;
         Matrix_RotateX(BINANG_TO_RAD(sp1C.y), MTXMODE_APPLY);
         Matrix_RotateZ(BINANG_TO_RAD(sp1C.x), MTXMODE_APPLY);
         Matrix_Translate(-2400.0f, 0.0f, 0.0f, MTXMODE_APPLY);
     }
     if (limbIndex == 8) {
-        sp1C = this->unk_1F4.unk_0E;
+        sp1C = this->interactInfo.torsoRot;
         Matrix_RotateY(BINANG_TO_RAD(sp1C.y), MTXMODE_APPLY);
         Matrix_RotateX(BINANG_TO_RAD(sp1C.x), MTXMODE_APPLY);
     }

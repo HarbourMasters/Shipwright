@@ -271,6 +271,10 @@ namespace GameMenuBar {
                     ImGui::PopStyleVar(1);
                 }
 
+                if (SohImGui::supportsWindowedFullscreen()) {
+                    UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", "gSdlWindowedFullscreen", true, false);
+                }
+
                 if (SohImGui::supportsViewports()) {
                     UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false);
                     UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
@@ -757,6 +761,10 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Fixes camera getting stuck on collision when standing still, also fixes slight shift back in camera when stop moving");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Hanging Ledge Swing Rate", "gFixHangingLedgeSwingRate", true, false);
                 UIWidgets::Tooltip("Fixes camera swing rate when player falls of a ledge and camera swings around");
+                UIWidgets::PaddedEnhancementCheckbox("Fix Missing Jingle after 5 Silver Rupees", "gSilverRupeeJingleExtend", true, false);
+                UIWidgets::Tooltip(
+                    "Adds 5 higher pitches for the Silver Rupee Jingle for the rooms with more than 5 Silver Rupees. "
+                    "Currently only relevant in Master Quest.");
 
                 ImGui::EndMenu();
             }

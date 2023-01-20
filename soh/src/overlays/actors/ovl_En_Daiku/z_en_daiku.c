@@ -571,14 +571,14 @@ void EnDaiku_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (this->stateFlags & ENDAIKU_STATEFLAG_1) {
-        this->unk_244.unk_18.x = player->actor.focus.pos.x;
-        this->unk_244.unk_18.y = player->actor.focus.pos.y;
-        this->unk_244.unk_18.z = player->actor.focus.pos.z;
+        this->interactInfo.trackPos.x = player->actor.focus.pos.x;
+        this->interactInfo.trackPos.y = player->actor.focus.pos.y;
+        this->interactInfo.trackPos.z = player->actor.focus.pos.z;
 
         if (this->stateFlags & ENDAIKU_STATEFLAG_2) {
-            func_80034A14(&this->actor, &this->unk_244, 0, 4);
+            Npc_TrackPoint(&this->actor, &this->interactInfo, 0, NPC_TRACKING_FULL_BODY);
         } else {
-            func_80034A14(&this->actor, &this->unk_244, 0, 2);
+            Npc_TrackPoint(&this->actor, &this->interactInfo, 0, NPC_TRACKING_HEAD_AND_TORSO);
         }
     }
 }
@@ -611,12 +611,12 @@ s32 EnDaiku_OverrideLimbDraw(PlayState* play, s32 limb, Gfx** dList, Vec3f* pos,
 
     switch (limb) {
         case 8: // torso
-            rot->x += this->unk_244.unk_0E.y;
-            rot->y -= this->unk_244.unk_0E.x;
+            rot->x += this->interactInfo.torsoRot.y;
+            rot->y -= this->interactInfo.torsoRot.x;
             break;
         case 15: // head
-            rot->x += this->unk_244.unk_08.y;
-            rot->z += this->unk_244.unk_08.x;
+            rot->x += this->interactInfo.headRot.y;
+            rot->z += this->interactInfo.headRot.x;
             break;
     }
 
