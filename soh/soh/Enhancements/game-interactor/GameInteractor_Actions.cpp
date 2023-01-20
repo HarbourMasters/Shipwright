@@ -156,10 +156,6 @@ void GameInteractor::Actions::SpawnCuccoStorm() {
     cucco->actionFunc = func_80AB70A0_nocutscene;
 }
 
-bool GameInteractor::Actions::CanSpawnEnemy() {
-    return GameInteractor::IsSaveLoaded() && !GameInteractor::IsGameplayPaused();
-}
-
 uint8_t GameInteractor::Actions::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {
     Player* player = GET_PLAYER(gPlayState);
 

@@ -95,7 +95,7 @@ namespace GameInteractionEffect {
         }
     }
     void GiveRupees::Apply() {
-        Rupees_ChangeBy(parameters[0]);
+        Rupees_ChangeBy(parameter);
     }
     void GiveRupees::Remove() {}
 
@@ -110,7 +110,7 @@ namespace GameInteractionEffect {
         }
     }
     void TakeRupees::Apply() {
-        Rupees_ChangeBy(-parameters[0]);
+        Rupees_ChangeBy(-parameter);
     }
     void TakeRupees::Remove() {}
 
@@ -170,13 +170,13 @@ namespace GameInteractionEffect {
         }
     }
     void GiveHealth::Apply() {
-        GameInteractor::Actions::HealOrDamagePlayer(parameters[0]);
+        GameInteractor::Actions::HealOrDamagePlayer(parameter);
     }
     void GiveHealth::Remove() {}
 
     // MARK: - TakeHealth
     GameInteractionEffectQueryResult TakeHealth::CanBeApplied() {
-        int32_t healthAfterEffect = (gSaveContext.health - (16 * parameters[0]));
+        int32_t healthAfterEffect = (gSaveContext.health - (16 * parameter));
         if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else if (healthAfterEffect <= 0) {
@@ -186,7 +186,7 @@ namespace GameInteractionEffect {
         }
     }
     void TakeHealth::Apply() {
-        GameInteractor::Actions::HealOrDamagePlayer(-parameters[0]);
+        GameInteractor::Actions::HealOrDamagePlayer(-parameter);
     }
     void TakeHealth::Remove() {}
 
@@ -255,7 +255,7 @@ namespace GameInteractionEffect {
         }
     }
     void KnockbackPlayer::Apply() {
-        GameInteractor::Actions::KnockbackPlayer(parameters[0]);
+        GameInteractor::Actions::KnockbackPlayer(parameter);
     }
     void KnockbackPlayer::Remove() {}
 
@@ -463,7 +463,7 @@ namespace GameInteractionEffect {
         }
     }
     void IncreaseDamageTaken::Apply() {
-        GameInteractor_DefenseModifier = -parameters[0];
+        GameInteractor_DefenseModifier = -parameter;
     }
     void IncreaseDamageTaken::Remove() {
         GameInteractor_DefenseModifier = 0;
@@ -478,7 +478,7 @@ namespace GameInteractionEffect {
         }
     }
     void DecreaseDamageTaken::Apply() {
-        GameInteractor_DefenseModifier = parameters[0];
+        GameInteractor_DefenseModifier = parameter;
     }
     void DecreaseDamageTaken::Remove() {
         GameInteractor_DefenseModifier = 0;

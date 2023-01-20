@@ -63,7 +63,7 @@ class CrowdControl {
 
         typedef struct Effect {
             uint32_t id;
-            uint32_t value;
+            uint32_t value[2];
             std::string category;
             long timeRemaining;
             GameInteractionEffectBase *giEffect;

@@ -25,6 +25,7 @@ public:
     // Helpers
     static bool IsSaveLoaded();
     static bool IsGameplayPaused();
+    static bool CanSpawnEnemy();
 
     class Actions {
     public:
@@ -43,7 +44,6 @@ public:
         static void GiveDekuShield();
         static void SpawnCuccoStorm();
 
-        static bool CanSpawnEnemy();
         static uint8_t SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
     };
 };

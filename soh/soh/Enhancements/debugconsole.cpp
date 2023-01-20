@@ -485,11 +485,7 @@ static bool GiantLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
 
     try {
         uint8_t state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        if (state) {
-            GameInteractor::Actions::SetLinkSize(GI_LINK_SIZE_GIANT);
-        } else {
-            GameInteractor::Actions::SetLinkSize(GI_LINK_SIZE_NORMAL);
-        }
+        GameInteractor::Actions::SetLinkSize(state ? GI_LINK_SIZE_GIANT : GI_LINK_SIZE_NORMAL);
 
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
@@ -506,11 +502,7 @@ static bool MinishLinkHandler(std::shared_ptr<Ship::Console> Console, const std:
 
     try {
         uint8_t state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        if (state) {
-            GameInteractor::Actions::SetLinkSize(GI_LINK_SIZE_MINISH);
-        } else {
-            GameInteractor::Actions::SetLinkSize(GI_LINK_SIZE_NORMAL);
-        }
+        GameInteractor::Actions::SetLinkSize(state ? GI_LINK_SIZE_MINISH : GI_LINK_SIZE_NORMAL);
 
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
@@ -692,11 +684,7 @@ static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
 
     try {
         uint8_t state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        if (state) {
-            GameInteractor::Actions::SetLinkSize(GI_LINK_SIZE_PAPER);
-        } else {
-            GameInteractor::Actions::SetLinkSize(GI_LINK_SIZE_NORMAL);
-        }
+        GameInteractor::Actions::SetLinkSize(state ? GI_LINK_SIZE_PAPER : GI_LINK_SIZE_NORMAL);
 
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
