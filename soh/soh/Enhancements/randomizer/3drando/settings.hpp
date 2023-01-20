@@ -989,6 +989,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option Kak30GSHintText;
   extern Option Kak40GSHintText;
   extern Option Kak50GSHintText;
+  extern Option ScrubHintText;
   extern Option WarpSongHints;
   extern Option DamageMultiplier;
   extern Option StartingTime;

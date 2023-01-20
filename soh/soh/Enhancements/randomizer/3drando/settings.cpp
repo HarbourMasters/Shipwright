@@ -322,7 +322,8 @@ namespace Settings {
   Option Kak20GSHintText     = Option::Bool("20 GS Hint",             {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);  
   Option Kak30GSHintText     = Option::Bool("30 GS Hint",             {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);  
   Option Kak40GSHintText     = Option::Bool("40 GS Hint",             {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);  
-  Option Kak50GSHintText     = Option::Bool("50 GS Hint",             {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);  
+  Option Kak50GSHintText     = Option::Bool("50 GS Hint",             {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);
+  Option ScrubHintText       = Option::Bool("Scrub Hint Text",        {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);    
   Option CompassesShowReward = Option::U8  ("Compasses Show Rewards", {"No", "Yes"},                                                          {compassesShowRewardsDesc},                                                                                       OptionCategory::Setting,    1);
   Option CompassesShowWotH   = Option::U8  ("Compasses Show WotH",    {"No", "Yes"},                                                          {compassesShowWotHDesc},                                                                                          OptionCategory::Setting,    1);
   Option MapsShowDungeonMode = Option::U8  ("Maps Show Dungeon Modes",{"No", "Yes"},                                                          {mapsShowDungeonModesDesc},                                                                                       OptionCategory::Setting,    1);
@@ -350,6 +351,7 @@ namespace Settings {
     &Kak30GSHintText,
     &Kak40GSHintText,
     &Kak50GSHintText,
+    &ScrubHintText,
     &CompassesShowReward,
     &CompassesShowWotH,
     &MapsShowDungeonMode,
@@ -2753,6 +2755,7 @@ namespace Settings {
     Kak30GSHintText.SetSelectedIndex(cvarSettings[RSK_KAK_30_SKULLS_HINT]);
     Kak40GSHintText.SetSelectedIndex(cvarSettings[RSK_KAK_40_SKULLS_HINT]);
     Kak50GSHintText.SetSelectedIndex(cvarSettings[RSK_KAK_50_SKULLS_HINT]);
+    ScrubHintText.SetSelectedIndex(cvarSettings[RSK_SCRUB_TEXT_HINT]);
     HintDistribution.SetSelectedIndex(cvarSettings[RSK_HINT_DISTRIBUTION]);
     BlueFireArrows.SetSelectedIndex(cvarSettings[RSK_BLUE_FIRE_ARROWS]);
     SunlightArrows.SetSelectedIndex(cvarSettings[RSK_SUNLIGHT_ARROWS]);
