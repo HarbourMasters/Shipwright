@@ -499,7 +499,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
     // cmd->base == 33: Zelda escaping with impa cutscene
     bool randoCsSkip = (gSaveContext.n64ddFlag && (cmd->base == 8 || cmd->base == 24 || cmd->base == 33));
     bool debugCsSkip = (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_START) &&
-                        (gSaveContext.fileNum != 0xFEDC) && CVar_GetS32("gDebugEnabled", 0));
+                        (gSaveContext.fileNum != 0xFEDC) && CVarGetInteger("gDebugEnabled", 0));
 
     if ((gSaveContext.gameMode != 0) && (gSaveContext.gameMode != 3) && (play->sceneNum != SCENE_SPOT00) &&
         (csCtx->frames > 20) &&
@@ -512,9 +512,9 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
     }
 
     bool playCutscene = false;
-    if (!CVar_GetS32("gCreditsFix", 1) && (cmd->startFrame == csCtx->frames)) {
+    if (!CVarGetInteger("gCreditsFix", 1) && (cmd->startFrame == csCtx->frames)) {
         playCutscene = true;
-    } else if (CVar_GetS32("gCreditsFix", 1)) {
+    } else if (CVarGetInteger("gCreditsFix", 1)) {
         u16 delay = 0;
         
         // HACK:  Align visual timing with audio during credits sequence
@@ -1637,7 +1637,7 @@ void Cutscene_ProcessCommands(PlayState* play, CutsceneContext* csCtx, u8* cutsc
         return;
     }
 
-    if (CVar_GetS32("gDebugEnabled", 0) && CHECK_BTN_ALL(play->state.input[0].press.button, BTN_DRIGHT)) {
+    if (CVarGetInteger("gDebugEnabled", 0) && CHECK_BTN_ALL(play->state.input[0].press.button, BTN_DRIGHT)) {
         csCtx->state = CS_STATE_UNSKIPPABLE_INIT;
         return;
     }

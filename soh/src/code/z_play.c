@@ -554,10 +554,10 @@ void Play_Init(GameState* thisx) {
     gTrnsnUnkState = 0;
     play->transitionMode = 0;
 
-    if (CVar_GetS32("gSceneTransitions", 255)!= 255){
-        play->transitionMode = CVar_GetS32("gSceneTransitions", 0);
-        gSaveContext.nextTransitionType = CVar_GetS32("gSceneTransitions", 0);
-        play->fadeTransition = CVar_GetS32("gSceneTransitions", 0);
+    if (CVarGetInteger("gSceneTransitions", 255)!= 255){
+        play->transitionMode = CVarGetInteger("gSceneTransitions", 0);
+        gSaveContext.nextTransitionType = CVarGetInteger("gSceneTransitions", 0);
+        play->fadeTransition = CVarGetInteger("gSceneTransitions", 0);
     }
 
     FrameAdvance_Init(&play->frameAdvCtx);
@@ -686,7 +686,7 @@ void Play_Update(PlayState* play) {
         ActorOverlayTable_LogPrint();
     }
 
-    if (CVar_GetS32("gFreeCamera", 0) && Player_InCsMode(play)) {
+    if (CVarGetInteger("gFreeCamera", 0) && Player_InCsMode(play)) {
         play->manualCamera = false;
     }
 
@@ -869,7 +869,7 @@ void Play_Update(PlayState* play) {
 
                             // Don't autosave in grottos or cutscenes
                             // Also don't save when you first load a file
-                            if (CVar_GetS32("gAutosave", 0) && (gSaveContext.cutsceneIndex == 0) && (play->gameplayFrames > 60) &&
+                            if (CVarGetInteger("gAutosave", 0) && (gSaveContext.cutsceneIndex == 0) && (play->gameplayFrames > 60) &&
                                 (play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA) && (play->sceneNum != SCENE_KENJYANOMA)) {
                                 Play_PerformSave(play);
                             }
@@ -1088,7 +1088,7 @@ void Play_Update(PlayState* play) {
                 if (!gSaveContext.sohStats.gameComplete) {
                       gSaveContext.sohStats.playTimer++;
 
-                      if (CVar_GetS32("gMMBunnyHood", 0) && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
+                      if (CVarGetInteger("gMMBunnyHood", 0) && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
                           gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD]++;
                       }
                 }
@@ -1645,13 +1645,13 @@ time_t Play_GetRealTime() {
 void Play_Main(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
 
-    if (CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0)) {
-        CVar_SetS32("gCheatEasyPauseBufferFrameAdvance", CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0) - 1);
+    if (CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0)) {
+        CVarSetInteger("gCheatEasyPauseBufferFrameAdvance", CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0) - 1);
     }
-    if (CVar_GetS32("gPauseBufferBlockInputFrame", 0)) {
-        CVar_SetS32("gPauseBufferBlockInputFrame", CVar_GetS32("gPauseBufferBlockInputFrame", 0) - 1);
+    if (CVarGetInteger("gPauseBufferBlockInputFrame", 0)) {
+        CVarSetInteger("gPauseBufferBlockInputFrame", CVarGetInteger("gPauseBufferBlockInputFrame", 0) - 1);
     }
-    if (play->envCtx.unk_EE[2] == 0 && CVar_GetS32("gLetItSnow", 0)) {
+    if (play->envCtx.unk_EE[2] == 0 && CVarGetInteger("gLetItSnow", 0)) {
         play->envCtx.unk_EE[3] = 64;
         Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_OBJECT_KANKYO, 0, 0, 0, 0, 0, 0, 3, 0);
     }
@@ -1697,7 +1697,7 @@ void Play_Main(GameState* thisx) {
         LOG_NUM("1", 1);
     }
     
-    if (CVar_GetS32("gTimeSync", 0)) {
+    if (CVarGetInteger("gTimeSync", 0)) {
         const int maxRealDaySeconds = 86400;
         const int maxInGameDayTicks = 65536;
 
@@ -2194,7 +2194,7 @@ void Play_PerformSave(PlayState* play) {
         } else {
             Save_SaveFile();
         }
-        if (CVar_GetS32("gAutosave", 0)) {
+        if (CVarGetInteger("gAutosave", 0)) {
             Overlay_DisplayText(3.0f, "Game Saved");
         }
     }

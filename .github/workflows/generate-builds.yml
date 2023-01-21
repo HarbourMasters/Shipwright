@@ -93,7 +93,17 @@ jobs:
           readme.txt
   build-linux:
     needs: extract-assets
-    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+        - os: ubuntu-20.04
+          gcc: 10
+          archive-suffix: compatibility
+        - os: ubuntu-22.04
+          gcc: 12
+          archive-suffix: performance
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -105,13 +115,13 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-        key: ${{ runner.os }}-ccache
+        key: ${{ matrix.os }}-ccache
     - name: Install latest SDL
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        wget https://www.libsdl.org/release/SDL2-2.24.1.tar.gz
-        tar -xzf SDL2-2.24.1.tar.gz
-        cd SDL2-2.24.1
+        wget https://www.libsdl.org/release/SDL2-2.26.1.tar.gz
+        tar -xzf SDL2-2.26.1.tar.gz
+        cd SDL2-2.26.1
         ./configure
         make -j 10
         sudo make install
@@ -143,12 +153,12 @@ jobs:
         mv README.md readme.txt
         mv build-cmake/*.appimage soh.appimage
       env:
-        CC: gcc-10
-        CXX: g++-10
+        CC: gcc-${{ matrix.gcc }}
+        CXX: g++-${{ matrix.gcc }}
     - name: Upload build
       uses: actions/upload-artifact@v3
       with:
-        name: soh-linux
+        name: soh-linux-${{ matrix.archive-suffix }}
         path: |
           soh.appimage
           readme.txt

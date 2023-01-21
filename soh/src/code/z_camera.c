@@ -1,4 +1,4 @@
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "vt.h"
 
@@ -1239,7 +1239,7 @@ f32 Camera_LERPClampDist(Camera* camera, f32 dist, f32 min, f32 max) {
 
     camera->rUpdateRateInv = Camera_LERPCeilF(rUpdateRateInvTarget, camera->rUpdateRateInv, PCT(OREG(25)), 0.1f);
     return Camera_LERPCeilF(distTarget, camera->dist, 1.0f / camera->rUpdateRateInv,
-                            CVar_GetS32("gFixCameraDrift", 0) ? 0.0f : 0.2f);
+                            CVarGetInteger("gFixCameraDrift", 0) ? 0.0f : 0.2f);
 }
 
 f32 Camera_ClampDist(Camera* camera, f32 dist, f32 minDist, f32 maxDist, s16 timer) {
@@ -1262,7 +1262,7 @@ f32 Camera_ClampDist(Camera* camera, f32 dist, f32 minDist, f32 maxDist, s16 tim
 
     camera->rUpdateRateInv = Camera_LERPCeilF(rUpdateRateInvTarget, camera->rUpdateRateInv, PCT(OREG(25)), 0.1f);
     return Camera_LERPCeilF(distTarget, camera->dist, 1.0f / camera->rUpdateRateInv,
-                            CVar_GetS32("gFixCameraDrift", 0) ? 0.0f : 0.2f);
+                            CVarGetInteger("gFixCameraDrift", 0) ? 0.0f : 0.2f);
 }
 
 s16 Camera_CalcDefaultPitch(Camera* camera, s16 arg1, s16 arg2, s16 arg3) {
@@ -1485,11 +1485,11 @@ s32 Camera_Free(Camera* camera) {
 
     camera->animState = 0;
 
-    f32 newCamX = -D_8015BD7C->state.input[0].cur.right_stick_x * 10.0f * (CVar_GetFloat("gThirdPersonCameraSensitivity", 1.0f));
-    f32 newCamY = D_8015BD7C->state.input[0].cur.right_stick_y * 10.0f * (CVar_GetFloat("gThirdPersonCameraSensitivity", 1.0f));
+    f32 newCamX = -D_8015BD7C->state.input[0].cur.right_stick_x * 10.0f * (CVarGetFloat("gThirdPersonCameraSensitivity", 1.0f));
+    f32 newCamY = D_8015BD7C->state.input[0].cur.right_stick_y * 10.0f * (CVarGetFloat("gThirdPersonCameraSensitivity", 1.0f));
 
-    camera->play->camX += newCamX * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1);
-    camera->play->camY += newCamY * (CVar_GetS32("gInvertYAxis", 1) ? 1 : -1);
+    camera->play->camX += newCamX * (CVarGetInteger("gInvertXAxis", 0) ? -1 : 1);
+    camera->play->camY += newCamY * (CVarGetInteger("gInvertYAxis", 1) ? 1 : -1);
 
     if (camera->play->camY > 0x32A4) {
         camera->play->camY = 0x32A4;
@@ -1498,8 +1498,8 @@ s32 Camera_Free(Camera* camera) {
         camera->play->camY = -0x228C;
     }
 
-    f32 distTarget = CVar_GetS32("gFreeCameraDistMax", para1->distTarget);
-    f32 speedScaler = CVar_GetS32("gFreeCameraTransitionSpeed", 25);
+    f32 distTarget = CVarGetInteger("gFreeCameraDistMax", para1->distTarget);
+    f32 speedScaler = CVarGetInteger("gFreeCameraTransitionSpeed", 25);
     f32 distDiff = ABS(distTarget - camera->dist);
     if (distDiff > 0)
         camera->dist = Camera_LERPCeilF(distTarget, camera->dist, speedScaler / (distDiff + speedScaler), 0.0f);
@@ -1523,7 +1523,7 @@ s32 Camera_Free(Camera* camera) {
 }
 
 s32 Camera_Normal1(Camera* camera) {
-    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+    if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
         Camera_Free(camera);
         return 1;
     }
@@ -1704,7 +1704,7 @@ s32 Camera_Normal1(Camera* camera) {
     Camera_Vec3fVecSphGeoAdd(eyeNext, at, &eyeAdjustment);
     if ((camera->status == CAM_STAT_ACTIVE) && (!(norm1->interfaceFlags & 0x10))) {
         anim->swingYawTarget = BINANG_ROT180(camera->playerPosRot.rot.y);
-        if (!CVar_GetS32("gFixCameraSwing", 0)) {
+        if (!CVarGetInteger("gFixCameraSwing", 0)) {
         if (anim->startSwingTimer > 0) {
             func_80046E20(camera, &eyeAdjustment, norm1->distMin, norm1->unk_0C, &sp98, &anim->swing);
         } else {
@@ -1743,7 +1743,7 @@ s32 Camera_Normal1(Camera* camera) {
         }
 
         // crit wiggle
-        if(!CVar_GetS32("gDisableCritWiggle",0)) {
+        if(!CVarGetInteger("gDisableCritWiggle",0)) {
             if (gSaveContext.health <= 16 && ((camera->play->state.frames % 256) == 0)) {
                 wiggleAdj = Rand_ZeroOne() * 10000.0f;
                 camera->inputDir.y = wiggleAdj + camera->inputDir.y;
@@ -1764,7 +1764,7 @@ s32 Camera_Normal1(Camera* camera) {
 }
 
 s32 Camera_Normal2(Camera* camera) {
-    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+    if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
         Camera_Free(camera);
         return 1;
     }
@@ -1935,7 +1935,7 @@ s32 Camera_Normal2(Camera* camera) {
 
 // riding epona
 s32 Camera_Normal3(Camera* camera) {
-    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+    if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
         Camera_Free(camera);
         return 1;
     }
@@ -2301,7 +2301,7 @@ s32 Camera_Parallel0(Camera* camera) {
  * Generic jump, jumping off ledges
  */
 s32 Camera_Jump1(Camera* camera) {
-    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+    if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
         Camera_Free(camera);
         return 1;
     }
@@ -2451,7 +2451,7 @@ s32 Camera_Jump1(Camera* camera) {
 
 // Climbing ladders/vines
 s32 Camera_Jump2(Camera* camera) {
-    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+    if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
         Camera_Free(camera);
         return 1;
     }
@@ -2638,7 +2638,7 @@ s32 Camera_Jump2(Camera* camera) {
 
 // swimming
 s32 Camera_Jump3(Camera* camera) {
-    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+    if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
         Camera_Free(camera);
         return 1;
     }
@@ -3100,7 +3100,7 @@ s32 Camera_Battle3(Camera* camera) {
  * setting value.
  */
 s32 Camera_Battle4(Camera* camera) {
-    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+    if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
         Camera_Free(camera);
         return 1;
     }
@@ -4635,7 +4635,7 @@ s32 Camera_Data4(Camera* camera) {
  * Hanging off of a ledge
  */
 s32 Camera_Unique1(Camera* camera) {
-    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+    if (CVarGetInteger("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
         Camera_Free(camera);
         return 1;
     }
@@ -4722,7 +4722,7 @@ s32 Camera_Unique1(Camera* camera) {
         anim->timer--;
     }
 
-    sp8C.yaw = Camera_LERPFloorS(anim->yawTarget, eyeNextAtOffset.yaw, 0.5f, CVar_GetS32("gFixHangingLedgeSwingRate", 0) ? 0xA : 0x2710);
+    sp8C.yaw = Camera_LERPFloorS(anim->yawTarget, eyeNextAtOffset.yaw, 0.5f, CVarGetInteger("gFixHangingLedgeSwingRate", 0) ? 0xA : 0x2710);
     Camera_Vec3fVecSphGeoAdd(eyeNext, at, &sp8C);
     *eye = *eyeNext;
     Camera_BGCheck(camera, at, eye);
@@ -7615,7 +7615,7 @@ Vec3s Camera_Update(Camera* camera) {
     }
 
     // enable/disable debug cam
-    if (CVar_GetS32("gDebugCamera", 0) && CHECK_BTN_ALL(D_8015BD7C->state.input[2].press.button, BTN_START)) {
+    if (CVarGetInteger("gDebugCamera", 0) && CHECK_BTN_ALL(D_8015BD7C->state.input[2].press.button, BTN_START)) {
         gDbgCamEnabled ^= 1;
         if (gDbgCamEnabled) {
             DbgCamera_Enable(&D_8015BD80, camera);
@@ -7697,7 +7697,7 @@ Vec3s Camera_Update(Camera* camera) {
                      BINANG_TO_DEGF(camera->camDir.x), camera->camDir.y, BINANG_TO_DEGF(camera->camDir.y));
     }
 
-    if (camera->timer != -1 && CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_DRIGHT) && CVar_GetS32("gDebugCamera", 0)) {
+    if (camera->timer != -1 && CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_DRIGHT) && CVarGetInteger("gDebugCamera", 0)) {
         camera->timer = 0;
     }
 

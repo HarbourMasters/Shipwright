@@ -521,11 +521,11 @@ void EnDivingGame_Update(Actor* thisx, PlayState* play2) {
     }
     this->actionFunc(this, play);
     Actor_SetFocus(&this->actor, 80.0f);
-    this->unk_324.unk_18 = player->actor.world.pos;
-    this->unk_324.unk_18.y = player->actor.world.pos.y;
-    func_80034A14(&this->actor, &this->unk_324, 2, 4);
-    this->vec_284 = this->unk_324.unk_08;
-    this->vec_28A = this->unk_324.unk_0E;
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.trackPos.y = player->actor.world.pos.y;
+    Npc_TrackPoint(&this->actor, &this->interactInfo, 2, NPC_TRACKING_FULL_BODY);
+    this->vec_284 = this->interactInfo.headRot;
+    this->vec_28A = this->interactInfo.torsoRot;
     if ((play->gameplayFrames % 16) == 0) {
         pos = this->actor.world.pos;
         pos.y += 20.0f;

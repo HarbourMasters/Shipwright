@@ -1,7 +1,7 @@
 #ifndef Z_EN_FIRE_ROCK_H
 #define Z_EN_FIRE_ROCK_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 #include "overlays/actors/ovl_En_Encount2/z_en_encount2.h"

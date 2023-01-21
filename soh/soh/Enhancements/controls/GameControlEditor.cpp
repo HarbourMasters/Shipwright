@@ -8,8 +8,8 @@
 
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
-#include <Cvar.h>
-#include <UltraController.h>
+#include <libultraship/bridge.h>
+#include <libultraship/libultra/controller.h>
 #include <Utils/StringHelper.h>
 #include <ImGuiImpl.h>
 
@@ -109,7 +109,7 @@ namespace GameControlEditor {
     // Draw a button mapping setting consisting of a padded label and button dropdown.
     // excludedButtons indicates which buttons are unavailable to choose from.
     void DrawMapping(CustomButtonMap& mapping, float labelWidth, N64ButtonMask excludedButtons) {
-        N64ButtonMask currentButton = CVar_GetS32(mapping.cVarName, mapping.defaultBtn);
+        N64ButtonMask currentButton = CVarGetInteger(mapping.cVarName, mapping.defaultBtn);
 
         const char* preview;
         if (buttonNames.contains(currentButton)) {
@@ -134,7 +134,7 @@ namespace GameControlEditor {
                     continue;
                 }
                 if (ImGui::Selectable(i->second, i->first == currentButton)) {
-                    CVar_SetS32(mapping.cVarName, i->first);
+                    CVarSetInteger(mapping.cVarName, i->first);
                 }
             }
             ImGui::EndCombo();
@@ -158,11 +158,11 @@ namespace GameControlEditor {
         ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
         UIWidgets::EnhancementCheckbox("Customize Ocarina Controls", "gCustomOcarinaControls");
 
-        if (CVar_GetS32("gCustomOcarinaControls", 0) == 1) {
+        if (CVarGetInteger("gCustomOcarinaControls", 0) == 1) {
             if (ImGui::BeginTable("tableCustomMainOcarinaControls", 2, ImGuiTableFlags_SizingStretchProp)) {
                 float labelWidth;
                 N64ButtonMask disableMask = BTN_B;
-                if (CVar_GetS32("gDpadOcarina", 0)) {
+                if (CVarGetInteger("gDpadOcarina", 0)) {
                     disableMask |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
                 }
 
@@ -242,11 +242,11 @@ namespace GameControlEditor {
         UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First-Person View", "gDisableAutoCenterViewFirstPerson");
         DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
         UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", "gEnableFirstPersonSensitivity", true, false);
-        if (CVar_GetS32("gEnableFirstPersonSensitivity", 0)) {
+        if (CVarGetInteger("gEnableFirstPersonSensitivity", 0)) {
             UIWidgets::EnhancementSliderFloat("Aiming/First-Person Sensitivity: %d %%", "##FirstPersonSensitivity",
                                                 "gFirstPersonCameraSensitivity", 0.01f, 5.0f, "", 1.0f, true, true);
         } else {
-            CVar_SetFloat("gFirstPersonCameraSensitivity", 1.0f);
+            CVarSetFloat("gFirstPersonCameraSensitivity", 1.0f);
         }
         SohImGui::EndGroupPanel();
 
@@ -298,7 +298,7 @@ namespace GameControlEditor {
         SohImGui::BeginGroupPanel("Misc Controls", ImGui::GetContentRegionAvail());
         UIWidgets::PaddedEnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify", true, false);
         DrawHelpIcon("Hold the assigned button to change the maximum walking speed\nTo change the assigned button, go into the Ports tabs above");
-         if (CVar_GetS32("gEnableWalkModify", 0)) {
+         if (CVarGetInteger("gEnableWalkModify", 0)) {
             UIWidgets::Spacer(5);
             SohImGui::BeginGroupPanel("Walk Modifier", ImGui::GetContentRegionAvail());
             UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding", "gWalkSpeedToggle", true, false);
@@ -317,7 +317,7 @@ namespace GameControlEditor {
 
     void DrawUI(bool& open) {
         if (!open) {
-            CVar_SetS32("gGameControlEditorEnabled", false);
+            CVarSetInteger("gGameControlEditorEnabled", false);
             return;
         }
 

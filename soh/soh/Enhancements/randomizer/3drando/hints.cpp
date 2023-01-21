@@ -116,6 +116,7 @@ Text childAltarText;
 Text adultAltarText;
 Text ganonText;
 Text ganonHintText;
+Text dampesText;
 Text warpMinuetText;
 Text warpBoleroText;
 Text warpSerenadeText;
@@ -137,6 +138,10 @@ Text& GetGanonText() {
 
 Text& GetGanonHintText() {
   return ganonHintText;
+}
+
+Text& GetDampeHintText() {
+  return dampesText;
 }
 
 Text& GetWarpMinuetText() {
@@ -312,17 +317,12 @@ static void CreateWothHint(uint8_t* remainingDungeonWothHints) {
     Location(hintedLocation)->SetAsHinted();
     uint32_t gossipStone = RandomElement(gossipStoneLocations);
 
-    // form hint text
-    Text locationText;
     if (Location(hintedLocation)->IsDungeon()) {
         *remainingDungeonWothHints -= 1;
-        uint32_t parentRegion = Location(hintedLocation)->GetParentRegionKey();
-        locationText = AreaTable(parentRegion)->GetHint().GetText();
-
-    } else {
-        uint32_t parentRegion = Location(hintedLocation)->GetParentRegionKey();
-        locationText = GetHintRegion(parentRegion)->GetHint().GetText();
     }
+
+    // form hint text
+    Text locationText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
     Text finalWothHint = Hint(PREFIX).GetText() + "#" + locationText + "#" + Hint(WAY_OF_THE_HERO).GetText();
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalWothHint.english);
@@ -360,16 +360,12 @@ static void CreateBarrenHint(uint8_t* remainingDungeonBarrenHints, std::vector<u
     Location(hintedLocation)->SetAsHinted();
     uint32_t gossipStone = RandomElement(gossipStoneLocations);
 
-    // form hint text
-    Text locationText;
     if (Location(hintedLocation)->IsDungeon()) {
         *remainingDungeonBarrenHints -= 1;
-        uint32_t parentRegion = Location(hintedLocation)->GetParentRegionKey();
-        locationText = Hint(AreaTable(parentRegion)->hintKey).GetText();
-    } else {
-        uint32_t parentRegion = Location(hintedLocation)->GetParentRegionKey();
-        locationText = Hint(GetHintRegion(parentRegion)->hintKey).GetText();
     }
+
+    // form hint text
+    Text locationText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
     Text finalBarrenHint =
         Hint(PREFIX).GetText() + Hint(PLUNDERING).GetText() + "#" + locationText + "#" + Hint(FOOLISH).GetText();
     SPDLOG_DEBUG("\tMessage: ");
@@ -414,16 +410,15 @@ static void CreateRandomLocationHint(const bool goodItem = false) {
 
   //form hint text
   Text itemText = Location(hintedLocation)->GetPlacedItem().GetHint().GetText();
+  Text locationText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
+  // RANDOTODO: reconsider dungeon vs non-dungeon item location hints when boss shuffle mixed pools happens
   if (Location(hintedLocation)->IsDungeon()) {
-    uint32_t parentRegion = Location(hintedLocation)->GetParentRegionKey();
-    Text locationText = AreaTable(parentRegion)->GetHint().GetText();
     Text finalHint = Hint(PREFIX).GetText()+"#"+locationText+"# "+Hint(HOARDS).GetText()+" #"+itemText+"#.";
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalHint.english);
     SPDLOG_DEBUG("\n\n");
     AddHint(finalHint, gossipStone, {QM_GREEN, QM_RED});
   } else {
-    Text locationText = GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
     Text finalHint = Hint(PREFIX).GetText()+"#"+itemText+"# "+Hint(CAN_BE_FOUND_AT).GetText()+" #"+locationText+"#.";
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalHint.english);
@@ -546,7 +541,7 @@ static void CreateTrialHints() {
   }
 }
 
-static void CreateGanonText() {
+void CreateGanonText() {
 
   //funny ganon line
   ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
@@ -680,7 +675,7 @@ static Text BuildGanonBossKeyText() {
   return Text()+"$b"+ganonBossKeyText+"^";
 }
 
-static void CreateAltarText() {
+void CreateAltarText() {
 
   //Child Altar Text
   childAltarText = Hint(SPIRITUAL_STONE_TEXT_START).GetText()+"^"+
@@ -737,6 +732,25 @@ void CreateMerchantsHints() {
   CreateMessageFromTextObject(0x6078, 0, 2, 3, AddColorsAndFormat(carpetSalesmanTextTwo, {QM_RED, QM_YELLOW, QM_RED}));
 }
 
+void CreateDampesDiaryText() {
+  uint32_t item = PROGRESSIVE_HOOKSHOT;
+  uint32_t location = FilterFromPool(allLocations, [item](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == item;})[0];
+  Text area = GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText();
+  Text temp1 = Text{
+    "Whoever reads this, please enter %g", 
+    "Toi qui lit ce journal, rends-toi dans %g",
+    "Wer immer dies liest, der möge folgenden Ort aufsuchen: %g"
+  };
+
+  Text temp2 = {
+    "%w. I will let you have my stretching, shrinking keepsake.^I'm waiting for you.&--Dampé",
+    "%w. Et peut-être auras-tu droit à mon précieux %rtrésor%w.^Je t'attends...&--Igor",
+    "%w. Ihm gebe ich meinen langen, kurzen Schatz.^Ich warte!&Boris"
+  };
+  
+  dampesText = temp1 + area + temp2;
+}
+
 void CreateWarpSongTexts() {
   auto warpSongEntrances = GetShuffleableEntrances(EntranceType::WarpSong, false);
 
@@ -776,9 +790,6 @@ void CreateWarpSongTexts() {
 }
 
 void CreateAllHints() {
-
-  CreateGanonText();
-  CreateAltarText();
 
   SPDLOG_DEBUG("\nNOW CREATING HINTS\n");
   const HintSetting& hintSetting = hintSettingTable[Settings::HintDistribution.Value<uint8_t>()];
