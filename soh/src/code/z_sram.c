@@ -207,7 +207,7 @@ void Sram_OpenSave() {
     osSyncPrintf(VT_RST);
 
     if (gSaveContext.health < 0x30) {
-        gSaveContext.health = (CVarGetInteger("gFullHealthSpawn", 0)) ? gSaveContext.healthCapacity : 0x30;
+        gSaveContext.health = CVarGetInteger("gFullHealthSpawn", 0) ? gSaveContext.healthCapacity : 0x30;
     }
 
     if (gSaveContext.scarecrowLongSongSet) {
