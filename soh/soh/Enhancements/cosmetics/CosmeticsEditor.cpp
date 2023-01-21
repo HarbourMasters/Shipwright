@@ -1801,7 +1801,7 @@ void InitCosmeticsEditor() {
 
 void CosmeticsEditor_RandomizeAll() {
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
-        if (!CVar_GetS32(cosmeticOption.lockedCvar, 0)) {
+        if (!CVarGetInteger(cosmeticOption.lockedCvar, 0)) {
             RandomizeColor(cosmeticOption);
         }
     }
@@ -1812,7 +1812,7 @@ void CosmeticsEditor_RandomizeAll() {
 
 void CosmeticsEditor_ResetAll() {
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
-        if (!CVar_GetS32(cosmeticOption.lockedCvar, 0)) {
+        if (!CVarGetInteger(cosmeticOption.lockedCvar, 0)) {
             ResetColor(cosmeticOption);
         }
     }
