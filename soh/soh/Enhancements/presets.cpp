@@ -55,9 +55,8 @@ void DrawPresetSelector(PresetType presetTypeId) {
 
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6.0f, 4.0f));
     if (ImGui::Button(("Apply Preset##" + presetTypeCvar).c_str())) {
-        if (selectedPresetId == 0) {
-            clearCvars(presetTypeDef.cvarsToClear);
-        } else {
+        clearCvars(presetTypeDef.cvarsToClear);
+        if (selectedPresetId != 0) {
             applyPreset(selectedPresetDef.entries);
         }
         SohImGui::RequestCvarSaveOnNextTick();
