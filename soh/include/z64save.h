@@ -1,7 +1,7 @@
 #ifndef Z64SAVE_H
 #define Z64SAVE_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "z64math.h"
 #include "z64audio.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
@@ -264,6 +264,7 @@ typedef struct {
     /*        */ char adultAltarText[750];
     /*        */ char ganonHintText[150];
     /*        */ char ganonText[250];
+    /*        */ char dampeText[150];
     /*        */ char warpMinuetText[100];
     /*        */ char warpBoleroText[100];
     /*        */ char warpSerenadeText[100];

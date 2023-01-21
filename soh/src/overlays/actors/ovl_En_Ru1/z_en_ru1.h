@@ -1,7 +1,7 @@
 #ifndef Z_EN_RU1_H
 #define Z_EN_RU1_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 #include "overlays/actors/ovl_Bg_Bdan_Objects/z_bg_bdan_objects.h"
@@ -54,7 +54,7 @@ typedef struct EnRu1 {
     /* 0x0360 */ f32 unk_360;
     /* 0x0364 */ Vec3f unk_364;
     /* 0x0370 */ f32 unk_370;
-    /* 0x0374 */ struct_80034A14_arg1 unk_374;
+    /* 0x0374 */ NpcInteractInfo interactInfo;
 } EnRu1; // size = 0x039C
 
 typedef enum {

@@ -1,7 +1,7 @@
 #ifndef Z_BOSS_GANON2_H
 #define Z_BOSS_GANON2_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 
@@ -91,8 +91,8 @@ typedef struct BossGanon2 {
     /* 0x0390 */ s16 unk_390;
     /* 0x0392 */ s16 unk_392;
     /* 0x0394 */ f32 unk_394;
-    /* 0x0398 */ u32 unk_398;
-    /* 0x039C */ s16 unk_39C;
+    /* 0x0398 */ u32 csTimer;
+    /* 0x039C */ s16 csState;
     /* 0x039E */ s16 unk_39E;
     /* 0x03A0 */ char unk_3A0[0x4];
     /* 0x03A4 */ Vec3f unk_3A4;

@@ -150,13 +150,13 @@ void func_80A505CC(Actor* thisx, PlayState* play) {
     func_80A5046C(this);
     this->actionFunc(this, play);
 
-    this->unk_2A0.unk_18 = player->actor.world.pos;
+    this->interactInfo.trackPos = player->actor.world.pos;
     if (LINK_IS_ADULT) {
-        this->unk_2A0.unk_14 = 10.0f;
+        this->interactInfo.yOffset = 10.0f;
     } else {
-        this->unk_2A0.unk_14 = 20.0f;
+        this->interactInfo.yOffset = 20.0f;
     }
-    func_80034A14(&this->actor, &this->unk_2A0, 6, 2);
+    Npc_TrackPoint(&this->actor, &this->interactInfo, 6, NPC_TRACKING_HEAD_AND_TORSO);
 
     func_80034F54(play, this->unk_2CC, this->unk_2EC, 16);
 
@@ -189,14 +189,14 @@ s32 EnGuest_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f*
     if (limbIndex == 15) {
         *dList = object_boj_DL_0059B0;
         Matrix_Translate(1400.0f, 0.0f, 0.0f, MTXMODE_APPLY);
-        sp3C = this->unk_2A0.unk_08;
+        sp3C = this->interactInfo.headRot;
         Matrix_RotateX((sp3C.y / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_RotateZ((sp3C.x / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_Translate(-1400.0f, 0.0f, 0.0f, MTXMODE_APPLY);
     }
 
     if (limbIndex == 8) {
-        sp3C = this->unk_2A0.unk_0E;
+        sp3C = this->interactInfo.torsoRot;
         Matrix_RotateX((-sp3C.y / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_RotateZ((sp3C.x / 32768.0f) * M_PI, MTXMODE_APPLY);
     }

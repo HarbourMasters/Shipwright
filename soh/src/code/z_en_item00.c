@@ -333,7 +333,7 @@ void EnItem00_SetupAction(EnItem00* this, EnItem00ActionFunc actionFunc) {
 void EnItem00_SetObjectDependency(EnItem00* this, PlayState* play, s16 objectIndex) {
     // Remove object dependency for Enemy Randomizer and Crowd Control to allow Like-likes to
     // drop equipment correctly in rooms where Like-likes normally don't spawn.
-    if (CVar_GetS32("gRandomizedEnemies", 0) || CVar_GetS32("gCrowdControl", 0)) {
+    if (CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0)) {
         this->actor.objBankIndex = 0;
     } else {
         this->actor.objBankIndex = Object_GetIndex(&play->objectCtx, objectIndex);
@@ -552,7 +552,7 @@ void EnItem00_Destroy(Actor* thisx, PlayState* play) {
 
 void func_8001DFC8(EnItem00* this, PlayState* play) {
 
-    if (!CVar_GetS32("gNewDrops", 0)){
+    if (!CVarGetInteger("gNewDrops", 0)){
         if ((this->actor.params <= ITEM00_RUPEE_RED) || ((this->actor.params == ITEM00_HEART) && (this->unk_15A < 0)) ||
             (this->actor.params == ITEM00_HEART_PIECE)) {
             this->actor.shape.rot.y += 960;
@@ -576,7 +576,7 @@ void func_8001DFC8(EnItem00* this, PlayState* play) {
     }
 
     if (this->actor.params == ITEM00_HEART_PIECE) {
-        if (CVar_GetS32("gNewDrops", 0) && !gSaveContext.n64ddFlag) {
+        if (CVarGetInteger("gNewDrops", 0) && !gSaveContext.n64ddFlag) {
             this->actor.shape.yOffset = Math_SinS(this->actor.shape.rot.y) * 20.0f + 50.0f;
         } else {
             this->actor.shape.yOffset = Math_SinS(this->actor.shape.rot.y) * 150.0f + 850.0f;
@@ -613,7 +613,7 @@ void func_8001E1C8(EnItem00* this, PlayState* play) {
     f32 originalVelocity;
     Vec3f effectPos;
 
-    if (this->actor.params <= ITEM00_RUPEE_RED && !CVar_GetS32("gNewDrops", 0)) {
+    if (this->actor.params <= ITEM00_RUPEE_RED && !CVarGetInteger("gNewDrops", 0)) {
         this->actor.shape.rot.y += 960;
     }
 
@@ -715,9 +715,9 @@ void func_8001E5C8(EnItem00* this, PlayState* play) {
 
     this->actor.world.pos = player->actor.world.pos;
 
-    if (this->actor.params <= ITEM00_RUPEE_RED && !CVar_GetS32("gNewDrops", 0)) {
+    if (this->actor.params <= ITEM00_RUPEE_RED && !CVarGetInteger("gNewDrops", 0)) {
         this->actor.shape.rot.y += 960;
-    } else if (this->actor.params == ITEM00_HEART && !CVar_GetS32("gNewDrops", 0)) {
+    } else if (this->actor.params == ITEM00_HEART && !CVarGetInteger("gNewDrops", 0)) {
         this->actor.shape.rot.y = 0;
     }
 
@@ -742,7 +742,7 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
     s32 pad;
 
 	// OTRTODO: remove special case for bombchu when its 2D drop is implemented
-    if (CVar_GetS32("gNewDrops", 0) || this->actor.params == ITEM00_BOMBCHU) { //set the rotation system on selected model only :)
+    if (CVarGetInteger("gNewDrops", 0) || this->actor.params == ITEM00_BOMBCHU) { //set the rotation system on selected model only :)
         if ((this->actor.params == ITEM00_RUPEE_GREEN) || (this->actor.params == ITEM00_RUPEE_BLUE) ||
             (this->actor.params == ITEM00_RUPEE_RED) || (this->actor.params == ITEM00_ARROWS_SINGLE) || 
             (this->actor.params == ITEM00_ARROWS_SMALL) || (this->actor.params == ITEM00_ARROWS_MEDIUM) ||
@@ -761,7 +761,7 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
 
     if (this->unk_15A > 0) {
         this->unk_15A--;
-        if (CVar_GetS32("gDropsDontDie", 0) && (this->unk_154 <= 0)) {
+        if (CVarGetInteger("gDropsDontDie", 0) && (this->unk_154 <= 0)) {
             this->unk_15A++;
         }
     }
@@ -977,7 +977,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
     if (!(this->unk_156 & this->unk_158)) {
         switch (this->actor.params) {
             case ITEM00_RUPEE_GREEN:
-                if (CVar_GetS32("gNewDrops", 0)) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.3f);
                     this->scale = 0.3f;
                     this->actor.shape.yOffset = 50.0f;
@@ -987,7 +987,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     break;
                 }    
             case ITEM00_RUPEE_BLUE:
-                if (CVar_GetS32("gNewDrops", 0)) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.3f);
                     this->scale = 0.3f;
                     this->actor.shape.yOffset = 50.0f;
@@ -997,7 +997,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     break;
                 }
             case ITEM00_RUPEE_RED:
-                if (CVar_GetS32("gNewDrops", 0)) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.3f);
                     this->scale = 0.3f;
                     this->actor.shape.yOffset = 50.0f;
@@ -1014,7 +1014,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     break;
                 }
             case ITEM00_RUPEE_ORANGE:
-                if (CVar_GetS32("gNewDrops", 0)) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.45f);
                     this->scale = 0.45f;
                     this->actor.shape.yOffset = 50.0f;
@@ -1031,7 +1031,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     break;
                 }
             case ITEM00_RUPEE_PURPLE:
-                if (CVar_GetS32("gNewDrops", 0)) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.4f);
                     this->scale = 0.4f;
                     this->actor.shape.yOffset = 50.0f;
@@ -1048,7 +1048,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     break;
                 }
             case ITEM00_HEART_PIECE:
-                if (CVar_GetS32("gNewDrops", 0) && !gSaveContext.n64ddFlag) {
+                if (CVarGetInteger("gNewDrops", 0) && !gSaveContext.n64ddFlag) {
                     Actor_SetScale(&this->actor, 0.5f);
                     this->scale = 0.5f;
                     this->actor.shape.yOffset = 50.0f;
@@ -1067,7 +1067,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                 EnItem00_DrawHeartContainer(this, play);
                 break;
             case ITEM00_HEART:
-                if (CVar_GetS32("gNewDrops", 0)) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     this->actor.home.rot.z = Rand_CenteredFloat(65535.0f);
                     this->actor.shape.yOffset = 25.0f;
                     this->actor.shape.shadowScale = 0.3f;
@@ -1104,7 +1104,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                 }
                 
             case ITEM00_BOMBS_A:
-                if (CVar_GetS32("gNewDrops", 0)) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.2f);
                     this->scale = 0.2f;
                     this->actor.shape.yOffset = 50.0f;
@@ -1114,7 +1114,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     break;
                 }
             case ITEM00_BOMBS_B:
-                if (CVar_GetS32("gNewDrops", 0)) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.2f);
                     this->scale = 0.2f;
                     this->actor.shape.yOffset = 50.0f;
@@ -1125,7 +1125,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                 }
             case ITEM00_BOMBS_SPECIAL:
             case ITEM00_ARROWS_SINGLE:
-                if (CVar_GetS32("gNewDrops", 0)) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.2f);
                     this->scale = 0.2f;
                     this->actor.shape.yOffset = 50.0f;
@@ -1135,7 +1135,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     break;
                 }
             case ITEM00_ARROWS_SMALL:
-                if (CVar_GetS32("gNewDrops", 0)) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.2f);
                     this->scale = 0.2f;
                     this->actor.shape.yOffset = 50.0f;
@@ -1145,7 +1145,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     break;
                 }
             case ITEM00_ARROWS_MEDIUM:
-                if (CVar_GetS32("gNewDrops", 0)) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.2f);
                     this->scale = 0.2f;
                     this->actor.shape.yOffset = 50.0f;
@@ -1155,7 +1155,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     break;
                 }
             case ITEM00_ARROWS_LARGE:
-                if (CVar_GetS32("gNewDrops", 0)) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.2f);
                     this->scale = 0.2f;
                     this->actor.shape.yOffset = 50.0f;
@@ -1165,7 +1165,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     break;
                 }
             case ITEM00_NUTS:
-                if (CVar_GetS32("gNewDrops", 0)) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.2f);
                     this->scale = 0.2f;
                     this->actor.shape.yOffset = 50.0f;
@@ -1175,7 +1175,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     break;
                 }
             case ITEM00_STICK:
-                if (CVar_GetS32("gNewDrops", 0)) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.2f);
                     this->scale = 0.2f;
                     this->actor.shape.yOffset = 50.0f;
@@ -1185,7 +1185,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     break;
                 }
             case ITEM00_MAGIC_LARGE:
-                if (CVar_GetS32("gNewDrops", 0)) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.2f);
                     this->scale = 0.2f;
                     this->actor.shape.yOffset = 50.0f;
@@ -1195,7 +1195,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     break;
                 }
             case ITEM00_MAGIC_SMALL:
-                if (CVar_GetS32("gNewDrops", 0)) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.2f);
                     this->scale = 0.2f;
                     this->actor.shape.yOffset = 50.0f;
@@ -1205,7 +1205,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     break;
                 }
             case ITEM00_SEEDS:
-                if (CVar_GetS32("gNewDrops", 0)) {
+                if (CVarGetInteger("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.2f);
                     this->scale = 0.2f;
                     this->actor.shape.yOffset = 50.0f;
@@ -1215,7 +1215,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     break;
                 }
             case ITEM00_SMALL_KEY:
-                if (CVar_GetS32("gNewDrops", 0) && !gSaveContext.n64ddFlag) {
+                if (CVarGetInteger("gNewDrops", 0) && !gSaveContext.n64ddFlag) {
                     Actor_SetScale(&this->actor, 0.2f);
                     this->scale = 0.2f;
                     this->actor.shape.yOffset = 50.0f;
@@ -1386,24 +1386,24 @@ void EnItem00_DrawRupee(EnItem00* this, PlayState* play) {
     u8 shouldColor = 0;
     switch (texIndex) {
         case 0:
-            rupeeColor = CVar_GetRGB("gCosmetics.Consumable_GreenRupee.Value", (Color_RGB8){ 255, 255, 255 });
-            shouldColor = CVar_GetS32("gCosmetics.Consumable_GreenRupee.Changed", 0);
+            rupeeColor = CVarGetColor24("gCosmetics.Consumable_GreenRupee.Value", (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVarGetInteger("gCosmetics.Consumable_GreenRupee.Changed", 0);
             break;
         case 1:
-            rupeeColor = CVar_GetRGB("gCosmetics.Consumable_BlueRupee.Value", (Color_RGB8){ 255, 255, 255 });
-            shouldColor = CVar_GetS32("gCosmetics.Consumable_BlueRupee.Changed", 0);
+            rupeeColor = CVarGetColor24("gCosmetics.Consumable_BlueRupee.Value", (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVarGetInteger("gCosmetics.Consumable_BlueRupee.Changed", 0);
             break;
         case 2:
-            rupeeColor = CVar_GetRGB("gCosmetics.Consumable_RedRupee.Value", (Color_RGB8){ 255, 255, 255 });
-            shouldColor = CVar_GetS32("gCosmetics.Consumable_RedRupee.Changed", 0);
+            rupeeColor = CVarGetColor24("gCosmetics.Consumable_RedRupee.Value", (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVarGetInteger("gCosmetics.Consumable_RedRupee.Changed", 0);
             break;
         case 3:
-            rupeeColor = CVar_GetRGB("gCosmetics.Consumable_PurpleRupee.Value", (Color_RGB8){ 255, 255, 255 });
-            shouldColor = CVar_GetS32("gCosmetics.Consumable_PurpleRupee.Changed", 0);
+            rupeeColor = CVarGetColor24("gCosmetics.Consumable_PurpleRupee.Value", (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVarGetInteger("gCosmetics.Consumable_PurpleRupee.Changed", 0);
             break;
         case 4:
-            rupeeColor = CVar_GetRGB("gCosmetics.Consumable_GoldRupee.Value", (Color_RGB8){ 255, 255, 255 });
-            shouldColor = CVar_GetS32("gCosmetics.Consumable_GoldRupee.Changed", 0);
+            rupeeColor = CVarGetColor24("gCosmetics.Consumable_GoldRupee.Value", (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVarGetInteger("gCosmetics.Consumable_GoldRupee.Changed", 0);
             break;
     }
 
@@ -1552,7 +1552,7 @@ s16 func_8001F404(s16 dropId) {
         }
     }
 
-    if ((CVar_GetS32("gBombchuDrops", 0) || 
+    if ((CVarGetInteger("gBombchuDrops", 0) || 
         (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1)) &&
         (dropId == ITEM00_BOMBS_A || dropId == ITEM00_BOMBS_B || dropId == ITEM00_BOMBS_SPECIAL)) {
         dropId = EnItem00_ConvertBombDropToBombchu(dropId);
@@ -1586,7 +1586,7 @@ EnItem00* Item_DropCollectible(PlayState* play, Vec3f* spawnPos, s16 params) {
 
     params &= 0x3FFF;
 
-    if ((params & 0x00FF) == ITEM00_HEART && CVar_GetS32("gNoHeartDrops", 0)) { return NULL; }
+    if ((params & 0x00FF) == ITEM00_HEART && CVarGetInteger("gNoHeartDrops", 0)) { return NULL; }
 
     if (((params & 0x00FF) == ITEM00_FLEXIBLE) && !param4000) {
         // TODO: Prevent the cast to EnItem00 here since this is a different actor (En_Elf)
@@ -1631,7 +1631,7 @@ EnItem00* Item_DropCollectible2(PlayState* play, Vec3f* spawnPos, s16 params) {
 
     params &= 0x3FFF;
 
-    if ((params & 0x00FF) == ITEM00_HEART && CVar_GetS32("gNoHeartDrops", 0)) { return NULL; }
+    if ((params & 0x00FF) == ITEM00_HEART && CVarGetInteger("gNoHeartDrops", 0)) { return NULL; }
     
     if (((params & 0x00FF) == ITEM00_FLEXIBLE) && !param4000) {
         // TODO: Prevent the cast to EnItem00 here since this is a different actor (En_Elf)
@@ -1668,7 +1668,7 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
     param8000 = params & 0x8000;
     params &= 0x7FFF;
 
-    if (CVar_GetS32("gNoRandomDrops", 0)) { return; }
+    if (CVarGetInteger("gNoRandomDrops", 0)) { return; }
 
     if (fromActor != NULL) {
         if (fromActor->dropFlag) {
@@ -1711,11 +1711,11 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
             EffectSsDeadSound_SpawnStationary(play, spawnPos, NA_SE_EV_BUTTERFRY_TO_FAIRY, true,
                                               DEADSOUND_REPEAT_MODE_OFF, 40);
             return;
-        } else if (gSaveContext.health <= 0x30 && !CVar_GetS32("gNoHeartDrops", 0)) { // 3 hearts or less
+        } else if (gSaveContext.health <= 0x30 && !CVarGetInteger("gNoHeartDrops", 0)) { // 3 hearts or less
             params = 0xB * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_HEART;
-        } else if (gSaveContext.health <= 0x50 && !CVar_GetS32("gNoHeartDrops", 0)) { // 5 hearts or less
+        } else if (gSaveContext.health <= 0x50 && !CVarGetInteger("gNoHeartDrops", 0)) { // 5 hearts or less
             params = 0xA * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_HEART;
@@ -1748,7 +1748,7 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
         }
     }
 
-    if (dropId != 0xFF && (!CVar_GetS32("gNoHeartDrops", 0) || dropId != ITEM00_HEART)) {
+    if (dropId != 0xFF && (!CVarGetInteger("gNoHeartDrops", 0) || dropId != ITEM00_HEART)) {
         dropQuantity = sDropQuantities[params + dropTableIndex];
         while (dropQuantity > 0) {
             if (!param8000) {

@@ -1,7 +1,7 @@
 #ifndef Z_EN_KZ_H
 #define Z_EN_KZ_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnKz;
@@ -13,7 +13,7 @@ typedef struct EnKz {
     /* 0x014C */ SkelAnime skelanime;
     /* 0x0190 */ EnKzActionFunc actionFunc;
     /* 0x0194 */ ColliderCylinder collider;
-    /* 0x01E0 */ struct_80034A14_arg1 unk_1E0;
+    /* 0x01E0 */ NpcInteractInfo interactInfo;
     /* 0x0208 */ u8 sfxPlayed;
     /* 0x0209 */ u8 isTrading;
     /* 0x020A */ s16 waypoint;

@@ -81,12 +81,25 @@ void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
     forwardEntrance->SetBlueWarp(forwardEntry.blueWarp);
     forwardEntrance->SetType(forwardEntry.type);
     forwardEntrance->SetAsPrimary();
+
+    // When decouple entrances is on, mark it for entrances except boss rooms
+    if (Settings::DecoupleEntrances && forwardEntry.type != EntranceType::ChildBoss &&
+      forwardEntry.type != EntranceType::AdultBoss) {
+      forwardEntrance->SetDecoupled();
+    }
+
     if (returnEntry.parentRegion != NONE) {
       Entrance* returnEntrance = AreaTable(returnEntry.parentRegion)->GetExit(returnEntry.connectedRegion);
       returnEntrance->SetIndex(returnEntry.index);
       returnEntrance->SetBlueWarp(returnEntry.blueWarp);
       returnEntrance->SetType(returnEntry.type);
       forwardEntrance->BindTwoWay(returnEntrance);
+
+      // Mark reverse entrance as decoupled
+      if (Settings::DecoupleEntrances && returnEntry.type != EntranceType::ChildBoss &&
+        returnEntry.type != EntranceType::AdultBoss) {
+        returnEntrance->SetDecoupled();
+      }
     }
   }
 }
@@ -96,7 +109,7 @@ static std::vector<Entrance*> AssumeEntrancePool(std::vector<Entrance*>& entranc
   for (Entrance* entrance : entrancePool) {
     totalRandomizableEntrances++;
     Entrance* assumedForward = entrance->AssumeReachable();
-    if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+    if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
       Entrance* assumedReturn = entrance->GetReverse()->AssumeReachable();
       if (!(Settings::MixedEntrancePools && (Settings::ShuffleOverworldEntrances || Settings::ShuffleInteriorEntrances.Is(SHUFFLEINTERIORS_ALL)))) {
         auto type = entrance->GetType();
@@ -218,7 +231,7 @@ static void ChangeConnections(Entrance* entrance, Entrance* targetEntrance) {
   SPDLOG_DEBUG(message);
   entrance->Connect(targetEntrance->Disconnect());
   entrance->SetReplacement(targetEntrance->GetReplacement());
-  if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+  if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
     targetEntrance->GetReplacement()->GetReverse()->Connect(entrance->GetReverse()->GetAssumed()->Disconnect());
     targetEntrance->GetReplacement()->GetReverse()->SetReplacement(entrance->GetReverse());
   }
@@ -229,7 +242,7 @@ static void ChangeConnections(Entrance* entrance, Entrance* targetEntrance) {
 static void RestoreConnections(Entrance* entrance, Entrance* targetEntrance) {
   targetEntrance->Connect(entrance->Disconnect());
   entrance->SetReplacement(nullptr);
-  if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+  if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
     entrance->GetReverse()->GetAssumed()->Connect(targetEntrance->GetReplacement()->GetReverse()->Disconnect());
     targetEntrance->GetReplacement()->GetReverse()->SetReplacement(nullptr);
   }
@@ -247,7 +260,7 @@ static void DeleteTargetEntrance(Entrance* targetEntrance) {
 
 static void ConfirmReplacement(Entrance* entrance, Entrance* targetEntrance) {
   DeleteTargetEntrance(targetEntrance);
-  if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+  if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
     auto replacedReverse = targetEntrance->GetReplacement()->GetReverse();
     DeleteTargetEntrance(replacedReverse->GetReverse()->GetAssumed());
   }
@@ -786,9 +799,9 @@ int ShuffleAllEntrances() {
      {EntranceType::SpecialInterior, KAK_POTION_SHOP_BACK,             KAK_BACKYARD,                         0x04FF}},
 
      // Grotto Loads use an entrance index of 0x0700 + their grotto id. The id is used as index for the
-     // grottoLoadTable in src/grotto.c
+     // grottoLoadTable in soh/soh/Enhancements/randomizer/randomizer_grotto.c
      // Grotto Returns use an entrance index of 0x0800 + their grotto id. The id is used as index for the
-     // grottoReturnTable in src/grotto.c
+     // grottoReturnTable in soh/soh/Enhancements/randomizer/randomizer_grotto.c
     {{EntranceType::GrottoGrave,     DESERT_COLOSSUS,                  COLOSSUS_GROTTO,                      0x0700},
      {EntranceType::GrottoGrave,     COLOSSUS_GROTTO,                  DESERT_COLOSSUS,                      0x0800}},
     {{EntranceType::GrottoGrave,     LAKE_HYLIA,                       LH_GROTTO,                            0x0701},
@@ -933,6 +946,23 @@ int ShuffleAllEntrances() {
     {{EntranceType::WarpSong,        REQUIEM_OF_SPIRIT_WARP,           DESERT_COLOSSUS,                      0x01F1}, NO_RETURN_ENTRANCE},
     {{EntranceType::WarpSong,        NOCTURNE_OF_SHADOW_WARP,          GRAVEYARD_WARP_PAD_REGION,            0x0568}, NO_RETURN_ENTRANCE},
     {{EntranceType::WarpSong,        PRELUDE_OF_LIGHT_WARP,            TEMPLE_OF_TIME,                       0x05F4}, NO_RETURN_ENTRANCE},
+
+    {{EntranceType::ChildBoss, DEKU_TREE_BOSS_ENTRYWAY,        DEKU_TREE_BOSS_ROOM,            0x040F},
+     {EntranceType::ChildBoss, DEKU_TREE_BOSS_ROOM,            DEKU_TREE_BOSS_ENTRYWAY,        0x0252, 0x0457}},
+    {{EntranceType::ChildBoss, DODONGOS_CAVERN_BOSS_ENTRYWAY,  DODONGOS_CAVERN_BOSS_ROOM,      0x040B},
+     {EntranceType::ChildBoss, DODONGOS_CAVERN_BOSS_ROOM,      DODONGOS_CAVERN_BOSS_ENTRYWAY,  0x00C5, 0x047A}},
+    {{EntranceType::ChildBoss, JABU_JABUS_BELLY_BOSS_ENTRYWAY, JABU_JABUS_BELLY_BOSS_ROOM,     0x0301},
+     {EntranceType::ChildBoss, JABU_JABUS_BELLY_BOSS_ROOM,     JABU_JABUS_BELLY_BOSS_ENTRYWAY, 0x0407, 0x010E}},
+    {{EntranceType::AdultBoss, FOREST_TEMPLE_BOSS_ENTRYWAY,    FOREST_TEMPLE_BOSS_ROOM,        0x000C},
+     {EntranceType::AdultBoss, FOREST_TEMPLE_BOSS_ROOM,        FOREST_TEMPLE_BOSS_ENTRYWAY,    0x024E, 0x0608}},
+    {{EntranceType::AdultBoss, FIRE_TEMPLE_BOSS_ENTRYWAY,      FIRE_TEMPLE_BOSS_ROOM,          0x0305},
+     {EntranceType::AdultBoss, FIRE_TEMPLE_BOSS_ROOM,          FIRE_TEMPLE_BOSS_ENTRYWAY,      0x0175, 0x0564}},
+    {{EntranceType::AdultBoss, WATER_TEMPLE_BOSS_ENTRYWAY,     WATER_TEMPLE_BOSS_ROOM,         0x0417},
+     {EntranceType::AdultBoss, WATER_TEMPLE_BOSS_ROOM,         WATER_TEMPLE_BOSS_ENTRYWAY,     0x0423, 0x060C}},
+    {{EntranceType::AdultBoss, SPIRIT_TEMPLE_BOSS_ENTRYWAY,    SPIRIT_TEMPLE_BOSS_ROOM,        0x008D},
+     {EntranceType::AdultBoss, SPIRIT_TEMPLE_BOSS_ROOM,        SPIRIT_TEMPLE_BOSS_ENTRYWAY,    0x02F5, 0x0610}},
+    {{EntranceType::AdultBoss, SHADOW_TEMPLE_BOSS_ENTRYWAY,    SHADOW_TEMPLE_BOSS_ROOM,        0x0413},
+     {EntranceType::AdultBoss, SHADOW_TEMPLE_BOSS_ROOM,        SHADOW_TEMPLE_BOSS_ENTRYWAY,    0x02B2, 0x0580}},
   };
 
   std::map<std::string, PriorityEntrance> priorityEntranceTable = {
@@ -967,6 +997,28 @@ int ShuffleAllEntrances() {
       oneWayPriorities["Nocturne"] = priorityEntranceTable["Nocturne"];
       if (!Settings::ShuffleDungeonEntrances && !Settings::ShuffleOverworldEntrances) {
         oneWayPriorities["Requiem"] = priorityEntranceTable["Requiem"];
+      }
+    }
+  }
+
+  // Shuffle Bosses
+  if (Settings::ShuffleBossEntrances.IsNot(SHUFFLEBOSSES_OFF)) {
+    if (Settings::ShuffleBossEntrances.Is(SHUFFLEBOSSES_FULL)) {
+      entrancePools[EntranceType::Boss] = GetShuffleableEntrances(EntranceType::ChildBoss);
+      AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::AdultBoss));
+      // If forest is closed, ensure Ghoma is inside the Deku tree
+      // Deku tree being in its vanilla location is handled below
+      if (Settings::OpenForest.Is(OPENFOREST_CLOSED) && !(Settings::ShuffleOverworldEntrances || Settings::ShuffleInteriorEntrances)) {
+        FilterAndEraseFromPool(entrancePools[EntranceType::Boss], [](const Entrance* entrance){return entrance->GetParentRegionKey()    == DEKU_TREE_BOSS_ENTRYWAY &&
+                                                                                                      entrance->GetConnectedRegionKey() == DEKU_TREE_BOSS_ROOM;});
+      }
+    } else {
+      entrancePools[EntranceType::ChildBoss] = GetShuffleableEntrances(EntranceType::ChildBoss);
+      entrancePools[EntranceType::AdultBoss] = GetShuffleableEntrances(EntranceType::AdultBoss);
+      // If forest is closed, ensure Ghoma is inside the Deku tree
+      if (Settings::OpenForest.Is(OPENFOREST_CLOSED) && !(Settings::ShuffleOverworldEntrances || Settings::ShuffleInteriorEntrances)) {
+        FilterAndEraseFromPool(entrancePools[EntranceType::ChildBoss], [](const Entrance* entrance){return entrance->GetParentRegionKey()    == DEKU_TREE_BOSS_ENTRYWAY &&
+                                                                                                           entrance->GetConnectedRegionKey() == DEKU_TREE_BOSS_ROOM;});
       }
     }
   }

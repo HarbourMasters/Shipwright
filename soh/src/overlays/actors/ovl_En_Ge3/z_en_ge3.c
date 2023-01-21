@@ -250,7 +250,7 @@ s32 EnGe3_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
             rot->x += this->headRot.y;
 
         default:
-            if (CVar_GetS32("gGerudoWarriorClothingFix", 0)) {
+            if (CVarGetInteger("gGerudoWarriorClothingFix", 0)) {
                 // This is a hack to fix the color-changing clothes this Gerudo has on N64 versions
                 OPEN_DISPS(play->state.gfxCtx);
                 switch (limbIndex) {
