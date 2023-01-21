@@ -39,8 +39,8 @@ enum GameInteractionEffectQueryResult {
 class GameInteractionEffectBase {
 public:
     virtual GameInteractionEffectQueryResult CanBeApplied() = 0;
-    virtual void Apply() = 0;
-    virtual void Remove() = 0;
+    virtual void Apply() {};
+    virtual void Remove() {};
     int32_t parameter;
 };
 
@@ -48,37 +48,31 @@ namespace GameInteractionEffect {
     class AddHeartContainer: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
-        void Remove() override;
     };
 
     class RemoveHeartContainer: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
-        void Remove() override;
     };
 
     class FillMagic: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
-        void Remove() override;
     };
 
     class EmptyMagic: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
-        void Remove() override;
     };
 
     class GiveRupees: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
-        void Remove() override;
     };
 
     class TakeRupees: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
-        void Remove() override;
     };
 
     class NoUI: public GameInteractionEffectBase {
@@ -102,43 +96,36 @@ namespace GameInteractionEffect {
     class GiveHealth : public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
-        void Remove() override;
     };
 
     class TakeHealth : public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
-        void Remove() override;
     };
 
     class KillPlayer: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
-        void Remove() override;
     };
 
     class FreezePlayer: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
-        void Remove() override;
     };
 
     class BurnPlayer: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
-        void Remove() override;
     };
 
     class ElectrocutePlayer: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
-        void Remove() override;
     };
 
     class KnockbackPlayer: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
-        void Remove() override;
     };
 
     class GiantLink: public GameInteractionEffectBase {
@@ -234,13 +221,11 @@ namespace GameInteractionEffect {
     class GiveDekuShield: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
-        void Remove() override;
     };
 
     class SpawnCuccoStorm: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void Apply() override;
-        void Remove() override;
     };
 }
 

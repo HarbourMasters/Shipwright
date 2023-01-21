@@ -39,7 +39,6 @@ namespace GameInteractionEffect {
     void AddHeartContainer::Apply() {
         GameInteractor::Actions::AddOrRemoveHealthContainers(1);
     }
-    void AddHeartContainer::Remove() {}
 
     // MARK: - RemoveHeartContainer
     GameInteractionEffectQueryResult RemoveHeartContainer::CanBeApplied() {
@@ -54,7 +53,6 @@ namespace GameInteractionEffect {
     void RemoveHeartContainer::Apply() {
         GameInteractor::Actions::AddOrRemoveHealthContainers(-1);
     }
-    void RemoveHeartContainer::Remove() {}
 
     // MARK: - FillMagic
     GameInteractionEffectQueryResult FillMagic::CanBeApplied() {
@@ -69,7 +67,6 @@ namespace GameInteractionEffect {
     void FillMagic::Apply() {
         GameInteractor::Actions::AddOrRemoveMagic(96);
     }
-    void FillMagic::Remove() {}
 
     // MARK: - EmptyMagic
     GameInteractionEffectQueryResult EmptyMagic::CanBeApplied() {
@@ -84,7 +81,6 @@ namespace GameInteractionEffect {
     void EmptyMagic::Apply() {
         GameInteractor::Actions::AddOrRemoveMagic(-96);
     }
-    void EmptyMagic::Remove() {}
 
     // MARK: - GiveRupees
     GameInteractionEffectQueryResult GiveRupees::CanBeApplied() {
@@ -97,7 +93,6 @@ namespace GameInteractionEffect {
     void GiveRupees::Apply() {
         Rupees_ChangeBy(parameter);
     }
-    void GiveRupees::Remove() {}
 
     // MARK: - TakeRupees
     GameInteractionEffectQueryResult TakeRupees::CanBeApplied() {
@@ -112,7 +107,6 @@ namespace GameInteractionEffect {
     void TakeRupees::Apply() {
         Rupees_ChangeBy(-parameter);
     }
-    void TakeRupees::Remove() {}
 
     // MARK: - NoUI
     GameInteractionEffectQueryResult NoUI::CanBeApplied() {
@@ -172,7 +166,6 @@ namespace GameInteractionEffect {
     void GiveHealth::Apply() {
         GameInteractor::Actions::HealOrDamagePlayer(parameter);
     }
-    void GiveHealth::Remove() {}
 
     // MARK: - TakeHealth
     GameInteractionEffectQueryResult TakeHealth::CanBeApplied() {
@@ -188,7 +181,6 @@ namespace GameInteractionEffect {
     void TakeHealth::Apply() {
         GameInteractor::Actions::HealOrDamagePlayer(-parameter);
     }
-    void TakeHealth::Remove() {}
 
     // MARK: - KillPlayer
     GameInteractionEffectQueryResult KillPlayer::CanBeApplied() {
@@ -202,7 +194,6 @@ namespace GameInteractionEffect {
     void KillPlayer::Apply() {
         GameInteractor::Actions::HealOrDamagePlayer(-50);
     }
-    void KillPlayer::Remove() {}
 
     // MARK: - FreezePlayer
     GameInteractionEffectQueryResult FreezePlayer::CanBeApplied() {
@@ -216,7 +207,6 @@ namespace GameInteractionEffect {
     void FreezePlayer::Apply() {
         GameInteractor::Actions::FreezePlayer();
     }
-    void FreezePlayer::Remove() {}
 
     // MARK: - BurnPlayer
     GameInteractionEffectQueryResult BurnPlayer::CanBeApplied() {
@@ -230,7 +220,6 @@ namespace GameInteractionEffect {
     void BurnPlayer::Apply() {
         GameInteractor::Actions::BurnPlayer();
     }
-    void BurnPlayer::Remove() {}
 
     // MARK: - ElectrocutePlayer
     GameInteractionEffectQueryResult ElectrocutePlayer::CanBeApplied() {
@@ -244,7 +233,6 @@ namespace GameInteractionEffect {
     void ElectrocutePlayer::Apply() {
         GameInteractor::Actions::ElectrocutePlayer();
     }
-    void ElectrocutePlayer::Remove() {}
 
     // MARK: - KnockbackPlayer
     GameInteractionEffectQueryResult KnockbackPlayer::CanBeApplied() {
@@ -257,7 +245,6 @@ namespace GameInteractionEffect {
     void KnockbackPlayer::Apply() {
         GameInteractor::Actions::KnockbackPlayer(parameter);
     }
-    void KnockbackPlayer::Remove() {}
 
     // MARK: - GiantLink
     GameInteractionEffectQueryResult GiantLink::CanBeApplied() {
@@ -495,7 +482,6 @@ namespace GameInteractionEffect {
     void GiveDekuShield::Apply() {
         GameInteractor::Actions::GiveDekuShield();
     }
-    void GiveDekuShield::Remove() {}
 
     // MARK: - SpawnCuccoStorm
     GameInteractionEffectQueryResult SpawnCuccoStorm::CanBeApplied() {
@@ -508,5 +494,4 @@ namespace GameInteractionEffect {
     void SpawnCuccoStorm::Apply() {
         GameInteractor::Actions::SpawnCuccoStorm();
     }
-    void SpawnCuccoStorm::Remove() {}
 }
