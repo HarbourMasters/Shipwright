@@ -1697,15 +1697,8 @@ void Message_StartTextbox(PlayState* play, u16 textId, Actor* actor) {
     osSyncPrintf(VT_RST);
 
     msgCtx->ocarinaAction = 0xFFFF;
-    // we need the talkActor for gossip stones in rando
-    // so we need to switch the order of these lines
-    if (gSaveContext.n64ddFlag && textId == 0x2053) {
-        msgCtx->talkActor = actor;
-        Message_OpenText(play, textId);
-    } else {
-        Message_OpenText(play, textId);
-        msgCtx->talkActor = actor;
-    }
+    Message_OpenText(play, textId);
+    msgCtx->talkActor = actor;
     msgCtx->msgMode = MSGMODE_TEXT_START;
     msgCtx->stateTimer = 0;
     msgCtx->textDelayTimer = 0;

@@ -207,7 +207,7 @@ void Sram_OpenSave() {
     osSyncPrintf(VT_RST);
 
     if (gSaveContext.health < 0x30) {
-        gSaveContext.health = 0x30;
+        gSaveContext.health = CVarGetInteger("gFullHealthSpawn", 0) ? gSaveContext.healthCapacity : 0x30;
     }
 
     if (gSaveContext.scarecrowLongSongSet) {
@@ -408,6 +408,19 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
       
         if(Randomizer_GetSettingValue(RSK_STARTING_KOKIRI_SWORD)) Item_Give(NULL, ITEM_SWORD_KOKIRI);
         if(Randomizer_GetSettingValue(RSK_STARTING_DEKU_SHIELD)) Item_Give(NULL, ITEM_SHIELD_DEKU);
+
+        if (Randomizer_GetSettingValue(RSK_STARTING_ZELDAS_LULLABY)) Item_Give(NULL, ITEM_SONG_LULLABY);
+        if (Randomizer_GetSettingValue(RSK_STARTING_EPONAS_SONG)) Item_Give(NULL, ITEM_SONG_EPONA);
+        if (Randomizer_GetSettingValue(RSK_STARTING_SARIAS_SONG)) Item_Give(NULL, ITEM_SONG_SARIA);
+        if (Randomizer_GetSettingValue(RSK_STARTING_SUNS_SONG)) Item_Give(NULL, ITEM_SONG_SUN);
+        if (Randomizer_GetSettingValue(RSK_STARTING_SONG_OF_TIME)) Item_Give(NULL, ITEM_SONG_TIME);
+        if (Randomizer_GetSettingValue(RSK_STARTING_SONG_OF_STORMS)) Item_Give(NULL, ITEM_SONG_STORMS);
+        if (Randomizer_GetSettingValue(RSK_STARTING_MINUET_OF_FOREST)) Item_Give(NULL, ITEM_SONG_MINUET);
+        if (Randomizer_GetSettingValue(RSK_STARTING_BOLERO_OF_FIRE)) Item_Give(NULL, ITEM_SONG_BOLERO);
+        if (Randomizer_GetSettingValue(RSK_STARTING_SERENADE_OF_WATER)) Item_Give(NULL, ITEM_SONG_SERENADE);
+        if (Randomizer_GetSettingValue(RSK_STARTING_REQUIEM_OF_SPIRIT)) Item_Give(NULL, ITEM_SONG_REQUIEM);
+        if (Randomizer_GetSettingValue(RSK_STARTING_NOCTURNE_OF_SHADOW)) Item_Give(NULL, ITEM_SONG_NOCTURNE);
+        if (Randomizer_GetSettingValue(RSK_STARTING_PRELUDE_OF_LIGHT)) Item_Give(NULL, ITEM_SONG_PRELUDE);
 
         if(Randomizer_GetSettingValue(RSK_STARTING_SKULLTULA_TOKEN)) {
             gSaveContext.inventory.questItems |= gBitFlags[QUEST_SKULL_TOKEN];

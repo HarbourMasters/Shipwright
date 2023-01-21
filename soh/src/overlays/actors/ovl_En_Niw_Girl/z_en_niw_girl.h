@@ -29,7 +29,7 @@ typedef struct EnNiwGirl {
     /* 0x0280 */ f32 unk_280;
     /* 0x0284 */ EnNiw* chasedEnNiw;
     /* 0x0288 */ ColliderCylinder collider;
-    /* 0x02D4 */ struct_80034A14_arg1 unk_2D4;
+    /* 0x02D4 */ NpcInteractInfo interactInfo;
 } EnNiwGirl; // size = 0x02FC
 
 #endif

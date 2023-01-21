@@ -2519,93 +2519,61 @@ void HintTable_Init() {
     |      BOSS HINT TEXT      |
     ---------------------------*/
 
-    hintTable[QUEEN_GOHMA] = HintText::Boss(
-        {
-            // obscure text
-            Text{ "An #ancient tree# rewards", /*french*/ "le #vieil arbre# octroie",
-                  /*spanish*/ "un #ancestral árbol# premia con" },
-        },
-        {},
-        // clear text
-        Text{ "the #Deku Tree# rewards", /*french*/ "l'#Arbre Mojo# octroie",
-              /*spanish*/ "el #Gran Árbol Deku# premia con" });
+    hintTable[QUEEN_GOHMA] = HintText::Boss({
+                       // obscure text
+                       Text{"the #Parasitic Armored Arachnid# holds", /*french*/"le #monstre insectoïde géant# possède", /*spanish*/"el #arácnido parasitario acorazado# porta"},
+                     }, {},
+                       //clear text
+                       Text{"#Queen Gohma# holds", /*french*/"la #Reine Gohma# possède", /*spanish*/"la #Reina Goma# porta"});
 
-    hintTable[KING_DODONGO] = HintText::Boss(
-        {
-            // obscure text
-            Text{ "An #immense cavern# rewards", /*french*/ "l'#immense caverne# octroie",
-                  /*spanish*/ "una #descomunal cueva# premia con" },
-        },
-        {},
-        // clear text
-        Text{ "#Dodongo's Cavern# rewards", /*french*/ "la #Caverne Dodongo# octroie",
-              /*spanish*/ "la #Cueva de los Dodongos# premia con" });
+    hintTable[KING_DODONGO] = HintText::Boss({
+                       //obscure text
+                       Text{"the #Infernal Dinosaur# holds", /*french*/"le #dinosaure infernal# possède", /*spanish*/"el #dinosaurio infernal# porta"},
+                     }, {},
+                       //clear text
+                       Text{"#King Dodongo# holds", /*french*/"le #Roi Dodongo# possède", /*spanish*/"el #Rey Dodongo# porta"});
 
-    hintTable[BARINADE] = HintText::Boss(
-        {
-            // obscure text
-            Text{ "the #belly of a deity# rewards", /*french*/ "le #ventre du gardien# octroie",
-                  /*spanish*/ "la #tripa de cierta deidad# premia con" },
-        },
-        {},
-        // clear text
-        Text{ "#Jabu-Jabu's Belly# rewards", /*french*/ "le #Ventre de Jabu-Jabu# octroie",
-              /*spanish*/ "la #tripa de Jabu-Jabu# premia con" });
+    hintTable[BARINADE] = HintText::Boss({
+                       //obscure text
+                       Text{"the #Bio-Electric Anemone# holds", /*french*/"l'#anémone bioélectrique# possède", /*spanish*/"la #anémona bioeléctrica# porta"},
+                     }, {},
+                       //clear text
+                       Text{"#Barinade# holds", /*french*/"#Barinade# possède", /*spanish*/"#Barinade# porta"});
 
-    hintTable[PHANTOM_GANON] = HintText::Boss(
-        {
-            // obscure text
-            Text{ "a #deep forest# rewards", /*french*/ "la #profonde forêt# octroie",
-                  /*spanish*/ "el #profundo bosque# premia con" },
-        },
-        {},
-        // clear text
-        Text{ "the #Forest Temple# rewards", /*french*/ "le #Temple de la Forêt# octroie",
-              /*spanish*/ "el #Templo del Bosque# premia con" });
+    hintTable[PHANTOM_GANON] = HintText::Boss({
+                       //obscure text
+                       Text{"the #Evil Spirit from Beyond# holds", /*french*/"l'#esprit maléfique de l'au-delà# possède", /*spanish*/"el #espíritu maligno de ultratumba# porta"},
+                     }, {},
+                       //clear text
+                       Text{"#Phantom Ganon# holds", /*french*/"#Ganon Spectral# possède", /*spanish*/"#Ganon Fantasma# porta"});
 
-    hintTable[VOLVAGIA] = HintText::Boss(
-        {
-            // obscure text
-            Text{ "a #high mountain# rewards", /*french*/ "la #grande montagne# octroie",
-                  /*spanish*/ "una #alta montaña# premia con" },
-        },
-        {},
-        // clear text
-        Text{ "the #Fire Temple# rewards", /*french*/ "le #Temple du Feu# octroie",
-              /*spanish*/ "el #Templo del Fuego# premia con" });
+    hintTable[VOLVAGIA] = HintText::Boss({
+                       //obscure text
+                       Text{"the #Subterranean Lava Dragon# holds", /*french*/"le #dragon des profondeurs# possède", /*spanish*/"el #dragón de lava subterráneo# porta"},
+                     }, {},
+                       //clear text
+                       Text{"#Volvagia# holds", /*french*/"#Volvagia# possède", /*spanish*/"#Volvagia# porta"});
 
-    hintTable[MORPHA] = HintText::Boss(
-        {
-            // obscure text
-            Text{ "a #vast lake# rewards", /*french*/ "le #vaste lac# octroie",
-                  /*spanish*/ "un #lago inmenso# premia con" },
-        },
-        {},
-        // clear text
-        Text{ "the #Water Temple# rewards", /*french*/ "le #Temple de l'Eau# octroie",
-              /*spanish*/ "el #Templo del Agua# premia con" });
+    hintTable[MORPHA] = HintText::Boss({
+                       //obscure text
+                       Text{"the #Giant Aquatic Amoeba# holds", /*french*/"l'#amibe aquatique géante# possède", /*spanish*/"la #ameba acuática gigante# porta"},
+                     }, {},
+                       //clear text
+                       Text{"#Morpha# holds", /*french*/"#Morpha# possède", /*spanish*/"#Morpha# porta"});
 
-    hintTable[BONGO_BONGO] = HintText::Boss(
-        {
-            // obscure text
-            Text{ "the #house of the dead# rewards", /*french*/ "la #maison des morts# octroie",
-                  /*spanish*/ "la #casa de la muerte# premia con" },
-        },
-        {},
-        // clear text
-        Text{ "the #Shadow Temple# rewards", /*french*/ "le #Temple de l'Ombre# octroie",
-              /*spanish*/ "el #Templo de las Sombras#" });
+    hintTable[BONGO_BONGO] = HintText::Boss({
+                       //obscure text
+                       Text{"the #Phantom Shadow Beast# holds", /*french*/"le #monstre de l'ombre# possède", /*spanish*/"la #alimaña oscura espectral# porta"},
+                     }, {},
+                       //clear text
+                       Text{"#Bongo Bongo# holds", /*french*/"#Bongo Bongo# possède", /*spanish*/"#Bongo Bongo# porta"});
 
-    hintTable[TWINROVA] = HintText::Boss(
-        {
-            // obscure text
-            Text{ "a #goddess of the sand# rewards", /*french*/ "la #déesse des sables# octroie",
-                  /*spanish*/ "la #diosa de la arena# premia con" },
-        },
-        {},
-        // clear text
-        Text{ "the #Spirit Temple# rewards", /*french*/ "le #Temple de l'Esprit# octroie",
-              /*spanish*/ "el #Templo del Espíritu# premia con" });
+    hintTable[TWINROVA] = HintText::Boss({
+                       //obscure text
+                       Text{"the #Sorceress Sisters# hold", /*french*/"#les sorcières jumelles# possède", /*spanish*/"las #hermanas hechiceras# portan"},
+                     }, {},
+                       //clear text
+                       Text{"#Twinrova# holds", /*french*/"#Twinrova# possède", /*spanish*/"#Birova# porta"});
     //
     // [LINKS_POCKET_BOSS] = HintText::Boss({
     //                    //obscure text

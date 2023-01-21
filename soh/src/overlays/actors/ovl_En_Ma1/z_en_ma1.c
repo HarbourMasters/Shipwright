@@ -137,7 +137,7 @@ u16 EnMa1_GetText(PlayState* play, Actor* thisx) {
 }
 
 s16 func_80AA0778(PlayState* play, Actor* thisx) {
-    s16 ret = 1;
+    s16 ret = NPC_TALK_STATE_TALKING;
 
     switch (Message_GetState(&play->msgCtx)) {
         case TEXT_STATE_CLOSING:
@@ -145,40 +145,40 @@ s16 func_80AA0778(PlayState* play, Actor* thisx) {
                 case 0x2041:
                     gSaveContext.infTable[8] |= 0x10;
                     gSaveContext.eventChkInf[1] |= 1;
-                    ret = 0;
+                    ret = NPC_TALK_STATE_IDLE;
                     break;
                 case 0x2043:
-                    ret = 1;
+                    ret = NPC_TALK_STATE_TALKING;
                     break;
                 case 0x2047:
                     gSaveContext.eventChkInf[1] |= 0x20;
-                    ret = 0;
+                    ret = NPC_TALK_STATE_IDLE;
                     break;
                 case 0x2048:
                     gSaveContext.infTable[8] |= 0x20;
-                    ret = 0;
+                    ret = NPC_TALK_STATE_IDLE;
                     break;
                 case 0x2049:
                     gSaveContext.eventChkInf[1] |= 0x40;
-                    ret = 0;
+                    ret = NPC_TALK_STATE_IDLE;
                     break;
                 case 0x2061:
-                    ret = 2;
+                    ret = NPC_TALK_STATE_ACTION;
                     break;
                 default:
-                    ret = 0;
+                    ret = NPC_TALK_STATE_IDLE;
                     break;
             }
             break;
         case TEXT_STATE_CHOICE:
         case TEXT_STATE_EVENT:
             if (Message_ShouldAdvance(play)) {
-                ret = 2;
+                ret = NPC_TALK_STATE_ACTION;
             }
             break;
         case TEXT_STATE_DONE:
             if (Message_ShouldAdvance(play)) {
-                ret = 3;
+                ret = NPC_TALK_STATE_ITEM_GIVEN;
             }
             break;
         case TEXT_STATE_NONE:
@@ -187,7 +187,7 @@ s16 func_80AA0778(PlayState* play, Actor* thisx) {
         case TEXT_STATE_SONG_DEMO_DONE:
         case TEXT_STATE_8:
         case TEXT_STATE_9:
-            ret = 1;
+            ret = NPC_TALK_STATE_TALKING;
             break;
     }
     return ret;
@@ -252,23 +252,23 @@ void EnMa1_ChangeAnim(EnMa1* this, s32 index) {
 
 void func_80AA0AF4(EnMa1* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 phi_a3;
+    s16 trackingMode;
 
-    if ((this->unk_1E8.unk_00 == 0) && (this->skelAnime.animation == &gMalonChildSingAnim)) {
-        phi_a3 = 1;
+    if ((this->interactInfo.talkState == NPC_TALK_STATE_IDLE) && (this->skelAnime.animation == &gMalonChildSingAnim)) {
+        trackingMode = NPC_TRACKING_NONE;
     } else {
-        phi_a3 = 0;
+        trackingMode = NPC_TRACKING_PLAYER_AUTO_TURN;
     }
 
-    this->unk_1E8.unk_18 = player->actor.world.pos;
-    this->unk_1E8.unk_18.y -= -10.0f;
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.trackPos.y -= -10.0f;
 
-    func_80034A14(&this->actor, &this->unk_1E8, 0, phi_a3);
+    Npc_TrackPoint(&this->actor, &this->interactInfo, 0, trackingMode);
 }
 
 void func_80AA0B74(EnMa1* this) {
     if (this->skelAnime.animation == &gMalonChildSingAnim) {
-        if (this->unk_1E8.unk_00 == 0) {
+        if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
             if (this->unk_1E0 != 0) {
                 this->unk_1E0 = 0;
                 func_800F6584(0);
@@ -306,7 +306,7 @@ void EnMa1_Init(Actor* thisx, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
     Actor_SetScale(&this->actor, 0.01f);
     this->actor.targetMode = 6;
-    this->unk_1E8.unk_00 = 0;
+    this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
 
    // To avoid missing a check, we want Malon to have the actionFunc for singing, but not reacting to Ocarina, if any of
    // the following are true.
@@ -336,7 +336,7 @@ void EnMa1_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_80AA0D88(EnMa1* this, PlayState* play) {
-    if (this->unk_1E8.unk_00 != 0) {
+    if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         if (this->skelAnime.animation != &gMalonChildIdleAnim) {
             EnMa1_ChangeAnim(this, ENMA1_ANIM_1);
         }
@@ -356,7 +356,7 @@ void func_80AA0D88(EnMa1* this, PlayState* play) {
     // 2. We haven't obtained Malon's Weird Egg Check (Randomizer only) OR
     // 3. We have Epona's Song? (Vanilla only, not sure why it's here but I didn't write that one)
     } else if ((!(gSaveContext.eventChkInf[1] & 0x10) || (gSaveContext.n64ddFlag && !Randomizer_ObtainedMalonHCReward())) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag)) {
-        if (this->unk_1E8.unk_00 == 2) {
+        if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
             this->actionFunc = func_80AA0EA0;
             play->msgCtx.stateTimer = 4;
             play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
@@ -379,8 +379,8 @@ void func_80AA0EA0(EnMa1* this, PlayState* play) {
 }
 
 void func_80AA0EFC(EnMa1* this, PlayState* play) {
-    if (this->unk_1E8.unk_00 == 3) {
-        this->unk_1E8.unk_00 = 0;
+    if (this->interactInfo.talkState == NPC_TALK_STATE_ITEM_GIVEN) {
+        this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         this->actionFunc = func_80AA0D88;
         gSaveContext.eventChkInf[1] |= 4;
         play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
@@ -401,14 +401,14 @@ void GivePlayerRandoRewardMalon(EnMa1* malon, PlayState* play, RandomizerCheck c
         GiveItemEntryFromActor(&malon->actor, play, getItemEntry, 10000.0f, 100.0f);
     }
     // make malon sing again after giving the item.
-    malon->unk_1E8.unk_00 = 0;
+    malon->interactInfo.talkState = NPC_TALK_STATE_IDLE;
     malon->unk_1E0 = 1;
 }
 
 void func_80AA0F44(EnMa1* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (this->unk_1E8.unk_00 != 0) {
+    if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         if (this->skelAnime.animation != &gMalonChildIdleAnim) {
             EnMa1_ChangeAnim(this, ENMA1_ANIM_1);
         }
@@ -425,7 +425,7 @@ void func_80AA0F44(EnMa1* this, PlayState* play) {
             player->unk_6A8 = &this->actor;
             this->actor.textId = 0x2061;
             Message_StartTextbox(play, this->actor.textId, NULL);
-            this->unk_1E8.unk_00 = 1;
+            this->interactInfo.talkState = NPC_TALK_STATE_TALKING;
             this->actor.flags |= ACTOR_FLAG_16;
             // when rando'ed, skip to the Item Giving. Otherwise go to the song teaching code.
             this->actionFunc = gSaveContext.n64ddFlag ? func_80AA1150 : func_80AA106C;
@@ -445,7 +445,7 @@ void func_80AA0F44(EnMa1* this, PlayState* play) {
 
 void func_80AA106C(EnMa1* this, PlayState* play) {
     GET_PLAYER(play)->stateFlags2 |= 0x800000;
-    if (this->unk_1E8.unk_00 == 2) {
+    if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         Audio_OcaSetInstrument(2);
         func_8010BD58(play, OCARINA_ACTION_TEACH_EPONA);
         this->actor.flags &= ~ACTOR_FLAG_16;
@@ -519,8 +519,8 @@ void EnMa1_Update(Actor* thisx, PlayState* play) {
     EnMa1_UpdateEyes(this);
     this->actionFunc(this, play);
     if (this->actionFunc != EnMa1_DoNothing) {
-        func_800343CC(play, &this->actor, &this->unk_1E8.unk_00, (f32)this->collider.dim.radius + 30.0f,
-                      EnMa1_GetText, func_80AA0778);
+        Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, (f32)this->collider.dim.radius + 30.0f,
+                          EnMa1_GetText, func_80AA0778);
     }
     func_80AA0B74(this);
     func_80AA0AF4(this, play);
@@ -535,13 +535,13 @@ s32 EnMa1_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
     }
     if (limbIndex == 15) {
         Matrix_Translate(1400.0f, 0.0f, 0.0f, MTXMODE_APPLY);
-        vec = this->unk_1E8.unk_08;
+        vec = this->interactInfo.headRot;
         Matrix_RotateX((vec.y / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_RotateZ((vec.x / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_Translate(-1400.0f, 0.0f, 0.0f, MTXMODE_APPLY);
     }
     if (limbIndex == 8) {
-        vec = this->unk_1E8.unk_0E;
+        vec = this->interactInfo.torsoRot;
         Matrix_RotateX((-vec.y / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_RotateZ((-vec.x / 32768.0f) * M_PI, MTXMODE_APPLY);
     }
