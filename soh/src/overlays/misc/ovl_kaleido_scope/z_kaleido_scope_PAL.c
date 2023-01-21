@@ -4158,7 +4158,7 @@ void KaleidoScope_Update(PlayState* play)
                             Grotto_ForceGrottoReturn();
                         }
                         gSaveContext.nextTransitionType = 2;
-                        gSaveContext.health = 0x30;
+                        gSaveContext.health = CVarGetInteger("gFullHealthSpawn", 0) ? gSaveContext.healthCapacity : 0x30;
                         Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
                         gSaveContext.healthAccumulator = 0;
                         gSaveContext.magicState = 0;

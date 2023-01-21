@@ -443,6 +443,8 @@ namespace GameMenuBar {
                         32x: Can survive void damage with max health and double defense\n\
                         64x: Cannot survive void damage"
                     );
+                    UIWidgets::PaddedEnhancementCheckbox("Spawn with full health", "gFullHealthSpawn", true, false);
+                    UIWidgets::Tooltip("Respawn with full health instead of 3 Hearts");
                     UIWidgets::PaddedEnhancementCheckbox("No Random Drops", "gNoRandomDrops", true, false);
                     UIWidgets::Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
                     bool forceEnableBombchuDrops = gSaveContext.n64ddFlag &&

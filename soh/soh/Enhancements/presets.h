@@ -86,6 +86,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gNoHeartDrops",
     "gBombchuDrops",
     "gGoronPot",
+    "gFullHealthSpawn",
     "gDampeWin",
     "gRedPotionEffect",
     "gRedPotionHealth",
