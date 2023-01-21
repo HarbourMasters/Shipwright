@@ -1598,6 +1598,11 @@ extern "C" void Overlay_DisplayText(float duration, const char* text) {
     SohImGui::GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
+extern "C" void Overlay_DisplayText_Seconds(int seconds, const char* text) {
+    float duration = seconds * CVarGetInteger("gInterpolationFPS", 20) * 0.05;
+    SohImGui::GetGameOverlay()->TextDrawNotification(duration, true, text);
+}
+
 extern "C" void Entrance_ClearEntranceTrackingData(void) {
     ClearEntranceTrackingData();
 }
