@@ -1,13 +1,13 @@
 #ifndef Z_BG_BOWL_WALL_H
 #define Z_BG_BOWL_WALL_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "overlays/actors/ovl_En_Bom_Bowl_Man/z_en_bom_bowl_man.h"
 
 struct BgBowlWall;
 
-typedef void (*BgBowlWallActionFunc)(struct BgBowlWall*, GlobalContext*);
+typedef void (*BgBowlWallActionFunc)(struct BgBowlWall*, PlayState*);
 
 typedef struct BgBowlWall {
     /* 0x0000 */ DynaPolyActor dyna;

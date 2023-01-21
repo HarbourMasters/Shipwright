@@ -63,9 +63,9 @@ string_view kakGateClosed             = "The gate and the Happy Mask Shop both r
 ------------------------------*/                                                           //
 string_view doorOfTimeOpen            = "The Door of Time starts opened instead of needing\n"
                                         "to play the Song of Time.";                       //
-string_view doorOfTimeClosed          = "Only an Ocarina and the Song of Time need to be\n"//
+string_view doorOfTimeSongOnly        = "Only an Ocarina and the Song of Time need to be\n"//
                                         "found to open the Door of Time.";                 //
-string_view doorOfTimeIntended        = "The Ocarina of Time, the Song of Time, and\n"     //
+string_view doorOfTimeClosed          = "The Ocarina of Time, the Song of Time, and\n"     //
                                         "all Spiritual Stones need to be found to\n"       //
                                         "open the Door of Time.";                          //
 /*------------------------------                                                           //
@@ -164,6 +164,17 @@ string_view dungeonEntrancesDesc      = "Shuffle the pool of dungeon entrances, 
                                         "Temple, Bottom of the Well and Gerudo Training\n" //
                                         "Ground are opened for both adult and child.";     //
 /*------------------------------                                                           //
+|       BOSS ENTRANCES         |                                                           //
+------------------------------*/                                                           //
+string_view bossEntrancesDesc         = "Shuffle the pool of dungeon boss entrances.\n"    //
+                                        "This affects the boss rooms of all stone and\n"   //
+                                        "medallion dungeons.\n"                            //
+                                        "\n"                                               //
+                                        "Child and adult boss rooms can be shuffled\n"     //
+                                        "separately.\n"                                    //
+                                        "Child may be expected to defeat Phantom Ganon\n"  //
+                                        "and/or Bongo Bongo.";                             //
+/*------------------------------                                                           //
 |      OVERWORLD ENTRANCES     |                                                           //
 ------------------------------*/                                                           //
 string_view overworldEntrancesDesc    = "Shuffle the pool of Overworld entrances, which\n" //
@@ -193,6 +204,54 @@ string_view interiorEntrancesAll      = "An extended version of 'Simple' with so
 string_view grottoEntrancesDesc       = "Shuffle the pool of grotto entrances, including\n"//
                                         "all graves, small Fairy Fountains and the Lost\n" //
                                         "Woods Stage.";                                    //
+/*------------------------------                                                           //
+|          OWL DROPS           |                                                           //
+------------------------------*/                                                           //
+string_view owlDropsDesc              = "Randomize where Kaepora Gaebora (the Owl) drops\n"//
+                                        "you at when you talk to him at Lake Hylia or at\n"//
+                                        "the top of Death Mountain Trail.";                //
+/*------------------------------                                                           //
+|          WARP SONGS          |                                                           //
+------------------------------*/                                                           //
+string_view warpSongsDesc             = "Randomize where each of the 6 warp songs leads to.";
+                                                                                           //
+/*------------------------------                                                           //
+|       OVERWORLD SPAWNS       |                                                           //
+------------------------------*/                                                           //
+string_view overworldSpawnsDesc       = "Randomize where you start as Child or Adult when\n"
+                                        "loading a save in the Overworld. This means you\n"//
+                                        "may not necessarily spawn inside Link's House or\n"
+                                        "Temple of Time.\n"                                //
+                                        "\n"                                               //
+                                        "This stays consistent after saving and loading the"
+                                        "game again.";                                     //
+/*------------------------------                                                           //
+|     MIXED ENTRANCE POOLS     |                                                           //
+------------------------------*/                                                           //
+string_view mixedPoolsDesc            = "Shuffle entrances into a mixed pool instead of\n" //
+                                        "separate ones. For example, enabling the settings\n"
+                                        "to shuffle grotto, dungeon, and overworld\n"      //
+                                        "entrances and selecting grotto and dungeon\n"     //
+                                        "entrances here will allow a dungeon to be inside a"
+                                        "grotto or vice versa, while overworld entrances\n"//
+                                        "are shuffled in their own separate pool and\n"    //
+                                        "indoors stay vanilla.";                           //
+string_view mixDungeonsDesc           = "Dungeon entrances will be part of the mixed pool.";
+string_view mixOverworldDesc          = "Overworld entrances will be part of the mixed\n"  //
+                                        "pool.";                                           //
+string_view mixInteriorsDesc          = "Interior entrances will be part of the mixed pool.";
+string_view mixGrottosDesc            = "Grotto entrances will be part of the mixed pool.";//
+/*------------------------------                                                           //
+|      DECOUPLED ENTRANCES     |                                                           //
+------------------------------*/                                                           //
+string_view decoupledEntrancesDesc    = "Decouple entrances when shuffling them. This means"
+                                        "you are no longer guaranteed to end up back where "
+                                        "you came from when you go back through an\n"      //
+                                        "entrance. This also adds the one-way entrance from"
+                                        "Gerudo Valley to Lake Hylia in the pool of\n"     //
+                                        "overworld entrances when they are shuffled.\n"    //
+                                        "Boss entrances are currently excluded from this\n"//
+                                        "and remain coupled regardless.";                  //
 /*------------------------------                                                           //
 |      BOMBCHUS IN LOGIC       |                                                           //
 ------------------------------*/                                                           //
@@ -384,6 +443,13 @@ string_view merchantsHintsDesc        = "These hints will make Medigoron and the
                                         "\n"                                               //
                                         "The Clearer Hints setting will affect how they\n" //
                                         "refer to the item.";                              //
+/*------------------------------                                                           //
+|   SHUFFLE FROG SONG RUPEES   |                                                           //
+------------------------------*/                                                           //
+string_view frogSongRupeesDesc        = "Enabling this adds 5 Purple Rupees to the item\n" //
+                                        "pool and shuffles the rewards from playing Zelda's\n"
+                                        "Lullaby, Epona's Song, Saria's Song, Sun's Song,\n"
+                                        "and Song of Time to the frogs in Zora's River.\n";//
 /*------------------------------                                                           //
 |     SHUFFLE ADULT TRADE      |                                                           //
 ------------------------------*/                                                           //
@@ -585,6 +651,13 @@ string_view kingZoraSpeedRandom       = "King Zora will move out of the way in 1
 ------------------------------*/                                                           //
 string_view completeMaskDesc          = "Once the happy mask shop is opened, all masks\n"  //
                                         "will be available to be borrowed.";               //
+/*------------------------------                                                           //
+|    ENABLE GLITCH CUTSCENES   |                                                           //
+------------------------------*/                                                           //
+string_view glitchCutscenesDesc       = "The cutscenes of the Poes in Forest Temple and\n" //
+                                        "Darunia in Fire Temple will not be skipped.\n"    //
+                                        "These cutscenes are only useful for glitched\n"   //
+                                        "gameplay and can be safely skipped otherwise.";   //
 /*------------------------------                                                           //
 |          QUICK TEXT          |                                                           //
 ------------------------------*/                                                           //
@@ -881,6 +954,16 @@ string_view gkDurabilityRandomRisk    = "Each Giant's Knife will get a random du
 string_view gkDurabilityRandomSafe    = "Each Giant's Knife will get a random durability\n"//
                                         "between 10 and 50, with an average of 30.";       //
                                                                                            //
+/*------------------------------                                                           //
+|      BLUE FIRE ARROWS        |                                                           //
+------------------------------*/                                                           //
+string_view blueFireArrowsDesc        = "Ice Arrows gain the ability to melt red ice\n"    //
+                                        "and break the mud walls in Dodongo's Cavern.";    //
+/*------------------------------                                                           //
+|       SUNLIGHT ARROWS        |                                                           //
+------------------------------*/                                                           //
+string_view sunlightArrowsDesc        = "Light Arrows gain the ability to activate sun\n"  //
+                                        "switches.";                                       //
 /*------------------------------                                                           //
 |         MULTIPLAYER          |                                                           //
 ------------------------------*/                                                           //

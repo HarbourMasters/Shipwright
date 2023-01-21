@@ -1,12 +1,12 @@
 #ifndef Z_EN_PO_DESERT_H
 #define Z_EN_PO_DESERT_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnPoDesert;
 
-typedef void (*EnPoDesertActionFunc)(struct EnPoDesert*, GlobalContext*);
+typedef void (*EnPoDesertActionFunc)(struct EnPoDesert*, PlayState*);
 
 typedef struct EnPoDesert {
     /* 0x0000 */ Actor actor;

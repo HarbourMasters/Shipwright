@@ -1,12 +1,12 @@
 #ifndef Z_OBJ_BEAN_H
 #define Z_OBJ_BEAN_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ObjBean;
 
-typedef void (*ObjBeanActionFunc)(struct ObjBean*, GlobalContext*);
+typedef void (*ObjBeanActionFunc)(struct ObjBean*, PlayState*);
 typedef void (*ObjBeanTransformFunc)(struct ObjBean*);
 
 typedef struct ObjBean {

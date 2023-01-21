@@ -9,16 +9,16 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
-void BgSpot18Shutter_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot18Shutter_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot18Shutter_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgSpot18Shutter_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgSpot18Shutter_Init(Actor* thisx, PlayState* play);
+void BgSpot18Shutter_Destroy(Actor* thisx, PlayState* play);
+void BgSpot18Shutter_Update(Actor* thisx, PlayState* play);
+void BgSpot18Shutter_Draw(Actor* thisx, PlayState* play);
 
-void func_808B95AC(BgSpot18Shutter* this, GlobalContext* globalCtx);
-void func_808B95B8(BgSpot18Shutter* this, GlobalContext* globalCtx);
-void func_808B9618(BgSpot18Shutter* this, GlobalContext* globalCtx);
-void func_808B9698(BgSpot18Shutter* this, GlobalContext* globalCtx);
-void func_808B971C(BgSpot18Shutter* this, GlobalContext* globalCtx);
+void func_808B95AC(BgSpot18Shutter* this, PlayState* play);
+void func_808B95B8(BgSpot18Shutter* this, PlayState* play);
+void func_808B9618(BgSpot18Shutter* this, PlayState* play);
+void func_808B9698(BgSpot18Shutter* this, PlayState* play);
+void func_808B971C(BgSpot18Shutter* this, PlayState* play);
 
 const ActorInit Bg_Spot18_Shutter_InitVars = {
     ACTOR_BG_SPOT18_SHUTTER,
@@ -37,7 +37,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void BgSpot18Shutter_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot18Shutter_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgSpot18Shutter* this = (BgSpot18Shutter*)thisx;
     s32 param = (this->dyna.actor.params >> 8) & 1;
@@ -55,7 +55,7 @@ void BgSpot18Shutter_Init(Actor* thisx, GlobalContext* globalCtx) {
                 this->actionFunc = func_808B9618;
             }
         } else {
-            if (Flags_GetSwitch(globalCtx, this->dyna.actor.params & 0x3F)) {
+            if (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)) {
                 this->actionFunc = func_808B95AC;
                 this->dyna.actor.world.pos.y += 180.0f;
             } else {
@@ -73,39 +73,39 @@ void BgSpot18Shutter_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     CollisionHeader_GetVirtual(&gGoronCityDoorCol, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 }
 
-void BgSpot18Shutter_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot18Shutter_Destroy(Actor* thisx, PlayState* play) {
     BgSpot18Shutter* this = (BgSpot18Shutter*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void func_808B95AC(BgSpot18Shutter* this, GlobalContext* globalCtx) {
+void func_808B95AC(BgSpot18Shutter* this, PlayState* play) {
 }
 
-void func_808B95B8(BgSpot18Shutter* this, GlobalContext* globalCtx) {
-    if (Flags_GetSwitch(globalCtx, this->dyna.actor.params & 0x3F)) {
+void func_808B95B8(BgSpot18Shutter* this, PlayState* play) {
+    if (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)) {
         Actor_SetFocus(&this->dyna.actor, 70.0f);
-        OnePointCutscene_Attention(globalCtx, &this->dyna.actor);
+        OnePointCutscene_Attention(play, &this->dyna.actor);
         this->actionFunc = func_808B9698;
     }
 }
 
-void func_808B9618(BgSpot18Shutter* this, GlobalContext* globalCtx) {
+void func_808B9618(BgSpot18Shutter* this, PlayState* play) {
     if (gSaveContext.infTable[16] & 0x200) {
         Actor_SetFocus(&this->dyna.actor, 70.0f);
         if (((this->dyna.actor.params >> 8) & 1) == 0) {
             this->actionFunc = func_808B9698;
         } else {
             this->actionFunc = func_808B971C;
-            OnePointCutscene_Init(globalCtx, 4221, 140, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 4221, 140, &this->dyna.actor, MAIN_CAM);
         }
     }
 }
 
-void func_808B9698(BgSpot18Shutter* this, GlobalContext* globalCtx) {
+void func_808B9698(BgSpot18Shutter* this, PlayState* play) {
     if (Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y + 180.0f, 1.44f)) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_STONEDOOR_STOP);
         this->actionFunc = func_808B95AC;
@@ -114,7 +114,7 @@ void func_808B9698(BgSpot18Shutter* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_808B971C(BgSpot18Shutter* this, GlobalContext* globalCtx) {
+void func_808B971C(BgSpot18Shutter* this, PlayState* play) {
     f32 sin = Math_SinS(this->dyna.actor.world.rot.y);
     f32 cos = Math_CosS(this->dyna.actor.world.rot.y);
     s32 flag = true;
@@ -130,12 +130,12 @@ void func_808B971C(BgSpot18Shutter* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgSpot18Shutter_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgSpot18Shutter_Update(Actor* thisx, PlayState* play) {
     BgSpot18Shutter* this = (BgSpot18Shutter*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgSpot18Shutter_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    Gfx_DrawDListOpa(globalCtx, gGoronCityDoorDL);
+void BgSpot18Shutter_Draw(Actor* thisx, PlayState* play) {
+    Gfx_DrawDListOpa(play, gGoronCityDoorDL);
 }

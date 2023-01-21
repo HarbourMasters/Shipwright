@@ -1,12 +1,12 @@
 #ifndef Z_EN_BOOM_H
 #define Z_EN_BOOM_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnBoom;
 
-typedef void (*EnBoomActionFunc)(struct EnBoom*, GlobalContext*);
+typedef void (*EnBoomActionFunc)(struct EnBoom*, PlayState*);
 
 typedef struct EnBoom {
     /* 0x0000 */ Actor actor;

@@ -22,6 +22,9 @@ You can also find the v142 toolset by searching through the individual component
 While you're there, you can also install Python 3 and Git if needed.
 
 1. Clone the Ship of Harkinian repository
+
+_Note: Be sure to either clone with the ``--recursive`` flag or do ``git submodule init`` after cloning to pull in the libultraship submodule!_
+
 2. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice
 
 _Note: Instructions assume using powershell_
@@ -31,6 +34,8 @@ cd Shipwright
 
 # Setup cmake project
 & 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v142 -A x64 # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
+# or for VS2019
+& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 16 2019" -T v142 -A x64
 # Extract assets & generate OTR (run this anytime you need to regenerate OTR)
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target ExtractAssets # --config Release (if you're packaging)
 # Compile project
@@ -83,6 +88,8 @@ _Note: If you're using Visual Studio Code, the [cpack plugin](https://marketplac
 # Clone the repo
 git clone https://github.com/HarbourMasters/Shipwright.git
 cd Shipwright
+# Clone the submodule libultraship
+git submodule update --init
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
 # Generate Ninja project
@@ -121,6 +128,8 @@ _Note: If you're using Visual Studio Code, the [cpack plugin](https://marketplac
 # Clone the repo
 git clone https://github.com/HarbourMasters/Shipwright.git
 cd ShipWright
+# Clone the submodule libultraship
+git submodule update --init
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
 # Generate Ninja project
@@ -186,9 +195,9 @@ cmake --build build-cmake --target ExtractAssets
 # Setup cmake project for building for Wii U
 cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
 # Build project and generate rpx
-cmake --build build-wiiu --target soh
+cmake --build build-wiiu --target soh # --target soh_wuhb (for building .wuhb) 
 
-# Now you can run the executable in ./build-wiiu/soh/soh.rpx
+# Now you can run the executable in ./build-wiiu/soh/soh.rpx or the Wii U Homebrew Bundle in ./build-wiiu/soh/soh.wuhb
 # To develop the project open the repository in VSCode (or your preferred editor)
 ```
 
@@ -210,3 +219,14 @@ Use the `extract_assets.py` script file to run the exporter using any of the fol
 
 If the script finds multiple roms the user is prompted which to use. Selection is done using the number keys and then pressing the carriage return key.
 
+## Getting CI to work on your fork
+
+The CI works via [Github Actions](https://github.com/features/actions) where we mostly make use of machines hosted by Github; except for the very first step of the CI process called "Extract assets". This steps extracts assets from the game file and generates an "assets" folder in `soh/`.
+
+To get this step working on your fork, you'll need to add a machine to your own repository as a self-hosted runner via "Settings > Actions > Runners" in your repository settings. Make sure to add the 'asset-builder' tag to your newly added runner to assign it to run this step. To setup your runner as a service read the docs [here](https://docs.github.com/en/actions/hosting-your-own-runners/configuring-the-self-hosted-runner-application-as-a-service?platform=linux).
+
+### Runner on Windows
+You'll have to enable the ability to run unsigned scripts through PowerShell. To do this, open Powershell as administrator and run `set-executionpolicy remotesigned`. Most dependencies get installed as part of the CI process. You will also need to seperately install 7z and add it to the PATH so `7z` can be run as a command. [Chocolatey](https://chocolatey.org/) or other package managers can be used to install it easily.
+
+### Runner on UNIX systems
+If you're on macOS or Linux take a look at `macports-deps.txt` or `apt-deps.txt` to see the dependencies expected to be on your machine.

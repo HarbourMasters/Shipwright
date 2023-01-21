@@ -1,12 +1,12 @@
 #ifndef Z_EN_FZ_H
 #define Z_EN_FZ_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnFz;
 
-typedef void (*EnFzActionFunc)(struct EnFz*, GlobalContext*);
+typedef void (*EnFzActionFunc)(struct EnFz*, PlayState*);
 typedef void (*EnFzSpawnIceSmokeFunc)(struct EnFz*);
 
 typedef struct {

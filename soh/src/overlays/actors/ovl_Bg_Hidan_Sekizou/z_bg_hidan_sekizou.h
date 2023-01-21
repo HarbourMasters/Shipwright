@@ -1,12 +1,12 @@
 #ifndef Z_BG_HIDAN_SEKIZOU_H
 #define Z_BG_HIDAN_SEKIZOU_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgHidanSekizou;
 
-typedef void (*BgHidanSekizouUpdateFunc)(struct BgHidanSekizou*, GlobalContext*);
+typedef void (*BgHidanSekizouUpdateFunc)(struct BgHidanSekizou*, PlayState*);
 
 typedef struct BgHidanSekizou {
     /* 0x0000 */ DynaPolyActor dyna;

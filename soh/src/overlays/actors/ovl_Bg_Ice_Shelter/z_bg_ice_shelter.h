@@ -1,12 +1,12 @@
 #ifndef Z_BG_ICE_SHELTER_H
 #define Z_BG_ICE_SHELTER_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgIceShelter;
 
-typedef void (*BgIceShelterActionFunc)(struct BgIceShelter*, GlobalContext*);
+typedef void (*BgIceShelterActionFunc)(struct BgIceShelter*, PlayState*);
 
 typedef struct BgIceShelter {
     /* 0x0000 */ DynaPolyActor dyna;

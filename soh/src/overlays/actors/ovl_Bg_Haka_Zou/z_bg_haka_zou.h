@@ -1,12 +1,12 @@
 #ifndef Z_BG_HAKA_ZOU_H
 #define Z_BG_HAKA_ZOU_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgHakaZou;
 
-typedef void (*BgHakaZouActionFunc)(struct BgHakaZou*, GlobalContext*);
+typedef void (*BgHakaZouActionFunc)(struct BgHakaZou*, PlayState*);
 
 typedef struct BgHakaZou {
     /* 0x0000 */ DynaPolyActor dyna;

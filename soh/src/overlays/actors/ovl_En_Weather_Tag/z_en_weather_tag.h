@@ -1,12 +1,12 @@
 #ifndef Z_EN_WEATHER_TAG_H
 #define Z_EN_WEATHER_TAG_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnWeatherTag;
 
-typedef void (*EnWeatherTagActionFunc)(struct EnWeatherTag*, GlobalContext*);
+typedef void (*EnWeatherTagActionFunc)(struct EnWeatherTag*, PlayState*);
 
 typedef struct EnWeatherTag {
     /* 0x0000 */ Actor actor;

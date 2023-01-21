@@ -1,13 +1,13 @@
 #ifndef Z_BG_SPOT01_IDOHASHIRA_H
 #define Z_BG_SPOT01_IDOHASHIRA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgSpot01Idohashira;
 
-typedef void (*BgSpot01IdohashiraActionFunc)(struct BgSpot01Idohashira*, GlobalContext*);
-typedef void (*BgSpot01IdohashiraDrawFunc)(struct BgSpot01Idohashira*, GlobalContext*);
+typedef void (*BgSpot01IdohashiraActionFunc)(struct BgSpot01Idohashira*, PlayState*);
+typedef void (*BgSpot01IdohashiraDrawFunc)(struct BgSpot01Idohashira*, PlayState*);
 
 typedef struct BgSpot01Idohashira {
     /* 0x0000 */ DynaPolyActor dyna;

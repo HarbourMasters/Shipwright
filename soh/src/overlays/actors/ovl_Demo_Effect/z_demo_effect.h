@@ -1,12 +1,12 @@
 #ifndef Z_DEMO_EFFECT_H
 #define Z_DEMO_EFFECT_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct DemoEffect;
 
-typedef void (*DemoEffectFunc)(struct DemoEffect*, GlobalContext*);
+typedef void (*DemoEffectFunc)(struct DemoEffect*, PlayState*);
 
 typedef struct {
     /* 0x00 */ u8 timer;

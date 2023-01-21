@@ -1,12 +1,12 @@
 #ifndef Z_BG_JYA_KANAAMI_H
 #define Z_BG_JYA_KANAAMI_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgJyaKanaami;
 
-typedef void (*BgJyaKanaamiActionFunc)(struct BgJyaKanaami*, GlobalContext*);
+typedef void (*BgJyaKanaamiActionFunc)(struct BgJyaKanaami*, PlayState*);
 
 typedef struct BgJyaKanaami {
     /* 0x0000 */ DynaPolyActor dyna;

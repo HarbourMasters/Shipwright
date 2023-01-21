@@ -1,12 +1,12 @@
 #ifndef Z_DEMO_TRE_LGT_H
 #define Z_DEMO_TRE_LGT_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct DemoTreLgt;
 
-typedef void (*DemoTreLgtActionFunc)(struct DemoTreLgt*, GlobalContext*);
+typedef void (*DemoTreLgtActionFunc)(struct DemoTreLgt*, PlayState*);
 
 typedef struct DemoTreLgt {
     /* 0x0000 */ Actor actor;

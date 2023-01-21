@@ -1,14 +1,14 @@
 #ifndef Z_BG_DY_YOSEIZO_H
 #define Z_BG_DY_YOSEIZO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "overlays/actors/ovl_En_Dy_Extra/z_en_dy_extra.h"
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
 
 struct BgDyYoseizo;
 
-typedef void (*BgDyYoseizoActionFunc)(struct BgDyYoseizo*, GlobalContext*);
+typedef void (*BgDyYoseizoActionFunc)(struct BgDyYoseizo*, PlayState*);
 
 typedef struct {
     /* 0x00 */ u8 alive; // drawn if 1, respawn if 0

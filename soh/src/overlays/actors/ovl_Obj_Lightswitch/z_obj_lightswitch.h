@@ -1,12 +1,12 @@
 #ifndef Z_OBJ_LIGHTSWITCH_H
 #define Z_OBJ_LIGHTSWITCH_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ObjLightswitch;
 
-typedef void (*ObjLightswitchActionFunc)(struct ObjLightswitch*, GlobalContext*);
+typedef void (*ObjLightswitchActionFunc)(struct ObjLightswitch*, PlayState*);
 
 typedef enum {
     /* 0 */ OBJLIGHTSWITCH_TYPE_STAY_ON, // doesn't turn off unless the switch flag is cleared some other way

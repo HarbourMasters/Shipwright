@@ -1,7 +1,7 @@
 #ifndef Z_EN_ENCOUNT1_H
 #define Z_EN_ENCOUNT1_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "overlays/actors/ovl_En_Reeba/z_en_reeba.h"
 
@@ -9,7 +9,7 @@
 
 struct EnEncount1;
 
-typedef void (*EnEncount1UpdateFunc)(struct EnEncount1*, GlobalContext*);
+typedef void (*EnEncount1UpdateFunc)(struct EnEncount1*, PlayState*);
 
 typedef struct EnEncount1 {
     /* 0x0000 */ Actor actor;

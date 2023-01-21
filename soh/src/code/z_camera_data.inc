@@ -1,4 +1,4 @@
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef struct {
@@ -2398,6 +2398,6 @@ s16 D_8011DAFC[] = {
     CAM_SET_NORMAL0, CAM_SET_NORMAL1, CAM_SET_NORMAL2, CAM_SET_DUNGEON0, CAM_SET_DUNGEON1, CAM_SET_DUNGEON2,
 };
 
-GlobalContext* D_8015BD7C;
+PlayState* D_8015BD7C;
 DbCamera D_8015BD80;
 CollisionPoly* playerFloorPoly;

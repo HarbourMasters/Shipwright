@@ -1,12 +1,12 @@
 #ifndef Z_BG_ICE_OBJECTS_H
 #define Z_BG_ICE_OBJECTS_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgIceObjects;
 
-typedef void (*BgIceObjectsActionFunc) (struct BgIceObjects*, GlobalContext*);
+typedef void (*BgIceObjectsActionFunc) (struct BgIceObjects*, PlayState*);
 
 typedef struct BgIceObjects {
     /* 0x0000 */ DynaPolyActor dyna;

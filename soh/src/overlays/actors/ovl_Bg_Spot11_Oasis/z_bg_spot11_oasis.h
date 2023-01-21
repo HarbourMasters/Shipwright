@@ -1,12 +1,12 @@
 #ifndef Z_BG_SPOT11_OASIS_H
 #define Z_BG_SPOT11_OASIS_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgSpot11Oasis;
 
-typedef void (*BgSpot11OasisActionFunc)(struct BgSpot11Oasis*, GlobalContext*);
+typedef void (*BgSpot11OasisActionFunc)(struct BgSpot11Oasis*, PlayState*);
 
 typedef struct BgSpot11Oasis {
     /* 0x0000 */ Actor actor;

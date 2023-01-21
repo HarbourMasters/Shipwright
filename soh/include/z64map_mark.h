@@ -1,7 +1,7 @@
 #ifndef Z64MAP_MARK_H
 #define Z64MAP_MARK_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 
 #define MAP_MARK_NONE -1
 #define MAP_MARK_CHEST 0
@@ -20,6 +20,7 @@ typedef struct {
 
 typedef MapMarkIconData MapMarkData[3]; // size = 0x72
 
-extern MapMarkData* gMapMarkDataTable[];
+extern MapMarkData* gMapMarkDataTableVanilla[];
+extern MapMarkData* gMapMarkDataTableMq[];
 
 #endif

@@ -1,7 +1,7 @@
 #ifndef Z_BG_HAKA_TRAP_H
 #define Z_BG_HAKA_TRAP_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef enum {
@@ -15,7 +15,7 @@ typedef enum {
 
 struct BgHakaTrap;
 
-typedef void (*BgHakaTrapActionFunc)(struct BgHakaTrap*, GlobalContext*);
+typedef void (*BgHakaTrapActionFunc)(struct BgHakaTrap*, PlayState*);
 
 typedef struct BgHakaTrap {
     /* 0x0000 */ DynaPolyActor dyna;

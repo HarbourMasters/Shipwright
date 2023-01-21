@@ -27,7 +27,7 @@ u16 gUpgradeCapacities[][4] = {
     { 0, 20, 30, 40 },     // Bomb Bags
     { 0, 0, 0, 0 },        // Unused (Scale)
     { 0, 0, 0, 0 },        // Unused (Strength)
-    { 99, 200, 500, 500 }, // Wallets
+    { 99, 200, 500, 999 }, // Wallets
     { 0, 30, 40, 50 },     // Deku Seed Bullet Bags
     { 0, 10, 20, 30 },     // Deku Stick Upgrades
     { 0, 20, 30, 40 },     // Deku Nut Upgrades
@@ -188,8 +188,8 @@ void Inventory_ChangeEquipment(s16 equipment, u16 value) {
     gSaveContext.equips.equipment |= value << gEquipShifts[equipment];
 }
 
-u8 Inventory_DeleteEquipment(GlobalContext* globalCtx, s16 equipment) {
-    Player* player = GET_PLAYER(globalCtx);
+u8 Inventory_DeleteEquipment(PlayState* play, s16 equipment) {
+    Player* player = GET_PLAYER(play);
     s32 pad;
     u16 sp26 = gSaveContext.equips.equipment & gEquipMasks[equipment];
 
@@ -211,8 +211,8 @@ u8 Inventory_DeleteEquipment(GlobalContext* globalCtx, s16 equipment) {
             gSaveContext.infTable[29] = 1;
         }
 
-        Player_SetEquipmentData(globalCtx, player);
-        globalCtx->pauseCtx.cursorSpecialPos = PAUSE_CURSOR_PAGE_LEFT;
+        Player_SetEquipmentData(play, player);
+        play->pauseCtx.cursorSpecialPos = PAUSE_CURSOR_PAGE_LEFT;
     }
 
     return sp26;

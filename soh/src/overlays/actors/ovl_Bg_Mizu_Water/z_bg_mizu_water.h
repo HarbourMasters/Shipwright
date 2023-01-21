@@ -1,12 +1,12 @@
 #ifndef Z_BG_MIZU_WATER_H
 #define Z_BG_MIZU_WATER_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgMizuWater;
 
-typedef void (*BgMizuWaterActionFunc)(struct BgMizuWater*, GlobalContext*);
+typedef void (*BgMizuWaterActionFunc)(struct BgMizuWater*, PlayState*);
 
 typedef struct BgMizuWater {
     /* 0x0000 */ Actor actor;

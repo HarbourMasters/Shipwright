@@ -1,12 +1,12 @@
 #ifndef Z_BOSS_FD2_H
 #define Z_BOSS_FD2_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BossFd2;
 
-typedef void (*BossFd2ActionFunc)(struct BossFd2*, GlobalContext*);
+typedef void (*BossFd2ActionFunc)(struct BossFd2*, PlayState*);
 
 typedef enum {
     /* 0 */ FD2_SIGNAL_NONE,

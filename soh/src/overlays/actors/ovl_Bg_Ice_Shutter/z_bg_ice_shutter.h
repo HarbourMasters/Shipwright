@@ -1,12 +1,12 @@
 #ifndef Z_BG_ICE_SHUTTER_H
 #define Z_BG_ICE_SHUTTER_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgIceShutter;
 
-typedef void (*BgIceShutterActionFunc)(struct BgIceShutter*, GlobalContext*);
+typedef void (*BgIceShutterActionFunc)(struct BgIceShutter*, PlayState*);
 
 typedef struct BgIceShutter {
     /* 0x0000 */ DynaPolyActor dyna;

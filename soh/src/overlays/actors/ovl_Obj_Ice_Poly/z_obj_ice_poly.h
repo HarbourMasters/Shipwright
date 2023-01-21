@@ -1,12 +1,12 @@
 #ifndef Z_OBJ_ICE_POLY_H
 #define Z_OBJ_ICE_POLY_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ObjIcePoly;
 
-typedef void (*ObjIcePolyActionFunc)(struct ObjIcePoly*, GlobalContext*);
+typedef void (*ObjIcePolyActionFunc)(struct ObjIcePoly*, PlayState*);
 
 typedef struct ObjIcePoly {
     /* 0x0000 */ Actor actor;

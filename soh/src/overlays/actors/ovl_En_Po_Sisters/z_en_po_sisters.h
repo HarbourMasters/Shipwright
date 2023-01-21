@@ -1,12 +1,12 @@
 #ifndef Z_EN_PO_SISTERS_H
 #define Z_EN_PO_SISTERS_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnPoSisters;
 
-typedef void (*EnPoSistersActionFunc)(struct EnPoSisters*, GlobalContext*);
+typedef void (*EnPoSistersActionFunc)(struct EnPoSisters*, PlayState*);
 
 typedef struct EnPoSisters {
     /* 0x0000 */ Actor actor;

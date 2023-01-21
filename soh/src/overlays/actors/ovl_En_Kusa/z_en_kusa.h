@@ -1,12 +1,12 @@
 #ifndef Z_EN_KUSA_H
 #define Z_EN_KUSA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnKusa;
 
-typedef void (*EnKusaActionFunc)(struct EnKusa*, GlobalContext*);
+typedef void (*EnKusaActionFunc)(struct EnKusa*, PlayState*);
 
 typedef enum {
     /* 0 */ ENKUSA_TYPE_0,

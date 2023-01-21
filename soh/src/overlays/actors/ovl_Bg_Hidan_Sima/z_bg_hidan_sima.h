@@ -1,12 +1,12 @@
 #ifndef Z_BG_HIDAN_SIMA_H
 #define Z_BG_HIDAN_SIMA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgHidanSima;
 
-typedef void (*BgHidanSimaActionFunc)(struct BgHidanSima*, GlobalContext*);
+typedef void (*BgHidanSimaActionFunc)(struct BgHidanSima*, PlayState*);
 
 typedef struct BgHidanSima {
     /* 0x0000 */ DynaPolyActor dyna;

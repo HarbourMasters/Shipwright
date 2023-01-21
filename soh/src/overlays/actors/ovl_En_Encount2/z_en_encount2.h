@@ -1,12 +1,12 @@
 #ifndef Z_EN_ENCOUNT2_H
 #define Z_EN_ENCOUNT2_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnEncount2;
 
-typedef void (*EnEncount2ActionFunc)(struct EnEncount2*, GlobalContext*);
+typedef void (*EnEncount2ActionFunc)(struct EnEncount2*, PlayState*);
 
 typedef struct {
     /* 0x0000 */ Vec3f pos;

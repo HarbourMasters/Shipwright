@@ -1,0 +1,14 @@
+<Root>
+    <File Name="miharigoya_scene" Segment="2">
+        <Texture Name="gGuardHouseOutSideView2NightTex" OutName="view_2_night" Format="rgba16" Width="64" Height="32" Offset="0x1350"/>
+        <Texture Name="gGuardHouseOutSideView2DayTex" OutName="view_2_day" Format="rgba16" Width="64" Height="32" Offset="0x2350"/>
+        <Texture Name="gGuardHouseOutSideView1NightTex" OutName="view_1_night" Format="rgba16" Width="64" Height="32" Offset="0x3550"/>
+        <Texture Name="gGuardHouseOutSideView1DayTex" OutName="view_1_day" Format="rgba16" Width="64" Height="32" Offset="0x6550"/>
+        <Scene Name="miharigoya_scene" Offset="0x0"/>
+    </File>
+    <File Name="miharigoya_room_0" Segment="3">
+        <Blob Name="gMiharigoyaBlob_0038D8" Size="0x68" Offset="0x38D8"/>
+        <Room Name="miharigoya_room_0" Offset="0x0"/>
+        <DList Name="gMiharigoyaDL_003DA0" Offset="0x3DA0"/>
+    </File>
+</Root>

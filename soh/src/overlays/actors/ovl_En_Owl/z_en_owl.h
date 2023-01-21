@@ -1,12 +1,12 @@
 #ifndef Z_EN_OWL_H
 #define Z_EN_OWL_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnOwl;
 
-typedef void (*EnOwlActionFunc)(struct EnOwl*, GlobalContext*);
+typedef void (*EnOwlActionFunc)(struct EnOwl*, PlayState*);
 typedef void (*OwlFunc)(struct EnOwl*);
 
 typedef struct EnOwl {

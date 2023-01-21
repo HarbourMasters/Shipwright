@@ -1,12 +1,12 @@
 #ifndef Z_EN_ATTACK_NIW_H
 #define Z_EN_ATTACK_NIW_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnAttackNiw;
 
-typedef void (*EnAttackNiwActionFunc)(struct EnAttackNiw*, GlobalContext*);
+typedef void (*EnAttackNiwActionFunc)(struct EnAttackNiw*, PlayState*);
 
 typedef struct EnAttackNiw {
     /* 0x0000 */ Actor actor;

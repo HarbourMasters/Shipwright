@@ -1,12 +1,12 @@
 #ifndef Z_BG_GATE_SHUTTER_H
 #define Z_BG_GATE_SHUTTER_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgGateShutter;
 
-typedef void (*BgGateShutterActionFunc)(struct BgGateShutter*, GlobalContext*);
+typedef void (*BgGateShutterActionFunc)(struct BgGateShutter*, PlayState*);
 
 typedef struct BgGateShutter {
     /* 0x0000 */ DynaPolyActor dyna;

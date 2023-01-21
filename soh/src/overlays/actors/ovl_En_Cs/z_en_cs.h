@@ -1,12 +1,12 @@
 #ifndef Z_EN_CS_H
 #define Z_EN_CS_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnCs;
 
-typedef void (*EnCsActionFunc)(struct EnCs*, GlobalContext*);
+typedef void (*EnCsActionFunc)(struct EnCs*, PlayState*);
 
 typedef struct EnCs {
     /* 0x0000 */ Actor actor;
@@ -28,7 +28,7 @@ typedef struct EnCs {
     /* 0x0210 */ s32 currentAnimIndex;
     /* 0x0214 */ char unk_214[4];
     /* 0x0218 */ MtxF spookyMaskMtx;
-    /* 0x0258 */ struct_80034A14_arg1 npcInfo;
+    /* 0x0258 */ NpcInteractInfo interactInfo;
     /* 0x0280 */ s32 flag;
     /* 0x0284 */ Vec3s jointTable[16];
     /* 0x02E4 */ Vec3s morphTable[16];

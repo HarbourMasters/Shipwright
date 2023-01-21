@@ -1,12 +1,12 @@
 #ifndef Z_EN_AM_H
 #define Z_EN_AM_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnAm;
 
-typedef void (*EnAmActionFunc)(struct EnAm*, GlobalContext*);
+typedef void (*EnAmActionFunc)(struct EnAm*, PlayState*);
 
 typedef struct EnAm {
     /* 0x0000 */ DynaPolyActor dyna;

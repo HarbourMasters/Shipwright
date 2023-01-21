@@ -1,12 +1,12 @@
 #ifndef Z_ARMS_HOOK_H
 #define Z_ARMS_HOOK_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ArmsHook;
 
-typedef void (*ArmsHookActionFunc)(struct ArmsHook*, GlobalContext*);
+typedef void (*ArmsHookActionFunc)(struct ArmsHook*, PlayState*);
 
 typedef struct ArmsHook {
     /* 0x0000 */ Actor actor;

@@ -1,12 +1,12 @@
 #ifndef Z_BG_HAKA_TUBO_H
 #define Z_BG_HAKA_TUBO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgHakaTubo;
 
-typedef void (*BgHakaTuboActionFunc)(struct BgHakaTubo*, GlobalContext*);
+typedef void (*BgHakaTuboActionFunc)(struct BgHakaTubo*, PlayState*);
 
 typedef struct BgHakaTubo {
     /* 0x0000 */ DynaPolyActor dyna;

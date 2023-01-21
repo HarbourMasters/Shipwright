@@ -1,12 +1,12 @@
 #ifndef Z_EN_NUTSBALL_H
 #define Z_EN_NUTSBALL_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnNutsball;
 
-typedef void (*EnNutsballActionFunc)(struct EnNutsball*, GlobalContext*);
+typedef void (*EnNutsballActionFunc)(struct EnNutsball*, PlayState*);
 
 typedef struct EnNutsball {
     /* 0x0000 */ Actor actor;

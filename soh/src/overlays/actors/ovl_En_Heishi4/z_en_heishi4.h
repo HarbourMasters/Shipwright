@@ -1,7 +1,7 @@
 #ifndef Z_EN_HEISHI4_H
 #define Z_EN_HEISHI4_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef enum {
@@ -13,7 +13,7 @@ typedef enum {
 
 struct EnHeishi4;
 
-typedef void (*EnHeishi4ActionFunc)(struct EnHeishi4*, GlobalContext*);
+typedef void (*EnHeishi4ActionFunc)(struct EnHeishi4*, PlayState*);
 
 typedef struct EnHeishi4 {
     /* 0x0000 */ Actor actor;
@@ -31,7 +31,7 @@ typedef struct EnHeishi4 {
     /* 0x0282 */ s16 unk_282;
     /* 0x0284 */ s16 unk_284;
     /* 0x0288 */ f32 unk_288;
-    /* 0x028C */ struct_80034A14_arg1 unk_28C;
+    /* 0x028C */ NpcInteractInfo interactInfo;
     /* 0x02B4 */ u8 unk_2B4;
     /* 0x02B6 */ char unk_2B6[7];
     /* 0x02BC */ ColliderCylinder collider;

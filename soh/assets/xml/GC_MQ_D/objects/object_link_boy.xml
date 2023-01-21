@@ -1,0 +1,271 @@
+<Root>
+    <File Name="object_link_boy" Segment="6">
+        <Skeleton Name="gLinkAdultSkel" Type="Flex" LimbType="LOD" Offset="0x377F4"/>
+
+        <!-- Far Limb DLists-->
+        <DList Name="gLinkAdultWaistFarDL" Offset="0x2F530"/>
+
+        <DList Name="gLinkAdultRightThighFarDL" Offset="0x2F7A0"/>
+        <DList Name="gLinkAdultRightLegFarDL" Offset="0x2F9B8"/>
+        <DList Name="gLinkAdultRightFootFarDL" Offset="0x2FB80"/>
+
+        <DList Name="gLinkAdultLeftThighFarDL" Offset="0x2FCA0"/>
+        <DList Name="gLinkAdultLeftLegFarDL" Offset="0x2FEC0"/>
+        <DList Name="gLinkAdultLeftFootFarDL" Offset="0x30088"/>
+
+        <DList Name="gLinkAdultCollarFarDL" Offset="0x301A8"/>
+        <DList Name="gLinkAdultTorsoFarDL" Offset="0x30250"/>
+        <DList Name="gLinkAdultHeadFarDL" Offset="0x30400"/>
+        <DList Name="gLinkAdultHatFarDL" Offset="0x309B0"/>
+
+        <DList Name="gLinkAdultRightShoulderFarDL" Offset="0x30AA0"/>
+        <DList Name="gLinkAdultRightArmFarDL" Offset="0x30C48"/>
+        <DList Name="gLinkAdultRightHandFarDL" Offset="0x274F8"/>
+
+        <DList Name="gLinkAdultLeftShoulderFarDL" Offset="0x30EF8"/>
+        <DList Name="gLinkAdultLeftArmFarDL" Offset="0x310A0"/>
+        <DList Name="gLinkAdultLeftHandFarDL" Offset="0x26C58"/>
+
+        <!-- Near Limb DLists-->
+        <DList Name="gLinkAdultWaistNearDL" Offset="0x35330"/>
+
+        <DList Name="gLinkAdultRightThighNearDL" Offset="0x35678"/>
+        <DList Name="gLinkAdultRightLegNearDL" Offset="0x358B0"/>
+        <DList Name="gLinkAdultRightFootNearDL" Offset="0x35B60"/>
+
+        <DList Name="gLinkAdultLeftThighNearDL" Offset="0x35CB8"/>
+        <DList Name="gLinkAdultLeftLegNearDL" Offset="0x35EF0"/>
+        <DList Name="gLinkAdultLeftFootNearDL" Offset="0x361A0"/>
+
+        <DList Name="gLinkAdultCollarNearDL" Offset="0x362F8"/>
+        <DList Name="gLinkAdultTorsoNearDL" Offset="0x363B8"/>
+        <DList Name="gLinkAdultHeadNearDL" Offset="0x365E8"/>
+        <DList Name="gLinkAdultHatNearDL" Offset="0x36D30"/>
+
+        <DList Name="gLinkAdultRightShoulderNearDL" Offset="0x36E58"/>
+        <DList Name="gLinkAdultRightArmNearDL" Offset="0x37018"/>
+        <DList Name="gLinkAdultRightHandNearDL" Offset="0x22498"/>
+
+        <DList Name="gLinkAdultLeftShoulderNearDL" Offset="0x37210"/>
+        <DList Name="gLinkAdultLeftArmNearDL" Offset="0x373D8"/>
+        <DList Name="gLinkAdultLeftHandNearDL" Offset="0x21AA8"/>
+
+        <DList Name="gLinkAdultBottleDL" Offset="0x2AD58"/>
+        <DList Name="gLinkAdultHandHoldingBottleDL" Offset="0x29600"/>
+
+        <!-- Bodypart DLs not directly used in the skeleton -->
+
+        <!-- TODO check left vs right-->
+        <DList Name="gLinkAdultRightHandClosedNearDL" Offset="0x226E0"/>
+        <DList Name="gLinkAdultRightHandClosedFarDL" Offset="0x27690"/>
+        <DList Name="gLinkAdultLeftHandHoldingMasterSwordNearDL" Offset="0x21F78"/>
+        <DList Name="gLinkAdultLeftHandHoldingMasterSwordFarDL" Offset="0x27078"/>
+
+        <DList Name="gLinkAdultLeftHandClosedNearDL" Offset="0x21CE8"/>
+        <DList Name="gLinkAdultLeftHandClosedFarDL" Offset="0x26DF0"/>
+
+        <!-- Left hand, left arm, and right arm are used with the Bow. Not sure what right hand is for -->
+        <DList Name="gLinkAdultRightArmOutNearDL" Offset="0x29918"/>
+        <DList Name="gLinkAdultRightHandOutNearDL" Offset="0x29C20"/>
+
+        <DList Name="gLinkAdultLeftArmOutNearDL" Offset="0x29FA0"/>
+        <DList Name="gLinkAdultLeftHandOutNearDL" Offset="0x24B58"/>
+
+        <!-- Limbs-->
+        <Limb Name="gLinkAdultRootLimb" LimbType="LOD" Offset="0x37650"/>
+        <Limb Name="gLinkAdultWaistLimb" LimbType="LOD" Offset="0x37660"/>
+        <Limb Name="gLinkAdultLowerControlLimb" LimbType="LOD" Offset="0x37670"/>
+        <Limb Name="gLinkAdultRightThighLimb" LimbType="LOD" Offset="0x37680"/>
+        <Limb Name="gLinkAdultRightLegLimb" LimbType="LOD" Offset="0x37690"/>
+        <Limb Name="gLinkAdultRightFootLimb" LimbType="LOD" Offset="0x376A0"/>
+        <Limb Name="gLinkAdultLeftThighLimb" LimbType="LOD" Offset="0x376B0"/>
+        <Limb Name="gLinkAdultLeftLegLimb" LimbType="LOD" Offset="0x376C0"/>
+        <Limb Name="gLinkAdultLeftFootLimb" LimbType="LOD" Offset="0x376D0"/>
+        <Limb Name="gLinkAdultUpperControlLimb" LimbType="LOD" Offset="0x376E0"/>
+        <Limb Name="gLinkAdultHeadLimb" LimbType="LOD" Offset="0x376F0"/>
+        <Limb Name="gLinkAdultHatLimb" LimbType="LOD" Offset="0x37700"/>
+        <Limb Name="gLinkAdultCollarLimb" LimbType="LOD" Offset="0x37710"/>
+        <Limb Name="gLinkAdultLeftShoulderLimb" LimbType="LOD" Offset="0x37720"/>
+        <Limb Name="gLinkAdultLeftArmLimb" LimbType="LOD" Offset="0x37730"/>
+        <Limb Name="gLinkAdultLeftHandLimb" LimbType="LOD" Offset="0x37740"/>
+        <Limb Name="gLinkAdultRightShoulderLimb" LimbType="LOD" Offset="0x37750"/>
+        <Limb Name="gLinkAdultRightArmLimb" LimbType="LOD" Offset="0x37760"/>
+        <Limb Name="gLinkAdultRightHandLimb" LimbType="LOD" Offset="0x37770"/>
+        <Limb Name="gLinkAdultSwordAndSheathLimb" LimbType="LOD" Offset="0x37780"/>
+        <Limb Name="gLinkTorsoLimb" LimbType="LOD" Offset="0x37790"/>
+
+        <!-- Swords and shields -->
+        <DList Name="gLinkAdultMasterSwordAndSheathNearDL" Offset="0x23160"/>
+        <DList Name="gLinkAdultMasterSwordAndSheathFarDL" Offset="0x27F00"/>
+
+        <DList Name="gLinkAdultHylianShieldSwordAndSheathNearDL" Offset="0x20A78"/>
+        <DList Name="gLinkAdultHylianShieldSwordAndSheathFarDL" Offset="0x25FB8"/>
+
+        <DList Name="gLinkAdultHylianShieldAndSheathNearDL" Offset="0x20E70"/>
+        <DList Name="gLinkAdultHylianShieldAndSheathFarDL" Offset="0x262B8"/>
+
+        <DList Name="gLinkAdultMirrorShieldAndSheathNearDL" Offset="0x216B0"/>
+        <DList Name="gLinkAdultMirrorShieldAndSheathFarDL" Offset="0x26910"/>
+
+        <DList Name="gLinkAdultMirrorShieldSwordAndSheathNearDL" Offset="0x211B8"/>
+        <DList Name="gLinkAdultMirrorShieldSwordAndSheathFarDL" Offset="0x264F0"/>
+
+        <DList Name="gLinkAdultLeftHandHoldingBgsNearDL" Offset="0x238C8"/>
+        <DList Name="gLinkAdultLeftHandHoldingBgsFarDL" Offset="0x286B8"/>
+
+        <DList Name="gLinkAdultHandHoldingBrokenGiantsKnifeDL" Offset="0x23D50"/>
+        <DList Name="gLinkAdultHandHoldingBrokenGiantsKnifeFarDL" Offset="0x291E8"/>
+
+        <DList Name="gLinkAdultSheathNearDL" Offset="0x249D8"/>
+        <DList Name="gLinkAdultSheathFarDL" Offset="0x28150"/>
+
+        <DList Name="gLinkAdultRightHandHoldingHylianShieldNearDL" Offset="0x22970"/>
+        <DList Name="gLinkAdultRightHandHoldingHylianShieldFarDL" Offset="0x27918"/>
+
+        <DList Name="gLinkAdultBrokenGiantsKnifeBladeDL" Offset="0x2BA38"/> <!-- Used for when Giants Knife shatters -->
+
+
+        <Texture Name="gLinkAdultShieldHandleTex" OutName="shield_handle" Format="ci8" Width="8" Height="16" Offset="0xD4B8" TlutOffset="0xCD48"/>
+        <Texture Name="gLinkAdultHylianShieldBackTex" OutName="hylian_shield_back" Format="ci8" Width="16" Height="32" Offset="0xD938" TlutOffset="0xCB40"/>
+        <Texture Name="gLinkAdultSheathBandTex" OutName="sheath_band" Format="ci8" Width="32" Height="16" Offset="0xE838" TlutOffset="0xCB40"/>
+
+        <Texture Name="gLinkAdultMirrorShieldLowerDesignTex" OutName="mirror_shield_lower_design" Format="ia16" Width="32" Height="64" Offset="0xB280"/>
+        <Texture Name="gLinkAdultMirrorShieldUpperDesignTex" OutName="mirror_shield_upper_design" Format="ia8" Width="64" Height="32" Offset="0xC280"/>
+
+        <Texture Name="gLinkAdultDefaultGauntlet1Tex" OutName="default_gauntlet_1" Format="ci8" Width="16" Height="32" Offset="0xD2B8" TlutOffset="0xCD48"/>
+        <Texture Name="gLinkAdultDefaultGauntlet2Tex" OutName="default_gauntlet_2" Format="ci8" Width="16" Height="32" Offset="0xD538" TlutOffset="0xCD48"/>
+
+
+        <Texture Name="gLinkAdultHandTex" OutName="hand" Format="ci8" Width="16" Height="16" Offset="0xD738" TlutOffset="0xCF50"/>
+        <Texture Name="gLinkAdultClosedHandThumbTex" OutName="closed_hand_thumb" Format="ci8" Width="16" Height="16" Offset="0xD838" TlutOffset="0xCF50"/>
+        <Texture Name="gLinkAdultClosedHandSideTex" OutName="closed_hand_side" Format="ci8" Width="16" Height="16" Offset="0xDB38" TlutOffset="0xCF50"/> <!-- TODO CHECK-->
+
+        <Texture Name="gLinkAdultBowBodyTex" OutName="bow_body" Format="i8" Width="8" Height="8" Offset="0xCB00"/> <!-- TODO get proper name for this-->
+
+        <Texture Name="gLinkAdultSwordEmblemTex" OutName="sword_emblem" Format="ci8" Width="16" Height="16" Offset="0xEA38" TlutOffset="0xCB40"/>
+
+        <Texture Name="gLinkAdultArmOutSleeveTex" OutName="arm_out_sleeve" Format="ci8" Width="16" Height="32" Offset="0xEDB8" TlutOffset="0xD078"/>
+        <Texture Name="gLinkAdultArmOutUpperGauntletTex" OutName="arm_out_upper_gauntlet" Format="ci8" Width="32" Height="32" Offset="0xE038" TlutOffset="0xCD48"/>
+        <Texture Name="gLinkAdultArmGauntletTex" OutName="arm_gauntlet" Format="ci8" Width="32" Height="32" Offset="0x7F80" TlutOffset="0x5800"/>
+
+        <Texture Name="gLinkAdultBoot2Tex" OutName="boot_2" Format="ci8" Width="16" Height="32" Offset="0x6300" TlutOffset="0x5800"/>
+        <Texture Name="gLinkAdultBootBuckleTex" OutName="boot_buckle" Format="ci8" Width="32" Height="16" Offset="0x6500" TlutOffset="0x5800"/>
+
+        <Texture Name="gLinkAdultEarringTex" OutName="earring" Format="ia16" Width="32" Height="32" Offset="0x7180"/>
+        <!-- Bow -->
+        <DList Name="gLinkAdultRightHandHoldingBowNearDL" Offset="0x22DA8"/>
+        <DList Name="gLinkAdultRightHandHoldingBowFarDL" Offset="0x27B88"/>
+        <DList Name="gLinkAdultRightHandHoldingBowFirstPersonDL" Offset="0x2A248"/>
+        <DList Name="gLinkAdultBowStringDL" Offset="0x2B108"/>
+
+        <DList Name="gLinkAdultLeftHandHoldingHammerNearDL" Offset="0x233E0"/>
+        <DList Name="gLinkAdultLeftHandHoldingHammerFarDL" Offset="0x28288"/>
+
+        <DList Name="gLinkAdultRightHandHoldingMirrorShieldNearDL" Offset="0x241C0"/>
+        <DList Name="gLinkAdultRightHandHoldingMirrorShieldFarDL" Offset="0x28B40"/>
+
+        <!-- Ocarina -->
+        <DList Name="gLinkAdultRightHandHoldingOotNearDL" Offset="0x24698"/>
+        <DList Name="gLinkAdultRightHandHoldingOotFarDL" Offset="0x28F58"/>
+
+        <!-- Hookshot -->
+        <DList Name="gLinkAdultRightHandHoldingHookshotNearDL" Offset="0x24D70"/>
+        <DList Name="gLinkAdultRightHandHoldingHookshotFarDL" Offset="0x2A738"/>
+        <DList Name="gLinkAdultHookshotChainDL" Offset="0x2AFF0"/>
+        <DList Name="gLinkAdultHookshotTipDL" Offset="0x2B288"/>
+        <Texture Name="gLinkAdultHookshotMetalTex" OutName="hookshot_metal" Format="rgba16" Width="8" Height="8" Offset="0xCA80"/>
+        <Texture Name="gLinkAdultHookshotHandleTex" OutName="hookshot_handle" Format="ci8" Width="16" Height="8" Offset="0xEB38" TlutOffset="0xCD48"/>
+        <Texture Name="gLinkAdultHookshotDesignTex" OutName="hookshot_design" Format="ci8" Width="16" Height="32" Offset="0xEBB8" TlutOffset="0xCB40"/>
+        <Texture Name="gLinkAdultHookshotChainTex" OutName="hookshot_chain" Format="rgba16" Width="16" Height="32" Offset="0x2B338"/>
+        <Texture Name="gLinkAdultHookshotReticleTex" OutName="hookshot_dot" Format="i8" Width="64" Height="64" Offset="0x2BB18"/>
+
+        <Texture Name="gLinkAdultBeltClaspTex" OutName="belt_clasp" Format="ci8" Width="32" Height="16" Offset="0x6F80" TlutOffset="0x5800"/>
+        <Texture Name="gLinkAdultSkirtAndHatTex" OutName="skirt_and_hat" Format="rgba16" Width="32" Height="32" Offset="0x6700"/>
+        <Texture Name="gLinkAdultBeltTex" OutName="belt" Format="ci8" Width="8" Height="16" Offset="0x6F00" TlutOffset="0x5800"/>
+        <Texture Name="gLinkAdultLegTex" OutName="leg" Format="ci8" Width="16" Height="32" Offset="0x6100" TlutOffset="0x5A00"/>
+        <Texture Name="gLinkAdultBootFarTex" OutName="boot_far" Format="ci8" Width="16" Height="32" Offset="0x5600" TlutOffset="0x5400"/>
+        <Texture Name="gLinkAdultBootTex" OutName="boot" Format="ci8" Width="16" Height="16" Offset="0x6000" TlutOffset="0x5800"/>
+        <Texture Name="gLinkAdultCollarTex" OutName="collar" Format="rgba16" Width="16" Height="32" Offset="0x9580"/>
+        <Texture Name="gLinkAdultTunicTex" OutName="tunic" Format="ci8" Width="16" Height="32" Offset="0x9380" TlutOffset="0x5A00"/>
+        <Texture Name="gLinkAdultNeckTex" OutName="neck" Format="ci8" Width="16" Height="32" Offset="0x7980" TlutOffset="0x5A00"/>
+        <Texture Name="gLinkAdultNose2Tex" OutName="nose2" Format="ci8" Width="16" Height="16" Offset="0x5200" TlutOffset="0x5C00"/>
+
+        <!-- Gauntlets -->
+        <DList Name="gLinkAdultLeftGauntletPlate1DL" Offset="0x25218"/>
+        <DList Name="gLinkAdultLeftGauntletPlate2DL" Offset="0x252D8"/>
+        <DList Name="gLinkAdultLeftGauntletPlate3DL" Offset="0x25438"/>
+
+        <DList Name="gLinkAdultRightGauntletPlate1DL" Offset="0x25598"/>
+        <DList Name="gLinkAdultRightGauntletPlate2DL" Offset="0x25658"/>
+        <DList Name="gLinkAdultRightGauntletPlate3DL" Offset="0x257B8"/>
+
+        <Texture Name="gLinkAdultGauntletPlate1Tex" OutName="gauntlet_plate_1" Format="rgba16" Width="16" Height="32" Offset="0x9980"/>
+        <Texture Name="gLinkAdultGauntletPlate2Tex" OutName="gauntlet_plate_2" Format="rgba16" Width="32" Height="32" Offset="0x9D80"/>
+
+        <DList Name="gLinkAdultHookshotReticleDL" Offset="0x2CB48"/>
+
+        <!-- Boots -->
+        <DList Name="gLinkAdultLeftIronBootDL" Offset="0x25918"/> <!-- TODO verify the positions-->
+        <DList Name="gLinkAdultRightIronBootDL" Offset="0x25A60"/>
+        <Texture Name="gLinkAdultIronBootTex" OutName="iron_boot" Format="ci8" Width="16" Height="16" Offset="0xD1B8" TlutOffset="0xCB40"/>
+
+        <DList Name="gLinkAdultLeftHoverBootDL" Offset="0x25BA8"/>
+        <DList Name="gLinkAdultRightHoverBootDL" Offset="0x25DB0"/>
+        <Texture Name="gLinkAdultHoverBootsHeelTex" OutName="hover_boots_heel" Format="rgba16" Width="16" Height="8" Offset="0xA580"/>
+        <Texture Name="gLinkAdultHoverBootsJetTex" OutName="hover_boots_jet" Format="rgba16" Width="32" Height="32" Offset="0xA680"/>
+        <Texture Name="gLinkAdultHoverBootsFeatherTex" OutName="hover_boots_feather" Format="rgba16" Width="32" Height="16" Offset="0xAE80"/>
+
+        <!-- Sword and sheath-->
+        <Texture Name="gLinkAdultSheathTex" OutName="sheath" Format="ci8" Width="32" Height="32" Offset="0xDC38" TlutOffset="0xCB40"/>
+        <Texture Name="gLinkAdultSwordPommelTex" OutName="sword_pommel" Format="ci8" Width="16" Height="16" Offset="0xD0B8" TlutOffset="0xCB40"/>
+        <Texture Name="gLinkAdultSwordGuardTex" OutName="sword_guard" Format="ci8" Width="32" Height="32" Offset="0xE438" TlutOffset="0xCB40"/>
+
+        <!-- Eyes -->
+        <Texture Name="gLinkAdultEyesOpenTex" OutName="eyes_open" Format="ci8" Width="64" Height="32" Offset="0x0000" TlutOffset="0x5C00"/>
+        <Texture Name="gLinkAdultEyesHalfTex" OutName="eyes_half" Format="ci8" Width="64" Height="32" Offset="0x0800" TlutOffset="0x5C00"/>
+        <Texture Name="gLinkAdultEyesClosedfTex" OutName="eyes_closed" Format="ci8" Width="64" Height="32" Offset="0x1000" TlutOffset="0x5C00"/>
+        <Texture Name="gLinkAdultEyesRollLeftTex" OutName="eyes_roll_left" Format="ci8" Width="64" Height="32" Offset="0x1800" TlutOffset="0x5C00"/><!--Left from links perspective-->
+        <Texture Name="gLinkAdultEyesRollRightTex" OutName="eyes_roll_right" Format="ci8" Width="64" Height="32" Offset="0x2000" TlutOffset="0x5C00"/><!--Right from links perspective-->
+        <Texture Name="gLinkAdultEyesShockTex" OutName="eyes_shock" Format="ci8" Width="64" Height="32" Offset="0x2800" TlutOffset="0x5C00"/>
+        <Texture Name="gLinkAdultEyesUnk1Tex" OutName="eyes_unk_1" Format="ci8" Width="64" Height="32" Offset="0x3000" TlutOffset="0x5C00"/>
+        <Texture Name="gLinkAdultEyesUnk2Tex" OutName="eyes_unk_2" Format="ci8" Width="64" Height="32" Offset="0x3800" TlutOffset="0x5C00"/>
+
+        <!--Mouth-->
+        <Texture Name="gLinkAdultMouth1Tex" OutName="mouth_1" Format="ci8" Width="32" Height="32" Offset="0x4000" TlutOffset="0x5C00"/>
+        <Texture Name="gLinkAdultMouth2Tex" OutName="mouth_2" Format="ci8" Width="32" Height="32" Offset="0x4400" TlutOffset="0x5C00"/>
+        <Texture Name="gLinkAdultMouth3Tex" OutName="mouth_3" Format="ci8" Width="32" Height="32" Offset="0x4800" TlutOffset="0x5C00"/>
+        <Texture Name="gLinkAdultMouth4Tex" OutName="mouth_4" Format="ci8" Width="32" Height="32" Offset="0x4C00" TlutOffset="0x5C00"/>
+
+        <Texture Name="gLinkAdultEarTex" OutName="ear" Format="ci8" Width="16" Height="16" Offset="0x5000" TlutOffset="0x5C00"/>
+        <Texture Name="gLinkAdultNoseTex" OutName="nose" Format="ci8" Width="16" Height="16" Offset="0x5100" TlutOffset="0x5C00"/>
+
+        <!-- Tluts -->
+        <Texture Name="gLinkAdultHeadTLUT" OutName="head_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5C00"/>
+        <Texture Name="gLinkAdultTlut_005E00" OutName="tlut_5E00" Format="rgba16" Width="16" Height="16" Offset="0x5E00"/>
+
+        <!-- Unused -->
+        <Texture Name="gLinkAdultUnusedHandTex" OutName="unused_hand" Format="ci8" Width="16" Height="16" Offset="0x5300" TlutOffset="0x5C00"/>
+        <Texture Name="gLinkAdultUnusedGauntlet1Tex" OutName="unused_gauntlet_1" Format="ci8" Width="16" Height="32" Offset="0x7B80" TlutOffset="0x5800"/>
+        <Texture Name="gLinkAdultUnusedGauntlet2Tex" OutName="unused_gauntlet_2" Format="ci8" Width="16" Height="32" Offset="0x7D80" TlutOffset="0x5800"/>
+        <Texture Name="gLinkAdultUnusedSheathTex" OutName="unused_sheath" Format="ci8" Width="32" Height="64" Offset="0x8380" TlutOffset="0x5E00"/>
+        <Texture Name="gLinkAdultUnusedSheathBandTex" OutName="unused_sheat_band" Format="ci8" Width="32" Height="16" Offset="0x8B80" TlutOffset="0x5E00"/>
+        <Texture Name="gLinkAdultUnusedSwordPommelTex" OutName="unused_sword_pommel" Format="ci8" Width="16" Height="16" Offset="0x8D80" TlutOffset="0x5E00"/>
+        <Texture Name="gLinkAdultUnusedSwordGuardTex" OutName="unused_sword_guard" Format="ci8" Width="32" Height="32" Offset="0x8E80" TlutOffset="5E00"/>
+        <Texture Name="gLinkAdultUnusedSwordEmblemTex" OutName="unused_sword_emblem" Format="ci8" Width="16" Height="16" Offset="0x9280" TlutOffset="0x5E00"/>
+
+        <Array Name="gLinkAdultVtx_02E120" Count="38" Offset="0x2E120" Static="On">
+            <Vtx/>
+        </Array>
+
+        <Array Name="gLinkAdultVtx_033760" Count="54" Offset="0x33760" Static="On">
+            <Vtx/>
+        </Array>
+        <Array Name="gLinkAdultVtx_0340A0" Count="146" Offset="0x340A0" Static="On">
+            <Vtx/>
+        </Array>
+        <Array Name="gLinkAdultVtx_02E7E0" Count="114" Offset="0x2E7E0" Static="On">
+            <Vtx/>
+        </Array>
+
+    </File>
+</Root>

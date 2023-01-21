@@ -1,12 +1,12 @@
 #ifndef Z_OBJECT_KANKYO_H
 #define Z_OBJECT_KANKYO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ObjectKankyo;
 
-typedef void (*ObjectKankyoActionFunc)(struct ObjectKankyo*, GlobalContext*);
+typedef void (*ObjectKankyoActionFunc)(struct ObjectKankyo*, PlayState*);
 
 typedef struct ObjectKankyoEffect {
     /* 0x00 */ u8 state;

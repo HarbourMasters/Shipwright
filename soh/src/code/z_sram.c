@@ -3,9 +3,12 @@
 
 #include <string.h>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
+#include <soh/Enhancements/randomizer/randomizer_inf.h>
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
 #define NUM_DUNGEONS 8
-#define NUM_TRIALS 6
+#define NUM_COWS 10
 
 /**
  *  Initialize new save.
@@ -30,7 +33,7 @@ void Sram_InitDebugSave(void) {
 
 // RANDOTODO replace most of these GiveLink functions with calls to
 // Item_Give in z_parameter, we'll need to update Item_Give to ensure
-// nothing breaks when calling it without a valid globalCtx first
+// nothing breaks when calling it without a valid play first
 void GiveLinkRupees(int numOfRupees) {
     int maxRupeeCount;
     if (CUR_UPG_VALUE(UPG_WALLET) == 0) {
@@ -48,31 +51,6 @@ void GiveLinkRupees(int numOfRupees) {
         gSaveContext.rupees = maxRupeeCount;
     } else {
         gSaveContext.rupees = newRupeeCount;
-    }
-}
-
-void GiveLinkRupeesByGetItemId(GetItemID giid) {
-    if (giid == GI_RUPEE_GREEN) {
-        GiveLinkRupees(1);
-    } else if (giid == GI_RUPEE_BLUE) {
-        GiveLinkRupees(5);
-    } else if (giid == GI_RUPEE_RED) {
-        GiveLinkRupees(20);
-    } else if (giid == GI_RUPEE_PURPLE) {
-        GiveLinkRupees(50);
-    } else if (giid == GI_RUPEE_GOLD) {
-        GiveLinkRupees(100);
-    }
-}
-
-void GiveLinkBombchus(GetItemID giid) {
-    INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
-    if (giid == GI_BOMBCHUS_5) {
-        AMMO(ITEM_BOMBCHU) += 5; 
-    } else if (giid == GI_BOMBCHUS_10) {
-        AMMO(ITEM_BOMBCHU) += 10; 
-    } else if (giid == GI_BOMBCHUS_20) {
-        AMMO(ITEM_BOMBCHU) += 20; 
     }
 }
 
@@ -97,16 +75,6 @@ void GiveLinkDekuSticks(int howManySticks) {
     }
 }
 
-void GiveLinkDekuSticksByGetItemId(GetItemID giid) {
-    if (giid == GI_STICKS_1) {
-        GiveLinkDekuSticks(1); 
-    } else if (giid == GI_STICKS_5) {
-        GiveLinkDekuSticks(5); 
-    } else if (giid == GI_STICKS_10) {
-        GiveLinkDekuSticks(10); 
-    }
-}
-
 void GiveLinkDekuNuts(int howManyNuts) {
     int maxNutCount;
     if (CUR_UPG_VALUE(UPG_NUTS) == 0) {
@@ -128,298 +96,23 @@ void GiveLinkDekuNuts(int howManyNuts) {
     }
 }
 
-void GiveLinkDekuNutsByGetItemId(GetItemID giid) {
-    if (giid == GI_NUTS_5) {
-        GiveLinkDekuNuts(5); 
-    } else if (giid == GI_NUTS_10) {
-        GiveLinkDekuNuts(10); 
+void GiveLinksPocketItem() {
+    if (Randomizer_GetSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING)  {
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
+
+        if (getItemEntry.modIndex == MOD_NONE) {
+            if (getItemEntry.getItemId == GI_SWORD_BGS) {
+                gSaveContext.bgsFlag = true;
+            }
+            Item_Give(NULL, getItemEntry.itemId);
+        } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
+            if (getItemEntry.getItemId == RG_ICE_TRAP) {
+                gSaveContext.pendingIceTrapCount++;
+            } else {
+                Randomizer_Item_Give(NULL, getItemEntry);
+            }
+        }
     }
-}
-
-void GiveLinkBeans() {
-    INV_CONTENT(ITEM_BEAN) = ITEM_BEAN;
-    AMMO(ITEM_BEAN)++;
-}
-
-void GiveLinkKokiriSword() {
-    uint32_t bitMask = 1 << 0;
-    gSaveContext.inventory.equipment |= bitMask;
-}
-
-void GiveLinkGiantsKnife() {
-    gSaveContext.bgsFlag = 0;
-    gSaveContext.swordHealth = 8;
-    uint32_t bitMask = 1 << 2;
-    gSaveContext.inventory.equipment |= bitMask;
-}
-
-void GiveLinkBiggoronSword() {
-    gSaveContext.bgsFlag = 1;
-    gSaveContext.swordHealth = 8;
-    uint32_t bitMask = 1 << 2;
-    gSaveContext.inventory.equipment |= bitMask;
-}
-
-void GiveLinkDekuShield() {
-    uint32_t bitMask = 1 << 4;
-    gSaveContext.inventory.equipment |= bitMask;
-}
-
-void GiveLinkHylianShield() {
-    uint32_t bitMask = 1 << 5;
-    gSaveContext.inventory.equipment |= bitMask;
-}
-
-void GiveLinkMirrorShield() {
-    uint32_t bitMask = 1 << 6;
-    gSaveContext.inventory.equipment |= bitMask;
-}
-
-void GiveLinkGoronTunic() {
-    uint32_t bitMask = 1 << 9;
-    gSaveContext.inventory.equipment |= bitMask;
-}
-
-void GiveLinkZoraTunic() {
-    uint32_t bitMask = 1 << 10;
-    gSaveContext.inventory.equipment |= bitMask;
-}
-
-void GiveLinkIronBoots() {
-    uint32_t bitMask = 1 << 13;
-    gSaveContext.inventory.equipment |= bitMask;
-}
-
-void GiveLinkHoverBoots() {
-    uint32_t bitMask = 1 << 14;
-    gSaveContext.inventory.equipment |= bitMask;
-}
-
-void GiveLinkStoneOfAgony() {
-    uint32_t bitMask = 1 << QUEST_STONE_OF_AGONY;
-    gSaveContext.inventory.questItems |= bitMask;    
-}
-
-void GiveLinkGerudoCard() {
-    uint32_t bitMask = 1 << QUEST_GERUDO_CARD;
-    gSaveContext.inventory.questItems |= bitMask;    
-}
-
-void GiveLinkPieceOfHeart() {
-    int32_t pohCount = (gSaveContext.inventory.questItems & 0xF0000000) >> 28;
-    pohCount++;
-    gSaveContext.inventory.questItems |= (pohCount << 28);
-}
-
-void GiveLinkHeartContainer() {
-    gSaveContext.healthCapacity += 16;
-    gSaveContext.health += 16;
-}
-
-void GiveLinkBulletBagUpgrade(GetItemID giid) {
-    if (giid == GI_SLINGSHOT) {
-        INV_CONTENT(ITEM_SLINGSHOT) = ITEM_SLINGSHOT;
-        AMMO(ITEM_SLINGSHOT) = 30;
-        Inventory_ChangeUpgrade(UPG_BULLET_BAG, 1);
-    } else if (giid == GI_BULLET_BAG_40) {
-        Inventory_ChangeUpgrade(UPG_BULLET_BAG, 2);
-        AMMO(ITEM_SLINGSHOT) = 40;
-    } else if (giid == GI_BULLET_BAG_50) {
-        Inventory_ChangeUpgrade(UPG_BULLET_BAG, 3);
-        AMMO(ITEM_SLINGSHOT) = 50;
-    }
-}
-
-void GiveLinkQuiverUpgrade(GetItemID giid) {
-    if (giid == GI_BOW) {
-        INV_CONTENT(ITEM_BOW) = ITEM_BOW;
-        Inventory_ChangeUpgrade(UPG_QUIVER, 1);
-        AMMO(ITEM_BOW) = 30;
-    } else if (giid == GI_QUIVER_40) {
-        Inventory_ChangeUpgrade(UPG_QUIVER, 2);
-        AMMO(ITEM_BOW) = 40;
-    } else if (giid == GI_QUIVER_50) {
-        Inventory_ChangeUpgrade(UPG_QUIVER, 3);
-        AMMO(ITEM_BOW) = 50;
-    }
-}
-
-void GiveLinkBombBagUpgrade(GetItemID giid) {
-    if (giid == GI_BOMB_BAG_20) {
-        INV_CONTENT(ITEM_BOMB) = ITEM_BOMB;
-        Inventory_ChangeUpgrade(UPG_BOMB_BAG, 1);
-        AMMO(ITEM_BOMB) = 20;
-    } else if (giid == GI_BOMB_BAG_30) {
-        Inventory_ChangeUpgrade(UPG_BOMB_BAG, 2);
-        AMMO(ITEM_BOMB) = 30;
-    } else if (giid == GI_BOMB_BAG_40) {
-        Inventory_ChangeUpgrade(UPG_BOMB_BAG, 3);
-        AMMO(ITEM_BOMB) = 40;
-    }
-}
-
-void GiveLinkStrengthUpgrade(GetItemID giid) {
-    if (giid == GI_BRACELET) {
-        Inventory_ChangeUpgrade(UPG_STRENGTH, 1);
-    } else if (giid == GI_GAUNTLETS_SILVER) {
-        Inventory_ChangeUpgrade(UPG_STRENGTH, 2);
-    } else if (giid == GI_GAUNTLETS_GOLD) {
-        Inventory_ChangeUpgrade(UPG_STRENGTH, 3);
-    }
-}
-
-void GiveLinkScaleUpgrade(GetItemID giid) {
-    if (giid == GI_SCALE_SILVER) {
-        Inventory_ChangeUpgrade(UPG_SCALE, 1);
-    } else if (giid == GI_SCALE_GOLD) {
-        Inventory_ChangeUpgrade(UPG_SCALE, 2);
-    }
-}
-
-void GiveLinkWalletUpgrade(GetItemID giid) {
-    if (giid == GI_WALLET_ADULT) {
-        Inventory_ChangeUpgrade(UPG_WALLET, 1);
-    } else if (giid == GI_WALLET_GIANT) {
-        Inventory_ChangeUpgrade(UPG_WALLET, 2);
-    }
-}
-
-void GiveLinkDekuStickUpgrade(GetItemID giid) {
-    if (giid == GI_STICK_UPGRADE_20) {
-        INV_CONTENT(ITEM_STICK) = ITEM_STICK;
-        Inventory_ChangeUpgrade(UPG_STICKS, 2);
-        AMMO(ITEM_STICK) = 20;
-    } else if (giid == GI_STICK_UPGRADE_30) {
-        Inventory_ChangeUpgrade(UPG_STICKS, 3);
-        AMMO(ITEM_STICK) = 30;
-    }
-}
-
-void GiveLinkDekuNutUpgrade(GetItemID giid) {
-    if (giid == GI_NUT_UPGRADE_30) {
-        INV_CONTENT(ITEM_NUT) = ITEM_NUT;
-        Inventory_ChangeUpgrade(UPG_NUTS, 2);
-        AMMO(ITEM_NUT) = 30;
-    } else if (giid == GI_NUT_UPGRADE_40) {
-        Inventory_ChangeUpgrade(UPG_NUTS, 3);
-        AMMO(ITEM_NUT) = 40;
-    }
-}
-
-void GiveLinkMagic(GetItemID giid) {
-    if (giid == RG_MAGIC_SINGLE) {
-        gSaveContext.magicLevel = 1;
-        gSaveContext.magicAcquired = true;
-        gSaveContext.doubleMagic = false;
-    } else if (giid == RG_MAGIC_DOUBLE) {
-        gSaveContext.magicLevel = 2;
-        gSaveContext.magicAcquired = true;
-        gSaveContext.doubleMagic = true;
-    }
-}
-
-void GiveLinkDoubleDefense() {
-    gSaveContext.doubleDefense = 1;
-    gSaveContext.inventory.defenseHearts = 20;
-}
-
-void GiveLinkSong(GetItemID getItemId) {
-    uint32_t bitMask;
-
-    switch (getItemId) {
-        case RG_ZELDAS_LULLABY:
-            bitMask = 1 << QUEST_SONG_LULLABY;
-            break;
-        case RG_SUNS_SONG:
-            bitMask = 1 << QUEST_SONG_SUN;
-            break;
-        case RG_EPONAS_SONG:
-            bitMask = 1 << QUEST_SONG_EPONA;
-            break;
-        case RG_SONG_OF_STORMS:
-            bitMask = 1 << QUEST_SONG_STORMS;
-            break;
-        case RG_SONG_OF_TIME:
-            bitMask = 1 << QUEST_SONG_TIME;
-            break;
-        case RG_SARIAS_SONG:
-            bitMask = 1 << QUEST_SONG_SARIA;
-            break;
-        case RG_MINUET_OF_FOREST:
-            bitMask = 1 << QUEST_SONG_MINUET;
-            break;
-        case RG_BOLERO_OF_FIRE:
-            bitMask = 1 << QUEST_SONG_BOLERO;
-            break;
-        case RG_SERENADE_OF_WATER:
-            bitMask = 1 << QUEST_SONG_SERENADE;
-            break;
-        case RG_NOCTURNE_OF_SHADOW:
-            bitMask = 1 << QUEST_SONG_NOCTURNE;
-            break;
-        case RG_REQUIEM_OF_SPIRIT:
-            bitMask = 1 << QUEST_SONG_REQUIEM;
-            break;
-        case RG_PRELUDE_OF_LIGHT:
-            bitMask = 1 << QUEST_SONG_PRELUDE;
-            break;
-    }
-
-    gSaveContext.inventory.questItems |= bitMask;
-}
-
-void GiveLinkDungeonReward(uint16_t getItemId) {
-    s16 item;
-
-    u8 medallion = 0;
-
-    switch (getItemId) {
-        case RG_FOREST_MEDALLION:
-            item = ITEM_MEDALLION_FOREST;
-            medallion = 1;
-            break;
-        case RG_FIRE_MEDALLION:
-            item = ITEM_MEDALLION_FIRE;
-            medallion = 1;
-            break;
-        case RG_WATER_MEDALLION:
-            item = ITEM_MEDALLION_WATER;
-            medallion = 1;
-            break;
-        case RG_SHADOW_MEDALLION:
-            item = ITEM_MEDALLION_SHADOW;
-            medallion = 1;
-            break;
-        case RG_SPIRIT_MEDALLION:
-            item = ITEM_MEDALLION_SPIRIT;
-            medallion = 1;
-            break;
-        case RG_LIGHT_MEDALLION:
-            item = ITEM_MEDALLION_LIGHT;
-            medallion = 1;
-            break;
-        case RG_KOKIRI_EMERALD:
-            item = ITEM_KOKIRI_EMERALD;
-            break;
-        case RG_GORON_RUBY:
-            item = ITEM_GORON_RUBY;
-            break;
-        case RG_ZORA_SAPPHIRE:
-            item = ITEM_ZORA_SAPPHIRE;
-            break;
-    }
-
-    if (medallion == 1) {
-        gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_MEDALLION_FOREST + QUEST_MEDALLION_FOREST];
-    } else {
-        gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_KOKIRI_EMERALD + QUEST_KOKIRI_EMERALD];
-    }
-}
-
-void GiveLinksPocketMedallion() {
-    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
-
-    GiveLinkDungeonReward(getItemEntry.getItemId);
 }
 
 /**
@@ -443,7 +136,7 @@ void Sram_OpenSave() {
 
     Save_LoadFile();
 
-    if (!CVar_GetS32("gRememberSaveLocation", 0) || gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE ||
+    if (!CVarGetInteger("gRememberSaveLocation", 0) || gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE ||
         gSaveContext.savedSceneNum == SCENE_KAKUSIANA) {
         switch (gSaveContext.savedSceneNum) {
             case SCENE_YDAN:
@@ -504,6 +197,12 @@ void Sram_OpenSave() {
         }
     }
 
+    // Setup the modified entrance table and entrance shuffle table for rando
+    if (gSaveContext.n64ddFlag) {
+        Entrance_Init();
+        Entrance_InitEntranceTrackingData();
+    }
+
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);
     osSyncPrintf(VT_RST);
 
@@ -513,14 +212,14 @@ void Sram_OpenSave() {
         gSaveContext.health = 0x30;
     }
 
-    if (gSaveContext.scarecrowCustomSongSet) {
+    if (gSaveContext.scarecrowLongSongSet) {
         osSyncPrintf(VT_FGCOL(BLUE));
         osSyncPrintf("\n====================================================================\n");
 
-        memcpy(gScarecrowCustomSongPtr, gSaveContext.scarecrowCustomSong, sizeof(gSaveContext.scarecrowCustomSong));
+        memcpy(gScarecrowCustomSongPtr, gSaveContext.scarecrowLongSong, sizeof(gSaveContext.scarecrowLongSong));
 
         ptr = (u8*)gScarecrowCustomSongPtr;
-        for (i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowCustomSong); i++, ptr++) {
+        for (i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowLongSong); i++, ptr++) {
             osSyncPrintf("%d, ", *ptr);
         }
 
@@ -565,13 +264,15 @@ void Sram_OpenSave() {
         gSaveContext.equips.equipment |= 2;
     }
 
-    for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
-        if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[i]) {
-            INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
+    if (!(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
+        for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
+            if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[i]) {
+                INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
 
-            for (j = 1; j < ARRAY_COUNT(gSaveContext.equips.buttonItems); j++) {
-                if (gSaveContext.equips.buttonItems[j] == gSpoilingItems[i]) {
-                    gSaveContext.equips.buttonItems[j] = gSpoilingItemReverts[i];
+                for (j = 1; j < ARRAY_COUNT(gSaveContext.equips.buttonItems); j++) {
+                    if (gSaveContext.equips.buttonItems[j] == gSpoilingItems[i]) {
+                        gSaveContext.equips.buttonItems[j] = gSpoilingItemReverts[i];
+                    }
                 }
             }
         }
@@ -586,7 +287,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
     u16* ptr;
     u16 checksum;
 
-    if (fileChooseCtx->buttonIndex != 0 || !CVar_GetS32("gDebugEnabled", 0)) {
+    if (fileChooseCtx->buttonIndex != 0 || !CVarGetInteger("gDebugEnabled", 0)) {
         Sram_InitNewSave();
     } else {
         Sram_InitDebugSave();
@@ -597,7 +298,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
     gSaveContext.dayTime = 0x6AAB;
     gSaveContext.cutsceneIndex = 0xFFF1;
 
-    if ((fileChooseCtx->buttonIndex == 0 && CVar_GetS32("gDebugEnabled", 0)) || CVar_GetS32("gNaviSkipCutscene", 0)) {
+    if ((fileChooseCtx->buttonIndex == 0 && CVarGetInteger("gDebugEnabled", 0)) || CVarGetInteger("gNaviSkipCutscene", 0)) {
         gSaveContext.cutsceneIndex = 0;
     }
 
@@ -605,21 +306,24 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.playerName[offset] = Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->playerName[offset];
     }
 
-    if (CVar_GetS32("gRandomizer", 0) != 0 &&
-        strcmp(CVar_GetString("gSpoilerLog", ""), "") != 0) {
+    if (fileChooseCtx->questType[fileChooseCtx->buttonIndex] == 2 && strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0 &&
+        !((Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->requiresMasterQuest && !ResourceMgr_GameHasMasterQuest()) ||
+          (Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->requiresMasterQuest && !ResourceMgr_GameHasOriginal()))) {
         // Set N64DD Flags for save file
         fileChooseCtx->n64ddFlags[fileChooseCtx->buttonIndex] = 1;
         fileChooseCtx->n64ddFlag = 1;
         gSaveContext.n64ddFlag = 1;
 
-        // Sets all the dungeons to incomplete when generating a rando save. Fixes https://github.com/briaguya-ai/rando-issue-tracker/issues/82
-        for (u8 i = 0; i < NUM_DUNGEONS; i++) {
-            gSaveContext.dungeonsDone[i] = 0;
+        // Sets all rando flags to false
+        for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.randomizerInf); i++) {
+            gSaveContext.randomizerInf[i] = 0;
         }
 
-        // Sets all Ganon's Trials to incomplete when generating a rando save. Fixes https://github.com/briaguya-ai/rando-issue-tracker/issues/131
-        for (u8 i = 0; i < NUM_TRIALS; i++) {
-            gSaveContext.trialsDone[i] = 0;
+        // If any trials aren't required, set them as completed
+        for (u16 i = RAND_INF_TRIALS_DONE_LIGHT_TRIAL; i <= RAND_INF_TRIALS_DONE_SHADOW_TRIAL; i++) {
+            if (!Randomizer_IsTrialRequired(i)) {
+                Flags_SetRandomizerInf(i);
+            }
         }
 
         // Set Cutscene flags to skip them
@@ -628,8 +332,9 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.eventChkInf[4] |= 0x20; // master sword pulled
         gSaveContext.eventChkInf[4] |= 0x8000; // entered master sword chamber
         gSaveContext.infTable[0] |= 1;
-        // RANDTODO: Don't skip this scene if Don't Skip Glitch Useful Cutscenes is enabled.
-        gSaveContext.infTable[17] |= 0x400; // Darunia in Fire Temple
+        if (!Randomizer_GetSettingValue(RSK_ENABLE_GLITCH_CUTSCENES)) {
+            gSaveContext.infTable[17] |= 0x400; // Darunia in Fire Temple
+        }
         gSaveContext.cutsceneIndex = 0;
         Flags_SetEventChkInf(5);
 
@@ -647,48 +352,92 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.eventChkInf[3] |= 0x800;
         gSaveContext.eventChkInf[12] |= 1;
 
+        // shuffle adult trade quest
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
+            gSaveContext.adultTradeItems = 0;
+        }
+
+        // Starts pending ice traps out at 0 before potentially incrementing them down the line.
+        gSaveContext.pendingIceTrapCount = 0;
+
         // Give Link's pocket item
-        GiveLinksPocketMedallion();
+        GiveLinksPocketItem();
 
         int openForest = Randomizer_GetSettingValue(RSK_FOREST);
         switch (openForest) {
-            case 0: // closed
+            case RO_FOREST_CLOSED:
                 break;
-            case 1: // open
+            case RO_FOREST_CLOSED_DEKU:
+                Flags_SetEventChkInf(7);
+                break;
+            case RO_FOREST_OPEN:
                 Flags_SetEventChkInf(7);
                 gSaveContext.eventChkInf[0] |= 0x10;
                 break;
-            case 2: // closed deku
-                Flags_SetEventChkInf(7);
+        }
+
+        int startingAge = Randomizer_GetSettingValue(RSK_STARTING_AGE);
+        switch (startingAge) {
+            case RO_AGE_ADULT: //Adult
+                gSaveContext.linkAge = 0;
+                gSaveContext.entranceIndex = 0x5F4;
+                gSaveContext.savedSceneNum = SCENE_SPOT20; //Set scene num manually to ToT
                 break;
+            case RO_AGE_CHILD: //Child
+                gSaveContext.linkAge = 1;
+                gSaveContext.savedSceneNum = -1;
+                break;
+            default:
+                break;
+        }
+
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS)) {
+            // Override the spawn entrance so entrance rando can take control,
+            // and to prevent remember save location from breaking inital spawn
+            gSaveContext.entranceIndex = -1;
         }
 
         int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);
         switch (doorOfTime) {
-            case 0: // open
+            case RO_DOOROFTIME_OPEN:
                 gSaveContext.eventChkInf[4] |= 0x800;
                 break;
         }
 
-        int kakGate = Randomizer_GetSettingValue(RSK_KAK_GATE);
-        switch (kakGate) {
-            case 1: // open
-                gSaveContext.infTable[7] |= 0x40;
-                break;
+        if (Randomizer_GetSettingValue(RSK_KAK_GATE) == RO_KAK_GATE_OPEN) {
+            gSaveContext.infTable[7] |= 0x40;
         }
       
-        if(Randomizer_GetSettingValue(RSK_STARTING_KOKIRI_SWORD)) GiveLinkKokiriSword();
-        if(Randomizer_GetSettingValue(RSK_STARTING_DEKU_SHIELD)) GiveLinkDekuShield();
+        if(Randomizer_GetSettingValue(RSK_STARTING_KOKIRI_SWORD)) Item_Give(NULL, ITEM_SWORD_KOKIRI);
+        if(Randomizer_GetSettingValue(RSK_STARTING_DEKU_SHIELD)) Item_Give(NULL, ITEM_SHIELD_DEKU);
+
+        if (Randomizer_GetSettingValue(RSK_STARTING_ZELDAS_LULLABY)) Item_Give(NULL, ITEM_SONG_LULLABY);
+        if (Randomizer_GetSettingValue(RSK_STARTING_EPONAS_SONG)) Item_Give(NULL, ITEM_SONG_EPONA);
+        if (Randomizer_GetSettingValue(RSK_STARTING_SARIAS_SONG)) Item_Give(NULL, ITEM_SONG_SARIA);
+        if (Randomizer_GetSettingValue(RSK_STARTING_SUNS_SONG)) Item_Give(NULL, ITEM_SONG_SUN);
+        if (Randomizer_GetSettingValue(RSK_STARTING_SONG_OF_TIME)) Item_Give(NULL, ITEM_SONG_TIME);
+        if (Randomizer_GetSettingValue(RSK_STARTING_SONG_OF_STORMS)) Item_Give(NULL, ITEM_SONG_STORMS);
+        if (Randomizer_GetSettingValue(RSK_STARTING_MINUET_OF_FOREST)) Item_Give(NULL, ITEM_SONG_MINUET);
+        if (Randomizer_GetSettingValue(RSK_STARTING_BOLERO_OF_FIRE)) Item_Give(NULL, ITEM_SONG_BOLERO);
+        if (Randomizer_GetSettingValue(RSK_STARTING_SERENADE_OF_WATER)) Item_Give(NULL, ITEM_SONG_SERENADE);
+        if (Randomizer_GetSettingValue(RSK_STARTING_REQUIEM_OF_SPIRIT)) Item_Give(NULL, ITEM_SONG_REQUIEM);
+        if (Randomizer_GetSettingValue(RSK_STARTING_NOCTURNE_OF_SHADOW)) Item_Give(NULL, ITEM_SONG_NOCTURNE);
+        if (Randomizer_GetSettingValue(RSK_STARTING_PRELUDE_OF_LIGHT)) Item_Give(NULL, ITEM_SONG_PRELUDE);
+
+        if(Randomizer_GetSettingValue(RSK_STARTING_SKULLTULA_TOKEN)) {
+            gSaveContext.inventory.questItems |= gBitFlags[QUEST_SKULL_TOKEN];
+            gSaveContext.inventory.gsTokens = Randomizer_GetSettingValue(RSK_STARTING_SKULLTULA_TOKEN);
+        }
 
         if(Randomizer_GetSettingValue(RSK_STARTING_OCARINA)) {
             INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
         }
 
-        if(Randomizer_GetSettingValue(RSK_STARTING_MAPS_COMPASSES)) {
+        if(Randomizer_GetSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
             uint32_t mapBitMask = 1 << 1;
             uint32_t compassBitMask = 1 << 2;
             uint32_t startingDungeonItemsBitMask = mapBitMask | compassBitMask;
-            for(int scene = 0; scene <= 9; scene++) {
+            for(int scene = SCENE_YDAN; scene <= SCENE_ICE_DOUKUTO; scene++) {
                 gSaveContext.inventory.dungeonItems[scene] |= startingDungeonItemsBitMask;
             }
         }
@@ -703,71 +452,16 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             s32 giid = getItem.getItemId;
 
             if (getItem.modIndex == MOD_NONE) {
-                if (getItem.itemId >= ITEM_MEDALLION_FOREST && getItem.itemId <= ITEM_ZORA_SAPPHIRE) {
-                    GiveLinkDungeonReward(getItem.getItemId);
-                } else if (getItem.itemId >= ITEM_SONG_MINUET && getItem.itemId <= ITEM_SONG_STORMS) {
-                    GiveLinkSong(getItem.getItemId);
-                } else if (giid == GI_RUPEE_GREEN || giid == GI_RUPEE_BLUE || giid == GI_RUPEE_RED ||
-                        giid == GI_RUPEE_PURPLE || giid == GI_RUPEE_GOLD) {
-                    GiveLinkRupeesByGetItemId(giid);
-                } else if (giid == GI_BOMBCHUS_10 || giid == GI_BOMBCHUS_5 || giid == GI_BOMBCHUS_20) {
-                    GiveLinkBombchus(giid);
-                } else if (giid == GI_STICKS_1 || giid == GI_STICKS_5 || giid == GI_STICKS_10) {
-                    GiveLinkDekuSticksByGetItemId(giid);
-                } else if (giid == GI_NUTS_5 || giid == GI_NUTS_10) {
-                    GiveLinkDekuNutsByGetItemId(giid);
-                } else if (giid == GI_BEAN) {
-                    GiveLinkBeans();
-                } else if (giid == GI_SWORD_KOKIRI) {
-                    GiveLinkKokiriSword();
-                } else if (giid == GI_SWORD_BGS) {
-                    GiveLinkBiggoronSword();
-                } else if (giid == GI_SWORD_KNIFE) {
-                    GiveLinkGiantsKnife();
-                } else if (giid == GI_SHIELD_DEKU) {
-                    GiveLinkDekuShield();
-                } else if (giid == GI_SHIELD_HYLIAN) {
-                    GiveLinkHylianShield();
-                } else if (giid == GI_SHIELD_MIRROR) {
-                    GiveLinkMirrorShield();
-                } else if (giid == GI_TUNIC_GORON) {
-                    GiveLinkGoronTunic();
-                } else if (giid == GI_TUNIC_ZORA) {
-                    GiveLinkZoraTunic();
-                } else if (giid == GI_BOOTS_IRON) {
-                    GiveLinkIronBoots();
-                } else if (giid == GI_BOOTS_HOVER) {
-                    GiveLinkHoverBoots();
-                } else if (giid == GI_SLINGSHOT || giid == GI_BULLET_BAG_40 || giid == GI_BULLET_BAG_50) {
-                    GiveLinkBulletBagUpgrade(giid);
-                } else if (giid == GI_BOW || giid == GI_QUIVER_40 || giid == GI_QUIVER_50) {
-                    GiveLinkQuiverUpgrade(giid);
-                } else if (giid == GI_BOMB_BAG_20 || giid == GI_BOMB_BAG_30 || giid == GI_BOMB_BAG_40) {
-                    GiveLinkBombBagUpgrade(giid);
-                } else if (giid == GI_BRACELET || giid == GI_GAUNTLETS_SILVER || giid == GI_GAUNTLETS_GOLD) {
-                    GiveLinkStrengthUpgrade(giid);
-                } else if (giid == GI_SCALE_SILVER || giid == GI_SCALE_GOLD) {
-                    GiveLinkScaleUpgrade(giid);
-                } else if (giid == GI_WALLET_ADULT || giid == GI_WALLET_GIANT) {
-                    GiveLinkWalletUpgrade(giid);
-                } else if (giid == GI_STONE_OF_AGONY) {
-                    GiveLinkStoneOfAgony();
-                } else if (giid == GI_GERUDO_CARD) {
-                    GiveLinkGerudoCard();
-                } else if (giid == GI_HEART_PIECE) {
-                    GiveLinkPieceOfHeart();
-                } else if (giid == GI_HEART_CONTAINER) {
-                    GiveLinkHeartContainer();
-                } else if (giid == GI_STICK_UPGRADE_20 || giid == GI_STICK_UPGRADE_30) {
-                    GiveLinkDekuStickUpgrade(giid);
-                } else if (giid == GI_NUT_UPGRADE_30 || giid == GI_NUT_UPGRADE_40) {
-                    GiveLinkDekuNutUpgrade(giid);
-                } else {
-                    s32 iid = getItem.itemId;
-                    if (iid != -1) INV_CONTENT(iid) = iid;
+                if (getItem.getItemId == GI_SWORD_BGS) {
+                    gSaveContext.bgsFlag = true;
                 }
+                Item_Give(NULL, getItem.itemId);
             } else if (getItem.modIndex == MOD_RANDOMIZER) {
-                Randomizer_Item_Give(NULL, getItem);
+                if (getItem.getItemId == RG_ICE_TRAP) {
+                    gSaveContext.pendingIceTrapCount++;
+                } else {
+                    Randomizer_Item_Give(NULL, getItem);
+                }
             }
 
             // malon/talon back at ranch
@@ -791,9 +485,45 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             GiveLinkRupees(9001);
         }
 
-        // For Ganon's boss key "Start With" is 0
-        if(Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY) == 0) {
-            gSaveContext.inventory.dungeonItems[10] |= 1;
+        if (Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
+            gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] = FOREST_TEMPLE_SMALL_KEY_MAX; // Forest
+            gSaveContext.sohStats.dungeonKeys[SCENE_BMORI1]     = FOREST_TEMPLE_SMALL_KEY_MAX; // Forest
+            gSaveContext.inventory.dungeonKeys[SCENE_HIDAN] = FIRE_TEMPLE_SMALL_KEY_MAX; // Fire
+            gSaveContext.sohStats.dungeonKeys[SCENE_HIDAN]     = FIRE_TEMPLE_SMALL_KEY_MAX; // Fire
+            gSaveContext.inventory.dungeonKeys[SCENE_MIZUSIN] = WATER_TEMPLE_SMALL_KEY_MAX; // Water
+            gSaveContext.sohStats.dungeonKeys[SCENE_MIZUSIN]     = WATER_TEMPLE_SMALL_KEY_MAX; // Water
+            gSaveContext.inventory.dungeonKeys[SCENE_JYASINZOU] = SPIRIT_TEMPLE_SMALL_KEY_MAX; // Spirit
+            gSaveContext.sohStats.dungeonKeys[SCENE_JYASINZOU]     = SPIRIT_TEMPLE_SMALL_KEY_MAX; // Spirit
+            gSaveContext.inventory.dungeonKeys[SCENE_HAKADAN] = SHADOW_TEMPLE_SMALL_KEY_MAX; // Shadow
+            gSaveContext.sohStats.dungeonKeys[SCENE_HAKADAN]     = SHADOW_TEMPLE_SMALL_KEY_MAX; // Shadow
+            gSaveContext.inventory.dungeonKeys[SCENE_HAKADANCH] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX; // BotW
+            gSaveContext.sohStats.dungeonKeys[SCENE_HAKADANCH]     = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX; // BotW
+            gSaveContext.inventory.dungeonKeys[SCENE_MEN] = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX; // GTG
+            gSaveContext.sohStats.dungeonKeys[SCENE_MEN]     = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX; // GTG
+            gSaveContext.inventory.dungeonKeys[SCENE_GANONTIKA] = GANONS_CASTLE_SMALL_KEY_MAX; // Ganon
+            gSaveContext.sohStats.dungeonKeys[SCENE_GANONTIKA]     = GANONS_CASTLE_SMALL_KEY_MAX; // Ganon
+        } else if (Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA) {
+            // Logic cannot handle vanilla key layout in some dungeons
+            // this is because vanilla expects the dungeon major item to be
+            // locked behind the keys, which is not always true in rando.
+            // We can resolve this by starting with some extra keys
+            if (ResourceMgr_IsSceneMasterQuest(SCENE_JYASINZOU)) {
+                // MQ Spirit needs 3 keys
+                gSaveContext.inventory.dungeonKeys[SCENE_JYASINZOU] = 3;
+                gSaveContext.sohStats.dungeonKeys[SCENE_JYASINZOU] = 3;
+            }
+        }
+
+        if(Randomizer_GetSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
+            gSaveContext.inventory.dungeonItems[SCENE_BMORI1] |= 1; // Forest
+            gSaveContext.inventory.dungeonItems[SCENE_HIDAN] |= 1; // Fire
+            gSaveContext.inventory.dungeonItems[SCENE_MIZUSIN] |= 1; // Water
+            gSaveContext.inventory.dungeonItems[SCENE_JYASINZOU] |= 1; // Spirit
+            gSaveContext.inventory.dungeonItems[SCENE_HAKADAN] |= 1; // Shadow
+        }
+
+        if(Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_STARTWITH) {
+            gSaveContext.inventory.dungeonItems[SCENE_GANON] |= 1;
         }
 
         HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * Randomizer_GetSettingValue(RSK_BIG_POE_COUNT));
@@ -810,12 +540,23 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.infTable[20] |= 4;
 
         // Go away ruto (water temple first cutscene)
-        gSaveContext.sceneFlags[05].swch |= (1 << 0x10);
+        gSaveContext.sceneFlags[SCENE_MIZUSIN].swch |= (1 << 0x10);
 
-        // Opens locked Water Temple door to prevent softlocks
+        // Open lowest Vanilla Fire Temple locked door (to prevent key logic lockouts)
+        // Not done on keysanity since this lockout is a non issue when Fire keys can be found outside the temple
+        u8 keysanity = Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
+                       Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
+                       Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON;
+        if (!ResourceMgr_IsSceneMasterQuest(SCENE_HIDAN) && !keysanity) {
+            gSaveContext.sceneFlags[SCENE_HIDAN].swch |= (1 << 0x17);
+        }
+
+        // Opens locked Water Temple door in vanilla to prevent softlocks
         // West door on the middle level that leads to the water raising thing
         // Happens in 3DS rando and N64 rando as well
-        gSaveContext.sceneFlags[05].swch |= (1 << 0x15);
+        if (!ResourceMgr_IsSceneMasterQuest(SCENE_MIZUSIN)) {
+            gSaveContext.sceneFlags[SCENE_MIZUSIN].swch |= (1 << 0x15);
+        }
 
         // Skip intro cutscene when bombing mud wall in Dodongo's cavern
         // this also makes the lower jaw render, and the eyes react to explosives
@@ -824,8 +565,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // skip verbose lake owl, skip to "i'm on my way back to the castle"
         gSaveContext.infTable[25] |= 0x20;
 
-        // fast gerudo fortress
-        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == 1 || Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == 2) {
+        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_FAST ||
+            Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_OPEN) {
             gSaveContext.eventChkInf[9] |= 2;
             gSaveContext.eventChkInf[9] |= 4;
             gSaveContext.eventChkInf[9] |= 8;
@@ -843,8 +584,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.sceneFlags[12].collect |= (1 << 0x0F);
         }
 
-        // open gerudo fortress
-        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == 2) {
+        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_OPEN) {
             gSaveContext.eventChkInf[9] |= 1;
             gSaveContext.sceneFlags[12].swch |= (1 << 0x01);
             gSaveContext.sceneFlags[12].swch |= (1 << 0x05);
@@ -852,8 +592,19 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.sceneFlags[12].collect |= (1 << 0x0C);
 
             if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
-                GiveLinkGerudoCard();
+                Item_Give(NULL, ITEM_GERUDO_CARD);
             }
+        }
+
+        // complete mask quest
+        if (Randomizer_GetSettingValue(RSK_COMPLETE_MASK_QUEST)) {
+            gSaveContext.infTable[7] |= 0x80;      // Soldier Wears Keaton Mask
+            gSaveContext.itemGetInf[3] |= 0x100;   // Sold Keaton Mask
+            gSaveContext.itemGetInf[3] |= 0x200;   // Sold Skull Mask
+            gSaveContext.itemGetInf[3] |= 0x400;   // Sold Spooky Mask
+            gSaveContext.itemGetInf[3] |= 0x800;   // bunny hood related
+            gSaveContext.itemGetInf[3] |= 0x8000;  // Obtained Mask of Truth
+            gSaveContext.eventChkInf[8] |= 0x8000; // sold all masks
         }
     }
 
@@ -864,4 +615,10 @@ void Sram_InitSram(GameState* gameState) {
     Save_Init();
 
     func_800F6700(gSaveContext.audioSetting);
+
+    // When going from a rando save to a vanilla save within the same game instance
+    // we need to reset the entrance table back to its vanilla state
+    Entrance_ResetEntranceTable();
+    // Clear out the entrance tracker
+    Entrance_ClearEntranceTrackingData();
 }

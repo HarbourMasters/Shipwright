@@ -1,12 +1,12 @@
 #ifndef Z_EN_NIW_H
 #define Z_EN_NIW_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnNiw;
 
-typedef void (*EnNiwActionFunc)(struct EnNiw*, GlobalContext*);
+typedef void (*EnNiwActionFunc)(struct EnNiw*, PlayState*);
 
 typedef struct {
     /* 0x0000 */ u8 type;
@@ -76,5 +76,18 @@ typedef struct EnNiw {
     /* 0x030C */ ColliderCylinder collider;
     /* 0x0358 */ EnNiwFeather feathers[20];
 } EnNiw; // size = 0x07B8
+
+#ifdef __cplusplus
+#define this thisx
+extern "C"
+{
+#endif
+    void func_80AB70A0(EnNiw* this, PlayState* play);
+    void func_80AB70A0_nocutscene(EnNiw* this, PlayState* play);
+#ifdef __cplusplus
+#undef this
+};
+#undef this
+#endif
 
 #endif

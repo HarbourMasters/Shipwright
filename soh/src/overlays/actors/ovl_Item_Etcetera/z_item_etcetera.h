@@ -1,12 +1,12 @@
 #ifndef Z_ITEM_ETC_H
 #define Z_ITEM_ETC_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ItemEtcetera;
 
-typedef void (*ItemEtceteraActionFunc)(struct ItemEtcetera*, GlobalContext*);
+typedef void (*ItemEtceteraActionFunc)(struct ItemEtcetera*, PlayState*);
 
 typedef struct ItemEtcetera {
     /* 0x0000 */ Actor actor;

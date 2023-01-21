@@ -9,10 +9,10 @@
 
 #define FLAGS 0
 
-void BgUmaJump_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgUmaJump_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgUmaJump_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgUmaJump_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgUmaJump_Init(Actor* thisx, PlayState* play);
+void BgUmaJump_Destroy(Actor* thisx, PlayState* play);
+void BgUmaJump_Update(Actor* thisx, PlayState* play);
+void BgUmaJump_Draw(Actor* thisx, PlayState* play);
 
 const ActorInit Bg_Umajump_InitVars = {
     ACTOR_BG_UMAJUMP,
@@ -31,7 +31,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-void BgUmaJump_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgUmaJump_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgUmaJump* this = (BgUmaJump*)thisx;
     CollisionHeader* colHeader = NULL;
@@ -39,7 +39,7 @@ void BgUmaJump_Init(Actor* thisx, GlobalContext* globalCtx) {
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&gJumpableHorseFenceCol, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 
     if (this->dyna.actor.params == 1) {
         if (!Flags_GetEventChkInf(0x18) && (DREG(1) == 0)) {
@@ -50,15 +50,15 @@ void BgUmaJump_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void BgUmaJump_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgUmaJump_Destroy(Actor* thisx, PlayState* play) {
     BgUmaJump* this = (BgUmaJump*)thisx;
 
-    DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void BgUmaJump_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgUmaJump_Update(Actor* thisx, PlayState* play) {
 }
 
-void BgUmaJump_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    Gfx_DrawDListOpa(globalCtx, gJumpableHorseFenceDL);
+void BgUmaJump_Draw(Actor* thisx, PlayState* play) {
+    Gfx_DrawDListOpa(play, gJumpableHorseFenceDL);
 }

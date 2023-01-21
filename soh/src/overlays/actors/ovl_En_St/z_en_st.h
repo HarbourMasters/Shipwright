@@ -1,12 +1,12 @@
 #ifndef Z_EN_ST_H
 #define Z_EN_ST_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnSt;
 
-typedef void (*EnStActionFunc)(struct EnSt* this, GlobalContext* globalCtx);
+typedef void (*EnStActionFunc)(struct EnSt* this, PlayState* play);
 
 typedef struct EnSt {
     /* 0x0000 */ Actor actor;

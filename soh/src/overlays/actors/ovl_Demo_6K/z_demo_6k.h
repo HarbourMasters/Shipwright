@@ -1,12 +1,12 @@
 #ifndef Z_DEMO_6K_H
 #define Z_DEMO_6K_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct Demo6K;
 
-typedef void (*Demo6KActionFunc)(struct Demo6K*, GlobalContext*);
+typedef void (*Demo6KActionFunc)(struct Demo6K*, PlayState*);
 
 typedef struct Demo6K {
     /* 0x0000 */ Actor actor;

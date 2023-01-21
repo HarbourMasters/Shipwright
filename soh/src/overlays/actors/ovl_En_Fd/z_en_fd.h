@@ -1,12 +1,12 @@
 #ifndef Z_EN_FD_H
 #define Z_EN_FD_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnFd;
 
-typedef void (*EnFdActionFunc)(struct EnFd* this, GlobalContext* globalCtx);
+typedef void (*EnFdActionFunc)(struct EnFd* this, PlayState* play);
 
 typedef enum {
     FD_EFFECT_NONE,

@@ -1,14 +1,14 @@
 #ifndef Z_EN_VIEWER_H
 #define Z_EN_VIEWER_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnViewer;
 
-typedef void (*EnViewerActionFunc)(struct EnViewer*, GlobalContext*);
-typedef void (*EnViewerDrawFunc)(struct EnViewer*, GlobalContext*);
-typedef void (*EnViewerInitAnimFunc)(struct EnViewer*, GlobalContext*, void*, AnimationHeader*);
+typedef void (*EnViewerActionFunc)(struct EnViewer*, PlayState*);
+typedef void (*EnViewerDrawFunc)(struct EnViewer*, PlayState*);
+typedef void (*EnViewerInitAnimFunc)(struct EnViewer*, PlayState*, void*, AnimationHeader*);
 
 typedef enum {
     /* 0 */ ENVIEWER_TYPE_0_HORSE_ZELDA,

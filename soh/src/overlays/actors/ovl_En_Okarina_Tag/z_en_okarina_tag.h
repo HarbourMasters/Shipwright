@@ -1,12 +1,12 @@
 #ifndef Z_EN_OKARINA_TAG_H
 #define Z_EN_OKARINA_TAG_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnOkarinaTag;
 
-typedef void (*EnOkarinaTagActionFunc)(struct EnOkarinaTag*, GlobalContext*);
+typedef void (*EnOkarinaTagActionFunc)(struct EnOkarinaTag*, PlayState*);
 
 typedef struct EnOkarinaTag {
     /* 0x0000 */ Actor actor;

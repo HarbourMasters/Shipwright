@@ -1,12 +1,12 @@
 #ifndef Z_EN_BILI_H
 #define Z_EN_BILI_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnBili;
 
-typedef void (*EnBiliActionFunc)(struct EnBili*, GlobalContext*);
+typedef void (*EnBiliActionFunc)(struct EnBili*, PlayState*);
 
 typedef enum {
     /* 0 */ EN_BILI_LIMB_NONE,

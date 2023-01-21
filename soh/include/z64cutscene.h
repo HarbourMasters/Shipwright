@@ -1,7 +1,7 @@
 #ifndef Z64CUTSCENE_H
 #define Z64CUTSCENE_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 
 typedef struct {
     /* 0x00 */ u16 entrance;       // entrance index upon which the cutscene should trigger
@@ -38,8 +38,7 @@ typedef struct {
 } CsCmdBase; // size = 0x6
 
 typedef struct {
-    /* 0x00 */ u8  unk_00;
-    /* 0x01 */ u8  setting;
+    /* 0x00 */ u16 setting;
     /* 0x02 */ u16 startFrame;
     /* 0x04 */ u16 endFrame;
 } CsCmdEnvLighting; // size = 0x6

@@ -1,16 +1,16 @@
 #ifndef Z_DEMO_GEFF_H
 #define Z_DEMO_GEFF_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 #include "../ovl_Demo_Gt/z_demo_gt.h"
 
 struct DemoGeff;
 
-typedef void (*DemoGeffInitFunc)(struct DemoGeff*, GlobalContext*);
-typedef void (*DemoGeffActionFunc)(struct DemoGeff*, GlobalContext*);
-typedef void (*DemoGeffDrawFunc)(struct DemoGeff*, GlobalContext*);
+typedef void (*DemoGeffInitFunc)(struct DemoGeff*, PlayState*);
+typedef void (*DemoGeffActionFunc)(struct DemoGeff*, PlayState*);
+typedef void (*DemoGeffDrawFunc)(struct DemoGeff*, PlayState*);
 
 typedef struct DemoGeff {
     /* 0x0000 */ Actor actor;

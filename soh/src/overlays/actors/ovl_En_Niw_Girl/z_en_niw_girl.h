@@ -1,13 +1,13 @@
 #ifndef Z_EN_NIW_GIRL_H
 #define Z_EN_NIW_GIRL_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "../ovl_En_Niw/z_en_niw.h"
 
 struct EnNiwGirl;
 
-typedef void (*EnNiwGirlActionFunc)(struct EnNiwGirl*, GlobalContext*);
+typedef void (*EnNiwGirlActionFunc)(struct EnNiwGirl*, PlayState*);
 
 typedef struct EnNiwGirl {
     /* 0x0000 */ Actor actor;
@@ -29,7 +29,7 @@ typedef struct EnNiwGirl {
     /* 0x0280 */ f32 unk_280;
     /* 0x0284 */ EnNiw* chasedEnNiw;
     /* 0x0288 */ ColliderCylinder collider;
-    /* 0x02D4 */ struct_80034A14_arg1 unk_2D4;
+    /* 0x02D4 */ NpcInteractInfo interactInfo;
 } EnNiwGirl; // size = 0x02FC
 
 #endif

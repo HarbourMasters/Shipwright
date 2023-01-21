@@ -1,12 +1,12 @@
 #ifndef Z_BG_GND_SOULMEIRO_H
 #define Z_BG_GND_SOULMEIRO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgGndSoulmeiro;
 
-typedef void (*BgGndSoulmeiroActionFunc)(struct BgGndSoulmeiro*, GlobalContext*);
+typedef void (*BgGndSoulmeiroActionFunc)(struct BgGndSoulmeiro*, PlayState*);
 
 typedef struct BgGndSoulmeiro {
     /* 0x0000 */ Actor actor;

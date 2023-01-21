@@ -1,12 +1,12 @@
 #ifndef Z_EN_KAKASI2_H
 #define Z_EN_KAKASI2_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnKakasi2;
 
-typedef void (*EnKakasi2ActionFunc)(struct EnKakasi2*, GlobalContext*);
+typedef void (*EnKakasi2ActionFunc)(struct EnKakasi2*, PlayState*);
 
 typedef struct EnKakasi2 {
     /* 0x0000 */ Actor actor;

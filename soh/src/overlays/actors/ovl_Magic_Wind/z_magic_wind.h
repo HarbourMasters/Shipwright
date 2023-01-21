@@ -1,12 +1,12 @@
 #ifndef Z_MAGIC_WIND_H
 #define Z_MAGIC_WIND_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct MagicWind;
 
-typedef void (*MagicWindFunc)(struct MagicWind* this, GlobalContext* globalCtx);
+typedef void (*MagicWindFunc)(struct MagicWind* this, PlayState* play);
 
 typedef struct MagicWind {
     /* 0x0000 */ Actor actor;

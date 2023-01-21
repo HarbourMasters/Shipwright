@@ -1,12 +1,12 @@
 #ifndef Z_BG_ICE_TURARA_H
 #define Z_BG_ICE_TURARA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgIceTurara;
 
-typedef void (*BgIceTuraraActionFunc)(struct BgIceTurara*, GlobalContext*);
+typedef void (*BgIceTuraraActionFunc)(struct BgIceTurara*, PlayState*);
 
 typedef enum {
     /* 0 */ TURARA_STALAGMITE,

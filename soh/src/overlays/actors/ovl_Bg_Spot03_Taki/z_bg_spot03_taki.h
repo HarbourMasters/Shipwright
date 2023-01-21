@@ -1,7 +1,7 @@
 #ifndef Z_BG_SPOT03_TAKI_H
 #define Z_BG_SPOT03_TAKI_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef enum {
@@ -14,7 +14,7 @@ typedef enum {
 
 struct BgSpot03Taki;
 
-typedef void (*BgSpot03TakiActionFunc)(struct BgSpot03Taki*, GlobalContext*);
+typedef void (*BgSpot03TakiActionFunc)(struct BgSpot03Taki*, PlayState*);
 
 typedef struct BgSpot03Taki {
     /* 0x0000 */ DynaPolyActor dyna;

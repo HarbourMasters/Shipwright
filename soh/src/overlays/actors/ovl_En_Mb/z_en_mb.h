@@ -1,12 +1,12 @@
 #ifndef Z_EN_MB_H
 #define Z_EN_MB_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnMb;
 
-typedef void (*EnMbActionFunc)(struct EnMb*, GlobalContext*);
+typedef void (*EnMbActionFunc)(struct EnMb*, PlayState*);
 
 typedef enum {
     /*  0 */ ENMB_STATE_SPEAR_SPEARPATH_DAMAGED,

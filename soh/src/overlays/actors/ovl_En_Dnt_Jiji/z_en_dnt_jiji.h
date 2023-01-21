@@ -1,12 +1,12 @@
 #ifndef Z_EN_DNT_JIJI_H
 #define Z_EN_DNT_JIJI_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnDntJiji;
 
-typedef void (*EnDntJijiActionFunc)(struct EnDntJiji*, GlobalContext*);
+typedef void (*EnDntJijiActionFunc)(struct EnDntJiji*, PlayState*);
 
 typedef struct EnDntJiji {
     /* 0x0000 */ Actor actor;

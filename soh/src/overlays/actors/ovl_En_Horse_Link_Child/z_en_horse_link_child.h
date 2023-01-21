@@ -1,12 +1,12 @@
 #ifndef Z_EN_HORSE_LINK_CHILD_H
 #define Z_EN_HORSE_LINK_CHILD_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnHorseLinkChild;
 
-typedef void (*EnHorseLinkChildActionFunc)(struct EnHorseLinkChild*, GlobalContext*);
+typedef void (*EnHorseLinkChildActionFunc)(struct EnHorseLinkChild*, PlayState*);
 
 typedef struct EnHorseLinkChild {
     /* 0x0000 */ Actor actor;

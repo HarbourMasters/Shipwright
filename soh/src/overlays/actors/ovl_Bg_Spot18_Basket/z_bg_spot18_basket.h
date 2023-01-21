@@ -1,12 +1,12 @@
 #ifndef Z_BG_SPOT18_BASKET_H
 #define Z_BG_SPOT18_BASKET_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgSpot18Basket;
 
-typedef void (*BgSpot18BasketActionFunc)(struct BgSpot18Basket*, GlobalContext*);
+typedef void (*BgSpot18BasketActionFunc)(struct BgSpot18Basket*, PlayState*);
 
 typedef struct BgSpot18Basket {
     /* 0x0000 */ DynaPolyActor dyna;

@@ -1,12 +1,12 @@
 #ifndef Z_BOSS_DODONGO_H
 #define Z_BOSS_DODONGO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BossDodongo;
 
-typedef void (*BossDodongoActionFunc)(struct BossDodongo*, GlobalContext*);
+typedef void (*BossDodongoActionFunc)(struct BossDodongo*, PlayState*);
 
 typedef struct {
     /* 0x00 */ Vec3f unk_00;

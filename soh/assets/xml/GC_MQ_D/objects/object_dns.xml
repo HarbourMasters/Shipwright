@@ -1,0 +1,35 @@
+<Root>
+    <File Name="object_dns" Segment="6">
+        <!-- Forest Stage leader skeleton -->
+        <Skeleton Name="gDntJijiSkel" Type="Normal" LimbType="Standard" Offset="0x33E0"/>
+
+        <!-- Forest Stage leader animations -->
+        <Animation Name="gDntJijiBurrowAnim" Offset="0x560"/>
+        <Animation Name="gDntJijiCowerAnim" Offset="0x944"/>
+        <Animation Name="gDntJijiHideAnim" Offset="0xA70"/>
+        <Animation Name="gDntJijiTalkAnim" Offset="0xBD0"/>
+        <Animation Name="gDntJijiUnburrowAnim" Offset="0xDF8"/>
+        <Animation Name="gDntJijiUpAnim" Offset="0x12B0"/>
+        <Animation Name="gDntJijiWalkAnim" Offset="0x37C0"/>
+
+        <!-- Forest Stage leader eye textures -->
+        <Texture Name="gDntJijiEyeOpenTex" Format="rgba16" Width="8" Height="8" Offset="0x30A0"/>
+        <Texture Name="gDntJijiEyeHalfTex" Format="rgba16" Width="8" Height="8" Offset="0x2EA0"/>
+        <Texture Name="gDntJijiEyeShutTex" Format="rgba16" Width="8" Height="8" Offset="0x3020"/>
+
+        <!-- Forest Stage leader flower -->
+        <DList Name="gDntJijiFlowerDL" Offset="0x2310"/>
+
+        <!-- Forest Stage leader deku nut (used by NutsBall) -->
+        <DList Name="gDntJijiNutDL" Offset="0x2410"/>
+
+        <!-- Unused Content -->
+
+        <!-- Forest Stage leader unused animations -->
+        <Animation Name="gDntJijiSpitAnim" Offset="0x400"/>
+        <Animation Name="gDntJijiDanceAnim" Offset="0x82C"/>
+        <Animation Name="gDntJijiUnkAnim" Offset="0xF98"/> <!-- This animation seems corrupted-->
+        <Animation Name="gDntJijiWaitAnim" Offset="0x364C"/>
+
+    </File>
+</Root>

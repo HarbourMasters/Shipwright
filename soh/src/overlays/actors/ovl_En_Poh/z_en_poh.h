@@ -1,12 +1,12 @@
 #ifndef Z_EN_POH_H
 #define Z_EN_POH_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnPoh;
 
-typedef void (*EnPohActionFunc)(struct EnPoh*, GlobalContext*);
+typedef void (*EnPohActionFunc)(struct EnPoh*, PlayState*);
 
 typedef enum {
     EN_POH_NORMAL,

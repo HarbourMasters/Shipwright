@@ -1,12 +1,12 @@
 #ifndef Z_BG_JYA_HAHENIRON_H
 #define Z_BG_JYA_HAHENIRON_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgJyaHaheniron;
 
-typedef void (*BgJyaHahenironActionFunc)(struct BgJyaHaheniron*, GlobalContext*);
+typedef void (*BgJyaHahenironActionFunc)(struct BgJyaHaheniron*, PlayState*);
 
 typedef struct BgJyaHaheniron {
     /* 0x0000 */ Actor actor;

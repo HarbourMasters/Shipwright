@@ -7,59 +7,10 @@
 #include <string>
 #include <list>
 
+#include "../randomizer_entrance.h"
+
 #define ENTRANCE_SHUFFLE_SUCCESS 0
 #define ENTRANCE_SHUFFLE_FAILURE 1
-
-
-typedef struct {
-    int16_t index;
-    int16_t destination;
-    int16_t blueWarp;
-    int16_t override;
-    int16_t overrideDestination;
-} EntranceOverride;
-
-typedef enum {
-    ENTRANCE_GROUP_NO_GROUP,
-    ENTRANCE_GROUP_KOKIRI_FOREST,
-    ENTRANCE_GROUP_LOST_WOODS,
-    ENTRANCE_GROUP_KAKARIKO,
-    ENTRANCE_GROUP_GRAVEYARD,
-    ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL,
-    ENTRANCE_GROUP_DEATH_MOUNTAIN_CRATER,
-    ENTRANCE_GROUP_GORON_CITY,
-    ENTRANCE_GROUP_ZORAS_DOMAIN,
-    ENTRANCE_GROUP_HYRULE_FIELD,
-    ENTRANCE_GROUP_LON_LON_RANCH,
-    ENTRANCE_GROUP_LAKE_HYLIA,
-    ENTRANCE_GROUP_GERUDO_VALLEY,
-    ENTRANCE_GROUP_HAUNTED_WASTELAND,
-    ENTRANCE_GROUP_MARKET,
-    ENTRANCE_GROUP_HYRULE_CASTLE,
-    SPOILER_ENTRANCE_GROUP_COUNT,
-} SpoilerEntranceGroup;
-
-typedef enum {
-    ENTRANCE_TYPE_OVERWORLD,
-    ENTRANCE_TYPE_INTERIOR,
-    ENTRANCE_TYPE_GROTTO,
-    ENTRANCE_TYPE_DUNGEON,
-    ENTRANCE_TYPE_COUNT,
-} TrackerEntranceType;
-
-typedef struct {
-    int16_t index;
-    char* name;
-    SpoilerEntranceGroup group;
-    TrackerEntranceType type;
-    uint8_t oneExit;
-} EntranceData;
-
-typedef struct {
-    uint8_t EntranceCount;
-    uint16_t GroupEntranceCounts[SPOILER_ENTRANCE_GROUP_COUNT];
-    uint16_t GroupOffsets[SPOILER_ENTRANCE_GROUP_COUNT];
-} EntranceTrackingData;
 
 extern std::list<EntranceOverride> entranceOverrides;
 
@@ -70,11 +21,18 @@ enum class EntranceType {
     WarpSong,
     Dungeon,
     GanonDungeon,
+    DungeonReverse,
+    Boss,
+    ChildBoss,
+    AdultBoss,
     Interior,
+    InteriorReverse,
     SpecialInterior,
     GrottoGrave,
+    GrottoGraveReverse,
     Overworld,
     Extra,
+    Mixed,
     All,
 };
 
@@ -87,6 +45,11 @@ public:
         for (size_t i = 0; i < conditions_met_.size(); i++) {
             conditions_met[i] = conditions_met_[i];
         }
+    }
+
+    // Resets the glitchless condition for the entrance
+    void SetCondition(ConditionFn newCondition) {
+        conditions_met[0] = newCondition;
     }
 
     bool GetConditionsMet() const {
@@ -220,6 +183,14 @@ public:
         return primary;
     }
 
+    bool IsDecoupled() const {
+        return decoupled;
+    }
+
+    void SetDecoupled() {
+        decoupled = true;
+    }
+
     int16_t GetIndex() const {
         return index;
     }
@@ -309,12 +280,12 @@ private:
     bool shuffled = false;
     bool primary = false;
     bool addedToPool = false;
+    bool decoupled = false;
     std::string name = "";
 };
 
 int  ShuffleAllEntrances();
 void CreateEntranceOverrides();
-EntranceTrackingData* GetEntranceTrackingData();
 
 extern std::vector<std::list<Entrance*>> playthroughEntrances;
 extern bool noRandomEntrances;

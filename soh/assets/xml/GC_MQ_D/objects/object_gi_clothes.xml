@@ -1,0 +1,10 @@
+<Root>
+    <File Name="object_gi_clothes" Segment="6">
+        <DList Name="gGiGoronCollarColorDL" Offset="0x14E0"/>
+        <DList Name="gGiZoraCollarColorDL" Offset="0x1500"/>
+        <DList Name="gGiGoronTunicColorDL" Offset="0x1520"/>
+        <DList Name="gGiZoraTunicColorDL" Offset="0x1540"/>
+        <DList Name="gGiTunicCollarDL" Offset="0x1560"/>
+        <DList Name="gGiTunicDL" Offset="0x1608"/>
+    </File>
+</Root>

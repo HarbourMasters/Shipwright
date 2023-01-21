@@ -1,12 +1,12 @@
 #ifndef Z_BG_HIDAN_CURTAIN_H
 #define Z_BG_HIDAN_CURTAIN_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgHidanCurtain;
 
-typedef void (*BgHidanCurtainActionFunc)(struct BgHidanCurtain*, GlobalContext*);
+typedef void (*BgHidanCurtainActionFunc)(struct BgHidanCurtain*, PlayState*);
 
 typedef struct BgHidanCurtain {
     /* 0x0000 */ Actor actor;

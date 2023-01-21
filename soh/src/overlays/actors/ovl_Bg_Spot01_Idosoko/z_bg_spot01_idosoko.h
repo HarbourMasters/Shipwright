@@ -1,12 +1,12 @@
 #ifndef Z_BG_SPOT01_IDOSOKO_H
 #define Z_BG_SPOT01_IDOSOKO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgSpot01Idosoko;
 
-typedef void (*BgSpot01IdosokoActionFunc)(struct BgSpot01Idosoko*, GlobalContext*);
+typedef void (*BgSpot01IdosokoActionFunc)(struct BgSpot01Idosoko*, PlayState*);
 
 typedef struct BgSpot01Idosoko {
     /* 0x0000 */ DynaPolyActor dyna;

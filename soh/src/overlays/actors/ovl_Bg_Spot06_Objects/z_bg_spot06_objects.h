@@ -1,12 +1,12 @@
 #ifndef Z_BG_SPOT06_OBJECTS_H
 #define Z_BG_SPOT06_OBJECTS_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgSpot06Objects;
 
-typedef void (*BgSpot06ObjectsActionFunc)(struct BgSpot06Objects*, GlobalContext*);
+typedef void (*BgSpot06ObjectsActionFunc)(struct BgSpot06Objects*, PlayState*);
 
 typedef struct BgSpot06Objects {
     /* 0x0000 */ DynaPolyActor dyna;

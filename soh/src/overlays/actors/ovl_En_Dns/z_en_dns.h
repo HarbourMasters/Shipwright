@@ -1,12 +1,12 @@
 #ifndef Z_EN_DNS_H
 #define Z_EN_DNS_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnDns;
 
-typedef void (*EnDnsActionFunc)(struct EnDns*, GlobalContext*);
+typedef void (*EnDnsActionFunc)(struct EnDns*, PlayState*);
 typedef u32 (*EnDnsPurchaseableCheck)(struct EnDns*);
 typedef void (*EnDnsSetRupeesAndFlags)(struct EnDns*);
 
@@ -32,6 +32,7 @@ typedef struct EnDns {
     /* 0x02BD */ u8 dropCollectible;
     /* 0x02C0 */ DnsItemEntry* dnsItemEntry;
     /* 0x02C4 */ f32 yInitPos;
+    /*        */ ScrubIdentity scrubIdentity;
 } EnDns; // size = 0x02C8
 
 #endif

@@ -1,7 +1,7 @@
 #ifndef Z_EN_ZO_H
 #define Z_EN_ZO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnZo;
@@ -18,13 +18,13 @@ typedef struct {
     u32 epoch;
 } EnZoEffect; // size = 0x38
 
-typedef void (*EnZoActionFunc)(struct EnZo*, GlobalContext*);
+typedef void (*EnZoActionFunc)(struct EnZo*, PlayState*);
 
 typedef struct EnZo {
     /* 0x0000 */ Actor actor;
     /* 0x014C */ SkelAnime skelAnime;
     /* 0x0190 */ EnZoActionFunc actionFunc;
-    /* 0x0194 */ struct_80034A14_arg1 unk_194;
+    /* 0x0194 */ NpcInteractInfo interactInfo;
     /* 0x01BC */ ColliderCylinder collider;
     /* 0x0208 */ u8 canSpeak;
     /* 0x020A */ Vec3s jointTable[20];
@@ -32,7 +32,7 @@ typedef struct EnZo {
     /* 0x02FC */ EnZoEffect effects[15];
     /* 0x0644 */ f32 dialogRadius;
     /* 0x0648 */ f32 alpha;
-    /* 0x064C */ s16 unk_64C;
+    /* 0x064C */ s16 trackingMode;
     /* 0x064E */ s16 rippleTimer;
     /* 0x0650 */ s16 timeToDive;
     /* 0x0652 */ s16 blinkTimer;

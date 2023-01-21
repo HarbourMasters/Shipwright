@@ -1,12 +1,12 @@
 #ifndef Z_EN_FR_H
 #define Z_EN_FR_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnFr;
 
-typedef void (*EnFrActionFunc)(struct EnFr*, GlobalContext*);
+typedef void (*EnFrActionFunc)(struct EnFr*, PlayState*);
 typedef void (*EnFrBlinkFunc)(struct EnFr*);
 
 typedef enum {

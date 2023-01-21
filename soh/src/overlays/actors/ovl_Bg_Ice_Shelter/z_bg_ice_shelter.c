@@ -3,16 +3,19 @@
 
 #define FLAGS 0
 
-void BgIceShelter_Init(Actor* thisx, GlobalContext* globalCtx);
-void BgIceShelter_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void BgIceShelter_Update(Actor* thisx, GlobalContext* globalCtx);
-void BgIceShelter_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BgIceShelter_Init(Actor* thisx, PlayState* play);
+void BgIceShelter_Destroy(Actor* thisx, PlayState* play);
+void BgIceShelter_Update(Actor* thisx, PlayState* play);
+void BgIceShelter_Draw(Actor* thisx, PlayState* play);
 
 void func_80891064(BgIceShelter* this);
 void func_808911BC(BgIceShelter* this);
 
-void func_8089107C(BgIceShelter* this, GlobalContext* globalCtx);
-void func_808911D4(BgIceShelter* this, GlobalContext* globalCtx);
+void func_8089107C(BgIceShelter* this, PlayState* play);
+void func_808911D4(BgIceShelter* this, PlayState* play);
+
+// For "Blue Fire Arrows" enhancement
+void MeltOnIceArrowHit(BgIceShelter* this, ColliderCylinder cylinder, s16 type, PlayState* play);
 
 const ActorInit Bg_Ice_Shelter_InitVars = {
     ACTOR_BG_ICE_SHELTER,
@@ -32,7 +35,7 @@ static f32 sScales[] = { 0.1f, 0.06f, 0.1f, 0.1f, 0.25f };
 static Color_RGBA8 sDustPrimColor = { 250, 250, 250, 255 };
 static Color_RGBA8 sDustEnvColor = { 180, 180, 180, 255 };
 
-static ColliderCylinderInit D_8089170C = {
+static ColliderCylinderInit sCylinder1Init = {
     {
         COLTYPE_NONE,
         AT_NONE,
@@ -52,7 +55,7 @@ static ColliderCylinderInit D_8089170C = {
     { 0, 0, 0, { 0, 0, 0 } },
 };
 
-static ColliderCylinderInit D_80891738 = {
+static ColliderCylinderInit sCylinder2Init = {
     {
         COLTYPE_HARD,
         AT_NONE,
@@ -72,22 +75,53 @@ static ColliderCylinderInit D_80891738 = {
     { 0, 0, 0, { 0, 0, 0 } },
 };
 
-void func_80890740(BgIceShelter* this, GlobalContext* globalCtx) {
+// This cylinder only used for "Blue Fire Arrows" enhancement
+static ColliderCylinderInit sIceArrowCylinderInit = {
+    {
+        COLTYPE_NONE,
+        AT_NONE,
+        AC_ON | AC_TYPE_OTHER | AC_TYPE_PLAYER,
+        OC1_ON | OC1_TYPE_ALL,
+        OC2_TYPE_2,
+        COLSHAPE_CYLINDER,
+    },
+    {
+        ELEMTYPE_UNK0,
+        { 0x00000000, 0x00, 0x00 },
+        { 0xFFCFFFFF, 0x00, 0x00 },
+        TOUCH_NONE,
+        BUMP_ON,
+        OCELEM_ON,
+    },
+    { 0, 0, 0, { 0, 0, 0 } },
+};
+
+bool blueFireArrowsEnabledOnRedIceLoad = false;
+
+void func_80890740(BgIceShelter* this, PlayState* play) {
     static s16 cylinderRadii[] = { 47, 33, 44, 41, 100 };
     static s16 cylinderHeights[] = { 80, 54, 90, 60, 200 };
     s32 pad;
     s32 type = (this->dyna.actor.params >> 8) & 7;
 
-    Collider_InitCylinder(globalCtx, &this->cylinder1);
-    Collider_SetCylinder(globalCtx, &this->cylinder1, &this->dyna.actor, &D_8089170C);
+    // Initialize this with the red ice, so it can't be affected by toggling while the actor is loaded
+    blueFireArrowsEnabledOnRedIceLoad = CVarGetInteger("gBlueFireArrows", 0) || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
+
+    Collider_InitCylinder(play, &this->cylinder1);
+    // If "Blue Fire Arrows" is enabled, set up a collider on the red ice that responds to them
+    if (blueFireArrowsEnabledOnRedIceLoad) {
+        Collider_SetCylinder(play, &this->cylinder1, &this->dyna.actor, &sIceArrowCylinderInit);
+    } else {
+        Collider_SetCylinder(play, &this->cylinder1, &this->dyna.actor, &sCylinder1Init);
+    }
     Collider_UpdateCylinder(&this->dyna.actor, &this->cylinder1);
 
     this->cylinder1.dim.radius = cylinderRadii[type];
     this->cylinder1.dim.height = cylinderHeights[type];
 
     if (type == 0 || type == 1 || type == 4) {
-        Collider_InitCylinder(globalCtx, &this->cylinder2);
-        Collider_SetCylinder(globalCtx, &this->cylinder2, &this->dyna.actor, &D_80891738);
+        Collider_InitCylinder(play, &this->cylinder2);
+        Collider_SetCylinder(play, &this->cylinder2, &this->dyna.actor, &sCylinder2Init);
         Collider_UpdateCylinder(&this->dyna.actor, &this->cylinder2);
         this->cylinder2.dim.radius = cylinderRadii[type];
         this->cylinder2.dim.height = cylinderHeights[type];
@@ -99,14 +133,14 @@ void func_80890740(BgIceShelter* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80890874(BgIceShelter* this, GlobalContext* globalCtx, CollisionHeader* collision, s32 moveFlag) {
+void func_80890874(BgIceShelter* this, PlayState* play, CollisionHeader* collision, s32 moveFlag) {
     s32 pad;
     CollisionHeader* colHeader = NULL;
     s32 pad2;
 
     DynaPolyActor_Init(&this->dyna, moveFlag);
     CollisionHeader_GetVirtual(collision, &colHeader);
-    this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
+    this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 
     if (this->dyna.bgId == BG_ACTOR_MAX) {
         // "Warning : move BG registration failed"
@@ -130,7 +164,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneDownward, 1000, ICHAIN_STOP),
 };
 
-void BgIceShelter_Init(Actor* thisx, GlobalContext* globalCtx) {
+void BgIceShelter_Init(Actor* thisx, PlayState* play) {
     static Vec3f kzIceScale = { 0.18f, 0.27f, 0.24f };
     BgIceShelter* this = (BgIceShelter*)thisx;
     s16 type = (this->dyna.actor.params >> 8) & 7;
@@ -152,18 +186,18 @@ void BgIceShelter_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     switch (type) {
         case 2:
-            func_80890874(this, globalCtx, &object_ice_objects_Col_001C1C, 0);
+            func_80890874(this, play, &object_ice_objects_Col_001C1C, 0);
             break;
         case 3:
-            func_80890874(this, globalCtx, &object_ice_objects_Col_002920, 0);
+            func_80890874(this, play, &object_ice_objects_Col_002920, 0);
             break;
     }
 
-    func_80890740(this, globalCtx);
+    func_80890740(this, play);
 
     this->dyna.actor.colChkInfo.mass = MASS_IMMOVABLE;
 
-    if (!((this->dyna.actor.params >> 6) & 1) && (Flags_GetSwitch(globalCtx, this->dyna.actor.params & 0x3F))) {
+    if (!((this->dyna.actor.params >> 6) & 1) && (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F))) {
         Actor_Kill(&this->dyna.actor);
         return;
     }
@@ -173,29 +207,29 @@ void BgIceShelter_Init(Actor* thisx, GlobalContext* globalCtx) {
     osSyncPrintf("(ice shelter)(arg_data 0x%04x)\n", this->dyna.actor.params);
 }
 
-void BgIceShelter_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void BgIceShelter_Destroy(Actor* thisx, PlayState* play) {
     BgIceShelter* this = (BgIceShelter*)thisx;
 
     switch ((this->dyna.actor.params >> 8) & 7) {
         case 2:
         case 3:
-            DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+            DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
             break;
 
         case 0:
         case 1:
         case 4:
-            Collider_DestroyCylinder(globalCtx, &this->cylinder2);
+            Collider_DestroyCylinder(play, &this->cylinder2);
             break;
     }
 
-    Collider_DestroyCylinder(globalCtx, &this->cylinder1);
+    Collider_DestroyCylinder(play, &this->cylinder1);
 }
 
 static s16 D_80891794[] = { 0x0000, 0x4000, 0x2000, 0x6000, 0x1000, 0x5000, 0x3000, 0x7000 };
 static s16 D_808917A4[] = { 0x0000, 0x003C, 0x0018, 0x0054, 0x0030, 0x000C, 0x0048, 0x0024 };
 
-void func_80890B8C(BgIceShelter* this, GlobalContext* globalCtx, f32 chance, f32 scale) {
+void func_80890B8C(BgIceShelter* this, PlayState* play, f32 chance, f32 scale) {
     f32 cos;
     f32 sin;
     f32 xzOffset;
@@ -208,7 +242,7 @@ void func_80890B8C(BgIceShelter* this, GlobalContext* globalCtx, f32 chance, f32
     Vec3f dustVel;
     Vec3f dustAccel;
 
-    frames = (s16)globalCtx->state.frames & 7;
+    frames = (s16)play->state.frames & 7;
 
     for (i = 0; i < 2; i++) {
         if (chance < Rand_ZeroOne()) {
@@ -233,12 +267,12 @@ void func_80890B8C(BgIceShelter* this, GlobalContext* globalCtx, f32 chance, f32
         dustAccel.y = 0.8f;
         dustAccel.z = 0.07f * cos;
 
-        func_8002829C(globalCtx, &dustPos, &dustVel, &dustAccel, &sDustPrimColor, &sDustEnvColor, 450.0f * scale,
+        func_8002829C(play, &dustPos, &dustVel, &dustAccel, &sDustPrimColor, &sDustEnvColor, 450.0f * scale,
                       (s16)((Rand_ZeroOne() * 40.0f) + 40.0f) * scale);
     }
 }
 
-void func_80890E00(BgIceShelter* this, GlobalContext* globalCtx, f32 chance, f32 arg3) {
+void func_80890E00(BgIceShelter* this, PlayState* play, f32 chance, f32 arg3) {
     static f32 D_808917B4[] = { -1.0f, 1.0f };
     Vec3f* icePos;
     s16 frames;
@@ -249,7 +283,7 @@ void func_80890E00(BgIceShelter* this, GlobalContext* globalCtx, f32 chance, f32
     Vec3f posOffset;
     s32 i;
 
-    frames = (s16)globalCtx->state.frames & 7;
+    frames = (s16)play->state.frames & 7;
 
     for (i = 0; i < 2; i++) {
         icePos = &this->dyna.actor.world.pos;
@@ -273,7 +307,7 @@ void func_80890E00(BgIceShelter* this, GlobalContext* globalCtx, f32 chance, f32
         dustAccel.y = 0.8f;
         dustAccel.z = (Rand_ZeroOne() * 0.14f) - 0.07f;
 
-        func_8002829C(globalCtx, &dustPos, &dustVel, &dustAccel, &sDustPrimColor, &sDustEnvColor, 450,
+        func_8002829C(play, &dustPos, &dustVel, &dustAccel, &sDustPrimColor, &sDustEnvColor, 450,
                       (Rand_ZeroOne() * 40.0f) + 40.0f);
     }
 }
@@ -283,7 +317,7 @@ void func_80891064(BgIceShelter* this) {
     this->alpha = 255;
 }
 
-void func_8089107C(BgIceShelter* this, GlobalContext* globalCtx) {
+void func_8089107C(BgIceShelter* this, PlayState* play) {
     s32 pad;
     s16 type = (this->dyna.actor.params >> 8) & 7;
 
@@ -292,7 +326,12 @@ void func_8089107C(BgIceShelter* this, GlobalContext* globalCtx) {
             this->dyna.actor.parent->freezeTimer = 10000;
         }
     }
-
+    // If we have "Blue Fire Arrows" enabled, check both cylinders for a hit
+    if (blueFireArrowsEnabledOnRedIceLoad) {
+        MeltOnIceArrowHit(this, this->cylinder1, type, play);
+        MeltOnIceArrowHit(this, this->cylinder2, type, play);
+    }
+    // Default blue fire check
     if (this->cylinder1.base.acFlags & AC_HIT) {
         this->cylinder1.base.acFlags &= ~AC_HIT;
 
@@ -312,12 +351,30 @@ void func_8089107C(BgIceShelter* this, GlobalContext* globalCtx) {
         case 0:
         case 1:
         case 4:
-            CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->cylinder1.base);
-            CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->cylinder2.base);
+            CollisionCheck_SetOC(play, &play->colChkCtx, &this->cylinder1.base);
+            CollisionCheck_SetAC(play, &play->colChkCtx, &this->cylinder2.base);
             break;
     }
 
-    CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->cylinder1.base);
+    CollisionCheck_SetAC(play, &play->colChkCtx, &this->cylinder1.base);
+}
+
+// For "Blue Fire Arrows" enhancement: If hit by an Ice Arrow, melt the red ice (copied from the default blue fire function above).
+void MeltOnIceArrowHit(BgIceShelter* this, ColliderCylinder cylinder, s16 type, PlayState* play) {
+    if (cylinder.base.acFlags & AC_HIT) {
+        cylinder.base.acFlags &= ~AC_HIT;
+        if ((cylinder.base.ac != NULL) && (cylinder.base.ac->id == ACTOR_EN_ARROW)) {
+            if (cylinder.base.ac->child != NULL && cylinder.base.ac->child->id == ACTOR_ARROW_ICE) {
+                if (type == 4) {
+                    if (this->dyna.actor.parent != NULL) {
+                        this->dyna.actor.parent->freezeTimer = 50;
+                    }
+                }
+                func_808911BC(this);
+                Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_ICE_MELT);
+            }
+        }
+    }
 }
 
 void func_808911BC(BgIceShelter* this) {
@@ -328,11 +385,11 @@ void func_808911BC(BgIceShelter* this) {
 static f32 D_808917BC[] = { -0.0015f, -0.0009f, -0.0016f, -0.0016f, -0.00375f };
 static f32 D_808917D0[] = { 1.0f, 0.6f, 1.2f, 1.0f, 1.8f };
 
-static void (*sEffSpawnFuncs[])(BgIceShelter* this, GlobalContext* globalCtx, f32 chance, f32 scale) = {
+static void (*sEffSpawnFuncs[])(BgIceShelter* this, PlayState* play, f32 chance, f32 scale) = {
     func_80890B8C, func_80890B8C, func_80890B8C, func_80890E00, func_80890B8C,
 };
 
-void func_808911D4(BgIceShelter* this, GlobalContext* globalCtx) {
+void func_808911D4(BgIceShelter* this, PlayState* play) {
 
     s32 pad;
     s32 type = (this->dyna.actor.params >> 8) & 7;
@@ -349,8 +406,8 @@ void func_808911D4(BgIceShelter* this, GlobalContext* globalCtx) {
             case 0:
             case 1:
             case 4:
-                CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->cylinder1.base);
-                CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->cylinder2.base);
+                CollisionCheck_SetOC(play, &play->colChkCtx, &this->cylinder1.base);
+                CollisionCheck_SetAC(play, &play->colChkCtx, &this->cylinder2.base);
                 break;
         }
     }
@@ -363,11 +420,11 @@ void func_808911D4(BgIceShelter* this, GlobalContext* globalCtx) {
         phi_f0 = 0.0f;
     }
 
-    sEffSpawnFuncs[type](this, globalCtx, phi_f0, D_808917D0[type]);
+    sEffSpawnFuncs[type](this, play, phi_f0, D_808917D0[type]);
 
     if (this->alpha <= 0) {
         if (!((this->dyna.actor.params >> 6) & 1)) {
-            Flags_SetSwitch(globalCtx, this->dyna.actor.params & 0x3F);
+            Flags_SetSwitch(play, this->dyna.actor.params & 0x3F);
         }
 
         if (type == 4) {
@@ -378,21 +435,21 @@ void func_808911D4(BgIceShelter* this, GlobalContext* globalCtx) {
     }
 }
 
-void BgIceShelter_Update(Actor* thisx, GlobalContext* globalCtx) {
+void BgIceShelter_Update(Actor* thisx, PlayState* play) {
     BgIceShelter* this = (BgIceShelter*)thisx;
 
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
 }
 
-void BgIceShelter_Draw(Actor* thisx, GlobalContext* globalCtx2) {
-    GlobalContext* globalCtx = globalCtx2;
+void BgIceShelter_Draw(Actor* thisx, PlayState* play2) {
+    PlayState* play = play2;
     BgIceShelter* this = (BgIceShelter*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(globalCtx->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     switch ((this->dyna.actor.params >> 8) & 7) {
@@ -400,32 +457,37 @@ void BgIceShelter_Draw(Actor* thisx, GlobalContext* globalCtx2) {
         case 1:
         case 2:
         case 4:
-            func_8002ED80(&this->dyna.actor, globalCtx, 0);
+            func_8002ED80(&this->dyna.actor, play, 0);
             break;
     }
 
-    gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, this->alpha);
+    if (CVarGetInteger("gCosmetics.World_RedIce.Changed", 0)) {
+        Color_RGB8 color = CVarGetColor24("gCosmetics.World_RedIce.Value", (Color_RGB8){ 255, 0, 0});
+        gDPSetEnvColor(POLY_XLU_DISP++, color.r, color.g, color.b, this->alpha);
+    } else {
+        gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, this->alpha);
+    }
 
     switch ((this->dyna.actor.params >> 8) & 7) {
         case 0:
         case 1:
         case 4:
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, -globalCtx->gameplayFrames & 0x7F,
-                                        -globalCtx->gameplayFrames & 0x7F, 0x20, 0x20, 1,
-                                        -globalCtx->gameplayFrames & 0x7F, globalCtx->gameplayFrames & 0x7F, 0x20,
+                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, -play->gameplayFrames & 0x7F,
+                                        -play->gameplayFrames & 0x7F, 0x20, 0x20, 1,
+                                        -play->gameplayFrames & 0x7F, play->gameplayFrames & 0x7F, 0x20,
                                         0x20));
             gSPDisplayList(POLY_XLU_DISP++, object_ice_objects_DL_0006F0);
             break;
 
         case 2:
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, globalCtx->gameplayFrames & 0xFF, 0x40, 0x40, 1,
-                                        0, -globalCtx->gameplayFrames & 0xFF, 0x40, 0x40));
+                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, play->gameplayFrames & 0xFF, 0x40, 0x40, 1,
+                                        0, -play->gameplayFrames & 0xFF, 0x40, 0x40));
             gSPSegment(POLY_XLU_DISP++, 0x09,
-                       Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, -globalCtx->gameplayFrames & 0xFF,
-                                        globalCtx->gameplayFrames & 0xFF, 0x40, 0x40, 1,
-                                        globalCtx->gameplayFrames & 0xFF, globalCtx->gameplayFrames & 0xFF, 0x40,
+                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, -play->gameplayFrames & 0xFF,
+                                        play->gameplayFrames & 0xFF, 0x40, 0x40, 1,
+                                        play->gameplayFrames & 0xFF, play->gameplayFrames & 0xFF, 0x40,
                                         0x40));
             gSPDisplayList(POLY_XLU_DISP++, object_ice_objects_DL_0012A0);
             break;
@@ -435,5 +497,5 @@ void BgIceShelter_Draw(Actor* thisx, GlobalContext* globalCtx2) {
             break;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

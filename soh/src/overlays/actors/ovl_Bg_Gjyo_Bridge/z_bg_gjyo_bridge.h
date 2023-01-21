@@ -1,12 +1,12 @@
 #ifndef Z_BG_GJYO_BRIDGE_H
 #define Z_BG_GJYO_BRIDGE_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgGjyoBridge;
 
-typedef void (*BgGjyoBridgeActionFunc)(struct BgGjyoBridge*, GlobalContext*);
+typedef void (*BgGjyoBridgeActionFunc)(struct BgGjyoBridge*, PlayState*);
 
 typedef struct BgGjyoBridge {
     /* 0x0000 */ DynaPolyActor dyna;

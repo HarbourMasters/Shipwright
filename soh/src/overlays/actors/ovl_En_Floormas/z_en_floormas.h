@@ -1,12 +1,12 @@
 #ifndef Z_EN_FLOORMAS_H
 #define Z_EN_FLOORMAS_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef struct EnFloormas EnFloormas;
 
-typedef void (*EnFloormasActionFunc)(EnFloormas* this, GlobalContext* globalCtx);
+typedef void (*EnFloormasActionFunc)(EnFloormas* this, PlayState* play);
 
 struct EnFloormas{
     /* 0x0000 */ Actor actor;

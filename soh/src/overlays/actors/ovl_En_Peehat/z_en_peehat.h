@@ -1,7 +1,7 @@
 #ifndef Z_EN_PEEHAT_H
 #define Z_EN_PEEHAT_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef enum {
@@ -12,7 +12,7 @@ typedef enum {
 
 struct EnPeehat;
 
-typedef void (*EnPeehatActionFunc)(struct EnPeehat*, GlobalContext*);
+typedef void (*EnPeehatActionFunc)(struct EnPeehat*, PlayState*);
 
 typedef struct EnPeehat {
     /* 0x0000 */ Actor actor;

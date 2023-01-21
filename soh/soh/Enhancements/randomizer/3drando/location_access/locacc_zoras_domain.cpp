@@ -31,6 +31,21 @@ void AreaTable_Init_ZorasDomain() {
                   LocationAccess(ZR_FROGS_IN_THE_RAIN,                 {[]{return IsChild && CanPlay(SongOfStorms);},
                                                             /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) ||
                                                                                   ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsChild && SongOfStorms;}}),
+                  LocationAccess(ZR_FROGS_ZELDAS_LULLABY,              {[]{return IsChild && CanPlay(ZeldasLullaby);},
+                                                            /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) ||
+                                                                                  ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsChild && ZeldasLullaby;}}),
+                  LocationAccess(ZR_FROGS_EPONAS_SONG,                 {[]{return IsChild && CanPlay(EponasSong);},
+                                                            /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) ||
+                                                                                  ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsChild && EponasSong;}}),
+                  LocationAccess(ZR_FROGS_SARIAS_SONG,                 {[]{return IsChild && CanPlay(SariasSong);},
+                                                            /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) ||
+                                                                                  ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsChild && SariasSong;}}),
+                  LocationAccess(ZR_FROGS_SUNS_SONG,                   {[]{return IsChild && CanPlay(SunsSong);},
+                                                            /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) ||
+                                                                                  ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsChild && SunsSong;}}),
+                  LocationAccess(ZR_FROGS_SONG_OF_TIME,                {[]{return IsChild && CanPlay(SongOfTime);},
+                                                            /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) ||
+                                                                                  ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsChild && SongOfTime;}}),
                   LocationAccess(ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH, {[]{return IsChild || CanUse(HOVER_BOOTS) || (IsAdult && LogicZoraRiverLower);}}),
                   LocationAccess(ZR_NEAR_DOMAIN_FREESTANDING_POH,      {[]{return IsChild || CanUse(HOVER_BOOTS) || (IsAdult && LogicZoraRiverUpper);}}),
                   LocationAccess(ZR_GS_LADDER,                         {[]{return IsChild && AtNight && CanChildAttack && CanGetNightTimeGS;}}),
@@ -61,7 +76,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(ZORAS_DOMAIN, {[]{return true;}}),
   });
 
-  areaTable[ZR_OPEN_GROTTO] = Area("ZR Open Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
+  areaTable[ZR_OPEN_GROTTO] = Area("ZR Open Grotto", "ZR Open Grotto", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(ZR_OPEN_GROTTO_CHEST,        {[]{return true;}}),
                   LocationAccess(ZR_OPEN_GROTTO_GOSSIP_STONE, {[]{return true;}}),
@@ -70,7 +85,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(ZORAS_RIVER, {[]{return true;}}),
   });
 
-  areaTable[ZR_FAIRY_GROTTO] = Area("ZR Fairy Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, {
+  areaTable[ZR_FAIRY_GROTTO] = Area("ZR Fairy Grotto", "ZR Fairy Grotto", NONE, NO_DAY_NIGHT_CYCLE, {
                   //Event
                   EventAccess(&FreeFairies, {[]{return true;}}),
                 }, {}, {
@@ -78,7 +93,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(ZORAS_RIVER, {[]{return true;}}),
   });
 
-  areaTable[ZR_STORMS_GROTTO] = Area("ZR Storms Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[ZR_STORMS_GROTTO] = Area("ZR Storms Grotto", "ZR Storms Grotto", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(ZR_DEKU_SCRUB_GROTTO_REAR,  {[]{return CanStunDeku;}}),
                   LocationAccess(ZR_DEKU_SCRUB_GROTTO_FRONT, {[]{return CanStunDeku;}}),
@@ -127,7 +142,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(ZORAS_FOUNTAIN, {[]{return true;}}),
   });
 
-  areaTable[ZD_SHOP] = Area("ZD Shop", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[ZD_SHOP] = Area("ZD Shop", "ZD Shop", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(ZD_SHOP_ITEM_1, {[]{return true;}}),
                   LocationAccess(ZD_SHOP_ITEM_2, {[]{return true;}}),
@@ -142,7 +157,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(ZORAS_DOMAIN, {[]{return true;}}),
   });
 
-  areaTable[ZD_STORMS_GROTTO] = Area("ZD Storms Grotto", "", NONE, NO_DAY_NIGHT_CYCLE, {
+  areaTable[ZD_STORMS_GROTTO] = Area("ZD Storms Grotto", "ZD Storms Grotto", NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&FreeFairies, {[]{return true;}}),
                 }, {}, {
@@ -176,7 +191,7 @@ void AreaTable_Init_ZorasDomain() {
                                            /*Glitched*/[]{return IsChild && (KokiriSword || Sticks) && CanShield && (CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::ADVANCED) || (CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE) && CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::INTERMEDIATE)));}}),
   });
 
-  areaTable[ZF_GREAT_FAIRY_FOUNTAIN] = Area("ZF Great Fairy Fountain", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+  areaTable[ZF_GREAT_FAIRY_FOUNTAIN] = Area("ZF Great Fairy Fountain", "ZF Great Fairy Fountain", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(ZF_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby);},
                                              /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) ||

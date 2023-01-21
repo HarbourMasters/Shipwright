@@ -1,12 +1,12 @@
 #ifndef Z_EN_YUKABYUN_H
 #define Z_EN_YUKABYUN_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnYukabyun;
 
-typedef void (*EnYukabyunActionFunc)(struct EnYukabyun*, GlobalContext*);
+typedef void (*EnYukabyunActionFunc)(struct EnYukabyun*, PlayState*);
 
 typedef struct EnYukabyun {
     /* 0x0000 */ Actor actor;

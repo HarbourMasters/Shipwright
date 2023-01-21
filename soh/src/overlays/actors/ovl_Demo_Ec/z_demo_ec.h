@@ -1,14 +1,14 @@
 #ifndef Z_DEMO_EC_H
 #define Z_DEMO_EC_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct DemoEc;
 
-typedef void (*DemoEcInitFunc)(struct DemoEc*, GlobalContext*);
-typedef void (*DemoEcUpdateFunc)(struct DemoEc*, GlobalContext*);
-typedef void (*DemoEcDrawFunc)(struct DemoEc*, GlobalContext*);
+typedef void (*DemoEcInitFunc)(struct DemoEc*, PlayState*);
+typedef void (*DemoEcUpdateFunc)(struct DemoEc*, PlayState*);
+typedef void (*DemoEcDrawFunc)(struct DemoEc*, PlayState*);
 
 typedef struct DemoEc {
     /* 0x0000 */ Actor actor;

@@ -1,12 +1,12 @@
 #ifndef Z_EN_HEISHI1_H
 #define Z_EN_HEISHI1_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnHeishi1;
 
-typedef void (*EnHeishi1ActionFunc)(struct EnHeishi1*, GlobalContext*);
+typedef void (*EnHeishi1ActionFunc)(struct EnHeishi1*, PlayState*);
 
 typedef struct EnHeishi1 {
     /* 0x0000 */ Actor actor;

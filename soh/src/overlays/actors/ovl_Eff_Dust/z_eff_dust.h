@@ -1,13 +1,13 @@
 #ifndef Z_EFF_DUST_H
 #define Z_EFF_DUST_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EffDust;
 
-typedef void (*EffDustActionFunc)(struct EffDust*, GlobalContext*);
-typedef void (*EffDustDrawFunc)(Actor*, GlobalContext*);
+typedef void (*EffDustActionFunc)(struct EffDust*, PlayState*);
+typedef void (*EffDustDrawFunc)(Actor*, PlayState*);
 
 typedef struct EffDust {
     /* 0x0000 */ Actor actor;

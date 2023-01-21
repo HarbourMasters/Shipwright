@@ -1,7 +1,7 @@
 #ifndef Z_BOSS_TW_H
 #define Z_BOSS_TW_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef enum {
@@ -95,7 +95,7 @@ typedef enum {
 
 struct BossTw;
 
-typedef void (*BossTwActionFunc)(struct BossTw*, GlobalContext* globalCtx);
+typedef void (*BossTwActionFunc)(struct BossTw*, PlayState* play);
 
 typedef struct BossTw {
     /* 0x0000 */ Actor actor;

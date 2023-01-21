@@ -1,12 +1,12 @@
 #ifndef Z_ITEM_SHIELD_H
 #define Z_ITEM_SHIELD_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ItemShield;
 
-typedef void (*ItemShieldActionFunc)(struct ItemShield*, GlobalContext*);
+typedef void (*ItemShieldActionFunc)(struct ItemShield*, PlayState*);
 
 typedef struct ItemShield {
     /* 0x0000 */ Actor actor;

@@ -1,12 +1,12 @@
 #ifndef Z_EN_REEBA_H
 #define Z_EN_REEBA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnReeba;
 
-typedef void (*EnReebaActionFunc)(struct EnReeba*, GlobalContext*);
+typedef void (*EnReebaActionFunc)(struct EnReeba*, PlayState*);
 
 typedef struct EnReeba {
     /* 0x0000 */ Actor actor;

@@ -1,7 +1,7 @@
 #ifndef Z_EN_HORSE_H
 #define Z_EN_HORSE_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef enum {
@@ -89,7 +89,7 @@ typedef enum {
     /* 1 */ HORSE_HNI
 } HorseType;
 
-typedef void (*EnHorsePostdrawFunc)(struct EnHorse*, GlobalContext*);
+typedef void (*EnHorsePostdrawFunc)(struct EnHorse*, PlayState*);
 
 typedef struct EnHorse {
     /* 0x0000 */ Actor actor;

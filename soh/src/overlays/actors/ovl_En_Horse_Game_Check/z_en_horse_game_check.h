@@ -1,12 +1,12 @@
 #ifndef Z_EN_HORSE_GAME_CHECK_H
 #define Z_EN_HORSE_GAME_CHECK_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnHorseGameCheckBase;
 
-typedef s32 (*EnHorseGameCheckFunc)(struct EnHorseGameCheckBase* this, GlobalContext* globalCtx);
+typedef s32 (*EnHorseGameCheckFunc)(struct EnHorseGameCheckBase* this, PlayState* play);
 
 typedef struct EnHorseGameCheckBase {
     /* 0x0000 */ Actor actor;

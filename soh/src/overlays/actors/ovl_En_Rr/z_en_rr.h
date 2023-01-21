@@ -1,12 +1,12 @@
 #ifndef Z_EN_RR_H
 #define Z_EN_RR_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnRr;
 
-typedef void (*EnRrActionFunc)(struct EnRr*, GlobalContext*);
+typedef void (*EnRrActionFunc)(struct EnRr*, PlayState*);
 
 typedef struct {
     /* 0x00 */ f32 height;

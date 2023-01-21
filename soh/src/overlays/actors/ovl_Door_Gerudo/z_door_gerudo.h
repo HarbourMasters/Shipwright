@@ -1,12 +1,12 @@
 #ifndef Z_DOOR_GERUDO_H
 #define Z_DOOR_GERUDO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct DoorGerudo;
 
-typedef void (*DoorGerudoActionFunc)(struct DoorGerudo*, GlobalContext*);
+typedef void (*DoorGerudoActionFunc)(struct DoorGerudo*, PlayState*);
 
 typedef struct DoorGerudo {
     /* 0x0000 */ DynaPolyActor dyna;

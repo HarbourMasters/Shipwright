@@ -1,12 +1,12 @@
 #ifndef Z_OBJ_ELEVATOR_H
 #define Z_OBJ_ELEVATOR_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ObjElevator;
 
-typedef void (*ObjElevatorActionFunc)(struct ObjElevator*, GlobalContext*);
+typedef void (*ObjElevatorActionFunc)(struct ObjElevator*, PlayState*);
 
 typedef struct ObjElevator {
     /* 0x0000 */ DynaPolyActor dyna;

@@ -1,12 +1,12 @@
 #ifndef Z_BG_JYA_COBRA_H
 #define Z_BG_JYA_COBRA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgJyaCobra;
 
-typedef void (*BgJyaCobraActionFunc)(struct BgJyaCobra*, GlobalContext*);
+typedef void (*BgJyaCobraActionFunc)(struct BgJyaCobra*, PlayState*);
 
 typedef struct BgJyaCobra {
     /* 0x0000 */ DynaPolyActor dyna;

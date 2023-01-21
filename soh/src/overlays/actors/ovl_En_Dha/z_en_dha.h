@@ -1,12 +1,12 @@
 #ifndef Z_EN_DHA_H
 #define Z_EN_DHA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnDha;
 
-typedef void (*EnDhaActionFunc)(struct EnDha*, GlobalContext*);
+typedef void (*EnDhaActionFunc)(struct EnDha*, PlayState*);
 
 typedef struct EnDha {
     /* 0x0000 */ Actor actor;

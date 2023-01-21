@@ -1,4 +1,4 @@
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 // TODO: can these macros be shared between files? code_800F9280 seems to use
@@ -134,7 +134,7 @@ u8 sAudioExtraFilter2 = 0;
 Vec3f* sSariaBgmPtr = NULL;
 f32 D_80130650 = 2000.0f;
 u8 sSeqModeInput = 0;
-u8 sSeqFlags[0x6E] = {
+u8 sSeqFlags[0x6F] = {
     0x2,  // NA_BGM_GENERAL_SFX
     0x1,  // NA_BGM_NATURE_BACKGROUND
     0,    // NA_BGM_FIELD_LOGIC
@@ -245,6 +245,7 @@ u8 sSeqFlags[0x6E] = {
     0,    // NA_BGM_FIRE_BOSS
     0x8,  // NA_BGM_TIMED_MINI_GAME
     0,    // NA_BGM_VARIOUS_SFX
+    1,    // NA_BGM_CUSTOM_SEQ
 };
 
 s8 sSpecReverbs[20] = { 0, 0, 0, 0, 0, 0, 0, 40, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -1246,6 +1247,7 @@ void Audio_StepFreqLerp(FreqLerp* lerp);
 void func_800F56A8(void);
 void Audio_PlayNatureAmbienceSequence(u8 natureAmbienceId);
 s32 Audio_SetGanonDistVol(u8 targetVol);
+void Audio_PlayFanfare_Rando(GetItemEntry getItem);
 
 // Right stick as virtual C buttons
 #define RSTICK_UP    0x100000
@@ -1256,11 +1258,11 @@ s32 Audio_SetGanonDistVol(u8 targetVol);
 // Function originally not called, so repurposing for control mapping
 void Audio_OcaUpdateBtnMap(bool customControls, bool dpad, bool rStick) {
     if (customControls) {
-        sOcarinaD5BtnMap = CVar_GetS32("gOcarinaD5BtnMap", BTN_CUP);
-        sOcarinaB4BtnMap = CVar_GetS32("gOcarinaB4BtnMap", BTN_CLEFT);
-        sOcarinaA4BtnMap = CVar_GetS32("gOcarinaA4BtnMap", BTN_CRIGHT);
-        sOcarinaF4BtnMap = CVar_GetS32("gOcarinaF4BtnMap", BTN_CDOWN);
-        sOcarinaD4BtnMap = CVar_GetS32("gOcarinaD4BtnMap", BTN_A);
+        sOcarinaD5BtnMap = CVarGetInteger("gOcarinaD5BtnMap", BTN_CUP);
+        sOcarinaB4BtnMap = CVarGetInteger("gOcarinaB4BtnMap", BTN_CLEFT);
+        sOcarinaA4BtnMap = CVarGetInteger("gOcarinaA4BtnMap", BTN_CRIGHT);
+        sOcarinaF4BtnMap = CVarGetInteger("gOcarinaF4BtnMap", BTN_CDOWN);
+        sOcarinaD4BtnMap = CVarGetInteger("gOcarinaD4BtnMap", BTN_A);
     } else {
         sOcarinaD5BtnMap = BTN_CUP;
         sOcarinaB4BtnMap = BTN_CLEFT;
@@ -1537,8 +1539,8 @@ void func_800ED200(void) {
     u8 k;
 
     u32 disableSongBtnMap;
-    if (CVar_GetS32("gCustomOcarinaControls", 0)) {
-        disableSongBtnMap = CVar_GetS32("gOcarinaDisableBtnMap", BTN_L);
+    if (CVarGetInteger("gCustomOcarinaControls", 0)) {
+        disableSongBtnMap = CVarGetInteger("gOcarinaDisableBtnMap", BTN_L);
     } else {
         disableSongBtnMap = BTN_L;
     }
@@ -1599,13 +1601,13 @@ void func_800ED200(void) {
 
 void func_800ED458(s32 arg0) {
     u32 phi_v1_2;
-    bool customControls = CVar_GetS32("gCustomOcarinaControls", 0);
-    bool dpad = CVar_GetS32("gDpadOcarina", 0);
-    bool rStick = CVar_GetS32("gRStickOcarina", 0);
+    bool customControls = CVarGetInteger("gCustomOcarinaControls", 0);
+    bool dpad = CVarGetInteger("gDpadOcarina", 0);
+    bool rStick = CVarGetInteger("gRStickOcarina", 0);
 
     if (D_80130F3C != 0 && sOcarinaDropInputTimer != 0) {
         sOcarinaDropInputTimer--;
-        if (!CVar_GetS32("gDpadNoDropOcarinaInput", 0)) {
+        if (!CVarGetInteger("gDpadNoDropOcarinaInput", 0)) {
             return;
         }
     }
@@ -1647,7 +1649,7 @@ void func_800ED458(s32 arg0) {
 
         u32 noteSharpBtnMap;
         if (customControls) {
-            noteSharpBtnMap = CVar_GetS32("gOcarinaSharpBtnMap", BTN_R);
+            noteSharpBtnMap = CVarGetInteger("gOcarinaSharpBtnMap", BTN_R);
         } else {
             noteSharpBtnMap = BTN_R;
         }
@@ -1658,7 +1660,7 @@ void func_800ED458(s32 arg0) {
 
         u32 noteFlatBtnMap;
         if (customControls) {
-            noteFlatBtnMap = CVar_GetS32("gOcarinaFlatBtnMap", BTN_Z);
+            noteFlatBtnMap = CVarGetInteger("gOcarinaFlatBtnMap", BTN_Z);
         } else {
             noteFlatBtnMap = BTN_Z;
         }
@@ -1695,6 +1697,13 @@ void func_800ED848(u8 inputEnabled) {
 void Audio_OcaSetInstrument(u8 arg0) {
     if (D_80130F10 == arg0) {
         return;
+    }
+
+    u16 sfxEditorId = arg0 + 0x81;
+    u16 newArg0 = SfxEditor_GetReplacementSeq(sfxEditorId);
+    if (newArg0 != sfxEditorId) {
+        gAudioContext.seqReplaced[SEQ_PLAYER_SFX] = 1;
+        arg0 = newArg0 - 0x81;
     }
 
     Audio_SeqCmd8(SEQ_PLAYER_SFX, 1, SFX_PLAYER_CHANNEL_OCARINA, arg0);
@@ -3954,6 +3963,58 @@ void Audio_ResetSfxChannelState(void) {
     sAudioCodeReverb = 0;
 }
 
+// Function to play "get-item" fanfares according to the type of item obtained (used in rando)
+// Longer fanfares for medallions/stones/songs are behind the Cvar
+void Audio_PlayFanfare_Rando(GetItemEntry getItem) {
+    s32 temp1;
+    s16 getItemId = getItem.getItemId;
+    s16 itemId = getItem.itemId;
+
+    if (getItem.modIndex == MOD_NONE) {
+        if (((itemId >= ITEM_RUPEE_GREEN) && (itemId <= ITEM_RUPEE_GOLD)) || (itemId == ITEM_HEART)) {
+            Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        } else {
+            if (itemId == ITEM_HEART_CONTAINER ||
+                ((itemId == ITEM_HEART_PIECE_2) && ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
+                temp1 = NA_BGM_HEART_GET | 0x900;
+            } else {
+                temp1 = (itemId == ITEM_HEART_PIECE_2) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
+            }
+            // If we get a skulltula token or the "WINNER" heart, play "get small item"
+            // Also make sure "WINNER" heart is not the 4th heart piece.
+            if (itemId == ITEM_SKULL_TOKEN || (getItemId == GI_HEART_PIECE_WIN && itemId == ITEM_HEART_PIECE_2 &&
+                (gSaveContext.inventory.questItems & 0xF0000000) != 0x40000000)) {
+                temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
+            }
+            // If the setting is toggled on and we get special quest items (longer fanfares):
+            if (CVarGetInteger("gRandoQuestItemFanfares", 0) != 0) {
+                // If we get a medallion, play the "get a medallion" fanfare
+                if ((itemId >= ITEM_MEDALLION_FOREST) && (itemId <= ITEM_MEDALLION_LIGHT)) {
+                    temp1 = NA_BGM_MEDALLION_GET | 0x900;
+                }
+                // If it's a Spiritual Stone, play the "get a spiritual stone" fanfare
+                if ((itemId >= ITEM_KOKIRI_EMERALD) && (itemId <= ITEM_ZORA_SAPPHIRE)) {
+                    temp1 = NA_BGM_SPIRITUAL_STONE | 0x900;
+                }
+                // If the item we're getting is a song, play the "learned a song" fanfare
+                if ((itemId >= ITEM_SONG_MINUET) && (itemId <= ITEM_SONG_STORMS)) {
+                    temp1 = NA_BGM_OCA_FAIRY_GET | 0x900;
+                }
+            }
+            Audio_PlayFanfare(temp1);
+        } 
+    } else if (getItem.modIndex == MOD_RANDOMIZER) {
+        if ((itemId >= RG_BOTTLE_WITH_RED_POTION && itemId <= RG_BOTTLE_WITH_BIG_POE) || 
+            (itemId >= RG_DEKU_TREE_MAP && itemId <= RG_GANONS_CASTLE_SMALL_KEY)) {
+            temp1 = NA_BGM_ITEM_GET | 0x900;
+        } else {
+            // Just in case nothing else matches.
+            temp1 = NA_BGM_ITEM_GET | 0x900;
+        }
+        Audio_PlayFanfare(temp1);
+    }
+}
+
 void func_800F3F3C(u8 arg0) {
     if (gSoundBankMuted[0] != 1) {
         Audio_StartSeq(SEQ_PLAYER_BGM_SUB, 0, NA_BGM_VARIOUS_SFX);
@@ -4588,7 +4649,7 @@ void Audio_PlayFanfare(u16 seqId)
 
     sp26 = func_800FA0B4(SEQ_PLAYER_FANFARE);
     sp1C = func_800E5E84(sp26 & 0xFF, &sp20);
-    sp18 = func_800E5E84(seqId & 0xFF, &sp20);
+    sp18 = func_800E5E84(seqId, &sp20);
 	if (!sp1C || !sp18) {
 		// disable BGM, we're about to null deref!
 		D_8016B9F4 = 1;

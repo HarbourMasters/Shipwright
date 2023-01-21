@@ -1,12 +1,12 @@
 #ifndef Z_EN_KAREBABA_H
 #define Z_EN_KAREBABA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnKarebaba;
 
-typedef void (*EnKarebabaActionFunc)(struct EnKarebaba*, GlobalContext*);
+typedef void (*EnKarebabaActionFunc)(struct EnKarebaba*, PlayState*);
 
 typedef struct EnKarebaba {
     /* 0x0000 */ Actor actor;

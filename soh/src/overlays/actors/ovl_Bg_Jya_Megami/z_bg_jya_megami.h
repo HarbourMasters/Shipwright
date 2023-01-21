@@ -1,12 +1,12 @@
 #ifndef Z_BG_JYA_MEGAMI_H
 #define Z_BG_JYA_MEGAMI_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgJyaMegami;
 
-typedef void (*BgJyaMegamiActionFunc)(struct BgJyaMegami*, GlobalContext*);
+typedef void (*BgJyaMegamiActionFunc)(struct BgJyaMegami*, PlayState*);
 
 typedef struct {
     /* 0x00 */ Vec3f pos;

@@ -1,12 +1,12 @@
 #ifndef Z_EN_VALI_H
 #define Z_EN_VALI_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnVali;
 
-typedef void (*EnValiActionFunc)(struct EnVali*, GlobalContext*);
+typedef void (*EnValiActionFunc)(struct EnVali*, PlayState*);
 
 typedef enum {
     /* 0x00 */ EN_VALI_LIMB_NONE,

@@ -10,14 +10,14 @@
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_25)
 
-void ArrowLight_Init(Actor* thisx, GlobalContext* globalCtx);
-void ArrowLight_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void ArrowLight_Update(Actor* thisx, GlobalContext* globalCtx);
-void ArrowLight_Draw(Actor* thisx, GlobalContext* globalCtx);
+void ArrowLight_Init(Actor* thisx, PlayState* play);
+void ArrowLight_Destroy(Actor* thisx, PlayState* play);
+void ArrowLight_Update(Actor* thisx, PlayState* play);
+void ArrowLight_Draw(Actor* thisx, PlayState* play);
 
-void ArrowLight_Charge(ArrowLight* this, GlobalContext* globalCtx);
-void ArrowLight_Fly(ArrowLight* this, GlobalContext* globalCtx);
-void ArrowLight_Hit(ArrowLight* this, GlobalContext* globalCtx);
+void ArrowLight_Charge(ArrowLight* this, PlayState* play);
+void ArrowLight_Fly(ArrowLight* this, PlayState* play);
+void ArrowLight_Hit(ArrowLight* this, PlayState* play);
 
 #include "overlays/ovl_Arrow_Light/ovl_Arrow_Light.h"
 
@@ -42,7 +42,7 @@ void ArrowLight_SetupAction(ArrowLight* this, ArrowLightActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
-void ArrowLight_Init(Actor* thisx, GlobalContext* globalCtx) {
+void ArrowLight_Init(Actor* thisx, PlayState* play) {
     ArrowLight* this = (ArrowLight*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
@@ -55,12 +55,12 @@ void ArrowLight_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->unk_164 = 0.0f;
 }
 
-void ArrowLight_Destroy(Actor* thisx, GlobalContext* globalCtx) {
-    func_800876C8(globalCtx);
+void ArrowLight_Destroy(Actor* thisx, PlayState* play) {
+    func_800876C8(play);
     LOG_STRING("消滅"); // "Disappearance"
 }
 
-void ArrowLight_Charge(ArrowLight* this, GlobalContext* globalCtx) {
+void ArrowLight_Charge(ArrowLight* this, PlayState* play) {
     EnArrow* arrow = (EnArrow*)this->actor.parent;
 
     if ((arrow == NULL) || (arrow->actor.update == NULL)) {
@@ -92,7 +92,7 @@ void func_80869E6C(Vec3f* unkPos, Vec3f* lightPos, f32 scale) {
     unkPos->z += ((lightPos->z - unkPos->z) * scale);
 }
 
-void ArrowLight_Hit(ArrowLight* this, GlobalContext* globalCtx) {
+void ArrowLight_Hit(ArrowLight* this, PlayState* play) {
     f32 scale;
     f32 offset;
     u16 timer;
@@ -143,7 +143,7 @@ void ArrowLight_Hit(ArrowLight* this, GlobalContext* globalCtx) {
     }
 }
 
-void ArrowLight_Fly(ArrowLight* this, GlobalContext* globalCtx) {
+void ArrowLight_Fly(ArrowLight* this, PlayState* play) {
     EnArrow* arrow = (EnArrow*)this->actor.parent;
     f32 distanceScaled;
     s32 pad;
@@ -176,32 +176,37 @@ void ArrowLight_Fly(ArrowLight* this, GlobalContext* globalCtx) {
     }
 }
 
-void ArrowLight_Update(Actor* thisx, GlobalContext* globalCtx) {
+void ArrowLight_Update(Actor* thisx, PlayState* play) {
     ArrowLight* this = (ArrowLight*)thisx;
 
-    if (globalCtx->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK ||
-        globalCtx->msgCtx.msgMode == MSGMODE_SONG_PLAYED) {
+    if (play->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK ||
+        play->msgCtx.msgMode == MSGMODE_SONG_PLAYED) {
         Actor_Kill(&this->actor);
     } else {
-        this->actionFunc(this, globalCtx);
+        this->actionFunc(this, play);
     }
 }
 
-void ArrowLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void ArrowLight_Draw(Actor* thisx, PlayState* play) {
     ArrowLight* this = (ArrowLight*)thisx;
     s32 pad;
-    u32 stateFrames = globalCtx->state.frames;
+    u32 stateFrames = play->state.frames;
     EnArrow* arrow = (EnArrow*)this->actor.parent;
     Actor* tranform;
-    Color_RGB8 Arrow_env_ori = {255, 255, 0};
-    Color_RGB8 Arrow_col_ori = {255, 255, 170};
-    Color_RGB8 Arrow_env = CVar_GetRGB("gLightArrowColEnv", Arrow_env_ori);
-    Color_RGB8 Arrow_col = CVar_GetRGB("gLightArrowCol", Arrow_col_ori);
+
+    Color_RGB8 primaryColor = {255, 255, 170};
+    if (CVarGetInteger("gCosmetics.Arrows_LightPrimary.Changed", 0)) {
+        primaryColor = CVarGetColor24("gCosmetics.Arrows_LightPrimary.Value", primaryColor);
+    }
+    Color_RGB8 secondaryColor = {255, 255, 0};
+    if (CVarGetInteger("gCosmetics.Arrows_LightSecondary.Changed", 0)) {
+        secondaryColor = CVarGetColor24("gCosmetics.Arrows_LightSecondary.Value", secondaryColor);
+    }
 
     if ((arrow != NULL) && (arrow->actor.update != NULL) && (this->timer < 255)) {
         tranform = (arrow->hitFlags & 2) ? &this->actor : &arrow->actor;
 
-        OPEN_DISPS(globalCtx->state.gfxCtx);
+        OPEN_DISPS(play->state.gfxCtx);
 
         Matrix_Translate(tranform->world.pos.x, tranform->world.pos.y, tranform->world.pos.z, MTXMODE_NEW);
         Matrix_RotateY(tranform->shape.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
@@ -211,31 +216,21 @@ void ArrowLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
         // Draw yellow effect over the screen when arrow hits
         if (this->unk_164 > 0) {
-            POLY_XLU_DISP = func_800937C0(POLY_XLU_DISP);
-            if (CVar_GetS32("gUseArrowsCol", 0)) {
-                gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 
-                (s32)(Arrow_env.r * this->unk_164) & 0xFF,
-                (s32)(Arrow_env.g * this->unk_164) & 0xFF, 
-                (s32)(Arrow_env.b * this->unk_164) & 0xFF, 
-                (s32)(30.0f * this->unk_164) & 0xFF); //Intentionnally made Alpha lower.
-            } else {
-                gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, (s32)(30.0f * this->unk_164) & 0xFF,
-                                (s32)(40.0f * this->unk_164) & 0xFF, 0, (s32)(150.0f * this->unk_164) & 0xFF);
-            }
+            POLY_XLU_DISP = Gfx_SetupDL_57(POLY_XLU_DISP);
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 
+                (s32)((secondaryColor.r / 6) * this->unk_164) & 0xFF,
+                (s32)((secondaryColor.g / 6) * this->unk_164) & 0xFF, 
+                (s32)((secondaryColor.b / 6) * this->unk_164) & 0xFF,
+                (s32)(150.0f * this->unk_164) & 0xFF);
             gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_DISABLE);
             gDPSetColorDither(POLY_XLU_DISP++, G_CD_DISABLE);
             gDPFillRectangle(POLY_XLU_DISP++, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
         }
 
         // Draw light on the arrow
-        func_80093D84(globalCtx->state.gfxCtx);
-        if (CVar_GetS32("gUseArrowsCol", 0)) {
-            gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, Arrow_col.r, Arrow_col.g, Arrow_col.b, this->alpha);
-            gDPSetEnvColor(POLY_XLU_DISP++, Arrow_env.r, Arrow_env.g, Arrow_env.b, 128);
-        } else {
-            gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, Arrow_col_ori.r, Arrow_col_ori.g, Arrow_col_ori.b, this->alpha);
-            gDPSetEnvColor(POLY_XLU_DISP++, Arrow_env_ori.r, Arrow_env_ori.g, Arrow_env_ori.b, 128);
-        }
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+        gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, primaryColor.r, primaryColor.g, primaryColor.b, this->alpha);
+        gDPSetEnvColor(POLY_XLU_DISP++, secondaryColor.r, secondaryColor.g, secondaryColor.b, 128);
         Matrix_RotateZYX(0x4000, 0x0, 0x0, MTXMODE_APPLY);
         if (this->timer != 0) {
             Matrix_Translate(0.0f, 0.0f, 0.0f, MTXMODE_APPLY);
@@ -244,14 +239,14 @@ void ArrowLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
         }
         Matrix_Scale(this->radius * 0.2f, this->unk_160 * 4.0f, this->radius * 0.2f, MTXMODE_APPLY);
         Matrix_Translate(0.0f, -700.0f, 0.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, sMaterialDL);
         gSPDisplayList(POLY_XLU_DISP++,
-                       Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 511 - (stateFrames * 5) % 512, 0, 4, 32, 1,
+                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 511 - (stateFrames * 5) % 512, 0, 4, 32, 1,
                                         511 - (stateFrames * 10) % 512, 511 - (stateFrames * 30) % 512, 8, 16));
         gSPDisplayList(POLY_XLU_DISP++, sModelDL);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        CLOSE_DISPS(play->state.gfxCtx);
     }
 }

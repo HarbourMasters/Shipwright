@@ -17,7 +17,7 @@
 
 #include <vector>
 #include <list>
-#include <Lib/spdlog/include/spdlog/spdlog.h>
+#include <spdlog/spdlog.h>
 
 using namespace CustomMessages;
 using namespace Logic;
@@ -163,8 +163,8 @@ static int GetMaxGSCount() {
   else if (Location(KAK_10_GOLD_SKULLTULA_REWARD)->GetPlacedItem().IsAdvancement() && Location(KAK_10_GOLD_SKULLTULA_REWARD)->GetPlacedItem().GetItemType() != ITEMTYPE_TOKEN) {
     maxUseful = 10;
   }
-  //Return max of the two possible reasons tokens could be important
-  return std::max(maxUseful, maxBridge);
+  //Return max of the two possible reasons tokens could be important, minus the tokens in the starting inventory
+  return std::max(maxUseful, maxBridge) - StartingSkulltulaToken.Value<uint8_t>();
 }
 
 std::string GetShopItemBaseName(std::string itemName) {
@@ -295,8 +295,8 @@ std::vector<uint32_t> GetAccessibleLocations(const std::vector<uint32_t>& allowe
         if (mode == SearchMode::GeneratePlaythrough && exit.IsShuffled() && !exit.IsAddedToPool() && !noRandomEntrances) {
           entranceSphere.push_back(&exit);
           exit.AddToPool();
-          // Don't list a coupled entrance from both directions
-          if (exit.GetReplacement()->GetReverse() != nullptr /*&& !DecoupleEntrances*/) {
+          // Don't list a two-way coupled entrance from both directions
+          if (exit.GetReverse() != nullptr && exit.GetReplacement()->GetReverse() != nullptr && !exit.IsDecoupled()) {
             exit.GetReplacement()->GetReverse()->AddToPool();
           }
         }
@@ -772,7 +772,7 @@ static void RandomizeOwnDungeon(const Dungeon::DungeonInfo* dungeon) {
 
   //Add specific items that need be randomized within this dungeon
   if (Keysanity.Is(KEYSANITY_OWN_DUNGEON) && dungeon->GetSmallKey() != NONE) {
-    std::vector<uint32_t> dungeonSmallKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){ return i == dungeon->GetSmallKey();});
+    std::vector<uint32_t> dungeonSmallKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){ return (i == dungeon->GetSmallKey()) || (i == dungeon->GetKeyRing());});
     AddElementsToPool(dungeonItems, dungeonSmallKeys);
   }
 
@@ -813,10 +813,10 @@ static void RandomizeDungeonItems() {
 
   for (auto dungeon : dungeonList) {
     if (Keysanity.Is(KEYSANITY_ANY_DUNGEON)) {
-      auto dungeonKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){return i == dungeon->GetSmallKey();});
+      auto dungeonKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){return (i == dungeon->GetSmallKey()) || (i == dungeon->GetKeyRing());});
       AddElementsToPool(anyDungeonItems, dungeonKeys);
     } else if (Keysanity.Is(KEYSANITY_OVERWORLD)) {
-      auto dungeonKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){return i == dungeon->GetSmallKey();});
+      auto dungeonKeys = FilterAndEraseFromPool(ItemPool, [dungeon](const uint32_t i){return (i == dungeon->GetSmallKey()) || (i == dungeon->GetKeyRing());});
       AddElementsToPool(overworldItems, dungeonKeys);
     }
 
@@ -909,6 +909,9 @@ void VanillaFill() {
   CreateItemOverrides();
   CreateEntranceOverrides();
   CreateAlwaysIncludedMessages();
+  if (ShuffleWarpSongs) {
+    CreateWarpSongTexts();
+  }
 }
 
 void ClearProgress() {
@@ -1039,6 +1042,19 @@ int Fill() {
     //Fast fill for the rest of the pool
     std::vector<uint32_t> remainingPool = FilterAndEraseFromPool(ItemPool, [](const auto i) { return true; });
     FastFill(remainingPool, GetAllEmptyLocations(), false);
+
+    //Add prices for scrubsanity, this is unique to SoH because we write/read scrub prices to/from the spoilerfile.
+    if (Scrubsanity.Is(SCRUBSANITY_AFFORDABLE)) {
+      for (size_t i = 0; i < ScrubLocations.size(); i++) {
+        Location(ScrubLocations[i])->SetScrubsanityPrice(10);
+      }
+    } else if (Scrubsanity.Is(SCRUBSANITY_RANDOM_PRICES)) {
+      for (size_t i = 0; i < ScrubLocations.size(); i++) {
+        int randomPrice = GetRandomScrubPrice();
+        Location(ScrubLocations[i])->SetScrubsanityPrice(randomPrice);
+      }
+    }
+
     GeneratePlaythrough();
     //Successful placement, produced beatable result
     if(playthroughBeatable && !placementFailure) {
@@ -1057,6 +1073,17 @@ int Fill() {
       }
       if (ShuffleMerchants.Is(SHUFFLEMERCHANTS_HINTS)) {
         CreateMerchantsHints();
+      }
+      //Always execute ganon hint generation for the funny line  
+      CreateGanonText();
+      if (AltarHintText) {
+        CreateAltarText();
+      }
+      if (DampeHintText) {
+        CreateDampesDiaryText();
+      }
+      if (ShuffleWarpSongs) {
+        CreateWarpSongTexts();
       }
       return 1;
     }

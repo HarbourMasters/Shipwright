@@ -1,12 +1,12 @@
 #ifndef Z_EN_DNT_DEMO_H
 #define Z_EN_DNT_DEMO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnDntDemo;
 
-typedef void (*EnDntDemoActionFunc)(struct EnDntDemo*, GlobalContext*);
+typedef void (*EnDntDemoActionFunc)(struct EnDntDemo*, PlayState*);
 
 typedef struct EnDntDemo {
     /* 0x0000 */ Actor actor;

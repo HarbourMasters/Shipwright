@@ -1,12 +1,12 @@
 #ifndef Z_EN_PO_FIELD_H
 #define Z_EN_PO_FIELD_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnPoField;
 
-typedef void (*EnPoFieldActionFunc)(struct EnPoField*, GlobalContext*);
+typedef void (*EnPoFieldActionFunc)(struct EnPoField*, PlayState*);
 
 typedef enum {
     EN_PO_FIELD_SMALL,

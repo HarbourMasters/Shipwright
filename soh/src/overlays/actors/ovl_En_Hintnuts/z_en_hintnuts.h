@@ -1,12 +1,12 @@
 #ifndef Z_EN_HINTNUTS_H
 #define Z_EN_HINTNUTS_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnHintnuts;
 
-typedef void (*EnHintnutsActionFunc)(struct EnHintnuts*, GlobalContext*);
+typedef void (*EnHintnutsActionFunc)(struct EnHintnuts*, PlayState*);
 
 typedef struct EnHintnuts {
     /* 0x0000 */ Actor actor;

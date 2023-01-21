@@ -1,7 +1,7 @@
 #ifndef Z_DOOR_SHUTTER_H
 #define Z_DOOR_SHUTTER_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 /**
@@ -41,7 +41,7 @@ typedef enum {
 
 struct DoorShutter;
 
-typedef void (*DoorShutterActionFunc)(struct DoorShutter*, GlobalContext*);
+typedef void (*DoorShutterActionFunc)(struct DoorShutter*, PlayState*);
 
 typedef struct DoorShutter {
     /* 0x0000 */ DynaPolyActor dyna;

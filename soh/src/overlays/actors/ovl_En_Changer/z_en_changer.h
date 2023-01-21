@@ -1,13 +1,13 @@
 #ifndef Z_EN_CHANGER_H
 #define Z_EN_CHANGER_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "overlays/actors/ovl_En_Box/z_en_box.h"
 
 struct EnChanger;
 
-typedef void (*EnChangerActionFunc)(struct EnChanger*, GlobalContext*);
+typedef void (*EnChangerActionFunc)(struct EnChanger*, PlayState*);
 
 typedef struct EnChanger {
     /* 0x0000 */ Actor actor;

@@ -1,12 +1,12 @@
 #ifndef Z_EN_KO_H
 #define Z_EN_KO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnKo;
 
-typedef void (*EnKoActionFunc)(struct EnKo*, GlobalContext*);
+typedef void (*EnKoActionFunc)(struct EnKo*, PlayState*);
 
 typedef struct EnKo {
     /* 0x0000 */ Actor actor;
@@ -18,7 +18,7 @@ typedef struct EnKo {
     /* 0x0197 */ s8 osAnimeBankIndex;
     /* 0x0198 */ ColliderCylinder collider;
     /* 0x01E4 */ Path* path;
-    /* 0x01E8 */ struct_80034A14_arg1 unk_1E8;
+    /* 0x01E8 */ NpcInteractInfo interactInfo;
     /* 0x0210 */ u8 unk_210; // block trade quest sfx
     /* 0x0212 */ s16 forestQuestState;
     /* 0x0214 */ s16 blinkTimer;

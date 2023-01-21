@@ -1,7 +1,7 @@
 #ifndef Z_EN_SIOFUKI_H
 #define Z_EN_SIOFUKI_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef enum {
@@ -11,7 +11,7 @@ typedef enum {
 
 struct EnSiofuki;
 
-typedef void (*EnSiofukiActionFunc)(struct EnSiofuki*, GlobalContext*);
+typedef void (*EnSiofukiActionFunc)(struct EnSiofuki*, PlayState*);
 
 typedef struct EnSiofuki {
     /* 0x0000 */ DynaPolyActor dyna;

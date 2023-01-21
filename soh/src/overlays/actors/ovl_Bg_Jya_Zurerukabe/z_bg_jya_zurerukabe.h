@@ -1,12 +1,12 @@
 #ifndef Z_BG_JYA_ZURERUKABE_H
 #define Z_BG_JYA_ZURERUKABE_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgJyaZurerukabe;
 
-typedef void (*BgJyaZurerukabeActionFunc)(struct BgJyaZurerukabe*, GlobalContext*);
+typedef void (*BgJyaZurerukabeActionFunc)(struct BgJyaZurerukabe*, PlayState*);
 
 typedef struct BgJyaZurerukabe {
     /* 0x0000 */ DynaPolyActor dyna;

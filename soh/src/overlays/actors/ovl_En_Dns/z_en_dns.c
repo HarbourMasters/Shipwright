@@ -10,11 +10,12 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
 
-void EnDns_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnDns_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnDns_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnDns_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnDns_Init(Actor* thisx, PlayState* play);
+void EnDns_Destroy(Actor* thisx, PlayState* play);
+void EnDns_Update(Actor* thisx, PlayState* play);
+void EnDns_Draw(Actor* thisx, PlayState* play);
 
+u32 EnDns_RandomizerPurchaseableCheck(EnDns* this);
 u32 func_809EF5A4(EnDns* this);
 u32 func_809EF658(EnDns* this);
 u32 func_809EF70C(EnDns* this);
@@ -24,6 +25,7 @@ u32 func_809EF854(EnDns* this);
 u32 func_809EF8F4(EnDns* this);
 u32 func_809EF9A4(EnDns* this);
 
+void EnDns_RandomizerPurchase(EnDns* this);
 void func_809EF9F8(EnDns* this);
 void func_809EFA28(EnDns* this);
 void func_809EFA58(EnDns* this);
@@ -32,16 +34,16 @@ void func_809EFACC(EnDns* this);
 void func_809EFAFC(EnDns* this);
 void func_809EFB40(EnDns* this);
 
-void EnDns_SetupWait(EnDns* this, GlobalContext* globalCtx);
-void EnDns_Wait(EnDns* this, GlobalContext* globalCtx);
-void EnDns_Talk(EnDns* this, GlobalContext* globalCtx);
-void func_809EFDD0(EnDns* this, GlobalContext* globalCtx);
-void func_809EFEE8(EnDns* this, GlobalContext* globalCtx);
-void func_809EFF50(EnDns* this, GlobalContext* globalCtx);
-void func_809EFF98(EnDns* this, GlobalContext* globalCtx);
-void func_809F008C(EnDns* this, GlobalContext* globalCtx);
-void EnDns_SetupBurrow(EnDns* this, GlobalContext* globalCtx);
-void EnDns_Burrow(EnDns* this, GlobalContext* globalCtx);
+void EnDns_SetupWait(EnDns* this, PlayState* play);
+void EnDns_Wait(EnDns* this, PlayState* play);
+void EnDns_Talk(EnDns* this, PlayState* play);
+void func_809EFDD0(EnDns* this, PlayState* play);
+void func_809EFEE8(EnDns* this, PlayState* play);
+void func_809EFF50(EnDns* this, PlayState* play);
+void func_809EFF98(EnDns* this, PlayState* play);
+void func_809F008C(EnDns* this, PlayState* play);
+void EnDns_SetupBurrow(EnDns* this, PlayState* play);
+void EnDns_Burrow(EnDns* this, PlayState* play);
 
 const ActorInit En_Dns_InitVars = {
     ACTOR_EN_DNS,
@@ -133,7 +135,7 @@ static AnimationMinimalInfo sAnimationInfo[] = {
     { &gBusinessScrubNervousTransitionAnim, ANIMMODE_ONCE, 0.0f },
 };
 
-void EnDns_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnDns_Init(Actor* thisx, PlayState* play) {
     EnDns* this = (EnDns*)thisx;
 
     if (this->actor.params < 0) {
@@ -150,12 +152,11 @@ void EnDns_Init(Actor* thisx, GlobalContext* globalCtx) {
     osSyncPrintf(VT_FGCOL(GREEN) "◆◆◆ 売りナッツ『%s』 ◆◆◆" VT_RST "\n", D_809F0424[this->actor.params],
                  this->actor.params);
     Actor_ProcessInitChain(&this->actor, sInitChain);
-    SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gBusinessScrubSkel, &gBusinessScrubNervousTransitionAnim,
+    SkelAnime_InitFlex(play, &this->skelAnime, &gBusinessScrubSkel, &gBusinessScrubNervousTransitionAnim,
                        this->jointTable, this->morphTable, 18);
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinderType1(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinderType1(play, &this->collider, &this->actor, &sCylinderInit);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 35.0f);
-    this->actor.textId = D_809F040C[this->actor.params];
     Actor_SetScale(&this->actor, 0.01f);
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
     this->maintainCollider = 1;
@@ -164,14 +165,41 @@ void EnDns_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.speedXZ = 0.0f;
     this->actor.velocity.y = 0.0f;
     this->actor.gravity = -1.0f;
+    this->actor.textId = D_809F040C[this->actor.params];
     this->dnsItemEntry = sItemEntries[this->actor.params];
+    if (gSaveContext.n64ddFlag) {
+        // Ugly, but the best way we can identify which grotto we are in, same method 3DRando uses, but we'll need to account for entrance rando
+        s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
+        this->scrubIdentity = Randomizer_IdentifyScrub(play->sceneNum, this->actor.params, respawnData);
+
+        if ((Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_AFFORDABLE ||
+             Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_RANDOM) &&
+            this->scrubIdentity.itemPrice != -1) {
+            this->dnsItemEntry->itemPrice = this->scrubIdentity.itemPrice;
+        }
+
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_EXPENSIVE) {
+            // temporary workaround: always use 40 rupees as price instead of 70
+            if (this->actor.params == 0x0006) {
+                this->dnsItemEntry->itemPrice = 40;
+            }
+        }
+
+        if (this->scrubIdentity.isShuffled) {
+            this->dnsItemEntry->getItemId = this->scrubIdentity.getItemId;
+            this->dnsItemEntry->purchaseableCheck = EnDns_RandomizerPurchaseableCheck;
+            this->dnsItemEntry->setRupeesAndFlags = EnDns_RandomizerPurchase;
+            this->dnsItemEntry->itemAmount = 1;
+            this->actor.textId = 0x9000 + (this->scrubIdentity.randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT);
+        }
+    }
     this->actionFunc = EnDns_SetupWait;
 }
 
-void EnDns_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnDns_Destroy(Actor* thisx, PlayState* play) {
     EnDns* this = (EnDns*)thisx;
 
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
 void EnDns_ChangeAnim(EnDns* this, u8 index) {
@@ -184,6 +212,13 @@ void EnDns_ChangeAnim(EnDns* this, u8 index) {
 }
 
 /* Item give checking functions */
+
+u32 EnDns_RandomizerPurchaseableCheck(EnDns* this) {
+    if (gSaveContext.rupees < this->dnsItemEntry->itemPrice || Flags_GetRandomizerInf(this->scrubIdentity.randomizerInf)) {
+        return 0;
+    }
+    return 4;
+}
 
 u32 func_809EF5A4(EnDns* this) {
     if ((CUR_CAPACITY(UPG_NUTS) != 0) && (AMMO(ITEM_NUT) >= CUR_CAPACITY(UPG_NUTS))) {
@@ -281,6 +316,10 @@ u32 func_809EF9A4(EnDns* this) {
 }
 
 /* Paying and flagging functions */
+void EnDns_RandomizerPurchase(EnDns* this) {
+    Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
+    Flags_SetRandomizerInf(this->scrubIdentity.randomizerInf);
+}
 
 void func_809EF9F8(EnDns* this) {
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
@@ -313,17 +352,17 @@ void func_809EFB40(EnDns* this) {
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
 }
 
-void EnDns_SetupWait(EnDns* this, GlobalContext* globalCtx) {
+void EnDns_SetupWait(EnDns* this, PlayState* play) {
     if (this->skelAnime.curFrame == this->skelAnime.endFrame) {
         this->actionFunc = EnDns_Wait;
         EnDns_ChangeAnim(this, ENDNS_ANIM_0);
     }
 }
 
-void EnDns_Wait(EnDns* this, GlobalContext* globalCtx) {
+void EnDns_Wait(EnDns* this, PlayState* play) {
     Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 2000, 0);
     this->actor.world.rot.y = this->actor.shape.rot.y;
-    if (Actor_ProcessTalkRequest(&this->actor, globalCtx)) {
+    if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = EnDns_Talk;
     } else {
         if ((this->collider.base.ocFlags1 & OC1_HIT) || this->actor.isTargeted) {
@@ -332,93 +371,91 @@ void EnDns_Wait(EnDns* this, GlobalContext* globalCtx) {
             this->actor.flags &= ~ACTOR_FLAG_16;
         }
         if (this->actor.xzDistToPlayer < 130.0f) {
-            func_8002F2F4(&this->actor, globalCtx);
+            func_8002F2F4(&this->actor, play);
         }
     }
 }
 
-void EnDns_Talk(EnDns* this, GlobalContext* globalCtx) {
-    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CHOICE) && Message_ShouldAdvance(globalCtx)) {
-        switch (globalCtx->msgCtx.choiceIndex) {
+void EnDns_Talk(EnDns* this, PlayState* play) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) && Message_ShouldAdvance(play)) {
+        switch (play->msgCtx.choiceIndex) {
             case 0: // OK
                 switch (this->dnsItemEntry->purchaseableCheck(this)) {
                     case 0:
-                        Message_ContinueTextbox(globalCtx, 0x10A5);
+                        Message_ContinueTextbox(play, 0x10A5);
                         this->actionFunc = func_809F008C;
                         break;
                     case 1:
-                        Message_ContinueTextbox(globalCtx, 0x10A6);
+                        Message_ContinueTextbox(play, 0x10A6);
                         this->actionFunc = func_809F008C;
                         break;
                     case 3:
-                        Message_ContinueTextbox(globalCtx, 0x10DE);
+                        Message_ContinueTextbox(play, 0x10DE);
                         this->actionFunc = func_809F008C;
                         break;
                     case 2:
                     case 4:
-                        Message_ContinueTextbox(globalCtx, 0x10A7);
+                        Message_ContinueTextbox(play, 0x10A7);
                         this->actionFunc = func_809EFEE8;
                         break;
                 }
                 break;
             case 1: // No way
-                Message_ContinueTextbox(globalCtx, 0x10A4);
+                Message_ContinueTextbox(play, 0x10A4);
                 this->actionFunc = func_809F008C;
         }
     }
 }
 
-void func_809EFDD0(EnDns* this, GlobalContext* globalCtx) {
-    if (this->actor.params == 0x9) {
-        if (gSaveContext.n64ddFlag) {
-            GetItemEntry getItemEntry = Randomizer_GetRandomizedItem(GI_STICK_UPGRADE_30, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 130.0f, 100.0f);
-        } else if (CUR_UPG_VALUE(UPG_STICKS) < 2) {
-            func_8002F434(&this->actor, globalCtx, GI_STICK_UPGRADE_20, 130.0f, 100.0f);
+void func_809EFDD0(EnDns* this, PlayState* play) {
+    u16 pendingGetItemId;
+    if (!gSaveContext.n64ddFlag || !this->scrubIdentity.isShuffled) {
+        if (this->actor.params == 0x9) {
+            if (CUR_UPG_VALUE(UPG_STICKS) < 2) {
+                pendingGetItemId = GI_STICK_UPGRADE_20;
+            } else {
+                pendingGetItemId = GI_STICK_UPGRADE_30;
+            }
+        } else if (this->actor.params == 0xA) {
+            if (CUR_UPG_VALUE(UPG_NUTS) < 2) {
+                pendingGetItemId = GI_NUT_UPGRADE_30;
+            } else {
+                pendingGetItemId = GI_NUT_UPGRADE_40;
+            }
         } else {
-            func_8002F434(&this->actor, globalCtx, GI_STICK_UPGRADE_30, 130.0f, 100.0f);
+            pendingGetItemId = this->dnsItemEntry->getItemId;
         }
-    } else if (this->actor.params == 0xA) {
-        if (gSaveContext.n64ddFlag) {
-            GetItemEntry getItemEntry = Randomizer_GetRandomizedItem(GI_NUT_UPGRADE_40, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 130.0f, 100.0f);
-        } else if (CUR_UPG_VALUE(UPG_NUTS) < 2) {
-            func_8002F434(&this->actor, globalCtx, GI_NUT_UPGRADE_30, 130.0f, 100.0f);
-        } else {
-            func_8002F434(&this->actor, globalCtx, GI_NUT_UPGRADE_40, 130.0f, 100.0f);
-        }
+        gSaveContext.pendingSale = ItemTable_Retrieve(pendingGetItemId).itemId;
+        func_8002F434(&this->actor, play, pendingGetItemId, 130.0f, 100.0f);
     } else {
-        if (!gSaveContext.n64ddFlag) {
-            func_8002F434(&this->actor, globalCtx, this->dnsItemEntry->getItemId, 130.0f, 100.0f);
-        } else {
-            GetItemEntry getItemEntry = Randomizer_GetRandomizedItem(this->dnsItemEntry->getItemId, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            GiveItemEntryFromActor(&this->actor, globalCtx, getItemEntry, 130.0f, 100.0f);
-        }
+        GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(this->scrubIdentity.randomizerCheck, this->scrubIdentity.getItemId);
+        gSaveContext.pendingSale = itemEntry.itemId;
+        GiveItemEntryFromActor(&this->actor, play, itemEntry, 130.0f, 100.0f);
     }
 }
 
-void func_809EFEE8(EnDns* this, GlobalContext* globalCtx) {
-    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(globalCtx)) {
-        Message_CloseTextbox(globalCtx);
-        func_809EFDD0(this, globalCtx);
+void func_809EFEE8(EnDns* this, PlayState* play) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
+        Message_CloseTextbox(play);
+        func_809EFDD0(this, play);
         this->actionFunc = func_809EFF50;
     }
 }
 
-void func_809EFF50(EnDns* this, GlobalContext* globalCtx) {
-    if (Actor_HasParent(&this->actor, globalCtx)) {
+void func_809EFF50(EnDns* this, PlayState* play) {
+    if (Actor_HasParent(&this->actor, play)) {
         this->actor.parent = NULL;
         this->actionFunc = func_809EFF98;
     } else {
-        func_809EFDD0(this, globalCtx);
+        func_809EFDD0(this, play);
     }
 }
 
-void func_809EFF98(EnDns* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_809EFF98(EnDns* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
     if (player->stateFlags1 & 0x400) {
-        if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
+        if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
             this->dnsItemEntry->setRupeesAndFlags(this);
             this->dropCollectible = 1;
             this->maintainCollider = 0;
@@ -436,8 +473,8 @@ void func_809EFF98(EnDns* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_809F008C(EnDns* this, GlobalContext* globalCtx) {
-    if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
+void func_809F008C(EnDns* this, PlayState* play) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         this->maintainCollider = 0;
         this->actor.flags &= ~ACTOR_FLAG_0;
         EnDns_ChangeAnim(this, ENDNS_ANIM_1);
@@ -445,7 +482,7 @@ void func_809F008C(EnDns* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnDns_SetupBurrow(EnDns* this, GlobalContext* globalCtx) {
+void EnDns_SetupBurrow(EnDns* this, PlayState* play) {
     f32 frameCount = Animation_GetLastFrame(&gBusinessScrubAnim_4404);
 
     if (this->skelAnime.curFrame == frameCount) {
@@ -456,7 +493,7 @@ void EnDns_SetupBurrow(EnDns* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnDns_Burrow(EnDns* this, GlobalContext* globalCtx) {
+void EnDns_Burrow(EnDns* this, PlayState* play) {
     f32 depth;
     Vec3f initPos;
     s32 i;
@@ -466,7 +503,7 @@ void EnDns_Burrow(EnDns* this, GlobalContext* globalCtx) {
         initPos.x = this->actor.world.pos.x;
         initPos.y = this->yInitPos;
         initPos.z = this->actor.world.pos.z;
-        func_80028990(globalCtx, 20.0f, &initPos);
+        func_80028990(play, 20.0f, &initPos);
     }
     this->actor.shape.rot.y += 0x2000;
     // Drops only if you bought its item
@@ -476,37 +513,41 @@ void EnDns_Burrow(EnDns* this, GlobalContext* globalCtx) {
             initPos.y = this->yInitPos;
             initPos.z = this->actor.world.pos.z;
             for (i = 0; i < 3; i++) {
-                Item_DropCollectible(globalCtx, &initPos, ITEM00_HEART);
+                Item_DropCollectible(play, &initPos, ITEM00_HEART);
             }
         }
         Actor_Kill(&this->actor);
+        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUSINESS_SCRUB]++;
     }
 }
 
-void EnDns_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnDns_Update(Actor* thisx, PlayState* play) {
     EnDns* this = (EnDns*)thisx;
     s16 pad;
 
     this->dustTimer++;
     this->actor.textId = D_809F040C[this->actor.params];
+    if (gSaveContext.n64ddFlag && this->scrubIdentity.isShuffled) {
+        this->actor.textId = 0x9000 + (this->scrubIdentity.randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT);
+    }
     Actor_SetFocus(&this->actor, 60.0f);
     Actor_SetScale(&this->actor, 0.01f);
     SkelAnime_Update(&this->skelAnime);
     Actor_MoveForward(&this->actor);
-    this->actionFunc(this, globalCtx);
+    this->actionFunc(this, play);
     if (this->standOnGround) {
-        Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 20.0f, 20.0f, 20.0f, 4);
+        Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 20.0f, 4);
     }
     if (this->maintainCollider) {
         Collider_UpdateCylinder(&this->actor, &this->collider);
-        CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+        CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
     }
 }
 
-void EnDns_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnDns_Draw(Actor* thisx, PlayState* play) {
     EnDns* this = (EnDns*)thisx;
 
-    func_80093D18(globalCtx->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, NULL, &this->actor);
 }

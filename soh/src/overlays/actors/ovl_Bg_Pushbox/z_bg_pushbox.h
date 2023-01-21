@@ -1,12 +1,12 @@
 #ifndef Z_BG_PUSHBOX_H
 #define Z_BG_PUSHBOX_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgPushbox;
 
-typedef void (*BgPushboxActionFunc)(struct BgPushbox*, GlobalContext*);
+typedef void (*BgPushboxActionFunc)(struct BgPushbox*, PlayState*);
 
 typedef struct BgPushbox {
     /* 0x0000 */ DynaPolyActor dyna;

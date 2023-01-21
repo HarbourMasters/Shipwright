@@ -1,12 +1,12 @@
 #ifndef Z_EN_COW_H
 #define Z_EN_COW_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnCow;
 
-typedef void (*EnCowActionFunc)(struct EnCow*, GlobalContext*);
+typedef void (*EnCowActionFunc)(struct EnCow*, PlayState*);
 
 typedef struct EnCow {
     /* 0x0000 */ Actor actor;

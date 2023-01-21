@@ -1,8 +1,9 @@
 #ifndef Z_EN_TK_H
 #define Z_EN_TK_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
+#include "z64.h"
 
 /* Dirt particle effect */
 struct EnTkEff;
@@ -22,15 +23,14 @@ typedef struct EnTkEff {
 
 struct EnTk;
 
-typedef void (*EnTkActionFunc)(struct EnTk*, GlobalContext*);
+typedef void (*EnTkActionFunc)(struct EnTk*, PlayState*);
 
 typedef struct EnTk {
     /* 0x0000 */ Actor      actor;
     /* 0x014C */ SkelAnime  skelAnime;
     /* 0x0190 */ EnTkActionFunc actionFunc;
     /* 0x0194 */ ColliderCylinder collider;
-    /* 0x01E0 */ s16        h_1E0;
-    /* 0x01E2 */ char       unk_1E2[0x26];
+    /* 0x01E0 */ NpcInteractInfo interactInfo;
     /* 0x0208 */ u8         validDigHere;
     /* 0x0209 */ u8         rewardCount[4];
     /* 0x0210 */ Actor*     currentSpot;

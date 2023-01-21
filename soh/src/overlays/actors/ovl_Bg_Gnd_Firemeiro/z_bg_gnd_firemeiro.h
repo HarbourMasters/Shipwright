@@ -1,12 +1,12 @@
 #ifndef Z_BG_GND_FIREMEIRO_H
 #define Z_BG_GND_FIREMEIRO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgGndFiremeiro;
 
-typedef void (*BgGndFiremeiroActionFunc)(struct BgGndFiremeiro*, GlobalContext*);
+typedef void (*BgGndFiremeiroActionFunc)(struct BgGndFiremeiro*, PlayState*);
 
 typedef struct BgGndFiremeiro {
     /* 0x0000 */ DynaPolyActor dyna;

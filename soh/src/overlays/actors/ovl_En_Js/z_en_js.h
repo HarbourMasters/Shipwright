@@ -1,12 +1,12 @@
 #ifndef Z_EN_JS_H
 #define Z_EN_JS_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnJs;
 
-typedef void (*EnJsActionFunc)(struct EnJs*, GlobalContext*);
+typedef void (*EnJsActionFunc)(struct EnJs*, PlayState*);
 
 typedef struct EnJs {
     /* 0x0000 */ Actor actor;

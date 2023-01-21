@@ -1,12 +1,12 @@
 #ifndef Z_EN_DEKUNUTS_H
 #define Z_EN_DEKUNUTS_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnDekunuts;
 
-typedef void (*EnDekunutsActionFunc)(struct EnDekunuts*, GlobalContext*);
+typedef void (*EnDekunutsActionFunc)(struct EnDekunuts*, PlayState*);
 
 typedef struct EnDekunuts {
     /* 0x0000 */ Actor actor;

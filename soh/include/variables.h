@@ -101,7 +101,7 @@ extern "C"
 	extern void* gItemIcons[0x82];
 	extern u8 gItemAgeReqs[];
 	extern u8 gItemSlots[56];
-	extern void (*gSceneCmdHandlers[SCENE_CMD_ID_MAX])(GlobalContext*, SceneCmd*);
+	extern void (*gSceneCmdHandlers[SCENE_CMD_ID_MAX])(PlayState*, SceneCmd*);
 	extern s16 gLinkObjectIds[2];
 	extern u32 gObjectTableSize;
 	extern RomFile gObjectTable[OBJECT_ID_MAX];
@@ -166,6 +166,9 @@ extern "C"
 	extern s32 gSystemArenaLogSeverity;
 	extern u8 __osPfsInodeCacheBank;
 	extern s32 __osPfsLastChannel;
+	extern u8 gWalkSpeedToggle1;
+	extern u8 gWalkSpeedToggle2;
+	extern f32 iceTrapScale;
 
 	extern const s16 D_8014A6C0[];
 #define gTatumsPerBeat (D_8014A6C0[1])
@@ -211,16 +214,16 @@ extern "C"
 	extern volatile OSTime gRDPTotalTime;
 	extern FaultThreadStruct gFaultStruct;
 
-extern ActiveSound gActiveSounds[7][MAX_CHANNELS_PER_BANK]; // total size = 0xA8
-extern u8 gSoundBankMuted[];
-extern u8 D_801333F0;
-extern u8 gAudioSfxSwapOff;
-extern u16 gAudioSfxSwapSource[10];
-extern u16 gAudioSfxSwapTarget[10];
-extern u8 gAudioSfxSwapMode[10];
-extern unk_D_8016E750 D_8016E750[4];
-extern AudioContext gAudioContext;
-extern void(*D_801755D0)(void);
+	extern ActiveSound gActiveSounds[7][MAX_CHANNELS_PER_BANK]; // total size = 0xA8
+	extern u8 gSoundBankMuted[];
+	extern u8 D_801333F0;
+	extern u8 gAudioSfxSwapOff;
+	extern u16 gAudioSfxSwapSource[10];
+	extern u16 gAudioSfxSwapTarget[10];
+	extern u8 gAudioSfxSwapMode[10];
+	extern unk_D_8016E750 D_8016E750[4];
+	extern AudioContext gAudioContext;
+	extern void(*D_801755D0)(void);
 
 	extern u32 __osMalloc_FreeBlockTest_Enable;
 	extern Arena gSystemArena;

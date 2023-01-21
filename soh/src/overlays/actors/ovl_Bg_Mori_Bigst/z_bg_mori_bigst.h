@@ -1,12 +1,12 @@
 #ifndef Z_BG_MORI_BIGST_H
 #define Z_BG_MORI_BIGST_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgMoriBigst;
 
-typedef void (*BgMoriBigstActionFunc)(struct BgMoriBigst*, GlobalContext*);
+typedef void (*BgMoriBigstActionFunc)(struct BgMoriBigst*, PlayState*);
 
 typedef struct BgMoriBigst {
     /* 0x0000 */ DynaPolyActor dyna;

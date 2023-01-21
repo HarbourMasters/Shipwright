@@ -1,12 +1,12 @@
 #ifndef Z_BG_DDAN_JD_H
 #define Z_BG_DDAN_JD_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgDdanJd;
 
-typedef void (*BgDdanJdActionFunc)(struct BgDdanJd*, GlobalContext*);
+typedef void (*BgDdanJdActionFunc)(struct BgDdanJd*, PlayState*);
 
 typedef struct BgDdanJd {
     /* 0x0000 */ DynaPolyActor dyna;

@@ -1,12 +1,12 @@
 #ifndef Z_EN_WONDER_ITEM_H
 #define Z_EN_WONDER_ITEM_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnWonderItem;
 
-typedef void (*EnWonderItemUpdateFunc)(struct EnWonderItem*, GlobalContext*);
+typedef void (*EnWonderItemUpdateFunc)(struct EnWonderItem*, PlayState*);
 
 typedef struct EnWonderItem {
     /* 0x0000 */ Actor actor;

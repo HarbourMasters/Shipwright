@@ -1,17 +1,18 @@
 #ifndef Z_EN_GE1_H
 #define Z_EN_GE1_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnGe1;
 
 typedef void (*EnGe1AnimFunc)(struct EnGe1*);
-typedef void (*EnGe1ActionFunc)(struct EnGe1*, GlobalContext*);
+typedef void (*EnGe1ActionFunc)(struct EnGe1*, PlayState*);
 
 typedef enum {
     /* 0x00 */ GE1_TYPE_GATE_GUARD,
     /* 0x01 */ GE1_TYPE_GATE_OPERATOR,
+    /* 0x02 */ GE1_TYPE_EXTRA_GATE_OPERATOR, // Custom guard type for entrance randomizer to open the gate
     /* 0x04 */ GE1_TYPE_NORMAL = 4,
     /* 0x05 */ GE1_TYPE_VALLEY_FLOOR,
     /* 0x45 */ GE1_TYPE_HORSEBACK_ARCHERY = 0x45,

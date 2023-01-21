@@ -1,7 +1,7 @@
 #ifndef Z_EN_WALLMAS_H
 #define Z_EN_WALLMAS_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef enum {
@@ -12,7 +12,7 @@ typedef enum {
 
 struct EnWallmas;
 
-typedef void (*EnWallmasActionFunc)(struct EnWallmas*, GlobalContext*);
+typedef void (*EnWallmasActionFunc)(struct EnWallmas*, PlayState*);
 
 typedef struct EnWallmas {
     /* 0x0000 */ Actor actor;

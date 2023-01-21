@@ -1,23 +1,23 @@
 #include "global.h"
 
-void GameOver_Init(GlobalContext* globalCtx) {
-    globalCtx->gameOverCtx.state = GAMEOVER_INACTIVE;
+void GameOver_Init(PlayState* play) {
+    play->gameOverCtx.state = GAMEOVER_INACTIVE;
 }
 
-void GameOver_FadeInLights(GlobalContext* globalCtx) {
-    GameOverContext* gameOverCtx = &globalCtx->gameOverCtx;
+void GameOver_FadeInLights(PlayState* play) {
+    GameOverContext* gameOverCtx = &play->gameOverCtx;
 
     if ((gameOverCtx->state >= GAMEOVER_DEATH_WAIT_GROUND && gameOverCtx->state < GAMEOVER_REVIVE_START) ||
         (gameOverCtx->state >= GAMEOVER_REVIVE_RUMBLE && gameOverCtx->state < GAMEOVER_REVIVE_FADE_OUT)) {
-        Environment_FadeInGameOverLights(globalCtx);
+        Environment_FadeInGameOverLights(play);
     }
 }
 
 // This variable cannot be moved into this file as all of z_message_PAL rodata is in the way
 extern s16 gGameOverTimer;
 
-void GameOver_Update(GlobalContext* globalCtx) {
-    GameOverContext* gameOverCtx = &globalCtx->gameOverCtx;
+void GameOver_Update(PlayState* play) {
+    GameOverContext* gameOverCtx = &play->gameOverCtx;
     s16 i;
     s16 j;
     s32 v90;
@@ -26,26 +26,28 @@ void GameOver_Update(GlobalContext* globalCtx) {
 
     switch (gameOverCtx->state) {
         case GAMEOVER_DEATH_START:
-            Message_CloseTextbox(globalCtx);
+            Message_CloseTextbox(play);
 
             gSaveContext.timer1State = 0;
             gSaveContext.timer2State = 0;
             gSaveContext.eventInf[1] &= ~1;
 
             // search inventory for spoiling items and revert if necessary
-            for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
-                if (INV_CONTENT(ITEM_POCKET_EGG) == gSpoilingItems[i]) {
-                    INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
+            if (!(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE))) {
+                for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
+                    if (INV_CONTENT(ITEM_POCKET_EGG) == gSpoilingItems[i]) {
+                        INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
 
-                    // search c buttons for the found spoiling item and revert if necessary
-                    for (j = 1; j < ARRAY_COUNT(gSaveContext.equips.buttonItems); j++) {
-                        if (gSaveContext.equips.buttonItems[j] == gSpoilingItems[i]) {
-                            gSaveContext.equips.buttonItems[j] = gSpoilingItemReverts[i];
-                            Interface_LoadItemIcon1(globalCtx, j);
+                        // search c buttons for the found spoiling item and revert if necessary
+                        for (j = 1; j < ARRAY_COUNT(gSaveContext.equips.buttonItems); j++) {
+                            if (gSaveContext.equips.buttonItems[j] == gSpoilingItems[i]) {
+                                gSaveContext.equips.buttonItems[j] = gSpoilingItemReverts[i];
+                                Interface_LoadItemIcon1(play, j);
+                            }
                         }
                     }
                 }
-            }
+			}
 
             // restore "temporary B" to the B Button if not a sword item
             if (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI &&
@@ -73,7 +75,7 @@ void GameOver_Update(GlobalContext* globalCtx) {
             }
             gSaveContext.unk_13E7 = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC = 0;
 
-            Environment_InitGameOverLights(globalCtx);
+            Environment_InitGameOverLights(play);
             gGameOverTimer = 20;
             v90 = VREG(90);
             v91 = VREG(91);
@@ -92,7 +94,7 @@ void GameOver_Update(GlobalContext* globalCtx) {
             gGameOverTimer--;
 
             if (gGameOverTimer == 0) {
-                globalCtx->pauseCtx.state = 8;
+                play->pauseCtx.state = 8;
                 gameOverCtx->state++;
                 func_800AA15C();
             }
@@ -101,7 +103,7 @@ void GameOver_Update(GlobalContext* globalCtx) {
         case GAMEOVER_REVIVE_START:
             gameOverCtx->state++;
             gGameOverTimer = 0;
-            Environment_InitGameOverLights(globalCtx);
+            Environment_InitGameOverLights(play);
             ShrinkWindow_SetVal(0x20);
             return;
 
@@ -136,7 +138,7 @@ void GameOver_Update(GlobalContext* globalCtx) {
             break;
 
         case GAMEOVER_REVIVE_FADE_OUT:
-            Environment_FadeOutGameOverLights(globalCtx);
+            Environment_FadeOutGameOverLights(play);
             gGameOverTimer--;
 
             if (gGameOverTimer == 0) {

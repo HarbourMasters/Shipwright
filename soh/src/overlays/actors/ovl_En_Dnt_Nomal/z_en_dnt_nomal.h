@@ -1,12 +1,12 @@
 #ifndef Z_EN_DNT_NOMAL_H
 #define Z_EN_DNT_NOMAL_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnDntNomal;
 
-typedef void (*EnDntNomalActionFunc)(struct EnDntNomal*, GlobalContext*);
+typedef void (*EnDntNomalActionFunc)(struct EnDntNomal*, PlayState*);
 
 typedef struct EnDntNomal {
     /* 0x0000 */ Actor actor;

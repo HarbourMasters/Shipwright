@@ -1,12 +1,12 @@
 #ifndef Z_EN_SYATEKI_NIW_H
 #define Z_EN_SYATEKI_NIW_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnSyatekiNiw;
 
-typedef void (*EnSyatekiNiwActionFunc)(struct EnSyatekiNiw*, GlobalContext*);
+typedef void (*EnSyatekiNiwActionFunc)(struct EnSyatekiNiw*, PlayState*);
 
 typedef struct {
     /* 0x00 */ u8    unk_00;

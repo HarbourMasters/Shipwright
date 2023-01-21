@@ -1,12 +1,12 @@
 #ifndef Z_OBJ_MURE_H
 #define Z_OBJ_MURE_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ObjMure;
 
-typedef void (*ObjMureActionFunc)(struct ObjMure*, GlobalContext*);
+typedef void (*ObjMureActionFunc)(struct ObjMure*, PlayState*);
 
 #define OBJMURE_MAX_SPAWNS 15
 

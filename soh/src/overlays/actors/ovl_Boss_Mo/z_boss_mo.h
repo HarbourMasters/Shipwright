@@ -1,12 +1,12 @@
 #ifndef Z_BOSS_MO_H
 #define Z_BOSS_MO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BossMo;
 
-typedef void (*BossMoActionFunc)(struct BossMo*, GlobalContext*);
+typedef void (*BossMoActionFunc)(struct BossMo*, PlayState*);
 
 typedef enum {
     /* 0 */ MO_TENT_ACTION_STATE,

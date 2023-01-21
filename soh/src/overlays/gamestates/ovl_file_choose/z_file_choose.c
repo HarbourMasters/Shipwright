@@ -6,162 +6,187 @@
 #include "textures/parameter_static/parameter_static.h"
 #include <textures/icon_item_static/icon_item_static.h>
 #include "soh/frame_interpolation.h"
+#include <GameVersions.h>
+#include "objects/object_mag/object_mag.h"
+#include "objects/gameplay_keep/gameplay_keep.h"
+
+#define NORMAL_QUEST 0
+#define MASTER_QUEST 1
+#define RANDOMIZER_QUEST 2
+#define MIN_QUEST (ResourceMgr_GameHasOriginal() ? NORMAL_QUEST : MASTER_QUEST)
+u8 getMaxQuest() {
+    if ((strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0)) {
+        return RANDOMIZER_QUEST;
+    }
+
+    if (ResourceMgr_GameHasMasterQuest()) {
+        return MASTER_QUEST;
+    }
+
+    return NORMAL_QUEST;
+}
+#define MAX_QUEST getMaxQuest()
+
+void FileChoose_DrawTextureI8(GraphicsContext* gfxCtx, const void* texture, s16 texWidth, s16 texHeight, s16 rectLeft, s16 rectTop,
+                         s16 rectWidth, s16 rectHeight, u16 dsdx, u16 dtdy) {
+    OPEN_DISPS(gfxCtx);
+    gDPLoadTextureBlock(POLY_OPA_DISP++, texture, G_IM_FMT_I, G_IM_SIZ_8b, texWidth, texHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+
+    gSPTextureRectangle(POLY_OPA_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2, (rectTop + rectHeight) << 2,
+                        G_TX_RENDERTILE, 0, 0, dsdx, dtdy);
+
+    CLOSE_DISPS(gfxCtx);
+}
+
+void FileChoose_DrawRawImageRGBA32(GraphicsContext* gfxCtx, s16 centerX, s16 centerY, const char* source, u32 width, u32 height) {
+    u8* curTexture;
+    s32 textureCount;
+    u32 rectLeft;
+    u32 rectTop;
+    u32 textureHeight;
+    s32 remainingSize;
+    s32 textureSize;
+    s32 pad;
+    s32 i;
+
+    OPEN_DISPS(gfxCtx);
+
+    source = ResourceMgr_LoadFileRaw(source);
+
+    curTexture = source;
+    rectLeft = centerX - (width / 2);
+    rectTop = centerY - (height / 2);
+    textureHeight = 4096 / (width << 2);
+    remainingSize = (width * height) << 2;
+    textureSize = (width * textureHeight) << 2;
+    textureCount = remainingSize / textureSize;
+    if ((remainingSize % textureSize) != 0) {
+        textureCount += 1;
+    }
+
+    gDPSetTileCustom(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_32b, width, textureHeight, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                     G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+
+    remainingSize -= textureSize;
+
+    for (i = 0; i < textureCount; i++) {
+        gDPSetTextureImage(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_32b, width, curTexture);
+
+        gDPLoadSync(POLY_OPA_DISP++);
+        gDPLoadTile(POLY_OPA_DISP++, G_TX_LOADTILE, 0, 0, (width - 1) << 2, (textureHeight - 1) << 2);
+
+        gSPTextureRectangle(POLY_OPA_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + (s32)width) << 2,
+                            (rectTop + textureHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+
+        curTexture += textureSize;
+        rectTop += textureHeight;
+
+        if ((remainingSize - textureSize) < 0) {
+            if (remainingSize > 0) {
+                textureHeight = remainingSize / (s32)(width << 2);
+                remainingSize -= textureSize;
+
+                gDPSetTileCustom(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_32b, width, textureHeight, 0,
+                                 G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                                 G_TX_NOLOD, G_TX_NOLOD);
+            }
+        } else {
+            remainingSize -= textureSize;
+        }
+    }
+    CLOSE_DISPS(gfxCtx);
+}
+
+void FileChoose_DrawImageRGBA32(GraphicsContext* gfxCtx, s16 centerX, s16 centerY, const char* source, u32 width, u32 height) {
+    u8* curTexture;
+    s32 textureCount;
+    u32 rectLeft;
+    u32 rectTop;
+    u32 textureHeight;
+    s32 remainingSize;
+    s32 textureSize;
+    s32 pad;
+    s32 i;
+
+    OPEN_DISPS(gfxCtx);
+
+    source = GetResourceDataByName(source, false);
+
+    curTexture = source;
+    rectLeft = centerX - (width / 2);
+    rectTop = centerY - (height / 2);
+    textureHeight = 4096 / (width << 2);
+    remainingSize = (width * height) << 2;
+    textureSize = (width * textureHeight) << 2;
+    textureCount = remainingSize / textureSize;
+    if ((remainingSize % textureSize) != 0) {
+        textureCount += 1;
+    }
+
+    gDPSetTileCustom(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_32b, width, textureHeight, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                     G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+
+    remainingSize -= textureSize;
+
+    for (i = 0; i < textureCount; i++) {
+        gDPSetTextureImage(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_32b, width, curTexture);
+
+        gDPLoadSync(POLY_OPA_DISP++);
+        gDPLoadTile(POLY_OPA_DISP++, G_TX_LOADTILE, 0, 0, (width - 1) << 2, (textureHeight - 1) << 2);
+
+        gSPTextureRectangle(POLY_OPA_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + (s32)width) << 2,
+                            (rectTop + textureHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+
+        curTexture += textureSize;
+        rectTop += textureHeight;
+
+        if ((remainingSize - textureSize) < 0) {
+            if (remainingSize > 0) {
+                textureHeight = remainingSize / (s32)(width << 2);
+                remainingSize -= textureSize;
+
+                gDPSetTileCustom(POLY_OPA_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_32b, width, textureHeight, 0,
+                                 G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
+                                 G_TX_NOLOD, G_TX_NOLOD);
+            }
+        } else {
+            remainingSize -= textureSize;
+        }
+    }
+    CLOSE_DISPS(gfxCtx);
+}
+
+void FileChoose_DrawTextRec(GraphicsContext* gfxCtx, s32 r, s32 g, s32 b, s32 a, f32 x, f32 y, f32 z, s32 s, s32 t,
+                         f32 dx, f32 dy) {
+    f32 unk;
+    s32 ulx, uly, lrx, lry;
+    f32 w, h;
+    s32 dsdx, dtdy;
+
+    OPEN_DISPS(gfxCtx);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, r, g, b, a);
+
+    w = 8.0f * z;
+    h = 12.0f * z;
+    unk = (1.0f / z) * 1024;
+    dsdx = unk * dx;
+    dtdy = dy * unk;
+
+    ulx = (x - w) * 4.0f;
+    uly = (y - h) * 4.0f;
+    lrx = (x + w) * 4.0f;
+    lry = (y + h) * 4.0f;
+    gSPTextureRectangle(POLY_OPA_DISP++, ulx, uly, lrx, lry, G_TX_RENDERTILE, s, t, dsdx, dtdy);
+    CLOSE_DISPS(gfxCtx);
+}
 
 static s16 sUnused = 106;
 
 static s16 sScreenFillAlpha = 255;
 
-unsigned char gFileSelRANDButtonTex[] = {
-    0x0,  0x0,  0x75, 0x73, 0xfa, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7,
-    0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff,
-    0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7,
-    0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff,
-    0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xe0, 0xff, 0x51, 0x7f, 0x0,  0x0,  0x5e, 0x5c, 0xff, 0xff, 0xff, 0xff, 0xf7,
-    0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff,
-    0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7,
-    0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff,
-    0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xf7, 0xff, 0xa0,
-    0xff, 0xa0, 0xff, 0x51, 0x7f, 0xe2, 0xff, 0xf7, 0xff, 0xf2, 0xff, 0x90, 0xff, 0x97, 0xff, 0x9d, 0xff, 0xa3, 0xff,
-    0xa9, 0xff, 0xb0, 0xff, 0xb6, 0xff, 0xbc, 0xff, 0xc3, 0xff, 0xca, 0xff, 0xd0, 0xff, 0xd3, 0xff, 0xce, 0xff, 0xca,
-    0xff, 0xc5, 0xff, 0xc1, 0xff, 0xbc, 0xff, 0xb8, 0xff, 0xb4, 0xff, 0xaf, 0xff, 0xab, 0xff, 0xa7, 0xff, 0xa2, 0xff,
-    0x9e, 0xff, 0x9a, 0xff, 0x95, 0xff, 0x91, 0xff, 0x8c, 0xff, 0x88, 0xff, 0x84, 0xff, 0x80, 0xff, 0x7c, 0xff, 0x77,
-    0xff, 0x75, 0xff, 0x7f, 0xff, 0x8a, 0xff, 0x95, 0xff, 0xa1, 0xff, 0xa2, 0xff, 0x93, 0xff, 0x59, 0xff, 0xd2, 0xff,
-    0xd8, 0xff, 0x8b, 0xff, 0x90, 0xff, 0x97, 0xff, 0x9d, 0xff, 0xa3, 0xff, 0xa9, 0xff, 0xb0, 0xff, 0xb6, 0xff, 0x9a,
-    0xff, 0x81, 0xff, 0x86, 0xff, 0x8a, 0xff, 0x8d, 0xff, 0xa2, 0xff, 0xca, 0xff, 0xc5, 0xff, 0xc1, 0xff, 0xbc, 0xff,
-    0xb8, 0xff, 0xb4, 0xff, 0xaf, 0xff, 0xab, 0xff, 0xa7, 0xff, 0xa2, 0xff, 0x9e, 0xff, 0x9a, 0xff, 0x95, 0xff, 0x91,
-    0xff, 0x8c, 0xff, 0x88, 0xff, 0x84, 0xff, 0x80, 0xff, 0x7c, 0xff, 0x77, 0xff, 0x75, 0xff, 0x63, 0xff, 0x8a, 0xff,
-    0x95, 0xff, 0xa1, 0xff, 0xb0, 0xff, 0x47, 0xff, 0x3a, 0xff, 0xd2, 0xff, 0xd2, 0xff, 0x8b, 0xff, 0x90, 0xff, 0x97,
-    0xff, 0x9d, 0xff, 0xa3, 0xff, 0xa9, 0xff, 0xb0, 0xff, 0x95, 0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff,
-    0x0,  0xff, 0x0,  0xff, 0x3f, 0xff, 0xe0, 0xff, 0xc1, 0xff, 0xbc, 0xff, 0xb8, 0xff, 0xb4, 0xff, 0xaf, 0xff, 0xab,
-    0xff, 0xa7, 0xff, 0xa2, 0xff, 0x9e, 0xff, 0x9a, 0xff, 0x95, 0xff, 0x91, 0xff, 0x8c, 0xff, 0x88, 0xff, 0x84, 0xff,
-    0x80, 0xff, 0x7c, 0xff, 0x77, 0xff, 0x20, 0xff, 0x0,  0xff, 0xba, 0xff, 0x95, 0xff, 0xa1, 0xff, 0xb0, 0xff, 0x3a,
-    0xff, 0x3a, 0xff, 0xd2, 0xff, 0xd2, 0xff, 0x8b, 0xff, 0x90, 0xff, 0x97, 0xff, 0x9d, 0xff, 0xa3, 0xff, 0xa9, 0xff,
-    0xb0, 0xff, 0x83, 0xff, 0x0,  0xff, 0xd,  0xff, 0x4f, 0xff, 0x4f, 0xff, 0x4c, 0xff, 0x4,  0xff, 0x0,  0xff, 0xa5,
-    0xff, 0xc6, 0xff, 0x85, 0xff, 0x5b, 0xff, 0x56, 0xff, 0x70, 0xff, 0xab, 0xff, 0xa7, 0xff, 0x79, 0xff, 0x7e, 0xff,
-    0x51, 0xff, 0x48, 0xff, 0x61, 0xff, 0x8c, 0xff, 0x88, 0xff, 0x84, 0xff, 0x40, 0xff, 0x2d, 0xff, 0x3a, 0xff, 0x1d,
-    0xff, 0x0,  0xff, 0xad, 0xff, 0xb7, 0xff, 0xa1, 0xff, 0xb0, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0xd2, 0xff, 0xd2, 0xff,
-    0x8b, 0xff, 0x90, 0xff, 0x55, 0xff, 0x52, 0xff, 0x68, 0xff, 0x7e, 0xff, 0xb0, 0xff, 0x83, 0xff, 0x0,  0xff, 0x21,
-    0xff, 0xf8, 0xff, 0xd6, 0xff, 0xd9, 0xff, 0x47, 0xff, 0x0,  0xff, 0x89, 0xff, 0x40, 0xff, 0x0,  0xff, 0x0,  0xff,
-    0x0,  0xff, 0x0,  0xff, 0x2c, 0xff, 0xa0, 0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0x3b,
-    0xff, 0xc1, 0xff, 0xf,  0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0xad, 0xff, 0xb7, 0xff,
-    0xa1, 0xff, 0xb0, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0xd2, 0xff, 0xd2, 0xff, 0x8b, 0xff, 0x90, 0xff, 0x3d, 0xff, 0x37,
-    0xff, 0x60, 0xff, 0x7e, 0xff, 0xb0, 0xff, 0x83, 0xff, 0x0,  0xff, 0x1,  0xff, 0x2d, 0xff, 0x28, 0xff, 0x24, 0xff,
-    0x0,  0xff, 0x0,  0xff, 0xd1, 0xff, 0x15, 0xff, 0x15, 0xff, 0xa3, 0xff, 0xa8, 0xff, 0x1f, 0xff, 0x0,  0xff, 0xbc,
-    0xff, 0x0,  0xff, 0x0,  0xff, 0x88, 0xff, 0x95, 0xff, 0x0,  0xff, 0x0,  0xff, 0xa7, 0xff, 0x0,  0xff, 0xd,  0xff,
-    0xa6, 0xff, 0x81, 0xff, 0x0,  0xff, 0x0,  0xff, 0xad, 0xff, 0xb7, 0xff, 0xa1, 0xff, 0xb0, 0xff, 0x3a, 0xff, 0x3a,
-    0xff, 0xd2, 0xff, 0xd2, 0xff, 0x8b, 0xff, 0x90, 0xff, 0x44, 0xff, 0x4f, 0xff, 0x8a, 0xff, 0x9e, 0xff, 0xb0, 0xff,
-    0x83, 0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0x4b, 0xff, 0xf5, 0xff, 0x67,
-    0xff, 0x1e, 0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0xbc, 0xff, 0x0,  0xff, 0x26, 0xff, 0xf5, 0xff,
-    0x95, 0xff, 0x14, 0xff, 0x0,  0xff, 0x7d, 0xff, 0x0,  0xff, 0x73, 0xff, 0xd6, 0xff, 0x77, 0xff, 0x16, 0xff, 0x0,
-    0xff, 0xad, 0xff, 0xb7, 0xff, 0xa1, 0xff, 0xb0, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0xd2, 0xff, 0xd2, 0xff, 0x8b, 0xff,
-    0x90, 0xff, 0x59, 0xff, 0x67, 0xff, 0x97, 0xff, 0x9b, 0xff, 0xb0, 0xff, 0x83, 0xff, 0x0,  0xff, 0x21, 0xff, 0xc6,
-    0xff, 0xbf, 0xff, 0x83, 0xff, 0x0,  0xff, 0x0,  0xff, 0xd1, 0xff, 0x0,  0xff, 0x0,  0xff, 0x24, 0xff, 0x30, 0xff,
-    0x10, 0xff, 0x0,  0xff, 0xbc, 0xff, 0x0,  0xff, 0x28, 0xff, 0xef, 0xff, 0x95, 0xff, 0x14, 0xff, 0x0,  0xff, 0x82,
-    0xff, 0x0,  0xff, 0x70, 0xff, 0xc3, 0xff, 0x77, 0xff, 0x19, 0xff, 0x0,  0xff, 0xad, 0xff, 0xb7, 0xff, 0xa1, 0xff,
-    0xb0, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0xd2, 0xff, 0xd2, 0xff, 0x8b, 0xff, 0x90, 0xff, 0x97, 0xff, 0x9d, 0xff, 0xa3,
-    0xff, 0xa9, 0xff, 0xb0, 0xff, 0x83, 0xff, 0x0,  0xff, 0x21, 0xff, 0xf8, 0xff, 0xd0, 0xff, 0xd3, 0xff, 0x2e, 0xff,
-    0x0,  0xff, 0x73, 0xff, 0x0,  0xff, 0x48, 0xff, 0xc5, 0xff, 0x98, 0xff, 0x16, 0xff, 0x0,  0xff, 0xbc, 0xff, 0x0,
-    0xff, 0x28, 0xff, 0xef, 0xff, 0x95, 0xff, 0x14, 0xff, 0x0,  0xff, 0xa8, 0xff, 0x0,  0xff, 0x18, 0xff, 0xa1, 0xff,
-    0x57, 0xff, 0x3,  0xff, 0x0,  0xff, 0xad, 0xff, 0xb7, 0xff, 0xa1, 0xff, 0xb0, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0xd2,
-    0xff, 0xd2, 0xff, 0x8b, 0xff, 0x90, 0xff, 0x97, 0xff, 0x9d, 0xff, 0xa3, 0xff, 0xa9, 0xff, 0xb0, 0xff, 0x83, 0xff,
-    0x0,  0xff, 0x21, 0xff, 0xf8, 0xff, 0xd0, 0xff, 0xd3, 0xff, 0x6b, 0xff, 0x0,  0xff, 0x2d, 0xff, 0x1,  0xff, 0x0,
-    0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0xa8, 0xff, 0x0,  0xff, 0x28, 0xff, 0xef, 0xff, 0x95, 0xff,
-    0x14, 0xff, 0x0,  0xff, 0xc1, 0xff, 0xf,  0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0x0,  0xff, 0xad,
-    0xff, 0xb7, 0xff, 0xa1, 0xff, 0xb0, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0xd2, 0xff, 0xc7, 0xff, 0x8b, 0xff, 0x90, 0xff,
-    0x97, 0xff, 0x9d, 0xff, 0xa3, 0xff, 0xa9, 0xff, 0xb0, 0xff, 0xb6, 0xff, 0x5a, 0xff, 0x81, 0xff, 0xf0, 0xff, 0xd0,
-    0xff, 0xd3, 0xff, 0xce, 0xff, 0x61, 0xff, 0x7f, 0xff, 0xee, 0xff, 0x5c, 0xff, 0x48, 0xff, 0x57, 0xff, 0x89, 0xff,
-    0x70, 0xff, 0xfe, 0xff, 0x4d, 0xff, 0x82, 0xff, 0xe1, 0xff, 0x95, 0xff, 0x4b, 0xff, 0x6a, 0xff, 0xf8, 0xff, 0x84,
-    0xff, 0x59, 0xff, 0x43, 0xff, 0x4f, 0xff, 0x86, 0xff, 0x6f, 0xff, 0xfb, 0xff, 0x95, 0xff, 0xa1, 0xff, 0xb0, 0xff,
-    0x3a, 0xff, 0x3a, 0xff, 0xc7, 0xff, 0x84, 0xff, 0x79, 0xff, 0x90, 0xff, 0x97, 0xff, 0x9d, 0xff, 0xa3, 0xff, 0xa9,
-    0xff, 0xb0, 0xff, 0xb6, 0xff, 0xbc, 0xff, 0xc3, 0xff, 0xca, 0xff, 0xd0, 0xff, 0xd3, 0xff, 0xce, 0xff, 0xca, 0xff,
-    0xc5, 0xff, 0xc1, 0xff, 0xbc, 0xff, 0xbc, 0xff, 0xbf, 0xff, 0xb7, 0xff, 0xab, 0xff, 0xa7, 0xff, 0xa2, 0xff, 0x9e,
-    0xff, 0x9a, 0xff, 0x95, 0xff, 0x91, 0xff, 0x8c, 0xff, 0x88, 0xff, 0x84, 0xff, 0x80, 0xff, 0x7c, 0xff, 0x8e, 0xff,
-    0x87, 0xff, 0x7f, 0xff, 0x8a, 0xff, 0x95, 0xff, 0xa1, 0xff, 0x48, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x2d, 0x5c, 0x79,
-    0xff, 0x79, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff,
-    0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a,
-    0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff,
-    0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a,
-    0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x1e, 0x7f, 0x0,  0x0,  0x37, 0x71, 0x4f, 0xff, 0x3a, 0xff, 0x3a, 0xff,
-    0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a,
-    0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff,
-    0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a,
-    0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x3a, 0xff, 0x15, 0x55,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,
-    0x0,  0x0,  0x0,  0x0,
-};
+static u8 isFastFileIdIncompatible = 0;
 
 static Gfx sScreenFillSetupDL[] = {
     gsDPPipeSync(),
@@ -176,10 +201,21 @@ static Gfx sScreenFillSetupDL[] = {
 
 static s16 sFileInfoBoxPartWidths[] = { 36, 36, 36, 36, 24 };
 
-static s16 sWindowContentColors[2][3] = {
+s16 sWindowContentColors[2][3] = {
     { 100, 150, 255 }, // blue
     { 100, 100, 100 }, // gray
 };
+
+static int FileChoose_IsSaveCompatible(const SaveFileMetaInfo* restrict meta) {
+    bool valid = true;
+    if (meta->requiresMasterQuest) {
+        valid = valid && ResourceMgr_GameHasMasterQuest();
+    }
+    if (meta->requiresOriginal) {
+        valid = valid && ResourceMgr_GameHasOriginal();
+    }
+    return valid;
+}
 
 void FileChoose_SetView(FileChooseContext* this, f32 eyeX, f32 eyeY, f32 eyeZ) {
     Vec3f eye;
@@ -343,18 +379,20 @@ void SpriteDraw(FileChooseContext* this, Sprite* sprite, int left, int top, int 
     CLOSE_DISPS(this->state.gfxCtx);
 }
 
+bool fileSelectSpoilerFileLoaded = false;
+
 void DrawSeedHashSprites(FileChooseContext* this) {
     OPEN_DISPS(this->state.gfxCtx);
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
-    if (this->windowRot == 0) {
+    if (this->windowRot == 0 || (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == RANDOMIZER_QUEST)) {
         if (this->selectMode == SM_CONFIRM_FILE) {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, this->fileInfoAlpha[this->buttonIndex]);
 
             u16 xStart = 64;
             // Draw Seed Icons
-            for (u8 i = 0; i < 5; i++) {
+            for (unsigned int i = 0; i < 5; i++) {
                 if (Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1) {
                     SpriteLoad(this, GetSeedTexture(Save_GetSaveMetaInfo(this->selectedFileIndex)->seedHash[i]));
                     SpriteDraw(this, GetSeedTexture(Save_GetSaveMetaInfo(this->selectedFileIndex)->seedHash[i]),
@@ -365,13 +403,13 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, this->fileButtonAlpha[this->buttonIndex]);
 
-        if (CVar_GetS32("gRandomizer", 0) != 0 && CVar_GetString("gSpoilerLog", "") != "") {
+        if (strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0 && fileSelectSpoilerFileLoaded) {
             u16 xStart = 64;
-            for (u8 i = 0; i < 5; i++) {
+            for (unsigned int i = 0; i < 5; i++) {
                 SpriteLoad(this, GetSeedTexture(gSaveContext.seedIcons[i]));
                 SpriteDraw(this, GetSeedTexture(gSaveContext.seedIcons[i]), xStart + (40 * i), 10, 24, 24);
             }
-        }
+            }
     }
 
     gDPPipeSync(POLY_OPA_DISP++);
@@ -380,7 +418,50 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 }
 
 u8 generating;
-bool fileSelectSpoilerFileLoaded;
+
+void FileChoose_UpdateRandomizer() {
+    if (CVarGetInteger("gRandoGenerating", 0) != 0 && generating == 0) {
+            generating = 1;
+            func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
+            return;
+    } else if (CVarGetInteger("gRandoGenerating", 0) == 0 && generating) {
+            Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+            func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
+            generating = 0;
+            return;
+    } else if (generating) {
+            return;
+    }
+
+    if (!SpoilerFileExists(CVarGetString("gSpoilerLog", ""))) {
+            CVarSetString("gSpoilerLog", "");
+            fileSelectSpoilerFileLoaded = false;
+    }
+
+    if ((CVarGetInteger("gNewFileDropped", 0) != 0) || (CVarGetInteger("gNewSeedGenerated", 0) != 0) ||
+        (!fileSelectSpoilerFileLoaded && SpoilerFileExists(CVarGetString("gSpoilerLog", "")))) {
+            if (CVarGetInteger("gNewFileDropped", 0) != 0) {
+            CVarSetString("gSpoilerLog", CVarGetString("gDroppedFile", "None"));
+            }
+            bool silent = true;
+            if ((CVarGetInteger("gNewFileDropped", 0) != 0) || (CVarGetInteger("gNewSeedGenerated", 0) != 0)) {
+            silent = false;
+            }
+            CVarSetInteger("gNewSeedGenerated", 0);
+            CVarSetInteger("gNewFileDropped", 0);
+            CVarSetString("gDroppedFile", "");
+            fileSelectSpoilerFileLoaded = false;
+            const char* fileLoc = CVarGetString("gSpoilerLog", "");
+            Randomizer_LoadSettings(fileLoc);
+            Randomizer_LoadHintLocations(fileLoc);
+            Randomizer_LoadRequiredTrials(fileLoc);
+            Randomizer_LoadItemLocations(fileLoc, silent);
+            Randomizer_LoadMerchantMessages(fileLoc);
+            Randomizer_LoadMasterQuestDungeons(fileLoc);
+            Randomizer_LoadEntranceOverrides(fileLoc, silent);
+            fileSelectSpoilerFileLoaded = true;
+    }
+}
 
 /**
  * Update the cursor and wait for the player to select a button to change menus accordingly.
@@ -394,66 +475,38 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-    bool dpad = CVar_GetS32("gDpadPauseName", 0);
+    bool dpad = CVarGetInteger("gDpadText", 0);
 
-    if (CVar_GetS32("gRandoGenerating", 0) != 0 && generating == 0) {
-        generating = 1;
-        func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
-        return;
-    } else if (CVar_GetS32("gRandoGenerating", 0) == 0 && generating) {
-        Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
-        func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
-        generating = 0;
-        return;
-    } else if (generating) {
-        return;
-    }
-
-    if (!SpoilerFileExists(CVar_GetString("gSpoilerLog", ""))) {
-        CVar_SetString("gSpoilerLog", "");
-        fileSelectSpoilerFileLoaded = false;
-    }
-
-    if ((CVar_GetS32("gNewFileDropped", 0) != 0) ||
-        (CVar_GetS32("gNewSeedGenerated", 0) != 0) ||
-        (!fileSelectSpoilerFileLoaded &&
-            SpoilerFileExists(CVar_GetString("gSpoilerLog", "")))) {
-        if (CVar_GetS32("gNewFileDropped", 0) != 0) {
-            CVar_SetString("gSpoilerLog", CVar_GetString("gDroppedFile", "None"));
-        }
-        bool silent = true;
-        if ((CVar_GetS32("gNewFileDropped", 0) != 0) ||
-            (CVar_GetS32("gNewSeedGenerated", 0) != 0)) {
-            silent = false;
-        }
-        CVar_SetS32("gNewSeedGenerated", 0);
-        CVar_SetS32("gNewFileDropped", 0);
-        CVar_SetString("gDroppedFile", "");
-        fileSelectSpoilerFileLoaded = false;
-        const char* fileLoc = CVar_GetString("gSpoilerLog", "");
-        Randomizer_LoadSettings(fileLoc);
-        Randomizer_LoadHintLocations(fileLoc);
-        Randomizer_LoadItemLocations(fileLoc, silent);
-        fileSelectSpoilerFileLoaded = true;
-    }
+    FileChoose_UpdateRandomizer();
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
         if (this->buttonIndex <= FS_BTN_MAIN_FILE_3) {
             if (!Save_GetSaveMetaInfo(this->buttonIndex)->valid) {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                this->configMode = CM_ROTATE_TO_NAME_ENTRY;
-                CVar_SetS32("gOnFileSelectNameEntry", 1);
-                this->kbdButton = FS_KBD_BTN_NONE;
-                this->charPage = FS_CHAR_PAGE_ENG;
-                this->kbdX = 0;
-                this->kbdY = 0;
-                this->charIndex = 0;
-                this->charBgAlpha = 0;
-                this->newFileNameCharCount = 0;
-                this->nameEntryBoxPosX = 120;
-                this->nameEntryBoxAlpha = 0;
-                memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, &emptyName, 8);
-            } else {
+                this->prevConfigMode = this->configMode;
+                if (MIN_QUEST != MAX_QUEST) {
+                    this->configMode = CM_ROTATE_TO_QUEST_MENU;
+                } else {
+                    this->configMode = CM_ROTATE_TO_NAME_ENTRY;
+                    gSaveContext.isMasterQuest = MIN_QUEST == MASTER_QUEST;
+                    this->questType[this->buttonIndex] = MIN_QUEST;
+                    CVarSetInteger("gOnFileSelectNameEntry", 1);
+                    this->kbdButton = FS_KBD_BTN_NONE;
+                    this->charPage = FS_CHAR_PAGE_ENG;
+                    this->kbdX = 0;
+                    this->kbdY = 0;
+                    this->charIndex = 0;
+                    this->charBgAlpha = 0;
+                    this->newFileNameCharCount = 0;
+                    this->nameEntryBoxPosX = 120;
+                    this->nameEntryBoxAlpha = 0;
+                    memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, &emptyName, 8);
+                }
+                this->logoAlpha = 0;
+            } else if(!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(this->buttonIndex))) {
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            }  
+            else {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                 this->actionTimer = 8;
                 this->selectMode = SM_FADE_MAIN_TO_SELECT;
@@ -531,6 +584,142 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     }
 }
 
+void FileChoose_UpdateStickDirectionPromptAnim(GameState* thisx) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+    f32 arrowAnimTween;
+    f32 new_var3;       // likely fake temp
+    s32 new_var2 = 155; // likely fake temp
+    f32 stickAnimTween;
+
+    arrowAnimTween = this->arrowAnimTween;
+    stickAnimTween = this->stickAnimTween;
+    if (this->arrowAnimState == 0) {
+        arrowAnimTween += 0.027f;
+        if (arrowAnimTween > 1.0f) {
+            arrowAnimTween = 1.0f;
+            this->arrowAnimState = 1;
+        }
+
+    } else {
+        arrowAnimTween -= 0.027f;
+        if (arrowAnimTween < 0.0f) {
+            arrowAnimTween = 0.0f;
+            this->arrowAnimState = 0;
+        }
+    }
+
+    this->arrowAnimTween = arrowAnimTween;
+    if (this->stickAnimState == 0) {
+        stickAnimTween += 0.027f;
+        if (stickAnimTween > 1.0f) {
+            stickAnimTween = 1.0f;
+            this->stickAnimState = 1;
+        }
+
+    } else {
+        stickAnimTween = 0.0f;
+        this->stickAnimState = 0;
+    }
+
+    this->stickAnimTween = stickAnimTween;
+    this->stickLeftPrompt.arrowColorR = (u8)(155 - ((s32)(75.0f * arrowAnimTween)));
+    this->stickLeftPrompt.arrowColorG = (u8)(new_var2 - (s32)(55.0f * arrowAnimTween));
+    new_var3 = (75.0f * arrowAnimTween);
+    this->stickLeftPrompt.arrowColorB = (u8)(255 - ((s32)(75.0f * arrowAnimTween)));
+    this->stickLeftPrompt.arrowColorA = (u8)(200 - ((s32)(50.0f * arrowAnimTween)));
+    this->stickRightPrompt.arrowColorR = (u8)(new_var2 - (s32)new_var3);
+    this->stickRightPrompt.arrowColorG = (u8)(155 - (s32)new_var3);
+    this->stickRightPrompt.arrowColorB = (u8)(255 - ((s32)(75.0f * arrowAnimTween)));
+    this->stickRightPrompt.arrowColorA = (u8)(200 - ((s32)(50.0f * arrowAnimTween)));
+    this->stickRightPrompt.arrowTexX = 260.0f;
+    this->stickLeftPrompt.arrowTexX = 63.0f;
+    this->stickRightPrompt.stickTexX = 244.0f;
+    this->stickLeftPrompt.stickTexX = 79.0f;
+    this->stickRightPrompt.stickTexX += (8.0f * stickAnimTween);
+    this->stickLeftPrompt.stickTexX -= (8.0f * stickAnimTween);
+    this->stickLeftPrompt.arrowTexY = this->stickRightPrompt.arrowTexY = 135.0f;
+    this->stickLeftPrompt.stickTexY = this->stickRightPrompt.stickTexY = 139.0f;
+}
+
+void FileChoose_StartQuestMenu(GameState* thisx) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+
+    this->logoAlpha += 25;
+
+    if (this->logoAlpha >= 255) {
+        this->logoAlpha = 255;
+        this->configMode = CM_QUEST_MENU;
+    }
+}
+
+void FileChoose_UpdateQuestMenu(GameState* thisx) {
+    static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
+    FileChoose_UpdateStickDirectionPromptAnim(thisx);
+    FileChooseContext* this = (FileChooseContext*)thisx;
+    Input* input = &this->state.input[0];
+    s8 i = 0;
+    bool dpad = CVarGetInteger("gDpadText", 0);(dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP));
+
+    FileChoose_UpdateRandomizer();
+
+    if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
+        if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
+            this->questType[this->buttonIndex] += 1;
+            if (this->questType[this->buttonIndex] == MASTER_QUEST && !ResourceMgr_GameHasMasterQuest()) {
+                // the only case not handled by the MIN/MAX_QUEST logic below. This will either put it at 
+                // above MAX_QUEST in which case it will wrap back around, or it will put it on MAX_QUEST
+                // in which case if MAX_QUEST even is that number it will be a valid selection that won't
+                // crash.
+                this->questType[this->buttonIndex] += 1;
+            }
+        } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
+            this->questType[this->buttonIndex] -= 1;
+            if (this->questType[this->buttonIndex] == MASTER_QUEST && !ResourceMgr_GameHasMasterQuest()) {
+                // the only case not handled by the MIN/MAX_QUEST logic below. This will either put it at
+                // below MIN_QUEST in which case it will wrap back around, or it will put it on MIN_QUEST
+                // in which case if MIN_QUEST even is that number it will be a valid selection that won't
+                // crash.
+                this->questType[this->buttonIndex] -= 1;
+            }
+        }
+
+        if (this->questType[this->buttonIndex] > MAX_QUEST) {
+            this->questType[this->buttonIndex] = MIN_QUEST;
+        } else if (this->questType[this->buttonIndex] < MIN_QUEST) {
+            this->questType[this->buttonIndex] = MAX_QUEST;
+        }
+
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+    }
+
+    if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        gSaveContext.isMasterQuest = this->questType[this->buttonIndex] == MASTER_QUEST;
+        gSaveContext.n64ddFlag = this->questType[this->buttonIndex] == RANDOMIZER_QUEST;
+        osSyncPrintf("Selected Dungeon Quest: %d\n", gSaveContext.isMasterQuest);
+        this->prevConfigMode = this->configMode;
+        this->configMode = CM_ROTATE_TO_NAME_ENTRY;
+        this->logoAlpha = 0;
+        CVarSetInteger("gOnFileSelectNameEntry", 1);
+        this->kbdButton = FS_KBD_BTN_NONE;
+        this->charPage = FS_CHAR_PAGE_ENG;
+        this->kbdX = 0;
+        this->kbdY = 0;
+        this->charIndex = 0;
+        this->charBgAlpha = 0;
+        this->newFileNameCharCount = 0;
+        this->nameEntryBoxPosX = 120;
+        this->nameEntryBoxAlpha = 0;
+        memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, &emptyName, 8);
+        return;
+    }
+
+    if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
+        this->configMode = CM_QUEST_TO_MAIN;
+        return;
+    }
+}
+
 /**
  * Update function for `CM_UNUSED_31`
  */
@@ -563,8 +752,11 @@ void FileChoose_RotateToNameEntry(GameState* thisx) {
 
     this->windowRot += VREG(16);
 
-    if (this->windowRot >= 314.0f) {
+    if (MIN_QUEST == MAX_QUEST && this->windowRot >= 314.0f) {
         this->windowRot = 314.0f;
+        this->configMode = CM_START_NAME_ENTRY;
+    } else if (this->windowRot >= 628.0f) {
+        this->windowRot = 628.0f;
         this->configMode = CM_START_NAME_ENTRY;
     }
 }
@@ -590,12 +782,43 @@ void FileChoose_RotateToOptions(GameState* thisx) {
  */
 void FileChoose_RotateToMain(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
+    if (this->configMode == CM_QUEST_TO_MAIN || (MIN_QUEST == MAX_QUEST && this->configMode == CM_NAME_ENTRY_TO_MAIN && this->prevConfigMode != CM_MAIN_MENU) || 
+        this->configMode == CM_OPTIONS_TO_MAIN) {
+        this->windowRot -= VREG(16);
 
-    this->windowRot += VREG(16);
+        if (this->windowRot <= 0.0f) {
+            this->windowRot = 0.0f;
+            this->configMode = CM_MAIN_MENU;
+        }
+    }
 
-    if (this->windowRot >= 628.0f) {
-        this->windowRot = 0.0f;
-        this->configMode = CM_MAIN_MENU;
+    if (this->configMode == CM_NAME_ENTRY_TO_MAIN && this->prevConfigMode == CM_MAIN_MENU) {
+        this->windowRot += VREG(16);
+
+        if (this->windowRot >= 942.0f || (MIN_QUEST == MAX_QUEST && this->windowRot >= 628.0f)) {
+            this->windowRot = 0.0f;
+            this->configMode = CM_MAIN_MENU;
+        }
+    }
+}
+
+void FileChoose_RotateToQuest(GameState* thisx) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+
+    if (this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU) {
+        this->windowRot -= VREG(16);
+
+        if (this->windowRot <= 314.0f) {
+            this->windowRot = 314.0f;
+            this->configMode = CM_START_QUEST_MENU;
+        }
+    } else {
+        this->windowRot += VREG(16);
+
+        if (this->windowRot >= 314.0f) {
+            this->windowRot = 314.0f;
+            this->configMode = CM_START_QUEST_MENU;
+        }
     }
 }
 
@@ -620,7 +843,9 @@ static void (*gConfigModeUpdateFuncs[])(GameState*) = {
     FileChoose_StartNameEntry,     FileChoose_RotateToMain,
     FileChoose_RotateToOptions,    FileChoose_UpdateOptionsMenu,
     FileChoose_StartOptions,       FileChoose_RotateToMain,
-    FileChoose_UnusedCMDelay,
+    FileChoose_UnusedCMDelay,      FileChoose_RotateToQuest,
+    FileChoose_UpdateQuestMenu,    FileChoose_StartQuestMenu,
+    FileChoose_RotateToMain,       FileChoose_RotateToQuest,
 };
 
 /**
@@ -1004,8 +1229,6 @@ static s16 sQuestItemBlue[] = { 255, 255, 255, 0, 0, 255, 0, 255, 0 };
 static s16 sQuestItemFlags[] = { 0x0012, 0x0013, 0x0014, 0x0000, 0x0001, 0x0002, 0x0003, 0x0004, 0x0005 };
 static s16 sNamePrimColors[2][3] = { { 255, 255, 255 }, { 100, 100, 100 } };
 static void* sHeartTextures[] = { gHeartFullTex, gDefenseHeartFullTex };
-static s16 sHeartPrimColors[2][3] = { { 255, 70, 50 }, { 200, 0, 0 } };
-static s16 sHeartEnvColors[2][3] = { { 50, 40, 60 }, { 255, 255, 255 } };
 
 void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
     FileChooseContext* this = (FileChooseContext*)thisx;
@@ -1015,6 +1238,23 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
     s16 vtxOffset;
     s16 j;
     s16 deathCountSplit[3];
+
+    Color_RGB8 heartColor = {HEARTS_PRIM_R, HEARTS_PRIM_G, HEARTS_PRIM_B};
+    if (CVarGetInteger("gCosmetics.Consumable_Hearts.Changed", 0)) {
+        heartColor = CVarGetColor24("gCosmetics.Consumable_Hearts.Value", heartColor);
+    }
+    Color_RGB8 heartBorder = {HEARTS_ENV_R, HEARTS_ENV_G, HEARTS_ENV_B};
+    if (CVarGetInteger("gCosmetics.Consumable_HeartBorder.Changed", 0)) {
+        heartBorder = CVarGetColor24("gCosmetics.Consumable_HeartBorder.Value", heartBorder);
+    }
+    Color_RGB8 ddColor = {HEARTS_DD_ENV_R, HEARTS_DD_ENV_G, HEARTS_DD_ENV_B};
+    if (CVarGetInteger("gCosmetics.Consumable_DDHearts.Changed", 0)) {
+        ddColor = CVarGetColor24("gCosmetics.Consumable_DDHearts.Value", ddColor);
+    }
+    Color_RGB8 ddBorder = {HEARTS_DD_PRIM_R, HEARTS_DD_PRIM_G, HEARTS_DD_PRIM_B};
+    if (CVarGetInteger("gCosmetics.Consumable_DDHeartBorder.Changed", 0)) {
+        ddBorder = CVarGetColor24("gCosmetics.Consumable_DDHeartBorder.Value", ddBorder);
+    }
 
     OPEN_DISPS(this->state.gfxCtx);
 
@@ -1058,10 +1298,13 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-        gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x00, sHeartPrimColors[heartType][0], sHeartPrimColors[heartType][1],
-                        sHeartPrimColors[heartType][2], this->fileInfoAlpha[fileIndex]);
-        gDPSetEnvColor(POLY_OPA_DISP++, sHeartEnvColors[heartType][0], sHeartEnvColors[heartType][1],
-                       sHeartEnvColors[heartType][2], 255);
+        if (heartType) {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x00, ddColor.r, ddColor.g, ddColor.b, this->fileInfoAlpha[fileIndex]);
+            gDPSetEnvColor(POLY_OPA_DISP++, ddBorder.r, ddBorder.g, ddBorder.b, 255);
+        } else {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x00, heartColor.r, heartColor.g, heartColor.b, this->fileInfoAlpha[fileIndex]);
+            gDPSetEnvColor(POLY_OPA_DISP++, heartBorder.r, heartBorder.g, heartBorder.b, 255);
+        }
 
         i = Save_GetSaveMetaInfo(fileIndex)->healthCapacity / 0x10;
 
@@ -1143,6 +1386,18 @@ static void* sOptionsButtonTextures[] = {
     gFileSelOptionsButtonENGTex,
 };
 
+const char* FileChoose_GetQuestChooseTitleTexName(Language lang) {
+    switch (lang) {
+        case LANGUAGE_ENG:
+        default:
+            return "assets/textures/title_static/gFileSelPleaseChooseAQuestENGTex";
+        case LANGUAGE_FRA:
+            return "assets/textures/title_static/gFileSelPleaseChooseAQuestFRATex";
+        case LANGUAGE_GER:
+            return "assets/textures/title_static/gFileSelPleaseChooseAQuestGERTex";
+    }
+}
+
 /**
  * Draw most window contents including buttons, labels, and icons.
  * Does not include anything from the keyboard and settings windows.
@@ -1155,7 +1410,11 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     s16 quadVtxIndex;
     s16 isActive;
     s16 pad;
-    Color_RGB8 Background_Color = { this->windowColor[0], this->windowColor[1], this->windowColor[2] };
+    char* tex = (this->configMode == CM_QUEST_MENU || this->configMode == CM_ROTATE_TO_NAME_ENTRY || 
+        this->configMode == CM_START_QUEST_MENU || this->configMode == CM_QUEST_TO_MAIN ||
+        this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU)
+                  ? ResourceMgr_LoadFileRaw(FileChoose_GetQuestChooseTitleTexName(gSaveContext.language))
+                  : sTitleLabels[gSaveContext.language][this->titleLabel];
 
     OPEN_DISPS(this->state.gfxCtx);
 
@@ -1166,204 +1425,263 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->titleAlpha[0]);
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
     gSPVertex(POLY_OPA_DISP++, this->windowContentVtx, 4, 0);
-    gDPLoadTextureBlock(POLY_OPA_DISP++, sTitleLabels[gSaveContext.language][this->titleLabel], G_IM_FMT_IA,
+    gDPLoadTextureBlock(POLY_OPA_DISP++, tex, G_IM_FMT_IA,
                         G_IM_SIZ_8b, 128, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                         G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
 
     // draw next title label
-    gDPPipeSync(POLY_OPA_DISP++);
-    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->titleAlpha[1]);
-    gDPLoadTextureBlock(POLY_OPA_DISP++, sTitleLabels[gSaveContext.language][this->nextTitleLabel], G_IM_FMT_IA,
-                        G_IM_SIZ_8b, 128, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
+    if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_START_QUEST_MENU) || 
+        this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU) {
+        // draw control stick prompts.
+        if (MIN_QUEST != MAX_QUEST) {
+            Gfx_SetupDL_39Opa(this->state.gfxCtx);
+            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                                G_TX_NOLOD);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR,
+                                    this->stickLeftPrompt.arrowColorG, this->stickLeftPrompt.arrowColorB,
+                                    this->stickLeftPrompt.arrowColorA, this->stickLeftPrompt.arrowTexX,
+                                    this->stickLeftPrompt.arrowTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
+                                    this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
+                                    this->stickRightPrompt.arrowColorA, this->stickRightPrompt.arrowTexX,
+                                    this->stickRightPrompt.arrowTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gControlStickTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                                G_TX_NOLOD);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.stickColorR,
+                                    this->stickLeftPrompt.stickColorG, this->stickLeftPrompt.stickColorB,
+                                    this->stickLeftPrompt.stickColorA, this->stickLeftPrompt.stickTexX,
+                                    this->stickLeftPrompt.stickTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.stickColorR,
+                                    this->stickRightPrompt.stickColorG, this->stickRightPrompt.stickColorB,
+                                    this->stickRightPrompt.stickColorA, this->stickRightPrompt.stickTexX,
+                                    this->stickRightPrompt.stickTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+        }
+        switch (this->questType[this->buttonIndex]) {
+            case NORMAL_QUEST:
+            default:
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
+                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, gTitleZeldaShieldLogoTex, 160, 160);
+                break;
 
-    temp = 4;
-
-    gDPPipeSync(POLY_OPA_DISP++);
-
-    // draw file info box (large box when a file is selected)
-    for (fileIndex = 0; fileIndex < 3; fileIndex++, temp += 20) {
+            case MASTER_QUEST:
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
+                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, gTitleZeldaShieldLogoMQTex, 160, 160);
+                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 182, 180, "__OTR__objects/object_mag/gTitleMasterQuestSubtitleTex", 128, 32);
+                break;
+            
+            case RANDOMIZER_QUEST:
+                DrawSeedHashSprites(this);
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
+                FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
+                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, ResourceMgr_GameHasOriginal() ? gTitleZeldaShieldLogoTex : gTitleZeldaShieldLogoMQTex, 160, 160);
+                FileChoose_DrawRawImageRGBA32(this->state.gfxCtx, 182, 180, "assets/objects/object_mag/gTitleRandomizerSubtitleTex", 128, 32);
+                break;
+        }
+    } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY) {
         gDPPipeSync(POLY_OPA_DISP++);
-
-        if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->fileInfoAlpha[fileIndex]);
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, Background_Color.r, Background_Color.g, Background_Color.b, this->fileInfoAlpha[fileIndex]);
-        }
-        gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[temp], 20, 0);
-
-        for (quadVtxIndex = 0, i = 0; i < 5; i++, quadVtxIndex += 4) {
-            gDPLoadTextureBlock(POLY_OPA_DISP++, sFileInfoBoxTextures[i], G_IM_FMT_IA, G_IM_SIZ_16b,
-                                sFileInfoBoxPartWidths[i], 56, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
-                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gSP1Quadrangle(POLY_OPA_DISP++, quadVtxIndex, quadVtxIndex + 2, quadVtxIndex + 3, quadVtxIndex + 1, 0);
-        }
-    }
-
-    for (i = 0; i < 3; i++, temp += 20) {
-        // draw file button
-        gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[temp], 20, 0);
-
-        isActive = 0;
-
-        if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->fileButtonAlpha[i]);
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0], sWindowContentColors[isActive][1],
-                            sWindowContentColors[isActive][2], this->fileButtonAlpha[i]);
-        }
-
-        gDPLoadTextureBlock(POLY_OPA_DISP++, sFileButtonTextures[gSaveContext.language][i], G_IM_FMT_IA, G_IM_SIZ_16b,
-                            64, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
-                            G_TX_NOLOD, G_TX_NOLOD);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->titleAlpha[1]);
+        gDPLoadTextureBlock(POLY_OPA_DISP++, sTitleLabels[gSaveContext.language][this->nextTitleLabel], G_IM_FMT_IA,
+                            G_IM_SIZ_8b, 128, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
 
-        // draw file name box
-        if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->nameBoxAlpha[i]);
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0], sWindowContentColors[isActive][1],
-                            sWindowContentColors[isActive][2], this->nameBoxAlpha[i]);
+        temp = 4;
+
+        gDPPipeSync(POLY_OPA_DISP++);
+
+        // draw file info box (large box when a file is selected)
+        for (fileIndex = 0; fileIndex < 3; fileIndex++, temp += 20) {
+            gDPPipeSync(POLY_OPA_DISP++);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                            this->fileInfoAlpha[fileIndex]);
+            gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[temp], 20, 0);
+
+            for (quadVtxIndex = 0, i = 0; i < 5; i++, quadVtxIndex += 4) {
+                gDPLoadTextureBlock(POLY_OPA_DISP++, sFileInfoBoxTextures[i], G_IM_FMT_IA, G_IM_SIZ_16b,
+                                    sFileInfoBoxPartWidths[i], 56, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gSP1Quadrangle(POLY_OPA_DISP++, quadVtxIndex, quadVtxIndex + 2, quadVtxIndex + 3, quadVtxIndex + 1, 0);
+            }
         }
 
-        gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelNameBoxTex, G_IM_FMT_IA, G_IM_SIZ_16b, 108, 16, 0,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
-                            G_TX_NOLOD);
-        gSP1Quadrangle(POLY_OPA_DISP++, 4, 6, 7, 5, 0);
+        for (i = 0; i < 3; i++, temp += 20) {
+            // draw file button
+            gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[temp], 20, 0);
 
-        // draw disk label for 64DD
-        if (Save_GetSaveMetaInfo(i)->randoSave) {
-            if (CVar_GetS32("gHudColors", 1) == 2) {
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->nameAlpha[i]);
+            isActive = 0;
+
+            if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i)) && Save_GetSaveMetaInfo(i)->valid) {
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[1][0], sWindowContentColors[1][1],
+                                sWindowContentColors[1][2], this->fileButtonAlpha[i]);
             } else {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0],
                                 sWindowContentColors[isActive][1], sWindowContentColors[isActive][2],
-                                this->nameAlpha[i]);
+                                this->fileButtonAlpha[i]);
             }
-            gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelRANDButtonTex, G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0,
+
+            gDPLoadTextureBlock(POLY_OPA_DISP++, sFileButtonTextures[gSaveContext.language][i], G_IM_FMT_IA,
+                                G_IM_SIZ_16b, 64, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
+
+            // draw file name box
+            if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[1][0], sWindowContentColors[1][1],
+                                sWindowContentColors[1][2], this->nameBoxAlpha[i]);
+            } else {
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0],
+                                sWindowContentColors[isActive][1], sWindowContentColors[isActive][2],
+                                this->nameBoxAlpha[i]);
+            }
+
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelNameBoxTex, G_IM_FMT_IA, G_IM_SIZ_16b, 108, 16, 0,
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
-            gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
+            gSP1Quadrangle(POLY_OPA_DISP++, 4, 6, 7, 5, 0);
+
+            // draw rando label
+            if (Save_GetSaveMetaInfo(i)->randoSave) {
+                if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[1][0], sWindowContentColors[1][1],
+                                    sWindowContentColors[1][2], this->nameBoxAlpha[i]);
+                } else {
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0],
+                                    sWindowContentColors[isActive][1], sWindowContentColors[isActive][2],
+                                    this->nameAlpha[i]);
+                }
+                gDPLoadTextureBlock(POLY_OPA_DISP++,
+                                    ResourceMgr_LoadFileRaw("assets/textures/title_static/gFileSelRANDButtonTex"),
+                                    G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
+            }
+            // Draw MQ label
+            if (Save_GetSaveMetaInfo(i)->requiresMasterQuest && !Save_GetSaveMetaInfo(i)->randoSave &&
+                Save_GetSaveMetaInfo(i)->valid) {
+                if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[1][0], sWindowContentColors[1][1],
+                                    sWindowContentColors[1][2], this->nameBoxAlpha[i]);
+                } else {
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0],
+                                    sWindowContentColors[isActive][1], sWindowContentColors[isActive][2],
+                                    this->nameAlpha[i]);
+                }
+                gDPLoadTextureBlock(POLY_OPA_DISP++,
+                                    ResourceMgr_LoadFileRaw("assets/textures/title_static/gFileSelMQButtonTex"),
+                                    G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
+            }
+
+            // draw connectors
+            if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i)) && Save_GetSaveMetaInfo(i)->valid) {
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[1][0], sWindowContentColors[1][1],
+                                sWindowContentColors[1][2], this->fileButtonAlpha[i]);
+            } else {
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0],
+                                sWindowContentColors[isActive][1], sWindowContentColors[isActive][2],
+                                this->connectorAlpha[i]);
+            }
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelConnectorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                G_TX_NOLOD, G_TX_NOLOD);
+            gSP1Quadrangle(POLY_OPA_DISP++, 12, 14, 15, 13, 0);
+
+            if (Save_GetSaveMetaInfo(i)->randoSave || Save_GetSaveMetaInfo(i)->requiresMasterQuest) {
+                gSP1Quadrangle(POLY_OPA_DISP++, 16, 18, 19, 17, 0);
+            }
         }
 
-        // draw connectors
-        if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->connectorAlpha[i]);
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0], sWindowContentColors[isActive][1],
-                            sWindowContentColors[isActive][2], this->connectorAlpha[i]);
+        // draw file info
+        for (fileIndex = 0; fileIndex < 3; fileIndex++) {
+            isActive = 0;
+            FileChoose_DrawFileInfo(&this->state, fileIndex, isActive);
         }
-        gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelConnectorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
-                            G_TX_NOLOD);
-        gSP1Quadrangle(POLY_OPA_DISP++, 12, 14, 15, 13, 0);
 
-        if (Save_GetSaveMetaInfo(i)->randoSave) {
-            gSP1Quadrangle(POLY_OPA_DISP++, 16, 18, 19, 17, 0);
-        }
-    }
-
-    // draw file info
-    for (fileIndex = 0; fileIndex < 3; fileIndex++) {
-        isActive = 0;
-        FileChoose_DrawFileInfo(&this->state, fileIndex, isActive);
-    }
-
-    gDPPipeSync(POLY_OPA_DISP++);
-    gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
-                      ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-    gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
-    gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[0x274], 20, 0);
-
-    // draw primary action buttons (copy/erase)
-    for (quadVtxIndex = 0, i = 0; i < 2; i++, quadVtxIndex += 4) {
-        gDPPipeSync(POLY_OPA_DISP++);
-
-        if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->actionButtonAlpha[i]);
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                            this->actionButtonAlpha[i]);
-        }
-        gDPLoadTextureBlock(POLY_OPA_DISP++, sActionButtonTextures[gSaveContext.language][i], G_IM_FMT_IA, G_IM_SIZ_16b,
-                            64, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
-                            G_TX_NOLOD, G_TX_NOLOD);
-        gSP1Quadrangle(POLY_OPA_DISP++, quadVtxIndex, quadVtxIndex + 2, quadVtxIndex + 3, quadVtxIndex + 1, 0);
-    }
-
-    gDPPipeSync(POLY_OPA_DISP++);
-
-    // draw confirm buttons (yes/quit)
-    for (quadVtxIndex = 0, i = 0; i < 2; i++, quadVtxIndex += 4) {
-        temp = this->confirmButtonTexIndices[i];
-
-        if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->confirmButtonAlpha[i]);
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                            this->confirmButtonAlpha[i]);
-        }
-        gDPLoadTextureBlock(POLY_OPA_DISP++, sActionButtonTextures[gSaveContext.language][temp], G_IM_FMT_IA,
-                            G_IM_SIZ_16b, 64, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gSP1Quadrangle(POLY_OPA_DISP++, quadVtxIndex, quadVtxIndex + 2, quadVtxIndex + 3, quadVtxIndex + 1, 0);
-    }
-
-    // draw options button
-    gDPPipeSync(POLY_OPA_DISP++);
-
-    if (CVar_GetS32("gHudColors", 1) == 2) {
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->optionButtonAlpha);
-    } else {
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                        this->optionButtonAlpha);
-    }
-    gDPLoadTextureBlock(POLY_OPA_DISP++, sOptionsButtonTextures[gSaveContext.language], G_IM_FMT_IA, G_IM_SIZ_16b, 64,
-                        16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
-                        G_TX_NOLOD, G_TX_NOLOD);
-    gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
-
-    // draw highlight over currently selected button
-    if (((this->menuMode == FS_MENU_MODE_CONFIG) &&
-         ((this->configMode == CM_MAIN_MENU) || (this->configMode == CM_SELECT_COPY_SOURCE) ||
-          (this->configMode == CM_SELECT_COPY_DEST) || (this->configMode == CM_COPY_CONFIRM) ||
-          (this->configMode == CM_ERASE_SELECT) || (this->configMode == CM_ERASE_CONFIRM))) ||
-        ((this->menuMode == FS_MENU_MODE_SELECT) && (this->selectMode == SM_CONFIRM_FILE))) {
-        gDPPipeSync(POLY_OPA_DISP++);
-        gDPSetCombineLERP(POLY_OPA_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0, TEXEL0, 0,
-                          PRIMITIVE, 0);
-
-        if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->highlightColor[3]);
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->highlightColor[0], this->highlightColor[1],
-                            this->highlightColor[2], this->highlightColor[3]);
-        }
-        gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelBigButtonHighlightTex, G_IM_FMT_I, G_IM_SIZ_8b, 72, 24, 0,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
-                            G_TX_NOLOD);
-        gSP1Quadrangle(POLY_OPA_DISP++, 12, 14, 15, 13, 0);
-    }
-
-    // draw warning labels
-    if (this->warningLabel > FS_WARNING_NONE) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->emptyFileTextAlpha);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
-        gDPLoadTextureBlock(POLY_OPA_DISP++, sWarningLabels[gSaveContext.language][this->warningLabel], G_IM_FMT_IA,
-                            G_IM_SIZ_8b, 128, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gSP1Quadrangle(POLY_OPA_DISP++, 16, 18, 19, 17, 0);
+        gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[0x274], 20, 0);
+
+        // draw primary action buttons (copy/erase)
+        for (quadVtxIndex = 0, i = 0; i < 2; i++, quadVtxIndex += 4) {
+            gDPPipeSync(POLY_OPA_DISP++);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                            this->actionButtonAlpha[i]);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, sActionButtonTextures[gSaveContext.language][i], G_IM_FMT_IA,
+                                G_IM_SIZ_16b, 64, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gSP1Quadrangle(POLY_OPA_DISP++, quadVtxIndex, quadVtxIndex + 2, quadVtxIndex + 3, quadVtxIndex + 1, 0);
+        }
+
+        gDPPipeSync(POLY_OPA_DISP++);
+
+        // draw confirm buttons (yes/quit)
+        for (quadVtxIndex = 0, i = 0; i < 2; i++, quadVtxIndex += 4) {
+            temp = this->confirmButtonTexIndices[i];
+
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                            this->confirmButtonAlpha[i]);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, sActionButtonTextures[gSaveContext.language][temp], G_IM_FMT_IA,
+                                G_IM_SIZ_16b, 64, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gSP1Quadrangle(POLY_OPA_DISP++, quadVtxIndex, quadVtxIndex + 2, quadVtxIndex + 3, quadVtxIndex + 1, 0);
+        }
+
+        // draw options button
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                        this->optionButtonAlpha);
+        gDPLoadTextureBlock(POLY_OPA_DISP++, sOptionsButtonTextures[gSaveContext.language], G_IM_FMT_IA, G_IM_SIZ_16b,
+                            64, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                            G_TX_NOLOD, G_TX_NOLOD);
+        gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
+
+        // draw highlight over currently selected button
+        if (((this->menuMode == FS_MENU_MODE_CONFIG) &&
+             ((this->configMode == CM_MAIN_MENU) || (this->configMode == CM_SELECT_COPY_SOURCE) ||
+              (this->configMode == CM_SELECT_COPY_DEST) || (this->configMode == CM_COPY_CONFIRM) ||
+              (this->configMode == CM_ERASE_SELECT) || (this->configMode == CM_ERASE_CONFIRM))) ||
+            ((this->menuMode == FS_MENU_MODE_SELECT) && (this->selectMode == SM_CONFIRM_FILE))) {
+            gDPPipeSync(POLY_OPA_DISP++);
+            gDPSetCombineLERP(POLY_OPA_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0, TEXEL0,
+                              0, PRIMITIVE, 0);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->highlightColor[0], this->highlightColor[1],
+                            this->highlightColor[2], this->highlightColor[3]);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelBigButtonHighlightTex, G_IM_FMT_I, G_IM_SIZ_8b, 72, 24, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                G_TX_NOLOD, G_TX_NOLOD);
+            gSP1Quadrangle(POLY_OPA_DISP++, 12, 14, 15, 13, 0);
+        }
+
+        // draw warning labels
+        if (this->warningLabel > FS_WARNING_NONE) {
+            gDPPipeSync(POLY_OPA_DISP++);
+            gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
+                              PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->emptyFileTextAlpha);
+            gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, sWarningLabels[gSaveContext.language][this->warningLabel], G_IM_FMT_IA,
+                                G_IM_SIZ_8b, 128, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gSP1Quadrangle(POLY_OPA_DISP++, 16, 18, 19, 17, 0);
+        }
+
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIDECALA, G_CC_MODULATEIDECALA);
+
+        CLOSE_DISPS(this->state.gfxCtx);
     }
-
-    gDPPipeSync(POLY_OPA_DISP++);
-    gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIDECALA, G_CC_MODULATEIDECALA);
-
-    CLOSE_DISPS(this->state.gfxCtx);
 }
 
 void FileChoose_ConfigModeDraw(GameState* thisx) {
@@ -1371,7 +1689,6 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
     f32 eyeX;
     f32 eyeY;
     f32 eyeZ;
-    Color_RGB8 Background_Color = {this->windowColor[0], this->windowColor[1], this->windowColor[2]};
 
     OPEN_DISPS(this->state.gfxCtx);
     gDPPipeSync(POLY_OPA_DISP++);
@@ -1386,30 +1703,32 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
     ZREG(11) += ZREG(10);
     Environment_UpdateSkybox(NULL, SKYBOX_NORMAL_SKY, &this->envCtx, &this->skyboxCtx);
     gDPPipeSync(POLY_OPA_DISP++);
-    func_800949A8(this->state.gfxCtx);
+    Gfx_SetupDL_42Opa(this->state.gfxCtx);
     FileChoose_SetView(this, 0.0f, 0.0f, 64.0f);
     FileChoose_SetWindowVtx(&this->state);
     FileChoose_SetWindowContentVtx(&this->state);
 
     FrameInterpolation_RecordOpenChild(this, this->configMode);
 
-    if ((this->configMode != CM_NAME_ENTRY) && (this->configMode != CM_START_NAME_ENTRY)) {
+    if ((this->configMode != CM_NAME_ENTRY) && (this->configMode != CM_START_NAME_ENTRY) &&
+        (this->configMode != CM_QUEST_MENU) && this->configMode != CM_NAME_ENTRY_TO_QUEST_MENU) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-
-        if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->windowAlpha);
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                            this->windowAlpha);
-        }
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                        this->windowAlpha);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
         Matrix_Translate(0.0f, 0.0f, -93.6f, MTXMODE_NEW);
         Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
 
         if (this->windowRot != 0) {
-            Matrix_RotateX(this->windowRot / 100.0f, MTXMODE_APPLY);
+            if (this->configMode == CM_ROTATE_TO_QUEST_MENU || 
+                (this->configMode >= CM_MAIN_TO_OPTIONS && this->configMode <= CM_OPTIONS_TO_MAIN) ||
+                MIN_QUEST == MAX_QUEST || this->configMode == CM_QUEST_TO_MAIN) {
+                Matrix_RotateX(this->windowRot / 100.0f, MTXMODE_APPLY);
+            } else {
+                Matrix_RotateX((this->windowRot - 942.0f) / 100.0f, MTXMODE_APPLY);
+            }
         }
 
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx),
@@ -1433,18 +1752,17 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
     if ((this->configMode >= CM_ROTATE_TO_NAME_ENTRY) && (this->configMode <= CM_NAME_ENTRY_TO_MAIN)) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-
-        if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->windowAlpha);
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                            this->windowAlpha);
-        }
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                        this->windowAlpha);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
         Matrix_Translate(0.0f, 0.0f, -93.6f, MTXMODE_NEW);
         Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
-        Matrix_RotateX((this->windowRot - 314.0f) / 100.0f, MTXMODE_APPLY);
+        if (MIN_QUEST == MAX_QUEST) {
+            Matrix_RotateX((this->windowRot - 314.0f) / 100.0f, MTXMODE_APPLY);
+        } else {
+            Matrix_RotateX((this->windowRot - 628.0f) / 100.0f, MTXMODE_APPLY);
+        }
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
@@ -1466,13 +1784,8 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
     if ((this->configMode >= CM_MAIN_TO_OPTIONS) && (this->configMode <= CM_OPTIONS_TO_MAIN)) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-
-        if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->windowAlpha);
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                            this->windowAlpha);
-        }
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                        this->windowAlpha);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
         Matrix_Translate(0.0f, 0.0f, -93.6f, MTXMODE_NEW);
@@ -1494,6 +1807,38 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
         gDPPipeSync(POLY_OPA_DISP++);
 
         FileChoose_DrawOptions(&this->state);
+    }
+
+    // draw quest menu
+    if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_ROTATE_TO_QUEST_MENU) || 
+        (this->configMode == CM_ROTATE_TO_NAME_ENTRY) || this->configMode == CM_QUEST_TO_MAIN ||
+        this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU) {
+        // window
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                        this->windowAlpha);
+        gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
+
+        Matrix_Translate(0.0f, 0.0f, -93.6f, MTXMODE_NEW);
+        Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
+        Matrix_RotateX((this->windowRot - 314.0f) / 100.0f, MTXMODE_APPLY);
+
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx),
+                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+
+        gSPVertex(POLY_OPA_DISP++, &this->windowVtx[0], 32, 0);
+        gSPDisplayList(POLY_OPA_DISP++, gFileSelWindow1DL);
+
+        gSPVertex(POLY_OPA_DISP++, &this->windowVtx[32], 32, 0);
+        gSPDisplayList(POLY_OPA_DISP++, gFileSelWindow2DL);
+
+        gSPVertex(POLY_OPA_DISP++, &this->windowVtx[64], 16, 0);
+        gSPDisplayList(POLY_OPA_DISP++, gFileSelWindow3DL);
+
+        gDPPipeSync(POLY_OPA_DISP++);
+
+        FileChoose_DrawWindowContents(&this->state);
     }
 
     gDPPipeSync(POLY_OPA_DISP++);
@@ -1591,7 +1936,7 @@ void FileChoose_FadeInFileInfo(GameState* thisx) {
 void FileChoose_ConfirmFile(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-    bool dpad = CVar_GetS32("gDpadPauseName", 0);
+    bool dpad = CVarGetInteger("gDpadText", 0);
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || (CHECK_BTN_ALL(input->press.button, BTN_A))) {
         if (this->confirmButtonIndex == FS_BTN_CONFIRM_YES) {
@@ -1710,10 +2055,14 @@ void FileChoose_LoadGame(GameState* thisx) {
     u16 swordEquipMask;
     s32 pad;
 
-    if (this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVar_GetS32("gDebugEnabled", 0)) {
+    if ((this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVarGetInteger("gDebugEnabled", 0)) || this->buttonIndex == 0xFF) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         gSaveContext.fileNum = this->buttonIndex;
-        Sram_OpenSave();
+        if (this->buttonIndex == 0xFF) {
+            Sram_InitDebugSave();
+        } else {
+            Sram_OpenSave();
+        }
         gSaveContext.gameMode = 0;
         SET_NEXT_GAMESTATE(&this->state, Select_Init, SelectContext);
         this->state.running = false;
@@ -1722,13 +2071,17 @@ void FileChoose_LoadGame(GameState* thisx) {
         gSaveContext.fileNum = this->buttonIndex;
         Sram_OpenSave();
         gSaveContext.gameMode = 0;
-        SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);
+        SET_NEXT_GAMESTATE(&this->state, Play_Init, PlayState);
         this->state.running = false;
     }
 
     Randomizer_LoadSettings("");
     Randomizer_LoadHintLocations("");
     Randomizer_LoadItemLocations("", true);
+    Randomizer_LoadRequiredTrials("");
+    Randomizer_LoadMerchantMessages("");
+    Randomizer_LoadMasterQuestDungeons("");
+    Randomizer_LoadEntranceOverrides("", true);
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;
@@ -1745,36 +2098,36 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.unk_13EE = 0x32;
     gSaveContext.nayrusLoveTimer = 0;
     gSaveContext.healthAccumulator = 0;
-    gSaveContext.unk_13F0 = 0;
-    gSaveContext.unk_13F2 = 0;
+    gSaveContext.magicState = 0;
+    gSaveContext.prevMagicState = 0;
     gSaveContext.forcedSeqId = NA_BGM_GENERAL_SFX;
     gSaveContext.skyboxTime = 0;
-    gSaveContext.nextTransition = 0xFF;
+    gSaveContext.nextTransitionType = 0xFF;
     gSaveContext.nextCutsceneIndex = 0xFFEF;
     gSaveContext.cutsceneTrigger = 0;
     gSaveContext.chamberCutsceneNum = 0;
     gSaveContext.nextDayTime = 0xFFFF;
-    gSaveContext.unk_13C3 = 0;
+    gSaveContext.retainWeatherMode = 0;
 
     for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
         gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
     }
 
     gSaveContext.unk_13E7 = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC =
-        gSaveContext.unk_13F4 = 0;
+        gSaveContext.magicCapacity = 0;
 
-    gSaveContext.unk_13F6 = gSaveContext.magic;
+    gSaveContext.magicFillTarget = gSaveContext.magic;
     gSaveContext.magic = 0;
     gSaveContext.magicLevel = gSaveContext.magic;
 
     osSyncPrintf(VT_FGCOL(GREEN));
-    osSyncPrintf("Z_MAGIC_NOW_NOW=%d  MAGIC_NOW=%d\n", ((void)0, gSaveContext.unk_13F6), gSaveContext.magic);
+    osSyncPrintf("Z_MAGIC_NOW_NOW=%d  MAGIC_NOW=%d\n", ((void)0, gSaveContext.magicFillTarget), gSaveContext.magic);
     osSyncPrintf(VT_RST);
 
     gSaveContext.naviTimer = 0;
 
     // SWORDLESS LINK IS BACK BABY
-    if (CVar_GetS32("gSwordlessLink", 0) != 0)
+    if (CVarGetInteger("gSwordlessLink", 0) != 0)
     {
         if ((gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI) &&
             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER) &&
@@ -1786,6 +2139,15 @@ void FileChoose_LoadGame(GameState* thisx) {
             gSaveContext.equips.equipment &= gEquipNegMasks[EQUIP_SWORD];
             gSaveContext.inventory.equipment ^= (gBitFlags[swordEquipMask - 1] << BOMSWAP16(gEquipShifts[EQUIP_SWORD]));
         }
+    }
+
+    // Handle randomized spawn positions after the save context has been setup from load
+    // When remeber save location is on, set save warp if the save was in an a grotto, or
+    // the entrance index is -1 from shuffle overwarld spawn
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) && ((!CVarGetInteger("gRememberSaveLocation", 0) ||
+        gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE || gSaveContext.savedSceneNum == SCENE_KAKUSIANA) ||
+        (CVarGetInteger("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == -1))) {
+        Entrance_SetSavewarpEntrance();
     }
 }
 
@@ -1805,7 +2167,6 @@ void FileChoose_SelectModeDraw(GameState* thisx) {
     f32 eyeX;
     f32 eyeY;
     f32 eyeZ;
-    Color_RGB8 Background_Color = { this->windowColor[0], this->windowColor[1], this->windowColor[2] };
 
     OPEN_DISPS(this->state.gfxCtx);
 
@@ -1821,19 +2182,14 @@ void FileChoose_SelectModeDraw(GameState* thisx) {
     ZREG(11) += ZREG(10);
     Environment_UpdateSkybox(NULL, SKYBOX_NORMAL_SKY, &this->envCtx, &this->skyboxCtx);
     gDPPipeSync(POLY_OPA_DISP++);
-    func_800949A8(this->state.gfxCtx);
+    Gfx_SetupDL_42Opa(this->state.gfxCtx);
     FileChoose_SetView(this, 0.0f, 0.0f, 64.0f);
     FileChoose_SetWindowVtx(&this->state);
     FileChoose_SetWindowContentVtx(&this->state);
 
     gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-
-    if (CVar_GetS32("gHudColors", 1) == 2) {
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChoosePrim", Background_Color).r, CVar_GetRGB("gCCFileChoosePrim", Background_Color).g, CVar_GetRGB("gCCFileChoosePrim", Background_Color).b, this->windowAlpha);
-    } else {
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                        this->windowAlpha);
-    }
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                    this->windowAlpha);
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
     Matrix_Translate(0.0f, 0.0f, -93.6f, MTXMODE_NEW);
@@ -1878,12 +2234,52 @@ void FileChoose_Main(GameState* thisx) {
         gFileSelControlsGERTex,
         gFileSelControlsFRATex,
     };
-    Color_RGB8 Text_Color = { 100, 255, 255 };
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
 
-    if (CVar_GetS32("gTimeFlowFileSelect", 0) != 0) {
+    Color_RGB8 helpTextColor = { 100, 255, 255 };
+    if (CVarGetInteger("gCosmetics.Title_FileChoose.Changed", 0)) {
+        Color_RGB8 backgroundColor = CVarGetColor24("gCosmetics.Title_FileChoose.Value", (Color_RGB8){ 100, 150, 255 });
+        this->windowColor[0] = backgroundColor.r;
+        this->windowColor[1] = backgroundColor.g;
+        this->windowColor[2] = backgroundColor.b;
+        this->highlightColor[0] = MIN(backgroundColor.r + 100, 255);
+        this->highlightColor[1] = MIN(backgroundColor.g + 100, 255);
+        this->highlightColor[2] = MIN(backgroundColor.b + 100, 255);
+        helpTextColor.r = MIN(backgroundColor.r + 100, 255);
+        helpTextColor.g = MIN(backgroundColor.g + 100, 255);
+        helpTextColor.b = MIN(backgroundColor.b + 100, 255);
+        sWindowContentColors[0][0] = backgroundColor.r;
+        sWindowContentColors[0][1] = backgroundColor.g;
+        sWindowContentColors[0][2] = backgroundColor.b;
+    } else {
+        this->windowColor[0] = 100;
+        this->windowColor[1] = 150;
+        this->windowColor[2] = 255;
+        this->highlightColor[0] = 155;
+        this->highlightColor[1] = 255;
+        this->highlightColor[2] = 255;
+        sWindowContentColors[0][0] = 100;
+        sWindowContentColors[0][1] = 150;
+        sWindowContentColors[0][2] = 255;
+    }
+
+    if (CVarGetInteger("gTimeFlowFileSelect", 0) != 0) {
         gSaveContext.skyboxTime += 0x10;
+    }
+
+    if (CVarGetInteger("gSkipLogoTitle", 0) && CVarGetInteger("gSaveFileID", 0) < 3 && !isFastFileIdIncompatible) {
+        if (Save_Exist(CVarGetInteger("gSaveFileID", 0)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVarGetInteger("gSaveFileID", 0)))) {
+            this->buttonIndex = CVarGetInteger("gSaveFileID", 0);
+            this->menuMode = FS_MENU_MODE_SELECT;
+            this->selectMode = SM_LOAD_GAME;
+        } else {
+            isFastFileIdIncompatible = 1;
+        }
+    } else if (CVarGetInteger("gSkipLogoTitle", 0) && CVarGetInteger("gSaveFileID", 0) == 3) {
+        this->buttonIndex = 0xFF;
+        this->menuMode = FS_MENU_MODE_SELECT;
+        this->selectMode = SM_LOAD_GAME;
     }
 
     OPEN_DISPS(this->state.gfxCtx);
@@ -1892,12 +2288,12 @@ void FileChoose_Main(GameState* thisx) {
     gSPSegment(POLY_OPA_DISP++, 0x01, this->staticSegment);
     gSPSegment(POLY_OPA_DISP++, 0x02, this->parameterSegment);
 
-    func_80095248(this->state.gfxCtx, 0, 0, 0);
+    Gfx_SetupFrame(this->state.gfxCtx, 0, 0, 0);
 
     this->stickRelX = input->rel.stick_x;
     this->stickRelY = input->rel.stick_y;
 
-    if (CVar_GetS32("gDpadHoldChange", 1) && CVar_GetS32("gDpadPauseName", 0)) {
+    if (CVarGetInteger("gDpadHoldChange", 1) && CVarGetInteger("gDpadText", 0)) {
         if (CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) {
             if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
                 this->inputTimerX = 10;
@@ -2009,16 +2405,11 @@ void FileChoose_Main(GameState* thisx) {
 
     // do not draw controls text in the options menu
     if ((this->configMode <= CM_NAME_ENTRY_TO_MAIN) || (this->configMode >= CM_UNUSED_DELAY)) {
-        func_800944C4(this->state.gfxCtx);
+        Gfx_SetupDL_39Opa(this->state.gfxCtx);
 
         gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-
-        if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetRGB("gCCFileChooseTextPrim", Text_Color).r, CVar_GetRGB("gCCFileChooseTextPrim", Text_Color).g, CVar_GetRGB("gCCFileChooseTextPrim", Text_Color).b, this->controlsAlpha);
-        } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, Text_Color.r, Text_Color.g, Text_Color.b, this->controlsAlpha);
-        }
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, helpTextColor.r, helpTextColor.g, helpTextColor.b, this->controlsAlpha);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
         gDPLoadTextureBlock(POLY_OPA_DISP++, controlsTextures[gSaveContext.language], G_IM_FMT_IA, G_IM_SIZ_8b, 144, 16,
                             0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
@@ -2160,6 +2551,41 @@ void FileChoose_InitContext(GameState* thisx) {
     this->unk_1CAD6[3] = 8;
     this->unk_1CAD6[4] = 10;
 
+    this->stickLeftPrompt.stickColorR = 200;
+    this->stickLeftPrompt.stickColorG = 200;
+    this->stickLeftPrompt.stickColorB = 200;
+    this->stickLeftPrompt.stickColorA = 180;
+    this->stickLeftPrompt.stickTexX = 79;
+    this->stickLeftPrompt.stickTexY = 139;
+    this->stickLeftPrompt.arrowColorR = 155;
+    this->stickLeftPrompt.arrowColorG = 155;
+    this->stickLeftPrompt.arrowColorB = 255;
+    this->stickLeftPrompt.arrowColorA = 200;
+    this->stickLeftPrompt.arrowTexX = 63;
+    this->stickLeftPrompt.arrowTexY = 135;
+    this->stickLeftPrompt.z = 1;
+    this->stickLeftPrompt.isEnabled = false;
+
+    this->stickRightPrompt.stickColorR = 200;
+    this->stickRightPrompt.stickColorG = 200;
+    this->stickRightPrompt.stickColorB = 200;
+    this->stickRightPrompt.stickColorA = 180;
+    this->stickRightPrompt.stickTexX = 244;
+    this->stickRightPrompt.stickTexY = 139;
+    this->stickRightPrompt.arrowColorR = 155;
+    this->stickRightPrompt.arrowColorG = 155;
+    this->stickRightPrompt.arrowColorB = 255;
+    this->stickRightPrompt.arrowColorA = 200;
+    this->stickRightPrompt.arrowTexX = 260;
+    this->stickRightPrompt.arrowTexY = 135;
+    this->stickRightPrompt.z = 1;
+    this->stickRightPrompt.isEnabled = false;
+
+    this->arrowAnimState = 0;
+    this->stickAnimState = 0;
+    this->arrowAnimTween = 0;
+    this->stickAnimTween = 0;
+
     ShrinkWindow_SetVal(0);
 
     gSaveContext.skyboxTime = 0;
@@ -2199,8 +2625,13 @@ void FileChoose_Init(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     size_t size = (u32)_title_staticSegmentRomEnd - (u32)_title_staticSegmentRomStart;
     s32 pad;
+    this->logoAlpha = 0;
+    this->questType[0] = MIN_QUEST;
+    this->questType[1] = MIN_QUEST;
+    this->questType[2] = MIN_QUEST;
     fileSelectSpoilerFileLoaded = false;
-    CVar_SetS32("gOnFileSelectNameEntry", 0);
+    isFastFileIdIncompatible = 0;
+    CVarSetInteger("gOnFileSelectNameEntry", 0);
 
     SREG(30) = 1;
     osSyncPrintf("SIZE=%x\n", size);

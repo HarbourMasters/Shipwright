@@ -1,12 +1,12 @@
 #ifndef Z_BG_SPOT18_SHUTTER_H
 #define Z_BG_SPOT18_SHUTTER_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgSpot18Shutter;
 
-typedef void (*BgSpot18ShutterActionFunc)(struct BgSpot18Shutter*, GlobalContext*);
+typedef void (*BgSpot18ShutterActionFunc)(struct BgSpot18Shutter*, PlayState*);
 
 typedef struct BgSpot18Shutter {
     /* 0x0000 */ DynaPolyActor dyna;

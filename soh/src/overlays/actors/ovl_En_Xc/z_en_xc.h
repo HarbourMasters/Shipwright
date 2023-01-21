@@ -1,13 +1,13 @@
 #ifndef Z_EN_XC_H
 #define Z_EN_XC_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnXc;
 
-typedef void (*EnXcActionFunc)(struct EnXc*, GlobalContext*);
-typedef void (*EnXcDrawFunc)(struct Actor*, GlobalContext*);
+typedef void (*EnXcActionFunc)(struct EnXc*, PlayState*);
+typedef void (*EnXcDrawFunc)(struct Actor*, PlayState*);
 
 typedef enum {
     /* 0 */ SHEIK_TYPE_0,
@@ -139,7 +139,7 @@ typedef struct EnXc {
     /* 0x02C0 */ ColliderCylinder collider;
     /* 0x030C */ s32 unk_30C;
     /* 0x0310 */ Actor* flameActor;
-    /* 0x0314 */ struct_80034A14_arg1 npcInfo;
+    /* 0x0314 */ NpcInteractInfo interactInfo;
 } EnXc; // size = 0x033C
 
 #endif

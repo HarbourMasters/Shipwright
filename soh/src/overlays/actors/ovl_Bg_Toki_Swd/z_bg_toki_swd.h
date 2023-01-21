@@ -1,12 +1,12 @@
 #ifndef Z_BG_TOKI_SWD_H
 #define Z_BG_TOKI_SWD_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgTokiSwd;
 
-typedef void (*BgTokiSwdActionFunc)(struct BgTokiSwd*, GlobalContext*);
+typedef void (*BgTokiSwdActionFunc)(struct BgTokiSwd*, PlayState*);
 
 typedef struct BgTokiSwd {
     /* 0x0000 */ Actor actor;

@@ -1,13 +1,13 @@
 #ifndef Z_OBJ_TIMEBLOCK_H
 #define Z_OBJ_TIMEBLOCK_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ObjTimeblock;
 
-typedef s32 (*ObjTimeblockSongObserverFunc)(struct ObjTimeblock*, GlobalContext*);
-typedef void (*ObjTimeblockActionFunc)(struct ObjTimeblock*, GlobalContext*);
+typedef s32 (*ObjTimeblockSongObserverFunc)(struct ObjTimeblock*, PlayState*);
+typedef void (*ObjTimeblockActionFunc)(struct ObjTimeblock*, PlayState*);
 
 typedef struct ObjTimeblock {
     /* 0x0000 */ DynaPolyActor dyna;

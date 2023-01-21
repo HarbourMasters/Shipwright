@@ -1,12 +1,12 @@
 #ifndef Z_ARROW_LIGHT_H
 #define Z_ARROW_LIGHT_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ArrowLight;
 
-typedef void (*ArrowLightActionFunc)(struct ArrowLight*, GlobalContext*);
+typedef void (*ArrowLightActionFunc)(struct ArrowLight*, PlayState*);
 
 typedef struct ArrowLight {
     /* 0x0000 */ Actor actor;

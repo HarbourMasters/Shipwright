@@ -134,7 +134,7 @@ s32 EffectSpark_Update(void* thisx) {
 void EffectSpark_Draw(void* thisx, GraphicsContext* gfxCtx) {
     Vtx* vertices;
     EffectSpark* this = (EffectSpark*)thisx;
-    GlobalContext* globalCtx = Effect_GetGlobalCtx();
+    PlayState* play = Effect_GetPlayState();
     s32 i;
     s32 j;
     u8 sp1D3;
@@ -161,7 +161,7 @@ void EffectSpark_Draw(void* thisx, GraphicsContext* gfxCtx) {
     if (this != NULL) {
         gSPMatrix(POLY_XLU_DISP++, &gMtxClear, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-        POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x26);
+        POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x26);
         gDPSetCycleType(POLY_XLU_DISP++, G_CYC_2CYCLE);
         gDPPipeSync(POLY_XLU_DISP++);
 
@@ -216,7 +216,7 @@ void EffectSpark_Draw(void* thisx, GraphicsContext* gfxCtx) {
             SkinMatrix_SetTranslate(&spEC, elem->position.x, elem->position.y, elem->position.z);
             temp = ((Rand_ZeroOne() * 2.5f) + 1.5f) / 64.0f;
             SkinMatrix_SetScale(&spAC, temp, temp, 1.0f);
-            SkinMatrix_MtxFMtxFMult(&spEC, &globalCtx->billboardMtxF, &sp6C);
+            SkinMatrix_MtxFMtxFMult(&spEC, &play->billboardMtxF, &sp6C);
             SkinMatrix_MtxFMtxFMult(&sp6C, &spAC, &sp12C);
 
             vertices[j].v.ob[0] = -32;

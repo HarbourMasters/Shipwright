@@ -1,12 +1,12 @@
 #ifndef Z_EN_FU_H
 #define Z_EN_FU_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnFu;
 
-typedef void (*EnFuActionFunc)(struct EnFu*, GlobalContext*);
+typedef void (*EnFuActionFunc)(struct EnFu*, PlayState*);
 
 typedef enum {
     /* 0x00 */ FU_LIMB_ROOT,

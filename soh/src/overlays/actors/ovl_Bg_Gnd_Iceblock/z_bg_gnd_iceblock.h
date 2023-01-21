@@ -1,12 +1,12 @@
 #ifndef Z_BG_GND_ICEBLOCK_H
 #define Z_BG_GND_ICEBLOCK_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgGndIceblock;
 
-typedef void (*BgGndIceblockActionFunc)(struct BgGndIceblock*, GlobalContext*);
+typedef void (*BgGndIceblockActionFunc)(struct BgGndIceblock*, PlayState*);
 
 typedef struct BgGndIceblock {
     /* 0x0000 */ DynaPolyActor dyna;

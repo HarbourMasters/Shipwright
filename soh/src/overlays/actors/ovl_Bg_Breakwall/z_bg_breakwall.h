@@ -1,12 +1,12 @@
 #ifndef Z_BG_BREAKWALL_H
 #define Z_BG_BREAKWALL_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgBreakwall;
 
-typedef void (*BgBreakwallActionFunc)(struct BgBreakwall*, GlobalContext*);
+typedef void (*BgBreakwallActionFunc)(struct BgBreakwall*, PlayState*);
 
 typedef struct BgBreakwall {
     /* 0x0000 */ DynaPolyActor dyna;

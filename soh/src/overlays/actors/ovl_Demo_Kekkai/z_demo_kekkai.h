@@ -1,12 +1,12 @@
 #ifndef Z_DEMO_KEKKAI_H
 #define Z_DEMO_KEKKAI_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct DemoKekkai;
 
-typedef void (*DemoKekkaiUpdateFunc)(struct DemoKekkai* this, GlobalContext* globalCtx);
+typedef void (*DemoKekkaiUpdateFunc)(struct DemoKekkai* this, PlayState* play);
 
 typedef struct DemoKekkai {
     /* 0x0000 */ Actor actor;

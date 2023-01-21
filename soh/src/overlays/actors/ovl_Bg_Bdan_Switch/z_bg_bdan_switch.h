@@ -1,7 +1,7 @@
 #ifndef Z_BG_BDAN_SWITCH_H
 #define Z_BG_BDAN_SWITCH_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 // BgBdanSwitch.actor.params & 0xFF
@@ -15,7 +15,7 @@ typedef enum {
 
 struct BgBdanSwitch;
 
-typedef void (*BgBdanSwitchActionFunc)(struct BgBdanSwitch*, GlobalContext*);
+typedef void (*BgBdanSwitchActionFunc)(struct BgBdanSwitch*, PlayState*);
 
 typedef struct BgBdanSwitch {
     /* 0x0000 */ DynaPolyActor dyna;

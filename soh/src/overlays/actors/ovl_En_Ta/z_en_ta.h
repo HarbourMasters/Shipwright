@@ -1,14 +1,14 @@
 #ifndef Z_EN_TA_H
 #define Z_EN_TA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 
 struct EnTa;
 
-typedef void (*EnTaActionFunc)(struct EnTa*, GlobalContext*);
+typedef void (*EnTaActionFunc)(struct EnTa*, PlayState*);
 typedef void (*EnTaUnkFunc)(struct EnTa*);
 
 typedef struct EnTa {

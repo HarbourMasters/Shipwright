@@ -1,12 +1,12 @@
 #ifndef Z_BG_MIZU_MOVEBG_H
 #define Z_BG_MIZU_MOVEBG_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgMizuMovebg;
 
-typedef void (*BgMizuMovebgActionFunc)(struct BgMizuMovebg*, GlobalContext*);
+typedef void (*BgMizuMovebgActionFunc)(struct BgMizuMovebg*, PlayState*);
 
 typedef struct BgMizuMovebg {
     /* 0x0000 */ DynaPolyActor dyna;

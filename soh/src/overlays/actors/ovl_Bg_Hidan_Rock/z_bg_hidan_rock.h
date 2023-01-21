@@ -1,12 +1,12 @@
 #ifndef Z_BG_HIDAN_ROCK_H
 #define Z_BG_HIDAN_ROCK_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgHidanRock;
 
-typedef void (*BgHidanRockActionFunc)(struct BgHidanRock*, GlobalContext*);
+typedef void (*BgHidanRockActionFunc)(struct BgHidanRock*, PlayState*);
 
 typedef struct BgHidanRock {
     /* 0x0000 */ DynaPolyActor dyna;

@@ -1,12 +1,12 @@
 #ifndef Z_EN_JJ_H
 #define Z_EN_JJ_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnJj;
 
-typedef void (*EnJjActionFunc)(struct EnJj*, GlobalContext*);
+typedef void (*EnJjActionFunc)(struct EnJj*, PlayState*);
 
 typedef struct EnJj {
     /* 0x0000 */ DynaPolyActor dyna;

@@ -1,12 +1,12 @@
 #ifndef Z_EN_TAKARA_MAN_H
 #define Z_EN_TAKARA_MAN_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnTakaraMan;
 
-typedef void (*EnTakaraManActionFunc)(struct EnTakaraMan*, GlobalContext*);
+typedef void (*EnTakaraManActionFunc)(struct EnTakaraMan*, PlayState*);
 
 typedef struct EnTakaraMan {
     /* 0x0000 */ Actor actor;

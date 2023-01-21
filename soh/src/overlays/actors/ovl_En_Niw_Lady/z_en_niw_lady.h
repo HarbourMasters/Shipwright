@@ -1,12 +1,12 @@
 #ifndef Z_EN_NIW_LADY_H
 #define Z_EN_NIW_LADY_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnNiwLady;
 
-typedef void (*EnNiwLadyActionFunc)(struct EnNiwLady*, GlobalContext*);
+typedef void (*EnNiwLadyActionFunc)(struct EnNiwLady*, PlayState*);
 
 typedef struct EnNiwLady {
     /* 0x0000 */ Actor actor;
@@ -38,7 +38,7 @@ typedef struct EnNiwLady {
     /* 0x0280 */ s8 objectAneIndex;
     /* 0x0281 */ s8 objectOsAnimeIndex;
     /* 0x0284 */ s32 getItemId;
-    /* 0x0288 */ struct_80034A14_arg1 unk_288;
+    /* 0x0288 */ NpcInteractInfo interactInfo;
     /* 0x02B0 */ ColliderCylinder collider;
     /* 0x02FC */ GetItemEntry getItemEntry;
 } EnNiwLady; // size = 0x02FC

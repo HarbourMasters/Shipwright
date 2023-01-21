@@ -1,12 +1,12 @@
 #ifndef Z_EN_EG_H
 #define Z_EN_EG_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnEg;
 
-typedef void (*EnEgActionFunc)(struct EnEg*, GlobalContext*);
+typedef void (*EnEgActionFunc)(struct EnEg*, PlayState*);
 
 typedef struct EnEg {
     /* 0x0000 */ Actor actor;

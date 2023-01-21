@@ -1,12 +1,12 @@
 #ifndef Z_EN_SKJ_H
 #define Z_EN_SKJ_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnSkj;
 
-typedef void (*EnSkjActionFunc)(struct EnSkj*, GlobalContext*);
+typedef void (*EnSkjActionFunc)(struct EnSkj*, PlayState*);
 
 typedef struct EnSkj {
     /* 0x0000 */ Actor actor;

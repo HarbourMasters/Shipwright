@@ -1,12 +1,12 @@
 #ifndef Z_EN_TEST_H
 #define Z_EN_TEST_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnTest;
 
-typedef void (*EnTestActionFunc)(struct EnTest*, GlobalContext*);
+typedef void (*EnTestActionFunc)(struct EnTest*, PlayState*);
 
 typedef enum {
     /* 0x00 */ STALFOS_LIMB_NONE,

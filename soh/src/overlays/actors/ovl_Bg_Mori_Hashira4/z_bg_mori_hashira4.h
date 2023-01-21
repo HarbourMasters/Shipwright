@@ -1,12 +1,12 @@
 #ifndef Z_BG_MORI_HASHIRA4_H
 #define Z_BG_MORI_HASHIRA4_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgMoriHashira4;
 
-typedef void (*BgMoriHashira4ActionFunc)(struct BgMoriHashira4*, GlobalContext*);
+typedef void (*BgMoriHashira4ActionFunc)(struct BgMoriHashira4*, PlayState*);
 
 typedef struct BgMoriHashira4 {
     /* 0x0000 */ DynaPolyActor dyna;

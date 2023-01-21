@@ -1,12 +1,12 @@
 #ifndef Z_BG_SPOT15_SAKU_H
 #define Z_BG_SPOT15_SAKU_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgSpot15Saku;
 
-typedef void (*BgSpot15SakuActionFunc)(struct BgSpot15Saku*, GlobalContext*);
+typedef void (*BgSpot15SakuActionFunc)(struct BgSpot15Saku*, PlayState*);
 
 typedef struct BgSpot15Saku {
     /* 0x0000 */ DynaPolyActor dyna;

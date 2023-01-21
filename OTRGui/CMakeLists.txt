@@ -19,19 +19,19 @@ include_directories(src/game)
 include_directories(include)
 
 if (NOT TARGET libultraship)
-    add_subdirectory(../libultraship/libultraship ${CMAKE_BINARY_DIR}/libultraship)
+    add_subdirectory(../libultraship ${CMAKE_BINARY_DIR}/libultraship)
 endif()
 if (NOT TARGET ZAPD)
     add_subdirectory(../ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
 endif()
 if (NOT TARGET ZAPDUtils)
-    add_subdirectory(../ZAPDTR/ZAPDUtils ${CMAKE_BINARY_DIR}/ZAPDUtils)
+    add_subdirectory(../libultraship/extern/ZAPDUtils ${CMAKE_BINARY_DIR}/ZAPDUtils)
 endif()
 if (NOT TARGET OTRExporter)
     add_subdirectory(../OTRExporter/OTRExporter ${CMAKE_BINARY_DIR}/OTRExporter)
 endif()
 if (NOT TARGET storm)
-    add_subdirectory(../StormLib ${CMAKE_BINARY_DIR}/StormLib)
+    add_subdirectory(../libultraship/extern/StormLib ${CMAKE_BINARY_DIR}/StormLib)
 endif()
 
 file(GLOB_RECURSE HEADERS src/*.h)
@@ -54,7 +54,12 @@ add_dependencies(OTRGui Assets)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC raylib)
 
-INSTALL(TARGETS OTRGui DESTINATION . COMPONENT ship)
+target_include_directories(${PROJECT_NAME} PRIVATE
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship
+	.
+)
+
+INSTALL(TARGETS OTRGui DESTINATION . COMPONENT ship OPTIONAL)
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/assets
         DESTINATION .
 	COMPONENT ship

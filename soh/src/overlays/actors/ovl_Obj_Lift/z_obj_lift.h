@@ -1,12 +1,12 @@
 #ifndef Z_OBJ_LIFT_H
 #define Z_OBJ_LIFT_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ObjLift;
 
-typedef void (*ObjLiftActionFunc)(struct ObjLift*, GlobalContext*);
+typedef void (*ObjLiftActionFunc)(struct ObjLift*, PlayState*);
 
 typedef struct ObjLift {
     /* 0x0000 */ DynaPolyActor dyna;

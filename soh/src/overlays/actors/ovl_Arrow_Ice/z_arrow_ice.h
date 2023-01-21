@@ -1,12 +1,12 @@
 #ifndef Z_ARROW_ICE_H
 #define Z_ARROW_ICE_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ArrowIce;
 
-typedef void (*ArrowIceActionFunc)(struct ArrowIce*, GlobalContext*);
+typedef void (*ArrowIceActionFunc)(struct ArrowIce*, PlayState*);
 
 typedef struct ArrowIce {
     /* 0x0000 */ Actor actor;

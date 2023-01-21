@@ -1,12 +1,12 @@
 #ifndef Z_BOSS_VA_H
 #define Z_BOSS_VA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BossVa;
 
-typedef void (*BossVaActionFunc)(struct BossVa*, GlobalContext*);
+typedef void (*BossVaActionFunc)(struct BossVa*, PlayState*);
 
 typedef struct BossVa {
     /* 0x0000 */ Actor actor;

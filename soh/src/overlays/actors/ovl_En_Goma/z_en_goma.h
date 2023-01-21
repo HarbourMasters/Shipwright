@@ -1,7 +1,7 @@
 #ifndef Z_EN_GOMA_H
 #define Z_EN_GOMA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef enum {
@@ -13,7 +13,7 @@ typedef enum {
 
 struct EnGoma;
 
-typedef void (*EnGomaActionFunc)(struct EnGoma*, GlobalContext*);
+typedef void (*EnGomaActionFunc)(struct EnGoma*, PlayState*);
 
 typedef enum {
     /*  0 */ GOMA_LIMB_NONE,

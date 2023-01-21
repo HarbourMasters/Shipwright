@@ -1,12 +1,12 @@
 #ifndef Z_EN_BA_H
 #define Z_EN_BA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnBa;
 
-typedef void (*EnBaActionFunc)(struct EnBa*, GlobalContext*);
+typedef void (*EnBaActionFunc)(struct EnBa*, PlayState*);
 
 typedef enum {
     /* 0x00 */ EN_BA_TENTACLE_RED,

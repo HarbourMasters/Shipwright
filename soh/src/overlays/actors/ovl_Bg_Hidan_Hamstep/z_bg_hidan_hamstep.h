@@ -1,12 +1,12 @@
 #ifndef Z_BG_HIDAN_HAMSTEP_H
 #define Z_BG_HIDAN_HAMSTEP_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgHidanHamstep;
 
-typedef void (*BgHidanHamstepActionFunc)(struct BgHidanHamstep*, GlobalContext*);
+typedef void (*BgHidanHamstepActionFunc)(struct BgHidanHamstep*, PlayState*);
 
 typedef struct BgHidanHamstep {
     /* 0x0000 */ DynaPolyActor dyna;

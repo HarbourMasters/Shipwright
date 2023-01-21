@@ -3,8 +3,6 @@
 
 #include "soh/frame_interpolation.h"
 
-const Color_RGB8 Trails_Color_ori = {255,255,255};
-
 void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2) {
     EffectBlureElement* elem;
     s32 numElements;
@@ -73,6 +71,11 @@ void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2) {
     }
 }
 
+//dumb doo doo command to change the type of an object's blur on the fly. Link's Swords with unique trail colors.
+void EffectBlure_ChangeType(EffectBlure* this, int type) {
+    this->trailType = type;
+}
+
 void EffectBlure_AddSpace(EffectBlure* this) {
     EffectBlureElement* elem;
     s32 numElements;
@@ -139,6 +142,7 @@ void EffectBlure_Init1(void* thisx, void* initParamsx) {
         this->elemDuration = initParams->elemDuration;
         this->unkFlag = initParams->unkFlag;
         this->calcMode = initParams->calcMode;
+        this->trailType = initParams->trailType;
         this->flags = 0;
         this->addAngleChange = 0;
         this->addAngle = 0;
@@ -187,6 +191,7 @@ void EffectBlure_Init2(void* thisx, void* initParamsx) {
         this->mode4Param = initParams->mode4Param;
         this->altPrimColor = initParams->altPrimColor;
         this->altEnvColor = initParams->altEnvColor;
+        this->trailType = initParams->trailType;
     }
 }
 
@@ -196,11 +201,89 @@ void EffectBlure_Destroy(void* thisx) {
 s32 EffectBlure_Update(void* thisx) {
     EffectBlure* this = (EffectBlure*)thisx;
     s32 i;
-    s16 RedColor;
-    s16 GreenColor;
-    s16 BlueColor;
-    s16 TrailDuration;
-    Color_RGB8 Trails_col = CVar_GetRGB("gTrailCol", Trails_Color_ori);
+    Color_RGBA8 color;
+    u8 changed = 0;
+
+    switch (this->trailType) { //there HAS to be a better way to do this.
+        case 2:
+            if (CVarGetInteger("gCosmetics.Trails_Boomerang.Changed", 0)) {
+                color = CVarGetColor("gCosmetics.Trails_Boomerang.Value", (Color_RGBA8){ 255, 255, 100, 255 });
+                changed = 1;
+            }
+            break;
+        case 3:
+            if (CVarGetInteger("gCosmetics.Trails_Bombchu.Changed", 0)) {
+                color = CVarGetColor("gCosmetics.Trails_Bombchu.Value", (Color_RGBA8){ 250, 0, 0, 255 });
+                this->p1StartColor.r = color.r;
+                this->p2StartColor.r = color.r * 0.8f;
+                this->p1EndColor.r = color.r * 0.6f;
+                this->p2EndColor.r = color.r * 0.4f;
+                this->p1StartColor.g = color.g;
+                this->p2StartColor.g = color.g * 0.8f;
+                this->p1EndColor.g = color.g * 0.6f;
+                this->p2EndColor.g = color.g * 0.4f;
+                this->p1StartColor.b = color.b;
+                this->p2StartColor.b = color.b * 0.8f;
+                this->p1EndColor.b = color.b * 0.6f;
+                this->p2EndColor.b = color.b * 0.4f;
+            }
+            break;
+        case 4:
+            if (CVarGetInteger("gCosmetics.Trails_KokiriSword.Changed", 0)) {
+                color = CVarGetColor("gCosmetics.Trails_KokiriSword.Value", (Color_RGBA8){ 255, 255, 255, 255 });
+                changed = 1;
+            }
+            break;
+        case 5:
+            if (CVarGetInteger("gCosmetics.Trails_MasterSword.Changed", 0)) {
+                color = CVarGetColor("gCosmetics.Trails_MasterSword.Value", (Color_RGBA8){ 255, 255, 255, 255 });
+                changed = 1;
+            }
+            break;
+        case 6:
+            if (CVarGetInteger("gCosmetics.Trails_BiggoronSword.Changed", 0)) {
+                color = CVarGetColor("gCosmetics.Trails_BiggoronSword.Value", (Color_RGBA8){ 255, 255, 255, 255 });
+                changed = 1;
+            }
+            break;
+        case 7:
+            if (CVarGetInteger("gCosmetics.Trails_Stick.Changed", 0)) {
+                color = CVarGetColor("gCosmetics.Trails_Stick.Value", (Color_RGBA8){ 255, 255, 255, 255 });
+                changed = 1;
+            }
+            break;
+        case 8:
+            if (CVarGetInteger("gCosmetics.Trails_Hammer.Changed", 0)) {
+                color = CVarGetColor("gCosmetics.Trails_Hammer.Value", (Color_RGBA8){ 255, 255, 255, 255 });
+                changed = 1;
+            }
+            break;
+        default: // don't do anything
+            break;
+    }
+
+    // We cant just straight up assign the colors because we need to preserve the alpha channel
+    if (changed) {
+        this->p1StartColor.r = color.r;
+        this->p2StartColor.r = color.r;
+        this->p1EndColor.r = color.r;
+        this->p2EndColor.r = color.r;
+        this->p1StartColor.g = color.g;
+        this->p2StartColor.g = color.g;
+        this->p1EndColor.g = color.g;
+        this->p2EndColor.g = color.g;
+        this->p1StartColor.b = color.b;
+        this->p2StartColor.b = color.b;
+        this->p1EndColor.b = color.b;
+        this->p2EndColor.b = color.b;
+    }
+
+    // Don't override boomerang and bombchu trail durations
+    if (this->trailType != 2 && this->trailType != 3) {
+        if (CVarGetInteger("gCosmetics.Trails_Duration.Changed", 0)) {
+            this->elemDuration = CVarGetInteger("gCosmetics.Trails_Duration.Value", 4);
+        }
+    }
 
     if (this == NULL) {
         return 0;
@@ -209,32 +292,6 @@ s32 EffectBlure_Update(void* thisx) {
     if (this->numElements == 0) {
         return 0;
     }
-
-    if (CVar_GetS32("gUseTrailsCol", 0) !=0) {
-        RedColor = Trails_col.r;
-        GreenColor = Trails_col.g;
-        BlueColor = Trails_col.b;
-        TrailDuration = 4.0f * CVar_GetS32("gTrailDurantion",1);
-    } else {
-        RedColor = Trails_Color_ori.r;
-        GreenColor = Trails_Color_ori.g;
-        BlueColor = Trails_Color_ori.b;
-        TrailDuration=4.0f;
-    }
-
-    this->p1StartColor.r = RedColor;
-    this->p2StartColor.r = RedColor;
-    this->p1EndColor.r = RedColor;
-    this->p2EndColor.r = RedColor;
-    this->p1StartColor.g = GreenColor;
-    this->p2StartColor.g = GreenColor;
-    this->p1EndColor.g = GreenColor;
-    this->p2EndColor.g = GreenColor;
-    this->p1StartColor.b = BlueColor;
-    this->p2StartColor.b = BlueColor;
-    this->p1EndColor.b = BlueColor;
-    this->p2EndColor.b = BlueColor;
-    this->elemDuration = TrailDuration;
 
     while (true) {
         if (this->elements[0].state == 0) {
@@ -394,7 +451,7 @@ void EffectBlure_GetComputedValues(EffectBlure* this, s32 index, f32 ratio, Vec3
             break;
     }
 
-    //sp30 = sp30; // Optimized out but seems necessary to match stack usage
+    sp30 = sp30; // Optimized out but seems necessary to match stack usage
 
     if (this->flags & 0x10) {
         color1->r = color1->g = color1->b = color1->a = 255;
@@ -414,7 +471,7 @@ void EffectBlure_GetComputedValues(EffectBlure* this, s32 index, f32 ratio, Vec3
 void EffectBlure_SetupSmooth(EffectBlure* this, GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
-    POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x26);
+    POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x26);
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -693,6 +750,8 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
     MtxF sp9C;
     MtxF sp5C;
     Mtx* mtx;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(gfxCtx);
 
@@ -710,6 +769,7 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
     this->elements[this->numElements - 1].flags &= ~3;
     this->elements[this->numElements - 1].flags |= 2;
 
+    FrameInterpolation_RecordOpenChild(this, epoch);
     EffectBlure_SetupSmooth(this, gfxCtx);
     SkinMatrix_SetTranslate(&spDC, this->elements[0].p2.x, this->elements[0].p2.y, this->elements[0].p2.z);
     SkinMatrix_SetScale(&sp9C, 0.1f, 0.1f, 0.1f);
@@ -734,7 +794,10 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
         } else {
             EffectBlure_DrawElemHermiteInterpolation(this, elem, i, gfxCtx);
         }
+        
     }
+
+    FrameInterpolation_RecordCloseChild();
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -742,7 +805,7 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
 void EffectBlure_SetupSimple(GraphicsContext* gfxCtx, EffectBlure* this, Vtx* vtx) {
     OPEN_DISPS(gfxCtx);
 
-    POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x26);
+    POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x26);
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -751,7 +814,7 @@ void EffectBlure_SetupSimpleAlt(GraphicsContext* gfxCtx, EffectBlure* this, Vtx*
     OPEN_DISPS(gfxCtx);
 
     gDPPipeSync(POLY_XLU_DISP++);
-    POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x26);
+    POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x26);
 
     gDPSetCycleType(POLY_XLU_DISP++, G_CYC_2CYCLE);
     gDPSetTextureLUT(POLY_XLU_DISP++, G_TT_NONE);
@@ -971,6 +1034,8 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
     s32 i;
     s32 j;
     s32 phi_t2;
+    static s32 epoch = 0;
+    epoch++;
 
     FrameInterpolation_RecordOpenChild(this, 0);
     OPEN_DISPS(gfxCtx);
@@ -979,7 +1044,7 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
 
     if (this->numElements != 0) {
         if (this->flags == 0) {
-            func_800942F0(gfxCtx);
+            Gfx_SetupDL_38Xlu(gfxCtx);
             gDPPipeSync(POLY_XLU_DISP++);
 
             vtx = Graph_Alloc(gfxCtx, sizeof(Vtx[32]));

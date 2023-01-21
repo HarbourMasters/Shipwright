@@ -1,13 +1,13 @@
 #ifndef Z_EN_ANUBICE_TAG_H
 #define Z_EN_ANUBICE_TAG_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "overlays/actors/ovl_En_Anubice/z_en_anubice.h"
 
 struct EnAnubiceTag;
 
-typedef void (*EnAnubiceTagActionFunc)(struct EnAnubiceTag*, GlobalContext*);
+typedef void (*EnAnubiceTagActionFunc)(struct EnAnubiceTag*, PlayState*);
 
 typedef struct EnAnubiceTag {
     /* 0x0000 */ Actor actor;

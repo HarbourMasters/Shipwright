@@ -1,12 +1,12 @@
 #ifndef Z_EN_DIVING_GAME_H
 #define Z_EN_DIVING_GAME_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnDivingGame;
 
-typedef void (*EnDivingGameActionFunc)(struct EnDivingGame*, GlobalContext*);
+typedef void (*EnDivingGameActionFunc)(struct EnDivingGame*, PlayState*);
 
 typedef struct EnDivingGame {
     /* 0x0000 */ Actor actor;
@@ -45,7 +45,7 @@ typedef struct EnDivingGame {
     /* 0x031E */ u8 allRupeesThrown; // flag
     /* 0x031F */ u8 unk_31F; // flag
     /* 0x0320 */ char unk_320[0x4]; // unused
-    /* 0x0324 */ struct_80034A14_arg1 unk_324;
+    /* 0x0324 */ NpcInteractInfo interactInfo;
     /* 0x034C */ ColliderCylinder collider;
 } EnDivingGame; // size = 0x0398
 

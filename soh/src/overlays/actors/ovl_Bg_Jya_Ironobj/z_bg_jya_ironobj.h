@@ -1,12 +1,12 @@
 #ifndef Z_BG_JYA_IRONOBJ_H
 #define Z_BG_JYA_IRONOBJ_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgJyaIronobj;
 
-typedef void (*BgJyaIronobjActionFunc)(struct BgJyaIronobj*, GlobalContext*);
+typedef void (*BgJyaIronobjActionFunc)(struct BgJyaIronobj*, PlayState*);
 
 typedef struct BgJyaIronobj {
     /* 0x0000 */ DynaPolyActor dyna;

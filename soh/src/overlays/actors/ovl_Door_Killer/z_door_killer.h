@@ -1,7 +1,7 @@
 #ifndef Z_DOOR_KILLER_H
 #define Z_DOOR_KILLER_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 /*
@@ -16,7 +16,7 @@ typedef struct {
 
 struct DoorKiller;
 
-typedef void (*DoorKillerActionFunc)(struct DoorKiller*, GlobalContext*);
+typedef void (*DoorKillerActionFunc)(struct DoorKiller*, PlayState*);
 
 typedef struct DoorKiller {
     /* 0x0000 */ Actor actor;

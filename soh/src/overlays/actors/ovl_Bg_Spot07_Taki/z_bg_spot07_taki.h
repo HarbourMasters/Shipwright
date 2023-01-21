@@ -1,12 +1,12 @@
 #ifndef Z_BG_SPOT07_TAKI_H
 #define Z_BG_SPOT07_TAKI_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgSpot07Taki;
 
-typedef void (*BgSpot07TakiActionFunc)(struct BgSpot07Taki*, GlobalContext*);
+typedef void (*BgSpot07TakiActionFunc)(struct BgSpot07Taki*, PlayState*);
 
 typedef struct BgSpot07Taki {
     /* 0x0000 */ DynaPolyActor dyna;

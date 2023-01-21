@@ -1,12 +1,12 @@
 #ifndef Z_EN_HORSE_GANON_H
 #define Z_EN_HORSE_GANON_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnHorseGanon;
 
-typedef void (*EnHorseGanonActionFunc)(struct EnHorseGanon*, GlobalContext*);
+typedef void (*EnHorseGanonActionFunc)(struct EnHorseGanon*, PlayState*);
 
 typedef struct EnHorseGanon {
     /* 0x0000 */ Actor actor;

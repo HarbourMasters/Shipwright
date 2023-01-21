@@ -1,12 +1,12 @@
 #ifndef Z_OBJ_MAKEKINSUTA_H
 #define Z_OBJ_MAKEKINSUTA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ObjMakekinsuta;
 
-typedef void (*ObjMakekinsutaActionFunc)(struct ObjMakekinsuta*, GlobalContext*);
+typedef void (*ObjMakekinsutaActionFunc)(struct ObjMakekinsuta*, PlayState*);
 
 typedef struct ObjMakekinsuta {
     /* 0x0000 */ Actor actor;

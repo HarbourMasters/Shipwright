@@ -1,7 +1,7 @@
 #ifndef Z_EN_ISHI_H
 #define Z_EN_ISHI_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef enum {
@@ -11,9 +11,9 @@ typedef enum {
 
 struct EnIshi;
 
-typedef void (*EnIshiActionFunc)(struct EnIshi*, GlobalContext*);
-typedef void (*EnIshiEffectSpawnFunc)(struct EnIshi*, GlobalContext*);
-typedef void (*EnIshiDrawFunc)(struct EnIshi*, GlobalContext*);
+typedef void (*EnIshiActionFunc)(struct EnIshi*, PlayState*);
+typedef void (*EnIshiEffectSpawnFunc)(struct EnIshi*, PlayState*);
+typedef void (*EnIshiDrawFunc)(struct EnIshi*, PlayState*);
 
 typedef struct EnIshi {
     /* 0x0000 */ Actor actor;

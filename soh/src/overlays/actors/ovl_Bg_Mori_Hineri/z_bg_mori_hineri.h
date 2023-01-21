@@ -1,12 +1,12 @@
 #ifndef Z_BG_MORI_HINERI_H
 #define Z_BG_MORI_HINERI_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgMoriHineri;
 
-typedef void (*BgMoriHineriActionFunc)(struct BgMoriHineri*, GlobalContext*);
+typedef void (*BgMoriHineriActionFunc)(struct BgMoriHineri*, PlayState*);
 
 typedef struct BgMoriHineri {
     /* 0x0000 */ DynaPolyActor dyna;

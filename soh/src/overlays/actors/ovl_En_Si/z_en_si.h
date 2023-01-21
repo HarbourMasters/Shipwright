@@ -1,12 +1,12 @@
 #ifndef Z_EN_SI_H
 #define Z_EN_SI_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnSi;
 
-typedef void (*EnSiActionFunc)(struct EnSi*, GlobalContext*);
+typedef void (*EnSiActionFunc)(struct EnSi*, PlayState*);
 
 typedef struct EnSi {
     /* 0x0000 */ Actor actor;

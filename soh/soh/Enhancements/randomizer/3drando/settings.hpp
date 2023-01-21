@@ -34,8 +34,8 @@ typedef enum {
 
 typedef enum {
     OPENFOREST_CLOSED,
-    OPENFOREST_OPEN,
     OPENFOREST_CLOSED_DEKU,
+    OPENFOREST_OPEN,
 } OpenForestSetting;
 
 typedef enum {
@@ -44,9 +44,9 @@ typedef enum {
 } OpenKakarikoSetting;
 
 typedef enum {
-    OPENDOOROFTIME_OPEN,
     OPENDOOROFTIME_CLOSED,
-    OPENDOOROFTIME_INTENDED,
+    OPENDOOROFTIME_SONGONLY,
+    OPENDOOROFTIME_OPEN,
 } OpenDoorOfTimeSetting;
 
 typedef enum {
@@ -62,8 +62,8 @@ typedef enum {
 } GerudoFortressSetting;
 
 typedef enum {
-    RAINBOWBRIDGE_OPEN,
     RAINBOWBRIDGE_VANILLA,
+    RAINBOWBRIDGE_OPEN,
     RAINBOWBRIDGE_STONES,
     RAINBOWBRIDGE_MEDALLIONS,
     RAINBOWBRIDGE_REWARDS,
@@ -81,8 +81,8 @@ typedef enum {
 } LACSConditionSetting;
 
 typedef enum {
-    AGE_ADULT,
     AGE_CHILD,
+    AGE_ADULT,
     AGE_RANDOM,
 } AgeSetting;
 
@@ -91,6 +91,12 @@ typedef enum {
     SHUFFLEDUNGEONS_ON,
     SHUFFLEDUNGEONS_GANON,
 } ShuffleDungeonEntrancesSetting;
+
+typedef enum {
+    SHUFFLEBOSSES_OFF,
+    SHUFFLEBOSSES_AGE_RESTRICTED,
+    SHUFFLEBOSSES_FULL,
+} ShuffleBossEntrancesSetting;
 
 typedef enum {
     SHUFFLEINTERIORS_OFF,
@@ -203,6 +209,13 @@ typedef enum {
 } GerudoKeysSetting;
 
 typedef enum {
+    KEYRINGS_OFF,
+    KEYRINGS_RANDOM,
+    KEYRINGS_RANDOM_COUNT,
+    KEYRINGS_SELECTION,
+} KeyRingsSetting;
+
+typedef enum {
     BOSSKEYSANITY_START_WITH,
     BOSSKEYSANITY_VANILLA,
     BOSSKEYSANITY_OWN_DUNGEON,
@@ -212,9 +225,9 @@ typedef enum {
 } BossKeysanitySetting;
 
 typedef enum {
-    GANONSBOSSKEY_START_WITH,
     GANONSBOSSKEY_VANILLA,
     GANONSBOSSKEY_OWN_DUNGEON,
+    GANONSBOSSKEY_START_WITH,
     GANONSBOSSKEY_ANY_DUNGEON,
     GANONSBOSSKEY_OVERWORLD,
     GANONSBOSSKEY_ANYWHERE,
@@ -380,9 +393,19 @@ typedef struct {
     uint8_t startingAge;
     uint8_t resolvedStartingAge;
     uint8_t shuffleDungeonEntrances;
+    uint8_t shuffleBossEntrances;
     uint8_t shuffleOverworldEntrances;
     uint8_t shuffleInteriorEntrances;
     uint8_t shuffleGrottoEntrances;
+    uint8_t shuffleOwlDrops;
+    uint8_t shuffleWarpSongs;
+    uint8_t shuffleOverworldSpawns;
+    uint8_t mixedEntrancePools;
+    uint8_t mixDungeons;
+    uint8_t mixOverworld;
+    uint8_t mixInteriors;
+    uint8_t mixGrottos;
+    uint8_t decoupleEntrances;
     uint8_t bombchusInLogic;
     uint8_t ammoDrops;
     uint8_t heartDropRefill;
@@ -403,6 +426,7 @@ typedef struct {
     uint8_t shuffleGerudoToken;
     uint8_t shuffleMagicBeans;
     uint8_t shuffleMerchants;
+    uint8_t shuffleFrogSongRupees;
     uint8_t shuffleAdultTradeQuest;
     uint8_t shuffleChestMinigame;
 
@@ -439,6 +463,7 @@ typedef struct {
     uint8_t numRequiredCuccos;
     uint8_t kingZoraSpeed;
     uint8_t completeMaskQuest;
+    uint8_t enableGlitchCutscenes;
     uint8_t quickText;
     uint8_t skipSongReplays;
     uint8_t keepFWWarpPoint;
@@ -456,6 +481,8 @@ typedef struct {
     uint8_t ingameSpoilers;
     uint8_t menuOpeningButton;
     uint8_t randomTrapDmg;
+    uint8_t blueFireArrows;
+    uint8_t sunLightArrows;
 
     uint8_t faroresWindAnywhere;
     uint8_t stickAsAdult;
@@ -848,7 +875,7 @@ class Menu {
 };
 
 namespace Settings {
-void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings);
+void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations);
   SettingsContext FillContext();
   void InitSettings();
   void SetDefaultSettings();
@@ -861,6 +888,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern std::string seed;
   extern std::string version;
   extern std::array<uint8_t, 5> hashIconIndexes;
+  extern std::string hash;
 
   extern bool skipChildZelda;
 
@@ -882,9 +910,19 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern uint8_t ResolvedStartingAge;
   extern Option ShuffleEntrances;
   extern Option ShuffleDungeonEntrances;
+  extern Option ShuffleBossEntrances;
   extern Option ShuffleOverworldEntrances;
   extern Option ShuffleInteriorEntrances;
   extern Option ShuffleGrottoEntrances;
+  extern Option ShuffleOwlDrops;
+  extern Option ShuffleWarpSongs;
+  extern Option ShuffleOverworldSpawns;
+  extern Option MixedEntrancePools;
+  extern Option MixDungeons;
+  extern Option MixOverworld;
+  extern Option MixInteriors;
+  extern Option MixGrottos;
+  extern Option DecoupleEntrances;
   extern Option BombchusInLogic;
   extern Option AmmoDrops;
   extern Option HeartDropRefill;
@@ -904,6 +942,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option ShuffleGerudoToken;
   extern Option ShuffleMagicBeans;
   extern Option ShuffleMerchants;
+  extern Option ShuffleFrogSongRupees;
   extern Option ShuffleAdultTradeQuest;
   extern Option ShuffleChestMinigame;
 
@@ -919,6 +958,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option LACSDungeonCount;
   extern Option LACSTokenCount;
   extern Option KeyRings;
+  extern Option KeyRingsRandomCount;
   extern Option RingFortress;
   extern Option RingForest;
   extern Option RingFire;
@@ -940,6 +980,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option NumRequiredCuccos;
   extern Option KingZoraSpeed;
   extern Option CompleteMaskQuest;
+  extern Option EnableGlitchCutscenes;
   extern Option QuickText;
   extern Option SkipSongReplays;
   extern Option KeepFWWarpPoint;
@@ -948,6 +989,16 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option GossipStoneHints;
   extern Option ClearerHints;
   extern Option HintDistribution;
+  extern Option AltarHintText;
+  extern Option GanondorfHintText;
+  extern Option DampeHintText;
+  extern Option Kak10GSHintText;
+  extern Option Kak20GSHintText;
+  extern Option Kak30GSHintText;
+  extern Option Kak40GSHintText;
+  extern Option Kak50GSHintText;
+  extern Option ScrubHintText;
+  extern Option WarpSongHints;
   extern Option DamageMultiplier;
   extern Option StartingTime;
   extern Option ChestAnimations;
@@ -956,6 +1007,8 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option IngameSpoilers;
   extern Option MenuOpeningButton;
   extern Option RandomTrapDmg;
+  extern Option BlueFireArrows;
+  extern Option SunlightArrows;
   extern bool HasNightStart;
 
   extern Option FaroresWindAnywhere;

@@ -1,12 +1,12 @@
 #ifndef Z_EN_SHOPNUTS_H
 #define Z_EN_SHOPNUTS_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnShopnuts;
 
-typedef void (*EnShopnutsActionFunc)(struct EnShopnuts*, GlobalContext*);
+typedef void (*EnShopnutsActionFunc)(struct EnShopnuts*, PlayState*);
 
 typedef struct EnShopnuts {
     /* 0x0000 */ Actor actor;

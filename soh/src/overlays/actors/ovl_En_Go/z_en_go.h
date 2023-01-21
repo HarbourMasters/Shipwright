@@ -1,14 +1,14 @@
 #ifndef Z_EN_GO_H
 #define Z_EN_GO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnGo;
 
-typedef void (*EnGoActionFunc)(struct EnGo*, GlobalContext*);
-typedef u16 (*callback1_80A3ED24)(GlobalContext*, struct EnGo*);
-typedef s16 (*callback2_80A3ED24)(GlobalContext*, struct EnGo*);
+typedef void (*EnGoActionFunc)(struct EnGo*, PlayState*);
+typedef u16 (*callback1_80A3ED24)(PlayState*, struct EnGo*);
+typedef s16 (*callback2_80A3ED24)(PlayState*, struct EnGo*);
 
 // WIP type docs
 // /* 0x00 */ GORON1_CITY_LINK,
@@ -42,7 +42,7 @@ typedef struct EnGo {
     /* 0x014C */ SkelAnime skelAnime;
     /* 0x0190 */ EnGoActionFunc actionFunc;
     /* 0x0194 */ ColliderCylinder collider;
-    /* 0x01E0 */ struct_80034A14_arg1 unk_1E0;
+    /* 0x01E0 */ NpcInteractInfo interactInfo;
     /* 0x0208 */ char unk_208[0x4];
     /* 0x020C */ s16 unk_20C;
     /* 0x020E */ s16 unk_20E;

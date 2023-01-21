@@ -1,12 +1,12 @@
 #ifndef Z_BOSS_GANON_H
 #define Z_BOSS_GANON_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BossGanon;
 
-typedef void (*BossGanonActionFunc)(struct BossGanon*, GlobalContext*);
+typedef void (*BossGanonActionFunc)(struct BossGanon*, PlayState*);
 
 typedef enum {
     /*  0 */ GDF_FWORK_0,

@@ -1,12 +1,12 @@
 #ifndef Z_EN_WF_H
 #define Z_EN_WF_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnWf;
 
-typedef void (*EnWfActionFunc)(struct EnWf*, GlobalContext*);
+typedef void (*EnWfActionFunc)(struct EnWf*, PlayState*);
 
 typedef enum {
     /*  0 */ WOLFOS_LIMB_NONE,

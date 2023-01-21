@@ -1,12 +1,12 @@
 #ifndef Z_EN_MK_H
 #define Z_EN_MK_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnMk;
 
-typedef void (*EnMkActionFunc)(struct EnMk*, GlobalContext*);
+typedef void (*EnMkActionFunc)(struct EnMk*, PlayState*);
 
 typedef struct EnMk {
     /* 0x0000 */ Actor actor;

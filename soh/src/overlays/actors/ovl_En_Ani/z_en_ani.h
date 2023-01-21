@@ -1,12 +1,12 @@
 #ifndef Z_EN_ANI_H
 #define Z_EN_ANI_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnAni;
 
-typedef void (*EnAniActionFunc)(struct EnAni*, GlobalContext*);
+typedef void (*EnAniActionFunc)(struct EnAni*, PlayState*);
 
 typedef struct EnAni {
     /* 0x0000 */ Actor actor;

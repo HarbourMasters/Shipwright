@@ -1,12 +1,12 @@
 #ifndef Z_ELF_MSG_H
 #define Z_ELF_MSG_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ElfMsg;
 
-typedef void (*ElfMsgActionFunc)(struct ElfMsg*, GlobalContext*);
+typedef void (*ElfMsgActionFunc)(struct ElfMsg*, PlayState*);
 
 typedef struct ElfMsg {
     /* 0x0000 */ Actor actor;

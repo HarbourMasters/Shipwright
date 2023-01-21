@@ -1,7 +1,7 @@
 #ifndef Z_EN_NB_H
 #define Z_EN_NB_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnNb;
@@ -29,8 +29,8 @@ typedef enum {
     /* 0x13 */ NB_LIMB_MAX
 } EnNbLimb;
 
-typedef void (*EnNbActionFunc)(struct EnNb*, GlobalContext*);
-typedef void (*EnNbDrawFunc)(struct EnNb*, GlobalContext*);
+typedef void (*EnNbActionFunc)(struct EnNb*, PlayState*);
+typedef void (*EnNbDrawFunc)(struct EnNb*, PlayState*);
 
 typedef struct EnNb {
     /* 0x0000 */ Actor actor;
@@ -52,7 +52,7 @@ typedef struct EnNb {
     /* 0x02F0 */ Vec3f finalPos;
     /* 0x02FC */ s16 pathYaw;
     /* 0x02FE */ u16 movementTimer;
-    /* 0x0300 */ struct_80034A14_arg1 unk_300;
+    /* 0x0300 */ NpcInteractInfo interactInfo;
 } EnNb; // size = 0x0328
 
 typedef enum {

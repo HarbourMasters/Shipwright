@@ -54,7 +54,7 @@ u32 ElfMessage_CheckCondition(ElfMessage* msg) {
                     return ((msg->byte0 & 1) == 1) ==
                            (CHECK_QUEST_ITEM(msg->byte3 - ITEM_MEDALLION_FOREST + QUEST_MEDALLION_FOREST) != 0);
                 case (ELF_MSG_CONDITION_MAGIC << 4):
-                    return ((msg->byte0 & 1) == 1) == (((void)0, gSaveContext.magicAcquired) != 0);
+                    return ((msg->byte0 & 1) == 1) == (((void)0, gSaveContext.isMagicAcquired) != 0);
             }
     }
 
@@ -148,12 +148,12 @@ u16 ElfMessage_GetTextFromMsgs(ElfMessage* msg) {
     }
 }
 
-u16 ElfMessage_GetSariaText(GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+u16 ElfMessage_GetSariaText(PlayState* play) {
+    Player* player = GET_PLAYER(play);
     ElfMessage* msgs;
 
     if (!LINK_IS_ADULT) {
-        if (Actor_FindNearby(globalCtx, &player->actor, ACTOR_EN_SA, 4, 800.0f) == NULL) {
+        if (Actor_FindNearby(play, &player->actor, ACTOR_EN_SA, 4, 800.0f) == NULL) {
             msgs = sChildSariaMsgs;
         } else {
             return 0x0160; // Special text about Saria preferring to talk to you face-to-face
@@ -165,10 +165,10 @@ u16 ElfMessage_GetSariaText(GlobalContext* globalCtx) {
     return ElfMessage_GetTextFromMsgs(msgs);
 }
 
-u16 ElfMessage_GetCUpText(GlobalContext* globalCtx) {
-    if (globalCtx->cUpElfMsgs == NULL) {
+u16 ElfMessage_GetCUpText(PlayState* play) {
+    if (play->cUpElfMsgs == NULL) {
         return 0;
     } else {
-        return ElfMessage_GetTextFromMsgs(globalCtx->cUpElfMsgs);
+        return ElfMessage_GetTextFromMsgs(play->cUpElfMsgs);
     }
 }

@@ -1,12 +1,12 @@
 #ifndef Z_BG_HIDAN_FWBIG_H
 #define Z_BG_HIDAN_FWBIG_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgHidanFwbig;
 
-typedef void (*BgHidanFwbigActionFunc)(struct BgHidanFwbig*, GlobalContext*);
+typedef void (*BgHidanFwbigActionFunc)(struct BgHidanFwbig*, PlayState*);
 
 typedef struct BgHidanFwbig {
     /* 0x0000 */ Actor actor;

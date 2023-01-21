@@ -1,12 +1,12 @@
 #ifndef Z_EN_IN_H
 #define Z_EN_IN_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnIn;
 
-typedef void (*EnInActionFunc)(struct EnIn*, GlobalContext*);
+typedef void (*EnInActionFunc)(struct EnIn*, PlayState*);
 
 typedef enum {
     /* 0x00 */ INGO_LIMB_NONE,
@@ -58,7 +58,7 @@ typedef struct EnIn {
     /* 0x02FC */ f32 unk_2FC;
     /* 0x0300 */ f32 unk_300;
     /* 0x0304 */ f32 unk_304;
-    /* 0x0308 */ struct_80034A14_arg1 unk_308;
+    /* 0x0308 */ NpcInteractInfo interactInfo;
     /* 0x0330 */ Vec3s unk_330[INGO_LIMB_MAX];
 } EnIn; // size = 0x03A8
 

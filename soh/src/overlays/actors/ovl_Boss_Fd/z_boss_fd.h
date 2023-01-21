@@ -1,12 +1,12 @@
 #ifndef Z_BOSS_FD_H
 #define Z_BOSS_FD_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BossFd;
 
-typedef void (*BossFdActionFunc)(struct BossFd*, GlobalContext*);
+typedef void (*BossFdActionFunc)(struct BossFd*, PlayState*);
 
 typedef enum {
     /*  -1 */ BOSSFD_WAIT_INTRO = -1,

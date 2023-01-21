@@ -1,12 +1,12 @@
 #ifndef Z_BG_HAKA_WATER_H
 #define Z_BG_HAKA_WATER_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgHakaWater;
 
-typedef void (*BgHakaWaterActionFunc)(struct BgHakaWater*, GlobalContext*);
+typedef void (*BgHakaWaterActionFunc)(struct BgHakaWater*, PlayState*);
 
 typedef struct BgHakaWater {
     /* 0x0000 */ Actor actor;

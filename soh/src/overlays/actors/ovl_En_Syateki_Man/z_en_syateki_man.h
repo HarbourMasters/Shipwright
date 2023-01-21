@@ -1,12 +1,12 @@
 #ifndef Z_EN_SYATEKI_MAN_H
 #define Z_EN_SYATEKI_MAN_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnSyatekiMan;
 
-typedef void (*EnSyatekiManActionFunc) (struct EnSyatekiMan*, GlobalContext*);
+typedef void (*EnSyatekiManActionFunc) (struct EnSyatekiMan*, PlayState*);
 typedef void (*EnSyatekiManOtherFunc) (struct EnSyatekiMan*);
 
 typedef struct EnSyatekiMan {

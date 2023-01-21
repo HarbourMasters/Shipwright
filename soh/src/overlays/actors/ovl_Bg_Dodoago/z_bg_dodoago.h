@@ -1,7 +1,7 @@
 #ifndef Z_BG_DODOAGO_H
 #define Z_BG_DODOAGO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef enum {
@@ -11,7 +11,7 @@ typedef enum {
 
 struct BgDodoago;
 
-typedef void (*BgDodoagoActionFunc)(struct BgDodoago*, GlobalContext*);
+typedef void (*BgDodoagoActionFunc)(struct BgDodoago*, PlayState*);
 
 typedef struct BgDodoago {
     /* 0x0000 */ DynaPolyActor dyna;

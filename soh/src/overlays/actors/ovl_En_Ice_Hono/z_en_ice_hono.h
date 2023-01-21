@@ -1,12 +1,12 @@
 #ifndef Z_EN_ICE_HONO_H
 #define Z_EN_ICE_HONO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnIceHono;
 
-typedef void (*EnIceHonoActionFunc)(struct EnIceHono*, GlobalContext*);
+typedef void (*EnIceHonoActionFunc)(struct EnIceHono*, PlayState*);
 
 typedef struct EnIceHono {
     /* 0x0000 */ Actor actor;

@@ -1,4 +1,4 @@
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "vt.h"
 
@@ -220,6 +220,11 @@ void Audio_ProcessSoundRequest(void)
     evictIndex = 0x80;
     if (req->sfxId == 0) {
         return;
+    }
+    u16 newSfxId = SfxEditor_GetReplacementSeq(req->sfxId);
+    if (req->sfxId != newSfxId) {
+        gAudioContext.seqReplaced[SEQ_PLAYER_SFX] = 1;
+        req->sfxId = newSfxId;
     }
     bankId = SFX_BANK(req->sfxId);
     if ((1 << bankId) & D_801333F0) {

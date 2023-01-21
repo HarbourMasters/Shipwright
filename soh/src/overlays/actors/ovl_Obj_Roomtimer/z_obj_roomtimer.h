@@ -1,13 +1,13 @@
 #ifndef Z_OBJ_ROOMTIMER_H
 #define Z_OBJ_ROOMTIMER_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "z64.h"
 
 struct ObjRoomtimer;
 
-typedef void (*ObjRoomtimerActionFunc)(struct ObjRoomtimer*, GlobalContext*);
+typedef void (*ObjRoomtimerActionFunc)(struct ObjRoomtimer*, PlayState*);
 
 typedef struct ObjRoomtimer {
     /* 0x0000 */ Actor actor;

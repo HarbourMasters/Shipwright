@@ -1,13 +1,13 @@
 #ifndef Z_EN_ANUBICE_H
 #define Z_EN_ANUBICE_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "overlays/actors/ovl_Bg_Hidan_Curtain/z_bg_hidan_curtain.h"
 
 struct EnAnubice;
 
-typedef void (*EnAnubiceActionFunc)(struct EnAnubice*, struct GlobalContext*);
+typedef void (*EnAnubiceActionFunc)(struct EnAnubice*, struct PlayState*);
 
 typedef enum {
     /*  0 */ ANUBICE_LIMB_NONE,

@@ -76,7 +76,7 @@ s32 func_800435B4(DynaPolyActor* dynaActor) {
     }
 }
 
-s32 func_800435D8(GlobalContext* globalCtx, DynaPolyActor* dynaActor, s16 arg2, s16 arg3, s16 arg4) {
+s32 func_800435D8(PlayState* play, DynaPolyActor* dynaActor, s16 arg2, s16 arg3, s16 arg4) {
     Vec3f posA;
     Vec3f posB;
     Vec3f posResult;
@@ -98,7 +98,7 @@ s32 func_800435D8(GlobalContext* globalCtx, DynaPolyActor* dynaActor, s16 arg2, 
     posB.y = posA.y;
     posB.z = sign * a3 * cos + posA.z;
 
-    if (BgCheck_EntityLineTest3(&globalCtx->colCtx, &posA, &posB, &posResult, &poly, true, false, false, true, &bgId,
+    if (BgCheck_EntityLineTest3(&play->colCtx, &posA, &posB, &posResult, &poly, true, false, false, true, &bgId,
                                 &dynaActor->actor, 0.0f)) {
         return false;
     }
@@ -106,7 +106,7 @@ s32 func_800435D8(GlobalContext* globalCtx, DynaPolyActor* dynaActor, s16 arg2, 
     posA.z = (dynaActor->actor.world.pos.z * 2) - posA.z;
     posB.x = sign * a3 * sin + posA.x;
     posB.z = sign * a3 * cos + posA.z;
-    if (BgCheck_EntityLineTest3(&globalCtx->colCtx, &posA, &posB, &posResult, &poly, true, false, false, true, &bgId,
+    if (BgCheck_EntityLineTest3(&play->colCtx, &posA, &posB, &posResult, &poly, true, false, false, true, &bgId,
                                 &dynaActor->actor, 0.0f)) {
         return false;
     }

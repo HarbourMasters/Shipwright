@@ -1,12 +1,12 @@
 #ifndef Z_EN_VM_H
 #define Z_EN_VM_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnVm;
 
-typedef void (*EnVmActionFunc)(struct EnVm*, GlobalContext*);
+typedef void (*EnVmActionFunc)(struct EnVm*, PlayState*);
 
 typedef struct EnVm {
     /* 0x0000 */ Actor actor;

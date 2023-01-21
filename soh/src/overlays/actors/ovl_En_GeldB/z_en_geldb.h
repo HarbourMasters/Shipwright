@@ -1,7 +1,7 @@
 #ifndef Z_EN_GELDB_H
 #define Z_EN_GELDB_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnGeldB;
@@ -34,7 +34,7 @@ typedef enum {
     /* 0x18 */ GELDB_LIMB_MAX
 } EnGeldBLimb;
 
-typedef void (*EnGeldBActionFunc)(struct EnGeldB*, GlobalContext*);
+typedef void (*EnGeldBActionFunc)(struct EnGeldB*, PlayState*);
 
 typedef struct EnGeldB {
     /* 0x0000 */ Actor actor;

@@ -1,12 +1,12 @@
 #ifndef Z_OBJ_HSBLOCK_H
 #define Z_OBJ_HSBLOCK_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ObjHsblock;
 
-typedef void (*ObjHsblockActionFunc)(struct ObjHsblock*, GlobalContext*);
+typedef void (*ObjHsblockActionFunc)(struct ObjHsblock*, PlayState*);
 
 typedef struct ObjHsblock {
     /* 0x0000 */ DynaPolyActor dyna;

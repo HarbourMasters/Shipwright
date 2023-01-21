@@ -1,12 +1,12 @@
 #ifndef Z_EN_SYATEKI_ITM_H
 #define Z_EN_SYATEKI_ITM_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnSyatekiItm;
 
-typedef void (*EnSyatekiItmActionFunc)(struct EnSyatekiItm*, GlobalContext*);
+typedef void (*EnSyatekiItmActionFunc)(struct EnSyatekiItm*, PlayState*);
 
 typedef enum {
     /* 0 */ ENSYATEKI_NONE,

@@ -1,19 +1,19 @@
 #ifndef Z_EN_MD_H
 #define Z_EN_MD_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnMd;
 
-typedef void (*EnMdActionFunc)(struct EnMd*, GlobalContext*);
+typedef void (*EnMdActionFunc)(struct EnMd*, PlayState*);
 
 typedef struct EnMd {
     /* 0x0000 */ Actor actor;
     /* 0x014C */ SkelAnime skelAnime;
     /* 0x0190 */ EnMdActionFunc actionFunc;
     /* 0x0194 */ ColliderCylinder collider;
-    /* 0x01E0 */ struct_80034A14_arg1 unk_1E0;
+    /* 0x01E0 */ NpcInteractInfo interactInfo;
     /* 0x0208 */ u8 unk_208;
     /* 0x0209 */ u8 unk_209;
     /* 0x020A */ u8 unk_20A;

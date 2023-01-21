@@ -10,16 +10,16 @@
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_25)
 
-void EnMd_Init(Actor* thisx, GlobalContext* globalCtx);
-void EnMd_Destroy(Actor* thisx, GlobalContext* globalCtx);
-void EnMd_Update(Actor* thisx, GlobalContext* globalCtx);
-void EnMd_Draw(Actor* thisx, GlobalContext* globalCtx);
+void EnMd_Init(Actor* thisx, PlayState* play);
+void EnMd_Destroy(Actor* thisx, PlayState* play);
+void EnMd_Update(Actor* thisx, PlayState* play);
+void EnMd_Draw(Actor* thisx, PlayState* play);
 
-void func_80AAB874(EnMd* this, GlobalContext* globalCtx);
-void func_80AAB8F8(EnMd* this, GlobalContext* globalCtx);
-void func_80AAB948(EnMd* this, GlobalContext* globalCtx);
-void func_80AABC10(EnMd* this, GlobalContext* globalCtx);
-void func_80AABD0C(EnMd* this, GlobalContext* globalCtx);
+void func_80AAB874(EnMd* this, PlayState* play);
+void func_80AAB8F8(EnMd* this, PlayState* play);
+void func_80AAB948(EnMd* this, PlayState* play);
+void func_80AABC10(EnMd* this, PlayState* play);
+void func_80AABD0C(EnMd* this, PlayState* play);
 
 const ActorInit En_Md_InitVars = {
     ACTOR_EN_MD,
@@ -297,7 +297,7 @@ void func_80AAA93C(EnMd* this) {
 }
 
 void func_80AAAA24(EnMd* this) {
-    if (this->unk_1E0.unk_00 != 0) {
+    if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         switch (this->actor.textId) {
             case 0x102F:
                 if ((this->unk_208 == 0) && (this->unk_20B != 1)) {
@@ -348,8 +348,8 @@ void func_80AAAA24(EnMd* this) {
     func_80AAA93C(this);
 }
 
-s16 func_80AAAC78(EnMd* this, GlobalContext* globalCtx) {
-    s16 dialogState = Message_GetState(&globalCtx->msgCtx);
+s16 func_80AAAC78(EnMd* this, PlayState* play) {
+    s16 dialogState = Message_GetState(&play->msgCtx);
 
     if ((this->unk_209 == TEXT_STATE_AWAITING_NEXT) || (this->unk_209 == TEXT_STATE_EVENT) ||
         (this->unk_209 == TEXT_STATE_CLOSING) || (this->unk_209 == TEXT_STATE_DONE_HAS_NEXT)) {
@@ -362,8 +362,8 @@ s16 func_80AAAC78(EnMd* this, GlobalContext* globalCtx) {
     return dialogState;
 }
 
-u16 EnMd_GetTextKokiriForest(GlobalContext* globalCtx, EnMd* this) {
-    u16 reactionText = Text_GetFaceReaction(globalCtx, 0x11);
+u16 EnMd_GetTextKokiriForest(PlayState* play, EnMd* this) {
+    u16 reactionText = Text_GetFaceReaction(play, 0x11);
 
     if (reactionText != 0) {
         return reactionText;
@@ -373,7 +373,7 @@ u16 EnMd_GetTextKokiriForest(GlobalContext* globalCtx, EnMd* this) {
     this->unk_209 = TEXT_STATE_NONE;
 
     if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) ||
-        (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[1])) {
+        (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE))) {
         return 0x1045;
     }
 
@@ -392,7 +392,7 @@ u16 EnMd_GetTextKokiriForest(GlobalContext* globalCtx, EnMd* this) {
     return 0x102F;
 }
 
-u16 EnMd_GetTextKokiriHome(GlobalContext* globalCtx, EnMd* this) {
+u16 EnMd_GetTextKokiriHome(PlayState* play, EnMd* this) {
     this->unk_208 = 0;
     this->unk_209 = TEXT_STATE_NONE;
 
@@ -403,7 +403,7 @@ u16 EnMd_GetTextKokiriHome(GlobalContext* globalCtx, EnMd* this) {
     return 0x1046;
 }
 
-u16 EnMd_GetTextLostWoods(GlobalContext* globalCtx, EnMd* this) {
+u16 EnMd_GetTextLostWoods(PlayState* play, EnMd* this) {
     this->unk_208 = 0;
     this->unk_209 = TEXT_STATE_NONE;
 
@@ -425,24 +425,24 @@ u16 EnMd_GetTextLostWoods(GlobalContext* globalCtx, EnMd* this) {
     return 0x1060;
 }
 
-u16 EnMd_GetText(GlobalContext* globalCtx, Actor* thisx) {
+u16 EnMd_GetText(PlayState* play, Actor* thisx) {
     EnMd* this = (EnMd*)thisx;
 
-    switch (globalCtx->sceneNum) {
+    switch (play->sceneNum) {
         case SCENE_SPOT04:
-            return EnMd_GetTextKokiriForest(globalCtx, this);
+            return EnMd_GetTextKokiriForest(play, this);
         case SCENE_KOKIRI_HOME4:
-            return EnMd_GetTextKokiriHome(globalCtx, this);
+            return EnMd_GetTextKokiriHome(play, this);
         case SCENE_SPOT10:
-            return EnMd_GetTextLostWoods(globalCtx, this);
+            return EnMd_GetTextLostWoods(play, this);
         default:
             return 0;
     }
 }
 
-s16 func_80AAAF04(GlobalContext* globalCtx, Actor* thisx) {
+s16 func_80AAAF04(PlayState* play, Actor* thisx) {
     EnMd* this = (EnMd*)thisx;
-    switch (func_80AAAC78(this, globalCtx)) {
+    switch (func_80AAAC78(this, play)) {
         case TEXT_STATE_NONE:
         case TEXT_STATE_DONE_HAS_NEXT:
         case TEXT_STATE_DONE_FADING:
@@ -451,7 +451,7 @@ s16 func_80AAAF04(GlobalContext* globalCtx, Actor* thisx) {
         case TEXT_STATE_SONG_DEMO_DONE:
         case TEXT_STATE_8:
         case TEXT_STATE_9:
-            return 1;
+            return NPC_TALK_STATE_TALKING;
         case TEXT_STATE_CLOSING:
             switch (this->actor.textId) {
                 case 0x1028:
@@ -469,25 +469,24 @@ s16 func_80AAAF04(GlobalContext* globalCtx, Actor* thisx) {
                     break;
                 case 0x1033:
                 case 0x1067:
-                    return 2;
+                    return NPC_TALK_STATE_ACTION;
             }
-            return 0;
+            return NPC_TALK_STATE_IDLE;
         case TEXT_STATE_EVENT:
-            if (Message_ShouldAdvance(globalCtx)) {
-                return 2;
+            if (Message_ShouldAdvance(play)) {
+                return NPC_TALK_STATE_ACTION;
             }
         default:
-            return 1;
+            return NPC_TALK_STATE_TALKING;
     }
 }
 
-u8 EnMd_ShouldSpawn(EnMd* this, GlobalContext* globalCtx) {
-    if (globalCtx->sceneNum == SCENE_SPOT04) {
+u8 EnMd_ShouldSpawn(EnMd* this, PlayState* play) {
+    if (play->sceneNum == SCENE_SPOT04) {
         if (gSaveContext.n64ddFlag) {
             // if we have beaten deku tree or have open forest turned on
             // or have already shown mido we have an equipped sword/shield
-            if (gSaveContext.dungeonsDone[1] ||
-                Randomizer_GetSettingValue(RSK_FOREST) == 1 ||
+            if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) ||
                 gSaveContext.eventChkInf[0] & 0x10) {
                 return 0;
             }
@@ -499,7 +498,7 @@ u8 EnMd_ShouldSpawn(EnMd* this, GlobalContext* globalCtx) {
         }
     }
 
-    if (globalCtx->sceneNum == SCENE_KOKIRI_HOME4) {
+    if (play->sceneNum == SCENE_KOKIRI_HOME4) {
         if (((gSaveContext.eventChkInf[1] & 0x1000) != 0) || ((gSaveContext.eventChkInf[4] & 1) != 0)) {
             if (!LINK_IS_ADULT) {
                 return 1;
@@ -507,7 +506,7 @@ u8 EnMd_ShouldSpawn(EnMd* this, GlobalContext* globalCtx) {
         }
     }
 
-    if (globalCtx->sceneNum == SCENE_SPOT10) {
+    if (play->sceneNum == SCENE_SPOT10) {
         return 1;
     }
 
@@ -524,10 +523,10 @@ void EnMd_UpdateEyes(EnMd* this) {
     }
 }
 
-void func_80AAB158(EnMd* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_80AAB158(EnMd* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     s16 absYawDiff;
-    s16 temp;
+    s16 trackingMode;
     s16 temp2;
     s16 yawDiff;
 
@@ -535,45 +534,46 @@ void func_80AAB158(EnMd* this, GlobalContext* globalCtx) {
         yawDiff = (f32)this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
         absYawDiff = ABS(yawDiff);
 
-        temp = (absYawDiff <= func_800347E8(2)) ? 2 : 1;
+        trackingMode =
+            absYawDiff <= Npc_GetTrackingPresetMaxPlayerYaw(2) ? NPC_TRACKING_HEAD_AND_TORSO : NPC_TRACKING_NONE;
         temp2 = 1;
     } else {
-        temp = 1;
+        trackingMode = NPC_TRACKING_NONE;
         temp2 = 0;
     }
 
-    if (this->unk_1E0.unk_00 != 0) {
-        temp = 4;
+    if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
+        trackingMode = NPC_TRACKING_FULL_BODY;
     }
 
     if (this->actionFunc == func_80AABD0C) {
-        temp = 1;
+        trackingMode = NPC_TRACKING_NONE;
         temp2 = 0;
     }
     if (this->actionFunc == func_80AAB8F8) {
-        temp = 4;
+        trackingMode = NPC_TRACKING_FULL_BODY;
         temp2 = 1;
     }
 
-    if ((globalCtx->csCtx.state != CS_STATE_IDLE) || gDbgCamEnabled) {
-        this->unk_1E0.unk_18 = globalCtx->view.eye;
-        this->unk_1E0.unk_14 = 40.0f;
-        temp = 2;
+    if ((play->csCtx.state != CS_STATE_IDLE) || gDbgCamEnabled) {
+        this->interactInfo.trackPos = play->view.eye;
+        this->interactInfo.yOffset = 40.0f;
+        trackingMode = NPC_TRACKING_HEAD_AND_TORSO;
     } else {
-        this->unk_1E0.unk_18 = player->actor.world.pos;
-        this->unk_1E0.unk_14 = (gSaveContext.linkAge > 0) ? 0.0f : -18.0f;
+        this->interactInfo.trackPos = player->actor.world.pos;
+        this->interactInfo.yOffset = (gSaveContext.linkAge > 0) ? 0.0f : -18.0f;
     }
 
-    func_80034A14(&this->actor, &this->unk_1E0, 2, temp);
+    Npc_TrackPoint(&this->actor, &this->interactInfo, 2, trackingMode);
     if (this->actionFunc != func_80AABC10) {
         if (temp2) {
-            func_800343CC(globalCtx, &this->actor, &this->unk_1E0.unk_00, this->collider.dim.radius + 30.0f,
-                          EnMd_GetText, func_80AAAF04);
+            Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 30.0f,
+                              EnMd_GetText, func_80AAAF04);
         }
     }
 }
 
-u8 EnMd_FollowPath(EnMd* this, GlobalContext* globalCtx) {
+u8 EnMd_FollowPath(EnMd* this, PlayState* play) {
     Path* path;
     Vec3s* pointPos;
     f32 pathDiffX;
@@ -583,7 +583,7 @@ u8 EnMd_FollowPath(EnMd* this, GlobalContext* globalCtx) {
         return 0;
     }
 
-    path = &globalCtx->setupPathList[(this->actor.params & 0xFF00) >> 8];
+    path = &play->setupPathList[(this->actor.params & 0xFF00) >> 8];
     pointPos = SEGMENTED_TO_VIRTUAL(path->points);
     pointPos += this->waypoint;
 
@@ -602,7 +602,7 @@ u8 EnMd_FollowPath(EnMd* this, GlobalContext* globalCtx) {
     return 0;
 }
 
-u8 EnMd_SetMovedPos(EnMd* this, GlobalContext* globalCtx) {
+u8 EnMd_SetMovedPos(EnMd* this, PlayState* play) {
     Path* path;
     Vec3s* lastPointPos;
 
@@ -610,7 +610,7 @@ u8 EnMd_SetMovedPos(EnMd* this, GlobalContext* globalCtx) {
         return 0;
     }
 
-    path = &globalCtx->setupPathList[(this->actor.params & 0xFF00) >> 8];
+    path = &play->setupPathList[(this->actor.params & 0xFF00) >> 8];
     lastPointPos = SEGMENTED_TO_VIRTUAL(path->points);
     lastPointPos += path->count - 1;
 
@@ -621,23 +621,23 @@ u8 EnMd_SetMovedPos(EnMd* this, GlobalContext* globalCtx) {
     return 1;
 }
 
-void func_80AAB5A4(EnMd* this, GlobalContext* globalCtx) {
+void func_80AAB5A4(EnMd* this, PlayState* play) {
     f32 temp;
 
-    if (globalCtx->sceneNum != SCENE_KOKIRI_HOME4) {
-        if (CVar_GetS32("gDisableKokiriDrawDistance", 0) != 0) {
+    if (play->sceneNum != SCENE_KOKIRI_HOME4) {
+        if (CVarGetInteger("gDisableKokiriDrawDistance", 0) != 0) {
             temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
-                    (globalCtx->sceneNum == SCENE_SPOT04))
+                    (play->sceneNum == SCENE_SPOT04))
                        ? 100.0f
                        : 32767.0f;
         } else {
             temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
-                    (globalCtx->sceneNum == SCENE_SPOT04))
+                    (play->sceneNum == SCENE_SPOT04))
                        ? 100.0f
                        : 400.0f;
         }
         
-        this->alpha = func_80034DD4(&this->actor, globalCtx, this->alpha, temp);
+        this->alpha = func_80034DD4(&this->actor, play, this->alpha, temp);
         this->actor.shape.shadowAlpha = this->alpha;
     } else {
         this->alpha = 255;
@@ -645,17 +645,17 @@ void func_80AAB5A4(EnMd* this, GlobalContext* globalCtx) {
     }
 }
 
-void EnMd_Init(Actor* thisx, GlobalContext* globalCtx) {
+void EnMd_Init(Actor* thisx, PlayState* play) {
     EnMd* this = (EnMd*)thisx;
     s32 pad;
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 24.0f);
-    SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gMidoSkel, NULL, this->jointTable, this->morphTable, 17);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gMidoSkel, NULL, this->jointTable, this->morphTable, 17);
 
-    Collider_InitCylinder(globalCtx, &this->collider);
-    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
+    Collider_InitCylinder(play, &this->collider);
+    Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
-    if (!EnMd_ShouldSpawn(this, globalCtx)) {
+    if (!EnMd_ShouldSpawn(this, play)) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -664,56 +664,56 @@ void EnMd_Init(Actor* thisx, GlobalContext* globalCtx) {
     Actor_SetScale(&this->actor, 0.01f);
     this->actor.targetMode = 6;
     this->alpha = 255;
-    Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_ELF, this->actor.world.pos.x,
+    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_ELF, this->actor.world.pos.x,
                        this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, FAIRY_KOKIRI);
 
-    if (((globalCtx->sceneNum == SCENE_SPOT04) && !(gSaveContext.eventChkInf[0] & 0x10)) ||
-        ((globalCtx->sceneNum == SCENE_SPOT04) && (gSaveContext.eventChkInf[0] & 0x10) &&
+    if (((play->sceneNum == SCENE_SPOT04) && !(gSaveContext.eventChkInf[0] & 0x10)) ||
+        ((play->sceneNum == SCENE_SPOT04) && (gSaveContext.eventChkInf[0] & 0x10) &&
          CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) ||
-        ((globalCtx->sceneNum == SCENE_SPOT10) && !(gSaveContext.eventChkInf[0] & 0x400))) {
+        ((play->sceneNum == SCENE_SPOT10) && !(gSaveContext.eventChkInf[0] & 0x400))) {
         this->actor.home.pos = this->actor.world.pos;
         this->actionFunc = func_80AAB948;
         return;
     }
 
-    if (globalCtx->sceneNum != SCENE_KOKIRI_HOME4) {
-        EnMd_SetMovedPos(this, globalCtx);
+    if (play->sceneNum != SCENE_KOKIRI_HOME4) {
+        EnMd_SetMovedPos(this, play);
     }
 
     this->actionFunc = func_80AAB874;
 }
 
-void EnMd_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+void EnMd_Destroy(Actor* thisx, PlayState* play) {
     EnMd* this = (EnMd*)thisx;
-    Collider_DestroyCylinder(globalCtx, &this->collider);
+    Collider_DestroyCylinder(play, &this->collider);
 }
 
-void func_80AAB874(EnMd* this, GlobalContext* globalCtx) {
+void func_80AAB874(EnMd* this, PlayState* play) {
     if (this->skelAnime.animation == &gMidoHandsOnHipsIdleAnim) {
-        func_80034F54(globalCtx, this->unk_214, this->unk_236, 17);
-    } else if ((this->unk_1E0.unk_00 == 0) && (this->unk_20B != 7)) {
+        func_80034F54(play, this->unk_214, this->unk_236, 17);
+    } else if ((this->interactInfo.talkState == NPC_TALK_STATE_IDLE) && (this->unk_20B != 7)) {
         func_80AAA92C(this, 7);
     }
 
     func_80AAAA24(this);
 }
 
-void func_80AAB8F8(EnMd* this, GlobalContext* globalCtx) {
+void func_80AAB8F8(EnMd* this, PlayState* play) {
     if (this->skelAnime.animation == &gMidoHandsOnHipsIdleAnim) {
-        func_80034F54(globalCtx, this->unk_214, this->unk_236, 17);
+        func_80034F54(play, this->unk_214, this->unk_236, 17);
     }
     func_80AAA93C(this);
 }
 
-void func_80AAB948(EnMd* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_80AAB948(EnMd* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
     f32 temp;
-    Actor* actorToBlock = &GET_PLAYER(globalCtx)->actor;
+    Actor* actorToBlock = &GET_PLAYER(play)->actor;
     s16 yaw;
 
     func_80AAAA24(this);
 
-    if (this->unk_1E0.unk_00 == 0) {
+    if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
         this->actor.world.rot.y = this->actor.yawTowardsPlayer;
         this->actor.shape.rot.y = this->actor.yawTowardsPlayer;
 
@@ -729,37 +729,37 @@ void func_80AAB948(EnMd* this, GlobalContext* globalCtx) {
         this->skelAnime.playSpeed = CLAMP(temp, 1.0f, 3.0f);
     }
 
-    if (this->unk_1E0.unk_00 == 2) {
+    if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
-            (globalCtx->sceneNum == SCENE_SPOT04)) {
-            globalCtx->msgCtx.msgMode = MSGMODE_PAUSED;
+            (play->sceneNum == SCENE_SPOT04)) {
+            play->msgCtx.msgMode = MSGMODE_PAUSED;
         }
 
-        if (globalCtx->sceneNum == SCENE_SPOT04) {
+        if (play->sceneNum == SCENE_SPOT04) {
             gSaveContext.eventChkInf[0] |= 0x10;
         }
-        if (globalCtx->sceneNum == SCENE_SPOT10) {
+        if (play->sceneNum == SCENE_SPOT10) {
             gSaveContext.eventChkInf[0] |= 0x400;
         }
 
         func_80AAA92C(this, 3);
         func_80AAA93C(this);
         this->waypoint = 1;
-        this->unk_1E0.unk_00 = 0;
+        this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         this->actionFunc = func_80AABD0C;
         this->actor.speedXZ = 1.5f;
         return;
     }
 
     if (this->skelAnime.animation == &gMidoHandsOnHipsIdleAnim) {
-        func_80034F54(globalCtx, this->unk_214, this->unk_236, 17);
+        func_80034F54(play, this->unk_214, this->unk_236, 17);
     }
 
-    if ((this->unk_1E0.unk_00 == 0) && (globalCtx->sceneNum == SCENE_SPOT10)) {
+    if ((this->interactInfo.talkState == NPC_TALK_STATE_IDLE) && (play->sceneNum == SCENE_SPOT10)) {
         if (player->stateFlags2 & 0x1000000) {
             player->stateFlags2 |= 0x2000000;
             player->unk_6A8 = &this->actor;
-            func_8010BD58(globalCtx, OCARINA_ACTION_CHECK_SARIA);
+            func_8010BD58(play, OCARINA_ACTION_CHECK_SARIA);
             this->actionFunc = func_80AABC10;
             return;
         }
@@ -770,36 +770,36 @@ void func_80AAB948(EnMd* this, GlobalContext* globalCtx) {
     }
 }
 
-void func_80AABC10(EnMd* this, GlobalContext* globalCtx) {
-    Player* player = GET_PLAYER(globalCtx);
+void func_80AABC10(EnMd* this, PlayState* play) {
+    Player* player = GET_PLAYER(play);
 
-    if (globalCtx->msgCtx.ocarinaMode >= OCARINA_MODE_04) {
+    if (play->msgCtx.ocarinaMode >= OCARINA_MODE_04) {
         this->actionFunc = func_80AAB948;
-        globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
-    } else if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_03) {
+        play->msgCtx.ocarinaMode = OCARINA_MODE_04;
+    } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->actor.textId = 0x1067;
-        func_8002F2CC(&this->actor, globalCtx, this->collider.dim.radius + 30.0f);
+        func_8002F2CC(&this->actor, play, this->collider.dim.radius + 30.0f);
 
         this->actionFunc = func_80AAB948;
-        globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+        play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else {
         player->stateFlags2 |= 0x800000;
     }
 }
 
-void func_80AABD0C(EnMd* this, GlobalContext* globalCtx) {
-    func_80034F54(globalCtx, this->unk_214, this->unk_236, 17);
+void func_80AABD0C(EnMd* this, PlayState* play) {
+    func_80034F54(play, this->unk_214, this->unk_236, 17);
     func_80AAA93C(this);
 
-    if (!(EnMd_FollowPath(this, globalCtx)) || (this->waypoint != 0)) {
+    if (!(EnMd_FollowPath(this, play)) || (this->waypoint != 0)) {
         this->actor.shape.rot = this->actor.world.rot;
         return;
     }
 
     if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
-        (globalCtx->sceneNum == SCENE_SPOT04)) {
-        Message_CloseTextbox(globalCtx);
+        (play->sceneNum == SCENE_SPOT04)) {
+        Message_CloseTextbox(play);
         gSaveContext.eventChkInf[1] |= 0x1000;
         Actor_Kill(&this->actor);
         return;
@@ -813,35 +813,35 @@ void func_80AABD0C(EnMd* this, GlobalContext* globalCtx) {
     this->actionFunc = func_80AAB8F8;
 }
 
-void EnMd_Update(Actor* thisx, GlobalContext* globalCtx) {
+void EnMd_Update(Actor* thisx, PlayState* play) {
     EnMd* this = (EnMd*)thisx;
     s32 pad;
 
     Collider_UpdateCylinder(&this->actor, &this->collider);
-    CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
+    CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
     SkelAnime_Update(&this->skelAnime);
     EnMd_UpdateEyes(this);
-    func_80AAB5A4(this, globalCtx);
+    func_80AAB5A4(this, play);
     Actor_MoveForward(&this->actor);
-    func_80AAB158(this, globalCtx);
-    Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 0.0f, 0.0f, 0.0f, 4);
-    this->actionFunc(this, globalCtx);
+    func_80AAB158(this, play);
+    Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
+    this->actionFunc(this, play);
 }
 
-s32 EnMd_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
+s32 EnMd_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
                           Gfx** gfx) {
     EnMd* this = (EnMd*)thisx;
     Vec3s vec;
 
     if (limbIndex == 16) {
         Matrix_Translate(1200.0f, 0.0f, 0.0f, MTXMODE_APPLY);
-        vec = this->unk_1E0.unk_08;
+        vec = this->interactInfo.headRot;
         Matrix_RotateX((vec.y / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_RotateZ((vec.x / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_Translate(-1200.0f, 0.0f, 0.0f, MTXMODE_APPLY);
     }
     if (limbIndex == 9) {
-        vec = this->unk_1E0.unk_0E;
+        vec = this->interactInfo.torsoRot;
         Matrix_RotateX((vec.x / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_RotateY((vec.y / 32768.0f) * M_PI, MTXMODE_APPLY);
     }
@@ -854,7 +854,7 @@ s32 EnMd_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, 
     return false;
 }
 
-void EnMd_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfx) {
+void EnMd_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfx) {
     EnMd* this = (EnMd*)thisx;
     Vec3f vec = { 400.0f, 0.0f, 0.0f };
 
@@ -863,7 +863,7 @@ void EnMd_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec
     }
 }
 
-void EnMd_Draw(Actor* thisx, GlobalContext* globalCtx) {
+void EnMd_Draw(Actor* thisx, PlayState* play) {
     static void* sEyeTextures[] = {
         gMidoEyeOpenTex,
         gMidoEyeHalfTex,
@@ -871,15 +871,15 @@ void EnMd_Draw(Actor* thisx, GlobalContext* globalCtx) {
     };
     EnMd* this = (EnMd*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+    OPEN_DISPS(play->state.gfxCtx);
 
     if (this->alpha == 255) {
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeIdx]));
-        func_80034BA0(globalCtx, &this->skelAnime, EnMd_OverrideLimbDraw, EnMd_PostLimbDraw, &this->actor, this->alpha);
+        func_80034BA0(play, &this->skelAnime, EnMd_OverrideLimbDraw, EnMd_PostLimbDraw, &this->actor, this->alpha);
     } else if (this->alpha != 0) {
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeIdx]));
-        func_80034CC4(globalCtx, &this->skelAnime, EnMd_OverrideLimbDraw, EnMd_PostLimbDraw, &this->actor, this->alpha);
+        func_80034CC4(play, &this->skelAnime, EnMd_OverrideLimbDraw, EnMd_PostLimbDraw, &this->actor, this->alpha);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }

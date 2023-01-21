@@ -12,9 +12,9 @@ void AreaTable_Init_SpiritTemple() {
   ---------------------------*/
   areaTable[SPIRIT_TEMPLE_ENTRYWAY] = Area("Spirit Temple Entryway", "Spirit Temple", SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(SPIRIT_TEMPLE_LOBBY,    {[]{return Dungeon::SpiritTemple.IsVanilla();}}),
-                  Entrance(SPIRIT_TEMPLE_MQ_LOBBY, {[]{return Dungeon::SpiritTemple.IsMQ();}}),
-                  Entrance(DESERT_COLOSSUS,        {[]{return true;}}),
+                  Entrance(SPIRIT_TEMPLE_LOBBY,                  {[]{return Dungeon::SpiritTemple.IsVanilla();}}),
+                  Entrance(SPIRIT_TEMPLE_MQ_LOBBY,               {[]{return Dungeon::SpiritTemple.IsMQ();}}),
+                  Entrance(DESERT_COLOSSUS_FROM_SPIRIT_ENTRYWAY, {[]{return true;}}),
   });
 
   /*--------------------------
@@ -51,7 +51,7 @@ void AreaTable_Init_SpiritTemple() {
                                                                                           ((SmallKeys(SPIRIT_TEMPLE, 3) || (SmallKeys(SPIRIT_TEMPLE, 2) && BombchusInLogic && ShuffleDungeonEntrances.Is(SHUFFLEDUNGEONS_OFF))) && CanUse(SILVER_GAUNTLETS) && (HasProjectile(HasProjectileAge::Adult) || CanTakeDamage));}}),
                 }, {
                   //Exits
-                  Entrance(SPIRIT_TEMPLE_CENTRAL_CHAMBER, {[]{return HasExplosives;}}),
+                  Entrance(SPIRIT_TEMPLE_CENTRAL_CHAMBER, {[]{return HasExplosives || (SunlightArrows && CanUse(LIGHT_ARROWS));}}),
   });
 
   areaTable[SPIRIT_TEMPLE_EARLY_ADULT] = Area("Early Adult Spirit Temple", "Spirit Temple", SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -114,7 +114,7 @@ void AreaTable_Init_SpiritTemple() {
 
   areaTable[SPIRIT_TEMPLE_BEYOND_CENTRAL_LOCKED_DOOR] = Area("Spirit Temple Beyond Central Locked Door", "Spirit Temple", SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(SPIRIT_TEMPLE_NEAR_FOUR_ARMOS_CHEST,         {[]{return MirrorShield && HasExplosives;}}),
+                  LocationAccess(SPIRIT_TEMPLE_NEAR_FOUR_ARMOS_CHEST,         {[]{return (MirrorShield || (SunlightArrows && CanUse(LIGHT_ARROWS))) && HasExplosives;}}),
                   LocationAccess(SPIRIT_TEMPLE_HALLWAY_LEFT_INVISIBLE_CHEST,  {[]{return (LogicLensSpirit || CanUse(LENS_OF_TRUTH)) && HasExplosives;}}),
                   LocationAccess(SPIRIT_TEMPLE_HALLWAY_RIGHT_INVISIBLE_CHEST, {[]{return (LogicLensSpirit || CanUse(LENS_OF_TRUTH)) && HasExplosives;}}),
                 }, {
@@ -122,16 +122,22 @@ void AreaTable_Init_SpiritTemple() {
                   Entrance(SPIRIT_TEMPLE_BEYOND_FINAL_LOCKED_DOOR, {[]{return SmallKeys(SPIRIT_TEMPLE, 5) && (LogicSpiritWall || CanUse(LONGSHOT) || HasBombchus || ((Bombs || Nuts || CanUse(DINS_FIRE)) && (Bow || CanUse(HOOKSHOT) || Hammer)));}}),
   });
 
-  areaTable[SPIRIT_TEMPLE_BEYOND_FINAL_LOCKED_DOOR] = Area("Spirit Temple Beyond Final Locked Door", "Spirit Temple", SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {
-                  //Events
-                  EventAccess(&SpiritTempleClear, {[]{return SpiritTempleClear || (MirrorShield && HasExplosives && Hookshot && BossKeySpiritTemple);}}),
-  }, {
+  areaTable[SPIRIT_TEMPLE_BEYOND_FINAL_LOCKED_DOOR] = Area("Spirit Temple Beyond Final Locked Door", "Spirit Temple", SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(SPIRIT_TEMPLE_BOSS_KEY_CHEST, {[]{return CanPlay(ZeldasLullaby) && ((CanTakeDamage && LogicFlamingChests) || (Bow && Hookshot));}}),
-                  LocationAccess(SPIRIT_TEMPLE_TOPMOST_CHEST,  {[]{return MirrorShield;}}),
-                  LocationAccess(SPIRIT_TEMPLE_TWINROVA_HEART, {[]{return MirrorShield && HasExplosives && Hookshot && BossKeySpiritTemple;}}),
-                  LocationAccess(TWINROVA,                     {[]{return MirrorShield && HasExplosives && Hookshot && BossKeySpiritTemple;}}),
-  }, {});
+                  LocationAccess(SPIRIT_TEMPLE_TOPMOST_CHEST,  {[]{return MirrorShield || (SunlightArrows && CanUse(LIGHT_ARROWS));}}),
+  }, {
+                  //Exits
+                  Entrance(SPIRIT_TEMPLE_INSIDE_STATUE_HEAD, {[]{return MirrorShield && HasExplosives && Hookshot;}}),
+  });
+
+  areaTable[SPIRIT_TEMPLE_INSIDE_STATUE_HEAD] =
+            Area("Spirit Temple Inside Statue Head", "Spirit Temple", SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {},
+                 {
+                     // Exits
+                     Entrance(SPIRIT_TEMPLE_CENTRAL_CHAMBER, { [] { return true; } }),
+                     Entrance(SPIRIT_TEMPLE_BOSS_ENTRYWAY, { [] { return BossKeySpiritTemple; } }),
+                 });
   }
 
   /*---------------------------
@@ -172,12 +178,12 @@ void AreaTable_Init_SpiritTemple() {
                   LocationAccess(SPIRIT_TEMPLE_MQ_STATUE_ROOM_INVISIBLE_CHEST, {[]{return (LogicLensSpiritMQ || CanUse(LENS_OF_TRUTH));}}),
                   LocationAccess(SPIRIT_TEMPLE_MQ_BEAMOS_ROOM_CHEST,           {[]{return SmallKeys(SPIRIT_TEMPLE, 5);}}),
                   LocationAccess(SPIRIT_TEMPLE_MQ_CHEST_SWITCH_CHEST,          {[]{return SmallKeys(SPIRIT_TEMPLE, 5) && CanPlay(SongOfTime);}}),
-                  LocationAccess(SPIRIT_TEMPLE_MQ_BOSS_KEY_CHEST,              {[]{return SmallKeys(SPIRIT_TEMPLE, 5) && CanPlay(SongOfTime) && MirrorShield;}}),
+                  LocationAccess(SPIRIT_TEMPLE_MQ_BOSS_KEY_CHEST,              {[]{return SmallKeys(SPIRIT_TEMPLE, 5) && CanPlay(SongOfTime) && (MirrorShield || (SunlightArrows && CanUse(LIGHT_ARROWS)));}}),
                   LocationAccess(SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_WEST,   {[]{return SmallKeys(SPIRIT_TEMPLE, 7);}}),
                   LocationAccess(SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_NORTH,  {[]{return SmallKeys(SPIRIT_TEMPLE, 7);}}),
   }, {
                   //Exits
-                  Entrance(SPIRIT_TEMPLE_MQ_LOWER_ADULT,        {[]{return MirrorShield && IsAdult && CanUse(FIRE_ARROWS);}}),
+                  Entrance(SPIRIT_TEMPLE_MQ_LOWER_ADULT,        {[]{return (MirrorShield || (SunlightArrows && CanUse(LIGHT_ARROWS))) && IsAdult && CanUse(FIRE_ARROWS);}}),
                     //Trick: MirrorShield && IsAdult && (CanUse(FIRE_ARROWS) || (LogicSpiritMQLowerAdult && CanUse(DINS_FIRE) && Bow))
                   Entrance(SPIRIT_TEMPLE_MQ_SHARED,             {[]{return true;}}),
                   Entrance(SPIRIT_TEMPLE_MQ_BOSS_AREA,          {[]{return SmallKeys(SPIRIT_TEMPLE, 6) && CanPlay(ZeldasLullaby) && Hammer;}}),
@@ -209,15 +215,21 @@ void AreaTable_Init_SpiritTemple() {
                   LocationAccess(SPIRIT_TEMPLE_MQ_GS_SYMPHONY_ROOM,           {[]{return SmallKeys(SPIRIT_TEMPLE, 7) && Hammer && Ocarina && SongOfTime && EponasSong && SunsSong && SongOfStorms && ZeldasLullaby;}}),
   }, {});
 
-  areaTable[SPIRIT_TEMPLE_MQ_BOSS_AREA] = Area("Spirit Temple MQ Boss Area", "Spirit Temple", SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {
-                  //Events
-                  EventAccess(&SpiritTempleClear, {[]{return SpiritTempleClear || (MirrorShield && BossKeySpiritTemple);}}),
-  }, {
+  areaTable[SPIRIT_TEMPLE_MQ_BOSS_AREA] = Area("Spirit Temple MQ Boss Area", "Spirit Temple", SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(SPIRIT_TEMPLE_MQ_MIRROR_PUZZLE_INVISIBLE_CHEST, {[]{return LogicLensSpiritMQ || CanUse(LENS_OF_TRUTH);}}),
-                  LocationAccess(SPIRIT_TEMPLE_TWINROVA_HEART,                   {[]{return MirrorShield && BossKeySpiritTemple;}}),
-                  LocationAccess(TWINROVA,                                       {[]{return MirrorShield && BossKeySpiritTemple;}}),
-  }, {});
+  }, {
+                  //Exits
+                  Entrance(SPIRIT_TEMPLE_MQ_INSIDE_STATUE_HEAD, {[]{return MirrorShield && Hookshot;}}),
+  });
+
+  areaTable[SPIRIT_TEMPLE_MQ_INSIDE_STATUE_HEAD] =
+            Area("Spirit Temple MQ Inside Statue Head", "Spirit Temple", SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {},
+                 {
+                     // Exits
+                     Entrance(SPIRIT_TEMPLE_MQ_SHARED, { [] { return true; } }),
+                     Entrance(SPIRIT_TEMPLE_BOSS_ENTRYWAY, { [] { return BossKeySpiritTemple; } }),
+                 });
 
   areaTable[SPIRIT_TEMPLE_MQ_MIRROR_SHIELD_HAND] = Area("Spirit Temple MQ Mirror Shield Hand", "Spirit Temple", SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
@@ -229,4 +241,35 @@ void AreaTable_Init_SpiritTemple() {
                   LocationAccess(SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST, {[]{return true;}}),
   }, {});
   }
+
+    /*---------------------------
+    |         BOSS ROOM         |
+    ---------------------------*/
+    areaTable[SPIRIT_TEMPLE_BOSS_ENTRYWAY] = Area(
+        "Spirit Temple Boss Entryway", "Spirit Temple", SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {},
+        {
+            // Exits
+            Entrance(SPIRIT_TEMPLE_INSIDE_STATUE_HEAD, { [] { return Dungeon::SpiritTemple.IsVanilla() && false; } }),
+            Entrance(SPIRIT_TEMPLE_MQ_INSIDE_STATUE_HEAD, { [] { return Dungeon::SpiritTemple.IsMQ() && false; } }),
+            Entrance(SPIRIT_TEMPLE_BOSS_ROOM, { [] { return true; } }),
+        });
+
+    areaTable[SPIRIT_TEMPLE_BOSS_ROOM] = Area(
+        "Spirit Temple Boss Room", "Spirit Temple", NONE, NO_DAY_NIGHT_CYCLE,
+        {
+            // Events
+            EventAccess(&SpiritTempleClear, { [] {
+                return SpiritTempleClear || (CanUse(MIRROR_SHIELD) &&
+                                             (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)));
+            } }),
+        },
+        {
+            // Locations
+            LocationAccess(SPIRIT_TEMPLE_TWINROVA_HEART, { [] { return SpiritTempleClear; } }),
+            LocationAccess(TWINROVA, { [] { return SpiritTempleClear; } }),
+        },
+        {
+            // Exits
+            Entrance(SPIRIT_TEMPLE_BOSS_ENTRYWAY, { [] { return false; } }),
+        });
 }

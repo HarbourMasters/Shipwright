@@ -1,12 +1,12 @@
 #ifndef Z_EN_TP_H
 #define Z_EN_TP_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnTp;
 
-typedef void (*EnTpActionFunc)(struct EnTp*, GlobalContext*);
+typedef void (*EnTpActionFunc)(struct EnTp*, PlayState*);
 
 typedef struct EnTp {
     /* 0x0000 */ Actor actor;

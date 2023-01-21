@@ -1,6 +1,5 @@
 #include "AudioExporter.h"
 #include "Main.h"
-#include <Animation.h>
 #include <Utils/MemoryStream.h>
 #include <Globals.h>
 #include <Utils/File.h>
@@ -30,7 +29,7 @@ void OTRExporter_Audio::WriteSampleEntryReference(ZAudio* audio, SampleEntry* en
 
 void OTRExporter_Audio::WriteSampleEntry(SampleEntry* entry, BinaryWriter* writer)
 {
-	WriteHeader(nullptr, "", writer, Ship::ResourceType::AudioSample, Ship::Version::Rachael);
+	WriteHeader(nullptr, "", writer, Ship::ResourceType::SOH_AudioSample, Ship::Version::Rachael);
 
 	writer->Write(entry->codec);
 	writer->Write(entry->medium);
@@ -82,7 +81,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 {
 	ZAudio* audio = (ZAudio*)res;
 
-	WriteHeader(res, outPath, writer, Ship::ResourceType::Audio, Ship::Version::Rachael);
+	WriteHeader(res, outPath, writer, Ship::ResourceType::SOH_Audio, Ship::Version::Rachael);
 
 	// Write Samples as individual files
 	for (auto pair : audio->samples)
@@ -115,7 +114,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 		MemoryStream* fntStream = new MemoryStream();
 		BinaryWriter fntWriter = BinaryWriter(fntStream);
 
-		WriteHeader(nullptr, "", &fntWriter, Ship::ResourceType::AudioSoundFont, Ship::Version::Rachael);
+		WriteHeader(nullptr, "", &fntWriter, Ship::ResourceType::SOH_AudioSoundFont, Ship::Version::Rachael);
 
 		fntWriter.Write((uint32_t)i);
 		fntWriter.Write(audio->soundFontTable[i].medium);
@@ -174,7 +173,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 		MemoryStream* seqStream = new MemoryStream();
 		BinaryWriter seqWriter = BinaryWriter(seqStream);
 
-		WriteHeader(nullptr, "", &seqWriter, Ship::ResourceType::AudioSequence, Ship::Version::Rachael);
+		WriteHeader(nullptr, "", &seqWriter, Ship::ResourceType::SOH_AudioSequence, Ship::Version::Rachael);
 
 		seqWriter.Write((uint32_t)seq.size());
 		seqWriter.Write(seq.data(), seq.size());

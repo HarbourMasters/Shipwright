@@ -1,12 +1,12 @@
 #ifndef Z_BOSS_SST_H
 #define Z_BOSS_SST_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BossSst;
 
-typedef void (*BossSstActionFunc)(struct BossSst*, GlobalContext*);
+typedef void (*BossSstActionFunc)(struct BossSst*, PlayState*);
 
 
 typedef struct {

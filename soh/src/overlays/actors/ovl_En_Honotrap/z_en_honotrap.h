@@ -1,12 +1,12 @@
 #ifndef Z_EN_HONOTRAP_H
 #define Z_EN_HONOTRAP_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnHonotrap;
 
-typedef void (*EnHonotrapActionFunc)(struct EnHonotrap*, GlobalContext*);
+typedef void (*EnHonotrapActionFunc)(struct EnHonotrap*, PlayState*);
 
 typedef union {
     struct {

@@ -1,12 +1,12 @@
 #ifndef Z_EN_BROB_H
 #define Z_EN_BROB_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnBrob;
 
-typedef void (*EnBrobActionFunc)(struct EnBrob* this, GlobalContext* globalCtx);
+typedef void (*EnBrobActionFunc)(struct EnBrob* this, PlayState* play);
 
 typedef struct EnBrob {
     /* 0x0000 */ DynaPolyActor dyna;

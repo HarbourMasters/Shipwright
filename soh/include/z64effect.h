@@ -1,10 +1,10 @@
 #ifndef Z64EFFECT_H
 #define Z64EFFECT_H
 
-#include "color.h"
+#include <libultraship/color.h>
 
 struct GraphicsContext;
-struct GlobalContext;
+struct PlayState;
 
 /* Effects */
 
@@ -73,6 +73,7 @@ typedef struct {
     /* 0x194 */ s32 elemDuration;
     /* 0x198 */ s32 unkFlag;
     /* 0x19C */ s32 calcMode;
+    /* 0x1A0 */ u8 trailType; // 1 is swords, 2 is boomerang, 3 is bombchu, 0 is rest
 } EffectBlureInit1; // size = 0x1A0
 
 typedef struct {
@@ -89,6 +90,7 @@ typedef struct {
     /* 0x1B */ u8 mode4Param;
     /* 0x1C */ Color_RGBA8 altPrimColor; // used with drawMode 1
     /* 0x20 */ Color_RGBA8 altEnvColor; // used with drawMode 1
+    /* 0x1A0 */ u8 trailType; // 1 is swords, 2 is boomerang, 3 is bombchu, 4 is stick, 0 is rest
 } EffectBlureInit2; // size = 0x24
 
 typedef struct {
@@ -108,6 +110,7 @@ typedef struct {
     /* 0x1A1 */ u8 drawMode; // 0: simple; 1: simple with alt colors; 2+: smooth
     /* 0x1A2 */ Color_RGBA8 altPrimColor; // used with drawMode 1
     /* 0x1A6 */ Color_RGBA8 altEnvColor; // used with drawMode 1
+    /* 0x1A0 */ u8 trailType; // 1 is default swords, 2 is boomerang, 3 is bombchu, 0 is rest. 4 is Kokiri, 5 is Master, 6 is BGS, 7 is Stick, 8 is Hammer.
 } EffectBlure; // size = 0x1AC
 
 typedef struct {
@@ -160,7 +163,7 @@ typedef struct {
 } EffectShieldParticle; // size = 0x1C8
 
 typedef struct {
-    /* 0x0000 */ struct GlobalContext* globalCtx;
+    /* 0x0000 */ struct PlayState* play;
     struct {
         EffectStatus status;
         EffectSpark effect;
@@ -194,9 +197,9 @@ typedef enum {
 
 struct EffectSs;
 
-typedef u32 (*EffectSsInitFunc)(struct GlobalContext* globalCtx, u32 index, struct EffectSs* effectSs, void* initParams);
-typedef void (*EffectSsUpdateFunc)(struct GlobalContext* globalCtx, u32 index, struct EffectSs* effectSs);
-typedef void (*EffectSsDrawFunc)(struct GlobalContext* globalCtx, u32 index, struct EffectSs* effectSs);
+typedef u32 (*EffectSsInitFunc)(struct PlayState* play, u32 index, struct EffectSs* effectSs, void* initParams);
+typedef void (*EffectSsUpdateFunc)(struct PlayState* play, u32 index, struct EffectSs* effectSs);
+typedef void (*EffectSsDrawFunc)(struct PlayState* play, u32 index, struct EffectSs* effectSs);
 
 typedef struct {
     /* 0x00 */ u32 type;

@@ -1,12 +1,12 @@
 #ifndef Z_BG_MIZU_BWALL_H
 #define Z_BG_MIZU_BWALL_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgMizuBwall;
 
-typedef void (*BgMizuBwallActionFunc)(struct BgMizuBwall*, GlobalContext*);
+typedef void (*BgMizuBwallActionFunc)(struct BgMizuBwall*, PlayState*);
 
 typedef struct BgMizuBwall {
     /* 0x0000 */ DynaPolyActor dyna;

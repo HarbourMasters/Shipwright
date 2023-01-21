@@ -1,12 +1,12 @@
 #ifndef Z_BG_MORI_KAITENKABE_H
 #define Z_BG_MORI_KAITENKABE_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgMoriKaitenkabe;
 
-typedef void (*BgMoriKaitenkabeActionFunc)(struct BgMoriKaitenkabe*, GlobalContext*);
+typedef void (*BgMoriKaitenkabeActionFunc)(struct BgMoriKaitenkabe*, PlayState*);
 
 typedef struct BgMoriKaitenkabe {
     /* 0x0000 */ DynaPolyActor dyna;

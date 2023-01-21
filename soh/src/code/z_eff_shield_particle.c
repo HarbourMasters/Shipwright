@@ -55,7 +55,7 @@ void EffectShieldParticle_Init(void* thisx, void* initParamsx) {
             this->lightInfo.type = LIGHT_POINT_NOGLOW;
             this->lightInfo.params.point = initParams->lightPoint;
             this->lightNode =
-                LightContext_InsertLight(Effect_GetGlobalCtx(), &Effect_GetGlobalCtx()->lightCtx, &this->lightInfo);
+                LightContext_InsertLight(Effect_GetPlayState(), &Effect_GetPlayState()->lightCtx, &this->lightInfo);
         } else {
             this->lightNode = NULL;
         }
@@ -66,10 +66,10 @@ void EffectShieldParticle_Destroy(void* thisx) {
     EffectShieldParticle* this = (EffectShieldParticle*)thisx;
 
     if ((this != NULL) && (this->lightDecay == true)) {
-        if (this->lightNode == Effect_GetGlobalCtx()->lightCtx.listHead) {
-            Effect_GetGlobalCtx()->lightCtx.listHead = this->lightNode->next;
+        if (this->lightNode == Effect_GetPlayState()->lightCtx.listHead) {
+            Effect_GetPlayState()->lightCtx.listHead = this->lightNode->next;
         }
-        LightContext_RemoveLight(Effect_GetGlobalCtx(), &Effect_GetGlobalCtx()->lightCtx, this->lightNode);
+        LightContext_RemoveLight(Effect_GetPlayState(), &Effect_GetPlayState()->lightCtx, this->lightNode);
     }
 }
 
@@ -160,7 +160,7 @@ void EffectShieldParticle_Draw(void* thisx, GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
     if (this != NULL) {
-        POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x26);
+        POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x26);
 
         gDPSetCycleType(POLY_XLU_DISP++, G_CYC_2CYCLE);
         gDPPipeSync(POLY_XLU_DISP++);

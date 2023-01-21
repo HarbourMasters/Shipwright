@@ -1,12 +1,12 @@
 #ifndef Z_EN_FHG_H
 #define Z_EN_FHG_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnfHG;
 
-typedef void (*EnfHGActionFunc)(struct EnfHG*, GlobalContext*);
+typedef void (*EnfHGActionFunc)(struct EnfHG*, PlayState*);
 
 typedef enum {
     /*  0 */ FHG_NO_SIGNAL,

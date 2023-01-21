@@ -1,12 +1,12 @@
 #ifndef Z_OBJ_TSUBO_H
 #define Z_OBJ_TSUBO_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ObjTsubo;
 
-typedef void (*ObjTsuboActionFunc)(struct ObjTsubo*, GlobalContext*);
+typedef void (*ObjTsuboActionFunc)(struct ObjTsubo*, PlayState*);
 
 typedef struct ObjTsubo {
     /* 0x0000 */ Actor actor;

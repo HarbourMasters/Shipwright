@@ -1,12 +1,12 @@
 #ifndef Z_EN_G_SWITCH_H
 #define Z_EN_G_SWITCH_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnGSwitch;
 
-typedef void (*EnGSwitchActionFunc)(struct EnGSwitch*, GlobalContext*);
+typedef void (*EnGSwitchActionFunc)(struct EnGSwitch*, PlayState*);
 
 typedef enum {
     /* 0 */ GSWITCH_NONE,

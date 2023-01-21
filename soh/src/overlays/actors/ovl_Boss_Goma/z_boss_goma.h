@@ -1,12 +1,12 @@
 #ifndef Z_BOSS_GOMA_H
 #define Z_BOSS_GOMA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BossGoma;
 
-typedef void (*BossGomaActionFunc)(struct BossGoma*, GlobalContext*);
+typedef void (*BossGomaActionFunc)(struct BossGoma*, PlayState*);
 
 typedef enum {
     /*  0 */ BOSSGOMA_LIMB_NONE,

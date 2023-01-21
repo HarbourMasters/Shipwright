@@ -1,12 +1,12 @@
 #ifndef Z_BG_JYA_GOROIWA_H
 #define Z_BG_JYA_GOROIWA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgJyaGoroiwa;
 
-typedef void (*BgJyaGoroiwaFunc)(struct BgJyaGoroiwa*, GlobalContext*);
+typedef void (*BgJyaGoroiwaFunc)(struct BgJyaGoroiwa*, PlayState*);
 
 typedef struct BgJyaGoroiwa {
     /* 0x0000 */ Actor actor;

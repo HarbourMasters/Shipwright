@@ -1,12 +1,12 @@
 #ifndef Z_EN_DOG_H
 #define Z_EN_DOG_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnDog;
 
-typedef void (*EnDogActionFunc)(struct EnDog*, GlobalContext*);
+typedef void (*EnDogActionFunc)(struct EnDog*, PlayState*);
 
 typedef struct EnDog {
     /* 0x0000 */ Actor actor;

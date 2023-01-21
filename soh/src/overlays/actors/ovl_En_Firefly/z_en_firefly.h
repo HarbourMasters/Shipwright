@@ -1,12 +1,12 @@
 #ifndef Z_EN_FIREFLY_H
 #define Z_EN_FIREFLY_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnFirefly;
 
-typedef void (*EnFireflyActionFunc)(struct EnFirefly*, GlobalContext*);
+typedef void (*EnFireflyActionFunc)(struct EnFirefly*, PlayState*);
 
 typedef struct EnFirefly {
     /* 0x0000 */ Actor actor;

@@ -124,7 +124,7 @@ GameStateOverlay* Graph_GetNextGameState(GameState* gameState) {
     if (gameStateInitFunc == Title_Init) {
         return &gGameStateOverlayTable[2];
     }
-    if (gameStateInitFunc == Gameplay_Init) {
+    if (gameStateInitFunc == Play_Init) {
         return &gGameStateOverlayTable[3];
     }
     if (gameStateInitFunc == Opening_Init) {
@@ -337,14 +337,14 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
         if (pool->headMagic != GFXPOOL_HEAD_MAGIC) {
             //! @bug (?) : "problem = true;" may be missing
-            osSyncPrintf("%c", 7);
+            osSyncPrintf("%c", BEL);
             // "Dynamic area head is destroyed"
             osSyncPrintf(VT_COL(RED, WHITE) "ダイナミック領域先頭が破壊されています\n" VT_RST);
             Fault_AddHungupAndCrash(__FILE__, __LINE__);
         }
         if (pool->tailMagic != GFXPOOL_TAIL_MAGIC) {
             problem = true;
-            osSyncPrintf("%c", 7);
+            osSyncPrintf("%c", BEL);
             // "Dynamic region tail is destroyed"
             osSyncPrintf(VT_COL(RED, WHITE) "ダイナミック領域末尾が破壊されています\n" VT_RST);
             Fault_AddHungupAndCrash(__FILE__, __LINE__);
@@ -353,19 +353,19 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     if (THGA_IsCrash(&gfxCtx->polyOpa)) {
         problem = true;
-        osSyncPrintf("%c", 7);
+        osSyncPrintf("%c", BEL);
         // "Zelda 0 is dead"
         osSyncPrintf(VT_COL(RED, WHITE) "ゼルダ0は死んでしまった(graph_alloc is empty)\n" VT_RST);
     }
     if (THGA_IsCrash(&gfxCtx->polyXlu)) {
         problem = true;
-        osSyncPrintf("%c", 7);
+        osSyncPrintf("%c", BEL);
         // "Zelda 1 is dead"
         osSyncPrintf(VT_COL(RED, WHITE) "ゼルダ1は死んでしまった(graph_alloc is empty)\n" VT_RST);
     }
     if (THGA_IsCrash(&gfxCtx->overlay)) {
         problem = true;
-        osSyncPrintf("%c", 7);
+        osSyncPrintf("%c", BEL);
         // "Zelda 4 is dead"
         osSyncPrintf(VT_COL(RED, WHITE) "ゼルダ4は死んでしまった(graph_alloc is empty)\n" VT_RST);
     }
@@ -395,7 +395,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
         sGraphUpdateTime = time;
     }
 
-    if (CVar_GetS32("gDebugEnabled", 0))
+    if (CVarGetInteger("gDebugEnabled", 0))
     {
         if (CHECK_BTN_ALL(gameState->input[0].press.button, BTN_Z) &&
             CHECK_BTN_ALL(gameState->input[0].cur.button, BTN_L | BTN_R)) {
@@ -469,8 +469,8 @@ static void RunFrame()
         // Setup the normal skybox once before entering any game states to avoid the 0xabababab crash.
         // The crash is due to certain skyboxes not loading all the data they need from Skybox_Setup.
         if (!hasSetupSkybox) {
-            GlobalContext* globalCtx = (GlobalContext*)runFrameContext.gameState;
-            Skybox_Setup(globalCtx, &globalCtx->skyboxCtx, SKYBOX_NORMAL_SKY);
+            PlayState* play = (PlayState*)runFrameContext.gameState;
+            Skybox_Setup(play, &play->skyboxCtx, SKYBOX_NORMAL_SKY);
             hasSetupSkybox = true;
         }
 
@@ -483,10 +483,7 @@ static void RunFrame()
 
             Graph_StartFrame();
 
-            // TODO: Workaround for rumble being too long. Implement os thread functions.
-            for (int i = 0; i < 3; i++) {
-                PadMgr_ThreadEntry(&gPadMgr);
-            }
+            PadMgr_ThreadEntry(&gPadMgr);
 
             Graph_Update(&runFrameContext.gfxCtx, runFrameContext.gameState);
             ticksB = GetPerfCounter();
