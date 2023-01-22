@@ -86,6 +86,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gNoHeartDrops",
     "gBombchuDrops",
     "gGoronPot",
+    "gFullHealthSpawn",
     "gDampeWin",
     "gRedPotionEffect",
     "gRedPotionHealth",
@@ -173,16 +174,25 @@ const std::vector<const char*> enhancementsCvars = {
     "gBombchuBowlingNoBigCucco",
     "gBombchuBowlingAmmunition",
     "gCreditsFix",
+    "gSilverRupeeJingleExtend",
+    "gStaticExplosionRadius"
 };
 
 const std::vector<const char*> randomizerCvars = {
+    "gRandomize10GSHint",
+    "gRandomize20GSHint",
+    "gRandomize30GSHint",
+    "gRandomize40GSHint",
+    "gRandomize50GSHint",
     "gRandomizeAllLocationsReachable",
+    "gRandomizeAltarHint",
     "gRandomizeBigPoeTargetCount",
     "gRandomizeBlueFireArrows",
     "gRandomizeBombchusInLogic",
     "gRandomizeBossKeysanity",
     "gRandomizeCompleteMaskQuest",
     "gRandomizeCuccosToReturn",
+    "gRandomizeDampeHint",
     "gRandomizeDecoupleEntrances",
     "gRandomizeDoorOfTime",
     "gRandomizeDungeonCount",
@@ -208,6 +218,7 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeLacsRewardCount",
     "gRandomizeLacsStoneCount",
     "gRandomizeLacsTokenCount",
+    "gRandomizeLAHint",
     "gRandomizeLinksPocket",
     "gRandomizeLogicRules",
     "gRandomizeMedallionCount",
@@ -220,9 +231,11 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeMqDungeons",
     "gRandomizeRainbowBridge",
     "gRandomizeRewardCount",
+    "gRandomizeScrubText",
     "gRandomizeShopsanity",
     "gRandomizeShuffleAdultTrade",
     "gRandomizeShuffleBeans",
+    "gRandomizeShuffleBossEntrances",
     "gRandomizeShuffleCows",
     "gRandomizeShuffleDungeonReward",
     "gRandomizeShuffleDungeonsEntrances",
@@ -259,14 +272,27 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeSkipTowerEscape",
     "gRandomizeStartingAge",
     "gRandomizeStartingConsumables",
+    "gRandomizeStartingBoleroOfFire",
     "gRandomizeStartingDekuShield",
+    "gRandomizeStartingEponasSong",
     "gRandomizeStartingKokiriSword",
     "gRandomizeStartingMapsCompasses",
+    "gRandomizeStartingMinuetOfForest",
+    "gRandomizeStartingNocturneOfShadow",
     "gRandomizeStartingOcarina",
+    "gRandomizeStartingPreludeOfLight",
+    "gRandomizeStartingRequiemOfSpirit",
+    "gRandomizeStartingSariasSong",
+    "gRandomizeStartingSerenadeOfWater",
     "gRandomizeStartingSkulltulaToken",
+    "gRandomizeStartingSongOfStorms",
+    "gRandomizeStartingSongOfTime",
+    "gRandomizeStartingSunsSong",
+    "gRandomizeStartingZeldasLullaby",
     "gRandomizeStoneCount",
     "gRandomizeSunlightArrows",
     "gRandomizeTokenCount",
+    "gRandomizeWarpSongText",
     "gRandomizeZorasFountain",
 };
 
@@ -320,6 +346,8 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     PRESET_ENTRY_S32("gDekuNutUpgradeFix", 1),
     // Fix Navi text HUD position
     PRESET_ENTRY_S32("gNaviTextFix", 1),
+    // Extend Silver Rupee Jingle
+    PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
@@ -383,6 +411,8 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32("gDekuNutUpgradeFix", 1),
     // Fix Navi text HUD position
     PRESET_ENTRY_S32("gNaviTextFix", 1),
+    // Extend Silver Rupee Jingle
+    PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),
@@ -495,6 +525,8 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gDekuNutUpgradeFix", 1),
     // Fix Navi text HUD position
     PRESET_ENTRY_S32("gNaviTextFix", 1),
+    // Extend Silver Rupee Jingle
+    PRESET_ENTRY_S32("gSilverRupeeJingleExtend", 1),
 
     // Red Ganon blood
     PRESET_ENTRY_S32("gRedGanonBlood", 1),

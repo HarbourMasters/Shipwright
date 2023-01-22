@@ -275,19 +275,7 @@ void AreaTable_Init_WaterTemple() {
                 }, {}, {
                   //Exits
                   Entrance(WATER_TEMPLE_LOBBY,     {[]{return true;}}),
-                  Entrance(WATER_TEMPLE_BOSS_ROOM, {[]{return BossKeyWaterTemple;}}),
-  });
-
-  areaTable[WATER_TEMPLE_BOSS_ROOM] = Area("Water Temple Boss Room", "Water Temple", WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {
-                  //Events
-                  EventAccess(&WaterTempleClear, {[]{return WaterTempleClear || (CanUse(HOOKSHOT) && (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)));}}),
-                }, {
-                  //Locations
-                  LocationAccess(WATER_TEMPLE_MORPHA_HEART, {[]{return WaterTempleClear;}}),
-                  LocationAccess(MORPHA,                    {[]{return WaterTempleClear;}}),
-                }, {
-                  //Exits
-                  Entrance(WATER_TEMPLE_ENTRYWAY, {[]{return WaterTempleClear;}}),
+                  Entrance(WATER_TEMPLE_BOSS_ENTRYWAY, {[]{return BossKeyWaterTemple;}}),
   });
   }
 
@@ -295,18 +283,12 @@ void AreaTable_Init_WaterTemple() {
   |   MASTER QUEST DUNGEON    |
   ---------------------------*/
   if (Dungeon::WaterTemple.IsMQ()) {
-  areaTable[WATER_TEMPLE_MQ_LOBBY] = Area("Water Temple MQ Lobby", "Water Temple", WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {
-                  //Events
-                  EventAccess(&WaterTempleClear, {[]{return BossKeyWaterTemple && IsAdult && CanUse(LONGSHOT);}}),
-  }, {
-                  //Locations
-                  LocationAccess(WATER_TEMPLE_MORPHA_HEART, {[]{return BossKeyWaterTemple && IsAdult && CanUse(LONGSHOT);}}),
-                  LocationAccess(MORPHA,                    {[]{return BossKeyWaterTemple && IsAdult && CanUse(LONGSHOT);}}),
-  }, {
+  areaTable[WATER_TEMPLE_MQ_LOBBY] = Area("Water Temple MQ Lobby", "Water Temple", WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(WATER_TEMPLE_ENTRYWAY,            {[]{return true;}}),
                   Entrance(WATER_TEMPLE_MQ_DIVE,             {[]{return IsAdult && WaterTimer >= 24 && CanUse(IRON_BOOTS);}}),
                   Entrance(WATER_TEMPLE_MQ_DARK_LINK_REGION, {[]{return SmallKeys(WATER_TEMPLE, 1) && IsAdult && CanUse(LONGSHOT);}}),
+                  Entrance(WATER_TEMPLE_BOSS_ENTRYWAY,       {[]{return BossKeyWaterTemple && IsAdult && CanUse(LONGSHOT);}}),
   });
 
   areaTable[WATER_TEMPLE_MQ_DIVE] = Area("Water Temple MQ Dive", "Water Temple", WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -348,4 +330,35 @@ void AreaTable_Init_WaterTemple() {
                     //Trick: LogicWaterMQLockedGS || (SmallKeys(WATER_TEMPLE, 2) && (HoverBoots || CanUse(SCARECROW) || LogicWaterNorthBasementLedgeJump))
   }, {});
   }
+
+    /*---------------------------
+    |         BOSS ROOM         |
+    ---------------------------*/
+    areaTable[WATER_TEMPLE_BOSS_ENTRYWAY] =
+        Area("Water Temple Boss Entryway", "Water Temple", WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {},
+             {
+                 // Exits
+                 Entrance(WATER_TEMPLE_PRE_BOSS_ROOM, { [] { return Dungeon::WaterTemple.IsVanilla() && false; } }),
+                 Entrance(WATER_TEMPLE_MQ_LOBBY, { [] { return Dungeon::WaterTemple.IsMQ() && false; } }),
+                 Entrance(WATER_TEMPLE_BOSS_ROOM, { [] { return true; } }),
+             });
+
+    areaTable[WATER_TEMPLE_BOSS_ROOM] = Area(
+        "Water Temple Boss Room", "Water Temple", NONE, NO_DAY_NIGHT_CYCLE,
+        {
+            // Events
+            EventAccess(&WaterTempleClear, { [] {
+                return WaterTempleClear ||
+                       (CanUse(HOOKSHOT) && (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)));
+            } }),
+        },
+        {
+            // Locations
+            LocationAccess(WATER_TEMPLE_MORPHA_HEART, { [] { return WaterTempleClear; } }),
+            LocationAccess(MORPHA, { [] { return WaterTempleClear; } }),
+        },
+        {
+            // Exits
+            Entrance(WATER_TEMPLE_BOSS_ENTRYWAY, { [] { return false; } }),
+        });
 }

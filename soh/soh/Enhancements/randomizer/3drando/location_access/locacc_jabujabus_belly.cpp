@@ -162,22 +162,9 @@ void AreaTable_Init_JabuJabusBelly() {
                 }, {
                   //Exits
                   Entrance(JABU_JABUS_BELLY_LIFT_MIDDLE, {[]{return true;}}),
-                  Entrance(JABU_JABUS_BELLY_BOSS_ROOM,   {[]{return CanUse(BOOMERANG);},
+                  Entrance(JABU_JABUS_BELLY_BOSS_ENTRYWAY, {[]{return CanUse(BOOMERANG);},
                                               /*Glitched*/[]{return (CanUse(HOVER_BOOTS) && (CanUse(BOW) || CanUse(SLINGSHOT))) || CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE) ||
                                                                     (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE)) || (Bombs && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::SuperStab, GlitchDifficulty::NOVICE);}}),
-  });
-
-  areaTable[JABU_JABUS_BELLY_BOSS_ROOM] = Area("Jabu Jabus Belly Boss Room", "Jabu Jabus Belly", JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {
-                  //Events
-                  EventAccess(&JabuJabusBellyClear, {[]{return JabuJabusBellyClear || CanUse(BOOMERANG);}}),
-                }, {
-                  //Locations
-                  LocationAccess(JABU_JABUS_BELLY_BARINADE_HEART, {[]{return JabuJabusBellyClear;}}),
-                  LocationAccess(BARINADE,                        {[]{return JabuJabusBellyClear;}}),
-                }, {
-                  //Exits
-                  Entrance(JABU_JABUS_BELLY_NEAR_BOSS_ROOM, {[]{return JabuJabusBellyClear;}}),
-                  Entrance(JABU_JABUS_BELLY_ENTRYWAY,       {[]{return JabuJabusBellyClear;}}),
   });
   }
 
@@ -234,12 +221,39 @@ void AreaTable_Init_JabuJabusBelly() {
                   //Locations
                   LocationAccess(JABU_JABUS_BELLY_MQ_COW,             {[]{return CanPlay(EponasSong);}}),
                   LocationAccess(JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST, {[]{return true;}}),
-                  LocationAccess(JABU_JABUS_BELLY_BARINADE_HEART,     {[]{return true;}}),
-                  LocationAccess(BARINADE,                            {[]{return true;}}),
                   LocationAccess(JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS,    {[]{return true;}}),
   }, {
                   //Exits
                   Entrance(JABU_JABUS_BELLY_MQ_MAIN, {[]{return true;}}),
+                  Entrance(JABU_JABUS_BELLY_BOSS_ENTRYWAY, {[]{return CanUse(SLINGSHOT);}}),
   });
   }
+
+    /*---------------------------
+    |         BOSS ROOM         |
+    ---------------------------*/
+    areaTable[JABU_JABUS_BELLY_BOSS_ENTRYWAY] =
+        Area("Jabu Jabus Belly Boss Entryway", "Jabu Jabus Belly", JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {},
+             {
+                 // Exits
+                 Entrance(JABU_JABUS_BELLY_NEAR_BOSS_ROOM, { [] { return Dungeon::JabuJabusBelly.IsVanilla(); } }),
+                 Entrance(JABU_JABUS_BELLY_MQ_BOSS_AREA, { [] { return Dungeon::JabuJabusBelly.IsMQ(); } }),
+                 Entrance(JABU_JABUS_BELLY_BOSS_ROOM, { [] { return true; } }),
+             });
+
+    areaTable[JABU_JABUS_BELLY_BOSS_ROOM] =
+        Area("Jabu Jabus Belly Boss Room", "Jabu Jabus Belly", NONE, NO_DAY_NIGHT_CYCLE,
+             {
+                 // Events
+                 EventAccess(&JabuJabusBellyClear, { [] { return JabuJabusBellyClear || CanUse(BOOMERANG); } }),
+             },
+             {
+                 // Locations
+                 LocationAccess(JABU_JABUS_BELLY_BARINADE_HEART, { [] { return JabuJabusBellyClear; } }),
+                 LocationAccess(BARINADE, { [] { return JabuJabusBellyClear; } }),
+             },
+             {
+                 // Exits
+                 Entrance(JABU_JABUS_BELLY_BOSS_ENTRYWAY, { [] { return false; } }),
+             });
 }

@@ -139,7 +139,7 @@ typedef struct EnXc {
     /* 0x02C0 */ ColliderCylinder collider;
     /* 0x030C */ s32 unk_30C;
     /* 0x0310 */ Actor* flameActor;
-    /* 0x0314 */ struct_80034A14_arg1 npcInfo;
+    /* 0x0314 */ NpcInteractInfo interactInfo;
 } EnXc; // size = 0x033C
 
 #endif
