@@ -1,11 +1,11 @@
 #include "CollisionExporter.h"
-#include <Resource.h>
+#include <libultraship/bridge.h>
 
 void OTRExporter_Collision::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)
 {
 	ZCollisionHeader* col = (ZCollisionHeader*)res;
 
-	WriteHeader(res, outPath, writer, Ship::ResourceType::CollisionHeader);
+	WriteHeader(res, outPath, writer, Ship::ResourceType::SOH_CollisionHeader);
 	
 	writer->Write(col->absMinX);
 	writer->Write(col->absMinY);

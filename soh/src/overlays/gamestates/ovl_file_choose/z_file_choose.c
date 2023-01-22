@@ -15,7 +15,7 @@
 #define RANDOMIZER_QUEST 2
 #define MIN_QUEST (ResourceMgr_GameHasOriginal() ? NORMAL_QUEST : MASTER_QUEST)
 u8 getMaxQuest() {
-    if ((strnlen(CVar_GetString("gSpoilerLog", ""), 1) != 0)) {
+    if ((strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0)) {
         return RANDOMIZER_QUEST;
     }
 
@@ -111,7 +111,7 @@ void FileChoose_DrawImageRGBA32(GraphicsContext* gfxCtx, s16 centerX, s16 center
 
     OPEN_DISPS(gfxCtx);
 
-    source = ResourceMgr_LoadTexByName(source);
+    source = GetResourceDataByName(source, false);
 
     curTexture = source;
     rectLeft = centerX - (width / 2);
@@ -403,7 +403,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, this->fileButtonAlpha[this->buttonIndex]);
 
-        if (strnlen(CVar_GetString("gSpoilerLog", ""), 1) != 0 && fileSelectSpoilerFileLoaded) {
+        if (strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0 && fileSelectSpoilerFileLoaded) {
             u16 xStart = 64;
             for (unsigned int i = 0; i < 5; i++) {
                 SpriteLoad(this, GetSeedTexture(gSaveContext.seedIcons[i]));
@@ -420,11 +420,11 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 u8 generating;
 
 void FileChoose_UpdateRandomizer() {
-    if (CVar_GetS32("gRandoGenerating", 0) != 0 && generating == 0) {
+    if (CVarGetInteger("gRandoGenerating", 0) != 0 && generating == 0) {
             generating = 1;
             func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
             return;
-    } else if (CVar_GetS32("gRandoGenerating", 0) == 0 && generating) {
+    } else if (CVarGetInteger("gRandoGenerating", 0) == 0 && generating) {
             Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
             func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
             generating = 0;
@@ -433,25 +433,25 @@ void FileChoose_UpdateRandomizer() {
             return;
     }
 
-    if (!SpoilerFileExists(CVar_GetString("gSpoilerLog", ""))) {
-            CVar_SetString("gSpoilerLog", "");
+    if (!SpoilerFileExists(CVarGetString("gSpoilerLog", ""))) {
+            CVarSetString("gSpoilerLog", "");
             fileSelectSpoilerFileLoaded = false;
     }
 
-    if ((CVar_GetS32("gNewFileDropped", 0) != 0) || (CVar_GetS32("gNewSeedGenerated", 0) != 0) ||
-        (!fileSelectSpoilerFileLoaded && SpoilerFileExists(CVar_GetString("gSpoilerLog", "")))) {
-            if (CVar_GetS32("gNewFileDropped", 0) != 0) {
-            CVar_SetString("gSpoilerLog", CVar_GetString("gDroppedFile", "None"));
+    if ((CVarGetInteger("gNewFileDropped", 0) != 0) || (CVarGetInteger("gNewSeedGenerated", 0) != 0) ||
+        (!fileSelectSpoilerFileLoaded && SpoilerFileExists(CVarGetString("gSpoilerLog", "")))) {
+            if (CVarGetInteger("gNewFileDropped", 0) != 0) {
+            CVarSetString("gSpoilerLog", CVarGetString("gDroppedFile", "None"));
             }
             bool silent = true;
-            if ((CVar_GetS32("gNewFileDropped", 0) != 0) || (CVar_GetS32("gNewSeedGenerated", 0) != 0)) {
+            if ((CVarGetInteger("gNewFileDropped", 0) != 0) || (CVarGetInteger("gNewSeedGenerated", 0) != 0)) {
             silent = false;
             }
-            CVar_SetS32("gNewSeedGenerated", 0);
-            CVar_SetS32("gNewFileDropped", 0);
-            CVar_SetString("gDroppedFile", "");
+            CVarSetInteger("gNewSeedGenerated", 0);
+            CVarSetInteger("gNewFileDropped", 0);
+            CVarSetString("gDroppedFile", "");
             fileSelectSpoilerFileLoaded = false;
-            const char* fileLoc = CVar_GetString("gSpoilerLog", "");
+            const char* fileLoc = CVarGetString("gSpoilerLog", "");
             Randomizer_LoadSettings(fileLoc);
             Randomizer_LoadHintLocations(fileLoc);
             Randomizer_LoadRequiredTrials(fileLoc);
@@ -475,7 +475,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-    bool dpad = CVar_GetS32("gDpadText", 0);
+    bool dpad = CVarGetInteger("gDpadText", 0);
 
     FileChoose_UpdateRandomizer();
 
@@ -490,7 +490,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
                     this->configMode = CM_ROTATE_TO_NAME_ENTRY;
                     gSaveContext.isMasterQuest = MIN_QUEST == MASTER_QUEST;
                     this->questType[this->buttonIndex] = MIN_QUEST;
-                    CVar_SetS32("gOnFileSelectNameEntry", 1);
+                    CVarSetInteger("gOnFileSelectNameEntry", 1);
                     this->kbdButton = FS_KBD_BTN_NONE;
                     this->charPage = FS_CHAR_PAGE_ENG;
                     this->kbdX = 0;
@@ -658,7 +658,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     s8 i = 0;
-    bool dpad = CVar_GetS32("gDpadText", 0);(dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP));
+    bool dpad = CVarGetInteger("gDpadText", 0);(dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP));
 
     FileChoose_UpdateRandomizer();
 
@@ -700,7 +700,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         this->prevConfigMode = this->configMode;
         this->configMode = CM_ROTATE_TO_NAME_ENTRY;
         this->logoAlpha = 0;
-        CVar_SetS32("gOnFileSelectNameEntry", 1);
+        CVarSetInteger("gOnFileSelectNameEntry", 1);
         this->kbdButton = FS_KBD_BTN_NONE;
         this->charPage = FS_CHAR_PAGE_ENG;
         this->kbdX = 0;
@@ -1240,20 +1240,20 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
     s16 deathCountSplit[3];
 
     Color_RGB8 heartColor = {HEARTS_PRIM_R, HEARTS_PRIM_G, HEARTS_PRIM_B};
-    if (CVar_GetS32("gCosmetics.Consumable_Hearts.Changed", 0)) {
-        heartColor = CVar_GetRGB("gCosmetics.Consumable_Hearts.Value", heartColor);
+    if (CVarGetInteger("gCosmetics.Consumable_Hearts.Changed", 0)) {
+        heartColor = CVarGetColor24("gCosmetics.Consumable_Hearts.Value", heartColor);
     }
     Color_RGB8 heartBorder = {HEARTS_ENV_R, HEARTS_ENV_G, HEARTS_ENV_B};
-    if (CVar_GetS32("gCosmetics.Consumable_HeartBorder.Changed", 0)) {
-        heartBorder = CVar_GetRGB("gCosmetics.Consumable_HeartBorder.Value", heartBorder);
+    if (CVarGetInteger("gCosmetics.Consumable_HeartBorder.Changed", 0)) {
+        heartBorder = CVarGetColor24("gCosmetics.Consumable_HeartBorder.Value", heartBorder);
     }
     Color_RGB8 ddColor = {HEARTS_DD_ENV_R, HEARTS_DD_ENV_G, HEARTS_DD_ENV_B};
-    if (CVar_GetS32("gCosmetics.Consumable_DDHearts.Changed", 0)) {
-        ddColor = CVar_GetRGB("gCosmetics.Consumable_DDHearts.Value", ddColor);
+    if (CVarGetInteger("gCosmetics.Consumable_DDHearts.Changed", 0)) {
+        ddColor = CVarGetColor24("gCosmetics.Consumable_DDHearts.Value", ddColor);
     }
     Color_RGB8 ddBorder = {HEARTS_DD_PRIM_R, HEARTS_DD_PRIM_G, HEARTS_DD_PRIM_B};
-    if (CVar_GetS32("gCosmetics.Consumable_DDHeartBorder.Changed", 0)) {
-        ddBorder = CVar_GetRGB("gCosmetics.Consumable_DDHeartBorder.Value", ddBorder);
+    if (CVarGetInteger("gCosmetics.Consumable_DDHeartBorder.Changed", 0)) {
+        ddBorder = CVarGetColor24("gCosmetics.Consumable_DDHeartBorder.Value", ddBorder);
     }
 
     OPEN_DISPS(this->state.gfxCtx);
@@ -1936,7 +1936,7 @@ void FileChoose_FadeInFileInfo(GameState* thisx) {
 void FileChoose_ConfirmFile(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-    bool dpad = CVar_GetS32("gDpadText", 0);
+    bool dpad = CVarGetInteger("gDpadText", 0);
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || (CHECK_BTN_ALL(input->press.button, BTN_A))) {
         if (this->confirmButtonIndex == FS_BTN_CONFIRM_YES) {
@@ -2055,7 +2055,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     u16 swordEquipMask;
     s32 pad;
 
-    if ((this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVar_GetS32("gDebugEnabled", 0)) || this->buttonIndex == 0xFF) {
+    if ((this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVarGetInteger("gDebugEnabled", 0)) || this->buttonIndex == 0xFF) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         gSaveContext.fileNum = this->buttonIndex;
         if (this->buttonIndex == 0xFF) {
@@ -2127,7 +2127,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.naviTimer = 0;
 
     // SWORDLESS LINK IS BACK BABY
-    if (CVar_GetS32("gSwordlessLink", 0) != 0)
+    if (CVarGetInteger("gSwordlessLink", 0) != 0)
     {
         if ((gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI) &&
             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER) &&
@@ -2144,9 +2144,9 @@ void FileChoose_LoadGame(GameState* thisx) {
     // Handle randomized spawn positions after the save context has been setup from load
     // When remeber save location is on, set save warp if the save was in an a grotto, or
     // the entrance index is -1 from shuffle overwarld spawn
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) && ((!CVar_GetS32("gRememberSaveLocation", 0) ||
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) && ((!CVarGetInteger("gRememberSaveLocation", 0) ||
         gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE || gSaveContext.savedSceneNum == SCENE_KAKUSIANA) ||
-        (CVar_GetS32("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == -1))) {
+        (CVarGetInteger("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == -1))) {
         Entrance_SetSavewarpEntrance();
     }
 }
@@ -2238,8 +2238,8 @@ void FileChoose_Main(GameState* thisx) {
     Input* input = &this->state.input[0];
 
     Color_RGB8 helpTextColor = { 100, 255, 255 };
-    if (CVar_GetS32("gCosmetics.Title_FileChoose.Changed", 0)) {
-        Color_RGB8 backgroundColor = CVar_GetRGB("gCosmetics.Title_FileChoose.Value", (Color_RGB8){ 100, 150, 255 });
+    if (CVarGetInteger("gCosmetics.Title_FileChoose.Changed", 0)) {
+        Color_RGB8 backgroundColor = CVarGetColor24("gCosmetics.Title_FileChoose.Value", (Color_RGB8){ 100, 150, 255 });
         this->windowColor[0] = backgroundColor.r;
         this->windowColor[1] = backgroundColor.g;
         this->windowColor[2] = backgroundColor.b;
@@ -2264,19 +2264,19 @@ void FileChoose_Main(GameState* thisx) {
         sWindowContentColors[0][2] = 255;
     }
 
-    if (CVar_GetS32("gTimeFlowFileSelect", 0) != 0) {
+    if (CVarGetInteger("gTimeFlowFileSelect", 0) != 0) {
         gSaveContext.skyboxTime += 0x10;
     }
 
-    if (CVar_GetS32("gSkipLogoTitle", 0) && CVar_GetS32("gSaveFileID", 0) < 3 && !isFastFileIdIncompatible) {
-        if (Save_Exist(CVar_GetS32("gSaveFileID", 0)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVar_GetS32("gSaveFileID", 0)))) {
-            this->buttonIndex = CVar_GetS32("gSaveFileID", 0);
+    if (CVarGetInteger("gSkipLogoTitle", 0) && CVarGetInteger("gSaveFileID", 0) < 3 && !isFastFileIdIncompatible) {
+        if (Save_Exist(CVarGetInteger("gSaveFileID", 0)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVarGetInteger("gSaveFileID", 0)))) {
+            this->buttonIndex = CVarGetInteger("gSaveFileID", 0);
             this->menuMode = FS_MENU_MODE_SELECT;
             this->selectMode = SM_LOAD_GAME;
         } else {
             isFastFileIdIncompatible = 1;
         }
-    } else if (CVar_GetS32("gSkipLogoTitle", 0) && CVar_GetS32("gSaveFileID", 0) == 3) {
+    } else if (CVarGetInteger("gSkipLogoTitle", 0) && CVarGetInteger("gSaveFileID", 0) == 3) {
         this->buttonIndex = 0xFF;
         this->menuMode = FS_MENU_MODE_SELECT;
         this->selectMode = SM_LOAD_GAME;
@@ -2293,7 +2293,7 @@ void FileChoose_Main(GameState* thisx) {
     this->stickRelX = input->rel.stick_x;
     this->stickRelY = input->rel.stick_y;
 
-    if (CVar_GetS32("gDpadHoldChange", 1) && CVar_GetS32("gDpadText", 0)) {
+    if (CVarGetInteger("gDpadHoldChange", 1) && CVarGetInteger("gDpadText", 0)) {
         if (CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) {
             if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
                 this->inputTimerX = 10;
@@ -2631,7 +2631,7 @@ void FileChoose_Init(GameState* thisx) {
     this->questType[2] = MIN_QUEST;
     fileSelectSpoilerFileLoaded = false;
     isFastFileIdIncompatible = 0;
-    CVar_SetS32("gOnFileSelectNameEntry", 0);
+    CVarSetInteger("gOnFileSelectNameEntry", 0);
 
     SREG(30) = 1;
     osSyncPrintf("SIZE=%x\n", size);

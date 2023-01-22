@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 extern char* sequenceMap[MAX_SEQUENCES];

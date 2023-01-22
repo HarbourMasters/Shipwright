@@ -286,6 +286,11 @@ Item& ItemFromGIID(const int giid) {
         }
         index++;
     }
+
+    // there are vanilla items that don't exist in the item table we're reading from here
+    // if we made it this far, it means we didn't find an item in the table
+    // if we don't return anything, the game will crash, so, as a workaround, return greg
+    return itemTable[GREEN_RUPEE];
 }
 
 //This function should only be used to place items containing hint text
