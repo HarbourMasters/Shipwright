@@ -1242,29 +1242,19 @@ extern "C" int16_t OTRGetRectDimensionFromRightEdge(float v) {
 }
 
 extern "C" bool AudioPlayer_Init(void) {
-    if (OTRGlobals::Instance->context->GetAudioPlayer() != nullptr) {
-        return OTRGlobals::Instance->context->GetAudioPlayer()->Init();
-    }
-
-    return false;
+    return AudioPlayerInit();
 }
 
 extern "C" int AudioPlayer_Buffered(void) {
-    if (OTRGlobals::Instance->context->GetAudioPlayer() != nullptr) {
-        return OTRGlobals::Instance->context->GetAudioPlayer()->Buffered();
-    }
+    return AudioPlayerBuffered();
 }
 
 extern "C" int AudioPlayer_GetDesiredBuffered(void) {
-    if (OTRGlobals::Instance->context->GetAudioPlayer() != nullptr) {
-        return OTRGlobals::Instance->context->GetAudioPlayer()->GetDesiredBuffered();
-    }
+    return AudioPlayerGetDesiredBuffered();
 }
 
 extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
-    if (OTRGlobals::Instance->context->GetAudioPlayer() != nullptr) {
-        OTRGlobals::Instance->context->GetAudioPlayer()->Play(buf, len);
-    }
+    AudioPlayerPlayFrame(buf, len);
 }
 
 extern "C" int Controller_ShouldRumble(size_t slot) {
