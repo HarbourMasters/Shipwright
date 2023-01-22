@@ -328,7 +328,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Castle Courtyard", "Vom Burghof", "Depuis la Cour du Chateau", 0x023D },
         { "From Great Fairy", "Von der Feen-Quelle", "Depuis la Grande Fee", 0x0340 },
         { "From Courtyard Guard Capture", "Von Wachen-Festnahme", "Depuis la capture d'un Garde de la Cour", 0x04FA },
-        { "Great Fairy", "Great Fairy", "Great Fairy", 0x04C2 },
+        { "Great Fairy", "Feen-Quelle", "Grande Fee", 0x04C2 },
     }},
     { "12:Hyrule Castle Courtyard", "12:Burghof", "12:Cour du Chateau", Select_LoadGame, 3, {
         { "From Crawlspace", "Vom Kriechtunnel", "Depuis l'Entree", 0x007A },
