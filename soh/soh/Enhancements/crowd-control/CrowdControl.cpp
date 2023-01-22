@@ -139,26 +139,13 @@ void CrowdControl::ListenToServer() {
                 continue;
             }
 
-            // If effect is a one off run, let's execute
+            // If effect is not a timed effect, execute and return result.
             if (!incomingEffect->timeRemaining) {
-                EffectResult result = EffectResult::Retry;
-                if (incomingEffect->category == "spawn_enemy") {
-                    if (GameInteractor::CanSpawnEnemy()) {
-                        if (GameInteractor::Actions::SpawnEnemyWithOffset(incomingEffect->value[0],
-                            incomingEffect->value[1])) {
-                            result = EffectResult::Success;
-                        }
-                    }
-                } else {
-                    result = CrowdControl::CanApplyEffect(incomingEffect);
-                    if (result == EffectResult::Success) {
-                        GameInteractor::ApplyEffect(incomingEffect->giEffect);
-                    }
-                }
-
+                EffectResult result = CrowdControl::ExecuteEffect(incomingEffect);
                 EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
             } else {
-                // check if a conflicting event is already active
+                // If another timed effect is already active that conflicts with the
+                // incoming effect, let CC retry later.
                 bool isConflictingEffectActive = false;
                 for (Effect* pack : activeEffects) {
                     if (pack != incomingEffect && pack->category == incomingEffect->category &&
@@ -166,13 +153,12 @@ void CrowdControl::ListenToServer() {
                         isConflictingEffectActive = true;
                         EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining,
                                     EffectResult::Retry);
-
                         break;
                     }
                 }
 
-                // check if effect can be executed
-                EffectResult result = CrowdControl::CanApplyEffect(incomingEffect);
+                // Execute effect. If it can't, let CC know.
+                EffectResult result = CrowdControl::ExecuteEffect(incomingEffect);
                 if (result == EffectResult::Retry || result == EffectResult::Failure) {
                     EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
                     continue;
@@ -196,28 +182,30 @@ void CrowdControl::ListenToServer() {
 
 void CrowdControl::ProcessActiveEffects() {
     while (isEnabled) {
-        // we only want to send events when status changes, on start we send Success,
-        // if it fails at some point, we send Pause, and when it starts to succeed again we send Success.
+        // We only want to send events when status changes, on start we send Success.
+        // If it fails at some point, we send Pause, and when it starts to succeed again we send Success.
+        // CC uses this to pause the timer on the overlay.
         activeEffectsMutex.lock();
         auto it = activeEffects.begin();
 
         while (it != activeEffects.end()) {
             Effect *effect = *it;
-            EffectResult result = CrowdControl::CanApplyEffect(effect);
+            EffectResult result = CrowdControl::ExecuteEffect(effect);
 
             if (result == EffectResult::Success) {
-                // If time remaining has reached 0, we have finished the effect
+                // If time remaining has reached 0, we have finished the effect.
                 if (effect->timeRemaining <= 0) {
                     it = activeEffects.erase(std::remove(activeEffects.begin(), activeEffects.end(), effect),
                                         activeEffects.end());
                     GameInteractor::RemoveEffect(effect->giEffect);
-
                     delete effect;
                 } else {
-                    // If we have a success after previously being paused, fire Resume event
+                    // If we have a success after previously being paused, tell CC to resume timer.
                     if (effect->isPaused) {
                         effect->isPaused = false;
                         EmitMessage(tcpsock, effect->id, effect->timeRemaining, EffectResult::Resumed);
+                    // If not paused before, subtract time from the timer and send a Success event if
+                    // the result is different from the last time this was ran.
                     } else {
                         effect->timeRemaining -= 1000;
                         if (result != effect->lastExecutionResult) {
@@ -225,7 +213,6 @@ void CrowdControl::ProcessActiveEffects() {
                             EmitMessage(tcpsock, effect->id, effect->timeRemaining, EffectResult::Success);
                         }
                     }
-                    GameInteractor::ApplyEffect(effect->giEffect);
                     it++;
                 }
             } else { // Timed effects only do Success or Retry
@@ -233,7 +220,6 @@ void CrowdControl::ProcessActiveEffects() {
                     effect->isPaused = true;
                     EmitMessage(tcpsock, effect->id, effect->timeRemaining, EffectResult::Paused);
                 }
-
                 it++;
             }
         }
@@ -303,7 +289,8 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::LowGravity();
     } else if (effectName == EFFECT_KILL) {
-        effect->giEffect = new GameInteractionEffect::KillPlayer();
+        effect->giEffect = new GameInteractionEffect::SetPlayerHealth();
+        effect->value[0] = 0;
     } else if (effectName == EFFECT_FREEZE) {
         effect->giEffect = new GameInteractionEffect::FreezePlayer();
     } else if (effectName == EFFECT_BURN) {
@@ -426,6 +413,9 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     }
 
     // If no value is specifically set, default to using whatever CC sends us.
+    // Values are used for various things depending on the effect, but they 
+    // usually represent the "amount" of an effect. Amount of hearts healed,
+    // strength of knockback, etc.
     if (effect->giEffect != NULL) {
         if (!effect->giEffect->parameter && effect->value[0]) {
             effect->giEffect->parameter = effect->value[0];
@@ -439,14 +429,20 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     return effect;
 }
 
-CrowdControl::EffectResult CrowdControl::CanApplyEffect(Effect* effect) {
-    // Get result for any given effect, and transform that into CC's own enums.
-    EffectResult result;
-    GameInteractionEffectQueryResult queryResult = GameInteractor::CanApplyEffect(effect->giEffect);
+CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
 
-    if (queryResult == GameInteractionEffectQueryResult::Possible) {
+    GameInteractionEffectQueryResult giResult;
+    if (effect->category == "spawn_enemy") {
+        giResult = GameInteractor::Actions::SpawnEnemyWithOffset(effect->value[0], effect->value[1]);
+    } else {
+        giResult = GameInteractor::ApplyEffect(effect->giEffect);
+    }
+
+    // Translate GameInteractor result into CC's own enums.
+    EffectResult result;
+    if (giResult == GameInteractionEffectQueryResult::Possible) {
         result = EffectResult::Success;
-    } else if (queryResult == GameInteractionEffectQueryResult::TemporarilyNotPossible) {
+    } else if (giResult == GameInteractionEffectQueryResult::TemporarilyNotPossible) {
         result = EffectResult::Retry;
     } else {
         result = EffectResult::Failure;

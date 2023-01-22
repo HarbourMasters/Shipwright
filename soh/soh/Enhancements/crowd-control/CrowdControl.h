@@ -92,7 +92,7 @@ class CrowdControl {
 
         void EmitMessage(TCPsocket socket, uint32_t eventId, long timeRemaining, EffectResult status);
         Effect* ParseMessage(char payload[512]);
-        EffectResult CanApplyEffect(Effect* effect);
+        EffectResult ExecuteEffect(Effect* effect);
 
     public:
         static CrowdControl* Instance;

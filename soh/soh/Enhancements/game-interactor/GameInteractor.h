@@ -19,7 +19,7 @@ public:
 
     // Effects
     static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase* effect);
-    static void ApplyEffect(GameInteractionEffectBase* effect);
+    static GameInteractionEffectQueryResult ApplyEffect(GameInteractionEffectBase* effect);
     static void RemoveEffect(GameInteractionEffectBase* effect);
 
     // Helpers
@@ -32,6 +32,7 @@ public:
         static void AddOrRemoveHealthContainers(int32_t amount);
         static void AddOrRemoveMagic(int32_t amount);
         static void HealOrDamagePlayer(int32_t hearts);
+        static void SetPlayerHealth(uint32_t hearts);
         static void SetLinkSize(uint8_t size);
         static void SetLinkInvisibility(uint8_t effectState);
         static void SetPacifistMode(uint8_t effectState);
@@ -44,7 +45,7 @@ public:
         static void GiveDekuShield();
         static void SpawnCuccoStorm();
 
-        static uint8_t SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
+        static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
     };
 };
 

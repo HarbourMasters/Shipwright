@@ -81,15 +81,28 @@ static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std:
 }
 
 static bool GiveDekuShieldHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&) {
-    GameInteractor::Actions::GiveDekuShield();
-    SohImGui::GetConsole()->SendInfoMessage("[SOH] Gave Deku Shield");
-    return CMD_SUCCESS;
+    GameInteractionEffectBase* effect = new GameInteractionEffect::GiveDekuShield();
+    GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Gave Deku Shield.");
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not give Deku Shield.");
+        return CMD_FAILED;
+    }
 }
 
 static bool KillPlayerHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&) {
-    gSaveContext.health = 0;
-    SohImGui::GetConsole()->SendInfoMessage("[SOH] You've met with a terrible fate, haven't you?");
-    return CMD_SUCCESS;
+    GameInteractionEffectBase* effect = new GameInteractionEffect::SetPlayerHealth();
+    effect->parameter = 0;
+    GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] You've met with a terrible fate, haven't you?");
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not kill player.");
+        return CMD_FAILED;
+    }
 }
 
 static bool SetPlayerHealthHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
@@ -109,13 +122,19 @@ static bool SetPlayerHealthHandler(std::shared_ptr<Ship::Console> Console, const
 
     if (health < 0) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Health value must be a positive integer");
-        return CMD_SUCCESS;
+        return CMD_FAILED;
     }
 
-    gSaveContext.health = health * 0x10;
-
-    SohImGui::GetConsole()->SendInfoMessage("[SOH] Player health updated to %d", health);
-    return CMD_SUCCESS;
+    GameInteractionEffectBase* effect = new GameInteractionEffect::SetPlayerHealth();
+    effect->parameter = health;
+    GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Player health updated to %d", health);
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not set player health.");
+        return CMD_FAILED;
+    }
 }
 
 static bool LoadSceneHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&) {
@@ -440,7 +459,7 @@ static bool StateSlotSelectHandler(std::shared_ptr<Ship::Console> Console, const
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
-    int slot;
+    uint8_t slot;
 
     try {
         slot = std::stoi(args[1], nullptr, 10);
@@ -465,14 +484,25 @@ static bool InvisibleHandler(std::shared_ptr<Ship::Console> Console, const std::
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
+    uint8_t state;
 
     try {
-        uint8_t state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        GameInteractor::Actions::SetLinkInvisibility(state);
-
-        return CMD_SUCCESS;
+        state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Invisible value must be a number.");
+        return CMD_FAILED;
+    }
+
+    GameInteractionEffectBase* effect = new GameInteractionEffect::InvisibleLink();
+    GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        if (!state) {
+            GameInteractor::RemoveEffect(effect);
+        }
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Updated Link's invisibility");
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not set link to invisible.");
         return CMD_FAILED;
     }
 }

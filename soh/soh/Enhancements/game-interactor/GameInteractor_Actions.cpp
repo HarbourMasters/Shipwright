@@ -49,6 +49,10 @@ void GameInteractor::Actions::HealOrDamagePlayer(int32_t hearts) {
     }
 }
 
+void GameInteractor::Actions::SetPlayerHealth(uint32_t hearts) {
+    gSaveContext.health = hearts * 0x10;
+}
+
 void GameInteractor::Actions::SetLinkSize(uint8_t size) {
     GameInteractor_GiantLinkActive = 0;
     GameInteractor_MinishLinkActive = 0;
@@ -156,7 +160,12 @@ void GameInteractor::Actions::SpawnCuccoStorm() {
     cucco->actionFunc = func_80AB70A0_nocutscene;
 }
 
-uint8_t GameInteractor::Actions::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {
+GameInteractionEffectQueryResult GameInteractor::Actions::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {
+
+    if (!GameInteractor::CanSpawnEnemy()) {
+        return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    }
+
     Player* player = GET_PLAYER(gPlayState);
 
     float posXOffset = 0;
@@ -172,7 +181,7 @@ uint8_t GameInteractor::Actions::SpawnEnemyWithOffset(uint32_t enemyId, int32_t 
         if (gPlayState->sceneNum == SCENE_DDAN_BOSS || gPlayState->sceneNum == SCENE_MIZUSIN_BS ||
             gPlayState->sceneNum == SCENE_JYASINBOSS || gPlayState->sceneNum == SCENE_GANON_BOSS ||
             gPlayState->sceneNum == SCENE_TURIBORI || gPlayState->sceneNum == SCENE_GANON_DEMO) {
-            return 0;
+            return GameInteractionEffectQueryResult::NotPossible;
         }
         posYOffset = 100;
     } else if (enemyId == ACTOR_EN_TORCH2) {
@@ -201,8 +210,8 @@ uint8_t GameInteractor::Actions::SpawnEnemyWithOffset(uint32_t enemyId, int32_t 
     if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, player->actor.world.pos.x + posXOffset,
         player->actor.world.pos.y + posYOffset, player->actor.world.pos.z + posZOffset, 0, 0, 0,
         enemyParams, 0) != NULL) {
-        return 1;
+        return GameInteractionEffectQueryResult::Possible;
     }
 
-    return 0;
+    return GameInteractionEffectQueryResult::TemporarilyNotPossible;
 }
