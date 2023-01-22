@@ -468,6 +468,6 @@ void SetupDisplayColors() {
 void InitStatTracker() {
     SohImGui::AddWindow("Enhancements", "Gameplay Stats", DrawStatsTracker);
     SohImGui::EnableWindow("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0));
-	SetupDisplayNames();
+    SetupDisplayNames();
     SetupDisplayColors();
 }
