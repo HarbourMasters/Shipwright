@@ -2816,7 +2816,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVarGetInteger("gRandomizeShuffleAdultTrade", 0);
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVarGetInteger("gRandomizeShuffleBeans", 0);
     cvarSettings[RSK_SHUFFLE_MERCHANTS] = CVarGetInteger("gRandomizeShuffleMerchants", RO_SHUFFLE_MERCHANTS_OFF);
-    cvarSettings[RSK_SHUFFLE_100_GS_REWARD] = CVar_GetS32("gRandomizeShuffle100GSReward", RO_GENERIC_OFF);
+    cvarSettings[RSK_SHUFFLE_100_GS_REWARD] = CVarGetInteger("gRandomizeShuffle100GSReward", RO_GENERIC_OFF);
     cvarSettings[RSK_ENABLE_BOMBCHU_DROPS] = CVarGetInteger("gRandomizeEnableBombchuDrops", 0);
     cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = CVarGetInteger("gRandomizeBombchusInLogic", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVarGetInteger("gRandomizeSkipChildZelda", 0);
@@ -3669,7 +3669,7 @@ void DrawRandoEditor(bool& open) {
                 // Shuffle 100 GS Reward
                 // Forcefully enabled if Ganon's Boss Key is on the cursed man
                 bool forceEnable100GSShuffle =
-                    (CVar_GetS32("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) == RO_GANON_BOSS_KEY_KAK_TOKENS);
+                    (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) == RO_GANON_BOSS_KEY_KAK_TOKENS);
                 const char* disable100GSRewardText = "This option is forcefully enabled because \"Ganon's Boss Key\" is set to \"100 GS Reward.\"";
                 UIWidgets::EnhancementCheckbox(Settings::Shuffle100GSReward.GetName().c_str(), "gRandomizeShuffle100GSReward",
                     forceEnable100GSShuffle, disable100GSRewardText, UIWidgets::CheckboxGraphics::Checkmark);
