@@ -1177,7 +1177,7 @@ void Select_PrintLoadingMessage(SelectContext* this, GfxPrint* printer) {
 
 static SceneSelectAgeLabels sAgeLabels[] = {
     { GFXP_HIRAGANA "17(ﾜｶﾓﾉ)", "17(Adult)", "17(Erwachsener)", "17(Adulte)" }, // "17(young)
-    { GFXP_HIRAGANA "5(ﾜｶｽｷﾞ)", "10(Child)", "10(Kind)", "10(Enfant)" }, // "5(very young), for the translation I decided to use the canonical age
+    { GFXP_HIRAGANA "5(ﾜｶｽｷﾞ)", "5(Child)", "5(Kind)", "5(Enfant)" },           // "5(very young)
 };
 
 static BetterSceneSelectAgeLabels sBetterAgeLabels[] = {
