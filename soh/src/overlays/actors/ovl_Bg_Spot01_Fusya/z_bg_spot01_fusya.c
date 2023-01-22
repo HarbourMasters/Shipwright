@@ -60,8 +60,8 @@ void func_808AAA50(BgSpot01Fusya* this, PlayState* play) {
     f32 temp;
     Actor* thisx = &this->actor;
 
-    if (CVar_GetS32("gCosmetics.Kak_Windmill_Speed.Changed", 0)) {
-        this->unk_158 = CVar_GetFloat("gCosmetics.Kak_Windmill_Speed.Value", 100.0f);
+    if (CVarGetInteger("gCosmetics.Kak_Windmill_Speed.Changed", 0)) {
+        this->unk_158 = CVarGetFloat("gCosmetics.Kak_Windmill_Speed.Value", 100.0f);
     } else {
         this->unk_158 = 100.0f;
     }

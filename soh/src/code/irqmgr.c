@@ -116,7 +116,7 @@ void IrqMgr_CheckStack() {
     if (StackCheck_Check(NULL) == 0) {
         osSyncPrintf("スタックは大丈夫みたいです\n"); // "The stack looks ok"
     } else {
-        osSyncPrintf("%c", 7);
+        osSyncPrintf("%c", BEL);
         osSyncPrintf(VT_FGCOL(RED));
         // "Stack overflow or dangerous"
         osSyncPrintf("スタックがオーバーフローしたか危険な状態です\n");

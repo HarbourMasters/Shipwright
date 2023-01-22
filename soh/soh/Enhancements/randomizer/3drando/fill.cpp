@@ -298,8 +298,8 @@ std::vector<uint32_t> GetAccessibleLocations(const std::vector<uint32_t>& allowe
         if (mode == SearchMode::GeneratePlaythrough && exit.IsShuffled() && !exit.IsAddedToPool() && !noRandomEntrances) {
           entranceSphere.push_back(&exit);
           exit.AddToPool();
-          // Don't list a coupled entrance from both directions
-          if (exit.GetReplacement()->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+          // Don't list a two-way coupled entrance from both directions
+          if (exit.GetReverse() != nullptr && exit.GetReplacement()->GetReverse() != nullptr && !exit.IsDecoupled()) {
             exit.GetReplacement()->GetReverse()->AddToPool();
           }
         }
@@ -912,6 +912,9 @@ void VanillaFill() {
   CreateItemOverrides();
   CreateEntranceOverrides();
   CreateAlwaysIncludedMessages();
+  if (ShuffleWarpSongs) {
+    CreateWarpSongTexts();
+  }
 }
 
 void ClearProgress() {
@@ -1073,6 +1076,17 @@ int Fill() {
       }
       if (ShuffleMerchants.Is(SHUFFLEMERCHANTS_HINTS)) {
         CreateMerchantsHints();
+      }
+      //Always execute ganon hint generation for the funny line  
+      CreateGanonText();
+      if (AltarHintText) {
+        CreateAltarText();
+      }
+      if (DampeHintText) {
+        CreateDampesDiaryText();
+      }
+      if (ShuffleWarpSongs) {
+        CreateWarpSongTexts();
       }
       return 1;
     }

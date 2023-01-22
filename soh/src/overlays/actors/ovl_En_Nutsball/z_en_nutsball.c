@@ -75,7 +75,7 @@ void EnNutsball_Init(Actor* thisx, PlayState* play) {
     ActorShape_Init(&this->actor.shape, 400.0f, ActorShadow_DrawCircle, 13.0f);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
-    if (CVar_GetS32("gRandomizedEnemies", 0)) {
+    if (CVarGetInteger("gRandomizedEnemies", 0)) {
         this->objBankIndex = 0;
     } else {
         this->objBankIndex = Object_GetIndex(&play->objectCtx, sObjectIDs[this->actor.params]);
@@ -176,7 +176,7 @@ void EnNutsball_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    if (CVar_GetS32("gNewDrops", 0) != 0) {
+    if (CVarGetInteger("gNewDrops", 0) != 0) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08,
                 Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 6),

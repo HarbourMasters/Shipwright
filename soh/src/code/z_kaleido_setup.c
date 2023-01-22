@@ -18,21 +18,21 @@ void KaleidoSetup_Update(PlayState* play) {
         play->shootingGalleryStatus <= 1 && gSaveContext.magicState != 8 && gSaveContext.magicState != 9 &&
         (play->sceneNum != SCENE_BOWLING || !Flags_GetSwitch(play, 0x38))) {
 
-        if (CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0) == 2 && !CHECK_BTN_ALL(input->press.button, BTN_START)) {
-            CVar_SetS32("gCheatEasyPauseBufferFrameAdvance", 0);
+        if (CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0) == 2 && !CHECK_BTN_ALL(input->press.button, BTN_START)) {
+            CVarSetInteger("gCheatEasyPauseBufferFrameAdvance", 0);
         }
 
         if (CHECK_BTN_ALL(input->cur.button, BTN_L) && CHECK_BTN_ALL(input->press.button, BTN_CUP)) {
             if (BREG(0)) {
                 pauseCtx->debugState = 3;
             }
-        } else if ((CHECK_BTN_ALL(input->press.button, BTN_START) && !CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0)) || CVar_GetS32("gCheatEasyPauseBufferFrameAdvance", 0) == 1) {
+        } else if ((CHECK_BTN_ALL(input->press.button, BTN_START) && !CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0)) || CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0) == 1) {
             gSaveContext.unk_13EE = gSaveContext.unk_13EA;
 
             if (CHECK_BTN_ALL(input->cur.button, BTN_L))
-                CVar_SetS32("gPauseTriforce", 1);
+                CVarSetInteger("gPauseTriforce", 1);
             else
-                CVar_SetS32("gPauseTriforce", 0);
+                CVarSetInteger("gPauseTriforce", 0);
 
 
             WREG(16) = -175;

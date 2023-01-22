@@ -5,7 +5,7 @@ void OTRExporter_Text::Save(ZResource* res, const fs::path& outPath, BinaryWrite
 {
 	ZText* txt = (ZText*)res;
 
-	WriteHeader(txt, outPath, writer, Ship::ResourceType::Text);
+	WriteHeader(txt, outPath, writer, Ship::ResourceType::SOH_Text);
 
 	writer->Write((uint32_t)txt->messages.size());
 

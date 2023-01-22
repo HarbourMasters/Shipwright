@@ -78,6 +78,9 @@
 static CollisionPoly* sCurCeilingPoly;
 static s32 sCurCeilingBgId;
 
+// Used for animating the ice trap on the "Get Item" model.
+f32 iceTrapScale;
+
 void ActorShape_Init(ActorShape* shape, f32 yOffset, ActorShadowFunc shadowDraw, f32 shadowScale) {
     shape->yOffset = yOffset;
     shape->shadowDraw = shadowDraw;
@@ -344,50 +347,50 @@ void func_8002BE98(TargetContext* targetCtx, s32 actorCategory, PlayState* play)
 }
 
 void func_8002BF60(TargetContext* targetCtx, Actor* actor, s32 actorCategory, PlayState* play) {
-    if (CVar_GetS32("gCosmetics.Navi_IdlePrimary.Changed", 0)) {
-        sNaviColorList[ACTORCAT_PLAYER].inner = CVar_GetRGBA("gCosmetics.Navi_IdlePrimary.Value", defaultIdlePrimaryColor);
+    if (CVarGetInteger("gCosmetics.Navi_IdlePrimary.Changed", 0)) {
+        sNaviColorList[ACTORCAT_PLAYER].inner = CVarGetColor("gCosmetics.Navi_IdlePrimary.Value", defaultIdlePrimaryColor);
     } else {
         sNaviColorList[ACTORCAT_PLAYER].inner = defaultIdlePrimaryColor;
     }
-    if (CVar_GetS32("gCosmetics.Navi_IdleSecondary.Changed", 0)) {
-        sNaviColorList[ACTORCAT_PLAYER].outer = CVar_GetRGBA("gCosmetics.Navi_IdleSecondary.Value", defaultIdleSecondaryColor);
+    if (CVarGetInteger("gCosmetics.Navi_IdleSecondary.Changed", 0)) {
+        sNaviColorList[ACTORCAT_PLAYER].outer = CVarGetColor("gCosmetics.Navi_IdleSecondary.Value", defaultIdleSecondaryColor);
     } else {
         sNaviColorList[ACTORCAT_PLAYER].outer = defaultIdleSecondaryColor;
     }
     
-    if (CVar_GetS32("gCosmetics.Navi_NPCPrimary.Changed", 0)) {
-        sNaviColorList[ACTORCAT_NPC].inner = CVar_GetRGBA("gCosmetics.Navi_NPCPrimary.Value", defaultNPCPrimaryColor);
+    if (CVarGetInteger("gCosmetics.Navi_NPCPrimary.Changed", 0)) {
+        sNaviColorList[ACTORCAT_NPC].inner = CVarGetColor("gCosmetics.Navi_NPCPrimary.Value", defaultNPCPrimaryColor);
     } else {
         sNaviColorList[ACTORCAT_NPC].inner = defaultNPCPrimaryColor;
     }
-    if (CVar_GetS32("gCosmetics.Navi_NPCSecondary.Changed", 0)) {
-        sNaviColorList[ACTORCAT_NPC].outer = CVar_GetRGBA("gCosmetics.Navi_NPCSecondary.Value", defaultNPCSecondaryColor);
+    if (CVarGetInteger("gCosmetics.Navi_NPCSecondary.Changed", 0)) {
+        sNaviColorList[ACTORCAT_NPC].outer = CVarGetColor("gCosmetics.Navi_NPCSecondary.Value", defaultNPCSecondaryColor);
     } else {
         sNaviColorList[ACTORCAT_NPC].outer = defaultNPCSecondaryColor;
     }
 
-    if (CVar_GetS32("gCosmetics.Navi_EnemyPrimary.Changed", 0)) {
-        sNaviColorList[ACTORCAT_ENEMY].inner = CVar_GetRGBA("gCosmetics.Navi_EnemyPrimary.Value", defaultEnemyPrimaryColor);
-        sNaviColorList[ACTORCAT_BOSS].inner = CVar_GetRGBA("gCosmetics.Navi_EnemyPrimary.Value", defaultEnemyPrimaryColor);
+    if (CVarGetInteger("gCosmetics.Navi_EnemyPrimary.Changed", 0)) {
+        sNaviColorList[ACTORCAT_ENEMY].inner = CVarGetColor("gCosmetics.Navi_EnemyPrimary.Value", defaultEnemyPrimaryColor);
+        sNaviColorList[ACTORCAT_BOSS].inner = CVarGetColor("gCosmetics.Navi_EnemyPrimary.Value", defaultEnemyPrimaryColor);
     } else {
         sNaviColorList[ACTORCAT_ENEMY].inner = defaultEnemyPrimaryColor;
         sNaviColorList[ACTORCAT_BOSS].inner = defaultEnemyPrimaryColor;
     }
-    if (CVar_GetS32("gCosmetics.Navi_EnemySecondary.Changed", 0)) {
-        sNaviColorList[ACTORCAT_ENEMY].outer = CVar_GetRGBA("gCosmetics.Navi_EnemySecondary.Value", defaultEnemySecondaryColor);
-        sNaviColorList[ACTORCAT_BOSS].outer = CVar_GetRGBA("gCosmetics.Navi_EnemySecondary.Value", defaultEnemySecondaryColor);
+    if (CVarGetInteger("gCosmetics.Navi_EnemySecondary.Changed", 0)) {
+        sNaviColorList[ACTORCAT_ENEMY].outer = CVarGetColor("gCosmetics.Navi_EnemySecondary.Value", defaultEnemySecondaryColor);
+        sNaviColorList[ACTORCAT_BOSS].outer = CVarGetColor("gCosmetics.Navi_EnemySecondary.Value", defaultEnemySecondaryColor);
     } else {
         sNaviColorList[ACTORCAT_ENEMY].outer = defaultEnemySecondaryColor;
         sNaviColorList[ACTORCAT_BOSS].outer = defaultEnemySecondaryColor;
     }
 
-    if (CVar_GetS32("gCosmetics.Navi_PropsPrimary.Changed", 0)) {
-        sNaviColorList[ACTORCAT_PROP].inner = CVar_GetRGBA("gCosmetics.Navi_PropsPrimary.Value", defaultPropsPrimaryColor);
+    if (CVarGetInteger("gCosmetics.Navi_PropsPrimary.Changed", 0)) {
+        sNaviColorList[ACTORCAT_PROP].inner = CVarGetColor("gCosmetics.Navi_PropsPrimary.Value", defaultPropsPrimaryColor);
     } else {
         sNaviColorList[ACTORCAT_PROP].inner = defaultPropsPrimaryColor;
     }
-    if (CVar_GetS32("gCosmetics.Navi_PropsSecondary.Changed", 0)) {
-        sNaviColorList[ACTORCAT_PROP].outer = CVar_GetRGBA("gCosmetics.Navi_PropsSecondary.Value", defaultPropsSecondaryColor);
+    if (CVarGetInteger("gCosmetics.Navi_PropsSecondary.Changed", 0)) {
+        sNaviColorList[ACTORCAT_PROP].outer = CVarGetColor("gCosmetics.Navi_PropsSecondary.Value", defaultPropsSecondaryColor);
     } else {
         sNaviColorList[ACTORCAT_PROP].outer = defaultPropsSecondaryColor;
     }
@@ -794,7 +797,7 @@ void TitleCard_InitBossName(PlayState* play, TitleCardContext* titleCtx, void* t
                             u8 height, s16 hasTranslation) {
 
     if (ResourceMgr_OTRSigCheck(texture))
-        texture = ResourceMgr_LoadTexByName(texture);
+        texture = GetResourceDataByName(texture, false);
 
     titleCtx->texture = texture;
     titleCtx->isBossCard = true;
@@ -1016,7 +1019,7 @@ void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* 
         texture = newName;
     }
 
-    titleCtx->texture = ResourceMgr_LoadTexByName(texture);
+    titleCtx->texture = GetResourceDataByName(texture, false);
 
     //titleCtx->texture = texture;
     titleCtx->isBossCard = false;
@@ -1032,10 +1035,10 @@ void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* 
 void TitleCard_Update(PlayState* play, TitleCardContext* titleCtx) {
     const Color_RGB8 TitleCard_Colors_ori = {255,255,255};
     Color_RGB8 TitleCard_Colors = {255,255,255};
-    if (titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {//Bosses cards.
-        TitleCard_Colors = CVar_GetRGB("gCCTC_B_U_Prim", TitleCard_Colors_ori);
-    } else if (!titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {
-        TitleCard_Colors = CVar_GetRGB("gCCTC_OW_U_Prim", TitleCard_Colors_ori);
+    if (titleCtx->isBossCard && CVarGetInteger("gHudColors", 1) == 2) {//Bosses cards.
+        TitleCard_Colors = CVarGetColor24("gCCTC_B_U_Prim", TitleCard_Colors_ori);
+    } else if (!titleCtx->isBossCard && CVarGetInteger("gHudColors", 1) == 2) {
+        TitleCard_Colors = CVarGetColor24("gCCTC_OW_U_Prim", TitleCard_Colors_ori);
     } else {
         TitleCard_Colors = TitleCard_Colors_ori;
     }
@@ -1070,20 +1073,20 @@ void TitleCard_Draw(PlayState* play, TitleCardContext* titleCtx) {
     if (titleCtx->alpha != 0) {
         width = titleCtx->width;
         height = titleCtx->height;
-        s16 TitleCard_PosX_Modifier = (titleCtx->isBossCard ? CVar_GetS32("gTCBPosX", 0) : CVar_GetS32("gTCMPosX", 0));
-        s16 TitleCard_PosY_Modifier = (titleCtx->isBossCard ? CVar_GetS32("gTCBPosY", 0) : CVar_GetS32("gTCMPosY", 0));
-        s16 TitleCard_PosType_Checker = (titleCtx->isBossCard ? CVar_GetS32("gTCBPosType", 0) : CVar_GetS32("gTCMPosType", 0));
-        s16 TitleCard_Margin_Checker = (titleCtx->isBossCard ? CVar_GetS32("gTCBUseMargins", 0) : CVar_GetS32("gTCMUseMargins", 0));
+        s16 TitleCard_PosX_Modifier = (titleCtx->isBossCard ? CVarGetInteger("gTCBPosX", 0) : CVarGetInteger("gTCMPosX", 0));
+        s16 TitleCard_PosY_Modifier = (titleCtx->isBossCard ? CVarGetInteger("gTCBPosY", 0) : CVarGetInteger("gTCMPosY", 0));
+        s16 TitleCard_PosType_Checker = (titleCtx->isBossCard ? CVarGetInteger("gTCBPosType", 0) : CVarGetInteger("gTCMPosType", 0));
+        s16 TitleCard_Margin_Checker = (titleCtx->isBossCard ? CVarGetInteger("gTCBUseMargins", 0) : CVarGetInteger("gTCMUseMargins", 0));
         s16 TitleCard_MarginX = 0;
         s16 TitleCard_PosX = titleCtx->x;
         s16 TitleCard_PosY = titleCtx->y;
         if (TitleCard_PosType_Checker != 0) {
             TitleCard_PosY = TitleCard_PosY_Modifier;
             if (TitleCard_PosType_Checker == 1) {//Anchor Left
-                if (TitleCard_Margin_Checker != 0) {TitleCard_MarginX = CVar_GetS32("gHUDMargin_L", 0)*-1;};
+                if (TitleCard_Margin_Checker != 0) {TitleCard_MarginX = CVarGetInteger("gHUDMargin_L", 0)*-1;};
                 TitleCard_PosX = OTRGetDimensionFromLeftEdge(TitleCard_PosX_Modifier+TitleCard_MarginX)-11;            
             } else if (TitleCard_PosType_Checker == 2) {//Anchor Right
-                if (TitleCard_Margin_Checker != 0) {TitleCard_MarginX = CVar_GetS32("gHUDMargin_R", 0);};
+                if (TitleCard_Margin_Checker != 0) {TitleCard_MarginX = CVarGetInteger("gHUDMargin_R", 0);};
                 TitleCard_PosX = OTRGetDimensionFromRightEdge(TitleCard_PosX_Modifier+TitleCard_MarginX);
             } else if (TitleCard_PosType_Checker == 3) {//Anchor None
                 TitleCard_PosX = TitleCard_PosX_Modifier;
@@ -1209,7 +1212,7 @@ void Actor_Init(Actor* actor, PlayState* play) {
     actor->uncullZoneForward = 1000.0f;
     actor->uncullZoneScale = 350.0f;
     actor->uncullZoneDownward = 700.0f;
-    if (CVar_GetS32("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
+    if (CVarGetInteger("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
         && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
         && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
         && (play->sceneNum != SCENE_DDAN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
@@ -2030,6 +2033,7 @@ s32 GiveItemEntryFromActor(Actor* actor, PlayState* play, GetItemEntry getItemEn
                 s32 absYawDiff = ABS(yawDiff);
 
                 if ((getItemEntry.getItemId != GI_NONE) || (player->getItemDirection < absYawDiff)) {
+                    iceTrapScale = 0.0f;
                     player->getItemEntry = getItemEntry;
                     player->getItemId = getItemEntry.getItemId;
                     player->interactRangeActor = actor;
@@ -2851,7 +2855,7 @@ s32 func_800314B0(PlayState* play, Actor* actor) {
 s32 func_800314D4(PlayState* play, Actor* actor, Vec3f* arg2, f32 arg3) {
     f32 var;
 
-    if (CVar_GetS32("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
+    if (CVarGetInteger("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
         && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
         && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
         && (play->sceneNum != SCENE_DDAN && actor->id != ACTOR_EN_ZF)) { // Check for DC and Lizalfos for the case where the miniboss music would still play under certains conditions and changing room
@@ -3156,7 +3160,7 @@ int gMapLoading = 0;
 Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ,
                    s16 rotX, s16 rotY, s16 rotZ, s16 params, s16 canRandomize) {
 
-    uint8_t tryRandomizeEnemy = CVar_GetS32("gRandomizedEnemies", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2 && canRandomize;
+    uint8_t tryRandomizeEnemy = CVarGetInteger("gRandomizedEnemies", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2 && canRandomize;
 
     if (tryRandomizeEnemy) {
         if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
@@ -3248,7 +3252,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
 
     objBankIndex = Object_GetIndex(&play->objectCtx, actorInit->objectId);
 
-    if (objBankIndex < 0 && (!gMapLoading || CVar_GetS32("gRandomizedEnemies", 0))) {
+    if (objBankIndex < 0 && (!gMapLoading || CVarGetInteger("gRandomizedEnemies", 0))) {
         objBankIndex = 0;
     }
 
@@ -3320,6 +3324,15 @@ Actor* Actor_SpawnAsChild(ActorContext* actorCtx, Actor* parent, PlayState* play
 
     if (spawnedActor == NULL) {
         return NULL;
+    }
+
+    // The following enemies break when the parent actor isn't the same as what would happen in authentic gameplay.
+    // As such, don't assign a parent to them at all when spawned with Enemy Randomizer.
+    // Gohma (z_boss_goma.c), the Stalchildren spawner (z_en_encount1.c) and the falling platform spawning Stalfos in
+    // Forest Temple (z_bg_mori_bigst.c) that normally rely on this behaviour are changed when
+    // Enemy Rando is on so they still work properly even without assigning a parent.
+    if (CVarGetInteger("gRandomizedEnemies", 0) && (spawnedActor->id == ACTOR_EN_FLOORMAS || spawnedActor->id == ACTOR_EN_PEEHAT)) {
+        return spawnedActor;
     }
 
     parent->child = spawnedActor;
@@ -4159,24 +4172,41 @@ Hilite* func_8003435C(Vec3f* object, PlayState* play) {
     return func_8002EB44(object, &play->view.eye, &lightDir, play->state.gfxCtx);
 }
 
-s32 func_800343CC(PlayState* play, Actor* actor, s16* arg2, f32 interactRange, callback1_800343CC unkFunc1,
-                  callback2_800343CC unkFunc2) {
+/**
+ * Updates NPC talking state. Checks for a talk request and updates
+ * the talkState parameter when a dialog is ongoing. Otherwise checks if
+ * the actor is onscreen, advertises the interaction in a range and sets
+ * the current text id if necessary.
+ *
+ * The talk state values are defined in the NpcTalkState enum.
+ *
+ * @see NpcTalkState
+ *
+ * @param[in,out] talkState Talk state
+ * @param interactRange The interact (talking) range for the actor
+ * @param getTextId Callback for getting the next text id
+ * @param updateTalkState Callback for getting the next talkState value
+ * @return True if a new dialog was started (player talked to the actor). False otherwise.
+ */
+s32 Npc_UpdateTalking(PlayState* play, Actor* actor, s16* talkState, f32 interactRange, NpcGetTextIdFunc getTextId,
+                      NpcUpdateTalkStateFunc updateTalkState) {
     s16 x;
     s16 y;
 
     if (Actor_ProcessTalkRequest(actor, play)) {
-        *arg2 = 1;
+        *talkState = NPC_TALK_STATE_TALKING;
         return true;
     }
 
-    if (*arg2 != 0) {
-        *arg2 = unkFunc2(play, actor);
+    if (*talkState != NPC_TALK_STATE_IDLE) {
+        *talkState = updateTalkState(play, actor);
         return false;
     }
 
     Actor_GetScreenPos(play, actor, &x, &y);
 
     if ((x < 0) || (x > SCREEN_WIDTH) || (y < 0) || (y > SCREEN_HEIGHT)) {
+        // Actor is offscreen
         return false;
     }
 
@@ -4184,159 +4214,237 @@ s32 func_800343CC(PlayState* play, Actor* actor, s16* arg2, f32 interactRange, c
         return false;
     }
 
-    actor->textId = unkFunc1(play, actor);
+    actor->textId = getTextId(play, actor);
 
     return false;
 }
 
 typedef struct {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
-    /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
-    /* 0x0A */ s16 unk_0A;
-    /* 0x0C */ u8 unk_0C;
-} struct_80116130_0; // size = 0x10
+    /* 0x00 */ s16 maxHeadYaw;
+    /* 0x02 */ s16 minHeadPitch;
+    /* 0x04 */ s16 maxHeadPitch;
+    /* 0x06 */ s16 maxTorsoYaw;
+    /* 0x08 */ s16 minTorsoPitch;
+    /* 0x0A */ s16 maxTorsoPitch;
+    /* 0x0C */ u8 rotateYaw;
+} NpcTrackingRotLimits; // size = 0x10
 
 typedef struct {
-    /* 0x00 */ struct_80116130_0 sub_00;
-    /* 0x10 */ f32 unk_10;
-    /* 0x14 */ s16 unk_14;
-} struct_80116130; // size = 0x18
+    /* 0x00 */ NpcTrackingRotLimits rotLimits;
+    // Fields specific to NPC_TRACKING_PLAYER_AUTO_TURN mode
+    /* 0x10 */ f32 autoTurnDistanceRange;   // Max distance to player to enable tracking and auto-turn
+    /* 0x14 */ s16 maxYawForPlayerTracking; // Player is tracked if within this yaw
+} NpcTrackingParams;                        // size = 0x18
 
-static struct_80116130 D_80116130[] = {
-    { { 0x2AA8, 0xF1C8, 0x18E2, 0x1554, 0x0000, 0x0000, 1 }, 170.0f, 0x3FFC },
-    { { 0x2AA8, 0xEAAC, 0x1554, 0x1554, 0xF8E4, 0x0E38, 1 }, 170.0f, 0x3FFC },
-    { { 0x31C4, 0xE390, 0x0E38, 0x0E38, 0xF1C8, 0x071C, 1 }, 170.0f, 0x3FFC },
-    { { 0x1554, 0xF1C8, 0x0000, 0x071C, 0xF8E4, 0x0000, 1 }, 170.0f, 0x3FFC },
-    { { 0x2AA8, 0xF8E4, 0x071C, 0x0E38, 0xD558, 0x2AA8, 1 }, 170.0f, 0x3FFC },
-    { { 0x0000, 0xE390, 0x2AA8, 0x3FFC, 0xF1C8, 0x0E38, 1 }, 170.0f, 0x3FFC },
-    { { 0x2AA8, 0xF1C8, 0x0E38, 0x0E38, 0x0000, 0x0000, 1 }, 0.0f, 0x0000 },
-    { { 0x2AA8, 0xF1C8, 0x0000, 0x0E38, 0x0000, 0x1C70, 1 }, 0.0f, 0x0000 },
-    { { 0x2AA8, 0xF1C8, 0xF1C8, 0x0000, 0x0000, 0x0000, 1 }, 0.0f, 0x0000 },
-    { { 0x071C, 0xF1C8, 0x0E38, 0x1C70, 0x0000, 0x0000, 1 }, 0.0f, 0x0000 },
-    { { 0x0E38, 0xF1C8, 0x0000, 0x1C70, 0x0000, 0x0E38, 1 }, 0.0f, 0x0000 },
-    { { 0x2AA8, 0xE390, 0x1C70, 0x0E38, 0xF1C8, 0x0E38, 1 }, 0.0f, 0x0000 },
-    { { 0x18E2, 0xF1C8, 0x0E38, 0x0E38, 0x0000, 0x0000, 1 }, 0.0f, 0x0000 },
+/**
+ * Npc tracking angle limit presets to use with Npc_TrackPoint.
+ *
+ * @see Npc_TrackPoint
+ */
+static NpcTrackingParams sNpcTrackingPresets[] = {
+    { { 0x2AA8, -0x0E38, 0x18E2, 0x1554, 0x0000, 0x0000, true }, 170.0f, 0x3FFC },
+    { { 0x2AA8, -0x1554, 0x1554, 0x1554, -0x071C, 0x0E38, true }, 170.0f, 0x3FFC },
+    { { 0x31C4, -0x1C70, 0x0E38, 0x0E38, -0x0E38, 0x071C, true }, 170.0f, 0x3FFC },
+    { { 0x1554, -0x0E38, 0x0000, 0x071C, -0x071C, 0x0000, true }, 170.0f, 0x3FFC },
+    { { 0x2AA8, -0x071C, 0x071C, 0x0E38, -0x2AA8, 0x2AA8, true }, 170.0f, 0x3FFC },
+    { { 0x0000, -0x1C70, 0x2AA8, 0x3FFC, -0x0E38, 0x0E38, true }, 170.0f, 0x3FFC },
+    { { 0x2AA8, -0x0E38, 0x0E38, 0x0E38, 0x0000, 0x0000, true }, 0.0f, 0x0000 },
+    { { 0x2AA8, -0x0E38, 0x0000, 0x0E38, 0x0000, 0x1C70, true }, 0.0f, 0x0000 },
+    { { 0x2AA8, -0x0E38, -0x0E38, 0x0000, 0x0000, 0x0000, true }, 0.0f, 0x0000 },
+    { { 0x071C, -0x0E38, 0x0E38, 0x1C70, 0x0000, 0x0000, true }, 0.0f, 0x0000 },
+    { { 0x0E38, -0x0E38, 0x0000, 0x1C70, 0x0000, 0x0E38, true }, 0.0f, 0x0000 },
+    { { 0x2AA8, -0x1C70, 0x1C70, 0x0E38, -0x0E38, 0x0E38, true }, 0.0f, 0x0000 },
+    { { 0x18E2, -0x0E38, 0x0E38, 0x0E38, 0x0000, 0x0000, true }, 0.0f, 0x0000 },
 };
 
-void func_800344BC(Actor* actor, struct_80034A14_arg1* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7,
-                   u8 arg8) {
-    s16 sp46;
-    s16 sp44;
-    s16 temp2;
-    s16 sp40;
-    s16 temp1;
-    Vec3f sp30;
+/**
+ * Smoothly turns the actor's whole body and updates torso and head rotations in
+ * NpcInteractInfo so that the actor tracks the point specified in NpcInteractInfo.trackPos.
+ * Rotations are limited to specified angles.
+ *
+ * Head and torso rotation angles are determined by calculating the pitch and yaw
+ * from the actor position to the given target position.
+ *
+ * The y position of the actor is offset by NpcInteractInfo.yOffset
+ * before calculating the angles. It can be used to configure the height difference
+ * between the actor and the target.
+ *
+ * @param maxHeadYaw maximum head yaw difference from neutral position
+ * @param maxHeadPitch maximum head pitch angle
+ * @param minHeadPitch minimum head pitch angle
+ * @param maxTorsoYaw maximum torso yaw difference from neutral position
+ * @param maxTorsoPitch maximum torso pitch angle
+ * @param minTorsoPitch minimum torso pitch angle
+ * @param rotateYaw if true, the actor's yaw (shape.rot.y) is updated to turn the actor's whole body
+ */
+void Npc_TrackPointWithLimits(Actor* actor, NpcInteractInfo* interactInfo, s16 maxHeadYaw, s16 maxHeadPitch,
+                              s16 minHeadPitch, s16 maxTorsoYaw, s16 maxTorsoPitch, s16 minTorsoPitch, u8 rotateYaw) {
+    s16 pitchTowardsTarget;
+    s16 yawTowardsTarget;
+    s16 torsoPitch;
+    s16 bodyYawDiff;
+    s16 temp;
+    Vec3f offsetActorPos;
 
-    sp30.x = actor->world.pos.x;
-    sp30.y = actor->world.pos.y + arg1->unk_14;
-    sp30.z = actor->world.pos.z;
+    offsetActorPos.x = actor->world.pos.x;
+    offsetActorPos.y = actor->world.pos.y + interactInfo->yOffset;
+    offsetActorPos.z = actor->world.pos.z;
 
-    sp46 = Math_Vec3f_Pitch(&sp30, &arg1->unk_18);
-    sp44 = Math_Vec3f_Yaw(&sp30, &arg1->unk_18);
-    sp40 = Math_Vec3f_Yaw(&actor->world.pos, &arg1->unk_18) - actor->shape.rot.y;
+    pitchTowardsTarget = Math_Vec3f_Pitch(&offsetActorPos, &interactInfo->trackPos);
+    yawTowardsTarget = Math_Vec3f_Yaw(&offsetActorPos, &interactInfo->trackPos);
+    bodyYawDiff = Math_Vec3f_Yaw(&actor->world.pos, &interactInfo->trackPos) - actor->shape.rot.y;
 
-    temp1 = CLAMP(sp40, -arg2, arg2);
-    Math_SmoothStepToS(&arg1->unk_08.y, temp1, 6, 2000, 1);
+    temp = CLAMP(bodyYawDiff, -maxHeadYaw, maxHeadYaw);
+    Math_SmoothStepToS(&interactInfo->headRot.y, temp, 6, 2000, 1);
 
-    temp1 = (ABS(sp40) >= 0x8000) ? 0 : ABS(sp40);
-    arg1->unk_08.y = CLAMP(arg1->unk_08.y, -temp1, temp1);
+    temp = (ABS(bodyYawDiff) >= 0x8000) ? 0 : ABS(bodyYawDiff);
+    interactInfo->headRot.y = CLAMP(interactInfo->headRot.y, -temp, temp);
 
-    sp40 -= arg1->unk_08.y;
+    bodyYawDiff -= interactInfo->headRot.y;
 
-    temp1 = CLAMP(sp40, -arg5, arg5);
-    Math_SmoothStepToS(&arg1->unk_0E.y, temp1, 6, 2000, 1);
+    temp = CLAMP(bodyYawDiff, -maxTorsoYaw, maxTorsoYaw);
+    Math_SmoothStepToS(&interactInfo->torsoRot.y, temp, 6, 2000, 1);
 
-    temp1 = (ABS(sp40) >= 0x8000) ? 0 : ABS(sp40);
-    arg1->unk_0E.y = CLAMP(arg1->unk_0E.y, -temp1, temp1);
+    temp = (ABS(bodyYawDiff) >= 0x8000) ? 0 : ABS(bodyYawDiff);
+    interactInfo->torsoRot.y = CLAMP(interactInfo->torsoRot.y, -temp, temp);
 
-    if (arg8) {
-        Math_SmoothStepToS(&actor->shape.rot.y, sp44, 6, 2000, 1);
+    if (rotateYaw) {
+        Math_SmoothStepToS(&actor->shape.rot.y, yawTowardsTarget, 6, 2000, 1);
     }
 
-    temp1 = CLAMP(sp46, arg4, (s16)(u16)arg3);
-    Math_SmoothStepToS(&arg1->unk_08.x, temp1, 6, 2000, 1);
+    temp = CLAMP(pitchTowardsTarget, minHeadPitch, (s16)(u16)maxHeadPitch);
+    Math_SmoothStepToS(&interactInfo->headRot.x, temp, 6, 2000, 1);
 
-    temp2 = sp46 - arg1->unk_08.x;
+    torsoPitch = pitchTowardsTarget - interactInfo->headRot.x;
 
-    temp1 = CLAMP(temp2, arg7, arg6);
-    Math_SmoothStepToS(&arg1->unk_0E.x, temp1, 6, 2000, 1);
+    temp = CLAMP(torsoPitch, minTorsoPitch, maxTorsoPitch);
+    Math_SmoothStepToS(&interactInfo->torsoRot.x, temp, 6, 2000, 1);
 }
 
-s16 func_800347E8(s16 arg0) {
-    return D_80116130[arg0].unk_14;
+s16 Npc_GetTrackingPresetMaxPlayerYaw(s16 presetIndex) {
+    return sNpcTrackingPresets[presetIndex].maxYawForPlayerTracking;
 }
 
-s16 func_80034810(Actor* actor, struct_80034A14_arg1* arg1, f32 arg2, s16 arg3, s16 arg4) {
+/**
+ * Handles NPC tracking modes and auto-turning towards the player when
+ * NPC_TRACKING_PLAYER_AUTO_TURN tracking mode is used.
+ *
+ * Returns a tracking mode that will determine which actor limbs
+ * will be rotated towards the target.
+ *
+ * When the player is behind the actor (i.e. not in the yaw range in front of the actor
+ * defined by maxYawForPlayerTracking), the actor will start an auto-turn sequence:
+ *   - look forward for 30-60 frames
+ *   - turn head to look at the player for 10-20 frames
+ *   - look forward for 30-60 frames
+ *   - turn the entire body to face the player
+ *
+ * @param distanceRange Max distance to player that tracking and auto-turning will be active for
+ * @param maxYawForPlayerTracking Maximum angle for tracking the player.
+ * @param trackingMode The tracking mode selected by the actor. If this is not
+ *        NPC_TRACKING_PLAYER_AUTO_TURN this function does nothing
+ *
+ * @return The tracking mode (NpcTrackingMode) to use for the current frame.
+ */
+s16 Npc_UpdateAutoTurn(Actor* actor, NpcInteractInfo* interactInfo, f32 distanceRange, s16 maxYawForPlayerTracking,
+                       s16 trackingMode) {
     s32 pad;
-    s16 var;
-    s16 abs_var;
+    s16 yaw;
+    s16 yawDiff;
 
-    if (arg4 != 0) {
-        return arg4;
+    if (trackingMode != NPC_TRACKING_PLAYER_AUTO_TURN) {
+        return trackingMode;
     }
 
-    if (arg1->unk_00 != 0) {
-        return 4;
+    if (interactInfo->talkState != NPC_TALK_STATE_IDLE) {
+        // When talking, always fully turn to face the player
+        return NPC_TRACKING_FULL_BODY;
     }
 
-    if (arg2 < Math_Vec3f_DistXYZ(&actor->world.pos, &arg1->unk_18)) {
-        arg1->unk_04 = 0;
-        arg1->unk_06 = 0;
-        return 1;
+    if (distanceRange < Math_Vec3f_DistXYZ(&actor->world.pos, &interactInfo->trackPos)) {
+        // Player is too far away, do not track
+        interactInfo->autoTurnTimer = 0;
+        interactInfo->autoTurnState = 0;
+        return NPC_TRACKING_NONE;
     }
 
-    var = Math_Vec3f_Yaw(&actor->world.pos, &arg1->unk_18);
-    abs_var = ABS((s16)((f32)var - actor->shape.rot.y));
-    if (arg3 >= abs_var) {
-        arg1->unk_04 = 0;
-        arg1->unk_06 = 0;
-        return 2;
+    yaw = Math_Vec3f_Yaw(&actor->world.pos, &interactInfo->trackPos);
+    yawDiff = ABS((s16)((f32)yaw - actor->shape.rot.y));
+    if (maxYawForPlayerTracking >= yawDiff) {
+        // Player is in front of the actor, track with the head and the torso
+        interactInfo->autoTurnTimer = 0;
+        interactInfo->autoTurnState = 0;
+        return NPC_TRACKING_HEAD_AND_TORSO;
     }
 
-    if (DECR(arg1->unk_04) != 0) {
-        return arg1->unk_02;
+    // Player is behind the actor, run the auto-turn sequence.
+    if (DECR(interactInfo->autoTurnTimer) != 0) {
+        // While the timer is still running, return the previous tracking mode
+        return interactInfo->trackingMode;
     }
 
-    switch (arg1->unk_06) {
+    switch (interactInfo->autoTurnState) {
         case 0:
         case 2:
-            arg1->unk_04 = Rand_S16Offset(30, 30);
-            arg1->unk_06++;
-            return 1;
+            // Just stand still, not tracking the player
+            interactInfo->autoTurnTimer = Rand_S16Offset(30, 30);
+            interactInfo->autoTurnState++;
+            return NPC_TRACKING_NONE;
         case 1:
-            arg1->unk_04 = Rand_S16Offset(10, 10);
-            arg1->unk_06++;
-            return 3;
+            // Glance at the player by only turning the head
+            interactInfo->autoTurnTimer = Rand_S16Offset(10, 10);
+            interactInfo->autoTurnState++;
+            return NPC_TRACKING_HEAD;
     }
 
-    return 4;
+    // Auto-turn sequence complete, turn towards the player
+    return NPC_TRACKING_FULL_BODY;
 }
 
-void func_80034A14(Actor* actor, struct_80034A14_arg1* arg1, s16 arg2, s16 arg3) {
-    struct_80116130_0 sp38;
+/**
+ * Rotates the actor's whole body, torso and head tracking the point specified in NpcInteractInfo.trackPos.
+ * Uses angle limits from a preset selected from from sNpcTrackingPresets.
+ *
+ * The trackingMode parameter controls whether the head and torso are turned towards the target.
+ * If not, they are smoothly turned towards zero. Setting the parameter to NPC_TRACKING_FULL_BODY
+ * causes the actor's whole body to be rotated to face the target.
+ *
+ * If NPC_TRACKING_PLAYER_AUTO_TURN is used, the actor will track the player with its head and torso as long
+ * as the player is in front of the actor (within a yaw angle specified in the option preset).
+ * If the player is outside of this angle, the actor will turn to face the player after a while.
+ *
+ * @see Npc_UpdateAutoTurn
+ * @see sNpcTrackingPresets
+ * @see NpcTrackingMode
+ *
+ * @param presetIndex The index to a preset in sNpcTrackingPresets
+ * @param trackingMode A value from NpcTrackingMode enum
+ */
+void Npc_TrackPoint(Actor* actor, NpcInteractInfo* interactInfo, s16 presetIndex, s16 trackingMode) {
+    NpcTrackingRotLimits rotLimits;
 
-    arg1->unk_02 = func_80034810(actor, arg1, D_80116130[arg2].unk_10, D_80116130[arg2].unk_14, arg3);
+    interactInfo->trackingMode =
+        Npc_UpdateAutoTurn(actor, interactInfo, sNpcTrackingPresets[presetIndex].autoTurnDistanceRange,
+                           sNpcTrackingPresets[presetIndex].maxYawForPlayerTracking, trackingMode);
 
-    sp38 = D_80116130[arg2].sub_00;
+    rotLimits = sNpcTrackingPresets[presetIndex].rotLimits;
 
-    switch (arg1->unk_02) {
-        case 1:
-            sp38.unk_00 = 0;
-            sp38.unk_04 = 0;
-            sp38.unk_02 = 0;
-        case 3:
-            sp38.unk_06 = 0;
-            sp38.unk_0A = 0;
-            sp38.unk_08 = 0;
-        case 2:
-            sp38.unk_0C = 0;
+    switch (interactInfo->trackingMode) {
+        case NPC_TRACKING_NONE:
+            rotLimits.maxHeadYaw = 0;
+            rotLimits.maxHeadPitch = 0;
+            rotLimits.minHeadPitch = 0;
+        case NPC_TRACKING_HEAD:
+            rotLimits.maxTorsoYaw = 0;
+            rotLimits.maxTorsoPitch = 0;
+            rotLimits.minTorsoPitch = 0;
+        case NPC_TRACKING_HEAD_AND_TORSO:
+            rotLimits.rotateYaw = false;
     }
 
-    func_800344BC(actor, arg1, sp38.unk_00, sp38.unk_04, sp38.unk_02, sp38.unk_06, sp38.unk_0A, sp38.unk_08,
-                  sp38.unk_0C);
+    Npc_TrackPointWithLimits(actor, interactInfo, rotLimits.maxHeadYaw, rotLimits.maxHeadPitch, rotLimits.minHeadPitch,
+                             rotLimits.maxTorsoYaw, rotLimits.maxTorsoPitch, rotLimits.minTorsoPitch,
+                             rotLimits.rotateYaw);
 }
 
 Gfx* func_80034B28(GraphicsContext* gfxCtx) {

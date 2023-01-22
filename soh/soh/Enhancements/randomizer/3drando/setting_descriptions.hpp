@@ -57,6 +57,8 @@ extern string_view shuffleEntrancesDesc;
 
 extern string_view dungeonEntrancesDesc;
 
+extern string_view bossEntrancesDesc;
+
 extern string_view overworldEntrancesDesc;
 
 extern string_view grottoEntrancesDesc;

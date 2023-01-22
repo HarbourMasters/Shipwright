@@ -1,8 +1,8 @@
 #ifndef Z64_H
 #define Z64_H
 
-#include "ultra64.h"
-#include "ultra64/gs2dex.h"
+#include <libultraship/libultra.h>
+#include "unk.h" // this used to get pulled in via ultra64.h
 #include "z64save.h"
 #include "z64light.h"
 #include "z64bgcheck.h"
@@ -27,7 +27,7 @@
 #include "alignment.h"
 #include "sequence.h"
 #include "sfx.h"
-#include <color.h>
+#include <libultraship/color.h>
 #include "ichain.h"
 #include "regs.h"
 
@@ -45,6 +45,7 @@ namespace Ship
     class Scene;
     class DisplayList;
 };
+#include <memory>
 #endif
 
 #define SCREEN_WIDTH  320
@@ -948,14 +949,6 @@ typedef struct {
 typedef struct {
     /* 0x00 */ Gfx* opa;
     /* 0x04 */ Gfx* xlu;
-
-#ifdef __cplusplus
-    Ship::DisplayList* opaDL;
-    Ship::DisplayList* xluDL;
-#else
-void* opaDL;
-void* xluDL;
-#endif
 } PolygonDlist; // size = 0x8
 
 
@@ -1016,14 +1009,6 @@ typedef struct {
     /* 0x06 */ s16   unk_06;
     /* 0x08 */ Gfx*  opa;
     /* 0x0C */ Gfx*  xlu;
-
-#ifdef __cplusplus
-    Ship::DisplayList* opaDL;
-    Ship::DisplayList* xluDL;
-#else
-    void* opaDL;
-    void* xluDL;
-#endif
 } PolygonDlist2; // size = 0x8
 
 typedef struct {
@@ -1087,12 +1072,7 @@ typedef struct {
     /* 0x58 */ OSMesgQueue loadQueue;
     /* 0x70 */ OSMesg loadMsg;
     /* 0x74 */ s16 unk_74[2]; // context-specific data used by the current scene draw config
-
-#ifdef __cplusplus
-    Ship::Scene* roomToLoad;
-#else
     void* roomToLoad;
-#endif
 } RoomContext; // size = 0x78
 
 typedef struct {
@@ -1310,13 +1290,7 @@ typedef struct PlayState {
     /* 0x000A4 */ s16 sceneNum;
     /* 0x000A6 */ u8 sceneConfig;
     /* 0x000A7 */ char unk_A7[0x9];
-
-#ifdef __cplusplus
-    Ship::Scene* sceneSegment;
-#else
     /* 0x000B0 */ void* sceneSegment;
-#endif
-
     /* 0x000B8 */ View view;
     /* 0x001E0 */ Camera mainCamera;
     /* 0x0034C */ Camera subCameras[NUM_CAMS - SUBCAM_FIRST];
@@ -1531,18 +1505,6 @@ typedef struct {
     /* 0x04 */ u8 mode;
     /* 0x08 */ f32 morphFrames;
 } AnimationMinimalInfo; // size = 0xC
-
-typedef struct {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
-    /* 0x06 */ s16 unk_06;
-    /* 0x08 */ Vec3s unk_08;
-    /* 0x0E */ Vec3s unk_0E;
-    /* 0x14 */ f32 unk_14;
-    /* 0x18 */ Vec3f unk_18;
-    /* 0x24 */ s16 unk_24;
-} struct_80034A14_arg1; // size = 0x28
 
 typedef struct {
     /* 0x00 */ s8  scene;

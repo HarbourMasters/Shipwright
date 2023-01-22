@@ -2,7 +2,7 @@
 #include <string.h>
 #include <assert.h>
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/sfx-editor/SfxEditor.h"
@@ -78,6 +78,8 @@ void* sUnusedHandler = NULL;
 s32 gAudioContextInitalized = false;
 
 char* sequenceMap[MAX_SEQUENCES];
+// A map of authentic sequence IDs to their cache policies, for use with sequence swapping.
+u8 seqCachePolicyMap[MAX_AUTHENTIC_SEQID];
 char* fontMap[256];
 
 uintptr_t fontStart;
@@ -569,15 +571,20 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     s32 index;
     s32 numFonts;
     s32 fontId;
+    s8 authCachePolicy = -1; // since 0 is a valid cache policy value
 
     AudioSeq_SequencePlayerDisable(seqPlayer);
 
     fontId = 0xFF;
 
     if (gAudioContext.seqReplaced[playerIdx]) {
+        authCachePolicy = seqCachePolicyMap[seqId];
         seqId = gAudioContext.seqToPlay[playerIdx];
     }
     SequenceData seqData2 = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
+    if (authCachePolicy != -1) {
+        seqData2.cachePolicy = authCachePolicy;
+    }
 
     for (int i = 0; i < seqData2.numFonts; i++)
     {
@@ -605,6 +612,12 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     seqPlayer->playerIdx = playerIdx;
     AudioSeq_SkipForwardSequence(seqPlayer);
     //! @bug missing return (but the return value is not used so it's not UB)
+    if (CVarGetInteger("gSeqNameOverlay", 0) && playerIdx == SEQ_PLAYER_BGM_MAIN) {
+        const char* sequenceName = SfxEditor_GetSequenceName(seqId);
+        if (sequenceName != NULL) {
+            Overlay_DisplayText_Seconds(CVarGetInteger("gSeqNameOverlayDuration", 5), sequenceName);
+        }
+    }
 }
 
 u8* AudioLoad_SyncLoadSeq(s32 seqId) {
@@ -1316,6 +1329,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         strcpy(str, seqList[i]);
 
         sequenceMap[sDat.seqNumber] = str;
+        seqCachePolicyMap[sDat.seqNumber] = sDat.cachePolicy;
     }
 
     free(seqList);

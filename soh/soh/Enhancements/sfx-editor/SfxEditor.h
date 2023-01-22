@@ -3,11 +3,11 @@
 
 void InitSfxEditor();
 #ifndef __cplusplus
+const char* SfxEditor_GetSequenceName(u16 seqId);
 void SfxEditor_AddSequence(char *otrPath, uint16_t seqNum);
 #endif
 
 #define INSTRUMENT_OFFSET 0x81
-#define MAX_AUTHENTIC_SEQID 110
 
 enum SeqType {
     SEQ_NOSHUFFLE  = 0,

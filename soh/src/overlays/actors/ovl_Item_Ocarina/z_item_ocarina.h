@@ -1,7 +1,7 @@
 #ifndef Z_ITEM_OCARINA_H
 #define Z_ITEM_OCARINA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ItemOcarina;

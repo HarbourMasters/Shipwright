@@ -1,9 +1,9 @@
 #ifndef _GAMECONSOLE_H_
 #define _GAMECONSOLE_H_
 
-#include <ultra64.h>
+#include <libultraship/libultra.h>
 #include <z64.h>
-#include <Cvar.h>
+#include <libultraship/bridge.h>
 
 #define MAX_CVARS 2048
 

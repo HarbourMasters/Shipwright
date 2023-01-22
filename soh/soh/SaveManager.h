@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ultra64/gbi.h>
+#include <libultraship/libultra/gbi.h>
 
 typedef struct {
     u8 valid;
@@ -122,6 +122,7 @@ public:
 
     static void LoadBaseVersion1();
     static void LoadBaseVersion2();
+    static void LoadBaseVersion3();
     static void SaveBase();
 
     std::vector<InitFunc> initFuncs;
