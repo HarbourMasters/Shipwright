@@ -31,7 +31,7 @@ GameInteractionEffectQueryResult GameInteractor::ApplyEffect(GameInteractionEffe
     return effect->Apply();
 }
 
-void GameInteractor::RemoveEffect(GameInteractionEffectBase* effect) {
+GameInteractionEffectQueryResult GameInteractor::RemoveEffect(GameInteractionEffectBase* effect) {
     return effect->Remove();
 }
 
