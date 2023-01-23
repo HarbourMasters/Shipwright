@@ -1121,6 +1121,8 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Hides the game version and build details in the boot logo start screen");
             UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
             UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
+            UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", "gDebugWarpScreenTranslation", true, false);
+            UIWidgets::Tooltip("Translate the Debug Warp Screen based on the game language");
             UIWidgets::PaddedSeparator();
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
             ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0,0));
