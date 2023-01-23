@@ -265,19 +265,20 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     // Assign GameInteractionEffect + values to CC effect.
     // Categories are mostly used for checking for conflicting timed effects.
     if (effectName == EFFECT_ADD_HEART_CONTAINER) {
-        effect->giEffect = new GameInteractionEffect::AddHeartContainers();
+        effect->giEffect = new GameInteractionEffect::ModifyHeartContainers();
         effect->giEffect->parameter = 1;
     } else if (effectName == EFFECT_REMOVE_HEART_CONTAINER) {
-        effect->giEffect = new GameInteractionEffect::RemoveHeartContainers();
-        effect->giEffect->parameter = 1;
+        effect->giEffect = new GameInteractionEffect::ModifyHeartContainers();
+        effect->giEffect->parameter = -1;
     } else if (effectName == EFFECT_FILL_MAGIC) {
         effect->giEffect = new GameInteractionEffect::FillMagic();
     } else if (effectName == EFFECT_EMPTY_MAGIC) {
         effect->giEffect = new GameInteractionEffect::EmptyMagic();
     } else if (effectName == EFFECT_ADD_RUPEES) {
-        effect->giEffect = new GameInteractionEffect::GiveRupees();
+        effect->giEffect = new GameInteractionEffect::ModifyRupees();
     } else if (effectName == EFFECT_REMOVE_RUPEES) {
-        effect->giEffect = new GameInteractionEffect::TakeRupees();
+        effect->giEffect = new GameInteractionEffect::ModifyRupees();
+        effect->paramMultiplier = -1;
     } else if (effectName == EFFECT_NO_UI) {
         effect->category = "ui";
         effect->timeRemaining = 60000;
@@ -302,9 +303,10 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     } else if (effectName == EFFECT_KNOCKBACK) {
         effect->giEffect = new GameInteractionEffect::KnockbackPlayer();
     } else if (effectName == EFFECT_HEAL) {
-        effect->giEffect = new GameInteractionEffect::GiveHealth();
+        effect->giEffect = new GameInteractionEffect::ModifyHealth();
     } else if (effectName == EFFECT_DAMAGE) {
-        effect->giEffect = new GameInteractionEffect::TakeHealth();
+        effect->giEffect = new GameInteractionEffect::ModifyHealth();
+        effect->paramMultiplier = -1;
     } else if (effectName == EFFECT_GIANT_LINK) {
         effect->category = "link_size";
         effect->timeRemaining = 30000;
@@ -362,11 +364,12 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     } else if (effectName == EFFECT_DAMAGE_MULTIPLIER) {
         effect->category = "damage_taken";
         effect->timeRemaining = 30000;
-        effect->giEffect = new GameInteractionEffect::IncreaseDamageTaken();
+        effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
+        effect->paramMultiplier = -1;
     } else if (effectName == EFFECT_DEFENSE_MULTIPLIER) {
         effect->category = "damage_taken";
         effect->timeRemaining = 30000;
-        effect->giEffect = new GameInteractionEffect::DecreaseDamageTaken();
+        effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
     } else if (effectName == EFFECT_SPAWN_CUCCO_STORM) {
         effect->giEffect = new GameInteractionEffect::SpawnCuccoStorm();
     } else if (effectName == EFFECT_SPAWN_WALLMASTER) {

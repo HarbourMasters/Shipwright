@@ -48,31 +48,18 @@ GameInteractionEffectQueryResult GameInteractionEffectBase::Remove() {
 namespace GameInteractionEffect {
 
     // MARK: - AddHeartContainers
-    GameInteractionEffectQueryResult AddHeartContainers::CanBeApplied() {
+    GameInteractionEffectQueryResult ModifyHeartContainers::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else if (gSaveContext.healthCapacity >= 0x140) {
+        } else if ((parameter > 0 && gSaveContext.healthCapacity >= 0x140) || (parameter < 0 && gSaveContext.healthCapacity <= 0x10)) {
             return GameInteractionEffectQueryResult::NotPossible;
-        } else {
-            return GameInteractionEffectQueryResult::Possible;
         }
-    }
-    void AddHeartContainers::_Apply() {
-        GameInteractor::RawAction::AddOrRemoveHealthContainers(parameter);
+
+        return GameInteractionEffectQueryResult::Possible;
     }
 
-    // MARK: - RemoveHeartContainers
-    GameInteractionEffectQueryResult RemoveHeartContainers::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded()) {
-            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else if (gSaveContext.healthCapacity <= 0x10) {
-            return GameInteractionEffectQueryResult::NotPossible;
-        } else {
-            return GameInteractionEffectQueryResult::Possible;
-        }
-    }
-    void RemoveHeartContainers::_Apply() {
-        GameInteractor::RawAction::AddOrRemoveHealthContainers(-parameter);
+    void ModifyHeartContainers::_Apply() {
+        GameInteractor::RawAction::AddOrRemoveHealthContainers(parameter);
     }
 
     // MARK: - FillMagic
@@ -103,30 +90,16 @@ namespace GameInteractionEffect {
         GameInteractor::RawAction::AddOrRemoveMagic(-96);
     }
 
-    // MARK: - GiveRupees
-    GameInteractionEffectQueryResult GiveRupees::CanBeApplied() {
+    // MARK: - ModifyRupees
+    GameInteractionEffectQueryResult ModifyRupees::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
-    void GiveRupees::_Apply() {
+    void ModifyRupees::_Apply() {
         Rupees_ChangeBy(parameter);
-    }
-
-    // MARK: - TakeRupees
-    GameInteractionEffectQueryResult TakeRupees::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded()) {
-            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else if (gSaveContext.rupees <= 0) {
-            return GameInteractionEffectQueryResult::NotPossible;
-        } else {
-            return GameInteractionEffectQueryResult::Possible;
-        }
-    }
-    void TakeRupees::_Apply() {
-        Rupees_ChangeBy(-parameter);
     }
 
     // MARK: - NoUI
@@ -175,32 +148,20 @@ namespace GameInteractionEffect {
     }
 
     // MARK: - GiveHealth
-    GameInteractionEffectQueryResult GiveHealth::CanBeApplied() {
+    GameInteractionEffectQueryResult ModifyHealth::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else if (gSaveContext.health == gSaveContext.healthCapacity) {
+        } else if (
+            (parameter > 0 && gSaveContext.health == gSaveContext.healthCapacity)
+            || (parameter < 0 && (gSaveContext.health - (16 * parameter)) <= 0)
+        ) {
             return GameInteractionEffectQueryResult::NotPossible;
-        } else {
-            return GameInteractionEffectQueryResult::Possible;
         }
-    }
-    void GiveHealth::_Apply() {
-        GameInteractor::RawAction::HealOrDamagePlayer(parameter);
-    }
 
-    // MARK: - TakeHealth
-    GameInteractionEffectQueryResult TakeHealth::CanBeApplied() {
-        int32_t healthAfterEffect = (gSaveContext.health - (16 * parameter));
-        if (!GameInteractor::IsSaveLoaded()) {
-            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else if (healthAfterEffect <= 0) {
-            return GameInteractionEffectQueryResult::NotPossible;
-        } else {
-            return GameInteractionEffectQueryResult::Possible;
-        }
+        return GameInteractionEffectQueryResult::Possible;
     }
-    void TakeHealth::_Apply() {
-        GameInteractor::RawAction::HealOrDamagePlayer(-parameter);
+    void ModifyHealth::_Apply() {
+        GameInteractor::RawAction::HealOrDamagePlayer(parameter);
     }
 
     // MARK: - SetPlayerHealth
@@ -463,32 +424,17 @@ namespace GameInteractionEffect {
     }
 
     // MARK: - IncreaseDamageTaken
-    GameInteractionEffectQueryResult IncreaseDamageTaken::CanBeApplied() {
+    GameInteractionEffectQueryResult ModifyDefenseModifier::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
-    void IncreaseDamageTaken::_Apply() {
-        GameInteractor::State::DefenseModifier = -parameter;
-    }
-    void IncreaseDamageTaken::_Remove() {
-        GameInteractor::State::DefenseModifier = 0;
-    }
-
-    // MARK: - DecreaseDamageTaken
-    GameInteractionEffectQueryResult DecreaseDamageTaken::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
-            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else {
-            return GameInteractionEffectQueryResult::Possible;
-        }
-    }
-    void DecreaseDamageTaken::_Apply() {
+    void ModifyDefenseModifier::_Apply() {
         GameInteractor::State::DefenseModifier = parameter;
     }
-    void DecreaseDamageTaken::_Remove() {
+    void ModifyDefenseModifier::_Remove() {
         GameInteractor::State::DefenseModifier = 0;
     }
 

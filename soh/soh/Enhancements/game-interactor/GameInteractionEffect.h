@@ -25,12 +25,7 @@ protected:
 };
 
 namespace GameInteractionEffect {
-    class AddHeartContainers: public GameInteractionEffectBase {
-        GameInteractionEffectQueryResult CanBeApplied() override;
-        void _Apply() override;
-    };
-
-    class RemoveHeartContainers: public GameInteractionEffectBase {
+    class ModifyHeartContainers: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
     };
@@ -45,12 +40,7 @@ namespace GameInteractionEffect {
         void _Apply() override;
     };
 
-    class GiveRupees: public GameInteractionEffectBase {
-        GameInteractionEffectQueryResult CanBeApplied() override;
-        void _Apply() override;
-    };
-
-    class TakeRupees: public GameInteractionEffectBase {
+    class ModifyRupees: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
     };
@@ -73,12 +63,7 @@ namespace GameInteractionEffect {
         void _Remove() override;
     };
 
-    class GiveHealth : public GameInteractionEffectBase {
-        GameInteractionEffectQueryResult CanBeApplied() override;
-        void _Apply() override;
-    };
-
-    class TakeHealth : public GameInteractionEffectBase {
+    class ModifyHealth : public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
     };
@@ -186,13 +171,7 @@ namespace GameInteractionEffect {
         void _Remove() override;
     };
 
-    class IncreaseDamageTaken: public GameInteractionEffectBase {
-        GameInteractionEffectQueryResult CanBeApplied() override;
-        void _Apply() override;
-        void _Remove() override;
-    };
-
-    class DecreaseDamageTaken : public GameInteractionEffectBase {
+    class ModifyDefenseModifier: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
         void _Remove() override;
