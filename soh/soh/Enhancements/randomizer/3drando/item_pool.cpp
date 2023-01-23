@@ -799,7 +799,7 @@ void GenerateItemPool() {
   }
 
   if (Shuffle100GSReward) {
-    if (ItemPoolValue.Is(ITEMPOOL_PLENTIFUL)) {
+    if (Tokensanity.IsNot(TOKENSANITY_OFF) && ItemPoolValue.Is(ITEMPOOL_PLENTIFUL)) {
       AddItemToPool(PendingJunkPool, GOLD_SKULLTULA_TOKEN, 10);
     }
     AddItemToMainPool(HUGE_RUPEE);
