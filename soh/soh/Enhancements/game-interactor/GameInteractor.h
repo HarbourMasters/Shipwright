@@ -20,7 +20,7 @@ public:
     // Effects
     static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase* effect);
     static GameInteractionEffectQueryResult ApplyEffect(GameInteractionEffectBase* effect);
-    static void RemoveEffect(GameInteractionEffectBase* effect);
+    static GameInteractionEffectQueryResult RemoveEffect(GameInteractionEffectBase* effect);
 
     // Helpers
     static bool IsSaveLoaded();
