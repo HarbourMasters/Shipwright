@@ -1181,7 +1181,7 @@ void Message_Decode(PlayState* play) {
         phi_s1 = temp_s2 = msgCtx->msgBufDecoded[decodedBufPos] = font->msgBuf[msgCtx->msgBufPos];
 
         // Don't require input for credits textboxes in randomizer
-        if (gSaveContext.n64ddFlag && (
+        if (CVarGetInteger("gNoInputForCredits", 0) && (
             msgCtx->textId == 0x706F ||
             msgCtx->textId == 0x7091 ||
             msgCtx->textId == 0x7092 ||

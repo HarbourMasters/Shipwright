@@ -175,7 +175,8 @@ const std::vector<const char*> enhancementsCvars = {
     "gBombchuBowlingAmmunition",
     "gCreditsFix",
     "gSilverRupeeJingleExtend",
-    "gStaticExplosionRadius"
+    "gStaticExplosionRadius",
+    "gNoInputForCredits",
 };
 
 const std::vector<const char*> randomizerCvars = {
@@ -617,6 +618,8 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gPauseLiveLink", 16),
     // Frames to wait
     PRESET_ENTRY_S32("gMinFrameCount", 200),
+
+    PRESET_ENTRY_S32("gNoInputForCredits", 1),
 };
 
 const std::vector<PresetEntry> s6PresetEntries = {
