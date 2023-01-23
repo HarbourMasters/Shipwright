@@ -1798,3 +1798,25 @@ void InitCosmeticsEditor() {
     SohImGui::RequestCvarSaveOnNextTick();
     ApplyOrResetCustomGfxPatches();
 }
+
+void CosmeticsEditor_RandomizeAll() {
+    for (auto& [id, cosmeticOption] : cosmeticOptions) {
+        if (!CVarGetInteger(cosmeticOption.lockedCvar, 0)) {
+            RandomizeColor(cosmeticOption);
+        }
+    }
+
+    SohImGui::RequestCvarSaveOnNextTick();
+    ApplyOrResetCustomGfxPatches();
+}
+
+void CosmeticsEditor_ResetAll() {
+    for (auto& [id, cosmeticOption] : cosmeticOptions) {
+        if (!CVarGetInteger(cosmeticOption.lockedCvar, 0)) {
+            ResetColor(cosmeticOption);
+        }
+    }
+
+    SohImGui::RequestCvarSaveOnNextTick();
+    ApplyOrResetCustomGfxPatches();
+}
