@@ -1216,12 +1216,12 @@ struct SelectContext;
 
 typedef struct {
     /* 0x00 */ char* japaneseName;
-    /*      */ char* englishName;
-    /*      */ char* germanName;
-    /*      */ char* frenchName;
-    /* 0x04 */ void (*loadFunc)(struct SelectContext*, s32);
-    /* 0x08 */ s32 entranceIndex;
-} SceneSelectEntry; // size = 0xC
+    /* 0x04 */ char* englishName;
+    /* 0x08 */ char* germanName;
+    /* 0x0C */ char* frenchName;
+    /* 0x10 */ void (*loadFunc)(struct SelectContext*, s32);
+    /* 0x14 */ s32 entranceIndex;
+} SceneSelectEntry; // size = 0x18
 
 typedef struct {
     /*      */ char* japaneseAge;
