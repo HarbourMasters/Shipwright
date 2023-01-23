@@ -174,7 +174,7 @@ void Font_LoadChar(Font* font, u8 character, u16 codePointIndex) {
                         //__FILE__, __LINE__);
 
     if (character < 0x8B)
-        memcpy(&font->charTexBuf[codePointIndex], ResourceMgr_LoadTexByName(fntTbl[character]), FONT_CHAR_TEX_SIZE);
+        memcpy(&font->charTexBuf[codePointIndex], GetResourceDataByName(fntTbl[character], false), FONT_CHAR_TEX_SIZE);
 }
 
 /**
@@ -183,7 +183,7 @@ void Font_LoadChar(Font* font, u8 character, u16 codePointIndex) {
  * The different icons are given in the MessageBoxIcon enum.
  */
 void Font_LoadMessageBoxIcon(Font* font, u16 icon) {
-    memcpy(font->iconBuf, ResourceMgr_LoadTexByName(msgStaticTbl[4 + icon]), FONT_CHAR_TEX_SIZE);
+    memcpy(font->iconBuf, GetResourceDataByName(msgStaticTbl[4 + icon], false), FONT_CHAR_TEX_SIZE);
 }
 
 /**
@@ -218,7 +218,7 @@ void Font_LoadOrderedFont(Font* font) {
             osSyncPrintf("nes_mes_buf[%d]=%d\n", codePointIndex, font->msgBuf[codePointIndex]);
 
             offset = (font->msgBuf[codePointIndex] - '\x20') * FONT_CHAR_TEX_SIZE;
-            memcpy(fontBuf, ResourceMgr_LoadTexByName(fntTbl[offset / FONT_CHAR_TEX_SIZE]), FONT_CHAR_TEX_SIZE);
+            memcpy(fontBuf, GetResourceDataByName(fntTbl[offset / FONT_CHAR_TEX_SIZE], false), FONT_CHAR_TEX_SIZE);
             //DmaMgr_SendRequest1(fontBuf, fontStatic + offset, FONT_CHAR_TEX_SIZE, __FILE__, __LINE__);
             fontBufIndex += FONT_CHAR_TEX_SIZE / 8;
         }

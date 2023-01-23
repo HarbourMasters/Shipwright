@@ -181,7 +181,7 @@ void BgHakaTubo_DropCollectible(BgHakaTubo* this, PlayState* play) {
                 func_80078884(NA_SE_SY_ERROR);
             } else {
                 // Random rewards
-                if (CVar_GetS32("gNoRandomDrops", 0)) {
+                if (CVarGetInteger("gNoRandomDrops", 0)) {
                     collectibleParams = -1;
                 } else if(rnd < 0.4f) {
                     collectibleParams = ITEM00_BOMBS_A;
@@ -196,7 +196,7 @@ void BgHakaTubo_DropCollectible(BgHakaTubo* this, PlayState* play) {
             }
         } else if (Flags_GetCollectible(play, this->dyna.actor.params) != 0) {
             // If small key already collected, drop recovery heart instead
-            if (CVar_GetS32("gNoHeartDrops", 0)) {
+            if (CVarGetInteger("gNoHeartDrops", 0)) {
                 collectibleParams = -1;
             }
             else {

@@ -1,5 +1,6 @@
 #include "global.h"
 #include "vt.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 void func_80095AB4(PlayState* play, Room* room, u32 flags);
 void func_80095D04(PlayState* play, Room* room, u32 flags);
@@ -401,7 +402,7 @@ BgImage* func_80096A74(PolygonType1* polygon1, PlayState* play) {
 
     camera = GET_ACTIVE_CAM(play);
     camId = camera->camDataIdx;
-    if (camId == -1 && CVar_GetS32("gNoRestrictItems", 0)) {
+    if (camId == -1 && CVarGetInteger("gNoRestrictItems", 0)) {
         // This prevents a crash when using items that change the
         // camera (such as din's fire) on scenes with prerendered backgrounds
         return NULL;
@@ -574,6 +575,12 @@ u32 func_80096FE8(PlayState* play, RoomContext* roomCtx) {
 
 s32 func_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomNum) {
     size_t size;
+
+    // In ER, override roomNum to load based on scene and spawn
+    if (gSaveContext.n64ddFlag && gSaveContext.respawnFlag <= 0 &&
+        Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+        roomNum = Entrance_OverrideSpawnSceneRoom(play->sceneNum, play->curSpawn, roomNum);
+    }
 
     return OTRfunc_8009728C(play, roomCtx, roomNum);
 
