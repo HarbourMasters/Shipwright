@@ -625,7 +625,7 @@ static bool GravityHandler(std::shared_ptr<Ship::Console> Console, const std::ve
     }
 
     try {
-        GameInteractor_GravityLevel = Ship::Math::clamp(std::stoi(args[1], nullptr, 10), GRAVITY_LEVEL_LIGHT, GRAVITY_LEVEL_HEAVY);
+        GameInteractor_SetGravityLevel(Ship::Math::clamp(std::stoi(args[1], nullptr, 10), GRAVITY_LEVEL_LIGHT, GRAVITY_LEVEL_HEAVY));
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Minish value must be a number.");
@@ -640,7 +640,7 @@ static bool NoUIHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
     }
 
     try {
-        GameInteractor_NoUIActive = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        GameInteractor_SetNoUIActive(std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1);
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] No UI value must be a number.");
@@ -660,7 +660,7 @@ static bool DefenseModifierHandler(std::shared_ptr<Ship::Console> Console, const
     }
 
     try {
-        GameInteractor_DefenseModifier = std::stoi(args[1], nullptr, 10);
+        GameInteractor_SetDefenseModifier(std::stoi(args[1], nullptr, 10));
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Defense modifier value must be a number.");
@@ -728,7 +728,7 @@ static bool NoZHandler(std::shared_ptr<Ship::Console> Console, const std::vector
     }
 
     try {
-        GameInteractor_DisableZTargetingActive = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
+        GameInteractor_SetDisableZTargetingActive(std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1);
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] NoZ value must be a number.");

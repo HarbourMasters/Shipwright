@@ -939,7 +939,7 @@ void func_80083108(PlayState* play) {
                 Interface_ChangeAlpha(50);
             }
         } else if (msgCtx->msgMode == MSGMODE_NONE) {
-            if (GameInteractor_PacifistModeActive) {
+            if (GameInteractor_PacifistModeActive()) {
                 gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
                 gSaveContext.buttonStatus[3] = gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] =
                 gSaveContext.buttonStatus[7] = gSaveContext.buttonStatus[8] = BTN_DISABLED;
@@ -3069,7 +3069,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
     }
 
     // If one-hit ko mode is on, any damage kills you and you cannot gain health.
-    if (GameInteractor_OneHitKOActive) {
+    if (GameInteractor_OneHitKOActive()) {
         if (healthChange < 0) {
             gSaveContext.health = 0;
         }
@@ -3086,11 +3086,12 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
     }
     // clang-format on
 
-    if (GameInteractor_DefenseModifier != 0 && healthChange < 0) {
-        if (GameInteractor_DefenseModifier > 0) {
-            healthChange /= GameInteractor_DefenseModifier;
+    int32_t giDefenseModifier = GameInteractor_DefenseModifier();
+    if (giDefenseModifier != 0 && healthChange < 0) {
+        if (giDefenseModifier > 0) {
+            healthChange /= giDefenseModifier;
         } else {
-            healthChange *= abs(GameInteractor_DefenseModifier);
+            healthChange *= abs(giDefenseModifier);
         }
     }
 
@@ -4955,7 +4956,7 @@ void Interface_Draw(PlayState* play) {
     s16 svar6;
     bool fullUi = !CVarGetInteger("gMinimalUI", 0) || !R_MINIMAP_DISABLED || play->pauseCtx.state != 0;
 
-    if (GameInteractor_NoUIActive) {
+    if (GameInteractor_NoUIActive()) {
         return;
     }
 

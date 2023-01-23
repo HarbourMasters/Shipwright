@@ -20,20 +20,6 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-uint32_t GameInteractor_NoUIActive;
-uint32_t GameInteractor_GiantLinkActive;
-uint32_t GameInteractor_MinishLinkActive;
-uint32_t GameInteractor_PaperLinkActive;
-uint32_t GameInteractor_InvisibleLinkActive;
-uint32_t GameInteractor_ResetLinkScale;
-uint32_t GameInteractor_OneHitKOActive;
-uint32_t GameInteractor_PacifistModeActive;
-uint32_t GameInteractor_DisableZTargetingActive;
-uint32_t GameInteractor_ReverseControlsActive;
-int32_t GameInteractor_DefenseModifier;
-int32_t GameInteractor_RunSpeedModifier;
-uint32_t GameInteractor_GravityLevel = GRAVITY_LEVEL_NORMAL;
-
 GameInteractionEffectQueryResult GameInteractionEffectBase::Apply() {
     GameInteractionEffectQueryResult result = CanBeApplied();
     if (result != GameInteractionEffectQueryResult::Possible) {
@@ -152,10 +138,10 @@ namespace GameInteractionEffect {
         }
     }
     void NoUI::_Apply() {
-        GameInteractor_NoUIActive = 1;
+        GameInteractor::State::NoUIActive = 1;
     }
     void NoUI::_Remove() {
-        GameInteractor_NoUIActive = 0;
+        GameInteractor::State::NoUIActive = 0;
     }
 
     // MARK: - HighGravity
@@ -365,10 +351,10 @@ namespace GameInteractionEffect {
         }
     }
     void DisableZTargeting::_Apply() {
-        GameInteractor_DisableZTargetingActive = 1;
+        GameInteractor::State::DisableZTargetingActive = 1;
     }
     void DisableZTargeting::_Remove() {
-        GameInteractor_DisableZTargetingActive = 0;
+        GameInteractor::State::DisableZTargetingActive = 0;
     }
 
     // MARK: - WeatherRainstorm
@@ -395,10 +381,10 @@ namespace GameInteractionEffect {
         }
     }
     void ReverseControls::_Apply() {
-        GameInteractor_ReverseControlsActive = 1;
+        GameInteractor::State::ReverseControlsActive = 1;
     }
     void ReverseControls::_Remove() {
-        GameInteractor_ReverseControlsActive = 0;
+        GameInteractor::State::ReverseControlsActive = 0;
     }
 
     // MARK: - ForceIronBoots
@@ -440,10 +426,10 @@ namespace GameInteractionEffect {
         }
     }
     void IncreaseRunSpeed::_Apply() {
-        GameInteractor_RunSpeedModifier = 2;
+        GameInteractor::State::RunSpeedModifier = 2;
     }
     void IncreaseRunSpeed::_Remove() {
-        GameInteractor_RunSpeedModifier = 0;
+        GameInteractor::State::RunSpeedModifier = 0;
     }
 
     // MARK: - DecreaseRunSpeed
@@ -455,10 +441,10 @@ namespace GameInteractionEffect {
         }
     }
     void DecreaseRunSpeed::_Apply() {
-        GameInteractor_RunSpeedModifier = -2;
+        GameInteractor::State::RunSpeedModifier = -2;
     }
     void DecreaseRunSpeed::_Remove() {
-        GameInteractor_RunSpeedModifier = 0;
+        GameInteractor::State::RunSpeedModifier = 0;
     }
 
     // MARK: - OneHitKO
@@ -470,10 +456,10 @@ namespace GameInteractionEffect {
         }
     }
     void OneHitKO::_Apply() {
-        GameInteractor_OneHitKOActive = 1;
+        GameInteractor::State::OneHitKOActive = 1;
     }
     void OneHitKO::_Remove() {
-        GameInteractor_OneHitKOActive = 0;
+        GameInteractor::State::OneHitKOActive = 0;
     }
 
     // MARK: - IncreaseDamageTaken
@@ -485,10 +471,10 @@ namespace GameInteractionEffect {
         }
     }
     void IncreaseDamageTaken::_Apply() {
-        GameInteractor_DefenseModifier = -parameter;
+        GameInteractor::State::DefenseModifier = -parameter;
     }
     void IncreaseDamageTaken::_Remove() {
-        GameInteractor_DefenseModifier = 0;
+        GameInteractor::State::DefenseModifier = 0;
     }
 
     // MARK: - DecreaseDamageTaken
@@ -500,10 +486,10 @@ namespace GameInteractionEffect {
         }
     }
     void DecreaseDamageTaken::_Apply() {
-        GameInteractor_DefenseModifier = parameter;
+        GameInteractor::State::DefenseModifier = parameter;
     }
     void DecreaseDamageTaken::_Remove() {
-        GameInteractor_DefenseModifier = 0;
+        GameInteractor::State::DefenseModifier = 0;
     }
 
     // MARK: - GiveDekuShield

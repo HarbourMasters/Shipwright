@@ -5,30 +5,6 @@
 
 #include <stdint.h>
 
-#define GRAVITY_LEVEL_NORMAL 1.0f
-#define GRAVITY_LEVEL_LIGHT 0.0f
-#define GRAVITY_LEVEL_HEAVY 2.0f
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-extern uint32_t GameInteractor_NoUIActive;
-extern uint32_t GameInteractor_GiantLinkActive;
-extern uint32_t GameInteractor_MinishLinkActive;
-extern uint32_t GameInteractor_PaperLinkActive;
-extern uint32_t GameInteractor_InvisibleLinkActive;
-extern uint32_t GameInteractor_ResetLinkScale;
-extern uint32_t GameInteractor_OneHitKOActive;
-extern uint32_t GameInteractor_PacifistModeActive;
-extern uint32_t GameInteractor_DisableZTargetingActive;
-extern uint32_t GameInteractor_ReverseControlsActive;
-extern int32_t GameInteractor_DefenseModifier;
-extern int32_t GameInteractor_RunSpeedModifier;
-extern uint32_t GameInteractor_GravityLevel;
-#ifdef __cplusplus
-}
-#endif
-
 #ifdef __cplusplus
 enum GameInteractionEffectQueryResult {
     Possible                = 0x00,

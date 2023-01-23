@@ -12,10 +12,54 @@ enum {
     GI_LINK_SIZE_PAPER
 };
 
+#define GRAVITY_LEVEL_NORMAL 1.0f
+#define GRAVITY_LEVEL_LIGHT 0.0f
+#define GRAVITY_LEVEL_HEAVY 2.0f
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+uint32_t GameInteractor_NoUIActive();
+uint32_t GameInteractor_GiantLinkActive();
+uint32_t GameInteractor_MinishLinkActive();
+uint32_t GameInteractor_PaperLinkActive();
+uint32_t GameInteractor_InvisibleLinkActive();
+uint32_t GameInteractor_ResetLinkScale();
+void GameInteractor_SetResetLinkScale(uint32_t scale);
+uint32_t GameInteractor_OneHitKOActive();
+uint32_t GameInteractor_PacifistModeActive();
+uint32_t GameInteractor_DisableZTargetingActive();
+uint32_t GameInteractor_ReverseControlsActive();
+int32_t GameInteractor_DefenseModifier();
+int32_t GameInteractor_RunSpeedModifier();
+uint32_t GameInteractor_GravityLevel();
+#ifdef __cplusplus
+}
+#endif
+
+
 #ifdef __cplusplus
 class GameInteractor {
 public:
     static GameInteractor* Instance;
+
+    // Gsme State
+    class State {
+    public:
+        static uint32_t NoUIActive;
+        static uint32_t GiantLinkActive;
+        static uint32_t MinishLinkActive;
+        static uint32_t PaperLinkActive;
+        static uint32_t InvisibleLinkActive;
+        static uint32_t ResetLinkScale;
+        static uint32_t OneHitKOActive;
+        static uint32_t PacifistModeActive;
+        static uint32_t DisableZTargetingActive;
+        static uint32_t ReverseControlsActive;
+        static int32_t DefenseModifier;
+        static int32_t RunSpeedModifier;
+        static uint32_t GravityLevel;
+    };
 
     // Effects
     static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase* effect);

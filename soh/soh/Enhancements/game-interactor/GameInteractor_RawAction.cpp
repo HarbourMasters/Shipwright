@@ -54,23 +54,28 @@ void GameInteractor::RawAction::SetPlayerHealth(uint32_t hearts) {
 }
 
 void GameInteractor::RawAction::SetLinkSize(uint8_t size) {
-    GameInteractor_GiantLinkActive = 0;
-    GameInteractor_MinishLinkActive = 0;
-    GameInteractor_PaperLinkActive = 0;
+    GameInteractor::State::GiantLinkActive = 0;
+    GameInteractor::State::MinishLinkActive = 0;
+    GameInteractor::State::PaperLinkActive = 0;
 
-    if (size == GI_LINK_SIZE_NORMAL) {
-        GameInteractor_ResetLinkScale = 1;
-    } else if (size == GI_LINK_SIZE_GIANT) {
-        GameInteractor_GiantLinkActive = 1;
-    } else if (size == GI_LINK_SIZE_MINISH) {
-        GameInteractor_MinishLinkActive = 1;
-    } else if (size == GI_LINK_SIZE_PAPER) {
-        GameInteractor_PaperLinkActive = 1;
+    switch (size) {
+        case GI_LINK_SIZE_NORMAL:
+            GameInteractor::State::ResetLinkScale = 1;
+            break;
+        case GI_LINK_SIZE_GIANT:
+            GameInteractor::State::GiantLinkActive = 1;
+            break;
+        case GI_LINK_SIZE_MINISH:
+            GameInteractor::State::MinishLinkActive = 1;
+            break;
+        case GI_LINK_SIZE_PAPER:
+            GameInteractor::State::PaperLinkActive = 1;
+            break;
     }
 }
 
 void GameInteractor::RawAction::SetLinkInvisibility(uint8_t effectState) {
-    GameInteractor_InvisibleLinkActive = effectState;
+    GameInteractor::State::InvisibleLinkActive = effectState;
     if (!effectState) {
         Player* player = GET_PLAYER(gPlayState);
         player->actor.shape.shadowDraw = ActorShadow_DrawFeet;
@@ -78,11 +83,11 @@ void GameInteractor::RawAction::SetLinkInvisibility(uint8_t effectState) {
 }
 
 void GameInteractor::RawAction::SetLinkGravity(int32_t gravityLevel) {
-    GameInteractor_GravityLevel = gravityLevel;
+    GameInteractor::State::GravityLevel = gravityLevel;
 }
 
 void GameInteractor::RawAction::SetPacifistMode(uint8_t effectState) {
-    GameInteractor_PacifistModeActive = effectState;
+    GameInteractor::State::PacifistModeActive = effectState;
     // Force interface update to update the button's transparency.
     gSaveContext.unk_13E8 = 50;
     Interface_Update(gPlayState);

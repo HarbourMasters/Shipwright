@@ -609,7 +609,8 @@ source_group("Source Files\\soh\\Enhancements\\item-tables" FILES ${Source_Files
 
 set(Source_Files__soh__Enhancements__game_interactor
     "soh/Enhancements/game-interactor/GameInteractor.cpp"
-    "soh/Enhancements/game-interactor/GameInteractor_Actions.cpp"
+    "soh/Enhancements/game-interactor/GameInteractor_RawAction.cpp"
+    "soh/Enhancements/game-interactor/GameInteractor_State.cpp"
     "soh/Enhancements/game-interactor/GameInteractionEffect.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\game-interactor" FILES ${Source_Files__soh__Enhancements__game_interactor})
