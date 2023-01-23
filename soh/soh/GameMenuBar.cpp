@@ -641,6 +641,8 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Allows graves to be pulled when child during the day");
                 UIWidgets::PaddedEnhancementCheckbox("Dogs follow you everywhere", "gDogFollowsEverywhere", true, false);
                 UIWidgets::Tooltip("Allows dogs to follow you anywhere you go, even if you leave the market");
+                UIWidgets::PaddedEnhancementCheckbox("Don't require input for Credits sequence", "gNoInputForCredits", true, false);
+                UIWidgets::Tooltip("Removes the input requirement on textboxes after defeating Ganon, allowing Credits sequence to continue to progress");
 
                 // Blue Fire Arrows
                 bool forceEnableBlueFireArrows = gSaveContext.n64ddFlag &&
