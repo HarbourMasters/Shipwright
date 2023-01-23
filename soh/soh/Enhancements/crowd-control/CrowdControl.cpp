@@ -433,7 +433,7 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
 
     GameInteractionEffectQueryResult giResult;
     if (effect->category == "spawn_enemy") {
-        giResult = GameInteractor::Actions::SpawnEnemyWithOffset(effect->value[0], effect->value[1]);
+        giResult = GameInteractor::RawAction::SpawnEnemyWithOffset(effect->value[0], effect->value[1]);
     } else {
         giResult = GameInteractor::ApplyEffect(effect->giEffect);
     }

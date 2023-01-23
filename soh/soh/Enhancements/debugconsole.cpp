@@ -515,7 +515,7 @@ static bool GiantLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
 
     try {
         uint8_t state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        GameInteractor::Actions::SetLinkSize(state ? GI_LINK_SIZE_GIANT : GI_LINK_SIZE_NORMAL);
+        GameInteractor::RawAction::SetLinkSize(state ? GI_LINK_SIZE_GIANT : GI_LINK_SIZE_NORMAL);
 
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
@@ -532,7 +532,7 @@ static bool MinishLinkHandler(std::shared_ptr<Ship::Console> Console, const std:
 
     try {
         uint8_t state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        GameInteractor::Actions::SetLinkSize(state ? GI_LINK_SIZE_MINISH : GI_LINK_SIZE_NORMAL);
+        GameInteractor::RawAction::SetLinkSize(state ? GI_LINK_SIZE_MINISH : GI_LINK_SIZE_NORMAL);
 
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
@@ -545,7 +545,7 @@ static bool AddHeartContainerHandler(std::shared_ptr<Ship::Console> Console, con
     if (gSaveContext.healthCapacity >= 0x140)
         return CMD_FAILED;
 
-    GameInteractor::Actions::AddOrRemoveHealthContainers(1);
+    GameInteractor::RawAction::AddOrRemoveHealthContainers(1);
     return CMD_SUCCESS;
 }
 
@@ -553,7 +553,7 @@ static bool RemoveHeartContainerHandler(std::shared_ptr<Ship::Console> Console, 
     if ((gSaveContext.healthCapacity - 0x10) < 3)
         return CMD_FAILED;
 
-    GameInteractor::Actions::AddOrRemoveHealthContainers(-1);
+    GameInteractor::RawAction::AddOrRemoveHealthContainers(-1);
     return CMD_SUCCESS;
 }
 
@@ -588,7 +588,7 @@ static bool NoUIHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
 }
 
 static bool FreezeHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    GameInteractor::Actions::FreezePlayer();
+    GameInteractor::RawAction::FreezePlayer();
     return CMD_SUCCESS;
 }
 
@@ -620,7 +620,7 @@ static bool DamageHandler(std::shared_ptr<Ship::Console> Console, const std::vec
             return CMD_FAILED;
         }
 
-        GameInteractor::Actions::HealOrDamagePlayer(-value);
+        GameInteractor::RawAction::HealOrDamagePlayer(-value);
 
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
@@ -642,7 +642,7 @@ static bool HealHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
             return CMD_FAILED;
         }
 
-        GameInteractor::Actions::HealOrDamagePlayer(value);
+        GameInteractor::RawAction::HealOrDamagePlayer(value);
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Heal value must be a number.");
@@ -651,12 +651,12 @@ static bool HealHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
 }
 
 static bool FillMagicHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    GameInteractor::Actions::AddOrRemoveMagic(96);
+    GameInteractor::RawAction::AddOrRemoveMagic(96);
     return CMD_SUCCESS;
 }
 
 static bool EmptyMagicHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    GameInteractor::Actions::AddOrRemoveMagic(-96);
+    GameInteractor::RawAction::AddOrRemoveMagic(-96);
     return CMD_SUCCESS;
 }
 
@@ -698,7 +698,7 @@ static bool PacifistHandler(std::shared_ptr<Ship::Console> Console, const std::v
 
     try {
         uint8_t state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        GameInteractor::Actions::SetPacifistMode(state);
+        GameInteractor::RawAction::SetPacifistMode(state);
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Pacifist value must be a number.");
@@ -714,7 +714,7 @@ static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
 
     try {
         uint8_t state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        GameInteractor::Actions::SetLinkSize(state ? GI_LINK_SIZE_PAPER : GI_LINK_SIZE_NORMAL);
+        GameInteractor::RawAction::SetLinkSize(state ? GI_LINK_SIZE_PAPER : GI_LINK_SIZE_NORMAL);
 
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
@@ -731,7 +731,7 @@ static bool RainstormHandler(std::shared_ptr<Ship::Console> Console, const std::
 
     try {
         uint32_t state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        GameInteractor::Actions::SetWeatherStorm(state);
+        GameInteractor::RawAction::SetWeatherStorm(state);
 
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
@@ -804,7 +804,7 @@ static bool BootsHandler(std::shared_ptr<Ship::Console> Console, const std::vect
         return CMD_FAILED;
     }
 
-    GameInteractor::Actions::ForceEquipBoots(it->second);
+    GameInteractor::RawAction::ForceEquipBoots(it->second);
     return CMD_SUCCESS;
 }
 
@@ -821,7 +821,7 @@ static bool KnockbackHandler(std::shared_ptr<Ship::Console> Console, const std::
             return CMD_FAILED;
         }
 
-        GameInteractor::Actions::KnockbackPlayer(value);
+        GameInteractor::RawAction::KnockbackPlayer(value);
         return CMD_SUCCESS;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Knockback value must be a number.");
@@ -832,7 +832,7 @@ static bool KnockbackHandler(std::shared_ptr<Ship::Console> Console, const std::
 static bool ElectrocuteHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     Player* player = GET_PLAYER(gPlayState);
     if (PlayerGrounded(player)) {
-        GameInteractor::Actions::ElectrocutePlayer();
+        GameInteractor::RawAction::ElectrocutePlayer();
         return CMD_SUCCESS;
     }
 
@@ -842,14 +842,14 @@ static bool ElectrocuteHandler(std::shared_ptr<Ship::Console> Console, const std
 static bool BurnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     Player* player = GET_PLAYER(gPlayState);
     if (PlayerGrounded(player)) {
-        GameInteractor::Actions::BurnPlayer();
+        GameInteractor::RawAction::BurnPlayer();
         return CMD_FAILED;
     }
     return CMD_SUCCESS;
 }
 
 static bool CuccoStormHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    GameInteractor::Actions::SpawnCuccoStorm();
+    GameInteractor::RawAction::SpawnCuccoStorm();
     return CMD_SUCCESS;
 }
 

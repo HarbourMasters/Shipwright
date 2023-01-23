@@ -10,11 +10,11 @@ extern PlayState* gPlayState;
 
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 
-void GameInteractor::Actions::AddOrRemoveHealthContainers(int32_t amount) {
+void GameInteractor::RawAction::AddOrRemoveHealthContainers(int32_t amount) {
     gSaveContext.healthCapacity += amount * 0x10;
 }
 
-void GameInteractor::Actions::AddOrRemoveMagic(int32_t amount) {
+void GameInteractor::RawAction::AddOrRemoveMagic(int32_t amount) {
     // Full single magic = 48
     // Full double magic = 96
     int32_t currentMagicCapacity = (gSaveContext.isDoubleMagicAcquired + 1) * 48;
@@ -38,7 +38,7 @@ void GameInteractor::Actions::AddOrRemoveMagic(int32_t amount) {
     }
 }
 
-void GameInteractor::Actions::HealOrDamagePlayer(int32_t hearts) {
+void GameInteractor::RawAction::HealOrDamagePlayer(int32_t hearts) {
     if (hearts > 0) {
         Health_ChangeBy(gPlayState, hearts * 0x10);
     } else if (hearts < 0) {
@@ -49,11 +49,11 @@ void GameInteractor::Actions::HealOrDamagePlayer(int32_t hearts) {
     }
 }
 
-void GameInteractor::Actions::SetPlayerHealth(uint32_t hearts) {
+void GameInteractor::RawAction::SetPlayerHealth(uint32_t hearts) {
     gSaveContext.health = hearts * 0x10;
 }
 
-void GameInteractor::Actions::SetLinkSize(uint8_t size) {
+void GameInteractor::RawAction::SetLinkSize(uint8_t size) {
     GameInteractor_GiantLinkActive = 0;
     GameInteractor_MinishLinkActive = 0;
     GameInteractor_PaperLinkActive = 0;
@@ -69,7 +69,7 @@ void GameInteractor::Actions::SetLinkSize(uint8_t size) {
     }
 }
 
-void GameInteractor::Actions::SetLinkInvisibility(uint8_t effectState) {
+void GameInteractor::RawAction::SetLinkInvisibility(uint8_t effectState) {
     GameInteractor_InvisibleLinkActive = effectState;
     if (!effectState) {
         Player* player = GET_PLAYER(gPlayState);
@@ -77,14 +77,14 @@ void GameInteractor::Actions::SetLinkInvisibility(uint8_t effectState) {
     }
 }
 
-void GameInteractor::Actions::SetPacifistMode(uint8_t effectState) {
+void GameInteractor::RawAction::SetPacifistMode(uint8_t effectState) {
     GameInteractor_PacifistModeActive = effectState;
     // Force interface update to update the button's transparency.
     gSaveContext.unk_13E8 = 50;
     Interface_Update(gPlayState);
 }
 
-void GameInteractor::Actions::SetWeatherStorm(uint8_t effectState) {
+void GameInteractor::RawAction::SetWeatherStorm(uint8_t effectState) {
     if (effectState) {
         gPlayState->envCtx.unk_F2[0] = 20;    // rain intensity target
         gPlayState->envCtx.gloomySkyMode = 1; // start gloomy sky
@@ -113,18 +113,18 @@ void GameInteractor::Actions::SetWeatherStorm(uint8_t effectState) {
     }
 }
 
-void GameInteractor::Actions::ForceEquipBoots(uint8_t boots) {
+void GameInteractor::RawAction::ForceEquipBoots(uint8_t boots) {
     Player* player = GET_PLAYER(gPlayState);
     player->currentBoots = boots;
     Inventory_ChangeEquipment(EQUIP_BOOTS, boots + 1);
     Player_SetBootData(gPlayState, player);
 }
 
-void GameInteractor::Actions::FreezePlayer() {
+void GameInteractor::RawAction::FreezePlayer() {
     gSaveContext.pendingIceTrapCount++;
 }
 
-void GameInteractor::Actions::BurnPlayer() {
+void GameInteractor::RawAction::BurnPlayer() {
     Player* player = GET_PLAYER(gPlayState);
     for (int i = 0; i < 18; i++) {
         player->flameTimers[i] = Rand_S16Offset(0, 200);
@@ -133,17 +133,17 @@ void GameInteractor::Actions::BurnPlayer() {
     func_80837C0C(gPlayState, player, 0, 0, 0, 0, 0);
 }
 
-void GameInteractor::Actions::ElectrocutePlayer() {
+void GameInteractor::RawAction::ElectrocutePlayer() {
     Player* player = GET_PLAYER(gPlayState);
     func_80837C0C(gPlayState, player, 4, 0, 0, 0, 0);
 }
 
-void GameInteractor::Actions::KnockbackPlayer(uint8_t strength) {
+void GameInteractor::RawAction::KnockbackPlayer(uint8_t strength) {
     Player* player = GET_PLAYER(gPlayState);
     func_8002F71C(gPlayState, &player->actor, strength * 5, player->actor.world.rot.y + 0x8000, strength * 5);
 }
 
-void GameInteractor::Actions::GiveDekuShield() {
+void GameInteractor::RawAction::GiveDekuShield() {
     // Give Deku Shield to the player, and automatically equip it when they're child and have no shield currently equiped.
     Player* player = GET_PLAYER(gPlayState);
     Item_Give(gPlayState, ITEM_SHIELD_DEKU);
@@ -153,14 +153,14 @@ void GameInteractor::Actions::GiveDekuShield() {
     }
 }
 
-void GameInteractor::Actions::SpawnCuccoStorm() {
+void GameInteractor::RawAction::SpawnCuccoStorm() {
     Player* player = GET_PLAYER(gPlayState);
     EnNiw* cucco = (EnNiw*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_NIW, player->actor.world.pos.x,
                                        player->actor.world.pos.y + 2200, player->actor.world.pos.z, 0, 0, 0, 0, 0);
     cucco->actionFunc = func_80AB70A0_nocutscene;
 }
 
-GameInteractionEffectQueryResult GameInteractor::Actions::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {
+GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {
 
     if (!GameInteractor::CanSpawnEnemy()) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;

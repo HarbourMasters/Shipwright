@@ -57,7 +57,7 @@ namespace GameInteractionEffect {
         }
     }
     void AddHeartContainer::_Apply() {
-        GameInteractor::Actions::AddOrRemoveHealthContainers(1);
+        GameInteractor::RawAction::AddOrRemoveHealthContainers(1);
     }
 
     // MARK: - RemoveHeartContainer
@@ -71,7 +71,7 @@ namespace GameInteractionEffect {
         }
     }
     void RemoveHeartContainer::_Apply() {
-        GameInteractor::Actions::AddOrRemoveHealthContainers(-1);
+        GameInteractor::RawAction::AddOrRemoveHealthContainers(-1);
     }
 
     // MARK: - FillMagic
@@ -85,7 +85,7 @@ namespace GameInteractionEffect {
         }
     }
     void FillMagic::_Apply() {
-        GameInteractor::Actions::AddOrRemoveMagic(96);
+        GameInteractor::RawAction::AddOrRemoveMagic(96);
     }
 
     // MARK: - EmptyMagic
@@ -99,7 +99,7 @@ namespace GameInteractionEffect {
         }
     }
     void EmptyMagic::_Apply() {
-        GameInteractor::Actions::AddOrRemoveMagic(-96);
+        GameInteractor::RawAction::AddOrRemoveMagic(-96);
     }
 
     // MARK: - GiveRupees
@@ -184,7 +184,7 @@ namespace GameInteractionEffect {
         }
     }
     void GiveHealth::_Apply() {
-        GameInteractor::Actions::HealOrDamagePlayer(parameter);
+        GameInteractor::RawAction::HealOrDamagePlayer(parameter);
     }
 
     // MARK: - TakeHealth
@@ -199,7 +199,7 @@ namespace GameInteractionEffect {
         }
     }
     void TakeHealth::_Apply() {
-        GameInteractor::Actions::HealOrDamagePlayer(-parameter);
+        GameInteractor::RawAction::HealOrDamagePlayer(-parameter);
     }
 
     // MARK: - SetPlayerHealth
@@ -212,7 +212,7 @@ namespace GameInteractionEffect {
         }
     }
     void SetPlayerHealth::_Apply() {
-        GameInteractor::Actions::SetPlayerHealth(parameter);
+        GameInteractor::RawAction::SetPlayerHealth(parameter);
     }
 
     // MARK: - FreezePlayer
@@ -225,7 +225,7 @@ namespace GameInteractionEffect {
         }
     }
     void FreezePlayer::_Apply() {
-        GameInteractor::Actions::FreezePlayer();
+        GameInteractor::RawAction::FreezePlayer();
     }
 
     // MARK: - BurnPlayer
@@ -238,7 +238,7 @@ namespace GameInteractionEffect {
         }
     }
     void BurnPlayer::_Apply() {
-        GameInteractor::Actions::BurnPlayer();
+        GameInteractor::RawAction::BurnPlayer();
     }
 
     // MARK: - ElectrocutePlayer
@@ -251,7 +251,7 @@ namespace GameInteractionEffect {
         }
     }
     void ElectrocutePlayer::_Apply() {
-        GameInteractor::Actions::ElectrocutePlayer();
+        GameInteractor::RawAction::ElectrocutePlayer();
     }
 
     // MARK: - KnockbackPlayer
@@ -263,7 +263,7 @@ namespace GameInteractionEffect {
         }
     }
     void KnockbackPlayer::_Apply() {
-        GameInteractor::Actions::KnockbackPlayer(parameter);
+        GameInteractor::RawAction::KnockbackPlayer(parameter);
     }
 
     // MARK: - GiantLink
@@ -275,10 +275,10 @@ namespace GameInteractionEffect {
         }
     }
     void GiantLink::_Apply() {
-        GameInteractor::Actions::SetLinkSize(GI_LINK_SIZE_GIANT);
+        GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_GIANT);
     }
     void GiantLink::Remove() { 
-        GameInteractor::Actions::SetLinkSize(GI_LINK_SIZE_NORMAL);
+        GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_NORMAL);
     }
 
     // MARK: - MinishLink
@@ -290,10 +290,10 @@ namespace GameInteractionEffect {
         }
     }
     void MinishLink::_Apply() {
-        GameInteractor::Actions::SetLinkSize(GI_LINK_SIZE_MINISH);
+        GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_MINISH);
     }
     void MinishLink::Remove() {
-        GameInteractor::Actions::SetLinkSize(GI_LINK_SIZE_NORMAL);
+        GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_NORMAL);
     }
 
     // MARK: - PaperLink
@@ -305,10 +305,10 @@ namespace GameInteractionEffect {
         }
     }
     void PaperLink::_Apply() {
-        GameInteractor::Actions::SetLinkSize(GI_LINK_SIZE_PAPER);
+        GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_PAPER);
     }
     void PaperLink::Remove() {
-        GameInteractor::Actions::SetLinkSize(GI_LINK_SIZE_NORMAL);
+        GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_NORMAL);
     }
 
     // MARK: - InvisibleLink
@@ -320,10 +320,10 @@ namespace GameInteractionEffect {
         }
     }
     void InvisibleLink::_Apply() {
-        GameInteractor::Actions::SetLinkInvisibility(1);
+        GameInteractor::RawAction::SetLinkInvisibility(1);
     }
     void InvisibleLink::Remove() {
-        GameInteractor::Actions::SetLinkInvisibility(0);
+        GameInteractor::RawAction::SetLinkInvisibility(0);
     }
 
     // MARK: - PacifistMode
@@ -335,10 +335,10 @@ namespace GameInteractionEffect {
         }
     }
     void PacifistMode::_Apply() {
-        GameInteractor::Actions::SetPacifistMode(1);
+        GameInteractor::RawAction::SetPacifistMode(1);
     }
     void PacifistMode::Remove() {
-        GameInteractor::Actions::SetPacifistMode(0);
+        GameInteractor::RawAction::SetPacifistMode(0);
     }
 
     // MARK: - DisableZTargeting
@@ -365,10 +365,10 @@ namespace GameInteractionEffect {
         }
     }
     void WeatherRainstorm::_Apply() {
-        GameInteractor::Actions::SetWeatherStorm(1);
+        GameInteractor::RawAction::SetWeatherStorm(1);
     }
     void WeatherRainstorm::Remove() {
-        GameInteractor::Actions::SetWeatherStorm(0);
+        GameInteractor::RawAction::SetWeatherStorm(0);
     }
 
     // MARK: - ReverseControls
@@ -395,10 +395,10 @@ namespace GameInteractionEffect {
         }
     }
     void ForceIronBoots::_Apply() {
-        GameInteractor::Actions::ForceEquipBoots(PLAYER_BOOTS_IRON);
+        GameInteractor::RawAction::ForceEquipBoots(PLAYER_BOOTS_IRON);
     }
     void ForceIronBoots::Remove() {
-        GameInteractor::Actions::ForceEquipBoots(PLAYER_BOOTS_KOKIRI);
+        GameInteractor::RawAction::ForceEquipBoots(PLAYER_BOOTS_KOKIRI);
     }
 
     // MARK: - ForceHoverBoots
@@ -410,10 +410,10 @@ namespace GameInteractionEffect {
         }
     }
     void ForceHoverBoots::_Apply() {
-        GameInteractor::Actions::ForceEquipBoots(PLAYER_BOOTS_HOVER);
+        GameInteractor::RawAction::ForceEquipBoots(PLAYER_BOOTS_HOVER);
     }
     void ForceHoverBoots::Remove() {
-        GameInteractor::Actions::ForceEquipBoots(PLAYER_BOOTS_KOKIRI);
+        GameInteractor::RawAction::ForceEquipBoots(PLAYER_BOOTS_KOKIRI);
     }
 
     // MARK: - IncreaseRunSpeed
@@ -500,7 +500,7 @@ namespace GameInteractionEffect {
         }
     }
     void GiveDekuShield::_Apply() {
-        GameInteractor::Actions::GiveDekuShield();
+        GameInteractor::RawAction::GiveDekuShield();
     }
 
     // MARK: - SpawnCuccoStorm
@@ -512,6 +512,6 @@ namespace GameInteractionEffect {
         }
     }
     void SpawnCuccoStorm::_Apply() {
-        GameInteractor::Actions::SpawnCuccoStorm();
+        GameInteractor::RawAction::SpawnCuccoStorm();
     }
 }

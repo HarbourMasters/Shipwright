@@ -27,7 +27,7 @@ public:
     static bool IsGameplayPaused();
     static bool CanSpawnEnemy();
 
-    class Actions {
+    class RawAction {
     public:
         static void AddOrRemoveHealthContainers(int32_t amount);
         static void AddOrRemoveMagic(int32_t amount);
