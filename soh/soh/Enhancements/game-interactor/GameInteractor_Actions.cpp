@@ -77,6 +77,10 @@ void GameInteractor::RawAction::SetLinkInvisibility(uint8_t effectState) {
     }
 }
 
+void GameInteractor::RawAction::SetLinkGravity(int32_t gravityLevel) {
+    GameInteractor_GravityLevel = gravityLevel;
+}
+
 void GameInteractor::RawAction::SetPacifistMode(uint8_t effectState) {
     GameInteractor_PacifistModeActive = effectState;
     // Force interface update to update the button's transparency.

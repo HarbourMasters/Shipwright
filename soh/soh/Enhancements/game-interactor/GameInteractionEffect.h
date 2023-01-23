@@ -49,12 +49,12 @@ protected:
 };
 
 namespace GameInteractionEffect {
-    class AddHeartContainer: public GameInteractionEffectBase {
+    class AddHeartContainers: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
     };
 
-    class RemoveHeartContainer: public GameInteractionEffectBase {
+    class RemoveHeartContainers: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
     };

@@ -110,7 +110,6 @@ static bool SetPlayerHealthHandler(std::shared_ptr<Ship::Console> Console, const
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
-
     int health;
 
     try {
@@ -494,15 +493,13 @@ static bool InvisibleHandler(std::shared_ptr<Ship::Console> Console, const std::
     }
 
     GameInteractionEffectBase* effect = new GameInteractionEffect::InvisibleLink();
-    GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
+    GameInteractionEffectQueryResult result = 
+        state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        if (!state) {
-            GameInteractor::RemoveEffect(effect);
-        }
-        SohImGui::GetConsole()->SendInfoMessage("[SOH] Updated Link's invisibility");
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Updated Link's invisibility.");
         return CMD_SUCCESS;
     } else {
-        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not set link to invisible.");
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not update Link's invisibility.");
         return CMD_FAILED;
     }
 }
@@ -512,14 +509,23 @@ static bool GiantLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
+    uint8_t state;
 
     try {
-        uint8_t state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        GameInteractor::RawAction::SetLinkSize(state ? GI_LINK_SIZE_GIANT : GI_LINK_SIZE_NORMAL);
-
-        return CMD_SUCCESS;
+        state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Giant value must be a number.");
+        return CMD_FAILED;
+    }
+
+    GameInteractionEffectBase* effect = new GameInteractionEffect::GiantLink();
+    GameInteractionEffectQueryResult result =
+        state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Updated Link's giant size.");
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not update Link's giant size.");
         return CMD_FAILED;
     }
 }
@@ -529,32 +535,87 @@ static bool MinishLinkHandler(std::shared_ptr<Ship::Console> Console, const std:
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
+    uint8_t state;
 
     try {
-        uint8_t state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        GameInteractor::RawAction::SetLinkSize(state ? GI_LINK_SIZE_MINISH : GI_LINK_SIZE_NORMAL);
-
-        return CMD_SUCCESS;
+        state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Minish value must be a number.");
+        return CMD_FAILED;
+    }
+
+    GameInteractionEffectBase* effect = new GameInteractionEffect::MinishLink();
+    GameInteractionEffectQueryResult result =
+        state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Updated Link's minish size.");
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not update Link's minish size.");
         return CMD_FAILED;
     }
 }
 
 static bool AddHeartContainerHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (gSaveContext.healthCapacity >= 0x140)
+    if (args.size() != 2) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
+    }
+    int hearts;
 
-    GameInteractor::RawAction::AddOrRemoveHealthContainers(1);
-    return CMD_SUCCESS;
+    try {
+        hearts = std::stoi(args[1]);
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Hearts value must be an integer.");
+        return CMD_FAILED;
+    }
+
+    if (hearts < 0) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Hearts value must be a positive integer");
+        return CMD_FAILED;
+    }
+
+    GameInteractionEffectBase* effect = new GameInteractionEffect::AddHeartContainers();
+    effect->parameter = hearts;
+    GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Added %d heart containers", hearts);
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not add heart containers.");
+        return CMD_FAILED;
+    }
 }
 
 static bool RemoveHeartContainerHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if ((gSaveContext.healthCapacity - 0x10) < 3)
+    if (args.size() != 2) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
+    }
+    int hearts;
 
-    GameInteractor::RawAction::AddOrRemoveHealthContainers(-1);
-    return CMD_SUCCESS;
+    try {
+        hearts = std::stoi(args[1]);
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Hearts value must be an integer.");
+        return CMD_FAILED;
+    }
+
+    if (hearts < 0) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Hearts value must be a positive integer");
+        return CMD_FAILED;
+    }
+
+    GameInteractionEffectBase* effect = new GameInteractionEffect::RemoveHeartContainers();
+    effect->parameter = hearts;
+    GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Removed %d heart containers", hearts);
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not remove heart containers.");
+        return CMD_FAILED;
+    }
 }
 
 static bool GravityHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {

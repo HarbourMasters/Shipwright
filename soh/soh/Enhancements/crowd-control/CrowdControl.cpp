@@ -265,9 +265,11 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     // Assign GameInteractionEffect + values to CC effect.
     // Categories are mostly used for checking for conflicting timed effects.
     if (effectName == EFFECT_ADD_HEART_CONTAINER) {
-        effect->giEffect = new GameInteractionEffect::AddHeartContainer();
+        effect->giEffect = new GameInteractionEffect::AddHeartContainers();
+        effect->giEffect->parameter = 1;
     } else if (effectName == EFFECT_REMOVE_HEART_CONTAINER) {
-        effect->giEffect = new GameInteractionEffect::RemoveHeartContainer();
+        effect->giEffect = new GameInteractionEffect::RemoveHeartContainers();
+        effect->giEffect->parameter = 1;
     } else if (effectName == EFFECT_FILL_MAGIC) {
         effect->giEffect = new GameInteractionEffect::FillMagic();
     } else if (effectName == EFFECT_EMPTY_MAGIC) {

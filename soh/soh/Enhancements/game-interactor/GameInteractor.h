@@ -35,6 +35,7 @@ public:
         static void SetPlayerHealth(uint32_t hearts);
         static void SetLinkSize(uint8_t size);
         static void SetLinkInvisibility(uint8_t effectState);
+        static void SetLinkGravity(int32_t gravityLevel);
         static void SetPacifistMode(uint8_t effectState);
         static void SetWeatherStorm(uint8_t effectState);
         static void ForceEquipBoots(uint8_t boots);

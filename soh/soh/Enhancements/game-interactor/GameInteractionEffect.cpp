@@ -61,8 +61,8 @@ GameInteractionEffectQueryResult GameInteractionEffectBase::Remove() {
 
 namespace GameInteractionEffect {
 
-    // MARK: - AddHeartContainer
-    GameInteractionEffectQueryResult AddHeartContainer::CanBeApplied() {
+    // MARK: - AddHeartContainers
+    GameInteractionEffectQueryResult AddHeartContainers::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else if (gSaveContext.healthCapacity >= 0x140) {
@@ -71,12 +71,12 @@ namespace GameInteractionEffect {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
-    void AddHeartContainer::_Apply() {
-        GameInteractor::RawAction::AddOrRemoveHealthContainers(1);
+    void AddHeartContainers::_Apply() {
+        GameInteractor::RawAction::AddOrRemoveHealthContainers(parameter);
     }
 
-    // MARK: - RemoveHeartContainer
-    GameInteractionEffectQueryResult RemoveHeartContainer::CanBeApplied() {
+    // MARK: - RemoveHeartContainers
+    GameInteractionEffectQueryResult RemoveHeartContainers::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else if (gSaveContext.healthCapacity <= 0x10) {
@@ -85,8 +85,8 @@ namespace GameInteractionEffect {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
-    void RemoveHeartContainer::_Apply() {
-        GameInteractor::RawAction::AddOrRemoveHealthContainers(-1);
+    void RemoveHeartContainers::_Apply() {
+        GameInteractor::RawAction::AddOrRemoveHealthContainers(-parameter);
     }
 
     // MARK: - FillMagic
@@ -167,10 +167,10 @@ namespace GameInteractionEffect {
         }
     }
     void HighGravity::_Apply() {
-        GameInteractor_GravityLevel = GRAVITY_LEVEL_HEAVY;
+        GameInteractor::RawAction::SetLinkGravity(GRAVITY_LEVEL_HEAVY);
     }
     void HighGravity::_Remove() {
-        GameInteractor_GravityLevel = GRAVITY_LEVEL_NORMAL;
+        GameInteractor::RawAction::SetLinkGravity(GRAVITY_LEVEL_NORMAL);
     }
 
     // MARK: - LowGravity
@@ -182,10 +182,10 @@ namespace GameInteractionEffect {
         }
     }
     void LowGravity::_Apply() {
-        GameInteractor_GravityLevel = GRAVITY_LEVEL_LIGHT;
+        GameInteractor::RawAction::SetLinkGravity(GRAVITY_LEVEL_LIGHT);
     }
     void LowGravity::_Remove() {
-        GameInteractor_GravityLevel = GRAVITY_LEVEL_NORMAL;
+        GameInteractor::RawAction::SetLinkGravity(GRAVITY_LEVEL_NORMAL);
     }
 
     // MARK: - GiveHealth
