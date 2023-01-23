@@ -39,11 +39,13 @@ enum GameInteractionEffectQueryResult {
 class GameInteractionEffectBase {
 public:
     virtual GameInteractionEffectQueryResult CanBeApplied() = 0;
+    virtual GameInteractionEffectQueryResult CanBeRemoved();
     GameInteractionEffectQueryResult Apply();
-    virtual void Remove() {};
+    GameInteractionEffectQueryResult Remove();
     int32_t parameter;
 protected:
     virtual void _Apply() = 0;
+    virtual void _Remove() {};
 };
 
 namespace GameInteractionEffect {
@@ -80,19 +82,19 @@ namespace GameInteractionEffect {
     class NoUI: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class HighGravity: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class LowGravity: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class GiveHealth : public GameInteractionEffectBase {
@@ -133,91 +135,91 @@ namespace GameInteractionEffect {
     class GiantLink: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class MinishLink: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class PaperLink: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class InvisibleLink : public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class PacifistMode : public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class DisableZTargeting: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class WeatherRainstorm: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class ReverseControls: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class ForceIronBoots: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class ForceHoverBoots: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class IncreaseRunSpeed: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class DecreaseRunSpeed: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class OneHitKO : public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class IncreaseDamageTaken: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class DecreaseDamageTaken : public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
-        void Remove() override;
+        void _Remove() override;
     };
 
     class GiveDekuShield: public GameInteractionEffectBase {

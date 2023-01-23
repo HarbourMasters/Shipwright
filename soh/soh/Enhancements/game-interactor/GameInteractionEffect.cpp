@@ -44,6 +44,21 @@ GameInteractionEffectQueryResult GameInteractionEffectBase::Apply() {
     return result;
 }
 
+/// For most effects, CanBeRemoved is the same as CanBeApplied. When its not: please override `CanBeRemoved`.
+GameInteractionEffectQueryResult GameInteractionEffectBase::CanBeRemoved() {
+    return CanBeApplied();
+}
+
+GameInteractionEffectQueryResult GameInteractionEffectBase::Remove() {
+    GameInteractionEffectQueryResult result = CanBeRemoved();
+    if (result != GameInteractionEffectQueryResult::Possible) {
+        return result;
+    }
+
+    _Remove();
+    return result;
+}
+
 namespace GameInteractionEffect {
 
     // MARK: - AddHeartContainer
@@ -139,7 +154,7 @@ namespace GameInteractionEffect {
     void NoUI::_Apply() {
         GameInteractor_NoUIActive = 1;
     }
-    void NoUI::Remove() {
+    void NoUI::_Remove() {
         GameInteractor_NoUIActive = 0;
     }
 
@@ -154,7 +169,7 @@ namespace GameInteractionEffect {
     void HighGravity::_Apply() {
         GameInteractor_GravityLevel = GRAVITY_LEVEL_HEAVY;
     }
-    void HighGravity::Remove() {
+    void HighGravity::_Remove() {
         GameInteractor_GravityLevel = GRAVITY_LEVEL_NORMAL;
     }
 
@@ -169,7 +184,7 @@ namespace GameInteractionEffect {
     void LowGravity::_Apply() {
         GameInteractor_GravityLevel = GRAVITY_LEVEL_LIGHT;
     }
-    void LowGravity::Remove() {
+    void LowGravity::_Remove() {
         GameInteractor_GravityLevel = GRAVITY_LEVEL_NORMAL;
     }
 
@@ -277,7 +292,7 @@ namespace GameInteractionEffect {
     void GiantLink::_Apply() {
         GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_GIANT);
     }
-    void GiantLink::Remove() { 
+    void GiantLink::_Remove() { 
         GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_NORMAL);
     }
 
@@ -292,7 +307,7 @@ namespace GameInteractionEffect {
     void MinishLink::_Apply() {
         GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_MINISH);
     }
-    void MinishLink::Remove() {
+    void MinishLink::_Remove() {
         GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_NORMAL);
     }
 
@@ -307,7 +322,7 @@ namespace GameInteractionEffect {
     void PaperLink::_Apply() {
         GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_PAPER);
     }
-    void PaperLink::Remove() {
+    void PaperLink::_Remove() {
         GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_NORMAL);
     }
 
@@ -322,7 +337,7 @@ namespace GameInteractionEffect {
     void InvisibleLink::_Apply() {
         GameInteractor::RawAction::SetLinkInvisibility(1);
     }
-    void InvisibleLink::Remove() {
+    void InvisibleLink::_Remove() {
         GameInteractor::RawAction::SetLinkInvisibility(0);
     }
 
@@ -337,7 +352,7 @@ namespace GameInteractionEffect {
     void PacifistMode::_Apply() {
         GameInteractor::RawAction::SetPacifistMode(1);
     }
-    void PacifistMode::Remove() {
+    void PacifistMode::_Remove() {
         GameInteractor::RawAction::SetPacifistMode(0);
     }
 
@@ -352,7 +367,7 @@ namespace GameInteractionEffect {
     void DisableZTargeting::_Apply() {
         GameInteractor_DisableZTargetingActive = 1;
     }
-    void DisableZTargeting::Remove() {
+    void DisableZTargeting::_Remove() {
         GameInteractor_DisableZTargetingActive = 0;
     }
 
@@ -367,7 +382,7 @@ namespace GameInteractionEffect {
     void WeatherRainstorm::_Apply() {
         GameInteractor::RawAction::SetWeatherStorm(1);
     }
-    void WeatherRainstorm::Remove() {
+    void WeatherRainstorm::_Remove() {
         GameInteractor::RawAction::SetWeatherStorm(0);
     }
 
@@ -382,7 +397,7 @@ namespace GameInteractionEffect {
     void ReverseControls::_Apply() {
         GameInteractor_ReverseControlsActive = 1;
     }
-    void ReverseControls::Remove() {
+    void ReverseControls::_Remove() {
         GameInteractor_ReverseControlsActive = 0;
     }
 
@@ -397,7 +412,7 @@ namespace GameInteractionEffect {
     void ForceIronBoots::_Apply() {
         GameInteractor::RawAction::ForceEquipBoots(PLAYER_BOOTS_IRON);
     }
-    void ForceIronBoots::Remove() {
+    void ForceIronBoots::_Remove() {
         GameInteractor::RawAction::ForceEquipBoots(PLAYER_BOOTS_KOKIRI);
     }
 
@@ -412,7 +427,7 @@ namespace GameInteractionEffect {
     void ForceHoverBoots::_Apply() {
         GameInteractor::RawAction::ForceEquipBoots(PLAYER_BOOTS_HOVER);
     }
-    void ForceHoverBoots::Remove() {
+    void ForceHoverBoots::_Remove() {
         GameInteractor::RawAction::ForceEquipBoots(PLAYER_BOOTS_KOKIRI);
     }
 
@@ -427,7 +442,7 @@ namespace GameInteractionEffect {
     void IncreaseRunSpeed::_Apply() {
         GameInteractor_RunSpeedModifier = 2;
     }
-    void IncreaseRunSpeed::Remove() {
+    void IncreaseRunSpeed::_Remove() {
         GameInteractor_RunSpeedModifier = 0;
     }
 
@@ -442,7 +457,7 @@ namespace GameInteractionEffect {
     void DecreaseRunSpeed::_Apply() {
         GameInteractor_RunSpeedModifier = -2;
     }
-    void DecreaseRunSpeed::Remove() {
+    void DecreaseRunSpeed::_Remove() {
         GameInteractor_RunSpeedModifier = 0;
     }
 
@@ -457,7 +472,7 @@ namespace GameInteractionEffect {
     void OneHitKO::_Apply() {
         GameInteractor_OneHitKOActive = 1;
     }
-    void OneHitKO::Remove() {
+    void OneHitKO::_Remove() {
         GameInteractor_OneHitKOActive = 0;
     }
 
@@ -472,7 +487,7 @@ namespace GameInteractionEffect {
     void IncreaseDamageTaken::_Apply() {
         GameInteractor_DefenseModifier = -parameter;
     }
-    void IncreaseDamageTaken::Remove() {
+    void IncreaseDamageTaken::_Remove() {
         GameInteractor_DefenseModifier = 0;
     }
 
@@ -487,7 +502,7 @@ namespace GameInteractionEffect {
     void DecreaseDamageTaken::_Apply() {
         GameInteractor_DefenseModifier = parameter;
     }
-    void DecreaseDamageTaken::Remove() {
+    void DecreaseDamageTaken::_Remove() {
         GameInteractor_DefenseModifier = 0;
     }
 
