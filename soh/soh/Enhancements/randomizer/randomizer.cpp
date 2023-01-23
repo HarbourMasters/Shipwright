@@ -48,19 +48,40 @@ const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
 const std::string Randomizer::randoMiscHintsTableID = "RandomizerMiscHints";
 
-static const char* englishRupeeNames[81] = {
-    "Rupees",       "Bitcoin",       "Bananas",      "Cornflakes", "Gummybears",   "Floopies",    "Dollars",
-    "Lemmings",     "Emeralds",      "Bucks",        "Rubles",     "Diamonds",     "Moons",       "Stars",
-    "Mana",         "Doll Hairs",    "Dogecoin",     "Mushrooms",  "Experience",   "Friends",     "Coins",
-    "Rings",        "Gil",           "Pokédollars",  "Bells",      "Orbs",         "Bottle Caps", "Simoleons",
-    "Pokémon",      "Toys",          "Smackaroos",   "Zorkmids",   "Zenny",        "Bones",       "Souls",
-    "Studs",        "Munny",         "Rubies",       "Gald",       "Gold",         "Shillings",   "Pounds",
-    "Glimmer",      "Potch",         "Robux",        "V-Bucks",    "Bratwürste",   "Mesetas",     "Coal",
-    "Euro",         "Spoons",        "Cucumbers",    "FPS",        "Shekels",      "Yen",         "Canadian Dollars",
-    "Dollarydoos",  "Copper",        "Silver",       "Platinum",   "Gems",         "Minerals",    "Vespene Gas",
-    "Lumber",       "Jiggies",       "Mumbo Tokens", "KF7 Ammo",   "Remote Mines", "Credits",     "Doubloons",
-    "Ether",        "Doge",          "Cards",        "Talent",     "Poko",         "Lira",        "Kroner",
-    "Store Credit", "Social Credit", "Cocoa Beans",  "Strawbs"
+static const char* englishRupeeNames[165] = { 
+    "Bad RNG Rolls",        "Bananas",              "Beanbean Coins",       "Beans",                "Bells",
+    "Beli",                 "Berries",              "Bison Dollars",        "Bitcoin",              "Blue Essence",
+    "Bolts",                "Bones",                "Boondollars",          "Bottle Caps",          "Bratwürste",
+    "Bucks",                "BugFrags",             "Bǎn",                  "Cards",                "Canadian Dollars",
+    "Chaos Orbs",           "Clams",                "Coal",                 "Cocoa Beans",          "Coins",
+    "Cookies",              "Copper",               "Cor",                  "Cornflakes",           "Credits", 
+    "Crimebucks",           "Crystal Shards",       "Cubits",               "DNA",                  "Dalmations",   
+    "Dampécoin",            "Dark Elixir",          "Darseks",              "Dead Memes",           "Diamonds",     
+    "Doge",                 "Dogecoin",             "Doll Hairs",           "Dollars",              "Dollerydoos",       
+    "Dosh",                 "Doubloons",            "Dwarfbucks",           "Emeralds",             "Energon", 
+    "Eris",                 "Ether",                "Eurodollars",          "Experience",           "Extinction Points",   
+    "Floopies",             "Flurbos",              "Friends",              "Frog Coins",           "Gald", 
+    "Gekz",                 "Gems",                 "Gil",                  "Glitches",             "Glimmer",          
+    "Gold",                 "Gold Dragons",         "Goober Dollars",       "Green Herbs",          "Gummybears",       
+    "Hell",                 "Hylian Loaches",       "ISK",                  "Ice Traps",            "Jiggies",          
+    "KF7 Ammo",             "Kinstones",            "Kremcoins",            "Kroner",               "Leaves",               
+    "Lemmings",             "Lien",                 "Lira",                 "Lumber",               "Lungmen Dollars",      
+    "Macca",                "Mana",                 "Mann Co. Keys",        "Meat",                 "Meat Stacks",         
+    "Medaparts",            "Meseta",               "Mesetas",              "Minerals",             "Monopoly Money",     
+    "Moons",                "Mora",                 "Mumbo Tokens",         "Munny",                "Mushrooms",           
+    "Mysteries",            "Neopoints",            "Notes",                "Nuyen",                "Orbs",                
+    "Pix",                  "Pixels",               "Platinum",             "Pokos",                "Pokédollars",        
+    "Pokémon",              "Potch",                "Pounds",               "Power Pellets",        "Primogems",        
+    "Refined Metal",        "Remote Mines",         "Retweets",             "Rhinu",                "Rings",                
+    "Riot Points",          "Robux",                "Rubies",               "Rubles",               "Runite Ore",          
+    "Rupees",               "Ryō",                  "Réals",                "Saint Quartz",         "Septims",           
+    "Shillings",            "Silver",               "Simoleons",            "Smackaroos",           "Social Credit",      
+    "Souls",                "Spent Casings",        "Spice",                "Spondulicks",          "Star Bits",            
+    "Star Chips",           "Stars",                "Stones of Jordan",     "Store Credit",         "Strawbs",            
+    "Studs",                "Super Sea Snails",     "Talent",               "Teef",                 "Telecrystals",     
+    "Tiberium",             "TokKul",               "Toys",                 "Turnips",              "Upvotes"           
+    "V-Bucks",              "Vespene Gas",          "Watts",                "Widgets",              "Woolongs",        
+    "World Dollars",        "Wumpa Fruit",          "Zenny",                "Zorkmids",             "[P]"
 };
 
 static const char* germanRupeeNames[41] = {

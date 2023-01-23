@@ -469,12 +469,12 @@ s16 func_80AAAF04(PlayState* play, Actor* thisx) {
                     break;
                 case 0x1033:
                 case 0x1067:
-                    NPC_TALK_STATE_ACTION;
+                    return NPC_TALK_STATE_ACTION;
             }
             return NPC_TALK_STATE_IDLE;
         case TEXT_STATE_EVENT:
             if (Message_ShouldAdvance(play)) {
-                NPC_TALK_STATE_ACTION;
+                return NPC_TALK_STATE_ACTION;
             }
         default:
             return NPC_TALK_STATE_TALKING;

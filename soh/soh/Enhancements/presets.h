@@ -86,6 +86,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gNoHeartDrops",
     "gBombchuDrops",
     "gGoronPot",
+    "gFullHealthSpawn",
     "gDampeWin",
     "gRedPotionEffect",
     "gRedPotionHealth",
@@ -173,7 +174,8 @@ const std::vector<const char*> enhancementsCvars = {
     "gBombchuBowlingNoBigCucco",
     "gBombchuBowlingAmmunition",
     "gCreditsFix",
-    "gSilverRupeeJingleExtend"
+    "gSilverRupeeJingleExtend",
+    "gStaticExplosionRadius"
 };
 
 const std::vector<const char*> randomizerCvars = {
