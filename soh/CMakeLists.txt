@@ -1919,6 +1919,32 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	set_target_properties(${PROJECT_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
 endif()
 ################################################################################
+# Find/download Boost
+################################################################################
+include(FetchContent)
+FetchContent_Declare(
+    Boost
+    URL      https://boostorg.jfrog.io/artifactory/main/release/1.81.0/source/boost_1_81_0.tar.gz
+    URL_HASH SHA256=205666dea9f6a7cfed87c7a6dfbeb52a2c1b9de55712c9c1a87735d7181452b6
+    SOURCE_SUBDIR "null" # Set to a nonexistent directory so boost is not built (we don't need to build it)
+    DOWNLOAD_EXTRACT_TIMESTAMP false # supress timestamp warning, not needed since the url wont change
+)
+
+set(Boost_NO_BOOST_CMAKE false)
+set(BOOST_INCLUDEDIR ${FETCHCONTENT_BASE_DIR}/boost-src) # Location where FetchContent stores the source
+message("Searching for Boost installation")
+find_package(Boost)
+
+if (NOT ${Boost_FOUND})
+    message("Boost not found. Downloading now...")
+    FetchContent_MakeAvailable(Boost)
+    message("Boost downloaded to " ${FETCHCONTENT_BASE_DIR}/boost-src)
+    set(BOOST-INCLUDE ${FETCHCONTENT_BASE_DIR}/boost-src)
+else()
+    message("Boost found in " ${Boost_INCLUDE_DIRS})
+    set(BOOST-INCLUDE ${Boost_INCLUDE_DIRS})
+endif()
+################################################################################
 # Compile definitions
 ################################################################################
 find_package(SDL2)
@@ -1955,6 +1981,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
     ${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPD/resource/type
 	${SDL2-INCLUDE}
     ${SDL2-NET-INCLUDE}
+    ${BOOST-INCLUDE}
 	${CMAKE_CURRENT_SOURCE_DIR}/assets/
 	.
 )

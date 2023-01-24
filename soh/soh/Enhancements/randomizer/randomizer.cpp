@@ -39,6 +39,7 @@ std::multimap<std::tuple<s16, s16, s32>, RandomizerCheckObject> checkFromActorMu
 std::set<RandomizerCheck> excludedLocations;
 
 u8 generated;
+char* seedInputBuffer;
 
 const std::string Randomizer::getItemMessageTableID = "Randomizer";
 const std::string Randomizer::hintMessageTableID = "RandomizerHints";
@@ -2766,7 +2767,7 @@ RandomizerCheck Randomizer::GetCheckFromRandomizerInf(RandomizerInf randomizerIn
 
 std::thread randoThread;
 
-void GenerateRandomizerImgui() {
+void GenerateRandomizerImgui(std::string seed = "") {
     CVarSetInteger("gRandoGenerating", 1);
     CVarSave();
 
@@ -2938,13 +2939,23 @@ void GenerateRandomizerImgui() {
         excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
     }
 
-    RandoMain::GenerateRando(cvarSettings, excludedLocations);
+    RandoMain::GenerateRando(cvarSettings, excludedLocations, seed);
+
+    memset(seedInputBuffer, 0, MAX_SEED_BUFFER_SIZE);
 
     CVarSetInteger("gRandoGenerating", 0);
     CVarSave();
     CVarLoad();
 
     generated = 1;
+}
+
+bool GenerateRandomizer(std::string seed /*= ""*/) {
+    if (CVarGetInteger("gRandoGenerating", 0) == 0) {
+        randoThread = std::thread(&GenerateRandomizerImgui, seed);
+        return true;
+    }
+    return false;
 }
 
 void DrawRandoEditor(bool& open) {
@@ -3017,28 +3028,46 @@ void DrawRandoEditor(bool& open) {
     static const char* randoItemPool[4] = { "Plentiful", "Balanced", "Scarce", "Minimal" };
     static const char* randoIceTraps[5] = { "Off", "Normal", "Extra", "Mayhem", "Onslaught" };
 
-    ImGui::SetNextWindowSize(ImVec2(920, 600), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(420, 300), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
 
-    /* [Race Template] Hide preset selector
-    DrawPresetSelector(PRESET_TYPE_RANDOMIZER);
-    */
-
     bool disableEditingRandoSettings = CVarGetInteger("gRandoGenerating", 0) || CVarGetInteger("gOnFileSelectNameEntry", 0);
     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableEditingRandoSettings);
     ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * (disableEditingRandoSettings ? 0.5f : 1.0f));
 
-    ImGui::Dummy(ImVec2(0.0f, 0.0f));
-    if (ImGui::Button("Generate Seed")) {
-        if (CVarGetInteger("gRandoGenerating", 0) == 0) {
-            randoThread = std::thread(&GenerateRandomizerImgui);
-        }
+    /* [Race Template] Hide preset selector
+    DrawPresetSelector(PRESET_TYPE_RANDOMIZER);
+    */
+
+    UIWidgets::Spacer(0);
+
+    ImGui::Text("Seed");
+    if (ImGui::InputText("##RandomizerSeed", seedInputBuffer, MAX_SEED_BUFFER_SIZE, ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterNumbers)) {
+        uint32_t seedInput;
+        ImGui::DataTypeApplyFromText(seedInputBuffer, ImGuiDataType_U32, &seedInput, "%u");
+        strncpy(seedInputBuffer, std::to_string(seedInput).c_str(), MAX_SEED_BUFFER_SIZE);
     }
+    UIWidgets::Tooltip("Leaving this field blank will use a random seed value automatically\nSeed range is 0 - 4,294,967,295");
+    ImGui::SameLine();
+    if (ImGui::Button("New Seed")) {
+        strncpy(seedInputBuffer, std::to_string(rand() & 0xFFFFFFFF).c_str(), MAX_SEED_BUFFER_SIZE);
+    }
+    UIWidgets::Tooltip("Creates a new random seed value to be used when generating a randomizer");
+    ImGui::SameLine();
+    if (ImGui::Button("Clear Seed")) {
+        memset(seedInputBuffer, 0, MAX_SEED_BUFFER_SIZE);
+    }
+
+    UIWidgets::Spacer(0);
+    if (ImGui::Button("Generate Randomizer")) {
+        GenerateRandomizer(seedInputBuffer);
+    }
+
+    UIWidgets::Spacer(0);
     /* [Race Template] Hide the rest of the randomizer menu
-    ImGui::Dummy(ImVec2(0.0f, 0.0f));
     std::string spoilerfilepath = CVarGetString("gSpoilerLog", "");
     ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
 
@@ -5286,6 +5315,7 @@ void InitRandoItemTable() {
 void InitRando() {
     SohImGui::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
     Randomizer::CreateCustomMessages();
+    seedInputBuffer = (char*)calloc(MAX_SEED_BUFFER_SIZE, sizeof(char));
     InitRandoItemTable();
 }
 
@@ -5296,4 +5326,3 @@ void Rando_Init(void) {
 }
 
 }
-

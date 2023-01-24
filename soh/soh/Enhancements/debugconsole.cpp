@@ -944,6 +944,34 @@ static bool SfxHandler(std::shared_ptr<Ship::Console> Console, const std::vector
     return CMD_SUCCESS;
 }
 
+static bool GenerateRandoHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() == 1) {
+        if (GenerateRandomizer()) {
+            return CMD_SUCCESS;
+        }
+    }
+
+    try {
+        uint32_t value = std::stoi(args[1], NULL, 10);
+        std::string seed = "";
+        if (args.size() == 3) {
+            int testing = std::stoi(args[1], nullptr, 10);
+            seed = "seed_testing_count";
+        }
+
+        if (GenerateRandomizer(seed + std::to_string(value))){
+            return CMD_SUCCESS;
+        }
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] seed|count value must be a number.");
+        return CMD_FAILED;
+    }
+
+
+    SohImGui::GetConsole()->SendErrorMessage("[SOH] Rando generation already in progress");
+    return CMD_FAILED;
+}
+
 #define VARTYPE_INTEGER 0
 #define VARTYPE_FLOAT   1
 #define VARTYPE_STRING  2
@@ -1203,6 +1231,11 @@ void DebugConsole_Init(void) {
 
     CMD_REGISTER("sfx", { SfxHandler, "Change SFX.", {
         { "reset|randomize", Ship::ArgumentType::TEXT },
+    }});
+
+    CMD_REGISTER("gen_rando", { GenerateRandoHandler, "Generate a randomizer seed", {
+        { "seed|count", Ship::ArgumentType::NUMBER, true },
+        { "testing", Ship::ArgumentType::NUMBER, true },
     }});
 
     CVarLoad();
