@@ -375,6 +375,8 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", "gMarketSneak", true, false);
                     UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking "
                     "to the guard next to the gate.");
+                    UIWidgets::PaddedEnhancementCheckbox("Faster Farore's Wind", "gFastFarores", true, false);
+                    UIWidgets::Tooltip("Greatly increases cast time of Farore's Wind magic spell.");
                     ImGui::EndMenu();
                 }
 

@@ -185,6 +185,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gMarketSneak",
     "gNutsExplodeBombs",
     "gDrawLineupTick",
+    "gFastFarores",
 };
 
 const std::vector<const char*> cheatCvars = {
@@ -667,6 +668,8 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gMinFrameCount", 200),
 
     PRESET_ENTRY_S32("gNoInputForCredits", 1),
+
+    PRESET_ENTRY_S32("gFastFarores", 1),
 };
 
 const std::vector<PresetEntry> s6PresetEntries = {
