@@ -153,13 +153,7 @@ namespace GameInteractionEffect {
         void _Remove() override;
     };
 
-    class IncreaseRunSpeed: public GameInteractionEffectBase {
-        GameInteractionEffectQueryResult CanBeApplied() override;
-        void _Apply() override;
-        void _Remove() override;
-    };
-
-    class DecreaseRunSpeed: public GameInteractionEffectBase {
+    class ModifyRunSpeedModifier: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
         void _Remove() override;

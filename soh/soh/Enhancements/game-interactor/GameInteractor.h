@@ -19,20 +19,20 @@ enum {
 #ifdef __cplusplus
 extern "C" {
 #endif
-uint32_t GameInteractor_NoUIActive();
-uint32_t GameInteractor_GiantLinkActive();
-uint32_t GameInteractor_MinishLinkActive();
-uint32_t GameInteractor_PaperLinkActive();
-uint32_t GameInteractor_InvisibleLinkActive();
-uint32_t GameInteractor_ResetLinkScale();
-void GameInteractor_SetResetLinkScale(uint32_t scale);
-uint32_t GameInteractor_OneHitKOActive();
-uint32_t GameInteractor_PacifistModeActive();
-uint32_t GameInteractor_DisableZTargetingActive();
-uint32_t GameInteractor_ReverseControlsActive();
+uint8_t GameInteractor_NoUIActive();
+uint8_t GameInteractor_GiantLinkActive();
+uint8_t GameInteractor_MinishLinkActive();
+uint8_t GameInteractor_PaperLinkActive();
+uint8_t GameInteractor_InvisibleLinkActive();
+uint8_t GameInteractor_ResetLinkScale();
+void GameInteractor_SetResetLinkScale(uint8_t scale);
+uint8_t GameInteractor_OneHitKOActive();
+uint8_t GameInteractor_PacifistModeActive();
+uint8_t GameInteractor_DisableZTargetingActive();
+uint8_t GameInteractor_ReverseControlsActive();
 int32_t GameInteractor_DefenseModifier();
 int32_t GameInteractor_RunSpeedModifier();
-uint32_t GameInteractor_GravityLevel();
+uint8_t GameInteractor_GravityLevel();
 #ifdef __cplusplus
 }
 #endif
@@ -46,19 +46,19 @@ public:
     // Gsme State
     class State {
     public:
-        static uint32_t NoUIActive;
-        static uint32_t GiantLinkActive;
-        static uint32_t MinishLinkActive;
-        static uint32_t PaperLinkActive;
-        static uint32_t InvisibleLinkActive;
-        static uint32_t ResetLinkScale;
-        static uint32_t OneHitKOActive;
-        static uint32_t PacifistModeActive;
-        static uint32_t DisableZTargetingActive;
-        static uint32_t ReverseControlsActive;
+        static bool NoUIActive;
+        static bool GiantLinkActive;
+        static bool MinishLinkActive;
+        static bool PaperLinkActive;
+        static bool InvisibleLinkActive;
+        static bool ResetLinkScale;
+        static bool OneHitKOActive;
+        static bool PacifistModeActive;
+        static bool DisableZTargetingActive;
+        static bool ReverseControlsActive;
         static int32_t DefenseModifier;
         static int32_t RunSpeedModifier;
-        static uint32_t GravityLevel;
+        static bool GravityLevel;
     };
 
     // Effects

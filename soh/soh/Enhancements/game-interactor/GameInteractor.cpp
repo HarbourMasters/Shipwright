@@ -21,10 +21,6 @@ extern PlayState* gPlayState;
 
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 
-// MARK: - Game State
-
-uint32_t GameInteractor::State::GravityLevel = GRAVITY_LEVEL_NORMAL;
-
 // MARK: - Effects
 
 GameInteractionEffectQueryResult GameInteractor::CanApplyEffect(GameInteractionEffectBase* effect) {

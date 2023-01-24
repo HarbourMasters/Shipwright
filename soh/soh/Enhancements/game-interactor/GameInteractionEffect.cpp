@@ -378,33 +378,18 @@ namespace GameInteractionEffect {
         GameInteractor::RawAction::ForceEquipBoots(PLAYER_BOOTS_KOKIRI);
     }
 
-    // MARK: - IncreaseRunSpeed
-    GameInteractionEffectQueryResult IncreaseRunSpeed::CanBeApplied() {
+    // MARK: - ModifyRunSpeedModifier
+    GameInteractionEffectQueryResult ModifyRunSpeedModifier::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
-    void IncreaseRunSpeed::_Apply() {
-        GameInteractor::State::RunSpeedModifier = 2;
+    void ModifyRunSpeedModifier::_Apply() {
+        GameInteractor::State::RunSpeedModifier = parameter;
     }
-    void IncreaseRunSpeed::_Remove() {
-        GameInteractor::State::RunSpeedModifier = 0;
-    }
-
-    // MARK: - DecreaseRunSpeed
-    GameInteractionEffectQueryResult DecreaseRunSpeed::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
-            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else {
-            return GameInteractionEffectQueryResult::Possible;
-        }
-    }
-    void DecreaseRunSpeed::_Apply() {
-        GameInteractor::State::RunSpeedModifier = -2;
-    }
-    void DecreaseRunSpeed::_Remove() {
+    void ModifyRunSpeedModifier::_Remove() {
         GameInteractor::State::RunSpeedModifier = 0;
     }
 

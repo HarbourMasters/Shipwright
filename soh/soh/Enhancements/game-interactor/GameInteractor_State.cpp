@@ -1,56 +1,70 @@
 #include "GameInteractor.h"
 
+bool GameInteractor::State::NoUIActive = 0;
+bool GameInteractor::State::GiantLinkActive = 0;
+bool GameInteractor::State::MinishLinkActive = 0;
+bool GameInteractor::State::PaperLinkActive = 0;
+bool GameInteractor::State::InvisibleLinkActive = 0;
+bool GameInteractor::State::ResetLinkScale = 0;
+bool GameInteractor::State::OneHitKOActive = 0;
+bool GameInteractor::State::PacifistModeActive = 0;
+bool GameInteractor::State::DisableZTargetingActive = 0;
+bool GameInteractor::State::ReverseControlsActive = 0;
+int32_t GameInteractor::State::DefenseModifier = 0;
+int32_t GameInteractor::State::RunSpeedModifier = 0;
+bool GameInteractor::State::GravityLevel = GRAVITY_LEVEL_NORMAL;
+
 // MARK: - GameInteractor::State::NoUIActive
-uint32_t GameInteractor_NoUIActive() {
+uint8_t GameInteractor_NoUIActive() {
     return GameInteractor::State::NoUIActive;
 }
 
 // MARK: - GameInteractor::State::GiantLinkActive
-uint32_t GameInteractor_GiantLinkActive() {
+uint8_t GameInteractor_GiantLinkActive() {
     return GameInteractor::State::GiantLinkActive;
 }
 
 // MARK: - GameInteractor::State::MinishLinkActive
-uint32_t GameInteractor_MinishLinkActive() {
+uint8_t GameInteractor_MinishLinkActive() {
     return GameInteractor::State::MinishLinkActive;
 }
 
 // MARK: - GameInteractor::State::PaperLinkActive
-uint32_t GameInteractor_PaperLinkActive() {
+uint8_t GameInteractor_PaperLinkActive() {
     return GameInteractor::State::PaperLinkActive;
 }
 
 // MARK: - GameInteractor::State::InvisibleLinkActive
-uint32_t GameInteractor_InvisibleLinkActive() {
+uint8_t GameInteractor_InvisibleLinkActive() {
     return GameInteractor::State::InvisibleLinkActive;
 }
 
 // MARK: - GameInteractor::State::ResetLinkScale
-uint32_t GameInteractor_ResetLinkScale() {
+uint8_t GameInteractor_ResetLinkScale() {
     return GameInteractor::State::ResetLinkScale;
 }
 
-void GameInteractor_SetResetLinkScale(uint32_t scale) {
+void GameInteractor_SetResetLinkScale(uint8_t scale) {
     GameInteractor::State::ResetLinkScale = scale;
 }
 
 // MARK: - GameInteractor::State::OneHitKOActive
-uint32_t GameInteractor_OneHitKOActive() {
+uint8_t GameInteractor_OneHitKOActive() {
     return GameInteractor::State::OneHitKOActive;
 }
 
 // MARK: - GameInteractor::State::PacifistModeActive
-uint32_t GameInteractor_PacifistModeActive() {
+uint8_t GameInteractor_PacifistModeActive() {
     return GameInteractor::State::PacifistModeActive;
 }
 
 // MARK: - GameInteractor::State::DisableZTargetingActive
-uint32_t GameInteractor_DisableZTargetingActive() {
+uint8_t GameInteractor_DisableZTargetingActive() {
     return GameInteractor::State::DisableZTargetingActive;
 }
 
 // MARK: - GameInteractor::State::DisableCameraRotationActive
-uint32_t GameInteractor_ReverseControlsActive() {
+uint8_t GameInteractor_ReverseControlsActive() {
     return GameInteractor::State::ReverseControlsActive;
 }
 
@@ -65,6 +79,6 @@ int32_t GameInteractor_RunSpeedModifier() {
 }
 
 // MARK: - GameInteractor::State::DisableCameraRotationActive
-uint32_t GameInteractor_GravityLevel() {
+uint8_t GameInteractor_GravityLevel() {
     return GameInteractor::State::GravityLevel;
 }

@@ -352,11 +352,13 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     } else if (effectName == EFFECT_INCREASE_SPEED) {
         effect->category = "speed";
         effect->timeRemaining = 30000;
-        effect->giEffect = new GameInteractionEffect::IncreaseRunSpeed();
+        effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
+        effect->giEffect->parameter = 2;
     } else if (effectName == EFFECT_DECREASE_SPEED) {
         effect->category = "speed";
         effect->timeRemaining = 30000;
-        effect->giEffect = new GameInteractionEffect::DecreaseRunSpeed();
+        effect->giEffect->parameter = -2;
+        effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
     } else if (effectName == EFFECT_OHKO) {
         effect->category = "damage_taken";
         effect->timeRemaining = 30000;
