@@ -59,6 +59,8 @@ public:
         static int32_t DefenseModifier;
         static int32_t RunSpeedModifier;
         static bool GravityLevel;
+
+        static void SetPacifistMode(bool active);
     };
 
     // Effects
@@ -78,10 +80,8 @@ public:
         static void HealOrDamagePlayer(int32_t hearts);
         static void SetPlayerHealth(uint32_t hearts);
         static void SetLinkSize(uint8_t size);
-        static void SetLinkInvisibility(uint8_t effectState);
-        static void SetLinkGravity(int32_t gravityLevel);
-        static void SetPacifistMode(uint8_t effectState);
-        static void SetWeatherStorm(uint8_t effectState);
+        static void SetLinkInvisibility(bool active);
+        static void SetWeatherStorm(bool active);
         static void ForceEquipBoots(uint8_t boots);
         static void FreezePlayer();
         static void BurnPlayer();
@@ -89,6 +89,7 @@ public:
         static void KnockbackPlayer(uint8_t strength);
         static void GiveDekuShield();
         static void SpawnCuccoStorm();
+        static void ForceInterfaceUpdate();
 
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
     };

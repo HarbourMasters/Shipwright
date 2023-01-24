@@ -126,10 +126,10 @@ namespace GameInteractionEffect {
         }
     }
     void HighGravity::_Apply() {
-        GameInteractor::RawAction::SetLinkGravity(GRAVITY_LEVEL_HEAVY);
+        GameInteractor::State::GravityLevel = GRAVITY_LEVEL_HEAVY;
     }
     void HighGravity::_Remove() {
-        GameInteractor::RawAction::SetLinkGravity(GRAVITY_LEVEL_NORMAL);
+        GameInteractor::State::GravityLevel = GRAVITY_LEVEL_NORMAL;
     }
 
     // MARK: - LowGravity
@@ -141,10 +141,10 @@ namespace GameInteractionEffect {
         }
     }
     void LowGravity::_Apply() {
-        GameInteractor::RawAction::SetLinkGravity(GRAVITY_LEVEL_LIGHT);
+        GameInteractor::State::GravityLevel = GRAVITY_LEVEL_LIGHT;
     }
     void LowGravity::_Remove() {
-        GameInteractor::RawAction::SetLinkGravity(GRAVITY_LEVEL_NORMAL);
+        GameInteractor::State::GravityLevel = GRAVITY_LEVEL_NORMAL;
     }
 
     // MARK: - GiveHealth
@@ -282,10 +282,10 @@ namespace GameInteractionEffect {
         }
     }
     void InvisibleLink::_Apply() {
-        GameInteractor::RawAction::SetLinkInvisibility(1);
+        GameInteractor::RawAction::SetLinkInvisibility(true);
     }
     void InvisibleLink::_Remove() {
-        GameInteractor::RawAction::SetLinkInvisibility(0);
+        GameInteractor::RawAction::SetLinkInvisibility(false);
     }
 
     // MARK: - PacifistMode
@@ -297,10 +297,10 @@ namespace GameInteractionEffect {
         }
     }
     void PacifistMode::_Apply() {
-        GameInteractor::RawAction::SetPacifistMode(1);
+        GameInteractor::State::SetPacifistMode(true);
     }
     void PacifistMode::_Remove() {
-        GameInteractor::RawAction::SetPacifistMode(0);
+        GameInteractor::State::SetPacifistMode(false);
     }
 
     // MARK: - DisableZTargeting
@@ -327,10 +327,10 @@ namespace GameInteractionEffect {
         }
     }
     void WeatherRainstorm::_Apply() {
-        GameInteractor::RawAction::SetWeatherStorm(1);
+        GameInteractor::RawAction::SetWeatherStorm(true);
     }
     void WeatherRainstorm::_Remove() {
-        GameInteractor::RawAction::SetWeatherStorm(0);
+        GameInteractor::RawAction::SetWeatherStorm(false);
     }
 
     // MARK: - ReverseControls

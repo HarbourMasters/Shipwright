@@ -74,27 +74,16 @@ void GameInteractor::RawAction::SetLinkSize(uint8_t size) {
     }
 }
 
-void GameInteractor::RawAction::SetLinkInvisibility(uint8_t effectState) {
-    GameInteractor::State::InvisibleLinkActive = effectState;
-    if (!effectState) {
+void GameInteractor::RawAction::SetLinkInvisibility(bool active) {
+    GameInteractor::State::InvisibleLinkActive = active;
+    if (!active) {
         Player* player = GET_PLAYER(gPlayState);
         player->actor.shape.shadowDraw = ActorShadow_DrawFeet;
     }
 }
 
-void GameInteractor::RawAction::SetLinkGravity(int32_t gravityLevel) {
-    GameInteractor::State::GravityLevel = gravityLevel;
-}
-
-void GameInteractor::RawAction::SetPacifistMode(uint8_t effectState) {
-    GameInteractor::State::PacifistModeActive = effectState;
-    // Force interface update to update the button's transparency.
-    gSaveContext.unk_13E8 = 50;
-    Interface_Update(gPlayState);
-}
-
-void GameInteractor::RawAction::SetWeatherStorm(uint8_t effectState) {
-    if (effectState) {
+void GameInteractor::RawAction::SetWeatherStorm(bool active) {
+    if (active) {
         gPlayState->envCtx.unk_F2[0] = 20;    // rain intensity target
         gPlayState->envCtx.gloomySkyMode = 1; // start gloomy sky
         if ((gWeatherMode != 0) || gPlayState->envCtx.unk_17 != 0) {
@@ -167,6 +156,11 @@ void GameInteractor::RawAction::SpawnCuccoStorm() {
     EnNiw* cucco = (EnNiw*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_NIW, player->actor.world.pos.x,
                                        player->actor.world.pos.y + 2200, player->actor.world.pos.z, 0, 0, 0, 0, 0);
     cucco->actionFunc = func_80AB70A0_nocutscene;
+}
+
+void GameInteractor::RawAction::ForceInterfaceUpdate() {
+    gSaveContext.unk_13E8 = 50;
+    Interface_Update(gPlayState);
 }
 
 GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {

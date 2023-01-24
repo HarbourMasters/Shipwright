@@ -1,5 +1,7 @@
 #include "GameInteractor.h"
 
+// MARK: - State Definitions
+
 bool GameInteractor::State::NoUIActive = 0;
 bool GameInteractor::State::GiantLinkActive = 0;
 bool GameInteractor::State::MinishLinkActive = 0;
@@ -13,6 +15,14 @@ bool GameInteractor::State::ReverseControlsActive = 0;
 int32_t GameInteractor::State::DefenseModifier = 0;
 int32_t GameInteractor::State::RunSpeedModifier = 0;
 bool GameInteractor::State::GravityLevel = GRAVITY_LEVEL_NORMAL;
+
+void GameInteractor::State::SetPacifistMode(bool active) {
+    PacifistModeActive = active;
+    // Force interface update to update the button's transparency.
+    GameInteractor::RawAction::ForceInterfaceUpdate();
+}
+
+// MARK: C - Bridge
 
 // MARK: - GameInteractor::State::NoUIActive
 uint8_t GameInteractor_NoUIActive() {
@@ -37,6 +47,10 @@ uint8_t GameInteractor_PaperLinkActive() {
 // MARK: - GameInteractor::State::InvisibleLinkActive
 uint8_t GameInteractor_InvisibleLinkActive() {
     return GameInteractor::State::InvisibleLinkActive;
+}
+
+void GameInteractor_SetInvisibleLinkActive(uint8_t active) {
+    GameInteractor::State::InvisibleLinkActive = active;
 }
 
 // MARK: - GameInteractor::State::ResetLinkScale
