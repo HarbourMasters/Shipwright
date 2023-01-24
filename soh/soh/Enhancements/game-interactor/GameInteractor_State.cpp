@@ -3,11 +3,8 @@
 // MARK: - State Definitions
 
 bool GameInteractor::State::NoUIActive = 0;
-bool GameInteractor::State::GiantLinkActive = 0;
-bool GameInteractor::State::MinishLinkActive = 0;
-bool GameInteractor::State::PaperLinkActive = 0;
+GILinkSize GameInteractor::State::LinkSize = GI_LINK_SIZE_NORMAL;
 bool GameInteractor::State::InvisibleLinkActive = 0;
-bool GameInteractor::State::ResetLinkScale = 0;
 bool GameInteractor::State::OneHitKOActive = 0;
 bool GameInteractor::State::PacifistModeActive = 0;
 bool GameInteractor::State::DisableZTargetingActive = 0;
@@ -29,19 +26,9 @@ uint8_t GameInteractor_NoUIActive() {
     return GameInteractor::State::NoUIActive;
 }
 
-// MARK: - GameInteractor::State::GiantLinkActive
-uint8_t GameInteractor_GiantLinkActive() {
-    return GameInteractor::State::GiantLinkActive;
-}
-
-// MARK: - GameInteractor::State::MinishLinkActive
-uint8_t GameInteractor_MinishLinkActive() {
-    return GameInteractor::State::MinishLinkActive;
-}
-
-// MARK: - GameInteractor::State::PaperLinkActive
-uint8_t GameInteractor_PaperLinkActive() {
-    return GameInteractor::State::PaperLinkActive;
+// MARK: - GameInteractor::State::LinkSize
+GILinkSize GameInteractor_LinkSize() {
+    return GameInteractor::State::LinkSize;
 }
 
 // MARK: - GameInteractor::State::InvisibleLinkActive
@@ -51,15 +38,6 @@ uint8_t GameInteractor_InvisibleLinkActive() {
 
 void GameInteractor_SetInvisibleLinkActive(uint8_t active) {
     GameInteractor::State::InvisibleLinkActive = active;
-}
-
-// MARK: - GameInteractor::State::ResetLinkScale
-uint8_t GameInteractor_ResetLinkScale() {
-    return GameInteractor::State::ResetLinkScale;
-}
-
-void GameInteractor_SetResetLinkScale(uint8_t scale) {
-    GameInteractor::State::ResetLinkScale = scale;
 }
 
 // MARK: - GameInteractor::State::OneHitKOActive

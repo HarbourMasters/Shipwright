@@ -53,27 +53,6 @@ void GameInteractor::RawAction::SetPlayerHealth(int16_t hearts) {
     gSaveContext.health = hearts * 0x10;
 }
 
-void GameInteractor::RawAction::SetLinkSize(GILinkSize size) {
-    GameInteractor::State::GiantLinkActive = 0;
-    GameInteractor::State::MinishLinkActive = 0;
-    GameInteractor::State::PaperLinkActive = 0;
-
-    switch (size) {
-        case GI_LINK_SIZE_NORMAL:
-            GameInteractor::State::ResetLinkScale = 1;
-            break;
-        case GI_LINK_SIZE_GIANT:
-            GameInteractor::State::GiantLinkActive = 1;
-            break;
-        case GI_LINK_SIZE_MINISH:
-            GameInteractor::State::MinishLinkActive = 1;
-            break;
-        case GI_LINK_SIZE_PAPER:
-            GameInteractor::State::PaperLinkActive = 1;
-            break;
-    }
-}
-
 void GameInteractor::RawAction::SetLinkInvisibility(bool active) {
     GameInteractor::State::InvisibleLinkActive = active;
     if (!active) {

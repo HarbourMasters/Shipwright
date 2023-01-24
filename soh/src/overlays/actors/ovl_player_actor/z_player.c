@@ -10986,37 +10986,39 @@ void Player_Update(Actor* thisx, PlayState* play) {
     MREG(54) = this->actor.world.pos.z;
     MREG(55) = this->actor.world.rot.y;
 
-    if (GameInteractor_GiantLinkActive()) {
-        this->actor.scale.x = 0.02f;
-        this->actor.scale.y = 0.02f;
-        this->actor.scale.z = 0.02f;
+    switch (GameInteractor_LinkSize()) {
+        case GI_LINK_SIZE_GIANT:
+            this->actor.scale.x = 0.02f;
+            this->actor.scale.y = 0.02f;
+            this->actor.scale.z = 0.02f;
+            break;
+        case GI_LINK_SIZE_MINISH:
+            this->actor.scale.x = 0.001f;
+            this->actor.scale.y = 0.001f;
+            this->actor.scale.z = 0.001f;
+            break;
+        case GI_LINK_SIZE_PAPER:
+            this->actor.scale.x = 0.001f;
+            this->actor.scale.y = 0.01f;
+            this->actor.scale.z = 0.01f;
+            break;
+        case GI_LINK_SIZE_NORMAL:
+        default:
+            this->actor.scale.x = 0.01f;
+            this->actor.scale.y = 0.01f;
+            this->actor.scale.z = 0.01f;
+            break;
     }
 
-    if (GameInteractor_MinishLinkActive()) {
-        this->actor.scale.x = 0.001f;
-        this->actor.scale.y = 0.001f;
-        this->actor.scale.z = 0.001f;
-    }
-
-    if (GameInteractor_PaperLinkActive()) {
-        this->actor.scale.x = 0.001f;
-        this->actor.scale.y = 0.01f;
-        this->actor.scale.z = 0.01f;
-    }
-
-    if (GameInteractor_ResetLinkScale()) {
-        this->actor.scale.x = 0.01f;
-        this->actor.scale.y = 0.01f;
-        this->actor.scale.z = 0.01f;
-        GameInteractor_SetResetLinkScale(0);
-    }
-
-    if (GameInteractor_GravityLevel() == GI_GRAVITY_LEVEL_HEAVY) {
-        this->actor.gravity = -4.0f;
-    }
-
-    if (GameInteractor_GravityLevel() == GI_GRAVITY_LEVEL_LIGHT) {
-        this->actor.gravity = -0.3f;
+    switch (GameInteractor_GravityLevel()) {
+        case GI_GRAVITY_LEVEL_HEAVY:
+            this->actor.gravity = -4.0f;
+            break;
+        case GI_GRAVITY_LEVEL_LIGHT:
+            this->actor.gravity = -0.3f;
+            break;
+        default:
+            break;
     }
 }
 

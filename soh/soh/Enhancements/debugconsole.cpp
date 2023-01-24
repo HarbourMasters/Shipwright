@@ -518,7 +518,8 @@ static bool GiantLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
         return CMD_FAILED;
     }
 
-    GameInteractionEffectBase* effect = new GameInteractionEffect::GiantLink();
+    GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyLinkSize();
+    effect->parameter = GI_LINK_SIZE_GIANT;
     GameInteractionEffectQueryResult result =
         state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
@@ -544,7 +545,8 @@ static bool MinishLinkHandler(std::shared_ptr<Ship::Console> Console, const std:
         return CMD_FAILED;
     }
 
-    GameInteractionEffectBase* effect = new GameInteractionEffect::MinishLink();
+    GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyLinkSize();
+    effect->parameter = GI_LINK_SIZE_MINISH;
     GameInteractionEffectQueryResult result =
         state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
@@ -870,7 +872,8 @@ static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
 
     try {
         uint8_t active = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        GameInteractionEffectBase* effect = new GameInteractionEffect::PaperLink();
+        GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyLinkSize();
+        effect->parameter = GI_LINK_SIZE_PAPER;
         GameInteractionEffectQueryResult result = active ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
 
         if (result == GameInteractionEffectQueryResult::Possible) {

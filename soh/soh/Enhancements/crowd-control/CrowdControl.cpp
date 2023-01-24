@@ -312,15 +312,18 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     } else if (effectName == EFFECT_GIANT_LINK) {
         effect->category = "link_size";
         effect->timeRemaining = 30000;
-        effect->giEffect = new GameInteractionEffect::GiantLink();
+        effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
+        effect->giEffect->parameter = GI_LINK_SIZE_GIANT;
     } else if (effectName == EFFECT_MINISH_LINK) {
         effect->category = "link_size";
         effect->timeRemaining = 30000;
-        effect->giEffect = new GameInteractionEffect::MinishLink();
+        effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
+        effect->giEffect->parameter = GI_LINK_SIZE_MINISH;
     } else if (effectName == EFFECT_PAPER_LINK) {
         effect->category = "link_size";
         effect->timeRemaining = 30000;
-        effect->giEffect = new GameInteractionEffect::PaperLink();
+        effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
+        effect->giEffect->parameter = GI_LINK_SIZE_PAPER;
     } else if (effectName == EFFECT_INVISIBLE_LINK) {
         effect->category = "link_size";
         effect->timeRemaining = 30000;

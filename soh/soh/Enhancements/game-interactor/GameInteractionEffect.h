@@ -87,19 +87,7 @@ namespace GameInteractionEffect {
         void _Apply() override;
     };
 
-    class GiantLink: public GameInteractionEffectBase {
-        GameInteractionEffectQueryResult CanBeApplied() override;
-        void _Apply() override;
-        void _Remove() override;
-    };
-
-    class MinishLink: public GameInteractionEffectBase {
-        GameInteractionEffectQueryResult CanBeApplied() override;
-        void _Apply() override;
-        void _Remove() override;
-    };
-
-    class PaperLink: public GameInteractionEffectBase {
+    class ModifyLinkSize: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
         void _Remove() override;

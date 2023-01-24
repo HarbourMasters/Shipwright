@@ -126,7 +126,7 @@ namespace GameInteractionEffect {
         }
     }
     void ModifyGravity::_Apply() {
-        GameInteractor::State::GravityLevel = GI_GRAVITY_LEVEL_HEAVY;
+        GameInteractor::State::GravityLevel = (GIGravityLevel)parameter;
     }
     void ModifyGravity::_Remove() {
         GameInteractor::State::GravityLevel = GI_GRAVITY_LEVEL_NORMAL;
@@ -213,49 +213,19 @@ namespace GameInteractionEffect {
         GameInteractor::RawAction::KnockbackPlayer(parameter);
     }
 
-    // MARK: - GiantLink
-    GameInteractionEffectQueryResult GiantLink::CanBeApplied() {
+    // MARK: - ModifyLinkSize
+    GameInteractionEffectQueryResult ModifyLinkSize::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
-    void GiantLink::_Apply() {
-        GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_GIANT);
+    void ModifyLinkSize::_Apply() {
+        GameInteractor::State::LinkSize = (GILinkSize)parameter;
     }
-    void GiantLink::_Remove() { 
-        GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_NORMAL);
-    }
-
-    // MARK: - MinishLink
-    GameInteractionEffectQueryResult MinishLink::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
-            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else {
-            return GameInteractionEffectQueryResult::Possible;
-        }
-    }
-    void MinishLink::_Apply() {
-        GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_MINISH);
-    }
-    void MinishLink::_Remove() {
-        GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_NORMAL);
-    }
-
-    // MARK: - PaperLink
-    GameInteractionEffectQueryResult PaperLink::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
-            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else {
-            return GameInteractionEffectQueryResult::Possible;
-        }
-    }
-    void PaperLink::_Apply() {
-        GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_PAPER);
-    }
-    void PaperLink::_Remove() {
-        GameInteractor::RawAction::SetLinkSize(GI_LINK_SIZE_NORMAL);
+    void ModifyLinkSize::_Remove() {
+        GameInteractor::State::LinkSize = GI_LINK_SIZE_NORMAL;
     }
 
     // MARK: - InvisibleLink

@@ -22,12 +22,9 @@ typedef enum {
 extern "C" {
 #endif
 uint8_t GameInteractor_NoUIActive();
-uint8_t GameInteractor_GiantLinkActive();
-uint8_t GameInteractor_MinishLinkActive();
-uint8_t GameInteractor_PaperLinkActive();
+GILinkSize GameInteractor_LinkSize();
 uint8_t GameInteractor_InvisibleLinkActive();
 uint8_t GameInteractor_ResetLinkScale();
-void GameInteractor_SetResetLinkScale(uint8_t scale);
 uint8_t GameInteractor_OneHitKOActive();
 uint8_t GameInteractor_PacifistModeActive();
 uint8_t GameInteractor_DisableZTargetingActive();
@@ -49,11 +46,8 @@ public:
     class State {
     public:
         static bool NoUIActive;
-        static bool GiantLinkActive;
-        static bool MinishLinkActive;
-        static bool PaperLinkActive;
+        static GILinkSize LinkSize;
         static bool InvisibleLinkActive;
-        static bool ResetLinkScale;
         static bool OneHitKOActive;
         static bool PacifistModeActive;
         static bool DisableZTargetingActive;
@@ -81,7 +75,6 @@ public:
         static void AddOrRemoveMagic(int8_t amount);
         static void HealOrDamagePlayer(int16_t hearts);
         static void SetPlayerHealth(int16_t hearts);
-        static void SetLinkSize(GILinkSize size);
         static void SetLinkInvisibility(bool active);
         static void SetWeatherStorm(bool active);
         static void ForceEquipBoots(int8_t boots);
