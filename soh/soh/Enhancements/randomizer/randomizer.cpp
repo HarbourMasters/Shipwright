@@ -227,6 +227,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Shuffle Weird Egg", RSK_SHUFFLE_WEIRD_EGG },
     { "Shuffle Settings:Shuffle Frog Song Rupees", RSK_SHUFFLE_FROG_SONG_RUPEES },
     { "Shuffle Settings:Shuffle Merchants", RSK_SHUFFLE_MERCHANTS },
+    { "Shuffle Settings:Shuffle 100 GS Reward", RSK_SHUFFLE_100_GS_REWARD },
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
@@ -739,6 +740,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_KOKIRI_SWORD:
                     case RSK_SHUFFLE_WEIRD_EGG:
                     case RSK_SHUFFLE_FROG_SONG_RUPEES:
+                    case RSK_SHUFFLE_100_GS_REWARD:
                     case RSK_RANDOM_MQ_DUNGEONS:
                     case RSK_STARTING_DEKU_SHIELD:
                     case RSK_STARTING_KOKIRI_SWORD:
@@ -948,6 +950,8 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_DUNGEONS;
                         } else if(it.value() == "LACS-Tokens") {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_TOKENS;
+                        } else if(it.value() == "100 GS Reward") {
+                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_KAK_TOKENS;
                         }
                         break;
                     case RSK_SKIP_CHILD_ZELDA:
@@ -2812,6 +2816,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVarGetInteger("gRandomizeShuffleAdultTrade", 0);
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVarGetInteger("gRandomizeShuffleBeans", 0);
     cvarSettings[RSK_SHUFFLE_MERCHANTS] = CVarGetInteger("gRandomizeShuffleMerchants", RO_SHUFFLE_MERCHANTS_OFF);
+    cvarSettings[RSK_SHUFFLE_100_GS_REWARD] = CVarGetInteger("gRandomizeShuffle100GSReward", RO_GENERIC_OFF);
     cvarSettings[RSK_ENABLE_BOMBCHU_DROPS] = CVarGetInteger("gRandomizeEnableBombchuDrops", 0);
     cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = CVarGetInteger("gRandomizeBombchusInLogic", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVarGetInteger("gRandomizeSkipChildZelda", 0);
@@ -2993,10 +2998,11 @@ void DrawRandoEditor(bool& open) {
     static const char* randoShuffleGerudoFortressKeys[4] = { "Vanilla", "Any Dungeon", "Overworld", "Anywhere" };
     static const char* randoShuffleBossKeys[6] = { "Start With",  "Vanilla",   "Own Dungeon",
                                             "Any Dungeon", "Overworld", "Anywhere" };
-    static const char* randoShuffleGanonsBossKey[12] = {"Vanilla", "Own dungeon", "Start with", 
+    static const char* randoShuffleGanonsBossKey[13] = {"Vanilla", "Own dungeon", "Start with", 
                                                 "Any Dungeon", "Overworld", "Anywhere", 
                                                 "LACS-Vanilla", "LACS-Medallions", "LACS-Stones", 
-                                                "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens"};
+                                                "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens",
+                                                "100 GS Reward"};
     static const char* randoShuffleKeyRings[4] = { "Off", "Random", "Count", "Selection" };
 
     // Misc Settings
@@ -3660,6 +3666,22 @@ void DrawRandoEditor(bool& open) {
 
                 UIWidgets::PaddedSeparator();
 
+                // Shuffle 100 GS Reward
+                // Forcefully enabled if Ganon's Boss Key is on the cursed man
+                bool forceEnable100GSShuffle =
+                    (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) == RO_GANON_BOSS_KEY_KAK_TOKENS);
+                const char* disable100GSRewardText = "This option is forcefully enabled because \"Ganon's Boss Key\" is set to \"100 GS Reward.\"";
+                UIWidgets::EnhancementCheckbox(Settings::Shuffle100GSReward.GetName().c_str(), "gRandomizeShuffle100GSReward",
+                    forceEnable100GSShuffle, disable100GSRewardText, UIWidgets::CheckboxGraphics::Checkmark);
+                UIWidgets::InsertHelpHoverText(
+                    "Shuffle the item the cursed rich man in the House of Skulltula gives when you "
+                    "have collected all 100 Gold Skulltula Tokens.\n"
+                    "\n"
+                    "You can still talk to him multiple times to get Huge Rupees."
+                );
+
+                UIWidgets::PaddedSeparator();
+
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
 
@@ -3820,7 +3842,9 @@ void DrawRandoEditor(bool& open) {
                     "- Stones: Obtain the specified amount of spiritual stones.\n"
                     "- Dungeon rewards: Obtain the specified total sum of spiritual stones or medallions.\n"
                     "- Dungeons: Complete the specified amount of dungeons. Dungeons are considered complete after stepping in to the blue warp after the boss.\n"
-                    "- Tokens: Obtain the specified amount of Skulltula tokens."
+                    "- Tokens: Obtain the specified amount of Skulltula tokens.\n"
+                    "\n"
+                    "100 GS Reward - Ganon's Boss Key will be awarded by the cursed rich man after you collect 100 Gold Skulltula Tokens."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, RO_GANON_BOSS_KEY_MAX, RO_GANON_BOSS_KEY_VANILLA);
                 ImGui::PopItemWidth();

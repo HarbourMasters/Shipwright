@@ -641,6 +641,10 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Injects item counts in pickup messages, like golden skulltula tokens and heart pieces");
                 UIWidgets::PaddedEnhancementCheckbox("Pull grave during the day", "gDayGravePull", true, false);
                 UIWidgets::Tooltip("Allows graves to be pulled when child during the day");
+                UIWidgets::PaddedEnhancementCheckbox("Dogs follow you everywhere", "gDogFollowsEverywhere", true, false);
+                UIWidgets::Tooltip("Allows dogs to follow you anywhere you go, even if you leave the market");
+                UIWidgets::PaddedEnhancementCheckbox("Don't require input for Credits sequence", "gNoInputForCredits", true, false);
+                UIWidgets::Tooltip("Removes the input requirement on textboxes after defeating Ganon, allowing Credits sequence to continue to progress");
 
                 // Blue Fire Arrows
                 bool forceEnableBlueFireArrows = gSaveContext.n64ddFlag &&
@@ -1001,6 +1005,7 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Makes every surface in the game climbable");
             UIWidgets::PaddedEnhancementCheckbox("Hookshot Everything", "gHookshotEverything", true, false);
             UIWidgets::Tooltip("Makes every surface in the game hookshot-able");
+            UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.1fx", "##gCheatHookshotReachMultiplier", "gCheatHookshotReachMultiplier", 1.0f, 5.0f, "", 1.0f, false);
             UIWidgets::PaddedEnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL", true, false);
             UIWidgets::Tooltip("Holding L makes you float into the air");
             UIWidgets::PaddedEnhancementCheckbox("Super Tunic", "gSuperTunic", true, false);
@@ -1123,6 +1128,8 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Hides the game version and build details in the boot logo start screen");
             UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
             UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
+            UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", "gDebugWarpScreenTranslation", true, false);
+            UIWidgets::Tooltip("Translate the Debug Warp Screen based on the game language");
             UIWidgets::PaddedSeparator();
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
             ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0,0));
@@ -1168,6 +1175,14 @@ namespace GameMenuBar {
                 CVarSetInteger("gActorViewerEnabled", !currentValue);
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Actor Viewer", CVarGetInteger("gActorViewerEnabled", 0));
+            }
+            UIWidgets::Spacer(0);
+            if (ImGui::Button(GetWindowButtonText("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
+            {
+                bool currentValue = CVarGetInteger("gDLViewerEnabled", 0);
+                CVarSetInteger("gDLViewerEnabled", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0));
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);

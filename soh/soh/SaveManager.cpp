@@ -1337,6 +1337,7 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
     SaveManager::Instance->LoadData("isMasterQuest", gSaveContext.isMasterQuest);
+    SaveManager::Instance->LoadData("dogParams", gSaveContext.dogParams);
 }
 
 void SaveManager::LoadBaseVersion4() {
@@ -1747,6 +1748,7 @@ void SaveManager::SaveBase() {
         SaveManager::Instance->SaveData("tempSwchFlags", gSaveContext.childFW.tempSwchFlags);
         SaveManager::Instance->SaveData("tempCollectFlags", gSaveContext.childFW.tempCollectFlags);
     });
+    SaveManager::Instance->SaveData("dogParams", gSaveContext.dogParams);
 }
 
 void SaveManager::SaveArray(const std::string& name, const size_t size, SaveArrayFunc func) {
