@@ -3023,7 +3023,9 @@ void DrawRandoEditor(bool& open) {
         return;
     }
 
+    /* [Race Template] Hide preset selector
     DrawPresetSelector(PRESET_TYPE_RANDOMIZER);
+    */
 
     bool disableEditingRandoSettings = CVarGetInteger("gRandoGenerating", 0) || CVarGetInteger("gOnFileSelectNameEntry", 0);
     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableEditingRandoSettings);
@@ -3035,6 +3037,7 @@ void DrawRandoEditor(bool& open) {
             randoThread = std::thread(&GenerateRandomizerImgui);
         }
     }
+    /* [Race Template] Hide the rest of the randomizer menu
     ImGui::Dummy(ImVec2(0.0f, 0.0f));
     std::string spoilerfilepath = CVarGetString("gSpoilerLog", "");
     ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
@@ -4445,6 +4448,7 @@ void DrawRandoEditor(bool& open) {
 
         ImGui::EndTabBar();
     }
+    */
     ImGui::PopItemFlag();
     ImGui::PopStyleVar();
     ImGui::End();

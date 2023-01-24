@@ -44,10 +44,13 @@ typedef struct PresetEntry {
     { cvar, PRESET_ENTRY_TYPE_STRING, value }
 
 void DrawPresetSelector(PresetType presetType);
+void clearCvars(std::vector<const char*> cvarsToClear);
+void applyPreset(std::vector<PresetEntry> entries);
 
 // TODO: Ideally everything below this point will come from one/many JSON files
 
 const std::vector<const char*> enhancementsCvars = {
+    /* [Race Template] Prevent controls cvars from being reset
     "gDpadPause",
     "gDpadText",
     "gDpadOcarina",
@@ -60,6 +63,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gInvertYAxis",
     "gRightStickAiming",
     "gDisableAutoCenterViewFirstPerson",
+    */
     "gTextSpeed",
     "gMweepSpeed",
     "gForgeTime",
@@ -177,6 +181,46 @@ const std::vector<const char*> enhancementsCvars = {
     "gSilverRupeeJingleExtend",
     "gStaticExplosionRadius",
     "gNoInputForCredits",
+    "gDogFollowsEverywhere",
+    "gMarketSneak",
+    "gNutsExplodeBombs",
+    "gDrawLineupTick",
+};
+
+const std::vector<const char*> cheatCvars = {
+    "gEnableWalkModify",
+    "gGoronPot",
+    "gDampeWin",
+    "gCustomizeShootingGallery",
+    "gCustomizeBombchuBowling",
+    "gCustomizeFishing",
+    "gInfiniteAmmo",
+    "gInfiniteEpona",
+    "gInfiniteHealth",
+    "gInfiniteMagic",
+    "gInfiniteMoney",
+    "gInfiniteNayru",
+    "gNoClip",
+    "gClimbEverything",
+    "gHookshotEverything",
+    "gCheatHookshotReachMultiplier",
+    "gMoonJumpOnL",
+    "gSuperTunic",
+    "gEzISG",
+    "gTimelessEquipment",
+    "gCheatEasyPauseBufferEnabled",
+    "gNoRestrictItems",
+    "gFreezeTime",
+    "gPrevTime",
+    "gDropsDontDie",
+    "gFireproofDekuShield",
+    "gShieldTwoHanded",
+    "gTimeSync",
+    "gDebugEnabled",
+    "gSkulltulaDebugEnabled",
+    "gConsoleEnabled",
+    "gSkipLogoTitle",
+    "gSaveFileID",
 };
 
 const std::vector<const char*> randomizerCvars = {
@@ -295,6 +339,9 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeTokenCount",
     "gRandomizeWarpSongText",
     "gRandomizeZorasFountain",
+};
+
+const std::vector<PresetEntry> racePresetEntries = {
 };
 
 const std::vector<PresetEntry> vanillaPlusPresetEntries = {
