@@ -51,13 +51,7 @@ namespace GameInteractionEffect {
         void _Remove() override;
     };
 
-    class HighGravity: public GameInteractionEffectBase {
-        GameInteractionEffectQueryResult CanBeApplied() override;
-        void _Apply() override;
-        void _Remove() override;
-    };
-
-    class LowGravity: public GameInteractionEffectBase {
+    class ModifyGravity: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
         void _Remove() override;
@@ -141,13 +135,7 @@ namespace GameInteractionEffect {
         void _Remove() override;
     };
 
-    class ForceIronBoots: public GameInteractionEffectBase {
-        GameInteractionEffectQueryResult CanBeApplied() override;
-        void _Apply() override;
-        void _Remove() override;
-    };
-
-    class ForceHoverBoots: public GameInteractionEffectBase {
+    class ForceEquipBoots: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
         void _Remove() override;

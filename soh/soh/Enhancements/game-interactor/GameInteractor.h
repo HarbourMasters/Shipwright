@@ -5,16 +5,18 @@
 
 #include "GameInteractionEffect.h"
 
-enum {
-    GI_LINK_SIZE_NORMAL,
-    GI_LINK_SIZE_GIANT,
-    GI_LINK_SIZE_MINISH,
-    GI_LINK_SIZE_PAPER
-};
+typedef enum {
+    /* 0x00 */ GI_LINK_SIZE_NORMAL,
+    /* 0x01 */ GI_LINK_SIZE_GIANT,
+    /* 0x02 */ GI_LINK_SIZE_MINISH,
+    /* 0x03 */ GI_LINK_SIZE_PAPER,
+} GILinkSize;
 
-#define GRAVITY_LEVEL_NORMAL 1.0f
-#define GRAVITY_LEVEL_LIGHT 0.0f
-#define GRAVITY_LEVEL_HEAVY 2.0f
+typedef enum {
+    /* 0x00 */ GI_GRAVITY_LEVEL_LIGHT,
+    /* 0x01 */ GI_GRAVITY_LEVEL_NORMAL,
+    /* 0x02 */ GI_GRAVITY_LEVEL_HEAVY,
+} GIGravityLevel;
 
 #ifdef __cplusplus
 extern "C" {
@@ -32,7 +34,7 @@ uint8_t GameInteractor_DisableZTargetingActive();
 uint8_t GameInteractor_ReverseControlsActive();
 int32_t GameInteractor_DefenseModifier();
 int32_t GameInteractor_RunSpeedModifier();
-uint8_t GameInteractor_GravityLevel();
+GIGravityLevel GameInteractor_GravityLevel();
 #ifdef __cplusplus
 }
 #endif
@@ -58,7 +60,7 @@ public:
         static bool ReverseControlsActive;
         static int32_t DefenseModifier;
         static int32_t RunSpeedModifier;
-        static bool GravityLevel;
+        static GIGravityLevel GravityLevel;
 
         static void SetPacifistMode(bool active);
     };
@@ -79,7 +81,7 @@ public:
         static void AddOrRemoveMagic(int32_t amount);
         static void HealOrDamagePlayer(int32_t hearts);
         static void SetPlayerHealth(uint32_t hearts);
-        static void SetLinkSize(uint8_t size);
+        static void SetLinkSize(GILinkSize size);
         static void SetLinkInvisibility(bool active);
         static void SetWeatherStorm(bool active);
         static void ForceEquipBoots(uint8_t boots);

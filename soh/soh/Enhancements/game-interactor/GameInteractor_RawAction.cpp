@@ -53,7 +53,7 @@ void GameInteractor::RawAction::SetPlayerHealth(uint32_t hearts) {
     gSaveContext.health = hearts * 0x10;
 }
 
-void GameInteractor::RawAction::SetLinkSize(uint8_t size) {
+void GameInteractor::RawAction::SetLinkSize(GILinkSize size) {
     GameInteractor::State::GiantLinkActive = 0;
     GameInteractor::State::MinishLinkActive = 0;
     GameInteractor::State::PaperLinkActive = 0;

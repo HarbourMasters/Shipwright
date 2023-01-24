@@ -286,11 +286,13 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     } else if (effectName == EFFECT_HIGH_GRAVITY) {
         effect->category = "gravity";
         effect->timeRemaining = 30000;
-        effect->giEffect = new GameInteractionEffect::HighGravity();
+        effect->giEffect = new GameInteractionEffect::ModifyGravity();
+        effect->giEffect->parameter = GI_GRAVITY_LEVEL_HEAVY;
     } else if (effectName == EFFECT_LOW_GRAVITY) {
         effect->category = "gravity";
         effect->timeRemaining = 30000;
-        effect->giEffect = new GameInteractionEffect::LowGravity();
+        effect->giEffect = new GameInteractionEffect::ModifyGravity();
+        effect->giEffect->parameter = GI_GRAVITY_LEVEL_LIGHT;
     } else if (effectName == EFFECT_KILL) {
         effect->giEffect = new GameInteractionEffect::SetPlayerHealth();
         effect->value[0] = 0;
@@ -342,11 +344,13 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     } else if (effectName == EFFECT_IRON_BOOTS) {
         effect->category = "boots";
         effect->timeRemaining = 30000;
-        effect->giEffect = new GameInteractionEffect::ForceIronBoots();
+        effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
+        effect->giEffect->parameter = PLAYER_BOOTS_IRON;
     } else if (effectName == EFFECT_HOVER_BOOTS) {
         effect->category = "boots";
         effect->timeRemaining = 30000;
-        effect->giEffect = new GameInteractionEffect::ForceHoverBoots();
+        effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
+        effect->giEffect->parameter = PLAYER_BOOTS_HOVER;;
     } else if (effectName == EFFECT_GIVE_DEKU_SHIELD) {
         effect->giEffect = new GameInteractionEffect::GiveDekuShield();
     } else if (effectName == EFFECT_INCREASE_SPEED) {

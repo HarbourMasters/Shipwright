@@ -117,34 +117,19 @@ namespace GameInteractionEffect {
         GameInteractor::State::NoUIActive = 0;
     }
 
-    // MARK: - HighGravity
-    GameInteractionEffectQueryResult HighGravity::CanBeApplied() {
+    // MARK: - ModifyGravity
+    GameInteractionEffectQueryResult ModifyGravity::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
-    void HighGravity::_Apply() {
-        GameInteractor::State::GravityLevel = GRAVITY_LEVEL_HEAVY;
+    void ModifyGravity::_Apply() {
+        GameInteractor::State::GravityLevel = GI_GRAVITY_LEVEL_HEAVY;
     }
-    void HighGravity::_Remove() {
-        GameInteractor::State::GravityLevel = GRAVITY_LEVEL_NORMAL;
-    }
-
-    // MARK: - LowGravity
-    GameInteractionEffectQueryResult LowGravity::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
-            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else {
-            return GameInteractionEffectQueryResult::Possible;
-        }
-    }
-    void LowGravity::_Apply() {
-        GameInteractor::State::GravityLevel = GRAVITY_LEVEL_LIGHT;
-    }
-    void LowGravity::_Remove() {
-        GameInteractor::State::GravityLevel = GRAVITY_LEVEL_NORMAL;
+    void ModifyGravity::_Remove() {
+        GameInteractor::State::GravityLevel = GI_GRAVITY_LEVEL_NORMAL;
     }
 
     // MARK: - GiveHealth
@@ -348,33 +333,18 @@ namespace GameInteractionEffect {
         GameInteractor::State::ReverseControlsActive = 0;
     }
 
-    // MARK: - ForceIronBoots
-    GameInteractionEffectQueryResult ForceIronBoots::CanBeApplied() {
+    // MARK: - ForceEquipBoots
+    GameInteractionEffectQueryResult ForceEquipBoots::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
-    void ForceIronBoots::_Apply() {
-        GameInteractor::RawAction::ForceEquipBoots(PLAYER_BOOTS_IRON);
+    void ForceEquipBoots::_Apply() {
+        GameInteractor::RawAction::ForceEquipBoots(parameter);
     }
-    void ForceIronBoots::_Remove() {
-        GameInteractor::RawAction::ForceEquipBoots(PLAYER_BOOTS_KOKIRI);
-    }
-
-    // MARK: - ForceHoverBoots
-    GameInteractionEffectQueryResult ForceHoverBoots::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
-            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else {
-            return GameInteractionEffectQueryResult::Possible;
-        }
-    }
-    void ForceHoverBoots::_Apply() {
-        GameInteractor::RawAction::ForceEquipBoots(PLAYER_BOOTS_HOVER);
-    }
-    void ForceHoverBoots::_Remove() {
+    void ForceEquipBoots::_Remove() {
         GameInteractor::RawAction::ForceEquipBoots(PLAYER_BOOTS_KOKIRI);
     }
 

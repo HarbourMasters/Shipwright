@@ -624,11 +624,21 @@ static bool GravityHandler(std::shared_ptr<Ship::Console> Console, const std::ve
         return CMD_FAILED;
     }
 
+    GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyGravity();
+
     try {
-        GameInteractor::State::GravityLevel = Ship::Math::clamp(std::stoi(args[1], nullptr, 10), GRAVITY_LEVEL_LIGHT, GRAVITY_LEVEL_HEAVY);
-        return CMD_SUCCESS;
+        effect->parameter = Ship::Math::clamp(std::stoi(args[1], nullptr, 10), GI_GRAVITY_LEVEL_LIGHT, GI_GRAVITY_LEVEL_HEAVY);
     } catch (std::invalid_argument const& ex) {
-        SohImGui::GetConsole()->SendErrorMessage("[SOH] Minish value must be a number.");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Gravity value must be a number.");
+        return CMD_FAILED;
+    }
+    
+    GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Updated gravity.");
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not update gravity.");
         return CMD_FAILED;
     }
 }
@@ -992,8 +1002,17 @@ static bool BootsHandler(std::shared_ptr<Ship::Console> Console, const std::vect
         return CMD_FAILED;
     }
 
-    GameInteractor::RawAction::ForceEquipBoots(it->second);
-    return CMD_SUCCESS;
+    GameInteractionEffectBase* effect = new GameInteractionEffect::ForceEquipBoots();
+    effect->parameter = it->second;
+    GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
+
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Boots updated");
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not update boots.");
+        return CMD_FAILED;
+    }
 }
 
 static bool KnockbackHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {

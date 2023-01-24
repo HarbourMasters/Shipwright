@@ -11011,11 +11011,11 @@ void Player_Update(Actor* thisx, PlayState* play) {
         GameInteractor_SetResetLinkScale(0);
     }
 
-    if (GameInteractor_GravityLevel() == GRAVITY_LEVEL_HEAVY) {
+    if (GameInteractor_GravityLevel() == GI_GRAVITY_LEVEL_HEAVY) {
         this->actor.gravity = -4.0f;
     }
 
-    if (GameInteractor_GravityLevel() == GRAVITY_LEVEL_LIGHT) {
+    if (GameInteractor_GravityLevel() == GI_GRAVITY_LEVEL_LIGHT) {
         this->actor.gravity = -0.3f;
     }
 }
