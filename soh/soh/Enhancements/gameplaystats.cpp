@@ -390,7 +390,7 @@ void SetupDisplayNames() {
     strcpy(timestampDisplayName[ITEM_ODD_MUSHROOM],     "Odd Mushroom:       ");
     strcpy(timestampDisplayName[ITEM_ODD_POTION],       "Odd Potion:         ");
     strcpy(timestampDisplayName[ITEM_SAW],              "Poacher's Saw:      ");
-    strcpy(timestampDisplayName[ITEM_SWORD_BROKEN],     "Goron Sword (Broke):");
+    strcpy(timestampDisplayName[ITEM_SWORD_BROKEN],     "Broken Goron Sword: ");
     strcpy(timestampDisplayName[ITEM_PRESCRIPTION],     "Prescription:       ");
     strcpy(timestampDisplayName[ITEM_FROG],             "Eyeball Frog:       ");
     strcpy(timestampDisplayName[ITEM_EYEDROPS],         "Eye Drops:          ");
