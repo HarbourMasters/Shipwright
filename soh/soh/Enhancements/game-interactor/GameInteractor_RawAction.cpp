@@ -17,7 +17,7 @@ void GameInteractor::RawAction::AddOrRemoveHealthContainers(int16_t amount) {
 void GameInteractor::RawAction::AddOrRemoveMagic(int8_t amount) {
     // Full single magic = 48
     // Full double magic = 96
-    int16_t currentMagicCapacity = (gSaveContext.isDoubleMagicAcquired + 1) * 48;
+    int8_t currentMagicCapacity = (gSaveContext.isDoubleMagicAcquired + 1) * 48;
 
     if (gSaveContext.isMagicAcquired) {
         gSaveContext.prevMagicState = gSaveContext.magicState;
