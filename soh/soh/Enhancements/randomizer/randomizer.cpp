@@ -3028,7 +3028,7 @@ void DrawRandoEditor(bool& open) {
     static const char* randoItemPool[4] = { "Plentiful", "Balanced", "Scarce", "Minimal" };
     static const char* randoIceTraps[5] = { "Off", "Normal", "Extra", "Mayhem", "Onslaught" };
 
-    ImGui::SetNextWindowSize(ImVec2(420, 300), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(490,130), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
