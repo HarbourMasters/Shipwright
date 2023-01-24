@@ -10,14 +10,14 @@ extern PlayState* gPlayState;
 
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 
-void GameInteractor::RawAction::AddOrRemoveHealthContainers(int32_t amount) {
+void GameInteractor::RawAction::AddOrRemoveHealthContainers(int16_t amount) {
     gSaveContext.healthCapacity += amount * 0x10;
 }
 
-void GameInteractor::RawAction::AddOrRemoveMagic(int32_t amount) {
+void GameInteractor::RawAction::AddOrRemoveMagic(int8_t amount) {
     // Full single magic = 48
     // Full double magic = 96
-    int32_t currentMagicCapacity = (gSaveContext.isDoubleMagicAcquired + 1) * 48;
+    int16_t currentMagicCapacity = (gSaveContext.isDoubleMagicAcquired + 1) * 48;
 
     if (gSaveContext.isMagicAcquired) {
         gSaveContext.prevMagicState = gSaveContext.magicState;
@@ -38,7 +38,7 @@ void GameInteractor::RawAction::AddOrRemoveMagic(int32_t amount) {
     }
 }
 
-void GameInteractor::RawAction::HealOrDamagePlayer(int32_t hearts) {
+void GameInteractor::RawAction::HealOrDamagePlayer(int16_t hearts) {
     if (hearts > 0) {
         Health_ChangeBy(gPlayState, hearts * 0x10);
     } else if (hearts < 0) {
@@ -49,7 +49,7 @@ void GameInteractor::RawAction::HealOrDamagePlayer(int32_t hearts) {
     }
 }
 
-void GameInteractor::RawAction::SetPlayerHealth(uint32_t hearts) {
+void GameInteractor::RawAction::SetPlayerHealth(int16_t hearts) {
     gSaveContext.health = hearts * 0x10;
 }
 
@@ -111,7 +111,7 @@ void GameInteractor::RawAction::SetWeatherStorm(bool active) {
     }
 }
 
-void GameInteractor::RawAction::ForceEquipBoots(uint8_t boots) {
+void GameInteractor::RawAction::ForceEquipBoots(int8_t boots) {
     Player* player = GET_PLAYER(gPlayState);
     player->currentBoots = boots;
     Inventory_ChangeEquipment(EQUIP_BOOTS, boots + 1);
@@ -136,7 +136,7 @@ void GameInteractor::RawAction::ElectrocutePlayer() {
     func_80837C0C(gPlayState, player, 4, 0, 0, 0, 0);
 }
 
-void GameInteractor::RawAction::KnockbackPlayer(uint8_t strength) {
+void GameInteractor::RawAction::KnockbackPlayer(float strength) {
     Player* player = GET_PLAYER(gPlayState);
     func_8002F71C(gPlayState, &player->actor, strength * 5, player->actor.world.rot.y + 0x8000, strength * 5);
 }

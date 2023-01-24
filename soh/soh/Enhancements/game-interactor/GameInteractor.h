@@ -77,18 +77,18 @@ public:
 
     class RawAction {
     public:
-        static void AddOrRemoveHealthContainers(int32_t amount);
-        static void AddOrRemoveMagic(int32_t amount);
-        static void HealOrDamagePlayer(int32_t hearts);
-        static void SetPlayerHealth(uint32_t hearts);
+        static void AddOrRemoveHealthContainers(int16_t amount);
+        static void AddOrRemoveMagic(int8_t amount);
+        static void HealOrDamagePlayer(int16_t hearts);
+        static void SetPlayerHealth(int16_t hearts);
         static void SetLinkSize(GILinkSize size);
         static void SetLinkInvisibility(bool active);
         static void SetWeatherStorm(bool active);
-        static void ForceEquipBoots(uint8_t boots);
+        static void ForceEquipBoots(int8_t boots);
         static void FreezePlayer();
         static void BurnPlayer();
         static void ElectrocutePlayer();
-        static void KnockbackPlayer(uint8_t strength);
+        static void KnockbackPlayer(float strength);
         static void GiveDekuShield();
         static void SpawnCuccoStorm();
         static void ForceInterfaceUpdate();
