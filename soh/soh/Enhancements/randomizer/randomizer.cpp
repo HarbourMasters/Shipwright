@@ -79,7 +79,7 @@ static const char* englishRupeeNames[165] = {
     "Souls",                "Spent Casings",        "Spice",                "Spondulicks",          "Star Bits",            
     "Star Chips",           "Stars",                "Stones of Jordan",     "Store Credit",         "Strawbs",            
     "Studs",                "Super Sea Snails",     "Talent",               "Teef",                 "Telecrystals",     
-    "Tiberium",             "TokKul",               "Toys",                 "Turnips",              "Upvotes"           
+    "Tiberium",             "TokKul",               "Toys",                 "Turnips",              "Upvotes",
     "V-Bucks",              "Vespene Gas",          "Watts",                "Widgets",              "Woolongs",        
     "World Dollars",        "Wumpa Fruit",          "Zenny",                "Zorkmids",             "[P]"
 };
