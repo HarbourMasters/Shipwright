@@ -394,7 +394,8 @@ void EnDog_FollowPlayer(EnDog* this, PlayState* play) {
     if (this->actor.xzDistToPlayer > 400.0f) {
         if (CVarGetInteger("gDogFollowsEverywhere", 0)) {
             // Instead of stopping following when the dog gets too far, just speed them up.
-            speed = this->actor.xzDistToPlayer / 25.0f;
+            Player* player = GET_PLAYER(play);
+            speed = this->actor.xzDistToPlayer / 25.0f + player->linearVelocity;
         } else {
             if (this->nextBehavior != DOG_SIT && this->nextBehavior != DOG_SIT_2) {
                 this->nextBehavior = DOG_BOW;
@@ -402,10 +403,15 @@ void EnDog_FollowPlayer(EnDog* this, PlayState* play) {
             gSaveContext.dogParams = 0;
             speed = 0.0f;
         }
-    } else if (this->actor.xzDistToPlayer > 100.0f) {
+    } else if (this->actor.xzDistToPlayer > (CVarGetInteger("gDogFollowsEverywhere", 0) ? 30.0f : 100.0f)) {
         this->nextBehavior = DOG_RUN;
-        speed = 4.0f;
-    } else if (this->actor.xzDistToPlayer < 40.0f) {
+        if (CVarGetInteger("gDogFollowsEverywhere", 0)) {
+            Player* player = GET_PLAYER(play);
+            speed = player->linearVelocity > 4.0f ? player->linearVelocity : 4.0f;
+        } else {
+
+        }
+    } else if (this->actor.xzDistToPlayer < (CVarGetInteger("gDogFollowsEverywhere", 0) ? 30.0f : 40.0f)) {
         if (this->nextBehavior != DOG_BOW && this->nextBehavior != DOG_BOW_2) {
             this->nextBehavior = DOG_BOW;
         }
