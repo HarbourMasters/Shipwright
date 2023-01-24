@@ -6301,21 +6301,13 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
 
                 iREG(67) = false;
 
-                if (gSaveContext.n64ddFlag && giEntry.getItemId == RG_ICE_TRAP) {
-                    if (giEntry.getItemFrom == ITEM_FROM_FREESTANDING) {
-                        // RANDOTODO: Abstract this to a function.
-                        this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
-                        this->actor.colChkInfo.damage = 0;
-                        func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
-                        Player_SetPendingFlag(this, play);
-                        Message_StartTextbox(play, 0xF8, NULL);
-                        Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
-                        this->getItemId = GI_NONE;
-                        this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
-                        // Gameplay stats: Increment Ice Trap count
-                        gSaveContext.sohStats.count[COUNT_ICE_TRAPS]++;
-                        return 1;
-                    }
+                if (gSaveContext.n64ddFlag && giEntry.getItemId == RG_ICE_TRAP && giEntry.getItemFrom == ITEM_FROM_FREESTANDING) {
+                    this->actor.freezeTimer = 30;
+                    Player_SetPendingFlag(this, play);
+                    Message_StartTextbox(play, 0xF8, NULL);
+                    Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
+                    gSaveContext.pendingIceTrapCount++;
+                    return 1;
                 }
 
                 // Show the cutscene for picking up an item. In vanilla, this happens in bombchu bowling alley (because getting bombchus need to show the cutscene)
@@ -10942,7 +10934,8 @@ void Player_Update(Actor* thisx, PlayState* play) {
 
     if (func_8084FCAC(this, play)) {
         if (gSaveContext.dogParams < 0) {
-            if (Object_GetIndex(&play->objectCtx, OBJECT_DOG) < 0) {
+            // Disable object dependency to prevent losing dog in scenes other than market
+            if (Object_GetIndex(&play->objectCtx, OBJECT_DOG) < 0 && !CVarGetInteger("gDogFollowsEverywhere", 0)) {
                 gSaveContext.dogParams = 0;
             } else {
                 gSaveContext.dogParams &= 0x7FFF;
@@ -10952,7 +10945,8 @@ void Player_Update(Actor* thisx, PlayState* play) {
                 dog = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_DOG, sDogSpawnPos.x, sDogSpawnPos.y,
                                   sDogSpawnPos.z, 0, this->actor.shape.rot.y, 0, dogParams | 0x8000, true);
                 if (dog != NULL) {
-                    dog->room = 0;
+                    // Room -1 allows actor to cross between rooms, similar to Navi
+                    dog->room = CVarGetInteger("gDogFollowsEverywhere", 0) ? -1 : 0;
                 }
             }
         }

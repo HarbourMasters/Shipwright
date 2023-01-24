@@ -2088,7 +2088,9 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.seqId = (u8)NA_BGM_DISABLED;
     gSaveContext.natureAmbienceId = 0xFF;
     gSaveContext.showTitleCard = true;
-    gSaveContext.dogParams = 0;
+    if (!CVarGetInteger("gDogFollowsEverywhere", 0)) {
+        gSaveContext.dogParams = 0;
+    }
     gSaveContext.timer1State = 0;
     gSaveContext.timer2State = 0;
     gSaveContext.eventInf[0] = 0;

@@ -8,6 +8,8 @@
 #include <string>
 #include "soh/OTRGlobals.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
+#include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
+#include "soh/Enhancements/sfx-editor/SfxEditor.h"
 
 
 #define Path _Path
@@ -934,6 +936,42 @@ static bool GenerateRandoHandler(std::shared_ptr<Ship::Console> Console, const s
     return CMD_FAILED;
 }
 
+static bool CosmeticsHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    if (args[1].compare("reset") == 0) {
+        CosmeticsEditor_ResetAll();
+    } else if (args[1].compare("randomize") == 0) {
+        CosmeticsEditor_RandomizeAll();
+    } else {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Invalid argument passed, must be 'reset' or 'randomize'");
+        return CMD_FAILED;
+    }
+
+    return CMD_SUCCESS;
+}
+
+static bool SfxHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    if (args[1].compare("reset") == 0) {
+        SfxEditor_ResetAll();
+    } else if (args[1].compare("randomize") == 0) {
+        SfxEditor_RandomizeAll();
+    } else {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Invalid argument passed, must be 'reset' or 'randomize'");
+        return CMD_FAILED;
+    }
+
+    return CMD_SUCCESS;
+}
+
 #define VARTYPE_INTEGER 0
 #define VARTYPE_FLOAT   1
 #define VARTYPE_STRING  2
@@ -1190,6 +1228,14 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("gen_rando", { GenerateRandoHandler, "Generate a randomizer seed", {
         { "seed|count", Ship::ArgumentType::NUMBER, true },
         { "testing", Ship::ArgumentType::NUMBER, true },
+    }});
+
+    CMD_REGISTER("cosmetics", { CosmeticsHandler, "Change cosmetics.", {
+        { "reset|randomize", Ship::ArgumentType::TEXT },
+    }});
+
+    CMD_REGISTER("sfx", { SfxHandler, "Change SFX.", {
+        { "reset|randomize", Ship::ArgumentType::TEXT },
     }});
 
     CVarLoad();

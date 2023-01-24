@@ -74,6 +74,25 @@ void HintTable_Init() {
         Text{ "#Malon's obstacle course# leads to", /*french*/ "la #course à obstacle de Malon# amène à",
               /*spanish*/ "la #carrera de obstáculos de Malon# brinda" });
 
+    hintTable[KAK_100_GOLD_SKULLTULA_REWARD] = HintText::Always(
+        {
+            // obscure text
+            Text{ "#100 bug badges# rewards",
+                  /*french*/ "#100 écussons# donnent",
+                  /*spanish*/ "#100 medallas de insectos# otorgan" },
+            Text{ "#100 spider souls# yields",
+                  /*french*/ "#100 âmes d'arachnide# donnent",
+                  /*spanish*/ "#100 almas de araña# otorgan" },
+            Text{ "#100 auriferous arachnids# lead to",
+                  /*french*/ "#100 arachnides aurifères# donnent",
+                  /*spanish*/ "#100 arácnidos auríferos# otorgan" },
+        },
+        {},
+        // clear text
+        Text{ "slaying #100 Gold Skulltulas# reveals",
+              /*french*/ "détruire #100 Skulltulas d'or# donne",
+              /*spanish*/ "exterminar #100 skulltulas doradas# revela" });
+
     /*--------------------------
     |    SOMETIMES HINT TEXT   |
     ---------------------------*/
@@ -2697,6 +2716,13 @@ void HintTable_Init() {
         Text{ "And the %revil one%w's key will&be given to the Hero once&the %rTriforce%w is completed.",
               /*french*/ "Aussi, la %rclé du Malin%w se&révèlera une fois la %rTriforce%w&assemblée.",
               /*spanish*/ "Y el héroe recibirá la llave del #señor del mal# cuando haya completado la #Trifuerza#." },
+    });
+
+    hintTable[GANON_BK_SKULLTULA_HINT] = HintText::GanonsBossKey({
+        // obscure text
+        Text { "And the %revil one%w's key will be&provided by the cursed rich man&once %r100 Gold Skulltula Tokens%w&are retrieved.",
+              /*french*/ "Aussi, la %rclé du Malin%w sera&donnée par l'homme maudit une&fois que %r100 Symboles de&Skulltula d'or%w auront été trouvés.",
+              /*spanish*/ "Y el rico maldito entregará la llave&del #señor de mal# tras obtener&100 símbolos de skulltula dorada#."},
     });
 
     /*--------------------------

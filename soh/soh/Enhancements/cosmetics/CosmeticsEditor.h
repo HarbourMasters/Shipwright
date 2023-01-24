@@ -25,3 +25,5 @@ static ImGuiTableColumnFlags FlagsCell = ImGuiTableColumnFlags_WidthStretch | Im
 
 void InitCosmeticsEditor();//Init the menu itself
 ImVec4 GetRandomValue(int MaximumPossible);
+void CosmeticsEditor_RandomizeAll();
+void CosmeticsEditor_ResetAll();

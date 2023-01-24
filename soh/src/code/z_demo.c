@@ -2180,9 +2180,8 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
                     gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_GANON_FINAL)) {
             Flags_SetEventChkInf(0xC7);
             gSaveContext.entranceIndex = 0x0517;
-            // If we are rando and tower escape skip is on, then set the flag to say we saw the towers fall
-            // and exit.
-            if (bShouldTowerRandoSkip) {
+            // In rando, skip the cutscene for the tower falling down after the escape.
+            if (gSaveContext.n64ddFlag) {
                 return;
             }
             gSaveContext.cutsceneIndex = 0xFFF0;

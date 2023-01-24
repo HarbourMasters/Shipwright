@@ -237,6 +237,7 @@ typedef enum {
     GANONSBOSSKEY_LACS_REWARDS,
     GANONSBOSSKEY_LACS_DUNGEONS,
     GANONSBOSSKEY_LACS_TOKENS,
+    GANONSBOSSKEY_FINAL_GS_REWARD,
 } GanonsBossKeySetting;
 
 typedef enum {
@@ -429,6 +430,7 @@ typedef struct {
     uint8_t shuffleFrogSongRupees;
     uint8_t shuffleAdultTradeQuest;
     uint8_t shuffleChestMinigame;
+    uint8_t shuffle100GsReward;
 
     uint8_t mapsAndCompasses;
     uint8_t keysanity;
@@ -945,6 +947,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option ShuffleFrogSongRupees;
   extern Option ShuffleAdultTradeQuest;
   extern Option ShuffleChestMinigame;
+  extern Option Shuffle100GSReward;
 
   extern Option MapsAndCompasses;
   extern Option Keysanity;
