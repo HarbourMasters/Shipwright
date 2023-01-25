@@ -156,27 +156,24 @@ void CrowdControl::ListenToServer() {
                 EffectResult result = CrowdControl::ExecuteEffect(incomingEffect);
                 EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
             } else {
-                // If another timed effect is already active that conflicts with the
-                // incoming effect, let CC retry later.
+                // If another timed effect is already active that conflicts with the incoming effect.
                 bool isConflictingEffectActive = false;
-                for (Effect* pack : activeEffects) {
-                    if (pack != incomingEffect && pack->category == incomingEffect->category &&
-                        pack->id < incomingEffect->id) {
+                for (Effect* effect : activeEffects) {
+                    if (effect != incomingEffect && effect->category == incomingEffect->category && effect->id < incomingEffect->id) {
                         isConflictingEffectActive = true;
-                        EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining,
-                                    EffectResult::Retry);
+                        EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, EffectResult::Retry);
                         break;
                     }
                 }
 
-                // Execute effect. If it can't, let CC know.
-                EffectResult result = CrowdControl::ExecuteEffect(incomingEffect);
-                if (result == EffectResult::Retry || result == EffectResult::Failure) {
-                    EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
-                    continue;
-                }
-
                 if (!isConflictingEffectActive) {
+                    // Check if effect can be applied, if it can't, let CC know.
+                    EffectResult result = CrowdControl::CanApplyEffect(incomingEffect);
+                    if (result == EffectResult::Retry || result == EffectResult::Failure) {
+                        EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
+                        continue;
+                    }
+
                     activeEffectsMutex.lock();
                     activeEffects.push_back(incomingEffect);
                     activeEffectsMutex.unlock();
@@ -457,13 +454,30 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 }
 
 CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
-
     GameInteractionEffectQueryResult giResult;
     if (effect->category == EFFECT_CAT_SPAWN_ENEMY) {
         giResult = GameInteractor::RawAction::SpawnEnemyWithOffset(effect->value[0], effect->value[1]);
     } else {
         giResult = GameInteractor::ApplyEffect(effect->giEffect);
     }
+
+    // Translate GameInteractor result into CC's own enums.
+    EffectResult result;
+    if (giResult == GameInteractionEffectQueryResult::Possible) {
+        result = EffectResult::Success;
+    } else if (giResult == GameInteractionEffectQueryResult::TemporarilyNotPossible) {
+        result = EffectResult::Retry;
+    } else {
+        result = EffectResult::Failure;
+    }
+
+    return result;
+}
+
+/// Checks if effect can be applied -- should not be used to check for spawn enemy effects.
+CrowdControl::EffectResult CrowdControl::CanApplyEffect(Effect* effect) {
+    assert(effect->category != EFFECT_CAT_SPAWN_ENEMY);
+    GameInteractionEffectQueryResult giResult = GameInteractor::CanApplyEffect(effect->giEffect);
 
     // Translate GameInteractor result into CC's own enums.
     EffectResult result;
