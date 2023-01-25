@@ -653,6 +653,9 @@ static Text BuildGanonBossKeyText() {
   } else if (GanonsBossKey.Is(GANONSBOSSKEY_ANYWHERE)) {
     ganonBossKeyText = Hint(GANON_BK_ANYWHERE_HINT).GetText();
 
+  } else if (GanonsBossKey.Is(GANONSBOSSKEY_FINAL_GS_REWARD)) {
+    ganonBossKeyText = Hint(GANON_BK_SKULLTULA_HINT).GetText();
+
   } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_VANILLA)) {
     ganonBossKeyText = Hint(LACS_VANILLA_HINT).GetText();
 

@@ -47,6 +47,9 @@ namespace UIWidgets {
     void EnhancementRadioButton(const char* text, const char* cvarName, int id);
 
     bool EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow = true, bool has_alpha=false, bool TitleSameLine=false);
+    void DrawFlagArray32(const std::string& name, uint32_t& flags);
+    void DrawFlagArray16(const std::string& name, uint16_t& flags);
+    void DrawFlagArray8(const std::string& name, uint8_t& flags);
 }
 
 #endif /* UIWidgets_hpp */

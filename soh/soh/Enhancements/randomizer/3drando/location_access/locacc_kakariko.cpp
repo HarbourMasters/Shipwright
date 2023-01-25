@@ -97,6 +97,7 @@ void AreaTable_Init_Kakariko() {
                   LocationAccess(KAK_30_GOLD_SKULLTULA_REWARD, {[]{return GoldSkulltulaTokens >= 30;}}),
                   LocationAccess(KAK_40_GOLD_SKULLTULA_REWARD, {[]{return GoldSkulltulaTokens >= 40;}}),
                   LocationAccess(KAK_50_GOLD_SKULLTULA_REWARD, {[]{return GoldSkulltulaTokens >= 50;}}),
+                  LocationAccess(KAK_100_GOLD_SKULLTULA_REWARD, {[]{return GoldSkulltulaTokens >= 100;}})
                 }, {
                   //Exits
                   Entrance(KAKARIKO_VILLAGE, {[]{return true;}}),

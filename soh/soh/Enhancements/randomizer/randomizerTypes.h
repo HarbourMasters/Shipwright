@@ -164,6 +164,7 @@ typedef enum {
     RC_KAK_30_GOLD_SKULLTULA_REWARD,
     RC_KAK_40_GOLD_SKULLTULA_REWARD,
     RC_KAK_50_GOLD_SKULLTULA_REWARD,
+    RC_KAK_100_GOLD_SKULLTULA_REWARD,
     RC_KAK_IMPAS_HOUSE_COW,
     RC_KAK_GS_TREE,
     RC_KAK_GS_GUARDS_HOUSE,
@@ -1091,6 +1092,7 @@ typedef enum {
     RSK_STARTING_SKULLTULA_TOKEN,
     RSK_ALL_LOCATIONS_REACHABLE,
     RSK_SHUFFLE_BOSS_ENTRANCES,
+    RSK_SHUFFLE_100_GS_REWARD,
     RSK_MAX
 } RandomizerSettingKey;
 
@@ -1235,7 +1237,7 @@ typedef enum {
 } RandoOptionKeyrings;
 
 //Ganon's Boss Key Settings (vanilla, own dungeon, start with,
-//overworld, anywhere)
+//overworld, anywhere, 100 GS reward)
 typedef enum {
     RO_GANON_BOSS_KEY_VANILLA,
     RO_GANON_BOSS_KEY_OWN_DUNGEON,
@@ -1249,6 +1251,7 @@ typedef enum {
     RO_GANON_BOSS_KEY_LACS_REWARDS,
     RO_GANON_BOSS_KEY_LACS_DUNGEONS,
     RO_GANON_BOSS_KEY_LACS_TOKENS,
+    RO_GANON_BOSS_KEY_KAK_TOKENS,
     RO_GANON_BOSS_KEY_MAX,
 } RandoOptionGanonsBossKey;
 
