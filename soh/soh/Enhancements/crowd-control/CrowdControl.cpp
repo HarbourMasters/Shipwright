@@ -63,6 +63,17 @@ extern PlayState* gPlayState;
 #define EFFECT_SPAWN_LIKE_LIKE "spawn_likelike"
 #define EFFECT_SPAWN_CUCCO_STORM "cucco_storm"
 
+#define EFFECT_CAT_UI "ui"
+#define EFFECT_CAT_GRAVITY "gravity"
+#define EFFECT_CAT_LINK_SIZE "link_size"
+#define EFFECT_CAT_PACIFIST "pacifist"
+#define EFFECT_CAT_NO_Z "no_z"
+#define EFFECT_CAT_WEATHER "weather"
+#define EFFECT_CAT_REVERSE_CONTROLS "reverse_controls"
+#define EFFECT_CAT_BOOTS "boots"
+#define EFFECT_CAT_SPEED "speed"
+#define EFFECT_CAT_DAMAGE_TAKEN "damage_taken"
+#define EFFECT_CAT_SPAWN_ENEMY "spawn_enemy"
 
 void CrowdControl::Init() {
     SDLNet_Init();
@@ -280,16 +291,16 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         effect->giEffect = new GameInteractionEffect::ModifyRupees();
         effect->paramMultiplier = -1;
     } else if (effectName == EFFECT_NO_UI) {
-        effect->category = "ui";
+        effect->category = EFFECT_CAT_UI;
         effect->timeRemaining = 60000;
         effect->giEffect = new GameInteractionEffect::NoUI();
     } else if (effectName == EFFECT_HIGH_GRAVITY) {
-        effect->category = "gravity";
+        effect->category = EFFECT_CAT_GRAVITY;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyGravity();
         effect->giEffect->parameter = GI_GRAVITY_LEVEL_HEAVY;
     } else if (effectName == EFFECT_LOW_GRAVITY) {
-        effect->category = "gravity";
+        effect->category = EFFECT_CAT_GRAVITY;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyGravity();
         effect->giEffect->parameter = GI_GRAVITY_LEVEL_LIGHT;
@@ -310,120 +321,120 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         effect->giEffect = new GameInteractionEffect::ModifyHealth();
         effect->paramMultiplier = -1;
     } else if (effectName == EFFECT_GIANT_LINK) {
-        effect->category = "link_size";
+        effect->category = EFFECT_CAT_LINK_SIZE;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
         effect->giEffect->parameter = GI_LINK_SIZE_GIANT;
     } else if (effectName == EFFECT_MINISH_LINK) {
-        effect->category = "link_size";
+        effect->category = EFFECT_CAT_LINK_SIZE;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
         effect->giEffect->parameter = GI_LINK_SIZE_MINISH;
     } else if (effectName == EFFECT_PAPER_LINK) {
-        effect->category = "link_size";
+        effect->category = EFFECT_CAT_LINK_SIZE;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
         effect->giEffect->parameter = GI_LINK_SIZE_PAPER;
     } else if (effectName == EFFECT_INVISIBLE_LINK) {
-        effect->category = "link_size";
+        effect->category = EFFECT_CAT_LINK_SIZE;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::InvisibleLink();
     } else if (effectName == EFFECT_PACIFIST) {
-        effect->category = "pacifist";
+        effect->category = EFFECT_CAT_PACIFIST;
         effect->timeRemaining = 15000;
         effect->giEffect = new GameInteractionEffect::PacifistMode();
     } else if (effectName == EFFECT_NO_Z_TARGETING) {
-        effect->category = "no_z";
+        effect->category = EFFECT_CAT_NO_Z;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::DisableZTargeting();
     } else if (effectName == EFFECT_RAINSTORM) {
-        effect->category = "weather";
+        effect->category = EFFECT_CAT_WEATHER;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::WeatherRainstorm();
     } else if (effectName == EFFECT_REVERSE_CONTROLS) {
-        effect->category = "reverse_controls";
+        effect->category = EFFECT_CAT_REVERSE_CONTROLS;
         effect->timeRemaining = 60000;
         effect->giEffect = new GameInteractionEffect::ReverseControls();
     } else if (effectName == EFFECT_IRON_BOOTS) {
-        effect->category = "boots";
+        effect->category = EFFECT_CAT_BOOTS;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
         effect->giEffect->parameter = PLAYER_BOOTS_IRON;
     } else if (effectName == EFFECT_HOVER_BOOTS) {
-        effect->category = "boots";
+        effect->category = EFFECT_CAT_BOOTS;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
         effect->giEffect->parameter = PLAYER_BOOTS_HOVER;;
     } else if (effectName == EFFECT_GIVE_DEKU_SHIELD) {
         effect->giEffect = new GameInteractionEffect::GiveDekuShield();
     } else if (effectName == EFFECT_INCREASE_SPEED) {
-        effect->category = "speed";
+        effect->category = EFFECT_CAT_SPEED;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
         effect->giEffect->parameter = 2;
     } else if (effectName == EFFECT_DECREASE_SPEED) {
-        effect->category = "speed";
+        effect->category = EFFECT_CAT_SPEED;
         effect->timeRemaining = 30000;
         effect->giEffect->parameter = -2;
         effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
     } else if (effectName == EFFECT_OHKO) {
-        effect->category = "damage_taken";
+        effect->category = EFFECT_CAT_DAMAGE_TAKEN;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::OneHitKO();
     } else if (effectName == EFFECT_DAMAGE_MULTIPLIER) {
-        effect->category = "damage_taken";
+        effect->category = EFFECT_CAT_DAMAGE_TAKEN;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
         effect->paramMultiplier = -1;
     } else if (effectName == EFFECT_DEFENSE_MULTIPLIER) {
-        effect->category = "damage_taken";
+        effect->category = EFFECT_CAT_DAMAGE_TAKEN;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
     } else if (effectName == EFFECT_SPAWN_CUCCO_STORM) {
         effect->giEffect = new GameInteractionEffect::SpawnCuccoStorm();
     } else if (effectName == EFFECT_SPAWN_WALLMASTER) {
         effect->value[0] = ACTOR_EN_WALLMAS;
-        effect->category = "spawn_enemy";
+        effect->category = EFFECT_CAT_SPAWN_ENEMY;
     } else if (effectName == EFFECT_SPAWN_ARWING) {
         effect->value[0] = ACTOR_EN_CLEAR_TAG;
         // Parameter for no cutscene Arwing
         effect->value[1] = 1;
-        effect->category = "spawn_enemy";
+        effect->category = EFFECT_CAT_SPAWN_ENEMY;
     } else if (effectName == EFFECT_SPAWN_DARK_LINK) {
         effect->value[0] = ACTOR_EN_TORCH2;
-        effect->category = "spawn_enemy";
+        effect->category = EFFECT_CAT_SPAWN_ENEMY;
     } else if (effectName == EFFECT_SPAWN_STALFOS) {
         effect->value[0] = ACTOR_EN_TEST;
         // Parameter for gravity-obeying Stalfos
         effect->value[1] = 2;
-        effect->category = "spawn_enemy";
+        effect->category = EFFECT_CAT_SPAWN_ENEMY;
     } else if (effectName == EFFECT_SPAWN_WOLFOS) {
         effect->value[0] = ACTOR_EN_WF;
-        effect->category = "spawn_enemy";
+        effect->category = EFFECT_CAT_SPAWN_ENEMY;
     } else if (effectName == EFFECT_SPAWN_FREEZARD) {
         effect->value[0] = ACTOR_EN_FZ;
-        effect->category = "spawn_enemy";
+        effect->category = EFFECT_CAT_SPAWN_ENEMY;
     } else if (effectName == EFFECT_SPAWN_KEESE) {
         effect->value[0] = ACTOR_EN_FIREFLY;
         // Parameter for normal keese
         effect->value[1] = 2;
-        effect->category = "spawn_enemy";
+        effect->category = EFFECT_CAT_SPAWN_ENEMY;
     } else if (effectName == EFFECT_SPAWN_ICE_KEESE) {
         effect->value[0] = ACTOR_EN_FIREFLY;
         // Parameter for ice keese
         effect->value[1] = 4;
-        effect->category = "spawn_enemy";
+        effect->category = EFFECT_CAT_SPAWN_ENEMY;
     } else if (effectName == EFFECT_SPAWN_FIRE_KEESE) {
         effect->value[0] = ACTOR_EN_FIREFLY;
         // Parameter for fire keese
         effect->value[1] = 1;
-        effect->category = "spawn_enemy";
+        effect->category = EFFECT_CAT_SPAWN_ENEMY;
     } else if (effectName == EFFECT_SPAWN_TEKTITE) {
         effect->value[0] = ACTOR_EN_TITE;
-        effect->category = "spawn_enemy";
+        effect->category = EFFECT_CAT_SPAWN_ENEMY;
     } else if (effectName == EFFECT_SPAWN_LIKE_LIKE) {
         effect->value[0] = ACTOR_EN_RR;
-        effect->category = "spawn_enemy";
+        effect->category = EFFECT_CAT_SPAWN_ENEMY;
     }
 
     // If no value is specifically set, default to using whatever CC sends us.
