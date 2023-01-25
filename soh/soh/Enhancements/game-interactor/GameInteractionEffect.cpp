@@ -94,6 +94,11 @@ namespace GameInteractionEffect {
     GameInteractionEffectQueryResult ModifyRupees::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else if (
+            (parameter < 0 && gSaveContext.rupees <= 0) ||
+            (parameter > 0 && gSaveContext.rupees >= CUR_CAPACITY(UPG_WALLET))
+        ) {
+            return GameInteractionEffectQueryResult::NotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
@@ -132,13 +137,13 @@ namespace GameInteractionEffect {
         GameInteractor::State::GravityLevel = GI_GRAVITY_LEVEL_NORMAL;
     }
 
-    // MARK: - GiveHealth
+    // MARK: - ModifyHealth
     GameInteractionEffectQueryResult ModifyHealth::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else if (
             (parameter > 0 && gSaveContext.health == gSaveContext.healthCapacity)
-            || (parameter < 0 && (gSaveContext.health - (16 * parameter)) <= 0)
+            || (parameter < 0 && (gSaveContext.health + (16 * parameter) <= 0))
         ) {
             return GameInteractionEffectQueryResult::NotPossible;
         }
@@ -367,6 +372,8 @@ namespace GameInteractionEffect {
     GameInteractionEffectQueryResult GiveDekuShield::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else if ((Item_CheckObtainability(ITEM_SHIELD_DEKU) != ITEM_NONE)) {
+            return GameInteractionEffectQueryResult::NotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }

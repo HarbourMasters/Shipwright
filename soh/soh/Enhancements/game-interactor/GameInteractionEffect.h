@@ -57,7 +57,7 @@ namespace GameInteractionEffect {
         void _Remove() override;
     };
 
-    class ModifyHealth : public GameInteractionEffectBase {
+    class ModifyHealth: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
     };

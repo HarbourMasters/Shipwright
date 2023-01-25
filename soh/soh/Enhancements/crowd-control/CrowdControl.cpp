@@ -374,8 +374,8 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     } else if (effectName == EFFECT_DECREASE_SPEED) {
         effect->category = EFFECT_CAT_SPEED;
         effect->timeRemaining = 30000;
-        effect->giEffect->parameter = -2;
         effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
+        effect->giEffect->parameter = -2;
     } else if (effectName == EFFECT_OHKO) {
         effect->category = EFFECT_CAT_DAMAGE_TAKEN;
         effect->timeRemaining = 30000;
@@ -442,7 +442,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     // strength of knockback, etc.
     if (effect->giEffect != NULL) {
         if (!effect->giEffect->parameter && effect->value[0]) {
-            effect->giEffect->parameter = effect->value[0];
+            effect->giEffect->parameter = effect->value[0] * effect->paramMultiplier;
         }
     }
 
