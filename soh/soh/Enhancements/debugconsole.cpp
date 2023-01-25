@@ -397,7 +397,7 @@ static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<
     if (args.size() != 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
-    } //info|warp|adult|child
+    }
 
     const auto& it = fw_options.find(args[1]);
     if (it == fw_options.end()) {
