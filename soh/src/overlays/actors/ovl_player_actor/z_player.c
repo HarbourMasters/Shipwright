@@ -13839,13 +13839,6 @@ void func_808507F4(Player* this, PlayState* play) {
                 gSaveContext.fw.roomIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].roomIndex;
                 gSaveContext.fw.tempSwchFlags = gSaveContext.respawn[RESPAWN_MODE_DOWN].tempSwchFlags;
                 gSaveContext.fw.tempCollectFlags = gSaveContext.respawn[RESPAWN_MODE_DOWN].tempCollectFlags;
-                if (CVarGetInteger("gBetterFW", 0)) {
-                    if (LINK_IS_ADULT) {
-                        gSaveContext.adultFW = gSaveContext.fw;
-                    } else {
-                        gSaveContext.childFW = gSaveContext.fw;
-                    }
-                }
                 this->unk_850 = 2;
             }
         } else if (this->unk_84F >= 0) {

@@ -390,7 +390,7 @@ static bool ReloadHandler(std::shared_ptr<Ship::Console> Console, const std::vec
 }
 
 const static std::map<std::string, uint16_t> fw_options {
-    { "clear", 0}, {"warp", 1}, {"adult", 2}, {"child", 3}
+    { "clear", 0}, {"warp", 1}, {"nackup", 2}
 };
 
 static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
@@ -401,7 +401,7 @@ static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<
 
     const auto& it = fw_options.find(args[1]);
     if (it == fw_options.end()) {
-        SohImGui::GetConsole()->SendErrorMessage("[SOH] Invalid option. Options are 'clear', 'warp', 'adult', 'child'");
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Invalid option. Options are 'clear', 'warp', 'backup'");
         return CMD_FAILED;
     }
     
@@ -424,22 +424,11 @@ static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<
                 }
                 return CMD_SUCCESS;
                 break;
-            case 2: //adult
+            case 2: //backup
                 if (CVarGetInteger("gBetterFW", 0)) {
-                    gSaveContext.fw = gSaveContext.adultFW;
+                    gSaveContext.fw = gSaveContext.backupFW;
                     gSaveContext.fw.set = 1;
-                    SohImGui::GetConsole()->SendInfoMessage("[SOH] Adult FW data copied! Reload scene to take effect.");
-                    return CMD_SUCCESS;
-                } else {
-                    SohImGui::GetConsole()->SendErrorMessage("Better Farore's Wind isn't turned on!");
-                    return CMD_FAILED;
-                }
-                break;
-            case 3: //child
-                if (CVarGetInteger("gBetterFW", 0)) {
-                    gSaveContext.fw = gSaveContext.childFW;
-                    gSaveContext.fw.set = 1;
-                    SohImGui::GetConsole()->SendInfoMessage("[SOH] Child FW data copied! Reload scene to take effect.");
+                    SohImGui::GetConsole()->SendInfoMessage("[SOH] Backup FW data copied! Reload scene to take effect.");
                     return CMD_SUCCESS;
                 } else {
                     SohImGui::GetConsole()->SendErrorMessage("Better Farore's Wind isn't turned on!");
@@ -1096,7 +1085,7 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("void", { VoidHandler, "Voids out of the current map." });
     CMD_REGISTER("reload", { ReloadHandler, "Reloads the current map." });
     CMD_REGISTER("fw", { FWHandler,"Spawns the player where Farore's Wind is set." , {
-        { "clear|warp|adult|child", Ship::ArgumentType::TEXT }
+        { "clear|warp|backup", Ship::ArgumentType::TEXT }
     }});
     CMD_REGISTER("entrance", { EntranceHandler, "Sends player to the entered entrance (hex)", {
         { "entrance", Ship::ArgumentType::NUMBER }

@@ -617,7 +617,9 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 break;
             case 8:
                 if (CVarGetInteger("gBetterFW", 0)) {
-                    gSaveContext.fw = LINK_IS_ADULT ? gSaveContext.childFW : gSaveContext.adultFW;
+                    FaroresWindData tempFW = gSaveContext.backupFW;
+                    gSaveContext.backupFW = gSaveContext.fw;
+                    gSaveContext.fw = tempFW;
                 } else {
                     gSaveContext.fw.set = 0;
                     gSaveContext.respawn[RESPAWN_MODE_TOP].data = 0;

@@ -503,8 +503,7 @@ void SaveManager::InitFileNormal() {
     gSaveContext.fw.set = 0;
     gSaveContext.fw.tempSwchFlags = 0;
     gSaveContext.fw.tempCollectFlags = 0;
-    gSaveContext.adultFW = gSaveContext.fw;
-    gSaveContext.childFW = gSaveContext.fw;
+    gSaveContext.backupFW = gSaveContext.fw;
     for (int flag = 0; flag < ARRAY_COUNT(gSaveContext.gsFlags); flag++) {
         gSaveContext.gsFlags[flag] = 0;
     }
@@ -1517,33 +1516,19 @@ void SaveManager::LoadBaseVersion4() {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
     SaveManager::Instance->LoadData("isMasterQuest", gSaveContext.isMasterQuest);
-    SaveManager::Instance->LoadStruct("adultFW", []() {
+    SaveManager::Instance->LoadStruct("backupFW", []() {
         SaveManager::Instance->LoadStruct("pos", []() {
-            SaveManager::Instance->LoadData("x", gSaveContext.adultFW.pos.x);
-            SaveManager::Instance->LoadData("y", gSaveContext.adultFW.pos.y);
-            SaveManager::Instance->LoadData("z", gSaveContext.adultFW.pos.z);
+            SaveManager::Instance->LoadData("x", gSaveContext.backupFW.pos.x);
+            SaveManager::Instance->LoadData("y", gSaveContext.backupFW.pos.y);
+            SaveManager::Instance->LoadData("z", gSaveContext.backupFW.pos.z);
         });
-        SaveManager::Instance->LoadData("yaw", gSaveContext.adultFW.yaw);
-        SaveManager::Instance->LoadData("playerParams", gSaveContext.adultFW.playerParams);
-        SaveManager::Instance->LoadData("entranceIndex", gSaveContext.adultFW.entranceIndex);
-        SaveManager::Instance->LoadData("roomIndex", gSaveContext.adultFW.roomIndex);
-        SaveManager::Instance->LoadData("set", gSaveContext.adultFW.set);
-        SaveManager::Instance->LoadData("tempSwchFlags", gSaveContext.adultFW.tempSwchFlags);
-        SaveManager::Instance->LoadData("tempCollectFlags", gSaveContext.adultFW.tempCollectFlags);
-    });
-    SaveManager::Instance->LoadStruct("childFW", []() {
-        SaveManager::Instance->LoadStruct("pos", []() {
-            SaveManager::Instance->LoadData("x", gSaveContext.childFW.pos.x);
-            SaveManager::Instance->LoadData("y", gSaveContext.childFW.pos.y);
-            SaveManager::Instance->LoadData("z", gSaveContext.childFW.pos.z);
-        });
-        SaveManager::Instance->LoadData("yaw", gSaveContext.childFW.yaw);
-        SaveManager::Instance->LoadData("playerParams", gSaveContext.childFW.playerParams);
-        SaveManager::Instance->LoadData("entranceIndex", gSaveContext.childFW.entranceIndex);
-        SaveManager::Instance->LoadData("roomIndex", gSaveContext.childFW.roomIndex);
-        SaveManager::Instance->LoadData("set", gSaveContext.childFW.set);
-        SaveManager::Instance->LoadData("tempSwchFlags", gSaveContext.childFW.tempSwchFlags);
-        SaveManager::Instance->LoadData("tempCollectFlags", gSaveContext.childFW.tempCollectFlags);
+        SaveManager::Instance->LoadData("yaw", gSaveContext.backupFW.yaw);
+        SaveManager::Instance->LoadData("playerParams", gSaveContext.backupFW.playerParams);
+        SaveManager::Instance->LoadData("entranceIndex", gSaveContext.backupFW.entranceIndex);
+        SaveManager::Instance->LoadData("roomIndex", gSaveContext.backupFW.roomIndex);
+        SaveManager::Instance->LoadData("set", gSaveContext.backupFW.set);
+        SaveManager::Instance->LoadData("tempSwchFlags", gSaveContext.backupFW.tempSwchFlags);
+        SaveManager::Instance->LoadData("tempCollectFlags", gSaveContext.backupFW.tempCollectFlags);
     });
 }
 
@@ -1720,33 +1705,19 @@ void SaveManager::SaveBase() {
         SaveManager::Instance->SaveData("", gSaveContext.randomizerInf[i]);
     });
     SaveManager::Instance->SaveData("isMasterQuest", gSaveContext.isMasterQuest);
-    SaveManager::Instance->SaveStruct("adultFW", []() {
+    SaveManager::Instance->SaveStruct("backupFW", []() {
         SaveManager::Instance->SaveStruct("pos", []() {
-            SaveManager::Instance->SaveData("x", gSaveContext.adultFW.pos.x);
-            SaveManager::Instance->SaveData("y", gSaveContext.adultFW.pos.y);
-            SaveManager::Instance->SaveData("z", gSaveContext.adultFW.pos.z);
+            SaveManager::Instance->SaveData("x", gSaveContext.backupFW.pos.x);
+            SaveManager::Instance->SaveData("y", gSaveContext.backupFW.pos.y);
+            SaveManager::Instance->SaveData("z", gSaveContext.backupFW.pos.z);
         });
-        SaveManager::Instance->SaveData("yaw", gSaveContext.adultFW.yaw);
-        SaveManager::Instance->SaveData("playerParams", gSaveContext.adultFW.playerParams);
-        SaveManager::Instance->SaveData("entranceIndex", gSaveContext.adultFW.entranceIndex);
-        SaveManager::Instance->SaveData("roomIndex", gSaveContext.adultFW.roomIndex);
-        SaveManager::Instance->SaveData("set", gSaveContext.adultFW.set);
-        SaveManager::Instance->SaveData("tempSwchFlags", gSaveContext.adultFW.tempSwchFlags);
-        SaveManager::Instance->SaveData("tempCollectFlags", gSaveContext.adultFW.tempCollectFlags);
-    });
-    SaveManager::Instance->SaveStruct("childFW", []() {
-        SaveManager::Instance->SaveStruct("pos", []() {
-            SaveManager::Instance->SaveData("x", gSaveContext.childFW.pos.x);
-            SaveManager::Instance->SaveData("y", gSaveContext.childFW.pos.y);
-            SaveManager::Instance->SaveData("z", gSaveContext.childFW.pos.z);
-        });
-        SaveManager::Instance->SaveData("yaw", gSaveContext.childFW.yaw);
-        SaveManager::Instance->SaveData("playerParams", gSaveContext.childFW.playerParams);
-        SaveManager::Instance->SaveData("entranceIndex", gSaveContext.childFW.entranceIndex);
-        SaveManager::Instance->SaveData("roomIndex", gSaveContext.childFW.roomIndex);
-        SaveManager::Instance->SaveData("set", gSaveContext.childFW.set);
-        SaveManager::Instance->SaveData("tempSwchFlags", gSaveContext.childFW.tempSwchFlags);
-        SaveManager::Instance->SaveData("tempCollectFlags", gSaveContext.childFW.tempCollectFlags);
+        SaveManager::Instance->SaveData("yaw", gSaveContext.backupFW.yaw);
+        SaveManager::Instance->SaveData("playerParams", gSaveContext.backupFW.playerParams);
+        SaveManager::Instance->SaveData("entranceIndex", gSaveContext.backupFW.entranceIndex);
+        SaveManager::Instance->SaveData("roomIndex", gSaveContext.backupFW.roomIndex);
+        SaveManager::Instance->SaveData("set", gSaveContext.backupFW.set);
+        SaveManager::Instance->SaveData("tempSwchFlags", gSaveContext.backupFW.tempSwchFlags);
+        SaveManager::Instance->SaveData("tempCollectFlags", gSaveContext.backupFW.tempCollectFlags);
     });
     SaveManager::Instance->SaveData("dogParams", gSaveContext.dogParams);
 }
