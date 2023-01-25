@@ -74,6 +74,7 @@ extern PlayState* gPlayState;
 #define EFFECT_CAT_SPEED "speed"
 #define EFFECT_CAT_DAMAGE_TAKEN "damage_taken"
 #define EFFECT_CAT_SPAWN_ENEMY "spawn_enemy"
+#define EFFECT_CAT_NONE "none"
 
 void CrowdControl::Init() {
     SDLNet_Init();
@@ -217,6 +218,7 @@ void CrowdControl::ProcessActiveEffects() {
                         EmitMessage(tcpsock, effect->id, effect->timeRemaining, EffectResult::Resumed);
                     // If not paused before, subtract time from the timer and send a Success event if
                     // the result is different from the last time this was ran.
+                    // Timed events are put on a thread that runs once per second.
                     } else {
                         effect->timeRemaining -= 1000;
                         if (result != effect->lastExecutionResult) {
@@ -448,7 +450,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     }
 
     if (effect->category == "") {
-        effect->category = "none";
+        effect->category = EFFECT_CAT_NONE;
     }
 
     return effect;
@@ -457,7 +459,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
 
     GameInteractionEffectQueryResult giResult;
-    if (effect->category == "spawn_enemy") {
+    if (effect->category == EFFECT_CAT_SPAWN_ENEMY) {
         giResult = GameInteractor::RawAction::SpawnEnemyWithOffset(effect->value[0], effect->value[1]);
     } else {
         giResult = GameInteractor::ApplyEffect(effect->giEffect);
