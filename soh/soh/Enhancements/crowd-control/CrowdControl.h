@@ -95,6 +95,7 @@ class CrowdControl {
         Effect* ParseMessage(char payload[512]);
         EffectResult ExecuteEffect(Effect* effect);
         EffectResult CanApplyEffect(Effect *effect);
+        EffectResult TranslateGiEnum(GameInteractionEffectQueryResult giResult);
 
     public:
         static CrowdControl* Instance;

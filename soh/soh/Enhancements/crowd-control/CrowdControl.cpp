@@ -461,17 +461,7 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
         giResult = GameInteractor::ApplyEffect(effect->giEffect);
     }
 
-    // Translate GameInteractor result into CC's own enums.
-    EffectResult result;
-    if (giResult == GameInteractionEffectQueryResult::Possible) {
-        result = EffectResult::Success;
-    } else if (giResult == GameInteractionEffectQueryResult::TemporarilyNotPossible) {
-        result = EffectResult::Retry;
-    } else {
-        result = EffectResult::Failure;
-    }
-
-    return result;
+    return TranslateGiEnum(giResult);
 }
 
 /// Checks if effect can be applied -- should not be used to check for spawn enemy effects.
@@ -479,6 +469,10 @@ CrowdControl::EffectResult CrowdControl::CanApplyEffect(Effect* effect) {
     assert(effect->category != EFFECT_CAT_SPAWN_ENEMY);
     GameInteractionEffectQueryResult giResult = GameInteractor::CanApplyEffect(effect->giEffect);
 
+    return TranslateGiEnum(giResult);
+}
+
+CrowdControl::EffectResult CrowdControl::TranslateGiEnum(GameInteractionEffectQueryResult giResult) {
     // Translate GameInteractor result into CC's own enums.
     EffectResult result;
     if (giResult == GameInteractionEffectQueryResult::Possible) {
