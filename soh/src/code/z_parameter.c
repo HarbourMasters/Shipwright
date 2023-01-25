@@ -13,7 +13,7 @@
 #include <assert.h>
 #endif
 
-#include "soh/Enhancements/debugconsole.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 
 static uint16_t _doActionTexWidth, _doActionTexHeight = -1;
@@ -939,7 +939,7 @@ void func_80083108(PlayState* play) {
                 Interface_ChangeAlpha(50);
             }
         } else if (msgCtx->msgMode == MSGMODE_NONE) {
-            if (chaosEffectPacifistMode) {
+            if (GameInteractor_PacifistModeActive()) {
                 gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
                 gSaveContext.buttonStatus[3] = gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] =
                 gSaveContext.buttonStatus[7] = gSaveContext.buttonStatus[8] = BTN_DISABLED;
@@ -3074,7 +3074,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
     }
 
     // If one-hit ko mode is on, any damage kills you and you cannot gain health.
-    if (chaosEffectOneHitKO) {
+    if (GameInteractor_OneHitKOActive()) {
         if (healthChange < 0) {
             gSaveContext.health = 0;
         }
@@ -3091,11 +3091,12 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
     }
     // clang-format on
 
-    if (chaosEffectDefenseModifier != 0 && healthChange < 0) {
-        if (chaosEffectDefenseModifier > 0) {
-            healthChange /= chaosEffectDefenseModifier;
+    int32_t giDefenseModifier = GameInteractor_DefenseModifier();
+    if (giDefenseModifier != 0 && healthChange < 0) {
+        if (giDefenseModifier > 0) {
+            healthChange /= giDefenseModifier;
         } else {
-            healthChange *= abs(chaosEffectDefenseModifier);
+            healthChange *= abs(giDefenseModifier);
         }
     }
 
@@ -3127,14 +3128,6 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
     } else {
         return 1;
     }
-}
-
-void Health_GiveHearts(s16 hearts) {
-    gSaveContext.healthCapacity += hearts * 0x10;
-}
-
-void Health_RemoveHearts(s16 hearts) {
-    gSaveContext.healthCapacity -= hearts * 0x10;
 }
 
 void Rupees_ChangeBy(s16 rupeeChange) {
@@ -4968,7 +4961,7 @@ void Interface_Draw(PlayState* play) {
     s16 svar6;
     bool fullUi = !CVarGetInteger("gMinimalUI", 0) || !R_MINIMAP_DISABLED || play->pauseCtx.state != 0;
 
-    if (chaosEffectNoUI) {
+    if (GameInteractor_NoUIActive()) {
         return;
     }
 

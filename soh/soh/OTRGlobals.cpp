@@ -71,6 +71,7 @@
 CrowdControl* CrowdControl::Instance;
 #endif
 
+#include "Enhancements/game-interactor/GameInteractor.h"
 #include "libultraship/libultraship.h"
 
 // Resource Types/Factories
@@ -104,6 +105,7 @@ OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
 ItemTableManager* ItemTableManager::Instance;
+GameInteractor* GameInteractor::Instance;
 
 OTRGlobals::OTRGlobals() {
     std::vector<std::string> OTRFiles;
@@ -471,6 +473,7 @@ extern "C" void InitOTR() {
     SaveManager::Instance = new SaveManager();
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
+    GameInteractor::Instance = new GameInteractor();
 
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
