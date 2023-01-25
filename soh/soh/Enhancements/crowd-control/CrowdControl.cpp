@@ -158,8 +158,8 @@ void CrowdControl::ListenToServer() {
             } else {
                 // If another timed effect is already active that conflicts with the incoming effect.
                 bool isConflictingEffectActive = false;
-                for (Effect* pack : activeEffects) {
-                    if (pack != incomingEffect && pack->category == incomingEffect->category && pack->id < incomingEffect->id) {
+                for (Effect* effect : activeEffects) {
+                    if (effect != incomingEffect && effect->category == incomingEffect->category && effect->id < incomingEffect->id) {
                         isConflictingEffectActive = true;
                         EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, EffectResult::Retry);
                         break;
