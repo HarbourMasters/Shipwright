@@ -262,7 +262,7 @@ void func_808B4194(BgSpot15Rrbox* this, PlayState* play) {
 
     this->unk_174 = this->unk_174 + ((CVarGetInteger("gFasterBlockPush", 0) / 2) * 0.5) + 0.5f;
 
-    this->unk_174 = CLAMP_MAX(this->unk_174, 2.0f);
+    this->unk_174 = CLAMP_MAX(this->unk_174, 2.0f + (CVarGetInteger("gFasterBlockPush", 0) * 0.5));
 
     approxFResult = Math_StepToF(&this->unk_178, 20.0f, this->unk_174);
 
