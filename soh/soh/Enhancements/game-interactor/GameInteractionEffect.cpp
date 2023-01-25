@@ -47,11 +47,14 @@ GameInteractionEffectQueryResult GameInteractionEffectBase::Remove() {
 
 namespace GameInteractionEffect {
 
-    // MARK: - AddHeartContainers
+    // MARK: - ModifyHeartContainers
     GameInteractionEffectQueryResult ModifyHeartContainers::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else if ((parameter > 0 && gSaveContext.healthCapacity >= 0x140) || (parameter < 0 && gSaveContext.healthCapacity <= 0x10)) {
+        } else if (
+                (parameter > 0 && (gSaveContext.healthCapacity + (parameter * 0x10) > 0x140)) ||
+                (parameter < 0 && (gSaveContext.healthCapacity + (parameter * 0x10) < 0x10))
+            ) {
             return GameInteractionEffectQueryResult::NotPossible;
         }
 

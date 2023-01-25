@@ -498,10 +498,11 @@ static bool InvisibleHandler(std::shared_ptr<Ship::Console> Console, const std::
     GameInteractionEffectQueryResult result = 
         state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        SohImGui::GetConsole()->SendInfoMessage("[SOH] Updated Link's invisibility.");
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Invisible Link %s", state ? "enabled" : "disabled");
         return CMD_SUCCESS;
     } else {
-        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not update Link's invisibility.");
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not %s Invisible Link.",
+                                                state ? "enable" : "disable");
         return CMD_FAILED;
     }
 }
@@ -525,10 +526,11 @@ static bool GiantLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
     GameInteractionEffectQueryResult result =
         state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        SohImGui::GetConsole()->SendInfoMessage("[SOH] Updated Link's giant size.");
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Giant Link %s", state ? "enabled" : "disabled");
         return CMD_SUCCESS;
     } else {
-        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not update Link's giant size.");
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not %s Giant Link.",
+                                                state ? "enable" : "disable");
         return CMD_FAILED;
     }
 }
@@ -552,10 +554,11 @@ static bool MinishLinkHandler(std::shared_ptr<Ship::Console> Console, const std:
     GameInteractionEffectQueryResult result =
         state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        SohImGui::GetConsole()->SendInfoMessage("[SOH] Updated Link's minish size.");
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Minish Link %s", state ? "enabled" : "disabled");
         return CMD_SUCCESS;
     } else {
-        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not update Link's minish size.");
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not %s Minish Link.",
+                                                state ? "enable" : "disable");
         return CMD_FAILED;
     }
 }
@@ -652,21 +655,25 @@ static bool NoUIHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
+    uint8_t state;
 
     try {
-        uint8_t active = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        GameInteractionEffectBase* effect = new GameInteractionEffect::NoUI();
-        GameInteractionEffectQueryResult result = active ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
-
-        if (result == GameInteractionEffectQueryResult::Possible) {
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] No UI %s", active ? "enabled" : "disabled");
-            return CMD_SUCCESS;
-        } else {
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not %s No UI.", active ? "enable" : "disable");
-            return CMD_FAILED;
-        }
+        state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] No UI value must be a number.");
+        return CMD_FAILED;
+    }
+    
+    GameInteractionEffectBase* effect = new GameInteractionEffect::NoUI();
+    GameInteractionEffectQueryResult result =
+        state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
+
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] No UI %s", state ? "enabled" : "disabled");
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not %s No UI.",
+                                                state ? "enable" : "disable");
         return CMD_FAILED;
     }
 }
@@ -689,8 +696,8 @@ static bool DefenseModifierHandler(std::shared_ptr<Ship::Console> Console, const
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
-
     GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyDefenseModifier();
+
     try {
         effect->parameter = std::stoi(args[1], nullptr, 10);
     } catch (std::invalid_argument const& ex) {
@@ -713,8 +720,8 @@ static bool DamageHandler(std::shared_ptr<Ship::Console> Console, const std::vec
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
-
     GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyHealth();
+
     try {
         int value = std::stoi(args[1], nullptr, 10);
         if (value < 0) {
@@ -743,8 +750,8 @@ static bool HealHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
-
     GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyHealth();
+
     try {
         int value = std::stoi(args[1], nullptr, 10);
         if (value < 0) {
@@ -799,21 +806,25 @@ static bool NoZHandler(std::shared_ptr<Ship::Console> Console, const std::vector
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
+     uint8_t state;
 
     try {
-        uint8_t active = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        GameInteractionEffectBase* effect = new GameInteractionEffect::DisableZTargeting();
-        GameInteractionEffectQueryResult result = active ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
-
-        if (result == GameInteractionEffectQueryResult::Possible) {
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] NoZ " + std::string(active ? "enabled" : "disabled"));
-            return CMD_SUCCESS;
-        } else {
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not " + std::string(active ? "enable" : "disable") + " NoZ.");
-            return CMD_FAILED;
-        }
+        state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] NoZ value must be a number.");
+        return CMD_FAILED;
+    }
+
+    GameInteractionEffectBase* effect = new GameInteractionEffect::DisableZTargeting();
+    GameInteractionEffectQueryResult result =
+        state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
+
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] NoZ " + std::string(state ? "enabled" : "disabled"));
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not " +
+                                                std::string(state ? "enable" : "disable") + " NoZ.");
         return CMD_FAILED;
     }
 }
@@ -823,21 +834,25 @@ static bool OneHitKOHandler(std::shared_ptr<Ship::Console> Console, const std::v
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
+    uint8_t state;
 
     try {
-        uint8_t active = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        GameInteractionEffectBase* effect = new GameInteractionEffect::OneHitKO();
-        GameInteractionEffectQueryResult result = active ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
-
-        if (result == GameInteractionEffectQueryResult::Possible) {
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] One-hit KO " + std::string(active ? "enabled" : "disabled"));
-            return CMD_SUCCESS;
-        } else {
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not " + std::string(active ? "enable" : "disable") + " One-hit KO.");
-            return CMD_FAILED;
-        }
+        state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] One-hit KO value must be a number.");
+        return CMD_FAILED;
+    }
+
+    GameInteractionEffectBase* effect = new GameInteractionEffect::OneHitKO();
+    GameInteractionEffectQueryResult result =
+        state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
+
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] One-hit KO " + std::string(state ? "enabled" : "disabled"));
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not " +
+                                                std::string(state ? "enable" : "disable") + " One-hit KO.");
         return CMD_FAILED;
     }
 }
@@ -847,21 +862,25 @@ static bool PacifistHandler(std::shared_ptr<Ship::Console> Console, const std::v
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
+    uint8_t state;
 
     try {
-        uint8_t active = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        GameInteractionEffectBase* effect = new GameInteractionEffect::PacifistMode();
-        GameInteractionEffectQueryResult result = active ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
-
-        if (result == GameInteractionEffectQueryResult::Possible) {
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Pacifist " + std::string(active ? "enabled" : "disabled"));
-            return CMD_SUCCESS;
-        } else {
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not " + std::string(active ? "enable" : "disable") + " Pacifist.");
-            return CMD_FAILED;
-        }
+        state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Pacifist value must be a number.");
+        return CMD_FAILED;
+    }
+
+    GameInteractionEffectBase* effect = new GameInteractionEffect::PacifistMode();
+    GameInteractionEffectQueryResult result =
+        state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
+
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Pacifist " + std::string(state ? "enabled" : "disabled"));
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not " +
+                                                std::string(state ? "enable" : "disable") + " Pacifist.");
         return CMD_FAILED;
     }
 }
@@ -871,22 +890,26 @@ static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
+    uint8_t state;
 
     try {
-        uint8_t active = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyLinkSize();
-        effect->parameter = GI_LINK_SIZE_PAPER;
-        GameInteractionEffectQueryResult result = active ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
-
-        if (result == GameInteractionEffectQueryResult::Possible) {
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Paper Link " + std::string(active ? "enabled" : "disabled"));
-            return CMD_SUCCESS;
-        } else {
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not " + std::string(active ? "enable" : "disable") + " Paper Link.");
-            return CMD_FAILED;
-        }
+        state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Paper Link value must be a number.");
+        return CMD_FAILED;
+    }
+
+    GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyLinkSize();
+    effect->parameter = GI_LINK_SIZE_PAPER;
+    GameInteractionEffectQueryResult result =
+        state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
+
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Paper Link " + std::string(state ? "enabled" : "disabled"));
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not " +
+                                                std::string(state ? "enable" : "disable") + " Paper Link.");
         return CMD_FAILED;
     }
 }
@@ -896,21 +919,25 @@ static bool RainstormHandler(std::shared_ptr<Ship::Console> Console, const std::
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
+    uint8_t state;
 
     try {
-        uint8_t active = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        GameInteractionEffectBase* effect = new GameInteractionEffect::WeatherRainstorm();
-        GameInteractionEffectQueryResult result = active ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
-
-        if (result == GameInteractionEffectQueryResult::Possible) {
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Rainstorm " + std::string(active ? "enabled" : "disabled"));
-            return CMD_SUCCESS;
-        } else {
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not " + std::string(active ? "enable" : "disable") + " Rainstorm.");
-            return CMD_FAILED;
-        }
+        state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Rainstorm value must be a number.");
+        return CMD_FAILED;
+    }
+
+    GameInteractionEffectBase* effect = new GameInteractionEffect::WeatherRainstorm();
+    GameInteractionEffectQueryResult result =
+        state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
+
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Rainstorm " + std::string(state ? "enabled" : "disabled"));
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not " +
+                                                std::string(state ? "enable" : "disable") + " Rainstorm.");
         return CMD_FAILED;
     }
 }
@@ -920,21 +947,26 @@ static bool ReverseControlsHandler(std::shared_ptr<Ship::Console> Console, const
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
+    uint8_t state;
 
     try {
-        uint8_t active = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-        GameInteractionEffectBase* effect = new GameInteractionEffect::ReverseControls();
-        GameInteractionEffectQueryResult result = active ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
-
-        if (result == GameInteractionEffectQueryResult::Possible) {
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Reverse controls " + std::string(active ? "enabled" : "disabled"));
-            return CMD_SUCCESS;
-        } else {
-            SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not " + std::string(active ? "enable" : "disable") + " Reverse controls.");
-            return CMD_FAILED;
-        }
+        state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Reverse controls value must be a number.");
+        return CMD_FAILED;
+    }
+
+    GameInteractionEffectBase* effect = new GameInteractionEffect::ReverseControls();
+    GameInteractionEffectQueryResult result =
+        state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
+
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Reverse controls " +
+                                                std::string(state ? "enabled" : "disabled"));
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not " +
+                                                std::string(state ? "enable" : "disable") + " Reverse controls.");
         return CMD_FAILED;
     }
 }
@@ -944,7 +976,6 @@ static bool UpdateRupeesHandler(std::shared_ptr<Ship::Console> Console, const st
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
-
     GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyRupees();
 
     try {
@@ -969,7 +1000,6 @@ static bool SpeedModifierHandler(std::shared_ptr<Ship::Console> Console, const s
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
-
     GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyRunSpeedModifier();
 
     try {
@@ -1025,7 +1055,6 @@ static bool KnockbackHandler(std::shared_ptr<Ship::Console> Console, const std::
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
-
     GameInteractionEffectBase* effect = new GameInteractionEffect::KnockbackPlayer();
 
     try {
