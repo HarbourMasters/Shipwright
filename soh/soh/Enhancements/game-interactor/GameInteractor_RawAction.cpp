@@ -10,14 +10,14 @@ extern PlayState* gPlayState;
 
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 
-void GameInteractor::RawAction::AddOrRemoveHealthContainers(int32_t amount) {
+void GameInteractor::RawAction::AddOrRemoveHealthContainers(int16_t amount) {
     gSaveContext.healthCapacity += amount * 0x10;
 }
 
-void GameInteractor::RawAction::AddOrRemoveMagic(int32_t amount) {
+void GameInteractor::RawAction::AddOrRemoveMagic(int8_t amount) {
     // Full single magic = 48
     // Full double magic = 96
-    int32_t currentMagicCapacity = (gSaveContext.isDoubleMagicAcquired + 1) * 48;
+    int8_t currentMagicCapacity = (gSaveContext.isDoubleMagicAcquired + 1) * 48;
 
     if (gSaveContext.isMagicAcquired) {
         gSaveContext.prevMagicState = gSaveContext.magicState;
@@ -38,7 +38,7 @@ void GameInteractor::RawAction::AddOrRemoveMagic(int32_t amount) {
     }
 }
 
-void GameInteractor::RawAction::HealOrDamagePlayer(int32_t hearts) {
+void GameInteractor::RawAction::HealOrDamagePlayer(int16_t hearts) {
     if (hearts > 0) {
         Health_ChangeBy(gPlayState, hearts * 0x10);
     } else if (hearts < 0) {
@@ -49,47 +49,20 @@ void GameInteractor::RawAction::HealOrDamagePlayer(int32_t hearts) {
     }
 }
 
-void GameInteractor::RawAction::SetPlayerHealth(uint32_t hearts) {
+void GameInteractor::RawAction::SetPlayerHealth(int16_t hearts) {
     gSaveContext.health = hearts * 0x10;
 }
 
-void GameInteractor::RawAction::SetLinkSize(uint8_t size) {
-    GameInteractor_GiantLinkActive = 0;
-    GameInteractor_MinishLinkActive = 0;
-    GameInteractor_PaperLinkActive = 0;
-
-    if (size == GI_LINK_SIZE_NORMAL) {
-        GameInteractor_ResetLinkScale = 1;
-    } else if (size == GI_LINK_SIZE_GIANT) {
-        GameInteractor_GiantLinkActive = 1;
-    } else if (size == GI_LINK_SIZE_MINISH) {
-        GameInteractor_MinishLinkActive = 1;
-    } else if (size == GI_LINK_SIZE_PAPER) {
-        GameInteractor_PaperLinkActive = 1;
-    }
-}
-
-void GameInteractor::RawAction::SetLinkInvisibility(uint8_t effectState) {
-    GameInteractor_InvisibleLinkActive = effectState;
-    if (!effectState) {
+void GameInteractor::RawAction::SetLinkInvisibility(bool active) {
+    GameInteractor::State::InvisibleLinkActive = active;
+    if (!active) {
         Player* player = GET_PLAYER(gPlayState);
         player->actor.shape.shadowDraw = ActorShadow_DrawFeet;
     }
 }
 
-void GameInteractor::RawAction::SetLinkGravity(int32_t gravityLevel) {
-    GameInteractor_GravityLevel = gravityLevel;
-}
-
-void GameInteractor::RawAction::SetPacifistMode(uint8_t effectState) {
-    GameInteractor_PacifistModeActive = effectState;
-    // Force interface update to update the button's transparency.
-    gSaveContext.unk_13E8 = 50;
-    Interface_Update(gPlayState);
-}
-
-void GameInteractor::RawAction::SetWeatherStorm(uint8_t effectState) {
-    if (effectState) {
+void GameInteractor::RawAction::SetWeatherStorm(bool active) {
+    if (active) {
         gPlayState->envCtx.unk_F2[0] = 20;    // rain intensity target
         gPlayState->envCtx.gloomySkyMode = 1; // start gloomy sky
         if ((gWeatherMode != 0) || gPlayState->envCtx.unk_17 != 0) {
@@ -117,7 +90,7 @@ void GameInteractor::RawAction::SetWeatherStorm(uint8_t effectState) {
     }
 }
 
-void GameInteractor::RawAction::ForceEquipBoots(uint8_t boots) {
+void GameInteractor::RawAction::ForceEquipBoots(int8_t boots) {
     Player* player = GET_PLAYER(gPlayState);
     player->currentBoots = boots;
     Inventory_ChangeEquipment(EQUIP_BOOTS, boots + 1);
@@ -142,7 +115,7 @@ void GameInteractor::RawAction::ElectrocutePlayer() {
     func_80837C0C(gPlayState, player, 4, 0, 0, 0, 0);
 }
 
-void GameInteractor::RawAction::KnockbackPlayer(uint8_t strength) {
+void GameInteractor::RawAction::KnockbackPlayer(float strength) {
     Player* player = GET_PLAYER(gPlayState);
     func_8002F71C(gPlayState, &player->actor, strength * 5, player->actor.world.rot.y + 0x8000, strength * 5);
 }
@@ -162,6 +135,11 @@ void GameInteractor::RawAction::SpawnCuccoStorm() {
     EnNiw* cucco = (EnNiw*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_NIW, player->actor.world.pos.x,
                                        player->actor.world.pos.y + 2200, player->actor.world.pos.z, 0, 0, 0, 0, 0);
     cucco->actionFunc = func_80AB70A0_nocutscene;
+}
+
+void GameInteractor::RawAction::ForceInterfaceUpdate() {
+    gSaveContext.unk_13E8 = 50;
+    Interface_Update(gPlayState);
 }
 
 GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {

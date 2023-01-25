@@ -1050,7 +1050,7 @@ s32 func_80090014(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
         }
     }
 
-    if (GameInteractor_InvisibleLinkActive) {
+    if (GameInteractor_InvisibleLinkActive()) {
         this->actor.shape.shadowDraw = NULL;
         *dList = NULL;
     }

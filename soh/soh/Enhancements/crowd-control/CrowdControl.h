@@ -67,6 +67,7 @@ class CrowdControl {
             std::string category;
             long timeRemaining;
             GameInteractionEffectBase *giEffect;
+            int32_t paramMultiplier = 1;
 
             // Metadata used while executing (only for timed effects)
             bool isPaused;

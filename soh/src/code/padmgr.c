@@ -229,11 +229,11 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
             case 0:
                 input->cur = *padnow1;
 
-                if (GameInteractor_DisableZTargetingActive) {
+                if (GameInteractor_DisableZTargetingActive()) {
                     input->cur.button &= ~(BTN_Z);
                 }
 
-                if (GameInteractor_ReverseControlsActive) {
+                if (GameInteractor_ReverseControlsActive()) {
                     if (input->cur.stick_x == -128) {
                         input->cur.stick_x = 127;
                     } else {
