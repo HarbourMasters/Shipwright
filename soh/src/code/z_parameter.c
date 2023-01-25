@@ -1371,6 +1371,11 @@ void Interface_SetSceneRestrictions(PlayState* play) {
                          interfaceCtx->restrictions.farores, interfaceCtx->restrictions.dinsNayrus,
                          interfaceCtx->restrictions.all);
             osSyncPrintf(VT_RST);
+            if (CVarGetInteger("gBetterFW", 0)) {
+                if (currentScene == SCENE_MEN || currentScene == SCENE_GANONTIKA) {
+                    interfaceCtx->restrictions.farores = 0;
+                }
+            }
             return;
         }
         i++;

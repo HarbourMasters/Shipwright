@@ -13716,7 +13716,7 @@ void func_8085063C(Player* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
         s32 respawnData = gSaveContext.respawn[RESPAWN_MODE_TOP].data;
 
-        if (play->msgCtx.choiceIndex == 0) {
+        if (play->msgCtx.choiceIndex == 0) { //Returns to FW
             gSaveContext.respawnFlag = 3;
             play->sceneLoadFlag = 0x14;
             play->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
@@ -13725,7 +13725,7 @@ void func_8085063C(Player* this, PlayState* play) {
             return;
         }
 
-        if (play->msgCtx.choiceIndex == 1) {
+        if (play->msgCtx.choiceIndex == 1) { //Unsets FW
             gSaveContext.respawn[RESPAWN_MODE_TOP].data = -respawnData;
             gSaveContext.fw.set = 0;
             func_80078914(&gSaveContext.respawn[RESPAWN_MODE_TOP].pos, NA_SE_PL_MAGIC_WIND_VANISH);
