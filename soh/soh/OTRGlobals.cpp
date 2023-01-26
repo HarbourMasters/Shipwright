@@ -247,10 +247,12 @@ OTRGlobals::OTRGlobals() {
 
     hasMasterQuest = hasOriginal = false;
 
+    // Move the camera strings from read only memory onto the heap (writable memory)
+    // This is in OTRGlobals right now because this is a place that will only ever be run once at the beginning of startup.
+    // We should probably find some code in db_camera that does initialization and only run once, and then dealloc on deinitialization.
     cameraStrings = (char**)malloc(sizeof(constCameraStrings));
     for (int32_t i = 0; i < sizeof(constCameraStrings) / sizeof(char*); i++) {
-        // TODO: never deallocated...
-
+        // OTRTODO: never deallocated...
         auto dup = strdup(constCameraStrings[i]);
         cameraStrings[i] = dup;
     }
