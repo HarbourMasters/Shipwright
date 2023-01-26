@@ -391,7 +391,7 @@ const std::vector<PresetEntry> racePresetEntries = {
     PRESET_ENTRY_S32("gRandomizeShuffleOcarinas", 1),
     PRESET_ENTRY_S32("gRandomizeShopsanity", 6),
     PRESET_ENTRY_S32("gRandomizeShuffleScrubs", 1),
-    PRESET_ENTRY_S32("gRandomizeStartingMapsCompasses", 0),
+    PRESET_ENTRY_S32("gRandomizeStartingMapsCompasses", 1),
     PRESET_ENTRY_S32("gRandomizeKeysanity", 5),
     PRESET_ENTRY_S32("gRandomizeShuffleKeyRings", 2),
     PRESET_ENTRY_S32("gRandomizeShuffleKeyRingsRandomCount", 8),
