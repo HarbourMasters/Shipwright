@@ -40,6 +40,7 @@
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "frame_interpolation.h"
 #include "variables.h"
+#include "z64.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
 #include <Hooks.h>
@@ -105,6 +106,87 @@ SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
 ItemTableManager* ItemTableManager::Instance;
 
+extern "C" char** cameraStrings;
+std::vector<std::shared_ptr<std::string>> cameraStdStrings;
+
+// OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
+const char* constCameraStrings[] = {
+    "INSUFFICIENT",
+    "KEYFRAMES",
+    "YOU CAN ADD MORE",
+    "FINISHED",
+    "PLAYING",
+    "DEMO CAMERA TOOL",
+    "CANNOT PLAY",
+    "KEYFRAME   ",
+    "PNT   /      ",
+    ">            >",
+    "<            <",
+    "<          >",
+    GFXP_KATAKANA "*ﾌﾟﾚｲﾔ-*",
+    "E MODE FIX",
+    "E MODE ABS",
+    GFXP_HIRAGANA "ｶﾞﾒﾝ" GFXP_KATAKANA "   ﾃﾞﾓ", // OTRTODO: Unused, get a translation!
+    GFXP_HIRAGANA "ｶﾞﾒﾝ   ﾌﾂｳ", // OTRTODO: Unused, get a translation!
+    "P TIME  MAX",
+    GFXP_KATAKANA "ﾘﾝｸ" GFXP_HIRAGANA "    ｷｵｸ", // OTRTODO: Unused, get a translation!
+    GFXP_KATAKANA "ﾘﾝｸ" GFXP_HIRAGANA "     ﾑｼ", // OTRTODO: Unused, get a translation!
+    "*VIEWPT*",
+    "*CAMPOS*",
+    "DEBUG CAMERA",
+    "CENTER/LOCK",
+    "CENTER/FREE",
+    "DEMO CONTROL",
+    GFXP_KATAKANA "ﾒﾓﾘ" GFXP_HIRAGANA "ｶﾞﾀﾘﾏｾﾝ",
+    "p",
+    "e",
+    "s",
+    "l",
+    "c",
+    GFXP_KATAKANA "ﾒﾓﾘﾊﾟｯｸ",
+    GFXP_KATAKANA "ｾｰﾌﾞ",
+    GFXP_KATAKANA "ﾛｰﾄﾞ",
+    GFXP_KATAKANA "ｸﾘｱ-",
+    GFXP_HIRAGANA "ｦﾇｶﾅｲﾃﾞﾈ",
+    "FREE      BYTE",
+    "NEED      BYTE",
+    GFXP_KATAKANA "*ﾒﾓﾘ-ﾊﾟｯｸ*",
+    GFXP_HIRAGANA "ｦﾐﾂｹﾗﾚﾏｾﾝ",
+    GFXP_KATAKANA "ﾌｧｲﾙ " GFXP_HIRAGANA "ｦ",
+    GFXP_HIRAGANA "ｼﾃﾓｲｲﾃﾞｽｶ?",
+    GFXP_HIRAGANA "ｹﾞﾝｻﾞｲﾍﾝｼｭｳﾁｭｳﾉ", // OTRTODO: Unused, get a translation! Number 43
+    GFXP_KATAKANA "ﾌｧｲﾙ" GFXP_HIRAGANA "ﾊﾊｷｻﾚﾏｽ", // OTRTODO: Unused, get a translation! Number 44
+    GFXP_HIRAGANA "ﾊｲ",
+    GFXP_HIRAGANA "ｲｲｴ",
+    GFXP_HIRAGANA "ｼﾃｲﾏｽ",
+    GFXP_HIRAGANA "ｳﾜｶﾞｷ", // OTRTODO: Unused, get a translation! Number 48
+    GFXP_HIRAGANA "ｼﾏｼﾀ",
+    "USE       BYTE",
+    GFXP_HIRAGANA "ﾆｼｯﾊﾟｲ",
+    "E MODE REL",
+    "FRAME       ",
+    "KEY   /       ",
+    "(CENTER)",
+    "(ORIG)",
+    "(PLAYER)",
+    "(ALIGN)",
+    "(SET)",
+    "(OBJECT)",
+    GFXP_KATAKANA "ﾎﾟｲﾝﾄNo.     ", // OTRTODO: Unused, need translation. Number 62
+    "FOV              ",
+    "N FRAME          ",
+    "Z ROT            ",
+    GFXP_KATAKANA  "ﾓ-ﾄﾞ        ", // OTRTODO: Unused, need translation. Number 65
+    "  R FOCUS   ",
+    "PMAX              ",
+    "DEPTH             ",
+    "XROT              ",
+    "YROT              ",
+    GFXP_KATAKANA "ﾌﾚ-ﾑ         ",
+    GFXP_KATAKANA "ﾄ-ﾀﾙ         ",
+    GFXP_KATAKANA "ｷ-     /   ",
+};
+
 OTRGlobals::OTRGlobals() {
     std::vector<std::string> OTRFiles;
     std::string mqPath = Ship::Window::GetPathRelativeToAppDirectory("oot-mq.otr");
@@ -162,6 +244,14 @@ OTRGlobals::OTRGlobals() {
     gRandomizer = std::make_shared<Randomizer>();
 
     hasMasterQuest = hasOriginal = false;
+
+    cameraStrings = (char**)malloc(sizeof(constCameraStrings));
+    for (int32_t i = 0; i < sizeof(constCameraStrings) / sizeof(char*); i++) {
+        // TODO: never deallocated...
+
+        auto dup = strdup(constCameraStrings[i]);
+        cameraStrings[i] = dup;
+    }
 
     auto versions = context->GetResourceManager()->GetGameVersions();
 
