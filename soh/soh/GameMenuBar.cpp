@@ -163,8 +163,8 @@ namespace GameMenuBar {
                 ImGui::PopStyleColor(1);
                 ImGui::PopStyleVar(3);
             #ifndef __SWITCH__
-                UIWidgets::PaddedEnhancementCheckbox("Use Controller Navigation", "gControlNav", true, false);
-                UIWidgets::Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
+                UIWidgets::PaddedEnhancementCheckbox("ImGui Controller Navigation", "gControlNav", true, false);
+                UIWidgets::Tooltip("Allows controller navigation of the SOH menu bar (Settings, Enhancements,...)\nCAUTION: This will disable your game input until the menu bar is hidden\n\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
             #endif
                 UIWidgets::PaddedEnhancementCheckbox("Show Inputs", "gInputEnabled", true, false);
                 UIWidgets::Tooltip("Shows currently pressed inputs on the bottom right of the screen");
@@ -374,8 +374,6 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", "gMarketSneak", true, false);
                     UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking "
                     "to the guard next to the gate.");
-                    UIWidgets::PaddedEnhancementCheckbox("Faster Farore's Wind", "gFastFarores", true, false);
-                    UIWidgets::Tooltip("Greatly increases cast time of Farore's Wind magic spell.");
                     ImGui::EndMenu();
                 }
 
@@ -402,8 +400,6 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Makes nuts explode bombs, similar to how they interact with bombchus. This does not affect bombflowers.");
                     UIWidgets::PaddedEnhancementCheckbox("Equip Multiple Arrows at Once", "gSeparateArrows", true, false);
                     UIWidgets::Tooltip("Allow the bow and magic arrows to be equipped at the same time on different slots");
-                    UIWidgets::PaddedEnhancementCheckbox("Better Farore's Wind", "gBetterFW", true, false);
-                    UIWidgets::Tooltip("Helps FW persist between ages, gives child and adult separate FW points, and can be used in more places.");
                     UIWidgets::PaddedEnhancementCheckbox("Static Explosion Radius", "gStaticExplosionRadius", true, false);
                     UIWidgets::Tooltip("Explosions are now a static size, like in Majora's Mask and OoT3D. Makes bombchu hovering much easier.");
                     ImGui::EndMenu();
