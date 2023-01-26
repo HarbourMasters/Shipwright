@@ -1215,18 +1215,45 @@ typedef struct {
 struct SelectContext;
 
 typedef struct {
-    /* 0x00 */ char* name;
-    /* 0x04 */ void (*loadFunc)(struct SelectContext*, s32);
-    /* 0x08 */ s32 entranceIndex;
-} SceneSelectEntry; // size = 0xC
+    /* 0x00 */ char* japaneseName;
+    /* 0x04 */ char* englishName;
+    /* 0x08 */ char* germanName;
+    /* 0x0C */ char* frenchName;
+    /* 0x10 */ void (*loadFunc)(struct SelectContext*, s32);
+    /* 0x14 */ s32 entranceIndex;
+} SceneSelectEntry; // size = 0x18
 
 typedef struct {
-  /*      */ char* name;
+    /*      */ char* japaneseAge;
+    /*      */ char* englishAge;
+    /*      */ char* germanAge;
+    /*      */ char* frenchAge;
+} SceneSelectAgeLabels;
+
+typedef struct {
+    /*      */ char* japaneseMessage;
+    /*      */ char* englishMessage;
+    /*      */ char* germanMessage;
+    /*      */ char* frenchMessage;
+} SceneSelectLoadingMessages;
+
+typedef struct {
+    /*      */ char* englishAge;
+    /*      */ char* germanAge;
+    /*      */ char* frenchAge;
+} BetterSceneSelectAgeLabels;
+
+typedef struct {
+  /*      */ char* englishName;
+  /*      */ char* germanName;
+  /*      */ char* frenchName;
   /*      */ s32 entranceIndex;
 } BetterSceneSelectEntrancePair;
 
 typedef struct {
-    /*      */ char* name;
+    /*      */ char* englishName;
+    /*      */ char* germanName;
+    /*      */ char* frenchName;
     /*      */ void (*loadFunc)(struct SelectContext*, s32);
     /*      */ s32 count;
     /*      */ BetterSceneSelectEntrancePair entrancePairs[18];
@@ -1505,18 +1532,6 @@ typedef struct {
     /* 0x04 */ u8 mode;
     /* 0x08 */ f32 morphFrames;
 } AnimationMinimalInfo; // size = 0xC
-
-typedef struct {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
-    /* 0x06 */ s16 unk_06;
-    /* 0x08 */ Vec3s unk_08;
-    /* 0x0E */ Vec3s unk_0E;
-    /* 0x14 */ f32 unk_14;
-    /* 0x18 */ Vec3f unk_18;
-    /* 0x24 */ s16 unk_24;
-} struct_80034A14_arg1; // size = 0x28
 
 typedef struct {
     /* 0x00 */ s8  scene;

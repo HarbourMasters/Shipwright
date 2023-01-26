@@ -93,6 +93,12 @@ typedef enum {
 } ShuffleDungeonEntrancesSetting;
 
 typedef enum {
+    SHUFFLEBOSSES_OFF,
+    SHUFFLEBOSSES_AGE_RESTRICTED,
+    SHUFFLEBOSSES_FULL,
+} ShuffleBossEntrancesSetting;
+
+typedef enum {
     SHUFFLEINTERIORS_OFF,
     SHUFFLEINTERIORS_SIMPLE,
     SHUFFLEINTERIORS_ALL,
@@ -231,6 +237,7 @@ typedef enum {
     GANONSBOSSKEY_LACS_REWARDS,
     GANONSBOSSKEY_LACS_DUNGEONS,
     GANONSBOSSKEY_LACS_TOKENS,
+    GANONSBOSSKEY_FINAL_GS_REWARD,
 } GanonsBossKeySetting;
 
 typedef enum {
@@ -387,6 +394,7 @@ typedef struct {
     uint8_t startingAge;
     uint8_t resolvedStartingAge;
     uint8_t shuffleDungeonEntrances;
+    uint8_t shuffleBossEntrances;
     uint8_t shuffleOverworldEntrances;
     uint8_t shuffleInteriorEntrances;
     uint8_t shuffleGrottoEntrances;
@@ -422,6 +430,7 @@ typedef struct {
     uint8_t shuffleFrogSongRupees;
     uint8_t shuffleAdultTradeQuest;
     uint8_t shuffleChestMinigame;
+    uint8_t shuffle100GsReward;
 
     uint8_t mapsAndCompasses;
     uint8_t keysanity;
@@ -878,7 +887,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   const std::vector<Menu*> GetAllOptionMenus();
 
 
-  extern std::string seed;
+  extern uint32_t seed;
   extern std::string version;
   extern std::array<uint8_t, 5> hashIconIndexes;
   extern std::string hash;
@@ -903,6 +912,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern uint8_t ResolvedStartingAge;
   extern Option ShuffleEntrances;
   extern Option ShuffleDungeonEntrances;
+  extern Option ShuffleBossEntrances;
   extern Option ShuffleOverworldEntrances;
   extern Option ShuffleInteriorEntrances;
   extern Option ShuffleGrottoEntrances;
@@ -937,6 +947,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option ShuffleFrogSongRupees;
   extern Option ShuffleAdultTradeQuest;
   extern Option ShuffleChestMinigame;
+  extern Option Shuffle100GSReward;
 
   extern Option MapsAndCompasses;
   extern Option Keysanity;
@@ -981,6 +992,16 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option GossipStoneHints;
   extern Option ClearerHints;
   extern Option HintDistribution;
+  extern Option AltarHintText;
+  extern Option GanondorfHintText;
+  extern Option DampeHintText;
+  extern Option Kak10GSHintText;
+  extern Option Kak20GSHintText;
+  extern Option Kak30GSHintText;
+  extern Option Kak40GSHintText;
+  extern Option Kak50GSHintText;
+  extern Option ScrubHintText;
+  extern Option WarpSongHints;
   extern Option DamageMultiplier;
   extern Option StartingTime;
   extern Option ChestAnimations;

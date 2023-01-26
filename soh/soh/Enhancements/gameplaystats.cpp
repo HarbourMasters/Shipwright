@@ -119,6 +119,9 @@ void DrawStatsTracker(bool& open) {
         ImGui::End();
         return;
     }
+    
+    bool showTimestamps = (CVarGetInteger("gGameplayStatsMode", 0) <= 1);
+    bool showCounts = ( (CVarGetInteger("gGameplayStatsMode", 0) == 0) || (CVarGetInteger("gGameplayStatsMode", 0) == 2) );
 
     u32 totalTimer = GAMEPLAYSTAT_TOTAL_TIME;
     u32 enemiesDefeated = 0;
@@ -168,171 +171,187 @@ void DrawStatsTracker(bool& open) {
     ImGui::EndTable();
 
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
-    ImGui::BeginTable("gameStatsTable", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
+    ImGui::BeginTable("gameStatsTable", (showTimestamps && showCounts) ? 2 : 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
 
-    ImGui::TableSetupColumn("Timestamps", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-    ImGui::TableSetupColumn("Counts", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+    if (showTimestamps) {
+        ImGui::TableSetupColumn("Timestamps", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+    }
+    if (showCounts) {
+        ImGui::TableSetupColumn("Counts", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+    }
     ImGui::TableHeadersRow();
     ImGui::TableNextRow();
-    ImGui::TableNextColumn();
 
-    // Display chronological timestamps of items obtained and bosses defeated
-    for (int i = 0; i < TIMESTAMP_MAX; i++) {
-        // To be shown, the entry must have a non-zero time and a string for its display name
-        if (timestampDisplay[i].time > 0 && strnlen(timestampDisplay[i].name, 21) > 1) {
-            DisplayTimeHHMMSS(timestampDisplay[i].time, timestampDisplay[i].name, timestampDisplay[i].color);
-        }
-    }
-
-    ImGui::TableNextColumn();
-
-    DisplayStat("Enemies Defeated:      ", enemiesDefeated);
-    // Show breakdown of enemies defeated in a tree. Only show counts for enemies if they've been defeated at least once.
-    if (enemiesDefeated > 0) {
-        if (ImGui::TreeNode("Enemy Details...")) {
-
-            DisplayStatIfNonZero("Anubis:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ANUBIS]);
-            DisplayStatIfNonZero("Armos:              ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ARMOS]);
-            DisplayStatIfNonZero("Arwing:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ARWING]);
-            DisplayStatIfNonZero("Bari:               ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BARI]);
-            DisplayStatIfNonZero("Biri:               ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BIRI]);
-            DisplayStatIfNonZero("Beamos:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BEAMOS]);
-            DisplayStatIfNonZero("Big Octo:           ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BIG_OCTO]);
-            DisplayStatIfNonZero("Bubble (Blue):      ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_BLUE]);
-            DisplayStatIfNonZero("Bubble (Green):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN]);
-            DisplayStatIfNonZero("Bubble (Red):       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_RED]);
-            DisplayStatIfNonZero("Bubble (White):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_WHITE]);
-            DisplayStatIfNonZero("Business Scrub:     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUSINESS_SCRUB]);
-            DisplayStatIfNonZero("Dark Link:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DARK_LINK]);
-            DisplayStatIfNonZero("Dead Hand:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEAD_HAND]);
-            DisplayStatIfNonZero("Deku Baba:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]);
-            DisplayStatIfNonZero("Deku Baba (Big):    ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]);
-            DisplayStatIfNonZero("Deku Scrub:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_SCRUB]);
-            DisplayStatIfNonZero("Dinolfos:           ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DINOLFOS]);
-            DisplayStatIfNonZero("Dodongo:            ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DODONGO]);
-            DisplayStatIfNonZero("Dodongo (Baby):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DODONGO_BABY]);
-            DisplayStatIfNonZero("Door Mimic:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DOOR_TRAP]);
-            DisplayStatIfNonZero("Flare Dancer:       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLARE_DANCER]);
-            DisplayStatIfNonZero("Floormaster:        ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLOORMASTER]/3);
-            DisplayStatIfNonZero("Flying Floor Tile:  ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLOOR_TILE]);
-            DisplayStatIfNonZero("Flying Pot:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]);
-            DisplayStatIfNonZero("Freezard:           ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FREEZARD]);
-            DisplayStatIfNonZero("Gerudo Thief:       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GERUDO_THIEF]);
-            DisplayStatIfNonZero("Gibdo:              ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GIBDO]);
-            DisplayStatIfNonZero("Gohma Larva:        ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GOHMA_LARVA]);
-            DisplayStatIfNonZero("Guay:               ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GUAY]);
-            DisplayStatIfNonZero("Iron Knuckle:       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE]);
-            DisplayStatIfNonZero("Iron Knuckle (Nab): ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE_NABOORU]);
-            DisplayStatIfNonZero("Keese:              ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE]);
-            DisplayStatIfNonZero("Keese (Fire):       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE_FIRE]);
-            DisplayStatIfNonZero("Keese (Ice):        ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE_ICE]);
-            DisplayStatIfNonZero("Leever:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER]);
-            DisplayStatIfNonZero("Leever (Big):       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER_BIG]);
-            DisplayStatIfNonZero("Like-Like:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LIKE_LIKE]);
-            DisplayStatIfNonZero("Lizalfos:           ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LIZALFOS]);
-            DisplayStatIfNonZero("Mad Scrub:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MAD_SCRUB]);
-            DisplayStatIfNonZero("Moblin:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MOBLIN]);
-            DisplayStatIfNonZero("Moblin (Club):      ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MOBLIN_CLUB]);
-            DisplayStatIfNonZero("Octorok:            ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_OCTOROK]);
-            DisplayStatIfNonZero("Parasitic Tentacle: ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PARASITIC_TENTACLE]);
-            DisplayStatIfNonZero("Peahat:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT]);
-            DisplayStatIfNonZero("Peahat Larva:       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA]);
-            DisplayStatIfNonZero("Poe:                ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE]);
-            DisplayStatIfNonZero("Poe (Big):          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_BIG]);
-            DisplayStatIfNonZero("Poe (Composer):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_COMPOSER]);
-            DisplayStatIfNonZero("Poe Sisters:        ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_SISTERS]);
-            DisplayStatIfNonZero("Redead:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_REDEAD]);
-            DisplayStatIfNonZero("Shabom:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SHABOM]);
-            DisplayStatIfNonZero("Shellblade:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SHELLBLADE]);
-            DisplayStatIfNonZero("Skull Kid:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULL_KID]);
-            DisplayStatIfNonZero("Skulltula:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA]);
-            DisplayStatIfNonZero("Skulltula (Big):    ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_BIG]);
-            DisplayStatIfNonZero("Skulltula (Gold):   ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_GOLD]);
-            DisplayStatIfNonZero("Skullwalltula:      ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLWALLTULA]);
-            DisplayStatIfNonZero("Spike:              ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SPIKE]);
-            DisplayStatIfNonZero("Stalchild:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_STALCHILD]);
-            DisplayStatIfNonZero("Stalfos:            ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_STALFOS]);
-            DisplayStatIfNonZero("Stinger:            ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_STINGER]);
-            DisplayStatIfNonZero("Tailpasaran:        ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TAILPASARAN]);
-            DisplayStatIfNonZero("Tektite (Blue):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_BLUE]);
-            DisplayStatIfNonZero("Tektite (Red):      ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_RED]);
-            DisplayStatIfNonZero("Torch Slug:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TORCH_SLUG]);
-            DisplayStatIfNonZero("Wallmaster:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WALLMASTER]);
-            DisplayStatIfNonZero("Withered Deku Baba: ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA]);
-            DisplayStatIfNonZero("Wolfos:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS]);
-            DisplayStatIfNonZero("Wolfos (White):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE]);
+    if (showTimestamps) {
+        ImGui::TableNextColumn();
         
-        ImGui::NewLine();
-        ImGui::TreePop();
-        }
-    }
-    
-    DisplayStat("Rupees Collected:      ", gSaveContext.sohStats.count[COUNT_RUPEES_COLLECTED]);
-    UIWidgets::Tooltip("Includes rupees collected with a full wallet.");
-    DisplayStat("Rupees Spent:          ", gSaveContext.sohStats.count[COUNT_RUPEES_SPENT]);
-    DisplayStat("Chests Opened:         ", gSaveContext.sohStats.count[COUNT_CHESTS_OPENED]);
-
-    DisplayStat("Ammo Used:             ", ammoUsed);
-    // Show breakdown of ammo used in a collapsible tree. Only show ammo types if they've been used at least once.
-    if (ammoUsed > 0) {
-        if (ImGui::TreeNode("Ammo Details...")) {
-
-            DisplayStatIfNonZero("Deku Sticks:        ", gSaveContext.sohStats.count[COUNT_AMMO_USED_STICK]);
-            DisplayStatIfNonZero("Deku Nuts:          ", gSaveContext.sohStats.count[COUNT_AMMO_USED_NUT]);
-            DisplayStatIfNonZero("Deku Seeds:         ", gSaveContext.sohStats.count[COUNT_AMMO_USED_SEED]);
-            DisplayStatIfNonZero("Bombs:              ", gSaveContext.sohStats.count[COUNT_AMMO_USED_BOMB]);
-            DisplayStatIfNonZero("Bombchus:           ", gSaveContext.sohStats.count[COUNT_AMMO_USED_BOMBCHU]);
-            DisplayStatIfNonZero("Arrows:             ", gSaveContext.sohStats.count[COUNT_AMMO_USED_ARROW]);
-            DisplayStatIfNonZero("Beans:              ", gSaveContext.sohStats.count[COUNT_AMMO_USED_BEAN]);
-
-            ImGui::NewLine();
-            ImGui::TreePop();
+        // Display chronological timestamps of items obtained and bosses defeated
+        for (int i = 0; i < TIMESTAMP_MAX; i++) {
+            // To be shown, the entry must have a non-zero time and a string for its display name
+            if (timestampDisplay[i].time > 0 && strnlen(timestampDisplay[i].name, 21) > 1) {
+                DisplayTimeHHMMSS(timestampDisplay[i].time, timestampDisplay[i].name, timestampDisplay[i].color);
+            }
         }
     }
 
-    DisplayStat("Damage Taken:          ", gSaveContext.sohStats.count[COUNT_DAMAGE_TAKEN]);
-    DisplayStat("Sword Swings:          ", gSaveContext.sohStats.count[COUNT_SWORD_SWINGS]);
-    DisplayStat("Steps Taken:           ", gSaveContext.sohStats.count[COUNT_STEPS]);
-    // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
-    if (CVarGetInteger("gMMBunnyHood", 0) || gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
-        DisplayTimeHHMMSS(gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] / 2, "Bunny Hood Time:    ", COLOR_WHITE);
-    }
-    DisplayStat("Rolls:                 ", gSaveContext.sohStats.count[COUNT_ROLLS]);
-    DisplayStat("Bonks:                 ", gSaveContext.sohStats.count[COUNT_BONKS]);
-    DisplayStat("Sidehops:              ", gSaveContext.sohStats.count[COUNT_SIDEHOPS]);
-    DisplayStat("Backflips:             ", gSaveContext.sohStats.count[COUNT_BACKFLIPS]);
-    DisplayStat("Ice Traps:             ", gSaveContext.sohStats.count[COUNT_ICE_TRAPS]);
-    DisplayStat("Pauses:                ", gSaveContext.sohStats.count[COUNT_PAUSES]);
-    DisplayStat("Pots Smashed:          ", gSaveContext.sohStats.count[COUNT_POTS_BROKEN]);
-    DisplayStat("Bushes Cut:            ", gSaveContext.sohStats.count[COUNT_BUSHES_CUT]);
+    if (showCounts) {
+        ImGui::TableNextColumn();
 
-    DisplayStat("Buttons Pressed:       ", buttonPresses);
-    // Show breakdown of ammo used in a collapsible tree. Only show ammo types if they've been used at least once.
-    if (buttonPresses > 0) {
-        if (ImGui::TreeNode("Buttons...")) {
+        DisplayStat("Enemies Defeated:      ", enemiesDefeated);
+        // Show breakdown of enemies defeated in a tree. Only show counts for enemies if they've been defeated at least once.
+        if (enemiesDefeated > 0) {
+            if (ImGui::TreeNode("Enemy Details...")) {
 
-            DisplayStatIfNonZero("A:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]);
-            DisplayStatIfNonZero("B:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_B]);
-            DisplayStatIfNonZero("L:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_L]);
-            DisplayStatIfNonZero("R:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_R]);
-            DisplayStatIfNonZero("Z:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_Z]);
-            DisplayStatIfNonZero("C-Up:               ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CUP]);
-            DisplayStatIfNonZero("C-Right:            ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CRIGHT]);
-            DisplayStatIfNonZero("C-Down:             ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CDOWN]);
-            DisplayStatIfNonZero("C-Left:             ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CLEFT]);
-            DisplayStatIfNonZero("D-Up:               ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DUP]);
-            DisplayStatIfNonZero("D-Right:            ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DRIGHT]);
-            DisplayStatIfNonZero("D-Down:             ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DDOWN]);
-            DisplayStatIfNonZero("D-Left:             ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DLEFT]);
-            DisplayStatIfNonZero("Start:              ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_START]);
-
+                DisplayStatIfNonZero("Anubis:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ANUBIS]);
+                DisplayStatIfNonZero("Armos:              ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ARMOS]);
+                DisplayStatIfNonZero("Arwing:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ARWING]);
+                DisplayStatIfNonZero("Bari:               ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BARI]);
+                DisplayStatIfNonZero("Biri:               ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BIRI]);
+                DisplayStatIfNonZero("Beamos:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BEAMOS]);
+                DisplayStatIfNonZero("Big Octo:           ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BIG_OCTO]);
+                DisplayStatIfNonZero("Bubble (Blue):      ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_BLUE]);
+                DisplayStatIfNonZero("Bubble (Green):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN]);
+                DisplayStatIfNonZero("Bubble (Red):       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_RED]);
+                DisplayStatIfNonZero("Bubble (White):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_WHITE]);
+                DisplayStatIfNonZero("Business Scrub:     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUSINESS_SCRUB]);
+                DisplayStatIfNonZero("Dark Link:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DARK_LINK]);
+                DisplayStatIfNonZero("Dead Hand:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEAD_HAND]);
+                DisplayStatIfNonZero("Deku Baba:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]);
+                DisplayStatIfNonZero("Deku Baba (Big):    ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]);
+                DisplayStatIfNonZero("Deku Scrub:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_SCRUB]);
+                DisplayStatIfNonZero("Dinolfos:           ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DINOLFOS]);
+                DisplayStatIfNonZero("Dodongo:            ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DODONGO]);
+                DisplayStatIfNonZero("Dodongo (Baby):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DODONGO_BABY]);
+                DisplayStatIfNonZero("Door Mimic:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DOOR_TRAP]);
+                DisplayStatIfNonZero("Flare Dancer:       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLARE_DANCER]);
+                DisplayStatIfNonZero("Floormaster:        ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLOORMASTER]/3);
+                DisplayStatIfNonZero("Flying Floor Tile:  ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLOOR_TILE]);
+                DisplayStatIfNonZero("Flying Pot:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]);
+                DisplayStatIfNonZero("Freezard:           ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FREEZARD]);
+                DisplayStatIfNonZero("Gerudo Thief:       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GERUDO_THIEF]);
+                DisplayStatIfNonZero("Gibdo:              ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GIBDO]);
+                DisplayStatIfNonZero("Gohma Larva:        ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GOHMA_LARVA]);
+                DisplayStatIfNonZero("Guay:               ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GUAY]);
+                DisplayStatIfNonZero("Iron Knuckle:       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE]);
+                DisplayStatIfNonZero("Iron Knuckle (Nab): ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE_NABOORU]);
+                DisplayStatIfNonZero("Keese:              ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE]);
+                DisplayStatIfNonZero("Keese (Fire):       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE_FIRE]);
+                DisplayStatIfNonZero("Keese (Ice):        ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE_ICE]);
+                DisplayStatIfNonZero("Leever:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER]);
+                DisplayStatIfNonZero("Leever (Big):       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER_BIG]);
+                DisplayStatIfNonZero("Like-Like:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LIKE_LIKE]);
+                DisplayStatIfNonZero("Lizalfos:           ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LIZALFOS]);
+                DisplayStatIfNonZero("Mad Scrub:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MAD_SCRUB]);
+                DisplayStatIfNonZero("Moblin:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MOBLIN]);
+                DisplayStatIfNonZero("Moblin (Club):      ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MOBLIN_CLUB]);
+                DisplayStatIfNonZero("Octorok:            ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_OCTOROK]);
+                DisplayStatIfNonZero("Parasitic Tentacle: ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PARASITIC_TENTACLE]);
+                DisplayStatIfNonZero("Peahat:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT]);
+                DisplayStatIfNonZero("Peahat Larva:       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA]);
+                DisplayStatIfNonZero("Poe:                ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE]);
+                DisplayStatIfNonZero("Poe (Big):          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_BIG]);
+                DisplayStatIfNonZero("Poe (Composer):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_COMPOSER]);
+                DisplayStatIfNonZero("Poe Sisters:        ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_SISTERS]);
+                DisplayStatIfNonZero("Redead:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_REDEAD]);
+                DisplayStatIfNonZero("Shabom:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SHABOM]);
+                DisplayStatIfNonZero("Shellblade:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SHELLBLADE]);
+                DisplayStatIfNonZero("Skull Kid:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULL_KID]);
+                DisplayStatIfNonZero("Skulltula:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA]);
+                DisplayStatIfNonZero("Skulltula (Big):    ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_BIG]);
+                DisplayStatIfNonZero("Skulltula (Gold):   ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_GOLD]);
+                DisplayStatIfNonZero("Skullwalltula:      ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLWALLTULA]);
+                DisplayStatIfNonZero("Spike:              ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SPIKE]);
+                DisplayStatIfNonZero("Stalchild:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_STALCHILD]);
+                DisplayStatIfNonZero("Stalfos:            ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_STALFOS]);
+                DisplayStatIfNonZero("Stinger:            ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_STINGER]);
+                DisplayStatIfNonZero("Tailpasaran:        ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TAILPASARAN]);
+                DisplayStatIfNonZero("Tektite (Blue):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_BLUE]);
+                DisplayStatIfNonZero("Tektite (Red):      ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_RED]);
+                DisplayStatIfNonZero("Torch Slug:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TORCH_SLUG]);
+                DisplayStatIfNonZero("Wallmaster:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WALLMASTER]);
+                DisplayStatIfNonZero("Withered Deku Baba: ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA]);
+                DisplayStatIfNonZero("Wolfos:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS]);
+                DisplayStatIfNonZero("Wolfos (White):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE]);
+            
             ImGui::NewLine();
             ImGui::TreePop();
+            }
+        }
+        
+        DisplayStat("Rupees Collected:      ", gSaveContext.sohStats.count[COUNT_RUPEES_COLLECTED]);
+        UIWidgets::Tooltip("Includes rupees collected with a full wallet.");
+        DisplayStat("Rupees Spent:          ", gSaveContext.sohStats.count[COUNT_RUPEES_SPENT]);
+        DisplayStat("Chests Opened:         ", gSaveContext.sohStats.count[COUNT_CHESTS_OPENED]);
+
+        DisplayStat("Ammo Used:             ", ammoUsed);
+        // Show breakdown of ammo used in a collapsible tree. Only show ammo types if they've been used at least once.
+        if (ammoUsed > 0) {
+            if (ImGui::TreeNode("Ammo Details...")) {
+
+                DisplayStatIfNonZero("Deku Sticks:        ", gSaveContext.sohStats.count[COUNT_AMMO_USED_STICK]);
+                DisplayStatIfNonZero("Deku Nuts:          ", gSaveContext.sohStats.count[COUNT_AMMO_USED_NUT]);
+                DisplayStatIfNonZero("Deku Seeds:         ", gSaveContext.sohStats.count[COUNT_AMMO_USED_SEED]);
+                DisplayStatIfNonZero("Bombs:              ", gSaveContext.sohStats.count[COUNT_AMMO_USED_BOMB]);
+                DisplayStatIfNonZero("Bombchus:           ", gSaveContext.sohStats.count[COUNT_AMMO_USED_BOMBCHU]);
+                DisplayStatIfNonZero("Arrows:             ", gSaveContext.sohStats.count[COUNT_AMMO_USED_ARROW]);
+                DisplayStatIfNonZero("Beans:              ", gSaveContext.sohStats.count[COUNT_AMMO_USED_BEAN]);
+
+                ImGui::NewLine();
+                ImGui::TreePop();
+            }
+        }
+
+        DisplayStat("Damage Taken:          ", gSaveContext.sohStats.count[COUNT_DAMAGE_TAKEN]);
+        DisplayStat("Sword Swings:          ", gSaveContext.sohStats.count[COUNT_SWORD_SWINGS]);
+        DisplayStat("Steps Taken:           ", gSaveContext.sohStats.count[COUNT_STEPS]);
+        // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
+        if (CVarGetInteger("gMMBunnyHood", 0) || gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
+            DisplayTimeHHMMSS(gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] / 2, "Bunny Hood Time:    ", COLOR_WHITE);
+        }
+        DisplayStat("Rolls:                 ", gSaveContext.sohStats.count[COUNT_ROLLS]);
+        DisplayStat("Bonks:                 ", gSaveContext.sohStats.count[COUNT_BONKS]);
+        DisplayStat("Sidehops:              ", gSaveContext.sohStats.count[COUNT_SIDEHOPS]);
+        DisplayStat("Backflips:             ", gSaveContext.sohStats.count[COUNT_BACKFLIPS]);
+        DisplayStat("Ice Traps:             ", gSaveContext.sohStats.count[COUNT_ICE_TRAPS]);
+        DisplayStat("Pauses:                ", gSaveContext.sohStats.count[COUNT_PAUSES]);
+        DisplayStat("Pots Smashed:          ", gSaveContext.sohStats.count[COUNT_POTS_BROKEN]);
+        DisplayStat("Bushes Cut:            ", gSaveContext.sohStats.count[COUNT_BUSHES_CUT]);
+
+        DisplayStat("Buttons Pressed:       ", buttonPresses);
+        // Show breakdown of ammo used in a collapsible tree. Only show ammo types if they've been used at least once.
+        if (buttonPresses > 0) {
+            if (ImGui::TreeNode("Buttons...")) {
+
+                DisplayStatIfNonZero("A:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]);
+                DisplayStatIfNonZero("B:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_B]);
+                DisplayStatIfNonZero("L:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_L]);
+                DisplayStatIfNonZero("R:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_R]);
+                DisplayStatIfNonZero("Z:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_Z]);
+                DisplayStatIfNonZero("C-Up:               ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CUP]);
+                DisplayStatIfNonZero("C-Right:            ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CRIGHT]);
+                DisplayStatIfNonZero("C-Down:             ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CDOWN]);
+                DisplayStatIfNonZero("C-Left:             ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CLEFT]);
+                DisplayStatIfNonZero("D-Up:               ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DUP]);
+                DisplayStatIfNonZero("D-Right:            ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DRIGHT]);
+                DisplayStatIfNonZero("D-Down:             ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DDOWN]);
+                DisplayStatIfNonZero("D-Left:             ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DLEFT]);
+                DisplayStatIfNonZero("Start:              ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_START]);
+
+                ImGui::NewLine();
+                ImGui::TreePop();
+            }
         }
     }
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
+
+    const char* gameplayStatsModeOptions[3] = { "Both", "Timestamps", "Counts"};
+    
+    ImGui::Text("Display Mode");
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+    UIWidgets::EnhancementCombobox("gGameplayStatsMode", gameplayStatsModeOptions, 3, 0);
 
     ImGui::Text("Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving.");
 
@@ -379,6 +398,22 @@ void SetupDisplayNames() {
     strcpy(timestampDisplayName[ITEM_SCALE_GOLDEN],     "Gold Scale:         ");
     strcpy(timestampDisplayName[ITEM_WALLET_ADULT],     "Adult's Wallet:     ");
     strcpy(timestampDisplayName[ITEM_WALLET_GIANT],     "Giant's Wallet:     ");
+    strcpy(timestampDisplayName[ITEM_WEIRD_EGG],        "Weird Egg:          ");
+    strcpy(timestampDisplayName[ITEM_GERUDO_CARD],      "Gerudo's Card:      ");
+    strcpy(timestampDisplayName[ITEM_COJIRO],           "Cojiro:             ");
+    strcpy(timestampDisplayName[ITEM_POCKET_EGG],       "Pocket Egg:         ");
+    strcpy(timestampDisplayName[ITEM_MASK_SKULL],       "Skull Mask:         ");
+    strcpy(timestampDisplayName[ITEM_MASK_SPOOKY],      "Spooky Mask:        ");
+    strcpy(timestampDisplayName[ITEM_MASK_KEATON],      "Keaton Mask:        ");
+    strcpy(timestampDisplayName[ITEM_MASK_BUNNY],       "Bunny Hood:         ");
+    strcpy(timestampDisplayName[ITEM_ODD_MUSHROOM],     "Odd Mushroom:       ");
+    strcpy(timestampDisplayName[ITEM_ODD_POTION],       "Odd Potion:         ");
+    strcpy(timestampDisplayName[ITEM_SAW],              "Poacher's Saw:      ");
+    strcpy(timestampDisplayName[ITEM_SWORD_BROKEN],     "Broken Goron Sword: ");
+    strcpy(timestampDisplayName[ITEM_PRESCRIPTION],     "Prescription:       ");
+    strcpy(timestampDisplayName[ITEM_FROG],             "Eyeball Frog:       ");
+    strcpy(timestampDisplayName[ITEM_EYEDROPS],         "Eye Drops:          ");
+    strcpy(timestampDisplayName[ITEM_CLAIM_CHECK],      "Claim Check:        ");
     strcpy(timestampDisplayName[ITEM_SONG_MINUET],      "Minuet of Forest:   ");
     strcpy(timestampDisplayName[ITEM_SONG_BOLERO],      "Bolero of Fire:     ");
     strcpy(timestampDisplayName[ITEM_SONG_SERENADE],    "Serenade of Water:  ");
@@ -466,7 +501,7 @@ void SetupDisplayColors() {
 }
 
 void InitStatTracker() {
-    SohImGui::AddWindow("Enhancements", "Gameplay Stats", DrawStatsTracker);
+    SohImGui::AddWindow("Enhancements", "Gameplay Stats", DrawStatsTracker, CVarGetInteger("gGameplayStatsEnabled", 0) == 1);
     SetupDisplayNames();
     SetupDisplayColors();
 }

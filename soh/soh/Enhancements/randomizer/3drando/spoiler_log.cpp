@@ -306,7 +306,7 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
   std::string name = entrance->GetName();
   std::string text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
 
-  if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+  if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
     destinationIndex = entrance->GetReverse()->GetIndex();
     replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
     replacementBlueWarp = entrance->GetReplacement()->GetReverse()->GetBlueWarp();
@@ -323,7 +323,7 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
   jsonData["entrances"].push_back(entranceJson);
 
   // When decoupled entrances is off, handle saving reverse entrances with blue warps
-  if (entrance->GetReverse() != nullptr && !Settings::DecoupleEntrances) {
+  if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
     json reverseEntranceJson = json::object({
       {"index", replacementDestinationIndex},
       {"destination", replacementIndex},
@@ -435,10 +435,30 @@ static void WriteStartingInventory() {
     &Settings::startingOthersOptions
   };
 
+  for (std::vector<Option*>* menu : startingInventoryOptions) {
+      for (size_t i = 0; i < menu->size(); ++i) {
+          const auto setting = menu->at(i);
+          // Starting Songs
+          if (setting->GetName() == "Start with Zelda's Lullaby" || 
+              setting->GetName() == "Start with Epona's Song" ||
+              setting->GetName() == "Start with Saria's Song" || 
+              setting->GetName() == "Start with Sun's Song" ||
+              setting->GetName() == "Start with Song of Time" || 
+              setting->GetName() == "Start with Song of Storms" ||
+              setting->GetName() == "Start with Minuet of Forest" || 
+              setting->GetName() == "Start with Bolero of Fire" ||
+              setting->GetName() == "Start with Serenade of Water" || 
+              setting->GetName() == "Start with Requiem of Spirit" ||
+              setting->GetName() == "Start with Nocturne of Shadow" || 
+              setting->GetName() == "Start with Prelude of Light") {
+              jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
+          }
+      }
+  }
   for (std::vector<Option *>* menu : startingInventoryOptions) {
     for (size_t i = 0; i < menu->size(); ++i) {
       const auto setting = menu->at(i);
-
+   
       // we need to write these every time because we're not clearing jsondata, so
       // the default logic of only writing it when we aren't using the default value
       // doesn't work, and because it'd be bad to set every single possible starting
@@ -628,12 +648,14 @@ std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
 static void WriteHints(int language) {
     std::string unformattedGanonText;
     std::string unformattedGanonHintText;
+    std::string unformattedDampesText;
 
     switch (language) {
         case 0:
         default:
             unformattedGanonText = GetGanonText().GetEnglish();
             unformattedGanonHintText = GetGanonHintText().GetEnglish();
+            unformattedDampesText = GetDampeHintText().GetEnglish();
             jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
             jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
             jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetEnglish();
@@ -646,6 +668,7 @@ static void WriteHints(int language) {
         case 2:
             unformattedGanonText = GetGanonText().GetFrench();
             unformattedGanonHintText = GetGanonHintText().GetFrench();
+            unformattedDampesText = GetDampeHintText().GetFrench();
             jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
             jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
             jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetFrench();
@@ -659,9 +682,11 @@ static void WriteHints(int language) {
 
     std::string ganonText = AutoFormatHintTextString(unformattedGanonText);
     std::string ganonHintText = AutoFormatHintTextString(unformattedGanonHintText);
+    std::string dampesText = AutoFormatHintTextString(unformattedDampesText);
 
     jsonData["ganonText"] = ganonText;
     jsonData["ganonHintText"] = ganonHintText;
+    jsonData["dampeText"] = dampesText;
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;
@@ -747,10 +772,10 @@ const char* SpoilerLog_Write(int language) {
     auto rootNode = spoilerLog.NewElement("spoiler-log");
     spoilerLog.InsertEndChild(rootNode);
 
-    rootNode->SetAttribute("version", Settings::version.c_str());
-    rootNode->SetAttribute("seed", Settings::seed.c_str());
-
     jsonData.clear();
+
+    jsonData["_version"] = (char*) gBuildVersion;
+    jsonData["_seed"] = Settings::seed;
 
     // Write Hash
     int index = 0;
@@ -819,7 +844,7 @@ bool PlacementLog_Write() {
     placementLog.InsertEndChild(rootNode);
 
     rootNode->SetAttribute("version", Settings::version.c_str());
-    rootNode->SetAttribute("seed", Settings::seed.c_str());
+    rootNode->SetAttribute("seed", Settings::seed);
 
     // WriteSettings(placementLog, true); // Include hidden settings.
     // WriteExcludedLocations(placementLog);

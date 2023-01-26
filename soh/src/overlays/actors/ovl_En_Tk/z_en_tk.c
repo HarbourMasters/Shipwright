@@ -355,7 +355,7 @@ u16 func_80B1C54C(PlayState* play, Actor* thisx) {
 }
 
 s16 func_80B1C5A0(PlayState* play, Actor* thisx) {
-    s32 ret = 1;
+    s32 ret = NPC_TALK_STATE_TALKING;
 
     switch (Message_GetState(&play->msgCtx)) {
         case TEXT_STATE_NONE:
@@ -366,7 +366,7 @@ s16 func_80B1C5A0(PlayState* play, Actor* thisx) {
             if (thisx->textId == 0x5028) {
                 gSaveContext.infTable[13] |= 0x0100;
             }
-            ret = 0;
+            ret = NPC_TALK_STATE_IDLE;
             break;
         case TEXT_STATE_DONE_FADING:
             break;
@@ -382,7 +382,7 @@ s16 func_80B1C5A0(PlayState* play, Actor* thisx) {
                     play->msgCtx.msgMode = MSGMODE_PAUSED;
                     Rupees_ChangeBy(-10);
                     gSaveContext.infTable[13] |= 0x0200;
-                    return 2;
+                    return NPC_TALK_STATE_ACTION;
                 }
                 Message_ContinueTextbox(play, thisx->textId);
                 gSaveContext.infTable[13] |= 0x0200;
@@ -391,7 +391,7 @@ s16 func_80B1C5A0(PlayState* play, Actor* thisx) {
         case TEXT_STATE_EVENT:
             if (Message_ShouldAdvance(play) && (thisx->textId == 0x0084 || thisx->textId == 0x0085)) {
                 Message_CloseTextbox(play);
-                ret = 0;
+                ret = NPC_TALK_STATE_IDLE;
             }
             break;
         case TEXT_STATE_DONE:
@@ -528,35 +528,35 @@ void EnTk_Rest(EnTk* this, PlayState* play) {
     s16 v1;
     s16 a1_;
 
-    if (this->h_1E0 != 0) {
+    if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         v1 = this->actor.shape.rot.y;
         v1 -= this->h_21E;
         v1 = this->actor.yawTowardsPlayer - v1;
 
-        if (this->h_1E0 == 2) {
+        if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
             EnTk_DigAnim(this, play);
-            this->h_1E0 = 0;
+            this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
             this->actionFunc = EnTk_Dig;
             return;
         }
 
-        func_800343CC(play, &this->actor, &this->h_1E0, this->collider.dim.radius + 30.0f, func_80B1C54C,
-                      func_80B1C5A0);
+        Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 30.0f,
+                          func_80B1C54C, func_80B1C5A0);
     } else if (EnTk_CheckFacingPlayer(this)) {
         v1 = this->actor.shape.rot.y;
         v1 -= this->h_21E;
         v1 = this->actor.yawTowardsPlayer - v1;
 
         this->actionCountdown = 0;
-        func_800343CC(play, &this->actor, &this->h_1E0, this->collider.dim.radius + 30.0f, func_80B1C54C,
-                      func_80B1C5A0);
+        Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 30.0f,
+                          func_80B1C54C, func_80B1C5A0);
     } else if (Actor_ProcessTalkRequest(&this->actor, play)) {
         v1 = this->actor.shape.rot.y;
         v1 -= this->h_21E;
         v1 = this->actor.yawTowardsPlayer - v1;
 
         this->actionCountdown = 0;
-        this->h_1E0 = 1;
+        this->interactInfo.talkState = NPC_TALK_STATE_TALKING;
     } else if (DECR(this->actionCountdown) == 0) {
         EnTk_WalkAnim(this, play);
         this->actionFunc = EnTk_Walk;
@@ -571,9 +571,9 @@ void EnTk_Rest(EnTk* this, PlayState* play) {
 }
 
 void EnTk_Walk(EnTk* this, PlayState* play) {
-    if (this->h_1E0 == 2) {
+    if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         EnTk_DigAnim(this, play);
-        this->h_1E0 = 0;
+        this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         this->actionFunc = EnTk_Dig;
     } else {
         this->actor.speedXZ = EnTk_Step(this, play);

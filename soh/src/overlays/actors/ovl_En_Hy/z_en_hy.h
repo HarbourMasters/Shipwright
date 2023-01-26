@@ -44,7 +44,7 @@ typedef struct EnHy {
     /* 0x0198 */ s8 objBankIndexSkel1; // sets the object used when drawing the skeleton for limb <= 7 (lower part?)
     /* 0x0199 */ s8 objBankIndexOsAnime;
     /* 0x019C */ ColliderCylinder collider;
-    /* 0x01E8 */ struct_80034A14_arg1 unk_1E8;
+    /* 0x01E8 */ NpcInteractInfo interactInfo;
     /* 0x0210 */ Path* path;
     /* 0x0214 */ s8 waypoint;
     /* 0x0215 */ s8 unk_215;

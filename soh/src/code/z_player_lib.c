@@ -6,7 +6,7 @@
 #include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 
-#include "soh/Enhancements/debugconsole.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 typedef struct {
     /* 0x00 */ u8 flag;
@@ -1050,7 +1050,7 @@ s32 func_80090014(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
         }
     }
 
-    if (chaosEffectInvisibleLink) {
+    if (GameInteractor_InvisibleLinkActive()) {
         this->actor.shape.shadowDraw = NULL;
         *dList = NULL;
     }
@@ -1510,7 +1510,7 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                     if (func_8002DD78(this) != 0) {
                         Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
                         Player_DrawHookshotReticle(
-                            play, this, (this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 77600.0f);
+                            play, this, ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 77600.0f) * CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f));
                     }
                 }
             }

@@ -22,6 +22,7 @@ void BootCommands_Init()
 {
     CVarRegisterInteger("gDebugEnabled", 0);
     CVarRegisterInteger("gLanguages", LANGUAGE_ENG);
+    CVarRegisterInteger("gDebugWarpScreenTranslation", 1);
     CVarRegisterInteger("gInvertYAxis", 1);
     CVarSetInteger("gRandoGenerating", 0); // Clear when a crash happened during rando seed generation
 #if defined(__SWITCH__) || defined(__WIIU__)

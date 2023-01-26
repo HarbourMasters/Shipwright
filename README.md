@@ -137,7 +137,10 @@ Assuming you have done everything correctly, boot up SoH and open up the SFX Edi
 Refer to the [building instructions](BUILDING.md) to compile SoH.
 
 ## Nightly Builds
-Nightly builds of Ship of Harkinian are available here: [Windows](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-windows.zip), [macOS](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-mac.zip), [Linux](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-linux.zip), [Switch](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-switch.zip), [Wii U](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-wiiu.zip)
+Nightly builds of Ship of Harkinian are available here: [Windows](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-windows.zip), [macOS](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-mac.zip), [Linux (compatibility*)](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-linux-compatiblity.zip), [Linux (performance*)](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-linux-performance.zip), [Switch](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-switch.zip), [Wii U](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-wiiu.zip)
+
+_*compatibility: compatible with most Linux distributions, but may not be as performant as the perf build._\
+_*performance: requires glibc 2.35 or newer, but will be more performant than the compat build._
 
 ## Take The Survey
 Want to use cartridge readers in tandem with the OTRGui?

@@ -1180,6 +1180,23 @@ void Message_Decode(PlayState* play) {
     while (true) {
         phi_s1 = temp_s2 = msgCtx->msgBufDecoded[decodedBufPos] = font->msgBuf[msgCtx->msgBufPos];
 
+        // Don't require input for credits textboxes in randomizer
+        if (CVarGetInteger("gNoInputForCredits", 0) && (
+            msgCtx->textId == 0x706F ||
+            msgCtx->textId == 0x7091 ||
+            msgCtx->textId == 0x7092 ||
+            msgCtx->textId == 0x7093 ||
+            msgCtx->textId == 0x7094 ||
+            msgCtx->textId == 0x7095
+        )) {
+            if (temp_s2 == MESSAGE_BOX_BREAK) {
+                phi_s1 = temp_s2 = msgCtx->msgBufDecoded[decodedBufPos] = font->msgBuf[msgCtx->msgBufPos] = MESSAGE_BOX_BREAK_DELAYED;
+            } else if (temp_s2 == MESSAGE_END) {
+                phi_s1 = temp_s2 = msgCtx->msgBufDecoded[decodedBufPos] = font->msgBuf[msgCtx->msgBufPos] = MESSAGE_FADE2;
+                phi_s1 = temp_s2 = msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[++msgCtx->msgBufPos] = MESSAGE_END;
+            }
+        }
+
         if (temp_s2 == MESSAGE_BOX_BREAK || temp_s2 == MESSAGE_TEXTID || temp_s2 == MESSAGE_BOX_BREAK_DELAYED ||
             temp_s2 == MESSAGE_EVENT || temp_s2 == MESSAGE_END) {
             // Textbox decoding ends with any of the above text control characters
@@ -1697,15 +1714,8 @@ void Message_StartTextbox(PlayState* play, u16 textId, Actor* actor) {
     osSyncPrintf(VT_RST);
 
     msgCtx->ocarinaAction = 0xFFFF;
-    // we need the talkActor for gossip stones in rando
-    // so we need to switch the order of these lines
-    if (gSaveContext.n64ddFlag && textId == 0x2053) {
-        msgCtx->talkActor = actor;
-        Message_OpenText(play, textId);
-    } else {
-        Message_OpenText(play, textId);
-        msgCtx->talkActor = actor;
-    }
+    Message_OpenText(play, textId);
+    msgCtx->talkActor = actor;
     msgCtx->msgMode = MSGMODE_TEXT_START;
     msgCtx->stateTimer = 0;
     msgCtx->textDelayTimer = 0;

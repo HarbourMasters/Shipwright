@@ -133,11 +133,11 @@ typedef struct {
     directly to gDPSetPrimColor/gDPSetEnvColor in code. If you find one, try changing the arguments and see if that's what you are looking for.
 
     If this fails, and you aren't able to find any colors within the source of the actor/whatever you will now need to investigate the DLists 
-    that are being rendered. The easiest way to do this is to check out the branch https://github.com/garrettjoecox/oot/tree/dlist-viewer
-    and use the DList viewer. An alternative to this is to dig through the source of the DLists after you have built the zeldaret/oot repository, 
-    but this will be much more manual, and I can't provide instructions for it.
+    that are being rendered. The easiest way to do this is to use the experimental Display List Viewer in the developer tools options. An
+    alternative to this is to dig through the source of the DLists after you have built the zeldaret/oot repository, but this will be much more
+    manual, and I can't provide instructions for it.
 
-    Assuming you have checked out the dlist-viewer branch, you need to find the name of the DList to inspect. In the same areas you were looking
+    Assuming you are planning on using the Display List Viewer, you need to find the name of the DList to inspect. In the same areas you were looking
     for RGB values you now want to look for calls to gSPDisplayList, or variables that end in "DL". Once you have this name start typing parts of 
     it into the dlist-viewer (in the developer dropdown) and select the desired dlist in the dropdown, there may be many. You will now see a
     list of commands associated with the DList you have selected. If you are lucky, there will be calls to gsDPSetPrimColor/gsDPSetEnvColor with
@@ -1669,6 +1669,25 @@ void DrawCosmeticsEditor(bool& open) {
     ImGui::SameLine();
     UIWidgets::EnhancementCombobox("gCosmetics.DefaultColorScheme", colorSchemes, 2, 0);
     UIWidgets::EnhancementCheckbox("Advanced Mode", "gCosmetics.AdvancedMode");
+    if (CVarGetInteger("gCosmetics.AdvancedMode", 0)) {
+        if (ImGui::Button("Lock All Advanced", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
+            for (auto& [id, cosmeticOption] : cosmeticOptions) {
+                if (cosmeticOption.advancedOption) {
+                    CVarSetInteger(cosmeticOption.lockedCvar, 1);
+                }
+            }
+            SohImGui::RequestCvarSaveOnNextTick();
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Unlock All Advanced", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
+            for (auto& [id, cosmeticOption] : cosmeticOptions) {
+                if (cosmeticOption.advancedOption) {
+                    CVarSetInteger(cosmeticOption.lockedCvar, 0);
+                }
+            }
+            SohImGui::RequestCvarSaveOnNextTick();
+        }
+    }
     UIWidgets::EnhancementCheckbox("Sync Rainbow colors", "gCosmetics.RainbowSync");
     UIWidgets::EnhancementSliderFloat("Rainbow Speed: %f", "##rainbowSpeed", "gCosmetics.RainbowSpeed", 0.03f, 1.0f, "", 0.6f, false);
     if (ImGui::Button("Randomize All", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
@@ -1688,6 +1707,24 @@ void DrawCosmeticsEditor(bool& open) {
             }
         }
         ApplyOrResetCustomGfxPatches();
+        SohImGui::RequestCvarSaveOnNextTick();
+    }
+
+    if (ImGui::Button("Lock All", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
+        for (auto& [id, cosmeticOption] : cosmeticOptions) {
+            if (!cosmeticOption.advancedOption || CVarGetInteger("gCosmetics.AdvancedMode", 0)) {
+                CVarSetInteger(cosmeticOption.lockedCvar, 1);
+            }
+        }
+        SohImGui::RequestCvarSaveOnNextTick();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Unlock All", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
+        for (auto& [id, cosmeticOption] : cosmeticOptions) {
+            if (!cosmeticOption.advancedOption || CVarGetInteger("gCosmetics.AdvancedMode", 0)) {
+                CVarSetInteger(cosmeticOption.lockedCvar, 0);
+            }
+        }
         SohImGui::RequestCvarSaveOnNextTick();
     }
 
@@ -1758,6 +1795,28 @@ void InitCosmeticsEditor() {
         cosmeticOption.currentColor.z = cvarColor.b / 255.0;
         cosmeticOption.currentColor.w = cvarColor.a / 255.0;
     }
+    SohImGui::RequestCvarSaveOnNextTick();
+    ApplyOrResetCustomGfxPatches();
+}
+
+void CosmeticsEditor_RandomizeAll() {
+    for (auto& [id, cosmeticOption] : cosmeticOptions) {
+        if (!CVarGetInteger(cosmeticOption.lockedCvar, 0)) {
+            RandomizeColor(cosmeticOption);
+        }
+    }
+
+    SohImGui::RequestCvarSaveOnNextTick();
+    ApplyOrResetCustomGfxPatches();
+}
+
+void CosmeticsEditor_ResetAll() {
+    for (auto& [id, cosmeticOption] : cosmeticOptions) {
+        if (!CVarGetInteger(cosmeticOption.lockedCvar, 0)) {
+            ResetColor(cosmeticOption);
+        }
+    }
+
     SohImGui::RequestCvarSaveOnNextTick();
     ApplyOrResetCustomGfxPatches();
 }

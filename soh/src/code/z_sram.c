@@ -207,7 +207,7 @@ void Sram_OpenSave() {
     osSyncPrintf(VT_RST);
 
     if (gSaveContext.health < 0x30) {
-        gSaveContext.health = 0x30;
+        gSaveContext.health = CVarGetInteger("gFullHealthSpawn", 0) ? gSaveContext.healthCapacity : 0x30;
     }
 
     if (gSaveContext.scarecrowLongSongSet) {
@@ -366,11 +366,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             case RO_FOREST_CLOSED:
                 break;
             case RO_FOREST_CLOSED_DEKU:
-                Flags_SetEventChkInf(7);
+                Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
                 break;
             case RO_FOREST_OPEN:
-                Flags_SetEventChkInf(7);
-                gSaveContext.eventChkInf[0] |= 0x10;
+                Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
+                Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
                 break;
         }
 
@@ -408,6 +408,19 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
       
         if(Randomizer_GetSettingValue(RSK_STARTING_KOKIRI_SWORD)) Item_Give(NULL, ITEM_SWORD_KOKIRI);
         if(Randomizer_GetSettingValue(RSK_STARTING_DEKU_SHIELD)) Item_Give(NULL, ITEM_SHIELD_DEKU);
+
+        if (Randomizer_GetSettingValue(RSK_STARTING_ZELDAS_LULLABY)) Item_Give(NULL, ITEM_SONG_LULLABY);
+        if (Randomizer_GetSettingValue(RSK_STARTING_EPONAS_SONG)) Item_Give(NULL, ITEM_SONG_EPONA);
+        if (Randomizer_GetSettingValue(RSK_STARTING_SARIAS_SONG)) Item_Give(NULL, ITEM_SONG_SARIA);
+        if (Randomizer_GetSettingValue(RSK_STARTING_SUNS_SONG)) Item_Give(NULL, ITEM_SONG_SUN);
+        if (Randomizer_GetSettingValue(RSK_STARTING_SONG_OF_TIME)) Item_Give(NULL, ITEM_SONG_TIME);
+        if (Randomizer_GetSettingValue(RSK_STARTING_SONG_OF_STORMS)) Item_Give(NULL, ITEM_SONG_STORMS);
+        if (Randomizer_GetSettingValue(RSK_STARTING_MINUET_OF_FOREST)) Item_Give(NULL, ITEM_SONG_MINUET);
+        if (Randomizer_GetSettingValue(RSK_STARTING_BOLERO_OF_FIRE)) Item_Give(NULL, ITEM_SONG_BOLERO);
+        if (Randomizer_GetSettingValue(RSK_STARTING_SERENADE_OF_WATER)) Item_Give(NULL, ITEM_SONG_SERENADE);
+        if (Randomizer_GetSettingValue(RSK_STARTING_REQUIEM_OF_SPIRIT)) Item_Give(NULL, ITEM_SONG_REQUIEM);
+        if (Randomizer_GetSettingValue(RSK_STARTING_NOCTURNE_OF_SHADOW)) Item_Give(NULL, ITEM_SONG_NOCTURNE);
+        if (Randomizer_GetSettingValue(RSK_STARTING_PRELUDE_OF_LIGHT)) Item_Give(NULL, ITEM_SONG_PRELUDE);
 
         if(Randomizer_GetSettingValue(RSK_STARTING_SKULLTULA_TOKEN)) {
             gSaveContext.inventory.questItems |= gBitFlags[QUEST_SKULL_TOKEN];
@@ -456,7 +469,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.eventChkInf[1] |= (1 << 4);
 
             // Set "Got Zelda's Letter" flag. Also ensures Saria is back at SFM. TODO: Is this flag used for anything else?
-            gSaveContext.eventChkInf[4] |= 1;
+            Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
 
             // Got item from impa
             gSaveContext.eventChkInf[5] |= 0x200;

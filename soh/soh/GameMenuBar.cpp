@@ -271,6 +271,10 @@ namespace GameMenuBar {
                     ImGui::PopStyleVar(1);
                 }
 
+                if (SohImGui::supportsWindowedFullscreen()) {
+                    UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", "gSdlWindowedFullscreen", true, false);
+                }
+
                 if (SohImGui::supportsViewports()) {
                     UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false);
                     UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
@@ -370,6 +374,8 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Exit Market at Night", "gMarketSneak", true, false);
                     UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking "
                     "to the guard next to the gate.");
+                    UIWidgets::PaddedEnhancementCheckbox("Faster Farore's Wind", "gFastFarores", true, false);
+                    UIWidgets::Tooltip("Greatly increases cast time of Farore's Wind magic spell.");
                     ImGui::EndMenu();
                 }
 
@@ -396,6 +402,10 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Makes nuts explode bombs, similar to how they interact with bombchus. This does not affect bombflowers.");
                     UIWidgets::PaddedEnhancementCheckbox("Equip Multiple Arrows at Once", "gSeparateArrows", true, false);
                     UIWidgets::Tooltip("Allow the bow and magic arrows to be equipped at the same time on different slots");
+                    UIWidgets::PaddedEnhancementCheckbox("Better Farore's Wind", "gBetterFW", true, false);
+                    UIWidgets::Tooltip("Helps FW persist between ages, gives child and adult separate FW points, and can be used in more places.");
+                    UIWidgets::PaddedEnhancementCheckbox("Static Explosion Radius", "gStaticExplosionRadius", true, false);
+                    UIWidgets::Tooltip("Explosions are now a static size, like in Majora's Mask and OoT3D. Makes bombchu hovering much easier.");
                     ImGui::EndMenu();
                 }
 
@@ -439,6 +449,8 @@ namespace GameMenuBar {
                         32x: Can survive void damage with max health and double defense\n\
                         64x: Cannot survive void damage"
                     );
+                    UIWidgets::PaddedEnhancementCheckbox("Spawn with full health", "gFullHealthSpawn", true, false);
+                    UIWidgets::Tooltip("Respawn with full health instead of 3 Hearts");
                     UIWidgets::PaddedEnhancementCheckbox("No Random Drops", "gNoRandomDrops", true, false);
                     UIWidgets::Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
                     bool forceEnableBombchuDrops = gSaveContext.n64ddFlag &&
@@ -631,6 +643,10 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Injects item counts in pickup messages, like golden skulltula tokens and heart pieces");
                 UIWidgets::PaddedEnhancementCheckbox("Pull grave during the day", "gDayGravePull", true, false);
                 UIWidgets::Tooltip("Allows graves to be pulled when child during the day");
+                UIWidgets::PaddedEnhancementCheckbox("Dogs follow you everywhere", "gDogFollowsEverywhere", true, false);
+                UIWidgets::Tooltip("Allows dogs to follow you anywhere you go, even if you leave the market");
+                UIWidgets::PaddedEnhancementCheckbox("Don't require input for Credits sequence", "gNoInputForCredits", true, false);
+                UIWidgets::Tooltip("Removes the input requirement on textboxes after defeating Ganon, allowing Credits sequence to continue to progress");
 
                 // Blue Fire Arrows
                 bool forceEnableBlueFireArrows = gSaveContext.n64ddFlag &&
@@ -757,6 +773,10 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Fixes camera getting stuck on collision when standing still, also fixes slight shift back in camera when stop moving");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Hanging Ledge Swing Rate", "gFixHangingLedgeSwingRate", true, false);
                 UIWidgets::Tooltip("Fixes camera swing rate when player falls of a ledge and camera swings around");
+                UIWidgets::PaddedEnhancementCheckbox("Fix Missing Jingle after 5 Silver Rupees", "gSilverRupeeJingleExtend", true, false);
+                UIWidgets::Tooltip(
+                    "Adds 5 higher pitches for the Silver Rupee Jingle for the rooms with more than 5 Silver Rupees. "
+                    "Currently only relevant in Master Quest.");
 
                 ImGui::EndMenu();
             }
@@ -987,6 +1007,7 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Makes every surface in the game climbable");
             UIWidgets::PaddedEnhancementCheckbox("Hookshot Everything", "gHookshotEverything", true, false);
             UIWidgets::Tooltip("Makes every surface in the game hookshot-able");
+            UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.1fx", "##gCheatHookshotReachMultiplier", "gCheatHookshotReachMultiplier", 1.0f, 5.0f, "", 1.0f, false);
             UIWidgets::PaddedEnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL", true, false);
             UIWidgets::Tooltip("Holding L makes you float into the air");
             UIWidgets::PaddedEnhancementCheckbox("Super Tunic", "gSuperTunic", true, false);
@@ -1109,6 +1130,8 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Hides the game version and build details in the boot logo start screen");
             UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
             UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
+            UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", "gDebugWarpScreenTranslation", true, false);
+            UIWidgets::Tooltip("Translate the Debug Warp Screen based on the game language");
             UIWidgets::PaddedSeparator();
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
             ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0,0));
@@ -1154,6 +1177,14 @@ namespace GameMenuBar {
                 CVarSetInteger("gActorViewerEnabled", !currentValue);
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Actor Viewer", CVarGetInteger("gActorViewerEnabled", 0));
+            }
+            UIWidgets::Spacer(0);
+            if (ImGui::Button(GetWindowButtonText("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
+            {
+                bool currentValue = CVarGetInteger("gDLViewerEnabled", 0);
+                CVarSetInteger("gDLViewerEnabled", !currentValue);
+                SohImGui::RequestCvarSaveOnNextTick();
+                SohImGui::EnableWindow("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0));
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
