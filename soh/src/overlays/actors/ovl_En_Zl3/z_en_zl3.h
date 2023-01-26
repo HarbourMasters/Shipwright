@@ -65,7 +65,7 @@ typedef struct EnZl3 {
     /* 0x03EC */ f32 unk_3EC;
     /* 0x03F0 */ f32 unk_3F0;
     /* 0x03F4 */ f32 unk_3F4;
-    /* 0x03F8 */ struct_80034A14_arg1 unk_3F8;
+    /* 0x03F8 */ NpcInteractInfo interactInfo;
 } EnZl3; // size = 0x0420
 
 #endif

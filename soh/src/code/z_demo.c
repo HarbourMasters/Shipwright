@@ -616,8 +616,14 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->fadeTransition = 11;
                 break;
             case 8:
-                gSaveContext.fw.set = 0;
-                gSaveContext.respawn[RESPAWN_MODE_TOP].data = 0;
+                if (CVarGetInteger("gBetterFW", 0)) {
+                    FaroresWindData tempFW = gSaveContext.backupFW;
+                    gSaveContext.backupFW = gSaveContext.fw;
+                    gSaveContext.fw = tempFW;
+                } else {
+                    gSaveContext.fw.set = 0;
+                    gSaveContext.respawn[RESPAWN_MODE_TOP].data = 0;
+                }
                 if (!(gSaveContext.eventChkInf[4] & 0x20)) {
                     gSaveContext.eventChkInf[4] |= 0x20;
                     play->nextEntranceIndex = 0x00A0;
@@ -2180,9 +2186,8 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
                     gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_GANON_FINAL)) {
             Flags_SetEventChkInf(0xC7);
             gSaveContext.entranceIndex = 0x0517;
-            // If we are rando and tower escape skip is on, then set the flag to say we saw the towers fall
-            // and exit.
-            if (bShouldTowerRandoSkip) {
+            // In rando, skip the cutscene for the tower falling down after the escape.
+            if (gSaveContext.n64ddFlag) {
                 return;
             }
             gSaveContext.cutsceneIndex = 0xFFF0;
