@@ -17,6 +17,8 @@
 #include <chrono>
 #include <future>
 
+#include "../game-interactor/GameInteractor.h"
+
 class CrowdControl {
     private:
         enum EffectResult {
@@ -61,10 +63,11 @@ class CrowdControl {
 
         typedef struct Effect {
             uint32_t id;
-            std::string type;
-            uint32_t value;
+            uint32_t value[2];
             std::string category;
             long timeRemaining;
+            GameInteractionEffectBase *giEffect;
+            int32_t paramMultiplier = 1;
 
             // Metadata used while executing (only for timed effects)
             bool isPaused;
@@ -88,12 +91,11 @@ class CrowdControl {
         void ListenToServer();
         void ProcessActiveEffects();
 
-        void EmitMessage(TCPsocket socket, uint32_t eventId, long timeRemaining,
-                                       CrowdControl::EffectResult status);
+        void EmitMessage(TCPsocket socket, uint32_t eventId, long timeRemaining, EffectResult status);
         Effect* ParseMessage(char payload[512]);
-        EffectResult ExecuteEffect(std::string effectId, uint32_t value, bool dryRun);
-        void RemoveEffect(std::string effectId);
-        bool SpawnEnemy(std::string effectId);
+        EffectResult ExecuteEffect(Effect* effect);
+        EffectResult CanApplyEffect(Effect *effect);
+        EffectResult TranslateGiEnum(GameInteractionEffectQueryResult giResult);
 
     public:
         static CrowdControl* Instance;

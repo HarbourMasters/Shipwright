@@ -12,9 +12,11 @@
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
+#define MAX_SEED_BUFFER_SIZE 11 // digits for uint32
 #define NUM_NAVI_MESSAGES 19
 #define NUM_ICE_TRAP_MESSAGES 23
 #define NUM_GORON_MESSAGES 9
+
 class Randomizer {
   private:
     std::unordered_map<RandomizerCheck, RandomizerGetData> itemLocations;
@@ -100,6 +102,7 @@ extern "C" {
 #endif
 
 void Rando_Init(void);
+bool GenerateRandomizer(std::string seed = "");
 
 #ifdef __cplusplus
 }

@@ -11,7 +11,8 @@
 
 #define TICKS_PER_SEC 268123480.0
 
-void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarSettings, std::set<RandomizerCheck> excludedLocations) {
+void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarSettings, std::set<RandomizerCheck> excludedLocations,
+    std::string seedInput) {
     HintTable_Init();
     ItemTable_Init();
     LocationTable_Init();
@@ -19,7 +20,7 @@ void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarS
     // std::string settingsFileName = "./randomizer/latest_settings.json";
     // CVarSetString("gLoadedPreset", settingsFileName.c_str());
 
-    std::string fileName = Ship::Window::GetPathRelativeToAppDirectory(GenerateRandomizer(cvarSettings, excludedLocations).c_str());
+    std::string fileName = Ship::Window::GetPathRelativeToAppDirectory(GenerateRandomizer(cvarSettings, excludedLocations, seedInput).c_str());
     CVarSetString("gSpoilerLog", fileName.c_str());
 
     CVarSave();

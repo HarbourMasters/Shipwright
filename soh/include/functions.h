@@ -1079,8 +1079,6 @@ void Interface_SetDoAction(PlayState* play, u16 action);
 void Interface_SetNaviCall(PlayState* play, u16 naviCallState);
 void Interface_LoadActionLabelB(PlayState* play, u16 action);
 s32 Health_ChangeBy(PlayState* play, s16 healthChange);
-void Health_GiveHearts(s16 hearts);
-void Health_RemoveHearts(s16 hearts);
 void Rupees_ChangeBy(s16 rupeeChange);
 void Inventory_ChangeAmmo(s16 item, s16 ammoChange);
 void Magic_Fill(PlayState* play);

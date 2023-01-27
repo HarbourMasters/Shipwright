@@ -40,6 +40,7 @@
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "frame_interpolation.h"
 #include "variables.h"
+#include "z64.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
 #include <Hooks.h>
@@ -71,6 +72,7 @@
 CrowdControl* CrowdControl::Instance;
 #endif
 
+#include "Enhancements/game-interactor/GameInteractor.h"
 #include "libultraship/libultraship.h"
 
 // Resource Types/Factories
@@ -104,6 +106,88 @@ OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
 ItemTableManager* ItemTableManager::Instance;
+GameInteractor* GameInteractor::Instance;
+
+extern "C" char** cameraStrings;
+std::vector<std::shared_ptr<std::string>> cameraStdStrings;
+
+// OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
+const char* constCameraStrings[] = {
+    "INSUFFICIENT",
+    "KEYFRAMES",
+    "YOU CAN ADD MORE",
+    "FINISHED",
+    "PLAYING",
+    "DEMO CAMERA TOOL",
+    "CANNOT PLAY",
+    "KEYFRAME   ",
+    "PNT   /      ",
+    ">            >",
+    "<            <",
+    "<          >",
+    GFXP_KATAKANA "*ﾌﾟﾚｲﾔ-*",
+    "E MODE FIX",
+    "E MODE ABS",
+    GFXP_HIRAGANA "ｶﾞﾒﾝ" GFXP_KATAKANA "   ﾃﾞﾓ", // OTRTODO: Unused, get a translation! Number 15
+    GFXP_HIRAGANA "ｶﾞﾒﾝ   ﾌﾂｳ", // OTRTODO: Unused, get a translation! Number 16
+    "P TIME  MAX",
+    GFXP_KATAKANA "ﾘﾝｸ" GFXP_HIRAGANA "    ｷｵｸ", // OTRTODO: Unused, get a translation! Number 18
+    GFXP_KATAKANA "ﾘﾝｸ" GFXP_HIRAGANA "     ﾑｼ", // OTRTODO: Unused, get a translation! Number 19
+    "*VIEWPT*",
+    "*CAMPOS*",
+    "DEBUG CAMERA",
+    "CENTER/LOCK",
+    "CENTER/FREE",
+    "DEMO CONTROL",
+    GFXP_KATAKANA "ﾒﾓﾘ" GFXP_HIRAGANA "ｶﾞﾀﾘﾏｾﾝ",
+    "p",
+    "e",
+    "s",
+    "l",
+    "c",
+    GFXP_KATAKANA "ﾒﾓﾘﾊﾟｯｸ",
+    GFXP_KATAKANA "ｾｰﾌﾞ",
+    GFXP_KATAKANA "ﾛｰﾄﾞ",
+    GFXP_KATAKANA "ｸﾘｱ-",
+    GFXP_HIRAGANA "ｦﾇｶﾅｲﾃﾞﾈ",
+    "FREE      BYTE",
+    "NEED      BYTE",
+    GFXP_KATAKANA "*ﾒﾓﾘ-ﾊﾟｯｸ*",
+    GFXP_HIRAGANA "ｦﾐﾂｹﾗﾚﾏｾﾝ",
+    GFXP_KATAKANA "ﾌｧｲﾙ " GFXP_HIRAGANA "ｦ",
+    GFXP_HIRAGANA "ｼﾃﾓｲｲﾃﾞｽｶ?",
+    GFXP_HIRAGANA "ｹﾞﾝｻﾞｲﾍﾝｼｭｳﾁｭｳﾉ", // OTRTODO: Unused, get a translation! Number 43
+    GFXP_KATAKANA "ﾌｧｲﾙ" GFXP_HIRAGANA "ﾊﾊｷｻﾚﾏｽ", // OTRTODO: Unused, get a translation! Number 44
+    GFXP_HIRAGANA "ﾊｲ",
+    GFXP_HIRAGANA "ｲｲｴ",
+    GFXP_HIRAGANA "ｼﾃｲﾏｽ",
+    GFXP_HIRAGANA "ｳﾜｶﾞｷ", // OTRTODO: Unused, get a translation! Number 48
+    GFXP_HIRAGANA "ｼﾏｼﾀ",
+    "USE       BYTE",
+    GFXP_HIRAGANA "ﾆｼｯﾊﾟｲ",
+    "E MODE REL",
+    "FRAME       ",
+    "KEY   /       ",
+    "(CENTER)",
+    "(ORIG)",
+    "(PLAYER)",
+    "(ALIGN)",
+    "(SET)",
+    "(OBJECT)",
+    GFXP_KATAKANA "ﾎﾟｲﾝﾄNo.     ", // OTRTODO: Unused, need translation. Number 62
+    "FOV              ",
+    "N FRAME          ",
+    "Z ROT            ",
+    GFXP_KATAKANA  "ﾓ-ﾄﾞ        ", // OTRTODO: Unused, need translation. Number 65
+    "  R FOCUS   ",
+    "PMAX              ",
+    "DEPTH             ",
+    "XROT              ",
+    "YROT              ",
+    GFXP_KATAKANA "ﾌﾚ-ﾑ         ",
+    GFXP_KATAKANA "ﾄ-ﾀﾙ         ",
+    GFXP_KATAKANA "ｷ-     /   ",
+};
 
 OTRGlobals::OTRGlobals() {
     std::vector<std::string> OTRFiles;
@@ -162,6 +246,16 @@ OTRGlobals::OTRGlobals() {
     gRandomizer = std::make_shared<Randomizer>();
 
     hasMasterQuest = hasOriginal = false;
+
+    // Move the camera strings from read only memory onto the heap (writable memory)
+    // This is in OTRGlobals right now because this is a place that will only ever be run once at the beginning of startup.
+    // We should probably find some code in db_camera that does initialization and only run once, and then dealloc on deinitialization.
+    cameraStrings = (char**)malloc(sizeof(constCameraStrings));
+    for (int32_t i = 0; i < sizeof(constCameraStrings) / sizeof(char*); i++) {
+        // OTRTODO: never deallocated...
+        auto dup = strdup(constCameraStrings[i]);
+        cameraStrings[i] = dup;
+    }
 
     auto versions = context->GetResourceManager()->GetGameVersions();
 
@@ -471,6 +565,7 @@ extern "C" void InitOTR() {
     SaveManager::Instance = new SaveManager();
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
+    GameInteractor::Instance = new GameInteractor();
 
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
