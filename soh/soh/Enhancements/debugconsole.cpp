@@ -454,7 +454,7 @@ static bool FileSelectHandler(std::shared_ptr<Ship::Console> Console, const std:
 }
 
 static bool QuitHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    gPlayState->state.running = 0;
+    Ship::Window::GetInstance()->Close();
     return CMD_SUCCESS;
 }
 
