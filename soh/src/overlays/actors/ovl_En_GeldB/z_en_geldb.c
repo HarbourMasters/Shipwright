@@ -1570,6 +1570,11 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
                 } else {
                     play->nextEntranceIndex = 0x3B4;
                 }
+
+                if (gSaveContext.n64ddFlag) {
+                    Entrance_OverrideGeurdoGuardCapture();
+                }
+
                 play->fadeTransition = 0x26;
                 play->sceneLoadFlag = 0x14;
             }
