@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include <set>
+#include <sstream>
 #include <libultraship/bridge.h>
 #include <ImGuiImpl.h>
 #include <functions.h>
