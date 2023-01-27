@@ -25,7 +25,7 @@ void InitializeChecks();
 void UpdateChecks();
 void UpdateInventoryChecks();
 void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckStatus);
-void BeginFloatWindows(std::string UniqueName, ImGuiWindowFlags flags = 0);
+void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 void EndFloatWindows();
 void UpdateOrdering(bool init = false);
 bool ShouldUpdateChecks();
@@ -113,6 +113,8 @@ void DrawCheckTracker(bool& open) {
         return;
     }
 
+    ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
+
     if (doInitialize)
         InitializeChecks();
     else if (initialized && (gPlayState == nullptr || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2)) {
@@ -136,7 +138,7 @@ void DrawCheckTracker(bool& open) {
         }
     }
 
-    BeginFloatWindows("Check Tracker", ImGuiWindowFlags_NoScrollbar);
+    BeginFloatWindows("Check Tracker", open, ImGuiWindowFlags_NoScrollbar);
 
     if (!initialized) {
         ImGui::Text("Waiting for file load..."); //TODO Language
@@ -326,7 +328,7 @@ void DrawCheckTracker(bool& open) {
 }
 
 // Windowing stuff
-void BeginFloatWindows(std::string UniqueName, ImGuiWindowFlags flags) {
+void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags) {
     ImGuiWindowFlags windowFlags = flags;
 
     if (windowFlags == 0) {
@@ -347,7 +349,7 @@ void BeginFloatWindows(std::string UniqueName, ImGuiWindowFlags flags) {
                                                     Color_Background.b / 255.0f, Color_Background.a / 255.0f));
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
-    ImGui::Begin(UniqueName.c_str(), nullptr, windowFlags);
+    ImGui::Begin(UniqueName.c_str(), &open, windowFlags);
 }
 void EndFloatWindows() {
     ImGui::PopStyleVar();
