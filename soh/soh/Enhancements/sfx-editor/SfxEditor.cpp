@@ -2,6 +2,7 @@
 #include "sequence.h"
 #include <string>
 #include <map>
+#include <set>
 #include <libultraship/bridge.h>
 #include <ImGuiImpl.h>
 #include <functions.h>
@@ -181,6 +182,8 @@ std::map<u16, std::tuple<std::string, std::string, SeqType>> sfxEditorSequenceMa
     {NA_SE_EV_CHICKEN_CRY_A,       {"Chicken Cry",                         "NA_SE_EV_CHICKEN_CRY_A",         SEQ_SFX}},
 };
 
+std::set<uint16_t> excludedSequences;
+
 // Grabs the current BGM sequence ID and replays it
 // which will lookup the proper override, or reset back to vanilla
 void ReplayCurrentBGM() {
@@ -206,7 +209,7 @@ void UpdateCurrentBGM(u16 seqKey, SeqType seqType) {
 void RandomizeGroup(const std::map<u16, std::tuple<std::string, std::string, SeqType>>& map, SeqType type) {
     std::vector<u16> values;
     for (const auto& [value, seqData] : map) {
-        if (std::get<2>(seqData) & type) {
+        if (std::get<2>(seqData) & type && !excludedSequences.count(value)) {
             values.push_back(value);
         }
     }
@@ -345,7 +348,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, std::tuple<std::s
             while (true) {
                 const auto& [value, seqData] = *std::next(it, rand() % map.size());
                 const auto& [name, sfxKey, seqType] = seqData;
-                if (seqType & type) {
+                if (seqType & type && !excludedSequences.count(value)) {
                     CVarSetInteger(cvarKey.c_str(), value);
                     SohImGui::RequestCvarSaveOnNextTick();
                     UpdateCurrentBGM(defaultValue, type);
@@ -400,8 +403,55 @@ extern "C" const char* SfxEditor_GetSequenceName(u16 seqId) {
     return NULL;
 }
 
+std::map<SeqType, std::map<uint16_t, std::tuple<std::string, std::string, SeqType>>> seqsByType = {};
+std::map<SeqType, std::map<uint16_t, std::tuple<std::string, std::string, SeqType>>> GetAllSeqsByType() {
+    if (seqsByType.size() == 0) {
+        for (auto& [seqId, seqTuple] : sfxEditorSequenceMap) {
+            seqsByType[std::get<2>(seqTuple)][seqId] = seqTuple;
+        }
+    }
+
+    return seqsByType;
+}
+
+std::string GetSequenceTypeName(SeqType type) {
+    switch (type) {
+        case SEQ_NOSHUFFLE:
+            return "No Shuffle";
+        case SEQ_BGM_WORLD:
+            return "World";
+        case SEQ_BGM_EVENT:
+            return "Event";
+        case SEQ_BGM_BATTLE:
+            return "Battle";
+        case SEQ_OCARINA:
+            return "Ocarina";
+        case SEQ_FANFARE:
+            return "Fanfare";
+        case SEQ_BGM_ERROR:
+            return "Error";
+        case SEQ_SFX:
+            return "SFX";
+        case SEQ_INSTRUMENT:
+            return "Instrument";
+        case SEQ_BGM_CUSTOM:
+            return "Custom";
+        default:
+            return "No Sequence Type";
+    }
+}
+
 void DrawSfxEditor(bool& open) {
     if (!open) {
+        // todo: this efficently when we build out cvar array support
+        std::string excludedSequenceString = "";
+        for (auto excludedSequenceIt : excludedSequences) {
+            excludedSequenceString += std::to_string(excludedSequenceIt);
+            excludedSequenceString += ",";
+        }
+        CVarSetString("gExcludedSequences", excludedSequenceString.c_str());
+        SohImGui::RequestCvarSaveOnNextTick();
+
         CVarSetInteger("gSfxEditor", 0);
         return;
     }
@@ -474,6 +524,101 @@ void DrawSfxEditor(bool& open) {
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         }
+
+        static bool excludeTabOpen = false;
+        if (ImGui::BeginTabItem("Exclude Sequences From Shuffle")) {
+            ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+            if (!excludeTabOpen) {
+                excludeTabOpen = true;
+            }
+
+            if (ImGui::BeginTable("tableAllSequences", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                ImGui::TableSetupColumn("Included", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Excluded", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                // ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                ImGui::TableHeadersRow();
+                // ImGui::PopItemFlag();
+                ImGui::TableNextRow();
+
+                // COLUMN 1 - INCLUDED SEQUENCES
+                ImGui::TableNextColumn();
+                // window->DC.CurrLineTextBaseOffset = 0.0f;
+
+                static ImGuiTextFilter sequenceSearch;
+                sequenceSearch.Draw();
+
+                ImGui::BeginChild("ChildIncludedSequences", ImVec2(0, -8));
+                for (auto& [seqType, seqTuples] : GetAllSeqsByType()) {
+                    bool hasItems = false;
+                    for (auto [seqId, seqTuple] : seqTuples) {
+                        if (!excludedSequences.count(seqId) &&
+                            sequenceSearch.PassFilter(std::get<0>(seqTuple).c_str())) {
+                            hasItems = true;
+                            break;
+                        }
+                    }
+
+                    if (hasItems) {
+                        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                        if (ImGui::TreeNode(GetSequenceTypeName(seqType).c_str())) {
+                            for (auto [seqId, seqTuple] : seqTuples) {
+                                if (!excludedSequences.count(seqId) &&
+                                    sequenceSearch.PassFilter(std::get<0>(seqTuple).c_str())) {
+
+                                    if (ImGui::ArrowButton(std::get<1>(seqTuple).c_str(), ImGuiDir_Right)) {
+                                        excludedSequences.insert(seqId);
+                                    }
+                                    ImGui::SameLine();
+                                    ImGui::Text(std::get<0>(seqTuple).c_str());
+                                }
+                            }
+                            ImGui::TreePop();
+                        }
+                    }
+                }
+                ImGui::EndChild();
+
+                // COLUMN 2 - EXCLUDED SEQUENCES
+                ImGui::TableNextColumn();
+                // window->DC.CurrLineTextBaseOffset = 0.0f;
+
+                ImGui::BeginChild("ChildExcludedSequences", ImVec2(0, -8));
+                for (auto& [seqType, seqTuples] : GetAllSeqsByType()) {
+                    bool hasItems = false;
+                    for (auto [seqId, seqTuple] : seqTuples) {
+                        if (excludedSequences.count(seqId)) {
+                            hasItems = true;
+                            break;
+                        }
+                    }
+
+                    if (hasItems) {
+                        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                        if (ImGui::TreeNode(GetSequenceTypeName(seqType).c_str())) {
+                            for (auto [seqId, seqTuple] : seqTuples) {
+                                auto elfound = excludedSequences.find(seqId);
+                                if (elfound != excludedSequences.end()) {
+                                    if (ImGui::ArrowButton(std::get<1>(seqTuple).c_str(), ImGuiDir_Left)) {
+                                        excludedSequences.erase(elfound);
+                                    }
+                                    ImGui::SameLine();
+                                    ImGui::Text(std::get<0>(seqTuple).c_str());
+                                }
+                            }
+                            ImGui::TreePop();
+                        }
+                    }
+                }
+                ImGui::EndChild();
+
+                ImGui::EndTable();
+            }
+            ImGui::PopStyleVar(1);
+            ImGui::EndTabItem();
+        } else {
+            excludeTabOpen = false;
+        }
+
         ImGui::EndTabBar();
     }
     ImGui::End();
@@ -482,6 +627,14 @@ void DrawSfxEditor(bool& open) {
 void InitSfxEditor() {
     //Draw the bar in the menu.
     SohImGui::AddWindow("Enhancements", "SFX Editor", DrawSfxEditor);
+
+    // Load list of sequences excluded from shuffle
+    // todo: this efficently when we build out cvar array support
+    std::stringstream excludedSequenceStringStream(CVarGetString("gExcludedSequences", ""));
+    std::string excludedSequenceString;
+    while (getline(excludedSequenceStringStream, excludedSequenceString, ',')) {
+        excludedSequences.insert(std::stoi(excludedSequenceString));
+    }
 }
 
 std::vector<SeqType> allTypes = { SEQ_BGM_WORLD, SEQ_BGM_EVENT, SEQ_BGM_BATTLE, SEQ_OCARINA, SEQ_FANFARE, SEQ_INSTRUMENT, SEQ_SFX };
