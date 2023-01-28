@@ -95,7 +95,7 @@ extern "C" void OTRMessage_Init()
         { 
             TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
             "You got a %rGold Skulltula Token%w!&You've collected %r{{gsCount}}%w tokens&in total!\x0E\x3C",
-            "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r{{gsCount}}%w Golende&Skulltula-Symbole gesammelt!\x0E\x3C",
+            "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r{{gsCount}}&%wGoldene Skulltula-Symbole&gesammelt!\x0E\x3C",
             "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r{{gsCount}}%w symboles en tout!\x0E\x3C"
         }
     );
@@ -104,7 +104,7 @@ extern "C" void OTRMessage_Init()
         { 
           TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
           "You got a %rGold Skulltula Token%w!&You've collected %r{{gsCount}}%w tokens&in total!",
-          "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r{{gsCount}}%w Golende&Skulltula-Symbole gesammelt!",
+          "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r{{gsCount}}&%wGoldene Skulltula-Symbole&gesammelt!",
           "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r{{gsCount}}%w symboles en tout!"
         }
     );
