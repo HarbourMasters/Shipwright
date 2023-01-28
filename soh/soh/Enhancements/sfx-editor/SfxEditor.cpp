@@ -566,7 +566,29 @@ void DrawSfxEditor(bool& open) {
         }
 
         static bool excludeTabOpen = false;
+        static bool excludeListInitialized = false;
         if (ImGui::BeginTabItem("Exclude Sequences From Shuffle")) {
+            if (!excludeListInitialized) {
+                // Load list of sequences excluded from shuffle
+                // todo: this efficently when we build out cvar array support
+                std::stringstream excludedSequenceStringStream(CVarGetString("gExcludedSequences", ""));
+                std::string excludedSequenceString;
+                std::set<std::string> excludedSequenceKeys;
+                while (getline(excludedSequenceStringStream, excludedSequenceString, ',')) {
+                    excludedSequenceKeys.insert(excludedSequenceString);
+                }
+
+                for (auto& [seqId, seqInfo] : sfxEditorSequenceMap) {
+                    if (excludedSequenceKeys.count(seqInfo.sfxKey)) {
+                        excludedSequences.insert(&seqInfo);
+                    } else {
+                        includedSequences.insert(&seqInfo);
+                    }
+                }
+
+                excludeListInitialized = true;                
+            }
+
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (!excludeTabOpen) {
                 excludeTabOpen = true;
@@ -647,23 +669,6 @@ void DrawSfxEditor(bool& open) {
 void InitSfxEditor() {
     //Draw the bar in the menu.
     SohImGui::AddWindow("Enhancements", "SFX Editor", DrawSfxEditor);
-
-    // Load list of sequences excluded from shuffle
-    // todo: this efficently when we build out cvar array support
-    std::stringstream excludedSequenceStringStream(CVarGetString("gExcludedSequences", ""));
-    std::string excludedSequenceString;
-    std::set<std::string> excludedSequenceKeys;
-    while (getline(excludedSequenceStringStream, excludedSequenceString, ',')) {
-        excludedSequenceKeys.insert(excludedSequenceString);
-    }
-
-    for (auto& [seqId, seqInfo] : sfxEditorSequenceMap) {
-        if (excludedSequenceKeys.count(seqInfo.sfxKey)) {
-            excludedSequences.insert(&seqInfo);
-        } else {
-            includedSequences.insert(&seqInfo);
-        }
-    }
 }
 
 std::vector<SeqType> allTypes = { SEQ_BGM_WORLD, SEQ_BGM_EVENT, SEQ_BGM_BATTLE, SEQ_OCARINA, SEQ_FANFARE, SEQ_INSTRUMENT, SEQ_SFX };
