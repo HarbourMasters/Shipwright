@@ -150,10 +150,10 @@ namespace GameMenuBar {
 
             if (ImGui::BeginMenu("Controller")) {
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2 (12.0f, 6.0f));
-                ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
+                ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.7f, 0.0f));
                 ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
                 ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-                if (ImGui::Button(GetWindowButtonText("Controller Configuration", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str()))
+                if (ImGui::Button(GetWindowButtonText("Controller Configuration", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f)))
                 {
                     bool currentValue = CVarGetInteger("gControllerConfigurationEnabled", 0);
                     CVarSetInteger("gControllerConfigurationEnabled", !currentValue);
@@ -163,7 +163,7 @@ namespace GameMenuBar {
                 ImGui::PopStyleColor(1);
                 ImGui::PopStyleVar(3);
             #ifndef __SWITCH__
-                UIWidgets::PaddedEnhancementCheckbox("ImGui Controller Navigation", "gControlNav", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Menubar Controller Navigation", "gControlNav", true, false);
                 UIWidgets::Tooltip("Allows controller navigation of the SOH menu bar (Settings, Enhancements,...)\nCAUTION: This will disable your game input until the menu bar is hidden\n\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
             #endif
                 UIWidgets::PaddedEnhancementCheckbox("Show Inputs", "gInputEnabled", true, false);
