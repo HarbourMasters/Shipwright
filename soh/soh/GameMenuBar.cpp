@@ -164,10 +164,10 @@ namespace GameMenuBar {
                 ImGui::PopStyleColor(1);
                 ImGui::PopStyleVar(3);
             #ifndef __SWITCH__
-                UIWidgets::PaddedEnhancementCheckbox("Menubar Controller Navigation", "gControlNav", true, false);
+                UIWidgets::EnhancementCheckbox("Menubar Controller Navigation", "gControlNav");
                 UIWidgets::Tooltip("Allows controller navigation of the SOH menu bar (Settings, Enhancements,...)\nCAUTION: This will disable game inputs while the menubar is visible.\n\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
             #endif
-                UIWidgets::PaddedEnhancementCheckbox("Show Inputs", "gInputEnabled", true, false);
+                UIWidgets::EnhancementCheckbox("Show Inputs", "gInputEnabled");
                 UIWidgets::Tooltip("Shows currently pressed inputs on the bottom right of the screen");
                 UIWidgets::Spacer(0);
                 ImGui::PushItemWidth(ImGui::GetWindowSize().x - 20.0f);
