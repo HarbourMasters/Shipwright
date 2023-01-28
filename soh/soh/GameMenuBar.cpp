@@ -160,6 +160,7 @@ namespace GameMenuBar {
                     SohImGui::RequestCvarSaveOnNextTick();
                     SohImGui::ToggleInputEditorWindow(CVarGetInteger("gControllerConfigurationEnabled", 0));
                 }
+                UIWidgets::PaddedSeparator();
                 ImGui::PopStyleColor(1);
                 ImGui::PopStyleVar(3);
             #ifndef __SWITCH__
