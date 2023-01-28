@@ -631,39 +631,6 @@ void DrawSfxEditor(bool& open) {
                     excludedSequences.erase(seqInfo);
                 }
 
-
-
-                // window->DC.CurrLineTextBaseOffset = 0.0f;
-
-                // ImGui::BeginChild("ChildExcludedSequences", ImVec2(0, -8));
-                // for (auto& [seqType, seqTuples] : GetAllSeqsByType()) {
-                //     bool hasItems = false;
-                //     for (auto [seqId, seqTuple] : seqTuples) {
-                //         if (excludedSequences.count(seqId)) {
-                //             hasItems = true;
-                //             break;
-                //         }
-                //     }
-
-                //     if (hasItems) {
-                //         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                //         if (ImGui::TreeNode(GetSequenceTypeName(seqType).c_str())) {
-                //             for (auto [seqId, seqTuple] : seqTuples) {
-                //                 auto elfound = excludedSequences.find(seqId);
-                //                 if (elfound != excludedSequences.end()) {
-                //                     if (ImGui::ArrowButton(seqTuple.sfxKey.c_str(), ImGuiDir_Left)) {
-                //                         excludedSequences.erase(elfound);
-                //                     }
-                //                     ImGui::SameLine();
-                //                     ImGui::Text(seqTuple.label.c_str());
-                //                 }
-                //             }
-                //             ImGui::TreePop();
-                //         }
-                //     }
-                // }
-                // ImGui::EndChild();
-
                 ImGui::EndTable();
             }
             ImGui::PopStyleVar(1);
