@@ -115,9 +115,10 @@ void DrawCheckTracker(bool& open) {
 
     ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
 
-    if (doInitialize)
+    if (doInitialize) {
+        Teardown();
         InitializeChecks();
-    else if (initialized && (gPlayState == nullptr || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2)) {
+    } else if (initialized && (gPlayState == nullptr || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2)) {
         Teardown();
         return;
     }
