@@ -386,12 +386,17 @@ void DrawSeedHashSprites(FileChooseContext* this) {
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
-    if (this->windowRot == 0 || (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == RANDOMIZER_QUEST)) {
-        if (this->selectMode == SM_CONFIRM_FILE) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, this->fileInfoAlpha[this->buttonIndex]);
+    // Draw icons on the main menu, when a rando file is selected, and when quest selection is set to rando
+    if ((this->configMode == CM_MAIN_MENU &&
+        (this->selectMode != SM_CONFIRM_FILE || Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1)) ||
+        (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == RANDOMIZER_QUEST)) {
+
+        if (this->fileInfoAlpha[this->selectedFileIndex] > 0) {
+            // Use file info alpha to match fading
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, this->fileInfoAlpha[this->selectedFileIndex]);
 
             u16 xStart = 64;
-            // Draw Seed Icons
+            // Draw Seed Icons for specific file
             for (unsigned int i = 0; i < 5; i++) {
                 if (Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1) {
                     SpriteLoad(this, GetSeedTexture(Save_GetSaveMetaInfo(this->selectedFileIndex)->seedHash[i]));
@@ -401,8 +406,15 @@ void DrawSeedHashSprites(FileChooseContext* this) {
             }
         }
 
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, this->fileButtonAlpha[this->buttonIndex]);
+        // Fade top seed icons based on main menu fade and if save supports rando
+        u8 alpha = MAX(this->optionButtonAlpha, Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1 ? 0xFF : 0);
+        if (alpha >= 200) {
+            alpha = 0xFF;
+        }
 
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, alpha);
+
+        // Draw Seed Icons for spoiler log
         if (strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0 && fileSelectSpoilerFileLoaded) {
             u16 xStart = 64;
             for (unsigned int i = 0; i < 5; i++) {
