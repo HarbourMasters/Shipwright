@@ -1668,6 +1668,9 @@ typedef enum {
   JUNK_WTC_7,
   JUNK_WTC_8,
   JUNK_WTC_9,
+  JUNK_WTC_10,
+  JUNK_WTC_11,
+  JUNK_WTC_12,
 
   JUNK_SEI_1,
   JUNK_SEI_2,
@@ -1747,6 +1750,10 @@ typedef enum {
   JUNK_MISC_15,
   JUNK_MISC_16,
   JUNK_MISC_17,
+
+  JUNK_SG_1,
+  JUNK_SG_2,
+  JUNK_SG_3,
 
   BRIDGE_OPEN_HINT,
   BRIDGE_VANILLA_HINT,
