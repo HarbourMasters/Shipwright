@@ -253,6 +253,7 @@ typedef struct {
     /*        */ u8 pendingIceTrapCount;
     /*        */ SohStats sohStats;
     /*        */ u8 temporaryWeapon;
+    /*        */ char buildVersion[50];
     /*        */ FaroresWindData backupFW;
     // #endregion
     // #region SOH [Randomizer]

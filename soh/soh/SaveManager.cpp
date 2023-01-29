@@ -51,6 +51,10 @@ SaveManager::SaveManager() {
         info.randoSave = 0;
         info.requiresMasterQuest = 0;
         info.requiresOriginal = 0;
+
+        for (int i = 0; i < ARRAY_COUNT(info.buildVersion); i++) {
+            info.buildVersion[i] = '\0';
+        }
     }
 }
 
@@ -382,6 +386,10 @@ void SaveManager::InitMeta(int fileNum) {
     // If the file is not marked as Master Quest, it could still theoretically be a rando save with all 12 MQ dungeons, in which case
     // we don't actually require a vanilla OTR.
     fileMetaInfo[fileNum].requiresOriginal = !gSaveContext.isMasterQuest && (!gSaveContext.n64ddFlag || gSaveContext.mqDungeonCount < 12);
+
+    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].buildVersion); i++) {
+        fileMetaInfo[fileNum].buildVersion[i] = gSaveContext.buildVersion[i];
+    }
 }
 
 void SaveManager::InitFile(bool isDebug) {
@@ -1350,6 +1358,11 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadData("tempCollectFlags", gSaveContext.backupFW.tempCollectFlags);
     });
     SaveManager::Instance->LoadData("dogParams", gSaveContext.dogParams);
+
+    std::string buildVersion;
+    SaveManager::Instance->LoadData("buildVersion", buildVersion);
+    strncpy(gSaveContext.buildVersion, buildVersion.c_str(), ARRAY_COUNT(gSaveContext.buildVersion) - 1);
+    gSaveContext.buildVersion[ARRAY_COUNT(gSaveContext.buildVersion) - 1] = 0;
 }
 
 void SaveManager::SaveBase() {
@@ -1540,6 +1553,7 @@ void SaveManager::SaveBase() {
         SaveManager::Instance->SaveData("tempCollectFlags", gSaveContext.backupFW.tempCollectFlags);
     });
     SaveManager::Instance->SaveData("dogParams", gSaveContext.dogParams);
+    SaveManager::Instance->SaveData("buildVersion", gSaveContext.buildVersion);
 }
 
 void SaveManager::SaveArray(const std::string& name, const size_t size, SaveArrayFunc func) {
@@ -1663,6 +1677,9 @@ void SaveManager::CopyZeldaFile(int from, int to) {
     fileMetaInfo[to].randoSave = fileMetaInfo[from].randoSave;
     fileMetaInfo[to].requiresMasterQuest = fileMetaInfo[from].requiresMasterQuest;
     fileMetaInfo[to].requiresOriginal = fileMetaInfo[from].requiresOriginal;
+    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[to].buildVersion); i++) {
+        fileMetaInfo[to].buildVersion[i] = fileMetaInfo[from].buildVersion[i];
+    }
 }
 
 void SaveManager::DeleteZeldaFile(int fileNum) {

@@ -14,6 +14,7 @@ typedef struct {
     u32 requiresOriginal;
     u8 seedHash[5];
     u8 randoSave;
+    char buildVersion[50];
 } SaveFileMetaInfo;
 
 #ifdef __cplusplus
