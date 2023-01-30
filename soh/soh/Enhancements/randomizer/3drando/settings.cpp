@@ -2965,6 +2965,13 @@ namespace Settings {
       trials[i]->SetAsRequired();
     }
 
+    // If any ER option is on that would allow you to escape forest, then we should set closed forest to closed deku
+    if (OpenForest.Is(OPENFOREST_CLOSED) &&
+        (ShuffleInteriorEntrances.Is(SHUFFLEINTERIORS_ALL) || ShuffleOverworldEntrances || ShuffleOverworldSpawns ||
+         DecoupleEntrances || MixedEntrancePools)) {
+        OpenForest.SetSelectedIndex(OPENFOREST_CLOSED_DEKU);
+    }
+
     if (StartingAge.Is(AGE_RANDOM)) {
       int choice = Random(0, 2); //50% chance of each
       if (choice == 0) {
