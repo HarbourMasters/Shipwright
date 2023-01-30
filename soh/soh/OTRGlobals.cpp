@@ -1518,6 +1518,34 @@ extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(Player* player)
     return getItemText;
 }
 
+extern "C" int CustomMessage_RetrieveIfExistsMsgCtx(MessageContext* msgCtx) {
+    uint16_t textId = msgCtx->textId;
+    Font* font = &msgCtx->font;
+    char* buffer = font->msgBuf;
+    const int maxBufferSize = sizeof(font->msgBuf);
+    CustomMessageEntry messageEntry;
+
+    if (textId == TEXT_RANDO_SAVE_VERSION_WARNING) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_RANDO_SAVE_VERSION_WARNING);
+    }
+    if (messageEntry.textBoxType != -1) {
+        font->charTexBuf[0] = (messageEntry.textBoxType << 4) | messageEntry.textBoxPos;
+        switch (gSaveContext.language) {
+            case LANGUAGE_FRA:
+                return msgCtx->msgLength = font->msgLength =
+                           CopyStringToCharBuffer(messageEntry.french, buffer, maxBufferSize);
+            case LANGUAGE_GER:
+                return msgCtx->msgLength = font->msgLength =
+                           CopyStringToCharBuffer(messageEntry.german, buffer, maxBufferSize);
+            case LANGUAGE_ENG:
+            default:
+                return msgCtx->msgLength = font->msgLength =
+                           CopyStringToCharBuffer(messageEntry.english, buffer, maxBufferSize);
+        }
+    }
+    return false;
+}
+
 extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     MessageContext* msgCtx = &play->msgCtx;
     uint16_t textId = msgCtx->textId;

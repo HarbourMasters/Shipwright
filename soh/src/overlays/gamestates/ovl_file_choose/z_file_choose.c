@@ -10,6 +10,8 @@
 #include "objects/object_mag/object_mag.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+
 #define NORMAL_QUEST 0
 #define MASTER_QUEST 1
 #define RANDOMIZER_QUEST 2
@@ -401,7 +403,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
                 if (Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1) {
                     SpriteLoad(this, GetSeedTexture(Save_GetSaveMetaInfo(this->selectedFileIndex)->seedHash[i]));
                     SpriteDraw(this, GetSeedTexture(Save_GetSaveMetaInfo(this->selectedFileIndex)->seedHash[i]),
-                               xStart + (18 * i), 136, 16, 16);
+                                xStart + (18 * i), 136, 16, 16);
                 }
             }
         }
@@ -421,7 +423,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
                 SpriteLoad(this, GetSeedTexture(gSaveContext.seedIcons[i]));
                 SpriteDraw(this, GetSeedTexture(gSaveContext.seedIcons[i]), xStart + (40 * i), 10, 24, 24);
             }
-            }
+        }
     }
 
     gDPPipeSync(POLY_OPA_DISP++);
@@ -1348,6 +1350,36 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
                     POLY_OPA_DISP = FileChoose_QuadTextureIA8(POLY_OPA_DISP, sQuestItemTextures[j], 0x10, 0x10, 0);
                 }
             }
+        }
+
+        // Use file info alpha to match fading
+        u8 textAlpha = this->fileInfoAlpha[fileIndex];
+        if (textAlpha >= 200) {
+            textAlpha = 255;
+        }
+
+        // Draw rando seed warning when build version doesn't match
+        if (Save_GetSaveMetaInfo(fileIndex)->randoSave == 1 &&
+            strncmp(Save_GetSaveMetaInfo(fileIndex)->buildVersion, (const char*) gBuildVersion, sizeof(Save_GetSaveMetaInfo(fileIndex)->buildVersion)) != 0) {
+
+            Gfx* gfx = Graph_GfxPlusOne(POLY_OPA_DISP);
+
+            MessageContext* msgCtx = &this->msgCtx;
+
+            // Load the custom text ID without doing a textbox
+            Message_OpenTextCustom(msgCtx, TEXT_RANDO_SAVE_VERSION_WARNING);
+            // Force the context into message print mode
+            msgCtx->msgMode = MSGMODE_TEXT_NEXT_MSG;
+            Message_DecodeCustom(msgCtx, &gfx);
+
+            // Set the draw pos to end of text to render it all at once
+            msgCtx->textDrawPos = msgCtx->decodedTextLen;
+            msgCtx->textColorAlpha = textAlpha;
+            R_TEXT_LINE_SPACING = 10;
+
+            Message_DrawTextCustom(msgCtx, &gfx, 128, 154);
+
+            POLY_OPA_DISP = gfx;
         }
     }
 
@@ -2659,6 +2691,9 @@ void FileChoose_Init(GameState* thisx) {
     ASSERT(this->parameterSegment != NULL);
     DmaMgr_SendRequest1(this->parameterSegment, (u32)_parameter_staticSegmentRomStart, size, __FILE__,
                         __LINE__);
+
+    // Load some registers used by the dialog system
+    func_80112098(NULL); // Passing in NULL as we dont have a playstate, and it isn't used in the func
 
     Matrix_Init(&this->state);
     View_Init(&this->view, this->state.gfxCtx);

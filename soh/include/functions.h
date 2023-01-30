@@ -2429,6 +2429,10 @@ void Heaps_Free(void);
 
 CollisionHeader* BgCheck_GetCollisionHeader(CollisionContext* colCtx, s32 bgId);
 
+void Message_OpenTextCustom(MessageContext* msgCtx, u16 textId);
+void Message_DecodeCustom(MessageContext* msgCtx, Gfx** gfxP);
+void Message_DrawTextCustom(MessageContext* msgCtx, Gfx** gfxP, u16 xPos, u16 yPos);
+
 #ifdef __cplusplus
 #undef this
 };
