@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <utility>
 #include <iterator>
+#include <variables.h>
 
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
@@ -298,7 +299,7 @@ namespace GameControlEditor {
         SohImGui::BeginGroupPanel("Misc Controls", ImGui::GetContentRegionAvail());
         UIWidgets::PaddedText("Allow the cursor to be on any slot");
         static const char* cursorOnAnySlot[3] = { "Only in Rando", "Always On", "Always Off" };
-        UIWidgets::EnhancementCombobox("gPauseAnyCursor", cursorOnAnySlot, 3, 0);
+        UIWidgets::EnhancementCombobox("gPauseAnyCursor", cursorOnAnySlot, PAUSE_ANY_CURSOR_MAX, PAUSE_ANY_CURSOR_RANDO_ONLY);
         DrawHelpIcon("Allows the cursor on the pause menu to be over any slot. Sometimes required in rando to select "
                      "certain items.");
         UIWidgets::Spacer(0);
