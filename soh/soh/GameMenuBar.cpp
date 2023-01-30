@@ -1237,9 +1237,7 @@ namespace GameMenuBar {
                 SohImGui::EnableWindow("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0));
             }
             ImGui::Dummy(ImVec2(0.0f, 0.0f));
-            ImGui::PopStyleVar(3);
-            ImGui::PopStyleColor(1);
-            /* [Race Template] Hide other rando stuff
+            /* [Race Template] Hide Entrance Tracker
             if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVarGetInteger("gEntranceTrackerEnabled", 0);
@@ -1248,6 +1246,7 @@ namespace GameMenuBar {
                 SohImGui::EnableWindow("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0));
             }
             ImGui::Dummy(ImVec2(0.0f, 0.0f));
+            */
             if (ImGui::Button(GetWindowButtonText("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVarGetInteger("gCheckTrackerEnabled", 0);
@@ -1265,7 +1264,7 @@ namespace GameMenuBar {
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
-
+            /* [Race Template] Hide other rando stuff
             UIWidgets::PaddedSeparator();
 
             if (ImGui::BeginMenu("Rando Enhancements"))

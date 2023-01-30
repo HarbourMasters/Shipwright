@@ -349,6 +349,7 @@ const std::vector<PresetEntry> racePresetEntries = {
     PRESET_ENTRY_S32("gFasterBlockPush", 5),
     PRESET_ENTRY_S32("gFasterHeavyBlockLift", 1),
     PRESET_ENTRY_S32("gNoForcedNavi", 1),
+    PRESET_ENTRY_S32("gDisableLOD", 1),
     PRESET_ENTRY_S32("gDisableNaviCallAudio", 1),
     PRESET_ENTRY_S32("gFastChests", 1),
     PRESET_ENTRY_S32("gFastDrops", 1),
