@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <utility>
 #include <iterator>
+#include <variables.h>
 
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
@@ -296,6 +297,12 @@ namespace GameControlEditor {
         ImVec2 cursor = ImGui::GetCursorPos();
         ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
         SohImGui::BeginGroupPanel("Misc Controls", ImGui::GetContentRegionAvail());
+        UIWidgets::PaddedText("Allow the cursor to be on any slot");
+        static const char* cursorOnAnySlot[3] = { "Only in Rando", "Always", "Never" };
+        UIWidgets::EnhancementCombobox("gPauseAnyCursor", cursorOnAnySlot, PAUSE_ANY_CURSOR_MAX, PAUSE_ANY_CURSOR_RANDO_ONLY);
+        DrawHelpIcon("Allows the cursor on the pause menu to be over any slot. Sometimes required in rando to select "
+                     "certain items.");
+        UIWidgets::Spacer(0);
         UIWidgets::PaddedEnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify", true, false);
         DrawHelpIcon("Hold the assigned button to change the maximum walking speed\nTo change the assigned button, go into the Ports tabs above");
          if (CVarGetInteger("gEnableWalkModify", 0)) {
@@ -307,8 +314,6 @@ namespace GameControlEditor {
             SohImGui::EndGroupPanel();
         }
         UIWidgets::Spacer(0);
-        UIWidgets::PaddedEnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor");
-        DrawHelpIcon("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
         UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");
         DrawHelpIcon("Speak to Navi with L but enter first-person camera with C-Up");
         SohImGui::EndGroupPanel();
