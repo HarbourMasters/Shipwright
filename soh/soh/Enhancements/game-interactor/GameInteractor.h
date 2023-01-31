@@ -10,6 +10,7 @@ typedef enum {
     /* 0x01 */ GI_LINK_SIZE_GIANT,
     /* 0x02 */ GI_LINK_SIZE_MINISH,
     /* 0x03 */ GI_LINK_SIZE_PAPER,
+    /* 0x04 */ GI_LINK_SIZE_RESET
 } GILinkSize;
 
 typedef enum {
@@ -22,9 +23,9 @@ typedef enum {
 extern "C" {
 #endif
 uint8_t GameInteractor_NoUIActive();
-GILinkSize GameInteractor_LinkSize();
+GILinkSize GameInteractor_GetLinkSize();
+void GameInteractor_SetLinkSize(GILinkSize size);
 uint8_t GameInteractor_InvisibleLinkActive();
-uint8_t GameInteractor_ResetLinkScale();
 uint8_t GameInteractor_OneHitKOActive();
 uint8_t GameInteractor_PacifistModeActive();
 uint8_t GameInteractor_DisableZTargetingActive();

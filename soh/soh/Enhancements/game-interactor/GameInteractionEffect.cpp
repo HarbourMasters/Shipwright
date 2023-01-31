@@ -233,7 +233,7 @@ namespace GameInteractionEffect {
         GameInteractor::State::LinkSize = (GILinkSize)parameter;
     }
     void ModifyLinkSize::_Remove() {
-        GameInteractor::State::LinkSize = GI_LINK_SIZE_NORMAL;
+        GameInteractor::State::LinkSize = GI_LINK_SIZE_RESET;
     }
 
     // MARK: - InvisibleLink
