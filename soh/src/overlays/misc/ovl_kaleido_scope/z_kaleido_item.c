@@ -101,6 +101,8 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
     s16 oldCursorPoint;
     s16 moveCursorResult;
     bool dpad = (CVarGetInteger("gDpadPause", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
+    bool pauseAnyCursor = (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && gSaveContext.n64ddFlag) ||
+                          (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -142,7 +144,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                             pauseCtx->cursorX[PAUSE_ITEM] -= 1;
                             pauseCtx->cursorPoint[PAUSE_ITEM] -= 1;
                             if ((gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) ||
-                                CVarGetInteger("gPauseAnyCursor", 0)) {
+                                pauseAnyCursor) {
                                 moveCursorResult = 1;
                             }
                         } else {
@@ -174,7 +176,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                             pauseCtx->cursorX[PAUSE_ITEM] += 1;
                             pauseCtx->cursorPoint[PAUSE_ITEM] += 1;
                             if ((gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) ||
-                                CVarGetInteger("gPauseAnyCursor", 0)) {
+                                pauseAnyCursor) {
                                 moveCursorResult = 1;
                             }
                         } else {
@@ -296,7 +298,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                                 pauseCtx->cursorY[PAUSE_ITEM] -= 1;
                                 pauseCtx->cursorPoint[PAUSE_ITEM] -= 6;
                                 if ((gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) ||
-                                    CVarGetInteger("gPauseAnyCursor", 0)) {
+                                    pauseAnyCursor) {
                                     moveCursorResult = 1;
                                 }
                             } else {
@@ -310,7 +312,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                                 pauseCtx->cursorY[PAUSE_ITEM] += 1;
                                 pauseCtx->cursorPoint[PAUSE_ITEM] += 6;
                                 if ((gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) ||
-                                    CVarGetInteger("gPauseAnyCursor", 0)) {
+                                    pauseAnyCursor) {
                                     moveCursorResult = 1;
                                 }
                             } else {

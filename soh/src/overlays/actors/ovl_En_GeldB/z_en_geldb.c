@@ -6,6 +6,7 @@
 
 #include "z_en_geldb.h"
 #include "objects/object_geldb/object_geldb.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
 
@@ -1570,6 +1571,11 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
                 } else {
                     play->nextEntranceIndex = 0x3B4;
                 }
+
+                if (gSaveContext.n64ddFlag) {
+                    Entrance_OverrideGeurdoGuardCapture();
+                }
+
                 play->fadeTransition = 0x26;
                 play->sceneLoadFlag = 0x14;
             }

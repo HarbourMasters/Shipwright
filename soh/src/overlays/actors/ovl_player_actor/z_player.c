@@ -2167,7 +2167,7 @@ void func_808340DC(Player* this, PlayState* play) {
 }
 
 void func_80834298(Player* this, PlayState* play) {
-    if ((this->actor.category == ACTORCAT_PLAYER) && !(this->stateFlags1 & PLAYER_STATE1_8) &&
+    if ((this->actor.category == ACTORCAT_PLAYER) && (CVarGetInteger("gQuickPutaway", 0) || !(this->stateFlags1 & PLAYER_STATE1_8)) &&
         ((this->heldItemAction == this->itemAction) || (this->stateFlags1 & PLAYER_STATE1_22)) &&
         (gSaveContext.health != 0) && (play->csCtx.state == CS_STATE_IDLE) && (this->csMode == 0) &&
         (play->shootingGalleryStatus == 0) && (play->activeCamera == MAIN_CAM) &&
@@ -10995,7 +10995,13 @@ void Player_Update(Actor* thisx, PlayState* play) {
     MREG(54) = this->actor.world.pos.z;
     MREG(55) = this->actor.world.rot.y;
 
-    switch (GameInteractor_LinkSize()) {
+    switch (GameInteractor_GetLinkSize()) {
+        case GI_LINK_SIZE_RESET:
+            this->actor.scale.x = 0.01f;
+            this->actor.scale.y = 0.01f;
+            this->actor.scale.z = 0.01f;
+            GameInteractor_SetLinkSize(GI_LINK_SIZE_NORMAL);
+            break;
         case GI_LINK_SIZE_GIANT:
             this->actor.scale.x = 0.02f;
             this->actor.scale.y = 0.02f;
@@ -11013,9 +11019,6 @@ void Player_Update(Actor* thisx, PlayState* play) {
             break;
         case GI_LINK_SIZE_NORMAL:
         default:
-            this->actor.scale.x = 0.01f;
-            this->actor.scale.y = 0.01f;
-            this->actor.scale.z = 0.01f;
             break;
     }
 

@@ -161,6 +161,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gHoverFishing",
     "gN64WeirdFrames",
     "gBombchusOOB",
+    "gQuickPutaway",
     "gGsCutscene",
     "gSkipSaveConfirmation",
     "gAutosave",
@@ -485,6 +486,8 @@ const std::vector<PresetEntry> vanillaPlusPresetEntries = {
     PRESET_ENTRY_S32("gN64WeirdFrames", 1),
     // Bombchus out of bounds
     PRESET_ENTRY_S32("gBombchusOOB", 1),
+    // Quick Putaway
+    PRESET_ENTRY_S32("gQuickPutaway", 1),
     // Skip save confirmation
     PRESET_ENTRY_S32("gSkipSaveConfirmation", 1),
 };
@@ -550,6 +553,8 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32("gN64WeirdFrames", 1),
     // Bombchus out of bounds
     PRESET_ENTRY_S32("gBombchusOOB", 1),
+    // Quick Putaway
+    PRESET_ENTRY_S32("gQuickPutaway", 1),
     // Skip save confirmation
     PRESET_ENTRY_S32("gSkipSaveConfirmation", 1),
     // Biggoron Forge Time (0 to 3)
@@ -664,6 +669,8 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gN64WeirdFrames", 1),
     // Bombchus out of bounds
     PRESET_ENTRY_S32("gBombchusOOB", 1),
+    // Quick Putaway
+    PRESET_ENTRY_S32("gQuickPutaway", 1),
     // Skip save confirmation
     PRESET_ENTRY_S32("gSkipSaveConfirmation", 1),
     // Biggoron Forge Time (0 to 3)
@@ -718,8 +725,6 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
 
     // Autosave
     PRESET_ENTRY_S32("gAutosave", 1),
-    // Allow the cursor to be on any slot
-    PRESET_ENTRY_S32("gPauseAnyCursor", 1),
 
     // Customize Fishing Behaviour
     PRESET_ENTRY_S32("gCustomizeFishing", 1),

@@ -659,7 +659,7 @@ void Entrance_OverrideWeatherState() {
 // Child should always be thrown in the stream when caught in the valley, and placed at the fortress entrance from valley when caught in the fortress
 void Entrance_OverrideGeurdoGuardCapture(void) {
     if (LINK_IS_CHILD) {
-        gPlayState->nextEntranceIndex = 0x1A5;
+        gPlayState->nextEntranceIndex = 0x1A5; // Geurdo Valley thrown out
     }
 
     if ((LINK_IS_CHILD || Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) &&

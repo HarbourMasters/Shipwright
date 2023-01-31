@@ -150,23 +150,24 @@ namespace GameMenuBar {
 
             if (ImGui::BeginMenu("Controller")) {
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2 (12.0f, 6.0f));
-                ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
+                ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
                 ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
                 ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-                if (ImGui::Button(GetWindowButtonText("Controller Configuration", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str()))
+                if (ImGui::Button(GetWindowButtonText("Controller Configuration", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f)))
                 {
                     bool currentValue = CVarGetInteger("gControllerConfigurationEnabled", 0);
                     CVarSetInteger("gControllerConfigurationEnabled", !currentValue);
                     SohImGui::RequestCvarSaveOnNextTick();
                     SohImGui::ToggleInputEditorWindow(CVarGetInteger("gControllerConfigurationEnabled", 0));
                 }
+                UIWidgets::PaddedSeparator();
                 ImGui::PopStyleColor(1);
                 ImGui::PopStyleVar(3);
             #ifndef __SWITCH__
-                UIWidgets::PaddedEnhancementCheckbox("Use Controller Navigation", "gControlNav", true, false);
-                UIWidgets::Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
+                UIWidgets::EnhancementCheckbox("Menubar Controller Navigation", "gControlNav");
+                UIWidgets::Tooltip("Allows controller navigation of the SOH menu bar (Settings, Enhancements,...)\nCAUTION: This will disable game inputs while the menubar is visible.\n\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
             #endif
-                UIWidgets::PaddedEnhancementCheckbox("Show Inputs", "gInputEnabled", true, false);
+                UIWidgets::EnhancementCheckbox("Show Inputs", "gInputEnabled");
                 UIWidgets::Tooltip("Shows currently pressed inputs on the bottom right of the screen");
                 UIWidgets::Spacer(0);
                 ImGui::PushItemWidth(ImGui::GetWindowSize().x - 20.0f);
@@ -376,7 +377,7 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Allows exiting Hyrule Castle Market Town to Hyrule Field at night by speaking "
                     "to the guard next to the gate.");
                     UIWidgets::PaddedEnhancementCheckbox("Faster Farore's Wind", "gFastFarores", true, false);
-                    UIWidgets::Tooltip("Greatly increases cast time of Farore's Wind magic spell.");
+                    UIWidgets::Tooltip("Greatly decreases cast time of Farore's Wind magic spell.");
                     ImGui::EndMenu();
                 }
 
@@ -794,6 +795,8 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Restores N64 Weird Frames allowing weirdshots to behave the same as N64");
                 UIWidgets::PaddedEnhancementCheckbox("Bombchus out of bounds", "gBombchusOOB", true, false);
                 UIWidgets::Tooltip("Allows bombchus to explode out of bounds\nSimilar to GameCube and Wii VC");
+                UIWidgets::PaddedEnhancementCheckbox("Quick Putaway", "gQuickPutaway", true, false);
+                UIWidgets::Tooltip("Restore a bug from NTSC 1.0 that allows putting away an item without an animation and performing Putaway Ocarina Items");
                 UIWidgets::PaddedEnhancementCheckbox("Restore old Gold Skulltula cutscene", "gGsCutscene", true, false);
 
                 ImGui::EndMenu();

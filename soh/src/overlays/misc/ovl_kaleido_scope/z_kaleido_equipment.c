@@ -177,6 +177,8 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
     s16 cursorY;
     s16 oldCursorPoint;
     bool dpad = (CVarGetInteger("gDpadPause", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
+    bool pauseAnyCursor = (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && gSaveContext.n64ddFlag) ||
+                          (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -226,7 +228,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                                     cursorMoveResult = 1;
                                 }
                             }
-                        } else if ((gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] & gSaveContext.inventory.equipment) || CVarGetInteger("gPauseAnyCursor", 0)) {
+                        } else if ((gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] & gSaveContext.inventory.equipment) || pauseAnyCursor) {
                             cursorMoveResult = 2;
                         }
                     } else {
@@ -260,7 +262,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                             if (CUR_UPG_VALUE(pauseCtx->cursorY[PAUSE_EQUIP]) != 0) {
                                 cursorMoveResult = 1;
                             }
-                        } else if ((gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] & gSaveContext.inventory.equipment) || CVarGetInteger("gPauseAnyCursor", 0)) {
+                        } else if ((gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] & gSaveContext.inventory.equipment) || pauseAnyCursor) {
                                 cursorMoveResult = 2;
                         }
                     } else {
@@ -311,7 +313,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                                 cursorMoveResult = 1;
                             }
                         } else if ((gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] &
-                                   gSaveContext.inventory.equipment) || CVarGetInteger("gPauseAnyCursor", 0)) {
+                                   gSaveContext.inventory.equipment) || pauseAnyCursor) {
                             cursorMoveResult = 2;
                         }
                     } else {
@@ -329,7 +331,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                                 cursorMoveResult = 1;
                             }
                         } else if ((gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] &
-                                   gSaveContext.inventory.equipment) || CVarGetInteger("gPauseAnyCursor", 0)) {
+                                   gSaveContext.inventory.equipment) || pauseAnyCursor) {
                             cursorMoveResult = 2;
                         }
                     } else {
