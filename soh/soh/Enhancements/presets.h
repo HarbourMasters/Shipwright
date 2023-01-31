@@ -373,6 +373,8 @@ const std::vector<PresetEntry> racePresetEntries = {
     PRESET_ENTRY_S32("gNewDrops", 1),
     PRESET_ENTRY_S32("gCreditsFix", 1),
     PRESET_ENTRY_S32("gSkipText", 1),
+    PRESET_ENTRY_S32("gSkulltulaFreeze", 1),
+    PRESET_ENTRY_S32("gPauseAnyCursor", 1),
     PRESET_ENTRY_S32("gHideBuildInfo", 1),
     PRESET_ENTRY_S32("gSkipLogoTitle", 1),
     PRESET_ENTRY_S32("gSaveFileID", 4),
