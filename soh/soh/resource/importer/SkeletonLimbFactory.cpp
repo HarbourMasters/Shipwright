@@ -27,6 +27,26 @@ std::shared_ptr<Resource> SkeletonLimbFactory::ReadResource(uint32_t version, st
 	return resource;
 }
 
+std::shared_ptr<Resource> SkeletonLimbFactory::ReadResourceXML(uint32_t version, tinyxml2::XMLElement* reader) {
+    auto resource = std::make_shared<SkeletonLimb>();
+    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
+
+    switch ((Version)version) {
+        case Version::Deckard:
+            factory = std::make_shared<SkeletonLimbFactoryV0>();
+            break;
+    }
+
+    if (factory == nullptr) {
+        SPDLOG_ERROR("Failed to load Skeleton Limb with version {}", version);
+        return nullptr;
+    }
+
+    factory->ParseFileXML(reader, resource);
+
+    return resource;
+}
+
 void Ship::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                                   std::shared_ptr<Resource> resource)
 {
@@ -192,4 +212,41 @@ void Ship::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
         }
     }
 }
+void SkeletonLimbFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<Resource> resource) 
+{
+    std::shared_ptr<SkeletonLimb> skelLimb = std::static_pointer_cast<SkeletonLimb>(resource);
+
+    std::string limbType = reader->Attribute("Type");
+
+    // OTRTODO
+    skelLimb->limbType = LimbType::LOD;
+
+    // skelLimb->legTransX = reader->FloatAttribute("LegTransX");
+    // skelLimb->legTransY = reader->FloatAttribute("LegTransY");
+    // skelLimb->legTransZ = reader->FloatAttribute("LegTransZ");
+    skelLimb->rotX = reader->IntAttribute("RotX");
+    skelLimb->rotY = reader->IntAttribute("RotY");
+    skelLimb->rotZ = reader->IntAttribute("RotZ");
+
+    // skelLimb->transX = reader->IntAttribute("TransX");
+    // skelLimb->transY = reader->IntAttribute("TransY");
+    // skelLimb->transZ = reader->IntAttribute("TransZ");
+
+    skelLimb->transX = (int)reader->FloatAttribute("LegTransX");
+    skelLimb->transY = (int)reader->FloatAttribute("LegTransY");
+    skelLimb->transZ = (int)reader->FloatAttribute("LegTransZ");
+
+    skelLimb->childIndex = reader->IntAttribute("ChildIndex");
+    skelLimb->siblingIndex = reader->IntAttribute("SiblingIndex");
+
+    // skelLimb->childPtr = reader->Attribute("ChildLimb");
+    // skelLimb->siblingPtr = reader->Attribute("SiblingLimb");
+    skelLimb->dListPtr = reader->Attribute("DisplayList1");
+
+    if (std::string(reader->Attribute("DisplayList1")) == "gEmptyDL")
+        skelLimb->dListPtr = "";
+
+    // skelLimb->dList2Ptr = reader->Attribute("DisplayList2");
+}
+
 } // namespace Ship
