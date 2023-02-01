@@ -4890,8 +4890,8 @@ CustomMessageMinimal FireTempleGoronMessages[NUM_GORON_MESSAGES] = {
         "Merci, mais je me sens plus en&sécurité ici...^...^...^...^...^Hmm...^...Tout compte fait, je vais y aller.&A plus tard.",
     },
     {
-        "Do you know about %b\x9f%w?&It's this weird symbol that's been&in my dreams lately...^Apparently, you pressed it %b{{a_btn}}%w times.^Wow."
-        "Weißt du über %b\x9f%w bescheid?&Es sind Symbole, die mir&in letzter Zeit öfter in&meinen Träumen erschienen sind...^Es scheint, dass du sie schon&%b{{a_btn}}%w mal betätigt hast.^Faszinierend..."
+        "Do you know about %b\x9f%w?&It's this weird symbol that's been&in my dreams lately...^Apparently, you pressed it %b{{a_btn}}%w times.^Wow.",
+        "Weißt du über %b\x9f%w bescheid?&Es sind Symbole, die mir&in letzter Zeit öfter in&meinen Träumen erschienen sind...^Es scheint, dass du sie schon&%b{{a_btn}}%w mal betätigt hast.^Faszinierend...",
         "Tu as déjà entendu parler du&symbole %b\x9f%w?&C'est un symbole bizarre qui est&apparu dans mes rêves dernièrement...^Apparemment, tu as appuyé dessus&%b{{a_btn}}%w fois.^Wow..."
     },
     {
