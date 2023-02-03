@@ -693,10 +693,6 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         }
     }
 
-    if (effect->category == "") {
-        effect->category = effectCatNone;
-    }
-
     return effect;
 }
 
