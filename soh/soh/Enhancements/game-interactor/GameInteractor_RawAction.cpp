@@ -150,12 +150,13 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
 
     Player* player = GET_PLAYER(gPlayState);
 
-    float posXOffset = 0;
-    float posYOffset = 0;
+    float posXOffset = 75;
+    float posYOffset = 50;
     float posZOffset = 0;
 
     if (enemyId == ACTOR_EN_WALLMAS) {
-
+        posXOffset = 0;
+        posYOffset = 0;
     } else if (enemyId == ACTOR_EN_CLEAR_TAG) {
         // Don't allow Arwings in certain areas because they cause issues.
         // Locations: King dodongo room, Morpha room, Twinrova room, Ganondorf room, Fishing pond, Ganon's room
@@ -165,28 +166,8 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
             gPlayState->sceneNum == SCENE_TURIBORI || gPlayState->sceneNum == SCENE_GANON_DEMO) {
             return GameInteractionEffectQueryResult::NotPossible;
         }
+        posXOffset = 0;
         posYOffset = 100;
-    } else if (enemyId == ACTOR_EN_TORCH2) {
-        posXOffset = 75;
-        posYOffset = 50;
-    } else if (enemyId == ACTOR_EN_TEST) {
-        posXOffset = 75;
-        posYOffset = 50;
-    } else if (enemyId == ACTOR_EN_WF) {
-        posXOffset = 75;
-        posYOffset = 50;
-    } else if (enemyId == ACTOR_EN_FZ) {
-        posXOffset = 75;
-        posYOffset = 50;
-    } else if (enemyId == ACTOR_EN_FIREFLY) {
-        posXOffset = 75;
-        posYOffset = 50;
-    } else if (enemyId == ACTOR_EN_TITE) {
-        posXOffset = 75;
-        posYOffset = 50;
-    } else if (enemyId == ACTOR_EN_RR) {
-        posXOffset = 75;
-        posYOffset = 50;
     }
 
     if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, player->actor.world.pos.x + posXOffset,

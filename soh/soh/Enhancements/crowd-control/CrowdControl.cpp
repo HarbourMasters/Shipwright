@@ -17,52 +17,142 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-#define EFFECT_HIGH_GRAVITY "high_gravity"
-#define EFFECT_LOW_GRAVITY "low_gravity"
-#define EFFECT_DAMAGE_MULTIPLIER "damage_multiplier"
-#define EFFECT_DEFENSE_MULTIPLIER "defense_multiplier"
-#define EFFECT_GIANT_LINK "giant_link"
-#define EFFECT_MINISH_LINK "minish_link"
-#define EFFECT_INVISIBLE_LINK "invisible"
-#define EFFECT_PAPER_LINK "paper_link"
-#define EFFECT_FREEZE "freeze"
-#define EFFECT_DAMAGE "damage"
-#define EFFECT_HEAL "heal"
-#define EFFECT_KNOCKBACK "knockback"
-#define EFFECT_ELECTROCUTE "electrocute"
-#define EFFECT_BURN "burn"
-#define EFFECT_KILL "kill"
-#define EFFECT_HOVER_BOOTS "hover_boots"
-#define EFFECT_IRON_BOOTS "iron_boots"
-#define EFFECT_ADD_HEART_CONTAINER "add_heart_container"
-#define EFFECT_REMOVE_HEART_CONTAINER "remove_heart_container"
-#define EFFECT_NO_UI "no_ui"
-#define EFFECT_FILL_MAGIC "fill_magic"
-#define EFFECT_EMPTY_MAGIC "empty_magic"
-#define EFFECT_OHKO "ohko"
-#define EFFECT_PACIFIST "pacifist"
-#define EFFECT_RAINSTORM "rainstorm"
-#define EFFECT_REVERSE_CONTROLS "reverse"
-#define EFFECT_ADD_RUPEES "add_rupees"
-#define EFFECT_REMOVE_RUPEES "remove_rupees"
-#define EFFECT_INCREASE_SPEED "increase_speed"
-#define EFFECT_DECREASE_SPEED "decrease_speed"
-#define EFFECT_NO_Z_TARGETING "no_z"
-#define EFFECT_GIVE_DEKU_SHIELD "give_dekushield"
-
-#define EFFECT_SPAWN_WALLMASTER "spawn_wallmaster"
+// Spawn Enemies and Objects
+#define EFFECT_SPAWN_CUCCO_STORM "spawn_cuccostorm"
+#define EFFECT_SPAWN_LIT_BOMB "spawn_litbomb"
+#define EFFECT_SPAWN_EXPLOSION "spawn_explosion"
 #define EFFECT_SPAWN_ARWING "spawn_arwing"
 #define EFFECT_SPAWN_DARK_LINK "spawn_darklink"
+#define EFFECT_SPAWN_IRON_KNUCKLE "spawn_ironknuckle"
 #define EFFECT_SPAWN_STALFOS "spawn_stalfos"
-#define EFFECT_SPAWN_WOLFOS "spawn_wolfos"
 #define EFFECT_SPAWN_FREEZARD "spawn_freezard"
+#define EFFECT_SPAWN_LIKE_LIKE "spawn_likelike"
 #define EFFECT_SPAWN_KEESE "spawn_keese"
 #define EFFECT_SPAWN_ICE_KEESE "spawn_icekeese"
 #define EFFECT_SPAWN_FIRE_KEESE "spawn_firekeese"
-#define EFFECT_SPAWN_TEKTITE "spawn_tektite"
-#define EFFECT_SPAWN_LIKE_LIKE "spawn_likelike"
-#define EFFECT_SPAWN_CUCCO_STORM "cucco_storm"
+#define EFFECT_SPAWN_WOLFOS "spawn_wolfos"
+#define EFFECT_SPAWN_WALLMASTER "spawn_wallmaster"
 
+// Link Modifiers
+#define EFFECT_HALF_DAMAGE_TAKEN "half_damage_taken"
+#define EFFECT_DOUBLE_DAMAGE_TAKEN "double_damage_taken"
+#define EFFECT_OHKO "ohko"
+#define EFFECT_INVINCIBLE "invincible"
+#define EFFECT_INCREASE_SPEED "increase_speed"
+#define EFFECT_DECREASE_SPEED "decrease_speed"
+#define EFFECT_LOW_GRAVITY "low_gravity"
+#define EFFECT_HIGH_GRAVITY "high_gravity"
+#define EFFECT_IRON_BOOTS "iron_boots"
+#define EFFECT_HOVER_BOOTS "hover_boots"
+#define EFFECT_SLIPPERY_FLOOR "slippery_floor"
+#define EFFECT_NO_LEDGE_GRABS "no_ledge_grabs"
+#define EFFECT_RANDOM_BONKS "random_bonks"
+
+// Hurt or heal Link
+#define EFFECT_DAMAGE "damage"
+#define EFFECT_HEAL "heal"
+#define EFFECT_KNOCKBACK "knockback"
+#define EFFECT_BURN "burn"
+#define EFFECT_FREEZE "freeze"
+#define EFFECT_ELECTROCUTE "electrocute"
+#define EFFECT_KILL "kill"
+
+// Give Items or Consumables
+#define EFFECT_ADD_HEART_CONTAINER "add_heart_container"
+#define EFFECT_FILL_MAGIC "fill_magic"
+#define EFFECT_ADD_RUPEES "add_rupees"
+#define EFFECT_GIVE_DEKU_SHIELD "give_dekushield"
+#define EFFECT_GIVE_HYLIAN_SHIELD "give_hylianshield"
+#define EFFECT_REFILL_STICKS "refill_sticks"
+#define EFFECT_REFILL_NUTS "refill_nuts"
+#define EFFECT_REFILL_BOMBS "refill_bombs"
+#define EFFECT_REFILL_SEEDS "refill_seeds"
+#define EFFECT_REFILL_ARROWS "refill_arrows"
+#define EFFECT_REFILL_BOMBCHUS "refill_bombchus"
+
+// Take Items or Consumables
+#define EFFECT_REMOVE_HEART_CONTAINER "remove_heart_container"
+#define EFFECT_EMPTY_MAGIC "empty_magic"
+#define EFFECT_REMOVE_RUPEES "remove_rupees"
+#define EFFECT_TAKE_DEKU_SHIELD "take_dekushield"
+#define EFFECT_TAKE_HYLIAN_SHIELD "take_hylianshield"
+#define EFFECT_TAKE_STICKS "take_sticks"
+#define EFFECT_TAKE_NUTS "take_nuts"
+#define EFFECT_TAKE_BOMBS "take_bombs"
+#define EFFECT_TAKE_SEEDS "take_seeds"
+#define EFFECT_TAKE_ARROWS "take_arrows"
+#define EFFECT_TAKE_BOMBCHUS "take_bombchus"
+
+// Link Size Modifiers
+#define EFFECT_GIANT_LINK "giant_link"
+#define EFFECT_MINISH_LINK "minish_link"
+#define EFFECT_PAPER_LINK "paper_link"
+#define EFFECT_SQUISHED_LINK "squished_link"
+#define EFFECT_INVISIBLE_LINK "invisible_link"
+
+// Generic Effects
+#define EFFECT_RANDOM_BOMB_TIMER "random_bomb_timer"
+#define EFFECT_TIME_DAWN "time_dawn"
+#define EFFECT_TIME_DUSK "time_dusk"
+
+// Visual Effects
+#define EFFECT_NO_UI "no_ui"
+#define EFFECT_RAINSTORM "rainstorm"
+#define EFFECT_DEBUG_MODE "debug_mode"
+#define EFFECT_RAINBOW_MODE "rainbow_mode"
+#define EFFECT_RANDOM_COSMETICS "random_cosmetics"
+
+// Controls
+#define EFFECT_NO_Z_TARGETING "no_z"
+#define EFFECT_REVERSE_CONTROLS "reverse_controls"
+#define EFFECT_PACIFIST "pacifist"
+#define EFFECT_RANDOM_BUTTONS "random_buttons"
+#define EFFECT_CLEAR_CBUTTONS "clear_cbuttons"
+#define EFFECT_CLEAR_DPAD "clear_dpad"
+
+// Teleport Player
+#define EFFECT_TP_LINKSHOUSE "tp_linkshouse"
+#define EFFECT_TP_MINUET "tp_minuet"
+#define EFFECT_TP_BOLERO "tp_bolero"
+#define EFFECT_TP_SERENADE "tp_serenade"
+#define EFFECT_TP_REQUIEM "tp_requiem"
+#define EFFECT_TP_NOCTURNE "tp_nocturne"
+#define EFFECT_TP_PRELUDE "tp_prelude"
+
+// Tunic Colors (bidding war)
+#define EFFECT_TUNIC_RED "tunic_red"
+#define EFFECT_TUNIC_GREEN "tunic_green"
+#define EFFECT_TUNIC_BLUE "tunic_blue"
+#define EFFECT_TUNIC_ORANGE "tunic_orange"
+#define EFFECT_TUNIC_YELLOW "tunic_yellow"
+#define EFFECT_TUNIC_PURPLE "tunic_purple"
+#define EFFECT_TUNIC_PINK "tunic_pink"
+#define EFFECT_TUNIC_BROWN "tunic_brown"
+#define EFFECT_TUNIC_BLACK "tunic_black"
+
+// Navi Colors (bidding war)
+#define EFFECT_NAVI_RED "navi_red"
+#define EFFECT_NAVI_GREEN "navi_green"
+#define EFFECT_NAVI_BLUE "navi_blue"
+#define EFFECT_NAVI_ORANGE "navi_orange"
+#define EFFECT_NAVI_YELLOW "navi_yellow"
+#define EFFECT_NAVI_PURPLE "navi_purple"
+#define EFFECT_NAVI_PINK "navi_pink"
+#define EFFECT_NAVI_BROWN "navi_brown"
+#define EFFECT_NAVI_BLACK "navi_black"
+
+// Link's hair Colors (bidding war)
+#define EFFECT_HAIR_RED "hair_red"
+#define EFFECT_HAIR_GREEN "hair_green"
+#define EFFECT_HAIR_BLUE "hair_blue"
+#define EFFECT_HAIR_ORANGE "hair_orange"
+#define EFFECT_HAIR_YELLOW "hair_yellow"
+#define EFFECT_HAIR_PURPLE "hair_purple"
+#define EFFECT_HAIR_PINK "hair_pink"
+#define EFFECT_HAIR_BROWN "hair_brown"
+#define EFFECT_HAIR_BLACK "hair_black"
+
+// Categories
 #define EFFECT_CAT_UI "ui"
 #define EFFECT_CAT_GRAVITY "gravity"
 #define EFFECT_CAT_LINK_SIZE "link_size"
@@ -380,12 +470,12 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         effect->category = EFFECT_CAT_DAMAGE_TAKEN;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::OneHitKO();
-    } else if (effectName == EFFECT_DAMAGE_MULTIPLIER) {
+    } else if (effectName == EFFECT_DOUBLE_DAMAGE_TAKEN) {
         effect->category = EFFECT_CAT_DAMAGE_TAKEN;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
         effect->paramMultiplier = -1;
-    } else if (effectName == EFFECT_DEFENSE_MULTIPLIER) {
+    } else if (effectName == EFFECT_HALF_DAMAGE_TAKEN) {
         effect->category = EFFECT_CAT_DAMAGE_TAKEN;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
@@ -427,9 +517,6 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         effect->value[0] = ACTOR_EN_FIREFLY;
         // Parameter for fire keese
         effect->value[1] = 1;
-        effect->category = EFFECT_CAT_SPAWN_ENEMY;
-    } else if (effectName == EFFECT_SPAWN_TEKTITE) {
-        effect->value[0] = ACTOR_EN_TITE;
         effect->category = EFFECT_CAT_SPAWN_ENEMY;
     } else if (effectName == EFFECT_SPAWN_LIKE_LIKE) {
         effect->value[0] = ACTOR_EN_RR;
