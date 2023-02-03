@@ -76,25 +76,17 @@ extern PlayState* gPlayState;
 #define EFFECT_CAT_SPAWN_ENEMY "spawn_enemy"
 #define EFFECT_CAT_NONE "none"
 
-void CrowdControl::Init() {
-    SDLNet_Init();
-}
-
-void CrowdControl::Shutdown() {
-    SDLNet_Quit();
-}
-
 void CrowdControl::Enable() {
     if (isEnabled) {
         return;
     }
 
-    if (SDLNet_ResolveHost(&ip, "127.0.0.1", 43384) == -1) {
-        SPDLOG_ERROR("[CrowdControl] SDLNet_ResolveHost: {}", SDLNet_GetError());
-    }
-
     isEnabled = true;
-    ccThreadReceive = std::thread(&CrowdControl::ListenToServer, this);
+    GameInteractor::Instance->EnableRemoteInteractor("127.0.0.1", 43384);
+    GameInteractor::Instance->RegisterRemoteForwarder([&](char received[512]) {
+        HandleRemoteData(received);
+    });
+
     ccThreadProcess = std::thread(&CrowdControl::ProcessActiveEffects, this);
 }
 
@@ -104,87 +96,42 @@ void CrowdControl::Disable() {
     }
 
     isEnabled = false;
-    ccThreadReceive.join();
     ccThreadProcess.join();
+    GameInteractor::Instance->DisableRemoteInteractor();
 }
 
-void CrowdControl::ListenToServer() {
-    while (isEnabled) {
-        while (!connected && isEnabled) {
-            SPDLOG_TRACE("[CrowdControl] Attempting to make connection to server...");
-            tcpsock = SDLNet_TCP_Open(&ip);
+void CrowdControl::HandleRemoteData(char received[512]) {
+    Effect* incomingEffect = ParseMessage(received);
+    if (!incomingEffect) {
+        return;
+    }
 
-            if (tcpsock) {
-                connected = true;
-                SPDLOG_TRACE("[CrowdControl] Connection to server established!");
+    // If effect is not a timed effect, execute and return result.
+    if (!incomingEffect->timeRemaining) {
+        EffectResult result = CrowdControl::ExecuteEffect(incomingEffect);
+        EmitMessage(incomingEffect->id, incomingEffect->timeRemaining, result);
+    } else {
+        // If another timed effect is already active that conflicts with the incoming effect.
+        bool isConflictingEffectActive = false;
+        for (Effect* effect : activeEffects) {
+            if (effect != incomingEffect && effect->category == incomingEffect->category && effect->id < incomingEffect->id) {
+                isConflictingEffectActive = true;
+                EmitMessage(incomingEffect->id, incomingEffect->timeRemaining, EffectResult::Retry);
                 break;
             }
         }
 
-        SDLNet_SocketSet socketSet = SDLNet_AllocSocketSet(1);
-        if (tcpsock) {
-            SDLNet_TCP_AddSocket(socketSet, tcpsock);
-        }
-
-        // Listen to socket messages
-        while (connected && tcpsock && isEnabled) {
-            // we check first if socket has data, to not block in the TCP_Recv
-            int socketsReady = SDLNet_CheckSockets(socketSet, 0);
-
-            if (socketsReady == -1) {
-                SPDLOG_ERROR("[CrowdControl] SDLNet_CheckSockets: {}", SDLNet_GetError());
-                break;
+        if (!isConflictingEffectActive) {
+            // Check if effect can be applied, if it can't, let CC know.
+            EffectResult result = CrowdControl::CanApplyEffect(incomingEffect);
+            if (result == EffectResult::Retry || result == EffectResult::Failure) {
+                EmitMessage(incomingEffect->id, incomingEffect->timeRemaining, result);
+                return;
             }
 
-            if (socketsReady == 0) {
-                continue;
-            }
-
-            int len = SDLNet_TCP_Recv(tcpsock, &received, sizeof(received));
-            if (!len || !tcpsock || len == -1) {
-                SPDLOG_ERROR("[CrowdControl] SDLNet_TCP_Recv: {}", SDLNet_GetError());
-                break;
-            }
-
-            Effect* incomingEffect = ParseMessage(received);
-            if (!incomingEffect) {
-                continue;
-            }
-
-            // If effect is not a timed effect, execute and return result.
-            if (!incomingEffect->timeRemaining) {
-                EffectResult result = CrowdControl::ExecuteEffect(incomingEffect);
-                EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
-            } else {
-                // If another timed effect is already active that conflicts with the incoming effect.
-                bool isConflictingEffectActive = false;
-                for (Effect* effect : activeEffects) {
-                    if (effect != incomingEffect && effect->category == incomingEffect->category && effect->id < incomingEffect->id) {
-                        isConflictingEffectActive = true;
-                        EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, EffectResult::Retry);
-                        break;
-                    }
-                }
-
-                if (!isConflictingEffectActive) {
-                    // Check if effect can be applied, if it can't, let CC know.
-                    EffectResult result = CrowdControl::CanApplyEffect(incomingEffect);
-                    if (result == EffectResult::Retry || result == EffectResult::Failure) {
-                        EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
-                        continue;
-                    }
-
-                    activeEffectsMutex.lock();
-                    activeEffects.push_back(incomingEffect);
-                    activeEffectsMutex.unlock();
-                }
-            }
-        }
-
-        if (connected) {
-            SDLNet_TCP_Close(tcpsock);
-            connected = false;
-            SPDLOG_TRACE("[CrowdControl] Ending Listen thread...");
+            activeEffectsMutex.lock();
+            activeEffects.push_back(incomingEffect);
+            activeEffectsMutex.unlock();
         }
     }
 }
@@ -212,7 +159,7 @@ void CrowdControl::ProcessActiveEffects() {
                     // If we have a success after previously being paused, tell CC to resume timer.
                     if (effect->isPaused) {
                         effect->isPaused = false;
-                        EmitMessage(tcpsock, effect->id, effect->timeRemaining, EffectResult::Resumed);
+                        EmitMessage(effect->id, effect->timeRemaining, EffectResult::Resumed);
                     // If not paused before, subtract time from the timer and send a Success event if
                     // the result is different from the last time this was ran.
                     // Timed events are put on a thread that runs once per second.
@@ -220,7 +167,7 @@ void CrowdControl::ProcessActiveEffects() {
                         effect->timeRemaining -= 1000;
                         if (result != effect->lastExecutionResult) {
                             effect->lastExecutionResult = result;
-                            EmitMessage(tcpsock, effect->id, effect->timeRemaining, EffectResult::Success);
+                            EmitMessage(effect->id, effect->timeRemaining, EffectResult::Success);
                         }
                     }
                     it++;
@@ -228,7 +175,7 @@ void CrowdControl::ProcessActiveEffects() {
             } else { // Timed effects only do Success or Retry
                 if (!effect->isPaused && effect->timeRemaining > 0) {
                     effect->isPaused = true;
-                    EmitMessage(tcpsock, effect->id, effect->timeRemaining, EffectResult::Paused);
+                    EmitMessage(effect->id, effect->timeRemaining, EffectResult::Paused);
                 }
                 it++;
             }
@@ -243,7 +190,7 @@ void CrowdControl::ProcessActiveEffects() {
 
 // MARK: - Helpers
 
-void CrowdControl::EmitMessage(TCPsocket socket, uint32_t eventId, long timeRemaining, EffectResult status) {
+void CrowdControl::EmitMessage(uint32_t eventId, long timeRemaining, EffectResult status) {
     nlohmann::json payload;
 
     payload["id"] = eventId;
@@ -252,7 +199,7 @@ void CrowdControl::EmitMessage(TCPsocket socket, uint32_t eventId, long timeRema
     payload["status"] = status;
 
     std::string jsonPayload = payload.dump();
-    SDLNet_TCP_Send(socket, jsonPayload.c_str(), jsonPayload.size() + 1);
+    GameInteractor::Instance->TransmitMessageToRemote(payload);
 }
 
 CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {

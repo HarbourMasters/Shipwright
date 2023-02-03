@@ -39,6 +39,10 @@ GIGravityLevel GameInteractor_GravityLevel();
 
 
 #ifdef __cplusplus
+#include <thread>
+#include <SDL2/SDL_net.h>
+#include <nlohmann/json.hpp>
+
 class GameInteractor {
 public:
     static GameInteractor* Instance;
@@ -59,6 +63,13 @@ public:
 
         static void SetPacifistMode(bool active);
     };
+
+    // Remote
+    // allow a remote forwarder to be set - to which we forward all messages
+    void EnableRemoteInteractor(const char *host, Uint16 port);
+    void DisableRemoteInteractor();
+    void RegisterRemoteForwarder(std::function<void(char[512])> method);
+    void TransmitMessageToRemote(nlohmann::json payload);
 
     // Effects
     static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase* effect);
@@ -89,6 +100,18 @@ public:
 
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
     };
+private:
+    // Remote
+    IPaddress remoteIP;
+    TCPsocket remoteSocket;
+    char remoteDataReceived[512];
+    std::thread remoteThreadReceive;
+    bool isRemoteInteractorConnected;
+    bool isRemoteInteractorEnabled;
+    std::function<void(char[512])> remoteForwarder;
+
+    void ReceiveFromServer();
+    void HandleRemoteMessage();
 };
 
 #endif /* __cplusplus */

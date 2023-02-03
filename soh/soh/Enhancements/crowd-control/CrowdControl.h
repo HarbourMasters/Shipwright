@@ -74,24 +74,17 @@ class CrowdControl {
             EffectResult lastExecutionResult;
         } Effect;
         
-        std::thread ccThreadReceive;
         std::thread ccThreadProcess;
-
-        TCPsocket tcpsock;
-        IPaddress ip;
-
         bool isEnabled;
-        bool connected;
-
-        char received[512];
 
         std::vector<Effect*> activeEffects;
         std::mutex activeEffectsMutex;
 
         void ListenToServer();
+        void HandleRemoteData(char received[512]);
         void ProcessActiveEffects();
 
-        void EmitMessage(TCPsocket socket, uint32_t eventId, long timeRemaining, EffectResult status);
+        void EmitMessage(uint32_t eventId, long timeRemaining, EffectResult status);
         Effect* ParseMessage(char payload[512]);
         EffectResult ExecuteEffect(Effect* effect);
         EffectResult CanApplyEffect(Effect *effect);

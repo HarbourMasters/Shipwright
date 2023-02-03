@@ -1313,9 +1313,9 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Will attempt to connect to the Crowd Control server. Check out crowdcontrol.live for more information.");
 
             if (CVarGetInteger("gCrowdControl", 0)) {
-                CrowdControl::Instance->Enable();
+                SDLNet_Init();
             } else {
-                CrowdControl::Instance->Disable();
+                SDLNet_Quit();
             }
 
             ImGui::Dummy(ImVec2(0.0f, 0.0f));

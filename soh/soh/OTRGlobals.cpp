@@ -592,7 +592,7 @@ extern "C" void InitOTR() {
     }
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance = new CrowdControl();
-    CrowdControl::Instance->Init();
+    SDLNet_Init();
     if (CVarGetInteger("gCrowdControl", 0)) {
         CrowdControl::Instance->Enable();
     } else {
@@ -604,7 +604,7 @@ extern "C" void InitOTR() {
 extern "C" void DeinitOTR() {
     OTRAudio_Exit();
 #ifdef ENABLE_CROWD_CONTROL
-    CrowdControl::Instance->Shutdown();
+    SDLNet_Quit();
 #endif
 }
 
