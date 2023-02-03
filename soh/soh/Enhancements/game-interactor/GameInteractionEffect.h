@@ -6,6 +6,8 @@
 #include <stdint.h>
 
 #ifdef __cplusplus
+#include <nlohmann/json.hpp>
+
 enum GameInteractionEffectQueryResult {
     Possible                = 0x00,
     TemporarilyNotPossible  = 0x01,
@@ -25,6 +27,33 @@ protected:
 };
 
 namespace GameInteractionEffect {
+    enum Values {
+        modifyHeartContainers,
+        fillMagic,
+        emptyMagic,
+        modifyRupees,
+        noUI,
+        modifyGravity,
+        modifyHealth,
+        setPlayerHealth,
+        freezePlayer,
+        burnPlayer,
+        electrocutePlayer,
+        knockbackPlayer,
+        modifyLinkSize,
+        invisibleLink,
+        pacifistMode,
+        disableZTargeting,
+        weatherRainstorm,
+        reverseControls,
+        forceEquipBoots,
+        modifyRunSpeedModifier,
+        oneHitKO,
+        modifyDefenseModifier,
+        giveDekuShield,
+        spawnCuccoStorm
+    };
+
     class ModifyHeartContainers: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;

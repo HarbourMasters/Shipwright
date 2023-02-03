@@ -350,10 +350,10 @@ namespace GameInteractionEffect {
         }
     }
     void OneHitKO::_Apply() {
-        GameInteractor::State::OneHitKOActive = 1;
+        GameInteractor::State::OneHitKOActive = true;
     }
     void OneHitKO::_Remove() {
-        GameInteractor::State::OneHitKOActive = 0;
+        GameInteractor::State::OneHitKOActive = false;
     }
 
     // MARK: - IncreaseDamageTaken
