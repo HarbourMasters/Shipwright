@@ -17,27 +17,37 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-static enum StringValue { 
-    enumNotDefined,
+typedef enum { 
     spawnCuccoStorm,
     spawnLitBomb,
     spawnExplosion,
-    enumMax
+    spawnArwing,
+    spawnDarkLink,
+    spawnIronKnuckle,
+    spawnStalfos,
+    spawnFreezard,
+    spawnLikeLike,
+    spawnKeese,
+    spawnIceKeese,
+    spawnFireKeese,
+    spawnWolfos,
+    spawnWallmaster,
+
+} CCStringValues;
+
+std::unordered_map<std::string, CCStringValues> effectStringToEnum = {
+    { "spawn_cuccostorm", spawnCuccoStorm },
+    { "spawn_litbomb", spawnLitBomb },
+    { "spawn_explosion", spawnExplosion },
+    { "spawn_arwing", spawnArwing },
+    { "spawn_darklink", spawnDarkLink },
+    { "spawn_ironknuckle", spawnIronKnuckle },
+    { "spawn_stalfos", spawnStalfos },
+    { "spawn_freezard", spawnFreezard },
+    { "spawn_likelike", spawnLikeLike },
+    { "spawn_keese", spawnKeese },
 };
 
-static std::map<std::string, StringValue> s_mapStringValues;
-
-void InitCCMap() {
-    s_mapStringValues["spawn_cuccostorm"] = spawnCuccoStorm;
-    s_mapStringValues["spawn_litbomb"] = spawnLitBomb;
-    s_mapStringValues["spawn_explosion"] = spawnExplosion;
-    s_mapStringValues["end"] = enumMax;
-}
-
-// Spawn Enemies and Objects
-#define EFFECT_SPAWN_CUCCO_STORM "spawn_cuccostorm"
-#define EFFECT_SPAWN_LIT_BOMB "spawn_litbomb"
-#define EFFECT_SPAWN_EXPLOSION "spawn_explosion"
 #define EFFECT_SPAWN_ARWING "spawn_arwing"
 #define EFFECT_SPAWN_DARK_LINK "spawn_darklink"
 #define EFFECT_SPAWN_IRON_KNUCKLE "spawn_ironknuckle"
@@ -381,10 +391,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 
     // Assign GameInteractionEffect + values to CC effect.
     // Categories are mostly used for checking for conflicting timed effects.
-
-    InitCCMap();
-
-    switch (s_mapStringValues[effectName]) { 
+    switch (effectStringToEnum[effectName]) {
         case spawnCuccoStorm:
             effect->giEffect = new GameInteractionEffect::SpawnCuccoStorm();
             break;
