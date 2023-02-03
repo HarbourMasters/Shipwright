@@ -494,31 +494,6 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         case effectHairBlack:
             break;
 
-        // Categories
-        case effectCatUi:
-            break;
-        case effectCatGravity:
-            break;
-        case effectCatLinkSize:
-            break;
-        case effectCatPacifist:
-            break;
-        case effectCatNoZ:
-            break;
-        case effectCatWeather:
-            break;
-        case effectCatReverseControls:
-            break;
-        case effectCatBoots:
-            break;
-        case effectCatSpeed:
-            break;
-        case effectCatDamageTaken:
-            break;
-        case effectCatSpawnEnemy:
-            break;
-        case effectCatNone:
-            break;
         default:
             break;
     }
