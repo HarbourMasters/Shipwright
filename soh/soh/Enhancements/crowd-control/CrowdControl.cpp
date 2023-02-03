@@ -17,6 +17,23 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
+static enum StringValue { 
+    enumNotDefined,
+    spawnCuccoStorm,
+    spawnLitBomb,
+    spawnExplosion,
+    enumMax
+};
+
+static std::map<std::string, StringValue> s_mapStringValues;
+
+void InitCCMap() {
+    s_mapStringValues["spawn_cuccostorm"] = spawnCuccoStorm;
+    s_mapStringValues["spawn_litbomb"] = spawnLitBomb;
+    s_mapStringValues["spawn_explosion"] = spawnExplosion;
+    s_mapStringValues["end"] = enumMax;
+}
+
 // Spawn Enemies and Objects
 #define EFFECT_SPAWN_CUCCO_STORM "spawn_cuccostorm"
 #define EFFECT_SPAWN_LIT_BOMB "spawn_litbomb"
@@ -364,6 +381,22 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 
     // Assign GameInteractionEffect + values to CC effect.
     // Categories are mostly used for checking for conflicting timed effects.
+
+    InitCCMap();
+
+    switch (s_mapStringValues[effectName]) { 
+        case spawnCuccoStorm:
+            effect->giEffect = new GameInteractionEffect::SpawnCuccoStorm();
+            break;
+        case spawnLitBomb:
+            effect->giEffect = new GameInteractionEffect::SpawnCuccoStorm();
+            break;
+        case spawnExplosion:
+            effect->giEffect = new GameInteractionEffect::SpawnCuccoStorm();
+            break;
+    }
+
+    // Spawn Enemies and Objects
     if (effectName == EFFECT_ADD_HEART_CONTAINER) {
         effect->giEffect = new GameInteractionEffect::ModifyHeartContainers();
         effect->giEffect->parameter = 1;
@@ -479,8 +512,8 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         effect->category = EFFECT_CAT_DAMAGE_TAKEN;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
-    } else if (effectName == EFFECT_SPAWN_CUCCO_STORM) {
-        effect->giEffect = new GameInteractionEffect::SpawnCuccoStorm();
+    /*} else if (effectName == EFFECT_SPAWN_CUCCO_STORM) {
+        effect->giEffect = new GameInteractionEffect::SpawnCuccoStorm();*/
     } else if (effectName == EFFECT_SPAWN_WALLMASTER) {
         effect->value[0] = ACTOR_EN_WALLMAS;
         effect->category = EFFECT_CAT_SPAWN_ENEMY;
