@@ -81,11 +81,11 @@ class CrowdControl {
         std::mutex activeEffectsMutex;
 
         void ListenToServer();
-        void HandleRemoteData(char received[512]);
+        void HandleRemoteData(nlohmann::json dataReceived);
         void ProcessActiveEffects();
 
         void EmitMessage(uint32_t eventId, long timeRemaining, EffectResult status);
-        Effect* ParseMessage(char payload[512]);
+        Effect* ParseMessage(nlohmann::json dataReceived);
         EffectResult ExecuteEffect(Effect* effect);
         EffectResult CanApplyEffect(Effect *effect);
         EffectResult TranslateGiEnum(GameInteractionEffectQueryResult giResult);

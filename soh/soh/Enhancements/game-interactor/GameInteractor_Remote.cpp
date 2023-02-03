@@ -16,7 +16,7 @@ void GameInteractor::EnableRemoteInteractor(const char *host, Uint16 port) {
     remoteThreadReceive = std::thread(&GameInteractor::ReceiveFromServer, this);
 }
 
-void GameInteractor::RegisterRemoteForwarder(std::function<void(char[512])> method) {
+void GameInteractor::RegisterRemoteForwarder(std::function<void(nlohmann::json)> method) {
     remoteForwarder = method;
 }
 
@@ -69,13 +69,14 @@ void GameInteractor::ReceiveFromServer() {
                 continue;
             }
 
+            char remoteDataReceived[512];
             int len = SDLNet_TCP_Recv(remoteSocket, &remoteDataReceived, sizeof(remoteDataReceived));
             if (!len || !remoteSocket || len == -1) {
                 SPDLOG_ERROR("[GameInteractor] SDLNet_TCP_Recv: {}", SDLNet_GetError());
                 break;
             }
 
-            HandleRemoteMessage();
+            HandleRemoteMessage(remoteDataReceived);
         }
 
         if (isRemoteInteractorConnected) {
@@ -86,9 +87,11 @@ void GameInteractor::ReceiveFromServer() {
     }
 }
 
-void GameInteractor::HandleRemoteMessage() {
+void GameInteractor::HandleRemoteMessage(char message[512]) {
+    nlohmann::json payload = nlohmann::json::parse(message, nullptr, false);
+
     if (remoteForwarder) {
-        remoteForwarder(remoteDataReceived);
+        remoteForwarder(payload);
         return;
     }
 

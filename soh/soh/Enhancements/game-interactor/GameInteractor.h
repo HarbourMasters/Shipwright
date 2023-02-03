@@ -68,7 +68,7 @@ public:
     // allow a remote forwarder to be set - to which we forward all messages
     void EnableRemoteInteractor(const char *host, Uint16 port);
     void DisableRemoteInteractor();
-    void RegisterRemoteForwarder(std::function<void(char[512])> method);
+    void RegisterRemoteForwarder(std::function<void(nlohmann::json)> method);
     void TransmitMessageToRemote(nlohmann::json payload);
 
     // Effects
@@ -104,14 +104,13 @@ private:
     // Remote
     IPaddress remoteIP;
     TCPsocket remoteSocket;
-    char remoteDataReceived[512];
     std::thread remoteThreadReceive;
     bool isRemoteInteractorConnected;
     bool isRemoteInteractorEnabled;
-    std::function<void(char[512])> remoteForwarder;
+    std::function<void(nlohmann::json)> remoteForwarder;
 
     void ReceiveFromServer();
-    void HandleRemoteMessage();
+    void HandleRemoteMessage(char message[512]);
 };
 
 #endif /* __cplusplus */

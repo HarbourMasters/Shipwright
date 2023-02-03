@@ -83,8 +83,8 @@ void CrowdControl::Enable() {
 
     isEnabled = true;
     GameInteractor::Instance->EnableRemoteInteractor("127.0.0.1", 43384);
-    GameInteractor::Instance->RegisterRemoteForwarder([&](char received[512]) {
-        HandleRemoteData(received);
+    GameInteractor::Instance->RegisterRemoteForwarder([&](nlohmann::json payload) {
+        HandleRemoteData(payload);
     });
 
     ccThreadProcess = std::thread(&CrowdControl::ProcessActiveEffects, this);
@@ -100,8 +100,8 @@ void CrowdControl::Disable() {
     GameInteractor::Instance->DisableRemoteInteractor();
 }
 
-void CrowdControl::HandleRemoteData(char received[512]) {
-    Effect* incomingEffect = ParseMessage(received);
+void CrowdControl::HandleRemoteData(nlohmann::json dataReceived) {
+    Effect* incomingEffect = ParseMessage(dataReceived);
     if (!incomingEffect) {
         return;
     }
@@ -202,8 +202,7 @@ void CrowdControl::EmitMessage(uint32_t eventId, long timeRemaining, EffectResul
     GameInteractor::Instance->TransmitMessageToRemote(payload);
 }
 
-CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
-    nlohmann::json dataReceived = nlohmann::json::parse(payload, nullptr, false);
+CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
     if (dataReceived.is_discarded()) {
         SPDLOG_ERROR("Error parsing JSON");
         return nullptr;
