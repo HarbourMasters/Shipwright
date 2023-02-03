@@ -197,7 +197,7 @@ void CrowdControl::EmitMessage(TCPsocket socket, uint32_t eventId, long timeRema
 
 CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
     GameInteractionEffectQueryResult giResult;
-    if (effectStringToEnum[effect->category] == effectCatSpawnEnemy) {
+    if (effect->category == effectCatSpawnEnemy) {
         giResult = GameInteractor::RawAction::SpawnEnemyWithOffset(effect->value[0], effect->value[1]);
     } else {
         giResult = GameInteractor::ApplyEffect(effect->giEffect);
@@ -208,7 +208,7 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
 
 /// Checks if effect can be applied -- should not be used to check for spawn enemy effects.
 CrowdControl::EffectResult CrowdControl::CanApplyEffect(Effect* effect) {
-    assert(effectStringToEnum[effect->category] != effectCatSpawnEnemy);
+    assert(effect->category != effectCatSpawnEnemy);
     GameInteractionEffectQueryResult giResult = GameInteractor::CanApplyEffect(effect->giEffect);
 
     return TranslateGiEnum(giResult);
@@ -258,48 +258,111 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         case effectSpawnExplosion:
             break;
         case effectSpawnArwing:
+            effect->value[0] = ACTOR_EN_CLEAR_TAG;
+            // Parameter for no cutscene Arwing
+            effect->value[1] = 1;
+            effect->category = effectCatSpawnEnemy;
             break;
         case effectSpawnDarklink:
+            effect->value[0] = ACTOR_EN_TORCH2;
+            effect->category = effectCatSpawnEnemy;
             break;
         case effectSpawnIronknuckle:
             break;
         case effectSpawnStalfos:
+            effect->value[0] = ACTOR_EN_TEST;
+            // Parameter for gravity-obeying Stalfos
+            effect->value[1] = 2;
+            effect->category = effectCatSpawnEnemy;
             break;
         case effectSpawnFreezard:
+            effect->value[0] = ACTOR_EN_FZ;
+            effect->category = effectCatSpawnEnemy;
             break;
         case effectSpawnLikelike:
+            effect->value[0] = ACTOR_EN_RR;
+            effect->category = effectCatSpawnEnemy;
             break;
         case effectSpawnKeese:
+            effect->value[0] = ACTOR_EN_FIREFLY;
+            // Parameter for normal keese
+            effect->value[1] = 2;
+            effect->category = effectCatSpawnEnemy;
             break;
         case effectSpawnIcekeese:
+            effect->value[0] = ACTOR_EN_FIREFLY;
+            // Parameter for ice keese
+            effect->value[1] = 4;
+            effect->category = effectCatSpawnEnemy;
             break;
         case effectSpawnFirekeese:
+            effect->value[0] = ACTOR_EN_FIREFLY;
+            // Parameter for fire keese
+            effect->value[1] = 1;
+            effect->category = effectCatSpawnEnemy;
             break;
         case effectSpawnWolfos:
+            effect->value[0] = ACTOR_EN_WF;
+            effect->category = effectCatSpawnEnemy;
             break;
         case effectSpawnWallmaster:
+            effect->value[0] = ACTOR_EN_WALLMAS;
+            effect->category = effectCatSpawnEnemy;
             break;
 
         // Link Modifiers
         case effectHalfDamageTaken:
+            effect->category = effectCatDamageTaken;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
             break;
         case effectDoubleDamageTaken:
+            effect->category = effectCatDamageTaken;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
             break;
         case effectOhko:
+            effect->category = effectCatOhko;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::OneHitKO();
             break;
         case effectInvincible:
             break;
         case effectIncreaseSpeed:
+            effect->category = effectCatSpeed;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
+            effect->giEffect->parameter = 2;
             break;
         case effectDecreaseSpeed:
+            effect->category = effectCatSpeed;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
+            effect->giEffect->parameter = -2;
             break;
         case effectLowGravity:
+            effect->category = effectCatGravity;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::ModifyGravity();
+            effect->giEffect->parameter = GI_GRAVITY_LEVEL_LIGHT;
             break;
         case effectHighGravity:
+            effect->category = effectCatGravity;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::ModifyGravity();
+            effect->giEffect->parameter = GI_GRAVITY_LEVEL_HEAVY;
             break;
         case effectIronBoots:
+            effect->category = effectCatBoots;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
+            effect->giEffect->parameter = PLAYER_BOOTS_IRON;
             break;
         case effectHoverBoots:
+            effect->category = effectCatBoots;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
+            effect->giEffect->parameter = PLAYER_BOOTS_HOVER;
             break;
         case effectSlipperyFloor:
             break;
@@ -310,28 +373,42 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 
         // Hurt or Heal Link
         case effectDamage:
+            effect->giEffect = new GameInteractionEffect::ModifyHealth();
+            effect->paramMultiplier = -1;
             break;
         case effectHeal:
+            effect->giEffect = new GameInteractionEffect::ModifyHealth();
             break;
         case effectKnockback:
+            effect->giEffect = new GameInteractionEffect::KnockbackPlayer();
             break;
         case effectBurn:
+            effect->giEffect = new GameInteractionEffect::BurnPlayer();
             break;
         case effectFreeze:
+            effect->giEffect = new GameInteractionEffect::FreezePlayer();
             break;
         case effectElectrocute:
+            effect->giEffect = new GameInteractionEffect::ElectrocutePlayer();
             break;
         case effectKill:
+            effect->giEffect = new GameInteractionEffect::SetPlayerHealth();
+            effect->value[0] = 0;
             break;
 
         // Give Items and Consumables
         case effectAddHeartContainer:
+            effect->giEffect = new GameInteractionEffect::ModifyHeartContainers();
+            effect->giEffect->parameter = 1;
             break;
         case effectFillMagic:
+            effect->giEffect = new GameInteractionEffect::FillMagic();
             break;
         case effectAddRupees:
+            effect->giEffect = new GameInteractionEffect::ModifyRupees();
             break;
         case effectGiveDekushield:
+            effect->giEffect = new GameInteractionEffect::GiveDekuShield();
             break;
         case effectGiveHylianshield:
             break;
@@ -350,10 +427,15 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 
         // Take Items and Consumables
         case effectRemoveHeartContainer:
+            effect->giEffect = new GameInteractionEffect::ModifyHeartContainers();
+            effect->giEffect->parameter = -1;
             break;
         case effectEmptyMagic:
+            effect->giEffect = new GameInteractionEffect::EmptyMagic();
             break;
         case effectRemoveRupees:
+            effect->giEffect = new GameInteractionEffect::ModifyRupees();
+            effect->paramMultiplier = -1;
             break;
         case effectTakeDekushield:
             break;
@@ -374,14 +456,29 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 
         // Link Size Modifiers
         case effectGiantLink:
+            effect->category = effectCatLinkSize;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
+            effect->giEffect->parameter = GI_LINK_SIZE_GIANT;
             break;
         case effectMinishLink:
+            effect->category = effectCatLinkSize;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
+            effect->giEffect->parameter = GI_LINK_SIZE_MINISH;
             break;
         case effectPaperLink:
+            effect->category = effectCatLinkSize;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
+            effect->giEffect->parameter = GI_LINK_SIZE_PAPER;
             break;
         case effectSquishedLink:
             break;
         case effectInvisibleLink:
+            effect->category = effectCatLinkSize;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::InvisibleLink();
             break;
 
         // Generic Effects
@@ -394,8 +491,14 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 
         // Visual Effects
         case effectNoUi:
+            effect->category = effectCatVisual;
+            effect->timeRemaining = 60000;
+            effect->giEffect = new GameInteractionEffect::NoUI();
             break;
         case effectRainstorm:
+            effect->category = effectCatVisual;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::WeatherRainstorm();
             break;
         case effectDebugMode:
             break;
@@ -406,10 +509,19 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 
         // Controls
         case effectNoZ:
+            effect->category = effectCatNoZ;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::DisableZTargeting();
             break;
         case effectReverseControls:
+            effect->category = effectCatReverseControls;
+            effect->timeRemaining = 60000;
+            effect->giEffect = new GameInteractionEffect::ReverseControls();
             break;
         case effectPacifist:
+            effect->category = effectCatPacifist;
+            effect->timeRemaining = 15000;
+            effect->giEffect = new GameInteractionEffect::PacifistMode();
             break;
         case effectRandomButtons:
             break;
@@ -498,166 +610,6 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             break;
     }
 
-    // Spawn Enemies and Objects
-    //if (effectName == EFFECT_ADD_HEART_CONTAINER) {
-    //    effect->giEffect = new GameInteractionEffect::ModifyHeartContainers();
-    //    effect->giEffect->parameter = 1;
-    //} else if (effectName == EFFECT_REMOVE_HEART_CONTAINER) {
-    //    effect->giEffect = new GameInteractionEffect::ModifyHeartContainers();
-    //    effect->giEffect->parameter = -1;
-    //} else if (effectName == EFFECT_FILL_MAGIC) {
-    //    effect->giEffect = new GameInteractionEffect::FillMagic();
-    //} else if (effectName == EFFECT_EMPTY_MAGIC) {
-    //    effect->giEffect = new GameInteractionEffect::EmptyMagic();
-    //} else if (effectName == EFFECT_ADD_RUPEES) {
-    //    effect->giEffect = new GameInteractionEffect::ModifyRupees();
-    //} else if (effectName == EFFECT_REMOVE_RUPEES) {
-    //    effect->giEffect = new GameInteractionEffect::ModifyRupees();
-    //    effect->paramMultiplier = -1;
-    //} else if (effectName == EFFECT_NO_UI) {
-    //    effect->category = EFFECT_CAT_UI;
-    //    effect->timeRemaining = 60000;
-    //    effect->giEffect = new GameInteractionEffect::NoUI();
-    //} else if (effectName == EFFECT_HIGH_GRAVITY) {
-    //    effect->category = EFFECT_CAT_GRAVITY;
-    //    effect->timeRemaining = 30000;
-    //    effect->giEffect = new GameInteractionEffect::ModifyGravity();
-    //    effect->giEffect->parameter = GI_GRAVITY_LEVEL_HEAVY;
-    //} else if (effectName == EFFECT_LOW_GRAVITY) {
-    //    effect->category = EFFECT_CAT_GRAVITY;
-    //    effect->timeRemaining = 30000;
-    //    effect->giEffect = new GameInteractionEffect::ModifyGravity();
-    //    effect->giEffect->parameter = GI_GRAVITY_LEVEL_LIGHT;
-    //} else if (effectName == EFFECT_KILL) {
-    //    effect->giEffect = new GameInteractionEffect::SetPlayerHealth();
-    //    effect->value[0] = 0;
-    //} else if (effectName == EFFECT_FREEZE) {
-    //    effect->giEffect = new GameInteractionEffect::FreezePlayer();
-    //} else if (effectName == EFFECT_BURN) {
-    //    effect->giEffect = new GameInteractionEffect::BurnPlayer();
-    //} else if (effectName == EFFECT_ELECTROCUTE) {
-    //    effect->giEffect = new GameInteractionEffect::ElectrocutePlayer();
-    //} else if (effectName == EFFECT_KNOCKBACK) {
-    //    effect->giEffect = new GameInteractionEffect::KnockbackPlayer();
-    //} else if (effectName == EFFECT_HEAL) {
-    //    effect->giEffect = new GameInteractionEffect::ModifyHealth();
-    //} else if (effectName == EFFECT_DAMAGE) {
-    //    effect->giEffect = new GameInteractionEffect::ModifyHealth();
-    //    effect->paramMultiplier = -1;
-    //} else if (effectName == EFFECT_GIANT_LINK) {
-    //    effect->category = EFFECT_CAT_LINK_SIZE;
-    //    effect->timeRemaining = 30000;
-    //    effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
-    //    effect->giEffect->parameter = GI_LINK_SIZE_GIANT;
-    //} else if (effectName == EFFECT_MINISH_LINK) {
-    //    effect->category = EFFECT_CAT_LINK_SIZE;
-    //    effect->timeRemaining = 30000;
-    //    effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
-    //    effect->giEffect->parameter = GI_LINK_SIZE_MINISH;
-    //} else if (effectName == EFFECT_PAPER_LINK) {
-    //    effect->category = EFFECT_CAT_LINK_SIZE;
-    //    effect->timeRemaining = 30000;
-    //    effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
-    //    effect->giEffect->parameter = GI_LINK_SIZE_PAPER;
-    //} else if (effectName == EFFECT_INVISIBLE_LINK) {
-    //    effect->category = EFFECT_CAT_LINK_SIZE;
-    //    effect->timeRemaining = 30000;
-    //    effect->giEffect = new GameInteractionEffect::InvisibleLink();
-    //} else if (effectName == EFFECT_PACIFIST) {
-    //    effect->category = EFFECT_CAT_PACIFIST;
-    //    effect->timeRemaining = 15000;
-    //    effect->giEffect = new GameInteractionEffect::PacifistMode();
-    //} else if (effectName == EFFECT_NO_Z_TARGETING) {
-    //    effect->category = EFFECT_CAT_NO_Z;
-    //    effect->timeRemaining = 30000;
-    //    effect->giEffect = new GameInteractionEffect::DisableZTargeting();
-    //} else if (effectName == EFFECT_RAINSTORM) {
-    //    effect->category = EFFECT_CAT_WEATHER;
-    //    effect->timeRemaining = 30000;
-    //    effect->giEffect = new GameInteractionEffect::WeatherRainstorm();
-    //} else if (effectName == EFFECT_REVERSE_CONTROLS) {
-    //    effect->category = EFFECT_CAT_REVERSE_CONTROLS;
-    //    effect->timeRemaining = 60000;
-    //    effect->giEffect = new GameInteractionEffect::ReverseControls();
-    //} else if (effectName == EFFECT_IRON_BOOTS) {
-    //    effect->category = EFFECT_CAT_BOOTS;
-    //    effect->timeRemaining = 30000;
-    //    effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
-    //    effect->giEffect->parameter = PLAYER_BOOTS_IRON;
-    //} else if (effectName == EFFECT_HOVER_BOOTS) {
-    //    effect->category = EFFECT_CAT_BOOTS;
-    //    effect->timeRemaining = 30000;
-    //    effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
-    //    effect->giEffect->parameter = PLAYER_BOOTS_HOVER;;
-    //} else if (effectName == EFFECT_GIVE_DEKU_SHIELD) {
-    //    effect->giEffect = new GameInteractionEffect::GiveDekuShield();
-    //} else if (effectName == EFFECT_INCREASE_SPEED) {
-    //    effect->category = EFFECT_CAT_SPEED;
-    //    effect->timeRemaining = 30000;
-    //    effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
-    //    effect->giEffect->parameter = 2;
-    //} else if (effectName == EFFECT_DECREASE_SPEED) {
-    //    effect->category = EFFECT_CAT_SPEED;
-    //    effect->timeRemaining = 30000;
-    //    effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
-    //    effect->giEffect->parameter = -2;
-    //} else if (effectName == EFFECT_OHKO) {
-    //    effect->category = EFFECT_CAT_DAMAGE_TAKEN;
-    //    effect->timeRemaining = 30000;
-    //    effect->giEffect = new GameInteractionEffect::OneHitKO();
-    //} else if (effectName == EFFECT_DOUBLE_DAMAGE_TAKEN) {
-    //    effect->category = EFFECT_CAT_DAMAGE_TAKEN;
-    //    effect->timeRemaining = 30000;
-    //    effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
-    //    effect->paramMultiplier = -1;
-    //} else if (effectName == EFFECT_HALF_DAMAGE_TAKEN) {
-    //    effect->category = EFFECT_CAT_DAMAGE_TAKEN;
-    //    effect->timeRemaining = 30000;
-    //    effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
-    //} else if (effectName == EFFECT_SPAWN_CUCCO_STORM) {
-    //    effect->giEffect = new GameInteractionEffect::SpawnCuccoStorm();
-    //} else if (effectName == EFFECT_SPAWN_WALLMASTER) {
-    //    effect->value[0] = ACTOR_EN_WALLMAS;
-    //    effect->category = EFFECT_CAT_SPAWN_ENEMY;
-    //} else if (effectName == EFFECT_SPAWN_ARWING) {
-    //    effect->value[0] = ACTOR_EN_CLEAR_TAG;
-    //    // Parameter for no cutscene Arwing
-    //    effect->value[1] = 1;
-    //    effect->category = EFFECT_CAT_SPAWN_ENEMY;
-    //} else if (effectName == EFFECT_SPAWN_DARK_LINK) {
-    //    effect->value[0] = ACTOR_EN_TORCH2;
-    //    effect->category = EFFECT_CAT_SPAWN_ENEMY;
-    //} else if (effectName == EFFECT_SPAWN_STALFOS) {
-    //    effect->value[0] = ACTOR_EN_TEST;
-    //    // Parameter for gravity-obeying Stalfos
-    //    effect->value[1] = 2;
-    //    effect->category = EFFECT_CAT_SPAWN_ENEMY;
-    //} else if (effectName == EFFECT_SPAWN_WOLFOS) {
-    //    effect->value[0] = ACTOR_EN_WF;
-    //    effect->category = EFFECT_CAT_SPAWN_ENEMY;
-    //} else if (effectName == EFFECT_SPAWN_FREEZARD) {
-    //    effect->value[0] = ACTOR_EN_FZ;
-    //    effect->category = EFFECT_CAT_SPAWN_ENEMY;
-    //} else if (effectName == EFFECT_SPAWN_KEESE) {
-    //    effect->value[0] = ACTOR_EN_FIREFLY;
-    //    // Parameter for normal keese
-    //    effect->value[1] = 2;
-    //    effect->category = EFFECT_CAT_SPAWN_ENEMY;
-    //} else if (effectName == EFFECT_SPAWN_ICE_KEESE) {
-    //    effect->value[0] = ACTOR_EN_FIREFLY;
-    //    // Parameter for ice keese
-    //    effect->value[1] = 4;
-    //    effect->category = EFFECT_CAT_SPAWN_ENEMY;
-    //} else if (effectName == EFFECT_SPAWN_FIRE_KEESE) {
-    //    effect->value[0] = ACTOR_EN_FIREFLY;
-    //    // Parameter for fire keese
-    //    effect->value[1] = 1;
-    //    effect->category = EFFECT_CAT_SPAWN_ENEMY;
-    //} else if (effectName == EFFECT_SPAWN_LIKE_LIKE) {
-    //    effect->value[0] = ACTOR_EN_RR;
-    //    effect->category = EFFECT_CAT_SPAWN_ENEMY;
-    //}
-
     // If no value is specifically set, default to using whatever CC sends us.
     // Values are used for various things depending on the effect, but they 
     // usually represent the "amount" of an effect. Amount of hearts healed,
@@ -666,6 +618,10 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         if (!effect->giEffect->parameter && effect->value[0]) {
             effect->giEffect->parameter = effect->value[0] * effect->paramMultiplier;
         }
+    }
+
+    if (!effect->category) {
+        effect->category = effectCatNone;
     }
 
     return effect;

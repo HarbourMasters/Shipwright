@@ -134,21 +134,22 @@ typedef enum {
     effectHairPink,
     effectHairBrown,
     effectHairBlack,
+} CCStringEnumValues;
 
-    // Categories
-    effectCatUi,
+typedef enum {
+    effectCatNone,
     effectCatGravity,
     effectCatLinkSize,
     effectCatPacifist,
     effectCatNoZ,
-    effectCatWeather,
+    effectCatVisual,
     effectCatReverseControls,
     effectCatBoots,
     effectCatSpeed,
     effectCatDamageTaken,
-    effectCatSpawnEnemy,
-    effectCatNone
-} CCStringEnumValues;
+    effectCatOhko,
+    effectCatSpawnEnemy
+} CCCatEnumValues;
 
 std::unordered_map<std::string, CCStringEnumValues> effectStringToEnum = {
 
@@ -286,18 +287,4 @@ std::unordered_map<std::string, CCStringEnumValues> effectStringToEnum = {
     { "hair_pink", effectHairPink },
     { "hair_brown", effectHairBrown },
     { "hair_black", effectHairBlack },
-
-    // Categories
-    { "cat_ui", effectCatUi },
-    { "cat_gravity", effectCatGravity },
-    { "cat_link_size", effectCatLinkSize },
-    { "cat_pacifist", effectCatPacifist },
-    { "cat_no_z", effectCatNoZ },
-    { "cat_weather", effectCatWeather },
-    { "cat_reverse_controls", effectCatReverseControls },
-    { "cat_boots", effectCatBoots },
-    { "cat_speed", effectCatSpeed },
-    { "cat_damage_taken", effectCatDamageTaken },
-    { "cat_spawn_enemy", effectCatSpawnEnemy },
-    { "cat_none", effectCatNone },
 };
