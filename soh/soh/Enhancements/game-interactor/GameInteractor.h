@@ -40,8 +40,10 @@ GIGravityLevel GameInteractor_GravityLevel();
 
 #ifdef __cplusplus
 #include <thread>
+#ifdef ENABLE_REMOTE_CONTROL
 #include <SDL2/SDL_net.h>
 #include <nlohmann/json.hpp>
+#endif
 
 class GameInteractor {
 public:
