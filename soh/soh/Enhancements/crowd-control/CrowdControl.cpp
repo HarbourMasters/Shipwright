@@ -82,7 +82,7 @@ void CrowdControl::Enable() {
     }
 
     isEnabled = true;
-    GameInteractor::Instance->EnableRemoteInteractor("127.0.0.1", 43384);
+    GameInteractor::Instance->EnableRemoteInteractor();
     GameInteractor::Instance->RegisterRemoteForwarder([&](nlohmann::json payload) {
         HandleRemoteData(payload);
     });

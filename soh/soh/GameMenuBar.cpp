@@ -9,6 +9,7 @@
 
 #include <spdlog/spdlog.h>
 #include <ImGui/imgui.h>
+#include <regex>
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <ImGui/imgui_internal.h>
 #include <ImGuiImpl.h>
@@ -654,7 +655,7 @@ namespace GameMenuBar {
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BLUE_FIRE_ARROWS);
                 const char* forceEnableBlueFireArrowsText =
                     "This setting is forcefully enabled because a savefile\nwith \"Blue Fire Arrows\" is loaded.";
-                UIWidgets::PaddedEnhancementCheckbox("Blue Fire Arrows", "gBlueFireArrows", true, false, 
+                UIWidgets::PaddedEnhancementCheckbox("Blue Fire Arrows", "gBlueFireArrows", true, false,
                     forceEnableBlueFireArrows, forceEnableBlueFireArrowsText, UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Allows Ice Arrows to melt red ice.\nMay require a room reload if toggled during gameplay.");
 
@@ -663,7 +664,7 @@ namespace GameMenuBar {
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SUNLIGHT_ARROWS);
                 const char* forceEnableSunLightArrowsText =
                     "This setting is forcefully enabled because a savefile\nwith \"Sunlight Arrows\" is loaded.";
-                UIWidgets::PaddedEnhancementCheckbox("Sunlight Arrows", "gSunlightArrows", true, false, 
+                UIWidgets::PaddedEnhancementCheckbox("Sunlight Arrows", "gSunlightArrows", true, false,
                     forceEnableSunLightArrows, forceEnableSunLightArrowsText, UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Allows Light Arrows to activate sun switches.\nMay require a room reload if toggled during gameplay.");
 
@@ -1103,7 +1104,7 @@ namespace GameMenuBar {
             if (ImGui::Button("Change Age")) {
                 CVarSetInteger("gSwitchAge", 1);
             }
-            UIWidgets::Tooltip("Switches links age and reloads the area.");   
+            UIWidgets::Tooltip("Switches links age and reloads the area.");
 
             ImGui::EndMenu();
         }
@@ -1191,6 +1192,90 @@ namespace GameMenuBar {
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
+
+            ImGui::EndMenu();
+        }
+
+        ImGui::SetCursorPosY(0.0f);
+
+        if (ImGui::BeginMenu("Network"))
+        {
+#ifdef ENABLE_REMOTE_CONTROL
+            bool isFormValid = GameInteractor::Instance->remoteIPStr[0] != '\0' && GameInteractor::Instance->remotePortStr[0] != '\0';
+            const char* remoteOptions[2] = { "Built-in", "Crowd Control"};
+
+            ImGui::Text("Remote Interaction Scheme");
+            if (UIWidgets::EnhancementCombobox("gRemoteGIScheme", remoteOptions, 2, 0)) {
+                if (CVarGetInteger("gRemoteGIScheme", 0) == 1) {
+                    strncpy(GameInteractor::Instance->remoteIPStr, "127.0.0.1", MAX_IP_BUFFER_SIZE);
+                    strncpy(GameInteractor::Instance->remotePortStr, "43384", MAX_PORT_BUFFER_SIZE);
+                    CVarSetString("gRemoteGIIP", "127.0.0.1");
+                    CVarSetString("gRemoteGIPort", "43384");
+                    isFormValid = true;
+                } else {
+                    strncpy(GameInteractor::Instance->remoteIPStr, "", MAX_IP_BUFFER_SIZE);
+                    strncpy(GameInteractor::Instance->remotePortStr, "", MAX_PORT_BUFFER_SIZE);
+                    CVarSetString("gRemoteGIIP", "");
+                    CVarSetString("gRemoteGIPort", "");
+                    isFormValid = false;
+                }
+            }
+
+            ImGui::Text("Remote IP & Port");
+            if (ImGui::InputText("##RemoteIP", GameInteractor::Instance->remoteIPStr, MAX_IP_BUFFER_SIZE)) {
+                if (GameInteractor::Instance->remoteIPStr[0] != '\0') {
+                    std::regex ipRegex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$");
+                    bool isValidIP = std::regex_match(GameInteractor::Instance->remoteIPStr, ipRegex);
+                    isFormValid = isValidIP && GameInteractor::Instance->remotePortStr[0] != '\0';
+                    CVarSetString("gRemoteGIIP", isValidIP ? GameInteractor::Instance->remoteIPStr : "");
+                }
+            }
+
+            ImGui::SameLine();
+            ImGui::PushItemWidth(ImGui::GetFontSize() * 5);
+            if (ImGui::InputText("##RemotePort", GameInteractor::Instance->remotePortStr, MAX_PORT_BUFFER_SIZE, ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterNumbers)) {
+                uint32_t portInput;
+                ImGui::DataTypeApplyFromText(GameInteractor::Instance->remotePortStr, ImGuiDataType_U32, &portInput, "%u");
+                strncpy(GameInteractor::Instance->remotePortStr, std::to_string(portInput).c_str(), MAX_PORT_BUFFER_SIZE);
+                isFormValid = GameInteractor::Instance->remoteIPStr[0] != '\0' && GameInteractor::Instance->remotePortStr[0] != '\0';
+                CVarSetString("gRemoteGIPort", std::to_string(portInput).c_str());
+            }
+            ImGui::PopItemWidth();
+            ImGui::Spacing();
+
+            if (!isFormValid && !GameInteractor::Instance->isRemoteInteractorEnabled) {
+                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+            }
+
+            const char* buttonLabel = GameInteractor::Instance->isRemoteInteractorEnabled ? "Disable" : "Enable";
+            if (ImGui::Button(buttonLabel, ImVec2(-1.0f, 0.0f))) {
+                if (GameInteractor::Instance->isRemoteInteractorEnabled) {
+                    CVarSetInteger("gRemoteGIEnabled", 0);
+                    SohImGui::RequestCvarSaveOnNextTick();
+                    if (CVarGetInteger("gRemoteGIScheme", 0) == 1) {
+                        CrowdControl::Instance->Disable();
+                    } else {
+                        GameInteractor::Instance->DisableRemoteInteractor();
+                    }
+                } else {
+                    CVarSetInteger("gRemoteGIEnabled", 1);
+                    SohImGui::RequestCvarSaveOnNextTick();
+                    if (CVarGetInteger("gRemoteGIScheme", 0) == 1) {
+                        CrowdControl::Instance->Enable();
+                    } else {
+                        GameInteractor::Instance->EnableRemoteInteractor();
+                    }
+                }
+            }
+
+            if (!isFormValid && !GameInteractor::Instance->isRemoteInteractorEnabled) {
+                ImGui::PopItemFlag();
+                ImGui::PopStyleVar();
+            }
+
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+#endif
 
             ImGui::EndMenu();
         }
@@ -1307,20 +1392,6 @@ namespace GameMenuBar {
             }
 
             UIWidgets::PaddedSeparator();
-
-        #ifdef ENABLE_REMOTE_CONTROL
-            UIWidgets::EnhancementCheckbox("Crowd Control", "gCrowdControl");
-            UIWidgets::Tooltip("Will attempt to connect to the Crowd Control server. Check out crowdcontrol.live for more information.");
-
-            if (CVarGetInteger("gCrowdControl", 0)) {
-                CrowdControl::Instance->Enable();
-            } else {
-                CrowdControl::Instance->Disable();
-
-            }
-
-            ImGui::Dummy(ImVec2(0.0f, 0.0f));
-        #endif
 
             UIWidgets::EnhancementCheckbox("Enemy Randomizer", "gRandomizedEnemies");
             UIWidgets::Tooltip(

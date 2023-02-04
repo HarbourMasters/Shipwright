@@ -567,6 +567,12 @@ extern "C" void InitOTR() {
     ItemTableManager::Instance = new ItemTableManager();
     GameInteractor::Instance = new GameInteractor();
 
+#ifdef ENABLE_REMOTE_CONTROL
+    CrowdControl::Instance = new CrowdControl();
+    strncpy(GameInteractor::Instance->remoteIPStr, CVarGetString("gRemoteGIIP", ""), MAX_IP_BUFFER_SIZE);
+    strncpy(GameInteractor::Instance->remotePortStr, CVarGetString("gRemoteGIPort", ""), MAX_IP_BUFFER_SIZE);
+#endif
+
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
@@ -591,12 +597,19 @@ extern "C" void InitOTR() {
         CVarClear("gLetItSnow");
     }
 #ifdef ENABLE_REMOTE_CONTROL
-    CrowdControl::Instance = new CrowdControl();
     SDLNet_Init();
-    if (CVarGetInteger("gCrowdControl", 0)) {
-        CrowdControl::Instance->Enable();
+    if (CVarGetInteger("gRemoteGIEnabled", 0)) {
+        if (CVarGetInteger("gRemoteGIScheme", 0) == 1) {
+            CrowdControl::Instance->Enable();
+        } else {
+            GameInteractor::Instance->EnableRemoteInteractor();
+        }
     } else {
-        CrowdControl::Instance->Disable();
+        if (CVarGetInteger("gRemoteGIScheme", 0) == 1) {
+            CrowdControl::Instance->Disable();
+        } else {
+            GameInteractor::Instance->DisableRemoteInteractor();
+        }
     }
 #endif
 }

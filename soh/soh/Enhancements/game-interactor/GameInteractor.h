@@ -5,6 +5,9 @@
 
 #include "GameInteractionEffect.h"
 
+#define MAX_IP_BUFFER_SIZE 256
+#define MAX_PORT_BUFFER_SIZE 6
+
 typedef enum {
     /* 0x00 */ GI_LINK_SIZE_NORMAL,
     /* 0x01 */ GI_LINK_SIZE_GIANT,
@@ -67,7 +70,11 @@ public:
     };
 
     #ifdef ENABLE_REMOTE_CONTROL
-    void EnableRemoteInteractor(const char *host, Uint16 port);
+    char remoteIPStr[MAX_IP_BUFFER_SIZE];
+    char remotePortStr[MAX_PORT_BUFFER_SIZE];
+    bool isRemoteInteractorEnabled;
+
+    void EnableRemoteInteractor();
     void DisableRemoteInteractor();
     void RegisterRemoteForwarder(std::function<void(nlohmann::json)> method);
     void TransmitMessageToRemote(nlohmann::json payload);
@@ -108,7 +115,6 @@ private:
     TCPsocket remoteSocket;
     std::thread remoteThreadReceive;
     bool isRemoteInteractorConnected;
-    bool isRemoteInteractorEnabled;
     std::function<void(nlohmann::json)> remoteForwarder;
 
     void ReceiveFromServer();

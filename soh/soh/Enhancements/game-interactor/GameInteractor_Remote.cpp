@@ -2,16 +2,21 @@
 
 #include "GameInteractor.h"
 #include <spdlog/spdlog.h>
+#include <ImGui/imgui.h>
+#include <ImGui/imgui_internal.h>
 #include <unordered_map>
 
 // MARK: - Remote
 
-void GameInteractor::EnableRemoteInteractor(const char *host, Uint16 port) {
+void GameInteractor::EnableRemoteInteractor() {
     if (isRemoteInteractorEnabled) {
         return;
     }
 
-    if (SDLNet_ResolveHost(&remoteIP, host, port) == -1) {
+    Uint16 port;
+    ImGui::DataTypeApplyFromText(GameInteractor::Instance->remotePortStr, ImGuiDataType_U16, &port, "%u");
+
+    if (SDLNet_ResolveHost(&remoteIP, remoteIPStr, port) == -1) {
         SPDLOG_ERROR("[GameInteractor] SDLNet_ResolveHost: {}", SDLNet_GetError());
     }
 
