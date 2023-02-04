@@ -356,7 +356,7 @@ namespace GameInteractionEffect {
         GameInteractor::State::OneHitKOActive = 0;
     }
 
-    // MARK: - IncreaseDamageTaken
+    // MARK: - ModifyDefenseModifier
     GameInteractionEffectQueryResult ModifyDefenseModifier::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
@@ -395,5 +395,56 @@ namespace GameInteractionEffect {
     }
     void SpawnCuccoStorm::_Apply() {
         GameInteractor::RawAction::SpawnCuccoStorm();
+    }
+
+    // MARK: - TeleportPlayer
+    GameInteractionEffectQueryResult TeleportPlayer::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void TeleportPlayer::_Apply() {
+        GameInteractor::RawAction::TeleportPlayer(parameter);
+    }
+
+    // MARK: - ClearAssignedButtons
+    GameInteractionEffectQueryResult ClearAssignedButtons::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void ClearAssignedButtons::_Apply() {
+        GameInteractor::RawAction::ClearAssignedButtons(parameter);
+    }
+
+    // MARK: - SetTimeOfDay
+    GameInteractionEffectQueryResult SetTimeOfDay::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void SetTimeOfDay::_Apply() {
+        GameInteractor::RawAction::SetTimeOfDay(parameter);
+    }
+
+    // MARK: - SetCollisionViewer
+    GameInteractionEffectQueryResult SetCollisionViewer::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void SetCollisionViewer::_Apply() {
+        GameInteractor::RawAction::SetCollisionViewer(true);
+    }
+    void SetCollisionViewer::_Remove() {
+        GameInteractor::RawAction::SetCollisionViewer(false);
     }
 }

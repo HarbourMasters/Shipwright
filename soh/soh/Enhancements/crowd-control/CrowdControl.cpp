@@ -315,11 +315,13 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->category = effectCatDamageTaken;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
+            effect->value[0] = 2;
             break;
         case effectDoubleDamageTaken:
             effect->category = effectCatDamageTaken;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
+            effect->value[0] = -2;
             break;
         case effectOhko:
             effect->category = effectCatOhko;
@@ -474,6 +476,10 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->giEffect->parameter = GI_LINK_SIZE_PAPER;
             break;
         case effectSquishedLink:
+            effect->category = effectCatLinkSize;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
+            effect->giEffect->parameter = GI_LINK_SIZE_SQUISHED;
             break;
         case effectInvisibleLink:
             effect->category = effectCatLinkSize;
@@ -483,28 +489,38 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 
         // Generic Effects
         case effectRandomBombTimer:
+
             break;
         case effectTimeDawn:
+            effect->giEffect = new GameInteractionEffect::SetTimeOfDay();
+            effect->value[0] = GI_TIMEOFDAY_DAWN;
             break;
         case effectTimeDusk:
+            effect->giEffect = new GameInteractionEffect::SetTimeOfDay();
+            effect->value[0] = GI_TIMEOFDAY_DUSK;
             break;
 
         // Visual Effects
         case effectNoUi:
-            effect->category = effectCatVisual;
+            effect->category = effectCatUi;
             effect->timeRemaining = 60000;
             effect->giEffect = new GameInteractionEffect::NoUI();
             break;
         case effectRainstorm:
-            effect->category = effectCatVisual;
+            effect->category = effectCatWeather;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::WeatherRainstorm();
             break;
         case effectDebugMode:
+            effect->category = effectCatDebugMode;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::SetCollisionViewer();
             break;
         case effectRainbowMode:
+
             break;
         case effectRandomCosmetics:
+
             break;
 
         // Controls
@@ -524,26 +540,45 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->giEffect = new GameInteractionEffect::PacifistMode();
             break;
         case effectRandomButtons:
+
             break;
         case effectClearCbuttons:
+            effect->giEffect = new GameInteractionEffect::ClearAssignedButtons();
+            effect->value[0] = GI_BUTTONS_CBUTTONS;
             break;
         case effectClearDpad:
+            effect->giEffect = new GameInteractionEffect::ClearAssignedButtons();
+            effect->value[0] = GI_BUTTONS_DPAD;
             break;
 
         // Teleport Player
         case effectTpLinkshouse:
+            effect->giEffect = new GameInteractionEffect::TeleportPlayer();
+            effect->value[0] = 187;
             break;
         case effectTpMinuet:
+            effect->giEffect = new GameInteractionEffect::TeleportPlayer();
+            effect->value[0] = 1536;
             break;
         case effectTpBolero:
+            effect->giEffect = new GameInteractionEffect::TeleportPlayer();
+            effect->value[0] = 1270;
             break;
         case effectTpSerenade:
+            effect->giEffect = new GameInteractionEffect::TeleportPlayer();
+            effect->value[0] = 1540;
             break;
         case effectTpRequiem:
+            effect->giEffect = new GameInteractionEffect::TeleportPlayer();
+            effect->value[0] = 497;
             break;
         case effectTpNocturne:
+            effect->giEffect = new GameInteractionEffect::TeleportPlayer();
+            effect->value[0] = 1384;
             break;
         case effectTpPrelude:
+            effect->giEffect = new GameInteractionEffect::TeleportPlayer();
+            effect->value[0] = 1524;
             break;
 
         // Tunic Color (Bidding War)

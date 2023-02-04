@@ -10,6 +10,7 @@ typedef enum {
     /* 0x01 */ GI_LINK_SIZE_GIANT,
     /* 0x02 */ GI_LINK_SIZE_MINISH,
     /* 0x03 */ GI_LINK_SIZE_PAPER,
+    /* 0x03 */ GI_LINK_SIZE_SQUISHED,
     /* 0x04 */ GI_LINK_SIZE_RESET
 } GILinkSize;
 
@@ -18,6 +19,18 @@ typedef enum {
     /* 0x01 */ GI_GRAVITY_LEVEL_NORMAL,
     /* 0x02 */ GI_GRAVITY_LEVEL_HEAVY,
 } GIGravityLevel;
+
+typedef enum {
+    /* 0x00 */ GI_BUTTONS_CBUTTONS,
+    /* 0x01 */ GI_BUTTONS_DPAD,
+} GIButtonSet;
+
+typedef enum {
+    /* 0x00 */ GI_TIMEOFDAY_DAWN = 32768,
+    /* 0x01 */ GI_TIMEOFDAY_NOON = 49152,
+    /* 0x02 */ GI_TIMEOFDAY_DUSK = 0,
+    /* 0x03 */ GI_TIMEOFDAY_MIDNIGHT = 16384,
+} GITimeOfDay;
 
 #ifdef __cplusplus
 extern "C" {
@@ -86,6 +99,10 @@ public:
         static void GiveDekuShield();
         static void SpawnCuccoStorm();
         static void ForceInterfaceUpdate();
+        static void TeleportPlayer(int32_t nextEntrance);
+        static void ClearAssignedButtons(uint8_t buttonSet);
+        static void SetTimeOfDay(uint32_t time);
+        static void SetCollisionViewer(bool active);
 
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
     };

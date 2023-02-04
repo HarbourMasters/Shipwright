@@ -11017,6 +11017,11 @@ void Player_Update(Actor* thisx, PlayState* play) {
             this->actor.scale.y = 0.01f;
             this->actor.scale.z = 0.01f;
             break;
+        case GI_LINK_SIZE_SQUISHED:
+            this->actor.scale.x = 0.015f;
+            this->actor.scale.y = 0.001f;
+            this->actor.scale.z = 0.015f;
+            break;
         case GI_LINK_SIZE_NORMAL:
         default:
             break;

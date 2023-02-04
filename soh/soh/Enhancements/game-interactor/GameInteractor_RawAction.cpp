@@ -142,6 +142,51 @@ void GameInteractor::RawAction::ForceInterfaceUpdate() {
     Interface_Update(gPlayState);
 }
 
+void GameInteractor::RawAction::TeleportPlayer(int32_t nextEntrance) {
+    gPlayState->nextEntranceIndex = nextEntrance;
+    gPlayState->sceneLoadFlag = 0x14;
+    gPlayState->fadeTransition = 2;
+    gSaveContext.nextTransitionType = 2;
+}
+
+void GameInteractor::RawAction::ClearAssignedButtons(uint8_t buttonSet) {
+    switch (buttonSet) {
+        case GI_BUTTONS_CBUTTONS:
+            gSaveContext.equips.buttonItems[1] = gSaveContext.equips.buttonItems[2] =
+                gSaveContext.equips.buttonItems[3] = ITEM_NONE;
+            break;
+        case GI_BUTTONS_DPAD:
+            gSaveContext.equips.buttonItems[4] = gSaveContext.equips.buttonItems[5] =
+                gSaveContext.equips.buttonItems[6] = gSaveContext.equips.buttonItems[7] = ITEM_NONE;
+            break;
+    }
+}
+
+void GameInteractor::RawAction::SetTimeOfDay(uint32_t time) {
+    if (time > 0xFFFF) {
+        gSaveContext.dayTime = 0xFFFF;
+    } else {
+        gSaveContext.dayTime = time;
+    }
+}
+
+void GameInteractor::RawAction::SetCollisionViewer(bool active) {
+    CVarSetInteger("gColViewerEnabled", active);
+    CVarSetInteger("gColViewerDecal", active);
+    
+    if (active) {
+        CVarSetInteger("gColViewerScene", 2);
+        CVarSetInteger("gColViewerBgActors", 2);
+        CVarSetInteger("gColViewerColCheck", 2);
+        CVarSetInteger("gColViewerWaterbox", 2);
+    } else {
+        CVarSetInteger("gColViewerScene", 0);
+        CVarSetInteger("gColViewerBgActors", 0);
+        CVarSetInteger("gColViewerColCheck", 0);
+        CVarSetInteger("gColViewerWaterbox", 0);
+    }
+}
+
 GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {
 
     if (!GameInteractor::CanSpawnEnemy()) {
