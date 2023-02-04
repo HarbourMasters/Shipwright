@@ -2182,7 +2182,7 @@ void func_80834298(Player* this, PlayState* play) {
 
 // Determine projectile type for bow or slingshot
 s32 func_80834380(PlayState* play, Player* this, s32* itemPtr, s32* typePtr) {
-    if (LINK_IS_ADULT) {
+    if (this->heldItemAction != PLAYER_IA_SLINGSHOT) {
         *itemPtr = ITEM_BOW;
         if (this->stateFlags1 & PLAYER_STATE1_23) {
             *typePtr = ARROW_NORMAL_HORSE;
@@ -11450,7 +11450,7 @@ s32 func_8084B3CC(PlayState* play, Player* this) {
         func_80835C58(play, this, func_8084FA54, 0);
 
         if (!func_8002DD6C(this) || Player_HoldsHookshot(this)) {
-            func_80835F44(play, this, 3);
+            func_80835F44(play, this, LINK_IS_ADULT ? ITEM_BOW : ITEM_SLINGSHOT);
         }
 
         this->stateFlags1 |= PLAYER_STATE1_20;
