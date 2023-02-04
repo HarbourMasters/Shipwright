@@ -264,7 +264,7 @@ set(Header_Files__soh__Enhancements__game_interactor
 )
 source_group("Header Files\\soh\\Enhancements\\game-interactor" FILES ${Header_Files__soh__Enhancements__game_interactor})
 
-if (BUILD_CROWD_CONTROL)
+if (BUILD_REMOTE_CONTROL)
 set(Header_Files__soh__Enhancements__crowd_control
     "soh/Enhancements/crowd-control/CrowdControl.h"
 )
@@ -612,15 +612,15 @@ source_group("Source Files\\soh\\Enhancements\\item-tables" FILES ${Source_Files
 set(Source_Files__soh__Enhancements__game_interactor
     "soh/Enhancements/game-interactor/GameInteractor.cpp"
     "soh/Enhancements/game-interactor/GameInteractor_RawAction.cpp"
-    "soh/Enhancements/game-interactor/GameInteractor_Remote.cpp"
     "soh/Enhancements/game-interactor/GameInteractor_State.cpp"
     "soh/Enhancements/game-interactor/GameInteractionEffect.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\game-interactor" FILES ${Source_Files__soh__Enhancements__game_interactor})
 
-if (BUILD_CROWD_CONTROL)
+if (BUILD_REMOTE_CONTROL)
 set(Source_Files__soh__Enhancements__crowd_control
     "soh/Enhancements/crowd-control/CrowdControl.cpp"
+    "soh/Enhancements/game-interactor/GameInteractor_Remote.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\crowd-control" FILES ${Source_Files__soh__Enhancements__crowd_control})
 endif()
@@ -1967,7 +1967,7 @@ endif()
 find_package(SDL2)
 set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
-if (BUILD_CROWD_CONTROL)
+if (BUILD_REMOTE_CONTROL)
     find_package(SDL2_net)
     set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
 endif()
@@ -2014,9 +2014,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"$<$<CONFIG:Release>:"
 				"NDEBUG"
 			">"
-            "$<$<BOOL:${BUILD_CROWD_CONTROL}>:ENABLE_CROWD_CONTROL>"
+            "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:ENABLE_REMOTE_CONTROL>"
 			"INCLUDE_GAME_PRINTF;"
-            "ENABLE_CROWD_CONTROL;"
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK
@@ -2061,7 +2060,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 		"$<$<CONFIG:Release>:"
 			"NDEBUG"
 		">"
-        "$<$<BOOL:${BUILD_CROWD_CONTROL}>:ENABLE_CROWD_CONTROL>"
+        "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:ENABLE_REMOTE_CONTROL>"
 		"SPDLOG_ACTIVE_LEVEL=0;"
 		"_CONSOLE;"
 		"_CRT_SECURE_NO_WARNINGS;"
@@ -2260,7 +2259,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
-            "$<$<BOOL:${BUILD_CROWD_CONTROL}>:SDL2_net::SDL2_net-static>"
+            "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net-static>"
 			"glfw;"
 			"winmm;"
 			"imm32;"
@@ -2312,7 +2311,7 @@ else()
         "libultraship;"
         "ZAPDUtils;"
 		SDL2::SDL2
-        "$<$<BOOL:${BUILD_CROWD_CONTROL}>:SDL2_net::SDL2_net>"
+        "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net>"
 		${CMAKE_DL_LIBS}
 		Threads::Threads
 	)

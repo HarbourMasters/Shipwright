@@ -29,7 +29,7 @@
 #include "OTRGlobals.h"
 #include "soh/Enhancements/presets.h"
 
-#ifdef ENABLE_CROWD_CONTROL
+#ifdef ENABLE_REMOTE_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
 #endif
 
@@ -1308,7 +1308,7 @@ namespace GameMenuBar {
 
             UIWidgets::PaddedSeparator();
 
-        #ifdef ENABLE_CROWD_CONTROL
+        #ifdef ENABLE_REMOTE_CONTROL
             UIWidgets::EnhancementCheckbox("Crowd Control", "gCrowdControl");
             UIWidgets::Tooltip("Will attempt to connect to the Crowd Control server. Check out crowdcontrol.live for more information.");
 

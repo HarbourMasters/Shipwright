@@ -1,3 +1,5 @@
+#ifdef ENABLE_REMOTE_CONTROL
+
 #include "GameInteractor.h"
 #include <spdlog/spdlog.h>
 #include <unordered_map>
@@ -229,3 +231,5 @@ GameInteractionEffectBase* EffectFromJson(std::string name, nlohmann::json paylo
             return nullptr;
     }
 }
+
+#endif

@@ -64,12 +64,12 @@ public:
         static void SetPacifistMode(bool active);
     };
 
-    // Remote
-    // allow a remote forwarder to be set - to which we forward all messages
+    #ifdef ENABLE_REMOTE_CONTROL
     void EnableRemoteInteractor(const char *host, Uint16 port);
     void DisableRemoteInteractor();
     void RegisterRemoteForwarder(std::function<void(nlohmann::json)> method);
     void TransmitMessageToRemote(nlohmann::json payload);
+    #endif
 
     // Effects
     static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase* effect);
@@ -101,7 +101,7 @@ public:
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
     };
 private:
-    // Remote
+#ifdef ENABLE_REMOTE_CONTROL
     IPaddress remoteIP;
     TCPsocket remoteSocket;
     std::thread remoteThreadReceive;
@@ -111,6 +111,7 @@ private:
 
     void ReceiveFromServer();
     void HandleRemoteMessage(char message[512]);
+#endif
 };
 
 #endif /* __cplusplus */

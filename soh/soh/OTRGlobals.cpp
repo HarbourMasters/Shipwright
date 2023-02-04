@@ -67,7 +67,7 @@
 #include "Enhancements/item-tables/ItemTableManager.h"
 #include "GameMenuBar.hpp"
 
-#ifdef ENABLE_CROWD_CONTROL
+#ifdef ENABLE_REMOTE_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
 CrowdControl* CrowdControl::Instance;
 #endif
@@ -590,7 +590,7 @@ extern "C" void InitOTR() {
     } else {
         CVarClear("gLetItSnow");
     }
-#ifdef ENABLE_CROWD_CONTROL
+#ifdef ENABLE_REMOTE_CONTROL
     CrowdControl::Instance = new CrowdControl();
     SDLNet_Init();
     if (CVarGetInteger("gCrowdControl", 0)) {
@@ -603,7 +603,7 @@ extern "C" void InitOTR() {
 
 extern "C" void DeinitOTR() {
     OTRAudio_Exit();
-#ifdef ENABLE_CROWD_CONTROL
+#ifdef ENABLE_REMOTE_CONTROL
     SDLNet_Quit();
 #endif
 }
