@@ -4916,11 +4916,9 @@ s32 func_8083AD4C(PlayState* play, Player* this) {
 
     if (this->unk_6AD == 2) {
         if (func_8002DD6C(this)) {
-            if (LINK_IS_ADULT) {
-                cameraMode = CAM_MODE_BOWARROW;
-            } else {
-                cameraMode = CAM_MODE_SLINGSHOT;
-            }
+            cameraMode = this->heldItemAction == PLAYER_IA_SLINGSHOT 
+                ? CAM_MODE_SLINGSHOT
+                : CAM_MODE_BOWARROW;
         } else {
             cameraMode = CAM_MODE_BOOMERANG;
         }

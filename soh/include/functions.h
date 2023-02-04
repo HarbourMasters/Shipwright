@@ -1120,6 +1120,8 @@ s32 Player_HasMirrorShieldEquipped(PlayState* play);
 s32 Player_HasMirrorShieldSetToDraw(PlayState* play);
 s32 Player_ActionToMagicSpell(Player* player, s32 actionParam);
 s32 Player_HoldsHookshot(Player* player);
+s32 Player_HoldsBow(Player* player);
+s32 Player_HoldsSlingshot(Player* player);
 s32 func_8008F128(Player* player);
 s32 Player_ActionToSword(s32 actionParam);
 s32 Player_GetSwordHeld(Player* player);
