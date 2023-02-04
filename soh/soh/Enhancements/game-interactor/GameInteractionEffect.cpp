@@ -450,7 +450,7 @@ namespace GameInteractionEffect {
 
     // MARK: - SetCosmeticsColor
     GameInteractionEffectQueryResult SetCosmeticsColor::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+        if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;

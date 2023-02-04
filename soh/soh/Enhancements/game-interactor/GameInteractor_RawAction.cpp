@@ -1,6 +1,5 @@
 #include "GameInteractor.h"
 #include <libultraship/bridge.h>
-#include "soh/UIWidgets.hpp"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 
 extern "C" {
@@ -190,73 +189,91 @@ void GameInteractor::RawAction::SetCollisionViewer(bool active) {
 }
 
 void GameInteractor::RawAction::SetCosmeticsColor(uint8_t cosmeticCategory, uint8_t colorValue) {
-    ImVec4 newColor;
+    Color_RGBA8 newColor;
+    newColor.r = 255;
+    newColor.g = 255;
+    newColor.b = 255;
+    newColor.a = 255;
     
     switch (colorValue) { 
         case GI_COLOR_RED:
-            newColor = ImVec4(200, 30, 30, 255);
+            newColor.r = 200;
+            newColor.g = 30;
+            newColor.b = 30;
             break;
         case GI_COLOR_GREEN:
-            newColor = ImVec4(50, 200, 50, 255);
+            newColor.r = 50;
+            newColor.g = 200;
+            newColor.b = 50;
             break;
         case GI_COLOR_BLUE:
-            newColor = ImVec4(50, 50, 200, 255);
+            newColor.r = 50;
+            newColor.g = 50;
+            newColor.b = 200;
             break;
         case GI_COLOR_ORANGE:
-            newColor = ImVec4(200, 120, 0, 255);
+            newColor.r = 200;
+            newColor.g = 120;
+            newColor.b = 0;
             break;
         case GI_COLOR_YELLOW:
-            newColor = ImVec4(234, 240, 33, 255);
+            newColor.r = 234;
+            newColor.g = 240;
+            newColor.b = 33;
             break;
         case GI_COLOR_PURPLE:
-            newColor = ImVec4(144, 13, 178, 255);
+            newColor.r = 144;
+            newColor.g = 13;
+            newColor.b = 178;
             break;
         case GI_COLOR_PINK:
-            newColor = ImVec4(215, 93, 246, 255);
+            newColor.r = 215;
+            newColor.g = 93;
+            newColor.b = 246;
             break;
         case GI_COLOR_BROWN:
-            newColor = ImVec4(108, 72, 15, 255);
+            newColor.r = 108;
+            newColor.g = 72;
+            newColor.b = 15;
             break;
         case GI_COLOR_BLACK:
-            newColor = ImVec4(0, 0, 0, 255);
+            newColor.r = 0;
+            newColor.g = 0;
+            newColor.b = 0;
+            break;
+        default:
             break;
     }
 
-    Color_RGBA8 RGBA8Color;
-    RGBA8Color.r = newColor.x;
-    RGBA8Color.g = newColor.y;
-    RGBA8Color.b = newColor.z;
-    RGBA8Color.a = newColor.w;
-
     switch (cosmeticCategory) { 
         case GI_COSMETICS_TUNICS:
-            CVarSetColor("gCosmetics.Link_KokiriTunic.Value", RGBA8Color);
+            CVarSetColor("gCosmetics.Link_KokiriTunic.Value", newColor);
             CVarSetInteger("gCosmetics.Link_KokiriTunic.Changed", 1);
-            CVarSetColor("gCosmetics.Link_GoronTunic.Value", RGBA8Color);
+            CVarSetColor("gCosmetics.Link_GoronTunic.Value", newColor);
             CVarSetInteger("gCosmetics.Link_GoronTunic.Changed", 1);
-            CVarSetColor("gCosmetics.Link_ZoraTunic.Value", RGBA8Color);
+            CVarSetColor("gCosmetics.Link_ZoraTunic.Value", newColor);
             CVarSetInteger("gCosmetics.Link_ZoraTunic.Changed", 1);
             break;
         case GI_COSMETICS_NAVI:
-            CVarSetColor("gCosmetics.Navi_EnemyPrimary.Value", RGBA8Color);
+            CVarSetColor("gCosmetics.Navi_EnemyPrimary.Value", newColor);
             CVarSetInteger("gCosmetics.Navi_EnemyPrimary.Changed", 1);
-            CVarSetColor("gCosmetics.Navi_EnemySecondary.Value", RGBA8Color);
+            CVarSetColor("gCosmetics.Navi_EnemySecondary.Value", newColor);
             CVarSetInteger("gCosmetics.Navi_EnemySecondary.Changed", 1);
-            CVarSetColor("gCosmetics.Navi_IdlePrimary.Value", RGBA8Color);
+            CVarSetColor("gCosmetics.Navi_IdlePrimary.Value", newColor);
             CVarSetInteger("gCosmetics.Navi_IdlePrimary.Changed", 1);
-            CVarSetColor("gCosmetics.Navi_IdleSecondary.Value", RGBA8Color);
+            CVarSetColor("gCosmetics.Navi_IdleSecondary.Value", newColor);
             CVarSetInteger("gCosmetics.Navi_IdleSecondary.Changed", 1);
-            CVarSetColor("gCosmetics.Navi_NPCPrimary.Value", RGBA8Color);
+            CVarSetColor("gCosmetics.Navi_NPCPrimary.Value", newColor);
             CVarSetInteger("gCosmetics.Navi_NPCPrimary.Changed", 1);
-            CVarSetColor("gCosmetics.Navi_NPCSecondary.Value", RGBA8Color);
+            CVarSetColor("gCosmetics.Navi_NPCSecondary.Value", newColor);
             CVarSetInteger("gCosmetics.Navi_NPCSecondary.Changed", 1);
-            CVarSetColor("gCosmetics.Navi_PropsPrimary.Value", RGBA8Color);
+            CVarSetColor("gCosmetics.Navi_PropsPrimary.Value", newColor);
             CVarSetInteger("gCosmetics.Navi_PropsPrimary.Changed", 1);
-            CVarSetColor("gCosmetics.Navi_PropsSecondary.Value", RGBA8Color);
+            CVarSetColor("gCosmetics.Navi_PropsSecondary.Value", newColor);
             CVarSetInteger("gCosmetics.Navi_PropsSecondary.Changed", 1);
             break;
         case GI_COSMETICS_HAIR:
-            CVarSetColor("gCosmetics.Link_Hair.Value", RGBA8Color);
+            CVarSetColor("gCosmetics.Link_Hair.Value", newColor);
             CVarSetInteger("gCosmetics.Link_Hair.Changed", 1);
             break;
     }
