@@ -18,8 +18,9 @@ public:
     virtual GameInteractionEffectQueryResult CanBeRemoved();
     GameInteractionEffectQueryResult Apply();
     GameInteractionEffectQueryResult Remove();
-    int32_t parameter;
-protected:
+    int32_t parameters[2];
+
+  protected:
     virtual void _Apply() = 0;
     virtual void _Remove() {};
 };
@@ -176,6 +177,11 @@ namespace GameInteractionEffect {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
         void _Remove() override;
+    };
+
+    class SetCosmeticsColor: public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
     };
 }
 

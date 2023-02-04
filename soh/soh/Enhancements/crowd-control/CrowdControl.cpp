@@ -315,13 +315,13 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->category = effectCatDamageTaken;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
-            effect->value[0] = 2;
+            effect->giEffect->parameters[0] = 2;
             break;
         case effectDoubleDamageTaken:
             effect->category = effectCatDamageTaken;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
-            effect->value[0] = -2;
+            effect->giEffect->parameters[0] = -2;
             break;
         case effectOhko:
             effect->category = effectCatOhko;
@@ -334,37 +334,37 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->category = effectCatSpeed;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
-            effect->giEffect->parameter = 2;
+            effect->giEffect->parameters[0] = 2;
             break;
         case effectDecreaseSpeed:
             effect->category = effectCatSpeed;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
-            effect->giEffect->parameter = -2;
+            effect->giEffect->parameters[0] = -2;
             break;
         case effectLowGravity:
             effect->category = effectCatGravity;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyGravity();
-            effect->giEffect->parameter = GI_GRAVITY_LEVEL_LIGHT;
+            effect->giEffect->parameters[0] = GI_GRAVITY_LEVEL_LIGHT;
             break;
         case effectHighGravity:
             effect->category = effectCatGravity;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyGravity();
-            effect->giEffect->parameter = GI_GRAVITY_LEVEL_HEAVY;
+            effect->giEffect->parameters[0] = GI_GRAVITY_LEVEL_HEAVY;
             break;
         case effectIronBoots:
             effect->category = effectCatBoots;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
-            effect->giEffect->parameter = PLAYER_BOOTS_IRON;
+            effect->giEffect->parameters[0] = PLAYER_BOOTS_IRON;
             break;
         case effectHoverBoots:
             effect->category = effectCatBoots;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
-            effect->giEffect->parameter = PLAYER_BOOTS_HOVER;
+            effect->giEffect->parameters[0] = PLAYER_BOOTS_HOVER;
             break;
         case effectSlipperyFloor:
             break;
@@ -401,7 +401,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         // Give Items and Consumables
         case effectAddHeartContainer:
             effect->giEffect = new GameInteractionEffect::ModifyHeartContainers();
-            effect->giEffect->parameter = 1;
+            effect->giEffect->parameters[0] = 1;
             break;
         case effectFillMagic:
             effect->giEffect = new GameInteractionEffect::FillMagic();
@@ -430,7 +430,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         // Take Items and Consumables
         case effectRemoveHeartContainer:
             effect->giEffect = new GameInteractionEffect::ModifyHeartContainers();
-            effect->giEffect->parameter = -1;
+            effect->giEffect->parameters[0] = -1;
             break;
         case effectEmptyMagic:
             effect->giEffect = new GameInteractionEffect::EmptyMagic();
@@ -461,25 +461,25 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->category = effectCatLinkSize;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
-            effect->giEffect->parameter = GI_LINK_SIZE_GIANT;
+            effect->giEffect->parameters[0] = GI_LINK_SIZE_GIANT;
             break;
         case effectMinishLink:
             effect->category = effectCatLinkSize;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
-            effect->giEffect->parameter = GI_LINK_SIZE_MINISH;
+            effect->giEffect->parameters[0] = GI_LINK_SIZE_MINISH;
             break;
         case effectPaperLink:
             effect->category = effectCatLinkSize;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
-            effect->giEffect->parameter = GI_LINK_SIZE_PAPER;
+            effect->giEffect->parameters[0] = GI_LINK_SIZE_PAPER;
             break;
         case effectSquishedLink:
             effect->category = effectCatLinkSize;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
-            effect->giEffect->parameter = GI_LINK_SIZE_SQUISHED;
+            effect->giEffect->parameters[0] = GI_LINK_SIZE_SQUISHED;
             break;
         case effectInvisibleLink:
             effect->category = effectCatLinkSize;
@@ -583,62 +583,143 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 
         // Tunic Color (Bidding War)
         case effectTunicRed:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
+            effect->giEffect->parameters[1] = GI_COLOR_RED;
             break;
         case effectTunicGreen:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
+            effect->giEffect->parameters[1] = GI_COLOR_GREEN;
             break;
         case effectTunicBlue:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
+            effect->giEffect->parameters[1] = GI_COLOR_BLUE;
             break;
         case effectTunicOrange:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
+            effect->giEffect->parameters[1] = GI_COLOR_ORANGE;
             break;
         case effectTunicYellow:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
+            effect->giEffect->parameters[1] = GI_COLOR_YELLOW;
             break;
         case effectTunicPurple:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
+            effect->giEffect->parameters[1] = GI_COLOR_PURPLE;
             break;
         case effectTunicPink:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
+            effect->giEffect->parameters[1] = GI_COLOR_PINK;
             break;
         case effectTunicBrown:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
+            effect->giEffect->parameters[1] = GI_COLOR_BROWN;
             break;
         case effectTunicBlack:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
+            effect->giEffect->parameters[1] = GI_COLOR_BLACK;
             break;
 
         // Navi Color (Bidding War)
         case effectNaviRed:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
+            effect->giEffect->parameters[1] = GI_COLOR_RED;
             break;
         case effectNaviGreen:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
+            effect->giEffect->parameters[1] = GI_COLOR_GREEN;
             break;
         case effectNaviBlue:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
+            effect->giEffect->parameters[1] = GI_COLOR_BLUE;
             break;
         case effectNaviOrange:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
+            effect->giEffect->parameters[1] = GI_COLOR_ORANGE;
             break;
         case effectNaviYellow:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
+            effect->giEffect->parameters[1] = GI_COLOR_YELLOW;
             break;
         case effectNaviPurple:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
+            effect->giEffect->parameters[1] = GI_COLOR_PURPLE;
             break;
         case effectNaviPink:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
+            effect->giEffect->parameters[1] = GI_COLOR_PINK;
             break;
         case effectNaviBrown:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
+            effect->giEffect->parameters[1] = GI_COLOR_BROWN;
             break;
         case effectNaviBlack:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
+            effect->giEffect->parameters[1] = GI_COLOR_BLACK;
             break;
 
         // Link's Hair Color (Bidding War)
         case effectHairRed:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
+            effect->giEffect->parameters[1] = GI_COLOR_RED;
             break;
         case effectHairGreen:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
+            effect->giEffect->parameters[1] = GI_COLOR_GREEN;
             break;
         case effectHairBlue:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
+            effect->giEffect->parameters[1] = GI_COLOR_BLUE;
             break;
         case effectHairOrange:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
+            effect->giEffect->parameters[1] = GI_COLOR_ORANGE;
             break;
         case effectHairYellow:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
+            effect->giEffect->parameters[1] = GI_COLOR_YELLOW;
             break;
         case effectHairPurple:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
+            effect->giEffect->parameters[1] = GI_COLOR_PURPLE;
             break;
         case effectHairPink:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
+            effect->giEffect->parameters[1] = GI_COLOR_PINK;
             break;
         case effectHairBrown:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
+            effect->giEffect->parameters[1] = GI_COLOR_BROWN;
             break;
         case effectHairBlack:
+            effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
+            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
+            effect->giEffect->parameters[1] = GI_COLOR_BLACK;
             break;
 
         default:
@@ -650,8 +731,8 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     // usually represent the "amount" of an effect. Amount of hearts healed,
     // strength of knockback, etc.
     if (effect->giEffect != NULL) {
-        if (!effect->giEffect->parameter && effect->value[0]) {
-            effect->giEffect->parameter = effect->value[0] * effect->paramMultiplier;
+        if (!effect->giEffect->parameters[0] && effect->value[0]) {
+            effect->giEffect->parameters[0] = effect->value[0] * effect->paramMultiplier;
         }
     }
 

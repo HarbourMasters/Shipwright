@@ -32,6 +32,24 @@ typedef enum {
     /* 0x03 */ GI_TIMEOFDAY_MIDNIGHT = 16384,
 } GITimeOfDay;
 
+typedef enum {
+    /* 0x00 */ GI_COSMETICS_TUNICS,
+    /* 0x01 */ GI_COSMETICS_NAVI,
+    /* 0x02 */ GI_COSMETICS_HAIR,
+} GICosmeticCategories;
+
+typedef enum {
+    /* 0x00 */ GI_COLOR_RED,
+    /* 0x00 */ GI_COLOR_GREEN,
+    /* 0x00 */ GI_COLOR_BLUE,
+    /* 0x00 */ GI_COLOR_ORANGE,
+    /* 0x00 */ GI_COLOR_YELLOW,
+    /* 0x00 */ GI_COLOR_PURPLE,
+    /* 0x00 */ GI_COLOR_PINK,
+    /* 0x00 */ GI_COLOR_BROWN,
+    /* 0x00 */ GI_COLOR_BLACK,
+} GIColors;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -103,6 +121,7 @@ public:
         static void ClearAssignedButtons(uint8_t buttonSet);
         static void SetTimeOfDay(uint32_t time);
         static void SetCollisionViewer(bool active);
+        static void SetCosmeticsColor(uint8_t cosmeticCategory, uint8_t colorValue);
 
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
     };

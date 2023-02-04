@@ -1,5 +1,7 @@
 #include "GameInteractor.h"
 #include <libultraship/bridge.h>
+#include "soh/UIWidgets.hpp"
+#include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 
 extern "C" {
 #include "variables.h"
@@ -185,6 +187,82 @@ void GameInteractor::RawAction::SetCollisionViewer(bool active) {
         CVarSetInteger("gColViewerColCheck", 0);
         CVarSetInteger("gColViewerWaterbox", 0);
     }
+}
+
+void GameInteractor::RawAction::SetCosmeticsColor(uint8_t cosmeticCategory, uint8_t colorValue) {
+    ImVec4 newColor;
+    
+    switch (colorValue) { 
+        case GI_COLOR_RED:
+            newColor = ImVec4(200, 30, 30, 255);
+            break;
+        case GI_COLOR_GREEN:
+            newColor = ImVec4(50, 200, 50, 255);
+            break;
+        case GI_COLOR_BLUE:
+            newColor = ImVec4(50, 50, 200, 255);
+            break;
+        case GI_COLOR_ORANGE:
+            newColor = ImVec4(200, 120, 0, 255);
+            break;
+        case GI_COLOR_YELLOW:
+            newColor = ImVec4(234, 240, 33, 255);
+            break;
+        case GI_COLOR_PURPLE:
+            newColor = ImVec4(144, 13, 178, 255);
+            break;
+        case GI_COLOR_PINK:
+            newColor = ImVec4(215, 93, 246, 255);
+            break;
+        case GI_COLOR_BROWN:
+            newColor = ImVec4(108, 72, 15, 255);
+            break;
+        case GI_COLOR_BLACK:
+            newColor = ImVec4(0, 0, 0, 255);
+            break;
+    }
+
+    Color_RGBA8 RGBA8Color;
+    RGBA8Color.r = newColor.x;
+    RGBA8Color.g = newColor.y;
+    RGBA8Color.b = newColor.z;
+    RGBA8Color.a = newColor.w;
+
+    switch (cosmeticCategory) { 
+        case GI_COSMETICS_TUNICS:
+            CVarSetColor("gCosmetics.Link_KokiriTunic.Value", RGBA8Color);
+            CVarSetInteger("gCosmetics.Link_KokiriTunic.Changed", 1);
+            CVarSetColor("gCosmetics.Link_GoronTunic.Value", RGBA8Color);
+            CVarSetInteger("gCosmetics.Link_GoronTunic.Changed", 1);
+            CVarSetColor("gCosmetics.Link_ZoraTunic.Value", RGBA8Color);
+            CVarSetInteger("gCosmetics.Link_ZoraTunic.Changed", 1);
+            break;
+        case GI_COSMETICS_NAVI:
+            CVarSetColor("gCosmetics.Navi_EnemyPrimary.Value", RGBA8Color);
+            CVarSetInteger("gCosmetics.Navi_EnemyPrimary.Changed", 1);
+            CVarSetColor("gCosmetics.Navi_EnemySecondary.Value", RGBA8Color);
+            CVarSetInteger("gCosmetics.Navi_EnemySecondary.Changed", 1);
+            CVarSetColor("gCosmetics.Navi_IdlePrimary.Value", RGBA8Color);
+            CVarSetInteger("gCosmetics.Navi_IdlePrimary.Changed", 1);
+            CVarSetColor("gCosmetics.Navi_IdleSecondary.Value", RGBA8Color);
+            CVarSetInteger("gCosmetics.Navi_IdleSecondary.Changed", 1);
+            CVarSetColor("gCosmetics.Navi_NPCPrimary.Value", RGBA8Color);
+            CVarSetInteger("gCosmetics.Navi_NPCPrimary.Changed", 1);
+            CVarSetColor("gCosmetics.Navi_NPCSecondary.Value", RGBA8Color);
+            CVarSetInteger("gCosmetics.Navi_NPCSecondary.Changed", 1);
+            CVarSetColor("gCosmetics.Navi_PropsPrimary.Value", RGBA8Color);
+            CVarSetInteger("gCosmetics.Navi_PropsPrimary.Changed", 1);
+            CVarSetColor("gCosmetics.Navi_PropsSecondary.Value", RGBA8Color);
+            CVarSetInteger("gCosmetics.Navi_PropsSecondary.Changed", 1);
+            break;
+        case GI_COSMETICS_HAIR:
+            CVarSetColor("gCosmetics.Link_Hair.Value", RGBA8Color);
+            CVarSetInteger("gCosmetics.Link_Hair.Changed", 1);
+            break;
+    }
+
+    SohImGui::RequestCvarSaveOnNextTick();
+    ApplyOrResetCustomGfxPatches();
 }
 
 GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {

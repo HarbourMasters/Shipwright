@@ -52,8 +52,8 @@ namespace GameInteractionEffect {
         if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else if (
-                (parameter > 0 && (gSaveContext.healthCapacity + (parameter * 0x10) > 0x140)) ||
-                (parameter < 0 && (gSaveContext.healthCapacity + (parameter * 0x10) < 0x10))
+                (parameters[0] > 0 && (gSaveContext.healthCapacity + (parameters[0] * 0x10) > 0x140)) ||
+                (parameters[0] < 0 && (gSaveContext.healthCapacity + (parameters[0] * 0x10) < 0x10))
             ) {
             return GameInteractionEffectQueryResult::NotPossible;
         }
@@ -62,7 +62,7 @@ namespace GameInteractionEffect {
     }
 
     void ModifyHeartContainers::_Apply() {
-        GameInteractor::RawAction::AddOrRemoveHealthContainers(parameter);
+        GameInteractor::RawAction::AddOrRemoveHealthContainers(parameters[0]);
     }
 
     // MARK: - FillMagic
@@ -98,8 +98,8 @@ namespace GameInteractionEffect {
         if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else if (
-            (parameter < 0 && gSaveContext.rupees <= 0) ||
-            (parameter > 0 && gSaveContext.rupees >= CUR_CAPACITY(UPG_WALLET))
+            (parameters[0] < 0 && gSaveContext.rupees <= 0) ||
+            (parameters[0] > 0 && gSaveContext.rupees >= CUR_CAPACITY(UPG_WALLET))
         ) {
             return GameInteractionEffectQueryResult::NotPossible;
         } else {
@@ -107,7 +107,7 @@ namespace GameInteractionEffect {
         }
     }
     void ModifyRupees::_Apply() {
-        Rupees_ChangeBy(parameter);
+        Rupees_ChangeBy(parameters[0]);
     }
 
     // MARK: - NoUI
@@ -134,7 +134,7 @@ namespace GameInteractionEffect {
         }
     }
     void ModifyGravity::_Apply() {
-        GameInteractor::State::GravityLevel = (GIGravityLevel)parameter;
+        GameInteractor::State::GravityLevel = (GIGravityLevel)parameters[0];
     }
     void ModifyGravity::_Remove() {
         GameInteractor::State::GravityLevel = GI_GRAVITY_LEVEL_NORMAL;
@@ -145,8 +145,8 @@ namespace GameInteractionEffect {
         if (!GameInteractor::IsSaveLoaded()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else if (
-            (parameter > 0 && gSaveContext.health == gSaveContext.healthCapacity)
-            || (parameter < 0 && (gSaveContext.health + (16 * parameter) <= 0))
+            (parameters[0] > 0 && gSaveContext.health == gSaveContext.healthCapacity)
+            || (parameters[0] < 0 && (gSaveContext.health + (16 * parameters[0]) <= 0))
         ) {
             return GameInteractionEffectQueryResult::NotPossible;
         }
@@ -154,7 +154,7 @@ namespace GameInteractionEffect {
         return GameInteractionEffectQueryResult::Possible;
     }
     void ModifyHealth::_Apply() {
-        GameInteractor::RawAction::HealOrDamagePlayer(parameter);
+        GameInteractor::RawAction::HealOrDamagePlayer(parameters[0]);
     }
 
     // MARK: - SetPlayerHealth
@@ -167,7 +167,7 @@ namespace GameInteractionEffect {
         }
     }
     void SetPlayerHealth::_Apply() {
-        GameInteractor::RawAction::SetPlayerHealth(parameter);
+        GameInteractor::RawAction::SetPlayerHealth(parameters[0]);
     }
 
     // MARK: - FreezePlayer
@@ -218,7 +218,7 @@ namespace GameInteractionEffect {
         }
     }
     void KnockbackPlayer::_Apply() {
-        GameInteractor::RawAction::KnockbackPlayer(parameter);
+        GameInteractor::RawAction::KnockbackPlayer(parameters[0]);
     }
 
     // MARK: - ModifyLinkSize
@@ -230,7 +230,7 @@ namespace GameInteractionEffect {
         }
     }
     void ModifyLinkSize::_Apply() {
-        GameInteractor::State::LinkSize = (GILinkSize)parameter;
+        GameInteractor::State::LinkSize = (GILinkSize)parameters[0];
     }
     void ModifyLinkSize::_Remove() {
         GameInteractor::State::LinkSize = GI_LINK_SIZE_RESET;
@@ -320,7 +320,7 @@ namespace GameInteractionEffect {
         }
     }
     void ForceEquipBoots::_Apply() {
-        GameInteractor::RawAction::ForceEquipBoots(parameter);
+        GameInteractor::RawAction::ForceEquipBoots(parameters[0]);
     }
     void ForceEquipBoots::_Remove() {
         GameInteractor::RawAction::ForceEquipBoots(PLAYER_BOOTS_KOKIRI);
@@ -335,7 +335,7 @@ namespace GameInteractionEffect {
         }
     }
     void ModifyRunSpeedModifier::_Apply() {
-        GameInteractor::State::RunSpeedModifier = parameter;
+        GameInteractor::State::RunSpeedModifier = parameters[0];
     }
     void ModifyRunSpeedModifier::_Remove() {
         GameInteractor::State::RunSpeedModifier = 0;
@@ -365,7 +365,7 @@ namespace GameInteractionEffect {
         }
     }
     void ModifyDefenseModifier::_Apply() {
-        GameInteractor::State::DefenseModifier = parameter;
+        GameInteractor::State::DefenseModifier = parameters[0];
     }
     void ModifyDefenseModifier::_Remove() {
         GameInteractor::State::DefenseModifier = 0;
@@ -406,7 +406,7 @@ namespace GameInteractionEffect {
         }
     }
     void TeleportPlayer::_Apply() {
-        GameInteractor::RawAction::TeleportPlayer(parameter);
+        GameInteractor::RawAction::TeleportPlayer(parameters[0]);
     }
 
     // MARK: - ClearAssignedButtons
@@ -418,7 +418,7 @@ namespace GameInteractionEffect {
         }
     }
     void ClearAssignedButtons::_Apply() {
-        GameInteractor::RawAction::ClearAssignedButtons(parameter);
+        GameInteractor::RawAction::ClearAssignedButtons(parameters[0]);
     }
 
     // MARK: - SetTimeOfDay
@@ -430,7 +430,7 @@ namespace GameInteractionEffect {
         }
     }
     void SetTimeOfDay::_Apply() {
-        GameInteractor::RawAction::SetTimeOfDay(parameter);
+        GameInteractor::RawAction::SetTimeOfDay(parameters[0]);
     }
 
     // MARK: - SetCollisionViewer
@@ -446,5 +446,17 @@ namespace GameInteractionEffect {
     }
     void SetCollisionViewer::_Remove() {
         GameInteractor::RawAction::SetCollisionViewer(false);
+    }
+
+    // MARK: - SetCosmeticsColor
+    GameInteractionEffectQueryResult SetCosmeticsColor::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void SetCosmeticsColor::_Apply() {
+        GameInteractor::RawAction::SetCosmeticsColor(parameters[0], parameters[1]);
     }
 }
