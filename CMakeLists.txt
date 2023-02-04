@@ -14,12 +14,6 @@ set(PROJECT_TEAM "github.com/harbourmasters" CACHE STRING "")
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 
-if (CMAKE_SYSTEM_NAME MATCHES "Windows|Linux")
-    if(NOT DEFINED BUILD_REMOTE_CONTROL)
-        set(BUILD_REMOTE_CONTROL ON)
-    endif()
-endif()
-
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 include(CMake/automate-vcpkg.cmake)
 
