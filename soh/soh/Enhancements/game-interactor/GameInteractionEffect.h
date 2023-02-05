@@ -179,6 +179,11 @@ namespace GameInteractionEffect {
         void _Apply() override;
     };
 
+    class RandomizeCosmetics: public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+    };
+
     class PressButton: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;

@@ -1799,7 +1799,8 @@ void InitCosmeticsEditor() {
 
 void CosmeticsEditor_RandomizeAll() {
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
-        if (!CVarGetInteger(cosmeticOption.lockedCvar, 0)) {
+        if (!CVarGetInteger(cosmeticOption.lockedCvar, 0) &&
+            (!cosmeticOption.advancedOption || CVarGetInteger("gCosmetics.AdvancedMode", 0))) {
             RandomizeColor(cosmeticOption);
         }
     }

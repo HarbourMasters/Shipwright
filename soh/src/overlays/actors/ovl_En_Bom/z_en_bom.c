@@ -253,7 +253,8 @@ void EnBom_Update(Actor* thisx, PlayState* play2) {
         this->timer--;
     }
 
-    if (this->timer == 67) {
+    // With random bomb fuse timer, sound effect and scaling is already done on init.
+    if (this->timer == 67 && !GameInteractor_GetRandomBombFuseTimerActive()) {
         Audio_PlayActorSound2(thisx, NA_SE_PL_TAKE_OUT_SHIELD);
         Actor_SetScale(thisx, 0.01f);
     }

@@ -448,6 +448,18 @@ namespace GameInteractionEffect {
         GameInteractor::RawAction::SetCosmeticsColor(parameters[0], parameters[1]);
     }
 
+    // MARK: - RandomizeCosmetics
+    GameInteractionEffectQueryResult RandomizeCosmetics::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void RandomizeCosmetics::_Apply() {
+        GameInteractor::RawAction::RandomizeCosmeticsColors(true);
+    }
+
     // MARK: - PressButton
     GameInteractionEffectQueryResult PressButton::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded()) {

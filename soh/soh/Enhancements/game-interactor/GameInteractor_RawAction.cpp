@@ -318,6 +318,37 @@ void GameInteractor::RawAction::SetCosmeticsColor(uint8_t cosmeticCategory, uint
     ApplyOrResetCustomGfxPatches();
 }
 
+void GameInteractor::RawAction::RandomizeCosmeticsColors(bool excludeBiddingWarColors) {
+    const char* cvarsToLock[12] = { 
+        "gCosmetics.Link_KokiriTunic.Locked",
+        "gCosmetics.Link_GoronTunic.Locked",
+        "gCosmetics.Link_ZoraTunic.Locked",
+        "gCosmetics.Navi_EnemyPrimary.Locked",
+        "gCosmetics.Navi_EnemySecondary.Locked",
+        "gCosmetics.Navi_IdlePrimary.Locked",
+        "gCosmetics.Navi_IdleSecondary.Locked",
+        "gCosmetics.Navi_NPCPrimary.Locked",
+        "gCosmetics.Navi_NPCSecondary.Locked",
+        "gCosmetics.Navi_PropsPrimary.Locked",
+        "gCosmetics.Navi_PropsSecondary.Locked",
+        "gCosmetics.Link_Hair.Locked"
+    };
+
+    if (excludeBiddingWarColors) {
+        for (uint8_t i = 0; i < 12; i++) {
+            CVarSetInteger(cvarsToLock[i], 1);
+        }
+    }
+
+    CosmeticsEditor_RandomizeAll();
+
+    if (excludeBiddingWarColors) {
+        for (uint8_t i = 0; i < 12; i++) {
+            CVarSetInteger(cvarsToLock[i], 0);
+        }
+    }
+}
+
 void GameInteractor::RawAction::EmulateButtonPress(int32_t button) {
     GameInteractor::State::EmulatedButtons |= button;
 }

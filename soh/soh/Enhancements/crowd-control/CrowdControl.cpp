@@ -577,7 +577,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 
             break;
         case effectRandomCosmetics:
-
+            effect->giEffect = new GameInteractionEffect::RandomizeCosmetics();
             break;
 
         // Controls

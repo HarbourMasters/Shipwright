@@ -137,6 +137,7 @@ public:
         static void SetTimeOfDay(uint32_t time);
         static void SetCollisionViewer(bool active);
         static void SetCosmeticsColor(uint8_t cosmeticCategory, uint8_t colorValue);
+        static void RandomizeCosmeticsColors(bool excludeBiddingWarColors);
         static void EmulateButtonPress(int32_t button);
         static void AddOrTakeAmmo(int16_t amount, int16_t item);
         static void EmulateRandomButtonPress(uint32_t chancePercentage = 100);
