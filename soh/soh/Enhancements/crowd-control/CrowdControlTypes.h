@@ -10,6 +10,7 @@ typedef enum {
     effectSpawnStalfos,
     effectSpawnFreezard,
     effectSpawnLikelike,
+    effectSpawnGibdo,
     effectSpawnKeese,
     effectSpawnIcekeese,
     effectSpawnFirekeese,
@@ -140,6 +141,7 @@ typedef enum {
     effectCatNone,
     effectCatGravity,
     effectCatLinkSize,
+    effectCatRandomBombFuseTimer,
     effectCatPacifist,
     effectCatNoZ,
     effectCatRandomButtons,
@@ -151,7 +153,8 @@ typedef enum {
     effectCatSpeed,
     effectCatDamageTaken,
     effectCatOhko,
-    effectCatSpawnEnemy
+    effectCatSpawnEnemy,
+    effectCatSpawnActor
 } CCCatEnumValues;
 
 std::unordered_map<std::string, CCStringEnumValues> effectStringToEnum = {
@@ -166,6 +169,7 @@ std::unordered_map<std::string, CCStringEnumValues> effectStringToEnum = {
     { "spawn_stalfos", effectSpawnStalfos },
     { "spawn_freezard", effectSpawnFreezard },
     { "spawn_likelike", effectSpawnLikelike },
+    { "spawn_gibdo", effectSpawnGibdo },
     { "spawn_keese", effectSpawnKeese },
     { "spawn_icekeese", effectSpawnIcekeese },
     { "spawn_firekeese", effectSpawnFirekeese },

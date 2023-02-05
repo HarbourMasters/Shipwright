@@ -1,6 +1,8 @@
 #include "GameInteractor.h"
 #include <libultraship/bridge.h>
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
+#include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include <math.h>
 
 extern "C" {
 #include "variables.h"
@@ -10,6 +12,7 @@ extern PlayState* gPlayState;
 }
 
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
+#include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 
 void GameInteractor::RawAction::AddOrRemoveHealthContainers(int16_t amount) {
     gSaveContext.healthCapacity += amount * 0x10;
@@ -168,13 +171,6 @@ void GameInteractor::RawAction::GiveOrTakeShield(int32_t shield) {
             }
         }
     }
-}
-
-void GameInteractor::RawAction::SpawnCuccoStorm() {
-    Player* player = GET_PLAYER(gPlayState);
-    EnNiw* cucco = (EnNiw*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_NIW, player->actor.world.pos.x,
-                                       player->actor.world.pos.y + 2200, player->actor.world.pos.z, 0, 0, 0, 0, 0);
-    cucco->actionFunc = func_80AB70A0_nocutscene;
 }
 
 void GameInteractor::RawAction::ForceInterfaceUpdate() {
@@ -345,20 +341,11 @@ void GameInteractor::RawAction::AddOrTakeAmmo(int16_t amount, int16_t item) {
 
 GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {
 
-    if (!GameInteractor::CanSpawnEnemy()) {
+    if (!GameInteractor::CanSpawnActor()) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
     }
 
-    Player* player = GET_PLAYER(gPlayState);
-
-    float posXOffset = 75;
-    float posYOffset = 50;
-    float posZOffset = 0;
-
-    if (enemyId == ACTOR_EN_WALLMAS) {
-        posXOffset = 0;
-        posYOffset = 0;
-    } else if (enemyId == ACTOR_EN_CLEAR_TAG) {
+    if (enemyId == ACTOR_EN_CLEAR_TAG) {
         // Don't allow Arwings in certain areas because they cause issues.
         // Locations: King dodongo room, Morpha room, Twinrova room, Ganondorf room, Fishing pond, Ganon's room
         // TODO: Swap this to disabling the option in CC options menu instead.
@@ -367,15 +354,98 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
             gPlayState->sceneNum == SCENE_TURIBORI || gPlayState->sceneNum == SCENE_GANON_DEMO) {
             return GameInteractionEffectQueryResult::NotPossible;
         }
-        posXOffset = 0;
-        posYOffset = 100;
     }
 
-    if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, player->actor.world.pos.x + posXOffset,
-        player->actor.world.pos.y + posYOffset, player->actor.world.pos.z + posZOffset, 0, 0, 0,
-        enemyParams, 0) != NULL) {
+    // Generate point in random angle with a radius.
+    float angle = Random(0, 2*M_PI);
+    float radius = 150;
+    float posXOffset = radius * cos(angle);
+    float posZOffset = radius * sin(angle);
+
+    // Raycast to the ground from randomly generated point.
+    CollisionPoly poly;
+    Vec3f pos;
+    f32 raycastResult;
+    Player* player = GET_PLAYER(gPlayState);
+
+    pos.x = player->actor.world.pos.x + posXOffset;
+    pos.y = player->actor.world.pos.y + 50;
+    pos.z = player->actor.world.pos.z + posZOffset;
+    raycastResult = BgCheck_AnyRaycastFloor1(&gPlayState->colCtx, &poly, &pos);
+
+    // If ground is found below actor, move actor to that height.
+    // If not it's likely out of bounds, so make it temporarily not possible and try again later.
+    if (raycastResult > BGCHECK_Y_MIN) {
+        pos.y = raycastResult;
+    } else {
+        return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    }
+
+    // Offset flying enemies off the ground
+    if (enemyId == ACTOR_EN_CLEAR_TAG || enemyId == ACTOR_EN_FIREFLY) {
+        pos.y += 100;
+    }
+
+    if (enemyId == ACTOR_EN_FIREFLY && enemyParams == 2) {
+        // Spawn Flock of Keese (5x)
+        for (uint8_t i = 0; i < 5; i++) {
+            pos.x += 10;
+            pos.y += 10;
+            pos.z += 10;
+            if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams, 0) == NULL) {
+                return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+            }
+        }
         return GameInteractionEffectQueryResult::Possible;
+    } else {
+        if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams, 0) != NULL) {
+            return GameInteractionEffectQueryResult::Possible;
+        }
     }
 
     return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+}
+
+GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t actorId, int32_t actorParams) {
+
+    if (!GameInteractor::CanSpawnActor()) {
+        return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    }
+
+    Player* player = GET_PLAYER(gPlayState);
+
+    if (actorId == ACTOR_EN_NIW) {
+        // Spawn Cucco and make it angry
+        EnNiw* cucco = (EnNiw*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, player->actor.world.pos.x,
+                                           player->actor.world.pos.y + 2200, player->actor.world.pos.z, 0, 0, 0, actorParams, 0);
+        if (cucco == NULL) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        }
+
+        cucco->actionFunc = func_80AB70A0_nocutscene;
+        return GameInteractionEffectQueryResult::Possible;
+    } else if (actorId == ACTOR_EN_BOM) {
+        // Spawn a bomb, make it explode instantly when params is set to 1 to emulate spawning an explosion
+        EnBom* bomb = (EnBom*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_BOM, player->actor.world.pos.x,
+                                   player->actor.world.pos.y + 30, player->actor.world.pos.z, 0, 0, 0, BOMB_BODY, true);
+
+        if (bomb == NULL) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        }
+
+        // Make bomb explode immediately
+        if (actorParams == 1) {
+            bomb->timer = 2;
+        }
+        return GameInteractionEffectQueryResult::Possible;
+    } else {
+        // Generic spawn an actor at Link's position
+        if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, player->actor.world.pos.x,
+                        player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, actorParams, 0) != NULL) {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+
+    return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    
 }

@@ -1231,8 +1231,7 @@ static bool BurnHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
 }
 
 static bool CuccoStormHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-   GameInteractionEffectBase* effect = new GameInteractionEffect::SpawnCuccoStorm();
-    GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
+    GameInteractionEffectQueryResult result = GameInteractor::RawAction::SpawnActor(ACTOR_EN_NIW, 0);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
         SohImGui::GetConsole()->SendInfoMessage("[SOH] Spawned cucco storm");

@@ -13,6 +13,7 @@ int32_t GameInteractor::State::DefenseModifier = 0;
 int32_t GameInteractor::State::RunSpeedModifier = 0;
 GIGravityLevel GameInteractor::State::GravityLevel = GI_GRAVITY_LEVEL_NORMAL;
 uint32_t GameInteractor::State::EmulatedButtons = 0;
+uint8_t GameInteractor::State::RandomBombFuseTimerActive = 0;
 
 void GameInteractor::State::SetPacifistMode(bool active) {
     PacifistModeActive = active;
@@ -89,4 +90,9 @@ uint32_t GameInteractor_GetEmulatedButtons() {
 // MARK: - GameInteractor::State::SetEmulatedButtons
 void GameInteractor_SetEmulatedButtons(uint32_t buttons) {
     GameInteractor::State::EmulatedButtons = buttons;
+}
+
+// MARK: - GameInteractor::State::GetRandomBombFuseTimerActive
+uint8_t GameInteractor_GetRandomBombFuseTimerActive() {
+    return GameInteractor::State::RandomBombFuseTimerActive;
 }

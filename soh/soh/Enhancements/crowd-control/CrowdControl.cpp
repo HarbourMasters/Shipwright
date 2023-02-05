@@ -199,6 +199,8 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
     GameInteractionEffectQueryResult giResult;
     if (effect->category == effectCatSpawnEnemy) {
         giResult = GameInteractor::RawAction::SpawnEnemyWithOffset(effect->value[0], effect->value[1]);
+    } else if (effect->category == effectCatSpawnActor) {
+        giResult = GameInteractor::RawAction::SpawnActor(effect->value[0], effect->value[1]);
     } else {
         giResult = GameInteractor::ApplyEffect(effect->giEffect);
     }
@@ -208,7 +210,7 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
 
 /// Checks if effect can be applied -- should not be used to check for spawn enemy effects.
 CrowdControl::EffectResult CrowdControl::CanApplyEffect(Effect* effect) {
-    assert(effect->category != effectCatSpawnEnemy);
+    assert(effect->category != effectCatSpawnEnemy || effect->category != effectCatSpawnActor);
     GameInteractionEffectQueryResult giResult = GameInteractor::CanApplyEffect(effect->giEffect);
 
     return TranslateGiEnum(giResult);
@@ -251,11 +253,17 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 
         // Spawn Enemies and Objects
         case effectSpawnCuccoStorm:
-            effect->giEffect = new GameInteractionEffect::SpawnCuccoStorm();
+            effect->value[0] = ACTOR_EN_NIW;
+            effect->category = effectCatSpawnActor;
             break;
         case effectSpawnLitBomb:
+            effect->value[0] = ACTOR_EN_BOM;
+            effect->category = effectCatSpawnActor;
             break;
         case effectSpawnExplosion:
+            effect->value[0] = ACTOR_EN_BOM;
+            effect->value[1] = 1;
+            effect->category = effectCatSpawnActor;
             break;
         case effectSpawnArwing:
             effect->value[0] = ACTOR_EN_CLEAR_TAG;
@@ -268,6 +276,10 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->category = effectCatSpawnEnemy;
             break;
         case effectSpawnIronknuckle:
+            effect->value[0] = ACTOR_EN_IK;
+            // Parameter for black standing Iron Knuckle
+            effect->value[1] = 2;
+            effect->category = effectCatSpawnEnemy;
             break;
         case effectSpawnStalfos:
             effect->value[0] = ACTOR_EN_TEST;
@@ -281,6 +293,12 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             break;
         case effectSpawnLikelike:
             effect->value[0] = ACTOR_EN_RR;
+            effect->category = effectCatSpawnEnemy;
+            break;
+        case effectSpawnGibdo:
+            effect->value[0] = ACTOR_EN_RD;
+            // Parameter for Gibdo
+            effect->value[1] = 32766;
             effect->category = effectCatSpawnEnemy;
             break;
         case effectSpawnKeese:
@@ -526,7 +544,9 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 
         // Generic Effects
         case effectRandomBombTimer:
-
+            effect->category = effectCatRandomBombFuseTimer;
+            effect->timeRemaining = 60000;
+            effect->giEffect = new GameInteractionEffect::RandomBombFuseTimer();
             break;
         case effectTimeDawn:
             effect->giEffect = new GameInteractionEffect::SetTimeOfDay();

@@ -385,18 +385,6 @@ namespace GameInteractionEffect {
         GameInteractor::RawAction::GiveOrTakeShield(parameters[0]);
     }
 
-    // MARK: - SpawnCuccoStorm
-    GameInteractionEffectQueryResult SpawnCuccoStorm::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
-            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else {
-            return GameInteractionEffectQueryResult::Possible;
-        }
-    }
-    void SpawnCuccoStorm::_Apply() {
-        GameInteractor::RawAction::SpawnCuccoStorm();
-    }
-
     // MARK: - TeleportPlayer
     GameInteractionEffectQueryResult TeleportPlayer::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
@@ -496,5 +484,20 @@ namespace GameInteractionEffect {
     }
     void AddOrTakeAmmo::_Apply() {
         GameInteractor::RawAction::AddOrTakeAmmo(parameters[0], parameters[1]);
+    }
+
+    // MARK: - RandomBombFuseTimer
+    GameInteractionEffectQueryResult RandomBombFuseTimer::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void RandomBombFuseTimer::_Apply() {
+        GameInteractor::State::RandomBombFuseTimerActive = 1;
+    }
+    void RandomBombFuseTimer::_Remove() {
+        GameInteractor::State::RandomBombFuseTimerActive = 0;
     }
 }

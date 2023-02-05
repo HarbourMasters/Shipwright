@@ -153,11 +153,6 @@ namespace GameInteractionEffect {
         void _Apply() override;
     };
 
-    class SpawnCuccoStorm: public GameInteractionEffectBase {
-        GameInteractionEffectQueryResult CanBeApplied() override;
-        void _Apply() override;
-    };
-
     class TeleportPlayer: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
@@ -197,6 +192,12 @@ namespace GameInteractionEffect {
     class AddOrTakeAmmo: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
+    };
+
+    class RandomBombFuseTimer: public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+        void _Remove() override;
     };
 }
 

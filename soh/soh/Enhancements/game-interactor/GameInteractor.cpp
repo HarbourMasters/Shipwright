@@ -50,7 +50,7 @@ bool GameInteractor::IsGameplayPaused() {
     return (Player_InBlockingCsMode(gPlayState, player) || gPlayState->pauseCtx.state != 0 || gPlayState->msgCtx.msgMode != 0) ? true : false;
 }
 
-bool GameInteractor::CanSpawnEnemy() {
+bool GameInteractor::CanSpawnActor() {
     return GameInteractor::IsSaveLoaded() && !GameInteractor::IsGameplayPaused();
 }
 

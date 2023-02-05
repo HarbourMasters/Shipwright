@@ -76,6 +76,7 @@ int32_t GameInteractor_RunSpeedModifier();
 GIGravityLevel GameInteractor_GravityLevel();
 uint32_t GameInteractor_GetEmulatedButtons();
 void GameInteractor_SetEmulatedButtons(uint32_t buttons);
+uint8_t GameInteractor_GetRandomBombFuseTimerActive();
 #ifdef __cplusplus
 }
 #endif
@@ -100,6 +101,7 @@ public:
         static int32_t RunSpeedModifier;
         static GIGravityLevel GravityLevel;
         static uint32_t EmulatedButtons;
+        static uint8_t RandomBombFuseTimerActive;
 
         static void SetPacifistMode(bool active);
     };
@@ -112,7 +114,7 @@ public:
     // Helpers
     static bool IsSaveLoaded();
     static bool IsGameplayPaused();
-    static bool CanSpawnEnemy();
+    static bool CanSpawnActor();
     static bool CanAddOrTakeAmmo(int16_t amount, int16_t item);
 
     class RawAction {
@@ -129,7 +131,6 @@ public:
         static void ElectrocutePlayer();
         static void KnockbackPlayer(float strength);
         static void GiveOrTakeShield(int32_t shield);
-        static void SpawnCuccoStorm();
         static void ForceInterfaceUpdate();
         static void TeleportPlayer(int32_t nextEntrance);
         static void ClearAssignedButtons(uint8_t buttonSet);
@@ -140,7 +141,9 @@ public:
         static void AddOrTakeAmmo(int16_t amount, int16_t item);
         static void EmulateRandomButtonPress(uint32_t chancePercentage = 100);
 
+
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
+        static GameInteractionEffectQueryResult SpawnActor(uint32_t actorId, int32_t actorParams);
     };
 };
 

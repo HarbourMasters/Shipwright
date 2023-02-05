@@ -30,6 +30,7 @@ public class SoH : SimpleTCPPack
         new Effect ("Stalfos", "spawn_stalfos", "spawn_stuff"),
         new Effect ("Freezard", "spawn_freezard", "spawn_stuff"),
         new Effect ("Like-Like", "spawn_likelike", "spawn_stuff"),
+        new Effect ("Gibdo", "spawn_gibdo", "spawn_stuff"),
         new Effect ("Flock of Keese (5x)", "spawn_keese", "spawn_stuff"),
         new Effect ("Ice Keese", "spawn_icekeese", "spawn_stuff"),
         new Effect ("Fire Keese", "spawn_firekeese", "spawn_stuff"),
