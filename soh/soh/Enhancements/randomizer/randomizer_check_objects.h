@@ -25,7 +25,7 @@ typedef enum {
     RCTYPE_CHEST_GAME, //todo replace this once we implement it, just using it to exclude for now
     RCTYPE_LINKS_POCKET, //todo this feels hacky
     RCTYPE_GOSSIP_STONE,
-    RCTYPE_SONG_LOCATION, // Song locations
+    RCTYPE_SONG_LOC, // Song locations
     RCTYPE_SONG_REWARD, // Song dungeon rewards
     RCTYPE_DUNGEON_REWARD, // Dungeon rewards
     RCTYPE_OCARINA, // Ocarina locations
