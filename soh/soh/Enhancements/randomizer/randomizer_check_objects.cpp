@@ -856,12 +856,12 @@ std::map<RandomizerCheckArea, std::string> rcAreaNames = {
     { RCAREA_INVALID, "Invalid"},
  };
 
-std::map<RandomizerCheckArea, std::map<RandomizerCheck, RandomizerCheckObject>> rcObjectsByArea = {};
+std::map<RandomizerCheckArea, std::map<RandomizerCheck, RandomizerCheckObject*>> rcObjectsByArea = {};
 
-std::map<RandomizerCheckArea, std::map<RandomizerCheck, RandomizerCheckObject>> RandomizerCheckObjects::GetAllRCObjectsByArea() {
+std::map<RandomizerCheckArea, std::map<RandomizerCheck, RandomizerCheckObject*>> RandomizerCheckObjects::GetAllRCObjectsByArea() {
     if (rcObjectsByArea.size() == 0) {
         for (auto& [randomizerCheck, rcObject] : rcObjects) {
-            rcObjectsByArea[rcObject.rcArea][randomizerCheck] = rcObject;
+            rcObjectsByArea[rcObject.rcArea][randomizerCheck] = &rcObject;
         }
     }
 
