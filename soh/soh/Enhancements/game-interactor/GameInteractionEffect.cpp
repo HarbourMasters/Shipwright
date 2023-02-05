@@ -371,18 +371,18 @@ namespace GameInteractionEffect {
         GameInteractor::State::DefenseModifier = 0;
     }
 
-    // MARK: - GiveDekuShield
-    GameInteractionEffectQueryResult GiveDekuShield::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded()) {
+    // MARK: - GiveOrTakeShield
+    GameInteractionEffectQueryResult GiveOrTakeShield::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else if ((Item_CheckObtainability(ITEM_SHIELD_DEKU) != ITEM_NONE)) {
+        } else if ((parameters[0] >= 0 && Item_CheckObtainability(parameters[0]) != ITEM_NONE)) {
             return GameInteractionEffectQueryResult::NotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
-    void GiveDekuShield::_Apply() {
-        GameInteractor::RawAction::GiveDekuShield();
+    void GiveOrTakeShield::_Apply() {
+        GameInteractor::RawAction::GiveOrTakeShield(parameters[0]);
     }
 
     // MARK: - SpawnCuccoStorm
@@ -458,5 +458,29 @@ namespace GameInteractionEffect {
     }
     void SetCosmeticsColor::_Apply() {
         GameInteractor::RawAction::SetCosmeticsColor(parameters[0], parameters[1]);
+    }
+
+    // MARK: - PressButton
+    GameInteractionEffectQueryResult PressButton::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void PressButton::_Apply() {
+        GameInteractor::RawAction::EmulateButtonPress(parameters[0]);
+    }
+
+    // MARK: - PressRandomButton
+    GameInteractionEffectQueryResult PressRandomButton::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void PressRandomButton::_Apply() {
+        GameInteractor::RawAction::EmulateRandomButtonPress(parameters[0]);
     }
 }

@@ -410,9 +410,12 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->giEffect = new GameInteractionEffect::ModifyRupees();
             break;
         case effectGiveDekushield:
-            effect->giEffect = new GameInteractionEffect::GiveDekuShield();
+            effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
+            effect->giEffect->parameters[0] = ITEM_SHIELD_DEKU;
             break;
         case effectGiveHylianshield:
+            effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
+            effect->giEffect->parameters[0] = ITEM_SHIELD_HYLIAN;
             break;
         case effectRefillSticks:
             break;
@@ -440,8 +443,12 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->paramMultiplier = -1;
             break;
         case effectTakeDekushield:
+            effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
+            effect->giEffect->parameters[0] = -ITEM_SHIELD_DEKU;
             break;
         case effectTakeHylianshield:
+            effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
+            effect->giEffect->parameters[0] = -ITEM_SHIELD_HYLIAN;
             break;
         case effectTakeSticks:
             break;
@@ -540,45 +547,48 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->giEffect = new GameInteractionEffect::PacifistMode();
             break;
         case effectRandomButtons:
-
+            effect->category = effectCatRandomButtons;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::PressRandomButton();
+            effect->giEffect->parameters[0] = 30;
             break;
         case effectClearCbuttons:
             effect->giEffect = new GameInteractionEffect::ClearAssignedButtons();
-            effect->value[0] = GI_BUTTONS_CBUTTONS;
+            effect->giEffect->parameters[0] = GI_BUTTONS_CBUTTONS;
             break;
         case effectClearDpad:
             effect->giEffect = new GameInteractionEffect::ClearAssignedButtons();
-            effect->value[0] = GI_BUTTONS_DPAD;
+            effect->giEffect->parameters[0] = GI_BUTTONS_DPAD;
             break;
 
         // Teleport Player
         case effectTpLinkshouse:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
-            effect->value[0] = 187;
+            effect->giEffect->parameters[0] = GI_TP_DEST_LINKSHOUSE;
             break;
         case effectTpMinuet:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
-            effect->value[0] = 1536;
+            effect->giEffect->parameters[0] = GI_TP_DEST_MINUET;
             break;
         case effectTpBolero:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
-            effect->value[0] = 1270;
+            effect->giEffect->parameters[0] = GI_TP_DEST_BOLERO;
             break;
         case effectTpSerenade:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
-            effect->value[0] = 1540;
+            effect->giEffect->parameters[0] = GI_TP_DEST_SERENADE;
             break;
         case effectTpRequiem:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
-            effect->value[0] = 497;
+            effect->giEffect->parameters[0] = GI_TP_DEST_REQUIEM;
             break;
         case effectTpNocturne:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
-            effect->value[0] = 1384;
+            effect->giEffect->parameters[0] = GI_TP_DEST_NOCTURNE;
             break;
         case effectTpPrelude:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
-            effect->value[0] = 1524;
+            effect->giEffect->parameters[0] = GI_TP_DEST_PRELUDE;
             break;
 
         // Tunic Color (Bidding War)

@@ -121,13 +121,52 @@ void GameInteractor::RawAction::KnockbackPlayer(float strength) {
     func_8002F71C(gPlayState, &player->actor, strength * 5, player->actor.world.rot.y + 0x8000, strength * 5);
 }
 
-void GameInteractor::RawAction::GiveDekuShield() {
-    // Give Deku Shield to the player, and automatically equip it when they're child and have no shield currently equiped.
+void GameInteractor::RawAction::GiveOrTakeShield(int32_t shield) {
+    // When taking a shield, make sure it is unequipped as well.
+    // When giving a shield and the player isn't wearing one yet,
+    // equip said shield when the player's current age can equip it.
+    // 'shield' being a negative number means taking that shield.
+
     Player* player = GET_PLAYER(gPlayState);
-    Item_Give(gPlayState, ITEM_SHIELD_DEKU);
-    if (LINK_IS_CHILD && player->currentShield == PLAYER_SHIELD_NONE) {
-        player->currentShield = PLAYER_SHIELD_DEKU;
-        Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_DEKU);
+    int8_t shieldToCheck = PLAYER_SHIELD_NONE;
+
+    if (shield < 0) {
+        shield = shield * -1;
+
+        switch (shield) {
+            case ITEM_SHIELD_DEKU:
+                shieldToCheck = PLAYER_SHIELD_DEKU;
+                break;
+            case ITEM_SHIELD_HYLIAN:
+                shieldToCheck = PLAYER_SHIELD_HYLIAN;
+                break;
+            case ITEM_SHIELD_MIRROR:
+                shieldToCheck = PLAYER_SHIELD_MIRROR;
+                break;
+            default:
+                break;
+        }
+
+        gSaveContext.inventory.equipment &= ~(gBitFlags[shield - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_SHIELD]);
+
+        if (player->currentShield == shieldToCheck) {
+            player->currentShield = PLAYER_SHIELD_NONE;
+            Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_NONE);
+        }
+    } else {
+        Item_Give(gPlayState, shield);
+        if (player->currentShield == PLAYER_SHIELD_NONE) {
+            if (LINK_IS_CHILD && shield == ITEM_SHIELD_DEKU) {
+                player->currentShield = PLAYER_SHIELD_DEKU;
+                Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_DEKU);
+            } else if (LINK_IS_ADULT && shield == ITEM_SHIELD_MIRROR) {
+                player->currentShield = PLAYER_SHIELD_MIRROR;
+                Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_MIRROR);
+            } else if (shield == ITEM_SHIELD_HYLIAN) {
+                player->currentShield = PLAYER_SHIELD_HYLIAN;
+                Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_HYLIAN);
+            }
+        }
     }
 }
 
@@ -144,6 +183,7 @@ void GameInteractor::RawAction::ForceInterfaceUpdate() {
 }
 
 void GameInteractor::RawAction::TeleportPlayer(int32_t nextEntrance) {
+    Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
     gPlayState->nextEntranceIndex = nextEntrance;
     gPlayState->sceneLoadFlag = 0x14;
     gPlayState->fadeTransition = 2;
@@ -280,6 +320,23 @@ void GameInteractor::RawAction::SetCosmeticsColor(uint8_t cosmeticCategory, uint
 
     SohImGui::RequestCvarSaveOnNextTick();
     ApplyOrResetCustomGfxPatches();
+}
+
+void GameInteractor::RawAction::EmulateButtonPress(int32_t button) {
+    GameInteractor::State::EmulatedButtons |= button;
+}
+
+void GameInteractor::RawAction::EmulateRandomButtonPress(uint32_t chancePercentage) {
+    uint32_t emulatedButton;
+    uint32_t randomNumber = rand();
+    uint32_t possibleButtons[14] = { BTN_CRIGHT, BTN_CLEFT, BTN_CDOWN, BTN_CUP,   BTN_R, BTN_L, BTN_DRIGHT,
+                             BTN_DLEFT,  BTN_DDOWN, BTN_DUP,   BTN_START, BTN_Z, BTN_B, BTN_A };
+
+    emulatedButton = possibleButtons[randomNumber % 14];
+
+    if (randomNumber % 100 < chancePercentage) {
+        GameInteractor::State::EmulatedButtons |= emulatedButton;
+    }
 }
 
 GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {

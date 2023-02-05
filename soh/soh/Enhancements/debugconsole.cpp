@@ -82,18 +82,6 @@ static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std:
     return CMD_SUCCESS;
 }
 
-static bool GiveDekuShieldHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&) {
-    GameInteractionEffectBase* effect = new GameInteractionEffect::GiveDekuShield();
-    GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
-    if (result == GameInteractionEffectQueryResult::Possible) {
-        SohImGui::GetConsole()->SendInfoMessage("[SOH] Gave Deku Shield.");
-        return CMD_SUCCESS;
-    } else {
-        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not give Deku Shield.");
-        return CMD_FAILED;
-    }
-}
-
 static bool KillPlayerHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>&) {
     GameInteractionEffectBase* effect = new GameInteractionEffect::SetPlayerHealth();
     effect->parameters[0] = 0;
@@ -1080,10 +1068,66 @@ static bool BootsHandler(std::shared_ptr<Ship::Console> Console, const std::vect
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        SohImGui::GetConsole()->SendInfoMessage("[SOH] Boots updated");
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Boots updated.");
         return CMD_SUCCESS;
     } else {
         SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not update boots.");
+        return CMD_FAILED;
+    }
+}
+
+const static std::map<std::string, uint16_t> shields {
+    { "deku", ITEM_SHIELD_DEKU },
+    { "hylian", ITEM_SHIELD_HYLIAN },
+    { "mirror", ITEM_SHIELD_MIRROR },
+};
+
+static bool GiveShieldHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    const auto& it = shields.find(args[1]);
+    if (it == shields.end()) {
+        SohImGui::GetConsole()->SendErrorMessage("Invalid shield type. Options are 'deku', 'hylian' and 'mirror'");
+        return CMD_FAILED;
+    }
+
+    GameInteractionEffectBase* effect = new GameInteractionEffect::GiveOrTakeShield();
+    effect->parameters[0] = it->second;
+    GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
+
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Gave shield.");
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not give shield.");
+        return CMD_FAILED;
+    }
+}
+
+static bool TakeShieldHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+
+    const auto& it = shields.find(args[1]);
+    if (it == shields.end()) {
+        SohImGui::GetConsole()->SendErrorMessage("Invalid shield type. Options are 'deku', 'hylian' and 'mirror'");
+        return CMD_FAILED;
+    }
+
+    GameInteractionEffectBase* effect = new GameInteractionEffect::GiveOrTakeShield();
+    effect->parameters[0] = it->second * -1;
+    GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
+
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Took shield.");
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not take shield.");
         return CMD_FAILED;
     }
 }
@@ -1343,8 +1387,6 @@ void DebugConsole_Init(void) {
         { "Item ID", Ship::ArgumentType::NUMBER }
     }});
 
-    CMD_REGISTER("givedekushield", { GiveDekuShieldHandler, "Gives a deku shield and equips it when Link is a child with no shield equiped." });
-
     CMD_REGISTER("spawn", { ActorSpawnHandler, "Spawn an actor.", { { "actor_id", Ship::ArgumentType::NUMBER },
                               { "data", Ship::ArgumentType::NUMBER },
                               { "x", Ship::ArgumentType::PLAYER_POS, true },
@@ -1463,6 +1505,14 @@ void DebugConsole_Init(void) {
     }});
 
     CMD_REGISTER("boots", { BootsHandler, "Activates boots.", {
+        { "type", Ship::ArgumentType::TEXT },
+    }});
+
+    CMD_REGISTER("giveshield", { GiveShieldHandler, "Gives a shield and equips it when Link is the right age for it.", {
+        { "type", Ship::ArgumentType::TEXT },
+    }});
+
+    CMD_REGISTER("takeshield", { TakeShieldHandler, "Takes a shield and unequips it if Link is wearing it.", {
         { "type", Ship::ArgumentType::TEXT },
     }});
 

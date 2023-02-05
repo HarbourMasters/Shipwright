@@ -148,7 +148,7 @@ namespace GameInteractionEffect {
         void _Remove() override;
     };
 
-    class GiveDekuShield: public GameInteractionEffectBase {
+    class GiveOrTakeShield: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
     };
@@ -180,6 +180,16 @@ namespace GameInteractionEffect {
     };
 
     class SetCosmeticsColor: public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+    };
+
+    class PressButton: public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+    };
+
+    class PressRandomButton: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
     };

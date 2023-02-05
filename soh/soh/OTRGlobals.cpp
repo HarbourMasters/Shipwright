@@ -604,6 +604,7 @@ extern "C" void InitOTR() {
 extern "C" void DeinitOTR() {
     OTRAudio_Exit();
 #ifdef ENABLE_CROWD_CONTROL
+    CrowdControl::Instance->Disable();
     CrowdControl::Instance->Shutdown();
 #endif
 }

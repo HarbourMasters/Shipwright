@@ -142,6 +142,7 @@ typedef enum {
     effectCatLinkSize,
     effectCatPacifist,
     effectCatNoZ,
+    effectCatRandomButtons,
     effectCatUi,
     effectCatWeather,
     effectCatDebugMode,
