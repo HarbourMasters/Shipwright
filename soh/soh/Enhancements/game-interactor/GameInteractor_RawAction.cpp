@@ -339,6 +339,10 @@ void GameInteractor::RawAction::EmulateRandomButtonPress(uint32_t chancePercenta
     }
 }
 
+void GameInteractor::RawAction::AddOrTakeAmmo(int16_t amount, int16_t item) {
+    Inventory_ChangeAmmo(item, amount);
+}
+
 GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {
 
     if (!GameInteractor::CanSpawnEnemy()) {

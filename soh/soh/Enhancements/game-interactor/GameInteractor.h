@@ -113,6 +113,7 @@ public:
     static bool IsSaveLoaded();
     static bool IsGameplayPaused();
     static bool CanSpawnEnemy();
+    static bool CanAddOrTakeAmmo(int16_t amount, int16_t item);
 
     class RawAction {
     public:
@@ -136,6 +137,7 @@ public:
         static void SetCollisionViewer(bool active);
         static void SetCosmeticsColor(uint8_t cosmeticCategory, uint8_t colorValue);
         static void EmulateButtonPress(int32_t button);
+        static void AddOrTakeAmmo(int16_t amount, int16_t item);
         static void EmulateRandomButtonPress(uint32_t chancePercentage = 100);
 
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);

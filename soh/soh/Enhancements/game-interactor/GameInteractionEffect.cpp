@@ -483,4 +483,18 @@ namespace GameInteractionEffect {
     void PressRandomButton::_Apply() {
         GameInteractor::RawAction::EmulateRandomButtonPress(parameters[0]);
     }
+
+    // MARK: - AddOrTakeAmmo
+    GameInteractionEffectQueryResult AddOrTakeAmmo::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else if (!GameInteractor::CanAddOrTakeAmmo(parameters[0], parameters[1])) {
+            return GameInteractionEffectQueryResult::NotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void AddOrTakeAmmo::_Apply() {
+        GameInteractor::RawAction::AddOrTakeAmmo(parameters[0], parameters[1]);
+    }
 }

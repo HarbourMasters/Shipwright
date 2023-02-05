@@ -197,48 +197,90 @@ static bool ResetHandler(std::shared_ptr<Ship::Console> Console, std::vector<std
     return CMD_SUCCESS;
 }
 
-const static std::map<std::string, uint16_t> ammoItems{
-    { "sticks", ITEM_STICK }, { "deku_sticks", ITEM_STICK },
-    { "nuts", ITEM_NUT },     { "deku_nuts", ITEM_NUT },
-    { "bombs", ITEM_BOMB },      { "arrows", ITEM_BOW },
-    { "bombchus", ITEM_BOMBCHU }, { "chus", ITEM_BOMBCHU },
-    { "beans", ITEM_BEAN },
-    { "seeds", ITEM_SLINGSHOT }, { "deku_seeds", ITEM_SLINGSHOT },
-    { "magic_beans", ITEM_BEAN },
+const static std::map<std::string, uint16_t> ammoItems{ 
+    { "sticks", ITEM_STICK }, { "nuts", ITEM_NUT },
+    { "bombs", ITEM_BOMB },   { "seeds", ITEM_SLINGSHOT },
+    { "arrows", ITEM_BOW },   { "bombchus", ITEM_BOMBCHU },
+    { "beans", ITEM_BEAN }
 };
 
-static bool AmmoHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+static bool AddAmmoHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
     if (args.size() != 3) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
-
-    int count;
+    int amount;
 
     try {
-        count = std::stoi(args[2]);
+        amount = std::stoi(args[2]);
     } catch (std::invalid_argument const& ex) {
         SohImGui::GetConsole()->SendErrorMessage("Ammo count must be an integer");
         return CMD_FAILED;
     }
 
-    if (count < 0) {
+    if (amount < 0) {
         SohImGui::GetConsole()->SendErrorMessage("Ammo count must be positive");
         return CMD_FAILED;
     }
 
     const auto& it = ammoItems.find(args[1]);
-
     if (it == ammoItems.end()) {
-        SohImGui::GetConsole()->SendErrorMessage("Invalid item passed");
+        SohImGui::GetConsole()->SendErrorMessage("Invalid ammo type. Options are 'sticks', 'nuts', 'bombs', 'seeds', 'arrows', 'bombchus' and 'beans'");
         return CMD_FAILED;
     }
 
-    // I dont think you can do OOB with just this
-    AMMO(it->second) = count;
+    GameInteractionEffectBase* effect = new GameInteractionEffect::AddOrTakeAmmo();
+    effect->parameters[0] = amount;
+    effect->parameters[1] = it->second;
+    GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
-    //To use a change by uncomment this
-    //Inventory_ChangeAmmo(it->second, count);
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Added ammo.");
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not add ammo.");
+        return CMD_FAILED;
+    }
+}
+
+static bool TakeAmmoHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
+    if (args.size() != 3) {
+        SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+    int amount;
+
+    try {
+        amount = std::stoi(args[2]);
+    } catch (std::invalid_argument const& ex) {
+        SohImGui::GetConsole()->SendErrorMessage("Ammo count must be an integer");
+        return CMD_FAILED;
+    }
+
+    if (amount < 0) {
+        SohImGui::GetConsole()->SendErrorMessage("Ammo count must be positive");
+        return CMD_FAILED;
+    }
+
+    const auto& it = ammoItems.find(args[1]);
+    if (it == ammoItems.end()) {
+        SohImGui::GetConsole()->SendErrorMessage(
+            "Invalid ammo type. Options are 'sticks', 'nuts', 'bombs', 'seeds', 'arrows', 'bombchus' and 'beans'");
+        return CMD_FAILED;
+    }
+
+    GameInteractionEffectBase* effect = new GameInteractionEffect::AddOrTakeAmmo();
+    effect->parameters[0] = -amount;
+    effect->parameters[1] = it->second;
+    GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
+
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Took ammo.");
+        return CMD_SUCCESS;
+    } else {
+        SohImGui::GetConsole()->SendInfoMessage("[SOH] Command failed: Could not take ammo.");
+        return CMD_FAILED;
+    }
 }
 
 const static std::map<std::string, uint16_t> bottleItems{
@@ -1412,8 +1454,13 @@ void DebugConsole_Init(void) {
         { "varName", Ship::ArgumentType::TEXT }
     }});
     
-    CMD_REGISTER("ammo", { AmmoHandler, "Changes ammo of an item.", {
-        { "item", Ship::ArgumentType::TEXT },
+    CMD_REGISTER("addammo", { AddAmmoHandler, "Adds ammo of an item.", {
+        { "sticks|nuts|bombs|seeds|arrows|bombchus|beans", Ship::ArgumentType::TEXT },
+        { "count", Ship::ArgumentType::NUMBER }
+    }});
+
+    CMD_REGISTER("takeammo", { TakeAmmoHandler, "Removes ammo of an item.", {
+        { "sticks|nuts|bombs|seeds|arrows|bombchus|beans", Ship::ArgumentType::TEXT },
         { "count", Ship::ArgumentType::NUMBER }
     }});
 
@@ -1505,15 +1552,15 @@ void DebugConsole_Init(void) {
     }});
 
     CMD_REGISTER("boots", { BootsHandler, "Activates boots.", {
-        { "type", Ship::ArgumentType::TEXT },
+        { "kokiri|iron|hover", Ship::ArgumentType::TEXT },
     }});
 
     CMD_REGISTER("giveshield", { GiveShieldHandler, "Gives a shield and equips it when Link is the right age for it.", {
-        { "type", Ship::ArgumentType::TEXT },
+        { "deku|hylian|mirror", Ship::ArgumentType::TEXT },
     }});
 
     CMD_REGISTER("takeshield", { TakeShieldHandler, "Takes a shield and unequips it if Link is wearing it.", {
-        { "type", Ship::ArgumentType::TEXT },
+        { "deku|hylian|mirror", Ship::ArgumentType::TEXT },
     }});
 
     CMD_REGISTER("knockback", { KnockbackHandler, "Knocks Link back.", {

@@ -193,6 +193,11 @@ namespace GameInteractionEffect {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
     };
+
+    class AddOrTakeAmmo: public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+    };
 }
 
 #endif /* __cplusplus */

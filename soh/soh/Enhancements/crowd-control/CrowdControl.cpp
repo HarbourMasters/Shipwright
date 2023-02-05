@@ -418,16 +418,28 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->giEffect->parameters[0] = ITEM_SHIELD_HYLIAN;
             break;
         case effectRefillSticks:
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[1] = ITEM_STICK;
             break;
         case effectRefillNuts:
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[1] = ITEM_NUT;
             break;
         case effectRefillBombs:
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[1] = ITEM_BOMB;
             break;
         case effectRefillSeeds:
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[1] = ITEM_SLINGSHOT;
             break;
         case effectRefillArrows:
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[1] = ITEM_BOW;
             break;
         case effectRefillBombchus:
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[1] = ITEM_BOMBCHU;
             break;
 
         // Take Items and Consumables
@@ -451,16 +463,34 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->giEffect->parameters[0] = -ITEM_SHIELD_HYLIAN;
             break;
         case effectTakeSticks:
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[1] = ITEM_STICK;
+            effect->paramMultiplier = -1;
             break;
         case effectTakeNuts:
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[1] = ITEM_NUT;
+            effect->paramMultiplier = -1;
             break;
         case effectTakeBombs:
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[1] = ITEM_BOMB;
+            effect->paramMultiplier = -1;
             break;
         case effectTakeSeeds:
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[1] = ITEM_SLINGSHOT;
+            effect->paramMultiplier = -1;
             break;
         case effectTakeArrows:
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[1] = ITEM_BOW;
+            effect->paramMultiplier = -1;
             break;
         case effectTakeBombchus:
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[1] = ITEM_BOMBCHU;
+            effect->paramMultiplier = -1;
             break;
 
         // Link Size Modifiers
