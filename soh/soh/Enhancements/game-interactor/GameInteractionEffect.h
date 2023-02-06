@@ -216,6 +216,12 @@ namespace GameInteractionEffect {
         void _Apply() override;
         void _Remove() override;
     };
+
+    class RandomBonks: public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+        void _Remove() override;
+    };
 }
 
 #endif /* __cplusplus */

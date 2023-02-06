@@ -397,6 +397,9 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->giEffect = new GameInteractionEffect::RandomWind();
             break;
         case effectRandomBonks:
+            effect->category = effectCatRandomBonks;
+            effect->timeRemaining = 60000;
+            effect->giEffect = new GameInteractionEffect::RandomBonks();
             break;
 
         // Hurt or Heal Link

@@ -17,6 +17,7 @@ uint8_t GameInteractor::State::RandomBombFuseTimerActive = 0;
 uint8_t GameInteractor::State::DisableLedgeGrabsActive = 0;
 uint8_t GameInteractor::State::RandomWindActive = 0;
 uint8_t GameInteractor::State::RandomWindSecondsSinceLastDirectionChange = 0;
+uint8_t GameInteractor::State::RandomBonksActive = 0;
 
 void GameInteractor::State::SetPacifistMode(bool active) {
     PacifistModeActive = active;
@@ -108,4 +109,9 @@ uint8_t GameInteractor_GetDisableLedgeGrabsActive() {
 // MARK: - GameInteractor::State::GetRandomWindActive
 uint8_t GameInteractor_GetRandomWindActive() {
     return GameInteractor::State::RandomWindActive;
+}
+
+// MARK: - GameInteractor::State::GetRandomBonksActive
+uint8_t GameInteractor_GetRandomBonksActive() {
+    return GameInteractor::State::RandomBonksActive;
 }

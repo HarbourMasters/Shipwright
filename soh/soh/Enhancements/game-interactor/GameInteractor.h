@@ -79,6 +79,7 @@ void GameInteractor_SetEmulatedButtons(uint32_t buttons);
 uint8_t GameInteractor_GetRandomBombFuseTimerActive();
 uint8_t GameInteractor_GetDisableLedgeGrabsActive();
 uint8_t GameInteractor_GetRandomWindActive();
+uint8_t GameInteractor_GetRandomBonksActive();
 #ifdef __cplusplus
 }
 #endif
@@ -107,6 +108,7 @@ public:
         static uint8_t DisableLedgeGrabsActive;
         static uint8_t RandomWindActive;
         static uint8_t RandomWindSecondsSinceLastDirectionChange;
+        static uint8_t RandomBonksActive;
 
         static void SetPacifistMode(bool active);
     };

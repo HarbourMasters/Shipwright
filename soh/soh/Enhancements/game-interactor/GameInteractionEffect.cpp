@@ -542,4 +542,19 @@ namespace GameInteractionEffect {
     void RandomWind::_Remove() {
         GameInteractor::RawAction::SetRandomWind(false);
     }
+
+    // MARK: - RandomBonks
+    GameInteractionEffectQueryResult RandomBonks::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void RandomBonks::_Apply() {
+        GameInteractor::State::RandomBonksActive = 1;
+    }
+    void RandomBonks::_Remove() {
+        GameInteractor::State::RandomBonksActive = 0;
+    }
 }

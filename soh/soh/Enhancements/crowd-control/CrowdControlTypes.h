@@ -150,6 +150,7 @@ typedef enum {
     effectCatDebugMode,
     effectCatNoLedgeGrabs,
     effectCatRandomWind,
+    effectCatRandomBonks,
     effectCatReverseControls,
     effectCatBoots,
     effectCatSpeed,
