@@ -2453,7 +2453,7 @@ void HintTable_Init() {
     });
 
     hintTable[JUNK_SG_6] = HintText::Junk({
-        Text{ "They say im not Christina!.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+        Text{ "They say I'm not Christina!.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
     });
 
     hintTable[JUNK_SG_7] = HintText::Junk({
