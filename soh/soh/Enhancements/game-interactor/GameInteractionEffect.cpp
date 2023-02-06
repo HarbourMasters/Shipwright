@@ -557,4 +557,34 @@ namespace GameInteractionEffect {
     void RandomBonks::_Remove() {
         GameInteractor::State::RandomBonksActive = 0;
     }
+
+    // MARK: - PlayerInvincibility
+    GameInteractionEffectQueryResult PlayerInvincibility::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void PlayerInvincibility::_Apply() {
+        GameInteractor::RawAction::SetPlayerInvincibility(true);
+    }
+    void PlayerInvincibility::_Remove() {
+        GameInteractor::RawAction::SetPlayerInvincibility(false);
+    }
+
+    // MARK: - SlipperyFloor
+    GameInteractionEffectQueryResult SlipperyFloor::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void SlipperyFloor::_Apply() {
+        GameInteractor::State::SlipperyFloorActive = 1;
+    }
+    void SlipperyFloor::_Remove() {
+        GameInteractor::State::SlipperyFloorActive = 0;
+    }
 }

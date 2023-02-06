@@ -222,6 +222,18 @@ namespace GameInteractionEffect {
         void _Apply() override;
         void _Remove() override;
     };
+
+    class PlayerInvincibility: public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+        void _Remove() override;
+    };
+
+    class SlipperyFloor: public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+        void _Remove() override;
+    };
 }
 
 #endif /* __cplusplus */

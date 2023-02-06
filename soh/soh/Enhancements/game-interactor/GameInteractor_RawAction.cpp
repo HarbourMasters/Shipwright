@@ -388,6 +388,15 @@ void GameInteractor::RawAction::SetRandomWind(bool active) {
     }
 }
 
+void GameInteractor::RawAction::SetPlayerInvincibility(bool active) {
+    Player* player = GET_PLAYER(gPlayState);
+    if (active) {
+        player->invincibilityTimer = 1000;
+    } else {
+        player->invincibilityTimer = 0;
+    }
+}
+
 GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {
 
     if (!GameInteractor::CanSpawnActor()) {

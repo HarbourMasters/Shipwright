@@ -153,9 +153,11 @@ typedef enum {
     effectCatRandomBonks,
     effectCatReverseControls,
     effectCatBoots,
+    effectCatSlipperyFloor,
     effectCatSpeed,
     effectCatDamageTaken,
     effectCatOhko,
+    effectCatInvincible,
     effectCatSpawnEnemy,
     effectCatSpawnActor
 } CCCatEnumValues;

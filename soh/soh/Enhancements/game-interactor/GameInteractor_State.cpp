@@ -18,6 +18,7 @@ uint8_t GameInteractor::State::DisableLedgeGrabsActive = 0;
 uint8_t GameInteractor::State::RandomWindActive = 0;
 uint8_t GameInteractor::State::RandomWindSecondsSinceLastDirectionChange = 0;
 uint8_t GameInteractor::State::RandomBonksActive = 0;
+uint8_t GameInteractor::State::SlipperyFloorActive = 0;
 
 void GameInteractor::State::SetPacifistMode(bool active) {
     PacifistModeActive = active;
@@ -114,4 +115,9 @@ uint8_t GameInteractor_GetRandomWindActive() {
 // MARK: - GameInteractor::State::GetRandomBonksActive
 uint8_t GameInteractor_GetRandomBonksActive() {
     return GameInteractor::State::RandomBonksActive;
+}
+
+// MARK: - GameInteractor::State::GetSlipperyFloorActive
+uint8_t GameInteractor_GetSlipperyFloorActive() {
+    return GameInteractor::State::SlipperyFloorActive;
 }

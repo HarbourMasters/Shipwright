@@ -347,6 +347,10 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->giEffect = new GameInteractionEffect::OneHitKO();
             break;
         case effectInvincible:
+            effect->category = effectCatInvincible;
+            effect->timeRemaining = 15000;
+            effect->giEffect = new GameInteractionEffect::PlayerInvincibility();
+            break;
             break;
         case effectIncreaseSpeed:
             effect->category = effectCatSpeed;
@@ -385,6 +389,9 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->giEffect->parameters[0] = PLAYER_BOOTS_HOVER;
             break;
         case effectSlipperyFloor:
+            effect->category = effectCatSlipperyFloor;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::SlipperyFloor();
             break;
         case effectNoLedgeGrabs:
             effect->category = effectCatNoLedgeGrabs;
