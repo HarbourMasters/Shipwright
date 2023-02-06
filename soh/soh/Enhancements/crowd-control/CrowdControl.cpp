@@ -387,6 +387,9 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         case effectSlipperyFloor:
             break;
         case effectNoLedgeGrabs:
+            effect->category = effectCatNoLedgeGrabs;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::DisableLedgeGrabs();
             break;
         case effectRandomBonks:
             break;
@@ -572,9 +575,6 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->category = effectCatDebugMode;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::SetCollisionViewer();
-            break;
-        case effectRainbowMode:
-
             break;
         case effectRandomCosmetics:
             effect->giEffect = new GameInteractionEffect::RandomizeCosmetics();

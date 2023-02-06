@@ -83,7 +83,6 @@ typedef enum {
     effectNoUi,
     effectRainstorm,
     effectDebugMode,
-    effectRainbowMode,
     effectRandomCosmetics,
 
     // Controls
@@ -148,6 +147,7 @@ typedef enum {
     effectCatUi,
     effectCatWeather,
     effectCatDebugMode,
+    effectCatNoLedgeGrabs,
     effectCatReverseControls,
     effectCatBoots,
     effectCatSpeed,
@@ -242,7 +242,6 @@ std::unordered_map<std::string, CCStringEnumValues> effectStringToEnum = {
     { "no_ui", effectNoUi },
     { "rainstorm", effectRainstorm },
     { "debug_mode", effectDebugMode },
-    { "rainbow_mode", effectRainbowMode },
     { "random_cosmetics", effectRandomCosmetics },
 
     // Controls

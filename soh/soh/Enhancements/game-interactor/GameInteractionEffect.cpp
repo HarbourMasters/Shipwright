@@ -512,4 +512,19 @@ namespace GameInteractionEffect {
     void RandomBombFuseTimer::_Remove() {
         GameInteractor::State::RandomBombFuseTimerActive = 0;
     }
+
+    // MARK: - DisableLedgeGrabs
+    GameInteractionEffectQueryResult DisableLedgeGrabs::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void DisableLedgeGrabs::_Apply() {
+        GameInteractor::State::DisableLedgeGrabsActive = 1;
+    }
+    void DisableLedgeGrabs::_Remove() {
+        GameInteractor::State::DisableLedgeGrabsActive = 0;
+    }
 }

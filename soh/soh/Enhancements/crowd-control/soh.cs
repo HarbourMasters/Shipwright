@@ -124,7 +124,6 @@ public class SoH : SimpleTCPPack
         new Effect("No UI", "no_ui", "visual_effects") { Duration = 60 },
         new Effect("Rainstorm", "rainstorm", "visual_effects") { Duration = 30 },
         new Effect("Debug Mode", "debug_mode", "visual_effects") { Duration = 30 },
-        new Effect("Rainbow Mode", "rainbow_mode", "visual_effects") { Duration = 30 },
         new Effect("Randomize Cosmetics", "random_cosmetics", "visual_effects") { Duration = 30 },
 
 

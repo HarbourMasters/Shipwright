@@ -204,6 +204,12 @@ namespace GameInteractionEffect {
         void _Apply() override;
         void _Remove() override;
     };
+
+    class DisableLedgeGrabs: public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+        void _Remove() override;
+    };
 }
 
 #endif /* __cplusplus */
