@@ -15,6 +15,8 @@ GIGravityLevel GameInteractor::State::GravityLevel = GI_GRAVITY_LEVEL_NORMAL;
 uint32_t GameInteractor::State::EmulatedButtons = 0;
 uint8_t GameInteractor::State::RandomBombFuseTimerActive = 0;
 uint8_t GameInteractor::State::DisableLedgeGrabsActive = 0;
+uint8_t GameInteractor::State::RandomWindActive = 0;
+uint8_t GameInteractor::State::RandomWindSecondsSinceLastDirectionChange = 0;
 
 void GameInteractor::State::SetPacifistMode(bool active) {
     PacifistModeActive = active;
@@ -101,4 +103,9 @@ uint8_t GameInteractor_GetRandomBombFuseTimerActive() {
 // MARK: - GameInteractor::State::GetDisableLedgeGrabsActive
 uint8_t GameInteractor_GetDisableLedgeGrabsActive() {
     return GameInteractor::State::DisableLedgeGrabsActive;
+}
+
+// MARK: - GameInteractor::State::GetRandomWindActive
+uint8_t GameInteractor_GetRandomWindActive() {
+    return GameInteractor::State::RandomWindActive;
 }

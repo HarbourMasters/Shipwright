@@ -370,6 +370,24 @@ void GameInteractor::RawAction::AddOrTakeAmmo(int16_t amount, int16_t item) {
     Inventory_ChangeAmmo(item, amount);
 }
 
+void GameInteractor::RawAction::SetRandomWind(bool active) {
+    Player* player = GET_PLAYER(gPlayState);
+    if (active) {
+        GameInteractor::State::RandomWindActive = 1;
+        if (GameInteractor::State::RandomWindSecondsSinceLastDirectionChange == 0) {
+            player->windDirection = (rand() % 49152) - 32767;
+            GameInteractor::State::RandomWindSecondsSinceLastDirectionChange = 5;
+        } else {
+            GameInteractor::State::RandomWindSecondsSinceLastDirectionChange--;
+        }
+    } else {
+        GameInteractor::State::RandomWindActive = 0;
+        GameInteractor::State::RandomWindSecondsSinceLastDirectionChange = 0;
+        player->windSpeed = 0.0f;
+        player->windDirection = 0.0f;
+    }
+}
+
 GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {
 
     if (!GameInteractor::CanSpawnActor()) {

@@ -53,6 +53,7 @@ public class SoH : SimpleTCPPack
         new Effect("Force Hover Boots", "hover_boots", "link_modifiers") { Duration = 30 },
         new Effect("Slippery Floor", "slippery_floor", "link_modifiers") { Duration = 30 },
         new Effect("Disable Ledge Grabs", "no_ledge_grabs", "link_modifiers") { Duration = 30 },
+        new Effect("Random Wind", "random_wind", "link_modifiers") { Duration = 30 },
         new Effect("Random Bonks When Rolling", "random_bonks", "link_modifiers") { Duration = 60 },
 
 

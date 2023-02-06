@@ -527,4 +527,19 @@ namespace GameInteractionEffect {
     void DisableLedgeGrabs::_Remove() {
         GameInteractor::State::DisableLedgeGrabsActive = 0;
     }
+
+    // MARK: - RandomWind
+    GameInteractionEffectQueryResult RandomWind::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        } else {
+            return GameInteractionEffectQueryResult::Possible;
+        }
+    }
+    void RandomWind::_Apply() {
+        GameInteractor::RawAction::SetRandomWind(true);
+    }
+    void RandomWind::_Remove() {
+        GameInteractor::RawAction::SetRandomWind(false);
+    }
 }

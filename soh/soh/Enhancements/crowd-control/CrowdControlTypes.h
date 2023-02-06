@@ -30,6 +30,7 @@ typedef enum {
     effectHoverBoots,
     effectSlipperyFloor,
     effectNoLedgeGrabs,
+    effectRandomWind,
     effectRandomBonks,
 
     // Hurt or Heal Link
@@ -148,6 +149,7 @@ typedef enum {
     effectCatWeather,
     effectCatDebugMode,
     effectCatNoLedgeGrabs,
+    effectCatRandomWind,
     effectCatReverseControls,
     effectCatBoots,
     effectCatSpeed,
@@ -189,6 +191,7 @@ std::unordered_map<std::string, CCStringEnumValues> effectStringToEnum = {
     { "hover_boots", effectHoverBoots },
     { "slippery_floor", effectSlipperyFloor },
     { "no_ledge_grabs", effectNoLedgeGrabs },
+    { "random_wind", effectRandomWind },
     { "random_bonks", effectRandomBonks },
 
     // Hurt or Heal Link

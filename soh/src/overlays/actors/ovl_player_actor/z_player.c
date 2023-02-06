@@ -11038,6 +11038,14 @@ void Player_Update(Actor* thisx, PlayState* play) {
         default:
             break;
     }
+
+    if (GameInteractor_GetRandomWindActive()) {
+        Player* player = GET_PLAYER(play);
+        player->windSpeed = 3.0f;
+        // Play fan sound (too annoying)
+        //func_8002F974(&player->actor, NA_SE_EV_WIND_TRAP - SFX_FLAG);
+    }
+    
 }
 
 static struct_80858AC8 D_80858AC8;

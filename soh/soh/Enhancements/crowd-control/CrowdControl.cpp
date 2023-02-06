@@ -391,6 +391,11 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::DisableLedgeGrabs();
             break;
+        case effectRandomWind:
+            effect->category = effectCatRandomWind;
+            effect->timeRemaining = 30000;
+            effect->giEffect = new GameInteractionEffect::RandomWind();
+            break;
         case effectRandomBonks:
             break;
 

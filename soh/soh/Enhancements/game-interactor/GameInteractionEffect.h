@@ -210,6 +210,12 @@ namespace GameInteractionEffect {
         void _Apply() override;
         void _Remove() override;
     };
+
+    class RandomWind: public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+        void _Remove() override;
+    };
 }
 
 #endif /* __cplusplus */

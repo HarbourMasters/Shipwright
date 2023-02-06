@@ -78,6 +78,7 @@ uint32_t GameInteractor_GetEmulatedButtons();
 void GameInteractor_SetEmulatedButtons(uint32_t buttons);
 uint8_t GameInteractor_GetRandomBombFuseTimerActive();
 uint8_t GameInteractor_GetDisableLedgeGrabsActive();
+uint8_t GameInteractor_GetRandomWindActive();
 #ifdef __cplusplus
 }
 #endif
@@ -104,6 +105,8 @@ public:
         static uint32_t EmulatedButtons;
         static uint8_t RandomBombFuseTimerActive;
         static uint8_t DisableLedgeGrabsActive;
+        static uint8_t RandomWindActive;
+        static uint8_t RandomWindSecondsSinceLastDirectionChange;
 
         static void SetPacifistMode(bool active);
     };
@@ -143,6 +146,7 @@ public:
         static void EmulateButtonPress(int32_t button);
         static void AddOrTakeAmmo(int16_t amount, int16_t item);
         static void EmulateRandomButtonPress(uint32_t chancePercentage = 100);
+        static void SetRandomWind(bool active);
 
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
         static GameInteractionEffectQueryResult SpawnActor(uint32_t actorId, int32_t actorParams);
