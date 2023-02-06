@@ -154,6 +154,7 @@ extern "C"
 	extern u8 gSfxChannelLayout;
 	extern Vec3f D_801333D4;
 	extern f32 D_801333E0;
+	extern s32 D_801333EC; //unused; hijacked by pitch shift mod
 	extern s8 D_801333E8;
 	extern u8 D_801333F0;
 	extern u8 gAudioSfxSwapOff;

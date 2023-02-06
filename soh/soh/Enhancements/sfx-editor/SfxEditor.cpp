@@ -434,7 +434,22 @@ void DrawSfxEditor(bool& open) {
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Sound Effects")) {
+            //MOD: Link's voice pitch
+            UIWidgets::EnhancementSliderFloat("Link's voice pitch multiplier: %f", "##linkVoiceFreqMultiplier",
+                                                "gLinkVoiceFreqMultiplier", 0.4, 2.5, "", 1.0, false, false);
+
+            ImGui::SameLine();
+            const std::string resetButton = "Reset##linkVoiceFreqMultiplier";
+            if (ImGui::Button(resetButton.c_str())) {
+                CVarSetFloat("gLinkVoiceFreqMultiplier", 1.0f);
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
+            ImGui::NewLine();
+            UIWidgets::PaddedSeparator();
+            // /MOD
+
             Draw_SfxTab("sfx", sfxEditorSequenceMap, SEQ_SFX);
+
             ImGui::EndTabItem();
         }
 

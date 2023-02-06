@@ -2182,7 +2182,15 @@ void func_8002F7A0(PlayState* play, Actor* actor, f32 arg2, s16 arg3, f32 arg4) 
 }
 
 void func_8002F7DC(Actor* actor, u16 sfxId) {
-    Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+    if (actor->id != ACTOR_PLAYER || sfxId < NA_SE_VO_LI_SWORD_N || sfxId > NA_SE_VO_LI_ELECTRIC_SHOCK_LV_KID) {
+        Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &D_801333E0 , &D_801333E0, &D_801333E8);
+    }
+    else {
+        f32 freqMultiplier = CVarGetFloat("gLinkVoiceFreqMultiplier", 1.0);
+        if (freqMultiplier <= 0) freqMultiplier = 1;
+        *((f32*) (&D_801333EC)) = freqMultiplier; //hijacking unused pointer
+        Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, (f32*) (&D_801333EC), &D_801333E0, &D_801333E8);
+    }
 }
 
 void Audio_PlayActorSound2(Actor* actor, u16 sfxId) {
