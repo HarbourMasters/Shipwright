@@ -10998,47 +10998,59 @@ void Player_Update(Actor* thisx, PlayState* play) {
     MREG(54) = this->actor.world.pos.z;
     MREG(55) = this->actor.world.rot.y;
 
-    switch (GameInteractor_GetLinkSize()) {
-        case GI_LINK_SIZE_RESET:
-            this->actor.scale.x = 0.01f;
-            this->actor.scale.y = 0.01f;
-            this->actor.scale.z = 0.01f;
-            GameInteractor_SetLinkSize(GI_LINK_SIZE_NORMAL);
-            break;
-        case GI_LINK_SIZE_GIANT:
-            this->actor.scale.x = 0.02f;
-            this->actor.scale.y = 0.02f;
-            this->actor.scale.z = 0.02f;
-            break;
-        case GI_LINK_SIZE_MINISH:
-            this->actor.scale.x = 0.001f;
-            this->actor.scale.y = 0.001f;
-            this->actor.scale.z = 0.001f;
-            break;
-        case GI_LINK_SIZE_PAPER:
-            this->actor.scale.x = 0.001f;
-            this->actor.scale.y = 0.01f;
-            this->actor.scale.z = 0.01f;
-            break;
-        case GI_LINK_SIZE_SQUISHED:
-            this->actor.scale.x = 0.015f;
-            this->actor.scale.y = 0.001f;
-            this->actor.scale.z = 0.015f;
-            break;
-        case GI_LINK_SIZE_NORMAL:
-        default:
-            break;
+    // Make Link normal size when going through doors and crawlspaces.
+    // Otherwise Link can glitch out, being in unloaded rooms or falling OoB.
+    if (this->stateFlags1 & PLAYER_STATE1_29 || this->stateFlags2 & PLAYER_STATE2_CRAWLING) {
+        this->actor.scale.x = 0.01f;
+        this->actor.scale.y = 0.01f;
+        this->actor.scale.z = 0.01f;
+    } else {
+        switch (GameInteractor_GetLinkSize()) {
+            case GI_LINK_SIZE_RESET:
+                this->actor.scale.x = 0.01f;
+                this->actor.scale.y = 0.01f;
+                this->actor.scale.z = 0.01f;
+                GameInteractor_SetLinkSize(GI_LINK_SIZE_NORMAL);
+                break;
+            case GI_LINK_SIZE_GIANT:
+                this->actor.scale.x = 0.02f;
+                this->actor.scale.y = 0.02f;
+                this->actor.scale.z = 0.02f;
+                break;
+            case GI_LINK_SIZE_MINISH:
+                this->actor.scale.x = 0.001f;
+                this->actor.scale.y = 0.001f;
+                this->actor.scale.z = 0.001f;
+                break;
+            case GI_LINK_SIZE_PAPER:
+                this->actor.scale.x = 0.001f;
+                this->actor.scale.y = 0.01f;
+                this->actor.scale.z = 0.01f;
+                break;
+            case GI_LINK_SIZE_SQUISHED:
+                this->actor.scale.x = 0.015f;
+                this->actor.scale.y = 0.001f;
+                this->actor.scale.z = 0.015f;
+                break;
+            case GI_LINK_SIZE_NORMAL:
+            default:
+                break;
+        }
     }
 
-    switch (GameInteractor_GravityLevel()) {
-        case GI_GRAVITY_LEVEL_HEAVY:
-            this->actor.gravity = -4.0f;
-            break;
-        case GI_GRAVITY_LEVEL_LIGHT:
-            this->actor.gravity = -0.3f;
-            break;
-        default:
-            break;
+    // Don't apply gravity when Link is in water, otherwise
+    // it makes him sink instead of float.
+    if (!(this->stateFlags1 & PLAYER_STATE1_27)) {
+        switch (GameInteractor_GravityLevel()) {
+            case GI_GRAVITY_LEVEL_HEAVY:
+                this->actor.gravity = -4.0f;
+                break;
+            case GI_GRAVITY_LEVEL_LIGHT:
+                this->actor.gravity = -0.3f;
+                break;
+            default:
+                break;
+        }
     }
 
     if (GameInteractor_GetRandomWindActive()) {

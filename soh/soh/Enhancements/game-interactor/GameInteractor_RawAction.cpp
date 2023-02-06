@@ -403,13 +403,30 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
     }
 
+    int16_t sceneNum = gPlayState->sceneNum;
+    int16_t roomNum = gPlayState->roomCtx.curRoom.num;
+    Player* player = GET_PLAYER(gPlayState);
+
+    // Disallow enemy spawns in the painting Poe rooms in Forest Temple.
+    // Killing a spawned enemy before the Poe can softlock the rooms entirely.
+    if (sceneNum == SCENE_BMORI1 && (roomNum == 12 || roomNum == 13 || roomNum == 16)) {
+        return GameInteractionEffectQueryResult::NotPossible;
+    }
+
+    // Only one Dark Link may exist at a time.
+    if (enemyId == ACTOR_EN_TORCH2) {
+        Actor* nearbyEnTest = Actor_FindNearby(gPlayState, &player->actor, ACTOR_EN_TORCH2, ACTORCAT_ENEMY, 8000.0f);
+        if (nearbyEnTest != NULL) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        }
+    }
+
     if (enemyId == ACTOR_EN_CLEAR_TAG) {
         // Don't allow Arwings in certain areas because they cause issues.
         // Locations: King dodongo room, Morpha room, Twinrova room, Ganondorf room, Fishing pond, Ganon's room
         // TODO: Swap this to disabling the option in CC options menu instead.
-        if (gPlayState->sceneNum == SCENE_DDAN_BOSS || gPlayState->sceneNum == SCENE_MIZUSIN_BS ||
-            gPlayState->sceneNum == SCENE_JYASINBOSS || gPlayState->sceneNum == SCENE_GANON_BOSS ||
-            gPlayState->sceneNum == SCENE_TURIBORI || gPlayState->sceneNum == SCENE_GANON_DEMO) {
+        if (sceneNum == SCENE_DDAN_BOSS || sceneNum == SCENE_MIZUSIN_BS || sceneNum == SCENE_JYASINBOSS ||
+            sceneNum == SCENE_GANON_BOSS || sceneNum == SCENE_TURIBORI || sceneNum == SCENE_GANON_DEMO) {
             return GameInteractionEffectQueryResult::NotPossible;
         }
     }
@@ -424,7 +441,6 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
     CollisionPoly poly;
     Vec3f pos;
     f32 raycastResult;
-    Player* player = GET_PLAYER(gPlayState);
 
     pos.x = player->actor.world.pos.x + posXOffset;
     pos.y = player->actor.world.pos.y + 50;
