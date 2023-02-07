@@ -3058,7 +3058,10 @@ void DrawRandoEditor(bool& open) {
 
         //Check for number-only string to pass through without hashing
         for (char a = *seedInputBuffer; seedInputBuffer; a = *++seedInputBuffer) {
-            if (!(isdigit(a))) passthru = false; break;
+            if (!(isdigit(a))) {
+                passthru = false;
+                break;
+            }
         }
         
         if (!passthru) {
