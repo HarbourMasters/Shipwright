@@ -81,6 +81,9 @@ static s32 sCurCeilingBgId;
 // Used for animating the ice trap on the "Get Item" model.
 f32 iceTrapScale;
 
+// For Link's voice pitch SFX modifier
+static f32 freqMultiplier = 1;
+
 void ActorShape_Init(ActorShape* shape, f32 yOffset, ActorShadowFunc shadowDraw, f32 shadowScale) {
     shape->yOffset = yOffset;
     shape->shadowDraw = shadowDraw;
@@ -2186,10 +2189,9 @@ void func_8002F7DC(Actor* actor, u16 sfxId) {
         Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &D_801333E0 , &D_801333E0, &D_801333E8);
     }
     else {
-        f32 freqMultiplier = CVarGetFloat("gLinkVoiceFreqMultiplier", 1.0);
+        freqMultiplier = CVarGetFloat("gLinkVoiceFreqMultiplier", 1.0);
         if (freqMultiplier <= 0) freqMultiplier = 1;
-        *((f32*) (&D_801333EC)) = freqMultiplier; //hijacking unused pointer
-        Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, (f32*) (&D_801333EC), &D_801333E0, &D_801333E8);
+        Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &freqMultiplier, &D_801333E0, &D_801333E8);
     }
 }
 
