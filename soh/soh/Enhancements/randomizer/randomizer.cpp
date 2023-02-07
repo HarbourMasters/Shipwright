@@ -3052,7 +3052,7 @@ void DrawRandoEditor(bool& open) {
     UIWidgets::Spacer(0);
 
     ImGui::Text("Seed");
-    if (ImGui::InputText("##RandomizerSeed", seedInputBuffer, MAX_SEED_BUFFER_SIZE, ImGuiInputTextFlags_CharsNoBlank)) {
+    if (ImGui::InputText("##RandomizerSeed", seedInputBuffer, MAX_SEED_BUFFER_SIZE, ImGuiInputTextFlags_AutoSelectAll)) {
         bool passthru = true;
         uint32_t seedInput;
 
