@@ -376,6 +376,8 @@ bool showKeysanity;
 bool showGerudoFortressKeys;
 bool showBossKeysanity;
 bool showGanonBossKey;
+bool showOcarinas;
+bool show100SkullReward;
 bool fortressFast;
 bool fortressNormal;
 
@@ -429,6 +431,12 @@ void LoadSettings() {
     showGanonBossKey = gSaveContext.n64ddFlag ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_VANILLA
         : false;
+    showOcarinas = gSaveContext.n64ddFlag ?
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_OCARINA) == RO_GENERIC_YES
+        : false;
+    show100SkullReward = gSaveContext.n64ddFlag ?
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_100_GS_REWARD) == RO_GENERIC_YES
+        : false;
 
     if (gSaveContext.n64ddFlag) {
         switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS)) {
@@ -475,6 +483,7 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
         (rcObj.rcArea != RCAREA_INVALID) &&         // don't show Invalid locations
         (rcObj.rcType != RCTYPE_GOSSIP_STONE) &&    //TODO: Don't show hints until tracker supports them
         (rcObj.rcType != RCTYPE_CHEST_GAME) &&      // don't show non final reward chest game checks until we support shuffling them
+        (rcObj.rc != RC_HC_ZELDAS_LETTER) &&        // don't show zeldas letter until we support shuffling it
         (!RandomizerCheckObjects::AreaIsDungeon(rcObj.rcArea) ||
             rcObj.vOrMQ == RCVORMQ_BOTH ||
             rcObj.vOrMQ == RCVORMQ_MQ && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) ||
@@ -482,30 +491,32 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
         ) &&
         (rcObj.rcType != RCTYPE_SHOP                || showShops) &&
         (rcObj.rcType != RCTYPE_SCRUB ||
-         showScrubs || 
-         rcObj.rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
-         rcObj.rc == RC_HF_DEKU_SCRUB_GROTTO ||
-         rcObj.rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT
+            showScrubs || 
+            rcObj.rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
+            rcObj.rc == RC_HF_DEKU_SCRUB_GROTTO ||
+            rcObj.rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT
         ) &&
         (rcObj.rcType != RCTYPE_MERCHANT            || showMerchants) &&
+        (rcObj.rcType != RCTYPE_OCARINA             || showOcarinas) &&
         (rcObj.rcType != RCTYPE_SKULL_TOKEN ||
             (showOverworldTokens && RandomizerCheckObjects::AreaIsOverworld(rcObj.rcArea)) ||
             (showDungeonTokens && RandomizerCheckObjects::AreaIsDungeon(rcObj.rcArea))
         ) &&
         (rcObj.rcType != RCTYPE_COW                 || showCows) &&
         (rcObj.rcType != RCTYPE_ADULT_TRADE ||
-         showAdultTrade ||
-         rcObj.rc == RC_KAK_ANJU_AS_ADULT ||  // adult trade checks that are always shuffled
-         rcObj.rc == RC_DMT_TRADE_CLAIM_CHECK // even when shuffle adult trade is off
+            showAdultTrade ||
+            rcObj.rc == RC_KAK_ANJU_AS_ADULT ||  // adult trade checks that are always shuffled
+            rcObj.rc == RC_DMT_TRADE_CLAIM_CHECK // even when shuffle adult trade is off
         ) &&
-        (rcObj.rc != RC_KF_KOKIRI_SWORD_CHEST       || showKokiriSword) &&
-        (rcObj.rc != RC_ZR_MAGIC_BEAN_SALESMAN      || showBeans) &&
-        (rcObj.rc != RC_HC_MALON_EGG                || showWeirdEgg) &&
-        (rcObj.rcType != RCTYPE_FROG_SONG           || showFrogSongRupees) &&
-        (rcObj.rcType != RCTYPE_MAP_COMPASS         || showStartingMapsCompasses) &&
-        (rcObj.rcType != RCTYPE_SMALL_KEY           || showKeysanity) &&
-        (rcObj.rcType != RCTYPE_BOSS_KEY            || showBossKeysanity) &&
-        (rcObj.rcType != RCTYPE_GANON_BOSS_KEY      || showGanonBossKey) &&
+        (rcObj.rc != RC_KF_KOKIRI_SWORD_CHEST         || showKokiriSword) &&
+        (rcObj.rc != RC_ZR_MAGIC_BEAN_SALESMAN        || showBeans) &&
+        (rcObj.rc != RC_HC_MALON_EGG                  || showWeirdEgg) &&
+        (rcObj.rcType != RCTYPE_FROG_SONG             || showFrogSongRupees) &&
+        (rcObj.rcType != RCTYPE_MAP_COMPASS           || showStartingMapsCompasses) &&
+        (rcObj.rcType != RCTYPE_SMALL_KEY             || showKeysanity) &&
+        (rcObj.rcType != RCTYPE_BOSS_KEY              || showBossKeysanity) &&
+        (rcObj.rcType != RCTYPE_GANON_BOSS_KEY        || showGanonBossKey) &&
+        (rcObj.rc != RC_KAK_100_GOLD_SKULLTULA_REWARD || show100SkullReward) &&
         (rcObj.rcType != RCTYPE_GF_KEY && rcObj.rc != RC_GF_GERUDO_MEMBERSHIP_CARD ||
             (showGerudoCard && rcObj.rc == RC_GF_GERUDO_MEMBERSHIP_CARD) ||
             (fortressNormal && showGerudoFortressKeys && rcObj.rcType == RCTYPE_GF_KEY) ||

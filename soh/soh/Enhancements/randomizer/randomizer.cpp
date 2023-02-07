@@ -2939,6 +2939,14 @@ void GenerateRandomizerImgui(std::string seed = "") {
         excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
     }
 
+    // Remove excludes for locations that are no longer allowed to be excluded
+    for (auto [randomizerCheck, rcObject] : RandomizerCheckObjects::GetAllRCObjects()) {
+        auto elfound = excludedLocations.find(rcObject.rc);
+        if (!rcObject.visibleInImgui && elfound != excludedLocations.end()) {
+            excludedLocations.erase(elfound);
+        }
+    }
+
     RandoMain::GenerateRando(cvarSettings, excludedLocations, seed);
 
     memset(seedInputBuffer, 0, MAX_SEED_BUFFER_SIZE);
@@ -4202,8 +4210,8 @@ void DrawRandoEditor(bool& open) {
                 for (auto [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
                     bool hasItems = false;
                     for (auto [randomizerCheck, rcObject] : rcObjects) {
-                        if (rcObject.visibleInImgui && !excludedLocations.count(rcObject.rc) &&
-                            locationSearch.PassFilter(rcObject.rcSpoilerName.c_str())) {
+                        if (rcObject->visibleInImgui && !excludedLocations.count(rcObject->rc) &&
+                            locationSearch.PassFilter(rcObject->rcSpoilerName.c_str())) {
 
                             hasItems = true;
                             break;
@@ -4214,11 +4222,11 @@ void DrawRandoEditor(bool& open) {
                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                         if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
                             for (auto [randomizerCheck, rcObject] : rcObjects) {
-                                if (rcObject.visibleInImgui && !excludedLocations.count(rcObject.rc) &&
-                                    locationSearch.PassFilter(rcObject.rcSpoilerName.c_str())) {
+                                if (rcObject->visibleInImgui && !excludedLocations.count(rcObject->rc) &&
+                                    locationSearch.PassFilter(rcObject->rcSpoilerName.c_str())) {
 
-                                    if (ImGui::ArrowButton(std::to_string(rcObject.rc).c_str(), ImGuiDir_Right)) {
-                                        excludedLocations.insert(rcObject.rc);
+                                    if (ImGui::ArrowButton(std::to_string(rcObject->rc).c_str(), ImGuiDir_Right)) {
+                                        excludedLocations.insert(rcObject->rc);
                                         // todo: this efficently when we build out cvar array support
                                         std::string excludedLocationString = "";
                                         for (auto excludedLocationIt : excludedLocations) {
@@ -4229,7 +4237,7 @@ void DrawRandoEditor(bool& open) {
                                         SohImGui::RequestCvarSaveOnNextTick();
                                     }
                                     ImGui::SameLine();
-                                    ImGui::Text(rcObject.rcShortName.c_str());
+                                    ImGui::Text(rcObject->rcShortName.c_str());
                                 }
                             }
                             ImGui::TreePop();
@@ -4246,7 +4254,7 @@ void DrawRandoEditor(bool& open) {
                 for (auto [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
                     bool hasItems = false;
                     for (auto [randomizerCheck, rcObject] : rcObjects) {
-                        if (rcObject.visibleInImgui && excludedLocations.count(rcObject.rc)) {
+                        if (rcObject->visibleInImgui && excludedLocations.count(rcObject->rc)) {
                             hasItems = true;
                             break;
                         }
@@ -4256,9 +4264,9 @@ void DrawRandoEditor(bool& open) {
                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                         if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
                             for (auto [randomizerCheck, rcObject] : rcObjects) {
-                                auto elfound = excludedLocations.find(rcObject.rc);
-                                if (rcObject.visibleInImgui && elfound != excludedLocations.end()) {
-                                    if (ImGui::ArrowButton(std::to_string(rcObject.rc).c_str(), ImGuiDir_Left)) {
+                                auto elfound = excludedLocations.find(rcObject->rc);
+                                if (rcObject->visibleInImgui && elfound != excludedLocations.end()) {
+                                    if (ImGui::ArrowButton(std::to_string(rcObject->rc).c_str(), ImGuiDir_Left)) {
                                         excludedLocations.erase(elfound);
                                         // todo: this efficently when we build out cvar array support
                                         std::string excludedLocationString = "";
@@ -4270,7 +4278,7 @@ void DrawRandoEditor(bool& open) {
                                         SohImGui::RequestCvarSaveOnNextTick();
                                     }
                                     ImGui::SameLine();
-                                    ImGui::Text(rcObject.rcShortName.c_str());
+                                    ImGui::Text(rcObject->rcShortName.c_str());
                                 }
                             }
                             ImGui::TreePop();
