@@ -531,7 +531,8 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
         return "";
     } else {
         try {
-            int seed = std::stoi(seedInput, nullptr);
+            //int seed = std::stoi(seedInput, nullptr);
+            int seed = std::stoul(seedInput, nullptr) & 0xFFFFFFFF;
             Settings::seed = seed;
         } catch (...) {
             return "";

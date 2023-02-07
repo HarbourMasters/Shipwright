@@ -26,6 +26,7 @@
 #include <functional>
 #include "draw.h"
 #include "rando_hash.h"
+#include <boost_custom/container_hash/hash_32.hpp>
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -3051,9 +3052,20 @@ void DrawRandoEditor(bool& open) {
     UIWidgets::Spacer(0);
 
     ImGui::Text("Seed");
-    if (ImGui::InputText("##RandomizerSeed", seedInputBuffer, MAX_SEED_BUFFER_SIZE, ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterNumbers)) {
+    if (ImGui::InputText("##RandomizerSeed", seedInputBuffer, MAX_SEED_BUFFER_SIZE, ImGuiInputTextFlags_CharsNoBlank)) {
+        bool passthru = true;
         uint32_t seedInput;
-        ImGui::DataTypeApplyFromText(seedInputBuffer, ImGuiDataType_U32, &seedInput, "%u");
+
+        //Check for number-only string to pass through without hashing
+        for (char a = *seedInputBuffer; seedInputBuffer; a = *++seedInputBuffer) {
+            if (!(isdigit(a))) passthru = false; break;
+        }
+        
+        if (!passthru) {
+            seedInput = boost::hash_32<std::string>{}(seedInputBuffer);
+        } else {
+            ImGui::DataTypeApplyFromText(seedInputBuffer, ImGuiDataType_U32, &seedInput, "%u");
+        }
         strncpy(seedInputBuffer, std::to_string(seedInput).c_str(), MAX_SEED_BUFFER_SIZE);
     }
     UIWidgets::Tooltip("Leaving this field blank will use a random seed value automatically\nSeed range is 0 - 4,294,967,295");
