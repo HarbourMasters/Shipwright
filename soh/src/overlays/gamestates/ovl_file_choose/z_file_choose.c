@@ -13,19 +13,33 @@
 #define NORMAL_QUEST 0
 #define MASTER_QUEST 1
 #define RANDOMIZER_QUEST 2
-#define MIN_QUEST (ResourceMgr_GameHasOriginal() ? NORMAL_QUEST : MASTER_QUEST)
-u8 getMaxQuest() {
-    if ((strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0)) {
-        return RANDOMIZER_QUEST;
-    }
 
+s8 availableQuests[4];
+s8 availQuestIndex;
+void FileChoose_UpdateAvailableQuests(void) {
+    int i = 0;
+
+    if (ResourceMgr_GameHasOriginal()) {
+        availableQuests[i++] = NORMAL_QUEST;
+    }
     if (ResourceMgr_GameHasMasterQuest()) {
-        return MASTER_QUEST;
+        availableQuests[i++] = MASTER_QUEST;
+    }
+    if ((strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0)) {
+        availableQuests[i++] = RANDOMIZER_QUEST;
     }
 
-    return NORMAL_QUEST;
+    availableQuests[i] = -1;
 }
-#define MAX_QUEST getMaxQuest()
+int FileChoose_CountAvailableQuests(void) {
+    int i;
+
+    for (i = 0; i < 3; i++) {
+        if (availableQuests[i] == -1)
+            break;
+    }
+    return i;
+}
 
 void FileChoose_DrawTextureI8(GraphicsContext* gfxCtx, const void* texture, s16 texWidth, s16 texHeight, s16 rectLeft, s16 rectTop,
                          s16 rectWidth, s16 rectHeight, u16 dsdx, u16 dtdy) {
@@ -478,18 +492,20 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     bool dpad = CVarGetInteger("gDpadText", 0);
 
     FileChoose_UpdateRandomizer();
+    FileChoose_UpdateAvailableQuests();
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
         if (this->buttonIndex <= FS_BTN_MAIN_FILE_3) {
             if (!Save_GetSaveMetaInfo(this->buttonIndex)->valid) {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                 this->prevConfigMode = this->configMode;
-                if (MIN_QUEST != MAX_QUEST) {
+                if (FileChoose_CountAvailableQuests() > 1) {
                     this->configMode = CM_ROTATE_TO_QUEST_MENU;
+                    availQuestIndex = 0;
                 } else {
                     this->configMode = CM_ROTATE_TO_NAME_ENTRY;
-                    gSaveContext.isMasterQuest = MIN_QUEST == MASTER_QUEST;
-                    this->questType[this->buttonIndex] = MIN_QUEST;
+                    gSaveContext.isMasterQuest = availableQuests[0] == MASTER_QUEST;
+                    this->questType[this->buttonIndex] = availableQuests[0];
                     CVarSetInteger("gOnFileSelectNameEntry", 1);
                     this->kbdButton = FS_KBD_BTN_NONE;
                     this->charPage = FS_CHAR_PAGE_ENG;
@@ -661,32 +677,19 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     bool dpad = CVarGetInteger("gDpadText", 0);(dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP));
 
     FileChoose_UpdateRandomizer();
+    FileChoose_UpdateAvailableQuests();
 
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
-            this->questType[this->buttonIndex] += 1;
-            if (this->questType[this->buttonIndex] == MASTER_QUEST && !ResourceMgr_GameHasMasterQuest()) {
-                // the only case not handled by the MIN/MAX_QUEST logic below. This will either put it at 
-                // above MAX_QUEST in which case it will wrap back around, or it will put it on MAX_QUEST
-                // in which case if MAX_QUEST even is that number it will be a valid selection that won't
-                // crash.
-                this->questType[this->buttonIndex] += 1;
-            }
+            availQuestIndex += 1;
         } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
-            this->questType[this->buttonIndex] -= 1;
-            if (this->questType[this->buttonIndex] == MASTER_QUEST && !ResourceMgr_GameHasMasterQuest()) {
-                // the only case not handled by the MIN/MAX_QUEST logic below. This will either put it at
-                // below MIN_QUEST in which case it will wrap back around, or it will put it on MIN_QUEST
-                // in which case if MIN_QUEST even is that number it will be a valid selection that won't
-                // crash.
-                this->questType[this->buttonIndex] -= 1;
-            }
+            availQuestIndex -= 1;
         }
 
-        if (this->questType[this->buttonIndex] > MAX_QUEST) {
-            this->questType[this->buttonIndex] = MIN_QUEST;
-        } else if (this->questType[this->buttonIndex] < MIN_QUEST) {
-            this->questType[this->buttonIndex] = MAX_QUEST;
+        if (availQuestIndex < 0) {
+            availQuestIndex = FileChoose_CountAvailableQuests() - 1;
+        } else if (availQuestIndex >= FileChoose_CountAvailableQuests()) {
+            availQuestIndex = 0;
         }
 
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -694,6 +697,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
 
     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        this->questType[this->buttonIndex] = availableQuests[availQuestIndex];
         gSaveContext.isMasterQuest = this->questType[this->buttonIndex] == MASTER_QUEST;
         gSaveContext.n64ddFlag = this->questType[this->buttonIndex] == RANDOMIZER_QUEST;
         osSyncPrintf("Selected Dungeon Quest: %d\n", gSaveContext.isMasterQuest);
@@ -752,7 +756,7 @@ void FileChoose_RotateToNameEntry(GameState* thisx) {
 
     this->windowRot += VREG(16);
 
-    if (MIN_QUEST == MAX_QUEST && this->windowRot >= 314.0f) {
+    if (FileChoose_CountAvailableQuests() <= 1 && this->windowRot >= 314.0f) {
         this->windowRot = 314.0f;
         this->configMode = CM_START_NAME_ENTRY;
     } else if (this->windowRot >= 628.0f) {
@@ -782,7 +786,7 @@ void FileChoose_RotateToOptions(GameState* thisx) {
  */
 void FileChoose_RotateToMain(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
-    if (this->configMode == CM_QUEST_TO_MAIN || (MIN_QUEST == MAX_QUEST && this->configMode == CM_NAME_ENTRY_TO_MAIN && this->prevConfigMode != CM_MAIN_MENU) || 
+    if (this->configMode == CM_QUEST_TO_MAIN || (FileChoose_CountAvailableQuests() <= 1 && this->configMode == CM_NAME_ENTRY_TO_MAIN && this->prevConfigMode != CM_MAIN_MENU) ||
         this->configMode == CM_OPTIONS_TO_MAIN) {
         this->windowRot -= VREG(16);
 
@@ -795,7 +799,7 @@ void FileChoose_RotateToMain(GameState* thisx) {
     if (this->configMode == CM_NAME_ENTRY_TO_MAIN && this->prevConfigMode == CM_MAIN_MENU) {
         this->windowRot += VREG(16);
 
-        if (this->windowRot >= 942.0f || (MIN_QUEST == MAX_QUEST && this->windowRot >= 628.0f)) {
+        if (this->windowRot >= 942.0f || (FileChoose_CountAvailableQuests() <= 1 && this->windowRot >= 628.0f)) {
             this->windowRot = 0.0f;
             this->configMode = CM_MAIN_MENU;
         }
@@ -1434,7 +1438,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_START_QUEST_MENU) || 
         this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU) {
         // draw control stick prompts.
-        if (MIN_QUEST != MAX_QUEST) {
+        if (FileChoose_CountAvailableQuests() > 1) {
             Gfx_SetupDL_39Opa(this->state.gfxCtx);
             gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
             gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
@@ -1460,9 +1464,8 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                     this->stickRightPrompt.stickColorA, this->stickRightPrompt.stickTexX,
                                     this->stickRightPrompt.stickTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
         }
-        switch (this->questType[this->buttonIndex]) {
+        switch (availableQuests[availQuestIndex]) {
             case NORMAL_QUEST:
-            default:
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->logoAlpha);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
@@ -1724,7 +1727,7 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
         if (this->windowRot != 0) {
             if (this->configMode == CM_ROTATE_TO_QUEST_MENU || 
                 (this->configMode >= CM_MAIN_TO_OPTIONS && this->configMode <= CM_OPTIONS_TO_MAIN) ||
-                MIN_QUEST == MAX_QUEST || this->configMode == CM_QUEST_TO_MAIN) {
+                FileChoose_CountAvailableQuests() <= 1 || this->configMode == CM_QUEST_TO_MAIN) {
                 Matrix_RotateX(this->windowRot / 100.0f, MTXMODE_APPLY);
             } else {
                 Matrix_RotateX((this->windowRot - 942.0f) / 100.0f, MTXMODE_APPLY);
@@ -1758,7 +1761,7 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
 
         Matrix_Translate(0.0f, 0.0f, -93.6f, MTXMODE_NEW);
         Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
-        if (MIN_QUEST == MAX_QUEST) {
+        if (FileChoose_CountAvailableQuests() <= 1) {
             Matrix_RotateX((this->windowRot - 314.0f) / 100.0f, MTXMODE_APPLY);
         } else {
             Matrix_RotateX((this->windowRot - 628.0f) / 100.0f, MTXMODE_APPLY);
@@ -2627,10 +2630,12 @@ void FileChoose_Init(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     size_t size = (u32)_title_staticSegmentRomEnd - (u32)_title_staticSegmentRomStart;
     s32 pad;
+
+    FileChoose_UpdateAvailableQuests();
     this->logoAlpha = 0;
-    this->questType[0] = MIN_QUEST;
-    this->questType[1] = MIN_QUEST;
-    this->questType[2] = MIN_QUEST;
+    this->questType[0] = availableQuests[0];
+    this->questType[1] = availableQuests[0];
+    this->questType[2] = availableQuests[0];
     fileSelectSpoilerFileLoaded = false;
     isFastFileIdIncompatible = 0;
     CVarSetInteger("gOnFileSelectNameEntry", 0);
