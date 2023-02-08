@@ -831,6 +831,10 @@ void DrawEntranceTracker(bool& open) {
                     const EntranceData* original = GetEntranceData(entrance.index);
                     const EntranceData* override = GetEntranceData(entrance.override);
 
+                    if (original->type == ENTRANCE_TYPE_DUNGEON || original->type == ENTRANCE_TYPE_GROTTO || original->type == ENTRANCE_TYPE_INTERIOR)
+                        if (original->oneExit != 1 && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF)
+                            continue;
+
                     bool isDiscovered = IsEntranceDiscovered(entrance.index);
 
                     bool showOriginal = (!destToggle ? CVarGetInteger("gEntranceTrackerShowTo", 0) : CVarGetInteger("gEntranceTrackerShowFrom", 0)) || isDiscovered;
