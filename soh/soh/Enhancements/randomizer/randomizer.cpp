@@ -21,6 +21,7 @@
 #include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include <stdexcept>
 #include "randomizer_check_objects.h"
+#include "randomizer_tricks.h"
 #include <sstream>
 #include <tuple>
 #include <functional>
@@ -38,6 +39,8 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum;
 std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum;
 std::multimap<std::tuple<s16, s16, s32>, RandomizerCheckObject> checkFromActorMultimap;
 std::set<RandomizerCheck> excludedLocations;
+std::set<RandomizerTrick> enabledTricks;
+std::set<RandomizerTrick> enabledGlitches;
 
 u8 generated;
 char* seedString;
@@ -3067,7 +3070,7 @@ void DrawRandoEditor(bool& open) {
 
     // Randomizer settings
     // Logic Settings
-    static const char* randoLogicRules[2] = { "Glitchless", "No logic" };
+    static const char* randoLogicRules[3] = { "Glitchless", "Glitched", "No logic" };
 
     // Open Settings
     static const char* randoForest[3] = { "Closed", "Closed Deku", "Open" };
@@ -4413,7 +4416,27 @@ void DrawRandoEditor(bool& open) {
             locationsTabOpen = false;
         }
 
+        static bool tricksTabOpen = false;
         if (ImGui::BeginTabItem("Tricks/Glitches")) {
+            if (!tricksTabOpen) {
+                tricksTabOpen = true;
+                //TODO have update based on available locations
+                //RandomizerTricks::UpdateImGuiVisibility();
+                // todo: this efficently when we build out cvar array support
+                std::stringstream enabledTrickStringStream(CVarGetString("gRandomizeEnabledTricks", ""));
+                std::string enabledTrickString;
+                enabledTricks.clear();
+                while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
+                    enabledTricks.insert((RandomizerTrick)std::stoi(enabledTrickString));
+                }
+                std::stringstream enabledGlitchStringStream(CVarGetString("gRandomizeEnabledGlitches", ""));
+                std::string enabledGlitchString;
+                enabledGlitches.clear();
+                while (getline(enabledGlitchStringStream, enabledGlitchString, ',')) {
+                    enabledGlitches.insert((RandomizerTrick)std::stoi(enabledGlitchString));
+                }
+            }
+            
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoLogic", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -4422,12 +4445,14 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PushItemWidth(170.0);
                 ImGui::Text("Logic Rules");
                 UIWidgets::InsertHelpHoverText(
-                    "Glitchless - No glitches are required, but may require some minor tricks.\n"
+                    "Glitchless - No glitches are required, but may require some minor tricks. Additional tricks may be enabled and disabled below.\n"
+                    "\n"
+                    "Glitched - Glitches may be required to beat the game. You can disable and enable glitches below.\n"
                     "\n"
                     "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, RO_LOGIC_MAX, RO_LOGIC_GLITCHLESS);
-                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHLESS) {
+                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
                     ImGui::SameLine();
                     UIWidgets::EnhancementCheckbox(Settings::LocationsReachable.GetName().c_str(), "gRandomizeAllLocationsReachable", false, "", UIWidgets::CheckboxGraphics::Cross, RO_GENERIC_ON);
                     UIWidgets::InsertHelpHoverText(
@@ -4451,35 +4476,242 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
-            if (ImGui::BeginTable("tableRandoTricksGlitches", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("Disabled", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Enabled", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+
+            // Glitchless and Enhancement Based Tricks (e.g. Bunny Hood Jumps)
+
+            if (ImGui::BeginTable("tableRandoTricks", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                ImGui::TableSetupColumn("Disabled Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Enabled Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
                 ImGui::TableNextRow();
 
-                // COLUMN 1 - DISABLED TRICKS AND GLITCHES
+                // COLUMN 1 - DISABLED TRICKS
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildTricksGlitchesDisabled", ImVec2(0, -8));
 
-                ImGui::Text("Coming soon");
+                static ImGuiTextFilter trickSearch;
+                trickSearch.Draw();
+                
+                //TODO requires logic condition block
+                //TODO Figure out a good size for this (or an automatic resizer)
+                ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, 200));
+
+                for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                    bool hasTricks = false;
+                    for (auto [randomizerTrick, rtObject] : rtObjects) {
+                        if (rtObject.visibleInImgui &&
+                            trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                            !enabledTricks.count(rtObject.rt) &&
+                            !rtObject.rtGlitch) {
+
+                            hasTricks = true;
+                            break;
+                        }
+                    }
+
+                    if (hasTricks) {
+                        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                        if (ImGui::TreeNode(RandomizerTricks::GetRTAreaName(rtArea).c_str())) {
+                            for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                if (rtObject.visibleInImgui &&
+                                    trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                    !enabledTricks.count(rtObject.rt) &&
+                                    !rtObject.rtGlitch) {
+
+                                    if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Right)) {
+                                        enabledTricks.insert(rtObject.rt);
+                                        // todo: this efficently when we build out cvar array support
+                                        std::string enabledTrickString = "";
+                                        for (auto enabledTrickIt : enabledTricks) {
+                                            enabledTrickString += std::to_string(enabledTrickIt);
+                                            enabledTrickString += ",";
+                                        }
+                                        CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                                        SohImGui::RequestCvarSaveOnNextTick();
+                                    }
+                                    ImGui::SameLine();
+                                    ImGui::Text(rtObject.rtShortName.c_str());
+                                    UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                }
+                            }
+                            ImGui::TreePop();
+                        }
+                    }
+                }
 
                 ImGui::EndChild();
 
-                // COLUMN 2 - ENABLED TRICKS AND GLITCHES
+                // COLUMN 2 - ENABLED TRICKS
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildTricksGlitchesEnabled", ImVec2(0, -8));
+                ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, 200));
 
-                ImGui::Text("Coming soon");
+                for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                    bool hasItems = false;
+                    for (auto [randomizerTrick, rtObject] : rtObjects) {
+                        if (rtObject.visibleInImgui && enabledTricks.count(rtObject.rt) && !rtObject.rtGlitch) {
+                            hasItems = true;
+                            break;
+                        }
+                    }
+
+                    if (hasItems) {
+                        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                        if (ImGui::TreeNode(RandomizerTricks::GetRTAreaName(rtArea).c_str())) {
+                            for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                auto etfound = enabledTricks.find(rtObject.rt);
+                                if (rtObject.visibleInImgui && etfound != enabledTricks.end() && !rtObject.rtGlitch) {
+                                    if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Left)) {
+                                        enabledTricks.erase(etfound);
+                                        // todo: this efficently when we build out cvar array support
+                                        std::string enabledTrickString = "";
+                                        for (auto enabledTrickIt : enabledTricks) {
+                                            enabledTrickString += std::to_string(enabledTrickIt);
+                                            enabledTrickString += ",";
+                                        }
+                                        CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                                        SohImGui::RequestCvarSaveOnNextTick();
+                                    }
+                                    ImGui::SameLine();
+                                    ImGui::Text(rtObject.rtShortName.c_str());
+                                    UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                }
+                            }
+                            ImGui::TreePop();
+                        }
+                    }
+                }
+                ImGui::EndChild();
+                ImGui::EndTable();
+            }
+            if (ImGui::BeginTable("tableRandoGlitches", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                ImGui::TableSetupColumn("Disabled Glitches", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Enabled Glitches", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                ImGui::TableHeadersRow();
+                ImGui::PopItemFlag();
+                ImGui::TableNextRow();
+
+
+                // COLUMN 1 - DISABLED GLITCHES
+                ImGui::TableNextColumn();
+                
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                static ImGuiTextFilter glitchSearch;
+                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHED) {
+                    glitchSearch.Draw();
+                }
+
+                ImGui::BeginChild("ChildGlitchesDisabled", ImVec2(0, -8));
+
+                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHED) {
+                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                        bool hasTricks = false;
+                        for (auto [randomizerTrick, rtObject] : rtObjects) {
+                            if (rtObject.visibleInImgui &&
+                                glitchSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                !enabledGlitches.count(rtObject.rt) &&
+                                rtObject.rtGlitch) {
+
+                                hasTricks = true;
+                                break;
+                            }
+                        }
+
+                        if (hasTricks) {
+                            ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                            if (ImGui::TreeNode(RandomizerTricks::GetRTAreaName(rtArea).c_str())) {
+                                for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                    if (rtObject.visibleInImgui &&
+                                        glitchSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                        !enabledGlitches.count(rtObject.rt) &&
+                                        rtObject.rtGlitch) {
+
+                                        if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Right)) {
+                                            enabledGlitches.insert(rtObject.rt);
+                                            // todo: this efficently when we build out cvar array support
+                                            std::string enabledGlitchString = "";
+                                            for (auto enabledGlitchIt : enabledGlitches) {
+                                                enabledGlitchString += std::to_string(enabledGlitchIt);
+                                                enabledGlitchString += ",";
+                                            }
+                                            CVarSetString("gRandomizeEnabledGlitches", enabledGlitchString.c_str());
+                                            SohImGui::RequestCvarSaveOnNextTick();
+                                        }
+                                        ImGui::SameLine();
+                                        ImGui::Text(rtObject.rtShortName.c_str());
+                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                    }
+                                }
+                                ImGui::TreePop();
+                            }
+                        }
+                    }
+                }
+                else {
+                    ImGui::Text("Requires Glitched Logic");
+                }
+                
+                
 
                 ImGui::EndChild();
+                
+                // COLUMN 2 - ENABLED GLITCHES
+                
+                ImGui::TableNextColumn();
+                window->DC.CurrLineTextBaseOffset = 0.0f;
+                ImGui::BeginChild("ChildGlitchesEnabled", ImVec2(0, -8));
+
+                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHED) {
+                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                        bool hasItems = false;
+                        for (auto [randomizerTrick, rtObject] : rtObjects) {
+                            if (rtObject.visibleInImgui && enabledGlitches.count(rtObject.rt) && rtObject.rtGlitch) {
+                                hasItems = true;
+                                break;
+                            }
+                        }
+
+                        if (hasItems) {
+                            ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                            if (ImGui::TreeNode(RandomizerTricks::GetRTAreaName(rtArea).c_str())) {
+                                for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                    auto etfound = enabledGlitches.find(rtObject.rt);
+                                    if (rtObject.visibleInImgui && etfound != enabledGlitches.end() && rtObject.rtGlitch) {
+                                        if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Left)) {
+                                            enabledGlitches.erase(etfound);
+                                            // todo: this efficently when we build out cvar array support
+                                            std::string enabledGlitchString = "";
+                                            for (auto enabledGlitchIt : enabledGlitches) {
+                                                enabledGlitchString += std::to_string(enabledGlitchIt);
+                                                enabledGlitchString += ",";
+                                            }
+                                            CVarSetString("gRandomizeEnabledGlitches", enabledGlitchString.c_str());
+                                            SohImGui::RequestCvarSaveOnNextTick();
+                                        }
+                                        ImGui::SameLine();
+                                        ImGui::Text(rtObject.rtShortName.c_str());
+                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                    }
+                                }
+                                ImGui::TreePop();
+                            }
+                        }
+                    }
+                }
+                else {
+                    ImGui::Text("Requires Glitched Logic");
+                }
+                ImGui::EndChild();
+                
                 ImGui::EndTable();
             }
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
+        } else {
+            tricksTabOpen = false;
         }
 
         if (ImGui::BeginTabItem("Starting Inventory")) {

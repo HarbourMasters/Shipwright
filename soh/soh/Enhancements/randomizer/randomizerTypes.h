@@ -769,6 +769,111 @@ typedef enum {
     RC_MAX
 } RandomizerCheck;
 
+// Randomizer tricks and glitches (beta) based on knowledge of what is achievable in Ship of Harkinian randomizer, excludes Item manipulation (e.g. RBA/GIM/SRM) and Wrong Warping and Ganon BK Skip
+// TODO Fill and alphabetize (area based tricks must have area in name and come alphetized after general tricks) 
+// TODO test commented out tricks to see if consistent with console on SoH
+// TODO add area specific tricks
+typedef enum {
+    
+    RT_ACUTE_ANGLE_CLIP,
+    RT_ADVANCED_CLIPS,
+    RT_BLANK_A,
+    RT_DOOM_JUMP,
+    RT_EPG,
+    RT_EQUIP_SWAP,
+    RT_EQUIP_SWAP_EXPECTS_DINS,
+    RT_FLAME_STORAGE,
+    RT_GROUND_CLIP,
+    RT_GROUND_JUMP,
+    RT_HESS,
+    RT_HOOKSHOT_CLIP,
+    RT_HOOKSHOT_JUMP,
+    RT_HOVERING,
+    RT_HOVERING_BOW_SLINGSHOT,
+    RT_HOVERING_CONTORTION,
+    RT_HOVERING_HOVERBOOTS,
+    RT_HOVERING_WALL,
+    RT_ISG,
+    RT_LADDER_CLIP,
+    RT_LADDER_CLIP_HOOKSHOT,
+    RT_LEDGE_CANCEL,
+    RT_LEDGE_CLIP,
+    RT_LUNGE_STORAGE,
+    RT_MEGAFLIP_BOMB,
+    RT_MEGAFLIP_BOMBCHU,
+    RT_MEGASIDEHOP_BOMB,
+    RT_MEGASIDEHOP_BOMBCHU,
+    RT_NAVI_DIVE,
+    RT_OCARINA_DIVE,
+    RT_OCARINA_ITEMS,
+    RT_OCARINA_ITEMS_BOMB,
+    RT_OCARINA_ITEMS_ESS,
+    RT_OCARINA_ITEMS_PUTAWAY,
+    RT_ONE_WAY_CLIPS,
+    RT_QUICKDRAW,
+    RT_QUICK_PUTAWAY,
+    RT_SEEMWALK,
+    RT_SUPERSLIDE,
+    RT_SUPERSLIDE_TELEPORT,
+    RT_TIME_STOP,
+    RT_TRIPLE_SLASH_CLIP,
+    RT_VINE_CLIP,
+    RT_WEIRDSHOT,
+    RT_WEIRDSHOT_BONK,
+    //RT_FW_VOID_WARP,                      --untested tricks:
+    //RT_FW_VOID_WARP_FAST_TEXT,
+    //RT_ACTION_SWAP,
+    //RT_ACTOR_GLITCH,
+    //RT_ADULT_TRADE_TTG,
+    RT_BUNNY_HOOD_JUMPS,
+    RT_DAMAGE_BOOST,
+    RT_NO_LENS,
+    RT_NO_STONE_OF_AGONY,
+    RT_NO_ZORA_TUNIC,
+    RT_RECOIL_BOOST,
+    //RT_ROCS_FEATHER                       --if implemented with main branch
+    RT_FOREST_TEMPLE_BK_SKIP,
+    RT_FIRE_TEMPLE_BK_SKIP,
+    RT_WATER_TEMPLE_BK_SKIP,
+    RT_SHADOW_TEMPLE_BK_SKIP,
+    RT_SPIRIT_BK_SKIP,
+    /*  AREA SPECIFIC GLITCHES
+
+    RT_TOT_DOT_SKIP_SWORDLESS,
+    RT_TOT_DOT_SKIP_SWORD,
+    RT_LLR_STEAL_EPONA,
+    RT_KF_POKEY_SKIP,
+    RT_KF_MIDO_SKIP,
+    RT_KF_CLIMB_TWINS_HOUSE,
+    //RT_KF_DEKU_TREE_ADULT
+    RT_LW_AQUAESCAPE,
+    RT_LW_MIDO_SKIP_ADULT,
+    RT_OGC_GOLD_GAUNTLET_SKIP,
+    RT_GY_ROYAL_TOMB,
+    RT_ZF_JABU_ADULT_BOMBCHU,
+    RT_ZF_JABU_ADULT_HOVERBOOT_BOMB,
+    RT_FOREST_TEMPLE_FOUR_POE_SKIP,
+    RT_FOREST_TEMPLE_JUNGLE_JUMP,
+    //RT_DARUNIA_CUTSCENE,
+    RT_BOTTOM_OF_THE_WELL_SKULL_PUSH,
+    RT_GANONS_CASTLE_BARRIER_SKIP_HOVER,
+    RT_GANONS_CASTLE_GOLD_GAUNTLET_SKIP,
+
+    //RT_DMT_TEKTITE,                       --extreme glitches
+    //RT_ZF_JABU_ADULT_TEKTITE,
+    //RT_COLOSSUS_SPIRIT_HOVER_GUAY,
+
+    ***TRICKS (TODO DOUBLE CHECK LOGIC: X - not in logic, nothing - untested)***
+
+    RT_DODONGOS_CAVERN_CHU_EYES,
+    RT_DODONGOS_CAVERN_CHU_KD,
+    RT_GANONS_CASTLE_SPT_CRYSTAL_BOW,
+    RT_ZR_CUCCO_WATERFALL,
+
+    */
+    RT_MAX
+} RandomizerTrick;
+
 // based on https://github.com/TestRunnerSRL/OoT-Randomizer/blob/e337d7f603b91a6bacb618fb32cc7fd70ed9ffca/ItemList.py
 typedef enum {
     RG_NONE,
@@ -1402,6 +1507,7 @@ typedef enum {
 // Logic (glitchless/no logic)
 typedef enum {
     RO_LOGIC_GLITCHLESS,
+    RO_LOGIC_GLITCHED,
     RO_LOGIC_NO_LOGIC,
     RO_LOGIC_MAX,
 } RandoOptionLogic;
