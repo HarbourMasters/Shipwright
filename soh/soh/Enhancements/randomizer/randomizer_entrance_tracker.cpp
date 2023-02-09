@@ -855,8 +855,6 @@ void DrawEntranceTracker(bool& open) {
                             CVarGetInteger("gEntranceTrackerHighlightPrevious", 0)) {
                                  color = COLOR_ORANGE;
                     } else if (LinkIsInArea(original) != -1) {
-                        printf("Last: %d; Original: %d,%d; Override: %d,%d", lastEntranceIndex, original->index,
-                               original->reverseIndex, override->index, override->reverseIndex);
                         if (CVarGetInteger("gEntranceTrackerHighlightAvailable", 0)) {
                             color = COLOR_GREEN;
                         }
