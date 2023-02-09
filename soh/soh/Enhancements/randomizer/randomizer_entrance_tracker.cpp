@@ -850,7 +850,13 @@ void DrawEntranceTracker(bool& open) {
                     uint32_t color = isDiscovered ? IM_COL32_WHITE : COLOR_GRAY;
 
                     // Handle highlighting and auto scroll
-                    if (LinkIsInArea(original) != -1) {
+                    if (original->index == lastEntranceIndex ||
+                        (override->reverseIndex == lastEntranceIndex && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF) &&
+                            CVarGetInteger("gEntranceTrackerHighlightPrevious", 0)) {
+                                 color = COLOR_ORANGE;
+                    } else if (LinkIsInArea(original) != -1) {
+                        printf("Last: %d; Original: %d,%d; Override: %d,%d", lastEntranceIndex, original->index,
+                               original->reverseIndex, override->index, override->reverseIndex);
                         if (CVarGetInteger("gEntranceTrackerHighlightAvailable", 0)) {
                             color = COLOR_GREEN;
                         }
@@ -860,10 +866,6 @@ void DrawEntranceTracker(bool& open) {
                             if (CVarGetInteger("gEntranceTrackerAutoScroll", 0)) {
                                 ImGui::SetScrollHereY(0.0f);
                             }
-                        }
-                    } else if (original->index == lastEntranceIndex) {
-                        if (CVarGetInteger("gEntranceTrackerHighlightPrevious", 0)) {
-                            color = COLOR_ORANGE;
                         }
                     }
 
