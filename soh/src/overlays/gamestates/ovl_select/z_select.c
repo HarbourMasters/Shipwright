@@ -1245,8 +1245,8 @@ void Better_Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 a
 
 void Select_PrintCutsceneSetting(SelectContext* this, GfxPrint* printer, u16 csIndex) {
     char* cutsceneLabels[13][4] = {
-        { GFXP_HIRAGANA " ﾖﾙ " GFXP_KATAKANA "ｺﾞﾛﾝ", "Day", "Nacht", "Jour" },
-        { GFXP_HIRAGANA "ｵﾋﾙ " GFXP_KATAKANA "ｼﾞｬﾗ", "Night", "Tag", "Nuit" },
+        { GFXP_HIRAGANA " ﾖﾙ " GFXP_KATAKANA "ｺﾞﾛﾝ", "Day", "Tag", "Jour" },
+        { GFXP_HIRAGANA "ｵﾋﾙ " GFXP_KATAKANA "ｼﾞｬﾗ", "Night", "Nacht", "Nuit" },
         { "ﾃﾞﾓ00", "Demo00", "Demo00", "Demo00" },
         { "ﾃﾞﾓ01", "Demo01", "Demo01", "Demo01" },
         { "ﾃﾞﾓ02", "Demo02", "Demo02", "Demo02" },
