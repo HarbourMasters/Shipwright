@@ -718,6 +718,15 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
             gPlayState->linkActorEntry = &modifiedLinkActorEntry;
         }
     }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) == RO_GENERIC_ON) {
+        // Move Hyrule Field bridge spawn for child link at night to be beyond the moat so he doesn't fell in the water
+        if (sceneNum == SCENE_SPOT00 && spawn == 7 && LINK_IS_CHILD && IS_NIGHT) {
+            modifiedLinkActorEntry.pos.x = 0x0001;
+            modifiedLinkActorEntry.pos.z = 0x049E;
+            gPlayState->linkActorEntry = &modifiedLinkActorEntry;
+        }
+    }
 }
 
 s32 Entrance_OverrideSpawnSceneRoom(s32 sceneNum, s32 spawn, s32 roomNum) {
