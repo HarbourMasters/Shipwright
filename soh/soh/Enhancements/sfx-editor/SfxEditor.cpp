@@ -295,6 +295,38 @@ void ResetGroup(const std::map<u16, SequenceInfo>& map, SeqType type) {
     }
 }
 
+void DrawPreviewButton(uint16_t sequenceId, std::string sfxKey, SeqType sequenceType) {
+    const std::string cvarKey = "gSfxEditor_" + sfxKey;
+    const std::string hiddenKey = "##" + cvarKey;
+    const std::string stopButton = " Stop  " + hiddenKey;
+    const std::string previewButton = "Preview" + hiddenKey;
+
+    if (CVarGetInteger("gSfxEditor_playing", 0) == sequenceId) {
+        if (ImGui::Button(stopButton.c_str())) {
+            func_800F5C2C();
+            CVarSetInteger("gSfxEditor_playing", 0);
+        }
+    } else {
+        if (ImGui::Button(previewButton.c_str())) {
+            if  (CVarGetInteger("gSfxEditor_playing", 0) != 0) {
+                func_800F5C2C();
+                CVarSetInteger("gSfxEditor_playing", 0);
+            } else {
+                if (sequenceType == SEQ_SFX) {
+                    Audio_PlaySoundGeneral(sequenceId, &pos, 4, &freqScale, &freqScale, &reverbAdd);
+                } else if (sequenceType == SEQ_INSTRUMENT) {
+                    Audio_OcaSetInstrument(sequenceId - INSTRUMENT_OFFSET);
+                    Audio_OcaSetSongPlayback(9, 1);
+                } else {
+                    // TODO: Cant do both here, so have to click preview button twice
+                    func_800F5ACC(sequenceId);
+                    CVarSetInteger("gSfxEditor_playing", sequenceId);
+                }
+            }
+        }
+    }
+}
+
 void Draw_SfxTab(const std::string& tabId, const std::map<u16, SequenceInfo>& map, SeqType type) {
     const std::string hiddenTabId = "##" + tabId;
     const std::string resetAllButton = "Reset All" + hiddenTabId;
@@ -330,8 +362,6 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, SequenceInfo>& ma
 
         const std::string cvarKey = "gSfxEditor_" + seqData.sfxKey;
         const std::string hiddenKey = "##" + cvarKey;
-        const std::string stopButton = " Stop  " + hiddenKey;
-        const std::string previewButton = "Preview" + hiddenKey;
         const std::string resetButton = "Reset" + hiddenKey;
         const std::string randomizeButton = "Randomize" + hiddenKey;
         const int currentValue = CVarGetInteger(cvarKey.c_str(), defaultValue);
@@ -359,30 +389,7 @@ void Draw_SfxTab(const std::string& tabId, const std::map<u16, SequenceInfo>& ma
         }
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(-FLT_MIN);
-        if (CVarGetInteger("gSfxEditor_playing", 0) == currentValue) {
-            if (ImGui::Button(stopButton.c_str())) {
-                func_800F5C2C();
-                CVarSetInteger("gSfxEditor_playing", 0);
-            }
-        } else {
-            if (ImGui::Button(previewButton.c_str())) {
-                if  (CVarGetInteger("gSfxEditor_playing", 0) != 0) {
-                    func_800F5C2C();
-                    CVarSetInteger("gSfxEditor_playing", 0);
-                } else {
-                    if (type == SEQ_SFX) {
-                        Audio_PlaySoundGeneral(defaultValue, &pos, 4, &freqScale, &freqScale, &reverbAdd);
-                    } else if (type == SEQ_INSTRUMENT) {
-                        Audio_OcaSetInstrument(defaultValue - INSTRUMENT_OFFSET);
-                        Audio_OcaSetSongPlayback(9, 1);
-                    } else {
-                        // TODO: Cant do both here, so have to click preview button twice
-                        func_800F5ACC(defaultValue);
-                        CVarSetInteger("gSfxEditor_playing", currentValue);
-                    }
-                }
-            }
-        }
+        DrawPreviewButton((type == SEQ_SFX || type == SEQ_INSTRUMENT) ? defaultValue : currentValue, seqData.sfxKey, type);
         ImGui::SameLine();
         ImGui::PushItemWidth(-FLT_MIN);
         if (ImGui::Button(resetButton.c_str())) {
@@ -618,6 +625,8 @@ void DrawSfxEditor(bool& open) {
                             seqsToExclude.insert(seqInfo);
                         }
                         ImGui::SameLine();
+                        DrawPreviewButton(seqInfo->sequenceId, seqInfo->sfxKey, seqInfo->category);
+                        ImGui::SameLine();
                         ImGui::Text(seqInfo->label.c_str());
                     }
                 }
@@ -641,6 +650,8 @@ void DrawSfxEditor(bool& open) {
                         if (ImGui::ArrowButton(seqInfo->sfxKey.c_str(), ImGuiDir_Left)) {
                             seqsToInclude.insert(seqInfo);
                         }
+                        ImGui::SameLine();
+                        DrawPreviewButton(seqInfo->sequenceId, seqInfo->sfxKey, seqInfo->category);
                         ImGui::SameLine();
                         ImGui::Text(seqInfo->label.c_str());
                     }
