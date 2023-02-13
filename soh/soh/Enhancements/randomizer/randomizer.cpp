@@ -689,6 +689,8 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_BRIDGE_DUNGEONS;
                         } else if(it.value() == "Tokens") {
                             gSaveContext.randoSettings[index].value = RO_BRIDGE_TOKENS;
+                        } else if(it.value() == "Greg") {
+                            gSaveContext.randoSettings[index].value = RO_BRIDGE_GREG;
                         }
                         break;
                     case RSK_RAINBOW_BRIDGE_STONE_COUNT:
@@ -2988,8 +2990,8 @@ void DrawRandoEditor(bool& open) {
     static const char* randoDoorOfTime[3] = { "Closed", "Song only", "Open" };
     static const char* randoZorasFountain[3] = { "Closed", "Closed as child", "Open" };
     static const char* randoGerudoFortress[3] = { "Normal", "Fast", "Open" };
-    static const char* randoRainbowBridge[7] = { "Vanilla",         "Always open", "Stones", "Medallions",
-                                          "Dungeon rewards", "Dungeons",    "Tokens" };
+    static const char* randoRainbowBridge[8] = { "Vanilla",         "Always open", "Stones", "Medallions",
+                                          "Dungeon rewards", "Dungeons",    "Tokens", "Greg" };
     static const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
     static const char* randoMqDungeons[3] = { "None", "Set Number", "Random Number" };
 
@@ -3228,7 +3230,9 @@ void DrawRandoEditor(bool& open) {
                     "are considered complete after stepping in to the blue warp after "
                     "the boss.\n"
                     "\n"
-                    "Tokens - Obtain the specified amount of Skulltula tokens."
+                    "Tokens - Obtain the specified amount of Skulltula tokens.\n"
+                    "\n"
+                    "Greg - Find Greg the Green Rupee."
                 );
 
                 UIWidgets::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, RO_BRIDGE_MAX, RO_BRIDGE_VANILLA);
@@ -3262,6 +3266,8 @@ void DrawRandoEditor(bool& open) {
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
                                                         "gRandomizeTokenCount", 1, 100, "", 100, true);
+                        break;
+                    case RO_BRIDGE_GREG:
                         break;
                 }
 

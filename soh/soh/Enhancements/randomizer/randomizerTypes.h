@@ -1175,6 +1175,7 @@ typedef enum {
     RO_BRIDGE_DUNGEON_REWARDS,
     RO_BRIDGE_DUNGEONS,
     RO_BRIDGE_TOKENS,
+    RO_BRIDGE_GREG,
     RO_BRIDGE_MAX,
 } RandoOptionRainbowBridge;
 

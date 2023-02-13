@@ -69,6 +69,7 @@ typedef enum {
     RAINBOWBRIDGE_REWARDS,
     RAINBOWBRIDGE_DUNGEONS,
     RAINBOWBRIDGE_TOKENS,
+    RAINBOWBRIDGE_GREG,
 } RainbowBridgeSetting;
 
 typedef enum {
