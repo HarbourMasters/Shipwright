@@ -4947,7 +4947,7 @@ void Randomizer::CreateCustomMessages() {
     const std::vector<GetItemMessage> getItemMessages = {
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
-			"You found %gGreg%w!",
+			"%gGreg%w! Du hast ihn wirklich gefunden!",
             "Vous obtenez %gGreg%w!"),
         GIMESSAGE(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE, 
 			"You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
