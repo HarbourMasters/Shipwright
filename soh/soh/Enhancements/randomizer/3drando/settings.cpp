@@ -178,6 +178,7 @@ namespace Settings {
   Option LinksPocketItem        = Option::U8  ("Link's Pocket",          {"Dungeon Reward", "Advancement", "Anything", "Nothing"},          {linksPocketDungeonReward, linksPocketAdvancement, linksPocketAnything, linksPocketNothing});
   Option ShuffleSongs           = Option::U8  ("Shuffle Songs",          {"Song locations", "Dungeon rewards", "Anywhere"},                 {songsSongLocations, songsDungeonRewards, songsAllLocations});
   Option Shopsanity             = Option::U8  ("Shopsanity",             {"Off","0 Items","1 Item","2 Items","3 Items","4 Items","Random"}, {shopsOff, shopsZero, shopsOne, shopsTwo, shopsThree, shopsFour, shopsRandom});
+  Option ShopsanityPrices       = Option::U8  ("Shopsanity Prices",      {"Random", "Starting Wallet", "Adult Wallet", "Giant's Wallet", "Tycoon's Wallet", "Affordable" }, {shopPriceRandom, shopPriceStarter, shopPriceAdult, shopPriceGiant, shopPriceTycoon, shopPriceAffordable} );
   Option Tokensanity            = Option::U8  ("Tokensanity",            {"Off", "Dungeons", "Overworld", "All Tokens"},                    {tokensOff, tokensDungeon, tokensOverworld, tokensAllTokens});
   Option Scrubsanity            = Option::U8  ("Scrub Shuffle",          {"Off", "Affordable", "Expensive", "Random Prices"},               {scrubsOff, scrubsAffordable, scrubsExpensive, scrubsRandomPrices});
   Option ShuffleCows            = Option::Bool("Shuffle Cows",           {"Off", "On"},                                                     {shuffleCowsDesc});
@@ -2426,6 +2427,7 @@ namespace Settings {
     &ShuffleRewards,
     &ShuffleSongs,
     &Shopsanity,
+    &ShopsanityPrices,
     &Scrubsanity,
     &ShuffleCows,
     &ShuffleMagicBeans,
@@ -2702,6 +2704,7 @@ namespace Settings {
     ShuffleSongs.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SONGS]);
     Tokensanity.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_TOKENS]);
     Shopsanity.SetSelectedIndex(cvarSettings[RSK_SHOPSANITY]);
+    ShopsanityPrices.SetSelectedIndex(cvarSettings[RSK_SHOPSANITY_PRICES]);
     Scrubsanity.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SCRUBS]);
     ShuffleCows.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_COWS]);
     ShuffleKokiriSword.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD]);

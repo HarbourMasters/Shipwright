@@ -128,14 +128,32 @@ static constexpr std::array<double, 60> ShopPriceProbability= {
   0.959992180, 0.968187000, 0.975495390, 0.981884488, 0.987344345, 0.991851853, 0.995389113, 0.997937921, 0.999481947, 1.000000000,
 };
 int GetRandomShopPrice() {
-  double random = RandomDouble(); //Randomly generated probability value
-  for (size_t i = 0; i < ShopPriceProbability.size(); i++) {
-    if (random < ShopPriceProbability[i]) {
-      //The randomly generated value has surpassed the total probability up to this point, so this is the generated price
-      return i * 5; //i in range [0, 59], output in range [0, 295] in increments of 5
+  int price = 10; // Affordable setting, or default if things go wrong
+  // Check beta random first
+  if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_RANDOM)) {
+    double random = RandomDouble(); //Randomly generated probability value
+    for (size_t i = 0; i < ShopPriceProbability.size(); i++) {
+      if (random < ShopPriceProbability[i]) {
+        //The randomly generated value has surpassed the total probability up to this point, so this is the generated price
+        price = i * 5; //i in range [0, 59], output in range [0, 295] in increments of 5
+        break;
+      }
     }
   }
-  return -1; //Shouldn't happen
+  int max = 10; // Starter wallet
+  if(Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_STARTER))
+    max = 99;
+  else if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_ADULT))
+    max = 200;
+  else if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_GIANT))
+    max = 500;
+  else if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_TYCOON))
+    max = 999;
+  if (max != 10) {
+      double random = RandomDouble();
+      price = ((int)((max * random) / 5)) * 5;
+  }
+  return price;
 }
 
 //Similar to above, beta distribution with alpha = 1, beta = 2,

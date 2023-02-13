@@ -356,6 +356,17 @@ string_view shopsFour                 = "Vanilla shop items will be shuffled amo
 string_view shopsRandom               = "Vanilla shop items will be shuffled among\n"      //
                                         "different shops, and each shop will contain\n"    //
                                         "1-4 non-vanilla shop items.";                     //
+                                                                                           //
+/*------------------------------                                                           //
+|     SHOPSANITY PRICES        |                                                           //
+------------------------------*/                                                           //
+string_view shopPriceRandom           = "Weighted randomization, max 300.";                //
+string_view shopPriceStarter          = "True randomization, max 99";                      //
+string_view shopPriceAdult            = "True randomization, max 200";                     //
+string_view shopPriceGiant            = "True randomization, max 500";                     //
+string_view shopPriceTycoon           = "True randomization, max 999";                     //
+string_view shopPriceAffordable       = "All shop check prices set to 10";                 //
+                                                                                           //
 /*------------------------------                                                           //
 |         TOKENSANITY          |                                                           //
 ------------------------------*/                                                           //

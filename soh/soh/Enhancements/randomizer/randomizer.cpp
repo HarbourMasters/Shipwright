@@ -220,6 +220,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Link's Pocket", RSK_LINKS_POCKET},
     { "Shuffle Settings:Shuffle Gerudo Card", RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD },
     { "Shuffle Settings:Shopsanity", RSK_SHOPSANITY },
+    { "Shuffle Settings:Shopsanity Prices", RSK_SHOPSANITY_PRICES },
     { "Shuffle Settings:Scrub Shuffle", RSK_SHUFFLE_SCRUBS },
     { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
     { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
@@ -724,6 +725,20 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_SHOPSANITY_RANDOM;
                         }
                         break;
+                    case RSK_SHOPSANITY_PRICES:
+                        if (it.value() == "Random") {
+                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_PRICE_RANDOM;
+                        } else if (it.value() == "Starter Wallet") {
+                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_PRICE_STARTER;
+                        } else if (it.value() == "Adult's Wallet") {
+                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_PRICE_ADULT;
+                        } else if (it.value() == "Giant's Wallet") {
+                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_PRICE_GIANT;
+                        } else if (it.value() == "Tycoon's Wallet") {
+                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_PRICE_TYCOON;
+                        } else if (it.value() == "Affordable") {
+                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_PRICE_AFFORDABLE;
+                        }
                     case RSK_SHUFFLE_SCRUBS:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = RO_SCRUBS_OFF;            
@@ -2813,6 +2828,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_SHUFFLE_SONGS] = CVarGetInteger("gRandomizeShuffleSongs", RO_SONG_SHUFFLE_SONG_LOCATIONS);
     cvarSettings[RSK_SHUFFLE_TOKENS] = CVarGetInteger("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF);
     cvarSettings[RSK_SHOPSANITY] = CVarGetInteger("gRandomizeShopsanity", RO_SHOPSANITY_OFF);
+    cvarSettings[RSK_SHOPSANITY_PRICES] = CVarGetInteger("gRandomizeShopsanityPrices", RO_SHOPSANITY_PRICE_RANDOM);
     cvarSettings[RSK_SHUFFLE_SCRUBS] = CVarGetInteger("gRandomizeShuffleScrubs", RO_SCRUBS_OFF);
     cvarSettings[RSK_SHUFFLE_COWS] = CVarGetInteger("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVarGetInteger("gRandomizeShuffleAdultTrade", 0);
@@ -3006,6 +3022,7 @@ void DrawRandoEditor(bool& open) {
     static const char* randoLinksPocket[4] = { "Dungeon Reward", "Advancement", "Anything", "Nothing" };
     static const char* randoShuffleSongs[3] = { "Song Locations", "Dungeon Rewards", "Anywhere" };
     static const char* randoShopsanity[7] = { "Off", "0 Items", "1 Item", "2 Items", "3 Items", "4 Items", "Random" };
+    static const char* randoShopsanityPrices[6] = { "Random", "Starter Wallet", "Adult Wallet", "Giant's Wallet", "Tycoon's Wallet", "Affordable" };
     static const char* randoTokensanity[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
     static const char* randoShuffleScrubs[4] = { "Off", "Affordable", "Expensive", "Random Prices" };
     static const char* randoShuffleMerchants[3] = { "Off", "On (no hints)", "On (with hints)" };
@@ -3617,6 +3634,24 @@ void DrawRandoEditor(bool& open) {
                     "Random - Vanilla shop items will be shuffled among different shops, and each shop will contain a random number(1-4) of non-vanilla shop items.\n"
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, RO_SHOPSANITY_MAX, RO_SHOPSANITY_OFF);
+
+                // Shopsanity Prices
+                switch (CVarGetInteger("gRandomizeShopsanity", RO_SHOPSANITY_OFF)) {
+                    case RO_SHOPSANITY_OFF:
+                    case RO_SHOPSANITY_ZERO_ITEMS:
+                        break;
+                    default:
+                        ImGui::Text(Settings::ShopsanityPrices.GetName().c_str());
+                        UIWidgets::InsertHelpHoverText(
+                            "Random - The default randomization. Shop prices for shopsanity items will range between 0 to 300 rupees, \
+                            with a bias towards values slightly below the middle of the range, in multiples of 5.\n "
+                            "\n"
+                            "X Wallet - Randomized betwee 0 and the wallet's max size, in multiples of 5"
+                            "\n"
+                            "Affordable - Item check prices are always 10"
+                        );
+                        UIWidgets::EnhancementCombobox("gRandomizeShopsanityPrices", randoShopsanityPrices, RO_SHOPSANITY_PRICE_MAX, RO_SHOPSANITY_PRICE_RANDOM);
+                }
 
                 UIWidgets::PaddedSeparator();
 
