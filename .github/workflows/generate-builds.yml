@@ -6,33 +6,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  extract-assets:
-    runs-on: [ self-hosted, asset-builder ]
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-    - name: Extract assets (Windows)
-      if: runner.os == 'Windows'
-      run: |
-        cp ../../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
-        cmake --no-warn-unused-cli -S . -B build-cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE:STRING=Release
-        cmake --build build-cmake --target ExtractAssets --config Release
-        7z a assets.zip soh/assets
-    - name: Extract assets (Unix)
-      if: runner.os != 'Windows'
-      run: |
-        cp ../../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
-        cmake --build build-cmake --target ExtractAssets --config Release
-        zip -r assets.zip soh/assets
-    - uses: actions/upload-artifact@v3
-      with:
-        name: assets
-        path: assets.zip
-        retention-days: 1
   build-macos:
-    needs: extract-assets
     runs-on: macos-12
     steps:
     - uses: actions/checkout@v3
@@ -69,14 +43,8 @@ jobs:
         brew uninstall --ignore-dependencies libpng
         sudo port install $(cat .github/workflows/macports-deps.txt)
         brew install ninja
-    - name: Restore assets
-      uses: actions/download-artifact@v3
-      with:
-        name: assets
     - name: Build SoH
       run: |
-        unzip -o assets.zip
-
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
         cmake --build build-cmake --config Release --parallel 10
@@ -92,7 +60,6 @@ jobs:
           SoH.dmg
           readme.txt
   build-linux:
-    needs: extract-assets
     strategy:
       fail-fast: true
       matrix:
@@ -136,14 +103,8 @@ jobs:
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
-    - name: Restore assets
-      uses: actions/download-artifact@v3
-      with:
-        name: assets
     - name: Build SoH
       run: |
-        unzip -o assets.zip
-
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
         cmake --build build-cmake --target OTRGui -j3
@@ -163,7 +124,6 @@ jobs:
           soh.appimage
           readme.txt
   build-switch:
-    needs: extract-assets
     runs-on: ubuntu-latest
     container:
       image: devkitpro/devkita64:latest
@@ -179,14 +139,8 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ runner.os }}-switch-ccache
-    - name: Restore assets
-      uses: actions/download-artifact@v3
-      with:
-        name: assets
     - name: Build SoH
       run: |
-        unzip -o assets.zip
-
         cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache
         cmake --build build-switch --target soh_nro -j3
 
@@ -200,7 +154,6 @@ jobs:
           soh.nro
           readme.txt
   build-wiiu:
-    needs: extract-assets
     runs-on: ubuntu-latest
     container:
       image: devkitpro/devkitppc:latest
@@ -216,14 +169,8 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ runner.os }}-wiiu-ccache
-    - name: Restore assets
-      uses: actions/download-artifact@v3
-      with:
-        name: assets
     - name: Build SoH
       run: |
-        unzip -o assets.zip
-
         cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache
         cmake --build build-wiiu --target soh_wuhb --config Release -j3
 
@@ -242,7 +189,6 @@ jobs:
           soh.wuhb
           readme.txt
   build-windows:
-    needs: extract-assets
     runs-on: windows-latest
     steps:
     - name: Install dependencies
@@ -256,18 +202,12 @@ jobs:
       uses: dcvz/ccache-action@27b9f33213c0079872f064f6b6ba0233dfa16ba2
       with:
         key: ${{ runner.os }}-ccache
-    - name: Restore assets
-      uses: actions/download-artifact@v3
-      with:
-        name: assets
     - uses: ilammy/msvc-dev-cmd@v1
     - name: Setup 7-Zip
       run: |
         "C:\Program Files\7-Zip" >> $env:GITHUB_PATH
     - name: Build SoH
       run: |
-        7z x assets.zip -aoa
-
         set $env:PATH="$env:USERPROFILE/.cargo/bin;$env:PATH"
         cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
         cmake --build build-windows --target OTRGui --config Release --parallel 10
