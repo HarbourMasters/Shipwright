@@ -488,6 +488,40 @@ std::string GetSequenceTypeName(SeqType type) {
     }
 }
 
+void DrawTypeChip(SeqType type) {
+    ImGui::BeginDisabled();
+    switch (type) {
+        case SEQ_NOSHUFFLE:
+        case SEQ_BGM_WORLD:
+        case SEQ_BGM_EVENT:
+        case SEQ_BGM_BATTLE:
+        case SEQ_OCARINA:
+        case SEQ_FANFARE:
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+            ImGui::SmallButton("fanfare");
+            break;
+        case SEQ_BGM_ERROR:
+        case SEQ_SFX:
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+            ImGui::SmallButton("sfx");
+            break;
+        case SEQ_INSTRUMENT:
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+            ImGui::SmallButton("instrument");
+            break;
+        case SEQ_BGM_CUSTOM:
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+            ImGui::SmallButton("custom");
+            break;
+        default:
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+            ImGui::SmallButton("default");
+            break;
+    }
+    ImGui::PopStyleColor();
+    ImGui::EndDisabled();
+}
+
 void DrawSfxEditor(bool& open) {
     if (!open) {
         // todo: this efficently when we build out cvar array support
@@ -628,6 +662,8 @@ void DrawSfxEditor(bool& open) {
                         DrawPreviewButton(seqInfo->sequenceId, seqInfo->sfxKey, seqInfo->category);
                         ImGui::SameLine();
                         ImGui::Text(seqInfo->label.c_str());
+                        ImGui::SameLine();
+                        DrawTypeChip(seqInfo->category);
                     }
                 }
                 ImGui::EndChild();
