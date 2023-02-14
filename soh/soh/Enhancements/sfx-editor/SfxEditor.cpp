@@ -633,6 +633,17 @@ void DrawSfxEditor(bool& open) {
                 excludeTabOpen = true;
             }
 
+            static std::map<SeqType, bool> showType {
+                {SEQ_BGM_WORLD, true},
+                {SEQ_BGM_EVENT, true},
+                {SEQ_BGM_BATTLE, true},
+                {SEQ_OCARINA, true},
+                {SEQ_FANFARE, true},
+                {SEQ_SFX, true},
+                {SEQ_INSTRUMENT, true},
+                {SEQ_BGM_CUSTOM, true}
+            };
+
             if (ImGui::BeginTable("tableAllSequences", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Included", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("Excluded", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -642,21 +653,30 @@ void DrawSfxEditor(bool& open) {
                 // COLUMN 1 - INCLUDED SEQUENCES
                 ImGui::TableNextColumn();
 
+                // make temporary sets because removing from the set we're iterating through crashes ImGui
+                std::set<SequenceInfo*> seqsToInclude = {};
+                std::set<SequenceInfo*> seqsToExclude = {};
+
                 static ImGuiTextFilter sequenceSearch;
-                sequenceSearch.Draw();
+                sequenceSearch.Draw("Filter (inc,-exc)", 240.0f);
+                ImGui::SameLine();
+                if (ImGui::Button("Exclude All")) {
+                    for (auto seqInfo : includedSequences) {
+                        if (sequenceSearch.PassFilter(seqInfo->label.c_str()) && showType[seqInfo->category]) {
+                            seqsToExclude.insert(seqInfo);
+                        }
+                    }
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Include All")) {
+                    for (auto seqInfo : excludedSequences) {
+                        if (sequenceSearch.PassFilter(seqInfo->label.c_str()) && showType[seqInfo->category]) {
+                            seqsToInclude.insert(seqInfo);
+                        }
+                    }
+                }
 
                 ImGui::BeginTable("sequenceTypes", 8, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders);
-                
-                static std::map<SeqType, bool> showType {
-                    {SEQ_BGM_WORLD, true},
-                    {SEQ_BGM_EVENT, true},
-                    {SEQ_BGM_BATTLE, true},
-                    {SEQ_OCARINA, true},
-                    {SEQ_FANFARE, true},
-                    {SEQ_SFX, true},
-                    {SEQ_INSTRUMENT, true},
-                    {SEQ_BGM_CUSTOM, true}
-                };
 
                 ImGui::TableNextColumn();
                 ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_WORLD));
@@ -700,9 +720,6 @@ void DrawSfxEditor(bool& open) {
 
                 ImGui::EndTable();
 
-                // make a temporary set because removing from the set we're iterating through crashes ImGui
-                std::set<SequenceInfo*> seqsToExclude = {};
-
                 ImGui::BeginChild("ChildIncludedSequences", ImVec2(0, -8));
                 for (auto seqInfo : includedSequences) {
                     if (sequenceSearch.PassFilter(seqInfo->label.c_str()) && showType[seqInfo->category]) {
@@ -726,9 +743,6 @@ void DrawSfxEditor(bool& open) {
 
                 // COLUMN 2 - EXCLUDED SEQUENCES
                 ImGui::TableNextColumn();
-
-                // make a temporary set because removing from the set we're iterating through crashes ImGui
-                std::set<SequenceInfo*> seqsToInclude = {};
 
                 ImGui::BeginChild("ChildExcludedSequences", ImVec2(0, -8));
                 for (auto seqInfo : excludedSequences) {
