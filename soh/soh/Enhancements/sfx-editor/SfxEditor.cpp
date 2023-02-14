@@ -541,7 +541,7 @@ void DrawSfxEditor(bool& open) {
         return;
     }
     ImGui::SetNextWindowSize(ImVec2(900, 630), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("SFX Editor", &open)) {
+    if (!ImGui::Begin("Audio Editor", &open)) {
         ImGui::End();
         return;
     }
@@ -612,7 +612,7 @@ void DrawSfxEditor(bool& open) {
 
         static bool excludeTabOpen = false;
         static bool excludeListInitialized = false;
-        if (ImGui::BeginTabItem("Exclude Sequences From Shuffle")) {
+        if (ImGui::BeginTabItem("Audio Shuffle Pool Management")) {
             if (!excludeListInitialized) {
                 for (auto& [seqId, seqInfo] : sfxEditorSequenceMap) {
                     const std::string cvarKey = "gExcludeSfx_" + seqInfo.sfxKey;
