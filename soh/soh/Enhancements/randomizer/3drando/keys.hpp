@@ -1759,7 +1759,6 @@ typedef enum {
   JUNK_SG_6,
   JUNK_SG_7,
   JUNK_SG_8,
-  JUNK_SG_9,
 
   BRIDGE_OPEN_HINT,
   BRIDGE_VANILLA_HINT,
