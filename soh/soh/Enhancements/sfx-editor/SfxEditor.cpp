@@ -530,17 +530,24 @@ void DrawTypeChip(SeqType type) {
     ImGui::EndDisabled();
 }
 
+void ExcludeSequence(SequenceInfo* seqInfo) {
+    const std::string cvarKey = "gExcludeSfx_" + seqInfo->sfxKey;
+    excludedSequences.insert(seqInfo);
+    includedSequences.erase(seqInfo);
+    CVarSetInteger(cvarKey.c_str(), 1);
+    SohImGui::RequestCvarSaveOnNextTick();
+}
+
+void IncludeSequence(SequenceInfo* seqInfo) {
+    const std::string cvarKey = "gExcludeSfx_" + seqInfo->sfxKey;
+    includedSequences.insert(seqInfo);
+    excludedSequences.erase(seqInfo);
+    CVarClear(cvarKey.c_str());
+    SohImGui::RequestCvarSaveOnNextTick();
+}
+
 void DrawSfxEditor(bool& open) {
     if (!open) {
-        // todo: this efficently when we build out cvar array support
-        std::string excludedSequenceString = "";
-        for (auto excludedSequenceIt : excludedSequences) {
-            excludedSequenceString += excludedSequenceIt->sfxKey;
-            excludedSequenceString += ",";
-        }
-        CVarSetString("gExcludedSequences", excludedSequenceString.c_str());
-        SohImGui::RequestCvarSaveOnNextTick();
-
         CVarSetInteger("gSfxEditor", 0);
         return;
     }
@@ -618,17 +625,9 @@ void DrawSfxEditor(bool& open) {
         static bool excludeListInitialized = false;
         if (ImGui::BeginTabItem("Exclude Sequences From Shuffle")) {
             if (!excludeListInitialized) {
-                // Load list of sequences excluded from shuffle
-                // todo: this efficently when we build out cvar array support
-                std::stringstream excludedSequenceStringStream(CVarGetString("gExcludedSequences", ""));
-                std::string excludedSequenceString;
-                std::set<std::string> excludedSequenceKeys;
-                while (getline(excludedSequenceStringStream, excludedSequenceString, ',')) {
-                    excludedSequenceKeys.insert(excludedSequenceString);
-                }
-
                 for (auto& [seqId, seqInfo] : sfxEditorSequenceMap) {
-                    if (excludedSequenceKeys.count(seqInfo.sfxKey)) {
+                    const std::string cvarKey = "gExcludeSfx_" + seqInfo.sfxKey;
+                    if (CVarGetInteger(cvarKey.c_str(), 0)) {
                         excludedSequences.insert(&seqInfo);
                     } else {
                         if (seqInfo.category != SEQ_NOSHUFFLE) {
@@ -680,8 +679,7 @@ void DrawSfxEditor(bool& open) {
 
                 // remove the sequences we added to the temp set
                 for (auto seqInfo : seqsToExclude) {
-                    excludedSequences.insert(seqInfo);
-                    includedSequences.erase(seqInfo);
+                    ExcludeSequence(seqInfo);
                 }
 
                 // COLUMN 2 - EXCLUDED SEQUENCES
@@ -708,8 +706,7 @@ void DrawSfxEditor(bool& open) {
 
                 // add the sequences we added to the temp set
                 for (auto seqInfo : seqsToInclude) {
-                    includedSequences.insert(seqInfo);
-                    excludedSequences.erase(seqInfo);
+                    IncludeSequence(seqInfo);
                 }
 
                 ImGui::EndTable();
