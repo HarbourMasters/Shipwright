@@ -856,7 +856,22 @@ void UpdateVectors() {
         mainWindowItems.insert(mainWindowItems.end(), dungeonItems.begin(), dungeonItems.end());
     }
     if (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 1) {
+        // insert empty items until we're on a new row for greg
+        while (mainWindowItems.size() % 6) {
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+        }
         mainWindowItems.insert(mainWindowItems.end(), gregItems.begin(), gregItems.end());
+    }
+    if (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 2) {
+        miscItems.insert(miscItems.end(), gregItems.begin(), gregItems.end());
+    } else {
+        for (auto it = miscItems.begin(); it != miscItems.end();) {
+            if (it->id == ITEM_RUPEE_GREEN) {
+                miscItems.erase(it);
+            } else {
+                it++;
+            }
+        }
     }
 
     shouldUpdateVectors = false;
@@ -948,7 +963,7 @@ void DrawItemTracker(bool& open) {
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 2) {
+        if (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 3) {
             BeginFloatingWindows("Greg Tracker");
             DrawItemsInRows(gregItems);
             EndFloatingWindows();
@@ -1041,7 +1056,7 @@ void DrawItemTrackerOptions(bool& open) {
         }
         PaddedEnhancementCheckbox("Maps and compasses", "gItemTrackerDisplayDungeonItemsMaps", 1);
     }
-    LabeledComboBoxRightAligned("Greg", "gItemTrackerGregDisplayType", { "Hidden", "Main Window", "Seperate" }, 0);
+    LabeledComboBoxRightAligned("Greg", "gItemTrackerGregDisplayType", { "Hidden", "Main Window", "Misc Window", "Seperate" }, 0);
 
     if (CVarGetInteger("gItemTrackerDisplayType", 0) != 1) {
         LabeledComboBoxRightAligned("Personal notes", "gItemTrackerNotesDisplayType", { "Hidden", "Main Window", "Seperate" }, 0);
