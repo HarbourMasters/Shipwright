@@ -228,8 +228,11 @@ std::map<uint16_t, SequenceInfo> sfxEditorSequenceMap = {
     SEQUENCE_MAP_ENTRY(NA_SE_EV_CHICKEN_CRY_A,       "Chicken Cry",                         "NA_SE_EV_CHICKEN_CRY_A",         SEQ_SFX),
 };
 
-std::set<SequenceInfo*> includedSequences;
-std::set<SequenceInfo*> excludedSequences;
+auto compareSequenceLabel = [](SequenceInfo* a, SequenceInfo* b) {
+    return a->label < b->label;
+};
+std::set<SequenceInfo*, decltype(compareSequenceLabel)> includedSequences;
+std::set<SequenceInfo*, decltype(compareSequenceLabel)> excludedSequences;
 
 // Grabs the current BGM sequence ID and replays it
 // which will lookup the proper override, or reset back to vanilla
