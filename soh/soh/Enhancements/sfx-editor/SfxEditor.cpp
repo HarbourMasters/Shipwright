@@ -488,43 +488,32 @@ std::string GetSequenceTypeName(SeqType type) {
     }
 }
 
+ImVec4 GetSequenceTypeColor(SeqType type) {
+    switch (type) {
+        case SEQ_BGM_WORLD:
+            return ImVec4(0.0f, 0.2f, 0.0f, 1.0f);
+        case SEQ_BGM_EVENT:
+            return ImVec4(0.3f, 0.0f, 0.15f, 1.0f);
+        case SEQ_BGM_BATTLE:
+            return ImVec4(0.2f, 0.07f, 0.0f, 1.0f);
+        case SEQ_OCARINA:
+            return ImVec4(0.0f, 0.0f, 0.4f, 1.0f);
+        case SEQ_FANFARE:
+            return ImVec4(0.3f, 0.0f, 0.3f, 1.0f);
+        case SEQ_SFX:
+            return ImVec4(0.4f, 0.33f, 0.0f, 1.0f);
+        case SEQ_INSTRUMENT:
+            return ImVec4(0.0f, 0.25f, 0.5f, 1.0f);
+        case SEQ_BGM_CUSTOM:
+            return ImVec4(0.9f, 0.0f, 0.9f, 1.0f);
+        default:
+            return ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
+    }
+}
+
 void DrawTypeChip(SeqType type) {
     ImGui::BeginDisabled();
-    switch (type) {
-        case SEQ_NOSHUFFLE:
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-            break;
-        case SEQ_BGM_WORLD:
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.2f, 0.0f, 1.0f));
-            break;
-        case SEQ_BGM_EVENT:
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.0f, 0.15f, 1.0f));
-            break;
-        case SEQ_BGM_BATTLE:
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.07f, 0.0f, 1.0f));
-            break;
-        case SEQ_OCARINA:
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.4f, 1.0f));
-            break;
-        case SEQ_FANFARE:
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.0f, 0.3f, 1.0f));
-            break;
-        case SEQ_BGM_ERROR:
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-            break;
-        case SEQ_SFX:
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.33f, 0.0f, 1.0f));
-            break;
-        case SEQ_INSTRUMENT:
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.25f, 0.5f, 1.0f));
-            break;
-        case SEQ_BGM_CUSTOM:
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.9f, 0.0f, 0.9f, 1.0f));
-            break;
-        default:
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-            break;
-    }
+    ImGui::PushStyleColor(ImGuiCol_Button, GetSequenceTypeColor(type));
     ImGui::SmallButton(GetSequenceTypeName(type).c_str());
     ImGui::PopStyleColor();
     ImGui::EndDisabled();
@@ -657,6 +646,58 @@ void DrawSfxEditor(bool& open) {
 
                 static ImGuiTextFilter sequenceSearch;
                 sequenceSearch.Draw();
+
+                ImGui::BeginTable("sequenceTypes", 8, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders);
+                
+                static bool showWorld = true;
+                ImGui::TableNextColumn();
+                ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_WORLD));
+                ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_WORLD).c_str(), &showWorld);
+                ImGui::PopStyleColor(1);
+
+                static bool showEvent = true;
+                ImGui::TableNextColumn();
+                ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_EVENT));
+                ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_EVENT).c_str(), &showEvent);
+                ImGui::PopStyleColor(1);
+
+                static bool showBattle = true;
+                ImGui::TableNextColumn();
+                ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_BATTLE));
+                ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_BATTLE).c_str(), &showBattle);
+                ImGui::PopStyleColor(1);
+
+                static bool showOcarina = true;
+                ImGui::TableNextColumn();
+                ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_OCARINA));
+                ImGui::Selectable(GetSequenceTypeName(SEQ_OCARINA).c_str(), &showOcarina);
+                ImGui::PopStyleColor(1);
+
+                static bool showFanfare = true;
+                ImGui::TableNextColumn();
+                ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_FANFARE));
+                ImGui::Selectable(GetSequenceTypeName(SEQ_FANFARE).c_str(), &showFanfare);
+                ImGui::PopStyleColor(1);
+
+                static bool showSfx = true;
+                ImGui::TableNextColumn();
+                ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_SFX));
+                ImGui::Selectable(GetSequenceTypeName(SEQ_SFX).c_str(), &showSfx);
+                ImGui::PopStyleColor(1);
+
+                static bool showInstrument = true;
+                ImGui::TableNextColumn();
+                ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_INSTRUMENT));
+                ImGui::Selectable(GetSequenceTypeName(SEQ_INSTRUMENT).c_str(), &showInstrument);
+                ImGui::PopStyleColor(1);
+
+                static bool showCustom = true;
+                ImGui::TableNextColumn();
+                ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_CUSTOM));
+                ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_CUSTOM).c_str(), &showCustom);
+                ImGui::PopStyleColor(1);
+
+                ImGui::EndTable();
 
                 // make a temporary set because removing from the set we're iterating through crashes ImGui
                 std::set<SequenceInfo*> seqsToExclude = {};
