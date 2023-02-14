@@ -636,9 +636,7 @@ void DrawSfxEditor(bool& open) {
             if (ImGui::BeginTable("tableAllSequences", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Included", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("Excluded", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                // ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
-                // ImGui::PopItemFlag();
                 ImGui::TableNextRow();
 
                 // COLUMN 1 - INCLUDED SEQUENCES
@@ -649,52 +647,55 @@ void DrawSfxEditor(bool& open) {
 
                 ImGui::BeginTable("sequenceTypes", 8, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders);
                 
-                static bool showWorld = true;
+                static std::map<SeqType, bool> showType {
+                    {SEQ_BGM_WORLD, true},
+                    {SEQ_BGM_EVENT, true},
+                    {SEQ_BGM_BATTLE, true},
+                    {SEQ_OCARINA, true},
+                    {SEQ_FANFARE, true},
+                    {SEQ_SFX, true},
+                    {SEQ_INSTRUMENT, true},
+                    {SEQ_BGM_CUSTOM, true}
+                };
+
                 ImGui::TableNextColumn();
                 ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_WORLD));
-                ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_WORLD).c_str(), &showWorld);
+                ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_WORLD).c_str(), &showType[SEQ_BGM_WORLD]);
                 ImGui::PopStyleColor(1);
 
-                static bool showEvent = true;
                 ImGui::TableNextColumn();
                 ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_EVENT));
-                ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_EVENT).c_str(), &showEvent);
+                ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_EVENT).c_str(), &showType[SEQ_BGM_EVENT]);
                 ImGui::PopStyleColor(1);
 
-                static bool showBattle = true;
                 ImGui::TableNextColumn();
                 ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_BATTLE));
-                ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_BATTLE).c_str(), &showBattle);
+                ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_BATTLE).c_str(), &showType[SEQ_BGM_BATTLE]);
                 ImGui::PopStyleColor(1);
 
-                static bool showOcarina = true;
                 ImGui::TableNextColumn();
                 ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_OCARINA));
-                ImGui::Selectable(GetSequenceTypeName(SEQ_OCARINA).c_str(), &showOcarina);
+                ImGui::Selectable(GetSequenceTypeName(SEQ_OCARINA).c_str(), &showType[SEQ_OCARINA]);
                 ImGui::PopStyleColor(1);
 
-                static bool showFanfare = true;
                 ImGui::TableNextColumn();
                 ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_FANFARE));
-                ImGui::Selectable(GetSequenceTypeName(SEQ_FANFARE).c_str(), &showFanfare);
+                ImGui::Selectable(GetSequenceTypeName(SEQ_FANFARE).c_str(), &showType[SEQ_FANFARE]);
                 ImGui::PopStyleColor(1);
 
-                static bool showSfx = true;
                 ImGui::TableNextColumn();
                 ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_SFX));
-                ImGui::Selectable(GetSequenceTypeName(SEQ_SFX).c_str(), &showSfx);
+                ImGui::Selectable(GetSequenceTypeName(SEQ_SFX).c_str(), &showType[SEQ_SFX]);
                 ImGui::PopStyleColor(1);
 
-                static bool showInstrument = true;
                 ImGui::TableNextColumn();
                 ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_INSTRUMENT));
-                ImGui::Selectable(GetSequenceTypeName(SEQ_INSTRUMENT).c_str(), &showInstrument);
+                ImGui::Selectable(GetSequenceTypeName(SEQ_INSTRUMENT).c_str(), &showType[SEQ_INSTRUMENT]);
                 ImGui::PopStyleColor(1);
 
-                static bool showCustom = true;
                 ImGui::TableNextColumn();
                 ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_CUSTOM));
-                ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_CUSTOM).c_str(), &showCustom);
+                ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_CUSTOM).c_str(), &showType[SEQ_BGM_CUSTOM]);
                 ImGui::PopStyleColor(1);
 
                 ImGui::EndTable();
@@ -704,7 +705,7 @@ void DrawSfxEditor(bool& open) {
 
                 ImGui::BeginChild("ChildIncludedSequences", ImVec2(0, -8));
                 for (auto seqInfo : includedSequences) {
-                    if (sequenceSearch.PassFilter(seqInfo->label.c_str())) {
+                    if (sequenceSearch.PassFilter(seqInfo->label.c_str()) && showType[seqInfo->category]) {
                         if (ImGui::ArrowButton(seqInfo->sfxKey.c_str(), ImGuiDir_Right)) {
                             seqsToExclude.insert(seqInfo);
                         }
@@ -731,7 +732,7 @@ void DrawSfxEditor(bool& open) {
 
                 ImGui::BeginChild("ChildExcludedSequences", ImVec2(0, -8));
                 for (auto seqInfo : excludedSequences) {
-                    if (sequenceSearch.PassFilter(seqInfo->label.c_str())) {
+                    if (sequenceSearch.PassFilter(seqInfo->label.c_str()) && showType[seqInfo->category]) {
                         if (ImGui::ArrowButton(seqInfo->sfxKey.c_str(), ImGuiDir_Left)) {
                             seqsToInclude.insert(seqInfo);
                         }
