@@ -382,6 +382,12 @@ void Audio_QueueSeqCmd(u32 cmd)
     sAudioSeqCmds[sSeqCmdWrPos++] = cmd;
 }
 
+void Audio_QueuePreviewSeqCmd(u16 seqId) {
+    gAudioContext.seqReplaced[0] = 1;
+    gAudioContext.seqToPlay[0] = seqId;
+    sAudioSeqCmds[sSeqCmdWrPos++] = 1;
+}
+
 void Audio_ProcessSeqCmds(void) {
     while (sSeqCmdWrPos != sSeqCmdRdPos) {
         Audio_ProcessSeqCmd(sAudioSeqCmds[sSeqCmdRdPos++]);

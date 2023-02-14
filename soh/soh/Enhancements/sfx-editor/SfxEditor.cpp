@@ -319,7 +319,7 @@ void DrawPreviewButton(uint16_t sequenceId, std::string sfxKey, SeqType sequence
                     Audio_OcaSetSongPlayback(9, 1);
                 } else {
                     // TODO: Cant do both here, so have to click preview button twice
-                    func_800F5ACC(sequenceId);
+                    PreviewSequence(sequenceId);
                     CVarSetInteger("gSfxEditor_playing", sequenceId);
                 }
             }
@@ -492,32 +492,40 @@ void DrawTypeChip(SeqType type) {
     ImGui::BeginDisabled();
     switch (type) {
         case SEQ_NOSHUFFLE:
-        case SEQ_BGM_WORLD:
-        case SEQ_BGM_EVENT:
-        case SEQ_BGM_BATTLE:
-        case SEQ_OCARINA:
-        case SEQ_FANFARE:
             ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-            ImGui::SmallButton("fanfare");
+            break;
+        case SEQ_BGM_WORLD:
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.2f, 0.0f, 1.0f));
+            break;
+        case SEQ_BGM_EVENT:
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.0f, 0.15f, 1.0f));
+            break;
+        case SEQ_BGM_BATTLE:
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.07f, 0.0f, 1.0f));
+            break;
+        case SEQ_OCARINA:
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.4f, 1.0f));
+            break;
+        case SEQ_FANFARE:
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.0f, 0.3f, 1.0f));
             break;
         case SEQ_BGM_ERROR:
-        case SEQ_SFX:
             ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-            ImGui::SmallButton("sfx");
+            break;
+        case SEQ_SFX:
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.33f, 0.0f, 1.0f));
             break;
         case SEQ_INSTRUMENT:
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-            ImGui::SmallButton("instrument");
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.25f, 0.5f, 1.0f));
             break;
         case SEQ_BGM_CUSTOM:
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-            ImGui::SmallButton("custom");
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.9f, 0.0f, 0.9f, 1.0f));
             break;
         default:
             ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-            ImGui::SmallButton("default");
             break;
     }
+    ImGui::SmallButton(GetSequenceTypeName(type).c_str());
     ImGui::PopStyleColor();
     ImGui::EndDisabled();
 }
@@ -623,7 +631,9 @@ void DrawSfxEditor(bool& open) {
                     if (excludedSequenceKeys.count(seqInfo.sfxKey)) {
                         excludedSequences.insert(&seqInfo);
                     } else {
-                        includedSequences.insert(&seqInfo);
+                        if (seqInfo.category != SEQ_NOSHUFFLE) {
+                            includedSequences.insert(&seqInfo);
+                        }
                     }
                 }
 
@@ -661,9 +671,9 @@ void DrawSfxEditor(bool& open) {
                         ImGui::SameLine();
                         DrawPreviewButton(seqInfo->sequenceId, seqInfo->sfxKey, seqInfo->category);
                         ImGui::SameLine();
-                        ImGui::Text(seqInfo->label.c_str());
-                        ImGui::SameLine();
                         DrawTypeChip(seqInfo->category);
+                        ImGui::SameLine();
+                        ImGui::Text(seqInfo->label.c_str());
                     }
                 }
                 ImGui::EndChild();
@@ -688,6 +698,8 @@ void DrawSfxEditor(bool& open) {
                         }
                         ImGui::SameLine();
                         DrawPreviewButton(seqInfo->sequenceId, seqInfo->sfxKey, seqInfo->category);
+                        ImGui::SameLine();
+                        DrawTypeChip(seqInfo->category);
                         ImGui::SameLine();
                         ImGui::Text(seqInfo->label.c_str());
                     }

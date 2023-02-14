@@ -4601,6 +4601,22 @@ void func_800F5ACC(u16 seqId) {
     }
 }
 
+// based on func_800F5ACC
+void PreviewSequence(u16 seqId) {
+    u16 curSeqId = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+
+    if ((curSeqId & 0xFF) != NA_BGM_GANON_TOWER && (curSeqId & 0xFF) != NA_BGM_ESCAPE && curSeqId != seqId) {
+        Audio_SetSequenceMode(SEQ_MODE_IGNORE);
+        if (curSeqId != NA_BGM_DISABLED) {
+            sPrevMainBgmSeqId = curSeqId;
+        } else {
+            osSyncPrintf("Middle Boss BGM Start not stack \n");
+        }
+
+        Audio_QueuePreviewSeqCmd(seqId);
+    }
+}
+
 /**
  * Restores the previous sequence to the main bgm player before func_800F5ACC was called
  */
