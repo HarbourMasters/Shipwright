@@ -4948,7 +4948,7 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
-            "Félicitation! Vous avez trouvez %gGreg%w!"),
+            "Félicitation! Vous avez trouvé %gGreg%w!"),
         GIMESSAGE(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE, 
 			"You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
 			"Du erhältst eine %rFlasche mit&blauem Feuer%w! Nutze es um&%rRotes Eis%w zu schmelzen!",
