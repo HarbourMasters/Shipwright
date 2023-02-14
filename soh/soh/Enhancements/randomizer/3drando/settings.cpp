@@ -23,6 +23,7 @@ namespace Settings {
   std::string hash;
   std::string version = RANDOMIZER_VERSION "-" COMMIT_NUMBER;
   std::array<uint8_t, 5> hashIconIndexes;
+  std::string seedString;
 
   bool skipChildZelda = false;
 
