@@ -3051,20 +3051,19 @@ void DrawRandoEditor(bool& open) {
     UIWidgets::EnhancementCheckbox("Manual seed entry", "gRandoManualSeedEntry", false, "");
     if (CVarGetInteger("gRandoManualSeedEntry", 0)) {
         ImGui::Text("Seed");
-        if (ImGui::InputText("##RandomizerSeed", seedString, MAX_SEED_BUFFER_SIZE, ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterAlphaNum)) {
-        }
+        ImGui::InputText("##RandomizerSeed", seedString, MAX_SEED_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterAlphaNum);
         UIWidgets::Tooltip(
             "Characters from a-z, A-Z, and 0-9 are supported.\n"
             "Character limit is 1023, after which the seed will be truncated.\n"
         );
         ImGui::SameLine();
         if (ImGui::Button("New Seed")) {
-            strncpy(seedString, std::to_string(rand() & 0xFFFFFFFF).c_str(), MAX_SEED_BUFFER_SIZE);
+            strncpy(seedString, std::to_string(rand() & 0xFFFFFFFF).c_str(), MAX_SEED_STRING_SIZE);
         }
         UIWidgets::Tooltip("Creates a new random seed value to be used when generating a randomizer");
         ImGui::SameLine();
         if (ImGui::Button("Clear Seed")) {
-            memset(seedString, 0, MAX_SEED_BUFFER_SIZE);
+            memset(seedString, 0, MAX_SEED_STRING_SIZE);
         }
     }
 
@@ -5306,7 +5305,7 @@ void InitRandoItemTable() {
 void InitRando() {
     SohImGui::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
     Randomizer::CreateCustomMessages();
-    seedString = (char*)calloc(MAX_SEED_BUFFER_SIZE, sizeof(char));
+    seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     InitRandoItemTable();
 }
 
