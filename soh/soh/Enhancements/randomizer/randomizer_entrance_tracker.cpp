@@ -687,6 +687,8 @@ void DrawEntranceTracker(bool& open) {
                 UIWidgets::Tooltip("Reveal the \"To\" entrance for undiscovered entrances");
                 UIWidgets::PaddedEnhancementCheckbox("Show \"From\"", "gEntranceTrackerShowFrom", true, false);
                 UIWidgets::Tooltip("Reveal the \"From\" entrance for undiscovered entrances");
+                UIWidgets::Spacer(2.0f);
+                UIWidgets::PaddedEnhancementCheckbox("Show redundant entrances", "gEntranceTrackerShowRedundantEntrances", true, false);
 
                 ImGui::EndTable();
             }
@@ -779,6 +781,15 @@ void DrawEntranceTracker(bool& open) {
             const EntranceData* original = GetEntranceData(entrance.index);
             const EntranceData* override = GetEntranceData(entrance.override);
 
+            // If entrance is a dungeon, grotto, or interior entrance, the transition into that area has oneExit set, which means we can filter the return transitions as redundant
+            // if entrances are not decoupled, as this is redundant information. Also, allows for If all of these conditions are met, we skip adding this entrance to any lists.
+            // However, if entrances are decoupled, then all transitions need to be displayed, so we proceed with the filtering
+            if ((original->type == ENTRANCE_TYPE_DUNGEON || original->type == ENTRANCE_TYPE_GROTTO || original->type == ENTRANCE_TYPE_INTERIOR) &&
+                (original->oneExit != 1 && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF) &&
+                CVarGetInteger("gEntranceTrackerShowRedundantEntrances", 0) == 0) {
+                    continue;
+            }
+
             bool isDiscovered = IsEntranceDiscovered(entrance.index);
 
             bool showOriginal = (!destToggle ? CVarGetInteger("gEntranceTrackerShowTo", 0) : CVarGetInteger("gEntranceTrackerShowFrom", 0)) || isDiscovered;
@@ -831,10 +842,6 @@ void DrawEntranceTracker(bool& open) {
                     const EntranceData* original = GetEntranceData(entrance.index);
                     const EntranceData* override = GetEntranceData(entrance.override);
 
-                    if (original->type == ENTRANCE_TYPE_DUNGEON || original->type == ENTRANCE_TYPE_GROTTO || original->type == ENTRANCE_TYPE_INTERIOR)
-                        if (original->oneExit != 1 && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF)
-                            continue;
-
                     bool isDiscovered = IsEntranceDiscovered(entrance.index);
 
                     bool showOriginal = (!destToggle ? CVarGetInteger("gEntranceTrackerShowTo", 0) : CVarGetInteger("gEntranceTrackerShowFrom", 0)) || isDiscovered;
@@ -850,8 +857,8 @@ void DrawEntranceTracker(bool& open) {
                     uint32_t color = isDiscovered ? IM_COL32_WHITE : COLOR_GRAY;
 
                     // Handle highlighting and auto scroll
-                    if (original->index == lastEntranceIndex ||
-                        (override->reverseIndex == lastEntranceIndex && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF) &&
+                    if ((original->index == lastEntranceIndex ||
+                        (override->reverseIndex == lastEntranceIndex && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF)) &&
                             CVarGetInteger("gEntranceTrackerHighlightPrevious", 0)) {
                                  color = COLOR_ORANGE;
                     } else if (LinkIsInArea(original) != -1) {
