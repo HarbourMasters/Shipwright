@@ -42,6 +42,7 @@ GIGravityLevel GameInteractor_GravityLevel();
 #ifdef __cplusplus
 
 #include <vector>
+#include <functional>
 
 #define DEFINE_HOOK(name, type)         \
     struct name {                       \
