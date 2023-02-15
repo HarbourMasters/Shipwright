@@ -2,6 +2,7 @@
 #include <ResourceMgr.h>
 #include "soh/resource/type/Scene.h"
 #include <Utils/StringHelper.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "global.h"
 #include "vt.h"
 #include <Vertex.h>
@@ -81,6 +82,8 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
                                                .get());
 
     auto data2 = ResourceMgr_LoadVtxByCRC(0x68d4ea06044e228f);*/
+    
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(play->sceneNum);
 
     volatile int a = 0;
 }

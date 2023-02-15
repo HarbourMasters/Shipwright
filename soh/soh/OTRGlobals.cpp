@@ -73,8 +73,9 @@
 CrowdControl* CrowdControl::Instance;
 #endif
 
+#include "Enhancements/mods/modhooks.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
-#include "libultraship/libultraship.h"
+#include <libultraship/libultraship.h>
 
 // Resource Types/Factories
 #include "soh/resource/type/Animation.h"
@@ -583,6 +584,8 @@ extern "C" void InitOTR() {
     CheckTracker::InitCheckTracker();
     OTRExtScanner();
     VanillaItemTable_Init();
+
+    RegisterModHooks();
 
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);
