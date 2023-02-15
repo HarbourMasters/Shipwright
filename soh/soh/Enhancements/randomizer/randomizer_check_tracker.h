@@ -29,5 +29,6 @@ typedef enum {
 
 void InitCheckTracker();
 void DrawCheckTracker(bool& open);
+void UpdateSavedChecks();
 
 } // namespace CheckTracker

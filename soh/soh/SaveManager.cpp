@@ -6,6 +6,7 @@
 #include "macros.h"
 #include <Hooks.h>
 #include <libultraship/bridge.h>
+#include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
 #include <spdlog/spdlog.h>
@@ -666,6 +667,8 @@ void SaveManager::SaveFile(int fileNum) {
     if (fileNum == 0xFF) {
         return;
     }
+
+    CheckTracker::UpdateSavedChecks();
 
     nlohmann::json baseBlock;
 

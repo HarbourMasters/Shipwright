@@ -22,7 +22,7 @@ namespace CheckTracker {
 
 void Teardown();
 void InitializeChecks();
-void UpdateChecks();
+void UpdateChecks(bool checkForSaved = false);
 void UpdateInventoryChecks();
 void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckStatus);
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
@@ -30,9 +30,10 @@ void EndFloatWindows();
 void UpdateOrdering(bool init = false);
 bool ShouldUpdateChecks();
 bool CompareCheckObject(RandomizerCheckObject i, RandomizerCheckObject j);
-bool HasItemBeenCollected(RandomizerCheckObject obj);
+bool HasItemBeenChecked(RandomizerCheckObject obj);
+bool HasItemBeenSaved(RandomizerCheckObject obj);
 void RainbowTick();
-RandomizerCheckShow GetCheckStatus(RandomizerCheckObject rcObj, int idx);
+RandomizerCheckShow GetCheckStatus(RandomizerCheckObject rcObj, int idx, bool checkForSaved = false);
 
 
 Color_RGBA8 Color_Bg_Default                        = {   0,   0,   0, 255 };   // Black
@@ -574,7 +575,7 @@ void InitializeChecks() {
     // Should use the below instead, but the setting isn't currently saved to the savefile
     //showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) != RO_GENERIC_OFF);
 
-    UpdateChecks();
+    UpdateSavedChecks();
     UpdateInventoryChecks();
     UpdateOrdering(true);
     doInitialize = false;
@@ -629,14 +630,17 @@ void UpdateInventoryChecks() {
             areasSpoiled |= (1 << i);
 }
 
-void UpdateChecks() {
+void UpdateChecks(bool checkForSaved) {
     int idx = 0;
     RandomizerCheckObject* lastCheck;
     RandomizerCheckShow lastStatus;
     for (auto& rcObj : checks) {
         RandomizerCheckShow* checkStatusPtr = &checkStatusMap.find(rcObj.rc)->second;
         lastStatus = *checkStatusPtr;
-        *checkStatusPtr = GetCheckStatus(rcObj, idx);
+        if (lastStatus == RCSHOW_UNCHECKED ||
+            (checkForSaved && lastStatus != RCSHOW_SAVED)) {
+            *checkStatusPtr = GetCheckStatus(rcObj, idx, checkForSaved);
+        }
 
         //Update areasFullyChecked
         if (lastStatus != *checkStatusPtr) {
@@ -658,6 +662,10 @@ void UpdateChecks() {
 
         idx++;
     }
+}
+
+void UpdateSavedChecks() {
+    UpdateChecks(true);
 }
 
 void UpdateOrdering(bool init) {
@@ -696,21 +704,86 @@ bool CompareCheckObject(RandomizerCheckObject i, RandomizerCheckObject j) {
     return false;
 }
 
-RandomizerCheckShow GetCheckStatus(RandomizerCheckObject rcObj, int idx) {
-    if (HasItemBeenCollected(rcObj))
-        return RCSHOW_SAVED; // TODO: use SAVED until we hook into game elements without requiring a save. Then we'll use CHECKED
+RandomizerCheckShow GetCheckStatus(RandomizerCheckObject rcObj, int idx, bool checkForSaved) {
+    if (checkForSaved && HasItemBeenSaved(rcObj)) {
+        return RCSHOW_SAVED;
+    }
+
+    if (HasItemBeenChecked(rcObj)) {
+        return RCSHOW_CHECKED;
+    }
 
     //If the status hasn't updated, keep showing as skipped
-    if (checkStatusMap.find(rcObj.rc)->second == RCSHOW_SKIPPED)
+    if (checkStatusMap.find(rcObj.rc)->second == RCSHOW_SKIPPED) {
         return RCSHOW_SKIPPED;
+    }
 
     return RCSHOW_UNCHECKED;
 
     // TODO Seen, Hinted, Scummed, saved/checked
 }
 
+bool HasItemBeenChecked(RandomizerCheckObject obj) {
+    ItemLocation* x = Location(obj.rc);
+    SpoilerCollectionCheck check = x->GetCollectionCheck();
+    auto flag = check.flag;
+    auto scene = check.scene;
+    auto type = check.type;
 
-bool HasItemBeenCollected(RandomizerCheckObject obj) {
+    if (gPlayState->sceneNum == scene) {
+        if (type == SpoilerCollectionCheckType::SPOILER_CHK_CHEST) {
+            return gPlayState->actorCtx.flags.chest & (1 << flag);
+        }
+    }
+
+    return false;
+
+    // switch (type) {
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_ALWAYS_COLLECTED:
+    //         return true;
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_BIGGORON:
+    //         return gSaveContext.bgsFlag & flag;
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_CHEST:
+    //         return gSaveContext.sceneFlags[scene].chest & (1 << flag);
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE:
+    //         return gSaveContext.sceneFlags[scene].collect & (1 << flag);
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT:
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM:
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_COW:
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_SCRUB:
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF:
+    //         return Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(obj.rc));
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF:
+    //         return gSaveContext.eventChkInf[flag / 16] & (0x01 << flag % 16);
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_GERUDO_MEMBERSHIP_CARD:
+    //         return CHECK_FLAG_ALL(gSaveContext.eventChkInf[0x09], 0x0F);
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA:
+    //         return GET_GS_FLAGS(scene) & flag;
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_INF_TABLE:
+    //         return gSaveContext.infTable[scene] & INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(flag);
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_ITEM_GET_INF:
+    //         return gSaveContext.itemGetInf[flag / 16] & INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(flag);
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS:
+    //         return BEANS_BOUGHT >= 10;
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_MINIGAME:
+    //         if (obj.rc == RC_LH_CHILD_FISHING)
+    //             return HIGH_SCORE(HS_FISHING) & 0x400;
+    //         if (obj.rc == RC_LH_ADULT_FISHING)
+    //             return HIGH_SCORE(HS_FISHING) & 0x800;
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_POE_POINTS:
+    //         return gSaveContext.highScores[HS_POE_POINTS] >= 1000;
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER:
+    //         // Gravedigger has a fix in place that means one of two save locations. Check both.
+    //         return (gSaveContext.itemGetInf[1] & 0x1000) || // vanilla flag
+    //                ((gSaveContext.n64ddFlag || CVarGetInteger("gGravediggingTourFix", 0)) &&
+    //                     gSaveContext.sceneFlags[scene].collect & (1 << flag)); // rando/fix flag
+    //     case SpoilerCollectionCheckType::SPOILER_CHK_NONE:
+    //     default:
+    //         return false;
+    // }
+}
+
+bool HasItemBeenSaved(RandomizerCheckObject obj) {
     ItemLocation* x = Location(obj.rc);
     SpoilerCollectionCheck check = x->GetCollectionCheck();
     auto flag = check.flag;
