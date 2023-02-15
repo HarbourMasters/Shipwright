@@ -470,8 +470,8 @@ void SaveManager::InitFileNormal() {
     }
     gSaveContext.sohStats.playTimer = 0;
     gSaveContext.sohStats.pauseTimer = 0;
-    for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.sohStats.timestamp); timestamp++) {
-        gSaveContext.sohStats.timestamp[timestamp] = 0;
+    for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp); timestamp++) {
+        gSaveContext.sohStats.itemTimestamp[timestamp] = 0;
     }
     for (int count = 0; count < ARRAY_COUNT(gSaveContext.sohStats.count); count++) {
         gSaveContext.sohStats.count[count] = 0;
@@ -1037,8 +1037,8 @@ void SaveManager::LoadBaseVersion2() {
         });
         SaveManager::Instance->LoadData("playTimer", gSaveContext.sohStats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.sohStats.pauseTimer);
-        SaveManager::Instance->LoadArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.timestamp), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.sohStats.timestamp[i]);
+        SaveManager::Instance->LoadArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.sohStats.itemTimestamp[i]);
         });
         SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.count[i]);
@@ -1243,8 +1243,8 @@ void SaveManager::LoadBaseVersion3() {
         });
         SaveManager::Instance->LoadData("playTimer", gSaveContext.sohStats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.sohStats.pauseTimer);
-        SaveManager::Instance->LoadArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.timestamp), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.sohStats.timestamp[i]);
+        SaveManager::Instance->LoadArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.sohStats.itemTimestamp[i]);
         });
         SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.count[i]);
@@ -1433,8 +1433,8 @@ void SaveManager::SaveBase() {
         });
         SaveManager::Instance->SaveData("playTimer", gSaveContext.sohStats.playTimer);
         SaveManager::Instance->SaveData("pauseTimer", gSaveContext.sohStats.pauseTimer);
-        SaveManager::Instance->SaveArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.timestamp), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.sohStats.timestamp[i]);
+        SaveManager::Instance->SaveArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
+            SaveManager::Instance->SaveData("", gSaveContext.sohStats.itemTimestamp[i]);
         });
         SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
             SaveManager::Instance->SaveData("", gSaveContext.sohStats.count[i]);

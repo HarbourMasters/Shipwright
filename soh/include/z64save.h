@@ -59,8 +59,13 @@ typedef struct {
     /*      */ u8 dungeonKeys[19];
     /*      */ u32 playTimer;
     /*      */ u32 pauseTimer;
+    /*      */ u32 sceneTimer;
+    /*      */ u32 roomTimer;
+    /*      */ s16 sceneNum;
+    /*      */ s8 roomNum;
     /*      */ bool gameComplete;
-    /*      */ u32 timestamp[TIMESTAMP_MAX];
+    /*      */ u32 itemTimestamp[TIMESTAMP_MAX];
+    /*      */ u32 sceneTimestamp[65535];
     /*      */ u32 count[COUNT_MAX];
     /*      */ u32 entrancesDiscovered[SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT];
     /*      */ u32 scenesDiscovered[SAVEFILE_SCENES_DISCOVERED_IDX_COUNT];
