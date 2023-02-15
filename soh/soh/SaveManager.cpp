@@ -483,6 +483,9 @@ void SaveManager::InitFileNormal() {
     for (int entrancesIdx = 0; entrancesIdx < ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered); entrancesIdx++) {
         gSaveContext.sohStats.entrancesDiscovered[entrancesIdx] = 0;
     }
+    for (int rc = 0; rc < ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped); rc++) {
+        gSaveContext.sohStats.locationsSkipped[rc] = 0;
+    }
     for (int scene = 0; scene < ARRAY_COUNT(gSaveContext.sceneFlags); scene++) {
         gSaveContext.sceneFlags[scene].chest = 0;
         gSaveContext.sceneFlags[scene].swch = 0;
@@ -1255,6 +1258,9 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadArray("entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.entrancesDiscovered[i]);
         });
+        SaveManager::Instance->LoadArray("locationsSkipped", ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.sohStats.locationsSkipped[i]);
+        });
     });
     SaveManager::Instance->LoadArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&i]() {
@@ -1444,6 +1450,9 @@ void SaveManager::SaveBase() {
         });
         SaveManager::Instance->SaveArray("entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered), [](size_t i) {
             SaveManager::Instance->SaveData("", gSaveContext.sohStats.entrancesDiscovered[i]);
+        });
+        SaveManager::Instance->SaveArray("locationsSkipped", ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped), [](size_t i) {
+            SaveManager::Instance->SaveData("", gSaveContext.sohStats.locationsSkipped[i]);
         });
     });
     SaveManager::Instance->SaveArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {
