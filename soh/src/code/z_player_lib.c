@@ -1112,7 +1112,7 @@ s32 func_800902F0(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
                 }
             }
             *dList = Player_HoldsHookshot(this) ? gLinkAdultRightHandHoldingHookshotFarDL
-                                                                       : sHoldingFirstPersonWeaponDLs[firstPersonWeaponIndex];
+                                                : sHoldingFirstPersonWeaponDLs[firstPersonWeaponIndex];
         } else {
             *dList = NULL;
         }
