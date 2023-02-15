@@ -4920,11 +4920,13 @@ s32 func_8083AD4C(PlayState* play, Player* this) {
 
     if (this->unk_6AD == 2) {
         if (func_8002DD6C(this)) {
-            if (LINK_IS_ADULT) {
-                cameraMode = CAM_MODE_BOWARROW;
-            } else {
-                cameraMode = CAM_MODE_SLINGSHOT;
+            bool shouldUseBowCamera = LINK_IS_ADULT;
+
+            if(CVarGetInteger("gBowSlingShotAmmoFix", 0)){
+                shouldUseBowCamera = this->heldItemAction != PLAYER_IA_SLINGSHOT;
             }
+            
+            cameraMode = shouldUseBowCamera ? CAM_MODE_BOWARROW : CAM_MODE_SLINGSHOT;
         } else {
             cameraMode = CAM_MODE_BOOMERANG;
         }
