@@ -1703,6 +1703,10 @@ extern "C" void Overlay_DisplayText_Seconds(int seconds, const char* text) {
     SohImGui::GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
+extern "C" void Overlay_ClearNotifications() {
+    SohImGui::GetGameOverlay()->ClearNotifications();
+}
+
 extern "C" void Entrance_ClearEntranceTrackingData(void) {
     ClearEntranceTrackingData();
 }

@@ -131,6 +131,7 @@ ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerC
 int CustomMessage_RetrieveIfExists(PlayState* play);
 void Overlay_DisplayText(float duration, const char* text);
 void Overlay_DisplayText_Seconds(int seconds, const char* text);
+void Overlay_ClearNotifications();
 GetItemEntry ItemTable_Retrieve(int16_t getItemID);
 GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
 void Entrance_ClearEntranceTrackingData(void);
