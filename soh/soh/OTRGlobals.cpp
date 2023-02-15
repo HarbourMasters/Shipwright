@@ -75,7 +75,6 @@ CrowdControl* CrowdControl::Instance;
 
 #include "Enhancements/mods/modhooks.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
-#include "Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <libultraship/libultraship.h>
 
 // Resource Types/Factories
