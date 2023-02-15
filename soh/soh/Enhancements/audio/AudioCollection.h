@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 #include <map>
 #include <string>
 #include <set>
@@ -58,3 +59,7 @@ class AudioCollection {
         uint16_t GetReverseReplacementSequence(uint16_t seqId);
         void InitializeShufflePool();
 };
+#else
+void AudioCollection_AddToCollection(char *otrPath, uint16_t seqNum);
+const char* AudioCollection_GetSequenceName(uint16_t seqId);
+#endif

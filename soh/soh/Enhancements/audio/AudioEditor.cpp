@@ -252,14 +252,6 @@ extern "C" u16 SfxEditor_GetReverseReplacementSeq(u16 seqId) {
     return AudioCollection::Instance->GetReverseReplacementSequence(seqId);
 }
 
-extern "C" const char* AudioEditor_GetSequenceName(u16 seqId) {
-    if (AudioCollection::Instance->GetAllSequences().contains(seqId)) {
-        const char *name = AudioCollection::Instance->GetAllSequences().at(seqId).label.c_str();
-        return name;
-    }
-    return NULL;
-}
-
 std::string GetSequenceTypeName(SeqType type) {
     switch (type) {
         case SEQ_NOSHUFFLE:
@@ -571,8 +563,4 @@ void AudioEditor_ResetAll() {
 
     SohImGui::RequestCvarSaveOnNextTick();
     ReplayCurrentBGM();
-}
-
-extern "C" void AudioEditor_AddSequence(char *otrPath, uint16_t seqNum) {
-    AudioCollection::Instance->AddToCollection(otrPath, seqNum);
 }

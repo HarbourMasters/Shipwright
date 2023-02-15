@@ -267,3 +267,15 @@ void AudioCollection::InitializeShufflePool() {
         shufflePoolInitialized = true;                
     }
 };
+
+extern "C" void AudioCollection_AddToCollection(char *otrPath, uint16_t seqNum) {
+    AudioCollection::Instance->AddToCollection(otrPath, seqNum);
+}
+
+extern "C" const char* AudioCollection_GetSequenceName(uint16_t seqId) {
+    if (AudioCollection::Instance->GetAllSequences().contains(seqId)) {
+        const char *name = AudioCollection::Instance->GetAllSequences().at(seqId).label.c_str();
+        return name;
+    }
+    return NULL;
+}
