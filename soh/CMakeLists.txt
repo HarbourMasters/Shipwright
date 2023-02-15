@@ -1831,7 +1831,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements}
     ${Header_Files__soh__Enhancements__controls}
     ${Header_Files__soh__Enhancements__cosmetics}
-    ${Header_Files__soh__Enhancements__sfx_editor}
+    ${Header_Files__soh__Enhancements__audio}
     ${Header_Files__soh__Enhancements__debugger}
     ${Header_Files__soh__Enhancements__randomizer}
     ${Header_Files__soh__Enhancements__randomizer__3drando}
@@ -1843,7 +1843,7 @@ set(ALL_FILES
     ${Source_Files__soh__Enhancements}
     ${Source_Files__soh__Enhancements__controls}
     ${Source_Files__soh__Enhancements__cosmetics}
-    ${Source_Files__soh__Enhancements__sfx_editor}
+    ${Source_Files__soh__Enhancements__audio}
     ${Source_Files__soh__Enhancements__debugger}
     ${Source_Files__soh__Enhancements__randomizer}
     ${Source_Files__soh__Enhancements__randomizer__3drando}
