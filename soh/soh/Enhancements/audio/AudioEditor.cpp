@@ -226,7 +226,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
         ImGui::PushItemWidth(-FLT_MIN);
         if (ImGui::Button(randomizeButton.c_str())) {
             std::vector<SequenceInfo*> validSequences = {};
-            for (const auto seqInfo : includedSequences) {
+            for (const auto seqInfo : AudioCollection::Instance->GetIncludedSequences()) {
                 if (seqInfo->category & type) {
                     validSequences.push_back(seqInfo);
                 }
