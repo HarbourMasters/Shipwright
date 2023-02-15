@@ -49,6 +49,7 @@ GIGravityLevel GameInteractor_GravityLevel();
     }
 
 extern "C" void GameInteractor_ExecuteOnReceiveItemHooks(PlayState* play, u8 item);
+extern "C" void GameInteractor_ExecuteOnSaveFile(int fileNum);
 
 class GameInteractor {
 public:
@@ -86,6 +87,7 @@ public:
     }
 
     DEFINE_HOOK(OnReceiveItem, void(PlayState* play, u8 item));
+    DEFINE_HOOK(OnSaveFile, void(int fileNum));
 
     // Helpers
     static bool IsSaveLoaded();

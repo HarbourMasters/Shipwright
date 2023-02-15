@@ -1,5 +1,6 @@
 #include "SaveManager.h"
 #include "OTRGlobals.h"
+#include "Enhancements/game-interactor/GameInteractor.h"
 
 #include "z64.h"
 #include "functions.h"
@@ -669,6 +670,8 @@ void SaveManager::SaveFile(int fileNum) {
     if (fileNum == 0xFF) {
         return;
     }
+    
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum);
 
     nlohmann::json baseBlock;
 

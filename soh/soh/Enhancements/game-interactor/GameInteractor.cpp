@@ -41,6 +41,10 @@ void GameInteractor_ExecuteOnReceiveItemHooks(PlayState* play, u8 item) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnReceiveItem>(play, item);
 }
 
+void GameInteractor_ExecuteOnSaveFile(int fileNum) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum);
+}
+
 // MARK: - Helpers
 
 bool GameInteractor::IsSaveLoaded() {
