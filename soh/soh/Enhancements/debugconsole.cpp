@@ -10,7 +10,7 @@
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
-#include "soh/Enhancements/sfx-editor/SfxEditor.h"
+#include "soh/Enhancements/audio/AudioEditor.h"
 
 #define Path _Path
 #define PATH_HACK

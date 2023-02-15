@@ -176,10 +176,11 @@ set(Header_Files__soh__Enhancements__cosmetics
 )
 source_group("Header Files\\soh\\Enhancements\\cosmetics" FILES ${Header_Files__soh__Enhancements__cosmetics})
 
-set(Header_Files__soh__Enhancements__sfx_editor
-    "soh/Enhancements/sfx-editor/SfxEditor.h"
+set(Header_Files__soh__Enhancements__audio
+    "soh/Enhancements/audio/AudioCollection.h"
+    "soh/Enhancements/audio/AudioEditor.h"
 )
-source_group("Header Files\\soh\\Enhancements\\sfx-editor" FILES ${Header_Files__soh__Enhancements__sfx_editor})
+source_group("Header Files\\soh\\Enhancements\\audio" FILES ${Header_Files__soh__Enhancements__audio})
 
 set(Header_Files__soh__Enhancements__debugger
     "soh/Enhancements/debugger/dlViewer.h"
@@ -506,10 +507,11 @@ set(Source_Files__soh__Enhancements__cosmetics
 )
 source_group("Source Files\\soh\\Enhancements\\cosmetics" FILES ${Source_Files__soh__Enhancements__cosmetics})
 
-set(Source_Files__soh__Enhancements__sfx_editor
-    "soh/Enhancements/sfx-editor/SfxEditor.cpp"
+set(Source_Files__soh__Enhancements__audio
+    "soh/Enhancements/audio/AudioCollection.cpp"
+    "soh/Enhancements/audio/AudioEditor.cpp"
 )
-source_group("Source Files\\soh\\Enhancements\\sfx-editor" FILES ${Source_Files__soh__Enhancements__sfx_editor})
+source_group("Source Files\\soh\\Enhancements\\audio" FILES ${Source_Files__soh__Enhancements__audio})
 
 set(Source_Files__soh__Enhancements__debugger
     "soh/Enhancements/debugger/dlViewer.cpp"

@@ -28,7 +28,8 @@
 #include <AudioPlayer.h>
 #include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
-#include "Enhancements/sfx-editor/SfxEditor.h"
+#include "Enhancements/audio/AudioCollection.h"
+#include "Enhancements/audio/AudioEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
 #include "Enhancements/randomizer/randomizer.h"
@@ -566,6 +567,7 @@ extern "C" void InitOTR() {
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
     GameInteractor::Instance = new GameInteractor();
+    AudioCollection::Instance = new AudioCollection();
 
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
