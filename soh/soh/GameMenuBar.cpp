@@ -325,6 +325,8 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementSliderInt("Block pushing speed +%d", "##BLOCKSPEED", "gFasterBlockPush", 0, 5, "", 0, false, false, true);
                     UIWidgets::PaddedEnhancementCheckbox("Faster Heavy Block Lift", "gFasterHeavyBlockLift", true, false);
                     UIWidgets::Tooltip("Speeds up lifting silver rocks and obelisks");
+                    UIWidgets::PaddedEnhancementCheckbox("Link as default file name", "gLinkDefaultName");
+                    UIWidgets::Tooltip("Allows you to have \"Link\" as a premade file name");
                     UIWidgets::PaddedEnhancementCheckbox("No Forced Navi", "gNoForcedNavi", true, false);
                     UIWidgets::Tooltip("Prevent forced Navi conversations");
                     UIWidgets::PaddedEnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze", true, false);
