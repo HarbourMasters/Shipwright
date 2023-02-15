@@ -85,7 +85,7 @@ void ArmsHook_Wait(ArmsHook* this, PlayState* play) {
     if (this->actor.parent == NULL) {
         Player* player = GET_PLAYER(play);
         // get correct timer length for hookshot or longshot
-        s32 length = (player->heldItemAction == PLAYER_IA_HOOKSHOT) ? 13 : 26;
+        s32 length = ((player->heldItemAction == PLAYER_IA_HOOKSHOT) ? 13 : 26) * CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f);
 
         ArmsHook_SetupAction(this, ArmsHook_Shoot);
         func_8002D9A4(&this->actor, 20.0f);
@@ -258,7 +258,7 @@ void ArmsHook_Shoot(ArmsHook* this, PlayState* play) {
         sp60.y = this->unk_1F4.y - (this->unk_1E8.y - this->unk_1F4.y);
         sp60.z = this->unk_1F4.z - (this->unk_1E8.z - this->unk_1F4.z);
         u16 buttonsToCheck = BTN_A | BTN_B | BTN_R | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-        if (CVar_GetS32("gDpadEquips", 0) != 0) {
+        if (CVarGetInteger("gDpadEquips", 0) != 0) {
             buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
         }
         if (BgCheck_EntityLineTest1(&play->colCtx, &sp60, &this->unk_1E8, &sp78, &poly, true, true, true, true,

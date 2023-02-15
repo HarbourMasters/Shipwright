@@ -272,6 +272,15 @@ void ObjOshihiki_Init(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     ObjOshihiki* this = (ObjOshihiki*)thisx;
 
+    // In MQ Spirit, remove the large silver block in the hole as child so the chest in the silver block hallway
+    // can be guaranteed accessible
+    if (gSaveContext.n64ddFlag && LINK_IS_CHILD && ResourceMgr_IsGameMasterQuest() &&
+        play->sceneNum == SCENE_JYASINZOU && thisx->room == 6 && // Spirit Temple silver block hallway
+        thisx->params == 0x9C7) { // Silver block that is marked as in the hole
+        Actor_Kill(thisx);
+        return;
+    }
+
     ObjOshihiki_CheckType(this, play);
 
     if ((((this->dyna.actor.params >> 8) & 0xFF) >= 0) && (((this->dyna.actor.params >> 8) & 0xFF) <= 0x3F)) {
@@ -558,9 +567,9 @@ void ObjOshihiki_Push(ObjOshihiki* this, PlayState* play) {
     f32 pushDistSigned;
     s32 stopFlag;
 
-    this->pushSpeed = this->pushSpeed + ((CVar_GetS32("gFasterBlockPush", 0) / 2) * 0.5) + 0.5f;
+    this->pushSpeed = this->pushSpeed + (CVarGetInteger("gFasterBlockPush", 0) * 0.25) + 0.5f;
     this->stateFlags |= PUSHBLOCK_PUSH;
-    this->pushSpeed = CLAMP_MAX(this->pushSpeed, 2.0f);
+    this->pushSpeed = CLAMP_MAX(this->pushSpeed, 2.0f + (CVarGetInteger("gFasterBlockPush", 0) * 0.5));
     stopFlag = Math_StepToF(&this->pushDist, 20.0f, this->pushSpeed);
     pushDistSigned = ((this->direction >= 0.0f) ? 1.0f : -1.0f) * this->pushDist;
     thisx->world.pos.x = thisx->home.pos.x + (pushDistSigned * this->yawSin);
@@ -586,7 +595,7 @@ void ObjOshihiki_Push(ObjOshihiki* this, PlayState* play) {
         this->dyna.unk_150 = 0.0f;
         this->pushDist = 0.0f;
         this->pushSpeed = 0.0f;
-        this->timer = 10 - ((CVar_GetS32("gFasterBlockPush", 0) * 3) / 2);
+        this->timer = 10 - ((CVarGetInteger("gFasterBlockPush", 0) * 3) / 2);
         if (this->floorBgIds[this->highestFloor] == BGCHECK_SCENE) {
             ObjOshihiki_SetupOnScene(this, play);
         } else {

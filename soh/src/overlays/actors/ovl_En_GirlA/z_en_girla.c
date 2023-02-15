@@ -492,7 +492,7 @@ s32 EnGirlA_CanBuy_DekuNuts(PlayState* play, EnGirlA* this) {
     if (gSaveContext.rupees < this->basePrice) {
         return CANBUY_RESULT_NEED_RUPEES;
     }
-    if ((Item_CheckObtainability(ITEM_NUT) == ITEM_NONE) && !CVar_GetS32("gFastDrops", 0)) {
+    if ((Item_CheckObtainability(ITEM_NUT) == ITEM_NONE) && !CVarGetInteger("gFastDrops", 0)) {
         return CANBUY_RESULT_SUCCESS_FANFARE;
     }
     return CANBUY_RESULT_SUCCESS;
@@ -505,7 +505,7 @@ s32 EnGirlA_CanBuy_DekuSticks(PlayState* play, EnGirlA* this) {
     if (gSaveContext.rupees < this->basePrice) {
         return CANBUY_RESULT_NEED_RUPEES;
     }
-    if ((Item_CheckObtainability(ITEM_STICK) == ITEM_NONE) && !CVar_GetS32("gFastDrops", 0)) {
+    if ((Item_CheckObtainability(ITEM_STICK) == ITEM_NONE) && !CVarGetInteger("gFastDrops", 0)) {
         return CANBUY_RESULT_SUCCESS_FANFARE;
     }
     return CANBUY_RESULT_SUCCESS;
@@ -703,7 +703,7 @@ s32 EnGirlA_CanBuy_DekuSeeds(PlayState* play, EnGirlA* this) {
     if (gSaveContext.rupees < this->basePrice) {
         return CANBUY_RESULT_NEED_RUPEES;
     }
-    if ((Item_CheckObtainability(ITEM_SEEDS) == ITEM_NONE) && !CVar_GetS32("gFastDrops", 0)) {
+    if ((Item_CheckObtainability(ITEM_SEEDS) == ITEM_NONE) && !CVarGetInteger("gFastDrops", 0)) {
         return CANBUY_RESULT_SUCCESS_FANFARE;
     }
     return CANBUY_RESULT_SUCCESS;

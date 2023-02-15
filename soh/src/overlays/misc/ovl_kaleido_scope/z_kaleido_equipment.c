@@ -97,10 +97,10 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
     //Vec3s rot; // Removed for not having it use din the function
     f32 scale;
     Input* input = &play->state.input[0];
-    s16 RotationSpeed = 150 * CVar_GetS32("gPauseLiveLinkRotationSpeed", 0);
-    u8 AllowStickRotation = (CVar_GetS32("gPauseLiveLinkRotation", 0) == 3) ? true : false;
-    u8 AllowCRotation = (CVar_GetS32("gPauseLiveLinkRotation", 0) == 2) ? true : false;
-    u8 AllowDPadRotation = (CVar_GetS32("gPauseLiveLinkRotation", 0) == 1) ? true : false;
+    s16 RotationSpeed = 150 * CVarGetInteger("gPauseLiveLinkRotationSpeed", 0);
+    u8 AllowStickRotation = (CVarGetInteger("gPauseLiveLinkRotation", 0) == 3) ? true : false;
+    u8 AllowCRotation = (CVarGetInteger("gPauseLiveLinkRotation", 0) == 2) ? true : false;
+    u8 AllowDPadRotation = (CVarGetInteger("gPauseLiveLinkRotation", 0) == 1) ? true : false;
 
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
@@ -108,7 +108,7 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
         pos.y = -130.0f;
         pos.z = -150.0f;
         scale = 0.046f;
-    } else if (CUR_EQUIP_VALUE(EQUIP_SWORD) != 2 && !CVar_GetS32("gPauseTriforce", 0)) {
+    } else if (CUR_EQUIP_VALUE(EQUIP_SWORD) != 2 && !CVarGetInteger("gPauseTriforce", 0)) {
         pos.x = 25.0f;
         pos.y = -228.0f;
         pos.z = 60.0f;
@@ -176,7 +176,9 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
     s16 cursorX;
     s16 cursorY;
     s16 oldCursorPoint;
-    bool dpad = (CVar_GetS32("gDpadPause", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
+    bool dpad = (CVarGetInteger("gDpadPause", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
+    bool pauseAnyCursor = (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && gSaveContext.n64ddFlag) ||
+                          (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -226,7 +228,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                                     cursorMoveResult = 1;
                                 }
                             }
-                        } else if ((gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] & gSaveContext.inventory.equipment) || CVar_GetS32("gPauseAnyCursor", 0)) {
+                        } else if ((gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] & gSaveContext.inventory.equipment) || pauseAnyCursor) {
                             cursorMoveResult = 2;
                         }
                     } else {
@@ -260,7 +262,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                             if (CUR_UPG_VALUE(pauseCtx->cursorY[PAUSE_EQUIP]) != 0) {
                                 cursorMoveResult = 1;
                             }
-                        } else if ((gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] & gSaveContext.inventory.equipment) || CVar_GetS32("gPauseAnyCursor", 0)) {
+                        } else if ((gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] & gSaveContext.inventory.equipment) || pauseAnyCursor) {
                                 cursorMoveResult = 2;
                         }
                     } else {
@@ -311,7 +313,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                                 cursorMoveResult = 1;
                             }
                         } else if ((gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] &
-                                   gSaveContext.inventory.equipment) || CVar_GetS32("gPauseAnyCursor", 0)) {
+                                   gSaveContext.inventory.equipment) || pauseAnyCursor) {
                             cursorMoveResult = 2;
                         }
                     } else {
@@ -329,7 +331,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                                 cursorMoveResult = 1;
                             }
                         } else if ((gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] &
-                                   gSaveContext.inventory.equipment) || CVar_GetS32("gPauseAnyCursor", 0)) {
+                                   gSaveContext.inventory.equipment) || pauseAnyCursor) {
                             cursorMoveResult = 2;
                         }
                     } else {
@@ -501,7 +503,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         KaleidoScope_SetCursorVtx(pauseCtx, cursorSlot * 4, pauseCtx->equipVtx);
 
         u16 buttonsToCheck = BTN_A | BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
-        if (CVar_GetS32("gDpadEquips", 0) && (!CVar_GetS32("gDpadPause", 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
+        if (CVarGetInteger("gDpadEquips", 0) && (!CVarGetInteger("gDpadPause", 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
             buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
         }
 
@@ -517,7 +519,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                     // Only BGS/Giant's Knife is affected, and it will revert to Master Sword.
 
                     // If we have the feature toggled on
-                    if (CVar_GetS32("gEquipmentCanBeRemoved", 0)) {
+                    if (CVarGetInteger("gEquipmentCanBeRemoved", 0)) {
                         
                         // If we're on the "swords" section of the equipment screen AND we're on a currently-equipped BGS/Giant's Knife
                         if (pauseCtx->cursorY[PAUSE_EQUIP] == 0 && pauseCtx->cursorX[PAUSE_EQUIP] == 3 
@@ -577,7 +579,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                     Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                     pauseCtx->unk_1E4 = 7;
                     sEquipTimer = 10;
-                } else if (CVar_GetS32("gAssignableTunicsAndBoots", 0) != 0) {
+                } else if (CVarGetInteger("gAssignableTunicsAndBoots", 0) != 0) {
                     // Only allow assigning tunic and boots to c-buttons
                     if (pauseCtx->cursorY[PAUSE_EQUIP] > 1) {
                         if (CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) {
@@ -617,7 +619,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                 EQUIP_FAIL:
                 if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
                     Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                } else if ((CVar_GetS32("gAssignableTunicsAndBoots", 0) != 0) && (pauseCtx->cursorY[PAUSE_EQUIP] > 1)) {
+                } else if ((CVarGetInteger("gAssignableTunicsAndBoots", 0) != 0) && (pauseCtx->cursorY[PAUSE_EQUIP] > 1)) {
                     Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                 }
             }
@@ -664,7 +666,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
 
     for (rowStart = 0, j = 0, temp = 0, i = 0; i < 4; i++, rowStart += 4, j += 16) {
         gSPVertex(POLY_KAL_DISP++, &pauseCtx->equipVtx[j], 16, 0);
-        bool drawGreyItems = !CVar_GetS32("gTimelessEquipment", 0);
+        bool drawGreyItems = !CVarGetInteger("gTimelessEquipment", 0);
         if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
             point = CUR_UPG_VALUE(sChildUpgrades[i]);
             if ((point != 0) && (CUR_UPG_VALUE(sChildUpgrades[i]) != 0)) {

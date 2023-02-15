@@ -333,7 +333,7 @@ s32 func_80B0C9F0(EnSw* this, PlayState* play) {
             }
             Enemy_StartFinishingBlow(play, &this->actor);
             if (((this->actor.params & 0xE000) >> 0xD) != 0) {
-                if (CVar_GetS32("gGsCutscene", 0)) {
+                if (CVarGetInteger("gGsCutscene", 0)) {
                     OnePointCutscene_Init(play, 2200, 90, &this->actor, MAIN_CAM);
                 }
                 this->skelAnime.playSpeed = 8.0f;

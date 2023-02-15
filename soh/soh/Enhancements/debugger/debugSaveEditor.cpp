@@ -9,7 +9,7 @@
 #include <bit>
 #include <map>
 #include <string>
-#include <Cvar.h>
+#include <libultraship/bridge.h>
 
 extern "C" {
 #include <z64.h>
@@ -749,28 +749,7 @@ void DrawInventoryTab() {
 }
 
 // Draw a flag bitfield as an grid of checkboxes
-void DrawFlagArray32(const std::string& name, uint32_t& flags) {
-    ImGui::PushID(name.c_str());
-    for (int32_t flagIndex = 0; flagIndex < 32; flagIndex++) {
-        if ((flagIndex % 8) != 0) {
-            ImGui::SameLine();
-        }
-        ImGui::PushID(flagIndex);
-        uint32_t bitMask = 1 << flagIndex;
-        bool flag = (flags & bitMask) != 0;
-        if (ImGui::Checkbox("##check", &flag)) {
-            if (flag) {
-                flags |= bitMask;
-            } else {
-                flags &= ~bitMask;
-            }
-        }
-        ImGui::PopID();
-    }
-    ImGui::PopID();
-}
-
-void DrawFlagArray16(const FlagTable& flagTable, uint16_t row, uint16_t& flags) {
+void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& flags) {
     ImGui::PushID((std::to_string(row) + flagTable.name).c_str());
     for (int32_t flagIndex = 15; flagIndex >= 0; flagIndex--) {
         ImGui::SameLine();
@@ -798,6 +777,36 @@ void DrawFlagArray16(const FlagTable& flagTable, uint16_t row, uint16_t& flags) 
 }
 
 void DrawFlagsTab() {
+    if (ImGui::TreeNode("Player State")) {
+        if (gPlayState != nullptr) {
+            Player* player = GET_PLAYER(gPlayState);
+
+            DrawGroupWithBorder([&]() {
+                ImGui::Text("stateFlags1");
+                UIWidgets::DrawFlagArray32("stateFlags1", player->stateFlags1);
+            });
+
+            ImGui::SameLine();
+
+            DrawGroupWithBorder([&]() {
+                ImGui::Text("stateFlags2");
+                UIWidgets::DrawFlagArray32("stateFlags2", player->stateFlags2);
+            });
+
+            DrawGroupWithBorder([&]() {
+                ImGui::Text("stateFlags3");
+                UIWidgets::DrawFlagArray8("stateFlags3", player->stateFlags3);
+            });
+            
+            ImGui::SameLine();
+            
+            DrawGroupWithBorder([&]() {
+                ImGui::Text("unk_6AE");
+                UIWidgets::DrawFlagArray16("unk_6AE", player->unk_6AE);
+            });
+        }
+        ImGui::TreePop();
+    }
     if (ImGui::TreeNode("Current Scene")) {
         if (gPlayState != nullptr) {
             ActorContext* act = &gPlayState->actorCtx;
@@ -805,7 +814,15 @@ void DrawFlagsTab() {
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Switch");
                 UIWidgets::InsertHelpHoverText("Permanently-saved switch flags");
-                DrawFlagArray32("Switch", act->flags.swch);
+                ImGui::SameLine();
+                if (ImGui::Button("Set All##Switch")) {
+                    act->flags.swch = UINT32_MAX;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Clear All##Switch")) {
+                    act->flags.swch = 0;
+                }
+                UIWidgets::DrawFlagArray32("Switch", act->flags.swch);
             });
 
             ImGui::SameLine();
@@ -813,13 +830,29 @@ void DrawFlagsTab() {
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Temp Switch");
                 UIWidgets::InsertHelpHoverText("Temporary switch flags. Unset on scene transitions");
-                DrawFlagArray32("Temp Switch", act->flags.tempSwch);
+                ImGui::SameLine();
+                if (ImGui::Button("Set All##Temp Switch")) {
+                    act->flags.tempSwch = UINT32_MAX;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Clear All##Temp Switch")) {
+                    act->flags.tempSwch = 0;
+                }
+                UIWidgets::DrawFlagArray32("Temp Switch", act->flags.tempSwch);
             });
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Clear");
                 UIWidgets::InsertHelpHoverText("Permanently-saved room-clear flags");
-                DrawFlagArray32("Clear", act->flags.clear);
+                ImGui::SameLine();
+                if (ImGui::Button("Set All##Clear")) {
+                    act->flags.clear = UINT32_MAX;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Clear All##Clear")) {
+                    act->flags.clear = 0;
+                }
+                UIWidgets::DrawFlagArray32("Clear", act->flags.clear);
             });
 
             ImGui::SameLine();
@@ -827,13 +860,29 @@ void DrawFlagsTab() {
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Temp Clear");
                 UIWidgets::InsertHelpHoverText("Temporary room-clear flags. Unset on scene transitions");
-                DrawFlagArray32("Temp Clear", act->flags.tempClear);
+                ImGui::SameLine();
+                if (ImGui::Button("Set All##Temp Clear")) {
+                    act->flags.tempClear = UINT32_MAX;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Clear All##Temp Clear")) {
+                    act->flags.tempClear = 0;
+                }
+                UIWidgets::DrawFlagArray32("Temp Clear", act->flags.tempClear);
             });
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Collect");
                 UIWidgets::InsertHelpHoverText("Permanently-saved collect flags");
-                DrawFlagArray32("Collect", act->flags.collect);
+                ImGui::SameLine();
+                if (ImGui::Button("Set All##Collect")) {
+                    act->flags.collect = UINT32_MAX;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Clear All##Collect")) {
+                    act->flags.collect = 0;
+                }
+                UIWidgets::DrawFlagArray32("Collect", act->flags.collect);
             });
 
             ImGui::SameLine();
@@ -841,13 +890,29 @@ void DrawFlagsTab() {
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Temp Collect");
                 UIWidgets::InsertHelpHoverText("Temporary collect flags. Unset on scene transitions");
-                DrawFlagArray32("Temp Collect", act->flags.tempCollect);
+                ImGui::SameLine();
+                if (ImGui::Button("Set All##Temp Collect")) {
+                    act->flags.tempCollect = UINT32_MAX;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Clear All##Temp Collect")) {
+                    act->flags.tempCollect = 0;
+                }
+                UIWidgets::DrawFlagArray32("Temp Collect", act->flags.tempCollect);
             });
 
             DrawGroupWithBorder([&]() {
                 ImGui::Text("Chest");
                 UIWidgets::InsertHelpHoverText("Permanently-saved chest flags");
-                DrawFlagArray32("Chest", act->flags.chest);
+                ImGui::SameLine();
+                if (ImGui::Button("Set All##Chest")) {
+                    act->flags.chest = UINT32_MAX;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Clear All##Chest")) {
+                    act->flags.chest = 0;
+                }
+                UIWidgets::DrawFlagArray32("Chest", act->flags.chest);
             });
 
             ImGui::SameLine();
@@ -913,7 +978,7 @@ void DrawFlagsTab() {
         DrawGroupWithBorder([&]() {
             ImGui::Text("Switch");
             UIWidgets::InsertHelpHoverText("Switch flags");
-            DrawFlagArray32("Switch", gSaveContext.sceneFlags[selectedSceneFlagMap].swch);
+            UIWidgets::DrawFlagArray32("Switch", gSaveContext.sceneFlags[selectedSceneFlagMap].swch);
         });
 
         ImGui::SameLine();
@@ -921,13 +986,13 @@ void DrawFlagsTab() {
         DrawGroupWithBorder([&]() {
             ImGui::Text("Clear");
             UIWidgets::InsertHelpHoverText("Room-clear flags");
-            DrawFlagArray32("Clear", gSaveContext.sceneFlags[selectedSceneFlagMap].clear);
+            UIWidgets::DrawFlagArray32("Clear", gSaveContext.sceneFlags[selectedSceneFlagMap].clear);
         });
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Collect");
             UIWidgets::InsertHelpHoverText("Collect flags");
-            DrawFlagArray32("Collect", gSaveContext.sceneFlags[selectedSceneFlagMap].collect);
+            UIWidgets::DrawFlagArray32("Collect", gSaveContext.sceneFlags[selectedSceneFlagMap].collect);
         });
 
         ImGui::SameLine();
@@ -935,13 +1000,13 @@ void DrawFlagsTab() {
         DrawGroupWithBorder([&]() {
             ImGui::Text("Chest");
             UIWidgets::InsertHelpHoverText("Chest flags");
-            DrawFlagArray32("Chest", gSaveContext.sceneFlags[selectedSceneFlagMap].chest);
+            UIWidgets::DrawFlagArray32("Chest", gSaveContext.sceneFlags[selectedSceneFlagMap].chest);
         });
 
         DrawGroupWithBorder([&]() {
             ImGui::Text("Rooms");
             UIWidgets::InsertHelpHoverText("Flags for visted rooms");
-            DrawFlagArray32("Rooms", gSaveContext.sceneFlags[selectedSceneFlagMap].rooms);
+            UIWidgets::DrawFlagArray32("Rooms", gSaveContext.sceneFlags[selectedSceneFlagMap].rooms);
         });
 
         ImGui::SameLine();
@@ -949,7 +1014,7 @@ void DrawFlagsTab() {
         DrawGroupWithBorder([&]() {
             ImGui::Text("Floors");
             UIWidgets::InsertHelpHoverText("Flags for visted floors");
-            DrawFlagArray32("Floors", gSaveContext.sceneFlags[selectedSceneFlagMap].floors);
+            UIWidgets::DrawFlagArray32("Floors", gSaveContext.sceneFlags[selectedSceneFlagMap].floors);
         });
 
         ImGui::TreePop();
@@ -1027,19 +1092,19 @@ void DrawFlagsTab() {
                     ImGui::Text(fmt::format("{:<2x}", j).c_str());
                     switch (flagTable.flagTableType) {
                         case EVENT_CHECK_INF:
-                            DrawFlagArray16(flagTable, j, gSaveContext.eventChkInf[j]);
+                            DrawFlagTableArray16(flagTable, j, gSaveContext.eventChkInf[j]);
                             break;
                         case ITEM_GET_INF:
-                            DrawFlagArray16(flagTable, j, gSaveContext.itemGetInf[j]);
+                            DrawFlagTableArray16(flagTable, j, gSaveContext.itemGetInf[j]);
                             break;
                         case INF_TABLE:
-                            DrawFlagArray16(flagTable, j, gSaveContext.infTable[j]);
+                            DrawFlagTableArray16(flagTable, j, gSaveContext.infTable[j]);
                             break;
                         case EVENT_INF:
-                            DrawFlagArray16(flagTable, j, gSaveContext.eventInf[j]);
+                            DrawFlagTableArray16(flagTable, j, gSaveContext.eventInf[j]);
                             break;
                         case RANDOMIZER_INF:
-                            DrawFlagArray16(flagTable, j, gSaveContext.randomizerInf[j]);
+                            DrawFlagTableArray16(flagTable, j, gSaveContext.randomizerInf[j]);
                             break;
                     }
                 });
@@ -1622,7 +1687,7 @@ void DrawPlayerTab() {
             ImGui::SameLine();
             ImGui::InputScalar("C Right", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[3], &one, NULL);
 
-            if (CVar_GetS32("gDpadEquips", 0)) {
+            if (CVarGetInteger("gDpadEquips", 0)) {
                 ImGui::NewLine();
                 ImGui::Text("Current D-pad Equips");
                 ImGui::InputScalar("D-pad Up  ", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[4], &one, NULL); // Two spaces at the end for aligning, not elegant but it's working
@@ -1663,7 +1728,7 @@ void DrawPlayerTab() {
 
 void DrawSaveEditor(bool& open) {
     if (!open) {
-        CVar_SetS32("gSaveEditorEnabled", 0);
+        CVarSetInteger("gSaveEditorEnabled", 0);
         return;
     }
 

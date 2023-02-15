@@ -1,7 +1,8 @@
 #include "OTRGlobals.h"
 #include <ResourceMgr.h>
-#include <Scene.h>
+#include "soh/resource/type/Scene.h"
 #include <Utils/StringHelper.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "global.h"
 #include "vt.h"
 #include <Vertex.h>
@@ -9,7 +10,7 @@
 extern "C" void Play_InitScene(PlayState * play, s32 spawn);
 extern "C" void Play_InitEnvironment(PlayState * play, s16 skyboxId);
 void OTRPlay_InitScene(PlayState* play, s32 spawn);
-s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* sceneCmd);
+s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* scene);
 
 //Ship::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
 Ship::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
@@ -36,7 +37,7 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
     }
     std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), scene->sceneFile.fileName, scene->sceneFile.fileName);
 
-    play->sceneSegment = (Ship::Scene*)OTRPlay_LoadFile(play, scenePath.c_str());
+    play->sceneSegment = OTRPlay_LoadFile(play, scenePath.c_str());
 
     // Failed to load scene... default to doodongs cavern
     if (play->sceneSegment == nullptr) 
@@ -53,8 +54,9 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
     //gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
 
     OTRPlay_InitScene(play, spawn);
+    auto roomSize = func_80096FE8(play, &play->roomCtx);
 
-    osSyncPrintf("ROOM SIZE=%fK\n", func_80096FE8(play, &play->roomCtx) / 1024.0f);
+    osSyncPrintf("ROOM SIZE=%fK\n", roomSize / 1024.0f);
 }
 
 void OTRPlay_InitScene(PlayState* play, s32 spawn) {
@@ -72,7 +74,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     func_80096FD4(play, &play->roomCtx.curRoom);
     YREG(15) = 0;
     gSaveContext.worldMapArea = 0;
-    OTRScene_ExecuteCommands(play, play->sceneSegment);
+    OTRScene_ExecuteCommands(play, (Ship::Scene*)play->sceneSegment);
     Play_InitEnvironment(play, play->skyboxId);
     if (gSaveContext.isBossRush && play->sceneNum != SCENE_KENJYANOMA) {
         gSaveContext.isBossRushPaused = 0;
@@ -83,6 +85,8 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
                                                .get());
 
     auto data2 = ResourceMgr_LoadVtxByCRC(0x68d4ea06044e228f);*/
+    
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(play->sceneNum);
 
     volatile int a = 0;
 }

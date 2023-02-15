@@ -123,7 +123,7 @@ set(Header_Files__include
     #"include/stdbool_n64.h"
     #"include/stddef_n64.h"
     #"include/stdlib_n64.h"
-    "include/ultra64.h"
+    # "include/ultra64.h"
     "include/unk.h"
     "include/variables.h"
     "include/vt.h"
@@ -183,6 +183,7 @@ set(Header_Files__soh__Enhancements__sfx_editor
 source_group("Header Files\\soh\\Enhancements\\sfx-editor" FILES ${Header_Files__soh__Enhancements__sfx_editor})
 
 set(Header_Files__soh__Enhancements__debugger
+    "soh/Enhancements/debugger/dlViewer.h"
     "soh/Enhancements/debugger/actorViewer.h"
     "soh/Enhancements/debugger/colViewer.h"
     "soh/Enhancements/debugger/debugger.h"
@@ -258,6 +259,18 @@ set(Header_Files__soh__Enhancements__item_tables
 
 source_group("Header Files\\soh\\Enhancements\\item-tables" FILES ${Header_Files__soh__Enhancements__item_tables})
 
+set(Header_Files__soh__Enhancements__mods
+    "soh/Enhancements/mods/modhooks.h"
+)
+source_group("Header Files\\soh\\Enhancements\\mods" FILES ${Header_Files__soh__Enhancements__mods})
+
+set(Header_Files__soh__Enhancements__game_interactor
+    "soh/Enhancements/game-interactor/GameInteractor.h"
+    "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+    "soh/Enhancements/game-interactor/GameInteractionEffect.h"
+)
+source_group("Header Files\\soh\\Enhancements\\game-interactor" FILES ${Header_Files__soh__Enhancements__game_interactor})
+
 if (BUILD_CROWD_CONTROL)
 set(Header_Files__soh__Enhancements__crowd_control
     "soh/Enhancements/crowd-control/CrowdControl.h"
@@ -270,6 +283,8 @@ set(Source_Files__soh
     "soh/OTRAudio.h"
     "soh/OTRGlobals.cpp"
     "soh/OTRGlobals.h"
+    "soh/mixer.c"
+    "soh/mixer.h"
     "soh/SaveManager.h"
     "soh/SaveManager.cpp"
     "soh/frame_interpolation.h"
@@ -288,6 +303,194 @@ set(Source_Files__soh
     "soh/CrashHandlerExt.cpp"
 )
 source_group("Source Files\\soh" FILES ${Source_Files__soh})
+
+set(Header_Files__soh__resourceTypes
+    "soh/resource/type/Animation.h"
+    "soh/resource/type/AudioSample.h"
+    "soh/resource/type/AudioSequence.h"
+    "soh/resource/type/AudioSoundFont.h"
+    "soh/resource/type/CollisionHeader.h"
+    "soh/resource/type/Cutscene.h"
+    "soh/resource/type/Path.h"
+    "soh/resource/type/PlayerAnimation.h"
+    "soh/resource/type/Scene.h"
+    "soh/resource/type/Skeleton.h"
+    "soh/resource/type/SkeletonLimb.h"
+    "soh/resource/type/Text.h"
+    "soh/resource/type/Background.h"
+)
+source_group("Header Files\\soh\\resource\\type" FILES ${Header_Files__soh__resourceTypes})
+
+set(Source_Files__soh__resourceTypes
+    "soh/resource/type/Animation.cpp"
+    "soh/resource/type/AudioSample.cpp"
+    "soh/resource/type/AudioSequence.cpp"
+    "soh/resource/type/AudioSoundFont.cpp"
+    "soh/resource/type/CollisionHeader.cpp"
+    "soh/resource/type/Cutscene.cpp"
+    "soh/resource/type/Path.cpp"
+    "soh/resource/type/PlayerAnimation.cpp"
+    "soh/resource/type/Scene.cpp"
+    "soh/resource/type/Skeleton.cpp"
+    "soh/resource/type/SkeletonLimb.cpp"
+    "soh/resource/type/Text.cpp"
+    "soh/resource/type/Background.cpp"
+)
+source_group("Source Files\\soh\\resource\\type" FILES ${Source_Files__soh__resourceTypes})
+
+set(Header_Files__soh__resourceFactories
+    "soh/resource/importer/AnimationFactory.h"
+    "soh/resource/importer/AudioSampleFactory.h"
+    "soh/resource/importer/AudioSequenceFactory.h"
+    "soh/resource/importer/AudioSoundFontFactory.h"
+    "soh/resource/importer/CollisionHeaderFactory.h"
+    "soh/resource/importer/CutsceneFactory.h"
+    "soh/resource/importer/PathFactory.h"
+    "soh/resource/importer/PlayerAnimationFactory.h"
+    "soh/resource/importer/SceneFactory.h"
+    "soh/resource/importer/SkeletonFactory.h"
+    "soh/resource/importer/SkeletonLimbFactory.h"
+    "soh/resource/importer/TextFactory.h"
+    "soh/resource/importer/BackgroundFactory.h"
+)
+source_group("Header Files\\soh\\resource\\importer" FILES ${Header_Files__soh__resourceFactories})
+
+set(Source_Files__soh__resourceFactories
+    "soh/resource/importer/AnimationFactory.cpp"
+    "soh/resource/importer/AudioSampleFactory.cpp"
+    "soh/resource/importer/AudioSequenceFactory.cpp"
+    "soh/resource/importer/AudioSoundFontFactory.cpp"
+    "soh/resource/importer/CollisionHeaderFactory.cpp"
+    "soh/resource/importer/CutsceneFactory.cpp"
+    "soh/resource/importer/PathFactory.cpp"
+    "soh/resource/importer/PlayerAnimationFactory.cpp"
+    "soh/resource/importer/SceneFactory.cpp"
+    "soh/resource/importer/SkeletonFactory.cpp"
+    "soh/resource/importer/SkeletonLimbFactory.cpp"
+    "soh/resource/importer/TextFactory.cpp"
+    "soh/resource/importer/BackgroundFactory.cpp"
+)
+source_group("Source Files\\soh\\resource\\importer" FILES ${Source_Files__soh__resourceFactories})
+
+set(Header_Files__soh__scenecommandTypes
+    "soh/resource/type/scenecommand/EndMarker.h"
+    "soh/resource/type/scenecommand/RomFile.h"
+    "soh/resource/type/scenecommand/SceneCommand.h"
+    "soh/resource/type/scenecommand/SetActorList.h"
+    "soh/resource/type/scenecommand/SetAlternateHeaders.h"
+    "soh/resource/type/scenecommand/SetCameraSettings.h"
+    "soh/resource/type/scenecommand/SetCollisionHeader.h"
+    "soh/resource/type/scenecommand/SetCsCamera.h"
+    "soh/resource/type/scenecommand/SetCutscenes.h"
+    "soh/resource/type/scenecommand/SetEchoSettings.h"
+    "soh/resource/type/scenecommand/SetEntranceList.h"
+    "soh/resource/type/scenecommand/SetExitList.h"
+    "soh/resource/type/scenecommand/SetLightingSettings.h"
+    "soh/resource/type/scenecommand/SetLightList.h"
+    "soh/resource/type/scenecommand/SetMesh.h"
+    "soh/resource/type/scenecommand/SetObjectList.h"
+    "soh/resource/type/scenecommand/SetPathways.h"
+    "soh/resource/type/scenecommand/SetRoomBehavior.h"
+    "soh/resource/type/scenecommand/SetRoomList.h"
+    "soh/resource/type/scenecommand/SetSkyboxModifier.h"
+    "soh/resource/type/scenecommand/SetSkyboxSettings.h"
+    "soh/resource/type/scenecommand/SetSoundSettings.h"
+    "soh/resource/type/scenecommand/SetSpecialObjects.h"
+    "soh/resource/type/scenecommand/SetStartPositionList.h"
+    "soh/resource/type/scenecommand/SetTimeSettings.h"
+    "soh/resource/type/scenecommand/SetTransitionActorList.h"
+    "soh/resource/type/scenecommand/SetWindSettings.h"
+)
+source_group("Header Files\\soh\\resource\\type\\scenecommand" FILES ${Header_Files__soh__scenecommandTypes})
+
+set(Source_Files__soh__scenecommandTypes
+    "soh/resource/type/scenecommand/EndMarker.cpp"
+    "soh/resource/type/scenecommand/SetActorList.cpp"
+    "soh/resource/type/scenecommand/SetAlternateHeaders.cpp"
+    "soh/resource/type/scenecommand/SetCameraSettings.cpp"
+    "soh/resource/type/scenecommand/SetCollisionHeader.cpp"
+    "soh/resource/type/scenecommand/SetCsCamera.cpp"
+    "soh/resource/type/scenecommand/SetCutscenes.cpp"
+    "soh/resource/type/scenecommand/SetEchoSettings.cpp"
+    "soh/resource/type/scenecommand/SetEntranceList.cpp"
+    "soh/resource/type/scenecommand/SetExitList.cpp"
+    "soh/resource/type/scenecommand/SetLightingSettings.cpp"
+    "soh/resource/type/scenecommand/SetLightList.cpp"
+    "soh/resource/type/scenecommand/SetMesh.cpp"
+    "soh/resource/type/scenecommand/SetObjectList.cpp"
+    "soh/resource/type/scenecommand/SetPathways.cpp"
+    "soh/resource/type/scenecommand/SetRoomBehavior.cpp"
+    "soh/resource/type/scenecommand/SetRoomList.cpp"
+    "soh/resource/type/scenecommand/SetSkyboxModifier.cpp"
+    "soh/resource/type/scenecommand/SetSkyboxSettings.cpp"
+    "soh/resource/type/scenecommand/SetSoundSettings.cpp"
+    "soh/resource/type/scenecommand/SetSpecialObjects.cpp"
+    "soh/resource/type/scenecommand/SetStartPositionList.cpp"
+    "soh/resource/type/scenecommand/SetTimeSettings.cpp"
+    "soh/resource/type/scenecommand/SetTransitionActorList.cpp"
+    "soh/resource/type/scenecommand/SetWindSettings.cpp"
+)
+source_group("Source Files\\soh\\resource\\type\\scenecommand" FILES ${Source_Files__soh__scenecommandTypes})
+
+set(Header_Files__soh__scenecommandFactories
+    "soh/resource/importer/scenecommand/EndMarkerFactory.h"
+    "soh/resource/importer/scenecommand/SceneCommandFactory.h"
+    "soh/resource/importer/scenecommand/SetActorListFactory.h"
+    "soh/resource/importer/scenecommand/SetAlternateHeadersFactory.h"
+    "soh/resource/importer/scenecommand/SetCameraSettingsFactory.h"
+    "soh/resource/importer/scenecommand/SetCollisionHeaderFactory.h"
+    "soh/resource/importer/scenecommand/SetCsCameraFactory.h"
+    "soh/resource/importer/scenecommand/SetCutscenesFactory.h"
+    "soh/resource/importer/scenecommand/SetEchoSettingsFactory.h"
+    "soh/resource/importer/scenecommand/SetEntranceListFactory.h"
+    "soh/resource/importer/scenecommand/SetExitListFactory.h"
+    "soh/resource/importer/scenecommand/SetLightingSettingsFactory.h"
+    "soh/resource/importer/scenecommand/SetLightListFactory.h"
+    "soh/resource/importer/scenecommand/SetMeshFactory.h"
+    "soh/resource/importer/scenecommand/SetObjectListFactory.h"
+    "soh/resource/importer/scenecommand/SetPathwaysFactory.h"
+    "soh/resource/importer/scenecommand/SetRoomBehaviorFactory.h"
+    "soh/resource/importer/scenecommand/SetRoomListFactory.h"
+    "soh/resource/importer/scenecommand/SetSkyboxModifierFactory.h"
+    "soh/resource/importer/scenecommand/SetSkyboxSettingsFactory.h"
+    "soh/resource/importer/scenecommand/SetSoundSettingsFactory.h"
+    "soh/resource/importer/scenecommand/SetSpecialObjectsFactory.h"
+    "soh/resource/importer/scenecommand/SetStartPositionListFactory.h"
+    "soh/resource/importer/scenecommand/SetTimeSettingsFactory.h"
+    "soh/resource/importer/scenecommand/SetTransitionActorListFactory.h"
+    "soh/resource/importer/scenecommand/SetWindSettingsFactory.h"
+)
+source_group("Header Files\\soh\\resource\\importer\\scenecommand" FILES ${Header_Files__soh__scenecommandFactories})
+
+set(Source_Files__soh__scenecommandFactories
+    "soh/resource/importer/scenecommand/EndMarkerFactory.cpp"
+    "soh/resource/importer/scenecommand/SceneCommandFactory.cpp"
+    "soh/resource/importer/scenecommand/SetActorListFactory.cpp"
+    "soh/resource/importer/scenecommand/SetAlternateHeadersFactory.cpp"
+    "soh/resource/importer/scenecommand/SetCameraSettingsFactory.cpp"
+    "soh/resource/importer/scenecommand/SetCollisionHeaderFactory.cpp"
+    "soh/resource/importer/scenecommand/SetCsCameraFactory.cpp"
+    "soh/resource/importer/scenecommand/SetCutscenesFactory.cpp"
+    "soh/resource/importer/scenecommand/SetEchoSettingsFactory.cpp"
+    "soh/resource/importer/scenecommand/SetEntranceListFactory.cpp"
+    "soh/resource/importer/scenecommand/SetExitListFactory.cpp"
+    "soh/resource/importer/scenecommand/SetLightingSettingsFactory.cpp"
+    "soh/resource/importer/scenecommand/SetLightListFactory.cpp"
+    "soh/resource/importer/scenecommand/SetMeshFactory.cpp"
+    "soh/resource/importer/scenecommand/SetObjectListFactory.cpp"
+    "soh/resource/importer/scenecommand/SetPathwaysFactory.cpp"
+    "soh/resource/importer/scenecommand/SetRoomBehaviorFactory.cpp"
+    "soh/resource/importer/scenecommand/SetRoomListFactory.cpp"
+    "soh/resource/importer/scenecommand/SetSkyboxModifierFactory.cpp"
+    "soh/resource/importer/scenecommand/SetSkyboxSettingsFactory.cpp"
+    "soh/resource/importer/scenecommand/SetSoundSettingsFactory.cpp"
+    "soh/resource/importer/scenecommand/SetSpecialObjectsFactory.cpp"
+    "soh/resource/importer/scenecommand/SetStartPositionListFactory.cpp"
+    "soh/resource/importer/scenecommand/SetTimeSettingsFactory.cpp"
+    "soh/resource/importer/scenecommand/SetTransitionActorListFactory.cpp"
+    "soh/resource/importer/scenecommand/SetWindSettingsFactory.cpp"
+)
+source_group("Source Files\\soh\\resource\\importer\\scenecommand" FILES ${Source_Files__soh__scenecommandFactories})
 
 set(Source_Files__soh__Enhancements
     "soh/Enhancements/bootcommands.c"
@@ -317,6 +520,7 @@ set(Source_Files__soh__Enhancements__sfx_editor
 source_group("Source Files\\soh\\Enhancements\\sfx-editor" FILES ${Source_Files__soh__Enhancements__sfx_editor})
 
 set(Source_Files__soh__Enhancements__debugger
+    "soh/Enhancements/debugger/dlViewer.cpp"
     "soh/Enhancements/debugger/actorViewer.cpp"
     "soh/Enhancements/debugger/colViewer.cpp"
     "soh/Enhancements/debugger/debugger.cpp"
@@ -412,6 +616,20 @@ set(Source_Files__soh__Enhancements__item_tables
 )
 
 source_group("Source Files\\soh\\Enhancements\\item-tables" FILES ${Source_Files__soh__Enhancements__item_tables})
+
+set(Source_Files__soh__Enhancements__mods
+    "soh/Enhancements/mods/modhooks.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\mods" FILES ${Source_Files__soh__Enhancements__mods})
+
+set(Source_Files__soh__Enhancements__game_interactor
+    "soh/Enhancements/game-interactor/GameInteractor.cpp"
+    "soh/Enhancements/game-interactor/GameInteractor_RawAction.cpp"
+    "soh/Enhancements/game-interactor/GameInteractor_Hooks.cpp"
+    "soh/Enhancements/game-interactor/GameInteractor_State.cpp"
+    "soh/Enhancements/game-interactor/GameInteractionEffect.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\game-interactor" FILES ${Source_Files__soh__Enhancements__game_interactor})
 
 if (BUILD_CROWD_CONTROL)
 set(Source_Files__soh__Enhancements__crowd_control
@@ -1631,6 +1849,8 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements__randomizer__3drando}
     ${Header_Files__soh__Enhancements__item_tables}
     ${Header_Files__soh__Enhancements__custom_message}
+    ${Header_Files__soh__Enhancements__mods}
+    ${Header_Files__soh__Enhancements__game_interactor}
     ${Header_Files__soh__Enhancements__crowd_control}
     ${Source_Files__soh}
     ${Source_Files__soh__Enhancements}
@@ -1644,6 +1864,8 @@ set(ALL_FILES
     ${Source_Files__soh__Enhancements__randomizer__3drando__location_access}
     ${Source_Files__soh__Enhancements__item_tables}
     ${Source_Files__soh__Enhancements__custom_message}
+    ${Source_Files__soh__Enhancements__mods}
+    ${Source_Files__soh__Enhancements__game_interactor}
     ${Source_Files__soh__Enhancements__crowd_control}
     ${Source_Files__src__boot}
     ${Source_Files__src__buffers}
@@ -1657,6 +1879,14 @@ set(ALL_FILES
     ${Source_Files__src__overlays__gamestates__ovl_title}
     ${Source_Files__src__overlays__misc__ovl_kaleido_scope}
     ${Source_Files__src__overlays__misc__ovl_map_mark_data}
+    ${Header_Files__soh__resourceTypes}
+    ${Source_Files__soh__resourceTypes}
+    ${Header_Files__soh__resourceFactories}
+    ${Source_Files__soh__resourceFactories}
+    ${Header_Files__soh__scenecommandTypes}
+    ${Source_Files__soh__scenecommandTypes}
+    ${Source_Files__soh__scenecommandFactories}
+    ${Header_Files__soh__scenecommandFactories}
 )
 
 ################################################################################
@@ -1721,6 +1951,32 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	set_target_properties(${PROJECT_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
 endif()
 ################################################################################
+# Find/download Boost
+################################################################################
+include(FetchContent)
+FetchContent_Declare(
+    Boost
+    URL      https://boostorg.jfrog.io/artifactory/main/release/1.81.0/source/boost_1_81_0.tar.gz
+    URL_HASH SHA256=205666dea9f6a7cfed87c7a6dfbeb52a2c1b9de55712c9c1a87735d7181452b6
+    SOURCE_SUBDIR "null" # Set to a nonexistent directory so boost is not built (we don't need to build it)
+    DOWNLOAD_EXTRACT_TIMESTAMP false # supress timestamp warning, not needed since the url wont change
+)
+
+set(Boost_NO_BOOST_CMAKE false)
+set(BOOST_INCLUDEDIR ${FETCHCONTENT_BASE_DIR}/boost-src) # Location where FetchContent stores the source
+message("Searching for Boost installation")
+find_package(Boost)
+
+if (NOT ${Boost_FOUND})
+    message("Boost not found. Downloading now...")
+    FetchContent_MakeAvailable(Boost)
+    message("Boost downloaded to " ${FETCHCONTENT_BASE_DIR}/boost-src)
+    set(BOOST-INCLUDE ${FETCHCONTENT_BASE_DIR}/boost-src)
+else()
+    message("Boost found in " ${Boost_INCLUDE_DIRS})
+    set(BOOST-INCLUDE ${Boost_INCLUDE_DIRS})
+endif()
+################################################################################
 # Compile definitions
 ################################################################################
 find_package(SDL2)
@@ -1743,7 +1999,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/misc
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/core
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/resource
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/resource/types
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/resource/type
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/audio
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/extern
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/extern/Mercury
@@ -1754,8 +2010,10 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/graphic/Fast3D/U64/PR
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/graphic
 	${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils
+    ${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPD/resource/type
 	${SDL2-INCLUDE}
     ${SDL2-NET-INCLUDE}
+    ${BOOST-INCLUDE}
 	${CMAKE_CURRENT_SOURCE_DIR}/assets/
 	.
 )

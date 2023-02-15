@@ -95,30 +95,30 @@ void Message_ResetOcarinaNoteState(void) {
     sOcarinaNoteABtnEnv = (Color_RGB8){ 10, 10, 10 };
     sOcarinaNoteCBtnPrim = (Color_RGB8){ 255, 255, 50 };
     sOcarinaNoteCBtnEnv = (Color_RGB8){ 10, 10, 10 };
-    if (CVar_GetS32("gCosmetics.Hud_AButton.Changed", 0)) {
-        sOcarinaNoteABtnPrim = CVar_GetRGB("gCosmetics.Hud_AButton.Value", sOcarinaNoteABtnPrim);
-    } else if (CVar_GetS32("gCosmetics.DefaultColorScheme", 0)) {
+    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
+        sOcarinaNoteABtnPrim = CVarGetColor24("gCosmetics.Hud_AButton.Value", sOcarinaNoteABtnPrim);
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
         sOcarinaNoteABtnPrim = (Color_RGB8){ 80, 255, 150 };
     }
-    if (CVar_GetS32("gCosmetics.Hud_CButtons.Changed", 0)) {
-        sOcarinaNoteCBtnPrim = CVar_GetRGB("gCosmetics.Hud_CButtons.Value", sOcarinaNoteCBtnPrim);
+    if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
+        sOcarinaNoteCBtnPrim = CVarGetColor24("gCosmetics.Hud_CButtons.Value", sOcarinaNoteCBtnPrim);
     }
 
     sOcarinaNoteCUpBtnPrim = sOcarinaNoteCBtnPrim;
     sOcarinaNoteCDownBtnPrim = sOcarinaNoteCBtnPrim;
     sOcarinaNoteCLeftBtnPrim = sOcarinaNoteCBtnPrim;
     sOcarinaNoteCRightBtnPrim = sOcarinaNoteCBtnPrim;
-    if (CVar_GetS32("gCosmetics.Hud_CUpButton.Changed", 0)) {
-        sOcarinaNoteCUpBtnPrim = CVar_GetRGB("gCosmetics.Hud_CUpButton.Value", sOcarinaNoteCUpBtnPrim);
+    if (CVarGetInteger("gCosmetics.Hud_CUpButton.Changed", 0)) {
+        sOcarinaNoteCUpBtnPrim = CVarGetColor24("gCosmetics.Hud_CUpButton.Value", sOcarinaNoteCUpBtnPrim);
     }
-    if (CVar_GetS32("gCosmetics.Hud_CDownButton.Changed", 0)) {
-        sOcarinaNoteCDownBtnPrim = CVar_GetRGB("gCosmetics.Hud_CDownButton.Value", sOcarinaNoteCDownBtnPrim);
+    if (CVarGetInteger("gCosmetics.Hud_CDownButton.Changed", 0)) {
+        sOcarinaNoteCDownBtnPrim = CVarGetColor24("gCosmetics.Hud_CDownButton.Value", sOcarinaNoteCDownBtnPrim);
     }
-    if (CVar_GetS32("gCosmetics.Hud_CLeftButton.Changed", 0)) {
-        sOcarinaNoteCLeftBtnPrim = CVar_GetRGB("gCosmetics.Hud_CLeftButton.Value", sOcarinaNoteCLeftBtnPrim);
+    if (CVarGetInteger("gCosmetics.Hud_CLeftButton.Changed", 0)) {
+        sOcarinaNoteCLeftBtnPrim = CVarGetColor24("gCosmetics.Hud_CLeftButton.Value", sOcarinaNoteCLeftBtnPrim);
     }
-    if (CVar_GetS32("gCosmetics.Hud_CRightButton.Changed", 0)) {
-        sOcarinaNoteCRightBtnPrim = CVar_GetRGB("gCosmetics.Hud_CRightButton.Value", sOcarinaNoteCRightBtnPrim);
+    if (CVarGetInteger("gCosmetics.Hud_CRightButton.Changed", 0)) {
+        sOcarinaNoteCRightBtnPrim = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", sOcarinaNoteCRightBtnPrim);
     }
 }
 
@@ -146,7 +146,7 @@ void Message_UpdateOcarinaGame(PlayState* play) {
 u8 Message_ShouldAdvance(PlayState* play) {
     Input* input = &play->state.input[0];
 
-    bool isB_Held = CVar_GetS32("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B)
+    bool isB_Held = CVarGetInteger("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B)
                                                      : CHECK_BTN_ALL(input->press.button, BTN_B);
 
     if (CHECK_BTN_ALL(input->press.button, BTN_A) || isB_Held || CHECK_BTN_ALL(input->press.button, BTN_CUP)) {
@@ -158,7 +158,7 @@ u8 Message_ShouldAdvance(PlayState* play) {
 u8 Message_ShouldAdvanceSilent(PlayState* play) {
     Input* input = &play->state.input[0];
 
-    bool isB_Held = CVar_GetS32("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B)
+    bool isB_Held = CVarGetInteger("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B)
                                                      : CHECK_BTN_ALL(input->press.button, BTN_B);
 
     return CHECK_BTN_ALL(input->press.button, BTN_A) || isB_Held || CHECK_BTN_ALL(input->press.button, BTN_CUP);
@@ -183,7 +183,7 @@ void Message_HandleChoiceSelection(PlayState* play, u8 numChoices) {
     static s16 sAnalogStickHeld = false;
     MessageContext* msgCtx = &play->msgCtx;
     Input* input = &play->state.input[0];
-    bool dpad = CVar_GetS32("gDpadText", 0);
+    bool dpad = CVarGetInteger("gDpadText", 0);
 
     if ((input->rel.stick_y >= 30 && !sAnalogStickHeld) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DUP))) {
         sAnalogStickHeld = true;
@@ -287,7 +287,7 @@ void Message_FindMessage(PlayState* play, u16 textId) {
     const char* seg;
     u16 bufferId = textId;
     // Use the better owl message if better owl is enabled
-    if (CVar_GetS32("gBetterOwl", 0) != 0 && (bufferId == 0x2066 || bufferId == 0x607B ||
+    if (CVarGetInteger("gBetterOwl", 0) != 0 && (bufferId == 0x2066 || bufferId == 0x607B ||
         bufferId == 0x10C2 || bufferId == 0x10C6 || bufferId == 0x206A))
     {
         bufferId = 0x71B3;
@@ -458,14 +458,14 @@ void Message_DrawTextboxIcon(PlayState* play, Gfx** p, s16 x, s16 y) {
         { 0, 0, 0 },
         { 0, 130, 255 },
     };
-    if (CVar_GetS32("gCosmetics.Hud_AButton.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_AButton.Value", (Color_RGB8){ 50, 130, 255 });
+    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
+        Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_AButton.Value", (Color_RGB8){ 50, 130, 255 });
         sIconPrimColors[0].r = (color.r / 255) * 95;
         sIconPrimColors[0].g = (color.g / 255) * 95;
         sIconPrimColors[0].b = (color.b / 255) * 95;
         sIconPrimColors[1] = color;
         sIconEnvColors[1] = color;
-    } else if (CVar_GetS32("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
         sIconPrimColors[0] = (Color_RGB8){ 0, 200, 80 };
         sIconPrimColors[1] = (Color_RGB8){ 50, 255, 130 }; 
         sIconEnvColors[1] = (Color_RGB8){ 50, 255, 130 }; 
@@ -1024,7 +1024,7 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 msgCtx->textDelay = msgCtx->msgBufDecoded[++i];
                 break;
             case MESSAGE_UNSKIPPABLE:
-                msgCtx->textUnskippable = CVar_GetS32("gSkipText", 0) != 1;
+                msgCtx->textUnskippable = CVarGetInteger("gSkipText", 0) != 1;
                 break;
             case MESSAGE_TWO_CHOICE:
                 msgCtx->textboxEndType = TEXTBOX_ENDTYPE_2_CHOICE;
@@ -1108,7 +1108,7 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
         }
     }
     if (msgCtx->textDelayTimer == 0) {
-        msgCtx->textDrawPos = i + CVar_GetS32("gTextSpeed", 2);
+        msgCtx->textDrawPos = i + CVarGetInteger("gTextSpeed", 2);
         msgCtx->textDelayTimer = msgCtx->textDelay;
     } else {
         msgCtx->textDelayTimer--;
@@ -1131,7 +1131,7 @@ void Message_LoadItemIcon(PlayState* play, u16 itemId, s16 y) {
         R_TEXTBOX_ICON_YPOS = y + 6;
         R_TEXTBOX_ICON_SIZE = 32;
         memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,
-               ResourceMgr_LoadTexByName(gItemIcons[itemId]), ResourceMgr_LoadTexSizeByName(gItemIcons[itemId]));
+               GetResourceDataByName(gItemIcons[itemId], false), GetResourceTexSizeByName(gItemIcons[itemId], false));
         // "Item 32-0"
         osSyncPrintf("アイテム32-0\n");
     } else {
@@ -1139,7 +1139,7 @@ void Message_LoadItemIcon(PlayState* play, u16 itemId, s16 y) {
         R_TEXTBOX_ICON_YPOS = y + 10;
         R_TEXTBOX_ICON_SIZE = 24;
         memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,
-               ResourceMgr_LoadTexByName(gItemIcons[itemId]), ResourceMgr_LoadTexSizeByName(gItemIcons[itemId]));
+               GetResourceDataByName(gItemIcons[itemId], false), GetResourceTexSizeByName(gItemIcons[itemId], false));
         // "Item 24"
         osSyncPrintf("アイテム24＝%d (%d) {%d}\n", itemId, itemId - ITEM_KOKIRI_EMERALD, 84);
     }
@@ -1179,6 +1179,23 @@ void Message_Decode(PlayState* play) {
 
     while (true) {
         phi_s1 = temp_s2 = msgCtx->msgBufDecoded[decodedBufPos] = font->msgBuf[msgCtx->msgBufPos];
+
+        // Don't require input for credits textboxes in randomizer
+        if (CVarGetInteger("gNoInputForCredits", 0) && (
+            msgCtx->textId == 0x706F ||
+            msgCtx->textId == 0x7091 ||
+            msgCtx->textId == 0x7092 ||
+            msgCtx->textId == 0x7093 ||
+            msgCtx->textId == 0x7094 ||
+            msgCtx->textId == 0x7095
+        )) {
+            if (temp_s2 == MESSAGE_BOX_BREAK) {
+                phi_s1 = temp_s2 = msgCtx->msgBufDecoded[decodedBufPos] = font->msgBuf[msgCtx->msgBufPos] = MESSAGE_BOX_BREAK_DELAYED;
+            } else if (temp_s2 == MESSAGE_END) {
+                phi_s1 = temp_s2 = msgCtx->msgBufDecoded[decodedBufPos] = font->msgBuf[msgCtx->msgBufPos] = MESSAGE_FADE2;
+                phi_s1 = temp_s2 = msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[++msgCtx->msgBufPos] = MESSAGE_END;
+            }
+        }
 
         if (temp_s2 == MESSAGE_BOX_BREAK || temp_s2 == MESSAGE_TEXTID || temp_s2 == MESSAGE_BOX_BREAK_DELAYED ||
             temp_s2 == MESSAGE_EVENT || temp_s2 == MESSAGE_END) {
@@ -1509,9 +1526,9 @@ void Message_Decode(PlayState* play) {
             msgCtx->textboxBackgroundUnkArg = font->msgBuf[msgCtx->msgBufPos + 3] & 0xF;
 
             memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,
-                   ResourceMgr_LoadTexByName(gRedMessageXLeftTex), ResourceMgr_LoadTexSizeByName(gRedMessageXLeftTex));
+                   GetResourceDataByName(gRedMessageXLeftTex, false), GetResourceTexSizeByName(gRedMessageXLeftTex, false));
             memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE + 0x900,
-                   ResourceMgr_LoadTexByName(gRedMessageXRightTex), ResourceMgr_LoadTexSizeByName(gRedMessageXRightTex));
+                   GetResourceDataByName(gRedMessageXRightTex, false), GetResourceTexSizeByName(gRedMessageXRightTex, false));
 
             msgCtx->msgBufPos += 3;
             R_TEXTBOX_BG_YPOS = R_TEXTBOX_Y + 8;
@@ -1630,12 +1647,12 @@ void Message_OpenText(PlayState* play, u16 textId) {
         //DmaMgr_SendRequest1(font->msgBuf, (uintptr_t)(_staff_message_data_staticSegmentRomStart + 4 + font->msgOffset),
                             //font->msgLength, __FILE__, __LINE__);
 
-    } else if (CVar_GetS32("gAskToEquip", 0) &&
-               (((LINK_IS_ADULT || CVar_GetS32("gTimelessEquipment", 0)) &&
+    } else if (CVarGetInteger("gAskToEquip", 0) &&
+               (((LINK_IS_ADULT || CVarGetInteger("gTimelessEquipment", 0)) &&
                  // 0C = Biggoron, 4B = Giant's, 4E = Mirror Shield, 50-51 = Tunics
                  (textId == 0x0C || textId == 0x4B || textId == 0x4E ||
                   textId == 0x50 || textId == 0x51)) ||
-                ((!LINK_IS_ADULT || CVar_GetS32("gTimelessEquipment", 0)) &&
+                ((!LINK_IS_ADULT || CVarGetInteger("gTimelessEquipment", 0)) &&
                 // 4C = Deku Shield, A4 = Kokiri Sword
                  (textId == 0x4C || textId == 0xA4)) ||
                 // 4D == Hylian Shield
@@ -1657,7 +1674,7 @@ void Message_OpenText(PlayState* play, u16 textId) {
     osSyncPrintf("吹き出し種類＝%d\n", msgCtx->textBoxType);
     if (textBoxType < TEXTBOX_TYPE_NONE_BOTTOM) {
         const char* textureName = msgStaticTbl[messageStaticIndices[textBoxType]];
-        memcpy(msgCtx->textboxSegment, ResourceMgr_LoadTexByName(textureName), MESSAGE_STATIC_TEX_SIZE);
+        memcpy(msgCtx->textboxSegment, GetResourceDataByName(textureName, false), MESSAGE_STATIC_TEX_SIZE);
         if (textBoxType == TEXTBOX_TYPE_BLACK) {
             msgCtx->textboxColorRed = 0;
             msgCtx->textboxColorGreen = 0;
@@ -1697,15 +1714,8 @@ void Message_StartTextbox(PlayState* play, u16 textId, Actor* actor) {
     osSyncPrintf(VT_RST);
 
     msgCtx->ocarinaAction = 0xFFFF;
-    // we need the talkActor for gossip stones in rando
-    // so we need to switch the order of these lines
-    if (gSaveContext.n64ddFlag && textId == 0x2053) {
-        msgCtx->talkActor = actor;
-        Message_OpenText(play, textId);
-    } else {
-        Message_OpenText(play, textId);
-        msgCtx->talkActor = actor;
-    }
+    Message_OpenText(play, textId);
+    msgCtx->talkActor = actor;
     msgCtx->msgMode = MSGMODE_TEXT_START;
     msgCtx->stateTimer = 0;
     msgCtx->textDelayTimer = 0;
@@ -1999,14 +2009,14 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 10, 10, 10 },
         { 50, 50, 255 },
     };
-    if (CVar_GetS32("gCosmetics.Hud_AButton.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_AButton.Value", (Color_RGB8){ 100, 200, 255 });
+    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
+        Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_AButton.Value", (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteAPrimColors[0].r = (color.r / 255) * 95;
         sOcarinaNoteAPrimColors[0].g = (color.g / 255) * 95;
         sOcarinaNoteAPrimColors[0].b = (color.b / 255) * 95;
         sOcarinaNoteAPrimColors[1] = color;
         sOcarinaNoteAEnvColors[1] = color;
-    } else if (CVar_GetS32("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
         sOcarinaNoteAPrimColors[0] = (Color_RGB8){ 80, 255, 150 };
         sOcarinaNoteAPrimColors[1] = (Color_RGB8){ 100, 255, 200 };
         sOcarinaNoteAEnvColors[1] = (Color_RGB8){ 50, 255, 50 };
@@ -2020,8 +2030,8 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 10, 10, 10 },
         { 110, 110, 50 },
     };
-    if (CVar_GetS32("gCosmetics.Hud_CButtons.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_CButtons.Value", (Color_RGB8){ 100, 200, 255 });
+    if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
+        Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_CButtons.Value", (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCPrimColors[0] = color;
         sOcarinaNoteCPrimColors[1] = color;
         sOcarinaNoteCEnvColors[1].r = (color.r / 255) * 95;
@@ -2037,8 +2047,8 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 10, 10, 10 },
         { 110, 110, 50 },
     };
-    if (CVar_GetS32("gCosmetics.Hud_CUpButton.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_CUpButton.Value", (Color_RGB8){ 100, 200, 255 });
+    if (CVarGetInteger("gCosmetics.Hud_CUpButton.Changed", 0)) {
+        Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_CUpButton.Value", (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCUpPrimColors[0] = color;
         sOcarinaNoteCUpPrimColors[1] = color;
         sOcarinaNoteCUpEnvColors[1].r = (color.r / 255) * 95;
@@ -2054,8 +2064,8 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 10, 10, 10 },
         { 110, 110, 50 },
     };
-    if (CVar_GetS32("gCosmetics.Hud_CDownButton.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_CDownButton.Value", (Color_RGB8){ 100, 200, 255 });
+    if (CVarGetInteger("gCosmetics.Hud_CDownButton.Changed", 0)) {
+        Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_CDownButton.Value", (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCDownPrimColors[0] = color;
         sOcarinaNoteCDownPrimColors[1] = color;
         sOcarinaNoteCDownEnvColors[1].r = (color.r / 255) * 95;
@@ -2071,8 +2081,8 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 10, 10, 10 },
         { 110, 110, 50 },
     };
-    if (CVar_GetS32("gCosmetics.Hud_CLeftButton.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_CLeftButton.Value", (Color_RGB8){ 100, 200, 255 });
+    if (CVarGetInteger("gCosmetics.Hud_CLeftButton.Changed", 0)) {
+        Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_CLeftButton.Value", (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCLeftPrimColors[0] = color;
         sOcarinaNoteCLeftPrimColors[1] = color;
         sOcarinaNoteCLeftEnvColors[1].r = (color.r / 255) * 95;
@@ -2088,8 +2098,8 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         { 10, 10, 10 },
         { 110, 110, 50 },
     };
-    if (CVar_GetS32("gCosmetics.Hud_CRightButton.Changed", 0)) {
-        Color_RGB8 color = CVar_GetRGB("gCosmetics.Hud_CRightButton.Value", (Color_RGB8){ 100, 200, 255 });
+    if (CVarGetInteger("gCosmetics.Hud_CRightButton.Changed", 0)) {
+        Color_RGB8 color = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", (Color_RGB8){ 100, 200, 255 });
         sOcarinaNoteCRightPrimColors[0] = color;
         sOcarinaNoteCRightPrimColors[1] = color;
         sOcarinaNoteCRightEnvColors[1].r = (color.r / 255) * 95;
@@ -2136,7 +2146,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE,
                           0);
 
-            bool isB_Held = CVar_GetS32("gSkipText", 0) != 0 ? CHECK_BTN_ALL(play->state.input[0].cur.button, BTN_B)
+            bool isB_Held = CVarGetInteger("gSkipText", 0) != 0 ? CHECK_BTN_ALL(play->state.input[0].cur.button, BTN_B)
                                                          : CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B);
 
         switch (msgCtx->msgMode) {
@@ -2417,7 +2427,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 }
                 break;
             case MSGMODE_SETUP_DISPLAY_SONG_PLAYED:
-                if (CVar_GetS32("gFastOcarinaPlayback", 0) == 0 ||
+                if (CVarGetInteger("gFastOcarinaPlayback", 0) == 0 ||
                     play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME ||
                     play->msgCtx.lastPlayedSong == OCARINA_SONG_STORMS ||
                     play->msgCtx.lastPlayedSong == OCARINA_SONG_SUNS) {
@@ -2472,7 +2482,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 Message_Decode(play);
                 msgCtx->msgMode = MSGMODE_DISPLAY_SONG_PLAYED_TEXT;
 
-                if (CVar_GetS32("gFastOcarinaPlayback", 0) == 0 || play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME
+                if (CVarGetInteger("gFastOcarinaPlayback", 0) == 0 || play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME
                     || play->msgCtx.lastPlayedSong == OCARINA_SONG_STORMS ||
                     play->msgCtx.lastPlayedSong == OCARINA_SONG_SUNS) {
                     msgCtx->stateTimer = 20;
@@ -2987,7 +2997,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
  * the last value being saved in a static variable.
  */
 void Message_DrawDebugVariableChanged(s16* var, GraphicsContext* gfxCtx) {
-    if (!CVar_GetS32("gDebugEnabled", 0)) { return; }
+    if (!CVarGetInteger("gDebugEnabled", 0)) { return; }
 
     static s16 sVarLastValue = 0;
     static s16 sFillTimer = 0;
@@ -3124,7 +3134,7 @@ void Message_Update(PlayState* play) {
         return;
     }
 
-    bool isB_Held = CVar_GetS32("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B) && !sTextboxSkipped
+    bool isB_Held = CVarGetInteger("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B) && !sTextboxSkipped
                                                      : CHECK_BTN_ALL(input->press.button, BTN_B);
 
     switch (msgCtx->msgMode) {

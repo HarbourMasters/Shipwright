@@ -297,7 +297,7 @@ void func_80AAA93C(EnMd* this) {
 }
 
 void func_80AAAA24(EnMd* this) {
-    if (this->unk_1E0.unk_00 != 0) {
+    if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         switch (this->actor.textId) {
             case 0x102F:
                 if ((this->unk_208 == 0) && (this->unk_20B != 1)) {
@@ -372,8 +372,8 @@ u16 EnMd_GetTextKokiriForest(PlayState* play, EnMd* this) {
     this->unk_208 = 0;
     this->unk_209 = TEXT_STATE_NONE;
 
-    if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) ||
-        (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE))) {
+    // In rando, skip talking about the tree being dead so we can have the prompt sword and shield instead
+    if (!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
         return 0x1045;
     }
 
@@ -451,7 +451,7 @@ s16 func_80AAAF04(PlayState* play, Actor* thisx) {
         case TEXT_STATE_SONG_DEMO_DONE:
         case TEXT_STATE_8:
         case TEXT_STATE_9:
-            return 1;
+            return NPC_TALK_STATE_TALKING;
         case TEXT_STATE_CLOSING:
             switch (this->actor.textId) {
                 case 0x1028:
@@ -469,30 +469,38 @@ s16 func_80AAAF04(PlayState* play, Actor* thisx) {
                     break;
                 case 0x1033:
                 case 0x1067:
-                    return 2;
+                    return NPC_TALK_STATE_ACTION;
             }
-            return 0;
+            return NPC_TALK_STATE_IDLE;
         case TEXT_STATE_EVENT:
             if (Message_ShouldAdvance(play)) {
-                return 2;
+                return NPC_TALK_STATE_ACTION;
             }
         default:
-            return 1;
+            return NPC_TALK_STATE_TALKING;
     }
 }
 
 u8 EnMd_ShouldSpawn(EnMd* this, PlayState* play) {
-    if (play->sceneNum == SCENE_SPOT04) {
-        if (gSaveContext.n64ddFlag) {
-            // if we have beaten deku tree or have open forest turned on
-            // or have already shown mido we have an equipped sword/shield
-            if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) ||
-                gSaveContext.eventChkInf[0] & 0x10) {
-                return 0;
-            }
+    // In rando, Mido's spawn logic is adjusted to support closed deku/forest options
+    // He will spawn in the forest if you haven't showed the sword and shield, and will remain
+    // in the forest until you've obtained Zelda's letter or Deku Tree dies
+    // This is to ensure Deku Tree can still be opened in dungeon entrance rando even if Ghoma is defeated
+    if (gSaveContext.n64ddFlag) {
+        if (play->sceneNum == SCENE_SPOT10) {
             return 1;
         }
 
+        if (Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD) &&
+            (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER) ||
+            Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD))) {
+            return play->sceneNum == SCENE_KOKIRI_HOME4 && !LINK_IS_ADULT;
+        }
+
+        return play->sceneNum == SCENE_SPOT04;
+    }
+
+    if (play->sceneNum == SCENE_SPOT04) {
         if (!(gSaveContext.eventChkInf[1] & 0x1000) && !(gSaveContext.eventChkInf[4] & 1)) {
             return 1;
         }
@@ -526,7 +534,7 @@ void EnMd_UpdateEyes(EnMd* this) {
 void func_80AAB158(EnMd* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s16 absYawDiff;
-    s16 temp;
+    s16 trackingMode;
     s16 temp2;
     s16 yawDiff;
 
@@ -534,40 +542,41 @@ void func_80AAB158(EnMd* this, PlayState* play) {
         yawDiff = (f32)this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
         absYawDiff = ABS(yawDiff);
 
-        temp = (absYawDiff <= func_800347E8(2)) ? 2 : 1;
+        trackingMode =
+            absYawDiff <= Npc_GetTrackingPresetMaxPlayerYaw(2) ? NPC_TRACKING_HEAD_AND_TORSO : NPC_TRACKING_NONE;
         temp2 = 1;
     } else {
-        temp = 1;
+        trackingMode = NPC_TRACKING_NONE;
         temp2 = 0;
     }
 
-    if (this->unk_1E0.unk_00 != 0) {
-        temp = 4;
+    if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
+        trackingMode = NPC_TRACKING_FULL_BODY;
     }
 
     if (this->actionFunc == func_80AABD0C) {
-        temp = 1;
+        trackingMode = NPC_TRACKING_NONE;
         temp2 = 0;
     }
     if (this->actionFunc == func_80AAB8F8) {
-        temp = 4;
+        trackingMode = NPC_TRACKING_FULL_BODY;
         temp2 = 1;
     }
 
     if ((play->csCtx.state != CS_STATE_IDLE) || gDbgCamEnabled) {
-        this->unk_1E0.unk_18 = play->view.eye;
-        this->unk_1E0.unk_14 = 40.0f;
-        temp = 2;
+        this->interactInfo.trackPos = play->view.eye;
+        this->interactInfo.yOffset = 40.0f;
+        trackingMode = NPC_TRACKING_HEAD_AND_TORSO;
     } else {
-        this->unk_1E0.unk_18 = player->actor.world.pos;
-        this->unk_1E0.unk_14 = (gSaveContext.linkAge > 0) ? 0.0f : -18.0f;
+        this->interactInfo.trackPos = player->actor.world.pos;
+        this->interactInfo.yOffset = (gSaveContext.linkAge > 0) ? 0.0f : -18.0f;
     }
 
-    func_80034A14(&this->actor, &this->unk_1E0, 2, temp);
+    Npc_TrackPoint(&this->actor, &this->interactInfo, 2, trackingMode);
     if (this->actionFunc != func_80AABC10) {
         if (temp2) {
-            func_800343CC(play, &this->actor, &this->unk_1E0.unk_00, this->collider.dim.radius + 30.0f,
-                          EnMd_GetText, func_80AAAF04);
+            Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 30.0f,
+                              EnMd_GetText, func_80AAAF04);
         }
     }
 }
@@ -624,7 +633,7 @@ void func_80AAB5A4(EnMd* this, PlayState* play) {
     f32 temp;
 
     if (play->sceneNum != SCENE_KOKIRI_HOME4) {
-        if (CVar_GetS32("gDisableKokiriDrawDistance", 0) != 0) {
+        if (CVarGetInteger("gDisableKokiriDrawDistance", 0) != 0) {
             temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
                     (play->sceneNum == SCENE_SPOT04))
                        ? 100.0f
@@ -690,7 +699,7 @@ void EnMd_Destroy(Actor* thisx, PlayState* play) {
 void func_80AAB874(EnMd* this, PlayState* play) {
     if (this->skelAnime.animation == &gMidoHandsOnHipsIdleAnim) {
         func_80034F54(play, this->unk_214, this->unk_236, 17);
-    } else if ((this->unk_1E0.unk_00 == 0) && (this->unk_20B != 7)) {
+    } else if ((this->interactInfo.talkState == NPC_TALK_STATE_IDLE) && (this->unk_20B != 7)) {
         func_80AAA92C(this, 7);
     }
 
@@ -712,7 +721,7 @@ void func_80AAB948(EnMd* this, PlayState* play) {
 
     func_80AAAA24(this);
 
-    if (this->unk_1E0.unk_00 == 0) {
+    if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
         this->actor.world.rot.y = this->actor.yawTowardsPlayer;
         this->actor.shape.rot.y = this->actor.yawTowardsPlayer;
 
@@ -728,7 +737,7 @@ void func_80AAB948(EnMd* this, PlayState* play) {
         this->skelAnime.playSpeed = CLAMP(temp, 1.0f, 3.0f);
     }
 
-    if (this->unk_1E0.unk_00 == 2) {
+    if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
             (play->sceneNum == SCENE_SPOT04)) {
             play->msgCtx.msgMode = MSGMODE_PAUSED;
@@ -744,7 +753,7 @@ void func_80AAB948(EnMd* this, PlayState* play) {
         func_80AAA92C(this, 3);
         func_80AAA93C(this);
         this->waypoint = 1;
-        this->unk_1E0.unk_00 = 0;
+        this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         this->actionFunc = func_80AABD0C;
         this->actor.speedXZ = 1.5f;
         return;
@@ -754,7 +763,7 @@ void func_80AAB948(EnMd* this, PlayState* play) {
         func_80034F54(play, this->unk_214, this->unk_236, 17);
     }
 
-    if ((this->unk_1E0.unk_00 == 0) && (play->sceneNum == SCENE_SPOT10)) {
+    if ((this->interactInfo.talkState == NPC_TALK_STATE_IDLE) && (play->sceneNum == SCENE_SPOT10)) {
         if (player->stateFlags2 & 0x1000000) {
             player->stateFlags2 |= 0x2000000;
             player->unk_6A8 = &this->actor;
@@ -834,13 +843,13 @@ s32 EnMd_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
 
     if (limbIndex == 16) {
         Matrix_Translate(1200.0f, 0.0f, 0.0f, MTXMODE_APPLY);
-        vec = this->unk_1E0.unk_08;
+        vec = this->interactInfo.headRot;
         Matrix_RotateX((vec.y / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_RotateZ((vec.x / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_Translate(-1200.0f, 0.0f, 0.0f, MTXMODE_APPLY);
     }
     if (limbIndex == 9) {
-        vec = this->unk_1E0.unk_0E;
+        vec = this->interactInfo.torsoRot;
         Matrix_RotateX((vec.x / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_RotateY((vec.y / 32768.0f) * M_PI, MTXMODE_APPLY);
     }

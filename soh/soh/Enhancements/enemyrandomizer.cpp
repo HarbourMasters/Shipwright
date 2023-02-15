@@ -232,7 +232,7 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
 }
 
 EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
-    if (CVar_GetS32("gSeededRandomizedEnemies", 0) && gSaveContext.n64ddFlag) {
+    if (CVarGetInteger("gSeededRandomizedEnemies", 0) && gSaveContext.n64ddFlag) {
         uint32_t finalSeed = seed + gSaveContext.seedIcons[0] + gSaveContext.seedIcons[1] + gSaveContext.seedIcons[2] +
                         gSaveContext.seedIcons[3] + gSaveContext.seedIcons[4];
         Random_Init(finalSeed);

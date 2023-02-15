@@ -1,11 +1,11 @@
 #include "PlayerAnimationExporter.h"
-#include <Resource.h>
+#include <libultraship/bridge.h>
 
 void OTRExporter_PlayerAnimationExporter::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)
 {
 	ZPlayerAnimationData* anim = (ZPlayerAnimationData*)res;
 
-	WriteHeader(res, outPath, writer, Ship::ResourceType::PlayerAnimation);
+	WriteHeader(res, outPath, writer, Ship::ResourceType::SOH_PlayerAnimation);
 
 	auto start = std::chrono::steady_clock::now();
 	

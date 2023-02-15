@@ -3,7 +3,7 @@
 #include "ZArray.h"
 //#include "OTRExporter.h"
 #include <Utils/BinaryWriter.h>
-#include <Resource.h>
+#include <libultraship/bridge.h>
 #include "VersionInfo.h"
 
 class OTRExporter : public ZResourceExporter

@@ -101,7 +101,7 @@ static f32 sSpawnSin;
 s32 EnWood02_SpawnZoneCheck(EnWood02* this, PlayState* play, Vec3f* pos) {
     f32 phi_f12;
 
-    if (CVar_GetS32("gDisableDrawDistance", 0) != 0) {
+    if (CVarGetInteger("gDisableDrawDistance", 0) != 0) {
         return true;
     }
 

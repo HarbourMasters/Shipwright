@@ -6,7 +6,7 @@
 #include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 
-#include "soh/Enhancements/debugconsole.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 typedef struct {
     /* 0x00 */ u8 flag;
@@ -363,7 +363,7 @@ s32 Player_ActionToModelGroup(Player* this, s32 actionParam) {
 void Player_SetModelsForHoldingShield(Player* this) {
     if ((this->stateFlags1 & 0x400000) &&
         ((this->itemAction < 0) || (this->itemAction == this->heldItemAction))) {
-        if ((CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemAction != PLAYER_IA_STICK) ||
+        if ((CVarGetInteger("gShieldTwoHanded", 0) && (this->heldItemAction != PLAYER_IA_STICK) ||
             !Player_HoldsTwoHandedWeapon(this)) && !Player_IsChildWithHylianShield(this)) {
             this->rightHandType = 10;
             this->rightHandDLists = &sPlayerDListGroups[10][gSaveContext.linkAge];
@@ -380,13 +380,23 @@ void Player_SetModelsForHoldingShield(Player* this) {
 }
 
 void Player_SetModels(Player* this, s32 modelGroup) {
+    // Left hand
     this->leftHandType = gPlayerModelTypes[modelGroup][1];
+    this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][gSaveContext.linkAge];
+    
+    // Right hand
     this->rightHandType = gPlayerModelTypes[modelGroup][2];
-    this->sheathType = gPlayerModelTypes[modelGroup][3];
+    this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
 
-    this->leftHandDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][1]][gSaveContext.linkAge];
-    this->rightHandDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][2]][gSaveContext.linkAge];
-    this->sheathDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][3]][gSaveContext.linkAge];
+    if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && this->rightHandType == 11) { // If holding Bow/Slingshot
+        this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
+    }
+
+    // Sheath
+    this->sheathType = gPlayerModelTypes[modelGroup][3];
+    this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
+
+    // Waist
     this->waistDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
 
     Player_SetModelsForHoldingShield(this);
@@ -490,7 +500,7 @@ s32 Player_IsBurningStickInRange(PlayState* play, Vec3f* pos, f32 xzRange, f32 y
 s32 Player_GetStrength(void) {
     s32 strengthUpgrade = CUR_UPG_VALUE(UPG_STRENGTH);
 
-    if (CVar_GetS32("gTimelessEquipment", 0) || LINK_IS_ADULT) {
+    if (CVarGetInteger("gTimelessEquipment", 0) || LINK_IS_ADULT) {
         return strengthUpgrade;
     } else if (strengthUpgrade != 0) {
         return PLAYER_STR_BRACELET;
@@ -537,6 +547,22 @@ s32 Player_ActionToMagicSpell(Player* this, s32 actionParam) {
 
 s32 Player_HoldsHookshot(Player* this) {
     return (this->heldItemAction == PLAYER_IA_HOOKSHOT) || (this->heldItemAction == PLAYER_IA_LONGSHOT);
+}
+
+s32 Player_HoldsBow(Player* this) {
+    switch(this->heldItemAction){
+        case PLAYER_IA_BOW:
+        case PLAYER_IA_BOW_FIRE:
+        case PLAYER_IA_BOW_ICE:
+        case PLAYER_IA_BOW_LIGHT:
+            return true;
+        default:
+            return false;
+    }
+}
+
+s32 Player_HoldsSlingshot(Player* this) {
+    return this->heldItemAction == PLAYER_IA_SLINGSHOT;
 }
 
 s32 func_8008F128(Player* this) {
@@ -634,9 +660,9 @@ s32 func_8008F2F8(PlayState* play) {
         triggerEntry = &sTextTriggers[var];
 
         if ((triggerEntry->flag != 0) && !(gSaveContext.textTriggerFlags & triggerEntry->flag) &&
-            (((var == 0) && (this->currentTunic != PLAYER_TUNIC_GORON && CVar_GetS32("gSuperTunic", 0) == 0)) ||
+            (((var == 0) && (this->currentTunic != PLAYER_TUNIC_GORON && CVarGetInteger("gSuperTunic", 0) == 0)) ||
              (((var == 1) || (var == 3)) && (this->currentBoots == PLAYER_BOOTS_IRON) &&
-              (this->currentTunic != PLAYER_TUNIC_ZORA && CVar_GetS32("gSuperTunic", 0) == 0)))) {
+              (this->currentTunic != PLAYER_TUNIC_ZORA && CVarGetInteger("gSuperTunic", 0) == 0)))) {
             Message_StartTextbox(play, triggerEntry->textId, NULL);
             gSaveContext.textTriggerFlags |= triggerEntry->flag;
         }
@@ -749,14 +775,14 @@ void func_8008F470(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dLis
 
     Color_RGB8 sTemp;
     color = &sTunicColors[tunic];
-    if (tunic == PLAYER_TUNIC_KOKIRI && CVar_GetS32("gCosmetics.Link_KokiriTunic.Changed", 0)) {
-        sTemp = CVar_GetRGB("gCosmetics.Link_KokiriTunic.Value", sTunicColors[PLAYER_TUNIC_KOKIRI]);
+    if (tunic == PLAYER_TUNIC_KOKIRI && CVarGetInteger("gCosmetics.Link_KokiriTunic.Changed", 0)) {
+        sTemp = CVarGetColor24("gCosmetics.Link_KokiriTunic.Value", sTunicColors[PLAYER_TUNIC_KOKIRI]);
         color = &sTemp;
-    } else if (tunic == PLAYER_TUNIC_GORON && CVar_GetS32("gCosmetics.Link_GoronTunic.Changed", 0)) {
-        sTemp = CVar_GetRGB("gCosmetics.Link_GoronTunic.Value", sTunicColors[PLAYER_TUNIC_GORON]);
+    } else if (tunic == PLAYER_TUNIC_GORON && CVarGetInteger("gCosmetics.Link_GoronTunic.Changed", 0)) {
+        sTemp = CVarGetColor24("gCosmetics.Link_GoronTunic.Value", sTunicColors[PLAYER_TUNIC_GORON]);
         color = &sTemp;
-    } else if (tunic == PLAYER_TUNIC_ZORA && CVar_GetS32("gCosmetics.Link_ZoraTunic.Changed", 0)) {
-        sTemp = CVar_GetRGB("gCosmetics.Link_ZoraTunic.Value", sTunicColors[PLAYER_TUNIC_ZORA]);
+    } else if (tunic == PLAYER_TUNIC_ZORA && CVarGetInteger("gCosmetics.Link_ZoraTunic.Changed", 0)) {
+        sTemp = CVarGetColor24("gCosmetics.Link_ZoraTunic.Value", sTunicColors[PLAYER_TUNIC_ZORA]);
         color = &sTemp;
     }
 
@@ -774,11 +800,11 @@ void func_8008F470(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dLis
                 gDPPipeSync(POLY_OPA_DISP++);
 
                 color = &sGauntletColors[strengthUpgrade - 2];
-                if (strengthUpgrade == PLAYER_STR_SILVER_G && CVar_GetS32("gCosmetics.Gloves_SilverGauntlets.Changed", 0)) {
-                    sTemp = CVar_GetRGB("gCosmetics.Gloves_SilverGauntlets.Value", sGauntletColors[PLAYER_STR_SILVER_G - 2]);
+                if (strengthUpgrade == PLAYER_STR_SILVER_G && CVarGetInteger("gCosmetics.Gloves_SilverGauntlets.Changed", 0)) {
+                    sTemp = CVarGetColor24("gCosmetics.Gloves_SilverGauntlets.Value", sGauntletColors[PLAYER_STR_SILVER_G - 2]);
                     color = &sTemp;
-                } else if (strengthUpgrade == PLAYER_STR_GOLD_G && CVar_GetS32("gCosmetics.Gloves_GoldenGauntlets.Changed", 0)) {
-                    sTemp = CVar_GetRGB("gCosmetics.Gloves_GoldenGauntlets.Value", sGauntletColors[PLAYER_STR_GOLD_G - 2]);
+                } else if (strengthUpgrade == PLAYER_STR_GOLD_G && CVarGetInteger("gCosmetics.Gloves_GoldenGauntlets.Changed", 0)) {
+                    sTemp = CVarGetColor24("gCosmetics.Gloves_GoldenGauntlets.Value", sGauntletColors[PLAYER_STR_GOLD_G - 2]);
                     color = &sTemp;
                 }
                 gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
@@ -948,8 +974,8 @@ s32 func_8008FCC8(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
         }
 
         if (limbIndex == PLAYER_LIMB_HEAD) {
-            if (CVar_GetS32("gCosmetics.Link_HeadScale.Changed", 0)) {
-                f32 scale = CVar_GetFloat("gCosmetics.Link_HeadScale.Value", 1.0f);
+            if (CVarGetInteger("gCosmetics.Link_HeadScale.Changed", 0)) {
+                f32 scale = CVarGetFloat("gCosmetics.Link_HeadScale.Value", 1.0f);
                 Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
                 if (scale > 1.2f) {
                     Matrix_Translate(-((LINK_IS_ADULT ? 320.0f : 200.0f) * scale), 0.0f, 0.0f, MTXMODE_APPLY);
@@ -961,8 +987,8 @@ s32 func_8008FCC8(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
             rot->y -= this->unk_6B8;
             rot->z += this->unk_6B6;
         } else if (limbIndex == PLAYER_LIMB_L_HAND) {
-            if (CVar_GetS32("gCosmetics.Link_SwordScale.Changed", 0)) {
-                f32 scale = CVar_GetFloat("gCosmetics.Link_SwordScale.Value", 1.0f);
+            if (CVarGetInteger("gCosmetics.Link_SwordScale.Changed", 0)) {
+                f32 scale = CVarGetFloat("gCosmetics.Link_SwordScale.Value", 1.0f);
                 Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
                 Matrix_Translate(-((LINK_IS_ADULT ? 320.0f : 200.0f) * scale), 0.0f, 0.0f, MTXMODE_APPLY);
             }
@@ -1050,7 +1076,7 @@ s32 func_80090014(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
         }
     }
 
-    if (chaosEffectInvisibleLink) {
+    if (GameInteractor_InvisibleLinkActive()) {
         this->actor.shape.shadowDraw = NULL;
         *dList = NULL;
     }
@@ -1067,14 +1093,26 @@ s32 func_800902F0(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
         } else if (limbIndex == PLAYER_LIMB_L_FOREARM) {
             *dList = sArmOutDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_L_HAND) {
-            *dList = sHandOutDLs[gSaveContext.linkAge];
+            s32 handOutDlIndex = gSaveContext.linkAge;
+            if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && LINK_IS_ADULT && Player_HoldsSlingshot(this)) {
+                handOutDlIndex = 1;
+            }
+            *dList = sHandOutDLs[handOutDlIndex];
         } else if (limbIndex == PLAYER_LIMB_R_SHOULDER) {
             *dList = sRightShoulderNearDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_R_FOREARM) {
             *dList = D_80125F30[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_R_HAND) {
+            s32 firstPersonWeaponIndex = gSaveContext.linkAge;
+            if (CVarGetInteger("gBowSlingShotAmmoFix", 0)) {
+                if (Player_HoldsBow(this)) {
+                    firstPersonWeaponIndex = 0;
+                } else if (Player_HoldsSlingshot(this)) {
+                    firstPersonWeaponIndex = 1;
+                }
+            }
             *dList = Player_HoldsHookshot(this) ? gLinkAdultRightHandHoldingHookshotFarDL
-                                                : sHoldingFirstPersonWeaponDLs[gSaveContext.linkAge];
+                                                : sHoldingFirstPersonWeaponDLs[firstPersonWeaponIndex];
         } else {
             *dList = NULL;
         }
@@ -1176,7 +1214,7 @@ void func_800906D4(PlayState* play, Player* this, Vec3f* newTipPos) {
 void Player_DrawGetItemIceTrap(PlayState* play, Player* this, Vec3f* refPos, s32 drawIdPlusOne, f32 height) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    if (CVar_GetS32("gLetItSnow", 0)) {
+    if (CVarGetInteger("gLetItSnow", 0)) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
         Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
@@ -1447,7 +1485,11 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
         if (this->rightHandType == 0xFF) {
             Matrix_Get(&this->shieldMf);
         } else if ((this->rightHandType == 11) || (this->rightHandType == 12)) {
-            BowStringData* stringData = &sBowStringData[gSaveContext.linkAge];
+            s32 stringModelToUse = gSaveContext.linkAge;
+            if(CVarGetInteger("gBowSlingShotAmmoFix", 0)){
+                stringModelToUse = Player_HoldsSlingshot(this);
+            }
+            BowStringData* stringData = &sBowStringData[stringModelToUse];
 
             OPEN_DISPS(play->state.gfxCtx);
 
@@ -1510,7 +1552,7 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                     if (func_8002DD78(this) != 0) {
                         Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
                         Player_DrawHookshotReticle(
-                            play, this, (this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 77600.0f);
+                            play, this, ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 77600.0f) * CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f));
                     }
                 }
             }
@@ -1607,7 +1649,7 @@ s32 func_80091880(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
         type = gPlayerModelTypes[modelGroup][3];
         if ((type == 18) || (type == 19)) {
             dListOffset = ptr[1] * ptrSize;
-        } else if (type == 16 && CVar_GetS32("gPauseLiveLink", 0)) {
+        } else if (type == 16 && CVarGetInteger("gPauseLiveLink", 0)) {
             //if (ptr[0] == 1)
                 //dListOffset = 4;
         }
@@ -1686,8 +1728,8 @@ void func_80091A24(PlayState* play, void* seg04, void* seg06, SkelAnime* skelAni
     sp12C[0] = sword;
     sp12C[1] = shield;
 
-    Matrix_SetTranslateRotateYXZ(pos->x - ((CVar_GetS32("gPauseLiveLink", 0) && LINK_AGE_IN_YEARS == YEARS_ADULT) ? 25 : 0),
-                                 pos->y - (CVar_GetS32("gPauseTriforce", 0) ? 16 : 0), pos->z, rot);
+    Matrix_SetTranslateRotateYXZ(pos->x - ((CVarGetInteger("gPauseLiveLink", 0) && LINK_AGE_IN_YEARS == YEARS_ADULT) ? 25 : 0),
+                                 pos->y - (CVarGetInteger("gPauseTriforce", 0) ? 16 : 0), pos->z, rot);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
 
     gSPSegment(POLY_OPA_DISP++, 0x04, seg04);
@@ -1706,7 +1748,7 @@ void func_80091A24(PlayState* play, void* seg04, void* seg06, SkelAnime* skelAni
     func_8008F470(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, tunic, boots, 0,
                   func_80091880, NULL, &sp12C);
 
-     if (CVar_GetS32("gPauseTriforce", 0)) {
+     if (CVarGetInteger("gPauseTriforce", 0)) {
 
         Matrix_SetTranslateRotateYXZ(pos->x - (LINK_AGE_IN_YEARS == YEARS_ADULT ? 25 : 0),
                                       pos->y + 280 + (LINK_AGE_IN_YEARS == YEARS_ADULT ? 48 : 0), pos->z, rot);
@@ -1740,8 +1782,8 @@ void func_8009214C(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f* po
     Vec3s* srcTable;
     s32 i;
     bool canswitchrnd = false;
-    s16 SelectedMode = CVar_GetS32("gPauseLiveLink", 0);
-    MinFrameCount = CVar_GetS32("gMinFrameCount", 200);
+    s16 SelectedMode = CVarGetInteger("gPauseLiveLink", 0);
+    MinFrameCount = CVarGetInteger("gMinFrameCount", 200);
 
     gSegments[4] = VIRTUAL_TO_PHYSICAL(segment + 0x3800);
     gSegments[6] = VIRTUAL_TO_PHYSICAL(segment + 0x8800);
@@ -1766,7 +1808,7 @@ void func_8009214C(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f* po
     };
     s16 AnimArraySize = ARRAY_COUNT(PauseMenuAnimSet);
 
-    if (CVar_GetS32("gPauseLiveLink", 0) || CVar_GetS32("gPauseTriforce", 0)) {
+    if (CVarGetInteger("gPauseLiveLink", 0) || CVarGetInteger("gPauseTriforce", 0)) {
         uintptr_t anim = 0; // Initialise anim
 
         if (CUR_EQUIP_VALUE(EQUIP_SWORD) >= 3) {
@@ -1923,7 +1965,7 @@ void func_8009214C(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f* po
 
         //anim = gPlayerAnim_link_wait_itemD2_20f; // Use for biggoron sword?
 
-        if (CVar_GetS32("gPauseTriforce", 0)) {
+        if (CVarGetInteger("gPauseTriforce", 0)) {
             anim = gPlayerAnim_link_magic_kaze2;
             sword = 0;
             shield = 0;

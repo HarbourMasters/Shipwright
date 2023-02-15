@@ -18,6 +18,8 @@
 
 #define MO_WATER_LEVEL(play) play->colCtx.colHeader->waterBoxes[0].ySurface
 
+#define MO_STARTING_WATER_LEVEL (-60)
+
 #define HAS_LINK(tent) \
     ((tent != NULL) && \
      ((tent->work[MO_TENT_ACTION_STATE] == MO_TENT_GRAB) || (tent->work[MO_TENT_ACTION_STATE] == MO_TENT_SHAKE)))
@@ -337,6 +339,10 @@ void BossMo_Init(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     BossMo* this = (BossMo*)thisx;
     u16 i;
+
+    // Due to Ships resource caching, the water level for Morpha needs to be reset
+    // to ensure subsequent re-fights in the same running instance start with the correct level
+    MO_WATER_LEVEL(play) = MO_STARTING_WATER_LEVEL;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 0.0f, NULL, 0.0f);

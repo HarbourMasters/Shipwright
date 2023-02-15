@@ -80,10 +80,11 @@ void OceffWipe_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
+    int fastOcarinaPlayback = (CVarGetInteger("gFastOcarinaPlayback", 0) != 0);
     if (this->timer < 32) {
-        z = Math_SinS(this->timer << 9) * 1400;
+        z = Math_SinS(this->timer << 9) * (fastOcarinaPlayback ? 1200.0f : 1400.0f);
     } else {
-        z = 1400;
+        z = fastOcarinaPlayback ? 1200.0f : 1400.0f;
     }
 
     if (this->timer >= 80) {

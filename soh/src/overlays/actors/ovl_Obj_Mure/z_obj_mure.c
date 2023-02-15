@@ -275,7 +275,7 @@ void ObjMure_InitialAction(ObjMure* this, PlayState* play) {
 }
 
 void ObjMure_CulledState(ObjMure* this, PlayState* play) {
-    if (fabsf(this->actor.projectedPos.z) < sZClip[this->type] || CVar_GetS32("gDisableDrawDistance", 0) != 0) {
+    if (fabsf(this->actor.projectedPos.z) < sZClip[this->type] || CVarGetInteger("gDisableDrawDistance", 0) != 0) {
         this->actionFunc = ObjMure_ActiveState;
         this->actor.flags |= ACTOR_FLAG_4;
         ObjMure_SpawnActors(this, play);
@@ -399,7 +399,7 @@ static ObjMureActionFunc sTypeGroupBehaviorFunc[] = {
 void ObjMure_ActiveState(ObjMure* this, PlayState* play) {
     ObjMure_CheckChildren(this, play);
     if (sZClip[this->type] + 40.0f <= fabsf(this->actor.projectedPos.z) &&
-        CVar_GetS32("gDisableDrawDistance", 1) != 0) {
+        CVarGetInteger("gDisableDrawDistance", 1) != 0) {
         this->actionFunc = ObjMure_CulledState;
         this->actor.flags &= ~ACTOR_FLAG_4;
         ObjMure_KillActors(this, play);
