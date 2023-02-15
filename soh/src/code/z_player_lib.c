@@ -1093,31 +1093,26 @@ s32 func_800902F0(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
         } else if (limbIndex == PLAYER_LIMB_L_FOREARM) {
             *dList = sArmOutDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_L_HAND) {
-            *dList = sHandOutDLs[gSaveContext.linkAge];
-
-            if(CVarGetInteger("gBowSlingShotAmmoFix", 0)){
-                if (Player_HoldsSlingshot(this)) {
-                    *dList = NULL;
-                } else if (LINK_IS_ADULT && (Player_HoldsBow(this) || Player_HoldsSlingshot(this))) {
-                    *dList = gLinkAdultRightHandOutNearDL;
-                }
+            s32 handOutDlIndex = gSaveContext.linkAge;
+            if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && LINK_IS_ADULT && Player_HoldsSlingshot(this)) {
+                handOutDlIndex = 1;
             }
+            *dList = sHandOutDLs[handOutDlIndex];
         } else if (limbIndex == PLAYER_LIMB_R_SHOULDER) {
             *dList = sRightShoulderNearDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_R_FOREARM) {
             *dList = D_80125F30[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_R_HAND) {
-            *dList = sHoldingFirstPersonWeaponDLs[gSaveContext.linkAge];
-
-            if (Player_HoldsHookshot(this)) {
-                *dList = gLinkAdultRightHandHoldingHookshotFarDL;
-            } else if (CVarGetInteger("gBowSlingShotAmmoFix", 0)) {
-                if(Player_HoldsBow(this)) {
-                    *dList = gLinkAdultRightHandHoldingBowFirstPersonDL;
+            s32 firstPersonWeaponIndex = gSaveContext.linkAge;
+            if (CVarGetInteger("gBowSlingShotAmmoFix", 0)) {
+                if (Player_HoldsBow(this)) {
+                    firstPersonWeaponIndex = 0;
                 } else if (Player_HoldsSlingshot(this)) {
-                    *dList = gLinkChildRightArmStretchedSlingshotDL;
+                    firstPersonWeaponIndex = 1;
                 }
             }
+            *dList = Player_HoldsHookshot(this) ? gLinkAdultRightHandHoldingHookshotFarDL
+                                                                       : sHoldingFirstPersonWeaponDLs[firstPersonWeaponIndex];
         } else {
             *dList = NULL;
         }
