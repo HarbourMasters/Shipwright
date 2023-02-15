@@ -4,14 +4,15 @@
 extern "C" {
 #include <z64.h>
 extern SaveContext gSaveContext;
+extern PlayState* gPlayState;
 extern void Play_PerformSave(PlayState* play);
 }
 
 void RegisterAutoSaveOnReceiveItem() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnReceiveItem>([](PlayState* play, u8 item) {
-        if (CVarGetInteger("gAutosave", 0) && (play != NULL) && (play->sceneNum != SCENE_KENJYANOMA) && (gSaveContext.pendingSale == ITEM_NONE) && (play->sceneNum != SCENE_GANON_DEMO)) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnReceiveItem>([](u8 item) {
+        if (CVarGetInteger("gAutosave", 0) && (gPlayState != NULL) && (gPlayState->sceneNum != SCENE_KENJYANOMA) && (gSaveContext.pendingSale == ITEM_NONE) && (gPlayState->sceneNum != SCENE_GANON_DEMO)) {
             if (CVarGetInteger("gAutosaveAllItems", 0)) {
-                Play_PerformSave(play);
+                Play_PerformSave(gPlayState);
             } else if (CVarGetInteger("gAutosaveMajorItems", 1)) {
                 switch (item) {
                     case ITEM_STICK:
@@ -50,11 +51,11 @@ void RegisterAutoSaveOnReceiveItem() {
                     case ITEM_BOMBCHUS_5:
                     case ITEM_BOMBCHUS_20:
                         if (!CVarGetInteger("gBombchuDrops", 0)) {
-                            Play_PerformSave(play);
+                            Play_PerformSave(gPlayState);
                         }
                         break;
                     default:
-                        Play_PerformSave(play);
+                        Play_PerformSave(gPlayState);
                         break;
                 }
             }

@@ -265,6 +265,7 @@ source_group("Header Files\\soh\\Enhancements\\mods" FILES ${Header_Files__soh__
 
 set(Header_Files__soh__Enhancements__game_interactor
     "soh/Enhancements/game-interactor/GameInteractor.h"
+    "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
     "soh/Enhancements/game-interactor/GameInteractionEffect.h"
 )
 source_group("Header Files\\soh\\Enhancements\\game-interactor" FILES ${Header_Files__soh__Enhancements__game_interactor})
@@ -622,6 +623,7 @@ source_group("Source Files\\soh\\Enhancements\\mods" FILES ${Source_Files__soh__
 set(Source_Files__soh__Enhancements__game_interactor
     "soh/Enhancements/game-interactor/GameInteractor.cpp"
     "soh/Enhancements/game-interactor/GameInteractor_RawAction.cpp"
+    "soh/Enhancements/game-interactor/GameInteractor_Hooks.cpp"
     "soh/Enhancements/game-interactor/GameInteractor_State.cpp"
     "soh/Enhancements/game-interactor/GameInteractionEffect.cpp"
 )
