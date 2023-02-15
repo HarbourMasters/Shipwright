@@ -1210,9 +1210,9 @@ static bool SfxHandler(std::shared_ptr<Ship::Console> Console, const std::vector
     }
 
     if (args[1].compare("reset") == 0) {
-        SfxEditor_ResetAll();
+        AudioEditor_ResetAll();
     } else if (args[1].compare("randomize") == 0) {
-        SfxEditor_RandomizeAll();
+        AudioEditor_RandomizeAll();
     } else {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Invalid argument passed, must be 'reset' or 'randomize'");
         return CMD_FAILED;

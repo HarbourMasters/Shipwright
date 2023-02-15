@@ -252,7 +252,7 @@ extern "C" u16 SfxEditor_GetReverseReplacementSeq(u16 seqId) {
     return AudioCollection::Instance->GetReverseReplacementSequence(seqId);
 }
 
-extern "C" const char* SfxEditor_GetSequenceName(u16 seqId) {
+extern "C" const char* AudioEditor_GetSequenceName(u16 seqId) {
     if (AudioCollection::Instance->GetAllSequences().contains(seqId)) {
         const char *name = AudioCollection::Instance->GetAllSequences().at(seqId).label.c_str();
         return name;
@@ -548,14 +548,14 @@ void DrawSfxEditor(bool& open) {
     ImGui::End();
 }
 
-void InitSfxEditor() {
+void InitAudioEditor() {
     //Draw the bar in the menu.
     SohImGui::AddWindow("Enhancements", "SFX Editor", DrawSfxEditor);
 }
 
 std::vector<SeqType> allTypes = { SEQ_BGM_WORLD, SEQ_BGM_EVENT, SEQ_BGM_BATTLE, SEQ_OCARINA, SEQ_FANFARE, SEQ_INSTRUMENT, SEQ_SFX };
 
-void SfxEditor_RandomizeAll() {
+void AudioEditor_RandomizeAll() {
     for (auto type : allTypes) {
         RandomizeGroup(type);
     }
@@ -564,7 +564,7 @@ void SfxEditor_RandomizeAll() {
     ReplayCurrentBGM();
 }
 
-void SfxEditor_ResetAll() {
+void AudioEditor_ResetAll() {
     for (auto type : allTypes) {
         ResetGroup(AudioCollection::Instance->GetAllSequences(), type);
     }
@@ -573,6 +573,6 @@ void SfxEditor_ResetAll() {
     ReplayCurrentBGM();
 }
 
-extern "C" void SfxEditor_AddSequence(char *otrPath, uint16_t seqNum) {
+extern "C" void AudioEditor_AddSequence(char *otrPath, uint16_t seqNum) {
     AudioCollection::Instance->AddToCollection(otrPath, seqNum);
 }
