@@ -35,6 +35,12 @@ GameInteractionEffectQueryResult GameInteractor::RemoveEffect(GameInteractionEff
     return effect->Remove();
 }
 
+// MARK: - Game Hooks
+
+void GameInteractor_ExecuteOnReceiveItemHooks(PlayState* play, u8 item) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnReceiveItem>(play, item);
+}
+
 // MARK: - Helpers
 
 bool GameInteractor::IsSaveLoaded() {

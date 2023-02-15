@@ -4,6 +4,7 @@
 #define GameInteractor_h
 
 #include "GameInteractionEffect.h"
+#include "z64.h"
 
 typedef enum {
     /* 0x00 */ GI_LINK_SIZE_NORMAL,
@@ -39,6 +40,16 @@ GIGravityLevel GameInteractor_GravityLevel();
 
 
 #ifdef __cplusplus
+
+#include <vector>
+
+#define DEFINE_HOOK(name, type)         \
+    struct name {                       \
+        typedef std::function<type> fn; \
+    }
+
+extern "C" void GameInteractor_ExecuteOnReceiveItemHooks(PlayState* play, u8 item);
+
 class GameInteractor {
 public:
     static GameInteractor* Instance;
@@ -64,6 +75,17 @@ public:
     static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase* effect);
     static GameInteractionEffectQueryResult ApplyEffect(GameInteractionEffectBase* effect);
     static GameInteractionEffectQueryResult RemoveEffect(GameInteractionEffectBase* effect);
+
+    // Game Hooks
+    template <typename H> struct RegisteredGameHooks { inline static std::vector<typename H::fn> functions; };
+    template <typename H> void RegisterGameHook(typename H::fn h) { RegisteredGameHooks<H>::functions.push_back(h); }
+    template <typename H, typename... Args> void ExecuteHooks(Args&&... args) {
+        for (auto& fn : RegisteredGameHooks<H>::functions) {
+            fn(std::forward<Args>(args)...);
+        }
+    }
+
+    DEFINE_HOOK(OnReceiveItem, void(PlayState* play, u8 item));
 
     // Helpers
     static bool IsSaveLoaded();
