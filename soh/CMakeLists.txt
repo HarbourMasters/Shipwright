@@ -258,8 +258,14 @@ set(Header_Files__soh__Enhancements__item_tables
 
 source_group("Header Files\\soh\\Enhancements\\item-tables" FILES ${Header_Files__soh__Enhancements__item_tables})
 
+set(Header_Files__soh__Enhancements__mods
+    "soh/Enhancements/mods/modhooks.h"
+)
+source_group("Header Files\\soh\\Enhancements\\mods" FILES ${Header_Files__soh__Enhancements__mods})
+
 set(Header_Files__soh__Enhancements__game_interactor
     "soh/Enhancements/game-interactor/GameInteractor.h"
+    "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
     "soh/Enhancements/game-interactor/GameInteractionEffect.h"
 )
 source_group("Header Files\\soh\\Enhancements\\game-interactor" FILES ${Header_Files__soh__Enhancements__game_interactor})
@@ -610,9 +616,15 @@ set(Source_Files__soh__Enhancements__item_tables
 
 source_group("Source Files\\soh\\Enhancements\\item-tables" FILES ${Source_Files__soh__Enhancements__item_tables})
 
+set(Source_Files__soh__Enhancements__mods
+    "soh/Enhancements/mods/modhooks.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\mods" FILES ${Source_Files__soh__Enhancements__mods})
+
 set(Source_Files__soh__Enhancements__game_interactor
     "soh/Enhancements/game-interactor/GameInteractor.cpp"
     "soh/Enhancements/game-interactor/GameInteractor_RawAction.cpp"
+    "soh/Enhancements/game-interactor/GameInteractor_Hooks.cpp"
     "soh/Enhancements/game-interactor/GameInteractor_State.cpp"
     "soh/Enhancements/game-interactor/GameInteractionEffect.cpp"
 )
@@ -1836,6 +1848,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements__randomizer__3drando}
     ${Header_Files__soh__Enhancements__item_tables}
     ${Header_Files__soh__Enhancements__custom_message}
+    ${Header_Files__soh__Enhancements__mods}
     ${Header_Files__soh__Enhancements__game_interactor}
     ${Header_Files__soh__Enhancements__crowd_control}
     ${Source_Files__soh}
@@ -1850,6 +1863,7 @@ set(ALL_FILES
     ${Source_Files__soh__Enhancements__randomizer__3drando__location_access}
     ${Source_Files__soh__Enhancements__item_tables}
     ${Source_Files__soh__Enhancements__custom_message}
+    ${Source_Files__soh__Enhancements__mods}
     ${Source_Files__soh__Enhancements__game_interactor}
     ${Source_Files__soh__Enhancements__crowd_control}
     ${Source_Files__src__boot}

@@ -6,6 +6,7 @@
 #include <fstream>
 
 #include <ResourceMgr.h>
+#include <OtrFile.h>
 #include <DisplayList.h>
 #include <Window.h>
 #include <GameVersions.h>
@@ -72,8 +73,9 @@
 CrowdControl* CrowdControl::Instance;
 #endif
 
+#include "Enhancements/mods/modhooks.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
-#include "libultraship/libultraship.h"
+#include <libultraship/libultraship.h>
 
 // Resource Types/Factories
 #include "soh/resource/type/Animation.h"
@@ -583,6 +585,8 @@ extern "C" void InitOTR() {
     OTRExtScanner();
     VanillaItemTable_Init();
 
+    RegisterModHooks();
+
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);
     if (tm_now->tm_mon == 11 && tm_now->tm_mday >= 24 && tm_now->tm_mday <= 25) {
@@ -878,7 +882,17 @@ std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path) {
 }
 
 extern "C" char* ResourceMgr_LoadFileRaw(const char* resName) {
-    return OTRGlobals::Instance->context->GetResourceManager()->LoadFile(resName)->Buffer.get();
+    // TODO: This should not exist. Anywhere we are loading textures with this function should be Resources instead.
+    // We are not currently packing our otr archive with certain textures as resources with otr headers.
+    static std::unordered_map<std::string, std::shared_ptr<Ship::OtrFile>> cachedRawFiles;
+    auto file = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(resName);
+    cachedRawFiles[resName] = file;
+
+    if (file == nullptr) {
+        return nullptr;
+    }
+
+    return file->Buffer.data();
 }
 
 extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {

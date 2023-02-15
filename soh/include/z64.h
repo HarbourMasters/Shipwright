@@ -35,7 +35,7 @@
 #define _SOH64
 #endif
 
-#define AUDIO_HEAP_SIZE  0x3800000
+#define AUDIO_HEAP_SIZE  0x380000
 #define SYSTEM_HEAP_SIZE (1024 * 1024 * 4)
 
 #ifdef __cplusplus
