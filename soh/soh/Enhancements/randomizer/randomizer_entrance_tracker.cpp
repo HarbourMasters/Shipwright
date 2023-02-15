@@ -669,8 +669,13 @@ void DrawEntranceTracker(bool& open) {
                 UIWidgets::Tooltip("Highlight the previous entrance that Link came from");
                 UIWidgets::PaddedEnhancementCheckbox("Highlight available", "gEntranceTrackerHighlightAvailable", true, false);
                 UIWidgets::Tooltip("Highlight available entrances in the current scene");
-                UIWidgets::PaddedEnhancementCheckbox("Hide undiscovered", "gEntranceTrackerCollapseUndiscovered", true, true);
+                UIWidgets::PaddedEnhancementCheckbox("Hide undiscovered", "gEntranceTrackerCollapseUndiscovered", true, false);
                 UIWidgets::Tooltip("Collapse undiscovered entrances towards the bottom of each group");
+                bool disableHideReverseEntrances = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
+                static const char* disableHideReverseEntrancesText = "This option is disabled because \"Decouple Entrances\" is enabled.";
+                UIWidgets::PaddedEnhancementCheckbox("Hide reverse", "gEntranceTrackerHideReverseEntrances", true, true,
+                                              disableHideReverseEntrances, disableHideReverseEntrancesText, UIWidgets::CheckboxGraphics::Cross, false);                
+                UIWidgets::Tooltip("Hide reverse entrance transitions when Decouple Entrances is off");
 
                 ImGui::TableNextColumn();
 
@@ -687,12 +692,6 @@ void DrawEntranceTracker(bool& open) {
                 UIWidgets::Tooltip("Reveal the \"To\" entrance for undiscovered entrances");
                 UIWidgets::PaddedEnhancementCheckbox("Show \"From\"", "gEntranceTrackerShowFrom", true, false);
                 UIWidgets::Tooltip("Reveal the \"From\" entrance for undiscovered entrances");
-                UIWidgets::Spacer(2.0f);
-                bool disableHideReverseEntrances = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
-                static const char* disableHideReverseEntrancesText = "This option is disabled because \"Decouple Entrances\" is enabled.";
-                UIWidgets::EnhancementCheckbox("Hide reverse", "gEntranceTrackerHideReverseEntrances",
-                                              disableHideReverseEntrances, disableHideReverseEntrancesText);                
-                UIWidgets::Tooltip("Hide reverse entrance transitions when Decouple Entrances is off");
 
                 ImGui::EndTable();
             }
