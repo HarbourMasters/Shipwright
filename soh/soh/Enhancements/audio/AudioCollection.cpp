@@ -3,6 +3,9 @@
 #include "sfx.h"
 #include <vector>
 #include <Utils/StringHelper.h>
+#include <libultraship/bridge.h>
+#include <ImGuiImpl.h>
+#include <locale>
 
 #define SEQUENCE_MAP_ENTRY(sequenceId, label, sfxKey, category) \
     { sequenceId, { sequenceId, label, sfxKey, category } }
