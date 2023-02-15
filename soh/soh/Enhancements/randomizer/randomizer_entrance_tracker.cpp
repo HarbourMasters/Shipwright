@@ -786,7 +786,8 @@ void DrawEntranceTracker(bool& open) {
             const EntranceData* override = GetEntranceData(entrance.override);
 
             // If entrance is a dungeon, grotto, or interior entrance, the transition into that area has oneExit set, which means we can filter the return transitions as redundant
-            // if entrances are not decoupled, as this is redundant information. Also, allows for If all of these conditions are met, we skip adding this entrance to any lists.
+            // if entrances are not decoupled, as this is redundant information. Also checks a setting, enabled by default, for hiding them.
+            // If all of these conditions are met, we skip adding this entrance to any lists.
             // However, if entrances are decoupled, then all transitions need to be displayed, so we proceed with the filtering
             if ((original->type == ENTRANCE_TYPE_DUNGEON || original->type == ENTRANCE_TYPE_GROTTO || original->type == ENTRANCE_TYPE_INTERIOR) &&
                 (original->oneExit != 1 && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF) &&
