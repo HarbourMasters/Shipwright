@@ -670,8 +670,6 @@ void SaveManager::SaveFile(int fileNum) {
     if (fileNum == 0xFF) {
         return;
     }
-    
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum);
 
     nlohmann::json baseBlock;
 
@@ -696,6 +694,7 @@ void SaveManager::SaveFile(int fileNum) {
 #endif
 
     InitMeta(fileNum);
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum);
 }
 
 void SaveManager::SaveGlobal() {
