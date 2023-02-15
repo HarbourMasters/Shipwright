@@ -272,10 +272,14 @@ extern "C" void AudioCollection_AddToCollection(char *otrPath, uint16_t seqNum) 
     AudioCollection::Instance->AddToCollection(otrPath, seqNum);
 }
 
-extern "C" const char* AudioCollection_GetSequenceName(uint16_t seqId) {
-    if (AudioCollection::Instance->GetAllSequences().contains(seqId)) {
-        const char *name = AudioCollection::Instance->GetAllSequences().at(seqId).label.c_str();
-        return name;
+const char* AudioCollection::GetSequenceName(uint16_t seqId) {
+    auto seqIt = sequenceMap.find(seqId);
+    if (seqIt != sequenceMap.end()) {
+        return seqIt->second.label.c_str();
     }
     return NULL;
+}
+
+extern "C" const char* AudioCollection_GetSequenceName(uint16_t seqId) {
+    return AudioCollection::Instance->GetSequenceName(seqId);
 }
