@@ -543,6 +543,23 @@ void DrawSfxEditor(bool& open) {
         CVarSetInteger("gSfxEditor", 0);
         return;
     }
+
+    static bool excludeListInitialized = false;
+    if (!excludeListInitialized) {
+        for (auto& [seqId, seqInfo] : sfxEditorSequenceMap) {
+            const std::string cvarKey = "gExcludeSfx_" + seqInfo.sfxKey;
+            if (CVarGetInteger(cvarKey.c_str(), 0)) {
+                excludedSequences.insert(&seqInfo);
+            } else {
+                if (seqInfo.category != SEQ_NOSHUFFLE) {
+                    includedSequences.insert(&seqInfo);
+                }
+            }
+        }
+
+        excludeListInitialized = true;                
+    }
+
     ImGui::SetNextWindowSize(ImVec2(900, 630), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Audio Editor", &open)) {
         ImGui::End();
@@ -614,23 +631,7 @@ void DrawSfxEditor(bool& open) {
         }
 
         static bool excludeTabOpen = false;
-        static bool excludeListInitialized = false;
         if (ImGui::BeginTabItem("Audio Shuffle Pool Management")) {
-            if (!excludeListInitialized) {
-                for (auto& [seqId, seqInfo] : sfxEditorSequenceMap) {
-                    const std::string cvarKey = "gExcludeSfx_" + seqInfo.sfxKey;
-                    if (CVarGetInteger(cvarKey.c_str(), 0)) {
-                        excludedSequences.insert(&seqInfo);
-                    } else {
-                        if (seqInfo.category != SEQ_NOSHUFFLE) {
-                            includedSequences.insert(&seqInfo);
-                        }
-                    }
-                }
-
-                excludeListInitialized = true;                
-            }
-
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (!excludeTabOpen) {
                 excludeTabOpen = true;
