@@ -411,6 +411,8 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Helps FW persist between ages, gives child and adult separate FW points, and can be used in more places.");
                     UIWidgets::PaddedEnhancementCheckbox("Static Explosion Radius", "gStaticExplosionRadius", true, false);
                     UIWidgets::Tooltip("Explosions are now a static size, like in Majora's Mask and OoT3D. Makes bombchu hovering much easier.");
+                    UIWidgets::PaddedEnhancementCheckbox("Prevent Bombchus Forcing First-Person", "gDisableFirstPersonChus", true, false);
+                    UIWidgets::Tooltip("Prevent bombchus from forcing the camera into first-person mode when released.");
                     ImGui::EndMenu();
                 }
 

@@ -9374,7 +9374,7 @@ void func_808464B0(Player* this, PlayState* play) {
             heldActor->velocity.y = 0.0f;
             heldActor->speedXZ = 0.0f;
             func_80834644(play, this);
-            if (heldActor->id == ACTOR_EN_BOM_CHU) {
+            if (heldActor->id == ACTOR_EN_BOM_CHU && !CVarGetInteger("gDisableFirstPersonChus", 0)) {
                 func_8083B8F4(this, play);
             }
         }
