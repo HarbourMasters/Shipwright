@@ -949,7 +949,7 @@ namespace GameMenuBar {
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6.0f, 4.0f));
                 if (ImGui::Button("Match Refresh Rate"))
                 {
-                    int hz = roundf(SohImGui::WindowRefreshRate());
+                    int hz = Ship::Window::GetInstance()->GetCurrentRefreshRate();
                     if (hz >= 20 && hz <= 360)
                     {
                         CVarSetInteger(fps_cvar, hz);
