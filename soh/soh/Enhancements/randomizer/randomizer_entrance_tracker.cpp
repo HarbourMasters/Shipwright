@@ -688,7 +688,11 @@ void DrawEntranceTracker(bool& open) {
                 UIWidgets::PaddedEnhancementCheckbox("Show \"From\"", "gEntranceTrackerShowFrom", true, false);
                 UIWidgets::Tooltip("Reveal the \"From\" entrance for undiscovered entrances");
                 UIWidgets::Spacer(2.0f);
-                UIWidgets::PaddedEnhancementCheckbox("Show redundant entrances", "gEntranceTrackerShowRedundantEntrances", true, false);
+                bool disableHideReverseEntrances = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
+                static const char* disableHideReverseEntrancesText = "This option is disabled because \"Decouple Entrances\" is enabled.";
+                UIWidgets::EnhancementCheckbox("Hide reverse", "gEntranceTrackerHideReverseEntrances",
+                                              disableHideReverseEntrances, disableHideReverseEntrancesText);                
+                UIWidgets::Tooltip("Hide reverse entrance transitions when Decouple Entrances is off");
 
                 ImGui::EndTable();
             }
@@ -786,7 +790,7 @@ void DrawEntranceTracker(bool& open) {
             // However, if entrances are decoupled, then all transitions need to be displayed, so we proceed with the filtering
             if ((original->type == ENTRANCE_TYPE_DUNGEON || original->type == ENTRANCE_TYPE_GROTTO || original->type == ENTRANCE_TYPE_INTERIOR) &&
                 (original->oneExit != 1 && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF) &&
-                CVarGetInteger("gEntranceTrackerShowRedundantEntrances", 0) == 0) {
+                CVarGetInteger("gEntranceTrackerHideReverseEntrances", 1) == 1) {
                     continue;
             }
 
