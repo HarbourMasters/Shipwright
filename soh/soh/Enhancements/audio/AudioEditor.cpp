@@ -326,7 +326,7 @@ void DrawSfxEditor(bool& open) {
 
     AudioCollection::Instance->InitializeShufflePool();
 
-    ImGui::SetNextWindowSize(ImVec2(900, 630), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(820, 630), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Audio Editor", &open)) {
         ImGui::End();
         return;
@@ -414,6 +414,73 @@ void DrawSfxEditor(bool& open) {
                 {SEQ_BGM_CUSTOM, true}
             };
 
+            // make temporary sets because removing from the set we're iterating through crashes ImGui
+            std::set<SequenceInfo*> seqsToInclude = {};
+            std::set<SequenceInfo*> seqsToExclude = {};
+
+            static ImGuiTextFilter sequenceSearch;
+            sequenceSearch.Draw("Filter (inc,-exc)", 490.0f);
+            ImGui::SameLine();
+            if (ImGui::Button("Exclude All")) {
+                for (auto seqInfo : AudioCollection::Instance->GetIncludedSequences()) {
+                    if (sequenceSearch.PassFilter(seqInfo->label.c_str()) && showType[seqInfo->category]) {
+                        seqsToExclude.insert(seqInfo);
+                    }
+                }
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Include All")) {
+                for (auto seqInfo : AudioCollection::Instance->GetExcludedSequences()) {
+                    if (sequenceSearch.PassFilter(seqInfo->label.c_str()) && showType[seqInfo->category]) {
+                        seqsToInclude.insert(seqInfo);
+                    }
+                }
+            }
+
+            ImGui::BeginTable("sequenceTypes", 8, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders);
+
+            ImGui::TableNextColumn();
+            ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_WORLD));
+            ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_WORLD).c_str(), &showType[SEQ_BGM_WORLD]);
+            ImGui::PopStyleColor(1);
+
+            ImGui::TableNextColumn();
+            ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_EVENT));
+            ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_EVENT).c_str(), &showType[SEQ_BGM_EVENT]);
+            ImGui::PopStyleColor(1);
+
+            ImGui::TableNextColumn();
+            ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_BATTLE));
+            ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_BATTLE).c_str(), &showType[SEQ_BGM_BATTLE]);
+            ImGui::PopStyleColor(1);
+
+            ImGui::TableNextColumn();
+            ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_OCARINA));
+            ImGui::Selectable(GetSequenceTypeName(SEQ_OCARINA).c_str(), &showType[SEQ_OCARINA]);
+            ImGui::PopStyleColor(1);
+
+            ImGui::TableNextColumn();
+            ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_FANFARE));
+            ImGui::Selectable(GetSequenceTypeName(SEQ_FANFARE).c_str(), &showType[SEQ_FANFARE]);
+            ImGui::PopStyleColor(1);
+
+            ImGui::TableNextColumn();
+            ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_SFX));
+            ImGui::Selectable(GetSequenceTypeName(SEQ_SFX).c_str(), &showType[SEQ_SFX]);
+            ImGui::PopStyleColor(1);
+
+            ImGui::TableNextColumn();
+            ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_INSTRUMENT));
+            ImGui::Selectable(GetSequenceTypeName(SEQ_INSTRUMENT).c_str(), &showType[SEQ_INSTRUMENT]);
+            ImGui::PopStyleColor(1);
+
+            ImGui::TableNextColumn();
+            ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_CUSTOM));
+            ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_CUSTOM).c_str(), &showType[SEQ_BGM_CUSTOM]);
+            ImGui::PopStyleColor(1);
+
+            ImGui::EndTable();
+
             if (ImGui::BeginTable("tableAllSequences", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Included", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("Excluded", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -422,73 +489,6 @@ void DrawSfxEditor(bool& open) {
 
                 // COLUMN 1 - INCLUDED SEQUENCES
                 ImGui::TableNextColumn();
-
-                // make temporary sets because removing from the set we're iterating through crashes ImGui
-                std::set<SequenceInfo*> seqsToInclude = {};
-                std::set<SequenceInfo*> seqsToExclude = {};
-
-                static ImGuiTextFilter sequenceSearch;
-                sequenceSearch.Draw("Filter (inc,-exc)", 240.0f);
-                ImGui::SameLine();
-                if (ImGui::Button("Exclude All")) {
-                    for (auto seqInfo : AudioCollection::Instance->GetIncludedSequences()) {
-                        if (sequenceSearch.PassFilter(seqInfo->label.c_str()) && showType[seqInfo->category]) {
-                            seqsToExclude.insert(seqInfo);
-                        }
-                    }
-                }
-                ImGui::SameLine();
-                if (ImGui::Button("Include All")) {
-                    for (auto seqInfo : AudioCollection::Instance->GetExcludedSequences()) {
-                        if (sequenceSearch.PassFilter(seqInfo->label.c_str()) && showType[seqInfo->category]) {
-                            seqsToInclude.insert(seqInfo);
-                        }
-                    }
-                }
-
-                ImGui::BeginTable("sequenceTypes", 8, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders);
-
-                ImGui::TableNextColumn();
-                ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_WORLD));
-                ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_WORLD).c_str(), &showType[SEQ_BGM_WORLD]);
-                ImGui::PopStyleColor(1);
-
-                ImGui::TableNextColumn();
-                ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_EVENT));
-                ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_EVENT).c_str(), &showType[SEQ_BGM_EVENT]);
-                ImGui::PopStyleColor(1);
-
-                ImGui::TableNextColumn();
-                ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_BATTLE));
-                ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_BATTLE).c_str(), &showType[SEQ_BGM_BATTLE]);
-                ImGui::PopStyleColor(1);
-
-                ImGui::TableNextColumn();
-                ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_OCARINA));
-                ImGui::Selectable(GetSequenceTypeName(SEQ_OCARINA).c_str(), &showType[SEQ_OCARINA]);
-                ImGui::PopStyleColor(1);
-
-                ImGui::TableNextColumn();
-                ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_FANFARE));
-                ImGui::Selectable(GetSequenceTypeName(SEQ_FANFARE).c_str(), &showType[SEQ_FANFARE]);
-                ImGui::PopStyleColor(1);
-
-                ImGui::TableNextColumn();
-                ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_SFX));
-                ImGui::Selectable(GetSequenceTypeName(SEQ_SFX).c_str(), &showType[SEQ_SFX]);
-                ImGui::PopStyleColor(1);
-
-                ImGui::TableNextColumn();
-                ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_INSTRUMENT));
-                ImGui::Selectable(GetSequenceTypeName(SEQ_INSTRUMENT).c_str(), &showType[SEQ_INSTRUMENT]);
-                ImGui::PopStyleColor(1);
-
-                ImGui::TableNextColumn();
-                ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_BGM_CUSTOM));
-                ImGui::Selectable(GetSequenceTypeName(SEQ_BGM_CUSTOM).c_str(), &showType[SEQ_BGM_CUSTOM]);
-                ImGui::PopStyleColor(1);
-
-                ImGui::EndTable();
 
                 ImGui::BeginChild("ChildIncludedSequences", ImVec2(0, -8));
                 for (auto seqInfo : AudioCollection::Instance->GetIncludedSequences()) {
