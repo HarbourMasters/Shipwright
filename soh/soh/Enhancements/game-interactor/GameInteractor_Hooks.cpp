@@ -27,3 +27,9 @@ void GameInteractor_ExecuteOnLoadFile(int fileNum) {
 void GameInteractor_ExecuteOnDeleteFile(int fileNum) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnDeleteFile>(fileNum);
 }
+
+// MARK: - Dialog
+
+void GameInteractor_ExecuteOnDialogMessage() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnDialogMessage>();
+}

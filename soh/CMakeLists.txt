@@ -261,6 +261,7 @@ source_group("Header Files\\soh\\Enhancements\\item-tables" FILES ${Header_Files
 
 set(Header_Files__soh__Enhancements__mods
     "soh/Enhancements/mods/modhooks.h"
+    "soh/Enhancements/mods/accessibility.h"
 )
 source_group("Header Files\\soh\\Enhancements\\mods" FILES ${Header_Files__soh__Enhancements__mods})
 
@@ -619,6 +620,7 @@ source_group("Source Files\\soh\\Enhancements\\item-tables" FILES ${Source_Files
 
 set(Source_Files__soh__Enhancements__mods
     "soh/Enhancements/mods/modhooks.cpp"
+    "soh/Enhancements/mods/accessibility.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\mods" FILES ${Source_Files__soh__Enhancements__mods})
 

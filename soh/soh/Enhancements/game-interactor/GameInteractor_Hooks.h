@@ -8,3 +8,6 @@ extern "C" void GameInteractor_ExecuteOnSceneInit(s16 sceneNum);
 extern "C" void GameInteractor_ExecuteOnSaveFile(int fileNum);
 extern "C" void GameInteractor_ExecuteOnLoadFile(int fileNum);
 extern "C" void GameInteractor_ExecuteOnDeleteFile(int fileNum);
+
+// MARK: - Dialog
+extern "C" void GameInteractor_ExecuteOnDialogMessage();
