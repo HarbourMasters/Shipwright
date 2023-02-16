@@ -34,11 +34,4 @@ static const __declspec(align(2)) char sCircleWipeVtx[] = dsCircleWipeVtx;
 static const char sCircleWipeVtx[] __attribute__((aligned (2))) = dsCircleWipeVtx;
 #endif
             
-#define dsCircleDList "__OTR__code/z_fbdemo_circle/sCircleDList"
-#ifdef _WIN32
-static const __declspec(align(2)) char sCircleDList[] = dsCircleDList;
-#else
-static const char sCircleDList[] __attribute__((aligned (2))) = dsCircleDList;
-#endif
-            
 

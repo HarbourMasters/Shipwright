@@ -13,46 +13,18 @@ static const __declspec(align(2)) char gSpiritTempleNightEntranceTex[] = dgSpiri
 static const char gSpiritTempleNightEntranceTex[] __attribute__((aligned (2))) = dgSpiritTempleNightEntranceTex;
 #endif
             
-#define djyasinzou_sceneCollisionHeader_016834 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_sceneCollisionHeader_016834"
+#define djyasinzou_sceneCollisionHeader_01680C "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_sceneCollisionHeader_01680C"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_sceneCollisionHeader_016834[] = djyasinzou_sceneCollisionHeader_016834;
+static const __declspec(align(2)) char jyasinzou_sceneCollisionHeader_01680C[] = djyasinzou_sceneCollisionHeader_01680C;
 #else
-static const char jyasinzou_sceneCollisionHeader_016834[] __attribute__((aligned (2))) = djyasinzou_sceneCollisionHeader_016834;
+static const char jyasinzou_sceneCollisionHeader_01680C[] __attribute__((aligned (2))) = djyasinzou_sceneCollisionHeader_01680C;
 #endif
             
-#define djyasinzou_sceneTLUT_017C00 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_sceneTLUT_017C00"
+#define djyasinzou_sceneTLUT_017BE0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_sceneTLUT_017BE0"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_sceneTLUT_017C00[] = djyasinzou_sceneTLUT_017C00;
+static const __declspec(align(2)) char jyasinzou_sceneTLUT_017BE0[] = djyasinzou_sceneTLUT_017BE0;
 #else
-static const char jyasinzou_sceneTLUT_017C00[] __attribute__((aligned (2))) = djyasinzou_sceneTLUT_017C00;
-#endif
-            
-#define djyasinzou_sceneTLUT_018020 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_sceneTLUT_018020"
-#ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_sceneTLUT_018020[] = djyasinzou_sceneTLUT_018020;
-#else
-static const char jyasinzou_sceneTLUT_018020[] __attribute__((aligned (2))) = djyasinzou_sceneTLUT_018020;
-#endif
-            
-#define djyasinzou_sceneTex_019340 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_sceneTex_019340"
-#ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_sceneTex_019340[] = djyasinzou_sceneTex_019340;
-#else
-static const char jyasinzou_sceneTex_019340[] __attribute__((aligned (2))) = djyasinzou_sceneTex_019340;
-#endif
-            
-#define djyasinzou_sceneTex_018840 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_sceneTex_018840"
-#ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_sceneTex_018840[] = djyasinzou_sceneTex_018840;
-#else
-static const char jyasinzou_sceneTex_018840[] __attribute__((aligned (2))) = djyasinzou_sceneTex_018840;
-#endif
-            
-#define djyasinzou_sceneTLUT_017E00 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_sceneTLUT_017E00"
-#ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_sceneTLUT_017E00[] = djyasinzou_sceneTLUT_017E00;
-#else
-static const char jyasinzou_sceneTLUT_017E00[] __attribute__((aligned (2))) = djyasinzou_sceneTLUT_017E00;
+static const char jyasinzou_sceneTLUT_017BE0[] __attribute__((aligned (2))) = djyasinzou_sceneTLUT_017BE0;
 #endif
             
 #define djyasinzou_sceneTLUT_018000 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_sceneTLUT_018000"
@@ -62,11 +34,39 @@ static const __declspec(align(2)) char jyasinzou_sceneTLUT_018000[] = djyasinzou
 static const char jyasinzou_sceneTLUT_018000[] __attribute__((aligned (2))) = djyasinzou_sceneTLUT_018000;
 #endif
             
-#define djyasinzou_sceneTex_019140 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_sceneTex_019140"
+#define djyasinzou_sceneTex_019320 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_sceneTex_019320"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_sceneTex_019140[] = djyasinzou_sceneTex_019140;
+static const __declspec(align(2)) char jyasinzou_sceneTex_019320[] = djyasinzou_sceneTex_019320;
 #else
-static const char jyasinzou_sceneTex_019140[] __attribute__((aligned (2))) = djyasinzou_sceneTex_019140;
+static const char jyasinzou_sceneTex_019320[] __attribute__((aligned (2))) = djyasinzou_sceneTex_019320;
+#endif
+            
+#define djyasinzou_sceneTex_018820 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_sceneTex_018820"
+#ifdef _WIN32
+static const __declspec(align(2)) char jyasinzou_sceneTex_018820[] = djyasinzou_sceneTex_018820;
+#else
+static const char jyasinzou_sceneTex_018820[] __attribute__((aligned (2))) = djyasinzou_sceneTex_018820;
+#endif
+            
+#define djyasinzou_sceneTLUT_017DE0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_sceneTLUT_017DE0"
+#ifdef _WIN32
+static const __declspec(align(2)) char jyasinzou_sceneTLUT_017DE0[] = djyasinzou_sceneTLUT_017DE0;
+#else
+static const char jyasinzou_sceneTLUT_017DE0[] __attribute__((aligned (2))) = djyasinzou_sceneTLUT_017DE0;
+#endif
+            
+#define djyasinzou_sceneTLUT_017FE0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_sceneTLUT_017FE0"
+#ifdef _WIN32
+static const __declspec(align(2)) char jyasinzou_sceneTLUT_017FE0[] = djyasinzou_sceneTLUT_017FE0;
+#else
+static const char jyasinzou_sceneTLUT_017FE0[] __attribute__((aligned (2))) = djyasinzou_sceneTLUT_017FE0;
+#endif
+            
+#define djyasinzou_sceneTex_019120 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_sceneTex_019120"
+#ifdef _WIN32
+static const __declspec(align(2)) char jyasinzou_sceneTex_019120[] = djyasinzou_sceneTex_019120;
+#else
+static const char jyasinzou_sceneTex_019120[] __attribute__((aligned (2))) = djyasinzou_sceneTex_019120;
 #endif
             
 

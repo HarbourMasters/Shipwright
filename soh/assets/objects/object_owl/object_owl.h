@@ -188,6 +188,20 @@ static const __declspec(align(2)) char gOwlPerchingSkel[] = dgOwlPerchingSkel;
 static const char gOwlPerchingSkel[] __attribute__((aligned (2))) = dgOwlPerchingSkel;
 #endif
             
+#define dobject_owl_TLUT_006DA8 "__OTR__objects/object_owl/object_owl_TLUT_006DA8"
+#ifdef _WIN32
+static const __declspec(align(2)) char object_owl_TLUT_006DA8[] = dobject_owl_TLUT_006DA8;
+#else
+static const char object_owl_TLUT_006DA8[] __attribute__((aligned (2))) = dobject_owl_TLUT_006DA8;
+#endif
+            
+#define dobject_owl_TLUT_006FA8 "__OTR__objects/object_owl/object_owl_TLUT_006FA8"
+#ifdef _WIN32
+static const __declspec(align(2)) char object_owl_TLUT_006FA8[] = dobject_owl_TLUT_006FA8;
+#else
+static const char object_owl_TLUT_006FA8[] __attribute__((aligned (2))) = dobject_owl_TLUT_006FA8;
+#endif
+            
 #define dgObjOwlEyeOpenTex "__OTR__objects/object_owl/gObjOwlEyeOpenTex"
 #ifdef _WIN32
 static const __declspec(align(2)) char gObjOwlEyeOpenTex[] = dgObjOwlEyeOpenTex;
@@ -235,13 +249,6 @@ static const char object_owlTex_0079A8[] __attribute__((aligned (2))) = dobject_
 static const __declspec(align(2)) char object_owlTex_0081A8[] = dobject_owlTex_0081A8;
 #else
 static const char object_owlTex_0081A8[] __attribute__((aligned (2))) = dobject_owlTex_0081A8;
-#endif
-            
-#define dobject_owlTLUT_006FA8 "__OTR__objects/object_owl/object_owlTLUT_006FA8"
-#ifdef _WIN32
-static const __declspec(align(2)) char object_owlTLUT_006FA8[] = dobject_owlTLUT_006FA8;
-#else
-static const char object_owlTLUT_006FA8[] __attribute__((aligned (2))) = dobject_owlTLUT_006FA8;
 #endif
             
 #define dobject_owlTex_0095A8 "__OTR__objects/object_owl/object_owlTex_0095A8"
@@ -368,13 +375,6 @@ static const char gOwlPerchingSkelLimbsLimb_01005CDL_00FE28[] __attribute__((ali
 static const __declspec(align(2)) char gOwlPerchingSkelLimbsLimb_010068DL_00F030[] = dgOwlPerchingSkelLimbsLimb_010068DL_00F030;
 #else
 static const char gOwlPerchingSkelLimbsLimb_010068DL_00F030[] __attribute__((aligned (2))) = dgOwlPerchingSkelLimbsLimb_010068DL_00F030;
-#endif
-            
-#define dobject_owlTLUT_006DA8 "__OTR__objects/object_owl/object_owlTLUT_006DA8"
-#ifdef _WIN32
-static const __declspec(align(2)) char object_owlTLUT_006DA8[] = dobject_owlTLUT_006DA8;
-#else
-static const char object_owlTLUT_006DA8[] __attribute__((aligned (2))) = dobject_owlTLUT_006DA8;
 #endif
             
 

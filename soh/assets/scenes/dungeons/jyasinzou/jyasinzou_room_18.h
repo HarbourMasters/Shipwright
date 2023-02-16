@@ -1,128 +1,128 @@
 #pragma once
-#define djyasinzou_room_18DL_0005F0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_0005F0"
+#define djyasinzou_room_18DL_000620 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_000620"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18DL_0005F0[] = djyasinzou_room_18DL_0005F0;
+static const __declspec(align(2)) char jyasinzou_room_18DL_000620[] = djyasinzou_room_18DL_000620;
 #else
-static const char jyasinzou_room_18DL_0005F0[] __attribute__((aligned (2))) = djyasinzou_room_18DL_0005F0;
+static const char jyasinzou_room_18DL_000620[] __attribute__((aligned (2))) = djyasinzou_room_18DL_000620;
 #endif
             
-#define djyasinzou_room_18Tex_0044C0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18Tex_0044C0"
+#define djyasinzou_room_18Tex_0044F0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18Tex_0044F0"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18Tex_0044C0[] = djyasinzou_room_18Tex_0044C0;
+static const __declspec(align(2)) char jyasinzou_room_18Tex_0044F0[] = djyasinzou_room_18Tex_0044F0;
 #else
-static const char jyasinzou_room_18Tex_0044C0[] __attribute__((aligned (2))) = djyasinzou_room_18Tex_0044C0;
+static const char jyasinzou_room_18Tex_0044F0[] __attribute__((aligned (2))) = djyasinzou_room_18Tex_0044F0;
 #endif
             
-#define djyasinzou_room_18Tex_0048C0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18Tex_0048C0"
+#define djyasinzou_room_18Tex_0048F0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18Tex_0048F0"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18Tex_0048C0[] = djyasinzou_room_18Tex_0048C0;
+static const __declspec(align(2)) char jyasinzou_room_18Tex_0048F0[] = djyasinzou_room_18Tex_0048F0;
 #else
-static const char jyasinzou_room_18Tex_0048C0[] __attribute__((aligned (2))) = djyasinzou_room_18Tex_0048C0;
+static const char jyasinzou_room_18Tex_0048F0[] __attribute__((aligned (2))) = djyasinzou_room_18Tex_0048F0;
 #endif
             
-#define djyasinzou_room_18DL_000D48 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_000D48"
+#define djyasinzou_room_18DL_000D78 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_000D78"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18DL_000D48[] = djyasinzou_room_18DL_000D48;
+static const __declspec(align(2)) char jyasinzou_room_18DL_000D78[] = djyasinzou_room_18DL_000D78;
 #else
-static const char jyasinzou_room_18DL_000D48[] __attribute__((aligned (2))) = djyasinzou_room_18DL_000D48;
+static const char jyasinzou_room_18DL_000D78[] __attribute__((aligned (2))) = djyasinzou_room_18DL_000D78;
 #endif
             
-#define djyasinzou_room_18Tex_0028C0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18Tex_0028C0"
+#define djyasinzou_room_18Tex_0028F0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18Tex_0028F0"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18Tex_0028C0[] = djyasinzou_room_18Tex_0028C0;
+static const __declspec(align(2)) char jyasinzou_room_18Tex_0028F0[] = djyasinzou_room_18Tex_0028F0;
 #else
-static const char jyasinzou_room_18Tex_0028C0[] __attribute__((aligned (2))) = djyasinzou_room_18Tex_0028C0;
+static const char jyasinzou_room_18Tex_0028F0[] __attribute__((aligned (2))) = djyasinzou_room_18Tex_0028F0;
 #endif
             
-#define djyasinzou_room_18DL_001008 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_001008"
+#define djyasinzou_room_18DL_001038 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_001038"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18DL_001008[] = djyasinzou_room_18DL_001008;
+static const __declspec(align(2)) char jyasinzou_room_18DL_001038[] = djyasinzou_room_18DL_001038;
 #else
-static const char jyasinzou_room_18DL_001008[] __attribute__((aligned (2))) = djyasinzou_room_18DL_001008;
+static const char jyasinzou_room_18DL_001038[] __attribute__((aligned (2))) = djyasinzou_room_18DL_001038;
 #endif
             
-#define djyasinzou_room_18DL_0013E8 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_0013E8"
+#define djyasinzou_room_18DL_001418 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_001418"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18DL_0013E8[] = djyasinzou_room_18DL_0013E8;
+static const __declspec(align(2)) char jyasinzou_room_18DL_001418[] = djyasinzou_room_18DL_001418;
 #else
-static const char jyasinzou_room_18DL_0013E8[] __attribute__((aligned (2))) = djyasinzou_room_18DL_0013E8;
+static const char jyasinzou_room_18DL_001418[] __attribute__((aligned (2))) = djyasinzou_room_18DL_001418;
 #endif
             
-#define djyasinzou_room_18Tex_0034C0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18Tex_0034C0"
+#define djyasinzou_room_18Tex_0034F0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18Tex_0034F0"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18Tex_0034C0[] = djyasinzou_room_18Tex_0034C0;
+static const __declspec(align(2)) char jyasinzou_room_18Tex_0034F0[] = djyasinzou_room_18Tex_0034F0;
 #else
-static const char jyasinzou_room_18Tex_0034C0[] __attribute__((aligned (2))) = djyasinzou_room_18Tex_0034C0;
+static const char jyasinzou_room_18Tex_0034F0[] __attribute__((aligned (2))) = djyasinzou_room_18Tex_0034F0;
 #endif
             
-#define djyasinzou_room_18DL_001660 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_001660"
+#define djyasinzou_room_18DL_001690 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_001690"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18DL_001660[] = djyasinzou_room_18DL_001660;
+static const __declspec(align(2)) char jyasinzou_room_18DL_001690[] = djyasinzou_room_18DL_001690;
 #else
-static const char jyasinzou_room_18DL_001660[] __attribute__((aligned (2))) = djyasinzou_room_18DL_001660;
+static const char jyasinzou_room_18DL_001690[] __attribute__((aligned (2))) = djyasinzou_room_18DL_001690;
 #endif
             
-#define djyasinzou_room_18Tex_0020C0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18Tex_0020C0"
+#define djyasinzou_room_18Tex_0020F0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18Tex_0020F0"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18Tex_0020C0[] = djyasinzou_room_18Tex_0020C0;
+static const __declspec(align(2)) char jyasinzou_room_18Tex_0020F0[] = djyasinzou_room_18Tex_0020F0;
 #else
-static const char jyasinzou_room_18Tex_0020C0[] __attribute__((aligned (2))) = djyasinzou_room_18Tex_0020C0;
+static const char jyasinzou_room_18Tex_0020F0[] __attribute__((aligned (2))) = djyasinzou_room_18Tex_0020F0;
 #endif
             
-#define djyasinzou_room_18DL_005140 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_005140"
+#define djyasinzou_room_18DL_005170 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_005170"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18DL_005140[] = djyasinzou_room_18DL_005140;
+static const __declspec(align(2)) char jyasinzou_room_18DL_005170[] = djyasinzou_room_18DL_005170;
 #else
-static const char jyasinzou_room_18DL_005140[] __attribute__((aligned (2))) = djyasinzou_room_18DL_005140;
+static const char jyasinzou_room_18DL_005170[] __attribute__((aligned (2))) = djyasinzou_room_18DL_005170;
 #endif
             
-#define djyasinzou_room_18DL_0018D0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_0018D0"
+#define djyasinzou_room_18DL_001900 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_001900"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18DL_0018D0[] = djyasinzou_room_18DL_0018D0;
+static const __declspec(align(2)) char jyasinzou_room_18DL_001900[] = djyasinzou_room_18DL_001900;
 #else
-static const char jyasinzou_room_18DL_0018D0[] __attribute__((aligned (2))) = djyasinzou_room_18DL_0018D0;
+static const char jyasinzou_room_18DL_001900[] __attribute__((aligned (2))) = djyasinzou_room_18DL_001900;
 #endif
             
-#define djyasinzou_room_18DL_0053D8 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_0053D8"
+#define djyasinzou_room_18DL_005408 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_005408"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18DL_0053D8[] = djyasinzou_room_18DL_0053D8;
+static const __declspec(align(2)) char jyasinzou_room_18DL_005408[] = djyasinzou_room_18DL_005408;
 #else
-static const char jyasinzou_room_18DL_0053D8[] __attribute__((aligned (2))) = djyasinzou_room_18DL_0053D8;
+static const char jyasinzou_room_18DL_005408[] __attribute__((aligned (2))) = djyasinzou_room_18DL_005408;
 #endif
             
-#define djyasinzou_room_18Tex_0054B0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18Tex_0054B0"
+#define djyasinzou_room_18Tex_0054E0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18Tex_0054E0"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18Tex_0054B0[] = djyasinzou_room_18Tex_0054B0;
+static const __declspec(align(2)) char jyasinzou_room_18Tex_0054E0[] = djyasinzou_room_18Tex_0054E0;
 #else
-static const char jyasinzou_room_18Tex_0054B0[] __attribute__((aligned (2))) = djyasinzou_room_18Tex_0054B0;
+static const char jyasinzou_room_18Tex_0054E0[] __attribute__((aligned (2))) = djyasinzou_room_18Tex_0054E0;
 #endif
             
-#define djyasinzou_room_18DL_001CF0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_001CF0"
+#define djyasinzou_room_18DL_001D20 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_001D20"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18DL_001CF0[] = djyasinzou_room_18DL_001CF0;
+static const __declspec(align(2)) char jyasinzou_room_18DL_001D20[] = djyasinzou_room_18DL_001D20;
 #else
-static const char jyasinzou_room_18DL_001CF0[] __attribute__((aligned (2))) = djyasinzou_room_18DL_001CF0;
+static const char jyasinzou_room_18DL_001D20[] __attribute__((aligned (2))) = djyasinzou_room_18DL_001D20;
 #endif
             
-#define djyasinzou_room_18Tex_003CC0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18Tex_003CC0"
+#define djyasinzou_room_18Tex_003CF0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18Tex_003CF0"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18Tex_003CC0[] = djyasinzou_room_18Tex_003CC0;
+static const __declspec(align(2)) char jyasinzou_room_18Tex_003CF0[] = djyasinzou_room_18Tex_003CF0;
 #else
-static const char jyasinzou_room_18Tex_003CC0[] __attribute__((aligned (2))) = djyasinzou_room_18Tex_003CC0;
+static const char jyasinzou_room_18Tex_003CF0[] __attribute__((aligned (2))) = djyasinzou_room_18Tex_003CF0;
 #endif
             
-#define djyasinzou_room_18DL_001F78 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_001F78"
+#define djyasinzou_room_18DL_001FA8 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18DL_001FA8"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18DL_001F78[] = djyasinzou_room_18DL_001F78;
+static const __declspec(align(2)) char jyasinzou_room_18DL_001FA8[] = djyasinzou_room_18DL_001FA8;
 #else
-static const char jyasinzou_room_18DL_001F78[] __attribute__((aligned (2))) = djyasinzou_room_18DL_001F78;
+static const char jyasinzou_room_18DL_001FA8[] __attribute__((aligned (2))) = djyasinzou_room_18DL_001FA8;
 #endif
             
-#define djyasinzou_room_18Tex_0030C0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18Tex_0030C0"
+#define djyasinzou_room_18Tex_0030F0 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_18Tex_0030F0"
 #ifdef _WIN32
-static const __declspec(align(2)) char jyasinzou_room_18Tex_0030C0[] = djyasinzou_room_18Tex_0030C0;
+static const __declspec(align(2)) char jyasinzou_room_18Tex_0030F0[] = djyasinzou_room_18Tex_0030F0;
 #else
-static const char jyasinzou_room_18Tex_0030C0[] __attribute__((aligned (2))) = djyasinzou_room_18Tex_0030C0;
+static const char jyasinzou_room_18Tex_0030F0[] __attribute__((aligned (2))) = djyasinzou_room_18Tex_0030F0;
 #endif
             
 
