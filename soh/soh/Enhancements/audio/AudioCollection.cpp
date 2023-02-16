@@ -254,20 +254,20 @@ void AudioCollection::AddToShufflePool(SequenceInfo* seqInfo) {
 }
 
 void AudioCollection::InitializeShufflePool() {
-    if (!shufflePoolInitialized) {
-        for (auto& [seqId, seqInfo] : sequenceMap) {
-            const std::string cvarKey = "gExcludeSfx_" + seqInfo.sfxKey;
-            if (CVarGetInteger(cvarKey.c_str(), 0)) {
-                excludedSequences.insert(&seqInfo);
-            } else {
-                if (seqInfo.category != SEQ_NOSHUFFLE) {
-                    includedSequences.insert(&seqInfo);
-                }
+    if (shufflePoolInitialized) return;
+    
+    for (auto& [seqId, seqInfo] : sequenceMap) {
+        const std::string cvarKey = "gExcludeSfx_" + seqInfo.sfxKey;
+        if (CVarGetInteger(cvarKey.c_str(), 0)) {
+            excludedSequences.insert(&seqInfo);
+        } else {
+            if (seqInfo.category != SEQ_NOSHUFFLE) {
+                includedSequences.insert(&seqInfo);
             }
         }
-
-        shufflePoolInitialized = true;                
     }
+
+    shufflePoolInitialized = true;
 };
 
 extern "C" void AudioCollection_AddToCollection(char *otrPath, uint16_t seqNum) {
