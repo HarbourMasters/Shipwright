@@ -646,13 +646,21 @@ void Play_Init(GameState* thisx) {
     AnimationContext_Update(play, &play->animationCtx);
 
     if (gSaveContext.sohStats.sceneNum != gPlayState->sceneNum) {
+        u16 idx = gSaveContext.sohStats.tsIdx;
+        gSaveContext.sohStats.sceneTimestamps[idx].ts = gSaveContext.sohStats.sceneTimer;
+        gSaveContext.sohStats.sceneTimestamps[idx].scene = gSaveContext.sohStats.sceneNum;
+        gSaveContext.sohStats.sceneTimestamps[idx].room = gSaveContext.sohStats.roomNum;
+        gSaveContext.sohStats.tsIdx++;
         gSaveContext.sohStats.sceneTimer = 0;
         gSaveContext.sohStats.roomTimer = 0;
-        gSaveContext.sohStats.sceneTimestamp
     } else if (gSaveContext.sohStats.roomNum != gPlayState->roomCtx.curRoom.num) {
+        u16 idx = gSaveContext.sohStats.tsIdx;
+        gSaveContext.sohStats.sceneTimestamps[idx].ts = gSaveContext.sohStats.roomTimer;
+        gSaveContext.sohStats.sceneTimestamps[idx].scene = gSaveContext.sohStats.sceneNum;
+        gSaveContext.sohStats.sceneTimestamps[idx].room = gSaveContext.sohStats.roomNum;
         gSaveContext.sohStats.roomTimer = 0;
     }
-    
+
     gSaveContext.sohStats.sceneNum = gPlayState->sceneNum;
     gSaveContext.sohStats.roomNum = gPlayState->roomCtx.curRoom.num;
     gSaveContext.respawnFlag = 0;

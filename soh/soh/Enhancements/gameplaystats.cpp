@@ -37,7 +37,8 @@ typedef struct {
 // Names and colors are set up at the bottom of this file
 // Times are stored in gSaveContext.sohStats.itemTimestamp
 TimestampInfo itemTimestampDisplay[TIMESTAMP_MAX];
-std::vector<TimestampInfo> sceneTimestampDisplay;
+TimestampInfo sceneTimestampDisplay[8191];
+//std::vector<TimestampInfo> sceneTimestampDisplay;
 
 void DisplayTimeHHMMSS(uint32_t timeInTenthsOfSeconds, const char* text, ImVec4 color) {
 
@@ -160,13 +161,24 @@ void DrawStatsTracker(bool& open) {
     for (int i = COUNT_BUTTON_PRESSES_A; i <= COUNT_BUTTON_PRESSES_START; i++) {
         buttonPresses += gSaveContext.sohStats.count[i];
     }
-    // Set up the array of timestamps and then sort it chronologically
+    // Set up the array of item timestamps and then sort it chronologically
     for (int i = 0; i < TIMESTAMP_MAX; i++) {
         strcpy(itemTimestampDisplay[i].name, itemTimestampDisplayName[i]);
         itemTimestampDisplay[i].time = gSaveContext.sohStats.itemTimestamp[i];
         itemTimestampDisplay[i].color = itemTimestampDisplayColor[i];
     }
+
+    for (int i = 0; i < 1024; i++) {
+        strcpy(sceneTimestampDisplay[i].name, fmt::format("Scene %u Room %u",
+         gSaveContext.sohStats.sceneTimestamps[i].scene,
+         gSaveContext.sohStats.sceneTimestamps[i].room).c_str());
+        sceneTimestampDisplay[i].time = gSaveContext.sohStats.sceneTimestamps[i].ts;
+        //sceneTimestampDisplay[i].time = 0;
+        sceneTimestampDisplay[i].color = COLOR_WHITE;
+    }
+
     SortChronological(itemTimestampDisplay, sizeof(itemTimestampDisplay) / sizeof(itemTimestampDisplay[0]));
+    SortChronological(sceneTimestampDisplay, sizeof(sceneTimestampDisplay) / sizeof(sceneTimestampDisplay[0]));
 
     
     // Begin drawing the table and showing the stats
@@ -342,9 +354,11 @@ void DrawStatsTracker(bool& open) {
         }
         if (ImGui::BeginTabItem("Scenes")) {
             for (TimestampInfo tsInfo: sceneTimestampDisplay) {
-                SortChronological(sceneTimestampDisplay, sizeof(sceneTimestampDisplay) / sizeof(sceneTimestampDisplay[0]));
+                if (tsInfo.time > 0 && strnlen(tsInfo.name, 25) > 1) {
+                    DisplayTimeHHMMSS(tsInfo.time, tsInfo.name, tsInfo.color);
+                }
             }
-            std::string toPass = fmt::format("Scene {:d}", gSaveContext.sohStats.sceneNum);
+            std::string toPass = fmt::format("Scene {:d} Room {:d}", gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum);
             DisplayTimeHHMMSS(gSaveContext.sohStats.sceneTimer / 2, toPass.c_str(), COLOR_WHITE);
             ImGui::EndTabItem();
         }

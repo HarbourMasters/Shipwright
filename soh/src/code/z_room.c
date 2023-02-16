@@ -648,6 +648,10 @@ void func_80097534(PlayState* play, RoomContext* roomCtx) {
         Map_SavePlayerInitialInfo(play);
     }
     Audio_SetEnvReverb(play->roomCtx.curRoom.echo);
+    gSaveContext.sohStats.sceneTimestamps[gSaveContext.sohStats.tsIdx].scene = gSaveContext.sohStats.sceneNum;
+    gSaveContext.sohStats.sceneTimestamps[gSaveContext.sohStats.tsIdx].room = gSaveContext.sohStats.roomNum;
+    gSaveContext.sohStats.sceneTimestamps[gSaveContext.sohStats.tsIdx].ts = gSaveContext.sohStats.roomTimer;
+    gSaveContext.sohStats.tsIdx++;
     gSaveContext.sohStats.roomNum = roomCtx->curRoom.num;
     gSaveContext.sohStats.roomTimer = 0;
 }
