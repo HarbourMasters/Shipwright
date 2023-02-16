@@ -11004,9 +11004,10 @@ void Player_Update(Actor* thisx, PlayState* play) {
     MREG(54) = this->actor.world.pos.z;
     MREG(55) = this->actor.world.rot.y;
 
-    // Make Link normal size when going through doors and crawlspaces.
+    // Make Link normal size when going through doors and crawlspaces and when climbing ladders.
     // Otherwise Link can glitch out, being in unloaded rooms or falling OoB.
-    if (this->stateFlags1 & PLAYER_STATE1_29 || this->stateFlags2 & PLAYER_STATE2_CRAWLING) {
+    if (this->stateFlags1 & PLAYER_STATE1_21 || this->stateFlags1 & PLAYER_STATE1_29 ||
+        this->stateFlags2 & PLAYER_STATE2_CRAWLING) {
         this->actor.scale.x = 0.01f;
         this->actor.scale.y = 0.01f;
         this->actor.scale.z = 0.01f;
