@@ -6,7 +6,6 @@
 #include "functions.h"
 #include "macros.h"
 #include <Hooks.h>
-#include <Cvar.h>
 #include "soh/Enhancements/bossrush.h"
 #include <libultraship/bridge.h>
 
