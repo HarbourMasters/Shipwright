@@ -624,6 +624,8 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     
     AudioSeq_SkipForwardSequence(seqPlayer);
     //! @bug missing return (but the return value is not used so it's not UB)
+    
+    // Keep track of the previous sequence/scene so we don't repeat notifications
     static uint16_t previousSeqId = UINT16_MAX;
     static int16_t previousSceneNum = INT16_MAX;
     if (CVarGetInteger("gSeqNameOverlay", 0) &&
