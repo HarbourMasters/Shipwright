@@ -56,7 +56,6 @@ class AudioCollection {
         void RemoveFromShufflePool(SequenceInfo*);
         void AddToCollection(char* otrPath, uint16_t seqNum);
         uint16_t GetReplacementSequence(uint16_t seqId);
-        uint16_t GetReverseReplacementSequence(uint16_t seqId);
         void InitializeShufflePool();
         const char* GetSequenceName(uint16_t seqId);
 };

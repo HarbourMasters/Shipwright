@@ -244,12 +244,8 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
     ImGui::EndTable();
 }
 
-extern "C" u16 SfxEditor_GetReplacementSeq(u16 seqId) {
+extern "C" u16 AudioEditor_GetReplacementSeq(u16 seqId) {
     return AudioCollection::Instance->GetReplacementSequence(seqId);
-}
-
-extern "C" u16 SfxEditor_GetReverseReplacementSeq(u16 seqId) {
-    return AudioCollection::Instance->GetReverseReplacementSequence(seqId);
 }
 
 std::string GetSequenceTypeName(SeqType type) {

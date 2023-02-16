@@ -226,17 +226,6 @@ uint16_t AudioCollection::GetReplacementSequence(uint16_t seqId) {
     return static_cast<uint16_t>(replacementSeq);
 }
 
-uint16_t AudioCollection::GetReverseReplacementSequence(uint16_t seqId) {
-    for (const auto& [id, sequenceInfo] : sequenceMap) {
-        const std::string cvarKey = "gSfxEditor_" + sequenceInfo.sfxKey;
-        if (CVarGetInteger(cvarKey.c_str(), id) == seqId){
-            return static_cast<uint16_t>(id);
-        }
-    }
-
-    return static_cast<uint16_t>(seqId);
-}
-
 void AudioCollection::RemoveFromShufflePool(SequenceInfo* seqInfo) {
     const std::string cvarKey = "gExcludeSfx_" + seqInfo->sfxKey;
     excludedSequences.insert(seqInfo);

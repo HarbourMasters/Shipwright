@@ -487,7 +487,7 @@ u8* AudioLoad_GetFontsForSequence(s32 seqId, u32* outNumFonts) {
      if (seqId == NA_BGM_DISABLED)
          return NULL;
 
-    u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
+    u16 newSeqId = AudioEditor_GetReplacementSeq(seqId);
     if (newSeqId > MAX_SEQUENCES || !sequenceMap[newSeqId]) {
         return NULL;
     }
@@ -1545,7 +1545,7 @@ s32 AudioLoad_SlowLoadSeq(s32 seqId, u8* ramAddr, s8* isDone) {
     size_t size;
 
     seqId = AudioLoad_GetRealTableIndex(SEQUENCE_TABLE, seqId);
-    u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
+    u16 newSeqId = AudioEditor_GetReplacementSeq(seqId);
     if (seqId != newSeqId) {
         gAudioContext.seqToPlay[SEQ_PLAYER_BGM_MAIN] = newSeqId;
         gAudioContext.seqReplaced[SEQ_PLAYER_BGM_MAIN] = 1;
