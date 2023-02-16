@@ -612,7 +612,7 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     seqPlayer->playerIdx = playerIdx;
 
     // Fix for barinade boss fight starting music multiple times
-    // this is not noticable if the sequence is authentic, since the "Boss Battle"
+    // this is not noticeable if the sequence is authentic, since the "Boss Battle"
     // sequence begins with some silence
     if (gPlayState != NULL &&
         gPlayState->sceneNum == SCENE_BDAN_BOSS &&
