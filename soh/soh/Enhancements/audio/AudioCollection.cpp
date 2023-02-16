@@ -188,7 +188,7 @@ void AudioCollection::AddToCollection(char* otrPath, uint16_t seqNum) {
     SeqType type = SEQ_BGM_CUSTOM;
     std::string typeString = splitFileName[splitFileName.size() - 1];
     std::locale loc;
-    for (int i = 0; i < typeString.length(); i++) {
+    for (size_t i = 0; i < typeString.length(); i++) {
         typeString[i] = std::tolower(typeString[i], loc);
     }
     if (typeString == "fanfare") {
