@@ -26,6 +26,7 @@
 #include <functional>
 #include "draw.h"
 #include "rando_hash.h"
+#include <boost_custom/container_hash/hash_32.hpp>
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -39,7 +40,7 @@ std::multimap<std::tuple<s16, s16, s32>, RandomizerCheckObject> checkFromActorMu
 std::set<RandomizerCheck> excludedLocations;
 
 u8 generated;
-char* seedInputBuffer;
+char* seedString;
 
 const std::string Randomizer::getItemMessageTableID = "Randomizer";
 const std::string Randomizer::hintMessageTableID = "RandomizerHints";
@@ -2939,9 +2940,15 @@ void GenerateRandomizerImgui(std::string seed = "") {
         excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
     }
 
-    RandoMain::GenerateRando(cvarSettings, excludedLocations, seed);
+    // Remove excludes for locations that are no longer allowed to be excluded
+    for (auto [randomizerCheck, rcObject] : RandomizerCheckObjects::GetAllRCObjects()) {
+        auto elfound = excludedLocations.find(rcObject.rc);
+        if (!rcObject.visibleInImgui && elfound != excludedLocations.end()) {
+            excludedLocations.erase(elfound);
+        }
+    }
 
-    memset(seedInputBuffer, 0, MAX_SEED_BUFFER_SIZE);
+    RandoMain::GenerateRando(cvarSettings, excludedLocations, seed);
 
     CVarSetInteger("gRandoGenerating", 0);
     CVarSave();
@@ -3041,27 +3048,28 @@ void DrawRandoEditor(bool& open) {
     DrawPresetSelector(PRESET_TYPE_RANDOMIZER);
 
     UIWidgets::Spacer(0);
-
-    ImGui::Text("Seed");
-    if (ImGui::InputText("##RandomizerSeed", seedInputBuffer, MAX_SEED_BUFFER_SIZE, ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterNumbers)) {
-        uint32_t seedInput;
-        ImGui::DataTypeApplyFromText(seedInputBuffer, ImGuiDataType_U32, &seedInput, "%u");
-        strncpy(seedInputBuffer, std::to_string(seedInput).c_str(), MAX_SEED_BUFFER_SIZE);
-    }
-    UIWidgets::Tooltip("Leaving this field blank will use a random seed value automatically\nSeed range is 0 - 4,294,967,295");
-    ImGui::SameLine();
-    if (ImGui::Button("New Seed")) {
-        strncpy(seedInputBuffer, std::to_string(rand() & 0xFFFFFFFF).c_str(), MAX_SEED_BUFFER_SIZE);
-    }
-    UIWidgets::Tooltip("Creates a new random seed value to be used when generating a randomizer");
-    ImGui::SameLine();
-    if (ImGui::Button("Clear Seed")) {
-        memset(seedInputBuffer, 0, MAX_SEED_BUFFER_SIZE);
+    UIWidgets::EnhancementCheckbox("Manual seed entry", "gRandoManualSeedEntry", false, "");
+    if (CVarGetInteger("gRandoManualSeedEntry", 0)) {
+        ImGui::Text("Seed");
+        ImGui::InputText("##RandomizerSeed", seedString, MAX_SEED_STRING_SIZE, ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterAlphaNum);
+        UIWidgets::Tooltip(
+            "Characters from a-z, A-Z, and 0-9 are supported.\n"
+            "Character limit is 1023, after which the seed will be truncated.\n"
+        );
+        ImGui::SameLine();
+        if (ImGui::Button("New Seed")) {
+            strncpy(seedString, std::to_string(rand() & 0xFFFFFFFF).c_str(), MAX_SEED_STRING_SIZE);
+        }
+        UIWidgets::Tooltip("Creates a new random seed value to be used when generating a randomizer");
+        ImGui::SameLine();
+        if (ImGui::Button("Clear Seed")) {
+            memset(seedString, 0, MAX_SEED_STRING_SIZE);
+        }
     }
 
     UIWidgets::Spacer(0);
-    if (ImGui::Button("Generate Randomizer")) {
-        GenerateRandomizer(seedInputBuffer);
+    if (ImGui::Button("Generate Randomizer")) {        
+        GenerateRandomizer(CVarGetInteger("gRandoManualSeedEntry", 0) ? seedString : std::to_string(rand() & 0xFFFFFFFF).c_str());
     }
 
     UIWidgets::Spacer(0);
@@ -4202,8 +4210,8 @@ void DrawRandoEditor(bool& open) {
                 for (auto [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
                     bool hasItems = false;
                     for (auto [randomizerCheck, rcObject] : rcObjects) {
-                        if (rcObject.visibleInImgui && !excludedLocations.count(rcObject.rc) &&
-                            locationSearch.PassFilter(rcObject.rcSpoilerName.c_str())) {
+                        if (rcObject->visibleInImgui && !excludedLocations.count(rcObject->rc) &&
+                            locationSearch.PassFilter(rcObject->rcSpoilerName.c_str())) {
 
                             hasItems = true;
                             break;
@@ -4214,11 +4222,11 @@ void DrawRandoEditor(bool& open) {
                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                         if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
                             for (auto [randomizerCheck, rcObject] : rcObjects) {
-                                if (rcObject.visibleInImgui && !excludedLocations.count(rcObject.rc) &&
-                                    locationSearch.PassFilter(rcObject.rcSpoilerName.c_str())) {
+                                if (rcObject->visibleInImgui && !excludedLocations.count(rcObject->rc) &&
+                                    locationSearch.PassFilter(rcObject->rcSpoilerName.c_str())) {
 
-                                    if (ImGui::ArrowButton(std::to_string(rcObject.rc).c_str(), ImGuiDir_Right)) {
-                                        excludedLocations.insert(rcObject.rc);
+                                    if (ImGui::ArrowButton(std::to_string(rcObject->rc).c_str(), ImGuiDir_Right)) {
+                                        excludedLocations.insert(rcObject->rc);
                                         // todo: this efficently when we build out cvar array support
                                         std::string excludedLocationString = "";
                                         for (auto excludedLocationIt : excludedLocations) {
@@ -4229,7 +4237,7 @@ void DrawRandoEditor(bool& open) {
                                         SohImGui::RequestCvarSaveOnNextTick();
                                     }
                                     ImGui::SameLine();
-                                    ImGui::Text(rcObject.rcShortName.c_str());
+                                    ImGui::Text(rcObject->rcShortName.c_str());
                                 }
                             }
                             ImGui::TreePop();
@@ -4246,7 +4254,7 @@ void DrawRandoEditor(bool& open) {
                 for (auto [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
                     bool hasItems = false;
                     for (auto [randomizerCheck, rcObject] : rcObjects) {
-                        if (rcObject.visibleInImgui && excludedLocations.count(rcObject.rc)) {
+                        if (rcObject->visibleInImgui && excludedLocations.count(rcObject->rc)) {
                             hasItems = true;
                             break;
                         }
@@ -4256,9 +4264,9 @@ void DrawRandoEditor(bool& open) {
                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                         if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
                             for (auto [randomizerCheck, rcObject] : rcObjects) {
-                                auto elfound = excludedLocations.find(rcObject.rc);
-                                if (rcObject.visibleInImgui && elfound != excludedLocations.end()) {
-                                    if (ImGui::ArrowButton(std::to_string(rcObject.rc).c_str(), ImGuiDir_Left)) {
+                                auto elfound = excludedLocations.find(rcObject->rc);
+                                if (rcObject->visibleInImgui && elfound != excludedLocations.end()) {
+                                    if (ImGui::ArrowButton(std::to_string(rcObject->rc).c_str(), ImGuiDir_Left)) {
                                         excludedLocations.erase(elfound);
                                         // todo: this efficently when we build out cvar array support
                                         std::string excludedLocationString = "";
@@ -4270,7 +4278,7 @@ void DrawRandoEditor(bool& open) {
                                         SohImGui::RequestCvarSaveOnNextTick();
                                     }
                                     ImGui::SameLine();
-                                    ImGui::Text(rcObject.rcShortName.c_str());
+                                    ImGui::Text(rcObject->rcShortName.c_str());
                                 }
                             }
                             ImGui::TreePop();
@@ -5297,7 +5305,7 @@ void InitRandoItemTable() {
 void InitRando() {
     SohImGui::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
     Randomizer::CreateCustomMessages();
-    seedInputBuffer = (char*)calloc(MAX_SEED_BUFFER_SIZE, sizeof(char));
+    seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     InitRandoItemTable();
 }
 

@@ -6,6 +6,7 @@
 #include <fstream>
 
 #include <ResourceMgr.h>
+#include <OtrFile.h>
 #include <DisplayList.h>
 #include <Window.h>
 #include <GameVersions.h>
@@ -28,7 +29,8 @@
 #include <AudioPlayer.h>
 #include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
-#include "Enhancements/sfx-editor/SfxEditor.h"
+#include "Enhancements/audio/AudioCollection.h"
+#include "Enhancements/audio/AudioEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
 #include "Enhancements/randomizer/randomizer.h"
@@ -72,8 +74,9 @@
 CrowdControl* CrowdControl::Instance;
 #endif
 
+#include "Enhancements/mods/modhooks.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
-#include "libultraship/libultraship.h"
+#include <libultraship/libultraship.h>
 
 // Resource Types/Factories
 #include "soh/resource/type/Animation.h"
@@ -107,6 +110,7 @@ SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
 ItemTableManager* ItemTableManager::Instance;
 GameInteractor* GameInteractor::Instance;
+AudioCollection* AudioCollection::Instance;
 
 extern "C" char** cameraStrings;
 std::vector<std::shared_ptr<std::string>> cameraStdStrings;
@@ -566,13 +570,14 @@ extern "C" void InitOTR() {
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
     GameInteractor::Instance = new GameInteractor();
+    AudioCollection::Instance = new AudioCollection();
 
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
     InitCosmeticsEditor();
     GameControlEditor::Init();
-    InitSfxEditor();
+    InitAudioEditor();
     DebugConsole_Init();
     Debug_Init();
     Rando_Init();
@@ -582,6 +587,8 @@ extern "C" void InitOTR() {
     CheckTracker::InitCheckTracker();
     OTRExtScanner();
     VanillaItemTable_Init();
+
+    RegisterModHooks();
 
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);
@@ -604,6 +611,7 @@ extern "C" void InitOTR() {
 extern "C" void DeinitOTR() {
     OTRAudio_Exit();
 #ifdef ENABLE_CROWD_CONTROL
+    CrowdControl::Instance->Disable();
     CrowdControl::Instance->Shutdown();
 #endif
 }
@@ -877,7 +885,17 @@ std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path) {
 }
 
 extern "C" char* ResourceMgr_LoadFileRaw(const char* resName) {
-    return OTRGlobals::Instance->context->GetResourceManager()->LoadFile(resName)->Buffer.get();
+    // TODO: This should not exist. Anywhere we are loading textures with this function should be Resources instead.
+    // We are not currently packing our otr archive with certain textures as resources with otr headers.
+    static std::unordered_map<std::string, std::shared_ptr<Ship::OtrFile>> cachedRawFiles;
+    auto file = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(resName);
+    cachedRawFiles[resName] = file;
+
+    if (file == nullptr) {
+        return nullptr;
+    }
+
+    return file->Buffer.data();
 }
 
 extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
