@@ -325,6 +325,8 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementSliderInt("Block pushing speed +%d", "##BLOCKSPEED", "gFasterBlockPush", 0, 5, "", 0, false, false, true);
                     UIWidgets::PaddedEnhancementCheckbox("Faster Heavy Block Lift", "gFasterHeavyBlockLift", true, false);
                     UIWidgets::Tooltip("Speeds up lifting silver rocks and obelisks");
+                    UIWidgets::PaddedEnhancementCheckbox("Link as default file name", "gLinkDefaultName");
+                    UIWidgets::Tooltip("Allows you to have \"Link\" as a premade file name");
                     UIWidgets::PaddedEnhancementCheckbox("No Forced Navi", "gNoForcedNavi", true, false);
                     UIWidgets::Tooltip("Prevent forced Navi conversations");
                     UIWidgets::PaddedEnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze", true, false);
@@ -403,10 +405,14 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Makes nuts explode bombs, similar to how they interact with bombchus. This does not affect bombflowers.");
                     UIWidgets::PaddedEnhancementCheckbox("Equip Multiple Arrows at Once", "gSeparateArrows", true, false);
                     UIWidgets::Tooltip("Allow the bow and magic arrows to be equipped at the same time on different slots");
+                    UIWidgets::PaddedEnhancementCheckbox("Bow as Child/Slingshot as Adult", "gBowSlingShotAmmoFix", true, false);
+                    UIWidgets::Tooltip("Allows child to use bow with arrows.\nAllows adult to use slingshot with seeds.\n\nRequires glitches or 'Timeless Equipment' cheat to equip.");
                     UIWidgets::PaddedEnhancementCheckbox("Better Farore's Wind", "gBetterFW", true, false);
                     UIWidgets::Tooltip("Helps FW persist between ages, gives child and adult separate FW points, and can be used in more places.");
                     UIWidgets::PaddedEnhancementCheckbox("Static Explosion Radius", "gStaticExplosionRadius", true, false);
                     UIWidgets::Tooltip("Explosions are now a static size, like in Majora's Mask and OoT3D. Makes bombchu hovering much easier.");
+                    UIWidgets::PaddedEnhancementCheckbox("Prevent Bombchus Forcing First-Person", "gDisableFirstPersonChus", true, false);
+                    UIWidgets::Tooltip("Prevent bombchus from forcing the camera into first-person mode when released.");
                     ImGui::EndMenu();
                 }
 
@@ -829,7 +835,7 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0));
             }
-            if (ImGui::Button(GetWindowButtonText("SFX Editor", CVarGetInteger("gSfxEditor", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
+            if (ImGui::Button(GetWindowButtonText("Audio Editor", CVarGetInteger("gSfxEditor", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
                 bool currentValue = CVarGetInteger("gSfxEditor", 0);
                 CVarSetInteger("gSfxEditor", !currentValue);
@@ -943,7 +949,7 @@ namespace GameMenuBar {
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6.0f, 4.0f));
                 if (ImGui::Button("Match Refresh Rate"))
                 {
-                    int hz = roundf(SohImGui::WindowRefreshRate());
+                    int hz = Ship::Window::GetInstance()->GetCurrentRefreshRate();
                     if (hz >= 20 && hz <= 360)
                     {
                         CVarSetInteger(fps_cvar, hz);

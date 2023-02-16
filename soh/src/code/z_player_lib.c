@@ -380,13 +380,23 @@ void Player_SetModelsForHoldingShield(Player* this) {
 }
 
 void Player_SetModels(Player* this, s32 modelGroup) {
+    // Left hand
     this->leftHandType = gPlayerModelTypes[modelGroup][1];
+    this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][gSaveContext.linkAge];
+    
+    // Right hand
     this->rightHandType = gPlayerModelTypes[modelGroup][2];
-    this->sheathType = gPlayerModelTypes[modelGroup][3];
+    this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
 
-    this->leftHandDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][1]][gSaveContext.linkAge];
-    this->rightHandDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][2]][gSaveContext.linkAge];
-    this->sheathDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][3]][gSaveContext.linkAge];
+    if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && this->rightHandType == 11) { // If holding Bow/Slingshot
+        this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
+    }
+
+    // Sheath
+    this->sheathType = gPlayerModelTypes[modelGroup][3];
+    this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
+
+    // Waist
     this->waistDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
 
     Player_SetModelsForHoldingShield(this);
@@ -537,6 +547,22 @@ s32 Player_ActionToMagicSpell(Player* this, s32 actionParam) {
 
 s32 Player_HoldsHookshot(Player* this) {
     return (this->heldItemAction == PLAYER_IA_HOOKSHOT) || (this->heldItemAction == PLAYER_IA_LONGSHOT);
+}
+
+s32 Player_HoldsBow(Player* this) {
+    switch(this->heldItemAction){
+        case PLAYER_IA_BOW:
+        case PLAYER_IA_BOW_FIRE:
+        case PLAYER_IA_BOW_ICE:
+        case PLAYER_IA_BOW_LIGHT:
+            return true;
+        default:
+            return false;
+    }
+}
+
+s32 Player_HoldsSlingshot(Player* this) {
+    return this->heldItemAction == PLAYER_IA_SLINGSHOT;
 }
 
 s32 func_8008F128(Player* this) {
@@ -1067,14 +1093,26 @@ s32 func_800902F0(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
         } else if (limbIndex == PLAYER_LIMB_L_FOREARM) {
             *dList = sArmOutDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_L_HAND) {
-            *dList = sHandOutDLs[gSaveContext.linkAge];
+            s32 handOutDlIndex = gSaveContext.linkAge;
+            if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && LINK_IS_ADULT && Player_HoldsSlingshot(this)) {
+                handOutDlIndex = 1;
+            }
+            *dList = sHandOutDLs[handOutDlIndex];
         } else if (limbIndex == PLAYER_LIMB_R_SHOULDER) {
             *dList = sRightShoulderNearDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_R_FOREARM) {
             *dList = D_80125F30[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_R_HAND) {
+            s32 firstPersonWeaponIndex = gSaveContext.linkAge;
+            if (CVarGetInteger("gBowSlingShotAmmoFix", 0)) {
+                if (Player_HoldsBow(this)) {
+                    firstPersonWeaponIndex = 0;
+                } else if (Player_HoldsSlingshot(this)) {
+                    firstPersonWeaponIndex = 1;
+                }
+            }
             *dList = Player_HoldsHookshot(this) ? gLinkAdultRightHandHoldingHookshotFarDL
-                                                : sHoldingFirstPersonWeaponDLs[gSaveContext.linkAge];
+                                                : sHoldingFirstPersonWeaponDLs[firstPersonWeaponIndex];
         } else {
             *dList = NULL;
         }
@@ -1447,7 +1485,11 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
         if (this->rightHandType == 0xFF) {
             Matrix_Get(&this->shieldMf);
         } else if ((this->rightHandType == 11) || (this->rightHandType == 12)) {
-            BowStringData* stringData = &sBowStringData[gSaveContext.linkAge];
+            s32 stringModelToUse = gSaveContext.linkAge;
+            if(CVarGetInteger("gBowSlingShotAmmoFix", 0)){
+                stringModelToUse = Player_HoldsSlingshot(this);
+            }
+            BowStringData* stringData = &sBowStringData[stringModelToUse];
 
             OPEN_DISPS(play->state.gfxCtx);
 
