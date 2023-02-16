@@ -3071,6 +3071,50 @@ void Message_Draw(PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+static uint8_t ttsHasNewMessage;
+static uint8_t ttsMessageBuf[256];
+
+void Message_TTS_Decode(uint8_t* sourceBuf, uint8_t* destBuf, uint16_t size) {
+    uint32_t destWriteIndex = 0;
+    
+    for (uint16_t i = 0; i < size; i++) {
+        uint8_t cchar = sourceBuf[i];
+        
+        if (cchar < ' ') {
+            
+        } else {
+            destBuf[destWriteIndex++] = cchar;
+        }
+    }
+    
+    destBuf[destWriteIndex] = 0;
+}
+
+void Message_TTS_Update(PlayState* play) {
+    MessageContext *msgCtx = &play->msgCtx;
+    
+    if (msgCtx->msgMode == MSGMODE_TEXT_NEXT_MSG || msgCtx->msgMode == MSGMODE_DISPLAY_SONG_PLAYED_TEXT_BEGIN || (msgCtx->msgMode == MSGMODE_TEXT_CONTINUING && msgCtx->stateTimer == 1)) {
+        ttsHasNewMessage = 1;
+    } else if (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING || msgCtx->msgMode == MSGMODE_TEXT_AWAIT_NEXT || msgCtx->msgMode == MSGMODE_TEXT_DONE || msgCtx->msgMode == MSGMODE_TEXT_DELAYED_BREAK
+               
+               || msgCtx->msgMode == MSGMODE_OCARINA_STARTING || msgCtx->msgMode == MSGMODE_OCARINA_PLAYING
+               
+               || msgCtx->msgMode == MSGMODE_DISPLAY_SONG_PLAYED_TEXT || msgCtx->msgMode == MSGMODE_DISPLAY_SONG_PLAYED_TEXT || msgCtx->msgMode == MSGMODE_SONG_PLAYED_ACT_BEGIN || msgCtx->msgMode == MSGMODE_SONG_PLAYED_ACT || msgCtx->msgMode == MSGMODE_SONG_PLAYBACK_STARTING || msgCtx->msgMode == MSGMODE_SONG_PLAYBACK || msgCtx->msgMode == MSGMODE_SONG_DEMONSTRATION_STARTING || msgCtx->msgMode == MSGMODE_SONG_DEMONSTRATION_SELECT_INSTRUMENT || msgCtx->msgMode == MSGMODE_SONG_DEMONSTRATION
+    ) {
+        if (ttsHasNewMessage) {
+            ttsHasNewMessage = 0;
+            
+            uint16_t size = msgCtx->decodedTextLen;
+            Message_TTS_Decode(msgCtx->msgBufDecoded, ttsMessageBuf, size);
+            SpeechSynthesizerSpeak(ttsMessageBuf);
+        }
+    } else if (ttsHasNewMessage) {
+        ttsHasNewMessage = 0;
+        
+        // TODO: cancel TTS?
+    }
+}
+
 void Message_Update(PlayState* play) {
     static s16 sTextboxXPositions[] = {
         34, 34, 34, 34, 34, 34,
@@ -3132,6 +3176,10 @@ void Message_Update(PlayState* play) {
 
     if (msgCtx->msgLength == 0) {
         return;
+    }
+        
+    if (CVarGetInteger("gA11yTTS", 0)) {
+        Message_TTS_Update(play);
     }
 
     bool isB_Held = CVarGetInteger("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B) && !sTextboxSkipped

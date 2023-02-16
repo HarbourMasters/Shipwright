@@ -302,6 +302,18 @@ namespace GameMenuBar {
                 UIWidgets::EnhancementRadioButton("French", "gLanguages", LANGUAGE_FRA);
                 ImGui::EndMenu();
             }
+            
+#if defined(_WIN32) || defined(__APPLE__)
+            UIWidgets::Spacer(0);
+            
+            if (ImGui::BeginMenu("Accessibility")) {
+                UIWidgets::PaddedEnhancementCheckbox("Text to Speech", "gA11yTTS");
+                UIWidgets::Tooltip("Enables text to speech for in game dialog");
+                
+                ImGui::EndMenu();
+            }
+#endif
+            
             ImGui::EndMenu();
         }
 

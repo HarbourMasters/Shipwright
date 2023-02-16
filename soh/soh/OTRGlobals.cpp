@@ -575,6 +575,7 @@ extern "C" void InitOTR() {
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
+    SpeechSynthesizerInit();
     InitCosmeticsEditor();
     GameControlEditor::Init();
     InitAudioEditor();
