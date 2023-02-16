@@ -1,18 +1,24 @@
 #pragma once
+
+#include "align_asset_macro.h"
+
 #define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
-#ifdef _WIN32
-static const __declspec(align(2)) char hiral_demo_sceneCollisionHeader_003548[] = dhiral_demo_sceneCollisionHeader_003548;
-#else
-static const char hiral_demo_sceneCollisionHeader_003548[] __attribute__((aligned (2))) = dhiral_demo_sceneCollisionHeader_003548;
-#endif
-            
-#define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
-#define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
-#define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
-#define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
-#define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
-#define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
-#define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
-#define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
+static const ALIGN_ASSET(2) char hiral_demo_sceneCollisionHeader_003548[] = dhiral_demo_sceneCollisionHeader_003548;
+
 #define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
 
+#define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
+
+#define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
+
+#define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
+
+#define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
+
+#define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
+
+#define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
+
+#define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
+
+#define dhiral_demo_sceneCollisionHeader_003548 "__OTR__scenes/nonmq/hiral_demo_scene/hiral_demo_sceneCollisionHeader_003548"
