@@ -6,6 +6,7 @@
 #include <libultraship/bridge.h>
 #include <ImGuiImpl.h>
 #include <locale>
+#include <filesystem>
 
 #define SEQUENCE_MAP_ENTRY(sequenceId, label, sfxKey, category) \
     { sequenceId, { sequenceId, label, sfxKey, category } }
@@ -181,8 +182,9 @@ AudioCollection::AudioCollection() {
 }
 
 void AudioCollection::AddToCollection(char* otrPath, uint16_t seqNum) {
-    std::vector<std::string> splitName = StringHelper::Split(std::string(otrPath), "/");
-    std::string fileName = splitName[splitName.size() - 1];
+    // std::vector<std::string> splitName = StringHelper::Split(std::string(otrPath), "/");
+    // std::string fileName = splitName[splitName.size() - 1];
+    std::string fileName = std::filesystem::path(otrPath).filename();
     std::vector<std::string> splitFileName = StringHelper::Split(fileName, "_");
     std::string sequenceName = splitFileName[0];
     SeqType type = SEQ_BGM_CUSTOM;
