@@ -1,121 +1,121 @@
 #pragma once
-#define dHIDAN_room_8DL_003648 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8DL_003648"
+#define dHIDAN_room_8DL_003668 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8DL_003668"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_8DL_003648[] = dHIDAN_room_8DL_003648;
+static const __declspec(align(2)) char HIDAN_room_8DL_003668[] = dHIDAN_room_8DL_003668;
 #else
-static const char HIDAN_room_8DL_003648[] __attribute__((aligned (2))) = dHIDAN_room_8DL_003648;
+static const char HIDAN_room_8DL_003668[] __attribute__((aligned (2))) = dHIDAN_room_8DL_003668;
 #endif
             
-#define dHIDAN_room_8Tex_005AB8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_005AB8"
+#define dHIDAN_room_8Tex_005AD8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_005AD8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_8Tex_005AB8[] = dHIDAN_room_8Tex_005AB8;
+static const __declspec(align(2)) char HIDAN_room_8Tex_005AD8[] = dHIDAN_room_8Tex_005AD8;
 #else
-static const char HIDAN_room_8Tex_005AB8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_005AB8;
+static const char HIDAN_room_8Tex_005AD8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_005AD8;
 #endif
             
-#define dHIDAN_room_8DL_002640 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8DL_002640"
+#define dHIDAN_room_8DL_002660 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8DL_002660"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_8DL_002640[] = dHIDAN_room_8DL_002640;
+static const __declspec(align(2)) char HIDAN_room_8DL_002660[] = dHIDAN_room_8DL_002660;
 #else
-static const char HIDAN_room_8DL_002640[] __attribute__((aligned (2))) = dHIDAN_room_8DL_002640;
+static const char HIDAN_room_8DL_002660[] __attribute__((aligned (2))) = dHIDAN_room_8DL_002660;
 #endif
             
-#define dHIDAN_room_8Tex_0092B8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_0092B8"
+#define dHIDAN_room_8Tex_0092D8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_0092D8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_8Tex_0092B8[] = dHIDAN_room_8Tex_0092B8;
+static const __declspec(align(2)) char HIDAN_room_8Tex_0092D8[] = dHIDAN_room_8Tex_0092D8;
 #else
-static const char HIDAN_room_8Tex_0092B8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_0092B8;
+static const char HIDAN_room_8Tex_0092D8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_0092D8;
 #endif
             
-#define dHIDAN_room_8DL_0006E0 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8DL_0006E0"
+#define dHIDAN_room_8DL_000700 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8DL_000700"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_8DL_0006E0[] = dHIDAN_room_8DL_0006E0;
+static const __declspec(align(2)) char HIDAN_room_8DL_000700[] = dHIDAN_room_8DL_000700;
 #else
-static const char HIDAN_room_8DL_0006E0[] __attribute__((aligned (2))) = dHIDAN_room_8DL_0006E0;
+static const char HIDAN_room_8DL_000700[] __attribute__((aligned (2))) = dHIDAN_room_8DL_000700;
 #endif
             
-#define dHIDAN_room_8Tex_0062B8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_0062B8"
+#define dHIDAN_room_8Tex_0062D8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_0062D8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_8Tex_0062B8[] = dHIDAN_room_8Tex_0062B8;
+static const __declspec(align(2)) char HIDAN_room_8Tex_0062D8[] = dHIDAN_room_8Tex_0062D8;
 #else
-static const char HIDAN_room_8Tex_0062B8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_0062B8;
+static const char HIDAN_room_8Tex_0062D8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_0062D8;
 #endif
             
-#define dHIDAN_room_8Tex_0086B8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_0086B8"
+#define dHIDAN_room_8Tex_0086D8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_0086D8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_8Tex_0086B8[] = dHIDAN_room_8Tex_0086B8;
+static const __declspec(align(2)) char HIDAN_room_8Tex_0086D8[] = dHIDAN_room_8Tex_0086D8;
 #else
-static const char HIDAN_room_8Tex_0086B8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_0086B8;
+static const char HIDAN_room_8Tex_0086D8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_0086D8;
 #endif
             
-#define dHIDAN_room_8Tex_0082B8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_0082B8"
+#define dHIDAN_room_8Tex_0082D8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_0082D8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_8Tex_0082B8[] = dHIDAN_room_8Tex_0082B8;
+static const __declspec(align(2)) char HIDAN_room_8Tex_0082D8[] = dHIDAN_room_8Tex_0082D8;
 #else
-static const char HIDAN_room_8Tex_0082B8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_0082B8;
+static const char HIDAN_room_8Tex_0082D8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_0082D8;
 #endif
             
-#define dHIDAN_room_8DL_001228 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8DL_001228"
+#define dHIDAN_room_8DL_001248 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8DL_001248"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_8DL_001228[] = dHIDAN_room_8DL_001228;
+static const __declspec(align(2)) char HIDAN_room_8DL_001248[] = dHIDAN_room_8DL_001248;
 #else
-static const char HIDAN_room_8DL_001228[] __attribute__((aligned (2))) = dHIDAN_room_8DL_001228;
+static const char HIDAN_room_8DL_001248[] __attribute__((aligned (2))) = dHIDAN_room_8DL_001248;
 #endif
             
-#define dHIDAN_room_8DL_0018E0 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8DL_0018E0"
+#define dHIDAN_room_8DL_001900 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8DL_001900"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_8DL_0018E0[] = dHIDAN_room_8DL_0018E0;
+static const __declspec(align(2)) char HIDAN_room_8DL_001900[] = dHIDAN_room_8DL_001900;
 #else
-static const char HIDAN_room_8DL_0018E0[] __attribute__((aligned (2))) = dHIDAN_room_8DL_0018E0;
+static const char HIDAN_room_8DL_001900[] __attribute__((aligned (2))) = dHIDAN_room_8DL_001900;
 #endif
             
-#define dHIDAN_room_8DL_002030 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8DL_002030"
+#define dHIDAN_room_8DL_002050 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8DL_002050"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_8DL_002030[] = dHIDAN_room_8DL_002030;
+static const __declspec(align(2)) char HIDAN_room_8DL_002050[] = dHIDAN_room_8DL_002050;
 #else
-static const char HIDAN_room_8DL_002030[] __attribute__((aligned (2))) = dHIDAN_room_8DL_002030;
+static const char HIDAN_room_8DL_002050[] __attribute__((aligned (2))) = dHIDAN_room_8DL_002050;
 #endif
             
-#define dHIDAN_room_8Tex_008AB8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_008AB8"
+#define dHIDAN_room_8Tex_008AD8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_008AD8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_8Tex_008AB8[] = dHIDAN_room_8Tex_008AB8;
+static const __declspec(align(2)) char HIDAN_room_8Tex_008AD8[] = dHIDAN_room_8Tex_008AD8;
 #else
-static const char HIDAN_room_8Tex_008AB8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_008AB8;
+static const char HIDAN_room_8Tex_008AD8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_008AD8;
 #endif
             
-#define dHIDAN_room_8DL_0047C8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8DL_0047C8"
+#define dHIDAN_room_8DL_0047E8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8DL_0047E8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_8DL_0047C8[] = dHIDAN_room_8DL_0047C8;
+static const __declspec(align(2)) char HIDAN_room_8DL_0047E8[] = dHIDAN_room_8DL_0047E8;
 #else
-static const char HIDAN_room_8DL_0047C8[] __attribute__((aligned (2))) = dHIDAN_room_8DL_0047C8;
+static const char HIDAN_room_8DL_0047E8[] __attribute__((aligned (2))) = dHIDAN_room_8DL_0047E8;
 #endif
             
-#define dHIDAN_room_8Tex_0052B8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_0052B8"
+#define dHIDAN_room_8Tex_0052D8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_0052D8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_8Tex_0052B8[] = dHIDAN_room_8Tex_0052B8;
+static const __declspec(align(2)) char HIDAN_room_8Tex_0052D8[] = dHIDAN_room_8Tex_0052D8;
 #else
-static const char HIDAN_room_8Tex_0052B8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_0052B8;
+static const char HIDAN_room_8Tex_0052D8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_0052D8;
 #endif
             
-#define dHIDAN_room_8Tex_006AB8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_006AB8"
+#define dHIDAN_room_8Tex_006AD8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_006AD8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_8Tex_006AB8[] = dHIDAN_room_8Tex_006AB8;
+static const __declspec(align(2)) char HIDAN_room_8Tex_006AD8[] = dHIDAN_room_8Tex_006AD8;
 #else
-static const char HIDAN_room_8Tex_006AB8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_006AB8;
+static const char HIDAN_room_8Tex_006AD8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_006AD8;
 #endif
             
-#define dHIDAN_room_8Tex_0050B8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_0050B8"
+#define dHIDAN_room_8Tex_0050D8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_0050D8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_8Tex_0050B8[] = dHIDAN_room_8Tex_0050B8;
+static const __declspec(align(2)) char HIDAN_room_8Tex_0050D8[] = dHIDAN_room_8Tex_0050D8;
 #else
-static const char HIDAN_room_8Tex_0050B8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_0050B8;
+static const char HIDAN_room_8Tex_0050D8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_0050D8;
 #endif
             
-#define dHIDAN_room_8Tex_007AB8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_007AB8"
+#define dHIDAN_room_8Tex_007AD8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_8Tex_007AD8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_8Tex_007AB8[] = dHIDAN_room_8Tex_007AB8;
+static const __declspec(align(2)) char HIDAN_room_8Tex_007AD8[] = dHIDAN_room_8Tex_007AD8;
 #else
-static const char HIDAN_room_8Tex_007AB8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_007AB8;
+static const char HIDAN_room_8Tex_007AD8[] __attribute__((aligned (2))) = dHIDAN_room_8Tex_007AD8;
 #endif
             
 

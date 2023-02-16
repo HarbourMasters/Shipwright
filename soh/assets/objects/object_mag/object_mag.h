@@ -27,11 +27,11 @@ static const __declspec(align(2)) char gTitleCopyright19982003Tex[] = dgTitleCop
 static const char gTitleCopyright19982003Tex[] __attribute__((aligned (2))) = dgTitleCopyright19982003Tex;
 #endif
             
-#define dgTitleDiskTex "__OTR__objects/object_mag/gTitleDiskTex"
+#define dgTitleMasterQuestSubtitleTex "__OTR__objects/object_mag/gTitleMasterQuestSubtitleTex"
 #ifdef _WIN32
-static const __declspec(align(2)) char gTitleDiskTex[] = dgTitleDiskTex;
+static const __declspec(align(2)) char gTitleMasterQuestSubtitleTex[] = dgTitleMasterQuestSubtitleTex;
 #else
-static const char gTitleDiskTex[] __attribute__((aligned (2))) = dgTitleDiskTex;
+static const char gTitleMasterQuestSubtitleTex[] __attribute__((aligned (2))) = dgTitleMasterQuestSubtitleTex;
 #endif
             
 #define dgTitleEffectMask00Tex "__OTR__objects/object_mag/gTitleEffectMask00Tex"
@@ -116,6 +116,20 @@ static const char gTitleTheLegendOfTextTex[] __attribute__((aligned (2))) = dgTi
 static const __declspec(align(2)) char gTitleOcarinaOfTimeTMTextTex[] = dgTitleOcarinaOfTimeTMTextTex;
 #else
 static const char gTitleOcarinaOfTimeTMTextTex[] __attribute__((aligned (2))) = dgTitleOcarinaOfTimeTMTextTex;
+#endif
+            
+#define dgTitleUraLogoTex "__OTR__objects/object_mag/gTitleUraLogoTex"
+#ifdef _WIN32
+static const __declspec(align(2)) char gTitleUraLogoTex[] = dgTitleUraLogoTex;
+#else
+static const char gTitleUraLogoTex[] __attribute__((aligned (2))) = dgTitleUraLogoTex;
+#endif
+            
+#define dgTitleDiskTex "__OTR__objects/object_mag/gTitleDiskTex"
+#ifdef _WIN32
+static const __declspec(align(2)) char gTitleDiskTex[] = dgTitleDiskTex;
+#else
+static const char gTitleDiskTex[] __attribute__((aligned (2))) = dgTitleDiskTex;
 #endif
             
 #define dgTitleTitleJPNTex "__OTR__objects/object_mag/gTitleTitleJPNTex"

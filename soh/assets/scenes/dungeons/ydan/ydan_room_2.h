@@ -1,65 +1,65 @@
 #pragma once
-#define dydan_room_2DL_001060 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2DL_001060"
+#define dydan_room_2DL_001160 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2DL_001160"
 #ifdef _WIN32
-static const __declspec(align(2)) char ydan_room_2DL_001060[] = dydan_room_2DL_001060;
+static const __declspec(align(2)) char ydan_room_2DL_001160[] = dydan_room_2DL_001160;
 #else
-static const char ydan_room_2DL_001060[] __attribute__((aligned (2))) = dydan_room_2DL_001060;
+static const char ydan_room_2DL_001160[] __attribute__((aligned (2))) = dydan_room_2DL_001160;
 #endif
             
-#define dydan_room_2Tex_001C08 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2Tex_001C08"
+#define dydan_room_2Tex_001D08 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2Tex_001D08"
 #ifdef _WIN32
-static const __declspec(align(2)) char ydan_room_2Tex_001C08[] = dydan_room_2Tex_001C08;
+static const __declspec(align(2)) char ydan_room_2Tex_001D08[] = dydan_room_2Tex_001D08;
 #else
-static const char ydan_room_2Tex_001C08[] __attribute__((aligned (2))) = dydan_room_2Tex_001C08;
+static const char ydan_room_2Tex_001D08[] __attribute__((aligned (2))) = dydan_room_2Tex_001D08;
 #endif
             
-#define dydan_room_2Tex_002C08 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2Tex_002C08"
+#define dydan_room_2Tex_002D08 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2Tex_002D08"
 #ifdef _WIN32
-static const __declspec(align(2)) char ydan_room_2Tex_002C08[] = dydan_room_2Tex_002C08;
+static const __declspec(align(2)) char ydan_room_2Tex_002D08[] = dydan_room_2Tex_002D08;
 #else
-static const char ydan_room_2Tex_002C08[] __attribute__((aligned (2))) = dydan_room_2Tex_002C08;
+static const char ydan_room_2Tex_002D08[] __attribute__((aligned (2))) = dydan_room_2Tex_002D08;
 #endif
             
-#define dydan_room_2Tex_004408 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2Tex_004408"
+#define dydan_room_2Tex_004508 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2Tex_004508"
 #ifdef _WIN32
-static const __declspec(align(2)) char ydan_room_2Tex_004408[] = dydan_room_2Tex_004408;
+static const __declspec(align(2)) char ydan_room_2Tex_004508[] = dydan_room_2Tex_004508;
 #else
-static const char ydan_room_2Tex_004408[] __attribute__((aligned (2))) = dydan_room_2Tex_004408;
+static const char ydan_room_2Tex_004508[] __attribute__((aligned (2))) = dydan_room_2Tex_004508;
 #endif
             
-#define dydan_room_2Tex_002408 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2Tex_002408"
+#define dydan_room_2Tex_002508 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2Tex_002508"
 #ifdef _WIN32
-static const __declspec(align(2)) char ydan_room_2Tex_002408[] = dydan_room_2Tex_002408;
+static const __declspec(align(2)) char ydan_room_2Tex_002508[] = dydan_room_2Tex_002508;
 #else
-static const char ydan_room_2Tex_002408[] __attribute__((aligned (2))) = dydan_room_2Tex_002408;
+static const char ydan_room_2Tex_002508[] __attribute__((aligned (2))) = dydan_room_2Tex_002508;
 #endif
             
-#define dydan_room_2Tex_003C08 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2Tex_003C08"
+#define dydan_room_2Tex_003D08 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2Tex_003D08"
 #ifdef _WIN32
-static const __declspec(align(2)) char ydan_room_2Tex_003C08[] = dydan_room_2Tex_003C08;
+static const __declspec(align(2)) char ydan_room_2Tex_003D08[] = dydan_room_2Tex_003D08;
 #else
-static const char ydan_room_2Tex_003C08[] __attribute__((aligned (2))) = dydan_room_2Tex_003C08;
+static const char ydan_room_2Tex_003D08[] __attribute__((aligned (2))) = dydan_room_2Tex_003D08;
 #endif
             
-#define dydan_room_2Tex_003408 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2Tex_003408"
+#define dydan_room_2Tex_003508 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2Tex_003508"
 #ifdef _WIN32
-static const __declspec(align(2)) char ydan_room_2Tex_003408[] = dydan_room_2Tex_003408;
+static const __declspec(align(2)) char ydan_room_2Tex_003508[] = dydan_room_2Tex_003508;
 #else
-static const char ydan_room_2Tex_003408[] __attribute__((aligned (2))) = dydan_room_2Tex_003408;
+static const char ydan_room_2Tex_003508[] __attribute__((aligned (2))) = dydan_room_2Tex_003508;
 #endif
             
-#define dydan_room_2DL_004D50 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2DL_004D50"
+#define dydan_room_2DL_004E50 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2DL_004E50"
 #ifdef _WIN32
-static const __declspec(align(2)) char ydan_room_2DL_004D50[] = dydan_room_2DL_004D50;
+static const __declspec(align(2)) char ydan_room_2DL_004E50[] = dydan_room_2DL_004E50;
 #else
-static const char ydan_room_2DL_004D50[] __attribute__((aligned (2))) = dydan_room_2DL_004D50;
+static const char ydan_room_2DL_004E50[] __attribute__((aligned (2))) = dydan_room_2DL_004E50;
 #endif
             
-#define dydan_room_2Tex_004E28 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2Tex_004E28"
+#define dydan_room_2Tex_004F28 "__OTR__scenes/nonmq/ydan_scene/ydan_room_2Tex_004F28"
 #ifdef _WIN32
-static const __declspec(align(2)) char ydan_room_2Tex_004E28[] = dydan_room_2Tex_004E28;
+static const __declspec(align(2)) char ydan_room_2Tex_004F28[] = dydan_room_2Tex_004F28;
 #else
-static const char ydan_room_2Tex_004E28[] __attribute__((aligned (2))) = dydan_room_2Tex_004E28;
+static const char ydan_room_2Tex_004F28[] __attribute__((aligned (2))) = dydan_room_2Tex_004F28;
 #endif
             
 

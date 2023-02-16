@@ -13,32 +13,32 @@ static const __declspec(align(2)) char gGTGNightEntranceTex[] = dgGTGNightEntran
 static const char gGTGNightEntranceTex[] __attribute__((aligned (2))) = dgGTGNightEntranceTex;
 #endif
             
-#define dmen_sceneCollisionHeader_00F700 "__OTR__scenes/nonmq/men_scene/men_sceneCollisionHeader_00F700"
+#define dmen_sceneCollisionHeader_00F690 "__OTR__scenes/nonmq/men_scene/men_sceneCollisionHeader_00F690"
 #ifdef _WIN32
-static const __declspec(align(2)) char men_sceneCollisionHeader_00F700[] = dmen_sceneCollisionHeader_00F700;
+static const __declspec(align(2)) char men_sceneCollisionHeader_00F690[] = dmen_sceneCollisionHeader_00F690;
 #else
-static const char men_sceneCollisionHeader_00F700[] __attribute__((aligned (2))) = dmen_sceneCollisionHeader_00F700;
+static const char men_sceneCollisionHeader_00F690[] __attribute__((aligned (2))) = dmen_sceneCollisionHeader_00F690;
 #endif
             
-#define dmen_sceneTLUT_00F730 "__OTR__scenes/nonmq/men_scene/men_sceneTLUT_00F730"
+#define dmen_sceneTLUT_00F6C0 "__OTR__scenes/nonmq/men_scene/men_sceneTLUT_00F6C0"
 #ifdef _WIN32
-static const __declspec(align(2)) char men_sceneTLUT_00F730[] = dmen_sceneTLUT_00F730;
+static const __declspec(align(2)) char men_sceneTLUT_00F6C0[] = dmen_sceneTLUT_00F6C0;
 #else
-static const char men_sceneTLUT_00F730[] __attribute__((aligned (2))) = dmen_sceneTLUT_00F730;
+static const char men_sceneTLUT_00F6C0[] __attribute__((aligned (2))) = dmen_sceneTLUT_00F6C0;
 #endif
             
-#define dmen_sceneTex_010D30 "__OTR__scenes/nonmq/men_scene/men_sceneTex_010D30"
+#define dmen_sceneTex_010CC0 "__OTR__scenes/nonmq/men_scene/men_sceneTex_010CC0"
 #ifdef _WIN32
-static const __declspec(align(2)) char men_sceneTex_010D30[] = dmen_sceneTex_010D30;
+static const __declspec(align(2)) char men_sceneTex_010CC0[] = dmen_sceneTex_010CC0;
 #else
-static const char men_sceneTex_010D30[] __attribute__((aligned (2))) = dmen_sceneTex_010D30;
+static const char men_sceneTex_010CC0[] __attribute__((aligned (2))) = dmen_sceneTex_010CC0;
 #endif
             
-#define dmen_sceneTex_010930 "__OTR__scenes/nonmq/men_scene/men_sceneTex_010930"
+#define dmen_sceneTex_0108C0 "__OTR__scenes/nonmq/men_scene/men_sceneTex_0108C0"
 #ifdef _WIN32
-static const __declspec(align(2)) char men_sceneTex_010930[] = dmen_sceneTex_010930;
+static const __declspec(align(2)) char men_sceneTex_0108C0[] = dmen_sceneTex_0108C0;
 #else
-static const char men_sceneTex_010930[] __attribute__((aligned (2))) = dmen_sceneTex_010930;
+static const char men_sceneTex_0108C0[] __attribute__((aligned (2))) = dmen_sceneTex_0108C0;
 #endif
             
 

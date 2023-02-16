@@ -1,37 +1,37 @@
 #pragma once
-#define dHAKAdanCH_sceneCollisionHeader_00A528 "__OTR__scenes/nonmq/HAKAdanCH_scene/HAKAdanCH_sceneCollisionHeader_00A528"
+#define dHAKAdanCH_sceneCollisionHeader_00A558 "__OTR__scenes/nonmq/HAKAdanCH_scene/HAKAdanCH_sceneCollisionHeader_00A558"
 #ifdef _WIN32
-static const __declspec(align(2)) char HAKAdanCH_sceneCollisionHeader_00A528[] = dHAKAdanCH_sceneCollisionHeader_00A528;
+static const __declspec(align(2)) char HAKAdanCH_sceneCollisionHeader_00A558[] = dHAKAdanCH_sceneCollisionHeader_00A558;
 #else
-static const char HAKAdanCH_sceneCollisionHeader_00A528[] __attribute__((aligned (2))) = dHAKAdanCH_sceneCollisionHeader_00A528;
+static const char HAKAdanCH_sceneCollisionHeader_00A558[] __attribute__((aligned (2))) = dHAKAdanCH_sceneCollisionHeader_00A558;
 #endif
             
-#define dHAKAdanCH_sceneTex_00BD60 "__OTR__scenes/nonmq/HAKAdanCH_scene/HAKAdanCH_sceneTex_00BD60"
+#define dHAKAdanCH_sceneTex_00BD90 "__OTR__scenes/nonmq/HAKAdanCH_scene/HAKAdanCH_sceneTex_00BD90"
 #ifdef _WIN32
-static const __declspec(align(2)) char HAKAdanCH_sceneTex_00BD60[] = dHAKAdanCH_sceneTex_00BD60;
+static const __declspec(align(2)) char HAKAdanCH_sceneTex_00BD90[] = dHAKAdanCH_sceneTex_00BD90;
 #else
-static const char HAKAdanCH_sceneTex_00BD60[] __attribute__((aligned (2))) = dHAKAdanCH_sceneTex_00BD60;
+static const char HAKAdanCH_sceneTex_00BD90[] __attribute__((aligned (2))) = dHAKAdanCH_sceneTex_00BD90;
 #endif
             
-#define dHAKAdanCH_sceneTex_00AD60 "__OTR__scenes/nonmq/HAKAdanCH_scene/HAKAdanCH_sceneTex_00AD60"
+#define dHAKAdanCH_sceneTex_00AD90 "__OTR__scenes/nonmq/HAKAdanCH_scene/HAKAdanCH_sceneTex_00AD90"
 #ifdef _WIN32
-static const __declspec(align(2)) char HAKAdanCH_sceneTex_00AD60[] = dHAKAdanCH_sceneTex_00AD60;
+static const __declspec(align(2)) char HAKAdanCH_sceneTex_00AD90[] = dHAKAdanCH_sceneTex_00AD90;
 #else
-static const char HAKAdanCH_sceneTex_00AD60[] __attribute__((aligned (2))) = dHAKAdanCH_sceneTex_00AD60;
+static const char HAKAdanCH_sceneTex_00AD90[] __attribute__((aligned (2))) = dHAKAdanCH_sceneTex_00AD90;
 #endif
             
-#define dHAKAdanCH_sceneTex_00A560 "__OTR__scenes/nonmq/HAKAdanCH_scene/HAKAdanCH_sceneTex_00A560"
+#define dHAKAdanCH_sceneTex_00A590 "__OTR__scenes/nonmq/HAKAdanCH_scene/HAKAdanCH_sceneTex_00A590"
 #ifdef _WIN32
-static const __declspec(align(2)) char HAKAdanCH_sceneTex_00A560[] = dHAKAdanCH_sceneTex_00A560;
+static const __declspec(align(2)) char HAKAdanCH_sceneTex_00A590[] = dHAKAdanCH_sceneTex_00A590;
 #else
-static const char HAKAdanCH_sceneTex_00A560[] __attribute__((aligned (2))) = dHAKAdanCH_sceneTex_00A560;
+static const char HAKAdanCH_sceneTex_00A590[] __attribute__((aligned (2))) = dHAKAdanCH_sceneTex_00A590;
 #endif
             
-#define dHAKAdanCH_sceneTex_00B560 "__OTR__scenes/nonmq/HAKAdanCH_scene/HAKAdanCH_sceneTex_00B560"
+#define dHAKAdanCH_sceneTex_00B590 "__OTR__scenes/nonmq/HAKAdanCH_scene/HAKAdanCH_sceneTex_00B590"
 #ifdef _WIN32
-static const __declspec(align(2)) char HAKAdanCH_sceneTex_00B560[] = dHAKAdanCH_sceneTex_00B560;
+static const __declspec(align(2)) char HAKAdanCH_sceneTex_00B590[] = dHAKAdanCH_sceneTex_00B590;
 #else
-static const char HAKAdanCH_sceneTex_00B560[] __attribute__((aligned (2))) = dHAKAdanCH_sceneTex_00B560;
+static const char HAKAdanCH_sceneTex_00B590[] __attribute__((aligned (2))) = dHAKAdanCH_sceneTex_00B590;
 #endif
             
 

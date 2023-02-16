@@ -5,7 +5,7 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 #include "soh/OTRGlobals.h"
-#include "soh/Enhancements/sfx-editor/SfxEditor.h"
+#include "soh/Enhancements/audio/AudioCollection.h"
 
 #define MK_ASYNC_MSG(retData, tableType, id, status) (((retData) << 24) | ((tableType) << 16) | ((id) << 8) | (status))
 #define ASYNC_TBLTYPE(v) ((u8)(v >> 16))
@@ -487,7 +487,7 @@ u8* AudioLoad_GetFontsForSequence(s32 seqId, u32* outNumFonts) {
      if (seqId == NA_BGM_DISABLED)
          return NULL;
 
-    u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
+    u16 newSeqId = AudioEditor_GetReplacementSeq(seqId);
     if (newSeqId > MAX_SEQUENCES || !sequenceMap[newSeqId]) {
         return NULL;
     }
@@ -631,7 +631,7 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
             if (gPlayState != NULL) {
                 previousSceneNum = gPlayState->sceneNum;
             }
-            const char* sequenceName = SfxEditor_GetSequenceName(seqId);
+            const char* sequenceName = AudioCollection_GetSequenceName(seqId);
             if (sequenceName != NULL) {
                 Overlay_DisplayText_Seconds(CVarGetInteger("gSeqNameOverlayDuration", 5), sequenceName);
             }
@@ -1360,7 +1360,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
 
     for (size_t i = startingSeqNum; i < startingSeqNum + customSeqListSize; i++) {
         int j = i - startingSeqNum;
-        SfxEditor_AddSequence(customSeqList[j], i);
+        AudioCollection_AddToCollection(customSeqList[j], i);
         SequenceData sDat = ResourceMgr_LoadSeqByName(customSeqList[j]);
         sDat.seqNumber = i;
 
@@ -1564,7 +1564,7 @@ s32 AudioLoad_SlowLoadSeq(s32 seqId, u8* ramAddr, s8* isDone) {
     size_t size;
 
     seqId = AudioLoad_GetRealTableIndex(SEQUENCE_TABLE, seqId);
-    u16 newSeqId = SfxEditor_GetReplacementSeq(seqId);
+    u16 newSeqId = AudioEditor_GetReplacementSeq(seqId);
     if (seqId != newSeqId) {
         gAudioContext.seqToPlay[SEQ_PLAYER_BGM_MAIN] = newSeqId;
         gAudioContext.seqReplaced[SEQ_PLAYER_BGM_MAIN] = 1;
