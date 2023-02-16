@@ -197,9 +197,9 @@ void CrowdControl::EmitMessage(TCPsocket socket, uint32_t eventId, long timeRema
 
 CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
     GameInteractionEffectQueryResult giResult;
-    if (effect->category == effectCatSpawnEnemy) {
+    if (effect->category == EffectCatSpawnEnemy) {
         giResult = GameInteractor::RawAction::SpawnEnemyWithOffset(effect->value[0], effect->value[1]);
-    } else if (effect->category == effectCatSpawnActor) {
+    } else if (effect->category == EffectCatSpawnActor) {
         giResult = GameInteractor::RawAction::SpawnActor(effect->value[0], effect->value[1]);
     } else {
         giResult = GameInteractor::ApplyEffect(effect->giEffect);
@@ -210,7 +210,7 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
 
 /// Checks if effect can be applied -- should not be used to check for spawn enemy effects.
 CrowdControl::EffectResult CrowdControl::CanApplyEffect(Effect* effect) {
-    assert(effect->category != effectCatSpawnEnemy || effect->category != effectCatSpawnActor);
+    assert(effect->category != EffectCatSpawnEnemy || effect->category != EffectCatSpawnActor);
     GameInteractionEffectQueryResult giResult = GameInteractor::CanApplyEffect(effect->giEffect);
 
     return TranslateGiEnum(giResult);
@@ -249,549 +249,549 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 
     // Assign GameInteractionEffect + values to CC effect.
     // Categories are mostly used for checking for conflicting timed effects.
-    switch (effectStringToEnum[effectName]) {
+    switch (EffectStringToEnum[effectName]) {
 
         // Spawn Enemies and Objects
-        case effectSpawnCuccoStorm:
+        case EffectSpawnCuccoStorm:
             effect->value[0] = ACTOR_EN_NIW;
-            effect->category = effectCatSpawnActor;
+            effect->category = EffectCatSpawnActor;
             break;
-        case effectSpawnLitBomb:
+        case EffectSpawnLitBomb:
             effect->value[0] = ACTOR_EN_BOM;
-            effect->category = effectCatSpawnActor;
+            effect->category = EffectCatSpawnActor;
             break;
-        case effectSpawnExplosion:
+        case EffectSpawnExplosion:
             effect->value[0] = ACTOR_EN_BOM;
             effect->value[1] = 1;
-            effect->category = effectCatSpawnActor;
+            effect->category = EffectCatSpawnActor;
             break;
-        case effectSpawnArwing:
+        case EffectSpawnArwing:
             effect->value[0] = ACTOR_EN_CLEAR_TAG;
             // Parameter for no cutscene Arwing
             effect->value[1] = 1;
-            effect->category = effectCatSpawnEnemy;
+            effect->category = EffectCatSpawnEnemy;
             break;
-        case effectSpawnDarklink:
+        case EffectSpawnDarklink:
             effect->value[0] = ACTOR_EN_TORCH2;
-            effect->category = effectCatSpawnEnemy;
+            effect->category = EffectCatSpawnEnemy;
             break;
-        case effectSpawnIronknuckle:
+        case EffectSpawnIronKnuckle:
             effect->value[0] = ACTOR_EN_IK;
             // Parameter for black standing Iron Knuckle
             effect->value[1] = 2;
-            effect->category = effectCatSpawnEnemy;
+            effect->category = EffectCatSpawnEnemy;
             break;
-        case effectSpawnStalfos:
+        case EffectSpawnStalfos:
             effect->value[0] = ACTOR_EN_TEST;
             // Parameter for gravity-obeying Stalfos
             effect->value[1] = 2;
-            effect->category = effectCatSpawnEnemy;
+            effect->category = EffectCatSpawnEnemy;
             break;
-        case effectSpawnFreezard:
+        case EffectSpawnFreezard:
             effect->value[0] = ACTOR_EN_FZ;
-            effect->category = effectCatSpawnEnemy;
+            effect->category = EffectCatSpawnEnemy;
             break;
-        case effectSpawnLikelike:
+        case EffectSpawnLikeLike:
             effect->value[0] = ACTOR_EN_RR;
-            effect->category = effectCatSpawnEnemy;
+            effect->category = EffectCatSpawnEnemy;
             break;
-        case effectSpawnGibdo:
+        case EffectSpawnGibdo:
             effect->value[0] = ACTOR_EN_RD;
             // Parameter for Gibdo
             effect->value[1] = 32766;
-            effect->category = effectCatSpawnEnemy;
+            effect->category = EffectCatSpawnEnemy;
             break;
-        case effectSpawnKeese:
+        case EffectSpawnKeese:
             effect->value[0] = ACTOR_EN_FIREFLY;
             // Parameter for normal keese
             effect->value[1] = 2;
-            effect->category = effectCatSpawnEnemy;
+            effect->category = EffectCatSpawnEnemy;
             break;
-        case effectSpawnIcekeese:
+        case EffectSpawnIceKeese:
             effect->value[0] = ACTOR_EN_FIREFLY;
             // Parameter for ice keese
             effect->value[1] = 4;
-            effect->category = effectCatSpawnEnemy;
+            effect->category = EffectCatSpawnEnemy;
             break;
-        case effectSpawnFirekeese:
+        case EffectSpawnFireKeese:
             effect->value[0] = ACTOR_EN_FIREFLY;
             // Parameter for fire keese
             effect->value[1] = 1;
-            effect->category = effectCatSpawnEnemy;
+            effect->category = EffectCatSpawnEnemy;
             break;
-        case effectSpawnWolfos:
+        case EffectSpawnWolfos:
             effect->value[0] = ACTOR_EN_WF;
-            effect->category = effectCatSpawnEnemy;
+            effect->category = EffectCatSpawnEnemy;
             break;
-        case effectSpawnWallmaster:
+        case EffectSpawnWallmaster:
             effect->value[0] = ACTOR_EN_WALLMAS;
-            effect->category = effectCatSpawnEnemy;
+            effect->category = EffectCatSpawnEnemy;
             break;
 
         // Link Modifiers
-        case effectHalfDamageTaken:
-            effect->category = effectCatDamageTaken;
+        case EffectTakeHalfDamage:
+            effect->category = EffectCatDamageTaken;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
             effect->giEffect->parameters[0] = 2;
             break;
-        case effectDoubleDamageTaken:
-            effect->category = effectCatDamageTaken;
+        case EffectTakeDoubleDamage:
+            effect->category = EffectCatDamageTaken;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
             effect->giEffect->parameters[0] = -2;
             break;
-        case effectOhko:
-            effect->category = effectCatOhko;
+        case EffectOneHitKo:
+            effect->category = EffectCatOhko;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::OneHitKO();
             break;
-        case effectInvincible:
-            effect->category = effectCatInvincible;
+        case EffectInvincibility:
+            effect->category = EffectCatInvincible;
             effect->timeRemaining = 15000;
             effect->giEffect = new GameInteractionEffect::PlayerInvincibility();
             break;
             break;
-        case effectIncreaseSpeed:
-            effect->category = effectCatSpeed;
+        case EffectIncreaseSpeed:
+            effect->category = EffectCatSpeed;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
             effect->giEffect->parameters[0] = 2;
             break;
-        case effectDecreaseSpeed:
-            effect->category = effectCatSpeed;
+        case EffectDecreaseSpeed:
+            effect->category = EffectCatSpeed;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
             effect->giEffect->parameters[0] = -2;
             break;
-        case effectLowGravity:
-            effect->category = effectCatGravity;
+        case EffectLowGravity:
+            effect->category = EffectCatGravity;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyGravity();
             effect->giEffect->parameters[0] = GI_GRAVITY_LEVEL_LIGHT;
             break;
-        case effectHighGravity:
-            effect->category = effectCatGravity;
+        case EffectHighGravity:
+            effect->category = EffectCatGravity;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyGravity();
             effect->giEffect->parameters[0] = GI_GRAVITY_LEVEL_HEAVY;
             break;
-        case effectIronBoots:
-            effect->category = effectCatBoots;
+        case EffectForceIronBoots:
+            effect->category = EffectCatBoots;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
             effect->giEffect->parameters[0] = PLAYER_BOOTS_IRON;
             break;
-        case effectHoverBoots:
-            effect->category = effectCatBoots;
+        case EffectForceHoverBoots:
+            effect->category = EffectCatBoots;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
             effect->giEffect->parameters[0] = PLAYER_BOOTS_HOVER;
             break;
-        case effectSlipperyFloor:
-            effect->category = effectCatSlipperyFloor;
+        case EffectSlipperyFloor:
+            effect->category = EffectCatSlipperyFloor;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::SlipperyFloor();
             break;
-        case effectNoLedgeGrabs:
-            effect->category = effectCatNoLedgeGrabs;
+        case EffectNoLedgeGrabs:
+            effect->category = EffectCatNoLedgeGrabs;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::DisableLedgeGrabs();
             break;
-        case effectRandomWind:
-            effect->category = effectCatRandomWind;
+        case EffectRandomWind:
+            effect->category = EffectCatRandomWind;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::RandomWind();
             break;
-        case effectRandomBonks:
-            effect->category = effectCatRandomBonks;
+        case EffectRandomBonks:
+            effect->category = EffectCatRandomBonks;
             effect->timeRemaining = 60000;
             effect->giEffect = new GameInteractionEffect::RandomBonks();
             break;
 
         // Hurt or Heal Link
-        case effectDamage:
+        case EffectEmptyHeart:
             effect->giEffect = new GameInteractionEffect::ModifyHealth();
             effect->paramMultiplier = -1;
             break;
-        case effectHeal:
+        case EffectFillHeart:
             effect->giEffect = new GameInteractionEffect::ModifyHealth();
             break;
-        case effectKnockback:
+        case EffectKnockbackLink:
             effect->giEffect = new GameInteractionEffect::KnockbackPlayer();
             break;
-        case effectBurn:
+        case EffectBurnLink:
             effect->giEffect = new GameInteractionEffect::BurnPlayer();
             break;
-        case effectFreeze:
+        case EffectFreezeLink:
             effect->giEffect = new GameInteractionEffect::FreezePlayer();
             break;
-        case effectElectrocute:
+        case EffectElectrocuteLink:
             effect->giEffect = new GameInteractionEffect::ElectrocutePlayer();
             break;
-        case effectKill:
+        case EffectKillLink:
             effect->giEffect = new GameInteractionEffect::SetPlayerHealth();
             effect->value[0] = 0;
             break;
 
         // Give Items and Consumables
-        case effectAddHeartContainer:
+        case EffectAddHeartContainer:
             effect->giEffect = new GameInteractionEffect::ModifyHeartContainers();
             effect->giEffect->parameters[0] = 1;
             break;
-        case effectFillMagic:
+        case EffectFillMagic:
             effect->giEffect = new GameInteractionEffect::FillMagic();
             break;
-        case effectAddRupees:
+        case EffectAddRupees:
             effect->giEffect = new GameInteractionEffect::ModifyRupees();
             break;
-        case effectGiveDekushield:
+        case EffectGiveDekuShield:
             effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
             effect->giEffect->parameters[0] = ITEM_SHIELD_DEKU;
             break;
-        case effectGiveHylianshield:
+        case EffectGiveHylianShield:
             effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
             effect->giEffect->parameters[0] = ITEM_SHIELD_HYLIAN;
             break;
-        case effectRefillSticks:
+        case EffectRefillSticks:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
             effect->giEffect->parameters[1] = ITEM_STICK;
             break;
-        case effectRefillNuts:
+        case EffectRefillNuts:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
             effect->giEffect->parameters[1] = ITEM_NUT;
             break;
-        case effectRefillBombs:
+        case EffectRefillBombs:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
             effect->giEffect->parameters[1] = ITEM_BOMB;
             break;
-        case effectRefillSeeds:
+        case EffectRefillSeeds:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
             effect->giEffect->parameters[1] = ITEM_SLINGSHOT;
             break;
-        case effectRefillArrows:
+        case EffectRefillArrows:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
             effect->giEffect->parameters[1] = ITEM_BOW;
             break;
-        case effectRefillBombchus:
+        case EffectRefillBombchus:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
             effect->giEffect->parameters[1] = ITEM_BOMBCHU;
             break;
 
         // Take Items and Consumables
-        case effectRemoveHeartContainer:
+        case EffectRemoveHeartContainer:
             effect->giEffect = new GameInteractionEffect::ModifyHeartContainers();
             effect->giEffect->parameters[0] = -1;
             break;
-        case effectEmptyMagic:
+        case EffectEmptyMagic:
             effect->giEffect = new GameInteractionEffect::EmptyMagic();
             break;
-        case effectRemoveRupees:
+        case EffectRemoveRupees:
             effect->giEffect = new GameInteractionEffect::ModifyRupees();
             effect->paramMultiplier = -1;
             break;
-        case effectTakeDekushield:
+        case EffectTakeDekuShield:
             effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
             effect->giEffect->parameters[0] = -ITEM_SHIELD_DEKU;
             break;
-        case effectTakeHylianshield:
+        case EffectTakeHylianShield:
             effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
             effect->giEffect->parameters[0] = -ITEM_SHIELD_HYLIAN;
             break;
-        case effectTakeSticks:
+        case EffectTakeSticks:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
             effect->giEffect->parameters[1] = ITEM_STICK;
             effect->paramMultiplier = -1;
             break;
-        case effectTakeNuts:
+        case EffectTakeNuts:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
             effect->giEffect->parameters[1] = ITEM_NUT;
             effect->paramMultiplier = -1;
             break;
-        case effectTakeBombs:
+        case EffectTakeBombs:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
             effect->giEffect->parameters[1] = ITEM_BOMB;
             effect->paramMultiplier = -1;
             break;
-        case effectTakeSeeds:
+        case EffectTakeSeeds:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
             effect->giEffect->parameters[1] = ITEM_SLINGSHOT;
             effect->paramMultiplier = -1;
             break;
-        case effectTakeArrows:
+        case EffectTakeArrows:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
             effect->giEffect->parameters[1] = ITEM_BOW;
             effect->paramMultiplier = -1;
             break;
-        case effectTakeBombchus:
+        case EffectTakeBombchus:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
             effect->giEffect->parameters[1] = ITEM_BOMBCHU;
             effect->paramMultiplier = -1;
             break;
 
         // Link Size Modifiers
-        case effectGiantLink:
-            effect->category = effectCatLinkSize;
+        case EffectGiantLink:
+            effect->category = EffectCatLinkSize;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
             effect->giEffect->parameters[0] = GI_LINK_SIZE_GIANT;
             break;
-        case effectMinishLink:
-            effect->category = effectCatLinkSize;
+        case EffectMinishLink:
+            effect->category = EffectCatLinkSize;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
             effect->giEffect->parameters[0] = GI_LINK_SIZE_MINISH;
             break;
-        case effectPaperLink:
-            effect->category = effectCatLinkSize;
+        case EffectPaperLink:
+            effect->category = EffectCatLinkSize;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
             effect->giEffect->parameters[0] = GI_LINK_SIZE_PAPER;
             break;
-        case effectSquishedLink:
-            effect->category = effectCatLinkSize;
+        case EffectSquishedLink:
+            effect->category = EffectCatLinkSize;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
             effect->giEffect->parameters[0] = GI_LINK_SIZE_SQUISHED;
             break;
-        case effectInvisibleLink:
-            effect->category = effectCatLinkSize;
+        case EffectInvisibleLink:
+            effect->category = EffectCatLinkSize;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::InvisibleLink();
             break;
 
         // Generic Effects
-        case effectRandomBombTimer:
-            effect->category = effectCatRandomBombFuseTimer;
+        case EffectRandomBombTimer:
+            effect->category = EffectCatRandomBombFuseTimer;
             effect->timeRemaining = 60000;
             effect->giEffect = new GameInteractionEffect::RandomBombFuseTimer();
             break;
-        case effectTimeDawn:
+        case EffectSetTimeToDawn:
             effect->giEffect = new GameInteractionEffect::SetTimeOfDay();
             effect->value[0] = GI_TIMEOFDAY_DAWN;
             break;
-        case effectTimeDusk:
+        case EffectSetTimeToDusk:
             effect->giEffect = new GameInteractionEffect::SetTimeOfDay();
             effect->value[0] = GI_TIMEOFDAY_DUSK;
             break;
 
         // Visual Effects
-        case effectNoUi:
-            effect->category = effectCatUi;
+        case EffectNoUi:
+            effect->category = EffectCatUi;
             effect->timeRemaining = 60000;
             effect->giEffect = new GameInteractionEffect::NoUI();
             break;
-        case effectRainstorm:
-            effect->category = effectCatWeather;
+        case EffectRainstorm:
+            effect->category = EffectCatWeather;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::WeatherRainstorm();
             break;
-        case effectDebugMode:
-            effect->category = effectCatDebugMode;
+        case EffectDebugMode:
+            effect->category = EffectCatDebugMode;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::SetCollisionViewer();
             break;
-        case effectRandomCosmetics:
+        case EffectRandomCosmetics:
             effect->giEffect = new GameInteractionEffect::RandomizeCosmetics();
             break;
 
         // Controls
-        case effectNoZ:
-            effect->category = effectCatNoZ;
+        case EffectNoZButton:
+            effect->category = EffectCatNoZ;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::DisableZTargeting();
             break;
-        case effectReverseControls:
-            effect->category = effectCatReverseControls;
+        case EffectReverseControls:
+            effect->category = EffectCatReverseControls;
             effect->timeRemaining = 60000;
             effect->giEffect = new GameInteractionEffect::ReverseControls();
             break;
-        case effectPacifist:
-            effect->category = effectCatPacifist;
+        case EffectPacifistMode:
+            effect->category = EffectCatPacifist;
             effect->timeRemaining = 15000;
             effect->giEffect = new GameInteractionEffect::PacifistMode();
             break;
-        case effectRandomButtons:
-            effect->category = effectCatRandomButtons;
+        case EffectPressRandomButtons:
+            effect->category = EffectCatRandomButtons;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::PressRandomButton();
             effect->giEffect->parameters[0] = 30;
             break;
-        case effectClearCbuttons:
+        case EffectClearCbuttons:
             effect->giEffect = new GameInteractionEffect::ClearAssignedButtons();
             effect->giEffect->parameters[0] = GI_BUTTONS_CBUTTONS;
             break;
-        case effectClearDpad:
+        case EffectClearDpad:
             effect->giEffect = new GameInteractionEffect::ClearAssignedButtons();
             effect->giEffect->parameters[0] = GI_BUTTONS_DPAD;
             break;
 
         // Teleport Player
-        case effectTpLinkshouse:
+        case EffectTpLinksHouse:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
             effect->giEffect->parameters[0] = GI_TP_DEST_LINKSHOUSE;
             break;
-        case effectTpMinuet:
+        case EffectTpMinuet:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
             effect->giEffect->parameters[0] = GI_TP_DEST_MINUET;
             break;
-        case effectTpBolero:
+        case EffectTpBolero:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
             effect->giEffect->parameters[0] = GI_TP_DEST_BOLERO;
             break;
-        case effectTpSerenade:
+        case EffectTpSerenade:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
             effect->giEffect->parameters[0] = GI_TP_DEST_SERENADE;
             break;
-        case effectTpRequiem:
+        case EffectTpRequiem:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
             effect->giEffect->parameters[0] = GI_TP_DEST_REQUIEM;
             break;
-        case effectTpNocturne:
+        case EffectTpNocturne:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
             effect->giEffect->parameters[0] = GI_TP_DEST_NOCTURNE;
             break;
-        case effectTpPrelude:
+        case EffectTpPrelude:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
             effect->giEffect->parameters[0] = GI_TP_DEST_PRELUDE;
             break;
 
         // Tunic Color (Bidding War)
-        case effectTunicRed:
+        case EffectTunicRed:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
             effect->giEffect->parameters[1] = GI_COLOR_RED;
             break;
-        case effectTunicGreen:
+        case EffectTunicGreen:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
             effect->giEffect->parameters[1] = GI_COLOR_GREEN;
             break;
-        case effectTunicBlue:
+        case EffectTunicBlue:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
             effect->giEffect->parameters[1] = GI_COLOR_BLUE;
             break;
-        case effectTunicOrange:
+        case EffectTunicOrange:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
             effect->giEffect->parameters[1] = GI_COLOR_ORANGE;
             break;
-        case effectTunicYellow:
+        case EffectTunicYellow:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
             effect->giEffect->parameters[1] = GI_COLOR_YELLOW;
             break;
-        case effectTunicPurple:
+        case EffectTunicPurple:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
             effect->giEffect->parameters[1] = GI_COLOR_PURPLE;
             break;
-        case effectTunicPink:
+        case EffectTunicPink:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
             effect->giEffect->parameters[1] = GI_COLOR_PINK;
             break;
-        case effectTunicBrown:
+        case EffectTunicBrown:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
             effect->giEffect->parameters[1] = GI_COLOR_BROWN;
             break;
-        case effectTunicBlack:
+        case EffectTunicBlack:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
             effect->giEffect->parameters[1] = GI_COLOR_BLACK;
             break;
 
         // Navi Color (Bidding War)
-        case effectNaviRed:
+        case EffectNaviRed:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
             effect->giEffect->parameters[1] = GI_COLOR_RED;
             break;
-        case effectNaviGreen:
+        case EffectNaviGreen:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
             effect->giEffect->parameters[1] = GI_COLOR_GREEN;
             break;
-        case effectNaviBlue:
+        case EffectNaviBlue:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
             effect->giEffect->parameters[1] = GI_COLOR_BLUE;
             break;
-        case effectNaviOrange:
+        case EffectNaviOrange:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
             effect->giEffect->parameters[1] = GI_COLOR_ORANGE;
             break;
-        case effectNaviYellow:
+        case EffectNaviYellow:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
             effect->giEffect->parameters[1] = GI_COLOR_YELLOW;
             break;
-        case effectNaviPurple:
+        case EffectNaviPurple:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
             effect->giEffect->parameters[1] = GI_COLOR_PURPLE;
             break;
-        case effectNaviPink:
+        case EffectNaviPink:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
             effect->giEffect->parameters[1] = GI_COLOR_PINK;
             break;
-        case effectNaviBrown:
+        case EffectNaviBrown:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
             effect->giEffect->parameters[1] = GI_COLOR_BROWN;
             break;
-        case effectNaviBlack:
+        case EffectNaviBlack:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
             effect->giEffect->parameters[1] = GI_COLOR_BLACK;
             break;
 
         // Link's Hair Color (Bidding War)
-        case effectHairRed:
+        case EffectHairRed:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
             effect->giEffect->parameters[1] = GI_COLOR_RED;
             break;
-        case effectHairGreen:
+        case EffectHairGreen:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
             effect->giEffect->parameters[1] = GI_COLOR_GREEN;
             break;
-        case effectHairBlue:
+        case EffectHairBlue:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
             effect->giEffect->parameters[1] = GI_COLOR_BLUE;
             break;
-        case effectHairOrange:
+        case EffectHairOrange:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
             effect->giEffect->parameters[1] = GI_COLOR_ORANGE;
             break;
-        case effectHairYellow:
+        case EffectHairYellow:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
             effect->giEffect->parameters[1] = GI_COLOR_YELLOW;
             break;
-        case effectHairPurple:
+        case EffectHairPurple:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
             effect->giEffect->parameters[1] = GI_COLOR_PURPLE;
             break;
-        case effectHairPink:
+        case EffectHairPink:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
             effect->giEffect->parameters[1] = GI_COLOR_PINK;
             break;
-        case effectHairBrown:
+        case EffectHairBrown:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
             effect->giEffect->parameters[1] = GI_COLOR_BROWN;
             break;
-        case effectHairBlack:
+        case EffectHairBlack:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
             effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
             effect->giEffect->parameters[1] = GI_COLOR_BLACK;
@@ -812,7 +812,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     }
 
     if (!effect->category) {
-        effect->category = effectCatNone;
+        effect->category = EffectCatNone;
     }
 
     return effect;
