@@ -193,7 +193,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
 
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
-        ImGui::Text(seqData.label.c_str());
+        ImGui::Text("%s", seqData.label.c_str());
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(-FLT_MIN);
         const int initialValue = map.contains(currentValue) ? currentValue : defaultValue;
@@ -493,7 +493,7 @@ void DrawSfxEditor(bool& open) {
                         ImGui::SameLine();
                         DrawTypeChip(seqInfo->category);
                         ImGui::SameLine();
-                        ImGui::Text(seqInfo->label.c_str());
+                        ImGui::Text("%s", seqInfo->label.c_str());
                     }
                 }
                 ImGui::EndChild();
@@ -517,7 +517,7 @@ void DrawSfxEditor(bool& open) {
                         ImGui::SameLine();
                         DrawTypeChip(seqInfo->category);
                         ImGui::SameLine();
-                        ImGui::Text(seqInfo->label.c_str());
+                        ImGui::Text("%s", seqInfo->label.c_str());
                     }
                 }
                 ImGui::EndChild();
