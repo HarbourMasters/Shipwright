@@ -182,9 +182,7 @@ AudioCollection::AudioCollection() {
 }
 
 void AudioCollection::AddToCollection(char* otrPath, uint16_t seqNum) {
-    // std::vector<std::string> splitName = StringHelper::Split(std::string(otrPath), "/");
-    // std::string fileName = splitName[splitName.size() - 1];
-    std::string fileName = std::filesystem::path(otrPath).filename();
+    std::string fileName = std::filesystem::path(otrPath).filename().string();
     std::vector<std::string> splitFileName = StringHelper::Split(fileName, "_");
     std::string sequenceName = splitFileName[0];
     SeqType type = SEQ_BGM_CUSTOM;
