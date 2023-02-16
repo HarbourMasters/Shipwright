@@ -277,7 +277,7 @@ const char* AudioCollection::GetSequenceName(uint16_t seqId) {
     if (seqIt != sequenceMap.end()) {
         return seqIt->second.label.c_str();
     }
-    return NULL;
+    return nullptr;
 }
 
 extern "C" const char* AudioCollection_GetSequenceName(uint16_t seqId) {
