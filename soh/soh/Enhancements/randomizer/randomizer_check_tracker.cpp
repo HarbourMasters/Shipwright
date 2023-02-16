@@ -31,6 +31,7 @@ void UpdateOrdering(bool init = false);
 bool ShouldUpdateChecks();
 bool CompareCheckObject(RandomizerCheckObject i, RandomizerCheckObject j);
 bool HasItemBeenCollected(RandomizerCheckObject obj);
+bool HasItemBeenSkipped(RandomizerCheckObject obj);
 void RainbowTick();
 RandomizerCheckShow GetCheckStatus(RandomizerCheckObject rcObj, int idx);
 
@@ -700,8 +701,7 @@ RandomizerCheckShow GetCheckStatus(RandomizerCheckObject rcObj, int idx) {
     if (HasItemBeenCollected(rcObj))
         return RCSHOW_SAVED; // TODO: use SAVED until we hook into game elements without requiring a save. Then we'll use CHECKED
 
-    //If the status hasn't updated, keep showing as skipped
-    if (checkStatusMap.find(rcObj.rc)->second == RCSHOW_SKIPPED)
+    if (HasItemBeenSkipped(rcObj))
         return RCSHOW_SKIPPED;
 
     return RCSHOW_UNCHECKED;
@@ -709,6 +709,9 @@ RandomizerCheckShow GetCheckStatus(RandomizerCheckObject rcObj, int idx) {
     // TODO Seen, Hinted, Scummed, saved/checked
 }
 
+bool HasItemBeenSkipped(RandomizerCheckObject obj) {
+    return gSaveContext.sohStats.locationsSkipped[obj.rc] == 1;
+}
 
 bool HasItemBeenCollected(RandomizerCheckObject obj) {
     ItemLocation* x = Location(obj.rc);
@@ -816,10 +819,13 @@ void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckSta
     if (*thisCheckStatus == RCSHOW_UNCHECKED || *thisCheckStatus == RCSHOW_SKIPPED) {
         bool skipped = (*thisCheckStatus == RCSHOW_SKIPPED);
         if (ImGui::ArrowButton(std::to_string(rcObj.rc).c_str(), skipped ? ImGuiDir_Left : ImGuiDir_Right)) {
-            if (skipped)
+            if (skipped) {
+                gSaveContext.sohStats.locationsSkipped[rcObj.rc] = 0;
                 *thisCheckStatus = RCSHOW_UNCHECKED;
-            else
+            } else {
+                gSaveContext.sohStats.locationsSkipped[rcObj.rc] = 1;
                 *thisCheckStatus = RCSHOW_SKIPPED;
+            }
         }
     } else {
         ImGui::InvisibleButton("", ImVec2(20.0f, 10.0f));
