@@ -888,6 +888,12 @@ extern "C" char* ResourceMgr_LoadFileRaw(const char* resName) {
     // TODO: This should not exist. Anywhere we are loading textures with this function should be Resources instead.
     // We are not currently packing our otr archive with certain textures as resources with otr headers.
     static std::unordered_map<std::string, std::shared_ptr<Ship::OtrFile>> cachedRawFiles;
+
+    auto cacheFind = cachedRawFiles.find(resName);
+    if (cacheFind != cachedRawFiles.end()) {
+        return cacheFind->second->Buffer.data();
+    }
+    
     auto file = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(resName);
     cachedRawFiles[resName] = file;
 
