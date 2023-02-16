@@ -97,6 +97,13 @@ static const __declspec(align(2)) char gDampeSkel[] = dgDampeSkel;
 static const char gDampeSkel[] __attribute__((aligned (2))) = dgDampeSkel;
 #endif
             
+#define dobject_tkTLUT_003780 "__OTR__objects/object_tk/object_tkTLUT_003780"
+#ifdef _WIN32
+static const __declspec(align(2)) char object_tkTLUT_003780[] = dobject_tkTLUT_003780;
+#else
+static const char object_tkTLUT_003780[] __attribute__((aligned (2))) = dobject_tkTLUT_003780;
+#endif
+            
 #define dobject_tkTex_009CC0 "__OTR__objects/object_tk/object_tkTex_009CC0"
 #ifdef _WIN32
 static const __declspec(align(2)) char object_tkTex_009CC0[] = dobject_tkTex_009CC0;
@@ -256,13 +263,6 @@ static const char gDampeSkelLimbsLimb_00BDE4DL_008410[] __attribute__((aligned (
 static const __declspec(align(2)) char gDampeSkelLimbsLimb_00BDF0DL_008958[] = dgDampeSkelLimbsLimb_00BDF0DL_008958;
 #else
 static const char gDampeSkelLimbsLimb_00BDF0DL_008958[] __attribute__((aligned (2))) = dgDampeSkelLimbsLimb_00BDF0DL_008958;
-#endif
-            
-#define dobject_tkTLUT_003780 "__OTR__objects/object_tk/object_tkTLUT_003780"
-#ifdef _WIN32
-static const __declspec(align(2)) char object_tkTLUT_003780[] = dobject_tkTLUT_003780;
-#else
-static const char object_tkTLUT_003780[] __attribute__((aligned (2))) = dobject_tkTLUT_003780;
 #endif
             
 #define dobject_tkTex_005440 "__OTR__objects/object_tk/object_tkTex_005440"

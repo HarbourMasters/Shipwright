@@ -76,11 +76,11 @@ static const __declspec(align(2)) char gDcOpeningCs[] = dgDcOpeningCs;
 static const char gDcOpeningCs[] __attribute__((aligned (2))) = dgDcOpeningCs;
 #endif
             
-#define dddan_sceneCollisionHeader_011D38 "__OTR__scenes/nonmq/ddan_scene/ddan_sceneCollisionHeader_011D38"
+#define dddan_sceneCollisionHeader_011D40 "__OTR__scenes/nonmq/ddan_scene/ddan_sceneCollisionHeader_011D40"
 #ifdef _WIN32
-static const __declspec(align(2)) char ddan_sceneCollisionHeader_011D38[] = dddan_sceneCollisionHeader_011D38;
+static const __declspec(align(2)) char ddan_sceneCollisionHeader_011D40[] = dddan_sceneCollisionHeader_011D40;
 #else
-static const char ddan_sceneCollisionHeader_011D38[] __attribute__((aligned (2))) = dddan_sceneCollisionHeader_011D38;
+static const char ddan_sceneCollisionHeader_011D40[] __attribute__((aligned (2))) = dddan_sceneCollisionHeader_011D40;
 #endif
             
 #define dddan_sceneTLUT_011D70 "__OTR__scenes/nonmq/ddan_scene/ddan_sceneTLUT_011D70"

@@ -1,72 +1,72 @@
 #pragma once
-#define dice_doukutu_room_9DL_004428 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9DL_004428"
+#define dice_doukutu_room_9DL_004468 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9DL_004468"
 #ifdef _WIN32
-static const __declspec(align(2)) char ice_doukutu_room_9DL_004428[] = dice_doukutu_room_9DL_004428;
+static const __declspec(align(2)) char ice_doukutu_room_9DL_004468[] = dice_doukutu_room_9DL_004468;
 #else
-static const char ice_doukutu_room_9DL_004428[] __attribute__((aligned (2))) = dice_doukutu_room_9DL_004428;
+static const char ice_doukutu_room_9DL_004468[] __attribute__((aligned (2))) = dice_doukutu_room_9DL_004468;
 #endif
             
-#define dice_doukutu_room_9Tex_005C60 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9Tex_005C60"
+#define dice_doukutu_room_9Tex_005CA0 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9Tex_005CA0"
 #ifdef _WIN32
-static const __declspec(align(2)) char ice_doukutu_room_9Tex_005C60[] = dice_doukutu_room_9Tex_005C60;
+static const __declspec(align(2)) char ice_doukutu_room_9Tex_005CA0[] = dice_doukutu_room_9Tex_005CA0;
 #else
-static const char ice_doukutu_room_9Tex_005C60[] __attribute__((aligned (2))) = dice_doukutu_room_9Tex_005C60;
+static const char ice_doukutu_room_9Tex_005CA0[] __attribute__((aligned (2))) = dice_doukutu_room_9Tex_005CA0;
 #endif
             
-#define dice_doukutu_room_9Tex_006C60 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9Tex_006C60"
+#define dice_doukutu_room_9Tex_006CA0 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9Tex_006CA0"
 #ifdef _WIN32
-static const __declspec(align(2)) char ice_doukutu_room_9Tex_006C60[] = dice_doukutu_room_9Tex_006C60;
+static const __declspec(align(2)) char ice_doukutu_room_9Tex_006CA0[] = dice_doukutu_room_9Tex_006CA0;
 #else
-static const char ice_doukutu_room_9Tex_006C60[] __attribute__((aligned (2))) = dice_doukutu_room_9Tex_006C60;
+static const char ice_doukutu_room_9Tex_006CA0[] __attribute__((aligned (2))) = dice_doukutu_room_9Tex_006CA0;
 #endif
             
-#define dice_doukutu_room_9Tex_004460 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9Tex_004460"
+#define dice_doukutu_room_9Tex_0044A0 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9Tex_0044A0"
 #ifdef _WIN32
-static const __declspec(align(2)) char ice_doukutu_room_9Tex_004460[] = dice_doukutu_room_9Tex_004460;
+static const __declspec(align(2)) char ice_doukutu_room_9Tex_0044A0[] = dice_doukutu_room_9Tex_0044A0;
 #else
-static const char ice_doukutu_room_9Tex_004460[] __attribute__((aligned (2))) = dice_doukutu_room_9Tex_004460;
+static const char ice_doukutu_room_9Tex_0044A0[] __attribute__((aligned (2))) = dice_doukutu_room_9Tex_0044A0;
 #endif
             
-#define dice_doukutu_room_9Tex_005460 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9Tex_005460"
+#define dice_doukutu_room_9Tex_0054A0 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9Tex_0054A0"
 #ifdef _WIN32
-static const __declspec(align(2)) char ice_doukutu_room_9Tex_005460[] = dice_doukutu_room_9Tex_005460;
+static const __declspec(align(2)) char ice_doukutu_room_9Tex_0054A0[] = dice_doukutu_room_9Tex_0054A0;
 #else
-static const char ice_doukutu_room_9Tex_005460[] __attribute__((aligned (2))) = dice_doukutu_room_9Tex_005460;
+static const char ice_doukutu_room_9Tex_0054A0[] __attribute__((aligned (2))) = dice_doukutu_room_9Tex_0054A0;
 #endif
             
-#define dice_doukutu_room_9Tex_006460 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9Tex_006460"
+#define dice_doukutu_room_9Tex_0064A0 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9Tex_0064A0"
 #ifdef _WIN32
-static const __declspec(align(2)) char ice_doukutu_room_9Tex_006460[] = dice_doukutu_room_9Tex_006460;
+static const __declspec(align(2)) char ice_doukutu_room_9Tex_0064A0[] = dice_doukutu_room_9Tex_0064A0;
 #else
-static const char ice_doukutu_room_9Tex_006460[] __attribute__((aligned (2))) = dice_doukutu_room_9Tex_006460;
+static const char ice_doukutu_room_9Tex_0064A0[] __attribute__((aligned (2))) = dice_doukutu_room_9Tex_0064A0;
 #endif
             
-#define dice_doukutu_room_9DL_007640 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9DL_007640"
+#define dice_doukutu_room_9DL_007680 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9DL_007680"
 #ifdef _WIN32
-static const __declspec(align(2)) char ice_doukutu_room_9DL_007640[] = dice_doukutu_room_9DL_007640;
+static const __declspec(align(2)) char ice_doukutu_room_9DL_007680[] = dice_doukutu_room_9DL_007680;
 #else
-static const char ice_doukutu_room_9DL_007640[] __attribute__((aligned (2))) = dice_doukutu_room_9DL_007640;
+static const char ice_doukutu_room_9DL_007680[] __attribute__((aligned (2))) = dice_doukutu_room_9DL_007680;
 #endif
             
-#define dice_doukutu_room_9Tex_007650 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9Tex_007650"
+#define dice_doukutu_room_9Tex_007690 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9Tex_007690"
 #ifdef _WIN32
-static const __declspec(align(2)) char ice_doukutu_room_9Tex_007650[] = dice_doukutu_room_9Tex_007650;
+static const __declspec(align(2)) char ice_doukutu_room_9Tex_007690[] = dice_doukutu_room_9Tex_007690;
 #else
-static const char ice_doukutu_room_9Tex_007650[] __attribute__((aligned (2))) = dice_doukutu_room_9Tex_007650;
+static const char ice_doukutu_room_9Tex_007690[] __attribute__((aligned (2))) = dice_doukutu_room_9Tex_007690;
 #endif
             
-#define dice_doukutu_room_9Set_000190DL_004428 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9Set_000190DL_004428"
+#define dice_doukutu_room_9Set_0001D0DL_004468 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9Set_0001D0DL_004468"
 #ifdef _WIN32
-static const __declspec(align(2)) char ice_doukutu_room_9Set_000190DL_004428[] = dice_doukutu_room_9Set_000190DL_004428;
+static const __declspec(align(2)) char ice_doukutu_room_9Set_0001D0DL_004468[] = dice_doukutu_room_9Set_0001D0DL_004468;
 #else
-static const char ice_doukutu_room_9Set_000190DL_004428[] __attribute__((aligned (2))) = dice_doukutu_room_9Set_000190DL_004428;
+static const char ice_doukutu_room_9Set_0001D0DL_004468[] __attribute__((aligned (2))) = dice_doukutu_room_9Set_0001D0DL_004468;
 #endif
             
-#define dice_doukutu_room_9Set_000190DL_007640 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9Set_000190DL_007640"
+#define dice_doukutu_room_9Set_0001D0DL_007680 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_9Set_0001D0DL_007680"
 #ifdef _WIN32
-static const __declspec(align(2)) char ice_doukutu_room_9Set_000190DL_007640[] = dice_doukutu_room_9Set_000190DL_007640;
+static const __declspec(align(2)) char ice_doukutu_room_9Set_0001D0DL_007680[] = dice_doukutu_room_9Set_0001D0DL_007680;
 #else
-static const char ice_doukutu_room_9Set_000190DL_007640[] __attribute__((aligned (2))) = dice_doukutu_room_9Set_000190DL_007640;
+static const char ice_doukutu_room_9Set_0001D0DL_007680[] __attribute__((aligned (2))) = dice_doukutu_room_9Set_0001D0DL_007680;
 #endif
             
 

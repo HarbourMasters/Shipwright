@@ -1,86 +1,142 @@
 #pragma once
-#define dHAKAdan_room_2DL_006AB8 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2DL_006AB8"
+#define dHAKAdan_room_2DL_004960 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2DL_004960"
 #ifdef _WIN32
-static const __declspec(align(2)) char HAKAdan_room_2DL_006AB8[] = dHAKAdan_room_2DL_006AB8;
+static const __declspec(align(2)) char HAKAdan_room_2DL_004960[] = dHAKAdan_room_2DL_004960;
 #else
-static const char HAKAdan_room_2DL_006AB8[] __attribute__((aligned (2))) = dHAKAdan_room_2DL_006AB8;
+static const char HAKAdan_room_2DL_004960[] __attribute__((aligned (2))) = dHAKAdan_room_2DL_004960;
 #endif
             
-#define dHAKAdan_room_2Tex_009B08 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_009B08"
+#define dHAKAdan_room_2Tex_0081D8 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_0081D8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HAKAdan_room_2Tex_009B08[] = dHAKAdan_room_2Tex_009B08;
+static const __declspec(align(2)) char HAKAdan_room_2Tex_0081D8[] = dHAKAdan_room_2Tex_0081D8;
 #else
-static const char HAKAdan_room_2Tex_009B08[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_009B08;
+static const char HAKAdan_room_2Tex_0081D8[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_0081D8;
 #endif
             
-#define dHAKAdan_room_2Tex_009108 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_009108"
+#define dHAKAdan_room_2Tex_007FD8 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_007FD8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HAKAdan_room_2Tex_009108[] = dHAKAdan_room_2Tex_009108;
+static const __declspec(align(2)) char HAKAdan_room_2Tex_007FD8[] = dHAKAdan_room_2Tex_007FD8;
 #else
-static const char HAKAdan_room_2Tex_009108[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_009108;
+static const char HAKAdan_room_2Tex_007FD8[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_007FD8;
 #endif
             
-#define dHAKAdan_room_2Tex_00A308 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_00A308"
+#define dHAKAdan_room_2Tex_0073D8 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_0073D8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HAKAdan_room_2Tex_00A308[] = dHAKAdan_room_2Tex_00A308;
+static const __declspec(align(2)) char HAKAdan_room_2Tex_0073D8[] = dHAKAdan_room_2Tex_0073D8;
 #else
-static const char HAKAdan_room_2Tex_00A308[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_00A308;
+static const char HAKAdan_room_2Tex_0073D8[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_0073D8;
 #endif
             
-#define dHAKAdan_room_2Tex_00A708 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_00A708"
+#define dHAKAdan_room_2DL_006828 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2DL_006828"
 #ifdef _WIN32
-static const __declspec(align(2)) char HAKAdan_room_2Tex_00A708[] = dHAKAdan_room_2Tex_00A708;
+static const __declspec(align(2)) char HAKAdan_room_2DL_006828[] = dHAKAdan_room_2DL_006828;
 #else
-static const char HAKAdan_room_2Tex_00A708[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_00A708;
+static const char HAKAdan_room_2DL_006828[] __attribute__((aligned (2))) = dHAKAdan_room_2DL_006828;
 #endif
             
-#define dHAKAdan_room_2Tex_00A508 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_00A508"
+#define dHAKAdan_room_2DL_005260 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2DL_005260"
 #ifdef _WIN32
-static const __declspec(align(2)) char HAKAdan_room_2Tex_00A508[] = dHAKAdan_room_2Tex_00A508;
+static const __declspec(align(2)) char HAKAdan_room_2DL_005260[] = dHAKAdan_room_2DL_005260;
 #else
-static const char HAKAdan_room_2Tex_00A508[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_00A508;
+static const char HAKAdan_room_2DL_005260[] __attribute__((aligned (2))) = dHAKAdan_room_2DL_005260;
 #endif
             
-#define dHAKAdan_room_2Tex_009908 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_009908"
+#define dHAKAdan_room_2DL_006A90 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2DL_006A90"
 #ifdef _WIN32
-static const __declspec(align(2)) char HAKAdan_room_2Tex_009908[] = dHAKAdan_room_2Tex_009908;
+static const __declspec(align(2)) char HAKAdan_room_2DL_006A90[] = dHAKAdan_room_2DL_006A90;
 #else
-static const char HAKAdan_room_2Tex_009908[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_009908;
+static const char HAKAdan_room_2DL_006A90[] __attribute__((aligned (2))) = dHAKAdan_room_2DL_006A90;
 #endif
             
-#define dHAKAdan_room_2Tex_006B08 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_006B08"
+#define dHAKAdan_room_2Tex_0077D8 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_0077D8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HAKAdan_room_2Tex_006B08[] = dHAKAdan_room_2Tex_006B08;
+static const __declspec(align(2)) char HAKAdan_room_2Tex_0077D8[] = dHAKAdan_room_2Tex_0077D8;
 #else
-static const char HAKAdan_room_2Tex_006B08[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_006B08;
+static const char HAKAdan_room_2Tex_0077D8[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_0077D8;
 #endif
             
-#define dHAKAdan_room_2Tex_008108 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_008108"
+#define dHAKAdan_room_2DL_002248 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2DL_002248"
 #ifdef _WIN32
-static const __declspec(align(2)) char HAKAdan_room_2Tex_008108[] = dHAKAdan_room_2Tex_008108;
+static const __declspec(align(2)) char HAKAdan_room_2DL_002248[] = dHAKAdan_room_2DL_002248;
 #else
-static const char HAKAdan_room_2Tex_008108[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_008108;
+static const char HAKAdan_room_2DL_002248[] __attribute__((aligned (2))) = dHAKAdan_room_2DL_002248;
 #endif
             
-#define dHAKAdan_room_2Tex_007F08 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_007F08"
+#define dHAKAdan_room_2Tex_0091D8 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_0091D8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HAKAdan_room_2Tex_007F08[] = dHAKAdan_room_2Tex_007F08;
+static const __declspec(align(2)) char HAKAdan_room_2Tex_0091D8[] = dHAKAdan_room_2Tex_0091D8;
 #else
-static const char HAKAdan_room_2Tex_007F08[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_007F08;
+static const char HAKAdan_room_2Tex_0091D8[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_0091D8;
 #endif
             
-#define dHAKAdan_room_2Tex_007308 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_007308"
+#define dHAKAdan_room_2DL_003570 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2DL_003570"
 #ifdef _WIN32
-static const __declspec(align(2)) char HAKAdan_room_2Tex_007308[] = dHAKAdan_room_2Tex_007308;
+static const __declspec(align(2)) char HAKAdan_room_2DL_003570[] = dHAKAdan_room_2DL_003570;
 #else
-static const char HAKAdan_room_2Tex_007308[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_007308;
+static const char HAKAdan_room_2DL_003570[] __attribute__((aligned (2))) = dHAKAdan_room_2DL_003570;
 #endif
             
-#define dHAKAdan_room_2Tex_007708 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_007708"
+#define dHAKAdan_room_2Tex_00A3D8 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_00A3D8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HAKAdan_room_2Tex_007708[] = dHAKAdan_room_2Tex_007708;
+static const __declspec(align(2)) char HAKAdan_room_2Tex_00A3D8[] = dHAKAdan_room_2Tex_00A3D8;
 #else
-static const char HAKAdan_room_2Tex_007708[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_007708;
+static const char HAKAdan_room_2Tex_00A3D8[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_00A3D8;
+#endif
+            
+#define dHAKAdan_room_2Tex_00A7D8 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_00A7D8"
+#ifdef _WIN32
+static const __declspec(align(2)) char HAKAdan_room_2Tex_00A7D8[] = dHAKAdan_room_2Tex_00A7D8;
+#else
+static const char HAKAdan_room_2Tex_00A7D8[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_00A7D8;
+#endif
+            
+#define dHAKAdan_room_2Tex_00A5D8 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_00A5D8"
+#ifdef _WIN32
+static const __declspec(align(2)) char HAKAdan_room_2Tex_00A5D8[] = dHAKAdan_room_2Tex_00A5D8;
+#else
+static const char HAKAdan_room_2Tex_00A5D8[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_00A5D8;
+#endif
+            
+#define dHAKAdan_room_2Tex_0099D8 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_0099D8"
+#ifdef _WIN32
+static const __declspec(align(2)) char HAKAdan_room_2Tex_0099D8[] = dHAKAdan_room_2Tex_0099D8;
+#else
+static const char HAKAdan_room_2Tex_0099D8[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_0099D8;
+#endif
+            
+#define dHAKAdan_room_2Tex_006BD8 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_006BD8"
+#ifdef _WIN32
+static const __declspec(align(2)) char HAKAdan_room_2Tex_006BD8[] = dHAKAdan_room_2Tex_006BD8;
+#else
+static const char HAKAdan_room_2Tex_006BD8[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_006BD8;
+#endif
+            
+#define dHAKAdan_room_2DL_005B28 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2DL_005B28"
+#ifdef _WIN32
+static const __declspec(align(2)) char HAKAdan_room_2DL_005B28[] = dHAKAdan_room_2DL_005B28;
+#else
+static const char HAKAdan_room_2DL_005B28[] __attribute__((aligned (2))) = dHAKAdan_room_2DL_005B28;
+#endif
+            
+#define dHAKAdan_room_2Tex_009BD8 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2Tex_009BD8"
+#ifdef _WIN32
+static const __declspec(align(2)) char HAKAdan_room_2Tex_009BD8[] = dHAKAdan_room_2Tex_009BD8;
+#else
+static const char HAKAdan_room_2Tex_009BD8[] __attribute__((aligned (2))) = dHAKAdan_room_2Tex_009BD8;
+#endif
+            
+#define dHAKAdan_room_2DL_006158 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2DL_006158"
+#ifdef _WIN32
+static const __declspec(align(2)) char HAKAdan_room_2DL_006158[] = dHAKAdan_room_2DL_006158;
+#else
+static const char HAKAdan_room_2DL_006158[] __attribute__((aligned (2))) = dHAKAdan_room_2DL_006158;
+#endif
+            
+#define dHAKAdan_room_2DL_000A50 "__OTR__scenes/nonmq/HAKAdan_scene/HAKAdan_room_2DL_000A50"
+#ifdef _WIN32
+static const __declspec(align(2)) char HAKAdan_room_2DL_000A50[] = dHAKAdan_room_2DL_000A50;
+#else
+static const char HAKAdan_room_2DL_000A50[] __attribute__((aligned (2))) = dHAKAdan_room_2DL_000A50;
 #endif
             
 
