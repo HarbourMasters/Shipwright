@@ -678,37 +678,45 @@ static Text BuildGanonBossKeyText() {
   return Text()+"$b"+ganonBossKeyText+"^";
 }
 
-void CreateAltarText() {
+void CreateAltarText(Option withHints) {
 
   //Child Altar Text
-  childAltarText = Hint(SPIRITUAL_STONE_TEXT_START).GetText()+"^"+
-  //Spiritual Stones
-      (StartingKokiriEmerald.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                              : BuildDungeonRewardText(KOKIRI_EMERALD)) +
-      (StartingGoronRuby.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                          : BuildDungeonRewardText(GORON_RUBY)) +
-      (StartingZoraSapphire.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                             : BuildDungeonRewardText(ZORA_SAPPHIRE)) +
-  //How to open Door of Time, the event trigger is necessary to read the altar multiple times
-  BuildDoorOfTimeText();
+  if (withHints) {
+    childAltarText = Hint(SPIRITUAL_STONE_TEXT_START).GetText()+"^"+
+    //Spiritual Stones
+        (StartingKokiriEmerald.Value<uint8_t>() ? Text{ "##", "##", "##" }
+                                                : BuildDungeonRewardText(KOKIRI_EMERALD)) +
+        (StartingGoronRuby.Value<uint8_t>() ? Text{ "##", "##", "##" }
+                                            : BuildDungeonRewardText(GORON_RUBY)) +
+        (StartingZoraSapphire.Value<uint8_t>() ? Text{ "##", "##", "##" }
+                                              : BuildDungeonRewardText(ZORA_SAPPHIRE)) +
+    //How to open Door of Time, the event trigger is necessary to read the altar multiple times
+    BuildDoorOfTimeText();
+  } else {
+    childAltarText = BuildDoorOfTimeText();
+  }
+
   CreateMessageFromTextObject(0x7040, 0, 2, 3, AddColorsAndFormat(childAltarText, {QM_GREEN, QM_RED, QM_BLUE}));
 
   //Adult Altar Text
-  adultAltarText = Hint(ADULT_ALTAR_TEXT_START).GetText()+"^"+
-  //Medallion Areas
-      (StartingLightMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                               : BuildDungeonRewardText(LIGHT_MEDALLION)) +
-      (StartingForestMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                                : BuildDungeonRewardText(FOREST_MEDALLION)) +
-      (StartingFireMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                              : BuildDungeonRewardText(FIRE_MEDALLION)) +
-      (StartingWaterMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                               : BuildDungeonRewardText(WATER_MEDALLION)) +
-      (StartingSpiritMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                                : BuildDungeonRewardText(SPIRIT_MEDALLION)) +
-      (StartingShadowMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                                : BuildDungeonRewardText(SHADOW_MEDALLION)) +
-
+  adultAltarText = Hint(ADULT_ALTAR_TEXT_START).GetText() + "^";
+  if (withHints) {
+    adultAltarText = adultAltarText +
+    //Medallion Areas
+        (StartingLightMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
+                                                : BuildDungeonRewardText(LIGHT_MEDALLION)) +
+        (StartingForestMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
+                                                  : BuildDungeonRewardText(FOREST_MEDALLION)) +
+        (StartingFireMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
+                                                : BuildDungeonRewardText(FIRE_MEDALLION)) +
+        (StartingWaterMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
+                                                : BuildDungeonRewardText(WATER_MEDALLION)) +
+        (StartingSpiritMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
+                                                  : BuildDungeonRewardText(SPIRIT_MEDALLION)) +
+        (StartingShadowMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
+                                                  : BuildDungeonRewardText(SHADOW_MEDALLION));
+  }
+  adultAltarText = adultAltarText + 
   //Bridge requirement
   BuildBridgeReqsText()+
 
