@@ -3123,9 +3123,7 @@ void Message_TTS_Update(PlayState* play) {
     if (msgCtx->msgMode == MSGMODE_TEXT_NEXT_MSG || msgCtx->msgMode == MSGMODE_DISPLAY_SONG_PLAYED_TEXT_BEGIN || (msgCtx->msgMode == MSGMODE_TEXT_CONTINUING && msgCtx->stateTimer == 1)) {
         ttsHasNewMessage = 1;
     } else if (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING || msgCtx->msgMode == MSGMODE_TEXT_AWAIT_NEXT || msgCtx->msgMode == MSGMODE_TEXT_DONE || msgCtx->msgMode == MSGMODE_TEXT_DELAYED_BREAK
-               
                || msgCtx->msgMode == MSGMODE_OCARINA_STARTING || msgCtx->msgMode == MSGMODE_OCARINA_PLAYING
-               
                || msgCtx->msgMode == MSGMODE_DISPLAY_SONG_PLAYED_TEXT || msgCtx->msgMode == MSGMODE_DISPLAY_SONG_PLAYED_TEXT || msgCtx->msgMode == MSGMODE_SONG_PLAYED_ACT_BEGIN || msgCtx->msgMode == MSGMODE_SONG_PLAYED_ACT || msgCtx->msgMode == MSGMODE_SONG_PLAYBACK_STARTING || msgCtx->msgMode == MSGMODE_SONG_PLAYBACK || msgCtx->msgMode == MSGMODE_SONG_DEMONSTRATION_STARTING || msgCtx->msgMode == MSGMODE_SONG_DEMONSTRATION_SELECT_INSTRUMENT || msgCtx->msgMode == MSGMODE_SONG_DEMONSTRATION
     ) {
         if (ttsHasNewMessage) {
@@ -3139,8 +3137,6 @@ void Message_TTS_Update(PlayState* play) {
         } else if (msgCtx->msgMode == MSGMODE_TEXT_DONE && msgCtx->choiceNum > 0 && msgCtx->choiceIndex != ttsCurrentHighlightedChoice) {
             ttsCurrentHighlightedChoice = msgCtx->choiceIndex;
             uint16_t startOffset = 0;
-            uint16_t endOffset = 0;
-            
             while (startOffset < msgCtx->decodedTextLen) {
                 if (msgCtx->msgBufDecoded[startOffset] == MESSAGE_TWO_CHOICE || msgCtx->msgBufDecoded[startOffset] == MESSAGE_THREE_CHOICE) {
                     startOffset++;
@@ -3149,6 +3145,7 @@ void Message_TTS_Update(PlayState* play) {
                 startOffset++;
             }
             
+            uint16_t endOffset = 0;
             if (startOffset < msgCtx->decodedTextLen) {
                 uint8_t i = msgCtx->choiceIndex;
                 while (i-- > 0) {
