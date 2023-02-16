@@ -610,9 +610,32 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     seqPlayer->delay = 0;
     seqPlayer->finished = 0;
     seqPlayer->playerIdx = playerIdx;
+
+    // Fix for barinade boss fight starting music multiple times
+    // this is not noticeable if the sequence is authentic, since the "Boss Battle"
+    // sequence begins with some silence
+    if (gPlayState != NULL &&
+        gPlayState->sceneNum == SCENE_BDAN_BOSS &&
+        playerIdx == SEQ_PLAYER_BGM_MAIN &&
+        seqId != NA_BGM_BOSS) {
+        
+        seqPlayer->delay = 10;
+    }
+    
     AudioSeq_SkipForwardSequence(seqPlayer);
     //! @bug missing return (but the return value is not used so it's not UB)
-    if (CVarGetInteger("gSeqNameOverlay", 0) && playerIdx == SEQ_PLAYER_BGM_MAIN) {
+    
+    // Keep track of the previous sequence/scene so we don't repeat notifications
+    static uint16_t previousSeqId = UINT16_MAX;
+    static int16_t previousSceneNum = INT16_MAX;
+    if (CVarGetInteger("gSeqNameOverlay", 0) &&
+        playerIdx == SEQ_PLAYER_BGM_MAIN &&
+        (seqId != previousSeqId || (gPlayState != NULL && gPlayState->sceneNum != previousSceneNum))) {
+        
+        previousSeqId = seqId;
+        if (gPlayState != NULL) {
+            previousSceneNum = gPlayState->sceneNum;
+        }
         const char* sequenceName = AudioCollection_GetSequenceName(seqId);
         if (sequenceName != NULL) {
             Overlay_DisplayText_Seconds(CVarGetInteger("gSeqNameOverlayDuration", 5), sequenceName);
