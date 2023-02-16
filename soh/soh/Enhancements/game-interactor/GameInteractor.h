@@ -4,7 +4,6 @@
 #define GameInteractor_h
 
 #include "GameInteractionEffect.h"
-#include "z64.h"
 
 typedef enum {
     /* 0x00 */ GI_LINK_SIZE_NORMAL,
@@ -84,15 +83,15 @@ public:
         }
     }
 
-    DEFINE_HOOK(OnReceiveItem, void(u8 item));
-    DEFINE_HOOK(OnSceneInit, void(s16 sceneNum));
+    DEFINE_HOOK(OnReceiveItem, void(uint8_t item));
+    DEFINE_HOOK(OnSceneInit, void(int16_t sceneNum));
     
     DEFINE_HOOK(OnSaveFile, void(int fileNum));
     DEFINE_HOOK(OnLoadFile, void(int fileNum));
     DEFINE_HOOK(OnDeleteFile, void(int fileNum));
     
     DEFINE_HOOK(OnDialogMessage, void());
-    DEFINE_HOOK(OnPresentBossTitleCard, void(int16_t bossActorId));
+    DEFINE_HOOK(OnPresentTitleCard, void());
 
     // Helpers
     static bool IsSaveLoaded();

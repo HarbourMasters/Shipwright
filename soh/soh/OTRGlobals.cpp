@@ -1,4 +1,4 @@
-﻿#include "OTRGlobals.h"
+#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
 #include <algorithm>
@@ -74,7 +74,7 @@
 CrowdControl* CrowdControl::Instance;
 #endif
 
-#include "Enhancements/mods/modhooks.h"
+#include "Enhancements/mods.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include <libultraship/libultraship.h>
 
@@ -589,7 +589,7 @@ extern "C" void InitOTR() {
     OTRExtScanner();
     VanillaItemTable_Init();
 
-    RegisterModHooks();
+    InitMods();
 
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);

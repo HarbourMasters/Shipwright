@@ -806,42 +806,6 @@ void func_8002CDE4(PlayState* play, TitleCardContext* titleCtx) {
 void TitleCard_InitBossName(PlayState* play, TitleCardContext* titleCtx, void* texture, s16 x, s16 y, u8 width,
                             u8 height, s16 hasTranslation) {
 
-    // TODO: Is there a better way to detect the boss?
-    char* texturePath = (char*)texture;
-    int16_t bossActorId = 0;
-    
-    if (!strcmp(texturePath, dgKingDodongoTitleCardTex)) {
-        // gKingDodongoTitleCardTex
-        bossActorId = ACTOR_EN_DODONGO;
-    } else if (!strcmp(texturePath, dgVolvagiaBossTitleCardTex)) {
-        // gVolvagiaTitleCardTex
-        bossActorId = ACTOR_BOSS_FD;
-    } else if (!strcmp(texturePath, dgGanondorfTitleCardTex)) {
-        // gDorfTitleCardTex
-        bossActorId = ACTOR_BOSS_GANON;
-    } else if (!strcmp(texturePath, dgGanonTitleCardTex)) {
-        // object_ganon2_Tex_021A90
-        bossActorId = ACTOR_BOSS_GANON2;
-    } else if (!strcmp(texturePath, dgGohmaTitleCardTex)) {
-        // gGohmaTitleCardTex
-        bossActorId = ACTOR_BOSS_GOMA;
-    } else if (!strcmp(texturePath, dgMorphaTitleCardTex)) {
-        // gMorphaTitleCardTex
-        bossActorId = ACTOR_BOSS_MO;
-    } else if (!strcmp(texturePath, dgBongoTitleCardTex)) {
-        // gBongoTitleCardTex
-        bossActorId = ACTOR_BOSS_SST;
-    } else if (!strcmp(texturePath, dgTwinrovaTitleCardTex)) {
-        // gTwinrovaTitleCardTex
-        bossActorId = ACTOR_BOSS_TW;
-    } else if (!strcmp(texturePath, dgBarinadeTitleCardTex)) {
-        // gBarinadeTitleCardTex
-        bossActorId = ACTOR_BOSS_VA;
-    } else if (!strcmp(texturePath, dgPhantomGanonTitleCardTex)) {
-        // gPhantomGanonTitleCardTex
-        bossActorId = ACTOR_EN_FHG;
-    }
-    
     if (ResourceMgr_OTRSigCheck(texture))
         texture = GetResourceDataByName(texture, false);
 
@@ -854,10 +818,6 @@ void TitleCard_InitBossName(PlayState* play, TitleCardContext* titleCtx, void* t
     titleCtx->height = height;
     titleCtx->durationTimer = 80;
     titleCtx->delayTimer = 0;
-    
-    if (bossActorId != 0) {
-        GameInteractor_ExecuteOnPresentBossTitleCard();
-    }
 }
 
 void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* texture, s32 x, s32 y,
@@ -1070,8 +1030,6 @@ void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* 
     }
 
     titleCtx->texture = GetResourceDataByName(texture, false);
-
-    //titleCtx->texture = texture;
     titleCtx->isBossCard = false;
     titleCtx->hasTranslation = false;
     titleCtx->x = x;
@@ -1094,6 +1052,10 @@ void TitleCard_Update(PlayState* play, TitleCardContext* titleCtx) {
     }
 
     if (DECR(titleCtx->delayTimer) == 0) {
+        if (titleCtx->durationTimer == 80) {
+            GameInteractor_ExecuteOnPresentTitleCard();
+        }
+        
         if (DECR(titleCtx->durationTimer) == 0) {
             Math_StepToS(&titleCtx->alpha, 0, 30);
             Math_StepToS(&titleCtx->intensityR, 0, 70);

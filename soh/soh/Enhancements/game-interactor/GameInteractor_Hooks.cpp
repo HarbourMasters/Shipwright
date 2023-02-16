@@ -1,16 +1,17 @@
 #include "GameInteractor_Hooks.h"
 
 extern "C" {
+#include "z64.h"
 extern PlayState* gPlayState;
 }
 
 // MARK: - Gameplay
 
-void GameInteractor_ExecuteOnReceiveItemHooks(u8 item) {
+void GameInteractor_ExecuteOnReceiveItemHooks(uint8_t item) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnReceiveItem>(item);
 }
 
-void GameInteractor_ExecuteOnSceneInitHooks(s16 sceneNum) {
+void GameInteractor_ExecuteOnSceneInitHooks(int16_t sceneNum) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(sceneNum);
 }
 
@@ -28,13 +29,12 @@ void GameInteractor_ExecuteOnDeleteFile(int fileNum) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnDeleteFile>(fileNum);
 }
 
+void GameInteractor_ExecuteOnPresentTitleCard() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPresentTitleCard>();
+}
+
 // MARK: - Dialog
 
 void GameInteractor_ExecuteOnDialogMessage() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnDialogMessage>();
 }
-
-void GameInteractor_ExecuteOnPresentBossTitleCard(int16_t bossActorId) {
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPresentBossTitleCard>(bossActorId);
-}
-

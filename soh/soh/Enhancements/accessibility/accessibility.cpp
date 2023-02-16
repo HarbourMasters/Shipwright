@@ -1,11 +1,47 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include <libultraship/bridge.h>
 
+#include <OtrFile.h>
+#include <libultraship/bridge.h>
+#include <libultraship/classes.h>
+#include <nlohmann/json.hpp>
+
+#include "soh/OTRGlobals.h"
 #include "message_data_static.h"
 
 extern "C" {
 extern PlayState* gPlayState;
 }
+
+nlohmann::json sceneMap = nullptr;
+
+// MARK: - Boss Title Cards
+
+const char* NameForSceneId(int16_t sceneId) {
+    auto key = std::to_string(sceneId);
+    auto name = sceneMap[key].get<std::string>();
+    return strdup(name.c_str());
+}
+
+static const char* titleCardText;
+
+void RegisterOnSceneInitHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+        titleCardText = NameForSceneId(sceneNum);
+    });
+}
+
+void RegisterOnPresentTitleCardHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPresentTitleCard>([]() {
+        SpeechSynthesizerSpeak(titleCardText);
+    });
+}
+
+// MARK: - Dialog Messages
+
+static uint8_t ttsHasMessage;
+static uint8_t ttsHasNewMessage;
+static char ttsMessageBuf[256];
+static int8_t ttsCurrentHighlightedChoice;
 
 void Message_TTS_Decode(uint8_t* sourceBuf, char* destBuf, uint16_t startOfset, uint16_t size) {
     uint32_t destWriteIndex = 0;
@@ -47,11 +83,6 @@ void Message_TTS_Decode(uint8_t* sourceBuf, char* destBuf, uint16_t startOfset, 
     
     destBuf[destWriteIndex] = 0;
 }
-
-static uint8_t ttsHasMessage;
-static uint8_t ttsHasNewMessage;
-static char ttsMessageBuf[256];
-static int8_t ttsCurrentHighlightedChoice;
 
 void RegisterOnDialogMessageHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDialogMessage>([]() {
@@ -123,6 +154,26 @@ void RegisterOnDialogMessageHook() {
     });
 }
 
+
+// MARK: - Main Registration
+
+void InitAccessibilityTexts() {
+    auto file = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/scenes.json");
+    if (file == nullptr || sceneMap != nullptr) {
+        return;
+    }
+    
+    sceneMap = nlohmann::json::parse(file->Buffer.data());
+    SPDLOG_TRACE("Parsed scene accessibility texts");
+}
+
 void RegisterAccessibilityModHooks() {
     RegisterOnDialogMessageHook();
+    RegisterOnSceneInitHook();
+    RegisterOnPresentTitleCardHook();
+}
+
+void InitAccessibility() {
+    InitAccessibilityTexts();
+    RegisterAccessibilityModHooks();
 }

@@ -1,7 +1,8 @@
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "mods.h"
 #include <libultraship/bridge.h>
+#include "game-interactor/GameInteractor.h"
 
-#include "accessibility.h"
+#include "accessibility/accessibility.h"
 
 extern "C" {
 #include <z64.h>
@@ -65,7 +66,7 @@ void RegisterAutoSaveOnReceiveItemHook() {
     });
 }
 
-extern "C" void RegisterModHooks() {
+void InitMods() {
+    InitAccessibility();
     RegisterAutoSaveOnReceiveItemHook();
-    RegisterAccessibilityModHooks();
 }

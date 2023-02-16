@@ -260,10 +260,14 @@ set(Header_Files__soh__Enhancements__item_tables
 source_group("Header Files\\soh\\Enhancements\\item-tables" FILES ${Header_Files__soh__Enhancements__item_tables})
 
 set(Header_Files__soh__Enhancements__mods
-    "soh/Enhancements/mods/modhooks.h"
-    "soh/Enhancements/mods/accessibility.h"
+    "soh/Enhancements/mods.h"
 )
 source_group("Header Files\\soh\\Enhancements\\mods" FILES ${Header_Files__soh__Enhancements__mods})
+
+set(Header_Files__soh__Enhancements__accessibility
+    "soh/Enhancements/accessibility/accessibility.h"
+)
+source_group("Header Files\\soh\\Enhancements\\accessibility" FILES ${Header_Files__soh__Enhancements__accessibility})
 
 set(Header_Files__soh__Enhancements__game_interactor
     "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -619,10 +623,14 @@ set(Source_Files__soh__Enhancements__item_tables
 source_group("Source Files\\soh\\Enhancements\\item-tables" FILES ${Source_Files__soh__Enhancements__item_tables})
 
 set(Source_Files__soh__Enhancements__mods
-    "soh/Enhancements/mods/modhooks.cpp"
-    "soh/Enhancements/mods/accessibility.cpp"
+    "soh/Enhancements/mods.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\mods" FILES ${Source_Files__soh__Enhancements__mods})
+
+set(Source_Files__soh__Enhancements__accessibility
+    "soh/Enhancements/accessibility/accessibility.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\accessibility" FILES ${Source_Files__soh__Enhancements__accessibility})
 
 set(Source_Files__soh__Enhancements__game_interactor
     "soh/Enhancements/game-interactor/GameInteractor.cpp"
@@ -1852,6 +1860,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements__item_tables}
     ${Header_Files__soh__Enhancements__custom_message}
     ${Header_Files__soh__Enhancements__mods}
+    ${Header_Files__soh__Enhancements__accessibility}
     ${Header_Files__soh__Enhancements__game_interactor}
     ${Header_Files__soh__Enhancements__crowd_control}
     ${Source_Files__soh}
@@ -1867,6 +1876,7 @@ set(ALL_FILES
     ${Source_Files__soh__Enhancements__item_tables}
     ${Source_Files__soh__Enhancements__custom_message}
     ${Source_Files__soh__Enhancements__mods}
+    ${Source_Files__soh__Enhancements__accessibility}
     ${Source_Files__soh__Enhancements__game_interactor}
     ${Source_Files__soh__Enhancements__crowd_control}
     ${Source_Files__src__boot}
