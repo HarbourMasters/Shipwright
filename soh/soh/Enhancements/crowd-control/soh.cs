@@ -154,43 +154,43 @@ public class SoH : SimpleTCPPack
         // Tunic Color (Bidding War)
         new Effect("Tunic Color", "color_tunic", ItemKind.BidWar),
 
-        new Effect("Red", "tunic_red", "color_tunic"),
-        new Effect("Green", "tunic_green", "color_tunic"),
-        new Effect("Blue", "tunic_blue", "color_tunic"),
-        new Effect("Orange", "tunic_orange", "color_tunic"),
-        new Effect("Yellow", "tunic_yellow", "color_tunic"),
-        new Effect("Purple", "tunic_purple", "color_tunic"),
-        new Effect("Pink", "tunic_pink", "color_tunic"),
-        new Effect("Brown", "tunic_brown", "color_tunic"),
-        new Effect("Black", "tunic_black", "color_tunic"),
+        new Effect("Red", "tunic_red", ItemKind.BidWarValue, "color_tunic"),
+        new Effect("Green", "tunic_green", ItemKind.BidWarValue, "color_tunic"),
+        new Effect("Blue", "tunic_blue", ItemKind.BidWarValue, "color_tunic"),
+        new Effect("Orange", "tunic_orange", ItemKind.BidWarValue, "color_tunic"),
+        new Effect("Yellow", "tunic_yellow", ItemKind.BidWarValue, "color_tunic"),
+        new Effect("Purple", "tunic_purple", ItemKind.BidWarValue, "color_tunic"),
+        new Effect("Pink", "tunic_pink", ItemKind.BidWarValue, "color_tunic"),
+        new Effect("Brown", "tunic_brown", ItemKind.BidWarValue, "color_tunic"),
+        new Effect("Black", "tunic_black", ItemKind.BidWarValue, "color_tunic"),
 
 
         // Navi Color (Bidding War)
         new Effect("Navi Color", "color_navi", ItemKind.BidWar),
 
-        new Effect("Red", "navi_red", "color_navi"),
-        new Effect("Green", "navi_green", "color_navi"),
-        new Effect("Blue", "navi_blue", "color_navi"),
-        new Effect("Orange", "navi_orange", "color_navi"),
-        new Effect("Yellow", "navi_yellow", "color_navi"),
-        new Effect("Purple", "navi_purple", "color_navi"),
-        new Effect("Pink", "navi_pink", "color_navi"),
-        new Effect("Brown", "navi_brown", "color_navi"),
-        new Effect("Black", "navi_black", "color_navi"),
+        new Effect("Red", "navi_red", ItemKind.BidWarValue, "color_navi"),
+        new Effect("Green", "navi_green", ItemKind.BidWarValue, "color_navi"),
+        new Effect("Blue", "navi_blue", ItemKind.BidWarValue, "color_navi"),
+        new Effect("Orange", "navi_orange", ItemKind.BidWarValue, "color_navi"),
+        new Effect("Yellow", "navi_yellow", ItemKind.BidWarValue, "color_navi"),
+        new Effect("Purple", "navi_purple", ItemKind.BidWarValue, "color_navi"),
+        new Effect("Pink", "navi_pink", ItemKind.BidWarValue, "color_navi"),
+        new Effect("Brown", "navi_brown", ItemKind.BidWarValue, "color_navi"),
+        new Effect("Black", "navi_black", ItemKind.BidWarValue, "color_navi"),
 
 
         // Link's Hair Color (Bidding War)
         new Effect("Link's Hair Color", "color_hair", ItemKind.BidWar),
 
-        new Effect("Red", "hair_red", "color_hair"),
-        new Effect("Green", "hair_green", "color_hair"),
-        new Effect("Blue", "hair_blue", "color_hair"),
-        new Effect("Orange", "hair_orange", "color_hair"),
-        new Effect("Yellow", "hair_yellow", "color_hair"),
-        new Effect("Purple", "hair_purple", "color_hair"),
-        new Effect("Pink", "hair_pink", "color_hair"),
-        new Effect("Brown", "hair_brown", "color_hair"),
-        new Effect("Black", "hair_black", "color_hair"),
+        new Effect("Red", "hair_red", ItemKind.BidWarValue, "color_hair"),
+        new Effect("Green", "hair_green", ItemKind.BidWarValue, "color_hair"),
+        new Effect("Blue", "hair_blue", ItemKind.BidWarValue, "color_hair"),
+        new Effect("Orange", "hair_orange", ItemKind.BidWarValue, "color_hair"),
+        new Effect("Yellow", "hair_yellow", ItemKind.BidWarValue, "color_hair"),
+        new Effect("Purple", "hair_purple", ItemKind.BidWarValue, "color_hair"),
+        new Effect("Pink", "hair_pink", ItemKind.BidWarValue, "color_hair"),
+        new Effect("Brown", "hair_brown", ItemKind.BidWarValue, "color_hair"),
+        new Effect("Black", "hair_black", ItemKind.BidWarValue, "color_hair"),
 
     };
 
