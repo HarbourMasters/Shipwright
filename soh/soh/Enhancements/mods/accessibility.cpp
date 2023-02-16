@@ -3,7 +3,6 @@
 
 #include "message_data_static.h"
 
-
 extern "C" {
 extern PlayState* gPlayState;
 }

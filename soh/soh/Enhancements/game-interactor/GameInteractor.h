@@ -92,6 +92,7 @@ public:
     DEFINE_HOOK(OnDeleteFile, void(int fileNum));
     
     DEFINE_HOOK(OnDialogMessage, void());
+    DEFINE_HOOK(OnPresentBossTitleCard, void(int16_t bossActorId));
 
     // Helpers
     static bool IsSaveLoaded();

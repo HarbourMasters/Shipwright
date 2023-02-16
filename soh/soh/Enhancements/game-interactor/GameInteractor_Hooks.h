@@ -11,3 +11,4 @@ extern "C" void GameInteractor_ExecuteOnDeleteFile(int fileNum);
 
 // MARK: - Dialog
 extern "C" void GameInteractor_ExecuteOnDialogMessage();
+extern "C" void GameInteractor_ExecuteOnPresentBossTitleCard(int16_t bossActorId);

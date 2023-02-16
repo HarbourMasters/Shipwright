@@ -33,3 +33,8 @@ void GameInteractor_ExecuteOnDeleteFile(int fileNum) {
 void GameInteractor_ExecuteOnDialogMessage() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnDialogMessage>();
 }
+
+void GameInteractor_ExecuteOnPresentBossTitleCard(int16_t bossActorId) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPresentBossTitleCard>(bossActorId);
+}
+

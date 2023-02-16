@@ -6,6 +6,16 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_bdoor/object_bdoor.h"
+#include "objects/object_goma/object_goma.h"
+#include "objects/object_ganon/object_ganon.h"
+#include "objects/object_ganon2/object_ganon2.h"
+#include "objects/object_fd/object_fd.h"
+#include "objects/object_kingdodongo/object_kingdodongo.h"
+#include "objects/object_mo/object_mo.h"
+#include "objects/object_sst/object_sst.h"
+#include "objects/object_tw/object_tw.h"
+#include "objects/object_bv/object_bv.h"
+#include "objects/object_fhg/object_fhg.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/enemyrandomizer.h"
 
@@ -796,6 +806,42 @@ void func_8002CDE4(PlayState* play, TitleCardContext* titleCtx) {
 void TitleCard_InitBossName(PlayState* play, TitleCardContext* titleCtx, void* texture, s16 x, s16 y, u8 width,
                             u8 height, s16 hasTranslation) {
 
+    // TODO: Is there a better way to detect the boss?
+    char* texturePath = (char*)texture;
+    int16_t bossActorId = 0;
+    
+    if (!strcmp(texturePath, dgKingDodongoTitleCardTex)) {
+        // gKingDodongoTitleCardTex
+        bossActorId = ACTOR_EN_DODONGO;
+    } else if (!strcmp(texturePath, dgVolvagiaBossTitleCardTex)) {
+        // gVolvagiaTitleCardTex
+        bossActorId = ACTOR_BOSS_FD;
+    } else if (!strcmp(texturePath, dgGanondorfTitleCardTex)) {
+        // gDorfTitleCardTex
+        bossActorId = ACTOR_BOSS_GANON;
+    } else if (!strcmp(texturePath, dgGanonTitleCardTex)) {
+        // object_ganon2_Tex_021A90
+        bossActorId = ACTOR_BOSS_GANON2;
+    } else if (!strcmp(texturePath, dgGohmaTitleCardTex)) {
+        // gGohmaTitleCardTex
+        bossActorId = ACTOR_BOSS_GOMA;
+    } else if (!strcmp(texturePath, dgMorphaTitleCardTex)) {
+        // gMorphaTitleCardTex
+        bossActorId = ACTOR_BOSS_MO;
+    } else if (!strcmp(texturePath, dgBongoTitleCardTex)) {
+        // gBongoTitleCardTex
+        bossActorId = ACTOR_BOSS_SST;
+    } else if (!strcmp(texturePath, dgTwinrovaTitleCardTex)) {
+        // gTwinrovaTitleCardTex
+        bossActorId = ACTOR_BOSS_TW;
+    } else if (!strcmp(texturePath, dgBarinadeTitleCardTex)) {
+        // gBarinadeTitleCardTex
+        bossActorId = ACTOR_BOSS_VA;
+    } else if (!strcmp(texturePath, dgPhantomGanonTitleCardTex)) {
+        // gPhantomGanonTitleCardTex
+        bossActorId = ACTOR_EN_FHG;
+    }
+    
     if (ResourceMgr_OTRSigCheck(texture))
         texture = GetResourceDataByName(texture, false);
 
@@ -808,6 +854,10 @@ void TitleCard_InitBossName(PlayState* play, TitleCardContext* titleCtx, void* t
     titleCtx->height = height;
     titleCtx->durationTimer = 80;
     titleCtx->delayTimer = 0;
+    
+    if (bossActorId != 0) {
+        GameInteractor_ExecuteOnPresentBossTitleCard();
+    }
 }
 
 void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* texture, s32 x, s32 y,
