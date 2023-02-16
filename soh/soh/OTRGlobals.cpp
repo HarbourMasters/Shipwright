@@ -896,11 +896,11 @@ extern "C" char* ResourceMgr_LoadFileRaw(const char* resName) {
     
     auto file = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(resName);
     cachedRawFiles[resName] = file;
-    
+
     if (file == nullptr) {
         return nullptr;
     }
-    
+
     return file->Buffer.data();
 }
 
