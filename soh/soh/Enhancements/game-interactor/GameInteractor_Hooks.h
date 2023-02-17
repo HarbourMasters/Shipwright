@@ -12,3 +12,4 @@ extern "C" void GameInteractor_ExecuteOnDeleteFile(int fileNum);
 // MARK: - Dialog
 extern "C" void GameInteractor_ExecuteOnDialogMessage();
 extern "C" void GameInteractor_ExecuteOnPresentTitleCard();
+extern "C" void GameInteractor_ExecuteOnInterfaceUpdate();

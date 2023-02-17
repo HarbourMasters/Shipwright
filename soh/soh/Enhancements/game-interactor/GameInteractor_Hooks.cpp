@@ -29,12 +29,16 @@ void GameInteractor_ExecuteOnDeleteFile(int fileNum) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnDeleteFile>(fileNum);
 }
 
-void GameInteractor_ExecuteOnPresentTitleCard() {
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPresentTitleCard>();
-}
-
 // MARK: - Dialog
 
 void GameInteractor_ExecuteOnDialogMessage() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnDialogMessage>();
+}
+
+void GameInteractor_ExecuteOnPresentTitleCard() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPresentTitleCard>();
+}
+
+void GameInteractor_ExecuteOnInterfaceUpdate() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnInterfaceUpdate>();
 }

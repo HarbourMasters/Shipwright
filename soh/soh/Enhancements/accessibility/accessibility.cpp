@@ -12,13 +12,43 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
+typedef enum {
+    /* 0x00 */ TEXT_BANK_SCENES,
+    /* 0x01 */ TEXT_BANK_UNITS,
+} TextBank;
+
 nlohmann::json sceneMap = nullptr;
+nlohmann::json unitsMap = nullptr;
+
+std::string GetParameritizedText(std::string key, TextBank bank, const char* arg) {
+    switch (bank) {
+        case TEXT_BANK_SCENES: {
+            return sceneMap[key].get<std::string>();
+            break;
+        }
+        case TEXT_BANK_UNITS: {
+            auto value = unitsMap[key].get<std::string>();
+            
+            std::string searchString = "$0";
+            size_t index = value.find(searchString);
+            
+            if (index != std::string::npos) {
+                value.replace(index, searchString.size(), std::string(arg));
+                return value;
+            } else {
+                return value;
+            }
+            
+            break;
+        }
+    }
+}
 
 // MARK: - Boss Title Cards
 
 const char* NameForSceneId(int16_t sceneId) {
     auto key = std::to_string(sceneId);
-    auto name = sceneMap[key].get<std::string>();
+    auto name = GetParameritizedText(key, TEXT_BANK_SCENES, nullptr);
     return strdup(name.c_str());
 }
 
@@ -33,6 +63,62 @@ void RegisterOnSceneInitHook() {
 void RegisterOnPresentTitleCardHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPresentTitleCard>([]() {
         SpeechSynthesizerSpeak(titleCardText);
+    });
+}
+
+// MARK: - Interface Updates
+
+void RegisterOnInterfaceUpdateHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnInterfaceUpdate>([]() {
+        static uint32_t prevTimer = 0;
+        static char ttsAnnounceBuf[32];
+        
+        uint32_t timer = 0;
+        if (gSaveContext.timer1State != 0) {
+            timer = gSaveContext.timer1Value;
+        } else if (gSaveContext.timer2State != 0) {
+            timer = gSaveContext.timer2Value;
+        }
+        
+        if (timer > 0) {
+            if (timer > prevTimer || (timer % 30 == 0 && prevTimer != timer)) {
+                uint32_t minutes = timer / 60;
+                uint32_t seconds = timer % 60;
+                char* announceBuf = ttsAnnounceBuf;
+                char arg[8]; // at least big enough where no s8 string will overflow
+                if (minutes > 0) {
+                    snprintf(arg, sizeof(arg), "%d", minutes);
+                    auto translation = GetParameritizedText((minutes > 1) ? "minutes_plural" : "minutes_singular", TEXT_BANK_UNITS, arg);
+                    announceBuf += snprintf(announceBuf, sizeof(ttsAnnounceBuf), "%s ", translation.c_str());
+                }
+                if (seconds > 0) {
+                    snprintf(arg, sizeof(arg), "%d", seconds);
+                    auto translation = GetParameritizedText((seconds > 1) ? "seconds_plural" : "seconds_singular", TEXT_BANK_UNITS, arg);
+                    announceBuf += snprintf(announceBuf, sizeof(ttsAnnounceBuf), "%s", translation.c_str());
+                }
+                ASSERT(announceBuf < ttsAnnounceBuf + sizeof(ttsAnnounceBuf));
+                SpeechSynthesizerSpeak(strdup(ttsAnnounceBuf));
+                prevTimer = timer;
+            }
+        }
+        
+        prevTimer = timer;
+        
+        static int16_t lostHealth = 0;
+        static int16_t prevHealth = 0;
+        
+        if (gSaveContext.health - prevHealth < 0) {
+            lostHealth += prevHealth - gSaveContext.health;
+        }
+        
+        if (gPlayState->state.frames % 7 == 0) {
+            if (lostHealth >= 16) {
+                Audio_PlaySoundGeneral(NA_SE_SY_CANCEL, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                lostHealth -= 16;
+            }
+        }
+        
+        prevHealth = gSaveContext.health;
     });
 }
 
@@ -158,19 +244,34 @@ void RegisterOnDialogMessageHook() {
 // MARK: - Main Registration
 
 void InitAccessibilityTexts() {
-    auto file = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/scenes.json");
-    if (file == nullptr || sceneMap != nullptr) {
+    std::string languageSuffix = "_eng.json";
+    switch (gSaveContext.language) {
+        case LANGUAGE_FRA:
+            languageSuffix = "_fra.json";
+            break;
+        case LANGUAGE_GER:
+            languageSuffix = "_ger.json";
+            break;
+    }
+
+    auto sceneFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/scenes" + languageSuffix);
+    if (sceneFile == nullptr || sceneMap != nullptr) {
         return;
     }
+    sceneMap = nlohmann::json::parse(sceneFile->Buffer.data());
     
-    sceneMap = nlohmann::json::parse(file->Buffer.data());
-    SPDLOG_TRACE("Parsed scene accessibility texts");
+    auto unitsFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/units" + languageSuffix);
+    if (unitsFile == nullptr || unitsMap != nullptr) {
+        return;
+    }
+    unitsMap = nlohmann::json::parse(unitsFile->Buffer.data());
 }
 
 void RegisterAccessibilityModHooks() {
     RegisterOnDialogMessageHook();
     RegisterOnSceneInitHook();
     RegisterOnPresentTitleCardHook();
+    RegisterOnInterfaceUpdateHook();
 }
 
 void InitAccessibility() {

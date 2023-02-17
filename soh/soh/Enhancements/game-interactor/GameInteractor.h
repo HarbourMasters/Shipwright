@@ -92,6 +92,7 @@ public:
     
     DEFINE_HOOK(OnDialogMessage, void());
     DEFINE_HOOK(OnPresentTitleCard, void());
+    DEFINE_HOOK(OnInterfaceUpdate, void());
 
     // Helpers
     static bool IsSaveLoaded();
