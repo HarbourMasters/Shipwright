@@ -673,8 +673,8 @@ void DrawEntranceTracker(bool& open) {
                 UIWidgets::Tooltip("Collapse undiscovered entrances towards the bottom of each group");
                 bool disableHideReverseEntrances = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
                 static const char* disableHideReverseEntrancesText = "This option is disabled because \"Decouple Entrances\" is enabled.";
-                UIWidgets::PaddedEnhancementCheckbox("Hide reverse", "gEntranceTrackerHideReverseEntrances", true, true,
-                                              disableHideReverseEntrances, disableHideReverseEntrancesText, UIWidgets::CheckboxGraphics::Cross, false);                
+                UIWidgets::PaddedEnhancementCheckbox("Hide reverse", "gEntranceTrackerHideReverseEntrances", true, false,
+                                              disableHideReverseEntrances, disableHideReverseEntrancesText, UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::Tooltip("Hide reverse entrance transitions when Decouple Entrances is off");
 
                 ImGui::TableNextColumn();
