@@ -3,7 +3,7 @@
 #include "ImGuiImpl.h"
 #include "../UIWidgets.hpp"
 
-#include <map>
+#include <vector>
 #include <string>
 #include <libultraship/bridge.h>
 #include <Hooks.h>
@@ -14,6 +14,118 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
+const std::vector<std::string> sceneMappings = {
+    {"Inside the Deku Tree"},
+    {"Dodongo's Cavern"},
+    {"Inside Jabu-Jabu's Belly"},
+    {"Forest Temple"},
+    {"Fire Temple"},
+    {"Water Temple"},
+    {"Spirit Temple"},
+    {"Shadow Temple"},
+    {"Bottom of the Well"},
+    {"Ice Cavern"},
+    {"Ganon's Tower"},
+    {"Gerudo Training Ground"},
+    {"Theives' Hideout"},
+    {"Inside Ganon's Castle"},
+    {"Tower Collapse"},
+    {"Castle Collapse"},
+    {"Treasure Box Shop"}, //AKA Chest game?
+    {"Gohma's Lair"},
+    {"King Dodongo's Lair"},
+    {"Barinade's Lair"},
+    {"Phantom Ganon's Lair"},
+    {"Volvagia's Lair"},
+    {"Morpha's Lair"},
+    {"Twinrova's Lair"},
+    {"Bongo Bongo's Lair"},
+    {"Ganondorf's Lair"},
+    {"Ganon's Lair"},
+    {"Market Entrance (Day)"},
+    {"Market Entrance (Night)"},
+    {"Market Entrance (Adult)"},
+    {"Back Alley (Day)"},
+    {"Back Alley (Night)"},
+    {"Market (Day)"},
+    {"Market (Night)"},
+    {"Market (Adult)"},
+    {"Outside ToT (Day)"},
+    {"Outside ToT (Night)"},
+    {"Outside ToT (Adult)"},
+    {"Know-It-All Bros' House"},
+    {"Twins' House"}, //kokiri_home_2 doesn't exist
+    {"Mido's House"},
+    {"Saria's House"},
+    {"Carpenter Boss's House"},
+    {"Man in Green's House"},
+    {"Bazaar"},
+    {"Kokiri Shop"},
+    {"Goron Shop"},
+    {"Zora Shop"},
+    {"Kakariko Potion Shop"},
+    {"Market Potion Shop"},
+    {"Bombchu Shop"},
+    {"Happy Mask Shop"},
+    {"Link's House"},
+    {"Richard's House"},
+    {"Stable"},
+    {"Impa's House"},
+    {"Lakeside Lab"},
+    {"Carpenters' Tent"},
+    {"Gravekeeper's Hut"},
+    {"Great Fairy"},
+    {"Fairy Fountain"},
+    {"Great Fairy"},
+    {"Grotto"}, //TODO: Placeholder depending on room num
+    {"Redead Grave"},
+    {"Fairy Fountain Grave"},
+    {"Royal Family's Tomb"},
+    {"Shooting Gallery"},
+    {"Temple of Time"},
+    {"Chamber of Sages"},
+    {"Castle Maze (Day)"},
+    {"Castle Maze (Night)"},
+    {"Cutscene Map"},
+    {"Dampe's Grave"}, //TODO: also covers windmill?
+    {"Fishing Pond"},
+    {"Castle Courtyard"},
+    {"Bombchu Bowling Alley"},
+    {"Ranch House"},
+    {"Guard House"},
+    {"Granny's Potion Shop"},
+    {"Tower Collapse/Battle Arena?"},
+    {"House of Skulltula"},
+    {"Hyrule Field"},
+    {"Kakariko Village"},
+    {"Graveyard"},
+    {"Zora's River"},
+    {"Kokiri Forest"},
+    {"Sacred Forest Meadow"},
+    {"Lake Hylia"},
+    {"Zora's Domain"},
+    {"Zora's Fountain"},
+    {"Gerudo Valley"},
+    {"Lost Woods"},
+    {"Desert Colossus"},
+    {"Gerudo's Fortress"},
+    {"Haunted Wasteland"},
+    {"Hyrule Castle"},
+    {"Death Mountain Trail"},
+    {"Death Mountain Crater"},
+    {"Goron City"},
+    {"Lon Lon Ranch"},
+    {"Outside Ganon's Castle"},
+    //Debug Rooms
+    {"Test Map"},
+    {"Test Room"},
+    {"Depth Test"},
+    {"Stalfos Mini-Boss Rm."},
+    {"Stalfos Boss Rm."},
+    {"Castle Maze (broken)"},
+    {"SRD Room"},
+    {"Chest Room"}
+};
 
 #define COLOR_WHITE      ImVec4(1.00f, 1.00f, 1.00f, 1.00f)
 #define COLOR_RED        ImVec4(1.00f, 0.00f, 0.00f, 1.00f)
@@ -125,6 +237,52 @@ void DisplayStatIfNonZero(const char* text, uint32_t value) {
     return;
 }
 
+std::string ResolveSceneID(int sceneID){
+    std::string scene = "";
+    if (sceneID == SCENE_KAKUSIANA) {
+        switch (gSaveContext.sohStats.roomNum) {
+            case 1:
+                scene = "Big Skulltula Grotto";
+                break;
+            case 2:
+                scene = "Lake Hylia Scrub Grotto";
+                break;
+            case 3:
+                scene = "Kak Redead Grotto";
+                break;
+            case 4:
+                scene = "Scrub Trio";
+                break;
+            case 5:
+                scene = "Near Gerudo Valley Grotto";
+                break;
+            case 6:
+                scene = "Lost Woods Scrub Grotto";
+                break;
+            case 7:
+                scene = "Wolfos Grotto";
+                break;
+            case 8:
+                scene = "Hyrule Castle Storms Grotto";
+                break;
+            case 9:
+                scene = "SFM Storms Grotto";
+                break;
+            case 10:
+                scene = "Valley Boulder Grotto";
+                break;
+            case 11:
+                scene = "Forest Stage";
+                break;
+            default:
+                scene = "???";
+        };
+    } else {
+        scene = sceneMappings[sceneID];
+    }
+    return scene;
+}
+
 void DrawStatsTracker(bool& open) {
     if (!open) {
         CVarSetInteger("gGameplayStatsEnabled", 0);
@@ -170,8 +328,9 @@ void DrawStatsTracker(bool& open) {
     }
    
     for (int i = 0; i < gSaveContext.sohStats.tsIdx; ++i) {
-        std::string name = fmt::format("Scene {} Room {}",
-            gSaveContext.sohStats.sceneTimestamps[i].scene, gSaveContext.sohStats.sceneTimestamps[i].room);
+        std::string sceneName = ResolveSceneID(gSaveContext.sohStats.sceneTimestamps[i].scene);
+        std::string name = fmt::format("{} Room {}",
+            sceneName, gSaveContext.sohStats.sceneTimestamps[i].room);
         strcpy(sceneTimestampDisplay[i].name, name.c_str());
         sceneTimestampDisplay[i].time = gSaveContext.sohStats.sceneTimestamps[i].ts;
         sceneTimestampDisplay[i].color = COLOR_WHITE;
