@@ -1035,6 +1035,8 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("This syncs the ingame time with the real world time");
             UIWidgets::PaddedEnhancementCheckbox("Fish don't despawn", "gNoFishDespawn", true, false);
             UIWidgets::Tooltip("Prevents fish from automatically despawning after a while when dropped");
+            UIWidgets::PaddedEnhancementCheckbox("Bugs don't despawn", "gNoBugsDespawn", true, false);
+            UIWidgets::Tooltip("Prevents bugs from automatically despawning after a while when dropped");
 
             {
                 static int32_t betaQuestEnabled = CVarGetInteger("gEnableBetaQuest", 0);
