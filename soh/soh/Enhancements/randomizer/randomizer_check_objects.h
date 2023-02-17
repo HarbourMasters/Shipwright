@@ -25,6 +25,10 @@ typedef enum {
     RCTYPE_CHEST_GAME, //todo replace this once we implement it, just using it to exclude for now
     RCTYPE_LINKS_POCKET, //todo this feels hacky
     RCTYPE_GOSSIP_STONE,
+    RCTYPE_SONG_LOCATION, // Song locations
+    RCTYPE_BOSS_HEART_OR_OTHER_REWARD, // Boss heart container or lesser dungeon rewards (lens, ice arrow)
+    RCTYPE_DUNGEON_REWARD, // Dungeon rewards (blue warps)
+    RCTYPE_OCARINA, // Ocarina locations
 } RandomizerCheckType;
 
 typedef enum {
@@ -94,7 +98,7 @@ namespace RandomizerCheckObjects {
     bool AreaIsOverworld(RandomizerCheckArea area);
     std::string GetRCAreaName(RandomizerCheckArea area);
     std::map<RandomizerCheck, RandomizerCheckObject> GetAllRCObjects();
-    std::map<RandomizerCheckArea, std::map<RandomizerCheck, RandomizerCheckObject>> GetAllRCObjectsByArea();
+    std::map<RandomizerCheckArea, std::map<RandomizerCheck, RandomizerCheckObject*>> GetAllRCObjectsByArea();
     std::map<SceneID, RandomizerCheckArea> GetAllRCAreaBySceneID();
     RandomizerCheckArea GetRCAreaBySceneID(SceneID sceneId);
     void UpdateImGuiVisibility();

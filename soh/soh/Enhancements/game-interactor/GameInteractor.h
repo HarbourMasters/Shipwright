@@ -4,12 +4,14 @@
 #define GameInteractor_h
 
 #include "GameInteractionEffect.h"
+#include "z64.h"
 
 typedef enum {
     /* 0x00 */ GI_LINK_SIZE_NORMAL,
     /* 0x01 */ GI_LINK_SIZE_GIANT,
     /* 0x02 */ GI_LINK_SIZE_MINISH,
     /* 0x03 */ GI_LINK_SIZE_PAPER,
+    /* 0x04 */ GI_LINK_SIZE_RESET
 } GILinkSize;
 
 typedef enum {
@@ -22,9 +24,9 @@ typedef enum {
 extern "C" {
 #endif
 uint8_t GameInteractor_NoUIActive();
-GILinkSize GameInteractor_LinkSize();
+GILinkSize GameInteractor_GetLinkSize();
+void GameInteractor_SetLinkSize(GILinkSize size);
 uint8_t GameInteractor_InvisibleLinkActive();
-uint8_t GameInteractor_ResetLinkScale();
 uint8_t GameInteractor_OneHitKOActive();
 uint8_t GameInteractor_PacifistModeActive();
 uint8_t GameInteractor_DisableZTargetingActive();
@@ -38,6 +40,15 @@ GIGravityLevel GameInteractor_GravityLevel();
 
 
 #ifdef __cplusplus
+
+#include <vector>
+#include <functional>
+
+#define DEFINE_HOOK(name, type)         \
+    struct name {                       \
+        typedef std::function<type> fn; \
+    }
+
 class GameInteractor {
 public:
     static GameInteractor* Instance;
@@ -63,6 +74,23 @@ public:
     static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase* effect);
     static GameInteractionEffectQueryResult ApplyEffect(GameInteractionEffectBase* effect);
     static GameInteractionEffectQueryResult RemoveEffect(GameInteractionEffectBase* effect);
+
+    // Game Hooks
+    template <typename H> struct RegisteredGameHooks { inline static std::vector<typename H::fn> functions; };
+    template <typename H> void RegisterGameHook(typename H::fn h) { RegisteredGameHooks<H>::functions.push_back(h); }
+    template <typename H, typename... Args> void ExecuteHooks(Args&&... args) {
+        for (auto& fn : RegisteredGameHooks<H>::functions) {
+            fn(std::forward<Args>(args)...);
+        }
+    }
+
+    DEFINE_HOOK(OnReceiveItem, void(u8 item));
+    DEFINE_HOOK(OnSceneInit, void(s16 sceneNum));
+    
+    
+    DEFINE_HOOK(OnSaveFile, void(int fileNum));
+    DEFINE_HOOK(OnLoadFile, void(int fileNum));
+    DEFINE_HOOK(OnDeleteFile, void(int fileNum));
 
     // Helpers
     static bool IsSaveLoaded();

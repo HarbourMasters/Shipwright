@@ -1629,6 +1629,18 @@ void HintTable_Init_Item() {
                        Text{"a Green Rupee", /*french*/"un rubis vert", /*spanish*/"una rupia verde"}
     );
 
+    hintTable[GREG_RUPEE] = HintText::Item({
+                       //obscure text
+                       Text{"an old friend",  /*french*/"Greg", /*spanish*/"Greg"},
+                       Text{"a glorious gem", /*french*/"Greg", /*spanish*/"Greg"},
+                     }, {
+                       //ambiguous text
+                       Text{"a Green Rupee", /*french*/"un rubis vert", /*spanish*/"una rupia verde"}
+                     },
+                       //clear text
+                       Text{"Greg", /*french*/"Greg", /*spanish*/"Greg"}
+    );
+
     hintTable[BLUE_RUPEE] = HintText::Item({
                        //obscure text
                        Text{"a common coin", /*french*/"quelques sous", /*spanish*/"una moneda usual"},

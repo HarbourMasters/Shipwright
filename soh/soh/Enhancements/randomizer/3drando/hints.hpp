@@ -223,7 +223,7 @@ extern void CreateMerchantsHints();
 extern void CreateWarpSongTexts();
 extern void CreateDampesDiaryText();
 extern void CreateGanonText();
-extern void CreateAltarText();
+extern void CreateAltarText(Option withHints);
 
 Text& GetChildAltarText();
 Text& GetAdultAltarText();

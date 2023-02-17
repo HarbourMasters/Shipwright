@@ -23,6 +23,7 @@ namespace Settings {
   std::string hash;
   std::string version = RANDOMIZER_VERSION "-" COMMIT_NUMBER;
   std::array<uint8_t, 5> hashIconIndexes;
+  std::string seedString;
 
   bool skipChildZelda = false;
 
@@ -58,7 +59,7 @@ namespace Settings {
   Option OpenDoorOfTime      = Option::U8  ("Door of Time",           {"Closed", "Song only", "Open"},                                              {doorOfTimeClosed, doorOfTimeSongOnly, doorOfTimeOpen});
   Option ZorasFountain       = Option::U8  ("Zora's Fountain",        {"Closed", "Closed as child", "Open"},                                        {fountainNormal, fountainAdult, fountainOpen});
   Option GerudoFortress      = Option::U8  ("Gerudo Fortress",        {"Normal", "Fast", "Open"},                                                   {gerudoNormal, gerudoFast, gerudoOpen});
-  Option Bridge              = Option::U8  ("Rainbow Bridge",         {"Vanilla", "Always open", "Stones", "Medallions", "Dungeon rewards", "Dungeons", "Tokens"}, {bridgeVanilla, bridgeOpen, bridgeStones, bridgeMedallions, bridgeRewards, bridgeDungeons, bridgeTokens},   OptionCategory::Setting,    RAINBOWBRIDGE_VANILLA);
+  Option Bridge              = Option::U8  ("Rainbow Bridge",         {"Vanilla", "Always open", "Stones", "Medallions", "Dungeon rewards", "Dungeons", "Tokens", "Greg"}, {bridgeVanilla, bridgeOpen, bridgeStones, bridgeMedallions, bridgeRewards, bridgeDungeons, bridgeTokens, bridgeGreg},   OptionCategory::Setting,    RAINBOWBRIDGE_VANILLA);
   Option BridgeStoneCount    = Option::U8  ("Stone Count",          {NumOpts(0, 3)},                                                              {bridgeStoneCountDesc},                                                                                     OptionCategory::Setting,    1,                          true);
   Option BridgeMedallionCount= Option::U8  ("Medallion Count",      {NumOpts(0, 6)},                                                              {bridgeMedallionCountDesc},                                                                                 OptionCategory::Setting,    1,                          true);
   Option BridgeRewardCount   = Option::U8  ("Reward Count",         {NumOpts(0, 9)},                                                              {bridgeRewardCountDesc},                                                                                    OptionCategory::Setting,    1,                          true);
@@ -2963,6 +2964,13 @@ namespace Settings {
     }
     for (uint8_t i = 0; i < GanonsTrialsCount.Value<uint8_t>(); i++) {
       trials[i]->SetAsRequired();
+    }
+
+    // If any ER option is on that would allow you to escape forest, then we should set closed forest to closed deku
+    if (OpenForest.Is(OPENFOREST_CLOSED) &&
+        (ShuffleInteriorEntrances.Is(SHUFFLEINTERIORS_ALL) || ShuffleOverworldEntrances || ShuffleOverworldSpawns ||
+         DecoupleEntrances || MixedEntrancePools)) {
+        OpenForest.SetSelectedIndex(OPENFOREST_CLOSED_DEKU);
     }
 
     if (StartingAge.Is(AGE_RANDOM)) {

@@ -35,7 +35,7 @@
 #define _SOH64
 #endif
 
-#define AUDIO_HEAP_SIZE  0x3800000
+#define AUDIO_HEAP_SIZE  0x380000
 #define SYSTEM_HEAP_SIZE (1024 * 1024 * 4)
 
 #ifdef __cplusplus
@@ -2221,6 +2221,13 @@ typedef struct {
     const char** textures;
     const char** palettes;
 } SkyboxTableEntry;
+
+typedef enum {
+    /* 0x00 */ PAUSE_ANY_CURSOR_RANDO_ONLY,
+    /* 0x01 */ PAUSE_ANY_CURSOR_ALWAYS_ON,
+    /* 0x02 */ PAUSE_ANY_CURSOR_ALWAYS_OFF,
+    /* 0x03 */ PAUSE_ANY_CURSOR_MAX
+} PauseCursorAnySlotOptions;
 
 #define ROM_FILE(name) \
     { 0, 0, #name }

@@ -27,8 +27,13 @@ uint8_t GameInteractor_NoUIActive() {
 }
 
 // MARK: - GameInteractor::State::LinkSize
-GILinkSize GameInteractor_LinkSize() {
+GILinkSize GameInteractor_GetLinkSize() {
     return GameInteractor::State::LinkSize;
+}
+
+// MARK: - GameInteractor::State::LinkSize
+void GameInteractor_SetLinkSize(GILinkSize size) {
+    GameInteractor::State::LinkSize = size;
 }
 
 // MARK: - GameInteractor::State::InvisibleLinkActive
