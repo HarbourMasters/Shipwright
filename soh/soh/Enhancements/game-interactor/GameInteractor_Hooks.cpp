@@ -1,10 +1,5 @@
 #include "GameInteractor_Hooks.h"
 
-extern "C" {
-#include "z64.h"
-extern PlayState* gPlayState;
-}
-
 // MARK: - Gameplay
 
 void GameInteractor_ExecuteOnReceiveItemHooks(uint8_t item) {
