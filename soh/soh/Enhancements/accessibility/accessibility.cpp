@@ -151,6 +151,8 @@ void RegisterOnInterfaceUpdateHook() {
         
         prevTimer = timer;
         
+        if (!GameInteractor::IsSaveLoaded()) return;
+        
         static int16_t lostHealth = 0;
         static int16_t prevHealth = 0;
         
