@@ -94,6 +94,9 @@ public:
     DEFINE_HOOK(OnPresentTitleCard, void());
     DEFINE_HOOK(OnInterfaceUpdate, void());
     DEFINE_HOOK(OnKaleidoscopeUpdate, void(int16_t inDungeonScene));
+    
+    DEFINE_HOOK(OnPresentFileSelect, void());
+    DEFINE_HOOK(OnUpdateFileSelectSelection, void(uint16_t optionIndex));
 
     // Helpers
     static bool IsSaveLoaded();

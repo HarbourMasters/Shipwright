@@ -7,6 +7,7 @@
 
 #include "soh/OTRGlobals.h"
 #include "message_data_static.h"
+#include "overlays/gamestates/ovl_file_choose/file_choose.h"
 
 extern "C" {
 extern PlayState* gPlayState;
@@ -16,11 +17,13 @@ typedef enum {
     /* 0x00 */ TEXT_BANK_SCENES,
     /* 0x01 */ TEXT_BANK_UNITS,
     /* 0x02 */ TEXT_BANK_KALEIDO,
+    /* 0x03 */ TEXT_BANK_FILECHOOSE,
 } TextBank;
 
 nlohmann::json sceneMap = nullptr;
 nlohmann::json unitsMap = nullptr;
 nlohmann::json kaleidoMap = nullptr;
+nlohmann::json fileChooseMap = nullptr;
 
 std::string GetParameritizedText(std::string key, TextBank bank, const char* arg) {
     switch (bank) {
@@ -58,6 +61,10 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
                 return value;
             }
             
+            break;
+        }
+        case TEXT_BANK_FILECHOOSE: {
+            return fileChooseMap[key].get<std::string>();
             break;
         }
     }
@@ -279,6 +286,54 @@ void RegisterOnKaleidoscopeUpdateHook() {
     });
 }
 
+void RegisterOnUpdateMainMenuSelection() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPresentFileSelect>([]() {
+        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        
+        auto translation = GetParameritizedText("file1", TEXT_BANK_FILECHOOSE, nullptr);
+        SpeechSynthesizerSpeak(strdup(translation.c_str()));
+    });
+    
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileSelectSelection>([](uint16_t optionIndex) {
+        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        
+        switch (optionIndex) {
+            case FS_BTN_MAIN_FILE_1: {
+                auto translation = GetParameritizedText("file1", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()));
+                break;
+            }
+            case FS_BTN_MAIN_FILE_2: {
+                auto translation = GetParameritizedText("file2", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()));
+                break;
+            }
+            case FS_BTN_MAIN_FILE_3: {
+                auto translation = GetParameritizedText("file3", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()));
+                break;
+            }
+            case FS_BTN_MAIN_OPTIONS: {
+                auto translation = GetParameritizedText("options", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()));
+                break;
+            }
+            case FS_BTN_MAIN_COPY: {
+                auto translation = GetParameritizedText("copy", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()));
+                break;
+            }
+            case FS_BTN_MAIN_ERASE: {
+                auto translation = GetParameritizedText("erase", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()));
+                break;
+            }
+            default:
+                break;
+        }
+    });
+}
+
 // MARK: - Dialog Messages
 
 static uint8_t ttsHasMessage;
@@ -397,7 +452,6 @@ void RegisterOnDialogMessageHook() {
     });
 }
 
-
 // MARK: - Main Registration
 
 void InitAccessibilityTexts() {
@@ -428,6 +482,12 @@ void InitAccessibilityTexts() {
         return;
     }
     kaleidoMap = nlohmann::json::parse(kaleidoFile->Buffer);
+    
+    auto fileChooseFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/filechoose" + languageSuffix);
+    if (fileChooseFile == nullptr || fileChooseMap != nullptr) {
+        return;
+    }
+    fileChooseMap = nlohmann::json::parse(fileChooseFile->Buffer);
 }
 
 void RegisterAccessibilityModHooks() {
@@ -436,6 +496,7 @@ void RegisterAccessibilityModHooks() {
     RegisterOnPresentTitleCardHook();
     RegisterOnInterfaceUpdateHook();
     RegisterOnKaleidoscopeUpdateHook();
+    RegisterOnUpdateMainMenuSelection();
 }
 
 void InitAccessibility() {

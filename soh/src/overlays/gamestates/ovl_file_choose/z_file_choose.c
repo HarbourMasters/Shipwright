@@ -346,6 +346,7 @@ void FileChoose_FinishFadeIn(GameState* thisx) {
         this->controlsAlpha = 255;
         this->windowAlpha = 200;
         this->configMode = CM_MAIN_MENU;
+        GameInteractor_ExecuteOnPresentFileSelect();
     }
 }
 
@@ -586,29 +587,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         }
         
         if (lastButtonIndex != this->buttonIndex) {
-            switch (this->buttonIndex) {
-                case FS_BTN_MAIN_FILE_1:
-                    OTRSpeakText("File 1");
-                    break;
-                case FS_BTN_MAIN_FILE_2:
-                    OTRSpeakText("File 2");
-                    break;
-                case FS_BTN_MAIN_FILE_3:
-                    OTRSpeakText("File 3");
-                    break;
-                case FS_BTN_MAIN_OPTIONS:
-                    OTRSpeakText("Options");
-                    break;
-                case FS_BTN_MAIN_COPY:
-                    OTRSpeakText("Copy");
-                    break;
-                case FS_BTN_MAIN_ERASE:
-                    OTRSpeakText("Erase");
-                    break;
-                default:
-                    break;
-            }
-            
+            GameInteractor_ExecuteOnUpdateFileSelectSelection(this->buttonIndex);
             lastButtonIndex = this->buttonIndex;
         }
     }

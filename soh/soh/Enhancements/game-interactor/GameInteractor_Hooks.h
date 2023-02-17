@@ -14,3 +14,7 @@ extern "C" void GameInteractor_ExecuteOnDialogMessage();
 extern "C" void GameInteractor_ExecuteOnPresentTitleCard();
 extern "C" void GameInteractor_ExecuteOnInterfaceUpdate();
 extern "C" void GameInteractor_ExecuteOnKaleidoscopeUpdate(int16_t inDungeonScene);
+
+// MARK: - Main Menu
+extern "C" void GameInteractor_ExecuteOnUpdateFileSelectSelection(uint16_t optionIndex);
+extern "C" void GameInteractor_ExecuteOnPresentFileSelect();

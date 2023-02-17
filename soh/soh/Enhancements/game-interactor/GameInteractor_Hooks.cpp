@@ -41,3 +41,13 @@ void GameInteractor_ExecuteOnInterfaceUpdate() {
 void GameInteractor_ExecuteOnKaleidoscopeUpdate(int16_t inDungeonScene) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnKaleidoscopeUpdate>(inDungeonScene);
 }
+
+// MARK: - Main Menu
+
+void GameInteractor_ExecuteOnUpdateFileSelectSelection(uint16_t optionIndex) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileSelectSelection>(optionIndex);
+}
+
+void GameInteractor_ExecuteOnPresentFileSelect() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPresentFileSelect>();
+}
