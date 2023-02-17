@@ -11,7 +11,9 @@
 extern "C" {
 #include <z64.h>
 #include "variables.h"
+extern PlayState* gPlayState;
 }
+
 
 #define COLOR_WHITE      ImVec4(1.00f, 1.00f, 1.00f, 1.00f)
 #define COLOR_RED        ImVec4(1.00f, 0.00f, 0.00f, 1.00f)
@@ -24,7 +26,6 @@ extern "C" {
 #define COLOR_GREY       ImVec4(0.78f, 0.78f, 0.78f, 1.00f)
 
 char itemTimestampDisplayName[TIMESTAMP_MAX][21] = { "" };
-char sceneTimestampDisplayName[SCENE_ID_MAX][25] = { "" };
 ImVec4 itemTimestampDisplayColor[TIMESTAMP_MAX];
 
 typedef struct {
@@ -167,18 +168,16 @@ void DrawStatsTracker(bool& open) {
         itemTimestampDisplay[i].time = gSaveContext.sohStats.itemTimestamp[i];
         itemTimestampDisplay[i].color = itemTimestampDisplayColor[i];
     }
-
-    for (int i = 0; i < 1024; i++) {
-        strcpy(sceneTimestampDisplay[i].name, fmt::format("Scene %u Room %u",
-         gSaveContext.sohStats.sceneTimestamps[i].scene,
-         gSaveContext.sohStats.sceneTimestamps[i].room).c_str());
+   
+    for (int i = 0; i < gSaveContext.sohStats.tsIdx; ++i) {
+        std::string name = fmt::format("Scene {} Room {}",
+            gSaveContext.sohStats.sceneTimestamps[i].scene, gSaveContext.sohStats.sceneTimestamps[i].room);
+        strcpy(sceneTimestampDisplay[i].name, name.c_str());
         sceneTimestampDisplay[i].time = gSaveContext.sohStats.sceneTimestamps[i].ts;
-        //sceneTimestampDisplay[i].time = 0;
         sceneTimestampDisplay[i].color = COLOR_WHITE;
     }
 
     SortChronological(itemTimestampDisplay, sizeof(itemTimestampDisplay) / sizeof(itemTimestampDisplay[0]));
-    SortChronological(sceneTimestampDisplay, sizeof(sceneTimestampDisplay) / sizeof(sceneTimestampDisplay[0]));
 
     
     // Begin drawing the table and showing the stats
@@ -195,8 +194,8 @@ void DrawStatsTracker(bool& open) {
     DisplayTimeHHMMSS(gSaveContext.sohStats.pauseTimer / 3, "Pause Menu Time:    ", COLOR_WHITE);
     DisplayTimeHHMMSS(gSaveContext.sohStats.sceneTimer / 2, "Time in scene:      ", COLOR_LIGHT_BLUE);
     DisplayTimeHHMMSS(gSaveContext.sohStats.roomTimer / 2,  "Time in room:       ", COLOR_LIGHT_BLUE);
-    ImGui::Text("Current room: %d", gSaveContext.sohStats.roomNum);
     ImGui::Text("Current scene: %d", gSaveContext.sohStats.sceneNum);
+    ImGui::Text("Current room: %d", gSaveContext.sohStats.roomNum);
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
@@ -353,13 +352,18 @@ void DrawStatsTracker(bool& open) {
         ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Scenes")) {
-            for (TimestampInfo tsInfo: sceneTimestampDisplay) {
-                if (tsInfo.time > 0 && strnlen(tsInfo.name, 25) > 1) {
-                    DisplayTimeHHMMSS(tsInfo.time, tsInfo.name, tsInfo.color);
+            if (gPlayState == NULL) {
+                ImGui::Text("Waiting for file load...");
+            } else {
+                for (int i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
+                    TimestampInfo tsInfo = sceneTimestampDisplay[i];
+                    if (tsInfo.time > 0 && strnlen(tsInfo.name, 25) > 1) {
+                        DisplayTimeHHMMSS(tsInfo.time, tsInfo.name, tsInfo.color);
+                    }
                 }
+                std::string toPass = fmt::format("Scene {:d} Room {:d}", gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum);
+                DisplayTimeHHMMSS(gSaveContext.sohStats.roomTimer / 2, toPass.c_str(), COLOR_YELLOW);
             }
-            std::string toPass = fmt::format("Scene {:d} Room {:d}", gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum);
-            DisplayTimeHHMMSS(gSaveContext.sohStats.sceneTimer / 2, toPass.c_str(), COLOR_WHITE);
             ImGui::EndTabItem();
         }
     ImGui::EndTabBar();
@@ -462,12 +466,6 @@ void SetupDisplayNames() {
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_TWINROVA],      "Twinrova Defeated:  ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANONDORF],     "Ganondorf Defeated: ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:     ");
-}
-
-void SetupSceneNames() {
-    for (int i = 0; i < SCENE_ID_MAX; i++) {
-        strcpy(sceneTimestampDisplayName[i], "");
-    }
 }
 
 void SetupDisplayColors() {

@@ -475,9 +475,10 @@ void SaveManager::InitFileNormal() {
     }
     for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps); timestamp++) {
         gSaveContext.sohStats.sceneTimestamps[timestamp].ts = 0;
-        gSaveContext.sohStats.sceneTimestamps[timestamp].scene = 255;
-        gSaveContext.sohStats.sceneTimestamps[timestamp].room = 255;
+        gSaveContext.sohStats.sceneTimestamps[timestamp].scene = 254;
+        gSaveContext.sohStats.sceneTimestamps[timestamp].room = 254;
     }
+    gSaveContext.sohStats.tsIdx = 0;
     for (int count = 0; count < ARRAY_COUNT(gSaveContext.sohStats.count); count++) {
         gSaveContext.sohStats.count[count] = 0;
     }
@@ -1258,6 +1259,7 @@ void SaveManager::LoadBaseVersion3() {
                 SaveManager::Instance->LoadData("ts", gSaveContext.sohStats.sceneTimestamps[i].ts);
             });
         });
+        SaveManager::Instance->LoadData("tsIdx", gSaveContext.sohStats.tsIdx);
         SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.count[i]);
         });
@@ -1455,6 +1457,7 @@ void SaveManager::SaveBase() {
                 SaveManager::Instance->SaveData("ts", gSaveContext.sohStats.sceneTimestamps[i].ts);
             });
         });
+        SaveManager::Instance->SaveData("tsIdx", gSaveContext.sohStats.tsIdx);
         SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
             SaveManager::Instance->SaveData("", gSaveContext.sohStats.count[i]);
         });
