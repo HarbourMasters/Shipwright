@@ -1,4 +1,4 @@
-﻿#include "OTRGlobals.h"
+#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
 #include <algorithm>
@@ -611,6 +611,10 @@ extern "C" void InitOTR() {
 
 extern "C" void DeinitOTR() {
     OTRAudio_Exit();
+#if defined(_WIN32) || defined(__APPLE__)
+    // Stop any current speech as we're ready to close
+    SpeechSynthesizerSpeakEnglish("");
+#endif
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance->Disable();
     CrowdControl::Instance->Shutdown();
