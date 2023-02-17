@@ -514,7 +514,7 @@ void DrawItem(ItemTrackerItem item) {
             break;
         case ITEM_RUPEE_GREEN:
             actualItemId = item.id;
-            hasItem = gSaveContext.sohStats.foundGreg;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
             break;
     }
 
