@@ -676,6 +676,7 @@ void DrawEntranceTracker(bool& open) {
                 UIWidgets::PaddedEnhancementCheckbox("Hide reverse", "gEntranceTrackerHideReverseEntrances", true, false,
                                               disableHideReverseEntrances, disableHideReverseEntrancesText, UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::Tooltip("Hide reverse entrance transitions when Decouple Entrances is off");
+                UIWidgets::Spacer(0);
 
                 ImGui::TableNextColumn();
 
