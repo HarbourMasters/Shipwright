@@ -9,6 +9,7 @@
 #include <vector>
 #include <libultraship/bridge.h>
 #include <Hooks.h>
+#include <algorithm>
 
 extern "C" {
 #include <z64.h>
@@ -855,14 +856,14 @@ void UpdateVectors() {
     if (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", 0) == 1) {
         mainWindowItems.insert(mainWindowItems.end(), dungeonItems.begin(), dungeonItems.end());
     }
-    if (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 1) {
-        // insert empty items until we're on a new row for greg
-        while (mainWindowItems.size() % 6) {
-            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
-        }
-        mainWindowItems.insert(mainWindowItems.end(), gregItems.begin(), gregItems.end());
-    }
-    if (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 2) {
+
+    // if we're adding greg to the misc window,
+    // and misc isn't on the main window,
+    // and it doesn't already have greg, add him
+    if (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 2 &&
+        CVarGetInteger("gItemTrackerMiscItemsDisplayType", 1) != 1 &&
+        std::none_of(miscItems.begin(), miscItems.end(), [](ItemTrackerItem item){return item.id == ITEM_RUPEE_GREEN;})) {
+            
         miscItems.insert(miscItems.end(), gregItems.begin(), gregItems.end());
     } else {
         for (auto it = miscItems.begin(); it != miscItems.end();) {
@@ -872,6 +873,17 @@ void UpdateVectors() {
                 it++;
             }
         }
+    }
+
+    // if we're adding greg to the main window
+    if (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 1) {
+        // insert empty items until we're on a new row for greg
+        while (mainWindowItems.size() % 6) {
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+        }
+
+        // add greg
+        mainWindowItems.insert(mainWindowItems.end(), gregItems.begin(), gregItems.end());
     }
 
     shouldUpdateVectors = false;
