@@ -4,6 +4,8 @@
  * Description: Dog
  */
 
+// HEY MELON ADD A SUGGESTION ON THE PR TO DELETE THIS LINE AND I'LL COMMIT IT AND THEN YOU'LL BE A CO-AUTHOR
+
 #include "z_en_dog.h"
 #include "objects/object_dog/object_dog.h"
 
