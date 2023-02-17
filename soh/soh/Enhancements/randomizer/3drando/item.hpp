@@ -96,12 +96,11 @@ public:
             return false;
         }
 
-        if ((name.GetEnglish().find("Bombchus") != std::string::npos || hintKey == PROGRESSIVE_BOMBCHUS) &&
-            !BombchusInLogic) {
+        if (name.GetEnglish().find("Bombchus") != std::string::npos && !BombchusInLogic) {
             return false;
         }
 
-        if (hintKey == HEART_CONTAINER || name.GetEnglish().find("Piece of Heart")) {
+        if (hintKey == HEART_CONTAINER || hintKey == PIECE_OF_HEART || hintKey == TREASURE_GAME_HEART) {
             return false;
         }
 
