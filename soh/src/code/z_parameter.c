@@ -2578,6 +2578,12 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         return RG_NONE;
     }
 
+    if (item == RG_GREG_RUPEE) {
+        Rupees_ChangeBy(1);
+        Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
+        return RG_NONE;
+    }
+
     temp = gSaveContext.inventory.items[slot];
     osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, temp);
     INV_CONTENT(item) = item;

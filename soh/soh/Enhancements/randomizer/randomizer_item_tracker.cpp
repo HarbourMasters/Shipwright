@@ -77,6 +77,10 @@ std::vector<ItemTrackerItem> songItems = {
     ITEM_TRACKER_ITEM(QUEST_SONG_REQUIEM, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_NOCTURNE, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_PRELUDE, 0, DrawSong),
 };
 
+std::vector<ItemTrackerItem> gregItems = {
+    ITEM_TRACKER_ITEM(ITEM_RUPEE_GREEN, 0, DrawItem),
+};
+
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsHorizontal = {
     { SCENE_YDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
     { SCENE_DDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
@@ -508,6 +512,10 @@ void DrawItem(ItemTrackerItem item) {
             actualItemId = CUR_UPG_VALUE(UPG_SCALE) == 2 ? ITEM_SCALE_GOLDEN : ITEM_SCALE_SILVER;
             hasItem = CUR_UPG_VALUE(UPG_SCALE) > 0;
             break;
+        case ITEM_RUPEE_GREEN:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
+            break;
     }
 
     if (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end()) {
@@ -847,6 +855,24 @@ void UpdateVectors() {
     if (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", 0) == 1) {
         mainWindowItems.insert(mainWindowItems.end(), dungeonItems.begin(), dungeonItems.end());
     }
+    if (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 1) {
+        // insert empty items until we're on a new row for greg
+        while (mainWindowItems.size() % 6) {
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+        }
+        mainWindowItems.insert(mainWindowItems.end(), gregItems.begin(), gregItems.end());
+    }
+    if (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 2) {
+        miscItems.insert(miscItems.end(), gregItems.begin(), gregItems.end());
+    } else {
+        for (auto it = miscItems.begin(); it != miscItems.end();) {
+            if (it->id == ITEM_RUPEE_GREEN) {
+                miscItems.erase(it);
+            } else {
+                it++;
+            }
+        }
+    }
 
     shouldUpdateVectors = false;
 }
@@ -872,6 +898,7 @@ void DrawItemTracker(bool& open) {
             (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", 1) == 1) ||
             (CVarGetInteger("gItemTrackerSongsDisplayType", 1) == 1) ||
             (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", 0) == 1) ||
+            (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 1) ||
             (CVarGetInteger("gItemTrackerNotesDisplayType", 0) == 1)
         ) {
             BeginFloatingWindows("Item Tracker##main window");
@@ -933,6 +960,12 @@ void DrawItemTracker(bool& open) {
             } else {
                 DrawItemsInRows(dungeonItems);
             }
+            EndFloatingWindows();
+        }
+
+        if (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 3) {
+            BeginFloatingWindows("Greg Tracker");
+            DrawItemsInRows(gregItems);
             EndFloatingWindows();
         }
 
@@ -1023,6 +1056,7 @@ void DrawItemTrackerOptions(bool& open) {
         }
         PaddedEnhancementCheckbox("Maps and compasses", "gItemTrackerDisplayDungeonItemsMaps", 1);
     }
+    LabeledComboBoxRightAligned("Greg", "gItemTrackerGregDisplayType", { "Hidden", "Main Window", "Misc Window", "Seperate" }, 0);
 
     if (CVarGetInteger("gItemTrackerDisplayType", 0) != 1) {
         LabeledComboBoxRightAligned("Personal notes", "gItemTrackerNotesDisplayType", { "Hidden", "Main Window", "Seperate" }, 0);

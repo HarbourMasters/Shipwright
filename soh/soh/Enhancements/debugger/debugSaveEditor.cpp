@@ -139,6 +139,10 @@ std::map<uint32_t, ItemMapEntry> itemMapping = {
     ITEM_MAP_ENTRY(ITEM_MAGIC_LARGE)
 };
 
+std::map<uint32_t, ItemMapEntry> gregMapping = {
+    {ITEM_RUPEE_GREEN, {ITEM_RUPEE_GREEN, "ITEM_RUPEE_GREEN", "ITEM_RUPEE_GREEN_Faded", "__OTR__textures/parameter_static/gRupeeCounterIconTex"}}
+};
+
 // Maps entries in the GS flag array to the area name it represents
 std::vector<std::string> gsMapping = {
     "Deku Tree",
@@ -1782,6 +1786,13 @@ void InitSaveEditor() {
     for (const auto& entry : itemMapping) {
         SohImGui::LoadResource(entry.second.name, entry.second.texturePath);
         SohImGui::LoadResource(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
+    }
+    for (const auto& entry : gregMapping) {
+        ImVec4 gregGreen = ImVec4(42.0f / 255.0f, 169.0f / 255.0f, 40.0f / 255.0f, 1.0f);
+        ImVec4 gregFadedGreen = gregGreen;
+        gregFadedGreen.w = 0.3f;
+        SohImGui::LoadResource(entry.second.name, entry.second.texturePath, gregGreen);
+        SohImGui::LoadResource(entry.second.nameFaded, entry.second.texturePath, gregFadedGreen);
     }
     for (const auto& entry : questMapping) {
         SohImGui::LoadResource(entry.second.name, entry.second.texturePath);
