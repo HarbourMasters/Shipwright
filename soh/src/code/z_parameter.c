@@ -2580,7 +2580,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
 
     if (item == RG_GREG_RUPEE) {
         Rupees_ChangeBy(1);
-        gSaveContext.sohStats.foundGreg = true;
+        Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
         return RG_NONE;
     }
 
