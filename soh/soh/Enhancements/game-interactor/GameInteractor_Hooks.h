@@ -13,3 +13,4 @@ extern "C" void GameInteractor_ExecuteOnDeleteFile(int fileNum);
 extern "C" void GameInteractor_ExecuteOnDialogMessage();
 extern "C" void GameInteractor_ExecuteOnPresentTitleCard();
 extern "C" void GameInteractor_ExecuteOnInterfaceUpdate();
+extern "C" void GameInteractor_ExecuteOnKaleidoscopeUpdate(int16_t inDungeonScene);

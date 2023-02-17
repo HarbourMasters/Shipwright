@@ -93,6 +93,7 @@ public:
     DEFINE_HOOK(OnDialogMessage, void());
     DEFINE_HOOK(OnPresentTitleCard, void());
     DEFINE_HOOK(OnInterfaceUpdate, void());
+    DEFINE_HOOK(OnKaleidoscopeUpdate, void(int16_t inDungeonScene));
 
     // Helpers
     static bool IsSaveLoaded();

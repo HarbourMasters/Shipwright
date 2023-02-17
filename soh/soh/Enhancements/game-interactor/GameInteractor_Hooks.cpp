@@ -37,3 +37,7 @@ void GameInteractor_ExecuteOnPresentTitleCard() {
 void GameInteractor_ExecuteOnInterfaceUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnInterfaceUpdate>();
 }
+
+void GameInteractor_ExecuteOnKaleidoscopeUpdate(int16_t inDungeonScene) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnKaleidoscopeUpdate>(inDungeonScene);
+}

@@ -15,10 +15,12 @@ extern PlayState* gPlayState;
 typedef enum {
     /* 0x00 */ TEXT_BANK_SCENES,
     /* 0x01 */ TEXT_BANK_UNITS,
+    /* 0x02 */ TEXT_BANK_KALEIDO,
 } TextBank;
 
 nlohmann::json sceneMap = nullptr;
 nlohmann::json unitsMap = nullptr;
+nlohmann::json kaleidoMap = nullptr;
 
 std::string GetParameritizedText(std::string key, TextBank bank, const char* arg) {
     switch (bank) {
@@ -33,6 +35,23 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
             size_t index = value.find(searchString);
             
             if (index != std::string::npos) {
+                ASSERT(arg != nullptr);
+                value.replace(index, searchString.size(), std::string(arg));
+                return value;
+            } else {
+                return value;
+            }
+            
+            break;
+        }
+        case TEXT_BANK_KALEIDO: {
+            auto value = kaleidoMap[key].get<std::string>();
+            
+            std::string searchString = "$0";
+            size_t index = value.find(searchString);
+            
+            if (index != std::string::npos) {
+                ASSERT(arg != nullptr);
                 value.replace(index, searchString.size(), std::string(arg));
                 return value;
             } else {
@@ -119,6 +138,136 @@ void RegisterOnInterfaceUpdateHook() {
         }
         
         prevHealth = gSaveContext.health;
+    });
+}
+
+
+void RegisterOnKaleidoscopeUpdateHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoscopeUpdate>([](int16_t inDungeonScene) {
+        static uint16_t prevCursorIndex = 0;
+        static uint16_t prevCursorSpecialPos = 0;
+        static uint16_t prevCursorPoint[5] = { 0 };
+        
+        PauseContext* pauseCtx = &gPlayState->pauseCtx;
+        Input* input = &gPlayState->state.input[0];
+        
+        if (pauseCtx->state != 6) {
+            //reset cursor index to so it is announced when pause is reopened
+            prevCursorIndex = -1;
+            return;
+        }
+        
+        if ((pauseCtx->debugState != 1) && (pauseCtx->debugState != 2)) {
+            char arg[8];
+            if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
+                snprintf(arg, sizeof(arg), "%d", gSaveContext.health);
+                auto translation = GetParameritizedText("health", TEXT_BANK_KALEIDO, arg);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()));
+            } else if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
+                snprintf(arg, sizeof(arg), "%d", gSaveContext.magic);
+                auto translation = GetParameritizedText("magic", TEXT_BANK_KALEIDO, arg);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()));
+            } else if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
+                snprintf(arg, sizeof(arg), "%d", gSaveContext.rupees);
+                auto translation = GetParameritizedText("rupees", TEXT_BANK_KALEIDO, arg);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()));
+            } else if (CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
+                //TODO: announce timer?
+            }
+        }
+        
+        uint16_t cursorIndex = (pauseCtx->pageIndex == PAUSE_MAP && !inDungeonScene) ? PAUSE_WORLD_MAP : pauseCtx->pageIndex;
+        if (prevCursorIndex == cursorIndex &&
+            prevCursorSpecialPos == pauseCtx->cursorSpecialPos &&
+            prevCursorPoint[cursorIndex] == pauseCtx->cursorPoint[cursorIndex]) {
+            return;
+        }
+        
+        prevCursorSpecialPos = pauseCtx->cursorSpecialPos;
+        
+        if (pauseCtx->cursorSpecialPos > 0) {
+            return;
+        }
+        
+        switch (pauseCtx->pageIndex) {
+            case PAUSE_ITEM:
+            {
+                char arg[8]; // at least big enough where no s8 string will overflow
+                switch (pauseCtx->cursorItem[PAUSE_ITEM]) {
+                    case ITEM_STICK:
+                    case ITEM_NUT:
+                    case ITEM_BOMB:
+                    case ITEM_BOMBCHU:
+                    case ITEM_SLINGSHOT:
+                    case ITEM_BOW:
+                        snprintf(arg, sizeof(arg), "%d", AMMO(pauseCtx->cursorItem[PAUSE_ITEM]));
+                        break;
+                    case ITEM_BEAN:
+                        snprintf(arg, sizeof(arg), "%d", 0);
+                        break;
+                    default:
+                        arg[0] = '\0';
+                }
+                
+                if (pauseCtx->cursorItem[PAUSE_ITEM] == 999) {
+                    return;
+                }
+                
+                std::string key = std::to_string(pauseCtx->cursorItem[PAUSE_ITEM]);
+                auto translation = GetParameritizedText(key, TEXT_BANK_KALEIDO, arg);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()));
+                break;
+            }
+            case PAUSE_MAP:
+                if (inDungeonScene) {
+                    if (pauseCtx->cursorItem[PAUSE_MAP] != PAUSE_ITEM_NONE) {
+                        std::string key = std::to_string(pauseCtx->cursorItem[PAUSE_MAP]);
+                        auto translation = GetParameritizedText(key, TEXT_BANK_KALEIDO, nullptr);
+                        SpeechSynthesizerSpeak(strdup(translation.c_str()));
+                    }
+                } else {
+                    std::string key = std::to_string(0x0100 + pauseCtx->cursorPoint[PAUSE_WORLD_MAP]);
+                    auto translation = GetParameritizedText(key, TEXT_BANK_KALEIDO, nullptr);
+                    SpeechSynthesizerSpeak(strdup(translation.c_str()));
+                    SPDLOG_INFO("Item: {}", key);
+                }
+                break;
+            case PAUSE_QUEST:
+            {
+                char arg[8]; // at least big enough where no s8 string will overflow
+                switch (pauseCtx->cursorItem[PAUSE_QUEST]) {
+                    case ITEM_SKULL_TOKEN:
+                        snprintf(arg, sizeof(arg), "%d", gSaveContext.inventory.gsTokens);
+                        break;
+                    case ITEM_HEART_CONTAINER:
+                        snprintf(arg, sizeof(arg), "%d", ((gSaveContext.inventory.questItems & 0xF) & 0xF) >> 0x1C);
+                        break;
+                    default:
+                        arg[0] = '\0';
+                }
+                
+                if (pauseCtx->cursorItem[PAUSE_QUEST] == 999) {
+                    return;
+                }
+                
+                std::string key = std::to_string(pauseCtx->cursorItem[PAUSE_QUEST]);
+                auto translation = GetParameritizedText(key, TEXT_BANK_KALEIDO, arg);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()));
+                break;
+            }
+            case PAUSE_EQUIP:
+            {
+                std::string key = std::to_string(pauseCtx->cursorItem[PAUSE_EQUIP]);
+                auto translation = GetParameritizedText(key, TEXT_BANK_KALEIDO, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()));
+                break;
+            }
+            default:
+                break;
+        }
+        
+        prevCursorIndex = cursorIndex;
+        memcpy(prevCursorPoint, pauseCtx->cursorPoint, sizeof(prevCursorPoint));
     });
 }
 
@@ -265,6 +414,12 @@ void InitAccessibilityTexts() {
         return;
     }
     unitsMap = nlohmann::json::parse(unitsFile->Buffer);
+    
+    auto kaleidoFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/kaleidoscope" + languageSuffix);
+    if (kaleidoFile == nullptr || kaleidoMap != nullptr) {
+        return;
+    }
+    kaleidoMap = nlohmann::json::parse(kaleidoFile->Buffer);
 }
 
 void RegisterAccessibilityModHooks() {
@@ -272,6 +427,7 @@ void RegisterAccessibilityModHooks() {
     RegisterOnSceneInitHook();
     RegisterOnPresentTitleCardHook();
     RegisterOnInterfaceUpdateHook();
+    RegisterOnKaleidoscopeUpdateHook();
 }
 
 void InitAccessibility() {

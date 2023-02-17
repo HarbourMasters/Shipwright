@@ -4256,4 +4256,6 @@ void KaleidoScope_Update(PlayState* play)
             osSyncPrintf(VT_RST);
             break;
     }
+    
+    GameInteractor_ExecuteOnKaleidoscopeUpdate(sInDungeonScene);
 }
