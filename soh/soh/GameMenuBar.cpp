@@ -1033,6 +1033,8 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
             UIWidgets::PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
             UIWidgets::Tooltip("This syncs the ingame time with the real world time");
+            UIWidgets::PaddedEnhancementCheckbox("Fish don't despawn", "gNoFishDespawn", true, false);
+            UIWidgets::Tooltip("Prevents fish from automatically despawning after a while when dropped");
 
             {
                 static int32_t betaQuestEnabled = CVarGetInteger("gEnableBetaQuest", 0);
