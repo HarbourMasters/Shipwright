@@ -258,13 +258,13 @@ void InitAccessibilityTexts() {
     if (sceneFile == nullptr || sceneMap != nullptr) {
         return;
     }
-    sceneMap = nlohmann::json::parse(sceneFile->Buffer.data());
+    sceneMap = nlohmann::json::parse(sceneFile->Buffer);
     
     auto unitsFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/units" + languageSuffix);
     if (unitsFile == nullptr || unitsMap != nullptr) {
         return;
     }
-    unitsMap = nlohmann::json::parse(unitsFile->Buffer.data());
+    unitsMap = nlohmann::json::parse(unitsFile->Buffer);
 }
 
 void RegisterAccessibilityModHooks() {
