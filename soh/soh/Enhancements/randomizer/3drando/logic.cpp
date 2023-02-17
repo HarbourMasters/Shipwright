@@ -1002,6 +1002,9 @@ namespace Logic {
      ShadowTrialClear = false;
      LightTrialClear  = false;
 
+     //Greg
+     Greg = false;
+
      //Progressive Items
      ProgressiveBulletBag  = 0;
      ProgressiveBombBag    = 0;
