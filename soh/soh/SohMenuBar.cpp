@@ -1194,6 +1194,8 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("Prevents ReDeads and Gibdos from being able to freeze you with their scream");
         UIWidgets::PaddedEnhancementCheckbox("Fish don't despawn", "gNoFishDespawn", true, false);
         UIWidgets::Tooltip("Prevents fish from automatically despawning after a while when dropped");
+        UIWidgets::PaddedEnhancementCheckbox("Bugs don't despawn", "gNoBugsDespawn", true, false);
+        UIWidgets::Tooltip("Prevents bugs from automatically despawning after a while when dropped");
 
         {
             static int32_t betaQuestEnabled = CVarGetInteger("gEnableBetaQuest", 0);
