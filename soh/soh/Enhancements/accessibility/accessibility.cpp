@@ -481,28 +481,24 @@ void InitAccessibilityTexts() {
     }
 
     auto sceneFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/scenes" + languageSuffix);
-    if (sceneFile == nullptr || sceneMap != nullptr) {
-        return;
+    if (sceneFile != nullptr && sceneMap == nullptr) {
+        sceneMap = nlohmann::json::parse(sceneFile->Buffer);
     }
-    sceneMap = nlohmann::json::parse(sceneFile->Buffer);
     
     auto unitsFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/units" + languageSuffix);
-    if (unitsFile == nullptr || unitsMap != nullptr) {
-        return;
+    if (unitsFile != nullptr && unitsMap == nullptr) {
+        unitsMap = nlohmann::json::parse(unitsFile->Buffer);
     }
-    unitsMap = nlohmann::json::parse(unitsFile->Buffer);
     
     auto kaleidoFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/kaleidoscope" + languageSuffix);
-    if (kaleidoFile == nullptr || kaleidoMap != nullptr) {
-        return;
+    if (kaleidoFile != nullptr && kaleidoMap == nullptr) {
+        kaleidoMap = nlohmann::json::parse(kaleidoFile->Buffer);
     }
-    kaleidoMap = nlohmann::json::parse(kaleidoFile->Buffer);
     
     auto fileChooseFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/filechoose" + languageSuffix);
-    if (fileChooseFile == nullptr || fileChooseMap != nullptr) {
-        return;
+    if (fileChooseFile != nullptr && fileChooseMap == nullptr) {
+        fileChooseMap = nlohmann::json::parse(fileChooseFile->Buffer);
     }
-    fileChooseMap = nlohmann::json::parse(fileChooseFile->Buffer);
 }
 
 void RegisterAccessibilityModHooks() {
