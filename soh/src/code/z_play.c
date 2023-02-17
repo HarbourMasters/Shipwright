@@ -647,7 +647,7 @@ void Play_Init(GameState* thisx) {
 
     if (gSaveContext.sohStats.sceneNum != gPlayState->sceneNum) {
         u16 idx = gSaveContext.sohStats.tsIdx;
-        gSaveContext.sohStats.sceneTimestamps[idx].ts = gSaveContext.sohStats.sceneTimer;
+        gSaveContext.sohStats.sceneTimestamps[idx].ts = gSaveContext.sohStats.sceneTimer / 2;
         gSaveContext.sohStats.sceneTimestamps[idx].scene = gSaveContext.sohStats.sceneNum;
         gSaveContext.sohStats.sceneTimestamps[idx].room = gSaveContext.sohStats.roomNum;
         gSaveContext.sohStats.tsIdx++;
@@ -655,7 +655,7 @@ void Play_Init(GameState* thisx) {
         gSaveContext.sohStats.roomTimer = 0;
     } else if (gSaveContext.sohStats.roomNum != gPlayState->roomCtx.curRoom.num) {
         u16 idx = gSaveContext.sohStats.tsIdx;
-        gSaveContext.sohStats.sceneTimestamps[idx].ts = gSaveContext.sohStats.roomTimer;
+        gSaveContext.sohStats.sceneTimestamps[idx].ts = gSaveContext.sohStats.roomTimer / 2;
         gSaveContext.sohStats.sceneTimestamps[idx].scene = gSaveContext.sohStats.sceneNum;
         gSaveContext.sohStats.sceneTimestamps[idx].room = gSaveContext.sohStats.roomNum;
         gSaveContext.sohStats.roomTimer = 0;
