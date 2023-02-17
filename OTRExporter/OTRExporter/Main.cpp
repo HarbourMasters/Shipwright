@@ -134,11 +134,10 @@ static void ExporterProgramEnd()
 			if(item.find("accessibility") != std::string::npos) {
 				std::string extension = splitPath.at(splitPath.size() - 1);
 				splitPath.pop_back();
-				std::string afterPath = std::accumulate(splitPath.begin(), splitPath.end(), std::string(""));
 				if(extension == "json"){
-					auto fileData = File::ReadAllBytes(afterPath);
-					printf("Adding accessibility texts %s\n", StringHelper::Split(afterPath, "texts/")[1].c_str());
-					otrArchive->AddFile(StringHelper::Split(afterPath, "Extract/assets/")[1], (uintptr_t)fileData.data(), fileData.size());
+					auto fileData = File::ReadAllBytes(item);
+					printf("Adding accessibility texts %s\n", StringHelper::Split(item, "texts/")[1].c_str());
+					otrArchive->AddFile(StringHelper::Split(item, "Extract/assets/")[1], (uintptr_t)fileData.data(), fileData.size());
 				}
 				continue;
 			}
