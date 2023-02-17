@@ -96,7 +96,7 @@ public:
             return false;
         }
 
-        if (name.GetEnglish().find("Bombchus") != std::string::npos && !BombchusInLogic) {
+        if ((randomizerGet == RG_BOMBCHU_5 || randomizerGet == RG_BOMBCHU_10 || randomizerGet == RG_BOMBCHU_20) && !BombchusInLogic) {
             return false;
         }
 
