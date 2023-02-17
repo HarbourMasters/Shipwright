@@ -463,6 +463,8 @@ void FileChoose_UpdateRandomizer() {
     }
 }
 
+uint16_t lastButtonIndex;
+
 /**
  * Update the cursor and wait for the player to select a button to change menus accordingly.
  * If an empty file is selected, enter the name entry config mode.
@@ -581,6 +583,33 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
             }
         } else {
             this->warningLabel = FS_WARNING_NONE;
+        }
+        
+        if (lastButtonIndex != this->buttonIndex) {
+            switch (this->buttonIndex) {
+                case FS_BTN_MAIN_FILE_1:
+                    OTRSpeakText("File 1");
+                    break;
+                case FS_BTN_MAIN_FILE_2:
+                    OTRSpeakText("File 2");
+                    break;
+                case FS_BTN_MAIN_FILE_3:
+                    OTRSpeakText("File 3");
+                    break;
+                case FS_BTN_MAIN_OPTIONS:
+                    OTRSpeakText("Options");
+                    break;
+                case FS_BTN_MAIN_COPY:
+                    OTRSpeakText("Copy");
+                    break;
+                case FS_BTN_MAIN_ERASE:
+                    OTRSpeakText("Erase");
+                    break;
+                default:
+                    break;
+            }
+            
+            lastButtonIndex = this->buttonIndex;
         }
     }
 }

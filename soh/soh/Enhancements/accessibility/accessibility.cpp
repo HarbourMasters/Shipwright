@@ -75,12 +75,16 @@ static const char* titleCardText;
 
 void RegisterOnSceneInitHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        
         titleCardText = NameForSceneId(sceneNum);
     });
 }
 
 void RegisterOnPresentTitleCardHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPresentTitleCard>([]() {
+        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        
         SpeechSynthesizerSpeak(titleCardText);
     });
 }
@@ -89,6 +93,8 @@ void RegisterOnPresentTitleCardHook() {
 
 void RegisterOnInterfaceUpdateHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnInterfaceUpdate>([]() {
+        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        
         static uint32_t prevTimer = 0;
         static char ttsAnnounceBuf[32];
         
@@ -144,6 +150,8 @@ void RegisterOnInterfaceUpdateHook() {
 
 void RegisterOnKaleidoscopeUpdateHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoscopeUpdate>([](int16_t inDungeonScene) {
+        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        
         static uint16_t prevCursorIndex = 0;
         static uint16_t prevCursorSpecialPos = 0;
         static uint16_t prevCursorPoint[5] = { 0 };
