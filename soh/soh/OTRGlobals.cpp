@@ -1593,7 +1593,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 Randomizer_GetCheckFromActor(stone->id, play->sceneNum, actorParams);
 
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, hintCheck);
-        } else if ((textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT) && Randomizer_GetSettingValue(RSK_TOT_ALTAR_HINT)) {
+        } else if ((textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT)) {
             // rando hints at altar
             messageEntry = (LINK_IS_ADULT)
                ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)

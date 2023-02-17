@@ -2145,13 +2145,19 @@ void FileChoose_LoadGame(GameState* thisx) {
         }
     }
 
-    // Handle randomized spawn positions after the save context has been setup from load
-    // When remeber save location is on, set save warp if the save was in an a grotto, or
-    // the entrance index is -1 from shuffle overwarld spawn
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) && ((!CVarGetInteger("gRememberSaveLocation", 0) ||
-        gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE || gSaveContext.savedSceneNum == SCENE_KAKUSIANA) ||
-        (CVarGetInteger("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == -1))) {
-        Entrance_SetSavewarpEntrance();
+    if (gSaveContext.n64ddFlag) {
+        // Setup the modified entrance table and entrance shuffle table for rando
+        Entrance_Init();
+        Entrance_InitEntranceTrackingData();
+
+        // Handle randomized spawn positions after the save context has been setup from load
+        // When remeber save location is on, set save warp if the save was in an a grotto, or
+        // the entrance index is -1 from shuffle overwarld spawn
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) && ((!CVarGetInteger("gRememberSaveLocation", 0) ||
+            gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE || gSaveContext.savedSceneNum == SCENE_KAKUSIANA) ||
+            (CVarGetInteger("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == -1))) {
+            Entrance_SetSavewarpEntrance();
+        }
     }
 }
 

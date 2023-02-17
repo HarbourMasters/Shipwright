@@ -95,8 +95,12 @@ public:
         if (type == ITEMTYPE_DUNGEONREWARD && (ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON))) {
             return false;
         }
-        // PURPLE TODO: LOCALIZATION
-        if (name.GetEnglish().find("Bombchus") != std::string::npos && !BombchusInLogic) {
+
+        if ((randomizerGet == RG_BOMBCHU_5 || randomizerGet == RG_BOMBCHU_10 || randomizerGet == RG_BOMBCHU_20) && !BombchusInLogic) {
+            return false;
+        }
+
+        if (hintKey == HEART_CONTAINER || hintKey == PIECE_OF_HEART || hintKey == TREASURE_GAME_HEART) {
             return false;
         }
 

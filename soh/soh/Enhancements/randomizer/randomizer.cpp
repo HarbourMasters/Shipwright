@@ -4747,7 +4747,7 @@ CustomMessageMinimal NaviMessages[NUM_NAVI_MESSAGES] = {
       "%cSi tu es coincé quelque part, tu&devrais %wsauvegarder ta partie %cet&faire un %wreset%c!" },
 
     { "%cSheik will meet you in a %rburning&village %conce you have %gForest%c,&%rFire%c, and %bWater %cMedallions!",
-      "%cSheik wird dich in einem %rbrennenden&Dorf %ctreffen sobald du das Amulett&des %gWaldes%c, %rFeuers %cund %bWassers&%cbesitzt.",
+      "%cShiek wird dich in einem %rbrennenden&Dorf %ctreffen sobald du das Amulett&des %gWaldes%c, %rFeuers %cund %bWassers&%cbesitzt.",
       "%cSheik t'attendra dans un %rvillage&en feu %clorsque tu auras récupéré&les médaillons de la %gForêt%c, du %rFeu&%cet de l'%bEau%c!" },
 
     { "%cIf you don't have a %wsword %cas a&child, try buying %wDeku Sticks%c!&They're effective against your foes!",
