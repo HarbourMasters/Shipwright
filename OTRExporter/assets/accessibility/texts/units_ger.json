@@ -1,0 +1,6 @@
+{
+    "minutes_plural" : "$0 Minuten",
+    "minutes_singular" : "$0 Minute",
+    "seconds_plural" : "$0 Sekunden",
+    "seconds_singular" : "$0 Sekunde"
+}
