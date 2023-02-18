@@ -1364,22 +1364,31 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
         if (Save_GetSaveMetaInfo(fileIndex)->randoSave == 1 &&
             strncmp(Save_GetSaveMetaInfo(fileIndex)->buildVersion, (const char*) gBuildVersion, sizeof(Save_GetSaveMetaInfo(fileIndex)->buildVersion)) != 0) {
 
-            Gfx* gfx = Graph_GfxPlusOne(POLY_OPA_DISP);
+            // Stub out a dummy play state to be able to use the dialog system (MessageCtx)
+            PlayState dummyPlay;
+            PlayState* dummyPlayPtr = &dummyPlay;
 
-            MessageContext* msgCtx = &this->msgCtx;
+            // Set the MessageCtx and GameState onto the dummy play state
+            dummyPlayPtr->msgCtx = this->msgCtx;
+            dummyPlayPtr->state = this->state;
 
             // Load the custom text ID without doing a textbox
-            Message_OpenTextCustom(msgCtx, TEXT_RANDO_SAVE_VERSION_WARNING);
+            Message_OpenText(dummyPlayPtr, TEXT_RANDO_SAVE_VERSION_WARNING);
             // Force the context into message print mode
-            msgCtx->msgMode = MSGMODE_TEXT_NEXT_MSG;
-            Message_DecodeCustom(msgCtx, &gfx);
+            dummyPlayPtr->msgCtx.msgMode = MSGMODE_TEXT_NEXT_MSG;
+            Message_Decode(dummyPlayPtr);
 
             // Set the draw pos to end of text to render it all at once
-            msgCtx->textDrawPos = msgCtx->decodedTextLen;
-            msgCtx->textColorAlpha = textAlpha;
-            R_TEXT_LINE_SPACING = 10;
+            dummyPlayPtr->msgCtx.textDrawPos = dummyPlayPtr->msgCtx.decodedTextLen;
+            dummyPlayPtr->msgCtx.textColorAlpha = textAlpha;
 
-            Message_DrawTextCustom(msgCtx, &gfx, 128, 154);
+            // Set position and spacing values
+            R_TEXT_LINE_SPACING = 10;
+            R_TEXT_INIT_XPOS = 128;
+            R_TEXT_INIT_YPOS = 154;
+
+            Gfx* gfx = Graph_GfxPlusOne(POLY_OPA_DISP);
+            Message_DrawText(dummyPlayPtr, &gfx);
 
             POLY_OPA_DISP = gfx;
         }

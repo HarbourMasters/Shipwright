@@ -129,7 +129,6 @@ GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, G
 GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
 int CustomMessage_RetrieveIfExists(PlayState* play);
-int CustomMessage_RetrieveIfExistsMsgCtx(MessageContext* msgCtx);
 void Overlay_DisplayText(float duration, const char* text);
 void Overlay_DisplayText_Seconds(int seconds, const char* text);
 GetItemEntry ItemTable_Retrieve(int16_t getItemID);
