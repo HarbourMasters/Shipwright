@@ -197,12 +197,6 @@ void Sram_OpenSave() {
         }
     }
 
-    // Setup the modified entrance table and entrance shuffle table for rando
-    if (gSaveContext.n64ddFlag) {
-        Entrance_Init();
-        Entrance_InitEntranceTrackingData();
-    }
-
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);
     osSyncPrintf(VT_RST);
 

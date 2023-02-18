@@ -244,8 +244,10 @@ namespace GameControlEditor {
         DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
         UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", "gEnableFirstPersonSensitivity", true, false);
         if (CVarGetInteger("gEnableFirstPersonSensitivity", 0)) {
-            UIWidgets::EnhancementSliderFloat("Aiming/First-Person Sensitivity: %d %%", "##FirstPersonSensitivity",
-                                                "gFirstPersonCameraSensitivity", 0.01f, 5.0f, "", 1.0f, true, true);
+            UIWidgets::EnhancementSliderFloat("Aiming/First-Person Horizontal Sensitivity: %d %%", "##FirstPersonSensitivity Horizontal",
+                                                "gFirstPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true, true);
+            UIWidgets::EnhancementSliderFloat("Aiming/First-Person Vertical Sensitivity: %d %%", "##FirstPersonSensitivity Vertical",
+                                              "gFirstPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true, true);
         } else {
             CVarSetFloat("gFirstPersonCameraSensitivity", 1.0f);
         }
@@ -261,8 +263,10 @@ namespace GameControlEditor {
         DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera");
         UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
         DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera");
-        UIWidgets::EnhancementSliderFloat("Third-Person Sensitivity: %d %%", "##ThirdPersonSensitivity",
-                                            "gThirdPersonCameraSensitivity", 0.01f, 5.0f, "", 1.0f, true, true);
++       UIWidgets::EnhancementSliderFloat("Third-Person Horizontal Sensitivity: %d %%", "##ThirdPersonSensitivity Horizontal",
++                                            "gThirdPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true, true);
++       UIWidgets::EnhancementSliderFloat("Third-Person Vertical Sensitivity: %d %%", "##ThirdPersonSensitivity Vertical",
++                                          "gThirdPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true, true);
         UIWidgets::EnhancementSliderInt("Camera Distance: %d", "##CamDist",
                                         "gFreeCameraDistMax", 100, 900, "", 185, true);
         UIWidgets::EnhancementSliderInt("Camera Transition Speed: %d", "##CamTranSpeed",

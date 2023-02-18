@@ -669,8 +669,14 @@ void DrawEntranceTracker(bool& open) {
                 UIWidgets::Tooltip("Highlight the previous entrance that Link came from");
                 UIWidgets::PaddedEnhancementCheckbox("Highlight available", "gEntranceTrackerHighlightAvailable", true, false);
                 UIWidgets::Tooltip("Highlight available entrances in the current scene");
-                UIWidgets::PaddedEnhancementCheckbox("Hide undiscovered", "gEntranceTrackerCollapseUndiscovered", true, true);
+                UIWidgets::PaddedEnhancementCheckbox("Hide undiscovered", "gEntranceTrackerCollapseUndiscovered", true, false);
                 UIWidgets::Tooltip("Collapse undiscovered entrances towards the bottom of each group");
+                bool disableHideReverseEntrances = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
+                static const char* disableHideReverseEntrancesText = "This option is disabled because \"Decouple Entrances\" is enabled.";
+                UIWidgets::PaddedEnhancementCheckbox("Hide reverse", "gEntranceTrackerHideReverseEntrances", true, false,
+                                              disableHideReverseEntrances, disableHideReverseEntrancesText, UIWidgets::CheckboxGraphics::Cross, true);
+                UIWidgets::Tooltip("Hide reverse entrance transitions when Decouple Entrances is off");
+                UIWidgets::Spacer(0);
 
                 ImGui::TableNextColumn();
 
@@ -779,6 +785,16 @@ void DrawEntranceTracker(bool& open) {
             const EntranceData* original = GetEntranceData(entrance.index);
             const EntranceData* override = GetEntranceData(entrance.override);
 
+            // If entrance is a dungeon, grotto, or interior entrance, the transition into that area has oneExit set, which means we can filter the return transitions as redundant
+            // if entrances are not decoupled, as this is redundant information. Also checks a setting, enabled by default, for hiding them.
+            // If all of these conditions are met, we skip adding this entrance to any lists.
+            // However, if entrances are decoupled, then all transitions need to be displayed, so we proceed with the filtering
+            if ((original->type == ENTRANCE_TYPE_DUNGEON || original->type == ENTRANCE_TYPE_GROTTO || original->type == ENTRANCE_TYPE_INTERIOR) &&
+                (original->oneExit != 1 && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF) &&
+                CVarGetInteger("gEntranceTrackerHideReverseEntrances", 1) == 1) {
+                    continue;
+            }
+
             bool isDiscovered = IsEntranceDiscovered(entrance.index);
 
             bool showOriginal = (!destToggle ? CVarGetInteger("gEntranceTrackerShowTo", 0) : CVarGetInteger("gEntranceTrackerShowFrom", 0)) || isDiscovered;
@@ -846,7 +862,11 @@ void DrawEntranceTracker(bool& open) {
                     uint32_t color = isDiscovered ? IM_COL32_WHITE : COLOR_GRAY;
 
                     // Handle highlighting and auto scroll
-                    if (LinkIsInArea(original) != -1) {
+                    if ((original->index == lastEntranceIndex ||
+                        (override->reverseIndex == lastEntranceIndex && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF)) &&
+                            CVarGetInteger("gEntranceTrackerHighlightPrevious", 0)) {
+                                 color = COLOR_ORANGE;
+                    } else if (LinkIsInArea(original) != -1) {
                         if (CVarGetInteger("gEntranceTrackerHighlightAvailable", 0)) {
                             color = COLOR_GREEN;
                         }
@@ -856,10 +876,6 @@ void DrawEntranceTracker(bool& open) {
                             if (CVarGetInteger("gEntranceTrackerAutoScroll", 0)) {
                                 ImGui::SetScrollHereY(0.0f);
                             }
-                        }
-                    } else if (original->index == lastEntranceIndex) {
-                        if (CVarGetInteger("gEntranceTrackerHighlightPrevious", 0)) {
-                            color = COLOR_ORANGE;
                         }
                     }
 
