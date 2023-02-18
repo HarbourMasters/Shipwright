@@ -612,8 +612,7 @@ extern "C" void InitOTR() {
 extern "C" void DeinitOTR() {
     OTRAudio_Exit();
 #if defined(_WIN32) || defined(__APPLE__)
-    // Stop any current speech as we're ready to close
-    SpeechSynthesizerSpeakEnglish("");
+    SpeechSynthesizerUninitialize();
 #endif
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance->Disable();
