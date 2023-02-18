@@ -1677,10 +1677,12 @@ s32 Camera_Normal1(Camera* camera) {
         Camera_ClampDist(camera, eyeAdjustment.r, norm1->distMin, norm1->distMax, anim->unk_28);
 
     if (anim->startSwingTimer <= 0) {
+        if (CVarGetInteger("gA11yDisableIdleCam", 0)) return;
         eyeAdjustment.pitch = atEyeNextGeo.pitch;
         eyeAdjustment.yaw =
             Camera_LERPCeilS(anim->swingYawTarget, atEyeNextGeo.yaw, 1.0f / camera->yawUpdateRateInv, 0xA);
     } else if (anim->swing.unk_18 != 0) {
+        if (CVarGetInteger("gA11yDisableIdleCam", 0)) return;
         eyeAdjustment.yaw =
             Camera_LERPCeilS(anim->swing.unk_16, atEyeNextGeo.yaw, 1.0f / camera->yawUpdateRateInv, 0xA);
         eyeAdjustment.pitch =
