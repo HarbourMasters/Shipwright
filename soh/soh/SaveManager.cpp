@@ -5,6 +5,7 @@
 #include "z64.h"
 #include "functions.h"
 #include "macros.h"
+#include <variables.h>
 #include <Hooks.h>
 #include <libultraship/bridge.h>
 
@@ -390,8 +391,12 @@ void SaveManager::InitMeta(int fileNum) {
     // we don't actually require a vanilla OTR.
     fileMetaInfo[fileNum].requiresOriginal = !gSaveContext.isMasterQuest && (!gSaveContext.n64ddFlag || gSaveContext.mqDungeonCount < 12);
 
+    fileMetaInfo[fileNum].buildVersionMajor = gSaveContext.sohStats.buildVersionMajor;
+    fileMetaInfo[fileNum].buildVersionMinor = gSaveContext.sohStats.buildVersionMinor;
+    fileMetaInfo[fileNum].buildVersionPatch = gSaveContext.sohStats.buildVersionPatch;
+
     for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].buildVersion); i++) {
-        fileMetaInfo[fileNum].buildVersion[i] = gSaveContext.buildVersion[i];
+        fileMetaInfo[fileNum].buildVersion[i] = gSaveContext.sohStats.buildVersion[i];
     }
 }
 
@@ -563,6 +568,13 @@ void SaveManager::InitFileNormal() {
     gSaveContext.infTable[29] = 1;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
     gSaveContext.pendingSale = ITEM_NONE;
+
+    strncpy(gSaveContext.sohStats.buildVersion, (const char*) gBuildVersion, sizeof(gSaveContext.sohStats.buildVersion) - 1);
+    gSaveContext.sohStats.buildVersion[sizeof(gSaveContext.sohStats.buildVersion) - 1] = 0;
+    gSaveContext.sohStats.buildVersionMajor = gBuildVersionMajor;
+    gSaveContext.sohStats.buildVersionMinor = gBuildVersionMinor;
+    gSaveContext.sohStats.buildVersionPatch = gBuildVersionPatch;
+
     //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
 
@@ -1252,6 +1264,14 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadData("gsTokens", gSaveContext.inventory.gsTokens);
     });
     SaveManager::Instance->LoadStruct("sohStats", []() {
+        std::string buildVersion;
+        SaveManager::Instance->LoadData("buildVersion", buildVersion);
+        strncpy(gSaveContext.sohStats.buildVersion, buildVersion.c_str(), ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1);
+        gSaveContext.sohStats.buildVersion[ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1] = 0;
+        SaveManager::Instance->LoadData("buildVersionMajor", gSaveContext.sohStats.buildVersionMajor);
+        SaveManager::Instance->LoadData("buildVersionMinor", gSaveContext.sohStats.buildVersionMinor);
+        SaveManager::Instance->LoadData("buildVersionPatch", gSaveContext.sohStats.buildVersionPatch);
+
         SaveManager::Instance->LoadData("heartPieces", gSaveContext.sohStats.heartPieces);
         SaveManager::Instance->LoadData("heartContainers", gSaveContext.sohStats.heartContainers);
         SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
@@ -1369,11 +1389,6 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadData("tempCollectFlags", gSaveContext.backupFW.tempCollectFlags);
     });
     SaveManager::Instance->LoadData("dogParams", gSaveContext.dogParams);
-
-    std::string buildVersion;
-    SaveManager::Instance->LoadData("buildVersion", buildVersion);
-    strncpy(gSaveContext.buildVersion, buildVersion.c_str(), ARRAY_COUNT(gSaveContext.buildVersion) - 1);
-    gSaveContext.buildVersion[ARRAY_COUNT(gSaveContext.buildVersion) - 1] = 0;
 }
 
 void SaveManager::SaveBase() {
@@ -1450,6 +1465,11 @@ void SaveManager::SaveBase() {
         SaveManager::Instance->SaveData("gsTokens", gSaveContext.inventory.gsTokens);
     });
     SaveManager::Instance->SaveStruct("sohStats", []() {
+        SaveManager::Instance->SaveData("buildVersion", gSaveContext.sohStats.buildVersion);
+        SaveManager::Instance->SaveData("buildVersionMajor", gSaveContext.sohStats.buildVersionMajor);
+        SaveManager::Instance->SaveData("buildVersionMinor", gSaveContext.sohStats.buildVersionMinor);
+        SaveManager::Instance->SaveData("buildVersionPatch", gSaveContext.sohStats.buildVersionPatch);
+
         SaveManager::Instance->SaveData("heartPieces", gSaveContext.sohStats.heartPieces);
         SaveManager::Instance->SaveData("heartContainers", gSaveContext.sohStats.heartContainers);
         SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
@@ -1567,7 +1587,6 @@ void SaveManager::SaveBase() {
         SaveManager::Instance->SaveData("tempCollectFlags", gSaveContext.backupFW.tempCollectFlags);
     });
     SaveManager::Instance->SaveData("dogParams", gSaveContext.dogParams);
-    SaveManager::Instance->SaveData("buildVersion", gSaveContext.buildVersion);
 }
 
 void SaveManager::SaveArray(const std::string& name, const size_t size, SaveArrayFunc func) {
@@ -1691,6 +1710,9 @@ void SaveManager::CopyZeldaFile(int from, int to) {
     fileMetaInfo[to].randoSave = fileMetaInfo[from].randoSave;
     fileMetaInfo[to].requiresMasterQuest = fileMetaInfo[from].requiresMasterQuest;
     fileMetaInfo[to].requiresOriginal = fileMetaInfo[from].requiresOriginal;
+    fileMetaInfo[to].buildVersionMajor = fileMetaInfo[from].buildVersionMajor;
+    fileMetaInfo[to].buildVersionMinor = fileMetaInfo[from].buildVersionMinor;
+    fileMetaInfo[to].buildVersionPatch = fileMetaInfo[from].buildVersionPatch;
     for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[to].buildVersion); i++) {
         fileMetaInfo[to].buildVersion[i] = fileMetaInfo[from].buildVersion[i];
     }

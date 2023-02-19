@@ -600,9 +600,6 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         }
     }
 
-    strncpy(gSaveContext.buildVersion, gBuildVersion, sizeof(gSaveContext.buildVersion) - 1);
-    gSaveContext.buildVersion[sizeof(gSaveContext.buildVersion) - 1] = 0;
-
     Save_SaveFile();
 }
 

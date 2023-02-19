@@ -15,6 +15,9 @@ typedef struct {
     u8 seedHash[5];
     u8 randoSave;
     char buildVersion[50];
+    s16 buildVersionMajor;
+    s16 buildVersionMinor;
+    s16 buildVersionPatch;
 } SaveFileMetaInfo;
 
 #ifdef __cplusplus

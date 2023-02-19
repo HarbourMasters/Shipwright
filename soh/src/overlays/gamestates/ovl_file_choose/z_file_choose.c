@@ -1360,9 +1360,10 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
             textAlpha = 255;
         }
 
-        // Draw rando seed warning when build version doesn't match
+        // Draw rando seed warning when build version doesn't match for Major or Minor number
         if (Save_GetSaveMetaInfo(fileIndex)->randoSave == 1 &&
-            strncmp(Save_GetSaveMetaInfo(fileIndex)->buildVersion, (const char*) gBuildVersion, sizeof(Save_GetSaveMetaInfo(fileIndex)->buildVersion)) != 0) {
+            gBuildVersionMajor != Save_GetSaveMetaInfo(fileIndex)->buildVersionMajor ||
+            gBuildVersionMinor != Save_GetSaveMetaInfo(fileIndex)->buildVersionMinor) {
 
             // Stub out a dummy play state to be able to use the dialog system (MessageCtx)
             PlayState dummyPlay;
