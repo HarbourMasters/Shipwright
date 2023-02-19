@@ -6,7 +6,6 @@
 #include <fstream>
 
 #include <ResourceMgr.h>
-#include <OtrFile.h>
 #include <DisplayList.h>
 #include <Window.h>
 #include <GameVersions.h>
@@ -29,8 +28,7 @@
 #include <AudioPlayer.h>
 #include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
-#include "Enhancements/audio/AudioCollection.h"
-#include "Enhancements/audio/AudioEditor.h"
+#include "Enhancements/sfx-editor/SfxEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
 #include "Enhancements/randomizer/randomizer.h"
@@ -74,9 +72,8 @@
 CrowdControl* CrowdControl::Instance;
 #endif
 
-#include "Enhancements/mods/modhooks.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
-#include <libultraship/libultraship.h>
+#include "libultraship/libultraship.h"
 
 // Resource Types/Factories
 #include "soh/resource/type/Animation.h"
@@ -110,7 +107,6 @@ SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
 ItemTableManager* ItemTableManager::Instance;
 GameInteractor* GameInteractor::Instance;
-AudioCollection* AudioCollection::Instance;
 
 extern "C" char** cameraStrings;
 std::vector<std::shared_ptr<std::string>> cameraStdStrings;
@@ -480,7 +476,7 @@ extern "C" void VanillaItemTable_Init() {
         GET_ITEM(ITEM_ARROWS_SMALL,     OBJECT_GI_ARROW,         GID_ARROWS_SMALL,     0xE6, 0x48, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_ARROWS_SMALL),
         GET_ITEM(ITEM_ARROWS_MEDIUM,    OBJECT_GI_ARROW,         GID_ARROWS_MEDIUM,    0xE6, 0x49, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_ARROWS_MEDIUM),
         GET_ITEM(ITEM_ARROWS_LARGE,     OBJECT_GI_ARROW,         GID_ARROWS_LARGE,     0xE6, 0x4A, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_ARROWS_LARGE),
-        GET_ITEM(ITEM_RUPEE_GREEN,      OBJECT_GI_RUPY,          GID_RUPEE_GREEN,      0x6F, 0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_GREEN),
+        GET_ITEM(ITEM_RUPEE_GREEN,      OBJECT_GI_RUPY,          GID_RUPEE_GREEN,      0x6F, 0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_RUPEE_GREEN),
         GET_ITEM(ITEM_RUPEE_BLUE,       OBJECT_GI_RUPY,          GID_RUPEE_BLUE,       0xCC, 0x01, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_BLUE),
         GET_ITEM(ITEM_RUPEE_RED,        OBJECT_GI_RUPY,          GID_RUPEE_RED,        0xF0, 0x02, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_RED),
         GET_ITEM(ITEM_HEART_CONTAINER,  OBJECT_GI_HEARTS,        GID_HEART_CONTAINER,  0xC6, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_HEART_CONTAINER_2),
@@ -570,14 +566,13 @@ extern "C" void InitOTR() {
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
     GameInteractor::Instance = new GameInteractor();
-    AudioCollection::Instance = new AudioCollection();
 
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
     InitCosmeticsEditor();
     GameControlEditor::Init();
-    InitAudioEditor();
+    InitSfxEditor();
     DebugConsole_Init();
     Debug_Init();
     Rando_Init();
@@ -587,8 +582,6 @@ extern "C" void InitOTR() {
     CheckTracker::InitCheckTracker();
     OTRExtScanner();
     VanillaItemTable_Init();
-
-    RegisterModHooks();
 
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);
@@ -885,23 +878,7 @@ std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path) {
 }
 
 extern "C" char* ResourceMgr_LoadFileRaw(const char* resName) {
-    // TODO: This should not exist. Anywhere we are loading textures with this function should be Resources instead.
-    // We are not currently packing our otr archive with certain textures as resources with otr headers.
-    static std::unordered_map<std::string, std::shared_ptr<Ship::OtrFile>> cachedRawFiles;
-
-    auto cacheFind = cachedRawFiles.find(resName);
-    if (cacheFind != cachedRawFiles.end()) {
-        return cacheFind->second->Buffer.data();
-    }
-    
-    auto file = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(resName);
-    cachedRawFiles[resName] = file;
-
-    if (file == nullptr) {
-        return nullptr;
-    }
-
-    return file->Buffer.data();
+    return OTRGlobals::Instance->context->GetResourceManager()->LoadFile(resName)->Buffer.get();
 }
 
 extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {

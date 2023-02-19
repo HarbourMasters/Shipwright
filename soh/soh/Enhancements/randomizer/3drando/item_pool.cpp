@@ -64,7 +64,7 @@ const std::array<uint32_t, 59> alwaysItems = {
   DINS_FIRE,
   FARORES_WIND,
   NAYRUS_LOVE,
-  GREG_RUPEE,
+  GREEN_RUPEE,
   PROGRESSIVE_HOOKSHOT,  //2 progressive hookshots
   PROGRESSIVE_HOOKSHOT,
   DEKU_SHIELD,

@@ -6,6 +6,6 @@ void* SetPathways::GetPointer() {
 }
 
 size_t SetPathways::GetPointerSize() {
-    return paths.size() * sizeof(std::shared_ptr<Ship::Path>);
+    return paths.size() * sizeof(std::shared_ptr<Path>);
 }
 } // namespace Ship

@@ -22,15 +22,6 @@ namespace UIWidgets {
             }
             return 1;
         }
-
-        static int FilterAlphaNum(ImGuiInputTextCallbackData* data) {
-            const char* alphanum = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWYZ0123456789";
-            if (data->EventChar < 256 && strchr(alphanum, (char)data->EventChar)) {
-                return 0;
-            }
-            return 1;
-        }
-        
     };
 
     // MARK: - Enums

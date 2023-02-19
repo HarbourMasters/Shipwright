@@ -120,10 +120,6 @@ public:
             return false;
         }
 
-        if (randomizerGet == RG_GREG_RUPEE) {
-            return Bridge.Is(RAINBOWBRIDGE_GREG);
-        }
-
         return IsAdvancement();
     }
 

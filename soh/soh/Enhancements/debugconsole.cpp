@@ -10,7 +10,7 @@
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
-#include "soh/Enhancements/audio/AudioEditor.h"
+#include "soh/Enhancements/sfx-editor/SfxEditor.h"
 
 #define Path _Path
 #define PATH_HACK
@@ -1210,9 +1210,9 @@ static bool SfxHandler(std::shared_ptr<Ship::Console> Console, const std::vector
     }
 
     if (args[1].compare("reset") == 0) {
-        AudioEditor_ResetAll();
+        SfxEditor_ResetAll();
     } else if (args[1].compare("randomize") == 0) {
-        AudioEditor_RandomizeAll();
+        SfxEditor_RandomizeAll();
     } else {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Invalid argument passed, must be 'reset' or 'randomize'");
         return CMD_FAILED;

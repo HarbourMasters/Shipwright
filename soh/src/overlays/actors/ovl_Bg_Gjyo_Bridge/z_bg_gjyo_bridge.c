@@ -135,12 +135,6 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, PlayState* play) {
                     func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
                 }
                 break;
-            case RO_BRIDGE_GREG:
-                if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
-                    this->actionFunc = BgGjyoBridge_SpawnBridge;
-                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
-                }
-                break;
         }
     }
 }
