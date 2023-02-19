@@ -1072,16 +1072,16 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Freezes the time of day");
             UIWidgets::PaddedEnhancementCheckbox("Drops Don't Despawn", "gDropsDontDie", true, false);
             UIWidgets::Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
+            UIWidgets::PaddedEnhancementCheckbox("Fish Don't Despawn", "gNoFishDespawn", true, false);
+            UIWidgets::Tooltip("Prevents fish from automatically despawning after a while when dropped");
+            UIWidgets::PaddedEnhancementCheckbox("Bugs Don't Despawn", "gNoBugsDespawn", true, false);
+            UIWidgets::Tooltip("Prevents bugs from automatically despawning after a while when dropped");
             UIWidgets::PaddedEnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield", true, false);
             UIWidgets::Tooltip("Prevents the Deku Shield from burning on contact with fire");
             UIWidgets::PaddedEnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded", true, false);
             UIWidgets::Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
             UIWidgets::PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
             UIWidgets::Tooltip("This syncs the ingame time with the real world time");
-            UIWidgets::PaddedEnhancementCheckbox("Fish don't despawn", "gNoFishDespawn", true, false);
-            UIWidgets::Tooltip("Prevents fish from automatically despawning after a while when dropped");
-            UIWidgets::PaddedEnhancementCheckbox("Bugs don't despawn", "gNoBugsDespawn", true, false);
-            UIWidgets::Tooltip("Prevents bugs from automatically despawning after a while when dropped");
 
             {
                 static int32_t betaQuestEnabled = CVarGetInteger("gEnableBetaQuest", 0);
