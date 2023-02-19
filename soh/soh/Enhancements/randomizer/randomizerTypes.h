@@ -904,6 +904,7 @@ typedef enum {
     RG_LIGHT_MEDALLION,
     RG_RECOVERY_HEART,
     RG_GREEN_RUPEE,
+    RG_GREG_RUPEE,
     RG_BLUE_RUPEE,
     RG_RED_RUPEE,
     RG_PURPLE_RUPEE,
@@ -1174,6 +1175,7 @@ typedef enum {
     RO_BRIDGE_DUNGEON_REWARDS,
     RO_BRIDGE_DUNGEONS,
     RO_BRIDGE_TOKENS,
+    RO_BRIDGE_GREG,
     RO_BRIDGE_MAX,
 } RandoOptionRainbowBridge;
 

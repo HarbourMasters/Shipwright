@@ -16,6 +16,6 @@ class SetPathways : public SceneCommand {
     size_t GetPointerSize();
 
     uint32_t numPaths;
-    std::vector<std::shared_ptr<Path>> paths;
+    std::vector<std::shared_ptr<Ship::Path>> paths;
 };
 }; // namespace Ship
