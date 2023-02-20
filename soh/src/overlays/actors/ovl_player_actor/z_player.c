@@ -10916,7 +10916,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
 
         AnimationContext_SetNextQueue(play);
 
-        // Super Sonic Mode - Don't Laugh!
+        // Super Sonic Mode
 
         if (CVarGetInteger("gSuperSonic", 0) >= 1) {
             // Initialize Timer
