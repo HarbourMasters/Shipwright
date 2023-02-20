@@ -363,6 +363,81 @@ static uint8_t ttsHasNewMessage;
 static char ttsMessageBuf[256];
 static int8_t ttsCurrentHighlightedChoice;
 
+char8_t const* remap(uint8_t character) {
+//    "80": "À",
+//     "81": "î",
+//     "82": "Â",
+//     "83": "Ä",
+//     "84": "Ç",
+//     "85": "È",
+//     "86": "É",
+//     "87": "Ê",
+//     "88": "Ë",
+//     "89": "Ï",
+//     "8A": "Ô",
+//     "8B": "Ö",
+//     "8C": "Ù",
+//     "8D": "Û",
+//     "8E": "Ü",
+//     "8F": "ß",
+//     "90": "à",
+//     "91": "á",
+//     "92": "â",
+//     "93": "ä",
+//     "94": "ç",
+//     "95": "è",
+//     "96": "é",
+//     "97": "ê",
+//     "98": "ë",
+//     "99": "ï",
+//     "9A": "ô",
+//     "9B": "ö",
+//     "9C": "ù",
+//     "9D": "û",
+//     "9E": "ü",
+//     "9F": "A",
+//     "A0": "B",
+//     "A1": "C",
+//     "A2": "L",
+//     "A3": "R",
+//     "A4": "Z",
+
+    switch (character) {
+        case 0x80: return u8"À";
+        case 0x81: return u8"î";
+        case 0x82: return u8"Â";
+        case 0x83: return u8"Ä";
+        case 0x84: return u8"Ç";
+        case 0x85: return u8"È";
+        case 0x86: return u8"É";
+        case 0x87: return u8"Ê";
+        case 0x88: return u8"Ë";
+        case 0x89: return u8"Ï";
+        case 0x8A: return u8"Ô";
+        case 0x8B: return u8"Ö";
+        case 0x8C: return u8"Ù";
+        case 0x8D: return u8"Û";
+        case 0x8E: return u8"Ü";
+        case 0x8F: return u8"ß";
+        case 0x90: return u8"à";
+        case 0x91: return u8"á";
+        case 0x92: return u8"â";
+        case 0x93: return u8"ä";
+        case 0x94: return u8"ç";
+        case 0x95: return u8"è";
+        case 0x96: return u8"é";
+        case 0x97: return u8"ê";
+        case 0x98: return u8"ë";
+        case 0x99: return u8"ï";
+        case 0x9A: return u8"ô";
+        case 0x9B: return u8"ö";
+        case 0x9C: return u8"ù";
+        case 0x9D: return u8"û";
+        case 0x9E: return u8"ü";
+        default: return u8"";
+    }
+}
+
 void Message_TTS_Decode(uint8_t* sourceBuf, char* destBuf, uint16_t startOfset, uint16_t size) {
     uint32_t destWriteIndex = 0;
     uint8_t isListingChoices = 0;
@@ -397,7 +472,14 @@ void Message_TTS_Decode(uint8_t* sourceBuf, char* destBuf, uint16_t startOfset, 
                     break;
             }
         } else {
-            destBuf[destWriteIndex++] = cchar;
+            if (cchar <= 0x80) {
+                destBuf[destWriteIndex++] = cchar;
+            } else {
+                auto rchar = remap(cchar);
+                while (*rchar) {
+                    destBuf[destWriteIndex++] = *rchar++;
+                }
+            }
         }
     }
     
