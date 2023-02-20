@@ -16,13 +16,13 @@ extern PlayState* gPlayState;
 
 typedef enum {
     /* 0x00 */ TEXT_BANK_SCENES,
-    /* 0x01 */ TEXT_BANK_UNITS,
+    /* 0x01 */ TEXT_BANK_MISC,
     /* 0x02 */ TEXT_BANK_KALEIDO,
     /* 0x03 */ TEXT_BANK_FILECHOOSE,
 } TextBank;
 
 nlohmann::json sceneMap = nullptr;
-nlohmann::json unitsMap = nullptr;
+nlohmann::json miscMap = nullptr;
 nlohmann::json kaleidoMap = nullptr;
 nlohmann::json fileChooseMap = nullptr;
 
@@ -36,8 +36,8 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
             return sceneMap[key].get<std::string>();
             break;
         }
-        case TEXT_BANK_UNITS: {
-            auto value = unitsMap[key].get<std::string>();
+        case TEXT_BANK_MISC: {
+            auto value = miscMap[key].get<std::string>();
             
             std::string searchString = "$0";
             size_t index = value.find(searchString);
@@ -140,12 +140,12 @@ void RegisterOnInterfaceUpdateHook() {
                 char arg[8]; // at least big enough where no s8 string will overflow
                 if (minutes > 0) {
                     snprintf(arg, sizeof(arg), "%d", minutes);
-                    auto translation = GetParameritizedText((minutes > 1) ? "minutes_plural" : "minutes_singular", TEXT_BANK_UNITS, arg);
+                    auto translation = GetParameritizedText((minutes > 1) ? "minutes_plural" : "minutes_singular", TEXT_BANK_MISC, arg);
                     announceBuf += snprintf(announceBuf, sizeof(ttsAnnounceBuf), "%s ", translation.c_str());
                 }
                 if (seconds > 0) {
                     snprintf(arg, sizeof(arg), "%d", seconds);
-                    auto translation = GetParameritizedText((seconds > 1) ? "seconds_plural" : "seconds_singular", TEXT_BANK_UNITS, arg);
+                    auto translation = GetParameritizedText((seconds > 1) ? "seconds_plural" : "seconds_singular", TEXT_BANK_MISC, arg);
                     announceBuf += snprintf(announceBuf, sizeof(ttsAnnounceBuf), "%s", translation.c_str());
                 }
                 ASSERT(announceBuf < ttsAnnounceBuf + sizeof(ttsAnnounceBuf));
@@ -364,44 +364,6 @@ static char ttsMessageBuf[256];
 static int8_t ttsCurrentHighlightedChoice;
 
 char8_t const* remap(uint8_t character) {
-//    "80": "À",
-//     "81": "î",
-//     "82": "Â",
-//     "83": "Ä",
-//     "84": "Ç",
-//     "85": "È",
-//     "86": "É",
-//     "87": "Ê",
-//     "88": "Ë",
-//     "89": "Ï",
-//     "8A": "Ô",
-//     "8B": "Ö",
-//     "8C": "Ù",
-//     "8D": "Û",
-//     "8E": "Ü",
-//     "8F": "ß",
-//     "90": "à",
-//     "91": "á",
-//     "92": "â",
-//     "93": "ä",
-//     "94": "ç",
-//     "95": "è",
-//     "96": "é",
-//     "97": "ê",
-//     "98": "ë",
-//     "99": "ï",
-//     "9A": "ô",
-//     "9B": "ö",
-//     "9C": "ù",
-//     "9D": "û",
-//     "9E": "ü",
-//     "9F": "A",
-//     "A0": "B",
-//     "A1": "C",
-//     "A2": "L",
-//     "A3": "R",
-//     "A4": "Z",
-
     switch (character) {
         case 0x80: return u8"À";
         case 0x81: return u8"î";
@@ -434,6 +396,18 @@ char8_t const* remap(uint8_t character) {
         case 0x9C: return u8"ù";
         case 0x9D: return u8"û";
         case 0x9E: return u8"ü";
+        case 0x9F: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_a", TEXT_BANK_MISC, nullptr).c_str()));
+        case 0xA0: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_b", TEXT_BANK_MISC, nullptr).c_str()));
+        case 0xA1: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_c", TEXT_BANK_MISC, nullptr).c_str()));
+        case 0xA2: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_l", TEXT_BANK_MISC, nullptr).c_str()));
+        case 0xA3: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_r", TEXT_BANK_MISC, nullptr).c_str()));
+        case 0xA4: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_z", TEXT_BANK_MISC, nullptr).c_str()));
+        case 0xA5: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_c_up", TEXT_BANK_MISC, nullptr).c_str()));
+        case 0xA6: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_c_down", TEXT_BANK_MISC, nullptr).c_str()));
+        case 0xA7: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_c_left", TEXT_BANK_MISC, nullptr).c_str()));
+        case 0xA8: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_c_right", TEXT_BANK_MISC, nullptr).c_str()));
+        case 0xAA: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_analog_stick", TEXT_BANK_MISC, nullptr).c_str()));
+        case 0xAB: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_d_pad", TEXT_BANK_MISC, nullptr).c_str()));
         default: return u8"";
     }
 }
@@ -574,9 +548,9 @@ void InitAccessibilityTexts() {
         sceneMap = nlohmann::json::parse(sceneFile->Buffer, nullptr, true, true);
     }
     
-    auto unitsFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/units" + languageSuffix);
-    if (unitsFile != nullptr && unitsMap == nullptr) {
-        unitsMap = nlohmann::json::parse(unitsFile->Buffer, nullptr, true, true);
+    auto miscFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/misc" + languageSuffix);
+    if (miscFile != nullptr && miscMap == nullptr) {
+        miscMap = nlohmann::json::parse(miscFile->Buffer, nullptr, true, true);
     }
     
     auto kaleidoFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/kaleidoscope" + languageSuffix);
