@@ -31,8 +31,6 @@ nlohmann::json fileChooseMap = nullptr;
 std::string GetParameritizedText(std::string key, TextBank bank, const char* arg) {
     switch (bank) {
         case TEXT_BANK_SCENES: {
-            // TODO: Remove after everything is cataloged
-            SohImGui::GetGameOverlay()->TextDrawNotification(12.0, true, "scene_json index: %s", key.c_str());
             return sceneMap[key].get<std::string>();
             break;
         }
@@ -53,8 +51,6 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
             break;
         }
         case TEXT_BANK_KALEIDO: {
-            // TODO: Remove after everything is cataloged
-            SohImGui::GetGameOverlay()->TextDrawNotification(12.0, true, "kaleido_json index: %s", key.c_str());
             auto value = kaleidoMap[key].get<std::string>();
             
             std::string searchString = "$0";
@@ -524,7 +520,7 @@ void RegisterOnDialogMessageHook() {
             ttsHasNewMessage = 0;
             
             if (msgCtx->decodedTextLen < 3 || (msgCtx->msgBufDecoded[msgCtx->decodedTextLen - 2] != MESSAGE_FADE && msgCtx->msgBufDecoded[msgCtx->decodedTextLen - 3] != MESSAGE_FADE2)) {
-                SpeechSynthesizerSpeakEnglish(""); // cancel current speech (except for faded out messages)
+                SpeechSynthesizerSpeak("", GetLanguageCode()); // cancel current speech (except for faded out messages)
             }
         }
     });
