@@ -473,7 +473,7 @@ void RegisterOnDialogMessageHook() {
 
 void InitAccessibilityTexts() {
     std::string languageSuffix = "_eng.json";
-    switch (gSaveContext.language) {
+    switch (CVarGetInteger("gLanguages", 0)) {
         case LANGUAGE_FRA:
             languageSuffix = "_fra.json";
             break;
