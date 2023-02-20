@@ -3655,7 +3655,9 @@ void KaleidoScope_Update(PlayState* play)
             switch (pauseCtx->unk_1E4) {
                 case 0:
                     if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
-                        CVarSetInteger("gPauseBufferBlockInputFrame", 9);
+                        if (CVarGetInteger("gCheatEasyPauseBufferEnabled", 0) || CVarGetInteger("gCheatEasyInputBufferingEnabled", 0)) {
+                            CVarSetInteger("gPauseBufferBlockInputFrame", 9);
+                        }
                         if (CVarGetInteger("gCheatEasyPauseBufferEnabled", 0)) {
                             CVarSetInteger("gCheatEasyPauseBufferFrameAdvance", 13);
                         }
