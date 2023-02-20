@@ -151,6 +151,8 @@ typedef enum {
 
     RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD,
 
+    RAND_INF_GREG_FOUND,
+
     // If you add anything to this list, you need to update the size of randomizerInf in z64save.h to be ceil(RAND_INF_MAX / 16)
 
     RAND_INF_MAX,

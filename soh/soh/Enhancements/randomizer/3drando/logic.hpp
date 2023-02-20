@@ -113,6 +113,9 @@ extern bool SpiritTrialClear;
 extern bool ShadowTrialClear;
 extern bool LightTrialClear;
 
+//Greg
+extern bool Greg;
+
 // Progression Items
 extern uint8_t ProgressiveBulletBag;
 extern uint8_t ProgressiveBombBag;

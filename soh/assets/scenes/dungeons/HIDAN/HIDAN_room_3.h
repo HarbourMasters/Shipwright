@@ -1,44 +1,44 @@
 #pragma once
-#define dHIDAN_room_3DL_000990 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_3DL_000990"
+#define dHIDAN_room_3DL_000980 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_3DL_000980"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_3DL_000990[] = dHIDAN_room_3DL_000990;
+static const __declspec(align(2)) char HIDAN_room_3DL_000980[] = dHIDAN_room_3DL_000980;
 #else
-static const char HIDAN_room_3DL_000990[] __attribute__((aligned (2))) = dHIDAN_room_3DL_000990;
+static const char HIDAN_room_3DL_000980[] __attribute__((aligned (2))) = dHIDAN_room_3DL_000980;
 #endif
             
-#define dHIDAN_room_3Tex_0022D8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_3Tex_0022D8"
+#define dHIDAN_room_3Tex_0022C8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_3Tex_0022C8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_3Tex_0022D8[] = dHIDAN_room_3Tex_0022D8;
+static const __declspec(align(2)) char HIDAN_room_3Tex_0022C8[] = dHIDAN_room_3Tex_0022C8;
 #else
-static const char HIDAN_room_3Tex_0022D8[] __attribute__((aligned (2))) = dHIDAN_room_3Tex_0022D8;
+static const char HIDAN_room_3Tex_0022C8[] __attribute__((aligned (2))) = dHIDAN_room_3Tex_0022C8;
 #endif
             
-#define dHIDAN_room_3DL_0014B0 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_3DL_0014B0"
+#define dHIDAN_room_3DL_0014A0 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_3DL_0014A0"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_3DL_0014B0[] = dHIDAN_room_3DL_0014B0;
+static const __declspec(align(2)) char HIDAN_room_3DL_0014A0[] = dHIDAN_room_3DL_0014A0;
 #else
-static const char HIDAN_room_3DL_0014B0[] __attribute__((aligned (2))) = dHIDAN_room_3DL_0014B0;
+static const char HIDAN_room_3DL_0014A0[] __attribute__((aligned (2))) = dHIDAN_room_3DL_0014A0;
 #endif
             
-#define dHIDAN_room_3DL_001850 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_3DL_001850"
+#define dHIDAN_room_3DL_001840 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_3DL_001840"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_3DL_001850[] = dHIDAN_room_3DL_001850;
+static const __declspec(align(2)) char HIDAN_room_3DL_001840[] = dHIDAN_room_3DL_001840;
 #else
-static const char HIDAN_room_3DL_001850[] __attribute__((aligned (2))) = dHIDAN_room_3DL_001850;
+static const char HIDAN_room_3DL_001840[] __attribute__((aligned (2))) = dHIDAN_room_3DL_001840;
 #endif
             
-#define dHIDAN_room_3Tex_001ED8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_3Tex_001ED8"
+#define dHIDAN_room_3Tex_001EC8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_3Tex_001EC8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_3Tex_001ED8[] = dHIDAN_room_3Tex_001ED8;
+static const __declspec(align(2)) char HIDAN_room_3Tex_001EC8[] = dHIDAN_room_3Tex_001EC8;
 #else
-static const char HIDAN_room_3Tex_001ED8[] __attribute__((aligned (2))) = dHIDAN_room_3Tex_001ED8;
+static const char HIDAN_room_3Tex_001EC8[] __attribute__((aligned (2))) = dHIDAN_room_3Tex_001EC8;
 #endif
             
-#define dHIDAN_room_3Tex_001AD8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_3Tex_001AD8"
+#define dHIDAN_room_3Tex_001AC8 "__OTR__scenes/nonmq/HIDAN_scene/HIDAN_room_3Tex_001AC8"
 #ifdef _WIN32
-static const __declspec(align(2)) char HIDAN_room_3Tex_001AD8[] = dHIDAN_room_3Tex_001AD8;
+static const __declspec(align(2)) char HIDAN_room_3Tex_001AC8[] = dHIDAN_room_3Tex_001AC8;
 #else
-static const char HIDAN_room_3Tex_001AD8[] __attribute__((aligned (2))) = dHIDAN_room_3Tex_001AD8;
+static const char HIDAN_room_3Tex_001AC8[] __attribute__((aligned (2))) = dHIDAN_room_3Tex_001AC8;
 #endif
             
 

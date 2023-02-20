@@ -726,7 +726,7 @@ namespace GameMenuBar {
 
                     ImGui::EndMenu();
                 }
-                UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gN64Mode", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gLowResMode", true, false);
                 UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
                 UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", "gDrawLineupTick", true, false);
                 UIWidgets::Tooltip("Displays a tick in the top center of the screen to help with glitch line-ups in SoH, as traditional UI based line-ups do not work outside of 4:3");
@@ -835,7 +835,7 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0));
             }
-            if (ImGui::Button(GetWindowButtonText("SFX Editor", CVarGetInteger("gSfxEditor", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
+            if (ImGui::Button(GetWindowButtonText("Audio Editor", CVarGetInteger("gSfxEditor", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
                 bool currentValue = CVarGetInteger("gSfxEditor", 0);
                 CVarSetInteger("gSfxEditor", !currentValue);

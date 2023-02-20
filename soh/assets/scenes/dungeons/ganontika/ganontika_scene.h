@@ -90,53 +90,53 @@ static const __declspec(align(2)) char gShadowBarrierCs[] = dgShadowBarrierCs;
 static const char gShadowBarrierCs[] __attribute__((aligned (2))) = dgShadowBarrierCs;
 #endif
             
-#define dganontika_sceneCollisionHeader_019E9C "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneCollisionHeader_019E9C"
+#define dganontika_sceneCollisionHeader_019EAC "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneCollisionHeader_019EAC"
 #ifdef _WIN32
-static const __declspec(align(2)) char ganontika_sceneCollisionHeader_019E9C[] = dganontika_sceneCollisionHeader_019E9C;
+static const __declspec(align(2)) char ganontika_sceneCollisionHeader_019EAC[] = dganontika_sceneCollisionHeader_019EAC;
 #else
-static const char ganontika_sceneCollisionHeader_019E9C[] __attribute__((aligned (2))) = dganontika_sceneCollisionHeader_019E9C;
+static const char ganontika_sceneCollisionHeader_019EAC[] __attribute__((aligned (2))) = dganontika_sceneCollisionHeader_019EAC;
 #endif
             
-#define dganontika_sceneTex_01F770 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_01F770"
+#define dganontika_sceneTex_01F780 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_01F780"
 #ifdef _WIN32
-static const __declspec(align(2)) char ganontika_sceneTex_01F770[] = dganontika_sceneTex_01F770;
+static const __declspec(align(2)) char ganontika_sceneTex_01F780[] = dganontika_sceneTex_01F780;
 #else
-static const char ganontika_sceneTex_01F770[] __attribute__((aligned (2))) = dganontika_sceneTex_01F770;
+static const char ganontika_sceneTex_01F780[] __attribute__((aligned (2))) = dganontika_sceneTex_01F780;
 #endif
             
-#define dganontika_sceneTLUT_01F370 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTLUT_01F370"
+#define dganontika_sceneTLUT_01F380 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTLUT_01F380"
 #ifdef _WIN32
-static const __declspec(align(2)) char ganontika_sceneTLUT_01F370[] = dganontika_sceneTLUT_01F370;
+static const __declspec(align(2)) char ganontika_sceneTLUT_01F380[] = dganontika_sceneTLUT_01F380;
 #else
-static const char ganontika_sceneTLUT_01F370[] __attribute__((aligned (2))) = dganontika_sceneTLUT_01F370;
+static const char ganontika_sceneTLUT_01F380[] __attribute__((aligned (2))) = dganontika_sceneTLUT_01F380;
 #endif
             
-#define dganontika_sceneTex_020370 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_020370"
+#define dganontika_sceneTex_020380 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_020380"
 #ifdef _WIN32
-static const __declspec(align(2)) char ganontika_sceneTex_020370[] = dganontika_sceneTex_020370;
+static const __declspec(align(2)) char ganontika_sceneTex_020380[] = dganontika_sceneTex_020380;
 #else
-static const char ganontika_sceneTex_020370[] __attribute__((aligned (2))) = dganontika_sceneTex_020370;
+static const char ganontika_sceneTex_020380[] __attribute__((aligned (2))) = dganontika_sceneTex_020380;
 #endif
             
-#define dganontika_sceneTex_020B70 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_020B70"
+#define dganontika_sceneTex_020B80 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_020B80"
 #ifdef _WIN32
-static const __declspec(align(2)) char ganontika_sceneTex_020B70[] = dganontika_sceneTex_020B70;
+static const __declspec(align(2)) char ganontika_sceneTex_020B80[] = dganontika_sceneTex_020B80;
 #else
-static const char ganontika_sceneTex_020B70[] __attribute__((aligned (2))) = dganontika_sceneTex_020B70;
+static const char ganontika_sceneTex_020B80[] __attribute__((aligned (2))) = dganontika_sceneTex_020B80;
 #endif
             
-#define dganontika_sceneTex_01F570 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_01F570"
+#define dganontika_sceneTex_01F580 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_01F580"
 #ifdef _WIN32
-static const __declspec(align(2)) char ganontika_sceneTex_01F570[] = dganontika_sceneTex_01F570;
+static const __declspec(align(2)) char ganontika_sceneTex_01F580[] = dganontika_sceneTex_01F580;
 #else
-static const char ganontika_sceneTex_01F570[] __attribute__((aligned (2))) = dganontika_sceneTex_01F570;
+static const char ganontika_sceneTex_01F580[] __attribute__((aligned (2))) = dganontika_sceneTex_01F580;
 #endif
             
-#define dganontika_sceneTex_01FF70 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_01FF70"
+#define dganontika_sceneTex_01FF80 "__OTR__scenes/nonmq/ganontika_scene/ganontika_sceneTex_01FF80"
 #ifdef _WIN32
-static const __declspec(align(2)) char ganontika_sceneTex_01FF70[] = dganontika_sceneTex_01FF70;
+static const __declspec(align(2)) char ganontika_sceneTex_01FF80[] = dganontika_sceneTex_01FF80;
 #else
-static const char ganontika_sceneTex_01FF70[] __attribute__((aligned (2))) = dganontika_sceneTex_01FF70;
+static const char ganontika_sceneTex_01FF80[] __attribute__((aligned (2))) = dganontika_sceneTex_01FF80;
 #endif
             
 

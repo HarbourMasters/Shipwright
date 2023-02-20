@@ -205,6 +205,8 @@ void SaveManager::LoadRandomizerVersion2() {
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
+    randomizer->LoadRandomizerSettings("");
+
     size_t merchantPricesSize = 0;
     SaveManager::Instance->LoadData("merchantPricesSize", merchantPricesSize);
 

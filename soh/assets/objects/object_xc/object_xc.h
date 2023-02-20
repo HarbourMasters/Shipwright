@@ -55,6 +55,13 @@ static const __declspec(align(2)) char gSheikIdleAnim[] = dgSheikIdleAnim;
 static const char gSheikIdleAnim[] __attribute__((aligned (2))) = dgSheikIdleAnim;
 #endif
             
+#define dobject_xc_TLUT_004A40 "__OTR__objects/object_xc/object_xc_TLUT_004A40"
+#ifdef _WIN32
+static const __declspec(align(2)) char object_xc_TLUT_004A40[] = dobject_xc_TLUT_004A40;
+#else
+static const char object_xc_TLUT_004A40[] __attribute__((aligned (2))) = dobject_xc_TLUT_004A40;
+#endif
+            
 #define dgSheikWalkingAnim "__OTR__objects/object_xc/gSheikWalkingAnim"
 #ifdef _WIN32
 static const __declspec(align(2)) char gSheikWalkingAnim[] = dgSheikWalkingAnim;
@@ -452,13 +459,6 @@ static const char object_xcTex_0060C0[] __attribute__((aligned (2))) = dobject_x
 static const __declspec(align(2)) char object_xcTex_0064C0[] = dobject_xcTex_0064C0;
 #else
 static const char object_xcTex_0064C0[] __attribute__((aligned (2))) = dobject_xcTex_0064C0;
-#endif
-            
-#define dobject_xcTLUT_004A40 "__OTR__objects/object_xc/object_xcTLUT_004A40"
-#ifdef _WIN32
-static const __declspec(align(2)) char object_xcTLUT_004A40[] = dobject_xcTLUT_004A40;
-#else
-static const char object_xcTLUT_004A40[] __attribute__((aligned (2))) = dobject_xcTLUT_004A40;
 #endif
             
 #define dobject_xcTex_006E80 "__OTR__objects/object_xc/object_xcTex_006E80"

@@ -6,13 +6,6 @@ static const __declspec(align(2)) char gMorphaTitleCardTex[] = dgMorphaTitleCard
 static const char gMorphaTitleCardTex[] __attribute__((aligned (2))) = dgMorphaTitleCardTex;
 #endif
             
-#define dgMorphaWaterTex "__OTR__objects/object_mo/gMorphaWaterTex"
-#ifdef _WIN32
-static const __declspec(align(2)) char gMorphaWaterTex[] = dgMorphaWaterTex;
-#else
-static const char gMorphaWaterTex[] __attribute__((aligned (2))) = dgMorphaWaterTex;
-#endif
-            
 #define dgMorphaCoreMembraneDL "__OTR__objects/object_mo/gMorphaCoreMembraneDL"
 #ifdef _WIN32
 static const __declspec(align(2)) char gMorphaCoreMembraneDL[] = dgMorphaCoreMembraneDL;
@@ -319,6 +312,13 @@ static const char gMorphaTentaclePart39DL[] __attribute__((aligned (2))) = dgMor
 static const __declspec(align(2)) char gMorphaTentaclePart40DL[] = dgMorphaTentaclePart40DL;
 #else
 static const char gMorphaTentaclePart40DL[] __attribute__((aligned (2))) = dgMorphaTentaclePart40DL;
+#endif
+            
+#define dgMorphaWaterTex "__OTR__objects/object_mo/gMorphaWaterTex"
+#ifdef _WIN32
+static const __declspec(align(2)) char gMorphaWaterTex[] = dgMorphaWaterTex;
+#else
+static const char gMorphaWaterTex[] __attribute__((aligned (2))) = dgMorphaWaterTex;
 #endif
             
 #define dgMorphaBubbleDL "__OTR__objects/object_mo/gMorphaBubbleDL"

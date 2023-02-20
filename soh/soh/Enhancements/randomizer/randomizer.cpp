@@ -690,6 +690,8 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_BRIDGE_DUNGEONS;
                         } else if(it.value() == "Tokens") {
                             gSaveContext.randoSettings[index].value = RO_BRIDGE_TOKENS;
+                        } else if(it.value() == "Greg") {
+                            gSaveContext.randoSettings[index].value = RO_BRIDGE_GREG;
                         }
                         break;
                     case RSK_RAINBOW_BRIDGE_STONE_COUNT:
@@ -1769,6 +1771,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
 
         case RG_RECOVERY_HEART:
         case RG_GREEN_RUPEE:
+        case RG_GREG_RUPEE:
         case RG_BLUE_RUPEE:
         case RG_RED_RUPEE:
         case RG_PURPLE_RUPEE:
@@ -2986,8 +2989,8 @@ void DrawRandoEditor(bool& open) {
     static const char* randoDoorOfTime[3] = { "Closed", "Song only", "Open" };
     static const char* randoZorasFountain[3] = { "Closed", "Closed as child", "Open" };
     static const char* randoGerudoFortress[3] = { "Normal", "Fast", "Open" };
-    static const char* randoRainbowBridge[7] = { "Vanilla",         "Always open", "Stones", "Medallions",
-                                          "Dungeon rewards", "Dungeons",    "Tokens" };
+    static const char* randoRainbowBridge[8] = { "Vanilla",         "Always open", "Stones", "Medallions",
+                                          "Dungeon rewards", "Dungeons",    "Tokens", "Greg" };
     static const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
     static const char* randoMqDungeons[3] = { "None", "Set Number", "Random Number" };
 
@@ -3227,7 +3230,9 @@ void DrawRandoEditor(bool& open) {
                     "are considered complete after stepping in to the blue warp after "
                     "the boss.\n"
                     "\n"
-                    "Tokens - Obtain the specified amount of Skulltula tokens."
+                    "Tokens - Obtain the specified amount of Skulltula tokens.\n"
+                    "\n"
+                    "Greg - Find Greg the Green Rupee."
                 );
 
                 UIWidgets::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, RO_BRIDGE_MAX, RO_BRIDGE_VANILLA);
@@ -3261,6 +3266,8 @@ void DrawRandoEditor(bool& open) {
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
                                                         "gRandomizeTokenCount", 1, 100, "", 100, true);
+                        break;
+                    case RO_BRIDGE_GREG:
                         break;
                 }
 
@@ -4740,7 +4747,7 @@ CustomMessageMinimal NaviMessages[NUM_NAVI_MESSAGES] = {
       "%cSi tu es coincé quelque part, tu&devrais %wsauvegarder ta partie %cet&faire un %wreset%c!" },
 
     { "%cSheik will meet you in a %rburning&village %conce you have %gForest%c,&%rFire%c, and %bWater %cMedallions!",
-      "%cSheik wird dich in einem %rbrennenden&Dorf %ctreffen sobald du das Amulett&des %gWaldes%c, %rFeuers %cund %bWassers&%cbesitzt.",
+      "%cShiek wird dich in einem %rbrennenden&Dorf %ctreffen sobald du das Amulett&des %gWaldes%c, %rFeuers %cund %bWassers&%cbesitzt.",
       "%cSheik t'attendra dans un %rvillage&en feu %clorsque tu auras récupéré&les médaillons de la %gForêt%c, du %rFeu&%cet de l'%bEau%c!" },
 
     { "%cIf you don't have a %wsword %cas a&child, try buying %wDeku Sticks%c!&They're effective against your foes!",
@@ -4944,6 +4951,10 @@ void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
     const std::vector<GetItemMessage> getItemMessages = {
+        GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
+			"You found %gGreg%w!",
+			"%gGreg%w! Du hast ihn wirklich gefunden!",
+            "Félicitation! Vous avez trouvé %gGreg%w!"),
         GIMESSAGE(RG_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE, 
 			"You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
 			"Du erhältst eine %rFlasche mit&blauem Feuer%w! Nutze es um&%rRotes Eis%w zu schmelzen!",
@@ -5226,6 +5237,7 @@ void InitRandoItemTable() {
         GET_ITEM(RG_MAGIC_SINGLE,                      OBJECT_GI_MAGICPOT, GID_MAGIC_SMALL,      0xE4,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MAGIC_SINGLE),
         GET_ITEM(RG_MAGIC_DOUBLE,                      OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE,      0xE8,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_MAGIC_DOUBLE),
         GET_ITEM(RG_DOUBLE_DEFENSE,                    OBJECT_GI_HEARTS,   GID_HEART_CONTAINER,  0xE9,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DOUBLE_DEFENSE),
+        GET_ITEM(RG_GREG_RUPEE,                        OBJECT_GI_RUPY,     GID_RUPEE_GREEN,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_GREG_RUPEE),
         GET_ITEM(RG_BOTTLE_WITH_RED_POTION,            OBJECT_GI_LIQUID,   GID_POTION_RED,       TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_RED_POTION),
         GET_ITEM(RG_BOTTLE_WITH_GREEN_POTION,          OBJECT_GI_LIQUID,   GID_POTION_GREEN,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_GREEN_POTION),
         GET_ITEM(RG_BOTTLE_WITH_BLUE_POTION,           OBJECT_GI_LIQUID,   GID_POTION_BLUE,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_BLUE_POTION),

@@ -4822,6 +4822,13 @@ static const __declspec(align(2)) char gEffBubbleDL[] = dgEffBubbleDL;
 static const char gEffBubbleDL[] __attribute__((aligned (2))) = dgEffBubbleDL;
 #endif
             
+#define dgGameplayKeepVtx_01A120 "__OTR__objects/gameplay_keep/gGameplayKeepVtx_01A120"
+#ifdef _WIN32
+static const __declspec(align(2)) char gGameplayKeepVtx_01A120[] = dgGameplayKeepVtx_01A120;
+#else
+static const char gGameplayKeepVtx_01A120[] __attribute__((aligned (2))) = dgGameplayKeepVtx_01A120;
+#endif
+            
 #define dgEffFireFootprint1Tex "__OTR__objects/gameplay_keep/gEffFireFootprint1Tex"
 #ifdef _WIN32
 static const __declspec(align(2)) char gEffFireFootprint1Tex[] = dgEffFireFootprint1Tex;

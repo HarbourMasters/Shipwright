@@ -350,10 +350,10 @@ void EnHeishi4_MarketSneak(EnHeishi4* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         switch (play->msgCtx.choiceIndex) {
             case 0: //yes
-                if (gSaveContext.n64ddFlag){
-                    play->nextEntranceIndex = Entrance_OverrideNextIndex(0xCD);
+                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) != RO_GENERIC_OFF){
+                    play->nextEntranceIndex = Entrance_OverrideNextIndex(0x01FD); // Market Entrance -> HF
                 } else {
-                    play->nextEntranceIndex = 0xCD;
+                    play->nextEntranceIndex = 0x00CD; // HF Near bridge (OoT cutscene entrance) to not fall in the water
                 } 
                 play->sceneLoadFlag = 0x14;
                 play->fadeTransition = 0x2E;
