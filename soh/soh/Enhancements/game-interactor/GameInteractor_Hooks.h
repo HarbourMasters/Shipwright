@@ -18,3 +18,6 @@ extern "C" void GameInteractor_ExecuteOnKaleidoscopeUpdate(int16_t inDungeonScen
 // MARK: - Main Menu
 extern "C" void GameInteractor_ExecuteOnUpdateFileSelectSelection(uint16_t optionIndex);
 extern "C" void GameInteractor_ExecuteOnPresentFileSelect();
+
+// MARK: - Game
+extern "C" void GameInteractor_ExecuteOnSetGameLanguage();

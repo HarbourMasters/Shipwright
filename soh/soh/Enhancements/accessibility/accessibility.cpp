@@ -78,7 +78,7 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
 }
 
 const char* GetLanguageCode() {
-    switch (gSaveContext.language) {
+    switch (CVarGetInteger("gLanguages", 0)) {
         case LANGUAGE_FRA:
             return "fr-FR";
             break;
@@ -544,27 +544,34 @@ void InitAccessibilityTexts() {
     }
 
     auto sceneFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/scenes" + languageSuffix);
-    if (sceneFile != nullptr && sceneMap == nullptr) {
+    if (sceneFile != nullptr) {
         sceneMap = nlohmann::json::parse(sceneFile->Buffer, nullptr, true, true);
     }
     
     auto miscFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/misc" + languageSuffix);
-    if (miscFile != nullptr && miscMap == nullptr) {
+    if (miscFile != nullptr) {
         miscMap = nlohmann::json::parse(miscFile->Buffer, nullptr, true, true);
     }
     
     auto kaleidoFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/kaleidoscope" + languageSuffix);
-    if (kaleidoFile != nullptr && kaleidoMap == nullptr) {
+    if (kaleidoFile != nullptr) {
         kaleidoMap = nlohmann::json::parse(kaleidoFile->Buffer, nullptr, true, true);
     }
     
     auto fileChooseFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/filechoose" + languageSuffix);
-    if (fileChooseFile != nullptr && fileChooseMap == nullptr) {
+    if (fileChooseFile != nullptr) {
         fileChooseMap = nlohmann::json::parse(fileChooseFile->Buffer, nullptr, true, true);
     }
 }
 
+void RegisterOnSetGameLanguageHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSetGameLanguage>([]() {
+        InitAccessibilityTexts();
+    });
+}
+
 void RegisterAccessibilityModHooks() {
+    RegisterOnSetGameLanguageHook();
     RegisterOnDialogMessageHook();
     RegisterOnSceneInitHook();
     RegisterOnPresentTitleCardHook();

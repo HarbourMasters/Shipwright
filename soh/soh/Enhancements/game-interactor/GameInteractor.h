@@ -97,6 +97,8 @@ public:
     
     DEFINE_HOOK(OnPresentFileSelect, void());
     DEFINE_HOOK(OnUpdateFileSelectSelection, void(uint16_t optionIndex));
+    
+    DEFINE_HOOK(OnSetGameLanguage, void());
 
     // Helpers
     static bool IsSaveLoaded();

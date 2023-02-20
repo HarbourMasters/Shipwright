@@ -51,3 +51,9 @@ void GameInteractor_ExecuteOnUpdateFileSelectSelection(uint16_t optionIndex) {
 void GameInteractor_ExecuteOnPresentFileSelect() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPresentFileSelect>();
 }
+
+// MARK: - Game
+
+void GameInteractor_ExecuteOnSetGameLanguage() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+}
