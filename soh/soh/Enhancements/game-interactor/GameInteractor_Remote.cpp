@@ -5,6 +5,37 @@
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
 #include <unordered_map>
+#include <tuple>
+
+// MARK: - Declarations
+
+/// Map of string name to enum value and flag whether it takes in a param or not
+std::unordered_map<std::string, std::tuple<GameInteractionEffect::Values, bool>> nameToEnum = {
+    { "modify_heart_container", { GameInteractionEffect::Values::modifyHeartContainers, true }},
+    { "fill_magic", { GameInteractionEffect::Values::fillMagic, false }},
+    { "empty_magic", { GameInteractionEffect::Values::emptyMagic, false }},
+    { "modify_rupees", { GameInteractionEffect::Values::modifyRupees, true }},
+    { "no_ui", { GameInteractionEffect::Values::noUI, false }},
+    { "modify_gravity", { GameInteractionEffect::Values::modifyGravity, true }},
+    { "modify_health", { GameInteractionEffect::Values::modifyHealth, true }},
+    { "set_player_health", { GameInteractionEffect::Values::setPlayerHealth, true }},
+    { "freeze_player", { GameInteractionEffect::Values::freezePlayer, false }},
+    { "burn_player", { GameInteractionEffect::Values::burnPlayer, false }},
+    { "electrocute_player", { GameInteractionEffect::Values::electrocutePlayer, false }},
+    { "knockback_player", { GameInteractionEffect::Values::knockbackPlayer, true }},
+    { "modify_link_size", { GameInteractionEffect::Values::modifyLinkSize, true }},
+    { "invisible_link", { GameInteractionEffect::Values::invisibleLink, false }},
+    { "pacifist_mode", { GameInteractionEffect::Values::pacifistMode, false }},
+    { "disable_z_targeting", { GameInteractionEffect::Values::disableZTargeting, false }},
+    { "weather_rainstorm", { GameInteractionEffect::Values::weatherRainstorm, false }},
+    { "reverse_controls", { GameInteractionEffect::Values::reverseControls, false }},
+    { "force_equip_boots", { GameInteractionEffect::Values::forceEquipBoots, true }},
+    { "modify_run_speed_modifier", { GameInteractionEffect::Values::modifyRunSpeedModifier, true }},
+    { "one_hit_ko", { GameInteractionEffect::Values::oneHitKO, false }},
+    { "modify_defense_modifier", { GameInteractionEffect::Values::modifyDefenseModifier, true }},
+    { "give_deku_shield", { GameInteractionEffect::Values::giveDekuShield, false }},
+    { "spawn_cucco_storm", { GameInteractionEffect::Values::spawnCuccoStorm, false }}
+};
 
 // MARK: - Remote
 
@@ -40,7 +71,7 @@ void GameInteractor::DisableRemoteInteractor() {
 
 void GameInteractor::TransmitMessageToRemote(nlohmann::json payload) {
     std::string jsonPayload = payload.dump();
-    SDLNet_TCP_Send(remoteSocket, jsonPayload.c_str(), jsonPayload.size() + 1);
+    SDLNet_TCP_Send(remoteSocket, jsonPayload.c_str(), jsonPayload.size());
 }
 
 // MARK: - Private
@@ -54,6 +85,19 @@ void GameInteractor::ReceiveFromServer() {
             if (remoteSocket) {
                 isRemoteInteractorConnected = true;
                 SPDLOG_TRACE("[GameInteractor] Connection to server established!");
+                
+                // transmit supported events to remote
+                nlohmann::json payload;
+                payload["action"] = "identify";
+                payload["supported_events"] = nlohmann::json::array();
+                for (auto& [key, value] : nameToEnum) {
+                    nlohmann::json entry;
+                    entry["event"] = key;
+                    entry["takes_param"] = std::get<1>(value);
+                    payload["supported_events"].push_back(entry);
+                }
+                TransmitMessageToRemote(payload);
+                
                 break;
             }
         }
@@ -124,39 +168,12 @@ void GameInteractor::HandleRemoteMessage(char message[512]) {
 
 // MARK: - Effect Helpers
 
-std::unordered_map<std::string, GameInteractionEffect::Values> nameToEnum = {
-    { "modify_heart_container", GameInteractionEffect::Values::modifyHeartContainers },
-    { "fill_magic", GameInteractionEffect::Values::fillMagic },
-    { "empty_magic", GameInteractionEffect::Values::emptyMagic },
-    { "modify_rupees", GameInteractionEffect::Values::modifyRupees },
-    { "no_ui", GameInteractionEffect::Values::noUI },
-    { "modify_gravity", GameInteractionEffect::Values::modifyGravity },
-    { "modify_health", GameInteractionEffect::Values::modifyHealth },
-    { "set_player_health", GameInteractionEffect::Values::setPlayerHealth },
-    { "freeze_player", GameInteractionEffect::Values::freezePlayer },
-    { "burn_player", GameInteractionEffect::Values::burnPlayer },
-    { "electrocute_player", GameInteractionEffect::Values::electrocutePlayer },
-    { "knockback_player", GameInteractionEffect::Values::knockbackPlayer },
-    { "modify_link_size", GameInteractionEffect::Values::modifyLinkSize },
-    { "invisible_link", GameInteractionEffect::Values::invisibleLink },
-    { "pacifist_mode", GameInteractionEffect::Values::pacifistMode },
-    { "disable_z_targeting", GameInteractionEffect::Values::disableZTargeting },
-    { "weather_rainstorm", GameInteractionEffect::Values::weatherRainstorm },
-    { "reverse_controls", GameInteractionEffect::Values::reverseControls },
-    { "force_equip_boots", GameInteractionEffect::Values::forceEquipBoots },
-    { "modify_run_speed_modifier", GameInteractionEffect::Values::modifyRunSpeedModifier },
-    { "one_hit_ko", GameInteractionEffect::Values::oneHitKO },
-    { "modify_defense_modifier", GameInteractionEffect::Values::modifyDefenseModifier },
-    { "give_deku_shield", GameInteractionEffect::Values::giveDekuShield },
-    { "spawn_cucco_storm", GameInteractionEffect::Values::spawnCuccoStorm }
-};
-
 GameInteractionEffectBase* EffectFromJson(std::string name, nlohmann::json payload) {
     if (nameToEnum.find(name) == nameToEnum.end()) {
         return nullptr;
     }
 
-    switch (nameToEnum[name]) {
+    switch (std::get<0>(nameToEnum[name])) {
         case GameInteractionEffect::Values::modifyHeartContainers: {
             auto effect = new GameInteractionEffect::ModifyHeartContainers();
             effect->parameter = payload["parameter"].get<int32_t>();
@@ -194,8 +211,11 @@ GameInteractionEffectBase* EffectFromJson(std::string name, nlohmann::json paylo
             return new GameInteractionEffect::BurnPlayer();
         case GameInteractionEffect::Values::electrocutePlayer:
             return new GameInteractionEffect::ElectrocutePlayer();
-        case GameInteractionEffect::Values::knockbackPlayer:
-            return new GameInteractionEffect::KnockbackPlayer();
+        case GameInteractionEffect::Values::knockbackPlayer: {
+            auto effect = new GameInteractionEffect::KnockbackPlayer();
+            effect->parameter = payload["parameter"].get<int32_t>();
+            return effect;
+        }
         case GameInteractionEffect::Values::modifyLinkSize: {
             auto effect = new GameInteractionEffect::ModifyLinkSize();
             effect->parameter = payload["parameter"].get<int32_t>();
