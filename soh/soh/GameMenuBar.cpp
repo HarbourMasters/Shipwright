@@ -617,6 +617,15 @@ namespace GameMenuBar {
                         ImGui::EndMenu();
                     }
 
+                    UIWidgets::Spacer(0);
+
+                    bool disabled = !CVarGetInteger("gSuperSonic", 0);
+                    const char* disabledTooltip = "This option is disabled because \"Super Sonic Mode\" is turned off";
+                    UIWidgets::PaddedEnhancementCheckbox("Super Sonic Mode", "gSuperSonic", true, false);
+                    UIWidgets::Tooltip("Rupees reduced over time, Link dies when the count hits 0.");
+                    UIWidgets::PaddedEnhancementSliderInt("Super Sonic Interval: %d", "##SsmInterval", "gSsmInterval", 3, 5, "", 5, false, true, false, disabled, disabledTooltip);
+                    UIWidgets::Tooltip("Interval between Rupee reduction in Super Sonic Mode");
+
                     ImGui::EndMenu();
                 }
 
