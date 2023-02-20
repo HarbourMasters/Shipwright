@@ -4,6 +4,7 @@
 #include <libultraship/bridge.h>
 #include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
+#include <spdlog/fmt/fmt.h>
 
 #include "soh/OTRGlobals.h"
 #include "message_data_static.h"
@@ -30,6 +31,8 @@ nlohmann::json fileChooseMap = nullptr;
 std::string GetParameritizedText(std::string key, TextBank bank, const char* arg) {
     switch (bank) {
         case TEXT_BANK_SCENES: {
+            // TODO: Remove after everything is cataloged
+            SohImGui::GetGameOverlay()->TextDrawNotification(12.0, true, "scene_json index: %s", key.c_str());
             return sceneMap[key].get<std::string>();
             break;
         }
@@ -50,6 +53,8 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
             break;
         }
         case TEXT_BANK_KALEIDO: {
+            // TODO: Remove after everything is cataloged
+            SohImGui::GetGameOverlay()->TextDrawNotification(12.0, true, "kaleido_json index: %s", key.c_str());
             auto value = kaleidoMap[key].get<std::string>();
             
             std::string searchString = "$0";
@@ -484,22 +489,22 @@ void InitAccessibilityTexts() {
 
     auto sceneFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/scenes" + languageSuffix);
     if (sceneFile != nullptr && sceneMap == nullptr) {
-        sceneMap = nlohmann::json::parse(sceneFile->Buffer);
+        sceneMap = nlohmann::json::parse(sceneFile->Buffer, nullptr, true, true);
     }
     
     auto unitsFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/units" + languageSuffix);
     if (unitsFile != nullptr && unitsMap == nullptr) {
-        unitsMap = nlohmann::json::parse(unitsFile->Buffer);
+        unitsMap = nlohmann::json::parse(unitsFile->Buffer, nullptr, true, true);
     }
     
     auto kaleidoFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/kaleidoscope" + languageSuffix);
     if (kaleidoFile != nullptr && kaleidoMap == nullptr) {
-        kaleidoMap = nlohmann::json::parse(kaleidoFile->Buffer);
+        kaleidoMap = nlohmann::json::parse(kaleidoFile->Buffer, nullptr, true, true);
     }
     
     auto fileChooseFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/filechoose" + languageSuffix);
     if (fileChooseFile != nullptr && fileChooseMap == nullptr) {
-        fileChooseMap = nlohmann::json::parse(fileChooseFile->Buffer);
+        fileChooseMap = nlohmann::json::parse(fileChooseFile->Buffer, nullptr, true, true);
     }
 }
 
