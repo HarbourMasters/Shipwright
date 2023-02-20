@@ -10931,9 +10931,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
                 } else {
                     if (gSaveContext.health > 0) {
                         gSaveContext.health = gSaveContext.health - 16;                        
-                    } else {
-                        Rupees_ChangeBy(99);
-                    }
+                    } 
                 }
             } else {
                 superSonicTimer++;
