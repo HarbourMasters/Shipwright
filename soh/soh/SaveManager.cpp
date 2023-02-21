@@ -54,9 +54,10 @@ SaveManager::SaveManager() {
         info.requiresMasterQuest = 0;
         info.requiresOriginal = 0;
 
-        for (int i = 0; i < ARRAY_COUNT(info.buildVersion); i++) {
-            info.buildVersion[i] = '\0';
-        }
+        info.buildVersionMajor = 0;
+        info.buildVersionMinor = 0;
+        info.buildVersionPatch = 0;
+        memset(&info.buildVersion, 0, sizeof(info.buildVersion));
     }
 }
 
@@ -394,10 +395,8 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].buildVersionMajor = gSaveContext.sohStats.buildVersionMajor;
     fileMetaInfo[fileNum].buildVersionMinor = gSaveContext.sohStats.buildVersionMinor;
     fileMetaInfo[fileNum].buildVersionPatch = gSaveContext.sohStats.buildVersionPatch;
-
-    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].buildVersion); i++) {
-        fileMetaInfo[fileNum].buildVersion[i] = gSaveContext.sohStats.buildVersion[i];
-    }
+    strncpy(fileMetaInfo[fileNum].buildVersion, gSaveContext.sohStats.buildVersion, sizeof(fileMetaInfo[fileNum].buildVersion) - 1);
+    fileMetaInfo[fileNum].buildVersion[sizeof(fileMetaInfo[fileNum].buildVersion) - 1] = 0;
 }
 
 void SaveManager::InitFile(bool isDebug) {
@@ -1713,9 +1712,8 @@ void SaveManager::CopyZeldaFile(int from, int to) {
     fileMetaInfo[to].buildVersionMajor = fileMetaInfo[from].buildVersionMajor;
     fileMetaInfo[to].buildVersionMinor = fileMetaInfo[from].buildVersionMinor;
     fileMetaInfo[to].buildVersionPatch = fileMetaInfo[from].buildVersionPatch;
-    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[to].buildVersion); i++) {
-        fileMetaInfo[to].buildVersion[i] = fileMetaInfo[from].buildVersion[i];
-    }
+    strncpy(fileMetaInfo[to].buildVersion, fileMetaInfo[from].buildVersion, sizeof(fileMetaInfo[to].buildVersion) - 1);
+    fileMetaInfo[to].buildVersion[sizeof(fileMetaInfo[to].buildVersion) - 1] = 0;
 }
 
 void SaveManager::DeleteZeldaFile(int fileNum) {
