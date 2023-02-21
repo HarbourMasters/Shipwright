@@ -714,6 +714,10 @@ extern "C" void Graph_StartFrame() {
 
             break;
         }
+        case SDL_SCANCODE_F9: {
+            // Toggle TTS
+            CVarSetInteger("gA11yTTS", !CVarGetInteger("gA11yTTS", 0));
+        }
     }
 #endif
     OTRGlobals::Instance->context->StartFrame();
