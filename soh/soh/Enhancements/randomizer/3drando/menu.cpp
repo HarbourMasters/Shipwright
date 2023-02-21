@@ -16,6 +16,7 @@
 #include "debug.hpp"
 #include <spdlog/spdlog.h>
 #include "../../randomizer/randomizerTypes.h"
+#include <boost_custom/container_hash/hash_32.hpp>
 
 namespace {
 bool seedChanged;
@@ -512,16 +513,16 @@ void PrintOptionDescription() {
 }
 
 std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations,
-    std::string seedInput) {
+    std::string seedString) {
 
     srand(time(NULL));
     // if a blank seed was entered, make a random one
-    if (seedInput.empty()) {
+    if (seedString.empty()) {
         Settings::seed = rand() & 0xFFFFFFFF;
-    } else if (seedInput.rfind("seed_testing_count", 0) == 0 && seedInput.length() > 18) {
+    } else if (seedString.rfind("seed_testing_count", 0) == 0 && seedString.length() > 18) {
         int count;
         try {
-            count = std::stoi(seedInput.substr(18), nullptr);
+            count = std::stoi(seedString.substr(18), nullptr);
         } catch (std::invalid_argument &e) {
             count = 1;
         } catch (std::out_of_range &e) {
@@ -531,8 +532,10 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
         return "";
     } else {
         try {
-            int seed = std::stoi(seedInput, nullptr);
+            uint32_t seedHash = boost::hash_32<std::string>{}(seedString);
+            int seed = seedHash & 0xFFFFFFFF;
             Settings::seed = seed;
+            Settings::seedString = seedString;
         } catch (...) {
             return "";
         }

@@ -473,6 +473,7 @@ void FileChoose_UpdateRandomizer() {
  */
 void FileChoose_UpdateMainMenu(GameState* thisx) {
     static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
+    static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     bool dpad = CVarGetInteger("gDpadText", 0);
@@ -497,10 +498,10 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
                     this->kbdY = 0;
                     this->charIndex = 0;
                     this->charBgAlpha = 0;
-                    this->newFileNameCharCount = 0;
+                    this->newFileNameCharCount = CVarGetInteger("gLinkDefaultName", 0) ? 4 : 0;
                     this->nameEntryBoxPosX = 120;
                     this->nameEntryBoxAlpha = 0;
-                    memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, &emptyName, 8);
+                    memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, CVarGetInteger("gLinkDefaultName", 0) ? &linkName : &emptyName, 8);  
                 }
                 this->logoAlpha = 0;
             } else if(!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(this->buttonIndex))) {
@@ -654,6 +655,7 @@ void FileChoose_StartQuestMenu(GameState* thisx) {
 
 void FileChoose_UpdateQuestMenu(GameState* thisx) {
     static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
+    static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
     FileChoose_UpdateStickDirectionPromptAnim(thisx);
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
@@ -707,10 +709,10 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         this->kbdY = 0;
         this->charIndex = 0;
         this->charBgAlpha = 0;
-        this->newFileNameCharCount = 0;
+        this->newFileNameCharCount = CVarGetInteger("gLinkDefaultName", 0) ? 4 : 0;
         this->nameEntryBoxPosX = 120;
         this->nameEntryBoxAlpha = 0;
-        memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, &emptyName, 8);
+        memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, CVarGetInteger("gLinkDefaultName", 0) ? &linkName : &emptyName, 8);
         return;
     }
 
@@ -2143,13 +2145,19 @@ void FileChoose_LoadGame(GameState* thisx) {
         }
     }
 
-    // Handle randomized spawn positions after the save context has been setup from load
-    // When remeber save location is on, set save warp if the save was in an a grotto, or
-    // the entrance index is -1 from shuffle overwarld spawn
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) && ((!CVarGetInteger("gRememberSaveLocation", 0) ||
-        gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE || gSaveContext.savedSceneNum == SCENE_KAKUSIANA) ||
-        (CVarGetInteger("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == -1))) {
-        Entrance_SetSavewarpEntrance();
+    if (gSaveContext.n64ddFlag) {
+        // Setup the modified entrance table and entrance shuffle table for rando
+        Entrance_Init();
+        Entrance_InitEntranceTrackingData();
+
+        // Handle randomized spawn positions after the save context has been setup from load
+        // When remeber save location is on, set save warp if the save was in an a grotto, or
+        // the entrance index is -1 from shuffle overwarld spawn
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) && ((!CVarGetInteger("gRememberSaveLocation", 0) ||
+            gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE || gSaveContext.savedSceneNum == SCENE_KAKUSIANA) ||
+            (CVarGetInteger("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == -1))) {
+            Entrance_SetSavewarpEntrance();
+        }
     }
 }
 

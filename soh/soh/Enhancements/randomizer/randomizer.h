@@ -12,7 +12,7 @@
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
-#define MAX_SEED_BUFFER_SIZE 11 // digits for uint32
+#define MAX_SEED_STRING_SIZE 1024
 #define NUM_NAVI_MESSAGES 19
 #define NUM_ICE_TRAP_MESSAGES 23
 #define NUM_GORON_MESSAGES 9

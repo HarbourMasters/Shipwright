@@ -1079,9 +1079,7 @@ int Fill() {
       }
       //Always execute ganon hint generation for the funny line  
       CreateGanonText();
-      if (AltarHintText) {
-        CreateAltarText();
-      }
+      CreateAltarText(AltarHintText);
       if (DampeHintText) {
         CreateDampesDiaryText();
       }
