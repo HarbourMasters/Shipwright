@@ -118,7 +118,7 @@ extern string_view shopsThree;
 extern string_view shopsFour;
 extern string_view shopsRandom;
 
-extern string_view shopPriceRandom;
+extern string_view shopPriceBalanced;
 extern string_view shopPriceStarter;
 extern string_view shopPriceAdult;
 extern string_view shopPriceGiant;

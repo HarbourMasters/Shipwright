@@ -362,7 +362,7 @@ string_view shopsRandom               = "Vanilla shop items will be shuffled amo
 /*------------------------------                                                           //
 |     SHOPSANITY PRICES        |                                                           //
 ------------------------------*/                                                           //
-string_view shopPriceRandom           = "Weighted randomization, max 300.";                //
+string_view shopPriceBalanced         = "Weighted randomization, max 300.";                //
 string_view shopPriceStarter          = "True randomization, max 99";                      //
 string_view shopPriceAdult            = "True randomization, max 200";                     //
 string_view shopPriceGiant            = "True randomization, max 500";                     //

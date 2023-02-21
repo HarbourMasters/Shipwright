@@ -730,7 +730,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         break;
                     case RSK_SHOPSANITY_PRICES:
                         if (it.value() == "Random") {
-                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_PRICE_RANDOM;
+                            gSaveContext.randoSettings[index].value = RO_SHOPSANITY_PRICE_BALANCED;
                         } else if (it.value() == "Starter Wallet") {
                             gSaveContext.randoSettings[index].value = RO_SHOPSANITY_PRICE_STARTER;
                         } else if (it.value() == "Adult's Wallet") {
@@ -2832,7 +2832,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_SHUFFLE_SONGS] = CVarGetInteger("gRandomizeShuffleSongs", RO_SONG_SHUFFLE_SONG_LOCATIONS);
     cvarSettings[RSK_SHUFFLE_TOKENS] = CVarGetInteger("gRandomizeShuffleTokens", RO_TOKENSANITY_OFF);
     cvarSettings[RSK_SHOPSANITY] = CVarGetInteger("gRandomizeShopsanity", RO_SHOPSANITY_OFF);
-    cvarSettings[RSK_SHOPSANITY_PRICES] = CVarGetInteger("gRandomizeShopsanityPrices", RO_SHOPSANITY_PRICE_RANDOM);
+    cvarSettings[RSK_SHOPSANITY_PRICES] = CVarGetInteger("gRandomizeShopsanityPrices", RO_SHOPSANITY_PRICE_BALANCED);
     cvarSettings[RSK_SHUFFLE_SCRUBS] = CVarGetInteger("gRandomizeShuffleScrubs", RO_SCRUBS_OFF);
     cvarSettings[RSK_SHUFFLE_COWS] = CVarGetInteger("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVarGetInteger("gRandomizeShuffleAdultTrade", 0);
@@ -3650,14 +3650,14 @@ void DrawRandoEditor(bool& open) {
                     default:
                         ImGui::Text(Settings::ShopsanityPrices.GetName().c_str());
                         UIWidgets::InsertHelpHoverText(
-                            "Random - The default randomization. Shop prices for shopsanity items will range between 0 to 300 rupees, \
+                            "Balanced - The default randomization. Shop prices for shopsanity items will range between 0 to 300 rupees, \
                             with a bias towards values slightly below the middle of the range, in multiples of 5.\n "
                             "\n"
                             "X Wallet - Randomized betwee 0 and the wallet's max size, in multiples of 5"
                             "\n"
                             "Affordable - Item check prices are always 10"
                         );
-                        UIWidgets::EnhancementCombobox("gRandomizeShopsanityPrices", randoShopsanityPrices, RO_SHOPSANITY_PRICE_MAX, RO_SHOPSANITY_PRICE_RANDOM);
+                        UIWidgets::EnhancementCombobox("gRandomizeShopsanityPrices", randoShopsanityPrices, RO_SHOPSANITY_PRICE_MAX, RO_SHOPSANITY_PRICE_BALANCED);
                 }
 
                 UIWidgets::PaddedSeparator();

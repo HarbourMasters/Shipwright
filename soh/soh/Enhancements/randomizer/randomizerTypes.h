@@ -1194,7 +1194,7 @@ typedef enum {
 
 //Shopsanity price ranges
 typedef enum {
-    RO_SHOPSANITY_PRICE_RANDOM, //Random from 0-300
+    RO_SHOPSANITY_PRICE_BALANCED, //Balanced random from 0-300
     RO_SHOPSANITY_PRICE_STARTER, //Wallets are random within their range, in increments of 5 rupees
     RO_SHOPSANITY_PRICE_ADULT,
     RO_SHOPSANITY_PRICE_GIANT,
