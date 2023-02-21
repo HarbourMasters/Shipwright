@@ -54,7 +54,7 @@ void FileChoose_SetupCopySource(GameState* thisx) {
     }
 }
 
-uint16_t lastButtonIndex;
+uint16_t lastCopyEraseButtonIndex;
 
 /**
  * Allow the player to select a file to copy or exit back to the main menu.
@@ -113,9 +113,9 @@ void FileChoose_SelectCopySource(GameState* thisx) {
         }
     }
     
-    if (lastButtonIndex != this->buttonIndex) {
+    if (lastCopyEraseButtonIndex != this->buttonIndex) {
         GameInteractor_ExecuteOnUpdateFileCopySelection(this->buttonIndex);
-        lastButtonIndex = this->buttonIndex;
+        lastCopyEraseButtonIndex = this->buttonIndex;
     }
 }
 
@@ -387,9 +387,9 @@ void FileChoose_CopyConfirm(GameState* thisx) {
         this->buttonIndex ^= 1;
     }
     
-    if (lastButtonIndex != this->buttonIndex) {
+    if (lastCopyEraseButtonIndex != this->buttonIndex) {
         GameInteractor_ExecuteOnUpdateFileCopyConfirmationSelection(this->buttonIndex);
-        lastButtonIndex = this->buttonIndex;
+        lastCopyEraseButtonIndex = this->buttonIndex;
     }
 }
 
@@ -737,9 +737,9 @@ void FileChoose_EraseSelect(GameState* thisx) {
         }
     }
     
-    if (lastButtonIndex != this->buttonIndex) {
+    if (lastCopyEraseButtonIndex != this->buttonIndex) {
         GameInteractor_ExecuteOnUpdateFileEraseSelection(this->buttonIndex);
-        lastButtonIndex = this->buttonIndex;
+        lastCopyEraseButtonIndex = this->buttonIndex;
     }
 }
 
@@ -851,9 +851,9 @@ void FileChoose_EraseConfirm(GameState* thisx) {
         this->buttonIndex ^= 1;
     }
     
-    if (lastButtonIndex != this->buttonIndex) {
+    if (lastCopyEraseButtonIndex != this->buttonIndex) {
         GameInteractor_ExecuteOnUpdateFileEraseConfirmationSelection(this->buttonIndex);
-        lastButtonIndex = this->buttonIndex;
+        lastCopyEraseButtonIndex = this->buttonIndex;
     }
 }
 

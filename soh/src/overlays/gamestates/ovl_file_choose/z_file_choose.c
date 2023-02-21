@@ -464,7 +464,7 @@ void FileChoose_UpdateRandomizer() {
     }
 }
 
-uint16_t lastButtonIndex;
+uint16_t lastFileChooseButtonIndex;
 
 /**
  * Update the cursor and wait for the player to select a button to change menus accordingly.
@@ -586,9 +586,9 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
             this->warningLabel = FS_WARNING_NONE;
         }
         
-        if (lastButtonIndex != this->buttonIndex) {
+        if (lastFileChooseButtonIndex != this->buttonIndex) {
             GameInteractor_ExecuteOnUpdateFileSelectSelection(this->buttonIndex);
-            lastButtonIndex = this->buttonIndex;
+            lastFileChooseButtonIndex = this->buttonIndex;
         }
     }
 }
