@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
+﻿#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #include <OtrFile.h>
 #include <libultraship/bridge.h>
