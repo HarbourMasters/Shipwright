@@ -1700,7 +1700,7 @@ void Audio_OcaSetInstrument(u8 arg0) {
     }
 
     u16 sfxEditorId = arg0 + 0x81;
-    u16 newArg0 = SfxEditor_GetReplacementSeq(sfxEditorId);
+    u16 newArg0 = AudioEditor_GetReplacementSeq(sfxEditorId);
     if (newArg0 != sfxEditorId) {
         gAudioContext.seqReplaced[SEQ_PLAYER_SFX] = 1;
         arg0 = newArg0 - 0x81;
@@ -4598,6 +4598,22 @@ void func_800F5ACC(u16 seqId) {
         }
 
         Audio_StartSeq(SEQ_PLAYER_BGM_MAIN, 0, seqId);
+    }
+}
+
+// based on func_800F5ACC
+void PreviewSequence(u16 seqId) {
+    u16 curSeqId = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+
+    if ((curSeqId & 0xFF) != NA_BGM_GANON_TOWER && (curSeqId & 0xFF) != NA_BGM_ESCAPE && curSeqId != seqId) {
+        Audio_SetSequenceMode(SEQ_MODE_IGNORE);
+        if (curSeqId != NA_BGM_DISABLED) {
+            sPrevMainBgmSeqId = curSeqId;
+        } else {
+            osSyncPrintf("Middle Boss BGM Start not stack \n");
+        }
+
+        Audio_QueuePreviewSeqCmd(seqId);
     }
 }
 

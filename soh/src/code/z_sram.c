@@ -197,12 +197,6 @@ void Sram_OpenSave() {
         }
     }
 
-    // Setup the modified entrance table and entrance shuffle table for rando
-    if (gSaveContext.n64ddFlag) {
-        Entrance_Init();
-        Entrance_InitEntranceTrackingData();
-    }
-
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);
     osSyncPrintf(VT_RST);
 
@@ -366,11 +360,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             case RO_FOREST_CLOSED:
                 break;
             case RO_FOREST_CLOSED_DEKU:
-                Flags_SetEventChkInf(7);
+                Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
                 break;
             case RO_FOREST_OPEN:
-                Flags_SetEventChkInf(7);
-                gSaveContext.eventChkInf[0] |= 0x10;
+                Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
+                Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
                 break;
         }
 
@@ -469,7 +463,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.eventChkInf[1] |= (1 << 4);
 
             // Set "Got Zelda's Letter" flag. Also ensures Saria is back at SFM. TODO: Is this flag used for anything else?
-            gSaveContext.eventChkInf[4] |= 1;
+            Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
 
             // Got item from impa
             gSaveContext.eventChkInf[5] |= 0x200;

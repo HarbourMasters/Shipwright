@@ -245,11 +245,17 @@ namespace UIWidgets {
         }
     }
 
-    bool EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue) {
+    bool EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue, bool disabled, const char* disabledTooltipText, uint8_t disabledValue) {
         bool changed = false;
         if (FirstTimeValue <= 0) {
             FirstTimeValue = 0;
         }
+
+        if (disabled) {
+            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+        }
+
         uint8_t selected = CVarGetInteger(name, FirstTimeValue);
         uint8_t DefaultValue = selected;
         std::string comboName = std::string("##") + std::string(name);
@@ -266,6 +272,21 @@ namespace UIWidgets {
             }
             ImGui::EndCombo();
         }
+
+        if (disabled) {
+            ImGui::PopStyleVar(1);
+            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(disabledTooltipText, "") != 0) {
+                ImGui::SetTooltip("%s", disabledTooltipText);
+            }
+            ImGui::PopItemFlag();
+
+            if (disabledValue >= 0 && selected != disabledValue) {
+                CVarSetInteger(name, disabledValue);
+                changed = true;
+                SohImGui::RequestCvarSaveOnNextTick();
+            }
+        }
+
         return changed;
     }
 
@@ -662,5 +683,68 @@ namespace UIWidgets {
         ImGui::PopItemWidth();
 
         return changed;
+    }
+
+    void DrawFlagArray32(const std::string& name, uint32_t& flags) {
+        ImGui::PushID(name.c_str());
+        for (int32_t flagIndex = 0; flagIndex < 32; flagIndex++) {
+            if ((flagIndex % 8) != 0) {
+                ImGui::SameLine();
+            }
+            ImGui::PushID(flagIndex);
+            uint32_t bitMask = 1 << flagIndex;
+            bool flag = (flags & bitMask) != 0;
+            if (ImGui::Checkbox("##check", &flag)) {
+                if (flag) {
+                    flags |= bitMask;
+                } else {
+                    flags &= ~bitMask;
+                }
+            }
+            ImGui::PopID();
+        }
+        ImGui::PopID();
+    }
+
+    void DrawFlagArray16(const std::string& name, uint16_t& flags) {
+        ImGui::PushID(name.c_str());
+        for (int16_t flagIndex = 0; flagIndex < 16; flagIndex++) {
+            if ((flagIndex % 8) != 0) {
+                ImGui::SameLine();
+            }
+            ImGui::PushID(flagIndex);
+            uint16_t bitMask = 1 << flagIndex;
+            bool flag = (flags & bitMask) != 0;
+            if (ImGui::Checkbox("##check", &flag)) {
+                if (flag) {
+                    flags |= bitMask;
+                } else {
+                    flags &= ~bitMask;
+                }
+            }
+            ImGui::PopID();
+        }
+        ImGui::PopID();
+    }
+
+    void DrawFlagArray8(const std::string& name, uint8_t& flags) {
+        ImGui::PushID(name.c_str());
+        for (int8_t flagIndex = 0; flagIndex < 8; flagIndex++) {
+            if ((flagIndex % 8) != 0) {
+                ImGui::SameLine();
+            }
+            ImGui::PushID(flagIndex);
+            uint8_t bitMask = 1 << flagIndex;
+            bool flag = (flags & bitMask) != 0;
+            if (ImGui::Checkbox("##check", &flag)) {
+                if (flag) {
+                    flags |= bitMask;
+                } else {
+                    flags &= ~bitMask;
+                }
+            }
+            ImGui::PopID();
+        }
+        ImGui::PopID();
     }
 }

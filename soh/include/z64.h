@@ -35,7 +35,7 @@
 #define _SOH64
 #endif
 
-#define AUDIO_HEAP_SIZE  0x3800000
+#define AUDIO_HEAP_SIZE  0x380000
 #define SYSTEM_HEAP_SIZE (1024 * 1024 * 4)
 
 #ifdef __cplusplus
@@ -1215,18 +1215,45 @@ typedef struct {
 struct SelectContext;
 
 typedef struct {
-    /* 0x00 */ char* name;
-    /* 0x04 */ void (*loadFunc)(struct SelectContext*, s32);
-    /* 0x08 */ s32 entranceIndex;
-} SceneSelectEntry; // size = 0xC
+    /* 0x00 */ char* japaneseName;
+    /* 0x04 */ char* englishName;
+    /* 0x08 */ char* germanName;
+    /* 0x0C */ char* frenchName;
+    /* 0x10 */ void (*loadFunc)(struct SelectContext*, s32);
+    /* 0x14 */ s32 entranceIndex;
+} SceneSelectEntry; // size = 0x18
 
 typedef struct {
-  /*      */ char* name;
+    /*      */ char* japaneseAge;
+    /*      */ char* englishAge;
+    /*      */ char* germanAge;
+    /*      */ char* frenchAge;
+} SceneSelectAgeLabels;
+
+typedef struct {
+    /*      */ char* japaneseMessage;
+    /*      */ char* englishMessage;
+    /*      */ char* germanMessage;
+    /*      */ char* frenchMessage;
+} SceneSelectLoadingMessages;
+
+typedef struct {
+    /*      */ char* englishAge;
+    /*      */ char* germanAge;
+    /*      */ char* frenchAge;
+} BetterSceneSelectAgeLabels;
+
+typedef struct {
+  /*      */ char* englishName;
+  /*      */ char* germanName;
+  /*      */ char* frenchName;
   /*      */ s32 entranceIndex;
 } BetterSceneSelectEntrancePair;
 
 typedef struct {
-    /*      */ char* name;
+    /*      */ char* englishName;
+    /*      */ char* germanName;
+    /*      */ char* frenchName;
     /*      */ void (*loadFunc)(struct SelectContext*, s32);
     /*      */ s32 count;
     /*      */ BetterSceneSelectEntrancePair entrancePairs[18];
@@ -2194,6 +2221,13 @@ typedef struct {
     const char** textures;
     const char** palettes;
 } SkyboxTableEntry;
+
+typedef enum {
+    /* 0x00 */ PAUSE_ANY_CURSOR_RANDO_ONLY,
+    /* 0x01 */ PAUSE_ANY_CURSOR_ALWAYS_ON,
+    /* 0x02 */ PAUSE_ANY_CURSOR_ALWAYS_OFF,
+    /* 0x03 */ PAUSE_ANY_CURSOR_MAX
+} PauseCursorAnySlotOptions;
 
 #define ROM_FILE(name) \
     { 0, 0, #name }

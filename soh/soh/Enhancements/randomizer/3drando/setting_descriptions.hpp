@@ -40,6 +40,7 @@ extern string_view bridgeMedallions;
 extern string_view bridgeRewards;
 extern string_view bridgeDungeons;
 extern string_view bridgeTokens;
+extern string_view bridgeGreg;
 
 extern string_view bridgeStoneCountDesc;
 extern string_view bridgeMedallionCountDesc;
@@ -148,6 +149,8 @@ extern string_view adultTradeDesc;
 
 extern string_view chestMinigameDesc;
 
+extern string_view shuffle100GsDesc;
+
 extern string_view mapCompassStartWith;
 extern string_view mapCompassVanilla;
 extern string_view mapCompassOwnDungeon;
@@ -183,6 +186,7 @@ extern string_view ganonKeyAnyDungeon;
 extern string_view ganonKeyOverworld;
 extern string_view ganonKeyAnywhere;
 extern string_view ganonKeyLACS;
+extern string_view ganonKey100GS;
 
 extern string_view lacsMedallionCountDesc;
 extern string_view lacsStoneCountDesc;

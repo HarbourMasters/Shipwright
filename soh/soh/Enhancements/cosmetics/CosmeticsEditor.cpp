@@ -133,11 +133,11 @@ typedef struct {
     directly to gDPSetPrimColor/gDPSetEnvColor in code. If you find one, try changing the arguments and see if that's what you are looking for.
 
     If this fails, and you aren't able to find any colors within the source of the actor/whatever you will now need to investigate the DLists 
-    that are being rendered. The easiest way to do this is to check out the branch https://github.com/garrettjoecox/oot/tree/dlist-viewer
-    and use the DList viewer. An alternative to this is to dig through the source of the DLists after you have built the zeldaret/oot repository, 
-    but this will be much more manual, and I can't provide instructions for it.
+    that are being rendered. The easiest way to do this is to use the experimental Display List Viewer in the developer tools options. An
+    alternative to this is to dig through the source of the DLists after you have built the zeldaret/oot repository, but this will be much more
+    manual, and I can't provide instructions for it.
 
-    Assuming you have checked out the dlist-viewer branch, you need to find the name of the DList to inspect. In the same areas you were looking
+    Assuming you are planning on using the Display List Viewer, you need to find the name of the DList to inspect. In the same areas you were looking
     for RGB values you now want to look for calls to gSPDisplayList, or variables that end in "DL". Once you have this name start typing parts of 
     it into the dlist-viewer (in the developer dropdown) and select the desired dlist in the dropdown, there may be many. You will now see a
     list of commands associated with the DList you have selected. If you are lucky, there will be calls to gsDPSetPrimColor/gsDPSetEnvColor with
@@ -384,13 +384,14 @@ int hue = 0;
 // Runs every frame to update rainbow hue, a potential future optimization is to only run this a once or twice a second and increase the speed of the rainbow hue rotation.
 void CosmeticsUpdateTick(bool& open) {
     int index = 0;
+    float rainbowSpeed = CVarGetFloat("gCosmetics.RainbowSpeed", 0.6f);
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
         if (cosmeticOption.supportsRainbow && CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
-            float frequency = 2 * M_PI / (360 * CVarGetFloat("gCosmetics.RainbowSpeed", 0.6f));
+            float frequency = 2 * M_PI / (360 * rainbowSpeed);
             Color_RGBA8 newColor;
-            newColor.r = sin(frequency * ((hue + index)) + 0) * 127 + 128;
-            newColor.g = sin(frequency * ((hue + index)) + (2 * M_PI / 3)) * 127 + 128;
-            newColor.b = sin(frequency * ((hue + index)) + (4 * M_PI / 3)) * 127 + 128;
+            newColor.r = sin(frequency * (hue + index) + 0) * 127 + 128;
+            newColor.g = sin(frequency * (hue + index) + (2 * M_PI / 3)) * 127 + 128;
+            newColor.b = sin(frequency * (hue + index) + (4 * M_PI / 3)) * 127 + 128;
             newColor.a = 255;
 
             cosmeticOption.currentColor.x = newColor.r / 255.0;
@@ -404,12 +405,12 @@ void CosmeticsUpdateTick(bool& open) {
         // Technically this would work if you replaced "60" with 1 but the hue would be so close it's 
         // indistinguishable, 60 gives us a big enough gap to notice the difference.
         if (!CVarGetInteger("gCosmetics.RainbowSync", 0)) {
-            index+= (60 * CVarGetFloat("gCosmetics.RainbowSpeed", 0.6f));
+            index+= (60 * rainbowSpeed);
         }
     }
     ApplyOrResetCustomGfxPatches(false);
     hue++;
-    if (hue >= 360) hue = 0;
+    if (hue >= (360 * rainbowSpeed)) hue = 0;
 }
 
 /* 

@@ -717,6 +717,36 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
             this->boxLidDL = gChristmasGreenTreasureChestChestSideAndLidDL;
         }
     }
+
+    // Chest Sizes Match Contents can make certain chests unreachable, so nudge
+    // the ones that cause problems.
+    // https://github.com/gamestabled/OoT3D_Randomizer/blob/68cf3f190d319e554bdeebc7f16e67578430dbc3/code/src/actors/chest.c#L57
+    s16 params = this->dyna.actor.params;
+    s16 sceneNum = play->sceneNum;
+    s16 room = this->dyna.actor.room;
+    s16 isLarge = this->dyna.actor.scale.x == 0.01f;
+
+    // Make Ganon's Castle Zelda's Lullaby chest reachable when large.
+    if ((params & 0xF000) == 0x8000 && sceneNum == SCENE_GANONTIKA && room == 9) {
+        this->dyna.actor.world.pos.z = isLarge ? -962.0f : -952.0f;
+    }
+
+    // Make MQ Deku Tree Song of Time chest reachable when large.
+    if (params == 0x5AA0 && sceneNum == SCENE_YDAN && room == 5) {
+        this->dyna.actor.world.pos.x = isLarge ? -1380.0f : -1376.0f;
+    }
+
+    // Make Ganon's Castle Gold Gauntlets chest reachable with hookshot from the
+    // switch platform when small.
+    if (params == 0x36C5 && sceneNum == SCENE_GANONTIKA && room == 12) {
+        this->dyna.actor.world.pos.x = isLarge ? 1757.0f : 1777.0f;
+        this->dyna.actor.world.pos.z = isLarge ? -3595.0f : -3626.0f;
+    }
+
+    // Make Spirit Temple Compass Chest reachable with hookshot when small.
+    if (params == 0x3804 && sceneNum == SCENE_JYASINZOU && room == 14) {
+        this->dyna.actor.world.pos.x = isLarge ? 358.0f : 400.0f;
+    }
 }
 
 void EnBox_CreateExtraChestTextures() {

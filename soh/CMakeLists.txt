@@ -176,12 +176,14 @@ set(Header_Files__soh__Enhancements__cosmetics
 )
 source_group("Header Files\\soh\\Enhancements\\cosmetics" FILES ${Header_Files__soh__Enhancements__cosmetics})
 
-set(Header_Files__soh__Enhancements__sfx_editor
-    "soh/Enhancements/sfx-editor/SfxEditor.h"
+set(Header_Files__soh__Enhancements__audio
+    "soh/Enhancements/audio/AudioCollection.h"
+    "soh/Enhancements/audio/AudioEditor.h"
 )
-source_group("Header Files\\soh\\Enhancements\\sfx-editor" FILES ${Header_Files__soh__Enhancements__sfx_editor})
+source_group("Header Files\\soh\\Enhancements\\audio" FILES ${Header_Files__soh__Enhancements__audio})
 
 set(Header_Files__soh__Enhancements__debugger
+    "soh/Enhancements/debugger/dlViewer.h"
     "soh/Enhancements/debugger/actorViewer.h"
     "soh/Enhancements/debugger/colViewer.h"
     "soh/Enhancements/debugger/debugger.h"
@@ -256,6 +258,18 @@ set(Header_Files__soh__Enhancements__item_tables
 )
 
 source_group("Header Files\\soh\\Enhancements\\item-tables" FILES ${Header_Files__soh__Enhancements__item_tables})
+
+set(Header_Files__soh__Enhancements__mods
+    "soh/Enhancements/mods/modhooks.h"
+)
+source_group("Header Files\\soh\\Enhancements\\mods" FILES ${Header_Files__soh__Enhancements__mods})
+
+set(Header_Files__soh__Enhancements__game_interactor
+    "soh/Enhancements/game-interactor/GameInteractor.h"
+    "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+    "soh/Enhancements/game-interactor/GameInteractionEffect.h"
+)
+source_group("Header Files\\soh\\Enhancements\\game-interactor" FILES ${Header_Files__soh__Enhancements__game_interactor})
 
 if (BUILD_CROWD_CONTROL)
 set(Header_Files__soh__Enhancements__crowd_control
@@ -499,12 +513,14 @@ set(Source_Files__soh__Enhancements__cosmetics
 )
 source_group("Source Files\\soh\\Enhancements\\cosmetics" FILES ${Source_Files__soh__Enhancements__cosmetics})
 
-set(Source_Files__soh__Enhancements__sfx_editor
-    "soh/Enhancements/sfx-editor/SfxEditor.cpp"
+set(Source_Files__soh__Enhancements__audio
+    "soh/Enhancements/audio/AudioCollection.cpp"
+    "soh/Enhancements/audio/AudioEditor.cpp"
 )
-source_group("Source Files\\soh\\Enhancements\\sfx-editor" FILES ${Source_Files__soh__Enhancements__sfx_editor})
+source_group("Source Files\\soh\\Enhancements\\audio" FILES ${Source_Files__soh__Enhancements__audio})
 
 set(Source_Files__soh__Enhancements__debugger
+    "soh/Enhancements/debugger/dlViewer.cpp"
     "soh/Enhancements/debugger/actorViewer.cpp"
     "soh/Enhancements/debugger/colViewer.cpp"
     "soh/Enhancements/debugger/debugger.cpp"
@@ -600,6 +616,20 @@ set(Source_Files__soh__Enhancements__item_tables
 )
 
 source_group("Source Files\\soh\\Enhancements\\item-tables" FILES ${Source_Files__soh__Enhancements__item_tables})
+
+set(Source_Files__soh__Enhancements__mods
+    "soh/Enhancements/mods/modhooks.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\mods" FILES ${Source_Files__soh__Enhancements__mods})
+
+set(Source_Files__soh__Enhancements__game_interactor
+    "soh/Enhancements/game-interactor/GameInteractor.cpp"
+    "soh/Enhancements/game-interactor/GameInteractor_RawAction.cpp"
+    "soh/Enhancements/game-interactor/GameInteractor_Hooks.cpp"
+    "soh/Enhancements/game-interactor/GameInteractor_State.cpp"
+    "soh/Enhancements/game-interactor/GameInteractionEffect.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\game-interactor" FILES ${Source_Files__soh__Enhancements__game_interactor})
 
 if (BUILD_CROWD_CONTROL)
 set(Source_Files__soh__Enhancements__crowd_control
@@ -1813,18 +1843,20 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements}
     ${Header_Files__soh__Enhancements__controls}
     ${Header_Files__soh__Enhancements__cosmetics}
-    ${Header_Files__soh__Enhancements__sfx_editor}
+    ${Header_Files__soh__Enhancements__audio}
     ${Header_Files__soh__Enhancements__debugger}
     ${Header_Files__soh__Enhancements__randomizer}
     ${Header_Files__soh__Enhancements__randomizer__3drando}
     ${Header_Files__soh__Enhancements__item_tables}
     ${Header_Files__soh__Enhancements__custom_message}
+    ${Header_Files__soh__Enhancements__mods}
+    ${Header_Files__soh__Enhancements__game_interactor}
     ${Header_Files__soh__Enhancements__crowd_control}
     ${Source_Files__soh}
     ${Source_Files__soh__Enhancements}
     ${Source_Files__soh__Enhancements__controls}
     ${Source_Files__soh__Enhancements__cosmetics}
-    ${Source_Files__soh__Enhancements__sfx_editor}
+    ${Source_Files__soh__Enhancements__audio}
     ${Source_Files__soh__Enhancements__debugger}
     ${Source_Files__soh__Enhancements__randomizer}
     ${Source_Files__soh__Enhancements__randomizer__3drando}
@@ -1832,6 +1864,8 @@ set(ALL_FILES
     ${Source_Files__soh__Enhancements__randomizer__3drando__location_access}
     ${Source_Files__soh__Enhancements__item_tables}
     ${Source_Files__soh__Enhancements__custom_message}
+    ${Source_Files__soh__Enhancements__mods}
+    ${Source_Files__soh__Enhancements__game_interactor}
     ${Source_Files__soh__Enhancements__crowd_control}
     ${Source_Files__src__boot}
     ${Source_Files__src__buffers}
@@ -1917,6 +1951,32 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	set_target_properties(${PROJECT_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
 endif()
 ################################################################################
+# Find/download Boost
+################################################################################
+include(FetchContent)
+FetchContent_Declare(
+    Boost
+    URL      https://boostorg.jfrog.io/artifactory/main/release/1.81.0/source/boost_1_81_0.tar.gz
+    URL_HASH SHA256=205666dea9f6a7cfed87c7a6dfbeb52a2c1b9de55712c9c1a87735d7181452b6
+    SOURCE_SUBDIR "null" # Set to a nonexistent directory so boost is not built (we don't need to build it)
+    DOWNLOAD_EXTRACT_TIMESTAMP false # supress timestamp warning, not needed since the url wont change
+)
+
+set(Boost_NO_BOOST_CMAKE false)
+set(BOOST_INCLUDEDIR ${FETCHCONTENT_BASE_DIR}/boost-src) # Location where FetchContent stores the source
+message("Searching for Boost installation")
+find_package(Boost)
+
+if (NOT ${Boost_FOUND})
+    message("Boost not found. Downloading now...")
+    FetchContent_MakeAvailable(Boost)
+    message("Boost downloaded to " ${FETCHCONTENT_BASE_DIR}/boost-src)
+    set(BOOST-INCLUDE ${FETCHCONTENT_BASE_DIR}/boost-src)
+else()
+    message("Boost found in " ${Boost_INCLUDE_DIRS})
+    set(BOOST-INCLUDE ${Boost_INCLUDE_DIRS})
+endif()
+################################################################################
 # Compile definitions
 ################################################################################
 find_package(SDL2)
@@ -1953,6 +2013,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
     ${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPD/resource/type
 	${SDL2-INCLUDE}
     ${SDL2-NET-INCLUDE}
+    ${BOOST-INCLUDE}
 	${CMAKE_CURRENT_SOURCE_DIR}/assets/
 	.
 )

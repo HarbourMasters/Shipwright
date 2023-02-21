@@ -6,6 +6,7 @@
 #include <fstream>
 
 #include <ResourceMgr.h>
+#include <OtrFile.h>
 #include <DisplayList.h>
 #include <Window.h>
 #include <GameVersions.h>
@@ -28,7 +29,8 @@
 #include <AudioPlayer.h>
 #include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
-#include "Enhancements/sfx-editor/SfxEditor.h"
+#include "Enhancements/audio/AudioCollection.h"
+#include "Enhancements/audio/AudioEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
 #include "Enhancements/randomizer/randomizer.h"
@@ -40,6 +42,7 @@
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "frame_interpolation.h"
 #include "variables.h"
+#include "z64.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
 #include <Hooks.h>
@@ -71,7 +74,9 @@
 CrowdControl* CrowdControl::Instance;
 #endif
 
-#include "libultraship/libultraship.h"
+#include "Enhancements/mods/modhooks.h"
+#include "Enhancements/game-interactor/GameInteractor.h"
+#include <libultraship/libultraship.h>
 
 // Resource Types/Factories
 #include "soh/resource/type/Animation.h"
@@ -104,6 +109,89 @@ OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
 ItemTableManager* ItemTableManager::Instance;
+GameInteractor* GameInteractor::Instance;
+AudioCollection* AudioCollection::Instance;
+
+extern "C" char** cameraStrings;
+std::vector<std::shared_ptr<std::string>> cameraStdStrings;
+
+// OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
+const char* constCameraStrings[] = {
+    "INSUFFICIENT",
+    "KEYFRAMES",
+    "YOU CAN ADD MORE",
+    "FINISHED",
+    "PLAYING",
+    "DEMO CAMERA TOOL",
+    "CANNOT PLAY",
+    "KEYFRAME   ",
+    "PNT   /      ",
+    ">            >",
+    "<            <",
+    "<          >",
+    GFXP_KATAKANA "*ﾌﾟﾚｲﾔ-*",
+    "E MODE FIX",
+    "E MODE ABS",
+    GFXP_HIRAGANA "ｶﾞﾒﾝ" GFXP_KATAKANA "   ﾃﾞﾓ", // OTRTODO: Unused, get a translation! Number 15
+    GFXP_HIRAGANA "ｶﾞﾒﾝ   ﾌﾂｳ", // OTRTODO: Unused, get a translation! Number 16
+    "P TIME  MAX",
+    GFXP_KATAKANA "ﾘﾝｸ" GFXP_HIRAGANA "    ｷｵｸ", // OTRTODO: Unused, get a translation! Number 18
+    GFXP_KATAKANA "ﾘﾝｸ" GFXP_HIRAGANA "     ﾑｼ", // OTRTODO: Unused, get a translation! Number 19
+    "*VIEWPT*",
+    "*CAMPOS*",
+    "DEBUG CAMERA",
+    "CENTER/LOCK",
+    "CENTER/FREE",
+    "DEMO CONTROL",
+    GFXP_KATAKANA "ﾒﾓﾘ" GFXP_HIRAGANA "ｶﾞﾀﾘﾏｾﾝ",
+    "p",
+    "e",
+    "s",
+    "l",
+    "c",
+    GFXP_KATAKANA "ﾒﾓﾘﾊﾟｯｸ",
+    GFXP_KATAKANA "ｾｰﾌﾞ",
+    GFXP_KATAKANA "ﾛｰﾄﾞ",
+    GFXP_KATAKANA "ｸﾘｱ-",
+    GFXP_HIRAGANA "ｦﾇｶﾅｲﾃﾞﾈ",
+    "FREE      BYTE",
+    "NEED      BYTE",
+    GFXP_KATAKANA "*ﾒﾓﾘ-ﾊﾟｯｸ*",
+    GFXP_HIRAGANA "ｦﾐﾂｹﾗﾚﾏｾﾝ",
+    GFXP_KATAKANA "ﾌｧｲﾙ " GFXP_HIRAGANA "ｦ",
+    GFXP_HIRAGANA "ｼﾃﾓｲｲﾃﾞｽｶ?",
+    GFXP_HIRAGANA "ｹﾞﾝｻﾞｲﾍﾝｼｭｳﾁｭｳﾉ", // OTRTODO: Unused, get a translation! Number 43
+    GFXP_KATAKANA "ﾌｧｲﾙ" GFXP_HIRAGANA "ﾊﾊｷｻﾚﾏｽ", // OTRTODO: Unused, get a translation! Number 44
+    GFXP_HIRAGANA "ﾊｲ",
+    GFXP_HIRAGANA "ｲｲｴ",
+    GFXP_HIRAGANA "ｼﾃｲﾏｽ",
+    GFXP_HIRAGANA "ｳﾜｶﾞｷ", // OTRTODO: Unused, get a translation! Number 48
+    GFXP_HIRAGANA "ｼﾏｼﾀ",
+    "USE       BYTE",
+    GFXP_HIRAGANA "ﾆｼｯﾊﾟｲ",
+    "E MODE REL",
+    "FRAME       ",
+    "KEY   /       ",
+    "(CENTER)",
+    "(ORIG)",
+    "(PLAYER)",
+    "(ALIGN)",
+    "(SET)",
+    "(OBJECT)",
+    GFXP_KATAKANA "ﾎﾟｲﾝﾄNo.     ", // OTRTODO: Unused, need translation. Number 62
+    "FOV              ",
+    "N FRAME          ",
+    "Z ROT            ",
+    GFXP_KATAKANA  "ﾓ-ﾄﾞ        ", // OTRTODO: Unused, need translation. Number 65
+    "  R FOCUS   ",
+    "PMAX              ",
+    "DEPTH             ",
+    "XROT              ",
+    "YROT              ",
+    GFXP_KATAKANA "ﾌﾚ-ﾑ         ",
+    GFXP_KATAKANA "ﾄ-ﾀﾙ         ",
+    GFXP_KATAKANA "ｷ-     /   ",
+};
 
 OTRGlobals::OTRGlobals() {
     std::vector<std::string> OTRFiles;
@@ -162,6 +250,16 @@ OTRGlobals::OTRGlobals() {
     gRandomizer = std::make_shared<Randomizer>();
 
     hasMasterQuest = hasOriginal = false;
+
+    // Move the camera strings from read only memory onto the heap (writable memory)
+    // This is in OTRGlobals right now because this is a place that will only ever be run once at the beginning of startup.
+    // We should probably find some code in db_camera that does initialization and only run once, and then dealloc on deinitialization.
+    cameraStrings = (char**)malloc(sizeof(constCameraStrings));
+    for (int32_t i = 0; i < sizeof(constCameraStrings) / sizeof(char*); i++) {
+        // OTRTODO: never deallocated...
+        auto dup = strdup(constCameraStrings[i]);
+        cameraStrings[i] = dup;
+    }
 
     auto versions = context->GetResourceManager()->GetGameVersions();
 
@@ -382,7 +480,7 @@ extern "C" void VanillaItemTable_Init() {
         GET_ITEM(ITEM_ARROWS_SMALL,     OBJECT_GI_ARROW,         GID_ARROWS_SMALL,     0xE6, 0x48, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_ARROWS_SMALL),
         GET_ITEM(ITEM_ARROWS_MEDIUM,    OBJECT_GI_ARROW,         GID_ARROWS_MEDIUM,    0xE6, 0x49, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_ARROWS_MEDIUM),
         GET_ITEM(ITEM_ARROWS_LARGE,     OBJECT_GI_ARROW,         GID_ARROWS_LARGE,     0xE6, 0x4A, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_ARROWS_LARGE),
-        GET_ITEM(ITEM_RUPEE_GREEN,      OBJECT_GI_RUPY,          GID_RUPEE_GREEN,      0x6F, 0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_RUPEE_GREEN),
+        GET_ITEM(ITEM_RUPEE_GREEN,      OBJECT_GI_RUPY,          GID_RUPEE_GREEN,      0x6F, 0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_GREEN),
         GET_ITEM(ITEM_RUPEE_BLUE,       OBJECT_GI_RUPY,          GID_RUPEE_BLUE,       0xCC, 0x01, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_BLUE),
         GET_ITEM(ITEM_RUPEE_RED,        OBJECT_GI_RUPY,          GID_RUPEE_RED,        0xF0, 0x02, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_RED),
         GET_ITEM(ITEM_HEART_CONTAINER,  OBJECT_GI_HEARTS,        GID_HEART_CONTAINER,  0xC6, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_HEART_CONTAINER_2),
@@ -471,13 +569,15 @@ extern "C" void InitOTR() {
     SaveManager::Instance = new SaveManager();
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
+    GameInteractor::Instance = new GameInteractor();
+    AudioCollection::Instance = new AudioCollection();
 
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
     InitCosmeticsEditor();
     GameControlEditor::Init();
-    InitSfxEditor();
+    InitAudioEditor();
     DebugConsole_Init();
     Debug_Init();
     Rando_Init();
@@ -487,6 +587,8 @@ extern "C" void InitOTR() {
     CheckTracker::InitCheckTracker();
     OTRExtScanner();
     VanillaItemTable_Init();
+
+    RegisterModHooks();
 
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);
@@ -509,6 +611,7 @@ extern "C" void InitOTR() {
 extern "C" void DeinitOTR() {
     OTRAudio_Exit();
 #ifdef ENABLE_CROWD_CONTROL
+    CrowdControl::Instance->Disable();
     CrowdControl::Instance->Shutdown();
 #endif
 }
@@ -782,7 +885,23 @@ std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path) {
 }
 
 extern "C" char* ResourceMgr_LoadFileRaw(const char* resName) {
-    return OTRGlobals::Instance->context->GetResourceManager()->LoadFile(resName)->Buffer.get();
+    // TODO: This should not exist. Anywhere we are loading textures with this function should be Resources instead.
+    // We are not currently packing our otr archive with certain textures as resources with otr headers.
+    static std::unordered_map<std::string, std::shared_ptr<Ship::OtrFile>> cachedRawFiles;
+
+    auto cacheFind = cachedRawFiles.find(resName);
+    if (cacheFind != cachedRawFiles.end()) {
+        return cacheFind->second->Buffer.data();
+    }
+    
+    auto file = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(resName);
+    cachedRawFiles[resName] = file;
+
+    if (file == nullptr) {
+        return nullptr;
+    }
+
+    return file->Buffer.data();
 }
 
 extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
@@ -1474,7 +1593,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 Randomizer_GetCheckFromActor(stone->id, play->sceneNum, actorParams);
 
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, hintCheck);
-        } else if ((textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT) && Randomizer_GetSettingValue(RSK_TOT_ALTAR_HINT)) {
+        } else if ((textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT)) {
             // rando hints at altar
             messageEntry = (LINK_IS_ADULT)
                ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)

@@ -64,6 +64,7 @@ typedef struct {
     /*      */ u32 count[COUNT_MAX];
     /*      */ u32 entrancesDiscovered[SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT];
     /*      */ u32 scenesDiscovered[SAVEFILE_SCENES_DISCOVERED_IDX_COUNT];
+    /*      */ u8 locationsSkipped[RC_MAX];
 } SohStats;
 
 typedef struct {
@@ -253,6 +254,7 @@ typedef struct {
     /*        */ u8 pendingIceTrapCount;
     /*        */ SohStats sohStats;
     /*        */ u8 temporaryWeapon;
+    /*        */ FaroresWindData backupFW;
     // #endregion
     // #region SOH [Randomizer]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to Randomizer
@@ -345,9 +347,9 @@ typedef enum {
 
 #define EVENTCHKINF_02 0x02
 #define EVENTCHKINF_03 0x03
-#define EVENTCHKINF_04 0x04
+#define EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD 0x04
 #define EVENTCHKINF_05 0x05
-#define EVENTCHKINF_07 0x07
+#define EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD 0x07
 #define EVENTCHKINF_09 0x09
 #define EVENTCHKINF_0A 0x0A
 #define EVENTCHKINF_0B 0x0B
@@ -390,7 +392,7 @@ typedef enum {
 #define EVENTCHKINF_40_INDEX 4
 #define EVENTCHKINF_40_SHIFT 0
 #define EVENTCHKINF_40_MASK (1 << EVENTCHKINF_40_SHIFT)
-#define EVENTCHKINF_40 ((EVENTCHKINF_40_INDEX << 4) | EVENTCHKINF_40_SHIFT)
+#define EVENTCHKINF_OBTAINED_ZELDAS_LETTER ((EVENTCHKINF_40_INDEX << 4) | EVENTCHKINF_40_SHIFT)
 
 #define EVENTCHKINF_41 0x41
 #define EVENTCHKINF_42 0x42

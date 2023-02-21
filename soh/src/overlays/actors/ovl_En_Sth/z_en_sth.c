@@ -244,6 +244,10 @@ void EnSth_GivePlayerItem(EnSth* this, PlayState* play) {
     if (gSaveContext.n64ddFlag) {
         switch (getItemId) {
             case GI_RUPEE_GOLD:
+                if (!Flags_GetRandomizerInf(RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD)) {
+                    getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_100_GOLD_SKULLTULA_REWARD, GI_RUPEE_GOLD);
+                    Flags_SetRandomizerInf(RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD);
+                }
                 break;
             case GI_WALLET_ADULT:
                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_10_GOLD_SKULLTULA_REWARD, GI_WALLET_ADULT);

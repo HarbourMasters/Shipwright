@@ -74,6 +74,25 @@ void HintTable_Init() {
         Text{ "#Malon's obstacle course# leads to", /*french*/ "la #course à obstacle de Malon# amène à",
               /*spanish*/ "la #carrera de obstáculos de Malon# brinda" });
 
+    hintTable[KAK_100_GOLD_SKULLTULA_REWARD] = HintText::Always(
+        {
+            // obscure text
+            Text{ "#100 bug badges# rewards",
+                  /*french*/ "#100 écussons# donnent",
+                  /*spanish*/ "#100 medallas de insectos# otorgan" },
+            Text{ "#100 spider souls# yields",
+                  /*french*/ "#100 âmes d'arachnide# donnent",
+                  /*spanish*/ "#100 almas de araña# otorgan" },
+            Text{ "#100 auriferous arachnids# lead to",
+                  /*french*/ "#100 arachnides aurifères# donnent",
+                  /*spanish*/ "#100 arácnidos auríferos# otorgan" },
+        },
+        {},
+        // clear text
+        Text{ "slaying #100 Gold Skulltulas# reveals",
+              /*french*/ "détruire #100 Skulltulas d'or# donne",
+              /*spanish*/ "exterminar #100 skulltulas doradas# revela" });
+
     /*--------------------------
     |    SOMETIMES HINT TEXT   |
     ---------------------------*/
@@ -2119,6 +2138,21 @@ void HintTable_Init() {
         Text{ "They say we'll meet again,&when something else cries.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
     });
 
+    hintTable[JUNK_WTC_10] = HintText::Junk({
+        Text{ "They say \"Forgive me, but-^Your script will not be used.&....After all...^The one writing the rest of "
+              "the script...&will be me.\"",
+              HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_WTC_11] = HintText::Junk({
+        Text{ "They say tea is best enjoyed...^\"\"With your fellow monsters.\"\"", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_WTC_12] = HintText::Junk({
+        Text{ "They say I shall make you some black&tea. With my own hands, not magic.", HINT_TEXT_NEEDS_TRANSLATION_FR,
+              "blarg" },
+    });
+
     hintTable[JUNK_SEI_1] = HintText::Junk({
         Text{ "They say you know I've kiboshed before...^and I will kibosh again.", HINT_TEXT_NEEDS_TRANSLATION_FR,
               "blarg" },
@@ -2396,6 +2430,40 @@ void HintTable_Init() {
 
     hintTable[JUNK_MISC_17] = HintText::Junk({
         Text{ "They say Rubies are on the path to&Lamp Oil, Rope, and Bombs", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SG_1] = HintText::Junk({
+        Text{ "They say %rError. Human is dead, mismatch.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SG_2] = HintText::Junk({
+        Text{ "They say this is the choice of the&steins gate.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SG_3] = HintText::Junk({
+        Text{ "They say el psy kongroo.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SG_4] = HintText::Junk({
+        Text{ "They say tutturu~.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+
+    hintTable[JUNK_SG_5] = HintText::Junk({
+        Text{ "They say im not Christina!.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SG_6] = HintText::Junk({
+        Text{ "They say you know where to find an IBN5100.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SG_7] = HintText::Junk({
+        Text{ "They say when you're on a chicken bender&grab a box of chicken tenders.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SG_8] = HintText::Junk({
+        Text{ "Juicy Chicken #1! Wow!.", HINT_TEXT_NEEDS_TRANSLATION_FR,
+              "blarg" },
     });
 
     /*--------------------------
@@ -2697,6 +2765,13 @@ void HintTable_Init() {
         Text{ "And the %revil one%w's key will&be given to the Hero once&the %rTriforce%w is completed.",
               /*french*/ "Aussi, la %rclé du Malin%w se&révèlera une fois la %rTriforce%w&assemblée.",
               /*spanish*/ "Y el héroe recibirá la llave del #señor del mal# cuando haya completado la #Trifuerza#." },
+    });
+
+    hintTable[GANON_BK_SKULLTULA_HINT] = HintText::GanonsBossKey({
+        // obscure text
+        Text { "And the %revil one%w's key will be&provided by the cursed rich man&once %r100 Gold Skulltula Tokens%w&are retrieved.",
+              /*french*/ "Aussi, la %rclé du Malin%w sera&donnée par l'homme maudit une&fois que %r100 Symboles de&Skulltula d'or%w auront été trouvés.",
+              /*spanish*/ "Y el rico maldito entregará la llave&del #señor de mal# tras obtener&100 símbolos de skulltula dorada#."},
     });
 
     /*--------------------------
