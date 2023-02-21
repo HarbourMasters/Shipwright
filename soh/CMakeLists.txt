@@ -308,6 +308,9 @@ set(Source_Files__soh
     "soh/CrashHandlerExt.cpp"
 )
 source_group("Source Files\\soh" FILES ${Source_Files__soh})
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set_source_files_properties(soh/OTRGlobals.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
+endif()
 
 set(Header_Files__soh__resourceTypes
     "soh/resource/type/Animation.h"
@@ -631,6 +634,9 @@ set(Source_Files__soh__Enhancements__accessibility
     "soh/Enhancements/accessibility/accessibility.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\accessibility" FILES ${Source_Files__soh__Enhancements__accessibility})
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set_source_files_properties(soh/Enhancements/accessibility/accessibility.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
+endif()
 
 set(Source_Files__soh__Enhancements__game_interactor
     "soh/Enhancements/game-interactor/GameInteractor.cpp"
