@@ -149,6 +149,11 @@ typedef enum {
 } AudioOption;
 
 typedef enum {
+    /* 0 */ FS_TARGET_SWITCH,
+    /* 1 */ FS_TARGET_HOLD,
+} TargetOption;
+
+typedef enum {
     /* 0 */ FS_CHAR_PAGE_HIRA,
     /* 1 */ FS_CHAR_PAGE_KATA,
     /* 2 */ FS_CHAR_PAGE_ENG

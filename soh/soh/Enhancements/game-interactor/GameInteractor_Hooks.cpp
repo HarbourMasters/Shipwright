@@ -44,12 +44,36 @@ void GameInteractor_ExecuteOnKaleidoscopeUpdate(int16_t inDungeonScene) {
 
 // MARK: - Main Menu
 
+void GameInteractor_ExecuteOnPresentFileSelect() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPresentFileSelect>();
+}
+
 void GameInteractor_ExecuteOnUpdateFileSelectSelection(uint16_t optionIndex) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileSelectSelection>(optionIndex);
 }
 
-void GameInteractor_ExecuteOnPresentFileSelect() {
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPresentFileSelect>();
+void GameInteractor_ExecuteOnUpdateFileCopySelection(uint16_t optionIndex) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileCopySelection>(optionIndex);
+}
+
+void GameInteractor_ExecuteOnUpdateFileCopyConfirmationSelection(uint16_t optionIndex) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileCopyConfirmationSelection>(optionIndex);
+}
+
+void GameInteractor_ExecuteOnUpdateFileEraseSelection(uint16_t optionIndex) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileEraseSelection>(optionIndex);
+}
+
+void GameInteractor_ExecuteOnUpdateFileEraseConfirmationSelection(uint16_t optionIndex) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileEraseConfirmationSelection>(optionIndex);
+}
+
+void GameInteractor_ExecuteOnUpdateFileAudioSelection(uint8_t optionIndex) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileAudioSelection>(optionIndex);
+}
+
+void GameInteractor_ExecuteOnUpdateFileTargetSelection(uint8_t optionIndex) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileTargetSelection>(optionIndex);
 }
 
 // MARK: - Game

@@ -350,6 +350,151 @@ void RegisterOnUpdateMainMenuSelection() {
                 break;
         }
     });
+    
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileCopySelection>([](uint16_t optionIndex) {
+        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        
+        switch (optionIndex) {
+            case FS_BTN_COPY_FILE_1: {
+                auto translation = GetParameritizedText("file1", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            case FS_BTN_COPY_FILE_2: {
+                auto translation = GetParameritizedText("file2", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            case FS_BTN_COPY_FILE_3: {
+                auto translation = GetParameritizedText("file3", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            case FS_BTN_COPY_QUIT: {
+                auto translation = GetParameritizedText("quit", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            default:
+                break;
+        }
+    });
+    
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileCopyConfirmationSelection>([](uint16_t optionIndex) {
+        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        
+        switch (optionIndex) {
+            case FS_BTN_CONFIRM_YES: {
+                auto translation = GetParameritizedText("confirm", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            case FS_BTN_CONFIRM_QUIT: {
+                auto translation = GetParameritizedText("quit", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            default:
+                break;
+        }
+    });
+    
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileEraseSelection>([](uint16_t optionIndex) {
+        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        
+        switch (optionIndex) {
+            case FS_BTN_ERASE_FILE_1: {
+                auto translation = GetParameritizedText("file1", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            case FS_BTN_ERASE_FILE_2: {
+                auto translation = GetParameritizedText("file2", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            case FS_BTN_ERASE_FILE_3: {
+                auto translation = GetParameritizedText("file3", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            case FS_BTN_ERASE_QUIT: {
+                auto translation = GetParameritizedText("quit", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            default:
+                break;
+        }
+    });
+    
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileEraseConfirmationSelection>([](uint16_t optionIndex) {
+        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        
+        switch (optionIndex) {
+            case FS_BTN_CONFIRM_YES: {
+                auto translation = GetParameritizedText("confirm", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            case FS_BTN_CONFIRM_QUIT: {
+                auto translation = GetParameritizedText("quit", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            default:
+                break;
+        }
+    });
+    
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileAudioSelection>([](uint8_t optionIndex) {
+        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        
+        switch (optionIndex) {
+            case FS_AUDIO_STEREO: {
+                auto translation = GetParameritizedText("audio_stereo", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            case FS_AUDIO_MONO: {
+                auto translation = GetParameritizedText("audio_mono", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            case FS_AUDIO_HEADSET: {
+                auto translation = GetParameritizedText("audio_headset", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            case FS_AUDIO_SURROUND: {
+                auto translation = GetParameritizedText("audio_surround", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            default:
+                break;
+        }
+    });
+    
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileTargetSelection>([](uint8_t optionIndex) {
+        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        
+        switch (optionIndex) {
+            case FS_TARGET_SWITCH: {
+                auto translation = GetParameritizedText("target_switch", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            case FS_TARGET_HOLD: {
+                auto translation = GetParameritizedText("target_hold", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                break;
+            }
+            default:
+                break;
+        }
+
+    });
 }
 
 // MARK: - Dialog Messages

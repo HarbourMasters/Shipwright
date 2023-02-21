@@ -97,6 +97,12 @@ public:
     
     DEFINE_HOOK(OnPresentFileSelect, void());
     DEFINE_HOOK(OnUpdateFileSelectSelection, void(uint16_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileCopySelection, void(uint16_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileCopyConfirmationSelection, void(uint16_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileEraseSelection, void(uint16_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileEraseConfirmationSelection, void(uint16_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileAudioSelection, void(uint8_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileTargetSelection, void(uint8_t optionIndex));
     
     DEFINE_HOOK(OnSetGameLanguage, void());
 
