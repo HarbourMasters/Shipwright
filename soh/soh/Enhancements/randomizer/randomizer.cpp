@@ -2939,6 +2939,9 @@ void GenerateRandomizerImgui(std::string seed = "") {
         excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
     }
 
+    // Update the visibilitiy before removing conflicting excludes (in case the locations tab wasn't viewed)
+    RandomizerCheckObjects::UpdateImGuiVisibility();
+
     // Remove excludes for locations that are no longer allowed to be excluded
     for (auto [randomizerCheck, rcObject] : RandomizerCheckObjects::GetAllRCObjects()) {
         auto elfound = excludedLocations.find(rcObject.rc);
