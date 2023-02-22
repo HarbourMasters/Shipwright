@@ -122,6 +122,7 @@ void GameInteractor::ReceiveFromServer() {
             }
 
             char remoteDataReceived[512];
+            memset(remoteDataReceived, 0, sizeof(remoteDataReceived));
             int len = SDLNet_TCP_Recv(remoteSocket, &remoteDataReceived, sizeof(remoteDataReceived));
             if (!len || !remoteSocket || len == -1) {
                 SPDLOG_ERROR("[GameInteractor] SDLNet_TCP_Recv: {}", SDLNet_GetError());
@@ -143,14 +144,14 @@ void GameInteractor::ReceiveFromServer() {
 GameInteractionEffectBase* EffectFromJson(std::string name, nlohmann::json payload);
 
 void GameInteractor::HandleRemoteMessage(char message[512]) {
-    nlohmann::json payload = nlohmann::json::parse(message, nullptr, false);
+    nlohmann::json payload = nlohmann::json::parse(message);
 
     if (remoteForwarder) {
         remoteForwarder(payload);
         return;
     }
 
-    // { action: "apply_effect, effect: { "name: "value", "payload": {} }
+    // { action: "apply_effect, effect: { "name: "value", "payload": { "parameter": "value" } }
     // { action: "remove_effect, effect: { "name: "value" }
     // if action contains effect then it's an effect
     if (payload["action"] == "apply_effect" || payload["action"] == "remove_effect") {
