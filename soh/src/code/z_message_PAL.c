@@ -2440,17 +2440,6 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     Audio_OcaSetInstrument(1);
                     Audio_OcaSetInstrument(1);
                 }
-                /*
-                if (CVarGetInteger("gTimeTravel", 0) == 1 && play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME) {
-                    Message_DrawText(play, &gfx);
-                    Audio_OcaSetInstrument(1);
-                    Audio_OcaSetInstrument(1);
-                    Audio_OcaSetSongPlayback(msgCtx->lastPlayedSong + 1, 1);
-
-                    CVarSetInteger("gSwitchAge", 1);
-                }
-                */
-                
 
                 if (msgCtx->lastPlayedSong != OCARINA_SONG_SCARECROW) {
                     Audio_PlayFanfare(sOcarinaSongFanfares[msgCtx->lastPlayedSong]);
