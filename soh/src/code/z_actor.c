@@ -2191,7 +2191,12 @@ void func_8002F7DC(Actor* actor, u16 sfxId) {
     else {
         freqMultiplier = CVarGetFloat("gLinkVoiceFreqMultiplier", 1.0);
         if (freqMultiplier <= 0) freqMultiplier = 1;
-        Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &freqMultiplier, &D_801333E0, &D_801333E8);
+        if (freqMultiplier != 1) {
+            Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &freqMultiplier, &D_801333E0, &D_801333E8);
+        }
+        else {
+            Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &D_801333E0 , &D_801333E0, &D_801333E8);
+        }
     }
 }
 
