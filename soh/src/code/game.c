@@ -432,22 +432,26 @@ void GameState_Update(GameState* gameState) {
     }
     
     //Switches Link's age and respawns him at the last entrance he entered.
-    if (CVarGetInteger("gSwitchAge", 0) != 0) {
+    if (CVarGetInteger("gTimeTravel", 0) && CVarGetInteger("gSwitchAge", 0)) {
         CVarSetInteger("gSwitchAge", 0);
-        if (gPlayState) {
-            playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
-            playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
-            gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
-            gPlayState->sceneLoadFlag = 0x14;
-            gPlayState->fadeTransition = 11;
-            gSaveContext.nextTransitionType = 11;
-            warped = true;
-            if (gPlayState->linkAgeOnLoad == 1) {
-                gPlayState->linkAgeOnLoad = 0;
-            } else {
-                gPlayState->linkAgeOnLoad = 1;
-            }
-        }
+        gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
+        gPlayState->sceneLoadFlag = 0x14;
+        gPlayState->fadeTransition = 11;
+        gSaveContext.nextTransitionType = 11;
+        gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
+    }
+
+    // Switches Link's age and respawns him at the last entrance and position he entered.
+    if (CVarGetInteger("gSwitchAge", 0)) {
+        CVarSetInteger("gSwitchAge", 0);
+        playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
+        playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
+        gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
+        gPlayState->sceneLoadFlag = 0x14;
+        gPlayState->fadeTransition = 11;
+        gSaveContext.nextTransitionType = 11;
+        warped = true;
+        gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
     }
 
     if (gPlayState) {

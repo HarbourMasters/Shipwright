@@ -1195,6 +1195,10 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0));
             }
+
+            UIWidgets::PaddedEnhancementCheckbox("SOT Time Travel", "gTimeTravel", true, false);
+            UIWidgets::Tooltip("GREAT SCOTT");
+
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
 
