@@ -128,9 +128,9 @@ static constexpr std::array<double, 60> ShopPriceProbability= {
   0.959992180, 0.968187000, 0.975495390, 0.981884488, 0.987344345, 0.991851853, 0.995389113, 0.997937921, 0.999481947, 1.000000000,
 };
 
+// Generate random number from 5 to wallet max
 int GetPriceFromMax(int max) {
-    double random = RandomDouble();
-    return ((int)((max * random) / 5)) * 5;
+    return Random(5, max);
 }
 
 int GetRandomShopPrice() {
