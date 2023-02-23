@@ -627,6 +627,9 @@ static Text BuildBridgeReqsText() {
 
   } else if (Bridge.Is(RAINBOWBRIDGE_TOKENS)) {
     bridgeText = BuildCountReq(BRIDGE_TOKENS_HINT, BridgeTokenCount);
+  
+  } else if (Bridge.Is(RAINBOWBRIDGE_GREG)) {
+    bridgeText = Hint(BRIDGE_GREG_HINT).GetText();
   }
 
   return Text()+"$l"+bridgeText+"^";
