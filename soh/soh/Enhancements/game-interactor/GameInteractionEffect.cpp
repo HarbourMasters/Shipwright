@@ -375,7 +375,10 @@ namespace GameInteractionEffect {
     GameInteractionEffectQueryResult GiveOrTakeShield::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-        } else if ((parameters[0] >= 0 && Item_CheckObtainability(parameters[0]) != ITEM_NONE)) {
+        } else if ((parameters[0] > 0 && ((gBitFlags[parameters[0] - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_SHIELD]) &
+                                           gSaveContext.inventory.equipment)) ||
+                   (parameters[0] < 0 && !((gBitFlags[(parameters[0] * -1) - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_SHIELD]) &
+                                           gSaveContext.inventory.equipment))) {
             return GameInteractionEffectQueryResult::NotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;
