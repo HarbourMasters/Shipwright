@@ -3649,19 +3649,19 @@ void DrawRandoEditor(bool& open) {
                         break;
                     default:
                         ImGui::Text(Settings::ShopsanityPrices.GetName().c_str());
-                        UIWidgets::EnhancementCombobox("gRandomizeShopsanityPrices", randoShopsanityPrices, RO_SHOPSANITY_PRICE_MAX, RO_SHOPSANITY_PRICE_BALANCED);
                         UIWidgets::InsertHelpHoverText(
-                            "Balanced - The default randomization. Shop prices for shopsanity items will range between 0 to 300 rupees, \
-                            with a bias towards values slightly below the middle of the range, in multiples of 5.\n "
+                            "Balanced - The default randomization. Shop prices for shopsanity items will range between 0 to 300 rupees, "
+                            "with a bias towards values slightly below the middle of the range, in multiples of 5.\n "
                             "\n"
                             "X Wallet - Randomized between 5 and the wallet's max size"
                         );
+                        UIWidgets::EnhancementCombobox("gRandomizeShopsanityPrices", randoShopsanityPrices, RO_SHOPSANITY_PRICE_MAX, RO_SHOPSANITY_PRICE_BALANCED);
                         UIWidgets::EnhancementCheckbox(Settings::ShopsanityPricesAffordable.GetName().c_str(), "gRandomizeShopsanityPricesAffordable",
                             CVarGetInteger("gRandomizeShopsanityPrices", RO_SHOPSANITY_PRICE_BALANCED) == RO_SHOPSANITY_PRICE_BALANCED,
                             "This can only apply to a wallet range.");
                         UIWidgets::InsertHelpHoverText("Cap item prices to a value just above the previous tier wallet's max value.\n"
                             "Affordable caps: starter = 10, adult = 105, giant = 205, tycoon = 505\n"
-                            "Use this to enable wallet tier locking, but make them not as expensive as they could be.");
+                            "Use this to enable wallet tier locking, but make shop items not as expensive as they could be.");
                 }
 
                 UIWidgets::PaddedSeparator();
