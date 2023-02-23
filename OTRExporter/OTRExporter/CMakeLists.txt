@@ -163,7 +163,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship
     ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src
     ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/Mercury
     ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/tinyxml2
     ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/ZAPDUtils
 	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/StormLib/src
