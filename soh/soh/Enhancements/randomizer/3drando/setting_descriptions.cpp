@@ -367,7 +367,8 @@ string_view shopPriceStarter          = "True randomization, max 99";           
 string_view shopPriceAdult            = "True randomization, max 200";                     //
 string_view shopPriceGiant            = "True randomization, max 500";                     //
 string_view shopPriceTycoon           = "True randomization, max 999";                     //
-string_view shopPriceAffordable       = "All shop check prices set to 10";                 //
+string_view shopPriceAffordable       = "Cap shop prices to affordable value just above"   //
+                                        "the previous tier wallet's max value";            //
                                                                                            //
 /*------------------------------                                                           //
 |         TOKENSANITY          |                                                           //

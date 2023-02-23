@@ -939,6 +939,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option ShuffleSongs;
   extern Option Shopsanity;
   extern Option ShopsanityPrices;
+  extern Option ShopsanityPricesAffordable;
   extern Option Tokensanity;
   extern Option Scrubsanity;
   extern Option ShuffleCows;

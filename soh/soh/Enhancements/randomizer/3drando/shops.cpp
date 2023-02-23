@@ -128,19 +128,32 @@ static constexpr std::array<double, 60> ShopPriceProbability= {
   0.959992180, 0.968187000, 0.975495390, 0.981884488, 0.987344345, 0.991851853, 0.995389113, 0.997937921, 0.999481947, 1.000000000,
 };
 
+std::map<uint8_t, int> affordableCaps = {
+    {RO_SHOPSANITY_PRICE_STARTER, 10},
+    {RO_SHOPSANITY_PRICE_ADULT,   105},
+    {RO_SHOPSANITY_PRICE_GIANT,   205},
+    {RO_SHOPSANITY_PRICE_TYCOON,  505},
+};
+
+// If affordable option is on, cap items at affordable price just above the max of the previous wallet tier
+int CapPriceAffordable(int value, int cap) {
+    if (Settings::ShopsanityPricesAffordable.Is(true) && value > cap)
+        return cap;
+    return value;
+}
+
 // Generate random number from 5 to wallet max
 int GetPriceFromMax(int max) {
-    return Random(5, max);
+    int temp = Random(5, max);
+    return CapPriceAffordable(temp, affordableCaps.find(Settings::ShopsanityPrices.Value<uint8_t>())->second);
 }
 
 int GetRandomShopPrice() {
-    if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_AFFORDABLE)) { // affordable option, everything 10 rupees
-        return 10;
-    }
     int max = 0;
 
-    if(Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_STARTER)) // check for xx wallet setting and set max amount as method for
+    if(Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_STARTER)) {// check for xx wallet setting and set max amount as method for
         max = 99;                                                        // setting true randomization
+    }
     else if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_ADULT))
         max = 200;
     else if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_GIANT))

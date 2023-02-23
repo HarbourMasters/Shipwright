@@ -179,9 +179,10 @@ namespace Settings {
   Option LinksPocketItem        = Option::U8  ("Link's Pocket",          {"Dungeon Reward", "Advancement", "Anything", "Nothing"},          {linksPocketDungeonReward, linksPocketAdvancement, linksPocketAnything, linksPocketNothing});
   Option ShuffleSongs           = Option::U8  ("Shuffle Songs",          {"Song locations", "Dungeon rewards", "Anywhere"},                 {songsSongLocations, songsDungeonRewards, songsAllLocations});
   Option Shopsanity             = Option::U8  ("Shopsanity",             {"Off","0 Items","1 Item","2 Items","3 Items","4 Items","Random"}, {shopsOff, shopsZero, shopsOne, shopsTwo, shopsThree, shopsFour, shopsRandom});
-  Option ShopsanityPrices       = Option::U8  ("Shopsanity Prices",      {"Balanced", "Starting Wallet", "Adult Wallet", "Giant's Wallet", "Tycoon's Wallet", "Affordable" }, {shopPriceBalanced, shopPriceStarter, shopPriceAdult, shopPriceGiant, shopPriceTycoon, shopPriceAffordable} );
-  Option Tokensanity            = Option::U8  ("Tokensanity",            {"Off", "Dungeons", "Overworld", "All Tokens"},                    {tokensOff, tokensDungeon, tokensOverworld, tokensAllTokens});
-  Option Scrubsanity            = Option::U8  ("Scrub Shuffle",          {"Off", "Affordable", "Expensive", "Random Prices"},               {scrubsOff, scrubsAffordable, scrubsExpensive, scrubsRandomPrices});
+  Option ShopsanityPrices       = Option::U8  ("Shopsanity Prices",      {"Balanced", "Starting Wallet", "Adult Wallet", "Giant's Wallet", "Tycoon's Wallet" }, {shopPriceBalanced, shopPriceStarter, shopPriceAdult, shopPriceGiant, shopPriceTycoon} );
+  Option ShopsanityPricesAffordable   = Option::Bool("Affordable Prices",                {"Off", "On"},                                                                                     {shopPriceAffordable} );
+  Option Tokensanity            = Option::U8  ("Tokensanity",            {"Off", "Dungeons", "Overworld", "All Tokens"},                          {tokensOff, tokensDungeon, tokensOverworld, tokensAllTokens});
+  Option Scrubsanity            = Option::U8  ("Scrub Shuffle",          {"Off", "Affordable", "Expensive", "Random Prices"},        {scrubsOff, scrubsAffordable, scrubsExpensive, scrubsRandomPrices});
   Option ShuffleCows            = Option::Bool("Shuffle Cows",           {"Off", "On"},                                                     {shuffleCowsDesc});
   Option ShuffleKokiriSword     = Option::Bool("Shuffle Kokiri Sword",   {"Off", "On"},                                                     {kokiriSwordDesc});
   Option ShuffleOcarinas        = Option::Bool("Shuffle Ocarinas",       {"Off", "On"},                                                     {ocarinasDesc});
@@ -199,6 +200,8 @@ namespace Settings {
     &LinksPocketItem,
     &ShuffleSongs,
     &Shopsanity,
+    &ShopsanityPrices,
+    &ShopsanityPricesAffordable,
     &Tokensanity,
     &Scrubsanity,
     &ShuffleCows,
@@ -2429,6 +2432,7 @@ namespace Settings {
     &ShuffleSongs,
     &Shopsanity,
     &ShopsanityPrices,
+    &ShopsanityPricesAffordable,
     &Scrubsanity,
     &ShuffleCows,
     &ShuffleMagicBeans,
@@ -2706,6 +2710,7 @@ namespace Settings {
     Tokensanity.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_TOKENS]);
     Shopsanity.SetSelectedIndex(cvarSettings[RSK_SHOPSANITY]);
     ShopsanityPrices.SetSelectedIndex(cvarSettings[RSK_SHOPSANITY_PRICES]);
+    ShopsanityPricesAffordable.SetSelectedIndex(cvarSettings[RSK_SHOPSANITY_PRICES_AFFORDABLE]);
     Scrubsanity.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SCRUBS]);
     ShuffleCows.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_COWS]);
     ShuffleKokiriSword.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD]);
