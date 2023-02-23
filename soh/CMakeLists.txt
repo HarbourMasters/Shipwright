@@ -274,7 +274,7 @@ source_group("Header Files\\soh\\Enhancements\\game-interactor" FILES ${Header_F
 if (BUILD_CROWD_CONTROL)
 set(Header_Files__soh__Enhancements__crowd_control
     "soh/Enhancements/crowd-control/CrowdControl.h"
-	"soh/Enhancements/crowd-control/CrowdControlTypes.h"
+    "soh/Enhancements/crowd-control/CrowdControlTypes.h"
 )
 source_group("Header Files\\soh\\Enhancements\\crowd-control" FILES ${Header_Files__soh__Enhancements__crowd_control})
 endif()
