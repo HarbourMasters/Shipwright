@@ -2712,7 +2712,7 @@ void FileChoose_Init(GameState* thisx) {
                         __LINE__);
 
     // Load some registers used by the dialog system
-    func_80112098(NULL); // Passing in NULL as we dont have a playstate, and it isn't used in the func
+    Regs_InitData(NULL); // Passing in NULL as we dont have a playstate, and it isn't used in the func
 
     Matrix_Init(&this->state);
     View_Init(&this->view, this->state.gfxCtx);

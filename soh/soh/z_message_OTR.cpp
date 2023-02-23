@@ -157,7 +157,7 @@ extern "C" void OTRMessage_Init()
         customMessageTableID, TEXT_RANDO_SAVE_VERSION_WARNING,
         {
             TEXTBOX_TYPE_NONE_BOTTOM, TEXTBOX_POS_BOTTOM,
-            "This save was created&on a different build.&&Things may be broken.",
+            "This save was created on&a different version of SoH.&&Things may be broken.",
             "", // TODO: german
             "", // TODO: french
         }
