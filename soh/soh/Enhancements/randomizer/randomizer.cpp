@@ -2591,6 +2591,13 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                     break;
             }
             break;
+        case SCENE_SPOT12:
+            // GF chest as child has different params and gives odd mushroom
+            // set it to the GF chest check for both ages
+            if (actorId == ACTOR_EN_BOX) {
+                specialRc = RC_GF_CHEST;
+            }
+            break;
         case SCENE_DDAN:
             // special case for MQ DC Gossip Stone
             if (actorId == ACTOR_EN_GS && actorParams == 15892 && ResourceMgr_IsGameMasterQuest()) {
