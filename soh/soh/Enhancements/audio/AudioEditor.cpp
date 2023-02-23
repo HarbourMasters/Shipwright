@@ -343,13 +343,6 @@ void DrawSfxEditor(bool& open) {
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Sound Effects")) {
-            const std::string resetButton = "Reset##linkVoiceFreqMultiplier";
-            if (ImGui::Button(resetButton.c_str())) {
-                CVarSetFloat("gLinkVoiceFreqMultiplier", 1.0f);
-                SohImGui::RequestCvarSaveOnNextTick();
-            }
-            ImGui::NewLine();
-            UIWidgets::PaddedSeparator();
             Draw_SfxTab("sfx", SEQ_SFX);
             ImGui::EndTabItem();
         }
@@ -378,6 +371,12 @@ void DrawSfxEditor(bool& open) {
                 ImGui::NewLine();
                 UIWidgets::EnhancementSliderFloat("Link's voice pitch multiplier: %f", "##linkVoiceFreqMultiplier",
                         "gLinkVoiceFreqMultiplier", 0.4, 2.5, "", 1.0, false, false);
+                ImGui::SameLine();
+                const std::string resetButton = "Reset##linkVoiceFreqMultiplier";
+                if (ImGui::Button(resetButton.c_str())) {
+                    CVarSetFloat("gLinkVoiceFreqMultiplier", 1.0f);
+                    SohImGui::RequestCvarSaveOnNextTick();
+                }
 
                 ImGui::NewLine();
                 UIWidgets::PaddedSeparator();
