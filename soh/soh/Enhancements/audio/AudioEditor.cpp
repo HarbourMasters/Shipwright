@@ -369,6 +369,7 @@ void DrawSfxEditor(bool& open) {
                 UIWidgets::EnhancementSliderInt("Overlay Duration: %d seconds", "##SeqNameOverlayDuration",
                                                 "gSeqNameOverlayDuration", 1, 10, "", 5, true);
                 ImGui::NewLine();
+                ImGui::PopItemWidth();
                 UIWidgets::EnhancementSliderFloat("Link's voice pitch multiplier: %f", "##linkVoiceFreqMultiplier",
                         "gLinkVoiceFreqMultiplier", 0.4, 2.5, "", 1.0, false, false);
                 ImGui::SameLine();
@@ -379,6 +380,7 @@ void DrawSfxEditor(bool& open) {
                 }
 
                 ImGui::NewLine();
+                ImGui::PushItemWidth(-FLT_MIN);
                 UIWidgets::PaddedSeparator();
                 UIWidgets::PaddedText("The following options are experimental and may cause music\nto sound odd or have other undesireable effects.");
                 UIWidgets::EnhancementCheckbox("Lower Octaves of Unplayable High Notes", "gExperimentalOctaveDrop");
