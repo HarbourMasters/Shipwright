@@ -608,7 +608,8 @@ std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
       textStr == "Sale petit garnement,&tu fais erreur!&C'est maintenant que marque&ta dernière heure!" ||
       textStr == "Gamin, ton destin achève,&sous mon sort tu périras!&Cette partie ne fut pas brève,&et cette mort, tu subiras!" ||
       textStr == "Oh! It's @.&I was expecting someone called Sheik.&Do you know what happened to them?" ||
-      textStr == "Ah, c'est @.&J'attendais un certain Sheik.&Tu sais ce qui lui est arrivé?") {
+      textStr == "Ah, c'est @.&J'attendais un certain Sheik.&Tu sais ce qui lui est arrivé?" ||
+      textStr == "They say \"Forgive me, but-^Your script will not be used.&....After all...^The one writing the rest of the script...&will be me.\"") {
     needsAutomaicNewlines = false;
   }
 

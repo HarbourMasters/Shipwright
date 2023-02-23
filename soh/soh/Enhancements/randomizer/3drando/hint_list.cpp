@@ -2149,7 +2149,7 @@ void HintTable_Init() {
     });
 
     hintTable[JUNK_WTC_12] = HintText::Junk({
-        Text{ "They say I shall make you some black&tea. With my own hands, not magic.", HINT_TEXT_NEEDS_TRANSLATION_FR,
+        Text{ "They say I shall make you some black tea. With my own hands, not magic.", HINT_TEXT_NEEDS_TRANSLATION_FR,
               "blarg" },
     });
 
