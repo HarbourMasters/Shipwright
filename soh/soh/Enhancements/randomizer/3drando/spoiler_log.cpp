@@ -726,7 +726,18 @@ static void WriteAllLocations(int language) {
             break;
         }
 
-        jsonData["locations"][location->GetName()] = placedItemName;
+        // If it's a simple item (not an ice trap, doesn't have a price)
+        // just add the name of the item and move on
+        if (!location->HasScrubsanityPrice() &&
+            !location->HasShopsanityPrice() &&
+            location->GetPlacedItemKey() != ICE_TRAP) {
+            
+            jsonData["locations"][location->GetName()] = placedItemName;
+            continue;
+        }
+
+        // We're dealing with a complex item, build out the json object for it
+        jsonData["locations"][location->GetName()]["item"] = placedItemName;
 
         if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
           jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
