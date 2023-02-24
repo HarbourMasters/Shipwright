@@ -771,8 +771,7 @@ void CreateDampesDiaryText() {
 }
 
 void CreateGregRupeeHint() {
-  uint32_t item = 0;
-  uint32_t location = FilterFromPool(allLocations, [item](const uint32_t loc){return Location(loc)->GetPlacedItemKey() == GREG_RUPEE;})[0];
+  uint32_t location = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlacedItemKey() == GREG_RUPEE;})[0];
   Text area = GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText();
 
   Text temp1 = Text{
