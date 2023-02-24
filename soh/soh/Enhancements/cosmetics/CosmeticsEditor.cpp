@@ -1,6 +1,6 @@
 #include "CosmeticsEditor.h"
 #include <ImGuiImpl.h>
-#include <Hooks.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #include <string>
 #include <libultraship/bridge.h>
@@ -1791,6 +1791,12 @@ void DrawCosmeticsEditor(bool& open) {
     ImGui::End();
 }
 
+void RegisterOnLoadFileHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](int32_t fileNum) {
+        ApplyOrResetCustomGfxPatches();
+    });
+}
+
 void InitCosmeticsEditor() {
     // There's probably a better way to do this, but leaving as is for historical reasons. Even though there is no
     // real window being rendered here, it calls this every frame allowing us to rotate through the rainbow hue for cosmetics
@@ -1811,9 +1817,7 @@ void InitCosmeticsEditor() {
     SohImGui::RequestCvarSaveOnNextTick();
     ApplyOrResetCustomGfxPatches();
 
-    Ship::RegisterHook<Ship::LoadFile>([](uint32_t fileNum) {
-        ApplyOrResetCustomGfxPatches();
-    });
+    RegisterOnLoadFileHook();
 }
 
 void CosmeticsEditor_RandomizeAll() {
