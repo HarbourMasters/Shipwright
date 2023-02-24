@@ -135,7 +135,7 @@ void DrawStatsTracker(bool& open) {
 
     ImGui::Text("Racing Build:        ");
     ImGui::SameLine();
-    ImGui::Text("Template");
+    ImGui::Text("Marchchch");
     DisplayTimeHHMMSS(totalTimer, "Total Game Time:    ", COLOR_WHITE);
     UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
     DisplayTimeHHMMSS(gSaveContext.sohStats.playTimer / 2, "Gameplay Time:      ", COLOR_WHITE);
