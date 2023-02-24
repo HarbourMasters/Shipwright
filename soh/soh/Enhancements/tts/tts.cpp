@@ -670,7 +670,7 @@ void RegisterOnDialogMessageHook() {
 
 // MARK: - Main Registration
 
-void InitAccessibilityTexts() {
+void InitTTSBank() {
     std::string languageSuffix = "_eng.json";
     switch (CVarGetInteger("gLanguages", 0)) {
         case LANGUAGE_FRA:
@@ -704,11 +704,11 @@ void InitAccessibilityTexts() {
 
 void RegisterOnSetGameLanguageHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSetGameLanguage>([]() {
-        InitAccessibilityTexts();
+        InitTTSBank();
     });
 }
 
-void RegisterAccessibilityModHooks() {
+void RegisterTTSModHooks() {
     RegisterOnSetGameLanguageHook();
     RegisterOnDialogMessageHook();
     RegisterOnSceneInitHook();
@@ -718,7 +718,7 @@ void RegisterAccessibilityModHooks() {
     RegisterOnUpdateMainMenuSelection();
 }
 
-void InitAccessibility() {
-    InitAccessibilityTexts();
-    RegisterAccessibilityModHooks();
+void InitTTS() {
+    InitTTSBank();
+    RegisterTTSModHooks();
 }

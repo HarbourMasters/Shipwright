@@ -264,10 +264,10 @@ set(Header_Files__soh__Enhancements__mods
 )
 source_group("Header Files\\soh\\Enhancements\\mods" FILES ${Header_Files__soh__Enhancements__mods})
 
-set(Header_Files__soh__Enhancements__accessibility
-    "soh/Enhancements/accessibility/accessibility.h"
+set(Header_Files__soh__Enhancements__tts
+    "soh/Enhancements/tts/tts.h"
 )
-source_group("Header Files\\soh\\Enhancements\\accessibility" FILES ${Header_Files__soh__Enhancements__accessibility})
+source_group("Header Files\\soh\\Enhancements\\tts" FILES ${Header_Files__soh__Enhancements__tts})
 
 set(Header_Files__soh__Enhancements__game_interactor
     "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -630,12 +630,12 @@ set(Source_Files__soh__Enhancements__mods
 )
 source_group("Source Files\\soh\\Enhancements\\mods" FILES ${Source_Files__soh__Enhancements__mods})
 
-set(Source_Files__soh__Enhancements__accessibility
-    "soh/Enhancements/accessibility/accessibility.cpp"
+set(Source_Files__soh__Enhancements__tts
+    "soh/Enhancements/tts/tts.cpp"
 )
-source_group("Source Files\\soh\\Enhancements\\accessibility" FILES ${Source_Files__soh__Enhancements__accessibility})
+source_group("Source Files\\soh\\Enhancements\\tts" FILES ${Source_Files__soh__Enhancements__tts})
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    set_source_files_properties(soh/Enhancements/accessibility/accessibility.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
+    set_source_files_properties(soh/Enhancements/tts/tts.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
 endif()
 
 set(Source_Files__soh__Enhancements__game_interactor
@@ -1866,7 +1866,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements__item_tables}
     ${Header_Files__soh__Enhancements__custom_message}
     ${Header_Files__soh__Enhancements__mods}
-    ${Header_Files__soh__Enhancements__accessibility}
+    ${Header_Files__soh__Enhancements__tts}
     ${Header_Files__soh__Enhancements__game_interactor}
     ${Header_Files__soh__Enhancements__crowd_control}
     ${Source_Files__soh}
@@ -1882,7 +1882,7 @@ set(ALL_FILES
     ${Source_Files__soh__Enhancements__item_tables}
     ${Source_Files__soh__Enhancements__custom_message}
     ${Source_Files__soh__Enhancements__mods}
-    ${Source_Files__soh__Enhancements__accessibility}
+    ${Source_Files__soh__Enhancements__tts}
     ${Source_Files__soh__Enhancements__game_interactor}
     ${Source_Files__soh__Enhancements__crowd_control}
     ${Source_Files__src__boot}

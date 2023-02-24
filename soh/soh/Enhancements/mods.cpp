@@ -2,7 +2,7 @@
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
 
-#include "accessibility/accessibility.h"
+#include "tts/tts.h"
 
 extern "C" {
 #include <z64.h>
@@ -67,6 +67,6 @@ void RegisterAutoSaveOnReceiveItemHook() {
 }
 
 void InitMods() {
-    InitAccessibility();
+    InitTTS();
     RegisterAutoSaveOnReceiveItemHook();
 }
