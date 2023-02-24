@@ -88,13 +88,13 @@ const char* GetLanguageCode() {
 
 // MARK: - Boss Title Cards
 
-const char* NameForSceneId(int16_t sceneId) {
+std::string NameForSceneId(int16_t sceneId) {
     auto key = std::to_string(sceneId);
     auto name = GetParameritizedText(key, TEXT_BANK_SCENES, nullptr);
-    return strdup(name.c_str());
+    return name;
 }
 
-static const char* titleCardText;
+static std::string titleCardText;
 
 void RegisterOnSceneInitHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
@@ -108,7 +108,7 @@ void RegisterOnPresentTitleCardHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPresentTitleCard>([]() {
         if (!CVarGetInteger("gA11yTTS", 0)) return;
         
-        SpeechSynthesizerSpeak(titleCardText, GetLanguageCode());
+        SpeechSynthesizerSpeak(titleCardText.c_str(), GetLanguageCode());
     });
 }
 
@@ -145,7 +145,7 @@ void RegisterOnInterfaceUpdateHook() {
                     announceBuf += snprintf(announceBuf, sizeof(ttsAnnounceBuf), "%s", translation.c_str());
                 }
                 ASSERT(announceBuf < ttsAnnounceBuf + sizeof(ttsAnnounceBuf));
-                SpeechSynthesizerSpeak(strdup(ttsAnnounceBuf), GetLanguageCode());
+                SpeechSynthesizerSpeak(ttsAnnounceBuf, GetLanguageCode());
                 prevTimer = timer;
             }
         }
@@ -195,15 +195,15 @@ void RegisterOnKaleidoscopeUpdateHook() {
             if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
                 snprintf(arg, sizeof(arg), "%d", gSaveContext.health);
                 auto translation = GetParameritizedText("health", TEXT_BANK_KALEIDO, arg);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
             } else if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
                 snprintf(arg, sizeof(arg), "%d", gSaveContext.magic);
                 auto translation = GetParameritizedText("magic", TEXT_BANK_KALEIDO, arg);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
             } else if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
                 snprintf(arg, sizeof(arg), "%d", gSaveContext.rupees);
                 auto translation = GetParameritizedText("rupees", TEXT_BANK_KALEIDO, arg);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
             } else if (CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
                 //TODO: announce timer?
             }
@@ -248,7 +248,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
                 
                 std::string key = std::to_string(pauseCtx->cursorItem[PAUSE_ITEM]);
                 auto translation = GetParameritizedText(key, TEXT_BANK_KALEIDO, arg);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case PAUSE_MAP:
@@ -256,12 +256,12 @@ void RegisterOnKaleidoscopeUpdateHook() {
                     if (pauseCtx->cursorItem[PAUSE_MAP] != PAUSE_ITEM_NONE) {
                         std::string key = std::to_string(pauseCtx->cursorItem[PAUSE_MAP]);
                         auto translation = GetParameritizedText(key, TEXT_BANK_KALEIDO, nullptr);
-                        SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                        SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                     }
                 } else {
                     std::string key = std::to_string(0x0100 + pauseCtx->cursorPoint[PAUSE_WORLD_MAP]);
                     auto translation = GetParameritizedText(key, TEXT_BANK_KALEIDO, nullptr);
-                    SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                    SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                     SPDLOG_INFO("Item: {}", key);
                 }
                 break;
@@ -285,14 +285,14 @@ void RegisterOnKaleidoscopeUpdateHook() {
                 
                 std::string key = std::to_string(pauseCtx->cursorItem[PAUSE_QUEST]);
                 auto translation = GetParameritizedText(key, TEXT_BANK_KALEIDO, arg);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case PAUSE_EQUIP:
             {
                 std::string key = std::to_string(pauseCtx->cursorItem[PAUSE_EQUIP]);
                 auto translation = GetParameritizedText(key, TEXT_BANK_KALEIDO, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             default:
@@ -309,7 +309,7 @@ void RegisterOnUpdateMainMenuSelection() {
         if (!CVarGetInteger("gA11yTTS", 0)) return;
         
         auto translation = GetParameritizedText("file1", TEXT_BANK_FILECHOOSE, nullptr);
-        SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+        SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
     });
     
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileSelectSelection>([](uint16_t optionIndex) {
@@ -318,32 +318,32 @@ void RegisterOnUpdateMainMenuSelection() {
         switch (optionIndex) {
             case FS_BTN_MAIN_FILE_1: {
                 auto translation = GetParameritizedText("file1", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case FS_BTN_MAIN_FILE_2: {
                 auto translation = GetParameritizedText("file2", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case FS_BTN_MAIN_FILE_3: {
                 auto translation = GetParameritizedText("file3", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case FS_BTN_MAIN_OPTIONS: {
                 auto translation = GetParameritizedText("options", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case FS_BTN_MAIN_COPY: {
                 auto translation = GetParameritizedText("copy", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case FS_BTN_MAIN_ERASE: {
                 auto translation = GetParameritizedText("erase", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             default:
@@ -357,22 +357,22 @@ void RegisterOnUpdateMainMenuSelection() {
         switch (optionIndex) {
             case FS_BTN_COPY_FILE_1: {
                 auto translation = GetParameritizedText("file1", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case FS_BTN_COPY_FILE_2: {
                 auto translation = GetParameritizedText("file2", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case FS_BTN_COPY_FILE_3: {
                 auto translation = GetParameritizedText("file3", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case FS_BTN_COPY_QUIT: {
                 auto translation = GetParameritizedText("quit", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             default:
@@ -386,12 +386,12 @@ void RegisterOnUpdateMainMenuSelection() {
         switch (optionIndex) {
             case FS_BTN_CONFIRM_YES: {
                 auto translation = GetParameritizedText("confirm", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case FS_BTN_CONFIRM_QUIT: {
                 auto translation = GetParameritizedText("quit", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             default:
@@ -405,22 +405,22 @@ void RegisterOnUpdateMainMenuSelection() {
         switch (optionIndex) {
             case FS_BTN_ERASE_FILE_1: {
                 auto translation = GetParameritizedText("file1", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case FS_BTN_ERASE_FILE_2: {
                 auto translation = GetParameritizedText("file2", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case FS_BTN_ERASE_FILE_3: {
                 auto translation = GetParameritizedText("file3", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case FS_BTN_ERASE_QUIT: {
                 auto translation = GetParameritizedText("quit", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             default:
@@ -434,12 +434,12 @@ void RegisterOnUpdateMainMenuSelection() {
         switch (optionIndex) {
             case FS_BTN_CONFIRM_YES: {
                 auto translation = GetParameritizedText("confirm", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case FS_BTN_CONFIRM_QUIT: {
                 auto translation = GetParameritizedText("quit", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             default:
@@ -453,22 +453,22 @@ void RegisterOnUpdateMainMenuSelection() {
         switch (optionIndex) {
             case FS_AUDIO_STEREO: {
                 auto translation = GetParameritizedText("audio_stereo", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case FS_AUDIO_MONO: {
                 auto translation = GetParameritizedText("audio_mono", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case FS_AUDIO_HEADSET: {
                 auto translation = GetParameritizedText("audio_headset", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case FS_AUDIO_SURROUND: {
                 auto translation = GetParameritizedText("audio_surround", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             default:
@@ -482,12 +482,12 @@ void RegisterOnUpdateMainMenuSelection() {
         switch (optionIndex) {
             case FS_TARGET_SWITCH: {
                 auto translation = GetParameritizedText("target_switch", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             case FS_TARGET_HOLD: {
                 auto translation = GetParameritizedText("target_hold", TEXT_BANK_FILECHOOSE, nullptr);
-                SpeechSynthesizerSpeak(strdup(translation.c_str()), GetLanguageCode());
+                SpeechSynthesizerSpeak(translation.c_str(), GetLanguageCode());
                 break;
             }
             default:
