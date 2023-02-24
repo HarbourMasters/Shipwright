@@ -750,13 +750,13 @@ static void WriteAllLocations(int language) {
                   jsonData["locations"][location->GetName()]["model"] =
                       ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
                   jsonData["locations"][location->GetName()]["trickName"] = 
-                      NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.english;
+                      GetIceTrapName(iceTrapModels[location->GetRandomizerCheck()]).english;
                   break;
               case 2:
                   jsonData["locations"][location->GetName()]["model"] =
                       ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
                   jsonData["locations"][location->GetName()]["trickName"] =
-                      NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.french;
+                      GetIceTrapName(iceTrapModels[location->GetRandomizerCheck()]).french;
                   break;
           }
       }
