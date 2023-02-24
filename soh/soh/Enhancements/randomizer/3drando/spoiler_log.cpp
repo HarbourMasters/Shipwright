@@ -726,43 +726,40 @@ static void WriteAllLocations(int language) {
             break;
         }
 
-        // Eventually check for other things here like fake name
-        if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
-            jsonData["locations"][location->GetName()]["item"] = placedItemName;
-            if (location->GetPlacedItemKey() == ICE_TRAP && location->IsCategory(Category::cShop)) {
-                switch (language) {
-                    case 0:
-                    default:
-                        jsonData["locations"][location->GetName()]["model"] =
-                            ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
-                        jsonData["locations"][location->GetName()]["trickName"] = 
-                            NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.english;
-                        break;
-                    case 2:
-                        jsonData["locations"][location->GetName()]["model"] =
-                            ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
-                        jsonData["locations"][location->GetName()]["trickName"] =
-                            NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.french;
-                        break;
-                }
-            }
-            jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
-        } else if (location->GetPlacedItemKey() == ICE_TRAP && iceTrapModels.contains(location->GetRandomizerCheck())) {
-            jsonData["locations"][location->GetName()]["item"] = placedItemName;
-            switch (language) {
-                case 0:
-                default:
-                    jsonData["locations"][location->GetName()]["model"] =
-                        ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
-                    break;
-                case 2:
-                    jsonData["locations"][location->GetName()]["model"] =
-                        ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
-                    break;
-            }
-        } else {
-          jsonData["locations"][location->GetName()] = placedItemName;
+        // If it's a simple item (not an ice trap, doesn't have a price)
+        // just add the name of the item and move on
+        if (!location->HasScrubsanityPrice() &&
+            !location->HasShopsanityPrice() &&
+            location->GetPlacedItemKey() != ICE_TRAP) {
+            
+            jsonData["locations"][location->GetName()] = placedItemName;
+            continue;
         }
+
+        // We're dealing with a complex item, build out the json object for it
+        jsonData["locations"][location->GetName()]["item"] = placedItemName;
+
+        if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
+          jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
+        }
+
+        if (location->GetPlacedItemKey() == ICE_TRAP) {
+          switch (language) {
+              case 0:
+              default:
+                  jsonData["locations"][location->GetName()]["model"] =
+                      ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
+                  jsonData["locations"][location->GetName()]["trickName"] = 
+                      GetIceTrapName(iceTrapModels[location->GetRandomizerCheck()]).english;
+                  break;
+              case 2:
+                  jsonData["locations"][location->GetName()]["model"] =
+                      ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
+                  jsonData["locations"][location->GetName()]["trickName"] =
+                      GetIceTrapName(iceTrapModels[location->GetRandomizerCheck()]).french;
+                  break;
+          }
+      }
     }
 }
 
