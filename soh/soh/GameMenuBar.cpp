@@ -738,6 +738,17 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                 UIWidgets::PaddedEnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon", true, false);
                 UIWidgets::Tooltip("Always shows dungeon entrance icons on the minimap");
+                UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
+                const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
+                UIWidgets::EnhancementCombobox("gDirtPathFix", zFightingOptions, 3, 0);
+                UIWidgets::Tooltip("Disabled: Paths vanish more the higher the resolution (Z-fighting is based on resolution)\n"
+                                   "Consistent: Certain paths vanish the same way in all resolutions\n"
+                                   "No Vanish: Paths do not vanish, Link seems to sink in to some paths\n"
+                                   "This might affect other decal effects\n");
+                /* 
+                UIWidgets::PaddedEnhancementCheckbox("Fix Vanishing Paths", "gDirtPathFix", true, false);
+                UIWidgets::Tooltip("Fixes paths vanishing in the ground, but let's link sink a bit in others paths");
+                */
 
                 ImGui::EndMenu();
             }
