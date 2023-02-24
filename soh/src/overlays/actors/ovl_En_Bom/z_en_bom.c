@@ -243,7 +243,9 @@ void EnBom_Update(Actor* thisx, PlayState* play2) {
         this->timer--;
     }
 
-    if (this->timer == (s32)(70 * CVarGetFloat("gBombTimerMultiplier", 1.0f) - 3)) {
+    float timerMultiplier = CVarGetFloat("gBombTimerMultiplier", 1.0f);
+
+    if (this->timer == (timerMultiplier == 1.0f ? 67 : (s32)(70 * timerMultiplier - 3))) {
         Audio_PlayActorSound2(thisx, NA_SE_PL_TAKE_OUT_SHIELD);
         Actor_SetScale(thisx, 0.01f);
     }
@@ -257,7 +259,7 @@ void EnBom_Update(Actor* thisx, PlayState* play2) {
     Actor_UpdateBgCheckInfo(play, thisx, 5.0f, 10.0f, 15.0f, 0x1F);
 
     if (thisx->params == BOMB_BODY) {
-        if (this->timer < (s32)(70 * CVarGetFloat("gBombTimerMultiplier", 1.0f) - 7)) {
+        if (this->timer < (timerMultiplier == 1.0f ? 63 : (s32)(70 * timerMultiplier - 7))) {
             dustAccel.y = 0.2f;
 
             // spawn spark effect on even frames
