@@ -117,6 +117,7 @@ Text adultAltarText;
 Text ganonText;
 Text ganonHintText;
 Text dampesText;
+Text gregText;
 Text warpMinuetText;
 Text warpBoleroText;
 Text warpSerenadeText;
@@ -142,6 +143,10 @@ Text& GetGanonHintText() {
 
 Text& GetDampeHintText() {
   return dampesText;
+}
+
+Text& GetGregHintText() {
+  return gregText;
 }
 
 Text& GetWarpMinuetText() {
@@ -763,6 +768,26 @@ void CreateDampesDiaryText() {
   };
   
   dampesText = temp1 + area + temp2;
+}
+
+void CreateGregRupeeHint() {
+  uint32_t item = GREG_RUPEE;
+  uint32_t location = FilterFromPool(allLocations, [item](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == item;})[0];
+  Text area = GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText();
+
+  Text temp1 = Text{
+    "By the way, if you're interested, I saw the shiniest %gGreen Rupee%w somewhere in%g",
+    "",
+    ""
+  };
+
+  Text temp2 = {
+    "%w. It's said to have %rmysterious powers%w...^But then, it could just be another regular rupee.&Oh well.",
+    "",
+    ""
+  };
+
+    gregText = temp1 + area + temp2;
 }
 
 void CreateWarpSongTexts() {

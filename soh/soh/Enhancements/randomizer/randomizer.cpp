@@ -280,6 +280,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Misc Settings:ToT Altar Hint", RSK_TOT_ALTAR_HINT },
     { "Misc Settings:Ganondorf LA Hint", RSK_GANONDORF_LIGHT_ARROWS_HINT },
     { "Misc Settings:Dampe's Diary Hint", RSK_DAMPES_DIARY_HINT },
+    { "Misc Settings:Greg Rupee Hint", RSK_GREG_HINT },
     { "Misc Settings:10 GS Hint", RSK_KAK_10_SKULLS_HINT },
     { "Misc Settings:20 GS Hint", RSK_KAK_20_SKULLS_HINT },
     { "Misc Settings:30 GS Hint", RSK_KAK_30_SKULLS_HINT },
@@ -409,6 +410,16 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
                 gSaveContext.dampeText,
                 gSaveContext.dampeText,
                 gSaveContext.dampeText
+            }
+        );
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_CHEST_GAME_PROCEED,
+            {
+                TEXTBOX_TYPE_BLACK,
+                TEXTBOX_POS_VARIABLE,
+                gSaveContext.gregHintText,
+                gSaveContext.gregHintText,
+                gSaveContext.gregHintText
             }
         );
 
@@ -2861,6 +2872,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_TOT_ALTAR_HINT] = CVarGetInteger("gRandomizeAltarHint", RO_GENERIC_ON);
     cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT] = CVarGetInteger("gRandomizeLAHint", RO_GENERIC_ON);
     cvarSettings[RSK_DAMPES_DIARY_HINT] = CVarGetInteger("gRandomizeDampeHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_GREG_HINT] = CVarGetInteger("gRandomizeGregHint", RO_GENERIC_OFF);
     cvarSettings[RSK_WARP_SONG_HINTS] = CVarGetInteger("gRandomizeWarpSongText", RO_GENERIC_OFF);
     cvarSettings[RSK_SCRUB_TEXT_HINT] = CVarGetInteger("gRandomizeScrubText", RO_GENERIC_OFF);
     cvarSettings[RSK_KAK_10_SKULLS_HINT] = CVarGetInteger("gRandomize10GSHint", RO_GENERIC_OFF);
@@ -4157,6 +4169,8 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::InsertHelpHoverText("Talking to Ganondorf in his boss room will tell you the location of the Light Arrows. If this option is enabled and Ganondorf is reachable without Light Arrows, Gossip Stones will never hint the Light Arrows.");
                 UIWidgets::PaddedEnhancementCheckbox("Dampe's Diary (Hookshot)", "gRandomizeDampeHint", true, false);
                 UIWidgets::InsertHelpHoverText("Reading the diary of Dampé the gravekeeper as adult will tell you the location of one of the Hookshots.");
+                UiWidgets::PaddedEnhancementCheckbox("Greg the Green Rupee", "gRandomizeGregHint", true, false);
+                UIWidgets::InsertHelpHoverText("Talking to the chest game owner will tell you the location of Greg the Green Rupee.");
                 UIWidgets::PaddedEnhancementCheckbox("Warp Song text", "gRandomizeWarpSongText", true, false, !CVarGetInteger("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF),
                  "This option is disabled since warp songs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::InsertHelpHoverText("Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)");

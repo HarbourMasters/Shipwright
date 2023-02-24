@@ -1083,6 +1083,9 @@ int Fill() {
       if (DampeHintText) {
         CreateDampesDiaryText();
       }
+      if (GregHintText) {
+        CreateGregRupeeHint();
+      }
       if (ShuffleWarpSongs) {
         CreateWarpSongTexts();
       }
