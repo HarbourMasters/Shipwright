@@ -823,6 +823,15 @@ void CreateAllHints() {
         }
     }
 
+    // If we have Rainbow Bridge set to Greg, add a hint for where Greg is
+    if (Bridge.Is(RAINBOWBRIDGE_GREG)) {
+      for(auto loc : allLocations) {
+        if (Location(loc)->GetPlacedItemKey() == GREG_RUPEE) {
+          alwaysHintLocations.push_back(loc);
+        }
+      }
+    }
+
     for (uint32_t location : alwaysHintLocations) {
       CreateLocationHint({location});
     }
