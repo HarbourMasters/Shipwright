@@ -41,9 +41,11 @@ extern PlayState* gPlayState;
 #include "objects/object_gi_pachinko/object_gi_pachinko.h"
 #include "objects/object_trap/object_trap.h"
 #include "overlays/ovl_Boss_Ganon2/ovl_Boss_Ganon2.h"
+#include "objects/object_gjyo_objects/object_gjyo_objects.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
+u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 }
 
 void ApplyOrResetCustomGfxPatches(bool rainbowTick);
@@ -1033,6 +1035,15 @@ void ApplyOrResetCustomGfxPatches(bool manualChange = true) {
         Color_RGBA8 color = CVarGetColor(n64LogoYellow.cvar, defaultColor);
         PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoYellow1",       n64LogoYellow.changedCvar,           81, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
         PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoYellow2",       n64LogoYellow.changedCvar,           82, gsDPSetEnvColor(color.r, color.g, color.b, 128));
+    }
+
+    // Greg Bridge
+    if (Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE) == RO_BRIDGE_GREG) {
+        ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge1", 2, gsSPGrayscale(true));
+        ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge2", 10, gsDPSetGrayscaleColor(0, 255, 0, 200));
+    } else {
+        ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge1");
+        ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge2");
     }
 
     if (gPlayState != nullptr) {
