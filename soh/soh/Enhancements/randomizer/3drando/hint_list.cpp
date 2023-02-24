@@ -2714,6 +2714,13 @@ void HintTable_Init() {
               /*spanish*/ "Los sabios aguardarán a que el héroe&obtenga #%d |símbolo|símbolos| de&skulltula dorada#." },
     });
 
+    hintTable[BRIDGE_GREG_HINT] = HintText::Bridge({
+        // obscure text
+        Text{ "The awakened ones will await&for the Hero to find %gGreg%w.",
+              /*french*/ "The awakened ones will await&for the Hero to find %gGreg%w.",
+              /*spanish*/ "The awakened ones will await&for the Hero to find %gGreg%w." },
+    });
+
     /*--------------------------
     | GANON BOSS KEY HINT TEXT |
     ---------------------------*/
