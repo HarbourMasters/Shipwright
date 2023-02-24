@@ -504,52 +504,52 @@ static uint8_t ttsHasNewMessage;
 static char ttsMessageBuf[256];
 static int8_t ttsCurrentHighlightedChoice;
 
-char8_t const* remap(uint8_t character) {
+std::string remap(uint8_t character) {
     switch (character) {
-        case 0x80: return u8"À";
-        case 0x81: return u8"î";
-        case 0x82: return u8"Â";
-        case 0x83: return u8"Ä";
-        case 0x84: return u8"Ç";
-        case 0x85: return u8"È";
-        case 0x86: return u8"É";
-        case 0x87: return u8"Ê";
-        case 0x88: return u8"Ë";
-        case 0x89: return u8"Ï";
-        case 0x8A: return u8"Ô";
-        case 0x8B: return u8"Ö";
-        case 0x8C: return u8"Ù";
-        case 0x8D: return u8"Û";
-        case 0x8E: return u8"Ü";
-        case 0x8F: return u8"ß";
-        case 0x90: return u8"à";
-        case 0x91: return u8"á";
-        case 0x92: return u8"â";
-        case 0x93: return u8"ä";
-        case 0x94: return u8"ç";
-        case 0x95: return u8"è";
-        case 0x96: return u8"é";
-        case 0x97: return u8"ê";
-        case 0x98: return u8"ë";
-        case 0x99: return u8"ï";
-        case 0x9A: return u8"ô";
-        case 0x9B: return u8"ö";
-        case 0x9C: return u8"ù";
-        case 0x9D: return u8"û";
-        case 0x9E: return u8"ü";
-        case 0x9F: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_a", TEXT_BANK_MISC, nullptr).c_str()));
-        case 0xA0: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_b", TEXT_BANK_MISC, nullptr).c_str()));
-        case 0xA1: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_c", TEXT_BANK_MISC, nullptr).c_str()));
-        case 0xA2: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_l", TEXT_BANK_MISC, nullptr).c_str()));
-        case 0xA3: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_r", TEXT_BANK_MISC, nullptr).c_str()));
-        case 0xA4: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_z", TEXT_BANK_MISC, nullptr).c_str()));
-        case 0xA5: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_c_up", TEXT_BANK_MISC, nullptr).c_str()));
-        case 0xA6: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_c_down", TEXT_BANK_MISC, nullptr).c_str()));
-        case 0xA7: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_c_left", TEXT_BANK_MISC, nullptr).c_str()));
-        case 0xA8: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_button_c_right", TEXT_BANK_MISC, nullptr).c_str()));
-        case 0xAA: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_analog_stick", TEXT_BANK_MISC, nullptr).c_str()));
-        case 0xAB: return reinterpret_cast<const char8_t*>(strdup(GetParameritizedText("input_d_pad", TEXT_BANK_MISC, nullptr).c_str()));
-        default: return u8"";
+        case 0x80: return "À";
+        case 0x81: return "î";
+        case 0x82: return "Â";
+        case 0x83: return "Ä";
+        case 0x84: return "Ç";
+        case 0x85: return "È";
+        case 0x86: return "É";
+        case 0x87: return "Ê";
+        case 0x88: return "Ë";
+        case 0x89: return "Ï";
+        case 0x8A: return "Ô";
+        case 0x8B: return "Ö";
+        case 0x8C: return "Ù";
+        case 0x8D: return "Û";
+        case 0x8E: return "Ü";
+        case 0x8F: return "ß";
+        case 0x90: return "à";
+        case 0x91: return "á";
+        case 0x92: return "â";
+        case 0x93: return "ä";
+        case 0x94: return "ç";
+        case 0x95: return "è";
+        case 0x96: return "é";
+        case 0x97: return "ê";
+        case 0x98: return "ë";
+        case 0x99: return "ï";
+        case 0x9A: return "ô";
+        case 0x9B: return "ö";
+        case 0x9C: return "ù";
+        case 0x9D: return "û";
+        case 0x9E: return "ü";
+        case 0x9F: return GetParameritizedText("input_button_a", TEXT_BANK_MISC, nullptr);
+        case 0xA0: return GetParameritizedText("input_button_b", TEXT_BANK_MISC, nullptr);
+        case 0xA1: return GetParameritizedText("input_button_c", TEXT_BANK_MISC, nullptr);
+        case 0xA2: return GetParameritizedText("input_button_l", TEXT_BANK_MISC, nullptr);
+        case 0xA3: return GetParameritizedText("input_button_r", TEXT_BANK_MISC, nullptr);
+        case 0xA4: return GetParameritizedText("input_button_z", TEXT_BANK_MISC, nullptr);
+        case 0xA5: return GetParameritizedText("input_button_c_up", TEXT_BANK_MISC, nullptr);
+        case 0xA6: return GetParameritizedText("input_button_c_down", TEXT_BANK_MISC, nullptr);
+        case 0xA7: return GetParameritizedText("input_button_c_left", TEXT_BANK_MISC, nullptr);
+        case 0xA8: return GetParameritizedText("input_button_c_right", TEXT_BANK_MISC, nullptr);
+        case 0xAA: return GetParameritizedText("input_analog_stick", TEXT_BANK_MISC, nullptr);
+        case 0xAB: return GetParameritizedText("input_d_pad", TEXT_BANK_MISC, nullptr);
+        default: return "";
     }
 }
 
@@ -590,9 +590,9 @@ void Message_TTS_Decode(uint8_t* sourceBuf, char* destBuf, uint16_t startOfset, 
             if (cchar <= 0x80) {
                 destBuf[destWriteIndex++] = cchar;
             } else {
-                auto rchar = remap(cchar);
-                while (*rchar) {
-                    destBuf[destWriteIndex++] = *rchar++;
+                std::string mchar = remap(cchar);
+                for (char const &c: mchar) {
+                    destBuf[destWriteIndex++] = c;
                 }
             }
         }
