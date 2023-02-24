@@ -1013,6 +1013,8 @@ typedef enum {
     RSK_SHUFFLE_SONGS,
     RSK_SHUFFLE_TOKENS,
     RSK_SHOPSANITY,
+    RSK_SHOPSANITY_PRICES,
+    RSK_SHOPSANITY_PRICES_AFFORDABLE,
     RSK_SHUFFLE_SCRUBS,
     RSK_SHUFFLE_COWS,
     RSK_SHUFFLE_WEIRD_EGG,
@@ -1190,6 +1192,16 @@ typedef enum {
     RO_SHOPSANITY_RANDOM,
     RO_SHOPSANITY_MAX,
 } RandoOptionShopsanity;
+
+//Shopsanity price ranges
+typedef enum {
+    RO_SHOPSANITY_PRICE_BALANCED, //Balanced random from 0-300
+    RO_SHOPSANITY_PRICE_STARTER, //Wallets are random within their range, in increments of 5 rupees
+    RO_SHOPSANITY_PRICE_ADULT,
+    RO_SHOPSANITY_PRICE_GIANT,
+    RO_SHOPSANITY_PRICE_TYCOON,
+    RO_SHOPSANITY_PRICE_MAX, 
+} RandoOptionShopsanityPrices;
 
 //Scrubsanity settings (off, affordable, expensive, random)
 typedef enum {
