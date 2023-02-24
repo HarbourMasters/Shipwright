@@ -92,7 +92,7 @@ void RandomizeGroup(SeqType type) {
     }
     Shuffle(values);
     for (const auto& [seqId, seqData] : AudioCollection::Instance->GetAllSequences()) {
-        const std::string cvarKey = "gSfxEditor_" + seqData.sfxKey;
+        const std::string cvarKey = "gAudioEditor.ReplacedSequences." + seqData.sfxKey;
         if (seqData.category & type) {
             // Only save authentic sequence CVars
             if (((seqData.category & SEQ_BGM_CUSTOM) || seqData.category == SEQ_FANFARE) && seqData.sequenceId >= MAX_AUTHENTIC_SEQID) {
@@ -112,28 +112,28 @@ void ResetGroup(const std::map<u16, SequenceInfo>& map, SeqType type) {
             if (seqData.category == SEQ_FANFARE && defaultValue >= MAX_AUTHENTIC_SEQID) {
                 continue;
             }
-            const std::string cvarKey = "gSfxEditor_" + seqData.sfxKey;
+            const std::string cvarKey = "gAudioEditor.ReplacedSequences." + seqData.sfxKey;
             CVarSetInteger(cvarKey.c_str(), defaultValue);
         }
     }
 }
 
 void DrawPreviewButton(uint16_t sequenceId, std::string sfxKey, SeqType sequenceType) {
-    const std::string cvarKey = "gSfxEditor_" + sfxKey;
+    const std::string cvarKey = "gAudioEditor.ReplacedSequences." + sfxKey;
     const std::string hiddenKey = "##" + cvarKey;
     const std::string stopButton = " Stop  " + hiddenKey;
     const std::string previewButton = "Preview" + hiddenKey;
 
-    if (CVarGetInteger("gSfxEditor_playing", 0) == sequenceId) {
+    if (CVarGetInteger("gAudioEditor.Playing", 0) == sequenceId) {
         if (ImGui::Button(stopButton.c_str())) {
             func_800F5C2C();
-            CVarSetInteger("gSfxEditor_playing", 0);
+            CVarSetInteger("gAudioEditor.Playing", 0);
         }
     } else {
         if (ImGui::Button(previewButton.c_str())) {
-            if  (CVarGetInteger("gSfxEditor_playing", 0) != 0) {
+            if  (CVarGetInteger("gAudioEditor.Playing", 0) != 0) {
                 func_800F5C2C();
-                CVarSetInteger("gSfxEditor_playing", 0);
+                CVarSetInteger("gAudioEditor.Playing", 0);
             } else {
                 if (sequenceType == SEQ_SFX) {
                     Audio_PlaySoundGeneral(sequenceId, &pos, 4, &freqScale, &freqScale, &reverbAdd);
@@ -143,7 +143,7 @@ void DrawPreviewButton(uint16_t sequenceId, std::string sfxKey, SeqType sequence
                 } else {
                     // TODO: Cant do both here, so have to click preview button twice
                     PreviewSequence(sequenceId);
-                    CVarSetInteger("gSfxEditor_playing", sequenceId);
+                    CVarSetInteger("gAudioEditor.Playing", sequenceId);
                 }
             }
         }
@@ -185,7 +185,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
             continue;
         }
 
-        const std::string cvarKey = "gSfxEditor_" + seqData.sfxKey;
+        const std::string cvarKey = "gAudioEditor.ReplacedSequences." + seqData.sfxKey;
         const std::string hiddenKey = "##" + cvarKey;
         const std::string resetButton = "Reset" + hiddenKey;
         const std::string randomizeButton = "Randomize" + hiddenKey;
@@ -308,7 +308,7 @@ void DrawTypeChip(SeqType type) {
 
 void DrawSfxEditor(bool& open) {
     if (!open) {
-        CVarSetInteger("gSfxEditor", 0);
+        CVarSetInteger("gAudioEditor.WindowOpen", 0);
         return;
     }
 
@@ -538,7 +538,7 @@ void DrawSfxEditor(bool& open) {
 
 void InitAudioEditor() {
     //Draw the bar in the menu.
-    SohImGui::AddWindow("Enhancements", "SFX Editor", DrawSfxEditor);
+    SohImGui::AddWindow("Enhancements", "Audio Editor", DrawSfxEditor);
 }
 
 std::vector<SeqType> allTypes = { SEQ_BGM_WORLD, SEQ_BGM_EVENT, SEQ_BGM_BATTLE, SEQ_OCARINA, SEQ_FANFARE, SEQ_INSTRUMENT, SEQ_SFX };
