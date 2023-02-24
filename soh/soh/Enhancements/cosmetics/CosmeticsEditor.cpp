@@ -1,5 +1,6 @@
 #include "CosmeticsEditor.h"
 #include <ImGuiImpl.h>
+#include <Hooks.h>
 
 #include <string>
 #include <libultraship/bridge.h>
@@ -910,6 +911,15 @@ void ApplyOrResetCustomGfxPatches(bool manualChange = true) {
         PATCH_GFX(gGiGreenRupeeInnerColorDL,                      "Consumable_GreenRupee2",   consumableGreenRupee.changedCvar,     4, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
         PATCH_GFX(gGiGreenRupeeOuterColorDL,                      "Consumable_GreenRupee3",   consumableGreenRupee.changedCvar,     3, gsDPSetPrimColor(0, 0, MIN(color.r + 100, 255), MIN(color.g + 100, 255), MIN(color.b + 100, 255), 255));
         PATCH_GFX(gGiGreenRupeeOuterColorDL,                      "Consumable_GreenRupee4",   consumableGreenRupee.changedCvar,     4, gsDPSetEnvColor(color.r * 0.75f, color.g * 0.75f, color.b * 0.75f, 255));
+    
+        // Greg Bridge
+        if (Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE) == RO_BRIDGE_GREG) {
+            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge1", 2, gsSPGrayscale(true));
+            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge2", 10, gsDPSetGrayscaleColor(color.r, color.g, color.b, color.a));
+        } else {
+            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge1");
+            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge2");
+        }
     }
     static CosmeticOption& consumableBlueRupee = cosmeticOptions.at("Consumable_BlueRupee");
     if (manualChange || CVarGetInteger(consumableBlueRupee.rainbowCvar, 0)) {
@@ -1035,18 +1045,6 @@ void ApplyOrResetCustomGfxPatches(bool manualChange = true) {
         Color_RGBA8 color = CVarGetColor(n64LogoYellow.cvar, defaultColor);
         PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoYellow1",       n64LogoYellow.changedCvar,           81, gsDPSetPrimColor(0, 0, 255, 255, 255, 255))
         PATCH_GFX(gNintendo64LogoDL,                              "Title_N64LogoYellow2",       n64LogoYellow.changedCvar,           82, gsDPSetEnvColor(color.r, color.g, color.b, 128));
-    }
-
-    // Greg Bridge
-    if (Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE) == RO_BRIDGE_GREG) {
-        static Color_RGBA8 defaultColor = {consumableGreenRupee.defaultColor.x, consumableGreenRupee.defaultColor.y, consumableGreenRupee.defaultColor.z, consumableGreenRupee.defaultColor.w};
-        Color_RGBA8 color = CVarGetColor(consumableGreenRupee.cvar, defaultColor);
-
-        ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge1", 2, gsSPGrayscale(true));
-        ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge2", 10, gsDPSetGrayscaleColor(color.r, color.g, color.b, color.a));
-    } else {
-        ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge1");
-        ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge2");
     }
 
     if (gPlayState != nullptr) {
@@ -1812,6 +1810,10 @@ void InitCosmeticsEditor() {
     }
     SohImGui::RequestCvarSaveOnNextTick();
     ApplyOrResetCustomGfxPatches();
+
+    Ship::RegisterHook<Ship::LoadFile>([](uint32_t fileNum) {
+        ApplyOrResetCustomGfxPatches();
+    });
 }
 
 void CosmeticsEditor_RandomizeAll() {
