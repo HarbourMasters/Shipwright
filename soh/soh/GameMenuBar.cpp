@@ -1211,9 +1211,9 @@ namespace GameMenuBar {
 
         ImGui::SetCursorPosY(0.0f);
 
+#ifdef ENABLE_REMOTE_CONTROL
         if (ImGui::BeginMenu("Network"))
         {
-#ifdef ENABLE_REMOTE_CONTROL
             bool isFormValid = GameInteractor::Instance->remoteIPStr[0] != '\0' && GameInteractor::Instance->remotePortStr[0] != '\0';
             const char* remoteOptions[2] = { "Built-in", "Crowd Control"};
 
@@ -1288,10 +1288,9 @@ namespace GameMenuBar {
             }
 
             ImGui::Dummy(ImVec2(0.0f, 0.0f));
-#endif
-
             ImGui::EndMenu();
         }
+#endif
 
         ImGui::SetCursorPosY(0.0f);
 
