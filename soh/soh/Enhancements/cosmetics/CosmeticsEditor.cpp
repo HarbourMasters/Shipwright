@@ -1039,8 +1039,11 @@ void ApplyOrResetCustomGfxPatches(bool manualChange = true) {
 
     // Greg Bridge
     if (Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE) == RO_BRIDGE_GREG) {
+        static Color_RGBA8 defaultColor = {consumableGreenRupee.defaultColor.x, consumableGreenRupee.defaultColor.y, consumableGreenRupee.defaultColor.z, consumableGreenRupee.defaultColor.w};
+        Color_RGBA8 color = CVarGetColor(consumableGreenRupee.cvar, defaultColor);
+
         ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge1", 2, gsSPGrayscale(true));
-        ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge2", 10, gsDPSetGrayscaleColor(0, 255, 0, 200));
+        ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge2", 10, gsDPSetGrayscaleColor(color.r, color.g, color.b, color.a));
     } else {
         ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge1");
         ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge2");
