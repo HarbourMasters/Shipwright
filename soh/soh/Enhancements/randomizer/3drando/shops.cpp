@@ -144,7 +144,7 @@ int CapPriceAffordable(int value, int cap) {
 
 // Generate random number from 5 to wallet max
 int GetPriceFromMax(int max) {
-    int temp = Random(5, max);
+    int temp = Random(1, max) * 5; // random range of 1 - wallet max / 5, where wallet max is the highest it goes as a multiple of 5
     return CapPriceAffordable(temp, affordableCaps.find(Settings::ShopsanityPrices.Value<uint8_t>())->second);
 }
 
@@ -152,14 +152,17 @@ int GetRandomShopPrice() {
     int max = 0;
 
     if(Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_STARTER)) {// check for xx wallet setting and set max amount as method for
-        max = 99;                                                        // setting true randomization
+        max = 19; // 95/5                                                        // setting true randomization
     }
-    else if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_ADULT))
-        max = 200;
-    else if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_GIANT))
-        max = 500;
-    else if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_TYCOON))
-        max = 999;
+    else if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_ADULT)) {
+        max = 40; // 200/5
+    }
+    else if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_GIANT)) {
+        max = 100; // 500/5
+    }
+    else if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_TYCOON)) {
+        max = 199; // 995/5
+    }
     if (max != 0) {
         return GetPriceFromMax(max);
     }

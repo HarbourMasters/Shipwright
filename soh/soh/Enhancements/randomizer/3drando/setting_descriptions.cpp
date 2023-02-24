@@ -363,10 +363,10 @@ string_view shopsRandom               = "Vanilla shop items will be shuffled amo
 |     SHOPSANITY PRICES        |                                                           //
 ------------------------------*/                                                           //
 string_view shopPriceBalanced         = "Weighted randomization, max 300.";                //
-string_view shopPriceStarter          = "True randomization, max 99";                      //
+string_view shopPriceStarter          = "True randomization, max 95";                      //
 string_view shopPriceAdult            = "True randomization, max 200";                     //
 string_view shopPriceGiant            = "True randomization, max 500";                     //
-string_view shopPriceTycoon           = "True randomization, max 999";                     //
+string_view shopPriceTycoon           = "True randomization, max 995";                     //
 string_view shopPriceAffordable       = "Cap shop prices to affordable value just above"   //
                                         "the previous tier wallet's max value";            //
                                                                                            //

@@ -3653,7 +3653,7 @@ void DrawRandoEditor(bool& open) {
                             "Balanced - The default randomization. Shop prices for shopsanity items will range between 0 to 300 rupees, "
                             "with a bias towards values slightly below the middle of the range, in multiples of 5.\n "
                             "\n"
-                            "X Wallet - Randomized between 5 and the wallet's max size"
+                            "X Wallet - Randomized between 5 and the wallet's max size, in multiples of 5"
                         );
                         UIWidgets::EnhancementCombobox("gRandomizeShopsanityPrices", randoShopsanityPrices, RO_SHOPSANITY_PRICE_MAX, RO_SHOPSANITY_PRICE_BALANCED);
                         UIWidgets::EnhancementCheckbox(Settings::ShopsanityPricesAffordable.GetName().c_str(), "gRandomizeShopsanityPricesAffordable",
