@@ -133,6 +133,9 @@ void DrawStatsTracker(bool& open) {
     ImGui::TableSetupColumn("Timers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
     ImGui::TableNextColumn();
 
+    ImGui::Text("Racing Build:        ");
+    ImGui::SameLine();
+    ImGui::Text("Template");
     DisplayTimeHHMMSS(totalTimer, "Total Game Time:    ", COLOR_WHITE);
     UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
     DisplayTimeHHMMSS(gSaveContext.sohStats.playTimer / 2, "Gameplay Time:      ", COLOR_WHITE);

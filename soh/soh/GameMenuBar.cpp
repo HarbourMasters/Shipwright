@@ -330,6 +330,7 @@ namespace GameMenuBar {
 
         if (ImGui::BeginMenu("Enhancements"))
         {
+            /* [Race Template] Hide appropriate enhancements
             DrawPresetSelector(PRESET_TYPE_ENHANCEMENTS);
 
             UIWidgets::Spacer(0);
@@ -854,6 +855,8 @@ namespace GameMenuBar {
 
             UIWidgets::Spacer(0);
 
+            */
+
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
             ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
@@ -991,6 +994,7 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Matches interpolation value to the current game's window refresh rate");
             UIWidgets::Spacer(0);
 
+            /* [Race Template] Hide appropriate enhancements
             UIWidgets::EnhancementCheckbox("Disable LOD", "gDisableLOD");
             UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
             if (UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance", true, false)) {
@@ -1005,6 +1009,7 @@ namespace GameMenuBar {
             }
             UIWidgets::PaddedEnhancementCheckbox("Skip Text", "gSkipText", true, false);
             UIWidgets::Tooltip("Holding down B skips text");
+            */
 
          #ifdef __SWITCH__
             UIWidgets::Spacer(0);
@@ -1029,6 +1034,7 @@ namespace GameMenuBar {
 
         ImGui::SetCursorPosY(0.0f);
 
+        /* [Race Template] Hide Cheats and Developer Tools
         if (ImGui::BeginMenu("Cheats"))
         {
             if (ImGui::BeginMenu("Infinite...")) {
@@ -1237,6 +1243,7 @@ namespace GameMenuBar {
         }
 
         ImGui::SetCursorPosY(0.0f);
+        */
 
         if (ImGui::BeginMenu("Randomizer"))
         {
@@ -1273,6 +1280,7 @@ namespace GameMenuBar {
                 SohImGui::EnableWindow("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0));
             }
             ImGui::Dummy(ImVec2(0.0f, 0.0f));
+            /* [Race Template] Hide Entrance Tracker
             if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVarGetInteger("gEntranceTrackerEnabled", 0);
@@ -1281,6 +1289,7 @@ namespace GameMenuBar {
                 SohImGui::EnableWindow("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0));
             }
             ImGui::Dummy(ImVec2(0.0f, 0.0f));
+            */
             if (ImGui::Button(GetWindowButtonText("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVarGetInteger("gCheckTrackerEnabled", 0);
@@ -1298,7 +1307,7 @@ namespace GameMenuBar {
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
-
+            /* [Race Template] Hide other rando stuff
             UIWidgets::PaddedSeparator();
 
             if (ImGui::BeginMenu("Rando Enhancements"))
@@ -1378,6 +1387,7 @@ namespace GameMenuBar {
                     "Enemy spawns will stay consistent throughout room reloads. Enemy spawns are based on randomizer seeds, so this only works with randomizer savefiles."
                 );
             }
+            */
 
             ImGui::EndMenu();
         }
