@@ -745,11 +745,6 @@ namespace GameMenuBar {
                                    "Consistent: Certain paths vanish the same way in all resolutions\n"
                                    "No Vanish: Paths do not vanish, Link seems to sink in to some paths\n"
                                    "This might affect other decal effects\n");
-                /* 
-                UIWidgets::PaddedEnhancementCheckbox("Fix Vanishing Paths", "gDirtPathFix", true, false);
-                UIWidgets::Tooltip("Fixes paths vanishing in the ground, but let's link sink a bit in others paths");
-                */
-
                 ImGui::EndMenu();
             }
 
