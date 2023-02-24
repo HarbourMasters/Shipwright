@@ -842,7 +842,7 @@ void CreateAllHints() {
     auto alwaysHintLocations = FilterFromPool(allLocations, [](const uint32_t loc){
         return ((Location(loc)->GetHint().GetType() == HintCategory::Always) ||
                 // If we have Rainbow Bridge set to Greg, add a hint for where Greg is
-                (Bridge.Is(RAINBOWBRIDGE_GREG) && Location(loc)->GetPlacedItemKey() == GREG_RUPEE)) &&
+                ((Bridge.Is(RAINBOWBRIDGE_GREG) && GregHintText.Is(OFF)) && Location(loc)->GetPlacedItemKey() == GREG_RUPEE)) &&
                Location(loc)->IsHintable()        && !(Location(loc)->IsHintedAt());
     });
 

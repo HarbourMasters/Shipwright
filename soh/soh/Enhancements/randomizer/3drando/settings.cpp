@@ -355,6 +355,7 @@ namespace Settings {
     &AltarHintText,
     &GanondorfHintText,
     &DampeHintText,
+    &GregHintText,
     &WarpSongHints,
     &Kak10GSHintText,
     &Kak20GSHintText,
