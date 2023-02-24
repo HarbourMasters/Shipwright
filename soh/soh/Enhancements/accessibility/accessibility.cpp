@@ -501,7 +501,6 @@ void RegisterOnUpdateMainMenuSelection() {
 
 static uint8_t ttsHasMessage;
 static uint8_t ttsHasNewMessage;
-static char ttsMessageBuf[256];
 static int8_t ttsCurrentHighlightedChoice;
 
 std::string remap(uint8_t character) {
@@ -553,7 +552,8 @@ std::string remap(uint8_t character) {
     }
 }
 
-void Message_TTS_Decode(uint8_t* sourceBuf, char* destBuf, uint16_t startOfset, uint16_t size) {
+std::string Message_TTS_Decode(uint8_t* sourceBuf, uint16_t startOfset, uint16_t size) {
+    std::string output;
     uint32_t destWriteIndex = 0;
     uint8_t isListingChoices = 0;
     
@@ -563,11 +563,11 @@ void Message_TTS_Decode(uint8_t* sourceBuf, char* destBuf, uint16_t startOfset, 
         if (cchar < ' ') {
             switch (cchar) {
                 case MESSAGE_NEWLINE:
-                    destBuf[destWriteIndex++] = (isListingChoices) ? '\n' : ' ';
+                    output += (isListingChoices) ? '\n' : ' ';
                     break;
                 case MESSAGE_THREE_CHOICE:
                 case MESSAGE_TWO_CHOICE:
-                    destBuf[destWriteIndex++] = '\n';
+                    output += '\n';
                     isListingChoices = 1;
                     break;
                 case MESSAGE_COLOR:
@@ -588,17 +588,14 @@ void Message_TTS_Decode(uint8_t* sourceBuf, char* destBuf, uint16_t startOfset, 
             }
         } else {
             if (cchar <= 0x80) {
-                destBuf[destWriteIndex++] = cchar;
+                output += cchar;
             } else {
-                std::string mchar = remap(cchar);
-                for (char const &c: mchar) {
-                    destBuf[destWriteIndex++] = c;
-                }
+                output += remap(cchar);
             }
         }
     }
     
-    destBuf[destWriteIndex] = 0;
+    return output;
 }
 
 void RegisterOnDialogMessageHook() {
@@ -619,8 +616,8 @@ void RegisterOnDialogMessageHook() {
                 ttsCurrentHighlightedChoice = 0;
                 
                 uint16_t size = msgCtx->decodedTextLen;
-                Message_TTS_Decode(msgCtx->msgBufDecoded, ttsMessageBuf, 0, size);
-                SpeechSynthesizerSpeak(ttsMessageBuf, GetLanguageCode());
+                auto decodedMsg = Message_TTS_Decode(msgCtx->msgBufDecoded, 0, size);
+                SpeechSynthesizerSpeak(decodedMsg.c_str(), GetLanguageCode());
             } else if (msgCtx->msgMode == MSGMODE_TEXT_DONE && msgCtx->choiceNum > 0 && msgCtx->choiceIndex != ttsCurrentHighlightedChoice) {
                 ttsCurrentHighlightedChoice = msgCtx->choiceIndex;
                 uint16_t startOffset = 0;
@@ -655,8 +652,8 @@ void RegisterOnDialogMessageHook() {
                     
                     if (startOffset < msgCtx->decodedTextLen && startOffset != endOffset) {
                         uint16_t size = endOffset - startOffset;
-                        Message_TTS_Decode(msgCtx->msgBufDecoded, ttsMessageBuf, startOffset, size);
-                        SpeechSynthesizerSpeak(ttsMessageBuf, GetLanguageCode());
+                        auto decodedMsg = Message_TTS_Decode(msgCtx->msgBufDecoded, startOffset, size);
+                        SpeechSynthesizerSpeak(decodedMsg.c_str(), GetLanguageCode());
                     }
                 }
             }
