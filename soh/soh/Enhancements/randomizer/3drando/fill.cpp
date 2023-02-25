@@ -912,9 +912,7 @@ void VanillaFill() {
   CreateItemOverrides();
   CreateEntranceOverrides();
   CreateAlwaysIncludedMessages();
-  if (ShuffleWarpSongs) {
-    CreateWarpSongTexts();
-  }
+  CreateWarpSongTexts();
 }
 
 void ClearProgress() {
