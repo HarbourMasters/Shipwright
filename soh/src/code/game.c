@@ -431,7 +431,18 @@ void GameState_Update(GameState* gameState) {
         CVarSetInteger("gPrevTime", -1);
     }
     
-    //Switches Link's age and respawns him at the last entrance he entered.
+    // For the gTimeTravel: Don't give child Link a Kokiri Sword if we don't have one
+    if (gPlayState && CVarGetInteger("gSwitchAge", 0)) {
+        uint32_t kokiriSwordBitMask = 1 << 0;
+        if (!(gSaveContext.inventory.equipment & kokiriSwordBitMask)) {
+            Player* player = GET_PLAYER(gPlayState);
+            player->currentSwordItemId = ITEM_NONE;
+            gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
+        }
+    }
+
+    // Switches Link's age and respawns him at the last entrance he entered.
     if (CVarGetInteger("gTimeTravel", 0) && CVarGetInteger("gSwitchAge", 0)) {
         CVarSetInteger("gSwitchAge", 0);
         gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;

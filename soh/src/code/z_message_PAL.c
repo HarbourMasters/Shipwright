@@ -2488,6 +2488,8 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     msgCtx->stateTimer = 30;
                     CVarSetInteger("gSwitchAge", 1);
                 }
+                // ^ TODO: Change this to the timeblock distance check in z_obj_timeblock???
+                // Or check here if there's a timeblock and if there is, we just return and don't enter the gSwitchAge ???
 
                 if (CVarGetInteger("gFastOcarinaPlayback", 0) == 0 || play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME
                     || play->msgCtx.lastPlayedSong == OCARINA_SONG_STORMS ||
