@@ -1000,6 +1000,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option AltarHintText;
   extern Option GanondorfHintText;
   extern Option DampeHintText;
+  extern Option GregHintText;
   extern Option Kak10GSHintText;
   extern Option Kak20GSHintText;
   extern Option Kak30GSHintText;
