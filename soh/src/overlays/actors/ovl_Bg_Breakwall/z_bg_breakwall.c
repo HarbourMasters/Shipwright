@@ -236,15 +236,6 @@ Actor* BgBreakwall_SpawnFragments(PlayState* play, BgBreakwall* this, Vec3f* pos
  * Sets up the collision model as well is the object dependency and action function to use.
  */
 void BgBreakwall_WaitForObject(BgBreakwall* this, PlayState* play) {
-    if (gSaveContext.isBossRush) {
-        Player* player = GET_PLAYER(play);
-        player->actor.world.pos.x = -890.0f;
-        player->actor.world.pos.y = -904.0f;
-        player->actor.world.pos.z = -2784.0f;
-
-        Actor_Kill(&this->dyna.actor);
-    }
-
     if (Object_IsLoaded(&play->objectCtx, this->bankIndex)) {
         CollisionHeader* colHeader = NULL;
         s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
@@ -283,7 +274,8 @@ void BgBreakwall_Wait(BgBreakwall* this, PlayState* play) {
         }
     }
     
-    if (this->collider.base.acFlags & 2 || blueFireArrowHit) {
+    // Break the floor immediately in Boss Rush so the player can jump in the hole immediately.
+    if (this->collider.base.acFlags & 2 || blueFireArrowHit || gSaveContext.isBossRush) {
         Vec3f effectPos;
         s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
 
