@@ -280,7 +280,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Misc Settings:ToT Altar Hint", RSK_TOT_ALTAR_HINT },
     { "Misc Settings:Ganondorf LA Hint", RSK_GANONDORF_LIGHT_ARROWS_HINT },
     { "Misc Settings:Dampe's Diary Hint", RSK_DAMPES_DIARY_HINT },
-    { "Misc Settings:Greg Rupee Hint", RSK_GREG_HINT },
+    { "Misc Settings:Greg the Rupee Hint", RSK_GREG_HINT },
     { "Misc Settings:10 GS Hint", RSK_KAK_10_SKULLS_HINT },
     { "Misc Settings:20 GS Hint", RSK_KAK_20_SKULLS_HINT },
     { "Misc Settings:30 GS Hint", RSK_KAK_30_SKULLS_HINT },
@@ -794,6 +794,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_TOT_ALTAR_HINT:
                     case RSK_GANONDORF_LIGHT_ARROWS_HINT:
                     case RSK_DAMPES_DIARY_HINT:
+                    case RSK_GREG_HINT:
                     case RSK_KAK_10_SKULLS_HINT:
                     case RSK_KAK_20_SKULLS_HINT:
                     case RSK_KAK_30_SKULLS_HINT:
