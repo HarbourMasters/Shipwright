@@ -785,13 +785,13 @@ void CreateGregRupeeHint() {
   Text area = GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText();
 
   Text temp1 = Text{
-    "By the way, if you're interested, I saw the shiniest %gGreen Rupee%w somewhere in%g",
+    "By the way, if you're interested, I saw the shiniest %gGreen Rupee%w somewhere in%g ",
     "",
     ""
   };
 
   Text temp2 = {
-    "%w. It's said to have %rmysterious powers%w...^But then, it could just be another regular rupee.&Oh well.",
+    "%w.^It's said to have %rmysterious powers%w...^But then, it could just be another regular rupee.&Oh well.",
     "",
     ""
   };

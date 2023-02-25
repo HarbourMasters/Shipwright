@@ -1215,6 +1215,11 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         strncpy(gSaveContext.dampeText, formattedDampeJsonText.c_str(), sizeof(gSaveContext.dampeText) - 1);
         gSaveContext.dampeText[sizeof(gSaveContext.dampeText) - 1] = 0;
 
+        std::string gregJsonText = spoilerFileJson["gregText"].get<std::string>();
+        std::string formattedGregJsonText = FormatJsonHintText(gregJsonText);
+        strncpy(gSaveContext.gregHintText, formattedGregJsonText.c_str(), sizeof(gSaveContext.gregHintText) - 1);
+        gSaveContext.gregHintText[sizeof(gSaveContext.gregHintText) - 1] = 0;
+
         std::string warpMinuetJsonText = spoilerFileJson["warpMinuetText"].get<std::string>();
         strncpy(gSaveContext.warpMinuetText, warpMinuetJsonText.c_str(), sizeof(gSaveContext.warpMinuetText) - 1);
         gSaveContext.warpMinuetText[sizeof(gSaveContext.warpMinuetText) - 1] = 0;
