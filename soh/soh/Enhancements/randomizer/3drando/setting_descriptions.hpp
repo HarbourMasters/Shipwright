@@ -40,6 +40,7 @@ extern string_view bridgeMedallions;
 extern string_view bridgeRewards;
 extern string_view bridgeDungeons;
 extern string_view bridgeTokens;
+extern string_view bridgeGreg;
 
 extern string_view bridgeStoneCountDesc;
 extern string_view bridgeMedallionCountDesc;
@@ -116,6 +117,13 @@ extern string_view shopsTwo;
 extern string_view shopsThree;
 extern string_view shopsFour;
 extern string_view shopsRandom;
+
+extern string_view shopPriceBalanced;
+extern string_view shopPriceStarter;
+extern string_view shopPriceAdult;
+extern string_view shopPriceGiant;
+extern string_view shopPriceTycoon;
+extern string_view shopPriceAffordable;   
 
 extern string_view tokensOff;
 extern string_view tokensDungeon;

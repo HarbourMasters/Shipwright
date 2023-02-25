@@ -175,7 +175,7 @@ static SceneSelectEntry sScenes[] = {
     { "65:" GFXP_KATAKANA "ｹﾞﾙﾄﾞ" GFXP_HIRAGANA "ﾉｼｭｳﾚﾝｼﾞｮｳ", "65:Gerudo Training Ground", "65:Gerudo-Arena", "65:Gymnase Gerudo", Select_LoadGame, 0x0008 },
     { "66:" GFXP_HIRAGANA "ﾖｳｾｲﾉｷﾉ " GFXP_KATAKANA "ﾀﾞﾝｼﾞｮﾝ", "66:Inside the Deku Tree", "66:Im Deku-Baum", "66:Arbre Mojo", Select_LoadGame, 0x0000 },
     { "67:" GFXP_HIRAGANA "ﾖｳｾｲﾉｷﾉ " GFXP_KATAKANA "ﾀﾞﾝｼﾞｮﾝ ﾎﾞｽ", "67:Gohma's Lair", "67:Gohmas Verlies", "67:Repaire de Gohma", Select_LoadGame, 0x040F },
-    { "68:" GFXP_KATAKANA "ﾄﾞﾄﾞﾝｺﾞ ﾀﾞﾝｼﾞｮﾝ", "68:Dodongo's Cavern", "68:Dodongo's Cavern", "68:Dodongos Hoehle", Select_LoadGame, 0x0004 },
+    { "68:" GFXP_KATAKANA "ﾄﾞﾄﾞﾝｺﾞ ﾀﾞﾝｼﾞｮﾝ", "68:Dodongo's Cavern", "68:Dodongos Hoehle", "68:Caverne Dodongo", Select_LoadGame, 0x0004 },
     { "69:" GFXP_KATAKANA "ﾄﾞﾄﾞﾝｺﾞ ﾀﾞﾝｼﾞｮﾝ ﾎﾞｽ", "69:King Dodongo's Lair", "69:King Dodongos Verlies", "69:Repaire du Roi Dodongo", Select_LoadGame, 0x040B },
     { "70:" GFXP_HIRAGANA "ｷｮﾀﾞｲｷﾞｮ " GFXP_KATAKANA "ﾀﾞﾝｼﾞｮﾝ", "70:Inside Jabu-Jabu's Belly", "70:Jabu-Jabus Bauch", "70:Ventre de Jabu-Jabu", Select_LoadGame, 0x0028 },
     { "71:" GFXP_HIRAGANA "ｷｮﾀﾞｲｷﾞｮ " GFXP_KATAKANA "ﾀﾞﾝｼﾞｮﾝ ﾎﾞｽ", "71:Barinade's Lair", "71:Barinades Verlies", "71:Repaire de Barinade", Select_LoadGame, 0x0301 },
@@ -185,7 +185,7 @@ static SceneSelectEntry sScenes[] = {
     { "75:" GFXP_HIRAGANA "ﾊｶｼﾀ " GFXP_KATAKANA "ﾀﾞﾝｼﾞｮﾝ", "75:Shadow Temple", "75:Schattentempel", "75:Temple de l'Ombre", Select_LoadGame, 0x0037 },
     { "76:" GFXP_HIRAGANA "ﾊｶｼﾀ " GFXP_KATAKANA "ﾀﾞﾝｼﾞｮﾝ ﾎﾞｽ", "76:Bongo Bongo's Lair", "76:Bongo Bongos Verlies", "76:Repaire de Bongo Bongo", Select_LoadGame, 0x0413 },
     { "77:" GFXP_HIRAGANA "ﾋﾉｼﾝﾃﾞﾝ", "77:Fire Temple", "77:Feuertempel", "77:Temple du Feu", Select_LoadGame, 0x0165 },
-    { "78:" GFXP_HIRAGANA "ﾋﾉｼﾝﾃﾞﾝ " GFXP_KATAKANA "ﾎﾞｽ", "78:Volvagia's Lair", "78:Volvagias Verlies", "78:Repaire de Volvagia", Select_LoadGame, 0x0305 },
+    { "78:" GFXP_HIRAGANA "ﾋﾉｼﾝﾃﾞﾝ " GFXP_KATAKANA "ﾎﾞｽ", "78:Volvagia's Lair", "78:Volvagias Verlies", "78:Repaire de Volcania", Select_LoadGame, 0x0305 },
     { "79:" GFXP_HIRAGANA "ﾐｽﾞﾉｼﾝﾃﾞﾝ", "79:Water Temple", "79:Wassertempel", "79:Temple de l'Eau", Select_LoadGame, 0x0010 },
     { "80:" GFXP_HIRAGANA "ﾐｽﾞﾉｼﾝﾃﾞﾝ " GFXP_KATAKANA "ﾎﾞｽ", "80:Morpha's Lair", "80:Morphas Verlies", "80:Repaire de Morpha", Select_LoadGame, 0x0417 },
     { "81:" GFXP_HIRAGANA "ｼﾞｬｼﾝｿﾞｳ " GFXP_KATAKANA "ﾀﾞﾝｼﾞｮﾝ", "81:Spirit Temple", "81:Geistertempel", "81:Temple de l'Esprit", Select_LoadGame, 0x0082 },
@@ -525,7 +525,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
     { "36:Fire Temple", "36:Feuertempel", "36:Temple du Feu", Select_LoadGame, 3, {
         { "Entrance", "Eingang", "Entrance", 0x0165 },
         { "Before Volvagia", "Vor Volvagia", "Avant Volvagia", 0x0175 },
-        { "Volvagia's Lair", "Volvagia Kampf", "Repaire de Volvagia", 0x0305 },
+        { "Volvagia's Lair", "Volvagia Kampf", "Repaire de Volcania", 0x0305 },
     }},
     { "37:Water Temple", "37:Wassertempel", "37:Temple de l'Eau", Select_LoadGame, 2, { 
         { "Entrance", "Eingang", "Entree", 0x0010 },
@@ -1245,8 +1245,8 @@ void Better_Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 a
 
 void Select_PrintCutsceneSetting(SelectContext* this, GfxPrint* printer, u16 csIndex) {
     char* cutsceneLabels[13][4] = {
-        { GFXP_HIRAGANA " ﾖﾙ " GFXP_KATAKANA "ｺﾞﾛﾝ", "Day", "Nacht", "Jour" },
-        { GFXP_HIRAGANA "ｵﾋﾙ " GFXP_KATAKANA "ｼﾞｬﾗ", "Night", "Tag", "Nuit" },
+        { GFXP_HIRAGANA " ﾖﾙ " GFXP_KATAKANA "ｺﾞﾛﾝ", "Day", "Tag", "Jour" },
+        { GFXP_HIRAGANA "ｵﾋﾙ " GFXP_KATAKANA "ｼﾞｬﾗ", "Night", "Nacht", "Nuit" },
         { "ﾃﾞﾓ00", "Demo00", "Demo00", "Demo00" },
         { "ﾃﾞﾓ01", "Demo01", "Demo01", "Demo01" },
         { "ﾃﾞﾓ02", "Demo02", "Demo02", "Demo02" },

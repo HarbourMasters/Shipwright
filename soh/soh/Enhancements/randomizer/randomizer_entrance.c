@@ -271,7 +271,8 @@ s16 Entrance_OverrideNextIndex(s16 nextEntranceIndex) {
 
     // Exiting through the crawl space from Hyrule Castle courtyard is the same exit as leaving Ganon's castle
     // Don't override the entrance if we came from the Castle courtyard (day and night scenes)
-    if (gPlayState != NULL && (gPlayState->sceneNum == 69 || gPlayState->sceneNum == 70) && nextEntranceIndex == 0x023D) {
+    if (gPlayState != NULL && (gPlayState->sceneNum == SCENE_HAIRAL_NIWA || gPlayState->sceneNum == SCENE_HAIRAL_NIWA_N) &&
+        nextEntranceIndex == 0x023D) {
         return nextEntranceIndex;
     }
 
@@ -289,7 +290,7 @@ s16 Entrance_OverrideDynamicExit(s16 dynamicExitIndex) {
 u32 Entrance_SceneAndSpawnAre(u8 scene, u8 spawn) {
     s16 computedEntranceIndex;
 
-    // Adjust the entrance to acount for the exact scene/spawn combination for child/adult and day/night
+    // Adjust the entrance to account for the exact scene/spawn combination for child/adult and day/night
     if (!IS_DAY) {
         if (!LINK_IS_ADULT) {
             computedEntranceIndex = gSaveContext.entranceIndex + 1;
@@ -680,7 +681,7 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON) {
         // Move Hyrule's Castle Courtyard exit spawn to be before the crates so players don't skip Talon
-        if (sceneNum == 95 && spawn == 1) {
+        if (sceneNum == SCENE_SPOT15 && spawn == 1) {
             modifiedLinkActorEntry.pos.x = 0x033A;
             modifiedLinkActorEntry.pos.y = 0x0623;
             modifiedLinkActorEntry.pos.z = 0xFF22;
@@ -689,7 +690,7 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
 
         // Move Ganon's Castle exit spawn to be on the small ledge near the castle and not over the void
         // to prevent Link from falling if the bridge isn't spawned
-        if (sceneNum == 100 && spawn == 1) {
+        if (sceneNum == SCENE_GANON_TOU && spawn == 1) {
             modifiedLinkActorEntry.pos.x = 0xFEA8;
             modifiedLinkActorEntry.pos.y = 0x065C;
             modifiedLinkActorEntry.pos.z = 0x0290;
@@ -715,6 +716,15 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
             modifiedLinkActorEntry.pos.y = 0x0406;
             modifiedLinkActorEntry.pos.z = 0xF828;
             modifiedLinkActorEntry.rot.y = 0x0;
+            gPlayState->linkActorEntry = &modifiedLinkActorEntry;
+        }
+    }
+
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) == RO_GENERIC_ON) {
+        // Move Hyrule Field bridge spawn for child link at night to be beyond the moat so he doesn't fall in the water
+        if (sceneNum == SCENE_SPOT00 && spawn == 7 && LINK_IS_CHILD && IS_NIGHT) {
+            modifiedLinkActorEntry.pos.x = 0x0001;
+            modifiedLinkActorEntry.pos.z = 0x049E;
             gPlayState->linkActorEntry = &modifiedLinkActorEntry;
         }
     }

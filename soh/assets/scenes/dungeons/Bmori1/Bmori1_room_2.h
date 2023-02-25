@@ -1,86 +1,86 @@
 #pragma once
-#define dBmori1_room_2DL_00A348 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2DL_00A348"
+#define dBmori1_room_2DL_00A328 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2DL_00A328"
 #ifdef _WIN32
-static const __declspec(align(2)) char Bmori1_room_2DL_00A348[] = dBmori1_room_2DL_00A348;
+static const __declspec(align(2)) char Bmori1_room_2DL_00A328[] = dBmori1_room_2DL_00A328;
 #else
-static const char Bmori1_room_2DL_00A348[] __attribute__((aligned (2))) = dBmori1_room_2DL_00A348;
+static const char Bmori1_room_2DL_00A328[] __attribute__((aligned (2))) = dBmori1_room_2DL_00A328;
 #endif
             
-#define dBmori1_room_2Tex_00A3A0 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00A3A0"
+#define dBmori1_room_2Tex_00A380 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00A380"
 #ifdef _WIN32
-static const __declspec(align(2)) char Bmori1_room_2Tex_00A3A0[] = dBmori1_room_2Tex_00A3A0;
+static const __declspec(align(2)) char Bmori1_room_2Tex_00A380[] = dBmori1_room_2Tex_00A380;
 #else
-static const char Bmori1_room_2Tex_00A3A0[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00A3A0;
+static const char Bmori1_room_2Tex_00A380[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00A380;
 #endif
             
-#define dBmori1_room_2Tex_00F1A0 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00F1A0"
+#define dBmori1_room_2Tex_00F180 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00F180"
 #ifdef _WIN32
-static const __declspec(align(2)) char Bmori1_room_2Tex_00F1A0[] = dBmori1_room_2Tex_00F1A0;
+static const __declspec(align(2)) char Bmori1_room_2Tex_00F180[] = dBmori1_room_2Tex_00F180;
 #else
-static const char Bmori1_room_2Tex_00F1A0[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00F1A0;
+static const char Bmori1_room_2Tex_00F180[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00F180;
 #endif
             
-#define dBmori1_room_2Tex_00DDA0 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00DDA0"
+#define dBmori1_room_2Tex_00DD80 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00DD80"
 #ifdef _WIN32
-static const __declspec(align(2)) char Bmori1_room_2Tex_00DDA0[] = dBmori1_room_2Tex_00DDA0;
+static const __declspec(align(2)) char Bmori1_room_2Tex_00DD80[] = dBmori1_room_2Tex_00DD80;
 #else
-static const char Bmori1_room_2Tex_00DDA0[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00DDA0;
+static const char Bmori1_room_2Tex_00DD80[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00DD80;
 #endif
             
-#define dBmori1_room_2Tex_00ABA0 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00ABA0"
+#define dBmori1_room_2Tex_00AB80 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00AB80"
 #ifdef _WIN32
-static const __declspec(align(2)) char Bmori1_room_2Tex_00ABA0[] = dBmori1_room_2Tex_00ABA0;
+static const __declspec(align(2)) char Bmori1_room_2Tex_00AB80[] = dBmori1_room_2Tex_00AB80;
 #else
-static const char Bmori1_room_2Tex_00ABA0[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00ABA0;
+static const char Bmori1_room_2Tex_00AB80[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00AB80;
 #endif
             
-#define dBmori1_room_2Tex_00DBA0 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00DBA0"
+#define dBmori1_room_2Tex_00DB80 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00DB80"
 #ifdef _WIN32
-static const __declspec(align(2)) char Bmori1_room_2Tex_00DBA0[] = dBmori1_room_2Tex_00DBA0;
+static const __declspec(align(2)) char Bmori1_room_2Tex_00DB80[] = dBmori1_room_2Tex_00DB80;
 #else
-static const char Bmori1_room_2Tex_00DBA0[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00DBA0;
+static const char Bmori1_room_2Tex_00DB80[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00DB80;
 #endif
             
-#define dBmori1_room_2Tex_00E5A0 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00E5A0"
+#define dBmori1_room_2Tex_00E580 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00E580"
 #ifdef _WIN32
-static const __declspec(align(2)) char Bmori1_room_2Tex_00E5A0[] = dBmori1_room_2Tex_00E5A0;
+static const __declspec(align(2)) char Bmori1_room_2Tex_00E580[] = dBmori1_room_2Tex_00E580;
 #else
-static const char Bmori1_room_2Tex_00E5A0[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00E5A0;
+static const char Bmori1_room_2Tex_00E580[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00E580;
 #endif
             
-#define dBmori1_room_2Tex_00D3A0 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00D3A0"
+#define dBmori1_room_2Tex_00D380 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00D380"
 #ifdef _WIN32
-static const __declspec(align(2)) char Bmori1_room_2Tex_00D3A0[] = dBmori1_room_2Tex_00D3A0;
+static const __declspec(align(2)) char Bmori1_room_2Tex_00D380[] = dBmori1_room_2Tex_00D380;
 #else
-static const char Bmori1_room_2Tex_00D3A0[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00D3A0;
+static const char Bmori1_room_2Tex_00D380[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00D380;
 #endif
             
-#define dBmori1_room_2Tex_00CFA0 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00CFA0"
+#define dBmori1_room_2Tex_00CF80 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00CF80"
 #ifdef _WIN32
-static const __declspec(align(2)) char Bmori1_room_2Tex_00CFA0[] = dBmori1_room_2Tex_00CFA0;
+static const __declspec(align(2)) char Bmori1_room_2Tex_00CF80[] = dBmori1_room_2Tex_00CF80;
 #else
-static const char Bmori1_room_2Tex_00CFA0[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00CFA0;
+static const char Bmori1_room_2Tex_00CF80[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00CF80;
 #endif
             
-#define dBmori1_room_2Tex_00BFA0 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00BFA0"
+#define dBmori1_room_2Tex_00BF80 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00BF80"
 #ifdef _WIN32
-static const __declspec(align(2)) char Bmori1_room_2Tex_00BFA0[] = dBmori1_room_2Tex_00BFA0;
+static const __declspec(align(2)) char Bmori1_room_2Tex_00BF80[] = dBmori1_room_2Tex_00BF80;
 #else
-static const char Bmori1_room_2Tex_00BFA0[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00BFA0;
+static const char Bmori1_room_2Tex_00BF80[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00BF80;
 #endif
             
-#define dBmori1_room_2Tex_00AFA0 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00AFA0"
+#define dBmori1_room_2Tex_00AF80 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00AF80"
 #ifdef _WIN32
-static const __declspec(align(2)) char Bmori1_room_2Tex_00AFA0[] = dBmori1_room_2Tex_00AFA0;
+static const __declspec(align(2)) char Bmori1_room_2Tex_00AF80[] = dBmori1_room_2Tex_00AF80;
 #else
-static const char Bmori1_room_2Tex_00AFA0[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00AFA0;
+static const char Bmori1_room_2Tex_00AF80[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00AF80;
 #endif
             
-#define dBmori1_room_2Tex_00E9A0 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00E9A0"
+#define dBmori1_room_2Tex_00E980 "__OTR__scenes/nonmq/Bmori1_scene/Bmori1_room_2Tex_00E980"
 #ifdef _WIN32
-static const __declspec(align(2)) char Bmori1_room_2Tex_00E9A0[] = dBmori1_room_2Tex_00E9A0;
+static const __declspec(align(2)) char Bmori1_room_2Tex_00E980[] = dBmori1_room_2Tex_00E980;
 #else
-static const char Bmori1_room_2Tex_00E9A0[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00E9A0;
+static const char Bmori1_room_2Tex_00E980[] __attribute__((aligned (2))) = dBmori1_room_2Tex_00E980;
 #endif
             
 

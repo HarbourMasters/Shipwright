@@ -20,54 +20,54 @@ static const __declspec(align(2)) char gIceCavernDayEntranceTex[] = dgIceCavernD
 static const char gIceCavernDayEntranceTex[] __attribute__((aligned (2))) = dgIceCavernDayEntranceTex;
 #endif
             
-#define dice_doukutu_sceneCollisionHeader_00F598 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_sceneCollisionHeader_00F598"
+#define dice_doukutu_sceneCollisionHeader_00F668 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_sceneCollisionHeader_00F668"
 #ifdef _WIN32
-static const __declspec(align(2)) char ice_doukutu_sceneCollisionHeader_00F598[] = dice_doukutu_sceneCollisionHeader_00F598;
+static const __declspec(align(2)) char ice_doukutu_sceneCollisionHeader_00F668[] = dice_doukutu_sceneCollisionHeader_00F668;
 #else
-static const char ice_doukutu_sceneCollisionHeader_00F598[] __attribute__((aligned (2))) = dice_doukutu_sceneCollisionHeader_00F598;
+static const char ice_doukutu_sceneCollisionHeader_00F668[] __attribute__((aligned (2))) = dice_doukutu_sceneCollisionHeader_00F668;
 #endif
             
-#define dice_doukutu_sceneTex_0109F0 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_sceneTex_0109F0"
+#define dice_doukutu_sceneTex_010AC0 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_sceneTex_010AC0"
 #ifdef _WIN32
-static const __declspec(align(2)) char ice_doukutu_sceneTex_0109F0[] = dice_doukutu_sceneTex_0109F0;
+static const __declspec(align(2)) char ice_doukutu_sceneTex_010AC0[] = dice_doukutu_sceneTex_010AC0;
 #else
-static const char ice_doukutu_sceneTex_0109F0[] __attribute__((aligned (2))) = dice_doukutu_sceneTex_0109F0;
+static const char ice_doukutu_sceneTex_010AC0[] __attribute__((aligned (2))) = dice_doukutu_sceneTex_010AC0;
 #endif
             
-#define dice_doukutu_sceneTex_00FBF0 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_sceneTex_00FBF0"
+#define dice_doukutu_sceneTex_00FCC0 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_sceneTex_00FCC0"
 #ifdef _WIN32
-static const __declspec(align(2)) char ice_doukutu_sceneTex_00FBF0[] = dice_doukutu_sceneTex_00FBF0;
+static const __declspec(align(2)) char ice_doukutu_sceneTex_00FCC0[] = dice_doukutu_sceneTex_00FCC0;
 #else
-static const char ice_doukutu_sceneTex_00FBF0[] __attribute__((aligned (2))) = dice_doukutu_sceneTex_00FBF0;
+static const char ice_doukutu_sceneTex_00FCC0[] __attribute__((aligned (2))) = dice_doukutu_sceneTex_00FCC0;
 #endif
             
-#define dice_doukutu_sceneTex_00FFF0 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_sceneTex_00FFF0"
+#define dice_doukutu_sceneTex_0100C0 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_sceneTex_0100C0"
 #ifdef _WIN32
-static const __declspec(align(2)) char ice_doukutu_sceneTex_00FFF0[] = dice_doukutu_sceneTex_00FFF0;
+static const __declspec(align(2)) char ice_doukutu_sceneTex_0100C0[] = dice_doukutu_sceneTex_0100C0;
 #else
-static const char ice_doukutu_sceneTex_00FFF0[] __attribute__((aligned (2))) = dice_doukutu_sceneTex_00FFF0;
+static const char ice_doukutu_sceneTex_0100C0[] __attribute__((aligned (2))) = dice_doukutu_sceneTex_0100C0;
 #endif
             
-#define dice_doukutu_sceneTex_0107F0 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_sceneTex_0107F0"
+#define dice_doukutu_sceneTex_0108C0 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_sceneTex_0108C0"
 #ifdef _WIN32
-static const __declspec(align(2)) char ice_doukutu_sceneTex_0107F0[] = dice_doukutu_sceneTex_0107F0;
+static const __declspec(align(2)) char ice_doukutu_sceneTex_0108C0[] = dice_doukutu_sceneTex_0108C0;
 #else
-static const char ice_doukutu_sceneTex_0107F0[] __attribute__((aligned (2))) = dice_doukutu_sceneTex_0107F0;
+static const char ice_doukutu_sceneTex_0108C0[] __attribute__((aligned (2))) = dice_doukutu_sceneTex_0108C0;
 #endif
             
-#define dice_doukutu_sceneTex_010DF0 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_sceneTex_010DF0"
+#define dice_doukutu_sceneTex_010EC0 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_sceneTex_010EC0"
 #ifdef _WIN32
-static const __declspec(align(2)) char ice_doukutu_sceneTex_010DF0[] = dice_doukutu_sceneTex_010DF0;
+static const __declspec(align(2)) char ice_doukutu_sceneTex_010EC0[] = dice_doukutu_sceneTex_010EC0;
 #else
-static const char ice_doukutu_sceneTex_010DF0[] __attribute__((aligned (2))) = dice_doukutu_sceneTex_010DF0;
+static const char ice_doukutu_sceneTex_010EC0[] __attribute__((aligned (2))) = dice_doukutu_sceneTex_010EC0;
 #endif
             
-#define dice_doukutu_sceneTLUT_00F7D0 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_sceneTLUT_00F7D0"
+#define dice_doukutu_sceneTLUT_00F8A0 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_sceneTLUT_00F8A0"
 #ifdef _WIN32
-static const __declspec(align(2)) char ice_doukutu_sceneTLUT_00F7D0[] = dice_doukutu_sceneTLUT_00F7D0;
+static const __declspec(align(2)) char ice_doukutu_sceneTLUT_00F8A0[] = dice_doukutu_sceneTLUT_00F8A0;
 #else
-static const char ice_doukutu_sceneTLUT_00F7D0[] __attribute__((aligned (2))) = dice_doukutu_sceneTLUT_00F7D0;
+static const char ice_doukutu_sceneTLUT_00F8A0[] __attribute__((aligned (2))) = dice_doukutu_sceneTLUT_00F8A0;
 #endif
             
-#define dice_doukutu_sceneCollisionHeader_00F598 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_sceneCollisionHeader_00F598"
+#define dice_doukutu_sceneCollisionHeader_00F668 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_sceneCollisionHeader_00F668"
 
