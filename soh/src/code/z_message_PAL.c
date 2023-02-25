@@ -2484,7 +2484,10 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 Message_Decode(play);
                 msgCtx->msgMode = MSGMODE_DISPLAY_SONG_PLAYED_TEXT;
 
-                if (CVarGetInteger("gTimeTravel", 0) && (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME) && play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME) {
+                Actor* player = GET_PLAYER(play);
+                Actor* nearbyBlockTest = Actor_FindNearby(play, player, ACTOR_OBJ_WARP2BLOCK, ACTORCAT_ITEMACTION, 300.0f);
+
+                if (CVarGetInteger("gTimeTravel", 0) && (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME) && play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && nearbyBlockTest == NULL) {
                     msgCtx->stateTimer = 30;
                     CVarSetInteger("gSwitchAge", 1);
                 }
