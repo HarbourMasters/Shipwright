@@ -383,9 +383,10 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Allows Link to freely change age by playing the Song of Time.\n"
                         "Time Blocks can still be used properly.\n\n"
                         "Requirements:\n"
-                        "- Ocarina of Time\n"
-                        "- Song of Time\n"
-                        "- Master Sword");
+                        "- Obtained the Ocarina of Time\n"
+                        "- Obtained the Song of Time\n"
+                        "- Obtained the Master Sword\n"
+                        "- Not within range of Time Block");
                     ImGui::EndMenu();
                 }
 
