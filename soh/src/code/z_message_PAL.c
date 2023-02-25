@@ -2435,12 +2435,10 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     Audio_OcaSetInstrument(1);
                     Audio_OcaSetInstrument(1);
                     Audio_OcaSetSongPlayback(msgCtx->lastPlayedSong + 1, 1);
-
                 } else {
                     Audio_OcaSetInstrument(1);
                     Audio_OcaSetInstrument(1);
                 }
-
                 if (msgCtx->lastPlayedSong != OCARINA_SONG_SCARECROW) {
                     Audio_PlayFanfare(sOcarinaSongFanfares[msgCtx->lastPlayedSong]);
                     Audio_SetSoundBanksMute(0x20);
@@ -2483,6 +2481,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 Message_ContinueTextbox(play, msgCtx->lastPlayedSong + 0x893); // You played [song name]
                 Message_Decode(play);
                 msgCtx->msgMode = MSGMODE_DISPLAY_SONG_PLAYED_TEXT;
+
                 if (CVarGetInteger("gFastOcarinaPlayback", 0) == 0 || play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME
                     || play->msgCtx.lastPlayedSong == OCARINA_SONG_STORMS ||
                     play->msgCtx.lastPlayedSong == OCARINA_SONG_SUNS) {
