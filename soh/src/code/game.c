@@ -432,7 +432,7 @@ void GameState_Update(GameState* gameState) {
     }
     
     // For the gTimeTravel: Don't give child Link a Kokiri Sword if we don't have one
-    if (gPlayState && CVarGetInteger("gSwitchAge", 0)) {
+    if (gPlayState && LINK_AGE_IN_YEARS == 5 && CVarGetInteger("gTimeTravel", 0)) {
         uint32_t kokiriSwordBitMask = 1 << 0;
         if (!(gSaveContext.inventory.equipment & kokiriSwordBitMask)) {
             Player* player = GET_PLAYER(gPlayState);

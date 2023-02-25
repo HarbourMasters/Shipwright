@@ -2483,17 +2483,6 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                 Message_ContinueTextbox(play, msgCtx->lastPlayedSong + 0x893); // You played [song name]
                 Message_Decode(play);
                 msgCtx->msgMode = MSGMODE_DISPLAY_SONG_PLAYED_TEXT;
-
-                Actor* player = GET_PLAYER(play);
-                Actor* nearbyBlockTest = Actor_FindNearby(play, player, ACTOR_OBJ_WARP2BLOCK, ACTORCAT_ITEMACTION, 300.0f);
-
-                if (CVarGetInteger("gTimeTravel", 0) && (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME) && play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && nearbyBlockTest == NULL) {
-                    msgCtx->stateTimer = 30;
-                    CVarSetInteger("gSwitchAge", 1);
-                }
-                // ^ TODO: Change this to the timeblock distance check in z_obj_timeblock???
-                // Or check here if there's a timeblock and if there is, we just return and don't enter the gSwitchAge ???
-
                 if (CVarGetInteger("gFastOcarinaPlayback", 0) == 0 || play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME
                     || play->msgCtx.lastPlayedSong == OCARINA_SONG_STORMS ||
                     play->msgCtx.lastPlayedSong == OCARINA_SONG_SUNS) {
@@ -2568,6 +2557,15 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                         }
                         osSyncPrintf(VT_RST);
                         osSyncPrintf("→  OCARINA_MODE=%d\n", play->msgCtx.ocarinaMode);
+                    }
+                    Actor* player = GET_PLAYER(play);
+                    Actor* nearbyTimeBlockEmpty = Actor_FindNearby(play, player, ACTOR_OBJ_WARP2BLOCK, ACTORCAT_ITEMACTION, 300.0f);
+                    Actor* nearbyTimeBlock = Actor_FindNearby(play, player, ACTOR_OBJ_TIMEBLOCK, ACTORCAT_ITEMACTION, 300.0f);
+
+                    // If TimeTravel + Player have the Ocarina of Time + is in proper range
+                    if (CVarGetInteger("gTimeTravel", 0) && (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME) && play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && nearbyTimeBlockEmpty == NULL && nearbyTimeBlock == NULL) {
+                        msgCtx->stateTimer = 30;
+                        CVarSetInteger("gSwitchAge", 1);
                     }
                 }
                 break;
