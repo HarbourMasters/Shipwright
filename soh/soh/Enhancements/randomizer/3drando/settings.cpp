@@ -325,7 +325,8 @@ namespace Settings {
   Option HintDistribution    = Option::U8  ("Hint Distribution",      {"Useless", "Balanced", "Strong", "Very Strong"},                       {uselessHintsDesc, balancedHintsDesc, strongHintsDesc, veryStrongHintsDesc},                                      OptionCategory::Setting,    1); // Balanced
   Option AltarHintText       = Option::Bool("ToT Altar Hint",         {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    1); 
   Option GanondorfHintText   = Option::Bool("Ganondorf LA Hint",      {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    1);  
-  Option DampeHintText       = Option::Bool("Dampe's Diary Hint",     {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);  
+  Option DampeHintText       = Option::Bool("Dampe's Diary Hint",     {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);
+  Option GregHintText        = Option::Bool("Greg the Rupee Hint",    {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);  
   Option WarpSongHints       = Option::Bool("Warp Songs Hints",       {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);
   Option Kak10GSHintText     = Option::Bool("10 GS Hint",             {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);  
   Option Kak20GSHintText     = Option::Bool("20 GS Hint",             {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);  
@@ -354,6 +355,7 @@ namespace Settings {
     &AltarHintText,
     &GanondorfHintText,
     &DampeHintText,
+    &GregHintText,
     &WarpSongHints,
     &Kak10GSHintText,
     &Kak20GSHintText,
@@ -2795,6 +2797,7 @@ namespace Settings {
     AltarHintText.SetSelectedIndex(cvarSettings[RSK_TOT_ALTAR_HINT]);
     GanondorfHintText.SetSelectedIndex(cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT]);
     DampeHintText.SetSelectedIndex(cvarSettings[RSK_DAMPES_DIARY_HINT]);
+    GregHintText.SetSelectedIndex(cvarSettings[RSK_GREG_HINT]);
     WarpSongHints.SetSelectedIndex(cvarSettings[RSK_WARP_SONG_HINTS]);
     Kak10GSHintText.SetSelectedIndex(cvarSettings[RSK_KAK_10_SKULLS_HINT]);
     Kak20GSHintText.SetSelectedIndex(cvarSettings[RSK_KAK_20_SKULLS_HINT]);

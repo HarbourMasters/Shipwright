@@ -650,6 +650,7 @@ static void WriteHints(int language) {
     std::string unformattedGanonText;
     std::string unformattedGanonHintText;
     std::string unformattedDampesText;
+    std::string unformattedGregText;
 
     switch (language) {
         case 0:
@@ -657,6 +658,7 @@ static void WriteHints(int language) {
             unformattedGanonText = GetGanonText().GetEnglish();
             unformattedGanonHintText = GetGanonHintText().GetEnglish();
             unformattedDampesText = GetDampeHintText().GetEnglish();
+            unformattedGregText = GetGregHintText().GetEnglish();
             jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
             jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
             jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetEnglish();
@@ -670,6 +672,7 @@ static void WriteHints(int language) {
             unformattedGanonText = GetGanonText().GetFrench();
             unformattedGanonHintText = GetGanonHintText().GetFrench();
             unformattedDampesText = GetDampeHintText().GetFrench();
+            unformattedGregText = GetGregHintText().GetFrench();
             jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
             jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
             jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetFrench();
@@ -684,10 +687,12 @@ static void WriteHints(int language) {
     std::string ganonText = AutoFormatHintTextString(unformattedGanonText);
     std::string ganonHintText = AutoFormatHintTextString(unformattedGanonHintText);
     std::string dampesText = AutoFormatHintTextString(unformattedDampesText);
+    std::string gregText = AutoFormatHintTextString(unformattedGregText);
 
     jsonData["ganonText"] = ganonText;
     jsonData["ganonHintText"] = ganonHintText;
     jsonData["dampeText"] = dampesText;
+    jsonData["gregText"] = gregText;
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;

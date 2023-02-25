@@ -97,17 +97,17 @@ void func_80B1778C(EnTakaraMan* this, PlayState* play) {
     } else {
         yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
         if (play->roomCtx.curRoom.num == 6 && !this->unk_21A) {
-            this->actor.textId = 0x6E;
+            this->actor.textId = 0x6E; //Real Gambler
             this->unk_21A = 1;
             this->dialogState = TEXT_STATE_DONE;
         }
 
         if (!this->unk_21A && this->unk_214) {
             if (Flags_GetSwitch(play, 0x32)) {
-                this->actor.textId = 0x84;
+                this->actor.textId = 0x84; //Thanks a lot! (Lost)
                 this->dialogState = TEXT_STATE_EVENT;
             } else {
-                this->actor.textId = 0x704C;
+                this->actor.textId = 0x704C; //Proceed
                 this->dialogState = TEXT_STATE_DONE;
             }
         }
