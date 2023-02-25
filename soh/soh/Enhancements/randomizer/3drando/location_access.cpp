@@ -286,7 +286,7 @@ void AreaTable_Init() {
                                                                  ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && (IsAdult || KokiriSword || Sticks || Bombs || HasBombchus || Boomerang || Slingshot || CanUse(MEGATON_HAMMER)) && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE)))) && PreludeOfLight   && CanLeaveForest;}}),
   });
 
-  areaTable[CHILD_SPAWN] = Area("Child Spawn", "", TEMPLE_OF_TIME, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[CHILD_SPAWN] = Area("Child Spawn", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(KF_LINKS_HOUSE, {[]{return true;}}),
   });

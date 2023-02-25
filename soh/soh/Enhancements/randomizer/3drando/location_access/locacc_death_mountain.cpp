@@ -230,7 +230,7 @@ void AreaTable_Init_DeathMountain() {
   areaTable[DMC_LOWER_LOCAL] = Area("DMC Lower Local", "Death Mountain Crater", DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(DMC_LOWER_NEARBY,       {[]{return true;}}),
-                  Entrance(DMC_LADDER_AREA_NEARBY, {[]{return true;}}),
+                  Entrance(DMC_LADDER_AREA_NEARBY, {[]{return FireTimer >= 8 || Hearts >= 3;}}),
                   Entrance(DMC_CENTRAL_NEARBY,     {[]{return (CanUse(HOVER_BOOTS) || CanUse(HOOKSHOT)) && (FireTimer >= 8 || Hearts >= 3);},
                                         /*Glitched*/[]{return CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE) && (FireTimer >= 8 || Hearts >= 3);}}),
                   Entrance(DMC_CENTRAL_LOCAL,      {[]{return (CanUse(HOVER_BOOTS) || CanUse(HOOKSHOT)) && FireTimer >= 24;}}),
