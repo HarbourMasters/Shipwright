@@ -184,6 +184,11 @@ extern "C" void BossRush_InitSave() {
     gSaveContext.eventChkInf[7] |= 0x40; // barinade
     gSaveContext.eventChkInf[7] |= 0x80; // bongo bongo
 
+    // Sets all rando flags to false
+    for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.randomizerInf); i++) {
+        gSaveContext.randomizerInf[i] = 0;
+    }
+
     static std::array<u8, 24> brItems = {
         ITEM_STICK,     ITEM_NUT,  ITEM_BOMB, ITEM_BOW,      ITEM_NONE,        ITEM_NONE,
         ITEM_SLINGSHOT, ITEM_NONE, ITEM_NONE, ITEM_LONGSHOT, ITEM_NONE,        ITEM_NONE,
