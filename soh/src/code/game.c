@@ -440,6 +440,10 @@ void GameState_Update(GameState* gameState) {
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;
             Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
         }
+    // Temporary hack to avoid swordless Adult Link until we fixed all the issues with it
+    // Once it is fixed, we can delete that else if statement
+    } else if (gPlayState && LINK_AGE_IN_YEARS == 17 && !(INV_CONTENT(ITEM_SWORD_MASTER)) && CVarGetInteger("gTimeTravel", 0)) {
+        Item_Give(gPlayState, ITEM_SWORD_MASTER);
     }
 
     // Switches Link's age and respawns him at the last entrance he entered.

@@ -380,7 +380,10 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Faster Farore's Wind", "gFastFarores", true, false);
                     UIWidgets::Tooltip("Greatly decreases cast time of Farore's Wind magic spell.");
                     UIWidgets::PaddedEnhancementCheckbox("Time Travel with the Song of Time", "gTimeTravel", true, false);
-                    UIWidgets::Tooltip("If you have the Ocarina of Time, playing the Song of Time will allow you to freely change Link's age.\nTime Blocks can still be used properly.\n\nWARNING: If you don't retrieve the Master Sword, Adult Link will be swordless to reflect the fact that he does not have it yet.");
+                    UIWidgets::Tooltip("If you have the Ocarina of Time, playing the Song of Time will allow you to freely change Link's age.\n"
+                        "Time Blocks can still be used properly.");
+                        // Uncomment the line below once Swordless Adult Link is fixed
+                        // "\n\nWARNING: If you don't retrieve the Master Sword, Adult Link will be swordless to reflect the fact that he does not have it yet.");
                     ImGui::EndMenu();
                 }
 
