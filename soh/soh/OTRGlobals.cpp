@@ -611,12 +611,6 @@ extern "C" void InitOTR() {
         } else {
             GameInteractor::Instance->EnableRemoteInteractor();
         }
-    } else {
-        if (CVarGetInteger("gRemoteGIScheme", 0) == 1) {
-            CrowdControl::Instance->Disable();
-        } else {
-            GameInteractor::Instance->DisableRemoteInteractor();
-        }
     }
 #endif
 }
@@ -624,10 +618,12 @@ extern "C" void InitOTR() {
 extern "C" void DeinitOTR() {
     OTRAudio_Exit();
 #ifdef ENABLE_REMOTE_CONTROL
-    if (CVarGetInteger("gRemoteGIScheme", 0) == 1) {
-        CrowdControl::Instance->Disable();
-    } else {
-        GameInteractor::Instance->DisableRemoteInteractor();
+    if (CVarGetInteger("gRemoteGIEnabled", 0)) {
+        if (CVarGetInteger("gRemoteGIScheme", 0) == 1) {
+            CrowdControl::Instance->Disable();
+        } else {
+            GameInteractor::Instance->DisableRemoteInteractor();
+        }
     }
     SDLNet_Quit();
 #endif
