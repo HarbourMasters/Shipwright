@@ -574,8 +574,19 @@ extern "C" void InitOTR() {
 
 #ifdef ENABLE_REMOTE_CONTROL
     CrowdControl::Instance = new CrowdControl();
-    strncpy(GameInteractor::Instance->remoteIPStr, CVarGetString("gRemoteGIIP", ""), MAX_IP_BUFFER_SIZE);
-    strncpy(GameInteractor::Instance->remotePortStr, CVarGetString("gRemoteGIPort", ""), MAX_IP_BUFFER_SIZE);
+
+    auto remoteIP = CVarGetString("gRemoteGIIP", "");
+    auto remoteIPSize = strlen(remoteIP);
+    auto remotePort = CVarGetString("gRemoteGIPort", "");
+    auto remotePortSize = strlen(remotePort);
+
+    if (remoteIPSize > 0) {
+        strncpy(GameInteractor::Instance->remoteIPStr, remoteIP, remoteIPSize);
+    }
+
+    if (remotePortSize > 0) {
+        strncpy(GameInteractor::Instance->remotePortStr, remotePort, remotePortSize);
+    }
 #endif
 
     clearMtx = (uintptr_t)&gMtxClear;
@@ -585,7 +596,7 @@ extern "C" void InitOTR() {
     GameControlEditor::Init();
     InitAudioEditor();
     DebugConsole_Init();
-    Debug_Init();
+    Debug_Init();\
     Rando_Init();
     InitItemTracker();
     InitEntranceTracker();
