@@ -379,6 +379,8 @@ namespace GameMenuBar {
                     "to the guard next to the gate.");
                     UIWidgets::PaddedEnhancementCheckbox("Faster Farore's Wind", "gFastFarores", true, false);
                     UIWidgets::Tooltip("Greatly decreases cast time of Farore's Wind magic spell.");
+                    UIWidgets::PaddedEnhancementCheckbox("Time Travel with the Song of Time", "gTimeTravel", true, false);
+                    UIWidgets::Tooltip("If you have the Ocarina of Time, playing the Song of Time will allow you to freely change Link's age.\n\nWARNING: If you don't retrieve the Master Sword, Adult Link will be swordless to reflect the fact that he does not have it yet.");
                     ImGui::EndMenu();
                 }
 
@@ -1202,9 +1204,6 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0));
             }
-
-            UIWidgets::PaddedEnhancementCheckbox("SOT Time Travel", "gTimeTravel", true, false);
-            UIWidgets::Tooltip("GREAT SCOTT");
 
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
