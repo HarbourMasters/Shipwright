@@ -686,10 +686,10 @@ static Text BuildGanonBossKeyText() {
   return Text()+"$b"+ganonBossKeyText+"^";
 }
 
-void CreateAltarText(Option withHints) {
+void CreateAltarText() {
 
   //Child Altar Text
-  if (withHints) {
+  if (AltarHintText) {
     childAltarText = Hint(SPIRITUAL_STONE_TEXT_START).GetText()+"^"+
     //Spiritual Stones
         (StartingKokiriEmerald.Value<uint8_t>() ? Text{ "##", "##", "##" }
@@ -708,7 +708,7 @@ void CreateAltarText(Option withHints) {
 
   //Adult Altar Text
   adultAltarText = Hint(ADULT_ALTAR_TEXT_START).GetText() + "^";
-  if (withHints) {
+  if (AltarHintText) {
     adultAltarText = adultAltarText +
     //Medallion Areas
         (StartingLightMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
@@ -752,6 +752,11 @@ void CreateMerchantsHints() {
 }
 
 void CreateDampesDiaryText() {
+  if (!DampeHintText) {
+    dampesText = Text();
+    return;
+  }
+
   uint32_t item = PROGRESSIVE_HOOKSHOT;
   uint32_t location = FilterFromPool(allLocations, [item](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == item;})[0];
   Text area = GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText();
@@ -771,6 +776,11 @@ void CreateDampesDiaryText() {
 }
 
 void CreateGregRupeeHint() {
+  if (!GregHintText) {
+    gregText = Text();
+    return;
+  }
+
   uint32_t location = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlacedItemKey() == GREG_RUPEE;})[0];
   Text area = GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText();
 
@@ -790,6 +800,16 @@ void CreateGregRupeeHint() {
 }
 
 void CreateWarpSongTexts() {
+  if (!ShuffleWarpSongs) {
+    warpMinuetText = Text();
+    warpBoleroText = Text();
+    warpSerenadeText = Text();
+    warpRequiemText = Text();
+    warpNocturneText = Text();
+    warpPreludeText = Text();
+    return;
+  }
+
   auto warpSongEntrances = GetShuffleableEntrances(EntranceType::WarpSong, false);
 
   for (auto entrance : warpSongEntrances) {
@@ -841,7 +861,7 @@ void CreateAllHints() {
     auto alwaysHintLocations = FilterFromPool(allLocations, [](const uint32_t loc){
         return ((Location(loc)->GetHint().GetType() == HintCategory::Always) ||
                 // If we have Rainbow Bridge set to Greg, add a hint for where Greg is
-                ((Bridge.Is(RAINBOWBRIDGE_GREG) && GregHintText.Is(OFF)) && Location(loc)->GetPlacedItemKey() == GREG_RUPEE)) &&
+                (Bridge.Is(RAINBOWBRIDGE_GREG) && !GregHintText && Location(loc)->GetPlacedItemKey() == GREG_RUPEE)) &&
                Location(loc)->IsHintable()        && !(Location(loc)->IsHintedAt());
     });
 

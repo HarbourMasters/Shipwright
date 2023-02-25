@@ -1079,16 +1079,10 @@ int Fill() {
       }
       //Always execute ganon hint generation for the funny line  
       CreateGanonText();
-      CreateAltarText(AltarHintText);
-      if (DampeHintText) {
-        CreateDampesDiaryText();
-      }
-      if (GregHintText) {
-        CreateGregRupeeHint();
-      }
-      if (ShuffleWarpSongs) {
-        CreateWarpSongTexts();
-      }
+      CreateAltarText();
+      CreateDampesDiaryText();
+      CreateGregRupeeHint();
+      CreateWarpSongTexts();
       return 1;
     }
     //Unsuccessful placement

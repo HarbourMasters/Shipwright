@@ -2797,6 +2797,7 @@ namespace Settings {
     AltarHintText.SetSelectedIndex(cvarSettings[RSK_TOT_ALTAR_HINT]);
     GanondorfHintText.SetSelectedIndex(cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT]);
     DampeHintText.SetSelectedIndex(cvarSettings[RSK_DAMPES_DIARY_HINT]);
+    GregHintText.SetSelectedIndex(cvarSettings[RSK_GREG_HINT]);
     WarpSongHints.SetSelectedIndex(cvarSettings[RSK_WARP_SONG_HINTS]);
     Kak10GSHintText.SetSelectedIndex(cvarSettings[RSK_KAK_10_SKULLS_HINT]);
     Kak20GSHintText.SetSelectedIndex(cvarSettings[RSK_KAK_20_SKULLS_HINT]);

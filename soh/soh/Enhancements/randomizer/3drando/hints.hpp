@@ -224,7 +224,7 @@ extern void CreateWarpSongTexts();
 extern void CreateDampesDiaryText();
 extern void CreateGregRupeeHint();
 extern void CreateGanonText();
-extern void CreateAltarText(Option withHints);
+extern void CreateAltarText();
 
 Text& GetChildAltarText();
 Text& GetAdultAltarText();
