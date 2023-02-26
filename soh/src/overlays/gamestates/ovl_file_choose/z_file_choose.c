@@ -9,6 +9,7 @@
 #include <GameVersions.h>
 #include "objects/object_mag/object_mag.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define NORMAL_QUEST 0
 #define MASTER_QUEST 1
@@ -2159,6 +2160,8 @@ void FileChoose_LoadGame(GameState* thisx) {
             Entrance_SetSavewarpEntrance();
         }
     }
+
+    GameInteractor_ExecuteOnLoadGame(gSaveContext.fileNum);
 }
 
 static void (*gSelectModeUpdateFuncs[])(GameState*) = {
