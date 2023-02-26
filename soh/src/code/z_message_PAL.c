@@ -2560,12 +2560,13 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     Actor* player = GET_PLAYER(play);
                     Actor* nearbyTimeBlockEmpty = Actor_FindNearby(play, player, ACTOR_OBJ_WARP2BLOCK, ACTORCAT_ITEMACTION, 300.0f);
                     Actor* nearbyTimeBlock = Actor_FindNearby(play, player, ACTOR_OBJ_TIMEBLOCK, ACTORCAT_ITEMACTION, 300.0f);
+                    Actor* nearbyAltar = Actor_FindNearby(play, player, ACTOR_EN_OKARINA_TAG, ACTORCAT_PROP, 120.0f);
                     uint8_t hasMasterSword = (gBitFlags[ITEM_SWORD_MASTER - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD]) & gSaveContext.inventory.equipment;
                     // If TimeTravel + Player have the Ocarina of Time + Have Master Sword + is in proper range
                     // TODO: Once Swordless Adult is fixed: Remove the Master Sword check
                     if (CVarGetInteger("gTimeTravel", 0) && (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME) &&
                         hasMasterSword && play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME &&
-                        nearbyTimeBlockEmpty == NULL && nearbyTimeBlock == NULL) {
+                        nearbyTimeBlockEmpty == NULL && nearbyTimeBlock == NULL && nearbyAltar == NULL) {
                         CVarSetInteger("gSwitchAge", 1);
                     }
                 }
