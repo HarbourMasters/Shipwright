@@ -10916,16 +10916,16 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
 
         AnimationContext_SetNextQueue(play);
 
-        // Super Sonic Mode
+        // Rupee Dash Mode
 
-        if (CVarGetInteger("gSuperSonic", 0) >= 1) {
+        if (CVarGetInteger("gRupeeDash", 0) >= 1) {
             // Initialize Timer
-            static uint16_t superSonicTimer = 0;
-            uint16_t ssmTime = CVarGetInteger("gSsmInterval", 5) * 20;
+            static uint16_t rupeeDashTimer = 0;
+            uint16_t rdmTime = CVarGetInteger("gDashInterval", 5) * 20;
 
             // Did time change by SsmInterval?
-            if (superSonicTimer >= ssmTime) {
-                superSonicTimer = 0;
+            if (rupeeDashTimer >= rdmTime) {
+                rupeeDashTimer = 0;
                 if (gSaveContext.rupees > 0) {
                     Rupees_ChangeBy(-1);
                 } else {
@@ -10934,7 +10934,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
                     } 
                 }
             } else {
-                superSonicTimer++;
+                rupeeDashTimer++;
             }
         }
 
