@@ -86,7 +86,7 @@ public:
 
     DEFINE_HOOK(OnReceiveItem, void(u8 item));
     DEFINE_HOOK(OnSceneInit, void(s16 sceneNum));
-    
+    DEFINE_HOOK(OnPlayerUpdate, void());
     
     DEFINE_HOOK(OnSaveFile, void(int fileNum));
     DEFINE_HOOK(OnLoadFile, void(int fileNum));
