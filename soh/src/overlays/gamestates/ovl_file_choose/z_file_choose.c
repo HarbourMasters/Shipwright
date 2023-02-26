@@ -2149,7 +2149,6 @@ void FileChoose_LoadGame(GameState* thisx) {
     if (gSaveContext.n64ddFlag) {
         // Setup the modified entrance table and entrance shuffle table for rando
         Entrance_Init();
-        Entrance_InitEntranceTrackingData();
 
         // Handle randomized spawn positions after the save context has been setup from load
         // When remeber save location is on, set save warp if the save was in an a grotto, or
