@@ -1791,8 +1791,8 @@ void DrawCosmeticsEditor(bool& open) {
     ImGui::End();
 }
 
-void RegisterOnLoadFileHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](int32_t fileNum) {
+void RegisterOnLoadGameHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         ApplyOrResetCustomGfxPatches();
     });
 }
@@ -1817,7 +1817,7 @@ void InitCosmeticsEditor() {
     SohImGui::RequestCvarSaveOnNextTick();
     ApplyOrResetCustomGfxPatches();
 
-    RegisterOnLoadFileHook();
+    RegisterOnLoadGameHook();
 }
 
 void CosmeticsEditor_RandomizeAll() {
