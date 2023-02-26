@@ -20,6 +20,11 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
+/// For most effects, CanBeRemoved is the same as CanBeApplied. When its not: please override `CanBeRemoved`.
+GameInteractionEffectQueryResult RemovableGameInteractionEffect::CanBeRemoved() {
+    return CanBeApplied();
+}
+
 GameInteractionEffectQueryResult GameInteractionEffectBase::Apply() {
     GameInteractionEffectQueryResult result = CanBeApplied();
     if (result != GameInteractionEffectQueryResult::Possible) {
@@ -30,12 +35,7 @@ GameInteractionEffectQueryResult GameInteractionEffectBase::Apply() {
     return result;
 }
 
-/// For most effects, CanBeRemoved is the same as CanBeApplied. When its not: please override `CanBeRemoved`.
-GameInteractionEffectQueryResult GameInteractionEffectBase::CanBeRemoved() {
-    return CanBeApplied();
-}
-
-GameInteractionEffectQueryResult GameInteractionEffectBase::Remove() {
+GameInteractionEffectQueryResult RemovableGameInteractionEffect::Remove() {
     GameInteractionEffectQueryResult result = CanBeRemoved();
     if (result != GameInteractionEffectQueryResult::Possible) {
         return result;

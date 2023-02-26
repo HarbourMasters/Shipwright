@@ -153,7 +153,7 @@ void CrowdControl::ProcessActiveEffects() {
                 if (effect->timeRemaining <= 0) {
                     it = activeEffects.erase(std::remove(activeEffects.begin(), activeEffects.end(), effect),
                                         activeEffects.end());
-                    GameInteractor::RemoveEffect(effect->giEffect);
+                    GameInteractor::RemoveEffect(dynamic_cast<RemovableGameInteractionEffect*>(effect->giEffect));
                     delete effect;
                 } else {
                     // If we have a success after previously being paused, tell CC to resume timer.
@@ -222,10 +222,10 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
     // Categories are mostly used for checking for conflicting timed effects.
     if (effectName == EFFECT_ADD_HEART_CONTAINER) {
         effect->giEffect = new GameInteractionEffect::ModifyHeartContainers();
-        effect->giEffect->parameter = 1;
+        dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameter = 1;
     } else if (effectName == EFFECT_REMOVE_HEART_CONTAINER) {
         effect->giEffect = new GameInteractionEffect::ModifyHeartContainers();
-        effect->giEffect->parameter = -1;
+        dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameter = -1;
     } else if (effectName == EFFECT_FILL_MAGIC) {
         effect->giEffect = new GameInteractionEffect::FillMagic();
     } else if (effectName == EFFECT_EMPTY_MAGIC) {
@@ -243,12 +243,12 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
         effect->category = EFFECT_CAT_GRAVITY;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyGravity();
-        effect->giEffect->parameter = GI_GRAVITY_LEVEL_HEAVY;
+        dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameter = GI_GRAVITY_LEVEL_HEAVY;
     } else if (effectName == EFFECT_LOW_GRAVITY) {
         effect->category = EFFECT_CAT_GRAVITY;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyGravity();
-        effect->giEffect->parameter = GI_GRAVITY_LEVEL_LIGHT;
+        dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameter = GI_GRAVITY_LEVEL_LIGHT;
     } else if (effectName == EFFECT_KILL) {
         effect->giEffect = new GameInteractionEffect::SetPlayerHealth();
         effect->value[0] = 0;
@@ -269,17 +269,17 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
         effect->category = EFFECT_CAT_LINK_SIZE;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
-        effect->giEffect->parameter = GI_LINK_SIZE_GIANT;
+        dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameter = GI_LINK_SIZE_GIANT;
     } else if (effectName == EFFECT_MINISH_LINK) {
         effect->category = EFFECT_CAT_LINK_SIZE;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
-        effect->giEffect->parameter = GI_LINK_SIZE_MINISH;
+        dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameter = GI_LINK_SIZE_MINISH;
     } else if (effectName == EFFECT_PAPER_LINK) {
         effect->category = EFFECT_CAT_LINK_SIZE;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
-        effect->giEffect->parameter = GI_LINK_SIZE_PAPER;
+        dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameter = GI_LINK_SIZE_PAPER;
     } else if (effectName == EFFECT_INVISIBLE_LINK) {
         effect->category = EFFECT_CAT_LINK_SIZE;
         effect->timeRemaining = 30000;
@@ -304,24 +304,24 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
         effect->category = EFFECT_CAT_BOOTS;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
-        effect->giEffect->parameter = PLAYER_BOOTS_IRON;
+        dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameter = PLAYER_BOOTS_IRON;
     } else if (effectName == EFFECT_HOVER_BOOTS) {
         effect->category = EFFECT_CAT_BOOTS;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
-        effect->giEffect->parameter = PLAYER_BOOTS_HOVER;;
+        dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameter = PLAYER_BOOTS_HOVER;;
     } else if (effectName == EFFECT_GIVE_DEKU_SHIELD) {
         effect->giEffect = new GameInteractionEffect::GiveDekuShield();
     } else if (effectName == EFFECT_INCREASE_SPEED) {
         effect->category = EFFECT_CAT_SPEED;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
-        effect->giEffect->parameter = 2;
+        dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameter = 2;
     } else if (effectName == EFFECT_DECREASE_SPEED) {
         effect->category = EFFECT_CAT_SPEED;
         effect->timeRemaining = 30000;
         effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
-        effect->giEffect->parameter = -2;
+        dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameter = -2;
     } else if (effectName == EFFECT_OHKO) {
         effect->category = EFFECT_CAT_DAMAGE_TAKEN;
         effect->timeRemaining = 30000;
@@ -387,8 +387,8 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
     // usually represent the "amount" of an effect. Amount of hearts healed,
     // strength of knockback, etc.
     if (effect->giEffect != NULL) {
-        if (!effect->giEffect->parameter && effect->value[0]) {
-            effect->giEffect->parameter = effect->value[0] * effect->paramMultiplier;
+        if (!dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameter && effect->value[0]) {
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameter = effect->value[0] * effect->paramMultiplier;
         }
     }
 

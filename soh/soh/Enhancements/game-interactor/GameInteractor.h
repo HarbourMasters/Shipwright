@@ -92,7 +92,7 @@ public:
     // Effects
     static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase* effect);
     static GameInteractionEffectQueryResult ApplyEffect(GameInteractionEffectBase* effect);
-    static GameInteractionEffectQueryResult RemoveEffect(GameInteractionEffectBase* effect);
+    static GameInteractionEffectQueryResult RemoveEffect(RemovableGameInteractionEffect* effect);
 
     // Game Hooks
     template <typename H> struct RegisteredGameHooks { inline static std::vector<typename H::fn> functions; };

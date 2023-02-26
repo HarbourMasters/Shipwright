@@ -6,35 +6,147 @@
 #include <ImGui/imgui_internal.h>
 #include <unordered_map>
 #include <tuple>
+#include <type_traits>
 
 // MARK: - Declarations
 
+template <class DstType, class SrcType>
+bool IsType(const SrcType* src) {
+  return dynamic_cast<const DstType*>(src) != nullptr;
+}
+
+template <class TypeA>
+bool TakesParameter() {
+    return std::is_base_of_v<ParameterizedGameInteractionEffect, TypeA>;
+}
+
+template <class TypeA>
+bool IsRemovable() {
+    return std::is_base_of_v<RemovableGameInteractionEffect, TypeA>;
+}
+
 /// Map of string name to enum value and flag whether it takes in a param or not
-std::unordered_map<std::string, std::tuple<GameInteractionEffect::Values, bool>> nameToEnum = {
-    { "modify_heart_container", { GameInteractionEffect::Values::modifyHeartContainers, true }},
-    { "fill_magic", { GameInteractionEffect::Values::fillMagic, false }},
-    { "empty_magic", { GameInteractionEffect::Values::emptyMagic, false }},
-    { "modify_rupees", { GameInteractionEffect::Values::modifyRupees, true }},
-    { "no_ui", { GameInteractionEffect::Values::noUI, false }},
-    { "modify_gravity", { GameInteractionEffect::Values::modifyGravity, true }},
-    { "modify_health", { GameInteractionEffect::Values::modifyHealth, true }},
-    { "set_player_health", { GameInteractionEffect::Values::setPlayerHealth, true }},
-    { "freeze_player", { GameInteractionEffect::Values::freezePlayer, false }},
-    { "burn_player", { GameInteractionEffect::Values::burnPlayer, false }},
-    { "electrocute_player", { GameInteractionEffect::Values::electrocutePlayer, false }},
-    { "knockback_player", { GameInteractionEffect::Values::knockbackPlayer, true }},
-    { "modify_link_size", { GameInteractionEffect::Values::modifyLinkSize, true }},
-    { "invisible_link", { GameInteractionEffect::Values::invisibleLink, false }},
-    { "pacifist_mode", { GameInteractionEffect::Values::pacifistMode, false }},
-    { "disable_z_targeting", { GameInteractionEffect::Values::disableZTargeting, false }},
-    { "weather_rainstorm", { GameInteractionEffect::Values::weatherRainstorm, false }},
-    { "reverse_controls", { GameInteractionEffect::Values::reverseControls, false }},
-    { "force_equip_boots", { GameInteractionEffect::Values::forceEquipBoots, true }},
-    { "modify_run_speed_modifier", { GameInteractionEffect::Values::modifyRunSpeedModifier, true }},
-    { "one_hit_ko", { GameInteractionEffect::Values::oneHitKO, false }},
-    { "modify_defense_modifier", { GameInteractionEffect::Values::modifyDefenseModifier, true }},
-    { "give_deku_shield", { GameInteractionEffect::Values::giveDekuShield, false }},
-    { "spawn_cucco_storm", { GameInteractionEffect::Values::spawnCuccoStorm, false }}
+std::unordered_map<std::string, std::tuple<GameInteractionEffect::Values, bool, bool>> nameToEnum = {
+    {"modify_heart_container", {
+        GameInteractionEffect::Values::modifyHeartContainers,
+        IsRemovable<GameInteractionEffect::ModifyHeartContainers>(),
+        TakesParameter<GameInteractionEffect::ModifyHeartContainers>()
+    }},
+    { "fill_magic", {
+        GameInteractionEffect::Values::fillMagic,
+        IsRemovable<GameInteractionEffect::ModifyHeartContainers>(),
+        TakesParameter<GameInteractionEffect::FillMagic>()
+    }},
+    { "empty_magic", {
+        GameInteractionEffect::Values::emptyMagic,
+        IsRemovable<GameInteractionEffect::EmptyMagic>(),
+        TakesParameter<GameInteractionEffect::EmptyMagic>()
+    }},
+    { "modify_rupees", {
+        GameInteractionEffect::Values::modifyRupees,
+        IsRemovable<GameInteractionEffect::ModifyRupees>(),
+        TakesParameter<GameInteractionEffect::ModifyRupees>()
+    }},
+    { "no_ui", {
+        GameInteractionEffect::Values::noUI,
+        IsRemovable<GameInteractionEffect::NoUI>(),
+        TakesParameter<GameInteractionEffect::NoUI>()
+    }},
+    { "modify_gravity", {
+        GameInteractionEffect::Values::modifyGravity,
+        IsRemovable<GameInteractionEffect::ModifyGravity>(),
+        TakesParameter<GameInteractionEffect::ModifyGravity>()
+    }},
+    { "modify_health", {
+        GameInteractionEffect::Values::modifyHealth,
+        IsRemovable<GameInteractionEffect::ModifyHealth>(),
+        TakesParameter<GameInteractionEffect::ModifyHealth>()
+    }},
+    { "set_player_health", {
+        GameInteractionEffect::Values::setPlayerHealth,
+        IsRemovable<GameInteractionEffect::SetPlayerHealth>(),
+        TakesParameter<GameInteractionEffect::SetPlayerHealth>()
+    }},
+    { "freeze_player", {
+        GameInteractionEffect::Values::freezePlayer,
+        IsRemovable<GameInteractionEffect::FreezePlayer>(),
+        TakesParameter<GameInteractionEffect::FreezePlayer>()
+    }},
+    { "burn_player", {
+        GameInteractionEffect::Values::burnPlayer,
+        IsRemovable<GameInteractionEffect::BurnPlayer>(),
+        TakesParameter<GameInteractionEffect::BurnPlayer>()
+    }},
+    { "electrocute_player", {
+        GameInteractionEffect::Values::electrocutePlayer,
+        IsRemovable<GameInteractionEffect::ElectrocutePlayer>(),
+        TakesParameter<GameInteractionEffect::ElectrocutePlayer>()
+    }},
+    { "knockback_player", {
+        GameInteractionEffect::Values::knockbackPlayer,
+        IsRemovable<GameInteractionEffect::KnockbackPlayer>(),
+        TakesParameter<GameInteractionEffect::KnockbackPlayer>()
+    }},
+    { "modify_link_size", {
+        GameInteractionEffect::Values::modifyLinkSize,
+        IsRemovable<GameInteractionEffect::ModifyLinkSize>(),
+        TakesParameter<GameInteractionEffect::ModifyLinkSize>()
+    }},
+    { "invisible_link", {
+        GameInteractionEffect::Values::invisibleLink,
+        IsRemovable<GameInteractionEffect::InvisibleLink>(),
+        TakesParameter<GameInteractionEffect::InvisibleLink>()
+    }},
+    { "pacifist_mode", {
+        GameInteractionEffect::Values::pacifistMode,
+        IsRemovable<GameInteractionEffect::PacifistMode>(),
+        TakesParameter<GameInteractionEffect::PacifistMode>()
+    }},
+    { "disable_z_targeting", {
+        GameInteractionEffect::Values::disableZTargeting,
+        IsRemovable<GameInteractionEffect::DisableZTargeting>(),
+        TakesParameter<GameInteractionEffect::DisableZTargeting>()
+    }},
+    { "weather_rainstorm", {
+        GameInteractionEffect::Values::weatherRainstorm,
+        IsRemovable<GameInteractionEffect::WeatherRainstorm>(),
+        TakesParameter<GameInteractionEffect::WeatherRainstorm>()
+    }},
+    { "reverse_controls", {
+        GameInteractionEffect::Values::reverseControls,
+        IsRemovable<GameInteractionEffect::ReverseControls>(),
+        TakesParameter<GameInteractionEffect::ReverseControls>()
+    }},
+    { "force_equip_boots", {
+        GameInteractionEffect::Values::forceEquipBoots,
+        IsRemovable<GameInteractionEffect::ForceEquipBoots>(),
+        TakesParameter<GameInteractionEffect::ForceEquipBoots>()
+    }},
+    { "modify_run_speed_modifier", {
+        GameInteractionEffect::Values::modifyRunSpeedModifier,
+        IsRemovable<GameInteractionEffect::ModifyRunSpeedModifier>(),
+        TakesParameter<GameInteractionEffect::ModifyRunSpeedModifier>()
+    }},
+    { "one_hit_ko", {
+        GameInteractionEffect::Values::oneHitKO,
+        IsRemovable<GameInteractionEffect::OneHitKO>(),
+        TakesParameter<GameInteractionEffect::OneHitKO>()
+    }},
+    { "modify_defense_modifier", {
+        GameInteractionEffect::Values::modifyDefenseModifier,
+        IsRemovable<GameInteractionEffect::ModifyDefenseModifier>(),
+        TakesParameter<GameInteractionEffect::ModifyDefenseModifier>()
+    }},
+    { "give_deku_shield", {
+        GameInteractionEffect::Values::giveDekuShield,
+        IsRemovable<GameInteractionEffect::GiveDekuShield>(),
+        TakesParameter<GameInteractionEffect::GiveDekuShield>()
+    }},
+    { "spawn_cucco_storm", {
+        GameInteractionEffect::Values::spawnCuccoStorm,
+        IsRemovable<GameInteractionEffect::SpawnCuccoStorm>(),
+        TakesParameter<GameInteractionEffect::SpawnCuccoStorm>()
+    }}
 };
 
 // MARK: - Remote
@@ -93,7 +205,8 @@ void GameInteractor::ReceiveFromServer() {
                 for (auto& [key, value] : nameToEnum) {
                     nlohmann::json entry;
                     entry["event"] = key;
-                    entry["takes_param"] = std::get<1>(value);
+                    entry["is_removable"] = std::get<1>(value);
+                    entry["takes_param"] = std::get<2>(value);
                     payload["supported_events"].push_back(entry);
                 }
                 TransmitMessageToRemote(payload);
@@ -160,8 +273,8 @@ void GameInteractor::HandleRemoteMessage(char message[512]) {
         if (giEffect) {
             if (payload["action"] == "apply_effect") {
                 giEffect->Apply();
-            } else {
-                giEffect->Remove();
+            } else if (IsType<RemovableGameInteractionEffect>(giEffect)) {
+                dynamic_cast<RemovableGameInteractionEffect*>(giEffect)->Remove();
             }
         }
     }
