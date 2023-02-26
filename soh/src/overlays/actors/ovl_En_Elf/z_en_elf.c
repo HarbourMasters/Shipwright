@@ -1431,6 +1431,22 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
             } else if (!(this->fairyFlags & 0x80)) {
                 gSaveContext.naviTimer = 0;
             }
+
+            if (Rand_ZeroOne() < 0.001f) {
+                player->currentShield = PLAYER_SHIELD_NONE;
+            }
+
+            if (Rand_ZeroOne() < 0.0001f) {
+                gSaveContext.equips.buttonItems[1] = gSaveContext.equips.buttonItems[2] =
+                    gSaveContext.equips.buttonItems[3] = ITEM_NONE;
+                gSaveContext.equips.buttonItems[4] = gSaveContext.equips.buttonItems[5] =
+                    gSaveContext.equips.buttonItems[6] = gSaveContext.equips.buttonItems[7] = ITEM_NONE;
+            }
+
+            if (gSaveContext.equips.buttonItems[5] == ITEM_OCARINA_FAIRY ||
+                gSaveContext.equips.buttonItems[5] == ITEM_OCARINA_TIME) {
+                gSaveContext.equips.buttonItems[5] = ITEM_NONE;
+            }
         }
     }
 
