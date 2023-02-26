@@ -10915,30 +10915,6 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
         }
 
         AnimationContext_SetNextQueue(play);
-
-        // Rupee Dash Mode
-
-        if (CVarGetInteger("gRupeeDash", 0) >= 1) {
-            // Initialize Timer
-            static uint16_t rupeeDashTimer = 0;
-            uint16_t rdmTime = CVarGetInteger("gDashInterval", 5) * 20;
-
-            // Did time change by SsmInterval?
-            if (rupeeDashTimer >= rdmTime) {
-                rupeeDashTimer = 0;
-                if (gSaveContext.rupees > 0) {
-                    Rupees_ChangeBy(-1);
-                } else {
-                    if (gSaveContext.health > 0) {
-                        gSaveContext.health = gSaveContext.health - 16;                        
-                    } 
-                }
-            } else {
-                rupeeDashTimer++;
-            }
-        }
-
-
     }
 
     Math_Vec3f_Copy(&this->actor.home.pos, &this->actor.world.pos);

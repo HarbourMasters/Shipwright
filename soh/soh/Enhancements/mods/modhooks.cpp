@@ -3,6 +3,7 @@
 
 extern "C" {
 #include <z64.h>
+#include "functions.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Play_PerformSave(PlayState* play);
@@ -63,6 +64,33 @@ void RegisterAutoSaveOnReceiveItem() {
     });
 }
 
+void RegisterRupeeDash() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (!CVarGetInteger("gRupeeDash", 0)) {
+            return;
+        }
+        
+        // Initialize Timer
+        static uint16_t rupeeDashTimer = 0;
+        uint16_t rdmTime = CVarGetInteger("gDashInterval", 5) * 20;
+        
+        // Did time change by SsmInterval?
+        if (rupeeDashTimer >= rdmTime) {
+            rupeeDashTimer = 0;
+            if (gSaveContext.rupees > 0) {
+                Rupees_ChangeBy(-1);
+            } else {
+                if (gSaveContext.health > 0) {
+                    gSaveContext.health = gSaveContext.health - 16;
+                }
+            }
+        } else {
+            rupeeDashTimer++;
+        }
+    });
+}
+
 extern "C" void RegisterModHooks() {
     RegisterAutoSaveOnReceiveItem();
+    RegisterRupeeDash();
 }
