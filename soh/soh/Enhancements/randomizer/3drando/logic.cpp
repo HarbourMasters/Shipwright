@@ -785,7 +785,8 @@ namespace Logic {
                            (Bridge.Is(RAINBOWBRIDGE_REWARDS)    && StoneCount + MedallionCount >= BridgeRewardCount.Value<uint8_t>())  ||
                            (Bridge.Is(RAINBOWBRIDGE_DUNGEONS)   && DungeonCount >= BridgeDungeonCount.Value<uint8_t>())                ||
                            (Bridge.Is(RAINBOWBRIDGE_TOKENS)     && GoldSkulltulaTokens >= BridgeTokenCount.Value<uint8_t>()) ||
-                           (Bridge.Is(RAINBOWBRIDGE_GREG)       && Greg);
+                           (Bridge.Is(RAINBOWBRIDGE_GREG)       && Greg) ||
+                           (Bridge.Is(RAINBOWBRIDGE_WILD_GREG) && StoneCount + MedallionCount >= BridgeRewardCount.Value<uint8_t>());
 
     CanTriggerLACS = (LACSCondition == LACSCONDITION_VANILLA    && ShadowMedallion && SpiritMedallion)                          ||
                      (LACSCondition == LACSCONDITION_STONES     && StoneCount >= LACSStoneCount.Value<uint8_t>())                    ||

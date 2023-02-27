@@ -141,6 +141,12 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, PlayState* play) {
                     func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
                 }
                 break;
+            case RO_BRIDGE_WILD_GREG:
+                if (CheckRewardCount() >= bridgeRewardCount) {
+                    this->actionFunc = BgGjyoBridge_SpawnBridge;
+                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                }
+                break;
         }
     }
 }

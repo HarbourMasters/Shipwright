@@ -299,6 +299,16 @@ u8 CheckMedallionCount() {
     return medallionCount;
 }
 
+u8 CheckRewardCount() {
+    u8 rewardCount = CheckMedallionCount() + CheckStoneCount();
+
+    if (RO_BRIDGE_WILD_GREG && Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+        rewardCount += 1;
+    }
+
+    return rewardCount;
+}
+
 u8 CheckDungeonCount() {
     u8 dungeonCount = 0;
 
