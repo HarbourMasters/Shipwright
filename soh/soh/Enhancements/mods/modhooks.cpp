@@ -81,7 +81,7 @@ void RegisterRupeeDash() {
                 Rupees_ChangeBy(-1);
             } else {
                 if (gSaveContext.health > 0) {
-                    gSaveContext.health = gSaveContext.health - 16;
+                    gSaveContext.health = std::max(gSaveContext.health - 16, 0);
                 }
             }
         } else {
