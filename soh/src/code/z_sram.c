@@ -197,12 +197,6 @@ void Sram_OpenSave() {
         }
     }
 
-    // Setup the modified entrance table and entrance shuffle table for rando
-    if (gSaveContext.n64ddFlag) {
-        Entrance_Init();
-        Entrance_InitEntranceTrackingData();
-    }
-
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);
     osSyncPrintf(VT_RST);
 
@@ -617,6 +611,4 @@ void Sram_InitSram(GameState* gameState) {
     // When going from a rando save to a vanilla save within the same game instance
     // we need to reset the entrance table back to its vanilla state
     Entrance_ResetEntranceTable();
-    // Clear out the entrance tracker
-    Entrance_ClearEntranceTrackingData();
 }

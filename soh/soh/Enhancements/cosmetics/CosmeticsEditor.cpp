@@ -1,5 +1,6 @@
 #include "CosmeticsEditor.h"
 #include <ImGuiImpl.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #include <string>
 #include <libultraship/bridge.h>
@@ -41,9 +42,11 @@ extern PlayState* gPlayState;
 #include "objects/object_gi_pachinko/object_gi_pachinko.h"
 #include "objects/object_trap/object_trap.h"
 #include "overlays/ovl_Boss_Ganon2/ovl_Boss_Ganon2.h"
+#include "objects/object_gjyo_objects/object_gjyo_objects.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
+u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 }
 
 void ApplyOrResetCustomGfxPatches(bool rainbowTick);
@@ -384,13 +387,14 @@ int hue = 0;
 // Runs every frame to update rainbow hue, a potential future optimization is to only run this a once or twice a second and increase the speed of the rainbow hue rotation.
 void CosmeticsUpdateTick(bool& open) {
     int index = 0;
+    float rainbowSpeed = CVarGetFloat("gCosmetics.RainbowSpeed", 0.6f);
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
         if (cosmeticOption.supportsRainbow && CVarGetInteger(cosmeticOption.rainbowCvar, 0)) {
-            float frequency = 2 * M_PI / (360 * CVarGetFloat("gCosmetics.RainbowSpeed", 0.6f));
+            float frequency = 2 * M_PI / (360 * rainbowSpeed);
             Color_RGBA8 newColor;
-            newColor.r = sin(frequency * ((hue + index)) + 0) * 127 + 128;
-            newColor.g = sin(frequency * ((hue + index)) + (2 * M_PI / 3)) * 127 + 128;
-            newColor.b = sin(frequency * ((hue + index)) + (4 * M_PI / 3)) * 127 + 128;
+            newColor.r = sin(frequency * (hue + index) + 0) * 127 + 128;
+            newColor.g = sin(frequency * (hue + index) + (2 * M_PI / 3)) * 127 + 128;
+            newColor.b = sin(frequency * (hue + index) + (4 * M_PI / 3)) * 127 + 128;
             newColor.a = 255;
 
             cosmeticOption.currentColor.x = newColor.r / 255.0;
@@ -404,12 +408,12 @@ void CosmeticsUpdateTick(bool& open) {
         // Technically this would work if you replaced "60" with 1 but the hue would be so close it's 
         // indistinguishable, 60 gives us a big enough gap to notice the difference.
         if (!CVarGetInteger("gCosmetics.RainbowSync", 0)) {
-            index+= (60 * CVarGetFloat("gCosmetics.RainbowSpeed", 0.6f));
+            index+= (60 * rainbowSpeed);
         }
     }
     ApplyOrResetCustomGfxPatches(false);
     hue++;
-    if (hue >= 360) hue = 0;
+    if (hue >= (360 * rainbowSpeed)) hue = 0;
 }
 
 /* 
@@ -907,6 +911,15 @@ void ApplyOrResetCustomGfxPatches(bool manualChange = true) {
         PATCH_GFX(gGiGreenRupeeInnerColorDL,                      "Consumable_GreenRupee2",   consumableGreenRupee.changedCvar,     4, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
         PATCH_GFX(gGiGreenRupeeOuterColorDL,                      "Consumable_GreenRupee3",   consumableGreenRupee.changedCvar,     3, gsDPSetPrimColor(0, 0, MIN(color.r + 100, 255), MIN(color.g + 100, 255), MIN(color.b + 100, 255), 255));
         PATCH_GFX(gGiGreenRupeeOuterColorDL,                      "Consumable_GreenRupee4",   consumableGreenRupee.changedCvar,     4, gsDPSetEnvColor(color.r * 0.75f, color.g * 0.75f, color.b * 0.75f, 255));
+    
+        // Greg Bridge
+        if (Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE) == RO_BRIDGE_GREG) {
+            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge1", 2, gsSPGrayscale(true));
+            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge2", 10, gsDPSetGrayscaleColor(color.r, color.g, color.b, color.a));
+        } else {
+            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge1");
+            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge2");
+        }
     }
     static CosmeticOption& consumableBlueRupee = cosmeticOptions.at("Consumable_BlueRupee");
     if (manualChange || CVarGetInteger(consumableBlueRupee.rainbowCvar, 0)) {
@@ -1778,6 +1791,12 @@ void DrawCosmeticsEditor(bool& open) {
     ImGui::End();
 }
 
+void RegisterOnLoadGameHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
+        ApplyOrResetCustomGfxPatches();
+    });
+}
+
 void InitCosmeticsEditor() {
     // There's probably a better way to do this, but leaving as is for historical reasons. Even though there is no
     // real window being rendered here, it calls this every frame allowing us to rotate through the rainbow hue for cosmetics
@@ -1797,6 +1816,8 @@ void InitCosmeticsEditor() {
     }
     SohImGui::RequestCvarSaveOnNextTick();
     ApplyOrResetCustomGfxPatches();
+
+    RegisterOnLoadGameHook();
 }
 
 void CosmeticsEditor_RandomizeAll() {

@@ -912,9 +912,7 @@ void VanillaFill() {
   CreateItemOverrides();
   CreateEntranceOverrides();
   CreateAlwaysIncludedMessages();
-  if (ShuffleWarpSongs) {
-    CreateWarpSongTexts();
-  }
+  CreateWarpSongTexts();
 }
 
 void ClearProgress() {
@@ -1079,15 +1077,10 @@ int Fill() {
       }
       //Always execute ganon hint generation for the funny line  
       CreateGanonText();
-      if (AltarHintText) {
-        CreateAltarText();
-      }
-      if (DampeHintText) {
-        CreateDampesDiaryText();
-      }
-      if (ShuffleWarpSongs) {
-        CreateWarpSongTexts();
-      }
+      CreateAltarText();
+      CreateDampesDiaryText();
+      CreateGregRupeeHint();
+      CreateWarpSongTexts();
       return 1;
     }
     //Unsuccessful placement

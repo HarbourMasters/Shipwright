@@ -2138,6 +2138,21 @@ void HintTable_Init() {
         Text{ "They say we'll meet again,&when something else cries.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
     });
 
+    hintTable[JUNK_WTC_10] = HintText::Junk({
+        Text{ "They say \"Forgive me, but-^Your script will not be used.&....After all...^The one writing the rest of "
+              "the script...&will be me.\"",
+              HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_WTC_11] = HintText::Junk({
+        Text{ "They say tea is best enjoyed...^\"\"With your fellow monsters.\"\"", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_WTC_12] = HintText::Junk({
+        Text{ "They say I shall make you some black tea. With my own hands, not magic.", HINT_TEXT_NEEDS_TRANSLATION_FR,
+              "blarg" },
+    });
+
     hintTable[JUNK_SEI_1] = HintText::Junk({
         Text{ "They say you know I've kiboshed before...^and I will kibosh again.", HINT_TEXT_NEEDS_TRANSLATION_FR,
               "blarg" },
@@ -2417,6 +2432,40 @@ void HintTable_Init() {
         Text{ "They say Rubies are on the path to&Lamp Oil, Rope, and Bombs", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
     });
 
+    hintTable[JUNK_SG_1] = HintText::Junk({
+        Text{ "They say %rError. Human is dead, mismatch.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SG_2] = HintText::Junk({
+        Text{ "They say this is the choice of the&steins gate.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SG_3] = HintText::Junk({
+        Text{ "They say el psy kongroo.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SG_4] = HintText::Junk({
+        Text{ "They say tutturu~.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+
+    hintTable[JUNK_SG_5] = HintText::Junk({
+        Text{ "They say im not Christina!.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SG_6] = HintText::Junk({
+        Text{ "They say you know where to find an IBN5100.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SG_7] = HintText::Junk({
+        Text{ "They say when you're on a chicken bender&grab a box of chicken tenders.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+    });
+
+    hintTable[JUNK_SG_8] = HintText::Junk({
+        Text{ "Juicy Chicken #1! Wow!.", HINT_TEXT_NEEDS_TRANSLATION_FR,
+              "blarg" },
+    });
+
     /*--------------------------
     |     DUNGEON HINT TEXT    |
     ---------------------------*/
@@ -2663,6 +2712,13 @@ void HintTable_Init() {
         Text{ "The awakened ones will await&for the Hero to collect&%d |Gold Skulltula Token|Gold Skulltula Tokens|.",
               /*french*/ "Les êtres de sagesse attendront&le héros muni de %r%d |Symbole|Symboles| &de Skulltula d'or%w.",
               /*spanish*/ "Los sabios aguardarán a que el héroe&obtenga #%d |símbolo|símbolos| de&skulltula dorada#." },
+    });
+
+    hintTable[BRIDGE_GREG_HINT] = HintText::Bridge({
+        // obscure text
+        Text{ "The awakened ones will await&for the Hero to find %gGreg%w.",
+              /*french*/ "The awakened ones will await&for the Hero to find %gGreg%w.",
+              /*spanish*/ "The awakened ones will await&for the Hero to find %gGreg%w." },
     });
 
     /*--------------------------

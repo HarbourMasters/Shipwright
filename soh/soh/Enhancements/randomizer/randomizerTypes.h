@@ -904,6 +904,7 @@ typedef enum {
     RG_LIGHT_MEDALLION,
     RG_RECOVERY_HEART,
     RG_GREEN_RUPEE,
+    RG_GREG_RUPEE,
     RG_BLUE_RUPEE,
     RG_RED_RUPEE,
     RG_PURPLE_RUPEE,
@@ -1012,6 +1013,8 @@ typedef enum {
     RSK_SHUFFLE_SONGS,
     RSK_SHUFFLE_TOKENS,
     RSK_SHOPSANITY,
+    RSK_SHOPSANITY_PRICES,
+    RSK_SHOPSANITY_PRICES_AFFORDABLE,
     RSK_SHUFFLE_SCRUBS,
     RSK_SHUFFLE_COWS,
     RSK_SHUFFLE_WEIRD_EGG,
@@ -1023,6 +1026,7 @@ typedef enum {
     RSK_TOT_ALTAR_HINT,
     RSK_GANONDORF_LIGHT_ARROWS_HINT,
     RSK_DAMPES_DIARY_HINT,
+    RSK_GREG_HINT,
     RSK_KAK_10_SKULLS_HINT,
     RSK_KAK_20_SKULLS_HINT,
     RSK_KAK_30_SKULLS_HINT,
@@ -1174,6 +1178,7 @@ typedef enum {
     RO_BRIDGE_DUNGEON_REWARDS,
     RO_BRIDGE_DUNGEONS,
     RO_BRIDGE_TOKENS,
+    RO_BRIDGE_GREG,
     RO_BRIDGE_MAX,
 } RandoOptionRainbowBridge;
 
@@ -1188,6 +1193,16 @@ typedef enum {
     RO_SHOPSANITY_RANDOM,
     RO_SHOPSANITY_MAX,
 } RandoOptionShopsanity;
+
+//Shopsanity price ranges
+typedef enum {
+    RO_SHOPSANITY_PRICE_BALANCED, //Balanced random from 0-300
+    RO_SHOPSANITY_PRICE_STARTER, //Wallets are random within their range, in increments of 5 rupees
+    RO_SHOPSANITY_PRICE_ADULT,
+    RO_SHOPSANITY_PRICE_GIANT,
+    RO_SHOPSANITY_PRICE_TYCOON,
+    RO_SHOPSANITY_PRICE_MAX, 
+} RandoOptionShopsanityPrices;
 
 //Scrubsanity settings (off, affordable, expensive, random)
 typedef enum {

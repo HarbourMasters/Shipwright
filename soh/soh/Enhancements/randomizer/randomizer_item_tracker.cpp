@@ -9,6 +9,7 @@
 #include <vector>
 #include <libultraship/bridge.h>
 #include <Hooks.h>
+#include <algorithm>
 
 extern "C" {
 #include <z64.h>
@@ -75,6 +76,10 @@ std::vector<ItemTrackerItem> songItems = {
     ITEM_TRACKER_ITEM(QUEST_SONG_SUN, 0, DrawSong),     ITEM_TRACKER_ITEM(QUEST_SONG_TIME, 0, DrawSong),     ITEM_TRACKER_ITEM(QUEST_SONG_STORMS, 0, DrawSong),
     ITEM_TRACKER_ITEM(QUEST_SONG_MINUET, 0, DrawSong),  ITEM_TRACKER_ITEM(QUEST_SONG_BOLERO, 0, DrawSong),   ITEM_TRACKER_ITEM(QUEST_SONG_SERENADE, 0, DrawSong),
     ITEM_TRACKER_ITEM(QUEST_SONG_REQUIEM, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_NOCTURNE, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_PRELUDE, 0, DrawSong),
+};
+
+std::vector<ItemTrackerItem> gregItems = {
+    ITEM_TRACKER_ITEM(ITEM_RUPEE_GREEN, 0, DrawItem),
 };
 
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsHorizontal = {
@@ -508,6 +513,10 @@ void DrawItem(ItemTrackerItem item) {
             actualItemId = CUR_UPG_VALUE(UPG_SCALE) == 2 ? ITEM_SCALE_GOLDEN : ITEM_SCALE_SILVER;
             hasItem = CUR_UPG_VALUE(UPG_SCALE) > 0;
             break;
+        case ITEM_RUPEE_GREEN:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
+            break;
     }
 
     if (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end()) {
@@ -848,6 +857,35 @@ void UpdateVectors() {
         mainWindowItems.insert(mainWindowItems.end(), dungeonItems.begin(), dungeonItems.end());
     }
 
+    // if we're adding greg to the misc window,
+    // and misc isn't on the main window,
+    // and it doesn't already have greg, add him
+    if (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 2 &&
+        CVarGetInteger("gItemTrackerMiscItemsDisplayType", 1) != 1 &&
+        std::none_of(miscItems.begin(), miscItems.end(), [](ItemTrackerItem item){return item.id == ITEM_RUPEE_GREEN;})) {
+            
+        miscItems.insert(miscItems.end(), gregItems.begin(), gregItems.end());
+    } else {
+        for (auto it = miscItems.begin(); it != miscItems.end();) {
+            if (it->id == ITEM_RUPEE_GREEN) {
+                miscItems.erase(it);
+            } else {
+                it++;
+            }
+        }
+    }
+
+    // if we're adding greg to the main window
+    if (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 1) {
+        // insert empty items until we're on a new row for greg
+        while (mainWindowItems.size() % 6) {
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+        }
+
+        // add greg
+        mainWindowItems.insert(mainWindowItems.end(), gregItems.begin(), gregItems.end());
+    }
+
     shouldUpdateVectors = false;
 }
 
@@ -872,6 +910,7 @@ void DrawItemTracker(bool& open) {
             (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", 1) == 1) ||
             (CVarGetInteger("gItemTrackerSongsDisplayType", 1) == 1) ||
             (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", 0) == 1) ||
+            (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 1) ||
             (CVarGetInteger("gItemTrackerNotesDisplayType", 0) == 1)
         ) {
             BeginFloatingWindows("Item Tracker##main window");
@@ -933,6 +972,12 @@ void DrawItemTracker(bool& open) {
             } else {
                 DrawItemsInRows(dungeonItems);
             }
+            EndFloatingWindows();
+        }
+
+        if (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 3) {
+            BeginFloatingWindows("Greg Tracker");
+            DrawItemsInRows(gregItems);
             EndFloatingWindows();
         }
 
@@ -1023,6 +1068,7 @@ void DrawItemTrackerOptions(bool& open) {
         }
         PaddedEnhancementCheckbox("Maps and compasses", "gItemTrackerDisplayDungeonItemsMaps", 1);
     }
+    LabeledComboBoxRightAligned("Greg", "gItemTrackerGregDisplayType", { "Hidden", "Main Window", "Misc Window", "Seperate" }, 0);
 
     if (CVarGetInteger("gItemTrackerDisplayType", 0) != 1) {
         LabeledComboBoxRightAligned("Personal notes", "gItemTrackerNotesDisplayType", { "Hidden", "Main Window", "Seperate" }, 0);
@@ -1056,6 +1102,7 @@ void InitItemTracker() {
     });
     Ship::RegisterHook<Ship::LoadFile>([](uint32_t fileNum) {
         const char* initialTrackerNotes = CVarGetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
+        itemTrackerNotes.resize(strlen(initialTrackerNotes) + 1);
         strcpy(itemTrackerNotes.Data, initialTrackerNotes);
     });
     Ship::RegisterHook<Ship::DeleteFile>([](uint32_t fileNum) {

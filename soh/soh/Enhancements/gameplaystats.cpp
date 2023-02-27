@@ -165,22 +165,7 @@ void DisplayTimeHHMMSS(uint32_t timeInTenthsOfSeconds, const char* text, ImVec4 
 
     ImGui::Text(text);
     ImGui::SameLine();
-
-    // Hack to keep the timers aligned and prevent them from shifting around
-    // Put a leading zero in front of the seconds or minutes if they're less than 10
-    if (mm < 10 && ss < 10) {
-        ImGui::Text("%u:0%u:0%u.%u", hh, mm, ss, ds);
-    }
-    if (mm < 10 && ss >= 10) {
-        ImGui::Text("%u:0%u:%u.%u", hh, mm, ss, ds);
-    }
-    if (mm >= 10 && ss < 10) {
-        ImGui::Text("%u:%u:0%u.%u", hh, mm, ss, ds);
-    }
-    if (mm >= 10 && ss >= 10) {
-        ImGui::Text("%u:%u:%u.%u", hh, mm, ss, ds);
-    }
-
+    ImGui::Text("%2u:%02u:%02u.%u", hh, mm, ss, ds);
     ImGui::PopStyleColor();
 }
 
@@ -214,20 +199,7 @@ void DisplayStat(const char* text, uint32_t value) {
 
     ImGui::Text(text);
     ImGui::SameLine();
-    // Hack to keep the digits properly aligned in the column
-           if (value < 10) {
-        ImGui::Text("     %u", value);
-    } else if (value < 100) {
-        ImGui::Text("    %u", value);
-    } else if (value < 1000) {
-        ImGui::Text("   %u", value);
-    } else if (value < 10000) {
-        ImGui::Text("  %u", value);
-    } else if (value < 100000) {
-        ImGui::Text(" %u", value);
-    } else {
-        ImGui::Text("%u", value);
-    }
+    ImGui::Text("%7u", value);
 }
 
 void DisplayStatIfNonZero(const char* text, uint32_t value) {
@@ -634,7 +606,8 @@ void SetupDisplayColors() {
             case ITEM_KOKIRI_EMERALD:
             case ITEM_SONG_SARIA:
             case ITEM_MEDALLION_FOREST:
-                itemTimestampDisplayColor[i] = COLOR_GREEN;
+            case TIMESTAMP_FOUND_GREG:
+                timestampDisplayColor[i] = COLOR_GREEN;
                 break;
             case ITEM_SONG_BOLERO:
             case ITEM_GORON_RUBY:

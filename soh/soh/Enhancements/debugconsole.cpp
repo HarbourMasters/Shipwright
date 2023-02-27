@@ -10,7 +10,7 @@
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
-#include "soh/Enhancements/sfx-editor/SfxEditor.h"
+#include "soh/Enhancements/audio/AudioEditor.h"
 
 #define Path _Path
 #define PATH_HACK
@@ -206,6 +206,7 @@ static bool ResetHandler(std::shared_ptr<Ship::Console> Console, std::vector<std
 
     SET_NEXT_GAMESTATE(&gPlayState->state, TitleSetup_Init, GameState);
     gPlayState->state.running = false;
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnExitGame>(gSaveContext.fileNum);
     return CMD_SUCCESS;
 }
 
@@ -1210,9 +1211,9 @@ static bool SfxHandler(std::shared_ptr<Ship::Console> Console, const std::vector
     }
 
     if (args[1].compare("reset") == 0) {
-        SfxEditor_ResetAll();
+        AudioEditor_ResetAll();
     } else if (args[1].compare("randomize") == 0) {
-        SfxEditor_RandomizeAll();
+        AudioEditor_RandomizeAll();
     } else {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Invalid argument passed, must be 'reset' or 'randomize'");
         return CMD_FAILED;

@@ -272,11 +272,11 @@ namespace GameMenuBar {
                     ImGui::PopStyleVar(1);
                 }
 
-                if (SohImGui::supportsWindowedFullscreen()) {
+                if (SohImGui::SupportsWindowedFullscreen()) {
                     UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", "gSdlWindowedFullscreen", true, false);
                 }
 
-                if (SohImGui::supportsViewports()) {
+                if (SohImGui::SupportsViewports()) {
                     UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false);
                     UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
                 }
@@ -325,6 +325,8 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementSliderInt("Block pushing speed +%d", "##BLOCKSPEED", "gFasterBlockPush", 0, 5, "", 0, false, false, true);
                     UIWidgets::PaddedEnhancementCheckbox("Faster Heavy Block Lift", "gFasterHeavyBlockLift", true, false);
                     UIWidgets::Tooltip("Speeds up lifting silver rocks and obelisks");
+                    UIWidgets::PaddedEnhancementCheckbox("Link as default file name", "gLinkDefaultName");
+                    UIWidgets::Tooltip("Allows you to have \"Link\" as a premade file name");
                     UIWidgets::PaddedEnhancementCheckbox("No Forced Navi", "gNoForcedNavi", true, false);
                     UIWidgets::Tooltip("Prevent forced Navi conversations");
                     UIWidgets::PaddedEnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze", true, false);
@@ -403,10 +405,14 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Makes nuts explode bombs, similar to how they interact with bombchus. This does not affect bombflowers.");
                     UIWidgets::PaddedEnhancementCheckbox("Equip Multiple Arrows at Once", "gSeparateArrows", true, false);
                     UIWidgets::Tooltip("Allow the bow and magic arrows to be equipped at the same time on different slots");
+                    UIWidgets::PaddedEnhancementCheckbox("Bow as Child/Slingshot as Adult", "gBowSlingShotAmmoFix", true, false);
+                    UIWidgets::Tooltip("Allows child to use bow with arrows.\nAllows adult to use slingshot with seeds.\n\nRequires glitches or 'Timeless Equipment' cheat to equip.");
                     UIWidgets::PaddedEnhancementCheckbox("Better Farore's Wind", "gBetterFW", true, false);
                     UIWidgets::Tooltip("Helps FW persist between ages, gives child and adult separate FW points, and can be used in more places.");
                     UIWidgets::PaddedEnhancementCheckbox("Static Explosion Radius", "gStaticExplosionRadius", true, false);
                     UIWidgets::Tooltip("Explosions are now a static size, like in Majora's Mask and OoT3D. Makes bombchu hovering much easier.");
+                    UIWidgets::PaddedEnhancementCheckbox("Prevent Bombchus Forcing First-Person", "gDisableFirstPersonChus", true, false);
+                    UIWidgets::Tooltip("Prevent bombchus from forcing the camera into first-person mode when released.");
                     ImGui::EndMenu();
                 }
 
@@ -720,7 +726,7 @@ namespace GameMenuBar {
 
                     ImGui::EndMenu();
                 }
-                UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gN64Mode", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gLowResMode", true, false);
                 UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
                 UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", "gDrawLineupTick", true, false);
                 UIWidgets::Tooltip("Displays a tick in the top center of the screen to help with glitch line-ups in SoH, as traditional UI based line-ups do not work outside of 4:3");
@@ -732,6 +738,13 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                 UIWidgets::PaddedEnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon", true, false);
                 UIWidgets::Tooltip("Always shows dungeon entrance icons on the minimap");
+                UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
+                const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
+                UIWidgets::EnhancementCombobox("gDirtPathFix", zFightingOptions, 3, 0);
+                UIWidgets::Tooltip("Disabled: Paths vanish more the higher the resolution (Z-fighting is based on resolution)\n"
+                                   "Consistent: Certain paths vanish the same way in all resolutions\n"
+                                   "No Vanish: Paths do not vanish, Link seems to sink in to some paths\n"
+                                   "This might affect other decal effects\n");
 
                 ImGui::EndMenu();
             }
@@ -773,7 +786,7 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Fix Camera Swing", "gFixCameraSwing", true, false);
                 UIWidgets::Tooltip("Fixes camera getting stuck on collision when standing still, also fixes slight shift back in camera when stop moving");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Hanging Ledge Swing Rate", "gFixHangingLedgeSwingRate", true, false);
-                UIWidgets::Tooltip("Fixes camera swing rate when player falls of a ledge and camera swings around");
+                UIWidgets::Tooltip("Fixes camera swing rate when player falls off a ledge and camera swings around");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Missing Jingle after 5 Silver Rupees", "gSilverRupeeJingleExtend", true, false);
                 UIWidgets::Tooltip(
                     "Adds 5 higher pitches for the Silver Rupee Jingle for the rooms with more than 5 Silver Rupees. "
@@ -829,12 +842,12 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0));
             }
-            if (ImGui::Button(GetWindowButtonText("SFX Editor", CVarGetInteger("gSfxEditor", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
+            if (ImGui::Button(GetWindowButtonText("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gSfxEditor", 0);
-                CVarSetInteger("gSfxEditor", !currentValue);
+                bool currentValue = CVarGetInteger("gAudioEditor.WindowOpen", 0);
+                CVarSetInteger("gAudioEditor.WindowOpen", !currentValue);
                 SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::EnableWindow("SFX Editor", CVarGetInteger("gSfxEditor", 0));
+                SohImGui::EnableWindow("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0));
             }
             if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 bool currentValue = CVarGetInteger("gGameplayStatsEnabled", 0);
@@ -943,7 +956,7 @@ namespace GameMenuBar {
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6.0f, 4.0f));
                 if (ImGui::Button("Match Refresh Rate"))
                 {
-                    int hz = roundf(SohImGui::WindowRefreshRate());
+                    int hz = Ship::Window::GetInstance()->GetCurrentRefreshRate();
                     if (hz >= 20 && hz <= 360)
                     {
                         CVarSetInteger(fps_cvar, hz);

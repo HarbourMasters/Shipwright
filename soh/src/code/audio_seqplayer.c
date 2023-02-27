@@ -1067,7 +1067,7 @@ void AudioSeq_SequenceChannelProcessScript(SequenceChannel* channel) {
                                 seqPlayer->seqId = gAudioContext.seqToPlay[seqPlayer->playerIdx];
                                 gAudioContext.seqReplaced[seqPlayer->playerIdx] = 0;
                             }
-                            u16 seqId = SfxEditor_GetReplacementSeq(seqPlayer->seqId);
+                            u16 seqId = AudioEditor_GetReplacementSeq(seqPlayer->seqId);
                             SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
                             command = sDat.fonts[sDat.numFonts - result - 1];
                         }
@@ -1184,7 +1184,7 @@ void AudioSeq_SequenceChannelProcessScript(SequenceChannel* channel) {
                                 seqPlayer->seqId = gAudioContext.seqToPlay[seqPlayer->playerIdx];
                                 gAudioContext.seqReplaced[seqPlayer->playerIdx] = 0;
                             }
-                            u16 seqId = SfxEditor_GetReplacementSeq(seqPlayer->seqId);
+                            u16 seqId = AudioEditor_GetReplacementSeq(seqPlayer->seqId);
                             SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
 
                             // The game apparantely would sometimes do negative array lookups, the result of which would get rejected by AudioHeap_SearchCaches, never

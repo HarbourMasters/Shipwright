@@ -109,6 +109,8 @@ string_view bridgeDungeons            = "The Rainbow Bridge requires completing 
                                         "into the blue warp at the end of them.";          //
 string_view bridgeTokens              = "The Rainbow Bridge requires collecting a\n"       //
                                         "configurable number of Gold Skulltula Tokens.";   //
+string_view bridgeGreg                = "The Rainbow Bridge requires collecting\n"         //
+                                        "Greg the green rupee.";                           //
 /*------------------------------                                                           //
 |      BRIDGE CONDITIONS       |                                                           //
 ------------------------------*/                                                           //
@@ -356,6 +358,18 @@ string_view shopsFour                 = "Vanilla shop items will be shuffled amo
 string_view shopsRandom               = "Vanilla shop items will be shuffled among\n"      //
                                         "different shops, and each shop will contain\n"    //
                                         "1-4 non-vanilla shop items.";                     //
+                                                                                           //
+/*------------------------------                                                           //
+|     SHOPSANITY PRICES        |                                                           //
+------------------------------*/                                                           //
+string_view shopPriceBalanced         = "Weighted randomization, max 300.";                //
+string_view shopPriceStarter          = "True randomization, max 95";                      //
+string_view shopPriceAdult            = "True randomization, max 200";                     //
+string_view shopPriceGiant            = "True randomization, max 500";                     //
+string_view shopPriceTycoon           = "True randomization, max 995";                     //
+string_view shopPriceAffordable       = "Cap shop prices to affordable value just above"   //
+                                        "the previous tier wallet's max value";            //
+                                                                                           //
 /*------------------------------                                                           //
 |         TOKENSANITY          |                                                           //
 ------------------------------*/                                                           //

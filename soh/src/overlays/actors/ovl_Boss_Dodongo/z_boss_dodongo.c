@@ -118,10 +118,7 @@ void func_808C12C4(u8* arg1, s16 arg2) {
 }
 
 void func_808C1554(void* arg0, void* floorTex, s32 arg2, f32 arg3) {
-    // Entering the King Dodongo boss battle was crashing when using only an mq otr
-    // because it was trying to load a texture from a non-mq path 
-    // HACK: GetResourceDataByName doesn't account for mq vs non-mq paths, LoadTexOrDListByName does. 
-    arg0 = ResourceMgr_LoadTexOrDListByName(arg0);
+    arg0 = GetResourceDataByNameHandlingMQ(arg0);
     floorTex = GetResourceDataByName(floorTex, false);
 
     u16* temp_s3 = SEGMENTED_TO_VIRTUAL(arg0);
