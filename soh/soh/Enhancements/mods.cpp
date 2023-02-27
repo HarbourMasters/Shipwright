@@ -1,5 +1,6 @@
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "mods.h"
 #include <libultraship/bridge.h>
+#include "game-interactor/GameInteractor.h"
 
 extern "C" {
 #include <z64.h>
@@ -8,7 +9,7 @@ extern PlayState* gPlayState;
 extern void Play_PerformSave(PlayState* play);
 }
 
-void RegisterAutoSaveOnReceiveItem() {
+void RegisterAutoSaveOnReceiveItemHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnReceiveItem>([](u8 item) {
         if (CVarGetInteger("gAutosave", 0) && (gPlayState != NULL) && (gPlayState->sceneNum != SCENE_KENJYANOMA) && (gSaveContext.pendingSale == ITEM_NONE) && (gPlayState->sceneNum != SCENE_GANON_DEMO)) {
             if (CVarGetInteger("gAutosaveAllItems", 0)) {
@@ -63,6 +64,6 @@ void RegisterAutoSaveOnReceiveItem() {
     });
 }
 
-extern "C" void RegisterModHooks() {
-    RegisterAutoSaveOnReceiveItem();
+void InitMods() {
+    RegisterAutoSaveOnReceiveItemHook();
 }
