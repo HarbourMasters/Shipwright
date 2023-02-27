@@ -1210,10 +1210,8 @@ void BossGanon_SetupTowerCutscene(BossGanon* this, PlayState* play) {
 
 void BossGanon_ShatterWindows(u8 windowShatterState) {
     s16 i;
-    // Temporary solution: using LoadTexOrDList to ensure we actually have the texture available
-    // based on mq/nonmq. This will be handled properly with LUS 1.0
-    u8* tex1 = ResourceMgr_LoadTexOrDListByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_006C18));
-    u8* tex2 = ResourceMgr_LoadTexOrDListByName(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_007418));
+    u8* tex1 = GetResourceDataByNameHandlingMQ(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_006C18));
+    u8* tex2 = GetResourceDataByNameHandlingMQ(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_007418));
     u8* templateTex = GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGanondorfWindowShatterTemplateTex), false);
 
     for (i = 0; i < 2048; i++) {

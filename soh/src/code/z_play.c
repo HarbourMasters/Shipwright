@@ -7,6 +7,7 @@
 #include <ImGuiImpl.h>
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/debugconsole.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
 
@@ -437,10 +438,12 @@ void Play_Init(GameState* thisx) {
         }
     }
 
+    // Invalid entrance, so immediately exit the game to opening title
     if (gSaveContext.entranceIndex == -1) {
         gSaveContext.entranceIndex = 0;
         play->state.running = false;
         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
+        GameInteractor_ExecuteOnExitGame(gSaveContext.fileNum);
         return;
     }
 

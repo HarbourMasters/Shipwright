@@ -9,6 +9,7 @@
 #include <GameVersions.h>
 #include "objects/object_mag/object_mag.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define NORMAL_QUEST 0
 #define MASTER_QUEST 1
@@ -2148,7 +2149,6 @@ void FileChoose_LoadGame(GameState* thisx) {
     if (gSaveContext.n64ddFlag) {
         // Setup the modified entrance table and entrance shuffle table for rando
         Entrance_Init();
-        Entrance_InitEntranceTrackingData();
 
         // Handle randomized spawn positions after the save context has been setup from load
         // When remeber save location is on, set save warp if the save was in an a grotto, or
@@ -2159,6 +2159,8 @@ void FileChoose_LoadGame(GameState* thisx) {
             Entrance_SetSavewarpEntrance();
         }
     }
+
+    GameInteractor_ExecuteOnLoadGame(gSaveContext.fileNum);
 }
 
 static void (*gSelectModeUpdateFuncs[])(GameState*) = {
