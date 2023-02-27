@@ -260,7 +260,7 @@ set(Header_Files__soh__Enhancements__item_tables
 source_group("Header Files\\soh\\Enhancements\\item-tables" FILES ${Header_Files__soh__Enhancements__item_tables})
 
 set(Header_Files__soh__Enhancements__mods
-    "soh/Enhancements/mods/modhooks.h"
+    "soh/Enhancements/mods.h"
 )
 source_group("Header Files\\soh\\Enhancements\\mods" FILES ${Header_Files__soh__Enhancements__mods})
 
@@ -618,7 +618,7 @@ set(Source_Files__soh__Enhancements__item_tables
 source_group("Source Files\\soh\\Enhancements\\item-tables" FILES ${Source_Files__soh__Enhancements__item_tables})
 
 set(Source_Files__soh__Enhancements__mods
-    "soh/Enhancements/mods/modhooks.cpp"
+    "soh/Enhancements/mods.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\mods" FILES ${Source_Files__soh__Enhancements__mods})
 
