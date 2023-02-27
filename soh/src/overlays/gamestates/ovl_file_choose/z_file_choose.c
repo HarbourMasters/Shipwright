@@ -53,7 +53,7 @@ void FileChoose_DrawRawImageRGBA32(GraphicsContext* gfxCtx, s16 centerX, s16 cen
 
     OPEN_DISPS(gfxCtx);
 
-    source = ResourceMgr_LoadFileRaw(source);
+    source = GetResourceDataByName(source, false);
 
     curTexture = source;
     rectLeft = centerX - (width / 2);
@@ -1393,11 +1393,11 @@ const char* FileChoose_GetQuestChooseTitleTexName(Language lang) {
     switch (lang) {
         case LANGUAGE_ENG:
         default:
-            return "assets/textures/title_static/gFileSelPleaseChooseAQuestENGTex";
+            return "__OTR__textures/title_static/gFileSelPleaseChooseAQuestENGTex";
         case LANGUAGE_FRA:
-            return "assets/textures/title_static/gFileSelPleaseChooseAQuestFRATex";
+            return "__OTR__textures/title_static/gFileSelPleaseChooseAQuestFRATex";
         case LANGUAGE_GER:
-            return "assets/textures/title_static/gFileSelPleaseChooseAQuestGERTex";
+            return "__OTR__textures/title_static/gFileSelPleaseChooseAQuestGERTex";
     }
 }
 
@@ -1416,7 +1416,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     char* tex = (this->configMode == CM_QUEST_MENU || this->configMode == CM_ROTATE_TO_NAME_ENTRY || 
         this->configMode == CM_START_QUEST_MENU || this->configMode == CM_QUEST_TO_MAIN ||
         this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU)
-                  ? ResourceMgr_LoadFileRaw(FileChoose_GetQuestChooseTitleTexName(gSaveContext.language))
+                  ? GetResourceDataByName(FileChoose_GetQuestChooseTitleTexName(gSaveContext.language), false)
                   : sTitleLabels[gSaveContext.language][this->titleLabel];
 
     OPEN_DISPS(this->state.gfxCtx);
@@ -1486,7 +1486,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
                 FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, ResourceMgr_GameHasOriginal() ? gTitleZeldaShieldLogoTex : gTitleZeldaShieldLogoMQTex, 160, 160);
-                FileChoose_DrawRawImageRGBA32(this->state.gfxCtx, 182, 180, "assets/objects/object_mag/gTitleRandomizerSubtitleTex", 128, 32);
+                FileChoose_DrawRawImageRGBA32(this->state.gfxCtx, 182, 180, "__OTR__objects/object_mag/gTitleRandomizerSubtitleTex", 128, 32);
                 break;
         }
     } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY) {
@@ -1562,7 +1562,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                     this->nameAlpha[i]);
                 }
                 gDPLoadTextureBlock(POLY_OPA_DISP++,
-                                    ResourceMgr_LoadFileRaw("assets/textures/title_static/gFileSelRANDButtonTex"),
+                                    GetResourceDataByName("__OTR__textures/title_static/gFileSelRANDButtonTex", false),
                                     G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
@@ -1579,7 +1579,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                     this->nameAlpha[i]);
                 }
                 gDPLoadTextureBlock(POLY_OPA_DISP++,
-                                    ResourceMgr_LoadFileRaw("assets/textures/title_static/gFileSelMQButtonTex"),
+                                    GetResourceDataByName("__OTR__textures/title_static/gFileSelMQButtonTex", false),
                                     G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
