@@ -458,8 +458,6 @@ void GameState_Update(GameState* gameState) {
         }
     }
 
-    gSaveContext.language = CVarGetInteger("gLanguages", LANGUAGE_ENG);
-
     gameState->frames++;
 }
 

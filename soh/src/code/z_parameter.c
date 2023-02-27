@@ -2889,14 +2889,14 @@ void Interface_LoadActionLabel(InterfaceContext* interfaceCtx, u16 action, s16 l
     char* doAction = actionsTbl[action];
 
     char newName[512];
-    if (gSaveContext.language != LANGUAGE_ENG) {
+    if (gGlobalSettings.language != LANGUAGE_ENG) {
         size_t length = strlen(doAction);
         strcpy(newName, doAction);
-        if (gSaveContext.language == LANGUAGE_FRA) {
+        if (gGlobalSettings.language == LANGUAGE_FRA) {
             newName[length - 6] = 'F';
             newName[length - 5] = 'R';
             newName[length - 4] = 'A';
-        } else if (gSaveContext.language == LANGUAGE_GER) {
+        } else if (gGlobalSettings.language == LANGUAGE_GER) {
             newName[length - 6] = 'G';
             newName[length - 5] = 'E';
             newName[length - 4] = 'R';
@@ -2975,14 +2975,14 @@ void Interface_LoadActionLabelB(PlayState* play, u16 action) {
     char* doAction = actionsTbl[action];
     char newName[512];
 
-    if (gSaveContext.language != LANGUAGE_ENG) {
+    if (gGlobalSettings.language != LANGUAGE_ENG) {
         size_t length = strlen(doAction);
         strcpy(newName, doAction);
-        if (gSaveContext.language == LANGUAGE_FRA) {
+        if (gGlobalSettings.language == LANGUAGE_FRA) {
             newName[length - 6] = 'F';
             newName[length - 5] = 'R';
             newName[length - 4] = 'A';
-        } else if (gSaveContext.language == LANGUAGE_GER) {
+        } else if (gGlobalSettings.language == LANGUAGE_GER) {
             newName[length - 6] = 'G';
             newName[length - 5] = 'E';
             newName[length - 4] = 'R';
@@ -3836,7 +3836,8 @@ void Interface_DrawItemButtons(PlayState* play) {
     int StartBTN_W_Scaled = StartBtn_Icon_W * Start_BTN_Scale;
     int StartBTN_W_factor = (1 << 10) * StartBtn_Icon_W / StartBTN_W_Scaled;
     int StartBTN_H_factor = (1 << 10) * StartBtn_Icon_H / StartBTN_H_Scaled;
-    const s16 PosX_StartBtn_ori = OTRGetRectDimensionFromRightEdge(startButtonLeftPos[gSaveContext.language]+X_Margins_StartBtn);
+    const s16 PosX_StartBtn_ori =
+        OTRGetRectDimensionFromRightEdge(startButtonLeftPos[gGlobalSettings.language] + X_Margins_StartBtn);
     const s16 PosY_StartBtn_ori = 16+Y_Margins_StartBtn;
     s16 StartBTN_Label_W = DO_ACTION_TEX_WIDTH();
     s16 StartBTN_Label_H = DO_ACTION_TEX_HEIGHT();
@@ -4063,14 +4064,14 @@ void Interface_DrawItemButtons(PlayState* play) {
             //There is probably a more elegant way to do it.
             char* doAction = actionsTbl[3];
             char newName[512];
-            if (gSaveContext.language != LANGUAGE_ENG) {
+            if (gGlobalSettings.language != LANGUAGE_ENG) {
                 size_t length = strlen(doAction);
                 strcpy(newName, doAction);
-                if (gSaveContext.language == LANGUAGE_FRA) {
+                if (gGlobalSettings.language == LANGUAGE_FRA) {
                     newName[length - 6] = 'F';
                     newName[length - 5] = 'R';
                     newName[length - 4] = 'A';
-                } else if (gSaveContext.language == LANGUAGE_GER) {
+                } else if (gGlobalSettings.language == LANGUAGE_GER) {
                     newName[length - 6] = 'G';
                     newName[length - 5] = 'E';
                     newName[length - 4] = 'R';
@@ -4125,7 +4126,7 @@ void Interface_DrawItemButtons(PlayState* play) {
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
 
-            gDPLoadTextureBlock_4b(OVERLAY_DISP++, cUpLabelTextures[gSaveContext.language], G_IM_FMT_IA, 32, 8, 0,
+            gDPLoadTextureBlock_4b(OVERLAY_DISP++, cUpLabelTextures[gGlobalSettings.language], G_IM_FMT_IA, 32, 8, 0,
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                    G_TX_NOLOD, G_TX_NOLOD);
 
@@ -4971,7 +4972,7 @@ void Interface_Draw(PlayState* play) {
                         break;
                 }
             } else {
-                if (CVarGetInteger("gCosmetics.Consumable_GreenRupee.Changed", rupeeWalletColors)) {
+                if (CVarGetInteger("gCosmetics.Consumable_GreenRupee.Changed", 0)) {
                      rColor = CVarGetColor24("gCosmetics.Consumable_GreenRupee.Value", rupeeWalletColors[0]);
                 } else {
                      rColor = rupeeWalletColors[0];
@@ -5186,10 +5187,10 @@ void Interface_Draw(PlayState* play) {
             // B Button Do Action Label
             s16 PosX_adjust;
             s16 PosY_adjust;
-            if (gSaveContext.language == 2) {
+            if (gGlobalSettings.language == 2) {
                 PosX_adjust = -12;
                 PosY_adjust = 5;
-            } else if (gSaveContext.language == 1) { //ger
+            } else if (gGlobalSettings.language == 1) { // ger
                 PosY_adjust = 6;
                 PosX_adjust = -9;
             } else {
@@ -5222,8 +5223,9 @@ void Interface_Draw(PlayState* play) {
                     BbtnPosX = -9999;
                 }
             } else {
-                BbtnPosX = OTRGetRectDimensionFromRightEdge(R_B_LABEL_X(gSaveContext.language)+X_Margins_BtnB_label);
-                BbtnPosY = R_B_LABEL_Y(gSaveContext.language)+Y_Margins_BtnB_label;
+                BbtnPosX =
+                    OTRGetRectDimensionFromRightEdge(R_B_LABEL_X(gGlobalSettings.language) + X_Margins_BtnB_label);
+                BbtnPosY = R_B_LABEL_Y(gGlobalSettings.language) + Y_Margins_BtnB_label;
             }
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
@@ -5234,7 +5236,7 @@ void Interface_Draw(PlayState* play) {
                                    DO_ACTION_TEX_WIDTH(), DO_ACTION_TEX_HEIGHT(), 0, G_TX_NOMIRROR | G_TX_WRAP,
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-            R_B_LABEL_DD = (1 << 10) / (WREG(37 + gSaveContext.language) / 100.0f);
+            R_B_LABEL_DD = (1 << 10) / (WREG(37 + gGlobalSettings.language) / 100.0f);
             gSPWideTextureRectangle(OVERLAY_DISP++, BbtnPosX << 2, BbtnPosY << 2,
                                 (BbtnPosX + DO_ACTION_TEX_WIDTH()) << 2,
                                 (BbtnPosY + DO_ACTION_TEX_HEIGHT()) << 2, G_TX_RENDERTILE, 0, 0,
@@ -5428,7 +5430,7 @@ void Interface_Draw(PlayState* play) {
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->aAlpha);
         gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
-        Matrix_Translate(-138.0f + rAIconX, rAIconY, WREG(46 + gSaveContext.language) / 10.0f, MTXMODE_NEW);
+        Matrix_Translate(-138.0f + rAIconX, rAIconY, WREG(46 + gGlobalSettings.language) / 10.0f, MTXMODE_NEW);
         Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
         Matrix_RotateX(interfaceCtx->unk_1F4 / 10000.0f, MTXMODE_APPLY);
         gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -6065,14 +6067,14 @@ void Interface_Update(PlayState* play) {
     Bottom_HUD_Margin = CVarGetInteger("gHUDMargin_B", 0);
 
     if (CHECK_BTN_ALL(debugInput->press.button, BTN_DLEFT)) {
-        gSaveContext.language = LANGUAGE_ENG;
-        osSyncPrintf("J_N=%x J_N=%x\n", gSaveContext.language, &gSaveContext.language);
+        gGlobalSettings.language = LANGUAGE_ENG;
+        osSyncPrintf("J_N=%x J_N=%x\n", gGlobalSettings.language, &gGlobalSettings.language);
     } else if (CHECK_BTN_ALL(debugInput->press.button, BTN_DUP)) {
-        gSaveContext.language = LANGUAGE_GER;
-        osSyncPrintf("J_N=%x J_N=%x\n", gSaveContext.language, &gSaveContext.language);
+        gGlobalSettings.language = LANGUAGE_GER;
+        osSyncPrintf("J_N=%x J_N=%x\n", gGlobalSettings.language, &gGlobalSettings.language);
     } else if (CHECK_BTN_ALL(debugInput->press.button, BTN_DRIGHT)) {
-        gSaveContext.language = LANGUAGE_FRA;
-        osSyncPrintf("J_N=%x J_N=%x\n", gSaveContext.language, &gSaveContext.language);
+        gGlobalSettings.language = LANGUAGE_FRA;
+        osSyncPrintf("J_N=%x J_N=%x\n", gGlobalSettings.language, &gGlobalSettings.language);
     }
 
     if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0)) {

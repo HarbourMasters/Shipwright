@@ -457,7 +457,7 @@ void DrawInfoTab() {
     UIWidgets::InsertHelpHoverText("Time, in seconds");
      
     const char* audioName;
-    switch (gSaveContext.audioSetting) { 
+    switch (gGlobalSettings.audioSetting) { 
         case 0:
             audioName = "Stereo";
             break;
@@ -475,16 +475,16 @@ void DrawInfoTab() {
     }
     if (ImGui::BeginCombo("Audio", audioName)) {
         if (ImGui::Selectable("Stereo")) {
-            gSaveContext.audioSetting = 0;
+            gGlobalSettings.audioSetting = 0;
         }
         if (ImGui::Selectable("Mono")) {
-            gSaveContext.audioSetting = 1;
+            gGlobalSettings.audioSetting = 1;
         }
         if (ImGui::Selectable("Headset")) {
-            gSaveContext.audioSetting = 2;
+            gGlobalSettings.audioSetting = 2;
         }
         if (ImGui::Selectable("Surround")) {
-            gSaveContext.audioSetting = 3;
+            gGlobalSettings.audioSetting = 3;
         }
 
         ImGui::EndCombo();
@@ -497,12 +497,12 @@ void DrawInfoTab() {
     }
     UIWidgets::InsertHelpHoverText("WARNING! If you save, your file may be locked! Use caution!");
     
-    if (ImGui::BeginCombo("Z Target Mode", gSaveContext.zTargetSetting ? "Hold" : "Switch")) {
+    if (ImGui::BeginCombo("Z Target Mode", gGlobalSettings.zTargetSetting ? "Hold" : "Switch")) {
         if (ImGui::Selectable("Switch")) {
-            gSaveContext.zTargetSetting = 0;
+            gGlobalSettings.zTargetSetting = 0;
         }
         if (ImGui::Selectable("Hold")) {
-            gSaveContext.zTargetSetting = 1;
+            gGlobalSettings.zTargetSetting = 1;
         }
         ImGui::EndCombo();
     }

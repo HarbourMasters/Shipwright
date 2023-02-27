@@ -47,6 +47,7 @@
 #include <Utils/StringHelper.h>
 #include <Hooks.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
+#include "GlobalSettings.h"
 
 #include <Fast3D/gfx_pc.h>
 #include <Fast3D/gfx_rendering_api.h>
@@ -230,6 +231,10 @@ OTRGlobals::OTRGlobals() {
         OOT_PAL_GC_DBG1,
         OOT_PAL_GC_DBG2
     };
+
+    GlobalSettings::Init();
+    Ship::RegisterHook<Ship::CVarInit>(GlobalSettings::RegisterCVars);
+
     context = Ship::Window::CreateInstance("Ship of Harkinian", OTRFiles);
 
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Animation, std::make_shared<Ship::AnimationFactory>());
@@ -564,6 +569,8 @@ extern "C" void InitOTR() {
 #endif
     SohImGui::AddSetupHooksDelegate(GameMenuBar::SetupHooks);
     SohImGui::RegisterMenuDrawMethod(GameMenuBar::Draw);
+
+    //GlobalSettings_Init();
 
     OTRGlobals::Instance = new OTRGlobals();
     SaveManager::Instance = new SaveManager();
@@ -1414,11 +1421,11 @@ extern "C" void* getN64WeirdFrame(s32 i) {
 extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize) {
     std::string postfix;
 
-    if (gSaveContext.language == LANGUAGE_FRA) {
+    if (gGlobalSettings.language == LANGUAGE_FRA) {
         postfix = "\x04\x1A\x08" "D\x96sirez-vous l'\x96quiper maintenant?" "\x09&&"
                   "\x1B%g" "Oui" "&"
                            "Non" "%w\x02";
-    } else if (gSaveContext.language == LANGUAGE_GER) {
+    } else if (gGlobalSettings.language == LANGUAGE_GER) {
         postfix = "\x04\x1A\x08" "M""\x9A""chtest Du es jetzt ausr\x9Esten?" "\x09&&"
                   "\x1B%g" "Ja!" "&"
                            "Nein!" "%w\x02";
@@ -1687,7 +1694,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     }
     if (messageEntry.textBoxType != -1) {
         font->charTexBuf[0] = (messageEntry.textBoxType << 4) | messageEntry.textBoxPos;
-        switch (gSaveContext.language) {
+        switch (gGlobalSettings.language) {
             case LANGUAGE_FRA:
                 return msgCtx->msgLength = font->msgLength =
                            CopyStringToCharBuffer(messageEntry.french, buffer, maxBufferSize);

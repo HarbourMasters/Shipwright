@@ -3258,7 +3258,7 @@ void func_80836BEC(Player* this, PlayState* play) {
                     actorToTarget = &GET_PLAYER(play)->actor;
                 }
 
-                holdTarget = (gSaveContext.zTargetSetting != 0) || (this->actor.category != ACTORCAT_PLAYER);
+                holdTarget = (gGlobalSettings.zTargetSetting != 0) || (this->actor.category != ACTORCAT_PLAYER);
                 this->stateFlags1 |= PLAYER_STATE1_15;
 
                 if ((actorToTarget != NULL) && !(actorToTarget->flags & ACTOR_FLAG_27)) {

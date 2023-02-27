@@ -1415,8 +1415,8 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     char* tex = (this->configMode == CM_QUEST_MENU || this->configMode == CM_ROTATE_TO_NAME_ENTRY || 
         this->configMode == CM_START_QUEST_MENU || this->configMode == CM_QUEST_TO_MAIN ||
         this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU)
-                  ? ResourceMgr_LoadFileRaw(FileChoose_GetQuestChooseTitleTexName(gSaveContext.language))
-                  : sTitleLabels[gSaveContext.language][this->titleLabel];
+                    ? ResourceMgr_LoadFileRaw(FileChoose_GetQuestChooseTitleTexName(gGlobalSettings.language))
+                    : sTitleLabels[gGlobalSettings.language][this->titleLabel];
 
     OPEN_DISPS(this->state.gfxCtx);
 
@@ -1491,7 +1491,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->titleAlpha[1]);
-        gDPLoadTextureBlock(POLY_OPA_DISP++, sTitleLabels[gSaveContext.language][this->nextTitleLabel], G_IM_FMT_IA,
+        gDPLoadTextureBlock(POLY_OPA_DISP++, sTitleLabels[gGlobalSettings.language][this->nextTitleLabel], G_IM_FMT_IA,
                             G_IM_SIZ_8b, 128, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
@@ -1530,7 +1530,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                 this->fileButtonAlpha[i]);
             }
 
-            gDPLoadTextureBlock(POLY_OPA_DISP++, sFileButtonTextures[gSaveContext.language][i], G_IM_FMT_IA,
+            gDPLoadTextureBlock(POLY_OPA_DISP++, sFileButtonTextures[gGlobalSettings.language][i], G_IM_FMT_IA,
                                 G_IM_SIZ_16b, 64, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
@@ -1620,7 +1620,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             gDPPipeSync(POLY_OPA_DISP++);
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
                             this->actionButtonAlpha[i]);
-            gDPLoadTextureBlock(POLY_OPA_DISP++, sActionButtonTextures[gSaveContext.language][i], G_IM_FMT_IA,
+            gDPLoadTextureBlock(POLY_OPA_DISP++, sActionButtonTextures[gGlobalSettings.language][i], G_IM_FMT_IA,
                                 G_IM_SIZ_16b, 64, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             gSP1Quadrangle(POLY_OPA_DISP++, quadVtxIndex, quadVtxIndex + 2, quadVtxIndex + 3, quadVtxIndex + 1, 0);
@@ -1634,7 +1634,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
                             this->confirmButtonAlpha[i]);
-            gDPLoadTextureBlock(POLY_OPA_DISP++, sActionButtonTextures[gSaveContext.language][temp], G_IM_FMT_IA,
+            gDPLoadTextureBlock(POLY_OPA_DISP++, sActionButtonTextures[gGlobalSettings.language][temp], G_IM_FMT_IA,
                                 G_IM_SIZ_16b, 64, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             gSP1Quadrangle(POLY_OPA_DISP++, quadVtxIndex, quadVtxIndex + 2, quadVtxIndex + 3, quadVtxIndex + 1, 0);
@@ -1644,7 +1644,8 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
                         this->optionButtonAlpha);
-        gDPLoadTextureBlock(POLY_OPA_DISP++, sOptionsButtonTextures[gSaveContext.language], G_IM_FMT_IA, G_IM_SIZ_16b,
+        gDPLoadTextureBlock(POLY_OPA_DISP++, sOptionsButtonTextures[gGlobalSettings.language], G_IM_FMT_IA,
+                            G_IM_SIZ_16b,
                             64, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
         gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
@@ -1673,7 +1674,8 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->emptyFileTextAlpha);
             gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
-            gDPLoadTextureBlock(POLY_OPA_DISP++, sWarningLabels[gSaveContext.language][this->warningLabel], G_IM_FMT_IA,
+            gDPLoadTextureBlock(POLY_OPA_DISP++, sWarningLabels[gGlobalSettings.language][this->warningLabel],
+                                G_IM_FMT_IA,
                                 G_IM_SIZ_8b, 128, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             gSP1Quadrangle(POLY_OPA_DISP++, 16, 18, 19, 17, 0);
@@ -2421,7 +2423,8 @@ void FileChoose_Main(GameState* thisx) {
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, helpTextColor.r, helpTextColor.g, helpTextColor.b, this->controlsAlpha);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
-        gDPLoadTextureBlock(POLY_OPA_DISP++, controlsTextures[gSaveContext.language], G_IM_FMT_IA, G_IM_SIZ_8b, 144, 16,
+        gDPLoadTextureBlock(POLY_OPA_DISP++, controlsTextures[gGlobalSettings.language], G_IM_FMT_IA, G_IM_SIZ_8b, 144,
+                            16,
                             0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
         gSPTextureRectangle(POLY_OPA_DISP++, 0x0168, 0x0330, 0x03A8, 0x0370, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);

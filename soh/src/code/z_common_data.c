@@ -2,6 +2,7 @@
 #include <string.h>
 
 SaveContext gSaveContext;
+GlobalSettingsStruct gGlobalSettings;
 
 void SaveContext_Init(void) {
     memset(&gSaveContext, 0, sizeof(gSaveContext));

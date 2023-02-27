@@ -180,6 +180,7 @@ extern "C"
 	extern u64 gJpegUCodeData[];
 
 	extern SaveContext gSaveContext;
+	extern GlobalSettingsStruct gGlobalSettings;
 	extern GameInfo* gGameInfo;
 	extern u16 D_8015FCC0;
 	extern u16 D_8015FCC2;

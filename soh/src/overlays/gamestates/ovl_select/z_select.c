@@ -1036,7 +1036,7 @@ void Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
         }
 
         if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
-            switch (gSaveContext.language) {
+            switch (gGlobalSettings.language) {
                 case LANGUAGE_ENG:
                 default:
                     name = this->scenes[scene].englishName;
@@ -1062,7 +1062,7 @@ void Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
     GfxPrint_SetColor(printer, 155, 55, 150, 255);
 
     // Small position hack of the OPT=X text since german Link's Age overlap if translated
-    if (CVarGetInteger("gDebugWarpScreenTranslation", 0) && gSaveContext.language == LANGUAGE_GER) {
+    if (CVarGetInteger("gDebugWarpScreenTranslation", 0) && gGlobalSettings.language == LANGUAGE_GER) {
         GfxPrint_SetPos(printer, 26, 26);
     } else {
         GfxPrint_SetPos(printer, 20, 26);
@@ -1092,7 +1092,7 @@ void Better_Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
         }
         
         if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
-            switch (gSaveContext.language) {
+            switch (gGlobalSettings.language) {
                 case LANGUAGE_ENG:
                 default:
                     name = this->betterScenes[scene].englishName;
@@ -1118,7 +1118,7 @@ void Better_Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
     GfxPrint_SetPos(printer, 3, 26);
 
     if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
-        switch (gSaveContext.language) {
+        switch (gGlobalSettings.language) {
             case LANGUAGE_ENG:
             default:
                 GfxPrint_Printf(printer, "%s", this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].englishName);
@@ -1158,7 +1158,7 @@ void Select_PrintLoadingMessage(SelectContext* this, GfxPrint* printer) {
     GfxPrint_SetColor(printer, 255, 255, 255, 255);
     randomMsg = Rand_ZeroOne() * ARRAY_COUNT(sLoadingMessages);
     if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
-        switch (gSaveContext.language) {
+        switch (gGlobalSettings.language) {
             case LANGUAGE_ENG:
             default:
                 GfxPrint_Printf(printer, "%s", sLoadingMessages[randomMsg].englishMessage);
@@ -1189,7 +1189,7 @@ void Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 age) {
     GfxPrint_SetPos(printer, 4, 26);
     GfxPrint_SetColor(printer, 255, 255, 55, 255);
     if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
-        switch (gSaveContext.language) {
+        switch (gGlobalSettings.language) {
             case LANGUAGE_ENG:
             default:
                 GfxPrint_Printf(printer, "Age:%s", sAgeLabels[age].englishAge);
@@ -1210,7 +1210,7 @@ void Better_Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 a
     GfxPrint_SetPos(printer, 25, 25);
     GfxPrint_SetColor(printer, 100, 100, 100, 255);
     if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
-        switch (gSaveContext.language) {
+        switch (gGlobalSettings.language) {
             case LANGUAGE_ENG:
             case LANGUAGE_FRA:
             default:
@@ -1226,7 +1226,7 @@ void Better_Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 a
     
     GfxPrint_SetColor(printer, 55, 200, 50, 255);
     if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
-        switch (gSaveContext.language) {
+        switch (gGlobalSettings.language) {
             case LANGUAGE_ENG:
             default:
                 GfxPrint_Printf(printer, "%s", sBetterAgeLabels[age].englishAge);
@@ -1261,7 +1261,7 @@ void Select_PrintCutsceneSetting(SelectContext* this, GfxPrint* printer, u16 csI
     };
     
     char* label;
-    int lang = CVarGetInteger("gDebugWarpScreenTranslation", 0) ? gSaveContext.language + 1 : 0;
+    int lang = CVarGetInteger("gDebugWarpScreenTranslation", 0) ? gGlobalSettings.language + 1 : 0;
 
     GfxPrint_SetPos(printer, 4, 25);
     GfxPrint_SetColor(printer, 255, 255, 55, 255);
@@ -1325,7 +1325,7 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
 
     if (gSaveContext.dayTime > 0xC000 || gSaveContext.dayTime < 0x4555) {
         if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
-            switch (gSaveContext.language) {
+            switch (gGlobalSettings.language) {
                 case LANGUAGE_ENG:
                 default:
                     label = "Night";
@@ -1342,7 +1342,7 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
         }
     } else {
         if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
-            switch (gSaveContext.language) {
+            switch (gGlobalSettings.language) {
                 case LANGUAGE_ENG:
                 default:
                     label = "Day";
@@ -1359,7 +1359,7 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
         }
     }
     if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
-        switch (gSaveContext.language) {
+        switch (gGlobalSettings.language) {
             case LANGUAGE_ENG:
             default:
                 GfxPrint_Printf(printer, "(Z/R)Time:");

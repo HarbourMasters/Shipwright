@@ -845,10 +845,11 @@ void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckSta
             case RCSHOW_SCUMMED:
                 if (gSaveContext.n64ddFlag)
                     txt = OTRGlobals::Instance->gRandomizer
-                        ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.rgID][gSaveContext.language];
-                else if (gSaveContext.language == LANGUAGE_ENG)
+                              ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.rgID]
+                                                        [gGlobalSettings.language];
+                else if (gGlobalSettings.language == LANGUAGE_ENG)
                     txt = ItemFromGIID(rcObj.ogItemId).GetName().english;
-                else if (gSaveContext.language == LANGUAGE_FRA)
+                else if (gGlobalSettings.language == LANGUAGE_FRA)
                     txt = ItemFromGIID(rcObj.ogItemId).GetName().french;
                 break;
             case RCSHOW_SKIPPED:
@@ -857,10 +858,11 @@ void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckSta
             case RCSHOW_SEEN:
                 if (gSaveContext.n64ddFlag)
                     txt = OTRGlobals::Instance->gRandomizer
-                        ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.fakeRgID][gSaveContext.language];
-                else if (gSaveContext.language == LANGUAGE_ENG)
+                              ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.fakeRgID]
+                                                        [gGlobalSettings.language];
+                else if (gGlobalSettings.language == LANGUAGE_ENG)
                     txt = ItemFromGIID(rcObj.ogItemId).GetName().english;
-                else if (gSaveContext.language == LANGUAGE_FRA)
+                else if (gGlobalSettings.language == LANGUAGE_FRA)
                     txt = ItemFromGIID(rcObj.ogItemId).GetName().french;
                 break;
             case RCSHOW_HINTED:

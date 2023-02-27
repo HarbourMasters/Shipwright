@@ -293,9 +293,9 @@ void Message_FindMessage(PlayState* play, u16 textId) {
         bufferId = 0x71B3;
     }
 
-    if (gSaveContext.language == LANGUAGE_GER)
+    if (gGlobalSettings.language == LANGUAGE_GER)
         messageTableEntry = sGerMessageEntryTablePtr;
-    else if (gSaveContext.language == LANGUAGE_FRA)
+    else if (gGlobalSettings.language == LANGUAGE_FRA)
         messageTableEntry = sFraMessageEntryTablePtr;
 
     // If PAL languages are not present in the OTR file, default to English
@@ -1127,7 +1127,7 @@ void Message_LoadItemIcon(PlayState* play, u16 itemId, s16 y) {
         interfaceCtx->mapPalette[31] = 0xFF;
     }
     if (itemId < ITEM_MEDALLION_FOREST) {
-        R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem32XOffsets[gSaveContext.language];
+        R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem32XOffsets[gGlobalSettings.language];
         R_TEXTBOX_ICON_YPOS = y + 6;
         R_TEXTBOX_ICON_SIZE = 32;
         memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,
@@ -1135,7 +1135,7 @@ void Message_LoadItemIcon(PlayState* play, u16 itemId, s16 y) {
         // "Item 32-0"
         osSyncPrintf("アイテム32-0\n");
     } else {
-        R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem24XOffsets[gSaveContext.language];
+        R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem24XOffsets[gGlobalSettings.language];
         R_TEXTBOX_ICON_YPOS = y + 10;
         R_TEXTBOX_ICON_SIZE = 24;
         memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,

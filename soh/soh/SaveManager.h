@@ -109,7 +109,6 @@ public:
     std::filesystem::path GetFileName(int fileNum);
 
     void ConvertFromUnversioned();
-    void CreateDefaultGlobal();
 
     void InitMeta(int slotNum);
     static void InitFileImpl(bool isDebug);

@@ -148,6 +148,7 @@ set(Header_Files__include
     "include/z64player.h"
     "include/z64save.h"
     "include/z64scene.h"
+    "include/z64settings.h"
     "include/z64transition.h"
 )
 source_group("Header Files\\include" FILES ${Header_Files__include})
@@ -301,6 +302,8 @@ set(Source_Files__soh
     "soh/UIWidgets.hpp"
     "soh/UIWidgets.cpp"
     "soh/CrashHandlerExt.cpp"
+    "soh/GlobalSettings.h"
+    "soh/GlobalSettings.cpp"
 )
 source_group("Source Files\\soh" FILES ${Source_Files__soh})
 

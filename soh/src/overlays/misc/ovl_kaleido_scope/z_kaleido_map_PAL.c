@@ -224,7 +224,8 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
 
     gSPVertex(POLY_KAL_DISP++, &pauseCtx->mapPageVtx[68], 16, 0);
 
-    gDPLoadTextureBlock(POLY_KAL_DISP++, dungeonTitleTexs[gSaveContext.mapIndex+(10*gSaveContext.language)], G_IM_FMT_IA, G_IM_SIZ_8b, 96, 16, 0,
+    gDPLoadTextureBlock(POLY_KAL_DISP++, dungeonTitleTexs[gSaveContext.mapIndex + (10 * gGlobalSettings.language)],
+                        G_IM_FMT_IA, G_IM_SIZ_8b, 96, 16, 0,
                         G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
@@ -733,7 +734,7 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
                       PRIMITIVE, 0);
     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 0, 0, 0, pauseCtx->alpha);
 
-    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, currentPosTitleTexs[gSaveContext.language], G_IM_FMT_I, 64, 8, 0,
+    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, currentPosTitleTexs[gGlobalSettings.language], G_IM_FMT_I, 64, 8, 0,
                            G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                            G_TX_NOLOD);
 

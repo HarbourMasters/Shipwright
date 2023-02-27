@@ -16,6 +16,7 @@
 #include <array>
 
 extern "C" SaveContext gSaveContext;
+extern "C" GlobalSettingsStruct gGlobalSettings;
 
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
     const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
@@ -333,26 +334,15 @@ void SaveManager::Init() {
         nlohmann::json globalBlock;
         input >> globalBlock;
 
-        if (!globalBlock.contains("version")) {
-            SPDLOG_WARN("Global save does not contain a version. We are reconstructing it.");
-            CreateDefaultGlobal();
-            return;
+        if (globalBlock.contains("version") && (globalBlock["version"].get<int>() == 1)) {
+            currentJsonContext = &globalBlock;
+            LoadData("audioSetting", gGlobalSettings.audioSetting);
+            LoadData("zTargetSetting", gGlobalSettings.zTargetSetting);
+            LoadData("language", gGlobalSettings.language);
         }
 
-        switch (globalBlock["version"].get<int>()) {
-            case 1:
-                currentJsonContext = &globalBlock;
-                LoadData("audioSetting", gSaveContext.audioSetting);
-                LoadData("zTargetSetting", gSaveContext.zTargetSetting);
-                LoadData("language", gSaveContext.language);
-                break;
-            default:
-                SPDLOG_WARN("Global save has a unrecognized version. We are reconstructing it.");
-                CreateDefaultGlobal();
-                break;
-        }
-    } else {
-        CreateDefaultGlobal();
+        input.close();
+        std::filesystem::remove(sGlobalPath);
     }
 
     // Load files to initialize metadata
@@ -360,7 +350,6 @@ void SaveManager::Init() {
         if (std::filesystem::exists(GetFileName(fileNum))) {
             LoadFile(fileNum);
         }
-
     }
 }
 
@@ -701,10 +690,7 @@ void SaveManager::SaveFile(int fileNum) {
 
 void SaveManager::SaveGlobal() {
     nlohmann::json globalBlock;
-    globalBlock["version"] = 1;
-    globalBlock["audioSetting"] = gSaveContext.audioSetting;
-    globalBlock["zTargetSetting"] = gSaveContext.zTargetSetting;
-    globalBlock["language"] = gSaveContext.language;
+    globalBlock["version"] = 2;
 
     const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
@@ -809,14 +795,6 @@ void SaveManager::AddPostFunction(const std::string& name, PostFunc func) {
     }
 
     postHandlers[name] = func;
-}
-
-void SaveManager::CreateDefaultGlobal() {
-    gSaveContext.audioSetting = 0;
-    gSaveContext.zTargetSetting = 0;
-    gSaveContext.language = CVarGetInteger("gLanguages", LANGUAGE_ENG);
-
-    SaveGlobal();
 }
 
 void SaveManager::LoadBaseVersion1() {
@@ -2003,16 +1981,16 @@ void SaveManager::ConvertFromUnversioned() {
 
     for (size_t i = 0; i < ARRAY_COUNT(sZeldaMagic) - 3; i++) {
         if (sZeldaMagic[i + SRAM_HEADER_MAGIC] != data[i + SRAM_HEADER_MAGIC]) {
-            CreateDefaultGlobal();
+            SPDLOG_WARN("Save file does not contain the magic bytes, we can not convert it.");
             return;
         }
     }
 
-    gSaveContext.audioSetting = data[SRAM_HEADER_SOUND] & 3;
-    gSaveContext.zTargetSetting = data[SRAM_HEADER_ZTARGET] & 1;
-    gSaveContext.language = data[SRAM_HEADER_LANGUAGE];
-    if (gSaveContext.language >= LANGUAGE_MAX) {
-        gSaveContext.language = CVarGetInteger("gLanguages", LANGUAGE_ENG);
+    gGlobalSettings.audioSetting = data[SRAM_HEADER_SOUND] & 3;
+    gGlobalSettings.zTargetSetting = data[SRAM_HEADER_ZTARGET] & 1;
+    gGlobalSettings.language = data[SRAM_HEADER_LANGUAGE];
+    if (gGlobalSettings.language >= LANGUAGE_MAX) {
+        gGlobalSettings.language = LANGUAGE_ENG;
     }
     SaveGlobal();
 

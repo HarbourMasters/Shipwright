@@ -1003,15 +1003,14 @@ void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* 
 
     char newName[512];
 
-    if (gSaveContext.language != LANGUAGE_ENG) {
+    if (gGlobalSettings.language != LANGUAGE_ENG) {
         size_t length = strlen(texture);
         strcpy(newName, texture);
-        if (gSaveContext.language == LANGUAGE_FRA) {
+        if (gGlobalSettings.language == LANGUAGE_FRA) {
             newName[length - 6] = 'F';
             newName[length - 5] = 'R';
             newName[length - 4] = 'A';
-        }
-        else if (gSaveContext.language == LANGUAGE_GER) {
+        } else if (gGlobalSettings.language == LANGUAGE_GER) {
             newName[length - 6] = 'G';
             newName[length - 5] = 'E';
             newName[length - 4] = 'R';
@@ -1109,12 +1108,12 @@ void TitleCard_Draw(PlayState* play, TitleCardContext* titleCtx) {
         shiftBottomY = 0x1000;
 
         //if this card is bosses cards, has translation and that is not using English language.
-        if (titleCtx->isBossCard && titleCtx->hasTranslation && gSaveContext.language != LANGUAGE_ENG) {
-            textureLanguageOffset = (width * height * gSaveContext.language);
-            if (gSaveContext.language == LANGUAGE_GER) {
+        if (titleCtx->isBossCard && titleCtx->hasTranslation && gGlobalSettings.language != LANGUAGE_ENG) {
+            textureLanguageOffset = (width * height * gGlobalSettings.language);
+            if (gGlobalSettings.language == LANGUAGE_GER) {
                 shiftTopY = 0x400;
                 shiftBottomY = 0x1400;
-            } else if (gSaveContext.language == LANGUAGE_FRA) {
+            } else if (gGlobalSettings.language == LANGUAGE_FRA) {
                 shiftTopY = 0x800;
                 shiftBottomY = 0x1800;
             }

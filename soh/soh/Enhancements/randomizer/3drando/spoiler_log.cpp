@@ -255,7 +255,7 @@ static void WriteLocation(
   ItemLocation* location = Location(locationKey);
 
   // auto node = parentNode->InsertNewChildElement("location");
-  switch (gSaveContext.language) {
+  switch (gGlobalSettings.language) {
         case LANGUAGE_ENG:
         default:
             jsonData["playthrough"][sphere][location->GetName()] = location->GetPlacedItemName().GetEnglish();
@@ -335,7 +335,7 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
     jsonData["entrances"].push_back(reverseEntranceJson);
   }
 
-  switch (gSaveContext.language) {
+  switch (gGlobalSettings.language) {
         case LANGUAGE_ENG:
         case LANGUAGE_FRA:
         default:
@@ -538,7 +538,7 @@ static void WriteRequiredTrials() {
     for (const auto& trial : Trial::trialList) {
         if (trial->IsRequired()) {
             std::string trialName;
-            switch (gSaveContext.language) {
+            switch (gGlobalSettings.language) {
                 case LANGUAGE_FRA:
                     trialName = trial->GetName().GetFrench();
                     break;
