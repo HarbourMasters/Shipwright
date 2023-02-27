@@ -1,0 +1,8 @@
+{
+	"image": "mcr.microsoft.com/devcontainers/universal:2",
+	"features": {
+		"ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+			"packages": "libsdl2-dev libsdl2-net-dev libpng-dev libglew-dev ninja-build"
+		}
+	}
+}
