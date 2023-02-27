@@ -1186,7 +1186,14 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
 }
 
 extern "C" s32* ResourceMgr_LoadCSByName(const char* path) {
-    return (s32*)GetResourceDataByName(path, false);
+    // Handle mq vs nonmq for cutscenes due to scene/ paths
+    auto res = ResourceMgr_LoadResource(path);
+
+    if (res == nullptr) {
+        return nullptr;
+    }
+
+    return (s32*)res->GetPointer();
 }
 
 std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
