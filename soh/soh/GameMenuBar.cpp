@@ -814,12 +814,23 @@ namespace GameMenuBar {
                 ImGui::EndMenu();
             }
 
-            UIWidgets::PaddedEnhancementCheckbox("Autosave", "gAutosave", true, false);
-            UIWidgets::Tooltip("Automatically save the game every time a new area is entered or item is obtained\n"
-                "To disable saving when obtaining a major item, manually set gAutosaveMajorItems to 0\n"
-                "To enable saving when obtaining any item, manually set gAutosaveAllItems to 1\n"
-                "gAutosaveAllItems takes priority over gAutosaveMajorItems if both are set to 1\n"
-                "gAutosaveMajorItems excludes rupees and health/magic/ammo refills (but includes bombchus)");
+            UIWidgets::PaddedSeparator(false, true);
+
+            // Autosave enum value of 1 is the default in presets and the old checkbox "on" state for backwards compatibility
+            const uint16_t selectedAutosaveId = CVarGetInteger("gAutosave", 0);
+            std::string autosaveLabels[] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
+            UIWidgets::PaddedText("Autosave", false, true);
+            if (ImGui::BeginCombo("##AutosaveComboBox", autosaveLabels[selectedAutosaveId].c_str())) {
+                for (int index = 0; index < sizeof(autosaveLabels) / sizeof(autosaveLabels[0]); index++) {
+                    if (ImGui::Selectable(autosaveLabels[index].c_str(), index == selectedAutosaveId)) {
+                        CVarSetInteger("gAutosave", index);
+                    }
+                }
+
+                ImGui::EndCombo();
+            }
+            UIWidgets::Tooltip("Automatically save the game every time a new area is entered and/or item is obtained\n"
+                "Major items exclude rupees and health/magic/ammo refills (but include bombchus unless bombchu drops are enabled)");
 
             UIWidgets::Spacer(0);
 
