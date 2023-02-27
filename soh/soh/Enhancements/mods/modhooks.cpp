@@ -74,7 +74,7 @@ void RegisterRupeeDash() {
         static uint16_t rupeeDashTimer = 0;
         uint16_t rdmTime = CVarGetInteger("gDashInterval", 5) * 20;
         
-        // Did time change by SsmInterval?
+        // Did time change by DashInterval?
         if (rupeeDashTimer >= rdmTime) {
             rupeeDashTimer = 0;
             if (gSaveContext.rupees > 0) {
