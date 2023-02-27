@@ -2568,11 +2568,11 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     // If TimeTravel + Player have the Ocarina of Time + Have Master Sword + is in proper range
                     // TODO: Once Swordless Adult is fixed: Remove the Master Sword check
                     if (CVarGetInteger("gTimeTravel", 0) && hasOcarinaOfTime && hasMasterSword &&
-                        play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && nearbyTimeBlockEmpty == NULL &&
-                        nearbyTimeBlock == NULL && nearbyOcarinaSpot == NULL && nearbyFrogs == NULL) {
+                        play->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && !nearbyTimeBlockEmpty &&
+                        !nearbyTimeBlock && !nearbyOcarinaSpot && !nearbyFrogs) {
                         if (gSaveContext.n64ddFlag) {
                             CVarSetInteger("gSwitchAge", 1);
-                        } else if (!gSaveContext.n64ddFlag && nearbyDoorOfTime == NULL) {
+                        } else if (!gSaveContext.n64ddFlag && !nearbyDoorOfTime) {
                             // This check is made for when Link is learning the Song Of Time in a vanilla save file that load a
                             // Temple of Time scene where the only object present is the Door of Time
                             CVarSetInteger("gSwitchAge", 1);
