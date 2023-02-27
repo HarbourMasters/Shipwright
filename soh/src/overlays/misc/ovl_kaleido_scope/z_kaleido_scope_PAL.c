@@ -14,7 +14,6 @@
 #include "vt.h"
 
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 static void* sEquipmentFRATexs[] = {
@@ -4181,7 +4180,6 @@ void KaleidoScope_Update(PlayState* play)
                     } else {
                         play->state.running = 0;
                         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
-                        GameInteractor_ExecuteOnExitGame(gSaveContext.fileNum);
                     }
                 }
             }

@@ -1,7 +1,9 @@
 #include "randomizer_entrance_tracker.h"
-#include "soh/OTRGlobals.h"
+#include "../../util.h"
+#include "../../OTRGlobals.h"
 #include <ImGuiImpl.h>
-#include "soh/UIWidgets.hpp"
+#include "../../UIWidgets.hpp"
+
 
 #include <map>
 #include <string>
@@ -16,11 +18,9 @@ extern "C" {
 #include "macros.h"
 extern PlayState* gPlayState;
 
-#include "soh/Enhancements/randomizer/randomizer_entrance.h"
-#include "soh/Enhancements/randomizer/randomizer_grotto.h"
+#include "randomizer_entrance.h"
+#include "randomizer_grotto.h"
 }
-
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define COLOR_ORANGE IM_COL32(230, 159, 0, 255)
 #define COLOR_GREEN IM_COL32(0, 158, 115, 255)
@@ -920,12 +920,4 @@ void DrawEntranceTracker(bool& open) {
 
 void InitEntranceTracker() {
     SohImGui::AddWindow("Randomizer", "Entrance Tracker", DrawEntranceTracker, CVarGetInteger("gEntranceTrackerEnabled", 0) == 1);
-
-    // Setup hooks for loading and clearing the entrance tracker data
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
-        InitEntranceTrackingData();
-    });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>([](int32_t fileNum) {
-        ClearEntranceTrackingData();
-    });
 }

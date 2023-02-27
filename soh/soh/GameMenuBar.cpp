@@ -272,11 +272,11 @@ namespace GameMenuBar {
                     ImGui::PopStyleVar(1);
                 }
 
-                if (SohImGui::SupportsWindowedFullscreen()) {
+                if (SohImGui::supportsWindowedFullscreen()) {
                     UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", "gSdlWindowedFullscreen", true, false);
                 }
 
-                if (SohImGui::SupportsViewports()) {
+                if (SohImGui::supportsViewports()) {
                     UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false);
                     UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
                 }
@@ -746,13 +746,6 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                 UIWidgets::PaddedEnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon", true, false);
                 UIWidgets::Tooltip("Always shows dungeon entrance icons on the minimap");
-                UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
-                const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
-                UIWidgets::EnhancementCombobox("gDirtPathFix", zFightingOptions, 3, 0);
-                UIWidgets::Tooltip("Disabled: Paths vanish more the higher the resolution (Z-fighting is based on resolution)\n"
-                                   "Consistent: Certain paths vanish the same way in all resolutions\n"
-                                   "No Vanish: Paths do not vanish, Link seems to sink in to some paths\n"
-                                   "This might affect other decal effects\n");
 
                 ImGui::EndMenu();
             }
@@ -794,7 +787,7 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Fix Camera Swing", "gFixCameraSwing", true, false);
                 UIWidgets::Tooltip("Fixes camera getting stuck on collision when standing still, also fixes slight shift back in camera when stop moving");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Hanging Ledge Swing Rate", "gFixHangingLedgeSwingRate", true, false);
-                UIWidgets::Tooltip("Fixes camera swing rate when player falls off a ledge and camera swings around");
+                UIWidgets::Tooltip("Fixes camera swing rate when player falls of a ledge and camera swings around");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Missing Jingle after 5 Silver Rupees", "gSilverRupeeJingleExtend", true, false);
                 UIWidgets::Tooltip(
                     "Adds 5 higher pitches for the Silver Rupee Jingle for the rooms with more than 5 Silver Rupees. "
@@ -850,12 +843,12 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0));
             }
-            if (ImGui::Button(GetWindowButtonText("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
+            if (ImGui::Button(GetWindowButtonText("Audio Editor", CVarGetInteger("gSfxEditor", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gAudioEditor.WindowOpen", 0);
-                CVarSetInteger("gAudioEditor.WindowOpen", !currentValue);
+                bool currentValue = CVarGetInteger("gSfxEditor", 0);
+                CVarSetInteger("gSfxEditor", !currentValue);
                 SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::EnableWindow("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0));
+                SohImGui::EnableWindow("SFX Editor", CVarGetInteger("gSfxEditor", 0));
             }
             if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 bool currentValue = CVarGetInteger("gGameplayStatsEnabled", 0);
