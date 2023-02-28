@@ -422,6 +422,7 @@ void SetupDisplayNames() {
     strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_TWINROVA],      "Twinrova Defeated:  ");
     strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_GANONDORF],     "Ganondorf Defeated: ");
     strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:     ");
+    strcpy(timestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:         ");
 }
 
 void SetupDisplayColors() {
@@ -431,6 +432,7 @@ void SetupDisplayColors() {
             case ITEM_KOKIRI_EMERALD:
             case ITEM_SONG_SARIA:
             case ITEM_MEDALLION_FOREST:
+            case TIMESTAMP_FOUND_GREG:
                 timestampDisplayColor[i] = COLOR_GREEN;
                 break;
             case ITEM_SONG_BOLERO:

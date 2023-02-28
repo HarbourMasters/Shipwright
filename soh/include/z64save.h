@@ -265,6 +265,7 @@ typedef struct {
     /*        */ char childAltarText[250];
     /*        */ char adultAltarText[750];
     /*        */ char ganonHintText[150];
+    /*        */ char gregHintText[250];
     /*        */ char ganonText[250];
     /*        */ char dampeText[150];
     /*        */ char warpMinuetText[100];

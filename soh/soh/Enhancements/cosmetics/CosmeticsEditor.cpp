@@ -1,5 +1,6 @@
 #include "CosmeticsEditor.h"
 #include <ImGuiImpl.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #include <string>
 #include <libultraship/bridge.h>
@@ -41,9 +42,11 @@ extern PlayState* gPlayState;
 #include "objects/object_gi_pachinko/object_gi_pachinko.h"
 #include "objects/object_trap/object_trap.h"
 #include "overlays/ovl_Boss_Ganon2/ovl_Boss_Ganon2.h"
+#include "objects/object_gjyo_objects/object_gjyo_objects.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
+u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 }
 
 void ApplyOrResetCustomGfxPatches(bool rainbowTick);
@@ -908,6 +911,15 @@ void ApplyOrResetCustomGfxPatches(bool manualChange = true) {
         PATCH_GFX(gGiGreenRupeeInnerColorDL,                      "Consumable_GreenRupee2",   consumableGreenRupee.changedCvar,     4, gsDPSetEnvColor(color.r / 5, color.g / 5, color.b / 5, 255));
         PATCH_GFX(gGiGreenRupeeOuterColorDL,                      "Consumable_GreenRupee3",   consumableGreenRupee.changedCvar,     3, gsDPSetPrimColor(0, 0, MIN(color.r + 100, 255), MIN(color.g + 100, 255), MIN(color.b + 100, 255), 255));
         PATCH_GFX(gGiGreenRupeeOuterColorDL,                      "Consumable_GreenRupee4",   consumableGreenRupee.changedCvar,     4, gsDPSetEnvColor(color.r * 0.75f, color.g * 0.75f, color.b * 0.75f, 255));
+    
+        // Greg Bridge
+        if (Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE) == RO_BRIDGE_GREG) {
+            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge1", 2, gsSPGrayscale(true));
+            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge2", 10, gsDPSetGrayscaleColor(color.r, color.g, color.b, color.a));
+        } else {
+            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge1");
+            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge2");
+        }
     }
     static CosmeticOption& consumableBlueRupee = cosmeticOptions.at("Consumable_BlueRupee");
     if (manualChange || CVarGetInteger(consumableBlueRupee.rainbowCvar, 0)) {
@@ -1779,6 +1791,12 @@ void DrawCosmeticsEditor(bool& open) {
     ImGui::End();
 }
 
+void RegisterOnLoadGameHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
+        ApplyOrResetCustomGfxPatches();
+    });
+}
+
 void InitCosmeticsEditor() {
     // There's probably a better way to do this, but leaving as is for historical reasons. Even though there is no
     // real window being rendered here, it calls this every frame allowing us to rotate through the rainbow hue for cosmetics
@@ -1798,6 +1816,8 @@ void InitCosmeticsEditor() {
     }
     SohImGui::RequestCvarSaveOnNextTick();
     ApplyOrResetCustomGfxPatches();
+
+    RegisterOnLoadGameHook();
 }
 
 void CosmeticsEditor_RandomizeAll() {

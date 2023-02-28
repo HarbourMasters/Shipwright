@@ -1,20 +1,28 @@
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "mods.h"
 #include <libultraship/bridge.h>
+#include "game-interactor/GameInteractor.h"
 
 extern "C" {
 #include <z64.h>
-#include "functions.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Play_PerformSave(PlayState* play);
 }
 
-void RegisterAutoSaveOnReceiveItem() {
+void RegisterAutoSaveOnReceiveItemHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnReceiveItem>([](u8 item) {
-        if (CVarGetInteger("gAutosave", 0) && (gPlayState != NULL) && (gPlayState->sceneNum != SCENE_KENJYANOMA) && (gSaveContext.pendingSale == ITEM_NONE) && (gPlayState->sceneNum != SCENE_GANON_DEMO)) {
-            if (CVarGetInteger("gAutosaveAllItems", 0)) {
+
+        // Don't autosave immediately after buying items from shops to prevent getting them for free!
+        // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
+        // Don't autosave during the Ganon fight when picking up the Master Sword
+        if ((CVarGetInteger("gAutosave", 0) > 0) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
+            (gPlayState->sceneNum != SCENE_KENJYANOMA) && (gPlayState->sceneNum != SCENE_GANON_DEMO)) {
+            if ((CVarGetInteger("gAutosave", 0) == 2) || (CVarGetInteger("gAutosave", 0) == 5)) {
+                // Autosave for all items
                 Play_PerformSave(gPlayState);
-            } else if (CVarGetInteger("gAutosaveMajorItems", 1)) {
+
+            } else if ((CVarGetInteger("gAutosave", 0) == 1) || (CVarGetInteger("gAutosave", 0) == 4)) {
+                // Autosave for major items
                 switch (item) {
                     case ITEM_STICK:
                     case ITEM_NUT:
@@ -90,7 +98,6 @@ void RegisterRupeeDash() {
     });
 }
 
-extern "C" void RegisterModHooks() {
-    RegisterAutoSaveOnReceiveItem();
-    RegisterRupeeDash();
+void InitMods() {
+    RegisterAutoSaveOnReceiveItemHook();
 }
