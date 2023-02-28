@@ -1,5 +1,4 @@
 #include "mods.h"
-#include <optional>
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
 
