@@ -1530,7 +1530,10 @@ void Play_Init(GameState* thisx);
 void Play_Main(GameState* thisx);
 u8 CheckStoneCount();
 u8 CheckMedallionCount();
+<<<<<<< HEAD
 u8 CheckWildcardCount();
+=======
+>>>>>>> parent of 15c74ce6 (Greg the Wildcard)
 u8 CheckDungeonCount();
 s32 Play_InCsMode(PlayState* play);
 f32 func_800BFCB8(PlayState* play, MtxF* mf, Vec3f* vec);

@@ -41,7 +41,6 @@ extern string_view bridgeRewards;
 extern string_view bridgeDungeons;
 extern string_view bridgeTokens;
 extern string_view bridgeGreg;
-extern string_view bridgeWildGreg;
 
 extern string_view bridgeStoneCountDesc;
 extern string_view bridgeMedallionCountDesc;

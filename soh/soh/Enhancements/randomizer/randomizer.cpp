@@ -693,8 +693,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_BRIDGE_TOKENS;
                         } else if(it.value() == "Greg") {
                             gSaveContext.randoSettings[index].value = RO_BRIDGE_GREG;
-                        } else if (it.value() == "Greg the Wildcard") {
-                            gSaveContext.randoSettings[index].value = RO_BRIDGE_WILD_GREG;
                         }
                         break;
                     case RSK_RAINBOW_BRIDGE_STONE_COUNT:
@@ -2994,7 +2992,8 @@ void DrawRandoEditor(bool& open) {
     static const char* randoDoorOfTime[3] = { "Closed", "Song only", "Open" };
     static const char* randoZorasFountain[3] = { "Closed", "Closed as child", "Open" };
     static const char* randoGerudoFortress[3] = { "Normal", "Fast", "Open" };
-    static const char* randoRainbowBridge[9] = { "Vanilla", "Always open", "Stones", "Medallions", "Dungeon rewards", "Dungeons", "Tokens", "Greg", "Greg the Wildcard" };
+    static const char* randoRainbowBridge[8] = { "Vanilla",         "Always open", "Stones", "Medallions",
+                                          "Dungeon rewards", "Dungeons",    "Tokens", "Greg" };
     static const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
     static const char* randoMqDungeons[3] = { "None", "Set Number", "Random Number" };
 
@@ -3236,10 +3235,8 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Tokens - Obtain the specified amount of Skulltula tokens.\n"
                     "\n"
-                    "Greg - Find Greg the Green Rupee.\n"
-                    "\n"
-                    "Greg the Wildcard - Same as 'Dungeon Rewards' but Greg the Green Rupee also counts as a "
-                    "dungeon reward if you manage to find him.");
+                    "Greg - Find Greg the Green Rupee."
+                );
 
                 UIWidgets::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, RO_BRIDGE_MAX, RO_BRIDGE_VANILLA);
                 ImGui::PopItemWidth();
@@ -3276,11 +3273,6 @@ void DrawRandoEditor(bool& open) {
                                                         "gRandomizeTokenCount", 1, 100, "", 100, true);
                         break;
                     case RO_BRIDGE_GREG:
-                        break;
-                    case RO_BRIDGE_WILD_GREG:
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        UIWidgets::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                        "gRandomizeRewardCount", 1, 9, "", 9, true);
                         break;
                 }
 

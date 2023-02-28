@@ -111,8 +111,6 @@ string_view bridgeTokens              = "The Rainbow Bridge requires collecting 
                                         "configurable number of Gold Skulltula Tokens.";   //
 string_view bridgeGreg                = "The Rainbow Bridge requires collecting\n"         //
                                         "Greg the green rupee.";                           //
-string_view bridgeWildGreg             = "The Rainbow Bridge requires collecting a\n"       //
-                                        "configurable number of Dungeon Rewards and/or Greg.";         //
 /*------------------------------                                                           //
 |      BRIDGE CONDITIONS       |                                                           //
 ------------------------------*/                                                           //
