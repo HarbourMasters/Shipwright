@@ -7,6 +7,8 @@ extern "C" {
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Play_PerformSave(PlayState* play);
+extern s32 Health_ChangeBy(PlayState* play, s16 healthChange);
+extern void Rupees_ChangeBy(s16 rupeeChange);
 }
 
 void RegisterAutoSaveOnReceiveItemHook() {
@@ -72,6 +74,31 @@ void RegisterAutoSaveOnReceiveItemHook() {
     });
 }
 
+void RegisterRupeeDash() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (!CVarGetInteger("gRupeeDash", 0)) {
+            return;
+        }
+        
+        // Initialize Timer
+        static uint16_t rupeeDashTimer = 0;
+        uint16_t rdmTime = CVarGetInteger("gDashInterval", 5) * 20;
+        
+        // Did time change by DashInterval?
+        if (rupeeDashTimer >= rdmTime) {
+            rupeeDashTimer = 0;
+            if (gSaveContext.rupees > 0) {
+                Rupees_ChangeBy(-1);
+            } else {
+                Health_ChangeBy(gPlayState, -16);
+            }
+        } else {
+            rupeeDashTimer++;
+        }
+    });
+}
+
 void InitMods() {
+    RegisterRupeeDash();
     RegisterAutoSaveOnReceiveItemHook();
 }
