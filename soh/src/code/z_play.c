@@ -299,7 +299,6 @@ u8 CheckMedallionCount() {
     return medallionCount;
 }
 
-<<<<<<< HEAD
 u8 CheckWildcardCount() {
     u8 wildcardCount = 0;
 
@@ -309,8 +308,6 @@ u8 CheckWildcardCount() {
     return wildcardCount;
 }
 
-=======
->>>>>>> parent of 15c74ce6 (Greg the Wildcard)
 u8 CheckDungeonCount() {
     u8 dungeonCount = 0;
 
