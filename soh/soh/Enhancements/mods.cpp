@@ -202,7 +202,7 @@ void RegisterOcarinaTimeTravel() {
         }
     });
     
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnOcarinaSongAction>([]() {
         if (!gPlayState) {
             return;
         }
