@@ -83,12 +83,16 @@ public:
         }
     }
 
+    DEFINE_HOOK(OnLoadGame, void(int32_t fileNum));
+    DEFINE_HOOK(OnExitGame, void(int32_t fileNum));
+    DEFINE_HOOK(OnGameFrameUpdate, void());
     DEFINE_HOOK(OnReceiveItem, void(uint8_t item));
     DEFINE_HOOK(OnSceneInit, void(int16_t sceneNum));
+    DEFINE_HOOK(OnPlayerUpdate, void());
     
-    DEFINE_HOOK(OnSaveFile, void(int fileNum));
-    DEFINE_HOOK(OnLoadFile, void(int fileNum));
-    DEFINE_HOOK(OnDeleteFile, void(int fileNum));
+    DEFINE_HOOK(OnSaveFile, void(int32_t fileNum));
+    DEFINE_HOOK(OnLoadFile, void(int32_t fileNum));
+    DEFINE_HOOK(OnDeleteFile, void(int32_t fileNum));
     
     DEFINE_HOOK(OnDialogMessage, void());
     DEFINE_HOOK(OnPresentTitleCard, void());

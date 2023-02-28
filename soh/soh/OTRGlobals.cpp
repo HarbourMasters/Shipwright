@@ -881,7 +881,7 @@ extern "C" void ResourceMgr_LoadFile(const char* resName) {
     OTRGlobals::Instance->context->GetResourceManager()->LoadResource(resName);
 }
 
-std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path) {
+std::shared_ptr<Ship::Resource> GetResourceByNameHandlingMQ(const char* path) {
     std::string Path = path;
     if (ResourceMgr_IsGameMasterQuest()) {
         size_t pos = 0;
@@ -890,6 +890,16 @@ std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path) {
         }
     }
     return OTRGlobals::Instance->context->GetResourceManager()->LoadResource(Path.c_str());
+}
+
+extern "C" char* GetResourceDataByNameHandlingMQ(const char* path) {
+    auto res = GetResourceByNameHandlingMQ(path);
+    
+    if (res == nullptr) {
+        return nullptr;
+    }
+    
+    return (char*)res->GetPointer();
 }
 
 extern "C" char* ResourceMgr_LoadFileRaw(const char* resName) {
@@ -969,21 +979,14 @@ extern "C" uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
 extern "C" uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
-    auto res = ResourceMgr_LoadResource(filePath);
+    auto res = GetResourceByNameHandlingMQ(filePath);
 
     if (res->Type == Ship::ResourceType::DisplayList)
         return (char*)&((std::static_pointer_cast<Ship::DisplayList>(res))->Instructions[0]);
     else if (res->Type == Ship::ResourceType::Array)
         return (char*)(std::static_pointer_cast<Ship::Array>(res))->Vertices.data();
     else {
-        std::string Path = filePath;
-        if (ResourceMgr_IsGameMasterQuest()) {
-            size_t pos = 0;
-            if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
-                Path.replace(pos, 7, "/mq/");
-            }
-        }
-        return (char*)GetResourceDataByName(Path.c_str(), false);
+        return (char*)GetResourceDataByNameHandlingMQ(filePath);
     }
 }
 
@@ -992,14 +995,14 @@ extern "C" Sprite* GetSeedTexture(uint8_t index) {
 }
 
 extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
-    auto anim = std::static_pointer_cast<Ship::PlayerAnimation>(ResourceMgr_LoadResource(animPath));
+    auto anim = std::static_pointer_cast<Ship::PlayerAnimation>(GetResourceByNameHandlingMQ(animPath));
 
     return (char*)&anim->limbRotData[0];
 }
 
 extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
 {
-    auto res = std::static_pointer_cast<Ship::DisplayList>(ResourceMgr_LoadResource(path));
+    auto res = std::static_pointer_cast<Ship::DisplayList>(GetResourceByNameHandlingMQ(path));
     return (Gfx*)&res->Instructions[0];
 }
 
@@ -1060,13 +1063,13 @@ extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patch
 
 extern "C" char* ResourceMgr_LoadArrayByName(const char* path)
 {
-    auto res = std::static_pointer_cast<Ship::Array>(ResourceMgr_LoadResource(path));
+    auto res = std::static_pointer_cast<Ship::Array>(GetResourceByNameHandlingMQ(path));
 
     return (char*)res->Scalars.data();
 }
 
 extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
-    auto res = std::static_pointer_cast<Ship::Array>(ResourceMgr_LoadResource(path));
+    auto res = std::static_pointer_cast<Ship::Array>(GetResourceByNameHandlingMQ(path));
 
     // if (res->CachedGameAsset != nullptr)
     //     return (char*)res->CachedGameAsset;
@@ -1194,7 +1197,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
 }
 
 extern "C" s32* ResourceMgr_LoadCSByName(const char* path) {
-    return (s32*)GetResourceDataByName(path, false);
+    return (s32*)GetResourceDataByNameHandlingMQ(path);
 }
 
 std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
@@ -1653,6 +1656,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             }
         } else if (Randomizer_GetSettingValue(RSK_DAMPES_DIARY_HINT) && textId == TEXT_DAMPES_DIARY) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY);
+        } else if (Randomizer_GetSettingValue(RSK_GREG_HINT) && (textId == 0x704C || textId == 0x6E)) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CHEST_GAME_PROCEED);
         } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS) &&
                    (textId >= TEXT_WARP_MINUET_OF_FOREST && textId <= TEXT_WARP_PRELUDE_OF_LIGHT)) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetWarpSongMessage(textId, Randomizer_GetSettingValue(RSK_WARP_SONG_HINTS) == RO_GENERIC_ON);

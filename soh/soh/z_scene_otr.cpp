@@ -50,7 +50,7 @@ std::shared_ptr<Ship::OtrFile> ResourceMgr_LoadFile(const char* path) {
 }
 
 // Forward Declaration of function declared in OTRGlobals.cpp
-std::shared_ptr<Ship::Resource> ResourceMgr_LoadResource(const char* path);
+std::shared_ptr<Ship::Resource> GetResourceByNameHandlingMQ(const char* path);
 
 bool Scene_CommandSpawnList(PlayState* play, Ship::SceneCommand* cmd)
 {
@@ -566,7 +566,7 @@ extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomN
         //DmaMgr_SendRequest2(&roomCtx->dmaRequest, roomCtx->unk_34, play->roomList[roomNum].vromStart, size, 0,
                             //&roomCtx->loadQueue, NULL, __FILE__, __LINE__);
 
-        auto roomData = std::static_pointer_cast<Ship::Scene>(ResourceMgr_LoadResource(play->roomList[roomNum].fileName));
+        auto roomData = std::static_pointer_cast<Ship::Scene>(GetResourceByNameHandlingMQ(play->roomList[roomNum].fileName));
         roomCtx->status = 1;
         roomCtx->roomToLoad = roomData.get();
 

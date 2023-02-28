@@ -896,7 +896,7 @@ void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* 
             texture = gStableTitleCardENGTex;
             break;
         case SCENE_HYLIA_LABO:
-            texture = gLakeHyliaTitleCardENGTex;
+            texture = gLakesideLaboratoryTitleCardENGTex;
             break;
         case SCENE_HUT:
             texture = gGravekeepersHutTitleCardENGTex;

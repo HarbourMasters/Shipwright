@@ -21,7 +21,8 @@ typedef enum {
     /* 0xA7 */ TIMESTAMP_DEFEAT_TWINROVA,       // z_boss_tw.c
     /* 0xA8 */ TIMESTAMP_DEFEAT_GANONDORF,      // z_boss_ganon.c
     /* 0xA9 */ TIMESTAMP_DEFEAT_GANON,          // z_boss_ganon2.c
-    /* 0xAA */ TIMESTAMP_MAX
+    /* 0xAA */ TIMESTAMP_FOUND_GREG,            // z_parameter.c
+    /* 0xAB */ TIMESTAMP_MAX
 
 }GameplayStatTimestamp;
 
