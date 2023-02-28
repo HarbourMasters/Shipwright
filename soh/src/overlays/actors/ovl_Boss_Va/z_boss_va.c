@@ -120,6 +120,7 @@ typedef enum {
 void BossVa_Init(Actor* thisx, PlayState* play);
 void BossVa_Destroy(Actor* thisx, PlayState* play);
 void BossVa_Update(Actor* thisx, PlayState* play);
+void BossVa_sohUpdate(Actor* thisx, PlayState* play);
 void BossVa_Draw(Actor* thisx, PlayState* play);
 void BossVa_Reset(void);
 
@@ -203,7 +204,7 @@ const ActorInit Boss_Va_InitVars = {
     sizeof(BossVa),
     (ActorFunc)BossVa_Init,
     (ActorFunc)BossVa_Destroy,
-    (ActorFunc)BossVa_Update,
+    (ActorFunc)BossVa_sohUpdate,
     (ActorFunc)BossVa_Draw,
     (ActorResetFunc)BossVa_Reset,
 };
@@ -2806,6 +2807,22 @@ void BossVa_Door(BossVa* this, PlayState* play) {
         } else {
             sDoorState = 100;
         }
+    }
+}
+
+void BossVa_sohUpdate(Actor* thisx, PlayState* play2) {
+    BossVa_Update(thisx, play2);
+    BossVa* this = (BossVa*)thisx;
+    Player* player = GET_PLAYER(play2);
+    if (!Player_InBlockingCsMode(play2, player) && this->actor.params == BOSSVA_BODY && CVarGetInteger("gHyperBosses", 0)) {
+        Actor* actor = play2->actorCtx.actorLists[ACTORCAT_BOSS].head;
+        while (actor != NULL) {
+            if (actor != thisx && actor->update != NULL) {
+                actor->update(actor, play2);
+            }
+            actor = actor->next;
+        }
+        BossVa_Update(thisx, play2);
     }
 }
 

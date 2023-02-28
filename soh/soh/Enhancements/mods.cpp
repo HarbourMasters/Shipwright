@@ -6,11 +6,9 @@ extern "C" {
 #include <z64.h>
 #include "macros.h"
 #include "variables.h"
+#include "functions.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
-extern void Play_PerformSave(PlayState* play);
-extern s32 Health_ChangeBy(PlayState* play, s16 healthChange);
-extern void Rupees_ChangeBy(s16 rupeeChange);
 }
 
 void RegisterInfiniteMoney() {
@@ -261,6 +259,30 @@ void RegisterRupeeDash() {
     });
 }
 
+void RegisterHyperBosses() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](Actor* actor) {
+        // Run the update function a second time to make bosses move and act twice as fast.
+
+        if (actor->category == ACTORCAT_BOSS) {
+            // Some actors are labeled as bosses but aren't really bosses, so exclude those.
+            // Barinade is handled seperately because its child actors have to be updated in sequence.
+            uint8_t isSkippedBossActor = actor->id == ACTOR_EN_TORCH2 || actor->id == ACTOR_DEMO_GEFF ||
+                                         actor->id == ACTOR_EN_CLEAR_TAG || actor->id == ACTOR_EN_GANON_ORGAN ||
+                                         actor->id == ACTOR_EN_GANON_MANT || actor->id == ACTOR_BOSS_VA;
+
+            // Sometimes the actor is destroyed in the previous Update, so check if the update function still exists.
+            if (actor->update != NULL && !isSkippedBossActor) {
+                uint8_t hyperBoss = CVarGetInteger("gHyperBosses", 0);
+                Player* player = GET_PLAYER(gPlayState);
+                // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
+                if (!Player_InBlockingCsMode(gPlayState, player) && hyperBoss) {
+                    actor->update(actor, gPlayState);
+                }
+            }
+        }
+    });
+}
+
 void InitMods() {
     RegisterInfiniteMoney();
     RegisterInfiniteHealth();
@@ -272,6 +294,7 @@ void InitMods() {
     RegisterUnrestrictedItems();
     RegisterFreezeTime();
     RegisterSwitchAge();
-    RegisterRupeeDash();
     RegisterAutoSave();
+    RegisterRupeeDash();
+    RegisterHyperBosses();
 }
