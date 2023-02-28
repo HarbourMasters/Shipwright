@@ -12,6 +12,7 @@ void Init() {
     gGlobalSettings.language = LANGUAGE_ENG;
     gGlobalSettings.zTargetSetting = 0;
     gGlobalSettings.audioSetting = 0;
+    gGlobalSettings.rando.matchKeyColor = 0;
 }
 
 void RegisterCVars() {
@@ -20,6 +21,7 @@ void RegisterCVars() {
     cvar->RegisterManaged("gLanguages", gGlobalSettings.language);
     cvar->RegisterManaged("gZTargetSetting", gGlobalSettings.zTargetSetting);
     cvar->RegisterManaged("gAudioSetting", gGlobalSettings.audioSetting);
+    cvar->RegisterManaged("gRandoMatchKeyColors", gGlobalSettings.rando.matchKeyColor);
 }
 
 } // namespace GlobalSettings
