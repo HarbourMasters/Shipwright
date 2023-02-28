@@ -4,6 +4,9 @@
 // I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
 // Frame counts in z_play.c and z_kaleido_scope_call.c
 #define GAMEPLAYSTAT_TOTAL_TIME (gSaveContext.sohStats.playTimer / 2 + gSaveContext.sohStats.pauseTimer / 3)
+#define CURRENT_MODE_TIMER (CVarGetInteger("gGameplayStatRoomBreakdown", 0) ?\
+    gSaveContext.sohStats.roomTimer :\
+    gSaveContext.sohStats.sceneTimer)
 
 void InitStatTracker();
 

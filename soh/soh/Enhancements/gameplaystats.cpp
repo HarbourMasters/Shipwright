@@ -31,7 +31,7 @@ const std::vector<std::string> sceneMappings = {
     {"Inside Ganon's Castle"},
     {"Tower Collapse"},
     {"Castle Collapse"},
-    {"Treasure Box Shop"}, //AKA Chest game?
+    {"Treasure Box Shop"},
     {"Gohma's Lair"},
     {"King Dodongo's Lair"},
     {"Barinade's Lair"},
@@ -54,7 +54,7 @@ const std::vector<std::string> sceneMappings = {
     {"Outside ToT (Night)"},
     {"Outside ToT (Adult)"},
     {"Know-It-All Bros' House"},
-    {"Twins' House"}, //kokiri_home_2 doesn't exist
+    {"Twins' House"},
     {"Mido's House"},
     {"Saria's House"},
     {"Carpenter Boss's House"},
@@ -77,7 +77,7 @@ const std::vector<std::string> sceneMappings = {
     {"Great Fairy"},
     {"Fairy Fountain"},
     {"Great Fairy"},
-    {"Grotto"}, //TODO: Placeholder depending on room num
+    {"Grotto"},
     {"Redead Grave"},
     {"Fairy Fountain Grave"},
     {"Royal Family's Tomb"},
@@ -144,6 +144,7 @@ typedef struct {
     char name[25];
     u32 time;
     ImVec4 color;
+    bool isRoom;
 }TimestampInfo;
 
 // Timestamps are an array of structs, each with a name, time, and color
@@ -209,27 +210,30 @@ void DisplayStatIfNonZero(const char* text, uint32_t value) {
     return;
 }
 
-std::string ResolveSceneID(int sceneID){
+std::string ResolveSceneID(int sceneID, int roomID){
     std::string scene = "";
     if (sceneID == SCENE_KAKUSIANA) {
-        switch (gSaveContext.sohStats.roomNum) {
-            case 1:
-                scene = "Big Skulltula Grotto";
+        switch (roomID) {
+            case 0:
+                scene = "Generic Grotto";
                 break;
-            case 2:
+            case 1:
                 scene = "Lake Hylia Scrub Grotto";
                 break;
+            case 2:
+                scene = "Redead Grotto";
+                break;
             case 3:
-                scene = "Kak Redead Grotto";
+                scene = "Cow Grotto";
                 break;
             case 4:
                 scene = "Scrub Trio";
                 break;
             case 5:
-                scene = "Near Gerudo Valley Grotto";
+                scene = "Flooded Grotto";
                 break;
             case 6:
-                scene = "Lost Woods Scrub Grotto";
+                scene = "Scrub Duo (Upgrade)";
                 break;
             case 7:
                 scene = "Wolfos Grotto";
@@ -238,17 +242,26 @@ std::string ResolveSceneID(int sceneID){
                 scene = "Hyrule Castle Storms Grotto";
                 break;
             case 9:
-                scene = "SFM Storms Grotto";
+                scene = "Scrub Duo";
                 break;
             case 10:
-                scene = "Valley Boulder Grotto";
+                scene = "Tektite Grotto";
                 break;
             case 11:
                 scene = "Forest Stage";
                 break;
+            case 12:
+                scene = "Webbed Grotto";
+                break;
+            case 13:
+                scene = "Big Skulltula Grotto";
+                break;
             default:
                 scene = "???";
         };
+    } else if (sceneID == SCENE_HAKASITARELAY) {
+        //Only the last room of Dampe's Grave (rm 6) is considered the windmill
+        scene = roomID == 6 ? "Windmill" : "Dampe's Grave";
     } else {
         scene = sceneMappings[sceneID];
     }
@@ -266,10 +279,6 @@ void DrawStatsTracker(bool& open) {
         ImGui::End();
         return;
     }
-    
-    bool showTimestamps = (CVarGetInteger("gGameplayStatsMode", 0) <= 1);
-    bool showCounts = ( (CVarGetInteger("gGameplayStatsMode", 0) == 0) || (CVarGetInteger("gGameplayStatsMode", 0) == 2) );
-
     u32 totalTimer = GAMEPLAYSTAT_TOTAL_TIME;
     u32 enemiesDefeated = 0;
     u32 ammoUsed = 0;
@@ -299,13 +308,22 @@ void DrawStatsTracker(bool& open) {
         itemTimestampDisplay[i].color = itemTimestampDisplayColor[i];
     }
    
-    for (int i = 0; i < gSaveContext.sohStats.tsIdx; ++i) {
-        std::string sceneName = ResolveSceneID(gSaveContext.sohStats.sceneTimestamps[i].scene);
-        std::string name = fmt::format("{} Room {}",
-            sceneName, gSaveContext.sohStats.sceneTimestamps[i].room);
+    for (int i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
+        std::string sceneName = ResolveSceneID(gSaveContext.sohStats.sceneTimestamps[i].scene, gSaveContext.sohStats.sceneTimestamps[i].room);
+        std::string name;
+        if (CVarGetInteger("gGameplayStatRoomBreakdown", 0) && gSaveContext.sohStats.sceneTimestamps[i].scene != SCENE_KAKUSIANA) {
+            name = fmt::format("{:s} Room {:d}", sceneName, gSaveContext.sohStats.sceneTimestamps[i].room);
+        } else {
+            name = fmt::format("{:s}", sceneName);
+        }
         strcpy(sceneTimestampDisplay[i].name, name.c_str());
         sceneTimestampDisplay[i].time = gSaveContext.sohStats.sceneTimestamps[i].ts;
         sceneTimestampDisplay[i].color = COLOR_WHITE;
+        //Room/Scene Timer Display Handling
+        sceneTimestampDisplay[i].isRoom = 
+        (gSaveContext.sohStats.sceneTimestamps[i].scene == gSaveContext.sohStats.sceneTimestamps[i-1].scene) &&
+        (gSaveContext.sohStats.sceneTimestamps[i].room != gSaveContext.sohStats.sceneTimestamps[i-1].room) ?
+        true : false;
     }
 
     SortChronological(itemTimestampDisplay, sizeof(itemTimestampDisplay) / sizeof(itemTimestampDisplay[0]));
@@ -324,7 +342,9 @@ void DrawStatsTracker(bool& open) {
     UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
     DisplayTimeHHMMSS(gSaveContext.sohStats.pauseTimer / 3, "Pause Menu Time:    ", COLOR_WHITE);
     DisplayTimeHHMMSS(gSaveContext.sohStats.sceneTimer / 2, "Time in scene:      ", COLOR_LIGHT_BLUE);
+    UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
     DisplayTimeHHMMSS(gSaveContext.sohStats.roomTimer / 2,  "Time in room:       ", COLOR_LIGHT_BLUE);
+    UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
     ImGui::Text("Current scene: %d", gSaveContext.sohStats.sceneNum);
     ImGui::Text("Current room: %d", gSaveContext.sohStats.roomNum);
 
@@ -482,18 +502,27 @@ void DrawStatsTracker(bool& open) {
             }
         ImGui::EndTabItem();
         }
-        if (ImGui::BeginTabItem("Scenes")) {
+        if (ImGui::BeginTabItem("Breakdown")) {
+            UIWidgets::PaddedEnhancementCheckbox("Room Breakdown", "gGameplayStatRoomBreakdown");
+            ImGui::SameLine();
+            UIWidgets::InsertHelpHoverText("Allows a more in-depth perspective of time spent in a certain map.");
             if (gPlayState == NULL) {
                 ImGui::Text("Waiting for file load...");
             } else {
                 for (int i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
                     TimestampInfo tsInfo = sceneTimestampDisplay[i];
-                    if (tsInfo.time > 0 && strnlen(tsInfo.name, 25) > 1) {
+                    bool canShow = CVarGetInteger("gGameplayStatRoomBreakdown", 0) ? true : !(tsInfo.isRoom);
+                    if (tsInfo.time > 0 && strnlen(tsInfo.name, 25) > 1 && canShow) {
                         DisplayTimeHHMMSS(tsInfo.time, tsInfo.name, tsInfo.color);
                     }
                 }
-                std::string toPass = fmt::format("Scene {:d} Room {:d}", gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum);
-                DisplayTimeHHMMSS(gSaveContext.sohStats.roomTimer / 2, toPass.c_str(), COLOR_YELLOW);
+                std::string toPass;
+                if (CVarGetInteger("gGameplayStatRoomBreakdown", 0) && gSaveContext.sohStats.sceneNum != SCENE_KAKUSIANA) {
+                    toPass = fmt::format("{:s} Room {:d}", ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum), gSaveContext.sohStats.roomNum);
+                } else {
+                    toPass = fmt::format("{:s}", ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum));
+                }
+                DisplayTimeHHMMSS(CURRENT_MODE_TIMER / 2, toPass.c_str(), COLOR_YELLOW);
             }
             ImGui::EndTabItem();
         }
@@ -607,7 +636,7 @@ void SetupDisplayColors() {
             case ITEM_SONG_SARIA:
             case ITEM_MEDALLION_FOREST:
             case TIMESTAMP_FOUND_GREG:
-                timestampDisplayColor[i] = COLOR_GREEN;
+                itemTimestampDisplayColor[i] = COLOR_GREEN;
                 break;
             case ITEM_SONG_BOLERO:
             case ITEM_GORON_RUBY:
