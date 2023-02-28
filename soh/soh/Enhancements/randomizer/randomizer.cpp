@@ -855,6 +855,13 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_MIX_GROTTO_ENTRANCES:
                     case RSK_DECOUPLED_ENTRANCES:
                     case RSK_SHOPSANITY_PRICES_AFFORDABLE:
+                    case RSK_ALL_LOCATIONS_REACHABLE:
+                        if(it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = RO_GENERIC_OFF;
+                        } else if(it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = RO_GENERIC_ON;
+                        }
+                        break;
                     case RSK_KEYRINGS:
                         if (it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = RO_KEYRINGS_OFF;
@@ -864,13 +871,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_KEYRINGS_COUNT;
                         } else if (it.value() == "Selection") {
                             gSaveContext.randoSettings[index].value = RO_KEYRINGS_SELECTION;
-                        }
-                        break;
-                    case RSK_ALL_LOCATIONS_REACHABLE:
-                        if(it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = RO_GENERIC_OFF;
-                        } else if(it.value() == "On") {
-                            gSaveContext.randoSettings[index].value = RO_GENERIC_ON;
                         }
                         break;
                     case RSK_SHUFFLE_MERCHANTS:
@@ -890,21 +890,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_AMMO_DROPS_ON_PLUS_BOMBCHU;
                         } else if (it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = RO_AMMO_DROPS_OFF;
-                        }
-                        break;
-                    case RSK_STARTING_MAPS_COMPASSES:
-                        if(it.value() == "Start With") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_STARTWITH;
-                        } else if(it.value() == "Vanilla") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_VANILLA;
-                        } else if(it.value() == "Own Dungeon") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_OWN_DUNGEON;
-                        } else if(it.value() == "Any Dungeon") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_ANY_DUNGEON;
-                        } else if(it.value() == "Overworld") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_OVERWORLD;
-                        } else if(it.value() == "Anywhere") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_ANYWHERE;
                         }
                         break;
                     case RSK_STARTING_OCARINA:
@@ -979,21 +964,8 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         }
                         break;
                     case RSK_KEYSANITY:
-                        if(it.value() == "Start With") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_STARTWITH;
-                        } else if(it.value() == "Vanilla") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_VANILLA;
-                        } else if(it.value() == "Own Dungeon") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_OWN_DUNGEON;
-                        } else if(it.value() == "Any Dungeon") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_ANY_DUNGEON;
-                        } else if(it.value() == "Overworld") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_OVERWORLD;
-                        } else if(it.value() == "Anywhere") {
-                            gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_ANYWHERE;
-                        }
-                        break;
                     case RSK_BOSS_KEYSANITY:
+                    case RSK_STARTING_MAPS_COMPASSES:
                         if(it.value() == "Start With") {
                             gSaveContext.randoSettings[index].value = RO_DUNGEON_ITEM_LOC_STARTWITH;
                         } else if(it.value() == "Vanilla") {

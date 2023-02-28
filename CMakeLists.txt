@@ -2,12 +2,10 @@ cmake_minimum_required(VERSION 3.16.0 FATAL_ERROR)
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
-#set(CMAKE_C_STANDARD 11 CACHE STRING "The C standard to use") - issue with soh compile with MSVC
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version" FORCE)
 
-project(Ship LANGUAGES C CXX
-	VERSION 6.0.0)
+project(Ship VERSION 6.0.0 LANGUAGES C CXX)
 set(PROJECT_BUILD_NAME "GIBBS ALFA" CACHE STRING "")
 set(PROJECT_TEAM "github.com/harbourmasters" CACHE STRING "")
 
@@ -92,7 +90,7 @@ add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship)
 add_subdirectory(ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
 add_subdirectory(OTRExporter)
 add_subdirectory(soh)
-if(NOT CMAKE_SYSTEM_NAME MATCHES "Darwin|NintendoSwitch|CafeOS")
+if(CMAKE_SYSTEM_NAME MATCHES "Windows|Linux")
 add_subdirectory(OTRGui)
 endif()
 
