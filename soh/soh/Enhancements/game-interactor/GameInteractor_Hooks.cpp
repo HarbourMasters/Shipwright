@@ -18,16 +18,20 @@ void GameInteractor_ExecuteOnGameFrameUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGameFrameUpdate>();
 }
 
-void GameInteractor_ExecuteOnReceiveItemHooks(u8 item) {
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnReceiveItem>(item);
-}
-
 void GameInteractor_ExecuteOnSceneInitHooks(s16 sceneNum) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(sceneNum);
 }
 
 void GameInteractor_ExecuteOnPlayerUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerUpdate>();
+}
+
+void GameInteractor_ExecuteOnReceiveItemHooks(u8 item) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnReceiveItem>(item);
+}
+
+void GameInteractor_ExecuteOnOcarinaSongAction() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnOcarinaSongAction>();
 }
 
 // MARK: -  Save Files
