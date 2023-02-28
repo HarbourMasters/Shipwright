@@ -739,7 +739,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_RAINBOW_BRIDGE_REWARD_COUNT:
                     case RSK_RAINBOW_BRIDGE_DUNGEON_COUNT:
                     case RSK_RAINBOW_BRIDGE_TOKEN_COUNT:
-                    case RSK_WILDCARD_GREG:
                     case RSK_TRIAL_COUNT:
                     case RSK_LACS_STONE_COUNT:
                     case RSK_LACS_MEDALLION_COUNT:
@@ -802,6 +801,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_FROG_SONG_RUPEES:
                     case RSK_SHUFFLE_100_GS_REWARD:
                     case RSK_SHUFFLE_OCARINA:
+                    case RSK_WILDCARD_GREG:
                     case RSK_STARTING_DEKU_SHIELD:
                     case RSK_STARTING_KOKIRI_SWORD:
                     case RSK_STARTING_ZELDAS_LULLABY:
