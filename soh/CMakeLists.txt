@@ -191,6 +191,21 @@ set(Header_Files__soh__Enhancements__debugger
 )
 source_group("Header Files\\soh\\Enhancements\\debugger" FILES ${Header_Files__soh__Enhancements__debugger})
 
+set(Header_Files__soh__Enhancements__speechsynthesizer
+    "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
+)
+source_group("Header Files\\soh\\Enhancements\\speechsynthesizer" FILES ${Header_Files__soh__Enhancements__speechsynthesizer})
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    list(APPEND Header_Files__soh__Enhancements__speechsynthesizer
+        "soh/Enhancements/speechsynthesizer/DarwinSpeechSynthesizer.h"
+    )
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    list(APPEND Header_Files__soh__Enhancements__speechsynthesizer
+        "soh/Enhancements/speechsynthesizer/SAPISpeechSynthesizer.h"
+    )
+endif()
+
 set(Header_Files__soh__Enhancements__randomizer
     "soh/Enhancements/randomizer/randomizer.h"
     "soh/Enhancements/randomizer/randomizer_entrance.h"
@@ -535,6 +550,21 @@ set(Source_Files__soh__Enhancements__debugger
     "soh/Enhancements/debugger/debugSaveEditor.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\debugger" FILES ${Source_Files__soh__Enhancements__debugger})
+
+set(Source_Files__soh__Enhancements__speechsynthesizer
+    "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.cpp"
+)
+source_group("Header Files\\soh\\Enhancements\\speechsynthesizer" FILES ${Source_Files__soh__Enhancements__speechsynthesizer})
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    list(APPEND Source_Files__soh__Enhancements__speechsynthesizer
+        "soh/Enhancements/speechsynthesizer/DarwinSpeechSynthesizer.mm"
+    )
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    list(APPEND Source_Files__soh__Enhancements__speechsynthesizer
+        "soh/Enhancements/speechsynthesizer/SAPISpeechSynthesizer.cpp"
+    )
+endif()
 
 set(Source_Files__soh__Enhancements__randomizer
     "soh/Enhancements/randomizer/randomizer.cpp"
@@ -1861,6 +1891,7 @@ set(ALL_FILES
     ${Header_Files__soh__Enhancements__cosmetics}
     ${Header_Files__soh__Enhancements__audio}
     ${Header_Files__soh__Enhancements__debugger}
+    ${Header_Files__soh__Enhancements__speechsynthesizer}
     ${Header_Files__soh__Enhancements__randomizer}
     ${Header_Files__soh__Enhancements__randomizer__3drando}
     ${Header_Files__soh__Enhancements__item_tables}
@@ -1875,6 +1906,7 @@ set(ALL_FILES
     ${Source_Files__soh__Enhancements__cosmetics}
     ${Source_Files__soh__Enhancements__audio}
     ${Source_Files__soh__Enhancements__debugger}
+    ${Source_Files__soh__Enhancements__speechsynthesizer}
     ${Source_Files__soh__Enhancements__randomizer}
     ${Source_Files__soh__Enhancements__randomizer__3drando}
     ${Source_Files__soh__Enhancements__randomizer__3drando__hint_list}
