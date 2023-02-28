@@ -143,7 +143,6 @@ void GameInteractor::RawAction::ForceInterfaceUpdate() {
 }
 
 GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {
-
     if (!GameInteractor::CanSpawnEnemy()) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
     }

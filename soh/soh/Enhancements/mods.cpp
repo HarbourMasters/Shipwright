@@ -1,4 +1,5 @@
 #include "mods.h"
+#include <optional>
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
 
@@ -14,6 +15,19 @@ extern s32 Health_ChangeBy(PlayState* play, s16 healthChange);
 extern void Rupees_ChangeBy(s16 rupeeChange);
 extern void Inventory_ChangeEquipment(s16 equipment, u16 value);
 }
+
+// MARK: - Helpers
+
+// TODO: When there's more uses of something like this, create a new GI::RawAction?
+void ReloadSceneTogglingLinkAge() {
+    gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
+    gPlayState->sceneLoadFlag = 0x14;
+    gPlayState->fadeTransition = 11;
+    gSaveContext.nextTransitionType = 11;
+    gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
+}
+
+// MARK: - Mods
 
 void RegisterInfiniteMoney() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
@@ -133,7 +147,7 @@ void RegisterFreezeTime() {
             if (CVarGetInteger("gPrevTime", -1) == -1) {
                 CVarSetInteger("gPrevTime", gSaveContext.dayTime);
             }
-
+            
             int32_t prevTime = CVarGetInteger("gPrevTime", gSaveContext.dayTime);
             gSaveContext.dayTime = prevTime;
         } else {
@@ -149,26 +163,22 @@ void RegisterSwitchAge() {
     int16_t playerYaw;
     
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&warped, &playerPos, &playerYaw]() {
-        if (CVarGetInteger("gSwitchAge", 0) != 0) {
-            CVarSetInteger("gSwitchAge", 0);
-            if (gPlayState) {
-                playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
-                playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
-                gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
-                gPlayState->sceneLoadFlag = 0x14;
-                gPlayState->fadeTransition = 11;
-                gSaveContext.nextTransitionType = 11;
-                warped = true;
-                gPlayState->linkAgeOnLoad ^= 1;
-            }
+        if (!gPlayState) {
+            return;
         }
         
-        if (gPlayState) {
-            if (warped && gPlayState->sceneLoadFlag != 0x0014 && gSaveContext.nextTransitionType == 255) {
-                GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
-                GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
-                warped = false;
-            }
+        if (CVarGetInteger("gSwitchAge", 0) && !CVarGetInteger("gTimeTravel", 0)) {
+            CVarSetInteger("gSwitchAge", 0);
+            playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
+            playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
+            ReloadSceneTogglingLinkAge();
+            warped = true;
+        }
+        
+        if (warped && gPlayState->sceneLoadFlag != 0x0014 && gSaveContext.nextTransitionType == 255) {
+            GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
+            GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
+            warped = false;
         }
     });
 }
@@ -194,11 +204,7 @@ void RegisterOcarinaTimeTravel() {
         // Switches Link's age and respawns him at the last entrance he entered.
         if (CVarGetInteger("gTimeTravel", 0) && CVarGetInteger("gSwitchAge", 0)) {
             CVarSetInteger("gSwitchAge", 0);
-            gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
-            gPlayState->sceneLoadFlag = 0x14;
-            gPlayState->fadeTransition = 11;
-            gSaveContext.nextTransitionType = 11;
-            gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
+            ReloadSceneTogglingLinkAge();
         }
     });
     
@@ -316,6 +322,8 @@ void RegisterRupeeDash() {
         }
     });
 }
+
+// MARK: - Public API
 
 void InitMods() {
     RegisterInfiniteMoney();
