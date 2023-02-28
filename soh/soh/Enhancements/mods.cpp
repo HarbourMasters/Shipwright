@@ -13,27 +13,28 @@ extern s32 Health_ChangeBy(PlayState* play, s16 healthChange);
 extern void Rupees_ChangeBy(s16 rupeeChange);
 }
 
-void RegisterCheats() {
-    bool warped = false;
-    Vec3f playerPos;
-    int16_t playerYaw;
-    
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&warped, &playerPos, &playerYaw]() {
-        // Inf Money
+void RegisterInfiniteMoney() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (CVarGetInteger("gInfiniteMoney", 0) != 0) {
             if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
                 gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
             }
         }
+    });
+}
 
-        // Inf Health
+void RegisterInfiniteHealth() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (CVarGetInteger("gInfiniteHealth", 0) != 0) {
             if (gSaveContext.health < gSaveContext.healthCapacity) {
                 gSaveContext.health = gSaveContext.healthCapacity;
             }
         }
+    });
+}
 
-        // Inf Ammo
+void RegisterInfiniteAmmo() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (CVarGetInteger("gInfiniteAmmo", 0) != 0) {
             // Deku Sticks
             if (AMMO(ITEM_STICK) < CUR_CAPACITY(UPG_STICKS)) {
@@ -65,20 +66,29 @@ void RegisterCheats() {
                 AMMO(ITEM_BOMBCHU) = 50;
             }
         }
+    });
+}
 
-        // Inf Magic
+void RegisterInfiniteMagic() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (CVarGetInteger("gInfiniteMagic", 0) != 0) {
             if (gSaveContext.isMagicAcquired && gSaveContext.magic != (gSaveContext.isDoubleMagicAcquired + 1) * 0x30) {
                 gSaveContext.magic = (gSaveContext.isDoubleMagicAcquired + 1) * 0x30;
             }
         }
+    });
+}
 
-        // Inf Nayru's Love Timer
+void RegisterInfiniteNayrusLove() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (CVarGetInteger("gInfiniteNayru", 0) != 0) {
             gSaveContext.nayrusLoveTimer = 0x44B;
         }
+    });
+}
 
-        // Moon Jump On L
+void RegisterMoonJumpOnL() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (CVarGetInteger("gMoonJumpOnL", 0) != 0) {
             if (gPlayState) {
                 Player* player = GET_PLAYER(gPlayState);
@@ -88,16 +98,23 @@ void RegisterCheats() {
                 }
             }
         }
+    });
+}
 
-        // Permanent infinite sword glitch (ISG)
+
+void RegisterInfiniteISG() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (CVarGetInteger("gEzISG", 0) != 0) {
             if (gPlayState) {
                 Player* player = GET_PLAYER(gPlayState);
                 player->swordState = 1;
             }
         }
+    });
+}
 
-        // Unrestricted Items
+void RegisterUnrestrictedItems() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (CVarGetInteger("gNoRestrictItems", 0) != 0) {
             if (gPlayState) {
                 u8 sunsBackup = gPlayState->interfaceCtx.restrictions.sunsSong;
@@ -105,8 +122,11 @@ void RegisterCheats() {
                 gPlayState->interfaceCtx.restrictions.sunsSong = sunsBackup;
             }
         }
+    });
+}
 
-        // Freeze Time
+void RegisterFreezeTime() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (CVarGetInteger("gFreezeTime", 0) != 0) {
             if (CVarGetInteger("gPrevTime", -1) == -1) {
                 CVarSetInteger("gPrevTime", gSaveContext.dayTime);
@@ -117,8 +137,16 @@ void RegisterCheats() {
         } else {
             CVarSetInteger("gPrevTime", -1);
         }
-        
-        //Switches Link's age and respawns him at the last entrance he entered.
+    });
+}
+
+/// Switches Link's age and respawns him at the last entrance he entered.
+void RegisterSwitchAge() {
+    bool warped = false;
+    Vec3f playerPos;
+    int16_t playerYaw;
+    
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&warped, &playerPos, &playerYaw]() {
         if (CVarGetInteger("gSwitchAge", 0) != 0) {
             CVarSetInteger("gSwitchAge", 0);
             if (gPlayState) {
@@ -147,9 +175,8 @@ void RegisterCheats() {
     });
 }
 
-void RegisterAutoSaveOnReceiveItemHook() {
+void RegisterAutoSave() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnReceiveItem>([](u8 item) {
-
         // Don't autosave immediately after buying items from shops to prevent getting them for free!
         // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
         // Don't autosave during the Ganon fight when picking up the Master Sword
@@ -235,7 +262,16 @@ void RegisterRupeeDash() {
 }
 
 void InitMods() {
-    RegisterCheats();
+    RegisterInfiniteMoney();
+    RegisterInfiniteHealth();
+    RegisterInfiniteAmmo();
+    RegisterInfiniteMagic();
+    RegisterInfiniteNayrusLove();
+    RegisterMoonJumpOnL();
+    RegisterInfiniteISG();
+    RegisterUnrestrictedItems();
+    RegisterFreezeTime();
+    RegisterSwitchAge();
     RegisterRupeeDash();
-    RegisterAutoSaveOnReceiveItemHook();
+    RegisterAutoSave();
 }
