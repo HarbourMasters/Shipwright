@@ -303,7 +303,6 @@ namespace GameMenuBar {
                 ImGui::EndMenu();
             }
             
-#if defined(_WIN32) || defined(__APPLE__)
             UIWidgets::Spacer(0);
             
             if (ImGui::BeginMenu("Accessibility")) {
@@ -312,7 +311,6 @@ namespace GameMenuBar {
                 
                 ImGui::EndMenu();
             }
-#endif
             ImGui::EndMenu();
         }
 
