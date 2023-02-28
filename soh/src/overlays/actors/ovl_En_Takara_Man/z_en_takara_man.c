@@ -104,7 +104,14 @@ void func_80B1778C(EnTakaraMan* this, PlayState* play) {
 
         if (!this->unk_21A && this->unk_214) {
             if (Flags_GetSwitch(play, 0x32)) {
-                this->actor.textId = 0x84; //Thanks a lot! (Lost)
+                // text id 0x84 is used in places other than the treasure chest game.
+                // in order to provide a  unique text id that can be replaced for the custom
+                // greg hint, we set it to 0x6E instead
+                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_GREG_HINT)) {
+                    this->actor.textId = 0x6E;
+                } else {
+                    this->actor.textId = 0x84; //Thanks a lot! (Lost)
+                }
                 this->dialogState = TEXT_STATE_EVENT;
             } else {
                 this->actor.textId = 0x704C; //Proceed
