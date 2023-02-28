@@ -1,17 +1,10 @@
 #pragma once
+#include <nlohmann/json.hpp>
+#include "randomizerTypes.h"
+#include "randomizer_check_objects.h"
 
 namespace CheckTracker {
 
-// Check tracker check visibility categories
-typedef enum {
-    RCSHOW_UNCHECKED,
-    RCSHOW_SKIPPED,
-    RCSHOW_SEEN,
-    RCSHOW_HINTED,
-    RCSHOW_CHECKED,
-    RCSHOW_SCUMMED,
-    RCSHOW_SAVED,
-} RandomizerCheckShow;
 
 //Converts an index into a Little Endian bitmask, as follows:
 //00: 0000000100000000
@@ -29,5 +22,9 @@ typedef enum {
 
 void InitCheckTracker();
 void DrawCheckTracker(bool& open);
-
+RandomizerCheckShow GetCheckStatus(RandomizerCheckObject rcObj, int idx);
+std::map<RandomizerCheck, RandomizerCheckTrackerData> *GetCheckTrackerData();
+void PushDefaultCheckData(RandomizerCheck rc);
+void LoadCheckTrackerData(nlohmann::json checks);
+void CreateTrackerData();
 } // namespace CheckTracker

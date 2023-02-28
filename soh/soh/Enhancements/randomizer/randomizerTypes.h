@@ -20,6 +20,14 @@ typedef struct {
     uint8_t id;
 } Sprite;
 
+// Check tracker check visibility categories
+typedef enum {
+    RCSHOW_UNCHECKED,
+    RCSHOW_SEEN,
+    RCSHOW_COLLECTED,
+    RCSHOW_SAVED,
+} RandomizerCheckShow;
+
 typedef enum {
     RC_UNKNOWN_CHECK,
     RC_LINKS_POCKET,

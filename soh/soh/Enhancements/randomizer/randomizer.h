@@ -95,6 +95,7 @@ class Randomizer {
     static void CreateCustomMessages();
     static CustomMessageEntry GetRupeeMessage(u16 rupeeTextId);
     bool CheckContainsVanillaItem(RandomizerCheck randoCheck);
+    void RegisterTrackerHooks();
 };
 
 #ifdef __cplusplus
@@ -103,6 +104,7 @@ extern "C" {
 
 void Rando_Init(void);
 bool GenerateRandomizer(std::string seed = "");
+void SaveTrackerData(int fileNum);
 
 #ifdef __cplusplus
 }
