@@ -180,6 +180,9 @@ void SaveManager::LoadRandomizerVersion2() {
     std::string dampeText;
     SaveManager::Instance->LoadData("dampeText", dampeText);
     memcpy(gSaveContext.dampeText, dampeText.c_str(), dampeText.length());
+    std::string gregHintText;
+    SaveManager::Instance->LoadData("gregHintText", gregHintText);
+    memcpy(gSaveContext.gregHintText, gregHintText.c_str(), gregHintText.length());
     std::string warpMinuetText;
     SaveManager::Instance->LoadData("warpMinuetText", warpMinuetText);
     memcpy(gSaveContext.warpMinuetText, warpMinuetText.c_str(), warpMinuetText.length());
@@ -272,6 +275,7 @@ void SaveManager::SaveRandomizer() {
     SaveManager::Instance->SaveData("ganonHintText", gSaveContext.ganonHintText);
     SaveManager::Instance->SaveData("ganonText", gSaveContext.ganonText);
     SaveManager::Instance->SaveData("dampeText", gSaveContext.dampeText);
+    SaveManager::Instance->SaveData("gregHintText", gSaveContext.gregHintText);
     SaveManager::Instance->SaveData("warpMinuetText", gSaveContext.warpMinuetText);
     SaveManager::Instance->SaveData("warpBoleroText", gSaveContext.warpBoleroText);
     SaveManager::Instance->SaveData("warpSerenadeText", gSaveContext.warpSerenadeText);

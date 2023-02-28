@@ -14,6 +14,7 @@
 #include "vt.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 static void* sEquipmentFRATexs[] = {
@@ -3655,7 +3656,9 @@ void KaleidoScope_Update(PlayState* play)
             switch (pauseCtx->unk_1E4) {
                 case 0:
                     if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
-                        CVarSetInteger("gPauseBufferBlockInputFrame", 9);
+                        if (CVarGetInteger("gCheatEasyPauseBufferEnabled", 0) || CVarGetInteger("gCheatEasyInputBufferingEnabled", 0)) {
+                            CVarSetInteger("gPauseBufferBlockInputFrame", 9);
+                        }
                         if (CVarGetInteger("gCheatEasyPauseBufferEnabled", 0)) {
                             CVarSetInteger("gCheatEasyPauseBufferFrameAdvance", 13);
                         }
@@ -4180,6 +4183,7 @@ void KaleidoScope_Update(PlayState* play)
                     } else {
                         play->state.running = 0;
                         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
+                        GameInteractor_ExecuteOnExitGame(gSaveContext.fileNum);
                     }
                 }
             }
