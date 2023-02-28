@@ -4,11 +4,147 @@
 
 extern "C" {
 #include <z64.h>
+#include "macros.h"
+#include "variables.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Play_PerformSave(PlayState* play);
 extern s32 Health_ChangeBy(PlayState* play, s16 healthChange);
 extern void Rupees_ChangeBy(s16 rupeeChange);
+}
+
+void RegisterCheats() {
+    bool warped = false;
+    Vec3f playerPos;
+    int16_t playerYaw;
+    
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&warped, &playerPos, &playerYaw]() {
+        // Inf Money
+        if (CVarGetInteger("gInfiniteMoney", 0) != 0) {
+            if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
+                gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
+            }
+        }
+
+        // Inf Health
+        if (CVarGetInteger("gInfiniteHealth", 0) != 0) {
+            if (gSaveContext.health < gSaveContext.healthCapacity) {
+                gSaveContext.health = gSaveContext.healthCapacity;
+            }
+        }
+
+        // Inf Ammo
+        if (CVarGetInteger("gInfiniteAmmo", 0) != 0) {
+            // Deku Sticks
+            if (AMMO(ITEM_STICK) < CUR_CAPACITY(UPG_STICKS)) {
+                AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
+            }
+
+            // Deku Nuts
+            if (AMMO(ITEM_NUT) < CUR_CAPACITY(UPG_NUTS)) {
+                AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
+            }
+
+            // Bombs
+            if (AMMO(ITEM_BOMB) < CUR_CAPACITY(UPG_BOMB_BAG)) {
+                AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
+            }
+
+            // Fairy Bow (Ammo)
+            if (AMMO(ITEM_BOW) < CUR_CAPACITY(UPG_QUIVER)) {
+                AMMO(ITEM_BOW) = CUR_CAPACITY(UPG_QUIVER);
+            }
+
+            // Fairy Slingshot (Ammo)
+            if (AMMO(ITEM_SLINGSHOT) < CUR_CAPACITY(UPG_BULLET_BAG)) {
+                AMMO(ITEM_SLINGSHOT) = CUR_CAPACITY(UPG_BULLET_BAG);
+            }
+
+            // Bombchus (max: 50, no upgrades)
+            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU && AMMO(ITEM_BOMBCHU) < 50) {
+                AMMO(ITEM_BOMBCHU) = 50;
+            }
+        }
+
+        // Inf Magic
+        if (CVarGetInteger("gInfiniteMagic", 0) != 0) {
+            if (gSaveContext.isMagicAcquired && gSaveContext.magic != (gSaveContext.isDoubleMagicAcquired + 1) * 0x30) {
+                gSaveContext.magic = (gSaveContext.isDoubleMagicAcquired + 1) * 0x30;
+            }
+        }
+
+        // Inf Nayru's Love Timer
+        if (CVarGetInteger("gInfiniteNayru", 0) != 0) {
+            gSaveContext.nayrusLoveTimer = 0x44B;
+        }
+
+        // Moon Jump On L
+        if (CVarGetInteger("gMoonJumpOnL", 0) != 0) {
+            if (gPlayState) {
+                Player* player = GET_PLAYER(gPlayState);
+
+                if (CHECK_BTN_ANY(gPlayState->state.input[0].cur.button, BTN_L)) {
+                    player->actor.velocity.y = 6.34375f;
+                }
+            }
+        }
+
+        // Permanent infinite sword glitch (ISG)
+        if (CVarGetInteger("gEzISG", 0) != 0) {
+            if (gPlayState) {
+                Player* player = GET_PLAYER(gPlayState);
+                player->swordState = 1;
+            }
+        }
+
+        // Unrestricted Items
+        if (CVarGetInteger("gNoRestrictItems", 0) != 0) {
+            if (gPlayState) {
+                u8 sunsBackup = gPlayState->interfaceCtx.restrictions.sunsSong;
+                memset(&gPlayState->interfaceCtx.restrictions, 0, sizeof(gPlayState->interfaceCtx.restrictions));
+                gPlayState->interfaceCtx.restrictions.sunsSong = sunsBackup;
+            }
+        }
+
+        // Freeze Time
+        if (CVarGetInteger("gFreezeTime", 0) != 0) {
+            if (CVarGetInteger("gPrevTime", -1) == -1) {
+                CVarSetInteger("gPrevTime", gSaveContext.dayTime);
+            }
+
+            int32_t prevTime = CVarGetInteger("gPrevTime", gSaveContext.dayTime);
+            gSaveContext.dayTime = prevTime;
+        } else {
+            CVarSetInteger("gPrevTime", -1);
+        }
+        
+        //Switches Link's age and respawns him at the last entrance he entered.
+        if (CVarGetInteger("gSwitchAge", 0) != 0) {
+            CVarSetInteger("gSwitchAge", 0);
+            if (gPlayState) {
+                playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
+                playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
+                gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
+                gPlayState->sceneLoadFlag = 0x14;
+                gPlayState->fadeTransition = 11;
+                gSaveContext.nextTransitionType = 11;
+                warped = true;
+                if (gPlayState->linkAgeOnLoad == 1) {
+                    gPlayState->linkAgeOnLoad = 0;
+                } else {
+                    gPlayState->linkAgeOnLoad = 1;
+                }
+            }
+        }
+        
+        if (gPlayState) {
+            if (warped && gPlayState->sceneLoadFlag != 0x0014 && gSaveContext.nextTransitionType == 255) {
+                GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
+                GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
+                warped = false;
+            }
+        }
+    });
 }
 
 void RegisterAutoSaveOnReceiveItemHook() {
@@ -99,6 +235,7 @@ void RegisterRupeeDash() {
 }
 
 void InitMods() {
+    RegisterCheats();
     RegisterRupeeDash();
     RegisterAutoSaveOnReceiveItemHook();
 }
