@@ -98,9 +98,9 @@ set(PROJECT_NAME soh)
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/build.c.in ${CMAKE_BINARY_DIR}/build.c @ONLY)
 
 set(Header_Files "resource.h")
-source_group("Header Files" FILES ${Header_Files})
+source_group("headers" FILES ${Header_Files})
 
-# include
+# include {{{
 file(GLOB Header_Files__include "include/*.h" "include/*.inc")
 list(APPEND Header_Files__include ${CMAKE_CURRENT_SOURCE_DIR}/include/libc/stdarg.h)
 list(REMOVE_ITEM Header_Files__include ${CMAKE_CURRENT_SOURCE_DIR}/include/bgm.h)
@@ -110,163 +110,91 @@ list(REMOVE_ITEM Header_Files__include ${CMAKE_CURRENT_SOURCE_DIR}/include/stdde
 list(REMOVE_ITEM Header_Files__include ${CMAKE_CURRENT_SOURCE_DIR}/include/stdlib_n64.h)
 list(REMOVE_ITEM Header_Files__include ${CMAKE_CURRENT_SOURCE_DIR}/include/ultra64.h)
 source_group("include" FILES ${Header_Files__include})
+# }}}
 
 # soh (root)
 file(GLOB soh__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/*.c" "soh/*.cpp" "soh/*.h")
 source_group("soh" FILES ${soh__})
 
-# soh/enhancements
-file(GLOB soh__Enhancements RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+# soh/enhancements {{{
+file(GLOB_RECURSE soh__Enhancements RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     "soh/Enhancements/*.c"
     "soh/Enhancements/*.cpp"
     "soh/Enhancements/*.h"
+    "soh/Enhancements/*.hpp"
     "soh/Enhancements/*_extern.inc"
 )
+
 list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/gamecommand.h")
 list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/gfx.*")
-source_group("soh\\Enhancements" FILES ${soh__Enhancements})
-
-# soh/enhancements/audio
-file (GLOB_RECURSE soh__Enhancements__audio RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/Enhancements/audio/*")
-source_group("soh\\Enhancements\\audio" FILES ${soh__Enhancements__audio})
-
-# soh/enhancements/controls
-file(GLOB soh__Enhancements__controls RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/Enhancements/controls/*")
-source_group("soh\\Enhancements\\controls" FILES ${soh__Enhancements__controls})
-
-# soh/enhancements/cosmetics
-file(GLOB soh__Enhancements__cosmetics RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/Enhancements/cosmetics/*")
-source_group("soh\\Enhancements\\cosmetics" FILES ${soh__Enhancements__cosmetics})
-
-# soh/enhancements/crowd-control
-if (BUILD_CROWD_CONTROL)
-    file(GLOB soh__Enhancements__crowd_control RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/Enhancements/crowd-control/*")
-    list(REMOVE_ITEM soh__Enhancements__crowd_control "soh/Enhancements/crowd-control/soh.cs")
+list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/crowd-control/soh.cs")
+if (!BUILD_CROWD_CONTROL)
+    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/crowd-control/.*")
 endif()
-source_group("soh\\Enhancements\\crowd-control" FILES ${soh__Enhancements__crowd_control})
 
-# soh/enhancements/custom-message
-file(GLOB soh__Enhancements__custom_message RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/Enhancements/custom-message/*")
-source_group("soh\\Enhancements\\custom-message" FILES ${soh__Enhancements__custom_message})
+source_group("soh\\Enhancements" REGULAR_EXPRESSION "soh/Enhancements/*")
+source_group("soh\\Enhancements\\audio" REGULAR_EXPRESSION "soh/Enhancements/audio/*")
+source_group("soh\\Enhancements\\controls" REGULAR_EXPRESSION "soh/Enhancements/controls/*")
+source_group("soh\\Enhancements\\cosmetics" REGULAR_EXPRESSION "soh/Enhancements/cosmetics/*")
+source_group("soh\\Enhancements\\crowd-control" REGULAR_EXPRESSION "soh/Enhancements/crowd-control/*")
+source_group("soh\\Enhancements\\custom-message" REGULAR_EXPRESSION "soh/Enhancements/custom-message/*")
+source_group("soh\\Enhancements\\debugger" REGULAR_EXPRESSION "soh/Enhancements/debugger/*")
+source_group("soh\\Enhancements\\game-interactor" REGULAR_EXPRESSION "soh/Enhancements/game-interactor/*")
+source_group("soh\\Enhancements\\item-tables" REGULAR_EXPRESSION "soh/Enhancements/item-tables/*")
+source_group("soh\\Enhancements\\randomizer" REGULAR_EXPRESSION "soh/Enhancements/randomizer/*")
+source_group("soh\\Enhancements\\randomizer\\3drando" REGULAR_EXPRESSION "soh/Enhancements/randomizer/3drando/*")
+source_group("soh\\Enhancements\\randomizer\\3drando\\hint_list" REGULAR_EXPRESSION "soh/Enhancements/randomizer/3drando/hint_list/*")
+source_group("soh\\Enhancements\\randomizer\\3drando\\location_access" REGULAR_EXPRESSION "soh/Enhancements/randomizer/3drando/location_access/*")
+# }}}
 
-# soh/enhancements/debugger
-file(GLOB soh__Enhancements__debugger RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/Enhancements/debugger/*")
-source_group("soh\\Enhancements\\debugger" FILES ${soh__Enhancements__debugger})
+# soh/resource {{{
+file(GLOB_RECURSE soh__Resource RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/resource/*.cpp" "soh/resource/*.h")
 
-# soh/enhancements/game-interactor
-file(GLOB soh__Enhancements__game_interactor RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/Enhancements/game-interactor/*")
-source_group("soh\\Enhancements\\game-interactor" FILES ${soh__Enhancements__game_interactor})
+source_group("soh\\resource\\type" REGULAR_EXPRESSION "soh/resource/type/*")
+source_group("soh\\resource\\type\\scenecommand" REGULAR_EXPRESSION "soh/resource/type/scenecommand/*")
+source_group("soh\\resource\\importer" REGULAR_EXPRESSION "soh/resource/importer/*")
+source_group("soh\\resource\\importer\\scenecommand" REGULAR_EXPRESSION "soh/resource/importer/scenecommand/*")
+# }}}
 
-# soh/enhancements/item-tables
-file(GLOB soh__Enhancements__item_tables RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/Enhancements/item-tables/*")
-source_group("soh\\Enhancements\\item-tables" FILES ${soh__Enhancements__item_tables})
+# src (decomp) {{{
+file(GLOB_RECURSE src__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.c" "src/*.h")
 
-# soh/enhancements/randomizer
-file(GLOB soh__Enhancements__randomizer RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/Enhancements/randomizer/*.c" "soh/Enhancements/randomizer/*.cpp" "soh/Enhancements/randomizer/*.h")
-source_group("soh\\Enhancements\\randomizer" FILES ${soh__Enhancements__randomizer})
+list(APPEND src__ ${CMAKE_BINARY_DIR}/build.c)
+list(FILTER src__ EXCLUDE REGEX "src/dmadata/*")
+list(FILTER src__ EXCLUDE REGEX "src/elf_message/*")
+list(FILTER src__ EXCLUDE REGEX "src/libultra/io/*")
+list(FILTER src__ EXCLUDE REGEX "src/libultra/libc/*")
+list(FILTER src__ EXCLUDE REGEX "src/libultra/os/*")
+list(FILTER src__ EXCLUDE REGEX "src/libultra/rmon/*")
+list(APPEND src__ "src/libultra/libc/sprintf.c")
+list(REMOVE_ITEM src__ "src/libultra/gu/cosf.c")
+list(REMOVE_ITEM src__ "src/libultra/gu/lookat.c")
+list(REMOVE_ITEM src__ "src/libultra/gu/lookathil.c")
+list(REMOVE_ITEM src__ "src/libultra/gu/perspective.c")
+list(REMOVE_ITEM src__ "src/libultra/gu/position.c")
+list(REMOVE_ITEM src__ "src/libultra/gu/sinf.c")
+list(REMOVE_ITEM src__ "src/libultra/gu/sinf.c")
+list(REMOVE_ITEM src__ "src/libultra/gu/sqrtf.c")
+list(REMOVE_ITEM src__ "src/libultra/gu/us2dex.c")
 
-# soh/enhancements/randomizer/3drando
-file(GLOB soh__Enhancements__randomizer__3drando RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/Enhancements/randomizer/3drando/*.hpp" "soh/Enhancements/randomizer/3drando/*.cpp")
-source_group("soh\\Enhancements\\randomizer\\3drando" FILES ${soh__Enhancements__randomizer__3drando})
-
-# soh/enhancements/randomizer/3drando/hint_list
-file(GLOB soh__Enhancements__randomizer__3drando__hint_list RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/Enhancements/randomizer/3drando/hint_list/*.hpp" "soh/Enhancements/randomizer/3drando/hint_list/*.cpp")
-source_group("soh\\Enhancements\\randomizer\\3drando\\hint_list" FILES ${soh__Enhancements__randomizer__3drando__hint_list})
-
-# soh/enhancements/randomizer/3drando/location_access
-file(GLOB soh__Enhancements__randomizer__3drando__location_access RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/Enhancements/randomizer/3drando/location_access/*.hpp" "soh/Enhancements/randomizer/3drando/location_access/*.cpp")
-source_group("soh\\Enhancements\\randomizer\\3drando\\location_access" FILES ${soh__Enhancements__randomizer__3drando__location_access})
-
-# soh/resource/type
-file(GLOB soh__resource_types RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/resource/type/*.h" "soh/resource/type/*.cpp")
-source_group("soh\\resource\\type" FILES ${soh__resource_types})
-
-# soh/resource/type/scenecommand
-file(GLOB soh__resource_types__scenecommand RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/resource/type/scenecommand/*.h" "soh/resource/type/scenecommand/*.cpp")
-source_group("soh\\resource\\type\\scenecommand" FILES ${soh__resource_types__scenecommand})
-
-# soh/resource/importer
-file(GLOB soh__resource_factories RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/resource/importer/*.h" "soh/resource/importer/*.cpp")
-source_group("soh\\resource\\importer" FILES ${soh__resource_factories})
-
-# soh/resource/importer/scenecommand
-file(GLOB soh__resource_factories__scenecommand RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/resource/importer/scenecommand/*.h" "soh/resource/importer/scenecommand/*.cpp")
-source_group("soh\\resource\\importer\\scenecommand" FILES ${soh__resource_factories__scenecommand})
-
-# src/boot (decomp)
-file(GLOB src__boot RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/boot/*.c")
-list(APPEND src__boot ${CMAKE_BINARY_DIR}/build.c)
-source_group("src\\boot" FILES ${src__boot})
-
-# src/buffers (decomp)
-file(GLOB src__buffers RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/buffers/*.c")
-source_group("src\\buffers" FILES ${src__buffers})
-
-# src/code (decomp)
-file(GLOB src__code RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/code/*.c")
-source_group("src\\code" FILES ${src__code})
-
-# src/libultra (decomp)
-set(src__libultra
-    "src/libultra/gu/coss.c"
-    "src/libultra/gu/guLookAt.c"
-    "src/libultra/gu/guLookAtHilite.c"
-    "src/libultra/gu/guPerspectiveF.c"
-    "src/libultra/gu/guPosition.c"
-    "src/libultra/gu/guS2DInitBg.c"
-    "src/libultra/gu/ortho.c"
-    "src/libultra/gu/rotate.c"
-    "src/libultra/gu/sins.c"
-    "src/libultra/gu/sintable.c"
-    "src/libultra/libc/sprintf.c"
-)
-source_group("src\\libultra" FILES ${src__libultra})
-
-# src/overlays/actors (decomp)
-file(GLOB_RECURSE src__overlays__actors RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/overlays/actors/*.c" "src/overlays/actors/*.h")
-source_group("src\\overlays\\actors" FILES ${src__overlays__actors})
-
-# src/overlays/effects (decomp)
-file(GLOB_RECURSE src__overlays__effects RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/overlays/effects/*.c" "src/overlays/effects/*.h")
-source_group("src\\overlays\\effects" FILES ${src__overlays__effects})
-
-# src/overlays/gamestates (decomp)
-file(GLOB_RECURSE src__overlays__gamestates RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/overlays/gamestates/*.c")
-source_group("src\\overlays\\gamestates" FILES ${src__overlays__gamestates})
-
-# src/overlays/misc (decomp)
-file(GLOB_RECURSE src__overlays__misc RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/overlays/misc/*.c" "src/overlays/misc/*.h") # TODO: Before we didn't include the header, not sure why...
-source_group("src\\overlays\\misc" FILES ${src__overlays__misc})
+source_group("src" REGULAR_EXPRESSION "src/*")
+source_group("src\\boot" REGULAR_EXPRESSION "src/boot/*")
+source_group("src\\buffers" REGULAR_EXPRESSION "src/buffers/*")
+source_group("src\\code" REGULAR_EXPRESSION "src/code/*")
+source_group("src\\libultra" REGULAR_EXPRESSION "src/libultra/*")
+source_group("src\\overlays\\actors" REGULAR_EXPRESSION "src/overlays/actors/*")
+source_group("src\\overlays\\effects" REGULAR_EXPRESSION "src/overlays/effects/*")
+source_group("src\\overlays\\gamestates" REGULAR_EXPRESSION  "src/overlays/gamestates/*")
+source_group("src\\overlays\\misc" REGULAR_EXPRESSION  "src/overlays/misc/*")
+# }}}
 
 set(ALL_FILES
     ${Header_Files}
     ${Header_Files__include}
     ${soh__}
     ${soh__Enhancements}
-    ${soh__Enhancements__controls}
-    ${soh__Enhancements__cosmetics}
-    ${soh__Enhancements__crowd_control}
-    ${soh__Enhancements__custom_message}
-    ${soh__Enhancements__audio}
-    ${soh__Enhancements__debugger}
-    ${soh__Enhancements__game_interactor}
-    ${soh__Enhancements__item_tables}
-    ${soh__Enhancements__randomizer}
-    ${soh__Enhancements__randomizer__3drando}
-    ${soh__Enhancements__randomizer__3drando__hint_list}
-    ${soh__Enhancements__randomizer__3drando__location_access}
-    ${soh__resource_types}
-    ${soh__resource_types__scenecommand}
-    ${soh__resource_factories}
-    ${soh__resource_factories__scenecommand}
-    ${src__boot}
-    ${src__buffers}
-    ${src__code}
-    ${src__libultra}
-    ${src__overlays__actors}
-    ${src__overlays__effects}
-    ${src__overlays__gamestates}
-    ${src__overlays__misc}
+    ${soh__Resource}
+    ${src__}
 )
 
 ################################################################################
