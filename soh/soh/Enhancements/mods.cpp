@@ -7,6 +7,8 @@ extern "C" {
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Play_PerformSave(PlayState* play);
+extern s32 Health_ChangeBy(PlayState* play, s16 healthChange);
+extern void Rupees_ChangeBy(s16 rupeeChange);
 }
 
 void RegisterAutoSaveOnReceiveItemHook() {
@@ -88,9 +90,7 @@ void RegisterRupeeDash() {
             if (gSaveContext.rupees > 0) {
                 Rupees_ChangeBy(-1);
             } else {
-                if (gSaveContext.health > 0) {
-                    gSaveContext.health = std::max(gSaveContext.health - 16, 0);
-                }
+                Health_ChangeBy(gPlayState, -16);
             }
         } else {
             rupeeDashTimer++;
@@ -99,5 +99,6 @@ void RegisterRupeeDash() {
 }
 
 void InitMods() {
+    RegisterRupeeDash();
     RegisterAutoSaveOnReceiveItemHook();
 }
