@@ -390,6 +390,7 @@ typedef struct {
     uint8_t bridgeRewardCount;
     uint8_t bridgeDungeonCount;
     uint8_t bridgeTokenCount;
+    uint8_t wildcardGreg;
     uint8_t randomGanonsTrials;
     uint8_t ganonsTrialsCount;
 
@@ -910,6 +911,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option BridgeTokenCount;
   extern Option RandomGanonsTrials;
   extern Option GanonsTrialsCount;
+  extern Option GregtheWildcard;
 
   extern Option StartingAge;
   extern uint8_t ResolvedStartingAge;

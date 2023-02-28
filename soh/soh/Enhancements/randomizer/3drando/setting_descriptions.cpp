@@ -127,6 +127,7 @@ string_view bridgeDungeonCountDesc    = "Set the number of completed dungeons re
                                         "spawn the Rainbow Bridge.";                       //
 string_view bridgeTokenCountDesc      = "Set the number of Gold Skulltula Tokens required\n"
                                         "to spawn the Rainbow Bridge.";                    //
+string_view wildcardGregDesc          = "Makes Greg a wildcard towards set bridge requirements."; //
 /*------------------------------                                                           //
 |     RANDOM GANONS TRIALS     |                                                           //
 ------------------------------*/                                                           //

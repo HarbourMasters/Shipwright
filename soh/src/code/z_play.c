@@ -299,14 +299,13 @@ u8 CheckMedallionCount() {
     return medallionCount;
 }
 
-u8 CheckRewardCount() {
-    u8 rewardCount = CheckMedallionCount() + CheckStoneCount();
+u8 CheckWildcardCount() {
+    u8 wildcardCount = 0;
 
-    if (RO_BRIDGE_WILD_GREG && Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
-        rewardCount += 1;
+    if (Randomizer_GetSettingValue(RSK_WILDCARD_GREG) && Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+        wildcardCount += 1;
     }
-
-    return rewardCount;
+    return wildcardCount;
 }
 
 u8 CheckDungeonCount() {
