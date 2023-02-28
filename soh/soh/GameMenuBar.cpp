@@ -625,6 +625,14 @@ namespace GameMenuBar {
                         ImGui::EndMenu();
                     }
 
+                    UIWidgets::Spacer(0);
+
+                    UIWidgets::PaddedEnhancementCheckbox("Rupee Dash Mode", "gRupeeDash", true, false);
+                    UIWidgets::Tooltip("Rupees reduced over time, Link suffers damage when the count hits 0.");
+                    UIWidgets::PaddedEnhancementSliderInt("Rupee Dash Interval: %d", "##DashInterval", "gDashInterval", 3, 5, "", 5, false, true, false,
+                        !CVarGetInteger("gRupeeDash", 0), "This option is disabled because \"Rupee Dash Mode\" is turned off");
+                    UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
+
                     ImGui::EndMenu();
                 }
 
@@ -822,12 +830,23 @@ namespace GameMenuBar {
                 ImGui::EndMenu();
             }
 
-            UIWidgets::PaddedEnhancementCheckbox("Autosave", "gAutosave", true, false);
-            UIWidgets::Tooltip("Automatically save the game every time a new area is entered or item is obtained\n"
-                "To disable saving when obtaining a major item, manually set gAutosaveMajorItems to 0\n"
-                "To enable saving when obtaining any item, manually set gAutosaveAllItems to 1\n"
-                "gAutosaveAllItems takes priority over gAutosaveMajorItems if both are set to 1\n"
-                "gAutosaveMajorItems excludes rupees and health/magic/ammo refills (but includes bombchus)");
+            UIWidgets::PaddedSeparator(false, true);
+
+            // Autosave enum value of 1 is the default in presets and the old checkbox "on" state for backwards compatibility
+            const uint16_t selectedAutosaveId = CVarGetInteger("gAutosave", 0);
+            std::string autosaveLabels[] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
+            UIWidgets::PaddedText("Autosave", false, true);
+            if (ImGui::BeginCombo("##AutosaveComboBox", autosaveLabels[selectedAutosaveId].c_str())) {
+                for (int index = 0; index < sizeof(autosaveLabels) / sizeof(autosaveLabels[0]); index++) {
+                    if (ImGui::Selectable(autosaveLabels[index].c_str(), index == selectedAutosaveId)) {
+                        CVarSetInteger("gAutosave", index);
+                    }
+                }
+
+                ImGui::EndCombo();
+            }
+            UIWidgets::Tooltip("Automatically save the game every time a new area is entered and/or item is obtained\n"
+                "Major items exclude rupees and health/magic/ammo refills (but include bombchus unless bombchu drops are enabled)");
 
             UIWidgets::Spacer(0);
 
@@ -1042,6 +1061,9 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Allows any item to be equipped, regardless of age\nAlso allows Child to use Adult strength upgrades");
             UIWidgets::PaddedEnhancementCheckbox("Easy Frame Advancing", "gCheatEasyPauseBufferEnabled", true, false);
             UIWidgets::Tooltip("Continue holding START button when unpausing to only advance a single frame and then re-pause");
+            const bool bEasyFrameAdvanceEnabled = CVarGetInteger("gCheatEasyPauseBufferEnabled", 0);
+            UIWidgets::PaddedEnhancementCheckbox("Easy Input Buffering", "gCheatEasyInputBufferingEnabled", true, false, bEasyFrameAdvanceEnabled, "Forced enabled when Easy Frame Advancing is enabled");
+            UIWidgets::Tooltip("Inputs that are held down while the Subscreen is closing will be pressed when the game is resumed");
             UIWidgets::PaddedEnhancementCheckbox("Unrestricted Items", "gNoRestrictItems", true, false);
             UIWidgets::Tooltip("Allows you to use any item at any location");
             UIWidgets::PaddedEnhancementCheckbox("Freeze Time", "gFreezeTime", true, false);

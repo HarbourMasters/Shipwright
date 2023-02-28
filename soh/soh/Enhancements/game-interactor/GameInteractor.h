@@ -86,9 +86,10 @@ public:
 
     DEFINE_HOOK(OnLoadGame, void(int32_t fileNum));
     DEFINE_HOOK(OnExitGame, void(int32_t fileNum));
+    DEFINE_HOOK(OnGameFrameUpdate, void());
     DEFINE_HOOK(OnReceiveItem, void(u8 item));
     DEFINE_HOOK(OnSceneInit, void(s16 sceneNum));
-    
+    DEFINE_HOOK(OnPlayerUpdate, void());
     
     DEFINE_HOOK(OnSaveFile, void(int32_t fileNum));
     DEFINE_HOOK(OnLoadFile, void(int32_t fileNum));
