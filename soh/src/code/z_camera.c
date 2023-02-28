@@ -1688,7 +1688,7 @@ s32 Camera_Normal1(Camera* camera) {
         eyeAdjustment.pitch =
             Camera_LERPCeilS(anim->swing.unk_14, atEyeNextGeo.pitch, 1.0f / camera->yawUpdateRateInv, 0xA);
     } else {
-        // rotate yaw to follow player.
+        // rotate yaw to follow player while moving around - to keep player on camera.
         eyeAdjustment.yaw =
             Camera_CalcDefaultYaw(camera, atEyeNextGeo.yaw, camera->playerPosRot.rot.y, norm1->unk_14, sp94);
         eyeAdjustment.pitch =
