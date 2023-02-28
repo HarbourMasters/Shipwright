@@ -160,6 +160,7 @@ source_group("soh\\resource\\importer\\scenecommand" REGULAR_EXPRESSION "soh/res
 file(GLOB_RECURSE src__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.c" "src/*.h")
 
 list(APPEND src__ ${CMAKE_BINARY_DIR}/build.c)
+list(APPEND src__ ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
 list(FILTER src__ EXCLUDE REGEX "src/dmadata/*")
 list(FILTER src__ EXCLUDE REGEX "src/elf_message/*")
 list(FILTER src__ EXCLUDE REGEX "src/libultra/io/*")
@@ -178,6 +179,7 @@ list(REMOVE_ITEM src__ "src/libultra/gu/sqrtf.c")
 list(REMOVE_ITEM src__ "src/libultra/gu/us2dex.c")
 
 source_group("src" REGULAR_EXPRESSION "src/*")
+source_group("src\\build" FILES ${CMAKE_BINARY_DIR}/build.c ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
 source_group("src\\boot" REGULAR_EXPRESSION "src/boot/*")
 source_group("src\\buffers" REGULAR_EXPRESSION "src/buffers/*")
 source_group("src\\code" REGULAR_EXPRESSION "src/code/*")
@@ -200,7 +202,7 @@ set(ALL_FILES
 ################################################################################
 # Target
 ################################################################################
-add_executable(${PROJECT_NAME} ${ALL_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
+add_executable(${PROJECT_NAME} ${ALL_FILES})
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
