@@ -224,11 +224,8 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Reward Count", RSK_RAINBOW_BRIDGE_REWARD_COUNT },
     { "Open Settings:Dungeon Count", RSK_RAINBOW_BRIDGE_DUNGEON_COUNT },
     { "Open Settings:Token Count", RSK_RAINBOW_BRIDGE_TOKEN_COUNT },
-<<<<<<< HEAD
     { "Open Settings:Greg the Wildcard", RSK_WILDCARD_GREG },
-=======
     { "Shuffle Settings:Shuffle Dungeon Rewards", RSK_SHUFFLE_DUNGEON_REWARDS },
->>>>>>> 35cc2aab835ef53d655f4a0bfec4ad797b7c8d02
     { "Shuffle Settings:Link's Pocket", RSK_LINKS_POCKET},
     { "Shuffle Settings:Shuffle Songs", RSK_SHUFFLE_SONGS },
     { "Shuffle Settings:Shuffle Gerudo Card", RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD },
@@ -742,11 +739,8 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_RAINBOW_BRIDGE_REWARD_COUNT:
                     case RSK_RAINBOW_BRIDGE_DUNGEON_COUNT:
                     case RSK_RAINBOW_BRIDGE_TOKEN_COUNT:
-<<<<<<< HEAD
                     case RSK_WILDCARD_GREG:
-=======
                     case RSK_TRIAL_COUNT:
->>>>>>> 35cc2aab835ef53d655f4a0bfec4ad797b7c8d02
                     case RSK_LACS_STONE_COUNT:
                     case RSK_LACS_MEDALLION_COUNT:
                     case RSK_LACS_REWARD_COUNT:
