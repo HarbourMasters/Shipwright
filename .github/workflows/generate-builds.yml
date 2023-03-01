@@ -6,8 +6,46 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  setup-runners:
+    runs-on: self-hosted
+    outputs:
+      macos-runner: ${{ steps.macos.outputs.runner }}
+      linux-perf-runner: ${{ steps.linux-perf.outputs.runner }}
+      linux-compat-runner: ${{ steps.linux-compat.outputs.runner }}
+      windows-runner: ${{ steps.windows.outputs.runner }}
+    steps:
+      - name: Set macOS runner
+        if: github.repository == 'HarbourMasters/Ghostship'
+        id: macos
+        run: |
+          if [ -n "${{ secrets.MAC_RUNNER }}" ]; then
+            echo "runner=[\"self-hosted\",\"macos\"]" >> $GITHUB_OUTPUT
+          fi
+      - name: Set Linux performance runner
+        if: github.repository == 'HarbourMasters/Ghostship'
+        id: linux-perf
+        run: |
+          if [ -n "${{ secrets.LINUX_PERF_RUNNER }}" ]; then
+            echo "runner=[\"self-hosted\",\"linux\",\"perf\"]" >> $GITHUB_OUTPUT
+          fi
+      - name: Set Linux compatibility runner
+        if: github.repository == 'HarbourMasters/Ghostship'
+        id: linux-compat
+        run: |
+          if [ -n "${{ secrets.LINUX_COMPAT_RUNNER }}" ]; then
+            echo "runner=[\"self-hosted\",\"linux\",\"compat\"]" >> $GITHUB_OUTPUT
+          fi
+      - name: Set Windows runner
+        if: github.repository == 'HarbourMasters/Ghostship'
+        id: windows
+        run: |
+          if [ -n "${{ secrets.WINDOWS_RUNNER }}" ]; then
+            echo "runner=[\"self-hosted\",\"windows\"]" >> $GITHUB_OUTPUT
+          fi
+
   build-macos:
-    runs-on: ${{ vars.MAC_RUNNER || 'macos-12' }}
+    needs: setup-runners
+    runs-on: ${{ (needs.setup-runners.outputs.macos-runner && fromJSON(needs.setup-runners.outputs.macos-runner)) || 'macos-latest' }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -16,13 +54,15 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ runner.os }}-ccache
-    - name: Install gtar wrapper
+    - name: Install gtar wrapper 
+      if: ${{ !needs.setup-runners.outputs.macos-runner }} # we assume self-hosted runners are already configured
       run: |
         sudo mv /usr/local/bin/gtar /usr/local/bin/gtar.orig
         sudo cp .github/workflows//gtar /usr/local/bin/gtar
         sudo chmod +x /usr/local/bin/gtar
     - name: Cache MacPorts
       id: cache-macports
+      if: ${{ !needs.setup-runners.outputs.macos-runner }} # we assume self-hosted runners are already configured
       uses: actions/cache@v2
       with:
         path: /opt/local/
@@ -30,6 +70,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-macports-
     - name: Install MacPorts (if necessary)
+      if: ${{ !needs.setup-runners.outputs.macos-runner }} # we assume self-hosted runners are already configured
       run: |
         if [ -d /opt/local/ ]; then
           echo "MacPorts already installed"
@@ -39,6 +80,7 @@ jobs:
         fi
         echo "/opt/local/bin:/opt/local/sbin" >> $GITHUB_PATH
     - name: Install dependencies
+      if: ${{ !needs.setup-runners.outputs.macos-runner }} # we assume self-hosted runners are already configured
       run: |
         brew uninstall --ignore-dependencies libpng
         sudo port install $(cat .github/workflows/macports-deps.txt)
@@ -60,6 +102,7 @@ jobs:
           SoH.dmg
           readme.txt
   build-linux:
+    needs: setup-runners
     strategy:
       fail-fast: true
       matrix:
@@ -70,7 +113,7 @@ jobs:
         - os: ubuntu-22.04
           gcc: 12
           archive-suffix: performance
-    runs-on: ${{ (matrix.os == 'ubuntu-20.04' && (vars.LINUX_COMPATIBILITY_RUNNER || matrix.os)) || (matrix.os == 'ubuntu-22.04' && (vars.LINUX_PERFORMANCE_RUNNER || matrix.os)) }}
+    runs-on: ${{ (matrix.os == 'ubuntu-20.04' && ((needs.setup-runners.outputs.linux-compat-runner && fromJSON(needs.setup-runners.outputs.linux-compat-runner)) || matrix.os)) || (matrix.os == 'ubuntu-22.04' && ((needs.setup-runners.outputs.linux-perf-runner && fromJSON(needs.setup-runners.outputs.linux-perf-runner)) || matrix.os)) }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -124,7 +167,8 @@ jobs:
           soh.appimage
           readme.txt
   build-switch:
-    runs-on: ${{ vars.LINUX_RUNNER || 'ubuntu-latest' }}
+    needs: setup-runners
+    runs-on: ${{ (needs.setup-runners.outputs.linux-perf-runner && fromJSON(needs.setup-runners.outputs.linux-perf-runner)) || 'ubuntu-latest' }}
     container:
       image: devkitpro/devkita64:latest
     steps:
@@ -154,7 +198,8 @@ jobs:
           soh.nro
           readme.txt
   build-wiiu:
-    runs-on: ${{ vars.LINUX_RUNNER || 'ubuntu-latest' }}
+    needs: setup-runners
+    runs-on: ${{ (needs.setup-runners.outputs.linux-perf-runner && fromJSON(needs.setup-runners.outputs.linux-perf-runner)) || 'ubuntu-latest' }}
     container:
       image: devkitpro/devkitppc:latest
     steps:
@@ -189,7 +234,8 @@ jobs:
           soh.wuhb
           readme.txt
   build-windows:
-    runs-on: ${{ vars.WINDOWS_RUNNER || 'windows-latest' }}
+    needs: setup-runners
+    runs-on: ${{ (needs.setup-runners.outputs.windows-runner && fromJSON(needs.setup-runners.outputs.windows-runner)) || 'windows-latest' }}
     steps:
     - name: Install dependencies
       run: |
