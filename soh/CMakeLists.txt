@@ -123,13 +123,25 @@ file(GLOB_RECURSE soh__Enhancements RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     "soh/Enhancements/*.h"
     "soh/Enhancements/*.hpp"
     "soh/Enhancements/*_extern.inc"
+    "soh/Enhancements/*.mm"
 )
 
 list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/gamecommand.h")
 list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/gfx.*")
+
+# handle crowd control removals
 list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/crowd-control/soh.cs")
 if (!BUILD_CROWD_CONTROL)
     list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/crowd-control/*")
+endif()
+
+# handle speechsynthesizer removals
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/Darwin*")
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/SAPI*")
+else()
+    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/(Darwin|SAPI).*")
 endif()
 
 source_group("soh\\Enhancements" REGULAR_EXPRESSION "soh/Enhancements/*")
