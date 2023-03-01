@@ -313,6 +313,14 @@ bool OTRGlobals::HasOriginal() {
     return hasOriginal;
 }
 
+uint32_t OTRGlobals::GetInterpolationFPS() {
+    if (CVarGetInteger("gMatchRefreshRate", 0)) {
+        return Ship::Window::GetInstance()->GetCurrentRefreshRate();
+    }
+
+    return std::min<uint32_t>(Ship::Window::GetInstance()->GetCurrentRefreshRate(), CVarGetInteger("gInterpolationFPS", 20));
+}
+
 std::shared_ptr<std::vector<std::string>> OTRGlobals::ListFiles(std::string path) {
     return context->GetResourceManager()->ListFiles(path);
 }
@@ -731,7 +739,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     audio.cv_to_thread.notify_one();
     std::vector<std::unordered_map<Mtx*, MtxF>> mtx_replacements;
-    int target_fps = CVarGetInteger("gInterpolationFPS", 20);
+    int target_fps = OTRGlobals::Instance->GetInterpolationFPS();
     static int last_fps;
     static int last_update_rate;
     static int time;
