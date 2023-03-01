@@ -198,9 +198,9 @@ void CrowdControl::EmitMessage(TCPsocket socket, uint32_t eventId, long timeRema
 CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
     GameInteractionEffectQueryResult giResult;
     if (effect->category == EffectCatSpawnEnemy) {
-        giResult = GameInteractor::RawAction::SpawnEnemyWithOffset(effect->value[0], effect->value[1]);
+        giResult = GameInteractor::RawAction::SpawnEnemyWithOffset(effect->spawnParams[0], effect->spawnParams[1]);
     } else if (effect->category == EffectCatSpawnActor) {
-        giResult = GameInteractor::RawAction::SpawnActor(effect->value[0], effect->value[1]);
+        giResult = GameInteractor::RawAction::SpawnActor(effect->spawnParams[0], effect->spawnParams[1]);
     } else {
         giResult = GameInteractor::ApplyEffect(effect->giEffect);
     }
@@ -241,10 +241,11 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     effect->lastExecutionResult = EffectResult::Initiate;
     effect->id = dataReceived["id"];
     auto parameters = dataReceived["parameters"];
+    uint32_t receivedParameter = 0;
     auto effectName = dataReceived["code"].get<std::string>();
 
     if (parameters.size() > 0) {
-        effect->value[0] = dataReceived["parameters"][0];
+        receivedParameter = dataReceived["parameters"][0];
     }
 
     // Assign GameInteractionEffect + values to CC effect.
@@ -253,78 +254,78 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 
         // Spawn Enemies and Objects
         case EffectSpawnCuccoStorm:
-            effect->value[0] = ACTOR_EN_NIW;
+            effect->spawnParams[0] = ACTOR_EN_NIW;
             effect->category = EffectCatSpawnActor;
             break;
         case EffectSpawnLitBomb:
-            effect->value[0] = ACTOR_EN_BOM;
+            effect->spawnParams[0] = ACTOR_EN_BOM;
             effect->category = EffectCatSpawnActor;
             break;
         case EffectSpawnExplosion:
-            effect->value[0] = ACTOR_EN_BOM;
-            effect->value[1] = 1;
+            effect->spawnParams[0] = ACTOR_EN_BOM;
+            effect->spawnParams[1] = 1;
             effect->category = EffectCatSpawnActor;
             break;
         case EffectSpawnArwing:
-            effect->value[0] = ACTOR_EN_CLEAR_TAG;
+            effect->spawnParams[0] = ACTOR_EN_CLEAR_TAG;
             // Parameter for no cutscene Arwing
-            effect->value[1] = 1;
+            effect->spawnParams[1] = 1;
             effect->category = EffectCatSpawnEnemy;
             break;
         case EffectSpawnDarklink:
-            effect->value[0] = ACTOR_EN_TORCH2;
+            effect->spawnParams[0] = ACTOR_EN_TORCH2;
             effect->category = EffectCatSpawnEnemy;
             break;
         case EffectSpawnIronKnuckle:
-            effect->value[0] = ACTOR_EN_IK;
+            effect->spawnParams[0] = ACTOR_EN_IK;
             // Parameter for black standing Iron Knuckle
-            effect->value[1] = 2;
+            effect->spawnParams[1] = 2;
             effect->category = EffectCatSpawnEnemy;
             break;
         case EffectSpawnStalfos:
-            effect->value[0] = ACTOR_EN_TEST;
+            effect->spawnParams[0] = ACTOR_EN_TEST;
             // Parameter for gravity-obeying Stalfos
-            effect->value[1] = 2;
+            effect->spawnParams[1] = 2;
             effect->category = EffectCatSpawnEnemy;
             break;
         case EffectSpawnFreezard:
-            effect->value[0] = ACTOR_EN_FZ;
+            effect->spawnParams[0] = ACTOR_EN_FZ;
             effect->category = EffectCatSpawnEnemy;
             break;
         case EffectSpawnLikeLike:
-            effect->value[0] = ACTOR_EN_RR;
+            effect->spawnParams[0] = ACTOR_EN_RR;
             effect->category = EffectCatSpawnEnemy;
             break;
         case EffectSpawnGibdo:
-            effect->value[0] = ACTOR_EN_RD;
+            effect->spawnParams[0] = ACTOR_EN_RD;
             // Parameter for Gibdo
-            effect->value[1] = 32766;
+            effect->spawnParams[1] = 32766;
             effect->category = EffectCatSpawnEnemy;
             break;
         case EffectSpawnKeese:
-            effect->value[0] = ACTOR_EN_FIREFLY;
+            effect->spawnParams[0] = ACTOR_EN_FIREFLY;
             // Parameter for normal keese
-            effect->value[1] = 2;
+            effect->spawnParams[1] = 2;
             effect->category = EffectCatSpawnEnemy;
             break;
         case EffectSpawnIceKeese:
-            effect->value[0] = ACTOR_EN_FIREFLY;
+            effect->spawnParams[0] = ACTOR_EN_FIREFLY;
             // Parameter for ice keese
-            effect->value[1] = 4;
+            effect->spawnParams[1] = 4;
             effect->category = EffectCatSpawnEnemy;
             break;
         case EffectSpawnFireKeese:
-            effect->value[0] = ACTOR_EN_FIREFLY;
+            effect->spawnParams[0] = ACTOR_EN_FIREFLY;
             // Parameter for fire keese
-            effect->value[1] = 1;
+            effect->spawnParams[1] = 1;
             effect->category = EffectCatSpawnEnemy;
             break;
         case EffectSpawnWolfos:
-            effect->value[0] = ACTOR_EN_WF;
+            effect->spawnParams[0] = ACTOR_EN_WF;
             effect->category = EffectCatSpawnEnemy;
             break;
         case EffectSpawnWallmaster:
-            effect->value[0] = ACTOR_EN_WALLMAS;
+            effect->spawnParams[0] = ACTOR_EN_WALLMAS;
             effect->category = EffectCatSpawnEnemy;
             break;
 
@@ -412,7 +413,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         // Hurt or Heal Link
         case EffectEmptyHeart:
             effect->giEffect = new GameInteractionEffect::ModifyHealth();
-            effect->paramMultiplier = -1;
+            effect->giEffect->parameters[0] = receivedParameter * -1;
             break;
         case EffectFillHeart:
             effect->giEffect = new GameInteractionEffect::ModifyHealth();
@@ -431,7 +432,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             break;
         case EffectKillLink:
             effect->giEffect = new GameInteractionEffect::SetPlayerHealth();
-            effect->value[0] = 0;
+            effect->giEffect->parameters[0] = 0;
             break;
 
         // Give Items and Consumables
@@ -488,7 +489,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             break;
         case EffectRemoveRupees:
             effect->giEffect = new GameInteractionEffect::ModifyRupees();
-            effect->paramMultiplier = -1;
+            effect->giEffect->parameters[0] = receivedParameter * -1;
             break;
         case EffectTakeDekuShield:
             effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
@@ -500,33 +501,33 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             break;
         case EffectTakeSticks:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[0] = receivedParameter * -1;
             effect->giEffect->parameters[1] = ITEM_STICK;
-            effect->paramMultiplier = -1;
             break;
         case EffectTakeNuts:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[0] = receivedParameter * -1;
             effect->giEffect->parameters[1] = ITEM_NUT;
-            effect->paramMultiplier = -1;
             break;
         case EffectTakeBombs:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[0] = receivedParameter * -1;
             effect->giEffect->parameters[1] = ITEM_BOMB;
-            effect->paramMultiplier = -1;
             break;
         case EffectTakeSeeds:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[0] = receivedParameter * -1;
             effect->giEffect->parameters[1] = ITEM_SLINGSHOT;
-            effect->paramMultiplier = -1;
             break;
         case EffectTakeArrows:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[0] = receivedParameter * -1;
             effect->giEffect->parameters[1] = ITEM_BOW;
-            effect->paramMultiplier = -1;
             break;
         case EffectTakeBombchus:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[0] = receivedParameter * -1;
             effect->giEffect->parameters[1] = ITEM_BOMBCHU;
-            effect->paramMultiplier = -1;
             break;
 
         // Link Size Modifiers
@@ -568,11 +569,11 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             break;
         case EffectSetTimeToDawn:
             effect->giEffect = new GameInteractionEffect::SetTimeOfDay();
-            effect->value[0] = GI_TIMEOFDAY_DAWN;
+            effect->giEffect->parameters[0] = GI_TIMEOFDAY_DAWN;
             break;
         case EffectSetTimeToDusk:
             effect->giEffect = new GameInteractionEffect::SetTimeOfDay();
-            effect->value[0] = GI_TIMEOFDAY_DUSK;
+            effect->giEffect->parameters[0] = GI_TIMEOFDAY_DUSK;
             break;
 
         // Visual Effects
@@ -806,8 +807,8 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     // usually represent the "amount" of an effect. Amount of hearts healed,
     // strength of knockback, etc.
     if (effect->giEffect != NULL) {
-        if (!effect->giEffect->parameters[0] && effect->value[0]) {
-            effect->giEffect->parameters[0] = effect->value[0] * effect->paramMultiplier;
+        if (!effect->giEffect->parameters[0]) {
+            effect->giEffect->parameters[0] = receivedParameter;
         }
     }
 
