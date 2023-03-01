@@ -127,8 +127,8 @@ static void ExporterProgramEnd()
 					printf("otrArchive->AddFile(%s)\n", StringHelper::Split(afterPath, "Extract/")[1].c_str());
 
 					auto exporter = new OTRExporter_Texture();
- 					MemoryStream* stream = new MemoryStream();
-         			BinaryWriter writer(stream);
+					MemoryStream* stream = new MemoryStream();
+					BinaryWriter writer(stream);
 
  					exporter->Save(&tex, "", &writer);
 
