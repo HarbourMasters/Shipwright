@@ -788,8 +788,10 @@ void DrawLocation(RandomizerCheckObject rcObj) {
         if (ImGui::ArrowButton(std::to_string(rcObj.rc).c_str(), skipped ? ImGuiDir_Left : ImGuiDir_Right)) {
             if (skipped) {
                 checkTrackerData.find(rcObj.rc)->second.skipped = false;
+                areaChecksGotten[rcObj.rcArea]--;
             } else {
                 checkTrackerData.find(rcObj.rc)->second.skipped = true;
+                areaChecksGotten[rcObj.rcArea]++;
             }
             UpdateOrdering();
             UpdateInventoryChecks();
