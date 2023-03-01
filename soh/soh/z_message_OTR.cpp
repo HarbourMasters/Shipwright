@@ -153,4 +153,13 @@ extern "C" void OTRMessage_Init()
             "Tu as l'air de t'ennuyer. Tu veux&aller faire un tour?\x1B&%gOui&Non%w",
         }
     );
+    CustomMessageManager::Instance->CreateMessage(
+        customMessageTableID, TEXT_RANDO_SAVE_VERSION_WARNING,
+        {
+            TEXTBOX_TYPE_NONE_BOTTOM, TEXTBOX_POS_BOTTOM,
+            "This save was created on&a different version of SoH.&&Things may be broken.",
+            "Dieser Spielstand wurde auf einer&anderen Version von SoH erstellt.&&Es könnten Fehler auftreten.",
+            "Cette sauvegarde a été créée sur&une version différente de SoH.&Certaines fonctionnalités&peuvent être corrompues.",
+        }
+    );
 }
