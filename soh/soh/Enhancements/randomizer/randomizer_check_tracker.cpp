@@ -766,6 +766,11 @@ void DrawLocation(RandomizerCheckObject rcObj) {
             return;
         mainColor = CVarGetColor("gCheckTrackerSeenMainColor", Color_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerSeenExtraColor", Color_Seen_Extra_Default);
+    } else if (status == RCSHOW_SCUMMED) {
+        if (!showHidden && CVarGetInteger("gCheckTrackerKnownHide", 0))
+            return;
+        mainColor = CVarGetColor("gCheckTrackerScummedMainColor", Color_Main_Default);
+        extraColor = CVarGetColor("gCheckTrackerScummedColor", Color_Scummed_Extra_Default);
     } else if (status == RCSHOW_COLLECTED) {
         if (!showHidden && CVarGetInteger("gCheckTrackerCheckedHide", 0))
             return;
@@ -817,6 +822,7 @@ void DrawLocation(RandomizerCheckObject rcObj) {
         switch (status) {
             case RCSHOW_SAVED:
             case RCSHOW_COLLECTED:
+            case RCSHOW_SCUMMED:
                 if (gSaveContext.n64ddFlag)
                     txt = OTRGlobals::Instance->gRandomizer
                         ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.rgID][gSaveContext.language];
@@ -990,9 +996,9 @@ void DrawCheckTrackerOptions(bool& open) {
     ImGuiDrawTwoColorPickerSection("Unchecked",        "gCheckTrackerUncheckedMainColor",        "gCheckTrackerUncheckedExtraColor",       Color_Unchecked_Main,         Color_Unchecked_Extra,        Color_Main_Default, Color_Unchecked_Extra_Default,       "gCheckTrackerUncheckedHide"      );
     ImGuiDrawTwoColorPickerSection("Skipped",          "gCheckTrackerSkippedMainColor",          "gCheckTrackerSkippedExtraColor",         Color_Skipped_Main,           Color_Skipped_Extra,          Color_Main_Default, Color_Skipped_Extra_Default,         "gCheckTrackerSkippedHide"        );
     ImGuiDrawTwoColorPickerSection("Seen (WIP)",       "gCheckTrackerSeenMainColor",             "gCheckTrackerSeenExtraColor",            Color_Seen_Main,              Color_Seen_Extra,             Color_Main_Default, Color_Seen_Extra_Default,            "gCheckTrackerSeenHide"           );
+    ImGuiDrawTwoColorPickerSection("Scummed",    "gCheckTrackerScummedMainColor",          "gCheckTrackerScummedExtraColor",         Color_Scummed_Main,           Color_Scummed_Extra,          Color_Main_Default, Color_Scummed_Extra_Default,         "gCheckTrackerScummedHide"        );
     ImGuiDrawTwoColorPickerSection("Hinted (WIP)",     "gCheckTrackerHintedMainColor",           "gCheckTrackerHintedExtraColor",          Color_Hinted_Main,            Color_Hinted_Extra,           Color_Main_Default, Color_Hinted_Extra_Default,          "gCheckTrackerHintedHide"         );
-    ImGuiDrawTwoColorPickerSection("Checked (WIP)",    "gCheckTrackerCheckedMainColor",          "gCheckTrackerCheckedExtraColor",         Color_Checked_Main,           Color_Checked_Extra,          Color_Main_Default, Color_Checked_Extra_Default,         "gCheckTrackerCheckedHide"        );
-    ImGuiDrawTwoColorPickerSection("Scummed (WIP)",    "gCheckTrackerScummedMainColor",          "gCheckTrackerScummedExtraColor",         Color_Scummed_Main,           Color_Scummed_Extra,          Color_Main_Default, Color_Scummed_Extra_Default,         "gCheckTrackerScummedHide"        );
+    ImGuiDrawTwoColorPickerSection("Collected",    "gCheckTrackerCheckedMainColor",          "gCheckTrackerCheckedExtraColor",         Color_Checked_Main,           Color_Checked_Extra,          Color_Main_Default, Color_Checked_Extra_Default,         "gCheckTrackerCheckedHide"        );
     ImGuiDrawTwoColorPickerSection("Saved",            "gCheckTrackerSavedMainColor",            "gCheckTrackerSavedExtraColor",           Color_Saved_Main,             Color_Saved_Extra,            Color_Main_Default, Color_Saved_Extra_Default,           "gCheckTrackerSavedHide"          );
 
     ImGui::PopStyleVar(1);
@@ -1020,8 +1026,8 @@ void InitCheckTracker() {
     Color_Seen_Extra            = CVarGetColor("gCheckTrackerSeenExtraColor",             Color_Seen_Extra_Default);
     Color_Hinted_Main           = CVarGetColor("gCheckTrackerHintedMainColor",            Color_Main_Default);
     Color_Hinted_Extra          = CVarGetColor("gCheckTrackerHintedExtraColor",           Color_Hinted_Extra_Default);
-    Color_Checked_Main          = CVarGetColor("gCheckTrackerCheckedMainColor",           Color_Main_Default);
-    Color_Checked_Extra         = CVarGetColor("gCheckTrackerCheckedExtraColor",          Color_Checked_Extra_Default);
+    Color_Checked_Main          = CVarGetColor("gCheckTrackerCollectedMainColor",         Color_Main_Default);
+    Color_Checked_Extra         = CVarGetColor("gCheckTrackerCollectedExtraColor",        Color_Collected_Extra_Default);
     Color_Scummed_Main          = CVarGetColor("gCheckTrackerScummedMainColor",           Color_Main_Default);
     Color_Scummed_Extra         = CVarGetColor("gCheckTrackerScummedExtraColor",          Color_Scummed_Extra_Default);
     Color_Saved_Main            = CVarGetColor("gCheckTrackerSavedMainColor",             Color_Main_Default);
@@ -1034,6 +1040,9 @@ void InitCheckTracker() {
         doInitialize = true;
     });
     Ship::RegisterHook<Ship::DeleteFile>([](uint32_t fileNum) {
+        Teardown();
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>([](uint32_t fileNum) {
         Teardown();
     });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnReceiveItem>(CheckTrackerItemReceive);

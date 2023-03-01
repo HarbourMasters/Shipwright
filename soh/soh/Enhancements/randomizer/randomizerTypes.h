@@ -24,6 +24,7 @@ typedef struct {
 typedef enum {
     RCSHOW_UNCHECKED,
     RCSHOW_SEEN,
+    RCSHOW_SCUMMED,
     RCSHOW_COLLECTED,
     RCSHOW_SAVED,
 } RandomizerCheckShow;

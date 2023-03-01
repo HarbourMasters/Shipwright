@@ -3087,7 +3087,7 @@ void SaveTrackerFile(std::filesystem::path filePath, json data) {
     output.close();
 }
 
-json SerializeTrackerData(int fileNum) {
+json SerializeTrackerData(int fileNum, bool gameSave) {
     if (!std::filesystem::exists(GetTrackerDataFileName(fileNum))) {
         CheckTracker::CreateTrackerData();
     }
@@ -3097,26 +3097,32 @@ json SerializeTrackerData(int fileNum) {
         if (rc == RC_UNKNOWN_CHECK || rc == RC_MAX || rc == RC_LINKS_POCKET)
             continue;
         json innerBlock = data;
+        if (innerBlock["status"] == RCSHOW_COLLECTED) {
+            if (gameSave)
+                innerBlock["status"] = RCSHOW_SAVED;
+            else
+                innerBlock["status"] = 
+        }
         block["checks"].push_back(innerBlock);
     }
     return block;
 }
 
-void SaveTrackerData(int fileNum, bool thread) {
+void SaveTrackerData(int fileNum, bool thread, bool gameSave) {
     if (thread)
-        std::thread(SaveTrackerFile, GetTrackerDataFileName(fileNum), SerializeTrackerData(fileNum)).join();
+        std::thread(SaveTrackerFile, GetTrackerDataFileName(fileNum), SerializeTrackerData(fileNum, gameSave)).join();
     else
-        SaveTrackerFile(GetTrackerDataFileName(fileNum), SerializeTrackerData(fileNum));
+        SaveTrackerFile(GetTrackerDataFileName(fileNum), SerializeTrackerData(fileNum, gameSave));
 }
 
 void SaveTrackerDataHook(int fileNum) {
     // todo: change checked to saved in memory
     if (!std::filesystem::exists(GetTrackerDataFileName(fileNum))) {
         CheckTracker::CreateTrackerData();
-        SaveTrackerData(fileNum, false);
+        SaveTrackerData(fileNum, false, true);
     }
     else
-        SaveTrackerData(fileNum, true);
+        SaveTrackerData(fileNum, true, true);
 }
 
 void LoadTrackerData(int fileNum) {
@@ -3136,9 +3142,14 @@ void DeleteTrackerData(int fileNum) {
     std::filesystem::remove(GetTrackerDataFileName(fileNum));
 }
 
+void TrackerExitGameHook(int fileNum) {
+    SaveTrackerData(fileNum, false, false);
+}
+
 void Randomizer::RegisterTrackerHooks() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaveFile>(SaveTrackerDataHook);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>(LoadTrackerData);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>(TrackerExitGameHook);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteFile>(DeleteTrackerData);
 }
 
