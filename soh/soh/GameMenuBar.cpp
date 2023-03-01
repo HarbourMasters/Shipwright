@@ -890,15 +890,10 @@ namespace GameMenuBar {
 
             const char* fps_cvar = "gInterpolationFPS";
             {
-            #if defined(__SWITCH__) || defined(__WIIU__)
                 int minFps = 20;
-                int maxFps = 60;
-            #else
-                int minFps = 20;
-                int maxFps = 360;
-            #endif
+                int maxFps = Ship::Window::GetInstance()->GetCurrentRefreshRate();
 
-                int val = CVarGetInteger(fps_cvar, minFps);
+                int val = OTRGlobals::Instance->GetInterpolationFPS();
                 val = fmax(fmin(val, maxFps), 20);
 
             #ifdef __WIIU__
@@ -915,6 +910,11 @@ namespace GameMenuBar {
                 else
                 {
                     ImGui::Text("Frame interpolation: %d FPS", fps);
+                }
+                
+                if (CVarGetInteger("gMatchRefreshRate", 0)) {
+                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
                 }
 
                 std::string MinusBTNFPSI = " - ##FPSInterpolation";
@@ -976,24 +976,18 @@ namespace GameMenuBar {
                     CVarSetInteger(fps_cvar, val);
                     SohImGui::RequestCvarSaveOnNextTick();
                 }
-            }
-
-            if (SohImGui::WindowBackend() == SohImGui::Backend::DX11)
-            {
-                UIWidgets::Spacer(0);
-                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6.0f, 4.0f));
-                if (ImGui::Button("Match Refresh Rate"))
-                {
-                    int hz = Ship::Window::GetInstance()->GetCurrentRefreshRate();
-                    if (hz >= 20 && hz <= 360)
-                    {
-                        CVarSetInteger(fps_cvar, hz);
-                        SohImGui::RequestCvarSaveOnNextTick();
-                    }
+                
+                if (CVarGetInteger("gMatchRefreshRate", 0)) {
+                    ImGui::PopItemFlag();
+                    ImGui::PopStyleVar(1);
                 }
-                ImGui::PopStyleVar(1);
-                UIWidgets::Spacer(0);
             }
+            
+            UIWidgets::Spacer(0);
+            UIWidgets::EnhancementCheckbox("Match Refresh Rate", "gMatchRefreshRate");
+            UIWidgets::Tooltip("Matches interpolation value to the current game's window refresh rate");
+            UIWidgets::Spacer(0);
+
             UIWidgets::EnhancementCheckbox("Disable LOD", "gDisableLOD");
             UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
             if (UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance", true, false)) {
