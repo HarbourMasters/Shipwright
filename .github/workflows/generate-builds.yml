@@ -7,7 +7,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build-macos:
-    runs-on: macos-12
+    runs-on: ${{ vars.MAC_RUNNER || 'macos-12' }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -70,7 +70,7 @@ jobs:
         - os: ubuntu-22.04
           gcc: 12
           archive-suffix: performance
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ (matrix.os == 'ubuntu-20.04' && (vars.LINUX_COMPATIBILITY_RUNNER || matrix.os)) || (matrix.os == 'ubuntu-22.04' && (vars.LINUX_PERFORMANCE_RUNNER || matrix.os)) }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -124,7 +124,7 @@ jobs:
           soh.appimage
           readme.txt
   build-switch:
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.LINUX_RUNNER || 'ubuntu-latest' }}
     container:
       image: devkitpro/devkita64:latest
     steps:
@@ -154,7 +154,7 @@ jobs:
           soh.nro
           readme.txt
   build-wiiu:
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.LINUX_RUNNER || 'ubuntu-latest' }}
     container:
       image: devkitpro/devkitppc:latest
     steps:
@@ -189,7 +189,7 @@ jobs:
           soh.wuhb
           readme.txt
   build-windows:
-    runs-on: windows-latest
+    runs-on: ${{ vars.WINDOWS_RUNNER || 'windows-latest' }}
     steps:
     - name: Install dependencies
       run: |

@@ -179,8 +179,10 @@ namespace Settings {
   Option LinksPocketItem        = Option::U8  ("Link's Pocket",          {"Dungeon Reward", "Advancement", "Anything", "Nothing"},          {linksPocketDungeonReward, linksPocketAdvancement, linksPocketAnything, linksPocketNothing});
   Option ShuffleSongs           = Option::U8  ("Shuffle Songs",          {"Song locations", "Dungeon rewards", "Anywhere"},                 {songsSongLocations, songsDungeonRewards, songsAllLocations});
   Option Shopsanity             = Option::U8  ("Shopsanity",             {"Off","0 Items","1 Item","2 Items","3 Items","4 Items","Random"}, {shopsOff, shopsZero, shopsOne, shopsTwo, shopsThree, shopsFour, shopsRandom});
-  Option Tokensanity            = Option::U8  ("Tokensanity",            {"Off", "Dungeons", "Overworld", "All Tokens"},                    {tokensOff, tokensDungeon, tokensOverworld, tokensAllTokens});
-  Option Scrubsanity            = Option::U8  ("Scrub Shuffle",          {"Off", "Affordable", "Expensive", "Random Prices"},               {scrubsOff, scrubsAffordable, scrubsExpensive, scrubsRandomPrices});
+  Option ShopsanityPrices       = Option::U8  ("Shopsanity Prices",      {"Balanced", "Starting Wallet", "Adult Wallet", "Giant's Wallet", "Tycoon's Wallet" }, {shopPriceBalanced, shopPriceStarter, shopPriceAdult, shopPriceGiant, shopPriceTycoon} );
+  Option ShopsanityPricesAffordable   = Option::Bool("Affordable Prices",                {"Off", "On"},                                                                                     {shopPriceAffordable} );
+  Option Tokensanity            = Option::U8  ("Tokensanity",            {"Off", "Dungeons", "Overworld", "All Tokens"},                          {tokensOff, tokensDungeon, tokensOverworld, tokensAllTokens});
+  Option Scrubsanity            = Option::U8  ("Scrub Shuffle",          {"Off", "Affordable", "Expensive", "Random Prices"},        {scrubsOff, scrubsAffordable, scrubsExpensive, scrubsRandomPrices});
   Option ShuffleCows            = Option::Bool("Shuffle Cows",           {"Off", "On"},                                                     {shuffleCowsDesc});
   Option ShuffleKokiriSword     = Option::Bool("Shuffle Kokiri Sword",   {"Off", "On"},                                                     {kokiriSwordDesc});
   Option ShuffleOcarinas        = Option::Bool("Shuffle Ocarinas",       {"Off", "On"},                                                     {ocarinasDesc});
@@ -191,13 +193,15 @@ namespace Settings {
   Option ShuffleFrogSongRupees  = Option::Bool("Shuffle Frog Song Rupees",{"Off", "On"},                                                    {frogSongRupeesDesc});
   Option ShuffleAdultTradeQuest = Option::Bool("Shuffle Adult Trade",    {"Off", "On"},                                                     {adultTradeDesc});
   Option ShuffleChestMinigame   = Option::U8  ("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"},                             {chestMinigameDesc});
-  Option Shuffle100GSReward     = Option::Bool("Shuffle 100 GS Reward",  {"No", "Yes"},                                                     {shuffle100GsDesc},                                                                                                    OptionCategory::Toggle);
+  Option Shuffle100GSReward     = Option::Bool("Shuffle 100 GS Reward",  {"Off", "On"},                                                     {shuffle100GsDesc});
   std::vector<Option *> shuffleOptions = {
     &RandomizeShuffle,
     &ShuffleRewards,
     &LinksPocketItem,
     &ShuffleSongs,
     &Shopsanity,
+    &ShopsanityPrices,
+    &ShopsanityPricesAffordable,
     &Tokensanity,
     &Scrubsanity,
     &ShuffleCows,
@@ -321,7 +325,8 @@ namespace Settings {
   Option HintDistribution    = Option::U8  ("Hint Distribution",      {"Useless", "Balanced", "Strong", "Very Strong"},                       {uselessHintsDesc, balancedHintsDesc, strongHintsDesc, veryStrongHintsDesc},                                      OptionCategory::Setting,    1); // Balanced
   Option AltarHintText       = Option::Bool("ToT Altar Hint",         {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    1); 
   Option GanondorfHintText   = Option::Bool("Ganondorf LA Hint",      {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    1);  
-  Option DampeHintText       = Option::Bool("Dampe's Diary Hint",     {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);  
+  Option DampeHintText       = Option::Bool("Dampe's Diary Hint",     {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);
+  Option GregHintText        = Option::Bool("Greg the Rupee Hint",    {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);  
   Option WarpSongHints       = Option::Bool("Warp Songs Hints",       {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);
   Option Kak10GSHintText     = Option::Bool("10 GS Hint",             {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);  
   Option Kak20GSHintText     = Option::Bool("20 GS Hint",             {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);  
@@ -350,6 +355,7 @@ namespace Settings {
     &AltarHintText,
     &GanondorfHintText,
     &DampeHintText,
+    &GregHintText,
     &WarpSongHints,
     &Kak10GSHintText,
     &Kak20GSHintText,
@@ -2427,6 +2433,8 @@ namespace Settings {
     &ShuffleRewards,
     &ShuffleSongs,
     &Shopsanity,
+    &ShopsanityPrices,
+    &ShopsanityPricesAffordable,
     &Scrubsanity,
     &ShuffleCows,
     &ShuffleMagicBeans,
@@ -2703,6 +2711,8 @@ namespace Settings {
     ShuffleSongs.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SONGS]);
     Tokensanity.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_TOKENS]);
     Shopsanity.SetSelectedIndex(cvarSettings[RSK_SHOPSANITY]);
+    ShopsanityPrices.SetSelectedIndex(cvarSettings[RSK_SHOPSANITY_PRICES]);
+    ShopsanityPricesAffordable.SetSelectedIndex(cvarSettings[RSK_SHOPSANITY_PRICES_AFFORDABLE]);
     Scrubsanity.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SCRUBS]);
     ShuffleCows.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_COWS]);
     ShuffleKokiriSword.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD]);
@@ -2787,6 +2797,7 @@ namespace Settings {
     AltarHintText.SetSelectedIndex(cvarSettings[RSK_TOT_ALTAR_HINT]);
     GanondorfHintText.SetSelectedIndex(cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT]);
     DampeHintText.SetSelectedIndex(cvarSettings[RSK_DAMPES_DIARY_HINT]);
+    GregHintText.SetSelectedIndex(cvarSettings[RSK_GREG_HINT]);
     WarpSongHints.SetSelectedIndex(cvarSettings[RSK_WARP_SONG_HINTS]);
     Kak10GSHintText.SetSelectedIndex(cvarSettings[RSK_KAK_10_SKULLS_HINT]);
     Kak20GSHintText.SetSelectedIndex(cvarSettings[RSK_KAK_20_SKULLS_HINT]);

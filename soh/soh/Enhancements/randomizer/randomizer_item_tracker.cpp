@@ -1102,6 +1102,7 @@ void InitItemTracker() {
     });
     Ship::RegisterHook<Ship::LoadFile>([](uint32_t fileNum) {
         const char* initialTrackerNotes = CVarGetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
+        itemTrackerNotes.resize(strlen(initialTrackerNotes) + 1);
         strcpy(itemTrackerNotes.Data, initialTrackerNotes);
     });
     Ship::RegisterHook<Ship::DeleteFile>([](uint32_t fileNum) {

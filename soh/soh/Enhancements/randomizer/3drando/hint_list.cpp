@@ -2149,7 +2149,7 @@ void HintTable_Init() {
     });
 
     hintTable[JUNK_WTC_12] = HintText::Junk({
-        Text{ "They say I shall make you some black&tea. With my own hands, not magic.", HINT_TEXT_NEEDS_TRANSLATION_FR,
+        Text{ "They say I shall make you some black tea. With my own hands, not magic.", HINT_TEXT_NEEDS_TRANSLATION_FR,
               "blarg" },
     });
 
@@ -2712,6 +2712,13 @@ void HintTable_Init() {
         Text{ "The awakened ones will await&for the Hero to collect&%d |Gold Skulltula Token|Gold Skulltula Tokens|.",
               /*french*/ "Les êtres de sagesse attendront&le héros muni de %r%d |Symbole|Symboles| &de Skulltula d'or%w.",
               /*spanish*/ "Los sabios aguardarán a que el héroe&obtenga #%d |símbolo|símbolos| de&skulltula dorada#." },
+    });
+
+    hintTable[BRIDGE_GREG_HINT] = HintText::Bridge({
+        // obscure text
+        Text{ "The awakened ones will await&for the Hero to find %gGreg%w.",
+              /*french*/ "The awakened ones will await&for the Hero to find %gGreg%w.",
+              /*spanish*/ "The awakened ones will await&for the Hero to find %gGreg%w." },
     });
 
     /*--------------------------

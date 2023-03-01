@@ -97,17 +97,20 @@ void func_80B1778C(EnTakaraMan* this, PlayState* play) {
     } else {
         yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
         if (play->roomCtx.curRoom.num == 6 && !this->unk_21A) {
-            this->actor.textId = 0x6E;
+            this->actor.textId = 0x6E; //Real Gambler
             this->unk_21A = 1;
             this->dialogState = TEXT_STATE_DONE;
         }
 
         if (!this->unk_21A && this->unk_214) {
             if (Flags_GetSwitch(play, 0x32)) {
-                this->actor.textId = 0x84;
-                this->dialogState = TEXT_STATE_EVENT;
+                this->actor.textId = 0x84; //Thanks a lot! (Lost)
+                // with text state event, it is only possible to talk to the person running the game
+                // once. we want the player to be able to ask again if they accidentally blast through
+                // the greg hint box, so we check for greg hint here
+                this->dialogState = Randomizer_GetSettingValue(RSK_GREG_HINT) ? TEXT_STATE_DONE : TEXT_STATE_EVENT;
             } else {
-                this->actor.textId = 0x704C;
+                this->actor.textId = 0x704C; //Proceed
                 this->dialogState = TEXT_STATE_DONE;
             }
         }

@@ -3,6 +3,7 @@
 typedef enum {
     TEXT_CURSED_SKULLTULA_PEOPLE = 0x22,
     TEXT_DAMPES_DIARY = 0x5003,
+    TEXT_CHEST_GAME_PROCEED = 0x704C,
     TEXT_BUY_BOMBCHU_10_PROMPT = 0x8C,
     TEXT_BUY_BOMBCHU_10_DESC = 0xBC,
     TEXT_GS_NO_FREEZE = 0xB4,
@@ -40,6 +41,7 @@ typedef enum {
     TEXT_WARP_RANDOM_REPLACED_TEXT = 0x9200,
     TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN = 0x346, // 0x3yy for cuttable sign range
     TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI = 0x1B3, // 0x1yy for Navi msg range
+    TEXT_RANDO_SAVE_VERSION_WARNING = 0x9300,
 } TextIDs;
 
 #ifdef __cplusplus
