@@ -432,7 +432,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
     }
 
     // Generate point in random angle with a radius.
-    float angle = Random(0, 2*M_PI);
+    float angle = Random(0, 2 * M_PI);
     float radius = 150;
     float posXOffset = radius * cos(angle);
     float posZOffset = radius * sin(angle);

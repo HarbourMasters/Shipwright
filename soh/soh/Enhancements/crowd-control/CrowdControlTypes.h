@@ -1,4 +1,8 @@
-typedef enum {
+#pragma once
+
+#include <unordered_map>
+
+enum CCStringEnumValues {
 
     // Spawn Enemies and Objects
     EffectSpawnCuccoStorm,
@@ -135,9 +139,9 @@ typedef enum {
     EffectHairPink,
     EffectHairBrown,
     EffectHairBlack,
-} CCStringEnumValues;
+};
 
-typedef enum {
+enum CCCatEnumValues {
     EffectCatNone,
     EffectCatGravity,
     EffectCatLinkSize,
@@ -160,9 +164,9 @@ typedef enum {
     EffectCatInvincible,
     EffectCatSpawnEnemy,
     EffectCatSpawnActor
-} CCCatEnumValues;
+};
 
-std::unordered_map<std::string, CCStringEnumValues> EffectStringToEnum = {
+std::unordered_map<std::string, CCStringEnumValues> effectStringToEnum = {
 
     // Spawn Enemies and Objects
     { "spawn_cucco_storm", EffectSpawnCuccoStorm },

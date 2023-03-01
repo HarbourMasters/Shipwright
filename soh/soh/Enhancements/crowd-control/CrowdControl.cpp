@@ -249,7 +249,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 
     // Assign GameInteractionEffect + values to CC effect.
     // Categories are mostly used for checking for conflicting timed effects.
-    switch (EffectStringToEnum[effectName]) {
+    switch (effectStringToEnum[effectName]) {
 
         // Spawn Enemies and Objects
         case EffectSpawnCuccoStorm:
@@ -809,10 +809,6 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         if (!effect->giEffect->parameters[0] && effect->value[0]) {
             effect->giEffect->parameters[0] = effect->value[0] * effect->paramMultiplier;
         }
-    }
-
-    if (!effect->category) {
-        effect->category = EffectCatNone;
     }
 
     return effect;

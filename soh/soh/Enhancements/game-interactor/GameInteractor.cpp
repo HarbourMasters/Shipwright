@@ -94,6 +94,4 @@ bool GameInteractor::CanAddOrTakeAmmo(int16_t amount, int16_t item) {
         }
         return true;
     }
-    
-    return false;
 }
