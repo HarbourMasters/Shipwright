@@ -127,6 +127,11 @@ void PushDefaultCheckData(RandomizerCheck rc) {
     checkTrackerData.emplace(rc, newData);
 }
 
+void LinksPocket() {
+    PushDefaultCheckData(RC_LINKS_POCKET);
+    checkTrackerData.find(RC_LINKS_POCKET)->second.status = RCSHOW_SAVED;
+}
+
 void TrySetAreas() {
     if (checkObjectsByArea.size() == 0) {
         for (int i = RCAREA_KOKIRI_FOREST; i < RCAREA_INVALID; i++) {
@@ -138,19 +143,19 @@ void TrySetAreas() {
 void CreateTrackerData() {
     TrySetAreas();
     for (auto& [rc, rco] : RandomizerCheckObjects::GetAllRCObjects()) {
-        if (rc != RC_UNKNOWN_CHECK && rc != RC_MAX && rc != RC_LINKS_POCKET)
+        if (rc != RC_UNKNOWN_CHECK && rc != RC_MAX && rc != RC_LINKS_POCKET) {
             PushDefaultCheckData(rc);
             areaChecksTotal[rco.rcArea]++;
+        }
     }
-    PushDefaultCheckData(RC_LINKS_POCKET);
-    checkTrackerData.find(RC_LINKS_POCKET)->second.status = RCSHOW_SAVED;
+    LinksPocket();
 }
 
 void LoadCheckTrackerData(json checks) {
     TrySetAreas();
-    auto trackerData = GetCheckTrackerData();
+    InitializeChecks();
     for (auto& item : checks) {
-        if (item["rc"] == RC_UNKNOWN_CHECK)
+        if (item["rc"] == RC_UNKNOWN_CHECK || item["rc"] == RC_MAX || item["rc"] == RC_LINKS_POCKET)
             continue;
         RandomizerCheckTrackerData entry;
         entry.rc = item["rc"];
@@ -158,11 +163,11 @@ void LoadCheckTrackerData(json checks) {
         entry.skipped = item["skipped"];
         entry.hintItem = item["hintItem"];
         RandomizerCheckObject entry2 = RandomizerCheckObjects::GetAllRCObjects().find(entry.rc)->second;
-        trackerData->emplace(entry.rc, entry);
+        checkTrackerData.emplace(entry.rc, entry);
         checkObjectsByArea.find(entry2.rcArea)->second.push_back(entry2);
         areaChecksTotal[entry2.rcArea]++;
     }
-    InitializeChecks();
+    UpdateOrdering();
 }
 
 void DrawCheckTracker(bool& open) {
@@ -669,7 +674,6 @@ void InitializeChecks() {
 
         checks.push_back(rcObj);
         checkObjectsByArea.find(rcObj.rcArea)->second.push_back(rcObj);
-        checkStatusMap.emplace(rcObj.rc, RCSHOW_UNCHECKED);
 
         if (areaChecksGotten[rcObj.rcArea] != 0 || RandomizerCheckObjects::AreaIsOverworld(rcObj.rcArea))
             areasSpoiled |= (1 << rcObj.rcArea);
@@ -704,7 +708,6 @@ void InitializeChecks() {
 
     //UpdateChecks();
    // UpdateInventoryChecks();
-    UpdateOrdering();
     doInitialize = false;
     initialized = true;
 }

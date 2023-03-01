@@ -3089,26 +3089,13 @@ void SaveTrackerFile(std::filesystem::path filePath, json data) {
 
 json SerializeTrackerData(int fileNum) {
     if (!std::filesystem::exists(GetTrackerDataFileName(fileNum))) {
-        for (auto &item : RandomizerCheckObjects::GetAllRCObjects()) {
-            CheckTracker::PushDefaultCheckData(item.first);
-        }
+        CheckTracker::CreateTrackerData();
     }
     json block;
-    std::map<RandomizerCheck, RandomizerCheckTrackerData> *checkTrackerData = CheckTracker::GetCheckTrackerData();
     block["checks"] = json::array();
-    for(auto& [rc, obj] : RandomizerCheckObjects::GetAllRCObjects()) {
-        if (rc == RC_UNKNOWN_CHECK || rc == RC_MAX)
+    for(auto& [rc, data] : *CheckTracker::GetCheckTrackerData()) {
+        if (rc == RC_UNKNOWN_CHECK || rc == RC_MAX || rc == RC_LINKS_POCKET)
             continue;
-        RandomizerCheckTrackerData data;
-        RandomizerCheckShow status = CheckTracker::GetCheckStatus(obj, 0);
-        if (checkTrackerData->count(obj.rc) > 0) {
-            data = checkTrackerData->find(obj.rc)->second;
-        } else {
-            data.rc = obj.rc;
-            data.status = status;
-            data.skipped = false;
-            data.hintItem = RC_UNKNOWN_CHECK;
-        }
         json innerBlock = data;
         block["checks"].push_back(innerBlock);
     }
@@ -3124,7 +3111,12 @@ void SaveTrackerData(int fileNum, bool thread) {
 
 void SaveTrackerDataHook(int fileNum) {
     // todo: change checked to saved in memory
-    SaveTrackerData(fileNum, true);
+    if (!std::filesystem::exists(GetTrackerDataFileName(fileNum))) {
+        CheckTracker::CreateTrackerData();
+        SaveTrackerData(fileNum, false);
+    }
+    else
+        SaveTrackerData(fileNum, true);
 }
 
 void LoadTrackerData(int fileNum) {
