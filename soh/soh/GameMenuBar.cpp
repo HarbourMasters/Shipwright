@@ -302,6 +302,15 @@ namespace GameMenuBar {
                 UIWidgets::EnhancementRadioButton("French", "gLanguages", LANGUAGE_FRA);
                 ImGui::EndMenu();
             }
+            
+            UIWidgets::Spacer(0);
+            
+            if (ImGui::BeginMenu("Accessibility")) {
+                UIWidgets::PaddedEnhancementCheckbox("Disable Idle Camera Re-Centering", "gA11yDisableIdleCam");
+                UIWidgets::Tooltip("Disables the automatic re-centering of the camera when idle.");
+                
+                ImGui::EndMenu();
+            }
             ImGui::EndMenu();
         }
 
