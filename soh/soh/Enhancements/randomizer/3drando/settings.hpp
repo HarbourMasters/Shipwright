@@ -73,6 +73,12 @@ typedef enum {
 } RainbowBridgeSetting;
 
 typedef enum {
+    REWARD_STANDARD,
+    REWARD_GREG,
+    REWARD_WILDCARD,
+} RewardOptions;
+
+typedef enum {
     LACSCONDITION_VANILLA,
     LACSCONDITION_STONES,
     LACSCONDITION_MEDALLIONS,
@@ -389,7 +395,7 @@ typedef struct {
     uint8_t bridgeRewardCount;
     uint8_t bridgeDungeonCount;
     uint8_t bridgeTokenCount;
-    uint8_t wildcardGreg;
+    uint8_t rewardOptions;
     uint8_t randomGanonsTrials;
     uint8_t ganonsTrialsCount;
 
@@ -911,7 +917,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option BridgeTokenCount;
   extern Option RandomGanonsTrials;
   extern Option GanonsTrialsCount;
-  extern Option GregtheWildcard;
+  extern Option RewardOptions;
 
   extern Option StartingAge;
   extern uint8_t ResolvedStartingAge;

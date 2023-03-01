@@ -989,7 +989,7 @@ typedef enum {
     RSK_RAINBOW_BRIDGE_REWARD_COUNT,
     RSK_RAINBOW_BRIDGE_DUNGEON_COUNT,
     RSK_RAINBOW_BRIDGE_TOKEN_COUNT,
-    RSK_WILDCARD_GREG,
+    RSK_REWARD_OPTIONS,
     RSK_GANONS_TRIALS,
     RSK_TRIAL_COUNT,
     RSK_STARTING_OCARINA,
@@ -1182,6 +1182,14 @@ typedef enum {
     RO_BRIDGE_GREG,
     RO_BRIDGE_MAX,
 } RandoOptionRainbowBridge;
+
+//Reward Options settings (Standard rewards, Greg as reward, Greg as wildcard)
+typedef enum {
+    RO_REWARD_STANDARD,
+    RO_REWARD_GREG,
+    RO_REWARD_WILDCARD,
+    RO_REWARD_MAX,
+} RandoOptionRewards;
 
 //Shopsanity settings (off, 0-4 items, random)
 typedef enum {

@@ -67,7 +67,7 @@ namespace Settings {
   Option BridgeTokenCount    = Option::U8  ("Token Count",          {NumOpts(0, 100)},                                                            {bridgeTokenCountDesc},                                                                                     OptionCategory::Setting,    1,                          true);
   Option RandomGanonsTrials  = Option::Bool("Random Ganon's Trials",  {"Off", "On"},                                                                {randomGanonsTrialsDesc},                                                                                   OptionCategory::Setting,    ON);
   Option GanonsTrialsCount   = Option::U8  ("Trial Count",          {NumOpts(0, 6)},                                                              {ganonsTrialCountDesc},                                                                                     OptionCategory::Setting,    1,                          true);
-  Option GregtheWildcard     = Option::Bool("Greg the Wildcard",      { "Off", "On" },                                                            {wildcardGregDesc},                                                                                       OptionCategory::Toggle);
+  Option RewardOptions       = Option::U8  ("Reward Options",         { "Standard Rewards", "Greg as Reward", "Greg as Wildcard" },               {rewardOptionsDesc});
   std::vector<Option *> openOptions = {
     &RandomizeOpen,
     &OpenForest,
@@ -83,7 +83,7 @@ namespace Settings {
     &BridgeTokenCount,
     &RandomGanonsTrials,
     &GanonsTrialsCount,
-    &GregtheWildcard,
+    &RewardOptions,
   };
 
   //World Settings
@@ -1300,7 +1300,7 @@ namespace Settings {
     ctx.bridgeTokenCount     = BridgeTokenCount.Value<uint8_t>();
     ctx.randomGanonsTrials   = (RandomGanonsTrials) ? 1 : 0;
     ctx.ganonsTrialsCount    = GanonsTrialsCount.Value<uint8_t>();
-    ctx.wildcardGreg = (GregtheWildcard) ? 1 : 0;
+    ctx.rewardOptions        = RewardOptions.Value<uint8_t>();
 
     ctx.startingAge          = StartingAge.Value<uint8_t>();
     ctx.resolvedStartingAge  = ResolvedStartingAge;
@@ -1961,21 +1961,17 @@ namespace Settings {
       //Only show reward count option if Rewards is selected
       if (Bridge.Is(RAINBOWBRIDGE_REWARDS)) {
         BridgeRewardCount.Unhide();
-          GregtheWildcard.Unhide();
       } else {
         BridgeRewardCount.SetSelectedIndex(9);
         BridgeRewardCount.Hide();
-        GregtheWildcard.Hide();
       }
 
       //Only show reward count option if Rewards is selected
       if (Bridge.Is(RAINBOWBRIDGE_DUNGEONS)) {
         BridgeDungeonCount.Unhide();
-        GregtheWildcard.Unhide();
       } else {
         BridgeDungeonCount.SetSelectedIndex(8);
         BridgeDungeonCount.Hide();
-        GregtheWildcard.Hide();
       }
 
       //Only show token count option if Tokens is selected
@@ -2697,7 +2693,6 @@ namespace Settings {
     BridgeRewardCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT]);
     BridgeDungeonCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT]);
     BridgeTokenCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT]);
-    GregtheWildcard.SetSelectedIndex(cvarSettings[RSK_WILDCARD_GREG]);
     if (cvarSettings[RSK_GANONS_TRIALS] == RO_GANONS_TRIALS_RANDOM_NUMBER) {
         RandomGanonsTrials.SetSelectedIndex(1);
     } else {

@@ -118,7 +118,7 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, PlayState* play) {
                 }
                 break;
             case RO_BRIDGE_DUNGEON_REWARDS:
-                if ((CheckMedallionCount() + CheckStoneCount() + CheckWildcardCount()) >= bridgeRewardCount) {
+                if ((CheckMedallionCount() + CheckStoneCount() + CheckRewardCount()) >= bridgeRewardCount) {
                     this->actionFunc = BgGjyoBridge_SpawnBridge;
                     func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
                 }

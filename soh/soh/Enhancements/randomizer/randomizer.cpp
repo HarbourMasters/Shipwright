@@ -224,7 +224,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Reward Count", RSK_RAINBOW_BRIDGE_REWARD_COUNT },
     { "Open Settings:Dungeon Count", RSK_RAINBOW_BRIDGE_DUNGEON_COUNT },
     { "Open Settings:Token Count", RSK_RAINBOW_BRIDGE_TOKEN_COUNT },
-    { "Open Settings:Greg the Wildcard", RSK_WILDCARD_GREG },
+    { "Open Settings:Reward Option", RSK_REWARD_OPTIONS },
     { "Shuffle Settings:Shuffle Dungeon Rewards", RSK_SHUFFLE_DUNGEON_REWARDS },
     { "Shuffle Settings:Link's Pocket", RSK_LINKS_POCKET},
     { "Shuffle Settings:Shuffle Songs", RSK_SHUFFLE_SONGS },
@@ -734,6 +734,15 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_BRIDGE_GREG;
                         }
                         break;
+                    case RSK_REWARD_OPTIONS:
+                        if (it.value() == "Standard Rewards") {
+                            gSaveContext.randoSettings[index].value = RO_REWARD_STANDARD;
+                        } else if (it.value() == "Greg as Reward") {
+                            gSaveContext.randoSettings[index].value = RO_REWARD_GREG;
+                        } else if (it.value() == "Greg as Wildcard") {
+                            gSaveContext.randoSettings[index].value = RO_REWARD_WILDCARD;
+                        }
+                        break;
                     case RSK_RAINBOW_BRIDGE_STONE_COUNT:
                     case RSK_RAINBOW_BRIDGE_MEDALLION_COUNT:
                     case RSK_RAINBOW_BRIDGE_REWARD_COUNT:
@@ -801,7 +810,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_FROG_SONG_RUPEES:
                     case RSK_SHUFFLE_100_GS_REWARD:
                     case RSK_SHUFFLE_OCARINA:
-                    case RSK_WILDCARD_GREG:
                     case RSK_STARTING_DEKU_SHIELD:
                     case RSK_STARTING_KOKIRI_SWORD:
                     case RSK_STARTING_ZELDAS_LULLABY:
@@ -2872,7 +2880,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = CVarGetInteger("gRandomizeRewardCount", 9);
     cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = CVarGetInteger("gRandomizeDungeonCount", 8);
     cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = CVarGetInteger("gRandomizeTokenCount", 100);
-    cvarSettings[RSK_WILDCARD_GREG] = CVarGetInteger("gRandomizeGregtheWildcard", 0);
+    cvarSettings[RSK_REWARD_OPTIONS] = CVarGetInteger("gRandomizeRewardOptions", 0);
     cvarSettings[RSK_GANONS_TRIALS] = CVarGetInteger("gRandomizeGanonTrial", RO_GANONS_TRIALS_SET_NUMBER);
     cvarSettings[RSK_TRIAL_COUNT] = CVarGetInteger("gRandomizeGanonTrialCount", 6);
     cvarSettings[RSK_STARTING_OCARINA] = CVarGetInteger("gRandomizeStartingOcarina", 0);
@@ -3082,6 +3090,7 @@ void DrawRandoEditor(bool& open) {
                                           "Dungeon rewards", "Dungeons",    "Tokens", "Greg" };
     static const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
     static const char* randoMqDungeons[3] = { "None", "Set Number", "Random Number" };
+    static const char* randoRewardOptions[3] = { "Standard Rewards", "Greg as Reward", "Greg as Wildcard" };
 
     // World Settings
     static const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
@@ -3346,8 +3355,6 @@ void DrawRandoEditor(bool& open) {
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         UIWidgets::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
                                                         "gRandomizeRewardCount", 1, 9, "", 9, true);
-                        UIWidgets::EnhancementCheckbox("Greg the Wildcard", "gRandomizeGregtheWildcard");
-                        UIWidgets::InsertHelpHoverText("Greg will help you on your journey by becoming a wildcard towards your set requirement.");
                         break;
                     case RO_BRIDGE_DUNGEONS:
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
@@ -3362,6 +3369,23 @@ void DrawRandoEditor(bool& open) {
                     case RO_BRIDGE_GREG:
                         break;
                 }
+
+                UIWidgets::PaddedSeparator();
+
+                // Reward Options
+                ImGui::Text("Reward Options");
+                UIWidgets::InsertHelpHoverText(
+                    "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
+                    "number of rewards on slider does not change.\n"
+                    "\n"
+                    "Greg as Reward - Greg does change logic (can be part of expected path for opening "
+                    "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
+                    "account for Greg. \n"
+                    "\n"
+                    "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
+                    "rewards on slider does not change.");
+
+                UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX, RO_REWARD_STANDARD);
 
                 UIWidgets::PaddedSeparator();
 

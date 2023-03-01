@@ -300,13 +300,15 @@ u8 CheckMedallionCount() {
     return medallionCount;
 }
 
-u8 CheckWildcardCount() {
-    u8 wildcardCount = 0;
+u8 CheckRewardCount() {
+    u8 rewardCount = 0;
 
-    if (Randomizer_GetSettingValue(RSK_WILDCARD_GREG) && Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
-        wildcardCount += 1;
+    if (Randomizer_GetSettingValue(RO_REWARD_WILDCARD) && Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+        rewardCount += 1;
+    } else if (Randomizer_GetSettingValue(RO_REWARD_GREG) && Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+            rewardCount += 1;
     }
-    return wildcardCount;
+    return rewardCount;
 }
 
 u8 CheckDungeonCount() {

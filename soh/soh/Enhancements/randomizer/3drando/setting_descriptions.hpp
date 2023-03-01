@@ -47,7 +47,7 @@ extern string_view bridgeMedallionCountDesc;
 extern string_view bridgeRewardCountDesc;
 extern string_view bridgeDungeonCountDesc;
 extern string_view bridgeTokenCountDesc;
-extern string_view wildcardGregDesc;
+extern string_view rewardOptionsDesc;
 
 extern string_view randomGanonsTrialsDesc;
 
