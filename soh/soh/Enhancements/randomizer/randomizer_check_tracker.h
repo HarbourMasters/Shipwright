@@ -22,7 +22,6 @@ namespace CheckTracker {
 
 void InitCheckTracker();
 void DrawCheckTracker(bool& open);
-RandomizerCheckShow GetCheckStatus(RandomizerCheckObject rcObj, int idx);
 std::map<RandomizerCheck, RandomizerCheckTrackerData> *GetCheckTrackerData();
 void PushDefaultCheckData(RandomizerCheck rc);
 void LoadCheckTrackerData(nlohmann::json checks);

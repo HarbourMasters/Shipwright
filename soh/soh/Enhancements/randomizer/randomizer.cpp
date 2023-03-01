@@ -3136,14 +3136,10 @@ void DeleteTrackerData(int fileNum) {
     std::filesystem::remove(GetTrackerDataFileName(fileNum));
 }
 
-void TrackerItemReceive(u8 item) {
-}
-
 void Randomizer::RegisterTrackerHooks() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaveFile>(SaveTrackerDataHook);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>(LoadTrackerData);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteFile>(DeleteTrackerData);
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnReceiveItem>(TrackerItemReceive);
 }
 
 void DrawRandoEditor(bool& open) {
