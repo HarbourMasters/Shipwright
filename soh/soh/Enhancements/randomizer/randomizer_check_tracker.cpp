@@ -127,18 +127,27 @@ void PushDefaultCheckData(RandomizerCheck rc) {
     checkTrackerData.emplace(rc, newData);
 }
 
-void CreateTrackerData() {
-    for (auto& [rc, rco] : RandomizerCheckObjects::GetAllRCObjects()) {
-        if (rc != RC_UNKNOWN_CHECK && rc != RC_MAX)
-            PushDefaultCheckData(rc);
+void TrySetAreas() {
+    if (checkObjectsByArea.size() == 0) {
+        for (int i = RCAREA_KOKIRI_FOREST; i < RCAREA_INVALID; i++) {
+            checkObjectsByArea.emplace(static_cast<RandomizerCheckArea>(i), std::vector<RandomizerCheckObject>());
+        }
     }
+}
+
+void CreateTrackerData() {
+    TrySetAreas();
+    for (auto& [rc, rco] : RandomizerCheckObjects::GetAllRCObjects()) {
+        if (rc != RC_UNKNOWN_CHECK && rc != RC_MAX && rc != RC_LINKS_POCKET)
+            PushDefaultCheckData(rc);
+            areaChecksTotal[rco.rcArea]++;
+    }
+    PushDefaultCheckData(RC_LINKS_POCKET);
     checkTrackerData.find(RC_LINKS_POCKET)->second.status = RCSHOW_SAVED;
 }
 
 void LoadCheckTrackerData(json checks) {
-    for (int i = RCAREA_KOKIRI_FOREST; i < RCAREA_INVALID; i++) {
-        checkObjectsByArea.emplace(static_cast<RandomizerCheckArea>(i), std::vector<RandomizerCheckObject>());
-    }
+    TrySetAreas();
     auto trackerData = GetCheckTrackerData();
     for (auto& item : checks) {
         if (item["rc"] == RC_UNKNOWN_CHECK)
@@ -795,11 +804,8 @@ void UpdateOrdering(RandomizerCheckArea rcArea) {
 }
 
 bool CompareCheckObject(RandomizerCheckObject i, RandomizerCheckObject j) {
-    if (i.rcArea < j.rcArea)
-        return true;
-    else if (i.rcArea > j.rcArea)
-        return false;
-
+    if (i.rc == RC_LINKS_POCKET)
+        bool iCont = checkTrackerData.contains(i.rc);
     RandomizerCheckTrackerData iShow = checkTrackerData.find(i.rc)->second;
     RandomizerCheckTrackerData jShow = checkTrackerData.find(j.rc)->second;
     if (iShow.status < jShow.status)
@@ -951,7 +957,7 @@ void DrawLocation(RandomizerCheckObject rcObj) {
             } else {
                 checkTrackerData.find(rcObj.rc)->second.skipped = true;
             }
-            SaveTrackerData(gSaveContext.fileNum);
+            SaveTrackerData(gSaveContext.fileNum, true);
         }
     } else {
         ImGui::InvisibleButton("", ImVec2(20.0f, 10.0f));
