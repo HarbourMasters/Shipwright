@@ -7,7 +7,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build-macos:
-    runs-on: ${{ vars.MAC_RUNNER || 'macos-12' }}
+    runs-on: ${{ (vars.MAC_RUNNER && fromJSON(vars.MAC_RUNNER)) || 'macos-12' }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -17,12 +17,14 @@ jobs:
       with:
         key: ${{ runner.os }}-ccache
     - name: Install gtar wrapper
+      if: ${{ !vars.MAC_RUNNER }}
       run: |
         sudo mv /usr/local/bin/gtar /usr/local/bin/gtar.orig
         sudo cp .github/workflows//gtar /usr/local/bin/gtar
         sudo chmod +x /usr/local/bin/gtar
     - name: Cache MacPorts
       id: cache-macports
+      if: ${{ !vars.MAC_RUNNER }}
       uses: actions/cache@v2
       with:
         path: /opt/local/
@@ -30,6 +32,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-macports-
     - name: Install MacPorts (if necessary)
+      if: ${{ !vars.MAC_RUNNER }}
       run: |
         if [ -d /opt/local/ ]; then
           echo "MacPorts already installed"
@@ -39,6 +42,7 @@ jobs:
         fi
         echo "/opt/local/bin:/opt/local/sbin" >> $GITHUB_PATH
     - name: Install dependencies
+      if: ${{ !vars.MAC_RUNNER }}
       run: |
         brew uninstall --ignore-dependencies libpng
         sudo port install $(cat .github/workflows/macports-deps.txt)
@@ -70,7 +74,7 @@ jobs:
         - os: ubuntu-22.04
           gcc: 12
           archive-suffix: performance
-    runs-on: ${{ (matrix.os == 'ubuntu-20.04' && (vars.LINUX_COMPATIBILITY_RUNNER || matrix.os)) || (matrix.os == 'ubuntu-22.04' && (vars.LINUX_PERFORMANCE_RUNNER || matrix.os)) }}
+    runs-on: ${{ (matrix.os == 'ubuntu-20.04' && ((vars.LINUX_COMPATIBILITY_RUNNER && fromJSON(vars.LINUX_COMPATIBILITY_RUNNER)) || matrix.os)) || (matrix.os == 'ubuntu-22.04' && ((vars.LINUX_PERFORMANCE_RUNNER && fromJSON(vars.LINUX_PERFORMANCE_RUNNER)) || matrix.os)) }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -124,7 +128,7 @@ jobs:
           soh.appimage
           readme.txt
   build-switch:
-    runs-on: ${{ vars.LINUX_RUNNER || 'ubuntu-latest' }}
+    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
     container:
       image: devkitpro/devkita64:latest
     steps:
@@ -154,7 +158,7 @@ jobs:
           soh.nro
           readme.txt
   build-wiiu:
-    runs-on: ${{ vars.LINUX_RUNNER || 'ubuntu-latest' }}
+    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
     container:
       image: devkitpro/devkitppc:latest
     steps:
@@ -189,7 +193,7 @@ jobs:
           soh.wuhb
           readme.txt
   build-windows:
-    runs-on: ${{ vars.WINDOWS_RUNNER || 'windows-latest' }}
+    runs-on: ${{ (vars.WINDOWS_RUNNER && fromJSON(vars.WINDOWS_RUNNER)) || 'windows-latest' }}
     steps:
     - name: Install dependencies
       run: |
