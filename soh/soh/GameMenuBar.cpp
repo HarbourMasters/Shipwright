@@ -33,6 +33,8 @@
 #include "Enhancements/crowd-control/CrowdControl.h"
 #endif
 
+#include "Enhancements/game-interactor/GameInteractor.h"
+
 #define EXPERIMENTAL() \
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 50, 50, 255)); \
     UIWidgets::Spacer(3.0f); \
@@ -297,15 +299,25 @@ namespace GameMenuBar {
 
             if (ImGui::BeginMenu("Languages")) {
                 UIWidgets::PaddedEnhancementCheckbox("Translate Title Screen", "gTitleScreenTranslation");
-                UIWidgets::EnhancementRadioButton("English", "gLanguages", LANGUAGE_ENG);
-                UIWidgets::EnhancementRadioButton("German", "gLanguages", LANGUAGE_GER);
-                UIWidgets::EnhancementRadioButton("French", "gLanguages", LANGUAGE_FRA);
+                if (UIWidgets::EnhancementRadioButton("English", "gLanguages", LANGUAGE_ENG)) {
+                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+                }
+                if (UIWidgets::EnhancementRadioButton("German", "gLanguages", LANGUAGE_GER)) {
+                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+                }
+                if (UIWidgets::EnhancementRadioButton("French", "gLanguages", LANGUAGE_FRA)) {
+                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+                }
                 ImGui::EndMenu();
             }
             
             UIWidgets::Spacer(0);
             
             if (ImGui::BeginMenu("Accessibility")) {
+            #if defined(_WIN32) || defined(__APPLE__)
+                UIWidgets::PaddedEnhancementCheckbox("Text to Speech", "gA11yTTS");
+                UIWidgets::Tooltip("Enables text to speech for in game dialog");
+            #endif
                 UIWidgets::PaddedEnhancementCheckbox("Disable Idle Camera Re-Centering", "gA11yDisableIdleCam");
                 UIWidgets::Tooltip("Disables the automatic re-centering of the camera when idle.");
                 

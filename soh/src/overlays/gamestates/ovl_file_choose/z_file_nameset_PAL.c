@@ -656,6 +656,7 @@ void FileChoose_StartOptions(GameState* thisx) {
 }
 
 static u8 sSelectedSetting;
+int8_t lastOptionButtonIndex = -1;
 
 /**
  * Update the cursor and appropriate settings for the options menu.
@@ -717,6 +718,19 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
     } else if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         sSelectedSetting ^= 1;
+    }
+    
+    if (sSelectedSetting == FS_SETTING_AUDIO) {
+        if (lastOptionButtonIndex != gSaveContext.audioSetting) {
+            GameInteractor_ExecuteOnUpdateFileAudioSelection(gSaveContext.audioSetting);
+            lastOptionButtonIndex = gSaveContext.audioSetting;
+        }
+    } else {
+        // offset to detect switching between modes
+        if (lastOptionButtonIndex != FS_BTN_SELECT_QUIT + gSaveContext.zTargetSetting + 1) {
+            GameInteractor_ExecuteOnUpdateFileTargetSelection(gSaveContext.zTargetSetting);
+            lastOptionButtonIndex = FS_BTN_SELECT_QUIT + gSaveContext.zTargetSetting + 1;
+        }
     }
 }
 

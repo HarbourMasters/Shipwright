@@ -3133,6 +3133,8 @@ void Message_Update(PlayState* play) {
     if (msgCtx->msgLength == 0) {
         return;
     }
+    
+    GameInteractor_ExecuteOnDialogMessage();
 
     bool isB_Held = CVarGetInteger("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B) && !sTextboxSkipped
                                                      : CHECK_BTN_ALL(input->press.button, BTN_B);
