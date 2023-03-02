@@ -3101,7 +3101,7 @@ json SerializeTrackerData(int fileNum, bool gameSave) {
             if (gameSave)
                 innerBlock["status"] = RCSHOW_SAVED;
             else
-                innerBlock["status"] = 
+                innerBlock["status"] = RCSHOW_SCUMMED;
         }
         block["checks"].push_back(innerBlock);
     }
@@ -3128,7 +3128,7 @@ void SaveTrackerDataHook(int fileNum) {
 void LoadTrackerData(int fileNum) {
     if (!std::filesystem::exists(GetTrackerDataFileName(fileNum))) {
         CheckTracker::CreateTrackerData();
-        SaveTrackerData(fileNum, false);
+        SaveTrackerData(fileNum, false, false);
     }
     else {
         std::ifstream input(GetTrackerDataFileName(fileNum));

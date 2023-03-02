@@ -104,7 +104,7 @@ extern "C" {
 
 void Rando_Init(void);
 bool GenerateRandomizer(std::string seed = "");
-void SaveTrackerData(int fileNum, bool thread);
+void SaveTrackerData(int fileNum, bool thread, bool gameSave);
 
 #ifdef __cplusplus
 }
