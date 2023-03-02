@@ -198,6 +198,8 @@ const std::vector<const char*> enhancementsCvars = {
     "gLinkDefaultName",
     "gPauseLiveLinkRotationSpeed",  
     "gSkipText",
+    "gRupeeDash",
+    "gDashInterval",
 };
 
 const std::vector<const char*> cheatCvars = {
@@ -357,6 +359,7 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeWarpSongText",
     "gRandomizeZorasFountain",
     "gRandomizeShuffle100GSReward",
+    "gRandomizeGregHint",
 };
 
 const std::vector<PresetEntry> racePresetEntries = {
@@ -441,12 +444,15 @@ const std::vector<PresetEntry> racePresetEntries = {
     PRESET_ENTRY_S32("gRandomizeStartingConsumables", 1),
     PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "78,141,142,227,"),
     PRESET_ENTRY_FLOAT("gCosmetics.Goron_NeckLength", 1000.0f),
-    PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", 1),
+    // Disabling for now, may revisit
+    // PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", 1),
     PRESET_ENTRY_S32("gRandomizeFullWallets", 1),
     PRESET_ENTRY_S32("gRandomizeKakarikoGate", 1),
     PRESET_ENTRY_S32("gRandomizeSkipChildZelda", 1),
     PRESET_ENTRY_S32("gRandomizeGregHint", 1),
     PRESET_ENTRY_S32("gRandomizeShuffleGanonBossKey", 9),
+    PRESET_ENTRY_S32("gForgeTime", 0),
+    PRESET_ENTRY_S32("gDisableFirstPersonChus", 1),
 };
 
 const std::vector<PresetEntry> vanillaPlusPresetEntries = {
