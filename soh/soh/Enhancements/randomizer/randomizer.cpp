@@ -735,7 +735,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         }
                         break;
                     case RSK_REWARD_OPTIONS:
-                        if (it.value() == "Standard Rewards") {
+                        if(it.value() == "Standard Rewards") {
                             gSaveContext.randoSettings[index].value = RO_REWARD_STANDARD;
                         } else if (it.value() == "Greg as Reward") {
                             gSaveContext.randoSettings[index].value = RO_REWARD_GREG;

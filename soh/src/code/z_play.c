@@ -303,12 +303,19 @@ u8 CheckMedallionCount() {
 u8 CheckRewardCount() {
     u8 rewardCount = 0;
 
-    if (Randomizer_GetSettingValue(RO_REWARD_WILDCARD) && Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
-        rewardCount += 1;
-    } else if (Randomizer_GetSettingValue(RO_REWARD_GREG) && Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
-            rewardCount += 1;
+    switch (Randomizer_GetSettingValue(RSK_REWARD_OPTIONS)) {
+        case RO_REWARD_WILDCARD:
+            if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+                rewardCount += 1;
+            }
+            break;
+        case RO_REWARD_GREG:
+            if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+                rewardCount += 1;
+            }
+            break;
     }
-    return rewardCount;
+            return rewardCount;
 }
 
 u8 CheckDungeonCount() {

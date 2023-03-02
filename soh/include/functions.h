@@ -1530,7 +1530,7 @@ void Play_Init(GameState* thisx);
 void Play_Main(GameState* thisx);
 u8 CheckStoneCount();
 u8 CheckMedallionCount();
-u8 CheckWildcardCount();
+u8 CheckRewardCount();
 u8 CheckDungeonCount();
 s32 Play_InCsMode(PlayState* play);
 f32 func_800BFCB8(PlayState* play, MtxF* mf, Vec3f* vec);
