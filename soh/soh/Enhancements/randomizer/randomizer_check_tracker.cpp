@@ -25,10 +25,21 @@ extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
 
 using json = nlohmann::json;
 
+void to_json(json& j, const RandomizerCheckTrackerData& rctd) {
+    j = json {
+        { "rc", rctd.rc }, { "status", rctd.status }, { "skipped", rctd.skipped }, { "hintItem", rctd.hintItem } };
+    }
+
+void from_json(const json& j, RandomizerCheckTrackerData& rctd) {
+    rctd.rc = j["rc"];
+    rctd.status = j["status"];
+    rctd.skipped = j["skipped"];
+    rctd.hintItem = j["hintItem"];
+}
+
 namespace CheckTracker {
 
-void Teardown();
-void InitializeChecks();
+void LoadSettings();
 void UpdateChecks();
 void UpdateInventoryChecks();
 void DrawLocation(RandomizerCheckObject rcObj);
@@ -95,8 +106,8 @@ SceneID DungeonSceneLookupByArea(RandomizerCheckArea area) {
 }
 
 // persistent during gameplay
-bool initialized = false;
-bool doInitialize = false;
+bool initialized;
+bool doInitialize;
 std::map<RandomizerCheck, RandomizerCheckShow> checkStatusMap;
 std::map<RandomizerCheck, RandomizerCheckTrackerData> checkTrackerData;
 std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checkObjectsByArea;
@@ -104,19 +115,24 @@ bool areasFullyChecked[RCAREA_INVALID];
 u32 areasSpoiled = 0;
 bool showVOrMQ;
 s8 areaChecksGotten[32];  //|     "Kokiri Forest (4/9)"
-std::vector<RandomizerCheckObject> checks;
 bool optCollapseAll; // A bool that will collapse all checks once
 bool optExpandAll;   // A bool that will expand all checks once
+RandomizerCheck lastItemGetCheck = RC_UNKNOWN_CHECK;
 RandomizerCheck lastLocationChecked = RC_UNKNOWN_CHECK;
 RandomizerCheckArea previousArea = RCAREA_INVALID;
 RandomizerCheckArea currentArea = RCAREA_INVALID;
 OSContPad* trackerButtonsPressed;
+SceneID lastScene = SCENE_ID_MAX;
 
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 
 std::map<RandomizerCheck, RandomizerCheckTrackerData> *GetCheckTrackerData() {
     return &checkTrackerData;
+}
+
+void SetLastItemGetRC(RandomizerCheck rc) {
+    lastItemGetCheck = rc;
 }
 
 void PushDefaultCheckData(RandomizerCheck rc) {
@@ -156,23 +172,49 @@ void CreateTrackerData() {
 }
 
 void LoadCheckTrackerData(json checks) {
+    Teardown();
+    LoadSettings();
     TrySetAreas();
-    InitializeChecks();
     for (auto& item : checks) {
-        if (item["rc"] == RC_UNKNOWN_CHECK || item["rc"] == RC_MAX || item["rc"] == RC_LINKS_POCKET)
+        RandomizerCheckTrackerData entry = item.get<RandomizerCheckTrackerData>();
+        if (entry.rc == RC_UNKNOWN_CHECK || entry.rc == RC_MAX || entry.rc == RC_LINKS_POCKET)
             continue;
-        RandomizerCheckTrackerData entry;
-        entry.rc = item["rc"];
-        entry.status = item["status"];
-        entry.skipped = item["skipped"];
-        entry.hintItem = item["hintItem"];
         RandomizerCheckObject entry2 = RandomizerCheckObjects::GetAllRCObjects().find(entry.rc)->second;
+        if (!IsVisibleInCheckTracker(entry2))
+            continue;
+
         checkTrackerData.emplace(entry.rc, entry);
         checkObjectsByArea.find(entry2.rcArea)->second.push_back(entry2);
         if (entry.status == RCSHOW_SAVED)
             areaChecksGotten[entry2.rcArea]++;
+        
+        if (areaChecksGotten[entry2.rcArea] != 0 || RandomizerCheckObjects::AreaIsOverworld(entry2.rcArea))
+            areasSpoiled |= (1 << entry2.rcArea);
     }
+    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING) {
+        s8 startingAge = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_AGE);
+        RandomizerCheckArea startingArea;
+        switch (startingAge) {
+            case RO_AGE_CHILD:
+                startingArea = RCAREA_KOKIRI_FOREST;
+                break;
+            case RO_AGE_ADULT:
+                startingArea = RCAREA_MARKET;
+                break;
+            default:
+                startingArea = RCAREA_KOKIRI_FOREST;
+                break;
+        }
+        RandomizerCheckObject linksPocket = { RC_LINKS_POCKET, RCVORMQ_BOTH, RCTYPE_LINKS_POCKET, startingArea, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, false, "Link's Pocket", "Link's Pocket" };
+        
+        checkObjectsByArea.find(startingArea)->second.push_back(linksPocket);
+        areaChecksGotten[startingArea]++;
+    }
+
+    showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) > 0);
     LinksPocket();
+    doInitialize = false;
+    initialized = true;
     UpdateOrdering();
     UpdateInventoryChecks();
 }
@@ -185,11 +227,7 @@ void DrawCheckTracker(bool& open) {
 
     ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
 
-    if (doInitialize) {
-        Teardown();
-        InitializeChecks();
-    } else if (initialized && (gPlayState == nullptr || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2)) {
-        Teardown();
+    if (initialized && (gPlayState == nullptr || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2)) {
         return;
     }
 
@@ -211,7 +249,7 @@ void DrawCheckTracker(bool& open) {
 
     BeginFloatWindows("Check Tracker", open, ImGuiWindowFlags_NoScrollbar);
 
-    if (!initialized) {
+    if (checkTrackerData.empty()) {
         ImGui::Text("Waiting for file load..."); //TODO Language
         EndFloatWindows();
         return;
@@ -221,6 +259,11 @@ void DrawCheckTracker(bool& open) {
     if (gPlayState != nullptr) {
         sceneId = (SceneID)gPlayState->sceneNum;
         currentArea = RandomizerCheckObjects::GetRCAreaBySceneID(sceneId);
+        if (lastScene != sceneId) {
+            lastScene = sceneId;
+            UpdateOrdering();
+            UpdateInventoryChecks();
+        }
     }
 
     bool doAreaScroll =
@@ -574,64 +617,17 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
         );
 }
 
-void InitializeChecks() {
-    if (gPlayState == nullptr || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2)
-        return;
-
-    LoadSettings();
-    for (auto& [rcCheck, rcObj] : RandomizerCheckObjects::GetAllRCObjects()) {
-        if (!IsVisibleInCheckTracker(rcObj))
-            continue;
-
-        checks.push_back(rcObj);
-        checkObjectsByArea.find(rcObj.rcArea)->second.push_back(rcObj);
-
-        if (areaChecksGotten[rcObj.rcArea] != 0 || RandomizerCheckObjects::AreaIsOverworld(rcObj.rcArea))
-            areasSpoiled |= (1 << rcObj.rcArea);
-    }
-    //Link's Pocket
-    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING) {
-        s8 startingAge = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_AGE);
-        RandomizerCheckArea startingArea;
-        switch (startingAge) {
-            case RO_AGE_CHILD:
-                startingArea = RCAREA_KOKIRI_FOREST;
-                break;
-            case RO_AGE_ADULT:
-                startingArea = RCAREA_MARKET;
-                break;
-            default:
-                startingArea = RCAREA_KOKIRI_FOREST;
-                break;
-        }
-        RandomizerCheckObject linksPocket = { RC_LINKS_POCKET, RCVORMQ_BOTH, RCTYPE_LINKS_POCKET, startingArea, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, false, "Link's Pocket", "Link's Pocket" };
-
-        checks.push_back(linksPocket);
-        checkObjectsByArea.find(startingArea)->second.push_back(linksPocket);
-        areaChecksGotten[startingArea]++;
-    }
-
-    showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) > 0);
-    //Bug: the above will spoil that everything is vanilla if the random count rolled 0.
-    // Should use the below instead, but the setting isn't currently saved to the savefile
-    //showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) != RO_GENERIC_OFF);
-    
-    UpdateInventoryChecks();
-    doInitialize = false;
-    initialized = true;
-}
-
 void Teardown() {
     initialized = false;
     checkStatusMap.clear();
+    checkTrackerData.clear();
+    checkObjectsByArea.clear();
     areasSpoiled = 0;
-    checks.clear();
     lastLocationChecked = RC_UNKNOWN_CHECK;
     for (auto& [rcArea, vec] : checkObjectsByArea) {
         vec.clear();
         areaChecksGotten[rcArea] = 0;
     }
-    doInitialize = true;
 }
 
 int slowCheckIdx = 0;
@@ -701,9 +697,9 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
         case SpoilerCollectionCheckType::SPOILER_CHK_BIGGORON:
             return gSaveContext.bgsFlag & flag;
         case SpoilerCollectionCheckType::SPOILER_CHK_CHEST:
-            return gSaveContext.sceneFlags[scene].chest & (1 << flag);
+            return gPlayState->actorCtx.flags.chest & (1 << flag);
         case SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE:
-            return gSaveContext.sceneFlags[scene].collect & (1 << flag);
+            return gPlayState->actorCtx.flags.collect & (1 << flag);
         case SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT:
         case SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM:
         case SpoilerCollectionCheckType::SPOILER_CHK_COW:
@@ -735,11 +731,30 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
             // Gravedigger has a fix in place that means one of two save locations. Check both.
             return (gSaveContext.itemGetInf[1] & 0x1000) || // vanilla flag
                    ((gSaveContext.n64ddFlag || CVarGetInteger("gGravediggingTourFix", 0)) &&
-                        gSaveContext.sceneFlags[scene].collect & (1 << flag)); // rando/fix flag
+                        gPlayState->actorCtx.flags.collect & (1 << flag)); // rando/fix flag
         default:
             return false;
     }
     return false;
+}
+
+void CheckTrackerItemReceive(uint8_t item) {
+    if (gPlayState == nullptr)
+        return;
+    auto scene = static_cast<SceneID>(gPlayState->sceneNum);
+    auto area = RandomizerCheckObjects::GetRCAreaBySceneID(scene);
+    auto rcobjs = RandomizerCheckObjects::GetAllRCObjectsByArea();
+    for (auto [rc, rco] : rcobjs.find(area)->second) {
+        auto rcData = checkTrackerData.find(rc)->second;
+        if (HasItemBeenCollected(*rco) && rcData.status != RCSHOW_COLLECTED && rcData.status != RCSHOW_SAVED) {
+            checkTrackerData.find(rc)->second.status = RCSHOW_COLLECTED;
+            areaChecksGotten[area]++;
+            UpdateOrdering();
+            UpdateInventoryChecks();
+            SaveTrackerData(gSaveContext.fileNum, true, false);
+            break;
+        }
+    }
 }
 
 void DrawLocation(RandomizerCheckObject rcObj) {
@@ -758,11 +773,6 @@ void DrawLocation(RandomizerCheckObject rcObj) {
             return;
         mainColor = CVarGetColor("gCheckTrackerSkippedMainColor", Color_Skipped_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerSkippedExtraColor", Color_Skipped_Extra_Default);
-    } else if (status == RCSHOW_UNCHECKED) {
-        if (!showHidden && CVarGetInteger("gCheckTrackerUncheckedHide", 0))
-            return;
-        mainColor = CVarGetColor("gCheckTrackerUncheckedMainColor", Color_Main_Default);
-        extraColor = CVarGetColor("gCheckTrackerUncheckedExtraColor",  Color_Unchecked_Extra_Default);
     } else if (status == RCSHOW_SEEN) {
         if (!showHidden && CVarGetInteger("gCheckTrackerSeenHide", 0))
             return;
@@ -773,6 +783,11 @@ void DrawLocation(RandomizerCheckObject rcObj) {
             return;
         mainColor = CVarGetColor("gCheckTrackerScummedMainColor", Color_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerScummedColor", Color_Scummed_Extra_Default);
+    } else if (status == RCSHOW_UNCHECKED) {
+        if (!showHidden && CVarGetInteger("gCheckTrackerUncheckedHide", 0))
+            return;
+        mainColor = CVarGetColor("gCheckTrackerUncheckedMainColor", Color_Main_Default);
+        extraColor = CVarGetColor("gCheckTrackerUncheckedExtraColor",  Color_Unchecked_Extra_Default);
     } else if (status == RCSHOW_COLLECTED) {
         if (!showHidden && CVarGetInteger("gCheckTrackerCollectedHide", 0))
             return;
@@ -790,8 +805,8 @@ void DrawLocation(RandomizerCheckObject rcObj) {
     if (lastLocationChecked == rcObj.rc)
         txt = "* " + txt;
  
-    // Draw button - for Skipped/Unchecked only
-    if (status == RCSHOW_UNCHECKED || skipped) {
+    // Draw button - for Skipped/Seen/Scummed/Unchecked only
+    if (status == RCSHOW_UNCHECKED || status == RCSHOW_SEEN || status == RCSHOW_SCUMMED || skipped) {
         if (ImGui::ArrowButton(std::to_string(rcObj.rc).c_str(), skipped ? ImGuiDir_Left : ImGuiDir_Right)) {
             if (skipped) {
                 checkTrackerData.find(rcObj.rc)->second.skipped = false;
@@ -816,9 +831,7 @@ void DrawLocation(RandomizerCheckObject rcObj) {
 
     //Draw the extra info
     txt = "";
-    if (skipped) {
-        txt = "Skipped"; //TODO language
-    } else if (checkData.hintItem != 0) {
+    if (checkData.hintItem != 0) {
         // TODO hints
     } else if (status != RCSHOW_UNCHECKED) {
         switch (status) {
@@ -844,6 +857,9 @@ void DrawLocation(RandomizerCheckObject rcObj) {
                 break;
         }
     }
+    if (txt == "" && skipped)
+        txt = "Skipped"; //TODO language
+
     if (txt != "") {
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(extraColor.r / 255.0f, extraColor.g / 255.0f, extraColor.b / 255.0f, extraColor.a / 255.0f));
         ImGui::SameLine();
@@ -927,20 +943,6 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
             ImGui::PopItemWidth();
 
             ImGui::EndTable();
-        }
-    }
-}
-
-void CheckTrackerItemReceive(uint8_t item) {
-    if (gPlayState == nullptr)
-        return;
-
-    auto rcobjs = RandomizerCheckObjects::GetAllRCObjectsByArea();
-    auto scene = static_cast<SceneID>(gPlayState->sceneNum);
-    auto area = RandomizerCheckObjects::GetRCAreaBySceneID(scene);
-    for (auto [rc, rco] : rcobjs.find(area)->second) {
-        if (ItemTable_RetrieveEntry(MOD_NONE, rco->ogItemId).itemId == item) {
-            printf("Item found: %s", rco->rcShortName);
         }
     }
 }
@@ -1045,15 +1047,6 @@ void InitCheckTracker() {
 
     Ship::RegisterHook<Ship::ControllerRead>([](OSContPad* cont_pad) {
         trackerButtonsPressed = cont_pad;
-    });
-    Ship::RegisterHook<Ship::LoadFile>([](uint32_t fileNum) {
-        doInitialize = true;
-    });
-    Ship::RegisterHook<Ship::DeleteFile>([](uint32_t fileNum) {
-        Teardown();
-    });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>([](uint32_t fileNum) {
-        Teardown();
     });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnReceiveItem>(CheckTrackerItemReceive);
 

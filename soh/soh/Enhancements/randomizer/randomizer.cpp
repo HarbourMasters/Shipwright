@@ -36,24 +36,6 @@ extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
 
-NLOHMANN_JSON_SERIALIZE_ENUM(RandomizerCheckShow, {
-    {RCSHOW_UNCHECKED, "unchecked"},
-    {RCSHOW_SEEN, "seen"},
-    {RCSHOW_SAVED, "saved"}
-})
-
-void to_json(json& j, const RandomizerCheckTrackerData& rctd) {
-    j = json {
-        { "rc", rctd.rc }, { "status", rctd.status }, { "skipped", rctd.skipped }, { "hintItem", rctd.hintItem } };
-    }
-
-void from_json(const json& j, RandomizerCheckTrackerData& rctd) {
-    rctd.rc = j["rc"];
-    rctd.status = j["status"];
-    rctd.skipped = j["skipped"];
-    rctd.hintItem = j["hintItem"];
-}
-
 std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum;
 std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum;
 std::multimap<std::tuple<s16, s16, s32>, RandomizerCheckObject> checkFromActorMultimap;
@@ -3088,21 +3070,22 @@ void SaveTrackerFile(std::filesystem::path filePath, json data) {
 }
 
 json SerializeTrackerData(int fileNum, bool gameSave) {
-    if (!std::filesystem::exists(GetTrackerDataFileName(fileNum))) {
-        CheckTracker::CreateTrackerData();
-    }
     json block;
     block["checks"] = json::array();
     for(auto& [rc, data] : *CheckTracker::GetCheckTrackerData()) {
         if (rc == RC_UNKNOWN_CHECK || rc == RC_MAX || rc == RC_LINKS_POCKET)
             continue;
-        if (data.status == RCSHOW_COLLECTED) {
-            if (gameSave)
-                data.status = RCSHOW_SAVED;
-            else
-                data.status = RCSHOW_SCUMMED;
-        }
         json innerBlock = data;
+        if (data.status == RCSHOW_COLLECTED) {
+            if (gameSave) {
+                innerBlock["status"] = RCSHOW_SAVED;
+                CheckTracker::GetCheckTrackerData()->find(rc)->second.status = RCSHOW_SAVED;
+            }
+            else {
+                innerBlock["status"] = RCSHOW_SCUMMED;
+            }
+        }
+
         block["checks"].push_back(innerBlock);
     }
     return block;
@@ -3120,6 +3103,7 @@ void SaveTrackerDataHook(int fileNum) {
     if (!std::filesystem::exists(GetTrackerDataFileName(fileNum))) {
         CheckTracker::CreateTrackerData();
         SaveTrackerData(fileNum, false, true);
+        CheckTracker::GetCheckTrackerData()->clear();
     }
     else
         SaveTrackerData(fileNum, true, true);
@@ -3134,16 +3118,18 @@ void LoadTrackerData(int fileNum) {
         std::ifstream input(GetTrackerDataFileName(fileNum));
 
         json data = json::parse(input);
-        CheckTracker::LoadCheckTrackerData(data["checks"]);
+        CheckTracker::LoadCheckTrackerData(data.at("checks"));
     }
 }
 
 void DeleteTrackerData(int fileNum) {
     std::filesystem::remove(GetTrackerDataFileName(fileNum));
+    CheckTracker::Teardown();
 }
 
 void TrackerExitGameHook(int fileNum) {
     SaveTrackerData(fileNum, false, false);
+    CheckTracker::Teardown();
 }
 
 void Randomizer::RegisterTrackerHooks() {
