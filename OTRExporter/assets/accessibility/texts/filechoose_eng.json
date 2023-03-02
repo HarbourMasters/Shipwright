@@ -1,0 +1,16 @@
+{
+    "file1": "File 1",
+    "file2": "File 2",
+    "file3": "File 3",
+    "options": "Options",
+    "copy": "Copy",
+    "erase": "Erase",
+    "quit": "Quit",
+    "confirm": "Yes",
+    "audio_stereo": "Sound - Stereo",
+    "audio_mono": "Sound - Mono",
+    "audio_headset": "Sound - Headset",
+    "audio_surround": "Sound - Surround",
+    "target_switch": "Targetting Mode - Switch",
+    "target_hold": "Targetting Mode - Hold"
+}

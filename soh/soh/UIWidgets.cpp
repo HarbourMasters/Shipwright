@@ -513,7 +513,7 @@ namespace UIWidgets {
             Spacer(0);
     }
 
-    void EnhancementRadioButton(const char* text, const char* cvarName, int id) {
+    bool EnhancementRadioButton(const char* text, const char* cvarName, int id) {
         /*Usage :
         EnhancementRadioButton("My Visible Name","gMyCVarName", MyID);
         First arg is the visible name of the Radio button
@@ -528,13 +528,17 @@ namespace UIWidgets {
         make_invisible += text;
         make_invisible += cvarName;
 
+        bool ret = false;
         int val = CVarGetInteger(cvarName, 0);
         if (ImGui::RadioButton(make_invisible.c_str(), id == val)) {
             CVarSetInteger(cvarName, id);
             SohImGui::RequestCvarSaveOnNextTick();
+            ret = true;
         }
         ImGui::SameLine();
         ImGui::Text("%s", text);
+        
+        return ret;
     }
 
     bool DrawResetColorButton(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha) {
