@@ -185,7 +185,7 @@ void LoadCheckTrackerData(json checks) {
 
         checkTrackerData.emplace(entry.rc, entry);
         checkObjectsByArea.find(entry2.rcArea)->second.push_back(entry2);
-        if (entry.status == RCSHOW_SAVED)
+        if (entry.status == RCSHOW_SAVED || entry.skipped)
             areaChecksGotten[entry2.rcArea]++;
         
         if (areaChecksGotten[entry2.rcArea] != 0 || RandomizerCheckObjects::AreaIsOverworld(entry2.rcArea))
@@ -619,15 +619,15 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
 
 void Teardown() {
     initialized = false;
+    for (auto& [rcArea, vec] : checkObjectsByArea) {
+        vec.clear();
+        areaChecksGotten[rcArea] = 0;
+    }
     checkStatusMap.clear();
     checkTrackerData.clear();
     checkObjectsByArea.clear();
     areasSpoiled = 0;
     lastLocationChecked = RC_UNKNOWN_CHECK;
-    for (auto& [rcArea, vec] : checkObjectsByArea) {
-        vec.clear();
-        areaChecksGotten[rcArea] = 0;
-    }
 }
 
 int slowCheckIdx = 0;
