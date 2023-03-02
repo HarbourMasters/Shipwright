@@ -188,7 +188,6 @@ void DrawCheckTracker(bool& open) {
     if (doInitialize) {
         Teardown();
         InitializeChecks();
-        UpdateOrdering();
     } else if (initialized && (gPlayState == nullptr || gSaveContext.fileNum < 0 || gSaveContext.fileNum > 2)) {
         Teardown();
         return;
@@ -662,7 +661,8 @@ void UpdateOrdering() {
 
 void UpdateOrdering(RandomizerCheckArea rcArea) {
     // Sort a single area
-    std::sort(checkObjectsByArea.find(rcArea)->second.begin(), checkObjectsByArea.find(rcArea)->second.end(), CompareCheckObject);
+    if(checkObjectsByArea.contains(rcArea))
+	    std::sort(checkObjectsByArea.find(rcArea)->second.begin(), checkObjectsByArea.find(rcArea)->second.end(), CompareCheckObject);
 }
 
 bool CompareCheckObject(RandomizerCheckObject i, RandomizerCheckObject j) {

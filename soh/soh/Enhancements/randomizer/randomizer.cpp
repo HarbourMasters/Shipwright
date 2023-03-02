@@ -3096,13 +3096,13 @@ json SerializeTrackerData(int fileNum, bool gameSave) {
     for(auto& [rc, data] : *CheckTracker::GetCheckTrackerData()) {
         if (rc == RC_UNKNOWN_CHECK || rc == RC_MAX || rc == RC_LINKS_POCKET)
             continue;
-        json innerBlock = data;
-        if (innerBlock["status"] == RCSHOW_COLLECTED) {
+        if (data.status == RCSHOW_COLLECTED) {
             if (gameSave)
-                innerBlock["status"] = RCSHOW_SAVED;
+                data.status = RCSHOW_SAVED;
             else
-                innerBlock["status"] = RCSHOW_SCUMMED;
+                data.status = RCSHOW_SCUMMED;
         }
+        json innerBlock = data;
         block["checks"].push_back(innerBlock);
     }
     return block;
