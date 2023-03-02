@@ -5,6 +5,12 @@ set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 project(soh LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    enable_language(OBJCXX)
+    set(CMAKE_OBJC_FLAGS "${CMAKE_OBJC_FLAGS} -fobjc-arc")
+    set(CMAKE_OBJCXX_FLAGS "${CMAKE_OBJCXX_FLAGS} -fobjc-arc")
+endif()
+
 set (BUILD_UTILS OFF CACHE STRING "no utilities")
 set (BUILD_SHARED_LIBS OFF CACHE STRING "install/link shared instead of static libs")
 
@@ -239,7 +245,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     set_target_properties(${PROJECT_NAME} PROPERTIES
-    OUTPUT_NAME "soh-macos"
+        XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC YES 
+        OUTPUT_NAME "soh-macos"
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	set_target_properties(${PROJECT_NAME} PROPERTIES
