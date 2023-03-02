@@ -40,6 +40,9 @@ void GameInteractor_ExecuteOnActorUpdate(void* actor) {
 
 void GameInteractor_ExecuteOnPlayerBonk() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerBonk>();
+
+void GameInteractor_ExecuteOnOcarinaSongAction() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnOcarinaSongAction>();
 }
 
 // MARK: -  Save Files

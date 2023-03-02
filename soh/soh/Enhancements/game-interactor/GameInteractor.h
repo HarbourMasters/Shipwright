@@ -151,7 +151,8 @@ public:
     DEFINE_HOOK(OnPlayerUpdate, void());
     DEFINE_HOOK(OnActorUpdate, void(void* actor));
     DEFINE_HOOK(OnPlayerBonk, void());
-    
+    DEFINE_HOOK(OnOcarinaSongAction, void());
+
     DEFINE_HOOK(OnSaveFile, void(int32_t fileNum));
     DEFINE_HOOK(OnLoadFile, void(int32_t fileNum));
     DEFINE_HOOK(OnDeleteFile, void(int32_t fileNum));
