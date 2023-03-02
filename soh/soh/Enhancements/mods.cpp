@@ -190,9 +190,7 @@ void RegisterSwitchAge() {
 /// Switches Link's age and respawns him at the last entrance he entered.
 void RegisterOcarinaTimeTravel() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!gPlayState) {
-            return;
-        }
+        if (!gPlayState) return;
 
         // For the gTimeTravel: Don't give child Link a Kokiri Sword if we don't have one
         if (LINK_AGE_IN_YEARS == 5 && CVarGetInteger("gTimeTravel", 0)) {
