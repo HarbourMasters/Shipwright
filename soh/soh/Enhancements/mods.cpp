@@ -89,13 +89,13 @@ void RegisterInfiniteNayrusLove() {
 
 void RegisterMoonJumpOnL() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!gPlayState) return;
+        
         if (CVarGetInteger("gMoonJumpOnL", 0) != 0) {
-            if (gPlayState) {
-                Player* player = GET_PLAYER(gPlayState);
+            Player* player = GET_PLAYER(gPlayState);
 
-                if (CHECK_BTN_ANY(gPlayState->state.input[0].cur.button, BTN_L)) {
-                    player->actor.velocity.y = 6.34375f;
-                }
+            if (CHECK_BTN_ANY(gPlayState->state.input[0].cur.button, BTN_L)) {
+                player->actor.velocity.y = 6.34375f;
             }
         }
     });
@@ -104,23 +104,23 @@ void RegisterMoonJumpOnL() {
 
 void RegisterInfiniteISG() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!gPlayState) return;
+
         if (CVarGetInteger("gEzISG", 0) != 0) {
-            if (gPlayState) {
-                Player* player = GET_PLAYER(gPlayState);
-                player->swordState = 1;
-            }
+            Player* player = GET_PLAYER(gPlayState);
+            player->swordState = 1;
         }
     });
 }
 
 void RegisterUnrestrictedItems() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!gPlayState) return;
+
         if (CVarGetInteger("gNoRestrictItems", 0) != 0) {
-            if (gPlayState) {
-                u8 sunsBackup = gPlayState->interfaceCtx.restrictions.sunsSong;
-                memset(&gPlayState->interfaceCtx.restrictions, 0, sizeof(gPlayState->interfaceCtx.restrictions));
-                gPlayState->interfaceCtx.restrictions.sunsSong = sunsBackup;
-            }
+            u8 sunsBackup = gPlayState->interfaceCtx.restrictions.sunsSong;
+            memset(&gPlayState->interfaceCtx.restrictions, 0, sizeof(gPlayState->interfaceCtx.restrictions));
+            gPlayState->interfaceCtx.restrictions.sunsSong = sunsBackup;
         }
     });
 }
@@ -142,35 +142,31 @@ void RegisterFreezeTime() {
 
 /// Switches Link's age and respawns him at the last entrance he entered.
 void RegisterSwitchAge() {
-    bool warped = false;
-    Vec3f playerPos;
-    int16_t playerYaw;
-    
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&warped, &playerPos, &playerYaw]() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        static bool warped = false;
+        static Vec3f playerPos;
+        static int16_t playerYaw;
+
+        if (!gPlayState) return;
+
         if (CVarGetInteger("gSwitchAge", 0) != 0) {
             CVarSetInteger("gSwitchAge", 0);
-            if (gPlayState) {
-                playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
-                playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
-                gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
-                gPlayState->sceneLoadFlag = 0x14;
-                gPlayState->fadeTransition = 11;
-                gSaveContext.nextTransitionType = 11;
-                warped = true;
-                if (gPlayState->linkAgeOnLoad == 1) {
-                    gPlayState->linkAgeOnLoad = 0;
-                } else {
-                    gPlayState->linkAgeOnLoad = 1;
-                }
-            }
+            playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
+            playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
+
+            gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
+            gPlayState->sceneLoadFlag = 0x14;
+            gPlayState->fadeTransition = 11;
+            gSaveContext.nextTransitionType = 11;
+            gPlayState->linkAgeOnLoad ^= 1;
+
+            warped = true;
         }
-        
-        if (gPlayState) {
-            if (warped && gPlayState->sceneLoadFlag != 0x0014 && gSaveContext.nextTransitionType == 255) {
-                GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
-                GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
-                warped = false;
-            }
+
+        if (warped && gPlayState->sceneLoadFlag != 0x0014 && gSaveContext.nextTransitionType == 255) {
+            GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
+            GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
+            warped = false;
         }
     });
 }
