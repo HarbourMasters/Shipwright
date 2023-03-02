@@ -367,7 +367,7 @@ void DrawSfxEditor(bool& open) {
                 );
                 ImGui::SameLine();
                 UIWidgets::EnhancementSliderInt("Overlay Duration: %d seconds", "##SeqNameOverlayDuration",
-                                                "gSeqNameOverlayDuration", 1, 10, "", 5, true);
+                                                "gSeqNameOverlayDuration", 1, 10, "", 5);
                 ImGui::NewLine();
                 UIWidgets::PaddedSeparator();
                 UIWidgets::PaddedText("The following options are experimental and may cause music\nto sound odd or have other undesireable effects.");

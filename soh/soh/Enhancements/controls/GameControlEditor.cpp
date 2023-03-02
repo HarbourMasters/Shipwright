@@ -245,9 +245,9 @@ namespace GameControlEditor {
         UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", "gEnableFirstPersonSensitivity", true, false);
         if (CVarGetInteger("gEnableFirstPersonSensitivity", 0)) {
             UIWidgets::EnhancementSliderFloat("Aiming/First-Person Horizontal Sensitivity: %d %%", "##FirstPersonSensitivity Horizontal",
-                                                "gFirstPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true, true);
+                                                "gFirstPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true);
             UIWidgets::EnhancementSliderFloat("Aiming/First-Person Vertical Sensitivity: %d %%", "##FirstPersonSensitivity Vertical",
-                                              "gFirstPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true, true);
+                                              "gFirstPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true);
         } else {
             CVarSetFloat("gFirstPersonCameraSensitivity", 1.0f);
         }
@@ -264,13 +264,13 @@ namespace GameControlEditor {
         UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
         DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera");
 +       UIWidgets::EnhancementSliderFloat("Third-Person Horizontal Sensitivity: %d %%", "##ThirdPersonSensitivity Horizontal",
-+                                            "gThirdPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true, true);
++                                            "gThirdPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true);
 +       UIWidgets::EnhancementSliderFloat("Third-Person Vertical Sensitivity: %d %%", "##ThirdPersonSensitivity Vertical",
-+                                          "gThirdPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true, true);
++                                          "gThirdPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true);
         UIWidgets::EnhancementSliderInt("Camera Distance: %d", "##CamDist",
-                                        "gFreeCameraDistMax", 100, 900, "", 185, true);
+                                        "gFreeCameraDistMax", 100, 900, "", 185);
         UIWidgets::EnhancementSliderInt("Camera Transition Speed: %d", "##CamTranSpeed",
-                                        "gFreeCameraTransitionSpeed", 0, 900, "", 25, true);
+                                        "gFreeCameraTransitionSpeed", 0, 900, "", 25);
         SohImGui::EndGroupPanel();
     }
 
@@ -313,8 +313,8 @@ namespace GameControlEditor {
             UIWidgets::Spacer(5);
             SohImGui::BeginGroupPanel("Walk Modifier", ImGui::GetContentRegionAvail());
             UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding", "gWalkSpeedToggle", true, false);
-            UIWidgets::EnhancementSliderFloat("Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true);
-            UIWidgets::EnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true);
+            UIWidgets::PaddedEnhancementSliderFloat("Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+            UIWidgets::PaddedEnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
             SohImGui::EndGroupPanel();
         }
         UIWidgets::Spacer(0);

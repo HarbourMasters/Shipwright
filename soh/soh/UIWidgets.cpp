@@ -347,24 +347,22 @@ namespace UIWidgets {
                 DisableComponentSwitch(disabledTooltipText, alpha);
             }
         }
-        if (PlusMinusButton) {
-#ifdef __SWITCH__
-            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
-#elif defined(__WIIU__)
-            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
-#else
-            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
-#endif
-        }
+
+        #ifdef __SWITCH__
+            ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 110.0f);
+        #elif defined(__WIIU__)
+            ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 79.0f * 2);
+        #else
+            ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 79.0f);
+        #endif
         if (ImGui::SliderInt(id, &val, min, max, format))
         {
             CVarSetInteger(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
             changed = true;
         }
-        if (PlusMinusButton) {
-            ImGui::PopItemWidth();
-        }
+        ImGui::PopItemWidth();
+        
         if(PlusMinusButton) {
             if (disabled) {
                 DisableComponentSwitch(disabledTooltipText, alpha);
@@ -440,15 +438,14 @@ namespace UIWidgets {
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
         }
-        if (PlusMinusButton) {
+
         #ifdef __SWITCH__
-            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
+            ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 110.0f);
         #elif defined(__WIIU__)
-            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
+            ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 79.0f * 2);
         #else
-            ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
+            ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 79.0f);
         #endif
-        }
         if (ImGui::SliderFloat(id, &val, min, max, format)) {
             if (isPercentage) {
                 CVarSetFloat(cvarName, roundf(val * 100) / 100);
@@ -458,9 +455,8 @@ namespace UIWidgets {
             SohImGui::RequestCvarSaveOnNextTick();
             changed = true;
         }
-        if (PlusMinusButton) {
-            ImGui::PopItemWidth();
-        }
+        ImGui::PopItemWidth();
+        
         if(PlusMinusButton) {
             std::string PlusBTNName = " + ##";
             PlusBTNName += cvarName;
@@ -503,14 +499,36 @@ namespace UIWidgets {
         return changed;
     }
 
-    void PaddedEnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText) {
-        if (padTop)
+    bool PaddedEnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText) {
+        bool changed = false;
+        
+        if (padTop) {
             Spacer(0);
+        }
 
-        EnhancementSliderInt(text, id, cvarName, min, max, format, defaultValue, PlusMinusButton, disabled, disabledTooltipText);
+        changed = EnhancementSliderInt(text, id, cvarName, min, max, format, defaultValue, PlusMinusButton, disabled, disabledTooltipText);
 
-        if (padBottom)
+        if (padBottom) {
             Spacer(0);
+        }
+
+        return changed;
+    }
+
+    bool PaddedEnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText) {
+        bool changed = false;
+
+        if (padTop) {
+            Spacer(0);
+        }
+
+        changed = EnhancementSliderFloat(text, id, cvarName, min, max, format, defaultValue, isPercentage, PlusMinusButton, disabled, disabledTooltipText);
+
+        if (padBottom) {
+            Spacer(0);
+        }
+
+        return changed;
     }
 
     bool EnhancementRadioButton(const char* text, const char* cvarName, int id) {
