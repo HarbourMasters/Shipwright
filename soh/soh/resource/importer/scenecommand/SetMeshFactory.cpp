@@ -87,8 +87,8 @@ void Ship::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reade
                 image.unk_00 = reader->ReadUInt16();
                 image.id = reader->ReadUByte();
                 std::string sourceFile = reader->ReadString();
-                void* sourceData = GetResourceDataByName(sourceFile.c_str(), true);
-                image.source = sourceData;
+                auto sourceData = LoadResource(sourceFile.c_str(), true);
+                image.source = (void*)sourceData->Path.c_str();
                 image.unk_0C = reader->ReadUInt32();
                 image.tlut = reader->ReadUInt32();
                 image.width = reader->ReadUInt16();

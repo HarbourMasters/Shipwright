@@ -1,4 +1,5 @@
 #include "z_boss_goma.h"
+#include "textures/boss_title_cards/object_goma.h"
 #include "objects/object_goma/object_goma.h"
 #include "overlays/actors/ovl_En_Goma/z_en_goma.h"
 #include "overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
@@ -928,7 +929,7 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
 
                 if (!(gSaveContext.eventChkInf[7] & 1)) {
                     TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
-                                           SEGMENTED_TO_VIRTUAL(gGohmaTitleCardTex), 160, 180, 128, 40, true);
+                                           SEGMENTED_TO_VIRTUAL(gGohmaTitleCardENGTex), 160, 180, 128, 40, true);
                 }
 
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS);

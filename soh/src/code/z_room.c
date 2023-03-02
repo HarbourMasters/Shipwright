@@ -220,44 +220,6 @@ void func_80095D04(PlayState* play, Room* room, u32 flags) {
 
 #define JPEG_MARKER 0xFFD8FFE0
 
-s32 func_80096238(void* data) {
-    OSTime time;
-
-    if (BE32SWAP(*(u32*)data) == JPEG_MARKER)
-    {
-        char* decodedJpeg = ResourceMgr_LoadJPEG(data, 320 * 240 * 2);
-        //char* decodedJpeg = ResourceMgr_LoadJPEG(data, 480 * 240 * 2);
-
-        osSyncPrintf("JPEGデータを展開します\n");        // "Expanding jpeg data"
-        osSyncPrintf("JPEGデータアドレス %08x\n", data); // "Jpeg data address %08x"
-        // "Work buffer address (Z buffer) %08x"
-        osSyncPrintf("ワークバッファアドレス（Ｚバッファ）%08x\n", gZBuffer);
-
-        time = osGetTime();
-
-        //if (!Jpeg_Decode(data, gZBuffer, gGfxSPTaskOutputBuffer, sizeof(gGfxSPTaskOutputBuffer)))
-        if (1)
-        {
-            memcpy(data, decodedJpeg, 320 * 240 * 2);
-            //memcpy(data, decodedJpeg, 480 * 240 * 2);
-            time = osGetTime() - time;
-
-            // "Success... I think. time = %6.3f ms"
-            osSyncPrintf("成功…だと思う。 time = %6.3f ms \n", OS_CYCLES_TO_USEC(time) / 1000.0f);
-            // "Writing back to original address from work buffer."
-            osSyncPrintf("ワークバッファから元のアドレスに書き戻します。\n");
-            // "If the original buffer size isn't at least 150kb, it will be out of control."
-            osSyncPrintf("元のバッファのサイズが150キロバイト無いと暴走するでしょう。\n");
-
-            //bcopy(gZBuffer, data, sizeof(gZBuffer));
-        } else {
-            osSyncPrintf("失敗！なんで〜\n"); // "Failure! Why is it 〜"
-        }
-    }
-
-    return 0;
-}
-
 void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 height, u8 fmt, u8 siz, u16 mode0,
                    u16 tlutCount, f32 frameX, f32 frameY) {
     Gfx* displayListHead;
@@ -265,7 +227,6 @@ void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 h
     s32 temp;
 
     displayListHead = *displayList;
-    func_80096238(SEGMENTED_TO_VIRTUAL(source));
 
     bg = (uObjBg*)(displayListHead + 1);
     gSPBranchList(displayListHead, (u8*)bg + sizeof(uObjBg));
@@ -281,6 +242,13 @@ void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 h
     bg->b.imageSiz = siz;
     bg->b.imagePal = 0;
     bg->b.imageFlip = 0;
+    
+    if (ResourceMgr_ResourceIsBackground((char*) source)) {
+        char* blob = (char*) GetResourceDataByName((char*) source, true);
+        if (BE32SWAP(*(u32*)blob) == JPEG_MARKER) {
+            bg->b.imagePtr = (uintptr_t) ResourceMgr_LoadJPEG((char*) blob, 320 * 240 * 2);
+        }
+    }
 
     displayListHead = (void*)(bg + 1);
     if (fmt == G_IM_FMT_CI) {

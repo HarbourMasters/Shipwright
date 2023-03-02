@@ -627,8 +627,8 @@ typedef enum {
 typedef struct {
     /* 0x0000 */ uintptr_t    msgOffset;
     /* 0x0004 */ u32          msgLength;
-    /* 0x0008 */ u8           charTexBuf[FONT_CHAR_TEX_SIZE * 120];
-    /* 0x3C08 */ u8           iconBuf[FONT_CHAR_TEX_SIZE];
+    /* 0x0008 */ u8           charTexBuf[FONT_CHAR_TEX_SIZE * 320];
+    /* 0x3C08 */ u8           iconBuf[FONT_CHAR_TEX_SIZE * 120];
     /* 0x3C88 */ u8           fontBuf[FONT_CHAR_TEX_SIZE * 320];
     union {
          /* 0xDC88 */ char   msgBuf[1280];
@@ -737,9 +737,9 @@ typedef struct {
     /* 0x0128 */ Vtx*   actionVtx;
     /* 0x012C */ Vtx*   beatingHeartVtx;
     /* 0x0130 */ u8*    parameterSegment;
-    /* 0x0134 */ u8*    doActionSegment;
+    /* 0x0134 */ char** doActionSegment;
     /* 0x0138 */ u8*    iconItemSegment;
-    /* 0x013C */ u8*    mapSegment;
+    /* 0x013C */ char** mapSegment;
     /* 0x0140 */ u8     mapPalette[32];
     /* 0x0160 */ DmaRequest dmaRequest_160;
     /* 0x0180 */ DmaRequest dmaRequest_180;

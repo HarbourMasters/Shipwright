@@ -562,7 +562,6 @@ void Message_DrawTextboxIcon(PlayState* play, Gfx** p, s16 x, s16 y) {
     *p = gfx;
 }
 
-#define MESSAGE_SPACE_WIDTH 6
 f32 sFontWidths[144] = {
     8.0f,  // ' '
     8.0f,  // '!'
@@ -865,7 +864,7 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 Message_SetTextColor(msgCtx, msgCtx->msgBufDecoded[++i] & 0xF);
                 break;
             case ' ':
-                msgCtx->textPosX += MESSAGE_SPACE_WIDTH;
+                msgCtx->textPosX += CVarGetInteger("gTextSpacing", 6);
                 break;
             case MESSAGE_BOX_BREAK:
                 if (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING) {
@@ -1131,7 +1130,7 @@ void Message_LoadItemIcon(PlayState* play, u16 itemId, s16 y) {
         R_TEXTBOX_ICON_YPOS = y + 6;
         R_TEXTBOX_ICON_SIZE = 32;
         memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,
-               GetResourceDataByName(gItemIcons[itemId], false), GetResourceTexSizeByName(gItemIcons[itemId], false));
+               gItemIcons[itemId], strlen(gItemIcons[itemId]) + 1);
         // "Item 32-0"
         osSyncPrintf("アイテム32-0\n");
     } else {
@@ -1139,7 +1138,7 @@ void Message_LoadItemIcon(PlayState* play, u16 itemId, s16 y) {
         R_TEXTBOX_ICON_YPOS = y + 10;
         R_TEXTBOX_ICON_SIZE = 24;
         memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,
-               GetResourceDataByName(gItemIcons[itemId], false), GetResourceTexSizeByName(gItemIcons[itemId], false));
+               gItemIcons[itemId], strlen(gItemIcons[itemId]) + 1);
         // "Item 24"
         osSyncPrintf("アイテム24＝%d (%d) {%d}\n", itemId, itemId - ITEM_KOKIRI_EMERALD, 84);
     }
@@ -1525,10 +1524,8 @@ void Message_Decode(PlayState* play) {
             msgCtx->textboxBackgroundYOffsetIdx = (font->msgBuf[msgCtx->msgBufPos + 3] & 0xF0) >> 4;
             msgCtx->textboxBackgroundUnkArg = font->msgBuf[msgCtx->msgBufPos + 3] & 0xF;
 
-            memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,
-                   GetResourceDataByName(gRedMessageXLeftTex, false), GetResourceTexSizeByName(gRedMessageXLeftTex, false));
-            memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE + 0x900,
-                   GetResourceDataByName(gRedMessageXRightTex, false), GetResourceTexSizeByName(gRedMessageXRightTex, false));
+            memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, gRedMessageXLeftTex, strlen(gRedMessageXLeftTex) + 1);
+            memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE + 0x900, gRedMessageXRightTex, strlen(gRedMessageXRightTex) + 1);
 
             msgCtx->msgBufPos += 3;
             R_TEXTBOX_BG_YPOS = R_TEXTBOX_Y + 8;
@@ -1674,7 +1671,7 @@ void Message_OpenText(PlayState* play, u16 textId) {
     osSyncPrintf("吹き出し種類＝%d\n", msgCtx->textBoxType);
     if (textBoxType < TEXTBOX_TYPE_NONE_BOTTOM) {
         const char* textureName = msgStaticTbl[messageStaticIndices[textBoxType]];
-        memcpy(msgCtx->textboxSegment, GetResourceDataByName(textureName, false), MESSAGE_STATIC_TEX_SIZE);
+        memcpy(msgCtx->textboxSegment, textureName, strlen(textureName) + 1);
         if (textBoxType == TEXTBOX_TYPE_BLACK) {
             msgCtx->textboxColorRed = 0;
             msgCtx->textboxColorGreen = 0;

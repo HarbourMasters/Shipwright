@@ -767,6 +767,8 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                 UIWidgets::PaddedEnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon", true, false);
                 UIWidgets::Tooltip("Always shows dungeon entrance icons on the minimap");
+                UIWidgets::PaddedEnhancementSliderInt("Text Spacing: %d", "##TEXTSPACING", "gTextSpacing", 4, 6, "", 6, true, true, true);
+                UIWidgets::Tooltip("Space between text characters (useful for HD font textures)");
                 UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
                 const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
                 UIWidgets::EnhancementCombobox("gDirtPathFix", zFightingOptions, 3, 0);

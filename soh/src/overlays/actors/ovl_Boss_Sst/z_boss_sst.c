@@ -5,6 +5,7 @@
  */
 
 #include "z_boss_sst.h"
+#include "textures/boss_title_cards/object_sst.h"
 #include "objects/object_sst/object_sst.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "overlays/actors/ovl_Bg_Sst_Floor/z_bg_sst_floor.h"
@@ -599,7 +600,7 @@ void BossSst_HeadIntro(BossSst* this, PlayState* play) {
                 } else if (revealStateTimer == 85) {
                     if (!(gSaveContext.eventChkInf[7] & 0x80)) {
                         TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
-                                               SEGMENTED_TO_VIRTUAL(gBongoTitleCardTex), 160, 180, 128, 40, true);
+                                               SEGMENTED_TO_VIRTUAL(gBongoTitleCardENGTex), 160, 180, 128, 40, true);
                     }
                     Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS);
                     Animation_MorphToPlayOnce(&this->skelAnime, &gBongoHeadEyeCloseAnim, -5.0f);

@@ -1,0 +1,52 @@
+<Root>
+	<File Name="object_bv" Segment="6">
+		<Texture Name="gBarinadeTitleCardENGTex" OutName="barinade_eng_title_card" Format="i8" Width="128" Height="40" Offset="0x1230" />
+		<Texture Name="gBarinadeTitleCardGERTex" OutName="barinade_ger_title_card" Format="i8" Width="128" Height="40" Offset="0x2630" />
+		<Texture Name="gBarinadeTitleCardFRATex" OutName="barinade_fra_title_card" Format="i8" Width="128" Height="40" Offset="0x3a30" />
+	</File>
+	<File Name="object_fd" Segment="6">
+		<Texture Name="gVolvagiaBossTitleCardENGTex" OutName="volvagia_boss_eng_title_card" Format="i8" Width="128" Height="40" Offset="0xd700" />
+		<Texture Name="gVolvagiaBossTitleCardGERTex" OutName="volvagia_boss_ger_title_card" Format="i8" Width="128" Height="40" Offset="0xeb00" />
+		<Texture Name="gVolvagiaBossTitleCardFRATex" OutName="volvagia_boss_fra_title_card" Format="i8" Width="128" Height="40" Offset="0xff00" />
+	</File>
+	<File Name="object_fhg" Segment="6">
+		<Texture Name="gPhantomGanonTitleCardENGTex" OutName="phantom_ganon_eng_title_card" Format="i8" Width="128" Height="40" Offset="0x59a0" />
+		<Texture Name="gPhantomGanonTitleCardGERTex" OutName="phantom_ganon_ger_title_card" Format="i8" Width="128" Height="40" Offset="0x6da0" />
+		<Texture Name="gPhantomGanonTitleCardFRATex" OutName="phantom_ganon_fra_title_card" Format="i8" Width="128" Height="40" Offset="0x81a0" />
+	</File>
+	<File Name="object_ganon" Segment="6">
+		<Texture Name="gGanondorfTitleCardENGTex" OutName="ganondorf_eng_title_card" Format="i8" Width="128" Height="40" Offset="0xcf00" />
+		<Texture Name="gGanondorfTitleCardGERTex" OutName="ganondorf_ger_title_card" Format="i8" Width="128" Height="40" Offset="0xe300" />
+		<Texture Name="gGanondorfTitleCardFRATex" OutName="ganondorf_fra_title_card" Format="i8" Width="128" Height="40" Offset="0xf700" />
+	</File>
+	<File Name="object_ganon2" Segment="6">
+		<Texture Name="gGanonTitleCardENGTex" OutName="ganon_eng_title_card" Format="i8" Width="128" Height="40" Offset="0x21a90" />
+		<Texture Name="gGanonTitleCardGERTex" OutName="ganon_ger_title_card" Format="i8" Width="128" Height="40" Offset="0x22e90" />
+		<Texture Name="gGanonTitleCardFRATex" OutName="ganon_fra_title_card" Format="i8" Width="128" Height="40" Offset="0x24290" />
+	</File>
+	<File Name="object_goma" Segment="6">
+		<Texture Name="gGohmaTitleCardENGTex" OutName="gohma_eng_title_card" Format="i8" Width="128" Height="40" Offset="0x19ba8" />
+		<Texture Name="gGohmaTitleCardGERTex" OutName="gohma_ger_title_card" Format="i8" Width="128" Height="40" Offset="0x1afa8" />
+		<Texture Name="gGohmaTitleCardFRATex" OutName="gohma_fra_title_card" Format="i8" Width="128" Height="40" Offset="0x1c3a8" />
+	</File>
+	<File Name="object_kingdodongo" Segment="6">
+		<Texture Name="gKingDodongoTitleCardENGTex" OutName="king_dodongo_eng_title_card" Format="i8" Width="128" Height="40" Offset="0x17410" />
+		<Texture Name="gKingDodongoTitleCardGERTex" OutName="king_dodongo_ger_title_card" Format="i8" Width="128" Height="40" Offset="0x18810" />
+		<Texture Name="gKingDodongoTitleCardFRATex" OutName="king_dodongo_fra_title_card" Format="i8" Width="128" Height="40" Offset="0x19c10" />
+	</File>
+	<File Name="object_mo" Segment="6">
+		<Texture Name="gMorphaTitleCardENGTex" OutName="morpha_eng_title_card" Format="i8" Width="128" Height="40" Offset="0x1010" />
+		<Texture Name="gMorphaTitleCardGERTex" OutName="morpha_ger_title_card" Format="i8" Width="128" Height="40" Offset="0x2410" />
+		<Texture Name="gMorphaTitleCardFRATex" OutName="morpha_fra_title_card" Format="i8" Width="128" Height="40" Offset="0x3810" />
+	</File>
+	<File Name="object_sst" Segment="6">
+		<Texture Name="gBongoTitleCardENGTex" OutName="bongo_eng_title_card" Format="i8" Width="128" Height="40" Offset="0x13d80" />
+		<Texture Name="gBongoTitleCardGERTex" OutName="bongo_ger_title_card" Format="i8" Width="128" Height="40" Offset="0x15180" />
+		<Texture Name="gBongoTitleCardFRATex" OutName="bongo_fra_title_card" Format="i8" Width="128" Height="40" Offset="0x16580" />
+	</File>
+	<File Name="object_tw" Segment="6">
+		<Texture Name="gTwinrovaTitleCardENGTex" OutName="twinrova_eng_title_card" Format="i8" Width="128" Height="40" Offset="0x2e170" />
+		<Texture Name="gTwinrovaTitleCardGERTex" OutName="twinrova_ger_title_card" Format="i8" Width="128" Height="40" Offset="0x2f570" />
+		<Texture Name="gTwinrovaTitleCardFRATex" OutName="twinrova_fra_title_card" Format="i8" Width="128" Height="40" Offset="0x30970" />
+	</File>
+</Root>
