@@ -1,23 +1,12 @@
 #pragma once
-#define dgDeathMountainCraterTitleCardENGTex "__OTR__textures/g_pn_40/gDeathMountainCraterTitleCardENGTex"
-#ifdef _WIN32
-static const __declspec(align(2)) char gDeathMountainCraterTitleCardENGTex[] = dgDeathMountainCraterTitleCardENGTex;
-#else
-static const char gDeathMountainCraterTitleCardENGTex[] __attribute__((aligned (2))) = dgDeathMountainCraterTitleCardENGTex;
-#endif
-            
-#define dgDeathMountainCraterTitleCardGERTex "__OTR__textures/g_pn_40/gDeathMountainCraterTitleCardGERTex"
-#ifdef _WIN32
-static const __declspec(align(2)) char gDeathMountainCraterTitleCardGERTex[] = dgDeathMountainCraterTitleCardGERTex;
-#else
-static const char gDeathMountainCraterTitleCardGERTex[] __attribute__((aligned (2))) = dgDeathMountainCraterTitleCardGERTex;
-#endif
-            
-#define dgDeathMountainCraterTitleCardFRATex "__OTR__textures/g_pn_40/gDeathMountainCraterTitleCardFRATex"
-#ifdef _WIN32
-static const __declspec(align(2)) char gDeathMountainCraterTitleCardFRATex[] = dgDeathMountainCraterTitleCardFRATex;
-#else
-static const char gDeathMountainCraterTitleCardFRATex[] __attribute__((aligned (2))) = dgDeathMountainCraterTitleCardFRATex;
-#endif
-            
 
+#include "align_asset_macro.h"
+
+#define dgDeathMountainCraterTitleCardENGTex "__OTR__textures/g_pn_40/gDeathMountainCraterTitleCardENGTex"
+static const ALIGN_ASSET(2) char gDeathMountainCraterTitleCardENGTex[] = dgDeathMountainCraterTitleCardENGTex;
+
+#define dgDeathMountainCraterTitleCardGERTex "__OTR__textures/g_pn_40/gDeathMountainCraterTitleCardGERTex"
+static const ALIGN_ASSET(2) char gDeathMountainCraterTitleCardGERTex[] = dgDeathMountainCraterTitleCardGERTex;
+
+#define dgDeathMountainCraterTitleCardFRATex "__OTR__textures/g_pn_40/gDeathMountainCraterTitleCardFRATex"
+static const ALIGN_ASSET(2) char gDeathMountainCraterTitleCardFRATex[] = dgDeathMountainCraterTitleCardFRATex;

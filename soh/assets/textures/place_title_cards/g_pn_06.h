@@ -1,23 +1,12 @@
 #pragma once
-#define dgDekuTreeTitleCardENGTex "__OTR__textures/g_pn_06/gDekuTreeTitleCardENGTex"
-#ifdef _WIN32
-static const __declspec(align(2)) char gDekuTreeTitleCardENGTex[] = dgDekuTreeTitleCardENGTex;
-#else
-static const char gDekuTreeTitleCardENGTex[] __attribute__((aligned (2))) = dgDekuTreeTitleCardENGTex;
-#endif
-            
-#define dgDekuTreeTitleCardGERTex "__OTR__textures/g_pn_06/gDekuTreeTitleCardGERTex"
-#ifdef _WIN32
-static const __declspec(align(2)) char gDekuTreeTitleCardGERTex[] = dgDekuTreeTitleCardGERTex;
-#else
-static const char gDekuTreeTitleCardGERTex[] __attribute__((aligned (2))) = dgDekuTreeTitleCardGERTex;
-#endif
-            
-#define dgDekuTreeTitleCardFRATex "__OTR__textures/g_pn_06/gDekuTreeTitleCardFRATex"
-#ifdef _WIN32
-static const __declspec(align(2)) char gDekuTreeTitleCardFRATex[] = dgDekuTreeTitleCardFRATex;
-#else
-static const char gDekuTreeTitleCardFRATex[] __attribute__((aligned (2))) = dgDekuTreeTitleCardFRATex;
-#endif
-            
 
+#include "align_asset_macro.h"
+
+#define dgDekuTreeTitleCardENGTex "__OTR__textures/g_pn_06/gDekuTreeTitleCardENGTex"
+static const ALIGN_ASSET(2) char gDekuTreeTitleCardENGTex[] = dgDekuTreeTitleCardENGTex;
+
+#define dgDekuTreeTitleCardGERTex "__OTR__textures/g_pn_06/gDekuTreeTitleCardGERTex"
+static const ALIGN_ASSET(2) char gDekuTreeTitleCardGERTex[] = dgDekuTreeTitleCardGERTex;
+
+#define dgDekuTreeTitleCardFRATex "__OTR__textures/g_pn_06/gDekuTreeTitleCardFRATex"
+static const ALIGN_ASSET(2) char gDekuTreeTitleCardFRATex[] = dgDekuTreeTitleCardFRATex;
