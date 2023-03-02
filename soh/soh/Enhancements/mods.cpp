@@ -263,7 +263,7 @@ void RegisterRupeeDash() {
 }
 
 void InitMods() {
-    InitTTS();
+    RegisterTTS();
     RegisterInfiniteMoney();
     RegisterInfiniteHealth();
     RegisterInfiniteAmmo();

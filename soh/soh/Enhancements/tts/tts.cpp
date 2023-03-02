@@ -718,7 +718,7 @@ void RegisterTTSModHooks() {
     RegisterOnUpdateMainMenuSelection();
 }
 
-void InitTTS() {
+void RegisterTTS() {
     InitTTSBank();
     RegisterTTSModHooks();
 }

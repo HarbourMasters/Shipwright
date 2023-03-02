@@ -1,6 +1,6 @@
 #ifndef TTS_H
 #define TTS_H
 
-void InitTTS();
+void RegisterTTS();
 
 #endif
