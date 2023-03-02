@@ -62,6 +62,10 @@ typedef struct {
 } SceneTimestamp;
 
 typedef struct {
+    /*      */ char buildVersion[50];
+    /*      */ s16 buildVersionMajor;
+    /*      */ s16 buildVersionMinor;
+    /*      */ s16 buildVersionPatch;
     /*      */ u8 heartPieces;
     /*      */ u8 heartContainers;
     /*      */ u8 dungeonKeys[19];
