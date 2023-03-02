@@ -650,21 +650,24 @@ void Play_Init(GameState* thisx) {
 
     if (gSaveContext.sohStats.sceneNum != gPlayState->sceneNum) {
         u16 idx = gSaveContext.sohStats.tsIdx;
-        if (CVarGetInteger("gGameplayStatRoomBreakdown", 0)) {
-            gSaveContext.sohStats.sceneTimestamps[idx].ts = gSaveContext.sohStats.sceneTimer / 2;
-        } else {
-            gSaveContext.sohStats.sceneTimestamps[idx].ts = gSaveContext.sohStats.roomTimer / 2;
-        }
+        gSaveContext.sohStats.sceneTimestamps[idx].sceneTime = gSaveContext.sohStats.sceneTimer / 2;
+        gSaveContext.sohStats.sceneTimestamps[idx].roomTime = gSaveContext.sohStats.roomTimer / 2;    
         gSaveContext.sohStats.sceneTimestamps[idx].scene = gSaveContext.sohStats.sceneNum;
         gSaveContext.sohStats.sceneTimestamps[idx].room = gSaveContext.sohStats.roomNum;
+        gSaveContext.sohStats.sceneTimestamps[idx].isRoom = 
+            gPlayState->sceneNum == gSaveContext.sohStats.sceneTimestamps[idx].scene &&
+            gPlayState->roomCtx.curRoom.num != gSaveContext.sohStats.sceneTimestamps[idx].room;
         gSaveContext.sohStats.tsIdx++;
         gSaveContext.sohStats.sceneTimer = 0;
         gSaveContext.sohStats.roomTimer = 0;
     } else if (gSaveContext.sohStats.roomNum != gPlayState->roomCtx.curRoom.num) {
         u16 idx = gSaveContext.sohStats.tsIdx;
-        gSaveContext.sohStats.sceneTimestamps[idx].ts = gSaveContext.sohStats.roomTimer / 2;
+        gSaveContext.sohStats.sceneTimestamps[idx].roomTime = gSaveContext.sohStats.roomTimer / 2;
         gSaveContext.sohStats.sceneTimestamps[idx].scene = gSaveContext.sohStats.sceneNum;
         gSaveContext.sohStats.sceneTimestamps[idx].room = gSaveContext.sohStats.roomNum;
+        gSaveContext.sohStats.sceneTimestamps[idx].isRoom = 
+            gPlayState->sceneNum == gSaveContext.sohStats.sceneTimestamps[idx].scene &&
+            gPlayState->roomCtx.curRoom.num != gSaveContext.sohStats.sceneTimestamps[idx].room;
         gSaveContext.sohStats.tsIdx++;
         gSaveContext.sohStats.roomTimer = 0;
     }

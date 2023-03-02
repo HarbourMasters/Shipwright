@@ -56,7 +56,9 @@ typedef struct {
 typedef struct {
     u16 scene;
     u8 room;
-    u32 ts;
+    u32 sceneTime;
+    u32 roomTime;
+    u8 isRoom;
 } SceneTimestamp;
 
 typedef struct {

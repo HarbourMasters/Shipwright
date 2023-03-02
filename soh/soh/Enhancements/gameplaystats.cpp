@@ -87,14 +87,14 @@ const std::vector<std::string> sceneMappings = {
     {"Castle Maze (Day)"},
     {"Castle Maze (Night)"},
     {"Cutscene Map"},
-    {"Dampe's Grave"}, //TODO: also covers windmill?
+    {"Dampe's Grave"},
     {"Fishing Pond"},
     {"Castle Courtyard"},
     {"Bombchu Bowling Alley"},
     {"Ranch House"},
     {"Guard House"},
     {"Granny's Potion Shop"},
-    {"Tower Collapse/Battle Arena?"},
+    {"Ganon Fight"},
     {"House of Skulltula"},
     {"Hyrule Field"},
     {"Kakariko Village"},
@@ -120,10 +120,11 @@ const std::vector<std::string> sceneMappings = {
     {"Test Map"},
     {"Test Room"},
     {"Depth Test"},
-    {"Stalfos Mini-Boss Rm."},
-    {"Stalfos Boss Rm."},
-    {"Castle Maze (broken)"},
-    {"SRD Room"},
+    {"Stalfos Mini-Boss"},
+    {"Stalfos Boss"},
+    {"Dark Link"}, 
+    {"Castle Maze (Broken)"},
+    {"SRD Room"}, 
     {"Chest Room"}
 };
 
@@ -164,26 +165,15 @@ void DisplayTimeHHMMSS(uint32_t timeInTenthsOfSeconds, const char* text, ImVec4 
 
     ImGui::PushStyleColor(ImGuiCol_Text, color);
 
-    ImGui::Text(text);
+    std::string text2(text);
+    std::string padded = fmt::format("{:<40}", text2);
+    ImGui::Text(padded.c_str());
     ImGui::SameLine();
     ImGui::Text("%2u:%02u:%02u.%u", hh, mm, ss, ds);
     ImGui::PopStyleColor();
 }
 
 void SortChronological(TimestampInfo* arr, size_t len) {
-    TimestampInfo temp;
-    for (int i = 0; i < len; i++) {
-        for (int j = 0; j + 1 < len - i; j++) {
-            if (arr[j].time > arr[j + 1].time) {
-                temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-            }
-        }
-    }
-}
-
-void SortChronological(std::vector<TimestampInfo> arr, size_t len) {
     TimestampInfo temp;
     for (int i = 0; i < len; i++) {
         for (int j = 0; j + 1 < len - i; j++) {
@@ -312,18 +302,15 @@ void DrawStatsTracker(bool& open) {
         std::string sceneName = ResolveSceneID(gSaveContext.sohStats.sceneTimestamps[i].scene, gSaveContext.sohStats.sceneTimestamps[i].room);
         std::string name;
         if (CVarGetInteger("gGameplayStatRoomBreakdown", 0) && gSaveContext.sohStats.sceneTimestamps[i].scene != SCENE_KAKUSIANA) {
-            name = fmt::format("{:s} Room {:d}", sceneName, gSaveContext.sohStats.sceneTimestamps[i].room);
+            name = fmt::format("{:s} Room {:d}", sceneName, gSaveContext.sohStats.sceneTimestamps[i].room);    
         } else {
             name = fmt::format("{:s}", sceneName);
         }
         strcpy(sceneTimestampDisplay[i].name, name.c_str());
-        sceneTimestampDisplay[i].time = gSaveContext.sohStats.sceneTimestamps[i].ts;
-        sceneTimestampDisplay[i].color = COLOR_WHITE;
-        //Room/Scene Timer Display Handling
-        sceneTimestampDisplay[i].isRoom = 
-        (gSaveContext.sohStats.sceneTimestamps[i].scene == gSaveContext.sohStats.sceneTimestamps[i-1].scene) &&
-        (gSaveContext.sohStats.sceneTimestamps[i].room != gSaveContext.sohStats.sceneTimestamps[i-1].room) ?
-        true : false;
+        sceneTimestampDisplay[i].time = CVarGetInteger("gGameplayStatRoomBreakdown", 0) ? 
+            gSaveContext.sohStats.sceneTimestamps[i].roomTime : gSaveContext.sohStats.sceneTimestamps[i].sceneTime;
+        sceneTimestampDisplay[i].color = COLOR_GREY;
+        sceneTimestampDisplay[i].isRoom = gSaveContext.sohStats.sceneTimestamps[i].isRoom;
     }
 
     SortChronological(itemTimestampDisplay, sizeof(itemTimestampDisplay) / sizeof(itemTimestampDisplay[0]));
@@ -512,7 +499,7 @@ void DrawStatsTracker(bool& open) {
                 for (int i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
                     TimestampInfo tsInfo = sceneTimestampDisplay[i];
                     bool canShow = CVarGetInteger("gGameplayStatRoomBreakdown", 0) ? true : !(tsInfo.isRoom);
-                    if (tsInfo.time > 0 && strnlen(tsInfo.name, 25) > 1 && canShow) {
+                    if (tsInfo.time > 0 && strnlen(tsInfo.name, 40) > 1 && canShow) {
                         DisplayTimeHHMMSS(tsInfo.time, tsInfo.name, tsInfo.color);
                     }
                 }
