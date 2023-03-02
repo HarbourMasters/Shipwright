@@ -157,23 +157,30 @@ void RegisterFreezeTime() {
 
 /// Switches Link's age and respawns him at the last entrance and position he entered.
 void RegisterSwitchAge() {
-    bool warped = false;
-    Vec3f playerPos;
-    int16_t playerYaw;
+    static bool warped = false;
+    static Vec3f playerPos;
+    static int16_t playerYaw;
     
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&warped, &playerPos, &playerYaw]() {
-        if (!gPlayState) {
-            return;
-        }
-        
-        if (CVarGetInteger("gSwitchAge", 0) && !CVarGetInteger("gTimeTravel", 0)) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!gPlayState) return;
+
+        static bool warped = false;
+        static Vec3f playerPos;
+        static int16_t playerYaw;
+
+        if (CVarGetInteger("gSwitchAge", 0)) {
             CVarSetInteger("gSwitchAge", 0);
             playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
             playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
-            ReloadSceneTogglingLinkAge();
+
+            gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
+            gPlayState->sceneLoadFlag = 0x14;
+            gPlayState->fadeTransition = 11;
+            gSaveContext.nextTransitionType = 11;
+            gPlayState->linkAgeOnLoad ^= 1;
             warped = true;
         }
-        
+
         if (warped && gPlayState->sceneLoadFlag != 0x0014 && gSaveContext.nextTransitionType == 255) {
             GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
             GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
@@ -201,8 +208,8 @@ void RegisterOcarinaTimeTravel() {
         }
         
         // Switches Link's age and respawns him at the last entrance he entered.
-        if (CVarGetInteger("gTimeTravel", 0) && CVarGetInteger("gSwitchAge", 0)) {
-            CVarSetInteger("gSwitchAge", 0);
+        if (CVarGetInteger("gTimeTravel", 0) && CVarGetInteger("gSwitchTimeline", 0)) {
+            CVarSetInteger("gSwitchTimeline", 0);
             ReloadSceneTogglingLinkAge();
         }
     });
@@ -226,11 +233,11 @@ void RegisterOcarinaTimeTravel() {
             gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && !nearbyTimeBlockEmpty &&
             !nearbyTimeBlock && !nearbyOcarinaSpot && !nearbyFrogs) {
             if (gSaveContext.n64ddFlag) {
-                CVarSetInteger("gSwitchAge", 1);
+                CVarSetInteger("gSwitchTimeline", 1);
             } else if (!gSaveContext.n64ddFlag && !nearbyDoorOfTime) {
                 // This check is made for when Link is learning the Song Of Time in a vanilla save file that load a
                 // Temple of Time scene where the only object present is the Door of Time
-                CVarSetInteger("gSwitchAge", 1);
+                CVarSetInteger("gSwitchTimeline", 1);
             }
         }
     });
