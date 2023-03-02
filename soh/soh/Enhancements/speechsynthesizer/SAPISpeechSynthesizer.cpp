@@ -12,7 +12,7 @@
 #include <spdlog/fmt/fmt.h>
 #include <spdlog/fmt/xchar.h>
 
-ISpVoice* mVoice = NULL;
+ISpVoice* ispVoice = NULL;
 
 SAPISpeechSynthesizer::SAPISpeechSynthesizer() {
 }
@@ -20,13 +20,13 @@ SAPISpeechSynthesizer::SAPISpeechSynthesizer() {
 bool SAPISpeechSynthesizer::DoInit() {
     CoInitializeEx(NULL, COINIT_MULTITHREADED);
     HRESULT CoInitializeEx(LPVOID pvReserved, DWORD dwCoInit);
-    CoCreateInstance(CLSID_SpVoice, NULL, CLSCTX_ALL, IID_ISpVoice, (void**)&mVoice);
+    CoCreateInstance(CLSID_SpVoice, NULL, CLSCTX_ALL, IID_ISpVoice, (void**)&ispVoice);
     return true;
 }
 
 void SAPISpeechSynthesizer::DoUninitialize() {
-    mVoice->Release();
-    mVoice = NULL;
+    ispVoice->Release();
+    ispVoice = NULL;
     CoUninitialize();
 }
 
@@ -43,7 +43,7 @@ void SpeakThreadTask(std::string text, std::string language) {
 
     auto speakText = fmt::format(
         L"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='{}'>{}</speak>", wLanguage, wText);
-    mVoice->Speak(speakText.c_str(), SPF_IS_XML | SPF_ASYNC | SPF_PURGEBEFORESPEAK, NULL);
+    ispVoice->Speak(speakText.c_str(), SPF_IS_XML | SPF_ASYNC | SPF_PURGEBEFORESPEAK, NULL);
 }
 
 void SAPISpeechSynthesizer::Speak(const char* text, const char* language) {
