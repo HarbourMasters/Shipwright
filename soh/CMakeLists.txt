@@ -122,6 +122,10 @@ source_group("include" FILES ${Header_Files__include})
 file(GLOB soh__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/*.c" "soh/*.cpp" "soh/*.h")
 source_group("soh" FILES ${soh__})
 
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set_source_files_properties(soh/OTRGlobals.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
+endif()
+
 # soh/enhancements {{{
 file(GLOB_RECURSE soh__Enhancements RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     "soh/Enhancements/*.c"
@@ -165,6 +169,10 @@ source_group("soh\\Enhancements\\randomizer\\3drando\\hint_list" REGULAR_EXPRESS
 source_group("soh\\Enhancements\\randomizer\\3drando\\location_access" REGULAR_EXPRESSION "soh/Enhancements/randomizer/3drando/location_access/*")
 source_group("soh\\Enhancements\\speechsynthesizer" REGULAR_EXPRESSION "soh/Enhancements/speechsynthesizer/*")
 source_group("soh\\Enhancements\\tts" REGULAR_EXPRESSION "soh/Enhancements/tts/*")
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set_source_files_properties(soh/Enhancements/tts/tts.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
+endif()
 # }}}
 
 # soh/resource {{{
