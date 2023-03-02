@@ -1,40 +1,24 @@
 #pragma once
+
+#include "align_asset_macro.h"
+
 #define dgSpiritBossNabooruKnuckleIntroCs "__OTR__scenes/nonmq/jyasinboss_scene/gSpiritBossNabooruKnuckleIntroCs"
-#ifdef _WIN32
-static const __declspec(align(2)) char gSpiritBossNabooruKnuckleIntroCs[] = dgSpiritBossNabooruKnuckleIntroCs;
-#else
-static const char gSpiritBossNabooruKnuckleIntroCs[] __attribute__((aligned (2))) = dgSpiritBossNabooruKnuckleIntroCs;
-#endif
-            
+static const ALIGN_ASSET(2) char gSpiritBossNabooruKnuckleIntroCs[] = dgSpiritBossNabooruKnuckleIntroCs;
+
 #define dgSpiritBossNabooruKnuckleDefeatCs "__OTR__scenes/nonmq/jyasinboss_scene/gSpiritBossNabooruKnuckleDefeatCs"
-#ifdef _WIN32
-static const __declspec(align(2)) char gSpiritBossNabooruKnuckleDefeatCs[] = dgSpiritBossNabooruKnuckleDefeatCs;
-#else
-static const char gSpiritBossNabooruKnuckleDefeatCs[] __attribute__((aligned (2))) = dgSpiritBossNabooruKnuckleDefeatCs;
-#endif
-            
+static const ALIGN_ASSET(2) char gSpiritBossNabooruKnuckleDefeatCs[] = dgSpiritBossNabooruKnuckleDefeatCs;
+
 #define djyasinboss_sceneCollisionHeader_002B80 "__OTR__scenes/nonmq/jyasinboss_scene/jyasinboss_sceneCollisionHeader_002B80"
-#ifdef _WIN32
-static const __declspec(align(2)) char jyasinboss_sceneCollisionHeader_002B80[] = djyasinboss_sceneCollisionHeader_002B80;
-#else
-static const char jyasinboss_sceneCollisionHeader_002B80[] __attribute__((aligned (2))) = djyasinboss_sceneCollisionHeader_002B80;
-#endif
-            
+static const ALIGN_ASSET(2) char jyasinboss_sceneCollisionHeader_002B80[] = djyasinboss_sceneCollisionHeader_002B80;
+
 #define djyasinboss_sceneTex_007CF0 "__OTR__scenes/nonmq/jyasinboss_scene/jyasinboss_sceneTex_007CF0"
-#ifdef _WIN32
-static const __declspec(align(2)) char jyasinboss_sceneTex_007CF0[] = djyasinboss_sceneTex_007CF0;
-#else
-static const char jyasinboss_sceneTex_007CF0[] __attribute__((aligned (2))) = djyasinboss_sceneTex_007CF0;
-#endif
-            
+static const ALIGN_ASSET(2) char jyasinboss_sceneTex_007CF0[] = djyasinboss_sceneTex_007CF0;
+
 #define djyasinboss_sceneTex_006CF0 "__OTR__scenes/nonmq/jyasinboss_scene/jyasinboss_sceneTex_006CF0"
-#ifdef _WIN32
-static const __declspec(align(2)) char jyasinboss_sceneTex_006CF0[] = djyasinboss_sceneTex_006CF0;
-#else
-static const char jyasinboss_sceneTex_006CF0[] __attribute__((aligned (2))) = djyasinboss_sceneTex_006CF0;
-#endif
-            
-#define djyasinboss_sceneCollisionHeader_002B80 "__OTR__scenes/nonmq/jyasinboss_scene/jyasinboss_sceneCollisionHeader_002B80"
-#define djyasinboss_sceneCollisionHeader_002B80 "__OTR__scenes/nonmq/jyasinboss_scene/jyasinboss_sceneCollisionHeader_002B80"
+static const ALIGN_ASSET(2) char jyasinboss_sceneTex_006CF0[] = djyasinboss_sceneTex_006CF0;
+
 #define djyasinboss_sceneCollisionHeader_002B80 "__OTR__scenes/nonmq/jyasinboss_scene/jyasinboss_sceneCollisionHeader_002B80"
 
+#define djyasinboss_sceneCollisionHeader_002B80 "__OTR__scenes/nonmq/jyasinboss_scene/jyasinboss_sceneCollisionHeader_002B80"
+
+#define djyasinboss_sceneCollisionHeader_002B80 "__OTR__scenes/nonmq/jyasinboss_scene/jyasinboss_sceneCollisionHeader_002B80"
