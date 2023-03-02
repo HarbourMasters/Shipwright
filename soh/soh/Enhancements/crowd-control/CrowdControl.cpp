@@ -418,8 +418,17 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         case EffectFillHeart:
             effect->giEffect = new GameInteractionEffect::ModifyHealth();
             break;
-        case EffectKnockbackLink:
+        case EffectKnockbackLinkWeak:
             effect->giEffect = new GameInteractionEffect::KnockbackPlayer();
+            effect->giEffect->parameters[0] = 1;
+            break;
+        case EffectKnockbackLinkStrong:
+            effect->giEffect = new GameInteractionEffect::KnockbackPlayer();
+            effect->giEffect->parameters[0] = 3;
+            break;
+        case EffectKnockbackLinkMega:
+            effect->giEffect = new GameInteractionEffect::KnockbackPlayer();
+            effect->giEffect->parameters[0] = 6;
             break;
         case EffectBurnLink:
             effect->giEffect = new GameInteractionEffect::BurnPlayer();

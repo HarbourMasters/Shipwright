@@ -62,7 +62,9 @@ public class SoH : SimpleTCPPack
 
         new Effect("Empty Heart", "empty_heart", new[] { "health20" }, "hurtheal_link"),
         new Effect("Fill Heart", "fill_heart", new[] { "health20" }, "hurtheal_link"),
-        new Effect("Knockback Link", "knockback_link", new[] { "knockbackstrength" }, "hurtheal_link"),
+        new Effect("Knockback Link (Weak)", "knockback_link_weak", "hurtheal_link"),
+        new Effect("Knockback Link (Strong)", "knockback_link_strong", "hurtheal_link"),
+        new Effect("Knockback Link (Mega)", "knockback_link_mega", "hurtheal_link"),
         new Effect("Burn Link", "burn_link", "hurtheal_link"),
         new Effect("Freeze Link", "freeze_link", "hurtheal_link"),
         new Effect("Electrocute Link", "electrocute_link", "hurtheal_link"),
@@ -200,7 +202,6 @@ public class SoH : SimpleTCPPack
         new ItemType("Rupees", "rupees999", ItemType.Subtype.Slider, "{\"min\":1,\"max\":999}"),
         new ItemType("Health", "health20", ItemType.Subtype.Slider, "{\"min\":1,\"max\":20}"),
         new ItemType("Ammo", "ammo30", ItemType.Subtype.Slider, "{\"min\":1,\"max\":30}"),
-        new ItemType("Knockback Strength", "knockbackstrength", ItemType.Subtype.Slider, "{\"min\":1,\"max\":3}")
     };
 	
 }

@@ -40,7 +40,9 @@ enum CCStringEnumValues {
     // Hurt or Heal Link
     EffectEmptyHeart,
     EffectFillHeart,
-    EffectKnockbackLink,
+    EffectKnockbackLinkWeak,
+    EffectKnockbackLinkStrong,
+    EffectKnockbackLinkMega,
     EffectBurnLink,
     EffectFreezeLink,
     EffectElectrocuteLink,
@@ -204,7 +206,9 @@ std::unordered_map<std::string, CCStringEnumValues> effectStringToEnum = {
     // Hurt or Heal Link
     { "empty_heart", EffectEmptyHeart },
     { "fill_heart", EffectFillHeart },
-    { "knockback_link", EffectKnockbackLink },
+    { "knockback_link_weak", EffectKnockbackLinkWeak },
+    { "knockback_link_strong", EffectKnockbackLinkStrong },
+    { "knockback_link_mega", EffectKnockbackLinkMega },
     { "burn_link", EffectBurnLink },
     { "freeze_link", EffectFreezeLink },
     { "electrocute_link", EffectElectrocuteLink },
