@@ -6064,6 +6064,8 @@ void Interface_Update(PlayState* play) {
     Left_HUD_Margin = CVarGetInteger("gHUDMargin_L", 0);
     Right_HUD_Margin = CVarGetInteger("gHUDMargin_R", 0);
     Bottom_HUD_Margin = CVarGetInteger("gHUDMargin_B", 0);
+    
+    GameInteractor_ExecuteOnInterfaceUpdate();
 
     if (CHECK_BTN_ALL(debugInput->press.button, BTN_DLEFT)) {
         gSaveContext.language = LANGUAGE_ENG;

@@ -33,6 +33,8 @@
 #include "Enhancements/crowd-control/CrowdControl.h"
 #endif
 
+#include "Enhancements/game-interactor/GameInteractor.h"
+
 #define EXPERIMENTAL() \
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 50, 50, 255)); \
     UIWidgets::Spacer(3.0f); \
@@ -297,15 +299,25 @@ namespace GameMenuBar {
 
             if (ImGui::BeginMenu("Languages")) {
                 UIWidgets::PaddedEnhancementCheckbox("Translate Title Screen", "gTitleScreenTranslation");
-                UIWidgets::EnhancementRadioButton("English", "gLanguages", LANGUAGE_ENG);
-                UIWidgets::EnhancementRadioButton("German", "gLanguages", LANGUAGE_GER);
-                UIWidgets::EnhancementRadioButton("French", "gLanguages", LANGUAGE_FRA);
+                if (UIWidgets::EnhancementRadioButton("English", "gLanguages", LANGUAGE_ENG)) {
+                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+                }
+                if (UIWidgets::EnhancementRadioButton("German", "gLanguages", LANGUAGE_GER)) {
+                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+                }
+                if (UIWidgets::EnhancementRadioButton("French", "gLanguages", LANGUAGE_FRA)) {
+                    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
+                }
                 ImGui::EndMenu();
             }
             
             UIWidgets::Spacer(0);
             
             if (ImGui::BeginMenu("Accessibility")) {
+            #if defined(_WIN32) || defined(__APPLE__)
+                UIWidgets::PaddedEnhancementCheckbox("Text to Speech", "gA11yTTS");
+                UIWidgets::Tooltip("Enables text to speech for in game dialog");
+            #endif
                 UIWidgets::PaddedEnhancementCheckbox("Disable Idle Camera Re-Centering", "gA11yDisableIdleCam");
                 UIWidgets::Tooltip("Disables the automatic re-centering of the camera when idle.");
                 
@@ -834,18 +846,9 @@ namespace GameMenuBar {
             UIWidgets::PaddedSeparator(false, true);
 
             // Autosave enum value of 1 is the default in presets and the old checkbox "on" state for backwards compatibility
-            const uint16_t selectedAutosaveId = CVarGetInteger("gAutosave", 0);
-            std::string autosaveLabels[] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
             UIWidgets::PaddedText("Autosave", false, true);
-            if (ImGui::BeginCombo("##AutosaveComboBox", autosaveLabels[selectedAutosaveId].c_str())) {
-                for (int index = 0; index < sizeof(autosaveLabels) / sizeof(autosaveLabels[0]); index++) {
-                    if (ImGui::Selectable(autosaveLabels[index].c_str(), index == selectedAutosaveId)) {
-                        CVarSetInteger("gAutosave", index);
-                    }
-                }
-
-                ImGui::EndCombo();
-            }
+            const char* autosaveLabels[] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
+            UIWidgets::EnhancementCombobox("gAutosave", autosaveLabels, (sizeof(autosaveLabels) / sizeof(autosaveLabels[0])), CVarGetInteger("gAutosave", 0));
             UIWidgets::Tooltip("Automatically save the game every time a new area is entered and/or item is obtained\n"
                 "Major items exclude rupees and health/magic/ammo refills (but include bombchus unless bombchu drops are enabled)");
 

@@ -349,6 +349,7 @@ void FileChoose_FinishFadeIn(GameState* thisx) {
         this->controlsAlpha = 255;
         this->windowAlpha = 200;
         this->configMode = CM_MAIN_MENU;
+        GameInteractor_ExecuteOnPresentFileSelect();
     }
 }
 
@@ -478,6 +479,8 @@ void FileChoose_UpdateRandomizer() {
     }
 }
 
+uint16_t lastFileChooseButtonIndex;
+
 /**
  * Update the cursor and wait for the player to select a button to change menus accordingly.
  * If an empty file is selected, enter the name entry config mode.
@@ -596,6 +599,11 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
             }
         } else {
             this->warningLabel = FS_WARNING_NONE;
+        }
+        
+        if (lastFileChooseButtonIndex != this->buttonIndex) {
+            GameInteractor_ExecuteOnUpdateFileSelectSelection(this->buttonIndex);
+            lastFileChooseButtonIndex = this->buttonIndex;
         }
     }
 }
