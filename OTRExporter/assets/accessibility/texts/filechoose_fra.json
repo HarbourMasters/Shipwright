@@ -1,0 +1,16 @@
+{
+    "file1": "Fichier 1",
+    "file2": "Fichier 2",
+    "file3": "Fichier 3",
+    "options": "Options",
+    "copy": "Copier",
+    "erase": "Effacer",
+    "quit": "Retour",
+    "confirm": "Oui",
+    "audio_stereo": "Son - Stéréo",
+    "audio_mono": "Son - Mono",
+    "audio_headset": "Son - Casque",
+    "audio_surround": "Son - Surround",
+    "target_switch": "Visée - Fixe",
+    "target_hold": "Visée - Maintenue"
+}
