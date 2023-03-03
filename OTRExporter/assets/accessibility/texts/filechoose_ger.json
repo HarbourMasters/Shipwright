@@ -1,0 +1,16 @@
+{
+    "file1": "Datei 1",
+    "file2": "Datei 2",
+    "file3": "Datei 3",
+    "options": "Optionen",
+    "copy": "Kopieren",
+    "erase": "Löschen",
+    "quit": "Zurück",
+    "confirm": "Ja",
+    "audio_stereo": "Sound - Stereo",
+    "audio_mono": "Sound - Mono",
+    "audio_headset": "Sound - Kopfhörer",
+    "audio_surround": "Sound - Surround",
+    "target_switch": "Zielerfassung - Einmal drücken",
+    "target_hold": "Zielerfassung - Trigger halten"
+}

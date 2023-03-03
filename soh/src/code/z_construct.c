@@ -163,7 +163,7 @@ void Message_Init(PlayState* play) {
     YREG(31) = 0;
 }
 
-void func_80111070(void) {
+void Regs_InitDataImpl(void) {
     YREG(8) = 10;
     YREG(14) = 0;
     YREG(15) = 0;
@@ -572,6 +572,6 @@ void func_80111070(void) {
     VREG(92) = -63;
 }
 
-void func_80112098(PlayState* play) {
-    func_80111070();
+void Regs_InitData(PlayState* play) {
+    Regs_InitDataImpl();
 }

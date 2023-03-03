@@ -432,6 +432,7 @@ void SetupDisplayNames() {
     strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_TWINROVA],        "Twinrova Completed: ");
     strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_GANONDORF],       "Ganondorf Completed:");
     strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_GANON],           "Boss Rush Finished: ");
+    strcpy(timestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:         ");
 }
 
 void SetupDisplayColors() {
@@ -443,6 +444,7 @@ void SetupDisplayColors() {
             case ITEM_MEDALLION_FOREST:
             case TIMESTAMP_BOSSRUSH_DEFEAT_GOHMA:
             case TIMESTAMP_BOSSRUSH_DEFEAT_PHANTOM_GANON:
+            case TIMESTAMP_FOUND_GREG:
                 timestampDisplayColor[i] = COLOR_GREEN;
                 break;
             case ITEM_SONG_BOLERO:

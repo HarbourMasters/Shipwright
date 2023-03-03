@@ -1,0 +1,18 @@
+{
+    "minutes_plural" : "$0 Minuten",
+    "minutes_singular" : "eine Minute",
+    "seconds_plural" : "$0 Sekunden",
+    "seconds_singular" : "eine Sekunde",
+    "input_button_a": "den A-Knopf",
+    "input_button_b": "den B-Knopf",
+    "input_button_c": "den C-Knopf",
+    "input_button_l": "den L-Knopf",
+    "input_button_r": "den R-Knopf",
+    "input_button_z": "den Z-Knopf",
+    "input_button_c_up": "C Oben",
+    "input_button_c_down": "C Unten",
+    "input_button_c_left": "C Links",
+    "input_button_c_right": "C Rechts",
+    "input_analog_stick": "den Analog-Stick",
+    "input_d_pad": "das Steuerkreuz"
+}

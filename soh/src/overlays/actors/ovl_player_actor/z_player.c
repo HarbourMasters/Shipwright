@@ -11161,6 +11161,8 @@ void Player_Update(Actor* thisx, PlayState* play) {
         default:
             break;
     }
+    
+    GameInteractor_ExecuteOnPlayerUpdate();
 }
 
 static struct_80858AC8 D_80858AC8;

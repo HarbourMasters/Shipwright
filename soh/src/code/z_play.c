@@ -7,6 +7,7 @@
 #include <ImGuiImpl.h>
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/debugconsole.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
 
@@ -427,10 +428,12 @@ void Play_Init(GameState* thisx) {
         }
     }
 
+    // Invalid entrance, so immediately exit the game to opening title
     if (gSaveContext.entranceIndex == -1) {
         gSaveContext.entranceIndex = 0;
         play->state.running = false;
         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
+        GameInteractor_ExecuteOnExitGame(gSaveContext.fileNum);
         return;
     }
 
@@ -460,7 +463,7 @@ void Play_Init(GameState* thisx) {
     play->cameraPtrs[MAIN_CAM]->uid = 0;
     play->activeCamera = MAIN_CAM;
     func_8005AC48(&play->mainCamera, 0xFF);
-    func_80112098(play);
+    Regs_InitData(play);
     Message_Init(play);
     GameOver_Init(play);
     SoundSource_InitAll(play);
@@ -867,9 +870,11 @@ void Play_Update(PlayState* play) {
                                 R_UPDATE_RATE = 3;
                             }
 
-                            // Don't autosave in grottos or cutscenes
-                            // Also don't save when you first load a file
-                            if (CVarGetInteger("gAutosave", 0) && (gSaveContext.cutsceneIndex == 0) && (play->gameplayFrames > 60) &&
+                            // Autosave on area transition unless you're in a cutscene or a grotto since resuming from grottos breaks the game
+                            // Also don't save when you first load a file to prevent consumables like magic from being lost
+                            // Also don't save if there's a pending shop sale to prevent getting the item for a discount!
+                            if ((CVarGetInteger("gAutosave", 0) >= 1) && (CVarGetInteger("gAutosave", 0) <= 3) &&
+                                (gSaveContext.cutsceneIndex == 0) && (play->gameplayFrames > 60) && (gSaveContext.pendingSale == ITEM_NONE) &&
                                 (play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA) && (play->sceneNum != SCENE_KENJYANOMA)) {
                                 Play_PerformSave(play);
                             }

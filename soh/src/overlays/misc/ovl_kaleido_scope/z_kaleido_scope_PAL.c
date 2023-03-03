@@ -14,6 +14,7 @@
 #include "vt.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 static void* sEquipmentFRATexs[] = {
@@ -3661,9 +3662,8 @@ void KaleidoScope_Update(PlayState* play)
                 case 0:
                     if (CHECK_BTN_ALL(input->press.button, BTN_START) ||
                         (CHECK_BTN_ALL(input->press.button, BTN_B) && gSaveContext.isBossRush)) {
-                        CVarSetInteger("gPauseBufferBlockInputFrame", 9);
-                        if (CVarGetInteger("gCheatEasyPauseBufferEnabled", 0)) {
-                            CVarSetInteger("gCheatEasyPauseBufferFrameAdvance", 13);
+                        if (CVarGetInteger("gCheatEasyPauseBufferEnabled", 0) || CVarGetInteger("gCheatEasyInputBufferingEnabled", 0)) {
+                            CVarSetInteger("gPauseBufferBlockInputFrame", 9);
                         }
                         Interface_SetDoAction(play, DO_ACTION_NONE);
                         pauseCtx->state = 0x12;
@@ -4191,6 +4191,7 @@ void KaleidoScope_Update(PlayState* play)
                         play->state.running = 0;
                         gSaveContext.isBossRush = false;
                         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
+                        GameInteractor_ExecuteOnExitGame(gSaveContext.fileNum);
                     }
                 }
             }
@@ -4267,4 +4268,6 @@ void KaleidoScope_Update(PlayState* play)
             osSyncPrintf(VT_RST);
             break;
     }
+    
+    GameInteractor_ExecuteOnKaleidoscopeUpdate(sInDungeonScene);
 }

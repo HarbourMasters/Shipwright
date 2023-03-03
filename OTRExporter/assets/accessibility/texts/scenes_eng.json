@@ -1,0 +1,112 @@
+{
+    "0": "Inside the Deku Tree",
+    "1": "Dodongo's Cavern",
+    "2": "Inside Jabu-Jabu's Belly",
+    "3": "Forest Temple",
+    "4": "Fire Temple",
+    "5": "Water Temple",
+    "6": "Spirit Temple",
+    "7": "Shadow Temple",
+    "8": "Bottom of The Well",
+    "9": "Ice Cavern",
+    "10": "", // Stairs to Ganondorf's Lair (No title card)
+    "11": "Gerudo Training Ground",
+    "12": "Thieves' Hideout",
+    "13": "Ganon's Castle",
+    "14": "", // Escape from Ganon's Castle (No title card)
+    "15": "", // Escape from Ganon's Castle 5 (No title card)x
+    "16": "Treasure Box Shop",
+    "17": "Parasitic Armored Arachnid - Gohma",
+    "18": "Infernal Dinosaur - King Dodongo",
+    "19": "Bio-electric Anemone - Barinade",
+    "20": "Evil Spirit from Beyond - Phantom Ganon",
+    "21": "Subterranean Lava Dragon - Volvagia",
+    "22": "Giant Aquatic Amoeba - Morpha",
+    "23": "Sorceress Sisters - Twinrova",
+    "24": "Phantom Shadow Beast - Bongo Bongo",
+    "25": "Great King of Evil - Ganondorf",
+    "26": "",
+    "27": "", // Entrance to Market (No title card)
+    "28": "",
+    "29": "",
+    "30": "Back Alley",
+    "31": "Back Alley",
+    "32": "Market",
+    "33": "Market",
+    "34": "Market",
+    "35": "", // Temple of Time Exterior (No title card)
+    "36": "SCENE_SHRINE_N",
+    "37": "SCENE_SHRINE_R",
+    "38": "", // House of the Know-it-All Brothers (No title card)
+    "39": "", // House of Twins (No title card)
+    "40": "", // House of the Great Mido (No title card)
+    "41": "", // Saria's House (No title card)
+    "42": "", // Kakariko House 1 (No title card)
+    "43": "", // Back Alley House 1 (No title card)
+    "44": "Bazaar",
+    "45": "Kokiri Shop",
+    "46": "Goron Shop",
+    "47": "Zora Shop",
+    "48": "", // Closed Shop (No title card)
+    "49": "Potion Shop",
+    "50": "", // Bombchu Shop (No title card)
+    "51": "Happy Mask Shop",
+    "52": "", // Link's House (No title card)
+    "53": "", // Dog Lady's House (No title card)
+    "54": "Stable",
+    "55": "", // Impa's House (No title card)
+    "56": "Lakeside Laboratory",
+    "57": "", // Running Man's Tent (No title card)
+    "58": "Gravekeepers Hut",
+    "59": "Great Fairy's Fountain",
+    "60": "Fairy's Fountain",
+    "61": "Great Fairy's Fountain",
+    "62": "", // Grottos (No title card)
+    "63": "", // Tomb 1 (No title card)
+    "64": "", // Tomb 2 (No title card)
+    "65": "Royal Family's Tomb",
+    "66": "Shooting Gallery",
+    "67": "Temple of Time",
+    "68": "Chamber of The Sages",
+    "69": "Castle Courtyard",
+    "70": "Castle Courtyard",
+    "71": "", // Goddesses Cutscene (No title card)
+    "72": "Unknown Place",
+    "73": "Fishing Pond",
+    "74": "Castle Courtyard",
+    "75": "Bombchu Bowling Alley",
+    "76": "", // Lon Lon Ranch House/Silo (No title card)
+    "77": "", // Guard House (No title card)
+    "78": "", // Potion Shop (No title card)
+    "79": "Ganon",
+    "80": "House of Skulltula",
+    "81": "Hyrule Field",
+    "82": "Kakariko Village",
+    "83": "Graveyard",
+    "84": "Zora's River",
+    "85": "Kokiri Forest",
+    "86": "Sacred Forest Meadow",
+    "87": "Lake Hylia",
+    "88": "Zoras Domain",
+    "89": "Zoras Fountain",
+    "90": "Gerudo Valley",
+    "91": "Lost Woods",
+    "92": "Desert Colossus",
+    "93": "Gerudo's Fortress",
+    "94": "Haunted Wasteland",
+    "95": "Hyrule Castle",
+    "96": "Death Mountain Trail",
+    "97": "Death Mountain Crater",
+    "98": "Goron City",
+    "99": "Lon Lon Ranch",
+    "100": "",
+    "101": "", // Debug: Test Map (No title card)
+    "102": "", // Debug: Test Room (No title card)
+    "103": "", // Debug: Depth Test (No title card)
+    "104": "", // Debug: Stalfos Miniboss Room (No title card)
+    "105": "", // Debug: Stalfos Boss Room (No title card)
+    "106": "", // Debug: Dark Link Room (No title card)
+    "107": "",
+    "108": "", // Debug: SRD Room (No title card)
+    "109": "" // Debug: Treasure Chest Warp (No title card)
+}

@@ -1,4 +1,5 @@
 #include "Main.h"
+#include "Exporter.h"
 #include "BackgroundExporter.h"
 #include "TextureExporter.h"
 #include "RoomExporter.h"
@@ -120,24 +121,41 @@ static void ExporterProgramEnd()
 				splitPath.pop_back();
 				std::string afterPath = std::accumulate(splitPath.begin(), splitPath.end(), std::string(""));
 				if (extension == "png" && (format == "rgba32" || format == "rgb5a1" || format == "i4" || format == "i8" || format == "ia4" || format == "ia8" || format == "ia16" || format == "ci4" || format == "ci8")) {
+					ZTexture tex(nullptr);
 					Globals::Instance->buildRawTexture = true;
-					Globals::Instance->BuildAssetTexture(item, ZTexture::GetTextureTypeFromString(format), afterPath);
-					Globals::Instance->buildRawTexture = false;
-
-					auto fileData = File::ReadAllBytes(afterPath);
+					tex.FromPNG(item, ZTexture::GetTextureTypeFromString(format));
 					printf("otrArchive->AddFile(%s)\n", StringHelper::Split(afterPath, "Extract/")[1].c_str());
-					otrArchive->AddFile(StringHelper::Split(afterPath, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
+
+					auto exporter = new OTRExporter_Texture();
+					MemoryStream* stream = new MemoryStream();
+					BinaryWriter writer(stream);
+
+ 					exporter->Save(&tex, "", &writer);
+
+ 					std::string src = tex.GetBodySourceCode();
+ 					writer.Write((char*) src.c_str(), src.size());
+
+ 					std::vector<char> fileData = stream->ToVector();
+ 					otrArchive->AddFile(StringHelper::Split(afterPath, "Extract/assets/")[1], (uintptr_t)fileData.data(), fileData.size());
+					continue;
 				}
+			}
+
+			if(item.find("accessibility") != std::string::npos) {
+				std::string extension = splitPath.at(splitPath.size() - 1);
+				splitPath.pop_back();
+				if(extension == "json"){
+					auto fileData = File::ReadAllBytes(item);
+					printf("Adding accessibility texts %s\n", StringHelper::Split(item, "texts/")[1].c_str());
+					otrArchive->AddFile(StringHelper::Split(item, "Extract/assets/")[1], (uintptr_t)fileData.data(), fileData.size());
+				}
+				continue;
 			}
 
 			auto fileData = File::ReadAllBytes(item);
 			printf("otrArchive->AddFile(%s)\n", StringHelper::Split(item, "Extract/")[1].c_str());
 			otrArchive->AddFile(StringHelper::Split(item, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
 		}
-
-		//otrArchive->AddFile("Audiobank", (uintptr_t)Globals::Instance->GetBaseromFile("Audiobank").data(), Globals::Instance->GetBaseromFile("Audiobank").size());
-		//otrArchive->AddFile("Audioseq", (uintptr_t)Globals::Instance->GetBaseromFile("Audioseq").data(), Globals::Instance->GetBaseromFile("Audioseq").size());
-		//otrArchive->AddFile("Audiotable", (uintptr_t)Globals::Instance->GetBaseromFile("Audiotable").data(), Globals::Instance->GetBaseromFile("Audiotable").size());
 	}
 }
 

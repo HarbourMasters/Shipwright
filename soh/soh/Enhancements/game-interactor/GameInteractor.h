@@ -4,7 +4,6 @@
 #define GameInteractor_h
 
 #include "GameInteractionEffect.h"
-#include "z64.h"
 
 typedef enum {
     /* 0x00 */ GI_LINK_SIZE_NORMAL,
@@ -84,13 +83,32 @@ public:
         }
     }
 
-    DEFINE_HOOK(OnReceiveItem, void(u8 item));
-    DEFINE_HOOK(OnSceneInit, void(s16 sceneNum));
+    DEFINE_HOOK(OnLoadGame, void(int32_t fileNum));
+    DEFINE_HOOK(OnExitGame, void(int32_t fileNum));
+    DEFINE_HOOK(OnGameFrameUpdate, void());
+    DEFINE_HOOK(OnReceiveItem, void(uint8_t item));
+    DEFINE_HOOK(OnSceneInit, void(int16_t sceneNum));
+    DEFINE_HOOK(OnPlayerUpdate, void());
     
+    DEFINE_HOOK(OnSaveFile, void(int32_t fileNum));
+    DEFINE_HOOK(OnLoadFile, void(int32_t fileNum));
+    DEFINE_HOOK(OnDeleteFile, void(int32_t fileNum));
     
-    DEFINE_HOOK(OnSaveFile, void(int fileNum));
-    DEFINE_HOOK(OnLoadFile, void(int fileNum));
-    DEFINE_HOOK(OnDeleteFile, void(int fileNum));
+    DEFINE_HOOK(OnDialogMessage, void());
+    DEFINE_HOOK(OnPresentTitleCard, void());
+    DEFINE_HOOK(OnInterfaceUpdate, void());
+    DEFINE_HOOK(OnKaleidoscopeUpdate, void(int16_t inDungeonScene));
+    
+    DEFINE_HOOK(OnPresentFileSelect, void());
+    DEFINE_HOOK(OnUpdateFileSelectSelection, void(uint16_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileCopySelection, void(uint16_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileCopyConfirmationSelection, void(uint16_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileEraseSelection, void(uint16_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileEraseConfirmationSelection, void(uint16_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileAudioSelection, void(uint8_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileTargetSelection, void(uint8_t optionIndex));
+    
+    DEFINE_HOOK(OnSetGameLanguage, void());
 
     // Helpers
     static bool IsSaveLoaded();

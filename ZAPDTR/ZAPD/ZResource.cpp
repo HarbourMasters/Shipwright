@@ -309,7 +309,7 @@ std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string&
 {
 	if (Globals::Instance->otrMode && genOTRDef)
 	{
-		std::string str = "";;
+		std::string str = "";
 		std::string nameStr = StringHelper::Strip(StringHelper::Strip(name, "\n"), "\r");
 
 		std::string outName = parent->GetOutName();
@@ -344,18 +344,13 @@ std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string&
 
 		if (prefix != "") {
 			str += StringHelper::Sprintf("#define d%s \"__OTR__%s/%s/%s\"", name.c_str(), prefix.c_str(), outName.c_str(), nameStr.c_str());
-        }
+		}
 		else
 			str += StringHelper::Sprintf("#define d%s \"__OTR__%s/%s\"", name.c_str(), outName.c_str(), nameStr.c_str());
 
 		if (nameSet && nameSet->find(name) == nameSet->end()) {
-			str += StringHelper::Sprintf(R"(
-#ifdef _WIN32
-static const __declspec(align(2)) char %s[] = d%s;
-#else
-static const char %s[] __attribute__((aligned (2))) = d%s;
-#endif
-			)", name.c_str(), name.c_str(), name.c_str(), name.c_str());
+			str += StringHelper::Sprintf("\n");
+			str += StringHelper::Sprintf(R"(static const ALIGN_ASSET(2) char %s[] = d%s;)", name.c_str(), name.c_str());
 
 			if (nameSet) {
 				nameSet->insert(name);
@@ -366,16 +361,11 @@ static const char %s[] __attribute__((aligned (2))) = d%s;
 		{
 			std::string addName = "gTitleZeldaShieldLogoTex";
 			nameStr = StringHelper::Strip(StringHelper::Strip(addName, "\n"), "\r");
-			str += StringHelper::Sprintf("\n#define d%s \"__OTR__%s/%s/%s\"", addName.c_str(), prefix.c_str(), outName.c_str(), nameStr.c_str());
+			str += StringHelper::Sprintf("\n\n#define d%s \"__OTR__%s/%s/%s\"", addName.c_str(), prefix.c_str(), outName.c_str(), nameStr.c_str());
 			if (nameSet && nameSet->find(addName) == nameSet->end())
 			{
-				str += StringHelper::Sprintf(R"(
-#ifdef _WIN32
-static const __declspec(align(2)) char %s[] = d%s;
-#else
-static const char %s[] __attribute__((aligned (2))) = d%s;
-#endif
-			)", addName.c_str(), addName.c_str(), addName.c_str(), addName.c_str());
+				str += StringHelper::Sprintf("\n");
+				str += StringHelper::Sprintf(R"(static const ALIGN_ASSET(2) char %s[] = d%s;)", addName.c_str(), addName.c_str());
 
 				if (nameSet)
 				{
