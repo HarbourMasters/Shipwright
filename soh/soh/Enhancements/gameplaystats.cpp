@@ -142,7 +142,7 @@ char itemTimestampDisplayName[TIMESTAMP_MAX][21] = { "" };
 ImVec4 itemTimestampDisplayColor[TIMESTAMP_MAX];
 
 typedef struct {
-    char name[25];
+    char name[40];
     u32 time;
     ImVec4 color;
     bool isRoom;
