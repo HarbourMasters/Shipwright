@@ -332,7 +332,6 @@ void DrawStatsTracker(bool& open) {
     UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
     DisplayTimeHHMMSS(gSaveContext.sohStats.roomTimer / 2,  "Time in room:       ", COLOR_LIGHT_BLUE);
     UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
-    ImGui::Text("Current scene: %d", gSaveContext.sohStats.sceneNum);
     ImGui::Text("Current room: %d", gSaveContext.sohStats.roomNum);
 
     ImGui::PopStyleVar(1);
@@ -509,7 +508,7 @@ void DrawStatsTracker(bool& open) {
                 } else {
                     toPass = fmt::format("{:s}", ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum));
                 }
-                DisplayTimeHHMMSS(CURRENT_MODE_TIMER / 2, toPass.c_str(), COLOR_YELLOW);
+                DisplayTimeHHMMSS(CURRENT_MODE_TIMER / 2, toPass.c_str(), COLOR_WHITE);
             }
             ImGui::EndTabItem();
         }
