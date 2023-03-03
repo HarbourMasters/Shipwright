@@ -89,7 +89,7 @@ public:
     DEFINE_HOOK(OnReceiveItem, void(uint8_t item));
     DEFINE_HOOK(OnSceneInit, void(int16_t sceneNum));
     DEFINE_HOOK(OnPlayerUpdate, void());
-    DEFINE_HOOK(OnActorUpdate, void(Actor* actor));
+    DEFINE_HOOK(OnActorUpdate, void(void* actor));
     
     DEFINE_HOOK(OnSaveFile, void(int32_t fileNum));
     DEFINE_HOOK(OnLoadFile, void(int32_t fileNum));

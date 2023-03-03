@@ -257,23 +257,24 @@ void RegisterRupeeDash() {
 }
 
 void RegisterHyperBosses() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](Actor* actor) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* actor) {
         // Run the update function a second time to make bosses move and act twice as fast.
+        Actor* actorObject = static_cast<Actor*>(actor);
 
-        if (actor->category == ACTORCAT_BOSS) {
+        if (actorObject->category == ACTORCAT_BOSS) {
             // Some actors are labeled as bosses but aren't really bosses, so exclude those.
             // Barinade is handled seperately because its child actors have to be updated in sequence.
-            uint8_t isSkippedBossActor = actor->id == ACTOR_EN_TORCH2 || actor->id == ACTOR_DEMO_GEFF ||
-                                         actor->id == ACTOR_EN_CLEAR_TAG || actor->id == ACTOR_EN_GANON_ORGAN ||
-                                         actor->id == ACTOR_EN_GANON_MANT || actor->id == ACTOR_BOSS_VA;
+            uint8_t isSkippedBossActor = actorObject->id == ACTOR_EN_TORCH2 || actorObject->id == ACTOR_DEMO_GEFF ||
+                                         actorObject->id == ACTOR_EN_CLEAR_TAG || actorObject->id == ACTOR_EN_GANON_ORGAN ||
+                                         actorObject->id == ACTOR_EN_GANON_MANT || actorObject->id == ACTOR_BOSS_VA;
 
-            // Sometimes the actor is destroyed in the previous Update, so check if the update function still exists.
-            if (actor->update != NULL && !isSkippedBossActor) {
+            // Sometimes the actorObject is destroyed in the previous Update, so check if the update function still exists.
+            if (actorObject->update != NULL && !isSkippedBossActor) {
                 uint8_t hyperBoss = CVarGetInteger("gHyperBosses", 0);
                 Player* player = GET_PLAYER(gPlayState);
                 // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
                 if (!Player_InBlockingCsMode(gPlayState, player) && hyperBoss) {
-                    actor->update(actor, gPlayState);
+                    actorObject->update(actorObject, gPlayState);
                 }
             }
         }
