@@ -1290,7 +1290,7 @@ void SaveManager::LoadBaseVersion3() {
         });
         SaveManager::Instance->LoadData("playTimer", gSaveContext.sohStats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.sohStats.pauseTimer);
-        SaveManager::Instance->LoadArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
+        SaveManager::Instance->LoadArray("itemTimestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.itemTimestamp[i]);
         });
         SaveManager::Instance->LoadArray("sceneTimestamps", ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps), [](size_t i) {
