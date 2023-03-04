@@ -4,7 +4,7 @@
 extern "C" void GameInteractor_ExecuteOnLoadGame(int32_t fileNum);
 extern "C" void GameInteractor_ExecuteOnExitGame(int32_t fileNum);
 extern "C" void GameInteractor_ExecuteOnGameFrameUpdate();
-extern "C" void GameInteractor_ExecuteOnReceiveItemHooks(uint8_t item);
+extern "C" void GameInteractor_ExecuteOnReceiveItemHooks(GetItemEntry item);
 extern "C" void GameInteractor_ExecuteOnSceneInit(int16_t sceneNum);
 extern "C" void GameInteractor_ExecuteOnPlayerUpdate();
 

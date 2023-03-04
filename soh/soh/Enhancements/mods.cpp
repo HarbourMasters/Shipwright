@@ -173,7 +173,8 @@ void RegisterSwitchAge() {
 }
 
 void RegisterAutoSave() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnReceiveItem>([](u8 item) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnReceiveItem>([](GetItemEntry get) {
+        u8 item = get.itemId;
         // Don't autosave immediately after buying items from shops to prevent getting them for free!
         // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
         // Don't autosave during the Ganon fight when picking up the Master Sword
