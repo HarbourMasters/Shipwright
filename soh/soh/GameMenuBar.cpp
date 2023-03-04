@@ -83,23 +83,11 @@ namespace GameMenuBar {
         return buttonText;
     }
 
-    void BindAudioSlider(const char* name, const char* key, float defaultValue, SeqPlayers playerId) {
-        float value = CVarGetFloat(key, defaultValue);
-
-        ImGui::Text(name, static_cast<int>(100 * value));
-        if (ImGui::SliderFloat((std::string("##") + key).c_str(), &value, 0.0f, 1.0f, "")) {
-            const float volume = floorf(value * 100) / 100;
-            CVarSetFloat(key, volume);
-            SohImGui::RequestCvarSaveOnNextTick();
-            Audio_SetGameVolume(playerId, volume);
-        }
-    }
-
     void UpdateAudio() {
-        Audio_SetGameVolume(SEQ_BGM_MAIN, CVarGetFloat("gMainMusicVolume", 1));
-        Audio_SetGameVolume(SEQ_BGM_SUB, CVarGetFloat("gSubMusicVolume", 1));
-        Audio_SetGameVolume(SEQ_FANFARE, CVarGetFloat("gSFXMusicVolume", 1));
-        Audio_SetGameVolume(SEQ_SFX, CVarGetFloat("gFanfareVolume", 1));
+        Audio_SetGameVolume(SEQ_BGM_MAIN, CVarGetFloat("gMainMusicVolume", 1.0f));
+        Audio_SetGameVolume(SEQ_BGM_SUB, CVarGetFloat("gSubMusicVolume", 1.0f));
+        Audio_SetGameVolume(SEQ_FANFARE, CVarGetFloat("gSFXMusicVolume", 1.0f));
+        Audio_SetGameVolume(SEQ_SFX, CVarGetFloat("gFanfareVolume", 1.0f));
     }
 
     // MARK: - Delegates
@@ -113,15 +101,19 @@ namespace GameMenuBar {
         if (ImGui::BeginMenu("Settings"))
         {
             if (ImGui::BeginMenu("Audio")) {
-                UIWidgets::EnhancementSliderFloat("Master Volume: %d %%", "##Master_Vol", "gGameMasterVolume", 0.0f, 1.0f, "", 1.0f, true);
-                UIWidgets::Spacer(0);
-                BindAudioSlider("Main Music Volume: %d %%", "gMainMusicVolume", 1.0f, SEQ_BGM_MAIN);
-                UIWidgets::Spacer(0);
-                BindAudioSlider("Sub Music Volume: %d %%", "gSubMusicVolume", 1.0f, SEQ_BGM_SUB);
-                UIWidgets::Spacer(0);
-                BindAudioSlider("Sound Effects Volume: %d %%", "gSFXMusicVolume", 1.0f, SEQ_SFX);
-                UIWidgets::Spacer(0);
-                BindAudioSlider("Fanfare Volume: %d %%", "gFanfareVolume", 1.0f, SEQ_FANFARE);
+                UIWidgets::PaddedEnhancementSliderFloat("Master Volume: %d %%", "##Master_Vol", "gGameMasterVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true);
+                if (UIWidgets::PaddedEnhancementSliderFloat("Main Music Volume: %d %%", "##Main_Music_Vol", "gMainMusicVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
+                    Audio_SetGameVolume(SEQ_BGM_MAIN, CVarGetFloat("gMainMusicVolume", 1.0f));
+                }
+                if (UIWidgets::PaddedEnhancementSliderFloat("Sub Music Volume: %d %%", "##Sub_Music_Vol", "gSubMusicVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
+                    Audio_SetGameVolume(SEQ_BGM_SUB, CVarGetFloat("gSubMusicVolume", 1.0f));
+                }
+                if (UIWidgets::PaddedEnhancementSliderFloat("Sound Effects Volume: %d %%", "##Sound_Effect_Vol", "gSFXMusicVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
+                    Audio_SetGameVolume(SEQ_SFX, CVarGetFloat("gSFXMusicVolume", 1.0f));
+                }
+                if (UIWidgets::PaddedEnhancementSliderFloat("Fanfare Volume: %d %%", "##Fanfare_Vol", "gFanfareVolume", 0.0f, 1.0f, "", 1.0f, true, true, false, true)) {
+                    Audio_SetGameVolume(SEQ_FANFARE, CVarGetFloat("gFanfareVolume", 1.0f));
+                }
 
                 ImGui::Text("Audio API (Needs reload)");
                 auto audioBackends = SohImGui::GetAvailableAudioBackends();
@@ -169,18 +161,12 @@ namespace GameMenuBar {
                 UIWidgets::EnhancementCheckbox("Menubar Controller Navigation", "gControlNav");
                 UIWidgets::Tooltip("Allows controller navigation of the SOH menu bar (Settings, Enhancements,...)\nCAUTION: This will disable game inputs while the menubar is visible.\n\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
             #endif
-                UIWidgets::EnhancementCheckbox("Show Inputs", "gInputEnabled");
+                UIWidgets::PaddedEnhancementCheckbox("Show Inputs", "gInputEnabled", true, false);
                 UIWidgets::Tooltip("Shows currently pressed inputs on the bottom right of the screen");
-                UIWidgets::Spacer(0);
-                ImGui::PushItemWidth(ImGui::GetWindowSize().x - 20.0f);
-                UIWidgets::EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
+                UIWidgets::PaddedEnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false, true, true, false);
                 UIWidgets::Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
-                ImGui::PopItemWidth();
-                UIWidgets::Spacer(0);
-                ImGui::PushItemWidth(ImGui::GetWindowSize().x - 20.0f);
-                UIWidgets::EnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", "gSimulatedInputLag", 0, 6, "", 0, false);
+                UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", "gSimulatedInputLag", 0, 6, "", 0, true, true, false);
                 UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
-                ImGui::PopItemWidth();
 
                 ImGui::EndMenu();
             }
@@ -199,57 +185,10 @@ namespace GameMenuBar {
                 SohImGui::SetMSAALevel(CVarGetInteger("gMSAAValue", 1));
             #endif
 
-                if (SohImGui::WindowBackend() == SohImGui::Backend::DX11)
-                {
-                    const char* cvar = "gExtraLatencyThreshold";
-                    int val = CVarGetInteger(cvar, 80);
-                    val = fmax(fmin(val, 360), 0);
-                    int fps = val;
-
-                    UIWidgets::Spacer(0);
-
-                    if (fps == 0)
-                    {
-                        ImGui::Text("Jitter fix: Off");
-                    }
-                    else
-                    {
-                        ImGui::Text("Jitter fix: >= %d FPS", fps);
-                    }
-
-                    std::string MinusBTNELT = " - ##ExtraLatencyThreshold";
-                    std::string PlusBTNELT = " + ##ExtraLatencyThreshold";
-                    if (ImGui::Button(MinusBTNELT.c_str())) {
-                        val--;
-                        CVarSetInteger(cvar, val);
-                        SohImGui::RequestCvarSaveOnNextTick();
-                    }
-                    ImGui::SameLine();
-                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-                #ifdef __SWITCH__
-                    ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
-                #elif defined(__WIIU__)
-                    ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
-                #else
-                    ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
-                #endif
-                    if (ImGui::SliderInt("##ExtraLatencyThreshold", &val, 0, 360, "", ImGuiSliderFlags_AlwaysClamp))
-                    {
-                        CVarSetInteger(cvar, val);
-                        SohImGui::RequestCvarSaveOnNextTick();
-                    }
-                    ImGui::PopItemWidth();
+                if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
+                    UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger("gExtraLatencyThreshold", 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
+                        "##ExtraLatencyThreshold", "gExtraLatencyThreshold", 0, 360, "", 80, true, true, false);
                     UIWidgets::Tooltip("When Interpolation FPS setting is at least this threshold, add one frame of input lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter. This setting allows the CPU to work on one frame while GPU works on the previous frame.\nThis setting should be used when your computer is too slow to do CPU + GPU work in time.");
-
-                    ImGui::SameLine();
-                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-                    if (ImGui::Button(PlusBTNELT.c_str())) {
-                        val++;
-                        CVarSetInteger(cvar, val);
-                        SohImGui::RequestCvarSaveOnNextTick();
-                    }
-
-                    UIWidgets::Spacer(0);
                 }
 
                 ImGui::Text("Renderer API (Needs reload)");
@@ -346,7 +285,7 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementSliderInt("Block pushing speed +%d", "##BLOCKSPEED", "gFasterBlockPush", 0, 5, "", 0, true, false, true);
                     UIWidgets::PaddedEnhancementCheckbox("Faster Heavy Block Lift", "gFasterHeavyBlockLift", true, false);
                     UIWidgets::Tooltip("Speeds up lifting silver rocks and obelisks");
-                    UIWidgets::PaddedEnhancementCheckbox("Link as default file name", "gLinkDefaultName");
+                    UIWidgets::PaddedEnhancementCheckbox("Link as default file name", "gLinkDefaultName", true, false);
                     UIWidgets::Tooltip("Allows you to have \"Link\" as a premade file name");
                     UIWidgets::PaddedEnhancementCheckbox("No Forced Navi", "gNoForcedNavi", true, false);
                     UIWidgets::Tooltip("Prevent forced Navi conversations");
@@ -444,38 +383,38 @@ namespace GameMenuBar {
                     ImGui::Text("Damage Multiplier");
                     UIWidgets::EnhancementCombobox("gDamageMul", powers, 9, 0);
                     UIWidgets::Tooltip(
-                        "Modifies all sources of damage not affected by other sliders\n\
-                        2x: Can survive all common attacks from the start of the game\n\
-                        4x: Dies in 1 hit to any substantial attack from the start of the game\n\
-                        8x: Can only survive trivial damage from the start of the game\n\
-                        16x: Can survive all common attacks with max health without double defense\n\
-                        32x: Can survive all common attacks with max health and double defense\n\
-                        64x: Can survive trivial damage with max health without double defense\n\
-                        128x: Can survive trivial damage with max health and double defense\n\
-                        256x: Cannot survive damage"
+                        "Modifies all sources of damage not affected by other sliders\n"
+                        "2x: Can survive all common attacks from the start of the game\n"
+                        "4x: Dies in 1 hit to any substantial attack from the start of the game\n"
+                        "8x: Can only survive trivial damage from the start of the game\n"
+                        "16x: Can survive all common attacks with max health without double defense\n"
+                        "32x: Can survive all common attacks with max health and double defense\n"
+                        "64x: Can survive trivial damage with max health without double defense\n"
+                        "128x: Can survive trivial damage with max health and double defense\n"
+                        "256x: Cannot survive damage"
                     );
                     UIWidgets::PaddedText("Fall Damage Multiplier", true, false);
                     UIWidgets::EnhancementCombobox("gFallDamageMul", powers, 8, 0);
                     UIWidgets::Tooltip(
-                        "Modifies all fall damage\n\
-                        2x: Can survive all fall damage from the start of the game\n\
-                        4x: Can only survive short fall damage from the start of the game\n\
-                        8x: Cannot survive any fall damage from the start of the game\n\
-                        16x: Can survive all fall damage with max health without double defense\n\
-                        32x: Can survive all fall damage with max health and double defense\n\
-                        64x: Can survive short fall damage with double defense\n\
-                        128x: Cannot survive fall damage"
+                        "Modifies all fall damage\n"
+                        "2x: Can survive all fall damage from the start of the game\n"
+                        "4x: Can only survive short fall damage from the start of the game\n"
+                        "8x: Cannot survive any fall damage from the start of the game\n"
+                        "16x: Can survive all fall damage with max health without double defense\n"
+                        "32x: Can survive all fall damage with max health and double defense\n"
+                        "64x: Can survive short fall damage with double defense\n"
+                        "128x: Cannot survive fall damage"
                     );
                     UIWidgets::PaddedText("Void Damage Multiplier", true, false);
                     UIWidgets::EnhancementCombobox("gVoidDamageMul", powers, 7, 0);
                     UIWidgets::Tooltip(
-                        "Modifies damage taken after falling into a void\n\
-                        2x: Can survive void damage from the start of the game\n\
-                        4x: Cannot survive void damage from the start of the game\n\
-                        8x: Can survive void damage twice with max health without double defense\n\
-                        16x: Can survive void damage with max health without double defense\n\
-                        32x: Can survive void damage with max health and double defense\n\
-                        64x: Cannot survive void damage"
+                        "Modifies damage taken after falling into a void\n"
+                        "2x: Can survive void damage from the start of the game\n"
+                        "4x: Cannot survive void damage from the start of the game\n"
+                        "8x: Can survive void damage twice with max health without double defense\n"
+                        "16x: Can survive void damage with max health without double defense\n"
+                        "32x: Can survive void damage with max health and double defense\n"
+                        "64x: Cannot survive void damage"
                     );
                     UIWidgets::PaddedEnhancementCheckbox("Spawn with full health", "gFullHealthSpawn", true, false);
                     UIWidgets::Tooltip("Respawn with full health instead of 3 Hearts");
@@ -891,107 +830,88 @@ namespace GameMenuBar {
 
             EXPERIMENTAL();
 
-            const char* fps_cvar = "gInterpolationFPS";
-            {
-                int minFps = 20;
-                int maxFps = Ship::Window::GetInstance()->GetCurrentRefreshRate();
-
-                int val = OTRGlobals::Instance->GetInterpolationFPS();
-                val = fmax(fmin(val, maxFps), 20);
-
+            { // FPS Slider
+                const int minFps = 20;
+                const int maxFps = Ship::Window::GetInstance()->GetCurrentRefreshRate();
+                int currentFps = fmax(fmin(OTRGlobals::Instance->GetInterpolationFPS(), maxFps), minFps);
             #ifdef __WIIU__
                 // only support divisors of 60 on the Wii U
-                val = 60 / (60 / val);
-            #endif
+                if (currentFps > 60) {
+                    currentFps = 60;
+                } 
+                else {
+                    currentFps = 60 / (60 / currentFps);
+                }
 
-                int fps = val;
-
-                if (fps == 20)
-                {
+                int fpsSlider = 1;
+                if (currentFps == 20) {
                     ImGui::Text("Frame interpolation: Off");
+                } 
+                else {
+                    ImGui::Text("Frame interpolation: %d FPS", currentFps);
+                    if (currentFps == 30) {
+                        fpsSlider = 2;
+                    }
+                    else { // currentFps == 60
+                        fpsSlider = 3;
+                    }
                 }
-                else
-                {
-                    ImGui::Text("Frame interpolation: %d FPS", fps);
-                }
-                
                 if (CVarGetInteger("gMatchRefreshRate", 0)) {
                     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                     ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
                 }
 
-                std::string MinusBTNFPSI = " - ##FPSInterpolation";
-                std::string PlusBTNFPSI = " + ##FPSInterpolation";
-                if (ImGui::Button(MinusBTNFPSI.c_str())) {
-                #ifdef __WIIU__
-                    if (val >= 60) val = 30;
-                    else val = 20;
-                #else
-                    val--;
-                #endif
-                    CVarSetInteger(fps_cvar, val);
-                    SohImGui::RequestCvarSaveOnNextTick();
+                if (ImGui::Button(" - ##WiiUFPS")) {
+                    fpsSlider--;
                 }
                 ImGui::SameLine();
                 ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-            #ifdef __SWITCH__
-                ImGui::PushItemWidth(ImGui::GetWindowSize().x - 110.0f);
-            #elif defined(__WIIU__)
-                ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f * 2);
-            #else
-                ImGui::PushItemWidth(ImGui::GetWindowSize().x - 79.0f);
-            #endif
-                if (ImGui::SliderInt("##FPSInterpolation", &val, minFps, maxFps, "", ImGuiSliderFlags_AlwaysClamp))
-                {
-                #ifdef __WIIU__
-                    // only support divisors of 60 on the Wii U
-                    val = 60 / (60 / val);
-                #endif
-                    if (val > 360)
-                    {
-                        val = 360;
-                    }
-                    else if (val < 20)
-                    {
-                        val = 20;
-                    }
 
-                    CVarSetInteger(fps_cvar, val);
-                    SohImGui::RequestCvarSaveOnNextTick();
-                }
-                ImGui::PopItemWidth();
-                UIWidgets::Tooltip("Interpolate extra frames to get smoother graphics\n"
-                    "Set to match your monitor's refresh rate, or a divisor of it\n"
-                    "A higher target FPS than your monitor's refresh rate will just waste resources, "
-                    "and might give a worse result.\n"
-                    "For consistent input lag, set this value and your monitor's refresh rate to a multiple of 20\n"
-                    "Ctrl+Click for keyboard input");
+                ImGui::SliderInt("##WiiUFPSSlider", &fpsSlider, 1, 3, "", ImGuiSliderFlags_AlwaysClamp);
 
                 ImGui::SameLine();
                 ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-                if (ImGui::Button(PlusBTNFPSI.c_str())) {
-                #ifdef __WIIU__
-                    if (val <= 20) val = 30;
-                    else val = 60;
-                #else
-                    val++;
-                #endif
-                    CVarSetInteger(fps_cvar, val);
-                    SohImGui::RequestCvarSaveOnNextTick();
+                if (ImGui::Button(" + ##WiiUFPS")) {
+                    fpsSlider++;
                 }
-                
+
                 if (CVarGetInteger("gMatchRefreshRate", 0)) {
                     ImGui::PopItemFlag();
                     ImGui::PopStyleVar(1);
                 }
-            }
-            
-            UIWidgets::Spacer(0);
-            UIWidgets::EnhancementCheckbox("Match Refresh Rate", "gMatchRefreshRate");
-            UIWidgets::Tooltip("Matches interpolation value to the current game's window refresh rate");
-            UIWidgets::Spacer(0);
+                if (fpsSlider > 3) {
+                    fpsSlider = 3;
+                } 
+                else if (fpsSlider < 1) {
+                    fpsSlider = 1;
+                }
 
-            UIWidgets::EnhancementCheckbox("Disable LOD", "gDisableLOD");
+                if (fpsSlider == 1) {
+                    currentFps = 20;
+                }
+                else if (fpsSlider == 2) {
+                    currentFps = 30;
+                }
+                else if (fpsSlider == 3) {
+                    currentFps = 60;
+                }
+                CVarSetInteger("gInterpolationFPS", currentFps);
+                SohImGui::RequestCvarSaveOnNextTick();
+            #else
+                UIWidgets::EnhancementSliderInt((currentFps == 20) ? "Frame interpolation: Off" : "Frame interpolation: %d FPS", 
+                    "##FPSInterpolation", "gInterpolationFPS", minFps, maxFps, "", 20, true, CVarGetInteger("gMatchRefreshRate", 0));
+            #endif
+                UIWidgets::Tooltip("Interpolate extra frames to get smoother graphics\n"
+                    "Set to match your monitor's refresh rate, or a divisor of it\n"
+                    "A higher target FPS than your monitor's refresh rate will just waste resources, and might give a worse result.\n"
+                    "For consistent input lag, set this value and your monitor's refresh rate to a multiple of 20\n"
+                    "Ctrl+Click for keyboard input");
+            } // END FPS Slider
+            
+            UIWidgets::PaddedEnhancementCheckbox("Match Refresh Rate", "gMatchRefreshRate", true, false);
+            UIWidgets::Tooltip("Matches interpolation value to the current game's window refresh rate");
+
+            UIWidgets::PaddedEnhancementCheckbox("Disable LOD", "gDisableLOD", true, false);
             UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
             if (UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance", true, false)) {
                 if (CVarGetInteger("gDisableDrawDistance", 0) == 0) {
@@ -1144,7 +1064,7 @@ namespace GameMenuBar {
             if (ImGui::Button("Change Age")) {
                 CVarSetInteger("gSwitchAge", 1);
             }
-            UIWidgets::Tooltip("Switches links age and reloads the area.");   
+            UIWidgets::Tooltip("Switches Link's age and reloads the area.");   
 
             ImGui::EndMenu();
         }
@@ -1256,7 +1176,7 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0));
             }
-            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+            UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVarGetInteger("gItemTrackerEnabled", 0);
@@ -1264,7 +1184,7 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0));
             }
-            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+            UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVarGetInteger("gItemTrackerSettingsEnabled", 0);
@@ -1272,7 +1192,7 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0));
             }
-            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+            UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVarGetInteger("gEntranceTrackerEnabled", 0);
@@ -1280,7 +1200,7 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0));
             }
-            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+            UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVarGetInteger("gCheckTrackerEnabled", 0);
@@ -1288,7 +1208,7 @@ namespace GameMenuBar {
                 SohImGui::RequestCvarSaveOnNextTick();
                 SohImGui::EnableWindow("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0));
             }
-            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+            UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Check Tracker Settings", CVarGetInteger("gCheckTrackerSettingsEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVarGetInteger("gCheckTrackerSettingsEnabled", 0);
@@ -1359,7 +1279,7 @@ namespace GameMenuBar {
                 CrowdControl::Instance->Disable();
             }
 
-            ImGui::Dummy(ImVec2(0.0f, 0.0f));
+            UIWidgets::Spacer(0);
         #endif
 
             UIWidgets::EnhancementCheckbox("Enemy Randomizer", "gRandomizedEnemies");

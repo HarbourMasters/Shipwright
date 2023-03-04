@@ -221,6 +221,7 @@ namespace UIWidgets {
 
     bool PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText, CheckboxGraphics disabledGraphic, bool defaultValue) {
         bool changed = false;
+        ImGui::BeginGroup();
         if (padTop) Spacer(0);
 
         if (EnhancementCheckbox(text, cvarName, disabled, disabledTooltipText, disabledGraphic, defaultValue)) {
@@ -228,7 +229,7 @@ namespace UIWidgets {
         }
 
         if (padBottom) Spacer(0);
-
+        ImGui::EndGroup();
         return changed;
     }
 
@@ -331,6 +332,7 @@ namespace UIWidgets {
             DisableComponentSwitch(disabledTooltipText, alpha);
         }
 
+        ImGui::BeginGroup();
         if(PlusMinusButton) {
             std::string MinusBTNName = " - ##";
             MinusBTNName += cvarName;
@@ -348,7 +350,7 @@ namespace UIWidgets {
             }
         }
 
-        if (ImGui::SliderInt(id, &val, min, max, format))
+        if (ImGui::SliderInt(id, &val, min, max, format, ImGuiSliderFlags_AlwaysClamp))
         {
             CVarSetInteger(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
@@ -371,6 +373,7 @@ namespace UIWidgets {
                 changed = true;
             }
         }
+        ImGui::EndGroup();
 
         if (disabled) {
             ImGui::PopStyleVar(1);
@@ -414,6 +417,8 @@ namespace UIWidgets {
             ImGui::Text(text, static_cast<int>(100 * val));
         }
         Spacer(0);
+
+        ImGui::BeginGroup();
         if(PlusMinusButton) {
             std::string MinusBTNName = " - ##";
             MinusBTNName += cvarName;
@@ -431,7 +436,7 @@ namespace UIWidgets {
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
         }
 
-        if (ImGui::SliderFloat(id, &val, min, max, format)) {
+        if (ImGui::SliderFloat(id, &val, min, max, format, ImGuiSliderFlags_AlwaysClamp)) {
             if (isPercentage) {
                 CVarSetFloat(cvarName, roundf(val * 100) / 100);
             } else {
@@ -457,6 +462,7 @@ namespace UIWidgets {
                 changed = true;
             }
         }
+        ImGui::EndGroup();
 
         if (disabled) {
             ImGui::PopStyleVar(1);
@@ -485,7 +491,7 @@ namespace UIWidgets {
 
     bool PaddedEnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText) {
         bool changed = false;
-        
+        ImGui::BeginGroup();
         if (padTop) {
             Spacer(0);
         }
@@ -495,13 +501,13 @@ namespace UIWidgets {
         if (padBottom) {
             Spacer(0);
         }
-
+        ImGui::EndGroup();
         return changed;
     }
 
     bool PaddedEnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText) {
         bool changed = false;
-
+        ImGui::BeginGroup();
         if (padTop) {
             Spacer(0);
         }
@@ -511,7 +517,7 @@ namespace UIWidgets {
         if (padBottom) {
             Spacer(0);
         }
-
+        ImGui::EndGroup();
         return changed;
     }
 
