@@ -12871,9 +12871,11 @@ void func_8084E6D4(Player* this, PlayState* play) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, this->actor.world.pos.x,
                                 this->actor.world.pos.y + 100.0f, this->actor.world.pos.z, 0, 0, 0, 0, true);
                     func_8083C0E8(this, play);
+                    GameInteractor_ExecuteOnReceiveItemHooks(ItemTable_RetrieveEntry(this->getItemEntry.modIndex, this->getItemEntry.getItemId));
                 } else {
                     this->actor.colChkInfo.damage = 0;
                     func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
+                    GameInteractor_ExecuteOnReceiveItemHooks(ItemTable_RetrieveEntry(this->getItemEntry.modIndex, this->getItemEntry.getItemId));
                     this->getItemId = GI_NONE;
                     this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
                     // Gameplay stats: Increment Ice Trap count
