@@ -987,6 +987,10 @@ void EnGirlA_ItemGive_Randomizer(PlayState* play, EnGirlA* this) {
         Randomizer_Item_Give(play, getItemEntry);
     }
 
+    if (getItemEntry.itemId == GI_ICE_TRAP || getItemEntry.itemId == RG_ICE_TRAP) {
+        GameInteractor_ExecuteOnReceiveItemHooks(ItemTable_RetrieveEntry(getItemEntry.modIndex, getItemEntry.getItemId));
+    }
+
     Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);
     Rupees_ChangeBy(-this->basePrice);
 }

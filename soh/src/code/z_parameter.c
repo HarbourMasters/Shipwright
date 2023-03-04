@@ -6191,7 +6191,8 @@ void Interface_Update(PlayState* play) {
                 u16 tempSaleMod = gSaveContext.pendingSaleMod;
                 gSaveContext.pendingSale = ITEM_NONE;
                 gSaveContext.pendingSaleMod = MOD_NONE;
-                GameInteractor_ExecuteOnReceiveItemHooks(ItemTable_RetrieveEntry(tempSaleMod,tempSaleItem));
+                // GameInteractor_ExecuteOnReceiveItemHooks(ItemTable_RetrieveEntry(tempSaleMod,tempSaleItem));
+                // TODO Make new SaleEnded hook to call autosave for shop items
             }
         } else {
             gSaveContext.rupeeAccumulator = 0;

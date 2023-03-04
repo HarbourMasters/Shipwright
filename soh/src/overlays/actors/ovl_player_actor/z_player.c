@@ -6320,6 +6320,7 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
                     Player_SetPendingFlag(this, play);
                     Message_StartTextbox(play, 0xF8, NULL);
                     Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
+                    GameInteractor_ExecuteOnReceiveItemHooks(ItemTable_RetrieveEntry(this->getItemEntry.modIndex, this->getItemEntry.getItemId));
                     gSaveContext.pendingIceTrapCount++;
                     return 1;
                 }
@@ -12624,6 +12625,10 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
             Player_SetPendingFlag(this, play);
         }
 
+        /*if (giEntry.itemId == RG_ICE_TRAP || giEntry.itemId == GI_ICE_TRAP) {
+            GameInteractor_ExecuteOnReceiveItemHooks(ItemTable_RetrieveEntry(giEntry.modIndex, giEntry.getItemId));
+        }*/
+
         // Use this if we do have a getItemEntry
         if (giEntry.modIndex == MOD_NONE) {
             if (gSaveContext.n64ddFlag) {
@@ -12703,6 +12708,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
                 this->unk_862 = 0;
                 gSaveContext.pendingIceTrapCount++;
                 Player_SetPendingFlag(this, play);
+                GameInteractor_ExecuteOnReceiveItemHooks(ItemTable_RetrieveEntry(giEntry.modIndex, giEntry.getItemId));
             }
 
             this->getItemId = GI_NONE;
