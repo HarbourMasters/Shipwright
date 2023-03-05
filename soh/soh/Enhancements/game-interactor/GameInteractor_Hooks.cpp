@@ -18,6 +18,10 @@ void GameInteractor_ExecuteOnReceiveItemHooks(GetItemEntry item) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnReceiveItem>(item);
 }
 
+void GameInteractor_ExecuteOnSaleEndHooks(GetItemEntry item) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaleEnd>(item);
+}
+
 void GameInteractor_ExecuteOnSceneInitHooks(int16_t sceneNum) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(sceneNum);
 }

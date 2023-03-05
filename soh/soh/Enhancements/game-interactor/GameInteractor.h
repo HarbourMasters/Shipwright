@@ -88,6 +88,7 @@ public:
     DEFINE_HOOK(OnExitGame, void(int32_t fileNum));
     DEFINE_HOOK(OnGameFrameUpdate, void());
     DEFINE_HOOK(OnReceiveItem, void(GetItemEntry item));
+    DEFINE_HOOK(OnSaleEnd, void(GetItemEntry item));
     DEFINE_HOOK(OnSceneInit, void(int16_t sceneNum));
     DEFINE_HOOK(OnPlayerUpdate, void());
     
