@@ -7,11 +7,9 @@ extern "C" {
 #include <z64.h>
 #include "macros.h"
 #include "variables.h"
+#include "functions.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
-extern void Play_PerformSave(PlayState* play);
-extern s32 Health_ChangeBy(PlayState* play, s16 healthChange);
-extern void Rupees_ChangeBy(s16 rupeeChange);
 }
 
 void RegisterInfiniteMoney() {
@@ -258,6 +256,52 @@ void RegisterRupeeDash() {
     });
 }
 
+void RegisterBonkDamage() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerBonk>([]() {
+        uint8_t bonkOption = CVarGetInteger("gBonkDamageMul", 0);
+        uint16_t bonkDamage = 0;
+        switch (bonkOption) {
+            // Quarter heart
+            case 1:
+                bonkDamage = 4;
+                break;
+            // Half a heart
+            case 2:
+                bonkDamage = 8;
+                break;
+            // Full heart
+            case 3:
+                bonkDamage = 16;
+                break;
+            // 2 hearts
+            case 4:
+                bonkDamage = 32;
+                break;
+            // 4 hearts
+            case 5:
+                bonkDamage = 64;
+                break;
+            // 8 hearts
+            case 6:
+                bonkDamage = 128;
+                break;
+            case 0:
+            case 7:
+            default:
+                break;
+        }
+        // OHKO
+        if (bonkOption == 7) {
+            gSaveContext.health = 0;
+        } else if (bonkDamage) {
+            Health_ChangeBy(gPlayState, -bonkDamage);
+            // Set invincibility to make Link flash red as a visual damage indicator.
+            Player* player = GET_PLAYER(gPlayState);
+            player->invincibilityTimer = 28;
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -272,4 +316,5 @@ void InitMods() {
     RegisterSwitchAge();
     RegisterRupeeDash();
     RegisterAutoSave();
+    RegisterBonkDamage();
 }
