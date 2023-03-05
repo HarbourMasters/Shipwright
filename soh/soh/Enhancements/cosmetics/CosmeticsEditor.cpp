@@ -1680,7 +1680,7 @@ void DrawCosmeticsEditor(bool& open) {
 
     ImGui::Text("Color Scheme");
     ImGui::SameLine();
-    UIWidgets::EnhancementCombobox("gCosmetics.DefaultColorScheme", colorSchemes, 2, 0);
+    UIWidgets::EnhancementCombobox("gCosmetics.DefaultColorScheme", colorSchemes, 0);
     UIWidgets::EnhancementCheckbox("Advanced Mode", "gCosmetics.AdvancedMode");
     if (CVarGetInteger("gCosmetics.AdvancedMode", 0)) {
         if (ImGui::Button("Lock All Advanced", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {

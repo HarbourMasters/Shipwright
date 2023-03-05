@@ -1041,14 +1041,14 @@ void DrawItemTrackerOptions(bool& open) {
     UIWidgets::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50, "", 12);
     
     ImGui::Text("Ammo/Capacity Tracking");
-    UIWidgets::EnhancementCombobox("gItemTrackerCapacityTrack", itemTrackerCapacityTrackOptions, 5, 1);
+    UIWidgets::EnhancementCombobox("gItemTrackerCapacityTrack", itemTrackerCapacityTrackOptions, 1);
     UIWidgets::InsertHelpHoverText("Customize what the numbers under each item are tracking."
                                     "\n\nNote: items without capacity upgrades will track ammo even in capacity mode");
     if (CVarGetInteger("gItemTrackerCapacityTrack", 1) == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || CVarGetInteger("gItemTrackerCapacityTrack", 1) == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
         PaddedEnhancementCheckbox("Align count to left side", "gItemTrackerCurrentOnLeft", 0);
     }
     ImGui::Text("Key Count Tracking");
-    UIWidgets::EnhancementCombobox("gItemTrackerKeyTrack", itemTrackerKeyTrackOptions, 3, 0);
+    UIWidgets::EnhancementCombobox("gItemTrackerKeyTrack", itemTrackerKeyTrackOptions, 0);
     UIWidgets::InsertHelpHoverText("Customize what numbers are shown for key tracking.");
 
     ImGui::TableNextColumn();

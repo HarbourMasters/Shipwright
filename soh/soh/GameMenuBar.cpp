@@ -59,20 +59,6 @@ enum SeqPlayers {
 
 namespace GameMenuBar {
 
-    // MARK: - Properties
-
-    const char* powers[9] = {
-        "Vanilla (1x)",
-        "Double (2x)",
-        "Quadruple (4x)",
-        "Octuple (8x)",
-        "Hexadecuple (16x)",
-        "Duotrigintuple (32x)",
-        "Quattuorsexagintuple (64x)",
-        "Octoviginticentuple (128x)",
-        "Hexaquinquagintiducentuple (256x)"
-    };
-
     // MARK: - Helpers
 
     std::string GetWindowButtonText(const char* text, bool menuOpen) {
@@ -225,7 +211,10 @@ namespace GameMenuBar {
                 EXPERIMENTAL();
 
                 ImGui::Text("Texture Filter (Needs reload)");
-                UIWidgets::EnhancementCombobox("gTextureFilter", SohImGui::GetSupportedTextureFilters(), 3, 0);
+                const char* filters[] = { SohImGui::GetSupportedTextureFilters()[0],
+                                          SohImGui::GetSupportedTextureFilters()[1],
+                                          SohImGui::GetSupportedTextureFilters()[2] };
+                UIWidgets::EnhancementCombobox("gTextureFilter", filters, 0);
 
                 UIWidgets::Spacer(0);
 
@@ -295,6 +284,11 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Kick open every chest");
                     UIWidgets::PaddedText("Chest size & texture matches contents", true, false);
                     const char* chestSizeAndTextureMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only"};
+                    if (UIWidgets::EnhancementCombobox("gChestSizeAndTextureMatchesContents", chestSizeAndTextureMatchesContentsOptions, 0)) {
+                        if (CVarGetInteger("gChestSizeAndTextureMatchesContents", 0) == 0) {
+                            CVarSetInteger("gChestSizeDependsStoneOfAgony", 0);
+                        }
+                    }
                     UIWidgets::Tooltip(
                         "Chest sizes and textures are changed to help identify the item inside.\n"
                         " - Major items: Large gold chests\n"
@@ -304,11 +298,6 @@ namespace GameMenuBar {
                         " - Boss keys: Vanilla size and texture\n"
                         " - Skulltula Tokens: Small skulltula chest\n"
                     );
-                    if (UIWidgets::EnhancementCombobox("gChestSizeAndTextureMatchesContents", chestSizeAndTextureMatchesContentsOptions, 4, 0)) {
-                        if (CVarGetInteger("gChestSizeAndTextureMatchesContents", 0) == 0) {
-                            CVarSetInteger("gChestSizeDependsStoneOfAgony", 0);
-                        }
-                    }
                     if (CVarGetInteger("gChestSizeAndTextureMatchesContents", 0) > 0) {
                         UIWidgets::PaddedEnhancementCheckbox("Chests of Agony", "gChestSizeDependsStoneOfAgony", true, false);
                         UIWidgets::Tooltip("Only change the size/texture of chests if you have the Stone of Agony.");
@@ -354,7 +343,7 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Prevent dropping inputs when playing the ocarina quickly");
                     UIWidgets::PaddedText("Bunny Hood Effect", true, false);
                     const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run"};
-                    UIWidgets::EnhancementCombobox("gMMBunnyHood", bunnyHoodOptions, 3, 0);
+                    UIWidgets::EnhancementCombobox("gMMBunnyHood", bunnyHoodOptions, 0);
                     UIWidgets::Tooltip(
                         "Wearing the Bunny Hood grants a speed increase like in Majora's Mask. The longer jump option is not accounted for in randomizer logic.\n\n"
                         "Also disables NPC's reactions to wearing the Bunny Hood."
@@ -380,8 +369,22 @@ namespace GameMenuBar {
 
                 if (ImGui::BeginMenu("Difficulty Options"))
                 {
+                    const char* allPowers[9] = {
+                        "Vanilla (1x)",
+                        "Double (2x)",
+                        "Quadruple (4x)",
+                        "Octuple (8x)",
+                        "Foolish (16x)",
+                        "Ridiculous (32x)",
+                        "Merciless (64x)",
+                        "Pure Torture (128x)",
+                        "OHKO (256x)" };
+                    const char* subPowers[8] = { allPowers[0], allPowers[1], allPowers[2], 
+                        allPowers[3], allPowers[4], allPowers[5], allPowers[6], allPowers[7] };
+                    const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], 
+                        allPowers[3], allPowers[4], allPowers[5], allPowers[6]};
                     ImGui::Text("Damage Multiplier");
-                    UIWidgets::EnhancementCombobox("gDamageMul", powers, 9, 0);
+                    UIWidgets::EnhancementCombobox("gDamageMul", allPowers, 0);
                     UIWidgets::Tooltip(
                         "Modifies all sources of damage not affected by other sliders\n"
                         "2x: Can survive all common attacks from the start of the game\n"
@@ -394,7 +397,7 @@ namespace GameMenuBar {
                         "256x: Cannot survive damage"
                     );
                     UIWidgets::PaddedText("Fall Damage Multiplier", true, false);
-                    UIWidgets::EnhancementCombobox("gFallDamageMul", powers, 8, 0);
+                    UIWidgets::EnhancementCombobox("gFallDamageMul", subPowers, 0);
                     UIWidgets::Tooltip(
                         "Modifies all fall damage\n"
                         "2x: Can survive all fall damage from the start of the game\n"
@@ -406,7 +409,7 @@ namespace GameMenuBar {
                         "128x: Cannot survive fall damage"
                     );
                     UIWidgets::PaddedText("Void Damage Multiplier", true, false);
-                    UIWidgets::EnhancementCombobox("gVoidDamageMul", powers, 7, 0);
+                    UIWidgets::EnhancementCombobox("gVoidDamageMul", subSubPowers, 0);
                     UIWidgets::Tooltip(
                         "Modifies damage taken after falling into a void\n"
                         "2x: Can survive void damage from the start of the game\n"
@@ -708,7 +711,7 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Always shows dungeon entrance icons on the minimap");
                 UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
                 const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
-                UIWidgets::EnhancementCombobox("gDirtPathFix", zFightingOptions, 3, 0);
+                UIWidgets::EnhancementCombobox("gDirtPathFix", zFightingOptions, 0);
                 UIWidgets::Tooltip("Disabled: Paths vanish more the higher the resolution (Z-fighting is based on resolution)\n"
                                    "Consistent: Certain paths vanish the same way in all resolutions\n"
                                    "No Vanish: Paths do not vanish, Link seems to sink in to some paths\n"
@@ -787,8 +790,8 @@ namespace GameMenuBar {
             // Autosave enum value of 1 is the default in presets and the old checkbox "on" state for backwards compatibility
             UIWidgets::PaddedText("Autosave", false, true);
             const char* autosaveLabels[] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
-            UIWidgets::EnhancementCombobox("gAutosave", autosaveLabels, (sizeof(autosaveLabels) / sizeof(autosaveLabels[0])), CVarGetInteger("gAutosave", 0));
-            UIWidgets::Tooltip("Automatically save the game every time a new area is entered and/or item is obtained\n"
+            UIWidgets::EnhancementCombobox("gAutosave", autosaveLabels, 0);
+            UIWidgets::Tooltip("Automatically save the game when changing locations and/or obtaining items\n"
                 "Major items exclude rupees and health/magic/ammo refills (but include bombchus unless bombchu drops are enabled)");
 
             UIWidgets::Spacer(0);
@@ -1088,7 +1091,7 @@ namespace GameMenuBar {
                     "File select",
                 };
                 ImGui::Text("Loading :");
-                UIWidgets::EnhancementCombobox("gSaveFileID", FastFileSelect, 5, 0);
+                UIWidgets::EnhancementCombobox("gSaveFileID", FastFileSelect, 0);
             };
             UIWidgets::PaddedEnhancementCheckbox("Hide Build Info", "gHideBuildInfo", true, false);
             UIWidgets::Tooltip("Hides the game version and build details in the boot logo start screen");

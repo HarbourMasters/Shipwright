@@ -233,23 +233,10 @@ namespace UIWidgets {
         return changed;
     }
 
-    void EnhancementCombo(const std::string& name, const char* cvarName, const std::vector<std::string>& items, int defaultValue) {
-        if (ImGui::BeginCombo(name.c_str(), items[static_cast<int>(CVarGetInteger(cvarName, defaultValue))].c_str())) {
-            for (int settingIndex = 0; settingIndex < (int) items.size(); settingIndex++) {
-                if (ImGui::Selectable(items[settingIndex].c_str())) {
-                    CVarSetInteger(cvarName, settingIndex);
-                    SohImGui::RequestCvarSaveOnNextTick();
-
-                }
-            }
-            ImGui::EndCombo();
-        }
-    }
-
-    bool EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue, bool disabled, const char* disabledTooltipText, uint8_t disabledValue) {
+    bool EnhancementCombobox(const char* cvarName, std::span<const char*, std::dynamic_extent> comboArray, uint8_t defaultIndex, bool disabled, const char* disabledTooltipText, uint8_t disabledValue) {
         bool changed = false;
-        if (FirstTimeValue <= 0) {
-            FirstTimeValue = 0;
+        if (defaultIndex <= 0) {
+            defaultIndex = 0;
         }
 
         if (disabled) {
@@ -257,14 +244,13 @@ namespace UIWidgets {
             ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
         }
 
-        uint8_t selected = CVarGetInteger(name, FirstTimeValue);
-        uint8_t DefaultValue = selected;
-        std::string comboName = std::string("##") + std::string(name);
-        if (ImGui::BeginCombo(comboName.c_str(), ComboArray[DefaultValue])) {
-            for (uint8_t i = 0; i < arraySize; i++) {
-                if (strlen(ComboArray[i]) > 1) {
-                    if (ImGui::Selectable(ComboArray[i], i == selected)) {
-                        CVarSetInteger(name, i);
+        uint8_t selected = CVarGetInteger(cvarName, defaultIndex);
+        std::string comboName = std::string("##") + std::string(cvarName);
+        if (ImGui::BeginCombo(comboName.c_str(), comboArray[selected])) {
+            for (uint8_t i = 0; i < comboArray.size(); i++) {
+                if (strlen(comboArray[i]) > 1) {
+                    if (ImGui::Selectable(comboArray[i], i == selected)) {
+                        CVarSetInteger(cvarName, i);
                         selected = i;
                         changed = true;
                         SohImGui::RequestCvarSaveOnNextTick();
@@ -282,7 +268,7 @@ namespace UIWidgets {
             ImGui::PopItemFlag();
 
             if (disabledValue >= 0 && selected != disabledValue) {
-                CVarSetInteger(name, disabledValue);
+                CVarSetInteger(cvarName, disabledValue);
                 changed = true;
                 SohImGui::RequestCvarSaveOnNextTick();
             }
