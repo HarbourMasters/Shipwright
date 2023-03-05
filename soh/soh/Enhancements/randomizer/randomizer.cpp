@@ -224,7 +224,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Reward Count", RSK_RAINBOW_BRIDGE_REWARD_COUNT },
     { "Open Settings:Dungeon Count", RSK_RAINBOW_BRIDGE_DUNGEON_COUNT },
     { "Open Settings:Token Count", RSK_RAINBOW_BRIDGE_TOKEN_COUNT },
-    { "Open Settings:Reward Option", RSK_REWARD_OPTIONS },
+    { "Open Settings:Reward Options", RSK_REWARD_OPTIONS },
     { "Shuffle Settings:Shuffle Dungeon Rewards", RSK_SHUFFLE_DUNGEON_REWARDS },
     { "Shuffle Settings:Link's Pocket", RSK_LINKS_POCKET},
     { "Shuffle Settings:Shuffle Songs", RSK_SHUFFLE_SONGS },
@@ -3342,24 +3342,140 @@ void DrawRandoEditor(bool& open) {
                     case RO_BRIDGE_VANILLA:
                         break;
                     case RO_BRIDGE_STONES:
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        UIWidgets::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                                                        "gRandomizeStoneCount", 1, 3, "", 3, true);
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for opening "
+                            "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX, RO_REWARD_STANDARD);
+                        switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
+                            case RO_REWARD_STANDARD:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                                UIWidgets::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
+                                                                "gRandomizeStoneCount", 1, 3, "", 3, true);
+                                break;
+                            case RO_REWARD_GREG:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                                UIWidgets::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
+                                                                "gRandomizeStoneCount", 1, 4, "", 4, true);
+                                break;
+                            case RO_REWARD_WILDCARD:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                                UIWidgets::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
+                                                                "gRandomizeStoneCount", 1, 3, "", 3, true);
+                                break;
+                        }
+
                         break;
                     case RO_BRIDGE_MEDALLIONS:
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        UIWidgets::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                                                        "gRandomizeMedallionCount", 1, 6, "", 6, true);
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for opening "
+                            "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX,
+                                                       RO_REWARD_STANDARD);
+                        switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
+                            case RO_REWARD_STANDARD:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                                UIWidgets::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
+                                                                "gRandomizeMedallionCount", 1, 6, "", 6, true);
+                                break;
+                            case RO_REWARD_GREG:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                                UIWidgets::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
+                                                                "gRandomizeMedallionCount", 1, 7, "", 7, true);
+                                break;
+                            case RO_REWARD_WILDCARD:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                                UIWidgets::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
+                                                                "gRandomizeMedallionCount", 1, 6, "", 6, true);
+                                break;
+                        }
+
                         break;
                     case RO_BRIDGE_DUNGEON_REWARDS:
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        UIWidgets::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                        "gRandomizeRewardCount", 1, 9, "", 9, true);
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for opening "
+                            "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX, RO_REWARD_STANDARD);
+                        switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
+                            case RO_REWARD_STANDARD:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                                UIWidgets::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
+                                                                "gRandomizeRewardCount", 1, 9, "", 9, true);
+                                break;
+                            case RO_REWARD_GREG:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                                UIWidgets::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
+                                                                "gRandomizeRewardCount", 1, 10, "", 10, true);
+                                break;
+                            case RO_REWARD_WILDCARD:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                                UIWidgets::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
+                                                                "gRandomizeRewardCount", 1, 9, "", 9, true);
+
+                                break;
+                        }
+
                         break;
+
                     case RO_BRIDGE_DUNGEONS:
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        UIWidgets::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                        "gRandomizeDungeonCount", 1, 8, "", 8, true);
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for opening "
+                            "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX,
+                                                       RO_REWARD_STANDARD);
+                        switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
+                            case RO_REWARD_STANDARD:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                                UIWidgets::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
+                                                                "gRandomizeDungeonCount", 1, 8, "", 8, true);
+                                break;
+                            case RO_REWARD_GREG:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                                UIWidgets::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
+                                                                "gRandomizeDungeonCount", 1, 9, "", 9, true);
+                                break;
+                            case RO_REWARD_WILDCARD:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                                UIWidgets::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
+                                                                "gRandomizeDungeonCount", 1, 8, "", 8, true);
+                                break;
+                        }
+
                         break;
                     case RO_BRIDGE_TOKENS:
                         ImGui::Dummy(ImVec2(0.0f, 0.0f));
@@ -3369,7 +3485,6 @@ void DrawRandoEditor(bool& open) {
                     case RO_BRIDGE_GREG:
                         break;
                 }
-
                 UIWidgets::PaddedSeparator();
 
                 // Reward Options
