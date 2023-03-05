@@ -990,23 +990,14 @@ void DrawCheckTrackerOptions(bool& open) {
     }
     ImGui::PopItemWidth();
 
-    ImGui::Text("Window Type");
-    ImGui::SameLine();
-    UIWidgets::EnhancementCombobox("gCheckTrackerWindowType", windowType, 1);
-
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Window Type", "gCheckTrackerWindowType", windowType, 1);
     if (CVarGetInteger("gCheckTrackerWindowType", 1) == 0) {
         UIWidgets::EnhancementCheckbox("Enable Dragging", "gCheckTrackerHudEditMode");
         UIWidgets::EnhancementCheckbox("Only enable while paused", "gCheckTrackerShowOnlyPaused");
-        ImGui::Text("Display Mode");
-        ImGui::SameLine();
-        UIWidgets::EnhancementCombobox("gCheckTrackerDisplayType", displayType, 0);
+        UIWidgets::LabeledRightAlignedEnhancementCombobox("Display Mode", "gCheckTrackerDisplayType", displayType, 0);
         if (CVarGetInteger("gCheckTrackerDisplayType", 0) > 0) {
-            ImGui::Text("Combo Button 1");
-            ImGui::SameLine();
-            UIWidgets::EnhancementCombobox("gCheckTrackerComboButton1", buttonStrings, 6);
-            ImGui::Text("Combo Button 2");
-            ImGui::SameLine();
-            UIWidgets::EnhancementCombobox("gCheckTrackerComboButton2", buttonStrings, 8);
+            UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 1", "gCheckTrackerComboButton1", buttonStrings, 6);
+            UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 2", "gCheckTrackerComboButton2", buttonStrings, 8);
         }
     }
     UIWidgets::EnhancementCheckbox("Performance mode", "gCheckTrackerOptionPerformanceMode");

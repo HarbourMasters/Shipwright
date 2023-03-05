@@ -64,18 +64,10 @@ void DrawColViewerWindow(bool& open) {
     }
     UIWidgets::EnhancementCheckbox("Enabled", "gColViewerEnabled");
 
-    UIWidgets::EnhancementCombobox("gColViewerScene", ColRenderSettingNames, 0);
-    ImGui::SameLine();
-    ImGui::Text("Scene");
-    UIWidgets::EnhancementCombobox("gColViewerBgActors", ColRenderSettingNames, 0);
-    ImGui::SameLine();
-    ImGui::Text("Bg Actors");
-    UIWidgets::EnhancementCombobox("gColViewerColCheck", ColRenderSettingNames, 0);
-    ImGui::SameLine();
-    ImGui::Text("Col Check");
-    UIWidgets::EnhancementCombobox("gColViewerWaterbox", ColRenderSettingNames, 0);
-    ImGui::SameLine();
-    ImGui::Text("Waterbox");
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Scene", "gColViewerScene", ColRenderSettingNames, 0);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Bg Actors", "gColViewerBgActors", ColRenderSettingNames, 0);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Col Check", "gColViewerColCheck", ColRenderSettingNames, 0);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Waterbox", "gColViewerWaterbox", ColRenderSettingNames, 0);
 
     UIWidgets::EnhancementCheckbox("Apply as decal", "gColViewerDecal");
     UIWidgets::InsertHelpHoverText("Applies the collision as a decal display. This can be useful if there is z-fighting occuring "

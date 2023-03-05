@@ -277,6 +277,24 @@ namespace UIWidgets {
         return changed;
     }
 
+    bool LabeledRightAlignedEnhancementCombobox(const char* label, const char* cvarName, std::span<const char*, std::dynamic_extent> comboArray, uint8_t defaultIndex, bool disabled, const char* disabledTooltipText, uint8_t disabledValue) {
+        ImGui::Text(label);
+        s32 currentValue = CVarGetInteger(cvarName, defaultIndex);
+
+#ifdef __WIIU__
+    ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(comboArray[currentValue]).x * 1.0f + 40.0f));
+    ImGui::PushItemWidth((ImGui::CalcTextSize(comboArray[currentValue]).x * 1.0f) + 60.0f);
+#else
+    ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(comboArray[currentValue]).x * 1.0f + 20.0f));
+    ImGui::PushItemWidth((ImGui::CalcTextSize(comboArray[currentValue]).x * 1.0f) + 30.0f);
+#endif
+
+    bool changed = EnhancementCombobox(cvarName, comboArray, defaultIndex, disabled, disabledTooltipText, disabledValue);
+
+    ImGui::PopItemWidth();
+    return changed;
+    }
+
     void PaddedText(const char* text, bool padTop, bool padBottom) {
         if (padTop)
             Spacer(0);

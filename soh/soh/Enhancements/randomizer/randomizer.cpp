@@ -3330,29 +3330,24 @@ void DrawRandoEditor(bool& open) {
                     case RO_BRIDGE_VANILLA:
                         break;
                     case RO_BRIDGE_STONES:
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        UIWidgets::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                                                        "gRandomizeStoneCount", 1, 3, "", 3);
+                        UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
+                                                        "gRandomizeStoneCount", 1, 3, "", 3, true, true, false);
                         break;
                     case RO_BRIDGE_MEDALLIONS:
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        UIWidgets::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                                                        "gRandomizeMedallionCount", 1, 6, "", 6);
+                        UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
+                                                        "gRandomizeMedallionCount", 1, 6, "", 6, true, true, false);
                         break;
                     case RO_BRIDGE_DUNGEON_REWARDS:
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        UIWidgets::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                        "gRandomizeRewardCount", 1, 9, "", 9);
+                        UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
+                                                        "gRandomizeRewardCount", 1, 9, "", 9, true, true, false);
                         break;
                     case RO_BRIDGE_DUNGEONS:
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        UIWidgets::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                        "gRandomizeDungeonCount", 1, 8, "", 8);
+                        UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
+                                                        "gRandomizeDungeonCount", 1, 8, "", 8, true, true, false);
                         break;
                     case RO_BRIDGE_TOKENS:
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        UIWidgets::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
-                                                        "gRandomizeTokenCount", 1, 100, "", 100);
+                        UIWidgets::PaddedEnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
+                                                        "gRandomizeTokenCount", 1, 100, "", 100, true, true, false);
                         break;
                     case RO_BRIDGE_GREG:
                         break;
@@ -3376,9 +3371,8 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, RO_GANONS_TRIALS_SET_NUMBER);
                 ImGui::PopItemWidth();
                 if (CVarGetInteger("gRandomizeGanonTrial", RO_GANONS_TRIALS_SET_NUMBER) == RO_GANONS_TRIALS_SET_NUMBER) {
-                    ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                    UIWidgets::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
-                                                    "gRandomizeGanonTrialCount", 1, 6, "", 6);
+                    UIWidgets::PaddedEnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
+                                                    "gRandomizeGanonTrialCount", 1, 6, "", 6, true, true, false);
                     UIWidgets::InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower.");
                 }
 
@@ -3400,9 +3394,8 @@ void DrawRandoEditor(bool& open) {
                     UIWidgets::EnhancementCombobox("gRandomizeMqDungeons", randoMqDungeons, RO_MQ_DUNGEONS_NONE);
                     ImGui::PopItemWidth();
                     if (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SET_NUMBER) {
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        UIWidgets::EnhancementSliderInt("Master Quest Dungeon Count: %d", "##RandoMqDungeonCount",
-                            "gRandomizeMqDungeonCount", 1, 12, "", CVarGetInteger("gRandomizeMqDungeonCount", 12));
+                        UIWidgets::PaddedEnhancementSliderInt("Master Quest Dungeon Count: %d", "##RandoMqDungeonCount",
+                            "gRandomizeMqDungeonCount", 1, 12, "", CVarGetInteger("gRandomizeMqDungeonCount", 12), true, true, false);
                     }
                 }
 
@@ -3620,9 +3613,7 @@ void DrawRandoEditor(bool& open) {
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleTokens", randoTokensanity, RO_TOKENSANITY_OFF);
 
-                ImGui::Dummy(ImVec2(0,0));
-
-                UIWidgets::EnhancementCheckbox("Nighttime GS expect Sun's Song", "gRandomizeGsExpectSunsSong");
+                UIWidgets::PaddedEnhancementCheckbox("Nighttime GS expect Sun's Song", "gRandomizeGsExpectSunsSong", true, false);
                 UIWidgets::InsertHelpHoverText(
                     "All Golden Skulltulas that require nighttime to appear will only be "
                     "expected to be collected after getting Sun's Song."
@@ -3906,9 +3897,8 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PopItemWidth();
                 switch (CVarGetInteger("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF)) {
                     case RO_KEYRINGS_COUNT:
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        UIWidgets::EnhancementSliderInt("Key Ring Count: %d", "##RandomizeShuffleKeyRingsRandomCount",
-                                                        "gRandomizeShuffleKeyRingsRandomCount", 1, 8, "", 8);
+                        UIWidgets::PaddedEnhancementSliderInt("Key Ring Count: %d", "##RandomizeShuffleKeyRingsRandomCount",
+                                                        "gRandomizeShuffleKeyRingsRandomCount", 1, 8, "", 8, true, true, false);
                         break;
                     case RO_KEYRINGS_SELECTION:
                         UIWidgets::EnhancementCheckbox("Forest Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsForestTemple");
@@ -3990,29 +3980,24 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PopItemWidth();
                 switch (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA)) {
                     case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        UIWidgets::EnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount",
-                                                        "gRandomizeLacsMedallionCount", 1, 6, "", 6);
+                        UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount",
+                                                        "gRandomizeLacsMedallionCount", 1, 6, "", 6, true, true, false);
                         break;
                     case RO_GANON_BOSS_KEY_LACS_STONES:
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        UIWidgets::EnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount",
-                                                        "gRandomizeLacsStoneCount", 1, 3, "", 3);
+                        UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount",
+                                                        "gRandomizeLacsStoneCount", 1, 3, "", 3, true, true, false);
                         break;
                     case RO_GANON_BOSS_KEY_LACS_REWARDS:
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        UIWidgets::EnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount",
-                                                        "gRandomizeLacsRewardCount", 1, 9, "", 9);
+                        UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount",
+                                                        "gRandomizeLacsRewardCount", 1, 9, "", 9, true, true, false);
                         break;
                     case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        UIWidgets::EnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount",
-                                                        "gRandomizeLacsDungeonCount", 1, 8, "", 8);
+                        UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount",
+                                                        "gRandomizeLacsDungeonCount", 1, 8, "", 8, true, true, false);
                         break;
                     case RO_GANON_BOSS_KEY_LACS_TOKENS:
-                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                        UIWidgets::EnhancementSliderInt("Token Count: %d", "##RandoLacsTokenCount",
-                                                        "gRandomizeLacsTokenCount", 1, 100, "", 100);
+                        UIWidgets::PaddedEnhancementSliderInt("Token Count: %d", "##RandoLacsTokenCount",
+                                                        "gRandomizeLacsTokenCount", 1, 100, "", 100, true, true, false);
                         break;
                     default:
                         break;
@@ -4164,7 +4149,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, RO_GOSSIP_STONES_NEED_NOTHING);
                 if (CVarGetInteger("gRandomizeGossipStoneHints", RO_GOSSIP_STONES_NEED_NOTHING) != RO_GOSSIP_STONES_NONE) {
                     // Hint Clarity
-                    ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                    UIWidgets::Spacer(0);
                     ImGui::Indent();
                     ImGui::Text(Settings::ClearerHints.GetName().c_str());
                     UIWidgets::InsertHelpHoverText(
@@ -4182,7 +4167,7 @@ void DrawRandoEditor(bool& open) {
                     UIWidgets::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, RO_HINT_CLARITY_CLEAR);
 
                     // Hint Distribution
-                    ImGui::Dummy(ImVec2(0.0f, 0.0f));
+                    UIWidgets::Spacer(0);
                     ImGui::Text(Settings::HintDistribution.GetName().c_str());
                     UIWidgets::InsertHelpHoverText(
                         "Sets how many hints will be useful.\n"
