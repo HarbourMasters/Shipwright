@@ -3485,23 +3485,7 @@ void DrawRandoEditor(bool& open) {
                     case RO_BRIDGE_GREG:
                         break;
                 }
-                UIWidgets::PaddedSeparator();
-
-                // Reward Options
-                ImGui::Text("Reward Options");
-                UIWidgets::InsertHelpHoverText(
-                    "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
-                    "number of rewards on slider does not change.\n"
-                    "\n"
-                    "Greg as Reward - Greg does change logic (can be part of expected path for opening "
-                    "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
-                    "account for Greg. \n"
-                    "\n"
-                    "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
-                    "rewards on slider does not change.");
-
-                UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX, RO_REWARD_STANDARD);
-
+                
                 UIWidgets::PaddedSeparator();
 
                 // Ganon's Trials

@@ -122,6 +122,7 @@ namespace Logic {
 
   //Greg
   bool Greg = false;
+  bool GregInLogic = false;
 
   //Progressive Items
   uint8_t ProgressiveBulletBag  = 0;
@@ -777,13 +778,14 @@ namespace Logic {
     DungeonCount          = (DekuTreeClear ? 1:0) + (DodongosCavernClear ? 1:0) + (JabuJabusBellyClear ? 1:0) + (ForestTempleClear ? 1:0) + (FireTempleClear ? 1:0) + (WaterTempleClear ? 1:0) + (SpiritTempleClear ? 1:0) + (ShadowTempleClear ? 1:0);
     HasAllStones          = StoneCount == 3;
     HasAllMedallions      = MedallionCount == 6;
+    GregInLogic           = RewardOptions.Is(REWARD_GREG);
 
     CanBuildRainbowBridge = Bridge.Is(RAINBOWBRIDGE_OPEN)                                                                         ||
                            (Bridge.Is(RAINBOWBRIDGE_VANILLA)    && ShadowMedallion && SpiritMedallion && LightArrows)             ||
-                           (Bridge.Is(RAINBOWBRIDGE_STONES)     && StoneCount >= BridgeStoneCount.Value<uint8_t>())                    ||
-                           (Bridge.Is(RAINBOWBRIDGE_MEDALLIONS) && MedallionCount >= BridgeMedallionCount.Value<uint8_t>())            ||
-                           (Bridge.Is(RAINBOWBRIDGE_REWARDS)    && StoneCount + MedallionCount >= BridgeRewardCount.Value<uint8_t>())  ||
-                           (Bridge.Is(RAINBOWBRIDGE_DUNGEONS)   && DungeonCount >= BridgeDungeonCount.Value<uint8_t>())                ||
+                           (Bridge.Is(RAINBOWBRIDGE_STONES)     && StoneCount + (Greg && GregInLogic ? 1 : 0) >= BridgeStoneCount.Value<uint8_t>()) ||
+                           (Bridge.Is(RAINBOWBRIDGE_MEDALLIONS) && MedallionCount + (Greg && GregInLogic ? 1 : 0) >= BridgeMedallionCount.Value<uint8_t>()) ||
+                           (Bridge.Is(RAINBOWBRIDGE_REWARDS)    && StoneCount + MedallionCount + (Greg && GregInLogic ? 1 : 0) >= BridgeRewardCount.Value<uint8_t>()) ||
+                           (Bridge.Is(RAINBOWBRIDGE_DUNGEONS)   && DungeonCount + (Greg && GregInLogic ? 1 : 0) >= BridgeDungeonCount.Value<uint8_t>()) ||
                            (Bridge.Is(RAINBOWBRIDGE_TOKENS)     && GoldSkulltulaTokens >= BridgeTokenCount.Value<uint8_t>()) ||
                            (Bridge.Is(RAINBOWBRIDGE_GREG)       && Greg);
 

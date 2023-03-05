@@ -76,7 +76,7 @@ typedef enum {
     REWARD_STANDARD,
     REWARD_GREG,
     REWARD_WILDCARD,
-} RewardOptions;
+} RewardOptionsSetting;
 
 typedef enum {
     LACSCONDITION_VANILLA,
