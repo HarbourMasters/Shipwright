@@ -3387,8 +3387,7 @@ void DrawRandoEditor(bool& open) {
                             "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
                             "rewards on slider does not change.");
 
-                        UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX,
-                                                       RO_REWARD_STANDARD);
+                        UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX, RO_REWARD_STANDARD);
                         switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
                             case RO_REWARD_STANDARD:
                                 ImGui::Dummy(ImVec2(0.0f, 0.0f));
@@ -3442,7 +3441,6 @@ void DrawRandoEditor(bool& open) {
                         }
 
                         break;
-
                     case RO_BRIDGE_DUNGEONS:
                         ImGui::Text("Reward Options");
                         UIWidgets::InsertHelpHoverText(
@@ -3456,8 +3454,7 @@ void DrawRandoEditor(bool& open) {
                             "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
                             "rewards on slider does not change.");
 
-                        UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX,
-                                                       RO_REWARD_STANDARD);
+                        UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX, RO_REWARD_STANDARD);
                         switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
                             case RO_REWARD_STANDARD:
                                 ImGui::Dummy(ImVec2(0.0f, 0.0f));
