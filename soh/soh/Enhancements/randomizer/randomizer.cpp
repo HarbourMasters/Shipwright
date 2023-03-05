@@ -3357,18 +3357,15 @@ void DrawRandoEditor(bool& open) {
                         UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX, RO_REWARD_STANDARD);
                         switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
                             case RO_REWARD_STANDARD:
-                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                                UIWidgets::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
+                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
                                                                 "gRandomizeStoneCount", 1, 3, "", 3, true);
                                 break;
                             case RO_REWARD_GREG:
-                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                                UIWidgets::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
+                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
                                                                 "gRandomizeStoneCount", 1, 4, "", 4, true);
                                 break;
                             case RO_REWARD_WILDCARD:
-                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                                UIWidgets::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
+                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
                                                                 "gRandomizeStoneCount", 1, 3, "", 3, true);
                                 break;
                         }
@@ -3390,18 +3387,15 @@ void DrawRandoEditor(bool& open) {
                         UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX, RO_REWARD_STANDARD);
                         switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
                             case RO_REWARD_STANDARD:
-                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                                UIWidgets::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
+                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
                                                                 "gRandomizeMedallionCount", 1, 6, "", 6, true);
                                 break;
                             case RO_REWARD_GREG:
-                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                                UIWidgets::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
+                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
                                                                 "gRandomizeMedallionCount", 1, 7, "", 7, true);
                                 break;
                             case RO_REWARD_WILDCARD:
-                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                                UIWidgets::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
+                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
                                                                 "gRandomizeMedallionCount", 1, 6, "", 6, true);
                                 break;
                         }
@@ -3423,18 +3417,15 @@ void DrawRandoEditor(bool& open) {
                         UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX, RO_REWARD_STANDARD);
                         switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
                             case RO_REWARD_STANDARD:
-                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                                UIWidgets::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
+                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
                                                                 "gRandomizeRewardCount", 1, 9, "", 9, true);
                                 break;
                             case RO_REWARD_GREG:
-                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                                UIWidgets::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
+                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
                                                                 "gRandomizeRewardCount", 1, 10, "", 10, true);
                                 break;
                             case RO_REWARD_WILDCARD:
-                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                                UIWidgets::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
+                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
                                                                 "gRandomizeRewardCount", 1, 9, "", 9, true);
 
                                 break;
@@ -3457,18 +3448,15 @@ void DrawRandoEditor(bool& open) {
                         UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX, RO_REWARD_STANDARD);
                         switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
                             case RO_REWARD_STANDARD:
-                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                                UIWidgets::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
+                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
                                                                 "gRandomizeDungeonCount", 1, 8, "", 8, true);
                                 break;
                             case RO_REWARD_GREG:
-                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                                UIWidgets::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
+                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
                                                                 "gRandomizeDungeonCount", 1, 9, "", 9, true);
                                 break;
                             case RO_REWARD_WILDCARD:
-                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
-                                UIWidgets::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
+                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
                                                                 "gRandomizeDungeonCount", 1, 8, "", 8, true);
                                 break;
                         }

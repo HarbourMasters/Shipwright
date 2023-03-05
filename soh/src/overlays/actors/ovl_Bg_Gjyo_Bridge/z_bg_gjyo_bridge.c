@@ -83,7 +83,6 @@ u8 CheckPlayerPosition(Player* player, PlayState* play) {
 
 void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    lusprintf(__FILE__, __LINE__, 2, "test %d", Randomizer_GetSettingValue(RSK_REWARD_OPTIONS));
     if (!gSaveContext.n64ddFlag) {
         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
             (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) && CheckPlayerPosition(player, play)) {
