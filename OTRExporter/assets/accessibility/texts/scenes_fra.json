@@ -1,0 +1,112 @@
+{
+    "0": "Abre Mojo",
+    "1": "Caverne Dodongo",
+    "2": "Ventre de Jabu-Jabu",
+    "3": "Temple de la Forêt",
+    "4": "Temple du Feu",
+    "5": "Temple de l'Eau",
+    "6": "Temple de l'Esprit",
+    "7": "Temple de l'Ombre",
+    "8": "Puits",
+    "9": "Caverne Polaire",
+    "10": "", // Escaliers vers le Repaire de Ganondorf (No title card)
+    "11": "Gymnase Gerudo",
+    "12": "Repaire des Voleurs",
+    "13": "Tour de Ganon",
+    "14": "", // Fuite du Château de Ganon (No title card)
+    "15": "", // Fuite du Château de Ganon 5 (No title card)
+    "16": "Chasse aux Trésors",
+    "17": "Monstre Insectoide Géant - Gohma",
+    "18": "Dinosaure Infernal - King Dodongo",
+    "19": "Anémone Bio-Electrique - Barinade",
+    "20": "Esprit Maléfique de l'Au-Delà - Ganon Spectral",
+    "21": "Dragon des Profondeurs - Volcania",
+    "22": "Amibe Aquatique Géante - Morpha",
+    "23": "Sorcières Jumelles - Duo Maléfique",
+    "24": "Monstre de l'Ombre - Bongo Bongo",
+    "25": "Seigneur du Malin - Ganondorf",
+    "26": "",
+    "27": "", // Entrée vers le Marché (No title card)
+    "28": "",
+    "29": "",
+    "30": "Ruelle",
+    "31": "Ruelle",
+    "32": "Place du Marché",
+    "33": "Place du Marché",
+    "34": "Place du Marché",
+    "35": "", // Extérieur du Temple du Temps (No title card)
+    "36": "SCENE_SHRINE_N",
+    "37": "SCENE_SHRINE_R",
+    "38": "", // Cabane des Frères Je-Sais-Tout (No title card)
+    "39": "", // Cabane des Jumelles (No title card)
+    "40": "", // Cabane du Grand Mido (No title card)
+    "41": "", // Cabane de Saria (No title card)
+    "42": "", // Maison du Village Cocorico 1 (No title card)
+    "43": "", // Maison de la Ruelle 1 (No title card)
+    "44": "Bazar",
+    "45": "Boutique Kokiri",
+    "46": "Boutique Goron",
+    "47": "Boutique Zora",
+    "48": "", // Magasin Fermé (No title card)
+    "49": "Apothicaire",
+    "50": "", // Magasin de Missiles (No title card)
+    "51": "Foire aux Masques",
+    "52": "", // Cabane de Link (No title card)
+    "53": "", // Dog Lady's House (No title card)
+    "54": "Étable",
+    "55": "", // Maison d'Impa (No title card)
+    "56": "Laboratoire du Lac",
+    "57": "", // Tente du Marathonien (No title card)
+    "58": "Cabane du fossoyeur",
+    "59": "Fountaine Royale des Fées",
+    "60": "Fountaine des Fées",
+    "61": "Fountaine Royale des Fées",
+    "62": "", // Grottes (No title card)
+    "63": "", // Tombe 1 (No title card)
+    "64": "", // Tombe 2 (No title card)
+    "65": "Tombe Royale",
+    "66": "Jeu d'adresse",
+    "67": "Temple du Temps",
+    "68": "Sanctuaire des Sages",
+    "69": "Cour du Château",
+    "70": "Cour du Château",
+    "71": "", // Goddesses Cutscene (No title card)
+    "72": "Endroit Inconnu",
+    "73": "Étang",
+    "74": "Cour du Château",
+    "75": "Bowling Teigneux",
+    "76": "", // Lon Lon Ranch House/Silo (No title card)
+    "77": "", // Guard House (No title card)
+    "78": "", // Potion Shop (No title card)
+    "79": "Ganon",
+    "80": "Maison des Araignées",
+    "81": "Plaine d'Hyrule",
+    "82": "Village Cocorico",
+    "83": "Cimetière",
+    "84": "Fleuve Zora",
+    "85": "Forêt Kokiri",
+    "86": "Bosquet Sacré",
+    "87": "Lac Hylia",
+    "88": "Domaine Zora",
+    "89": "Fontaine Zora",
+    "90": "Vallée Gerudo",
+    "91": "Bois Perdu",
+    "92": "Colosse du Désert",
+    "93": "Forteresse Gerudo",
+    "94": "Désert Hanté",
+    "95": "Château d'Hyrule",
+    "96": "Chemin du Péril",
+    "97": "Cratère du Péril",
+    "98": "Village Goron",
+    "99": "Ranch Lon Lon",
+    "100": "",
+    "101": "", // Debug: Test Map (No title card)
+    "102": "", // Debug: Test Room (No title card)
+    "103": "", // Debug: Depth Test (No title card)
+    "104": "", // Debug: Stalfos Miniboss Room (No title card)
+    "105": "", // Debug: Stalfos Boss Room (No title card)
+    "106": "", // Debug: Dark Link Room (No title card)
+    "107": "",
+    "108": "", // Debug: SRD Room (No title card)
+    "109": "" // Debug: Treasure Chest Warp (No title card)
+}

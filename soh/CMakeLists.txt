@@ -5,6 +5,12 @@ set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 project(soh LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    enable_language(OBJCXX)
+    set(CMAKE_OBJC_FLAGS "${CMAKE_OBJC_FLAGS} -fobjc-arc")
+    set(CMAKE_OBJCXX_FLAGS "${CMAKE_OBJCXX_FLAGS} -fobjc-arc")
+endif()
+
 set (BUILD_UTILS OFF CACHE STRING "no utilities")
 set (BUILD_SHARED_LIBS OFF CACHE STRING "install/link shared instead of static libs")
 
@@ -116,6 +122,10 @@ source_group("include" FILES ${Header_Files__include})
 file(GLOB soh__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/*.c" "soh/*.cpp" "soh/*.h")
 source_group("soh" FILES ${soh__})
 
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set_source_files_properties(soh/OTRGlobals.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
+endif()
+
 # soh/enhancements {{{
 file(GLOB_RECURSE soh__Enhancements RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     "soh/Enhancements/*.c"
@@ -123,13 +133,25 @@ file(GLOB_RECURSE soh__Enhancements RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     "soh/Enhancements/*.h"
     "soh/Enhancements/*.hpp"
     "soh/Enhancements/*_extern.inc"
+    "soh/Enhancements/*.mm"
 )
 
 list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/gamecommand.h")
 list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/gfx.*")
+
+# handle crowd control removals
 list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/crowd-control/soh.cs")
 if (!BUILD_CROWD_CONTROL)
-    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/crowd-control/.*")
+    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/crowd-control/*")
+endif()
+
+# handle speechsynthesizer removals
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/Darwin*")
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/SAPI*")
+else()
+    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/(Darwin|SAPI).*")
 endif()
 
 source_group("soh\\Enhancements" REGULAR_EXPRESSION "soh/Enhancements/*")
@@ -145,6 +167,12 @@ source_group("soh\\Enhancements\\randomizer" REGULAR_EXPRESSION "soh/Enhancement
 source_group("soh\\Enhancements\\randomizer\\3drando" REGULAR_EXPRESSION "soh/Enhancements/randomizer/3drando/*")
 source_group("soh\\Enhancements\\randomizer\\3drando\\hint_list" REGULAR_EXPRESSION "soh/Enhancements/randomizer/3drando/hint_list/*")
 source_group("soh\\Enhancements\\randomizer\\3drando\\location_access" REGULAR_EXPRESSION "soh/Enhancements/randomizer/3drando/location_access/*")
+source_group("soh\\Enhancements\\speechsynthesizer" REGULAR_EXPRESSION "soh/Enhancements/speechsynthesizer/*")
+source_group("soh\\Enhancements\\tts" REGULAR_EXPRESSION "soh/Enhancements/tts/*")
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set_source_files_properties(soh/Enhancements/tts/tts.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
+endif()
 # }}}
 
 # soh/resource {{{
@@ -225,7 +253,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     set_target_properties(${PROJECT_NAME} PROPERTIES
-    OUTPUT_NAME "soh-macos"
+        XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC YES 
+        OUTPUT_NAME "soh-macos"
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	set_target_properties(${PROJECT_NAME} PROPERTIES

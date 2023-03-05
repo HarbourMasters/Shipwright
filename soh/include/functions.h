@@ -2417,7 +2417,7 @@ void GameOver_Update(PlayState* play);
 void func_80110990(PlayState* play);
 void func_801109B0(PlayState* play);
 void Message_Init(PlayState* play);
-void func_80112098(PlayState* play);
+void Regs_InitData(PlayState* play);
 
 void Title_Init(GameState* thisx);
 void Title_PrintBuildInfo(Gfx** gfxp);
@@ -2433,6 +2433,11 @@ void Heaps_Alloc(void);
 void Heaps_Free(void);
 
 CollisionHeader* BgCheck_GetCollisionHeader(CollisionContext* colCtx, s32 bgId);
+
+// Exposing these methods to leverage them from the file select screen to render messages
+void Message_OpenText(PlayState* play, u16 textId);
+void Message_Decode(PlayState* play);
+void Message_DrawText(PlayState* play, Gfx** gfxP);
 
 #ifdef __cplusplus
 #undef this

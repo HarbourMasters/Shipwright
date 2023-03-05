@@ -1,9 +1,6 @@
 #pragma once
-#define dgDaySkyboxTLUT "__OTR__textures/vr_fine1_pal_static/gDaySkyboxTLUT"
-#ifdef _WIN32
-static const __declspec(align(2)) char gDaySkyboxTLUT[] = dgDaySkyboxTLUT;
-#else
-static const char gDaySkyboxTLUT[] __attribute__((aligned (2))) = dgDaySkyboxTLUT;
-#endif
-            
 
+#include "align_asset_macro.h"
+
+#define dgDaySkyboxTLUT "__OTR__textures/vr_fine1_pal_static/gDaySkyboxTLUT"
+static const ALIGN_ASSET(2) char gDaySkyboxTLUT[] = dgDaySkyboxTLUT;
