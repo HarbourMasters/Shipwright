@@ -14,12 +14,12 @@ void GameInteractor_ExecuteOnGameFrameUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGameFrameUpdate>();
 }
 
-void GameInteractor_ExecuteOnReceiveItemHooks(GetItemEntry item) {
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnReceiveItem>(item);
+void GameInteractor_ExecuteOnReceiveItemHooks(GetItemEntry itemEntry) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnReceiveItem>(itemEntry);
 }
 
-void GameInteractor_ExecuteOnSaleEndHooks(GetItemEntry item) {
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaleEnd>(item);
+void GameInteractor_ExecuteOnSaleEndHooks(GetItemEntry itemEntry) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaleEnd>(itemEntry);
 }
 
 void GameInteractor_ExecuteOnSceneInitHooks(int16_t sceneNum) {

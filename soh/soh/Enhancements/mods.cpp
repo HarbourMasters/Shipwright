@@ -172,8 +172,8 @@ void RegisterSwitchAge() {
     });
 }
 
-void AutoSave(GetItemEntry get) {
-    u8 item = get.itemId;
+void AutoSave(GetItemEntry itemEntry) {
+    u8 item = itemEntry.itemId;
     // Don't autosave immediately after buying items from shops to prevent getting them for free!
     // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
     // Don't autosave during the Ganon fight when picking up the Master Sword
@@ -238,8 +238,8 @@ void AutoSave(GetItemEntry get) {
 }
 
 void RegisterAutoSave() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnReceiveItem>([](GetItemEntry get) { AutoSave(get); });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>([](GetItemEntry get) { AutoSave(get); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnReceiveItem>([](GetItemEntry itemEntry) { AutoSave(itemEntry); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>([](GetItemEntry itemEntry) { AutoSave(itemEntry); });
 }
 
 void RegisterRupeeDash() {
