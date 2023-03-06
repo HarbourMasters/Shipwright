@@ -14,7 +14,7 @@
 #include <time.h>
 
 void* D_8012D1F0 = NULL;
-// UNK_TYPE D_8012D1F4 = 0; // unused
+//UNK_TYPE D_8012D1F4 = 0; // unused
 Input* D_8012D1F8 = NULL;
 
 TransitionUnk sTrnsnUnk;
@@ -62,7 +62,7 @@ void func_800BC590(PlayState* play) {
 void func_800BC5E0(PlayState* play, s32 transitionType) {
     TransitionContext* transitionCtx = &play->transitionCtx;
 
-    memset(transitionCtx, 0, sizeof(TransitionContext));
+    memset(transitionCtx,0,  sizeof(TransitionContext));
 
     transitionCtx->transitionType = transitionType;
 
@@ -152,13 +152,14 @@ void func_800BC88C(PlayState* play) {
 }
 
 Gfx* Play_SetFog(PlayState* play, Gfx* gfx) {
-    return Gfx_SetFog2(gfx, play->lightCtx.fogColor[0], play->lightCtx.fogColor[1], play->lightCtx.fogColor[2], 0,
-                       play->lightCtx.fogNear, 1000);
+    return Gfx_SetFog2(gfx, play->lightCtx.fogColor[0], play->lightCtx.fogColor[1],
+                       play->lightCtx.fogColor[2], 0, play->lightCtx.fogNear, 1000);
 }
 
 void Play_Destroy(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
     Player* player = GET_PLAYER(play);
+
 
     // Only initialize the frame counter when exiting the title screen
     if (gSaveContext.fileNum == 0xFF) {
@@ -214,8 +215,7 @@ void GivePlayerRandoRewardSongOfTime(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
 
     if (gSaveContext.entranceIndex == 0x050F && player != NULL && !Player_InBlockingCsMode(play, player) &&
-        !Flags_GetTreasure(play, 0x1F) && gSaveContext.nextTransitionType == 0xFF &&
-        !gSaveContext.pendingIceTrapCount) {
+        !Flags_GetTreasure(play, 0x1F) && gSaveContext.nextTransitionType == 0xFF && !gSaveContext.pendingIceTrapCount) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
         GiveItemEntryWithoutActor(play, getItemEntry);
         player->pendingFlag.flagID = 0x1F;
@@ -226,11 +226,11 @@ void GivePlayerRandoRewardSongOfTime(PlayState* play, RandomizerCheck check) {
 void GivePlayerRandoRewardNocturne(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
 
-    if ((gSaveContext.entranceIndex == 0x00DB || gSaveContext.entranceIndex == 0x0191 ||
-         gSaveContext.entranceIndex == 0x0195) &&
-        LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) &&
-        CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && player != NULL && !Player_InBlockingCsMode(play, player) &&
-        !Flags_GetEventChkInf(0xAA)) {
+    if ((gSaveContext.entranceIndex == 0x00DB ||
+         gSaveContext.entranceIndex == 0x0191 ||
+         gSaveContext.entranceIndex == 0x0195) && LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
+        CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && player != NULL &&
+        !Player_InBlockingCsMode(play, player) && !Flags_GetEventChkInf(0xAA)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_NOCTURNE_OF_SHADOW);
         GiveItemEntryWithoutActor(play, getItemEntry);
         player->pendingFlag.flagID = 0xAA;
@@ -424,7 +424,7 @@ void Play_Init(GameState* thisx) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
     enableBetaQuest();
     gPlayState = play;
-    // play->state.gfxCtx = NULL;
+    //play->state.gfxCtx = NULL;
     uintptr_t zAlloc;
     uintptr_t zAllocAligned;
     size_t zAllocSize;
@@ -542,7 +542,8 @@ void Play_Init(GameState* thisx) {
     }
 
     Play_SpawnScene(
-        play, gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene,
+        play,
+        gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene,
         gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.entranceIndex)].spawn);
 
     osSyncPrintf("\nSCENE_NO=%d COUNTER=%d\n", ((void)0, gSaveContext.entranceIndex), gSaveContext.sceneSetupIndex);
@@ -556,7 +557,8 @@ void Play_Init(GameState* thisx) {
             gSaveContext.totalDays++;
             gSaveContext.bgsDayCount++;
             gSaveContext.dogIsLost = true;
-            if (Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN) || Inventory_HatchPocketCucco(play)) {
+            if (Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN) ||
+                Inventory_HatchPocketCucco(play)) {
                 Message_StartTextbox(play, 0x3066, NULL);
             }
             gSaveContext.nextDayTime = 0xFFFE;
@@ -573,7 +575,7 @@ void Play_Init(GameState* thisx) {
     gTrnsnUnkState = 0;
     play->transitionMode = 0;
 
-    if (CVarGetInteger("gSceneTransitions", 255) != 255) {
+    if (CVarGetInteger("gSceneTransitions", 255)!= 255){
         play->transitionMode = CVarGetInteger("gSceneTransitions", 0);
         gSaveContext.nextTransitionType = CVarGetInteger("gSceneTransitions", 0);
         play->fadeTransition = CVarGetInteger("gSceneTransitions", 0);
@@ -664,13 +666,13 @@ void Play_Init(GameState* thisx) {
     func_8002DF18(play, GET_PLAYER(play));
     AnimationContext_Update(play, &play->animationCtx);
     gSaveContext.respawnFlag = 0;
-#if 0
+    #if 0
     if (dREG(95) != 0) {
         D_8012D1F0 = D_801614D0;
         osSyncPrintf("\nkawauso_data=[%x]", D_8012D1F0);
         DmaMgr_DmaRomToRam(0x03FEB000, D_8012D1F0, sizeof(D_801614D0));
     }
-#endif
+    #endif
 }
 
 void Play_Update(PlayState* play) {
@@ -720,48 +722,20 @@ void Play_Update(PlayState* play) {
 
         // Gameplay stats: Count button presses
         if (!gSaveContext.sohStats.gameComplete) {
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_A)) {
-                gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_B)) {
-                gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_B]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CUP)) {
-                gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CUP]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CRIGHT)) {
-                gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CRIGHT]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CLEFT)) {
-                gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CLEFT]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_CDOWN)) {
-                gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CDOWN]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DUP)) {
-                gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DUP]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DRIGHT)) {
-                gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DRIGHT]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DDOWN)) {
-                gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DDOWN]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_DLEFT)) {
-                gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DLEFT]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_L)) {
-                gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_L]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_R)) {
-                gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_R]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_Z)) {
-                gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_Z]++;
-            }
-            if (CHECK_BTN_ALL(input[0].press.button, BTN_START)) {
-                gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_START]++;
-            }
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_A))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_B))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_B]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_CUP))    {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CUP]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_CRIGHT)) {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CRIGHT]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_CLEFT))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CLEFT]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_CDOWN))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CDOWN]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_DUP))    {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DUP]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_DRIGHT)) {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DRIGHT]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_DDOWN))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DDOWN]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_DLEFT))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DLEFT]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_L))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_L]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_R))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_R]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_Z))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_Z]++;}
+            if (CHECK_BTN_ALL(input[0].press.button, BTN_START))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_START]++;}
         }
 
         if (gTrnsnUnkState != 0) {
@@ -821,39 +795,47 @@ void Play_Update(PlayState* play) {
 
                     if ((play->transitionCtx.transitionType >> 5) == 1) {
                         play->transitionCtx.setType(&play->transitionCtx.data,
-                                                    play->transitionCtx.transitionType | 0x80);
+                                                         play->transitionCtx.transitionType | 0x80);
                     }
 
                     gSaveContext.transWipeSpeed = 14;
-                    if ((play->transitionCtx.transitionType == 8) || (play->transitionCtx.transitionType == 9)) {
+                    if ((play->transitionCtx.transitionType == 8) ||
+                        (play->transitionCtx.transitionType == 9)) {
                         gSaveContext.transWipeSpeed = 28;
                     }
 
                     gSaveContext.transFadeDuration = 60;
-                    if ((play->transitionCtx.transitionType == 4) || (play->transitionCtx.transitionType == 5)) {
+                    if ((play->transitionCtx.transitionType == 4) ||
+                        (play->transitionCtx.transitionType == 5)) {
                         gSaveContext.transFadeDuration = 20;
-                    } else if ((play->transitionCtx.transitionType == 6) || (play->transitionCtx.transitionType == 7)) {
+                    } else if ((play->transitionCtx.transitionType == 6) ||
+                               (play->transitionCtx.transitionType == 7)) {
                         gSaveContext.transFadeDuration = 150;
                     } else if (play->transitionCtx.transitionType == 17) {
                         gSaveContext.transFadeDuration = 2;
                     }
 
-                    if ((play->transitionCtx.transitionType == 3) || (play->transitionCtx.transitionType == 5) ||
-                        (play->transitionCtx.transitionType == 7) || (play->transitionCtx.transitionType == 13) ||
+                    if ((play->transitionCtx.transitionType == 3) ||
+                        (play->transitionCtx.transitionType == 5) ||
+                        (play->transitionCtx.transitionType == 7) ||
+                        (play->transitionCtx.transitionType == 13) ||
                         (play->transitionCtx.transitionType == 17)) {
                         play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(160, 160, 160, 255));
                         if (play->transitionCtx.setEnvColor != NULL) {
-                            play->transitionCtx.setEnvColor(&play->transitionCtx.data, RGBA8(160, 160, 160, 255));
+                            play->transitionCtx.setEnvColor(&play->transitionCtx.data,
+                                                                 RGBA8(160, 160, 160, 255));
                         }
                     } else if (play->transitionCtx.transitionType == 18) {
                         play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(140, 140, 100, 255));
                         if (play->transitionCtx.setEnvColor != NULL) {
-                            play->transitionCtx.setEnvColor(&play->transitionCtx.data, RGBA8(140, 140, 100, 255));
+                            play->transitionCtx.setEnvColor(&play->transitionCtx.data,
+                                                                 RGBA8(140, 140, 100, 255));
                         }
                     } else if (play->transitionCtx.transitionType == 19) {
                         play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(70, 100, 110, 255));
                         if (play->transitionCtx.setEnvColor != NULL) {
-                            play->transitionCtx.setEnvColor(&play->transitionCtx.data, RGBA8(70, 100, 110, 255));
+                            play->transitionCtx.setEnvColor(&play->transitionCtx.data,
+                                                                 RGBA8(70, 100, 110, 255));
                         }
                     } else {
                         play->transitionCtx.setColor(&play->transitionCtx.data, RGBA8(0, 0, 0, 0));
@@ -906,15 +888,12 @@ void Play_Update(PlayState* play) {
                                 R_UPDATE_RATE = 3;
                             }
 
-                            // Autosave on area transition unless you're in a cutscene or a grotto since resuming from
-                            // grottos breaks the game Also don't save when you first load a file to prevent consumables
-                            // like magic from being lost Also don't save if there's a pending shop sale to prevent
-                            // getting the item for a discount!
+                            // Autosave on area transition unless you're in a cutscene or a grotto since resuming from grottos breaks the game
+                            // Also don't save when you first load a file to prevent consumables like magic from being lost
+                            // Also don't save if there's a pending shop sale to prevent getting the item for a discount!
                             if ((CVarGetInteger("gAutosave", 0) >= 1) && (CVarGetInteger("gAutosave", 0) <= 3) &&
-                                (gSaveContext.cutsceneIndex == 0) && (play->gameplayFrames > 60) &&
-                                (gSaveContext.pendingSale == ITEM_NONE) &&
-                                (play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA) &&
-                                (play->sceneNum != SCENE_KENJYANOMA)) {
+                                (gSaveContext.cutsceneIndex == 0) && (play->gameplayFrames > 60) && (gSaveContext.pendingSale == ITEM_NONE) &&
+                                (play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA) && (play->sceneNum != SCENE_KENJYANOMA)) {
                                 Play_PerformSave(play);
                             }
                         }
@@ -1130,18 +1109,19 @@ void Play_Update(PlayState* play) {
                 play->gameplayFrames++;
                 // Gameplay stat tracking
                 if (!gSaveContext.sohStats.gameComplete) {
-                    gSaveContext.sohStats.playTimer++;
+                      gSaveContext.sohStats.playTimer++;
 
-                    if (CVarGetInteger("gMMBunnyHood", 0) && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
-                        gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD]++;
-                    }
+                      if (CVarGetInteger("gMMBunnyHood", 0) && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
+                          gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD]++;
+                      }
                 }
 
                 func_800AA178(1);
 
                 if (play->actorCtx.freezeFlashTimer && (play->actorCtx.freezeFlashTimer-- < 5)) {
                     osSyncPrintf("FINISH=%d\n", play->actorCtx.freezeFlashTimer);
-                    if ((play->actorCtx.freezeFlashTimer > 0) && ((play->actorCtx.freezeFlashTimer % 2) != 0)) {
+                    if ((play->actorCtx.freezeFlashTimer > 0) &&
+                        ((play->actorCtx.freezeFlashTimer % 2) != 0)) {
                         play->envCtx.fillScreen = true;
                         play->envCtx.screenFillColor[0] = play->envCtx.screenFillColor[1] =
                             play->envCtx.screenFillColor[2] = 150;
@@ -1361,8 +1341,8 @@ skip:
         LOG_NUM("1", 1);
     }
 
-    Environment_Update(play, &play->envCtx, &play->lightCtx, &play->pauseCtx, &play->msgCtx, &play->gameOverCtx,
-                       play->state.gfxCtx);
+    Environment_Update(play, &play->envCtx, &play->lightCtx, &play->pauseCtx, &play->msgCtx,
+                       &play->gameOverCtx, play->state.gfxCtx);
 
     if (gSaveContext.n64ddFlag) {
         GivePlayerRandoRewardSariaGift(play, RC_LW_GIFT_FROM_SARIA);
@@ -1434,11 +1414,12 @@ void Play_Draw(PlayState* play) {
         Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
         Matrix_Get(&play->viewProjectionMtxF);
         play->billboardMtxF.mf[0][3] = play->billboardMtxF.mf[1][3] = play->billboardMtxF.mf[2][3] =
-            play->billboardMtxF.mf[3][0] = play->billboardMtxF.mf[3][1] = play->billboardMtxF.mf[3][2] = 0.0f;
+            play->billboardMtxF.mf[3][0] = play->billboardMtxF.mf[3][1] = play->billboardMtxF.mf[3][2] =
+                0.0f;
         // This transpose is where the viewing matrix is properly converted into a billboard matrix
         Matrix_Transpose(&play->billboardMtxF);
-        play->billboardMtx =
-            Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(&play->billboardMtxF), Graph_Alloc(gfxCtx, sizeof(Mtx)));
+        play->billboardMtx = Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(&play->billboardMtxF),
+                                                   Graph_Alloc(gfxCtx, sizeof(Mtx)));
 
         gSPSegment(POLY_OPA_DISP++, 0x01, play->billboardMtx);
 
@@ -1482,7 +1463,8 @@ void Play_Draw(PlayState* play) {
             POLY_OPA_DISP = sp88;
             goto Play_Draw_DrawOverlayElements;
         } else {
-            PreRender_SetValues(&play->pauseBgPreRender, SCREEN_WIDTH, SCREEN_HEIGHT, gfxCtx->curFrameBuffer, gZBuffer);
+            PreRender_SetValues(&play->pauseBgPreRender, SCREEN_WIDTH, SCREEN_HEIGHT, gfxCtx->curFrameBuffer,
+                                gZBuffer);
 
             if (R_PAUSE_MENU_MODE == 2) {
                 MsgEvent_SendNullTask();
@@ -1495,25 +1477,28 @@ void Play_Draw(PlayState* play) {
             if (R_PAUSE_MENU_MODE == 3) {
                 Gfx* sp84 = POLY_OPA_DISP;
 
-                // func_800C24BC(&play->pauseBgPreRender, &sp84);
+                //func_800C24BC(&play->pauseBgPreRender, &sp84);
                 POLY_OPA_DISP = sp84;
 
-                // goto Play_Draw_DrawOverlayElements;
+                //goto Play_Draw_DrawOverlayElements;
             }
-            // else
+            //else
             {
                 s32 sp80;
 
                 if ((HREG(80) != 10) || (HREG(83) != 0)) {
-                    if (play->skyboxId && (play->skyboxId != SKYBOX_UNSET_1D) && !play->envCtx.skyboxDisabled) {
-                        if ((play->skyboxId == SKYBOX_NORMAL_SKY) || (play->skyboxId == SKYBOX_CUTSCENE_MAP)) {
+                    if (play->skyboxId && (play->skyboxId != SKYBOX_UNSET_1D) &&
+                        !play->envCtx.skyboxDisabled) {
+                        if ((play->skyboxId == SKYBOX_NORMAL_SKY) ||
+                            (play->skyboxId == SKYBOX_CUTSCENE_MAP)) {
                             Environment_UpdateSkybox(play, play->skyboxId, &play->envCtx, &play->skyboxCtx);
 
-                            SkyboxDraw_Draw(&play->skyboxCtx, gfxCtx, play->skyboxId, play->envCtx.skyboxBlend,
-                                            play->view.eye.x, play->view.eye.y, play->view.eye.z);
+                            SkyboxDraw_Draw(&play->skyboxCtx, gfxCtx, play->skyboxId,
+                                            play->envCtx.skyboxBlend, play->view.eye.x, play->view.eye.y,
+                                            play->view.eye.z);
                         } else if (play->skyboxCtx.unk_140 == 0) {
-                            SkyboxDraw_Draw(&play->skyboxCtx, gfxCtx, play->skyboxId, 0, play->view.eye.x,
-                                            play->view.eye.y, play->view.eye.z);
+                            SkyboxDraw_Draw(&play->skyboxCtx, gfxCtx, play->skyboxId, 0,
+                                            play->view.eye.x, play->view.eye.y, play->view.eye.z);
                         }
                     }
                 }
@@ -1553,12 +1538,14 @@ void Play_Draw(PlayState* play) {
                 }
 
                 if ((HREG(80) != 10) || (HREG(83) != 0)) {
-                    if ((play->skyboxCtx.unk_140 != 0) && (GET_ACTIVE_CAM(play)->setting != CAM_SET_PREREND_FIXED)) {
+                    if ((play->skyboxCtx.unk_140 != 0) &&
+                        (GET_ACTIVE_CAM(play)->setting != CAM_SET_PREREND_FIXED)) {
                         Vec3f sp74;
 
                         Camera_GetSkyboxOffset(&sp74, GET_ACTIVE_CAM(play));
-                        SkyboxDraw_Draw(&play->skyboxCtx, gfxCtx, play->skyboxId, 0, play->view.eye.x + sp74.x,
-                                        play->view.eye.y + sp74.y, play->view.eye.z + sp74.z);
+                        SkyboxDraw_Draw(&play->skyboxCtx, gfxCtx, play->skyboxId, 0,
+                                        play->view.eye.x + sp74.x, play->view.eye.y + sp74.y,
+                                        play->view.eye.z + sp74.z);
                     }
                 }
 
@@ -1596,9 +1583,10 @@ void Play_Draw(PlayState* play) {
 
                     switch (play->envCtx.fillScreen) {
                         case 1:
-                            Environment_FillScreen(gfxCtx, play->envCtx.screenFillColor[0],
-                                                   play->envCtx.screenFillColor[1], play->envCtx.screenFillColor[2],
-                                                   play->envCtx.screenFillColor[3], FILL_SCREEN_OPA | FILL_SCREEN_XLU);
+                            Environment_FillScreen(
+                                gfxCtx, play->envCtx.screenFillColor[0], play->envCtx.screenFillColor[1],
+                                play->envCtx.screenFillColor[2], play->envCtx.screenFillColor[3],
+                                FILL_SCREEN_OPA | FILL_SCREEN_XLU);
                             break;
                         default:
                             break;
@@ -1646,7 +1634,8 @@ void Play_Draw(PlayState* play) {
         func_800AB944(&play->view);
         play->view.unk_124 = 0;
         if (play->skyboxId && (play->skyboxId != SKYBOX_UNSET_1D) && !play->envCtx.skyboxDisabled) {
-            SkyboxDraw_UpdateMatrix(&play->skyboxCtx, play->view.eye.x, play->view.eye.y, play->view.eye.z);
+            SkyboxDraw_UpdateMatrix(&play->skyboxCtx, play->view.eye.x, play->view.eye.y,
+                                    play->view.eye.z);
         }
     }
 
@@ -1730,7 +1719,7 @@ void Play_Main(GameState* thisx) {
     if (1 && HREG(63)) {
         LOG_NUM("1", 1);
     }
-
+    
     if (CVarGetInteger("gTimeSync", 0)) {
         const int maxRealDaySeconds = 86400;
         const int maxInGameDayTicks = 65536;
@@ -1741,7 +1730,9 @@ void Play_Main(GameState* thisx) {
         int newIngameTime = maxInGameDayTicks * percent;
 
         gSaveContext.dayTime = newIngameTime;
+
     }
+
 }
 
 u8 PlayerGrounded(Player* player) {
@@ -1839,7 +1830,8 @@ void Play_InitEnvironment(PlayState* play, s16 skyboxId) {
     Environment_Init(play, &play->envCtx, 0);
 }
 
-void Play_InitScene(PlayState* play, s32 spawn) {
+void Play_InitScene(PlayState* play, s32 spawn)
+{
     play->curSpawn = spawn;
     play->linkActorEntry = NULL;
     play->unk_11DFC = NULL;
@@ -1873,8 +1865,9 @@ void func_800C016C(PlayState* play, Vec3f* src, Vec3f* dest) {
     Matrix_Mult(&play->viewProjectionMtxF, MTXMODE_NEW);
     Matrix_MultVec3f(src, dest);
 
-    temp = play->viewProjectionMtxF.ww + (play->viewProjectionMtxF.wx * src->x + play->viewProjectionMtxF.wy * src->y +
-                                          play->viewProjectionMtxF.wz * src->z);
+    temp = play->viewProjectionMtxF.ww +
+           (play->viewProjectionMtxF.wx * src->x + play->viewProjectionMtxF.wy * src->y +
+            play->viewProjectionMtxF.wz * src->z);
 
     dest->x = 160.0f + ((dest->x / temp) * 160.0f);
     dest->y = 120.0f + ((dest->y / temp) * 120.0f);
@@ -2100,8 +2093,8 @@ void Play_SaveSceneFlags(PlayState* play) {
     savedSceneFlags->collect = play->actorCtx.flags.collect;
 }
 
-void Play_SetRespawnData(PlayState* play, s32 respawnMode, s16 entranceIndex, s32 roomIndex, s32 playerParams,
-                         Vec3f* pos, s16 yaw) {
+void Play_SetRespawnData(PlayState* play, s32 respawnMode, s16 entranceIndex, s32 roomIndex,
+                             s32 playerParams, Vec3f* pos, s16 yaw) {
     RespawnData* respawnData = &gSaveContext.respawn[respawnMode];
 
     respawnData->entranceIndex = entranceIndex;
@@ -2121,8 +2114,8 @@ void Play_SetupRespawnPoint(PlayState* play, s32 respawnMode, s32 playerParams) 
     if ((play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA)) {
         roomIndex = play->roomCtx.curRoom.num;
         entranceIndex = gSaveContext.entranceIndex;
-        Play_SetRespawnData(play, respawnMode, entranceIndex, roomIndex, playerParams, &player->actor.world.pos,
-                            player->actor.shape.rot.y);
+        Play_SetRespawnData(play, respawnMode, entranceIndex, roomIndex, playerParams,
+                                &player->actor.world.pos, player->actor.shape.rot.y);
     }
 }
 
