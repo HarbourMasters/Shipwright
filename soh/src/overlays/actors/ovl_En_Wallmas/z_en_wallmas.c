@@ -421,6 +421,9 @@ void EnWallmas_Die(EnWallmas* this, PlayState* play) {
         Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xC0);
         Actor_Kill(&this->actor);
     }
+    if (this->actor.params == WMT_SHADOWTAG) {
+        EnWallmas_Init(this, play);
+    }
     this->actor.scale.z = this->actor.scale.x;
     this->actor.scale.y = this->actor.scale.x;
 }
