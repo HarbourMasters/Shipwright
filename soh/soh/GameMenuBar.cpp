@@ -272,14 +272,14 @@ namespace GameMenuBar {
                     ImGui::PopStyleVar(1);
                 }
 
-                if (SohImGui::SupportsWindowedFullscreen()) {
+/*              if (SohImGui::SupportsWindowedFullscreen()) {
                     UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", "gSdlWindowedFullscreen", true, false);
                 }
 
                 if (SohImGui::SupportsViewports()) {
                     UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false);
                     UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
-                }
+                } */
 
                 EXPERIMENTAL();
 
@@ -627,12 +627,20 @@ namespace GameMenuBar {
                     }
 
                     UIWidgets::Spacer(0);
+                    ImGui::Separator();
+                    ImGui::Text("Meme Difficulty Options");
+                    UIWidgets::Spacer(0);
 
                     UIWidgets::PaddedEnhancementCheckbox("Rupee Dash Mode", "gRupeeDash", true, false);
                     UIWidgets::Tooltip("Rupees reduced over time, Link suffers damage when the count hits 0.");
                     UIWidgets::PaddedEnhancementSliderInt("Rupee Dash Interval: %d", "##DashInterval", "gDashInterval", 3, 5, "", 5, false, true, false,
                         !CVarGetInteger("gRupeeDash", 0), "This option is disabled because \"Rupee Dash Mode\" is turned off");
                     UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
+
+                    UIWidgets::Spacer(0);
+
+                    UIWidgets::PaddedEnhancementCheckbox("Shadow Tag Mode", "gShadowTag", true, false);
+                    UIWidgets::Tooltip("A Wallmaster follows you everywhere, don't get caught!");
 
                     ImGui::EndMenu();
                 }
