@@ -646,6 +646,11 @@ namespace GameMenuBar {
                         !CVarGetInteger("gRupeeDash", 0), "This option is disabled because \"Rupee Dash Mode\" is turned off");
                     UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
 
+                    UIWidgets::Spacer(0);
+
+                    UIWidgets::PaddedEnhancementCheckbox("Shadow Tag Mode", "gShadowTag", true, false);
+                    UIWidgets::Tooltip("A Wallmaster follows you everywhere, don't get caught!");
+
                     ImGui::EndMenu();
                 }
 
