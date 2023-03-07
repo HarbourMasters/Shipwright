@@ -3358,15 +3358,15 @@ void DrawRandoEditor(bool& open) {
                         switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
                             case RO_REWARD_STANDARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                                                                "gRandomizeStoneCount", 1, 3, "", 3, true);
+                                                                "gRandomizeStoneCount", 1, 3, "", 3, true, true, false);
                                 break;
                             case RO_REWARD_GREG:
                                 UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                                                                "gRandomizeStoneCount", 1, 4, "", 4, true);
+                                                                "gRandomizeStoneCount", 1, 4, "", 4, true, true, false);
                                 break;
                             case RO_REWARD_WILDCARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                                                                "gRandomizeStoneCount", 1, 3, "", 3, true);
+                                                                "gRandomizeStoneCount", 1, 3, "", 3, true, true, false);
                                 break;
                         }
 
@@ -3388,15 +3388,15 @@ void DrawRandoEditor(bool& open) {
                         switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
                             case RO_REWARD_STANDARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                                                                "gRandomizeMedallionCount", 1, 6, "", 6, true);
+                                                                "gRandomizeMedallionCount", 1, 6, "", 6, true, true, false);
                                 break;
                             case RO_REWARD_GREG:
                                 UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                                                                "gRandomizeMedallionCount", 1, 7, "", 7, true);
+                                                                "gRandomizeMedallionCount", 1, 7, "", 7, true, true, false);
                                 break;
                             case RO_REWARD_WILDCARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                                                                "gRandomizeMedallionCount", 1, 6, "", 6, true);
+                                                                "gRandomizeMedallionCount", 1, 6, "", 6, true, true, false);
                                 break;
                         }
 
@@ -3418,15 +3418,15 @@ void DrawRandoEditor(bool& open) {
                         switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
                             case RO_REWARD_STANDARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                                "gRandomizeRewardCount", 1, 9, "", 9, true);
+                                                                "gRandomizeRewardCount", 1, 9, "", 9, true, true, false);
                                 break;
                             case RO_REWARD_GREG:
                                 UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                                "gRandomizeRewardCount", 1, 10, "", 10, true);
+                                                                "gRandomizeRewardCount", 1, 10, "", 10, true, true, false);
                                 break;
                             case RO_REWARD_WILDCARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                                "gRandomizeRewardCount", 1, 9, "", 9, true);
+                                                                "gRandomizeRewardCount", 1, 9, "", 9, true, true, false);
 
                                 break;
                         }
@@ -3449,15 +3449,15 @@ void DrawRandoEditor(bool& open) {
                         switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
                             case RO_REWARD_STANDARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                                "gRandomizeDungeonCount", 1, 8, "", 8, true);
+                                                                "gRandomizeDungeonCount", 1, 8, "", 8, true, true, false);
                                 break;
                             case RO_REWARD_GREG:
                                 UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                                "gRandomizeDungeonCount", 1, 9, "", 9, true);
+                                                                "gRandomizeDungeonCount", 1, 9, "", 9, true, true, false);
                                 break;
                             case RO_REWARD_WILDCARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                                "gRandomizeDungeonCount", 1, 8, "", 8, true);
+                                                                "gRandomizeDungeonCount", 1, 8, "", 8, true, true, false);
                                 break;
                         }
 
