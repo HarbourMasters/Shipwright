@@ -291,6 +291,7 @@ void InitMods() {
     RegisterFreezeTime();
     RegisterSwitchAge();
     RegisterRupeeDash();
+    RegisterShadowTag();
     RegisterAutoSave();
     RegisterShadowTag();
 }
