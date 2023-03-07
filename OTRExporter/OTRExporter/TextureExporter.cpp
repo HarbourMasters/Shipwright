@@ -17,9 +17,10 @@ void OTRExporter_Texture::Save(ZResource* res, const fs::path& outPath, BinaryWr
 
 	writer->Write((uint32_t)tex->GetRawDataSize());
 
-	auto data = tex->parent->GetRawData();
-
-	writer->Write((char*)data.data() + tex->GetRawDataIndex(), tex->GetRawDataSize());
+	if (tex->parent != nullptr) {
+ 		auto data = tex->parent->GetRawData();
+ 		writer->Write((char*)data.data() + tex->GetRawDataIndex(), tex->GetRawDataSize());
+ 	}
 
 	auto end = std::chrono::steady_clock::now();
 	size_t diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();

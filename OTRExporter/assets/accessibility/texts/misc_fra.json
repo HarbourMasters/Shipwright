@@ -1,0 +1,18 @@
+{
+    "minutes_plural" : "$0 minutes",
+    "minutes_singular" : "$0 minute",
+    "seconds_plural" : "$0 secondes",
+    "seconds_singular" : "$0 seconde",
+    "input_button_a": "le bouton A",
+    "input_button_b": "le bouton B",
+    "input_button_c": "le bouton C",
+    "input_button_l": "le bouton L",
+    "input_button_r": "le bouton R",
+    "input_button_z": "le bouton Z",
+    "input_button_c_up": "C Haut",
+    "input_button_c_down": "C Bas",
+    "input_button_c_left": "C Gauche",
+    "input_button_c_right": "C Droit",
+    "input_analog_stick": "le Stick Analogique",
+    "input_d_pad": "D-Pad"
+}

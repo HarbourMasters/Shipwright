@@ -5321,7 +5321,7 @@ void Interface_Draw(PlayState* play) {
 
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, dPadColor.r, dPadColor.g, dPadColor.b, dpadAlpha);
             if (fullUi) {
-                gDPLoadTextureBlock(OVERLAY_DISP++, ResourceMgr_LoadFileRaw("assets/textures/parameter_static/gDPad"),
+                gDPLoadTextureBlock(OVERLAY_DISP++, GetResourceDataByName("__OTR__textures/parameter_static/gDPad", false),
                                     G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 gSPWideTextureRectangle(OVERLAY_DISP++, DpadPosX << 2, DpadPosY << 2,
@@ -6064,6 +6064,8 @@ void Interface_Update(PlayState* play) {
     Left_HUD_Margin = CVarGetInteger("gHUDMargin_L", 0);
     Right_HUD_Margin = CVarGetInteger("gHUDMargin_R", 0);
     Bottom_HUD_Margin = CVarGetInteger("gHUDMargin_B", 0);
+    
+    GameInteractor_ExecuteOnInterfaceUpdate();
 
     if (CHECK_BTN_ALL(debugInput->press.button, BTN_DLEFT)) {
         gSaveContext.language = LANGUAGE_ENG;
