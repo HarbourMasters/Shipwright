@@ -238,7 +238,7 @@ void AutoSave(GetItemEntry itemEntry) {
 }
 
 void RegisterAutoSave() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnReceiveItem>([](GetItemEntry itemEntry) { AutoSave(itemEntry); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) { AutoSave(itemEntry); });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>([](GetItemEntry itemEntry) { AutoSave(itemEntry); });
 }
 

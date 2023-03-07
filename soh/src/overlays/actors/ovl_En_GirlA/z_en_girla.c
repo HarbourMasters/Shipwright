@@ -988,7 +988,7 @@ void EnGirlA_ItemGive_Randomizer(PlayState* play, EnGirlA* this) {
     }
 
     if (getItemEntry.itemId == GI_ICE_TRAP || getItemEntry.itemId == RG_ICE_TRAP) {
-        GameInteractor_ExecuteOnReceiveItemHooks(getItemEntry);
+        GameInteractor_ExecuteOnItemReceiveHooks(getItemEntry);
     }
 
     Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);

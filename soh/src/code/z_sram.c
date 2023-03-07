@@ -108,7 +108,7 @@ void GiveLinksPocketItem() {
         } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
             if (getItemEntry.getItemId == RG_ICE_TRAP) {
                 gSaveContext.pendingIceTrapCount++;
-                GameInteractor_ExecuteOnReceiveItemHooks(getItemEntry);
+                GameInteractor_ExecuteOnItemReceiveHooks(getItemEntry);
             } else {
                 Randomizer_Item_Give(NULL, getItemEntry);
             }
@@ -452,7 +452,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             } else if (getItem.modIndex == MOD_RANDOMIZER) {
                 if (getItem.getItemId == RG_ICE_TRAP) {
                     gSaveContext.pendingIceTrapCount++;
-                    GameInteractor_ExecuteOnReceiveItemHooks(getItem);
+                    GameInteractor_ExecuteOnItemReceiveHooks(getItem);
                 } else {
                     Randomizer_Item_Give(NULL, getItem);
                 }

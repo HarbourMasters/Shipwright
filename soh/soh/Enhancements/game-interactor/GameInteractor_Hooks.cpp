@@ -14,8 +14,8 @@ void GameInteractor_ExecuteOnGameFrameUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGameFrameUpdate>();
 }
 
-void GameInteractor_ExecuteOnReceiveItemHooks(GetItemEntry itemEntry) {
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnReceiveItem>(itemEntry);
+void GameInteractor_ExecuteOnItemReceiveHooks(GetItemEntry itemEntry) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnItemReceive>(itemEntry);
 }
 
 void GameInteractor_ExecuteOnSaleEndHooks(GetItemEntry itemEntry) {

@@ -123,7 +123,7 @@ void func_80AFB768(EnSi* this, PlayState* play) {
                         Audio_PlayFanfare_Rando(getItem);
                     } else {
                         gSaveContext.pendingIceTrapCount++;
-                        GameInteractor_ExecuteOnReceiveItemHooks(getItem);
+                        GameInteractor_ExecuteOnItemReceiveHooks(getItem);
                         Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
                     }
                 } else {
@@ -162,7 +162,7 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
                 Audio_PlayFanfare_Rando(getItem);
             } else {
                 gSaveContext.pendingIceTrapCount++;
-                GameInteractor_ExecuteOnReceiveItemHooks(getItem);
+                GameInteractor_ExecuteOnItemReceiveHooks(getItem);
                 Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
             }
         } else {

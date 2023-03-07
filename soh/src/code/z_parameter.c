@@ -1698,8 +1698,8 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
     }
 }
 
-u8 Return_Item_Entry(GetItemEntry entry, ItemID returnItem ) {
-    GameInteractor_ExecuteOnReceiveItemHooks(entry);
+u8 Return_Item_Entry(GetItemEntry itemEntry, ItemID returnItem ) {
+    GameInteractor_ExecuteOnItemReceiveHooks(itemEntry);
     return returnItem;
 }
 
