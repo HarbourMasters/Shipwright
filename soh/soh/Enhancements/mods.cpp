@@ -1,6 +1,7 @@
 #include "mods.h"
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
+#include "tts/tts.h"
 
 extern "C" {
 #include <z64.h>
@@ -280,6 +281,7 @@ void RegisterShadowTag() {
 }
 
 void InitMods() {
+    RegisterTTS();
     RegisterInfiniteMoney();
     RegisterInfiniteHealth();
     RegisterInfiniteAmmo();
