@@ -122,12 +122,12 @@ C
 
 Once you have prepared your sequences folder:
 1. Download and open [Retro](https://github.com/HarbourMasters/retro/releases). 
-1. Choose the "Create OTR" option 
-1. Choose the "Custom Sequences" option
-1. Using the file select, choose the sequences folder you prepared in the previous instructions.
-1. Click the "Stage Files" button (Reminder: SoH can handle 1024 custom sequence in total, this number include the count of the original music with it so be sure to take this into account)
+1. Choose the "Create OTR" option. 
+1. Choose the "Custom Sequences" option.
+1. Using the file selection screen, choose the sequences folder you prepared in the previous instructions.
+1. Click the "Stage Files" button. (Reminder: SoH can handle 1024 custom sequence in total, this number include the count of the original music with it so be sure to take this into account)
 1. Click the "Finalize OTR" text in the green footer.
-1. Finally click "Generate OTR" and for the source destination it needs to go in the `mods` folder of your SoH installation.
+1. Click "Generate OTR" and, using the file selection screen, save the file to the `mods` folder of your SoH installation.
     - This `mods` folder should be in the same folder as your `oot.otr` file.
 
 Assuming you have done everything correctly, boot up SoH and open up the SFX Editor (In the Enhancements dropdown). You should now be able to swap out any of the in game sequences/fanfares for the sequences added in your newly generated OTR file. If you have any trouble with this process please reach out in the support section of the Discord
