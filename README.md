@@ -128,7 +128,7 @@ Once you have prepared your sequences folder:
 1. Click the "Stage Files" button (Reminder: SoH can handle 1024 custom sequence in total, this number include the count of the original music with it so be sure to take this into account)
 1. Click the "Finalize OTR" text in the green footer.
 1. Finally click "Generate OTR" and for the source destination it needs to go in the `mods` folder of your SoH installation.
-    - This `mods` folder should be a sibling of your `oot.otr` file.
+    - This `mods` folder should be in the same folder as your `oot.otr` file.
 
 Assuming you have done everything correctly, boot up SoH and open up the SFX Editor (In the Enhancements dropdown). You should now be able to swap out any of the in game sequences/fanfares for the sequences added in your newly generated OTR file. If you have any trouble with this process please reach out in the support section of the Discord
 
