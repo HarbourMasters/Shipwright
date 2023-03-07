@@ -874,7 +874,7 @@ void Play_Update(PlayState* play) {
                             // Also don't save when you first load a file to prevent consumables like magic from being lost
                             // Also don't save if there's a pending shop sale to prevent getting the item for a discount!
                             if ((CVarGetInteger("gAutosave", 0) >= 1) && (CVarGetInteger("gAutosave", 0) <= 3) &&
-                                (gSaveContext.cutsceneIndex == 0) && (play->gameplayFrames > 60) && (gSaveContext.pendingSale == ITEM_NONE) &&
+                                (gSaveContext.cutsceneIndex < 0xFFF0) && (play->gameplayFrames > 60) && (gSaveContext.pendingSale == ITEM_NONE) &&
                                 (play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA) && (play->sceneNum != SCENE_KENJYANOMA)) {
                                 Play_PerformSave(play);
                             }
