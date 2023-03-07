@@ -40,7 +40,7 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 
 ## About Versions
 
-The Ship of Harkinian's versioning system is a unique system, comprising of a three-numbered version (`x.y.z`) and a version codename.  The main version number `x` signifies major feature updates that require a new `oot.otr` file.  The version number `y` signifies major feature updates and bugfixes that most likely do not require a new `oot.otr` file, although it may be a good idea to create a new one.  The version number `z` signifies minor updates such as a collection of bugfixes.
+The Ship of Harkinian's versioning system is a unique system, comprising of a three-numbered version (`x.y.z`) and a version codename.  The main version number `x` signifies major feature updates that require a new `oot.otr` file.  The version number `y` signifies major feature updates and bugfixes that do not require a new `oot.otr` file.  The version number `z` signifies minor updates such as a collection of bugfixes.
 
 The version codename consists of a sci-fi film character followed by a phonetic alphabet code word. The film character represents a major release version which increments with the major `x` or `y` version bumps. The code word represents a minor release version which increments with the minor `z` version bump.
 
@@ -51,6 +51,7 @@ The version codename consists of a sci-fi film character followed by a phonetic 
 * Open `OTRGui.exe` and click on "Open OOT ROM", then select your supported copy of the game (see section "Supported Games").
 * If a second button already exits then `oot.otr` already exists. To prevent overwriting the old `oot.otr` use this button to choose a new game directory. The new directory must not already contain an `oot.otr` to prevent an error.
 * When the process completes, you should have an `oot.otr` or `oot-mq.otr` file in your main directory, depending on the version of the game used to build it.
+    -*NOTE:* You can have both `.otr` files, if you want to! This even allows you to shuffle MQ and vanilla dungeons in the randomizer!
 
 This process can take up to several minutes, depending on your system hardware.
 
@@ -62,6 +63,7 @@ If you get another message, then you might have selected the wrong rom. See sect
 * Place one of the supported roms in the same folder as the appimage (See section "Supported Games").
 * Execute `soh.appimage`.  You may have to `chmod +x` the appimage via terminal.
 * When the process completes, you should have an `oot.otr` or `oot-mq.otr` file in the same directory as the appimage, and the game should start automatically.
+    -*NOTE:* You can provide both a vanilla and MQ ROM, if you want to! This even allows you to shuffle MQ and vanilla dungeons in the randomizer!
 
 This process can take up to several minutes, depending on your system hardware.
 
@@ -114,7 +116,7 @@ Currently, DirectX 11 and OpenGL are supported. You can change which API to use 
 
 ### Custom Music
 
-We support importing custom [Seq64](https://github.com/sauraen/seq64) files to replace the in game music and fanfares (SFX replacement is currently not supported).
+We support importing custom [Seq64](https://github.com/sauraen/seq64) files to replace the in game music and fanfares (Sound effect and instrument replacement is currently not supported).
 
 First you will need to prepare a folder with the desired sequences. Every sequence requires two files with the same name and different extensions - a `.seq` Seq64 file and a `.meta` plaintext file. These files can be categorically nested in folders if desired, - Retro will recursively search each subfolder it finds.
 
