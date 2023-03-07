@@ -58,7 +58,7 @@ If you get another message, then you might have selected the wrong rom. See sect
 ### Linux Rom Extraction
 
 * Place one of the supported roms in the same folder as the appimage (See section "Supported Games").
-* Execute `soh.appimage'.  You may have to `chmod +x` the appimage via terminal.
+* Execute `soh.appimage`.  You may have to `chmod +x` the appimage via terminal.
 * When the process completes, you should have an `oot.otr` or `oot-mq.otr` file in the same directory as the appimage, and the game should start automatically.
 
 This process can take up to several minutes, depending on your system hardware.
