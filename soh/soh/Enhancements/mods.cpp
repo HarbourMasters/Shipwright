@@ -1,7 +1,6 @@
 #include "mods.h"
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
-#include "tts/tts.h"
 
 extern "C" {
 #include <z64.h>
@@ -274,14 +273,13 @@ void RegisterShadowTag() {
             tagDelay--;
         }
     });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) { 
         tagSpawnable = 0;
         tagDelay = 60;
     });
 }
 
 void InitMods() {
-    RegisterTTS();
     RegisterInfiniteMoney();
     RegisterInfiniteHealth();
     RegisterInfiniteAmmo();
@@ -295,4 +293,5 @@ void InitMods() {
     RegisterRupeeDash();
     RegisterShadowTag();
     RegisterAutoSave();
+    RegisterShadowTag();
 }
