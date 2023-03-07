@@ -17,14 +17,12 @@ Official Discord: https://discord.com/invite/BtBmd55HVH
 
 ### Supported Games
 #### Ocarina of Time Debug PAL GC (not Master Quest)
-> Currently the recommended option
 ```
 Build team: `zelda@srd022j`
 Build date: `03-02-21 00:49:18` (year-month-day)
 sha1: cee6bc3c2a634b41728f2af8da54d9bf8cc14099
 ```
 #### Ocarina of Time PAL GameCube
-> May lead to crashes and instability
 ```
 sha1: 0227d7c0074f2d0ac935631990da8ec5914597b4
 ```
@@ -51,7 +49,7 @@ The version codename consists of a sci-fi film character followed by a phonetic 
 * Open `OTRGui.exe` and click on "Open OOT ROM", then select your supported copy of the game (see section "Supported Games").
 * If a second button already exits then `oot.otr` already exists. To prevent overwriting the old `oot.otr` use this button to choose a new game directory. The new directory must not already contain an `oot.otr` to prevent an error.
 * When the process completes, you should have an `oot.otr` or `oot-mq.otr` file in your main directory, depending on the version of the game used to build it.
-    -*NOTE:* You can have both `.otr` files, if you want to! This even allows you to shuffle MQ and vanilla dungeons in the randomizer!
+    (*NOTE:* You can have both `.otr` files, if you want to! This even allows you to shuffle MQ and vanilla dungeons in the randomizer)
 
 This process can take up to several minutes, depending on your system hardware.
 
@@ -63,7 +61,7 @@ If you get another message, then you might have selected the wrong rom. See sect
 * Place one of the supported roms in the same folder as the appimage (See section "Supported Games").
 * Execute `soh.appimage`.  You may have to `chmod +x` the appimage via terminal.
 * When the process completes, you should have an `oot.otr` or `oot-mq.otr` file in the same directory as the appimage, and the game should start automatically.
-    -*NOTE:* You can provide both a vanilla and MQ ROM, if you want to! This even allows you to shuffle MQ and vanilla dungeons in the randomizer!
+    (*NOTE:* You can provide both a vanilla and MQ ROM, if you want to! This even allows you to shuffle MQ and vanilla dungeons in the randomizer)
 
 This process can take up to several minutes, depending on your system hardware.
 
@@ -112,7 +110,7 @@ Other shortcuts:
 | Alt+Enter | Fullscreen (DirectX) |
 | Ctrl+R | Reset |
 
-Currently, DirectX 11 and OpenGL are supported. You can change which API to use in the `Settings` menu of the menubar, which requires a restart.  If you're having an issue with crashing, you can change the API in the `shipofharkinian.json` file by finding the line `gfxbackend:""` and changing the value to `sdl` for OpenGL. DirectX 11 is the default on Windows.
+Currently, there are three rendering APIs supported: DirectX11 (Windows), OpenGL (all platforms), and Metal (MacOS). You can change which API to use in the `Settings` menu of the menubar, which requires a restart.  If you're having an issue with crashing, you can change the API in the `shipofharkinian.json` file by finding the line `gfxbackend:""` and changing the value to `sdl` for OpenGL. DirectX 11 is the default on Windows.
 
 ### Custom Music
 
@@ -131,7 +129,8 @@ Once you have prepared your sequences folder:
 1. Choose the "Create OTR" option. 
 1. Choose the "Custom Sequences" option.
 1. Using the file selection screen, choose the sequences folder you prepared in the previous instructions.
-1. Click the "Stage Files" button. (Reminder: SoH can handle 1024 custom sequence in total, this number include the count of the original music with it so be sure to take this into account)
+1. Click the "Stage Files" button.
+    (*NOTE:* SoH can handle 1024 custom sequence in total. This includes the original music. Keep that in mind!)
 1. Click the "Finalize OTR" text in the green footer.
 1. Click "Generate OTR" and, using the file selection screen, save the file to the `mods` folder of your SoH installation.
     - This `mods` folder should be in the same folder as your `oot.otr` file.
