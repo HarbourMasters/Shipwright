@@ -348,7 +348,6 @@ static s32 D_80858AA4;
 static Vec3f D_80858AA8;
 static Input* sControlInput;
 
-
 // .data
 
 static u8 D_80853410[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
