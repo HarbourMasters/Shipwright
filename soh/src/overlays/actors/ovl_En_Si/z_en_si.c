@@ -103,6 +103,11 @@ void func_80AFB768(EnSi* this, PlayState* play) {
 
                 if (gSaveContext.n64ddFlag) {
                     Randomizer_UpdateSkullReward(this, play);
+                    if (getItemId != RG_ICE_TRAP) {
+                        Randomizer_GiveSkullReward(this, play);
+                    } else {
+                        gSaveContext.pendingIceTrapCount++;
+                    }
                 } else {
                     Item_Give(play, giveItemId);
                 }
@@ -117,14 +122,8 @@ void func_80AFB768(EnSi* this, PlayState* play) {
 
                 Message_StartTextbox(play, textId, NULL);
 
-                if (gSaveContext.n64ddFlag) {
-                    if (getItemId != RG_ICE_TRAP) {
-                        Randomizer_GiveSkullReward(this, play);
-                        Audio_PlayFanfare_Rando(getItem);
-                    } else {
-                        gSaveContext.pendingIceTrapCount++;
-                        Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
-                    }
+                if (gSaveContext.n64ddFlag && getItemId != RG_ICE_TRAP) {
+                    Audio_PlayFanfare_Rando(getItem);
                 } else {
                     Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
                 }
@@ -149,20 +148,19 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_13)) {
         if (gSaveContext.n64ddFlag) {
             Randomizer_UpdateSkullReward(this, play);
+            if (getItemId != RG_ICE_TRAP) {
+                Randomizer_GiveSkullReward(this, play);
+            } else {
+                gSaveContext.pendingIceTrapCount++;
+            }
         } else {
             Item_Give(play, giveItemId);
         }
 
         Message_StartTextbox(play, textId, NULL);
 
-        if (gSaveContext.n64ddFlag) {
-            if (getItemId != RG_ICE_TRAP) {
-                Randomizer_GiveSkullReward(this, play);
-                Audio_PlayFanfare_Rando(getItem);
-            } else {
-                gSaveContext.pendingIceTrapCount++;
-                Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
-            }
+        if (gSaveContext.n64ddFlag && getItemId != RG_ICE_TRAP) {
+            Audio_PlayFanfare_Rando(getItem);
         } else {
             Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         }
