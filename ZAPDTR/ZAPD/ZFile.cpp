@@ -128,6 +128,9 @@ void ZFile::ParseXML(tinyxml2::XMLElement* reader, const std::string& filename)
 	if (reader->Attribute("RangeEnd") != nullptr)
 		rangeEnd = StringHelper::StrToL(reader->Attribute("RangeEnd"), 16);
 
+	if (reader->Attribute("Compilable") != nullptr)
+		isCompilable = true;
+
 	if (rangeStart > rangeEnd)
 		HANDLE_ERROR_PROCESS(
 			WarningType::Always,
@@ -261,16 +264,19 @@ void ZFile::ParseXML(tinyxml2::XMLElement* reader, const std::string& filename)
 			}
 			nameSet.insert(nameXml);
 		}
-
+		
 		std::string nodeName = std::string(child->Name());
 
 		if (nodeMap.find(nodeName) != nodeMap.end())
 		{
 			ZResource* nRes = nodeMap[nodeName](this);
 
-			if (mode == ZFileMode::Extract || mode == ZFileMode::ExternalFile || mode == ZFileMode::ExtractDirectory)
-				nRes->ExtractFromXML(child, rawDataIndex);
-
+			if (mode == ZFileMode::Extract || mode == ZFileMode::ExternalFile ||
+			    mode == ZFileMode::ExtractDirectory)
+			{
+				if (!isCompilable)
+					nRes->ExtractFromXML(child, rawDataIndex);
+			}
 			switch (nRes->GetResourceType())
 			{
 			case ZResourceType::Texture:

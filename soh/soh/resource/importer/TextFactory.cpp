@@ -29,6 +29,27 @@ std::shared_ptr<Resource> TextFactory::ReadResource(uint32_t version, std::share
 	return resource;
 }
 
+std::shared_ptr<Resource> TextFactory::ReadResourceXML(uint32_t version, tinyxml2::XMLElement* reader) 
+{
+    auto resource = std::make_shared<Text>();
+    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
+
+    switch ((Version)version) {
+        case Version::Deckard:
+            factory = std::make_shared<TextFactoryV0>();
+            break;
+    }
+
+    if (factory == nullptr) {
+        SPDLOG_ERROR("Failed to load Text with version {}", version);
+        return nullptr;
+    }
+
+    factory->ParseFileXML(reader, resource);
+
+    return resource;
+}
+
 void Ship::TextFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource)
 {
@@ -49,4 +70,29 @@ void Ship::TextFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
 		text->messages.push_back(entry);
 	}
 }
+void TextFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<Resource> resource) 
+{
+    std::shared_ptr<Text> txt = std::static_pointer_cast<Text>(resource);
+
+    auto child = reader->FirstChildElement();
+
+    while (child != nullptr) {
+        std::string childName = child->Name();
+
+        if (childName == "TextEntry") {
+            MessageEntry entry;
+            entry.id = child->IntAttribute("ID");
+            entry.textboxType = child->IntAttribute("TextboxType");
+            entry.textboxYPos = child->IntAttribute("TextboxYPos");
+            entry.msg = child->Attribute("Message");
+            entry.msg += "\x2";
+
+            txt->messages.push_back(entry);
+            int bp = 0;
+        }
+
+        child = child->NextSiblingElement();
+    }
+}
+
 } // namespace Ship
