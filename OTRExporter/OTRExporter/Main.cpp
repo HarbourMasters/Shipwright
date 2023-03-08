@@ -251,10 +251,6 @@ static void ExporterProcessCompilable(tinyxml2::XMLElement* reader)
 {
 	std::string nodeName = reader->Name();
 
-	if (nodeName == "Text")
-	{
-		
-	}
 }
 
 static void ExporterXMLBegin()
