@@ -214,6 +214,9 @@ public:
 	ZResourceExporter() = default;
 	virtual ~ZResourceExporter() = default;
 
+	//virtual void ParseCompilableData(tinyxml2::XMLElement* reader, ZResource* res,
+	                                 //const fs::path& outPath, BinaryWriter* writer) = 0;
+
 	virtual void Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer) = 0;
 };
 
