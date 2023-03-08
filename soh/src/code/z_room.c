@@ -1,3 +1,4 @@
+#include <vcruntime_string.h>
 #include "global.h"
 #include "vt.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
@@ -220,6 +221,33 @@ void func_80095D04(PlayState* play, Room* room, u32 flags) {
 
 #define JPEG_MARKER 0xFFD8FFE0
 
+s32 swapAndConvertJPEG(void* data) {
+    OSTime time;
+    if (BE32SWAP(*(u32*)data) == JPEG_MARKER) {
+        size_t size = 320 * 240 * 2;
+
+        char *decodedJpeg = ResourceMgr_LoadJPEG(data, size);
+
+        osSyncPrintf("Expanding jpeg data\n");
+        osSyncPrintf("Work buffer address (Z buffer) %08x\n", gZBuffer);
+
+        time = osGetTime();
+
+        memcpy(data, decodedJpeg, size);
+        time = osGetTime() - time;
+
+        osSyncPrintf("Success... I think. time = %6.3f ms", OS_CYCLES_TO_USEC(time) / 1000.0f);
+        osSyncPrintf("Writing back to original address from work buffer.");
+        osSyncPrintf("If the original buffer size isn't at least 150kb, it will be out of control.");
+        return 1;
+    }
+
+    osSyncPrintf("We received a non-JPEG file, or the file is corrupted. You may be in a state of panic now.\n");
+
+    return 0;
+}
+
+
 void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 height, u8 fmt, u8 siz, u16 mode0,
                    u16 tlutCount, f32 frameX, f32 frameY) {
     Gfx* displayListHead;
@@ -245,9 +273,8 @@ void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 h
     
     if (ResourceMgr_ResourceIsBackground((char*) source)) {
         char* blob = (char*) GetResourceDataByName((char*) source, true);
-        if (BE32SWAP(*(u32*)blob) == JPEG_MARKER) {
-            bg->b.imagePtr = (uintptr_t) ResourceMgr_LoadJPEG((char*) blob, 320 * 240 * 2);
-        }
+        swapAndConvertJPEG(blob);
+        bg->b.imagePtr = (uintptr_t) blob;
     }
 
     displayListHead = (void*)(bg + 1);

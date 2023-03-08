@@ -65,7 +65,7 @@ char* GetResourceDataByNameHandlingMQ(const char* path);
 void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
 uint8_t ResourceMgr_ResourceIsBackground(char* texPath);
-char* ResourceMgr_LoadJPEG(char* data, int dataSize);
+char* ResourceMgr_LoadJPEG(char* data, size_t dataSize);
 uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
 uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 char* ResourceMgr_LoadTexOrDListByName(const char* filePath);

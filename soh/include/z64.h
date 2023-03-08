@@ -624,12 +624,15 @@ typedef enum {
     /* 10 */ TEXT_STATE_AWAITING_NEXT
 } TextState;
 
+// Increased char buffer because texture paths could be bigger than (16 * 16 / 2)
+#define FONT_CHAR_MULTIPLIER 8
+
 typedef struct {
     /* 0x0000 */ uintptr_t    msgOffset;
     /* 0x0004 */ u32          msgLength;
-    /* 0x0008 */ u8           charTexBuf[FONT_CHAR_TEX_SIZE * 320];
-    /* 0x3C08 */ u8           iconBuf[FONT_CHAR_TEX_SIZE * 120];
-    /* 0x3C88 */ u8           fontBuf[FONT_CHAR_TEX_SIZE * 320];
+    /* 0x0008 */ u8           charTexBuf[FONT_CHAR_TEX_SIZE * FONT_CHAR_MULTIPLIER];
+    /* 0x3C08 */ u8           iconBuf[FONT_CHAR_TEX_SIZE * FONT_CHAR_MULTIPLIER];
+    /* 0x3C88 */ u8           fontBuf[FONT_CHAR_TEX_SIZE * FONT_CHAR_MULTIPLIER];
     union {
          /* 0xDC88 */ char   msgBuf[1280];
          /* 0xDC88 */ u16    msgBufWide[640];

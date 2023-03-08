@@ -86,7 +86,7 @@ void Ship::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reade
                 BgImage image;
                 image.unk_00 = reader->ReadUInt16();
                 image.id = reader->ReadUByte();
-                std::string imagePath = reader->ReadString();
+                std::string imagePath = "__OTR__" + reader->ReadString();
                 setMesh->imagePaths.push_back(imagePath);
                 image.source = (void*)setMesh->imagePaths.back().c_str();
                 image.unk_0C = reader->ReadUInt32();
