@@ -873,10 +873,6 @@ extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
     OTRGlobals::Instance->context->GetResourceManager()->DirtyDirectory(resName);
 }
 
-extern "C" void ResourceMgr_InvalidateCache() {
-    OTRGlobals::Instance->context->GetResourceManager()->InvalidateResourceCache();
-}
-
 // OTRTODO: There is probably a more elegant way to go about this...
 extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize) {
     auto lst = OTRGlobals::Instance->context->GetResourceManager()->ListFiles(searchMask);
