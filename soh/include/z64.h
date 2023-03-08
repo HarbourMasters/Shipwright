@@ -625,7 +625,7 @@ typedef enum {
 } TextState;
 
 // Increased char buffer because texture paths could be bigger than (16 * 16 / 2)
-#define FONT_CHAR_MULTIPLIER 8
+#define FONT_CHAR_MULTIPLIER 256
 
 typedef struct {
     /* 0x0000 */ uintptr_t    msgOffset;
