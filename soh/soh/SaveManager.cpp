@@ -1726,6 +1726,8 @@ void SaveManager::DeleteZeldaFile(int fileNum) {
     }
     fileMetaInfo[fileNum].valid = false;
     fileMetaInfo[fileNum].randoSave = false;
+    fileMetaInfo[fileNum].requiresMasterQuest = false;
+    fileMetaInfo[fileNum].requiresOriginal = false;
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnDeleteFile>(fileNum);
 }
 
