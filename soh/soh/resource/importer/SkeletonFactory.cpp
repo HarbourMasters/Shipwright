@@ -140,10 +140,17 @@ void SkeletonFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_p
         if (childName == "SkeletonLimb") {
             std::string limbName = child->Attribute("Path");
             skel->limbTable.push_back(limbName);
+
+            auto limb = GetResourceDataByName(limbName.c_str(), true);
+            skel->skeletonHeaderSegments.push_back(limb);
         }
 
         child = child->NextSiblingElement();
     }
+    
+    skel->skeletonData.flexSkeletonHeader.sh.limbCount = skel->limbCount;
+    skel->skeletonData.flexSkeletonHeader.sh.segment = (void**)skel->skeletonHeaderSegments.data();
+    skel->skeletonData.flexSkeletonHeader.dListCount = skel->dListCount;
 }
 
 } // namespace Ship

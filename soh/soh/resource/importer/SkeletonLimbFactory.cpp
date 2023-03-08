@@ -246,6 +246,23 @@ void SkeletonLimbFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shar
     if (std::string(reader->Attribute("DisplayList1")) == "gEmptyDL")
         skelLimb->dListPtr = "";
 
+
+    auto& limbData = skelLimb->limbData;
+
+    limbData.lodLimb.jointPos.x = skelLimb->transX;
+    limbData.lodLimb.jointPos.y = skelLimb->transY;
+    limbData.lodLimb.jointPos.z = skelLimb->transZ;
+
+    if (skelLimb->dListPtr != "")
+        limbData.lodLimb.dLists[0] = (Gfx*)GetResourceDataByName((const char*)skelLimb->dListPtr.c_str(), true);
+    else
+        limbData.lodLimb.dLists[0] = nullptr;
+
+    limbData.lodLimb.dLists[1] = nullptr;
+
+    limbData.lodLimb.child = skelLimb->childIndex;
+    limbData.lodLimb.sibling = skelLimb->siblingIndex;
+
     // skelLimb->dList2Ptr = reader->Attribute("DisplayList2");
 }
 

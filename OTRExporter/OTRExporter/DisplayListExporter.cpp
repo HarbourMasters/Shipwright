@@ -15,7 +15,7 @@
 
 #define GFX_SIZE 8
 
-#define gsDPSetCombineLERP2(a0, b0, c0, d0, Aa0, Ab0, Ac0, Ad0,      \
+#define gsDPSetCombineLERP_NoMacros(a0, b0, c0, d0, Aa0, Ab0, Ac0, Ad0,      \
         a1, b1, c1, d1, Aa1, Ab1, Ac1, Ad1)         \
 {                                   \
     _SHIFTL(G_SETCOMBINE, 24, 8) |                  \
@@ -76,7 +76,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 		F3DZEXOpcode opF3D = (F3DZEXOpcode)opcode;
 
 		if ((int)opF3D == G_DL)// || (int)opF3D == G_BRANCH_Z)
-			opcode = (uint8_t)G_DL_OTR;
+			opcode = (uint8_t)G_DL_OTR_HASH;
 
 		if ((int)opF3D == G_MTX)
 			opcode = (uint8_t)G_MTX_OTR;
@@ -85,10 +85,10 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			opcode = (uint8_t)G_BRANCH_Z_OTR;
 
 		if ((int)opF3D == G_VTX)
-			opcode = (uint8_t)G_VTX_OTR;
+			opcode = (uint8_t)G_VTX_OTR_HASH;
 
 		if ((int)opF3D == G_SETTIMG)
-			opcode = (uint8_t)G_SETTIMG_OTR;
+			opcode = (uint8_t)G_SETTIMG_OTR_HASH;
 
 		word0 += (opcode << 24);
 
@@ -607,7 +607,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t ab1 = (data & 0b00000000000000000000000000000000000000000000000000000000111000) >> 3;
 			int32_t ad1 = (data & 0b00000000000000000000000000000000000000000000000000000000000111) >> 0;
 
-			Gfx value = {gsDPSetCombineLERP2(a0, b0, c0, d0, aa0, ab0, ac0, ad0, a1, b1, c1, d1, aa1, ab1, ac1, ad1)};
+			Gfx value = { gsDPSetCombineLERP_NoMacros(a0, b0, c0, d0, aa0, ab0, ac0, ad0, a1, b1, c1, d1, aa1, ab1, ac1, ad1)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -686,7 +686,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 				Gfx value = {gsDPSetTextureImage(fmt, siz, www + 1, __)};
 				word0 = value.words.w0 & 0x00FFFFFF;
-				word0 += (G_SETTIMG_OTR << 24);
+				word0 += (G_SETTIMG_OTR_HASH << 24);
 				//word1 = value.words.w1;
 				word1 = 0;
 
@@ -754,7 +754,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 					word0 = value.words.w0;
 					word0 &= 0x00FFFFFF;
-					word0 += (G_VTX_OTR << 24);
+					word0 += (G_VTX_OTR_HASH << 24);
 					word1 = value.words.w1;
 
 					writer->Write(word0);
