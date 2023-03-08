@@ -242,8 +242,6 @@ s32 swapAndConvertJPEG(void* data) {
         return 1;
     }
 
-    osSyncPrintf("We received a non-JPEG file, or the file is corrupted. You may be in a state of panic now.\n");
-
     return 0;
 }
 
@@ -270,7 +268,7 @@ void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 h
     bg->b.imageSiz = siz;
     bg->b.imagePal = 0;
     bg->b.imageFlip = 0;
-    
+
     if (ResourceMgr_ResourceIsBackground((char*) source)) {
         char* blob = (char*) GetResourceDataByName((char*) source, true);
         swapAndConvertJPEG(blob);
@@ -402,7 +400,7 @@ BgImage* func_80096A74(PolygonType1* polygon1, PlayState* play) {
         // camera (such as din's fire) on scenes with prerendered backgrounds
         return NULL;
     }
-    
+
     // jfifid
     camId2 = func_80041C10(&play->colCtx, camId, BGCHECK_SCENE)[2].y;
     if (camId2 >= 0) {
