@@ -94,6 +94,7 @@ class SetMesh : public SceneCommand {
 
     std::vector<PolygonDlist> dlists;
     std::vector<PolygonDlist2> dlists2;
+    std::vector<std::string> imagePaths;
     std::vector<BgImage> images;
     MeshHeader meshHeader;
 };
