@@ -348,7 +348,6 @@ static s32 D_80858AA4;
 static Vec3f D_80858AA8;
 static Input* sControlInput;
 
-static bool potSpawn = 0;
 
 // .data
 
