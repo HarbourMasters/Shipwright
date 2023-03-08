@@ -11,6 +11,7 @@
 #include "utils.hpp"
 #include "shops.hpp"
 #include "hints.hpp"
+#include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include <nlohmann/json.hpp>
 
 #include <cstdio>
@@ -32,6 +33,7 @@
 using json = nlohmann::json;
 
 json jsonData;
+std::map<HintKey, ItemLocation*> hintedLocations;
 
 namespace {
 std::string placementtxt;
@@ -747,6 +749,9 @@ static void WriteAllLocations(int language) {
         if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
           jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
         }
+        if (location->IsHintedAt()) {
+          hintedLocations.emplace(location->GetHintKey(), location);
+        }
 
         if (location->GetPlacedItemKey() == ICE_TRAP) {
           switch (language) {
@@ -765,6 +770,16 @@ static void WriteAllLocations(int language) {
                   break;
           }
       }
+    }
+}
+
+static void WriteHintData(int language) {
+    for (auto [hintKey, item_location] : hintedLocations) {
+        ItemLocation *hint_location = Location(hintKey);
+        jsonData["hints"][hint_location->GetName()] = { { "text", hint_location->GetPlacedItemName().GetEnglish() },
+                                                        { "item", item_location->GetPlacedItemName().GetEnglish() },
+                                                        { "itemLocation", item_location->GetName() },
+                                                        { "locationArea", item_location->GetParentRegionKey() } };
     }
 }
 
@@ -806,6 +821,7 @@ const char* SpoilerLog_Write(int language) {
     WriteHints(language);
     WriteShuffledEntrances();
     WriteAllLocations(language);
+    WriteHintData(language);
 
     if (!std::filesystem::exists(Ship::Window::GetPathRelativeToAppDirectory("Randomizer"))) {
         std::filesystem::create_directory(Ship::Window::GetPathRelativeToAppDirectory("Randomizer"));
