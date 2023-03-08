@@ -257,25 +257,44 @@ void RegisterRupeeDash() {
 }
 
 void RegisterHyperBosses() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* actor) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
         // Run the update function a second time to make bosses move and act twice as fast.
-        Actor* actorObject = static_cast<Actor*>(actor);
 
-        if (actorObject->category == ACTORCAT_BOSS) {
-            // Some actors are labeled as bosses but aren't really bosses, so exclude those.
-            // Barinade is handled seperately because its child actors have to be updated in sequence.
-            uint8_t isSkippedBossActor = actorObject->id == ACTOR_EN_TORCH2 || actorObject->id == ACTOR_DEMO_GEFF ||
-                                         actorObject->id == ACTOR_EN_CLEAR_TAG || actorObject->id == ACTOR_EN_GANON_ORGAN ||
-                                         actorObject->id == ACTOR_EN_GANON_MANT || actorObject->id == ACTOR_BOSS_VA;
+        Player* player = GET_PLAYER(gPlayState);
+        Actor* actor = static_cast<Actor*>(refActor);
 
-            // Sometimes the actorObject is destroyed in the previous Update, so check if the update function still exists.
-            if (actorObject->update != NULL && !isSkippedBossActor) {
-                uint8_t hyperBoss = CVarGetInteger("gHyperBosses", 0);
-                Player* player = GET_PLAYER(gPlayState);
-                // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
-                if (!Player_InBlockingCsMode(gPlayState, player) && hyperBoss) {
-                    actorObject->update(actorObject, gPlayState);
+        uint8_t isBossActor =
+            actor->id == ACTOR_BOSS_GOMA ||                              // Gohma
+            actor->id == ACTOR_EN_DODONGO ||                             // King Dodongo
+            actor->id == ACTOR_BOSS_VA ||                                // Barinade
+            actor->id == ACTOR_BOSS_GANONDROF ||                         // Phantom Ganon
+            (actor->id == 0 && actor->category == ACTORCAT_BOSS) ||      // Phantom Ganon/Ganondorf Energy Ball/Thunder
+            actor->id == ACTOR_EN_FHG ||                                 // Phantom Ganon's Horse
+            actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || // Volvagia (grounded/flying)
+            actor->id == ACTOR_BOSS_MO ||                                // Morpha
+            actor->id == ACTOR_BOSS_SST ||                               // Bongo Bongo
+            actor->id == ACTOR_BOSS_TW ||                                // Twinrova
+            actor->id == ACTOR_BOSS_GANON ||                             // Ganondorf
+            actor->id == ACTOR_BOSS_GANON2;                              // Ganon
+
+        // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
+        // Sometimes the actor is destroyed in the previous Update, so check if the update function still exists.
+        if (CVarGetInteger("gHyperBosses", 0) && isBossActor && !Player_InBlockingCsMode(gPlayState, player) &&
+            actor->update != NULL) {
+            // Barinade needs to be updated in sequence to avoid unintended behaviour.
+            if (actor->id == ACTOR_BOSS_VA) {
+                // params -1 is BOSSVA_BODY
+                if (actor->params == -1) {
+                    Actor* actorList = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS].head;
+                    while (actorList != NULL) {
+                        if (actorList->update != NULL) {
+                            actorList->update(actorList, gPlayState);
+                        }
+                        actorList = actorList->next;
+                    }
                 }
+            } else {
+                actor->update(actor, gPlayState);
             }
         }
     });
