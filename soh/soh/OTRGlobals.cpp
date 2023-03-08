@@ -234,19 +234,31 @@ OTRGlobals::OTRGlobals() {
     };
     context = Ship::Window::CreateInstance("Ship of Harkinian", OTRFiles);
 
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Animation, std::make_shared<Ship::AnimationFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_PlayerAnimation, std::make_shared<Ship::PlayerAnimationFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Room, std::make_shared<Ship::SceneFactory>()); // Is room scene? maybe?
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_CollisionHeader, std::make_shared<Ship::CollisionHeaderFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Skeleton, std::make_shared<Ship::SkeletonFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_SkeletonLimb, std::make_shared<Ship::SkeletonLimbFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Path, std::make_shared<Ship::PathFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Cutscene, std::make_shared<Ship::CutsceneFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Text, std::make_shared<Ship::TextFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_AudioSample, std::make_shared<Ship::AudioSampleFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_AudioSoundFont, std::make_shared<Ship::AudioSoundFontFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_AudioSequence, std::make_shared<Ship::AudioSequenceFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Background, std::make_shared<Ship::BackgroundFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        Ship::ResourceType::SOH_Animation, "SOH_Animation", std::make_shared<Ship::AnimationFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        Ship::ResourceType::SOH_PlayerAnimation, "SOH_PlayerAnimation", std::make_shared<Ship::PlayerAnimationFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        Ship::ResourceType::SOH_Room, "SOH_Room", std::make_shared<Ship::SceneFactory>()); // Is room scene? maybe?
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        Ship::ResourceType::SOH_CollisionHeader, "SOH_CollisionHeader", std::make_shared<Ship::CollisionHeaderFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        Ship::ResourceType::SOH_Skeleton, "SOH_Skeleton", std::make_shared<Ship::SkeletonFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        Ship::ResourceType::SOH_SkeletonLimb, "SOH_SkeletonLimb", std::make_shared<Ship::SkeletonLimbFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        Ship::ResourceType::SOH_Path, "SOH_Path",  std::make_shared<Ship::PathFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Cutscene, "SOH_Cutscene", std::make_shared<Ship::CutsceneFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        Ship::ResourceType::SOH_Text, "SOH_Text", std::make_shared<Ship::TextFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        Ship::ResourceType::SOH_AudioSample, "SOH_AudioSample", std::make_shared<Ship::AudioSampleFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        Ship::ResourceType::SOH_AudioSoundFont, "SOH_AudioSoundFont", std::make_shared<Ship::AudioSoundFontFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        Ship::ResourceType::SOH_AudioSequence, "SOH_AudioSequence", std::make_shared<Ship::AudioSequenceFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        Ship::ResourceType::SOH_Background, "SOH_Background", std::make_shared<Ship::BackgroundFactory>());
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
