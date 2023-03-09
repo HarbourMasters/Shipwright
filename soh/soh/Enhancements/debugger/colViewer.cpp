@@ -18,7 +18,7 @@ extern PlayState* gPlayState;
 
 enum class ColRenderSetting { Disabled, Solid, Transparent };
 
-const char* ColRenderSettingNames[] = {
+static const char* ColRenderSettingNames[] = {
     "Disabled",
     "Solid",
     "Transparent",

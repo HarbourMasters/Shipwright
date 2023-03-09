@@ -891,7 +891,7 @@ static std::set<std::string> rainbowCVars = {
 int hue = 0;
 void RainbowTick() {
     float freqHue = hue * 2 * M_PI / (360 * CVarGetFloat("gCosmetics.RainbowSpeed", 0.6f));
-    for (auto cvar : rainbowCVars) {
+    for (auto& cvar : rainbowCVars) {
         if (CVarGetInteger((cvar + "RBM").c_str(), 0) == 0)
             continue;
      
@@ -956,10 +956,10 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
 
 
 
-const char* windowType[] = { "Floating", "Window" };
-const char* displayType[] = { "Always", "Combo Button Hold" };
-const char* buttonStrings[] = { "A Button", "B Button", "C-Up",  "C-Down", "C-Left", "C-Right", "L Button",
-                                "Z Button", "R Button", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
+static const char* windowType[] = { "Floating", "Window" };
+static const char* displayType[] = { "Always", "Combo Button Hold" };
+static const char* buttonStrings[] = { "A Button", "B Button", "C-Up",  "C-Down", "C-Left", "C-Right", "L Button",
+                                       "Z Button", "R Button", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
 void DrawCheckTrackerOptions(bool& open) {
     if (!open) {
         CVarSetInteger("gCheckTrackerSettingsEnabled", 0);

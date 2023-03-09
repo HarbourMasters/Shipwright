@@ -105,7 +105,7 @@ static const char* frenchRupeeNames[36] = {
 };
 
 Randomizer::Randomizer() {
-    for (auto [randomizerCheck, rcObject] : RandomizerCheckObjects::GetAllRCObjects()) {
+    for (auto& [randomizerCheck, rcObject] : RandomizerCheckObjects::GetAllRCObjects()) {
         SpoilerfileCheckNameToEnum[rcObject.rcSpoilerName] = rcObject.rc;
         checkFromActorMultimap.emplace(std::make_tuple((s16)rcObject.actorId, (s16)rcObject.sceneId, rcObject.actorParams), rcObject);
     }
@@ -165,46 +165,47 @@ std::unordered_map<std::string, SceneID> spoilerFileDungeonToScene = {
     { "Ganon's Castle", SCENE_GANONTIKA }
 };
 
-std::unordered_map<s16, s16>
-    getItemIdToItemId = { { GI_BOW, ITEM_BOW },
-                          { GI_ARROW_FIRE, ITEM_ARROW_FIRE },
-                          { GI_DINS_FIRE, ITEM_DINS_FIRE },
-                          { GI_SLINGSHOT, ITEM_SLINGSHOT },
-                          { GI_OCARINA_FAIRY, ITEM_OCARINA_FAIRY },
-                          { GI_OCARINA_OOT, ITEM_OCARINA_TIME },
-                          { GI_HOOKSHOT, ITEM_HOOKSHOT },
-                          { GI_LONGSHOT, ITEM_LONGSHOT },
-                          { GI_ARROW_ICE, ITEM_ARROW_ICE },
-                          { GI_FARORES_WIND, ITEM_FARORES_WIND },
-                          { GI_BOOMERANG, ITEM_BOOMERANG },
-                          { GI_LENS, ITEM_LENS },
-                          { GI_HAMMER, ITEM_HAMMER },
-                          { GI_ARROW_LIGHT, ITEM_ARROW_LIGHT },
-                          { GI_NAYRUS_LOVE, ITEM_NAYRUS_LOVE },
-                          { GI_BOTTLE, ITEM_BOTTLE },
-                          { GI_POTION_RED, ITEM_POTION_RED },
-                          { GI_POTION_GREEN, ITEM_POTION_GREEN },
-                          { GI_POTION_BLUE, ITEM_POTION_BLUE },
-                          { GI_FAIRY, ITEM_FAIRY },
-                          { GI_FISH, ITEM_FISH },
-                          { GI_MILK_BOTTLE, ITEM_MILK_BOTTLE },
-                          { GI_LETTER_RUTO, ITEM_LETTER_RUTO },
-                          { GI_BLUE_FIRE, ITEM_BLUE_FIRE },
-                          { GI_BUGS, ITEM_BUG },
-                          { GI_BIG_POE, ITEM_BIG_POE },
-                          { GI_POE, ITEM_POE },
-                          { GI_WEIRD_EGG, ITEM_WEIRD_EGG },
-                          { GI_LETTER_ZELDA, ITEM_LETTER_ZELDA },
-                          { GI_POCKET_EGG, ITEM_POCKET_EGG },
-                          { GI_COJIRO, ITEM_COJIRO },
-                          { GI_ODD_MUSHROOM, ITEM_ODD_MUSHROOM },
-                          { GI_ODD_POTION, ITEM_ODD_POTION },
-                          { GI_SAW, ITEM_SAW },
-                          { GI_SWORD_BROKEN, ITEM_SWORD_BROKEN },
-                          { GI_PRESCRIPTION, ITEM_PRESCRIPTION },
-                          { GI_FROG, ITEM_FROG },
-                          { GI_EYEDROPS, ITEM_EYEDROPS },
-                          { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK } };
+std::unordered_map<s16, s16> getItemIdToItemId = { 
+    { GI_BOW, ITEM_BOW },
+    { GI_ARROW_FIRE, ITEM_ARROW_FIRE },
+    { GI_DINS_FIRE, ITEM_DINS_FIRE },
+    { GI_SLINGSHOT, ITEM_SLINGSHOT },
+    { GI_OCARINA_FAIRY, ITEM_OCARINA_FAIRY },
+    { GI_OCARINA_OOT, ITEM_OCARINA_TIME },
+    { GI_HOOKSHOT, ITEM_HOOKSHOT },
+    { GI_LONGSHOT, ITEM_LONGSHOT },
+    { GI_ARROW_ICE, ITEM_ARROW_ICE },
+    { GI_FARORES_WIND, ITEM_FARORES_WIND },
+    { GI_BOOMERANG, ITEM_BOOMERANG },
+    { GI_LENS, ITEM_LENS },
+    { GI_HAMMER, ITEM_HAMMER },
+    { GI_ARROW_LIGHT, ITEM_ARROW_LIGHT },
+    { GI_NAYRUS_LOVE, ITEM_NAYRUS_LOVE },
+    { GI_BOTTLE, ITEM_BOTTLE },
+    { GI_POTION_RED, ITEM_POTION_RED },
+    { GI_POTION_GREEN, ITEM_POTION_GREEN },
+    { GI_POTION_BLUE, ITEM_POTION_BLUE },
+    { GI_FAIRY, ITEM_FAIRY },
+    { GI_FISH, ITEM_FISH },
+    { GI_MILK_BOTTLE, ITEM_MILK_BOTTLE },
+    { GI_LETTER_RUTO, ITEM_LETTER_RUTO },
+    { GI_BLUE_FIRE, ITEM_BLUE_FIRE },
+    { GI_BUGS, ITEM_BUG },
+    { GI_BIG_POE, ITEM_BIG_POE },
+    { GI_POE, ITEM_POE },
+    { GI_WEIRD_EGG, ITEM_WEIRD_EGG },
+    { GI_LETTER_ZELDA, ITEM_LETTER_ZELDA },
+    { GI_POCKET_EGG, ITEM_POCKET_EGG },
+    { GI_COJIRO, ITEM_COJIRO },
+    { GI_ODD_MUSHROOM, ITEM_ODD_MUSHROOM },
+    { GI_ODD_POTION, ITEM_ODD_POTION },
+    { GI_SAW, ITEM_SAW },
+    { GI_SWORD_BROKEN, ITEM_SWORD_BROKEN },
+    { GI_PRESCRIPTION, ITEM_PRESCRIPTION },
+    { GI_FROG, ITEM_FROG },
+    { GI_EYEDROPS, ITEM_EYEDROPS },
+    { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK } 
+};
 
 std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEnum = {
     { "Detailed Logic Settings:Logic", RSK_LOGIC_RULES },
@@ -368,7 +369,7 @@ void Randomizer::LoadRandomizerSettings(const char* spoilerFileName) {
         ParseRandomizerSettingsFile(spoilerFileName);
     }
 
-    for(auto randoSetting : gSaveContext.randoSettings) {
+    for(auto& randoSetting : gSaveContext.randoSettings) {
         this->randoSettings[randoSetting.key] = randoSetting.value;
     }
 }
@@ -403,7 +404,7 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     this->ganonHintText = gSaveContext.ganonHintText;
     this->ganonText = gSaveContext.ganonText;
 
-    for (auto hintLocation : gSaveContext.hintLocations) {
+    for (const auto& hintLocation : gSaveContext.hintLocations) {
         if(hintLocation.check == RC_LINKS_POCKET) break;
         this->hintLocations[hintLocation.check] = hintLocation.hintText;
         CustomMessageManager::Instance->CreateMessage(
@@ -602,7 +603,7 @@ void Randomizer::LoadItemLocations(const char* spoilerFileName, bool silent) {
         ParseItemLocationsFile(spoilerFileName, silent);
     }
 
-    for (auto itemLocation : gSaveContext.itemLocations) {
+    for (auto& itemLocation : gSaveContext.itemLocations) {
         this->itemLocations[itemLocation.check] = itemLocation.get;
     }
 
@@ -3030,7 +3031,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     RandomizerCheckObjects::UpdateImGuiVisibility();
 
     // Remove excludes for locations that are no longer allowed to be excluded
-    for (auto [randomizerCheck, rcObject] : RandomizerCheckObjects::GetAllRCObjects()) {
+    for (auto& [randomizerCheck, rcObject] : RandomizerCheckObjects::GetAllRCObjects()) {
         auto elfound = excludedLocations.find(rcObject.rc);
         if (!rcObject.visibleInImgui && elfound != excludedLocations.end()) {
             excludedLocations.erase(elfound);
@@ -3801,7 +3802,7 @@ void DrawRandoEditor(bool& open) {
                 // Forcefully enabled if Ganon's Boss Key is on the cursed man
                 bool forceEnable100GSShuffle =
                     (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) == RO_GANON_BOSS_KEY_KAK_TOKENS);
-                const char* disable100GSRewardText = "This option is forcefully enabled because \"Ganon's Boss Key\" is set to \"100 GS Reward.\"";
+                static const char* disable100GSRewardText = "This option is forcefully enabled because \"Ganon's Boss Key\" is set to \"100 GS Reward.\"";
                 UIWidgets::EnhancementCheckbox(Settings::Shuffle100GSReward.GetName().c_str(), "gRandomizeShuffle100GSReward",
                     forceEnable100GSShuffle, disable100GSRewardText, UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::InsertHelpHoverText(
@@ -4310,9 +4311,9 @@ void DrawRandoEditor(bool& open) {
                 locationSearch.Draw();
 
                 ImGui::BeginChild("ChildIncludedLocations", ImVec2(0, -8));
-                for (auto [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
+                for (auto& [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
                     bool hasItems = false;
-                    for (auto [randomizerCheck, rcObject] : rcObjects) {
+                    for (auto& [randomizerCheck, rcObject] : rcObjects) {
                         if (rcObject->visibleInImgui && !excludedLocations.count(rcObject->rc) &&
                             locationSearch.PassFilter(rcObject->rcSpoilerName.c_str())) {
 
@@ -4324,7 +4325,7 @@ void DrawRandoEditor(bool& open) {
                     if (hasItems) {
                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                         if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
-                            for (auto [randomizerCheck, rcObject] : rcObjects) {
+                            for (auto& [randomizerCheck, rcObject] : rcObjects) {
                                 if (rcObject->visibleInImgui && !excludedLocations.count(rcObject->rc) &&
                                     locationSearch.PassFilter(rcObject->rcSpoilerName.c_str())) {
 
@@ -4354,9 +4355,9 @@ void DrawRandoEditor(bool& open) {
                 window->DC.CurrLineTextBaseOffset = 0.0f;
 
                 ImGui::BeginChild("ChildExcludedLocations", ImVec2(0, -8));
-                for (auto [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
+                for (auto& [rcArea, rcObjects] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
                     bool hasItems = false;
-                    for (auto [randomizerCheck, rcObject] : rcObjects) {
+                    for (auto& [randomizerCheck, rcObject] : rcObjects) {
                         if (rcObject->visibleInImgui && excludedLocations.count(rcObject->rc)) {
                             hasItems = true;
                             break;
@@ -4366,7 +4367,7 @@ void DrawRandoEditor(bool& open) {
                     if (hasItems) {
                         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                         if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
-                            for (auto [randomizerCheck, rcObject] : rcObjects) {
+                            for (auto& [randomizerCheck, rcObject] : rcObjects) {
                                 auto elfound = excludedLocations.find(rcObject->rc);
                                 if (rcObject->visibleInImgui && elfound != excludedLocations.end()) {
                                     if (ImGui::ArrowButton(std::to_string(rcObject->rc).c_str(), ImGuiDir_Left)) {
@@ -4671,7 +4672,7 @@ CustomMessageEntry Randomizer::GetCursedSkullMessage(s16 params) {
     return messageEntry;
 }
 
-const char* mapGetItemHints[3][2] = {
+static const char* mapGetItemHints[3][2] = {
     { " It's ordinary.", " It's masterful!" },
     { "&Sieht aus wie immer.", " &Man kann darauf die Worte&%r\"Master Quest\"%w entziffern..." },
     { "&Elle vous semble %rordinaire%w.", "&Étrange... les mots %r\"Master&Quest\"%w sont gravés dessus." },

@@ -319,11 +319,12 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("NPC_IronKnuckles",              "Iron Knuckles",        GROUP_NPC,          ImVec4(245, 255, 205, 255), false, true, false),
 };
 
-const char* MarginCvarList[] {
+static const char* MarginCvarList[] {
     "gHearts", "gHeartsCount", "gMagicBar", "gVSOA", "gBBtn", "gABtn", "gStartBtn", 
     "gCBtnU", "gCBtnD", "gCBtnL", "gCBtnR", "gDPad", "gMinimap", 
     "gSKC", "gRC", "gCarrots",  "gTimers", "gAS", "gTCM", "gTCB"
 };
+static const char* MarginCvarNonAnchor[]{ "gCarrots", "gTimers", "gAS", "gTCM","gTCB" };
 
 ImVec4 GetRandomValue(int MaximumPossible){
     ImVec4 NewColor;
@@ -347,24 +348,26 @@ void SetMarginAll(const char* ButtonName, bool SetActivated) {
     if (ImGui::Button(ButtonName)) {
         u8 arrayLength = sizeof(MarginCvarList) / sizeof(*MarginCvarList);
         //MarginCvarNonAnchor is an array that list every element that has No anchor by default, because if that the case this function will not touch it with pose type 0.
-        const char* MarginCvarNonAnchor[] { "gCarrots", "gTimers", "gAS", "gTCM","gTCB" };
         u8 arrayLengthNonMargin = sizeof(MarginCvarNonAnchor) / sizeof(*MarginCvarNonAnchor);
         for (u8 s = 0; s < arrayLength; s++) {
-            std::string cvarName = MarginCvarList[s];
-            std::string cvarPosType = cvarName+"PosType";
-            std::string cvarNameMargins = cvarName+"UseMargins";
-            if (CVarGetInteger(cvarPosType.c_str(),0) <= 2 && SetActivated) { //Our element is not Hidden or Non anchor
-                for(int i = 0; i < arrayLengthNonMargin; i++){
-                    if(MarginCvarNonAnchor[i] == cvarName && CVarGetInteger(cvarPosType.c_str(),0) == 0){ //Our element is both in original position and do not have anchor by default so we skip it.
-                        CVarSetInteger(cvarNameMargins.c_str(), false); //force set off
-                    } else if(MarginCvarNonAnchor[i] == cvarName && CVarGetInteger(cvarPosType.c_str(),0) != 0){ //Our element is not in original position regarless it has no anchor by default since player made it anchored we can toggle margins
-                        CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
-                    } else if(MarginCvarNonAnchor[i] != cvarName){ //Our elements has an anchor by default so regarless of it's position right now that okay to toggle margins.
-                        CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
+            const char* cvarName = MarginCvarList[s];
+            const char* cvarPosType = std::string(cvarName).append("PosType").c_str();
+            const char* cvarNameMargins = std::string(cvarName).append("UseMargins").c_str();
+            if (CVarGetInteger(cvarPosType,0) <= 2 && SetActivated) { //Our element is not Hidden or Non anchor
+                for (int i = 0; i < arrayLengthNonMargin; i++){
+                    if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) && (CVarGetInteger(cvarPosType, 0) == 0)) { //Our element is both in original position and do not have anchor by default so we skip it.
+                        CVarSetInteger(cvarNameMargins, false); //force set off
+                    } 
+                    else if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) && (CVarGetInteger(cvarPosType, 0) != 0)) { //Our element is not in original position regarless it has no anchor by default since player made it anchored we can toggle margins
+                        CVarSetInteger(cvarNameMargins, SetActivated);
+                    } 
+                    else if (strcmp(cvarName, MarginCvarNonAnchor[i]) != 0) { //Our elements has an anchor by default so regarless of it's position right now that okay to toggle margins.
+                        CVarSetInteger(cvarNameMargins, SetActivated);
                     }
                 }
-            } else { //Since the user requested to turn all margin off no need to do any check there.
-                CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
+            } 
+            else { //Since the user requested to turn all margin off no need to do any check there.
+                CVarSetInteger(cvarNameMargins, SetActivated);
             }
         }
     }
@@ -373,11 +376,11 @@ void ResetPositionAll() {
     if (ImGui::Button("Reset all positions")) {
         u8 arrayLength = sizeof(MarginCvarList) / sizeof(*MarginCvarList);
         for (u8 s = 0; s < arrayLength; s++) {
-            std::string cvarName = MarginCvarList[s];
-            std::string cvarPosType = cvarName+"PosType";
-            std::string cvarNameMargins = cvarName+"UseMargins";
-            CVarSetInteger(cvarPosType.c_str(), 0);
-            CVarSetInteger(cvarNameMargins.c_str(), false); //Turn margin off to everythings as that original position.
+            const char* cvarName = MarginCvarList[s];
+            const char* cvarPosType = std::string(cvarName).append("PosType").c_str();
+            const char* cvarNameMargins = std::string(cvarName).append("UseMargins").c_str();
+            CVarSetInteger(cvarPosType, 0);
+            CVarSetInteger(cvarNameMargins, false); //Turn margin off to everythings as that original position.
         }
     }
 }
@@ -1114,10 +1117,10 @@ void Draw_Placements(){
         UIWidgets::EnhancementSliderInt("Right: %dx", "##UIMARGINR", "gHUDMargin_R", (ImGui::GetWindowViewport()->Size.x)*-1, 25, "", 0);
         UIWidgets::EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", "gHUDMargin_B", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0);
         SetMarginAll("All margins on",true);
-        UIWidgets::Tooltip("Set most of the element to use margin\nSome elements with default position will not be affected\nElements without Archor or Hidden will not be turned on");
+        UIWidgets::Tooltip("Set most of the elements to use margins\nSome elements with default position will not be affected\nElements without Anchor or Hidden will not be turned on");
         ImGui::SameLine();
         SetMarginAll("All margins off",false);
-        UIWidgets::Tooltip("Set all of the element to not use margin");
+        UIWidgets::Tooltip("Set all of the elements to not use margins");
         ImGui::SameLine();
         ResetPositionAll();
         UIWidgets::Tooltip("Revert every element to use their original position and no margins");
@@ -1661,7 +1664,7 @@ void DrawCosmeticGroup(CosmeticGroup cosmeticGroup) {
     }
 }
 
-const char* colorSchemes[2] = {
+static const char* colorSchemes[2] = {
     "N64",
     "Gamecube",
 };

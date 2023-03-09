@@ -949,8 +949,13 @@ void DrawItemTracker(bool& open) {
     }
 }
 
-const char* itemTrackerCapacityTrackOptions[5] = { "No Numbers", "Current Capacity", "Current Ammo", "Current Capacity / Max Capacity", "Current Ammo / Current Capacity" };
-const char* itemTrackerKeyTrackOptions[3] = { "Collected / Max", "Current / Collected / Max", "Current / Max" };
+static const char* itemTrackerCapacityTrackOptions[5] = { "No Numbers", "Current Capacity", "Current Ammo", "Current Capacity / Max Capacity", "Current Ammo / Current Capacity" };
+static const char* itemTrackerKeyTrackOptions[3] = { "Collected / Max", "Current / Collected / Max", "Current / Max" };
+static const char* windowTypes[2] = { "Floating", "Window" };
+static const char* displayModes[2] = { "Always", "Combo Button Hold" };
+static const char* buttons[14] = { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right" };
+static const char* displayTypes[3] = { "Hidden", "Main Window", "Seperate" };
+static const char* extendedDisplayTypes[4] = { "Hidden", "Main Window", "Misc Window", "Seperate" };
 
 void DrawItemTrackerOptions(bool& open) {
     if (!open) {
@@ -984,7 +989,6 @@ void DrawItemTrackerOptions(bool& open) {
     }
     ImGui::PopItemWidth();
 
-    const char* windowTypes[] = { "Floating", "Window" };
     if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Window Type", "gItemTrackerWindowType", windowTypes, 0)) {
         shouldUpdateVectors = true;
     }
@@ -996,12 +1000,10 @@ void DrawItemTrackerOptions(bool& open) {
         if (UIWidgets::PaddedEnhancementCheckbox("Only enable while paused", "gItemTrackerShowOnlyPaused")) {
             shouldUpdateVectors = true;
         }
-        const char* displayModes[] = { "Always", "Combo Button Hold" };
         if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Display Mode", "gItemTrackerDisplayType", displayModes, 0)) {
             shouldUpdateVectors = true;
         }
         if (CVarGetInteger("gItemTrackerDisplayType", 0) > 0) {
-            const char* buttons[] = { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right" };
             if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 1", "gItemTrackerComboButton1", buttons, 6)) {
                 shouldUpdateVectors = true;
             }
@@ -1029,7 +1031,6 @@ void DrawItemTrackerOptions(bool& open) {
 
     ImGui::TableNextColumn();
 
-    const char* displayTypes[] = { "Hidden", "Main Window", "Seperate" };
     if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Inventory", "gItemTrackerInventoryItemsDisplayType", displayTypes, 1)) {
         shouldUpdateVectors = true;
     }
@@ -1063,7 +1064,6 @@ void DrawItemTrackerOptions(bool& open) {
             shouldUpdateVectors = true;
         }
     }
-    const char* extendedDisplayTypes[] = { "Hidden", "Main Window", "Misc Window", "Seperate" };
     if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Greg", "gItemTrackerGregDisplayType", extendedDisplayTypes, 0)) {
         shouldUpdateVectors = true;
     }

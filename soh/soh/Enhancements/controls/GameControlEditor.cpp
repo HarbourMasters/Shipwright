@@ -136,6 +136,7 @@ namespace GameControlEditor {
                 }
                 if (ImGui::Selectable(i->second, i->first == currentButton)) {
                     CVarSetInteger(mapping.cVarName, i->first);
+                    SohImGui::RequestCvarSaveOnNextTick();
                 }
             }
             ImGui::EndCombo();

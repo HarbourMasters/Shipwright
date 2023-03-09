@@ -59,6 +59,26 @@ enum SeqPlayers {
 
 namespace GameMenuBar {
 
+    // MARK: - Properties
+
+    static const char* chestSizeAndTextureMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only" };
+    static const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run" };
+    static const char* allPowers[9] = {
+                        "Vanilla (1x)",
+                        "Double (2x)",
+                        "Quadruple (4x)",
+                        "Octuple (8x)",
+                        "Foolish (16x)",
+                        "Ridiculous (32x)",
+                        "Merciless (64x)",
+                        "Pure Torture (128x)",
+                        "OHKO (256x)" };
+    static const char* subPowers[8] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6], allPowers[7] };
+    static const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6] };
+    static const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
+    static const char* autosaveLabels[6] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
+    static const char* FastFileSelect[5] = { "File N.1", "File N.2", "File N.3", "Zelda Map Select (require OoT Debug Mode)", "File select" };
+
     // MARK: - Helpers
 
     std::string GetWindowButtonText(const char* text, bool menuOpen) {
@@ -210,6 +230,7 @@ namespace GameMenuBar {
 
                 EXPERIMENTAL();
 
+                // If more filters are added to LUS, make sure to add them to the filters list here
                 ImGui::Text("Texture Filter (Needs reload)");
                 const char* filters[] = { SohImGui::GetSupportedTextureFilters()[0],
                                           SohImGui::GetSupportedTextureFilters()[1],
@@ -283,7 +304,6 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Fast Chests", "gFastChests", true, false);
                     UIWidgets::Tooltip("Kick open every chest");
                     UIWidgets::PaddedText("Chest size & texture matches contents", true, false);
-                    const char* chestSizeAndTextureMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only"};
                     if (UIWidgets::EnhancementCombobox("gChestSizeAndTextureMatchesContents", chestSizeAndTextureMatchesContentsOptions, 0)) {
                         if (CVarGetInteger("gChestSizeAndTextureMatchesContents", 0) == 0) {
                             CVarSetInteger("gChestSizeDependsStoneOfAgony", 0);
@@ -311,7 +331,7 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback", true, false);
                     bool forceSkipScarecrow = gSaveContext.n64ddFlag &&
                         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_SCARECROWS_SONG);
-                    const char* forceSkipScarecrowText =
+                    static const char* forceSkipScarecrowText =
                         "This setting is forcefully enabled because a savefile\nwith \"Skip Scarecrow Song\" is loaded";
                     UIWidgets::Tooltip("Skip the part where the Ocarina playback is called when you play a song");
                     UIWidgets::PaddedEnhancementCheckbox("Skip Scarecrow Song", "gSkipScarecrow", true, false,
@@ -342,7 +362,6 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Prevent Dropped Ocarina Inputs", "gDpadNoDropOcarinaInput", true, false);
                     UIWidgets::Tooltip("Prevent dropping inputs when playing the ocarina quickly");
                     UIWidgets::PaddedText("Bunny Hood Effect", true, false);
-                    const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run"};
                     UIWidgets::EnhancementCombobox("gMMBunnyHood", bunnyHoodOptions, 0);
                     UIWidgets::Tooltip(
                         "Wearing the Bunny Hood grants a speed increase like in Majora's Mask. The longer jump option is not accounted for in randomizer logic.\n\n"
@@ -369,20 +388,6 @@ namespace GameMenuBar {
 
                 if (ImGui::BeginMenu("Difficulty Options"))
                 {
-                    const char* allPowers[9] = {
-                        "Vanilla (1x)",
-                        "Double (2x)",
-                        "Quadruple (4x)",
-                        "Octuple (8x)",
-                        "Foolish (16x)",
-                        "Ridiculous (32x)",
-                        "Merciless (64x)",
-                        "Pure Torture (128x)",
-                        "OHKO (256x)" };
-                    const char* subPowers[8] = { allPowers[0], allPowers[1], allPowers[2], 
-                        allPowers[3], allPowers[4], allPowers[5], allPowers[6], allPowers[7] };
-                    const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], 
-                        allPowers[3], allPowers[4], allPowers[5], allPowers[6]};
                     ImGui::Text("Damage Multiplier");
                     UIWidgets::EnhancementCombobox("gDamageMul", allPowers, 0);
                     UIWidgets::Tooltip(
@@ -425,7 +430,7 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
                     bool forceEnableBombchuDrops = gSaveContext.n64ddFlag &&
                         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1;
-                    const char* forceEnableBombchuDropsText =
+                    static const char* forceEnableBombchuDropsText =
                         "This setting is forcefully enabled because a savefile\nwith \"Enable Bombchu Drops\" is loaded.";
                     UIWidgets::PaddedEnhancementCheckbox("Enable Bombchu Drops", "gBombchuDrops", true, false,
                                                          forceEnableBombchuDrops, forceEnableBombchuDropsText, UIWidgets::CheckboxGraphics::Checkmark);
@@ -444,7 +449,7 @@ namespace GameMenuBar {
                         UIWidgets::EnhancementCheckbox("Change Red Potion Effect", "gRedPotionEffect");
                         UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Red Potions");
                         bool disabledRedPotion = !CVarGetInteger("gRedPotionEffect", 0);
-                        const char* disabledTooltipRedPotion = "This option is disabled because \"Change Red Potion Effect\" is turned off";
+                        static const char* disabledTooltipRedPotion = "This option is disabled because \"Change Red Potion Effect\" is turned off";
                         UIWidgets::EnhancementSliderInt("Red Potion Health: %d", "##REDPOTIONHEALTH", "gRedPotionHealth", 1, 100, "", 0, true, disabledRedPotion, disabledTooltipRedPotion);
                         UIWidgets::Tooltip("Changes the amount of health restored by Red Potions");
                         UIWidgets::EnhancementCheckbox("Red Potion Percent Restore", "gRedPercentRestore", disabledRedPotion, disabledTooltipRedPotion);
@@ -455,7 +460,7 @@ namespace GameMenuBar {
                         UIWidgets::EnhancementCheckbox("Change Green Potion Effect", "gGreenPotionEffect");
                         UIWidgets::Tooltip("Enable the following changes to the amount of mana restored by Green Potions");
                         bool disabledGreenPotion = !CVarGetInteger("gGreenPotionEffect", 0);
-                        const char* disabledTooltipGreenPotion = "This option is disabled because \"Change Green Potion Effect\" is turned off";
+                        static const char* disabledTooltipGreenPotion = "This option is disabled because \"Change Green Potion Effect\" is turned off";
                         UIWidgets::EnhancementSliderInt("Green Potion Mana: %d", "##GREENPOTIONMANA", "gGreenPotionMana", 1, 100, "", 0, true, disabledGreenPotion, disabledTooltipGreenPotion);
                         UIWidgets::Tooltip("Changes the amount of mana restored by Green Potions, base max mana is 48, max upgraded mana is 96");
                         UIWidgets::EnhancementCheckbox("Green Potion Percent Restore", "gGreenPercentRestore", disabledGreenPotion, disabledTooltipGreenPotion);
@@ -466,7 +471,7 @@ namespace GameMenuBar {
                         UIWidgets::EnhancementCheckbox("Change Blue Potion Effects", "gBluePotionEffects");
                         UIWidgets::Tooltip("Enable the following changes to the amount of health and mana restored by Blue Potions");
                         bool disabledBluePotion = !CVarGetInteger("gBluePotionEffects", 0);
-                        const char* disabledTooltipBluePotion = "This option is disabled because \"Change Blue Potion Effects\" is turned off";
+                        static const char* disabledTooltipBluePotion = "This option is disabled because \"Change Blue Potion Effects\" is turned off";
                         UIWidgets::EnhancementSliderInt("Blue Potion Health: %d", "##BLUEPOTIONHEALTH", "gBluePotionHealth", 1, 100, "", 0, true, disabledBluePotion, disabledTooltipBluePotion);
                         UIWidgets::Tooltip("Changes the amount of health restored by Blue Potions");
                         UIWidgets::EnhancementCheckbox("Blue Potion Health Percent Restore", "gBlueHealthPercentRestore", disabledBluePotion, disabledTooltipBluePotion);
@@ -484,7 +489,7 @@ namespace GameMenuBar {
                         UIWidgets::EnhancementCheckbox("Change Milk Effect", "gMilkEffect");
                         UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Milk");
                         bool disabledMilk = !CVarGetInteger("gMilkEffect", 0);
-                        const char* disabledTooltipMilk = "This option is disabled because \"Change Milk Effect\" is turned off";
+                        static const char* disabledTooltipMilk = "This option is disabled because \"Change Milk Effect\" is turned off";
                         UIWidgets::EnhancementSliderInt("Milk Health: %d", "##MILKHEALTH", "gMilkHealth", 1, 100, "", 0, true, disabledMilk, disabledTooltipMilk);
                         UIWidgets::Tooltip("Changes the amount of health restored by Milk");
                         UIWidgets::EnhancementCheckbox("Milk Percent Restore", "gMilkPercentRestore", disabledMilk, disabledTooltipMilk);
@@ -495,7 +500,7 @@ namespace GameMenuBar {
                         UIWidgets::EnhancementCheckbox("Separate Half Milk Effect", "gSeparateHalfMilkEffect", disabledMilk, disabledTooltipMilk);
                         UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Half Milk\nIf this is disabled, Half Milk will behave the same as Full Milk.");
                         bool disabledHalfMilk = disabledMilk || !CVarGetInteger("gSeparateHalfMilkEffect", 0);
-                        const char* disabledTooltipHalfMilk = "This option is disabled because \"Separate Half Milk Effect\" is turned off";
+                        static const char* disabledTooltipHalfMilk = "This option is disabled because \"Separate Half Milk Effect\" is turned off";
                         UIWidgets::EnhancementSliderInt("Half Milk Health: %d", "##HALFMILKHEALTH", "gHalfMilkHealth", 1, 100, "", 0, true, disabledHalfMilk, disabledTooltipHalfMilk);
                         UIWidgets::Tooltip("Changes the amount of health restored by Half Milk");
                         UIWidgets::EnhancementCheckbox("Half Milk Percent Restore", "gHalfMilkPercentRestore", disabledHalfMilk, disabledTooltipHalfMilk);
@@ -506,7 +511,7 @@ namespace GameMenuBar {
                         UIWidgets::EnhancementCheckbox("Change Fairy Effect", "gFairyEffect");
                         UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Fairies");
                         bool disabledFairy = !CVarGetInteger("gFairyEffect", 0);
-                        const char* disabledTooltipFairy = "This option is disabled because \"Change Fairy Effect\" is turned off";
+                        static const char* disabledTooltipFairy = "This option is disabled because \"Change Fairy Effect\" is turned off";
                         UIWidgets::EnhancementSliderInt("Fairy: %d", "##FAIRYHEALTH", "gFairyHealth", 1, 100, "", 0, true, disabledFairy, disabledTooltipFairy);
                         UIWidgets::Tooltip("Changes the amount of health restored by Fairies");
                         UIWidgets::EnhancementCheckbox("Fairy Percent Restore", "gFairyPercentRestore", disabledFairy, disabledTooltipFairy);
@@ -517,7 +522,7 @@ namespace GameMenuBar {
                         UIWidgets::EnhancementCheckbox("Change Fairy Revive Effect", "gFairyReviveEffect");
                         UIWidgets::Tooltip("Enable the following changes to the amount of health restored by Fairy Revivals");
                         bool disabledFairyRevive = !CVarGetInteger("gFairyReviveEffect", 0);
-                        const char* disabledTooltipFairyRevive = "This option is disabled because \"Change Fairy Revive Effect\" is turned off";
+                        static const char* disabledTooltipFairyRevive = "This option is disabled because \"Change Fairy Revive Effect\" is turned off";
                         UIWidgets::EnhancementSliderInt("Fairy Revival: %d", "##FAIRYREVIVEHEALTH", "gFairyReviveHealth", 1, 100, "", 0, true, disabledFairyRevive, disabledTooltipFairyRevive);
                         UIWidgets::Tooltip("Changes the amount of health restored by Fairy Revivals");
                         UIWidgets::EnhancementCheckbox("Fairy Revive Percent Restore", "gFairyRevivePercentRestore", disabledFairyRevive, disabledTooltipFairyRevive);
@@ -532,7 +537,7 @@ namespace GameMenuBar {
                         UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeShootingGallery");
                         UIWidgets::Tooltip("Turn on/off changes to the shooting gallery behavior");
                         bool disabled = !CVarGetInteger("gCustomizeShootingGallery", 0);
-                        const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
+                        static const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
                         UIWidgets::PaddedEnhancementCheckbox("Instant Win", "gInstantShootingGalleryWin", true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("Skips the shooting gallery minigame");
                         UIWidgets::PaddedEnhancementCheckbox("No Rupee Randomization", "gConstantAdultGallery", true, false, disabled, disabledTooltip);
@@ -550,7 +555,7 @@ namespace GameMenuBar {
                         UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeBombchuBowling");
                         UIWidgets::Tooltip("Turn on/off changes to the bombchu bowling behavior");
                         bool disabled = CVarGetInteger("gCustomizeBombchuBowling", 0) == 0;
-                        const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
+                        static const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
                         UIWidgets::PaddedEnhancementCheckbox("Remove Small Cucco", "gBombchuBowlingNoSmallCucco", true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("Prevents the small cucco from appearing in the bombchu bowling minigame");
                         UIWidgets::PaddedEnhancementCheckbox("Remove Big Cucco", "gBombchuBowlingNoBigCucco", true, false, disabled, disabledTooltip);
@@ -566,7 +571,7 @@ namespace GameMenuBar {
                         UIWidgets::EnhancementCheckbox("Customize Behavior", "gCustomizeFishing");
                         UIWidgets::Tooltip("Turn on/off changes to the fishing behavior");
                         bool disabled = !CVarGetInteger("gCustomizeFishing", 0);
-                        const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
+                        static const char* disabledTooltip = "This option is disabled because \"Customize Behavior\" is turned off";
                         UIWidgets::PaddedEnhancementCheckbox("Instant Fishing", "gInstantFishing", true, false, disabled, disabledTooltip);
                         UIWidgets::Tooltip("All fish will be caught instantly");
                         UIWidgets::PaddedEnhancementCheckbox("Guarantee Bite", "gGuaranteeFishingBite", true, false, disabled, disabledTooltip);
@@ -629,7 +634,7 @@ namespace GameMenuBar {
                 // Blue Fire Arrows
                 bool forceEnableBlueFireArrows = gSaveContext.n64ddFlag &&
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BLUE_FIRE_ARROWS);
-                const char* forceEnableBlueFireArrowsText =
+                static const char* forceEnableBlueFireArrowsText =
                     "This setting is forcefully enabled because a savefile\nwith \"Blue Fire Arrows\" is loaded.";
                 UIWidgets::PaddedEnhancementCheckbox("Blue Fire Arrows", "gBlueFireArrows", true, false, 
                     forceEnableBlueFireArrows, forceEnableBlueFireArrowsText, UIWidgets::CheckboxGraphics::Checkmark);
@@ -638,7 +643,7 @@ namespace GameMenuBar {
                 // Sunlight Arrows
                 bool forceEnableSunLightArrows = gSaveContext.n64ddFlag &&
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SUNLIGHT_ARROWS);
-                const char* forceEnableSunLightArrowsText =
+                static const char* forceEnableSunLightArrowsText =
                     "This setting is forcefully enabled because a savefile\nwith \"Sunlight Arrows\" is loaded.";
                 UIWidgets::PaddedEnhancementCheckbox("Sunlight Arrows", "gSunlightArrows", true, false, 
                     forceEnableSunLightArrows, forceEnableSunLightArrowsText, UIWidgets::CheckboxGraphics::Checkmark);
@@ -710,7 +715,6 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon", true, false);
                 UIWidgets::Tooltip("Always shows dungeon entrance icons on the minimap");
                 UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
-                const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
                 UIWidgets::EnhancementCombobox("gDirtPathFix", zFightingOptions, 0);
                 UIWidgets::Tooltip("Disabled: Paths vanish more the higher the resolution (Z-fighting is based on resolution)\n"
                                    "Consistent: Certain paths vanish the same way in all resolutions\n"
@@ -789,7 +793,6 @@ namespace GameMenuBar {
 
             // Autosave enum value of 1 is the default in presets and the old checkbox "on" state for backwards compatibility
             UIWidgets::PaddedText("Autosave", false, true);
-            const char* autosaveLabels[] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
             UIWidgets::EnhancementCombobox("gAutosave", autosaveLabels, 0);
             UIWidgets::Tooltip("Automatically save the game when changing locations and/or obtaining items\n"
                 "Major items exclude rupees and health/magic/ammo refills (but include bombchus unless bombchu drops are enabled)");
@@ -931,19 +934,10 @@ namespace GameMenuBar {
 
          #ifdef __SWITCH__
             UIWidgets::Spacer(0);
-            int slot = CVarGetInteger("gSwitchPerfMode", (int)Ship::SwitchProfiles::STOCK);
             ImGui::Text("Switch performance mode");
-            if (ImGui::BeginCombo("##perf", SWITCH_CPU_PROFILES[slot])) {
-                for (int sId = 0; sId <= Ship::SwitchProfiles::POWERSAVINGM3; sId++) {
-                    if (ImGui::Selectable(SWITCH_CPU_PROFILES[sId], sId == slot)) {
-                        SPDLOG_INFO("Profile:: %s", SWITCH_CPU_PROFILES[sId]);
-                        CVarSetInteger("gSwitchPerfMode", sId);
-                        Ship::Switch::ApplyOverclock();
-                        SohImGui::RequestCvarSaveOnNextTick();
-                    }
-
-                }
-                ImGui::EndCombo();
+            if (UIWidgets::EnhancementCombobox("gSwitchPerfMode", SWITCH_CPU_PROFILES, (int)Ship::SwitchProfiles::STOCK)) {
+                SPDLOG_INFO("Profile:: %s", SWITCH_CPU_PROFILES[sId]);
+                Ship::Switch::ApplyOverclock();
             }
          #endif
 
@@ -1083,13 +1077,6 @@ namespace GameMenuBar {
             UIWidgets::PaddedEnhancementCheckbox("Fast File Select", "gSkipLogoTitle", true, false);
             UIWidgets::Tooltip("Load the game to the selected menu or file\n\"Zelda Map Select\" require debug mode else you will fallback to File choose menu\nUsing a file number that don't have save will create a save file only if you toggle on \"Create a new save if none ?\" else it will bring you to the File choose menu");
             if (CVarGetInteger("gSkipLogoTitle", 0)) {
-                const char* FastFileSelect[5] = {
-                    "File N.1",
-                    "File N.2",
-                    "File N.3",
-                    "Zelda Map Select (require OoT Debug Mode)",
-                    "File select",
-                };
                 ImGui::Text("Loading :");
                 UIWidgets::EnhancementCombobox("gSaveFileID", FastFileSelect, 0);
             };
@@ -1252,7 +1239,7 @@ namespace GameMenuBar {
                     disableKeyColors = false;
                 }
 
-                const char* disableKeyColorsText = 
+                static const char* disableKeyColorsText = 
                     "This setting is disabled because a savefile is loaded without any key\n"
                     "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
 
@@ -1294,7 +1281,7 @@ namespace GameMenuBar {
             if (CVarGetInteger("gRandomizedEnemies", 0)) {
 
                 bool disableSeededEnemies = !gSaveContext.n64ddFlag && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
-                const char* disableSeededEnemiesText = "This setting is disabled because it relies on a randomizer savefile.";
+                static const char* disableSeededEnemiesText = "This setting is disabled because it relies on a randomizer savefile.";
 
                 UIWidgets::PaddedEnhancementCheckbox("Seeded Enemy Spawns", "gSeededRandomizedEnemies", true, false, disableSeededEnemies, disableSeededEnemiesText);
                 UIWidgets::Tooltip(
