@@ -22,7 +22,7 @@
 
 #define CALC_RESAMPLE_FREQ(sampleRate) ((float)sampleRate / (s32)gAudioContext.audioBufferParameters.frequency)
 
-#define MAX_SEQUENCES 0x400
+#define MAX_SEQUENCES 0x800
 
 extern char* fontMap[256];
 

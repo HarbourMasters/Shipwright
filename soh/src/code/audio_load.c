@@ -1361,17 +1361,21 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     int startingSeqNum = MAX_AUTHENTIC_SEQID; // 109 is the highest vanilla sequence
     char** customSeqList = ResourceMgr_ListFiles("custom/music/*", &customSeqListSize);
     qsort(customSeqList, customSeqListSize, sizeof(char*), strcmp_sort);
+    int seqNum = startingSeqNum;
 
     for (size_t i = startingSeqNum; i < startingSeqNum + customSeqListSize; i++) {
         int j = i - startingSeqNum;
-        AudioCollection_AddToCollection(customSeqList[j], i);
-        SequenceData sDat = ResourceMgr_LoadSeqByName(customSeqList[j]);
-        sDat.seqNumber = i;
-
+        if (strcmp(sequenceMap[seqNum - 1], customSeqList[j]) == 0) {
+            continue;
+        }
         char* str = malloc(strlen(customSeqList[j]) + 1);
         strcpy(str, customSeqList[j]);
+        AudioCollection_AddToCollection(customSeqList[j], i);
+        SequenceData sDat = ResourceMgr_LoadSeqByName(customSeqList[j]);
+        sDat.seqNumber = seqNum;
 
-        sequenceMap[sDat.seqNumber] = str;
+        sequenceMap[seqNum] = str;
+        seqNum++;
     }
 
     free(customSeqList);
