@@ -936,7 +936,7 @@ namespace GameMenuBar {
             UIWidgets::Spacer(0);
             ImGui::Text("Switch performance mode");
             if (UIWidgets::EnhancementCombobox("gSwitchPerfMode", SWITCH_CPU_PROFILES, (int)Ship::SwitchProfiles::STOCK)) {
-                SPDLOG_INFO("Profile:: %s", SWITCH_CPU_PROFILES[sId]);
+                SPDLOG_INFO("Profile:: %s", SWITCH_CPU_PROFILES[CVarGetInteger("gSwitchPerfMode", (int)Ship::SwitchProfiles::STOCK)]);
                 Ship::Switch::ApplyOverclock();
             }
          #endif
