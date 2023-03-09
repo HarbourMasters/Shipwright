@@ -1370,7 +1370,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         }
         char* str = malloc(strlen(customSeqList[j]) + 1);
         strcpy(str, customSeqList[j]);
-        AudioCollection_AddToCollection(customSeqList[j], i);
+        AudioCollection_AddToCollection(customSeqList[j], seqNum);
         SequenceData sDat = ResourceMgr_LoadSeqByName(customSeqList[j]);
         sDat.seqNumber = seqNum;
 
