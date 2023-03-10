@@ -51,22 +51,6 @@ namespace UIWidgets {
         return WrappedText(text.c_str(), charactersPerLine);
     }
 
-    void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha)
-    {
-        Color_RGBA8 defaultColors;
-        defaultColors.r = default_colors.x;
-        defaultColors.g = default_colors.y;
-        defaultColors.b = default_colors.z;
-        defaultColors.a = default_colors.w;
-
-        Color_RGBA8 cvarColor = CVarGetColor(cvarname, defaultColors);
-
-        ColorArray.x = cvarColor.r / 255.0;
-        ColorArray.y = cvarColor.g / 255.0;
-        ColorArray.z = cvarColor.b / 255.0;
-        ColorArray.w = cvarColor.a / 255.0;
-    }
-
     void SetLastItemHoverText(const std::string& text) {
         if (ImGui::IsItemHovered()) {
             ImGui::BeginTooltip();
@@ -196,11 +180,24 @@ namespace UIWidgets {
         return pressed;
     }
 
+    void ReEnableComponent(const char* disabledTooltipText) {
+        // End of disable region of previous component
+        ImGui::PopStyleVar(1);
+        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(disabledTooltipText, "") != 0) {
+            ImGui::SetTooltip("%s", disabledTooltipText);
+        }
+        ImGui::PopItemFlag();
+    }
+
+    void DisableComponent(const float alpha) {
+        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
+    }
+
     bool EnhancementCheckbox(const char* text, const char* cvarName, bool disabled, const char* disabledTooltipText, CheckboxGraphics disabledGraphic, bool defaultValue) {
         bool changed = false;
         if (disabled) {
-            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+            DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
         }
         bool val = (bool)CVarGetInteger(cvarName, defaultValue);
         if (CustomCheckbox(text, &val, disabled, disabledGraphic)) {
@@ -210,11 +207,7 @@ namespace UIWidgets {
         }
 
         if (disabled) {
-            ImGui::PopStyleVar(1);
-            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(disabledTooltipText, "") != 0) {
-                ImGui::SetTooltip("%s", disabledTooltipText);
-            }
-            ImGui::PopItemFlag();
+            ReEnableComponent(disabledTooltipText);
         }
         return changed;
     }
@@ -240,8 +233,7 @@ namespace UIWidgets {
         }
 
         if (disabled) {
-            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+            DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
         }
 
         uint8_t selected = CVarGetInteger(cvarName, defaultIndex);
@@ -261,11 +253,7 @@ namespace UIWidgets {
         }
 
         if (disabled) {
-            ImGui::PopStyleVar(1);
-            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(disabledTooltipText, "") != 0) {
-                ImGui::SetTooltip("%s", disabledTooltipText);
-            }
-            ImGui::PopItemFlag();
+            ReEnableComponent(disabledTooltipText);
 
             if (disabledValue >= 0 && selected != disabledValue) {
                 CVarSetInteger(cvarName, disabledValue);
@@ -305,36 +293,16 @@ namespace UIWidgets {
             Spacer(0);
     }
 
-    void DisableComponentSwitch(const char* disabledTooltipText, const float alpha) {
-        // End of disable region of previous component
-        ImGui::PopStyleVar(1);
-        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(disabledTooltipText, "") != 0) {
-            ImGui::SetTooltip("%s", disabledTooltipText);
-        }
-        ImGui::PopItemFlag();
-
-        // Start of disable region of next component
-        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
-    }
-
     bool EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool disabled, const char* disabledTooltipText) {
         bool changed = false;
         int val = CVarGetInteger(cvarName, defaultValue);
 
-        float alpha;
         if (disabled) {
-            alpha = ImGui::GetStyle().Alpha * 0.5f;
-            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
+            DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
         }
 
         ImGui::Text(text, val);
         Spacer(0);
-
-        if (disabled) {
-            DisableComponentSwitch(disabledTooltipText, alpha);
-        }
 
         ImGui::BeginGroup();
         if(PlusMinusButton) {
@@ -348,10 +316,6 @@ namespace UIWidgets {
             }
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-
-            if (disabled) {
-                DisableComponentSwitch(disabledTooltipText, alpha);
-            }
         }
 
         if (ImGui::SliderInt(id, &val, min, max, format, ImGuiSliderFlags_AlwaysClamp))
@@ -362,10 +326,6 @@ namespace UIWidgets {
         }
         
         if(PlusMinusButton) {
-            if (disabled) {
-                DisableComponentSwitch(disabledTooltipText, alpha);
-            }
-
             std::string PlusBTNName = " + ##";
             PlusBTNName += cvarName;
             ImGui::SameLine();
@@ -380,11 +340,7 @@ namespace UIWidgets {
         ImGui::EndGroup();
 
         if (disabled) {
-            ImGui::PopStyleVar(1);
-            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(disabledTooltipText, "") != 0) {
-                ImGui::SetTooltip("%s", disabledTooltipText);
-            }
-            ImGui::PopItemFlag();
+            ReEnableComponent(disabledTooltipText);
         }
 
         if (val < min)
@@ -411,8 +367,7 @@ namespace UIWidgets {
         float val = CVarGetFloat(cvarName, defaultValue);
 
         if (disabled) {
-            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+            DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
         }
 
         if (!isPercentage) {
@@ -469,11 +424,7 @@ namespace UIWidgets {
         ImGui::EndGroup();
 
         if (disabled) {
-            ImGui::PopStyleVar(1);
-            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && strcmp(disabledTooltipText, "") != 0) {
-                ImGui::SetTooltip("%s", disabledTooltipText);
-            }
-            ImGui::PopItemFlag();
+            ReEnableComponent(disabledTooltipText);
         }
 
         if (val < min) {
@@ -631,6 +582,21 @@ namespace UIWidgets {
 
         EnhancementCheckbox(MakeInvisible.c_str(), Cvar_RBM.c_str());
         Tooltip("Cycles through colors on a timer\nOverwrites previously chosen color");
+    }
+
+    void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha) {
+        Color_RGBA8 defaultColors;
+        defaultColors.r = default_colors.x;
+        defaultColors.g = default_colors.y;
+        defaultColors.b = default_colors.z;
+        defaultColors.a = default_colors.w;
+
+        Color_RGBA8 cvarColor = CVarGetColor(cvarname, defaultColors);
+
+        ColorArray.x = cvarColor.r / 255.0;
+        ColorArray.y = cvarColor.g / 255.0;
+        ColorArray.z = cvarColor.b / 255.0;
+        ColorArray.w = cvarColor.a / 255.0;
     }
 
     bool EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow, bool has_alpha, bool TitleSameLine) {
