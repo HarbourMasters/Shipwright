@@ -3133,8 +3133,9 @@ void DrawRandoEditor(bool& open) {
     }
 
     bool disableEditingRandoSettings = CVarGetInteger("gRandoGenerating", 0) || CVarGetInteger("gOnFileSelectNameEntry", 0);
-    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableEditingRandoSettings);
-    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * (disableEditingRandoSettings ? 0.5f : 1.0f));
+    if (disableEditingRandoSettings) {
+        UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
+    }
 
     DrawPresetSelector(PRESET_TYPE_RANDOMIZER);
 
@@ -4572,8 +4573,10 @@ void DrawRandoEditor(bool& open) {
 
         ImGui::EndTabBar();
     }
-    ImGui::PopItemFlag();
-    ImGui::PopStyleVar();
+    
+    if (disableEditingRandoSettings) {
+        UIWidgets::ReEnableComponent("");
+    }
     ImGui::End();
 }
 

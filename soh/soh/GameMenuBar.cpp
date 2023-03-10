@@ -126,8 +126,7 @@ namespace GameMenuBar {
                 auto currentAudioBackend = SohImGui::GetCurrentAudioBackend();
 
                 if (audioBackends.size() <= 1) {
-                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+                    UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
                 }
                 if (ImGui::BeginCombo("##AApi", currentAudioBackend.second)) {
                     for (uint8_t i = 0; i < audioBackends.size(); i++) {
@@ -139,8 +138,7 @@ namespace GameMenuBar {
                     ImGui::EndCombo();
                 }
                 if (audioBackends.size() <= 1) {
-                    ImGui::PopItemFlag();
-                    ImGui::PopStyleVar(1);
+                    UIWidgets::ReEnableComponent("");
                 }
 
                 ImGui::EndMenu();
@@ -202,8 +200,7 @@ namespace GameMenuBar {
                 auto currentRenderingBackend = SohImGui::GetCurrentRenderingBackend();
 
                 if (renderingBackends.size() <= 1) {
-                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+                    UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
                 }
                 if (ImGui::BeginCombo("##RApi", currentRenderingBackend.second)) {
                     for (uint8_t i = 0; i < renderingBackends.size(); i++) {
@@ -215,8 +212,7 @@ namespace GameMenuBar {
                     ImGui::EndCombo();
                 }
                 if (renderingBackends.size() <= 1) {
-                    ImGui::PopItemFlag();
-                    ImGui::PopStyleVar(1);
+                    UIWidgets::ReEnableComponent("");
                 }
 
                 if (SohImGui::SupportsWindowedFullscreen()) {
@@ -863,8 +859,7 @@ namespace GameMenuBar {
                     }
                 }
                 if (CVarGetInteger("gMatchRefreshRate", 0)) {
-                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+                    UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
                 }
 
                 if (ImGui::Button(" - ##WiiUFPS")) {
@@ -882,8 +877,7 @@ namespace GameMenuBar {
                 }
 
                 if (CVarGetInteger("gMatchRefreshRate", 0)) {
-                    ImGui::PopItemFlag();
-                    ImGui::PopStyleVar(1);
+                    UIWidgets::ReEnableComponent("");
                 }
                 if (fpsSlider > 3) {
                     fpsSlider = 3;
@@ -999,8 +993,7 @@ namespace GameMenuBar {
                 static int32_t lastBetaQuestWorld = betaQuestWorld;
 
                 if (!isBetaQuestEnabled) {
-                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+                    UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
                 }
 
                 UIWidgets::PaddedEnhancementCheckbox("Enable Beta Quest", "gEnableBetaQuest", true, false);
@@ -1053,8 +1046,7 @@ namespace GameMenuBar {
                 }
 
                 if (!isBetaQuestEnabled) {
-                    ImGui::PopItemFlag();
-                    ImGui::PopStyleVar(1);
+                    UIWidgets::ReEnableComponent("");
                 }
             }
 

@@ -102,13 +102,9 @@ namespace UIWidgets {
     }
 
     void PaddedSeparator(bool padTop, bool padBottom, float extraVerticalTopPadding, float extraVerticalBottomPadding) {
-        if (padTop)
-            Spacer(0);
-
+        if (padTop) Spacer(0);
         ImGui::Separator();
-
-        if (padBottom)
-            Spacer(0);
+        if (padBottom) Spacer(0);
     }
 
     void RenderCross(ImDrawList* draw_list, ImVec2 pos, ImU32 col, float sz) {
@@ -127,8 +123,9 @@ namespace UIWidgets {
 
     bool CustomCheckbox(const char* label, bool* v, bool disabled, CheckboxGraphics disabledGraphic) {
         ImGuiWindow* window = ImGui::GetCurrentWindow();
-        if (window->SkipItems)
+        if (window->SkipItems) {
             return false;
+        }
 
         ImGuiContext& g = *GImGui;
         const ImGuiStyle& style = g.Style;
@@ -171,10 +168,12 @@ namespace UIWidgets {
         }
 
         ImVec2 label_pos = ImVec2(check_bb.Max.x + style.ItemInnerSpacing.x, check_bb.Min.y + style.FramePadding.y);
-        if (g.LogEnabled)
+        if (g.LogEnabled) {
             ImGui::LogRenderedText(&label_pos, mixed_value ? "[~]" : *v ? "[x]" : "[ ]");
-        if (label_size.x > 0.0f)
+        }
+        if (label_size.x > 0.0f) {
             ImGui::RenderText(label_pos, label);
+        }
 
         IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags | ImGuiItemStatusFlags_Checkable | (*v ? ImGuiItemStatusFlags_Checked : 0));
         return pressed;
@@ -199,6 +198,7 @@ namespace UIWidgets {
         if (disabled) {
             DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
         }
+
         bool val = (bool)CVarGetInteger(cvarName, defaultValue);
         if (CustomCheckbox(text, &val, disabled, disabledGraphic)) {
             CVarSetInteger(cvarName, val);
@@ -213,13 +213,10 @@ namespace UIWidgets {
     }
 
     bool PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText, CheckboxGraphics disabledGraphic, bool defaultValue) {
-        bool changed = false;
         ImGui::BeginGroup();
         if (padTop) Spacer(0);
 
-        if (EnhancementCheckbox(text, cvarName, disabled, disabledTooltipText, disabledGraphic, defaultValue)) {
-            changed = true;
-        }
+        bool changed = EnhancementCheckbox(text, cvarName, disabled, disabledTooltipText, disabledGraphic, defaultValue);
 
         if (padBottom) Spacer(0);
         ImGui::EndGroup();
@@ -270,27 +267,25 @@ namespace UIWidgets {
         s32 currentValue = CVarGetInteger(cvarName, defaultIndex);
 
 #ifdef __WIIU__
-    ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(comboArray[currentValue]).x * 1.0f + 40.0f));
-    ImGui::PushItemWidth((ImGui::CalcTextSize(comboArray[currentValue]).x * 1.0f) + 60.0f);
+        ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(comboArray[currentValue]).x * 1.0f + 40.0f));
+        ImGui::PushItemWidth((ImGui::CalcTextSize(comboArray[currentValue]).x * 1.0f) + 60.0f);
 #else
-    ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(comboArray[currentValue]).x * 1.0f + 20.0f));
-    ImGui::PushItemWidth((ImGui::CalcTextSize(comboArray[currentValue]).x * 1.0f) + 30.0f);
+        ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(comboArray[currentValue]).x * 1.0f + 20.0f));
+        ImGui::PushItemWidth((ImGui::CalcTextSize(comboArray[currentValue]).x * 1.0f) + 30.0f);
 #endif
 
-    bool changed = EnhancementCombobox(cvarName, comboArray, defaultIndex, disabled, disabledTooltipText, disabledValue);
+        bool changed = EnhancementCombobox(cvarName, comboArray, defaultIndex, disabled, disabledTooltipText, disabledValue);
 
-    ImGui::PopItemWidth();
-    return changed;
+        ImGui::PopItemWidth();
+        return changed;
     }
 
     void PaddedText(const char* text, bool padTop, bool padBottom) {
-        if (padTop)
-            Spacer(0);
+        if (padTop) Spacer(0);
 
         ImGui::Text("%s", text);
 
-        if (padBottom)
-            Spacer(0);
+        if (padBottom) Spacer(0);
     }
 
     bool EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool disabled, const char* disabledTooltipText) {
@@ -305,13 +300,10 @@ namespace UIWidgets {
         Spacer(0);
 
         ImGui::BeginGroup();
-        if(PlusMinusButton) {
-            std::string MinusBTNName = " - ##";
-            MinusBTNName += cvarName;
+        if (PlusMinusButton) {
+            std::string MinusBTNName = " - ##" + std::string(cvarName);
             if (ImGui::Button(MinusBTNName.c_str())) {
                 val--;
-                CVarSetInteger(cvarName, val);
-                SohImGui::RequestCvarSaveOnNextTick();
                 changed = true;
             }
             ImGui::SameLine();
@@ -320,20 +312,15 @@ namespace UIWidgets {
 
         if (ImGui::SliderInt(id, &val, min, max, format, ImGuiSliderFlags_AlwaysClamp))
         {
-            CVarSetInteger(cvarName, val);
-            SohImGui::RequestCvarSaveOnNextTick();
             changed = true;
         }
         
-        if(PlusMinusButton) {
-            std::string PlusBTNName = " + ##";
-            PlusBTNName += cvarName;
+        if (PlusMinusButton) {
+            std::string PlusBTNName = " + ##" + std::string(cvarName);
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
             if (ImGui::Button(PlusBTNName.c_str())) {
                 val++;
-                CVarSetInteger(cvarName, val);
-                SohImGui::RequestCvarSaveOnNextTick();
                 changed = true;
             }
         }
@@ -343,20 +330,19 @@ namespace UIWidgets {
             ReEnableComponent(disabledTooltipText);
         }
 
-        if (val < min)
-        {
+        if (val < min) {
             val = min;
-            CVarSetInteger(cvarName, val);
-            SohImGui::RequestCvarSaveOnNextTick();
             changed = true;
         }
 
-        if (val > max)
-        {
+        if (val > max) {
             val = max;
+            changed = true;
+        }
+
+        if (changed) {
             CVarSetInteger(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
-            changed = true;
         }
 
         return changed;
@@ -378,17 +364,14 @@ namespace UIWidgets {
         Spacer(0);
 
         ImGui::BeginGroup();
-        if(PlusMinusButton) {
-            std::string MinusBTNName = " - ##";
-            MinusBTNName += cvarName;
+        if (PlusMinusButton) {
+            std::string MinusBTNName = " - ##" + std::string(cvarName);
             if (ImGui::Button(MinusBTNName.c_str())) {
-                if (!isPercentage) {
-                    val -= 0.1f;
-                } else {
+                if (isPercentage) {
                     val -= 0.01f;
+                } else {
+                    val -= 0.1f;
                 }
-                CVarSetFloat(cvarName, val);
-                SohImGui::RequestCvarSaveOnNextTick();
                 changed = true;
             }
             ImGui::SameLine();
@@ -397,27 +380,21 @@ namespace UIWidgets {
 
         if (ImGui::SliderFloat(id, &val, min, max, format, ImGuiSliderFlags_AlwaysClamp)) {
             if (isPercentage) {
-                CVarSetFloat(cvarName, roundf(val * 100) / 100);
-            } else {
-                CVarSetFloat(cvarName, val);
+                val = roundf(val * 100) / 100;
             }
-            SohImGui::RequestCvarSaveOnNextTick();
             changed = true;
         }
         
-        if(PlusMinusButton) {
-            std::string PlusBTNName = " + ##";
-            PlusBTNName += cvarName;
+        if (PlusMinusButton) {
+            std::string PlusBTNName = " + ##" + std::string(cvarName);
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
             if (ImGui::Button(PlusBTNName.c_str())) {
-                if (!isPercentage) {
-                    val += 0.1f;
-                } else {
+                if (isPercentage) {
                     val += 0.01f;
+                } else {
+                    val += 0.1f;
                 }
-                CVarSetFloat(cvarName, val);
-                SohImGui::RequestCvarSaveOnNextTick();
                 changed = true;
             }
         }
@@ -429,16 +406,17 @@ namespace UIWidgets {
 
         if (val < min) {
             val = min;
-            CVarSetFloat(cvarName, val);
-            SohImGui::RequestCvarSaveOnNextTick();
             changed = true;
         }
 
         if (val > max) {
             val = max;
+            changed = true;
+        }
+
+        if (changed) {
             CVarSetFloat(cvarName, val);
             SohImGui::RequestCvarSaveOnNextTick();
-            changed = true;
         }
 
         return changed;
@@ -447,15 +425,11 @@ namespace UIWidgets {
     bool PaddedEnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText) {
         bool changed = false;
         ImGui::BeginGroup();
-        if (padTop) {
-            Spacer(0);
-        }
+        if (padTop) Spacer(0);
 
         changed = EnhancementSliderInt(text, id, cvarName, min, max, format, defaultValue, PlusMinusButton, disabled, disabledTooltipText);
 
-        if (padBottom) {
-            Spacer(0);
-        }
+        if (padBottom) Spacer(0);
         ImGui::EndGroup();
         return changed;
     }
@@ -463,15 +437,11 @@ namespace UIWidgets {
     bool PaddedEnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton, bool padTop, bool padBottom, bool disabled, const char* disabledTooltipText) {
         bool changed = false;
         ImGui::BeginGroup();
-        if (padTop) {
-            Spacer(0);
-        }
+        if (padTop) Spacer(0);
 
         changed = EnhancementSliderFloat(text, id, cvarName, min, max, format, defaultValue, isPercentage, PlusMinusButton, disabled, disabledTooltipText);
 
-        if (padBottom) {
-            Spacer(0);
-        }
+        if (padBottom) Spacer(0);
         ImGui::EndGroup();
         return changed;
     }
@@ -487,9 +457,7 @@ namespace UIWidgets {
             EnhancementRadioButton("German", "gLanguages", LANGUAGE_GER);
             EnhancementRadioButton("French", "gLanguages", LANGUAGE_FRA);
         */
-        std::string make_invisible = "##";
-        make_invisible += text;
-        make_invisible += cvarName;
+        std::string make_invisible = "##" + std::string(text) + std::string(cvarName);
 
         bool ret = false;
         int val = CVarGetInteger(cvarName, 0);
@@ -506,12 +474,8 @@ namespace UIWidgets {
 
     bool DrawResetColorButton(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha) {
         bool changed = false;
-        std::string Cvar_RBM = cvarName;
-        Cvar_RBM += "RBM";
-        std::string MakeInvisible = "Reset";
-        MakeInvisible += "##";
-        MakeInvisible += cvarName;
-        MakeInvisible += "Reset";
+        std::string Cvar_RBM = std::string(cvarName) + "RBM";
+        std::string MakeInvisible = "Reset##" + std::string(cvarName) + "Reset";
         if (ImGui::Button(MakeInvisible.c_str())) {
             colors->x = defaultcolors.x;
             colors->y = defaultcolors.y;
@@ -536,13 +500,8 @@ namespace UIWidgets {
     bool DrawRandomizeColorButton(const char* cvarName, ImVec4* colors) {
         bool changed = false;
         Color_RGBA8 NewColors = {0,0,0,255};
-        std::string Cvar_RBM = cvarName;
-        Cvar_RBM += "RBM";
-        std::string MakeInvisible = "##";
-        MakeInvisible += cvarName;
-        MakeInvisible += "Random";
-        std::string FullName = "Random";
-        FullName += MakeInvisible;
+        std::string Cvar_RBM = std::string(cvarName) + "RBM";
+        std::string FullName = "Random##" + std::string(cvarName) + "Random";
         if (ImGui::Button(FullName.c_str())) {
 #if defined(__SWITCH__) || defined(__WIIU__)
             srand(time(NULL));
@@ -564,8 +523,7 @@ namespace UIWidgets {
     }
 
     void DrawLockColorCheckbox(const char* cvarName) {
-        std::string Cvar_Lock = cvarName;
-        Cvar_Lock += "Lock";
+        std::string Cvar_Lock = std::string(cvarName) + "Lock";
         s32 lock = CVarGetInteger(Cvar_Lock.c_str(), 0);
         std::string FullName = "Lock##" + Cvar_Lock;
         EnhancementCheckbox(FullName.c_str(), Cvar_Lock.c_str());
@@ -573,12 +531,8 @@ namespace UIWidgets {
     }
 
     void RainbowColor(const char* cvarName, ImVec4* colors) {
-        std::string Cvar_RBM = cvarName;
-        Cvar_RBM += "RBM";
-        std::string MakeInvisible = "Rainbow";
-        MakeInvisible += "##";
-        MakeInvisible += cvarName;
-        MakeInvisible += "Rainbow";
+        std::string Cvar_RBM = std::string(cvarName) + "RBM";
+        std::string MakeInvisible = "Rainbow##" + std::string(cvarName) + "Rainbow";
 
         EnhancementCheckbox(MakeInvisible.c_str(), Cvar_RBM.c_str());
         Tooltip("Cycles through colors on a timer\nOverwrites previously chosen color");
