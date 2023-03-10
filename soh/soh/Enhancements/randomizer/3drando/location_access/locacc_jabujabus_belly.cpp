@@ -33,7 +33,7 @@ void AreaTable_Init_JabuJabusBelly() {
                   Entrance(JABU_JABUS_BELLY_BEGINNING,      {[]{return true;}}),
                   Entrance(JABU_JABUS_BELLY_MAIN_UPPER,     {[]{return true;}}),
                   Entrance(JABU_JABUS_BELLY_LIFT_LOWER,     {[]{return true;}}),
-                  Entrance(JABU_JABUS_BELLY_NEAR_BOSS_ROOM, {[]{return HasAccessTo(JABU_JABUS_BELLY_LIFT_UPPER) || (LogicJabuBossGSAdult && IsAdult && CanUse(HOVER_BOOTS));},
+                  Entrance(JABU_JABUS_BELLY_NEAR_BOSS_ROOM, {[]{return HasAccessTo(JABU_JABUS_BELLY_LIFT_UPPER) || (LogicJabuBossHover && IsAdult && CanUse(HOVER_BOOTS));},
                                                  /*Glitched*/[]{return (CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE)) &&
                                                                        GlitchJabuSwitch && (Fish || Bugs || CanUse(FARORES_WIND) || (IsAdult && ClaimCheck));}}),
   });
@@ -83,7 +83,7 @@ void AreaTable_Init_JabuJabusBelly() {
 
   areaTable[JABU_JABUS_BELLY_LIFT_LOWER] = Area("Jabu Jabus Belly Lift Lower", "Jabu Jabus Belly", JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(JABU_JABUS_BELLY_DEKU_SCRUB, {[]{return (IsChild || CanDive || LogicJabuScrubJumpDive || CanUse(IRON_BOOTS)) && CanStunDeku;}}),
+                  LocationAccess(JABU_JABUS_BELLY_DEKU_SCRUB, {[]{return (IsChild || CanDive || LogicJabuAlcoveJumpDive || CanUse(IRON_BOOTS)) && CanStunDeku;}}),
                 }, {
                   //Exits
                   Entrance(JABU_JABUS_BELLY_SHABOMB_CORRIDOR, {[]{return true;}}),

@@ -136,8 +136,8 @@ void AreaTable_Init_CastleTown() {
   });
 
   areaTable[GANONS_CASTLE_GROUNDS] = Area("Ganon's Castle Grounds", "Castle Grounds", OUTSIDE_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {
-                  //Locations                                   //the terrain was lowered such that you can't get this GS with a simple sword slash
-                  LocationAccess(OGC_GS, {[]{return HasExplosives || (IsAdult && (LogicOutsideGanonsGS || Bow || HookshotOrBoomerang || CanUse(DINS_FIRE)));}}),
+                  //Locations                                   //3D logic means that adult cannot get this with a simple slash, but in the original link can kill the skulltula with a variety of slashes
+                  LocationAccess(OGC_GS, {[]{return /*HasExplosives || (*/IsAdult/* && (LogicOutsideGanonsGS || Bow || HookshotOrBoomerang || CanUse(DINS_FIRE)))*/;}}),
                 }, {
                   //Exits
                   Entrance(CASTLE_GROUNDS,           {[]{return AtNight;}}),

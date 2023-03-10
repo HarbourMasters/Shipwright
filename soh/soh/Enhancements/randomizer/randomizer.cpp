@@ -3029,6 +3029,16 @@ void GenerateRandomizerImgui(std::string seed = "") {
         excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
     }
 
+    // todo: better way to sort out linking tricks rather than name
+    
+    std::set<int> enabledTricksNums;
+    std::stringstream enabledTrickStringStream(CVarGetString("gRandomizeEnabledTricks", ""));
+    std::string enabledTrickString;
+    while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
+        enabledTricksNums.insert(std::stoi(enabledTrickString));
+    }
+    
+
     // Update the visibilitiy before removing conflicting excludes (in case the locations tab wasn't viewed)
     RandomizerCheckObjects::UpdateImGuiVisibility();
 
@@ -3040,7 +3050,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
         }
     }
 
-    RandoMain::GenerateRando(cvarSettings, excludedLocations, seed);
+    RandoMain::GenerateRando(cvarSettings, excludedLocations, enabledTricksNums, seed);
 
     CVarSetInteger("gRandoGenerating", 0);
     CVarSave();

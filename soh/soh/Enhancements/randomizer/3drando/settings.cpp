@@ -655,6 +655,8 @@ namespace Settings {
   }
 
   //Detailed Logic Tricks                               ---------------------
+  /* FORMER TRICKS FROM OOT3D, NOT CONSISTENT WITH N64 OOTR
+  
   Option ToggleAllTricks                  = Option::U8("All Tricks", {"None", "Novice", "Intermediate", "Expert"},  {ToggleLogicNoneDesc, ToggleLogicNoviceDesc, ToggleLogicIntermediateDesc, ToggleLogicExpertDesc},                                           OptionCategory::Toggle);
   Option LogicGrottosWithoutAgony         = LogicTrick(" Grotto Access\n   w/o Stone of Agony",       LogicGrottosWithoutAgonyDesc);
   Option LogicVisibleCollision            = LogicTrick(" Go Through Visible\n   One-Way Collisions",  LogicVisibleCollisionDesc);
@@ -835,6 +837,356 @@ namespace Settings {
     &LogicSpiritTrialHookshot,
     &LogicFlamingChests,
   };
+  */
+  Option ToggleAllTricks                          = Option::U8("All Tricks", {"None", "Novice", "Intermediate", "Expert"},  {ToggleLogicNoneDesc, ToggleLogicNoviceDesc, ToggleLogicIntermediateDesc, ToggleLogicExpertDesc},                                           OptionCategory::Toggle);;
+  Option LogicVisibleCollision                    = LogicTrick("", LogicTempDesc);
+  Option LogicGrottosWithoutAgony                 = LogicTrick("", LogicTempDesc);
+  Option LogicFewerTunicRequirements              = LogicTrick("", LogicTempDesc);
+  Option LogicRustedSwitches                      = LogicTrick("", LogicTempDesc);
+  Option LogicFlamingChests                       = LogicTrick("", LogicTempDesc);
+  Option LogicBunnyHoodJump                       = LogicTrick("", LogicTempDesc);
+  Option LogicDamageBoost                         = LogicTrick("", LogicTempDesc);
+  Option LogicHoverBoost                          = LogicTrick("", LogicTempDesc);
+  Option LogicAdultKokiriGS                       = LogicTrick("", LogicTempDesc);
+  Option LogicLostWoodsBridge                     = LogicTrick("", LogicTempDesc);
+  Option LogicMidoBackflip                        = LogicTrick("", LogicTempDesc);
+  Option LogicLostWoodsGSBean                     = LogicTrick("", LogicTempDesc);
+  Option LogicCastleStormsGS                      = LogicTrick("", LogicTempDesc);
+  Option LogicManOnRoof                           = LogicTrick("", LogicTempDesc);
+  Option LogicKakarikoTowerGS                     = LogicTrick("", LogicTempDesc);
+  Option LogicAdultWindmillPoH                    = LogicTrick("", LogicTempDesc);
+  Option LogicChildWindmillPoH                    = LogicTrick("", LogicTempDesc);
+  Option LogicKakarikoRooftopGS                   = LogicTrick("", LogicTempDesc);
+  Option LogicGraveyardPoH                        = LogicTrick("", LogicTempDesc);
+  Option LogicChildDampeRacePoH                   = LogicTrick("", LogicTempDesc);
+  Option LogicShadowFireArrowEntry                = LogicTrick("", LogicTempDesc);
+  Option LogicDMTSoilGS                           = LogicTrick("", LogicTempDesc);
+  Option LogicDMTBombable                         = LogicTrick("", LogicTempDesc);
+  Option LogicDMTGSLowerHookshot                  = LogicTrick("", LogicTempDesc);
+  Option LogicDMTGSLowerHovers                    = LogicTrick("", LogicTempDesc);
+  Option LogicDMTGSLowerBean                      = LogicTrick("", LogicTempDesc);
+  Option LogicDMTGSLowerJS                        = LogicTrick("", LogicTempDesc);
+  Option LogicDMTClimbHovers                      = LogicTrick("", LogicTempDesc);
+  Option LogicDMTGSUpper                          = LogicTrick("", LogicTempDesc);
+  Option LogicBiggoronBolero                      = LogicTrick("", LogicTempDesc);
+  Option LogicGoronCityPot                        = LogicTrick("", LogicTempDesc);
+  Option LogicGoronCityPotWithStrength            = LogicTrick("", LogicTempDesc);
+  Option LogicChildRollingWithStrength            = LogicTrick("", LogicTempDesc);
+  Option LogicGoronCityLeftMost                   = LogicTrick("", LogicTempDesc);
+  Option LogicGoronCityGrotto                     = LogicTrick("", LogicTempDesc);
+  Option LogicGoronCityLinkGoronDins              = LogicTrick("", LogicTempDesc);
+  Option LogicCraterBeanPoHWithHovers             = LogicTrick("", LogicTempDesc);
+  Option LogicCraterBoleroJump                    = LogicTrick("", LogicTempDesc);
+  Option LogicCraterBoulderJS                     = LogicTrick("", LogicTempDesc);
+  Option LogicCraterBoulderSkip                   = LogicTrick("", LogicTempDesc);
+  Option LogicZoraRiverLower                      = LogicTrick("", LogicTempDesc);
+  Option LogicZoraRiverUpper                      = LogicTrick("", LogicTempDesc);
+  Option LogicZoraWithHovers                      = LogicTrick("", LogicTempDesc);
+  Option LogicZoraWithCucco                       = LogicTrick("", LogicTempDesc);
+  Option LogicKingZoraSkip                        = LogicTrick("", LogicTempDesc);
+  Option LogicDomainGS                            = LogicTrick("", LogicTempDesc);
+  Option LogicLabWallGS                           = LogicTrick("", LogicTempDesc);
+  Option LogicLabDiving                           = LogicTrick("", LogicTempDesc);
+  Option LogicWaterHookshotEntry                  = LogicTrick("", LogicTempDesc);
+  Option LogicValleyCrateHovers                   = LogicTrick("", LogicTempDesc);
+  Option LogicGerudoKitchen                       = LogicTrick("", LogicTempDesc);
+  Option LogicGFJump                              = LogicTrick("", LogicTempDesc);
+  Option LogicWastelandBunnyCrossing              = LogicTrick("", LogicTempDesc);
+  Option LogicWastelandCrossing                   = LogicTrick("", LogicTempDesc);
+  Option LogicLensWasteland                       = LogicTrick("", LogicTempDesc);
+  Option LogicReverseWasteland                    = LogicTrick("", LogicTempDesc);
+  Option LogicColossusGS                          = LogicTrick("", LogicTempDesc);
+  Option LogicDekuBasementGS                      = LogicTrick("", LogicTempDesc);
+  Option LogicDekuB1Skip                          = LogicTrick("", LogicTempDesc);
+  Option LogicDekuB1WebsWithBow                   = LogicTrick("", LogicTempDesc);
+  Option LogicDekuMQCompassGS                     = LogicTrick("", LogicTempDesc);
+  Option LogicDekuMQLog                           = LogicTrick("", LogicTempDesc);
+  Option LogicDCScarecrowGS                       = LogicTrick("", LogicTempDesc);
+  Option LogicDCVinesGS                           = LogicTrick("", LogicTempDesc);
+  Option LogicDCStaircase                         = LogicTrick("", LogicTempDesc);
+  Option LogicDCSlingshotSkip                     = LogicTrick("", LogicTempDesc);
+  Option LogicDCScrubRoom                         = LogicTrick("", LogicTempDesc);
+  Option LogicDCJump                              = LogicTrick("", LogicTempDesc);
+  Option LogicDCHammerFloor                       = LogicTrick("", LogicTempDesc);
+  Option LogicDCMQChildBombs                      = LogicTrick("", LogicTempDesc);
+  Option LogicDCMQEyesChild                       = LogicTrick("", LogicTempDesc);
+  Option LogicDCMQEyesAdult                       = LogicTrick("", LogicTempDesc);
+  Option LogicJabuAlcoveJumpDive                  = LogicTrick("", LogicTempDesc);
+  Option LogicJabuBossHover                       = LogicTrick("", LogicTempDesc);
+  Option LogicJabuNearBossRanged                  = LogicTrick("", LogicTempDesc);
+  Option LogicJabuNearBossExplosives              = LogicTrick("", LogicTempDesc);
+  Option LogicLensJabuMQ                          = LogicTrick("", LogicTempDesc);
+  Option LogicJabuMQRangJump                      = LogicTrick("", LogicTempDesc);
+  Option LogicJabuMQSoTGS                         = LogicTrick("", LogicTempDesc);
+  Option LogicLensBotw                            = LogicTrick("", LogicTempDesc);
+  Option LogicChildDeadhand                       = LogicTrick("", LogicTempDesc);
+  Option LogicBotwBasement                        = LogicTrick("", LogicTempDesc);
+  Option LogicBotwMQPits                          = LogicTrick("", LogicTempDesc);
+  Option LogicBotwMQDeadHandKey                   = LogicTrick("", LogicTempDesc);
+  Option LogicForestFirstGS                       = LogicTrick("", LogicTempDesc);
+  Option LogicForestOutdoorEastGS                 = LogicTrick("", LogicTempDesc);
+  Option LogicForestVines                         = LogicTrick("", LogicTempDesc);
+  Option LogicForestOutdoorsLedge                 = LogicTrick("", LogicTempDesc);
+  Option LogicForestDoorFrame                     = LogicTrick("", LogicTempDesc);
+  Option LogicForestOutsideBackdoor               = LogicTrick("", LogicTempDesc);
+  Option LogicForestMQWellSwim                    = LogicTrick("", LogicTempDesc);
+  Option LogicForestMQBlockPuzzle                 = LogicTrick("", LogicTempDesc);
+  Option LogicForestMQHallwaySwitchJS             = LogicTrick("", LogicTempDesc);
+  //Option LogicForestMQHallwaySwitchHookshot     = LogicTrick("", LogicTempDesc);
+  Option LogicForestMQHallwaySwitchBoomerang      = LogicTrick("", LogicTempDesc);
+  Option LogicFireBossDoorJump                    = LogicTrick("", LogicTempDesc);
+  Option LogicFireSongOfTime                      = LogicTrick("", LogicTempDesc);
+  Option LogicFireStrength                        = LogicTrick("", LogicTempDesc);
+  Option LogicFireScarecrow                       = LogicTrick("", LogicTempDesc);
+  Option LogicFireFlameMaze                       = LogicTrick("", LogicTempDesc);
+  Option LogicFireMQNearBoss                      = LogicTrick("", LogicTempDesc);
+  Option LogicFireMQBlockedChest                  = LogicTrick("", LogicTempDesc);
+  Option LogicFireMQBKChest                       = LogicTrick("", LogicTempDesc);
+  Option LogicFireMQClimb                         = LogicTrick("", LogicTempDesc);
+  Option LogicFireMQMazeSideRoom                  = LogicTrick("", LogicTempDesc);
+  Option LogicFireMQMazeHovers                    = LogicTrick("", LogicTempDesc);
+  Option LogicFireMQMazeJump                      = LogicTrick("", LogicTempDesc);
+  Option LogicFireMQAboveMazeGS                   = LogicTrick("", LogicTempDesc);
+  Option LogicFireMQFlameMaze                     = LogicTrick("", LogicTempDesc);
+  Option LogicWaterTempleTorchLongshot            = LogicTrick("", LogicTempDesc);
+  Option LogicWaterCrackedWallHovers              = LogicTrick("", LogicTempDesc);
+  Option LogicWaterCrackedWallNothing             = LogicTrick("", LogicTempDesc);
+  Option LogicWaterBossKeyRegion                  = LogicTrick("", LogicTempDesc);
+  Option LogicWaterNorthBasementLedgeJump         = LogicTrick("", LogicTempDesc);
+  Option LogicWaterBKJumpDive                     = LogicTrick("", LogicTempDesc);
+  Option LogicWaterCentralGSFW                    = LogicTrick("", LogicTempDesc);
+  Option LogicWaterCentralGSIrons                 = LogicTrick("", LogicTempDesc);
+  Option LogicWaterCentralBow                     = LogicTrick("", LogicTempDesc);
+  Option LogicWaterFallingPlatformGSHookshot      = LogicTrick("", LogicTempDesc);
+  Option LogicWaterFallingPlatformGSBoomerang     = LogicTrick("", LogicTempDesc);
+  Option LogicWaterRiverGS                        = LogicTrick("", LogicTempDesc);
+  Option LogicWaterDragonJumpDive                 = LogicTrick("", LogicTempDesc);
+  Option LogicWaterDragonAdult                    = LogicTrick("", LogicTempDesc);
+  Option LogicWaterDragonChild                    = LogicTrick("", LogicTempDesc);
+  Option LogicWaterMQCentralPillar                = LogicTrick("", LogicTempDesc);
+  Option LogicWaterMQLockedGS                     = LogicTrick("", LogicTempDesc);
+  Option LogicLensShadow                          = LogicTrick("", LogicTempDesc);
+  Option LogicLensShadowPlatform                  = LogicTrick("", LogicTempDesc);
+  Option LogicLensBongo                           = LogicTrick("", LogicTempDesc);
+  Option LogicShadowUmbrella                      = LogicTrick("", LogicTempDesc);
+  Option LogicShadowUmbrellaGS                    = LogicTrick("", LogicTempDesc);
+  Option LogicShadowFreestandingKey               = LogicTrick("", LogicTempDesc);
+  Option LogicShadowStatue                        = LogicTrick("", LogicTempDesc);
+  Option LogicShadowBongo                         = LogicTrick("", LogicTempDesc);
+  Option LogicLensShadowMQ                        = LogicTrick("", LogicTempDesc);
+  Option LogicLensShadowMQInvisibleBlades         = LogicTrick("", LogicTempDesc);
+  Option LogicLensShadowMQPlatform                = LogicTrick("", LogicTempDesc);
+  Option LogicLensShadowMQDeadHand                = LogicTrick("", LogicTempDesc);
+  Option LogicShadowMQGap                         = LogicTrick("", LogicTempDesc);
+  Option LogicShadowMQInvisibleBlades             = LogicTrick("", LogicTempDesc);
+  Option LogicShadowMQHugePit                     = LogicTrick("", LogicTempDesc);
+  Option LogicShadowMQWindyWalkway                = LogicTrick("", LogicTempDesc);
+  Option LogicLensSpirit                          = LogicTrick("", LogicTempDesc);
+  Option LogicSpiritChildBombchu                  = LogicTrick("", LogicTempDesc);
+  Option LogicSpiritLobbyGS                       = LogicTrick("", LogicTempDesc);
+  Option LogicSpiritLowerAdultSwitch              = LogicTrick("", LogicTempDesc);
+  Option LogicSpiritLobbyJump                     = LogicTrick("", LogicTempDesc);
+  Option LogicSpiritPlatformHookshot              = LogicTrick("", LogicTempDesc);
+  Option LogicSpiritMapChest                      = LogicTrick("", LogicTempDesc);
+  Option LogicSpiritSunChest                      = LogicTrick("", LogicTempDesc);
+  Option LogicSpiritWall                          = LogicTrick("", LogicTempDesc);
+  Option LogicLensSpiritMQ                        = LogicTrick("", LogicTempDesc);
+  Option LogicSpiritMQSunBlockSoT                 = LogicTrick("", LogicTempDesc);
+  Option LogicSpiritMQSunBlockGS                  = LogicTrick("", LogicTempDesc);
+  Option LogicSpiritMQLowerAdult                  = LogicTrick("", LogicTempDesc);
+  Option LogicSpiritMQFrozenEye                   = LogicTrick("", LogicTempDesc);
+  Option LogicIceBlockGS                          = LogicTrick("", LogicTempDesc);
+  Option LogicIceMQRedIceGS                       = LogicTrick("", LogicTempDesc);
+  Option LogicIceMQScarecrow                      = LogicTrick("", LogicTempDesc);
+  Option LogicLensGtg                             = LogicTrick("", LogicTempDesc);
+  Option LogicGtgWithoutHookshot                  = LogicTrick("", LogicTempDesc);
+  Option LogicGtgFakeWall                         = LogicTrick("", LogicTempDesc);
+  Option LogicLensGtgMQ                           = LogicTrick("", LogicTempDesc);
+  Option LogicGtgMQWithHookshot                   = LogicTrick("", LogicTempDesc);
+  Option LogicGtgMQWithoutHookshot                = LogicTrick("", LogicTempDesc);
+  Option LogicLensCastle                          = LogicTrick("", LogicTempDesc);
+  Option LogicSpiritTrialHookshot                 = LogicTrick("", LogicTempDesc);
+  Option LogicLensCastleMQ                        = LogicTrick("", LogicTempDesc);
+  Option LogicFireTrialMQ                         = LogicTrick("", LogicTempDesc);
+  Option LogicShadowTrialMQ                       = LogicTrick("", LogicTempDesc);
+  Option LogicLightTrialMQ                        = LogicTrick("", LogicTempDesc);
+
+  std::vector<Option *> trickOptions = {
+    //&ToggleAllTricks,
+    &LogicVisibleCollision,
+    &LogicGrottosWithoutAgony,
+    &LogicFewerTunicRequirements,
+    &LogicRustedSwitches,
+    &LogicFlamingChests,
+    &LogicBunnyHoodJump,
+    &LogicDamageBoost,
+    &LogicHoverBoost,
+    &LogicAdultKokiriGS,
+    &LogicLostWoodsBridge,
+    &LogicMidoBackflip,
+    &LogicLostWoodsGSBean,
+    &LogicCastleStormsGS,
+    &LogicManOnRoof,
+    &LogicKakarikoTowerGS,
+    &LogicAdultWindmillPoH,
+    &LogicChildWindmillPoH,
+    &LogicKakarikoRooftopGS,
+    &LogicGraveyardPoH,
+    &LogicChildDampeRacePoH,
+    &LogicShadowFireArrowEntry,
+    &LogicDMTSoilGS,
+    &LogicDMTBombable,
+    &LogicDMTGSLowerHookshot,
+    &LogicDMTGSLowerHovers,
+    &LogicDMTGSLowerBean,
+    &LogicDMTGSLowerJS,
+    &LogicDMTClimbHovers,
+    &LogicDMTGSUpper,
+    &LogicBiggoronBolero,
+    &LogicGoronCityPot,
+    &LogicGoronCityPotWithStrength,
+    &LogicChildRollingWithStrength,
+    &LogicGoronCityLeftMost,
+    &LogicGoronCityGrotto,
+    &LogicGoronCityLinkGoronDins,
+    &LogicCraterBeanPoHWithHovers,
+    &LogicCraterBoleroJump,
+    &LogicCraterBoulderJS,
+    &LogicCraterBoulderSkip,
+    &LogicZoraRiverLower,
+    &LogicZoraRiverUpper,
+    &LogicZoraWithHovers,
+    &LogicZoraWithCucco,
+    &LogicKingZoraSkip,
+    &LogicDomainGS,
+    &LogicLabWallGS,
+    &LogicLabDiving,
+    &LogicWaterHookshotEntry,
+    &LogicValleyCrateHovers,
+    &LogicGerudoKitchen,
+    &LogicGFJump,
+    &LogicWastelandBunnyCrossing,
+    &LogicWastelandCrossing,
+    &LogicLensWasteland,
+    &LogicReverseWasteland,
+    &LogicColossusGS,
+    &LogicDekuBasementGS,
+    &LogicDekuB1Skip,
+    &LogicDekuB1WebsWithBow,
+    &LogicDekuMQCompassGS,
+    &LogicDekuMQLog,
+    &LogicDCScarecrowGS,
+    &LogicDCVinesGS,
+    &LogicDCStaircase,
+    &LogicDCSlingshotSkip,
+    &LogicDCScrubRoom,
+    &LogicDCJump,
+    &LogicDCHammerFloor,
+    &LogicDCMQChildBombs,
+    &LogicDCMQEyesChild,
+    &LogicDCMQEyesAdult,
+    &LogicJabuAlcoveJumpDive,
+    &LogicJabuBossHover,
+    &LogicJabuNearBossRanged,
+    &LogicJabuNearBossExplosives,
+    &LogicLensJabuMQ,
+    &LogicJabuMQRangJump,
+    &LogicJabuMQSoTGS,
+    &LogicLensBotw,
+    &LogicChildDeadhand,
+    &LogicBotwBasement,
+    &LogicBotwMQPits,
+    &LogicBotwMQDeadHandKey,
+    &LogicForestFirstGS,
+    &LogicForestOutdoorEastGS,
+    &LogicForestVines,
+    &LogicForestOutdoorsLedge,
+    &LogicForestDoorFrame,
+    &LogicForestOutsideBackdoor,
+    &LogicForestMQWellSwim,
+    &LogicForestMQBlockPuzzle,
+    &LogicForestMQHallwaySwitchJS,
+    //&LogicForestMQHallwaySwitchHookshot,
+    &LogicForestMQHallwaySwitchBoomerang,
+    &LogicFireBossDoorJump,
+    &LogicFireSongOfTime,
+    &LogicFireStrength,
+    &LogicFireScarecrow,
+    &LogicFireFlameMaze,
+    &LogicFireMQNearBoss,
+    &LogicFireMQBlockedChest,
+    &LogicFireMQBKChest,
+    &LogicFireMQClimb,
+    &LogicFireMQMazeSideRoom,
+    &LogicFireMQMazeHovers,
+    &LogicFireMQMazeJump,
+    &LogicFireMQAboveMazeGS,
+    &LogicFireMQFlameMaze,
+    &LogicWaterTempleTorchLongshot,
+    &LogicWaterCrackedWallHovers,
+    &LogicWaterCrackedWallNothing,
+    &LogicWaterBossKeyRegion,
+    &LogicWaterNorthBasementLedgeJump,
+    &LogicWaterBKJumpDive,
+    &LogicWaterCentralGSFW,
+    &LogicWaterCentralGSIrons,
+    &LogicWaterCentralBow,
+    &LogicWaterFallingPlatformGSHookshot,
+    &LogicWaterFallingPlatformGSBoomerang,
+    &LogicWaterRiverGS,
+    &LogicWaterDragonJumpDive,
+    &LogicWaterDragonAdult,
+    &LogicWaterDragonChild,
+    &LogicWaterMQCentralPillar,
+    &LogicWaterMQLockedGS,
+    &LogicLensShadow,
+    &LogicLensShadowPlatform,
+    &LogicLensBongo,
+    &LogicShadowUmbrella,
+    &LogicShadowUmbrellaGS,
+    &LogicShadowFreestandingKey,
+    &LogicShadowStatue,
+    &LogicShadowBongo,
+    &LogicLensShadowMQ,
+    &LogicLensShadowMQInvisibleBlades,
+    &LogicLensShadowMQPlatform,
+    &LogicLensShadowMQDeadHand,
+    &LogicShadowMQGap,
+    &LogicShadowMQInvisibleBlades,
+    &LogicShadowMQHugePit,
+    &LogicShadowMQWindyWalkway,
+    &LogicLensSpirit,
+    &LogicSpiritChildBombchu,
+    &LogicSpiritLobbyGS,
+    &LogicSpiritLowerAdultSwitch,
+    &LogicSpiritLobbyJump,
+    &LogicSpiritPlatformHookshot,
+    &LogicSpiritMapChest,
+    &LogicSpiritSunChest,
+    &LogicSpiritWall,
+    &LogicLensSpiritMQ,
+    &LogicSpiritMQSunBlockSoT,
+    &LogicSpiritMQSunBlockGS,
+    &LogicSpiritMQLowerAdult,
+    &LogicSpiritMQFrozenEye,
+    &LogicIceBlockGS,
+    &LogicIceMQRedIceGS,
+    &LogicIceMQScarecrow,
+    &LogicLensGtg,
+    &LogicGtgWithoutHookshot,
+    &LogicGtgFakeWall,
+    &LogicLensGtgMQ,
+    &LogicGtgMQWithHookshot,
+    &LogicGtgMQWithoutHookshot,
+    &LogicLensCastle,
+    &LogicSpiritTrialHookshot,
+    &LogicLensCastleMQ,
+    &LogicFireTrialMQ,
+    &LogicShadowTrialMQ,
+    &LogicLightTrialMQ,
+  };
+
+  //TODO completely rewrite glitch section since oot3d glitches differ from oot
 
   //Function to avoid accidentally naming the options wrong, as logic.cpp requires these exact names
   std::vector<std::string> GlitchDifficultyOptions(uint8_t enabledDifficulties) {
@@ -850,7 +1202,7 @@ namespace Settings {
 
     return selectableDifficulties;
   }
-
+  
   Option GlitchRestrictedItems    = Option::U8("Restricted Items",      GlitchDifficultyOptions(0b00001), { GlitchRestrictedItemsDescDisabled    , GlitchRestrictedItemsDescNovice                                                                                                                                                              });
   Option GlitchSuperStab          = Option::U8("Super Stab",            GlitchDifficultyOptions(0b00001), { GlitchSuperStabDescDisabled          , GlitchSuperStabDescNovice                                                                                                                                                                    });
   Option GlitchISG                = Option::U8("Infinite Sword Glitch", GlitchDifficultyOptions(0b00111), { GlitchISGDescDisabled                , GlitchISGDescNovice                , GlitchISGDescIntermediate                , GlitchISGDescAdvanced                                                                                        });
@@ -926,6 +1278,7 @@ namespace Settings {
     &GlitchForestBKSkip,
     &GlitchFireGrunzClip,
   };
+  
 
   Menu glitchCategorySettings = Menu::SubMenu("General Categories",     &glitchCategories, false);
   Menu miscGlitchSettings     = Menu::SubMenu("Miscellaneous Glitches", &miscGlitches,     false);
@@ -2196,6 +2549,7 @@ namespace Settings {
           trickOptions[i]->SetSelectedIndex(0);
         }
         if(currentSetting->GetSelectedOptionIndex() >= 1){ //novice options
+        /*
           LogicGrottosWithoutAgony.SetSelectedIndex(1);
           LogicVisibleCollision.SetSelectedIndex(1);
           LogicFewerTunicRequirements.SetSelectedIndex(1);
@@ -2231,8 +2585,10 @@ namespace Settings {
           LogicLensBotwMQ.SetSelectedIndex(1);
           LogicLensGtgMQ.SetSelectedIndex(1);
           LogicFlamingChests.SetSelectedIndex(1);
+          */
         }
         if(currentSetting->GetSelectedOptionIndex() >= 2){ //intermediate options
+        /*
           LogicLabWallGS.SetSelectedIndex(1);
           LogicChildDampeRacePoH.SetSelectedIndex(1);
           LogicGerudoKitchen.SetSelectedIndex(1);
@@ -2266,8 +2622,10 @@ namespace Settings {
           LogicLensShadowMQBack.SetSelectedIndex(1);
           LogicLensCastleMQ.SetSelectedIndex(1);
           LogicSpiritTrialHookshot.SetSelectedIndex(1);
+          */
         }
         if(currentSetting->GetSelectedOptionIndex() == 3){ //expert options
+        /*
           LogicLensWasteland.SetSelectedIndex(1);
           LogicReverseWasteland.SetSelectedIndex(1);
           LogicColossusGS.SetSelectedIndex(1);
@@ -2288,6 +2646,7 @@ namespace Settings {
           //LogicShadowFireArrowEntry.SetSelectedIndex(1);
           LogicShadowUmbrella.SetSelectedIndex(1);
           LogicGtgWithoutHookshot.SetSelectedIndex(1);
+          */
         }
       }
     }
@@ -2654,18 +3013,10 @@ namespace Settings {
   }
 
   //Function to set flags depending on settings
-  void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations) {
+  void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<int> enabledTricksNums) {
 
-    // RANDTODO: Switch this back once all logic options are implemented
-    // Logic.SetSelectedIndex(cvarSettings[RSK_LOGIC_RULES]);
-    switch (cvarSettings[RSK_LOGIC_RULES]) {
-        case RO_LOGIC_GLITCHLESS:
-            Logic.SetSelectedIndex(0);
-            break;
-        case RO_LOGIC_NO_LOGIC:
-            Logic.SetSelectedIndex(2);
-            break;
-    }
+    Logic.SetSelectedIndex(cvarSettings[RSK_LOGIC_RULES]);
+
     LocationsReachable.SetSelectedIndex(cvarSettings[RSK_ALL_LOCATIONS_REACHABLE]);
 
     AddExcludedOptions();
@@ -2677,6 +3028,13 @@ namespace Settings {
         location->GetExcludedOption()->SetSelectedIndex(0);
       }
     }
+
+    //tricks
+    
+    for (auto trickNum : enabledTricksNums) {
+      trickOptions.at(trickNum)->SetSelectedIndex(1);
+    }
+    
 
     OpenForest.SetSelectedIndex(cvarSettings[RSK_FOREST]);
     OpenKakariko.SetSelectedIndex(cvarSettings[RSK_KAK_GATE]);

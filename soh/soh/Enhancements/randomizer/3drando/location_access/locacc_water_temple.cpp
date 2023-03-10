@@ -37,7 +37,7 @@ void AreaTable_Init_WaterTemple() {
                   Entrance(WATER_TEMPLE_EAST_MIDDLE,           {[]{return (WaterTempleLow || WaterTempleMiddle || (CanUse(IRON_BOOTS) && WaterTimer >= 16)) && CanUse(HOOKSHOT);}}),
                   Entrance(WATER_TEMPLE_WEST_MIDDLE,           {[]{return WaterTempleMiddle;},
                                                     /*Glitched*/[]{return WaterTempleLow && (CanDoGlitch(GlitchType::HammerSlide, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE));}}),
-                  Entrance(WATER_TEMPLE_HIGH_WATER,            {[]{return IsAdult && (CanUse(HOVER_BOOTS) || (LogicWaterTempleUpperBoost && Bombs && CanTakeDamage));},
+                  Entrance(WATER_TEMPLE_HIGH_WATER,            {[]{return IsAdult && (CanUse(HOVER_BOOTS) || (LogicDamageBoost && Bombs && CanTakeDamage));},
                                                     /*Glitched*/[]{return CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE));}}),
                   Entrance(WATER_TEMPLE_BLOCK_CORRIDOR,        {[]{return (WaterTempleLow || WaterTempleMiddle) && (CanUse(SLINGSHOT) || CanUse(BOW)) && (CanUse(LONGSHOT) || CanUse(HOVER_BOOTS) || (LogicWaterCentralBow && (IsAdult || WaterTempleMiddle)));},
                                                     /*Glitched*/[]{return (WaterTempleLow || WaterTempleMiddle) && IsAdult && CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::INTERMEDIATE);}}),
@@ -230,7 +230,7 @@ void AreaTable_Init_WaterTemple() {
 
   areaTable[WATER_TEMPLE_FALLING_PLATFORM_ROOM] = Area("Water Temple Falling Platform Room", "Water Temple", WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(WATER_TEMPLE_GS_FALLING_PLATFORM_ROOM, {[]{return CanUse(LONGSHOT) || (LogicWaterFallingPlatformGS && IsAdult && HookshotOrBoomerang);}}),
+                  LocationAccess(WATER_TEMPLE_GS_FALLING_PLATFORM_ROOM, {[]{return CanUse(LONGSHOT) || (LogicWaterFallingPlatformGSBoomerang && IsChild && CanUse(BOOMERANG)) || (LogicWaterFallingPlatformGSHookshot && IsAdult && CanUse(HOOKSHOT));}}),
                 }, {
                   //Exits
                   Entrance(WATER_TEMPLE_LOBBY,               {[]{return CanUse(HOOKSHOT) && SmallKeys(WATER_TEMPLE, 4);}}),

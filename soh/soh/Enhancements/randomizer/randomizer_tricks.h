@@ -5,7 +5,6 @@
 
 typedef enum {
     RTAREA_GENERAL,
-    RTAREA_EXPLOSIVES,
     RTAREA_BK_SKIPS,
     RTAREA_KOKIRI_FOREST,
     RTAREA_LOST_WOODS,
@@ -39,7 +38,6 @@ typedef enum {
     RTAREA_ICE_CAVERN,
     RTAREA_GERUDO_TRAINING_GROUND,
     RTAREA_GANONS_CASTLE,
-    RTAREA_EXTREME,
     RTAREA_INVALID
 } RandomizerTrickArea;
 
@@ -49,6 +47,7 @@ typedef enum {
     RTVORMQ_BOTH
 } RandomizerTrickVanillaOrMQ;
 
+//todo tags
 #define RT_OBJECT(rt, rt_v_or_mq, rt_area, rt_glitch, rt_shortname, rt_desc) \
     { rt, {rt, rt_v_or_mq, rt_area, rt_glitch, true, rt_shortname, rt_desc} }
 
@@ -67,4 +66,3 @@ namespace RandomizerTricks {
     std::map<RandomizerTrickArea, std::map<RandomizerTrick,RandomizerTrickObject>> GetAllRTObjectsByArea();
     std::string GetRTAreaName(RandomizerTrickArea area);
 }
-

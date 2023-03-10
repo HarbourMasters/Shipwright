@@ -187,7 +187,7 @@ void AreaTable_Init_ZorasDomain() {
                                            /*Glitched*/[]{return (IsChild && CanUse(STICKS) && GlitchJabuStickRecoil) || (IsAdult && GlitchJabuAdult);}}),
                   Entrance(ICE_CAVERN_ENTRYWAY,       {[]{return IsAdult;},
                                            /*Glitched*/[]{return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);}}),
-                  Entrance(ZF_GREAT_FAIRY_FOUNTAIN,   {[]{return HasExplosives || (CanUse(SILVER_GAUNTLETS) && Hammer && LogicZFGreatFairy);},
+                  Entrance(ZF_GREAT_FAIRY_FOUNTAIN,   {[]{return HasExplosives/* || (CanUse(SILVER_GAUNTLETS) && Hammer && LogicZFGreatFairy)*/;},
                                            /*Glitched*/[]{return IsChild && (KokiriSword || Sticks) && CanShield && (CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::ADVANCED) || (CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE) && CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::INTERMEDIATE)));}}),
   });
 

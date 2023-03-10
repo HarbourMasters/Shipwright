@@ -464,6 +464,8 @@ namespace Logic {
     return 0;
   }
 
+//todo rewrite glitch section
+
   bool CanDoGlitch(GlitchType glitch, GlitchDifficulty difficulty) {
     uint8_t setDifficulty;
     switch (glitch) {

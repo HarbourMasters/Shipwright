@@ -64,8 +64,8 @@ void AreaTable_Init_GerudoValley() {
                   //Events
                   EventAccess(&BrokenSwordAccess, {[]{return IsAdult && (PoachersSawAccess || PoachersSaw);}}),
                 }, {
-                  //Locations
-                  LocationAccess(GV_CHEST,          {[]{return IsAdult && (CanUse(MEGATON_HAMMER) || LogicGVHammerChest);},
+                  //Locations                                       //LogicGVHammerChest refers to an oot3d exclusive trick
+                  LocationAccess(GV_CHEST,          {[]{return IsAdult && CanUse(MEGATON_HAMMER)/*(CanUse(MEGATON_HAMMER) || LogicGVHammerChest)*/;},
                                          /*Glitched*/[]{return IsAdult && (CanDoGlitch(GlitchType::LedgeCancel, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE) && (CanTakeDamageTwice || CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED))));}}),
                   LocationAccess(GV_TRADE_SAW,      {[]{return IsAdult && PoachersSaw;}}),
                   LocationAccess(GV_GS_BEHIND_TENT, {[]{return IsAdult && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;},

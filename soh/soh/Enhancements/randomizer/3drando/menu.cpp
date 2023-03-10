@@ -512,7 +512,7 @@ void PrintOptionDescription() {
   printf("\x1b[22;0H%s", description.data());
 }
 
-std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations,
+std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<int> enabledTricksNums,
     std::string seedString) {
 
     srand(time(NULL));
@@ -528,7 +528,7 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
         } catch (std::out_of_range &e) {
             count = 1;
         }
-        Playthrough::Playthrough_Repeat(cvarSettings, excludedLocations, count);
+        Playthrough::Playthrough_Repeat(cvarSettings, excludedLocations, enabledTricksNums, count);
         return "";
     } else {
         try {
@@ -541,7 +541,7 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
         }
     }
 
-    int ret = Playthrough::Playthrough_Init(Settings::seed, cvarSettings, excludedLocations);
+    int ret = Playthrough::Playthrough_Init(Settings::seed, cvarSettings, excludedLocations, enabledTricksNums);
     if (ret < 0) {
         if (ret == -1) { // Failed to generate after 5 tries
             printf("\n\nFailed to generate after 5 tries.\nPress B to go back to the menu.\nA different seed might be "

@@ -131,10 +131,10 @@ void AreaTable_Init_Kakariko() {
                                                      CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Fish || Bugs) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)));}}),
                 }, {
                   //Locations
-                  LocationAccess(KAK_WINDMILL_FREESTANDING_POH, {[]{return CanUse(BOOMERANG) || DampesWindmillAccess || (IsAdult && CanUse(HOOKSHOT) && LogicWindmillPoHHookshot);},
+                  LocationAccess(KAK_WINDMILL_FREESTANDING_POH, {[]{return CanUse(BOOMERANG) || DampesWindmillAccess || (IsAdult && LogicAdultWindmillPoH) || (IsChild && LogicChildWindmillPoH);},
                                                      /*Glitched*/[]{return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);}}),
                   LocationAccess(SONG_FROM_WINDMILL,            {[]{return IsAdult && Ocarina;},
-                                                     /*Glitched*/[]{return IsAdult && (CanDoGlitch(GlitchType::WindmillBombOI, GlitchDifficulty::EXPERT) || ((Fish || Bugs) && CanShield && ((Bombs && (CanSurviveDamage || (Fairy && NumBottles >= 2))) || (DampesWindmillAccess || (IsAdult && CanUse(HOOKSHOT) && LogicWindmillPoHHookshot) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE))) &&
+                                                     /*Glitched*/[]{return IsAdult && (CanDoGlitch(GlitchType::WindmillBombOI, GlitchDifficulty::EXPERT) || ((Fish || Bugs) && CanShield && ((Bombs && (CanSurviveDamage || (Fairy && NumBottles >= 2))) || (DampesWindmillAccess || (IsAdult && LogicAdultWindmillPoH) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE))) &&
                                                                            CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Fish || Bugs) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)));}}),
                 }, {
                   //Exits
