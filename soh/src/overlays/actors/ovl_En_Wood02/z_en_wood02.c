@@ -173,6 +173,15 @@ void EnWood02_Init(Actor* thisx, PlayState* play2) {
     f32 floorY;
     s16 extraRot;
 
+    // The tree in Kakariko's day scene does not have the same params to spawn the GS
+    // as the night scene, For the always spawn GS enhancement we apply the needed
+    // params to have the GS drop when bonking
+    if ((this->actor.params & 0xFF) == WOOD_TREE_CONICAL_MEDIUM && IS_DAY &&
+        play->sceneNum == SCENE_SPOT01 && CVarGetInteger("gNightGSAlwaysSpawn", 0)) {
+        this->actor.params = 0x2001;
+        this->actor.home.rot.z = 0x71;
+    }
+
     spawnType = WOOD_SPAWN_NORMAL;
     actorScale = 1.0f;
     this->unk_14C = (this->actor.params >> 8) & 0xFF;
