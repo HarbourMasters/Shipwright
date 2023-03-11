@@ -132,6 +132,7 @@ public:
         static void GiveDekuShield();
         static void SpawnCuccoStorm();
         static void ForceInterfaceUpdate();
+        static void UpdateActor(void* refActor);
 
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
     };

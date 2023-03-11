@@ -278,23 +278,19 @@ void RegisterHyperBosses() {
             actor->id == ACTOR_BOSS_GANON2;                              // Ganon
 
         // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
-        // Sometimes the actor is destroyed in the previous Update, so check if the update function still exists.
-        if (CVarGetInteger("gHyperBosses", 0) && isBossActor && !Player_InBlockingCsMode(gPlayState, player) &&
-            actor->update != NULL) {
+        if (CVarGetInteger("gHyperBosses", 0) && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
             // Barinade needs to be updated in sequence to avoid unintended behaviour.
             if (actor->id == ACTOR_BOSS_VA) {
                 // params -1 is BOSSVA_BODY
                 if (actor->params == -1) {
                     Actor* actorList = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS].head;
                     while (actorList != NULL) {
-                        if (actorList->update != NULL) {
-                            actorList->update(actorList, gPlayState);
-                        }
+                        GameInteractor::RawAction::UpdateActor(actorList);
                         actorList = actorList->next;
                     }
                 }
             } else {
-                actor->update(actor, gPlayState);
+                GameInteractor::RawAction::UpdateActor(actor);
             }
         }
     });

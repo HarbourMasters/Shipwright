@@ -142,6 +142,23 @@ void GameInteractor::RawAction::ForceInterfaceUpdate() {
     Interface_Update(gPlayState);
 }
 
+void GameInteractor::RawAction::UpdateActor(void* refActor) {
+    // Update actor again outside of their normal update cycle.
+
+    Actor* actor = static_cast<Actor*>(refActor);
+    
+    // Sometimes the actor is destroyed in the previous Update, so check if the update function still exists.
+    if (actor->update != NULL) {
+        // Fix for enemies sometimes taking a "fake" hit, where their invincibility timer is
+        // reset but damage isn't applied.
+        if (actor->colorFilterTimer > 0) {
+            actor->colorFilterTimer--;
+        }
+
+        actor->update(actor, gPlayState);
+    }
+}
+
 GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {
 
     if (!GameInteractor::CanSpawnEnemy()) {
