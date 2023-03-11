@@ -20,6 +20,11 @@ using namespace Logic;
 using namespace Settings;
 using namespace Trial;
 
+std::array<std::string, 13> hintTypeNames = {
+    "Trial", "Always", "WotH",      "Barren",  "Entrance", "Sometimes", "Random",
+    "Item",  "Song",   "Overworld", "Dungeon", "Junk",     "NamedItem",
+};
+
 constexpr std::array<HintSetting, 4> hintSettingTable{{
   // Useless hints
   {
@@ -232,10 +237,13 @@ static std::vector<uint32_t> GetAccessibleGossipStones(const uint32_t hintedLoca
   return accessibleGossipStones;
 }
 
-static void AddHint(Text hint, const uint32_t gossipStone, const std::vector<uint8_t>& colors = {}) {
+static void AddHint(Text hint, const uint32_t gossipStone, const std::vector<uint8_t>& colors = {}, HintType hintType = HintType::Item, const uint32_t hintedLocation = NONE) {
   //save hints as dummy items for writing to the spoiler log
   NewItem(gossipStone, Item{RG_HINT, hint, ITEMTYPE_EVENT, GI_RUPEE_BLUE_LOSE, false, &noVariable, NONE});
   Location(gossipStone)->SetPlacedItem(gossipStone);
+  Location(gossipStone)->SetHintedLocation(hintedLocation);
+  Location(gossipStone)->SetHintType(hintType);
+  Location(gossipStone)->SetHintedRegion(GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText().GetEnglish());
 
   //create the in game message
   // uint32_t messageId = 0x400 + Location(gossipStone)->GetFlag();
@@ -274,13 +282,13 @@ static void CreateLocationHint(const std::vector<uint32_t>& possibleHintLocation
   Text locationHintText = Location(hintedLocation)->GetHint().GetText();
   Text itemHintText = Location(hintedLocation)->GetPlacedItem().GetHint().GetText();
   Text prefix = Hint(PREFIX).GetText();
-
+  
   Text finalHint = prefix + locationHintText + " #"+itemHintText+"#.";
   SPDLOG_DEBUG("\tMessage: ");
   SPDLOG_DEBUG(finalHint.english);
   SPDLOG_DEBUG("\n\n");
 
-  AddHint(finalHint, gossipStone, {QM_GREEN, QM_RED});
+  AddHint(finalHint, gossipStone, {QM_GREEN, QM_RED}, HintType::Item, hintedLocation);
 }
 
 static void CreateWothHint(uint8_t* remainingDungeonWothHints) {
@@ -332,7 +340,7 @@ static void CreateWothHint(uint8_t* remainingDungeonWothHints) {
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalWothHint.english);
     SPDLOG_DEBUG("\n\n");
-    AddHint(finalWothHint, gossipStone, { QM_LBLUE });
+    AddHint(finalWothHint, gossipStone, { QM_LBLUE }, HintType::Woth, hintedLocation);
 }
 
 static void CreateBarrenHint(uint8_t* remainingDungeonBarrenHints, std::vector<uint32_t>& barrenLocations) {
@@ -376,7 +384,7 @@ static void CreateBarrenHint(uint8_t* remainingDungeonBarrenHints, std::vector<u
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalBarrenHint.english);
     SPDLOG_DEBUG("\n\n");
-    AddHint(finalBarrenHint, gossipStone, { QM_PINK });
+    AddHint(finalBarrenHint, gossipStone, { QM_PINK }, HintType::Barren, hintedLocation);
 
     // get rid of all other locations in this same barren region
     barrenLocations = FilterFromPool(barrenLocations, [hintedLocation](uint32_t loc) {
@@ -422,13 +430,13 @@ static void CreateRandomLocationHint(const bool goodItem = false) {
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalHint.english);
     SPDLOG_DEBUG("\n\n");
-    AddHint(finalHint, gossipStone, {QM_GREEN, QM_RED});
+    AddHint(finalHint, gossipStone, {QM_GREEN, QM_RED}, HintType::NamedItem, hintedLocation);
   } else {
     Text finalHint = Hint(PREFIX).GetText()+"#"+itemText+"# "+Hint(CAN_BE_FOUND_AT).GetText()+" #"+locationText+"#.";
     SPDLOG_DEBUG("\tMessage: ");
     SPDLOG_DEBUG(finalHint.english);
     SPDLOG_DEBUG("\n\n");
-    AddHint(finalHint, gossipStone, {QM_RED, QM_GREEN});
+    AddHint(finalHint, gossipStone, { QM_RED, QM_GREEN }, HintType::NamedItem, hintedLocation);
   }
 }
 
@@ -452,7 +460,7 @@ static void CreateJunkHint() {
   SPDLOG_DEBUG(hint.english);
   SPDLOG_DEBUG("\n\n");
 
-  AddHint(hint, gossipStone, {QM_PINK});
+  AddHint(hint, gossipStone, { QM_PINK }, HintType::Junk);
 }
 
 static std::vector<uint32_t> CalculateBarrenRegions() {
@@ -495,7 +503,7 @@ static void CreateTrialHints() {
 
     //make hint
     auto hint = Hint(PREFIX).GetText() + Hint(SIX_TRIALS).GetText();
-    AddHint(hint, gossipStone, {QM_PINK});
+    AddHint(hint, gossipStone, { QM_PINK }, HintType::Trial);
 
     //zero trials
   } else if (RandomGanonsTrials && GanonsTrialsCount.Is(0)) {
@@ -506,7 +514,7 @@ static void CreateTrialHints() {
 
     //make hint
     auto hint = Hint(PREFIX).GetText() + Hint(ZERO_TRIALS).GetText();
-    AddHint(hint, gossipStone, {QM_YELLOW});
+    AddHint(hint, gossipStone, { QM_YELLOW }, HintType::Trial);
 
     //4 or 5 required trials
   } else if (GanonsTrialsCount.Is(5) || GanonsTrialsCount.Is(4)) {
@@ -524,7 +532,7 @@ static void CreateTrialHints() {
 
       //make hint
       auto hint = Hint(PREFIX).GetText()+"#"+trial->GetName()+"#"+Hint(FOUR_TO_FIVE_TRIALS).GetText();
-      AddHint(hint, gossipStone, {QM_YELLOW});
+      AddHint(hint, gossipStone, { QM_YELLOW }, HintType::Trial);
     }
     //1 to 3 trials
   } else if (GanonsTrialsCount.Value<uint8_t>() >= 1 && GanonsTrialsCount.Value<uint8_t>() <= 3) {
@@ -541,7 +549,7 @@ static void CreateTrialHints() {
 
       //make hint
       auto hint = Hint(PREFIX).GetText()+"#"+trial->GetName()+"#"+Hint(ONE_TO_THREE_TRIALS).GetText();
-      AddHint(hint, gossipStone, {QM_PINK});
+      AddHint(hint, gossipStone, { QM_PINK }, HintType::Trial);
     }
   }
 }
@@ -939,22 +947,6 @@ void CreateAllHints() {
       dungeonInfoData[i] = DungeonInfo::DUNGEON_NEITHER;
     }
   }
-
-  std::array<std::string, 13> hintTypeNames = {
-    "Trial",
-    "Always",
-    "WotH",
-    "Barren",
-    "Entrance",
-    "Sometimes",
-    "Random",
-    "Item",
-    "Song",
-    "Overworld",
-    "Dungeon",
-    "Junk",
-    "NamedItem",
-  };
 
   //while there are still gossip stones remaining
   while (FilterFromPool(gossipStoneLocations, [](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == NONE;}).size() != 0) {

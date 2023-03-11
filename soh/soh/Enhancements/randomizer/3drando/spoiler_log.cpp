@@ -35,6 +35,8 @@ using json = nlohmann::json;
 json jsonData;
 std::map<HintKey, ItemLocation*> hintedLocations;
 
+extern std::array<std::string, 13>hintTypeNames;
+
 namespace {
 std::string placementtxt;
 } // namespace
@@ -713,8 +715,18 @@ static void WriteHints(int language) {
                 break;
         }
 
+        HintType hintType = location->GetHintType();
+        Area* hintLoc = AreaTable(Location(location->GetHintedLocation())->GetParentRegionKey());
+
         std::string textStr = AutoFormatHintTextString(unformattedHintTextString);
-        jsonData["hints"][location->GetName()] = textStr;
+        jsonData["hints"][location->GetName()]["hint"] = textStr;
+        jsonData["hints"][location->GetName()]["type"] = hintTypeNames[static_cast<int>(hintType)];
+        if (hintType == HintType::Item || hintType == HintType::NamedItem) {
+            jsonData["hints"][location->GetName()]["item"] = Location(location->GetHintedLocation())->GetPlacedItemName().GetEnglish();
+        }
+        if (hintType != HintType::Trial && hintType != HintType::Junk) {
+            jsonData["hints"][location->GetName()]["area"] = location->GetHintedRegion();
+        }
     }
 }
 
@@ -773,15 +785,15 @@ static void WriteAllLocations(int language) {
     }
 }
 
-static void WriteHintData(int language) {
-    for (auto [hintKey, item_location] : hintedLocations) {
-        ItemLocation *hint_location = Location(hintKey);
-        jsonData["hints"][hint_location->GetName()] = { { "text", hint_location->GetPlacedItemName().GetEnglish() },
-                                                        { "item", item_location->GetPlacedItemName().GetEnglish() },
-                                                        { "itemLocation", item_location->GetName() },
-                                                        { "locationArea", item_location->GetParentRegionKey() } };
-    }
-}
+//static void WriteHintData(int language) {
+//    for (auto [hintKey, item_location] : hintedLocations) {
+//        ItemLocation *hint_location = Location(hintKey);
+//        jsonData["hints"][hint_location->GetName()] = { { "text", hint_location->GetPlacedItemName().GetEnglish() },
+//                                                        { "item", item_location->GetPlacedItemName().GetEnglish() },
+//                                                        { "itemLocation", item_location->GetName() },
+//                                                        { "locationArea", item_location->GetParentRegionKey() } };
+//    }
+//}
 
 const char* SpoilerLog_Write(int language) {
     auto spoilerLog = tinyxml2::XMLDocument(false);
@@ -821,7 +833,7 @@ const char* SpoilerLog_Write(int language) {
     WriteHints(language);
     WriteShuffledEntrances();
     WriteAllLocations(language);
-    WriteHintData(language);
+    //WriteHintData(language);
 
     if (!std::filesystem::exists(Ship::Window::GetPathRelativeToAppDirectory("Randomizer"))) {
         std::filesystem::create_directory(Ship::Window::GetPathRelativeToAppDirectory("Randomizer"));
