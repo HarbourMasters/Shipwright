@@ -306,9 +306,8 @@ void RegisterHyperEnemies() {
         // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
         // Sometimes the actor is destroyed in the previous Update, so check if the update function still exists.
         if (CVarGetInteger("gHyperEnemies", 0) && actor->category == ACTORCAT_ENEMY &&
-            !Player_InBlockingCsMode(gPlayState, player) &&
-            actor->update != NULL) {
-            actor->update(actor, gPlayState);
+            !Player_InBlockingCsMode(gPlayState, player)) {
+            GameInteractor::RawAction::UpdateActor(actor);
         }
     });
 }
