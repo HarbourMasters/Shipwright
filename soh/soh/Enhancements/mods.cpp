@@ -300,6 +300,23 @@ void RegisterHyperBosses() {
     });
 }
 
+void RegisterHyperEnemies() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+        // Run the update function a second time to make enemies move and act twice as fast.
+
+        Player* player = GET_PLAYER(gPlayState);
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
+        // Sometimes the actor is destroyed in the previous Update, so check if the update function still exists.
+        if (CVarGetInteger("gHyperEnemies", 0) && actor->category == ACTORCAT_ENEMY &&
+            !Player_InBlockingCsMode(gPlayState, player) &&
+            actor->update != NULL) {
+            actor->update(actor, gPlayState);
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -315,4 +332,5 @@ void InitMods() {
     RegisterAutoSave();
     RegisterRupeeDash();
     RegisterHyperBosses();
+    RegisterHyperEnemies();
 }
