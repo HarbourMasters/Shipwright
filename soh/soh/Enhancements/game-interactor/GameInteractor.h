@@ -88,6 +88,7 @@ public:
     DEFINE_HOOK(OnGameFrameUpdate, void());
     DEFINE_HOOK(OnReceiveItem, void(uint8_t item));
     DEFINE_HOOK(OnSceneInit, void(int16_t sceneNum));
+    DEFINE_HOOK(OnSceneSpawnActors, void());
     DEFINE_HOOK(OnPlayerUpdate, void());
     
     DEFINE_HOOK(OnSaveFile, void(int32_t fileNum));

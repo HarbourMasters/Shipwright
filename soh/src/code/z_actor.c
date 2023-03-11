@@ -2515,6 +2515,7 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
             Actor_SpawnEntry(&play->actorCtx, actorEntry++, play);
         }
         play->numSetupActors = 0;
+        GameInteractor_ExecuteOnSceneSpawnActors();
     }
 
     if (actorCtx->unk_02 != 0) {
