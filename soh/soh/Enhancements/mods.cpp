@@ -265,7 +265,7 @@ void RegisterHyperBosses() {
 
         uint8_t isBossActor =
             actor->id == ACTOR_BOSS_GOMA ||                              // Gohma
-            actor->id == ACTOR_EN_DODONGO ||                             // King Dodongo
+            actor->id == ACTOR_BOSS_DODONGO ||                           // King Dodongo
             actor->id == ACTOR_BOSS_VA ||                                // Barinade
             actor->id == ACTOR_BOSS_GANONDROF ||                         // Phantom Ganon
             (actor->id == 0 && actor->category == ACTORCAT_BOSS) ||      // Phantom Ganon/Ganondorf Energy Ball/Thunder
