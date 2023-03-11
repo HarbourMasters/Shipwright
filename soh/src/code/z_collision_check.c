@@ -3008,7 +3008,11 @@ void CollisionCheck_ApplyDamage(PlayState* play, CollisionCheckContext* colChkCt
         collider->actor->colChkInfo.damageEffect = tbl->table[i] >> 4 & 0xF;
     }
     if (!(collider->acFlags & AC_HARD)) {
-        collider->actor->colChkInfo.damage += damage;
+        // Decomp:
+        // collider->actor->colChkInfo.damage += damage;
+        // SoH:
+        // Prevents enemies taking double damage when Hyper Bosses is on.
+        collider->actor->colChkInfo.damage = damage;
     }
 }
 
