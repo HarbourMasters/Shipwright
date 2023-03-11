@@ -9,6 +9,7 @@ extern PlayState* gPlayState;
 }
 
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
+#include "z64collision_check.h"
 
 void GameInteractor::RawAction::AddOrRemoveHealthContainers(int16_t amount) {
     gSaveContext.healthCapacity += amount * 0x10;
@@ -155,7 +156,11 @@ void GameInteractor::RawAction::UpdateActor(void* refActor) {
             actor->colorFilterTimer--;
         }
 
+        // This variable is used to not let the collider subscribe a second time when the actor update function
+        // is ran a second time, incorrectly applying double damage in some cases.
+        secondCollisionUpdate = 1;
         actor->update(actor, gPlayState);
+        secondCollisionUpdate = 0;
     }
 }
 

@@ -37,6 +37,8 @@ typedef enum {
     /* 2 */ MASSTYPE_NORMAL
 } ColChkMassType;
 
+uint8_t secondCollisionUpdate = 0;
+
 /**
  * Draws a red triangle with vertices vA, vB, and vC.
  */
@@ -1177,6 +1179,10 @@ static ColChkResetFunc sATResetFuncs[] = {
 s32 CollisionCheck_SetAT(PlayState* play, CollisionCheckContext* colChkCtx, Collider* collider) {
     s32 index;
 
+    if (secondCollisionUpdate) {
+        return -1;
+    }
+
     if (FrameAdvance_IsEnabled(play) == true) {
         return -1;
     }
@@ -1206,9 +1212,15 @@ s32 CollisionCheck_SetAT(PlayState* play, CollisionCheckContext* colChkCtx, Coll
 s32 CollisionCheck_SetAT_SAC(PlayState* play, CollisionCheckContext* colChkCtx, Collider* collider,
                              s32 index) {
     ASSERT(collider->shape <= COLSHAPE_QUAD);
+
+    if (secondCollisionUpdate) {
+        return -1;
+    }
+
     if (FrameAdvance_IsEnabled(play) == true) {
         return -1;
     }
+
     sATResetFuncs[collider->shape](play, collider);
     if (collider->actor != NULL && collider->actor->update == NULL) {
         return -1;
@@ -1246,6 +1258,10 @@ static ColChkResetFunc sACResetFuncs[] = {
 s32 CollisionCheck_SetAC(PlayState* play, CollisionCheckContext* colChkCtx, Collider* collider) {
     s32 index;
 
+    if (secondCollisionUpdate) {
+        return -1;
+    }
+
     if (FrameAdvance_IsEnabled(play) == true) {
         return -1;
     }
@@ -1275,9 +1291,15 @@ s32 CollisionCheck_SetAC(PlayState* play, CollisionCheckContext* colChkCtx, Coll
 s32 CollisionCheck_SetAC_SAC(PlayState* play, CollisionCheckContext* colChkCtx, Collider* collider,
                              s32 index) {
     ASSERT(collider->shape <= COLSHAPE_QUAD);
+
+    if (secondCollisionUpdate) {
+        return -1;
+    }
+
     if (FrameAdvance_IsEnabled(play) == true) {
         return -1;
     }
+
     sACResetFuncs[collider->shape](play, collider);
     if (collider->actor != NULL && collider->actor->update == NULL) {
         return -1;
@@ -1315,6 +1337,10 @@ static ColChkResetFunc sOCResetFuncs[] = {
 s32 CollisionCheck_SetOC(PlayState* play, CollisionCheckContext* colChkCtx, Collider* collider) {
     s32 index;
 
+    if (secondCollisionUpdate) {
+        return -1;
+    }
+
     if (FrameAdvance_IsEnabled(play) == true) {
         return -1;
     }
@@ -1345,9 +1371,15 @@ s32 CollisionCheck_SetOC(PlayState* play, CollisionCheckContext* colChkCtx, Coll
  */
 s32 CollisionCheck_SetOC_SAC(PlayState* play, CollisionCheckContext* colChkCtx, Collider* collider,
                              s32 index) {
+
+    if (secondCollisionUpdate) {
+        return -1;
+    }
+
     if (FrameAdvance_IsEnabled(play) == true) {
         return -1;
     }
+
     ASSERT(collider->shape <= COLSHAPE_QUAD);
     sOCResetFuncs[collider->shape](play, collider);
     if (collider->actor != NULL && collider->actor->update == NULL) {
@@ -1379,6 +1411,10 @@ s32 CollisionCheck_SetOC_SAC(PlayState* play, CollisionCheckContext* colChkCtx, 
  */
 s32 CollisionCheck_SetOCLine(PlayState* play, CollisionCheckContext* colChkCtx, OcLine* collider) {
     s32 index;
+
+    if (secondCollisionUpdate) {
+        return -1;
+    }
 
     if (FrameAdvance_IsEnabled(play) == true) {
         return -1;
@@ -3008,11 +3044,7 @@ void CollisionCheck_ApplyDamage(PlayState* play, CollisionCheckContext* colChkCt
         collider->actor->colChkInfo.damageEffect = tbl->table[i] >> 4 & 0xF;
     }
     if (!(collider->acFlags & AC_HARD)) {
-        // Decomp:
-        // collider->actor->colChkInfo.damage += damage;
-        // SoH:
-        // Prevents enemies taking double damage when Hyper Bosses is on.
-        collider->actor->colChkInfo.damage = damage;
+        collider->actor->colChkInfo.damage += damage;
     }
 }
 
