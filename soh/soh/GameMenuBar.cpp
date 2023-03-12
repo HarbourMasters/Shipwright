@@ -310,9 +310,9 @@ namespace GameMenuBar {
                 }
                 ImGui::EndMenu();
             }
-            
+
             UIWidgets::Spacer(0);
-            
+
             if (ImGui::BeginMenu("Accessibility")) {
             #if defined(_WIN32) || defined(__APPLE__)
                 UIWidgets::PaddedEnhancementCheckbox("Text to Speech", "gA11yTTS");
@@ -320,7 +320,7 @@ namespace GameMenuBar {
             #endif
                 UIWidgets::PaddedEnhancementCheckbox("Disable Idle Camera Re-Centering", "gA11yDisableIdleCam");
                 UIWidgets::Tooltip("Disables the automatic re-centering of the camera when idle.");
-                
+
                 ImGui::EndMenu();
             }
             ImGui::EndMenu();
@@ -639,12 +639,20 @@ namespace GameMenuBar {
                     }
 
                     UIWidgets::Spacer(0);
+                    ImGui::Separator();
+                    ImGui::Text("Meme Difficulty Options");
+                    UIWidgets::Spacer(0);
 
                     UIWidgets::PaddedEnhancementCheckbox("Rupee Dash Mode", "gRupeeDash", true, false);
                     UIWidgets::Tooltip("Rupees reduced over time, Link suffers damage when the count hits 0.");
                     UIWidgets::PaddedEnhancementSliderInt("Rupee Dash Interval: %d", "##DashInterval", "gDashInterval", 3, 5, "", 5, false, true, false,
                         !CVarGetInteger("gRupeeDash", 0), "This option is disabled because \"Rupee Dash Mode\" is turned off");
                     UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
+
+                    UIWidgets::Spacer(0);
+
+                    UIWidgets::PaddedEnhancementCheckbox("Shadow Tag Mode", "gShadowTag", true, false);
+                    UIWidgets::Tooltip("A Wallmaster follows you everywhere, don't get caught!");
 
                     ImGui::EndMenu();
                 }
@@ -689,7 +697,7 @@ namespace GameMenuBar {
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BLUE_FIRE_ARROWS);
                 const char* forceEnableBlueFireArrowsText =
                     "This setting is forcefully enabled because a savefile\nwith \"Blue Fire Arrows\" is loaded.";
-                UIWidgets::PaddedEnhancementCheckbox("Blue Fire Arrows", "gBlueFireArrows", true, false, 
+                UIWidgets::PaddedEnhancementCheckbox("Blue Fire Arrows", "gBlueFireArrows", true, false,
                     forceEnableBlueFireArrows, forceEnableBlueFireArrowsText, UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Allows Ice Arrows to melt red ice.\nMay require a room reload if toggled during gameplay.");
 
@@ -698,7 +706,7 @@ namespace GameMenuBar {
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SUNLIGHT_ARROWS);
                 const char* forceEnableSunLightArrowsText =
                     "This setting is forcefully enabled because a savefile\nwith \"Sunlight Arrows\" is loaded.";
-                UIWidgets::PaddedEnhancementCheckbox("Sunlight Arrows", "gSunlightArrows", true, false, 
+                UIWidgets::PaddedEnhancementCheckbox("Sunlight Arrows", "gSunlightArrows", true, false,
                     forceEnableSunLightArrows, forceEnableSunLightArrowsText, UIWidgets::CheckboxGraphics::Checkmark);
                 UIWidgets::Tooltip("Allows Light Arrows to activate sun switches.\nMay require a room reload if toggled during gameplay.");
 
@@ -895,7 +903,7 @@ namespace GameMenuBar {
             {
                 int minFps = 20;
                 int maxFps = Ship::Window::GetInstance()->GetCurrentRefreshRate();
-
+ 
                 int val = OTRGlobals::Instance->GetInterpolationFPS();
                 val = fmax(fmin(val, maxFps), 20);
 
@@ -914,11 +922,11 @@ namespace GameMenuBar {
                 {
                     ImGui::Text("Frame interpolation: %d FPS", fps);
                 }
-                
+
                 if (CVarGetInteger("gMatchRefreshRate", 0)) {
                     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                     ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-                }
+                }                
 
                 std::string MinusBTNFPSI = " - ##FPSInterpolation";
                 std::string PlusBTNFPSI = " + ##FPSInterpolation";
@@ -1144,7 +1152,7 @@ namespace GameMenuBar {
             if (ImGui::Button("Change Age")) {
                 CVarSetInteger("gSwitchAge", 1);
             }
-            UIWidgets::Tooltip("Switches links age and reloads the area.");   
+            UIWidgets::Tooltip("Switches links age and reloads the area.");
 
             ImGui::EndMenu();
         }
@@ -1324,12 +1332,12 @@ namespace GameMenuBar {
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
                     (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_VANILLA &&
                      OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_OWN_DUNGEON &&
-                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_STARTWITH) || 
+                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_STARTWITH) ||
                     !gSaveContext.n64ddFlag) {
                     disableKeyColors = false;
                 }
 
-                const char* disableKeyColorsText = 
+                const char* disableKeyColorsText =
                     "This setting is disabled because a savefile is loaded without any key\n"
                     "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
 
