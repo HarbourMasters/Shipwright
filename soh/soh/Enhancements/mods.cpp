@@ -297,11 +297,11 @@ void RegisterDaytimeGoldSkultullas() {
                                         {ACTOR_EN_SW, {997, 286, -2698}, {16384, -16384, 0}, -29692} } },
         };
 
-        for (auto dayTimeGS : dayTimeGoldSkulltulas) {
+        for (const auto dayTimeGS : dayTimeGoldSkulltulas) {
             if (IS_DAY && dayTimeGS.forChild == LINK_IS_CHILD &&
                 dayTimeGS.scene == gPlayState->sceneNum &&
                 dayTimeGS.room == gPlayState->roomCtx.curRoom.num) {
-                for (auto actorEntry : dayTimeGS.actorEntries) {
+                for (const auto actorEntry : dayTimeGS.actorEntries) {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorEntry.id, actorEntry.pos.x, actorEntry.pos.y,
                                 actorEntry.pos.z, actorEntry.rot.x, actorEntry.rot.y, actorEntry.rot.z,
                                 actorEntry.params, false);
