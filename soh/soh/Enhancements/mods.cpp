@@ -316,6 +316,9 @@ void RegisterDaytimeGoldSkultullas() {
                                 actorEntry.params, false);
                 }
             }
+        }
+    });
+}
 
 void RegisterBonkDamage() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerBonk>([]() {
