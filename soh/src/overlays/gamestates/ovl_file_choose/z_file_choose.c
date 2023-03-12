@@ -655,6 +655,17 @@ void FileChoose_StartQuestMenu(GameState* thisx) {
     }
 }
 
+void FileChoose_StartBossRushMenu(GameState* thisx) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+
+    this->logoAlpha -= 25;
+
+    if (this->logoAlpha >= 0) {
+        this->logoAlpha = 0;
+        this->configMode = CM_BOSS_RUSH_MENU;
+    }
+}
+
 void FileChoose_UpdateQuestMenu(GameState* thisx) {
     static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
     static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
@@ -704,11 +715,8 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
 
         if (this->questType[this->buttonIndex] == BOSSRUSH_QUEST) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            this->buttonIndex = 0xFE;
-            this->menuMode = FS_MENU_MODE_SELECT;
-            this->selectMode = SM_FADE_OUT;
             this->prevConfigMode = this->configMode;
-            this->configMode = CM_FADE_IN_START;
+            this->configMode = CM_ROTATE_TO_BOSS_RUSH_MENU;
             return;
         } else {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -728,12 +736,31 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             this->nameEntryBoxAlpha = 0;
             memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, CVarGetInteger("gLinkDefaultName", 0) ? &linkName : &emptyName, 8);
             return;
-            return;
         }
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
         this->configMode = CM_QUEST_TO_MAIN;
+        return;
+    }
+}
+
+void FileChoose_UpdateBossRushMenu(GameState* thisx) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+    Input* input = &this->state.input[0];
+
+    if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
+        this->configMode = CM_BOSS_RUSH_TO_QUEST;
+        return;
+    }
+
+    if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        this->buttonIndex = 0xFE;
+        this->menuMode = FS_MENU_MODE_SELECT;
+        this->selectMode = SM_FADE_OUT;
+        this->prevConfigMode = this->configMode;
+        this->configMode = CM_FADE_IN_START;
         return;
     }
 }
@@ -770,10 +797,7 @@ void FileChoose_RotateToNameEntry(GameState* thisx) {
 
     this->windowRot += VREG(16);
 
-    if (MIN_QUEST == MAX_QUEST && this->windowRot >= 314.0f) {
-        this->windowRot = 314.0f;
-        this->configMode = CM_START_NAME_ENTRY;
-    } else if (this->windowRot >= 628.0f) {
+    if (this->windowRot >= 628.0f) {
         this->windowRot = 628.0f;
         this->configMode = CM_START_NAME_ENTRY;
     }
@@ -823,7 +847,7 @@ void FileChoose_RotateToMain(GameState* thisx) {
 void FileChoose_RotateToQuest(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
 
-    if (this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU) {
+    if (this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU || this->configMode == CM_BOSS_RUSH_TO_QUEST) {
         this->windowRot -= VREG(16);
 
         if (this->windowRot <= 314.0f) {
@@ -837,6 +861,17 @@ void FileChoose_RotateToQuest(GameState* thisx) {
             this->windowRot = 314.0f;
             this->configMode = CM_START_QUEST_MENU;
         }
+    }
+}
+
+void FileChoose_RotateToBossRush(GameState* thisx) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+
+    this->windowRot += VREG(16);
+
+    if (this->windowRot >= 628.0f) {
+        this->windowRot = 628.0f;
+        this->configMode = CM_START_BOSS_RUSH_MENU;
     }
 }
 
@@ -864,6 +899,8 @@ static void (*gConfigModeUpdateFuncs[])(GameState*) = {
     FileChoose_UnusedCMDelay,      FileChoose_RotateToQuest,
     FileChoose_UpdateQuestMenu,    FileChoose_StartQuestMenu,
     FileChoose_RotateToMain,       FileChoose_RotateToQuest,
+    FileChoose_RotateToBossRush,   FileChoose_UpdateBossRushMenu,
+    FileChoose_StartBossRushMenu,  FileChoose_RotateToQuest,
 };
 
 /**
@@ -1457,6 +1494,18 @@ const char* FileChoose_GetQuestChooseTitleTexName(Language lang) {
     }
 }
 
+const char* FileChoose_GetBossRushOptionsTitleTexName(Language lang) {
+    switch (lang) {
+        case LANGUAGE_ENG:
+        default:
+            return "__OTR__textures/title_static/gFileSelBossRushSettingsENGTex";
+        case LANGUAGE_FRA:
+            return "__OTR__textures/title_static/gFileSelBossRushSettingsFRATex";
+        case LANGUAGE_GER:
+            return "__OTR__textures/title_static/gFileSelBossRushSettingsGERTex";
+    }
+}
+
 /**
  * Draw most window contents including buttons, labels, and icons.
  * Does not include anything from the keyboard and settings windows.
@@ -1469,11 +1518,26 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     s16 quadVtxIndex;
     s16 isActive;
     s16 pad;
-    char* tex = (this->configMode == CM_QUEST_MENU || this->configMode == CM_ROTATE_TO_NAME_ENTRY || 
-        this->configMode == CM_START_QUEST_MENU || this->configMode == CM_QUEST_TO_MAIN ||
-        this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU)
-                  ? GetResourceDataByName(FileChoose_GetQuestChooseTitleTexName(gSaveContext.language), false)
-                  : sTitleLabels[gSaveContext.language][this->titleLabel];
+    char* tex;
+
+    switch (this->configMode) { 
+        case CM_QUEST_MENU:
+        case CM_ROTATE_TO_NAME_ENTRY:
+        case CM_START_QUEST_MENU:
+        case CM_QUEST_TO_MAIN:
+        case CM_NAME_ENTRY_TO_QUEST_MENU:
+        case CM_ROTATE_TO_BOSS_RUSH_MENU:
+            tex = GetResourceDataByName(FileChoose_GetQuestChooseTitleTexName(gSaveContext.language), false);
+            break;
+        case CM_BOSS_RUSH_MENU:
+        case CM_START_BOSS_RUSH_MENU:
+        case CM_BOSS_RUSH_TO_QUEST:
+            tex = GetResourceDataByName(FileChoose_GetBossRushOptionsTitleTexName(gSaveContext.language), false);
+            break;
+        default:
+            tex = sTitleLabels[gSaveContext.language][this->titleLabel];
+            break;
+    }
 
     OPEN_DISPS(this->state.gfxCtx);
 
@@ -1553,6 +1617,11 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 FileChoose_DrawRawImageRGBA32(this->state.gfxCtx, 182, 180, "__OTR__objects/object_mag/gTitleBossRushSubtitleTex", 128, 32);
                 break;
         }
+    } else if (this->configMode == CM_BOSS_RUSH_MENU || this->configMode == CM_START_BOSS_RUSH_MENU ||
+               this->configMode == CM_ROTATE_TO_BOSS_RUSH_MENU || this->configMode == CM_BOSS_RUSH_TO_QUEST) {
+
+
+
     } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->titleAlpha[1]);
@@ -1879,7 +1948,7 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
     // draw quest menu
     if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_ROTATE_TO_QUEST_MENU) || 
         (this->configMode == CM_ROTATE_TO_NAME_ENTRY) || this->configMode == CM_QUEST_TO_MAIN ||
-        this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU) {
+        this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU || this->configMode == CM_ROTATE_TO_BOSS_RUSH_MENU) {
         // window
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
@@ -1893,6 +1962,36 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
 
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+
+        gSPVertex(POLY_OPA_DISP++, &this->windowVtx[0], 32, 0);
+        gSPDisplayList(POLY_OPA_DISP++, gFileSelWindow1DL);
+
+        gSPVertex(POLY_OPA_DISP++, &this->windowVtx[32], 32, 0);
+        gSPDisplayList(POLY_OPA_DISP++, gFileSelWindow2DL);
+
+        gSPVertex(POLY_OPA_DISP++, &this->windowVtx[64], 16, 0);
+        gSPDisplayList(POLY_OPA_DISP++, gFileSelWindow3DL);
+
+        gDPPipeSync(POLY_OPA_DISP++);
+
+        FileChoose_DrawWindowContents(&this->state);
+    }
+
+    // Draw Boss Rush Options Menu
+    if (this->configMode == CM_BOSS_RUSH_MENU || this->configMode == CM_ROTATE_TO_BOSS_RUSH_MENU ||
+        this->configMode == CM_START_BOSS_RUSH_MENU || this->configMode == CM_BOSS_RUSH_TO_QUEST) {
+        // window
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                        this->windowAlpha);
+        gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
+
+        Matrix_Translate(0.0f, 0.0f, -93.6f, MTXMODE_NEW);
+        Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
+        Matrix_RotateX((this->windowRot - 628.0f) / 100.0f, MTXMODE_APPLY);
+
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gSPVertex(POLY_OPA_DISP++, &this->windowVtx[0], 32, 0);
         gSPDisplayList(POLY_OPA_DISP++, gFileSelWindow1DL);

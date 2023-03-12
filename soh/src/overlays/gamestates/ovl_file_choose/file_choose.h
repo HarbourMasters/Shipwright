@@ -61,6 +61,10 @@ typedef enum {
     CM_START_QUEST_MENU,
     CM_QUEST_TO_MAIN,
     CM_NAME_ENTRY_TO_QUEST_MENU,
+    CM_ROTATE_TO_BOSS_RUSH_MENU,
+    CM_BOSS_RUSH_MENU,
+    CM_START_BOSS_RUSH_MENU,
+    CM_BOSS_RUSH_TO_QUEST,
 } ConfigMode;
 
 typedef enum {
