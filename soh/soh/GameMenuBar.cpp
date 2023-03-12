@@ -79,6 +79,17 @@ namespace GameMenuBar {
     static const char* autosaveLabels[6] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
     static const char* FastFileSelect[5] = { "File N.1", "File N.2", "File N.3", "Zelda Map Select (require OoT Debug Mode)", "File select" };
 
+    const char* bonkDamageValues[8] = {
+        "No Damage",
+        "0.25 Heart",
+        "0.5 Heart",
+        "1 Heart",
+        "2 Hearts",
+        "4 Hearts",
+        "8 Hearts",
+        "OHKO"
+    };
+
     // MARK: - Helpers
 
     std::string GetWindowButtonText(const char* text, bool menuOpen) {
@@ -420,6 +431,9 @@ namespace GameMenuBar {
                         "32x: Can survive void damage with max health and double defense\n"
                         "64x: Cannot survive void damage"
                     );
+                    UIWidgets::PaddedText("Bonk Damage Multiplier", true, false);
+                    UIWidgets::EnhancementCombobox("gBonkDamageMul", bonkDamageValues, 8, 0);
+                    UIWidgets::Tooltip("Modifies damage taken after bonking.");
                     UIWidgets::PaddedEnhancementCheckbox("Spawn with full health", "gFullHealthSpawn", true, false);
                     UIWidgets::Tooltip("Respawn with full health instead of 3 Hearts");
                     UIWidgets::PaddedEnhancementCheckbox("No Random Drops", "gNoRandomDrops", true, false);
