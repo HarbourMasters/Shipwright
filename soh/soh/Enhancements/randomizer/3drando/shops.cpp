@@ -128,24 +128,20 @@ static constexpr std::array<double, 60> ShopPriceProbability= {
   0.959992180, 0.968187000, 0.975495390, 0.981884488, 0.987344345, 0.991851853, 0.995389113, 0.997937921, 0.999481947, 1.000000000,
 };
 
-std::map<uint8_t, int> affordableCaps = {
-    {RO_SHOPSANITY_PRICE_STARTER, 10},
-    {RO_SHOPSANITY_PRICE_ADULT,   105},
-    {RO_SHOPSANITY_PRICE_GIANT,   205},
-    {RO_SHOPSANITY_PRICE_TYCOON,  505},
-};
-
-// If affordable option is on, cap items at affordable price just above the max of the previous wallet tier
-int CapPriceAffordable(int value, int cap) {
-    if (Settings::ShopsanityPricesAffordable.Is(true) && value > cap)
-        return cap;
-    return value;
-}
+std::vector<int> priceCaps = { 10, 105, 205, 505 };
 
 // Generate random number from 5 to wallet max
 int GetPriceFromMax(int max) {
-    int temp = Random(1, max) * 5; // random range of 1 - wallet max / 5, where wallet max is the highest it goes as a multiple of 5
-    return CapPriceAffordable(temp, affordableCaps.find(Settings::ShopsanityPrices.Value<uint8_t>())->second);
+    return Random(1, max) * 5; // random range of 1 - wallet max / 5, where wallet max is the highest it goes as a multiple of 5
+}
+
+int GetPriceAffordable() {
+    std::vector<int> elementCaps;
+    uint8_t maxElements = Settings::ShopsanityPrices.Value<uint8_t>();
+    for (int i = 0; i < maxElements; i++) {
+        elementCaps.push_back(priceCaps.at(i));
+    }
+    return RandomElement(elementCaps);
 }
 
 int GetRandomShopPrice() {
@@ -164,6 +160,12 @@ int GetRandomShopPrice() {
         max = 199; // 995/5
     }
     if (max != 0) {
+        if (Settings::ShopsanityPricesAffordable.Is(true)) {
+            if(max == 19) {
+                return 10;
+            }
+            return GetPriceAffordable();
+        }
         return GetPriceFromMax(max);
     }
     // Balanced is default, so if all other known cases fail, fall back to Balanced
