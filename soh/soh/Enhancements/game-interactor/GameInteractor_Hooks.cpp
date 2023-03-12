@@ -14,8 +14,12 @@ void GameInteractor_ExecuteOnGameFrameUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGameFrameUpdate>();
 }
 
-void GameInteractor_ExecuteOnReceiveItemHooks(uint8_t item) {
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnReceiveItem>(item);
+void GameInteractor_ExecuteOnItemReceiveHooks(GetItemEntry itemEntry) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnItemReceive>(itemEntry);
+}
+
+void GameInteractor_ExecuteOnSaleEndHooks(GetItemEntry itemEntry) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaleEnd>(itemEntry);
 }
 
 void GameInteractor_ExecuteOnSceneInitHooks(int16_t sceneNum) {
@@ -24,6 +28,10 @@ void GameInteractor_ExecuteOnSceneInitHooks(int16_t sceneNum) {
 
 void GameInteractor_ExecuteOnPlayerUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerUpdate>();
+}
+
+void GameInteractor_ExecuteOnPlayerBonk() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerBonk>();
 }
 
 // MARK: -  Save Files
