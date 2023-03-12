@@ -503,7 +503,7 @@ void EnTk_Init(Actor* thisx, PlayState* play) {
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
 
     if (CVarGetInteger("gDampeAllNight", 0)) {
-        if (gSaveContext.dayTime <= (int)-1 || !!LINK_IS_ADULT || play->sceneNum != SCENE_SPOT02) {
+        if (!!LINK_IS_ADULT || play->sceneNum != SCENE_SPOT02) {
             Actor_Kill(&this->actor);
             return;
         }
