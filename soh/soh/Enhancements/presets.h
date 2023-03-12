@@ -82,6 +82,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gDamageMul",
     "gFallDamageMul",
     "gVoidDamageMul",
+    "gBonkDamageMul",
     "gNoRandomDrops",
     "gNoHeartDrops",
     "gBombchuDrops",
