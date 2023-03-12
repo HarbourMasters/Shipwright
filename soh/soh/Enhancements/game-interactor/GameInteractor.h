@@ -4,6 +4,7 @@
 #define GameInteractor_h
 
 #include "GameInteractionEffect.h"
+#include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
 typedef enum {
     /* 0x00 */ GI_LINK_SIZE_NORMAL,
@@ -86,7 +87,8 @@ public:
     DEFINE_HOOK(OnLoadGame, void(int32_t fileNum));
     DEFINE_HOOK(OnExitGame, void(int32_t fileNum));
     DEFINE_HOOK(OnGameFrameUpdate, void());
-    DEFINE_HOOK(OnReceiveItem, void(uint8_t item));
+    DEFINE_HOOK(OnItemReceive, void(GetItemEntry itemEntry));
+    DEFINE_HOOK(OnSaleEnd, void(GetItemEntry itemEntry));
     DEFINE_HOOK(OnSceneInit, void(int16_t sceneNum));
     DEFINE_HOOK(OnPlayerUpdate, void());
     
