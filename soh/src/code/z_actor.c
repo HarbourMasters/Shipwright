@@ -1020,8 +1020,6 @@ void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* 
     }
 
     titleCtx->texture = GetResourceDataByName(texture, false);
-
-    //titleCtx->texture = texture;
     titleCtx->isBossCard = false;
     titleCtx->hasTranslation = false;
     titleCtx->x = x;
@@ -1044,6 +1042,10 @@ void TitleCard_Update(PlayState* play, TitleCardContext* titleCtx) {
     }
 
     if (DECR(titleCtx->delayTimer) == 0) {
+        if (titleCtx->durationTimer == 80) {
+            GameInteractor_ExecuteOnPresentTitleCard();
+        }
+        
         if (DECR(titleCtx->durationTimer) == 0) {
             Math_StepToS(&titleCtx->alpha, 0, 30);
             Math_StepToS(&titleCtx->intensityR, 0, 70);

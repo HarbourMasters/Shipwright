@@ -54,6 +54,8 @@ void FileChoose_SetupCopySource(GameState* thisx) {
     }
 }
 
+uint16_t lastCopyEraseButtonIndex;
+
 /**
  * Allow the player to select a file to copy or exit back to the main menu.
  * Update function for `CM_SELECT_COPY_SOURCE`
@@ -109,6 +111,11 @@ void FileChoose_SelectCopySource(GameState* thisx) {
                 this->warningLabel = FS_WARNING_NONE;
             }
         }
+    }
+    
+    if (lastCopyEraseButtonIndex != this->buttonIndex) {
+        GameInteractor_ExecuteOnUpdateFileCopySelection(this->buttonIndex);
+        lastCopyEraseButtonIndex = this->buttonIndex;
     }
 }
 
@@ -378,6 +385,11 @@ void FileChoose_CopyConfirm(GameState* thisx) {
     } else if ((ABS(this->stickRelY) >= 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->buttonIndex ^= 1;
+    }
+    
+    if (lastCopyEraseButtonIndex != this->buttonIndex) {
+        GameInteractor_ExecuteOnUpdateFileCopyConfirmationSelection(this->buttonIndex);
+        lastCopyEraseButtonIndex = this->buttonIndex;
     }
 }
 
@@ -724,6 +736,11 @@ void FileChoose_EraseSelect(GameState* thisx) {
             this->warningLabel = FS_WARNING_NONE;
         }
     }
+    
+    if (lastCopyEraseButtonIndex != this->buttonIndex) {
+        GameInteractor_ExecuteOnUpdateFileEraseSelection(this->buttonIndex);
+        lastCopyEraseButtonIndex = this->buttonIndex;
+    }
 }
 
 /**
@@ -832,6 +849,11 @@ void FileChoose_EraseConfirm(GameState* thisx) {
     } else if ((ABS(this->stickRelY) >= 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->buttonIndex ^= 1;
+    }
+    
+    if (lastCopyEraseButtonIndex != this->buttonIndex) {
+        GameInteractor_ExecuteOnUpdateFileEraseConfirmationSelection(this->buttonIndex);
+        lastCopyEraseButtonIndex = this->buttonIndex;
     }
 }
 

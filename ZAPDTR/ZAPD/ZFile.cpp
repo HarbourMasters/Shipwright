@@ -800,19 +800,22 @@ void ZFile::GenerateSourceHeaderFiles()
 {
 	OutputFormatter formatter;
 
-	formatter.Write("#pragma once\n");
+	formatter.Write("#pragma once\n\n");
+	formatter.Write("#include \"align_asset_macro.h\"\n");
 	std::set<std::string> nameSet;
 	for (ZResource* res : resources)
 	{
 		std::string resSrc = res->GetSourceOutputHeader("", &nameSet);
-		formatter.Write(resSrc);
-
-		if (resSrc != "")
-			formatter.Write("\n");
+		if (!resSrc.empty()) 
+		{
+			formatter.Write(resSrc.front() == '\n' ? resSrc : "\n" + resSrc);
+			formatter.Write(res == resources.back() ? "" : "\n");
+		}
 	}
 
 	for (auto& sym : symbolResources)
 	{
+		formatter.Write("\n\n");
 		formatter.Write(sym.second->GetSourceOutputHeader("", &nameSet));
 	}
 
@@ -823,8 +826,12 @@ void ZFile::GenerateSourceHeaderFiles()
 	if (Globals::Instance->verbosity >= VerbosityLevel::VERBOSITY_INFO)
 		printf("Writing H file: %s\n", headerFilename.c_str());
 
+	std::string output = formatter.GetOutput();
+	while (output.back() == '\n')
+		output.pop_back();
+
 	if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
-		File::WriteAllText(headerFilename, formatter.GetOutput());
+		File::WriteAllText(headerFilename, output);
 	else if (Globals::Instance->sourceOutputPath != "")
 	{
 		std::string xmlPath = xmlFilePath.string();
@@ -849,7 +856,7 @@ void ZFile::GenerateSourceHeaderFiles()
 				outPath += "/";
 		}
 
-		File::WriteAllText(outPath, formatter.GetOutput());
+		File::WriteAllText(outPath, output);
 	}
 }
 

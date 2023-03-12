@@ -27,6 +27,7 @@
 #define DRWAV_IMPLEMENTATION
 #include <dr_libs/wav.h>
 #include <AudioPlayer.h>
+#include "Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/audio/AudioCollection.h"
@@ -111,6 +112,7 @@ CustomMessageManager* CustomMessageManager::Instance;
 ItemTableManager* ItemTableManager::Instance;
 GameInteractor* GameInteractor::Instance;
 AudioCollection* AudioCollection::Instance;
+SpeechSynthesizer* SpeechSynthesizer::Instance;
 
 extern "C" char** cameraStrings;
 std::vector<std::shared_ptr<std::string>> cameraStdStrings;
@@ -232,19 +234,19 @@ OTRGlobals::OTRGlobals() {
     };
     context = Ship::Window::CreateInstance("Ship of Harkinian", OTRFiles);
 
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Animation, std::make_shared<Ship::AnimationFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_PlayerAnimation, std::make_shared<Ship::PlayerAnimationFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Room, std::make_shared<Ship::SceneFactory>()); // Is room scene? maybe?
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_CollisionHeader, std::make_shared<Ship::CollisionHeaderFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Skeleton, std::make_shared<Ship::SkeletonFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_SkeletonLimb, std::make_shared<Ship::SkeletonLimbFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Path, std::make_shared<Ship::PathFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Cutscene, std::make_shared<Ship::CutsceneFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Text, std::make_shared<Ship::TextFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_AudioSample, std::make_shared<Ship::AudioSampleFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_AudioSoundFont, std::make_shared<Ship::AudioSoundFontFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_AudioSequence, std::make_shared<Ship::AudioSequenceFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Background, std::make_shared<Ship::BackgroundFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Animation, "Animation", std::make_shared<Ship::AnimationFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_PlayerAnimation, "PlayerAnimation", std::make_shared<Ship::PlayerAnimationFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Room, "Room", std::make_shared<Ship::SceneFactory>()); // Is room scene? maybe?
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_CollisionHeader, "CollisionHeader", std::make_shared<Ship::CollisionHeaderFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Skeleton, "Skeleton", std::make_shared<Ship::SkeletonFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_SkeletonLimb, "SkeletonLimb", std::make_shared<Ship::SkeletonLimbFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Path, "Path", std::make_shared<Ship::PathFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Cutscene, "Cutscene", std::make_shared<Ship::CutsceneFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Text, "Text", std::make_shared<Ship::TextFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_AudioSample, "AudioSample", std::make_shared<Ship::AudioSampleFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_AudioSoundFont, "AudioSoundFont", std::make_shared<Ship::AudioSoundFontFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_AudioSequence, "AudioSequence", std::make_shared<Ship::AudioSequenceFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Background, "Background", std::make_shared<Ship::BackgroundFactory>());
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
@@ -311,6 +313,14 @@ bool OTRGlobals::HasMasterQuest() {
 
 bool OTRGlobals::HasOriginal() {
     return hasOriginal;
+}
+
+uint32_t OTRGlobals::GetInterpolationFPS() {
+    if (CVarGetInteger("gMatchRefreshRate", 0)) {
+        return Ship::Window::GetInstance()->GetCurrentRefreshRate();
+    }
+
+    return std::min<uint32_t>(Ship::Window::GetInstance()->GetCurrentRefreshRate(), CVarGetInteger("gInterpolationFPS", 20));
 }
 
 std::shared_ptr<std::vector<std::string>> OTRGlobals::ListFiles(std::string path) {
@@ -571,7 +581,14 @@ extern "C" void InitOTR() {
     ItemTableManager::Instance = new ItemTableManager();
     GameInteractor::Instance = new GameInteractor();
     AudioCollection::Instance = new AudioCollection();
-
+#ifdef __APPLE__
+    SpeechSynthesizer::Instance = new DarwinSpeechSynthesizer();
+    SpeechSynthesizer::Instance->Init();
+#elif defined(_WIN32)
+    SpeechSynthesizer::Instance = new SAPISpeechSynthesizer();
+    SpeechSynthesizer::Instance->Init();
+#endif
+    
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
@@ -610,6 +627,9 @@ extern "C" void InitOTR() {
 
 extern "C" void DeinitOTR() {
     OTRAudio_Exit();
+#if defined(_WIN32) || defined(__APPLE__)
+    SpeechSynthesizerUninitialize();
+#endif
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance->Disable();
     CrowdControl::Instance->Shutdown();
@@ -710,6 +730,10 @@ extern "C" void Graph_StartFrame() {
 
             break;
         }
+        case SDL_SCANCODE_F9: {
+            // Toggle TTS
+            CVarSetInteger("gA11yTTS", !CVarGetInteger("gA11yTTS", 0));
+        }
     }
 #endif
     OTRGlobals::Instance->context->StartFrame();
@@ -731,7 +755,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     audio.cv_to_thread.notify_one();
     std::vector<std::unordered_map<Mtx*, MtxF>> mtx_replacements;
-    int target_fps = CVarGetInteger("gInterpolationFPS", 20);
+    int target_fps = OTRGlobals::Instance->GetInterpolationFPS();
     static int last_fps;
     static int last_update_rate;
     static int time;
@@ -849,10 +873,6 @@ extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
     OTRGlobals::Instance->context->GetResourceManager()->DirtyDirectory(resName);
 }
 
-extern "C" void ResourceMgr_InvalidateCache() {
-    OTRGlobals::Instance->context->GetResourceManager()->InvalidateResourceCache();
-}
-
 // OTRTODO: There is probably a more elegant way to go about this...
 extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize) {
     auto lst = OTRGlobals::Instance->context->GetResourceManager()->ListFiles(searchMask);
@@ -892,26 +912,6 @@ extern "C" char* GetResourceDataByNameHandlingMQ(const char* path) {
     }
     
     return (char*)res->GetPointer();
-}
-
-extern "C" char* ResourceMgr_LoadFileRaw(const char* resName) {
-    // TODO: This should not exist. Anywhere we are loading textures with this function should be Resources instead.
-    // We are not currently packing our otr archive with certain textures as resources with otr headers.
-    static std::unordered_map<std::string, std::shared_ptr<Ship::OtrFile>> cachedRawFiles;
-
-    auto cacheFind = cachedRawFiles.find(resName);
-    if (cacheFind != cachedRawFiles.end()) {
-        return cacheFind->second->Buffer.data();
-    }
-    
-    auto file = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(resName);
-    cachedRawFiles[resName] = file;
-
-    if (file == nullptr) {
-        return nullptr;
-    }
-
-    return file->Buffer.data();
 }
 
 extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
@@ -1648,7 +1648,9 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             }
         } else if (Randomizer_GetSettingValue(RSK_DAMPES_DIARY_HINT) && textId == TEXT_DAMPES_DIARY) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY);
-        } else if (Randomizer_GetSettingValue(RSK_GREG_HINT) && (textId == 0x704C || textId == 0x6E)) {
+        } else if (play->sceneNum == SCENE_TAKARAYA &&
+                   Randomizer_GetSettingValue(RSK_GREG_HINT) &&
+                   (textId == 0x704C || textId == 0x6E || textId == 0x84)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CHEST_GAME_PROCEED);
         } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS) &&
                    (textId >= TEXT_WARP_MINUET_OF_FOREST && textId <= TEXT_WARP_PRELUDE_OF_LIGHT)) {
@@ -1689,6 +1691,9 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     }
     if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger("gMarketSneak", 0) && play->sceneNum == SCENE_ENTRA_N) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT);
+    }
+    if (textId == TEXT_RANDO_SAVE_VERSION_WARNING) {
+        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_RANDO_SAVE_VERSION_WARNING);
     }
     if (messageEntry.textBoxType != -1) {
         font->charTexBuf[0] = (messageEntry.textBoxType << 4) | messageEntry.textBoxPos;

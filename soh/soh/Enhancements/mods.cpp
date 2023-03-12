@@ -1,16 +1,15 @@
 #include "mods.h"
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
+#include "tts/tts.h"
 
 extern "C" {
 #include <z64.h>
 #include "macros.h"
 #include "variables.h"
+#include "functions.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
-extern void Play_PerformSave(PlayState* play);
-extern s32 Health_ChangeBy(PlayState* play, s16 healthChange);
-extern void Rupees_ChangeBy(s16 rupeeChange);
 }
 
 void RegisterInfiniteMoney() {
@@ -89,13 +88,13 @@ void RegisterInfiniteNayrusLove() {
 
 void RegisterMoonJumpOnL() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!gPlayState) return;
+        
         if (CVarGetInteger("gMoonJumpOnL", 0) != 0) {
-            if (gPlayState) {
-                Player* player = GET_PLAYER(gPlayState);
+            Player* player = GET_PLAYER(gPlayState);
 
-                if (CHECK_BTN_ANY(gPlayState->state.input[0].cur.button, BTN_L)) {
-                    player->actor.velocity.y = 6.34375f;
-                }
+            if (CHECK_BTN_ANY(gPlayState->state.input[0].cur.button, BTN_L)) {
+                player->actor.velocity.y = 6.34375f;
             }
         }
     });
@@ -104,23 +103,23 @@ void RegisterMoonJumpOnL() {
 
 void RegisterInfiniteISG() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!gPlayState) return;
+
         if (CVarGetInteger("gEzISG", 0) != 0) {
-            if (gPlayState) {
-                Player* player = GET_PLAYER(gPlayState);
-                player->swordState = 1;
-            }
+            Player* player = GET_PLAYER(gPlayState);
+            player->swordState = 1;
         }
     });
 }
 
 void RegisterUnrestrictedItems() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!gPlayState) return;
+
         if (CVarGetInteger("gNoRestrictItems", 0) != 0) {
-            if (gPlayState) {
-                u8 sunsBackup = gPlayState->interfaceCtx.restrictions.sunsSong;
-                memset(&gPlayState->interfaceCtx.restrictions, 0, sizeof(gPlayState->interfaceCtx.restrictions));
-                gPlayState->interfaceCtx.restrictions.sunsSong = sunsBackup;
-            }
+            u8 sunsBackup = gPlayState->interfaceCtx.restrictions.sunsSong;
+            memset(&gPlayState->interfaceCtx.restrictions, 0, sizeof(gPlayState->interfaceCtx.restrictions));
+            gPlayState->interfaceCtx.restrictions.sunsSong = sunsBackup;
         }
     });
 }
@@ -142,99 +141,103 @@ void RegisterFreezeTime() {
 
 /// Switches Link's age and respawns him at the last entrance he entered.
 void RegisterSwitchAge() {
-    bool warped = false;
-    Vec3f playerPos;
-    int16_t playerYaw;
-    
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([&warped, &playerPos, &playerYaw]() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        static bool warped = false;
+        static Vec3f playerPos;
+        static int16_t playerYaw;
+
+        if (!gPlayState) return;
+
         if (CVarGetInteger("gSwitchAge", 0) != 0) {
             CVarSetInteger("gSwitchAge", 0);
-            if (gPlayState) {
-                playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
-                playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
-                gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
-                gPlayState->sceneLoadFlag = 0x14;
-                gPlayState->fadeTransition = 11;
-                gSaveContext.nextTransitionType = 11;
-                warped = true;
-                if (gPlayState->linkAgeOnLoad == 1) {
-                    gPlayState->linkAgeOnLoad = 0;
-                } else {
-                    gPlayState->linkAgeOnLoad = 1;
-                }
-            }
+            playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
+            playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
+
+            gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
+            gPlayState->sceneLoadFlag = 0x14;
+            gPlayState->fadeTransition = 11;
+            gSaveContext.nextTransitionType = 11;
+            gPlayState->linkAgeOnLoad ^= 1;
+
+            warped = true;
         }
-        
-        if (gPlayState) {
-            if (warped && gPlayState->sceneLoadFlag != 0x0014 && gSaveContext.nextTransitionType == 255) {
-                GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
-                GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
-                warped = false;
-            }
+
+        if (warped && gPlayState->sceneLoadFlag != 0x0014 && gSaveContext.nextTransitionType == 255) {
+            GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
+            GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
+            warped = false;
         }
     });
 }
 
-void RegisterAutoSave() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnReceiveItem>([](u8 item) {
-        // Don't autosave immediately after buying items from shops to prevent getting them for free!
-        // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
-        // Don't autosave during the Ganon fight when picking up the Master Sword
-        if ((CVarGetInteger("gAutosave", 0) > 0) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
-            (gPlayState->sceneNum != SCENE_KENJYANOMA) && (gPlayState->sceneNum != SCENE_GANON_DEMO)) {
-            if ((CVarGetInteger("gAutosave", 0) == 2) || (CVarGetInteger("gAutosave", 0) == 5)) {
-                // Autosave for all items
-                Play_PerformSave(gPlayState);
+void AutoSave(GetItemEntry itemEntry) {
+    u8 item = itemEntry.itemId;
+    // Don't autosave immediately after buying items from shops to prevent getting them for free!
+    // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
+    // Don't autosave during the Ganon fight when picking up the Master Sword
+    // Don't autosave in grottos since resuming from grottos breaks the game.
+    if ((CVarGetInteger("gAutosave", 0) > 0) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
+        (gPlayState->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (gPlayState->sceneNum != SCENE_KAKUSIANA) &&
+        (gPlayState->sceneNum != SCENE_KENJYANOMA) && (gPlayState->sceneNum != SCENE_GANON_DEMO) &&
+        (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0)) {
+        if ((CVarGetInteger("gAutosave", 0) == 2) || (CVarGetInteger("gAutosave", 0) == 5) && (item != ITEM_NONE)) {
+            // Autosave for all items
+            Play_PerformSave(gPlayState);
 
-            } else if ((CVarGetInteger("gAutosave", 0) == 1) || (CVarGetInteger("gAutosave", 0) == 4)) {
-                // Autosave for major items
-                switch (item) {
-                    case ITEM_STICK:
-                    case ITEM_NUT:
-                    case ITEM_BOMB:
-                    case ITEM_BOW:
-                    case ITEM_SEEDS:
-                    case ITEM_FISHING_POLE:
-                    case ITEM_MAGIC_SMALL:
-                    case ITEM_MAGIC_LARGE:
-                    case ITEM_INVALID_4:
-                    case ITEM_INVALID_5:
-                    case ITEM_INVALID_6:
-                    case ITEM_INVALID_7:
-                    case ITEM_HEART:
-                    case ITEM_RUPEE_GREEN:
-                    case ITEM_RUPEE_BLUE:
-                    case ITEM_RUPEE_RED:
-                    case ITEM_RUPEE_PURPLE:
-                    case ITEM_RUPEE_GOLD:
-                    case ITEM_INVALID_8:
-                    case ITEM_STICKS_5:
-                    case ITEM_STICKS_10:
-                    case ITEM_NUTS_5:
-                    case ITEM_NUTS_10:
-                    case ITEM_BOMBS_5:
-                    case ITEM_BOMBS_10:
-                    case ITEM_BOMBS_20:
-                    case ITEM_BOMBS_30:
-                    case ITEM_ARROWS_SMALL:
-                    case ITEM_ARROWS_MEDIUM:
-                    case ITEM_ARROWS_LARGE:
-                    case ITEM_SEEDS_30:
-                        break;
-                    case ITEM_BOMBCHU:
-                    case ITEM_BOMBCHUS_5:
-                    case ITEM_BOMBCHUS_20:
-                        if (!CVarGetInteger("gBombchuDrops", 0)) {
-                            Play_PerformSave(gPlayState);
-                        }
-                        break;
-                    default:
+        } else if ((CVarGetInteger("gAutosave", 0) == 1) || (CVarGetInteger("gAutosave", 0) == 4) && (item != ITEM_NONE)) {
+            // Autosave for major items
+            switch (item) {
+                case ITEM_STICK:
+                case ITEM_NUT:
+                case ITEM_BOMB:
+                case ITEM_BOW:
+                case ITEM_SEEDS:
+                case ITEM_FISHING_POLE:
+                case ITEM_MAGIC_SMALL:
+                case ITEM_MAGIC_LARGE:
+                case ITEM_INVALID_4:
+                case ITEM_INVALID_5:
+                case ITEM_INVALID_6:
+                case ITEM_INVALID_7:
+                case ITEM_HEART:
+                case ITEM_RUPEE_GREEN:
+                case ITEM_RUPEE_BLUE:
+                case ITEM_RUPEE_RED:
+                case ITEM_RUPEE_PURPLE:
+                case ITEM_RUPEE_GOLD:
+                case ITEM_INVALID_8:
+                case ITEM_STICKS_5:
+                case ITEM_STICKS_10:
+                case ITEM_NUTS_5:
+                case ITEM_NUTS_10:
+                case ITEM_BOMBS_5:
+                case ITEM_BOMBS_10:
+                case ITEM_BOMBS_20:
+                case ITEM_BOMBS_30:
+                case ITEM_ARROWS_SMALL:
+                case ITEM_ARROWS_MEDIUM:
+                case ITEM_ARROWS_LARGE:
+                case ITEM_SEEDS_30:
+                case ITEM_NONE:
+                    break;
+                case ITEM_BOMBCHU:
+                case ITEM_BOMBCHUS_5:
+                case ITEM_BOMBCHUS_20:
+                    if (!CVarGetInteger("gBombchuDrops", 0)) {
                         Play_PerformSave(gPlayState);
-                        break;
-                }
+                    }
+                    break;
+                default:
+                    Play_PerformSave(gPlayState);
+                    break;
             }
         }
-    });
+    }
+}
+
+void RegisterAutoSave() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) { AutoSave(itemEntry); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>([](GetItemEntry itemEntry) { AutoSave(itemEntry); });
 }
 
 void RegisterRupeeDash() {
@@ -261,7 +264,54 @@ void RegisterRupeeDash() {
     });
 }
 
+void RegisterBonkDamage() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerBonk>([]() {
+        uint8_t bonkOption = CVarGetInteger("gBonkDamageMul", 0);
+        uint16_t bonkDamage = 0;
+        switch (bonkOption) {
+            // Quarter heart
+            case 1:
+                bonkDamage = 4;
+                break;
+            // Half a heart
+            case 2:
+                bonkDamage = 8;
+                break;
+            // Full heart
+            case 3:
+                bonkDamage = 16;
+                break;
+            // 2 hearts
+            case 4:
+                bonkDamage = 32;
+                break;
+            // 4 hearts
+            case 5:
+                bonkDamage = 64;
+                break;
+            // 8 hearts
+            case 6:
+                bonkDamage = 128;
+                break;
+            case 0:
+            case 7:
+            default:
+                break;
+        }
+        // OHKO
+        if (bonkOption == 7) {
+            gSaveContext.health = 0;
+        } else if (bonkDamage) {
+            Health_ChangeBy(gPlayState, -bonkDamage);
+            // Set invincibility to make Link flash red as a visual damage indicator.
+            Player* player = GET_PLAYER(gPlayState);
+            player->invincibilityTimer = 28;
+        }
+    });
+}
+
 void InitMods() {
+    RegisterTTS();
     RegisterInfiniteMoney();
     RegisterInfiniteHealth();
     RegisterInfiniteAmmo();
@@ -274,4 +324,5 @@ void InitMods() {
     RegisterSwitchAge();
     RegisterRupeeDash();
     RegisterAutoSave();
+    RegisterBonkDamage();
 }
