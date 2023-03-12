@@ -78,8 +78,7 @@ namespace GameMenuBar {
     static const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
     static const char* autosaveLabels[6] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
     static const char* FastFileSelect[5] = { "File N.1", "File N.2", "File N.3", "Zelda Map Select (require OoT Debug Mode)", "File select" };
-
-    const char* bonkDamageValues[8] = {
+    static const char* bonkDamageValues[8] = {
         "No Damage",
         "0.25 Heart",
         "0.5 Heart",
@@ -432,7 +431,7 @@ namespace GameMenuBar {
                         "64x: Cannot survive void damage"
                     );
                     UIWidgets::PaddedText("Bonk Damage Multiplier", true, false);
-                    UIWidgets::EnhancementCombobox("gBonkDamageMul", bonkDamageValues, 8, 0);
+                    UIWidgets::EnhancementCombobox("gBonkDamageMul", bonkDamageValues, 0);
                     UIWidgets::Tooltip("Modifies damage taken after bonking.");
                     UIWidgets::PaddedEnhancementCheckbox("Spawn with full health", "gFullHealthSpawn", true, false);
                     UIWidgets::Tooltip("Respawn with full health instead of 3 Hearts");
