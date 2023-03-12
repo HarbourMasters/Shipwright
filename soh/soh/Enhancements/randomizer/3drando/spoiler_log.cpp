@@ -35,7 +35,8 @@ using json = nlohmann::json;
 json jsonData;
 std::map<HintKey, ItemLocation*> hintedLocations;
 
-extern std::array<std::string, 13>hintTypeNames;
+extern std::array<std::string, 13> hintTypeNames;
+extern std::array<std::string, 17> hintCategoryNames;
 
 namespace {
 std::string placementtxt;
@@ -704,6 +705,7 @@ static void WriteHints(int language) {
 
     for (const uint32_t key : gossipStoneLocations) {
         ItemLocation* location = Location(key);
+        ItemLocation* hintedLocation = Location(location->GetHintedLocation());
         std::string unformattedHintTextString;
         switch (language) {
             case 0:
@@ -722,7 +724,10 @@ static void WriteHints(int language) {
         jsonData["hints"][location->GetName()]["hint"] = textStr;
         jsonData["hints"][location->GetName()]["type"] = hintTypeNames[static_cast<int>(hintType)];
         if (hintType == HintType::Item || hintType == HintType::NamedItem) {
-            jsonData["hints"][location->GetName()]["item"] = Location(location->GetHintedLocation())->GetPlacedItemName().GetEnglish();
+            jsonData["hints"][location->GetName()]["item"] = hintedLocation->GetPlacedItemName().GetEnglish();
+            if (hintType != HintType::NamedItem) {
+                jsonData["hints"][location->GetName()]["location"] = hintedLocation->GetName();
+            }
         }
         if (hintType != HintType::Trial && hintType != HintType::Junk) {
             jsonData["hints"][location->GetName()]["area"] = location->GetHintedRegion();
