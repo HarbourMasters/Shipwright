@@ -8679,6 +8679,7 @@ void func_80844708(Player* this, PlayState* play) {
                     func_80832698(this, NA_SE_VO_LI_CLIMB_END);
                     this->unk_850 = 1;
                     gSaveContext.sohStats.count[COUNT_BONKS]++;
+                    GameInteractor_ExecuteOnPlayerBonk();
                     return;
                 }
             }

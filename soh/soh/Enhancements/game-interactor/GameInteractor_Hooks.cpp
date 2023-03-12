@@ -30,6 +30,10 @@ void GameInteractor_ExecuteOnPlayerUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerUpdate>();
 }
 
+void GameInteractor_ExecuteOnPlayerBonk() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerBonk>();
+}
+
 // MARK: -  Save Files
 
 void GameInteractor_ExecuteOnSaveFile(int32_t fileNum) {

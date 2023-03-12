@@ -91,6 +91,7 @@ public:
     DEFINE_HOOK(OnSaleEnd, void(GetItemEntry itemEntry));
     DEFINE_HOOK(OnSceneInit, void(int16_t sceneNum));
     DEFINE_HOOK(OnPlayerUpdate, void());
+    DEFINE_HOOK(OnPlayerBonk, void());
     
     DEFINE_HOOK(OnSaveFile, void(int32_t fileNum));
     DEFINE_HOOK(OnLoadFile, void(int32_t fileNum));
