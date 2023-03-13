@@ -133,7 +133,13 @@ int GetPriceFromMax(int max) {
     return Random(1, max) * 5; // random range of 1 - wallet max / 5, where wallet max is the highest it goes as a multiple of 5
 }
 
+// Get random price out of available "affordable prices", or just return 10 if Starter wallet is selected (no need to randomly select
+// from a single element
 int GetPriceAffordable() {
+    if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_STARTER)) {
+        return 10;
+    }
+
     static const std::vector<int> affordablePrices = { 10, 105, 205, 505 };
     std::vector<int> priceList;
     uint8_t maxElements = Settings::ShopsanityPrices.Value<uint8_t>();
@@ -161,13 +167,7 @@ int GetRandomShopPrice() {
         max = 199; // 995/5
     }
     if (max != 0) {
-        if (Settings::ShopsanityPricesAffordable.Is(true)) {
-            if(max == 19) {
-                return 10;
-            }
-            return GetPriceAffordable();
-        }
-        return GetPriceFromMax(max);
+        return Settings::ShopsanityPricesAffordable.Is(true) ? GetPriceAffordable() : GetPriceFromMax(max);
     }
     // Balanced is default, so if all other known cases fail, fall back to Balanced
     int price = 150; // JUST in case something fails with the randomization, return sane price for balanced
