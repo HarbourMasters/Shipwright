@@ -6097,6 +6097,9 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
 
         if (CVarGetInteger("gMMBunnyHood", 0) == 1 && this->currentMask == PLAYER_MASK_BUNNY) {
             maxSpeed *= 1.5f;
+            if (gPlayState->sceneNum == SCENE_SPOT00) {
+                maxSpeed *= CVarGetInteger("gHyruleBunnyHoodMulti", 1);
+            }
         } 
         
         if (CVarGetInteger("gEnableWalkModify", 0)) {
@@ -7736,6 +7739,9 @@ void func_80842180(Player* this, PlayState* play) {
 
             if (CVarGetInteger("gMMBunnyHood", 0) && this->currentMask == PLAYER_MASK_BUNNY) {
                 sp2C *= 1.5f;
+                if (gPlayState->sceneNum == SCENE_SPOT00) {
+                    sp2C *= CVarGetInteger("gHyruleBunnyHoodMulti", 1);
+                }
             } 
             
             if (CVarGetInteger("gEnableWalkModify", 0)) {
