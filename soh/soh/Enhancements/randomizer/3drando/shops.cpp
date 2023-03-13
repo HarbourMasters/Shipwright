@@ -134,7 +134,7 @@ int GetPriceFromMax(int max) {
 }
 
 // Get random price out of available "affordable prices", or just return 10 if Starter wallet is selected (no need to randomly select
-// from a single element
+// from a single element)
 int GetPriceAffordable() {
     if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_STARTER)) {
         return 10;
@@ -150,10 +150,15 @@ int GetPriceAffordable() {
 }
 
 int GetRandomShopPrice() {
-    int max = 0;
-    // max 0 means Balanced is selected, and thus shouldn't trigger GetPriceFromMax or GetPriceAffordable
+    // If Affordable is enabled, no need to set randomizer max price
+    if (Settings::ShopsanityPricesAffordable.Is(true)) {
+        return GetPriceAffordable();
+    }
 
-    // check settings for a wallet tier selection and set max amount as method for setting true randomization or affordability
+    // max 0 means Balanced is selected, and thus shouldn't trigger GetPriceFromMax
+    int max = 0;
+
+    // check settings for a wallet tier selection and set max amount as method for setting true randomization
     if(Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_STARTER)) {
         max = 19; // 95/5
     }
@@ -167,7 +172,7 @@ int GetRandomShopPrice() {
         max = 199; // 995/5
     }
     if (max != 0) {
-        return Settings::ShopsanityPricesAffordable.Is(true) ? GetPriceAffordable() : GetPriceFromMax(max);
+        return GetPriceFromMax(max);
     }
     // Balanced is default, so if all other known cases fail, fall back to Balanced
     int price = 150; // JUST in case something fails with the randomization, return sane price for balanced
