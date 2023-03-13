@@ -128,27 +128,28 @@ static constexpr std::array<double, 60> ShopPriceProbability= {
   0.959992180, 0.968187000, 0.975495390, 0.981884488, 0.987344345, 0.991851853, 0.995389113, 0.997937921, 0.999481947, 1.000000000,
 };
 
-std::vector<int> priceCaps = { 10, 105, 205, 505 };
-
 // Generate random number from 5 to wallet max
 int GetPriceFromMax(int max) {
     return Random(1, max) * 5; // random range of 1 - wallet max / 5, where wallet max is the highest it goes as a multiple of 5
 }
 
 int GetPriceAffordable() {
-    std::vector<int> elementCaps;
+    static const std::vector<int> affordablePrices = { 10, 105, 205, 505 };
+    std::vector<int> priceList;
     uint8_t maxElements = Settings::ShopsanityPrices.Value<uint8_t>();
     for (int i = 0; i < maxElements; i++) {
-        elementCaps.push_back(priceCaps.at(i));
+        priceList.push_back(affordablePrices.at(i));
     }
-    return RandomElement(elementCaps);
+    return RandomElement(priceList);
 }
 
 int GetRandomShopPrice() {
     int max = 0;
+    // max 0 means Balanced is selected, and thus shouldn't trigger GetPriceFromMax or GetPriceAffordable
 
-    if(Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_STARTER)) {// check for xx wallet setting and set max amount as method for
-        max = 19; // 95/5                                                        // setting true randomization
+    // check settings for a wallet tier selection and set max amount as method for setting true randomization or affordability
+    if(Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_STARTER)) {
+        max = 19; // 95/5
     }
     else if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_ADULT)) {
         max = 40; // 200/5
