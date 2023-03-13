@@ -158,10 +158,13 @@ void EnMs_Sell(EnMs* this, PlayState* play) {
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_BEAN);
             gSaveContext.pendingSale = itemEntry.itemId;
+            gSaveContext.pendingSaleMod = itemEntry.modIndex;
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 90.0f, 10.0f);
             BEANS_BOUGHT = 10;
         } else {
-            gSaveContext.pendingSale = ItemTable_Retrieve(GI_BEAN).itemId;
+            GetItemEntry entry = ItemTable_Retrieve(GI_BEAN);
+            gSaveContext.pendingSaleMod = entry.modIndex;
+            gSaveContext.pendingSale = entry.itemId;
             func_8002F434(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
         }
     }

@@ -230,12 +230,14 @@ void func_80A74398(Actor* thisx, PlayState* play) {
     Effect_Add(play, &this->blureIdx, EFFECT_BLURE1, 0, 0, &blureInit);
     func_80A74714(this);
 
+    uint8_t enemyRandoCCActive = CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0);
+
     if (this->switchFlags != 0xFF) {
         // In vanilla gameplay, Iron Knuckles are despawned based on specific flags in specific scenarios.
-        // In Enemy Randomizer, this made the Iron Knuckles despawn when the same flag was set by other objects.
+        // In Enemy Randomizer and Crowd Control, this made the Iron Knuckles despawn when the same flag was set by other objects.
         // Instead, rely on the "Clear enemy room" flag when in Enemy Randomizer for Iron Knuckles that aren't Nabooru.
-        if ((Flags_GetSwitch(play, this->switchFlags) && !CVarGetInteger("gRandomizedEnemies", 0)) ||
-            (thisx->params != 0 && Flags_GetClear(play, play->roomCtx.curRoom.num) && CVarGetInteger("gRandomizedEnemies", 0))) {
+        if ((Flags_GetSwitch(play, this->switchFlags) && !enemyRandoCCActive) ||
+            (thisx->params != 0 && Flags_GetClear(play, play->roomCtx.curRoom.num) && enemyRandoCCActive)) {
             Actor_Kill(thisx);
         }
     } else if (thisx->params != 0 && Flags_GetClear(play, play->roomCtx.curRoom.num)) {
@@ -656,9 +658,9 @@ void func_80A75A38(EnIk* this, PlayState* play) {
             }
             if (this->unk_2F9 == 0) {
                 Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xB0);
-                // Don't set flag when Iron Knuckle is spawned by Enemy Rando.
-                // Instead Iron Knuckles rely on the "clear room" flag when Enemy Rando is on.
-                if (this->switchFlags != 0xFF && !CVarGetInteger("gRandomizedEnemies",0)) {
+                // Don't set flag when Enemy Rando or CrowdControl are on.
+                // Instead Iron Knuckles rely on the "clear room" flag.
+                if (this->switchFlags != 0xFF && !CVarGetInteger("gRandomizedEnemies", 0) && !CVarGetInteger("gCrowdControl", 0)) {
                     Flags_SetSwitch(play, this->switchFlags);
                 }
                 Actor_Kill(&this->actor);
@@ -1481,8 +1483,8 @@ void EnIk_Init(Actor* thisx, PlayState* play) {
         func_80A780D0(this, play);
     }
 
-    // Immediately trigger Iron Knuckle for enemy randomizer
-    if (CVarGetInteger("gRandomizedEnemies", 0) && (thisx->params == 2 || thisx->params == 3)) {
+    // Immediately trigger Iron Knuckle for Enemy Rando and Crowd Control
+    if ((CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0)) && (thisx->params == 2 || thisx->params == 3)) {
         this->skelAnime.playSpeed = 1.0f;
     }
 }

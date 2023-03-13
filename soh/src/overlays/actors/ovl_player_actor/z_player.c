@@ -6320,6 +6320,7 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
                     Player_SetPendingFlag(this, play);
                     Message_StartTextbox(play, 0xF8, NULL);
                     Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
+                    GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
                     gSaveContext.pendingIceTrapCount++;
                     return 1;
                 }
@@ -8558,7 +8559,8 @@ void func_8084411C(Player* this, PlayState* play) {
                         func_80843E14(this, NA_SE_VO_LI_FALL_L);
                     }
 
-                    if ((this->actor.bgCheckFlags & 0x200) && !(this->stateFlags2 & PLAYER_STATE2_19) &&
+                    if (!GameInteractor_GetDisableLedgeGrabsActive() && (this->actor.bgCheckFlags & 0x200) &&
+                        !(this->stateFlags2 & PLAYER_STATE2_19) &&
                         !(this->stateFlags1 & (PLAYER_STATE1_11 | PLAYER_STATE1_27)) && (this->linearVelocity > 0.0f)) {
                         if ((this->wallHeight >= 150.0f) && (this->unk_84B[this->unk_846] == 0)) {
                             func_8083EC18(this, play, D_808535F0);
@@ -8654,8 +8656,10 @@ void func_80844708(Player* this, PlayState* play) {
                 func_8083A060(this, play);
             }
         } else {
+            f32 rand = Rand_ZeroOne();
+            uint8_t randomBonk = (rand <= .05) && GameInteractor_GetRandomBonksActive();
             if (this->linearVelocity >= 7.0f) {
-                if (((this->actor.bgCheckFlags & 0x200) && (D_8085360C < 0x2000)) ||
+                if (randomBonk || ((this->actor.bgCheckFlags & 0x200) && (D_8085360C < 0x2000)) ||
                     ((this->cylinder.base.ocFlags1 & OC1_HIT) &&
                      (cylinderOc = this->cylinder.base.oc,
                       ((cylinderOc->id == ACTOR_EN_WOOD02) &&
@@ -8678,6 +8682,7 @@ void func_80844708(Player* this, PlayState* play) {
                     func_80832698(this, NA_SE_VO_LI_CLIMB_END);
                     this->unk_850 = 1;
                     gSaveContext.sohStats.count[COUNT_BONKS]++;
+                    GameInteractor_ExecuteOnPlayerBonk();
                     return;
                 }
             }
@@ -10663,7 +10668,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
 
         if (!(this->skelAnime.moveFlags & 0x80)) {
             if (((this->actor.bgCheckFlags & 1) && (D_808535E4 == 5) && (this->currentBoots != PLAYER_BOOTS_IRON)) ||
-                ((this->currentBoots == PLAYER_BOOTS_HOVER) &&
+                ((this->currentBoots == PLAYER_BOOTS_HOVER || GameInteractor_GetSlipperyFloorActive()) &&
                  !(this->stateFlags1 & (PLAYER_STATE1_27 | PLAYER_STATE1_29)))) {
                 f32 sp70 = this->linearVelocity;
                 s16 sp6E = this->currentYaw;
@@ -11001,42 +11006,67 @@ void Player_Update(Actor* thisx, PlayState* play) {
     MREG(54) = this->actor.world.pos.z;
     MREG(55) = this->actor.world.rot.y;
 
-    switch (GameInteractor_GetLinkSize()) {
-        case GI_LINK_SIZE_RESET:
-            this->actor.scale.x = 0.01f;
-            this->actor.scale.y = 0.01f;
-            this->actor.scale.z = 0.01f;
-            GameInteractor_SetLinkSize(GI_LINK_SIZE_NORMAL);
-            break;
-        case GI_LINK_SIZE_GIANT:
-            this->actor.scale.x = 0.02f;
-            this->actor.scale.y = 0.02f;
-            this->actor.scale.z = 0.02f;
-            break;
-        case GI_LINK_SIZE_MINISH:
-            this->actor.scale.x = 0.001f;
-            this->actor.scale.y = 0.001f;
-            this->actor.scale.z = 0.001f;
-            break;
-        case GI_LINK_SIZE_PAPER:
-            this->actor.scale.x = 0.001f;
-            this->actor.scale.y = 0.01f;
-            this->actor.scale.z = 0.01f;
-            break;
-        case GI_LINK_SIZE_NORMAL:
-        default:
-            break;
+    // Make Link normal size when going through doors and crawlspaces and when climbing ladders.
+    // Otherwise Link can glitch out, being in unloaded rooms or falling OoB.
+    if (this->stateFlags1 & PLAYER_STATE1_21 || this->stateFlags1 & PLAYER_STATE1_29 ||
+        this->stateFlags2 & PLAYER_STATE2_CRAWLING) {
+        this->actor.scale.x = 0.01f;
+        this->actor.scale.y = 0.01f;
+        this->actor.scale.z = 0.01f;
+    } else {
+        switch (GameInteractor_GetLinkSize()) {
+            case GI_LINK_SIZE_RESET:
+                this->actor.scale.x = 0.01f;
+                this->actor.scale.y = 0.01f;
+                this->actor.scale.z = 0.01f;
+                GameInteractor_SetLinkSize(GI_LINK_SIZE_NORMAL);
+                break;
+            case GI_LINK_SIZE_GIANT:
+                this->actor.scale.x = 0.02f;
+                this->actor.scale.y = 0.02f;
+                this->actor.scale.z = 0.02f;
+                break;
+            case GI_LINK_SIZE_MINISH:
+                this->actor.scale.x = 0.001f;
+                this->actor.scale.y = 0.001f;
+                this->actor.scale.z = 0.001f;
+                break;
+            case GI_LINK_SIZE_PAPER:
+                this->actor.scale.x = 0.001f;
+                this->actor.scale.y = 0.01f;
+                this->actor.scale.z = 0.01f;
+                break;
+            case GI_LINK_SIZE_SQUISHED:
+                this->actor.scale.x = 0.015f;
+                this->actor.scale.y = 0.001f;
+                this->actor.scale.z = 0.015f;
+                break;
+            case GI_LINK_SIZE_NORMAL:
+            default:
+                break;
+        }
     }
 
-    switch (GameInteractor_GravityLevel()) {
-        case GI_GRAVITY_LEVEL_HEAVY:
-            this->actor.gravity = -4.0f;
-            break;
-        case GI_GRAVITY_LEVEL_LIGHT:
-            this->actor.gravity = -0.3f;
-            break;
-        default:
-            break;
+    // Don't apply gravity when Link is in water, otherwise
+    // it makes him sink instead of float.
+    if (!(this->stateFlags1 & PLAYER_STATE1_27)) {
+        switch (GameInteractor_GravityLevel()) {
+            case GI_GRAVITY_LEVEL_HEAVY:
+                this->actor.gravity = -4.0f;
+                break;
+            case GI_GRAVITY_LEVEL_LIGHT:
+                this->actor.gravity = -0.3f;
+                break;
+            default:
+                break;
+        }
+    }
+
+    if (GameInteractor_GetRandomWindActive()) {
+        Player* player = GET_PLAYER(play);
+        player->windSpeed = 3.0f;
+        // Play fan sound (too annoying)
+        //func_8002F974(&player->actor, NA_SE_EV_WIND_TRAP - SFX_FLAG);
     }
     
     GameInteractor_ExecuteOnPlayerUpdate();
@@ -12604,7 +12634,8 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         }
         this->unk_84F = 1;
         equipItem = giEntry.itemId;
-        equipNow = CVarGetInteger("gAskToEquip", 0) && equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_TUNIC_ZORA &&
+        equipNow = CVarGetInteger("gAskToEquip", 0) && giEntry.modIndex == MOD_NONE &&
+                    equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_TUNIC_ZORA &&
                    ((gItemAgeReqs[equipItem] == 9 || gItemAgeReqs[equipItem] == gSaveContext.linkAge) ||
                     CVarGetInteger("gTimelessEquipment", 0));
 
@@ -12703,6 +12734,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
                 this->unk_862 = 0;
                 gSaveContext.pendingIceTrapCount++;
                 Player_SetPendingFlag(this, play);
+                GameInteractor_ExecuteOnItemReceiveHooks(giEntry);
             }
 
             this->getItemId = GI_NONE;
@@ -12871,9 +12903,11 @@ void func_8084E6D4(Player* this, PlayState* play) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, this->actor.world.pos.x,
                                 this->actor.world.pos.y + 100.0f, this->actor.world.pos.z, 0, 0, 0, 0, true);
                     func_8083C0E8(this, play);
+                    GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
                 } else {
                     this->actor.colChkInfo.damage = 0;
                     func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
+                    GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
                     this->getItemId = GI_NONE;
                     this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
                     // Gameplay stats: Increment Ice Trap count
