@@ -3,7 +3,7 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 
-extern char* sequenceMap[MAX_SEQUENCES];
+extern char** sequenceMap;
 
 #define PORTAMENTO_IS_SPECIAL(x) ((x).mode & 0x80)
 #define PORTAMENTO_MODE(x) ((x).mode & ~0x80)
