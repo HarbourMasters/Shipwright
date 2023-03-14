@@ -2306,7 +2306,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         gSaveContext.isMagicAcquired = true;
         gSaveContext.magicFillTarget = 0x30;
         Magic_Fill(play);
-        Return_Item_Entry(giEntry, RG_NONE);
+        return Return_Item_Entry(giEntry, RG_NONE);
     } else if (item == RG_MAGIC_DOUBLE) {
         if (!gSaveContext.isMagicAcquired) {
             gSaveContext.isMagicAcquired = true;
@@ -2315,7 +2315,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         gSaveContext.magicFillTarget = 0x60;
         gSaveContext.magicLevel = 0;
         Magic_Fill(play);
-        Return_Item_Entry(giEntry, RG_NONE);
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item == RG_MAGIC_BEAN_PACK) {
@@ -2323,14 +2323,14 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             INV_CONTENT(ITEM_BEAN) = ITEM_BEAN;
             AMMO(ITEM_BEAN) = 10;
         }
-        Return_Item_Entry(giEntry, RG_NONE);
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item == RG_DOUBLE_DEFENSE) {
         gSaveContext.isDoubleDefenseAcquired = true;
         gSaveContext.inventory.defenseHearts = 20;
         gSaveContext.healthAccumulator = 0x140;
-        Return_Item_Entry(giEntry, RG_NONE);
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item >= RG_BOTTLE_WITH_RED_POTION && item <= RG_BOTTLE_WITH_BIG_POE) {
@@ -2368,7 +2368,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
                 }
 
                 gSaveContext.inventory.items[temp + i] = item;
-                Return_Item(item, giEntry.modIndex, RG_NONE);
+                return Return_Item_Entry(giEntry, RG_NONE);
             }
         }
     } else if ((item >= RG_FOREST_TEMPLE_SMALL_KEY && item <= RG_GANONS_CASTLE_SMALL_KEY) ||
@@ -2469,11 +2469,11 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             } else {
                 gSaveContext.inventory.dungeonKeys[mapIndex]++;
             }
-            Return_Item_Entry(giEntry, RG_NONE);
+            return Return_Item_Entry(giEntry, RG_NONE);
         } else if ((item >= RG_FOREST_TEMPLE_KEY_RING) && (item <= RG_GANONS_CASTLE_KEY_RING)) {
             gSaveContext.sohStats.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
             gSaveContext.inventory.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
-            Return_Item_Entry(giEntry, RG_NONE);
+            return Return_Item_Entry(giEntry, RG_NONE);
         } else {
             int bitmask;
             if ((item >= RG_DEKU_TREE_MAP) && (item <= RG_ICE_CAVERN_MAP)) {
@@ -2485,7 +2485,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             }
 
             gSaveContext.inventory.dungeonItems[mapIndex] |= bitmask;
-            Return_Item_Entry(giEntry, RG_NONE);
+            return Return_Item_Entry(giEntry, RG_NONE);
         }
     }
 
@@ -2494,14 +2494,14 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(999);
         }
-        Return_Item_Entry(giEntry, RG_NONE);
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item == RG_GREG_RUPEE) {
         Rupees_ChangeBy(1);
         Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
         gSaveContext.sohStats.timestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
-        Return_Item_Entry(giEntry, RG_NONE);
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     temp = gSaveContext.inventory.items[slot];
