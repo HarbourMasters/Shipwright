@@ -2519,7 +2519,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     if (item == RG_GREG_RUPEE) {
         Rupees_ChangeBy(1);
         Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
-        gSaveContext.sohStats.timestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
+        gSaveContext.sohStats.itemTimestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
         Return_Item_Entry(giEntry, RG_NONE);
     }
 
