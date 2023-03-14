@@ -37,7 +37,7 @@ void Ship::SetWindSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
 	setWind->settings.windWest = reader->ReadInt8();
     setWind->settings.windVertical = reader->ReadInt8();
     setWind->settings.windSouth = reader->ReadInt8();
-    setWind->settings.windSpeed = reader->ReadInt8();
+    setWind->settings.windSpeed = reader->ReadUByte();
 }
 
 } // namespace Ship
