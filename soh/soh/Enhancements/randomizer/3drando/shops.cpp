@@ -128,31 +128,39 @@ static constexpr std::array<double, 60> ShopPriceProbability= {
   0.959992180, 0.968187000, 0.975495390, 0.981884488, 0.987344345, 0.991851853, 0.995389113, 0.997937921, 0.999481947, 1.000000000,
 };
 
-std::map<uint8_t, int> affordableCaps = {
-    {RO_SHOPSANITY_PRICE_STARTER, 10},
-    {RO_SHOPSANITY_PRICE_ADULT,   105},
-    {RO_SHOPSANITY_PRICE_GIANT,   205},
-    {RO_SHOPSANITY_PRICE_TYCOON,  505},
-};
-
-// If affordable option is on, cap items at affordable price just above the max of the previous wallet tier
-int CapPriceAffordable(int value, int cap) {
-    if (Settings::ShopsanityPricesAffordable.Is(true) && value > cap)
-        return cap;
-    return value;
-}
-
 // Generate random number from 5 to wallet max
 int GetPriceFromMax(int max) {
-    int temp = Random(1, max) * 5; // random range of 1 - wallet max / 5, where wallet max is the highest it goes as a multiple of 5
-    return CapPriceAffordable(temp, affordableCaps.find(Settings::ShopsanityPrices.Value<uint8_t>())->second);
+    return Random(1, max) * 5; // random range of 1 - wallet max / 5, where wallet max is the highest it goes as a multiple of 5
+}
+
+// Get random price out of available "affordable prices", or just return 10 if Starter wallet is selected (no need to randomly select
+// from a single element)
+int GetPriceAffordable() {
+    if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_STARTER)) {
+        return 10;
+    }
+
+    static const std::vector<int> affordablePrices = { 10, 105, 205, 505 };
+    std::vector<int> priceList;
+    uint8_t maxElements = Settings::ShopsanityPrices.Value<uint8_t>();
+    for (int i = 0; i < maxElements; i++) {
+        priceList.push_back(affordablePrices.at(i));
+    }
+    return RandomElement(priceList);
 }
 
 int GetRandomShopPrice() {
+    // If Affordable is enabled, no need to set randomizer max price
+    if (Settings::ShopsanityPricesAffordable.Is(true)) {
+        return GetPriceAffordable();
+    }
+
+    // max 0 means Balanced is selected, and thus shouldn't trigger GetPriceFromMax
     int max = 0;
 
-    if(Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_STARTER)) {// check for xx wallet setting and set max amount as method for
-        max = 19; // 95/5                                                        // setting true randomization
+    // check settings for a wallet tier selection and set max amount as method for setting true randomization
+    if(Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_STARTER)) {
+        max = 19; // 95/5
     }
     else if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_ADULT)) {
         max = 40; // 200/5
