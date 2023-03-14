@@ -53,7 +53,7 @@ void AudioHeap_ResetLoadStatus(void) {
         }
     }
 
-    for (i = 0; i < MAX_SEQUENCES; i++) {
+    for (i = 0; i < sequenceMapSize; i++) {
         if (gAudioContext.seqLoadStatus[i] != 5) {
             gAudioContext.seqLoadStatus[i] = 0;
         }

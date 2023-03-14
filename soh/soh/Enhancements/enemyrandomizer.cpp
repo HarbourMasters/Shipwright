@@ -319,9 +319,11 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
     // Shell Blade & Spike - Child link can't kill these with sword or deku stick.
     // Arwing & Dark Link - Both go out of bounds way too easily, softlocking the player.
     // Wallmaster - Not easily visible, often makes players think they're softlocked and that there's no enemies left.
+    // Club Moblin - Many issues with them falling or placing out of bounds. Maybe fixable in the future?
     bool enemiesToExcludeClearRooms = enemy.id == ACTOR_EN_FZ || enemy.id == ACTOR_EN_VM || enemy.id == ACTOR_EN_SB ||
                                       enemy.id == ACTOR_EN_NY || enemy.id == ACTOR_EN_CLEAR_TAG ||
-                                      enemy.id == ACTOR_EN_WALLMAS || enemy.id == ACTOR_EN_TORCH2;
+                                      enemy.id == ACTOR_EN_WALLMAS || enemy.id == ACTOR_EN_TORCH2 ||
+                                      enemy.id == ACTOR_EN_MB;
 
     // Bari - Spawns 3 more enemies, potentially extremely difficult in timed rooms.
     bool enemiesToExcludeTimedRooms = enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI;
