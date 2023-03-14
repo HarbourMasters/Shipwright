@@ -14,7 +14,6 @@
 #include "z64animation.h"
 #include "z64bgcheck.h"
 #include "Enhancements/gameconsole.h"
-#include <libultraship/libultra/gbi.h>
 #ifdef _WIN32
 #include <Windows.h>
 #else
@@ -78,6 +77,7 @@ CrowdControl* CrowdControl::Instance;
 #include "Enhancements/mods.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include <libultraship/libultraship.h>
+#include <libultraship/libultra/gbi.h>
 
 // Resource Types/Factories
 #include "soh/resource/type/Animation.h"
@@ -554,7 +554,7 @@ extern "C" void VanillaItemTable_Init() {
 }
 
 extern "C" void OTRExtScanner() {
-    auto lst = *OTRGlobals::Instance->context->GetResourceManager()->ListFiles("*.*").get();
+    auto lst = *OTRGlobals::Instance->context->GetResourceManager()->ListFiles("*").get();
 
     for (auto& rPath : lst) {
         std::vector<std::string> raw = StringHelper::Split(rPath, ".");
@@ -889,6 +889,15 @@ extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize)
     return result;
 }
 
+extern "C" uint8_t ResourceMgr_FileExists(const char* filePath) {
+    std::string path = filePath;
+    if(path.substr(0, 7) == "__OTR__"){
+        path = path.substr(7);
+    }
+
+    return ExtensionCache.contains(path);
+}
+
 extern "C" void ResourceMgr_LoadFile(const char* resName) {
     OTRGlobals::Instance->context->GetResourceManager()->LoadResource(resName);
 }
@@ -928,7 +937,12 @@ extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
     return data;
 }
 
-extern "C" char* ResourceMgr_LoadJPEG(char* data, int dataSize)
+extern "C" uint8_t ResourceMgr_ResourceIsBackground(char* texPath) {
+    auto res = GetResourceByNameHandlingMQ(texPath);
+    return res->Type == Ship::ResourceType::SOH_Background;
+}
+
+extern "C" char* ResourceMgr_LoadJPEG(char* data, size_t dataSize)
 {
     static char* finalBuffer = 0;
 
@@ -978,7 +992,7 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     else if (res->Type == Ship::ResourceType::Array)
         return (char*)(std::static_pointer_cast<Ship::Array>(res))->Vertices.data();
     else {
-        return (char*)GetResourceDataByNameHandlingMQ(filePath);
+        return (char*)filePath;
     }
 }
 
@@ -990,6 +1004,11 @@ extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
     auto anim = std::static_pointer_cast<Ship::PlayerAnimation>(GetResourceByNameHandlingMQ(animPath));
 
     return (char*)&anim->limbRotData[0];
+}
+
+extern "C" void ResourceMgr_PushCurrentDirectory(char* path)
+{
+    gfx_push_current_dir(path);
 }
 
 extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)

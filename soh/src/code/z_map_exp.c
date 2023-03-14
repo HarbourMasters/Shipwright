@@ -413,8 +413,7 @@ void Map_InitData(PlayState* play, s16 room) {
                                 //gMapData->owMinimapTexSize[mapIndex], __FILE__, __LINE__);
 
             if (sEntranceIconMapIndex < 24) {
-                const char* textureName = minimapTableOW[sEntranceIconMapIndex];
-                memcpy(play->interfaceCtx.mapSegment, GetResourceDataByName(textureName, false), GetResourceTexSizeByName(textureName, false));
+                play->interfaceCtx.mapSegment[0] = minimapTableOW[sEntranceIconMapIndex];
             }
 
             interfaceCtx->unk_258 = mapIndex;
@@ -447,8 +446,7 @@ void Map_InitData(PlayState* play, s16 room) {
                                     //((gMapData->dgnMinimapTexIndexOffset[mapIndex] + room) * 0xFF0),
                                 //0xFF0, __FILE__, __LINE__);
 
-            const char* textureName = minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room];
-            memcpy(play->interfaceCtx.mapSegment, GetResourceDataByName(textureName, false), GetResourceTexSizeByName(textureName, false));
+            play->interfaceCtx.mapSegment[0] = minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room];
 
             R_COMPASS_OFFSET_X = gMapData->roomCompassOffsetX[mapIndex][room];
             R_COMPASS_OFFSET_Y = gMapData->roomCompassOffsetY[mapIndex][room];
@@ -519,7 +517,7 @@ void Map_Init(PlayState* play) {
     interfaceCtx->unk_258 = -1;
     interfaceCtx->unk_25A = -1;
 
-    interfaceCtx->mapSegment = GAMESTATE_ALLOC_MC(&play->state, 0x1000);
+    interfaceCtx->mapSegment = GAMESTATE_ALLOC_MC(&play->state, 2 * sizeof(char*));
     // "ＭＡＰ texture initialization scene_data_ID=%d mapSegment=%x"
     osSyncPrintf("\n\n\nＭＡＰ テクスチャ初期化   scene_data_ID=%d\nmapSegment=%x\n\n", play->sceneNum,
                  interfaceCtx->mapSegment, play);
@@ -756,8 +754,7 @@ void Minimap_Draw(PlayState* play) {
                     if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, mapIndex)) {
                         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, minimapColor.r, minimapColor.g, minimapColor.b, interfaceCtx->minimapAlpha);
 
-                        gSPInvalidateTexCache(OVERLAY_DISP++, interfaceCtx->mapSegment);
-                        gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegment, G_IM_FMT_I, 96, 85, 0,
+                        gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegment[0], G_IM_FMT_I, 96, 85, 0,
                                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
@@ -827,7 +824,7 @@ void Minimap_Draw(PlayState* play) {
                     gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
                     gDPSetPrimColor(OVERLAY_DISP++, 0, 0, minimapColor.r, minimapColor.g, minimapColor.b, interfaceCtx->minimapAlpha);
 
-                    gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegment, G_IM_FMT_IA,
+                    gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegment[0], G_IM_FMT_IA,
                                            gMapData->owMinimapWidth[mapIndex], gMapData->owMinimapHeight[mapIndex], 0,
                                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);

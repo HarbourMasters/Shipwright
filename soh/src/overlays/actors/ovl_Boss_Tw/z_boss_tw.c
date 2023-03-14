@@ -1,5 +1,6 @@
 #include "z_boss_tw.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "textures/boss_title_cards/object_tw.h"
 #include "objects/object_tw/object_tw.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "soh/frame_interpolation.h"
@@ -2181,7 +2182,7 @@ void BossTw_TwinrovaIntroCS(BossTw* this, PlayState* play) {
                 play->envCtx.unk_BE = 1;
                 play->envCtx.unk_BD = 1;
                 play->envCtx.unk_D8 = 0.0f;
-                TitleCard_InitBossName(play, &play->actorCtx.titleCtx, SEGMENTED_TO_VIRTUAL(gTwinrovaTitleCardTex), 160, 180, 128, 40, true);
+                TitleCard_InitBossName(play, &play->actorCtx.titleCtx, SEGMENTED_TO_VIRTUAL(gTwinrovaTitleCardENGTex), 160, 180, 128, 40, true);
                 gSaveContext.eventChkInf[7] |= 0x20;
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS);
             }

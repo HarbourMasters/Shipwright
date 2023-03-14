@@ -1,4 +1,5 @@
 #include "z_boss_dodongo.h"
+#include "textures/boss_title_cards/object_kingdodongo.h"
 #include "objects/object_kingdodongo/object_kingdodongo.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "scenes/dungeons/ddan_boss/ddan_boss_room_1.h"
@@ -421,7 +422,7 @@ void BossDodongo_IntroCutscene(BossDodongo* this, PlayState* play) {
             if (this->unk_198 == 0x5A) {
                 if (!(gSaveContext.eventChkInf[7] & 2)) {
                     TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
-                                           SEGMENTED_TO_VIRTUAL(gKingDodongoTitleCardTex), 160, 180, 128, 40, true);
+                                           SEGMENTED_TO_VIRTUAL(gKingDodongoTitleCardENGTex), 160, 180, 128, 40, true);
                 }
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_FIRE_BOSS);
             }
