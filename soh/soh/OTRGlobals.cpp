@@ -942,7 +942,7 @@ extern "C" uint8_t ResourceMgr_ResourceIsBackground(char* texPath) {
     return res->Type == Ship::ResourceType::SOH_Background;
 }
 
-extern "C" char* ResourceMgr_LoadJPEG(char* data, int dataSize)
+extern "C" char* ResourceMgr_LoadJPEG(char* data, size_t dataSize)
 {
     static char* finalBuffer = 0;
 
