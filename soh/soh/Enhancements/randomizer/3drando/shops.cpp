@@ -136,7 +136,7 @@ int GetPriceFromMax(int max) {
 // Get random price out of available "affordable prices", or just return 10 if Starter wallet is selected (no need to randomly select
 // from a single element)
 int GetPriceAffordable() {
-    if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_STARTER)) {
+    if (Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_STARTER) && !Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_BALANCED)) {
         return 10;
     }
 
