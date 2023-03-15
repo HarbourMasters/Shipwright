@@ -151,7 +151,7 @@ int GetPriceAffordable() {
 
 int GetRandomShopPrice() {
     // If Affordable is enabled, no need to set randomizer max price
-    if (Settings::ShopsanityPricesAffordable.Is(true)) {
+    if (Settings::ShopsanityPricesAffordable.Is(true) && !Settings::ShopsanityPrices.Is(RO_SHOPSANITY_PRICE_BALANCED)) {
         return GetPriceAffordable();
     }
 
