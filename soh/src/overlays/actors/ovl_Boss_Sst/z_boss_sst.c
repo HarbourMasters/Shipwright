@@ -247,7 +247,7 @@ const ActorInit Boss_Sst_InitVars = {
     (ActorFunc)BossSst_Destroy,
     (ActorFunc)BossSst_UpdateHand,
     (ActorFunc)BossSst_DrawHand,
-    NULL,
+    (ActorResetFunc)BossSst_Reset,
 };
 
 #include "z_boss_sst_colchk.c"
@@ -3268,4 +3268,13 @@ void BossSst_Reset(void) {
 
     sCutsceneCamera= 0;
     sBodyStatic = false;
+    // Reset death colors
+    sBodyColor.a = 255;
+    sBodyColor.r = 255;
+    sBodyColor.g = 255;
+    sBodyColor.b = 255;
+    sStaticColor.a = 255;
+    sStaticColor.r = 0;
+    sStaticColor.g = 0;
+    sStaticColor.b = 0;
 }

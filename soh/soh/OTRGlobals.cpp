@@ -340,7 +340,7 @@ extern "C" void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 extern "C" int AudioPlayer_Buffered(void);
 extern "C" int AudioPlayer_GetDesiredBuffered(void);
-extern "C" void ResourceMgr_CacheDirectory(const char* resName);
+extern "C" void ResourceMgr_LoadDirectory(const char* resName);
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path);
 std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
@@ -393,7 +393,7 @@ void OTRAudio_Thread() {
 extern "C" void OTRAudio_Init()
 {
     // Precache all our samples, sequences, etc...
-    ResourceMgr_CacheDirectory("audio");
+    ResourceMgr_LoadDirectory("audio");
 
     if (!audio.running) {
         audio.running = true;
@@ -866,8 +866,8 @@ extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
     return IsGameMasterQuest();
 }
 
-extern "C" void ResourceMgr_CacheDirectory(const char* resName) {
-    OTRGlobals::Instance->context->GetResourceManager()->CacheDirectory(resName);
+extern "C" void ResourceMgr_LoadDirectory(const char* resName) {
+    OTRGlobals::Instance->context->GetResourceManager()->LoadDirectory(resName);
 }
 extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
     OTRGlobals::Instance->context->GetResourceManager()->DirtyDirectory(resName);
@@ -1678,7 +1678,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 textId = TEXT_GS_FREEZE;
             }
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
-            CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{gsCount}}", std::to_string(gSaveContext.inventory.gsTokens + 1));
+            CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{gsCount}}", std::to_string(gSaveContext.inventory.gsTokens));
         }
     }
     if (textId == TEXT_HEART_CONTAINER && CVarGetInteger("gInjectItemCounts", 0)) {
