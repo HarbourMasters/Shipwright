@@ -77,7 +77,8 @@ void* sUnusedHandler = NULL;
 
 s32 gAudioContextInitalized = false;
 
-char* sequenceMap[MAX_SEQUENCES];
+char** sequenceMap;
+size_t sequenceMapSize;
 // A map of authentic sequence IDs to their cache policies, for use with sequence swapping.
 u8 seqCachePolicyMap[MAX_AUTHENTIC_SEQID];
 char* fontMap[256];
@@ -488,7 +489,7 @@ u8* AudioLoad_GetFontsForSequence(s32 seqId, u32* outNumFonts) {
          return NULL;
 
     u16 newSeqId = AudioEditor_GetReplacementSeq(seqId);
-    if (newSeqId > MAX_SEQUENCES || !sequenceMap[newSeqId]) {
+    if (newSeqId > sequenceMapSize || !sequenceMap[newSeqId]) {
         return NULL;
     }
     SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[newSeqId]);
@@ -1342,7 +1343,12 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     AudioHeap_ResetStep();
 
     int seqListSize = 0;
+    int customSeqListSize = 0;
     char** seqList = ResourceMgr_ListFiles("audio/sequences*", &seqListSize);
+    char** customSeqList = ResourceMgr_ListFiles("custom/music/*", &customSeqListSize);
+    sequenceMapSize = (size_t)(seqListSize + customSeqListSize);
+    sequenceMap = malloc(sequenceMapSize * sizeof(char*));
+    gAudioContext.seqLoadStatus = malloc(sequenceMapSize * sizeof(char*));
 
     for (size_t i = 0; i < seqListSize; i++)
     {
@@ -1357,9 +1363,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
 
     free(seqList);
 
-    int customSeqListSize = 0;
     int startingSeqNum = MAX_AUTHENTIC_SEQID; // 109 is the highest vanilla sequence
-    char** customSeqList = ResourceMgr_ListFiles("custom/music/*", &customSeqListSize);
     qsort(customSeqList, customSeqListSize, sizeof(char*), strcmp_sort);
 
     for (size_t i = startingSeqNum; i < startingSeqNum + customSeqListSize; i++) {
