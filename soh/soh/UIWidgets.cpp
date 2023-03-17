@@ -308,6 +308,7 @@ namespace UIWidgets {
             }
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+            ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 30.0f);
         }
 
         if (ImGui::SliderInt(id, &val, min, max, format, ImGuiSliderFlags_AlwaysClamp))
@@ -317,6 +318,7 @@ namespace UIWidgets {
         
         if (PlusMinusButton) {
             std::string PlusBTNName = " + ##" + std::string(cvarName);
+            ImGui::PopItemWidth();
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
             if (ImGui::Button(PlusBTNName.c_str())) {
@@ -376,6 +378,7 @@ namespace UIWidgets {
             }
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+            ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 30.0f);
         }
 
         if (ImGui::SliderFloat(id, &val, min, max, format, ImGuiSliderFlags_AlwaysClamp)) {
@@ -387,6 +390,7 @@ namespace UIWidgets {
         
         if (PlusMinusButton) {
             std::string PlusBTNName = " + ##" + std::string(cvarName);
+            ImGui::PopItemWidth();
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
             if (ImGui::Button(PlusBTNName.c_str())) {

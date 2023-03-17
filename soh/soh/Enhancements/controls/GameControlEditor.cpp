@@ -210,6 +210,7 @@ namespace GameControlEditor {
             UIWidgets::EnhancementCheckbox("Play with D-pad", "gDpadOcarina");
             TableHelper::NextCol();
             UIWidgets::EnhancementCheckbox("Play with camera stick", "gRStickOcarina");
+            UIWidgets::Spacer(0);
             ImGui::EndTable();
         }
         SohImGui::EndGroupPanel();
@@ -250,6 +251,7 @@ namespace GameControlEditor {
         } else {
             CVarSetFloat("gFirstPersonCameraSensitivity", 1.0f);
         }
+        UIWidgets::Spacer(0);
         SohImGui::EndGroupPanel();
 
         UIWidgets::Spacer(0);
@@ -262,14 +264,15 @@ namespace GameControlEditor {
         DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera");
         UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
         DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera");
-+       UIWidgets::EnhancementSliderFloat("Third-Person Horizontal Sensitivity: %d %%", "##ThirdPersonSensitivity Horizontal",
-+                                            "gThirdPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true);
-+       UIWidgets::EnhancementSliderFloat("Third-Person Vertical Sensitivity: %d %%", "##ThirdPersonSensitivity Vertical",
-+                                          "gThirdPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true);
-        UIWidgets::EnhancementSliderInt("Camera Distance: %d", "##CamDist",
-                                        "gFreeCameraDistMax", 100, 900, "", 185);
-        UIWidgets::EnhancementSliderInt("Camera Transition Speed: %d", "##CamTranSpeed",
-                                        "gFreeCameraTransitionSpeed", 0, 900, "", 25);
+        UIWidgets::Spacer(0);
++       UIWidgets::PaddedEnhancementSliderFloat("Third-Person Horizontal Sensitivity: %d %%", "##ThirdPersonSensitivity Horizontal",
++                                            "gThirdPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true, true, false, true);
++       UIWidgets::PaddedEnhancementSliderFloat("Third-Person Vertical Sensitivity: %d %%", "##ThirdPersonSensitivity Vertical",
++                                          "gThirdPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true, true, false, true);
+        UIWidgets::PaddedEnhancementSliderInt("Camera Distance: %d", "##CamDist",
+                                        "gFreeCameraDistMax", 100, 900, "", 185, true, false, true);
+        UIWidgets::PaddedEnhancementSliderInt("Camera Transition Speed: %d", "##CamTranSpeed",
+                                        "gFreeCameraTransitionSpeed", 0, 900, "", 25, true, false, true);
         SohImGui::EndGroupPanel();
     }
 

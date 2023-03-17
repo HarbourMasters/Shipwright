@@ -368,7 +368,7 @@ void DrawSfxEditor(bool& open) {
                 ImGui::SameLine();
                 ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
                 UIWidgets::EnhancementSliderInt("Overlay Duration: %d seconds", "##SeqNameOverlayDuration",
-                                                "gSeqNameOverlayDuration", 1, 10, "", 5);
+                                                "gSeqNameOverlayDuration", 1, 10, "", 5, false);
                 ImGui::PopItemWidth();
                 ImGui::NewLine();
                 UIWidgets::PaddedSeparator();
