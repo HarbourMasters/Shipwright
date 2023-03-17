@@ -308,17 +308,17 @@ namespace UIWidgets {
             }
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-            ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 30.0f);
         }
 
+        ImGui::PushItemWidth(std::min((ImGui::GetContentRegionAvail().x - (PlusMinusButton ? 30.0f : 0.0f)), maxSliderWidth));
         if (ImGui::SliderInt(id, &val, min, max, format, ImGuiSliderFlags_AlwaysClamp))
         {
             changed = true;
         }
+        ImGui::PopItemWidth();
         
         if (PlusMinusButton) {
             std::string PlusBTNName = " + ##" + std::string(cvarName);
-            ImGui::PopItemWidth();
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
             if (ImGui::Button(PlusBTNName.c_str())) {
@@ -378,19 +378,19 @@ namespace UIWidgets {
             }
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-            ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 30.0f);
         }
 
+        ImGui::PushItemWidth(std::min((ImGui::GetContentRegionAvail().x - (PlusMinusButton ? 30.0f : 0.0f)), maxSliderWidth));
         if (ImGui::SliderFloat(id, &val, min, max, format, ImGuiSliderFlags_AlwaysClamp)) {
             if (isPercentage) {
                 val = roundf(val * 100) / 100;
             }
             changed = true;
         }
+        ImGui::PopItemWidth();
         
         if (PlusMinusButton) {
             std::string PlusBTNName = " + ##" + std::string(cvarName);
-            ImGui::PopItemWidth();
             ImGui::SameLine();
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
             if (ImGui::Button(PlusBTNName.c_str())) {

@@ -41,6 +41,7 @@ namespace UIWidgets {
         Checkmark,
         None
     };
+    constexpr float maxSliderWidth = 260.0f;
 
     char* WrappedText(const char* text, unsigned int charactersPerLine = 60);
     char* WrappedText(const std::string& text, unsigned int charactersPerLine);

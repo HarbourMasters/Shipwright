@@ -4033,17 +4033,19 @@ void DrawRandoEditor(bool& open) {
                 ImGui::BeginChild("ChildTimeSavers", ImVec2(0, -8));
 
                 // Cuccos to return
-                UIWidgets::EnhancementSliderInt("Cuccos to return: %d", "##RandoCuccosToReturn",
-                                               "gRandomizeCuccosToReturn", 0, 7, "", 7);
+                int cuccos = CVarGetInteger("gRandomizeCuccosToReturn", 7);
+                ImGui::Text("Cuccos to return: %d", cuccos);
                 UIWidgets::InsertHelpHoverText("The amount of cuccos needed to claim the reward from Anju the cucco lady");
-
+                ImGui::SameLine();
+                UIWidgets::EnhancementSliderInt("", "##RandoCuccosToReturn", "gRandomizeCuccosToReturn", 0, 7, "", 7);
                 UIWidgets::PaddedSeparator();
 
                 // Big Poe Target Count
-                UIWidgets::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
-                                               "gRandomizeBigPoeTargetCount", 1, 10, "", 10);
+                int poes = CVarGetInteger("gRandomizeBigPoeTargetCount", 10);
+                ImGui::Text("Big Poe Target Count: %d", poes);
                 UIWidgets::InsertHelpHoverText("The Poe collector will give a reward for turning in this many Big Poes.");
-
+                ImGui::SameLine();
+                UIWidgets::EnhancementSliderInt("", "##RandoBigPoeTargetCount", "gRandomizeBigPoeTargetCount", 1, 10, "", 10);
                 UIWidgets::PaddedSeparator();
 
                 // Skip child stealth
