@@ -2,6 +2,7 @@
 #include <map>
 #include <string>
 #include <libultraship/bridge.h>
+#include <ImGuiImpl.h>
 #include "z64.h"
 
 // Trick names and descriptions obtained from https://github.com/OoTRandomizer/OoT-Randomizer/blob/Dev/SettingsList.py with additions and edits
@@ -28,7 +29,7 @@ std::map<RandomizerTrick, RandomizerTrickObject> rtObjects = {
     RT_OBJECT(RT_RUSTED_SWITCHES,                           RTVORMQ_BOTH,    RTAREA_GENERAL,                false,                                     "Hammer Rusted Switches Through Walls", "Applies to: - Fire Temple Highest Goron Chest. - MQ Fire Temple Lizalfos Maze. - MQ Spirit Trial."),
     RT_OBJECT(RT_FLAMING_CHESTS,                            RTVORMQ_BOTH,    RTAREA_GENERAL,                false,                                     "Flaming Chests", "The chests encircled in flames in Gerudo Training Grounds and in Spirit Temple can be opened by running into the flames while Link is invincible after taking damage."),
     RT_OBJECT(RT_BUNNY_HOOD_JUMPS,                          RTVORMQ_BOTH,    RTAREA_GENERAL,                false,                                     "Bunny Hood Jumps", "Allows reaching locations using Bunny Hood's extended jumps."),
-    RT_OBJECT(RT_DAMAGE_BOOST_SIMPLE,                       RTVORMQ_BOTH,    RTAREA_GENERAL,                false,                                     "Simple damage boosts", "Allows damage boosts to reach more locations. Does not include spirit"),
+    RT_OBJECT(RT_DAMAGE_BOOST_SIMPLE,                       RTVORMQ_BOTH,    RTAREA_GENERAL,                false,                                     "Simple damage boosts", "Allows damage boosts to reach more locations. Does not include early spirit climb."),
     RT_OBJECT(RT_HOVER_BOOST_SIMPLE,                        RTVORMQ_BOTH,    RTAREA_GENERAL,                false,                                     "Simple hover boosts", "Allows equipping of hover boots when link is moving at high speeds to extend distance covered. Can be combined with \"Simple damage boosts\" for greater uses."),
     RT_OBJECT(RT_KF_ADULT_GS,                               RTVORMQ_BOTH,    RTAREA_KOKIRI_FOREST,          false,                                     "Adult Kokiri Forest GS with Hover Boots", "Can be obtained without Hookshot by using the Hover Boots off of one of the roots."),
     RT_OBJECT(RT_LW_BRIDGE,                                 RTVORMQ_BOTH,    RTAREA_LOST_WOODS,             false,                                     "Jump onto the Lost Woods Bridge as Adult with Nothing", "With very precise movement it's possible for adult to jump onto the bridge without needing Longshot, Hover Boots, or Bean."),
@@ -247,4 +248,77 @@ std::map<RandomizerTrickArea, std::map<RandomizerTrick,RandomizerTrickObject>> R
 
 std::string RandomizerTricks::GetRTAreaName(RandomizerTrickArea area) {
     return rtAreaNames[area];
+}
+
+ImVec4 RandomizerTricks::GetRTAreaColor(RandomizerTrickArea area) {
+    switch (area) {
+        case RTAREA_GENERAL:
+            return ImVec4(0.4f,0.4f,0.4f,1.0f);
+        case RTAREA_KOKIRI_FOREST:
+            return ImVec4(0.3f,0.6f,0.0f,1.0f);
+        case RTAREA_LOST_WOODS:
+            return ImVec4(0.0f,0.6f,0.0f,1.0f);
+        case RTAREA_SACRED_FOREST_MEADOW:
+            return ImVec4(0.0f,0.6f,0.2f,1.0f);
+        case RTAREA_HYRULE_FIELD:
+            return ImVec4(0.5f,1.0f,0.2f,1.0f);
+        case RTAREA_LAKE_HYLIA:
+            return ImVec4(0.0f,0.2f,1.0f,1.0f);
+        case RTAREA_GERUDO_VALLEY:
+            return ImVec4(0.6f,0.6f,0.15f,1.0f);
+        case RTAREA_GERUDO_FORTRESS:
+            return ImVec4(0.6f,0.5f,0.2f,1.0f);
+        case RTAREA_WASTELAND:
+            return ImVec4(0.7f,0.6f,0.3f,1.0f);
+        case RTAREA_DESERT_COLOSSUS:
+            return ImVec4(0.5f,0.5f,0.3f,1.0f);
+        case RTAREA_MARKET:
+            return ImVec4(0.6f,0.6f,0.6f,1.0f);
+        case RTAREA_HYRULE_CASTLE:
+            return ImVec4(0.5f,0.5f,0.5f,1.0f);
+        case RTAREA_KAKARIKO_VILLAGE:
+            return ImVec4(0.8f,0.4f,0.25f,1.0f);
+        case RTAREA_GRAVEYARD:
+            return ImVec4(0.5f,0.0f,1.0f,1.0f);
+        case RTAREA_DEATH_MOUNTAIN_TRAIL:
+            return ImVec4(0.8f,0.3f,0.1f,1.0f);
+        case RTAREA_GORON_CITY:
+            return ImVec4(0.75f,0.60f,0.18f,1.0f);
+        case RTAREA_DEATH_MOUNTAIN_CRATER:
+            return ImVec4(1.0f,0.0f,0.0f,1.0f);
+        case RTAREA_ZORAS_RIVER:
+            return ImVec4(0.0f,0.5f,0.7f,1.0f);
+        case RTAREA_ZORAS_DOMAIN:
+            return ImVec4(0.0f,0.5f,0.5f,1.0f);
+        case RTAREA_ZORAS_FOUNTAIN:
+            return ImVec4(0.0f,0.6f,0.75f,1.0f);
+        case RTAREA_LON_LON_RANCH:
+            return ImVec4(0.4f,0.25f,0.1f,1.0f);
+        case RTAREA_DEKU_TREE:
+            return ImVec4(0.2f,0.65f,0.3f,1.0f);
+        case RTAREA_DODONGOS_CAVERN:
+            return ImVec4(0.88f,0.07f,0.37f,1.0f);
+        case RTAREA_JABU_JABUS_BELLY:
+            return ImVec4(0.06f,0.32f,0.73f,1.0f);
+        case RTAREA_FOREST_TEMPLE:
+            return ImVec4(0.1f,0.55f,0.1f,1.0f);
+        case RTAREA_FIRE_TEMPLE:
+            return ImVec4(1.0f,0.4f,0.0f,1.0f);
+        case RTAREA_WATER_TEMPLE:
+            return ImVec4(0.0f,0.0f,1.0f,1.0f);
+        case RTAREA_SPIRIT_TEMPLE:
+            return ImVec4(0.7f,0.35f,0.0f,1.0f);
+        case RTAREA_SHADOW_TEMPLE:
+            return ImVec4(0.45f,0.0f,0.45f,1.0f);
+        case RTAREA_BOTTOM_OF_THE_WELL:
+            return ImVec4(0.7f,0.05f,1.0f,1.0f);
+        case RTAREA_ICE_CAVERN:
+            return ImVec4(0.0f,0.65f,0.65f,1.0f);
+        case RTAREA_GERUDO_TRAINING_GROUND:
+            return ImVec4(0.65f,0.57f,0.0f,1.0f);
+        case RTAREA_GANONS_CASTLE:
+            return ImVec4(0.2f,0.0f,0.4f,1.0f);
+        default:
+            return ImVec4(0.1f,0.1f,0.1f,1.0f);
+    }
 }

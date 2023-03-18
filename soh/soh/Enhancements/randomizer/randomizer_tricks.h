@@ -2,6 +2,7 @@
 #include "randomizerTypes.h"
 #include <string>
 #include <map>
+#include <ImGuiImpl.h>
 
 typedef enum {
     RTAREA_GENERAL,
@@ -65,4 +66,5 @@ typedef struct {
 namespace RandomizerTricks {
     std::map<RandomizerTrickArea, std::map<RandomizerTrick,RandomizerTrickObject>> GetAllRTObjectsByArea();
     std::string GetRTAreaName(RandomizerTrickArea area);
+    ImVec4 GetRTAreaColor(RandomizerTrickArea area);
 }
