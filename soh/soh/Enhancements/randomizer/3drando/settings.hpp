@@ -879,7 +879,7 @@ class Menu {
 };
 
 namespace Settings {
-void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<int> enabledTricksNums);
+void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks);
   SettingsContext FillContext();
   void InitSettings();
   void SetDefaultSettings();

@@ -3039,11 +3039,11 @@ void GenerateRandomizerImgui(std::string seed = "") {
 
     // todo: better way to sort out linking tricks rather than name
     
-    std::set<int> enabledTricksNums;
+    std::set<RandomizerTrick> enabledTricks;
     std::stringstream enabledTrickStringStream(CVarGetString("gRandomizeEnabledTricks", ""));
     std::string enabledTrickString;
     while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
-        enabledTricksNums.insert(std::stoi(enabledTrickString));
+        enabledTricks.insert((RandomizerTrick)std::stoi(enabledTrickString));
     }
     
 
@@ -3058,7 +3058,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
         }
     }
 
-    RandoMain::GenerateRando(cvarSettings, excludedLocations, enabledTricksNums, seed);
+    RandoMain::GenerateRando(cvarSettings, excludedLocations, enabledTricks, seed);
 
     CVarSetInteger("gRandoGenerating", 0);
     CVarSave();
@@ -4438,7 +4438,6 @@ void DrawRandoEditor(bool& open) {
         if (ImGui::BeginTabItem("Tricks/Glitches")) {
             if (!tricksTabOpen) {
                 tricksTabOpen = true;
-                //TODO have update based on available locations
                 //RandomizerTricks::UpdateImGuiVisibility();
                 // todo: this efficently when we build out cvar array support
                 std::stringstream enabledTrickStringStream(CVarGetString("gRandomizeEnabledTricks", ""));
@@ -4534,26 +4533,27 @@ void DrawRandoEditor(bool& open) {
             };
             if (ImGui::BeginTabBar("TrickGlitchTabs", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
                 if (ImGui::BeginTabItem("Tricks")) {
-
                     static ImGuiTextFilter trickSearch;
                     trickSearch.Draw("Filter (inc,-exc)", 490.0f);
-                    ImGui::SameLine();
-                    if (ImGui::Button("Disable all")) {
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                auto etfound = enabledTricks.find(randomizerTrick);
-                                if (!rtObject.rtGlitch && etfound != enabledTricks.end() && trickSearch.PassFilter(rtObject.rtShortName.c_str()) && showType[rtArea]) {
-                                    enabledTricks.erase(etfound);
+                    if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
+                        ImGui::SameLine();
+                        if (ImGui::Button("Disable all")) {
+                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                                for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                    auto etfound = enabledTricks.find(randomizerTrick);
+                                    if (!rtObject.rtGlitch && etfound != enabledTricks.end() && trickSearch.PassFilter(rtObject.rtShortName.c_str()) && showType[rtArea]) {
+                                        enabledTricks.erase(etfound);
+                                    }
                                 }
                             }
                         }
-                    }
-                    ImGui::SameLine();
-                    if (ImGui::Button("Enable all")) {
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                if (!rtObject.rtGlitch && !enabledTricks.count(rtObject.rt) && trickSearch.PassFilter(rtObject.rtShortName.c_str()) && showType[rtArea]) {
-                                    enabledTricks.insert(randomizerTrick);
+                        ImGui::SameLine();
+                        if (ImGui::Button("Enable all")) {
+                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                                for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                    if (!rtObject.rtGlitch && !enabledTricks.count(rtObject.rt) && trickSearch.PassFilter(rtObject.rtShortName.c_str()) && showType[rtArea]) {
+                                        enabledTricks.insert(randomizerTrick);
+                                    }
                                 }
                             }
                         }
@@ -4567,104 +4567,124 @@ void DrawRandoEditor(bool& open) {
                         ImGui::TableHeadersRow();
                         ImGui::PopItemFlag();
                         ImGui::TableNextRow();
-
-                        // COLUMN 1 - TAG FILTERS
-                        ImGui::TableNextColumn();
-                        if (ImGui::Button("Show all")) {
-                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                                showType[rtArea] = true;
-                            }
-                        }
-                        ImGui::SameLine();
-                        if (ImGui::Button("Hide all")) {
-                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                                showType[rtArea] = false;
-                            }
-                        }
-                        ImGui::BeginChild("ChildTrickAreas", ImVec2(0, -8));
-                        ImGui::BeginTable("TrickAreas", 1, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders);
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            ImGui::TableNextRow();
-                            ImGui::TableNextColumn();
-                            ImGui::PushStyleColor(ImGuiCol_Header, RandomizerTricks::GetRTAreaColor(rtArea));
-                            ImGui::Selectable(RandomizerTricks::GetRTAreaName(rtArea).c_str(), &showType[rtArea]);
-                            ImGui::PopStyleColor(1);
-                        }
-                        // code for checking colours for all possible area tags
-                        /*for (auto [rtArea, selectedState] : showType) {
-                            ImGui::TableNextRow();
-                            ImGui::TableNextColumn();
-                            ImGui::PushStyleColor(ImGuiCol_Header, RandomizerTricks::GetRTAreaColor(rtArea));
-                            ImGui::Selectable(RandomizerTricks::GetRTAreaName(rtArea).c_str(), &showType[rtArea]);
-                            ImGui::PopStyleColor(1);
-                        }*/
-                        ImGui::EndTable();
-                        ImGui::EndChild();
-
-                        // COLUMN 2 - DISABLED TRICKS
-                        ImGui::TableNextColumn();
-                        window->DC.CurrLineTextBaseOffset = 0.0f;
                         
-                        ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8));
-
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                if (rtObject.visibleInImgui &&
-                                    trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
-                                    showType[rtArea] &&
-                                    !enabledTricks.count(rtObject.rt) &&
-                                    !rtObject.rtGlitch) {
-                                    if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Right)) {
-                                        enabledTricks.insert(rtObject.rt);
-                                    }
-                                    ImGui::SameLine();
-                                    DrawTypeChip(rtArea);
-                                    ImGui::SameLine();
-                                    ImGui::Text(rtObject.rtShortName.c_str());
-                                    UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                        if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
+                            // COLUMN 1 - TAG FILTERS
+                            ImGui::TableNextColumn();
+                            if (ImGui::Button("Show all")) {
+                                for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                                    showType[rtArea] = true;
                                 }
                             }
-                        }
-                        ImGui::EndChild();
-
-                        
-
-                        // COLUMN 3 - ENABLED TRICKS
-                        ImGui::TableNextColumn();
-                        window->DC.CurrLineTextBaseOffset = 0.0f;
-                        
-                        ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8));
-
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                auto etfound = enabledTricks.find(rtObject.rt);
-                                if (rtObject.visibleInImgui &&
-                                    trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
-                                    showType[rtArea] &&
-                                    etfound != enabledTricks.end() &&
-                                    !rtObject.rtGlitch) {
-                                    
-                                    if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Left)) {
-                                        enabledTricks.erase(etfound);
-                                    }
-                                    ImGui::SameLine();
-                                    DrawTypeChip(rtArea);
-                                    ImGui::SameLine();
-                                    ImGui::Text(rtObject.rtShortName.c_str());
-                                    UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                            ImGui::SameLine();
+                            if (ImGui::Button("Hide all")) {
+                                for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                                    showType[rtArea] = false;
                                 }
                             }
-                        }
-                        ImGui::EndChild();
+                            ImGui::BeginChild("ChildTrickAreas", ImVec2(0, -8));
+                            ImGui::BeginTable("TrickAreas", 1, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders);
+                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                                ImGui::TableNextRow();
+                                ImGui::TableNextColumn();
+                                ImGui::PushStyleColor(ImGuiCol_Header, RandomizerTricks::GetRTAreaColor(rtArea));
+                                ImGui::Selectable(RandomizerTricks::GetRTAreaName(rtArea).c_str(), &showType[rtArea]);
+                                ImGui::PopStyleColor(1);
+                            }
+                            // code for checking colours for all possible area tags
+                            /*for (auto [rtArea, selectedState] : showType) {
+                                ImGui::TableNextRow();
+                                ImGui::TableNextColumn();
+                                ImGui::PushStyleColor(ImGuiCol_Header, RandomizerTricks::GetRTAreaColor(rtArea));
+                                ImGui::Selectable(RandomizerTricks::GetRTAreaName(rtArea).c_str(), &showType[rtArea]);
+                                ImGui::PopStyleColor(1);
+                            }*/
+                            ImGui::EndTable();
+                            ImGui::EndChild();
 
-                        std::string enabledTrickString = "";
-                        for (auto enabledTrickIt : enabledTricks) {
-                            enabledTrickString += std::to_string(enabledTrickIt);
-                            enabledTrickString += ",";
-                        }
-                        CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                        SohImGui::RequestCvarSaveOnNextTick();
+                            // COLUMN 2 - DISABLED TRICKS
+                            ImGui::TableNextColumn();
+                            window->DC.CurrLineTextBaseOffset = 0.0f;
+                            
+                            ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8));
 
+                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                                for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                    if (rtObject.visibleInImgui &&
+                                        trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                        showType[rtArea] &&
+                                        !enabledTricks.count(rtObject.rt) &&
+                                        !rtObject.rtGlitch) {
+                                        if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Right)) {
+                                            enabledTricks.insert(rtObject.rt);
+                                            std::string enabledTrickString = "";
+                                            for (auto enabledTrickIt : enabledTricks) {
+                                                enabledTrickString += std::to_string(enabledTrickIt);
+                                                enabledTrickString += ",";
+                                            }
+                                            CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                                            SohImGui::RequestCvarSaveOnNextTick();
+                                        }
+                                        ImGui::SameLine();
+                                        DrawTypeChip(rtArea);
+                                        ImGui::SameLine();
+                                        ImGui::Text(rtObject.rtShortName.c_str());
+                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                    }
+                                }
+                            }
+                            ImGui::EndChild();
+
+                            
+
+                            // COLUMN 3 - ENABLED TRICKS
+                            ImGui::TableNextColumn();
+                            window->DC.CurrLineTextBaseOffset = 0.0f;
+                            
+                            ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8));
+
+                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                                for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                    auto etfound = enabledTricks.find(rtObject.rt);
+                                    if (rtObject.visibleInImgui &&
+                                        trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                        showType[rtArea] &&
+                                        etfound != enabledTricks.end() &&
+                                        !rtObject.rtGlitch) {
+                                        
+                                        if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Left)) {
+                                            enabledTricks.erase(etfound);
+                                            std::string enabledTrickString = "";
+                                            for (auto enabledTrickIt : enabledTricks) {
+                                                enabledTrickString += std::to_string(enabledTrickIt);
+                                                enabledTrickString += ",";
+                                            }
+                                            CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                                            SohImGui::RequestCvarSaveOnNextTick();
+                                        }
+                                        ImGui::SameLine();
+                                        DrawTypeChip(rtArea);
+                                        ImGui::SameLine();
+                                        ImGui::Text(rtObject.rtShortName.c_str());
+                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                    }
+                                }
+                            }
+                            ImGui::EndChild();
+                        } else {
+                            ImGui::TableNextColumn();
+                            ImGui::BeginChild("ChildTrickAreas", ImVec2(0, -8));
+                            ImGui::Text("Requires Logic Turned On.");
+                            ImGui::EndChild();
+                            ImGui::TableNextColumn();
+                            ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8));
+                            ImGui::Text("Requires Logic Turned On.");
+                            ImGui::EndChild();
+                            ImGui::TableNextColumn();
+                            ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8));
+                            ImGui::Text("Requires Logic Turned On.");
+                            ImGui::EndChild();
+                        }
                         ImGui::EndTable();
                     }
                     ImGui::EndTabItem();
@@ -4673,23 +4693,25 @@ void DrawRandoEditor(bool& open) {
 
                     static ImGuiTextFilter glitchSearch;
                     glitchSearch.Draw("Filter (inc,-exc)", 490.0f);
-                    ImGui::SameLine();
-                    if (ImGui::Button("Disable all")) {
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                auto etfound = enabledGlitches.find(randomizerTrick);
-                                if (rtObject.rtGlitch && etfound != enabledGlitches.end() && glitchSearch.PassFilter(rtObject.rtShortName.c_str()) && showType[rtArea]) {
-                                    enabledGlitches.erase(etfound);
+                    if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHED) {
+                        ImGui::SameLine();
+                        if (ImGui::Button("Disable all")) {
+                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                                for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                    auto etfound = enabledGlitches.find(randomizerTrick);
+                                    if (rtObject.rtGlitch && etfound != enabledGlitches.end() && glitchSearch.PassFilter(rtObject.rtShortName.c_str()) && showType[rtArea]) {
+                                        enabledGlitches.erase(etfound);
+                                    }
                                 }
                             }
                         }
-                    }
-                    ImGui::SameLine();
-                    if (ImGui::Button("Enable all")) {
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                if (rtObject.rtGlitch && !enabledGlitches.count(rtObject.rt) && glitchSearch.PassFilter(rtObject.rtShortName.c_str()) && showType[rtArea]) {
-                                    enabledGlitches.insert(randomizerTrick);
+                        ImGui::SameLine();
+                        if (ImGui::Button("Enable all")) {
+                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                                for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                    if (rtObject.rtGlitch && !enabledGlitches.count(rtObject.rt) && glitchSearch.PassFilter(rtObject.rtShortName.c_str()) && showType[rtArea]) {
+                                        enabledGlitches.insert(randomizerTrick);
+                                    }
                                 }
                             }
                         }
@@ -4704,103 +4726,116 @@ void DrawRandoEditor(bool& open) {
                         ImGui::PopItemFlag();
                         ImGui::TableNextRow();
 
-                        // COLUMN 1 - TAG FILTERS
-                        ImGui::TableNextColumn();
-                        if (ImGui::Button("Show all")) {
-                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                                showType[rtArea] = true;
-                            }
-                        }
-                        ImGui::SameLine();
-                        if (ImGui::Button("Hide all")) {
-                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                                showType[rtArea] = false;
-                            }
-                        }
-                        ImGui::BeginChild("ChildGlitchAreas", ImVec2(0, -8));
-                        ImGui::BeginTable("GlitchAreas", 1, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders);
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            ImGui::TableNextRow();
-                            ImGui::TableNextColumn();
-                            ImGui::PushStyleColor(ImGuiCol_Header, RandomizerTricks::GetRTAreaColor(rtArea));
-                            ImGui::Selectable(RandomizerTricks::GetRTAreaName(rtArea).c_str(), &showType[rtArea]);
-                            ImGui::PopStyleColor(1);
-                        }
-                        // code for checking colours for all possible area tags
-                        /*for (auto [rtArea, selectedState] : showType) {
-                            ImGui::TableNextRow();
-                            ImGui::TableNextColumn();
-                            ImGui::PushStyleColor(ImGuiCol_Header, RandomizerTricks::GetRTAreaColor(rtArea));
-                            ImGui::Selectable(RandomizerTricks::GetRTAreaName(rtArea).c_str(), &showType[rtArea]);
-                            ImGui::PopStyleColor(1);
-                        }*/
-                        ImGui::EndTable();
-                        ImGui::EndChild();
+                        if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHED) {
 
-                        // COLUMN 2 - DISABLED GLITCHES
-                        ImGui::TableNextColumn();
-                        window->DC.CurrLineTextBaseOffset = 0.0f;
-                        
-                        ImGui::BeginChild("ChildGlitchesDisabled", ImVec2(0, -8));
-
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                if (rtObject.visibleInImgui &&
-                                    glitchSearch.PassFilter(rtObject.rtShortName.c_str()) &&
-                                    showType[rtArea] &&
-                                    !enabledGlitches.count(rtObject.rt) &&
-                                    rtObject.rtGlitch) {
-                                    if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Right)) {
-                                        enabledGlitches.insert(rtObject.rt);
-                                    }
-                                    ImGui::SameLine();
-                                    DrawTypeChip(rtArea);
-                                    ImGui::SameLine();
-                                    ImGui::Text(rtObject.rtShortName.c_str());
-                                    UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                            // COLUMN 1 - TAG FILTERS
+                            ImGui::TableNextColumn();
+                            if (ImGui::Button("Show all")) {
+                                for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                                    showType[rtArea] = true;
                                 }
                             }
-                        }
-                        ImGui::EndChild();
-
-                        
-
-                        // COLUMN 3 - ENABLED GLITCHES
-                        ImGui::TableNextColumn();
-                        window->DC.CurrLineTextBaseOffset = 0.0f;
-                        
-                        ImGui::BeginChild("ChildGlitchesEnabled", ImVec2(0, -8));
-
-                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                            for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                auto etfound = enabledGlitches.find(rtObject.rt);
-                                if (rtObject.visibleInImgui &&
-                                    glitchSearch.PassFilter(rtObject.rtShortName.c_str()) &&
-                                    showType[rtArea] &&
-                                    etfound != enabledGlitches.end() &&
-                                    rtObject.rtGlitch) {
-                                    
-                                    if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Left)) {
-                                        enabledGlitches.erase(etfound);
-                                    }
-                                    ImGui::SameLine();
-                                    DrawTypeChip(rtArea);
-                                    ImGui::SameLine();
-                                    ImGui::Text(rtObject.rtShortName.c_str());
-                                    UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                            ImGui::SameLine();
+                            if (ImGui::Button("Hide all")) {
+                                for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                                    showType[rtArea] = false;
                                 }
                             }
-                        }
-                        ImGui::EndChild();
+                            ImGui::BeginChild("ChildGlitchAreas", ImVec2(0, -8));
+                            ImGui::BeginTable("GlitchAreas", 1, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders);
+                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                                ImGui::TableNextRow();
+                                ImGui::TableNextColumn();
+                                ImGui::PushStyleColor(ImGuiCol_Header, RandomizerTricks::GetRTAreaColor(rtArea));
+                                ImGui::Selectable(RandomizerTricks::GetRTAreaName(rtArea).c_str(), &showType[rtArea]);
+                                ImGui::PopStyleColor(1);
+                            }
+                            ImGui::EndTable();
+                            ImGui::EndChild();
 
-                        std::string enabledGlitchString = "";
-                        for (auto enabledGlitchIt : enabledGlitches) {
-                            enabledGlitchString += std::to_string(enabledGlitchIt);
-                            enabledGlitchString += ",";
-                        }
-                        CVarSetString("gRandomizeEnabledGlitches", enabledGlitchString.c_str());
-                        SohImGui::RequestCvarSaveOnNextTick();
+                            // COLUMN 2 - DISABLED GLITCHES
+                            ImGui::TableNextColumn();
+                            window->DC.CurrLineTextBaseOffset = 0.0f;
+                            
+                            ImGui::BeginChild("ChildGlitchesDisabled", ImVec2(0, -8));
 
+                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                                for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                    if (rtObject.visibleInImgui &&
+                                        glitchSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                        showType[rtArea] &&
+                                        !enabledGlitches.count(rtObject.rt) &&
+                                        rtObject.rtGlitch) {
+                                        if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Right)) {
+                                            enabledGlitches.insert(rtObject.rt);
+                                            std::string enabledGlitchString = "";
+                                            for (auto enabledGlitchIt : enabledGlitches) {
+                                                enabledGlitchString += std::to_string(enabledGlitchIt);
+                                                enabledGlitchString += ",";
+                                            }
+                                            CVarSetString("gRandomizeEnabledGlitches", enabledGlitchString.c_str());
+                                            SohImGui::RequestCvarSaveOnNextTick();
+                                        }
+                                        ImGui::SameLine();
+                                        DrawTypeChip(rtArea);
+                                        ImGui::SameLine();
+                                        ImGui::Text(rtObject.rtShortName.c_str());
+                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                    }
+                                }
+                            }
+                            ImGui::EndChild();
+
+                            
+
+                            // COLUMN 3 - ENABLED GLITCHES
+                            ImGui::TableNextColumn();
+                            window->DC.CurrLineTextBaseOffset = 0.0f;
+                            
+                            ImGui::BeginChild("ChildGlitchesEnabled", ImVec2(0, -8));
+
+                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                                for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                    auto etfound = enabledGlitches.find(rtObject.rt);
+                                    if (rtObject.visibleInImgui &&
+                                        glitchSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                        showType[rtArea] &&
+                                        etfound != enabledGlitches.end() &&
+                                        rtObject.rtGlitch) {
+                                        
+                                        if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Left)) {
+                                            enabledGlitches.erase(etfound);
+                                            std::string enabledGlitchString = "";
+                                            for (auto enabledGlitchIt : enabledGlitches) {
+                                                enabledGlitchString += std::to_string(enabledGlitchIt);
+                                                enabledGlitchString += ",";
+                                            }
+                                            CVarSetString("gRandomizeEnabledGlitches", enabledGlitchString.c_str());
+                                            SohImGui::RequestCvarSaveOnNextTick();
+                                        }
+                                        ImGui::SameLine();
+                                        DrawTypeChip(rtArea);
+                                        ImGui::SameLine();
+                                        ImGui::Text(rtObject.rtShortName.c_str());
+                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                    }
+                                }
+                            }
+                            ImGui::EndChild();
+                        } else {
+                            ImGui::TableNextColumn();
+                            ImGui::BeginChild("ChildGlitchAreas", ImVec2(0, -8));
+                            ImGui::Text("Requires Glitched Logic.");
+                            ImGui::EndChild();
+                            ImGui::TableNextColumn();
+                            ImGui::BeginChild("ChildGlitchesDisabled", ImVec2(0, -8));
+                            ImGui::Text("Requires Glitched Logic.");
+                            ImGui::EndChild();
+                            ImGui::TableNextColumn();
+                            ImGui::BeginChild("ChildGlitchesEnabled", ImVec2(0, -8));
+                            ImGui::Text("Requires Glitched Logic.");
+                            ImGui::EndChild();
+                        }
                         ImGui::EndTable();
                     }
                     ImGui::EndTabItem();
