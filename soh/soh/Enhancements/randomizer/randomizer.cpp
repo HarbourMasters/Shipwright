@@ -245,6 +245,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Start with Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start with Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start with Fairy Ocarina", RSK_STARTING_OCARINA },
+    { "Start with Nayru's Love/Roc's Feather", RSK_STARTING_NAYRUS },
     { "Start with Zelda's Lullaby", RSK_STARTING_ZELDAS_LULLABY },
     { "Start with Epona's Song", RSK_STARTING_EPONAS_SONG },
     { "Start with Saria's Song", RSK_STARTING_SARIAS_SONG },
@@ -802,6 +803,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_OCARINA:
                     case RSK_STARTING_DEKU_SHIELD:
                     case RSK_STARTING_KOKIRI_SWORD:
+                    case RSK_STARTING_NAYRUS:
                     case RSK_STARTING_ZELDAS_LULLABY:
                     case RSK_STARTING_EPONAS_SONG:
                     case RSK_STARTING_SARIAS_SONG:
@@ -2879,6 +2881,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD] = CVarGetInteger("gRandomizeShuffleKokiriSword", 0) ||
                                              CVarGetInteger("gRandomizeStartingKokiriSword", 0);
     cvarSettings[RSK_STARTING_DEKU_SHIELD] = CVarGetInteger("gRandomizeStartingDekuShield", 0);
+    cvarSettings[RSK_STARTING_NAYRUS] = CVarGetInteger("gRandomizeStartingNayrusLove", 0);
     cvarSettings[RSK_STARTING_ZELDAS_LULLABY] = CVarGetInteger("gRandomizeStartingZeldasLullaby", 0);
     cvarSettings[RSK_STARTING_EPONAS_SONG] = CVarGetInteger("gRandomizeStartingEponasSong", 0);
     cvarSettings[RSK_STARTING_SARIAS_SONG] = CVarGetInteger("gRandomizeStartingSariasSong", 0);
@@ -4527,6 +4530,10 @@ void DrawRandoEditor(bool& open) {
                                               "gRandomizeStartingConsumables");
                 UIWidgets::PaddedSeparator();
                 UIWidgets::EnhancementSliderInt("Gold Skulltula Tokens: %d", "##RandoStartingSkulltulaToken", "gRandomizeStartingSkulltulaToken", 0, 100, "", 0, true);
+                UIWidgets::PaddedSeparator();
+                UIWidgets::EnhancementCheckbox(Settings::StartingNayrusLove.GetName().c_str(),
+                                               "gRandomizeStartingNayrusLove");
+
                 UIWidgets::PaddedSeparator();
 
                 ImGui::EndChild();

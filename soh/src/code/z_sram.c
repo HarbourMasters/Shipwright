@@ -401,6 +401,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
       
         if(Randomizer_GetSettingValue(RSK_STARTING_KOKIRI_SWORD)) Item_Give(NULL, ITEM_SWORD_KOKIRI);
         if(Randomizer_GetSettingValue(RSK_STARTING_DEKU_SHIELD)) Item_Give(NULL, ITEM_SHIELD_DEKU);
+        if(Randomizer_GetSettingValue(RSK_STARTING_NAYRUS)) Item_Give(NULL, ITEM_NAYRUS_LOVE);
 
         if (Randomizer_GetSettingValue(RSK_STARTING_ZELDAS_LULLABY)) Item_Give(NULL, ITEM_SONG_LULLABY);
         if (Randomizer_GetSettingValue(RSK_STARTING_EPONAS_SONG)) Item_Give(NULL, ITEM_SONG_EPONA);

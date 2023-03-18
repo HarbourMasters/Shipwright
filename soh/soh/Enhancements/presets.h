@@ -285,6 +285,7 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeStartingKokiriSword",
     "gRandomizeStartingMapsCompasses",
     "gRandomizeStartingMinuetOfForest",
+    "gRandomizeStartingNayrusLove",
     "gRandomizeStartingNocturneOfShadow",
     "gRandomizeStartingOcarina",
     "gRandomizeStartingPreludeOfLight",

@@ -505,7 +505,7 @@ namespace Settings {
   Option StartingLensOfTruth      = Option::U8  ("Lens of Truth",        {"Off",             "On"},                                                       {""});
   Option StartingDinsFire         = Option::U8  ("Din's Fire",           {"Off",             "On"},                                                       {""});
   Option StartingFaroresWind      = Option::U8  ("Farore's Wind",        {"Off",             "On"},                                                       {""});
-  Option StartingNayrusLove       = Option::U8  ("Nayru's Love",         {"Off",             "On"},                                                       {""});
+  Option StartingNayrusLove       = Option::U8  ("Start with Nayru's Love/Roc's Feather",         {"Off",             "On"},                                                       {""});
   Option StartingMagicBean        = Option::U8  ("Magic Beans",          {"Off",             "On"},                                                       {""});
   Option StartingBottle1          = Option::U8  ("Bottle 1",             bottleOptions,                                                                   {""});
   Option StartingBottle2          = Option::U8  ("Bottle 2",             bottleOptions,                                                                   {""});
@@ -2766,6 +2766,7 @@ namespace Settings {
     // the checkboxes work because 0 is "Off" and 1 is "On"
     StartingDekuShield.SetSelectedIndex(cvarSettings[RSK_STARTING_DEKU_SHIELD]);
     StartingKokiriSword.SetSelectedIndex(cvarSettings[RSK_STARTING_KOKIRI_SWORD]);
+    StartingNayrusLove.SetSelectedIndex(cvarSettings[RSK_STARTING_NAYRUS]);
 
     StartingSkulltulaToken.SetSelectedIndex(cvarSettings[RSK_STARTING_SKULLTULA_TOKEN]);
 

@@ -469,7 +469,8 @@ static void WriteStartingInventory() {
           setting->GetName() == "Gold Skulltula Tokens" ||
           setting->GetName() == "Start with Fairy Ocarina" ||
           setting->GetName() == "Start with Kokiri Sword" ||
-          setting->GetName() == "Start with Deku Shield") {
+          setting->GetName() == "Start with Deku Shield" ||
+          setting->GetName() == "Start with Nayru's Love/Roc's Feather") {
         jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
       }
     }
