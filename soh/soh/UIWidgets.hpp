@@ -42,6 +42,13 @@ namespace UIWidgets {
         None
     };
     constexpr float maxSliderWidth = 260.0f;
+#ifdef __SWITCH__
+    constexpr float sliderButtonWidth = 42.0f;
+#elif defined(__WIIU__)
+    constexpr float sliderButtonWidth = 60.0f;
+#else
+    constexpr float sliderButtonWidth = 30.0f;
+#endif
 
     char* WrappedText(const char* text, unsigned int charactersPerLine = 60);
     char* WrappedText(const std::string& text, unsigned int charactersPerLine);

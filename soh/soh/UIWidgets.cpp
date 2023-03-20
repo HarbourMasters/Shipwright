@@ -267,11 +267,11 @@ namespace UIWidgets {
         s32 currentValue = CVarGetInteger(cvarName, defaultIndex);
 
 #ifdef __WIIU__
-        ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(comboArray[currentValue]).x * 1.0f + 40.0f));
-        ImGui::PushItemWidth((ImGui::CalcTextSize(comboArray[currentValue]).x * 1.0f) + 60.0f);
+        ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(comboArray[currentValue]).x + 40.0f));
+        ImGui::PushItemWidth(ImGui::CalcTextSize(comboArray[currentValue]).x + 60.0f);
 #else
-        ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(comboArray[currentValue]).x * 1.0f + 20.0f));
-        ImGui::PushItemWidth((ImGui::CalcTextSize(comboArray[currentValue]).x * 1.0f) + 30.0f);
+        ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(comboArray[currentValue]).x + 20.0f));
+        ImGui::PushItemWidth(ImGui::CalcTextSize(comboArray[currentValue]).x + 30.0f);
 #endif
 
         bool changed = EnhancementCombobox(cvarName, comboArray, defaultIndex, disabled, disabledTooltipText, disabledValue);
@@ -310,7 +310,7 @@ namespace UIWidgets {
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
         }
 
-        ImGui::PushItemWidth(std::min((ImGui::GetContentRegionAvail().x - (PlusMinusButton ? 30.0f : 0.0f)), maxSliderWidth));
+        ImGui::PushItemWidth(std::min((ImGui::GetContentRegionAvail().x - (PlusMinusButton ? sliderButtonWidth : 0.0f)), maxSliderWidth));
         if (ImGui::SliderInt(id, &val, min, max, format, ImGuiSliderFlags_AlwaysClamp))
         {
             changed = true;
@@ -380,7 +380,7 @@ namespace UIWidgets {
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
         }
 
-        ImGui::PushItemWidth(std::min((ImGui::GetContentRegionAvail().x - (PlusMinusButton ? 30.0f : 0.0f)), maxSliderWidth));
+        ImGui::PushItemWidth(std::min((ImGui::GetContentRegionAvail().x - (PlusMinusButton ? sliderButtonWidth : 0.0f)), maxSliderWidth));
         if (ImGui::SliderFloat(id, &val, min, max, format, ImGuiSliderFlags_AlwaysClamp)) {
             if (isPercentage) {
                 val = roundf(val * 100) / 100;
