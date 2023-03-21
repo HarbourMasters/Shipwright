@@ -21,6 +21,86 @@ typedef struct {
 } Sprite;
 
 typedef enum {
+    HINT_TYPE_TRIAL,
+    HINT_TYPE_ALWAYS,
+    HINT_TYPE_WOTH, // Way of the Hero
+    HINT_TYPE_BARREN,
+    HINT_TYPE_ENTRANCE,
+    HINT_TYPE_SOMETIMES,
+    HINT_TYPE_RANDOM,
+    HINT_TYPE_ITEM,
+    HINT_TYPE_SONG,
+    HINT_TYPE_OVERWORLD,
+    HINT_TYPE_DUNGEON,
+    HINT_TYPE_JUNK,
+    HINT_TYPE_NAMED_ITEM,
+    HINT_TYPE_MAX
+} HintType;
+
+// Check types based on main settings
+typedef enum {
+    RCTYPE_STANDARD,       // Base set of rando checks
+    RCTYPE_SKULL_TOKEN,    // Gold Skulltulas
+    RCTYPE_COW,            // Cows
+    RCTYPE_ADULT_TRADE,    // Adult trade quest checks
+    RCTYPE_FROG_SONG,      // Frog song purple rupee checks
+    RCTYPE_MAP_COMPASS,    // Maps/Compasses
+    RCTYPE_SMALL_KEY,      // Small Keys
+    RCTYPE_GF_KEY,         // Gerudo Fortress Keys
+    RCTYPE_BOSS_KEY,       // Boss Keys
+    RCTYPE_GANON_BOSS_KEY, // Ganon's boss key
+    RCTYPE_SHOP,           // shops
+    RCTYPE_SCRUB,          // scrubs
+    RCTYPE_MERCHANT,       // merchants
+    RCTYPE_CHEST_GAME,     // todo replace this once we implement it, just using it to exclude for now
+    RCTYPE_LINKS_POCKET,   // todo this feels hacky
+    RCTYPE_GOSSIP_STONE,
+    RCTYPE_SONG_LOCATION,              // Song locations
+    RCTYPE_BOSS_HEART_OR_OTHER_REWARD, // Boss heart container or lesser dungeon rewards (lens, ice arrow)
+    RCTYPE_DUNGEON_REWARD,             // Dungeon rewards (blue warps)
+    RCTYPE_OCARINA,                    // Ocarina locations
+} RandomizerCheckType;
+
+typedef enum { RCVORMQ_VANILLA, RCVORMQ_MQ, RCVORMQ_BOTH } RandomizerCheckVanillaOrMQ;
+
+typedef enum {
+    RCAREA_KOKIRI_FOREST,
+    RCAREA_LOST_WOODS,
+    RCAREA_SACRED_FOREST_MEADOW,
+    RCAREA_HYRULE_FIELD,
+    RCAREA_LAKE_HYLIA,
+    RCAREA_GERUDO_VALLEY,
+    RCAREA_GERUDO_FORTRESS,
+    RCAREA_WASTELAND,
+    RCAREA_DESERT_COLOSSUS,
+    RCAREA_MARKET,
+    RCAREA_HYRULE_CASTLE,
+    RCAREA_KAKARIKO_VILLAGE,
+    RCAREA_GRAVEYARD,
+    RCAREA_DEATH_MOUNTAIN_TRAIL,
+    RCAREA_GORON_CITY,
+    RCAREA_DEATH_MOUNTAIN_CRATER,
+    RCAREA_ZORAS_RIVER,
+    RCAREA_ZORAS_DOMAIN,
+    RCAREA_ZORAS_FOUNTAIN,
+    RCAREA_LON_LON_RANCH,
+    RCAREA_DEKU_TREE,
+    RCAREA_DODONGOS_CAVERN,
+    RCAREA_JABU_JABUS_BELLY,
+    RCAREA_FOREST_TEMPLE,
+    RCAREA_FIRE_TEMPLE,
+    RCAREA_WATER_TEMPLE,
+    RCAREA_SPIRIT_TEMPLE,
+    RCAREA_SHADOW_TEMPLE,
+    RCAREA_BOTTOM_OF_THE_WELL,
+    RCAREA_ICE_CAVERN,
+    RCAREA_GERUDO_TRAINING_GROUND,
+    RCAREA_GANONS_CASTLE,
+    // If adding any more areas, Check Tracker will need a refactor
+    RCAREA_INVALID
+} RandomizerCheckArea;
+
+typedef enum {
     RC_UNKNOWN_CHECK,
     RC_LINKS_POCKET,
     RC_QUEEN_GOHMA,

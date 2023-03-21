@@ -129,6 +129,10 @@ typedef struct {
 
 typedef struct {
     RandomizerCheck check;
+    RandomizerCheck hintedCheck;
+    RandomizerGet rGet;
+    RandomizerCheckArea area;
+    HintType type;
     char hintText[200];
 } HintLocationRando;
 

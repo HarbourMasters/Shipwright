@@ -35,7 +35,7 @@ using json = nlohmann::json;
 json jsonData;
 std::map<HintKey, ItemLocation*> hintedLocations;
 
-extern std::array<std::string, 13> hintTypeNames;
+extern std::unordered_map<HintType, std::string> hintTypeNames;
 extern std::array<std::string, 17> hintCategoryNames;
 
 namespace {
@@ -722,14 +722,14 @@ static void WriteHints(int language) {
 
         std::string textStr = AutoFormatHintTextString(unformattedHintTextString);
         jsonData["hints"][location->GetName()]["hint"] = textStr;
-        jsonData["hints"][location->GetName()]["type"] = hintTypeNames[static_cast<int>(hintType)];
-        if (hintType == HintType::Item || hintType == HintType::NamedItem) {
+        jsonData["hints"][location->GetName()]["type"] = hintTypeNames[hintType];
+        if (hintType == HINT_TYPE_ITEM || hintType == HINT_TYPE_NAMED_ITEM) {
             jsonData["hints"][location->GetName()]["item"] = hintedLocation->GetPlacedItemName().GetEnglish();
-            if (hintType != HintType::NamedItem) {
+            if (hintType != HINT_TYPE_NAMED_ITEM) {
                 jsonData["hints"][location->GetName()]["location"] = hintedLocation->GetName();
             }
         }
-        if (hintType != HintType::Trial && hintType != HintType::Junk) {
+        if (hintType != HINT_TYPE_TRIAL && hintType != HINT_TYPE_JUNK) {
             jsonData["hints"][location->GetName()]["area"] = location->GetHintedRegion();
         }
     }

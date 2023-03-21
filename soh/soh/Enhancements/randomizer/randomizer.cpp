@@ -31,11 +31,16 @@
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
+extern std::map<RandomizerCheckArea, std::string> rcAreaNames;
+extern std::unordered_map<HintType, std::string> hintTypeNames;
+
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
 
 std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum;
 std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum;
+std::unordered_map<std::string, RandomizerCheckArea> SpoilerfileAreaNameToEnum;
+std::unordered_map<std::string, HintType> SpoilerfileHintTypeNameToEnum;
 std::multimap<std::tuple<s16, s16, s32>, RandomizerCheckObject> checkFromActorMultimap;
 std::set<RandomizerCheck> excludedLocations;
 
@@ -122,6 +127,12 @@ Randomizer::Randomizer() {
             item.GetName().english,
             item.GetName().french,
         };
+    }
+    for (auto area : rcAreaNames) {
+        SpoilerfileAreaNameToEnum[area.second] = area.first;
+    }
+    for (auto [type, name] : hintTypeNames) {
+        SpoilerfileHintTypeNameToEnum[name] = type;
     }
 }
 
@@ -1291,8 +1302,28 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         int index = 0;
         for (auto it = hintsJson.begin(); it != hintsJson.end(); ++it) {
             gSaveContext.hintLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
+            auto hintInfo = it.value();
+            if (hintInfo["location"].is_null()) {
+                gSaveContext.hintLocations[index].hintedCheck = RC_UNKNOWN_CHECK;
+            } else {
+                gSaveContext.hintLocations[index].hintedCheck = SpoilerfileCheckNameToEnum[hintInfo["location"]];
+            }
+            if (hintInfo["item"].is_null()) {
+                gSaveContext.hintLocations[index].rGet = RG_NONE;
+            } else {
+                gSaveContext.hintLocations[index].rGet = SpoilerfileGetNameToEnum[hintInfo["item"]];
+            }
+            gSaveContext.hintLocations[index].type = SpoilerfileHintTypeNameToEnum[hintInfo["type"]];
 
-            std::string hintMessage = FormatJsonHintText(it.value());
+            if (gSaveContext.hintLocations[index].type == HINT_TYPE_TRIAL) {
+                gSaveContext.hintLocations[index].area = RCAREA_GANONS_CASTLE;
+            } else if (gSaveContext.hintLocations[index].type == HINT_TYPE_JUNK) {
+                gSaveContext.hintLocations[index].area = RCAREA_INVALID;
+            } else {
+                gSaveContext.hintLocations[index].area = SpoilerfileAreaNameToEnum[hintInfo["area"]];
+            }
+
+            std::string hintMessage = FormatJsonHintText(hintInfo["hint"]);
             size_t maxHintTextSize = sizeof(gSaveContext.hintLocations[index].hintText);
             strncpy(gSaveContext.hintLocations[index].hintText, hintMessage.c_str(), maxHintTextSize - 1);
             gSaveContext.hintLocations[index].hintText[maxHintTextSize - 1] = 0;
