@@ -356,8 +356,10 @@ void BossSst_HeadSetupLurk(BossSst* this) {
 }
 
 void BossSst_HeadLurk(BossSst* this, PlayState* play) {
-    if (CVarGetInteger("gQuickBongoKill", 0))
+    if (CVarGetInteger("gQuickBongoKill", 0)) {
         this->colliderCyl.base.acFlags |= AC_ON;
+    }
+
     if (this->actor.yDistToPlayer < 1000.0f) {
         BossSst_HeadSetupIntro(this, play);
     }
@@ -365,8 +367,10 @@ void BossSst_HeadLurk(BossSst* this, PlayState* play) {
 
 void BossSst_HeadSetupIntro(BossSst* this, PlayState* play) {
     //Make sure to restore original behavior if the quick kill didn't happen
-    if (CVarGetInteger("gQuickBongoKill", 0))
+    if (CVarGetInteger("gQuickBongoKill", 0)) {
         this->colliderCyl.base.acFlags &= ~AC_ON;
+    }
+
     Player* player = GET_PLAYER(play);
 
     this->timer = 611;
