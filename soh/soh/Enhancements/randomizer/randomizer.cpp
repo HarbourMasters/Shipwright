@@ -4584,6 +4584,7 @@ void DrawRandoEditor(bool& open) {
                         
                         if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
                             // COLUMN 1 - TAG FILTERS
+                            bool hasTrick = false;
                             ImGui::TableNextColumn();
                             if (ImGui::Button("Show all")) {
                                 for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
@@ -4599,11 +4600,20 @@ void DrawRandoEditor(bool& open) {
                             ImGui::BeginChild("ChildTrickAreas", ImVec2(0, -8));
                             ImGui::BeginTable("TrickAreas", 1, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders);
                             for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                                ImGui::TableNextRow();
-                                ImGui::TableNextColumn();
-                                ImGui::PushStyleColor(ImGuiCol_Header, RandomizerTricks::GetRTAreaColor(rtArea));
-                                ImGui::Selectable(RandomizerTricks::GetRTAreaName(rtArea).c_str(), &showType[rtArea]);
-                                ImGui::PopStyleColor(1);
+                                hasTrick = false;
+                                for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                    if (!rtObject.rtGlitch) {
+                                        hasTrick = true;
+                                        break;
+                                    }
+                                }
+                                if (hasTrick) {
+                                    ImGui::TableNextRow();
+                                    ImGui::TableNextColumn();
+                                    ImGui::PushStyleColor(ImGuiCol_Header, RandomizerTricks::GetRTAreaColor(rtArea));
+                                    ImGui::Selectable(RandomizerTricks::GetRTAreaName(rtArea).c_str(), &showType[rtArea]);
+                                    ImGui::PopStyleColor(1);
+                                }
                             }
                             // code for checking colours for all possible area tags
                             /*for (auto [rtArea, selectedState] : showType) {
@@ -4707,7 +4717,7 @@ void DrawRandoEditor(bool& open) {
 
                     static ImGuiTextFilter glitchSearch;
                     glitchSearch.Draw("Filter (inc,-exc)", 490.0f);
-                    if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHED) {
+                    if (/*CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHED*/false) {
                         ImGui::SameLine();
                         if (ImGui::Button("Disable all")) {
                             for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
@@ -4740,10 +4750,11 @@ void DrawRandoEditor(bool& open) {
                         ImGui::PopItemFlag();
                         ImGui::TableNextRow();
 
-                        if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHED) {
+                        if (/*CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHED*/false) {
 
                             // COLUMN 1 - TAG FILTERS
                             ImGui::TableNextColumn();
+                            bool hasGlitch = false;
                             if (ImGui::Button("Show all")) {
                                 for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
                                     showType[rtArea] = true;
@@ -4758,11 +4769,20 @@ void DrawRandoEditor(bool& open) {
                             ImGui::BeginChild("ChildGlitchAreas", ImVec2(0, -8));
                             ImGui::BeginTable("GlitchAreas", 1, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders);
                             for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                                ImGui::TableNextRow();
-                                ImGui::TableNextColumn();
-                                ImGui::PushStyleColor(ImGuiCol_Header, RandomizerTricks::GetRTAreaColor(rtArea));
-                                ImGui::Selectable(RandomizerTricks::GetRTAreaName(rtArea).c_str(), &showType[rtArea]);
-                                ImGui::PopStyleColor(1);
+                                hasGlitch = false;
+                                for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                    if (rtObject.rtGlitch) {
+                                        hasGlitch = true;
+                                        break;
+                                    }
+                                }
+                                if (hasGlitch) {
+                                    ImGui::TableNextRow();
+                                    ImGui::TableNextColumn();
+                                    ImGui::PushStyleColor(ImGuiCol_Header, RandomizerTricks::GetRTAreaColor(rtArea));
+                                    ImGui::Selectable(RandomizerTricks::GetRTAreaName(rtArea).c_str(), &showType[rtArea]);
+                                    ImGui::PopStyleColor(1);
+                                }
                             }
                             ImGui::EndTable();
                             ImGui::EndChild();
@@ -4835,6 +4855,19 @@ void DrawRandoEditor(bool& open) {
                                     }
                                 }
                             }
+                            ImGui::EndChild();
+                        } else if (true) {
+                            ImGui::TableNextColumn();
+                            ImGui::BeginChild("ChildGlitchAreas", ImVec2(0, -8));
+                            ImGui::Text("Coming Soon.");
+                            ImGui::EndChild();
+                            ImGui::TableNextColumn();
+                            ImGui::BeginChild("ChildGlitchesDisabled", ImVec2(0, -8));
+                            ImGui::Text("Coming Soon.");
+                            ImGui::EndChild();
+                            ImGui::TableNextColumn();
+                            ImGui::BeginChild("ChildGlitchesEnabled", ImVec2(0, -8));
+                            ImGui::Text("Coming Soon.");
                             ImGui::EndChild();
                         } else {
                             ImGui::TableNextColumn();

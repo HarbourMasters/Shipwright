@@ -193,8 +193,8 @@ void AreaTable_Init_GanonsCastle() {
                   EventAccess(&NutPot,           {[]{return NutPot || (Hammer && HasBombchus && IsAdult && ((CanUse(FIRE_ARROWS) && MirrorShield) || (SunlightArrows && CanUse(LIGHT_ARROWS))));}}),
   }, {
                   //Locations
-                  LocationAccess(GANONS_CASTLE_MQ_SPIRIT_TRIAL_FIRST_CHEST,             {[]{return IsAdult && Bow && Hammer;}}),
-                  LocationAccess(GANONS_CASTLE_MQ_SPIRIT_TRIAL_INVISIBLE_CHEST,         {[]{return IsAdult && Bow && Hammer && HasBombchus && (LogicLensCastleMQ || CanUse(LENS_OF_TRUTH));}}),
+                  LocationAccess(GANONS_CASTLE_MQ_SPIRIT_TRIAL_FIRST_CHEST,             {[]{return IsAdult && (Bow || LogicRustedSwitches) && Hammer;}}),
+                  LocationAccess(GANONS_CASTLE_MQ_SPIRIT_TRIAL_INVISIBLE_CHEST,         {[]{return IsAdult && (Bow || LogicRustedSwitches) && Hammer && HasBombchus && (LogicLensCastleMQ || CanUse(LENS_OF_TRUTH));}}),
                   LocationAccess(GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_FRONT_LEFT_CHEST,    {[]{return IsAdult && Hammer && HasBombchus && ((CanUse(FIRE_ARROWS) && CanUse(MIRROR_SHIELD)) || (SunlightArrows && CanUse(LIGHT_ARROWS)));}}),
                   LocationAccess(GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_LEFT_CHEST,     {[]{return IsAdult && Hammer && HasBombchus && ((CanUse(FIRE_ARROWS) && CanUse(MIRROR_SHIELD)) || (SunlightArrows && CanUse(LIGHT_ARROWS)));}}),
                   LocationAccess(GANONS_CASTLE_MQ_SPIRIT_TRIAL_GOLDEN_GAUNTLETS_CHEST,  {[]{return IsAdult && Hammer && HasBombchus && ((CanUse(FIRE_ARROWS) && CanUse(MIRROR_SHIELD)) || (SunlightArrows && CanUse(LIGHT_ARROWS)));}}),

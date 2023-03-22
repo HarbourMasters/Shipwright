@@ -278,7 +278,7 @@ void AreaTable_Init_FireTemple() {
 
   areaTable[FIRE_TEMPLE_WEST_CENTRAL_LOWER] = Area("Fire Temple West Central Lower", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(FIRE_TEMPLE_HIGHEST_GORON_CHEST, {[]{return Here(FIRE_TEMPLE_WEST_CENTRAL_UPPER, []{return CanPlay(SongOfTime) && CanUse(MEGATON_HAMMER);});},
+                  LocationAccess(FIRE_TEMPLE_HIGHEST_GORON_CHEST, {[]{return Here(FIRE_TEMPLE_WEST_CENTRAL_UPPER, []{return (CanPlay(SongOfTime) || LogicRustedSwitches) && CanUse(MEGATON_HAMMER);});},
                                                        /*Glitched*/[]{return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::INTERMEDIATE) || Here(FIRE_TEMPLE_WEST_CENTRAL_UPPER, []{return (IsAdult || CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE) ||
                                                                              (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE))) &&
                                                                              (((SongOfTime && (((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || CanDoGlitch(GlitchType::DungeonBombOI, GlitchDifficulty::NOVICE))) ||
