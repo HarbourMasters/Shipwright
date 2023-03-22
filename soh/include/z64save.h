@@ -137,6 +137,11 @@ typedef struct {
 } HintLocationRando;
 
 typedef struct {
+    RandomizerCheck rc;
+    RandomizerCheckArea area;
+} RewardHintInfo;
+
+typedef struct {
     RandomizerSettingKey key;
     u8 value;
 } RandoSetting;
@@ -273,6 +278,7 @@ typedef struct {
     /*        */ EntranceOverride entranceOverrides[ENTRANCE_OVERRIDES_MAX_COUNT];
     /*        */ char childAltarText[250];
     /*        */ char adultAltarText[750];
+    /*        */ RewardHintInfo rewardInfo[9];
     /*        */ char ganonHintText[150];
     /*        */ char gregHintText[250];
     /*        */ char ganonText[250];
