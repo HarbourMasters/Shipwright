@@ -11,6 +11,7 @@
 #include "utils.hpp"
 #include "shops.hpp"
 #include "hints.hpp"
+#include "pool_functions.hpp"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include <nlohmann/json.hpp>
 
@@ -650,6 +651,10 @@ std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
   return textStr;
 }
 
+ItemLocation* GetItemLocation(uint32_t item) {
+    return Location(FilterFromPool(allLocations, [item](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == item;})[0]);
+}
+
 // Writes the hints to the spoiler log, if they are enabled.
 static void WriteHints(int language) {
     std::string unformattedGanonText;
@@ -670,8 +675,8 @@ static void WriteHints(int language) {
             jsonData["warpRequiemText"] = GetWarpRequiemText().GetEnglish();
             jsonData["warpNocturneText"] = GetWarpNocturneText().GetEnglish();
             jsonData["warpPreludeText"] = GetWarpPreludeText().GetEnglish();
-            jsonData["childAltarText"] = GetChildAltarText().GetEnglish();
-            jsonData["adultAltarText"] = GetAdultAltarText().GetEnglish();
+            jsonData["childAltar"]["hintText"] = GetChildAltarText().GetEnglish();
+            jsonData["adultAltar"]["hintText"] = GetAdultAltarText().GetEnglish();
             break;
         case 2:
             unformattedGanonText = GetGanonText().GetFrench();
@@ -684,10 +689,23 @@ static void WriteHints(int language) {
             jsonData["warpRequiemText"] = GetWarpRequiemText().GetFrench();
             jsonData["warpNocturneText"] = GetWarpNocturneText().GetFrench();
             jsonData["warpPreludeText"] = GetWarpPreludeText().GetFrench();
-            jsonData["childAltarText"] = GetChildAltarText().GetFrench();
-            jsonData["adultAltarText"] = GetAdultAltarText().GetFrench();
+            jsonData["childAltar"]["hintText"] = GetChildAltarText().GetFrench();
+            jsonData["adultAltar"]["hintText"] = GetAdultAltarText().GetFrench();
             break;
     }
+
+    ItemLocation* emeraldLoc = GetItemLocation(KOKIRI_EMERALD);
+    ItemLocation* rubyLoc = GetItemLocation(GORON_RUBY);
+    ItemLocation* sapphireLoc = GetItemLocation(ZORA_SAPPHIRE);
+
+    jsonData["childAltar"]["rewards"]["emeraldLoc"] = emeraldLoc->GetName();
+    jsonData["childAltar"]["rewards"]["emeraldArea"] = emeraldLoc->GetHintedRegion();
+
+    jsonData["childAltar"]["rewards"]["rubyLoc"] = rubyLoc->GetName();
+    jsonData["childAltar"]["rewards"]["rubyArea"] = rubyLoc->GetHintedRegion();
+
+    jsonData["childAltar"]["rewards"]["sapphireLoc"] = sapphireLoc->GetName();
+    jsonData["childAltar"]["rewards"]["sapphireArea"] = sapphireLoc->GetHintedRegion();
 
     std::string ganonText = AutoFormatHintTextString(unformattedGanonText);
     std::string ganonHintText = AutoFormatHintTextString(unformattedGanonHintText);
