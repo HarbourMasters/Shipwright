@@ -19,7 +19,7 @@ void AreaTable_Init_GerudoValley() {
                   Entrance(GV_UPPER_STREAM,   {[]{return true;}}),
                   Entrance(GV_CRATE_LEDGE,    {[]{return IsChild || CanUse(LONGSHOT);}}),
                   Entrance(GV_GROTTO_LEDGE,   {[]{return true;}}),
-                  Entrance(GV_FORTRESS_SIDE,  {[]{return (IsAdult && (CanRideEpona || CanUse(LONGSHOT) || GerudoFortress.Is(GERUDOFORTRESS_OPEN) || CarpenterRescue)) || (IsChild && CanUse(HOOKSHOT));},
+                  Entrance(GV_FORTRESS_SIDE,  {[]{return (IsAdult && (CanRideEpona || CanUse(LONGSHOT) || GerudoFortress.Is(GERUDOFORTRESS_OPEN) || CarpenterRescue/* || (IsAdult && CanUse(HOVER_BOOTS) && (//(LogicBunnyHoodJump && FastBunnyHood) || //LogicHoverBoost))*/)) || (IsChild && CanUse(HOOKSHOT));},
                                    /*Glitched*/[]{return (HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE)) || (IsChild && CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::HERO)) || (IsAdult && (CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HammerSlide, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::ADVANCED) ||
                                                          (CanUse(HOVER_BOOTS) && (CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE) || (CanSurviveDamage && (Bombs || HasBombchus) && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::NOVICE)) || (Bombs && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::ADVANCED))))));}}),
   });
@@ -82,6 +82,7 @@ void AreaTable_Init_GerudoValley() {
                                    /*Glitched*/[]{return GlitchGVTentAsChild.Value<bool>();}}),
                   Entrance(GV_STORMS_GROTTO,  {[]{return IsAdult && CanOpenStormGrotto;},
                                    /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsAdult && SongOfStorms && (ShardOfAgony || LogicGrottosWithoutAgony);}}),
+                  Entrance(GV_CRATE_LEDGE, {[]{return /*(IsAdult && ((Bombs && LogicDamageBoost) || (CanUse(HOVER_BOOTS) && LogicValleyCrateHovers))) || */false;}}),
   });
 
   areaTable[GV_CARPENTER_TENT] = Area("GV Carpenter Tent", "GV Carpenter Tent", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -125,7 +126,7 @@ void AreaTable_Init_GerudoValley() {
                   LocationAccess(GF_GERUDO_MEMBERSHIP_CARD,       {[]{return CanFinishGerudoFortress;}}),
                   LocationAccess(GF_GS_ARCHERY_RANGE,   {[]{return IsAdult && HookshotOrBoomerang && GerudoToken && AtNight && CanGetNightTimeGS;},
                                              /*Glitched*/[]{return IsAdult && HookshotOrBoomerang && GlitchGFGuardSneak && AtNight && CanGetNightTimeGS;}}),
-                  LocationAccess(GF_GS_TOP_FLOOR,       {[]{return IsAdult && AtNight && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen) && CanGetNightTimeGS;}}),
+                  LocationAccess(GF_GS_TOP_FLOOR,       {[]{return IsAdult && AtNight && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen || LogicGFJump) && CanGetNightTimeGS;}}),
                 }, {
                   //Exits
                   Entrance(GV_FORTRESS_SIDE,                 {[]{return true;}}),
@@ -159,7 +160,7 @@ void AreaTable_Init_GerudoValley() {
   areaTable[WASTELAND_NEAR_FORTRESS] = Area("Wasteland Near Fortress", "Haunted Wasteland", HAUNTED_WASTELAND, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(GF_OUTSIDE_GATE,   {[]{return true;}}),
-                  Entrance(HAUNTED_WASTELAND, {[]{return CanUse(HOVER_BOOTS) || CanUse(LONGSHOT);},
+                  Entrance(HAUNTED_WASTELAND, {[]{return CanUse(HOVER_BOOTS) || CanUse(LONGSHOT) || LogicWastelandCrossing;},
                                    /*Glitched*/[]{return ((Bombs || HasBombchus) && CanSurviveDamage && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::NOVICE)) || (CanUse(MEGATON_HAMMER) && CanShield && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::INTERMEDIATE)) ||
                                                          (Bombs && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::ADVANCED)) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE)) || GlitchItemlessWasteland;}}),
   });
@@ -179,7 +180,7 @@ void AreaTable_Init_GerudoValley() {
                 }, {
                   //Exits
                   Entrance(WASTELAND_NEAR_COLOSSUS, {[]{return LogicLensWasteland || CanUse(LENS_OF_TRUTH);}}),
-                  Entrance(WASTELAND_NEAR_FORTRESS, {[]{return CanUse(HOVER_BOOTS) || CanUse(LONGSHOT);},
+                  Entrance(WASTELAND_NEAR_FORTRESS, {[]{return CanUse(HOVER_BOOTS) || CanUse(LONGSHOT) || LogicWastelandCrossing;},
                                          /*Glitched*/[]{return ((Bombs || HasBombchus) && CanSurviveDamage && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::NOVICE)) || (CanUse(MEGATON_HAMMER) && CanShield && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::INTERMEDIATE)) ||
                                                                (Bombs && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::ADVANCED)) || (HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE)) || GlitchItemlessWasteland;}}),
   });

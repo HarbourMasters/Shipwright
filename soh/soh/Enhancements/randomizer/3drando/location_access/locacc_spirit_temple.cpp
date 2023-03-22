@@ -33,9 +33,9 @@ void AreaTable_Init_SpiritTemple() {
                   EventAccess(&NutCrate, {[]{return true;}}),
                 }, {
                   //Locations
-                  LocationAccess(SPIRIT_TEMPLE_CHILD_BRIDGE_CHEST,        {[]{return (Boomerang || Slingshot || (HasExplosives && LogicSpiritChildBombchu)) && (HasExplosives || ((Nuts || Boomerang) && (Sticks || KokiriSword || Slingshot)));}}),
-                  LocationAccess(SPIRIT_TEMPLE_CHILD_EARLY_TORCHES_CHEST, {[]{return (Boomerang || Slingshot || (HasExplosives && LogicSpiritChildBombchu)) && (HasExplosives || ((Nuts || Boomerang) && (Sticks || KokiriSword || Slingshot))) && (Sticks || CanUse(DINS_FIRE));}}),
-                  LocationAccess(SPIRIT_TEMPLE_GS_METAL_FENCE,            {[]{return (Boomerang || Slingshot || (HasExplosives && LogicSpiritChildBombchu)) && (HasExplosives || ((Nuts || Boomerang) && (Sticks || KokiriSword || Slingshot)));}}),
+                  LocationAccess(SPIRIT_TEMPLE_CHILD_BRIDGE_CHEST,        {[]{return (Boomerang || Slingshot || (HasBombchus && LogicSpiritChildBombchu)) && (HasExplosives || ((Nuts || Boomerang) && (Sticks || KokiriSword || Slingshot)));}}),
+                  LocationAccess(SPIRIT_TEMPLE_CHILD_EARLY_TORCHES_CHEST, {[]{return (Boomerang || Slingshot || (HasBombchus && LogicSpiritChildBombchu)) && (HasExplosives || ((Nuts || Boomerang) && (Sticks || KokiriSword || Slingshot))) && (Sticks || CanUse(DINS_FIRE));}}),
+                  LocationAccess(SPIRIT_TEMPLE_GS_METAL_FENCE,            {[]{return (Boomerang || Slingshot || (HasBombchus && LogicSpiritChildBombchu)) && (HasExplosives || ((Nuts || Boomerang) && (Sticks || KokiriSword || Slingshot)));}}),
                 }, {
                   //Exits
                   Entrance(SPIRIT_TEMPLE_CHILD_CLIMB, {[]{return SmallKeys(SPIRIT_TEMPLE, 1);}}),
@@ -86,16 +86,16 @@ void AreaTable_Init_SpiritTemple() {
                                                                                                 (CanUse(FIRE_ARROWS) || (LogicSpiritSunChest && Bow)) &&
                                                                                                 CanUse(SILVER_GAUNTLETS));}}),
                   LocationAccess(SPIRIT_TEMPLE_STATUE_ROOM_HAND_CHEST,       {[]{return SmallKeys(SPIRIT_TEMPLE, 3) && CanUse(SILVER_GAUNTLETS) && CanPlay(ZeldasLullaby);}}),
-                  LocationAccess(SPIRIT_TEMPLE_STATUE_ROOM_NORTHEAST_CHEST,  {[]{return SmallKeys(SPIRIT_TEMPLE, 3) && CanUse(SILVER_GAUNTLETS) && CanPlay(ZeldasLullaby) && (Hookshot || HoverBoots);}}),
+                  LocationAccess(SPIRIT_TEMPLE_STATUE_ROOM_NORTHEAST_CHEST,  {[]{return SmallKeys(SPIRIT_TEMPLE, 3) && CanUse(SILVER_GAUNTLETS) && CanPlay(ZeldasLullaby) && (Hookshot || HoverBoots || LogicSpiritLobbyJump);}}),
                   LocationAccess(SPIRIT_TEMPLE_GS_HALL_AFTER_SUN_BLOCK_ROOM, {[]{return (HasExplosives && Boomerang && Hookshot) ||
                                                                                             (CanUse(BOOMERANG) && SmallKeys(SPIRIT_TEMPLE, 5) && HasExplosives) ||
                                                                                             (Hookshot && CanUse(SILVER_GAUNTLETS) &&
                                                                                                 (SmallKeys(SPIRIT_TEMPLE, 3) ||
                                                                                                     (SmallKeys(SPIRIT_TEMPLE, 2) && Boomerang && BombchusInLogic && ShuffleDungeonEntrances.Is(SHUFFLEDUNGEONS_OFF))));}}),
                   LocationAccess(SPIRIT_TEMPLE_GS_LOBBY,                     {[]{return ((HasExplosives || SmallKeys(SPIRIT_TEMPLE, 3) || (SmallKeys(SPIRIT_TEMPLE, 2) && BombchusInLogic && ShuffleDungeonEntrances.Is(SHUFFLEDUNGEONS_OFF))) &&
-                                                                                                LogicSpiritLobbyGS && Boomerang && (Hookshot || HoverBoots)) ||
+                                                                                                LogicSpiritLobbyGS && Boomerang && (Hookshot || HoverBoots || LogicSpiritLobbyJump)) ||
                                                                                             (LogicSpiritLobbyGS && SmallKeys(SPIRIT_TEMPLE, 5) && HasExplosives && CanUse(BOOMERANG)) ||
-                                                                                            (SmallKeys(SPIRIT_TEMPLE, 3) && CanUse(SILVER_GAUNTLETS) && (Hookshot || HoverBoots));}}),
+                                                                                            (SmallKeys(SPIRIT_TEMPLE, 3) && CanUse(SILVER_GAUNTLETS) && (Hookshot || HoverBoots || LogicSpiritLobbyJump));}}),
                 }, {
                   //Exits
                   Entrance(SPIRIT_TEMPLE_OUTDOOR_HANDS,              {[]{return true;}}),
@@ -164,7 +164,7 @@ void AreaTable_Init_SpiritTemple() {
                   LocationAccess(SPIRIT_TEMPLE_MQ_CHILD_HAMMER_SWITCH_CHEST,  {[]{return Here(SPIRIT_TEMPLE_MQ_ADULT, []{return SmallKeys(SPIRIT_TEMPLE, 7) && Hammer;});}}),
                   LocationAccess(SPIRIT_TEMPLE_MQ_MAP_ROOM_ENEMY_CHEST,       {[]{return KokiriSword && HasBombchus && Slingshot && CanUse(DINS_FIRE);}}),
                   LocationAccess(SPIRIT_TEMPLE_MQ_MAP_CHEST,                  {[]{return KokiriSword || Bombs;}}),
-                  LocationAccess(SPIRIT_TEMPLE_MQ_SILVER_BLOCK_HALLWAY_CHEST, {[]{return HasBombchus && SmallKeys(SPIRIT_TEMPLE, 7) && Slingshot && (CanUse(DINS_FIRE) || (Here(SPIRIT_TEMPLE_MQ_ADULT, []{return IsAdult && CanUse(FIRE_ARROWS);})));}}),
+                  LocationAccess(SPIRIT_TEMPLE_MQ_SILVER_BLOCK_HALLWAY_CHEST, {[]{return HasBombchus && SmallKeys(SPIRIT_TEMPLE, 7) && Slingshot && (CanUse(DINS_FIRE) || (Here(SPIRIT_TEMPLE_MQ_ADULT, []{return IsAdult && (CanUse(FIRE_ARROWS) || (LogicSpiritMQFrozenEye && CanUse(BOW) && CanPlay(SongOfTime)));})));}}),
                     //Trick: HasBombchus && SmallKeys(SPIRIT_TEMPLE, 7) && Slingshot && (CanUse(DINS_FIRE) || (SPIRIT_TEMPLE_MQ_ADULT.Adult() && IsAdult && (CanUse(FIRE_ARROWS) || (LogicSpiritMQFrozenEye && CanUse(BOW) && CanPlay(SongOfTime)))))
   }, {
                   //Exits
@@ -183,7 +183,7 @@ void AreaTable_Init_SpiritTemple() {
                   LocationAccess(SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_NORTH,  {[]{return SmallKeys(SPIRIT_TEMPLE, 7);}}),
   }, {
                   //Exits
-                  Entrance(SPIRIT_TEMPLE_MQ_LOWER_ADULT,        {[]{return (MirrorShield || (SunlightArrows && CanUse(LIGHT_ARROWS))) && IsAdult && CanUse(FIRE_ARROWS);}}),
+                  Entrance(SPIRIT_TEMPLE_MQ_LOWER_ADULT,        {[]{return MirrorShield && IsAdult && (CanUse(FIRE_ARROWS) || (LogicSpiritMQLowerAdult && CanUse(DINS_FIRE) && Bow));}}),
                     //Trick: MirrorShield && IsAdult && (CanUse(FIRE_ARROWS) || (LogicSpiritMQLowerAdult && CanUse(DINS_FIRE) && Bow))
                   Entrance(SPIRIT_TEMPLE_MQ_SHARED,             {[]{return true;}}),
                   Entrance(SPIRIT_TEMPLE_MQ_BOSS_AREA,          {[]{return SmallKeys(SPIRIT_TEMPLE, 6) && CanPlay(ZeldasLullaby) && Hammer;}}),
@@ -194,15 +194,15 @@ void AreaTable_Init_SpiritTemple() {
                   //Locations
                   LocationAccess(SPIRIT_TEMPLE_MQ_CHILD_CLIMB_NORTH_CHEST, {[]{return SmallKeys(SPIRIT_TEMPLE, 6);}}),
                   LocationAccess(SPIRIT_TEMPLE_MQ_COMPASS_CHEST,           {[]{return (IsChild && CanUse(SLINGSHOT) && SmallKeys(SPIRIT_TEMPLE, 7)) || (IsAdult && CanUse(BOW)) || (Bow && Slingshot);}}),
-                  LocationAccess(SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM_CHEST,    {[]{return CanPlay(SongOfTime) || IsAdult;}}),
+                  LocationAccess(SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM_CHEST,    {[]{return CanPlay(SongOfTime) || LogicSpiritMQSunBlockSoT || IsAdult;}}),
                     //Trick: CanPlay(SongOfTime) || LogicSpiritMQSunBlockSoT || IsAdult
-                  LocationAccess(SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM,       {[]{return IsAdult;}}),
-                    //Trick: (LogicSpiritMQSunBlockGS && Boomerange && (CanPlay(SongOfTime) || LogicSpiritMQSunBlockSoT)) || IsAdult
+                  LocationAccess(SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM,       {[]{return (LogicSpiritMQSunBlockGS && Boomerang && (CanPlay(SongOfTime) || LogicSpiritMQSunBlockSoT)) || IsAdult;}}),
+                    //Trick: (LogicSpiritMQSunBlockGS && Boomerang && (CanPlay(SongOfTime) || LogicSpiritMQSunBlockSoT)) || IsAdult
    }, {
                   //Exits
-                  Entrance(SPIRIT_TEMPLE_MQ_SILVER_GAUNTLETS_HAND, {[]{return (SmallKeys(SPIRIT_TEMPLE, 7) && (CanPlay(SongOfTime) || IsAdult)) || (SmallKeys(SPIRIT_TEMPLE, 4) && CanPlay(SongOfTime) && (LogicLensSpiritMQ || CanUse(LENS_OF_TRUTH)));}}),
+                  Entrance(SPIRIT_TEMPLE_MQ_SILVER_GAUNTLETS_HAND, {[]{return (SmallKeys(SPIRIT_TEMPLE, 7) && (CanPlay(SongOfTime) || LogicSpiritMQSunBlockSoT || IsAdult)) || (SmallKeys(SPIRIT_TEMPLE, 4) && CanPlay(SongOfTime) && (LogicLensSpiritMQ || CanUse(LENS_OF_TRUTH)));}}),
                     //Trick: (SmallKeys(SPIRIT_TEMPLE, 7) && (CanPlay(SongOfTime) || LogicSpiritMQSunBlockSoT || IsAdult)) || (SmallKeys(SPIRIT_TEMPLE, 4) && CanPlay(SongOfTime) && (LogicLensSpiritMQ || CanUse(LENS_OF_TRUTH)))
-                  Entrance(DESERT_COLOSSUS,                        {[]{return (SmallKeys(SPIRIT_TEMPLE, 7) && (CanPlay(SongOfTime) || IsAdult)) || (SmallKeys(SPIRIT_TEMPLE, 4) && CanPlay(SongOfTime) && (LogicLensSpiritMQ || CanUse(LENS_OF_TRUTH)) && IsAdult);}}),
+                  Entrance(DESERT_COLOSSUS,                        {[]{return (SmallKeys(SPIRIT_TEMPLE, 7) && (CanPlay(SongOfTime) || LogicSpiritMQSunBlockSoT || IsAdult)) || (SmallKeys(SPIRIT_TEMPLE, 4) && CanPlay(SongOfTime) && (LogicLensSpiritMQ || CanUse(LENS_OF_TRUTH)) && IsAdult);}}),
                     //Trick: (SmallKeys(SPIRIT_TEMPLE, 7) && (CanPlay(SongOfTime) || LogicSpiritMQSunBlockSoT || IsAdult)) || (SmallKeys(SPIRIT_TEMPLE, 4) && CanPlay(SongOfTime) && (LogicLensSpiritMQ || CanUse(LENS_OF_TRUTH)) && IsAdult)
   });
 

@@ -16,7 +16,7 @@ void AreaTable_Init_LostWoods() {
                   LocationAccess(KF_KOKIRI_SWORD_CHEST,   {[]{return IsChild;}}),
                   LocationAccess(KF_GS_KNOW_IT_ALL_HOUSE, {[]{return IsChild && CanChildAttack && AtNight && (HasNightStart || CanLeaveForest || CanPlay(SunsSong)) && CanGetNightTimeGS;}}),
                   LocationAccess(KF_GS_BEAN_PATCH,        {[]{return CanPlantBugs && CanChildAttack;}}),
-                  LocationAccess(KF_GS_HOUSE_OF_TWINS,    {[]{return IsAdult && AtNight && HookshotOrBoomerang && CanGetNightTimeGS;},
+                  LocationAccess(KF_GS_HOUSE_OF_TWINS,    {[]{return IsAdult && AtNight && (HookshotOrBoomerang || (LogicAdultKokiriGS && CanUse(HOVER_BOOTS))) && CanGetNightTimeGS;},
                                                /*Glitched*/[]{return IsAdult && AtNight && CanGetNightTimeGS && (CanDoGlitch(GlitchType::HammerSlide, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE));}}),
                   LocationAccess(KF_GOSSIP_STONE,         {[]{return true;}}),
                 }, {
@@ -141,13 +141,13 @@ void AreaTable_Init_LostWoods() {
                   //Exits
                   Entrance(LW_FOREST_EXIT,           {[]{return true;}}),
                   Entrance(GC_WOODS_WARP,            {[]{return true;}}),
-                  Entrance(LW_BRIDGE,                {[]{return CanLeaveForest && ((IsAdult && CanPlantBean(THE_LOST_WOODS)) || CanUse(HOVER_BOOTS) || CanUse(LONGSHOT));},
+                  Entrance(LW_BRIDGE,                {[]{return CanLeaveForest && ((IsAdult && (CanPlantBean(THE_LOST_WOODS) || LogicLostWoodsBridge)) || CanUse(HOVER_BOOTS) || CanUse(LONGSHOT));},
                                           /*Glitched*/[]{return CanLeaveForest && (CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE) || (CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) && HasBombchus) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::INTERMEDIATE));}}),
                   Entrance(ZORAS_RIVER,              {[]{return CanLeaveForest && (CanDive || CanUse(IRON_BOOTS));},
                                           /*Glitched*/[]{return CanLeaveForest && (CanDoGlitch(GlitchType::TripleSlashClip, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::NaviDive_Stick, GlitchDifficulty::ADVANCED) ||
                                                                 ((Bugs || Fish) && CanUse(HOVER_BOOTS) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::INTERMEDIATE)) || (CanUse(FARORES_WIND) && (FaroresWindAnywhere || (CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE) && (HasBottle || (IsAdult && (HasBoots || ClaimCheck)) || (IsChild && WeirdEgg)))) &&
                                                                 ((CanUse(NAYRUS_LOVE) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::NOVICE)) || (CanUseMagicArrow && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::ADVANCED)))));}}),
-                  Entrance(LW_BEYOND_MIDO,           {[]{return IsChild || CanPlay(SariasSong);},
+                  Entrance(LW_BEYOND_MIDO,           {[]{return IsChild || CanPlay(SariasSong) || LogicMidoBackflip;},
                                           /*Glitched*/[]{return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::LedgeCancel, GlitchDifficulty::NOVICE) ||
                                                                 CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::INTERMEDIATE) || (CanDoGlitch(GlitchType::HookshotJump_Bonk, GlitchDifficulty::ADVANCED) && (CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE) || HoverBoots)) ||
                                                                 ((CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && SariasSong);}}),

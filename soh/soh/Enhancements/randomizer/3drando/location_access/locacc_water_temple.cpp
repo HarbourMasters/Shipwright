@@ -157,7 +157,7 @@ void AreaTable_Init_WaterTemple() {
 
   areaTable[WATER_TEMPLE_DRAGON_ROOM] = Area("Water Temple Dragon Room", "Water Temple", WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(WATER_TEMPLE_DRAGON_CHEST, {[]{return (CanUse(HOOKSHOT) && CanUse(IRON_BOOTS)) || (IsAdult && LogicWaterDragonAdult && HasBombchus && (CanDive || CanUse(IRON_BOOTS))) ||
+                  LocationAccess(WATER_TEMPLE_DRAGON_CHEST, {[]{return (CanUse(HOOKSHOT) && CanUse(IRON_BOOTS)) || (((IsAdult && LogicWaterDragonAdult && (CanUse(HOOKSHOT) || CanUse(BOW) || HasBombchus)) || (IsChild && LogicWaterDragonChild && (CanUse(SLINGSHOT) || CanUse(BOOMERANG) || HasBombchus))) && (CanDive || CanUse(IRON_BOOTS))) ||
                                                                        Here(WATER_TEMPLE_RIVER, []{return IsAdult && CanUse(BOW) && ((LogicWaterDragonAdult && (CanDive || CanUse(IRON_BOOTS))) || LogicWaterDragonJumpDive);});},
                                                  /*Glitched*/[]{return Bombs && ((IsAdult && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::ADVANCED)) || (CanUse(IRON_BOOTS) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE)));}}),
                 }, {
@@ -180,7 +180,7 @@ void AreaTable_Init_WaterTemple() {
                                                              (CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED) || (HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)))));}}),
                 }, {
                   //Locations
-                  LocationAccess(WATER_TEMPLE_GS_CENTRAL_PILLAR, {[]{return CanUse(LONGSHOT) || (LogicWaterCentralGSFW && WaterTempleHigh && CanUse(FARORES_WIND) && HookshotOrBoomerang);}}),
+                  LocationAccess(WATER_TEMPLE_GS_CENTRAL_PILLAR, {[]{return CanUse(LONGSHOT) || (((LogicWaterCentralGSFW && CanUse(FARORES_WIND)) || (LogicWaterCentralGSIrons && CanUse(IRON_BOOTS))) && WaterTempleHigh  && HookshotOrBoomerang);}}),
                 }, {
                   //Exits
                   Entrance(WATER_TEMPLE_LOBBY,                {[]{return true;}}),
@@ -294,7 +294,7 @@ void AreaTable_Init_WaterTemple() {
   areaTable[WATER_TEMPLE_MQ_DIVE] = Area("Water Temple MQ Dive", "Water Temple", WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(WATER_TEMPLE_MQ_MAP_CHEST,            {[]{return HasFireSource && IsAdult && CanUse(HOOKSHOT);}}),
-                  LocationAccess(WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST, {[]{return IsAdult && CanUse(ZORA_TUNIC) && CanUse(HOOKSHOT) && (CanUse(DINS_FIRE) && CanPlay(SongOfTime));}}),
+                  LocationAccess(WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST, {[]{return IsAdult && CanUse(ZORA_TUNIC) && CanUse(HOOKSHOT) && ((LogicWaterMQCentralPillar && CanUse(FIRE_ARROWS)) || (CanUse(DINS_FIRE) && CanPlay(SongOfTime)));}}),
                     //Trick: IsAdult && CanUse(ZORA_TUNIC) && CanUse(HOOKSHOT) && ((LogicWaterMQCentralPillar && CanUse(FIRE_ARROWS)) || (CanUse(DINS_FIRE) && CanPlay(SongOfTime)))
   }, {
                   //Exits
@@ -326,7 +326,7 @@ void AreaTable_Init_WaterTemple() {
                   //Locations
                   LocationAccess(WATER_TEMPLE_MQ_FREESTANDING_KEY,         {[]{return HoverBoots || CanUse(SCARECROW) || LogicWaterNorthBasementLedgeJump;}}),
                   LocationAccess(WATER_TEMPLE_MQ_GS_TRIPLE_WALL_TORCH,     {[]{return CanUse(FIRE_ARROWS) && (HoverBoots || CanUse(SCARECROW));}}),
-                  LocationAccess(WATER_TEMPLE_MQ_GS_FREESTANDING_KEY_AREA, {[]{return SmallKeys(WATER_TEMPLE, 2) && (HoverBoots || CanUse(SCARECROW) || LogicWaterNorthBasementLedgeJump);}}),
+                  LocationAccess(WATER_TEMPLE_MQ_GS_FREESTANDING_KEY_AREA, {[]{return LogicWaterMQLockedGS || (SmallKeys(WATER_TEMPLE, 2) && (HoverBoots || CanUse(SCARECROW) || LogicWaterNorthBasementLedgeJump));}}),
                     //Trick: LogicWaterMQLockedGS || (SmallKeys(WATER_TEMPLE, 2) && (HoverBoots || CanUse(SCARECROW) || LogicWaterNorthBasementLedgeJump))
   }, {});
   }

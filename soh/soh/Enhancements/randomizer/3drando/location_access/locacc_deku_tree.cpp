@@ -196,7 +196,7 @@ void AreaTable_Init_DekuTree() {
                   LocationAccess(DEKU_TREE_MQ_GS_COMPASS_ROOM, {[]{return HookshotOrBoomerang &&
                                                                                Here(DEKU_TREE_MQ_COMPASS_ROOM, []{return HasBombchus ||
                                                                                (Bombs && (CanPlay(SongOfTime) || IsAdult)) ||
-                                                                               (IsAdult && CanUse(MEGATON_HAMMER) && (CanPlay(SongOfTime) /*|| LogicDekuMQCompassGS*/));});}}),
+                                                                               (IsAdult && CanUse(MEGATON_HAMMER) && (CanPlay(SongOfTime) || LogicDekuMQCompassGS));});}}),
   }, {
                   //Exits
                   Entrance(DEKU_TREE_MQ_LOBBY, {[]{return true;}}),
@@ -207,7 +207,7 @@ void AreaTable_Init_DekuTree() {
                   LocationAccess(DEKU_TREE_MQ_BEFORE_SPINNING_LOG_CHEST, {[]{return true;}}),
   }, {
                   //Exits
-                  Entrance(DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, {[]{return /*LogicDekuMQLog || */ (IsChild && (DekuShield || HylianShield)) ||
+                  Entrance(DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, {[]{return LogicDekuMQLog ||  (IsChild && (DekuShield || HylianShield)) ||
                                                                              (IsAdult && (CanUse(LONGSHOT) || (CanUse(HOOKSHOT) && CanUse(IRON_BOOTS))));}}),
                   Entrance(DEKU_TREE_MQ_LOBBY,                    {[]{return true;}}),
   });

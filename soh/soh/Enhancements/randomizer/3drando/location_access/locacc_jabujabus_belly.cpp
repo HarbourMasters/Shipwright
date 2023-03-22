@@ -162,7 +162,7 @@ void AreaTable_Init_JabuJabusBelly() {
                 }, {
                   //Exits
                   Entrance(JABU_JABUS_BELLY_LIFT_MIDDLE, {[]{return true;}}),
-                  Entrance(JABU_JABUS_BELLY_BOSS_ENTRYWAY, {[]{return CanUse(BOOMERANG);},
+                  Entrance(JABU_JABUS_BELLY_BOSS_ENTRYWAY, {[]{return CanUse(BOOMERANG) || (LogicJabuNearBossRanged && ((IsAdult && (CanUse(HOOKSHOT) || CanUse(BOW))) || (IsChild && CanUse(SLINGSHOT)))) || (LogicJabuNearBossExplosives && (HasBombchus || (IsAdult && CanUse(HOVER_BOOTS) && Bombs)));},
                                               /*Glitched*/[]{return (CanUse(HOVER_BOOTS) && (CanUse(BOW) || CanUse(SLINGSHOT))) || CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE) ||
                                                                     (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE)) || (Bombs && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::SuperStab, GlitchDifficulty::NOVICE);}}),
   });
@@ -194,7 +194,7 @@ void AreaTable_Init_JabuJabusBelly() {
                   LocationAccess(JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST, {[]{return true;}}),
                   LocationAccess(JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST,   {[]{return true;}}),
                   LocationAccess(JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST,              {[]{return true;}}),
-                  LocationAccess(JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,      {[]{return CanPlay(SongOfTime);}}),
+                  LocationAccess(JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,      {[]{return CanPlay(SongOfTime) || (LogicJabuMQSoTGS && IsChild && CanUse(BOOMERANG));}}),
                     //Trick: CanPlay(SongOfTime) || (LogicJabuMQSoTGS && IsChild && CanUse(BOOMERANG))
   }, {
                   //Exits

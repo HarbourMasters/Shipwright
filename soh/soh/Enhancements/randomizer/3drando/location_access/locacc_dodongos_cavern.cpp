@@ -123,7 +123,7 @@ void AreaTable_Init_DodongosCavern() {
                   //Locations
                   LocationAccess(DODONGOS_CAVERN_GS_ALCOVE_ABOVE_STAIRS, {[]{return Here(DODONGOS_CAVERN_FAR_BRIDGE, []{return HookshotOrBoomerang;}) || CanUse(LONGSHOT);},
                                                               /*Glitched*/[]{return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || (CanDoGlitch(GlitchType::HammerSlide, GlitchDifficulty::NOVICE) && HookshotOrBoomerang);}}),
-                  LocationAccess(DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS,  {[]{return IsAdult || CanChildAttack;}}),
+                  LocationAccess(DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS,  {[]{return IsAdult || CanChildAttack || (HasAccessTo(DODONGOS_CAVERN_STAIRS_LOWER) && CanUse(LONGSHOT) && LogicDCVinesGS);}}),
                 }, {
                   //Exits
                   Entrance(DODONGOS_CAVERN_STAIRS_LOWER, {[]{return true;}}),
@@ -150,11 +150,11 @@ void AreaTable_Init_DodongosCavern() {
                   LocationAccess(DODONGOS_CAVERN_BOMB_FLOWER_PLATFORM_CHEST, {[]{return true;}}),
                 }, {
                   //Exits
-                  Entrance(DODONGOS_CAVERN_2F_SIDE_ROOM,         {[]{return Here(DODONGOS_CAVERN_BOMB_ROOM_LOWER, []{return CanBlastOrSmash;});},
+                  Entrance(DODONGOS_CAVERN_2F_SIDE_ROOM,         {[]{return Here(DODONGOS_CAVERN_BOMB_ROOM_LOWER, []{return CanBlastOrSmash || (LogicDCScrubRoom && GoronBracelet);});},
                                                       /*Glitched*/[]{return Here(DODONGOS_CAVERN_BOMB_ROOM_LOWER, []{return (GlitchBlueFireWall && BlueFire) || (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED));});}}),
                   Entrance(DODONGOS_CAVERN_FIRST_SLINGSHOT_ROOM, {[]{return Here(DODONGOS_CAVERN_BOMB_ROOM_LOWER, []{return CanBlastOrSmash || GoronBracelet;});},
                                                       /*Glitched*/[]{return Here(DODONGOS_CAVERN_BOMB_ROOM_LOWER, []{return (GlitchBlueFireWall && BlueFire) || (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED));});}}),
-                  Entrance(DODONGOS_CAVERN_BOMB_ROOM_UPPER,      {[]{return (IsAdult && LogicDCJump) || CanUse(HOVER_BOOTS) || (IsAdult && CanUse(LONGSHOT));},
+                  Entrance(DODONGOS_CAVERN_BOMB_ROOM_UPPER,      {[]{return (IsAdult && LogicDCJump)/* || (IsChild && LogicDamageBoost && HasExplosives && CanJumpslash)*/ || CanUse(HOVER_BOOTS) || (IsAdult && CanUse(LONGSHOT));},
                                                       /*Glitched*/[]{return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::INTERMEDIATE) ||
                                                                             (IsAdult && (CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(SLINGSHOT)) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED));}}),
   });
@@ -263,9 +263,9 @@ void AreaTable_Init_DodongosCavern() {
   }, {
                   //Exits
                   Entrance(DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE,  {[]{return Here(DODONGOS_CAVERN_MQ_LOBBY, []{return CanBlastOrSmash || (((IsChild && CanUse(STICKS)) || CanUse(DINS_FIRE)) && CanTakeDamage);});}}),
-                  Entrance(DODONGOS_CAVERN_MQ_BOMB_BAG_AREA,     {[]{return IsAdult || (Here(DODONGOS_CAVERN_MQ_LOBBY, []{return IsAdult;}) && HasExplosives);}}),
+                  Entrance(DODONGOS_CAVERN_MQ_BOMB_BAG_AREA,     {[]{return /*IsAdult || (Here(DODONGOS_CAVERN_MQ_LOBBY, []{return IsAdult;}) && HasExplosives)*/ IsAdult || (Here(DODONGOS_CAVERN_MQ_LOBBY, []{return IsAdult;}) && HasExplosives) || (LogicDCMQChildBombs && CanJumpslash && CanTakeDamage);}}),
                     //Trick: IsAdult || HasExplosives || (LogicDCMQChildBombs && (KokiriSword || Sticks) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO))
-                  Entrance(DODONGOS_CAVERN_MQ_BOSS_AREA,         {[]{return HasExplosives;}}),
+                  Entrance(DODONGOS_CAVERN_MQ_BOSS_AREA,         {[]{return HasExplosives || (GoronBracelet && ((IsAdult && LogicDCMQEyesAdult) || (IsChild && LogicDCMQEyesChild)) && ((IsChild && (CanUse(STICKS))) || CanUse(DINS_FIRE) || (IsAdult && (LogicDCJump || Hammer || HoverBoots || Hookshot))));}}), 
                     //Trick: HasExplosives || (LogicDCMQEyes && GoronBracelet && (IsAdult || LogicDCMQChildBack) && ((IsChild && CanUse(STICKS)) || CanUse(DINS_FIRE) || (IsAdult && (LogicDCJump || Hammer || HoverBoots || Hookshot))))
   });
 
@@ -325,14 +325,14 @@ void AreaTable_Init_DodongosCavern() {
                              { [] {
                                   return DodongosCavernClear ||
                                          (Here(DODONGOS_CAVERN_BOSS_ROOM,
-                                               [] { return HasExplosives || (CanUse(MEGATON_HAMMER) && CanShield); }) &&
-                                          (Bombs || GoronBracelet) && CanJumpslash);
+                                               [] { return HasExplosives || (CanUse(MEGATON_HAMMER) && LogicDCHammerFloor); }) &&
+                                          (Bombs || GoronBracelet) && CanJumpslash); /*todo add chu kill to tricks*/
                               },
                                /*Glitched*/
                                [] {
                                    return Here(DODONGOS_CAVERN_BOSS_ROOM,
                                                [] {
-                                                   return HasExplosives || (CanUse(MEGATON_HAMMER) && CanShield) ||
+                                                   return HasExplosives || (CanUse(MEGATON_HAMMER) && LogicDCHammerFloor) ||
                                                           (GlitchBlueFireWall && BlueFire);
                                                }) &&
                                           (HasExplosives || GoronBracelet) && CanJumpslash;

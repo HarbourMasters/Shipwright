@@ -21,7 +21,7 @@ void AreaTable_Init_Kakariko() {
                   LocationAccess(KAK_GS_SKULLTULA_HOUSE,          {[]{return IsChild && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(KAK_GS_GUARDS_HOUSE,             {[]{return IsChild && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(KAK_GS_TREE,                     {[]{return IsChild && AtNight && CanGetNightTimeGS;}}),
-                  LocationAccess(KAK_GS_WATCHTOWER,               {[]{return IsChild && (Slingshot || HasBombchus || CanUse(BOW) || CanUse(LONGSHOT)) && AtNight && CanGetNightTimeGS;},
+                  LocationAccess(KAK_GS_WATCHTOWER,               {[]{return IsChild && (Slingshot || HasBombchus || CanUse(BOW) || CanUse(LONGSHOT) || (LogicKakarikoTowerGS && CanJumpslash)) && AtNight && CanGetNightTimeGS;},
                                                        /*Glitched*/[]{return IsChild && AtNight && CanGetNightTimeGS && (CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::SuperStab, GlitchDifficulty::NOVICE) || (Sticks && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::INTERMEDIATE)));}}),
                 }, {
                   //Exits
@@ -43,7 +43,7 @@ void AreaTable_Init_Kakariko() {
                                              /*Glitched*/[]{return IsAdult && ((HoverBoots && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE)) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE));}}),
                   Entrance(KAK_ROOFTOP,                 {[]{return CanUse(HOOKSHOT) || (LogicManOnRoof && (IsAdult || AtDay || Slingshot || HasBombchus || CanUse(BOW) || CanUse(LONGSHOT)));},
                                              /*Glitched*/[]{return LogicManOnRoof && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE);}}),
-                  Entrance(KAK_IMPAS_ROOFTOP,           {[]{return CanUse(HOOKSHOT);},
+                  Entrance(KAK_IMPAS_ROOFTOP,           {[]{return CanUse(HOOKSHOT) || (LogicKakarikoRooftopGS && CanUse(HOVER_BOOTS));},
                                              /*Glitched*/[]{return (HoverBoots && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE)) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE);}}),
                   Entrance(THE_GRAVEYARD,               {[]{return true;}}),
                   Entrance(KAK_BEHIND_GATE,             {[]{return IsAdult || (KakarikoVillageGateOpen);},
@@ -131,7 +131,7 @@ void AreaTable_Init_Kakariko() {
                                                      CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Fish || Bugs) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)));}}),
                 }, {
                   //Locations
-                  LocationAccess(KAK_WINDMILL_FREESTANDING_POH, {[]{return CanUse(BOOMERANG) || DampesWindmillAccess || (IsAdult && LogicAdultWindmillPoH) || (IsChild && LogicChildWindmillPoH);},
+                  LocationAccess(KAK_WINDMILL_FREESTANDING_POH, {[]{return CanUse(BOOMERANG) || DampesWindmillAccess || (IsAdult && LogicAdultWindmillPoH)/* || (IsChild && CanJumpslash && LogicChildWindmillPoH)*/;},
                                                      /*Glitched*/[]{return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);}}),
                   LocationAccess(SONG_FROM_WINDMILL,            {[]{return IsAdult && Ocarina;},
                                                      /*Glitched*/[]{return IsAdult && (CanDoGlitch(GlitchType::WindmillBombOI, GlitchDifficulty::EXPERT) || ((Fish || Bugs) && CanShield && ((Bombs && (CanSurviveDamage || (Fairy && NumBottles >= 2))) || (DampesWindmillAccess || (IsAdult && LogicAdultWindmillPoH) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE))) &&

@@ -65,7 +65,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(ZR_STORMS_GROTTO,    {[]{return CanOpenStormGrotto;},
                                      /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) ||
                                                            ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && SongOfStorms && (ShardOfAgony || LogicGrottosWithoutAgony);}}),
-                  Entrance(ZR_BEHIND_WATERFALL, {[]{return CanPlay(ZeldasLullaby);},
+                  Entrance(ZR_BEHIND_WATERFALL, {[]{return CanPlay(ZeldasLullaby) || (IsChild && LogicZoraWithCucco) || (IsAdult && CanUse(HOVER_BOOTS) && LogicZoraWithHovers);},
                                      /*Glitched*/[]{return CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::ADVANCED) || ((CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) ||
                                                            ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && ZeldasLullaby);}}),
   });
@@ -117,7 +117,7 @@ void AreaTable_Init_ZorasDomain() {
                   LocationAccess(ZD_CHEST,               {[]{return IsChild && CanUse(STICKS);}}),
                   LocationAccess(ZD_KING_ZORA_THAWED,    {[]{return KingZoraThawed;}}),
                   LocationAccess(ZD_TRADE_PRESCRIPTION,  {[]{return KingZoraThawed && Prescription;}}),
-                  LocationAccess(ZD_GS_FROZEN_WATERFALL, {[]{return IsAdult && AtNight && (HookshotOrBoomerang || CanUse(SLINGSHOT) || Bow || MagicMeter) && CanGetNightTimeGS;}}),
+                  LocationAccess(ZD_GS_FROZEN_WATERFALL, {[]{return IsAdult && AtNight && (HookshotOrBoomerang || CanUse(SLINGSHOT) || Bow || MagicMeter || LogicDomainGS) && CanGetNightTimeGS;}}),
                   LocationAccess(ZD_GOSSIP_STONE,        {[]{return true;}}),
                 }, {
                   //Exits
@@ -125,7 +125,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(LAKE_HYLIA,          {[]{return IsChild && (CanDive || CanUse(IRON_BOOTS));},
                                      /*Glitched*/[]{return (IsAdult && GlitchZDOoBJumpSlash) || (IsChild && CanUse(FARORES_WIND) && (FaroresWindAnywhere || (CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE) && (HasBottle || WeirdEgg))) &&
                                                            ((CanUse(NAYRUS_LOVE) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::NOVICE)) || (CanUseMagicArrow && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::ADVANCED))));}}),
-                  Entrance(ZD_BEHIND_KING_ZORA, {[]{return DeliverLetter || ZorasFountain.Is(ZORASFOUNTAIN_OPEN) || (ZorasFountain.Is(ZORASFOUNTAIN_ADULT) && IsAdult);},
+                  Entrance(ZD_BEHIND_KING_ZORA, {[]{return DeliverLetter || ZorasFountain.Is(ZORASFOUNTAIN_OPEN) || (ZorasFountain.Is(ZORASFOUNTAIN_ADULT) && IsAdult) || (LogicKingZoraSkip && IsAdult);},
                                      /*Glitched*/[]{return ((IsChild || CanUse(IRON_BOOTS)) && CanDoGlitch(GlitchType::TripleSlashClip, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::ASlide, GlitchDifficulty::NOVICE) ||
                                                            CanDoGlitch(GlitchType::LedgeCancel, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::LedgeClip, GlitchDifficulty::INTERMEDIATE);}}),
                   Entrance(ZD_SHOP,             {[]{return IsChild || BlueFire;},

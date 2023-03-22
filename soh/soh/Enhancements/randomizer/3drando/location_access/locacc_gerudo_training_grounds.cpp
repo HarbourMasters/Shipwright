@@ -157,7 +157,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   LocationAccess(GERUDO_TRAINING_GROUNDS_MQ_FIRST_IRON_KNUCKLE_CHEST, {[]{return IsAdult || KokiriSword || HasExplosives;}}),
   }, {
                   //Exits
-                  Entrance(GERUDO_TRAINING_GROUNDS_MQ_STALFOS_ROOM, {[]{return IsAdult && CanUse(LONGSHOT);}}),
+                  Entrance(GERUDO_TRAINING_GROUNDS_MQ_STALFOS_ROOM, {[]{return (IsAdult && CanUse(LONGSHOT)) || LogicGtgMQWithoutHookshot || (LogicGtgMQWithHookshot && IsAdult && CanUse(HOOKSHOT));}}),
                     //Trick: (IsAdult && CanUse(LONGSHOT)) || LogicGtgMQWithoutHookshot || (LogicGtgMQWithHookshot && IsAdult && CanUse(HOOKSHOT))
   });
 
@@ -170,7 +170,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   LocationAccess(GERUDO_TRAINING_GROUNDS_MQ_HEAVY_BLOCK_CHEST,        {[]{return CanUse(SILVER_GAUNTLETS);}}),
   }, {
                   //Exits
-                  Entrance(GERUDO_TRAINING_GROUNDS_MQ_BACK_AREAS, {[]{return IsAdult && (LogicLensGtgMQ || CanUse(LENS_OF_TRUTH)) && BlueFire && CanPlay(SongOfTime);}}),
+                  Entrance(GERUDO_TRAINING_GROUNDS_MQ_BACK_AREAS, {[]{return IsAdult && (LogicLensGtgMQ || CanUse(LENS_OF_TRUTH)) && BlueFire && (CanPlay(SongOfTime) || (LogicGtgFakeWall && IsAdult && CanUse(HOVER_BOOTS)));}}),
                     //Trick: IsAdult && (LogicLensGtgMQ || CanUse(LENS_OF_TRUTH)) && BlueFire && (CanPlay(SongOfTime) || (LogicGtgFakeWall && IsAdult && CanUse(HOVER_BOOTS)))
   });
 

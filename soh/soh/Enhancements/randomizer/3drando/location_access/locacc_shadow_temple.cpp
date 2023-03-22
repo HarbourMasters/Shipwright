@@ -58,12 +58,12 @@ void AreaTable_Init_ShadowTemple() {
                   LocationAccess(SHADOW_TEMPLE_INVISIBLE_BLADES_VISIBLE_CHEST,   {[]{return true;}}),
                   LocationAccess(SHADOW_TEMPLE_INVISIBLE_BLADES_INVISIBLE_CHEST, {[]{return true;}}),
                   LocationAccess(SHADOW_TEMPLE_FALLING_SPIKES_LOWER_CHEST,       {[]{return true;}}),
-                  LocationAccess(SHADOW_TEMPLE_FALLING_SPIKES_UPPER_CHEST,       {[]{return LogicShadowUmbrella || GoronBracelet;}}),
-                  LocationAccess(SHADOW_TEMPLE_FALLING_SPIKES_SWITCH_CHEST,      {[]{return LogicShadowUmbrella || GoronBracelet;}}),
+                  LocationAccess(SHADOW_TEMPLE_FALLING_SPIKES_UPPER_CHEST,       {[]{return (LogicShadowUmbrella && HoverBoots) || GoronBracelet;}}),
+                  LocationAccess(SHADOW_TEMPLE_FALLING_SPIKES_SWITCH_CHEST,      {[]{return (LogicShadowUmbrella && HoverBoots) || GoronBracelet;}}),
                   LocationAccess(SHADOW_TEMPLE_INVISIBLE_SPIKES_CHEST,           {[]{return SmallKeys(SHADOW_TEMPLE, 2, 3) && ((LogicLensShadowPlatform && LogicLensShadow) || CanUse(LENS_OF_TRUTH));}}),
                   LocationAccess(SHADOW_TEMPLE_FREESTANDING_KEY,                 {[]{return SmallKeys(SHADOW_TEMPLE, 2, 3) && ((LogicLensShadowPlatform && LogicLensShadow) || CanUse(LENS_OF_TRUTH)) && Hookshot && (Bombs || GoronBracelet || (LogicShadowFreestandingKey && HasBombchus));}}),
                   LocationAccess(SHADOW_TEMPLE_GS_LIKE_LIKE_ROOM,                {[]{return true;}}),
-                  LocationAccess(SHADOW_TEMPLE_GS_FALLING_SPIKES_ROOM,           {[]{return Hookshot;}}),
+                  LocationAccess(SHADOW_TEMPLE_GS_FALLING_SPIKES_ROOM,           {[]{return Hookshot || (LogicShadowUmbrellaGS && HoverBoots);}}),
                   LocationAccess(SHADOW_TEMPLE_GS_SINGLE_GIANT_POT,              {[]{return SmallKeys(SHADOW_TEMPLE, 2, 3) && ((LogicLensShadowPlatform && LogicLensShadow) || CanUse(LENS_OF_TRUTH)) && Hookshot;}}),
                 }, {
                   //Exits
@@ -100,7 +100,7 @@ void AreaTable_Init_ShadowTemple() {
   areaTable[SHADOW_TEMPLE_MQ_BEGINNING] = Area("Shadow Temple MQ Beginning", "Shadow Temple", SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(SHADOW_TEMPLE_ENTRYWAY,          {[]{return true;}}),
-                  Entrance(SHADOW_TEMPLE_MQ_FIRST_BEAMOS,   {[]{return IsAdult && (CanUse(FIRE_ARROWS) || CanUse(HOVER_BOOTS));}}),
+                  Entrance(SHADOW_TEMPLE_MQ_FIRST_BEAMOS,   {[]{return IsAdult && (CanUse(FIRE_ARROWS) || HoverBoots || (LogicShadowMQGap && CanUse(LONGSHOT)));}}),
                     //Trick: IsAdult && (CanUse(FIRE_ARROWS) || HoverBoots || (LogicShadowMQGap && CanUse(LONGSHOT)))
                   Entrance(SHADOW_TEMPLE_MQ_DEAD_HAND_AREA, {[]{return HasExplosives && SmallKeys(SHADOW_TEMPLE, 6);}}),
   });
@@ -123,13 +123,13 @@ void AreaTable_Init_ShadowTemple() {
 
   areaTable[SHADOW_TEMPLE_MQ_UPPER_HUGE_PIT] = Area("Shadow Temple MQ Upper Huge Pit", "Shadow Temple", SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_VISIBLE_CHEST,   {[]{return CanPlay(SongOfTime);}}),
+                  LocationAccess(SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_VISIBLE_CHEST,   {[]{return CanPlay(SongOfTime) || (LogicShadowMQInvisibleBlades && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO));}}),
                     //Trick: CanPlay(SongOfTime) || (LogicShadowMQInvisibleBlades && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO))
-                  LocationAccess(SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_INVISIBLE_CHEST, {[]{return CanPlay(SongOfTime);}}),
+                  LocationAccess(SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_INVISIBLE_CHEST, {[]{return CanPlay(SongOfTime) || (LogicShadowMQInvisibleBlades && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO));}}),
                     //Trick: CanPlay(SongOfTime) || (LogicShadowMQInvisibleBlades && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO))
   }, {
                   //Exits
-                  Entrance(SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT, {[]{return HasFireSource;}}),
+                  Entrance(SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT, {[]{return HasFireSource || LogicShadowMQHugePit;}}),
                     //Trick: HasFireSource || LogicShadowMQHugePit
   });
 
@@ -141,7 +141,7 @@ void AreaTable_Init_ShadowTemple() {
                   LocationAccess(SHADOW_TEMPLE_MQ_FALLING_SPIKES_SWITCH_CHEST, {[]{return (LogicShadowUmbrella && HoverBoots) || GoronBracelet;}}),
                   LocationAccess(SHADOW_TEMPLE_MQ_INVISIBLE_SPIKES_CHEST,      {[]{return HoverBoots && SmallKeys(SHADOW_TEMPLE, 3) && ((LogicLensShadowMQ && LogicLensShadowMQPlatform) || CanUse(LENS_OF_TRUTH));}}),
                   LocationAccess(SHADOW_TEMPLE_MQ_STALFOS_ROOM_CHEST,          {[]{return HoverBoots && SmallKeys(SHADOW_TEMPLE, 3) && Hookshot && ((LogicLensShadowMQ && LogicLensShadowMQInvisibleBlades && LogicLensShadowMQPlatform) || CanUse(LENS_OF_TRUTH));}}),
-                  LocationAccess(SHADOW_TEMPLE_MQ_GS_FALLING_SPIKES_ROOM,      {[]{return Hookshot;}}),
+                  LocationAccess(SHADOW_TEMPLE_MQ_GS_FALLING_SPIKES_ROOM,      {[]{return Hookshot || (LogicShadowUmbrellaGS && HoverBoots);}}),
   }, {
                   //Exits
                   Entrance(SHADOW_TEMPLE_MQ_WIND_TUNNEL, {[]{return HoverBoots && ((LogicLensShadowMQ && LogicLensShadowMQPlatform) || CanUse(LENS_OF_TRUTH)) && Hookshot && SmallKeys(SHADOW_TEMPLE, 4);}}),
@@ -176,7 +176,8 @@ void AreaTable_Init_ShadowTemple() {
                   //Locations
                   LocationAccess(SHADOW_TEMPLE_MQ_SPIKE_WALLS_LEFT_CHEST, {[]{return CanUse(DINS_FIRE) && SmallKeys(SHADOW_TEMPLE, 6);}}),
                   LocationAccess(SHADOW_TEMPLE_MQ_BOSS_KEY_CHEST,         {[]{return CanUse(DINS_FIRE) && SmallKeys(SHADOW_TEMPLE, 6);}}),
-                  LocationAccess(SHADOW_TEMPLE_MQ_BOMB_FLOWER_CHEST,      {[]{return true;}}),
+                  //below previously returned true
+                  LocationAccess(SHADOW_TEMPLE_MQ_BOMB_FLOWER_CHEST,      {[]{return CanUse(LENS_OF_TRUTH) || LogicLensShadowMQDeadHand;}}),
                   LocationAccess(SHADOW_TEMPLE_MQ_FREESTANDING_KEY,       {[]{return true;}}),
   }, {});
   }
@@ -199,8 +200,7 @@ void AreaTable_Init_ShadowTemple() {
                  // Events
                  EventAccess(&ShadowTempleClear, { [] {
                      return ShadowTempleClear ||
-                            ((CanUse(LENS_OF_TRUTH) || ((Dungeon::ShadowTemple.IsVanilla() && (LogicLensShadowPlatform && LogicLensShadow)) ||
-                                                        (Dungeon::ShadowTemple.IsMQ() && (LogicLensShadowMQ && LogicLensShadowMQPlatform)))) &&
+                            ((CanUse(LENS_OF_TRUTH) || LogicLensBongo) &&
                              (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)));
                  } }),
              },

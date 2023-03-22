@@ -1122,9 +1122,9 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option LogicFewerTunicRequirements;
   extern Option LogicRustedSwitches;
   extern Option LogicFlamingChests;
-  extern Option LogicBunnyHoodJump; //NEW
-  extern Option LogicDamageBoost; //NEW
-  extern Option LogicHoverBoost; //NEW
+  extern Option LogicBunnyHoodJump; //NEW not implemented
+  extern Option LogicDamageBoost; //NEW not implemented
+  extern Option LogicHoverBoost; //NEW not implemented
   extern Option LogicAdultKokiriGS;
   extern Option LogicLostWoodsBridge;
   extern Option LogicMidoBackflip;
@@ -1133,7 +1133,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option LogicManOnRoof;
   extern Option LogicKakarikoTowerGS;
   extern Option LogicAdultWindmillPoH;
-  extern Option LogicChildWindmillPoH; //NEW
+  extern Option LogicChildWindmillPoH; //NEW not implemented
   extern Option LogicKakarikoRooftopGS;
   extern Option LogicGraveyardPoH;
   extern Option LogicChildDampeRacePoH;
@@ -1146,7 +1146,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option LogicDMTGSLowerJS; //NEW
   extern Option LogicDMTClimbHovers;
   extern Option LogicDMTGSUpper;
-  extern Option LogicBiggoronBolero;
+  extern Option LogicBiggoronBolero; //not implemented - unnecessary with SoH rando
   extern Option LogicGoronCityPot;
   extern Option LogicGoronCityPotWithStrength;
   extern Option LogicChildRollingWithStrength;
@@ -1169,7 +1169,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option LogicValleyCrateHovers;
   extern Option LogicGerudoKitchen;
   extern Option LogicGFJump;
-  extern Option LogicWastelandBunnyCrossing;
+  extern Option LogicWastelandBunnyCrossing; //NEW not implemented
   extern Option LogicWastelandCrossing;
   extern Option LogicLensWasteland;
   extern Option LogicReverseWasteland;
@@ -1194,7 +1194,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option LogicJabuNearBossRanged;
   extern Option LogicJabuNearBossExplosives;
   extern Option LogicLensJabuMQ;
-  extern Option LogicJabuMQRangJump;
+  extern Option LogicJabuMQRangJump; //not implemented - requires dungeon shortcuts which is not built into rando yet
   extern Option LogicJabuMQSoTGS;
   extern Option LogicLensBotw;
   extern Option LogicChildDeadhand;
@@ -1250,7 +1250,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option LogicShadowUmbrellaGS;
   extern Option LogicShadowFreestandingKey;
   extern Option LogicShadowStatue;
-  extern Option LogicShadowBongo;
+  extern Option LogicShadowBongo; //not implemented - projectiles are not expected for bongo anyways
   extern Option LogicLensShadowMQ;
   extern Option LogicLensShadowMQInvisibleBlades;
   extern Option LogicLensShadowMQPlatform;
@@ -1258,13 +1258,13 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option LogicShadowMQGap;
   extern Option LogicShadowMQInvisibleBlades;
   extern Option LogicShadowMQHugePit;
-  extern Option LogicShadowMQWindyWalkway;
+  extern Option LogicShadowMQWindyWalkway; //not implemented - requires dungeon shortcuts which is not built into rando yet
   extern Option LogicLensSpirit;
   extern Option LogicSpiritChildBombchu;
   extern Option LogicSpiritLobbyGS;
   extern Option LogicSpiritLowerAdultSwitch;
   extern Option LogicSpiritLobbyJump;
-  extern Option LogicSpiritPlatformHookshot;
+  extern Option LogicSpiritPlatformHookshot; //not implemented - requires boss shortcuts which is not built into rando yet
   extern Option LogicSpiritMapChest;
   extern Option LogicSpiritSunChest;
   extern Option LogicSpiritWall;

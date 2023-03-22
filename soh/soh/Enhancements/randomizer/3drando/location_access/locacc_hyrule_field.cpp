@@ -147,7 +147,7 @@ void AreaTable_Init_HyruleField() {
                   Entrance(LH_FISHING_ISLAND,     {[]{return IsChild || CanUse(SCARECROW) || CanPlantBean(LAKE_HYLIA) || WaterTempleClear;},
                                        /*Glitched*/[]{return (CanUse(HOOKSHOT) && ScarecrowSong && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE)))) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE);}}),
                   Entrance(LH_LAB,                {[]{return true;}}),
-                  Entrance(WATER_TEMPLE_ENTRYWAY, {[]{return CanUse(HOOKSHOT) && (CanUse(IRON_BOOTS) || (IsAdult && CanUse(LONGSHOT) && ProgressiveScale >= 2));},
+                  Entrance(WATER_TEMPLE_ENTRYWAY, {[]{return CanUse(HOOKSHOT) && ((CanUse(IRON_BOOTS) || (LogicWaterHookshotEntry && ProgressiveScale >= 2)) || (IsAdult && CanUse(LONGSHOT) && ProgressiveScale >= 2));},
                                        /*Glitched*/[]{return CanDoGlitch(GlitchType::LedgeClip, GlitchDifficulty::ADVANCED);}}),
                   Entrance(LH_GROTTO,             {[]{return true;}}),
   });

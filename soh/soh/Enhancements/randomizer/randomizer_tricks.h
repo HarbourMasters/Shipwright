@@ -56,7 +56,6 @@ typedef struct {
     RandomizerTrick rt;
     RandomizerTrickVanillaOrMQ vOrMQ;
     RandomizerTrickArea rtArea;
-    //SceneID sceneId;
     bool rtGlitch;
     bool visibleInImgui;
     std::string rtShortName;

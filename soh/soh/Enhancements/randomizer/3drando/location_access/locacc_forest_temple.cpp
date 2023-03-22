@@ -24,7 +24,7 @@ void AreaTable_Init_ForestTemple() {
   areaTable[FOREST_TEMPLE_FIRST_ROOM] = Area("Forest Temple First Room", "Forest Temple", FOREST_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(FOREST_TEMPLE_FIRST_ROOM_CHEST, {[]{return true;}}),
-                  LocationAccess(FOREST_TEMPLE_GS_FIRST_ROOM,    {[]{return (IsAdult && Bombs) || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(BOOMERANG) || CanUse(SLINGSHOT) || HasBombchus || CanUse(DINS_FIRE);},
+                  LocationAccess(FOREST_TEMPLE_GS_FIRST_ROOM,    {[]{return (IsAdult && Bombs) || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(BOOMERANG) || CanUse(SLINGSHOT) || HasBombchus || CanUse(DINS_FIRE) || (LogicForestFirstGS && (CanJumpslash || (IsChild && Bombs)));},
                                                       /*Glitched*/[]{return (Bombs && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::SuperStab, GlitchDifficulty::NOVICE);}}),
                 }, {
                   //Exits
@@ -121,12 +121,12 @@ void AreaTable_Init_ForestTemple() {
                                     /*Glitched*/[]{return CanUse(MEGATON_HAMMER);}}),
                 }, {
                   //Locations
-                  LocationAccess(FOREST_TEMPLE_RAISED_ISLAND_COURTYARD_CHEST, {[]{return CanUse(HOOKSHOT) || HasAccessTo(FOREST_TEMPLE_FALLING_ROOM);}}),
+                  LocationAccess(FOREST_TEMPLE_RAISED_ISLAND_COURTYARD_CHEST, {[]{return CanUse(HOOKSHOT) || HasAccessTo(FOREST_TEMPLE_FALLING_ROOM) || (HasAccessTo(FOREST_TEMPLE_NE_OUTDOORS_UPPER) && IsAdult && LogicForestOutdoorsLedge && HoverBoots);}}),
                   LocationAccess(FOREST_TEMPLE_GS_RAISED_ISLAND_COURTYARD,    {[]{return CanUse(HOOKSHOT) || (LogicForestOutdoorEastGS && CanUse(BOOMERANG)) || Here(FOREST_TEMPLE_FALLING_ROOM, []{return CanUse(BOW) || CanUse(SLINGSHOT) || CanUse(DINS_FIRE) || HasExplosives;});}}),
                 }, {
                   //Exits
                   Entrance(FOREST_TEMPLE_LOBBY,             {[]{return true;}}),
-                  Entrance(FOREST_TEMPLE_NE_OUTDOORS_UPPER, {[]{return CanUse(LONGSHOT);}}),
+                  Entrance(FOREST_TEMPLE_NE_OUTDOORS_UPPER, {[]{return CanUse(LONGSHOT) || (LogicForestVines && CanUse(HOOKSHOT));}}),
                   Entrance(FOREST_TEMPLE_SEWER,             {[]{return GoldScale || CanUse(IRON_BOOTS) || HasAccessTo(FOREST_TEMPLE_NE_OUTDOORS_UPPER);}}),
                   Entrance(FOREST_TEMPLE_FALLING_ROOM,      {[]{return false;},
                                                  /*Glitched*/[]{return Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE);}}),
@@ -191,7 +191,7 @@ void AreaTable_Init_ForestTemple() {
                 }, {
                   //Exits
                   Entrance(FOREST_TEMPLE_WEST_CORRIDOR,            {[]{return true;}}),
-                  Entrance(FOREST_TEMPLE_NW_OUTDOORS_UPPER,        {[]{return CanUse(HOVER_BOOTS) || (LogicForestOutsideBackdoor && IsAdult && GoronBracelet);},
+                  Entrance(FOREST_TEMPLE_NW_OUTDOORS_UPPER,        {[]{return CanUse(HOVER_BOOTS) || (LogicForestOutsideBackdoor/* && IsAdult*/ && GoronBracelet);},
                                                         /*Glitched*/[]{return CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE) || (Bombs && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE));}}),
                   Entrance(FOREST_TEMPLE_NW_CORRIDOR_TWISTED,      {[]{return IsAdult && GoronBracelet && SmallKeys(FOREST_TEMPLE, 2);},
                                                         /*Glitched*/[]{return ((IsAdult && (Bow || Hookshot || CanUse(SLINGSHOT)) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)) ||
@@ -333,10 +333,10 @@ void AreaTable_Init_ForestTemple() {
                   //Exits
                   Entrance(FOREST_TEMPLE_MQ_NW_OUTDOORS,        {[]{return (IsAdult && CanUse(BOW)) || (IsChild && CanUse(SLINGSHOT));}}),
                   Entrance(FOREST_TEMPLE_MQ_NE_OUTDOORS,        {[]{return (IsAdult && CanUse(BOW)) || (IsChild && CanUse(SLINGSHOT));}}), //This is as far as child can get
-                  Entrance(FOREST_TEMPLE_MQ_AFTER_BLOCK_PUZZLE, {[]{return IsAdult && GoronBracelet;}}),
+                  Entrance(FOREST_TEMPLE_MQ_AFTER_BLOCK_PUZZLE, {[]{return IsAdult && (GoronBracelet || (LogicForestMQBlockPuzzle && HasBombchus && IsAdult && CanUse(HOOKSHOT)));}}),
                     //Trick: IsAdult && (GoronBracelet || (LogicForestMQBlockPuzzle && HasBombchus && IsAdult && CanUse(HOOKSHOT)))
-                  Entrance(FOREST_TEMPLE_MQ_OUTDOOR_LEDGE,      {[]{return false;}}),
-                    //Trick: (LogicForestMQHallwaySwitchJumpslash && IsAdult && CanUse(HOVER_BOOTS)) || (LogicForestMQHallwaySwitchHookshot && IsAdult && CanUse(HOOKSHOT))
+                  Entrance(FOREST_TEMPLE_MQ_OUTDOOR_LEDGE,      {[]{return (LogicForestMQHallwaySwitchJS && IsAdult && CanUse(HOVER_BOOTS)) || (LogicForestMQHallwaySwitchBoomerang && CanUse(BOOMERANG));}}),
+                    //Trick (Hookshot trick not added to either n64 or oot3d rando as of yet): (LogicForestMQHallwaySwitchJS && IsAdult && CanUse(HOVER_BOOTS)) || (LogicForestMQHallwaySwitchHookshot && IsAdult && CanUse(HOOKSHOT)) 
                   Entrance(FOREST_TEMPLE_MQ_BOSS_REGION,        {[]{return ForestTempleJoAndBeth && ForestTempleAmyAndMeg;}}),
   });
 
@@ -346,8 +346,8 @@ void AreaTable_Init_ForestTemple() {
   }, {
                   //Exits
                   Entrance(FOREST_TEMPLE_MQ_BOW_REGION,    {[]{return SmallKeys(FOREST_TEMPLE, 4);}}),
-                  Entrance(FOREST_TEMPLE_MQ_OUTDOOR_LEDGE, {[]{return SmallKeys(FOREST_TEMPLE, 3);}}),
-                    //Trick: SmallKeys(FOREST_TEMPLE, 3) || (LogicForestMQHallwaySwitchJumpslash && ((IsAdult && CanUse(HOOKSHOT)) || LogicForestOutsideBackdoor))
+                  Entrance(FOREST_TEMPLE_MQ_OUTDOOR_LEDGE, {[]{return  SmallKeys(FOREST_TEMPLE, 3) || (LogicForestMQHallwaySwitchJS && ((IsAdult && CanUse(HOOKSHOT)) || (LogicForestOutsideBackdoor && (IsAdult || (IsChild && CanUse(STICKS))))));}}),
+                    //Trick (Doing the hallway switch jumpslash as child requires sticks and has been added above): SmallKeys(FOREST_TEMPLE, 3) || (LogicForestMQHallwaySwitchJS && ((IsAdult && CanUse(HOOKSHOT)) || LogicForestOutsideBackdoor))
                   Entrance(FOREST_TEMPLE_MQ_NW_OUTDOORS,   {[]{return SmallKeys(FOREST_TEMPLE, 2);}}),
   });
 
@@ -364,7 +364,7 @@ void AreaTable_Init_ForestTemple() {
                   LocationAccess(FOREST_TEMPLE_MQ_GS_LEVEL_ISLAND_COURTYARD, {[]{return true;}}),
   }, {
                   //Exits
-                  Entrance(FOREST_TEMPLE_MQ_NE_OUTDOORS,         {[]{return (IsAdult && (CanUse(IRON_BOOTS) || CanUse(LONGSHOT))) || ProgressiveScale >= 2;}}),
+                  Entrance(FOREST_TEMPLE_MQ_NE_OUTDOORS,         {[]{return (IsAdult && (CanUse(IRON_BOOTS) || CanUse(LONGSHOT) || (LogicForestMQWellSwim && CanUse(HOOKSHOT)))) || ProgressiveScale >= 2;}}),
                     //Trick: (IsAdult && (CanUse(IRON_BOOTS) || CanUse(LONGSHOT) || (LogicForestMQWellSwim && CanUse(HOOKSHOT)))) || ProgressiveScale >= 2
                   Entrance(FOREST_TEMPLE_MQ_OUTDOORS_TOP_LEDGES, {[]{return IsAdult && CanUse(FIRE_ARROWS);}}),
   });
@@ -390,7 +390,7 @@ void AreaTable_Init_ForestTemple() {
   }, {
                   //Exits
                   Entrance(FOREST_TEMPLE_MQ_NE_OUTDOORS,       {[]{return true;}}),
-                  Entrance(FOREST_TEMPLE_MQ_NE_OUTDOORS_LEDGE, {[]{return false;}}),
+                  Entrance(FOREST_TEMPLE_MQ_NE_OUTDOORS_LEDGE, {[]{return LogicForestOutdoorsLedge && IsAdult && CanUse(HOVER_BOOTS);}}),
                     //Trick: LogicForestOutdoorsLedge && IsAdult && CanUse(HOVER_BOOTS)
   });
 

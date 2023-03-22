@@ -93,7 +93,7 @@ void AreaTable_Init_CastleTown() {
                 }, {
                   //Exits
                   Entrance(CASTLE_GROUNDS,          {[]{return true;}}),
-                  Entrance(HC_GARDEN,               {[]{return WeirdEgg || !ShuffleWeirdEgg;}}),
+                  Entrance(HC_GARDEN,               {[]{return WeirdEgg || !ShuffleWeirdEgg/*|| (CanJumpslash && IsChild && HasExplosives && LogicDamageBoost)*/;}}),
                   Entrance(HC_GREAT_FAIRY_FOUNTAIN, {[]{return CanBlastOrSmash;},
                                          /*Glitched*/[]{return Sticks && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED);}}),
                   Entrance(HC_STORMS_GROTTO,        {[]{return CanOpenStormGrotto;},
@@ -127,7 +127,7 @@ void AreaTable_Init_CastleTown() {
                   EventAccess(&WanderingBugs,    {[]{return WanderingBugs    || CanBlastOrSmash;}}),
                 }, {
                   //Locations
-                  LocationAccess(HC_GS_STORMS_GROTTO,           {[]{return CanBlastOrSmash && HookshotOrBoomerang;},
+                  LocationAccess(HC_GS_STORMS_GROTTO,           {[]{return (CanBlastOrSmash && HookshotOrBoomerang) || (Boomerang && LogicCastleStormsGS);},
                                                      /*Glitched*/[]{return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);}}),
                   LocationAccess(HC_STORMS_GROTTO_GOSSIP_STONE, {[]{return CanBlastOrSmash;}}),
                 }, {

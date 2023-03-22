@@ -17,7 +17,7 @@ void AreaTable_Init_DeathMountain() {
                   LocationAccess(DMT_GS_BEAN_PATCH,            {[]{return CanPlantBugs && (HasExplosives || GoronBracelet || (LogicDMTSoilGS && (CanTakeDamage || CanUse(HOVER_BOOTS)) && CanUse(BOOMERANG)));}}),
                   LocationAccess(DMT_GS_NEAR_KAK,              {[]{return CanBlastOrSmash;},
                                                     /*Glitched*/[]{return (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED));}}),
-                  LocationAccess(DMT_GS_ABOVE_DODONGOS_CAVERN, {[]{return IsAdult && AtNight && CanUse(MEGATON_HAMMER) && CanGetNightTimeGS;},
+                  LocationAccess(DMT_GS_ABOVE_DODONGOS_CAVERN, {[]{return IsAdult && AtNight && (CanUse(MEGATON_HAMMER) || (LogicDMTGSLowerHookshot && CanUse(HOOKSHOT)) || (LogicDMTGSLowerBean && CanPlantBean(DEATH_MOUNTAIN_TRAIL)) || (LogicDMTGSLowerHovers && CanUse(HOVER_BOOTS)) || LogicDMTGSLowerJS) && CanGetNightTimeGS;},
                                                     /*Glitched*/[]{return IsAdult && AtNight && CanGetNightTimeGS && CanUse(STICKS) && ((CanTakeDamageTwice && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED));}}),
                 }, {
                   //Exits
@@ -40,7 +40,7 @@ void AreaTable_Init_DeathMountain() {
                   LocationAccess(DMT_TRADE_BROKEN_SWORD,    {[]{return IsAdult && BrokenSword;}}),
                   LocationAccess(DMT_TRADE_EYEDROPS,        {[]{return IsAdult && Eyedrops;}}),
                   LocationAccess(DMT_TRADE_CLAIM_CHECK,     {[]{return IsAdult && ClaimCheck;}}),
-                  LocationAccess(DMT_GS_FALLING_ROCKS_PATH, {[]{return IsAdult && AtNight && CanUse(MEGATON_HAMMER) && CanGetNightTimeGS;}}),
+                  LocationAccess(DMT_GS_FALLING_ROCKS_PATH, {[]{return IsAdult && AtNight && (CanUse(MEGATON_HAMMER) || LogicDMTGSUpper) && CanGetNightTimeGS;}}),
                   LocationAccess(DMT_GOSSIP_STONE,          {[]{return true;}}),
                 }, {
                   //Exits
@@ -122,7 +122,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(GC_SHOP,              {[]{return (IsAdult && StopGCRollingGoronAsAdult) || (IsChild && (CanBlastOrSmash || GoronBracelet || GoronCityChildFire || CanUse(BOW)));},
                                       /*Glitched*/[]{return IsChild && Sticks && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED);}}),
                   Entrance(GC_DARUNIAS_CHAMBER,  {[]{return (IsAdult && StopGCRollingGoronAsAdult) || GCDaruniasDoorOpenChild;}}),
-                  Entrance(GC_GROTTO_PLATFORM,   {[]{return IsAdult && ((CanPlay(SongOfTime) && ((EffectiveHealth > 2) || CanUse(GORON_TUNIC) || CanUse(LONGSHOT) || CanUse(NAYRUS_LOVE))) || (EffectiveHealth > 1 && CanUse(GORON_TUNIC) && CanUse(HOOKSHOT)) || (CanUse(NAYRUS_LOVE) && CanUse(HOOKSHOT)));},
+                  Entrance(GC_GROTTO_PLATFORM,   {[]{return IsAdult && ((CanPlay(SongOfTime) && ((EffectiveHealth > 2) || CanUse(GORON_TUNIC) || CanUse(LONGSHOT) || CanUse(NAYRUS_LOVE))) || (EffectiveHealth > 1 && CanUse(GORON_TUNIC) && CanUse(HOOKSHOT)) || (CanUse(NAYRUS_LOVE) && CanUse(HOOKSHOT)) || (EffectiveHealth > 2 && CanUse(HOOKSHOT) && LogicGoronCityGrotto));},
                                       /*Glitched*/[]{return (HasBombchus && ((IsChild && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE))) || (IsChild && CanUse(LONGSHOT));}}),
   });
 
@@ -233,7 +233,7 @@ void AreaTable_Init_DeathMountain() {
                   Entrance(DMC_LADDER_AREA_NEARBY, {[]{return FireTimer >= 8 || Hearts >= 3;}}),
                   Entrance(DMC_CENTRAL_NEARBY,     {[]{return (CanUse(HOVER_BOOTS) || CanUse(HOOKSHOT)) && (FireTimer >= 8 || Hearts >= 3);},
                                         /*Glitched*/[]{return CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE) && (FireTimer >= 8 || Hearts >= 3);}}),
-                  Entrance(DMC_CENTRAL_LOCAL,      {[]{return (CanUse(HOVER_BOOTS) || CanUse(HOOKSHOT)) && FireTimer >= 24;}}),
+                  Entrance(DMC_CENTRAL_LOCAL,      {[]{return (CanUse(HOVER_BOOTS) || CanUse(HOOKSHOT) || (IsAdult && CanShield && LogicCraterBoleroJump)) && FireTimer >= 24;}}),
   });
 
   areaTable[DMC_CENTRAL_NEARBY] = Area("DMC Central Nearby", "Death Mountain Crater", DEATH_MOUNTAIN_CRATER, NO_DAY_NIGHT_CYCLE, {}, {
