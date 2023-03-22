@@ -242,7 +242,7 @@ void AreaTable_Init_JabuJabusBelly() {
              });
 
     areaTable[JABU_JABUS_BELLY_BOSS_ROOM] =
-        Area("Jabu Jabus Belly Boss Room", "Jabu Jabus Belly", NONE, NO_DAY_NIGHT_CYCLE,
+        Area("Jabu Jabus Belly Boss Room", "Jabu Jabus Belly", JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE,
              {
                  // Events
                  EventAccess(&JabuJabusBellyClear, { [] { return JabuJabusBellyClear || CanUse(BOOMERANG); } }),

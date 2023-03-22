@@ -189,7 +189,7 @@ Text& GetWarpPreludeText() {
   return warpPreludeText;
 }
 
-static Area* GetHintRegion(const uint32_t area) {
+Area* GetHintRegion(const uint32_t area) {
 
   std::vector<uint32_t> alreadyChecked = {};
   std::vector<uint32_t> spotQueue = {area};

@@ -38,6 +38,7 @@ std::map<HintKey, ItemLocation*> hintedLocations;
 
 extern std::unordered_map<HintType, std::string> hintTypeNames;
 extern std::array<std::string, 17> hintCategoryNames;
+extern Area* GetHintRegion(uint32_t);
 
 namespace {
 std::string placementtxt;
@@ -697,15 +698,36 @@ static void WriteHints(int language) {
     ItemLocation* emeraldLoc = GetItemLocation(KOKIRI_EMERALD);
     ItemLocation* rubyLoc = GetItemLocation(GORON_RUBY);
     ItemLocation* sapphireLoc = GetItemLocation(ZORA_SAPPHIRE);
+    std::string emeraldArea;
+    std::string erubyArea;
+    std::string sapphireArea;
 
     jsonData["childAltar"]["rewards"]["emeraldLoc"] = emeraldLoc->GetName();
-    jsonData["childAltar"]["rewards"]["emeraldArea"] = emeraldLoc->GetHintedRegion();
-
+    jsonData["childAltar"]["rewards"]["emeraldArea"] = GetHintRegion(emeraldLoc->GetParentRegionKey())->regionName;
     jsonData["childAltar"]["rewards"]["rubyLoc"] = rubyLoc->GetName();
-    jsonData["childAltar"]["rewards"]["rubyArea"] = rubyLoc->GetHintedRegion();
-
+    jsonData["childAltar"]["rewards"]["rubyArea"] = GetHintRegion(rubyLoc->GetParentRegionKey())->regionName;
     jsonData["childAltar"]["rewards"]["sapphireLoc"] = sapphireLoc->GetName();
-    jsonData["childAltar"]["rewards"]["sapphireArea"] = sapphireLoc->GetHintedRegion();
+    jsonData["childAltar"]["rewards"]["sapphireArea"] = GetHintRegion(sapphireLoc->GetParentRegionKey())->regionName;
+
+    ItemLocation* forestMedallionLoc = GetItemLocation(FOREST_MEDALLION);
+    ItemLocation* fireMedallionLoc = GetItemLocation(FIRE_MEDALLION);
+    ItemLocation* waterMedallionLoc = GetItemLocation(WATER_MEDALLION);
+    ItemLocation* shadowMedallionLoc = GetItemLocation(SHADOW_MEDALLION);
+    ItemLocation* spiritMedallionLoc = GetItemLocation(SPIRIT_MEDALLION);
+    ItemLocation* lightMedallionLoc = GetItemLocation(LIGHT_MEDALLION);
+
+    jsonData["adultAltar"]["rewards"]["forestMedallionLoc"] = forestMedallionLoc->GetName();
+    jsonData["adultAltar"]["rewards"]["forestMedallionArea"] = AreaTable(GetHintRegionHintKey(forestMedallionLoc->GetParentRegionKey()))->regionName;
+    jsonData["adultAltar"]["rewards"]["fireMedallionLoc"] = fireMedallionLoc->GetName();
+    jsonData["adultAltar"]["rewards"]["fireMedallionArea"] = AreaTable(GetHintRegionHintKey(fireMedallionLoc->GetParentRegionKey()))->regionName;
+    jsonData["adultAltar"]["rewards"]["waterMedallionLoc"] = waterMedallionLoc->GetName();
+    jsonData["adultAltar"]["rewards"]["waterMedallionArea"] = AreaTable(GetHintRegionHintKey(waterMedallionLoc->GetParentRegionKey()))->regionName;
+    jsonData["adultAltar"]["rewards"]["shadowMedallionLoc"] = shadowMedallionLoc->GetName();
+    jsonData["adultAltar"]["rewards"]["shadowMedallionArea"] = AreaTable(GetHintRegionHintKey(shadowMedallionLoc->GetParentRegionKey()))->regionName;
+    jsonData["adultAltar"]["rewards"]["spiritMedallionLoc"] = spiritMedallionLoc->GetName();
+    jsonData["adultAltar"]["rewards"]["spiritMedallionArea"] = AreaTable(GetHintRegionHintKey(spiritMedallionLoc->GetParentRegionKey()))->regionName;
+    jsonData["adultAltar"]["rewards"]["lightMedallionLoc"] = lightMedallionLoc->GetName();
+    jsonData["adultAltar"]["rewards"]["lightMedallionArea"] = AreaTable(GetHintRegionHintKey(lightMedallionLoc->GetParentRegionKey()))->regionName;
 
     std::string ganonText = AutoFormatHintTextString(unformattedGanonText);
     std::string ganonHintText = AutoFormatHintTextString(unformattedGanonHintText);
