@@ -328,8 +328,23 @@ void func_80AE2C1C(EnRd* this, PlayState* play) {
     if (Actor_WorldDistXYZToPoint(&player->actor, &this->actor.home.pos) >= 150.0f) {
         func_80AE2F50(this, play);
     }
+    
+    if (CVarGetInteger("gNoRedeadFreeze", 0) && (ABS(sp32) < 0x1554) && (Actor_WorldDistXYZToActor(&this->actor, &player->actor) <= 150.0f)) {
+        if (!(player->stateFlags1 & 0x2C6080) && !(player->stateFlags2 & 0x80)) {
+            if (this->unk_306 == 0) {
+                if (!(this->unk_312 & 0x80)) {
+                    player->actor.freezeTimer = 0;
+                }
+                this->unk_306 = 0x3C;
+                Audio_PlayActorSound2(&this->actor, NA_SE_EN_REDEAD_AIM);
+            }
+        } else {
+            func_80AE2F50(this, play);
+        }
+    
 
-    if ((ABS(sp32) < 0x1554) && (Actor_WorldDistXYZToActor(&this->actor, &player->actor) <= 150.0f)) {
+
+    } else if ((ABS(sp32) < 0x1554) && (Actor_WorldDistXYZToActor(&this->actor, &player->actor) <= 150.0f)) {
         if (!(player->stateFlags1 & 0x2C6080) && !(player->stateFlags2 & 0x80)) {
             if (this->unk_306 == 0) {
                 if (!(this->unk_312 & 0x80)) {
@@ -559,8 +574,15 @@ void func_80AE3834(EnRd* this, PlayState* play) {
     Color_RGBA8 sp2C = D_80AE493C;
     Player* player = GET_PLAYER(play);
     s16 temp_v0 = this->actor.yawTowardsPlayer - this->actor.shape.rot.y - this->unk_30E - this->unk_310;
+    
+    if (CVarGetInteger("gNoRedeadFreeze", 0)) {
+        if (!(this->unk_312 & 0x80)) {
+            player->actor.freezeTimer = 0;
+        }
+        Audio_PlayActorSound2(&this->actor, NA_SE_EN_REDEAD_AIM);
+        func_80AE2B90(this, play);
 
-    if (ABS(temp_v0) < 0x2008) {
+    } else if (ABS(temp_v0) < 0x2008) {
         if (!(this->unk_312 & 0x80)) {
             player->actor.freezeTimer = 60;
             func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
