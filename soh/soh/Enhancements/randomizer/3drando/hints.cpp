@@ -141,6 +141,9 @@ Text warpRequiemText;
 Text warpNocturneText;
 Text warpPreludeText;
 
+std::string ganonHintLoc;
+std::string dampeHintLoc;
+
 Text& GetChildAltarText() {
   return childAltarText;
 }
@@ -187,6 +190,14 @@ Text& GetWarpNocturneText() {
 
 Text& GetWarpPreludeText() {
   return warpPreludeText;
+}
+
+std::string GetGanonHintLoc() {
+    return ganonHintLoc;
+}
+
+std::string GetDampeHintLoc() {
+    return dampeHintLoc;
 }
 
 Area* GetHintRegion(const uint32_t area) {
@@ -578,8 +589,10 @@ void CreateGanonText() {
   auto hint = Hint(LIGHT_ARROW_LOCATION_HINT);
   if (lightArrowLocation.empty()) {
     ganonHintText = hint.GetText()+Hint(YOUR_POCKET).GetText();
+    ganonHintLoc = "Link's Pocket";
   } else {
     ganonHintText = hint.GetText()+GetHintRegion(Location(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
+    ganonHintLoc = Location(lightArrowLocation[0])->GetName();
   }
   ganonHintText = ganonHintText + "!";
 
@@ -793,6 +806,7 @@ void CreateDampesDiaryText() {
   };
   
   dampesText = temp1 + area + temp2;
+  dampeHintLoc = Location(location)->GetName();
 }
 
 void CreateGregRupeeHint() {

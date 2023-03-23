@@ -222,3 +222,6 @@ Text& GetWarpSerenadeText();
 Text& GetWarpRequiemText();
 Text& GetWarpNocturneText();
 Text& GetWarpPreludeText();
+
+std::string GetDampeHintLoc();
+std::string GetGanonHintLoc();

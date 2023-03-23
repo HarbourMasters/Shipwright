@@ -1254,34 +1254,26 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         std::string formattedChildAltarText = FormatJsonHintText(childAltarJsonText);
         strncpy(gSaveContext.childAltarText, formattedChildAltarText.c_str(), sizeof(gSaveContext.childAltarText) - 1);
         gSaveContext.childAltarText[sizeof(gSaveContext.childAltarText) - 1] = 0;
-        gSaveContext.rewardInfo[0].area = SpoilerfileAreaNameToEnum[spoilerFileJson["childAltar"]["rewards"]["emeraldArea"]];
-        gSaveContext.rewardInfo[0].rc = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["emeraldLoc"]];
-        gSaveContext.rewardInfo[1].area = SpoilerfileAreaNameToEnum[spoilerFileJson["childAltar"]["rewards"]["rubyArea"]];
-        gSaveContext.rewardInfo[1].rc = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["rubyLoc"]];
-        gSaveContext.rewardInfo[2].area = SpoilerfileAreaNameToEnum[spoilerFileJson["childAltar"]["rewards"]["sapphireArea"]];
-        gSaveContext.rewardInfo[2].rc = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["sapphireLoc"]];
+        gSaveContext.rewardCheck[0] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["emeraldLoc"]];
+        gSaveContext.rewardCheck[1] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["rubyLoc"]];
+        gSaveContext.rewardCheck[2] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["sapphireLoc"]];
 
         std::string adultAltarJsonText = spoilerFileJson["adultAltar"]["hintText"].get<std::string>();
         std::string formattedAdultAltarText = FormatJsonHintText(adultAltarJsonText);
         strncpy(gSaveContext.adultAltarText, formattedAdultAltarText.c_str(), sizeof(gSaveContext.adultAltarText) - 1);
         gSaveContext.adultAltarText[sizeof(gSaveContext.adultAltarText) - 1] = 0;
-        gSaveContext.rewardInfo[3].area = SpoilerfileAreaNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["forestMedallionArea"]];
-        gSaveContext.rewardInfo[3].rc = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["forestMedallionLoc"]];
-        gSaveContext.rewardInfo[4].area = SpoilerfileAreaNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["fireMedallionArea"]];
-        gSaveContext.rewardInfo[4].rc = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["fireMedallionLoc"]];
-        gSaveContext.rewardInfo[5].area = SpoilerfileAreaNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["waterMedallionArea"]];
-        gSaveContext.rewardInfo[5].rc = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["waterMedallionLoc"]];
-        gSaveContext.rewardInfo[6].area = SpoilerfileAreaNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["shadowMedallionArea"]];
-        gSaveContext.rewardInfo[6].rc = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["shadowMedallionLoc"]];
-        gSaveContext.rewardInfo[7].area = SpoilerfileAreaNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["spiritMedallionArea"]];
-        gSaveContext.rewardInfo[7].rc = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["spiritMedallionLoc"]];
-        gSaveContext.rewardInfo[8].area = SpoilerfileAreaNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["lightMedallionArea"]];
-        gSaveContext.rewardInfo[8].rc = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["lightMedallionLoc"]];
+        gSaveContext.rewardCheck[3] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["forestMedallionLoc"]];
+        gSaveContext.rewardCheck[4] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["fireMedallionLoc"]];
+        gSaveContext.rewardCheck[5] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["waterMedallionLoc"]];
+        gSaveContext.rewardCheck[6] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["shadowMedallionLoc"]];
+        gSaveContext.rewardCheck[7] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["spiritMedallionLoc"]];
+        gSaveContext.rewardCheck[8] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["lightMedallionLoc"]];
 
         std::string ganonHintJsonText = spoilerFileJson["ganonHintText"].get<std::string>();
         std::string formattedGanonHintJsonText = FormatJsonHintText(ganonHintJsonText);
         strncpy(gSaveContext.ganonHintText, formattedGanonHintJsonText.c_str(), sizeof(gSaveContext.ganonHintText) - 1);
         gSaveContext.ganonHintText[sizeof(gSaveContext.ganonHintText) - 1] = 0;
+        gSaveContext.ganonHintCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["ganonHintLoc"]];
 
         std::string ganonJsonText = spoilerFileJson["ganonText"].get<std::string>();
         std::string formattedGanonJsonText = FormatJsonHintText(ganonJsonText);
@@ -1292,11 +1284,13 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         std::string formattedDampeJsonText = FormatJsonHintText(dampeJsonText);
         strncpy(gSaveContext.dampeText, formattedDampeJsonText.c_str(), sizeof(gSaveContext.dampeText) - 1);
         gSaveContext.dampeText[sizeof(gSaveContext.dampeText) - 1] = 0;
+        gSaveContext.dampeCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["dampeHintLoc"]];
 
         std::string gregJsonText = spoilerFileJson["gregText"].get<std::string>();
         std::string formattedGregJsonText = FormatJsonHintText(gregJsonText);
         strncpy(gSaveContext.gregHintText, formattedGregJsonText.c_str(), sizeof(gSaveContext.gregHintText) - 1);
         gSaveContext.gregHintText[sizeof(gSaveContext.gregHintText) - 1] = 0;
+        gSaveContext.gregCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["gregLoc"]];
 
         std::string warpMinuetJsonText = spoilerFileJson["warpMinuetText"].get<std::string>();
         strncpy(gSaveContext.warpMinuetText, warpMinuetJsonText.c_str(), sizeof(gSaveContext.warpMinuetText) - 1);

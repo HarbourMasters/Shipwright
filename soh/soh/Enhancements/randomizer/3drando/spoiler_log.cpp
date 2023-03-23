@@ -703,11 +703,8 @@ static void WriteHints(int language) {
     std::string sapphireArea;
 
     jsonData["childAltar"]["rewards"]["emeraldLoc"] = emeraldLoc->GetName();
-    jsonData["childAltar"]["rewards"]["emeraldArea"] = GetHintRegion(emeraldLoc->GetParentRegionKey())->GetHint().GetText().GetEnglish();
     jsonData["childAltar"]["rewards"]["rubyLoc"] = rubyLoc->GetName();
-    jsonData["childAltar"]["rewards"]["rubyArea"] = GetHintRegion(rubyLoc->GetParentRegionKey())->GetHint().GetText().GetEnglish();
     jsonData["childAltar"]["rewards"]["sapphireLoc"] = sapphireLoc->GetName();
-    jsonData["childAltar"]["rewards"]["sapphireArea"] = GetHintRegion(sapphireLoc->GetParentRegionKey())->GetHint().GetText().GetEnglish();
 
     ItemLocation* forestMedallionLoc = GetItemLocation(FOREST_MEDALLION);
     ItemLocation* fireMedallionLoc = GetItemLocation(FIRE_MEDALLION);
@@ -717,17 +714,11 @@ static void WriteHints(int language) {
     ItemLocation* lightMedallionLoc = GetItemLocation(LIGHT_MEDALLION);
 
     jsonData["adultAltar"]["rewards"]["forestMedallionLoc"] = forestMedallionLoc->GetName();
-    jsonData["adultAltar"]["rewards"]["forestMedallionArea"] = GetHintRegion(forestMedallionLoc->GetParentRegionKey())->GetHint().GetText().GetEnglish();
     jsonData["adultAltar"]["rewards"]["fireMedallionLoc"] = fireMedallionLoc->GetName();
-    jsonData["adultAltar"]["rewards"]["fireMedallionArea"] = GetHintRegion(fireMedallionLoc->GetParentRegionKey())->GetHint().GetText().GetEnglish();
     jsonData["adultAltar"]["rewards"]["waterMedallionLoc"] = waterMedallionLoc->GetName();
-    jsonData["adultAltar"]["rewards"]["waterMedallionArea"] = GetHintRegion(waterMedallionLoc->GetParentRegionKey())->GetHint().GetText().GetEnglish();
     jsonData["adultAltar"]["rewards"]["shadowMedallionLoc"] = shadowMedallionLoc->GetName();
-    jsonData["adultAltar"]["rewards"]["shadowMedallionArea"] = GetHintRegion(shadowMedallionLoc->GetParentRegionKey())->GetHint().GetText().GetEnglish();
     jsonData["adultAltar"]["rewards"]["spiritMedallionLoc"] = spiritMedallionLoc->GetName();
-    jsonData["adultAltar"]["rewards"]["spiritMedallionArea"] = GetHintRegion(spiritMedallionLoc->GetParentRegionKey())->GetHint().GetText().GetEnglish();
     jsonData["adultAltar"]["rewards"]["lightMedallionLoc"] = lightMedallionLoc->GetName();
-    jsonData["adultAltar"]["rewards"]["lightMedallionArea"] = GetHintRegion(lightMedallionLoc->GetParentRegionKey())->GetHint().GetText().GetEnglish();
 
     std::string ganonText = AutoFormatHintTextString(unformattedGanonText);
     std::string ganonHintText = AutoFormatHintTextString(unformattedGanonHintText);
@@ -736,8 +727,11 @@ static void WriteHints(int language) {
 
     jsonData["ganonText"] = ganonText;
     jsonData["ganonHintText"] = ganonHintText;
+    jsonData["ganonHintLoc"] = GetGanonHintLoc();
     jsonData["dampeText"] = dampesText;
+    jsonData["dampeHintLoc"] = GetDampeHintLoc();
     jsonData["gregText"] = gregText;
+    jsonData["gregLoc"] = GetItemLocation(GREG_RUPEE)->GetName();
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;
