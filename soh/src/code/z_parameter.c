@@ -3084,7 +3084,11 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
 }
 
 void Rupees_ChangeBy(s16 rupeeChange) {
-    gSaveContext.rupeeAccumulator += rupeeChange;
+    if (gPlayState == NULL) {
+        gSaveContext.rupees += rupeeChange;
+    } else {
+        gSaveContext.rupeeAccumulator += rupeeChange;
+    }
 
     if (rupeeChange > 0) {
         gSaveContext.sohStats.count[COUNT_RUPEES_COLLECTED] += rupeeChange;
