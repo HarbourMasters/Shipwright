@@ -1393,6 +1393,7 @@ typedef struct PlayState {
     /* 0x1242B */ u8 unk_1242B;
     /* 0x1242C */ SceneTableEntry* loadedScene;
     /* 0x12430 */ char unk_12430[0xE8];
+    /*         */ Actor* lastCheck;
 } PlayState; // size = 0x12518
 
 typedef struct {

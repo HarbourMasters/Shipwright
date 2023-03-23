@@ -100,6 +100,7 @@ void func_80AFB768(EnSi* this, PlayState* play) {
 
             if (this->collider.base.ocFlags2 & OC2_HIT_PLAYER) {
                 this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
+                gPlayState->lastCheck = &this->actor;
 
                 if (gSaveContext.n64ddFlag) {
                     Randomizer_UpdateSkullReward(this, play);

@@ -3091,11 +3091,12 @@ json SerializeTrackerData(int fileNum, bool gameSave) {
     return block;
 }
 
-void SaveTrackerData(int fileNum, bool thread, bool gameSave) {
+void SaveTrackerData(int fileNum, bool thread, bool convertCollected) {
     if (thread)
-        std::thread(SaveTrackerFile, GetTrackerDataFileName(fileNum), SerializeTrackerData(fileNum, gameSave)).join();
+        std::thread(SaveTrackerFile, GetTrackerDataFileName(fileNum), SerializeTrackerData(fileNum, convertCollected || CheckTracker::GetLoadFileChecks())).join();
     else
-        SaveTrackerFile(GetTrackerDataFileName(fileNum), SerializeTrackerData(fileNum, gameSave));
+        SaveTrackerFile(GetTrackerDataFileName(fileNum), SerializeTrackerData(fileNum, convertCollected || CheckTracker::GetLoadFileChecks()));
+    CheckTracker::SetLoadFileChecks(false);
 }
 
 void SaveTrackerDataHook(int fileNum) {

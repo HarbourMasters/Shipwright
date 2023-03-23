@@ -40,7 +40,7 @@ void from_json(const json& j, RandomizerCheckTrackerData& rctd) {
 namespace CheckTracker {
 
 void LoadSettings();
-void UpdateChecks();
+void UpdateAreas();
 void UpdateInventoryChecks();
 void DrawLocation(RandomizerCheckObject rcObj);
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
@@ -49,7 +49,7 @@ void UpdateOrdering();
 void UpdateOrdering(RandomizerCheckArea rcArea);
 bool ShouldUpdateChecks();
 bool CompareCheckObject(RandomizerCheckObject i, RandomizerCheckObject j);
-bool HasItemBeenCollected(RandomizerCheckObject obj);
+bool HasItemBeenCollected(RandomizerCheck rc);
 void RainbowTick();
 
 
@@ -123,6 +123,7 @@ RandomizerCheckArea previousArea = RCAREA_INVALID;
 RandomizerCheckArea currentArea = RCAREA_INVALID;
 OSContPad* trackerButtonsPressed;
 SceneID lastScene = SCENE_ID_MAX;
+bool LoadFileChecks = false;
 
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
@@ -159,6 +160,44 @@ void TrySetAreas() {
     }
 }
 
+bool GetLoadFileChecks() {
+    return LoadFileChecks;
+}
+
+void SetLoadFileChecks(bool status) {
+    LoadFileChecks = status;
+}
+
+void CheckHasBeenCollected(RandomizerCheckTrackerData rcData, RandomizerCheckObject rcObj) {
+    if (HasItemBeenCollected(rcData.rc) && rcData.status != RCSHOW_COLLECTED && rcData.status != RCSHOW_SAVED) {
+        checkTrackerData.find(rcData.rc)->second.status = RCSHOW_COLLECTED;
+        areaChecksGotten[rcObj.rcArea]++;
+        UpdateOrdering();
+        UpdateInventoryChecks();
+        SaveTrackerData(gSaveContext.fileNum, true, false);
+    }
+}
+
+void CheckChecks(bool single) {
+   /* if (single) {
+        auto scene = static_cast<SceneID>(gPlayState->sceneNum);
+        auto area = RandomizerCheckObjects::GetRCAreaBySceneID(scene);
+        auto rcobjs = RandomizerCheckObjects::GetAllRCObjectsByArea().find(area)->second;
+        for (auto [rc, rco] : rcobjs) {
+            if (checkTrackerData.contains(rc)) {
+                CheckHasBeenCollected(checkTrackerData.find(rc)->second, *rco);
+            }
+        }
+    } else {*/
+        for (auto [rc, rcData] : checkTrackerData) {
+            if (RandomizerCheckObjects::GetAllRCObjects().contains(rc)) {
+                RandomizerCheckObject rco = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
+                CheckHasBeenCollected(rcData, rco);
+            }
+        }
+    //}
+}
+
 void CreateTrackerData() {
     TrySetAreas();
     for (auto& [rc, rco] : RandomizerCheckObjects::GetAllRCObjects()) {
@@ -166,6 +205,7 @@ void CreateTrackerData() {
             PushDefaultCheckData(rc);
         }
     }
+    CheckChecks(false);
     LinksPocket();
     UpdateOrdering();
     UpdateInventoryChecks();
@@ -642,7 +682,7 @@ void UpdateInventoryChecks() {
 void UpdateAreaFullyChecked(RandomizerCheckArea area) {
 }
 
-void UpdateChecks(RandomizerCheckArea area) {
+void UpdateAreas(RandomizerCheckArea area) {
     areasFullyChecked[area] = areaChecksGotten[area] == checkObjectsByArea.find(area)->second.size();
     if (areaChecksGotten[area] != 0 || RandomizerCheckObjects::AreaIsOverworld(area))
         areasSpoiled |= (1 << area);
@@ -684,8 +724,11 @@ bool CompareCheckObject(RandomizerCheckObject i, RandomizerCheckObject j) {
     return false;
 }
 
-bool HasItemBeenCollected(RandomizerCheckObject obj) {
-    ItemLocation* x = Location(obj.rc);
+bool HasItemBeenCollected(RandomizerCheck rc) {
+    if (gPlayState == NULL) {
+        return false;
+    }
+    ItemLocation* x = Location(rc);
     SpoilerCollectionCheck check = x->GetCollectionCheck();
     auto flag = check.flag;
     auto scene = check.scene;
@@ -705,7 +748,7 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
         case SpoilerCollectionCheckType::SPOILER_CHK_COW:
         case SpoilerCollectionCheckType::SPOILER_CHK_SCRUB:
         case SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF:
-            return Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(obj.rc));
+            return Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc));
         case SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF:
             return gSaveContext.eventChkInf[flag / 16] & (0x01 << flag % 16);
         case SpoilerCollectionCheckType::SPOILER_CHK_GERUDO_MEMBERSHIP_CARD:
@@ -719,9 +762,9 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
         case SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS:
             return BEANS_BOUGHT >= 10;
         case SpoilerCollectionCheckType::SPOILER_CHK_MINIGAME:
-            if (obj.rc == RC_LH_CHILD_FISHING)
+            if (rc == RC_LH_CHILD_FISHING)
                 return HIGH_SCORE(HS_FISHING) & 0x400;
-            if (obj.rc == RC_LH_ADULT_FISHING)
+            if (rc == RC_LH_ADULT_FISHING)
                 return HIGH_SCORE(HS_FISHING) & 0x800;
         case SpoilerCollectionCheckType::SPOILER_CHK_NONE:
             return false;
@@ -738,27 +781,18 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
     return false;
 }
 
-void CheckTrackerItemReceive(uint8_t item) {
+void CheckTrackerItemReceive(GetItemEntry giEntry) {
     if (gPlayState == nullptr)
         return;
-    auto scene = static_cast<SceneID>(gPlayState->sceneNum);
-    auto area = RandomizerCheckObjects::GetRCAreaBySceneID(scene);
-    auto rcobjs = RandomizerCheckObjects::GetAllRCObjectsByArea();
-    for (auto [rc, rco] : rcobjs.find(area)->second) {
-        auto rcData = checkTrackerData.find(rc)->second;
-        if (HasItemBeenCollected(*rco) && rcData.status != RCSHOW_COLLECTED && rcData.status != RCSHOW_SAVED) {
-            checkTrackerData.find(rc)->second.status = RCSHOW_COLLECTED;
-            areaChecksGotten[area]++;
-            UpdateOrdering();
-            UpdateInventoryChecks();
-            SaveTrackerData(gSaveContext.fileNum, true, false);
-            break;
-        }
-    }
+    Actor* actor = gPlayState->lastCheck;
+    if (actor == nullptr)
+        return;
+    RandomizerCheck check = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actor->id, gPlayState->sceneNum, actor->params);
+    //CheckChecks(true);
 }
 
 void DrawLocation(RandomizerCheckObject rcObj) {
-    Color_RGBA8 mainColor;
+    Color_RGBA8 mainColor; 
     Color_RGBA8 extraColor;
     std::string txt;
     bool showHidden = CVarGetInteger("gCheckTrackerOptionShowHidden", 0);
@@ -1048,7 +1082,8 @@ void InitCheckTracker() {
     Ship::RegisterHook<Ship::ControllerRead>([](OSContPad* cont_pad) {
         trackerButtonsPressed = cont_pad;
     });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnReceiveItem>(CheckTrackerItemReceive);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(CheckTrackerItemReceive);
+    //GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>(CheckTrackerCheckInit);
 
     LocationTable_Init();
 }
