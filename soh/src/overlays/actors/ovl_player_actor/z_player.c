@@ -6100,18 +6100,23 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
         } 
         
         if (CVarGetInteger("gEnableWalkModify", 0)) {
+            f32 modifierValue = 1.0;
             if (CVarGetInteger("gWalkSpeedToggle", 0)) {
                 if (gWalkSpeedToggle1) {
-                    maxSpeed *= CVarGetFloat("gWalkModifierOne", 1.0f);
+                    modifierValue = CVarGetFloat("gWalkModifierOne", 1.0f);
                 } else if (gWalkSpeedToggle2) {
-                    maxSpeed *= CVarGetFloat("gWalkModifierTwo", 1.0f);
+                    modifierValue = CVarGetFloat("gWalkModifierTwo", 1.0f);
                 }
             } else {
                 if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
-                    maxSpeed *= CVarGetFloat("gWalkModifierOne", 1.0f);
+                    modifierValue = CVarGetFloat("gWalkModifierOne", 1.0f);
                 } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
-                    maxSpeed *= CVarGetFloat("gWalkModifierTwo", 1.0f);
+                    modifierValue = CVarGetFloat("gWalkModifierTwo", 1.0f);
                 }
+            }
+
+            if (modifierValue > 1.0 || !CVarGetInteger("gWalkModifierToInputs", 0)) {
+                maxSpeed *= modifierValue;
             }
         }
 
@@ -10549,6 +10554,30 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     s32 pad;
 
     sControlInput = input;
+
+    if (CVarGetInteger("gEnableWalkModify", 0)) {
+        f32 modifierValue = 1.0;
+        if (CVarGetInteger("gWalkSpeedToggle", 0)) {
+            if (gWalkSpeedToggle1) {
+                modifierValue = CVarGetFloat("gWalkModifierOne", 1.0f);
+            } else if (gWalkSpeedToggle2) {
+                modifierValue = CVarGetFloat("gWalkModifierTwo", 1.0f);
+            }
+        } else {
+            if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER1)) {
+                modifierValue = CVarGetFloat("gWalkModifierOne", 1.0f);
+            } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_MODIFIER2)) {
+                modifierValue = CVarGetFloat("gWalkModifierTwo", 1.0f);
+            }
+        }
+
+        if (modifierValue < 1.0 && CVarGetInteger("gWalkModifierToInputs", 0)) {
+            s32 old_stick_x = input->rel.stick_x;
+            s32 old_stick_y = input->rel.stick_y;
+            input->rel.stick_x *= modifierValue * ABS(cosf(Math_Atan2F(old_stick_x, old_stick_y)));
+            input->rel.stick_y *= modifierValue * ABS(sinf(Math_Atan2F(old_stick_x, old_stick_y)));
+        }
+    }
 
     if (this->unk_A86 < 0) {
         this->unk_A86++;

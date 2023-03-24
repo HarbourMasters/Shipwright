@@ -313,6 +313,9 @@ namespace GameControlEditor {
             UIWidgets::Spacer(5);
             SohImGui::BeginGroupPanel("Walk Modifier", ImGui::GetContentRegionAvail());
             UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding", "gWalkSpeedToggle", true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Apply walk speed modifier to raw player inputs if less than 100%", "gWalkModifierToInputs", true, false);
+            DrawHelpIcon("If selected, the walk speed modifier will be taken into account for all player controls that relies on stick magnitude.\n"
+                         "This allows, for example, to put away your sword while moving, easily achieving ESS position, or a quick adjustment of aim sensitivity.");
             UIWidgets::EnhancementSliderFloat("Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true);
             UIWidgets::EnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true);
             SohImGui::EndGroupPanel();
