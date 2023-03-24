@@ -108,6 +108,7 @@ SceneID DungeonSceneLookupByArea(RandomizerCheckArea area) {
 // persistent during gameplay
 bool initialized;
 bool doInitialize;
+bool pendingSaleCheck = false;
 std::map<RandomizerCheck, RandomizerCheckShow> checkStatusMap;
 std::map<RandomizerCheck, RandomizerCheckTrackerData> checkTrackerData;
 std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checkObjectsByArea;
@@ -168,34 +169,115 @@ void SetLoadFileChecks(bool status) {
     LoadFileChecks = status;
 }
 
-void CheckHasBeenCollected(RandomizerCheckTrackerData rcData, RandomizerCheckObject rcObj) {
-    if (HasItemBeenCollected(rcData.rc) && rcData.status != RCSHOW_COLLECTED && rcData.status != RCSHOW_SAVED) {
-        checkTrackerData.find(rcData.rc)->second.status = RCSHOW_COLLECTED;
-        areaChecksGotten[rcObj.rcArea]++;
-        UpdateOrdering();
-        UpdateInventoryChecks();
-        SaveTrackerData(gSaveContext.fileNum, true, false);
+void SetCheckCollected(RandomizerCheckTrackerData rcData, RandomizerCheckObject rcObj) {
+    checkTrackerData.find(rcData.rc)->second.status = RCSHOW_COLLECTED;
+    areaChecksGotten[rcObj.rcArea]++;
+    UpdateOrdering(rcObj.rcArea);
+    UpdateInventoryChecks();
+    SaveTrackerData(gSaveContext.fileNum, true, false);
+}
+
+void CheckChecks(GetItemEntry giEntry = GET_ITEM_NONE) {
+    auto scene = static_cast<SceneID>(gPlayState->sceneNum);
+    auto area = RandomizerCheckObjects::GetRCAreaBySceneID(scene);
+    auto rcobjs = RandomizerCheckObjects::GetAllRCObjectsByArea().find(area)->second;
+    for (auto [rc, rco] : rcobjs) {
+        if (rco->sceneId == scene) {
+            if (checkTrackerData.contains(rc)) {
+                RandomizerCheckTrackerData rcData = checkTrackerData.find(rc)->second;
+                if (HasItemBeenCollected(rcData.rc) && rcData.status != RCSHOW_COLLECTED && rcData.status != RCSHOW_SAVED) {
+                    SetCheckCollected(rcData, *rco);
+                }
+            }
+        }
     }
 }
 
-void CheckChecks(bool single) {
-   /* if (single) {
-        auto scene = static_cast<SceneID>(gPlayState->sceneNum);
-        auto area = RandomizerCheckObjects::GetRCAreaBySceneID(scene);
-        auto rcobjs = RandomizerCheckObjects::GetAllRCObjectsByArea().find(area)->second;
-        for (auto [rc, rco] : rcobjs) {
-            if (checkTrackerData.contains(rc)) {
-                CheckHasBeenCollected(checkTrackerData.find(rc)->second, *rco);
-            }
+bool HasItemBeenCollected(RandomizerCheck rc) {
+    if (gPlayState == NULL) {
+        return false;
+    }
+    ItemLocation* x = Location(rc);
+    SpoilerCollectionCheck check = x->GetCollectionCheck();
+    auto flag = check.flag;
+    auto scene = check.scene;
+    auto type = check.type;
+
+    switch (type) {
+    case SpoilerCollectionCheckType::SPOILER_CHK_ALWAYS_COLLECTED:
+        return true;
+    case SpoilerCollectionCheckType::SPOILER_CHK_BIGGORON:
+        return gSaveContext.bgsFlag & flag;
+    case SpoilerCollectionCheckType::SPOILER_CHK_CHEST:
+        return gPlayState->actorCtx.flags.chest & (1 << flag);
+    case SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE:
+        return gPlayState->actorCtx.flags.collect & (1 << flag);
+    case SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT:
+    case SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM:
+    case SpoilerCollectionCheckType::SPOILER_CHK_COW:
+    case SpoilerCollectionCheckType::SPOILER_CHK_SCRUB:
+    case SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF:
+        return Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc));
+    case SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF:
+        return gSaveContext.eventChkInf[flag / 16] & (0x01 << flag % 16);
+    case SpoilerCollectionCheckType::SPOILER_CHK_GERUDO_MEMBERSHIP_CARD:
+        return CHECK_FLAG_ALL(gSaveContext.eventChkInf[0x09], 0x0F);
+    case SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA:
+        return GET_GS_FLAGS(scene) & flag;
+    case SpoilerCollectionCheckType::SPOILER_CHK_INF_TABLE:
+        return gSaveContext.infTable[scene] & INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(flag);
+    case SpoilerCollectionCheckType::SPOILER_CHK_ITEM_GET_INF:
+        return gSaveContext.itemGetInf[flag / 16] & INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(flag);
+    case SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS:
+        return BEANS_BOUGHT >= 10;
+    case SpoilerCollectionCheckType::SPOILER_CHK_MINIGAME:
+        if (rc == RC_LH_CHILD_FISHING)
+            return HIGH_SCORE(HS_FISHING) & 0x400;
+        if (rc == RC_LH_ADULT_FISHING)
+            return HIGH_SCORE(HS_FISHING) & 0x800;
+    case SpoilerCollectionCheckType::SPOILER_CHK_NONE:
+        return false;
+    case SpoilerCollectionCheckType::SPOILER_CHK_POE_POINTS:
+        return gSaveContext.highScores[HS_POE_POINTS] >= 1000;
+    case SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER:
+        // Gravedigger has a fix in place that means one of two save locations. Check both.
+        return (gSaveContext.itemGetInf[1] & 0x1000) || // vanilla flag
+            ((gSaveContext.n64ddFlag || CVarGetInteger("gGravediggingTourFix", 0)) &&
+                gPlayState->actorCtx.flags.collect & (1 << flag)); // rando/fix flag
+    default:
+        return false;
+    }
+    return false;
+}
+
+void CheckTrackerSaleEnd(GetItemEntry giEntry) {
+    if (pendingSaleCheck) {
+        pendingSaleCheck = false;
+        CheckChecks(giEntry);
+    }
+}
+
+void CheckTrackerItemReceive(GetItemEntry giEntry) {
+    if (gPlayState == nullptr) {
+        return;
+    }
+    if (gSaveContext.pendingSale != ITEM_NONE) {
+        pendingSaleCheck = true;
+        return;
+    }
+    Actor* actor = gPlayState->lastCheck;
+    RandomizerCheck check = RC_UNKNOWN_CHECK;
+    if (actor != nullptr) {
+        check = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actor->id, gPlayState->sceneNum, actor->params);
+    }
+    if (check == RC_UNKNOWN_CHECK) {
+        CheckChecks(giEntry);
+    }
+    else {
+        if (checkTrackerData.contains(check)) {
+            SetCheckCollected(checkTrackerData.find(check)->second, RandomizerCheckObjects::GetAllRCObjects().find(check)->second);
         }
-    } else {*/
-        for (auto [rc, rcData] : checkTrackerData) {
-            if (RandomizerCheckObjects::GetAllRCObjects().contains(rc)) {
-                RandomizerCheckObject rco = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
-                CheckHasBeenCollected(rcData, rco);
-            }
-        }
-    //}
+    }
 }
 
 void CreateTrackerData() {
@@ -205,7 +287,7 @@ void CreateTrackerData() {
             PushDefaultCheckData(rc);
         }
     }
-    CheckChecks(false);
+    CheckChecks();
     LinksPocket();
     UpdateOrdering();
     UpdateInventoryChecks();
@@ -724,73 +806,6 @@ bool CompareCheckObject(RandomizerCheckObject i, RandomizerCheckObject j) {
     return false;
 }
 
-bool HasItemBeenCollected(RandomizerCheck rc) {
-    if (gPlayState == NULL) {
-        return false;
-    }
-    ItemLocation* x = Location(rc);
-    SpoilerCollectionCheck check = x->GetCollectionCheck();
-    auto flag = check.flag;
-    auto scene = check.scene;
-    auto type = check.type;
-
-    switch (type) {
-        case SpoilerCollectionCheckType::SPOILER_CHK_ALWAYS_COLLECTED:
-            return true;
-        case SpoilerCollectionCheckType::SPOILER_CHK_BIGGORON:
-            return gSaveContext.bgsFlag & flag;
-        case SpoilerCollectionCheckType::SPOILER_CHK_CHEST:
-            return gPlayState->actorCtx.flags.chest & (1 << flag);
-        case SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE:
-            return gPlayState->actorCtx.flags.collect & (1 << flag);
-        case SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT:
-        case SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM:
-        case SpoilerCollectionCheckType::SPOILER_CHK_COW:
-        case SpoilerCollectionCheckType::SPOILER_CHK_SCRUB:
-        case SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF:
-            return Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(rc));
-        case SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF:
-            return gSaveContext.eventChkInf[flag / 16] & (0x01 << flag % 16);
-        case SpoilerCollectionCheckType::SPOILER_CHK_GERUDO_MEMBERSHIP_CARD:
-            return CHECK_FLAG_ALL(gSaveContext.eventChkInf[0x09], 0x0F);
-        case SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA:
-            return GET_GS_FLAGS(scene) & flag;
-        case SpoilerCollectionCheckType::SPOILER_CHK_INF_TABLE:
-            return gSaveContext.infTable[scene] & INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(flag);
-        case SpoilerCollectionCheckType::SPOILER_CHK_ITEM_GET_INF:
-            return gSaveContext.itemGetInf[flag / 16] & INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(flag);
-        case SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS:
-            return BEANS_BOUGHT >= 10;
-        case SpoilerCollectionCheckType::SPOILER_CHK_MINIGAME:
-            if (rc == RC_LH_CHILD_FISHING)
-                return HIGH_SCORE(HS_FISHING) & 0x400;
-            if (rc == RC_LH_ADULT_FISHING)
-                return HIGH_SCORE(HS_FISHING) & 0x800;
-        case SpoilerCollectionCheckType::SPOILER_CHK_NONE:
-            return false;
-        case SpoilerCollectionCheckType::SPOILER_CHK_POE_POINTS:
-            return gSaveContext.highScores[HS_POE_POINTS] >= 1000;
-        case SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER:
-            // Gravedigger has a fix in place that means one of two save locations. Check both.
-            return (gSaveContext.itemGetInf[1] & 0x1000) || // vanilla flag
-                   ((gSaveContext.n64ddFlag || CVarGetInteger("gGravediggingTourFix", 0)) &&
-                        gPlayState->actorCtx.flags.collect & (1 << flag)); // rando/fix flag
-        default:
-            return false;
-    }
-    return false;
-}
-
-void CheckTrackerItemReceive(GetItemEntry giEntry) {
-    if (gPlayState == nullptr)
-        return;
-    Actor* actor = gPlayState->lastCheck;
-    if (actor == nullptr)
-        return;
-    RandomizerCheck check = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actor->id, gPlayState->sceneNum, actor->params);
-    //CheckChecks(true);
-}
-
 void DrawLocation(RandomizerCheckObject rcObj) {
     Color_RGBA8 mainColor; 
     Color_RGBA8 extraColor;
@@ -1083,6 +1098,7 @@ void InitCheckTracker() {
         trackerButtonsPressed = cont_pad;
     });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(CheckTrackerItemReceive);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>(CheckTrackerSaleEnd);
     //GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>(CheckTrackerCheckInit);
 
     LocationTable_Init();

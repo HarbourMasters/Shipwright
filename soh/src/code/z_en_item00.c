@@ -838,6 +838,8 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
 
     gPlayState->lastCheck = NULL;
 
+    RandomizerCheck check = Randomizer_GetCheckFromActor(this->actor.id, gPlayState->sceneNum, this->actor.params);
+
     switch (this->actor.params) {
         case ITEM00_RUPEE_GREEN:
             Item_Give(play, ITEM_RUPEE_GREEN);
@@ -969,6 +971,7 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
     Actor_SetScale(&this->actor, this->scale);
 
     this->getItemId = GI_NONE;
+    gPlayState->lastCheck = NULL;
     EnItem00_SetupAction(this, func_8001E5C8);
 }
 
