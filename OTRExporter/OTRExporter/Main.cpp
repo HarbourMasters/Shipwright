@@ -73,24 +73,21 @@ static void ExporterProgramEnd()
 		std::vector<uint8_t> romData = File::ReadAllBytes(romPath);
 		uint32_t crc = BitConverter::ToUInt32BE(romData, 0x10);
         uint8_t endianness = (uint8_t)Endianness::Big;
+	
 
-		// Write crc to version file
-		fs::path versionPath("Extract/version");
-        MemoryStream* versionStream = new MemoryStream();
-        BinaryWriter writer(versionStream);
-        writer.SetEndianness(Endianness::Big);
-        writer.Write(endianness);
-        writer.Write(crc);
-		std::ofstream versionFile(versionPath.c_str(), std::ios::out | std::ios::binary);
-        versionFile.write(versionStream->ToVector().data(), versionStream->GetLength());
-		versionFile.flush();
-		versionFile.close();
-        writer.Close();
+		MemoryStream* versionStream = new MemoryStream();
+		BinaryWriter writer(versionStream);
+		writer.SetEndianness(Endianness::Big);
+		writer.Write(endianness);
+		writer.Write(crc);
+		writer.Close();
 
 		printf("Created version file.\n");
 
 		printf("Generating OTR Archive...\n");
 		otrArchive = Ship::Archive::CreateArchive(otrFileName, 40000);
+
+		otrArchive->AddFile("version", (uintptr_t)versionStream->ToVector().data(), versionStream->GetLength());
 
 		for (auto item : files) {
 			std::string fName = item.first;
@@ -109,6 +106,8 @@ static void ExporterProgramEnd()
 
 		// Add any additional files that need to be manually copied...
 		auto lst = Directory::ListFiles("Extract");
+		std::shared_ptr<Ship::Archive> sohOtr = Ship::Archive::CreateArchive("soh.otr", 4096);
+		sohOtr->AddFile("version", (uintptr_t)versionStream->ToVector().data(), versionStream->GetLength());
 
 		for (auto item : lst)
 		{
@@ -124,19 +123,20 @@ static void ExporterProgramEnd()
 					ZTexture tex(nullptr);
 					Globals::Instance->buildRawTexture = true;
 					tex.FromPNG(item, ZTexture::GetTextureTypeFromString(format));
-					printf("otrArchive->AddFile(%s)\n", StringHelper::Split(afterPath, "Extract/")[1].c_str());
+					printf("sohOtr->AddFile(%s)\n", StringHelper::Split(afterPath, "Extract/")[1].c_str());
 
-					auto exporter = new OTRExporter_Texture();
+					OTRExporter_Texture exporter;
+
 					MemoryStream* stream = new MemoryStream();
 					BinaryWriter writer(stream);
 
- 					exporter->Save(&tex, "", &writer);
+ 					exporter.Save(&tex, "", &writer);
 
  					std::string src = tex.GetBodySourceCode();
  					writer.Write((char*) src.c_str(), src.size());
 
  					std::vector<char> fileData = stream->ToVector();
- 					otrArchive->AddFile(StringHelper::Split(afterPath, "Extract/assets/")[1], (uintptr_t)fileData.data(), fileData.size());
+ 					sohOtr->AddFile(StringHelper::Split(afterPath, "Extract/assets/")[1], (uintptr_t)fileData.data(), fileData.size());
 					continue;
 				}
 			}
@@ -147,14 +147,14 @@ static void ExporterProgramEnd()
 				if(extension == "json"){
 					auto fileData = File::ReadAllBytes(item);
 					printf("Adding accessibility texts %s\n", StringHelper::Split(item, "texts/")[1].c_str());
-					otrArchive->AddFile(StringHelper::Split(item, "Extract/assets/")[1], (uintptr_t)fileData.data(), fileData.size());
+					sohOtr->AddFile(StringHelper::Split(item, "Extract/assets/")[1], (uintptr_t)fileData.data(), fileData.size());
 				}
 				continue;
 			}
 
 			auto fileData = File::ReadAllBytes(item);
-			printf("otrArchive->AddFile(%s)\n", StringHelper::Split(item, "Extract/")[1].c_str());
-			otrArchive->AddFile(StringHelper::Split(item, item.find("Extract/assets/") != std::string::npos ? "Extract/assets/" : "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
+			printf("sohOtr->AddFile(%s)\n", StringHelper::Split(item, "Extract/")[1].c_str());
+			sohOtr->AddFile(StringHelper::Split(item, item.find("Extract/assets/") != std::string::npos ? "Extract/assets/" : "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
 		}
 	}
 }
