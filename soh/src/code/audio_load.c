@@ -1346,7 +1346,9 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     int customSeqListSize = 0;
     char** seqList = ResourceMgr_ListFiles("audio/sequences*", &seqListSize);
     char** customSeqList = ResourceMgr_ListFiles("custom/music/*", &customSeqListSize);
-    sequenceMapSize = (size_t)(seqListSize + customSeqListSize);
+    // 20 is arbitrary and meant as only a temporary fix. this just gives headroom for the sequences in AudioCollection that take up early indexes that
+    // would otherwise be assigned to custom sequences
+    sequenceMapSize = (size_t)(seqListSize + customSeqListSize + 20); 
     sequenceMap = malloc(sequenceMapSize * sizeof(char*));
     gAudioContext.seqLoadStatus = malloc(sequenceMapSize * sizeof(char*));
 
@@ -1366,16 +1368,23 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     int startingSeqNum = MAX_AUTHENTIC_SEQID; // 109 is the highest vanilla sequence
     qsort(customSeqList, customSeqListSize, sizeof(char*), strcmp_sort);
 
+    int seqNum = startingSeqNum;
+
     for (size_t i = startingSeqNum; i < startingSeqNum + customSeqListSize; i++) {
+        // ensure that what would be the next sequence number is actually unassigned in AudioCollection
+        while (AudioCollection_GetSequenceName(seqNum) != NULL) {
+            seqNum++;
+        }
         int j = i - startingSeqNum;
-        AudioCollection_AddToCollection(customSeqList[j], i);
+        AudioCollection_AddToCollection(customSeqList[j], seqNum);
         SequenceData sDat = ResourceMgr_LoadSeqByName(customSeqList[j]);
-        sDat.seqNumber = i;
+        sDat.seqNumber = seqNum;
 
         char* str = malloc(strlen(customSeqList[j]) + 1);
         strcpy(str, customSeqList[j]);
 
         sequenceMap[sDat.seqNumber] = str;
+        seqNum++;
     }
 
     free(customSeqList);
