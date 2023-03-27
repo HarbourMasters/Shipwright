@@ -151,7 +151,7 @@ void PushDefaultCheckData(RandomizerCheck rc) {
 }
 
 void SongFromImpa() {
-    if (CVarGetInteger("gRandomizeSkipChildZelda", 0) != 0) {
+    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA) == RO_GENERIC_ON) {
         RandomizerCheckTrackerData* data = &checkTrackerData.find(RC_SONG_FROM_IMPA)->second;
         if (data->status != RCSHOW_SAVED) {
             data->status = RCSHOW_SAVED;
@@ -161,8 +161,8 @@ void SongFromImpa() {
 
 // Function for adding Link's Pocket check
 void LinksPocket() {
-    if (CVarGetInteger("gRandomizeLinksPocket", RO_LINKS_POCKET_DUNGEON_REWARD) != RO_LINKS_POCKET_NOTHING ||
-        CVarGetInteger("gRandomizeLDungeonRewards", RO_DUNGEON_REWARDS_END_OF_DUNGEON) == RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
+    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING ||
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DUNGEON_REWARDS) == RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
         PushDefaultCheckData(RC_LINKS_POCKET);
         checkTrackerData.find(RC_LINKS_POCKET)->second.status = RCSHOW_SAVED;
     }
