@@ -138,6 +138,7 @@ void Entrance_ClearEntranceTrackingData(void);
 void Entrance_InitEntranceTrackingData(void);
 void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex);
 void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex);
+void CheckTracker_OnMessageClose();
 #endif
 
 #endif

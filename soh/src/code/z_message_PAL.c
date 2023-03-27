@@ -169,6 +169,7 @@ u8 Message_ShouldAdvanceSilent(PlayState* play) {
  * input from the player.
  */
 void Message_CloseTextbox(PlayState* play) {
+    // OnMessageClose ?
     MessageContext* msgCtx = &play->msgCtx;
 
     if (msgCtx->msgLength != 0) {
@@ -3378,6 +3379,7 @@ void Message_Update(PlayState* play) {
             }
             sLastPlayedSong = 0xFF;
             osSyncPrintf("OCARINA_MODE=%d   chk_ocarina_no=%d\n", play->msgCtx.ocarinaMode, msgCtx->unk_E3F2);
+            CheckTracker_OnMessageClose();
             break;
         case MSGMODE_PAUSED:
             break;

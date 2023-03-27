@@ -415,6 +415,7 @@ void Play_Init(GameState* thisx) {
     s32 i;
     u8 tempSetupIndex;
     s32 pad[2];
+    gPlayState->lastCheck = NULL;
 
     // Skip Child Stealth when option is enabled, Zelda's Letter isn't obtained and Impa's reward hasn't been received
     // eventChkInf[4] & 1 = Got Zelda's Letter
@@ -868,6 +869,11 @@ void Play_Update(PlayState* play) {
                                 TransitionUnk_Destroy(&sTrnsnUnk);
                                 gTrnsnUnkState = 0;
                                 R_UPDATE_RATE = 3;
+                            }
+
+                            if (gPlayState->sceneNum != SCENE_KAKUSIANA && gPlayState->sceneNum != SCENE_YOUSEI_IZUMI_YOKO && gPlayState->sceneNum != SCENE_YOUSEI_IZUMI_TATE &&
+                                gPlayState->sceneNum != SCENE_SHOP1) {
+                                gSaveContext.lastScene = gPlayState->sceneNum;
                             }
 
                             // Autosave on area transition unless you're in a cutscene or a grotto since resuming from grottos breaks the game

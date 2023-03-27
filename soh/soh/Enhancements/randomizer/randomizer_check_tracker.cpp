@@ -109,6 +109,9 @@ SceneID DungeonSceneLookupByArea(RandomizerCheckArea area) {
 bool initialized;
 bool doInitialize;
 bool pendingSaleCheck = false;
+bool messageCloseCheck = false;
+bool tickCheck = false;
+int tickCheckCounter = 0;
 std::map<RandomizerCheck, RandomizerCheckShow> checkStatusMap;
 std::map<RandomizerCheck, RandomizerCheckTrackerData> checkTrackerData;
 std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checkObjectsByArea;
@@ -147,10 +150,22 @@ void PushDefaultCheckData(RandomizerCheck rc) {
     checkTrackerData.emplace(rc, newData);
 }
 
+void SongFromImpa() {
+    if (CVarGetInteger("gRandomizeSkipChildZelda", 0) != 0) {
+        RandomizerCheckTrackerData* data = &checkTrackerData.find(RC_SONG_FROM_IMPA)->second;
+        if (data->status != RCSHOW_SAVED) {
+            data->status = RCSHOW_SAVED;
+        }
+    }
+}
+
 // Function for adding Link's Pocket check
 void LinksPocket() {
-    PushDefaultCheckData(RC_LINKS_POCKET);
-    checkTrackerData.find(RC_LINKS_POCKET)->second.status = RCSHOW_SAVED;
+    if (CVarGetInteger("gRandomizeLinksPocket", RO_LINKS_POCKET_DUNGEON_REWARD) != RO_LINKS_POCKET_NOTHING ||
+        CVarGetInteger("gRandomizeLDungeonRewards", RO_DUNGEON_REWARDS_END_OF_DUNGEON) == RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
+        PushDefaultCheckData(RC_LINKS_POCKET);
+        checkTrackerData.find(RC_LINKS_POCKET)->second.status = RCSHOW_SAVED;
+    }
 }
 
 void TrySetAreas() {
@@ -169,8 +184,9 @@ void SetLoadFileChecks(bool status) {
     LoadFileChecks = status;
 }
 
-void SetCheckCollected(RandomizerCheckTrackerData rcData, RandomizerCheckObject rcObj) {
-    checkTrackerData.find(rcData.rc)->second.status = RCSHOW_COLLECTED;
+void SetCheckCollected(RandomizerCheck rc) {
+    checkTrackerData.find(rc)->second.status = RCSHOW_COLLECTED;
+    RandomizerCheckObject rcObj = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
     areaChecksGotten[rcObj.rcArea]++;
     UpdateOrdering(rcObj.rcArea);
     UpdateInventoryChecks();
@@ -178,16 +194,21 @@ void SetCheckCollected(RandomizerCheckTrackerData rcData, RandomizerCheckObject 
 }
 
 void CheckChecks(GetItemEntry giEntry = GET_ITEM_NONE) {
+    if (gPlayState == nullptr) {
+        return;
+    }
+    // #TODO Rework with OnTransitionEnd to get overworld area and pull RCObjects to check based on that
     auto scene = static_cast<SceneID>(gPlayState->sceneNum);
     auto area = RandomizerCheckObjects::GetRCAreaBySceneID(scene);
+    if (scene == SCENE_YOUSEI_IZUMI_TATE || scene == SCENE_YOUSEI_IZUMI_YOKO || scene == SCENE_KAKUSIANA || scene == SCENE_SHOP1) {
+        area = RandomizerCheckObjects::GetRCAreaBySceneID(static_cast<SceneID>(gSaveContext.lastScene));
+    }
     auto rcobjs = RandomizerCheckObjects::GetAllRCObjectsByArea().find(area)->second;
     for (auto [rc, rco] : rcobjs) {
-        if (rco->sceneId == scene) {
-            if (checkTrackerData.contains(rc)) {
-                RandomizerCheckTrackerData rcData = checkTrackerData.find(rc)->second;
-                if (HasItemBeenCollected(rcData.rc) && rcData.status != RCSHOW_COLLECTED && rcData.status != RCSHOW_SAVED) {
-                    SetCheckCollected(rcData, *rco);
-                }
+        if (checkTrackerData.contains(rc)) {
+            RandomizerCheckTrackerData rcData = checkTrackerData.find(rc)->second;
+            if (HasItemBeenCollected(rcData.rc) && rcData.status != RCSHOW_COLLECTED && rcData.status != RCSHOW_SAVED) {
+                SetCheckCollected(rc);
             }
         }
     }
@@ -250,6 +271,27 @@ bool HasItemBeenCollected(RandomizerCheck rc) {
     return false;
 }
 
+void CheckTrackerDialogClosed() {
+    if (messageCloseCheck) {
+        messageCloseCheck = false;
+        tickCheck = true;
+        tickCheckCounter = 2;
+    }
+}
+
+void CheckTrackerFrame() {
+    if (tickCheckCounter > 0) {
+        tickCheckCounter--;
+    } else if (tickCheck) {
+        CheckChecks();
+        tickCheck = false;
+    }
+    if (pendingSaleCheck && gSaveContext.pendingSale == ITEM_NONE) {
+        pendingSaleCheck = false;
+        CheckChecks();
+    }
+}
+
 void CheckTrackerSaleEnd(GetItemEntry giEntry) {
     if (pendingSaleCheck) {
         pendingSaleCheck = false;
@@ -265,19 +307,40 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         pendingSaleCheck = true;
         return;
     }
-    Actor* actor = gPlayState->lastCheck;
-    RandomizerCheck check = RC_UNKNOWN_CHECK;
-    if (actor != nullptr) {
-        check = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actor->id, gPlayState->sceneNum, actor->params);
-    }
-    if (check == RC_UNKNOWN_CHECK) {
-        CheckChecks(giEntry);
-    }
-    else {
-        if (checkTrackerData.contains(check)) {
-            SetCheckCollected(checkTrackerData.find(check)->second, RandomizerCheckObjects::GetAllRCObjects().find(check)->second);
+    auto scene = static_cast<SceneID>(gPlayState->sceneNum);
+    if (scene == SCENE_SYATEKIJYOU) {
+        if (gSaveContext.linkAge == 1) {
+            SetCheckCollected(RC_MARKET_SHOOTING_GALLERY_REWARD);
+        } else {
+            SetCheckCollected(RC_KAK_SHOOTING_GALLERY_REWARD);
         }
+        return;
     }
+    if (GET_PLAYER(gPlayState)->interactRangeActor == nullptr) {
+         Actor* actor = gPlayState->lastCheck;
+         RandomizerCheck check = RC_UNKNOWN_CHECK;
+         if (actor != nullptr) {
+             check = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actor->id, gPlayState->sceneNum,
+             actor->params);
+         }
+         if (check == RC_UNKNOWN_CHECK) {
+             if (GET_PLAYER(gPlayState)->interactRangeActor != nullptr) {
+                 actor = GET_PLAYER(gPlayState)->interactRangeActor;
+                 check = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actor->id, gPlayState->sceneNum,
+                 actor->params);
+             }
+         }
+         if (check != RC_UNKNOWN_CHECK && checkTrackerData.contains(check)) {
+             SetCheckCollected(check);
+             return;
+         }
+    } else {
+         if (gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
+             messageCloseCheck = true;
+             return;
+         }
+    }
+    CheckChecks();
 }
 
 void CreateTrackerData() {
@@ -289,6 +352,7 @@ void CreateTrackerData() {
     }
     CheckChecks();
     LinksPocket();
+    SongFromImpa();
     UpdateOrdering();
     UpdateInventoryChecks();
 }
@@ -1099,6 +1163,7 @@ void InitCheckTracker() {
     });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(CheckTrackerItemReceive);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>(CheckTrackerSaleEnd);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(CheckTrackerFrame);
     //GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>(CheckTrackerCheckInit);
 
     LocationTable_Init();

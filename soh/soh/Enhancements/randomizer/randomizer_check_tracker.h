@@ -32,6 +32,7 @@ void CreateTrackerData();
 void SetLastItemGetRC(RandomizerCheck rc);
 bool GetLoadFileChecks();
 void SetLoadFileChecks(bool);
+void CheckTrackerDialogClosed();
 } // namespace CheckTracker
 
 NLOHMANN_JSON_SERIALIZE_ENUM(RandomizerCheckShow, {

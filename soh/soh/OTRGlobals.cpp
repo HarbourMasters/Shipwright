@@ -1737,3 +1737,7 @@ extern "C" void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex) {
 extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
     SetLastEntranceOverrideForTracker(entranceIndex);
 }
+
+extern "C" void CheckTracker_OnMessageClose() {
+    CheckTracker::CheckTrackerDialogClosed();
+}
