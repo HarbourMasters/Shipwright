@@ -1305,7 +1305,7 @@ void func_80090A28(Player* this, Vec3f* vecs) {
 }
 
 void Player_DrawHookshotReticle(PlayState* play, Player* this, f32 arg2) {
-    static Vec3f D_801260C8 = { -500.0f, -100.0f, 0.0f };
+    static Vec3f D_801260C8 = { -500.0f, -100.0f , 0.0f };
     CollisionPoly* sp9C;
     s32 bgId;
     Vec3f sp8C;
@@ -1535,24 +1535,44 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
         }
 
         if (this->actor.scale.y >= 0.0f) {
-            if ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
-                (this->heldItemAction == PLAYER_IA_LONGSHOT)) {
-                Matrix_MultVec3f(&D_80126184, &this->unk_3C8);
+            if (((this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
+                (this->heldItemAction == PLAYER_IA_LONGSHOT) ||
+                CVarGetInteger("gBowReticle", 0) && (
+                    (this->heldItemAction == PLAYER_IA_BOW_FIRE) ||
+                    (this->heldItemAction == PLAYER_IA_BOW_ICE) ||
+                    (this->heldItemAction == PLAYER_IA_BOW_LIGHT) ||
+                    (this->heldItemAction == PLAYER_IA_BOW) ||
+                    (this->heldItemAction == PLAYER_IA_SLINGSHOT)))) {
+
+                if ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
+                    (this->heldItemAction == PLAYER_IA_LONGSHOT)) {
+                    Matrix_MultVec3f(&D_80126184, &this->unk_3C8);
+                }
 
                 if (heldActor != NULL) {
                     MtxF sp44;
                     s32 pad;
 
-                    Matrix_MultVec3f(&D_80126190, &heldActor->world.pos);
-                    Matrix_RotateZYX(0, -0x4000, -0x4000, MTXMODE_APPLY);
+                    if ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
+                        (this->heldItemAction == PLAYER_IA_LONGSHOT)) {
+                        Matrix_MultVec3f(&D_80126190, &heldActor->world.pos);
+                        Matrix_RotateZYX(0, -0x4000, -0x4000, MTXMODE_APPLY);
+                    }
+                    else {
+                        Matrix_RotateZYX(0, -15216, -17496, MTXMODE_APPLY);
+                    }
                     Matrix_Get(&sp44);
-                    Matrix_MtxFToYXZRotS(&sp44, &heldActor->world.rot, 0);
-                    heldActor->shape.rot = heldActor->world.rot;
+                    if ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
+                        (this->heldItemAction == PLAYER_IA_LONGSHOT)) {
+                        Matrix_MtxFToYXZRotS(&sp44, &heldActor->world.rot, 0);
+                        heldActor->shape.rot = heldActor->world.rot;
+                    }
 
                     if (func_8002DD78(this) != 0) {
                         Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
                         Player_DrawHookshotReticle(
-                            play, this, ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 77600.0f) * CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f));
+                            play, this, ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 
+                                         ((this->heldItemAction == PLAYER_IA_LONGSHOT) ? 77600.0f : 3.402823466e+12f)) * CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f));
                     }
                 }
             }
