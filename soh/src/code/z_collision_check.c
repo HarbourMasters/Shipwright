@@ -1,6 +1,7 @@
 #include "global.h"
 #include "vt.h"
 #include "overlays/effects/ovl_Effect_Ss_HitMark/z_eff_ss_hitmark.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 typedef s32 (*ColChkResetFunc)(PlayState*, Collider*);
 typedef void (*ColChkBloodFunc)(PlayState*, Collider*, Vec3f*);
@@ -36,8 +37,6 @@ typedef enum {
     /* 1 */ MASSTYPE_HEAVY,
     /* 2 */ MASSTYPE_NORMAL
 } ColChkMassType;
-
-uint8_t secondCollisionUpdate = 0;
 
 /**
  * Draws a red triangle with vertices vA, vB, and vC.
@@ -1179,7 +1178,7 @@ static ColChkResetFunc sATResetFuncs[] = {
 s32 CollisionCheck_SetAT(PlayState* play, CollisionCheckContext* colChkCtx, Collider* collider) {
     s32 index;
 
-    if (secondCollisionUpdate) {
+    if (GameInteractor_SecondCollisionUpdate()) {
         return -1;
     }
 
@@ -1213,7 +1212,7 @@ s32 CollisionCheck_SetAT_SAC(PlayState* play, CollisionCheckContext* colChkCtx, 
                              s32 index) {
     ASSERT(collider->shape <= COLSHAPE_QUAD);
 
-    if (secondCollisionUpdate) {
+    if (GameInteractor_SecondCollisionUpdate()) {
         return -1;
     }
 
@@ -1258,7 +1257,7 @@ static ColChkResetFunc sACResetFuncs[] = {
 s32 CollisionCheck_SetAC(PlayState* play, CollisionCheckContext* colChkCtx, Collider* collider) {
     s32 index;
 
-    if (secondCollisionUpdate) {
+    if (GameInteractor_SecondCollisionUpdate()) {
         return -1;
     }
 
@@ -1292,7 +1291,7 @@ s32 CollisionCheck_SetAC_SAC(PlayState* play, CollisionCheckContext* colChkCtx, 
                              s32 index) {
     ASSERT(collider->shape <= COLSHAPE_QUAD);
 
-    if (secondCollisionUpdate) {
+    if (GameInteractor_SecondCollisionUpdate()) {
         return -1;
     }
 
@@ -1337,7 +1336,7 @@ static ColChkResetFunc sOCResetFuncs[] = {
 s32 CollisionCheck_SetOC(PlayState* play, CollisionCheckContext* colChkCtx, Collider* collider) {
     s32 index;
 
-    if (secondCollisionUpdate) {
+    if (GameInteractor_SecondCollisionUpdate()) {
         return -1;
     }
 
@@ -1372,7 +1371,7 @@ s32 CollisionCheck_SetOC(PlayState* play, CollisionCheckContext* colChkCtx, Coll
 s32 CollisionCheck_SetOC_SAC(PlayState* play, CollisionCheckContext* colChkCtx, Collider* collider,
                              s32 index) {
 
-    if (secondCollisionUpdate) {
+    if (GameInteractor_SecondCollisionUpdate()) {
         return -1;
     }
 
@@ -1412,7 +1411,7 @@ s32 CollisionCheck_SetOC_SAC(PlayState* play, CollisionCheckContext* colChkCtx, 
 s32 CollisionCheck_SetOCLine(PlayState* play, CollisionCheckContext* colChkCtx, OcLine* collider) {
     s32 index;
 
-    if (secondCollisionUpdate) {
+    if (GameInteractor_SecondCollisionUpdate()) {
         return -1;
     }
 

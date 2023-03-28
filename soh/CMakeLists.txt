@@ -141,6 +141,7 @@ list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/gfx.*")
 
 # handle crowd control removals
 list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/crowd-control/soh.cs")
+list(REMOVE_ITEM soh__Enhancements "soh/Enhancements/crowd-control/soh.ccpak")
 if (!BUILD_CROWD_CONTROL)
     list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/crowd-control/*")
 endif()

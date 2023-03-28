@@ -22,7 +22,8 @@
 
 #define CALC_RESAMPLE_FREQ(sampleRate) ((float)sampleRate / (s32)gAudioContext.audioBufferParameters.frequency)
 
-#define MAX_SEQUENCES 0x400
+//#define MAX_SEQUENCES 0x800
+extern size_t sequenceMapSize;
 
 extern char* fontMap[256];
 
@@ -917,7 +918,7 @@ typedef struct {
     /* 0x342C */ AudioPoolSplit3 temporaryCommonPoolSplit;
     /* 0x3438 */ u8 sampleFontLoadStatus[0x30];
     /* 0x3468 */ u8 fontLoadStatus[0x30];
-    /* 0x3498 */ u8 seqLoadStatus[MAX_SEQUENCES];
+    /* 0x3498 */ u8* seqLoadStatus;
     /* 0x3518 */ volatile u8 resetStatus;
     /* 0x3519 */ u8 audioResetSpecIdToLoad;
     /* 0x351C */ s32 audioResetFadeOutFramesLeft;

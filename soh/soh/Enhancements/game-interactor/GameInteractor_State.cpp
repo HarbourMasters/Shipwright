@@ -12,6 +12,14 @@ bool GameInteractor::State::ReverseControlsActive = 0;
 int32_t GameInteractor::State::DefenseModifier = 0;
 int32_t GameInteractor::State::RunSpeedModifier = 0;
 GIGravityLevel GameInteractor::State::GravityLevel = GI_GRAVITY_LEVEL_NORMAL;
+uint32_t GameInteractor::State::EmulatedButtons = 0;
+uint8_t GameInteractor::State::RandomBombFuseTimerActive = 0;
+uint8_t GameInteractor::State::DisableLedgeGrabsActive = 0;
+uint8_t GameInteractor::State::RandomWindActive = 0;
+uint8_t GameInteractor::State::RandomWindSecondsSinceLastDirectionChange = 0;
+uint8_t GameInteractor::State::RandomBonksActive = 0;
+uint8_t GameInteractor::State::SlipperyFloorActive = 0;
+uint8_t GameInteractor::State::SecondCollisionUpdate = 0;
 
 void GameInteractor::State::SetPacifistMode(bool active) {
     PacifistModeActive = active;
@@ -78,4 +86,44 @@ int32_t GameInteractor_RunSpeedModifier() {
 // MARK: - GameInteractor::State::DisableCameraRotationActive
 GIGravityLevel GameInteractor_GravityLevel() {
     return GameInteractor::State::GravityLevel;
+}
+
+// MARK: - GameInteractor::State::GetEmulatedButtons
+uint32_t GameInteractor_GetEmulatedButtons() {
+    return GameInteractor::State::EmulatedButtons;
+}
+
+// MARK: - GameInteractor::State::SetEmulatedButtons
+void GameInteractor_SetEmulatedButtons(uint32_t buttons) {
+    GameInteractor::State::EmulatedButtons = buttons;
+}
+
+// MARK: - GameInteractor::State::GetRandomBombFuseTimerActive
+uint8_t GameInteractor_GetRandomBombFuseTimerActive() {
+    return GameInteractor::State::RandomBombFuseTimerActive;
+}
+
+// MARK: - GameInteractor::State::GetDisableLedgeGrabsActive
+uint8_t GameInteractor_GetDisableLedgeGrabsActive() {
+    return GameInteractor::State::DisableLedgeGrabsActive;
+}
+
+// MARK: - GameInteractor::State::GetRandomWindActive
+uint8_t GameInteractor_GetRandomWindActive() {
+    return GameInteractor::State::RandomWindActive;
+}
+
+// MARK: - GameInteractor::State::GetRandomBonksActive
+uint8_t GameInteractor_GetRandomBonksActive() {
+    return GameInteractor::State::RandomBonksActive;
+}
+
+// MARK: - GameInteractor::State::GetSlipperyFloorActive
+uint8_t GameInteractor_GetSlipperyFloorActive() {
+    return GameInteractor::State::SlipperyFloorActive;
+}
+
+// MARK: - GameInteractor::State::SecondCollisionUpdate
+uint8_t GameInteractor_SecondCollisionUpdate() {
+    return GameInteractor::State::SecondCollisionUpdate;
 }

@@ -387,6 +387,4 @@ typedef enum {
 #define DMG_RANGED (DMG_ARROW | DMG_HOOKSHOT | DMG_SLINGSHOT)
 #define DMG_DEFAULT ~(DMG_SHIELD | DMG_MIR_RAY)
 
-extern uint8_t secondCollisionUpdate;
-
 #endif

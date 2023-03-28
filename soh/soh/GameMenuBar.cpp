@@ -73,6 +73,17 @@ namespace GameMenuBar {
         "Hexaquinquagintiducentuple (256x)"
     };
 
+    const char* bonkDamageValues[8] = {
+        "No Damage",
+        "0.25 Heart",
+        "0.5 Heart",
+        "1 Heart",
+        "2 Hearts",
+        "4 Hearts",
+        "8 Hearts",
+        "OHKO"
+    };
+
     // MARK: - Helpers
 
     std::string GetWindowButtonText(const char* text, bool menuOpen) {
@@ -477,6 +488,9 @@ namespace GameMenuBar {
                         32x: Can survive void damage with max health and double defense\n\
                         64x: Cannot survive void damage"
                     );
+                    UIWidgets::PaddedText("Bonk Damage Multiplier", true, false);
+                    UIWidgets::EnhancementCombobox("gBonkDamageMul", bonkDamageValues, 8, 0);
+                    UIWidgets::Tooltip("Modifies damage taken after bonking.");
                     UIWidgets::PaddedEnhancementCheckbox("Spawn with full health", "gFullHealthSpawn", true, false);
                     UIWidgets::Tooltip("Respawn with full health instead of 3 Hearts");
                     UIWidgets::PaddedEnhancementCheckbox("No Random Drops", "gNoRandomDrops", true, false);
@@ -843,6 +857,8 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Quick Putaway", "gQuickPutaway", true, false);
                 UIWidgets::Tooltip("Restore a bug from NTSC 1.0 that allows putting away an item without an animation and performing Putaway Ocarina Items");
                 UIWidgets::PaddedEnhancementCheckbox("Restore old Gold Skulltula cutscene", "gGsCutscene", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Quick Bongo Kill", "gQuickBongoKill", true, false);
+                UIWidgets::Tooltip("Restore a bug from NTSC 1.0 that allows bypassing Bongo Bongo's intro cutscene to quickly kill him");
 
                 ImGui::EndMenu();
             }

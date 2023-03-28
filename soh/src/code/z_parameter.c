@@ -1698,6 +1698,16 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
     }
 }
 
+u8 Return_Item_Entry(GetItemEntry itemEntry, ItemID returnItem ) {
+    GameInteractor_ExecuteOnItemReceiveHooks(itemEntry);
+    return returnItem;
+}
+
+// Processes Item_Give returns
+u8 Return_Item(u8 item, ModIndex modId, ItemID returnItem) {
+    return Return_Item_Entry(ItemTable_RetrieveEntry(modId, item), returnItem);
+}
+
 /**
  * @brief Adds the given item to Link's inventory.
  * 
@@ -1714,6 +1724,8 @@ u8 Item_Give(PlayState* play, u8 item) {
     s16 i;
     s16 slot;
     s16 temp;
+
+    GetItemID returnItem = ITEM_NONE;
 
     // Gameplay stats: Update the time the item was obtained
     GameplayStats_SetTimestamp(play, item);
@@ -1738,8 +1750,7 @@ u8 Item_Give(PlayState* play, u8 item) {
             func_8006D0AC(play);
         }
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_SONG_MINUET) && (item <= ITEM_SONG_STORMS)) {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_SONG_MINUET + QUEST_SONG_MINUET];
 
@@ -1750,8 +1761,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                      gBitFlags[item - ITEM_SONG_MINUET + QUEST_SONG_MINUET], gBitFlags[item - ITEM_SONG_MINUET]);
         osSyncPrintf(VT_RST);
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_KOKIRI_EMERALD) && (item <= ITEM_ZORA_SAPPHIRE)) {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_KOKIRI_EMERALD + QUEST_KOKIRI_EMERALD];
 
@@ -1759,8 +1769,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         osSyncPrintf("精霊石 = %x\n", gSaveContext.inventory.questItems); // "Spiritual Stones = %x"
         osSyncPrintf(VT_RST);
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item == ITEM_STONE_OF_AGONY) || (item == ITEM_GERUDO_CARD)) {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_STONE_OF_AGONY + QUEST_STONE_OF_AGONY];
 
@@ -1768,8 +1777,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         osSyncPrintf("アイテム = %x\n", gSaveContext.inventory.questItems); // "Items = %x"
         osSyncPrintf(VT_RST);
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_SKULL_TOKEN) {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_SKULL_TOKEN + QUEST_SKULL_TOKEN];
         gSaveContext.inventory.gsTokens++;
@@ -1779,8 +1787,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         osSyncPrintf("Ｎコイン = %x(%d)\n", gSaveContext.inventory.questItems, gSaveContext.inventory.gsTokens);
         osSyncPrintf(VT_RST);
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_SWORD_KOKIRI) && (item <= ITEM_SWORD_BGS)) {
         gSaveContext.inventory.equipment |= gBitFlags[item - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD];
 
@@ -1811,20 +1818,16 @@ u8 Item_Give(PlayState* play, u8 item) {
             }
         }
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_SHIELD_DEKU) && (item <= ITEM_SHIELD_MIRROR)) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_SHIELD]);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_TUNIC_KOKIRI) && (item <= ITEM_TUNIC_ZORA)) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_TUNIC_KOKIRI] << gEquipShifts[EQUIP_TUNIC]);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_BOOTS_KOKIRI) && (item <= ITEM_BOOTS_HOVER)) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_BOOTS_KOKIRI] << gEquipShifts[EQUIP_BOOTS]);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item == ITEM_KEY_BOSS) || (item == ITEM_COMPASS) || (item == ITEM_DUNGEON_MAP)) {
         // Boss Key, Compass, and Dungeon Map exceptions for rando.
         // Rando should never be able to get here for Link's Pocket unless something goes wrong,
@@ -1840,8 +1843,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         } else {
             gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
         }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_KEY_SMALL) {
         // Small key exceptions for rando with keysanity off.
         // Rando should never be able to get here for Link's Pocket unless something goes wrong,
@@ -1851,45 +1853,35 @@ u8 Item_Give(PlayState* play, u8 item) {
                 gSaveContext.sohStats.dungeonKeys[13]++;
                 if (gSaveContext.inventory.dungeonKeys[13] < 0) {
                     gSaveContext.inventory.dungeonKeys[13] = 1;
-                    GameInteractor_ExecuteOnReceiveItemHooks(item);
-                    return ITEM_NONE;
                 } else {
                     gSaveContext.inventory.dungeonKeys[13]++;
-                    GameInteractor_ExecuteOnReceiveItemHooks(item);
-                    return ITEM_NONE;
                 }
+                return Return_Item(item, MOD_NONE, ITEM_NONE);
             }
 
             if (play->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
                 gSaveContext.sohStats.dungeonKeys[6]++;
                 if (gSaveContext.inventory.dungeonKeys[6] < 0) {
                     gSaveContext.inventory.dungeonKeys[6] = 1;
-                    GameInteractor_ExecuteOnReceiveItemHooks(item);
-                    return ITEM_NONE;
                 } else {
                     gSaveContext.inventory.dungeonKeys[6]++;
-                    GameInteractor_ExecuteOnReceiveItemHooks(item);
-                    return ITEM_NONE;
                 }
+                return Return_Item(item, MOD_NONE, ITEM_NONE);
             }
         }
         gSaveContext.sohStats.dungeonKeys[gSaveContext.mapIndex]++;
         if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] < 0) {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] = 1;
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
         } else {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]++;
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
         }
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item == ITEM_QUIVER_30) || (item == ITEM_BOW)) {
         if (CUR_UPG_VALUE(UPG_QUIVER) == 0) {
             Inventory_ChangeUpgrade(UPG_QUIVER, 1);
             INV_CONTENT(ITEM_BOW) = ITEM_BOW;
             AMMO(ITEM_BOW) = CAPACITY(UPG_QUIVER, 1);
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         } else {
             AMMO(ITEM_BOW)++;
             if (AMMO(ITEM_BOW) > CUR_CAPACITY(UPG_QUIVER)) {
@@ -1899,30 +1891,25 @@ u8 Item_Give(PlayState* play, u8 item) {
     } else if (item == ITEM_QUIVER_40) {
         Inventory_ChangeUpgrade(UPG_QUIVER, 2);
         AMMO(ITEM_BOW) = CAPACITY(UPG_QUIVER, 2);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_QUIVER_50) {
         Inventory_ChangeUpgrade(UPG_QUIVER, 3);
         AMMO(ITEM_BOW) = CAPACITY(UPG_QUIVER, 3);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_BULLET_BAG_40) {
         Inventory_ChangeUpgrade(UPG_BULLET_BAG, 2);
         AMMO(ITEM_SLINGSHOT) = CAPACITY(UPG_BULLET_BAG, 2);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_BULLET_BAG_50) {
         Inventory_ChangeUpgrade(UPG_BULLET_BAG, 3);
         AMMO(ITEM_SLINGSHOT) = CAPACITY(UPG_BULLET_BAG, 3);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_BOMB_BAG_20) {
         if (CUR_UPG_VALUE(UPG_BOMB_BAG) == 0) {
             Inventory_ChangeUpgrade(UPG_BOMB_BAG, 1);
             INV_CONTENT(ITEM_BOMB) = ITEM_BOMB;
             AMMO(ITEM_BOMB) = CAPACITY(UPG_BOMB_BAG, 1);
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         } else {
             AMMO(ITEM_BOMB)++;
             if (AMMO(ITEM_BOMB) > CUR_CAPACITY(UPG_BOMB_BAG)) {
@@ -1932,79 +1919,66 @@ u8 Item_Give(PlayState* play, u8 item) {
     } else if (item == ITEM_BOMB_BAG_30) {
         Inventory_ChangeUpgrade(UPG_BOMB_BAG, 2);
         AMMO(ITEM_BOMB) = CAPACITY(UPG_BOMB_BAG, 2);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_BOMB_BAG_40) {
         Inventory_ChangeUpgrade(UPG_BOMB_BAG, 3);
         AMMO(ITEM_BOMB) = CAPACITY(UPG_BOMB_BAG, 3);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_BRACELET) {
         Inventory_ChangeUpgrade(UPG_STRENGTH, 1);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_GAUNTLETS_SILVER) {
         Inventory_ChangeUpgrade(UPG_STRENGTH, 2);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_GAUNTLETS_GOLD) {
         Inventory_ChangeUpgrade(UPG_STRENGTH, 3);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_SCALE_SILVER) {
         Inventory_ChangeUpgrade(UPG_SCALE, 1);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_SCALE_GOLDEN) {
         Inventory_ChangeUpgrade(UPG_SCALE, 2);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_WALLET_ADULT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 1);
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(200);
         }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_WALLET_GIANT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 2);
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(500);
         }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_STICK_UPGRADE_20) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_STICK) = ITEM_STICK;
         }
         Inventory_ChangeUpgrade(UPG_STICKS, 2);
         AMMO(ITEM_STICK) = CAPACITY(UPG_STICKS, 2);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_STICK_UPGRADE_30) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_STICK) = ITEM_STICK;
         }
         Inventory_ChangeUpgrade(UPG_STICKS, 3);
         AMMO(ITEM_STICK) = CAPACITY(UPG_STICKS, 3);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_NUT_UPGRADE_30) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_NUT) = ITEM_NUT;
         }
         Inventory_ChangeUpgrade(UPG_NUTS, 2);
         AMMO(ITEM_NUT) = CAPACITY(UPG_NUTS, 2);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_NUT_UPGRADE_40) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_NUT) = ITEM_NUT;
         }
         Inventory_ChangeUpgrade(UPG_NUTS, 3);
         AMMO(ITEM_NUT) = CAPACITY(UPG_NUTS, 3);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_LONGSHOT) {
         INV_CONTENT(item) = item;
         // always update "equips" as this is what is currently on the c-buttons
@@ -2037,8 +2011,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                 }
             }
         }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_STICK) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             Inventory_ChangeUpgrade(UPG_STICKS, 1);
@@ -2090,42 +2063,34 @@ u8 Item_Give(PlayState* play, u8 item) {
         if ((AMMO(ITEM_BOMB) += 1) > CUR_CAPACITY(UPG_BOMB_BAG)) {
             AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
         }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_BOMBS_5) && (item <= ITEM_BOMBS_30)) {
         if ((AMMO(ITEM_BOMB) += sAmmoRefillCounts[item - ITEM_BOMBS_5]) > CUR_CAPACITY(UPG_BOMB_BAG)) {
             AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
         }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_BOMBCHU) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
             AMMO(ITEM_BOMBCHU) = 10;
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
         } else {
             AMMO(ITEM_BOMBCHU) += 10;
             if (AMMO(ITEM_BOMBCHU) > 50) {
                 AMMO(ITEM_BOMBCHU) = 50;
             }
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
         }
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item == ITEM_BOMBCHUS_5) || (item == ITEM_BOMBCHUS_20)) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
             AMMO(ITEM_BOMBCHU) += sAmmoRefillCounts[item - ITEM_BOMBCHUS_5 + 8];
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
         } else {
             AMMO(ITEM_BOMBCHU) += sAmmoRefillCounts[item - ITEM_BOMBCHUS_5 + 8];
             if (AMMO(ITEM_BOMBCHU) > 50) {
                 AMMO(ITEM_BOMBCHU) = 50;
             }
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
         }
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_ARROWS_SMALL) && (item <= ITEM_ARROWS_LARGE)) {
         AMMO(ITEM_BOW) += sAmmoRefillCounts[item - ITEM_ARROWS_SMALL + 4];
 
@@ -2135,14 +2100,12 @@ u8 Item_Give(PlayState* play, u8 item) {
 
         osSyncPrintf("%d本  Item_MaxGet=%d\n", AMMO(ITEM_BOW), CUR_CAPACITY(UPG_QUIVER));
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_BOW;
+        return Return_Item(item, MOD_NONE, ITEM_BOW);
     } else if (item == ITEM_SLINGSHOT) {
         Inventory_ChangeUpgrade(UPG_BULLET_BAG, 1);
         INV_CONTENT(ITEM_SLINGSHOT) = ITEM_SLINGSHOT;
         AMMO(ITEM_SLINGSHOT) = 30;
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_SEEDS) {
         AMMO(ITEM_SLINGSHOT) += 5;
 
@@ -2152,12 +2115,10 @@ u8 Item_Give(PlayState* play, u8 item) {
 
         if (!(gSaveContext.itemGetInf[1] & 8)) {
             gSaveContext.itemGetInf[1] |= 8;
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_SEEDS;
+        return Return_Item(item, MOD_NONE, ITEM_SEEDS);
     } else if (item == ITEM_SEEDS_30) {
         AMMO(ITEM_SLINGSHOT) += 30;
 
@@ -2167,16 +2128,13 @@ u8 Item_Give(PlayState* play, u8 item) {
 
         if (!(gSaveContext.itemGetInf[1] & 8)) {
             gSaveContext.itemGetInf[1] |= 8;
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_SEEDS;
+        return Return_Item(item, MOD_NONE, ITEM_SEEDS);
     } else if (item == ITEM_OCARINA_FAIRY) {
         INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_OCARINA_TIME) {
         INV_CONTENT(ITEM_OCARINA_TIME) = ITEM_OCARINA_TIME;
         // always update "equips" as this is what is currently on the c-buttons
@@ -2208,8 +2166,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                 }
             }
         }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_BEAN) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(item) = item;
@@ -2219,26 +2176,22 @@ u8 Item_Give(PlayState* play, u8 item) {
             AMMO(ITEM_BEAN)++;
             BEANS_BOUGHT++;
         }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item == ITEM_HEART_PIECE_2) || (item == ITEM_HEART_PIECE)) {
         gSaveContext.inventory.questItems += 1 << (QUEST_HEART_PIECE + 4);
         gSaveContext.sohStats.heartPieces++;
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART_CONTAINER) {
         gSaveContext.healthCapacity += 0x10;
         gSaveContext.health += 0x10;
         gSaveContext.sohStats.heartContainers++;
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART) {
         osSyncPrintf("回復ハート回復ハート回復ハート\n"); // "Recovery Heart"
         if (play != NULL) {
             Health_ChangeBy(play, 0x10);
         }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return item;
+        return Return_Item(item, MOD_NONE, item);
     } else if (item == ITEM_MAGIC_SMALL) {
         if (gSaveContext.magicState != 10) {
             if (play != NULL) {
@@ -2252,12 +2205,10 @@ u8 Item_Give(PlayState* play, u8 item) {
 
         if (!(gSaveContext.infTable[25] & 0x100)) {
             gSaveContext.infTable[25] |= 0x100;
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return item;
+        return Return_Item(item, MOD_NONE, item);
     } else if (item == ITEM_MAGIC_LARGE) {
         if (gSaveContext.magicState != 10) {
             if (play != NULL) {
@@ -2270,24 +2221,20 @@ u8 Item_Give(PlayState* play, u8 item) {
 
         if (!(gSaveContext.infTable[25] & 0x100)) {
             gSaveContext.infTable[25] |= 0x100;
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return item;
+        return Return_Item(item, MOD_NONE, item);
     } else if ((item >= ITEM_RUPEE_GREEN) && (item <= ITEM_INVALID_8)) {
         Rupees_ChangeBy(sAmmoRefillCounts[item - ITEM_RUPEE_GREEN + 10]);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_BOTTLE) {
         temp = SLOT(item);
 
         for (i = 0; i < 4; i++) {
             if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
                 gSaveContext.inventory.items[temp + i] = item;
-                GameInteractor_ExecuteOnReceiveItemHooks(item);
-                return ITEM_NONE;
+                return Return_Item(item, MOD_NONE, ITEM_NONE);
             }
         }
     } else if (((item >= ITEM_POTION_RED) && (item <= ITEM_POE)) || (item == ITEM_MILK)) {
@@ -2318,19 +2265,17 @@ u8 Item_Give(PlayState* play, u8 item) {
                     }
 
                     gSaveContext.inventory.items[temp + i] = item;
-                    GameInteractor_ExecuteOnReceiveItemHooks(item);
-                    return ITEM_NONE;
                 }
             }
         } else {
             for (i = 0; i < 4; i++) {
                 if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
                     gSaveContext.inventory.items[temp + i] = item;
-                    GameInteractor_ExecuteOnReceiveItemHooks(item);
-                    return ITEM_NONE;
+                    break;
                 }
             }
         }
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_WEIRD_EGG) && (item <= ITEM_CLAIM_CHECK)) {
         if ((item == ITEM_SAW) && CVarGetInteger("gDekuNutUpgradeFix", 0) == 0) {
             gSaveContext.itemGetInf[1] |= 0x8000;
@@ -2354,22 +2299,17 @@ u8 Item_Give(PlayState* play, u8 item) {
                     } else {
                         gSaveContext.equips.buttonItems[i] = ITEM_NONE;
                     }
-                    GameInteractor_ExecuteOnReceiveItemHooks(item);
-                    return ITEM_NONE;
+                    return Return_Item(item, MOD_NONE, ITEM_NONE);
                 }
             }
         }
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     }
-
-    temp = gSaveContext.inventory.items[slot];
-    osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, temp);
+    returnItem = gSaveContext.inventory.items[slot];
+    osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, returnItem);
     INV_CONTENT(item) = item;
-
-    GameInteractor_ExecuteOnReceiveItemHooks(item);
-    return temp;
+    return Return_Item(item, MOD_NONE, returnItem);
 }
 
 u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
@@ -2386,7 +2326,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         gSaveContext.isMagicAcquired = true;
         gSaveContext.magicFillTarget = 0x30;
         Magic_Fill(play);
-        return RG_NONE;
+        return Return_Item_Entry(giEntry, RG_NONE);
     } else if (item == RG_MAGIC_DOUBLE) {
         if (!gSaveContext.isMagicAcquired) {
             gSaveContext.isMagicAcquired = true;
@@ -2395,7 +2335,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         gSaveContext.magicFillTarget = 0x60;
         gSaveContext.magicLevel = 0;
         Magic_Fill(play);
-        return RG_NONE;
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item == RG_MAGIC_BEAN_PACK) {
@@ -2403,14 +2343,14 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             INV_CONTENT(ITEM_BEAN) = ITEM_BEAN;
             AMMO(ITEM_BEAN) = 10;
         }
-        return RG_NONE;
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item == RG_DOUBLE_DEFENSE) {
         gSaveContext.isDoubleDefenseAcquired = true;
         gSaveContext.inventory.defenseHearts = 20;
         gSaveContext.healthAccumulator = 0x140;
-        return RG_NONE;
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item >= RG_BOTTLE_WITH_RED_POTION && item <= RG_BOTTLE_WITH_BIG_POE) {
@@ -2448,7 +2388,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
                 }
 
                 gSaveContext.inventory.items[temp + i] = item;
-                return ITEM_NONE;
+                return Return_Item_Entry(giEntry, RG_NONE);
             }
         }
     } else if ((item >= RG_FOREST_TEMPLE_SMALL_KEY && item <= RG_GANONS_CASTLE_SMALL_KEY) ||
@@ -2546,15 +2486,14 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             gSaveContext.sohStats.dungeonKeys[mapIndex]++;
             if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
                 gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
-                return RG_NONE;
             } else {
                 gSaveContext.inventory.dungeonKeys[mapIndex]++;
-                return RG_NONE;
             }
+            return Return_Item_Entry(giEntry, RG_NONE);
         } else if ((item >= RG_FOREST_TEMPLE_KEY_RING) && (item <= RG_GANONS_CASTLE_KEY_RING)) {
             gSaveContext.sohStats.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
             gSaveContext.inventory.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
-            return RG_NONE;
+            return Return_Item_Entry(giEntry, RG_NONE);
         } else {
             int bitmask;
             if ((item >= RG_DEKU_TREE_MAP) && (item <= RG_ICE_CAVERN_MAP)) {
@@ -2566,7 +2505,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             }
 
             gSaveContext.inventory.dungeonItems[mapIndex] |= bitmask;
-            return RG_NONE;
+            return Return_Item_Entry(giEntry, RG_NONE);
         }
     }
 
@@ -2575,14 +2514,14 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(999);
         }
-        return RG_NONE;
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item == RG_GREG_RUPEE) {
         Rupees_ChangeBy(1);
         Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
         gSaveContext.sohStats.timestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
-        return RG_NONE;
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     temp = gSaveContext.inventory.items[slot];
@@ -6254,8 +6193,10 @@ void Interface_Update(PlayState* play) {
             }
             if (gSaveContext.rupeeAccumulator == 0) {
                 u16 tempSaleItem = gSaveContext.pendingSale;
+                u16 tempSaleMod = gSaveContext.pendingSaleMod;
                 gSaveContext.pendingSale = ITEM_NONE;
-                GameInteractor_ExecuteOnReceiveItemHooks(tempSaleItem);
+                gSaveContext.pendingSaleMod = MOD_NONE;
+                GameInteractor_ExecuteOnSaleEndHooks(ItemTable_RetrieveEntry(tempSaleMod,tempSaleItem));
             }
         } else {
             gSaveContext.rupeeAccumulator = 0;
