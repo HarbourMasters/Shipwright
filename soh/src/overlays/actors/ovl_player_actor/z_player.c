@@ -11031,11 +11031,11 @@ void Player_Update(Actor* thisx, PlayState* play) {
     }
 
     if (this->stateFlags1 & PLAYER_STATE1_21) {
-        this->actor.scale.x = 0.02f;
-        this->actor.scale.y = 0.009f;
-        this->actor.scale.z = 0.009f;
-    } else if (this->actor.scale.x == 0.02f) {
-        GameInteractor_SetLinkSize(GI_LINK_SIZE_RESET);
+        this->actor.shape.rot.x = 31000;
+        this->actor.shape.rot.z = 16000;
+    } else if (this->actor.shape.rot.x == 31000 || this->actor.shape.rot.z == 16000) {
+        this->actor.shape.rot.x = 0;
+        this->actor.shape.rot.z = 0;
     }
 
     if (this->actor.scale.x == 0.01f) {
