@@ -9937,7 +9937,7 @@ s32 func_80847A78(Player* this) {
 
     if (this->actor.bgCheckFlags & 1) {
         if (!cond) {
-            this->hoverBootsTimer = 19;
+            this->hoverBootsTimer = 38;
         }
         return 0;
     }
@@ -11112,9 +11112,9 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
         s32 sp5C;
         s32 hoverBootsTimer = this->hoverBootsTimer;
 
-        if (this->hoverBootsTimer < 19) {
+        if (this->hoverBootsTimer < 38) {
             if (hoverBootsTimer >= 15) {
-                D_8085486C = (19 - hoverBootsTimer) * 51.0f;
+                D_8085486C = 255.0f;
             } else if (hoverBootsTimer < 19) {
                 sp5C = hoverBootsTimer;
 
