@@ -12,7 +12,6 @@ extern PlayState* gPlayState;
 }
 
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
-#include "z64collision_check.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 
 void GameInteractor::RawAction::AddOrRemoveHealthContainers(int16_t amount) {
@@ -194,9 +193,9 @@ void GameInteractor::RawAction::UpdateActor(void* refActor) {
 
         // This variable is used to not let the collider subscribe a second time when the actor update function
         // is ran a second time, incorrectly applying double damage in some cases.
-        secondCollisionUpdate = 1;
+        GameInteractor::State::SecondCollisionUpdate = 1;
         actor->update(actor, gPlayState);
-        secondCollisionUpdate = 0;
+        GameInteractor::State::SecondCollisionUpdate = 0;
     }
 }
 

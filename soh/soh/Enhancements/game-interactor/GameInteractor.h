@@ -82,6 +82,7 @@ uint8_t GameInteractor_GetDisableLedgeGrabsActive();
 uint8_t GameInteractor_GetRandomWindActive();
 uint8_t GameInteractor_GetRandomBonksActive();
 uint8_t GameInteractor_GetSlipperyFloorActive();
+uint8_t GameInteractor_SecondCollisionUpdate();
 #ifdef __cplusplus
 }
 #endif
@@ -121,6 +122,7 @@ public:
         static uint8_t RandomWindSecondsSinceLastDirectionChange;
         static uint8_t RandomBonksActive;
         static uint8_t SlipperyFloorActive;
+        static uint8_t SecondCollisionUpdate;
 
         static void SetPacifistMode(bool active);
     };
