@@ -11,55 +11,17 @@ extern "C" {
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 
 static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] = {
-    { ACTOR_EN_FIREFLY, 2 },    // Regular Keese
-    { ACTOR_EN_FIREFLY, 1 },    // Fire Keese
-    { ACTOR_EN_FIREFLY, 4 },    // Ice Keese
     { ACTOR_EN_TEST, 2 },       // Stalfos
-    { ACTOR_EN_TITE, -1 },      // Tektite (red)
-    { ACTOR_EN_TITE, -2 },      // Tektite (blue)
-    { ACTOR_EN_WALLMAS, 1 },    // Wallmaster
-    { ACTOR_EN_DODONGO, -1 },   // Dodongo
     { ACTOR_EN_PEEHAT, -1 },    // Flying Peahat (big grounded, doesn't spawn larva)
-    { ACTOR_EN_PEEHAT, 1 },     // Flying Peahat Larva
-    { ACTOR_EN_ZF, -1 },        // Lizalfos
-    { ACTOR_EN_ZF, -2 },        // Dinolfos
-    { ACTOR_EN_GOMA, 7 },       // Gohma larva (non-gohma rooms)
-    { ACTOR_EN_BUBBLE, 0 },     // Shabom (bubble)
-    { ACTOR_EN_DODOJR, 0 },     // Baby Dodongo
-    { ACTOR_EN_TORCH2, 0 },     // Dark Link
-    { ACTOR_EN_BILI, 0 },       // Biri (jellyfish)
-    { ACTOR_EN_TP, -1 },        // Electric Tailparasan
-    { ACTOR_EN_ST, 0 },         // Skulltula (normal)
-    { ACTOR_EN_ST, 1 },         // Skulltula (big)
-    { ACTOR_EN_ST, 2 },         // Skulltula (invisible)
-    { ACTOR_EN_BW, 0 },         // Torch Slug
-    { ACTOR_EN_EIYER, 10 },     // Stinger (land) (One in formation, sink under floor and do not activate)
     { ACTOR_EN_MB, 0 },         // Moblins (Club)
-    { ACTOR_EN_DEKUBABA, 0 },   // Deku Baba (small)
-    { ACTOR_EN_DEKUBABA, 1 },   // Deku Baba (large)
-    { ACTOR_EN_AM, -1 },        // Armos (enemy variant)
-    { ACTOR_EN_DEKUNUTS, 768 }, // Mad Scrub (triple attack) (projectiles don't work)
     { ACTOR_EN_VALI, -1 },      // Bari (big jellyfish)
-    { ACTOR_EN_BB, -1 },        // Bubble (flying skull enemy) (blue)
-    { ACTOR_EN_YUKABYUN, 0 },   // Flying Floor Tile
-    { ACTOR_EN_VM, 1280 },      // Beamos
     { ACTOR_EN_FLOORMAS, 0 },   // Floormaster
     { ACTOR_EN_RD, 1 },         // Redead (standing)
     { ACTOR_EN_RD, 32766 },     // Gibdo (standing)
-    { ACTOR_EN_SB, 0 },         // Shell Blade
-    { ACTOR_EN_KAREBABA, 0 },   // Withered Deku Baba
     { ACTOR_EN_RR, 0 },         // Like-Like
-    { ACTOR_EN_NY, 0 },         // Spike (rolling enemy)
     { ACTOR_EN_IK, 2 },         // Iron Knuckle (black, standing)
     { ACTOR_EN_IK, 3 },         // Iron Knuckle (white, standing)
-    { ACTOR_EN_TUBO_TRAP, 0 },  // Flying pot
-    { ACTOR_EN_FZ, 0 },         // Freezard
-    { ACTOR_EN_CLEAR_TAG, 1 },  // Arwing
-    { ACTOR_EN_WF, 0 },         // Wolfos (normal)
-    { ACTOR_EN_WF, 1 },         // Wolfos (white)
-    { ACTOR_EN_SKB, 1 },        // Stalchild (small)
-    { ACTOR_EN_SKB, 20 },       // Stalchild (big)
-    { ACTOR_EN_CROW, 0 }        // Guay
+    { ACTOR_EN_CLEAR_TAG, 1 }   // Arwing
 
     // Doesn't work {ACTOR_EN_POH, 0}, // Poe (Seems to rely on other objects?)
     // Doesn't work {ACTOR_EN_POH, 2}, // Poe (composer Sharp) (Seems to rely on other objects?)
