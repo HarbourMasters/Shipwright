@@ -11030,15 +11030,23 @@ void Player_Update(Actor* thisx, PlayState* play) {
             break;
     }
 
-    if (this->actor.scale.x = 0.01f) {
+    if (this->stateFlags1 & PLAYER_STATE1_21) {
+        this->actor.scale.x = 0.02f;
+        this->actor.scale.y = 0.009f;
+        this->actor.scale.z = 0.009f;
+    } else if (this->actor.scale.x == 0.02f) {
+        GameInteractor_SetLinkSize(GI_LINK_SIZE_RESET);
+    }
+
+    if (this->actor.scale.x == 0.01f) {
         this->actor.scale.x = 0.009f;
     }
 
-    if (this->actor.scale.y = 0.01f) {
+    if (this->actor.scale.y == 0.01f) {
         this->actor.scale.y = 0.009f;
     }
 
-    if (this->actor.scale.z = 0.01f) {
+    if (this->actor.scale.z == 0.01f) {
         this->actor.scale.z = 0.009f;
     }
 
