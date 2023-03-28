@@ -34,6 +34,7 @@ uint8_t GameInteractor_ReverseControlsActive();
 int32_t GameInteractor_DefenseModifier();
 int32_t GameInteractor_RunSpeedModifier();
 GIGravityLevel GameInteractor_GravityLevel();
+uint8_t GameInteractor_SecondCollisionUpdate();
 #ifdef __cplusplus
 }
 #endif
@@ -66,6 +67,7 @@ public:
         static int32_t DefenseModifier;
         static int32_t RunSpeedModifier;
         static GIGravityLevel GravityLevel;
+        static uint8_t SecondCollisionUpdate;
 
         static void SetPacifistMode(bool active);
     };
@@ -90,6 +92,7 @@ public:
     DEFINE_HOOK(OnReceiveItem, void(u8 item));
     DEFINE_HOOK(OnSceneInit, void(s16 sceneNum));
     DEFINE_HOOK(OnPlayerUpdate, void());
+    DEFINE_HOOK(OnActorUpdate, void(void* actor));
     
     DEFINE_HOOK(OnSaveFile, void(int32_t fileNum));
     DEFINE_HOOK(OnLoadFile, void(int32_t fileNum));
@@ -116,6 +119,7 @@ public:
         static void GiveDekuShield();
         static void SpawnCuccoStorm();
         static void ForceInterfaceUpdate();
+        static void UpdateActor(void* refActor);
 
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
     };

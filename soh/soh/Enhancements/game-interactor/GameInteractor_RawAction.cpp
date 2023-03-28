@@ -142,6 +142,27 @@ void GameInteractor::RawAction::ForceInterfaceUpdate() {
     Interface_Update(gPlayState);
 }
 
+void GameInteractor::RawAction::UpdateActor(void* refActor) {
+    // Update actor again outside of their normal update cycle.
+
+    Actor* actor = static_cast<Actor*>(refActor);
+    
+    // Sometimes the actor is destroyed in the previous Update, so check if the update function still exists.
+    if (actor->update != NULL) {
+        // Fix for enemies sometimes taking a "fake" hit, where their invincibility timer is
+        // reset but damage isn't applied.
+        if (actor->colorFilterTimer > 0) {
+            actor->colorFilterTimer--;
+        }
+
+        // This variable is used to not let the collider subscribe a second time when the actor update function
+        // is ran a second time, incorrectly applying double damage in some cases.
+        GameInteractor::State::SecondCollisionUpdate = 1;
+        actor->update(actor, gPlayState);
+        GameInteractor::State::SecondCollisionUpdate = 0;
+    }
+}
+
 GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {
 
     if (!GameInteractor::CanSpawnEnemy()) {

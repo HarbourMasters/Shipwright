@@ -12,6 +12,7 @@ bool GameInteractor::State::ReverseControlsActive = 0;
 int32_t GameInteractor::State::DefenseModifier = 0;
 int32_t GameInteractor::State::RunSpeedModifier = 0;
 GIGravityLevel GameInteractor::State::GravityLevel = GI_GRAVITY_LEVEL_NORMAL;
+uint8_t GameInteractor::State::SecondCollisionUpdate = 0;
 
 void GameInteractor::State::SetPacifistMode(bool active) {
     PacifistModeActive = active;
@@ -78,4 +79,9 @@ int32_t GameInteractor_RunSpeedModifier() {
 // MARK: - GameInteractor::State::DisableCameraRotationActive
 GIGravityLevel GameInteractor_GravityLevel() {
     return GameInteractor::State::GravityLevel;
+}
+
+// MARK: - GameInteractor::State::SecondCollisionUpdate
+uint8_t GameInteractor_SecondCollisionUpdate() {
+    return GameInteractor::State::SecondCollisionUpdate;
 }

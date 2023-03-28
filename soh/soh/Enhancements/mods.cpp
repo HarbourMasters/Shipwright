@@ -6,11 +6,9 @@ extern "C" {
 #include <z64.h>
 #include "macros.h"
 #include "variables.h"
+#include "functions.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
-extern void Play_PerformSave(PlayState* play);
-extern s32 Health_ChangeBy(PlayState* play, s16 healthChange);
-extern void Rupees_ChangeBy(s16 rupeeChange);
 }
 
 void RegisterInfiniteMoney() {
@@ -257,6 +255,46 @@ void RegisterRupeeDash() {
     });
 }
 
+void RegisterHyperBosses() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+        // Run the update function a second time to make bosses move and act twice as fast.
+
+        Player* player = GET_PLAYER(gPlayState);
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        uint8_t isBossActor =
+            actor->id == ACTOR_BOSS_GOMA ||                              // Gohma
+            actor->id == ACTOR_BOSS_DODONGO ||                           // King Dodongo
+            actor->id == ACTOR_BOSS_VA ||                                // Barinade
+            actor->id == ACTOR_BOSS_GANONDROF ||                         // Phantom Ganon
+            (actor->id == 0 && actor->category == ACTORCAT_BOSS) ||      // Phantom Ganon/Ganondorf Energy Ball/Thunder
+            actor->id == ACTOR_EN_FHG ||                                 // Phantom Ganon's Horse
+            actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || // Volvagia (grounded/flying)
+            actor->id == ACTOR_BOSS_MO ||                                // Morpha
+            actor->id == ACTOR_BOSS_SST ||                               // Bongo Bongo
+            actor->id == ACTOR_BOSS_TW ||                                // Twinrova
+            actor->id == ACTOR_BOSS_GANON ||                             // Ganondorf
+            actor->id == ACTOR_BOSS_GANON2;                              // Ganon
+
+        // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
+        if (isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
+            // Barinade needs to be updated in sequence to avoid unintended behaviour.
+            if (actor->id == ACTOR_BOSS_VA) {
+                // params -1 is BOSSVA_BODY
+                if (actor->params == -1) {
+                    Actor* actorList = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS].head;
+                    while (actorList != NULL) {
+                        GameInteractor::RawAction::UpdateActor(actorList);
+                        actorList = actorList->next;
+                    }
+                }
+            } else {
+                GameInteractor::RawAction::UpdateActor(actor);
+            }
+        }
+    });
+}
+
 void InitMods() {
     RegisterInfiniteMoney();
     RegisterInfiniteHealth();
@@ -270,4 +308,5 @@ void InitMods() {
     RegisterSwitchAge();
     RegisterRupeeDash();
     RegisterAutoSave();
+    RegisterHyperBosses();
 }
