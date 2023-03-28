@@ -4654,7 +4654,7 @@ CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u
     } else { 
         shopItemName = EnumToSpoilerfileGetName[shopItemGet];
     }
-    u16 shopItemPrice = merchantPrices[rc];
+    u16 shopItemPrice = 999;
 
     if (textId == TEXT_SCRUB_RANDOM && shopItemPrice == 0) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM_FREE);
