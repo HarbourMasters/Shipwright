@@ -6,6 +6,7 @@
 
 #include "z_en_elf.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_25)
 
@@ -1432,10 +1433,12 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
                 gSaveContext.naviTimer = 0;
             }
 
+            // Unequip current shield randomly. Averages once every 1000 frames AKA 1000/20 = 50 seconds.
             if (Rand_ZeroOne() < 0.001f) {
                 player->currentShield = PLAYER_SHIELD_NONE;
             }
 
+            // Unequip current equipped C and dpad buttons. Averages once every 10000 frames AKA 10000/20 = 500 seconds.
             if (Rand_ZeroOne() < 0.0001f) {
                 gSaveContext.equips.buttonItems[1] = gSaveContext.equips.buttonItems[2] =
                     gSaveContext.equips.buttonItems[3] = ITEM_NONE;
@@ -1443,9 +1446,17 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
                     gSaveContext.equips.buttonItems[6] = gSaveContext.equips.buttonItems[7] = ITEM_NONE;
             }
 
+            // Unequip ocarina when set to dpad down.
             if (gSaveContext.equips.buttonItems[5] == ITEM_OCARINA_FAIRY ||
                 gSaveContext.equips.buttonItems[5] == ITEM_OCARINA_TIME) {
                 gSaveContext.equips.buttonItems[5] = ITEM_NONE;
+            }
+
+            // Randomly spawn a cucco storm. Averages once every 12500 frames AKA 12500/20 = 625 seconds.
+            if (Rand_ZeroOne() < 0.00008f) {
+                EnNiw* cucco = (EnNiw*)Actor_Spawn(&play->actorCtx, gPlayState, ACTOR_EN_NIW, player->actor.world.pos.x,
+                                        player->actor.world.pos.y + 2200, player->actor.world.pos.z, 0, 0, 0, 0, 0);
+                cucco->actionFunc = func_80AB70A0_nocutscene;
             }
         }
     }
