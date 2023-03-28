@@ -11052,6 +11052,10 @@ void Player_Update(Actor* thisx, PlayState* play) {
         default:
             break;
     }
+
+    if (this->currentBoots == PLAYER_BOOTS_IRON) {
+        this->actor.gravity = -10.0f;
+    }
     
     GameInteractor_ExecuteOnPlayerUpdate();
 }
