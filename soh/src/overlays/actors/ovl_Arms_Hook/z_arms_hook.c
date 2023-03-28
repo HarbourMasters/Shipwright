@@ -84,8 +84,15 @@ void ArmsHook_Destroy(Actor* thisx, PlayState* play) {
 void ArmsHook_Wait(ArmsHook* this, PlayState* play) {
     if (this->actor.parent == NULL) {
         Player* player = GET_PLAYER(play);
+        s32 length;
+        if (player->heldItemAction == PLAYER_IA_HOOKSHOT) {
+            length = Rand_ZeroOne() * 2 * 13;
+        } else {
+            length = Rand_ZeroOne() * 2 * 26;
+        }
+        
         // get correct timer length for hookshot or longshot
-        s32 length = ((player->heldItemAction == PLAYER_IA_HOOKSHOT) ? 13 : 26) * CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f);
+        //s32 length = ((player->heldItemAction == PLAYER_IA_HOOKSHOT) ? 13 : 26) * CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f);
 
         ArmsHook_SetupAction(this, ArmsHook_Shoot);
         func_8002D9A4(&this->actor, 20.0f);
