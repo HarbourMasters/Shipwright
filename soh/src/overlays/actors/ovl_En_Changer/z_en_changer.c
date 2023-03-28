@@ -136,7 +136,11 @@ void EnChanger_Init(Actor* thisx, PlayState* play2) {
     this->rightChestGetItemId = GI_DOOR_KEY;
     rightChestItem = ITEM_ETC_KEY_SMALL_CHEST_GAME;
 
-    if (Rand_ZeroFloat(1.99f) < 1.0f) {
+    uint8_t roomNum = play->roomCtx.curRoom.num;
+    uint8_t leftSideKey = roomNum == 1 || roomNum == 2 || roomNum == 5;
+    // Solution: LLRRL
+
+    if (leftSideKey) {
         rightChestParams = (sLoserGetItemIds[play->roomCtx.curRoom.num] << 5) | 0x4000;
         this->rightChestNum = new_var;
         this->rightChestGetItemId = sLoserGetItemIds[play->roomCtx.curRoom.num];
