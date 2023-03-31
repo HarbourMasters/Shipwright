@@ -52,41 +52,6 @@ bool CompareCheckObject(RandomizerCheckObject i, RandomizerCheckObject j);
 bool HasItemBeenCollected(RandomizerCheck rc);
 void RainbowTick();
 
-
-Color_RGBA8 Color_Bg_Default                        = {   0,   0,   0, 255 };   // Black
-Color_RGBA8 Color_Main_Default                      = { 255, 255, 255, 255 };   // White
-Color_RGBA8 Color_Area_Incomplete_Extra_Default     = { 255, 255, 255, 255 };   // White
-Color_RGBA8 Color_Area_Complete_Extra_Default       = { 255, 255, 255, 255 };   // White
-Color_RGBA8 Color_Unchecked_Extra_Default           = { 255, 255, 255, 255 };   // White
-Color_RGBA8 Color_Skipped_Main_Default              = { 160, 160, 160, 255 };   // Grey
-Color_RGBA8 Color_Skipped_Extra_Default             = { 160, 160, 160, 255 };   // Grey
-Color_RGBA8 Color_Seen_Extra_Default                = { 255, 255, 255, 255 };   // TODO
-Color_RGBA8 Color_Hinted_Extra_Default              = { 255, 255, 255, 255 };   // TODO
-Color_RGBA8 Color_Collected_Extra_Default             = { 255, 255, 255, 255 };   // TODO
-Color_RGBA8 Color_Scummed_Extra_Default             = { 255, 255, 255, 255 };   // TODO
-Color_RGBA8 Color_Saved_Extra_Default               = {   0, 185,   0, 255 };   // Green
-
-Color_RGBA8 Color_Background = { 0, 0, 0, 255 };
-
-Color_RGBA8 Color_Area_Incomplete_Main  = { 255, 255, 255, 255 }; //White
-Color_RGBA8 Color_Area_Incomplete_Extra = { 255, 255, 255, 255 }; //White
-Color_RGBA8 Color_Area_Complete_Main    = { 255, 255, 255, 255 }; // White
-Color_RGBA8 Color_Area_Complete_Extra   = { 255, 255, 255, 255 }; // White
-Color_RGBA8 Color_Unchecked_Main     = { 255, 255, 255, 255 }; //White
-Color_RGBA8 Color_Unchecked_Extra    = { 255, 255, 255, 255 }; //Useless
-Color_RGBA8 Color_Skipped_Main       = { 255, 255, 255, 255 }; //Grey
-Color_RGBA8 Color_Skipped_Extra      = { 255, 255, 255, 255 }; //Grey
-Color_RGBA8 Color_Seen_Main          = { 255, 255, 255, 255 }; //TODO
-Color_RGBA8 Color_Seen_Extra         = { 255, 255, 255, 255 }; //TODO
-Color_RGBA8 Color_Hinted_Main        = { 255, 255, 255, 255 }; //TODO
-Color_RGBA8 Color_Hinted_Extra       = { 255, 255, 255, 255 }; //TODO
-Color_RGBA8 Color_Collected_Main       = { 255, 255, 255, 255 }; //TODO
-Color_RGBA8 Color_Collected_Extra      = { 255, 255, 255, 255 }; //TODO
-Color_RGBA8 Color_Scummed_Main       = { 255, 255, 255, 255 }; //TODO
-Color_RGBA8 Color_Scummed_Extra      = { 255, 255, 255, 255 }; //TODO
-Color_RGBA8 Color_Saved_Main         = { 255, 255, 255, 255 }; //White
-Color_RGBA8 Color_Saved_Extra        = {   0, 185,   0, 255 }; //Green
-
 SceneID DungeonSceneLookupByArea(RandomizerCheckArea area) {
     switch (area) {
         case RCAREA_DEKU_TREE:              return SCENE_YDAN;
@@ -187,7 +152,9 @@ void SetLoadFileChecks(bool status) {
 void SetCheckCollected(RandomizerCheck rc) {
     checkTrackerData.find(rc)->second.status = RCSHOW_COLLECTED;
     RandomizerCheckObject rcObj = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
-    areaChecksGotten[rcObj.rcArea]++;
+    if (!checkTrackerData.find(rc)->second.skipped) {
+        areaChecksGotten[rcObj.rcArea]++;
+    }
     UpdateOrdering(rcObj.rcArea);
     UpdateInventoryChecks();
     SaveTrackerData(gSaveContext.fileNum, true, false);
