@@ -328,14 +328,14 @@ void func_80AE2C1C(EnRd* this, PlayState* play) {
     if (Actor_WorldDistXYZToPoint(&player->actor, &this->actor.home.pos) >= 150.0f) {
         func_80AE2F50(this, play);
     }
-    
+
     if ((ABS(sp32) < 0x1554) && (Actor_WorldDistXYZToActor(&this->actor, &player->actor) <= 150.0f)) {
         if (!(player->stateFlags1 & 0x2C6080) && !(player->stateFlags2 & 0x80)) {
             if (this->unk_306 == 0) {
                 if (!(this->unk_312 & 0x80) && !(CVarGetInteger("gNoRedeadFreeze", 0))) {
                     player->actor.freezeTimer = 40;
                     func_8008EEAC(play, &this->actor);
-                    GET_PLAYER(play)->unk_684 = &this->actor; 
+                    GET_PLAYER(play)->unk_684 = &this->actor;
                     func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
                 }
                 this->unk_306 = 0x3C;
@@ -559,7 +559,7 @@ void func_80AE3834(EnRd* this, PlayState* play) {
     Color_RGBA8 sp2C = D_80AE493C;
     Player* player = GET_PLAYER(play);
     s16 temp_v0 = this->actor.yawTowardsPlayer - this->actor.shape.rot.y - this->unk_30E - this->unk_310;
-    
+
     if (ABS(temp_v0) < 0x2008) {
         if (!(this->unk_312 & 0x80) && !(CVarGetInteger("gNoRedeadFreeze", 0))) {
             player->actor.freezeTimer = 60;
