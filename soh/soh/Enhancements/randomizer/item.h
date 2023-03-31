@@ -31,9 +31,10 @@ class RandoItem {
   public:
     RandoItem() = default;
     RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_, bool* logicVar_,
-         uint32_t hintKey_, uint16_t price_ = 0);
+         uint32_t hintKey_, int itemId_, int field_, int textId_, int objectId_, int modIndex_, int gid_, GetItemCategory category_, uint16_t price_ = 0);
     RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
-         uint8_t* logicVar_, uint32_t hintKey_, uint16_t price_ = 0);
+              uint8_t* logicVar_, uint32_t hintKey_, int itemId_, int field_, int textId, int objectId_, int modIndex_,
+              int gid_, GetItemCategory category_, uint16_t price_ = 0);
     ~RandoItem();
 
     void ApplyEffect();
@@ -152,18 +153,18 @@ class RandoItem {
     RandomizerGet randomizerGet;
     Text name;
     ItemType type;
+    int getItemId;
+    bool advancement;
+    std::variant<bool*, uint8_t*> logicVar;
+    uint32_t hintKey;
     int itemId;
     int field;
     int textId;
     int objectId;
     int modIndex;
-    int getItemId;
     int gid;
     bool collectable;
     GetItemCategory category;
-    bool advancement;
-    std::variant<bool*, uint8_t*> logicVar;
-    uint32_t hintKey;
     uint16_t price;
     bool playthrough = false;
 };
