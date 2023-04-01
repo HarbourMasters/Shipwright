@@ -291,13 +291,9 @@ void AreaTable_Init_DodongosCavern() {
   areaTable[DODONGOS_CAVERN_MQ_BOSS_AREA] = Area("Dodongos Cavern MQ BossArea", "Dodongos Cavern", DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&FairyPot,            {[]{return true;}}),
-                  EventAccess(&DodongosCavernClear, {[]{return DodongosCavernClear || (CanBlastOrSmash && (Bombs || GoronBracelet) && (IsAdult || Sticks || KokiriSword));}}),
   }, {
                   //Locations
                   LocationAccess(DODONGOS_CAVERN_MQ_UNDER_GRAVE_CHEST, {[]{return true;}}),
-                  LocationAccess(DODONGOS_CAVERN_BOSS_ROOM_CHEST,      {[]{return true;}}),
-                  LocationAccess(DODONGOS_CAVERN_KING_DODONGO_HEART,   {[]{return CanBlastOrSmash && (Bombs || GoronBracelet) && (IsAdult || Sticks || KokiriSword);}}),
-                  LocationAccess(KING_DODONGO,                         {[]{return CanBlastOrSmash && (Bombs || GoronBracelet) && (IsAdult || Sticks || KokiriSword);}}),
                   LocationAccess(DODONGOS_CAVERN_MQ_GS_BACK_AREA,      {[]{return true;}}),
   }, {
                   //Exits

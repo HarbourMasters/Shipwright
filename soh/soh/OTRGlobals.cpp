@@ -340,7 +340,7 @@ extern "C" void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 extern "C" int AudioPlayer_Buffered(void);
 extern "C" int AudioPlayer_GetDesiredBuffered(void);
-extern "C" void ResourceMgr_CacheDirectory(const char* resName);
+extern "C" void ResourceMgr_LoadDirectory(const char* resName);
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path);
 std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
@@ -393,7 +393,7 @@ void OTRAudio_Thread() {
 extern "C" void OTRAudio_Init()
 {
     // Precache all our samples, sequences, etc...
-    ResourceMgr_CacheDirectory("audio");
+    ResourceMgr_LoadDirectory("audio");
 
     if (!audio.running) {
         audio.running = true;
@@ -528,7 +528,7 @@ extern "C" void VanillaItemTable_Init() {
         GET_ITEM(ITEM_POE,              OBJECT_GI_GHOST,         GID_POE,              0x97, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_POE),
         GET_ITEM(ITEM_BIG_POE,          OBJECT_GI_GHOST,         GID_BIG_POE,          0xF9, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BIG_POE),
         GET_ITEM(ITEM_KEY_SMALL,        OBJECT_GI_KEY,           GID_KEY_SMALL,        0xF3, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY,       MOD_NONE, GI_DOOR_KEY),
-        GET_ITEM(ITEM_RUPEE_GREEN,      OBJECT_GI_RUPY,          GID_RUPEE_GREEN,      0xF4, 0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_RUPEE_GREEN_LOSE),
+        GET_ITEM(ITEM_RUPEE_GREEN,      OBJECT_GI_RUPY,          GID_RUPEE_GREEN,      0xF4, 0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_GREEN_LOSE),
         GET_ITEM(ITEM_RUPEE_BLUE,       OBJECT_GI_RUPY,          GID_RUPEE_BLUE,       0xF5, 0x01, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_BLUE_LOSE),
         GET_ITEM(ITEM_RUPEE_RED,        OBJECT_GI_RUPY,          GID_RUPEE_RED,        0xF6, 0x02, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_RED_LOSE),
         GET_ITEM(ITEM_RUPEE_PURPLE,     OBJECT_GI_RUPY,          GID_RUPEE_PURPLE,     0xF7, 0x14, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_PURPLE_LOSE),
@@ -866,8 +866,8 @@ extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
     return IsGameMasterQuest();
 }
 
-extern "C" void ResourceMgr_CacheDirectory(const char* resName) {
-    OTRGlobals::Instance->context->GetResourceManager()->CacheDirectory(resName);
+extern "C" void ResourceMgr_LoadDirectory(const char* resName) {
+    OTRGlobals::Instance->context->GetResourceManager()->LoadDirectory(resName);
 }
 extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
     OTRGlobals::Instance->context->GetResourceManager()->DirtyDirectory(resName);
@@ -1677,8 +1677,11 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             } else {
                 textId = TEXT_GS_FREEZE;
             }
+            // In vanilla, GS token count is incremented prior to the text box displaying
+            // In rando we need to bump the token count by one to show the correct count
+            s16 gsCount = gSaveContext.inventory.gsTokens + (gSaveContext.n64ddFlag ? 1 : 0);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
-            CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{gsCount}}", std::to_string(gSaveContext.inventory.gsTokens + 1));
+            CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{gsCount}}", std::to_string(gsCount));
         }
     }
     if (textId == TEXT_HEART_CONTAINER && CVarGetInteger("gInjectItemCounts", 0)) {

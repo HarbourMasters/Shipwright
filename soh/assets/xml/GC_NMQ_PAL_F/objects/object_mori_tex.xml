@@ -11,10 +11,9 @@
         <Texture Name="gMoriStalfosPlatformSideTex" OutName="stalfos_platform_side" Format="rgba16" Height="32" Width="64" Offset="0x3200"/>
         <Texture Name="gMoriStalfosPlatformTopTex" OutName="stalfos_platform_top" Format="rgba16" Height="32" Width="32" Offset="0x4200"/>
 
-        <Texture Name="gMoriHashiraPlatformsTex" OutName="hashira_platform" Format="rgba16" Height="32" Width="32" Offset="0x4A00"/>
+        <Texture Name="gMoriHashiraPlatformsTex" OutName="hashira_platform" Format="rgba16" Height="16" Width="16" Offset="0x4A00"/>
 
-        <!-- This is just a guess since its unused -->
-        <Texture Name="gMoriWaterTex" OutName="water_tex" Format="rgba16" Height="8" Width="32" Offset="0x5200"/> 
+        <Texture Name="gMoriWaterTex" OutName="water_tex" Format="rgba16" Height="32" Width="32" Offset="0x4C00"/> 
 
         <Texture Name="gMoriHashigoLadderTex" OutName="ladder" Format="rgba16" Height="32" Width="32" Offset="0x5400"/>
 

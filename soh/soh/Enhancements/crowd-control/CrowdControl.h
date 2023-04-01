@@ -63,11 +63,10 @@ class CrowdControl {
 
         typedef struct Effect {
             uint32_t id;
-            uint32_t value[2];
-            std::string category;
+            uint32_t spawnParams[2];
+            uint32_t category = 0;
             long timeRemaining;
             GameInteractionEffectBase *giEffect;
-            int32_t paramMultiplier = 1;
 
             // Metadata used while executing (only for timed effects)
             bool isPaused;
