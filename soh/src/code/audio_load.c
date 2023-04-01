@@ -1367,7 +1367,9 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     qsort(customSeqList, customSeqListSize, sizeof(char*), strcmp_sort);
 
     // Because AudioCollection's sequenceMap actually has more than sequences (including instruments from 130-135 and sfx in the 2000s, 6000s, 10000s, 14000s, 18000s, and 26000s),
-    // it's better here to keep track of the next empty seqNum in AudioCollection instead of just skipping past the instruments at 130 with a higher MAX_AUTHENTIC_SEQID
+    // it's better here to keep track of the next empty seqNum in AudioCollection instead of just skipping past the instruments at 130 with a higher MAX_AUTHENTIC_SEQID,
+    // especially if those others could be added to in the future. However, this really needs to be streamlined with specific ranges in AudioCollection for types, or unifying
+    // AudioCollection and the various maps in here
     int seqNum = startingSeqNum;
 
     for (size_t i = startingSeqNum; i < startingSeqNum + customSeqListSize; i++) {
