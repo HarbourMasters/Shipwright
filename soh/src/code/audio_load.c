@@ -1346,9 +1346,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     int customSeqListSize = 0;
     char** seqList = ResourceMgr_ListFiles("audio/sequences*", &seqListSize);
     char** customSeqList = ResourceMgr_ListFiles("custom/music/*", &customSeqListSize);
-    // 20 is arbitrary and meant as only a temporary fix. this just gives headroom for the sequences in AudioCollection that take up early indexes that
-    // would otherwise be assigned to custom sequences
-    sequenceMapSize = (size_t)(seqListSize + customSeqListSize + 20); 
+    sequenceMapSize = (size_t)(AudioCollection_SequenceMapSize() + customSeqListSize); 
     sequenceMap = malloc(sequenceMapSize * sizeof(char*));
     gAudioContext.seqLoadStatus = malloc(sequenceMapSize * sizeof(char*));
 
@@ -1368,11 +1366,14 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     int startingSeqNum = MAX_AUTHENTIC_SEQID; // 109 is the highest vanilla sequence
     qsort(customSeqList, customSeqListSize, sizeof(char*), strcmp_sort);
 
+    // Because the additions to AudioCollection's map aren't sequences as this code originally assumed, despite there being other audio assets listed in there,
+    // there's a gap of 20 slots that would be wasted space if we just set MAX_AUTHENTIC_SEQID to 136 to manually skip the audio fonts at 130-135.
+    // This keeps track of the seqNum that should be assigned in audio_load's sequenceMap array to match up with AudioCollection's seqNums after skipping existing assets
     int seqNum = startingSeqNum;
 
     for (size_t i = startingSeqNum; i < startingSeqNum + customSeqListSize; i++) {
         // ensure that what would be the next sequence number is actually unassigned in AudioCollection
-        while (AudioCollection_GetSequenceName(seqNum) != NULL) {
+        while (AudioCollection_HasSequenceNum(seqNum)) {
             seqNum++;
         }
         int j = i - startingSeqNum;
