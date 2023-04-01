@@ -13,7 +13,6 @@
 #include "objects/object_mastergolon/object_mastergolon.h"
 #include "objects/object_masterzoora/object_masterzoora.h"
 #include "objects/object_masterkokirihead/object_masterkokirihead.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
 
@@ -935,12 +934,7 @@ void EnOssan_State_StartConversation(EnOssan* this, PlayState* play, Player* pla
                 EnOssan_TryPaybackMask(this, play);
                 return;
             case OSSAN_HAPPY_STATE_ANGRY:
-                // In ER, handle happy mask throwing link out with not enough rupees
-                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
-                    play->nextEntranceIndex = Entrance_OverrideNextIndex(0x1D1);
-                } else {
-                    play->nextEntranceIndex = 0x1D1;
-                }
+                play->nextEntranceIndex = 0x1D1;
                 play->sceneLoadFlag = 0x14;
                 play->fadeTransition = 0x2E;
                 return;
