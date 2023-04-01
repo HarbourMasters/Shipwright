@@ -1178,7 +1178,6 @@ typedef enum {
     RO_REWARD_STANDARD,
     RO_REWARD_GREG,
     RO_REWARD_WILDCARD,
-    RO_REWARD_MAX,
 } RandoOptionRewards;
 
 //Shopsanity settings (off, 0-4 items, random)
