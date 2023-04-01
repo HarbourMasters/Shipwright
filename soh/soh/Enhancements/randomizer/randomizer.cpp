@@ -3344,6 +3344,7 @@ void DrawRandoEditor(bool& open) {
                     case RO_BRIDGE_VANILLA:
                         break;
                     case RO_BRIDGE_STONES:
+<<<<<<< HEAD
                         ImGui::Text("Reward Options");
                         UIWidgets::InsertHelpHoverText(
                             "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
@@ -3356,7 +3357,7 @@ void DrawRandoEditor(bool& open) {
                             "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
                             "rewards on slider does not change.");
 
-                        UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_STANDARD);
+                        UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX, RO_REWARD_STANDARD);
                         switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
                             case RO_REWARD_STANDARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
@@ -3386,7 +3387,7 @@ void DrawRandoEditor(bool& open) {
                             "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
                             "rewards on slider does not change.");
 
-                        UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_STANDARD);
+                        UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX, RO_REWARD_STANDARD);
                         switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
                             case RO_REWARD_STANDARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
@@ -3416,7 +3417,7 @@ void DrawRandoEditor(bool& open) {
                             "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
                             "rewards on slider does not change.");
 
-                        UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_STANDARD);
+                        UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX, RO_REWARD_STANDARD);
                         switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
                             case RO_REWARD_STANDARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
@@ -3447,7 +3448,7 @@ void DrawRandoEditor(bool& open) {
                             "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
                             "rewards on slider does not change.");
 
-                        UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_STANDARD);
+                        UIWidgets::EnhancementCombobox("gRandomizeRewardOptions", randoRewardOptions, RO_REWARD_MAX, RO_REWARD_STANDARD);
                         switch (CVarGetInteger("gRandomizeRewardOptions", RO_REWARD_STANDARD)) {
                             case RO_REWARD_STANDARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
@@ -3463,6 +3464,7 @@ void DrawRandoEditor(bool& open) {
                                 break;
                         }
 
+=======
                         UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
                                                         "gRandomizeStoneCount", 1, 3, "", 3, true, true, false);
                         break;
@@ -3477,6 +3479,7 @@ void DrawRandoEditor(bool& open) {
                     case RO_BRIDGE_DUNGEONS:
                         UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
                                                         "gRandomizeDungeonCount", 1, 8, "", 8, true, true, false);
+>>>>>>> heads/develop
                         break;
                     case RO_BRIDGE_TOKENS:
                         UIWidgets::PaddedEnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
