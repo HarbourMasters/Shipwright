@@ -1366,9 +1366,8 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     int startingSeqNum = MAX_AUTHENTIC_SEQID; // 109 is the highest vanilla sequence
     qsort(customSeqList, customSeqListSize, sizeof(char*), strcmp_sort);
 
-    // Because the additions to AudioCollection's map aren't sequences as this code originally assumed, despite there being other audio assets listed in there,
-    // there's a gap of 20 slots that would be wasted space if we just set MAX_AUTHENTIC_SEQID to 136 to manually skip the audio fonts at 130-135.
-    // This keeps track of the seqNum that should be assigned in audio_load's sequenceMap array to match up with AudioCollection's seqNums after skipping existing assets
+    // Because AudioCollection's sequenceMap actually has more than sequences (including instruments from 130-135 and sfx in the 2000s, 6000s, 10000s, 14000s, 18000s, and 26000s),
+    // it's better here to keep track of the next empty seqNum in AudioCollection instead of just skipping past the instruments at 130 with a higher MAX_AUTHENTIC_SEQID
     int seqNum = startingSeqNum;
 
     for (size_t i = startingSeqNum; i < startingSeqNum + customSeqListSize; i++) {
