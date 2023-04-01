@@ -1,4 +1,4 @@
-#include <unordered_map>
+#include <array>
 #include "randomizerTypes.h"
 #include "item.h"
 /**
@@ -10,11 +10,11 @@
  */
 class StaticData {
     private:
-    std::unordered_map<RandomizerGet, RandoItem> itemTable;
-    void InitItemTable();
+      static std::array<RandoItem, RG_MAX> itemTable;
 
     public:
-    StaticData();
-    ~StaticData();
+      static void InitItemTable();
+      StaticData();
+      ~StaticData();
 
 };
