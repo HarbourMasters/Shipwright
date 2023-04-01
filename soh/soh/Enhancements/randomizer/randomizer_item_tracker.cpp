@@ -758,47 +758,6 @@ std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeo
 
     return dungeonItems;
 }
-
-/* TODO: These need to be moved to a common imgui file */
-void LabeledComboBoxRightAligned(const char* label, const char* cvar, std::vector<std::string> options, s32 defaultValue) {
-    s32 currentValue = CVarGetInteger(cvar, defaultValue);
-    std::string hiddenLabel = "##" + std::string(cvar);
-    ImGui::Text(label);
-#ifdef __WIIU__
-    ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(options[currentValue].c_str()).x * 1.0f + 40.0f));
-    ImGui::PushItemWidth((ImGui::CalcTextSize(options[currentValue].c_str()).x * 1.0f) + 60.0f);
-#else
-    ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(options[currentValue].c_str()).x * 1.0f + 20.0f));
-    ImGui::PushItemWidth((ImGui::CalcTextSize(options[currentValue].c_str()).x * 1.0f) + 30.0f);
-#endif
-    if (ImGui::BeginCombo(hiddenLabel.c_str(), options[currentValue].c_str())) {
-        for (int i = 0; i < options.size(); i++) {
-            if (ImGui::Selectable(options[i].c_str())) {
-                CVarSetInteger(cvar, i);
-                SohImGui::RequestCvarSaveOnNextTick();
-                shouldUpdateVectors = true;
-            }
-        }
-
-        ImGui::EndCombo();
-    }
-    ImGui::PopItemWidth();
-}
-
-void PaddedEnhancementCheckbox(const char* text, const char* cvarName, s32 defaultValue = 0, bool padTop = true, bool padBottom = true) {
-    if (padTop) {
-        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-    }
-    bool val = (bool)CVarGetInteger(cvarName, defaultValue);
-        if (ImGui::Checkbox(text, &val)) {
-            CVarSetInteger(cvarName, val);
-            SohImGui::RequestCvarSaveOnNextTick();
-            shouldUpdateVectors = true;
-        }
-    if (padBottom) {
-        ImGui::Dummy(ImVec2(0.0f, 0.0f));
-    }
-}
 /* ****************************************************** */
 
 void UpdateVectors() {
@@ -990,8 +949,13 @@ void DrawItemTracker(bool& open) {
     }
 }
 
-const char* itemTrackerCapacityTrackOptions[5] = { "No Numbers", "Current Capacity", "Current Ammo", "Current Capacity / Max Capacity", "Current Ammo / Current Capacity" };
-const char* itemTrackerKeyTrackOptions[3] = { "Collected / Max", "Current / Collected / Max", "Current / Max" };
+static const char* itemTrackerCapacityTrackOptions[5] = { "No Numbers", "Current Capacity", "Current Ammo", "Current Capacity / Max Capacity", "Current Ammo / Current Capacity" };
+static const char* itemTrackerKeyTrackOptions[3] = { "Collected / Max", "Current / Collected / Max", "Current / Max" };
+static const char* windowTypes[2] = { "Floating", "Window" };
+static const char* displayModes[2] = { "Always", "Combo Button Hold" };
+static const char* buttons[14] = { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right" };
+static const char* displayTypes[3] = { "Hidden", "Main Window", "Seperate" };
+static const char* extendedDisplayTypes[4] = { "Hidden", "Main Window", "Misc Window", "Seperate" };
 
 void DrawItemTrackerOptions(bool& open) {
     if (!open) {
@@ -1025,53 +989,89 @@ void DrawItemTrackerOptions(bool& open) {
     }
     ImGui::PopItemWidth();
 
-    LabeledComboBoxRightAligned("Window Type", "gItemTrackerWindowType", { "Floating", "Window" }, 0);
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Window Type", "gItemTrackerWindowType", windowTypes, 0)) {
+        shouldUpdateVectors = true;
+    }
 
     if (CVarGetInteger("gItemTrackerWindowType", 0) == 0) {
-        PaddedEnhancementCheckbox("Enable Dragging", "gItemTrackerHudEditMode", 0);
-        PaddedEnhancementCheckbox("Only enable while paused", "gItemTrackerShowOnlyPaused", 0);
-        LabeledComboBoxRightAligned("Display Mode", "gItemTrackerDisplayType", { "Always", "Combo Button Hold" }, 0);
+        if (UIWidgets::PaddedEnhancementCheckbox("Enable Dragging", "gItemTrackerHudEditMode")) {
+            shouldUpdateVectors = true;
+        }
+        if (UIWidgets::PaddedEnhancementCheckbox("Only enable while paused", "gItemTrackerShowOnlyPaused")) {
+            shouldUpdateVectors = true;
+        }
+        if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Display Mode", "gItemTrackerDisplayType", displayModes, 0)) {
+            shouldUpdateVectors = true;
+        }
         if (CVarGetInteger("gItemTrackerDisplayType", 0) > 0) {
-            LabeledComboBoxRightAligned("Combo Button 1", "gItemTrackerComboButton1", { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right" }, 6);
-            LabeledComboBoxRightAligned("Combo Button 2", "gItemTrackerComboButton2", { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right" }, 8);
+            if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 1", "gItemTrackerComboButton1", buttons, 6)) {
+                shouldUpdateVectors = true;
+            }
+            if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 2", "gItemTrackerComboButton2", buttons, 8)) {
+                shouldUpdateVectors = true;
+            }
         }
     }
     UIWidgets::PaddedSeparator();
-    UIWidgets::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gItemTrackerIconSize", 25, 128, "", 36, true);
-    UIWidgets::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50, "", 12, true);
+    UIWidgets::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gItemTrackerIconSize", 25, 128, "", 36);
+    UIWidgets::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50, "", 12);
     
     ImGui::Text("Ammo/Capacity Tracking");
-    UIWidgets::EnhancementCombobox("gItemTrackerCapacityTrack", itemTrackerCapacityTrackOptions, 5, 1);
+    UIWidgets::EnhancementCombobox("gItemTrackerCapacityTrack", itemTrackerCapacityTrackOptions, 1);
     UIWidgets::InsertHelpHoverText("Customize what the numbers under each item are tracking."
                                     "\n\nNote: items without capacity upgrades will track ammo even in capacity mode");
     if (CVarGetInteger("gItemTrackerCapacityTrack", 1) == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || CVarGetInteger("gItemTrackerCapacityTrack", 1) == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
-        PaddedEnhancementCheckbox("Align count to left side", "gItemTrackerCurrentOnLeft", 0);
+        if (UIWidgets::PaddedEnhancementCheckbox("Align count to left side", "gItemTrackerCurrentOnLeft")) {
+            shouldUpdateVectors = true;
+        }
     }
     ImGui::Text("Key Count Tracking");
-    UIWidgets::EnhancementCombobox("gItemTrackerKeyTrack", itemTrackerKeyTrackOptions, 3, 0);
+    UIWidgets::EnhancementCombobox("gItemTrackerKeyTrack", itemTrackerKeyTrackOptions, 0);
     UIWidgets::InsertHelpHoverText("Customize what numbers are shown for key tracking.");
 
     ImGui::TableNextColumn();
 
-    LabeledComboBoxRightAligned("Inventory", "gItemTrackerInventoryItemsDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
-    LabeledComboBoxRightAligned("Equipment", "gItemTrackerEquipmentItemsDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
-    LabeledComboBoxRightAligned("Misc", "gItemTrackerMiscItemsDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
-    LabeledComboBoxRightAligned("Dungeon Rewards", "gItemTrackerDungeonRewardsDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
-    if (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", 1) == 2) {
-        PaddedEnhancementCheckbox("Circle display", "gItemTrackerDungeonRewardsCircle", 1);
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Inventory", "gItemTrackerInventoryItemsDisplayType", displayTypes, 1)) {
+        shouldUpdateVectors = true;
     }
-    LabeledComboBoxRightAligned("Songs", "gItemTrackerSongsDisplayType", { "Hidden", "Main Window", "Seperate" }, 1);
-    LabeledComboBoxRightAligned("Dungeon Items", "gItemTrackerDungeonItemsDisplayType", { "Hidden", "Main Window", "Seperate" }, 0);
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Equipment", "gItemTrackerEquipmentItemsDisplayType", displayTypes, 1)) {
+        shouldUpdateVectors = true;
+    }
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Misc", "gItemTrackerMiscItemsDisplayType", displayTypes, 1)) {
+        shouldUpdateVectors = true;
+    }
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Dungeon Rewards", "gItemTrackerDungeonRewardsDisplayType", displayTypes, 1)) {
+        shouldUpdateVectors = true;
+    }
+    if (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", 1) == 2) {
+        if (UIWidgets::PaddedEnhancementCheckbox("Circle display", "gItemTrackerDungeonRewardsCircle", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
+            shouldUpdateVectors = true;
+        }
+    }
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Songs", "gItemTrackerSongsDisplayType", displayTypes, 1)) {
+        shouldUpdateVectors = true;
+    }
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Dungeon Items", "gItemTrackerDungeonItemsDisplayType", displayTypes, 0)) {
+        shouldUpdateVectors = true;
+    }
     if (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", 0) != 0) {
         if (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", 0) == 2) {
-            PaddedEnhancementCheckbox("Horizontal display", "gItemTrackerDisplayDungeonItemsHorizontal", 1);
+            if (UIWidgets::PaddedEnhancementCheckbox("Horizontal display", "gItemTrackerDisplayDungeonItemsHorizontal", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
+                shouldUpdateVectors = true;
+            }
         }
-        PaddedEnhancementCheckbox("Maps and compasses", "gItemTrackerDisplayDungeonItemsMaps", 1);
+        if (UIWidgets::PaddedEnhancementCheckbox("Maps and compasses", "gItemTrackerDisplayDungeonItemsMaps", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
+            shouldUpdateVectors = true;
+        }
     }
-    LabeledComboBoxRightAligned("Greg", "gItemTrackerGregDisplayType", { "Hidden", "Main Window", "Misc Window", "Seperate" }, 0);
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Greg", "gItemTrackerGregDisplayType", extendedDisplayTypes, 0)) {
+        shouldUpdateVectors = true;
+    }
 
     if (CVarGetInteger("gItemTrackerDisplayType", 0) != 1) {
-        LabeledComboBoxRightAligned("Personal notes", "gItemTrackerNotesDisplayType", { "Hidden", "Main Window", "Seperate" }, 0);
+        if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Personal notes", "gItemTrackerNotesDisplayType", displayTypes, 0)) {
+            shouldUpdateVectors = true;
+        }
     }
 
     ImGui::PopStyleVar(1);

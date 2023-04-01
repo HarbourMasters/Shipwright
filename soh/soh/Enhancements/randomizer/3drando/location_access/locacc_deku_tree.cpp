@@ -233,16 +233,9 @@ void AreaTable_Init_DekuTree() {
                   Entrance(DEKU_TREE_MQ_BASEMENT_WATER_ROOM_BACK, {[]{return (IsChild && CanUse(KOKIRI_SWORD)) || CanUseProjectile || (Nuts && (IsChild && CanUse(STICKS)));}}),
   });
 
-  areaTable[DEKU_TREE_MQ_BASEMENT_LEDGE] = Area("Deku Tree MQ Basement Ledge", "Deku Tree", DEKU_TREE, NO_DAY_NIGHT_CYCLE, {
-                  //Events
-                  EventAccess(&DekuTreeClear, {[]{return DekuTreeClear || (Here(DEKU_TREE_MQ_BASEMENT_LEDGE, []{return HasFireSourceWithTorch;}) &&
-                                                                           Here(DEKU_TREE_MQ_BASEMENT_LEDGE, []{return HasShield;})  &&
-                                                                           (IsAdult || KokiriSword || Sticks) && (Nuts || CanUse(SLINGSHOT) || CanUse(BOW) || HookshotOrBoomerang));}}),
-  }, {
+  areaTable[DEKU_TREE_MQ_BASEMENT_LEDGE] = Area("Deku Tree MQ Basement Ledge", "Deku Tree", DEKU_TREE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(DEKU_TREE_MQ_DEKU_SCRUB,     {[]{return CanStunDeku;}}),
-                  LocationAccess(DEKU_TREE_QUEEN_GOHMA_HEART, {[]{return HasFireSourceWithTorch && HasShield && (IsAdult || KokiriSword || Sticks) && (Nuts || CanUse(SLINGSHOT) || CanUse(BOW) || HookshotOrBoomerang);}}),
-                  LocationAccess(QUEEN_GOHMA,                 {[]{return HasFireSourceWithTorch && HasShield && (IsAdult || KokiriSword || Sticks) && (Nuts || CanUse(SLINGSHOT) || CanUse(BOW) || HookshotOrBoomerang);}}),
+                  LocationAccess(DEKU_TREE_MQ_DEKU_SCRUB, {[]{return CanStunDeku;}}),
   }, {
                   //Exits
                   Entrance(DEKU_TREE_MQ_BASEMENT_BACK_ROOM, {[]{return IsChild;}}),
