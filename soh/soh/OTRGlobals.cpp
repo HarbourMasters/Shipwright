@@ -1677,8 +1677,11 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             } else {
                 textId = TEXT_GS_FREEZE;
             }
+            // In vanilla, GS token count is incremented prior to the text box displaying
+            // In rando we need to bump the token count by one to show the correct count
+            s16 gsCount = gSaveContext.inventory.gsTokens + (gSaveContext.n64ddFlag ? 1 : 0);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
-            CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{gsCount}}", std::to_string(gSaveContext.inventory.gsTokens));
+            CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{gsCount}}", std::to_string(gsCount));
         }
     }
     if (textId == TEXT_HEART_CONTAINER && CVarGetInteger("gInjectItemCounts", 0)) {
