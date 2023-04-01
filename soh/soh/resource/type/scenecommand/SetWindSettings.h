@@ -12,7 +12,7 @@ typedef struct {
   int8_t windWest;
   int8_t windVertical;
   int8_t windSouth;
-  uint8_t windSpeed;
+  int8_t windSpeed;
 } WindSettings;
 
 class SetWindSettings : public SceneCommand {

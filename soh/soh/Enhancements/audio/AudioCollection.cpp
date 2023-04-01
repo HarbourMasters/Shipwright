@@ -261,10 +261,6 @@ extern "C" void AudioCollection_AddToCollection(char *otrPath, uint16_t seqNum) 
     AudioCollection::Instance->AddToCollection(otrPath, seqNum);
 }
 
-bool AudioCollection::HasSequenceNum(uint16_t seqId) {
-    return sequenceMap.contains(seqId);
-}
-
 const char* AudioCollection::GetSequenceName(uint16_t seqId) {
     auto seqIt = sequenceMap.find(seqId);
     if (seqIt != sequenceMap.end()) {
@@ -273,18 +269,6 @@ const char* AudioCollection::GetSequenceName(uint16_t seqId) {
     return nullptr;
 }
 
-size_t AudioCollection::SequenceMapSize() {
-    return sequenceMap.size();
-}
-
 extern "C" const char* AudioCollection_GetSequenceName(uint16_t seqId) {
     return AudioCollection::Instance->GetSequenceName(seqId);
-}
-
-extern "C" bool AudioCollection_HasSequenceNum(uint16_t seqId) {
-    return AudioCollection::Instance->HasSequenceNum(seqId);
-}
-
-extern "C" size_t AudioCollection_SequenceMapSize() {
-    return AudioCollection::Instance->SequenceMapSize();
 }

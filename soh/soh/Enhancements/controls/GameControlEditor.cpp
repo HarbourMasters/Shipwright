@@ -136,7 +136,6 @@ namespace GameControlEditor {
                 }
                 if (ImGui::Selectable(i->second, i->first == currentButton)) {
                     CVarSetInteger(mapping.cVarName, i->first);
-                    SohImGui::RequestCvarSaveOnNextTick();
                 }
             }
             ImGui::EndCombo();
@@ -210,7 +209,6 @@ namespace GameControlEditor {
             UIWidgets::EnhancementCheckbox("Play with D-pad", "gDpadOcarina");
             TableHelper::NextCol();
             UIWidgets::EnhancementCheckbox("Play with camera stick", "gRStickOcarina");
-            UIWidgets::Spacer(0);
             ImGui::EndTable();
         }
         SohImGui::EndGroupPanel();
@@ -238,20 +236,21 @@ namespace GameControlEditor {
         DrawHelpIcon("Allows for aiming with the right stick in:\n-First-Person/C-Up view\n-Weapon Aiming");
         UIWidgets::PaddedEnhancementCheckbox("Invert Aiming X Axis", "gInvertAimingXAxis");
         DrawHelpIcon("Inverts the Camera X Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
         UIWidgets::PaddedEnhancementCheckbox("Invert Aiming Y Axis", "gInvertAimingYAxis");
         DrawHelpIcon("Inverts the Camera Y Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
         UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First-Person View", "gDisableAutoCenterViewFirstPerson");
         DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
         UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", "gEnableFirstPersonSensitivity", true, false);
         if (CVarGetInteger("gEnableFirstPersonSensitivity", 0)) {
             UIWidgets::EnhancementSliderFloat("Aiming/First-Person Horizontal Sensitivity: %d %%", "##FirstPersonSensitivity Horizontal",
-                                                "gFirstPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true);
+                                                "gFirstPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true, true);
             UIWidgets::EnhancementSliderFloat("Aiming/First-Person Vertical Sensitivity: %d %%", "##FirstPersonSensitivity Vertical",
-                                              "gFirstPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true);
+                                              "gFirstPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true, true);
         } else {
             CVarSetFloat("gFirstPersonCameraSensitivity", 1.0f);
         }
-        UIWidgets::Spacer(0);
         SohImGui::EndGroupPanel();
 
         UIWidgets::Spacer(0);
@@ -264,15 +263,14 @@ namespace GameControlEditor {
         DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera");
         UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
         DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera");
-        UIWidgets::Spacer(0);
-+       UIWidgets::PaddedEnhancementSliderFloat("Third-Person Horizontal Sensitivity: %d %%", "##ThirdPersonSensitivity Horizontal",
-+                                            "gThirdPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true, true, false, true);
-+       UIWidgets::PaddedEnhancementSliderFloat("Third-Person Vertical Sensitivity: %d %%", "##ThirdPersonSensitivity Vertical",
-+                                          "gThirdPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true, true, false, true);
-        UIWidgets::PaddedEnhancementSliderInt("Camera Distance: %d", "##CamDist",
-                                        "gFreeCameraDistMax", 100, 900, "", 185, true, false, true);
-        UIWidgets::PaddedEnhancementSliderInt("Camera Transition Speed: %d", "##CamTranSpeed",
-                                        "gFreeCameraTransitionSpeed", 0, 900, "", 25, true, false, true);
++       UIWidgets::EnhancementSliderFloat("Third-Person Horizontal Sensitivity: %d %%", "##ThirdPersonSensitivity Horizontal",
++                                            "gThirdPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true, true);
++       UIWidgets::EnhancementSliderFloat("Third-Person Vertical Sensitivity: %d %%", "##ThirdPersonSensitivity Vertical",
++                                          "gThirdPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true, true);
+        UIWidgets::EnhancementSliderInt("Camera Distance: %d", "##CamDist",
+                                        "gFreeCameraDistMax", 100, 900, "", 185, true);
+        UIWidgets::EnhancementSliderInt("Camera Transition Speed: %d", "##CamTranSpeed",
+                                        "gFreeCameraTransitionSpeed", 0, 900, "", 25, true);
         SohImGui::EndGroupPanel();
     }
 
@@ -305,7 +303,7 @@ namespace GameControlEditor {
         SohImGui::BeginGroupPanel("Misc Controls", ImGui::GetContentRegionAvail());
         UIWidgets::PaddedText("Allow the cursor to be on any slot");
         static const char* cursorOnAnySlot[3] = { "Only in Rando", "Always", "Never" };
-        UIWidgets::EnhancementCombobox("gPauseAnyCursor", cursorOnAnySlot, PAUSE_ANY_CURSOR_RANDO_ONLY);
+        UIWidgets::EnhancementCombobox("gPauseAnyCursor", cursorOnAnySlot, PAUSE_ANY_CURSOR_MAX, PAUSE_ANY_CURSOR_RANDO_ONLY);
         DrawHelpIcon("Allows the cursor on the pause menu to be over any slot. Sometimes required in rando to select "
                      "certain items.");
         UIWidgets::Spacer(0);
@@ -315,8 +313,8 @@ namespace GameControlEditor {
             UIWidgets::Spacer(5);
             SohImGui::BeginGroupPanel("Walk Modifier", ImGui::GetContentRegionAvail());
             UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding", "gWalkSpeedToggle", true, false);
-            UIWidgets::PaddedEnhancementSliderFloat("Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
-            UIWidgets::PaddedEnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
+            UIWidgets::EnhancementSliderFloat("Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true);
+            UIWidgets::EnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true);
             SohImGui::EndGroupPanel();
         }
         UIWidgets::Spacer(0);

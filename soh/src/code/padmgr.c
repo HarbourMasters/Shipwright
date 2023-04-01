@@ -233,12 +233,6 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
                     input->cur.button &= ~(BTN_Z);
                 }
 
-                uint32_t emulatedButtons = GameInteractor_GetEmulatedButtons();
-                if (emulatedButtons) {
-                    input->cur.button |= emulatedButtons;
-                    GameInteractor_SetEmulatedButtons(0);
-                }
-
                 if (GameInteractor_ReverseControlsActive()) {
                     if (input->cur.stick_x == -128) {
                         input->cur.stick_x = 127;

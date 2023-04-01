@@ -323,7 +323,7 @@ void DrawStatsTracker(bool& open) {
     ImGui::Text("Display Mode");
     ImGui::SameLine();
     ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
-    UIWidgets::EnhancementCombobox("gGameplayStatsMode", gameplayStatsModeOptions, 0);
+    UIWidgets::EnhancementCombobox("gGameplayStatsMode", gameplayStatsModeOptions, 3, 0);
 
     ImGui::Text("Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving.");
 

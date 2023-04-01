@@ -372,11 +372,8 @@ u16 EnMd_GetTextKokiriForest(PlayState* play, EnMd* this) {
     this->unk_208 = 0;
     this->unk_209 = TEXT_STATE_NONE;
 
-    // In rando, skip talking about the tree being dead so we can have the prompt for sword and shield instead
-    if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) ||
-        (gSaveContext.n64ddFlag && Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD) &&
-        Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) &&
-        !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH))) {
+    // In rando, skip talking about the tree being dead so we can have the prompt sword and shield instead
+    if (!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
         return 0x1045;
     }
 
@@ -495,7 +492,6 @@ u8 EnMd_ShouldSpawn(EnMd* this, PlayState* play) {
         }
 
         if (Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD) &&
-            Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
             (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER) ||
             Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD))) {
             return play->sceneNum == SCENE_KOKIRI_HOME4 && !LINK_IS_ADULT;
@@ -681,8 +677,7 @@ void EnMd_Init(Actor* thisx, PlayState* play) {
 
     if (((play->sceneNum == SCENE_SPOT04) && !(gSaveContext.eventChkInf[0] & 0x10)) ||
         ((play->sceneNum == SCENE_SPOT04) && (gSaveContext.eventChkInf[0] & 0x10) &&
-         ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) ||
-          (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE)))) ||
+         CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) ||
         ((play->sceneNum == SCENE_SPOT10) && !(gSaveContext.eventChkInf[0] & 0x400))) {
         this->actor.home.pos = this->actor.world.pos;
         this->actionFunc = func_80AAB948;
@@ -743,9 +738,7 @@ void func_80AAB948(EnMd* this, PlayState* play) {
     }
 
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
-        if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) ||
-            gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) &&
-            Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
+        if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
             (play->sceneNum == SCENE_SPOT04)) {
             play->msgCtx.msgMode = MSGMODE_PAUSED;
         }
@@ -812,9 +805,7 @@ void func_80AABD0C(EnMd* this, PlayState* play) {
         return;
     }
 
-    if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) ||
-        gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) &&
-        Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
+    if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
         (play->sceneNum == SCENE_SPOT04)) {
         Message_CloseTextbox(play);
         gSaveContext.eventChkInf[1] |= 0x1000;
