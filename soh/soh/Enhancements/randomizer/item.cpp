@@ -7,19 +7,21 @@
 #include "z64item.h"
 
 RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
-                     bool* logicVar_, uint32_t hintKey_, int itemId_, int field_, int textId_, int objectId_,
-                     int modIndex_, int gid_, GetItemCategory category_, uint16_t price_)
+                     bool* logicVar_, uint32_t hintKey_, int itemId_, int objectId_, int gid_, int textId_, int field_,
+                     int chestAnimation_, GetItemCategory category_, int modIndex_, uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-      advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), itemId(itemId_), field(field_),
-      textId(textId_), objectId(objectId_), modIndex(modIndex_), gid(gid_), category(category_), price(price_) {
+      advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), itemId(itemId_), objectId(objectId_),
+      gid(gid_), textId(textId_), field(field_), chestAnimation(chestAnimation_), modIndex(modIndex_),
+      category(category_), price(price_) {
 }
 
 RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
-                     uint8_t* logicVar_, uint32_t hintKey_, int itemId_, int field_, int textId_, int objectId_,
-                     int modIndex_, int gid_, GetItemCategory category_, uint16_t price_)
+                     uint8_t* logicVar_, uint32_t hintKey_, int itemId_, int objectId_, int gid_, int textId_,
+                     int field_, int chestAnimation_, GetItemCategory category_, int modIndex_, uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-      advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), itemId(itemId_), field(field_),
-      textId(textId_), objectId(objectId_), modIndex(modIndex_), gid(gid_), category(category_), price(price_) {
+      advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), itemId(itemId_), objectId(objectId_),
+      gid(gid_), textId(textId_), field(field_), chestAnimation(chestAnimation_), modIndex(modIndex_),
+      category(category_), price(price_) {
 }
 
 RandoItem::~RandoItem() = default;
