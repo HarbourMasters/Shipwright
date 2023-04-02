@@ -49,6 +49,7 @@ enum class SceneCommandID : uint8_t {
 
 class SceneCommand : public Resource {
 public:
+  using Resource::Resource;
   SceneCommandID cmdId;
 };
 

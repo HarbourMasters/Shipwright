@@ -356,6 +356,15 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Greatly decreases cast time of Farore's Wind magic spell.");
                     UIWidgets::PaddedEnhancementCheckbox("Dampe Appears All Night", "gDampeAllNight", true, false);
                     UIWidgets::Tooltip("Makes Dampe appear anytime during it's night, not just his usual working hours.");
+                    UIWidgets::PaddedEnhancementCheckbox("Time Travel with the Song of Time", "gTimeTravel", true, false);
+                    UIWidgets::Tooltip("Allows Link to freely change age by playing the Song of Time.\n"
+                        "Time Blocks can still be used properly.\n\n"
+                        "Requirements:\n"
+                        "- Obtained the Ocarina of Time\n"
+                        "- Obtained the Song of Time\n"
+                        "- Obtained the Master Sword\n"
+                        "- Not within range of Time Block\n"
+                        "- Not within range of Ocarina playing spots");
                     UIWidgets::PaddedEnhancementCheckbox("No water take breath animation", "gNoSwimDeepEndAnim", true, false);
                     UIWidgets::Tooltip("Skips Link's taking breath animation after coming up from water. This setting does not interfere with getting items from underwater.");
                     ImGui::EndMenu();
