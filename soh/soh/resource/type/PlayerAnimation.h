@@ -11,6 +11,8 @@ namespace Ship {
 
 class PlayerAnimation : public Resource {
   public:
+    using Resource::Resource;
+
     void* GetPointer();
     size_t GetPointerSize();
 

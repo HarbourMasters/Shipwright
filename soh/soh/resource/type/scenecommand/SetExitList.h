@@ -10,6 +10,8 @@
 namespace Ship {
 class SetExitList : public SceneCommand {
   public:
+    using SceneCommand::SceneCommand;
+
     void* GetPointer();
     size_t GetPointerSize();
 
