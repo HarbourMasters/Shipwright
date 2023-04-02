@@ -82,6 +82,7 @@ uint8_t GameInteractor_GetDisableLedgeGrabsActive();
 uint8_t GameInteractor_GetRandomWindActive();
 uint8_t GameInteractor_GetRandomBonksActive();
 uint8_t GameInteractor_GetSlipperyFloorActive();
+uint8_t GameInteractor_SecondCollisionUpdate();
 #ifdef __cplusplus
 }
 #endif
@@ -121,6 +122,7 @@ public:
         static uint8_t RandomWindSecondsSinceLastDirectionChange;
         static uint8_t RandomBonksActive;
         static uint8_t SlipperyFloorActive;
+        static uint8_t SecondCollisionUpdate;
 
         static void SetPacifistMode(bool active);
     };
@@ -146,6 +148,7 @@ public:
     DEFINE_HOOK(OnSaleEnd, void(GetItemEntry itemEntry));
     DEFINE_HOOK(OnSceneInit, void(int16_t sceneNum));
     DEFINE_HOOK(OnPlayerUpdate, void());
+    DEFINE_HOOK(OnActorUpdate, void(void* actor));
     DEFINE_HOOK(OnPlayerBonk, void());
     
     DEFINE_HOOK(OnSaveFile, void(int32_t fileNum));
@@ -189,6 +192,7 @@ public:
         static void KnockbackPlayer(float strength);
         static void GiveOrTakeShield(int32_t shield);
         static void ForceInterfaceUpdate();
+        static void UpdateActor(void* refActor);
         static void TeleportPlayer(int32_t nextEntrance);
         static void ClearAssignedButtons(uint8_t buttonSet);
         static void SetTimeOfDay(uint32_t time);
