@@ -164,11 +164,7 @@ void RegisterSwitchAge() {
             playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
             playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
 
-            gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
-            gPlayState->sceneLoadFlag = 0x14;
-            gPlayState->fadeTransition = 11;
-            gSaveContext.nextTransitionType = 11;
-            gPlayState->linkAgeOnLoad ^= 1;
+            ReloadSceneTogglingLinkAge();
 
             warped = true;
         }
@@ -184,9 +180,7 @@ void RegisterSwitchAge() {
 /// Switches Link's age and respawns him at the last entrance he entered.
 void RegisterOcarinaTimeTravel() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!gPlayState) {
-            return;
-        }
+        if (!gPlayState) return;
 
         // For the gTimeTravel: Don't give child Link a Kokiri Sword if we don't have one
         if (LINK_AGE_IN_YEARS == 5 && CVarGetInteger("gTimeTravel", 0)) {
@@ -200,8 +194,8 @@ void RegisterOcarinaTimeTravel() {
         }
 
         // Switches Link's age and respawns him at the last entrance he entered.
-        if (CVarGetInteger("gTimeTravel", 0) && CVarGetInteger("gSwitchAge", 0)) {
-            CVarSetInteger("gSwitchAge", 0);
+        if (CVarGetInteger("gTimeTravel", 0) && CVarGetInteger("gSwitchTimeline", 0)) {
+            CVarSetInteger("gSwitchTimeline", 0);
             ReloadSceneTogglingLinkAge();
         }
     });
@@ -212,12 +206,11 @@ void RegisterOcarinaTimeTravel() {
         }
 
         Actor* player = &GET_PLAYER(gPlayState)->actor;
-        Actor* nearbyTimeBlockEmpty =
-            Actor_FindNearby(gPlayState, player, ACTOR_OBJ_WARP2BLOCK, ACTORCAT_ITEMACTION, 300.0f);
+        Actor* nearbyTimeBlockEmpty = Actor_FindNearby(gPlayState, player, ACTOR_OBJ_WARP2BLOCK, ACTORCAT_ITEMACTION, 300.0f);
         Actor* nearbyTimeBlock = Actor_FindNearby(gPlayState, player, ACTOR_OBJ_TIMEBLOCK, ACTORCAT_ITEMACTION, 300.0f);
         Actor* nearbyOcarinaSpot = Actor_FindNearby(gPlayState, player, ACTOR_EN_OKARINA_TAG, ACTORCAT_PROP, 120.0f);
         Actor* nearbyDoorOfTime = Actor_FindNearby(gPlayState, player, ACTOR_DOOR_TOKI, ACTORCAT_BG, 500.0f);
-        Actor* nearbyFrogs = Actor_FindNearby(gPlayState, player, ACTOR_EN_FR, ACTORCAT_NPC, 50.0f);
+        Actor* nearbyFrogs = Actor_FindNearby(gPlayState, player, ACTOR_EN_FR, ACTORCAT_NPC, 120.0f);
         uint8_t hasMasterSword = (gBitFlags[ITEM_SWORD_MASTER - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD]) &
                                  gSaveContext.inventory.equipment;
         uint8_t hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
@@ -227,11 +220,11 @@ void RegisterOcarinaTimeTravel() {
             gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && !nearbyTimeBlockEmpty && !nearbyTimeBlock &&
             !nearbyOcarinaSpot && !nearbyFrogs) {
             if (gSaveContext.n64ddFlag) {
-                CVarSetInteger("gSwitchAge", 1);
+                CVarSetInteger("gSwitchTimeline", 1);
             } else if (!gSaveContext.n64ddFlag && !nearbyDoorOfTime) {
                 // This check is made for when Link is learning the Song Of Time in a vanilla save file that load a
                 // Temple of Time scene where the only object present is the Door of Time
-                CVarSetInteger("gSwitchAge", 1);
+                CVarSetInteger("gSwitchTimeline", 1);
             }
         }
     });
