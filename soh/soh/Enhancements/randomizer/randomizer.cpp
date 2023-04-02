@@ -225,6 +225,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Reward Count", RSK_RAINBOW_BRIDGE_REWARD_COUNT },
     { "Open Settings:Dungeon Count", RSK_RAINBOW_BRIDGE_DUNGEON_COUNT },
     { "Open Settings:Token Count", RSK_RAINBOW_BRIDGE_TOKEN_COUNT },
+    { "Open Settings:Bridge Reward Options", RSK_BRIDGE_OPTIONS },
     { "Shuffle Settings:Shuffle Dungeon Rewards", RSK_SHUFFLE_DUNGEON_REWARDS },
     { "Shuffle Settings:Link's Pocket", RSK_LINKS_POCKET},
     { "Shuffle Settings:Shuffle Songs", RSK_SHUFFLE_SONGS },
@@ -268,6 +269,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Dungeon Items:Reward Count", RSK_LACS_REWARD_COUNT },
     { "Shuffle Dungeon Items:Dungeon Count", RSK_LACS_DUNGEON_COUNT },
     { "Shuffle Dungeon Items:Token Count", RSK_LACS_TOKEN_COUNT },
+    { "Shuffle Dungeon Items:LACS Reward Options", RSK_LACS_OPTIONS },
     { "Shuffle Dungeon Items:Key Rings", RSK_KEYRINGS },
     { "Shuffle Dungeon Items:Keyring Dungeon Count", RSK_KEYRINGS_RANDOM_COUNT },
     { "Shuffle Dungeon Items:Forest Temple", RSK_KEYRINGS_FOREST_TEMPLE },
@@ -734,6 +736,15 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_BRIDGE_GREG;
                         }
                         break;
+                    case RSK_BRIDGE_OPTIONS:
+                        if (it.value() == "Standard Rewards") {
+                            gSaveContext.randoSettings[index].value = RO_BRIDGE_STANDARD_REWARD;
+                        } else if (it.value() == "Greg as Reward") {
+                            gSaveContext.randoSettings[index].value = RO_BRIDGE_GREG_REWARD;
+                        } else if (it.value() == "Greg as Wildcard") {
+                            gSaveContext.randoSettings[index].value = RO_BRIDGE_WILDCARD_REWARD;
+                        }
+                        break;
                     case RSK_RAINBOW_BRIDGE_STONE_COUNT:
                     case RSK_RAINBOW_BRIDGE_MEDALLION_COUNT:
                     case RSK_RAINBOW_BRIDGE_REWARD_COUNT:
@@ -745,6 +756,15 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_LACS_REWARD_COUNT:
                     case RSK_LACS_DUNGEON_COUNT:
                     case RSK_LACS_TOKEN_COUNT:
+                    case RSK_LACS_OPTIONS:
+                        if (it.value() == "Standard LACS Conditions") {
+                            gSaveContext.randoSettings[index].value = RO_LACS_STANDARD_REWARD;
+                        } else if (it.value() == "Greg as LACS Condition") {
+                            gSaveContext.randoSettings[index].value = RO_LACS_GREG_REWARD;
+                        } else if (it.value() == "Greg as LACS Wildcard") {
+                            gSaveContext.randoSettings[index].value = RO_LACS_WILDCARD_REWARD;
+                        }
+                        break;
                     case RSK_KEYRINGS_RANDOM_COUNT:
                     case RSK_BIG_POE_COUNT:
                     case RSK_CUCCO_COUNT:
@@ -2871,6 +2891,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = CVarGetInteger("gRandomizeRewardCount", 9);
     cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = CVarGetInteger("gRandomizeDungeonCount", 8);
     cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = CVarGetInteger("gRandomizeTokenCount", 100);
+    cvarSettings[RSK_BRIDGE_OPTIONS] = CVarGetInteger("gRandomizeBridgeRewardOptions", 0);
     cvarSettings[RSK_GANONS_TRIALS] = CVarGetInteger("gRandomizeGanonTrial", RO_GANONS_TRIALS_SET_NUMBER);
     cvarSettings[RSK_TRIAL_COUNT] = CVarGetInteger("gRandomizeGanonTrialCount", 6);
     cvarSettings[RSK_STARTING_OCARINA] = CVarGetInteger("gRandomizeStartingOcarina", 0);
@@ -2953,6 +2974,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_LACS_REWARD_COUNT] = CVarGetInteger("gRandomizeLacsRewardCount", 9);
     cvarSettings[RSK_LACS_DUNGEON_COUNT] = CVarGetInteger("gRandomizeLacsDungeonCount", 8);
     cvarSettings[RSK_LACS_TOKEN_COUNT] = CVarGetInteger("gRandomizeLacsTokenCount", 100);
+    cvarSettings[RSK_LACS_OPTIONS] = CVarGetInteger("gRandomizeLacsRewardOptions", 0);
     cvarSettings[RSK_STARTING_CONSUMABLES] = CVarGetInteger("gRandomizeStartingConsumables", 0);
     cvarSettings[RSK_FULL_WALLETS] = CVarGetInteger("gRandomizeFullWallets", 0);
     
@@ -3078,6 +3100,7 @@ void DrawRandoEditor(bool& open) {
     static const char* randoGerudoFortress[3] = { "Normal", "Fast", "Open" };
     static const char* randoRainbowBridge[8] = { "Vanilla", "Always open", "Stones", "Medallions",
                                           "Dungeon rewards", "Dungeons", "Tokens", "Greg" };
+    static const char* randoBridgeRewardOptions[3] = { "Standard Rewards", "Greg as Reward", "Greg as Wildcard" };
     static const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
     static const char* randoMqDungeons[3] = { "None", "Set Number", "Random Number" };
 
@@ -3110,9 +3133,10 @@ void DrawRandoEditor(bool& open) {
                                             "Any Dungeon", "Overworld", "Anywhere" };
     static const char* randoShuffleGanonsBossKey[13] = {"Vanilla", "Own dungeon", "Start with", 
                                                 "Any Dungeon", "Overworld", "Anywhere", 
-                                                "LACS-Vanilla", "LACS-Medallions", "LACS-Stones", 
+                                                "LACS-Vanilla", "LACS-Stones", "LACS-Medallions", 
                                                 "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens",
                                                 "100 GS Reward"};
+    static const char* randoLACSRewardOptions[3] = { "Standard LACS Conditions", "Greg as Condition", "Greg as LACS Wildcard" };
     static const char* randoShuffleKeyRings[4] = { "Off", "Random", "Count", "Selection" };
 
     // Misc Settings
@@ -3332,21 +3356,124 @@ void DrawRandoEditor(bool& open) {
                     case RO_BRIDGE_VANILLA:
                         break;
                     case RO_BRIDGE_STONES:
-                        UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                                                        "gRandomizeStoneCount", 1, 3, "", 3, true, true, false);
+                         ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for opening "
+                            "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions, RO_BRIDGE_STANDARD_REWARD);
+                        switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
+                            case RO_BRIDGE_STANDARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
+                                                                "gRandomizeStoneCount", 1, 3, "", 3, true, true, false);
+                                break;
+                            case RO_BRIDGE_GREG_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
+                                                                "gRandomizeStoneCount", 1, 4, "", 4, true, true, false);
+                                break;
+                            case RO_BRIDGE_WILDCARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
+                                                                "gRandomizeStoneCount", 1, 3, "", 3, true, true, false);
+                                break;
+                        }
+
                         break;
                     case RO_BRIDGE_MEDALLIONS:
-                        UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                                                        "gRandomizeMedallionCount", 1, 6, "", 6, true, true, false);
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for opening "
+                            "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions, RO_BRIDGE_STANDARD_REWARD);
+                        switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
+                            case RO_BRIDGE_STANDARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
+                                                                "gRandomizeMedallionCount", 1, 6, "", 6, true, true, false);
+                                break;
+                            case RO_BRIDGE_GREG_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
+                                                                "gRandomizeMedallionCount", 1, 7, "", 7, true, true, false);
+                                break;
+                            case RO_BRIDGE_WILDCARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
+                                                                "gRandomizeMedallionCount", 1, 6, "", 6, true, true, false);
+                                break;
+                        }
+
                         break;
                     case RO_BRIDGE_DUNGEON_REWARDS:
-                        UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                        "gRandomizeRewardCount", 1, 9, "", 9, true, true, false);
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for opening "
+                            "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions, RO_BRIDGE_STANDARD_REWARD);
+                        switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
+                            case RO_BRIDGE_STANDARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
+                                                                "gRandomizeRewardCount", 1, 9, "", 9, true, true, false);
+                                break;
+                            case RO_BRIDGE_GREG_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
+                                                                "gRandomizeRewardCount", 1, 10, "", 10, true, true, false);
+                                break;
+                            case RO_BRIDGE_WILDCARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
+                                                                "gRandomizeRewardCount", 1, 9, "", 9, true, true, false);
+
+                                break;
+                        }
+
                         break;
                     case RO_BRIDGE_DUNGEONS:
-                        UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                        "gRandomizeDungeonCount", 1, 8, "", 8, true, true, false);
-                        break;
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for opening "
+                            "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions, RO_BRIDGE_STANDARD_REWARD);
+                        switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
+                            case RO_BRIDGE_STANDARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
+                                                                "gRandomizeDungeonCount", 1, 8, "", 8, true, true, false);
+                                break;
+                            case RO_BRIDGE_GREG_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
+                                                                "gRandomizeDungeonCount", 1, 9, "", 9, true, true, false);
+                                break;
+                            case RO_BRIDGE_WILDCARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
+                                                                "gRandomizeDungeonCount", 1, 8, "", 8, true, true, false);
+                                break;
+                        }
                     case RO_BRIDGE_TOKENS:
                         UIWidgets::PaddedEnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
                                                         "gRandomizeTokenCount", 1, 100, "", 100, true, true, false);
@@ -3970,8 +4097,8 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "LACS - These settings put the boss key on the Light Arrow Cutscene location, from Zelda in Temple of Time as adult, with differing requirements:\n"
                     "- Vanilla: Obtain the Shadow Medallion and Spirit Medallion\n"
-                    "- Medallions: Obtain the specified amount of medallions.\n"
                     "- Stones: Obtain the specified amount of spiritual stones.\n"
+                    "- Medallions: Obtain the specified amount of medallions.\n"
                     "- Dungeon rewards: Obtain the specified total sum of spiritual stones or medallions.\n"
                     "- Dungeons: Complete the specified amount of dungeons. Dungeons are considered complete after stepping in to the blue warp after the boss.\n"
                     "- Tokens: Obtain the specified amount of Skulltula tokens.\n"
@@ -3981,21 +4108,125 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, RO_GANON_BOSS_KEY_VANILLA);
                 ImGui::PopItemWidth();
                 switch (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA)) {
-                    case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
-                        UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount",
-                                                        "gRandomizeLacsMedallionCount", 1, 6, "", 6, true, true, false);
-                        break;
                     case RO_GANON_BOSS_KEY_LACS_STONES:
-                        UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount",
-                                                        "gRandomizeLacsStoneCount", 1, 3, "", 3, true, true, false);
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help obtain GBK, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for obtaining "
+                            "GBK), Greg helps obtain GBK, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions, RO_LACS_STANDARD_REWARD);
+                        switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
+                            case RO_LACS_STANDARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount", 
+                                                            "gRandomizeLacsStoneCount", 1, 3, "", 3, true, true, false);
+                                break;
+                            case RO_LACS_GREG_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount", 
+                                                            "gRandomizeLacsStoneCount", 1, 4, "", 4, true, true, false);
+                                break;
+                            case RO_LACS_WILDCARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount", 
+                                                            "gRandomizeLacsStoneCount", 1, 3, "", 3, true, true, false);
+                                break;
+                        }
+
+                        break;
+                    case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help obtain GBK, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for obtaining "
+                            "GBK), Greg helps obtain GBK, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions, RO_LACS_STANDARD_REWARD);
+                        switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
+                            case RO_LACS_STANDARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
+                                                            "gRandomizeLacsMedallionCount", 1, 6, "", 6, true, true, false);
+                                break;
+                            case RO_LACS_GREG_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedllionCount", 
+                                                            "gRandomizeLacsMedallionCount", 1, 7, "", 7, true, true, false);
+                                break;
+                            case RO_LACS_WILDCARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
+                                                            "gRandomizeLacsMedallionCount", 1, 6, "", 6, true, true, false);
+                                break;
+                        }
+
                         break;
                     case RO_GANON_BOSS_KEY_LACS_REWARDS:
-                        UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount",
-                                                        "gRandomizeLacsRewardCount", 1, 9, "", 9, true, true, false);
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help obtain GBK, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for obtaining "
+                            "GBK), Greg helps obtain GBK, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions, RO_LACS_STANDARD_REWARD);
+                        switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
+                            case RO_LACS_STANDARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
+                                                            "gRandomizeLacsRewardCount", 1, 9, "", 9, true, true, false);
+                                break;
+                            case RO_LACS_GREG_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
+                                                            "gRandomizeLacsRewardCount", 1, 10, "", 10, true, true, false);
+                                break;
+                            case RO_LACS_WILDCARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
+                                                            "gRandomizeLacsRewardCount", 1, 9, "", 9, true, true, false);
+                                break;
+                        }
+
                         break;
                     case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
-                        UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount",
-                                                        "gRandomizeLacsDungeonCount", 1, 8, "", 8, true, true, false);
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help obtain GBK, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for obtaining "
+                            "GBK), Greg helps obtain GBK, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions, RO_LACS_STANDARD_REWARD);
+                        switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
+                            case RO_LACS_STANDARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
+                                                            "gRandomizeLacsDungeonCount", 1, 8, "", 8, true, true, false);
+                                break;
+                            case RO_LACS_GREG_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
+                                                            "gRandomizeLacsDungeonCount", 1, 9, "", 9, true, true, false);
+                                break;
+                            case RO_LACS_WILDCARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
+                                                            "gRandomizeLacsDungeonCount", 1, 8, "", 8, true, true, false);
+                                break;
+                        }
+
                         break;
                     case RO_GANON_BOSS_KEY_LACS_TOKENS:
                         UIWidgets::PaddedEnhancementSliderInt("Token Count: %d", "##RandoLacsTokenCount",

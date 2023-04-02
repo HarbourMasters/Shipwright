@@ -73,6 +73,13 @@ typedef enum {
 } RainbowBridgeSetting;
 
 typedef enum {
+    BRIDGE_OPTION_STANDARD,
+    BRIDGE_OPTION_GREG,
+    BRIDGE_OPTION_WILDCARD,
+} BridgeRewardOptionsSetting;
+
+
+typedef enum {
     LACSCONDITION_VANILLA,
     LACSCONDITION_STONES,
     LACSCONDITION_MEDALLIONS,
@@ -80,6 +87,12 @@ typedef enum {
     LACSCONDITION_DUNGEONS,
     LACSCONDITION_TOKENS,
 } LACSConditionSetting;
+
+typedef enum {
+    LACS_OPTION_STANDARD,
+    LACS_OPTION_GREG,
+    LACS_OPTION_WILDCARD,
+} LACSRewardOptionsSetting;
 
 typedef enum {
     AGE_CHILD,
@@ -389,6 +402,7 @@ typedef struct {
     uint8_t bridgeRewardCount;
     uint8_t bridgeDungeonCount;
     uint8_t bridgeTokenCount;
+    uint8_t bridgeRewardOptions;
     uint8_t randomGanonsTrials;
     uint8_t ganonsTrialsCount;
 
@@ -445,6 +459,7 @@ typedef struct {
     uint8_t lacsRewardCount;
     uint8_t lacsDungeonCount;
     uint8_t lacsTokenCount;
+    uint8_t lacsRewardOptions;
 
     uint8_t ringFortress;
     uint8_t ringForest;
@@ -908,6 +923,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option BridgeRewardCount;
   extern Option BridgeDungeonCount;
   extern Option BridgeTokenCount;
+  extern Option BridgeRewardOptions;
   extern Option RandomGanonsTrials;
   extern Option GanonsTrialsCount;
 
@@ -965,6 +981,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option LACSRewardCount;
   extern Option LACSDungeonCount;
   extern Option LACSTokenCount;
+  extern Option LACSRewardOptions;
   extern Option KeyRings;
   extern Option KeyRingsRandomCount;
   extern Option RingFortress;
