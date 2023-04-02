@@ -6,10 +6,15 @@
 extern "C" {
 #include <z64.h>
 #include "macros.h"
+#include "functions.h"
 #include "variables.h"
 #include "functions.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
+extern void Play_PerformSave(PlayState* play);
+extern s32 Health_ChangeBy(PlayState* play, s16 healthChange);
+extern void Rupees_ChangeBy(s16 rupeeChange);
+extern void Inventory_ChangeEquipment(s16 equipment, u16 value);
 }
 bool performDelayedSave = false;
 bool performSave = false;
@@ -444,6 +449,7 @@ void InitMods() {
     RegisterFreezeTime();
     RegisterSwitchAge();
     RegisterOcarinaTimeTravel();
+    RegisterRupeeDash();
     RegisterAutoSave();
     RegisterRupeeDash();
     RegisterHyperBosses();

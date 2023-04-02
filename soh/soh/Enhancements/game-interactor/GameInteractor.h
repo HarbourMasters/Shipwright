@@ -149,9 +149,10 @@ public:
     DEFINE_HOOK(OnTransitionEnd, void(int16_t sceneNum));
     DEFINE_HOOK(OnSceneInit, void(int16_t sceneNum));
     DEFINE_HOOK(OnPlayerUpdate, void());
+    DEFINE_HOOK(OnOcarinaSongAction, void());
+
     DEFINE_HOOK(OnActorUpdate, void(void* actor));
     DEFINE_HOOK(OnPlayerBonk, void());
-    DEFINE_HOOK(OnOcarinaSongAction, void());
 
     DEFINE_HOOK(OnSaveFile, void(int32_t fileNum));
     DEFINE_HOOK(OnLoadFile, void(int32_t fileNum));
