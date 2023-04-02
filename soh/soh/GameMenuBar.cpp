@@ -363,7 +363,8 @@ namespace GameMenuBar {
                         "- Obtained the Ocarina of Time\n"
                         "- Obtained the Song of Time\n"
                         "- Obtained the Master Sword\n"
-                        "- Not within range of Time Block");
+                        "- Not within range of Time Block\n"
+                        "- Not within range of Ocarina playing spots");
                     ImGui::EndMenu();
                 }
 
