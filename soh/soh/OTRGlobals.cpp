@@ -323,10 +323,6 @@ uint32_t OTRGlobals::GetInterpolationFPS() {
     return std::min<uint32_t>(Ship::Window::GetInstance()->GetCurrentRefreshRate(), CVarGetInteger("gInterpolationFPS", 20));
 }
 
-std::shared_ptr<std::vector<std::string>> OTRGlobals::ListFiles(std::string path) {
-    return context->GetResourceManager()->ListFiles(path);
-}
-
 struct ExtensionEntry {
     std::string path;
     std::string ext;
@@ -686,7 +682,7 @@ extern "C" uint32_t GetGIID(uint32_t itemID) {
 }
 
 extern "C" void OTRExtScanner() {
-    auto lst = *OTRGlobals::Instance->context->GetResourceManager()->ListFiles("*.*").get();
+    auto lst = *OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->ListFiles("*.*").get();
 
     for (auto& rPath : lst) {
         std::vector<std::string> raw = StringHelper::Split(rPath, ".");
@@ -1007,7 +1003,7 @@ extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
 
 // OTRTODO: There is probably a more elegant way to go about this...
 extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize) {
-    auto lst = OTRGlobals::Instance->context->GetResourceManager()->ListFiles(searchMask);
+    auto lst = OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->ListFiles(searchMask);
     char** result = (char**)malloc(lst->size() * sizeof(char*));
 
     for (size_t i = 0; i < lst->size(); i++) {
@@ -1105,9 +1101,9 @@ extern "C" uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = GetResourceByNameHandlingMQ(filePath);
 
-    if (res->Type == Ship::ResourceType::DisplayList)
+    if (res->InitData->Type == Ship::ResourceType::DisplayList)
         return (char*)&((std::static_pointer_cast<Ship::DisplayList>(res))->Instructions[0]);
-    else if (res->Type == Ship::ResourceType::Array)
+    else if (res->InitData->Type == Ship::ResourceType::Array)
         return (char*)(std::static_pointer_cast<Ship::Array>(res))->Vertices.data();
     else {
         return (char*)GetResourceDataByNameHandlingMQ(filePath);
