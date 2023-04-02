@@ -22,6 +22,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play);
 void Fishing_UpdateOwner(Actor* thisx, PlayState* play);
 void Fishing_DrawFish(Actor* thisx, PlayState* play);
 void Fishing_DrawOwner(Actor* thisx, PlayState* play);
+void Fishing_Reset(void);
 
 typedef struct {
     /* 0x00 */ u8 unk_00;
@@ -132,7 +133,7 @@ const ActorInit Fishing_InitVars = {
     (ActorFunc)Fishing_Destroy,
     (ActorFunc)Fishing_UpdateFish,
     (ActorFunc)Fishing_DrawFish,
-    NULL,
+    (ActorResetFunc)Fishing_Reset,
 };
 
 static f32 D_80B7A650 = 0.0f;
@@ -5887,4 +5888,11 @@ void Fishing_DrawOwner(Actor* thisx, PlayState* play) {
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
+}
+
+void Fishing_Reset(void) {
+    // Reset static variables for fishing camera and cinematic state to prevent crashing when dying
+    // or re-entering the scene while the fishing rod was cast
+    sCameraId = 0;
+    D_80B7A6CC = 0;
 }
