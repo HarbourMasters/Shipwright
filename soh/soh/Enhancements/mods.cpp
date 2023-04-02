@@ -408,7 +408,7 @@ void RegisterDaytimeGoldSkultullas() {
     });
 }
 
-            void RegisterHyperBosses() {
+void RegisterHyperBosses() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
         // Run the update function a second time to make bosses move and act twice as fast.
 
