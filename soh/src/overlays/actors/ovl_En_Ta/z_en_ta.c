@@ -917,7 +917,9 @@ void func_80B15FE8(EnTa* this, PlayState* play) {
                         this->unk_2E0 |= 2;
                         func_80B13AA0(this, func_80B15E80, func_80B16938);
                         Rupees_ChangeBy(-30);
-                        gSaveContext.pendingSale = ItemTable_Retrieve(GI_MILK).itemId;
+                        GetItemEntry itemEntry = ItemTable_Retrieve(GI_MILK);
+                        gSaveContext.pendingSale = itemEntry.itemId;
+                        gSaveContext.pendingSaleMod = itemEntry.modIndex;
                         func_8002F434(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
                         break;
                 }

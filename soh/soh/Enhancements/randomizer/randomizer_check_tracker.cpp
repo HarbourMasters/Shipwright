@@ -891,7 +891,7 @@ static std::set<std::string> rainbowCVars = {
 int hue = 0;
 void RainbowTick() {
     float freqHue = hue * 2 * M_PI / (360 * CVarGetFloat("gCosmetics.RainbowSpeed", 0.6f));
-    for (auto cvar : rainbowCVars) {
+    for (auto& cvar : rainbowCVars) {
         if (CVarGetInteger((cvar + "RBM").c_str(), 0) == 0)
             continue;
      
@@ -956,10 +956,10 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
 
 
 
-const char* windowType[] = { "Floating", "Window" };
-const char* displayType[] = { "Always", "Combo Button Hold" };
-const char* buttonStrings[] = { "A Button", "B Button", "C-Up",  "C-Down", "C-Left", "C-Right", "L Button",
-                                "Z Button", "R Button", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
+static const char* windowType[] = { "Floating", "Window" };
+static const char* displayType[] = { "Always", "Combo Button Hold" };
+static const char* buttonStrings[] = { "A Button", "B Button", "C-Up",  "C-Down", "C-Left", "C-Right", "L Button",
+                                       "Z Button", "R Button", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
 void DrawCheckTrackerOptions(bool& open) {
     if (!open) {
         CVarSetInteger("gCheckTrackerSettingsEnabled", 0);
@@ -990,23 +990,14 @@ void DrawCheckTrackerOptions(bool& open) {
     }
     ImGui::PopItemWidth();
 
-    ImGui::Text("Window Type");
-    ImGui::SameLine();
-    UIWidgets::EnhancementCombobox("gCheckTrackerWindowType", windowType, 2, 1);
-
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Window Type", "gCheckTrackerWindowType", windowType, 1);
     if (CVarGetInteger("gCheckTrackerWindowType", 1) == 0) {
         UIWidgets::EnhancementCheckbox("Enable Dragging", "gCheckTrackerHudEditMode");
         UIWidgets::EnhancementCheckbox("Only enable while paused", "gCheckTrackerShowOnlyPaused");
-        ImGui::Text("Display Mode");
-        ImGui::SameLine();
-        UIWidgets::EnhancementCombobox("gCheckTrackerDisplayType", displayType, 2, 0);
+        UIWidgets::LabeledRightAlignedEnhancementCombobox("Display Mode", "gCheckTrackerDisplayType", displayType, 0);
         if (CVarGetInteger("gCheckTrackerDisplayType", 0) > 0) {
-            ImGui::Text("Combo Button 1");
-            ImGui::SameLine();
-            UIWidgets::EnhancementCombobox("gCheckTrackerComboButton1", buttonStrings, 14, 6);
-            ImGui::Text("Combo Button 2");
-            ImGui::SameLine();
-            UIWidgets::EnhancementCombobox("gCheckTrackerComboButton2", buttonStrings, 14, 8);
+            UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 1", "gCheckTrackerComboButton1", buttonStrings, 6);
+            UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 2", "gCheckTrackerComboButton2", buttonStrings, 8);
         }
     }
     UIWidgets::EnhancementCheckbox("Performance mode", "gCheckTrackerOptionPerformanceMode");

@@ -2226,7 +2226,6 @@ typedef enum {
     /* 0x00 */ PAUSE_ANY_CURSOR_RANDO_ONLY,
     /* 0x01 */ PAUSE_ANY_CURSOR_ALWAYS_ON,
     /* 0x02 */ PAUSE_ANY_CURSOR_ALWAYS_OFF,
-    /* 0x03 */ PAUSE_ANY_CURSOR_MAX
 } PauseCursorAnySlotOptions;
 
 #define ROM_FILE(name) \

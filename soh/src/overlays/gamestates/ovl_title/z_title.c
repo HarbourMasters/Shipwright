@@ -309,7 +309,7 @@ void Title_Init(GameState* thisx) {
     osSyncPrintf("z_title.c\n");
     //ASSERT(this->staticSegment != NULL);
 
-    //ResourceMgr_CacheDirectory("nintendo_rogo_static*");
+    //ResourceMgr_LoadDirectory("nintendo_rogo_static*");
 
     // Disable vismono
     D_801614B0.a = 0;

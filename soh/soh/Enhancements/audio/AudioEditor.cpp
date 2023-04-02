@@ -366,8 +366,10 @@ void DrawSfxEditor(bool& open) {
                     "is loaded to the main sequence player (does not apply to fanfares or enemy BGM)."
                 );
                 ImGui::SameLine();
+                ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
                 UIWidgets::EnhancementSliderInt("Overlay Duration: %d seconds", "##SeqNameOverlayDuration",
-                                                "gSeqNameOverlayDuration", 1, 10, "", 5, true);
+                                                "gSeqNameOverlayDuration", 1, 10, "", 5);
+                ImGui::PopItemWidth();
                 ImGui::NewLine();
                 UIWidgets::PaddedSeparator();
                 UIWidgets::PaddedText("The following options are experimental and may cause music\nto sound odd or have other undesireable effects.");

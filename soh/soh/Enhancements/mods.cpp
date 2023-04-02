@@ -8,6 +8,7 @@ extern "C" {
 #include "macros.h"
 #include "functions.h"
 #include "variables.h"
+#include "functions.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Play_PerformSave(PlayState* play);
@@ -15,6 +16,8 @@ extern s32 Health_ChangeBy(PlayState* play, s16 healthChange);
 extern void Rupees_ChangeBy(s16 rupeeChange);
 extern void Inventory_ChangeEquipment(s16 equipment, u16 value);
 }
+bool performDelayedSave = false;
+bool performSave = false;
 
 // MARK: - Helpers
 
@@ -241,19 +244,21 @@ void RegisterOcarinaTimeTravel() {
     });
 }
 
-void RegisterAutoSave() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnReceiveItem>([](u8 item) {
-        // Don't autosave immediately after buying items from shops to prevent getting them for free!
-        // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
-        // Don't autosave during the Ganon fight when picking up the Master Sword
-        if ((CVarGetInteger("gAutosave", 0) > 0) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
-            (gPlayState->sceneNum != SCENE_KENJYANOMA) && (gPlayState->sceneNum != SCENE_GANON_DEMO)) {
-            if ((CVarGetInteger("gAutosave", 0) == 2) || (CVarGetInteger("gAutosave", 0) == 5)) {
-                // Autosave for all items
-                Play_PerformSave(gPlayState);
+void AutoSave(GetItemEntry itemEntry) {
+    u8 item = itemEntry.itemId;
+    // Don't autosave immediately after buying items from shops to prevent getting them for free!
+    // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
+    // Don't autosave during the Ganon fight when picking up the Master Sword
+    // Don't autosave in grottos since resuming from grottos breaks the game.
+    if ((CVarGetInteger("gAutosave", 0) > 0) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
+        (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0) && (gPlayState->sceneNum != SCENE_GANON_DEMO)) {
+        if (((CVarGetInteger("gAutosave", 0) == 2) || (CVarGetInteger("gAutosave", 0) == 5)) && (item != ITEM_NONE)) {
+            // Autosave for all items
+            performSave = true;
 
-            } else if ((CVarGetInteger("gAutosave", 0) == 1) || (CVarGetInteger("gAutosave", 0) == 4)) {
-                // Autosave for major items
+        } else if (((CVarGetInteger("gAutosave", 0) == 1) || (CVarGetInteger("gAutosave", 0) == 4)) && (item != ITEM_NONE)) {
+            // Autosave for major items
+            if (itemEntry.modIndex == 0) {
                 switch (item) {
                     case ITEM_STICK:
                     case ITEM_NUT:
@@ -286,21 +291,49 @@ void RegisterAutoSave() {
                     case ITEM_ARROWS_MEDIUM:
                     case ITEM_ARROWS_LARGE:
                     case ITEM_SEEDS_30:
+                    case ITEM_NONE:
                         break;
                     case ITEM_BOMBCHU:
                     case ITEM_BOMBCHUS_5:
                     case ITEM_BOMBCHUS_20:
                         if (!CVarGetInteger("gBombchuDrops", 0)) {
-                            Play_PerformSave(gPlayState);
+                            performSave = true;
                         }
                         break;
                     default:
-                        Play_PerformSave(gPlayState);
+                        performSave = true;
                         break;
                 }
+            } else if (itemEntry.modIndex == 1 && item != RG_ICE_TRAP) {
+                performSave = true;
             }
+        } else if ((CVarGetInteger("gAutosave", 0) > 0 && (CVarGetInteger("gAutosave", 0) < 4))) {
+            performSave = true;
         }
-    });
+        if ((gPlayState->sceneNum == SCENE_YOUSEI_IZUMI_TATE) || (gPlayState->sceneNum == SCENE_KAKUSIANA) ||
+                (gPlayState->sceneNum == SCENE_KENJYANOMA)) {
+            if ((CVarGetInteger("gAutosave", 0) > 0 && (CVarGetInteger("gAutosave", 0) < 4))) {
+                performSave = false;
+                return;
+            }
+            if (performSave) {
+                performSave = false;
+                performDelayedSave = true;
+            }
+            return;
+        }
+        if (performSave || performDelayedSave) {
+            Play_PerformSave(gPlayState);
+            performSave = false;
+            performDelayedSave = false;
+        }
+    }
+}
+
+void RegisterAutoSave() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) { AutoSave(itemEntry); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>([](GetItemEntry itemEntry) { AutoSave(itemEntry); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([](int32_t sceneNum) { AutoSave(GET_ITEM_NONE); });
 }
 
 void RegisterRupeeDash() {
@@ -327,6 +360,92 @@ void RegisterRupeeDash() {
     });
 }
 
+void RegisterHyperBosses() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+        // Run the update function a second time to make bosses move and act twice as fast.
+
+        Player* player = GET_PLAYER(gPlayState);
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        uint8_t isBossActor =
+            actor->id == ACTOR_BOSS_GOMA ||                              // Gohma
+            actor->id == ACTOR_BOSS_DODONGO ||                           // King Dodongo
+            actor->id == ACTOR_BOSS_VA ||                                // Barinade
+            actor->id == ACTOR_BOSS_GANONDROF ||                         // Phantom Ganon
+            (actor->id == 0 && actor->category == ACTORCAT_BOSS) ||      // Phantom Ganon/Ganondorf Energy Ball/Thunder
+            actor->id == ACTOR_EN_FHG ||                                 // Phantom Ganon's Horse
+            actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || // Volvagia (grounded/flying)
+            actor->id == ACTOR_BOSS_MO ||                                // Morpha
+            actor->id == ACTOR_BOSS_SST ||                               // Bongo Bongo
+            actor->id == ACTOR_BOSS_TW ||                                // Twinrova
+            actor->id == ACTOR_BOSS_GANON ||                             // Ganondorf
+            actor->id == ACTOR_BOSS_GANON2;                              // Ganon
+
+        // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
+        if (CVarGetInteger("gHyperBosses", 0) && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
+            // Barinade needs to be updated in sequence to avoid unintended behaviour.
+            if (actor->id == ACTOR_BOSS_VA) {
+                // params -1 is BOSSVA_BODY
+                if (actor->params == -1) {
+                    Actor* actorList = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS].head;
+                    while (actorList != NULL) {
+                        GameInteractor::RawAction::UpdateActor(actorList);
+                        actorList = actorList->next;
+                    }
+                }
+            } else {
+                GameInteractor::RawAction::UpdateActor(actor);
+            }
+        }
+    });
+}
+
+void RegisterBonkDamage() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerBonk>([]() {
+        uint8_t bonkOption = CVarGetInteger("gBonkDamageMul", 0);
+        uint16_t bonkDamage = 0;
+        switch (bonkOption) {
+            // Quarter heart
+            case 1:
+                bonkDamage = 4;
+                break;
+            // Half a heart
+            case 2:
+                bonkDamage = 8;
+                break;
+            // Full heart
+            case 3:
+                bonkDamage = 16;
+                break;
+            // 2 hearts
+            case 4:
+                bonkDamage = 32;
+                break;
+            // 4 hearts
+            case 5:
+                bonkDamage = 64;
+                break;
+            // 8 hearts
+            case 6:
+                bonkDamage = 128;
+                break;
+            case 0:
+            case 7:
+            default:
+                break;
+        }
+        // OHKO
+        if (bonkOption == 7) {
+            gSaveContext.health = 0;
+        } else if (bonkDamage) {
+            Health_ChangeBy(gPlayState, -bonkDamage);
+            // Set invincibility to make Link flash red as a visual damage indicator.
+            Player* player = GET_PLAYER(gPlayState);
+            player->invincibilityTimer = 28;
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -342,4 +461,7 @@ void InitMods() {
     RegisterOcarinaTimeTravel();
     RegisterRupeeDash();
     RegisterAutoSave();
+    RegisterRupeeDash();
+    RegisterHyperBosses();
+    RegisterBonkDamage();
 }
