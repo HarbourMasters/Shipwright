@@ -449,7 +449,6 @@ void InitMods() {
     RegisterFreezeTime();
     RegisterSwitchAge();
     RegisterOcarinaTimeTravel();
-    RegisterRupeeDash();
     RegisterAutoSave();
     RegisterRupeeDash();
     RegisterHyperBosses();

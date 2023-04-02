@@ -1020,6 +1020,8 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
             UIWidgets::PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
             UIWidgets::Tooltip("This syncs the ingame time with the real world time");
+            UIWidgets::PaddedEnhancementCheckbox("No ReDead/Gibdo Freeze", "gNoRedeadFreeze", true, false);
+            UIWidgets::Tooltip("Prevents ReDeads and Gibdos from being able to freeze you with their scream");
 
             {
                 static int32_t betaQuestEnabled = CVarGetInteger("gEnableBetaQuest", 0);
