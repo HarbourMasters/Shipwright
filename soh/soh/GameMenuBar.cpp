@@ -365,7 +365,7 @@ namespace GameMenuBar {
                         "- Obtained the Master Sword\n"
                         "- Not within range of Time Block\n"
                         "- Not within range of Ocarina playing spots");
-                    UIWidgets::PaddedEnhancementCheckbox("No water take breath animation", "gNoSwimDeepEndAnim", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Skip water take breath animation", "gSkipSwimDeepEndAnim", true, false);
                     UIWidgets::Tooltip("Skips Link's taking breath animation after coming up from water. This setting does not interfere with getting items from underwater.");
                     ImGui::EndMenu();
                 }
