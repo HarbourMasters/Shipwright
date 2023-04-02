@@ -4,27 +4,26 @@
 #include "libultraship/bridge.h"
 
 namespace Ship {
-std::shared_ptr<Resource> SkeletonLimbFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader)
-{
-	auto resource = std::make_shared<SkeletonLimb>();
-	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
+std::shared_ptr<Resource> SkeletonLimbFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+                                                            std::shared_ptr<ResourceInitData> initData,
+                                                            std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<SkeletonLimb>(resourceMgr, initData);
+    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-	switch (version)
-	{
-	case 0:
-		factory = std::make_shared<SkeletonLimbFactoryV0>();
-		break;
-	}
+    switch (resource->InitData->ResourceVersion) {
+    case 0:
+	    factory = std::make_shared<SkeletonLimbFactoryV0>();
+	    break;
+    }
 
-	if (factory == nullptr)
-	{
-		SPDLOG_ERROR("Failed to load Skeleton Limb with version {}", version);
-		return nullptr;
-	}
+    if (factory == nullptr) {
+        SPDLOG_ERROR("Failed to load Skeleton Limb with version {}", resource->InitData->ResourceVersion);
+	return nullptr;
+    }
 
-	factory->ParseFileBinary(reader, resource);
+    factory->ParseFileBinary(reader, resource);
 
-	return resource;
+    return resource;
 }
 
 std::shared_ptr<Resource> SkeletonLimbFactory::ReadResourceXML(uint32_t version, tinyxml2::XMLElement* reader) {
@@ -50,8 +49,8 @@ std::shared_ptr<Resource> SkeletonLimbFactory::ReadResourceXML(uint32_t version,
 void Ship::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                                   std::shared_ptr<Resource> resource)
 {
-	std::shared_ptr<SkeletonLimb> skeletonLimb = std::static_pointer_cast<SkeletonLimb>(resource);
-	ResourceVersionFactory::ParseFileBinary(reader, skeletonLimb);
+    std::shared_ptr<SkeletonLimb> skeletonLimb = std::static_pointer_cast<SkeletonLimb>(resource);
+    ResourceVersionFactory::ParseFileBinary(reader, skeletonLimb);
 
     skeletonLimb->limbType = (LimbType)reader->ReadInt8();
     skeletonLimb->skinSegmentType = (ZLimbSkinType)reader->ReadInt8();
@@ -197,8 +196,7 @@ void Ship::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
             skeletonLimb->skinAnimLimbData.limbModifications = skeletonLimb->skinLimbModifArray.data();
             skeletonLimb->skinAnimLimbData.dlist = (Gfx*)GetResourceDataByName(skeletonLimb->skinDList2.c_str(), true);
 
-            for (size_t i = 0; i < skeletonLimb->skinLimbModifArray.size(); i++)
-            {
+            for (size_t i = 0; i < skeletonLimb->skinLimbModifArray.size(); i++) {
                 skeletonLimb->skinAnimLimbData.limbModifications[i].vtxCount = skeletonLimb->skinLimbModifVertexArrays[i].size();
                 skeletonLimb->skinAnimLimbData.limbModifications[i].skinVertices = skeletonLimb->skinLimbModifVertexArrays[i].data();
                 

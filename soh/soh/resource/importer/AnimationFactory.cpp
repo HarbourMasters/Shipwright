@@ -3,18 +3,20 @@
 #include "spdlog/spdlog.h"
 
 namespace Ship {
-std::shared_ptr<Resource> AnimationFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<Animation>();
+std::shared_ptr<Resource> AnimationFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+                                                         std::shared_ptr<ResourceInitData> initData,
+                                                         std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<Animation>(resourceMgr, initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch (version) {
+    switch (resource->InitData->ResourceVersion) {
         case 0:
             factory = std::make_shared<AnimationFactoryV0>();
             break;
     }
 
     if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load Animation with version {}", version);
+        SPDLOG_ERROR("Failed to load Animation with version {}", resource->InitData->ResourceVersion);
         return nullptr;
     }
 

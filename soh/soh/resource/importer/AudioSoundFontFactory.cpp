@@ -4,34 +4,33 @@
 #include "libultraship/bridge.h"
 
 namespace Ship {
-std::shared_ptr<Resource> AudioSoundFontFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader)
-{
-	auto resource = std::make_shared<AudioSoundFont>();
-	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
+std::shared_ptr<Resource> AudioSoundFontFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+                                                              std::shared_ptr<ResourceInitData> initData,
+                                                              std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<AudioSoundFont>(resourceMgr, initData);
+    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-	switch (version)
-	{
-	case 2:
-		factory = std::make_shared<AudioSoundFontFactoryV0>();
-		break;
-	}
+    switch (resource->InitData->ResourceVersion) {
+    case 2:
+	factory = std::make_shared<AudioSoundFontFactoryV0>();
+	break;
+    }
 
-	if (factory == nullptr)
-	{
-		SPDLOG_ERROR("Failed to load AudioSoundFont with version {}", version);
-		return nullptr;
-	}
+    if (factory == nullptr)
+    {
+        SPDLOG_ERROR("Failed to load AudioSoundFont with version {}", resource->InitData->ResourceVersion);
+	return nullptr;
+    }
 
-	factory->ParseFileBinary(reader, resource);
+    factory->ParseFileBinary(reader, resource);
 
-	return resource;
+    return resource;
 }
 
 void Ship::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                    std::shared_ptr<Resource> resource)
-{
-	std::shared_ptr<AudioSoundFont> audioSoundFont = std::static_pointer_cast<AudioSoundFont>(resource);
-	ResourceVersionFactory::ParseFileBinary(reader, audioSoundFont);
+                                                    std::shared_ptr<Resource> resource) {
+    std::shared_ptr<AudioSoundFont> audioSoundFont = std::static_pointer_cast<AudioSoundFont>(resource);
+    ResourceVersionFactory::ParseFileBinary(reader, audioSoundFont);
 
     audioSoundFont->soundFont.fntIndex = reader->ReadInt32();
     audioSoundFont->medium = reader->ReadInt8();

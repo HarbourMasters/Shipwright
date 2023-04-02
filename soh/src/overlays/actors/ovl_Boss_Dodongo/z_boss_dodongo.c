@@ -36,7 +36,7 @@ void BossDodongo_DrawEffects(PlayState* play);
 void BossDodongo_UpdateEffects(PlayState* play);
 
 const ActorInit Boss_Dodongo_InitVars = {
-    ACTOR_EN_DODONGO,
+    ACTOR_BOSS_DODONGO,
     ACTORCAT_BOSS,
     FLAGS,
     OBJECT_KINGDODONGO,

@@ -285,12 +285,10 @@ static bool TakeAmmoHandler(std::shared_ptr<Ship::Console> Console, const std::v
 }
 
 const static std::map<std::string, uint16_t> bottleItems{
-    { "green_potion", ITEM_POTION_GREEN },
-    { "red_potion", ITEM_POTION_RED },
-    { "blue_potion", ITEM_POTION_BLUE },
-    { "milk", ITEM_MILK },    { "half_milk", ITEM_MILK_HALF },           { "fairy", ITEM_FAIRY },
-    { "bugs", ITEM_BUG }, { "fish", ITEM_FISH },         { "poe", ITEM_POE },
-    { "big_poe", ITEM_BIG_POE },  { "blue_fire", ITEM_BLUE_FIRE }, { "rutos_letter", ITEM_LETTER_RUTO },
+    { "green_potion", ITEM_POTION_GREEN }, { "red_potion", ITEM_POTION_RED }, { "blue_potion", ITEM_POTION_BLUE },
+    { "milk", ITEM_MILK },                 { "half_milk", ITEM_MILK_HALF },   { "fairy", ITEM_FAIRY },
+    { "bugs", ITEM_BUG },                  { "fish", ITEM_FISH },             { "poe", ITEM_POE },
+    { "big_poe", ITEM_BIG_POE },           { "blue_fire", ITEM_BLUE_FIRE },   { "rutos_letter", ITEM_LETTER_RUTO },
 };
 
 static bool BottleHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
@@ -418,7 +416,7 @@ static bool ReloadHandler(std::shared_ptr<Ship::Console> Console, const std::vec
 }
 
 const static std::map<std::string, uint16_t> fw_options {
-    { "clear", 0}, {"warp", 1}, {"nackup", 2}
+    { "clear", 0}, {"warp", 1}, {"backup", 2}
 };
 
 static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
@@ -1430,13 +1428,13 @@ void DebugConsole_Init(void) {
     }});
 
     CMD_REGISTER("spawn", { ActorSpawnHandler, "Spawn an actor.", { { "actor_id", Ship::ArgumentType::NUMBER },
-                              { "data", Ship::ArgumentType::NUMBER },
-                              { "x", Ship::ArgumentType::PLAYER_POS, true },
-                              { "y", Ship::ArgumentType::PLAYER_POS, true },
-                              { "z", Ship::ArgumentType::PLAYER_POS, true },
-                              { "rx", Ship::ArgumentType::PLAYER_ROT, true },
-                              { "ry", Ship::ArgumentType::PLAYER_ROT, true },
-                              { "rz", Ship::ArgumentType::PLAYER_ROT, true }
+        { "data", Ship::ArgumentType::NUMBER },
+        { "x", Ship::ArgumentType::PLAYER_POS, true },
+        { "y", Ship::ArgumentType::PLAYER_POS, true },
+        { "z", Ship::ArgumentType::PLAYER_POS, true },
+        { "rx", Ship::ArgumentType::PLAYER_ROT, true },
+        { "ry", Ship::ArgumentType::PLAYER_ROT, true },
+        { "rz", Ship::ArgumentType::PLAYER_ROT, true }
     }});
 
     CMD_REGISTER("pos", { SetPosHandler, "Sets the position of the player.", {

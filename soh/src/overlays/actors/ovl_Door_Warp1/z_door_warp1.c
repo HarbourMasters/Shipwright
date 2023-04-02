@@ -568,6 +568,8 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
                 if (gSaveContext.n64ddFlag) {
                     play->nextEntranceIndex = 0x0457;
                     gSaveContext.nextCutsceneIndex = 0;
+                    // Skip Mido complaining about dead Deku tree
+                    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH);
                 } else {
                     Item_Give(play, ITEM_KOKIRI_EMERALD);
                     play->nextEntranceIndex = 0xEE;

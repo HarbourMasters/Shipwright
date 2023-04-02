@@ -3,41 +3,39 @@
 #include "spdlog/spdlog.h"
 
 namespace Ship {
-std::shared_ptr<Resource> SetTransitionActorListFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader)
-{
-	auto resource = std::make_shared<SetTransitionActorList>();
-	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
+std::shared_ptr<Resource> SetTransitionActorListFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+                                                                      std::shared_ptr<ResourceInitData> initData,
+                                                                      std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<SetTransitionActorList>(resourceMgr, initData);
+    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-	switch (version)
-	{
-	case 0:
-		factory = std::make_shared<SetTransitionActorListFactoryV0>();
-		break;
-	}
+    switch (resource->InitData->ResourceVersion) {
+    case 0:
+	    factory = std::make_shared<SetTransitionActorListFactoryV0>();
+	    break;
+    }
 
-	if (factory == nullptr)
-	{
-		SPDLOG_ERROR("Failed to load SetTransitionActorList with version {}", version);
-		return nullptr;
-	}
+    if (factory == nullptr) {
+        SPDLOG_ERROR("Failed to load SetTransitionActorList with version {}", resource->InitData->ResourceVersion);
+	return nullptr;
+    }
 
-	factory->ParseFileBinary(reader, resource);
+    factory->ParseFileBinary(reader, resource);
 
-	return resource;
+    return resource;
 }
 
 void Ship::SetTransitionActorListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<Resource> resource)
-{
-	std::shared_ptr<SetTransitionActorList> setTransitionActorList = std::static_pointer_cast<SetTransitionActorList>(resource);
-	ResourceVersionFactory::ParseFileBinary(reader, setTransitionActorList);
+                                        std::shared_ptr<Resource> resource) {
+    std::shared_ptr<SetTransitionActorList> setTransitionActorList = std::static_pointer_cast<SetTransitionActorList>(resource);
+    ResourceVersionFactory::ParseFileBinary(reader, setTransitionActorList);
 
-	ReadCommandId(setTransitionActorList, reader);
+    ReadCommandId(setTransitionActorList, reader);
 	
     setTransitionActorList->numTransitionActors = reader->ReadUInt32();
     setTransitionActorList->transitionActorList.reserve(setTransitionActorList->numTransitionActors);
     for (uint32_t i = 0; i < setTransitionActorList->numTransitionActors; i++) {
-		TransitionActorEntry entry;
+        TransitionActorEntry entry;
 
         entry.sides[0].room = reader->ReadUByte();
         entry.sides[0].effects = reader->ReadUByte();
