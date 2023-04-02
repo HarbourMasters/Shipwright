@@ -12,6 +12,7 @@ extern "C" void GameInteractor_ExecuteOnPlayerUpdate();
 extern "C" void GameInteractor_ExecuteOnOcarinaSongAction();
 extern "C" void GameInteractor_ExecuteOnActorUpdate(void* actor);
 extern "C" void GameInteractor_ExecuteOnPlayerBonk();
+extern "C" void GameInteractor_ExecuteOnOcarinaSongAction();
 
 // MARK: -  Save Files
 extern "C" void GameInteractor_ExecuteOnSaveFile(int32_t fileNum);
