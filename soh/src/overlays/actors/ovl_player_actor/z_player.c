@@ -5819,9 +5819,20 @@ s32 func_8083D12C(PlayState* play, Player* this, Input* arg2) {
                 }
 
                 func_80832340(play, this);
-                func_80832B0C(play, this,
+                
+                /* Skip water take breath animation if the player didn't get an item and the setting is enabled */
+                if (CVarGetInteger("gNoSwimDeepEndAnim", 0) && !(this->stateFlags1 & PLAYER_STATE1_11))
+                {
+                    LinkAnimation_Change(play, &this->skelAnime, &gPlayerAnim_link_swimer_swim_deep_end, 1.0f,
+                        Animation_GetLastFrame(&gPlayerAnim_link_swimer_swim_deep_end),
+                        Animation_GetLastFrame(&gPlayerAnim_link_swimer_swim_deep_end), ANIMMODE_ONCE, -6.0f);
+                }
+                else
+                {
+                    func_80832B0C(play, this,
                               (this->stateFlags1 & PLAYER_STATE1_11) ? &gPlayerAnim_link_swimer_swim_get
                                                                      : &gPlayerAnim_link_swimer_swim_deep_end);
+                }
 
                 if (func_8083CFA8(play, this, this->actor.velocity.y, 500)) {
                     func_8002F7DC(&this->actor, NA_SE_PL_FACE_UP);
