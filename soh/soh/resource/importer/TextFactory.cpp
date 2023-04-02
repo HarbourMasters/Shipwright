@@ -28,19 +28,20 @@ std::shared_ptr<Resource> TextFactory::ReadResource(std::shared_ptr<ResourceMgr>
     return resource;
 }
 
-std::shared_ptr<Resource> TextFactory::ReadResourceXML(uint32_t version, tinyxml2::XMLElement* reader) 
-{
-    auto resource = std::make_shared<Text>();
+std::shared_ptr<Resource> TextFactory::ReadResourceXML(std::shared_ptr<ResourceMgr> resourceMgr,
+                                                       std::shared_ptr<ResourceInitData> initData,
+                                                       tinyxml2::XMLElement* reader) {
+    auto resource = std::make_shared<Text>(resourceMgr, initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch ((Version)version) {
+    switch ((Version)resource->InitData->ResourceVersion) {
         case Version::Deckard:
             factory = std::make_shared<TextFactoryV0>();
             break;
     }
 
     if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load Text with version {}", version);
+        SPDLOG_ERROR("Failed to load Text with version {}", resource->InitData->ResourceVersion);
         return nullptr;
     }
 
@@ -67,8 +68,7 @@ void Ship::TextFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
 	text->messages.push_back(entry);
     }
 }
-void TextFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<Resource> resource) 
-{
+void TextFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<Resource> resource) {
     std::shared_ptr<Text> txt = std::static_pointer_cast<Text>(resource);
 
     auto child = reader->FirstChildElement();

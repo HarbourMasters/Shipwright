@@ -26,19 +26,20 @@ std::shared_ptr<Resource> SkeletonFactory::ReadResource(std::shared_ptr<Resource
     return resource;
 }
 
-std::shared_ptr<Resource> SkeletonFactory::ReadResourceXML(uint32_t version, tinyxml2::XMLElement* reader) 
-{
-    auto resource = std::make_shared<Skeleton>();
+std::shared_ptr<Resource> SkeletonFactory::ReadResourceXML(std::shared_ptr<ResourceMgr> resourceMgr,
+                                                           std::shared_ptr<ResourceInitData> initData,
+                                                           tinyxml2::XMLElement* reader) {
+    auto resource = std::make_shared<Skeleton>(resourceMgr, initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch ((Version)version) {
+    switch ((Version)resource->InitData->ResourceVersion) {
         case Version::Deckard:
             factory = std::make_shared<SkeletonFactoryV0>();
             break;
     }
 
     if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load Skeleton with version {}", version);
+        SPDLOG_ERROR("Failed to load Skeleton with version {}", resource->InitData->ResourceVersion);
         return nullptr;
     }
 
@@ -107,12 +108,13 @@ void SkeletonFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_p
     int numLimbs = reader->IntAttribute("LimbCount");
     int numDLs = reader->IntAttribute("DisplayListCount");
 
-    if (skeletonType == "Flex")
+    if (skeletonType == "Flex") {
         skel->type = SkeletonType::Flex;
-    else if (skeletonType == "Curve")
+    } else if (skeletonType == "Curve") {
         skel->type = SkeletonType::Curve;
-    else if (skeletonType == "Normal")
+    } else if (skeletonType == "Normal") {
         skel->type = SkeletonType::Normal;
+    }
 
     skel->type = SkeletonType::Flex;
     skel->limbType = LimbType::LOD;
