@@ -11,6 +11,8 @@ namespace Ship {
 
 class Scene : public Resource {
 public:
+  using Resource::Resource;
+
   void* GetPointer();
   size_t GetPointerSize();
 
