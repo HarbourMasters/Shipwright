@@ -11,6 +11,8 @@ extern "C" {
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
+bool performDelayedSave = false;
+bool performSave = false;
 
 void RegisterInfiniteMoney() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
@@ -177,60 +179,81 @@ void AutoSave(GetItemEntry itemEntry) {
     // Don't autosave during the Ganon fight when picking up the Master Sword
     // Don't autosave in grottos since resuming from grottos breaks the game.
     if ((CVarGetInteger("gAutosave", 0) > 0) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
-        (gPlayState->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (gPlayState->sceneNum != SCENE_KAKUSIANA) &&
-        (gPlayState->sceneNum != SCENE_KENJYANOMA) && (gPlayState->sceneNum != SCENE_GANON_DEMO) &&
-        (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0)) {
-        if ((CVarGetInteger("gAutosave", 0) == 2) || (CVarGetInteger("gAutosave", 0) == 5) && (item != ITEM_NONE)) {
+        (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0) && (gPlayState->sceneNum != SCENE_GANON_DEMO)) {
+        if (((CVarGetInteger("gAutosave", 0) == 2) || (CVarGetInteger("gAutosave", 0) == 5)) && (item != ITEM_NONE)) {
             // Autosave for all items
-            Play_PerformSave(gPlayState);
+            performSave = true;
 
-        } else if ((CVarGetInteger("gAutosave", 0) == 1) || (CVarGetInteger("gAutosave", 0) == 4) && (item != ITEM_NONE)) {
+        } else if (((CVarGetInteger("gAutosave", 0) == 1) || (CVarGetInteger("gAutosave", 0) == 4)) && (item != ITEM_NONE)) {
             // Autosave for major items
-            switch (item) {
-                case ITEM_STICK:
-                case ITEM_NUT:
-                case ITEM_BOMB:
-                case ITEM_BOW:
-                case ITEM_SEEDS:
-                case ITEM_FISHING_POLE:
-                case ITEM_MAGIC_SMALL:
-                case ITEM_MAGIC_LARGE:
-                case ITEM_INVALID_4:
-                case ITEM_INVALID_5:
-                case ITEM_INVALID_6:
-                case ITEM_INVALID_7:
-                case ITEM_HEART:
-                case ITEM_RUPEE_GREEN:
-                case ITEM_RUPEE_BLUE:
-                case ITEM_RUPEE_RED:
-                case ITEM_RUPEE_PURPLE:
-                case ITEM_RUPEE_GOLD:
-                case ITEM_INVALID_8:
-                case ITEM_STICKS_5:
-                case ITEM_STICKS_10:
-                case ITEM_NUTS_5:
-                case ITEM_NUTS_10:
-                case ITEM_BOMBS_5:
-                case ITEM_BOMBS_10:
-                case ITEM_BOMBS_20:
-                case ITEM_BOMBS_30:
-                case ITEM_ARROWS_SMALL:
-                case ITEM_ARROWS_MEDIUM:
-                case ITEM_ARROWS_LARGE:
-                case ITEM_SEEDS_30:
-                case ITEM_NONE:
-                    break;
-                case ITEM_BOMBCHU:
-                case ITEM_BOMBCHUS_5:
-                case ITEM_BOMBCHUS_20:
-                    if (!CVarGetInteger("gBombchuDrops", 0)) {
-                        Play_PerformSave(gPlayState);
-                    }
-                    break;
-                default:
-                    Play_PerformSave(gPlayState);
-                    break;
+            if (itemEntry.modIndex == 0) {
+                switch (item) {
+                    case ITEM_STICK:
+                    case ITEM_NUT:
+                    case ITEM_BOMB:
+                    case ITEM_BOW:
+                    case ITEM_SEEDS:
+                    case ITEM_FISHING_POLE:
+                    case ITEM_MAGIC_SMALL:
+                    case ITEM_MAGIC_LARGE:
+                    case ITEM_INVALID_4:
+                    case ITEM_INVALID_5:
+                    case ITEM_INVALID_6:
+                    case ITEM_INVALID_7:
+                    case ITEM_HEART:
+                    case ITEM_RUPEE_GREEN:
+                    case ITEM_RUPEE_BLUE:
+                    case ITEM_RUPEE_RED:
+                    case ITEM_RUPEE_PURPLE:
+                    case ITEM_RUPEE_GOLD:
+                    case ITEM_INVALID_8:
+                    case ITEM_STICKS_5:
+                    case ITEM_STICKS_10:
+                    case ITEM_NUTS_5:
+                    case ITEM_NUTS_10:
+                    case ITEM_BOMBS_5:
+                    case ITEM_BOMBS_10:
+                    case ITEM_BOMBS_20:
+                    case ITEM_BOMBS_30:
+                    case ITEM_ARROWS_SMALL:
+                    case ITEM_ARROWS_MEDIUM:
+                    case ITEM_ARROWS_LARGE:
+                    case ITEM_SEEDS_30:
+                    case ITEM_NONE:
+                        break;
+                    case ITEM_BOMBCHU:
+                    case ITEM_BOMBCHUS_5:
+                    case ITEM_BOMBCHUS_20:
+                        if (!CVarGetInteger("gBombchuDrops", 0)) {
+                            performSave = true;
+                        }
+                        break;
+                    default:
+                        performSave = true;
+                        break;
+                }
+            } else if (itemEntry.modIndex == 1 && item != RG_ICE_TRAP) {
+                performSave = true;
             }
+        } else if ((CVarGetInteger("gAutosave", 0) > 0 && (CVarGetInteger("gAutosave", 0) < 4))) {
+            performSave = true;
+        }
+        if ((gPlayState->sceneNum == SCENE_YOUSEI_IZUMI_TATE) || (gPlayState->sceneNum == SCENE_KAKUSIANA) ||
+                (gPlayState->sceneNum == SCENE_KENJYANOMA)) {
+            if ((CVarGetInteger("gAutosave", 0) > 0 && (CVarGetInteger("gAutosave", 0) < 4))) {
+                performSave = false;
+                return;
+            }
+            if (performSave) {
+                performSave = false;
+                performDelayedSave = true;
+            }
+            return;
+        }
+        if (performSave || performDelayedSave) {
+            Play_PerformSave(gPlayState);
+            performSave = false;
+            performDelayedSave = false;
         }
     }
 }
@@ -238,6 +261,7 @@ void AutoSave(GetItemEntry itemEntry) {
 void RegisterAutoSave() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) { AutoSave(itemEntry); });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>([](GetItemEntry itemEntry) { AutoSave(itemEntry); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([](int32_t sceneNum) { AutoSave(GET_ITEM_NONE); });
 }
 
 void RegisterRupeeDash() {

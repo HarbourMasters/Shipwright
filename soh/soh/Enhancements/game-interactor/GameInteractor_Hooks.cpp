@@ -22,6 +22,10 @@ void GameInteractor_ExecuteOnSaleEndHooks(GetItemEntry itemEntry) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaleEnd>(itemEntry);
 }
 
+void GameInteractor_ExecuteOnTransitionEndHooks(int16_t sceneNum) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnTransitionEnd>(sceneNum);
+}
+
 void GameInteractor_ExecuteOnSceneInitHooks(int16_t sceneNum) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(sceneNum);
 }
