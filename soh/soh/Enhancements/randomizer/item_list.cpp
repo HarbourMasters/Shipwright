@@ -296,5 +296,58 @@ void StaticData::InitItemTable() {
                   ITEMTYPE_ITEM, RG_BOTTLE_WITH_BIG_POE, true, &Logic::BottleWithBigPoe, RG_BOTTLE_WITH_BIG_POE,
                   RG_BOTTLE_WITH_BIG_POE, OBJECT_GI_GHOST, GID_BIG_POE, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
                   CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
-    
+    // Songs
+    itemTable[RG_ZELDAS_LULLABY] =
+        RandoItem(RG_ZELDAS_LULLABY, Text{ "Zelda's Lullaby", "Berceuse de Zelda", "Zeldas Wiegenlied" }, ITEMTYPE_SONG,
+                  RG_ZELDAS_LULLABY, true, &Logic::ZeldasLullaby, RG_ZELDAS_LULLABY, ITEM_SONG_LULLABY,
+                  OBJECT_GI_MELODY, GID_SONG_ZELDA, 0xD4, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_EPONAS_SONG] =
+        RandoItem(RG_EPONAS_SONG, Text{ "Epona's Song", "Chant d'Epona", "Eponas Lied" }, ITEMTYPE_SONG, RG_EPONAS_SONG,
+                  true, &Logic::EponasSong, RG_EPONAS_SONG, ITEM_SONG_EPONA, OBJECT_GI_MELODY, GID_SONG_EPONA, 0xD2,
+                  0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_SARIAS_SONG] =
+        RandoItem(RG_SARIAS_SONG, Text{ "Saria's Song", "Chant de Saria", "Sarias Lied" }, ITEMTYPE_SONG,
+                  RG_SARIAS_SONG, true, &Logic::SariasSong, RG_SARIAS_SONG, ITEM_SONG_SARIA, OBJECT_GI_MELODY,
+                  GID_SONG_SARIA, 0xD1, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_SUNS_SONG] =
+        RandoItem(RG_SUNS_SONG, Text{ "Sun's Song", "Chant du Soleil", "Das Lied der Sonne" }, ITEMTYPE_SONG,
+                  RG_SUNS_SONG, true, &Logic::SunsSong, RG_SUNS_SONG, ITEM_SONG_SUN, OBJECT_GI_MELODY, GID_SONG_SUN,
+                  0xD3, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_SONG_OF_TIME] =
+        RandoItem(RG_SONG_OF_TIME, Text{ "Song of Time", "Chant du Temps", "Das Lied der Zeit" }, ITEMTYPE_SONG,
+                  RG_SONG_OF_TIME, true, &Logic::SongOfTime, RG_SONG_OF_TIME, ITEM_SONG_TIME, OBJECT_GI_MELODY,
+                  GID_SONG_TIME, 0xD5, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_SONG_OF_STORMS] =
+        RandoItem(RG_SONG_OF_STORMS, Text{ "Song of Storms", "Chant des Tempêtes", "Lied der Stürme" }, ITEMTYPE_SONG,
+                  RG_SONG_OF_STORMS, true, &Logic::SongOfStorms, RG_SONG_OF_STORMS, ITEM_SONG_STORMS, OBJECT_GI_MELODY,
+                  GID_SONG_STORM, 0xD6, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_MINUET_OF_FOREST] =
+        RandoItem(RG_MINUET_OF_FOREST, Text{ "Minuet of Forest", "Menuet des Bois", "Wald-Minuett", }, ITEMTYPE_SONG,
+                  RG_MINUET_OF_FOREST, true, &Logic::MinuetOfForest, RG_MINUET_OF_FOREST, ITEM_SONG_MINUET,                    
+                  OBJECT_GI_MELODY, GID_SONG_MINUET, 0x73, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_BOLERO_OF_FIRE] =
+        RandoItem(RG_BOLERO_OF_FIRE, Text{ "Bolero of Fire", "Boléro du Feu", "Bolero des Feuers" }, ITEMTYPE_SONG,
+                  RG_BOLERO_OF_FIRE, true, &Logic::BoleroOfFire, RG_BOLERO_OF_FIRE, ITEM_SONG_BOLERO, OBJECT_GI_MELODY,
+                  GID_SONG_BOLERO, 0x74, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_SERENADE_OF_WATER] =
+        RandoItem(RG_SERENADE_OF_WATER, Text{ "Serenade of Water", "Sérénade de l'Eau", "Serenade des Wassers" },
+                  ITEMTYPE_SONG, RG_SERENADE_OF_WATER, true, &Logic::SerenadeOfWater, RG_SERENADE_OF_WATER,
+                  ITEM_SONG_SERENADE, OBJECT_GI_MELODY, GID_SONG_SERENADE, 0x75, 0x80, CHEST_ANIM_LONG,
+                  ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_NOCTURNE_OF_SHADOW] =
+        RandoItem(RG_NOCTURNE_OF_SHADOW, Text{ "Nocturne of Shadow", "Nocturne de l'Ombre", "Nocturne der Schatten "},
+                  ITEMTYPE_SONG, RG_NOCTURNE_OF_SHADOW, true, &Logic::NocturneOfShadow, RG_NOCTURNE_OF_SHADOW,
+                  ITEM_SONG_NOCTURNE, OBJECT_GI_MELODY, GID_SONG_NOCTURNE, 0x77, 0x80, CHEST_ANIM_LONG, 
+                  ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_REQUIEM_OF_SPIRIT] =
+        RandoItem(RG_REQUIEM_OF_SPIRIT, Text{ "Requiem of Spirit", "Requiem des Esprits", "Requiem des Geistes" },
+                  ITEMTYPE_SONG, RG_REQUIEM_OF_SPIRIT, true, &Logic::RequiemOfSpirit, RG_REQUIEM_OF_SPIRIT,
+                  ITEM_SONG_REQUIEM, OBJECT_GI_MELODY, GID_SONG_REQUIEM, 0x76, 0x80, CHEST_ANIM_LONG, 
+                  ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_PRELUDE_OF_LIGHT] =
+        RandoItem(RG_PRELUDE_OF_LIGHT, Text{ "Prelude of Light", "Prélude de la Lumière", "Präludium des Lichts" },
+                  ITEMTYPE_SONG, RG_PRELUDE_OF_LIGHT, true, &Logic::PreludeOfLight, RG_PRELUDE_OF_LIGHT,
+                  ITEM_SONG_PRELUDE, OBJECT_GI_MELODY, GID_SONG_PRELUDE, 0x78, 0x80, CHEST_ANIM_LONG,
+                  ITEM_CATEGORY_MAJOR, MOD_NONE);
+    // Maps and Compasses
 }
