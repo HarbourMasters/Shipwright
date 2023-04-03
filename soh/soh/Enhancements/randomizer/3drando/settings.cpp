@@ -68,7 +68,6 @@ namespace Settings {
   Option BridgeRewardOptions = Option::U8  ("Bridge Reward Options",  {"Standard Rewards", "Greg as Reward", "Greg as Wildcard"},                 {bridgeRewardOptionsDesc});
   Option RandomGanonsTrials  = Option::Bool("Random Ganon's Trials",  {"Off", "On"},                                                                {randomGanonsTrialsDesc},                                                                                   OptionCategory::Setting,    ON);
   Option GanonsTrialsCount   = Option::U8  ("Trial Count",          {NumOpts(0, 6)},                                                              {ganonsTrialCountDesc},                                                                                     OptionCategory::Setting,    1,                          true);
-  
   std::vector<Option *> openOptions = {
     &RandomizeOpen,
     &OpenForest,
