@@ -268,7 +268,7 @@ void BgJyaCobra_UpdateShadowFromSide(BgJyaCobra* this) {
     Vec3f spD4;
     Vec3f spC8;
     Vec3f spBC;
-    u8* temp_s2;
+    u8* shadowTex;
     s32 temp_x;
     s32 temp_z;
     s32 x;
@@ -279,8 +279,8 @@ void BgJyaCobra_UpdateShadowFromSide(BgJyaCobra* this) {
     s32 l;
     s16 rotY;
 
-    temp_s2 = ALIGN16((uintptr_t)(&this->shadowTexture));
-    memset(temp_s2, 0, 0x1000);
+    shadowTex = COBRA_SHADOW_TEX_PTR(this);
+    memset(shadowTex, 0, COBRA_SHADOW_TEX_SIZE);
 
     Matrix_RotateX((M_PI / 4), MTXMODE_NEW);
     rotY = !(this->dyna.actor.params & 3) ? (this->dyna.actor.shape.rot.y + 0x4000)
@@ -307,7 +307,7 @@ void BgJyaCobra_UpdateShadowFromSide(BgJyaCobra* this) {
                     for (l = 0; l < 11; l++) {
                         temp_x = x - 5 + l;
                         if (!(temp_x & ~0x3F)) {
-                            temp_s2[temp_z + temp_x] |= D_8089731C[k][l];
+                            shadowTex[temp_z + temp_x] |= D_8089731C[k][l];
                         }
                     }
                 }
@@ -334,7 +334,7 @@ void BgJyaCobra_UpdateShadowFromSide(BgJyaCobra* this) {
                     for (l = 0; l < 3; l++) {
                         temp_x = x - 1 + l;
                         if (!(temp_x & ~0x3F)) {
-                            temp_s2[temp_z + temp_x] |= D_80897398[k][l];
+                            shadowTex[temp_z + temp_x] |= D_80897398[k][l];
                         }
                     }
                 }
@@ -343,13 +343,13 @@ void BgJyaCobra_UpdateShadowFromSide(BgJyaCobra* this) {
     }
 
     for (i = 0; i < 0x40; i++) {
-        temp_s2[0 * 0x40 + i] = 0;
-        temp_s2[0x3F * 0x40 + i] = 0;
+        shadowTex[0 * 0x40 + i] = 0;
+        shadowTex[0x3F * 0x40 + i] = 0;
     }
 
     for (j = 1; j < 0x3F; j++) {
-        temp_s2[j * 0x40 + 0] = 0;
-        temp_s2[j * 0x40 + 0x3F] = 0;
+        shadowTex[j * 0x40 + 0] = 0;
+        shadowTex[j * 0x40 + 0x3F] = 0;
     }
     if (D_80897398[0][0]) {}
 }
@@ -363,15 +363,15 @@ void BgJyaCobra_UpdateShadowFromTop(BgJyaCobra* this) {
     s32 j;
     s32 i_copy;
     s32 counter;
-    u8* temp_s0;
+    u8* shadowTex;
     u8* sp40;
 
     for (i = 0; i < 0x40; i++) {
         sp58[i] = SQ(i - 31.5f);
     }
 
-    sp40 = temp_s0 = (u8*)ALIGN16((uintptr_t)(&this->shadowTexture));
-    memset(temp_s0, 0, 0x1000);
+    sp40 = shadowTex = COBRA_SHADOW_TEX_PTR(this);
+    memset(shadowTex, 0, COBRA_SHADOW_TEX_SIZE);
 
     for (i = 0; i != 0x40; i++) {
         f32 temp_f12 = sp58[i];
@@ -388,12 +388,12 @@ void BgJyaCobra_UpdateShadowFromTop(BgJyaCobra* this) {
     for (i_copy = 0x780, counter = 0; counter < 4; counter++, i_copy += 0x40) {
         i = i_copy;
         for (j = 4; j < 0x3C; j++) {
-            if (temp_s0[i_copy + j] < D_80897518[counter]) {
-                temp_s0[i_copy + j] = D_80897518[counter];
+            if (shadowTex[i_copy + j] < D_80897518[counter]) {
+                shadowTex[i_copy + j] = D_80897518[counter];
             }
         }
-        temp_s0[i + 0x3C] = 0x20;
-        temp_s0[i + 0x3] = 0x20;
+        shadowTex[i + 0x3C] = 0x20;
+        shadowTex[i + 0x3] = 0x20;
     }
 }
 
@@ -422,7 +422,7 @@ void BgJyaCobra_Init(Actor* thisx, PlayState* play) {
 
     // "(jya cobra)"
     osSyncPrintf("(jya コブラ)(arg_data 0x%04x)(act %x)(txt %x)(txt16 %x)\n", this->dyna.actor.params, this,
-                 &this->shadowTexture, ALIGN16((s32)(&this->shadowTexture)));
+                 &this->shadowTextureBuffer, COBRA_SHADOW_TEX_PTR(this));
 }
 
 void BgJyaCobra_Destroy(Actor* thisx, PlayState* play) {
@@ -452,7 +452,7 @@ void func_80896950(BgJyaCobra* this, PlayState* play) {
 
     if (fabsf(this->dyna.unk_150) > 0.001f) {
         this->dyna.unk_150 = 0.0f;
-        player->stateFlags2 &= ~0x10;
+        player->stateFlags2 &= ~PLAYER_STATE2_4;
     }
 }
 
@@ -494,7 +494,7 @@ void func_80896ABC(BgJyaCobra* this, PlayState* play) {
 
     if (Math_ScaledStepToS(&this->unk_170, this->unk_16A * 0x2000, this->unk_16E)) {
         this->unk_16C = (this->unk_16C + this->unk_16A) & 7;
-        player->stateFlags2 &= ~0x10;
+        player->stateFlags2 &= ~PLAYER_STATE2_4;
         this->dyna.unk_150 = 0.0f;
         func_80896918(this, play);
     } else {
@@ -502,7 +502,7 @@ void func_80896ABC(BgJyaCobra* this, PlayState* play) {
             (this->unk_16C * 0x2000) + this->dyna.actor.home.rot.y + this->unk_170;
     }
 
-    if (player->stateFlags2 & 0x10) {
+    if (player->stateFlags2 & PLAYER_STATE2_4) {
         if (this->unk_172) {
             func_80895BEC(this, play);
         }
@@ -585,6 +585,11 @@ void BgJyaCobra_DrawShadow(BgJyaCobra* this, PlayState* play) {
         Math_Vec3f_Copy(&sp64, &this->dyna.actor.world.pos);
     }
 
+    // Fixes cobra statue shadow texture not updating when rotating it
+    if (this->actionFunc == func_80896ABC) {
+        gSPInvalidateTexCache(POLY_XLU_DISP++, COBRA_SHADOW_TEX_PTR(this));
+    }
+
     Matrix_SetTranslateRotateYXZ(sp64.x, sp64.y, sp64.z, phi_a3);
 
     Matrix_Scale(D_80897548[params].x, D_80897548[params].y, D_80897548[params].z, MTXMODE_APPLY);
@@ -594,9 +599,9 @@ void BgJyaCobra_DrawShadow(BgJyaCobra* this, PlayState* play) {
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDPLoadTextureBlock(POLY_XLU_DISP++, ALIGN16((uintptr_t)(&this->shadowTexture)), G_IM_FMT_I, G_IM_SIZ_8b, 0x40, 0x40, 0,
-                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
-                        G_TX_NOLOD);
+    gDPLoadTextureBlock(POLY_XLU_DISP++, COBRA_SHADOW_TEX_PTR(this), G_IM_FMT_I, G_IM_SIZ_8b, COBRA_SHADOW_TEX_WIDTH,
+                        COBRA_SHADOW_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
+                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     gSPDisplayList(POLY_XLU_DISP++, sShadowDL);
 
