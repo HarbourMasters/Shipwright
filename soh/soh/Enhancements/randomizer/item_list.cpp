@@ -660,4 +660,119 @@ void StaticData::InitItemTable() {
                   ITEMTYPE_DUNGEONREWARD, RG_LIGHT_MEDALLION, true, &Logic::LightMedallion, RG_LIGHT_MEDALLION,
                   ITEM_MEDALLION_LIGHT, OBJECT_GI_MEDAL, GID_MEDALLION_LIGHT, 0x40, 0x80, CHEST_ANIM_LONG,
                   ITEM_CATEGORY_MAJOR, MOD_NONE);
+    // Generic Items
+    itemTable[RG_RECOVERY_HEART] =
+        RandoItem(RG_RECOVERY_HEART, Text{ "Recovery Heart", "Coeur de Vie", "Herz" }, ITEMTYPE_ITEM, GI_HEART, false,
+                  &Logic::noVariable, RG_RECOVERY_HEART, ITEM_HEART, OBJECT_GI_HEART, GID_HEART, 0x55, 0x80,
+                  CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_GREEN_RUPEE] =
+        RandoItem(RG_GREEN_RUPEE, Text{ "Green Rupee", "Rubis Vert", "Grüne Rupie" }, ITEMTYPE_ITEM, GI_RUPEE_GREEN,
+                  false, &Logic::noVariable, RG_GREEN_RUPEE, ITEM_RUPEE_GREEN, OBJECT_GI_RUPY, GID_RUPEE_GREEN, 0x6F,
+                  0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_GREG_RUPEE] =
+        RandoItem(RG_GREG_RUPEE, Text{ "Greg the Green Rupee", "Rubis Greg", "Greg Rupie" }, ITEMTYPE_ITEM,
+                  GI_RUPEE_GREEN, true, &Logic::Greg, RG_GREG_RUPEE, RG_GREG_RUPEE, OBJECT_GI_RUPY, GID_RUPEE_GREEN,
+                  TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
+    itemTable[RG_BLUE_RUPEE] =
+        RandoItem(RG_BLUE_RUPEE, Text{ "Blue Rupee", "Rubis Bleu", "Blaue Rupie" }, ITEMTYPE_ITEM, GI_RUPEE_BLUE, false,
+                  &Logic::noVariable, RG_BLUE_RUPEE, ITEM_RUPEE_BLUE, OBJECT_GI_RUPY, GID_RUPEE_BLUE, 0xCC, 0x01,
+                  CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_RED_RUPEE] =
+        RandoItem(RG_RED_RUPEE, Text{ "Red Rupee", "Rubis Rouge", "Rote Rupie" }, ITEMTYPE_ITEM, GI_RUPEE_RED, false,
+                  &Logic::noVariable, RG_RED_RUPEE, ITEM_RUPEE_RED, OBJECT_GI_RUPY, GID_RUPEE_RED, 0xF0, 0x02,
+                  CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_PURPLE_RUPEE] =
+        RandoItem(RG_PURPLE_RUPEE, Text{ "Purple Rupee", "Rubis Pourpre", "Lila Rupie" }, ITEMTYPE_ITEM,
+                  GI_RUPEE_PURPLE, false, &Logic::noVariable, RG_PURPLE_RUPEE, ITEM_RUPEE_PURPLE, OBJECT_GI_RUPY,
+                  GID_RUPEE_PURPLE, 0xF1, 0x14, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_HUGE_RUPEE] =
+        RandoItem(RG_HUGE_RUPEE, Text{ "Huge Rupee", "Énorme Rubis", "Riesige Rupie" }, ITEMTYPE_ITEM, GI_RUPEE_GOLD,
+                  false, &Logic::noVariable, RG_HUGE_RUPEE, ITEM_RUPEE_GOLD, OBJECT_GI_RUPY, GID_RUPEE_GOLD, 0xF2, 0x13,
+                  CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER, MOD_NONE);
+    itemTable[RG_PIECE_OF_HEART] =
+        RandoItem(RG_PIECE_OF_HEART, Text{ "Piece of Heart", "Quart de Coeur", "Herzstück" }, ITEMTYPE_ITEM,
+                  GI_HEART_PIECE, true, &Logic::PieceOfHeart, RG_PIECE_OF_HEART, ITEM_HEART_PIECE_2, OBJECT_GI_HEARTS,
+                  GID_HEART_PIECE, 0xC2, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_NONE);
+    itemTable[RG_HEART_CONTAINER] =
+        RandoItem(RG_HEART_CONTAINER, Text{ "Heart Container", "Réceptacle de Coeur", "Herz-Container" }, ITEMTYPE_ITEM,
+                  GI_HEART_CONTAINER_2, true, &Logic::HeartContainer, RG_HEART_CONTAINER, ITEM_HEART_CONTAINER,
+                  OBJECT_GI_HEARTS, GID_HEART_CONTAINER, 0xC6, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_NONE);
+    itemTable[RG_ICE_TRAP] =
+        RandoItem(RG_ICE_TRAP, Text{ "Ice Trap", "Piège de Glace", "Eisfalle" }, ITEMTYPE_ITEM, RG_ICE_TRAP, false,
+                  &Logic::noVariable, RG_ICE_TRAP, RG_ICE_TRAP, OBJECT_GI_RUPY, GID_RUPEE_GOLD,
+                  TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
+    itemTable[RG_MILK] =
+        RandoItem(RG_MILK, Text{ "Milk", "Lait", "Milch" }, ITEMTYPE_ITEM, GI_MILK, false, &Logic::noVariable, RG_NONE,
+                  ITEM_MILK, OBJECT_GI_MILK, GID_MILK, 0x98, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE);
+    // Refills
+    itemTable[RG_BOMBS_5] = RandoItem(RG_BOMBS_5, Text{ "Bombs (5)", "Bombes (5)", "Bomben (5)" }, ITEMTYPE_REFILL,
+                                      GI_BOMBS_5, false, &Logic::noVariable, RG_BOMBS_5, ITEM_BOMBS_5, OBJECT_GI_BOMB_1,
+                                      GID_BOMB, 0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_BOMBS_10] =
+        RandoItem(RG_BOMBS_10, Text{ "Bombs (10)", "Bombes (10)", "Bomben (10)" }, ITEMTYPE_REFILL, GI_BOMBS_10, false,
+                  &Logic::noVariable, RG_BOMBS_10, ITEM_BOMBS_10, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59,
+                  CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_BOMBS_20] =
+        RandoItem(RG_BOMBS_20, Text{ "Bombs (20)", "Bombes (20)", "Bomben (20)" }, ITEMTYPE_REFILL, GI_BOMBS_20, false,
+                  &Logic::noVariable, RG_BOMBS_20, ITEM_BOMBS_20, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59, CHEST_ANIM_SHORT,
+                  ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_BOMBCHU_5] =
+        RandoItem(RG_BOMBCHU_5, Text{ "Bombchus (5)", "Missiles (5)", "Bombchus (5)" }, ITEMTYPE_REFILL, GI_BOMBCHUS_5,
+                  true, &Logic::Bombchus5, RG_BOMBCHU_5, ITEM_BOMBCHUS_5, OBJECT_GI_BOMB_2, GID_BOMBCHU, 0x33, 0x80,
+                  CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_BOMBCHU_10] =
+        RandoItem(RG_BOMBCHU_10, Text{ "Bombchus (10)", "Missiles (10)", "Bombchus (10)" }, ITEMTYPE_REFILL,
+                  GI_BOMBCHUS_10, true, &Logic::Bombchus10, RG_BOMBCHU_10, ITEM_BOMBCHU, OBJECT_GI_BOMB_2, GID_BOMBCHU,
+                  0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_BOMBCHU_20] =
+        RandoItem(RG_BOMBCHU_20, Text{ "Bombchus (20)", "Missiles (20)", "Bombchus (20)" }, ITEMTYPE_REFILL,
+                  GI_BOMBCHUS_20, true, &Logic::Bombchus20, RG_BOMBCHU_20, ITEM_BOMBCHUS_20, OBJECT_GI_BOMB_2,
+                  GID_BOMBCHU, 0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_BOMBCHU_DROP] =
+        RandoItem(RG_BOMBCHU_DROP, Text{ "Bombchu Drop", "Drop Missiles", "Bombchus" }, ITEMTYPE_DROP, GI_BOMBCHUS_10,
+                  true, &Logic::BombchuDrop, NONE, ITEM_BOMBCHU, OBJECT_GI_BOMB_2, GID_BOMBCHU, 0x33, 0x80,
+                  CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_ARROWS_5] =
+        RandoItem(RG_ARROWS_5, Text{ "Arrows (5)", "Flèches (5)", "Pfeile (5)" }, ITEMTYPE_REFILL, GI_ARROWS_SMALL,
+                  false, &Logic::noVariable, RG_ARROWS_5, ITEM_ARROWS_SMALL, OBJECT_GI_ARROW, GID_ARROWS_SMALL, 0xE6,
+                  0x48, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_ARROWS_10] =
+        RandoItem(RG_ARROWS_10, Text{ "Arrows (10)", "Flèches (10)", "Pfeile (10)" }, ITEMTYPE_REFILL, GI_ARROWS_MEDIUM,
+                  false, &Logic::noVariable, RG_ARROWS_10, ITEM_ARROWS_MEDIUM, OBJECT_GI_ARROW, GID_ARROWS_MEDIUM, 0xE6,
+                  0x49, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[ARROWS_30] =
+        RandoItem(RG_ARROWS_30, Text{ "Arrows (30)", "Flèches (30)", "Pfeile (30)" }, ITEMTYPE_REFILL, GI_ARROWS_LARGE,
+                  false, &Logic::noVariable, RG_ARROWS_30, ITEM_ARROWS_LARGE, OBJECT_GI_ARROW, GID_ARROWS_LARGE, 0xE6,
+                  0x4A, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_DEKU_NUTS_5] =
+        RandoItem(RG_DEKU_NUTS_5, Text{ "Deku Nuts (5)", "Noix Mojo (5)", "Deku-Nüsse (5)" }, ITEMTYPE_REFILL,
+                  GI_NUTS_5, false, &Logic::noVariable, RG_DEKU_NUTS_5, ITEM_NUTS_5, OBJECT_GI_NUTS, GID_NUTS, 0x34,
+                  0x0C, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_DEKU_NUTS_10] =
+        RandoItem(RG_DEKU_NUTS_10, Text{ "Deku Nuts (10)", "Noix Mojo (10)", "Deku-Nüsse (10)" }, ITEMTYPE_REFILL,
+                  GI_NUTS_10, false, &Logic::noVariable, RG_DEKU_NUTS_10, ITEM_NUTS_10, OBJECT_GI_NUTS, GID_NUTS, 0x34,
+                  0x0C, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_DEKU_SEEDS_30] =
+        RandoItem(RG_DEKU_SEEDS_30, Text{ "Deku Seeds (30)", "Graines Mojo (30)", "Deku-Samen (30)" }, ITEMTYPE_REFILL,
+                  GI_SEEDS_30, false, &Logic::noVariable, RG_DEKU_SEEDS_30, ITEM_SEEDS_30, OBJECT_GI_SEED, GID_SEEDS,
+                  0xDC, 0x50, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_DEKU_STICK_1] =
+        RandoItem(RG_DEKU_STICK_1, Text{ "Deku Stick (1)", "Bâton Mojo (1)", "Deku-Stick (1)" }, ITEMTYPE_REFILL,
+                  GI_STICKS_1, false, &Logic::noVariable, RG_DEKU_STICK_1, ITEM_STICK, OBJECT_GI_STICK, GID_STICK, 0x37,
+                  0x0D, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_RED_POTION_REFILL] =
+        RandoItem(RG_RED_POTION_REFILL,
+                  Text{ "Red Potion Refill", "Recharge de Potion Rouge", "Rotes Elixier Nachfüllpackung" },
+                  ITEMTYPE_REFILL, GI_POTION_RED, false, &Logic::noVariable, RG_NONE, ITEM_POTION_RED, OBJECT_GI_LIQUID,
+                  GID_POTION_RED, 0x43, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_GREEN_POTION_REFILL] =
+        RandoItem(RG_GREEN_POTION_REFILL,
+                  Text{ "Green Potion Refill", "Recharge de Potion Verte", "Grünes Elixier Nachfüllpackung" },
+                  ITEMTYPE_REFILL, GI_POTION_GREEN, false, &Logic::noVariable, RG_NONE, ITEM_POTION_GREEN,
+                  OBJECT_GI_LIQUID, GID_POTION_GREEN, 0x44, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE);
+    itemTable[RG_BLUE_POTION_REFILL] =
+        RandoItem(RG_BLUE_POTION_REFILL,
+                  Text{ "Blue Potion Refill", "Recharge de Potion Bleue", "Blaues Elixier Nachfüllpackung" },
+                  ITEMTYPE_REFILL, GI_POTION_BLUE, false, &Logic::noVariable, RG_NONE, ITEM_POTION_BLUE,
+                  OBJECT_GI_LIQUID, GID_POTION_BLUE, 0x45, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE);
 }
