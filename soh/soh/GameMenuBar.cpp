@@ -354,6 +354,19 @@ namespace GameMenuBar {
                     "to the guard next to the gate.");
                     UIWidgets::PaddedEnhancementCheckbox("Faster Farore's Wind", "gFastFarores", true, false);
                     UIWidgets::Tooltip("Greatly decreases cast time of Farore's Wind magic spell.");
+                    UIWidgets::PaddedEnhancementCheckbox("Nighttime GS Always Spawn", "gNightGSAlwaysSpawn", true, false);
+                    UIWidgets::Tooltip("Nighttime Skulltulas will spawn during both day and night.");
+                    UIWidgets::PaddedEnhancementCheckbox("Dampe Appears All Night", "gDampeAllNight", true, false);
+                    UIWidgets::Tooltip("Makes Dampe appear anytime during it's night, not just his usual working hours.");
+                    UIWidgets::PaddedEnhancementCheckbox("Time Travel with the Song of Time", "gTimeTravel", true, false);
+                    UIWidgets::Tooltip("Allows Link to freely change age by playing the Song of Time.\n"
+                        "Time Blocks can still be used properly.\n\n"
+                        "Requirements:\n"
+                        "- Obtained the Ocarina of Time\n"
+                        "- Obtained the Song of Time\n"
+                        "- Obtained the Master Sword\n"
+                        "- Not within range of Time Block\n"
+                        "- Not within range of Ocarina playing spots");
                     ImGui::EndMenu();
                 }
 
@@ -446,6 +459,8 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Bombchus will sometimes drop in place of bombs");
                     UIWidgets::PaddedEnhancementCheckbox("No Heart Drops", "gNoHeartDrops", true, false);
                     UIWidgets::Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
+                    UIWidgets::PaddedEnhancementCheckbox("Hyper Bosses", "gHyperBosses", true, false);
+                    UIWidgets::Tooltip("All major bosses move and act twice as fast.");
                     UIWidgets::PaddedEnhancementCheckbox("Always Win Goron Pot", "gGoronPot", true, false);
                     UIWidgets::Tooltip("Always get the heart piece/purple rupee from the spinning Goron pot");
                     UIWidgets::PaddedEnhancementCheckbox("Always Win Dampe Digging Game", "gDampeWin", true, false, SaveManager::Instance->IsRandoFile(),
@@ -1000,6 +1015,8 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
             UIWidgets::PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
             UIWidgets::Tooltip("This syncs the ingame time with the real world time");
+            UIWidgets::PaddedEnhancementCheckbox("No ReDead/Gibdo Freeze", "gNoRedeadFreeze", true, false);
+            UIWidgets::Tooltip("Prevents ReDeads and Gibdos from being able to freeze you with their scream");
 
             {
                 static int32_t betaQuestEnabled = CVarGetInteger("gEnableBetaQuest", 0);
