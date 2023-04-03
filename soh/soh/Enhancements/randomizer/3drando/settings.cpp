@@ -65,9 +65,10 @@ namespace Settings {
   Option BridgeRewardCount   = Option::U8  ("Reward Count",         {NumOpts(0, 10)},                                                              {bridgeRewardCountDesc},                                                                                    OptionCategory::Setting,    1,                          true);
   Option BridgeDungeonCount  = Option::U8  ("Dungeon Count",        {NumOpts(0, 9)},                                                              {bridgeDungeonCountDesc},                                                                                   OptionCategory::Setting,    1,                          true);
   Option BridgeTokenCount    = Option::U8  ("Token Count",          {NumOpts(0, 100)},                                                            {bridgeTokenCountDesc},                                                                                     OptionCategory::Setting,    1,                          true);
+  Option BridgeRewardOptions = Option::U8  ("Bridge Reward Options",  {"Standard Rewards", "Greg as Reward", "Greg as Wildcard"},                 {bridgeRewardOptionsDesc});
   Option RandomGanonsTrials  = Option::Bool("Random Ganon's Trials",  {"Off", "On"},                                                                {randomGanonsTrialsDesc},                                                                                   OptionCategory::Setting,    ON);
   Option GanonsTrialsCount   = Option::U8  ("Trial Count",          {NumOpts(0, 6)},                                                              {ganonsTrialCountDesc},                                                                                     OptionCategory::Setting,    1,                          true);
-  Option BridgeRewardOptions = Option::U8  ("Bridge Reward Options",         {"Standard Rewards", "Greg as Reward", "Greg as Wildcard"},                 {bridgeRewardOptionsDesc});
+  
   std::vector<Option *> openOptions = {
     &RandomizeOpen,
     &OpenForest,
@@ -81,9 +82,10 @@ namespace Settings {
     &BridgeRewardCount,
     &BridgeDungeonCount,
     &BridgeTokenCount,
+    &BridgeRewardOptions,
     &RandomGanonsTrials,
     &GanonsTrialsCount,
-    &BridgeRewardOptions,
+    
   };
 
   //World Settings
@@ -232,12 +234,12 @@ namespace Settings {
   Option GanonsBossKey       = Option::U8  ("Ganon's Boss Key",          {"Vanilla", "Own dungeon", "Start with", "Any Dungeon", "Overworld", "Anywhere", "LACS-Vanilla", "LACS-Stones", "LACS-Medallions", "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens", "100 GS Reward"},
                                                                          {ganonKeyVanilla, ganonKeyOwnDungeon, ganonKeyStartWith, ganonKeyAnyDungeon, ganonKeyOverworld, ganonKeyAnywhere, ganonKeyLACS, ganonKey100GS},                                           OptionCategory::Setting,    GANONSBOSSKEY_VANILLA);
   uint8_t LACSCondition           = 0;
-  Option LACSMedallionCount  = Option::U8  ("Medallion Count",         {NumOpts(0, 7)},                                                        {lacsMedallionCountDesc},                                                                                         OptionCategory::Setting,    1,                          true);
   Option LACSStoneCount      = Option::U8  ("Stone Count",             {NumOpts(0, 4)},                                                        {lacsStoneCountDesc},                                                                                             OptionCategory::Setting,    1,                          true);
-  Option LACSRewardCount     = Option::U8  ("Reward Count",            {NumOpts(0, 10)},                                                        {lacsRewardCountDesc},                                                                                            OptionCategory::Setting,    1,                          true);
+  Option LACSMedallionCount  = Option::U8  ("Medallion Count",         {NumOpts(0, 7)},                                                        {lacsMedallionCountDesc},                                                                                         OptionCategory::Setting,    1,                          true);
+  Option LACSRewardCount     = Option::U8  ("Reward Count",            {NumOpts(0, 10)},                                                       {lacsRewardCountDesc},                                                                                            OptionCategory::Setting,    1,                          true);
   Option LACSDungeonCount    = Option::U8  ("Dungeon Count",           {NumOpts(0, 9)},                                                        {lacsDungeonCountDesc},                                                                                           OptionCategory::Setting,    1,                          true);
   Option LACSTokenCount      = Option::U8  ("Token Count",             {NumOpts(0, 100)},                                                      {lacsTokenCountDesc},                                                                                             OptionCategory::Setting,    1,                          true);
-  Option LACSRewardOptions   = Option::U8  ("LACS Reward Options",         {"Standard LACS Conditions", "Greg as LACS Conditom", "Greg as LACS Wildcard"},              {lacsRewardOptionsDesc});
+  Option LACSRewardOptions   = Option::U8  ("LACS Reward Options",     {"Standard Reward", "Greg as Reward", "Greg as Wildcard"},              {lacsRewardOptionsDesc});
   Option KeyRings            = Option::U8  ("Key Rings",               {"Off", "Random", "Count", "Selection"},                                {keyRingDesc});
   Option KeyRingsRandomCount = Option::U8  ("Keyring Dungeon Count",   {NumOpts(0, 8)},                                                        {keyRingDesc},                                                                                                    OptionCategory::Setting,    1);
   Option RingFortress        = Option::Bool("Gerudo Fortress",         {"Off", "On"},                                                          {keyRingDesc},                                                                                                    OptionCategory::Setting);
@@ -257,8 +259,8 @@ namespace Settings {
     &GerudoKeys,
     &BossKeysanity,
     &GanonsBossKey,
-    &LACSMedallionCount,
     &LACSStoneCount,
+    &LACSMedallionCount,
     &LACSRewardCount,
     &LACSDungeonCount,
     &LACSTokenCount,
@@ -1349,8 +1351,8 @@ namespace Settings {
     ctx.bossKeysanity        = BossKeysanity.Value<uint8_t>();
     ctx.ganonsBossKey        = GanonsBossKey.Value<uint8_t>();
     ctx.lacsCondition        = LACSCondition;
-    ctx.lacsMedallionCount   = LACSMedallionCount.Value<uint8_t>();
     ctx.lacsStoneCount       = LACSStoneCount.Value<uint8_t>();
+    ctx.lacsMedallionCount   = LACSMedallionCount.Value<uint8_t>();
     ctx.lacsRewardCount      = LACSRewardCount.Value<uint8_t>();
     ctx.lacsDungeonCount     = LACSDungeonCount.Value<uint8_t>();
     ctx.lacsTokenCount       = LACSTokenCount.Value<uint8_t>();
@@ -2117,20 +2119,20 @@ namespace Settings {
     }
 
     if (!RandomizeDungeon) {
-      //Only show Medallion Count if setting Ganons Boss Key to LACS Medallions
-      if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_MEDALLIONS)) {
-        LACSMedallionCount.Unhide();
-      } else {
-        LACSMedallionCount.SetSelectedIndex(6);
-        LACSMedallionCount.Hide();
-      }
-
       //Only show Stone Count if setting Ganons Boss Key to LACS Stones
       if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_STONES)) {
         LACSStoneCount.Unhide();
       } else {
         LACSStoneCount.SetSelectedIndex(3);
         LACSStoneCount.Hide();
+      }
+      
+      //Only show Medallion Count if setting Ganons Boss Key to LACS Medallions
+      if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_MEDALLIONS)) {
+        LACSMedallionCount.Unhide();
+      } else {
+        LACSMedallionCount.SetSelectedIndex(6);
+        LACSMedallionCount.Hide();
       }
 
       //Only show Reward Count if setting Ganons Boss Key to LACS Rewards
@@ -3009,10 +3011,10 @@ namespace Settings {
 
     HasNightStart = StartingTime.Is(STARTINGTIME_NIGHT);
 
-    if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_MEDALLIONS)) {
-      LACSCondition = LACSCONDITION_MEDALLIONS;
-    } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_STONES)) {
+    if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_STONES)) {
       LACSCondition = LACSCONDITION_STONES;
+    } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_MEDALLIONS)) {
+      LACSCondition = LACSCONDITION_MEDALLIONS;
     } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_REWARDS)) {
       LACSCondition = LACSCONDITION_REWARDS;
     } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_DUNGEONS)) {

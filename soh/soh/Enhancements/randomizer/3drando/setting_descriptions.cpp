@@ -604,10 +604,10 @@ string_view ganonKey100GS             = "Ganon's Castle Boss Key is given to you
 /*------------------------------                                                           //
 |        LACS CONDITIONS       |                                                           //
 ------------------------------*/                                                           //
-string_view lacsMedallionCountDesc    = "Set the number of Medallions required to trigger\n"
-                                        "the Light Arrow Cutscene.";                       //
 string_view lacsStoneCountDesc        = "Set the number of Spiritual Stones required to\n" //
                                         "trigger the Light Arrow Cutscene.";               //
+string_view lacsMedallionCountDesc    = "Set the number of Medallions required to trigger\n"
+                                        "the Light Arrow Cutscene.";                       //
 string_view lacsRewardCountDesc       = "Set the number of Dungeon Rewards (Spiritual\n"   //
                                         "Stones and Medallions) required to trigger the\n" //
                                         "Light Arrow Cutscene.";                           //

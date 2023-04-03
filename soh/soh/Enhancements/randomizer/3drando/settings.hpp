@@ -246,8 +246,8 @@ typedef enum {
     GANONSBOSSKEY_OVERWORLD,
     GANONSBOSSKEY_ANYWHERE,
     GANONSBOSSKEY_LACS_VANILLA,
-    GANONSBOSSKEY_LACS_MEDALLIONS,
     GANONSBOSSKEY_LACS_STONES,
+    GANONSBOSSKEY_LACS_MEDALLIONS,
     GANONSBOSSKEY_LACS_REWARDS,
     GANONSBOSSKEY_LACS_DUNGEONS,
     GANONSBOSSKEY_LACS_TOKENS,
@@ -454,8 +454,8 @@ typedef struct {
     uint8_t bossKeysanity;
     uint8_t ganonsBossKey;
     uint8_t lacsCondition;
-    uint8_t lacsMedallionCount;
     uint8_t lacsStoneCount;
+    uint8_t lacsMedallionCount;
     uint8_t lacsRewardCount;
     uint8_t lacsDungeonCount;
     uint8_t lacsTokenCount;
@@ -976,8 +976,8 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option BossKeysanity;
   extern Option GanonsBossKey;
   extern uint8_t LACSCondition;
-  extern Option LACSMedallionCount;
   extern Option LACSStoneCount;
+  extern Option LACSMedallionCount;
   extern Option LACSRewardCount;
   extern Option LACSDungeonCount;
   extern Option LACSTokenCount;

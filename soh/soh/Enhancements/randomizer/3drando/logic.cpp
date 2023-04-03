@@ -293,8 +293,8 @@ namespace Logic {
   bool CanUseMagicArrow = false;
 
   //Bridge and LACS Requirements
-  uint8_t MedallionCount          = 0;
   uint8_t StoneCount              = 0;
+  uint8_t MedallionCount          = 0;
   uint8_t DungeonCount            = 0;
   bool HasAllStones          = false;
   bool HasAllMedallions      = false;

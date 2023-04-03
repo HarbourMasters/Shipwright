@@ -264,8 +264,8 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Dungeon Items:Gerudo Fortress Keys", RSK_GERUDO_KEYS },
     { "Shuffle Dungeon Items:Boss Keys", RSK_BOSS_KEYSANITY },
     { "Shuffle Dungeon Items:Ganon's Boss Key", RSK_GANONS_BOSS_KEY },
-    { "Shuffle Dungeon Items:Medallion Count", RSK_LACS_MEDALLION_COUNT },
     { "Shuffle Dungeon Items:Stone Count", RSK_LACS_STONE_COUNT },
+    { "Shuffle Dungeon Items:Medallion Count", RSK_LACS_MEDALLION_COUNT },
     { "Shuffle Dungeon Items:Reward Count", RSK_LACS_REWARD_COUNT },
     { "Shuffle Dungeon Items:Dungeon Count", RSK_LACS_DUNGEON_COUNT },
     { "Shuffle Dungeon Items:Token Count", RSK_LACS_TOKEN_COUNT },
@@ -745,6 +745,15 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_BRIDGE_WILDCARD_REWARD;
                         }
                         break;
+                    case RSK_LACS_OPTIONS:
+                        if (it.value() == "Standard Reward") {
+                            gSaveContext.randoSettings[index].value = RO_LACS_STANDARD_REWARD;
+                        } else if (it.value() == "Greg as Reward") {
+                            gSaveContext.randoSettings[index].value = RO_LACS_GREG_REWARD;
+                        } else if (it.value() == "Greg as Wildcard") {
+                            gSaveContext.randoSettings[index].value = RO_LACS_WILDCARD_REWARD;
+                        }
+                        break;
                     case RSK_RAINBOW_BRIDGE_STONE_COUNT:
                     case RSK_RAINBOW_BRIDGE_MEDALLION_COUNT:
                     case RSK_RAINBOW_BRIDGE_REWARD_COUNT:
@@ -756,15 +765,6 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_LACS_REWARD_COUNT:
                     case RSK_LACS_DUNGEON_COUNT:
                     case RSK_LACS_TOKEN_COUNT:
-                    case RSK_LACS_OPTIONS:
-                        if (it.value() == "Standard LACS Conditions") {
-                            gSaveContext.randoSettings[index].value = RO_LACS_STANDARD_REWARD;
-                        } else if (it.value() == "Greg as LACS Condition") {
-                            gSaveContext.randoSettings[index].value = RO_LACS_GREG_REWARD;
-                        } else if (it.value() == "Greg as LACS Wildcard") {
-                            gSaveContext.randoSettings[index].value = RO_LACS_WILDCARD_REWARD;
-                        }
-                        break;
                     case RSK_KEYRINGS_RANDOM_COUNT:
                     case RSK_BIG_POE_COUNT:
                     case RSK_CUCCO_COUNT:
@@ -1014,10 +1014,10 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_ANYWHERE;
                         } else if(it.value() == "LACS-Vanilla") {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_VANILLA;
-                        } else if(it.value() == "LACS-Medallions") {
-                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_MEDALLIONS;
                         } else if(it.value() == "LACS-Stones") {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_STONES;
+                        } else if(it.value() == "LACS-Medallions") {
+                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_MEDALLIONS;
                         } else if(it.value() == "LACS-Rewards") {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_REWARDS;
                         } else if(it.value() == "LACS-Dungeons") {
@@ -2886,10 +2886,10 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_STARTING_AGE] = CVarGetInteger("gRandomizeStartingAge", RO_AGE_CHILD);
     cvarSettings[RSK_GERUDO_FORTRESS] = CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL);
     cvarSettings[RSK_RAINBOW_BRIDGE] = CVarGetInteger("gRandomizeRainbowBridge", RO_BRIDGE_VANILLA);
-    cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] = CVarGetInteger("gRandomizeStoneCount", 3);
-    cvarSettings[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] = CVarGetInteger("gRandomizeMedallionCount", 6);
-    cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = CVarGetInteger("gRandomizeRewardCount", 9);
-    cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = CVarGetInteger("gRandomizeDungeonCount", 8);
+    cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] = CVarGetInteger("gRandomizeStoneCount", 4);
+    cvarSettings[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] = CVarGetInteger("gRandomizeMedallionCount", 7);
+    cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = CVarGetInteger("gRandomizeRewardCount", 10);
+    cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = CVarGetInteger("gRandomizeDungeonCount", 9);
     cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = CVarGetInteger("gRandomizeTokenCount", 100);
     cvarSettings[RSK_BRIDGE_OPTIONS] = CVarGetInteger("gRandomizeBridgeRewardOptions", 0);
     cvarSettings[RSK_GANONS_TRIALS] = CVarGetInteger("gRandomizeGanonTrial", RO_GANONS_TRIALS_SET_NUMBER);
@@ -2969,10 +2969,10 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_KEYRINGS_GANONS_CASTLE] = CVarGetInteger("gRandomizeShuffleKeyRingsGanonsCastle", 0);
     cvarSettings[RSK_BOSS_KEYSANITY] = CVarGetInteger("gRandomizeBossKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     cvarSettings[RSK_GANONS_BOSS_KEY] = CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA);
-    cvarSettings[RSK_LACS_STONE_COUNT] = CVarGetInteger("gRandomizeLacsStoneCount", 3);
-    cvarSettings[RSK_LACS_MEDALLION_COUNT] = CVarGetInteger("gRandomizeLacsMedallionCount", 6);
-    cvarSettings[RSK_LACS_REWARD_COUNT] = CVarGetInteger("gRandomizeLacsRewardCount", 9);
-    cvarSettings[RSK_LACS_DUNGEON_COUNT] = CVarGetInteger("gRandomizeLacsDungeonCount", 8);
+    cvarSettings[RSK_LACS_STONE_COUNT] = CVarGetInteger("gRandomizeLacsStoneCount", 4);
+    cvarSettings[RSK_LACS_MEDALLION_COUNT] = CVarGetInteger("gRandomizeLacsMedallionCount", 7);
+    cvarSettings[RSK_LACS_REWARD_COUNT] = CVarGetInteger("gRandomizeLacsRewardCount", 10);
+    cvarSettings[RSK_LACS_DUNGEON_COUNT] = CVarGetInteger("gRandomizeLacsDungeonCount", 9);
     cvarSettings[RSK_LACS_TOKEN_COUNT] = CVarGetInteger("gRandomizeLacsTokenCount", 100);
     cvarSettings[RSK_LACS_OPTIONS] = CVarGetInteger("gRandomizeLacsRewardOptions", 0);
     cvarSettings[RSK_STARTING_CONSUMABLES] = CVarGetInteger("gRandomizeStartingConsumables", 0);
@@ -3136,7 +3136,7 @@ void DrawRandoEditor(bool& open) {
                                                 "LACS-Vanilla", "LACS-Stones", "LACS-Medallions", 
                                                 "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens",
                                                 "100 GS Reward"};
-    static const char* randoLACSRewardOptions[3] = { "Standard LACS Conditions", "Greg as Condition", "Greg as LACS Wildcard" };
+    static const char* randoLACSRewardOptions[3] = { "Standard Reward", "Greg as Reward", "Greg as Wildcard" };
     static const char* randoShuffleKeyRings[4] = { "Off", "Random", "Count", "Selection" };
 
     // Misc Settings
@@ -4158,7 +4158,7 @@ void DrawRandoEditor(bool& open) {
                                                             "gRandomizeLacsMedallionCount", 1, 6, "", 6, true, true, false);
                                 break;
                             case RO_LACS_GREG_REWARD:
-                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedllionCount", 
+                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
                                                             "gRandomizeLacsMedallionCount", 1, 7, "", 7, true, true, false);
                                 break;
                             case RO_LACS_WILDCARD_REWARD:
