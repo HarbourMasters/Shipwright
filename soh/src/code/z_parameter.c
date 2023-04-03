@@ -1704,8 +1704,13 @@ u8 Return_Item_Entry(GetItemEntry itemEntry, ItemID returnItem ) {
 }
 
 // Processes Item_Give returns
-u8 Return_Item(u8 item, ModIndex modId, ItemID returnItem) {
-    return Return_Item_Entry(ItemTable_RetrieveEntry(modId, item), returnItem);
+u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
+    uint32_t get = GetGIID(itemID);
+    if (get == -1) {
+        modId = MOD_RANDOMIZER;
+        get = itemID;
+    }
+    return Return_Item_Entry(ItemTable_RetrieveEntry(modId, get), returnItem);
 }
 
 /**
@@ -2313,7 +2318,7 @@ u8 Item_Give(PlayState* play, u8 item) {
 }
 
 u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
-    uint16_t item = giEntry.itemId;
+    uint16_t item = giEntry.getItemId;
     uint16_t temp;
     uint16_t i;
     uint16_t slot;
@@ -3023,7 +3028,11 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
 }
 
 void Rupees_ChangeBy(s16 rupeeChange) {
-    gSaveContext.rupeeAccumulator += rupeeChange;
+    if (gPlayState == NULL) {
+        gSaveContext.rupees += rupeeChange;
+    } else {
+        gSaveContext.rupeeAccumulator += rupeeChange;
+    }
 
     if (rupeeChange > 0) {
         gSaveContext.sohStats.count[COUNT_RUPEES_COLLECTED] += rupeeChange;
@@ -6192,11 +6201,16 @@ void Interface_Update(PlayState* play) {
                 Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             }
             if (gSaveContext.rupeeAccumulator == 0) {
-                u16 tempSaleItem = gSaveContext.pendingSale;
-                u16 tempSaleMod = gSaveContext.pendingSaleMod;
-                gSaveContext.pendingSale = ITEM_NONE;
-                gSaveContext.pendingSaleMod = MOD_NONE;
-                GameInteractor_ExecuteOnSaleEndHooks(ItemTable_RetrieveEntry(tempSaleMod,tempSaleItem));
+                if (gSaveContext.pendingSale != ITEM_NONE) {
+                    u16 tempSaleItem = gSaveContext.pendingSale;
+                    u16 tempSaleMod = gSaveContext.pendingSaleMod;
+                    gSaveContext.pendingSale = ITEM_NONE;
+                    gSaveContext.pendingSaleMod = MOD_NONE;
+                    if (tempSaleMod == 0) {
+                        tempSaleItem = GetGIID(tempSaleItem);
+                    }
+                    GameInteractor_ExecuteOnSaleEndHooks(ItemTable_RetrieveEntry(tempSaleMod, tempSaleItem));
+                }
             }
         } else {
             gSaveContext.rupeeAccumulator = 0;

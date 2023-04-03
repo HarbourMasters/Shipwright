@@ -12,6 +12,8 @@
 namespace Ship {
 class SetCutscenes : public SceneCommand {
   public:
+    using SceneCommand::SceneCommand;
+
     void* GetPointer();
     size_t GetPointerSize();
 
