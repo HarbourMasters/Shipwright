@@ -8,6 +8,7 @@ extern "C" void GameInteractor_ExecuteOnItemReceiveHooks(GetItemEntry itemEntry)
 extern "C" void GameInteractor_ExecuteOnSaleEndHooks(GetItemEntry itemEntry);
 extern "C" void GameInteractor_ExecuteOnTransitionEndHooks(int16_t sceneNum);
 extern "C" void GameInteractor_ExecuteOnSceneInit(int16_t sceneNum);
+extern "C" void GameInteractor_ExecuteOnSceneSpawnActors();
 extern "C" void GameInteractor_ExecuteOnPlayerUpdate();
 extern "C" void GameInteractor_ExecuteOnOcarinaSongAction();
 extern "C" void GameInteractor_ExecuteOnActorUpdate(void* actor);

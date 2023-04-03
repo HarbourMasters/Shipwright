@@ -30,6 +30,10 @@ void GameInteractor_ExecuteOnSceneInitHooks(int16_t sceneNum) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(sceneNum);
 }
 
+void GameInteractor_ExecuteOnSceneSpawnActors() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneSpawnActors>();
+}
+
 void GameInteractor_ExecuteOnPlayerUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerUpdate>();
 }
