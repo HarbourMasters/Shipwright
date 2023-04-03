@@ -78,7 +78,6 @@ typedef enum {
     BRIDGE_OPTION_WILDCARD,
 } BridgeRewardOptionsSetting;
 
-
 typedef enum {
     LACSCONDITION_VANILLA,
     LACSCONDITION_STONES,

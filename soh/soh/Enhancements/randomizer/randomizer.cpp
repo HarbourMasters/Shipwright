@@ -3383,7 +3383,6 @@ void DrawRandoEditor(bool& open) {
                                                                 "gRandomizeStoneCount", 1, 3, "", 3, true, true, false);
                                 break;
                         }
-
                         break;
                     case RO_BRIDGE_MEDALLIONS:
                         ImGui::Text("Reward Options");
@@ -3413,7 +3412,6 @@ void DrawRandoEditor(bool& open) {
                                                                 "gRandomizeMedallionCount", 1, 6, "", 6, true, true, false);
                                 break;
                         }
-
                         break;
                     case RO_BRIDGE_DUNGEON_REWARDS:
                         ImGui::Text("Reward Options");
@@ -3444,7 +3442,6 @@ void DrawRandoEditor(bool& open) {
 
                                 break;
                         }
-
                         break;
                     case RO_BRIDGE_DUNGEONS:
                         ImGui::Text("Reward Options");
@@ -3474,6 +3471,7 @@ void DrawRandoEditor(bool& open) {
                                                                 "gRandomizeDungeonCount", 1, 8, "", 8, true, true, false);
                                 break;
                         }
+                        break;
                     case RO_BRIDGE_TOKENS:
                         UIWidgets::PaddedEnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
                                                         "gRandomizeTokenCount", 1, 100, "", 100, true, true, false);
@@ -4136,7 +4134,6 @@ void DrawRandoEditor(bool& open) {
                                                             "gRandomizeLacsStoneCount", 1, 3, "", 3, true, true, false);
                                 break;
                         }
-
                         break;
                     case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
                         ImGui::Text("Reward Options");
@@ -4166,7 +4163,6 @@ void DrawRandoEditor(bool& open) {
                                                             "gRandomizeLacsMedallionCount", 1, 6, "", 6, true, true, false);
                                 break;
                         }
-
                         break;
                     case RO_GANON_BOSS_KEY_LACS_REWARDS:
                         ImGui::Text("Reward Options");
@@ -4196,7 +4192,6 @@ void DrawRandoEditor(bool& open) {
                                                             "gRandomizeLacsRewardCount", 1, 9, "", 9, true, true, false);
                                 break;
                         }
-
                         break;
                     case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
                         ImGui::Text("Reward Options");
@@ -4226,7 +4221,6 @@ void DrawRandoEditor(bool& open) {
                                                             "gRandomizeLacsDungeonCount", 1, 8, "", 8, true, true, false);
                                 break;
                         }
-
                         break;
                     case RO_GANON_BOSS_KEY_LACS_TOKENS:
                         UIWidgets::PaddedEnhancementSliderInt("Token Count: %d", "##RandoLacsTokenCount",

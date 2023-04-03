@@ -85,7 +85,6 @@ namespace Settings {
     &BridgeRewardOptions,
     &RandomGanonsTrials,
     &GanonsTrialsCount,
-    
   };
 
   //World Settings
