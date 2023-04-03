@@ -36,6 +36,10 @@ class RandoItem {
     RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
               uint8_t* logicVar_, uint32_t hintKey_, int itemId_, int objectId_, int gid_, int textId_, int field_,
               int chestAnimation_, GetItemCategory category_, int modIndex_, uint16_t price_ = 0);
+    RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
+              bool* logicVar_, uint32_t hintKey_, uint16_t price = 0);
+    RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
+              uint8_t* logicVar_, uint32_t hintKey_, uint16_t price = 0);
     ~RandoItem();
 
     void ApplyEffect();

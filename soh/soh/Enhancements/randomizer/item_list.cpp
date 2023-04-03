@@ -775,4 +775,109 @@ void StaticData::InitItemTable() {
                   Text{ "Blue Potion Refill", "Recharge de Potion Bleue", "Blaues Elixier Nachfüllpackung" },
                   ITEMTYPE_REFILL, GI_POTION_BLUE, false, &Logic::noVariable, RG_NONE, ITEM_POTION_BLUE,
                   OBJECT_GI_LIQUID, GID_POTION_BLUE, 0x45, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE);
+    // Treasure Game
+    itemTable[RG_TREASURE_GAME_HEART] = RandoItem(
+        RG_TREASURE_GAME_HEART,
+        Text{ "Piece of Heart (Treasure Chest Minigame)", "Quart de Coeur (Chasse-aux-Trésors)",
+              "Herzstück (Schatztruhen-Minispiel)" },
+        ITEMTYPE_ITEM, GI_HEART_PIECE_WIN, true, &Logic::PieceOfHeart, RG_TREASURE_GAME_HEART, ITEM_HEART_PIECE_2,
+        OBJECT_GI_HEARTS, GID_HEART_PIECE, 0xFA, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_NONE);
+    itemTable[RG_TREASURE_GAME_GREEN_RUPEE] = RandoItem(
+        RG_TREASURE_GAME_GREEN_RUPEE,
+        Text{ "Green Rupee (Treasure Chest Minigame)", "Rubis Vert (Chasse-aux-Trésors)",
+              "Grüne Rupie (Schatztruhe-Minispiel)" },
+        ITEMTYPE_ITEM, GI_RUPEE_GREEN_LOSE, false, &Logic::noVariable, RG_TREASURE_GAME_GREEN_RUPEE, ITEM_RUPEE_GREEN,
+        OBJECT_GI_RUPY, GID_RUPEE_GREEN, 0xF4, 0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    // Shop
+    itemTable[RG_BUY_DEKU_NUT_5] =
+        RandoItem(RG_BUY_DEKU_NUT_5, Text{ "Buy Deku Nut (5)", "Acheter: Noix Mojo (5)", "Deku-Nuss kaufen (5)" },
+                  ITEMTYPE_SHOP, RG_BUY_DEKU_NUT_5, true, &Logic::Nuts, RG_DEKU_NUTS_5, 15);
+    itemTable[RG_BUY_ARROWS_30] =
+        RandoItem(RG_BUY_ARROWS_30, Text{ "Buy Arrows (30)", "Acheter: Flèches (30)", "Pfeile kaufen (30)" },
+                  ITEMTYPE_SHOP, RG_BUY_ARROWS_30, true, &Logic::BuyArrow, RG_ARROWS_30, 60);
+    itemTable[RG_BUY_ARROWS_50] =
+        RandoItem(RG_BUY_ARROWS_50, Text{ "Buy Arrows (50)", "Acheter: Flèches (50)", "Pfeile kaufen (50)" },
+                  ITEMTYPE_SHOP, RG_BUY_ARROWS_50, true, &Logic::BuyArrow, RG_ARROWS_30, 90);
+    itemTable[RG_BUY_BOMBS_525] =
+        RandoItem(RG_BUY_BOMBS_525, Text{ "Buy Bombs (5) [25]", "Acheter: Bombes (5) [25]", "Bomben kaufen (5) [25]" },
+                  ITEMTYPE_SHOP, RG_BUY_BOMBS_525, true, &Logic::BuyBomb, RG_BOMBS_5, 25);
+    itemTable[RG_BUY_DEKU_NUT_10] =
+        RandoItem(RG_BUY_DEKU_NUT_10, Text{ "Buy Deku Nut (10)", "Acheter: Noix Mojo (10)", "Deku-Nuss kaufen (10)" },
+                  ITEMTYPE_SHOP, RG_BUY_DEKU_NUT_10, true, &Logic::Nuts, RG_DEKU_NUTS_10, 30);
+    itemTable[RG_BUY_DEKU_STICK_1] =
+        RandoItem(RG_BUY_DEKU_STICK_1, Text{ "Buy Deku Stick (1)", "Acheter: Bâton Mojo (1)", "Deku-Stick kaufen (1)" },
+                  ITEMTYPE_SHOP, RG_BUY_DEKU_STICK_1, true, &Logic::Sticks, RG_DEKU_STICK_1, 10);
+    itemTable[RG_BUY_BOMBS_10] =
+        RandoItem(RG_BUY_BOMBS_10, Text{ "Buy Bombs (10)", "Acheter: Bombes (10)", "Bomben kaufen (10)" },
+                  ITEMTYPE_SHOP, RG_BUY_BOMBS_10, true, &Logic::BuyBomb, RG_BOMBS_10, 50);
+    itemTable[RG_BUY_FISH] = RandoItem(RG_BUY_FISH, Text{ "Buy Fish", "Acheter: Poisson", "Fisch kaufen" },
+                                       ITEMTYPE_SHOP, RG_BUY_FISH, true, &Logic::FishAccess, RG_BOTTLE_WITH_FISH, 200);
+    itemTable[RG_BUY_RED_POTION_30] = RandoItem(
+        RG_BUY_RED_POTION_30, Text{ "Buy Red Potion [30]", "Acheter: Potion Rouge [30]", "Rotes Elixier kaufen [30]" },
+        ITEMTYPE_SHOP, RG_BUY_RED_POTION_30, false, &Logic::noVariable, RG_BOTTLE_WITH_RED_POTION, 30);
+    itemTable[RG_BUY_GREEN_POTION] =
+        RandoItem(RG_BUY_GREEN_POTION, Text{ "Buy Green Potion", "Acheter: Potion Verte", "Grünes Elixier kaufen" },
+                  ITEMTYPE_SHOP, RG_BUY_GREEN_POTION, true, &Logic::BuyGPotion, RG_BOTTLE_WITH_GREEN_POTION, 30);
+    itemTable[RG_BUY_BLUE_POTION] =
+        RandoItem(RG_BUY_BLUE_POTION, Text{ "Buy Blue Potion", "Acheter: Potion Bleue", "Blaues Elixier kaufen" },
+                  ITEMTYPE_SHOP, RG_BUY_BLUE_POTION, true, &Logic::BuyBPotion, RG_BOTTLE_WITH_BLUE_POTION, 100);
+    itemTable[RG_BUY_HYLIAN_SHIELD] = RandoItem(
+        RG_BUY_HYLIAN_SHIELD, Text{ "Buy Hylian Shield", "Acheter: Bouclier Hylien", "Hylianischer Schild kaufen" },
+        ITEMTYPE_SHOP, RG_BUY_HYLIAN_SHIELD, true, &Logic::HylianShield, RG_HYLIAN_SHIELD, 80);
+    itemTable[RG_BUY_DEKU_SHIELD] =
+        RandoItem(RG_BUY_DEKU_SHIELD, Text{ "Buy Deku Shield", "Acheter: Bouclier Mojo", "Deku-Schild kaufen" },
+                  ITEMTYPE_SHOP, RG_BUY_DEKU_SHIELD, true, &Logic::DekuShield, RG_DEKU_SHIELD, 40);
+    itemTable[RG_BUY_GORON_TUNIC] =
+        RandoItem(RG_BUY_GORON_TUNIC, Text{ "Buy Goron Tunic", "Acheter: Tunique Goron", "Goronen-Tunika kaufen" },
+                  ITEMTYPE_SHOP, RG_BUY_GORON_TUNIC, true, &Logic::GoronTunic, RG_GORON_TUNIC, 200);
+    itemTable[RG_BUY_ZORA_TUNIC] =
+        RandoItem(RG_BUY_ZORA_TUNIC, Text{ "Buy Zora Tunic", "Acheter: Tunique Zora", "Zora-Tunika kaufen" },
+                  ITEMTYPE_SHOP, RG_BUY_ZORA_TUNIC, true, &Logic::ZoraTunic, RG_ZORA_TUNIC, 300);
+    itemTable[RG_BUY_HEART] = RandoItem(RG_BUY_HEART, Text{ "Buy Heart", "Acheter: Coeur de Vie", "Herz kaufen" },
+                                        ITEMTYPE_SHOP, RG_BUY_HEART, false, &Logic::noVariable, RG_RECOVERY_HEART, 10);
+    itemTable[RG_BUY_BOMBCHU_10] =
+        RandoItem(RG_BUY_BOMBCHU_10, Text{ "Buy Bombchu (10)", "Acheter: Missiles (10)", "Bomchu kaufen (10)" },
+                  ITEMTYPE_SHOP, RG_BUY_BOMBCHU_10, true, &Logic::BuyBombchus10, RG_BOMBCHU_10, 99);
+    itemTable[RG_BUY_BOMBCHU_20] =
+        RandoItem(RG_BUY_BOMBCHU_20, Text{ "Buy Bombchu (20)", "Acheter: Missiles (20)", "Bomchu kaufen (20)" },
+                  ITEMTYPE_SHOP, RG_BUY_BOMBCHU_20, true, &Logic::BuyBombchus20, RG_BOMBCHU_20, 180);
+    itemTable[RG_BUY_DEKU_SEEDS_30] = RandoItem(
+        RG_BUY_DEKU_SEEDS_30, Text{ "Buy Deku Seeds (30)", "Acheter: Graines Mojo (30)", "Deku-Samen kaufen (30)" },
+        ITEMTYPE_SHOP, RG_BUY_DEKU_SEEDS_30, true, &Logic::BuySeed, RG_DEKU_SEEDS_30, 30);
+    itemTable[RG_SOLD_OUT] = RandoItem(RG_SOLD_OUT, Text{ "Sold Out", "Rupture de stock", "Ausverkauft" },
+                                       ITEMTYPE_SHOP, RG_SOLD_OUT, false, &Logic::noVariable, RG_NONE, 0);
+    itemTable[RG_BUY_BLUE_FIRE] =
+        RandoItem(RG_BUY_BLUE_FIRE, Text{ "Buy Blue Fire", "Acheter: Flamme Bleue", "Blaues Feuer kaufen" },
+                  ITEMTYPE_SHOP, RG_BUY_BLUE_FIRE, true, &Logic::BlueFireAccess, RG_BOTTLE_WITH_BLUE_FIRE, 300);
+    itemTable[RG_BUY_BOTTLE_BUG] =
+        RandoItem(RG_BUY_BOTTLE_BUG, Text{ "Buy Bottle Bug", "Acheter: Insecte en bouteille", "Flaschenkäfer kaufen" },
+                  ITEMTYPE_SHOP, RG_BUY_BOTTLE_BUG, true, &Logic::BugsAccess, RG_BOTTLE_WITH_BUGS, 50);
+    itemTable[RG_BUY_POE] = RandoItem(RG_BUY_POE, Text{ "Buy Poe", "Acheter: Esprit", "Geist kaufen" }, ITEMTYPE_SHOP,
+                                      RG_BUY_POE, false, &Logic::noVariable, RG_BOTTLE_WITH_BIG_POE, 30);
+    itemTable[RG_BUY_FAIRYS_SPIRIT] =
+        RandoItem(RG_BUY_FAIRYS_SPIRIT, Text{ "Buy Fairy's Spirit", "Acheter: Esprit de Fée", "Feengeist kaufen" },
+                  ITEMTYPE_SHOP, RG_BUY_FAIRYS_SPIRIT, true, &Logic::FairyAccess, RG_BOTTLE_WITH_FAIRY, 50);
+    itemTable[RG_BUY_ARROWS_10] =
+        RandoItem(RG_BUY_ARROWS_10, Text{ "Buy Arrows (10)", "Acheter: Flèches (10)", "Pfeile kaufen (10)" },
+                  ITEMTYPE_SHOP, RG_BUY_ARROWS_10, true, &Logic::BuyArrow, RG_ARROWS_10, 20);
+    itemTable[RG_BUY_BOMBS_20] =
+        RandoItem(RG_BUY_BOMBS_20, Text{ "Buy Bombs (20)", "Acheter: Bombes (20)", "Bomben kaufen (20)" },
+                  ITEMTYPE_SHOP, RG_BUY_BOMBS_20, true, &Logic::BuyBomb, RG_BOMBS_20, 80);
+    itemTable[RG_BUY_BOMBS_30] =
+        RandoItem(RG_BUY_BOMBS_30, Text{ "Buy Bombs (30)", "Acheter: Bombes (30)", "Bomben kaufen (30)" },
+                  ITEMTYPE_SHOP, RG_BUY_BOMBS_30, true, &Logic::BuyBomb, RG_BOMBS_20, 120);
+    itemTable[RG_BUY_BOMBS_535] =
+        RandoItem(RG_BUY_BOMBS_535, Text{ "Buy Bombs (5) [35]", "Acheter: Bombes (5) [35]", "Bomben kaufen (5) [35]" },
+                  ITEMTYPE_SHOP, RG_BUY_BOMBS_535, true, &Logic::BuyBomb, RG_BOMBS_5, 35);
+    itemTable[RG_BUY_RED_POTION_40] = RandoItem(
+        RG_BUY_RED_POTION_40, Text{ "Buy Red Potion [40]", "Acheter: Potion Rouge [40]", "Rotes Elixier kaufen [40]" },
+        ITEMTYPE_SHOP, RG_BUY_RED_POTION_40, false, &Logic::noVariable, RG_BOTTLE_WITH_RED_POTION, 40);
+    itemTable[RG_BUY_RED_POTION_50] = RandoItem(
+        RG_BUY_RED_POTION_50, Text{ "Buy Red Potion [50]", "Acheter: Potion Rouge [50]", "Rotes Elixier kaufen [50]" },
+        ITEMTYPE_SHOP, RG_BUY_RED_POTION_50, false, &Logic::noVariable, RG_BOTTLE_WITH_RED_POTION, 50);
+    // Misc.
+    itemTable[RG_TRIFORCE] = RandoItem(RG_TRIFORCE, Text{ "Triforce", "Triforce", "Triforce" }, ITEMTYPE_EVENT,
+                                       RG_TRIFORCE, false, &Logic::noVariable, RG_NONE);
+    itemTable[RG_HINT] = RandoItem(RG_HINT, Text{ "Hint", "Indice", "Hinweis" }, ITEMTYPE_EVENT, RG_HINT, false,
+                                   &Logic::noVariable, RG_NONE);
 }

@@ -24,7 +24,21 @@ RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, i
       category(category_), price(price_) {
 }
 
-RandoItem::~RandoItem() = default;
+RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
+                     bool* logicVar_, uint32_t hintKey_, uint16_t price_)
+    : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
+      advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), itemId(ITEM_NONE), objectId(0), gid(0),
+      textId(0), field(0), chestAnimation(0), modIndex(MOD_NONE), category(ITEM_CATEGORY_JUNK), price(price_) {
+}
+
+RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
+                     uint8_t* logicVar_, uint32_t hintKey_, uint16_t price_)
+    : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
+      advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), itemId(ITEM_NONE), objectId(0), gid(0),
+      textId(0), field(0), chestAnimation(0), modIndex(MOD_NONE), category(ITEM_CATEGORY_JUNK), price(price_) {
+}
+
+    RandoItem::~RandoItem() = default;
 
 void RandoItem::ApplyEffect() {
     // If this is a key ring, logically add as many keys as we could need
