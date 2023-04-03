@@ -620,4 +620,44 @@ void StaticData::InitItemTable() {
         RG_GANONS_CASTLE_KEY_RING, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT,
         ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
     // Dungeon Rewards
+    itemTable[RG_KOKIRI_EMERALD] = RandoItem(
+        RG_KOKIRI_EMERALD, Text{ "Kokiri's Emerald", "Émeraude Kokiri", "Kokiri-Smaragd" }, ITEMTYPE_DUNGEONREWARD,
+        RG_KOKIRI_EMERALD, true, &Logic::KokiriEmerald, RG_KOKIRI_EMERALD, ITEM_KOKIRI_EMERALD, OBJECT_GI_JEWEL,
+        GID_KOKIRI_EMERALD, 0x80, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_GORON_RUBY] =
+        RandoItem(RG_GORON_RUBY, Text{ "Goron's Ruby", "Rubis Goron", "Goronen-Rubin" }, ITEMTYPE_DUNGEONREWARD,
+                  RG_GORON_RUBY, true, &Logic::GoronRuby, RG_GORON_RUBY, ITEM_GORON_RUBY, OBJECT_GI_JEWEL,
+                  GID_GORON_RUBY, 0x81, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_ZORA_SAPPHIRE] =
+        RandoItem(RG_ZORA_SAPPHIRE, Text{ "Zora's Sapphire", "Saphir Zora", "Zora-Saphir" }, ITEMTYPE_DUNGEONREWARD,
+                  RG_ZORA_SAPPHIRE, true, &Logic::ZoraSapphire, RG_ZORA_SAPPHIRE, ITEM_ZORA_SAPPHIRE, OBJECT_GI_JEWEL,
+                  GID_ZORA_SAPPHIRE, 0x82, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_FOREST_MEDALLION] =
+        RandoItem(RG_FOREST_MEDALLION, Text{ "Forest Medallion", "Médaillon de la Forêt", "Wald Medaillon" },
+                  ITEMTYPE_DUNGEONREWARD, RG_FOREST_MEDALLION, true, &Logic::ForestMedallion, RG_FOREST_MEDALLION,
+                  ITEM_MEDALLION_FOREST, OBJECT_GI_MEDAL, GID_MEDALLION_FOREST, 0x3E, 0x80, CHEST_ANIM_LONG,
+                  ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_FIRE_MEDALLION] = RandoItem(
+        RG_FIRE_MEDALLION, Text{ "Fire Medallion", "Médaillon du Feu", "Feuer Medaillon" }, ITEMTYPE_DUNGEONREWARD,
+        RG_FIRE_MEDALLION, true, &Logic::FireMedallion, RG_FIRE_MEDALLION, ITEM_MEDALLION_FIRE, OBJECT_GI_MEDAL,
+        GID_MEDALLION_FIRE, 0x3C, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_WATER_MEDALLION] = RandoItem(
+        RG_WATER_MEDALLION, Text{ "Water Medallion", "Médaillon de l'Eau", "Wasser Medaillon" }, ITEMTYPE_DUNGEONREWARD,
+        RG_WATER_MEDALLION, true, &Logic::WaterMedallion, RG_WATER_MEDALLION, ITEM_MEDALLION_WATER, OBJECT_GI_MEDAL,
+        GID_MEDALLION_WATER, 0x3D, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_SPIRIT_MEDALLION] =
+        RandoItem(RG_SPIRIT_MEDALLION, Text{ "Spirit Medallion", "Médaillon de l'Esprit", "Geist Medaillon" },
+                  ITEMTYPE_DUNGEONREWARD, RG_SPIRIT_MEDALLION, true, &Logic::SpiritMedallion, RG_SPIRIT_MEDALLION,
+                  ITEM_MEDALLION_SPIRIT, OBJECT_GI_MEDAL, GID_MEDALLION_SPIRIT, 0x3F, 0x80, CHEST_ANIM_LONG,
+                  ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_SHADOW_MEDALLION] =
+        RandoItem(RG_SHADOW_MEDALLION, Text{ "Shadow Medallion", "Médaillon de l'Ombre", "Schatten Medaillon" },
+                  ITEMTYPE_DUNGEONREWARD, RG_SHADOW_MEDALLION, true, &Logic::ShadowMedallion, RG_SHADOW_MEDALLION,
+                  ITEM_MEDALLION_SHADOW, OBJECT_GI_MEDAL, GID_MEDALLION_SHADOW, 0x41, 0x80, CHEST_ANIM_LONG,
+                  ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_LIGHT_MEDALLION] =
+        RandoItem(RG_LIGHT_MEDALLION, Text{ "Light Medallion", "Médaillon de la Lumière", "Licht Medaillon" },
+                  ITEMTYPE_DUNGEONREWARD, RG_LIGHT_MEDALLION, true, &Logic::LightMedallion, RG_LIGHT_MEDALLION,
+                  ITEM_MEDALLION_LIGHT, OBJECT_GI_MEDAL, GID_MEDALLION_LIGHT, 0x40, 0x80, CHEST_ANIM_LONG,
+                  ITEM_CATEGORY_MAJOR, MOD_NONE);
 }
