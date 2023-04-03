@@ -354,6 +354,8 @@ namespace GameMenuBar {
                     "to the guard next to the gate.");
                     UIWidgets::PaddedEnhancementCheckbox("Faster Farore's Wind", "gFastFarores", true, false);
                     UIWidgets::Tooltip("Greatly decreases cast time of Farore's Wind magic spell.");
+                    UIWidgets::PaddedEnhancementCheckbox("Nighttime GS Always Spawn", "gNightGSAlwaysSpawn", true, false);
+                    UIWidgets::Tooltip("Nighttime Skulltulas will spawn during both day and night.");
                     UIWidgets::PaddedEnhancementCheckbox("Dampe Appears All Night", "gDampeAllNight", true, false);
                     UIWidgets::Tooltip("Makes Dampe appear anytime during it's night, not just his usual working hours.");
                     UIWidgets::PaddedEnhancementCheckbox("Time Travel with the Song of Time", "gTimeTravel", true, false);

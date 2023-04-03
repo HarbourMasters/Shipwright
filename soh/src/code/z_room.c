@@ -637,11 +637,21 @@ void Room_Draw(PlayState* play, Room* room, u32 flags) {
 void func_80097534(PlayState* play, RoomContext* roomCtx) {
     roomCtx->prevRoom.num = -1;
     roomCtx->prevRoom.segment = NULL;
-    func_80031B14(play, &play->actorCtx);
+    func_80031B14(play, &play->actorCtx); //kills all actors without room num set to -1
     Actor_SpawnTransitionActors(play, &play->actorCtx);
     Map_InitRoomData(play, roomCtx->curRoom.num);
     if (!((play->sceneNum >= SCENE_SPOT00) && (play->sceneNum <= SCENE_SPOT20))) {
         Map_SavePlayerInitialInfo(play);
     }
     Audio_SetEnvReverb(play->roomCtx.curRoom.echo);
+    u8 idx = gSaveContext.sohStats.tsIdx;
+    gSaveContext.sohStats.sceneTimestamps[idx].scene = gSaveContext.sohStats.sceneNum;
+    gSaveContext.sohStats.sceneTimestamps[idx].room = gSaveContext.sohStats.roomNum;
+    gSaveContext.sohStats.sceneTimestamps[idx].roomTime = gSaveContext.sohStats.roomTimer / 2;
+    gSaveContext.sohStats.sceneTimestamps[idx].isRoom = 
+        gPlayState->sceneNum == gSaveContext.sohStats.sceneTimestamps[idx].scene &&
+        gPlayState->roomCtx.curRoom.num != gSaveContext.sohStats.sceneTimestamps[idx].room;
+    gSaveContext.sohStats.tsIdx++;
+    gSaveContext.sohStats.roomNum = roomCtx->curRoom.num;
+    gSaveContext.sohStats.roomTimer = 0;
 }

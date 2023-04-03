@@ -14,6 +14,8 @@ extern PlayState* gPlayState;
 extern void Play_PerformSave(PlayState* play);
 extern s32 Health_ChangeBy(PlayState* play, s16 healthChange);
 extern void Rupees_ChangeBy(s16 rupeeChange);
+extern Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ,
+                            s16 rotX, s16 rotY, s16 rotZ, s16 params, s16 canRandomize);
 extern void Inventory_ChangeEquipment(s16 equipment, u16 value);
 }
 bool performDelayedSave = false;
@@ -350,6 +352,62 @@ void RegisterRupeeDash() {
     });
 }
 
+struct DayTimeGoldSkulltulas {
+    uint16_t scene;
+    uint16_t room;
+    bool forChild;
+    std::vector<ActorEntry> actorEntries;
+};
+
+using DayTimeGoldSkulltulasList = std::vector<DayTimeGoldSkulltulas>;
+
+void RegisterDaytimeGoldSkultullas() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
+        if (!CVarGetInteger("gNightGSAlwaysSpawn", 0)) {
+            return;
+        }
+
+        // Gold Skulltulas that are not part of the scene actor list during the day
+        // Actor values copied from the night time scene actor list
+        static const DayTimeGoldSkulltulasList dayTimeGoldSkulltulas = {
+            // Graveyard
+            { SCENE_SPOT02, 1, true, { { ACTOR_EN_SW, { 156, 315, 795 }, { 16384, -32768, 0 }, -20096 } } },
+            // ZF
+            { SCENE_SPOT08, 0, true, { { ACTOR_EN_SW, { -1891, 187, 1911 }, { 16384, 18022, 0 }, -19964 } } },
+            // GF
+            { SCENE_SPOT12, 0, false, { { ACTOR_EN_SW, { 1598, 999, -2008 }, { 16384, -16384, 0 }, -19198 } } },
+            { SCENE_SPOT12, 1, false, { { ACTOR_EN_SW, { 3377, 1734, -4935 }, { 16384, 0, 0 }, -19199 } } },
+            // Kak
+            { SCENE_SPOT01, 0, false, { { ACTOR_EN_SW, { -18, 540, 1800 }, { 0, -32768, 0 }, -20160 } } },
+            { SCENE_SPOT01,
+              0,
+              true,
+              { { ACTOR_EN_SW, { -465, 377, -888 }, { 0, 28217, 0 }, -20222 },
+                { ACTOR_EN_SW, { 5, 686, -171 }, { 0, -32768, 0 }, -20220 },
+                { ACTOR_EN_SW, { 324, 270, 905 }, { 16384, 0, 0 }, -20216 },
+                { ACTOR_EN_SW, { -602, 120, 1120 }, { 16384, 0, 0 }, -20208 } } },
+            // LLR
+            { SCENE_SPOT20,
+              0,
+              true,
+              { { ACTOR_EN_SW, { -2344, 180, 672 }, { 16384, 22938, 0 }, -29695 },
+                { ACTOR_EN_SW, { 808, 48, 326 }, { 16384, 0, 0 }, -29694 },
+                { ACTOR_EN_SW, { 997, 286, -2698 }, { 16384, -16384, 0 }, -29692 } } },
+        };
+
+        for (const auto& dayTimeGS : dayTimeGoldSkulltulas) {
+            if (IS_DAY && dayTimeGS.forChild == LINK_IS_CHILD && dayTimeGS.scene == gPlayState->sceneNum &&
+                dayTimeGS.room == gPlayState->roomCtx.curRoom.num) {
+                for (const auto& actorEntry : dayTimeGS.actorEntries) {
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorEntry.id, actorEntry.pos.x, actorEntry.pos.y,
+                                actorEntry.pos.z, actorEntry.rot.x, actorEntry.rot.y, actorEntry.rot.z,
+                                actorEntry.params, false);
+                }
+            }
+        }
+    });
+}
+
 void RegisterHyperBosses() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
         // Run the update function a second time to make bosses move and act twice as fast.
@@ -450,6 +508,7 @@ void InitMods() {
     RegisterSwitchAge();
     RegisterOcarinaTimeTravel();
     RegisterAutoSave();
+    RegisterDaytimeGoldSkultullas();
     RegisterRupeeDash();
     RegisterHyperBosses();
     RegisterBonkDamage();
