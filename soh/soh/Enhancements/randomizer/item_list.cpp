@@ -466,4 +466,103 @@ void StaticData::InitItemTable() {
                   OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
                   ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
     // Boss Keys
+    itemTable[RG_FOREST_TEMPLE_BOSS_KEY] =
+        RandoItem(RG_FOREST_TEMPLE_BOSS_KEY,
+                  Text{ "Forest Temple Boss Key", "Clé d'Or du Temple de la Forêt", "Waldtempel-Boss-Schlüssel" },
+                  ITEMTYPE_BOSSKEY, RG_FOREST_TEMPLE_BOSS_KEY, true, &Logic::BossKeyForestTemple,
+                  RG_FOREST_TEMPLE_BOSS_KEY, RG_FOREST_TEMPLE_BOSS_KEY, OBJECT_GI_BOSSKEY, GID_KEY_BOSS,
+                  TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_BOSS_KEY, MOD_RANDOMIZER);
+    itemTable[RG_FIRE_TEMPLE_BOSS_KEY] =
+        RandoItem(RG_FIRE_TEMPLE_BOSS_KEY,
+                  Text{ "Fire Temple Boss Key", "Clé d'Or du Temple du Feu", "Feuertempel-Boss-Schlüssel" },
+                  ITEMTYPE_BOSSKEY, RG_FIRE_TEMPLE_BOSS_KEY, true, &Logic::BossKeyFireTemple, RG_FIRE_TEMPLE_BOSS_KEY,
+                  RG_FIRE_TEMPLE_BOSS_KEY, OBJECT_GI_BOSSKEY, GID_KEY_BOSS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                  CHEST_ANIM_LONG, ITEM_CATEGORY_BOSS_KEY, MOD_RANDOMIZER);
+    itemTable[RG_WATER_TEMPLE_BOSS_KEY] =
+        RandoItem(RG_WATER_TEMPLE_BOSS_KEY,
+                  Text{ "Water Temple Boss Key", "Clé d'Or du Temple de l'Eau", "Wassertempel-Boss-Schlüssel" },
+                  ITEMTYPE_BOSSKEY, RG_WATER_TEMPLE_BOSS_KEY, true, &Logic::BossKeyWaterTemple,
+                  RG_WATER_TEMPLE_BOSS_KEY, RG_WATER_TEMPLE_BOSS_KEY, OBJECT_GI_BOSSKEY, GID_KEY_BOSS,
+                  TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_BOSS_KEY, MOD_RANDOMIZER);
+    itemTable[RG_SPIRIT_TEMPLE_BOSS_KEY] =
+        RandoItem(RG_SPIRIT_TEMPLE_BOSS_KEY,
+                  Text{ "Spirit Temple Boss Key", "Clé d'Or du Temple de l'Esprit", "Geistertempel-Boss-Schlüssel" },
+                  ITEMTYPE_BOSSKEY, RG_SPIRIT_TEMPLE_BOSS_KEY, true, &Logic::BossKeySpiritTemple,
+                  RG_SPIRIT_TEMPLE_BOSS_KEY, RG_SPIRIT_TEMPLE_BOSS_KEY, OBJECT_GI_BOSSKEY, GID_KEY_BOSS,
+                  TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_BOSS_KEY, MOD_RANDOMIZER);
+    itemTable[RG_SHADOW_TEMPLE_BOSS_KEY] =
+        RandoItem(RG_SHADOW_TEMPLE_BOSS_KEY,
+                  Text{ "Shadow Temple Boss Key", "Clé d'Or du Temple de l'Ombre", 
+                  "Schlüssel für den Boss des Schattentempels" }, ITEMTYPE_BOSSKEY, RG_SHADOW_TEMPLE_BOSS_KEY, true,
+                  &Logic::BossKeyShadowTemple, RG_SHADOW_TEMPLE_BOSS_KEY, RG_SHADOW_TEMPLE_BOSS_KEY, OBJECT_GI_BOSSKEY,
+                  GID_KEY_BOSS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_BOSS_KEY,
+                  MOD_RANDOMIZER);
+    itemTable[RG_GANONS_CASTLE_BOSS_KEY] =
+        RandoItem(RG_GANONS_CASTLE_BOSS_KEY,
+                  Text{ "Ganon's Castle Boss Key", "Clé d'Or du Château de Ganon", "Ganons Schloss-Boss-Schlüssel" },
+                  ITEMTYPE_BOSSKEY, RG_GANONS_CASTLE_BOSS_KEY, true, &Logic::BossKeyGanonsCastle,
+                  RG_GANONS_CASTLE_BOSS_KEY, RG_GANONS_CASTLE_BOSS_KEY, OBJECT_GI_BOSSKEY, GID_KEY_BOSS,
+                  TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_BOSS_KEY, MOD_RANDOMIZER);
+    itemTable[RG_FOREST_TEMPLE_SMALL_KEY] =
+        RandoItem(RG_FOREST_TEMPLE_SMALL_KEY,
+                  Text{ "Forest Temple Small Key", "Petite Clé du Temple de la Forêt", "Waldtempel Kleiner Schlüssel" },
+                  ITEMTYPE_SMALLKEY, RG_FOREST_TEMPLE_SMALL_KEY, true, &Logic::ForestTempleKeys,
+                  RG_FOREST_TEMPLE_SMALL_KEY, RG_FOREST_TEMPLE_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL,
+                  TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
+    itemTable[RG_FIRE_TEMPLE_SMALL_KEY] =
+        RandoItem(RG_FIRE_TEMPLE_SMALL_KEY,
+                  Text{ "Fire Temple Small Key", "Petite Clé du Temple du Feu", "Feuertempel Kleiner Schlüssel" },
+                  ITEMTYPE_SMALLKEY, RG_FIRE_TEMPLE_SMALL_KEY, true, &Logic::FireTempleKeys, RG_FIRE_TEMPLE_SMALL_KEY,
+                  RG_FIRE_TEMPLE_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                  CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
+    itemTable[RG_WATER_TEMPLE_SMALL_KEY] =
+        RandoItem(RG_WATER_TEMPLE_SMALL_KEY,
+                  Text{ "Water Temple Small Key", "Petite Clé du Temple de l'Eau", "Wassertempel Kleiner Schlüssel" },
+                  ITEMTYPE_SMALLKEY, RG_WATER_TEMPLE_SMALL_KEY, true, &Logic::WaterTempleKeys,
+                  RG_WATER_TEMPLE_SMALL_KEY, RG_WATER_TEMPLE_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL,
+                  TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
+    itemTable[RG_SPIRIT_TEMPLE_SMALL_KEY] =
+        RandoItem(RG_SPIRIT_TEMPLE_SMALL_KEY, 
+                  Text{ "Spirit Temple Small Key", "Petite Clé du Temple de l'Esprit", "Geisttempel Kleiner Schlüssel" },
+                  ITEMTYPE_SMALLKEY, RG_SPIRIT_TEMPLE_SMALL_KEY, true, &Logic::SpiritTempleKeys,
+                  RG_SPIRIT_TEMPLE_SMALL_KEY, RG_SPIRIT_TEMPLE_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL,
+                  TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
+    itemTable[RG_SHADOW_TEMPLE_SMALL_KEY] =
+        RandoItem(RG_SHADOW_TEMPLE_SMALL_KEY,
+                  Text{ "Shadow Temple Small Key", "Petite Clé du Temple de l'Ombre",
+                  "Schattentempel Kleiner Schlüssel" }, ITEMTYPE_SMALLKEY, RG_SHADOW_TEMPLE_SMALL_KEY, true,
+                  &Logic::ShadowTempleKeys, RG_SHADOW_TEMPLE_SMALL_KEY, RG_SHADOW_TEMPLE_SMALL_KEY, OBJECT_GI_KEY, 
+                  GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY,
+                  MOD_RANDOMIZER);
+    itemTable[RG_BOTTOM_OF_THE_WELL_SMALL_KEY] =
+        RandoItem(RG_BOTTOM_OF_THE_WELL_SMALL_KEY,
+                  Text{ "Bottom of the Well Small Key", "Petite Clé du Puits", "Boden des Brunnens Kleiner Schlüssel" },
+                  ITEMTYPE_SMALLKEY, RG_BOTTOM_OF_THE_WELL_SMALL_KEY, true, &Logic::BottomOfTheWellKeys,
+                  RG_BOTTOM_OF_THE_WELL_SMALL_KEY, RG_BOTTOM_OF_THE_WELL_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL,
+                  TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
+    itemTable[RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY] = RandoItem(
+        RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
+        Text{ "Training Grounds Small Key", "Petite Clé du Gymnase Gerudo", "Trainingsgelände Kleiner Schlüssel" },
+        ITEMTYPE_SMALLKEY, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, true, &Logic::GerudoTrainingGroundsKeys,
+        RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL,
+        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
+    itemTable[RG_GERUDO_FORTRESS_SMALL_KEY] = RandoItem(
+        RG_GERUDO_FORTRESS_SMALL_KEY,
+        Text{ "Gerudo Fortress Small Key", "Petite Clé du Repaire des Voleurs", "Gerudo-Festung Kleiner Schlüssel" },
+        ITEMTYPE_SMALLKEY, RG_GERUDO_FORTRESS_SMALL_KEY, true, &Logic::GerudoFortressKeys, RG_GERUDO_FORTRESS_SMALL_KEY,
+        RG_GERUDO_FORTRESS_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT,
+        ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
+    itemTable[RG_GANONS_CASTLE_SMALL_KEY] = RandoItem(
+        RG_GANONS_CASTLE_SMALL_KEY,
+        Text{ "Ganon's Castle Small Key", "Petite Clé du Château de Ganon", "Ganons Schloss Kleiner Schlüssel" },
+        ITEMTYPE_SMALLKEY, RG_GANONS_CASTLE_SMALL_KEY, true, &Logic::GanonsCastleKeys, RG_GANONS_CASTLE_SMALL_KEY,
+        RG_GANONS_CASTLE_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT,
+        ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
+    itemTable[RG_TREASURE_GAME_SMALL_KEY] = RandoItem(
+        RG_TREASURE_GAME_SMALL_KEY,
+        Text{ "Chest Game Small Key", "Petite Clé du jeu la Chasse-aux-Trésors", "Truhenspiel Kleiner Schlüssel" },
+        ITEMTYPE_SMALLKEY, RG_TREASURE_GAME_SMALL_KEY, true, &Logic::TreasureGameKeys, RG_TREASURE_GAME_SMALL_KEY, 
+        RG_TREASURE_GAME_SMALL_KEY, OBJECT_GI_KEY, GID_KEY_SMALL, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT,
+        ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER);
+    // Key Rings
 }
