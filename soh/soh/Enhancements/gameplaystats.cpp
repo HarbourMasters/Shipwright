@@ -155,7 +155,7 @@ TimestampInfo itemTimestampDisplay[TIMESTAMP_MAX];
 TimestampInfo sceneTimestampDisplay[8191];
 //std::vector<TimestampInfo> sceneTimestampDisplay;
 
-void DisplayTimeHHMMSS(uint32_t timeInTenthsOfSeconds, const char* text, ImVec4 color) {
+void DisplayTimeHHMMSS(uint32_t timeInTenthsOfSeconds, std::string text, ImVec4 color) {
 
     uint32_t sec = timeInTenthsOfSeconds / 10;
     uint32_t hh = sec / 3600;
@@ -165,8 +165,7 @@ void DisplayTimeHHMMSS(uint32_t timeInTenthsOfSeconds, const char* text, ImVec4 
 
     ImGui::PushStyleColor(ImGuiCol_Text, color);
 
-    std::string text2(text);
-    std::string padded = fmt::format("{:<40}", text2);
+    std::string padded = fmt::format("{:<40}", text);
     ImGui::Text(padded.c_str());
     ImGui::SameLine();
     ImGui::Text("%2u:%02u:%02u.%u", hh, mm, ss, ds);
@@ -304,7 +303,7 @@ void DrawStatsTracker(bool& open) {
         if (CVarGetInteger("gGameplayStatRoomBreakdown", 0) && gSaveContext.sohStats.sceneTimestamps[i].scene != SCENE_KAKUSIANA) {
             name = fmt::format("{:s} Room {:d}", sceneName, gSaveContext.sohStats.sceneTimestamps[i].room);    
         } else {
-            name = fmt::format("{:s}", sceneName);
+            name = sceneName;
         }
         strcpy(sceneTimestampDisplay[i].name, name.c_str());
         sceneTimestampDisplay[i].time = CVarGetInteger("gGameplayStatRoomBreakdown", 0) ? 
@@ -325,12 +324,12 @@ void DrawStatsTracker(bool& open) {
 
     DisplayTimeHHMMSS(totalTimer, "Total Game Time:    ", COLOR_WHITE);
     UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
-    DisplayTimeHHMMSS(gSaveContext.sohStats.playTimer / 2,  "Gameplay Time:      ", COLOR_WHITE);
+    DisplayTimeHHMMSS(gSaveContext.sohStats.playTimer / 2, "Gameplay Time:      ", COLOR_WHITE);
     UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
     DisplayTimeHHMMSS(gSaveContext.sohStats.pauseTimer / 3, "Pause Menu Time:    ", COLOR_WHITE);
     DisplayTimeHHMMSS(gSaveContext.sohStats.sceneTimer / 2, "Time in scene:      ", COLOR_LIGHT_BLUE);
     UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
-    DisplayTimeHHMMSS(gSaveContext.sohStats.roomTimer / 2,  "Time in room:       ", COLOR_LIGHT_BLUE);
+    DisplayTimeHHMMSS(gSaveContext.sohStats.roomTimer / 2, "Time in room:       ", COLOR_LIGHT_BLUE);
     UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
     ImGui::Text("Current room: %d", gSaveContext.sohStats.roomNum);
 
@@ -497,7 +496,7 @@ void DrawStatsTracker(bool& open) {
             } else {
                 for (int i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
                     TimestampInfo tsInfo = sceneTimestampDisplay[i];
-                    bool canShow = CVarGetInteger("gGameplayStatRoomBreakdown", 0) ? true : !(tsInfo.isRoom);
+                    bool canShow = !tsInfo.isRoom || CVarGetInteger("gGameplayStatRoomBreakdown", 0);
                     if (tsInfo.time > 0 && strnlen(tsInfo.name, 40) > 1 && canShow) {
                         DisplayTimeHHMMSS(tsInfo.time, tsInfo.name, tsInfo.color);
                     }
@@ -506,7 +505,7 @@ void DrawStatsTracker(bool& open) {
                 if (CVarGetInteger("gGameplayStatRoomBreakdown", 0) && gSaveContext.sohStats.sceneNum != SCENE_KAKUSIANA) {
                     toPass = fmt::format("{:s} Room {:d}", ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum), gSaveContext.sohStats.roomNum);
                 } else {
-                    toPass = fmt::format("{:s}", ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum));
+                    toPass = ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum);
                 }
                 DisplayTimeHHMMSS(CURRENT_MODE_TIMER / 2, toPass.c_str(), COLOR_WHITE);
             }
