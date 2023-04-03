@@ -350,4 +350,120 @@ void StaticData::InitItemTable() {
                   ITEM_SONG_PRELUDE, OBJECT_GI_MELODY, GID_SONG_PRELUDE, 0x78, 0x80, CHEST_ANIM_LONG,
                   ITEM_CATEGORY_MAJOR, MOD_NONE);
     // Maps and Compasses
+    itemTable[RG_DEKU_TREE_MAP] =
+        RandoItem(RG_DEKU_TREE_MAP, Text{ "Great Deku Tree Map", "Carte de l'Arbre Mojo", "Karte des Deku-Baums" },
+                  ITEMTYPE_MAP, RG_DEKU_TREE_MAP, false, &Logic::noVariable, RG_DEKU_TREE_MAP, RG_DEKU_TREE_MAP,                    
+                  OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
+                  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_DODONGOS_CAVERN_MAP] =
+        RandoItem(RG_DODONGOS_CAVERN_MAP,
+                  Text{ "Dodongo's Cavern Map", "Carte de la Caverne Dodongo", "Karte der Dodongo-Höhle" },
+                  ITEMTYPE_MAP, RG_DODONGOS_CAVERN_MAP, false, &Logic::noVariable, RG_DODONGOS_CAVERN_MAP,
+                  RG_DODONGOS_CAVERN_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                  CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_JABU_JABUS_BELLY_MAP] =
+        RandoItem(RG_JABU_JABUS_BELLY_MAP,
+                  Text{ "Jabu-Jabu's Belly Map", "Carte du Ventre de Jabu-Jabu", "Karte des Jabu-Jabu-Bauchs" },
+                  ITEMTYPE_MAP, RG_JABU_JABUS_BELLY_MAP, false, &Logic::noVariable, RG_JABU_JABUS_BELLY_MAP,
+                  RG_JABU_JABUS_BELLY_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                  CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_FOREST_TEMPLE_MAP] =
+        RandoItem(RG_FOREST_TEMPLE_MAP, Text{ "Forest Temple Map", "Carte du Temple de la Forêt", "Waldtempel Karte" },
+                  ITEMTYPE_MAP, RG_FOREST_TEMPLE_MAP, false, &Logic::noVariable, RG_FOREST_TEMPLE_MAP,
+                  RG_FOREST_TEMPLE_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                  CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_FIRE_TEMPLE_MAP] =
+        RandoItem(RG_FIRE_TEMPLE_MAP, Text{ "Fire Temple Map", "Carte due Temple de Feu", "Feuertempel Karte" },
+                  ITEMTYPE_MAP, RG_FIRE_TEMPLE_MAP, false, &Logic::noVariable, RG_FIRE_TEMPLE_MAP, RG_FIRE_TEMPLE_MAP,                  
+                  OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
+                  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_WATER_TEMPLE_MAP] =
+        RandoItem(RG_WATER_TEMPLE_MAP, Text{ "Water Temple Map", "Carte du Temple de l'Eau", "Wassertempel-Karte" },
+                  ITEMTYPE_MAP, RG_WATER_TEMPLE_MAP, false, &Logic::noVariable, RG_WATER_TEMPLE_MAP, RG_WATER_TEMPLE_MAP,                 
+                  OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, 
+                  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_SPIRIT_TEMPLE_MAP] =
+        RandoItem(RG_SPIRIT_TEMPLE_MAP,
+                  Text{ "Spirit Temple Map", "Carte due Temple de l'Esprit", "Geistertempel Karte"}, ITEMTYPE_MAP,
+                  RG_SPIRIT_TEMPLE_MAP, false, &Logic::noVariable, RG_SPIRIT_TEMPLE_MAP, RG_SPIRIT_TEMPLE_MAP,
+                  OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
+                  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_SHADOW_TEMPLE_MAP] =
+        RandoItem(RG_SHADOW_TEMPLE_MAP,
+                  Text{ "Shadow Temple Map", "Carte du Temple de l'Ombre", "Karte des Schattentempels"}, ITEMTYPE_MAP,
+                  RG_SHADOW_TEMPLE_MAP, false, &Logic::noVariable, RG_SHADOW_TEMPLE_MAP, RG_SHADOW_TEMPLE_MAP,
+                  OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
+                  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_BOTTOM_OF_THE_WELL_MAP] =
+        RandoItem(RG_BOTTOM_OF_THE_WELL_MAP,
+                  Text{ "Bottom of the Well Map", "Carte du Puits", "Boden des Brunnens Karte"}, ITEMTYPE_MAP,
+                  RG_BOTTOM_OF_THE_WELL_MAP, false, &Logic::noVariable, RG_BOTTOM_OF_THE_WELL_MAP,
+                  RG_BOTTOM_OF_THE_WELL_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                  CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_ICE_CAVERN_MAP] =
+        RandoItem(RG_ICE_CAVERN_MAP, Text{ "Ice Cavern Map", "Carte de la Caverne Polaire", "Eishöhle Karte" },
+                  ITEMTYPE_MAP, RG_ICE_CAVERN_MAP, false, &Logic::noVariable, RG_ICE_CAVERN_MAP, RG_ICE_CAVERN_MAP,                    
+                  OBJECT_GI_MAP, GID_DUNGEON_MAP, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
+                  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_DEKU_TREE_COMPASS] =
+        RandoItem(RG_DEKU_TREE_COMPASS,
+                  Text{ "Great Deku Tree Compass", "Boussole de l'Arbre Mojo", "Kompass des Deku-Baums"},
+                  ITEMTYPE_COMPASS, RG_DEKU_TREE_COMPASS, false, &Logic::noVariable, RG_DEKU_TREE_COMPASS,
+                  RG_DEKU_TREE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                  CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_DODONGOS_CAVERN_COMPASS] =
+        RandoItem(RG_DODONGOS_CAVERN_COMPASS,
+                  Text{ "Dodongo's Cavern Compass", "Boussole de la Caverne Dodongo", "Kompass der Dodongo-Höhle" },
+                  ITEMTYPE_COMPASS, RG_DODONGOS_CAVERN_COMPASS, false, &Logic::noVariable, RG_DODONGOS_CAVERN_COMPASS,
+                  RG_DODONGOS_CAVERN_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                  CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_JABU_JABUS_BELLY_COMPASS] =
+        RandoItem(RG_JABU_JABUS_BELLY_COMPASS,
+                  Text{ "Jabu-Jabu's Belly Compass", "Boussole du Ventre de Jabu-Jabu", "Kompass des Jabu-Jabu-Bauchs" },
+                  ITEMTYPE_COMPASS, RG_JABU_JABUS_BELLY_COMPASS, false, &Logic::noVariable, RG_JABU_JABUS_BELLY_COMPASS,
+                  RG_JABU_JABUS_BELLY_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                  CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_FOREST_TEMPLE_COMPASS] =
+        RandoItem(RG_FOREST_TEMPLE_COMPASS,
+                  Text{ "Forest Temple Compass", "Boussole du Temple de la Forêt", "Waldtempel-Kompass" },
+                  ITEMTYPE_COMPASS, RG_FOREST_TEMPLE_COMPASS, false, &Logic::noVariable, RG_FOREST_TEMPLE_COMPASS,
+                  RG_FOREST_TEMPLE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                  CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_FIRE_TEMPLE_COMPASS] =
+        RandoItem(RG_FIRE_TEMPLE_COMPASS,
+                  Text{ "Fire Temple Compass", "Boussole du Temple du Feu", "Feuertempel-Kompass" }, ITEMTYPE_COMPASS,
+                  RG_FIRE_TEMPLE_COMPASS, false, &Logic::noVariable, RG_FIRE_TEMPLE_COMPASS, RG_FIRE_TEMPLE_COMPASS,              
+                  OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
+                  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_WATER_TEMPLE_COMPASS] =
+        RandoItem(RG_WATER_TEMPLE_COMPASS,
+                  Text{ "Water Temple Compass", "Boussole du Temple de l'Eau", "Wassertempel-Kompass" },
+                  ITEMTYPE_COMPASS, RG_WATER_TEMPLE_COMPASS, false, &Logic::noVariable, RG_WATER_TEMPLE_COMPASS, 
+                  RG_WATER_TEMPLE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                  CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_SPIRIT_TEMPLE_COMPASS] =
+        RandoItem(RG_SPIRIT_TEMPLE_COMPASS,
+                  Text{ "Spirit Temple Compass", "Boussole due Temple de l'Esprit", "Geistiger Tempelkompass" },
+                  ITEMTYPE_COMPASS, RG_SPIRIT_TEMPLE_COMPASS, false, &Logic::noVariable, RG_SPIRIT_TEMPLE_COMPASS,
+                  RG_SPIRIT_TEMPLE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                  CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_SHADOW_TEMPLE_COMPASS] =
+        RandoItem(RG_SHADOW_TEMPLE_COMPASS,
+                  Text{ "Shadow Temple Compass", "Boussole du Temple de l'Ombre", "Kompass des Schattentempels" },
+                  ITEMTYPE_COMPASS, RG_SHADOW_TEMPLE_COMPASS, false, &Logic::noVariable, RG_SHADOW_TEMPLE_COMPASS,
+                  RG_SHADOW_TEMPLE_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80,
+                  CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_BOTTOM_OF_THE_WELL_COMPASS] =
+        RandoItem(RG_BOTTOM_OF_THE_WELL_COMPASS,
+                  Text{ "Bottom of the Well Compass", "Boussole du Puits", "Boden des Brunnenkompasses" },
+                  ITEMTYPE_COMPASS, RG_BOTTOM_OF_THE_WELL_COMPASS, false, &Logic::noVariable,
+                  RG_BOTTOM_OF_THE_WELL_COMPASS, RG_BOTTOM_OF_THE_WELL_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS,
+                  TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_ICE_CAVERN_COMPASS] =
+        RandoItem(RG_ICE_CAVERN_COMPASS,
+                  Text{ "Ice Cavern Compass", "Boussole de la Caverne Polaire", "Eishöhlenkompass"}, ITEMTYPE_COMPASS,
+                  RG_ICE_CAVERN_COMPASS, false, &Logic::noVariable, RG_ICE_CAVERN_COMPASS, RG_ICE_CAVERN_COMPASS,               
+                  OBJECT_GI_COMPASS, GID_COMPASS, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,
+                  ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    // Boss Keys
 }
