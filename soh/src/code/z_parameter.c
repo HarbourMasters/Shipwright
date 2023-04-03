@@ -1625,7 +1625,7 @@ void func_80084BF4(PlayState* play, u16 flag) {
 void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
 
     // If we already have a timestamp for this item, do nothing
-    if (gSaveContext.sohStats.timestamp[item] != 0){
+    if (gSaveContext.sohStats.itemTimestamp[item] != 0){
         return;
     }
     // Use ITEM_KEY_BOSS only for Ganon's boss key - not any other boss keys
@@ -1644,20 +1644,20 @@ void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
 
     // Count any bottled item as a bottle
     if (item >= ITEM_BOTTLE && item <= ITEM_POE) {
-        if (gSaveContext.sohStats.timestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.sohStats.timestamp[ITEM_BOTTLE] = time;
+        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] = time;
         }
         return;
     }
     // Count any bombchu pack as bombchus
     if (item == ITEM_BOMBCHU || (item >= ITEM_BOMBCHUS_5 && item <= ITEM_BOMBCHUS_20)) {
-        if (gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] == 0) {
-            gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] = time;
+        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] == 0) {
+            gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
         return;
     }
 
-    gSaveContext.sohStats.timestamp[item] = time;
+    gSaveContext.sohStats.itemTimestamp[item] = time;
 }
 
 // Gameplay stat tracking: Update time the item was acquired
@@ -1673,28 +1673,28 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
 
     // Use ITEM_KEY_BOSS to timestamp Ganon's boss key
     if (item == RG_GANONS_CASTLE_BOSS_KEY) {
-        gSaveContext.sohStats.timestamp[ITEM_KEY_BOSS] = time;
+        gSaveContext.sohStats.itemTimestamp[ITEM_KEY_BOSS] = time;
     }
 
     // Count any bottled item as a bottle
     if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
-        if (gSaveContext.sohStats.timestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.sohStats.timestamp[ITEM_BOTTLE] = time;
+        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] = time;
         }
         return;
     }
     // Count any bombchu pack as bombchus
     if (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) {
-        if (gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] = 0) {
-            gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] = time;
+        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = 0) {
+            gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
         return;
     }
     if (item == RG_MAGIC_SINGLE) {
-        gSaveContext.sohStats.timestamp[ITEM_SINGLE_MAGIC] = time;
+        gSaveContext.sohStats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
     }
     if (item == RG_DOUBLE_DEFENSE) {
-        gSaveContext.sohStats.timestamp[ITEM_DOUBLE_DEFENSE] = time;
+        gSaveContext.sohStats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
     }
 }
 
@@ -2525,7 +2525,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     if (item == RG_GREG_RUPEE) {
         Rupees_ChangeBy(1);
         Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
-        gSaveContext.sohStats.timestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
+        gSaveContext.sohStats.itemTimestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 

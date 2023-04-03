@@ -54,6 +54,14 @@ typedef struct {
 } Inventory; // size = 0x5E
 
 typedef struct {
+    u16 scene;
+    u8 room;
+    u32 sceneTime;
+    u32 roomTime;
+    u8 isRoom;
+} SceneTimestamp;
+
+typedef struct {
     /*      */ char buildVersion[50];
     /*      */ s16 buildVersionMajor;
     /*      */ s16 buildVersionMinor;
@@ -63,8 +71,14 @@ typedef struct {
     /*      */ u8 dungeonKeys[19];
     /*      */ u32 playTimer;
     /*      */ u32 pauseTimer;
+    /*      */ u32 sceneTimer;
+    /*      */ u32 roomTimer;
+    /*      */ s16 sceneNum;
+    /*      */ s8 roomNum;
     /*      */ bool gameComplete;
-    /*      */ u32 timestamp[TIMESTAMP_MAX];
+    /*      */ u32 itemTimestamp[TIMESTAMP_MAX];
+    /*      */ SceneTimestamp sceneTimestamps[8191];
+    /*      */ u32 tsIdx;
     /*      */ u32 count[COUNT_MAX];
     /*      */ u32 entrancesDiscovered[SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT];
     /*      */ u32 scenesDiscovered[SAVEFILE_SCENES_DISCOVERED_IDX_COUNT];
