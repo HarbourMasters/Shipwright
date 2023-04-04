@@ -1869,6 +1869,27 @@ void EnGo2_SetupGetItem(EnGo2* this, PlayState* play) {
 void EnGo2_SetGetItem(EnGo2* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
+
+        if (gSaveContext.n64ddFlag) {
+            switch (this->actor.params & 0x1F) {
+                case GORON_DMT_BIGGORON:
+                    // Resolves #1301. unk_13EE is used to set the opacity of the HUD. The trade sequence discussion with Biggoron
+                    // sets the HUD to transparent, and it is restored at z_message_PAL:3549, but by specifically watching for
+                    // trade sequence items, this leaves it transparent for non-trade sequence items (in rando) so we fix that here
+                    gSaveContext.unk_13EE = 0x32;
+                    return;
+                case GORON_CITY_LINK:
+                    EnGo2_GetItemAnimation(this, play);
+                    return;
+                case GORON_CITY_ROLLING_BIG:
+                    EnGo2_RollingAnimation(this, play);
+                    this->actionFunc = EnGo2_GoronRollingBigContinueRolling;
+                    return;
+            }
+            this->actionFunc = func_80A46B40;
+            return;
+        }
+
         switch (this->getItemId) {
             case GI_CLAIM_CHECK:
                 Environment_ClearBgsDayCount();
@@ -1888,13 +1909,6 @@ void EnGo2_SetGetItem(EnGo2* this, PlayState* play) {
                 EnGo2_RollingAnimation(this, play);
                 this->actionFunc = EnGo2_GoronRollingBigContinueRolling;
                 return;
-        }
-
-        if (gSaveContext.n64ddFlag) {
-            // Resolves #1301. unk_13EE is used to set the opacity of the HUD. The trade sequence discussion with Biggoron 
-            // sets the HUD to transparent, and it is restored at z_message_PAL:3549, but by specifically watching for 
-            // trade sequence items, this leaves it transparent for non-trade sequence items (in rando) so we fix that here
-            gSaveContext.unk_13EE = 0x32;
         }
         this->actionFunc = func_80A46B40;
     }
