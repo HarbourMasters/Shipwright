@@ -60,6 +60,7 @@ RandomizerCheckArea previousArea = RCAREA_INVALID;
 RandomizerCheckArea currentArea = RCAREA_INVALID;
 OSContPad* trackerButtonsPressed;
 SceneID lastScene = SCENE_ID_MAX;
+SceneID currentScene = SCENE_ID_MAX;
 bool LoadFileChecks = false;
 
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
@@ -283,6 +284,12 @@ void CheckTrackerDialogClosed() {
     }
 }
 
+void CheckTrackerTransition(uint32_t sceneNum) {
+    currentArea = RandomizerCheckObjects::GetRCAreaBySceneID(static_cast<SceneID>(sceneNum));
+    UpdateOrdering();
+    UpdateInventoryChecks();
+}
+
 void CheckTrackerFrame() {
     if (tickCheckCounter > 0) {
         tickCheckCounter--;
@@ -489,12 +496,6 @@ void DrawCheckTracker(bool& open) {
     SceneID sceneId = SCENE_ID_MAX;
     if (gPlayState != nullptr) {
         sceneId = (SceneID)gPlayState->sceneNum;
-        currentArea = RandomizerCheckObjects::GetRCAreaBySceneID(sceneId);
-        if (lastScene != sceneId) {
-            lastScene = sceneId;
-            UpdateOrdering();
-            UpdateInventoryChecks();
-        }
     }
 
     bool doAreaScroll =
@@ -879,8 +880,9 @@ void UpdateOrdering() {
 
 void UpdateOrdering(RandomizerCheckArea rcArea) {
     // Sort a single area
-    if(checkObjectsByArea.contains(rcArea))
-	    std::sort(checkObjectsByArea.find(rcArea)->second.begin(), checkObjectsByArea.find(rcArea)->second.end(), CompareCheckObject);
+    if(checkObjectsByArea.contains(rcArea)) {
+        std::sort(checkObjectsByArea.find(rcArea)->second.begin(), checkObjectsByArea.find(rcArea)->second.end(), CompareCheckObject);
+    }
 }
 
 bool CompareCheckObject(RandomizerCheckObject i, RandomizerCheckObject j) {
@@ -1148,8 +1150,6 @@ void DrawCheckTrackerOptions(bool& open) {
             UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 2", "gCheckTrackerComboButton2", buttonStrings, 8);
         }
     }
-    UIWidgets::EnhancementCheckbox("Performance mode", "gCheckTrackerOptionPerformanceMode");
-    UIWidgets::Tooltip("Slows down checking for updates to 1 check per frame. Only required if experiencing poor performance when using Check Tracker.");
     UIWidgets::EnhancementCheckbox("Vanilla/MQ Dungeon Spoilers", "gCheckTrackerOptionMQSpoilers");
     UIWidgets::Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. Otherwise, Vanilla/MQ dungeon locations must be unlocked. ");
 
@@ -1199,7 +1199,7 @@ void InitCheckTracker() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(CheckTrackerItemReceive);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>(CheckTrackerSaleEnd);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(CheckTrackerFrame);
-    //GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>(CheckTrackerCheckInit);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>(CheckTrackerTransition);
 
     LocationTable_Init();
 }
