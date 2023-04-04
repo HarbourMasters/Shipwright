@@ -1056,6 +1056,11 @@ extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
     return data;
 }
 
+extern "C" uint8_t ResourceMgr_ResourceIsBackground(char* texPath) {
+    auto res = GetResourceByNameHandlingMQ(texPath);
+    return res->InitData->Type == Ship::ResourceType::SOH_Background;
+}
+
 extern "C" char* ResourceMgr_LoadJPEG(char* data, int dataSize)
 {
     static char* finalBuffer = 0;
