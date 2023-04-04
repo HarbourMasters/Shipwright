@@ -3,34 +3,33 @@
 #include "spdlog/spdlog.h"
 
 namespace Ship {
-std::shared_ptr<Resource> CollisionHeaderFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader)
-{
-	auto resource = std::make_shared<CollisionHeader>();
-	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
+std::shared_ptr<Resource> CollisionHeaderFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+                                                               std::shared_ptr<ResourceInitData> initData,
+                                                               std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<CollisionHeader>(resourceMgr, initData);
+    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-	switch (version)
-	{
-	case 0:
-		factory = std::make_shared<CollisionHeaderFactoryV0>();
-		break;
-	}
+    switch (resource->InitData->ResourceVersion) {
+    case 0:
+	factory = std::make_shared<CollisionHeaderFactoryV0>();
+	break;
+    }
 
-	if (factory == nullptr)
-	{
-		SPDLOG_ERROR("Failed to load Collision Header with version {}", version);
-		return nullptr;
-	}
+    if (factory == nullptr) {
+        SPDLOG_ERROR("Failed to load Collision Header with version {}", resource->InitData->ResourceVersion);
+	return nullptr;
+    }
 
-	factory->ParseFileBinary(reader, resource);
+    factory->ParseFileBinary(reader, resource);
 
-	return resource;
+    return resource;
 }
 
 void Ship::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                                      std::shared_ptr<Resource> resource)
 {
-	std::shared_ptr<CollisionHeader> collisionHeader = std::static_pointer_cast<CollisionHeader>(resource);
-	ResourceVersionFactory::ParseFileBinary(reader, collisionHeader);
+    std::shared_ptr<CollisionHeader> collisionHeader = std::static_pointer_cast<CollisionHeader>(resource);
+    ResourceVersionFactory::ParseFileBinary(reader, collisionHeader);
 
     collisionHeader->collisionHeaderData.minBounds.x = reader->ReadInt16();
     collisionHeader->collisionHeaderData.minBounds.y = reader->ReadInt16();

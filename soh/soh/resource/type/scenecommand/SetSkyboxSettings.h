@@ -17,6 +17,8 @@ typedef struct {
 
 class SetSkyboxSettings : public SceneCommand {
   public:
+    using SceneCommand::SceneCommand;
+
     void* GetPointer();
     size_t GetPointerSize();
 

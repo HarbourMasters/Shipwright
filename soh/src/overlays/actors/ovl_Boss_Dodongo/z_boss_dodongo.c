@@ -35,7 +35,7 @@ void BossDodongo_DrawEffects(PlayState* play);
 void BossDodongo_UpdateEffects(PlayState* play);
 
 const ActorInit Boss_Dodongo_InitVars = {
-    ACTOR_EN_DODONGO,
+    ACTOR_BOSS_DODONGO,
     ACTORCAT_BOSS,
     FLAGS,
     OBJECT_KINGDODONGO,
@@ -1330,7 +1330,7 @@ void BossDodongo_DeathCutscene(BossDodongo* this, PlayState* play) {
             this->cameraAt.x = camera->at.x;
             this->cameraAt.y = camera->at.y;
             this->cameraAt.z = camera->at.z;
-            gSaveContext.sohStats.timestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
             break;
         case 5:
             tempSin = Math_SinS(this->actor.shape.rot.y - 0x1388) * 150.0f;

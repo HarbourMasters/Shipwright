@@ -22,12 +22,28 @@ void GameInteractor_ExecuteOnSaleEndHooks(GetItemEntry itemEntry) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaleEnd>(itemEntry);
 }
 
+void GameInteractor_ExecuteOnTransitionEndHooks(int16_t sceneNum) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnTransitionEnd>(sceneNum);
+}
+
 void GameInteractor_ExecuteOnSceneInitHooks(int16_t sceneNum) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(sceneNum);
 }
 
+void GameInteractor_ExecuteOnSceneSpawnActors() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneSpawnActors>();
+}
+
 void GameInteractor_ExecuteOnPlayerUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerUpdate>();
+}
+
+void GameInteractor_ExecuteOnOcarinaSongAction() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnOcarinaSongAction>();
+}
+
+void GameInteractor_ExecuteOnActorUpdate(void* actor) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnActorUpdate>(actor);
 }
 
 void GameInteractor_ExecuteOnPlayerBonk() {
