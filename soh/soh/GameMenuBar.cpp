@@ -957,6 +957,8 @@ namespace GameMenuBar {
             }
             UIWidgets::PaddedEnhancementCheckbox("Skip Text", "gSkipText", true, false);
             UIWidgets::Tooltip("Holding down B skips text");
+            
+            UIWidgets::PaddedEnhancementCheckbox("HD Assets", "gHdAssets", true, false);
 
          #ifdef __SWITCH__
             UIWidgets::Spacer(0);
