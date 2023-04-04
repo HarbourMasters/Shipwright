@@ -220,7 +220,7 @@ void func_80095D04(PlayState* play, Room* room, u32 flags) {
 
 #define JPEG_MARKER 0xFFD8FFE0
 
-s32 func_80096238(void* data) {
+s32 swapAndConvertJPEG(void* data) {
     OSTime time;
 
     if (BE32SWAP(*(u32*)data) == JPEG_MARKER)
@@ -265,7 +265,7 @@ void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 h
     s32 temp;
 
     displayListHead = *displayList;
-    func_80096238(SEGMENTED_TO_VIRTUAL(source));
+    swapAndConvertJPEG(SEGMENTED_TO_VIRTUAL(source));
 
     bg = (uObjBg*)(displayListHead + 1);
     gSPBranchList(displayListHead, (u8*)bg + sizeof(uObjBg));
@@ -281,6 +281,12 @@ void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 h
     bg->b.imageSiz = siz;
     bg->b.imagePal = 0;
     bg->b.imageFlip = 0;
+
+    if (ResourceMgr_ResourceIsBackground((char*) source)) {
+        char* blob = (char*) GetResourceDataByName((char*) source, true);
+        swapAndConvertJPEG(blob);
+        bg->b.imagePtr = (uintptr_t) blob;
+    }
 
     displayListHead = (void*)(bg + 1);
     if (fmt == G_IM_FMT_CI) {
