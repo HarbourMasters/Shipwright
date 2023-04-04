@@ -69,7 +69,7 @@ void func_8087B7E8(BgHaka* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (this->dyna.unk_150 != 0.0f) {
-        if (play->sceneNum == SCENE_SPOT02 && !LINK_IS_ADULT && IS_DAY && !gSaveContext.n64ddFlag && !CVarGetInteger("gDayGravePull", 0)) {
+        if (play->sceneNum == SCENE_SPOT02 && !LINK_IS_ADULT && IS_DAY && !CVarGetInteger("gDayGravePull", 0)) {
             this->dyna.unk_150 = 0.0f;
             player->stateFlags2 &= ~0x10;
             if (!Play_InCsMode(play)) {

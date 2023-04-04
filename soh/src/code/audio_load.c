@@ -1346,7 +1346,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     int customSeqListSize = 0;
     char** seqList = ResourceMgr_ListFiles("audio/sequences*", &seqListSize);
     char** customSeqList = ResourceMgr_ListFiles("custom/music/*", &customSeqListSize);
-    sequenceMapSize = (size_t)(seqListSize + customSeqListSize);
+    sequenceMapSize = (size_t)(AudioCollection_SequenceMapSize() + customSeqListSize); 
     sequenceMap = malloc(sequenceMapSize * sizeof(char*));
     gAudioContext.seqLoadStatus = malloc(sequenceMapSize * sizeof(char*));
 
@@ -1366,16 +1366,27 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     int startingSeqNum = MAX_AUTHENTIC_SEQID; // 109 is the highest vanilla sequence
     qsort(customSeqList, customSeqListSize, sizeof(char*), strcmp_sort);
 
+    // Because AudioCollection's sequenceMap actually has more than sequences (including instruments from 130-135 and sfx in the 2000s, 6000s, 10000s, 14000s, 18000s, and 26000s),
+    // it's better here to keep track of the next empty seqNum in AudioCollection instead of just skipping past the instruments at 130 with a higher MAX_AUTHENTIC_SEQID,
+    // especially if those others could be added to in the future. However, this really needs to be streamlined with specific ranges in AudioCollection for types, or unifying
+    // AudioCollection and the various maps in here
+    int seqNum = startingSeqNum;
+
     for (size_t i = startingSeqNum; i < startingSeqNum + customSeqListSize; i++) {
+        // ensure that what would be the next sequence number is actually unassigned in AudioCollection
+        while (AudioCollection_HasSequenceNum(seqNum)) {
+            seqNum++;
+        }
         int j = i - startingSeqNum;
-        AudioCollection_AddToCollection(customSeqList[j], i);
+        AudioCollection_AddToCollection(customSeqList[j], seqNum);
         SequenceData sDat = ResourceMgr_LoadSeqByName(customSeqList[j]);
-        sDat.seqNumber = i;
+        sDat.seqNumber = seqNum;
 
         char* str = malloc(strlen(customSeqList[j]) + 1);
         strcpy(str, customSeqList[j]);
 
         sequenceMap[sDat.seqNumber] = str;
+        seqNum++;
     }
 
     free(customSeqList);

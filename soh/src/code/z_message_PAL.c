@@ -2557,6 +2557,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                         osSyncPrintf(VT_RST);
                         osSyncPrintf("→  OCARINA_MODE=%d\n", play->msgCtx.ocarinaMode);
                     }
+                    GameInteractor_ExecuteOnOcarinaSongAction();
                 }
                 break;
             case MSGMODE_DISPLAY_SONG_PLAYED:

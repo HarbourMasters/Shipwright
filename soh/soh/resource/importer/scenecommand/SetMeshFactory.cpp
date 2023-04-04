@@ -4,13 +4,13 @@
 #include "libultraship/bridge.h"
 
 namespace Ship {
-std::shared_ptr<Resource> SetMeshFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader)
-{
-    auto resource = std::make_shared<SetMesh>();
+std::shared_ptr<Resource> SetMeshFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+                                                       std::shared_ptr<ResourceInitData> initData,
+                                                       std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<SetMesh>(resourceMgr, initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch (version)
-    {
+    switch (resource->InitData->ResourceVersion) {
     case 0:
         factory = std::make_shared<SetMeshFactoryV0>();
         break;
@@ -18,7 +18,7 @@ std::shared_ptr<Resource> SetMeshFactory::ReadResource(uint32_t version, std::sh
 
     if (factory == nullptr)
     {
-        SPDLOG_ERROR("Failed to load SetMesh with version {}", version);
+        SPDLOG_ERROR("Failed to load SetMesh with version {}", resource->InitData->ResourceVersion);
         return nullptr;
     }
 
@@ -86,9 +86,9 @@ void Ship::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reade
                 BgImage image;
                 image.unk_00 = reader->ReadUInt16();
                 image.id = reader->ReadUByte();
-                std::string sourceFile = reader->ReadString();
-                void* sourceData = GetResourceDataByName(sourceFile.c_str(), true);
-                image.source = sourceData;
+                std::string imagePath = "__OTR__" + reader->ReadString();
+                setMesh->imagePaths.push_back(imagePath);
+                image.source = (void*)setMesh->imagePaths.back().c_str();
                 image.unk_0C = reader->ReadUInt32();
                 image.tlut = reader->ReadUInt32();
                 image.width = reader->ReadUInt16();

@@ -11,6 +11,8 @@
 namespace Ship {
 class SetObjectList : public SceneCommand {
   public:
+    using SceneCommand::SceneCommand;
+
     void* GetPointer();
     size_t GetPointerSize();
 
