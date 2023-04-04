@@ -513,14 +513,14 @@ s16 EnGo2_UpdateTalkStateGoronCityLowestFloor(PlayState* play, EnGo2* this) {
 u16 EnGo2_GetTextIdGoronCityLink(PlayState* play, EnGo2* this) {
     // For rando, prioritize opening the doors in GC when Link the goron has been stopped
     if (gSaveContext.n64ddFlag) {
-        if (!Flags_GetInfTable(INFTABLE_10C)) { // Link goron not stopped
+        if (!Flags_GetInfTable(INFTABLE_STOPPED_GORON_LINKS_ROLLING)) {
             return 0x3030;
-        } else if (!Flags_GetInfTable(INFTABLE_109)) { // Doors not opened
+        } else if (!Flags_GetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED)) {
             return 0x3036;
         } else if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE)) {
             return 0x3041;
         } else { 
-            return Flags_GetInfTable(INFTABLE_10E) ? 0x3038 : 0x3037;
+            return Flags_GetInfTable(INFTABLE_SPOKE_TO_GORON_LINK) ? 0x3038 : 0x3037;
         }
     }
 
@@ -551,7 +551,7 @@ s16 EnGo2_UpdateTalkStateGoronCityLink(PlayState* play, EnGo2* this) {
                             return NPC_TALK_STATE_IDLE;
                         }
 
-                        Flags_SetInfTable(INFTABLE_109);
+                        Flags_SetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED);
                         EnGo2_GetItemEntry(this, play, Randomizer_GetItemFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON));
                         this->actionFunc = EnGo2_SetupGetItem;
                         Flags_SetTreasure(play, 0x1F);
