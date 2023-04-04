@@ -212,7 +212,9 @@ void CheckChecks(GetItemEntry giEntry = GET_ITEM_NONE) {
     for (auto [rc, rco] : rcobjs) {
         if (checkTrackerData.contains(rc)) {
             RandomizerCheckTrackerData rcData = checkTrackerData.find(rc)->second;
-            if (HasItemBeenCollected(rcData.rc) && rcData.status != RCSHOW_COLLECTED && rcData.status != RCSHOW_SAVED) {
+            GetItemID giid =  OTRGlobals::Instance->gRandomizer->GetItemIdFromRandomizerGet(OTRGlobals::Instance->gRandomizer->GetRandomizerGetDataFromKnownCheck(rc).rgID, rco->ogItemId);
+            bool match = giEntry.itemId == ITEM_NONE || giid == giEntry.getItemId;
+            if (match && (gPlayState->sceneNum == rco->sceneId) && HasItemBeenCollected(rcData.rc) && rcData.status != RCSHOW_COLLECTED && rcData.status != RCSHOW_SAVED) {
                 SetCheckCollected(rc);
             }
         }
@@ -368,8 +370,10 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
                  actor->params);
              }
          }
-         if (check != RC_UNKNOWN_CHECK && checkTrackerData.contains(check)) {
-             SetCheckCollected(check);
+         if (check != RC_UNKNOWN_CHECK) {
+             if (checkTrackerData.contains(check)) {
+                 SetCheckCollected(check);
+             }
              return;
          }
     } //else {
@@ -378,7 +382,7 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
              return;
          }
    // }
-    CheckChecks();
+    CheckChecks(giEntry);
     gPlayState->lastCheck = nullptr;
 }
 
