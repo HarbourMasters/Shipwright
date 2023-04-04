@@ -872,7 +872,7 @@ void Play_Update(PlayState* play) {
                             }
 
                             if (gPlayState->sceneNum != SCENE_KAKUSIANA && gPlayState->sceneNum != SCENE_YOUSEI_IZUMI_YOKO && gPlayState->sceneNum != SCENE_YOUSEI_IZUMI_TATE &&
-                                gPlayState->sceneNum != SCENE_SHOP1) {
+                                gPlayState->sceneNum != SCENE_SHOP1 && gPlayState->sceneNum != SCENE_DAIYOUSEI_IZUMI && gPlayState->sceneNum != SCENE_TOKINOMA) {
                                 gSaveContext.lastScene = gPlayState->sceneNum;
                             }
 

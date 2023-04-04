@@ -236,8 +236,10 @@ void Randomizer_GiveSkullReward(EnSi* this, PlayState* play) {
         if (getItem.getItemId == GI_SWORD_BGS) {
             gSaveContext.bgsFlag = true;
         }
+        gPlayState->lastCheck = &this->actor;
         Item_Give(play, giveItemId);
     } else if (getItem.modIndex == MOD_RANDOMIZER) {
+        gPlayState->lastCheck = &this->actor;
         Randomizer_Item_Give(play, getItem);
     }
 }
