@@ -214,7 +214,7 @@ void CheckChecks(GetItemEntry giEntry = GET_ITEM_NONE) {
             RandomizerCheckTrackerData rcData = checkTrackerData.find(rc)->second;
             GetItemID giid =  OTRGlobals::Instance->gRandomizer->GetItemIdFromRandomizerGet(OTRGlobals::Instance->gRandomizer->GetRandomizerGetDataFromKnownCheck(rc).rgID, rco->ogItemId);
             bool match = giEntry.itemId == ITEM_NONE || giid == giEntry.getItemId;
-            if (match && (gPlayState->sceneNum == rco->sceneId) && HasItemBeenCollected(rcData.rc) && rcData.status != RCSHOW_COLLECTED && rcData.status != RCSHOW_SAVED) {
+            if (match && HasItemBeenCollected(rcData.rc) && rcData.status != RCSHOW_COLLECTED && rcData.status != RCSHOW_SAVED) {
                 SetCheckCollected(rc);
             }
         }
