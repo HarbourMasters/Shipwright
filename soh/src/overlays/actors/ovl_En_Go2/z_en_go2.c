@@ -511,8 +511,17 @@ s16 EnGo2_UpdateTalkStateGoronCityLowestFloor(PlayState* play, EnGo2* this) {
 }
 
 u16 EnGo2_GetTextIdGoronCityLink(PlayState* play, EnGo2* this) {
-    if(gSaveContext.n64ddFlag) {
-        return 0x3036;
+    // For rando, prioritize opening the doors in GC when Link the goron has been stopped
+    if (gSaveContext.n64ddFlag) {
+        if (!Flags_GetInfTable(INFTABLE_10C)) { // Link goron not stopped
+            return 0x3030;
+        } else if (!Flags_GetInfTable(INFTABLE_109)) { // Doors not opened
+            return 0x3036;
+        } else if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE)) {
+            return 0x3041;
+        } else { 
+            return Flags_GetInfTable(INFTABLE_10E) ? 0x3038 : 0x3037;
+        }
     }
 
     if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
@@ -531,29 +540,28 @@ u16 EnGo2_GetTextIdGoronCityLink(PlayState* play, EnGo2* this) {
 s16 EnGo2_UpdateTalkStateGoronCityLink(PlayState* play, EnGo2* this) {
     switch (EnGo2_GetDialogState(this, play)) {
         case TEXT_STATE_CLOSING:
-            if(!gSaveContext.n64ddFlag) {
-                switch (this->actor.textId) {
-                    case 0x3036:
+            switch (this->actor.textId) {
+                case 0x3036:
+                    if (!gSaveContext.n64ddFlag) {
                         EnGo2_GetItem(this, play, GI_TUNIC_GORON);
                         this->actionFunc = EnGo2_SetupGetItem;
                         return NPC_TALK_STATE_ACTION;
-                    case 0x3037:
-                        gSaveContext.infTable[16] |= 0x4000;
-                    default:
-                        return NPC_TALK_STATE_IDLE;
-                }
-            } else {
-                if (Flags_GetTreasure(play, 0x1F)) {
-                    return NPC_TALK_STATE_IDLE;
-                }
-                
-                gSaveContext.infTable[16] |= 0x200;
-                EnGo2_GetItemEntry(this, play, Randomizer_GetItemFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON));
-                this->actionFunc = EnGo2_SetupGetItem;
-                Flags_SetTreasure(play, 0x1F);
-                return NPC_TALK_STATE_ACTION;
-            }
+                    } else {
+                        if (Flags_GetTreasure(play, 0x1F)) {
+                            return NPC_TALK_STATE_IDLE;
+                        }
 
+                        Flags_SetInfTable(INFTABLE_109);
+                        EnGo2_GetItemEntry(this, play, Randomizer_GetItemFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON));
+                        this->actionFunc = EnGo2_SetupGetItem;
+                        Flags_SetTreasure(play, 0x1F);
+                        return NPC_TALK_STATE_ACTION;
+                    }
+                case 0x3037:
+                    gSaveContext.infTable[16] |= 0x4000;
+                default:
+                    return NPC_TALK_STATE_IDLE;
+            }
         case TEXT_STATE_CHOICE:
             if (Message_ShouldAdvance(play)) {
                 if (this->actor.textId == 0x3034) {
