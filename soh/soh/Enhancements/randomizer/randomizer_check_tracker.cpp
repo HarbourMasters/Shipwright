@@ -37,6 +37,8 @@ void from_json(const json& j, RandomizerCheckTrackerData& rctd) {
     rctd.hintItem = j["hintItem"];
 }
 
+bool bypassRandoCheck = true;
+
 namespace CheckTracker {
 // persistent during gameplay
 bool initialized;
@@ -308,7 +310,7 @@ void CheckTrackerFrame() {
 void CheckTrackerSaleEnd(GetItemEntry giEntry) {
     if (pendingSaleCheck) {
         pendingSaleCheck = false;
-        CheckChecks(giEntry);
+        CheckChecks();
     }
 }
 
@@ -316,6 +318,9 @@ RandomizerCheck daiyouseiChecks[] = { RC_OGC_GREAT_FAIRY_REWARD, RC_DMT_GREAT_FA
 RandomizerCheck izumiYokoChecks[] = { RC_ZF_GREAT_FAIRY_REWARD, RC_COLOSSUS_GREAT_FAIRY_REWARD, RC_HC_GREAT_FAIRY_REWARD };
 
 void CheckTrackerItemReceive(GetItemEntry giEntry) {
+    if (!gSaveContext.n64ddFlag && !bypassRandoCheck)
+        return;
+
     if (gPlayState == nullptr) {
         return;
     }
@@ -466,6 +471,10 @@ void DrawCheckTracker(bool& open) {
         CVarSetInteger("gCheckTrackerEnabled", 0);
         return;
     }
+
+    // temporarily disable item tracking for vanilla games
+    if (!gSaveContext.n64ddFlag && !bypassRandoCheck)
+        return;
 
     ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
 
