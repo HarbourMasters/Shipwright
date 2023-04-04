@@ -880,4 +880,119 @@ void StaticData::InitItemTable() {
                                        RG_TRIFORCE, false, &Logic::noVariable, RG_NONE);
     itemTable[RG_HINT] = RandoItem(RG_HINT, Text{ "Hint", "Indice", "Hinweis" }, ITEMTYPE_EVENT, RG_HINT, false,
                                    &Logic::noVariable, RG_NONE);
+    // Individual stages of progressive items (only here for GetItemEntry purposes, not for use in seed gen)
+    itemTable[RG_HOOKSHOT] =
+        RandoItem(RG_HOOKSHOT, Text{ "Hookshot", "Grappin", "Fanghaken" }, ITEMTYPE_ITEM, GI_HOOKSHOT, true,
+                  &Logic::ProgressiveHookshot, RG_HOOKSHOT, ITEM_HOOKSHOT, OBJECT_GI_HOOKSHOT, GID_HOOKSHOT, 0x36, 0x80,
+                  CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_LONGSHOT] =
+        RandoItem(RG_LONGSHOT, Text{ "Longshot", "Super-Grappin", "Enterhaken" }, ITEMTYPE_ITEM, GI_LONGSHOT, true,
+                  &Logic::ProgressiveHookshot, RG_LONGSHOT, ITEM_LONGSHOT, OBJECT_GI_HOOKSHOT, GID_LONGSHOT, 0x4F, 0x80,
+                  CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_FAIRY_OCARINA] =
+        RandoItem(RG_FAIRY_OCARINA, Text{ "Fairy Ocarina", "Ocarina des fées", "Feen-Okarina" }, ITEMTYPE_ITEM,
+                  GI_OCARINA_FAIRY, true, &Logic::ProgressiveOcarina, RG_FAIRY_OCARINA, ITEM_OCARINA_FAIRY,
+                  OBJECT_GI_OCARINA_0, GID_OCARINA_FAIRY, 0x4A, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_OCARINA_OF_TIME] =
+        RandoItem(RG_OCARINA_OF_TIME, Text{ "Ocarina of Time", "Ocarina du Temps", "Okarina der Zeit" }, ITEMTYPE_ITEM,
+                  GI_OCARINA_OOT, true, &Logic::ProgressiveOcarina, RG_OCARINA_OF_TIME, ITEM_OCARINA_TIME,
+                  OBJECT_GI_OCARINA, GID_OCARINA_TIME, 0x3A, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_BOMB_BAG] =
+        RandoItem(RG_BOMB_BAG, Text{ "Bomb Bag", "Sac de Bombes", "Bombentasche" }, ITEMTYPE_ITEM, GI_BOMB_BAG_20, true,
+                  &Logic::ProgressiveBombBag, RG_BOMB_BAG, ITEM_BOMB_BAG_20, OBJECT_GI_BOMBPOUCH, GID_BOMB_BAG_20, 0x58,
+                  0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_BIG_BOMB_BAG] =
+        RandoItem(RG_BIG_BOMB_BAG, Text{ "Big Bomb Bag", "Grand Sac de Bombes", "Große Bombentasche" }, ITEMTYPE_ITEM,
+                  GI_BOMB_BAG_30, true, &Logic::ProgressiveBombBag, RG_BIG_BOMB_BAG, ITEM_BOMB_BAG_30,
+                  OBJECT_GI_BOMBPOUCH, GID_BOMB_BAG_30, 0x59, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_NONE);
+    itemTable[RG_BIGGEST_BOMB_BAG] = RandoItem(
+        RG_BIGGEST_BOMB_BAG, Text{ "Biggest Bomb Bag", "Énorme Sac de Bombes", "Größte Bombentasche" }, ITEMTYPE_ITEM,
+        GI_BOMB_BAG_40, true, &Logic::ProgressiveBombBag, RG_BIGGEST_BOMB_BAG, ITEM_BOMB_BAG_40, OBJECT_GI_BOMBPOUCH,
+        GID_BOMB_BAG_40, 0x5A, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_NONE);
+    itemTable[RG_FAIRY_BOW] = RandoItem(RG_FAIRY_BOW, Text{ "Fairy Bow", "Arc des Fées", "Feen-Bogen" }, ITEMTYPE_ITEM,
+                                        GI_BOW, true, &Logic::ProgressiveBow, RG_FAIRY_BOW, ITEM_BOW, OBJECT_GI_BOW,
+                                        GID_BOW, 0x31, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_BIG_QUIVER] =
+        RandoItem(RG_BIG_QUIVER, Text{ "Big Quiver", "Grand carquois", "Großer Köcher" }, ITEMTYPE_ITEM, GI_QUIVER_40,
+                  true, &Logic::ProgressiveBow, RG_BIG_QUIVER, ITEM_QUIVER_40, OBJECT_GI_ARROWCASE, GID_QUIVER_40, 0x56,
+                  0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_NONE);
+    itemTable[RG_BIGGEST_QUIVER] =
+        RandoItem(RG_BIGGEST_QUIVER, Text{ "Biggest Quiver", "Énorme carquois", "Größter Köcher" }, ITEMTYPE_ITEM,
+                  GI_QUIVER_50, true, &Logic::ProgressiveBow, RG_BIGGEST_QUIVER, ITEM_QUIVER_50, OBJECT_GI_ARROWCASE,
+                  GID_QUIVER_50, 0x57, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_NONE);
+    itemTable[RG_FAIRY_SLINGSHOT] =
+        RandoItem(RG_FAIRY_SLINGSHOT, Text{ "Fairy Slingshot", "Lance-Pierre des Fées", "Feen-Schleuder" },
+                  ITEMTYPE_ITEM, GI_SLINGSHOT, true, &Logic::ProgressiveBulletBag, RG_FAIRY_SLINGSHOT, ITEM_SLINGSHOT,
+                  OBJECT_GI_PACHINKO, GID_SLINGSHOT, 0x30, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_BIG_BULLET_BAG] = RandoItem(
+        RG_BIG_BULLET_BAG,
+        Text{ "Big Deku Seed Bullet Bag", "Grand sac de graines mojo", "Großer Deku-Samenkugelsack" }, ITEMTYPE_ITEM,
+        GI_BULLET_BAG_30, true, &Logic::ProgressiveBulletBag, RG_BIG_BULLET_BAG, ITEM_BULLET_BAG_30,
+        OBJECT_GI_DEKUPOUCH, GID_BULLET_BAG, 0x07, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_NONE);
+    itemTable[RG_BIGGEST_BULLET_BAG] = RandoItem(
+        RG_BIGGEST_BULLET_BAG,
+        Text{ "Biggest Deku Seed Bullet Bag", "Énorme sac de graines mojo", "Größte Deku-Samenkugelsack" },
+        ITEMTYPE_ITEM, GI_BULLET_BAG_40, true, &Logic::ProgressiveBulletBag, RG_BIGGEST_BULLET_BAG, ITEM_BULLET_BAG_40,
+        OBJECT_GI_DEKUPOUCH, GID_BULLET_BAG, 0x07, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_NONE);
+    itemTable[RG_GORONS_BRACELET] =
+        RandoItem(RG_GORONS_BRACELET, Text{ "Goron's Bracelet", "Bracelet Goron", "Goronen-Armband" }, ITEMTYPE_ITEM,
+                  GI_BRACELET, true, &Logic::ProgressiveStrength, RG_GORONS_BRACELET, ITEM_BRACELET, OBJECT_GI_BRACELET,
+                  GID_BRACELET, 0x79, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_SILVER_GAUNTLETS] =
+        RandoItem(RG_SILVER_GAUNTLETS, Text{ "Silver Gauntlets", "Gantelets d'argent", "Silberne Fehdehandschuhe" },
+                  ITEMTYPE_ITEM, GI_GAUNTLETS_SILVER, true, &Logic::ProgressiveStrength, RG_SILVER_GAUNTLETS,
+                  ITEM_GAUNTLETS_SILVER, OBJECT_GI_GLOVES, GID_GAUNTLETS_SILVER, 0x5B, 0x80, CHEST_ANIM_LONG,
+                  ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_GOLDEN_GAUNTLETS] = RandoItem(
+        RG_GOLDEN_GAUNTLETS, Text{ "Golden Gauntlets", "Gantelets d'or", "Goldene Fehdehandschuhe" }, ITEMTYPE_ITEM,
+        GI_GAUNTLETS_GOLD, true, &Logic::ProgressiveStrength, RG_GOLDEN_GAUNTLETS, ITEM_GAUNTLETS_GOLD,
+        OBJECT_GI_GLOVES, GID_GAUNTLETS_GOLD, 0x5C, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_SILVER_SCALE] =
+        RandoItem(RG_SILVER_SCALE, Text{ "Silver Scale", "Écaille d'argent", "Silberne Skala" }, ITEMTYPE_ITEM,
+                  GI_SCALE_SILVER, true, &Logic::ProgressiveScale, RG_SILVER_SCALE, ITEM_SCALE_SILVER, OBJECT_GI_SCALE,
+                  GID_SCALE_SILVER, 0xCD, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_GOLDEN_SCALE] =
+        RandoItem(RG_GOLDEN_SCALE, Text{ "Golden Scale", "Écaille d'or", "Goldene Skala" }, ITEMTYPE_ITEM,
+                  GI_SCALE_GOLD, true, &Logic::ProgressiveScale, RG_GOLDEN_SCALE, ITEM_SCALE_GOLDEN, OBJECT_GI_SCALE,
+                  GID_SCALE_GOLDEN, 0xCE, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_ADULT_WALLET] =
+        RandoItem(RG_ADULT_WALLET, Text{ "Adult Wallet", "Grande Bourse", "Erwachsene Geldbörse" }, ITEMTYPE_ITEM,
+                  GI_WALLET_ADULT, true, &Logic::ProgressiveWallet, RG_ADULT_WALLET, ITEM_WALLET_ADULT, OBJECT_GI_PURSE,
+                  GID_WALLET_ADULT, 0x5E, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_GIANT_WALLET] =
+        RandoItem(RG_GIANT_WALLET, Text{ "Giant Wallet", "Bourse de Géant", "Riesige Geldbörse" }, ITEMTYPE_ITEM,
+                  GI_WALLET_GIANT, true, &Logic::ProgressiveWallet, RG_GIANT_WALLET, ITEM_WALLET_GIANT, OBJECT_GI_PURSE,
+                  GID_WALLET_GIANT, 0x5F, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE);
+    itemTable[RG_TYCOON_WALLET] = RandoItem(
+        RG_TYCOON_WALLET, Text{ "Tycoon Wallet", "Bourse de Magnat", "Reiche Geldbörse" }, ITEMTYPE_ITEM,
+        RG_TYCOON_WALLET, true, &Logic::ProgressiveWallet, RG_TYCOON_WALLET, RG_TYCOON_WALLET, OBJECT_GI_PURSE,
+        GID_WALLET_GIANT, TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
+    itemTable[RG_DEKU_NUT_CAPACITY_30] = RandoItem(
+        RG_DEKU_NUT_CAPACITY_30,
+        Text{ "Deku Nut Capacity (30)", "Capacité de noix Mojo (30)", "Deku Nuss Kapazität (30)" }, ITEMTYPE_ITEM,
+        GI_NUT_UPGRADE_30, false, &Logic::noVariable, RG_DEKU_NUT_CAPACITY_30, ITEM_NUT_UPGRADE_30, OBJECT_GI_NUTS,
+        GID_NUTS, 0xA7, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER, MOD_NONE);
+    itemTable[RG_DEKU_NUT_CAPACITY_40] = RandoItem(
+        RG_DEKU_NUT_CAPACITY_40,
+        Text{ "Deku Nut Capacity (40)", "Capacité de noix Mojo (40)", "Deku Nuss Kapazität (40)" }, ITEMTYPE_ITEM,
+        GI_NUT_UPGRADE_40, false, &Logic::noVariable, RG_DEKU_NUT_CAPACITY_40, ITEM_NUT_UPGRADE_40, OBJECT_GI_NUTS,
+        GID_NUTS, 0xA8, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER, MOD_NONE);
+    itemTable[RG_DEKU_STICK_CAPACITY_20] = RandoItem(
+        RG_DEKU_STICK_CAPACITY_20,
+        Text{ "Deku Stick Capacity (20)", "Capacité de Bâtons Mojo (20)", "Deku Stick Kapazität (20)" }, ITEMTYPE_ITEM,
+        GI_STICK_UPGRADE_20, false, &Logic::noVariable, RG_DEKU_STICK_CAPACITY_20, ITEM_STICK_UPGRADE_20,
+        OBJECT_GI_STICK, GID_STICK, 0x90, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER, MOD_NONE);
+    itemTable[RG_DEKU_STICK_CAPACITY_30] = RandoItem(
+        RG_DEKU_STICK_CAPACITY_30,
+        Text{ "Deku Stick Capacity (30)", "Capacité de Bâtons Mojo (30)", "Deku Stick Kapazität (30)" }, ITEMTYPE_ITEM,
+        GI_STICK_UPGRADE_30, false, &Logic::noVariable, RG_DEKU_STICK_CAPACITY_30, ITEM_STICK_UPGRADE_30,
+        OBJECT_GI_STICK, GID_STICK, 0x91, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER, MOD_NONE);
+    itemTable[RG_MAGIC_SINGLE] =
+        RandoItem(RG_MAGIC_SINGLE, Text{ "Magic Meter", "Jauge de Magie", "Magisches Messgerät" }, ITEMTYPE_ITEM, 0x8A,
+                  true, &Logic::ProgressiveMagic, RG_MAGIC_SINGLE, RG_MAGIC_SINGLE, OBJECT_GI_MAGICPOT, GID_MAGIC_SMALL,
+                  0xE4, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
+    itemTable[RG_MAGIC_DOUBLE] = RandoItem(
+        RG_MAGIC_DOUBLE, Text{ "Enhanced Magic Meter", "Jauge de Magie améliorée", "Verbesserte Magieanzeige" },
+        ITEMTYPE_ITEM, 0x8A, true, &Logic::ProgressiveMagic, RG_MAGIC_DOUBLE, RG_MAGIC_DOUBLE, OBJECT_GI_MAGICPOT,
+        GID_MAGIC_LARGE, 0xE8, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
 }
