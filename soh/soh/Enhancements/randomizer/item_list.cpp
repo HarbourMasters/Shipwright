@@ -164,75 +164,52 @@ void StaticData::InitItemTable() {
     // Progressive Items
     itemTable[RG_PROGRESSIVE_HOOKSHOT] =
         RandoItem(RG_PROGRESSIVE_HOOKSHOT, Text{ "Progressive Hookshot", "Grappin (prog.)", "Progressiver Fanghaken" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_HOOKSHOT, true, &Logic::ProgressiveHookshot, RG_PROGRESSIVE_HOOKSHOT,
-                  ITEM_HOOKSHOT, OBJECT_GI_HOOKSHOT, GID_HOOKSHOT, 0x36, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
-                  MOD_RANDOMIZER);
+                  ITEMTYPE_ITEM, RG_PROGRESSIVE_HOOKSHOT, true, &Logic::ProgressiveHookshot, RG_PROGRESSIVE_HOOKSHOT);
     itemTable[RG_PROGRESSIVE_STRENGTH] =
         RandoItem(RG_PROGRESSIVE_STRENGTH,
                   Text{ "Progressive Strength Upgrade", "Amélioration de Force (prog.)", "Progressives Kraft-Upgrade" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_STRENGTH, true, &Logic::ProgressiveStrength, RG_PROGRESSIVE_STRENGTH,
-                  ITEM_BRACELET, OBJECT_GI_BRACELET, GID_BRACELET, 0x79, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
-                  MOD_RANDOMIZER);
+                  ITEMTYPE_ITEM, RG_PROGRESSIVE_STRENGTH, true, &Logic::ProgressiveStrength, RG_PROGRESSIVE_STRENGTH);
     itemTable[RG_PROGRESSIVE_BOMB_BAG] =
         RandoItem(RG_PROGRESSIVE_BOMB_BAG,
                   Text{ "Progressive Bomb Bag", "Sac de Bombes (prog.)", "Progressive Bombentasche" }, ITEMTYPE_ITEM,
-                  RG_PROGRESSIVE_BOMB_BAG, true, &Logic::ProgressiveBombBag, RG_PROGRESSIVE_BOMB_BAG, ITEM_BOMB_BAG_20,
-                  OBJECT_GI_BOMBPOUCH, GID_BOMB_BAG_20, 0x58, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
-                  MOD_RANDOMIZER);
+                  RG_PROGRESSIVE_BOMB_BAG, true, &Logic::ProgressiveBombBag, RG_PROGRESSIVE_BOMB_BAG);
     itemTable[RG_PROGRESSIVE_BOW] =
         RandoItem(RG_PROGRESSIVE_BOW, Text{ "Progressive Bow", "Arc (prog.)", "Progressiver Bogen" }, ITEMTYPE_ITEM,
-                  RG_PROGRESSIVE_BOW, true, &Logic::ProgressiveBow, RG_PROGRESSIVE_BOW, ITEM_BOW, OBJECT_GI_BOW,
-                  GID_BOW, 0x31, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
+                  RG_PROGRESSIVE_BOW, true, &Logic::ProgressiveBow, RG_PROGRESSIVE_BOW);
     itemTable[RG_PROGRESSIVE_SLINGSHOT] =
         RandoItem(RG_PROGRESSIVE_SLINGSHOT,
                   Text{ "Progressive Slingshot", "Lance-Pierre (prog.)", "Progressive Steinschleuder" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_SLINGSHOT, true, &Logic::ProgressiveBulletBag, RG_PROGRESSIVE_SLINGSHOT,
-                  ITEM_SLINGSHOT, OBJECT_GI_PACHINKO, GID_SLINGSHOT, 0x30, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
-                  MOD_RANDOMIZER);
+                  ITEMTYPE_ITEM, RG_PROGRESSIVE_SLINGSHOT, true, &Logic::ProgressiveBulletBag,
+                  RG_PROGRESSIVE_SLINGSHOT);
     itemTable[RG_PROGRESSIVE_WALLET] = 
         RandoItem(RG_PROGRESSIVE_WALLET, Text{ "Progressive Wallet", "Bourse (prog.)", "Progressive Brieftasche" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_WALLET, true, &Logic::ProgressiveWallet, RG_PROGRESSIVE_WALLET,
-                  ITEM_WALLET_ADULT, OBJECT_GI_PURSE, GID_WALLET_ADULT, 0x5E, 0x80, CHEST_ANIM_LONG,
-                  ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
+                  ITEMTYPE_ITEM, RG_PROGRESSIVE_WALLET, true, &Logic::ProgressiveWallet, RG_PROGRESSIVE_WALLET);
     itemTable[RG_PROGRESSIVE_SCALE] =
         RandoItem(RG_PROGRESSIVE_SCALE, Text{ "Progressive Scale", "Écaille (prog.)", "Progressive Skala" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_SCALE, true, &Logic::ProgressiveScale, RG_PROGRESSIVE_SCALE,
-                  ITEM_SCALE_SILVER, OBJECT_GI_SCALE, GID_SCALE_SILVER, 0xCD, 0x80, CHEST_ANIM_LONG,
-                  ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
+                  ITEMTYPE_ITEM, RG_PROGRESSIVE_SCALE, true, &Logic::ProgressiveScale, RG_PROGRESSIVE_SCALE);
     itemTable[RG_PROGRESSIVE_NUT_UPGRADE] =
         RandoItem(RG_PROGRESSIVE_NUT_UPGRADE,
                   Text{ "Progressive Nut Capacity", "Capacité de Noix (prog.)", "Progressive Nusskapazität" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_NUT_UPGRADE, false, &Logic::noVariable, RG_PROGRESSIVE_NUT_UPGRADE, 
-                  ITEM_NUT_UPGRADE_30, OBJECT_GI_NUTS, GID_NUTS, 0xA7, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,         
-                  MOD_RANDOMIZER);
+                  ITEMTYPE_ITEM, RG_PROGRESSIVE_NUT_UPGRADE, false, &Logic::noVariable, RG_PROGRESSIVE_NUT_UPGRADE);
     itemTable[RG_PROGRESSIVE_STICK_UPGRADE] =
         RandoItem(RG_PROGRESSIVE_STICK_UPGRADE,
                   Text{ "Progressive Stick Capacity", "Capacité de Bâtons (prog.)", "Progressive Stick-Kapazität" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_STICK_UPGRADE, false, &Logic::noVariable, RG_PROGRESSIVE_STICK_UPGRADE,
-                  ITEM_STICK_UPGRADE_20, OBJECT_GI_STICK, GID_STICK, 0x90, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,         
-                  MOD_RANDOMIZER);
+                  ITEMTYPE_ITEM, RG_PROGRESSIVE_STICK_UPGRADE, false, &Logic::noVariable, RG_PROGRESSIVE_STICK_UPGRADE);
     itemTable[RG_PROGRESSIVE_BOMBCHUS] =
         RandoItem(RG_PROGRESSIVE_BOMBCHUS, Text{ "Progressive Bombchu", "Missiles (prog.)", "Progressive Kriechgrube" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_BOMBCHUS, true, &Logic::Bombchus, RG_PROGRESSIVE_BOMBCHUS,
-                  ITEM_BOMBCHUS_20, OBJECT_GI_BOMB_2, GID_BOMBCHU, 0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,           
-                  MOD_RANDOMIZER);
+                  ITEMTYPE_ITEM, RG_PROGRESSIVE_BOMBCHUS, true, &Logic::Bombchus, RG_PROGRESSIVE_BOMBCHUS);
     itemTable[RG_PROGRESSIVE_MAGIC_METER] =
         RandoItem(RG_PROGRESSIVE_MAGIC_METER,
                   Text{ "Progressive Magic Meter", "Jauge de Magie (prog.)", "Progressives magisches Messgerät" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_MAGIC_METER, true, &Logic::ProgressiveMagic, RG_PROGRESSIVE_MAGIC_METER,
-                  RG_MAGIC_SINGLE, OBJECT_GI_MAGICPOT, GID_MAGIC_SMALL, 0xE4, 0x80, CHEST_ANIM_LONG, 
-                  ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
+                  ITEMTYPE_ITEM, RG_PROGRESSIVE_MAGIC_METER, true, &Logic::ProgressiveMagic,
+                  RG_PROGRESSIVE_MAGIC_METER);
     itemTable[RG_PROGRESSIVE_OCARINA] =
         RandoItem(RG_PROGRESSIVE_OCARINA, Text{ "Progressive Ocarina", "Ocarina (prog.)", "Progressive Okarina" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_OCARINA, true, &Logic::ProgressiveOcarina, RG_PROGRESSIVE_OCARINA,
-                  ITEM_OCARINA_FAIRY, OBJECT_GI_OCARINA_0, GID_OCARINA_FAIRY, 0x4A, 0x80, CHEST_ANIM_LONG,
-                  ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER);
+                  ITEMTYPE_ITEM, RG_PROGRESSIVE_OCARINA, true, &Logic::ProgressiveOcarina, RG_PROGRESSIVE_OCARINA);
     itemTable[RG_PROGRESSIVE_GORONSWORD] =
         RandoItem(RG_PROGRESSIVE_GORONSWORD,
                   Text{ "Progressive Goron Sword", "Épée Goron (prog.)", "Progressives Goronenschwert" }, ITEMTYPE_ITEM,
-                  RG_PROGRESSIVE_GORONSWORD, true, &Logic::ProgressiveGiantKnife, RG_PROGRESSIVE_GORONSWORD,
-                  ITEM_SWORD_BGS, OBJECT_GI_LONGSWORD, GID_SWORD_BGS, 0x4B, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
-                  MOD_RANDOMIZER);
+                  RG_PROGRESSIVE_GORONSWORD, true, &Logic::ProgressiveGiantKnife, RG_PROGRESSIVE_GORONSWORD);
     // Bottles
     itemTable[RG_EMPTY_BOTTLE] =
         RandoItem(RG_EMPTY_BOTTLE, Text{ "Empty Bottle", "Bouteille Vide", "Leere Flasche" }, ITEMTYPE_ITEM,
