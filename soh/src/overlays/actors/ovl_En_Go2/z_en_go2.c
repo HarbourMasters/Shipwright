@@ -1218,7 +1218,9 @@ s32 EnGo2_IsCameraModified(EnGo2* this, PlayState* play) {
         (this->actor.params & 0x1F) == GORON_CITY_STAIRWELL || (this->actor.params & 0x1F) == GORON_DMT_BIGGORON ||
         (this->actor.params & 0x1F) == GORON_MARKET_BAZAAR) {
         return true;
-    } else if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
+    } else if (((!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
+                (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) &&
+                CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
         return true;
     } else {
         return false;
@@ -1275,7 +1277,9 @@ void EnGo2_SelectGoronWakingUp(EnGo2* this) {
             EnGo2_BiggoronWakingUp(this);
             break;
         case GORON_CITY_LINK:
-            if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
+            if (((!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
+                 (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) &&
+                CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
                 EnGo2_WakingUp(this);
                 break;
             }
@@ -1635,7 +1639,9 @@ void EnGo2_Init(Actor* thisx, PlayState* play) {
             if ((gSaveContext.infTable[16] & 0x200)) {
                 Path_CopyLastPoint(this->path, &this->actor.world.pos);
                 this->actor.home.pos = this->actor.world.pos;
-                if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
+                if (((!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
+                     (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) &&
+                    CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
                     EnGo2_GetItemAnimation(this, play);
                 } else {
                     this->actionFunc = EnGo2_CurledUp;
