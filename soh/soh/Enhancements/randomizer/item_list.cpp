@@ -973,3 +973,7 @@ void StaticData::InitItemTable() {
         ITEMTYPE_ITEM, 0x8A, true, &Logic::ProgressiveMagic, RG_MAGIC_DOUBLE, RG_MAGIC_DOUBLE, OBJECT_GI_MAGICPOT,
         GID_MAGIC_LARGE, 0xE8, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_RANDOMIZER);
 }
+
+RandoItem& StaticData::RetrieveItem(const RandomizerGet rgid) {
+    return itemTable[rgid];
+}

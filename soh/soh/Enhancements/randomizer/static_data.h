@@ -14,6 +14,7 @@ class StaticData {
 
     public:
       static void InitItemTable();
+      static RandoItem& RetrieveItem(const RandomizerGet rgid);
       StaticData();
       ~StaticData();
 

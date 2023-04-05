@@ -89,3 +89,109 @@ ItemOverride_Value RandoItem::Value() const {
     }
     return val;
 }
+
+const Text& RandoItem::GetName() const {
+    return name;
+}
+
+bool RandoItem::IsAdvancement() const {
+    return advancement;
+}
+
+int RandoItem::GetItemID() const {
+    return getItemId;
+}
+
+ItemType RandoItem::GetItemType() const {
+    return type;
+}
+
+RandomizerGet RandoItem::GetRandomizerGet() {
+    return randomizerGet;
+}
+
+uint16_t RandoItem::GetPrice() const {
+    return price;
+}
+
+void RandoItem::SetPrice(uint16_t price_) {
+    price = price_;
+}
+
+void RandoItem::SetAsPlaythrough() {
+    playthrough = true;
+}
+
+bool RandoItem::IsPlaythrough() const {
+    return playthrough;
+}
+
+bool RandoItem::IsBottleItem() const {
+    return getItemId == 0x0F ||                      // Empty Bottle
+           getItemId == 0X14 ||                      // Bottle with Milk
+           (getItemId >= 0x8C && getItemId <= 0x94); // Rest of bottled contents
+}
+
+bool RandoItem::IsMajorItem() const {
+    using namespace Settings;
+    if (type == ITEMTYPE_TOKEN) {
+        return Bridge.Is(RAINBOWBRIDGE_TOKENS) || LACSCondition == LACSCONDITION_TOKENS;
+    }
+
+    if (type == ITEMTYPE_DROP || type == ITEMTYPE_EVENT || type == ITEMTYPE_SHOP || type == ITEMTYPE_MAP ||
+        type == ITEMTYPE_COMPASS) {
+        return false;
+    }
+
+    if (type == ITEMTYPE_DUNGEONREWARD && (ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON))) {
+        return false;
+    }
+
+    if ((randomizerGet == RG_BOMBCHU_5 || randomizerGet == RG_BOMBCHU_10 || randomizerGet == RG_BOMBCHU_20) &&
+        !BombchusInLogic) {
+        return false;
+    }
+
+    if (hintKey == RG_HEART_CONTAINER || hintKey == RG_PIECE_OF_HEART || hintKey == RG_TREASURE_GAME_HEART) {
+        return false;
+    }
+
+    if (type == ITEMTYPE_SMALLKEY && (Keysanity.Is(KEYSANITY_VANILLA) || Keysanity.Is(KEYSANITY_OWN_DUNGEON))) {
+        return false;
+    }
+
+    if (type == ITEMTYPE_FORTRESS_SMALLKEY && GerudoKeys.Is(GERUDOKEYS_VANILLA)) {
+        return false;
+    }
+
+    if ((type == ITEMTYPE_BOSSKEY && getItemId != 0xAD) &&
+        (BossKeysanity.Is(BOSSKEYSANITY_VANILLA) || BossKeysanity.Is(BOSSKEYSANITY_OWN_DUNGEON))) {
+        return false;
+    }
+    // Ganons Castle Boss Key
+    if (getItemId == 0xAD && (GanonsBossKey.Is(GANONSBOSSKEY_VANILLA) || GanonsBossKey.Is(GANONSBOSSKEY_OWN_DUNGEON))) {
+        return false;
+    }
+
+    if (randomizerGet == RG_GREG_RUPEE) {
+        return Bridge.Is(RAINBOWBRIDGE_GREG);
+    }
+
+    return IsAdvancement();
+}
+
+const uint32_t RandoItem::GetHintKey() const {
+    return hintKey;
+}
+
+const HintText& RandoItem::GetHint() const {
+    return Hint(hintKey);
+}
+
+bool RandoItem::operator==(const RandoItem& right) const {
+    return type == right.GetItemType() && getItemId == right.GetItemID();
+}
+
+bool RandoItem::operator!=(const RandoItem& right) const {
+    return !operator==(right);
+}
