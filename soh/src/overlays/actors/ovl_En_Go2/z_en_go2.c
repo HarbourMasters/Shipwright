@@ -511,7 +511,8 @@ s16 EnGo2_UpdateTalkStateGoronCityLowestFloor(PlayState* play, EnGo2* this) {
 }
 
 u16 EnGo2_GetTextIdGoronCityLink(PlayState* play, EnGo2* this) {
-    // For rando, prioritize opening the doors in GC when Link the goron has been stopped
+    // For rando, prioritize opening the doors in GC when Link the goron has been stopped when
+    // the doors are not opened, otherwise let him talk about the DMC exit or that gorons are saved
     if (gSaveContext.n64ddFlag) {
         if (!Flags_GetInfTable(INFTABLE_STOPPED_GORON_LINKS_ROLLING)) {
             return 0x3030;
@@ -1870,6 +1871,8 @@ void EnGo2_SetGetItem(EnGo2* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
 
+        // For randomizer, handle updating the states for the gorons after receiving the item based on
+        // the goron type rather then the item being received
         if (gSaveContext.n64ddFlag) {
             switch (this->actor.params & 0x1F) {
                 case GORON_DMT_BIGGORON:
