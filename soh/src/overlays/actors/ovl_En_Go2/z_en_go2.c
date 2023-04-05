@@ -1896,9 +1896,7 @@ void EnGo2_SetGetItem(EnGo2* this, PlayState* play) {
                 EnGo2_GetItemAnimation(this, play);
                 return;
             case GI_TUNIC_GORON:
-                if (!gSaveContext.n64ddFlag) {
-                    gSaveContext.infTable[16] |= 0x200;
-                }
+                gSaveContext.infTable[16] |= 0x200;
                 EnGo2_GetItemAnimation(this, play);
                 return;
             case GI_SWORD_BGS:
