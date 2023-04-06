@@ -2821,8 +2821,55 @@ void Inventory_UpdateBottleItem(PlayState* play, u8 item, u8 button) {
         (item == ITEM_BOTTLE)) {
         item = ITEM_MILK_HALF;
     }
+    //rba cases (hacky fix but gets around having to deal with how data is read by game):
+    if (CVarGetInteger("gRestoreRBAValues",0) && button == 0) { //button == 0 check unnecessary but double checks that rba is being performed to avoid any unintended behaviour
+        u8 rbaItem;
+        switch (gSaveContext.equips.cButtonSlots[button - 1]) {
+            case ITEM_MASK_GORON:
+                rbaItem = ITEM_MASK_ZORA;
+                break;
+            case ITEM_MASK_ZORA:
+                rbaItem = ITEM_MASK_GORON;
+                break;
+            case ITEM_MASK_GERUDO:              //unconfirmed if gerudo mask and mask of truth end up with reversed values as fake deku stick count is not visible in menu
+                rbaItem = ITEM_MASK_TRUTH;
+                break;
+            case ITEM_MASK_TRUTH:
+                rbaItem = ITEM_MASK_GERUDO; 
+                break;
+            case ITEM_SOLD_OUT:
+                rbaItem = ITEM_COJIRO;
+                break;
+            case ITEM_POCKET_EGG:
+                rbaItem = ITEM_POCKET_CUCCO;
+                break;
+            case ITEM_POCKET_CUCCO:
+                rbaItem = ITEM_POCKET_EGG;
+                break;
+            case ITEM_COJIRO:
+                rbaItem = ITEM_SOLD_OUT;
+                break;
+            case ITEM_ODD_MUSHROOM:
+                rbaItem = ITEM_SWORD_BROKEN;
+                break;
+            case ITEM_ODD_POTION:
+                rbaItem = ITEM_SAW;
+                break;
+            case ITEM_SAW:
+                rbaItem = ITEM_ODD_POTION;
+                break;
+            case ITEM_SWORD_BROKEN:
+                rbaItem = ITEM_ODD_MUSHROOM;
+                break;
+            default:
+                rbaItem = gSaveContext.equips.cButtonSlots[button - 1];
+                break;
+        }
+        gSaveContext.inventory.items[rbaItem] = item;
+    } else {
+        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] = item;
+    }
 
-    gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] = item;
     gSaveContext.equips.buttonItems[button] = item;
 
     Interface_LoadItemIcon1(play, button);

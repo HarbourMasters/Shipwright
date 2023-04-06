@@ -156,6 +156,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gRedGanonBlood",
     "gHoverFishing",
     "gN64WeirdFrames",
+    "gRestoreRBAValues",
     "gBombchusOOB",
     "gQuickPutaway",
     "gGsCutscene",
