@@ -839,7 +839,7 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Quick Putaway", "gQuickPutaway", true, false);
                 UIWidgets::Tooltip("Restore a bug from NTSC 1.0 that allows putting away an item without an animation and performing Putaway Ocarina Items");
                 UIWidgets::PaddedEnhancementCheckbox("Original RBA Values", "gRestoreRBAValues", true, false);
-                UIWidgets::Tooltip("Restores the original values when performing RBA.");
+                UIWidgets::Tooltip("Restores the original outcomes when performing Reverse Bottle Adventure.");
                 UIWidgets::PaddedEnhancementCheckbox("Restore old Gold Skulltula cutscene", "gGsCutscene", true, false);
 
                 ImGui::EndMenu();
