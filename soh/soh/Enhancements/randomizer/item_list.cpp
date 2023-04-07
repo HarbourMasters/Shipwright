@@ -164,52 +164,49 @@ void StaticData::InitItemTable() {
     // Progressive Items
     itemTable[RG_PROGRESSIVE_HOOKSHOT] =
         RandoItem(RG_PROGRESSIVE_HOOKSHOT, Text{ "Progressive Hookshot", "Grappin (prog.)", "Progressiver Fanghaken" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_HOOKSHOT, true, &Logic::ProgressiveHookshot, RG_PROGRESSIVE_HOOKSHOT);
-    itemTable[RG_PROGRESSIVE_STRENGTH] =
-        RandoItem(RG_PROGRESSIVE_STRENGTH,
-                  Text{ "Progressive Strength Upgrade", "Amélioration de Force (prog.)", "Progressives Kraft-Upgrade" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_STRENGTH, true, &Logic::ProgressiveStrength, RG_PROGRESSIVE_STRENGTH);
-    itemTable[RG_PROGRESSIVE_BOMB_BAG] =
-        RandoItem(RG_PROGRESSIVE_BOMB_BAG,
-                  Text{ "Progressive Bomb Bag", "Sac de Bombes (prog.)", "Progressive Bombentasche" }, ITEMTYPE_ITEM,
-                  RG_PROGRESSIVE_BOMB_BAG, true, &Logic::ProgressiveBombBag, RG_PROGRESSIVE_BOMB_BAG);
+                  ITEMTYPE_ITEM, RG_PROGRESSIVE_HOOKSHOT, true, &Logic::ProgressiveHookshot, RG_PROGRESSIVE_HOOKSHOT,
+                  true);
+    itemTable[RG_PROGRESSIVE_STRENGTH] = RandoItem(
+        RG_PROGRESSIVE_STRENGTH,
+        Text{ "Progressive Strength Upgrade", "Amélioration de Force (prog.)", "Progressives Kraft-Upgrade" },
+        ITEMTYPE_ITEM, RG_PROGRESSIVE_STRENGTH, true, &Logic::ProgressiveStrength, RG_PROGRESSIVE_STRENGTH, true);
+    itemTable[RG_PROGRESSIVE_BOMB_BAG] = RandoItem(
+        RG_PROGRESSIVE_BOMB_BAG, Text{ "Progressive Bomb Bag", "Sac de Bombes (prog.)", "Progressive Bombentasche" },
+        ITEMTYPE_ITEM, RG_PROGRESSIVE_BOMB_BAG, true, &Logic::ProgressiveBombBag, RG_PROGRESSIVE_BOMB_BAG, true);
     itemTable[RG_PROGRESSIVE_BOW] =
         RandoItem(RG_PROGRESSIVE_BOW, Text{ "Progressive Bow", "Arc (prog.)", "Progressiver Bogen" }, ITEMTYPE_ITEM,
-                  RG_PROGRESSIVE_BOW, true, &Logic::ProgressiveBow, RG_PROGRESSIVE_BOW);
-    itemTable[RG_PROGRESSIVE_SLINGSHOT] =
-        RandoItem(RG_PROGRESSIVE_SLINGSHOT,
-                  Text{ "Progressive Slingshot", "Lance-Pierre (prog.)", "Progressive Steinschleuder" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_SLINGSHOT, true, &Logic::ProgressiveBulletBag,
-                  RG_PROGRESSIVE_SLINGSHOT);
-    itemTable[RG_PROGRESSIVE_WALLET] = 
+                  RG_PROGRESSIVE_BOW, true, &Logic::ProgressiveBow, RG_PROGRESSIVE_BOW, true);
+    itemTable[RG_PROGRESSIVE_SLINGSHOT] = RandoItem(
+        RG_PROGRESSIVE_SLINGSHOT, Text{ "Progressive Slingshot", "Lance-Pierre (prog.)", "Progressive Steinschleuder" },
+        ITEMTYPE_ITEM, RG_PROGRESSIVE_SLINGSHOT, true, &Logic::ProgressiveBulletBag, RG_PROGRESSIVE_SLINGSHOT, true);
+    itemTable[RG_PROGRESSIVE_WALLET] =
         RandoItem(RG_PROGRESSIVE_WALLET, Text{ "Progressive Wallet", "Bourse (prog.)", "Progressive Brieftasche" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_WALLET, true, &Logic::ProgressiveWallet, RG_PROGRESSIVE_WALLET);
+                  ITEMTYPE_ITEM, RG_PROGRESSIVE_WALLET, true, &Logic::ProgressiveWallet, RG_PROGRESSIVE_WALLET, true);
     itemTable[RG_PROGRESSIVE_SCALE] =
         RandoItem(RG_PROGRESSIVE_SCALE, Text{ "Progressive Scale", "Écaille (prog.)", "Progressive Skala" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_SCALE, true, &Logic::ProgressiveScale, RG_PROGRESSIVE_SCALE);
-    itemTable[RG_PROGRESSIVE_NUT_UPGRADE] =
-        RandoItem(RG_PROGRESSIVE_NUT_UPGRADE,
-                  Text{ "Progressive Nut Capacity", "Capacité de Noix (prog.)", "Progressive Nusskapazität" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_NUT_UPGRADE, false, &Logic::noVariable, RG_PROGRESSIVE_NUT_UPGRADE);
-    itemTable[RG_PROGRESSIVE_STICK_UPGRADE] =
-        RandoItem(RG_PROGRESSIVE_STICK_UPGRADE,
-                  Text{ "Progressive Stick Capacity", "Capacité de Bâtons (prog.)", "Progressive Stick-Kapazität" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_STICK_UPGRADE, false, &Logic::noVariable, RG_PROGRESSIVE_STICK_UPGRADE);
+                  ITEMTYPE_ITEM, RG_PROGRESSIVE_SCALE, true, &Logic::ProgressiveScale, RG_PROGRESSIVE_SCALE, true);
+    itemTable[RG_PROGRESSIVE_NUT_UPGRADE] = RandoItem(
+        RG_PROGRESSIVE_NUT_UPGRADE,
+        Text{ "Progressive Nut Capacity", "Capacité de Noix (prog.)", "Progressive Nusskapazität" }, ITEMTYPE_ITEM,
+        RG_PROGRESSIVE_NUT_UPGRADE, false, &Logic::noVariable, RG_PROGRESSIVE_NUT_UPGRADE, true);
+    itemTable[RG_PROGRESSIVE_STICK_UPGRADE] = RandoItem(
+        RG_PROGRESSIVE_STICK_UPGRADE,
+        Text{ "Progressive Stick Capacity", "Capacité de Bâtons (prog.)", "Progressive Stick-Kapazität" },
+        ITEMTYPE_ITEM, RG_PROGRESSIVE_STICK_UPGRADE, false, &Logic::noVariable, RG_PROGRESSIVE_STICK_UPGRADE, true);
     itemTable[RG_PROGRESSIVE_BOMBCHUS] =
         RandoItem(RG_PROGRESSIVE_BOMBCHUS, Text{ "Progressive Bombchu", "Missiles (prog.)", "Progressive Kriechgrube" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_BOMBCHUS, true, &Logic::Bombchus, RG_PROGRESSIVE_BOMBCHUS);
-    itemTable[RG_PROGRESSIVE_MAGIC_METER] =
-        RandoItem(RG_PROGRESSIVE_MAGIC_METER,
-                  Text{ "Progressive Magic Meter", "Jauge de Magie (prog.)", "Progressives magisches Messgerät" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_MAGIC_METER, true, &Logic::ProgressiveMagic,
-                  RG_PROGRESSIVE_MAGIC_METER);
-    itemTable[RG_PROGRESSIVE_OCARINA] =
-        RandoItem(RG_PROGRESSIVE_OCARINA, Text{ "Progressive Ocarina", "Ocarina (prog.)", "Progressive Okarina" },
-                  ITEMTYPE_ITEM, RG_PROGRESSIVE_OCARINA, true, &Logic::ProgressiveOcarina, RG_PROGRESSIVE_OCARINA);
+                  ITEMTYPE_ITEM, RG_PROGRESSIVE_BOMBCHUS, true, &Logic::Bombchus, RG_PROGRESSIVE_BOMBCHUS, true);
+    itemTable[RG_PROGRESSIVE_MAGIC_METER] = RandoItem(
+        RG_PROGRESSIVE_MAGIC_METER,
+        Text{ "Progressive Magic Meter", "Jauge de Magie (prog.)", "Progressives magisches Messgerät" }, ITEMTYPE_ITEM,
+        RG_PROGRESSIVE_MAGIC_METER, true, &Logic::ProgressiveMagic, RG_PROGRESSIVE_MAGIC_METER, true);
+    itemTable[RG_PROGRESSIVE_OCARINA] = RandoItem(
+        RG_PROGRESSIVE_OCARINA, Text{ "Progressive Ocarina", "Ocarina (prog.)", "Progressive Okarina" }, ITEMTYPE_ITEM,
+        RG_PROGRESSIVE_OCARINA, true, &Logic::ProgressiveOcarina, RG_PROGRESSIVE_OCARINA, true);
     itemTable[RG_PROGRESSIVE_GORONSWORD] =
         RandoItem(RG_PROGRESSIVE_GORONSWORD,
                   Text{ "Progressive Goron Sword", "Épée Goron (prog.)", "Progressives Goronenschwert" }, ITEMTYPE_ITEM,
-                  RG_PROGRESSIVE_GORONSWORD, true, &Logic::ProgressiveGiantKnife, RG_PROGRESSIVE_GORONSWORD);
+                  RG_PROGRESSIVE_GORONSWORD, true, &Logic::ProgressiveGiantKnife, RG_PROGRESSIVE_GORONSWORD, true);
     // Bottles
     itemTable[RG_EMPTY_BOTTLE] =
         RandoItem(RG_EMPTY_BOTTLE, Text{ "Empty Bottle", "Bouteille Vide", "Leere Flasche" }, ITEMTYPE_ITEM,
@@ -768,90 +765,92 @@ void StaticData::InitItemTable() {
     // Shop
     itemTable[RG_BUY_DEKU_NUT_5] =
         RandoItem(RG_BUY_DEKU_NUT_5, Text{ "Buy Deku Nut (5)", "Acheter: Noix Mojo (5)", "Deku-Nuss kaufen (5)" },
-                  ITEMTYPE_SHOP, RG_BUY_DEKU_NUT_5, true, &Logic::Nuts, RG_DEKU_NUTS_5, 15);
+                  ITEMTYPE_SHOP, RG_BUY_DEKU_NUT_5, true, &Logic::Nuts, RG_DEKU_NUTS_5, false, 15);
     itemTable[RG_BUY_ARROWS_30] =
         RandoItem(RG_BUY_ARROWS_30, Text{ "Buy Arrows (30)", "Acheter: Flèches (30)", "Pfeile kaufen (30)" },
-                  ITEMTYPE_SHOP, RG_BUY_ARROWS_30, true, &Logic::BuyArrow, RG_ARROWS_30, 60);
+                  ITEMTYPE_SHOP, RG_BUY_ARROWS_30, true, &Logic::BuyArrow, RG_ARROWS_30, false, 60);
     itemTable[RG_BUY_ARROWS_50] =
         RandoItem(RG_BUY_ARROWS_50, Text{ "Buy Arrows (50)", "Acheter: Flèches (50)", "Pfeile kaufen (50)" },
-                  ITEMTYPE_SHOP, RG_BUY_ARROWS_50, true, &Logic::BuyArrow, RG_ARROWS_30, 90);
+                  ITEMTYPE_SHOP, RG_BUY_ARROWS_50, true, &Logic::BuyArrow, RG_ARROWS_30, false, 90);
     itemTable[RG_BUY_BOMBS_525] =
         RandoItem(RG_BUY_BOMBS_525, Text{ "Buy Bombs (5) [25]", "Acheter: Bombes (5) [25]", "Bomben kaufen (5) [25]" },
-                  ITEMTYPE_SHOP, RG_BUY_BOMBS_525, true, &Logic::BuyBomb, RG_BOMBS_5, 25);
+                  ITEMTYPE_SHOP, RG_BUY_BOMBS_525, true, &Logic::BuyBomb, RG_BOMBS_5, false, 25);
     itemTable[RG_BUY_DEKU_NUT_10] =
         RandoItem(RG_BUY_DEKU_NUT_10, Text{ "Buy Deku Nut (10)", "Acheter: Noix Mojo (10)", "Deku-Nuss kaufen (10)" },
-                  ITEMTYPE_SHOP, RG_BUY_DEKU_NUT_10, true, &Logic::Nuts, RG_DEKU_NUTS_10, 30);
+                  ITEMTYPE_SHOP, RG_BUY_DEKU_NUT_10, true, &Logic::Nuts, RG_DEKU_NUTS_10, false, 30);
     itemTable[RG_BUY_DEKU_STICK_1] =
         RandoItem(RG_BUY_DEKU_STICK_1, Text{ "Buy Deku Stick (1)", "Acheter: Bâton Mojo (1)", "Deku-Stick kaufen (1)" },
-                  ITEMTYPE_SHOP, RG_BUY_DEKU_STICK_1, true, &Logic::Sticks, RG_DEKU_STICK_1, 10);
+                  ITEMTYPE_SHOP, RG_BUY_DEKU_STICK_1, true, &Logic::Sticks, RG_DEKU_STICK_1, false, 10);
     itemTable[RG_BUY_BOMBS_10] =
         RandoItem(RG_BUY_BOMBS_10, Text{ "Buy Bombs (10)", "Acheter: Bombes (10)", "Bomben kaufen (10)" },
-                  ITEMTYPE_SHOP, RG_BUY_BOMBS_10, true, &Logic::BuyBomb, RG_BOMBS_10, 50);
-    itemTable[RG_BUY_FISH] = RandoItem(RG_BUY_FISH, Text{ "Buy Fish", "Acheter: Poisson", "Fisch kaufen" },
-                                       ITEMTYPE_SHOP, RG_BUY_FISH, true, &Logic::FishAccess, RG_BOTTLE_WITH_FISH, 200);
+                  ITEMTYPE_SHOP, RG_BUY_BOMBS_10, true, &Logic::BuyBomb, RG_BOMBS_10, false, 50);
+    itemTable[RG_BUY_FISH] =
+        RandoItem(RG_BUY_FISH, Text{ "Buy Fish", "Acheter: Poisson", "Fisch kaufen" }, ITEMTYPE_SHOP, RG_BUY_FISH, true,
+                  &Logic::FishAccess, RG_BOTTLE_WITH_FISH, false, 200);
     itemTable[RG_BUY_RED_POTION_30] = RandoItem(
         RG_BUY_RED_POTION_30, Text{ "Buy Red Potion [30]", "Acheter: Potion Rouge [30]", "Rotes Elixier kaufen [30]" },
-        ITEMTYPE_SHOP, RG_BUY_RED_POTION_30, false, &Logic::noVariable, RG_BOTTLE_WITH_RED_POTION, 30);
+        ITEMTYPE_SHOP, RG_BUY_RED_POTION_30, false, &Logic::noVariable, RG_BOTTLE_WITH_RED_POTION, false, 30);
     itemTable[RG_BUY_GREEN_POTION] =
         RandoItem(RG_BUY_GREEN_POTION, Text{ "Buy Green Potion", "Acheter: Potion Verte", "Grünes Elixier kaufen" },
-                  ITEMTYPE_SHOP, RG_BUY_GREEN_POTION, true, &Logic::BuyGPotion, RG_BOTTLE_WITH_GREEN_POTION, 30);
+                  ITEMTYPE_SHOP, RG_BUY_GREEN_POTION, true, &Logic::BuyGPotion, RG_BOTTLE_WITH_GREEN_POTION, false, 30);
     itemTable[RG_BUY_BLUE_POTION] =
         RandoItem(RG_BUY_BLUE_POTION, Text{ "Buy Blue Potion", "Acheter: Potion Bleue", "Blaues Elixier kaufen" },
-                  ITEMTYPE_SHOP, RG_BUY_BLUE_POTION, true, &Logic::BuyBPotion, RG_BOTTLE_WITH_BLUE_POTION, 100);
+                  ITEMTYPE_SHOP, RG_BUY_BLUE_POTION, true, &Logic::BuyBPotion, RG_BOTTLE_WITH_BLUE_POTION, false, 100);
     itemTable[RG_BUY_HYLIAN_SHIELD] = RandoItem(
         RG_BUY_HYLIAN_SHIELD, Text{ "Buy Hylian Shield", "Acheter: Bouclier Hylien", "Hylianischer Schild kaufen" },
-        ITEMTYPE_SHOP, RG_BUY_HYLIAN_SHIELD, true, &Logic::HylianShield, RG_HYLIAN_SHIELD, 80);
+        ITEMTYPE_SHOP, RG_BUY_HYLIAN_SHIELD, true, &Logic::HylianShield, RG_HYLIAN_SHIELD, false, 80);
     itemTable[RG_BUY_DEKU_SHIELD] =
         RandoItem(RG_BUY_DEKU_SHIELD, Text{ "Buy Deku Shield", "Acheter: Bouclier Mojo", "Deku-Schild kaufen" },
-                  ITEMTYPE_SHOP, RG_BUY_DEKU_SHIELD, true, &Logic::DekuShield, RG_DEKU_SHIELD, 40);
+                  ITEMTYPE_SHOP, RG_BUY_DEKU_SHIELD, true, &Logic::DekuShield, RG_DEKU_SHIELD, false, 40);
     itemTable[RG_BUY_GORON_TUNIC] =
         RandoItem(RG_BUY_GORON_TUNIC, Text{ "Buy Goron Tunic", "Acheter: Tunique Goron", "Goronen-Tunika kaufen" },
-                  ITEMTYPE_SHOP, RG_BUY_GORON_TUNIC, true, &Logic::GoronTunic, RG_GORON_TUNIC, 200);
+                  ITEMTYPE_SHOP, RG_BUY_GORON_TUNIC, true, &Logic::GoronTunic, RG_GORON_TUNIC, false, 200);
     itemTable[RG_BUY_ZORA_TUNIC] =
         RandoItem(RG_BUY_ZORA_TUNIC, Text{ "Buy Zora Tunic", "Acheter: Tunique Zora", "Zora-Tunika kaufen" },
-                  ITEMTYPE_SHOP, RG_BUY_ZORA_TUNIC, true, &Logic::ZoraTunic, RG_ZORA_TUNIC, 300);
-    itemTable[RG_BUY_HEART] = RandoItem(RG_BUY_HEART, Text{ "Buy Heart", "Acheter: Coeur de Vie", "Herz kaufen" },
-                                        ITEMTYPE_SHOP, RG_BUY_HEART, false, &Logic::noVariable, RG_RECOVERY_HEART, 10);
+                  ITEMTYPE_SHOP, RG_BUY_ZORA_TUNIC, true, &Logic::ZoraTunic, RG_ZORA_TUNIC, false, 300);
+    itemTable[RG_BUY_HEART] =
+        RandoItem(RG_BUY_HEART, Text{ "Buy Heart", "Acheter: Coeur de Vie", "Herz kaufen" }, ITEMTYPE_SHOP,
+                  RG_BUY_HEART, false, &Logic::noVariable, RG_RECOVERY_HEART, false, 10);
     itemTable[RG_BUY_BOMBCHU_10] =
         RandoItem(RG_BUY_BOMBCHU_10, Text{ "Buy Bombchu (10)", "Acheter: Missiles (10)", "Bomchu kaufen (10)" },
-                  ITEMTYPE_SHOP, RG_BUY_BOMBCHU_10, true, &Logic::BuyBombchus10, RG_BOMBCHU_10, 99);
+                  ITEMTYPE_SHOP, RG_BUY_BOMBCHU_10, true, &Logic::BuyBombchus10, RG_BOMBCHU_10, false, 99);
     itemTable[RG_BUY_BOMBCHU_20] =
         RandoItem(RG_BUY_BOMBCHU_20, Text{ "Buy Bombchu (20)", "Acheter: Missiles (20)", "Bomchu kaufen (20)" },
-                  ITEMTYPE_SHOP, RG_BUY_BOMBCHU_20, true, &Logic::BuyBombchus20, RG_BOMBCHU_20, 180);
+                  ITEMTYPE_SHOP, RG_BUY_BOMBCHU_20, true, &Logic::BuyBombchus20, RG_BOMBCHU_20, false, 180);
     itemTable[RG_BUY_DEKU_SEEDS_30] = RandoItem(
         RG_BUY_DEKU_SEEDS_30, Text{ "Buy Deku Seeds (30)", "Acheter: Graines Mojo (30)", "Deku-Samen kaufen (30)" },
-        ITEMTYPE_SHOP, RG_BUY_DEKU_SEEDS_30, true, &Logic::BuySeed, RG_DEKU_SEEDS_30, 30);
+        ITEMTYPE_SHOP, RG_BUY_DEKU_SEEDS_30, true, &Logic::BuySeed, RG_DEKU_SEEDS_30, false, 30);
     itemTable[RG_SOLD_OUT] = RandoItem(RG_SOLD_OUT, Text{ "Sold Out", "Rupture de stock", "Ausverkauft" },
-                                       ITEMTYPE_SHOP, RG_SOLD_OUT, false, &Logic::noVariable, RG_NONE, 0);
+                                       ITEMTYPE_SHOP, RG_SOLD_OUT, false, &Logic::noVariable, RG_NONE, false, 0);
     itemTable[RG_BUY_BLUE_FIRE] =
         RandoItem(RG_BUY_BLUE_FIRE, Text{ "Buy Blue Fire", "Acheter: Flamme Bleue", "Blaues Feuer kaufen" },
-                  ITEMTYPE_SHOP, RG_BUY_BLUE_FIRE, true, &Logic::BlueFireAccess, RG_BOTTLE_WITH_BLUE_FIRE, 300);
+                  ITEMTYPE_SHOP, RG_BUY_BLUE_FIRE, true, &Logic::BlueFireAccess, RG_BOTTLE_WITH_BLUE_FIRE, false, 300);
     itemTable[RG_BUY_BOTTLE_BUG] =
         RandoItem(RG_BUY_BOTTLE_BUG, Text{ "Buy Bottle Bug", "Acheter: Insecte en bouteille", "Flaschenkäfer kaufen" },
-                  ITEMTYPE_SHOP, RG_BUY_BOTTLE_BUG, true, &Logic::BugsAccess, RG_BOTTLE_WITH_BUGS, 50);
+                  ITEMTYPE_SHOP, RG_BUY_BOTTLE_BUG, true, &Logic::BugsAccess, RG_BOTTLE_WITH_BUGS, false, 50);
     itemTable[RG_BUY_POE] = RandoItem(RG_BUY_POE, Text{ "Buy Poe", "Acheter: Esprit", "Geist kaufen" }, ITEMTYPE_SHOP,
-                                      RG_BUY_POE, false, &Logic::noVariable, RG_BOTTLE_WITH_BIG_POE, 30);
+                                      RG_BUY_POE, false, &Logic::noVariable, RG_BOTTLE_WITH_BIG_POE, false, 30);
     itemTable[RG_BUY_FAIRYS_SPIRIT] =
         RandoItem(RG_BUY_FAIRYS_SPIRIT, Text{ "Buy Fairy's Spirit", "Acheter: Esprit de Fée", "Feengeist kaufen" },
-                  ITEMTYPE_SHOP, RG_BUY_FAIRYS_SPIRIT, true, &Logic::FairyAccess, RG_BOTTLE_WITH_FAIRY, 50);
+                  ITEMTYPE_SHOP, RG_BUY_FAIRYS_SPIRIT, true, &Logic::FairyAccess, RG_BOTTLE_WITH_FAIRY, false, 50);
     itemTable[RG_BUY_ARROWS_10] =
         RandoItem(RG_BUY_ARROWS_10, Text{ "Buy Arrows (10)", "Acheter: Flèches (10)", "Pfeile kaufen (10)" },
-                  ITEMTYPE_SHOP, RG_BUY_ARROWS_10, true, &Logic::BuyArrow, RG_ARROWS_10, 20);
+                  ITEMTYPE_SHOP, RG_BUY_ARROWS_10, true, &Logic::BuyArrow, RG_ARROWS_10, false, 20);
     itemTable[RG_BUY_BOMBS_20] =
         RandoItem(RG_BUY_BOMBS_20, Text{ "Buy Bombs (20)", "Acheter: Bombes (20)", "Bomben kaufen (20)" },
-                  ITEMTYPE_SHOP, RG_BUY_BOMBS_20, true, &Logic::BuyBomb, RG_BOMBS_20, 80);
+                  ITEMTYPE_SHOP, RG_BUY_BOMBS_20, true, &Logic::BuyBomb, RG_BOMBS_20, false, 80);
     itemTable[RG_BUY_BOMBS_30] =
         RandoItem(RG_BUY_BOMBS_30, Text{ "Buy Bombs (30)", "Acheter: Bombes (30)", "Bomben kaufen (30)" },
-                  ITEMTYPE_SHOP, RG_BUY_BOMBS_30, true, &Logic::BuyBomb, RG_BOMBS_20, 120);
+                  ITEMTYPE_SHOP, RG_BUY_BOMBS_30, true, &Logic::BuyBomb, RG_BOMBS_20, false, 120);
     itemTable[RG_BUY_BOMBS_535] =
         RandoItem(RG_BUY_BOMBS_535, Text{ "Buy Bombs (5) [35]", "Acheter: Bombes (5) [35]", "Bomben kaufen (5) [35]" },
-                  ITEMTYPE_SHOP, RG_BUY_BOMBS_535, true, &Logic::BuyBomb, RG_BOMBS_5, 35);
+                  ITEMTYPE_SHOP, RG_BUY_BOMBS_535, true, &Logic::BuyBomb, RG_BOMBS_5, false, 35);
     itemTable[RG_BUY_RED_POTION_40] = RandoItem(
         RG_BUY_RED_POTION_40, Text{ "Buy Red Potion [40]", "Acheter: Potion Rouge [40]", "Rotes Elixier kaufen [40]" },
-        ITEMTYPE_SHOP, RG_BUY_RED_POTION_40, false, &Logic::noVariable, RG_BOTTLE_WITH_RED_POTION, 40);
+        ITEMTYPE_SHOP, RG_BUY_RED_POTION_40, false, &Logic::noVariable, RG_BOTTLE_WITH_RED_POTION, false, 40);
     itemTable[RG_BUY_RED_POTION_50] = RandoItem(
         RG_BUY_RED_POTION_50, Text{ "Buy Red Potion [50]", "Acheter: Potion Rouge [50]", "Rotes Elixier kaufen [50]" },
-        ITEMTYPE_SHOP, RG_BUY_RED_POTION_50, false, &Logic::noVariable, RG_BOTTLE_WITH_RED_POTION, 50);
+        ITEMTYPE_SHOP, RG_BUY_RED_POTION_50, false, &Logic::noVariable, RG_BOTTLE_WITH_RED_POTION, false, 50);
     // Misc.
     itemTable[RG_TRIFORCE] = RandoItem(RG_TRIFORCE, Text{ "Triforce", "Triforce", "Triforce" }, ITEMTYPE_EVENT,
                                        RG_TRIFORCE, false, &Logic::noVariable, RG_NONE);
