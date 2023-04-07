@@ -173,15 +173,14 @@ void RegisterSwitchAge() {
             playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
 
             ReloadSceneTogglingLinkAge();
-            CVarSetInteger("gSwitchAge", 0);
-            switchLock = true;
             warped = true;
         }
 
-        if (warped && gPlayState->sceneLoadFlag != 0x0014 && gSaveContext.nextTransitionType == 255) {
+        if (!switchLock && warped && gPlayState->sceneLoadFlag != 0x0014 && gSaveContext.nextTransitionType == 255) {
             GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
             GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
             warped = false;
+            switchLock = true;
         }
     });
 }

@@ -1421,7 +1421,9 @@ void Inventory_SwapAgeEquipment(void) {
             if (i != 0) {
                 gSaveContext.childEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
             } else {
-                if (CVarGetInteger("gSwitchAge",0) && (gSaveContext.inventory.equipment & PLAYER_SWORD_KOKIRI == PLAYER_SWORD_KOKIRI)) {
+                if (CVarGetInteger("gSwitchAge", 0) && 
+                    gSaveContext.infTable[29] && 
+                    !gSaveContext.n64ddFlag) {
                     gSaveContext.childEquips.buttonItems[i] = ITEM_NONE;
                 } else {
                     gSaveContext.childEquips.buttonItems[i] = ITEM_SWORD_KOKIRI;
@@ -1497,7 +1499,8 @@ void Inventory_SwapAgeEquipment(void) {
 
         gSaveContext.adultEquips.equipment = gSaveContext.equips.equipment;
 
-        if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE || (!gSaveContext.n64ddFlag && CVarGetInteger("gSwitchAge",0))) {
+        if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE ||
+            (CVarGetInteger("gSwitchAge", 0) && !gSaveContext.n64ddFlag)) {
             for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                 gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
 
@@ -1538,11 +1541,16 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = 0x1111;
         }
 
-        if (!gSaveContext.n64ddFlag && CVarGetInteger("gSwitchAge",0) && (gSaveContext.inventory.equipment & PLAYER_SWORD_KOKIRI == PLAYER_SWORD_KOKIRI)) {
+        if (CVarGetInteger("gSwitchAge", 0) && !gSaveContext.n64ddFlag && (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
             gSaveContext.infTable[29] |= 1;
+            if (gSaveContext.childEquips.equipment == 0) {
+                // force equip kokiri tunic and boots in scenario gSaveContext.childEquips.equipment is uninitialized
+                gSaveContext.equips.equipment &= 0xFFF0;
+                gSaveContext.equips.equipment |= 0x1100;
+            }
         }
     }
-
+    CVarSetInteger("gSwitchAge", 0);
     temp = gEquipMasks[EQUIP_SHIELD] & gSaveContext.equips.equipment;
     if (temp != 0) {
         temp >>= gEquipShifts[EQUIP_SHIELD];
