@@ -12,10 +12,8 @@ void AreaTable_Init_BottomOfTheWell() {
   ---------------------------*/
   areaTable[BOTTOM_OF_THE_WELL_ENTRYWAY] = Area("Bottom of the Well Entryway", "Bottom of the Well", BOTTOM_OF_THE_WELL, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(BOTTOM_OF_THE_WELL_MAIN_AREA,    {[]{return Dungeon::BottomOfTheWell.IsVanilla() && IsChild && (CanChildAttack || Nuts);},
-                                                 /*Glitched*/[]{return Dungeon::BottomOfTheWell.IsVanilla() && IsChild && CanUse(MEGATON_HAMMER);}}),
-                  Entrance(BOTTOM_OF_THE_WELL_MQ_PERIMETER, {[]{return Dungeon::BottomOfTheWell.IsMQ()      && IsChild;},
-                                                 /*Glitched*/[]{return Dungeon::BottomOfTheWell.IsMQ()      && CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::INTERMEDIATE) && Longshot;}}),
+                  Entrance(BOTTOM_OF_THE_WELL_MAIN_AREA,    {[]{return Dungeon::BottomOfTheWell.IsVanilla() && IsChild && (CanChildAttack || Nuts);}}),
+                  Entrance(BOTTOM_OF_THE_WELL_MQ_PERIMETER, {[]{return Dungeon::BottomOfTheWell.IsMQ()      && IsChild;}}),
                   Entrance(KAKARIKO_VILLAGE,                {[]{return true;}}),
   });
 
@@ -62,14 +60,14 @@ void AreaTable_Init_BottomOfTheWell() {
   }, {
                   //Locations
                   LocationAccess(BOTTOM_OF_THE_WELL_MQ_COMPASS_CHEST,              {[]{return KokiriSword || (Sticks && LogicChildDeadhand);}}),
-                  LocationAccess(BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_FREESTANDING_KEY, {[]{return HasExplosives;}}),
+                  LocationAccess(BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_FREESTANDING_KEY, {[]{return HasExplosives || (LogicBotWMQDeadHandKey && Boomerang);}}),
                     //Trick: HasExplosives || (LogicBotWMQDeadHandKey && Boomerang)
                   LocationAccess(BOTTOM_OF_THE_WELL_MQ_GS_BASEMENT,                {[]{return CanChildAttack;}}),
                   LocationAccess(BOTTOM_OF_THE_WELL_MQ_GS_COFFIN_ROOM,             {[]{return CanChildAttack && SmallKeys(BOTTOM_OF_THE_WELL, 2);}}),
   }, {
                   //Exits
                   Entrance(BOTTOM_OF_THE_WELL_ENTRYWAY,  {[]{return true;}}),
-                  Entrance(BOTTOM_OF_THE_WELL_MQ_MIDDLE, {[]{return CanPlay(ZeldasLullaby);}}),
+                  Entrance(BOTTOM_OF_THE_WELL_MQ_MIDDLE, {[]{return CanPlay(ZeldasLullaby) || (LogicBotWMQPits && HasExplosives);}}),
                     //Trick: CanPlay(ZeldasLullaby) || (LogicBotWMQPits && HasExplosives)
   });
 
@@ -78,7 +76,7 @@ void AreaTable_Init_BottomOfTheWell() {
                   LocationAccess(BOTTOM_OF_THE_WELL_MQ_MAP_CHEST,                        {[]{return true;}}),
                   LocationAccess(BOTTOM_OF_THE_WELL_MQ_LENS_OF_TRUTH_CHEST,              {[]{return HasExplosives && SmallKeys(BOTTOM_OF_THE_WELL, 2);}}),
                   LocationAccess(BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_FREESTANDING_KEY, {[]{return true;}}),
-                  LocationAccess(BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM,               {[]{return CanChildAttack && HasExplosives;}}),
+                  LocationAccess(BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM,               {[]{return CanChildAttack && (LogicBotWMQPits || HasExplosives);}}),
                     //Trick: CanChildAttack && (LogicBotWMQPits || HasExplosives)
   }, {
                   //Exits
