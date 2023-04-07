@@ -511,8 +511,18 @@ s16 EnGo2_UpdateTalkStateGoronCityLowestFloor(PlayState* play, EnGo2* this) {
 }
 
 u16 EnGo2_GetTextIdGoronCityLink(PlayState* play, EnGo2* this) {
-    if(gSaveContext.n64ddFlag) {
-        return 0x3036;
+    // For rando, prioritize opening the doors in GC when Link the goron has been stopped when
+    // the doors are not opened, otherwise let him talk about the DMC exit or that gorons are saved
+    if (gSaveContext.n64ddFlag) {
+        if (!Flags_GetInfTable(INFTABLE_STOPPED_GORON_LINKS_ROLLING)) {
+            return 0x3030;
+        } else if (!Flags_GetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED)) {
+            return 0x3036;
+        } else if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE)) {
+            return 0x3041;
+        } else { 
+            return Flags_GetInfTable(INFTABLE_SPOKE_TO_GORON_LINK) ? 0x3038 : 0x3037;
+        }
     }
 
     if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
@@ -531,29 +541,28 @@ u16 EnGo2_GetTextIdGoronCityLink(PlayState* play, EnGo2* this) {
 s16 EnGo2_UpdateTalkStateGoronCityLink(PlayState* play, EnGo2* this) {
     switch (EnGo2_GetDialogState(this, play)) {
         case TEXT_STATE_CLOSING:
-            if(!gSaveContext.n64ddFlag) {
-                switch (this->actor.textId) {
-                    case 0x3036:
+            switch (this->actor.textId) {
+                case 0x3036:
+                    if (!gSaveContext.n64ddFlag) {
                         EnGo2_GetItem(this, play, GI_TUNIC_GORON);
                         this->actionFunc = EnGo2_SetupGetItem;
                         return NPC_TALK_STATE_ACTION;
-                    case 0x3037:
-                        gSaveContext.infTable[16] |= 0x4000;
-                    default:
-                        return NPC_TALK_STATE_IDLE;
-                }
-            } else {
-                if (Flags_GetTreasure(play, 0x1F)) {
-                    return NPC_TALK_STATE_IDLE;
-                }
-                
-                gSaveContext.infTable[16] |= 0x200;
-                EnGo2_GetItemEntry(this, play, Randomizer_GetItemFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON));
-                this->actionFunc = EnGo2_SetupGetItem;
-                Flags_SetTreasure(play, 0x1F);
-                return NPC_TALK_STATE_ACTION;
-            }
+                    } else {
+                        if (Flags_GetTreasure(play, 0x1F)) {
+                            return NPC_TALK_STATE_IDLE;
+                        }
 
+                        Flags_SetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED);
+                        EnGo2_GetItemEntry(this, play, Randomizer_GetItemFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON));
+                        this->actionFunc = EnGo2_SetupGetItem;
+                        Flags_SetTreasure(play, 0x1F);
+                        return NPC_TALK_STATE_ACTION;
+                    }
+                case 0x3037:
+                    gSaveContext.infTable[16] |= 0x4000;
+                default:
+                    return NPC_TALK_STATE_IDLE;
+            }
         case TEXT_STATE_CHOICE:
             if (Message_ShouldAdvance(play)) {
                 if (this->actor.textId == 0x3034) {
@@ -1210,7 +1219,9 @@ s32 EnGo2_IsCameraModified(EnGo2* this, PlayState* play) {
         (this->actor.params & 0x1F) == GORON_CITY_STAIRWELL || (this->actor.params & 0x1F) == GORON_DMT_BIGGORON ||
         (this->actor.params & 0x1F) == GORON_MARKET_BAZAAR) {
         return true;
-    } else if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
+    } else if (((!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
+                (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) &&
+                CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
         return true;
     } else {
         return false;
@@ -1267,7 +1278,9 @@ void EnGo2_SelectGoronWakingUp(EnGo2* this) {
             EnGo2_BiggoronWakingUp(this);
             break;
         case GORON_CITY_LINK:
-            if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
+            if (((!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
+                 (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) &&
+                CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
                 EnGo2_WakingUp(this);
                 break;
             }
@@ -1627,7 +1640,9 @@ void EnGo2_Init(Actor* thisx, PlayState* play) {
             if ((gSaveContext.infTable[16] & 0x200)) {
                 Path_CopyLastPoint(this->path, &this->actor.world.pos);
                 this->actor.home.pos = this->actor.world.pos;
-                if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
+                if (((!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
+                     (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE))) &&
+                    CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
                     EnGo2_GetItemAnimation(this, play);
                 } else {
                     this->actionFunc = EnGo2_CurledUp;
@@ -1855,15 +1870,36 @@ void EnGo2_SetupGetItem(EnGo2* this, PlayState* play) {
 void EnGo2_SetGetItem(EnGo2* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
+
+        // For randomizer, handle updating the states for the gorons after receiving the item based on
+        // the goron type rather then the item being received
+        if (gSaveContext.n64ddFlag) {
+            switch (this->actor.params & 0x1F) {
+                case GORON_DMT_BIGGORON:
+                    // Resolves #1301. unk_13EE is used to set the opacity of the HUD. The trade sequence discussion with Biggoron
+                    // sets the HUD to transparent, and it is restored at z_message_PAL:3549, but by specifically watching for
+                    // trade sequence items, this leaves it transparent for non-trade sequence items (in rando) so we fix that here
+                    gSaveContext.unk_13EE = 0x32;
+                    return;
+                case GORON_CITY_LINK:
+                    EnGo2_GetItemAnimation(this, play);
+                    return;
+                case GORON_CITY_ROLLING_BIG:
+                    EnGo2_RollingAnimation(this, play);
+                    this->actionFunc = EnGo2_GoronRollingBigContinueRolling;
+                    return;
+            }
+            this->actionFunc = func_80A46B40;
+            return;
+        }
+
         switch (this->getItemId) {
             case GI_CLAIM_CHECK:
                 Environment_ClearBgsDayCount();
                 EnGo2_GetItemAnimation(this, play);
                 return;
             case GI_TUNIC_GORON:
-                if (!gSaveContext.n64ddFlag) {
-                    gSaveContext.infTable[16] |= 0x200;
-                }
+                gSaveContext.infTable[16] |= 0x200;
                 EnGo2_GetItemAnimation(this, play);
                 return;
             case GI_SWORD_BGS:
@@ -1874,13 +1910,6 @@ void EnGo2_SetGetItem(EnGo2* this, PlayState* play) {
                 EnGo2_RollingAnimation(this, play);
                 this->actionFunc = EnGo2_GoronRollingBigContinueRolling;
                 return;
-        }
-
-        if (gSaveContext.n64ddFlag) {
-            // Resolves #1301. unk_13EE is used to set the opacity of the HUD. The trade sequence discussion with Biggoron 
-            // sets the HUD to transparent, and it is restored at z_message_PAL:3549, but by specifically watching for 
-            // trade sequence items, this leaves it transparent for non-trade sequence items (in rando) so we fix that here
-            gSaveContext.unk_13EE = 0x32;
         }
         this->actionFunc = func_80A46B40;
     }
