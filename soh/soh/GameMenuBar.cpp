@@ -17,6 +17,7 @@
 #include <libultraship/libultra/types.h>
 #include <libultraship/libultra/pi.h>
 #include <libultraship/libultra/sptask.h>
+#include <Fast3D/gfx_pc.h>
 
 #ifdef __SWITCH__
 #include <port/switch/SwitchImpl.h>
@@ -34,6 +35,8 @@
 #endif
 
 #include "Enhancements/game-interactor/GameInteractor.h"
+
+bool ShouldClearTextureCacheAtEndOfFrame = false;
 
 #define EXPERIMENTAL() \
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 50, 50, 255)); \
@@ -958,7 +961,9 @@ namespace GameMenuBar {
             UIWidgets::PaddedEnhancementCheckbox("Skip Text", "gSkipText", true, false);
             UIWidgets::Tooltip("Holding down B skips text");
             
-            UIWidgets::PaddedEnhancementCheckbox("HD Assets", "gHdAssets", true, false);
+            if (UIWidgets::PaddedEnhancementCheckbox("HD Assets", "gHdAssets", true, false)) {
+                ShouldClearTextureCacheAtEndOfFrame = true;
+            }
 
          #ifdef __SWITCH__
             UIWidgets::Spacer(0);

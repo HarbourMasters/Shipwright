@@ -1,6 +1,7 @@
 #include <string.h>
 #include "global.h"
 #include "vt.h"
+#include "libultraship/bridge.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 SpeedMeter D_801664D0;
@@ -13,6 +14,7 @@ u16 sLastButtonPressed;
 
 // Forward declared, because this in a C++ header.
 int gfx_create_framebuffer(uint32_t width, uint32_t height);
+void gfx_texture_cache_clear();
 
 void GameState_FaultPrint(void) {
     static char sBtnChars[] = "ABZSuldr*+LRudlr";
@@ -459,6 +461,11 @@ void GameState_Destroy(GameState* gameState) {
     Fault_RemoveClient(&sGameFaultClient);
 
     osSyncPrintf("game デストラクタ終了\n"); // "game destructor end"
+
+    if (CVarGetInteger("gHdAssets", 0)) {
+        UnloadResourceDirectory("hd/*");
+        gfx_texture_cache_clear();
+    }
 }
 
 GameStateFunc GameState_GetInit(GameState* gameState) {

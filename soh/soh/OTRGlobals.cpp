@@ -682,7 +682,7 @@ extern "C" uint32_t GetGIID(uint32_t itemID) {
 }
 
 extern "C" void OTRExtScanner() {
-    auto lst = *OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->ListFiles("*.*").get();
+    auto lst = *OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->ListFiles("*").get();
 
     for (auto& rPath : lst) {
         std::vector<std::string> raw = StringHelper::Split(rPath, ".");
@@ -874,6 +874,8 @@ void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>
     }
 }
 
+extern bool ShouldClearTextureCacheAtEndOfFrame;
+
 // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     {
@@ -927,6 +929,11 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         while (audio.processing) {
             audio.cv_from_thread.wait(Lock);
         }
+    }
+
+    if (ShouldClearTextureCacheAtEndOfFrame) {
+        gfx_texture_cache_clear();
+        ShouldClearTextureCacheAtEndOfFrame = false;
     }
 
     // OTRTODO: FIGURE OUT END FRAME POINT
@@ -1002,6 +1009,7 @@ extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
 }
 
 // OTRTODO: There is probably a more elegant way to go about this...
+// Kenix: This is definitely leaking memory when it's called.
 extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize) {
     auto lst = OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->ListFiles(searchMask);
     char** result = (char**)malloc(lst->size() * sizeof(char*));
