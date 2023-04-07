@@ -77,7 +77,9 @@ typedef enum {
 #define TWO_ACTOR_PARAMS(a, b) (abs(a) << 16) | abs(b)
 
 #define RC_OBJECT(rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, rc_shortname, rc_spoilername) \
-    { rc, {rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, false, rc_shortname, rc_spoilername} }
+    { rc, {rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, false, rc_shortname, rc_spoilername, true} }
+#define RC_OBJECTV(rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, rc_shortname, rc_spoilername, vanillaCheck) \
+    { rc, {rc, rc_v_or_mq, rc_type, rc_area, actor_id, scene_id, actor_params, og_item_id, false, rc_shortname, rc_spoilername, vanillaCheck} }
 
 typedef struct {
     RandomizerCheck rc;
@@ -98,6 +100,7 @@ typedef struct {
     bool visibleInImgui;
     std::string rcShortName;
     std::string rcSpoilerName;
+    bool vanillaCheck;
 } RandomizerCheckObject;
 
 namespace RandomizerCheckObjects {

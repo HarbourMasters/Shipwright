@@ -3094,10 +3094,9 @@ json SerializeTrackerData(int fileNum, bool gameSave) {
 
 void SaveTrackerData(int fileNum, bool thread, bool convertCollected) {
     if (thread)
-        std::thread(SaveTrackerFile, GetTrackerDataFileName(fileNum), SerializeTrackerData(fileNum, convertCollected || CheckTracker::GetLoadFileChecks())).join();
+        std::thread(SaveTrackerFile, GetTrackerDataFileName(fileNum), SerializeTrackerData(fileNum, convertCollected)).join();
     else
-        SaveTrackerFile(GetTrackerDataFileName(fileNum), SerializeTrackerData(fileNum, convertCollected || CheckTracker::GetLoadFileChecks()));
-    CheckTracker::SetLoadFileChecks(false);
+        SaveTrackerFile(GetTrackerDataFileName(fileNum), SerializeTrackerData(fileNum, convertCollected));
 }
 
 void SaveTrackerDataHook(int fileNum) {

@@ -30,8 +30,6 @@ void LoadCheckTrackerData(nlohmann::json checks);
 bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj);
 void CreateTrackerData();
 void SetLastItemGetRC(RandomizerCheck rc);
-bool GetLoadFileChecks();
-void SetLoadFileChecks(bool);
 void CheckTrackerDialogClosed();
 } // namespace CheckTracker
 

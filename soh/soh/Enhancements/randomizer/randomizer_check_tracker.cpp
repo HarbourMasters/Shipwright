@@ -49,7 +49,7 @@ bool tickCheck = false;
 int tickCheckCounter = 0;
 std::map<RandomizerCheck, RandomizerCheckShow> checkStatusMap;
 std::map<RandomizerCheck, RandomizerCheckTrackerData> checkTrackerData;
-std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checkObjectsByArea;
+std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> checksByArea;
 bool areasFullyChecked[RCAREA_INVALID];
 u32 areasSpoiled = 0;
 bool showVOrMQ;
@@ -63,20 +63,21 @@ RandomizerCheckArea currentArea = RCAREA_INVALID;
 OSContPad* trackerButtonsPressed;
 SceneID lastScene = SCENE_ID_MAX;
 SceneID currentScene = SCENE_ID_MAX;
-bool LoadFileChecks = false;
+bool newFileCheck = false;
 
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
-bool CompareCheckObject(RandomizerCheckObject i, RandomizerCheckObject j);
-void DrawLocation(RandomizerCheckObject rcObj);
+bool CompareChecks(RandomizerCheck, RandomizerCheck);
+void CheckByArea(RandomizerCheckArea, GetItemEntry);
+void DrawLocation(RandomizerCheck);
 void EndFloatWindows();
-bool HasItemBeenCollected(RandomizerCheck rc);
+bool HasItemBeenCollected(RandomizerCheck);
 void LoadSettings();
 bool ShouldUpdateChecks();
 void RainbowTick();
 void UpdateAreas();
 void UpdateInventoryChecks();
 void UpdateOrdering();
-void UpdateOrdering(RandomizerCheckArea rcArea);
+void UpdateOrdering(RandomizerCheckArea);
 
 SceneID DungeonSceneLookupByArea(RandomizerCheckArea area) {
     switch (area) {
@@ -152,7 +153,7 @@ void PushDefaultCheckData(RandomizerCheck rc) {
 }
 
 void SongFromImpa() {
-    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA) == RO_GENERIC_ON) {
+    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA) == RO_GENERIC_ON && gSaveContext.n64ddFlag) {
         RandomizerCheckTrackerData* data = &checkTrackerData.find(RC_SONG_FROM_IMPA)->second;
         if (data->status != RCSHOW_SAVED) {
             data->status = RCSHOW_SAVED;
@@ -162,27 +163,21 @@ void SongFromImpa() {
 
 // Function for adding Link's Pocket check
 void LinksPocket() {
-    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING ||
-        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DUNGEON_REWARDS) == RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
-        PushDefaultCheckData(RC_LINKS_POCKET);
-        checkTrackerData.find(RC_LINKS_POCKET)->second.status = RCSHOW_SAVED;
-    }
-}
-
-void TrySetAreas() {
-    if (checkObjectsByArea.empty()) {
-        for (int i = RCAREA_KOKIRI_FOREST; i < RCAREA_INVALID; i++) {
-            checkObjectsByArea.emplace(static_cast<RandomizerCheckArea>(i), std::vector<RandomizerCheckObject>());
+    if (gSaveContext.n64ddFlag) {
+        if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING ||
+            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DUNGEON_REWARDS) == RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
+            PushDefaultCheckData(RC_LINKS_POCKET);
+            checkTrackerData.find(RC_LINKS_POCKET)->second.status = RCSHOW_SAVED;
         }
     }
 }
 
-bool GetLoadFileChecks() {
-    return LoadFileChecks;
-}
-
-void SetLoadFileChecks(bool status) {
-    LoadFileChecks = status;
+void TrySetAreas() {
+    if (checksByArea.empty()) {
+        for (int i = RCAREA_KOKIRI_FOREST; i < RCAREA_INVALID; i++) {
+            checksByArea.emplace(static_cast<RandomizerCheckArea>(i), std::vector<RandomizerCheck>());
+        }
+    }
 }
 
 void SetCheckCollected(RandomizerCheck rc) {
@@ -210,11 +205,15 @@ void CheckChecks(GetItemEntry giEntry = GET_ITEM_NONE) {
     } else if (scene == SCENE_TOKINOMA) {
         area = RCAREA_MARKET;
     }
-    auto rcobjs = RandomizerCheckObjects::GetAllRCObjectsByArea().find(area)->second;
-    for (auto [rc, rco] : rcobjs) {
+    CheckByArea(area, giEntry);
+}
+
+void CheckByArea(RandomizerCheckArea area, GetItemEntry giEntry = GET_ITEM_NONE) {
+    for (auto rc : checksByArea.find(area)->second) {
         if (checkTrackerData.contains(rc)) {
+            RandomizerCheckObject rco = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
             RandomizerCheckTrackerData rcData = checkTrackerData.find(rc)->second;
-            GetItemID giid =  OTRGlobals::Instance->gRandomizer->GetItemIdFromRandomizerGet(OTRGlobals::Instance->gRandomizer->GetRandomizerGetDataFromKnownCheck(rc).rgID, rco->ogItemId);
+            GetItemID giid = OTRGlobals::Instance->gRandomizer->GetItemIdFromRandomizerGet(OTRGlobals::Instance->gRandomizer->GetRandomizerGetDataFromKnownCheck(rc).rgID, rco.ogItemId);
             bool match = giEntry.itemId == ITEM_NONE || giid == giEntry.getItemId;
             if (match && HasItemBeenCollected(rcData.rc) && rcData.status != RCSHOW_COLLECTED && rcData.status != RCSHOW_SAVED) {
                 SetCheckCollected(rc);
@@ -289,6 +288,12 @@ void CheckTrackerDialogClosed() {
 }
 
 void CheckTrackerTransition(uint32_t sceneNum) {
+    if (newFileCheck) {
+        newFileCheck = false;
+        for (auto [area, check] : checksByArea) {
+            CheckByArea(area);
+        }
+    }
     currentArea = RandomizerCheckObjects::GetRCAreaBySceneID(static_cast<SceneID>(sceneNum));
     UpdateOrdering();
     UpdateInventoryChecks();
@@ -318,9 +323,6 @@ RandomizerCheck daiyouseiChecks[] = { RC_OGC_GREAT_FAIRY_REWARD, RC_DMT_GREAT_FA
 RandomizerCheck izumiYokoChecks[] = { RC_ZF_GREAT_FAIRY_REWARD, RC_COLOSSUS_GREAT_FAIRY_REWARD, RC_HC_GREAT_FAIRY_REWARD };
 
 void CheckTrackerItemReceive(GetItemEntry giEntry) {
-    if (!gSaveContext.n64ddFlag && !bypassRandoCheck)
-        return;
-
     if (gPlayState == nullptr) {
         return;
     }
@@ -394,12 +396,26 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
 void CreateTrackerData() {
     TrySetAreas();
     for (auto& [rc, rco] : RandomizerCheckObjects::GetAllRCObjects()) {
-        if (rc != RC_UNKNOWN_CHECK && rc != RC_MAX && rc != RC_LINKS_POCKET) {
+        /*if (!gSaveContext.n64ddFlag) {
+            if (rco.vanillaCheck) {
+                PushDefaultCheckData(rc);
+            }
+        }
+        else {
+            if ((rc == RC_UNKNOWN_CHECK) || (rc == RC_MAX) || (rc == RC_LINKS_POCKET) ||
+                ((OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_OFF) && (rco.rcType == RCTYPE_SCRUB) &&
+                    !(rco.rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || rco.rc == RC_HF_DEKU_SCRUB_GROTTO || rco.rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT)) ||
+                (rco.rcType == RCTYPE_MERCHANT && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) == RO_GENERIC_OFF)) {
+                continue;
+            }
+            PushDefaultCheckData(rc);
+        }*/
+        if (rc != RC_UNKNOWN_CHECK && rc != RC_MAX && rc != RC_LINKS_POCKET && IsVisibleInCheckTracker(rco)) {
             PushDefaultCheckData(rc);
         }
     }
-    CheckChecks();
-    LinksPocket();
+    newFileCheck = true;
+    //LinksPocket();
     SongFromImpa();
     UpdateOrdering();
     UpdateInventoryChecks();
@@ -414,18 +430,18 @@ void LoadCheckTrackerData(json checks) {
         if (entry.rc == RC_UNKNOWN_CHECK || entry.rc == RC_MAX || entry.rc == RC_LINKS_POCKET)
             continue;
         RandomizerCheckObject entry2 = RandomizerCheckObjects::GetAllRCObjects().find(entry.rc)->second;
-        if (!IsVisibleInCheckTracker(entry2))
-            continue;
+        /*if (!IsVisibleInCheckTracker(entry2) && entry2.rcType != RCTYPE_SKULL_TOKEN)
+            continue;*/
 
         checkTrackerData.emplace(entry.rc, entry);
-        checkObjectsByArea.find(entry2.rcArea)->second.push_back(entry2);
+        checksByArea.find(entry2.rcArea)->second.push_back(entry.rc);
         if (entry.status == RCSHOW_SAVED || entry.skipped)
             areaChecksGotten[entry2.rcArea]++;
         
         if (areaChecksGotten[entry2.rcArea] != 0 || RandomizerCheckObjects::AreaIsOverworld(entry2.rcArea))
             areasSpoiled |= (1 << entry2.rcArea);
     }
-    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING) {
+    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING && gSaveContext.n64ddFlag) {
         s8 startingAge = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_AGE);
         RandomizerCheckArea startingArea;
         switch (startingAge) {
@@ -441,7 +457,8 @@ void LoadCheckTrackerData(json checks) {
         }
         RandomizerCheckObject linksPocket = { RC_LINKS_POCKET, RCVORMQ_BOTH, RCTYPE_LINKS_POCKET, startingArea, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, false, "Link's Pocket", "Link's Pocket" };
         
-        checkObjectsByArea.find(startingArea)->second.push_back(linksPocket);
+        checksByArea.find(startingArea)->second.push_back(RC_LINKS_POCKET);
+        RandomizerCheckObjects::GetAllRCObjects().emplace(RC_LINKS_POCKET, linksPocket);
         areaChecksGotten[startingArea]++;
     }
 
@@ -455,13 +472,13 @@ void LoadCheckTrackerData(json checks) {
 
 void Teardown() {
     initialized = false;
-    for (auto& [rcArea, vec] : checkObjectsByArea) {
+    for (auto& [rcArea, vec] : checksByArea) {
         vec.clear();
         areaChecksGotten[rcArea] = 0;
     }
     checkStatusMap.clear();
     checkTrackerData.clear();
-    checkObjectsByArea.clear();
+    checksByArea.clear();
     areasSpoiled = 0;
     lastLocationChecked = RC_UNKNOWN_CHECK;
 }
@@ -471,10 +488,6 @@ void DrawCheckTracker(bool& open) {
         CVarSetInteger("gCheckTrackerEnabled", 0);
         return;
     }
-
-    // temporarily disable item tracking for vanilla games
-    if (!gSaveContext.n64ddFlag && !bypassRandoCheck)
-        return;
 
     ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
 
@@ -586,8 +599,8 @@ void DrawCheckTracker(bool& open) {
     std::string stemp;
     s32 areaMask = 1;
 
-    for (auto& [rcArea, rcObjects] : checkObjectsByArea) {
-        const int areaChecksTotal = static_cast<int>(rcObjects.size());
+    for (auto& [rcArea, checks] : checksByArea) {
+        const int areaChecksTotal = static_cast<int>(checks.size());
         thisAreaFullyChecked = (areaChecksGotten[rcArea] == areaChecksTotal);
         //Last Area needs to be cleaned up
         if (lastArea != RCAREA_INVALID && doDraw) {
@@ -652,9 +665,9 @@ void DrawCheckTracker(bool& open) {
             //Keep areas loaded between transitions
             if (currentArea == rcArea && doAreaScroll)
                 ImGui::SetScrollHereY(0.0f);
-            for (auto& obj : rcObjects) {
+            for (auto& check : checks) {
                 if (doDraw && isThisAreaSpoiled)
-                    DrawLocation(obj);
+                    DrawLocation(check);
             }
             if (doDraw)
                 ImGui::TreePop();
@@ -821,49 +834,57 @@ void LoadSettings() {
 }
 
 bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
-    return
-        (rcObj.rcArea != RCAREA_INVALID) &&         // don't show Invalid locations
-        (rcObj.rcType != RCTYPE_GOSSIP_STONE) &&    //TODO: Don't show hints until tracker supports them
-        (rcObj.rcType != RCTYPE_CHEST_GAME) &&      // don't show non final reward chest game checks until we support shuffling them
-        (rcObj.rc != RC_HC_ZELDAS_LETTER) &&        // don't show zeldas letter until we support shuffling it
-        (!RandomizerCheckObjects::AreaIsDungeon(rcObj.rcArea) ||
-            rcObj.vOrMQ == RCVORMQ_BOTH ||
+    if (gSaveContext.n64ddFlag) {
+        return
+            (rcObj.rcArea != RCAREA_INVALID) &&         // don't show Invalid locations
+            (rcObj.rcType != RCTYPE_GOSSIP_STONE) &&    //TODO: Don't show hints until tracker supports them
+            (rcObj.rcType != RCTYPE_CHEST_GAME) &&      // don't show non final reward chest game checks until we support shuffling them
+            (rcObj.rc != RC_HC_ZELDAS_LETTER) &&        // don't show zeldas letter until we support shuffling it
+            (!RandomizerCheckObjects::AreaIsDungeon(rcObj.rcArea) ||
+                rcObj.vOrMQ == RCVORMQ_BOTH ||
+                rcObj.vOrMQ == RCVORMQ_MQ && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) ||
+                rcObj.vOrMQ == RCVORMQ_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId)
+                ) &&
+            (rcObj.rcType != RCTYPE_SHOP || showShops) &&
+            (rcObj.rcType != RCTYPE_SCRUB ||
+                showScrubs ||
+                rcObj.rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
+                rcObj.rc == RC_HF_DEKU_SCRUB_GROTTO ||
+                rcObj.rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT
+                ) &&
+            (rcObj.rcType != RCTYPE_MERCHANT || showMerchants) &&
+            (rcObj.rcType != RCTYPE_OCARINA || showOcarinas) &&
+            (rcObj.rcType != RCTYPE_SKULL_TOKEN ||
+                (showOverworldTokens && RandomizerCheckObjects::AreaIsOverworld(rcObj.rcArea)) ||
+                (showDungeonTokens && RandomizerCheckObjects::AreaIsDungeon(rcObj.rcArea))
+                ) &&
+            (rcObj.rcType != RCTYPE_COW || showCows) &&
+            (rcObj.rcType != RCTYPE_ADULT_TRADE ||
+                showAdultTrade ||
+                rcObj.rc == RC_KAK_ANJU_AS_ADULT ||  // adult trade checks that are always shuffled
+                rcObj.rc == RC_DMT_TRADE_CLAIM_CHECK // even when shuffle adult trade is off
+                ) &&
+            (rcObj.rc != RC_KF_KOKIRI_SWORD_CHEST || showKokiriSword) &&
+            (rcObj.rc != RC_ZR_MAGIC_BEAN_SALESMAN || showBeans) &&
+            (rcObj.rc != RC_HC_MALON_EGG || showWeirdEgg) &&
+            (rcObj.rcType != RCTYPE_FROG_SONG || showFrogSongRupees) &&
+            (rcObj.rcType != RCTYPE_MAP_COMPASS || showStartingMapsCompasses) &&
+            (rcObj.rcType != RCTYPE_SMALL_KEY || showKeysanity) &&
+            (rcObj.rcType != RCTYPE_BOSS_KEY || showBossKeysanity) &&
+            (rcObj.rcType != RCTYPE_GANON_BOSS_KEY || showGanonBossKey) &&
+            (rcObj.rc != RC_KAK_100_GOLD_SKULLTULA_REWARD || show100SkullReward) &&
+            (rcObj.rcType != RCTYPE_GF_KEY && rcObj.rc != RC_GF_GERUDO_MEMBERSHIP_CARD ||
+                (showGerudoCard && rcObj.rc == RC_GF_GERUDO_MEMBERSHIP_CARD) ||
+                (fortressNormal && showGerudoFortressKeys && rcObj.rcType == RCTYPE_GF_KEY) ||
+                (fortressFast && showGerudoFortressKeys && rcObj.rc == RC_GF_NORTH_F1_CARPENTER)
+                );
+    }
+    else if (rcObj.vanillaCheck) {
+        return rcObj.vOrMQ == RCVORMQ_BOTH ||
             rcObj.vOrMQ == RCVORMQ_MQ && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) ||
-            rcObj.vOrMQ == RCVORMQ_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId)
-        ) &&
-        (rcObj.rcType != RCTYPE_SHOP                || showShops) &&
-        (rcObj.rcType != RCTYPE_SCRUB ||
-            showScrubs || 
-            rcObj.rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
-            rcObj.rc == RC_HF_DEKU_SCRUB_GROTTO ||
-            rcObj.rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT
-        ) &&
-        (rcObj.rcType != RCTYPE_MERCHANT            || showMerchants) &&
-        (rcObj.rcType != RCTYPE_OCARINA             || showOcarinas) &&
-        (rcObj.rcType != RCTYPE_SKULL_TOKEN ||
-            (showOverworldTokens && RandomizerCheckObjects::AreaIsOverworld(rcObj.rcArea)) ||
-            (showDungeonTokens && RandomizerCheckObjects::AreaIsDungeon(rcObj.rcArea))
-        ) &&
-        (rcObj.rcType != RCTYPE_COW                 || showCows) &&
-        (rcObj.rcType != RCTYPE_ADULT_TRADE ||
-            showAdultTrade ||
-            rcObj.rc == RC_KAK_ANJU_AS_ADULT ||  // adult trade checks that are always shuffled
-            rcObj.rc == RC_DMT_TRADE_CLAIM_CHECK // even when shuffle adult trade is off
-        ) &&
-        (rcObj.rc != RC_KF_KOKIRI_SWORD_CHEST         || showKokiriSword) &&
-        (rcObj.rc != RC_ZR_MAGIC_BEAN_SALESMAN        || showBeans) &&
-        (rcObj.rc != RC_HC_MALON_EGG                  || showWeirdEgg) &&
-        (rcObj.rcType != RCTYPE_FROG_SONG             || showFrogSongRupees) &&
-        (rcObj.rcType != RCTYPE_MAP_COMPASS           || showStartingMapsCompasses) &&
-        (rcObj.rcType != RCTYPE_SMALL_KEY             || showKeysanity) &&
-        (rcObj.rcType != RCTYPE_BOSS_KEY              || showBossKeysanity) &&
-        (rcObj.rcType != RCTYPE_GANON_BOSS_KEY        || showGanonBossKey) &&
-        (rcObj.rc != RC_KAK_100_GOLD_SKULLTULA_REWARD || show100SkullReward) &&
-        (rcObj.rcType != RCTYPE_GF_KEY && rcObj.rc != RC_GF_GERUDO_MEMBERSHIP_CARD ||
-            (showGerudoCard && rcObj.rc == RC_GF_GERUDO_MEMBERSHIP_CARD) ||
-            (fortressNormal && showGerudoFortressKeys && rcObj.rcType == RCTYPE_GF_KEY) ||
-            (fortressFast && showGerudoFortressKeys && rcObj.rc == RC_GF_NORTH_F1_CARPENTER)
-        );
+            rcObj.vOrMQ == RCVORMQ_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId);
+    }
+    return false;
 }
 
 int slowCheckIdx = 0;
@@ -879,7 +900,7 @@ void UpdateAreaFullyChecked(RandomizerCheckArea area) {
 }
 
 void UpdateAreas(RandomizerCheckArea area) {
-    areasFullyChecked[area] = areaChecksGotten[area] == checkObjectsByArea.find(area)->second.size();
+    areasFullyChecked[area] = areaChecksGotten[area] == checksByArea.find(area)->second.size();
     if (areaChecksGotten[area] != 0 || RandomizerCheckObjects::AreaIsOverworld(area))
         areasSpoiled |= (1 << area);
 }
@@ -893,14 +914,14 @@ void UpdateOrdering() {
 
 void UpdateOrdering(RandomizerCheckArea rcArea) {
     // Sort a single area
-    if(checkObjectsByArea.contains(rcArea)) {
-        std::sort(checkObjectsByArea.find(rcArea)->second.begin(), checkObjectsByArea.find(rcArea)->second.end(), CompareCheckObject);
+    if(checksByArea.contains(rcArea)) {
+        std::sort(checksByArea.find(rcArea)->second.begin(), checksByArea.find(rcArea)->second.end(), CompareChecks);
     }
 }
 
-bool CompareCheckObject(RandomizerCheckObject i, RandomizerCheckObject j) {
-    RandomizerCheckTrackerData iShow = checkTrackerData.find(i.rc)->second;
-    RandomizerCheckTrackerData jShow = checkTrackerData.find(j.rc)->second;
+bool CompareChecks(RandomizerCheck i, RandomizerCheck j) {
+    RandomizerCheckTrackerData iShow = checkTrackerData.find(i)->second;
+    RandomizerCheckTrackerData jShow = checkTrackerData.find(j)->second;
     bool iCollected = iShow.status == RCSHOW_COLLECTED || iShow.status == RCSHOW_SAVED;
     bool iSaved = iShow.status == RCSHOW_SAVED;
     bool jCollected = jShow.status == RCSHOW_COLLECTED || jShow.status == RCSHOW_SAVED;
@@ -920,18 +941,19 @@ bool CompareCheckObject(RandomizerCheckObject i, RandomizerCheckObject j) {
     else if (iShow.skipped && !jShow.skipped)
         return false;
 
-    if (i.rc < j.rc)
+    if (i < j)
         return true;
-    else if (i.rc > j.rc)
+    else if (i > j)
         return false;
 
     return false;
 }
 
-void DrawLocation(RandomizerCheckObject rcObj) {
+void DrawLocation(RandomizerCheck rc) {
     Color_RGBA8 mainColor; 
     Color_RGBA8 extraColor;
     std::string txt;
+    auto rcObj = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
     bool showHidden = CVarGetInteger("gCheckTrackerOptionShowHidden", 0);
     if(!checkTrackerData.contains(rcObj.rc)) {
         PushDefaultCheckData(rcObj.rc);
