@@ -460,7 +460,7 @@ void LoadCheckTrackerData(json checks) {
         if (entry.rc == RC_UNKNOWN_CHECK || entry.rc == RC_MAX || entry.rc == RC_LINKS_POCKET)
             continue;
         RandomizerCheckObject entry2 = RandomizerCheckObjects::GetAllRCObjects().find(entry.rc)->second;
-        if (!IsVisibleInCheckTracker(entry2) && entry2.rcType != RCTYPE_SKULL_TOKEN)
+        if (!IsVisibleInCheckTracker(entry2))
             continue;
 
         checkTrackerData.emplace(entry.rc, entry);
