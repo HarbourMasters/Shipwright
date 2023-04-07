@@ -726,6 +726,7 @@ namespace Settings {
   Option LogicShadowUmbrella              = LogicTrick(" ShT Stone Umbrella\n   w/ Hover Boots",      LogicShadowUmbrellaDesc);
   Option LogicShadowFreestandingKey       = LogicTrick(" ShT Skull Vase Key\n   w/ Bombchu",          LogicShadowFreestandingKeyDesc);
   Option LogicShadowStatue                = LogicTrick(" ShT River Statue\n   w/ Bombchu",            LogicShadowStatueDesc);
+  Option LogicShadowBongo                 = LogicTrick("ShT Bongo\n w/o Projectiles",                 LogicShadowBongoDesc);
   Option LogicChildDeadhand               = LogicTrick(" BotW Deadhand\n   w/o Sword",                LogicChildDeadhandDesc);
   Option LogicGtgWithoutHookshot          = LogicTrick(" GTG West Silver Rupee\n   w/o Hookshot",     LogicGtgWithoutHookshotDesc);
   Option LogicGtgFakeWall                 = LogicTrick(" GTG Invisible Wall\n   w/ Hover Boots",      LogicGtgFakeWallDesc);
@@ -816,6 +817,7 @@ namespace Settings {
     &LogicShadowUmbrella,
     &LogicShadowFreestandingKey,
     &LogicShadowStatue,
+    &LogicShadowBongo,
     &LogicChildDeadhand,
     &LogicGtgWithoutHookshot,
     &LogicGtgFakeWall,
@@ -2287,6 +2289,7 @@ namespace Settings {
           LogicSpiritSunChest.SetSelectedIndex(1);
           //LogicShadowFireArrowEntry.SetSelectedIndex(1);
           LogicShadowUmbrella.SetSelectedIndex(1);
+          LogicShadowBongo.SetSelectedIndex(1);
           LogicGtgWithoutHookshot.SetSelectedIndex(1);
         }
       }

@@ -1186,6 +1186,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option LogicShadowUmbrella;
   extern Option LogicShadowFreestandingKey;
   extern Option LogicShadowStatue;
+  extern Option LogicShadowBongo;
   extern Option LogicChildDeadhand;
   extern Option LogicGtgWithoutHookshot;
   extern Option LogicGtgFakeWall;
