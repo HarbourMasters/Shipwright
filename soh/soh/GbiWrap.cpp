@@ -40,8 +40,12 @@ extern "C" void gSPSegment(void* value, int segNum, uintptr_t target) {
 
     int res = ResourceMgr_OTRSigCheck(imgData);
 
-    if (res)
-        target = (uintptr_t)ResourceMgr_LoadTexOrDListByName(imgData);
+    // OTRTODO: Disabled for now to fix an issue with HD Textures.
+    // With HD textures, we need to pass the path to F3D, not the raw texture data.
+    // Otherwise the needed metadata is not available for proper rendering...
+    // This should *not* cause any crashes, but some testing may be needed...
+    // if (res)
+        // target = (uintptr_t)ResourceMgr_LoadTexOrDListByName(imgData);
 
     __gSPSegment(value, segNum, target);
 }
