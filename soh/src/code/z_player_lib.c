@@ -1024,7 +1024,8 @@ s32 func_8008FCC8(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
 s32 func_80090014(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
-    if (!func_8008FCC8(play, limbIndex, dList, pos, rot, thisx)) {
+    if (!func_8008FCC8(play, limbIndex, dList, pos, rot, thisx)) 
+    {
         if (limbIndex == PLAYER_LIMB_L_HAND) {
             Gfx** dLists = this->leftHandDLists;
 
@@ -1072,7 +1073,12 @@ s32 func_80090014(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
 
 
         } else if (limbIndex == PLAYER_LIMB_WAIST) {
-            *dList = ResourceMgr_LoadGfxByName(this->waistDLists[sDListsLodOffset]);
+            
+            if (!CVarGetInteger("gUseCustomLinkModel", 0)) {
+                *dList = ResourceMgr_LoadGfxByName(
+                    this->waistDLists[sDListsLodOffset]); // NOTE: This needs to be disabled when using custom
+                                                          // characters - they're not going to have LODs anyways...
+            }
         }
     }
 
@@ -1655,6 +1661,10 @@ s32 func_80091880(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
         }
     } else if (limbIndex == PLAYER_LIMB_WAIST) {
         type = gPlayerModelTypes[modelGroup][4];
+        
+        if (CVarGetInteger("gUseCustomLinkModel", 0)) {
+            return 0;
+        }
     } else {
         return 0;
     }
