@@ -161,18 +161,20 @@ void RegisterFreezeTime() {
 void RegisterSwitchAge() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         static bool warped = false;
+        static bool switchLock = true;
         static Vec3f playerPos;
         static int16_t playerYaw;
 
         if (!gPlayState) return;
 
-        if (CVarGetInteger("gSwitchAge", 0) != 0) {
-            CVarSetInteger("gSwitchAge", 0);
+        if (CVarGetInteger("gSwitchAge", 0) && switchLock) {
+            switchLock = false;
             playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
             playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
 
             ReloadSceneTogglingLinkAge();
-
+            CVarSetInteger("gSwitchAge", 0);
+            switchLock = true;
             warped = true;
         }
 
