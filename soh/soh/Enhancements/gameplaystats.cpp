@@ -251,10 +251,10 @@ std::string ResolveSceneID(int sceneID, int roomID){
     } else if (sceneID == SCENE_HAKASITARELAY) {
         //Only the last room of Dampe's Grave (rm 6) is considered the windmill
         scene = roomID == 6 ? "Windmill" : "Dampe's Grave";
-    } else if (sceneID < sceneMappings.length()) {
+    } else if (sceneID < sceneMappings.size()) {
         scene = sceneMappings[sceneID];
     } else {
-        scene = "???"
+        scene = "???";
     }
     return scene;
 }
