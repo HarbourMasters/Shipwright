@@ -3,8 +3,8 @@
 #include <stdint.h>
 #endif
 
-#define CHEST_ANIM_SHORT 0
-#define CHEST_ANIM_LONG 1
+#define CHEST_ANIM_SHORT (int16_t)0
+#define CHEST_ANIM_LONG (int16_t)1
 
 /**
  * Flag to indicate which type of Actor has given the player an item. ITEM_FROM_NPC by default,
@@ -30,17 +30,14 @@ typedef enum GetItemCategory {
 } GetItemCategory;
 
 #define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim, itemCategory, modIndex, getItemId) \
-    { itemId, field, (chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1), textId, objectId, modIndex, getItemId, drawId, true, ITEM_FROM_NPC, itemCategory, NULL }
+    { itemId, field, (int16_t)((chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1)), textId, objectId, modIndex, getItemId, drawId, true, ITEM_FROM_NPC, itemCategory, NULL }
 
 #define GET_ITEM_NONE \
     { ITEM_NONE, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL }
 
 typedef struct PlayState PlayState;
-typedef struct GetItemEntry GetItemEntry;
 
-typedef void (*CustomDrawFunc)(PlayState* play, GetItemEntry* getItemEntry);
-
-typedef struct GetItemEntry {
+typedef struct {
     /* 0x00 */ uint16_t itemId;
     /* 0x01 */ uint16_t field; // various bit-packed data
     /* 0x02 */ int16_t gi;     // defines the draw id and chest opening animation
@@ -54,5 +51,4 @@ typedef struct GetItemEntry {
     /* 0x0F */ GetItemCategory getItemCategory; // Primarily made and used for chest size/texture matches contents
     /* 0x10 */ uint16_t drawItemId; // Will be a copy of itemId unless the item is an ice trap. Needed for particles to function on ice traps.
     /* 0x11 */ uint16_t drawModIndex; // Will be a copy of modIndex unless the item is an ice trap. Needed for particles to function on ice traps.
-    CustomDrawFunc drawFunc;
-}; // size = 0x11
+} GetItemEntry; // size = 0x11

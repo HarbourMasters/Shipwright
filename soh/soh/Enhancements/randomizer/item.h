@@ -30,16 +30,18 @@ enum ItemType {
 class RandoItem {
   public:
     RandoItem() = default;
+    RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
+                     bool* logicVar_, uint32_t hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
+                     uint16_t textId_, uint16_t field_, int16_t chestAnimation_, GetItemCategory category_,
+                     uint16_t modIndex_, bool progressive = false, uint16_t price_ = 0);
+    RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
+              uint8_t* logicVar_, uint32_t hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
+              uint16_t textId_, uint16_t field_, int16_t chestAnimation_, GetItemCategory category_, uint16_t modIndex_,
+              bool progressive = false, uint16_t price_ = 0);
     RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
-              bool* logicVar_, uint32_t hintKey_, int itemId_, int objectId_, int gid_, int textId_, int field_,
-              int chestAnimation_, GetItemCategory category_, int modIndex_, uint16_t price_ = 0);
+              bool* logicVar_, uint32_t hintKey_, bool progressive = false, uint16_t price = 0);
     RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
-              uint8_t* logicVar_, uint32_t hintKey_, int itemId_, int objectId_, int gid_, int textId_, int field_,
-              int chestAnimation_, GetItemCategory category_, int modIndex_, uint16_t price_ = 0);
-    RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
-              bool* logicVar_, uint32_t hintKey_, uint16_t price = 0);
-    RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,
-              uint8_t* logicVar_, uint32_t hintKey_, uint16_t price = 0);
+              uint8_t* logicVar_, uint32_t hintKey_, bool progressive = false, uint16_t price = 0);
     ~RandoItem();
 
     void ApplyEffect();
@@ -67,19 +69,12 @@ class RandoItem {
     RandomizerGet randomizerGet;
     Text name;
     ItemType type;
-    int getItemId;
+    int16_t getItemId;
     bool advancement;
     std::variant<bool*, uint8_t*> logicVar;
     uint32_t hintKey;
-    int itemId;
-    int objectId;
-    int gid;
-    int textId;
-    int field;
-    int chestAnimation;
-    int modIndex;
-    bool collectable;
-    GetItemCategory category;
+    bool progressive = false;
     uint16_t price;
     bool playthrough = false;
+   std::shared_ptr<GetItemEntry> giEntry = nullptr;
 };
