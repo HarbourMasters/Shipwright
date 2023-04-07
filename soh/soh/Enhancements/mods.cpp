@@ -181,9 +181,9 @@ void RegisterSwitchAge() {
             gSaveContext.nextTransitionType == 255) {
             GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
             GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
-            func_800973FC(gPlayState, &gPlayState->roomCtx); //unload start room 
             func_8009728C(gPlayState, roomCtx, roomNum); //load original room
-            func_80097534(gPlayState, roomCtx);  // load map into correct room (finishes unloading of previous room)
+            //func_800973FC(gPlayState, &gPlayState->roomCtx); // commit to room load?
+            func_80097534(gPlayState, roomCtx);  // load map for new room (unloading the previous room)
             warped = false;      
         }
     });
