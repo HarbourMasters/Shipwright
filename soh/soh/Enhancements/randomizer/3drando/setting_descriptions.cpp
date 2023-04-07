@@ -1435,6 +1435,12 @@ string_view LogicShadowStatueDesc                     = "Difficulty: Novice\n"  
                                                         "By sending a Bombchu around the edge of the gorge,"
                                                         "you can knock down the statue without needing a\n"//
                                                         "Bow. Applies in both vanilla and MQ Shadow.";     //
+string_view LogicShadowBongoDesc                      = "Difficulty Expert\n"                              //
+                                                        "Using precise sword slashes, Bongo Bongo can be\n"//
+                                                        "defeated without using projectiles.\n"            //
+                                                        "This trick is much more difficult when done with\n"
+                                                        "Kokiri Sword vs Master Sword or Biggorron Sword.\n"
+                                                        "Useful for Boss Entrance Randomizer.";            //
 string_view LogicChildDeadhandDesc                    = "Difficulty: Novice\n"                             //
                                                         "Requires 9 sticks or 5 jump slashes.";            //
 string_view LogicGtgWithoutHookshotDesc               = "Difficulty: Expert\n"                             //
