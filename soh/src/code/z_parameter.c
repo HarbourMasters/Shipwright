@@ -1418,7 +1418,7 @@ void Inventory_SwapAgeEquipment(void) {
                 gSaveContext.childEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
             } else {
                 if (CVarGetInteger("gSwitchAge", 0) && 
-                    gSaveContext.infTable[29]) {
+                    (gSaveContext.infTable[29] & 1)) {
                     gSaveContext.childEquips.buttonItems[i] = ITEM_NONE;
                 } else {
                     gSaveContext.childEquips.buttonItems[i] = ITEM_SWORD_KOKIRI;
@@ -1552,7 +1552,7 @@ void Inventory_SwapAgeEquipment(void) {
             }
         }
     }
-    CVarSetInteger("gSwitchAge", 0);
+
     temp = gEquipMasks[EQUIP_SHIELD] & gSaveContext.equips.equipment;
     if (temp != 0) {
         temp >>= gEquipShifts[EQUIP_SHIELD];
