@@ -14,6 +14,8 @@
 #include "3drando/item_location.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
+#include "z64item.h"
+
 extern "C" {
 #include "variables.h"
 #include "functions.h"
@@ -46,10 +48,11 @@ bool doInitialize;
 bool pendingSaleCheck = false;
 bool messageCloseCheck = false;
 bool tickCheck = false;
+bool transitionCheck = false;
 int tickCheckCounter = 0;
 std::map<RandomizerCheck, RandomizerCheckShow> checkStatusMap;
 std::map<RandomizerCheck, RandomizerCheckTrackerData> checkTrackerData;
-std::map<RandomizerCheckArea, std::vector<RandomizerCheck>> checksByArea;
+std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea;
 bool areasFullyChecked[RCAREA_INVALID];
 u32 areasSpoiled = 0;
 bool showVOrMQ;
@@ -66,9 +69,9 @@ SceneID currentScene = SCENE_ID_MAX;
 bool newFileCheck = false;
 
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
-bool CompareChecks(RandomizerCheck, RandomizerCheck);
+bool CompareChecks(RandomizerCheckObject, RandomizerCheckObject);
 void CheckByArea(RandomizerCheckArea, GetItemEntry);
-void DrawLocation(RandomizerCheck);
+void DrawLocation(RandomizerCheckObject);
 void EndFloatWindows();
 bool HasItemBeenCollected(RandomizerCheck);
 void LoadSettings();
@@ -134,6 +137,36 @@ Color_RGBA8 Color_Saved_Extra           = {   0, 185,   0, 255 }; // Green
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 
+std::map<GetItemID, Text> itemNames = {
+    { GI_HOOKSHOT,          Text{ "Hookshot",            "Grappin",                  "Gancho" } },
+    { GI_LONGSHOT,          Text{ "Longshot",            "Super-Grappin",            "Supergancho" } },
+    { GI_OCARINA_FAIRY,     Text{ "Fairy Ocarina",       "Ocarina des fées",         "Ocarina de las Hadas" } },
+    { GI_OCARINA_OOT,       Text{ "Ocarina of Time",     "Ocarina du Temps",         "Ocarina del Tiempo" } },
+    { GI_BOMB_BAG_20,       Text{ "Bomb Bag",            "Sac de Bombes",            "Saco de bombas" } },
+    { GI_BOMB_BAG_30,       Text{ "Bomb Bag Upgrade",    "Sac de Bombes améliorer",  "Saco de bombas mejora" } },
+    { GI_BOMB_BAG_40,       Text{ "Bomb Bag Upgrade",    "Sac de Bombes améliorer",  "Saco de bombas mejora" } },
+    { GI_BOW,               Text{ "Fairy Bow",           "Arc des Fées",             "Arco de las Hadas" } },
+    { GI_QUIVER_40,         Text{ "Quiver Upgrade",      "Carquois améliorer",       "Carcaj grande" } },
+    { GI_QUIVER_50,         Text{ "Quiver Upgrade",      "Carquois améliorer",       "Carcaj grande" } },
+    { GI_SLINGSHOT,         Text{ "Fairy Slingshot",     "Lance-Pierre des Fées",    "Resortera de las hadas" } },
+    { GI_BULLET_BAG_40,     Text{ "Bullet Bag Upgrade",  "Sac de graines améliorer", "Bolsa de semillas deku mejora" } },
+    { GI_BULLET_BAG_50,     Text{ "Bullet Bag Upgrade",  "Sac de graines améliorer", "Bolsa de semillas deku mejora" } },
+    { GI_BRACELET,          Text{ "Goron's Bracelet",    "Bracelet Goron",           "Brazalete de los Goron" } },
+    { GI_GAUNTLETS_SILVER,  Text{ "Silver Gauntlets",    "Gantelets d'argent",       "Guantes de plata" } },
+    { GI_GAUNTLETS_GOLD,    Text{ "Golden Gauntlets",    "Gantelets d'or",           "Guantes de oro" } },
+    { GI_SCALE_SILVER,      Text{ "Silver Scale",        "Écaille d'argent",         "Escama de Plata" } },
+    { GI_SCALE_GOLD,        Text{ "Golden Scale",        "Écaille d'or",             "Escama de Oro" } },
+    { GI_WALLET_ADULT,      Text{ "Adult Wallet",        "Grande Bourse",            "Bolsa de adulto" } },
+    { GI_WALLET_GIANT,      Text{ "Giant Wallet",        "Bourse de Géant",          "Bolsa gigante" } },
+    { GI_NUT_UPGRADE_30,    Text{ "Deku Nut Capacity",   "Capacité de noix Mojo",    "Capacidad de nueces deku" } },
+    { GI_NUT_UPGRADE_40,    Text{ "Deku Nut Capacity",   "Capacité de noix Mojo",    "Capacidad de nueces deku" } },
+    { GI_STICK_UPGRADE_20,  Text{ "Deku Stick Capacity", "Capacité de Bâtons Mojo",  "Capacidad de palos deku" } },
+    { GI_STICK_UPGRADE_30,  Text{ "Deku Stick Capacity", "Capacité de Bâtons Mojo",  "Capacidad de palos deku" } }
+    //{GI_,                       Text{"Magic Meter",                     "Jauge de Magie",                   "Poder mágico"}},
+    //{RG_ENHANCED_MAGIC_METER,              Text{"Enhanced Magic Meter",            "Jauge de Magie améliorée",         "Poder mágico mejorado"}},
+
+};
+
 std::map<RandomizerCheck, RandomizerCheckTrackerData> *GetCheckTrackerData() {
     return &checkTrackerData;
 }
@@ -175,7 +208,7 @@ void LinksPocket() {
 void TrySetAreas() {
     if (checksByArea.empty()) {
         for (int i = RCAREA_KOKIRI_FOREST; i < RCAREA_INVALID; i++) {
-            checksByArea.emplace(static_cast<RandomizerCheckArea>(i), std::vector<RandomizerCheck>());
+            checksByArea.emplace(static_cast<RandomizerCheckArea>(i), std::vector<RandomizerCheckObject>());
         }
     }
 }
@@ -209,21 +242,20 @@ void CheckChecks(GetItemEntry giEntry = GET_ITEM_NONE) {
 }
 
 void CheckByArea(RandomizerCheckArea area, GetItemEntry giEntry = GET_ITEM_NONE) {
-    for (auto rc : checksByArea.find(area)->second) {
-        if (checkTrackerData.contains(rc)) {
-            RandomizerCheckObject rco = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
-            RandomizerCheckTrackerData rcData = checkTrackerData.find(rc)->second;
-            GetItemID giid = OTRGlobals::Instance->gRandomizer->GetItemIdFromRandomizerGet(OTRGlobals::Instance->gRandomizer->GetRandomizerGetDataFromKnownCheck(rc).rgID, rco.ogItemId);
+    for (auto rco : checksByArea.find(area)->second) {
+        if (checkTrackerData.contains(rco.rc)) {
+            RandomizerCheckTrackerData rcData = checkTrackerData.find(rco.rc)->second;
+            GetItemID giid = OTRGlobals::Instance->gRandomizer->GetItemIdFromRandomizerGet(OTRGlobals::Instance->gRandomizer->GetRandomizerGetDataFromKnownCheck(rco.rc).rgID, rco.ogItemId);
             bool match = giEntry.itemId == ITEM_NONE || giid == giEntry.getItemId;
             if (match && HasItemBeenCollected(rcData.rc) && rcData.status != RCSHOW_COLLECTED && rcData.status != RCSHOW_SAVED) {
-                SetCheckCollected(rc);
+                SetCheckCollected(rco.rc);
             }
         }
     }
 }
 
 bool HasItemBeenCollected(RandomizerCheck rc) {
-    if (gPlayState == NULL) {
+    if (gPlayState == nullptr) {
         return false;
     }
     ItemLocation* x = Location(rc);
@@ -293,6 +325,11 @@ void CheckTrackerTransition(uint32_t sceneNum) {
         for (auto [area, check] : checksByArea) {
             CheckByArea(area);
         }
+        SaveTrackerData(gSaveContext.fileNum, true, true);
+    }
+    if (transitionCheck) {
+        transitionCheck = false;
+        CheckChecks();
     }
     currentArea = RandomizerCheckObjects::GetRCAreaBySceneID(static_cast<SceneID>(sceneNum));
     UpdateOrdering();
@@ -326,11 +363,14 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
     if (gPlayState == nullptr) {
         return;
     }
+    auto scene = static_cast<SceneID>(gPlayState->sceneNum);
+    if (scene == SCENE_KOKIRI_SHOP && giEntry.itemId == ITEM_SHIELD_DEKU && !gSaveContext.n64ddFlag) {
+        SetCheckCollected(RC_KF_SHOP_ITEM_3);
+    }
     if (gSaveContext.pendingSale != ITEM_NONE) {
         pendingSaleCheck = true;
         return;
     }
-    auto scene = static_cast<SceneID>(gPlayState->sceneNum);
     if (scene == SCENE_SYATEKIJYOU) {
         if (gSaveContext.linkAge == 1) {
             SetCheckCollected(RC_MARKET_SHOOTING_GALLERY_REWARD);
@@ -357,6 +397,10 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         } else if (gSaveContext.lastScene == SCENE_SPOT17) {
             SetCheckCollected(RC_DMC_GREAT_FAIRY_REWARD);
         }
+        return;
+    }
+    if (GET_PLAYER(gPlayState) == nullptr) {
+        transitionCheck = true;
         return;
     }
     if (GET_PLAYER(gPlayState)->interactRangeActor != nullptr || gPlayState->lastCheck != nullptr) {
@@ -396,26 +440,12 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
 void CreateTrackerData() {
     TrySetAreas();
     for (auto& [rc, rco] : RandomizerCheckObjects::GetAllRCObjects()) {
-        /*if (!gSaveContext.n64ddFlag) {
-            if (rco.vanillaCheck) {
-                PushDefaultCheckData(rc);
-            }
-        }
-        else {
-            if ((rc == RC_UNKNOWN_CHECK) || (rc == RC_MAX) || (rc == RC_LINKS_POCKET) ||
-                ((OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_OFF) && (rco.rcType == RCTYPE_SCRUB) &&
-                    !(rco.rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || rco.rc == RC_HF_DEKU_SCRUB_GROTTO || rco.rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT)) ||
-                (rco.rcType == RCTYPE_MERCHANT && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) == RO_GENERIC_OFF)) {
-                continue;
-            }
-            PushDefaultCheckData(rc);
-        }*/
-        if (rc != RC_UNKNOWN_CHECK && rc != RC_MAX && rc != RC_LINKS_POCKET && IsVisibleInCheckTracker(rco)) {
+        if (rc != RC_UNKNOWN_CHECK && rc != RC_MAX && rc != RC_LINKS_POCKET) {
             PushDefaultCheckData(rc);
         }
     }
     newFileCheck = true;
-    //LinksPocket();
+    LinksPocket();
     SongFromImpa();
     UpdateOrdering();
     UpdateInventoryChecks();
@@ -430,11 +460,11 @@ void LoadCheckTrackerData(json checks) {
         if (entry.rc == RC_UNKNOWN_CHECK || entry.rc == RC_MAX || entry.rc == RC_LINKS_POCKET)
             continue;
         RandomizerCheckObject entry2 = RandomizerCheckObjects::GetAllRCObjects().find(entry.rc)->second;
-        /*if (!IsVisibleInCheckTracker(entry2) && entry2.rcType != RCTYPE_SKULL_TOKEN)
-            continue;*/
+        if (!IsVisibleInCheckTracker(entry2) && entry2.rcType != RCTYPE_SKULL_TOKEN)
+            continue;
 
         checkTrackerData.emplace(entry.rc, entry);
-        checksByArea.find(entry2.rcArea)->second.push_back(entry.rc);
+        checksByArea.find(entry2.rcArea)->second.push_back(entry2);
         if (entry.status == RCSHOW_SAVED || entry.skipped)
             areaChecksGotten[entry2.rcArea]++;
         
@@ -457,8 +487,7 @@ void LoadCheckTrackerData(json checks) {
         }
         RandomizerCheckObject linksPocket = { RC_LINKS_POCKET, RCVORMQ_BOTH, RCTYPE_LINKS_POCKET, startingArea, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, false, "Link's Pocket", "Link's Pocket" };
         
-        checksByArea.find(startingArea)->second.push_back(RC_LINKS_POCKET);
-        RandomizerCheckObjects::GetAllRCObjects().emplace(RC_LINKS_POCKET, linksPocket);
+        checksByArea.find(startingArea)->second.push_back(linksPocket);
         areaChecksGotten[startingArea]++;
     }
 
@@ -599,8 +628,8 @@ void DrawCheckTracker(bool& open) {
     std::string stemp;
     s32 areaMask = 1;
 
-    for (auto& [rcArea, checks] : checksByArea) {
-        const int areaChecksTotal = static_cast<int>(checks.size());
+    for (auto& [rcArea, objs] : checksByArea) {
+        const int areaChecksTotal = static_cast<int>(objs.size());
         thisAreaFullyChecked = (areaChecksGotten[rcArea] == areaChecksTotal);
         //Last Area needs to be cleaned up
         if (lastArea != RCAREA_INVALID && doDraw) {
@@ -665,9 +694,9 @@ void DrawCheckTracker(bool& open) {
             //Keep areas loaded between transitions
             if (currentArea == rcArea && doAreaScroll)
                 ImGui::SetScrollHereY(0.0f);
-            for (auto& check : checks) {
-                if (doDraw && isThisAreaSpoiled)
-                    DrawLocation(check);
+            for (auto rco : objs) {
+                if (doDraw && isThisAreaSpoiled && IsVisibleInCheckTracker(rco))
+                    DrawLocation(rco);
             }
             if (doDraw)
                 ImGui::TreePop();
@@ -919,9 +948,9 @@ void UpdateOrdering(RandomizerCheckArea rcArea) {
     }
 }
 
-bool CompareChecks(RandomizerCheck i, RandomizerCheck j) {
-    RandomizerCheckTrackerData iShow = checkTrackerData.find(i)->second;
-    RandomizerCheckTrackerData jShow = checkTrackerData.find(j)->second;
+bool CompareChecks(RandomizerCheckObject i, RandomizerCheckObject j) {
+    RandomizerCheckTrackerData iShow = checkTrackerData.find(i.rc)->second;
+    RandomizerCheckTrackerData jShow = checkTrackerData.find(j.rc)->second;
     bool iCollected = iShow.status == RCSHOW_COLLECTED || iShow.status == RCSHOW_SAVED;
     bool iSaved = iShow.status == RCSHOW_SAVED;
     bool jCollected = jShow.status == RCSHOW_COLLECTED || jShow.status == RCSHOW_SAVED;
@@ -941,23 +970,19 @@ bool CompareChecks(RandomizerCheck i, RandomizerCheck j) {
     else if (iShow.skipped && !jShow.skipped)
         return false;
 
-    if (i < j)
+    if (i.rc < j.rc)
         return true;
-    else if (i > j)
+    else if (i.rc > j.rc)
         return false;
 
     return false;
 }
 
-void DrawLocation(RandomizerCheck rc) {
+void DrawLocation(RandomizerCheckObject rcObj) {
     Color_RGBA8 mainColor; 
     Color_RGBA8 extraColor;
     std::string txt;
-    auto rcObj = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
     bool showHidden = CVarGetInteger("gCheckTrackerOptionShowHidden", 0);
-    if(!checkTrackerData.contains(rcObj.rc)) {
-        PushDefaultCheckData(rcObj.rc);
-    }
     RandomizerCheckTrackerData checkData = checkTrackerData.find(rcObj.rc)->second;
     RandomizerCheckShow status = checkData.status;
     bool skipped = checkData.skipped;
@@ -1032,23 +1057,51 @@ void DrawLocation(RandomizerCheck rc) {
             case RCSHOW_SAVED:
             case RCSHOW_COLLECTED:
             case RCSHOW_SCUMMED:
-                if (gSaveContext.n64ddFlag)
-                    txt = OTRGlobals::Instance->gRandomizer
-                        ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.rgID][gSaveContext.language];
-                else if (gSaveContext.language == LANGUAGE_ENG)
+                if (gSaveContext.n64ddFlag) {
+                    txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.rgID][gSaveContext.language];
+                } else if (gSaveContext.language == LANGUAGE_ENG || gSaveContext.language == LANGUAGE_GER) {
                     txt = ItemFromGIID(rcObj.ogItemId).GetName().english;
-                else if (gSaveContext.language == LANGUAGE_FRA)
+                    if (txt == "Green Rupee" && rcObj.ogItemId != GI_RUPEE_GREEN) {
+                        if (itemNames.contains(rcObj.ogItemId)) {
+                            txt = itemNames.find(rcObj.ogItemId)->second.GetEnglish();
+                        } else {
+                            txt = "";
+                        }
+                    }
+                } else if (gSaveContext.language == LANGUAGE_FRA) {
                     txt = ItemFromGIID(rcObj.ogItemId).GetName().french;
+                    if (txt == "Rubis Vert" && rcObj.ogItemId != GI_RUPEE_GREEN) {
+                        if (itemNames.contains(rcObj.ogItemId)) {
+                            txt = itemNames.find(rcObj.ogItemId)->second.GetFrench();
+                        } else {
+                            txt = "";
+                        }
+                    }
+                }
                 break;
             case RCSHOW_SEEN:
-                if (gSaveContext.n64ddFlag)
-                    txt = OTRGlobals::Instance->gRandomizer
-                        ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.fakeRgID][gSaveContext.language];
-                else if (gSaveContext.language == LANGUAGE_ENG)
+                if (gSaveContext.n64ddFlag) {
+                    txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.fakeRgID][gSaveContext.language];
+                } else if (gSaveContext.language == LANGUAGE_ENG || gSaveContext.language == LANGUAGE_GER) {
                     txt = ItemFromGIID(rcObj.ogItemId).GetName().english;
-                else if (gSaveContext.language == LANGUAGE_FRA)
+                    if (txt == "Green Rupee" && rcObj.ogItemId != GI_RUPEE_GREEN) {
+                        if (itemNames.contains(rcObj.ogItemId)) {
+                            txt = itemNames.find(rcObj.ogItemId)->second.GetEnglish();
+                        } else {
+                            txt = "";
+                        }
+                    }
+                } else if (gSaveContext.language == LANGUAGE_FRA) {
                     txt = ItemFromGIID(rcObj.ogItemId).GetName().french;
-                break;
+                    if (txt == "Rubis Vert" && rcObj.ogItemId != GI_RUPEE_GREEN) {
+                        if (itemNames.contains(rcObj.ogItemId)) {
+                            txt = itemNames.find(rcObj.ogItemId)->second.GetFrench();
+                        } else {
+                            txt = "";
+                        }
+                    }
+                }
+            break;
         }
     }
     if (txt == "" && skipped)

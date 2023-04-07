@@ -3115,12 +3115,10 @@ void LoadTrackerData(int fileNum) {
         CheckTracker::CreateTrackerData();
         SaveTrackerData(fileNum, false, false);
     }
-    else {
-        std::ifstream input(GetTrackerDataFileName(fileNum));
+    std::ifstream input(GetTrackerDataFileName(fileNum));
 
-        json data = json::parse(input);
-        CheckTracker::LoadCheckTrackerData(data.at("checks"));
-    }
+    json data = json::parse(input);
+    CheckTracker::LoadCheckTrackerData(data.at("checks"));
 }
 
 void DeleteTrackerData(int fileNum) {
