@@ -1010,7 +1010,7 @@ void DrawLocation(RandomizerCheckObject rcObj) {
         if (!showHidden && CVarGetInteger("gCheckTrackerKnownHide", 0))
             return;
         mainColor = CVarGetColor("gCheckTrackerScummedMainColor", Color_Main_Default);
-        extraColor = CVarGetColor("gCheckTrackerScummedColor", Color_Scummed_Extra_Default);
+        extraColor = CVarGetColor("gCheckTrackerScummedExtraColor", Color_Scummed_Extra_Default);
     } else if (status == RCSHOW_UNCHECKED) {
         if (!showHidden && CVarGetInteger("gCheckTrackerUncheckedHide", 0))
             return;
