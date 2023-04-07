@@ -1411,19 +1411,14 @@ void Inventory_SwapAgeEquipment(void) {
     u16 temp;
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
-        // When becoming adult, remove swordless flag since we'll get master sword
-        // Only in rando to keep swordless link bugs in vanilla
-        if (gSaveContext.n64ddFlag) {
-            gSaveContext.infTable[29] &= ~1;
-        }
+        
 
         for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
             if (i != 0) {
                 gSaveContext.childEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
             } else {
                 if (CVarGetInteger("gSwitchAge", 0) && 
-                    gSaveContext.infTable[29] && 
-                    !gSaveContext.n64ddFlag) {
+                    gSaveContext.infTable[29]) {
                     gSaveContext.childEquips.buttonItems[i] = ITEM_NONE;
                 } else {
                     gSaveContext.childEquips.buttonItems[i] = ITEM_SWORD_KOKIRI;
@@ -1433,6 +1428,12 @@ void Inventory_SwapAgeEquipment(void) {
             if (i != 0) {
                 gSaveContext.childEquips.cButtonSlots[i - 1] = gSaveContext.equips.cButtonSlots[i - 1];
             }
+        }
+
+        // When becoming adult, remove swordless flag since we'll get master sword
+        // Only in rando to keep swordless link bugs in vanilla
+        if (gSaveContext.n64ddFlag) {
+            gSaveContext.infTable[29] &= ~1;
         }
 
         gSaveContext.childEquips.equipment = gSaveContext.equips.equipment;
@@ -1500,7 +1501,7 @@ void Inventory_SwapAgeEquipment(void) {
         gSaveContext.adultEquips.equipment = gSaveContext.equips.equipment;
 
         if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE ||
-            (CVarGetInteger("gSwitchAge", 0) && !gSaveContext.n64ddFlag)) {
+            CVarGetInteger("gSwitchAge", 0)) {
             for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                 gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
 
@@ -1541,7 +1542,8 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = 0x1111;
         }
 
-        if (CVarGetInteger("gSwitchAge", 0) && !gSaveContext.n64ddFlag && (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
+        if (CVarGetInteger("gSwitchAge", 0) &&
+            (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
             gSaveContext.infTable[29] |= 1;
             if (gSaveContext.childEquips.equipment == 0) {
                 // force equip kokiri tunic and boots in scenario gSaveContext.childEquips.equipment is uninitialized
