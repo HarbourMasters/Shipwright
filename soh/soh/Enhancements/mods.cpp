@@ -161,26 +161,30 @@ void RegisterFreezeTime() {
 void RegisterSwitchAge() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         static bool warped = false;
-        static bool switchLock = true;
         static Vec3f playerPos;
         static int16_t playerYaw;
+        static RoomContext* roomCtx;
+        static s32 roomNum;
 
         if (!gPlayState) return;
 
-        if (CVarGetInteger("gSwitchAge", 0) && switchLock) {
-            switchLock = false;
+        if (CVarGetInteger("gSwitchAge", 0) && !warped) {
             playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
             playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
-
+            roomCtx = &gPlayState->roomCtx;
+            roomNum = roomCtx->curRoom.num;
             ReloadSceneTogglingLinkAge();
             warped = true;
         }
 
-        if (!switchLock && warped && gPlayState->sceneLoadFlag != 0x0014 && gSaveContext.nextTransitionType == 255) {
+        if (warped && gPlayState->sceneLoadFlag != 0x0014 &&
+            gSaveContext.nextTransitionType == 255) {
             GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
             GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
-            warped = false;
-            switchLock = true;
+            func_800973FC(gPlayState, &gPlayState->roomCtx); //unload start room 
+            func_8009728C(gPlayState, roomCtx, roomNum); //load original room
+            func_80097534(gPlayState, roomCtx);  // load map into correct room (finishes unloading of previous room)
+            warped = false;      
         }
     });
 }
