@@ -244,7 +244,8 @@ void AreaTable_Init_JabuJabusBelly() {
         Area("Jabu Jabus Belly Boss Room", "Jabu Jabus Belly", NONE, NO_DAY_NIGHT_CYCLE,
              {
                  // Events
-                 EventAccess(&JabuJabusBellyClear, { [] { return JabuJabusBellyClear || CanUse(BOOMERANG); } }),
+                 EventAccess(&JabuJabusBellyClear,
+                             { [] { return JabuJabusBellyClear || (CanUse(BOOMERANG) && CanJumpslash); } }),
              },
              {
                  // Locations

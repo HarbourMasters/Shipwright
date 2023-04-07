@@ -193,24 +193,25 @@ void AreaTable_Init_ShadowTemple() {
                  Entrance(SHADOW_TEMPLE_BOSS_ROOM, { [] { return true; } }),
              });
 
-    areaTable[SHADOW_TEMPLE_BOSS_ROOM] =
-        Area("Shadow Temple Boss Room", "Shadow Temple", NONE, NO_DAY_NIGHT_CYCLE,
-             {
-                 // Events
-                 EventAccess(&ShadowTempleClear, { [] {
-                     return ShadowTempleClear ||
-                            ((CanUse(LENS_OF_TRUTH) || ((Dungeon::ShadowTemple.IsVanilla() && LogicLensShadowBack) ||
-                                                        (Dungeon::ShadowTemple.IsMQ() && LogicLensShadowMQBack))) &&
-                             (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)));
-                 } }),
-             },
-             {
-                 // Locations
-                 LocationAccess(SHADOW_TEMPLE_BONGO_BONGO_HEART, { [] { return ShadowTempleClear; } }),
-                 LocationAccess(BONGO_BONGO, { [] { return ShadowTempleClear; } }),
-             },
-             {
-                 // Exits
-                 Entrance(SHADOW_TEMPLE_BOSS_ENTRYWAY, { [] { return false; } }),
-             });
+    areaTable[SHADOW_TEMPLE_BOSS_ROOM] = Area(
+        "Shadow Temple Boss Room", "Shadow Temple", NONE, NO_DAY_NIGHT_CYCLE,
+        {
+            // Events
+            EventAccess(&ShadowTempleClear, { [] {
+                return ShadowTempleClear ||
+                       ((CanUse(LENS_OF_TRUTH) || ((Dungeon::ShadowTemple.IsVanilla() && LogicLensShadowBack) ||
+                                                   (Dungeon::ShadowTemple.IsMQ() && LogicLensShadowMQBack))) &&
+                        (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD) || LogicShadowBongo) &&
+                        (CanUse(HOOKSHOT) || CanUse(BOW) || CanUse(SLINGSHOT)));
+            } }),
+        },
+        {
+            // Locations
+            LocationAccess(SHADOW_TEMPLE_BONGO_BONGO_HEART, { [] { return ShadowTempleClear; } }),
+            LocationAccess(BONGO_BONGO, { [] { return ShadowTempleClear; } }),
+        },
+        {
+            // Exits
+            Entrance(SHADOW_TEMPLE_BOSS_ENTRYWAY, { [] { return false; } }),
+        });
 }
