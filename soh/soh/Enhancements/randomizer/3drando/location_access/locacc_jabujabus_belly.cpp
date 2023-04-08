@@ -234,7 +234,7 @@ void AreaTable_Init_JabuJabusBelly() {
     areaTable[JABU_JABUS_BELLY_BOSS_ROOM] =
         Area("Jabu Jabus Belly Boss Room", "Jabu Jabus Belly", NONE, NO_DAY_NIGHT_CYCLE,
              {
-                 // Events
+                 // Events //todo: add pot kill trick
                  EventAccess(&JabuJabusBellyClear, { [] { return JabuJabusBellyClear || CanUse(BOOMERANG); } }),
              },
              {

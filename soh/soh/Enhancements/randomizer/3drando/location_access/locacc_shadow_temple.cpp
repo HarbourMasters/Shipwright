@@ -196,7 +196,8 @@ void AreaTable_Init_ShadowTemple() {
                  EventAccess(&ShadowTempleClear, { [] {
                      return ShadowTempleClear ||
                             ((CanUse(LENS_OF_TRUTH) || LogicLensBongo) &&
-                             (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)));
+                             (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)) &&
+                             (CanUse(HOOKSHOT) || CanUse(BOW) || CanUse(SLINGSHOT) || LogicShadowBongo));
                  } }),
              },
              {
