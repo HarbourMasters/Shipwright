@@ -63,6 +63,7 @@ char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
 char* GetResourceDataByNameHandlingMQ(const char* path);
 void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
+uint8_t ResourceMgr_ResourceIsBackground(char* texPath);
 char* ResourceMgr_LoadJPEG(char* data, int dataSize);
 uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
 uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
@@ -138,6 +139,8 @@ void Entrance_ClearEntranceTrackingData(void);
 void Entrance_InitEntranceTrackingData(void);
 void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex);
 void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex);
+
+uint32_t GetGIID(uint32_t itemID);
 #endif
 
 #endif

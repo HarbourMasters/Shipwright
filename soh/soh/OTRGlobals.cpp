@@ -323,10 +323,6 @@ uint32_t OTRGlobals::GetInterpolationFPS() {
     return std::min<uint32_t>(Ship::Window::GetInstance()->GetCurrentRefreshRate(), CVarGetInteger("gInterpolationFPS", 20));
 }
 
-std::shared_ptr<std::vector<std::string>> OTRGlobals::ListFiles(std::string path) {
-    return context->GetResourceManager()->ListFiles(path);
-}
-
 struct ExtensionEntry {
     std::string path;
     std::string ext;
@@ -528,7 +524,7 @@ extern "C" void VanillaItemTable_Init() {
         GET_ITEM(ITEM_POE,              OBJECT_GI_GHOST,         GID_POE,              0x97, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_POE),
         GET_ITEM(ITEM_BIG_POE,          OBJECT_GI_GHOST,         GID_BIG_POE,          0xF9, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BIG_POE),
         GET_ITEM(ITEM_KEY_SMALL,        OBJECT_GI_KEY,           GID_KEY_SMALL,        0xF3, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY,       MOD_NONE, GI_DOOR_KEY),
-        GET_ITEM(ITEM_RUPEE_GREEN,      OBJECT_GI_RUPY,          GID_RUPEE_GREEN,      0xF4, 0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_RUPEE_GREEN_LOSE),
+        GET_ITEM(ITEM_RUPEE_GREEN,      OBJECT_GI_RUPY,          GID_RUPEE_GREEN,      0xF4, 0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_GREEN_LOSE),
         GET_ITEM(ITEM_RUPEE_BLUE,       OBJECT_GI_RUPY,          GID_RUPEE_BLUE,       0xF5, 0x01, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_BLUE_LOSE),
         GET_ITEM(ITEM_RUPEE_RED,        OBJECT_GI_RUPY,          GID_RUPEE_RED,        0xF6, 0x02, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_RED_LOSE),
         GET_ITEM(ITEM_RUPEE_PURPLE,     OBJECT_GI_RUPY,          GID_RUPEE_PURPLE,     0xF7, 0x14, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_PURPLE_LOSE),
@@ -553,8 +549,140 @@ extern "C" void VanillaItemTable_Init() {
     }
 }
 
+std::unordered_map<uint32_t, uint32_t> ItemIDtoGetItemID{
+    { ITEM_ARROWS_LARGE, GI_ARROWS_LARGE },
+    { ITEM_ARROWS_MEDIUM, GI_ARROWS_MEDIUM },
+    { ITEM_ARROWS_SMALL, GI_ARROWS_SMALL },
+    { ITEM_ARROW_FIRE, GI_ARROW_FIRE },
+    { ITEM_ARROW_ICE, GI_ARROW_ICE },
+    { ITEM_ARROW_LIGHT, GI_ARROW_LIGHT },
+    { ITEM_BEAN, GI_BEAN },
+    { ITEM_BIG_POE, GI_BIG_POE },
+    { ITEM_BLUE_FIRE, GI_BLUE_FIRE },
+    { ITEM_BOMB, GI_BOMBS_1 },
+    { ITEM_BOMBCHU, GI_BOMBCHUS_10 },
+    { ITEM_BOMBCHUS_20, GI_BOMBCHUS_20 },
+    { ITEM_BOMBCHUS_5, GI_BOMBCHUS_5 },
+    { ITEM_BOMBS_10, GI_BOMBS_10 },
+    { ITEM_BOMBS_20, GI_BOMBS_20 },
+    { ITEM_BOMBS_30, GI_BOMBS_30 },
+    { ITEM_BOMBS_5, GI_BOMBS_5 },
+    { ITEM_BOMB_BAG_20, GI_BOMB_BAG_20 },
+    { ITEM_BOMB_BAG_30, GI_BOMB_BAG_30 },
+    { ITEM_BOMB_BAG_40, GI_BOMB_BAG_40 },
+    { ITEM_BOOMERANG, GI_BOOMERANG },
+    { ITEM_BOOTS_HOVER, GI_BOOTS_HOVER },
+    { ITEM_BOOTS_IRON, GI_BOOTS_IRON },
+    { ITEM_BOTTLE, GI_BOTTLE },
+    { ITEM_BOW, GI_BOW },
+    { ITEM_BRACELET, GI_BRACELET },
+    { ITEM_BUG, GI_BUGS },
+    { ITEM_BULLET_BAG_30, GI_BULLET_BAG_30 },
+    { ITEM_BULLET_BAG_40, GI_BULLET_BAG_40 },
+    { ITEM_BULLET_BAG_50, GI_BULLET_BAG_50 }, { ITEM_CHICKEN, GI_CHICKEN },
+    { ITEM_CLAIM_CHECK, GI_CLAIM_CHECK },
+    { ITEM_COJIRO, GI_COJIRO },
+    { ITEM_COMPASS, GI_COMPASS },
+    { ITEM_DINS_FIRE, GI_DINS_FIRE },
+    { ITEM_DUNGEON_MAP, GI_MAP },
+    { ITEM_EYEDROPS, GI_EYEDROPS },
+    { ITEM_FAIRY, GI_FAIRY },
+    { ITEM_FARORES_WIND, GI_FARORES_WIND },
+    { ITEM_FISH, GI_FISH },
+    { ITEM_FROG, GI_FROG },
+    { ITEM_GAUNTLETS_GOLD, GI_GAUNTLETS_GOLD },
+    { ITEM_GAUNTLETS_SILVER, GI_GAUNTLETS_SILVER },
+    { ITEM_GERUDO_CARD, GI_GERUDO_CARD },
+    { ITEM_HAMMER, GI_HAMMER },
+    { ITEM_HEART, GI_HEART },
+    { ITEM_HEART_CONTAINER, GI_HEART_CONTAINER },
+    { ITEM_HEART_CONTAINER, GI_HEART_CONTAINER_2 },
+    { ITEM_HEART_PIECE_2, GI_HEART_PIECE },
+    { ITEM_HEART_PIECE_2, GI_HEART_PIECE_WIN },
+    { ITEM_HOOKSHOT, GI_HOOKSHOT },
+    { ITEM_KEY_BOSS, GI_KEY_BOSS },
+    { ITEM_KEY_SMALL, GI_DOOR_KEY },
+    { ITEM_KEY_SMALL, GI_KEY_SMALL },
+    { ITEM_LENS, GI_LENS },
+    { ITEM_LETTER_RUTO, GI_LETTER_RUTO },
+    { ITEM_LETTER_ZELDA, GI_LETTER_ZELDA },
+    { ITEM_LONGSHOT, GI_LONGSHOT },
+    { ITEM_MAGIC_LARGE, GI_MAGIC_LARGE },
+    { ITEM_MAGIC_SMALL, GI_MAGIC_SMALL },
+    { ITEM_MASK_BUNNY, GI_MASK_BUNNY },
+    { ITEM_MASK_GERUDO, GI_MASK_GERUDO },
+    { ITEM_MASK_GORON, GI_MASK_GORON },
+    { ITEM_MASK_KEATON, GI_MASK_KEATON },
+    { ITEM_MASK_SKULL, GI_MASK_SKULL },
+    { ITEM_MASK_SPOOKY, GI_MASK_SPOOKY },
+    { ITEM_MASK_TRUTH, GI_MASK_TRUTH },
+    { ITEM_MASK_ZORA, GI_MASK_ZORA },
+    { ITEM_MILK, GI_MILK },
+    { ITEM_MILK_BOTTLE, GI_MILK_BOTTLE },
+    { ITEM_NAYRUS_LOVE, GI_NAYRUS_LOVE },
+    { ITEM_NUT, GI_NUTS_5 },
+    { ITEM_NUTS_10, GI_NUTS_10 },
+    { ITEM_NUTS_5, GI_NUTS_5 },
+    { ITEM_NUTS_5, GI_NUTS_5_2 },
+    { ITEM_NUT_UPGRADE_30, GI_NUT_UPGRADE_30 },
+    { ITEM_NUT_UPGRADE_40, GI_NUT_UPGRADE_40 },
+    { ITEM_OCARINA_FAIRY, GI_OCARINA_FAIRY },
+    { ITEM_OCARINA_TIME, GI_OCARINA_OOT },
+    { ITEM_ODD_MUSHROOM, GI_ODD_MUSHROOM },
+    { ITEM_ODD_POTION, GI_ODD_POTION },
+    { ITEM_POCKET_CUCCO, GI_POCKET_CUCCO },
+    { ITEM_POCKET_EGG, GI_POCKET_EGG },
+    { ITEM_POE, GI_POE },
+    { ITEM_POTION_BLUE, GI_POTION_BLUE },
+    { ITEM_POTION_GREEN, GI_POTION_GREEN },
+    { ITEM_POTION_RED, GI_POTION_RED },
+    { ITEM_PRESCRIPTION, GI_PRESCRIPTION },
+    { ITEM_QUIVER_40, GI_QUIVER_40 },
+    { ITEM_QUIVER_50, GI_QUIVER_50 },
+    { ITEM_RUPEE_BLUE, GI_RUPEE_BLUE },
+    { ITEM_RUPEE_BLUE, GI_RUPEE_BLUE_LOSE },
+    { ITEM_RUPEE_GOLD, GI_RUPEE_GOLD },
+    { ITEM_RUPEE_GREEN, GI_RUPEE_GREEN },
+    { ITEM_RUPEE_GREEN, GI_RUPEE_GREEN_LOSE },
+    { ITEM_RUPEE_PURPLE, GI_RUPEE_PURPLE },
+    { ITEM_RUPEE_PURPLE, GI_RUPEE_PURPLE_LOSE },
+    { ITEM_RUPEE_RED, GI_RUPEE_RED },
+    { ITEM_RUPEE_RED, GI_RUPEE_RED_LOSE },
+    { ITEM_SAW, GI_SAW },
+    { ITEM_SCALE_GOLDEN, GI_SCALE_GOLD },
+    { ITEM_SCALE_SILVER, GI_SCALE_SILVER },
+    { ITEM_SEEDS, GI_SEEDS_5 },
+    { ITEM_SEEDS_30, GI_SEEDS_30 },
+    { ITEM_SHIELD_DEKU, GI_SHIELD_DEKU },
+    { ITEM_SHIELD_HYLIAN, GI_SHIELD_HYLIAN },
+    { ITEM_SHIELD_MIRROR, GI_SHIELD_MIRROR },
+    { ITEM_SKULL_TOKEN, GI_SKULL_TOKEN },
+    { ITEM_SLINGSHOT, GI_SLINGSHOT },
+    { ITEM_STICK, GI_STICKS_1 },
+    { ITEM_STICKS_10, GI_STICKS_10 },
+    { ITEM_STICKS_5, GI_STICKS_5 },
+    { ITEM_STICK_UPGRADE_20, GI_STICK_UPGRADE_20 },
+    { ITEM_STICK_UPGRADE_30, GI_STICK_UPGRADE_30 },
+    { ITEM_STONE_OF_AGONY, GI_STONE_OF_AGONY },
+    { ITEM_SWORD_BGS, GI_SWORD_BGS },
+    { ITEM_SWORD_BGS, GI_SWORD_KNIFE },
+    { ITEM_SWORD_BROKEN, GI_SWORD_BROKEN },
+    { ITEM_SWORD_KOKIRI, GI_SWORD_KOKIRI },
+    { ITEM_TUNIC_GORON, GI_TUNIC_GORON },
+    { ITEM_TUNIC_ZORA, GI_TUNIC_ZORA },
+    { ITEM_WALLET_ADULT, GI_WALLET_ADULT },
+    { ITEM_WALLET_GIANT, GI_WALLET_GIANT },
+    { ITEM_WEIRD_EGG, GI_WEIRD_EGG }
+};
+
+extern "C" uint32_t GetGIID(uint32_t itemID) {
+    if (ItemIDtoGetItemID.contains(itemID))
+        return ItemIDtoGetItemID.at(itemID);
+    return -1;
+}
+
 extern "C" void OTRExtScanner() {
-    auto lst = *OTRGlobals::Instance->context->GetResourceManager()->ListFiles("*.*").get();
+    auto lst = *OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->ListFiles("*.*").get();
 
     for (auto& rPath : lst) {
         std::vector<std::string> raw = StringHelper::Split(rPath, ".");
@@ -875,7 +1003,7 @@ extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
 
 // OTRTODO: There is probably a more elegant way to go about this...
 extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize) {
-    auto lst = OTRGlobals::Instance->context->GetResourceManager()->ListFiles(searchMask);
+    auto lst = OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->ListFiles(searchMask);
     char** result = (char**)malloc(lst->size() * sizeof(char*));
 
     for (size_t i = 0; i < lst->size(); i++) {
@@ -928,6 +1056,11 @@ extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
     return data;
 }
 
+extern "C" uint8_t ResourceMgr_ResourceIsBackground(char* texPath) {
+    auto res = GetResourceByNameHandlingMQ(texPath);
+    return res->InitData->Type == Ship::ResourceType::SOH_Background;
+}
+
 extern "C" char* ResourceMgr_LoadJPEG(char* data, int dataSize)
 {
     static char* finalBuffer = 0;
@@ -973,9 +1106,9 @@ extern "C" uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = GetResourceByNameHandlingMQ(filePath);
 
-    if (res->Type == Ship::ResourceType::DisplayList)
+    if (res->InitData->Type == Ship::ResourceType::DisplayList)
         return (char*)&((std::static_pointer_cast<Ship::DisplayList>(res))->Instructions[0]);
-    else if (res->Type == Ship::ResourceType::Array)
+    else if (res->InitData->Type == Ship::ResourceType::Array)
         return (char*)(std::static_pointer_cast<Ship::Array>(res))->Vertices.data();
     else {
         return (char*)GetResourceDataByNameHandlingMQ(filePath);
@@ -1677,8 +1810,11 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             } else {
                 textId = TEXT_GS_FREEZE;
             }
+            // In vanilla, GS token count is incremented prior to the text box displaying
+            // In rando we need to bump the token count by one to show the correct count
+            s16 gsCount = gSaveContext.inventory.gsTokens + (gSaveContext.n64ddFlag ? 1 : 0);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
-            CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{gsCount}}", std::to_string(gSaveContext.inventory.gsTokens));
+            CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{gsCount}}", std::to_string(gsCount));
         }
     }
     if (textId == TEXT_HEART_CONTAINER && CVarGetInteger("gInjectItemCounts", 0)) {
