@@ -1175,96 +1175,17 @@ namespace Settings {
   };
 
   //TODO completely rewrite glitch section since oot3d glitches differ from oot
-
-  //Function to avoid accidentally naming the options wrong, as logic.cpp requires these exact names
-  std::vector<std::string> GlitchDifficultyOptions(uint8_t enabledDifficulties) {
-    static constexpr std::array glitchDifficulties{"Novice", "Intermediate", "Advanced", "Expert", "Hero"};
-
-    std::vector<std::string> selectableDifficulties;
-    selectableDifficulties.push_back("Disabled");
-    for (size_t i = 0; i < glitchDifficulties.size(); i++) {
-      if ((enabledDifficulties >> i) & 1) {
-        selectableDifficulties.push_back(glitchDifficulties[i]);
-      }
-    }
-
-    return selectableDifficulties;
-  }
   
-  Option GlitchRestrictedItems    = Option::U8("Restricted Items",      GlitchDifficultyOptions(0b00001), { GlitchRestrictedItemsDescDisabled    , GlitchRestrictedItemsDescNovice                                                                                                                                                              });
-  Option GlitchSuperStab          = Option::U8("Super Stab",            GlitchDifficultyOptions(0b00001), { GlitchSuperStabDescDisabled          , GlitchSuperStabDescNovice                                                                                                                                                                    });
-  Option GlitchISG                = Option::U8("Infinite Sword Glitch", GlitchDifficultyOptions(0b00111), { GlitchISGDescDisabled                , GlitchISGDescNovice                , GlitchISGDescIntermediate                , GlitchISGDescAdvanced                                                                                        });
-  Option GlitchHover              = Option::U8("Bomb Hover",            GlitchDifficultyOptions(0b00111), { GlitchHoverDescDisabled              , GlitchHoverDescNovice              , GlitchHoverDescIntermediate              , GlitchHoverDescAdvanced                                                                                      });
-  Option GlitchBombOI             = Option::U8("Ocarina Items (Bomb)",  GlitchDifficultyOptions(0b01111), { GlitchBombOIDescDisabled             , GlitchBombOIDescNovice             , GlitchBombOIDescIntermediate             , GlitchBombOIDescAdvanced             , GlitchBombOIDescExpert                                                });
-  Option GlitchHoverBoost         = Option::U8("HoverBoost",            GlitchDifficultyOptions(0b00111), { GlitchHoverBoostDescDisabled         , GlitchHoverBoostDescNovice         , GlitchHoverBoostDescIntermediate         , GlitchHoverBoostDescAdvanced                                                                                 });
-  Option GlitchSuperSlide         = Option::U8("Extended Super Slide",  GlitchDifficultyOptions(0b01111), { GlitchSuperSlideDescDisabled         , GlitchSuperSlideDescNovice         , GlitchSuperSlideDescIntermediate         , GlitchSuperSlideDescAdvanced         , GlitchSuperSlideDescExpert                                            });
-  Option GlitchMegaflip           = Option::U8("Megaflip",              GlitchDifficultyOptions(0b11111), { GlitchMegaflipDescDisabled           , GlitchMegaflipDescNovice           , GlitchMegaflipDescIntermediate           , GlitchMegaflipDescAdvanced           , GlitchMegaflipDescExpert           , GlitchMegaflipDescHero           });
-  Option GlitchASlide             = Option::U8("A-Slide",               GlitchDifficultyOptions(0b01111), { GlitchASlideDescDisabled             , GlitchASlideDescNovice             , GlitchASlideDescIntermediate             , GlitchASlideDescAdvanced             , GlitchASlideDescExpert                                                });
-  Option GlitchHammerSlide        = Option::U8("Hammer Slide",          GlitchDifficultyOptions(0b00011), { GlitchHammerSlideDescDisabled        , GlitchHammerSlideDescNovice        , GlitchHammerSlideDescIntermediate                                                                                                                       });
-  Option GlitchLedgeCancel        = Option::U8("Ledge Cancel",          GlitchDifficultyOptions(0b00111), { GlitchLedgeCancelDescDisabled        , GlitchLedgeCancelDescNovice        , GlitchLedgeCancelDescIntermediate        , GlitchLedgeCancelDescAdvanced                                                                                });
-  Option GlitchActionSwap         = Option::U8("Action Swap",           GlitchDifficultyOptions(0b00101), { GlitchActionSwapDescDisabled         , GlitchActionSwapDescNovice                                                    , GlitchActionSwapDescAdvanced                                                                                 });
-  Option GlitchQPA                = Option::U8("Quick Put Away",        GlitchDifficultyOptions(0b01111), { GlitchQPADescDisabled                , GlitchQPADescNovice                , GlitchQPADescIntermediate                , GlitchQPADescAdvanced                , GlitchQPADescExpert                                                   });
-  Option GlitchHookshotClip       = Option::U8("Hookshot Clip",         GlitchDifficultyOptions(0b00011), { GlitchHookshotClipDescDisabled       , GlitchHookshotClipDescNovice       , GlitchHookshotClipDescIntermediate                                                                                                                      });
-  Option GlitchHookshotJump_Bonk  = Option::U8("Hookshot Jump (Bonk)",  GlitchDifficultyOptions(0b00111), { GlitchHookshotJump_BonkDescDisabled  , GlitchHookshotJump_BonkDescNovice  , GlitchHookshotJump_BonkDescIntermediate  , GlitchHookshotJump_BonkDescAdvanced                                                                          });
-  Option GlitchHookshotJump_Boots = Option::U8("Hookshot Jump (Boots)", GlitchDifficultyOptions(0b00111), { GlitchHookshotJump_BootsDescDisabled , GlitchHookshotJump_BootsDescNovice , GlitchHookshotJump_BootsDescIntermediate , GlitchHookshotJump_BootsDescAdvanced                                                                         });
-  Option GlitchCutsceneDive       = Option::U8("Cutscene Dives",        GlitchDifficultyOptions(0b00111), { GlitchCutsceneDiveDescDisabled       , GlitchCutsceneDiveDescNovice       , GlitchCutsceneDiveDescIntermediate       , GlitchCutsceneDiveDescAdvanced                                                                               });
-  Option GlitchNaviDive_Stick     = Option::U8("Navi Dive (Stick)",     GlitchDifficultyOptions(0b00111), { GlitchNaviDive_StickDescDisabled     , GlitchNaviDive_StickDescNovice     , GlitchNaviDive_StickDescIntermediate     , GlitchNaviDive_StickDescAdvanced                                                                             });
-  Option GlitchTripleSlashClip    = Option::U8("Triple Slash Clip",     GlitchDifficultyOptions(0b01111), { GlitchTripleSlashClipDescDisabled    , GlitchTripleSlashClipDescNovice    , GlitchTripleSlashClipDescIntermediate    , GlitchTripleSlashClipDescAdvanced    , GlitchTripleSlashClipDescExpert                                       });
-  Option GlitchLedgeClip          = Option::U8("Ledge Clip",            GlitchDifficultyOptions(0b00111), { GlitchLedgeClipDescDisabled          , GlitchLedgeClipDescNovice          , GlitchLedgeClipDescIntermediate          , GlitchLedgeClipDescAdvanced                                                                                  });
-  Option GlitchSeamWalk           = Option::U8("Seam Walk",             GlitchDifficultyOptions(0b11111), { GlitchSeamWalkDescDisabled           , GlitchSeamWalkDescNovice           , GlitchSeamWalkDescIntermediate           , GlitchSeamWalkDescAdvanced           , GlitchSeamWalkDescExpert           , GlitchSeamWalkDescHero           });
-  std::vector<Option*> glitchCategories = {
-    &GlitchRestrictedItems,
-    &GlitchSuperStab,
-    &GlitchISG,
-    &GlitchHover,
-    &GlitchBombOI,
-    &GlitchHoverBoost,
-    &GlitchSuperSlide,
-    &GlitchMegaflip,
-    &GlitchASlide,
-    &GlitchHammerSlide,
-    &GlitchLedgeCancel,
-    &GlitchActionSwap,
-    &GlitchQPA,
-    &GlitchHookshotClip,
-    &GlitchHookshotJump_Bonk,
-    &GlitchHookshotJump_Boots,
-    &GlitchCutsceneDive,
-    &GlitchNaviDive_Stick,
-    &GlitchTripleSlashClip,
-    &GlitchLedgeClip,
-    &GlitchSeamWalk,
-  };
+  Option GlitchEquipSwapDins = LogicTrick("", LogicTempDesc);
+  Option GlitchEquipSwap     = LogicTrick("", LogicTempDesc);
 
-  Option GlitchWWTEscape         = Option::Bool("WWT Kokiri\n  Forest Escape", {"Off", "On"}, {GlitchWWTEscapeDesc});
-  Option GlitchGVTentAsChild     = Option::Bool("Enter GV Tent\n  as Child",   {"Off", "On"}, {GlitchGVTentAsChildDesc});
-  Option GlitchGFGuardSneak      = Option::Bool("Sneak Past\n  the GF Guard",  {"Off", "On"}, {GlitchGFGuardSneakDesc});
-  Option GlitchItemlessWasteland = Option::Bool("Cross the HW\n  w/o Items",   {"Off", "On"}, {GlitchItemlessWastelandDesc});
-  Option GlitchOccamsStatue      = Option::Bool("Occam's Statue",              {"Off", "On"}, {GlitchOccamsStatueDesc});
-  Option GlitchZDOoBJumpSlash    = Option::Bool("ZD OoB w/\n  Jump Slash",     {"Off", "On"}, {GlitchZDOoBJumpSlashDesc});
-  Option GlitchJabuStickRecoil   = Option::Bool("Enter Jabu\n  w/o Bottle",    {"Off", "On"}, {GlitchJabuStickRecoilDesc});
-  Option GlitchJabuAdult         = Option::Bool("Enter Jabu\n  as Adult",      {"Off", "On"}, {GlitchJabuAdultDesc});
-  Option GlitchBlueFireWall      = Option::Bool("Break Walls\n  w/ Blue Fire", {"Off", "On"}, {GlitchBlueFireWallDesc});
-  Option GlitchClassicHalfie     = Option::Bool("Classic Halfie",              {"Off", "On"}, {GlitchClassicHalfieDesc});
-  Option GlitchModernHalfie      = Option::Bool("Modern Halfie",               {"Off", "On"}, {GlitchModernHalfieDesc});
-  Option GlitchJabuSwitch        = Option::Bool("Jabu Switch\n  w/ CS item",   {"Off", "On"}, {GlitchJabuSwitchDesc});
-  Option GlitchForestBKSkip      = Option::Bool("Forest Temple\n  BK Skip",    {"Off", "On"}, {GlitchForestBKSkipDesc});
-  Option GlitchFireGrunzClip     = Option::Bool("Fire Temple\n  Grunz Clip",   {"Off", "On"}, {GlitchFireGrunzClipDesc});
+  std::vector<Option*> glitchCategories = {
+    &GlitchEquipSwapDins,
+    &GlitchEquipSwap,
+  };
+  
   std::vector<Option*> miscGlitches = {
-    &GlitchWWTEscape,
-    &GlitchGVTentAsChild,
-    &GlitchGFGuardSneak,
-    &GlitchItemlessWasteland,
-    &GlitchOccamsStatue,
-    &GlitchZDOoBJumpSlash,
-    &GlitchJabuStickRecoil,
-    &GlitchJabuAdult,
-    &GlitchBlueFireWall,
-    &GlitchClassicHalfie,
-    &GlitchModernHalfie,
-    &GlitchJabuSwitch,
-    &GlitchForestBKSkip,
-    &GlitchFireGrunzClip,
+    
   };
   
 
