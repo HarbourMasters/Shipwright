@@ -2828,20 +2828,20 @@ void Interface_LoadActionLabel(InterfaceContext* interfaceCtx, u16 action, s16 l
 
     char* doAction = actionsTbl[action];
 
-    char newName[512];
+    static char newName[4][512];
     if (gSaveContext.language != LANGUAGE_ENG) {
         size_t length = strlen(doAction);
-        strcpy(newName, doAction);
+        strcpy(newName[loadOffset], doAction);
         if (gSaveContext.language == LANGUAGE_FRA) {
-            newName[length - 6] = 'F';
-            newName[length - 5] = 'R';
-            newName[length - 4] = 'A';
+            newName[loadOffset][length - 6] = 'F';
+            newName[loadOffset][length - 5] = 'R';
+            newName[loadOffset][length - 4] = 'A';
         } else if (gSaveContext.language == LANGUAGE_GER) {
-            newName[length - 6] = 'G';
-            newName[length - 5] = 'E';
-            newName[length - 4] = 'R';
+            newName[loadOffset][length - 6] = 'G';
+            newName[loadOffset][length - 5] = 'E';
+            newName[loadOffset][length - 4] = 'R';
         }
-        doAction = newName;
+        doAction = newName[loadOffset];
     }
     
     char* segment = interfaceCtx->doActionSegment[loadOffset];
@@ -2892,7 +2892,7 @@ void Interface_LoadActionLabelB(PlayState* play, u16 action) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
 
     char* doAction = actionsTbl[action];
-    char newName[512];
+    static char newName[512];
 
     if (gSaveContext.language != LANGUAGE_ENG) {
         size_t length = strlen(doAction);
@@ -2909,20 +2909,7 @@ void Interface_LoadActionLabelB(PlayState* play, u16 action) {
         doAction = newName;
     }
 
-    /*if (gSaveContext.language != LANGUAGE_ENG) {
-        action += DO_ACTION_MAX;
-    }
-
-    if (gSaveContext.language == LANGUAGE_FRA) {
-        action += DO_ACTION_MAX;
-    }*/
-
     interfaceCtx->unk_1FC = action;
-
-
-
-    // OTRTODO
-    osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
     
     char* segment = interfaceCtx->doActionSegment[1];
     interfaceCtx->doActionSegment[1] = action != DO_ACTION_NONE ? doAction : gDoEmptyTexture;

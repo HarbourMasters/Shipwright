@@ -29,12 +29,14 @@
 #include "soh/SaveManager.h"
 #include "OTRGlobals.h"
 #include "soh/Enhancements/presets.h"
+#include "soh/resource/type/Skeleton.h"
 
 #ifdef ENABLE_CROWD_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
 #endif
 
 #include "Enhancements/game-interactor/GameInteractor.h"
+
 
 bool ShouldClearTextureCacheAtEndOfFrame = false;
 
@@ -963,6 +965,7 @@ namespace GameMenuBar {
             
             if (UIWidgets::PaddedEnhancementCheckbox("HD Assets", "gHdAssets", true, false)) {
                 ShouldClearTextureCacheAtEndOfFrame = true;
+                Ship::SkeletonPatcher::UpdateSkeletons(CVarGetInteger("gHdAssets", 0));
             }
 
          #ifdef __SWITCH__

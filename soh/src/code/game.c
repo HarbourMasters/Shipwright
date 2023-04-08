@@ -466,6 +466,8 @@ void GameState_Destroy(GameState* gameState) {
         UnloadResourceDirectory("hd/*");
         gfx_texture_cache_clear();
     }
+
+    ResourceMgr_ClearSkeletons();
 }
 
 GameStateFunc GameState_GetInit(GameState* gameState) {

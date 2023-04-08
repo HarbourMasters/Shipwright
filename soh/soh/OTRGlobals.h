@@ -88,7 +88,9 @@ void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 
 uint64_t GetPerfCounter();
-struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path);
+struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime);
+void ResourceMgr_UnregisterSkeleton(SkelAnime* skelAnime);
+void ResourceMgr_ClearSkeletons();
 s32* ResourceMgr_LoadCSByName(const char* path);
 int ResourceMgr_OTRSigCheck(char* imgData);
 uint64_t osGetTime(void);

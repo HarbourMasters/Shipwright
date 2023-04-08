@@ -1339,8 +1339,27 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
     return (AnimationHeaderCommon*)GetResourceDataByName(path, false);
 }
 
-extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
-    return (SkeletonHeader*)GetResourceDataByName(path, false);
+extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) 
+{
+    SkeletonHeader* skelHeader = (SkeletonHeader*)GetResourceDataByName(path, false);
+
+    // This function is only called when a skeleton is initialized.
+    // Therefore we can take this oppurtunity to take note of the Skeleton that is created...
+    if (skelAnime != nullptr)
+        Ship::SkeletonPatcher::RegisterSkeleton(path, skelAnime);
+
+
+    return skelHeader;
+}
+
+extern "C" void ResourceMgr_UnregisterSkeleton(SkelAnime* skelAnime) {
+    if (skelAnime != nullptr)
+        Ship::SkeletonPatcher::UnregisterSkeleton(skelAnime);
+}
+
+extern "C" void ResourceMgr_ClearSkeletons(SkelAnime* skelAnime) {
+    if (skelAnime != nullptr)
+        Ship::SkeletonPatcher::ClearSkeletons();
 }
 
 extern "C" s32* ResourceMgr_LoadCSByName(const char* path) {

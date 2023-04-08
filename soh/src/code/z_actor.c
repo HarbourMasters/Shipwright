@@ -1018,7 +1018,7 @@ void TitleCard_InitPlaceName(PlayState* play, TitleCardContext* titleCtx, void* 
 
     }
 
-    char newName[512];
+    static char newName[512];
 
     if (gSaveContext.language != LANGUAGE_ENG) {
         size_t length = strlen(texture);
