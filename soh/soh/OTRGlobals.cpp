@@ -316,7 +316,7 @@ bool OTRGlobals::HasOriginal() {
 }
 
 uint32_t OTRGlobals::GetInterpolationFPS() {
-    if (CVarGetInteger("gMatchRefreshRate", 0)) {
+    if (CVarGetInteger("gMatchRefreshRate", 0) && SohImGui::WindowBackend() != SohImGui::Backend::DX11) {
         return Ship::Window::GetInstance()->GetCurrentRefreshRate();
     }
 
