@@ -6,7 +6,7 @@
 
 typedef enum {
     RTAREA_GENERAL,
-    RTAREA_BK_SKIPS,
+    //RTAREA_BK_SKIPS,
     RTAREA_KOKIRI_FOREST,
     RTAREA_LOST_WOODS,
     RTAREA_SACRED_FOREST_MEADOW,
@@ -48,14 +48,26 @@ typedef enum {
     RTVORMQ_BOTH
 } RandomizerTrickVanillaOrMQ;
 
+typedef enum {
+    RTTAG_NOVICE,
+    RTTAG_INTERMEDIATE,
+    RTTAG_ADVANCED,
+    RTTAG_EXPERT,
+    RTTAG_EXTREME,
+    /*RTTAG_LENS,
+    RTTAG_BKSKIP
+    RTTAG_EXPERIMENTAL*/
+} RandomizerTrickTag;
+
 //todo tags
-#define RT_OBJECT(rt, rt_v_or_mq, rt_area, rt_glitch, rt_shortname, rt_desc) \
-    { rt, {rt, rt_v_or_mq, rt_area, rt_glitch, true, rt_shortname, rt_desc} }
+#define RT_OBJECT(rt, rt_v_or_mq, rt_area, rt_tags, rt_glitch, rt_shortname, rt_desc) \
+    { rt, {rt, rt_v_or_mq, rt_area, rt_tags, rt_glitch, true, rt_shortname, rt_desc} }
 
 typedef struct {
     RandomizerTrick rt;
     RandomizerTrickVanillaOrMQ vOrMQ;
     RandomizerTrickArea rtArea;
+    std::vector<RandomizerTrickTag> *rtTags;
     bool rtGlitch;
     bool visibleInImgui;
     std::string rtShortName;
@@ -63,7 +75,11 @@ typedef struct {
 } RandomizerTrickObject;
 
 namespace RandomizerTricks {
+    std::map<RandomizerTrick, RandomizerTrickObject> GetAllRTObjects();
     std::map<RandomizerTrickArea, std::map<RandomizerTrick,RandomizerTrickObject>> GetAllRTObjectsByArea();
     std::string GetRTAreaName(RandomizerTrickArea area);
+    std::string GetRTTagName(RandomizerTrickTag tag);
     ImVec4 GetRTAreaColor(RandomizerTrickArea area);
+    ImVec4 GetRTTagColor(RandomizerTrickTag tag);
+    bool CheckRTTags(std::map<RandomizerTrickTag, bool> &showTag, const std::vector<RandomizerTrickTag> &rtTags);
 }
