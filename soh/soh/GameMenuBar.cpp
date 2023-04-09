@@ -367,8 +367,6 @@ namespace GameMenuBar {
                         "- Obtained the Master Sword\n"
                         "- Not within range of Time Block\n"
                         "- Not within range of Ocarina playing spots");
-                    UIWidgets::PaddedEnhancementCheckbox("Disable Hot/Underwater Warning Text", "gDisableWarningText", true, false);
-                    UIWidgets::Tooltip("Disables warning text when you don't have on the Goron/Zora Tunic in Hot/Underwater conditions.");
                     ImGui::EndMenu();
                 }
 
@@ -632,6 +630,8 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Hides most of the UI when not needed\nNote: Doesn't activate until after loading a new scene");
                     UIWidgets::PaddedEnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio", true, false);
                     UIWidgets::Tooltip("Disables the voice audio when Navi calls you");
+                    UIWidgets::PaddedEnhancementCheckbox("Disable Hot/Underwater Warning Text", "gDisableWarningText", true, false);
+                    UIWidgets::Tooltip("Disables warning text when you don't have on the Goron/Zora Tunic in Hot/Underwater conditions.");
 
                     ImGui::EndMenu();
                 }
