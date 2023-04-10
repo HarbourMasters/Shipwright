@@ -379,9 +379,9 @@ void EnGanonMant_DrawCloak(PlayState* play, EnGanonMant* this) {
     // set vertices, vertices are double buffered to prevent
     // modification of vertices as they are being drawn
     if (this->frameTimer % 2 != 0) {
-        gSPSegment(POLY_OPA_DISP++, 0x0C, gMant1Vtx);
+        gSPSegmentLoadRes(POLY_OPA_DISP++, 0x0C, gMant1Vtx);
     } else {
-        gSPSegment(POLY_OPA_DISP++, 0x0C, gMant2Vtx);
+        gSPSegmentLoadRes(POLY_OPA_DISP++, 0x0C, gMant2Vtx);
     }
 
     // draw cloak

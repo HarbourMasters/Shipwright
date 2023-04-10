@@ -50,6 +50,17 @@ extern "C" void gSPSegment(void* value, int segNum, uintptr_t target) {
     __gSPSegment(value, segNum, target);
 }
 
+extern "C" void gSPSegmentLoadRes(void* value, int segNum, uintptr_t target) {
+    char* imgData = (char*)target;
+
+    int res = ResourceMgr_OTRSigCheck(imgData);
+
+    if (res)
+        target = (uintptr_t)ResourceMgr_LoadTexOrDListByName(imgData);
+
+    __gSPSegment(value, segNum, target);
+}
+
 extern "C" void gDPSetTextureImage(Gfx* pkt, u32 format, u32 size, u32 width, uintptr_t i) {
     __gDPSetTextureImage(pkt, format, size, width, i);
 }

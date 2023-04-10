@@ -28,6 +28,7 @@ f64 sqrt(f64 d);
 //#pragma intrinsic(sqrt)
 
 void gSPSegment(void* value, int segNum, uintptr_t target);
+void gSPSegmentLoadRes(void* value, int segNum, uintptr_t target);
 void gDPSetTextureImage(Gfx* pkt, u32 f, u32 s, u32 w, uintptr_t i);
 void gSPDisplayList(Gfx* pkt, Gfx* dl);
 void gSPDisplayListOffset(Gfx* pkt, Gfx* dl, int offset);
