@@ -9,7 +9,7 @@
 #include <vector>
 #include "spoiler_log.hpp"
 #include "item_list.hpp"
-#include "../randomizerTypes.h"
+#include "soh/Enhancements/randomizer/static_data.h"
 
 enum ItemOverride_Type {
     OVR_BASE_ITEM = 0,
@@ -221,11 +221,11 @@ public:
     }
 
     const Text& GetPlacedItemName() const {
-      return ItemTable(placedItem).GetName();
+      return StaticData::RetrieveItem((RandomizerGet)placedItem).GetName();
     }
 
-    const Item& GetPlacedItem() const {
-      return ItemTable(placedItem);
+    const RandoItem& GetPlacedItem() const {
+      return StaticData::RetrieveItem((RandomizerGet)placedItem);
     }
 
     uint32_t GetPlacedItemKey() const {
@@ -236,9 +236,13 @@ public:
       return placedItem;
     }
 
+    RandomizerGet GetPlacedRandomizerGet() const {
+      return (RandomizerGet)placedItem;
+    }
+
     void SetPlacedItem(const uint32_t item) {
       placedItem = item;
-      SetPrice(ItemTable(placedItem).GetPrice());
+      SetPrice(StaticData::RetrieveItem((RandomizerGet)placedItem).GetPrice());
     }
 
     //Saves an item to be set as placedItem later
@@ -252,7 +256,7 @@ public:
     }
 
     void ApplyPlacedItemEffect() {
-      ItemTable(placedItem).ApplyEffect();
+      StaticData::RetrieveItem((RandomizerGet)placedItem).ApplyEffect();
     }
 
     //Set placedItem as item saved in SetDelayedItem
@@ -262,8 +266,8 @@ public:
     }
 
     uint16_t GetPrice() const {
-      if (ItemTable(placedItem).GetItemType() == ITEMTYPE_SHOP) {
-        return ItemTable(placedItem).GetPrice();
+      if (StaticData::RetrieveItem((RandomizerGet)placedItem).GetItemType() == ITEMTYPE_SHOP) {
+          return StaticData::RetrieveItem((RandomizerGet)placedItem).GetPrice();
       }
       return price;
     }
@@ -513,7 +517,7 @@ extern bool showItemProgress;
 extern uint16_t itemsPlaced;
 
 void GenerateLocationPool();
-void PlaceItemInLocation(uint32_t loc, uint32_t item, bool applyEffectImmediately = false, bool setHidden = false);
+void PlaceItemInLocation(uint32_t loc, RandomizerGet item, bool applyEffectImmediately = false, bool setHidden = false);
 std::vector<uint32_t> GetLocations(const std::vector<uint32_t>& locationPool, Category categoryInclude,
                                    Category categoryExclude = Category::cNull);
 void LocationReset();

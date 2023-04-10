@@ -12,7 +12,7 @@ struct ItemAndPrice {
 };
 
 extern void PlaceVanillaShopItems();
-extern std::vector<uint32_t> GetMinVanillaShopItems(int total_replaced);
+extern std::vector<RandomizerGet> GetMinVanillaShopItems(int total_replaced);
 extern int GetRandomShopPrice();
 extern int16_t GetRandomScrubPrice();
 extern int GetShopsanityReplaceAmount();

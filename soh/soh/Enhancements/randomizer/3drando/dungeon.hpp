@@ -5,11 +5,12 @@
 #include <vector>
 
 #include "keys.hpp"
+#include "../randomizerTypes.h"
 
 namespace Dungeon {
 class DungeonInfo {
 public:
-    DungeonInfo(std::string name_, uint32_t map_, uint32_t compass_, uint32_t smallKey_, uint32_t keyRing_, uint32_t bossKey_,
+    DungeonInfo(std::string name_, RandomizerGet map_, RandomizerGet compass_, RandomizerGet smallKey_, RandomizerGet keyRing_, RandomizerGet bossKey_,
               uint8_t vanillaKeyCount_, uint8_t mqKeyCount_,
                 std::vector<uint32_t> vanillaLocations_,
                 std::vector<uint32_t> mqLocations_,
@@ -52,11 +53,11 @@ public:
         return (masterQuest) ? mqKeyCount : vanillaKeyCount;
     }
 
-    uint32_t GetSmallKey() const;
-    uint32_t GetKeyRing() const;
-    uint32_t GetMap() const;
-    uint32_t GetCompass() const;
-    uint32_t GetBossKey() const;
+    RandomizerGet GetSmallKey() const;
+    RandomizerGet GetKeyRing() const;
+    RandomizerGet GetMap() const;
+    RandomizerGet GetCompass() const;
+    RandomizerGet GetBossKey() const;
 
     void PlaceVanillaMap();
     void PlaceVanillaCompass();
@@ -71,11 +72,11 @@ public:
 
 private:
     std::string name;
-    uint32_t map;
-    uint32_t compass;
-    uint32_t smallKey;
-    uint32_t keyRing;
-    uint32_t bossKey;
+    RandomizerGet map;
+    RandomizerGet compass;
+    RandomizerGet smallKey;
+    RandomizerGet keyRing;
+    RandomizerGet bossKey;
     uint8_t vanillaKeyCount;
     uint8_t mqKeyCount;
     bool masterQuest = false;

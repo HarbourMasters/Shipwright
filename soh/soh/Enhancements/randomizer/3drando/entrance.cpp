@@ -2,13 +2,13 @@
 
 #include "fill.hpp"
 #include "settings.hpp"
-#include "item_list.hpp"
 #include "item_pool.hpp"
 #include "item_location.hpp"
 #include "debug.hpp"
 #include "spoiler_log.hpp"
 #include "hints.hpp"
 #include "location_access.hpp"
+#include "soh/Enhancements/randomizer/static_data.h"
 
 #include <vector>
 #include <utility>
@@ -176,9 +176,10 @@ static std::array<std::vector<Entrance*>, 2> SplitEntrancesByRequirements(std::v
 
   Logic::LogicReset();
   // Apply the effects of all advancement items to search for entrance accessibility
-  std::vector<ItemKey> items = FilterFromPool(ItemPool, [](const ItemKey i){ return ItemTable(i).IsAdvancement();});
-  for (ItemKey unplacedItem : items) {
-    ItemTable(unplacedItem).ApplyEffect();
+  std::vector<RandomizerGet> items = 
+    FilterFromPool(ItemPool, [](const RandomizerGet i){ return StaticData::RetrieveItem(i).IsAdvancement();});
+  for (RandomizerGet unplacedItem : items) {
+    StaticData::RetrieveItem(unplacedItem).ApplyEffect();
   }
   // run a search to see what's accessible
   GetAccessibleLocations({});

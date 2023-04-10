@@ -8,6 +8,7 @@
 #include "keys.hpp"
 #include <spdlog/spdlog.h>
 #include "../randomizerTypes.h"
+#include "soh/Enhancements/randomizer/static_data.h"
 
 //Location definitions
 static std::array<ItemLocation, KEY_ENUM_MAX> locationTable;
@@ -1530,16 +1531,16 @@ void GenerateLocationPool() {
   }
 }
 
-void PlaceItemInLocation(uint32_t locKey, uint32_t item, bool applyEffectImmediately /*= false*/, bool setHidden /*= false*/) {
+void PlaceItemInLocation(uint32_t locKey, RandomizerGet item, bool applyEffectImmediately /*= false*/, bool setHidden /*= false*/) {
   auto loc = Location(locKey);
   SPDLOG_DEBUG("\n");
-  SPDLOG_DEBUG(ItemTable(item).GetName().GetEnglish());
+  SPDLOG_DEBUG(StaticData::RetrieveItem(item).GetName().GetEnglish());
   SPDLOG_DEBUG(" placed at ");
   SPDLOG_DEBUG(loc->GetName());
   SPDLOG_DEBUG("\n\n");
 
   if (applyEffectImmediately || Settings::Logic.Is(LOGIC_NONE) || Settings::Logic.Is(LOGIC_VANILLA)) {
-    ItemTable(item).ApplyEffect();
+    StaticData::RetrieveItem(item).ApplyEffect();
   }
 
   itemsPlaced++;
@@ -1552,10 +1553,11 @@ void PlaceItemInLocation(uint32_t locKey, uint32_t item, bool applyEffectImmedia
   }
 
   //If we're placing a non-shop item in a shop location, we want to record it for custom messages
-  if (ItemTable(item).GetItemType() != ITEMTYPE_SHOP && loc->IsCategory(Category::cShop)) {
+  if (StaticData::RetrieveItem(item).GetItemType() != ITEMTYPE_SHOP && loc->IsCategory(Category::cShop)) {
     int index = TransformShopIndex(GetShopIndex(locKey));
-    NonShopItems[index].Name = ItemTable(item).GetName();
-    NonShopItems[index].Repurchaseable = ItemTable(item).GetItemType() == ITEMTYPE_REFILL || ItemTable(item).GetHintKey() == PROGRESSIVE_BOMBCHUS;
+    NonShopItems[index].Name = StaticData::RetrieveItem(item).GetName();
+    NonShopItems[index].Repurchaseable = StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_REFILL ||
+                                         StaticData::RetrieveItem(item).GetHintKey() == RG_PROGRESSIVE_BOMBCHUS;
   }
 
   loc->SetPlacedItem(item);
@@ -1626,9 +1628,9 @@ void CreateItemOverrides() {
     SPDLOG_DEBUG("NOW CREATING OVERRIDES\n\n");
     for (uint32_t locKey : allLocations) {
         auto loc = Location(locKey);
-        ItemOverride_Value val = ItemTable(loc->GetPlaceduint32_t()).Value();
+        ItemOverride_Value val = StaticData::RetrieveItem(loc->GetPlacedRandomizerGet()).Value();
         // If this is an ice trap, store the disguise model in iceTrapModels
-        if (loc->GetPlaceduint32_t() == ICE_TRAP) {
+        if (loc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
             iceTrapModels[loc->GetRandomizerCheck()] = val.looksLikeItemId;
             // If this is ice trap is in a shop, change the name based on what the model will look like
             if (loc->IsCategory(Category::cShop)) {
