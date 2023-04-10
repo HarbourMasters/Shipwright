@@ -236,10 +236,10 @@ RandomizerCheckArea GetCheckArea() {
     auto scene = static_cast<SceneID>(gPlayState->sceneNum);
     if (scene == SCENE_YOUSEI_IZUMI_TATE || scene == SCENE_YOUSEI_IZUMI_YOKO || scene == SCENE_KAKUSIANA) {
         return previousArea;
-    } else if (scene == SCENE_TOKINOMA || scene == SCENE_SHOP1) {
+    } else if (scene == SCENE_SYATEKIJYOU || scene == SCENE_SHOP1) {
         return gSaveContext.linkAge == 1 ? RCAREA_MARKET : RCAREA_KAKARIKO_VILLAGE;
     } else {
-        return currentArea;
+        return RandomizerCheckObjects::GetRCAreaBySceneID(scene);
     }
 }
 
@@ -299,7 +299,7 @@ bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID, GetItemEntry giEntry
             }
         }
         return true;
-    } else {
+    } else if (area != RCAREA_INVALID) {
         auto areaChecks = checksByArea.find(area)->second;
         if (checkCounter >= areaChecks.size()) {
             checkCounter = 0;
@@ -388,7 +388,7 @@ void CheckTrackerTransition(uint32_t sceneNum) {
         checkCollected = true;
     }
     previousArea = currentArea;
-    currentArea = RandomizerCheckObjects::GetRCAreaBySceneID(static_cast<SceneID>(sceneNum));
+    currentArea = GetCheckArea();
 }
 
 void CheckTrackerFrame() {
@@ -417,8 +417,75 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         return;
     }
     auto scene = static_cast<SceneID>(gPlayState->sceneNum);
-    if (scene == SCENE_KOKIRI_SHOP && giEntry.itemId == ITEM_SHIELD_DEKU && !gSaveContext.n64ddFlag) {
-        SetCheckCollected(RC_KF_SHOP_ITEM_3);
+    if (!gSaveContext.n64ddFlag) {
+        if (scene == SCENE_KOKIRI_SHOP && giEntry.itemId == ITEM_SHIELD_DEKU) {
+            SetCheckCollected(RC_KF_SHOP_ITEM_3);
+            return;
+        }
+        if (giEntry.itemId == ITEM_KOKIRI_EMERALD) {
+            SetCheckCollected(RC_QUEEN_GOHMA);
+            return;
+        } else if (giEntry.itemId == ITEM_GORON_RUBY) {
+            SetCheckCollected(RC_KING_DODONGO);
+            return;
+        } else if (giEntry.itemId == ITEM_ZORA_SAPPHIRE) {
+            SetCheckCollected(RC_BARINADE);
+            return;
+        } else if (giEntry.itemId == ITEM_MEDALLION_FOREST) {
+            SetCheckCollected(RC_QUEEN_GOHMA);
+            return;
+        } else if (giEntry.itemId == ITEM_MEDALLION_FIRE) {
+            SetCheckCollected(RC_QUEEN_GOHMA);
+            return;
+        } else if (giEntry.itemId == ITEM_MEDALLION_WATER) {
+            SetCheckCollected(RC_QUEEN_GOHMA);
+            return;
+        } else if (giEntry.itemId == ITEM_MEDALLION_SHADOW) {
+            SetCheckCollected(RC_QUEEN_GOHMA);
+            return;
+        } else if (giEntry.itemId == ITEM_MEDALLION_SPIRIT) {
+            SetCheckCollected(RC_QUEEN_GOHMA);
+            return;
+        } else if (giEntry.itemId == ITEM_MEDALLION_LIGHT) {
+            SetCheckCollected(RC_QUEEN_GOHMA);
+            return;
+        } else if (giEntry.itemId == ITEM_SONG_LULLABY) {
+            SetCheckCollected(RC_SONG_FROM_IMPA);
+            return;
+        } else if (giEntry.itemId == ITEM_SONG_SARIA) {
+            SetCheckCollected(RC_SONG_FROM_SARIA);
+            return;
+        } else if (giEntry.itemId == ITEM_SONG_EPONA) {
+            SetCheckCollected(RC_SONG_FROM_MALON);
+            return;
+        } else if (giEntry.itemId == ITEM_SONG_SUN) {
+            SetCheckCollected(RC_SONG_FROM_ROYAL_FAMILYS_TOMB);
+            return;
+        } else if (giEntry.itemId == ITEM_SONG_TIME) {
+            SetCheckCollected(RC_SONG_FROM_OCARINA_OF_TIME);
+            return;
+        } else if (giEntry.itemId == ITEM_SONG_STORMS) {
+            SetCheckCollected(RC_SONG_FROM_WINDMILL);
+            return;
+        } else if (giEntry.itemId == ITEM_SONG_MINUET) {
+            SetCheckCollected(RC_SHEIK_IN_FOREST);
+            return;
+        } else if (giEntry.itemId == ITEM_SONG_BOLERO) {
+            SetCheckCollected(RC_SHEIK_IN_CRATER);
+            return;
+        } else if (giEntry.itemId == ITEM_SONG_SERENADE) {
+            SetCheckCollected(RC_SHEIK_IN_ICE_CAVERN);
+            return;
+        } else if (giEntry.itemId == ITEM_SONG_NOCTURNE) {
+            SetCheckCollected(RC_SHEIK_IN_KAKARIKO);
+            return;
+        } else if (giEntry.itemId == ITEM_SONG_REQUIEM) {
+            SetCheckCollected(RC_SHEIK_AT_COLOSSUS);
+            return;
+        } else if (giEntry.itemId == ITEM_SONG_PRELUDE) {
+            SetCheckCollected(RC_SHEIK_AT_TEMPLE);
+            return;
+        }
     }
     checkScene = scene;
     if (gSaveContext.pendingSale != ITEM_NONE) {
@@ -482,10 +549,13 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
     //         return;
     //     }
     //} //else {
-         if (gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
-             messageCloseCheck = true;
-             return;
-         }
+     if (gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
+         messageCloseCheck = true;
+         return;
+     }
+     if (!gSaveContext.n64ddFlag && giEntry.getItemCategory != ITEM_CATEGORY_JUNK) {
+         checkCollected = true;
+     }
    // }
    // CheckChecks(giEntry);
    // gPlayState->lastCheck = nullptr;
@@ -1027,9 +1097,9 @@ bool CompareChecks(RandomizerCheckObject i, RandomizerCheckObject j) {
     else if (iCollected && !jCollected)
         return false;
 
-    if (!iCollected && jCollected)
+    if (!iSaved && jSaved)
         return true;
-    else if (iCollected && !jCollected)
+    else if (iSaved && !jSaved)
         return false;
 
     if (!iShow.skipped && jShow.skipped)
@@ -1045,6 +1115,10 @@ bool CompareChecks(RandomizerCheckObject i, RandomizerCheckObject j) {
     return false;
 }
 
+bool IsHeartPiece(GetItemID giid) {
+    return giid == GI_HEART_PIECE || giid == GI_HEART_PIECE_WIN;
+}
+
 void DrawLocation(RandomizerCheckObject rcObj) {
     Color_RGBA8 mainColor; 
     Color_RGBA8 extraColor;
@@ -1056,32 +1130,38 @@ void DrawLocation(RandomizerCheckObject rcObj) {
     if (status == RCSHOW_COLLECTED) {
         if (!showHidden && CVarGetInteger("gCheckTrackerCollectedHide", 0))
             return;
-        mainColor = CVarGetColor("gCheckTrackerCollectedMainColor", Color_Main_Default);
+        mainColor = !IsHeartPiece(rcObj.ogItemId) && !gSaveContext.n64ddFlag ? CVarGetColor("gCheckTrackerCollectedExtraColor", Color_Collected_Extra_Default) :
+                  CVarGetColor("gCheckTrackerCollectedMainColor", Color_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerCollectedExtraColor", Color_Collected_Extra_Default);
     } else if (status == RCSHOW_SAVED) {
         if (!showHidden && CVarGetInteger("gCheckTrackerSavedHide", 0))
             return;
-        mainColor = CVarGetColor("gCheckTrackerSavedMainColor", Color_Main_Default);
+         mainColor = !IsHeartPiece(rcObj.ogItemId) && !gSaveContext.n64ddFlag ? CVarGetColor("gCheckTrackerSavedExtraColor", Color_Saved_Extra_Default) :
+                  CVarGetColor("gCheckTrackerSavedMainColor", Color_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerSavedExtraColor", Color_Saved_Extra_Default);
     } else if (skipped) {
         if (!showHidden && CVarGetInteger("gCheckTrackerSkippedHide", 0))
             return;
-        mainColor = CVarGetColor("gCheckTrackerSkippedMainColor", Color_Skipped_Main_Default);
+         mainColor = !IsHeartPiece(rcObj.ogItemId) && !gSaveContext.n64ddFlag ? CVarGetColor("gCheckTrackerSkippedExtraColor", Color_Skipped_Extra_Default) :
+                  CVarGetColor("gCheckTrackerSkippedMainColor", Color_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerSkippedExtraColor", Color_Skipped_Extra_Default);
     } else if (status == RCSHOW_SEEN) {
         if (!showHidden && CVarGetInteger("gCheckTrackerSeenHide", 0))
             return;
-        mainColor = CVarGetColor("gCheckTrackerSeenMainColor", Color_Main_Default);
+         mainColor = !IsHeartPiece(rcObj.ogItemId) && !gSaveContext.n64ddFlag ? CVarGetColor("gCheckTrackerSeenExtraColor", Color_Seen_Extra_Default) :
+                  CVarGetColor("gCheckTrackerSeenMainColor", Color_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerSeenExtraColor", Color_Seen_Extra_Default);
     } else if (status == RCSHOW_SCUMMED) {
         if (!showHidden && CVarGetInteger("gCheckTrackerKnownHide", 0))
             return;
-        mainColor = CVarGetColor("gCheckTrackerScummedMainColor", Color_Main_Default);
+         mainColor = !IsHeartPiece(rcObj.ogItemId) && !gSaveContext.n64ddFlag ? CVarGetColor("gCheckTrackerScummedExtraColor", Color_Scummed_Extra_Default) :
+                  CVarGetColor("gCheckTrackerScummedMainColor", Color_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerScummedExtraColor", Color_Scummed_Extra_Default);
     } else if (status == RCSHOW_UNCHECKED) {
         if (!showHidden && CVarGetInteger("gCheckTrackerUncheckedHide", 0))
             return;
-        mainColor = CVarGetColor("gCheckTrackerUncheckedMainColor", Color_Main_Default);
+         mainColor = !IsHeartPiece(rcObj.ogItemId) && !gSaveContext.n64ddFlag ? CVarGetColor("gCheckTrackerUncheckedExtraColor", Color_Unchecked_Extra_Default) :
+                  CVarGetColor("gCheckTrackerUncheckedMainColor", Color_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerUncheckedExtraColor",  Color_Unchecked_Extra_Default);
     }
  
@@ -1126,22 +1206,12 @@ void DrawLocation(RandomizerCheckObject rcObj) {
             case RCSHOW_SCUMMED:
                 if (gSaveContext.n64ddFlag) {
                     txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.rgID][gSaveContext.language];
-                } else if (gSaveContext.language == LANGUAGE_ENG || gSaveContext.language == LANGUAGE_GER) {
-                    txt = ItemFromGIID(rcObj.ogItemId).GetName().english;
-                    if (txt == "Green Rupee" && rcObj.ogItemId != GI_RUPEE_GREEN) {
-                        if (itemNames.contains(rcObj.ogItemId)) {
-                            txt = itemNames.find(rcObj.ogItemId)->second.GetEnglish();
-                        } else {
-                            txt = "";
-                        }
-                    }
-                } else if (gSaveContext.language == LANGUAGE_FRA) {
-                    txt = ItemFromGIID(rcObj.ogItemId).GetName().french;
-                    if (txt == "Rubis Vert" && rcObj.ogItemId != GI_RUPEE_GREEN) {
-                        if (itemNames.contains(rcObj.ogItemId)) {
-                            txt = itemNames.find(rcObj.ogItemId)->second.GetFrench();
-                        } else {
-                            txt = "";
+                } else {
+                    if (IsHeartPiece(rcObj.ogItemId)) {
+                        if (gSaveContext.language == LANGUAGE_ENG || gSaveContext.language == LANGUAGE_GER) {
+                            txt = ItemFromGIID(rcObj.ogItemId).GetName().english;
+                        } else if (gSaveContext.language == LANGUAGE_FRA) {
+                            txt = ItemFromGIID(rcObj.ogItemId).GetName().french;
                         }
                     }
                 }
@@ -1149,22 +1219,12 @@ void DrawLocation(RandomizerCheckObject rcObj) {
             case RCSHOW_SEEN:
                 if (gSaveContext.n64ddFlag) {
                     txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.fakeRgID][gSaveContext.language];
-                } else if (gSaveContext.language == LANGUAGE_ENG || gSaveContext.language == LANGUAGE_GER) {
-                    txt = ItemFromGIID(rcObj.ogItemId).GetName().english;
-                    if (txt == "Green Rupee" && rcObj.ogItemId != GI_RUPEE_GREEN) {
-                        if (itemNames.contains(rcObj.ogItemId)) {
-                            txt = itemNames.find(rcObj.ogItemId)->second.GetEnglish();
-                        } else {
-                            txt = "";
-                        }
-                    }
-                } else if (gSaveContext.language == LANGUAGE_FRA) {
-                    txt = ItemFromGIID(rcObj.ogItemId).GetName().french;
-                    if (txt == "Rubis Vert" && rcObj.ogItemId != GI_RUPEE_GREEN) {
-                        if (itemNames.contains(rcObj.ogItemId)) {
-                            txt = itemNames.find(rcObj.ogItemId)->second.GetFrench();
-                        } else {
-                            txt = "";
+                } else {
+                    if (IsHeartPiece(rcObj.ogItemId)) {
+                        if (gSaveContext.language == LANGUAGE_ENG || gSaveContext.language == LANGUAGE_GER) {
+                            txt = ItemFromGIID(rcObj.ogItemId).GetName().english;
+                        } else if (gSaveContext.language == LANGUAGE_FRA) {
+                            txt = ItemFromGIID(rcObj.ogItemId).GetName().french;
                         }
                     }
                 }
