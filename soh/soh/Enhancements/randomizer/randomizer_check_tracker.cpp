@@ -292,6 +292,7 @@ bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID, GetItemEntry giEntry
                     OTRGlobals::Instance->gRandomizer->GetRandomizerGetDataFromKnownCheck(rco.rc).rgID, rco.ogItemId);
                 if (rcData.status == RCSHOW_SCUMMED || rcData.status == RCSHOW_COLLECTED || rcData.status == RCSHOW_SAVED) {
                     checkTrackerData.find(rco.rc)->second.status = RCSHOW_UNCHECKED;
+                    areaChecksGotten[rco.rcArea]--;
                 }
                 if (HasItemBeenCollected(rcData.rc)) {
                     SetCheckCollected(rco.rc);
