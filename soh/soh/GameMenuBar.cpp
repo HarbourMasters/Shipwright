@@ -357,7 +357,7 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Nighttime GS Always Spawn", "gNightGSAlwaysSpawn", true, false);
                     UIWidgets::Tooltip("Nighttime Skulltulas will spawn during both day and night.");
                     UIWidgets::PaddedEnhancementCheckbox("Dampe Appears All Night", "gDampeAllNight", true, false);
-                    UIWidgets::Tooltip("Makes Dampe appear anytime during it's night, not just his usual working hours.");
+                    UIWidgets::Tooltip("Makes Dampe appear anytime during the night, not just his usual working hours.");
                     UIWidgets::PaddedEnhancementCheckbox("Time Travel with the Song of Time", "gTimeTravel", true, false);
                     UIWidgets::Tooltip("Allows Link to freely change age by playing the Song of Time.\n"
                         "Time Blocks can still be used properly.\n\n"
@@ -630,6 +630,8 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Hides most of the UI when not needed\nNote: Doesn't activate until after loading a new scene");
                     UIWidgets::PaddedEnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio", true, false);
                     UIWidgets::Tooltip("Disables the voice audio when Navi calls you");
+                    UIWidgets::PaddedEnhancementCheckbox("Disable Hot/Underwater Warning Text", "gDisableWarningText", true, false);
+                    UIWidgets::Tooltip("Disables warning text when you don't have on the Goron/Zora Tunic in Hot/Underwater conditions.");
 
                     ImGui::EndMenu();
                 }
