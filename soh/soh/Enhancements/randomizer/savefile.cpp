@@ -2,7 +2,6 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
-
 extern "C" {
 #include <z64.h>
 #include "variables.h"
@@ -214,68 +213,68 @@ extern "C" void Randomizer_InitSaveFile() {
     gSaveContext.pendingIceTrapCount = 0;
 
     // Set Cutscene flags and texts to skip them
-    Flags_SetInfTable(INFTABLE_00);       // greeted by saria
-    Flags_SetEventChkInf(EVENTCHKINF_02); // spoke to mido
-    Flags_SetEventChkInf(EVENTCHKINF_0C); // met deku tree
-    Flags_SetEventChkInf(EVENTCHKINF_05); // deku tree opened mouth
-    Flags_SetInfTable(INFTABLE_195);      // spoke to kaepora in lake hylia
-    Flags_SetEventChkInf(EVENTCHKINF_4F); // entered master sword chamber
-    Flags_SetEventChkInf(EVENTCHKINF_45); // master sword pulled
-    Flags_SetEventChkInf(EVENTCHKINF_C5); // sheik at tot pedestal
-    Flags_SetEventChkInf(EVENTCHKINF_C4); // returned to tot with medallions
-    Flags_SetEventChkInf(EVENTCHKINF_1B); // Rented horse from ingo
-    Flags_SetInfTable(INFTABLE_B6);       // spoke to poe collector in ruined market
-    Flags_SetEventChkInf(EVENTCHKINF_C7); // watched ganon's castle collapse / caught by gerudo
-    Flags_SetEventChkInf(EVENTCHKINF_94); // spoke to nabooru as child
+    Flags_SetInfTable(INFTABLE_GREETED_BY_SARIA);
+    Flags_SetEventChkInf(EVENTCHKINF_FIRST_SPOKE_TO_MIDO);
+    Flags_SetEventChkInf(EVENTCHKINF_MET_DEKU_TREE);
+    Flags_SetEventChkInf(EVENTCHKINF_DEKU_TREE_OPENED_MOUTH);
+    Flags_SetInfTable(INFTABLE_SPOKE_TO_KAEPORA_IN_LAKE_HYLIA);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
+    Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
+    Flags_SetEventChkInf(EVENTCHKINF_SHEIK_SPAWNED_AT_MASTER_SWORD_PEDESTAL);
+    Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
+    Flags_SetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO);
+    Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
+    Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
+    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_NABOORU_IN_SPIRIT_TEMPLE);
 
-    Flags_SetInfTable(INFTABLE_84);       // met malon in castle or market
-    Flags_SetEventChkInf(EVENTCHKINF_10); // spoke to malon in castle or market
-    Flags_SetEventChkInf(EVENTCHKINF_12); // spoke to ingo before talon returns
-    Flags_SetEventChkInf(EVENTCHKINF_15); // spoke to child malon at ranch
-    Flags_SetEventChkInf(EVENTCHKINF_16); // invited to sing with child malon
-    Flags_SetInfTable(INFTABLE_85);       // child malon said epona was afraid of you
-    Flags_SetInfTable(INFTABLE_9A);       // spoke to ingo once as adult
+    Flags_SetInfTable(INFTABLE_MET_CHILD_MALON_AT_CASTLE_OR_MARKET);
+    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_CASTLE_OR_MARKET);
+    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_INGO_AT_RANCH_BEFORE_TALON_RETURNS);
+    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_RANCH);
+    Flags_SetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON);
+    Flags_SetInfTable(INFTABLE_CHILD_MALON_SAID_EPONA_WAS_AFRAID_OF_YOU);
+    Flags_SetInfTable(INFTABLE_SPOKE_TO_INGO_ONCE_AS_ADULT);
 
     // Ruto already met in jabu and spawns down the hole immediately
-    Flags_SetInfTable(INFTABLE_141); // Meet ruto
-    Flags_SetInfTable(INFTABLE_142); // talk to ruto first time
-    Flags_SetInfTable(INFTABLE_144); // ruto asked to be thrown at sapphire stone
+    Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_MEET_RUTO);
+    Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_TALK_FIRST_TIME);
+    Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_WANTS_TO_BE_TOSSED_TO_SAPPHIRE);
 
     // Skip cutscenes before Nabooru fight
-    Flags_SetEventChkInf(EVENTCHKINF_3B); // began nabooru battle
-    Flags_SetEventChkInf(EVENTCHKINF_C0); // nabooru ordered to fight
+    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_NABOORU_BATTLE);
+    Flags_SetEventChkInf(EVENTCHKINF_NABOORU_ORDERED_TO_FIGHT_BY_TWINROVA);
 
     // Skip boss cutscenes
-    Flags_SetEventChkInf(EVENTCHKINF_70); // gohma
-    Flags_SetEventChkInf(EVENTCHKINF_71); // dodongo
-    Flags_SetEventChkInf(EVENTCHKINF_72); // phantom ganon
-    Flags_SetEventChkInf(EVENTCHKINF_73); // volvagia
-    Flags_SetEventChkInf(EVENTCHKINF_74); // morpha
-    Flags_SetEventChkInf(EVENTCHKINF_75); // twinrova
-    Flags_SetEventChkInf(EVENTCHKINF_76); // barinade
-    Flags_SetEventChkInf(EVENTCHKINF_77); // bongo bongo
+    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_GOHMA_BATTLE);
+    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_KING_DODONGO_BATTLE);
+    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_PHANTOM_GANON_BATTLE);
+    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_VOLVAGIA_BATTLE);
+    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_MORPHA_BATTLE);
+    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_TWINROVA_BATTLE);
+    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_BARINA_BATTLE);
+    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE);
 
     // Entered areas
-    Flags_SetEventChkInf(EVENTCHKINF_A0); // entered hyrule field
-    Flags_SetEventChkInf(EVENTCHKINF_A1); // entered death mountain trail
-    Flags_SetEventChkInf(EVENTCHKINF_A3); // entered kakariko village
-    Flags_SetEventChkInf(EVENTCHKINF_A4); // entered zora's domain
-    Flags_SetEventChkInf(EVENTCHKINF_A5); // entered hyrule castle
-    Flags_SetEventChkInf(EVENTCHKINF_A6); // entered goron city
-    Flags_SetEventChkInf(EVENTCHKINF_A7); // entered temple of time
-    Flags_SetEventChkInf(EVENTCHKINF_A8); // entered deku tree
-    Flags_SetEventChkInf(EVENTCHKINF_B0); // entered dodongo's cavern
-    Flags_SetEventChkInf(EVENTCHKINF_B1); // entered lake hylia
-    Flags_SetEventChkInf(EVENTCHKINF_B2); // entered gerudo valley
-    Flags_SetEventChkInf(EVENTCHKINF_B3); // entered gerudo's fortress
-    Flags_SetEventChkInf(EVENTCHKINF_B4); // entered lon lon ranch
-    Flags_SetEventChkInf(EVENTCHKINF_B5); // entered jabu-jabu's belly
-    Flags_SetEventChkInf(EVENTCHKINF_B6); // entered graveyard
-    Flags_SetEventChkInf(EVENTCHKINF_B7); // entered zora's fountain
-    Flags_SetEventChkInf(EVENTCHKINF_B8); // entered desert colossus
-    Flags_SetEventChkInf(EVENTCHKINF_B9); // entered death mountain crater
-    Flags_SetEventChkInf(EVENTCHKINF_BA); // entered ganon's castle (exterior)
-    Flags_SetInfTable(INFTABLE_8B);       // entered hyrule castle
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_HYRULE_FIELD);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEATH_MOUNTAIN_TRAIL);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_KAKARIKO_VILLAGE);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_ZORAS_DOMAIN);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_HYRULE_CASTLE);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GORON_CITY);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_TEMPLE_OF_TIME);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEKU_TREE);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_LAKE_HYLIA);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GERUDO_VALLEY);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GERUDOS_FORTRESS);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_LON_LON_RANCH);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_JABU_JABUS_BELLY);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GRAVEYARD);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_ZORAS_FOUNTAIN);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DESERT_COLOSSUS);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEATH_MOUNTAIN_CRATER);
+    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GANONS_CASTLE_EXTERIOR);
+    Flags_SetInfTable(INFTABLE_ENTERED_HYRULE_CASTLE);
 
     // skip the z target talk instructions by the kokiri shop
     gSaveContext.sceneFlags[SCENE_SPOT04].swch |= (1 << 0x1F);
@@ -292,7 +291,7 @@ extern "C" void Randomizer_InitSaveFile() {
     gSaveContext.sceneFlags[SCENE_SPOT15].swch |= (1 << 0x5);  // hyrule castle kaepora
 
     if (!Randomizer_GetSettingValue(RSK_ENABLE_GLITCH_CUTSCENES)) {
-        Flags_SetInfTable(INFTABLE_11A); // Darunia in Fire Temple
+        Flags_SetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE); // Darunia in Fire Temple
     }
 
     // Give Link's pocket item
@@ -336,15 +335,15 @@ extern "C" void Randomizer_InitSaveFile() {
         StartingItemGive(getItemEntry);
 
         // malon/talon back at ranch
-        Flags_SetEventChkInf(EVENTCHKINF_12); // obtained pocket egg
+        Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
         Flags_SetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_CASTLE);
         Flags_SetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE);
 
-        // Set "Got Zelda's Letter" flag. Also ensures Saria is back at SFM. TODO: Is this flag used for anything else?
+        // Set "Got Zelda's Letter" flag. Also ensures Saria is back at SFM.
         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
 
         // Got item from impa
-        Flags_SetEventChkInf(EVENTCHKINF_59); // learned zelda's lullaby
+        Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
 
         gSaveContext.sceneFlags[SCENE_SPOT15].swch |= (1 << 0x4); // move milk crates in hyrule castle to moat
 
@@ -388,12 +387,12 @@ extern "C" void Randomizer_InitSaveFile() {
     int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);
     switch (doorOfTime) {
         case RO_DOOROFTIME_OPEN:
-            Flags_SetEventChkInf(EVENTCHKINF_4B); // opened the door of time
+            Flags_SetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME);
             break;
     }
 
     if (Randomizer_GetSettingValue(RSK_KAK_GATE) == RO_KAK_GATE_OPEN) {
-        Flags_SetInfTable(INFTABLE_76); // show zelda's letter to gate gaurd
+        Flags_SetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD);
     }
 
     if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_FAST ||
@@ -429,13 +428,13 @@ extern "C" void Randomizer_InitSaveFile() {
 
     // complete mask quest
     if (Randomizer_GetSettingValue(RSK_COMPLETE_MASK_QUEST)) {
-        Flags_SetInfTable(INFTABLE_77);       // Soldier Wears Keaton Mask
+        Flags_SetInfTable(INFTABLE_GATE_GUARD_PUT_ON_KEATON_MASK);
+        Flags_SetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE);
         gSaveContext.itemGetInf[3] |= 0x100;  // Sold Keaton Mask
         gSaveContext.itemGetInf[3] |= 0x200;  // Sold Skull Mask
         gSaveContext.itemGetInf[3] |= 0x400;  // Sold Spooky Mask
         gSaveContext.itemGetInf[3] |= 0x800;  // bunny hood related
         gSaveContext.itemGetInf[3] |= 0x8000; // Obtained Mask of Truth
-        Flags_SetEventChkInf(EVENTCHKINF_8F); // sold all masks
     }
 
     SetStartingItems();
