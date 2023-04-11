@@ -48,6 +48,7 @@ bool doAreaScroll;
 bool doInitialize;
 
 bool checkCollected = false;
+int checkLoops = 0;
 int checkCounter = 0;
 bool messageCloseCheck = false;
 bool pendingSaleCheck = false;
@@ -72,6 +73,8 @@ SceneID checkScene = SCENE_ID_MAX;
 SceneID lastScene = SCENE_ID_MAX;
 SceneID currentScene = SCENE_ID_MAX;
 bool newFileCheck = false;
+bool tickCheck = false;
+int tickCounter = 0;
 
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 bool CompareChecks(RandomizerCheckObject, RandomizerCheckObject);
@@ -192,10 +195,13 @@ void PushDefaultCheckData(RandomizerCheck rc) {
 }
 
 void SongFromImpa() {
-    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA) == RO_GENERIC_ON && gSaveContext.n64ddFlag) {
-        RandomizerCheckTrackerData* data = &checkTrackerData.find(RC_SONG_FROM_IMPA)->second;
-        if (data->status != RCSHOW_SAVED) {
-            data->status = RCSHOW_SAVED;
+    if (gSaveContext.n64ddFlag) {
+        if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA) == RO_GENERIC_ON &&
+            gSaveContext.n64ddFlag) {
+            RandomizerCheckTrackerData* data = &checkTrackerData.find(RC_SONG_FROM_IMPA)->second;
+            if (data->status != RCSHOW_SAVED) {
+                data->status = RCSHOW_SAVED;
+            }
         }
     }
 }
@@ -209,6 +215,10 @@ void LinksPocket() {
             checkTrackerData.find(RC_LINKS_POCKET)->second.status = RCSHOW_SAVED;
         }
     }
+}
+
+bool IsRunning() {
+    return gPlayState != nullptr && gSaveContext.fileNum != 256;
 }
 
 void TrySetAreas() {
@@ -295,7 +305,8 @@ bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID, GetItemEntry giEntry
                     areaChecksGotten[rco.rcArea]--;
                 }
                 if (HasItemBeenCollected(rcData.rc)) {
-                    SetCheckCollected(rco.rc);
+                    checkTrackerData.find(rco.rc)->second.status = RCSHOW_SAVED;
+                    areaChecksGotten[rco.rcArea]++;
                 }
             }
         }
@@ -304,6 +315,7 @@ bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID, GetItemEntry giEntry
         auto areaChecks = checksByArea.find(area)->second;
         if (checkCounter >= areaChecks.size()) {
             checkCounter = 0;
+            checkLoops++;
         }
         auto rco = areaChecks.at(checkCounter);
         return EvaluateCheck(rco);
@@ -375,12 +387,17 @@ void CheckTrackerDialogClosed() {
 }
 
 void CheckTrackerTransition(uint32_t sceneNum) {
+    if (!IsRunning()) {
+        return;
+    }
     if (newFileCheck) {
         newFileCheck = false;
         for (auto [area, check] : checksByArea) {
-            CheckByArea(area);
+            CheckByArea(area, GET_ITEM_NONE, true);
         }
         SaveTrackerData(gSaveContext.fileNum, true, true);
+        UpdateAllOrdering();
+        UpdateInventoryChecks();
     }
     doAreaScroll = sceneNum != SCENE_KAKUSIANA && // Don't move for grottos
         sceneNum != SCENE_YOUSEI_IZUMI_TATE && sceneNum != SCENE_YOUSEI_IZUMI_YOKO && sceneNum != SCENE_DAIYOUSEI_IZUMI; // Don't move for great fairy fountains #TODO allow scrolling for all scenes
@@ -393,6 +410,16 @@ void CheckTrackerTransition(uint32_t sceneNum) {
 }
 
 void CheckTrackerFrame() {
+    if (!IsRunning()) {
+        return;
+    }
+    //if (tickCheck) {
+    //    if (tickCounter > 0) {
+    //        tickCounter--;
+    //    } else {
+    //        tickCheck = false;
+    //    }
+    //}
     if (checkCollected) {
         for (int i = 0; i < 6; i++) {
             if (CheckChecks()) {
@@ -402,6 +429,10 @@ void CheckTrackerFrame() {
             } else {
                 checkCounter++;
             }
+        }
+        if (checkLoops > 3) {
+            checkCollected = false;
+            checkLoops = 0;
         }
     }
 }
@@ -414,7 +445,7 @@ void CheckTrackerSaleEnd(GetItemEntry giEntry) {
 }
 
 void CheckTrackerItemReceive(GetItemEntry giEntry) {
-    if (gPlayState == nullptr || vector_contains_scene(skipScenes, gPlayState->sceneNum)) {
+    if (!IsRunning() || vector_contains_scene(skipScenes, gPlayState->sceneNum)) {
         return;
     }
     auto scene = static_cast<SceneID>(gPlayState->sceneNum);
@@ -486,7 +517,10 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         } else if (giEntry.itemId == ITEM_SONG_PRELUDE) {
             SetCheckCollected(RC_SHEIK_AT_TEMPLE);
             return;
-        }
+        } /*else if (giEntry.itemId == ITEM_BRACELET) {
+            SetCheckCollected(RC_GC_DARUNIAS_JOY);
+            return;
+        }*/
     }
     checkScene = scene;
     if (gSaveContext.pendingSale != ITEM_NONE) {
@@ -525,51 +559,23 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         transitionCheck = true;
         return;
     }
-    //if (GET_PLAYER(gPlayState)->interactRangeActor != nullptr || gPlayState->lastCheck != nullptr) {
-    //     Actor* actor = gPlayState->lastCheck;
-    //     RandomizerCheck check = RC_UNKNOWN_CHECK;
-    //     if (actor != nullptr) {
-    //         check = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actor->id, gPlayState->sceneNum,
-    //         actor->params);
-    //     }
-    //     if (check == RC_ZR_FROGS_ZELDAS_LULLABY) {
-    //         messageCloseCheck = true;
-    //         return;
-    //     }
-    //     if (check == RC_UNKNOWN_CHECK) {
-    //         if (GET_PLAYER(gPlayState)->interactRangeActor != nullptr) {
-    //             actor = GET_PLAYER(gPlayState)->interactRangeActor;
-    //             check = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actor->id, gPlayState->sceneNum,
-    //             actor->params);
-    //         }
-    //     }
-    //     if (check != RC_UNKNOWN_CHECK) {
-    //         if (checkTrackerData.contains(check)) {
-    //             SetCheckCollected(check);
-    //         }
-    //         return;
-    //     }
-    //} //else {
-     if (gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
-         messageCloseCheck = true;
-         return;
-     }
-     if (!gSaveContext.n64ddFlag && giEntry.getItemCategory != ITEM_CATEGORY_JUNK) {
-         checkCollected = true;
-     }
-   // }
-   // CheckChecks(giEntry);
-   // gPlayState->lastCheck = nullptr;
+    if (gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
+        messageCloseCheck = true;
+        return;
+    }
+    if (!gSaveContext.n64ddFlag && giEntry.getItemCategory != ITEM_CATEGORY_JUNK) {
+        checkCollected = true;
+    }
 }
 
-void CreateTrackerData() {
+void CreateTrackerData(bool recreate = false) {
     TrySetAreas();
     for (auto& [rc, rco] : RandomizerCheckObjects::GetAllRCObjects()) {
         if (rc != RC_UNKNOWN_CHECK && rc != RC_MAX && rc != RC_LINKS_POCKET) {
             PushDefaultCheckData(rc);
         }
     }
-    newFileCheck = true;
+    newFileCheck = recreate;
     LinksPocket();
     SongFromImpa();
     UpdateAllOrdering();
@@ -642,6 +648,7 @@ void Teardown() {
     checksByArea.clear();
     checksByScene.clear();
     areasSpoiled = 0;
+    checkCollected = false;
     lastLocationChecked = RC_UNKNOWN_CHECK;
 }
 
@@ -720,6 +727,9 @@ void DrawCheckTracker(bool& open) {
     ImGui::SameLine();
     if (ImGui::Button("Recheck Area")) {
         CheckChecks(GET_ITEM_NONE, true);
+        UpdateAllOrdering();
+        UpdateInventoryChecks();
+        SaveTrackerData(gSaveContext.fileNum, true, false);
     }
     UIWidgets::PaddedSeparator();
 
@@ -1086,6 +1096,10 @@ void UpdateOrdering(RandomizerCheckArea rcArea) {
     }
 }
 
+bool IsEoDCheck(RandomizerCheckType type) {
+    return type == RCTYPE_BOSS_HEART_OR_OTHER_REWARD || type == RCTYPE_DUNGEON_REWARD;
+}
+
 bool CompareChecks(RandomizerCheckObject i, RandomizerCheckObject j) {
     RandomizerCheckTrackerData iShow = checkTrackerData.find(i.rc)->second;
     RandomizerCheckTrackerData jShow = checkTrackerData.find(j.rc)->second;
@@ -1106,6 +1120,11 @@ bool CompareChecks(RandomizerCheckObject i, RandomizerCheckObject j) {
     if (!iShow.skipped && jShow.skipped)
         return true;
     else if (iShow.skipped && !jShow.skipped)
+        return false;
+
+    if (!IsEoDCheck(i.rcType) && IsEoDCheck(j.rcType))
+        return true;
+    else if (IsEoDCheck(i.rcType) && !IsEoDCheck(j.rcType))
         return false;
 
     if (i.rc < j.rc)

@@ -3100,20 +3100,13 @@ void SaveTrackerData(int fileNum, bool thread, bool convertCollected) {
 }
 
 void SaveTrackerDataHook(int fileNum) {
-    // todo: change checked to saved in memory
-    if (!std::filesystem::exists(GetTrackerDataFileName(fileNum))) {
-        CheckTracker::CreateTrackerData();
-        SaveTrackerData(fileNum, false, true);
-        CheckTracker::GetCheckTrackerData()->clear();
-    }
-    else
-        SaveTrackerData(fileNum, true, true);
+    SaveTrackerData(fileNum, true, true);
 }
 
 void LoadTrackerData(int fileNum) {
     if (!std::filesystem::exists(GetTrackerDataFileName(fileNum))) {
-        CheckTracker::CreateTrackerData();
-        SaveTrackerData(fileNum, false, false);
+        CheckTracker::CreateTrackerData(true);
+        SaveTrackerData(fileNum, false, true);
     }
     std::ifstream input(GetTrackerDataFileName(fileNum));
 

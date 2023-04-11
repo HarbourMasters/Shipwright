@@ -28,7 +28,7 @@ std::map<RandomizerCheck, RandomizerCheckTrackerData> *GetCheckTrackerData();
 void PushDefaultCheckData(RandomizerCheck rc);
 void LoadCheckTrackerData(nlohmann::json checks);
 bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj);
-void CreateTrackerData();
+void CreateTrackerData(bool);
 void SetLastItemGetRC(RandomizerCheck rc);
 void CheckTrackerDialogClosed();
 } // namespace CheckTracker
