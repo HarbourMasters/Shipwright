@@ -1854,7 +1854,7 @@ extern "C" void Overlay_DisplayText(float duration, const char* text) {
 }
 
 extern "C" void Overlay_DisplayText_Seconds(int seconds, const char* text) {
-    float duration = seconds * CVarGetInteger("gInterpolationFPS", 20) * 0.05;
+    float duration = seconds * OTRGlobals::Instance->GetInterpolationFPS() * 0.05;
     SohImGui::GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
