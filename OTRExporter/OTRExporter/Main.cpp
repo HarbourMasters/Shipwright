@@ -27,7 +27,7 @@
 
 std::string otrFileName = "oot.otr";
 std::shared_ptr<Ship::Archive> otrArchive;
-BinaryWriter* fileWriter;
+BinaryWriter *fileWriter;
 std::chrono::steady_clock::time_point fileStart, resStart;
 std::map<std::string, std::vector<char>> files;
 std::mutex fileMutex;
@@ -39,7 +39,7 @@ enum class ExporterFileMode
 	BuildOTR = (int)ZFileMode::Custom + 1,
 };
 
-static void ExporterParseFileMode(const std::string& buildMode, ZFileMode& fileMode)
+static void ExporterParseFileMode(const std::string &buildMode, ZFileMode &fileMode)
 {
 	if (buildMode == "botr")
 	{
@@ -64,18 +64,21 @@ static void ExporterParseFileMode(const std::string& buildMode, ZFileMode& fileM
 
 static void ExporterProgramEnd()
 {
+	
+	
+	uint32_t crc = 0xFFFFFFFF;
+	const uint8_t endianness = (uint8_t)Endianness::Big;
+	
 	if (Globals::Instance->fileMode == ZFileMode::ExtractDirectory)
 	{
+		std::string romPath = Globals::Instance->baseRomPath.string();
+		const std::vector<uint8_t>& romData = File::ReadAllBytes(romPath);
+		crc = BitConverter::ToUInt32BE(romData, 0x10);
 		printf("Creating version file...\n");
 
 		// Get crc from rom
-		std::string romPath = Globals::Instance->baseRomPath.string();
-		std::vector<uint8_t> romData = File::ReadAllBytes(romPath);
-		uint32_t crc = BitConverter::ToUInt32BE(romData, 0x10);
-        uint8_t endianness = (uint8_t)Endianness::Big;
-	
 
-		MemoryStream* versionStream = new MemoryStream();
+		MemoryStream *versionStream = new MemoryStream();
 		BinaryWriter writer(versionStream);
 		writer.SetEndianness(Endianness::Big);
 		writer.Write(endianness);
@@ -89,7 +92,8 @@ static void ExporterProgramEnd()
 
 		otrArchive->AddFile("version", (uintptr_t)versionStream->ToVector().data(), versionStream->GetLength());
 
-		for (auto item : files) {
+		for (const auto &item : files)
+		{
 			std::string fName = item.first;
 			if (fName.find("gTitleZeldaShieldLogoMQTex") != std::string::npos && !ZRom(romPath).IsMQ())
 			{
@@ -99,68 +103,71 @@ static void ExporterProgramEnd()
 					fName.replace(pos, 27, "gTitleZeldaShieldLogoTex");
 				}
 			}
-			auto fileData = item.second;
+			const auto &fileData = item.second;
 			otrArchive->AddFile(fName, (uintptr_t)fileData.data(),
-		                      fileData.size());
+								fileData.size());
 		}
+	}
 
-		// Add any additional files that need to be manually copied...
-		auto lst = Directory::ListFiles("Extract");
-		std::shared_ptr<Ship::Archive> sohOtr = Ship::Archive::CreateArchive("soh.otr", 4096);
-		sohOtr->AddFile("version", (uintptr_t)versionStream->ToVector().data(), versionStream->GetLength());
+	// Add any additional files that need to be manually copied...
+	const auto &lst = Directory::ListFiles("Extract");
+	std::shared_ptr<Ship::Archive> sohOtr = Ship::Archive::CreateArchive("soh.otr", 4096);
+	//sohOtr->AddFile("version", (uintptr_t)versionStream->ToVector().data(), versionStream->GetLength());
 
-		for (auto item : lst)
+	for (const auto &item : lst)
+	{
+		std::vector<std::string> splitPath = StringHelper::Split(item, ".");
+
+		if (splitPath.size() >= 3)
 		{
-			std::vector<std::string> splitPath = StringHelper::Split(item, ".");
+			const std::string &extension = splitPath.at(splitPath.size() - 1);
+			const std::string &format = splitPath.at(splitPath.size() - 2);
+			splitPath.pop_back();
+			splitPath.pop_back();
+			std::string afterPath = std::accumulate(splitPath.begin(), splitPath.end(), std::string(""));
+			if (extension == "png" && (format == "rgba32" || format == "rgb5a1" || format == "i4" || format == "i8" || format == "ia4" || format == "ia8" || format == "ia16" || format == "ci4" || format == "ci8"))
+			{
+				ZTexture tex(nullptr);
+				Globals::Instance->buildRawTexture = true;
+				tex.FromPNG(item, ZTexture::GetTextureTypeFromString(format));
+				printf("sohOtr->AddFile(%s)\n", StringHelper::Split(afterPath, "Extract/")[1].c_str());
 
-			if (splitPath.size() >= 3) {
-				std::string extension = splitPath.at(splitPath.size() - 1);
-				std::string format = splitPath.at(splitPath.size() - 2);
-				splitPath.pop_back();
-				splitPath.pop_back();
-				std::string afterPath = std::accumulate(splitPath.begin(), splitPath.end(), std::string(""));
-				if (extension == "png" && (format == "rgba32" || format == "rgb5a1" || format == "i4" || format == "i8" || format == "ia4" || format == "ia8" || format == "ia16" || format == "ci4" || format == "ci8")) {
-					ZTexture tex(nullptr);
-					Globals::Instance->buildRawTexture = true;
-					tex.FromPNG(item, ZTexture::GetTextureTypeFromString(format));
-					printf("sohOtr->AddFile(%s)\n", StringHelper::Split(afterPath, "Extract/")[1].c_str());
+				OTRExporter_Texture exporter;
 
-					OTRExporter_Texture exporter;
+				MemoryStream *stream = new MemoryStream();
+				BinaryWriter writer(stream);
 
-					MemoryStream* stream = new MemoryStream();
-					BinaryWriter writer(stream);
+				exporter.Save(&tex, "", &writer);
 
- 					exporter.Save(&tex, "", &writer);
+				std::string src = tex.GetBodySourceCode();
+				writer.Write((char *)src.c_str(), src.size());
 
- 					std::string src = tex.GetBodySourceCode();
- 					writer.Write((char*) src.c_str(), src.size());
-
- 					std::vector<char> fileData = stream->ToVector();
- 					sohOtr->AddFile(StringHelper::Split(afterPath, "Extract/assets/")[1], (uintptr_t)fileData.data(), fileData.size());
-					continue;
-				}
-			}
-
-			if(item.find("accessibility") != std::string::npos) {
-				std::string extension = splitPath.at(splitPath.size() - 1);
-				splitPath.pop_back();
-				if(extension == "json"){
-					auto fileData = File::ReadAllBytes(item);
-					printf("Adding accessibility texts %s\n", StringHelper::Split(item, "texts/")[1].c_str());
-					sohOtr->AddFile(StringHelper::Split(item, "Extract/assets/")[1], (uintptr_t)fileData.data(), fileData.size());
-				}
+				std::vector<char> fileData = stream->ToVector();
+				sohOtr->AddFile(StringHelper::Split(afterPath, "Extract/assets/")[1], (uintptr_t)fileData.data(), fileData.size());
 				continue;
 			}
-
-			auto fileData = File::ReadAllBytes(item);
-			printf("sohOtr->AddFile(%s)\n", StringHelper::Split(item, "Extract/")[1].c_str());
-			sohOtr->AddFile(StringHelper::Split(item, item.find("Extract/assets/") != std::string::npos ? "Extract/assets/" : "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
 		}
+
+		if (item.find("accessibility") != std::string::npos)
+		{
+			std::string extension = splitPath.at(splitPath.size() - 1);
+			splitPath.pop_back();
+			if (extension == "json")
+			{
+				const auto &fileData = File::ReadAllBytes(item);
+				printf("Adding accessibility texts %s\n", StringHelper::Split(item, "texts/")[1].c_str());
+				sohOtr->AddFile(StringHelper::Split(item, "Extract/assets/")[1], (uintptr_t)fileData.data(), fileData.size());
+			}
+			continue;
+		}
+
+		const auto &fileData = File::ReadAllBytes(item);
+		printf("sohOtr->AddFile(%s)\n", StringHelper::Split(item, "Extract/")[1].c_str());
+		sohOtr->AddFile(StringHelper::Split(item, item.find("Extract/assets/") != std::string::npos ? "Extract/assets/" : "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
 	}
 }
 
-
-static void ExporterParseArgs(int argc, char* argv[], int& i)
+static void ExporterParseArgs(int argc, char *argv[], int &i)
 {
 	std::string arg = argv[i];
 
@@ -181,23 +188,23 @@ static bool ExporterProcessFileMode(ZFileMode fileMode)
 	return false;
 }
 
-static void ExporterFileBegin(ZFile* file)
+static void ExporterFileBegin(ZFile *file)
 {
 	fileStart = std::chrono::steady_clock::now();
 
-	MemoryStream* stream = new MemoryStream();
+	MemoryStream *stream = new MemoryStream();
 	fileWriter = new BinaryWriter(stream);
 }
 
-static void ExporterFileEnd(ZFile* file)
+static void ExporterFileEnd(ZFile *file)
 {
 	// delete fileWriter;
 }
 
-static void ExporterResourceEnd(ZResource* res, BinaryWriter& writer)
+static void ExporterResourceEnd(ZResource *res, BinaryWriter &writer)
 {
 	auto streamShared = writer.GetStream();
-	MemoryStream* strem = (MemoryStream*)streamShared.get();
+	MemoryStream *strem = (MemoryStream *)streamShared.get();
 
 	auto start = std::chrono::steady_clock::now();
 
@@ -207,8 +214,8 @@ static void ExporterResourceEnd(ZResource* res, BinaryWriter& writer)
 		std::string rName = res->GetName();
 		std::string prefix = OTRExporter_DisplayList::GetPrefix(res);
 
-		//auto xmlFilePath = res->parent->GetXmlFilePath();
-		//prefix = StringHelper::Split(StringHelper::Split(xmlFilePath.string(), "xml\\")[1], ".xml")[0];
+		// auto xmlFilePath = res->parent->GetXmlFilePath();
+		// prefix = StringHelper::Split(StringHelper::Split(xmlFilePath.string(), "xml\\")[1], ".xml")[0];
 
 		if (StringHelper::Contains(oName, "_scene"))
 		{
@@ -243,8 +250,8 @@ static void ExporterResourceEnd(ZResource* res, BinaryWriter& writer)
 	auto end = std::chrono::steady_clock::now();
 	size_t diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 
-	//if (diff > 10)
-		//printf("Exported Resource End %s in %zums\n", res->GetName().c_str(), diff);
+	// if (diff > 10)
+	// printf("Exported Resource End %s in %zums\n", res->GetName().c_str(), diff);
 }
 
 static void ExporterXMLBegin()
@@ -270,7 +277,7 @@ static void ImportExporters()
 {
 	// In this example we set up a new exporter called "EXAMPLE".
 	// By running ZAPD with the argument -se EXAMPLE, we tell it that we want to use this exporter for our resources.
-	ExporterSet* exporterSet = new ExporterSet();
+	ExporterSet *exporterSet = new ExporterSet();
 	exporterSet->processFileModeFunc = ExporterProcessFileMode;
 	exporterSet->parseFileModeFunc = ExporterParseFileMode;
 	exporterSet->parseArgsFunc = ExporterParseArgs;

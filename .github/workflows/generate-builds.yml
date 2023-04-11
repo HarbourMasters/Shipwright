@@ -51,6 +51,8 @@ jobs:
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
+        cmake --build build-cmake --config Release --target ZAPD
+        COMMAND ../build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
         cmake --build build-cmake --config Release --parallel 10
         (cd build-cmake && cpack)
 
@@ -112,6 +114,8 @@ jobs:
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
         cmake --build build-cmake --target OTRGui -j3
+        cmake --build build-cmake --config Release --target ZAPD
+        COMMAND ../build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
         cmake --build build-cmake --config Release -j3
         (cd build-cmake && cpack -G External)
 
@@ -146,6 +150,8 @@ jobs:
     - name: Build SoH
       run: |
         cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache
+        cmake --build build-switch --config Release --target ZAPD
+        COMMAND ../build-switch/ZAPD/ZAPD.out botr -se OTR --norom
         cmake --build build-switch --target soh_nro -j3
 
         mv build-switch/soh/*.nro soh.nro
@@ -177,6 +183,8 @@ jobs:
     - name: Build SoH
       run: |
         cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache
+        cmake --build build-wiiu --config Release --target ZAPD
+        COMMAND ../build-wiiu/ZAPD/ZAPD.out botr -se OTR --norom
         cmake --build build-wiiu --target soh_wuhb --config Release -j3
 
         mv build-wiiu/soh/*.rpx soh.rpx
@@ -218,6 +226,8 @@ jobs:
         set $env:PATH="$env:USERPROFILE/.cargo/bin;$env:PATH"
         cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
         cmake --build build-windows --target OTRGui --config Release --parallel 10
+        cmake --build build-windows --config Release --target ZAPD
+        COMMAND ../build-windows/ZAPD/ZAPD.exe botr -se OTR --norom
         cmake --build build-windows --config Release --parallel 10
         cd build-windows
         cpack -G ZIP
