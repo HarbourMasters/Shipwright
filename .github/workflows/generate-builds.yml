@@ -293,14 +293,7 @@ jobs:
         mv ./README.md ./soh-windows/readme.txt
         mv ./build-windows/gamecontrollerdb.txt ./soh-windows/gamecontrollerdb.txt
         mv ./build-windows/OTRGui/assets ./soh-windows
-        echo blarg
-        ls
-        echo blarg
-        cd build-windows
-        ls
-        echo blarg
-        cd ZAPD
-        ls
+        mv ./build-windows/ZAPD/ZAPD.exe ./soh-windows/assets/extractor/ZAPD.exe
     - name: Download soh.otr
       uses: actions/download-artifact@v3
       with:
