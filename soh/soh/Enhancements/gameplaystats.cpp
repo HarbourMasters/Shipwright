@@ -603,27 +603,27 @@ void SetupDisplayNames() {
     strcpy(itemTimestampDisplayName[ITEM_DOUBLE_DEFENSE],   "Double Defense:     ");
 
     // Other events
-    strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_GOHMA],         "Gohma Defeated:     ");
-    strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_KING_DODONGO],  "KD Defeated:        ");
-    strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_BARINADE],      "Barinade Defeated:  ");
-    strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_PHANTOM_GANON], "PG Defeated:        ");
-    strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_VOLVAGIA],      "Volvagia Defeated:  ");
-    strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_MORPHA],        "Morpha Defeated:    ");
-    strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_BONGO_BONGO],   "Bongo Defeated:     ");
-    strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_TWINROVA],      "Twinrova Defeated:  ");
-    strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_GANONDORF],     "Ganondorf Defeated: ");
-    strcpy(timestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:     ");
-    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_GOHMA],           "Gohma Completed:    ");
-    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_KING_DODONGO],    "KD Completed:       ");
-    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_BARINADE],        "Barinade Completed: ");
-    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_PHANTOM_GANON],   "PG Completed:       ");
-    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_VOLVAGIA],        "Volvagia Completed: ");
-    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_MORPHA],          "Morpha Completed:   ");
-    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_BONGO_BONGO],     "Bongo Completed:    ");
-    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_TWINROVA],        "Twinrova Completed: ");
-    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_GANONDORF],       "Ganondorf Completed:");
-    strcpy(timestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_GANON],           "Boss Rush Finished: ");
-    strcpy(timestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:         ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GOHMA],         "Gohma Defeated:     ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_KING_DODONGO],  "KD Defeated:        ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_BARINADE],      "Barinade Defeated:  ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_PHANTOM_GANON], "PG Defeated:        ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_VOLVAGIA],      "Volvagia Defeated:  ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_MORPHA],        "Morpha Defeated:    ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_BONGO_BONGO],   "Bongo Defeated:     ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_TWINROVA],      "Twinrova Defeated:  ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANONDORF],     "Ganondorf Defeated: ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:     ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_GOHMA],           "Gohma Completed:    ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_KING_DODONGO],    "KD Completed:       ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_BARINADE],        "Barinade Completed: ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_PHANTOM_GANON],   "PG Completed:       ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_VOLVAGIA],        "Volvagia Completed: ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_MORPHA],          "Morpha Completed:   ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_BONGO_BONGO],     "Bongo Completed:    ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_TWINROVA],        "Twinrova Completed: ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_GANONDORF],       "Ganondorf Completed:");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_GANON],           "Boss Rush Finished: ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:         ");
 }
 
 void SetupDisplayColors() {

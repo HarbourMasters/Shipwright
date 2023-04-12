@@ -128,28 +128,28 @@ extern "C" void BossRush_HandleCompleteBoss(PlayState* play) {
     gSaveContext.isBossRushPaused = 1;
     switch (play->sceneNum) {
         case SCENE_YDAN_BOSS:
-            gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
+            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
             break;
         case SCENE_DDAN_BOSS:
-            gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
             break;
         case SCENE_BDAN_BOSS:
-            gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
+            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
             break;
         case SCENE_MORIBOSSROOM:
-            gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_PHANTOM_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_PHANTOM_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
             break;
         case SCENE_FIRE_BS:
-            gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
+            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
             break;
         case SCENE_MIZUSIN_BS:
-            gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
+            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
             break;
         case SCENE_JYASINBOSS:
-            gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
+            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
             break;
         case SCENE_HAKADAN_BS:
-            gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
             break;
         default:
             break;
