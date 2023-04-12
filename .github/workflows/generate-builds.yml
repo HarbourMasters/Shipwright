@@ -40,9 +40,9 @@ jobs:
       run: |
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
         cmake --build build-cmake --config Release --target ZAPD
+        ./build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
+        cd build-cmake
         ls
-  #      ./build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
-  #      ls
   #       zip -r assets.zip soh/assets
   #   - uses: actions/upload-artifact@v3
   #     with:
