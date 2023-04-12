@@ -158,6 +158,10 @@ jobs:
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
+    - name: Download soh.otr
+      uses: actions/download-artifact@v3
+      with:
+        name: soh.otr
     - name: Build SoH
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
