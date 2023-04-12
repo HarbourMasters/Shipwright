@@ -279,12 +279,8 @@ jobs:
         cmake --build build-windows --target OTRGui --config Release --parallel 10
         cmake --build build-windows --config Release --parallel 10
 
-        cd build-windows
-        ls
-        cd soh
-        ls
-        cd ..
-        cd OTRGui
+        cd x64
+        cd Release
         ls
     # - name: Upload build
     #   uses: actions/upload-artifact@v3
