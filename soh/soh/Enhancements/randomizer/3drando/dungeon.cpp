@@ -7,12 +7,14 @@
 
 namespace Dungeon {
 
-DungeonInfo::DungeonInfo(std::string name_, uint32_t map_, uint32_t compass_, uint32_t smallKey_, uint32_t keyRing_,
-                         uint32_t bossKey_, uint8_t vanillaKeyCount_, uint8_t mqKeyCount_,
+DungeonInfo::DungeonInfo(std::string name_, uint32_t hintKey_, uint32_t map_, uint32_t compass_, uint32_t smallKey_,
+                         uint32_t keyRing_, uint32_t bossKey_, uint8_t vanillaKeyCount_, uint8_t mqKeyCount_,
                          std::vector<uint32_t> vanillaLocations_,
                          std::vector<uint32_t> mqLocations_,
-                         std::vector<uint32_t> sharedLocations_)
+                         std::vector<uint32_t> sharedLocations_,
+                         std::vector<uint32_t> bossRoomLocations_)
   : name(std::move(name_)),
+    hintKey(hintKey_),
     map(map_),
     compass(compass_),
     smallKey(smallKey_),
@@ -22,9 +24,14 @@ DungeonInfo::DungeonInfo(std::string name_, uint32_t map_, uint32_t compass_, ui
     mqKeyCount(mqKeyCount_),
     vanillaLocations(std::move(vanillaLocations_)),
     mqLocations(std::move(mqLocations_)),
-    sharedLocations(std::move(sharedLocations_)) {}
+    sharedLocations(std::move(sharedLocations_)),
+    bossRoomLocations(std::move(bossRoomLocations_)) {}
 
 DungeonInfo::~DungeonInfo() = default;
+
+uint32_t DungeonInfo::GetHintKey() const {
+  return hintKey;
+}
 
 uint32_t DungeonInfo::GetSmallKey() const {
   return smallKey;
@@ -92,6 +99,7 @@ void DungeonInfo::PlaceVanillaSmallKeys() {
 std::vector<uint32_t> DungeonInfo::GetDungeonLocations() const {
   auto locations = masterQuest ? mqLocations : vanillaLocations;
   AddElementsToPool(locations, sharedLocations);
+  AddElementsToPool(locations, bossRoomLocations);
   return locations;
 }
 
@@ -100,10 +108,11 @@ std::vector<uint32_t> DungeonInfo::GetEveryLocation() const {
   auto locations = vanillaLocations;
   AddElementsToPool(locations, mqLocations);
   AddElementsToPool(locations, sharedLocations);
+  AddElementsToPool(locations, bossRoomLocations);
   return locations;
 }
 
-  DungeonInfo DekuTree = DungeonInfo("Deku Tree", DEKU_TREE_MAP, DEKU_TREE_COMPASS, NONE, NONE, NONE, 0, 0, {
+  DungeonInfo DekuTree = DungeonInfo("Deku Tree", DEKU_TREE, DEKU_TREE_MAP, DEKU_TREE_COMPASS, NONE, NONE, NONE, 0, 0, {
                             //Vanilla Locations
                             DEKU_TREE_MAP_CHEST,
                             DEKU_TREE_COMPASS_CHEST,
@@ -129,13 +138,15 @@ std::vector<uint32_t> DungeonInfo::GetEveryLocation() const {
                             DEKU_TREE_MQ_GS_COMPASS_ROOM,
                             DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM,
                             DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM,
-                          }, {
-                            //Shared Locations
+                          },
+                          {},
+                          {
+                            // Boss Room Locations
                             DEKU_TREE_QUEEN_GOHMA_HEART,
                             QUEEN_GOHMA,
                           });
 
-  DungeonInfo DodongosCavern = DungeonInfo("Dodongo's Cavern", DODONGOS_CAVERN_MAP, DODONGOS_CAVERN_COMPASS, NONE, NONE, NONE, 0, 0, {
+  DungeonInfo DodongosCavern = DungeonInfo("Dodongo's Cavern", DODONGOS_CAVERN, DODONGOS_CAVERN_MAP, DODONGOS_CAVERN_COMPASS, NONE, NONE, NONE, 0, 0, {
                             //Vanilla Locations
                             DODONGOS_CAVERN_MAP_CHEST,
                             DODONGOS_CAVERN_COMPASS_CHEST,
@@ -168,14 +179,16 @@ std::vector<uint32_t> DungeonInfo::GetEveryLocation() const {
                             DODONGOS_CAVERN_MQ_GS_LIZALFOS_ROOM,
                             DODONGOS_CAVERN_MQ_GS_LARVAE_ROOM,
                             DODONGOS_CAVERN_MQ_GS_BACK_AREA,
-                          }, {
-                            //Shared Locations
+                          },
+                          {},
+                          {
+                            // Boss Room Locations
                             DODONGOS_CAVERN_BOSS_ROOM_CHEST,
                             DODONGOS_CAVERN_KING_DODONGO_HEART,
                             KING_DODONGO,
                           });
 
-  DungeonInfo JabuJabusBelly = DungeonInfo("Jabu Jabu's Belly", JABU_JABUS_BELLY_MAP, JABU_JABUS_BELLY_COMPASS, NONE, NONE, NONE, 0, 0, {
+  DungeonInfo JabuJabusBelly = DungeonInfo("Jabu Jabu's Belly", JABU_JABUS_BELLY, JABU_JABUS_BELLY_MAP, JABU_JABUS_BELLY_COMPASS, NONE, NONE, NONE, 0, 0, {
                             //Vanilla Locations
                             JABU_JABUS_BELLY_MAP_CHEST,
                             JABU_JABUS_BELLY_COMPASS_CHEST,
@@ -203,13 +216,15 @@ std::vector<uint32_t> DungeonInfo::GetEveryLocation() const {
                             JABU_JABUS_BELLY_MQ_GS_INVISIBLE_ENEMIES_ROOM,
                             JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,
                             JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS,
-                          }, {
-                            //Shared Locations
+                          },
+                          {},
+                          {
+                            // Boss Room Locations
                             JABU_JABUS_BELLY_BARINADE_HEART,
                             BARINADE,
                           });
 
-  DungeonInfo ForestTemple = DungeonInfo("Forest Temple", FOREST_TEMPLE_MAP, FOREST_TEMPLE_COMPASS, FOREST_TEMPLE_SMALL_KEY, FOREST_TEMPLE_KEY_RING, FOREST_TEMPLE_BOSS_KEY, 5, 6, {
+  DungeonInfo ForestTemple = DungeonInfo("Forest Temple", FOREST_TEMPLE, FOREST_TEMPLE_MAP, FOREST_TEMPLE_COMPASS, FOREST_TEMPLE_SMALL_KEY, FOREST_TEMPLE_KEY_RING, FOREST_TEMPLE_BOSS_KEY, 5, 6, {
                             //Vanilla Locations
                             FOREST_TEMPLE_FIRST_ROOM_CHEST,
                             FOREST_TEMPLE_FIRST_STALFOS_CHEST,
@@ -248,13 +263,15 @@ std::vector<uint32_t> DungeonInfo::GetEveryLocation() const {
                             FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD,
                             FOREST_TEMPLE_MQ_GS_LEVEL_ISLAND_COURTYARD,
                             FOREST_TEMPLE_MQ_GS_WELL,
-                          }, {
-                            //Shared Locations
+                          },
+                          {},
+                          {
+                            // Boss Room Locations
                             FOREST_TEMPLE_PHANTOM_GANON_HEART,
                             PHANTOM_GANON,
                           });
 
-  DungeonInfo FireTemple = DungeonInfo("Fire Temple", FIRE_TEMPLE_MAP, FIRE_TEMPLE_COMPASS, FIRE_TEMPLE_SMALL_KEY, FIRE_TEMPLE_KEY_RING, FIRE_TEMPLE_BOSS_KEY, 8, 5, {
+  DungeonInfo FireTemple = DungeonInfo("Fire Temple", FIRE_TEMPLE, FIRE_TEMPLE_MAP, FIRE_TEMPLE_COMPASS, FIRE_TEMPLE_SMALL_KEY, FIRE_TEMPLE_KEY_RING, FIRE_TEMPLE_BOSS_KEY, 8, 5, {
                             //Vanilla Locations
                             FIRE_TEMPLE_NEAR_BOSS_CHEST,
                             FIRE_TEMPLE_FLARE_DANCER_CHEST,
@@ -294,13 +311,15 @@ std::vector<uint32_t> DungeonInfo::GetEveryLocation() const {
                             FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR,
                             FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM,
                             FIRE_TEMPLE_MQ_GS_SKULL_ON_FIRE,
-                          }, {
-                            //Shared Locations
+                          },
+                          {},
+                          {
+                            // Boos Room Locations
                             FIRE_TEMPLE_VOLVAGIA_HEART,
                             VOLVAGIA,
                           });
 
-  DungeonInfo WaterTemple = DungeonInfo("Water Temple", WATER_TEMPLE_MAP, WATER_TEMPLE_COMPASS, WATER_TEMPLE_SMALL_KEY, WATER_TEMPLE_KEY_RING, WATER_TEMPLE_BOSS_KEY, 6, 2, {
+  DungeonInfo WaterTemple = DungeonInfo("Water Temple", WATER_TEMPLE, WATER_TEMPLE_MAP, WATER_TEMPLE_COMPASS, WATER_TEMPLE_SMALL_KEY, WATER_TEMPLE_KEY_RING, WATER_TEMPLE_BOSS_KEY, 6, 2, {
                             //Vanilla Locations
                             WATER_TEMPLE_MAP_CHEST,
                             WATER_TEMPLE_COMPASS_CHEST,
@@ -330,13 +349,15 @@ std::vector<uint32_t> DungeonInfo::GetEveryLocation() const {
                             WATER_TEMPLE_MQ_GS_LIZALFOS_HALLWAY,
                             WATER_TEMPLE_MQ_GS_RIVER,
                             WATER_TEMPLE_MQ_GS_TRIPLE_WALL_TORCH,
-                          }, {
-                            //Shared Locations
+                          },
+                          {},
+                          {
+                            // Boss Room Locations
                             WATER_TEMPLE_MORPHA_HEART,
                             MORPHA,
                           });
 
-  DungeonInfo SpiritTemple = DungeonInfo("Spirit Temple", SPIRIT_TEMPLE_MAP, SPIRIT_TEMPLE_COMPASS, SPIRIT_TEMPLE_SMALL_KEY, SPIRIT_TEMPLE_KEY_RING, SPIRIT_TEMPLE_BOSS_KEY, 5, 7, {
+  DungeonInfo SpiritTemple = DungeonInfo("Spirit Temple", SPIRIT_TEMPLE, SPIRIT_TEMPLE_MAP, SPIRIT_TEMPLE_COMPASS, SPIRIT_TEMPLE_SMALL_KEY, SPIRIT_TEMPLE_KEY_RING, SPIRIT_TEMPLE_BOSS_KEY, 5, 7, {
                             //Vanilla Locations
                             SPIRIT_TEMPLE_CHILD_BRIDGE_CHEST,
                             SPIRIT_TEMPLE_CHILD_EARLY_TORCHES_CHEST,
@@ -391,11 +412,13 @@ std::vector<uint32_t> DungeonInfo::GetEveryLocation() const {
                             //Shared Locations
                             SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST,
                             SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST,
+                          }, {
+                            // Boss Room Locations
                             SPIRIT_TEMPLE_TWINROVA_HEART,
                             TWINROVA,
                           });
 
-  DungeonInfo ShadowTemple = DungeonInfo("Shadow Temple", SHADOW_TEMPLE_MAP, SHADOW_TEMPLE_COMPASS, SHADOW_TEMPLE_SMALL_KEY, SHADOW_TEMPLE_KEY_RING, SHADOW_TEMPLE_BOSS_KEY, 5, 6, {
+  DungeonInfo ShadowTemple = DungeonInfo("Shadow Temple", SHADOW_TEMPLE, SHADOW_TEMPLE_MAP, SHADOW_TEMPLE_COMPASS, SHADOW_TEMPLE_SMALL_KEY, SHADOW_TEMPLE_KEY_RING, SHADOW_TEMPLE_BOSS_KEY, 5, 6, {
                             //Vanilla Locations
                             SHADOW_TEMPLE_MAP_CHEST,
                             SHADOW_TEMPLE_HOVER_BOOTS_CHEST,
@@ -446,13 +469,15 @@ std::vector<uint32_t> DungeonInfo::GetEveryLocation() const {
                             SHADOW_TEMPLE_MQ_GS_AFTER_WIND,
                             SHADOW_TEMPLE_MQ_GS_AFTER_SHIP,
                             SHADOW_TEMPLE_MQ_GS_NEAR_BOSS,
-                          }, {
-                            //Shared Locations
+                          },
+                          {},
+                          {
+                            // Boss Room Locations
                             SHADOW_TEMPLE_BONGO_BONGO_HEART,
                             BONGO_BONGO,
                           });
 
-  DungeonInfo BottomOfTheWell = DungeonInfo("Bottom of the Well", BOTTOM_OF_THE_WELL_MAP, BOTTOM_OF_THE_WELL_COMPASS, BOTTOM_OF_THE_WELL_SMALL_KEY, BOTTOM_OF_THE_WELL_KEY_RING, NONE, 3, 2, {
+  DungeonInfo BottomOfTheWell = DungeonInfo("Bottom of the Well", BOTTOM_OF_THE_WELL, BOTTOM_OF_THE_WELL_MAP, BOTTOM_OF_THE_WELL_COMPASS, BOTTOM_OF_THE_WELL_SMALL_KEY, BOTTOM_OF_THE_WELL_KEY_RING, NONE, 3, 2, {
                             //Vanilla Locations
                             BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST,
                             BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST,
@@ -481,9 +506,9 @@ std::vector<uint32_t> DungeonInfo::GetEveryLocation() const {
                             BOTTOM_OF_THE_WELL_MQ_GS_BASEMENT,
                             BOTTOM_OF_THE_WELL_MQ_GS_COFFIN_ROOM,
                             BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM,
-                          }, {});
+                          }, {}, {});
 
-  DungeonInfo IceCavern = DungeonInfo("Ice Cavern", ICE_CAVERN_MAP, ICE_CAVERN_COMPASS, NONE, NONE, NONE, 0, 0, {
+  DungeonInfo IceCavern = DungeonInfo("Ice Cavern", ICE_CAVERN, ICE_CAVERN_MAP, ICE_CAVERN_COMPASS, NONE, NONE, NONE, 0, 0, {
                             //Vanilla Locations
                             ICE_CAVERN_MAP_CHEST,
                             ICE_CAVERN_COMPASS_CHEST,
@@ -504,9 +529,9 @@ std::vector<uint32_t> DungeonInfo::GetEveryLocation() const {
                           }, {
                             //Shared Locations
                             SHEIK_IN_ICE_CAVERN,
-                          });
+                          }, {});
 
-  DungeonInfo GerudoTrainingGrounds = DungeonInfo("Gerudo Training Grounds", NONE, NONE, GERUDO_TRAINING_GROUNDS_SMALL_KEY, GERUDO_TRAINING_GROUNDS_KEY_RING, NONE, 9, 3, {
+  DungeonInfo GerudoTrainingGrounds = DungeonInfo("Gerudo Training Grounds", GERUDO_TRAINING_GROUNDS, NONE, NONE, GERUDO_TRAINING_GROUNDS_SMALL_KEY, GERUDO_TRAINING_GROUNDS_KEY_RING, NONE, 9, 3, {
                             //Vanilla Locations
                             GERUDO_TRAINING_GROUNDS_LOBBY_LEFT_CHEST,
                             GERUDO_TRAINING_GROUNDS_LOBBY_RIGHT_CHEST,
@@ -549,9 +574,9 @@ std::vector<uint32_t> DungeonInfo::GetEveryLocation() const {
                             GERUDO_TRAINING_GROUNDS_MQ_HIDDEN_CEILING_CHEST,
                             GERUDO_TRAINING_GROUNDS_MQ_UNDERWATER_SILVER_RUPEE_CHEST,
                             GERUDO_TRAINING_GROUNDS_MQ_HEAVY_BLOCK_CHEST,
-                          }, {});
+                          }, {}, {});
 
-  DungeonInfo GanonsCastle = DungeonInfo("Ganon's Castle", NONE, NONE, GANONS_CASTLE_SMALL_KEY, GANONS_CASTLE_KEY_RING, GANONS_CASTLE_BOSS_KEY, 2, 3, {
+  DungeonInfo GanonsCastle = DungeonInfo("Ganon's Castle", GANONS_CASTLE, NONE, NONE, GANONS_CASTLE_SMALL_KEY, GANONS_CASTLE_KEY_RING, GANONS_CASTLE_BOSS_KEY, 2, 3, {
                             //Vanilla Locations
                             GANONS_CASTLE_FOREST_TRIAL_CHEST,
                             GANONS_CASTLE_WATER_TRIAL_LEFT_CHEST,
@@ -596,7 +621,7 @@ std::vector<uint32_t> DungeonInfo::GetEveryLocation() const {
                             //Shared Locations
                             GANONS_TOWER_BOSS_KEY_CHEST,
                             GANON,
-                          });
+                          }, {});
 
   const DungeonArray dungeonList = {
     &DekuTree,
