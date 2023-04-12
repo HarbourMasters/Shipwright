@@ -296,10 +296,10 @@ jobs:
         echo blarg
         ls
         echo blarg
-        cd x64
+        cd build-windows
         ls
         echo blarg
-        cd Release
+        cd ZAPD
         ls
     - name: Download soh.otr
       uses: actions/download-artifact@v3
