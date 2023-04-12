@@ -46,6 +46,7 @@ jobs:
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
         cmake --build build-cmake --config Release --target ZAPD
         ./build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
+        ls
         cd build-cmake
         ls
   #       zip -r assets.zip soh/assets
