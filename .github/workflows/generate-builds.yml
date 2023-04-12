@@ -52,7 +52,7 @@ jobs:
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
         cmake --build build-cmake --config Release --target ZAPD
-        COMMAND ./build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
+        ./build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
         cmake --build build-cmake --config Release --parallel 10
         (cd build-cmake && cpack)
 
@@ -115,7 +115,7 @@ jobs:
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
         cmake --build build-cmake --target OTRGui -j3
         cmake --build build-cmake --config Release --target ZAPD
-        COMMAND ./build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
+        ./build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
         cmake --build build-cmake --config Release -j3
         (cd build-cmake && cpack -G External)
 
