@@ -2805,9 +2805,9 @@ void BossGanon_UpdateDamage(BossGanon* this, PlayState* play) {
                     Audio_QueueSeqCmd(0x100100FF);
                     this->screenFlashTimer = 4;
                     if (!gSaveContext.isBossRush) {
-                        gSaveContext.sohStats.timestamp[TIMESTAMP_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
+                        gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
                     } else {
-                        gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
+                        gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_GANONDORF] = GAMEPLAYSTAT_TOTAL_TIME;
                     }
                 } else {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GANON_DAMAGE2);

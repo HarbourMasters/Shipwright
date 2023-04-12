@@ -49,8 +49,6 @@ void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 }
 
-void ApplyOrResetCustomGfxPatches(bool rainbowTick);
-
 // Not to be confused with tabs, groups are 1:1 with the boxes shown in the UI, grouping them allows us to reset/randomize
 // every item in a group at once. If you are looking for tabs they are rendered manually in ImGui in `DrawCosmeticsEditor`
 typedef enum {
@@ -319,11 +317,12 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("NPC_IronKnuckles",              "Iron Knuckles",        GROUP_NPC,          ImVec4(245, 255, 205, 255), false, true, false),
 };
 
-const char* MarginCvarList[] {
+static const char* MarginCvarList[] {
     "gHearts", "gHeartsCount", "gMagicBar", "gVSOA", "gBBtn", "gABtn", "gStartBtn", 
     "gCBtnU", "gCBtnD", "gCBtnL", "gCBtnR", "gDPad", "gMinimap", 
     "gSKC", "gRC", "gCarrots",  "gTimers", "gAS", "gTCM", "gTCB"
 };
+static const char* MarginCvarNonAnchor[]{ "gCarrots", "gTimers", "gAS", "gTCM","gTCB" };
 
 ImVec4 GetRandomValue(int MaximumPossible){
     ImVec4 NewColor;
@@ -347,24 +346,26 @@ void SetMarginAll(const char* ButtonName, bool SetActivated) {
     if (ImGui::Button(ButtonName)) {
         u8 arrayLength = sizeof(MarginCvarList) / sizeof(*MarginCvarList);
         //MarginCvarNonAnchor is an array that list every element that has No anchor by default, because if that the case this function will not touch it with pose type 0.
-        const char* MarginCvarNonAnchor[] { "gCarrots", "gTimers", "gAS", "gTCM","gTCB" };
         u8 arrayLengthNonMargin = sizeof(MarginCvarNonAnchor) / sizeof(*MarginCvarNonAnchor);
         for (u8 s = 0; s < arrayLength; s++) {
-            std::string cvarName = MarginCvarList[s];
-            std::string cvarPosType = cvarName+"PosType";
-            std::string cvarNameMargins = cvarName+"UseMargins";
-            if (CVarGetInteger(cvarPosType.c_str(),0) <= 2 && SetActivated) { //Our element is not Hidden or Non anchor
-                for(int i = 0; i < arrayLengthNonMargin; i++){
-                    if(MarginCvarNonAnchor[i] == cvarName && CVarGetInteger(cvarPosType.c_str(),0) == 0){ //Our element is both in original position and do not have anchor by default so we skip it.
-                        CVarSetInteger(cvarNameMargins.c_str(), false); //force set off
-                    } else if(MarginCvarNonAnchor[i] == cvarName && CVarGetInteger(cvarPosType.c_str(),0) != 0){ //Our element is not in original position regarless it has no anchor by default since player made it anchored we can toggle margins
-                        CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
-                    } else if(MarginCvarNonAnchor[i] != cvarName){ //Our elements has an anchor by default so regarless of it's position right now that okay to toggle margins.
-                        CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
+            const char* cvarName = MarginCvarList[s];
+            const char* cvarPosType = std::string(cvarName).append("PosType").c_str();
+            const char* cvarNameMargins = std::string(cvarName).append("UseMargins").c_str();
+            if (CVarGetInteger(cvarPosType,0) <= 2 && SetActivated) { //Our element is not Hidden or Non anchor
+                for (int i = 0; i < arrayLengthNonMargin; i++){
+                    if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) && (CVarGetInteger(cvarPosType, 0) == 0)) { //Our element is both in original position and do not have anchor by default so we skip it.
+                        CVarSetInteger(cvarNameMargins, false); //force set off
+                    } 
+                    else if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) && (CVarGetInteger(cvarPosType, 0) != 0)) { //Our element is not in original position regarless it has no anchor by default since player made it anchored we can toggle margins
+                        CVarSetInteger(cvarNameMargins, SetActivated);
+                    } 
+                    else if (strcmp(cvarName, MarginCvarNonAnchor[i]) != 0) { //Our elements has an anchor by default so regarless of it's position right now that okay to toggle margins.
+                        CVarSetInteger(cvarNameMargins, SetActivated);
                     }
                 }
-            } else { //Since the user requested to turn all margin off no need to do any check there.
-                CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
+            } 
+            else { //Since the user requested to turn all margin off no need to do any check there.
+                CVarSetInteger(cvarNameMargins, SetActivated);
             }
         }
     }
@@ -373,11 +374,11 @@ void ResetPositionAll() {
     if (ImGui::Button("Reset all positions")) {
         u8 arrayLength = sizeof(MarginCvarList) / sizeof(*MarginCvarList);
         for (u8 s = 0; s < arrayLength; s++) {
-            std::string cvarName = MarginCvarList[s];
-            std::string cvarPosType = cvarName+"PosType";
-            std::string cvarNameMargins = cvarName+"UseMargins";
-            CVarSetInteger(cvarPosType.c_str(), 0);
-            CVarSetInteger(cvarNameMargins.c_str(), false); //Turn margin off to everythings as that original position.
+            const char* cvarName = MarginCvarList[s];
+            const char* cvarPosType = std::string(cvarName).append("PosType").c_str();
+            const char* cvarNameMargins = std::string(cvarName).append("UseMargins").c_str();
+            CVarSetInteger(cvarPosType, 0);
+            CVarSetInteger(cvarNameMargins, false); //Turn margin off to everythings as that original position.
         }
     }
 }
@@ -425,7 +426,7 @@ void CosmeticsUpdateTick(bool& open) {
     4. GFX Command Index: Index of the GFX command you want to replace, the instructions on finding this are in the giant comment block above the cosmeticOptions map
     5. GFX Command: The GFX command you want to insert
 */
-void ApplyOrResetCustomGfxPatches(bool manualChange = true) {
+void ApplyOrResetCustomGfxPatches(bool manualChange) {
     static CosmeticOption& linkGoronTunic = cosmeticOptions.at("Link_GoronTunic");
     if (manualChange || CVarGetInteger(linkGoronTunic.rainbowCvar, 0)) {
         static Color_RGBA8 defaultColor = {linkGoronTunic.defaultColor.x, linkGoronTunic.defaultColor.y, linkGoronTunic.defaultColor.z, linkGoronTunic.defaultColor.w};
@@ -1094,30 +1095,30 @@ void DrawPositionSlider(const std::string CvarName, int MinY, int MaxY, int MinX
     std::string PosYCvar = CvarName+"PosY";
     std::string InvisibleLabelX = "##"+PosXCvar;
     std::string InvisibleLabelY = "##"+PosYCvar;
-    UIWidgets::EnhancementSliderInt("Up <-> Down : %d", InvisibleLabelY.c_str(), PosYCvar.c_str(), MinY, MaxY, "", 0, true);
+    UIWidgets::EnhancementSliderInt("Up <-> Down : %d", InvisibleLabelY.c_str(), PosYCvar.c_str(), MinY, MaxY, "", 0);
     UIWidgets::Tooltip("This slider is used to move Up and Down your elements.");
-    UIWidgets::EnhancementSliderInt("Left <-> Right : %d", InvisibleLabelX.c_str(), PosXCvar.c_str(), MinX, MaxX, "", 0, true);
+    UIWidgets::EnhancementSliderInt("Left <-> Right : %d", InvisibleLabelX.c_str(), PosXCvar.c_str(), MinX, MaxX, "", 0);
     UIWidgets::Tooltip("This slider is used to move Left and Right your elements.");
 }
 void DrawScaleSlider(const std::string CvarName,float DefaultValue){
     std::string InvisibleLabel = "##"+CvarName;
     std::string CvarLabel = CvarName+"Scale";
     //Disabled for now. feature not done and several fixes needed to be merged.
-    //UIWidgets::EnhancementSliderFloat("Scale : %dx", InvisibleLabel.c_str(), CvarLabel.c_str(), 0.1f, 3.0f,"",DefaultValue,true,true);
+    //UIWidgets::EnhancementSliderFloat("Scale : %dx", InvisibleLabel.c_str(), CvarLabel.c_str(), 0.1f, 3.0f,"",DefaultValue,true);
 }
 void Draw_Placements(){
     if (ImGui::BeginTable("tableMargins", 1, FlagsTable)) {
         ImGui::TableSetupColumn("General margins settings", FlagsCell, TablesCellsWidth);
         Table_InitHeader();
-        UIWidgets::EnhancementSliderInt("Top : %dx", "##UIMARGINT", "gHUDMargin_T", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0, true);
-        UIWidgets::EnhancementSliderInt("Left: %dx", "##UIMARGINL", "gHUDMargin_L", -25, ImGui::GetWindowViewport()->Size.x, "", 0, true);
-        UIWidgets::EnhancementSliderInt("Right: %dx", "##UIMARGINR", "gHUDMargin_R", (ImGui::GetWindowViewport()->Size.x)*-1, 25, "", 0, true);
-        UIWidgets::EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", "gHUDMargin_B", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0, true);
+        UIWidgets::EnhancementSliderInt("Top : %dx", "##UIMARGINT", "gHUDMargin_T", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0);
+        UIWidgets::EnhancementSliderInt("Left: %dx", "##UIMARGINL", "gHUDMargin_L", -25, ImGui::GetWindowViewport()->Size.x, "", 0);
+        UIWidgets::EnhancementSliderInt("Right: %dx", "##UIMARGINR", "gHUDMargin_R", (ImGui::GetWindowViewport()->Size.x)*-1, 25, "", 0);
+        UIWidgets::EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", "gHUDMargin_B", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0);
         SetMarginAll("All margins on",true);
-        UIWidgets::Tooltip("Set most of the element to use margin\nSome elements with default position will not be affected\nElements without Archor or Hidden will not be turned on");
+        UIWidgets::Tooltip("Set most of the elements to use margins\nSome elements with default position will not be affected\nElements without Anchor or Hidden will not be turned on");
         ImGui::SameLine();
         SetMarginAll("All margins off",false);
-        UIWidgets::Tooltip("Set all of the element to not use margin");
+        UIWidgets::Tooltip("Set all of the elements to not use margins");
         ImGui::SameLine();
         ResetPositionAll();
         UIWidgets::Tooltip("Revert every element to use their original position and no margins");
@@ -1132,7 +1133,7 @@ void Draw_Placements(){
             DrawPositionsRadioBoxes("gHeartsCount");
             DrawPositionSlider("gHeartsCount",-22,ImGui::GetWindowViewport()->Size.y,-125,ImGui::GetWindowViewport()->Size.x);
             DrawScaleSlider("gHeartsCount",0.7f);
-            UIWidgets::EnhancementSliderInt("Heart line length : %d", "##HeartLineLength", "gHeartsLineLength", 0, 20, "", 10, true);
+            UIWidgets::EnhancementSliderInt("Heart line length : %d", "##HeartLineLength", "gHeartsLineLength", 0, 20, "", 10);
             UIWidgets::Tooltip("This will set the length of a row of hearts. Set to 0 for unlimited length.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -1661,7 +1662,7 @@ void DrawCosmeticGroup(CosmeticGroup cosmeticGroup) {
     }
 }
 
-const char* colorSchemes[2] = {
+static const char* colorSchemes[2] = {
     "N64",
     "Gamecube",
 };
@@ -1680,7 +1681,7 @@ void DrawCosmeticsEditor(bool& open) {
 
     ImGui::Text("Color Scheme");
     ImGui::SameLine();
-    UIWidgets::EnhancementCombobox("gCosmetics.DefaultColorScheme", colorSchemes, 2, 0);
+    UIWidgets::EnhancementCombobox("gCosmetics.DefaultColorScheme", colorSchemes, 0);
     UIWidgets::EnhancementCheckbox("Advanced Mode", "gCosmetics.AdvancedMode");
     if (CVarGetInteger("gCosmetics.AdvancedMode", 0)) {
         if (ImGui::Button("Lock All Advanced", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
@@ -1756,7 +1757,7 @@ void DrawCosmeticsEditor(bool& open) {
             DrawCosmeticGroup(GROUP_ARROWS);
             DrawCosmeticGroup(GROUP_SPIN_ATTACK);
             DrawCosmeticGroup(GROUP_TRAILS);
-            if (UIWidgets::EnhancementSliderInt("Trails Duration: %d", "##Trails_Duration", "gCosmetics.Trails_Duration.Value", 2, 20, "", 4, false)) {
+            if (UIWidgets::EnhancementSliderInt("Trails Duration: %d", "##Trails_Duration", "gCosmetics.Trails_Duration.Value", 2, 20, "", 4)) {
                 CVarSetInteger("gCosmetics.Trails_Duration.Changed", 1);
             }
             ImGui::SameLine();
@@ -1822,7 +1823,8 @@ void InitCosmeticsEditor() {
 
 void CosmeticsEditor_RandomizeAll() {
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
-        if (!CVarGetInteger(cosmeticOption.lockedCvar, 0)) {
+        if (!CVarGetInteger(cosmeticOption.lockedCvar, 0) &&
+            (!cosmeticOption.advancedOption || CVarGetInteger("gCosmetics.AdvancedMode", 0))) {
             RandomizeColor(cosmeticOption);
         }
     }

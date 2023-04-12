@@ -18,17 +18,14 @@ def chooseROM(verbose=False, non_interactive=False):
         return roms
 
     if non_interactive:
-        romsToExtract = []
-        foundMq = False
-        foundOot = False
+        mq_rom = None
+        non_mq_rom = None
         for rom in roms:
-            if rom.isMq and not foundMq:
-                romsToExtract.append(rom)
-                foundMq = True
-            elif not rom.isMq and not foundOot:
-                romsToExtract.append(rom)
-                foundOot = True
-        return romsToExtract
+            if rom.isMq and mq_rom is None:
+                mq_rom = rom
+            elif not rom.isMq and non_mq_rom is None:
+                non_mq_rom = rom
+        return [rom for rom in [non_mq_rom, mq_rom] if rom is not None]
 
     print(f"{len(roms)} roms found, please select one by pressing 1-{len(roms)}")
     print()

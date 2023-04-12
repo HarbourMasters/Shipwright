@@ -584,6 +584,8 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
                 if (gSaveContext.n64ddFlag) {
                     play->nextEntranceIndex = 0x0457;
                     gSaveContext.nextCutsceneIndex = 0;
+                    // Skip Mido complaining about dead Deku tree
+                    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH);
                 } else {
                     Item_Give(play, ITEM_KOKIRI_EMERALD);
                     play->nextEntranceIndex = 0xEE;
@@ -847,6 +849,8 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 if (gSaveContext.n64ddFlag) {
                     play->nextEntranceIndex = 0x564;
                     gSaveContext.nextCutsceneIndex = 0;
+                    // Change Death Mountain cloud since we aren't warping to the cutscene
+                    Flags_SetEventChkInf(EVENTCHKINF_DEATH_MOUNTAIN_ERUPTED);
                 } else {
                     Item_Give(play, ITEM_MEDALLION_FIRE);
                     play->nextEntranceIndex = 0xDB;
@@ -868,8 +872,8 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 if (gSaveContext.n64ddFlag) {
                     play->nextEntranceIndex = 0x60C;
                     gSaveContext.nextCutsceneIndex = 0;
-                    // Set "raised lake hylia water" since we aren't warping to the cutscene
-                    gSaveContext.eventChkInf[6] |= 0x200;
+                    // Fill Lake Hylia since we aren't warping to the cutscene
+                    Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
                 } else {
                     Item_Give(play, ITEM_MEDALLION_WATER);
                     play->nextEntranceIndex = 0x6B;

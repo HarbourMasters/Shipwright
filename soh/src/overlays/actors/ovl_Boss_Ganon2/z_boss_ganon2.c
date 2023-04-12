@@ -1681,9 +1681,9 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
                 func_80064520(play, &play->csCtx);
                 gSaveContext.sohStats.gameComplete = true;
                 if (!gSaveContext.isBossRush) {
-                    gSaveContext.sohStats.timestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
                 } else {
-                    gSaveContext.sohStats.timestamp[TIMESTAMP_BOSSRUSH_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
                 }
                 this->unk_39E = Play_CreateSubCamera(play);
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);

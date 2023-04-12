@@ -3,27 +3,26 @@
 #include "spdlog/spdlog.h"
 
 namespace Ship {
-std::shared_ptr<Resource> CutsceneFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader)
-{
-	auto resource = std::make_shared<Cutscene>();
-	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
+std::shared_ptr<Resource> CutsceneFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+                                                        std::shared_ptr<ResourceInitData> initData,
+                                                        std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<Cutscene>(resourceMgr, initData);
+    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-	switch (version)
-	{
-	case 0:
-		factory = std::make_shared<CutsceneFactoryV0>();
-		break;
-	}
+    switch (resource->InitData->ResourceVersion) {
+    case 0:
+	factory = std::make_shared<CutsceneFactoryV0>();
+	break;
+    }
 
-	if (factory == nullptr)
-	{
-		SPDLOG_ERROR("Failed to load Cutscene with version {}", version);
-		return nullptr;
-	}
+    if (factory == nullptr) {
+        SPDLOG_ERROR("Failed to load Cutscene with version {}", resource->InitData->ResourceVersion);
+	return nullptr;
+    }
 
-	factory->ParseFileBinary(reader, resource);
+    factory->ParseFileBinary(reader, resource);
 
-	return resource;
+    return resource;
 }
 
 static inline uint32_t read_CMD_BBBB(std::shared_ptr<BinaryReader> reader) {
@@ -84,10 +83,10 @@ static inline uint32_t read_CMD_HH(std::shared_ptr<BinaryReader> reader) {
 void Ship::CutsceneFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                               std::shared_ptr<Resource> resource)
 {
-	std::shared_ptr<Cutscene> cutscene = std::static_pointer_cast<Cutscene>(resource);
-	ResourceVersionFactory::ParseFileBinary(reader, cutscene);
+    std::shared_ptr<Cutscene> cutscene = std::static_pointer_cast<Cutscene>(resource);
+    ResourceVersionFactory::ParseFileBinary(reader, cutscene);
 
-	uint32_t numEntries = reader->ReadUInt32();
+    uint32_t numEntries = reader->ReadUInt32();
     cutscene->commands.reserve(numEntries);
 
     cutscene->numCommands = reader->ReadUInt32();

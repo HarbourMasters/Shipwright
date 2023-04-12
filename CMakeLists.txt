@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 
-project(Ship VERSION 6.1.0 LANGUAGES C CXX)
-set(PROJECT_BUILD_NAME "KHAN ALFA" CACHE STRING "")
+project(Ship VERSION 6.1.2 LANGUAGES C CXX)
+set(PROJECT_BUILD_NAME "KHAN CHARLIE" CACHE STRING "")
 set(PROJECT_TEAM "github.com/harbourmasters" CACHE STRING "")
 
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
@@ -25,7 +25,7 @@ set(VCPKG_TRIPLET x64-windows-static)
 set(VCPKG_TARGET_TRIPLET x64-windows-static)
 
 vcpkg_bootstrap()
-vcpkg_install_packages(zlib bzip2 libpng SDL2 SDL2-net GLEW glfw3)
+vcpkg_install_packages(zlib bzip2 libpng sdl2 sdl2-net glew glfw3)
 endif()
 
 ################################################################################
