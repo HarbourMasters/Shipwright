@@ -46,16 +46,11 @@ jobs:
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
         cmake --build build-cmake --config Release --target ZAPD
         ./build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
-        ls
-        echo blarg
-        cd build-cmake
-        ls
-  #       zip -r assets.zip soh/assets
-  #   - uses: actions/upload-artifact@v3
-  #     with:
-  #       name: assets
-  #       path: assets.zip
-  #       retention-days: 1
+    - uses: actions/upload-artifact@v3
+      with:
+        name: soh.otr
+        path: soh.otr
+        retention-days: 1
   # build-macos:
   #   runs-on: ${{ (vars.MAC_RUNNER && fromJSON(vars.MAC_RUNNER)) || 'macos-12' }}
   #   steps:
