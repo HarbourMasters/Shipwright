@@ -47,6 +47,7 @@ jobs:
         cmake --build build-cmake --config Release --target ZAPD
         ./build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
         ls
+        echo blarg
         cd build-cmake
         ls
   #       zip -r assets.zip soh/assets
