@@ -234,8 +234,6 @@ jobs:
     - name: Build SoH
       run: |
         cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache
-        cmake --build build-wiiu --config Release --target ZAPD
-        COMMAND ./build-wiiu/ZAPD/ZAPD.out botr -se OTR --norom
         cmake --build build-wiiu --target soh_wuhb --config Release -j3
 
         mv build-wiiu/soh/*.rpx soh.rpx
