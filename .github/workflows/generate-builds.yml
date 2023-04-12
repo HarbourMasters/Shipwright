@@ -279,11 +279,20 @@ jobs:
         cmake --build build-windows --target OTRGui --config Release --parallel 10
         cmake --build build-windows --config Release --parallel 10
 
-        cd x64
-        cd Release
-        ls
-    # - name: Upload build
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: soh-windows
-    #     path: build-windows
+        mkdir soh-windows
+        mv ./x64/Release/soh.exe ./soh-windows/soh.exe
+        mkdir debug
+        mv ./x64/Release/soh.pdb ./soh-windows/debug/soh.exe
+        mv ./x64/Release/OTRGui.exe ./soh-windows/OTRGui.exe
+        mv ./README.md ./soh-windows/readme.txt
+        mv ./build-windows/gamecontrollerdb.txt ./soh-windows/gamecontrollerdb.txt
+    - name: Download soh.otr
+      uses: actions/download-artifact@v3
+      with:
+        name: soh.otr
+        path: soh-windows
+    - name: Upload build
+      uses: actions/upload-artifact@v3
+      with:
+        name: soh-windows
+        path: soh-windows
