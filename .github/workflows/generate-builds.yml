@@ -163,8 +163,6 @@ jobs:
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
         cmake --build build-cmake --target OTRGui -j3
-        cmake --build build-cmake --config Release --target ZAPD
-        ./build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
         cmake --build build-cmake --config Release -j3
         (cd build-cmake && cpack -G External)
 
@@ -200,19 +198,21 @@ jobs:
     - name: Build SoH
       run: |
         cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache
-        cmake --build build-switch --config Release --target ZAPD
-        COMMAND ./build-switch/ZAPD/ZAPD.out botr -se OTR --norom
         cmake --build build-switch --target soh_nro -j3
 
         mv build-switch/soh/*.nro soh.nro
-        mv build-switch/soh/soh.otr soh.otr
         mv README.md readme.txt
+    - name: Download soh.otr
+      uses: actions/download-artifact@v3
+      with:
+        name: soh.otr
     - name: Upload build
       uses: actions/upload-artifact@v3
       with:
         name: soh-switch
         path: |
           soh.nro
+          soh.otr
           readme.txt
   build-wiiu:
     needs: generate-soh-otr
@@ -282,7 +282,7 @@ jobs:
         mkdir soh-windows
         mv ./x64/Release/soh.exe ./soh-windows/soh.exe
         mkdir soh-windows/debug
-        mv ./x64/Release/soh.pdb ./soh-windows/debug/soh.exe
+        mv ./x64/Release/soh.pdb ./soh-windows/debug/soh.pdb
         mv ./x64/Release/OTRGui.exe ./soh-windows/OTRGui.exe
         mv ./README.md ./soh-windows/readme.txt
         mv ./build-windows/gamecontrollerdb.txt ./soh-windows/gamecontrollerdb.txt
