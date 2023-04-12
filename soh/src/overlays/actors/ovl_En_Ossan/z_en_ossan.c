@@ -1724,6 +1724,7 @@ void EnOssan_State_ItemPurchased(EnOssan* this, PlayState* play, Player* player)
     }
     if (gSaveContext.pendingSale == ITEM_NONE) {
         gSaveContext.pendingSale = getItemEntry.itemId;
+        gSaveContext.pendingSaleMod = getItemEntry.modIndex;
     }
 
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {

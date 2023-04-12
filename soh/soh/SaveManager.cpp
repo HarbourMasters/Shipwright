@@ -489,9 +489,17 @@ void SaveManager::InitFileNormal() {
     }
     gSaveContext.sohStats.playTimer = 0;
     gSaveContext.sohStats.pauseTimer = 0;
-    for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.sohStats.timestamp); timestamp++) {
-        gSaveContext.sohStats.timestamp[timestamp] = 0;
+    for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp); timestamp++) {
+        gSaveContext.sohStats.itemTimestamp[timestamp] = 0;
     }
+    for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps); timestamp++) {
+        gSaveContext.sohStats.sceneTimestamps[timestamp].sceneTime = 0;
+        gSaveContext.sohStats.sceneTimestamps[timestamp].roomTime = 0;
+        gSaveContext.sohStats.sceneTimestamps[timestamp].scene = 254;
+        gSaveContext.sohStats.sceneTimestamps[timestamp].room = 254;
+        gSaveContext.sohStats.sceneTimestamps[timestamp].isRoom = 0;
+    }
+    gSaveContext.sohStats.tsIdx = 0;
     for (int count = 0; count < ARRAY_COUNT(gSaveContext.sohStats.count); count++) {
         gSaveContext.sohStats.count[count] = 0;
     }
@@ -571,6 +579,7 @@ void SaveManager::InitFileNormal() {
     gSaveContext.infTable[29] = 1;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
     gSaveContext.pendingSale = ITEM_NONE;
+    gSaveContext.pendingSaleMod = MOD_NONE;
 
     strncpy(gSaveContext.sohStats.buildVersion, (const char*) gBuildVersion, sizeof(gSaveContext.sohStats.buildVersion) - 1);
     gSaveContext.sohStats.buildVersion[sizeof(gSaveContext.sohStats.buildVersion) - 1] = 0;
@@ -1068,8 +1077,8 @@ void SaveManager::LoadBaseVersion2() {
         });
         SaveManager::Instance->LoadData("playTimer", gSaveContext.sohStats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.sohStats.pauseTimer);
-        SaveManager::Instance->LoadArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.timestamp), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.sohStats.timestamp[i]);
+        SaveManager::Instance->LoadArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.sohStats.itemTimestamp[i]);
         });
         SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.count[i]);
@@ -1282,9 +1291,20 @@ void SaveManager::LoadBaseVersion3() {
         });
         SaveManager::Instance->LoadData("playTimer", gSaveContext.sohStats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.sohStats.pauseTimer);
-        SaveManager::Instance->LoadArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.timestamp), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.sohStats.timestamp[i]);
+        SaveManager::Instance->LoadArray("itemTimestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.sohStats.itemTimestamp[i]);
         });
+        SaveManager::Instance->LoadArray("sceneTimestamps", ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps), [](size_t i) {
+            SaveManager::Instance->LoadStruct("", [&i]() {
+                SaveManager::Instance->LoadData("scene", gSaveContext.sohStats.sceneTimestamps[i].scene);
+                SaveManager::Instance->LoadData("room", gSaveContext.sohStats.sceneTimestamps[i].room);
+                SaveManager::Instance->LoadData("sceneTime", gSaveContext.sohStats.sceneTimestamps[i].sceneTime);
+                SaveManager::Instance->LoadData("roomTime", gSaveContext.sohStats.sceneTimestamps[i].roomTime);
+                SaveManager::Instance->LoadData("isRoom", gSaveContext.sohStats.sceneTimestamps[i].isRoom);
+
+            });
+        });
+        SaveManager::Instance->LoadData("tsIdx", gSaveContext.sohStats.tsIdx);
         SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.count[i]);
         });
@@ -1480,9 +1500,19 @@ void SaveManager::SaveBase() {
         });
         SaveManager::Instance->SaveData("playTimer", gSaveContext.sohStats.playTimer);
         SaveManager::Instance->SaveData("pauseTimer", gSaveContext.sohStats.pauseTimer);
-        SaveManager::Instance->SaveArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.timestamp), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.sohStats.timestamp[i]);
+        SaveManager::Instance->SaveArray("itemTimestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
+            SaveManager::Instance->SaveData("", gSaveContext.sohStats.itemTimestamp[i]);
         });
+        SaveManager::Instance->SaveArray("sceneTimestamps", ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps), [](size_t i) {
+            SaveManager::Instance->SaveStruct("", [&i]() {
+                SaveManager::Instance->SaveData("scene", gSaveContext.sohStats.sceneTimestamps[i].scene);
+                SaveManager::Instance->SaveData("room", gSaveContext.sohStats.sceneTimestamps[i].room);
+                SaveManager::Instance->SaveData("sceneTime", gSaveContext.sohStats.sceneTimestamps[i].sceneTime);
+                SaveManager::Instance->SaveData("roomTime", gSaveContext.sohStats.sceneTimestamps[i].roomTime);
+                SaveManager::Instance->SaveData("isRoom", gSaveContext.sohStats.sceneTimestamps[i].isRoom);
+            });
+        });
+        SaveManager::Instance->SaveData("tsIdx", gSaveContext.sohStats.tsIdx);
         SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
             SaveManager::Instance->SaveData("", gSaveContext.sohStats.count[i]);
         });
@@ -1726,6 +1756,8 @@ void SaveManager::DeleteZeldaFile(int fileNum) {
     }
     fileMetaInfo[fileNum].valid = false;
     fileMetaInfo[fileNum].randoSave = false;
+    fileMetaInfo[fileNum].requiresMasterQuest = false;
+    fileMetaInfo[fileNum].requiresOriginal = false;
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnDeleteFile>(fileNum);
 }
 

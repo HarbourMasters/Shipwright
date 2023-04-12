@@ -50,6 +50,48 @@ bool GameInteractor::IsGameplayPaused() {
     return (Player_InBlockingCsMode(gPlayState, player) || gPlayState->pauseCtx.state != 0 || gPlayState->msgCtx.msgMode != 0) ? true : false;
 }
 
-bool GameInteractor::CanSpawnEnemy() {
+bool GameInteractor::CanSpawnActor() {
     return GameInteractor::IsSaveLoaded() && !GameInteractor::IsGameplayPaused();
+}
+
+bool GameInteractor::CanAddOrTakeAmmo(int16_t amount, int16_t item) {
+    int16_t upgradeToCheck = 0;
+
+    switch (item) {
+        case ITEM_STICK:
+            upgradeToCheck = UPG_STICKS;
+            break;
+        case ITEM_NUT:
+            upgradeToCheck = UPG_NUTS;
+            break;
+        case ITEM_BOW:
+            upgradeToCheck = UPG_QUIVER;
+            break;
+        case ITEM_SLINGSHOT:
+            upgradeToCheck = UPG_BULLET_BAG;
+            break;
+        case ITEM_BOMB:
+            upgradeToCheck = UPG_BOMB_BAG;
+            break;
+        default:
+            break;
+    }
+
+    if (amount < 0 && AMMO(item) == 0) {
+        return false;
+    }
+
+    if (item != ITEM_BOMBCHU && item != ITEM_BEAN) {
+        if ((CUR_CAPACITY(upgradeToCheck) == 0) || (amount > 0 && AMMO(item) == CUR_CAPACITY(upgradeToCheck))) {
+            return false;
+        }
+        return true;
+    } else {
+        // Seperate checks for beans and bombchus because they don't have capacity upgrades
+        if (INV_CONTENT(item) != item ||
+            (amount > 0 && ((item == ITEM_BOMBCHU && AMMO(item) == 50) || (item == ITEM_BEAN && AMMO(item) == 10)))) {
+            return false;
+        }
+        return true;
+    }
 }

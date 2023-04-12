@@ -205,8 +205,7 @@ void AreaTable_Init_JabuJabusBelly() {
 
   areaTable[JABU_JABUS_BELLY_MQ_BOSS_AREA] = Area("Jabu Jabus Belly MQ Boss Area", "Jabu Jabus Belly", JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&FairyPot,            {[]{return true;}}),
-                  EventAccess(&JabuJabusBellyClear, {[]{return true;}}),
+                  EventAccess(&FairyPot, {[]{return true;}}),
   }, {
                   //Locations
                   LocationAccess(JABU_JABUS_BELLY_MQ_COW,             {[]{return CanPlay(EponasSong);}}),
@@ -235,7 +234,8 @@ void AreaTable_Init_JabuJabusBelly() {
         Area("Jabu Jabus Belly Boss Room", "Jabu Jabus Belly", NONE, NO_DAY_NIGHT_CYCLE,
              {
                  // Events //todo: add pot kill trick
-                 EventAccess(&JabuJabusBellyClear, { [] { return JabuJabusBellyClear || CanUse(BOOMERANG); } }),
+                 EventAccess(&JabuJabusBellyClear,
+                             { [] { return JabuJabusBellyClear || (CanUse(BOOMERANG) && CanJumpslash); } }),
              },
              {
                  // Locations

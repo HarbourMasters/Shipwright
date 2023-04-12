@@ -54,6 +54,14 @@ typedef struct {
 } Inventory; // size = 0x5E
 
 typedef struct {
+    u16 scene;
+    u8 room;
+    u32 sceneTime;
+    u32 roomTime;
+    u8 isRoom;
+} SceneTimestamp;
+
+typedef struct {
     /*      */ char buildVersion[50];
     /*      */ s16 buildVersionMajor;
     /*      */ s16 buildVersionMinor;
@@ -63,8 +71,14 @@ typedef struct {
     /*      */ u8 dungeonKeys[19];
     /*      */ u32 playTimer;
     /*      */ u32 pauseTimer;
+    /*      */ u32 sceneTimer;
+    /*      */ u32 roomTimer;
+    /*      */ s16 sceneNum;
+    /*      */ s8 roomNum;
     /*      */ bool gameComplete;
-    /*      */ u32 timestamp[TIMESTAMP_MAX];
+    /*      */ u32 itemTimestamp[TIMESTAMP_MAX];
+    /*      */ SceneTimestamp sceneTimestamps[8191];
+    /*      */ u32 tsIdx;
     /*      */ u32 count[COUNT_MAX];
     /*      */ u32 entrancesDiscovered[SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT];
     /*      */ u32 scenesDiscovered[SAVEFILE_SCENES_DISCOVERED_IDX_COUNT];
@@ -251,6 +265,7 @@ typedef struct {
     /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
     /* 0x1424 */ s16 healthAccumulator;
     /* 0x1426 */ u16 pendingSale;
+    /* 0x1428 */ u16 pendingSaleMod;
     // #region SOH [General]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to SoH
     /*        */ uint32_t isMasterQuest;
@@ -369,7 +384,7 @@ typedef enum {
 #define EVENTCHKINF_16 0x16
 #define EVENTCHKINF_EPONA_OBTAINED 0x18
 #define EVENTCHKINF_1B 0x1B
-#define EVENTCHKINF_1C 0x1C
+#define EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH 0x1C
 #define EVENTCHKINF_1D 0x1D
 #define EVENTCHKINF_1E 0x1E
 #define EVENTCHKINF_20 0x20
@@ -682,12 +697,12 @@ typedef enum {
 #define INFTABLE_F4 0xF4
 #define INFTABLE_F8 0xF8
 #define INFTABLE_FC 0xFC
-#define INFTABLE_109 0x109
+#define INFTABLE_GORON_CITY_DOORS_UNLOCKED 0x109
 #define INFTABLE_10A 0x10A
 #define INFTABLE_10B 0x10B
-#define INFTABLE_10C 0x10C
+#define INFTABLE_STOPPED_GORON_LINKS_ROLLING 0x10C
 #define INFTABLE_10D 0x10D
-#define INFTABLE_10E 0x10E
+#define INFTABLE_SPOKE_TO_GORON_LINK 0x10E
 #define INFTABLE_10F 0x10F
 #define INFTABLE_113 0x113
 #define INFTABLE_11A 0x11A

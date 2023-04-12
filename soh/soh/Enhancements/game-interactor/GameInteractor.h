@@ -4,12 +4,14 @@
 #define GameInteractor_h
 
 #include "GameInteractionEffect.h"
+#include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
 typedef enum {
     /* 0x00 */ GI_LINK_SIZE_NORMAL,
     /* 0x01 */ GI_LINK_SIZE_GIANT,
     /* 0x02 */ GI_LINK_SIZE_MINISH,
     /* 0x03 */ GI_LINK_SIZE_PAPER,
+    /* 0x03 */ GI_LINK_SIZE_SQUISHED,
     /* 0x04 */ GI_LINK_SIZE_RESET
 } GILinkSize;
 
@@ -18,6 +20,46 @@ typedef enum {
     /* 0x01 */ GI_GRAVITY_LEVEL_NORMAL,
     /* 0x02 */ GI_GRAVITY_LEVEL_HEAVY,
 } GIGravityLevel;
+
+typedef enum {
+    /* 0x00 */ GI_BUTTONS_CBUTTONS,
+    /* 0x01 */ GI_BUTTONS_DPAD,
+} GIButtonSet;
+
+typedef enum {
+    /*      */ GI_TIMEOFDAY_DAWN = 32768,
+    /*      */ GI_TIMEOFDAY_NOON = 49152,
+    /*      */ GI_TIMEOFDAY_DUSK = 0,
+    /*      */ GI_TIMEOFDAY_MIDNIGHT = 16384,
+} GITimeOfDay;
+
+typedef enum {
+    /* 0x00 */ GI_COSMETICS_TUNICS,
+    /* 0x01 */ GI_COSMETICS_NAVI,
+    /* 0x02 */ GI_COSMETICS_HAIR,
+} GICosmeticCategories;
+
+typedef enum {
+    /* 0x00 */ GI_COLOR_RED,
+    /* 0x01 */ GI_COLOR_GREEN,
+    /* 0x02 */ GI_COLOR_BLUE,
+    /* 0x03 */ GI_COLOR_ORANGE,
+    /* 0x04 */ GI_COLOR_YELLOW,
+    /* 0x05 */ GI_COLOR_PURPLE,
+    /* 0x06 */ GI_COLOR_PINK,
+    /* 0x07 */ GI_COLOR_BROWN,
+    /* 0x08 */ GI_COLOR_BLACK,
+} GIColors;
+
+typedef enum {
+    /*      */ GI_TP_DEST_LINKSHOUSE = 187,
+    /*      */ GI_TP_DEST_MINUET = 1536,
+    /*      */ GI_TP_DEST_BOLERO = 1270,
+    /*      */ GI_TP_DEST_SERENADE = 1540,
+    /*      */ GI_TP_DEST_REQUIEM = 497,
+    /*      */ GI_TP_DEST_NOCTURNE = 1384,
+    /*      */ GI_TP_DEST_PRELUDE = 1524,
+} GITeleportDestinations;
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,6 +75,14 @@ uint8_t GameInteractor_ReverseControlsActive();
 int32_t GameInteractor_DefenseModifier();
 int32_t GameInteractor_RunSpeedModifier();
 GIGravityLevel GameInteractor_GravityLevel();
+uint32_t GameInteractor_GetEmulatedButtons();
+void GameInteractor_SetEmulatedButtons(uint32_t buttons);
+uint8_t GameInteractor_GetRandomBombFuseTimerActive();
+uint8_t GameInteractor_GetDisableLedgeGrabsActive();
+uint8_t GameInteractor_GetRandomWindActive();
+uint8_t GameInteractor_GetRandomBonksActive();
+uint8_t GameInteractor_GetSlipperyFloorActive();
+uint8_t GameInteractor_SecondCollisionUpdate();
 #ifdef __cplusplus
 }
 #endif
@@ -65,6 +115,14 @@ public:
         static int32_t DefenseModifier;
         static int32_t RunSpeedModifier;
         static GIGravityLevel GravityLevel;
+        static uint32_t EmulatedButtons;
+        static uint8_t RandomBombFuseTimerActive;
+        static uint8_t DisableLedgeGrabsActive;
+        static uint8_t RandomWindActive;
+        static uint8_t RandomWindSecondsSinceLastDirectionChange;
+        static uint8_t RandomBonksActive;
+        static uint8_t SlipperyFloorActive;
+        static uint8_t SecondCollisionUpdate;
 
         static void SetPacifistMode(bool active);
     };
@@ -86,10 +144,17 @@ public:
     DEFINE_HOOK(OnLoadGame, void(int32_t fileNum));
     DEFINE_HOOK(OnExitGame, void(int32_t fileNum));
     DEFINE_HOOK(OnGameFrameUpdate, void());
-    DEFINE_HOOK(OnReceiveItem, void(uint8_t item));
+    DEFINE_HOOK(OnItemReceive, void(GetItemEntry itemEntry));
+    DEFINE_HOOK(OnSaleEnd, void(GetItemEntry itemEntry));
+    DEFINE_HOOK(OnTransitionEnd, void(int16_t sceneNum));
     DEFINE_HOOK(OnSceneInit, void(int16_t sceneNum));
+    DEFINE_HOOK(OnSceneSpawnActors, void());
     DEFINE_HOOK(OnPlayerUpdate, void());
-    
+    DEFINE_HOOK(OnOcarinaSongAction, void());
+
+    DEFINE_HOOK(OnActorUpdate, void(void* actor));
+    DEFINE_HOOK(OnPlayerBonk, void());
+
     DEFINE_HOOK(OnSaveFile, void(int32_t fileNum));
     DEFINE_HOOK(OnLoadFile, void(int32_t fileNum));
     DEFINE_HOOK(OnDeleteFile, void(int32_t fileNum));
@@ -113,7 +178,8 @@ public:
     // Helpers
     static bool IsSaveLoaded();
     static bool IsGameplayPaused();
-    static bool CanSpawnEnemy();
+    static bool CanSpawnActor();
+    static bool CanAddOrTakeAmmo(int16_t amount, int16_t item);
 
     class RawAction {
     public:
@@ -128,11 +194,23 @@ public:
         static void BurnPlayer();
         static void ElectrocutePlayer();
         static void KnockbackPlayer(float strength);
-        static void GiveDekuShield();
-        static void SpawnCuccoStorm();
+        static void GiveOrTakeShield(int32_t shield);
         static void ForceInterfaceUpdate();
+        static void UpdateActor(void* refActor);
+        static void TeleportPlayer(int32_t nextEntrance);
+        static void ClearAssignedButtons(uint8_t buttonSet);
+        static void SetTimeOfDay(uint32_t time);
+        static void SetCollisionViewer(bool active);
+        static void SetCosmeticsColor(uint8_t cosmeticCategory, uint8_t colorValue);
+        static void RandomizeCosmeticsColors(bool excludeBiddingWarColors);
+        static void EmulateButtonPress(int32_t button);
+        static void AddOrTakeAmmo(int16_t amount, int16_t item);
+        static void EmulateRandomButtonPress(uint32_t chancePercentage = 100);
+        static void SetRandomWind(bool active);
+        static void SetPlayerInvincibility(bool active);
 
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
+        static GameInteractionEffectQueryResult SpawnActor(uint32_t actorId, int32_t actorParams);
     };
 };
 

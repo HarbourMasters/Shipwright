@@ -82,6 +82,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gDamageMul",
     "gFallDamageMul",
     "gVoidDamageMul",
+    "gBonkDamageMul",
     "gNoRandomDrops",
     "gNoHeartDrops",
     "gBombchuDrops",
@@ -128,6 +129,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gTimeFlowFileSelect",
     "gInjectItemCounts",
     "gDayGravePull",
+    "gDampeAllNight",
     "gSkipScarecrow",
     "gBlueFireArrows",
     "gSunlightArrows",
@@ -179,6 +181,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gStaticExplosionRadius",
     "gNoInputForCredits",
     "gFastFarores",
+    "gNightGSAlwaysSpawn",
 };
 
 const std::vector<const char*> randomizerCvars = {

@@ -108,6 +108,7 @@ void GiveLinksPocketItem() {
         } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
             if (getItemEntry.getItemId == RG_ICE_TRAP) {
                 gSaveContext.pendingIceTrapCount++;
+                GameInteractor_ExecuteOnItemReceiveHooks(getItemEntry);
             } else {
                 Randomizer_Item_Give(NULL, getItemEntry);
             }
@@ -298,9 +299,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.playerName[offset] = Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->playerName[offset];
     }
 
-    if (fileChooseCtx->questType[fileChooseCtx->buttonIndex] == 2 && strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0 &&
-        !((Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->requiresMasterQuest && !ResourceMgr_GameHasMasterQuest()) ||
-          (Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->requiresMasterQuest && !ResourceMgr_GameHasOriginal()))) {
+    if (fileChooseCtx->questType[fileChooseCtx->buttonIndex] == 2 && strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
         // Set N64DD Flags for save file
         fileChooseCtx->n64ddFlags[fileChooseCtx->buttonIndex] = 1;
         fileChooseCtx->n64ddFlag = 1;
@@ -451,6 +450,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             } else if (getItem.modIndex == MOD_RANDOMIZER) {
                 if (getItem.getItemId == RG_ICE_TRAP) {
                     gSaveContext.pendingIceTrapCount++;
+                    GameInteractor_ExecuteOnItemReceiveHooks(getItem);
                 } else {
                     Randomizer_Item_Give(NULL, getItem);
                 }

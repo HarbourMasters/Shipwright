@@ -2557,6 +2557,7 @@ namespace Settings {
           LogicSpiritSunChest.SetSelectedIndex(1);
           //LogicShadowFireArrowEntry.SetSelectedIndex(1);
           LogicShadowUmbrella.SetSelectedIndex(1);
+          LogicShadowBongo.SetSelectedIndex(1);
           LogicGtgWithoutHookshot.SetSelectedIndex(1);
           */
         }
