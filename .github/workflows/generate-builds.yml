@@ -238,7 +238,6 @@ jobs:
 
         mv build-wiiu/soh/*.rpx soh.rpx
         mv build-wiiu/soh/*.wuhb soh.wuhb
-        mv build-wiiu/soh/soh.otr soh.otr
         mv README.md readme.txt
       env:
         DEVKITPRO: /opt/devkitpro
