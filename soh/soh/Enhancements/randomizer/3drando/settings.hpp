@@ -1210,7 +1210,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option LogicForestMQWellSwim;
   extern Option LogicForestMQBlockPuzzle;
   extern Option LogicForestMQHallwaySwitchJS;
-  //extern Option LogicForestMQHallwaySwitchHookshot;
+  extern Option LogicForestMQHallwaySwitchHookshot; //not implemented yet
   extern Option LogicForestMQHallwaySwitchBoomerang;
   extern Option LogicFireBossDoorJump;
   extern Option LogicFireSongOfTime;

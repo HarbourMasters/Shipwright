@@ -22,7 +22,7 @@ std::vector<RandomizerTrickTag> extremeBase{RTTAG_EXTREME};
 // Experimental - not implemented; these tricks may let you put the game into a softlockable state
 // Please see https://www.youtube.com/playlist?list=PLqsXSioZwQyoa23_27l5NZq5IZdKRi5Sm for reference on performing several of these tricks
 //            RandomizerTrick,                              RTVORMQ,         RTAREA,                         rt_tags                     rt_glitch (is it a glitch)                 "Short name", "Description"
-std::map<RandomizerTrick, RandomizerTrickObject> rtObjects = {
+std::unordered_map<RandomizerTrick, RandomizerTrickObject> rtObjects = {
     RT_OBJECT(RT_ACUTE_ANGLE_CLIP,                          RTVORMQ_BOTH,    RTAREA_GENERAL,                &advancedBase,               true,                                      "Acute angle clip", "Enables locations requiring jumpslash clips through walls which meet at an acute angle."),
     RT_OBJECT(RT_ADVANCED_CLIPS,                            RTVORMQ_BOTH,    RTAREA_GENERAL,                &advancedBase,               true,                                      "Advanced clips", "Enables locations requiring clips through walls and objects requiring precise jumps or other tricks."),
     RT_OBJECT(RT_BLANK_A,                                   RTVORMQ_BOTH,    RTAREA_GENERAL,                &advancedBase,               true,                                      "Blank A", "Enables locations requiring blank A button; NOTE: this requires the 'Quick Putaway' restoration."),
@@ -210,7 +210,7 @@ std::map<RandomizerTrick, RandomizerTrickObject> rtObjects = {
     RT_OBJECT(RT_GANON_MQ_LIGHT_TRIAL,                      RTVORMQ_MQ,      RTAREA_GANONS_CASTLE,          &intermediateBase,  /*todo*/ false,                                     "Light Trial MQ without Hookshot", "If you move quickly you can sneak past the edge of a flame wall before it can rise up to block you. In this case to do it without taking damage is especially precise.")
 };
 
-std::map<RandomizerTrickArea, std::string> rtAreaNames = {
+std::unordered_map<RandomizerTrickArea, std::string> rtAreaNames = {
     { RTAREA_GENERAL, "General Tricks"},
     //{ RTAREA_BK_SKIPS, "Boss Key Skips"},
     { RTAREA_KOKIRI_FOREST, "Kokiri Forest"},
@@ -248,7 +248,7 @@ std::map<RandomizerTrickArea, std::string> rtAreaNames = {
     { RTAREA_INVALID, "Invalid"},
 };
 
-std::map<RandomizerTrickTag, std::string> rtTagNames = {
+std::unordered_map<RandomizerTrickTag, std::string> rtTagNames = {
     {RTTAG_NOVICE, "Novice"},
     {RTTAG_INTERMEDIATE, "Intermediate"},
     {RTTAG_ADVANCED, "Advanced"},
@@ -259,13 +259,13 @@ std::map<RandomizerTrickTag, std::string> rtTagNames = {
     {RTTAG_EXPERIMENTAL, "Experimental"}*/
 };
 
-std::map<RandomizerTrickArea, std::map<RandomizerTrick, RandomizerTrickObject>> rtObjectsByArea = {};
+std::unordered_map<RandomizerTrickArea, std::unordered_map<RandomizerTrick, RandomizerTrickObject>> rtObjectsByArea = {};
 
-std::map<RandomizerTrick, RandomizerTrickObject> RandomizerTricks::GetAllRTObjects() {
+std::unordered_map<RandomizerTrick, RandomizerTrickObject> RandomizerTricks::GetAllRTObjects() {
     return rtObjects;
 }
 
-std::map<RandomizerTrickArea, std::map<RandomizerTrick,RandomizerTrickObject>> RandomizerTricks::GetAllRTObjectsByArea() {
+std::unordered_map<RandomizerTrickArea, std::unordered_map<RandomizerTrick,RandomizerTrickObject>> RandomizerTricks::GetAllRTObjectsByArea() {
     if (rtObjectsByArea.size() == 0) {
         for (auto& [randomizerTrick, rtObject] : rtObjects) {
             rtObjectsByArea[rtObject.rtArea][randomizerTrick] = rtObject;
@@ -281,6 +281,10 @@ std::string RandomizerTricks::GetRTAreaName(RandomizerTrickArea area) {
 
 std::string RandomizerTricks::GetRTTagName(RandomizerTrickTag tag) {
     return rtTagNames[tag];
+}
+
+std::string RandomizerTricks::GetRTName(RandomizerTrick trick) {
+    return rtObjects[trick].rtShortName;
 }
 
 ImVec4 RandomizerTricks::GetRTAreaColor(RandomizerTrickArea area) {
@@ -379,7 +383,7 @@ ImVec4 RandomizerTricks::GetRTTagColor(RandomizerTrickTag tag) {
     }
 }
 
-bool RandomizerTricks::CheckRTTags(std::map<RandomizerTrickTag, bool> &showTag, const std::vector<RandomizerTrickTag> &rtTags) {
+bool RandomizerTricks::CheckRTTags(std::unordered_map<RandomizerTrickTag, bool> &showTag, const std::vector<RandomizerTrickTag> &rtTags) {
     for (auto rtTag : rtTags) {
         if (showTag[rtTag]) {
             return true;

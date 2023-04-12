@@ -11,6 +11,7 @@
 #include "utils.hpp"
 #include "shops.hpp"
 #include "hints.hpp"
+#include "../randomizer_tricks.h"
 #include <nlohmann/json.hpp>
 
 #include <cstdio>
@@ -478,20 +479,20 @@ static void WriteStartingInventory() {
 
 // Writes the enabled tricks to the spoiler log, if there are any.
 static void WriteEnabledTricks(tinyxml2::XMLDocument& spoilerLog) {
-  auto parentNode = spoilerLog.NewElement("enabled-tricks");
+  //auto parentNode = spoilerLog.NewElement("enabled-tricks");
 
   for (const auto& setting : Settings::trickOptions) {
-    if (setting->GetSelectedOptionIndex() != TRICK_ENABLED || !setting->IsCategory(OptionCategory::Setting)) {
+    if (setting->GetSelectedOptionIndex() != TRICK_ENABLED/* || !setting->IsCategory(OptionCategory::Setting)*/) {
       continue;
     }
-
-    auto node = parentNode->InsertNewChildElement("trick");
-    node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
+    jsonData["enabledTricks"].push_back(RemoveLineBreaks(RandomizerTricks::GetRTName((RandomizerTrick)std::stoi(setting->GetName()))).c_str());
+    //auto node = parentNode->InsertNewChildElement("trick");
+    //node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
   }
 
-  if (!parentNode->NoChildren()) {
-    spoilerLog.RootElement()->InsertEndChild(parentNode);
-  }
+  // if (!parentNode->NoChildren()) {
+  //  spoilerLog.RootElement()->InsertEndChild(parentNode);
+  //}
 }
 
 // Writes the enabled glitches to the spoiler log, if there are any.
@@ -790,7 +791,7 @@ const char* SpoilerLog_Write(int language) {
     WriteSettings();
     WriteExcludedLocations();
     WriteStartingInventory();
-    //WriteEnabledTricks(spoilerLog);
+    WriteEnabledTricks(spoilerLog);
     //if (Settings::Logic.Is(LOGIC_GLITCHED)) {
     //    WriteEnabledGlitches(spoilerLog);
     //}

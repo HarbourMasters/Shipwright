@@ -4506,7 +4506,7 @@ void DrawRandoEditor(bool& open) {
             }
 
             // Tricks
-            static std::map<RandomizerTrickArea, bool> areaTreeDisabled {
+            static std::unordered_map<RandomizerTrickArea, bool> areaTreeDisabled {
                 {RTAREA_GENERAL, true},
                 {RTAREA_KOKIRI_FOREST, true},
                 {RTAREA_LOST_WOODS, true},
@@ -4542,7 +4542,7 @@ void DrawRandoEditor(bool& open) {
                 {RTAREA_GANONS_CASTLE, true}
                 //{RTAREA_BK_SKIPS, true}
             };
-            static std::map<RandomizerTrickArea, bool> areaTreeEnabled {
+            static std::unordered_map<RandomizerTrickArea, bool> areaTreeEnabled {
                 {RTAREA_GENERAL, true},
                 {RTAREA_KOKIRI_FOREST, true},
                 {RTAREA_LOST_WOODS, true},
@@ -4579,7 +4579,7 @@ void DrawRandoEditor(bool& open) {
                 //{RTAREA_BK_SKIPS, true}
             };
 
-            static std::map<RandomizerTrickTag, bool> showTag {
+            static std::unordered_map<RandomizerTrickTag, bool> showTag {
                 {RTTAG_NOVICE,true},
                 {RTTAG_INTERMEDIATE,true},
                 {RTTAG_ADVANCED,true},
@@ -4777,7 +4777,7 @@ void DrawRandoEditor(bool& open) {
                             }
                         }
                         if (hasTricks) {
-                            std::string areaArrowR = "##AreaArrowRight" + RandomizerTricks::GetRTAreaName(rtArea);
+                            /*std::string areaArrowR = "##AreaArrowRight" + RandomizerTricks::GetRTAreaName(rtArea);
                             if (ImGui::ArrowButton(areaArrowR.c_str(), ImGuiDir_Right)) {
                                 for (auto [randomizerTrick, rtObject] : rtObjects) {
                                     if (rtObject.visibleInImgui &&
@@ -4796,7 +4796,7 @@ void DrawRandoEditor(bool& open) {
                                 CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
                                 SohImGui::RequestCvarSaveOnNextTick();
                             }
-                            ImGui::SameLine();
+                            ImGui::SameLine();*/
                             ImGui::TreeNodeSetOpen(ImGui::GetID(RandomizerTricks::GetRTAreaName(rtArea).c_str()), areaTreeDisabled[rtArea]);
                             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                             if (ImGui::TreeNode(RandomizerTricks::GetRTAreaName(rtArea).c_str())) {
@@ -4816,8 +4816,8 @@ void DrawRandoEditor(bool& open) {
                                             CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
                                             SohImGui::RequestCvarSaveOnNextTick();
                                         }
-                                        ImGui::SameLine();
-                                        DrawAreaChip(rtArea);
+                                        /*ImGui::SameLine();
+                                        DrawAreaChip(rtArea);*/
                                         DrawTagChips(*rtObject.rtTags);
                                         ImGui::SameLine();
                                         ImGui::Text(rtObject.rtShortName.c_str());
@@ -4913,7 +4913,7 @@ void DrawRandoEditor(bool& open) {
                             }
                         }
                         if (hasTricks) {
-                            std::string areaArrowL = "##AreaArrowLeft" + RandomizerTricks::GetRTAreaName(rtArea);
+                            /*std::string areaArrowL = "##AreaArrowLeft" + RandomizerTricks::GetRTAreaName(rtArea);
                             if (ImGui::ArrowButton(areaArrowL.c_str(), ImGuiDir_Left)) {
                                 for (auto [randomizerTrick, rtObject] : rtObjects) {
                                     auto etfound = enabledTricks.find(rtObject.rt);
@@ -4933,7 +4933,7 @@ void DrawRandoEditor(bool& open) {
                                 CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
                                 SohImGui::RequestCvarSaveOnNextTick();
                             }
-                            ImGui::SameLine();
+                            ImGui::SameLine();*/
                             ImGui::TreeNodeSetOpen(ImGui::GetID(RandomizerTricks::GetRTAreaName(rtArea).c_str()), areaTreeEnabled[rtArea]);
                             ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                             if (ImGui::TreeNode(RandomizerTricks::GetRTAreaName(rtArea).c_str())) {
@@ -4955,8 +4955,8 @@ void DrawRandoEditor(bool& open) {
                                             CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
                                             SohImGui::RequestCvarSaveOnNextTick();
                                         }
-                                        ImGui::SameLine();
-                                        DrawAreaChip(rtArea);
+                                        /*ImGui::SameLine();
+                                        DrawAreaChip(rtArea);*/
                                         DrawTagChips(*rtObject.rtTags);
                                         ImGui::SameLine();
                                         ImGui::Text(rtObject.rtShortName.c_str());

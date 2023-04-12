@@ -75,11 +75,12 @@ typedef struct {
 } RandomizerTrickObject;
 
 namespace RandomizerTricks {
-    std::map<RandomizerTrick, RandomizerTrickObject> GetAllRTObjects();
-    std::map<RandomizerTrickArea, std::map<RandomizerTrick,RandomizerTrickObject>> GetAllRTObjectsByArea();
+    std::unordered_map<RandomizerTrick, RandomizerTrickObject> GetAllRTObjects();
+    std::unordered_map<RandomizerTrickArea, std::unordered_map<RandomizerTrick,RandomizerTrickObject>> GetAllRTObjectsByArea();
     std::string GetRTAreaName(RandomizerTrickArea area);
     std::string GetRTTagName(RandomizerTrickTag tag);
+    std::string GetRTName(RandomizerTrick trick);
     ImVec4 GetRTAreaColor(RandomizerTrickArea area);
     ImVec4 GetRTTagColor(RandomizerTrickTag tag);
-    bool CheckRTTags(std::map<RandomizerTrickTag, bool> &showTag, const std::vector<RandomizerTrickTag> &rtTags);
+    bool CheckRTTags(std::unordered_map<RandomizerTrickTag, bool> &showTag, const std::vector<RandomizerTrickTag> &rtTags);
 }
