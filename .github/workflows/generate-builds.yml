@@ -45,11 +45,12 @@ jobs:
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
         cmake --build build-cmake --config Release --target ZAPD
-        ./build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
+        cd OTRExporter
+        ../build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
     - uses: actions/upload-artifact@v3
       with:
         name: soh.otr
-        path: soh.otr
+        path: OTRExporter/soh.otr
         retention-days: 1
   # build-macos:
   #   runs-on: ${{ (vars.MAC_RUNNER && fromJSON(vars.MAC_RUNNER)) || 'macos-12' }}
