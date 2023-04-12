@@ -19,8 +19,9 @@ jobs:
     - name: Generate soh.otr
       run: |
         cmake --build build-cmake --config Release --target ZAPD
-        ./build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
         ls
+  #      ./build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
+  #      ls
   #       zip -r assets.zip soh/assets
   #   - uses: actions/upload-artifact@v3
   #     with:
