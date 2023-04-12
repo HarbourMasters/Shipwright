@@ -2458,6 +2458,7 @@ namespace Settings {
           trickOptions[i]->SetSelectedIndex(0);
         }
         if(currentSetting->GetSelectedOptionIndex() >= 1){ //novice options
+        // Not relevant for SoH
         /*
           LogicGrottosWithoutAgony.SetSelectedIndex(1);
           LogicVisibleCollision.SetSelectedIndex(1);
@@ -2497,6 +2498,7 @@ namespace Settings {
           */
         }
         if(currentSetting->GetSelectedOptionIndex() >= 2){ //intermediate options
+        // Not relevant for SoH
         /*
           LogicLabWallGS.SetSelectedIndex(1);
           LogicChildDampeRacePoH.SetSelectedIndex(1);
@@ -2534,6 +2536,7 @@ namespace Settings {
           */
         }
         if(currentSetting->GetSelectedOptionIndex() == 3){ //expert options
+        // Not relevant for SoH
         /*
           LogicLensWasteland.SetSelectedIndex(1);
           LogicReverseWasteland.SetSelectedIndex(1);
