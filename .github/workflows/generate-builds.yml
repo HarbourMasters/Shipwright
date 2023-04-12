@@ -46,7 +46,10 @@ jobs:
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
         cmake --build build-cmake --config Release --target ZAPD
         cd OTRExporter
+        ls
+        echo doing the build thing
         ../build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
+        ls
     - uses: actions/upload-artifact@v3
       with:
         name: soh.otr
