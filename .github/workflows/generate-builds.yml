@@ -104,7 +104,7 @@ jobs:
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
         cmake --build build-cmake --config Release --parallel 10
-        mv soh.otr build-cmake
+        mv soh.otr build-cmake/soh
         (cd build-cmake && cpack)
 
         mv _packages/*.dmg SoH.dmg
