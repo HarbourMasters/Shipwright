@@ -1280,6 +1280,8 @@ namespace GameMenuBar {
                     "Play unique fanfares when obtaining quest items "
                     "(medallions/stones/songs). Note that these fanfares are longer than usual."
                 );
+                UIWidgets::PaddedEnhancementCheckbox("Get GBK When Requirement is Met", "gGetGBKImmediately", true, false);
+                UIWidgets::Tooltip("Get Ganon's Boss Key as soon as you meet the set requirement instead of going to the Temple of Time for it.");
                 ImGui::EndMenu();
             }
 

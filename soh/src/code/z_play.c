@@ -376,7 +376,14 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(PlayState* play, RandomizerCheck 
             break;
     }
 
-    if (meetsRequirements && LINK_IS_ADULT &&
+    if (meetsRequirements && CVarGetInteger("gGetGBKImmediately", 0) && !Flags_GetTreasure(play, 0x1E)) {
+        GetItemEntry getItem = Randomizer_GetItemFromKnownCheck(check, GI_ARROW_LIGHT);
+        if (GiveItemEntryWithoutActor(play, getItem)) {
+            player->pendingFlag.flagID = 0x1E;
+            player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
+        }
+            
+    } else if (meetsRequirements && LINK_IS_ADULT &&
         (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA) &&
         !Flags_GetTreasure(play, 0x1E) && player != NULL && !Player_InBlockingCsMode(play, player) &&
         play->sceneLoadFlag == 0) {
