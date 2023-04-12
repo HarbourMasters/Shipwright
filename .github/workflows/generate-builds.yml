@@ -162,7 +162,6 @@ jobs:
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
-        cmake --build build-cmake --target OTRGui -j3
         cmake --build build-cmake --config Release -j3
         (cd build-cmake && cpack -G External)
 
