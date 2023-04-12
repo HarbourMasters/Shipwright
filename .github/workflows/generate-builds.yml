@@ -16,6 +16,26 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
+    - name: Install latest SDL
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        wget https://www.libsdl.org/release/SDL2-2.26.1.tar.gz
+        tar -xzf SDL2-2.26.1.tar.gz
+        cd SDL2-2.26.1
+        ./configure
+        make -j 10
+        sudo make install
+        sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
+    - name: Install latest SDL_net
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        wget https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz
+        tar -xzf SDL2_net-2.2.0.tar.gz
+        cd SDL2_net-2.2.0
+        ./configure
+        make -j 10
+        sudo make install
+        sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
     - name: Generate soh.otr
       run: |
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
