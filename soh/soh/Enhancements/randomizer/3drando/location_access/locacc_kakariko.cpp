@@ -118,7 +118,8 @@ void AreaTable_Init_Kakariko() {
                   EventAccess(&DrainWell, {[]{return DrainWell || (IsChild && CanPlay(SongOfStorms));}}),
                 }, {
                   //Locations
-                  LocationAccess(KAK_WINDMILL_FREESTANDING_POH, {[]{return CanUse(BOOMERANG) || DampesWindmillAccess || (IsAdult && LogicAdultWindmillPoH)/* || (IsChild && CanJumpslash && LogicChildWindmillPoH)*/;}}),
+                  LocationAccess(KAK_WINDMILL_FREESTANDING_POH, {[]{return CanUse(BOOMERANG) || DampesWindmillAccess || (IsAdult && LogicAdultWindmillPoH) || (IsChild && CanJumpslash && LogicChildWindmillPoH);}}),
+                    //PoH as child not added to trick options yet (needs uncommenting in randomizer_tricks.cpp)
                   LocationAccess(SONG_FROM_WINDMILL,            {[]{return IsAdult && Ocarina;}}),
                 }, {
                   //Exits

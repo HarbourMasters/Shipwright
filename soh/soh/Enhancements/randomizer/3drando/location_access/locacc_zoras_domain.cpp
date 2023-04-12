@@ -153,7 +153,7 @@ void AreaTable_Init_ZorasDomain() {
                   Entrance(ZD_BEHIND_KING_ZORA,       {[]{return true;}}),
                   Entrance(JABU_JABUS_BELLY_ENTRYWAY, {[]{return (IsChild && Fish);}}),
                   Entrance(ICE_CAVERN_ENTRYWAY,       {[]{return IsAdult;}}),
-                  Entrance(ZF_GREAT_FAIRY_FOUNTAIN,   {[]{return HasExplosives/* || (CanUse(SILVER_GAUNTLETS) && Hammer && LogicZFGreatFairy)*/;}}),
+                  Entrance(ZF_GREAT_FAIRY_FOUNTAIN,   {[]{return HasExplosives;}}),
   });
 
   areaTable[ZF_GREAT_FAIRY_FOUNTAIN] = Area("ZF Great Fairy Fountain", "ZF Great Fairy Fountain", NONE, NO_DAY_NIGHT_CYCLE, {}, {

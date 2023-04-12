@@ -18,7 +18,7 @@ void AreaTable_Init_GerudoValley() {
                   Entrance(GV_UPPER_STREAM,   {[]{return true;}}),
                   Entrance(GV_CRATE_LEDGE,    {[]{return IsChild || CanUse(LONGSHOT);}}),
                   Entrance(GV_GROTTO_LEDGE,   {[]{return true;}}),
-                  Entrance(GV_FORTRESS_SIDE,  {[]{return (IsAdult && (CanRideEpona || CanUse(LONGSHOT) || GerudoFortress.Is(GERUDOFORTRESS_OPEN) || CarpenterRescue/* || (IsAdult && CanUse(HOVER_BOOTS) && (//(LogicBunnyHoodJump && FastBunnyHood) || //LogicHoverBoost))*/)) || (IsChild && CanUse(HOOKSHOT));}}),
+                  Entrance(GV_FORTRESS_SIDE,  {[]{return (IsAdult && (CanRideEpona || CanUse(LONGSHOT) || GerudoFortress.Is(GERUDOFORTRESS_OPEN) || CarpenterRescue)) || (IsChild && CanUse(HOOKSHOT));}}),
   });
 
   areaTable[GV_UPPER_STREAM] = Area("GV Upper Stream", "Gerudo Valley", GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
@@ -60,8 +60,8 @@ void AreaTable_Init_GerudoValley() {
                   //Events
                   EventAccess(&BrokenSwordAccess, {[]{return IsAdult && (PoachersSawAccess || PoachersSaw);}}),
                 }, {
-                  //Locations                                       //LogicGVHammerChest refers to an oot3d exclusive trick
-                  LocationAccess(GV_CHEST,          {[]{return IsAdult && CanUse(MEGATON_HAMMER)/*(CanUse(MEGATON_HAMMER) || LogicGVHammerChest)*/;}}),
+                  //Locations                                       
+                  LocationAccess(GV_CHEST,          {[]{return IsAdult && CanUse(MEGATON_HAMMER);}}),
                   LocationAccess(GV_TRADE_SAW,      {[]{return IsAdult && PoachersSaw;}}),
                   LocationAccess(GV_GS_BEHIND_TENT, {[]{return IsAdult && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(GV_GS_PILLAR,      {[]{return IsAdult && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
@@ -72,7 +72,7 @@ void AreaTable_Init_GerudoValley() {
                   Entrance(GERUDO_VALLEY,     {[]{return IsChild || CanRideEpona || CanUse(LONGSHOT) || GerudoFortress.Is(GERUDOFORTRESS_OPEN) || CarpenterRescue;}}),
                   Entrance(GV_CARPENTER_TENT, {[]{return IsAdult;}}),
                   Entrance(GV_STORMS_GROTTO,  {[]{return IsAdult && CanOpenStormGrotto;}}),
-                  Entrance(GV_CRATE_LEDGE, {[]{return /*(IsAdult && ((Bombs && LogicDamageBoost) || (CanUse(HOVER_BOOTS) && LogicValleyCrateHovers))) || */false;}}),
+                  Entrance(GV_CRATE_LEDGE, {[]{return false;}}),
   });
 
   areaTable[GV_CARPENTER_TENT] = Area("GV Carpenter Tent", "GV Carpenter Tent", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
