@@ -108,6 +108,7 @@ static void ExporterProgramEnd()
 								fileData.size());
 		}
 	}
+	otrArchive = nullptr;
 
 	// Add any additional files that need to be manually copied...
 	const auto &lst = Directory::ListFiles("Extract");
@@ -165,6 +166,7 @@ static void ExporterProgramEnd()
 		printf("sohOtr->AddFile(%s)\n", StringHelper::Split(item, "Extract/")[1].c_str());
 		sohOtr->AddFile(StringHelper::Split(item, item.find("Extract/assets/") != std::string::npos ? "Extract/assets/" : "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
 	}
+	sohOtr = nullptr;
 }
 
 static void ExporterParseArgs(int argc, char *argv[], int &i)
