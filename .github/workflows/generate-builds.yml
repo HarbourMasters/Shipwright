@@ -281,7 +281,7 @@ jobs:
 
         mkdir soh-windows
         mv ./x64/Release/soh.exe ./soh-windows/soh.exe
-        mkdir debug
+        mkdir soh-windows/debug
         mv ./x64/Release/soh.pdb ./soh-windows/debug/soh.exe
         mv ./x64/Release/OTRGui.exe ./soh-windows/OTRGui.exe
         mv ./README.md ./soh-windows/readme.txt
