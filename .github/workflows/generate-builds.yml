@@ -272,21 +272,14 @@ jobs:
       with:
         key: ${{ runner.os }}-ccache
     - uses: ilammy/msvc-dev-cmd@v1
-    - name: Setup 7-Zip
-      run: |
-        "C:\Program Files\7-Zip" >> $env:GITHUB_PATH
     - name: Build SoH
       run: |
         set $env:PATH="$env:USERPROFILE/.cargo/bin;$env:PATH"
         cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
         cmake --build build-windows --target OTRGui --config Release --parallel 10
-        cmake --build build-windows --config Release --target ZAPD
-        COMMAND ./build-windows/ZAPD/ZAPD.exe botr -se OTR --norom
         cmake --build build-windows --config Release --parallel 10
-        cd build-windows
-        cpack -G ZIP
     - name: Upload build
       uses: actions/upload-artifact@v3
       with:
         name: soh-windows
-        path: _packages/*.zip
+        path: build-windows
