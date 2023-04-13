@@ -15,12 +15,9 @@ typedef struct ItemTrackerItem {
     void (*drawFunc)(ItemTrackerItem);
 } ItemTrackerItem;
 
-std::vector<ItemTrackerItem> dungeonRewardStones;
-std::vector<ItemTrackerItem> dungeonRewardMedallions;
-std::vector<ItemTrackerItem> songItems;
-
 bool HasSong(ItemTrackerItem);
 bool HasQuestItem(ItemTrackerItem);
+bool HasEqItem(ItemTrackerItem);
 
 #define ITEM_TRACKER_ITEM(id, data, drawFunc)     \
     {                                             \

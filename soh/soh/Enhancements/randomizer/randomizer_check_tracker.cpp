@@ -27,6 +27,13 @@ extern PlayState* gPlayState;
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
 
+extern std::vector<ItemTrackerItem> dungeonRewardStones;
+extern std::vector<ItemTrackerItem> dungeonRewardMedallions;
+extern std::vector<ItemTrackerItem> songItems;
+extern std::vector<ItemTrackerItem> equipmentItems;
+
+#define RCO_RAORU { RC_GIFT_FROM_SAGES, RCVORMQ_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_MARKET, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, false, "Gift from Raoru", "Gift from Raoru", true };
+
 using json = nlohmann::json;
 
 void to_json(json& j, const RandomizerCheckTrackerData& rctd) {
@@ -58,7 +65,7 @@ bool transitionCheck = false;
 std::map<RandomizerCheck, RandomizerCheckShow> checkStatusMap;
 std::map<RandomizerCheck, RandomizerCheckTrackerData> checkTrackerData;
 std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea;
-std::map<SceneID, std::vector<RandomizerCheckObject>> checksByScene;
+//std::map<SceneID, std::vector<RandomizerCheckObject>> checksByScene;
 bool areasFullyChecked[RCAREA_INVALID];
 u32 areasSpoiled = 0;
 bool showVOrMQ;
@@ -81,7 +88,7 @@ int tickCounter = 0;
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 bool CompareChecks(RandomizerCheckObject, RandomizerCheckObject);
 bool CheckByArea(RandomizerCheckArea, GetItemEntry, bool);
-bool CheckByScene();
+//bool CheckByScene();
 void DrawLocation(RandomizerCheckObject);
 void EndFloatWindows();
 bool HasItemBeenCollected(RandomizerCheck);
@@ -239,15 +246,20 @@ void TrySetAreas() {
 
 void SetCheckCollected(RandomizerCheck rc) {
     checkTrackerData.find(rc)->second.status = RCSHOW_COLLECTED;
-    RandomizerCheckObject rcObj = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
+    RandomizerCheckObject rcObj;
+    if (rc == RC_GIFT_FROM_SAGES && !gSaveContext.n64ddFlag) {
+        rcObj = RCO_RAORU;
+    } else {
+        rcObj = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
+    }
     if (!checkTrackerData.find(rc)->second.skipped) {
         areaChecksGotten[rcObj.rcArea]++;
     } else {
         checkTrackerData.find(rc)->second.skipped = false;
     }
+    SaveTrackerData(gSaveContext.fileNum, true, false);
     UpdateOrdering(rcObj.rcArea);
     UpdateInventoryChecks();
-    SaveTrackerData(gSaveContext.fileNum, true, false);
 }
 
 bool IsAreaScene(SceneID sceneNum) {
@@ -359,13 +371,37 @@ bool EvaluateCheck(RandomizerCheckObject rco) {
     return false;
 }
 
-bool CheckByScene() {
-    auto sceneChecks = checksByScene.find(checkScene)->second;
-    if (checkCounter >= sceneChecks.size()) {
-        checkCounter = 0;
-    }
-    return EvaluateCheck(sceneChecks.at(checkCounter));
-}
+//bool CheckByScene() {
+//    auto sceneChecks = checksByScene.find(checkScene)->second;
+//    if (checkCounter >= sceneChecks.size()) {
+//        checkCounter = 0;
+//    }
+//    return EvaluateCheck(sceneChecks.at(checkCounter));
+//}
+
+std::map<RandomizerCheck, QuestItem> QuestItemFromCheck = {
+    { RC_QUEEN_GOHMA, QUEST_KOKIRI_EMERALD },
+    { RC_KING_DODONGO, QUEST_GORON_RUBY },
+    { RC_BARINADE, QUEST_ZORA_SAPPHIRE },
+    { RC_PHANTOM_GANON, QUEST_MEDALLION_FOREST },
+    { RC_VOLVAGIA, QUEST_MEDALLION_FIRE },
+    { RC_MORPHA, QUEST_MEDALLION_WATER },
+    { RC_BONGO_BONGO, QUEST_MEDALLION_SHADOW },
+    { RC_TWINROVA, QUEST_MEDALLION_SPIRIT },
+    { RC_GIFT_FROM_SAGES, QUEST_MEDALLION_LIGHT },
+    { RC_SONG_FROM_IMPA, QUEST_SONG_LULLABY },
+    { RC_SONG_FROM_MALON, QUEST_SONG_EPONA },
+    { RC_SONG_FROM_SARIA, QUEST_SONG_SARIA },
+    { RC_SONG_FROM_ROYAL_FAMILYS_TOMB, QUEST_SONG_SUN },
+    { RC_SONG_FROM_OCARINA_OF_TIME, QUEST_SONG_TIME },
+    { RC_SONG_FROM_WINDMILL, QUEST_SONG_STORMS },
+    { RC_SHEIK_IN_FOREST, QUEST_SONG_MINUET },
+    { RC_SHEIK_IN_CRATER, QUEST_SONG_BOLERO },
+    { RC_SHEIK_IN_ICE_CAVERN, QUEST_SONG_SERENADE },
+    { RC_SHEIK_AT_COLOSSUS, QUEST_SONG_REQUIEM },
+    { RC_SHEIK_IN_KAKARIKO, QUEST_SONG_NOCTURNE },
+    { RC_SHEIK_AT_TEMPLE, QUEST_SONG_PRELUDE }
+};
 
 bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID, GetItemEntry giEntry = GET_ITEM_NONE, bool recheck = false) {
     if (area == RCAREA_INVALID) {
@@ -381,27 +417,46 @@ bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID, GetItemEntry giEntry
                     checkTrackerData.find(rco.rc)->second.status = RCSHOW_UNCHECKED;
                     areaChecksGotten[rco.rcArea]--;
                 }
+                bool collected = false;
                 if (HasItemBeenCollected(rcData.rc)) {
-                    checkTrackerData.find(rco.rc)->second.status = RCSHOW_SAVED;
-                    areaChecksGotten[rco.rcArea]++;
-                    break;
+                    collected = true;
                 }
                 if (!gSaveContext.n64ddFlag) {
-                    /*auto reward = 
-                    if (rco.rc == RC_GIFT_FROM_SAGES) {
-                        if(HasQuestItem(dungeonRewardMedallions[QUEST_MEDALLION_LIGHT]))
+                    if (rco.rc == RC_KF_SHOP_ITEM_3) {
+                        collected = HasEqItem(equipmentItems[6]);
+                    }else if (rco.rc >= RC_QUEEN_GOHMA && rco.rc <= RC_SHEIK_AT_TEMPLE) {
+                        if (QuestItemFromCheck.contains(rco.rc)) {
+                            if (rco.rc == RC_GIFT_FROM_SAGES) {
+                                if (HasQuestItem(dungeonRewardMedallions[5])) {
+                                    collected = true;
+                                }
+                            } else if (rco.rc <= RC_BARINADE) {
+                                if (HasQuestItem(dungeonRewardStones[QuestItemFromCheck.find(rco.rc)->second - QUEST_KOKIRI_EMERALD])) {
+                                    collected = true;
+                                }
+                            } else if (rco.rc <= RC_TWINROVA) {
+                                if (HasQuestItem(dungeonRewardMedallions[QuestItemFromCheck.find(rco.rc)->second - QUEST_MEDALLION_FOREST])) {
+                                    collected = true;
+                                }
+                            } else if (rco.rc <= RC_SONG_FROM_WINDMILL) {
+                                auto item = QuestItemFromCheck.find(rco.rc)->second;
+                                auto titem = songItems[item - QUEST_SONG_LULLABY];
+                                if (HasSong(titem)) {
+                                    collected = true;
+                                }
+                            } else if (rco.rc <= RC_SHEIK_AT_TEMPLE) {
+                                auto item = QuestItemFromCheck.find(rco.rc)->second;
+                                auto titem = songItems[item - QUEST_SONG_MINUET + 6];
+                                if (HasSong(titem)) {
+                                    collected = true;
+                                }
+                            }
+                        }
                     }
-                    if (rco.rc >= RC_QUEEN_GOHMA && rco.rc <= RC_BARINADE) {
-                        if (HasQuestItem(dungeonRewardStones[QUEST_ZORA_SAPPHIRE - (RC_BARINADE - rco.rc)])) {
-                            checkTrackerData.find(rco.rc)->second.status = RCSHOW_SAVED;
-                            areaChecksGotten[rco.rcArea]++;
-                        }
-                    } else if (rco.rc >= RC_QUEEN_GOHMA && rco.rc <= RC_BARINADE) {
-                        if (HasQuestItem(dungeonRewardStones[QUEST_ZORA_SAPPHIRE - (RC_BARINADE - rco.rc)])) {
-                            checkTrackerData.find(rco.rc)->second.status = RCSHOW_SAVED;
-                            areaChecksGotten[rco.rcArea]++;
-                        }
-                    }*/
+                }
+                if (collected) {
+                    checkTrackerData.find(rco.rc)->second.status = RCSHOW_SAVED;
+                    areaChecksGotten[rco.rcArea]++;
                 }
             }
         }
@@ -426,7 +481,6 @@ bool HasItemBeenCollected(RandomizerCheck rc) {
     auto flag = check.flag;
     auto scene = check.scene;
     auto type = check.type;
-    auto rco = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
 
     switch (type) {
     case SpoilerCollectionCheckType::SPOILER_CHK_ALWAYS_COLLECTED:
@@ -688,19 +742,24 @@ void LoadCheckTrackerData(json checks) {
         RandomizerCheckTrackerData entry = item.get<RandomizerCheckTrackerData>();
         if (entry.rc == RC_UNKNOWN_CHECK || entry.rc == RC_MAX || entry.rc == RC_LINKS_POCKET)
             continue;
-        RandomizerCheckObject entry2 = RandomizerCheckObjects::GetAllRCObjects().find(entry.rc)->second;
+        RandomizerCheckObject entry2;
+        if (entry.rc == RC_GIFT_FROM_SAGES && !gSaveContext.n64ddFlag) {
+            entry2 = RCO_RAORU;
+        } else {
+           entry2 = RandomizerCheckObjects::GetAllRCObjects().find(entry.rc)->second;
+        }
         if (!IsVisibleInCheckTracker(entry2))
             continue;
 
         checkTrackerData.emplace(entry.rc, entry);
         checksByArea.find(entry2.rcArea)->second.push_back(entry2);
 
-        SceneID sceneID = entry2.sceneId;
-        if (sceneID == SCENE_TEST01) {
-            sceneID = SCENE_SHOP1;
-        }
-        checksByScene.try_emplace(sceneID, std::vector<RandomizerCheckObject>());
-        checksByScene.find(sceneID)->second.push_back(entry2);
+        //SceneID sceneID = entry2.sceneId;
+        //if (sceneID == SCENE_TEST01) {
+        //    sceneID = SCENE_SHOP1;
+        //}
+        //checksByScene.try_emplace(sceneID, std::vector<RandomizerCheckObject>());
+        //checksByScene.find(sceneID)->second.push_back(entry2);
         if (entry.status == RCSHOW_SAVED || entry.skipped)
             areaChecksGotten[entry2.rcArea]++;
         
@@ -726,14 +785,9 @@ void LoadCheckTrackerData(json checks) {
         checksByArea.find(startingArea)->second.push_back(linksPocket);
         areaChecksGotten[startingArea]++;
     }
-    if(!gSaveContext.n64ddFlag) {
-        RandomizerCheckObject giftFromSages = { RC_GIFT_FROM_SAGES, RCVORMQ_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_MARKET, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, false, "Gift from Raoru", "Gift from Raoru", true };
-        checksByArea.find(RCAREA_MARKET)->second.push_back(giftFromSages);
-    }
 
     showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) > 0);
     LinksPocket();
-    GiftFromSages();
     doInitialize = false;
     initialized = true;
     UpdateAllOrdering();
@@ -749,7 +803,7 @@ void Teardown() {
     checkStatusMap.clear();
     checkTrackerData.clear();
     checksByArea.clear();
-    checksByScene.clear();
+    //checksByScene.clear();
     areasSpoiled = 0;
     checkCollected = false;
     checkLoops = 0;
@@ -832,9 +886,9 @@ void DrawCheckTracker(bool& open) {
     ImGui::SameLine();
     if (ImGui::Button("Recheck Area")) {
         CheckChecks(GET_ITEM_NONE, true);
+        SaveTrackerData(gSaveContext.fileNum, true, false);
         UpdateAllOrdering();
         UpdateInventoryChecks();
-        SaveTrackerData(gSaveContext.fileNum, true, false);
     }
     UIWidgets::PaddedSeparator();
 
@@ -1305,9 +1359,9 @@ void DrawLocation(RandomizerCheckObject rcObj) {
                 checkTrackerData.find(rcObj.rc)->second.skipped = true;
                 areaChecksGotten[rcObj.rcArea]++;
             }
+            SaveTrackerData(gSaveContext.fileNum, true, false);
             UpdateOrdering(rcObj.rcArea);
             UpdateInventoryChecks();
-            SaveTrackerData(gSaveContext.fileNum, true, false);
         }
     } else {
         ImGui::InvisibleButton("", ImVec2(20.0f, 10.0f));
