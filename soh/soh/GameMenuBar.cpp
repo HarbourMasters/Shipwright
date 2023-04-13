@@ -93,7 +93,9 @@ namespace GameMenuBar {
 
     std::string GetWindowButtonText(const char* text, bool menuOpen) {
         char buttonText[100] = "";
-        if(menuOpen) { strcat(buttonText,"> "); }
+        if (menuOpen) {
+            strcat(buttonText, ICON_FA_CHEVRON_RIGHT " ");
+        }
         strcat(buttonText, text);
         if (!menuOpen) { strcat(buttonText, "  "); }
         return buttonText;
