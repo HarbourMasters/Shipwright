@@ -47,7 +47,7 @@ typedef enum {
 #ifdef __cplusplus
 
 typedef struct {
-    u16 giid;
+    uint16_t giid;
     ItemID iid;
     std::string english;
     std::string german;

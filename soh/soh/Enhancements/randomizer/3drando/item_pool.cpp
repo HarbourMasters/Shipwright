@@ -2,7 +2,6 @@
 
 #include "dungeon.hpp"
 #include "fill.hpp"
-#include "item_list.hpp"
 #include "item_location.hpp"
 #include "pool_functions.hpp"
 #include "random.hpp"

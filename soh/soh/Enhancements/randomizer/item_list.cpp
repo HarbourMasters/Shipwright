@@ -4,6 +4,8 @@
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "draw.h"
 
+std::array<RandoItem, RG_MAX> StaticData::itemTable;
+
 void StaticData::InitItemTable() {
     itemTable[RG_NONE] =
         RandoItem(RG_NONE, Text{ "No Item", "Rien", "Kein Artikel" }, ITEMTYPE_EVENT, GI_RUPEE_GREEN, false,
@@ -1016,4 +1018,8 @@ RandoItem& StaticData::ItemFromGIID(const int giid) {
     // if we made it this far, it means we didn't find an item in the table
     // if we don't return anything, the game will crash, so, as a workaround, return greg
     return itemTable[RG_GREEN_RUPEE];
+}
+
+std::array<RandoItem, RG_MAX>& StaticData::GetItemTable() {
+    return itemTable;
 }

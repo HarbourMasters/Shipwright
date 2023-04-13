@@ -14,6 +14,7 @@
 #include "z64item.h"
 #include <spdlog/spdlog.h>
 #include "../randomizerTypes.h"
+#include "../context.h"
 
 using namespace CustomMessages;
 using namespace Logic;
@@ -234,8 +235,10 @@ static std::vector<uint32_t> GetAccessibleGossipStones(const uint32_t hintedLoca
 
 static void AddHint(Text hint, const uint32_t gossipStone, const std::vector<uint8_t>& colors = {}) {
   //save hints as dummy items for writing to the spoiler log
-  NewItem(gossipStone, Item{RG_HINT, hint, ITEMTYPE_EVENT, GI_RUPEE_BLUE_LOSE, false, &noVariable, NONE});
-  Location(gossipStone)->SetPlacedItem(gossipStone);
+  //NewItem(gossipStone, Item{RG_HINT, hint, ITEMTYPE_EVENT, GI_RUPEE_BLUE_LOSE, false, &noVariable, NONE});
+  //Location(gossipStone)->SetPlacedItem(gossipStone);
+
+  Rando::Context::GetInstance()->AddHint((RandomizerHintKey)(gossipStone - DMC_GOSSIP_STONE) , hint);
 
   //create the in game message
   // uint32_t messageId = 0x400 + Location(gossipStone)->GetFlag();

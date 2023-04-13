@@ -113,7 +113,7 @@ Randomizer::Randomizer() {
     SpoilerfileCheckNameToEnum["Invalid Location"] = RC_UNKNOWN_CHECK;
     SpoilerfileCheckNameToEnum["Link's Pocket"] = RC_LINKS_POCKET;
 
-    for (auto& item: *RandoMain::GetFullItemTable()) {
+    for (auto& item: StaticData::GetItemTable()) {
         // Easiest way to filter out all the empty values from the array, since we still technically want the 0/RG_NONE entry
         if (item.GetName().english.empty()) continue;
         SpoilerfileGetNameToEnum[item.GetName().english] = item.GetRandomizerGet();

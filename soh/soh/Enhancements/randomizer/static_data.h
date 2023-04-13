@@ -18,6 +18,7 @@ class StaticData {
       static void InitItemTable();
       static RandoItem& RetrieveItem(const RandomizerGet rgid);
       static RandoItem& ItemFromGIID(const int giid);
+      static std::array<RandoItem, RG_MAX>& GetItemTable();
       StaticData();
       ~StaticData();
 

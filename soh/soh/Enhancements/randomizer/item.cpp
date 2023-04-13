@@ -12,8 +12,7 @@ RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, i
                      uint16_t modIndex_, bool progressive_, uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
       advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
-    giEntry = std::make_shared<GetItemEntry>(std::initializer_list<GetItemEntry>{
-        GET_ITEM(itemId_, objectId_, gid_, textId_, field_, chestAnimation_, category_, modIndex_, getItemId_) });
+    giEntry = std::shared_ptr<GetItemEntry>(new GetItemEntry(GET_ITEM(itemId_, objectId_, gid_, textId_, field_, chestAnimation_, category_, modIndex_, getItemId_)));
 }
 
 RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
@@ -22,8 +21,8 @@ RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, i
                      uint16_t modIndex_, bool progressive_, uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
       advancement(advancement_), logicVar(logicVar_), hintKey(hintKey_), progressive(progressive_), price(price_) {
-    giEntry = std::make_shared<GetItemEntry>(std::initializer_list<GetItemEntry>{
-        GET_ITEM(itemId_, objectId_, gid_, textId_, field_, chestAnimation_, category_, modIndex_, getItemId_) });
+    giEntry = std::shared_ptr<GetItemEntry>(new GetItemEntry(
+        GET_ITEM(itemId_, objectId_, gid_, textId_, field_, chestAnimation_, category_, modIndex_, getItemId_)));
 }
 
 RandoItem::RandoItem(RandomizerGet randomizerGet_, Text name_, ItemType type_, int getItemId_, bool advancement_,

@@ -847,9 +847,9 @@ void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckSta
                     txt = OTRGlobals::Instance->gRandomizer
                         ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.rgID][gSaveContext.language];
                 else if (gSaveContext.language == LANGUAGE_ENG)
-                    txt = ItemFromGIID(rcObj.ogItemId).GetName().english;
+                    txt = StaticData::ItemFromGIID(rcObj.ogItemId).GetName().english;
                 else if (gSaveContext.language == LANGUAGE_FRA)
-                    txt = ItemFromGIID(rcObj.ogItemId).GetName().french;
+                    txt = StaticData::ItemFromGIID(rcObj.ogItemId).GetName().french;
                 break;
             case RCSHOW_SKIPPED:
                 txt = "Skipped"; //TODO language
@@ -859,9 +859,9 @@ void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckSta
                     txt = OTRGlobals::Instance->gRandomizer
                         ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.fakeRgID][gSaveContext.language];
                 else if (gSaveContext.language == LANGUAGE_ENG)
-                    txt = ItemFromGIID(rcObj.ogItemId).GetName().english;
+                    txt = StaticData::ItemFromGIID(rcObj.ogItemId).GetName().english;
                 else if (gSaveContext.language == LANGUAGE_FRA)
-                    txt = ItemFromGIID(rcObj.ogItemId).GetName().french;
+                    txt = StaticData::ItemFromGIID(rcObj.ogItemId).GetName().french;
                 break;
             case RCSHOW_HINTED:
                 txt = "Hints are WIP"; // TODO language

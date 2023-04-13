@@ -2,7 +2,6 @@
 #include "item_pool.hpp"
 #include "location_access.hpp"
 #include "random.hpp"
-#include "item.hpp"
 #include "shops.hpp"
 #include "debug.hpp"
 
