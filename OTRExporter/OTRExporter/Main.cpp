@@ -119,8 +119,8 @@ static void ExporterProgramEnd()
 
 		if (splitPath.size() >= 3)
 		{
-			const std::string& extension = splitPath.at(splitPath.size() - 1);
-			const std::string& format = splitPath.at(splitPath.size() - 2);
+			const std::string extension = splitPath.at(splitPath.size() - 1);
+			const std::string format = splitPath.at(splitPath.size() - 2);
 			splitPath.pop_back();
 			splitPath.pop_back();
 			std::string afterPath = std::accumulate(splitPath.begin(), splitPath.end(), std::string(""));
