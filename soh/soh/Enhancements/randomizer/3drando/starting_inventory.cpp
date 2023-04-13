@@ -2,7 +2,6 @@
 
 #include "debug.hpp"
 #include "dungeon.hpp"
-#include "item_list.hpp"
 #include "settings.hpp"
 #include "soh/Enhancements/randomizer/static_data.h"
 

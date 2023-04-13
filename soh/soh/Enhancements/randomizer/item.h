@@ -55,8 +55,11 @@ class RandoItem {
     ItemType GetItemType() const;
     RandomizerGet GetRandomizerGet();
     uint16_t GetPrice() const;
+    std::shared_ptr<GetItemEntry> GetGIEntry() const;
+    GetItemEntry GetGIEntry_Copy();
     void SetPrice(uint16_t price_);
     void SetAsPlaythrough();
+    void SetCustomDrawFunc(CustomDrawFunc);
     bool IsPlaythrough() const;
     bool IsBottleItem() const;
     bool IsMajorItem() const;

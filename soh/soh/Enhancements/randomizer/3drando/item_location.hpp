@@ -8,7 +8,6 @@
 #include <string>
 #include <vector>
 #include "spoiler_log.hpp"
-#include "item_list.hpp"
 #include "soh/Enhancements/randomizer/static_data.h"
 
 enum ItemOverride_Type {

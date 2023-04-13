@@ -1,7 +1,6 @@
 #include "location_access.hpp"
 
 #include "dungeon.hpp"
-#include "item_list.hpp"
 #include "item_location.hpp"
 #include "item_pool.hpp"
 #include "logic.hpp"

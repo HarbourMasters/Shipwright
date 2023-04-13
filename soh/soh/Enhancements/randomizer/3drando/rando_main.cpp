@@ -1,6 +1,5 @@
 #include "menu.hpp"
 #include "hint_list.hpp"
-#include "item_list.hpp"
 #include "item_location.hpp"
 #include "location_access.hpp"
 #include "rando_main.hpp"
@@ -14,7 +13,6 @@
 void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarSettings, std::set<RandomizerCheck> excludedLocations,
     std::string seedString) {
     HintTable_Init();
-    ItemTable_Init();
     LocationTable_Init();
 
     // std::string settingsFileName = "./randomizer/latest_settings.json";
@@ -26,10 +24,4 @@ void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarS
     CVarSave();
     CVarLoad();
     CVarSetInteger("gNewSeedGenerated", 1);
-}
-
-std::array<Item, KEY_ENUM_MAX>* RandoMain::GetFullItemTable() {
-    ItemTable_Init();
-
-    return GetFullItemTable_();
 }

@@ -1,7 +1,6 @@
 #include "spoiler_log.hpp"
 
 #include "dungeon.hpp"
-#include "item_list.hpp"
 #include "item_location.hpp"
 #include "entrance.hpp"
 #include "random.hpp"
@@ -748,18 +747,18 @@ static void WriteAllLocations(int language) {
           jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
         }
 
-        if (location->GetPlacedItemKey() == ICE_TRAP) {
+        if (location->GetPlacedItemKey() == RG_ICE_TRAP) {
           switch (language) {
               case 0:
               default:
                   jsonData["locations"][location->GetName()]["model"] =
-                      ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
+                      StaticData::ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
                   jsonData["locations"][location->GetName()]["trickName"] = 
                       GetIceTrapName(iceTrapModels[location->GetRandomizerCheck()]).english;
                   break;
               case 2:
                   jsonData["locations"][location->GetName()]["model"] =
-                      ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
+                      StaticData::ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
                   jsonData["locations"][location->GetName()]["trickName"] =
                       GetIceTrapName(iceTrapModels[location->GetRandomizerCheck()]).french;
                   break;

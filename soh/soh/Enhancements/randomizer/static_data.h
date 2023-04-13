@@ -1,3 +1,5 @@
+#pragma once
+
 #include <array>
 #include "randomizerTypes.h"
 #include "item.h"
@@ -15,6 +17,7 @@ class StaticData {
     public:
       static void InitItemTable();
       static RandoItem& RetrieveItem(const RandomizerGet rgid);
+      static RandoItem& ItemFromGIID(const int giid);
       StaticData();
       ~StaticData();
 

@@ -36,8 +36,11 @@ typedef enum GetItemCategory {
     { ITEM_NONE, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK }
 
 typedef struct PlayState PlayState;
+typedef struct GetItemEntry GetItemEntry;
 
-typedef struct {
+typedef void (*CustomDrawFunc)(PlayState*, GetItemEntry*);
+
+typedef struct GetItemEntry {
     /* 0x00 */ uint16_t itemId;
     /* 0x01 */ uint16_t field; // various bit-packed data
     /* 0x02 */ int16_t gi;     // defines the draw id and chest opening animation
@@ -51,4 +54,5 @@ typedef struct {
     /* 0x0F */ GetItemCategory getItemCategory; // Primarily made and used for chest size/texture matches contents
     /* 0x10 */ uint16_t drawItemId; // Will be a copy of itemId unless the item is an ice trap. Needed for particles to function on ice traps.
     /* 0x11 */ uint16_t drawModIndex; // Will be a copy of modIndex unless the item is an ice trap. Needed for particles to function on ice traps.
+    CustomDrawFunc drawFunc;
 } GetItemEntry; // size = 0x11

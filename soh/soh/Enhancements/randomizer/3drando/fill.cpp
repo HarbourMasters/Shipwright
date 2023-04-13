@@ -738,7 +738,7 @@ static void RandomizeDungeonRewards() {
         ItemPool, [](const auto i) { return StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD; });
     // If there are no remaining stones/medallions, then Link's pocket won't get one
     if (rewards.empty()) {
-      PlaceItemInLocation(LINKS_POCKET, GREEN_RUPEE);
+      PlaceItemInLocation(LINKS_POCKET, RG_GREEN_RUPEE);
       return;
     }
     RandomizerGet startingReward = RandomElement(rewards, true);
@@ -893,7 +893,7 @@ static void RandomizeLinksPocket() {
 
    PlaceItemInLocation(LINKS_POCKET, startingItem);
  } else if (LinksPocketItem.Is(LINKSPOCKETITEM_NOTHING)) {
-   PlaceItemInLocation(LINKS_POCKET, GREEN_RUPEE);
+   PlaceItemInLocation(LINKS_POCKET, RG_GREEN_RUPEE);
  }
 }
 

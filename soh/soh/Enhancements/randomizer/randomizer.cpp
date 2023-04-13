@@ -26,6 +26,7 @@
 #include <functional>
 #include "draw.h"
 #include "rando_hash.h"
+#include "static_data.h"
 #include <boost_custom/container_hash/hash_32.hpp>
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
@@ -2800,27 +2801,17 @@ GetItemEntry Randomizer::GetItemEntryFromRGData(RandomizerGetData rgData, GetIte
     if (checkObtainability && OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerGet(rgData.rgID) != CAN_OBTAIN) {
         return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, GI_RUPEE_BLUE);
     }
-    // Can't get RG_ICE_TRAP if the rgID corresponds to a vanilla item
-    if (IsItemVanilla(rgData.rgID)) {
-        return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, GetItemIdFromRandomizerGet(rgData.rgID, ogItemId));
-    }
-    // After this point we can assume we are dealing with a randomizer exclusive item.
-    GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(
-        MOD_RANDOMIZER, GetItemIdFromRandomizerGet(rgData.rgID, ogItemId));
-    // If we have an ice trap, we want to change the GID and DrawFunc to the fakeRgID's values.
+
+    RandoItem item = StaticData::RetrieveItem(rgData.rgID);
+    GetItemEntry giEntry = item.GetGIEntry_Copy();
+    // If we have an ice trap, we want to change the GID and drawFunc to the fakeRgID's values.
     if (rgData.rgID == RG_ICE_TRAP) {
-        ModIndex modIndex;
-        if (IsItemVanilla(rgData.fakeRgID)) {
-            modIndex = MOD_NONE;
-        } else {
-            modIndex = MOD_RANDOMIZER;
-        }
-        GetItemEntry fakeGiEntry = ItemTableManager::Instance->RetrieveItemEntry(modIndex, GetItemIdFromRandomizerGet(rgData.fakeRgID, ogItemId));
-        giEntry.gid = fakeGiEntry.gid;
-        giEntry.gi = fakeGiEntry.gi;
-        giEntry.drawItemId = fakeGiEntry.drawItemId;
-        giEntry.drawModIndex = fakeGiEntry.drawModIndex;
-        giEntry.drawFunc = fakeGiEntry.drawFunc;
+        std::shared_ptr<GetItemEntry> fakeGiEntry = StaticData::RetrieveItem(rgData.fakeRgID).GetGIEntry();
+        giEntry.gid = fakeGiEntry->gid;
+        giEntry.gi = fakeGiEntry->gi;
+        giEntry.drawItemId = fakeGiEntry->drawItemId;
+        giEntry.drawModIndex = fakeGiEntry->drawModIndex;
+        giEntry.drawFunc = fakeGiEntry->drawFunc;
     }
     return giEntry;
 }

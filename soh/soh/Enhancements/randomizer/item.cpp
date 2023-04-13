@@ -114,12 +114,24 @@ uint16_t RandoItem::GetPrice() const {
     return price;
 }
 
+std::shared_ptr<GetItemEntry> RandoItem::GetGIEntry() const {
+    return giEntry;
+}
+
+GetItemEntry RandoItem::GetGIEntry_Copy() {
+    return *giEntry;
+}
+
 void RandoItem::SetPrice(uint16_t price_) {
     price = price_;
 }
 
 void RandoItem::SetAsPlaythrough() {
     playthrough = true;
+}
+
+void RandoItem::SetCustomDrawFunc(CustomDrawFunc drawFunc) {
+    giEntry->drawFunc = drawFunc;
 }
 
 bool RandoItem::IsPlaythrough() const {
