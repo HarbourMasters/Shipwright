@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include "soh/OTRGlobals.h"
 
 typedef enum {
     // ENTRANCE_GROUP_NO_GROUP,
@@ -80,3 +81,5 @@ void ClearEntranceTrackingData();
 void InitEntranceTrackingData();
 void DrawEntranceTracker(bool& open);
 void InitEntranceTracker();
+s16 GetLastEntranceOverride();
+const EntranceData* GetEntranceData(s16);

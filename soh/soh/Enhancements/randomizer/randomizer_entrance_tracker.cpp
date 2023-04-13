@@ -1,5 +1,4 @@
 #include "randomizer_entrance_tracker.h"
-#include "soh/OTRGlobals.h"
 #include <ImGuiImpl.h>
 #include "soh/UIWidgets.hpp"
 
@@ -537,6 +536,10 @@ void SortEntranceListByArea(EntranceOverride* entranceList, u8 byDest) {
             }
         }
     }
+}
+
+s16 GetLastEntranceOverride() {
+    return lastEntranceIndex;
 }
 
 void SetCurrentGrottoIDForTracker(s16 entranceIndex) {

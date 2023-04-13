@@ -267,6 +267,15 @@ bool IsValidSaveFile() {
     return validSave;
 }
 
+bool HasSong(ItemTrackerItem item) {
+    uint32_t bitMask = 1 << item.id;
+    return (bitMask & gSaveContext.inventory.questItems) != 0;
+}
+
+bool HasQuestItem(ItemTrackerItem item) {
+    return (item.data & gSaveContext.inventory.questItems) != 0;
+}
+
 ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
     ItemTrackerNumbers result;
     result.currentCapacity = 0;
@@ -476,7 +485,7 @@ void DrawEquip(ItemTrackerItem item) {
 }
 
 void DrawQuest(ItemTrackerItem item) {
-    bool hasQuestItem = (item.data & gSaveContext.inventory.questItems) != 0;
+    bool hasQuestItem = HasQuestItem(item);
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     ImGui::BeginGroup();
     ImGui::Image(SohImGui::GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
@@ -614,9 +623,8 @@ void DrawDungeonItem(ItemTrackerItem item) {
 
 void DrawSong(ItemTrackerItem item) {
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
-    uint32_t bitMask = 1 << item.id;
-    bool hasSong = (bitMask & gSaveContext.inventory.questItems) != 0;
     ImVec2 p = ImGui::GetCursorScreenPos();
+    bool hasSong = HasSong(item);
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
     ImGui::Image(SohImGui::GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5, iconSize), ImVec2(0, 0), ImVec2(1, 1));
