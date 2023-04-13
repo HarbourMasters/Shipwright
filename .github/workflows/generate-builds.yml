@@ -17,10 +17,12 @@ jobs:
       with:
         key: ${{ runner.os }}-soh-otr-ccache
     - name: Install dependencies
+      if: ${{ !vars.LINUX_RUNNER }}
       run: |
         sudo apt-get update
         sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
     - name: Install latest SDL
+      if: ${{ !vars.LINUX_RUNNER }}
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         wget https://www.libsdl.org/release/SDL2-2.26.1.tar.gz
@@ -31,6 +33,7 @@ jobs:
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
     - name: Install latest SDL_net
+      if: ${{ !vars.LINUX_RUNNER }}
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         wget https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz
@@ -134,6 +137,7 @@ jobs:
       with:
         submodules: true
     - name: Install dependencies
+      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
       run: |
         sudo apt-get update
         sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
@@ -142,6 +146,7 @@ jobs:
       with:
         key: ${{ matrix.os }}-ccache
     - name: Install latest SDL
+      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         wget https://www.libsdl.org/release/SDL2-2.26.1.tar.gz
@@ -152,6 +157,7 @@ jobs:
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
     - name: Install latest SDL_net
+      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         wget https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz
@@ -191,6 +197,7 @@ jobs:
       image: devkitpro/devkita64:latest
     steps:
     - name: Install dependencies
+      if: ${{ !vars.LINUX_RUNNER }}
       run: |
         sudo apt-get update
         sudo apt-get install -y ninja-build
@@ -227,6 +234,7 @@ jobs:
       image: devkitpro/devkitppc:latest
     steps:
     - name: Install dependencies
+      if: ${{ !vars.LINUX_RUNNER }}
       run: |
         sudo apt-get update
         sudo apt-get install -y ninja-build
