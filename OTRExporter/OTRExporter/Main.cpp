@@ -101,7 +101,7 @@ static void ExporterProgramEnd()
 					fName.replace(pos, 27, "gTitleZeldaShieldLogoTex");
 				}
 			}
-			const auto &fileData = item.second;
+			const auto& fileData = item.second;
 			otrArchive->AddFile(fName, (uintptr_t)fileData.data(),
 								fileData.size());
 		}
@@ -167,7 +167,7 @@ static void ExporterProgramEnd()
 	sohOtr = nullptr;
 }
 
-static void ExporterParseArgs(int argc, char* argv[], int &i)
+static void ExporterParseArgs(int argc, char* argv[], int& i)
 {
 	std::string arg = argv[i];
 
