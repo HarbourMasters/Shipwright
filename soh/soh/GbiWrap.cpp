@@ -21,6 +21,7 @@ uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
 uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 size_t GetResourceTexSizeByName(const char* name);
 char* ResourceMgr_LoadTexOrDListByName(char* filePath);
+char* ResourceMgr_LoadIfDListByName(char* filePath);
 char* ResourceMgr_LoadPlayerAnimByName(char* animPath);
 char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc);
 Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
@@ -44,8 +45,14 @@ extern "C" void gSPSegment(void* value, int segNum, uintptr_t target) {
     // With HD textures, we need to pass the path to F3D, not the raw texture data.
     // Otherwise the needed metadata is not available for proper rendering...
     // This should *not* cause any crashes, but some testing may be needed...
-    // if (res)
-        // target = (uintptr_t)ResourceMgr_LoadTexOrDListByName(imgData);
+    // UPDATE: To maintain compatability it will still do the old behavior if the resource is a display list.
+    // That should not affect HD textures.
+    if (res) {
+        uintptr_t desiredTarget = (uintptr_t)ResourceMgr_LoadIfDListByName(imgData);
+
+        if (desiredTarget != NULL)
+            target = desiredTarget;
+    }
 
     __gSPSegment(value, segNum, target);
 }

@@ -1132,6 +1132,15 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     }
 }
 
+extern "C" char* ResourceMgr_LoadIfDListByName(const char* filePath) {
+    auto res = GetResourceByNameHandlingMQ(filePath);
+
+    if (res->InitData->Type == Ship::ResourceType::DisplayList)
+        return (char*)&((std::static_pointer_cast<Ship::DisplayList>(res))->Instructions[0]);
+    
+    return nullptr;
+}
+
 extern "C" Sprite* GetSeedTexture(uint8_t index) {
     return OTRGlobals::Instance->gRandomizer->GetSeedTexture(index);
 }
