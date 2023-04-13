@@ -100,6 +100,7 @@ set_property(TARGET soh PROPERTY APPIMAGE_ICON_FILE "${CMAKE_BINARY_DIR}/sohIcon
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 install(PROGRAMS "${CMAKE_SOURCE_DIR}/scripts/linux/appimage/soh.sh" DESTINATION . COMPONENT appimage)
+install(FILES "${CMAKE_SOURCE_DIR}/soh.otr" DESTINATION . COMPONENT appimage)
 endif()
 
 find_package(Python3 COMPONENTS Interpreter)
@@ -113,7 +114,7 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter
     COMMENT "Running asset extraction..."
     DEPENDS ZAPD
-    BYPRODUCTS oot.otr ${CMAKE_SOURCE_DIR}/oot.otr oot-mq.otr ${CMAKE_SOURCE_DIR}/oot-mq.otr
+    BYPRODUCTS oot.otr ${CMAKE_SOURCE_DIR}/oot.otr oot-mq.otr ${CMAKE_SOURCE_DIR}/oot-mq.otr ${CMAKE_SOURCE_DIR}/soh.otr
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
