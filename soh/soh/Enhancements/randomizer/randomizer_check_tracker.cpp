@@ -333,9 +333,9 @@ RandomizerCheckArea GetCheckArea() {
     auto scene = static_cast<SceneID>(gPlayState->sceneNum);
     const EntranceData* ent = GetEntranceData(GetLastEntranceOverride());
     RandomizerCheckArea area = RCAREA_INVALID;
-    if (ent != nullptr) {
-        area = AreaFromEntranceGroup[ent->dstGroup];
-    }
+    //if (ent != nullptr) {
+    //    area = AreaFromEntranceGroup[ent->dstGroup];
+    //}
     if (area == RCAREA_INVALID) {
         area = RandomizerCheckObjects::GetRCAreaBySceneID(scene);
     }

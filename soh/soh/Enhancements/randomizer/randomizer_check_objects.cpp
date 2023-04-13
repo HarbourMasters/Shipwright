@@ -906,6 +906,7 @@ std::map<SceneID, RandomizerCheckArea> RandomizerCheckObjects::GetAllRCAreaBySce
         for (int id = (int)SCENE_ENTRA; id <= (int)SCENE_MARKET_RUINS; id++) {
             rcAreaBySceneID[(SceneID)id] = RCAREA_MARKET;
         }
+        rcAreaBySceneID[SCENE_TOKINOMA] = RCAREA_MARKET;
     }
     return rcAreaBySceneID;
 }

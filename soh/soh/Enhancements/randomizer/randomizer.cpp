@@ -3100,6 +3100,9 @@ void SaveTrackerData(int fileNum, bool thread, bool convertCollected) {
 }
 
 void SaveTrackerDataHook(int fileNum) {
+    if (!std::filesystem::exists(GetTrackerDataFileName(fileNum))) {
+        CheckTracker::CreateTrackerData(true);
+    }
     SaveTrackerData(fileNum, true, true);
 }
 
