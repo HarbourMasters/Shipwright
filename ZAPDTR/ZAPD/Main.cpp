@@ -271,7 +271,6 @@ int main(int argc, char* argv[])
 	ExporterSet* exporterSet = Globals::Instance->GetExporterSet();
 	
 	if(Globals::Instance->onlyGenSohOtr) {
-		puts("True");
 		exporterSet->endProgramFunc();
 
 		delete g;
