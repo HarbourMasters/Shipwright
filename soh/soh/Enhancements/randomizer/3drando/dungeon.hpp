@@ -9,11 +9,12 @@
 namespace Dungeon {
 class DungeonInfo {
 public:
-    DungeonInfo(std::string name_, uint32_t map_, uint32_t compass_, uint32_t smallKey_, uint32_t keyRing_, uint32_t bossKey_,
+    DungeonInfo(std::string name_, uint32_t hintKey_, uint32_t map_, uint32_t compass_, uint32_t smallKey_, uint32_t keyRing_, uint32_t bossKey_,
               uint8_t vanillaKeyCount_, uint8_t mqKeyCount_,
                 std::vector<uint32_t> vanillaLocations_,
                 std::vector<uint32_t> mqLocations_,
-                std::vector<uint32_t> sharedLocations_);
+                std::vector<uint32_t> sharedLocations_,
+                std::vector<uint32_t> bossRoomLocations_);
     ~DungeonInfo();
 
     const std::string& GetName() const {
@@ -52,6 +53,7 @@ public:
         return (masterQuest) ? mqKeyCount : vanillaKeyCount;
     }
 
+    uint32_t GetHintKey() const;
     uint32_t GetSmallKey() const;
     uint32_t GetKeyRing() const;
     uint32_t GetMap() const;
@@ -71,6 +73,7 @@ public:
 
 private:
     std::string name;
+    uint32_t hintKey;
     uint32_t map;
     uint32_t compass;
     uint32_t smallKey;
@@ -83,6 +86,7 @@ private:
     std::vector<uint32_t> vanillaLocations;
     std::vector<uint32_t> mqLocations;
     std::vector<uint32_t> sharedLocations;
+    std::vector<uint32_t> bossRoomLocations;
 };
 
 extern DungeonInfo DekuTree;
