@@ -249,7 +249,7 @@ static void ExporterResourceEnd(ZResource* res, BinaryWriter& writer)
 
 	auto end = std::chrono::steady_clock::now();
 	size_t diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-	
+
 	//if (diff > 10)
 		//printf("Exported Resource End %s in %zums\n", res->GetName().c_str(), diff);
 }
