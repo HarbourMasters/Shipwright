@@ -861,6 +861,12 @@ extern "C" void Graph_StartFrame() {
         case SDL_SCANCODE_F9: {
             // Toggle TTS
             CVarSetInteger("gA11yTTS", !CVarGetInteger("gA11yTTS", 0));
+            break;
+        }
+        case SDL_SCANCODE_TAB: {
+            // Toggle HD Assets
+            CVarSetInteger("gHdAssets", !CVarGetInteger("gHdAssets", 0));
+            break;
         }
     }
 #endif
