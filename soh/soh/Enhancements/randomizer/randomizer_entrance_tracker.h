@@ -82,4 +82,5 @@ void InitEntranceTrackingData();
 void DrawEntranceTracker(bool& open);
 void InitEntranceTracker();
 s16 GetLastEntranceOverride();
+s16 GetCurrentGrottoId();
 const EntranceData* GetEntranceData(s16);

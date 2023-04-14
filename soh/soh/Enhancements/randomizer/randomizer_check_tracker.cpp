@@ -65,7 +65,6 @@ bool transitionCheck = false;
 std::map<RandomizerCheck, RandomizerCheckShow> checkStatusMap;
 std::map<RandomizerCheck, RandomizerCheckTrackerData> checkTrackerData;
 std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea;
-//std::map<SceneID, std::vector<RandomizerCheckObject>> checksByScene;
 bool areasFullyChecked[RCAREA_INVALID];
 u32 areasSpoiled = 0;
 bool showVOrMQ;
@@ -88,7 +87,6 @@ int tickCounter = 0;
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 bool CompareChecks(RandomizerCheckObject, RandomizerCheckObject);
 bool CheckByArea(RandomizerCheckArea, GetItemEntry, bool);
-//bool CheckByScene();
 void DrawLocation(RandomizerCheckObject);
 void EndFloatWindows();
 bool HasItemBeenCollected(RandomizerCheck);
@@ -258,6 +256,7 @@ void SetCheckCollected(RandomizerCheck rc) {
         checkTrackerData.find(rc)->second.skipped = false;
     }
     SaveTrackerData(gSaveContext.fileNum, true, false);
+    doAreaScroll = true;
     UpdateOrdering(rcObj.rcArea);
     UpdateInventoryChecks();
 }
@@ -331,11 +330,20 @@ RandomizerCheckArea AreaFromEntranceGroup[] = {
 
 RandomizerCheckArea GetCheckArea() {
     auto scene = static_cast<SceneID>(gPlayState->sceneNum);
-    const EntranceData* ent = GetEntranceData(GetLastEntranceOverride());
+    const EntranceData* ent = GetEntranceData((scene == SCENE_KAKUSIANA || scene == SCENE_YOUSEI_IZUMI_TATE || scene == SCENE_YOUSEI_IZUMI_YOKO) ?
+        ENTRANCE_RANDO_GROTTO_EXIT_START + GetCurrentGrottoId() : gSaveContext.entranceIndex);
     RandomizerCheckArea area = RCAREA_INVALID;
-    //if (ent != nullptr) {
-    //    area = AreaFromEntranceGroup[ent->dstGroup];
-    //}
+    if (ent != nullptr && ent->type != ENTRANCE_TYPE_DUNGEON) {
+        if (ent->dstGroup == ENTRANCE_GROUP_GERUDO_VALLEY && ent->type == ENTRANCE_TYPE_GROTTO && ent->destination == "GF") {
+            area = RCAREA_GERUDO_FORTRESS;
+        }
+        else if (ent->dstGroup == ENTRANCE_GROUP_HAUNTED_WASTELAND && ent->type == ENTRANCE_TYPE_GROTTO && ent->destination == "Desert Colossus") {
+            area = RCAREA_DESERT_COLOSSUS;
+        }
+        else {
+            area = AreaFromEntranceGroup[ent->dstGroup];
+        }
+    }
     if (area == RCAREA_INVALID) {
         area = RandomizerCheckObjects::GetRCAreaBySceneID(scene);
     }
@@ -370,14 +378,6 @@ bool EvaluateCheck(RandomizerCheckObject rco) {
     }
     return false;
 }
-
-//bool CheckByScene() {
-//    auto sceneChecks = checksByScene.find(checkScene)->second;
-//    if (checkCounter >= sceneChecks.size()) {
-//        checkCounter = 0;
-//    }
-//    return EvaluateCheck(sceneChecks.at(checkCounter));
-//}
 
 std::map<RandomizerCheck, QuestItem> QuestItemFromCheck = {
     { RC_QUEEN_GOHMA, QUEST_KOKIRI_EMERALD },
@@ -553,9 +553,10 @@ void CheckTrackerTransition(uint32_t sceneNum) {
         transitionCheck = false;
         checkCollected = true;
     }
-    doAreaScroll = sceneNum != SCENE_KAKUSIANA && // Don't move for grottos
-        sceneNum != SCENE_YOUSEI_IZUMI_TATE && sceneNum != SCENE_YOUSEI_IZUMI_YOKO && sceneNum != SCENE_DAIYOUSEI_IZUMI && // Don't move for great fairy fountains #TODO allow scrolling for all scenes
-        sceneNum != SCENE_HAKASITARELAY;
+    doAreaScroll = true;
+    //doAreaScroll = sceneNum != SCENE_KAKUSIANA && // Don't move for grottos
+    //    sceneNum != SCENE_YOUSEI_IZUMI_TATE && sceneNum != SCENE_YOUSEI_IZUMI_YOKO && sceneNum != SCENE_DAIYOUSEI_IZUMI && // Don't move for great fairy fountains #TODO allow scrolling for all scenes
+    //    sceneNum != SCENE_HAKASITARELAY;
     previousArea = currentArea;
     currentArea = GetCheckArea();
 }
