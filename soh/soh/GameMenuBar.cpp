@@ -868,7 +868,12 @@ namespace GameMenuBar {
 
             { // FPS Slider
                 const int minFps = 20;
-                const int maxFps = Ship::Window::GetInstance()->GetCurrentRefreshRate();
+                static int maxFps;
+                if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
+                    maxFps = 360;
+                } else {
+                    maxFps = Ship::Window::GetInstance()->GetCurrentRefreshRate();
+                }
                 int currentFps = fmax(fmin(OTRGlobals::Instance->GetInterpolationFPS(), maxFps), minFps);
             #ifdef __WIIU__
                 // only support divisors of 60 on the Wii U
@@ -932,8 +937,9 @@ namespace GameMenuBar {
                 CVarSetInteger("gInterpolationFPS", currentFps);
                 SohImGui::RequestCvarSaveOnNextTick();
             #else
+                bool matchingRefreshRate = CVarGetInteger("gMatchRefreshRate", 0) && SohImGui::WindowBackend() != SohImGui::Backend::DX11;
                 UIWidgets::EnhancementSliderInt((currentFps == 20) ? "Frame interpolation: Off" : "Frame interpolation: %d FPS", 
-                    "##FPSInterpolation", "gInterpolationFPS", minFps, maxFps, "", 20, true, CVarGetInteger("gMatchRefreshRate", 0));
+                    "##FPSInterpolation", "gInterpolationFPS", minFps, maxFps, "", 20, true, matchingRefreshRate);
             #endif
                 UIWidgets::Tooltip("Interpolate extra frames to get smoother graphics\n"
                     "Set to match your monitor's refresh rate, or a divisor of it\n"
@@ -942,7 +948,18 @@ namespace GameMenuBar {
                     "Ctrl+Click for keyboard input");
             } // END FPS Slider
             
-            UIWidgets::PaddedEnhancementCheckbox("Match Refresh Rate", "gMatchRefreshRate", true, false);
+            if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
+                ImGui::Dummy(ImVec2(0,0));
+                if (ImGui::Button("Match Refresh Rate")) {
+                    int hz = Ship::Window::GetInstance()->GetCurrentRefreshRate();
+                    if (hz >= 20 && hz <= 360) {
+                        CVarSetInteger("gInterpolationFPS", hz);
+                        SohImGui::RequestCvarSaveOnNextTick();
+                    }
+                }
+            } else {
+                UIWidgets::PaddedEnhancementCheckbox("Match Refresh Rate", "gMatchRefreshRate", true, false);
+            }
             UIWidgets::Tooltip("Matches interpolation value to the current game's window refresh rate");
 
             UIWidgets::PaddedEnhancementCheckbox("Disable LOD", "gDisableLOD", true, false);
