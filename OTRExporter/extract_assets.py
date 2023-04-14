@@ -14,15 +14,17 @@ def BuildOTR(xmlPath, rom, zapd_exe=None, genHeaders=None):
     if not zapd_exe:
         zapd_exe = "x64\\Release\\ZAPD.exe" if sys.platform == "win32" else "../ZAPDTR/ZAPD.out"
 
+    # generate headers, but not otrs by excluding the otr exporter
     if genHeaders:
-        genHeaders = "1"
+        exec_cmd = [zapd_exe, "ed", "-i", xmlPath, "-b", rom, "-fl", "CFG/filelists",
+                "-o", "placeholder", "-osf", "placeholder", "-gsf", "1",
+                "-rconf", "CFG/Config.xml"]
     else:
-        genHeaders = "0"
-
-    exec_cmd = [zapd_exe, "ed", "-i", xmlPath, "-b", rom, "-fl", "CFG/filelists",
-            "-o", "placeholder", "-osf", "placeholder", "-gsf", genHeaders,
-            "-rconf", "CFG/Config.xml", "-se", "OTR", "--otrfile",
-            "oot-mq.otr" if Z64Rom.isMqRom(rom) else "oot.otr"]
+        # generate otrs, but not headers
+        exec_cmd = [zapd_exe, "ed", "-i", xmlPath, "-b", rom, "-fl", "CFG/filelists",
+                "-o", "placeholder", "-osf", "placeholder", "-gsf", "0",
+                "-rconf", "CFG/Config.xml", "-se", "OTR", "--otrfile",
+                "oot-mq.otr" if Z64Rom.isMqRom(rom) else "oot.otr"]
 
     print(exec_cmd)
     exitValue = subprocess.call(exec_cmd)
