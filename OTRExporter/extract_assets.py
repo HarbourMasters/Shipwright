@@ -8,15 +8,20 @@ import struct
 import subprocess
 import argparse
 
-def BuildOTR(xmlPath, rom, zapd_exe=None):
+def BuildOTR(xmlPath, rom, zapd_exe=None, genHeaders=None):
     shutil.copytree("assets", "Extract/assets")
 
     if not zapd_exe:
         zapd_exe = "x64\\Release\\ZAPD.exe" if sys.platform == "win32" else "../ZAPDTR/ZAPD.out"
 
+    if genHeaders:
+        genHeaders = "1"
+    else:
+        genHeaders = "0"
+
     exec_cmd = [zapd_exe, "ed", "-i", xmlPath, "-b", rom, "-fl", "CFG/filelists",
-            "-o", "placeholder", "-osf", "placeholder", "-gsf", "1",
-            "-rconf", "CFG/Config.xml", "-se", "OTR", "--otrfile", 
+            "-o", "placeholder", "-osf", "placeholder", "-gsf", genHeaders,
+            "-rconf", "CFG/Config.xml", "-se", "OTR", "--otrfile",
             "oot-mq.otr" if Z64Rom.isMqRom(rom) else "oot.otr"]
 
     print(exec_cmd)
@@ -33,6 +38,7 @@ def main():
     parser.add_argument("rom", help="Path to the rom", type=str, nargs="?")
     parser.add_argument("--non-interactive", help="Runs the script non-interactively for use in build scripts.", dest="non_interactive", action="store_true")
     parser.add_argument("-v", "--verbose", help="Display rom's header checksums and their corresponding xml folder", dest="verbose", action="store_true")
+    parser.add_argument("--gen-headers", help="Generate source headers to be checked in", dest="gen_headers", action="store_true")
 
     args = parser.parse_args()
 
@@ -41,7 +47,7 @@ def main():
         if (os.path.exists("Extract")):
             shutil.rmtree("Extract")
 
-        BuildOTR("../soh/assets/xml/" + rom.version.xml_ver + "/", rom.file_path, zapd_exe=args.zapd_exe)
+        BuildOTR("../soh/assets/xml/" + rom.version.xml_ver + "/", rom.file_path, zapd_exe=args.zapd_exe, genHeaders=args.gen_headers)
 
 if __name__ == "__main__":
     main()

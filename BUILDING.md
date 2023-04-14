@@ -45,6 +45,9 @@ cd Shipwright
 
 # If you need to clean the project you can run
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target clean
+
+# If you need to regenerate the asset headers to check them into source
+& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target ExtractAssetsHeaders
 ```
 
 ### Developing SoH
@@ -104,6 +107,9 @@ cmake --build build-cmake # --config Release (if you're packaging)
 
 # If you need to clean the project you can run
 cmake --build build-cmake --target clean
+
+# If you need to regenerate the asset headers to check them into source
+cmake --build build-cmake --target ExtractAssetsHeaders
 ```
 
 ### Generating a distributable
@@ -148,6 +154,9 @@ cp build-cmake/soh/oot.otr ~/Library/Application\ Support/com.shipofharkinian.so
 
 # If you need to clean the project you can run
 cmake --build build-cmake --target clean
+
+# If you need to regenerate the asset headers to check them into source
+cmake --build build-cmake --target ExtractAssetsHeaders
 ```
 
 ### Generating a distributable
