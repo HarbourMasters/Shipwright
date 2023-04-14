@@ -55,6 +55,7 @@ namespace CheckTracker {
 bool initialized;
 bool doAreaScroll;
 bool doInitialize;
+bool previousShowHidden = false;
 
 bool checkCollected = false;
 int checkLoops = 0;
@@ -333,11 +334,11 @@ RandomizerCheckArea GetCheckArea() {
     const EntranceData* ent = GetEntranceData((scene == SCENE_KAKUSIANA || scene == SCENE_YOUSEI_IZUMI_TATE || scene == SCENE_YOUSEI_IZUMI_YOKO) ?
         ENTRANCE_RANDO_GROTTO_EXIT_START + GetCurrentGrottoId() : gSaveContext.entranceIndex);
     RandomizerCheckArea area = RCAREA_INVALID;
-    if (ent != nullptr && ent->type != ENTRANCE_TYPE_DUNGEON) {
-        if (ent->dstGroup == ENTRANCE_GROUP_GERUDO_VALLEY && ent->type == ENTRANCE_TYPE_GROTTO && ent->destination == "GF") {
+    if (ent != nullptr && !IsAreaScene(scene) && ent->type != ENTRANCE_TYPE_DUNGEON) {
+        if (ent->dstGroup == ENTRANCE_GROUP_GERUDO_VALLEY && ent->source == "GF") {
             area = RCAREA_GERUDO_FORTRESS;
         }
-        else if (ent->dstGroup == ENTRANCE_GROUP_HAUNTED_WASTELAND && ent->type == ENTRANCE_TYPE_GROTTO && ent->destination == "Desert Colossus") {
+        else if (ent->dstGroup == ENTRANCE_GROUP_HAUNTED_WASTELAND && ent->source == "Desert Colossus") {
             area = RCAREA_DESERT_COLOSSUS;
         }
         else {
@@ -415,7 +416,9 @@ bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID, GetItemEntry giEntry
                     OTRGlobals::Instance->gRandomizer->GetRandomizerGetDataFromKnownCheck(rco.rc).rgID, rco.ogItemId);
                 if (rcData.status == RCSHOW_SCUMMED || rcData.status == RCSHOW_COLLECTED || rcData.status == RCSHOW_SAVED) {
                     checkTrackerData.find(rco.rc)->second.status = RCSHOW_UNCHECKED;
-                    areaChecksGotten[rco.rcArea]--;
+                    if (rcData.status != RCSHOW_SCUMMED) {
+                        areaChecksGotten[rco.rcArea]--;
+                    }
                 }
                 bool collected = false;
                 if (HasItemBeenCollected(rcData.rc)) {
@@ -942,13 +945,16 @@ void DrawCheckTracker(bool& open) {
             UIWidgets::PaddedSeparator();
         }
         lastArea = rcArea;
+        if (previousShowHidden != showHidden) {
+            previousShowHidden = showHidden;
+            doAreaScroll = true;
+        }
         if (!showHidden && (
             hideComplete && thisAreaFullyChecked || 
             hideIncomplete && !thisAreaFullyChecked
         )) {
             doDraw = false;
-        }
-        else {
+        } else {
             //Get the colour for the area
             if (thisAreaFullyChecked) {
                 mainColor = areaCompleteColor;
