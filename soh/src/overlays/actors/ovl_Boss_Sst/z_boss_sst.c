@@ -356,12 +356,21 @@ void BossSst_HeadSetupLurk(BossSst* this) {
 }
 
 void BossSst_HeadLurk(BossSst* this, PlayState* play) {
+    if (CVarGetInteger("gQuickBongoKill", 0)) {
+        this->colliderCyl.base.acFlags |= AC_ON;
+    }
+
     if (this->actor.yDistToPlayer < 1000.0f) {
         BossSst_HeadSetupIntro(this, play);
     }
 }
 
 void BossSst_HeadSetupIntro(BossSst* this, PlayState* play) {
+    //Make sure to restore original behavior if the quick kill didn't happen
+    if (CVarGetInteger("gQuickBongoKill", 0)) {
+        this->colliderCyl.base.acFlags &= ~AC_ON;
+    }
+
     Player* player = GET_PLAYER(play);
 
     this->timer = 611;
@@ -2548,7 +2557,7 @@ void BossSst_HeadCollisionCheck(BossSst* this, PlayState* play) {
                 if (Actor_ApplyDamage(&this->actor) == 0) {
                     Enemy_StartFinishingBlow(play, &this->actor);
                     BossSst_HeadSetupDeath(this, play);
-                    gSaveContext.sohStats.timestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+                    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
                 } else {
                     BossSst_HeadSetupDamage(this);
                 }
@@ -2649,7 +2658,7 @@ void BossSst_UpdateHead(Actor* thisx, PlayState* play) {
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->colliderJntSph.base);
     }
 
-    if ((this->actionFunc != BossSst_HeadLurk) && (this->actionFunc != BossSst_HeadIntro)) {
+    if ((this->actionFunc != BossSst_HeadLurk || CVarGetInteger("gQuickBongoKill", 0)) && (this->actionFunc != BossSst_HeadIntro)) {
         if (this->colliderCyl.base.acFlags & AC_ON) {
             CollisionCheck_SetAC(play, &play->colChkCtx, &this->colliderCyl.base);
         }

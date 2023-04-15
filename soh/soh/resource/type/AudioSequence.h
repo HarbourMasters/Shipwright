@@ -19,6 +19,8 @@ typedef struct {
 
 class AudioSequence : public Resource {
 public:
+    using Resource::Resource;
+
     void* GetPointer();
     size_t GetPointerSize();
 

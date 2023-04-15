@@ -6,7 +6,58 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  generate-soh-otr:
+    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ runner.os }}-soh-otr-ccache
+    - name: Install dependencies
+      if: ${{ !vars.LINUX_RUNNER }}
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
+    - name: Install latest SDL
+      if: ${{ !vars.LINUX_RUNNER }}
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        wget https://www.libsdl.org/release/SDL2-2.26.1.tar.gz
+        tar -xzf SDL2-2.26.1.tar.gz
+        cd SDL2-2.26.1
+        ./configure
+        make -j 10
+        sudo make install
+        sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
+    - name: Install latest SDL_net
+      if: ${{ !vars.LINUX_RUNNER }}
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        wget https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz
+        tar -xzf SDL2_net-2.2.0.tar.gz
+        cd SDL2_net-2.2.0
+        ./configure
+        make -j 10
+        sudo make install
+        sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
+    - name: Generate soh.otr
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
+        cmake --build build-cmake --config Release --target ZAPD
+        mkdir Extract
+        cp -r OTRExporter/assets/ ./Extract/assets
+        ./build-cmake/ZAPD/ZAPD.out botr -se OTR --norom
+    - uses: actions/upload-artifact@v3
+      with:
+        name: soh.otr
+        path: soh.otr
+        retention-days: 1
   build-macos:
+    needs: generate-soh-otr
     runs-on: ${{ (vars.MAC_RUNNER && fromJSON(vars.MAC_RUNNER)) || 'macos-12' }}
     steps:
     - uses: actions/checkout@v3
@@ -47,11 +98,16 @@ jobs:
         brew uninstall --ignore-dependencies libpng
         sudo port install $(cat .github/workflows/macports-deps.txt)
         brew install ninja
+    - name: Download soh.otr
+      uses: actions/download-artifact@v3
+      with:
+        name: soh.otr
     - name: Build SoH
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
         cmake --build build-cmake --config Release --parallel 10
+        mv soh.otr build-cmake/soh
         (cd build-cmake && cpack)
 
         mv _packages/*.dmg SoH.dmg
@@ -64,6 +120,7 @@ jobs:
           SoH.dmg
           readme.txt
   build-linux:
+    needs: generate-soh-otr
     strategy:
       fail-fast: true
       matrix:
@@ -80,6 +137,7 @@ jobs:
       with:
         submodules: true
     - name: Install dependencies
+      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
       run: |
         sudo apt-get update
         sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
@@ -88,6 +146,7 @@ jobs:
       with:
         key: ${{ matrix.os }}-ccache
     - name: Install latest SDL
+      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         wget https://www.libsdl.org/release/SDL2-2.26.1.tar.gz
@@ -98,6 +157,7 @@ jobs:
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
     - name: Install latest SDL_net
+      if: ${{ (matrix.os == 'ubuntu-20.04' && !vars.LINUX_COMPATIBILITY_RUNNER) || (matrix.os == 'ubuntu-22.04' && !vars.LINUX_PERFORMANCE_RUNNER) }}
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         wget https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz
@@ -107,11 +167,14 @@ jobs:
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
+    - name: Download soh.otr
+      uses: actions/download-artifact@v3
+      with:
+        name: soh.otr
     - name: Build SoH
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
-        cmake --build build-cmake --target OTRGui -j3
         cmake --build build-cmake --config Release -j3
         (cd build-cmake && cpack -G External)
 
@@ -128,11 +191,13 @@ jobs:
           soh.appimage
           readme.txt
   build-switch:
+    needs: generate-soh-otr
     runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
     container:
       image: devkitpro/devkita64:latest
     steps:
     - name: Install dependencies
+      if: ${{ !vars.LINUX_RUNNER }}
       run: |
         sudo apt-get update
         sudo apt-get install -y ninja-build
@@ -150,19 +215,26 @@ jobs:
 
         mv build-switch/soh/*.nro soh.nro
         mv README.md readme.txt
+    - name: Download soh.otr
+      uses: actions/download-artifact@v3
+      with:
+        name: soh.otr
     - name: Upload build
       uses: actions/upload-artifact@v3
       with:
         name: soh-switch
         path: |
           soh.nro
+          soh.otr
           readme.txt
   build-wiiu:
+    needs: generate-soh-otr
     runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
     container:
       image: devkitpro/devkitppc:latest
     steps:
     - name: Install dependencies
+      if: ${{ !vars.LINUX_RUNNER }}
       run: |
         sudo apt-get update
         sudo apt-get install -y ninja-build
@@ -184,6 +256,10 @@ jobs:
       env:
         DEVKITPRO: /opt/devkitpro
         DEVKITPPC: /opt/devkitpro/devkitPPC
+    - name: Download soh.otr
+      uses: actions/download-artifact@v3
+      with:
+        name: soh.otr
     - name: Upload build
       uses: actions/upload-artifact@v3
       with:
@@ -191,11 +267,14 @@ jobs:
         path: |
           soh.rpx
           soh.wuhb
+          soh.otr
           readme.txt
   build-windows:
+    needs: generate-soh-otr
     runs-on: ${{ (vars.WINDOWS_RUNNER && fromJSON(vars.WINDOWS_RUNNER)) || 'windows-latest' }}
     steps:
     - name: Install dependencies
+      if: ${{ !vars.WINDOWS_RUNNER }}
       run: |
         choco install ninja
         Remove-Item -Path "C:\ProgramData\Chocolatey\bin\ccache.exe" -Force
@@ -207,19 +286,29 @@ jobs:
       with:
         key: ${{ runner.os }}-ccache
     - uses: ilammy/msvc-dev-cmd@v1
-    - name: Setup 7-Zip
-      run: |
-        "C:\Program Files\7-Zip" >> $env:GITHUB_PATH
     - name: Build SoH
       run: |
         set $env:PATH="$env:USERPROFILE/.cargo/bin;$env:PATH"
         cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
         cmake --build build-windows --target OTRGui --config Release --parallel 10
         cmake --build build-windows --config Release --parallel 10
-        cd build-windows
-        cpack -G ZIP
+
+        mkdir soh-windows
+        mv ./x64/Release/soh.exe ./soh-windows/soh.exe
+        mkdir soh-windows/debug
+        mv ./x64/Release/soh.pdb ./soh-windows/debug/soh.pdb
+        mv ./x64/Release/OTRGui.exe ./soh-windows/OTRGui.exe
+        mv ./README.md ./soh-windows/readme.txt
+        mv ./build-windows/gamecontrollerdb.txt ./soh-windows/gamecontrollerdb.txt
+        mv ./build-windows/OTRGui/assets ./soh-windows
+        mv ./build-windows/ZAPD/ZAPD.exe ./soh-windows/assets/extractor/ZAPD.exe
+    - name: Download soh.otr
+      uses: actions/download-artifact@v3
+      with:
+        name: soh.otr
+        path: soh-windows
     - name: Upload build
       uses: actions/upload-artifact@v3
       with:
         name: soh-windows
-        path: _packages/*.zip
+        path: soh-windows

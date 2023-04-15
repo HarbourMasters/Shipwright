@@ -431,6 +431,7 @@ extern string_view LogicShadowFireArrowEntryDesc;
 extern string_view LogicShadowUmbrellaDesc;
 extern string_view LogicShadowFreestandingKeyDesc;
 extern string_view LogicShadowStatueDesc;
+extern string_view LogicShadowBongoDesc;
 extern string_view LogicChildDeadhandDesc;
 extern string_view LogicGtgWithoutHookshotDesc;
 extern string_view LogicGtgFakeWallDesc;

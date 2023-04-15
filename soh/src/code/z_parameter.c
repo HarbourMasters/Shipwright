@@ -1411,22 +1411,29 @@ void Inventory_SwapAgeEquipment(void) {
     u16 temp;
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
-        // When becoming adult, remove swordless flag since we'll get master sword
-        // Only in rando to keep swordless link bugs in vanilla
-        if (gSaveContext.n64ddFlag) {
-            gSaveContext.infTable[29] &= ~1;
-        }
+        
 
         for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
             if (i != 0) {
                 gSaveContext.childEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
             } else {
-                gSaveContext.childEquips.buttonItems[i] = ITEM_SWORD_KOKIRI;
+                if (CVarGetInteger("gSwitchAge", 0) && 
+                    (gSaveContext.infTable[29] & 1)) {
+                    gSaveContext.childEquips.buttonItems[i] = ITEM_NONE;
+                } else {
+                    gSaveContext.childEquips.buttonItems[i] = ITEM_SWORD_KOKIRI;
+                }
             }
 
             if (i != 0) {
                 gSaveContext.childEquips.cButtonSlots[i - 1] = gSaveContext.equips.cButtonSlots[i - 1];
             }
+        }
+
+        // When becoming adult, remove swordless flag since we'll get master sword
+        // Only in rando to keep swordless link bugs in vanilla
+        if (gSaveContext.n64ddFlag) {
+            gSaveContext.infTable[29] &= ~1;
         }
 
         gSaveContext.childEquips.equipment = gSaveContext.equips.equipment;
@@ -1493,7 +1500,8 @@ void Inventory_SwapAgeEquipment(void) {
 
         gSaveContext.adultEquips.equipment = gSaveContext.equips.equipment;
 
-        if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) {
+        if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE ||
+            CVarGetInteger("gSwitchAge", 0)) {
             for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                 gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
 
@@ -1532,6 +1540,16 @@ void Inventory_SwapAgeEquipment(void) {
                 }
             }
             gSaveContext.equips.equipment = 0x1111;
+        }
+
+        if (CVarGetInteger("gSwitchAge", 0) &&
+            (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
+            gSaveContext.infTable[29] |= 1;
+            if (gSaveContext.childEquips.equipment == 0) {
+                // force equip kokiri tunic and boots in scenario gSaveContext.childEquips.equipment is uninitialized
+                gSaveContext.equips.equipment &= 0xFFF0;
+                gSaveContext.equips.equipment |= 0x1100;
+            }
         }
     }
 
@@ -1625,7 +1643,7 @@ void func_80084BF4(PlayState* play, u16 flag) {
 void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
 
     // If we already have a timestamp for this item, do nothing
-    if (gSaveContext.sohStats.timestamp[item] != 0){
+    if (gSaveContext.sohStats.itemTimestamp[item] != 0){
         return;
     }
     // Use ITEM_KEY_BOSS only for Ganon's boss key - not any other boss keys
@@ -1644,20 +1662,20 @@ void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
 
     // Count any bottled item as a bottle
     if (item >= ITEM_BOTTLE && item <= ITEM_POE) {
-        if (gSaveContext.sohStats.timestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.sohStats.timestamp[ITEM_BOTTLE] = time;
+        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] = time;
         }
         return;
     }
     // Count any bombchu pack as bombchus
     if (item == ITEM_BOMBCHU || (item >= ITEM_BOMBCHUS_5 && item <= ITEM_BOMBCHUS_20)) {
-        if (gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] == 0) {
-            gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] = time;
+        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] == 0) {
+            gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
         return;
     }
 
-    gSaveContext.sohStats.timestamp[item] = time;
+    gSaveContext.sohStats.itemTimestamp[item] = time;
 }
 
 // Gameplay stat tracking: Update time the item was acquired
@@ -1673,28 +1691,28 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
 
     // Use ITEM_KEY_BOSS to timestamp Ganon's boss key
     if (item == RG_GANONS_CASTLE_BOSS_KEY) {
-        gSaveContext.sohStats.timestamp[ITEM_KEY_BOSS] = time;
+        gSaveContext.sohStats.itemTimestamp[ITEM_KEY_BOSS] = time;
     }
 
     // Count any bottled item as a bottle
     if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
-        if (gSaveContext.sohStats.timestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.sohStats.timestamp[ITEM_BOTTLE] = time;
+        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] = time;
         }
         return;
     }
     // Count any bombchu pack as bombchus
     if (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) {
-        if (gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] = 0) {
-            gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] = time;
+        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = 0) {
+            gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
         return;
     }
     if (item == RG_MAGIC_SINGLE) {
-        gSaveContext.sohStats.timestamp[ITEM_SINGLE_MAGIC] = time;
+        gSaveContext.sohStats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
     }
     if (item == RG_DOUBLE_DEFENSE) {
-        gSaveContext.sohStats.timestamp[ITEM_DOUBLE_DEFENSE] = time;
+        gSaveContext.sohStats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
     }
 }
 
@@ -1704,8 +1722,13 @@ u8 Return_Item_Entry(GetItemEntry itemEntry, ItemID returnItem ) {
 }
 
 // Processes Item_Give returns
-u8 Return_Item(u8 item, ModIndex modId, ItemID returnItem) {
-    return Return_Item_Entry(ItemTable_RetrieveEntry(modId, item), returnItem);
+u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
+    uint32_t get = GetGIID(itemID);
+    if (get == -1) {
+        modId = MOD_RANDOMIZER;
+        get = itemID;
+    }
+    return Return_Item_Entry(ItemTable_RetrieveEntry(modId, get), returnItem);
 }
 
 /**
@@ -2313,7 +2336,7 @@ u8 Item_Give(PlayState* play, u8 item) {
 }
 
 u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
-    uint16_t item = giEntry.itemId;
+    uint16_t item = giEntry.getItemId;
     uint16_t temp;
     uint16_t i;
     uint16_t slot;
@@ -2520,7 +2543,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     if (item == RG_GREG_RUPEE) {
         Rupees_ChangeBy(1);
         Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
-        gSaveContext.sohStats.timestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
+        gSaveContext.sohStats.itemTimestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
@@ -3023,7 +3046,11 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
 }
 
 void Rupees_ChangeBy(s16 rupeeChange) {
-    gSaveContext.rupeeAccumulator += rupeeChange;
+    if (gPlayState == NULL) {
+        gSaveContext.rupees += rupeeChange;
+    } else {
+        gSaveContext.rupeeAccumulator += rupeeChange;
+    }
 
     if (rupeeChange > 0) {
         gSaveContext.sohStats.count[COUNT_RUPEES_COLLECTED] += rupeeChange;
@@ -6192,11 +6219,16 @@ void Interface_Update(PlayState* play) {
                 Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             }
             if (gSaveContext.rupeeAccumulator == 0) {
-                u16 tempSaleItem = gSaveContext.pendingSale;
-                u16 tempSaleMod = gSaveContext.pendingSaleMod;
-                gSaveContext.pendingSale = ITEM_NONE;
-                gSaveContext.pendingSaleMod = MOD_NONE;
-                GameInteractor_ExecuteOnSaleEndHooks(ItemTable_RetrieveEntry(tempSaleMod,tempSaleItem));
+                if (gSaveContext.pendingSale != ITEM_NONE) {
+                    u16 tempSaleItem = gSaveContext.pendingSale;
+                    u16 tempSaleMod = gSaveContext.pendingSaleMod;
+                    gSaveContext.pendingSale = ITEM_NONE;
+                    gSaveContext.pendingSaleMod = MOD_NONE;
+                    if (tempSaleMod == 0) {
+                        tempSaleItem = GetGIID(tempSaleItem);
+                    }
+                    GameInteractor_ExecuteOnSaleEndHooks(ItemTable_RetrieveEntry(tempSaleMod, tempSaleItem));
+                }
             }
         } else {
             gSaveContext.rupeeAccumulator = 0;

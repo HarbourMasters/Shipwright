@@ -647,6 +647,33 @@ void Play_Init(GameState* thisx) {
     gSaveContext.natureAmbienceId = play->sequenceCtx.natureAmbienceId;
     func_8002DF18(play, GET_PLAYER(play));
     AnimationContext_Update(play, &play->animationCtx);
+
+    if (gSaveContext.sohStats.sceneNum != gPlayState->sceneNum) {
+        u16 idx = gSaveContext.sohStats.tsIdx;
+        gSaveContext.sohStats.sceneTimestamps[idx].sceneTime = gSaveContext.sohStats.sceneTimer / 2;
+        gSaveContext.sohStats.sceneTimestamps[idx].roomTime = gSaveContext.sohStats.roomTimer / 2;    
+        gSaveContext.sohStats.sceneTimestamps[idx].scene = gSaveContext.sohStats.sceneNum;
+        gSaveContext.sohStats.sceneTimestamps[idx].room = gSaveContext.sohStats.roomNum;
+        gSaveContext.sohStats.sceneTimestamps[idx].isRoom = 
+            gPlayState->sceneNum == gSaveContext.sohStats.sceneTimestamps[idx].scene &&
+            gPlayState->roomCtx.curRoom.num != gSaveContext.sohStats.sceneTimestamps[idx].room;
+        gSaveContext.sohStats.tsIdx++;
+        gSaveContext.sohStats.sceneTimer = 0;
+        gSaveContext.sohStats.roomTimer = 0;
+    } else if (gSaveContext.sohStats.roomNum != gPlayState->roomCtx.curRoom.num) {
+        u16 idx = gSaveContext.sohStats.tsIdx;
+        gSaveContext.sohStats.sceneTimestamps[idx].roomTime = gSaveContext.sohStats.roomTimer / 2;
+        gSaveContext.sohStats.sceneTimestamps[idx].scene = gSaveContext.sohStats.sceneNum;
+        gSaveContext.sohStats.sceneTimestamps[idx].room = gSaveContext.sohStats.roomNum;
+        gSaveContext.sohStats.sceneTimestamps[idx].isRoom = 
+            gPlayState->sceneNum == gSaveContext.sohStats.sceneTimestamps[idx].scene &&
+            gPlayState->roomCtx.curRoom.num != gSaveContext.sohStats.sceneTimestamps[idx].room;
+        gSaveContext.sohStats.tsIdx++;
+        gSaveContext.sohStats.roomTimer = 0;
+    }
+
+    gSaveContext.sohStats.sceneNum = gPlayState->sceneNum;
+    gSaveContext.sohStats.roomNum = gPlayState->roomCtx.curRoom.num;
     gSaveContext.respawnFlag = 0;
     #if 0
     if (dREG(95) != 0) {
@@ -869,15 +896,8 @@ void Play_Update(PlayState* play) {
                                 gTrnsnUnkState = 0;
                                 R_UPDATE_RATE = 3;
                             }
-
-                            // Autosave on area transition unless you're in a cutscene or a grotto since resuming from grottos breaks the game
-                            // Also don't save when you first load a file to prevent consumables like magic from being lost
-                            // Also don't save if there's a pending shop sale to prevent getting the item for a discount!
-                            if ((CVarGetInteger("gAutosave", 0) >= 1) && (CVarGetInteger("gAutosave", 0) <= 3) &&
-                                (gSaveContext.cutsceneIndex < 0xFFF0) && (play->gameplayFrames > 60) && (gSaveContext.pendingSale == ITEM_NONE) &&
-                                (play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA) && (play->sceneNum != SCENE_KENJYANOMA)) {
-                                Play_PerformSave(play);
-                            }
+                            
+                            GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
                         }
                         play->sceneLoadFlag = 0;
                     } else {
@@ -1092,6 +1112,8 @@ void Play_Update(PlayState* play) {
                 // Gameplay stat tracking
                 if (!gSaveContext.sohStats.gameComplete) {
                       gSaveContext.sohStats.playTimer++;
+                      gSaveContext.sohStats.sceneTimer++;
+                      gSaveContext.sohStats.roomTimer++;
 
                       if (CVarGetInteger("gMMBunnyHood", 0) && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
                           gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD]++;

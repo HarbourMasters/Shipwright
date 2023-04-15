@@ -5,7 +5,9 @@
 namespace Ship {
 class SetEntranceListFactory : public SceneCommandFactory {
   public:
-    std::shared_ptr<Resource> ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader);
+    std::shared_ptr<Resource> ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+                                           std::shared_ptr<ResourceInitData> initData,
+                                           std::shared_ptr<BinaryReader> reader) override;
 };
 
 class SetEntranceListFactoryV0 : public SceneCommandVersionFactory {
