@@ -951,7 +951,7 @@ namespace GameMenuBar {
             if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
                 ImGui::Dummy(ImVec2(0,0));
                 if (ImGui::Button("Match Refresh Rate")) {
-                    int hz = Ship::Window::GetInstance()->GetCurrentRefreshRate();
+                    int hz = ImGui::GetIO().Framerate;
                     if (hz >= 20 && hz <= 360) {
                         CVarSetInteger("gInterpolationFPS", hz);
                         SohImGui::RequestCvarSaveOnNextTick();
