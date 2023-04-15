@@ -1305,7 +1305,7 @@ void func_80090A28(Player* this, Vec3f* vecs) {
 }
 
 void Player_DrawHookshotReticle(PlayState* play, Player* this, f32 arg2) {
-    static Vec3f D_801260C8 = { -500.0f, -100.0f , 0.0f };
+    static Vec3f D_801260C8 = { -500.0f, -100.0f, 0.0f };
     CollisionPoly* sp9C;
     s32 bgId;
     Vec3f sp8C;
