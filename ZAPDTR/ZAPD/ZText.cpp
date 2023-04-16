@@ -63,18 +63,26 @@ void ZText::ParseRawData()
 		unsigned int extra = 0;
 		bool stop = false;
 
+		// Continue parsing until we are told to stop and all extra bytes are read
 		while ((c != '\0' && !stop) || extra > 0)
 		{
 			msgEntry.msg += c;
 			msgPtr++;
 
+			// Some control codes require reading extra bytes
 			if (extra == 0)
 			{
-				if (c == 0x05 || c == 0x13 || c == 0x0E || c == 0x0C || c == 0x1E || c == 0x06 ||
+				// End marker, so stop this message and do not read anything else
+				if (c == 0x02)
+				{
+					stop = true;
+				}
+				else if (c == 0x05 || c == 0x13 || c == 0x0E || c == 0x0C || c == 0x1E || c == 0x06 ||
 				    c == 0x14)
 				{
 					extra = 1;
 				}
+				// "Continue to new text ID", so stop this message and read two more bytes for the text ID
 				else if (c == 0x07)
 				{
 					extra = 2;
