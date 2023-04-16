@@ -49,6 +49,8 @@
 #include <Hooks.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 
+#include "Extractor/Extract.h"
+
 #include <Fast3D/gfx_pc.h>
 #include <Fast3D/gfx_rendering_api.h>
 
@@ -699,6 +701,15 @@ extern "C" void OTRExtScanner() {
 }
 
 extern "C" void InitOTR() {
+    if (!std::filesystem::exists(Ship::Window::GetPathRelativeToAppDirectory("oot-mq.otr")) &&
+        !std::filesystem::exists(Ship::Window::GetPathRelativeToAppDirectory("oot.otr"))){
+        if (MessageBoxA(nullptr, "No Otr files found. Generate one now?", "No Otr files", MB_YESNO) == IDYES) {
+            Extractor extract;
+            extract.Run();
+            extract.CallZapd();
+        }
+    }
+
 #ifdef __SWITCH__
     Ship::Switch::Init(Ship::PreInitPhase);
 #elif defined(__WIIU__)

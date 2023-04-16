@@ -159,6 +159,7 @@ void GameConfig::ReadConfigFile(const fs::path& argConfigFilePath)
 	tinyxml2::XMLDocument doc;
 	tinyxml2::XMLError eResult = doc.LoadFile(configFilePath.c_str());
 
+
 	if (eResult != tinyxml2::XML_SUCCESS)
 	{
 		throw std::runtime_error("Error: Unable to read config file.");

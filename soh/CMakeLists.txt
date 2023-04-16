@@ -18,6 +18,7 @@ set (BUILD_SHARED_LIBS OFF CACHE STRING "install/link shared instead of static l
 # Set target arch type if empty. Visual studio solution generator provides it.
 ################################################################################
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	set (ZAPD_LIB BOOL ON)
 	if(NOT CMAKE_VS_PLATFORM_NAME)
 		set(CMAKE_VS_PLATFORM_NAME "x64")
 	endif()
@@ -477,7 +478,8 @@ if(MSVC)
                 /FORCE:MULTIPLE
             >
             /DEBUG;
-            /SUBSYSTEM:WINDOWS           
+            /SUBSYSTEM:WINDOWS    
+			/MAP:soh.map
         )
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         target_link_options(${PROJECT_NAME} PRIVATE
@@ -592,6 +594,7 @@ endif()
 # Pre build events
 ################################################################################
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	set(ZAPD_LIB TRUE)
 	add_custom_command_if(
 		TARGET ${PROJECT_NAME}
 		PRE_BUILD
@@ -605,6 +608,7 @@ endif()
 add_dependencies(${PROJECT_NAME}
     ZAPDUtils
     libultraship
+	ZAPD
 )
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -612,6 +616,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
 			"ZAPDUtils;"
+			"ZAPD"
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
@@ -626,6 +631,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
 			"ZAPDUtils;"
+			"ZAPD"
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"

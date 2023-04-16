@@ -260,7 +260,16 @@ set(ALL_FILES
 ################################################################################
 # Target
 ################################################################################
-add_executable(${PROJECT_NAME} ${ALL_FILES})
+
+add_library(${PROJECT_NAME} STATIC ${ALL_FILES})
+
+#if (NOT TARGET soh)
+#	add_library(${PROJECT_NAME} STATIC ${ALL_FILES})
+#else()
+#	add_executable(${PROJECT_NAME} ${ALL_FILES})
+#endif()
+
+
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
@@ -312,6 +321,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		target_compile_definitions(${PROJECT_NAME} PRIVATE
 			"_CRT_SECURE_NO_WARNINGS;"
 			"_MBCS"
+			
 			STORMLIB_NO_AUTO_LINK
 		)
 	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
@@ -401,6 +411,11 @@ if(MSVC)
             /DEBUG:FULL
         )
     endif()
+	if(ZAPD_LIB)
+		target_link_options(${PROJECT_NAME} PRIVATE
+		/DZAPD_AS_LIB
+		)
+	endif()
 endif()
 
 if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")

@@ -29,29 +29,6 @@
 const char gBuildHash[] = "";
 
 // LINUX_TODO: remove, those are because of soh <-> lus dependency problems
-float divisor_num = 0.0f;
-
-extern "C" void Audio_SetGameVolume(int player_id, float volume)
-{
-
-}
-
-
-extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
-{
-	return 0;
-}
-
-void DebugConsole_SaveCVars()
-{
-
-}
-
-void DebugConsole_LoadCVars()
-{
-
-}
-
 
 bool Parse(const fs::path& xmlFilePath, const fs::path& basePath, const fs::path& outPath,
            ZFileMode fileMode, int workerID);
@@ -119,7 +96,14 @@ void ErrorHandler(int sig)
 }
 #endif
 
-int main(int argc, char* argv[])
+#define ZAPD_AS_LIB
+#ifdef ZAPD_AS_LIB
+#define ZAPD_MAIN zapd_main
+#else
+#define ZAPD_MAIN main
+#endif
+
+extern "C" int ZAPD_MAIN(int argc, char* argv[])
 {
 	// Syntax: ZAPD.out [mode (btex/bovl/e)] (Arbritrary Number of Arguments)
 
@@ -347,7 +331,7 @@ int main(int argc, char* argv[])
 
 				auto start = std::chrono::steady_clock::now();
 				int fileListSize = fileList.size();
-				Globals::Instance->singleThreaded = false;
+				Globals::Instance->singleThreaded = true;
 
 				for (int i = 0; i < fileListSize; i++)
 					Globals::Instance->workerData[i] = new FileWorker();
