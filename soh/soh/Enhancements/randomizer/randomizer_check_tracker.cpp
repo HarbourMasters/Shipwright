@@ -331,7 +331,8 @@ RandomizerCheckArea AreaFromEntranceGroup[] = {
 
 RandomizerCheckArea GetCheckArea() {
     auto scene = static_cast<SceneID>(gPlayState->sceneNum);
-    const EntranceData* ent = GetEntranceData((scene == SCENE_KAKUSIANA || scene == SCENE_YOUSEI_IZUMI_TATE || scene == SCENE_YOUSEI_IZUMI_YOKO) ?
+    bool grottoScene = (scene == SCENE_KAKUSIANA || scene == SCENE_YOUSEI_IZUMI_TATE || scene == SCENE_YOUSEI_IZUMI_YOKO);
+    const EntranceData* ent = GetEntranceData(grottoScene ?
         ENTRANCE_RANDO_GROTTO_EXIT_START + GetCurrentGrottoId() : gSaveContext.entranceIndex);
     RandomizerCheckArea area = RCAREA_INVALID;
     if (ent != nullptr && !IsAreaScene(scene) && ent->type != ENTRANCE_TYPE_DUNGEON) {
@@ -346,7 +347,11 @@ RandomizerCheckArea GetCheckArea() {
         }
     }
     if (area == RCAREA_INVALID) {
-        area = RandomizerCheckObjects::GetRCAreaBySceneID(scene);
+        if (grottoScene && (GetCurrentGrottoId() == -1) && (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) == RO_GENERIC_OFF)) {
+            area = previousArea;
+        } else {
+            area = RandomizerCheckObjects::GetRCAreaBySceneID(scene);
+        }
     }
     return area;
 }
