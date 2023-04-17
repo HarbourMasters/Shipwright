@@ -214,7 +214,13 @@ void RegisterOcarinaTimeTravel() {
             gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && !nearbyTimeBlockEmpty && !nearbyTimeBlock &&
             !nearbyOcarinaSpot && !nearbyFrogs) {
 
-            CVarSetInteger("gSwitchTimeline", 1);
+            if (gSaveContext.n64ddFlag) {
+                CVarSetInteger("gSwitchTimeline", 1);
+            } else if (!gSaveContext.n64ddFlag && !nearbyDoorOfTime) {
+                // This check is made for when Link is learning the Song Of Time in a vanilla save file that load a
+                // Temple of Time scene where the only object present is the Door of Time
+                CVarSetInteger("gSwitchTimeline", 1);
+            }
             ReloadSceneTogglingLinkAge();
         }
     });
