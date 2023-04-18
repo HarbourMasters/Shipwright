@@ -806,12 +806,12 @@ extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
 
 extern "C" void Graph_StartFrame() {
 #ifndef __WIIU__
-    // Why -1?
+    using Ship::KbScancode;
     int32_t dwScancode = OTRGlobals::Instance->context->GetLastScancode();
     OTRGlobals::Instance->context->SetLastScancode(-1);
 
-    switch (dwScancode - 1) {
-        case SDL_SCANCODE_F5: {
+    switch (dwScancode) {
+        case KbScancode::LUS_KB_F5: {
             const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
             const SaveStateReturn stateReturn =
                 OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
@@ -828,7 +828,7 @@ extern "C" void Graph_StartFrame() {
             }
             break;
         }
-        case SDL_SCANCODE_F6: {
+        case KbScancode::LUS_KB_F6: {
             unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
             slot++;
             if (slot > 5) {
@@ -838,7 +838,7 @@ extern "C" void Graph_StartFrame() {
             SPDLOG_INFO("Set SaveState slot to {}.", slot);
             break;
         }
-        case SDL_SCANCODE_F7: {
+        case KbScancode::LUS_KB_F7: {
             const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
             const SaveStateReturn stateReturn =
                 OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::LOAD });
@@ -862,12 +862,12 @@ extern "C" void Graph_StartFrame() {
 
             break;
         }
-        case SDL_SCANCODE_F9: {
+        case KbScancode::LUS_KB_F9: {
             // Toggle TTS
             CVarSetInteger("gA11yTTS", !CVarGetInteger("gA11yTTS", 0));
             break;
         }
-        case SDL_SCANCODE_TAB: {
+        case KbScancode::LUS_KB_TAB: {
             // Toggle HD Assets
             CVarSetInteger("gHdAssets", !CVarGetInteger("gHdAssets", 0));
             break;
