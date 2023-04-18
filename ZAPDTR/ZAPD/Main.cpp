@@ -4,11 +4,74 @@
 #include "Utils/File.h"
 #include "Utils/Path.h"
 #include "WarningHandler.h"
+
 #include "ZAnimation.h"
+ZNormalAnimation nAnim(nullptr);
+ZCurveAnimation cAnim(nullptr);
+ZLinkAnimation lAnim(nullptr);
+ZLegacyAnimation lAnim2(nullptr);
+
+#include "ZArray.h"
+ZArray arr(nullptr);
+
+#include "ZAudio.h"
+ZAudio audio(nullptr);
+
 #include "ZBackground.h"
+ZBackground back(nullptr);
+
 #include "ZBlob.h"
+ZBlob blob(nullptr);
+
+#include "ZCollision.h"
+ZCollisionHeader colHeader(nullptr);
+
+#include "ZCutscene.h"
+ZCutscene cs(nullptr);
+
+#include "ZLimb.h"
+ZLimb limb(nullptr);
+
+#include "ZMtx.h"
+ZMtx mtx(nullptr);
+
+#include "ZPath.h"
+ZPath path(nullptr);
+
+#include "ZPlayerAnimationData.h"
+ZPlayerAnimationData pAnimData(nullptr);
+
+#include "ZScalar.h"
+ZScalar scalar(nullptr);
+
+#include "ZSkeleton.h"
+ZLimbTable limbTbl(nullptr);
+ZSkeleton skel(nullptr);
+
+#include "ZString.h"
+ZString str(nullptr);
+
+#include "ZSymbol.h"
+ZSymbol sym(nullptr);
+
+#include "ZText.h"
+ZText txt(nullptr);
+
+#include "ZTexture.h"
+ZTexture tex(nullptr);
+
+#include "ZVector.h"
+ZVector vec(nullptr);
+
+#include "ZVtx.h"
+ZVtx vtx(nullptr);
+
+#include "ZRoom/ZRoom.h"
+ZRoom room(nullptr);
+
 #include "ZFile.h"
 #include "ZTexture.h"
+
 
 #ifdef __linux__
 #include <csignal>

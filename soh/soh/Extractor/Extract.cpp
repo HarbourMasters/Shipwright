@@ -183,7 +183,7 @@ void Extractor::SetRomInfo(const std::string& path) {
 void Extractor::GetRoms(std::vector<std::string>& roms) {
 #ifdef _WIN32
     WIN32_FIND_DATAA ffd;
-    HANDLE h = FindFirstFileA("\\*", &ffd);
+    HANDLE h = FindFirstFileA(".\\*", &ffd);
 
     do {
         if (!(ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
