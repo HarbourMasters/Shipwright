@@ -18,24 +18,24 @@ class Extractor {
 
     bool GetRomPathFromBox();
 
-    uint32_t GetRomVerCrc();
-    size_t GetCurRomSize();
+    uint32_t GetRomVerCrc() const;
+    size_t GetCurRomSize() const;
     bool ValidateAndFixRom();
-    bool ValidateRomSize();
+    bool ValidateRomSize() const;
 
     bool ValidateRom(bool skipCrcBox = false);
-    const char* GetZapdVerStr();
-    bool IsMasterQuest();
+    const char* GetZapdVerStr() const;
+    bool IsMasterQuest() const;
     
 
-    int ShowYesNoBox(const char* title, const char* text);
+    int ShowYesNoBox(const char* title, const char* text) const;
     void SetRomInfo(const std::string& path);
 
     void GetRoms(std::vector<std::string>& roms);
-    void ShowSizeErrorBox();
-    void ShowCrcErrorBox();
-    void ShowErrorBox(const char* title, const char* text);
-    int ShowRomPickBox(uint32_t verCrc);
+    void ShowSizeErrorBox() const;
+    void ShowCrcErrorBox() const;
+    void ShowErrorBox(const char* title, const char* text) const;
+    int ShowRomPickBox(uint32_t verCrc) const;
 
   public:
     bool Run();

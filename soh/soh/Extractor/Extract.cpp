@@ -106,7 +106,7 @@ enum class ButtonId : int {
 };
 
 
-void Extractor::ShowErrorBox(const char* title, const char* text) {
+void Extractor::ShowErrorBox(const char* title, const char* text) const {
 #ifdef _WIN32
     MessageBoxA(nullptr, text, title, MB_OK | MB_ICONERROR);
 #else
@@ -114,7 +114,7 @@ void Extractor::ShowErrorBox(const char* title, const char* text) {
 #endif
 }
 
-void Extractor::ShowSizeErrorBox() {
+void Extractor::ShowSizeErrorBox() const {
     std::unique_ptr<char[]> boxBuffer = std::make_unique<char[]>(mCurrentRomPath.size() + 100);
     snprintf(boxBuffer.get(), mCurrentRomPath.size() + 100,
              "The rom file %s was not a valid size. Was %zu MB, expecting 32, 54, or 64MB.", mCurrentRomPath.c_str(),
@@ -122,11 +122,11 @@ void Extractor::ShowSizeErrorBox() {
     ShowErrorBox("Invalid Rom Size", boxBuffer.get());
 }
 
-void Extractor::ShowCrcErrorBox() {
+void Extractor::ShowCrcErrorBox() const {
     ShowErrorBox("Rom CRC invalid", "Rom CRC did not match the list of known good roms. Please find another.");
 }
 
-int Extractor::ShowRomPickBox(uint32_t verCrc) {
+int Extractor::ShowRomPickBox(uint32_t verCrc) const {
     std::unique_ptr<char[]> boxBuffer = std::make_unique<char[]>(mCurrentRomPath.size() + 100);
     SDL_MessageBoxData boxData = { 0 };
     SDL_MessageBoxButtonData buttons[3] = { { 0 } };
@@ -155,7 +155,7 @@ int Extractor::ShowRomPickBox(uint32_t verCrc) {
     return ret;
 }
 
-int Extractor::ShowYesNoBox(const char* title, const char* box) {
+int Extractor::ShowYesNoBox(const char* title, const char* box) const {
     SDL_MessageBoxData boxData = { 0 };
     SDL_MessageBoxButtonData buttons[2] = { { 0 } };
     int ret;
@@ -282,11 +282,11 @@ bool Extractor::GetRomPathFromBox() {
     mCurRomSize = GetCurRomSize();
     return true;
 }
-uint32_t Extractor::GetRomVerCrc() {
+uint32_t Extractor::GetRomVerCrc() const {
     return _byteswap_ulong(((uint32_t*)mRomData.get())[4]);
 }
 
-size_t Extractor::GetCurRomSize() {
+size_t Extractor::GetCurRomSize() const {
     return std::filesystem::file_size(mCurrentRomPath);
 }
 
@@ -305,7 +305,7 @@ bool Extractor::ValidateAndFixRom() {
     return false;
 }
 
-bool Extractor::ValidateRomSize() {
+bool Extractor::ValidateRomSize() const {
     if (mCurRomSize != MB32 && mCurRomSize != MB54 && mCurRomSize != MB64) {
         return false;
     }
@@ -420,7 +420,7 @@ bool Extractor::Run() {
     return true;
 }
 
-bool Extractor::IsMasterQuest() {
+bool Extractor::IsMasterQuest() const {
     switch (GetRomVerCrc()) {
         case OOT_PAL_GC_MQ_DBG:
             return true;
@@ -432,7 +432,7 @@ bool Extractor::IsMasterQuest() {
     }
 }
 
-const char* Extractor::GetZapdVerStr() {
+const char* Extractor::GetZapdVerStr() const {
     switch (GetRomVerCrc()) {
         case OOT_PAL_GC:
             return "GC_NMQ_PAL_F";
@@ -447,6 +447,7 @@ const char* Extractor::GetZapdVerStr() {
     }
 }
 
+#if 0
 const char* Extractor::GetZapdStr() {
     constexpr size_t ZAPD_STR_SIZE = 1024;
     char* zapdCall = new char[ZAPD_STR_SIZE];
@@ -460,7 +461,7 @@ const char* Extractor::GetZapdStr() {
 
     return zapdCall;
 }
-
+#endif
 extern "C" int zapd_main(int argc, char** argv);
 
 //const char* zapdArgv[] = {
@@ -473,10 +474,11 @@ bool Extractor::CallZapd() {
     char baseromPath[100];
     char confPath[100];
     std::array<const char*, argc> argv;
+    const char* version = GetZapdVerStr();
 
-    snprintf(xmlPath, 100, "assets/extractor/xmls/%s", GetZapdVerStr());
+    snprintf(xmlPath, 100, "assets/extractor/xmls/%s", version);
     snprintf(baseromPath, 100, "%s", mCurrentRomPath.c_str());
-    snprintf(confPath, 100, "assets/extractor/Config_%s.xml", GetZapdVerStr());
+    snprintf(confPath, 100, "assets/extractor/Config_%s.xml", version);
 
     argv[0] = "ZAPD";
     argv[1] = "ed";
