@@ -96,14 +96,7 @@ void ErrorHandler(int sig)
 }
 #endif
 
-#define ZAPD_AS_LIB
-#ifdef ZAPD_AS_LIB
-#define ZAPD_MAIN zapd_main
-#else
-#define ZAPD_MAIN main
-#endif
-
-extern "C" int ZAPD_MAIN(int argc, char* argv[])
+extern "C" int zapd_main(int argc, char* argv[])
 {
 	// Syntax: ZAPD.out [mode (btex/bovl/e)] (Arbritrary Number of Arguments)
 
