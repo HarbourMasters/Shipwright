@@ -614,14 +614,6 @@ namespace GameMenuBar {
                         ImGui::EndMenu();
                     }
 
-                    UIWidgets::Spacer(0);
-
-                    UIWidgets::PaddedEnhancementCheckbox("Rupee Dash Mode", "gRupeeDash", true, false);
-                    UIWidgets::Tooltip("Rupees reduced over time, Link suffers damage when the count hits 0.");
-                    UIWidgets::PaddedEnhancementSliderInt("Rupee Dash Interval: %d", "##DashInterval", "gDashInterval", 3, 5, "", 5, true, true, false,
-                        !CVarGetInteger("gRupeeDash", 0), "This option is disabled because \"Rupee Dash Mode\" is turned off");
-                    UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
-
                     ImGui::EndMenu();
                 }
 
@@ -820,6 +812,29 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Restore old Gold Skulltula cutscene", "gGsCutscene", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("Quick Bongo Kill", "gQuickBongoKill", true, false);
                 UIWidgets::Tooltip("Restore a bug from NTSC 1.0 that allows bypassing Bongo Bongo's intro cutscene to quickly kill him");
+
+                ImGui::EndMenu();
+            }
+
+            UIWidgets::Spacer(0);
+
+            if (ImGui::BeginMenu("Extra Modes")) {
+                UIWidgets::PaddedEnhancementCheckbox("Ivan the Fairy (Coop Mode)", "gIvanCoopModeEnabled", true, false);
+                UIWidgets::Tooltip("Enables Ivan the Fairy upon the next map change. Player 2 can control Ivan and "
+                                   "press the C-Buttons to use items and mess with Player 1!");
+
+                UIWidgets::Spacer(0);
+
+                UIWidgets::PaddedEnhancementCheckbox("Rupee Dash Mode", "gRupeeDash", true, false);
+
+                if (CVarGetInteger("gRupeeDash", 0)) {
+                    UIWidgets::Tooltip("Rupees reduced over time, Link suffers damage when the count hits 0.");
+                    UIWidgets::PaddedEnhancementSliderInt(
+                        "Rupee Dash Interval: %d", "##DashInterval", "gDashInterval", 3, 5, "", 5, true, true, false,
+                        !CVarGetInteger("gRupeeDash", 0),
+                        "This option is disabled because \"Rupee Dash Mode\" is turned off");
+                    UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
+                }
 
                 ImGui::EndMenu();
             }

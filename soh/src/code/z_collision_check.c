@@ -3045,6 +3045,10 @@ void CollisionCheck_ApplyDamage(PlayState* play, CollisionCheckContext* colChkCt
     if (!(collider->acFlags & AC_HARD)) {
         collider->actor->colChkInfo.damage += damage;
     }
+
+    if (CVarGetInteger("gIvanCoopModeEnabled", 0)) {
+        collider->actor->colChkInfo.damage *= GET_PLAYER(play)->ivanDamageMultiplier;
+    }
 }
 
 /**
