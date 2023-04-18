@@ -18,7 +18,6 @@ set (BUILD_SHARED_LIBS OFF CACHE STRING "install/link shared instead of static l
 # Set target arch type if empty. Visual studio solution generator provides it.
 ################################################################################
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	set (ZAPD_LIB BOOL ON)
 	if(NOT CMAKE_VS_PLATFORM_NAME)
 		set(CMAKE_VS_PLATFORM_NAME "x64")
 	endif()
@@ -95,6 +94,10 @@ endif()
 
 if (NOT TARGET ZAPDUtils)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils ${CMAKE_BINARY_DIR}/ZAPDUtils)
+endif()
+
+if (NOT TARGET ZAPDLib)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
 endif()
 
 set(PROJECT_NAME soh)
@@ -177,6 +180,15 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 # }}}
 
+# soh/Extractor {{{
+file(GLOB_RECURSE soh__Extractor RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    "soh/Extractor/*.c"
+    "soh/Extractor/*.cpp"
+    "soh/Extractor/*.h"
+    "soh/Extractor/*.hpp"
+)
+# }}}
+
 # soh/resource {{{
 file(GLOB_RECURSE soh__Resource RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/resource/*.cpp" "soh/resource/*.h")
 
@@ -225,6 +237,7 @@ set(ALL_FILES
     ${Header_Files__include}
     ${soh__}
     ${soh__Enhancements}
+    ${soh__Extractor}
     ${soh__Resource}
     ${src__}
 )
@@ -478,8 +491,7 @@ if(MSVC)
                 /FORCE:MULTIPLE
             >
             /DEBUG;
-            /SUBSYSTEM:WINDOWS    
-			/MAP:soh.map
+            /SUBSYSTEM:WINDOWS
         )
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         target_link_options(${PROJECT_NAME} PRIVATE
@@ -594,7 +606,6 @@ endif()
 # Pre build events
 ################################################################################
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	set(ZAPD_LIB TRUE)
 	add_custom_command_if(
 		TARGET ${PROJECT_NAME}
 		PRE_BUILD
@@ -608,7 +619,7 @@ endif()
 add_dependencies(${PROJECT_NAME}
     ZAPDUtils
     libultraship
-	ZAPD
+	ZAPDLib
 )
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -616,7 +627,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
 			"ZAPDUtils;"
-			"ZAPD"
+			"ZAPDLib;"
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
@@ -631,7 +642,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
 			"ZAPDUtils;"
-			"ZAPD"
+			"ZAPDLib;"
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
