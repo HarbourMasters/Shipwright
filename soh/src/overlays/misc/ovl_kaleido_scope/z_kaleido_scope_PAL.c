@@ -1934,12 +1934,12 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
                 pauseCtx->infoPanelVtx[21].v.tc[0] = pauseCtx->infoPanelVtx[23].v.tc[0] =
                     D_8082ADD8[gSaveContext.language] << 5;
 
-                s16 PosX; //General Pos of C button icon
-                if (gSaveContext.language == 0) { //eng
+                s16 PosX; // General Pos of C button icon
+                if (gSaveContext.language == LANGUAGE_ENG) {
                     PosX = 112;
-                } else if (gSaveContext.language == 1) { //ger
+                } else if (gSaveContext.language == LANGUAGE_GER) {
                     PosX = 175;
-                } else {//baguettes
+                } else { // French
                     PosX = 98;
                 }
                 s16 PosY = 200 - pauseCtx->infoPanelOffsetY; //General Pos of C button icon
