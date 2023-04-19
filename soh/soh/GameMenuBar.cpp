@@ -228,9 +228,7 @@ namespace GameMenuBar {
                 }
 
                 if (Ship::Window::GetInstance()->CanDisableVerticalSync()) {
-                    if (UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", "gVsyncEnabled", true, false)) {
-                        Ship::Window::GetInstance()->SetVerticalSync(CVarGetInteger("gVsyncEnabled", true));
-                    };
+                    UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", "gVsyncEnabled", true, false);
                 }
 
                 if (SohImGui::SupportsWindowedFullscreen()) {
