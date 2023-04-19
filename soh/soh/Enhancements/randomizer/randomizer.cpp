@@ -4678,6 +4678,11 @@ CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u
 
     if (textId == TEXT_SCRUB_RANDOM && shopItemPrice == 0) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM_FREE);
+    } else if (textId == TEXT_GRANNYS_SHOP) {
+        // Capitalize the first letter for the item in Granny's text as the item is the first word presented
+        for (auto &itemName : shopItemName) {
+            itemName[0] = std::toupper(itemName[0]);
+        }
     }
 
     CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{item}}", shopItemName[0], shopItemName[1], shopItemName[2]);
