@@ -1868,6 +1868,10 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
 }
 
 GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId) {
+    // Shopsanity with at least one item shuffled allows for a third wallet upgrade.
+    // This is needed since Plentiful item pool also adds a third progressive wallet
+    // but we should *not* get Tycoon's Wallet in that mode.
+    u8 numWallets = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 3 : 2;
     switch (randoGet) {
         case RG_NONE:
             return ogItemId;
@@ -1912,6 +1916,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_STICK_UPGRADE_20;
                 case 2:
+                case 3:
                     return GI_STICK_UPGRADE_30;
             }
         case RG_PROGRESSIVE_NUT_UPGRADE:
@@ -1920,6 +1925,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_NUT_UPGRADE_30;
                 case 2:
+                case 3:
                     return GI_NUT_UPGRADE_40;
             }
         case RG_PROGRESSIVE_BOMB_BAG:
@@ -1929,6 +1935,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_BOMB_BAG_30;
                 case 2:
+                case 3:
                     return GI_BOMB_BAG_40;
             }
         case RG_BOMBS_5:
@@ -1950,6 +1957,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_QUIVER_40;
                 case 2:
+                case 3:
                     return GI_QUIVER_50;
             }
         case RG_ARROWS_5:
@@ -1968,6 +1976,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_BULLET_BAG_40;
                 case 2:
+                case 3:
                     return GI_BULLET_BAG_50;
             }
         case RG_DEKU_SEEDS_30:
@@ -1978,6 +1987,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case ITEM_NONE:
                     return GI_OCARINA_FAIRY;
                 case ITEM_OCARINA_FAIRY:
+                case ITEM_OCARINA_TIME:
                     return GI_OCARINA_OOT;
             }
         case RG_PROGRESSIVE_BOMBCHUS:
@@ -2002,6 +2012,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case ITEM_NONE:
                     return GI_HOOKSHOT;
                 case ITEM_HOOKSHOT:
+                case ITEM_LONGSHOT:
                     return GI_LONGSHOT;
             }
         case RG_BOOMERANG:
@@ -2098,6 +2109,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_GAUNTLETS_SILVER;
                 case 2:
+                case 3:
                     return GI_GAUNTLETS_GOLD;
             }
         case RG_PROGRESSIVE_WALLET:
@@ -2107,13 +2119,15 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_WALLET_GIANT;
                 case 2:
-                    return (GetItemID)RG_TYCOON_WALLET;
+                case 3:
+                    return numWallets == 3 ? (GetItemID)RG_TYCOON_WALLET : GI_WALLET_GIANT;
             }
         case RG_PROGRESSIVE_SCALE:
             switch (CUR_UPG_VALUE(UPG_SCALE)) {
                 case 0:
                     return GI_SCALE_SILVER;
                 case 1:
+                case 2:
                     return GI_SCALE_GOLD;
             }
         case RG_PROGRESSIVE_MAGIC_METER:
@@ -2121,6 +2135,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 0:
                     return (GetItemID)RG_MAGIC_SINGLE;
                 case 1:
+                case 2:
                     return (GetItemID)RG_MAGIC_DOUBLE;
             }
 
