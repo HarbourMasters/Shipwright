@@ -260,10 +260,23 @@ int main(int argc, char* argv[])
 		{
 			Globals::Instance->buildRawTexture = true;
 		}
+		else if (arg == "--norom") 
+		{
+			Globals::Instance->onlyGenSohOtr = true;
+		}
 	}
+
 
 	// Parse File Mode
 	ExporterSet* exporterSet = Globals::Instance->GetExporterSet();
+	
+	if(Globals::Instance->onlyGenSohOtr) {
+		exporterSet->endProgramFunc();
+
+		delete g;
+		return 0;
+	}
+	
 	std::string buildMode = argv[1];
 	ZFileMode fileMode = ZFileMode::Invalid;
 
@@ -419,6 +432,8 @@ int main(int argc, char* argv[])
 
 	if (exporterSet != nullptr && exporterSet->endProgramFunc != nullptr)
 		exporterSet->endProgramFunc();
+
+end:
 
 	delete g;
 	return 0;

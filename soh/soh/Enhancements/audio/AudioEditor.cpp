@@ -371,6 +371,18 @@ void DrawSfxEditor(bool& open) {
                                                 "gSeqNameOverlayDuration", 1, 10, "", 5);
                 ImGui::PopItemWidth();
                 ImGui::NewLine();
+                ImGui::PopItemWidth();
+                UIWidgets::EnhancementSliderFloat("Link's voice pitch multiplier: %f", "##linkVoiceFreqMultiplier",
+                        "gLinkVoiceFreqMultiplier", 0.4, 2.5, "", 1.0, false, false);
+                ImGui::SameLine();
+                const std::string resetButton = "Reset##linkVoiceFreqMultiplier";
+                if (ImGui::Button(resetButton.c_str())) {
+                    CVarSetFloat("gLinkVoiceFreqMultiplier", 1.0f);
+                    SohImGui::RequestCvarSaveOnNextTick();
+                }
+
+                ImGui::NewLine();
+                ImGui::PushItemWidth(-FLT_MIN);
                 UIWidgets::PaddedSeparator();
                 UIWidgets::PaddedText("The following options are experimental and may cause music\nto sound odd or have other undesireable effects.");
                 UIWidgets::EnhancementCheckbox("Lower Octaves of Unplayable High Notes", "gExperimentalOctaveDrop");

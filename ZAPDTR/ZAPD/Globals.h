@@ -54,7 +54,7 @@ public:
 	bool useLegacyZDList;
 	bool singleThreaded;
 	VerbosityLevel verbosity;  // ZAPD outputs additional information
-	ZFileMode fileMode;
+	ZFileMode fileMode = ZFileMode::Invalid;
 	fs::path baseRomPath, inputPath, outputPath, sourceOutputPath, cfgPath, fileListPath;
 	TextureType texType;
 	ZGame game;
@@ -65,6 +65,7 @@ public:
 	bool forceUnaccountedStatic = false;
 	bool otrMode = true;
 	bool buildRawTexture = false;
+	bool onlyGenSohOtr = false;
 
 	ZRom* rom;
 	std::vector<ZFile*> files;

@@ -205,6 +205,10 @@ OTRGlobals::OTRGlobals() {
     if (std::filesystem::exists(ootPath)) {
         OTRFiles.push_back(ootPath);
     }
+    std::string sohOtrPath = Ship::Window::GetPathRelativeToAppBundle("soh.otr");
+    if (std::filesystem::exists(sohOtrPath)) {
+        OTRFiles.push_back(sohOtrPath);
+    }
     std::string patchesPath = Ship::Window::GetPathRelativeToAppDirectory("mods");
     if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
         if (std::filesystem::is_directory(patchesPath)) {
@@ -316,7 +320,7 @@ bool OTRGlobals::HasOriginal() {
 }
 
 uint32_t OTRGlobals::GetInterpolationFPS() {
-    if (CVarGetInteger("gMatchRefreshRate", 0)) {
+    if (CVarGetInteger("gMatchRefreshRate", 0) && SohImGui::WindowBackend() != SohImGui::Backend::DX11) {
         return Ship::Window::GetInstance()->GetCurrentRefreshRate();
     }
 
@@ -1854,7 +1858,7 @@ extern "C" void Overlay_DisplayText(float duration, const char* text) {
 }
 
 extern "C" void Overlay_DisplayText_Seconds(int seconds, const char* text) {
-    float duration = seconds * CVarGetInteger("gInterpolationFPS", 20) * 0.05;
+    float duration = seconds * OTRGlobals::Instance->GetInterpolationFPS() * 0.05;
     SohImGui::GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 

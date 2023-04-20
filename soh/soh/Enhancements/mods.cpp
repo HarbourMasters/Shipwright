@@ -163,23 +163,31 @@ void RegisterSwitchAge() {
         static bool warped = false;
         static Vec3f playerPos;
         static int16_t playerYaw;
+        static RoomContext* roomCtx;
+        static s32 roomNum;
 
         if (!gPlayState) return;
 
-        if (CVarGetInteger("gSwitchAge", 0) != 0) {
-            CVarSetInteger("gSwitchAge", 0);
+        if (CVarGetInteger("gSwitchAge", 0) && !warped) {
             playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
             playerYaw = GET_PLAYER(gPlayState)->actor.shape.rot.y;
-
+            roomCtx = &gPlayState->roomCtx;
+            roomNum = roomCtx->curRoom.num;
             ReloadSceneTogglingLinkAge();
-
             warped = true;
         }
 
-        if (warped && gPlayState->sceneLoadFlag != 0x0014 && gSaveContext.nextTransitionType == 255) {
+        if (warped && gPlayState->sceneLoadFlag != 0x0014 &&
+            gSaveContext.nextTransitionType == 255) {
             GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
             GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
+            if (roomNum != roomCtx->curRoom.num) {
+                func_8009728C(gPlayState, roomCtx, roomNum); //load original room
+                //func_800973FC(gPlayState, &gPlayState->roomCtx); // commit to room load?
+                func_80097534(gPlayState, roomCtx);  // load map for new room (unloading the previous room)
+            }
             warped = false;
+            CVarSetInteger("gSwitchAge", 0);
         }
     });
 }
