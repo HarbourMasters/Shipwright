@@ -211,7 +211,7 @@ namespace GameMenuBar {
                     }
                     int currentFps = fmax(fmin(OTRGlobals::Instance->GetInterpolationFPS(), maxFps), minFps);
                 #ifdef __WIIU__
-                    UIWidgets::Spacer();
+                    UIWidgets::Spacer(0);
                     // only support divisors of 60 on the Wii U
                     if (currentFps > 60) {
                         currentFps = 60;
@@ -240,7 +240,7 @@ namespace GameMenuBar {
                     ImGui::SameLine();
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
 
-                    UIWidgets::Spacer();
+                    UIWidgets::Spacer(0);
 
                     ImGui::SliderInt("##WiiUFPSSlider", &fpsSlider, 1, 3, "", ImGuiSliderFlags_AlwaysClamp);
 
