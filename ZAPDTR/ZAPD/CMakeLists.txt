@@ -290,7 +290,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		)
 	endif()
 elseif (CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-        set_target_properties(${PROJECT_NAME} PROPERTIES
+        set_target_properties(ZAPD PROPERTIES
 		OUTPUT_NAME "ZAPD.out"
 	)
 endif()
@@ -414,7 +414,7 @@ if(MSVC)
 endif()
 
 if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
-	target_compile_options(${PROJECT_NAME} PRIVATE
+	target_compile_options(${PROJECT_NAME} PUBLIC
 		-Wall -Wextra -Wno-error
         -Wno-unused-parameter
         -Wno-unused-function
@@ -427,11 +427,11 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 	)
 	
     if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-        target_link_options(${PROJECT_NAME} PRIVATE
+        target_link_options(${PROJECT_NAME} PUBLIC
             -pthread
         )
     else()
-        target_link_options(${PROJECT_NAME} PRIVATE
+        target_link_options(${PROJECT_NAME} PUBLIC
             -pthread
             -Wl,-export-dynamic
         )
@@ -501,7 +501,7 @@ endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
 add_library(pathconf OBJECT pathconf.c)
-target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}" $<TARGET_OBJECTS:pathconf> )
+target_link_libraries(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}" $<TARGET_OBJECTS:pathconf> )
 else()
-target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
+target_link_libraries(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 endif()

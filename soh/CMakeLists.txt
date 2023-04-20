@@ -612,6 +612,14 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		COMMANDS
 		COMMAND   $<CONFIG:Debug> copy /b $<SHELL_PATH:${CMAKE_BINARY_DIR}/>build.c +,,
 	)
+	add_custom_command(
+		TARGET ${PROJECT_NAME}
+		POST_BUILD
+		COMMENT "Copying asset xmls..."
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/OTRGui/assets $<TARGET_FILE_DIR:soh>/assets
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/soh/assets/xml $<TARGET_FILE_DIR:soh>/assets/extractor/xmls
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/OTRExporter/assets $<TARGET_FILE_DIR:soh>/Extract/assets
+	)
 endif()
 ################################################################################
 # Dependencies

@@ -243,7 +243,7 @@ bool Extractor::GetRomPathFromBox() {
     box.lpstrFile = nameBuffer;
     box.nMaxFile = sizeof(nameBuffer) / sizeof(nameBuffer[0]);
     box.lpstrTitle = "Open Rom";
-    box.Flags = OFN_ENABLESIZING | OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
+    box.Flags = OFN_NOCHANGEDIR | OFN_ENABLESIZING | OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
     box.lpstrFilter = "N64 Roms\0*.z64;*.v64;*.n64\0\0";
     if (!GetOpenFileNameA(&box)) {
         DWORD err = CommDlgExtendedError();
