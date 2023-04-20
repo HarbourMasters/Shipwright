@@ -194,7 +194,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gRupeeDash",
     "gDashInterval",
     "gDogFollowsEverywhere",
-    "gDisableWarningText",
+    "gDisableTunicWarningText",
     "gDisableLOD",
     "gDisableDrawDistance",
     "gDisableKokiriDrawDistance",

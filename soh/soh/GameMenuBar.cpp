@@ -35,13 +35,6 @@
 
 #include "Enhancements/game-interactor/GameInteractor.h"
 
-#define EXPERIMENTAL() \
-    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 50, 50, 255)); \
-    UIWidgets::Spacer(3.0f); \
-    ImGui::Text("Experimental"); \
-    ImGui::PopStyleColor(); \
-    UIWidgets::PaddedSeparator(false, true);
-
 bool isBetaQuestEnabled = false;
 
 extern "C" {
@@ -284,7 +277,7 @@ namespace GameMenuBar {
                 } // END FPS Slider
 
                 if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
-                    ImGui::Dummy(ImVec2(0, 0));
+                    UIWidgets::Spacer(0);
                     if (ImGui::Button("Match Refresh Rate")) {
                         int hz = Ship::Window::GetInstance()->GetCurrentRefreshRate();
                         if (hz >= 20 && hz <= 360) {
@@ -730,7 +723,7 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Hides most of the UI when not needed\nNote: Doesn't activate until after loading a new scene");
                     UIWidgets::PaddedEnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio", true, false);
                     UIWidgets::Tooltip("Disables the voice audio when Navi calls you");
-                    UIWidgets::PaddedEnhancementCheckbox("Disable Hot/Underwater Warning Text", "gDisableWarningText", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Disable Hot/Underwater Warning Text", "gDisableTunicWarningText", true, false);
                     UIWidgets::Tooltip("Disables warning text when you don't have on the Goron/Zora Tunic in Hot/Underwater conditions.");
 
                     ImGui::EndMenu();
