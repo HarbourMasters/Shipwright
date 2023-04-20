@@ -372,12 +372,13 @@ bool CheckChecks(GetItemEntry giEntry = GET_ITEM_NONE, bool recheck = false) {
 }
 
 bool EvaluateCheck(RandomizerCheckObject rco) {
-    RandomizerCheckTrackerData rcData;
+    /*RandomizerCheckTrackerData rcData;
     if (checkTrackerData.contains(rco.rc)) {
         rcData = checkTrackerData.find(rco.rc)->second;
     } else {
         return false;
-    }
+    }*/
+    RandomizerCheckTrackerData rcData = checkTrackerData.find(rco.rc)->second;
     if (HasItemBeenCollected(rco.rc) && rcData.status != RCSHOW_COLLECTED && rcData.status != RCSHOW_SAVED) {
         SetCheckCollected(rco.rc);
         return true;
@@ -562,9 +563,6 @@ void CheckTrackerTransition(uint32_t sceneNum) {
         checkCollected = true;
     }
     doAreaScroll = true;
-    //doAreaScroll = sceneNum != SCENE_KAKUSIANA && // Don't move for grottos
-    //    sceneNum != SCENE_YOUSEI_IZUMI_TATE && sceneNum != SCENE_YOUSEI_IZUMI_YOKO && sceneNum != SCENE_DAIYOUSEI_IZUMI && // Don't move for great fairy fountains #TODO allow scrolling for all scenes
-    //    sceneNum != SCENE_HAKASITARELAY;
     previousArea = currentArea;
     currentArea = GetCheckArea();
 }
@@ -573,13 +571,6 @@ void CheckTrackerFrame() {
     if (!IsRunning()) {
         return;
     }
-    //if (tickCheck) {
-    //    if (tickCounter > 0) {
-    //        tickCounter--;
-    //    } else {
-    //        tickCheck = false;
-    //    }
-    //}
     if (checkCollected) {
         for (int i = 0; i < 6; i++) {
             if (CheckChecks()) {
@@ -686,6 +677,12 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
     if (gSaveContext.pendingSale != ITEM_NONE) {
         pendingSaleCheck = true;
         return;
+    }
+    if (scene == SCENE_SPOT11 && (gSaveContext.entranceIndex == 485 || gSaveContext.entranceIndex == 489)) {
+        if (EvaluateCheck(RandomizerCheckObjects::GetAllRCObjects().find(RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST)->second) ||
+            EvaluateCheck(RandomizerCheckObjects::GetAllRCObjects().find(RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST)->second)) {
+            return;
+        }
     }
     if (scene == SCENE_SYATEKIJYOU) {
         if (gSaveContext.linkAge == 1) {
