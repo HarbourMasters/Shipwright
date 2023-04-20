@@ -1071,6 +1071,14 @@ void EnGirlA_BuyEvent_Randomizer(PlayState* play, EnGirlA* this) {
     gSaveContext.pendingSaleMod = getItemEntry.modIndex;
     Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);
     Rupees_ChangeBy(-this->basePrice);
+
+    // Heart Pieces and Heart Containers refill Links health when the text box is closed on their text IDs.
+    // In Shopsanity the textbox does not close, as the shop keeper continues the text bos asking to buy more.
+    // So here we detect when a Heart Piece/Container is granted to refil Links health manually
+    if (getItemEntry.itemId == ITEM_HEART_PIECE || getItemEntry.itemId == ITEM_HEART_PIECE_2 ||
+        getItemEntry.itemId == ITEM_HEART_CONTAINER) {
+        gSaveContext.healthAccumulator = 0x140; // Refill 20 hearts
+    }
 }
 
 void EnGirlA_Noop(EnGirlA* this, PlayState* play) {
