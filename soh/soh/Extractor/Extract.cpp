@@ -156,9 +156,12 @@ int Extractor::ShowRomPickBox(uint32_t verCrc) const {
 }
 
 int Extractor::ShowYesNoBox(const char* title, const char* box) const {
+    int ret;
+#ifdef _WIN32
+    ret = MessageBoxA(nullptr, box, title, MB_YESNO | MB_ICONQUESTION);
+#else
     SDL_MessageBoxData boxData = { 0 };
     SDL_MessageBoxButtonData buttons[2] = { { 0 } };
-    int ret;
 
     buttons[0].buttonid = IDYES;
     buttons[0].text = "Yes";
@@ -172,6 +175,7 @@ int Extractor::ShowYesNoBox(const char* title, const char* box) const {
     boxData.title = title;
     boxData.buttons = buttons;
     SDL_ShowMessageBox(&boxData, &ret);
+#endif
     return ret;
 }
 
