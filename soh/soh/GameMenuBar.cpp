@@ -268,12 +268,18 @@ namespace GameMenuBar {
                         (currentFps == 20) ? "FPS: Original (20)" : "FPS: %d",
                         "##FPSInterpolation", "gInterpolationFPS", minFps, maxFps, "", 20, true, true, false, matchingRefreshRate);
                 #endif
-                    UIWidgets::Tooltip(
-                        "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics. This is purely "
-                        "visual and does not impact game logic, execution of glitches etc.\n\n"
-                        "A higher target FPS than your monitor's refresh rate will waste resources, and might give a worse result.\n\n"
-                        "For consistent input lag, set this value and your monitor's refresh rate to a multiple of 20."
-                    );
+                    if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
+                        UIWidgets::Tooltip(
+                            "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics. This is purely "
+                            "visual and does not impact game logic, execution of glitches etc.\n\n"
+                            "A higher target FPS than your monitor's refresh rate will waste resources, and might give a worse result."
+                        );
+                    } else {
+                        UIWidgets::Tooltip(
+                            "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics. This is purely "
+                            "visual and does not impact game logic, execution of glitches etc."
+                        );
+                    }
                 } // END FPS Slider
 
                 if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
