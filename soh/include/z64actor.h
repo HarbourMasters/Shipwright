@@ -6,6 +6,7 @@
 #include "z64math.h"
 #include "z64collision_check.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
+#include "z64actor_enum.h"
 
 #define ACTOR_NUMBER_MAX 2000
 #define INVISIBLE_ACTOR_MAX 20
@@ -346,22 +347,6 @@ typedef enum {
 } ActorCategory;
 
 //#define DEFINE_ACTOR(_0, enum, _2) enum,
-#define DEFINE_ACTOR_INTERNAL(_0, enum, _2) enum,
-#define DEFINE_ACTOR_UNSET(enum) enum,
-#define DEFINE_ACTOR(_0, enum, _2) DEFINE_ACTOR_INTERNAL(_0, enum, _2)
-
-#ifdef __cplusplus
-enum ActorID : int {
-#else
-enum ActorID {
-#endif
-    #include "tables/actor_table.h"
-    /* 0x0192 */ ACTOR_ID_MAX // originally "ACTOR_DLF_MAX"
-};
-
-#undef DEFINE_ACTOR
-#undef DEFINE_ACTOR_INTERNAL
-#undef DEFINE_ACTOR_UNSET
 
 typedef enum {
     DOORLOCK_NORMAL,
