@@ -1,4 +1,4 @@
-#include "location.hpp"
+#include "location.h"
 #include "3drando/hint_list.hpp"
 
 RandomizerCheck Rando::Location::GetRandomizerCheck() const {
@@ -63,84 +63,77 @@ uint32_t Rando::Location::GetParentRegionKey() const {
     return parentRegion;
 }
 
-Rando::Location
-Rando::Location::Base(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
-                      const RandomizerGet vanillaItem, std::vector<Category>&& categories,
-                      SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(),
-                      SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+Rando::Location Rando::Location::Base(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name,
+                                      const uint32_t hintKey, const RandomizerGet vanillaItem,
+                                      std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck,
+                                      SpoilerCollectionCheckGroup collectionCheckGroup) {
     return Location(rc, scene, LocationType::Base, flag, std::move(name), hintKey, vanillaItem, std::move(categories),
                     collectionCheck, collectionCheckGroup);
 }
 
-Rando::Location
-Rando::Location::Chest(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
-                       const RandomizerGet vanillaItem, std::vector<Category>&& categories,
-                       SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+Rando::Location Rando::Location::Chest(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name,
+                                       const uint32_t hintKey, const RandomizerGet vanillaItem,
+                                       std::vector<Category>&& categories,
+                                       SpoilerCollectionCheckGroup collectionCheckGroup) {
     return Location(rc, scene, LocationType::Chest, flag, std::move(name), hintKey, vanillaItem, std::move(categories),
                     SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_CHEST, scene, flag),
                     collectionCheckGroup);
 }
 
-Rando::Location
-Rando::Location::Chest(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
-                       const RandomizerGet vanillaItem, std::vector<Category>&& categories,
-                       SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(),
-                       SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+Rando::Location Rando::Location::Chest(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name,
+                                       const uint32_t hintKey, const RandomizerGet vanillaItem,
+                                       std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck,
+                                       SpoilerCollectionCheckGroup collectionCheckGroup) {
     return Location(rc, scene, LocationType::Chest, flag, std::move(name), hintKey, vanillaItem, std::move(categories),
                     collectionCheck, collectionCheckGroup);
 }
 
-Rando::Location Rando::Location::Collectable(
-    RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
-    const RandomizerGet vanillaItem, std::vector<Category>&& categories,
-    SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+Rando::Location Rando::Location::Collectable(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name,
+                                             const uint32_t hintKey, const RandomizerGet vanillaItem,
+                                             std::vector<Category>&& categories,
+                                             SpoilerCollectionCheckGroup collectionCheckGroup) {
     return Location(
         rc, scene, LocationType::Collectable, flag, std::move(name), hintKey, vanillaItem, std::move(categories),
         SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE, scene, flag), collectionCheckGroup);
 }
 
-Rando::Location Rando::Location::Collectable(
-    RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
-    const RandomizerGet vanillaItem, std::vector<Category>&& categories,
-    SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(),
-    SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+Rando::Location Rando::Location::Collectable(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name,
+                                             const uint32_t hintKey, const RandomizerGet vanillaItem,
+                                             std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck,
+                                             SpoilerCollectionCheckGroup collectionCheckGroup) {
     return Location(rc, scene, LocationType::Collectable, flag, std::move(name), hintKey, vanillaItem,
                     std::move(categories), collectionCheck, collectionCheckGroup);
 }
 
-Rando::Location Rando::Location::GSToken(
-    RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
-    std::vector<Category>&& categories,
-    SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+Rando::Location Rando::Location::GSToken(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name,
+                                         const uint32_t hintKey, std::vector<Category>&& categories,
+                                         SpoilerCollectionCheckGroup collectionCheckGroup) {
     return Location(rc, scene, LocationType::GSToken, flag, std::move(name), hintKey, RG_GOLD_SKULLTULA_TOKEN,
                     std::move(categories),
                     SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA, scene, flag),
                     collectionCheckGroup);
 }
 
-Rando::Location Rando::Location::GrottoScrub(
-    RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
-    const RandomizerGet vanillaItem, std::vector<Category>&& categories,
-    SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(),
-    SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+Rando::Location Rando::Location::GrottoScrub(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name,
+                                             const uint32_t hintKey, const RandomizerGet vanillaItem,
+                                             std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck,
+                                             SpoilerCollectionCheckGroup collectionCheckGroup) {
     return Location(rc, scene, LocationType::GrottoScrub, flag, std::move(name), hintKey, vanillaItem,
                     std::move(categories), collectionCheck, collectionCheckGroup);
 }
 
-Rando::Location Rando::Location::Delayed(
-    RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
-    const RandomizerGet vanillaItem, std::vector<Category>&& categories,
-    SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(),
-    SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+Rando::Location Rando::Location::Delayed(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name,
+                                         const uint32_t hintKey, const RandomizerGet vanillaItem,
+                                         std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck,
+                                         SpoilerCollectionCheckGroup collectionCheckGroup) {
     return Location(rc, scene, LocationType::Delayed, flag, std::move(name), hintKey, vanillaItem,
                     std::move(categories), collectionCheck, collectionCheckGroup);
 }
 
-Rando::Location Rando::Location::Reward(
-    RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
-    const RandomizerGet vanillaItem, std::vector<Category>&& categories,
-    SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(),
-    SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+Rando::Location Rando::Location::Reward(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name,
+                                        const uint32_t hintKey, const RandomizerGet vanillaItem,
+                                        std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck,
+                                        SpoilerCollectionCheckGroup collectionCheckGroup) {
     return Location(rc, scene, LocationType::TempleReward, flag, std::move(name), hintKey, vanillaItem,
                     std::move(categories), collectionCheck, collectionCheckGroup);
 }

@@ -6,6 +6,7 @@
 #include "3drando/category.hpp"
 #include "3drando/hints.hpp"
 
+#include "global.h"
 #include "z64scene.h"
 #include "z64item.h"
 #include "randomizerTypes.h"
