@@ -787,6 +787,7 @@ void CreateMerchantsHints() {
 void CreateDampesDiaryText() {
   if (!DampeHintText) {
     dampesText = Text();
+    dampeHintLoc = "";
     return;
   }
 
@@ -986,7 +987,7 @@ void CreateAllHints() {
     HintType type = RandomElement(remainingHintTypes, true);
 
     SPDLOG_DEBUG("Attempting to make hint of type: ");
-    SPDLOG_DEBUG(hintTypeNames[static_cast<int>(type)]);
+    SPDLOG_DEBUG(hintTypeNames.find(type)->second);
     SPDLOG_DEBUG("\n");
 
     //create the appropriate hint for the type

@@ -755,7 +755,7 @@ static void WriteHints(int language) {
 
         std::string textStr = AutoFormatHintTextString(unformattedHintTextString);
         jsonData["hints"][location->GetName()]["hint"] = textStr;
-        jsonData["hints"][location->GetName()]["type"] = hintTypeNames[hintType];
+        jsonData["hints"][location->GetName()]["type"] = hintTypeNames.find(hintType)->second;
         if (hintType == HINT_TYPE_ITEM || hintType == HINT_TYPE_NAMED_ITEM) {
             jsonData["hints"][location->GetName()]["item"] = hintedLocation->GetPlacedItemName().GetEnglish();
             if (hintType != HINT_TYPE_NAMED_ITEM) {
