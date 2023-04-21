@@ -1398,7 +1398,7 @@ void Inventory_SwapAgeEquipment(void) {
             if (i != 0) {
                 gSaveContext.childEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
             } else {
-                if (CVarGetInteger("gSwitchAge", 0) && 
+                if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && 
                     (gSaveContext.infTable[29] & 1)) {
                     gSaveContext.childEquips.buttonItems[i] = ITEM_NONE;
                 } else {
@@ -1482,7 +1482,8 @@ void Inventory_SwapAgeEquipment(void) {
         gSaveContext.adultEquips.equipment = gSaveContext.equips.equipment;
 
         if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE ||
-            CVarGetInteger("gSwitchAge", 0)) {
+            CVarGetInteger("gSwitchAge", 0) ||
+            CVarGetInteger("gSwitchTimeline", 0)) {
             for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                 gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
 
@@ -1523,7 +1524,7 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = 0x1111;
         }
 
-        if (CVarGetInteger("gSwitchAge", 0) &&
+        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) &&
             (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
             gSaveContext.infTable[29] |= 1;
             if (gSaveContext.childEquips.equipment == 0) {
@@ -1533,7 +1534,7 @@ void Inventory_SwapAgeEquipment(void) {
             }
         }
     }
-
+    CVarSetInteger("gSwitchTimeline", 0);
     temp = gEquipMasks[EQUIP_SHIELD] & gSaveContext.equips.equipment;
     if (temp != 0) {
         temp >>= gEquipShifts[EQUIP_SHIELD];

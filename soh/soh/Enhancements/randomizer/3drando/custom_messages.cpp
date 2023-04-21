@@ -432,6 +432,32 @@ constexpr std::array DungeonColors = {
           textStr->replace(carrotSymbol, 1, INSTANT_TEXT_OFF()+WAIT_FOR_INPUT()+INSTANT_TEXT_ON());
           carrotSymbol = textStr->find('^');
         }
+
+        //If there's a two-way choice and only 1 newline before it in the same text box, add another one
+        size_t choice = textStr->find(TWO_WAY_CHOICE());
+        if (choice != std::string::npos) {
+          size_t newLinesCount = 0;
+          size_t lastBoxBreak = textStr->rfind(WAIT_FOR_INPUT(), choice);
+          lastNewline = choice;
+
+          if (lastBoxBreak == std::string::npos) {
+            lastBoxBreak = 0;
+          }
+
+          while ((lastNewline != std::string::npos)) {
+            lastNewline = textStr->rfind(NEWLINE(), lastNewline - 1);
+            if (lastNewline != std::string::npos && lastNewline > lastBoxBreak) {
+                newLinesCount++;
+            } else {
+                break;
+            }
+          }
+
+          if (newLinesCount <= 1) {
+              textStr->replace(choice, TWO_WAY_CHOICE().length(), NEWLINE()+TWO_WAY_CHOICE());
+          }
+        }
+
         //add colors
         for (auto color : colors) {
           size_t firstHashtag = textStr->find('#');
