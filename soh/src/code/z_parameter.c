@@ -1703,7 +1703,7 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
         return;
     }
     // Count any bombchu pack as bombchus
-    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) || RG_PROGRESSIVE_BOMBCHUS) {
+    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) || item == RG_PROGRESSIVE_BOMBCHUS) {
         if (gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = 0) {
             gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
