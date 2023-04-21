@@ -1768,7 +1768,7 @@ void BossMo_CoreCollisionCheck(BossMo* this, PlayState* play) {
         // "hit 2 !!"
         osSyncPrintf("Core_Damage_check 当り 2 ！！\n");
         if ((this->work[MO_TENT_ACTION_STATE] != MO_CORE_UNDERWATER) && (this->work[MO_TENT_INVINC_TIMER] == 0)) {
-            u8 damage = CollisionCheck_GetSwordDamage(hurtbox->toucher.dmgFlags);
+            u8 damage = CollisionCheck_GetSwordDamage(hurtbox->toucher.dmgFlags, play);
 
             if ((damage != 0) && (this->work[MO_TENT_ACTION_STATE] < MO_CORE_ATTACK)) {
                 // "sword hit !!"

@@ -3081,7 +3081,7 @@ void BossTw_TwinrovaUpdate(Actor* thisx, PlayState* play2) {
 
             this->collider.base.acFlags &= ~AC_HIT;
             swordDamage = false;
-            damage = CollisionCheck_GetSwordDamage(info->toucher.dmgFlags);
+            damage = CollisionCheck_GetSwordDamage(info->toucher.dmgFlags, play);
 
             if (damage == 0) {
                 damage = 2;

@@ -3653,7 +3653,7 @@ s32 CollisionCheck_CylSideVsLineSeg(f32 radius, f32 height, f32 offset, Vec3f* a
  * Gets damage from a sword strike using generic values, and returns 0 if the attack is
  * not sword-type. Used by bosses to require that a sword attack deal the killing blow.
  */
-u8 CollisionCheck_GetSwordDamage(s32 dmgFlags) {
+u8 CollisionCheck_GetSwordDamage(s32 dmgFlags, PlayState* play) {
     u8 damage = 0;
 
     if (dmgFlags & 0x00400100) {
@@ -3664,6 +3664,10 @@ u8 CollisionCheck_GetSwordDamage(s32 dmgFlags) {
         damage = 4;
     } else if (dmgFlags & 0x04000000) {
         damage = 8;
+    }
+
+    if (CVarGetInteger("gIvanCoopModeEnabled", 0)) {
+        damage *= GET_PLAYER(play)->ivanDamageMultiplier;
     }
 
     KREG(7) = damage;

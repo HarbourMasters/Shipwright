@@ -1832,7 +1832,7 @@ void BossGoma_UpdateHit(BossGoma* this, PlayState* play) {
                 BossGoma_SetupFallStruckDown(this);
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOMA_DAM2);
             } else if (this->actionFunc == BossGoma_FloorStunned &&
-                       (damage = CollisionCheck_GetSwordDamage(acHitInfo->toucher.dmgFlags)) != 0) {
+                       (damage = CollisionCheck_GetSwordDamage(acHitInfo->toucher.dmgFlags, play)) != 0) {
                 this->actor.colChkInfo.health -= damage;
 
                 if ((s8)this->actor.colChkInfo.health > 0) {

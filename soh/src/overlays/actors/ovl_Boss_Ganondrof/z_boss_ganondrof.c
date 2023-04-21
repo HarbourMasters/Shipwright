@@ -1271,7 +1271,7 @@ void BossGanondrof_CollisionCheck(BossGanondrof* this, PlayState* play) {
                         if (dmgFlags & 0x80) {
                             return;
                         }
-                        dmg = CollisionCheck_GetSwordDamage(dmgFlags);
+                        dmg = CollisionCheck_GetSwordDamage(dmgFlags, play);
                         (dmg == 0) ? (dmg = 2) : (canKill = true);
                         if (((s8)this->actor.colChkInfo.health > 2) || canKill) {
                             this->actor.colChkInfo.health -= dmg;

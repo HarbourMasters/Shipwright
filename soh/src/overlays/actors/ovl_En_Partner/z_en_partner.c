@@ -482,13 +482,13 @@ void UseSpell(Actor* thisx, PlayState* play, u8 started, u8 spellType) {
                 Vec3f newBasePos[3];
 
                 switch (this->usedSpell) {
-                    case 1:
+                    case 1: //Din's
                         GET_PLAYER(play)->ivanDamageMultiplier = 2;
                         break;
-                    case 2:
+                    case 2: //Nayru's
                         GET_PLAYER(play)->invincibilityTimer = -10;
                         break;
-                    case 3:
+                    case 3: //Farore's
                         GET_PLAYER(play)->hoverBootsTimer = 10;
                         GET_PLAYER(play)->ivanFloating = 1;
                         break;
@@ -498,7 +498,7 @@ void UseSpell(Actor* thisx, PlayState* play, u8 started, u8 spellType) {
                 this->magicTimer--;
                 if (this->magicTimer <= 0) {
                     gSaveContext.magic--;
-                    this->magicTimer = 5;
+                    this->magicTimer = 20;
                     if (gSaveContext.magic <= 0) {
                         gSaveContext.magic = 0;
 

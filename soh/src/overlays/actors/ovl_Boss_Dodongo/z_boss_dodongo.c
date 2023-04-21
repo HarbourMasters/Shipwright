@@ -1275,7 +1275,7 @@ void BossDodongo_UpdateDamage(BossDodongo* this, PlayState* play) {
             this->collider.elements->info.bumperFlags &= ~2;
             item1 = this->collider.elements[0].info.acHitInfo;
             if ((this->actionFunc == BossDodongo_Vulnerable) || (this->actionFunc == BossDodongo_LayDown)) {
-                swordDamage = damage = CollisionCheck_GetSwordDamage(item1->toucher.dmgFlags);
+                swordDamage = damage = CollisionCheck_GetSwordDamage(item1->toucher.dmgFlags, play);
 
                 if (damage != 0) {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_K_DAMAGE);

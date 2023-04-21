@@ -2777,7 +2777,7 @@ void BossGanon_UpdateDamage(BossGanon* this, PlayState* play) {
                                               Rand_ZeroFloat(200.0f) + 500.0f, 0x1E);
                 }
 
-                damage = flags = CollisionCheck_GetSwordDamage(acHitInfo->toucher.dmgFlags);
+                damage = flags = CollisionCheck_GetSwordDamage(acHitInfo->toucher.dmgFlags, play);
 
                 if (flags == 0) {
                     damage = 2;
