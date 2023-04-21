@@ -3,6 +3,7 @@
 #include <array>
 #include "randomizerTypes.h"
 #include "item.h"
+#include "location.h"
 /**
  * @brief Singleton for storing and accessing static Randomizer-related data
  * 
@@ -13,9 +14,11 @@
 class StaticData {
     private:
       static std::array<RandoItem, RG_MAX> itemTable;
+      static std::array<Rando::Location, RC_MAX> locationTable;
 
     public:
       static void InitItemTable();
+      static void InitLocationTable();
       static RandoItem& RetrieveItem(const RandomizerGet rgid);
       static RandoItem& ItemFromGIID(const int giid);
       static std::array<RandoItem, RG_MAX>& GetItemTable();
