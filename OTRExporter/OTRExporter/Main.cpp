@@ -109,6 +109,9 @@ static void ExporterProgramEnd()
 	otrArchive = nullptr;
 
 	// Add any additional files that need to be manually copied...
+	if (File::Exists("soh.otr")) {
+		return;
+	}
 	const auto& lst = Directory::ListFiles("Extract");
 	std::shared_ptr<Ship::Archive> sohOtr = Ship::Archive::CreateArchive("soh.otr", 4096);
 	//sohOtr->AddFile("version", (uintptr_t)versionStream->ToVector().data(), versionStream->GetLength());

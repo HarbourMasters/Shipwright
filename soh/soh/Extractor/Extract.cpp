@@ -473,7 +473,7 @@ extern "C" int zapd_main(int argc, char** argv);
 //}
 
 bool Extractor::CallZapd() {
-    constexpr int argc = 19;
+    constexpr int argc = 16;
     char xmlPath[100];
     char baseromPath[100];
     char confPath[100];
@@ -492,17 +492,18 @@ bool Extractor::CallZapd() {
     argv[5] = baseromPath;
     argv[6] = "-fl";
     argv[7] = "assets/extractor/filelists";
-    argv[8] = "-o";
-    argv[9] = "placeholder";
-    argv[10] = "-osf";
-    argv[11] = "placeholder";
-    argv[12] = "-gsf";
-    argv[13] = "1";
-    argv[14] = "-rconf";
-    argv[15] = confPath;
-    argv[16] = "-se";
-    argv[17] = "OTR";
-    argv[18] = IsMasterQuest() ? "oot-mq.otr" : "oot.otr";
+    //argv[8] = "-o";
+    //argv[9] = "placeholder";
+    //argv[10] = "-osf";
+    //argv[11] = "placeholder";
+    argv[8] = "-gsf";
+    argv[9] = "1";
+    argv[10] = "-rconf";
+    argv[11] = confPath;
+    argv[12] = "-se";
+    argv[13] = "OTR";
+    argv[14] = "--otrfile";
+    argv[15] = IsMasterQuest() ? "oot-mq.otr" : "oot.otr";
 
     return zapd_main(argc, (char**)argv.data());
 }
