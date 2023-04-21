@@ -227,6 +227,10 @@ namespace GameMenuBar {
                     UIWidgets::ReEnableComponent("");
                 }
 
+                if (Ship::Window::GetInstance()->CanDisableVerticalSync()) {
+                    UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", "gVsyncEnabled", true, false);
+                }
+
                 if (SohImGui::SupportsWindowedFullscreen()) {
                     UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", "gSdlWindowedFullscreen", true, false);
                 }
