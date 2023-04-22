@@ -808,6 +808,8 @@ extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
     OTRGlobals::Instance->context->MainLoop(run_one_game_iter);
 }
 
+extern bool ShouldClearTextureCacheAtEndOfFrame;
+
 extern "C" void Graph_StartFrame() {
 #ifndef __WIIU__
     using Ship::KbScancode;
@@ -874,6 +876,8 @@ extern "C" void Graph_StartFrame() {
         case KbScancode::LUS_KB_TAB: {
             // Toggle HD Assets
             CVarSetInteger("gHdAssets", !CVarGetInteger("gHdAssets", 0));
+            ShouldClearTextureCacheAtEndOfFrame = true;
+            Ship::SkeletonPatcher::UpdateSkeletons(CVarGetInteger("gHdAssets", 0));
             break;
         }
     }
@@ -887,8 +891,6 @@ void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>
         gfx_end_frame();
     }
 }
-
-extern bool ShouldClearTextureCacheAtEndOfFrame;
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {

@@ -11240,8 +11240,9 @@ void Player_Draw(Actor* thisx, PlayState* play2) {
             lod = 1;
         }
 
-        if (CVarGetInteger("gDisableLOD", 0) != 0)
+        if (CVarGetInteger("gDisableLOD", 0) != 0) {
             lod = 0;
+        }
 
         func_80093C80(play);
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
