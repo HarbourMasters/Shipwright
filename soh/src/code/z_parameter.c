@@ -1684,7 +1684,7 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
         return;
     }
     // Count any bombchu pack as bombchus
-    if (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) {
+    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) || item == RG_PROGRESSIVE_BOMBCHUS) {
         if (gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = 0) {
             gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
@@ -2526,6 +2526,19 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         Rupees_ChangeBy(1);
         Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
         gSaveContext.sohStats.itemTimestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_PROGRESSIVE_BOMBCHUS) {
+        if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
+            INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
+            AMMO(ITEM_BOMBCHU) = 20;
+        } else {
+            AMMO(ITEM_BOMBCHU) += AMMO(ITEM_BOMBCHU) < 5 ? 10 : 5;
+            if (AMMO(ITEM_BOMBCHU) > 50) {
+                AMMO(ITEM_BOMBCHU) = 50;
+            }
+        }
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
