@@ -62,8 +62,9 @@ extern "C" void gSPSegmentLoadRes(void* value, int segNum, uintptr_t target) {
 
     int res = ResourceMgr_OTRSigCheck(imgData);
 
-    if (res)
+    if (res) {
         target = (uintptr_t)ResourceMgr_LoadTexOrDListByName(imgData);
+    }
 
     __gSPSegment(value, segNum, target);
 }
