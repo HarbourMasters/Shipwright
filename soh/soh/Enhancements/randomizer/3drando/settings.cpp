@@ -1792,12 +1792,14 @@ namespace Settings {
       IncludeAndHide({ZR_MAGIC_BEAN_SALESMAN});
     }
 
-    //Force include Medigoron and Carpet salesman if Shuffle Merchants is off
+    //Force include Medigoron, Granny and Carpet salesman if Shuffle Merchants is off
     if (ShuffleMerchants.IsNot(SHUFFLEMERCHANTS_OFF)) {
       Unhide({GC_MEDIGORON});
+      Unhide({KAK_GRANNYS_SHOP});
       Unhide({WASTELAND_BOMBCHU_SALESMAN});
     } else {
       IncludeAndHide({GC_MEDIGORON});
+      IncludeAndHide({KAK_GRANNYS_SHOP});
       IncludeAndHide({WASTELAND_BOMBCHU_SALESMAN});
     }
 

@@ -96,7 +96,7 @@ static bool KillPlayerHandler(std::shared_ptr<Ship::Console> Console, const std:
 }
 
 static bool SetPlayerHealthHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -206,7 +206,7 @@ const static std::map<std::string, uint16_t> ammoItems{
 };
 
 static bool AddAmmoHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 3) {
+    if (args.size() < 3) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -245,7 +245,7 @@ static bool AddAmmoHandler(std::shared_ptr<Ship::Console> Console, const std::ve
 }
 
 static bool TakeAmmoHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 3) {
+    if (args.size() < 3) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -292,7 +292,7 @@ const static std::map<std::string, uint16_t> bottleItems{
 };
 
 static bool BottleHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 3) {
+    if (args.size() < 3) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -324,7 +324,7 @@ static bool BottleHandler(std::shared_ptr<Ship::Console> Console, const std::vec
 }
 
 static bool BHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -334,7 +334,7 @@ static bool BHandler(std::shared_ptr<Ship::Console> Console, const std::vector<s
 }
 
 static bool ItemHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 3) {
+    if (args.size() < 3) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -345,7 +345,7 @@ static bool ItemHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
 }
 
 static bool GiveItemHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string> args) {
-    if (args.size() != 3) {
+    if (args.size() < 3) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -366,7 +366,7 @@ static bool GiveItemHandler(std::shared_ptr<Ship::Console> Console, const std::v
 }
 
 static bool EntranceHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -420,7 +420,7 @@ const static std::map<std::string, uint16_t> fw_options {
 };
 
 static bool FWHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -523,7 +523,7 @@ static bool LoadStateHandler(std::shared_ptr<Ship::Console> Console, const std::
 }
 
 static bool StateSlotSelectHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -548,7 +548,7 @@ static bool StateSlotSelectHandler(std::shared_ptr<Ship::Console> Console, const
 }
 
 static bool InvisibleHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -575,7 +575,7 @@ static bool InvisibleHandler(std::shared_ptr<Ship::Console> Console, const std::
 }
 
 static bool GiantLinkHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -603,7 +603,7 @@ static bool GiantLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
 }
 
 static bool MinishLinkHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -631,7 +631,7 @@ static bool MinishLinkHandler(std::shared_ptr<Ship::Console> Console, const std:
 }
 
 static bool AddHeartContainerHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -662,7 +662,7 @@ static bool AddHeartContainerHandler(std::shared_ptr<Ship::Console> Console, con
 }
 
 static bool RemoveHeartContainerHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -693,7 +693,7 @@ static bool RemoveHeartContainerHandler(std::shared_ptr<Ship::Console> Console, 
 }
 
 static bool GravityHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -718,7 +718,7 @@ static bool GravityHandler(std::shared_ptr<Ship::Console> Console, const std::ve
 }
 
 static bool NoUIHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -759,7 +759,7 @@ static bool FreezeHandler(std::shared_ptr<Ship::Console> Console, const std::vec
 }
 
 static bool DefenseModifierHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -783,7 +783,7 @@ static bool DefenseModifierHandler(std::shared_ptr<Ship::Console> Console, const
 }
 
 static bool DamageHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -813,7 +813,7 @@ static bool DamageHandler(std::shared_ptr<Ship::Console> Console, const std::vec
 }
 
 static bool HealHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -869,7 +869,7 @@ static bool EmptyMagicHandler(std::shared_ptr<Ship::Console> Console, const std:
 }
 
 static bool NoZHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-     if (args.size() != 2) {
+     if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -897,7 +897,7 @@ static bool NoZHandler(std::shared_ptr<Ship::Console> Console, const std::vector
 }
 
 static bool OneHitKOHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -925,7 +925,7 @@ static bool OneHitKOHandler(std::shared_ptr<Ship::Console> Console, const std::v
 }
 
 static bool PacifistHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -953,7 +953,7 @@ static bool PacifistHandler(std::shared_ptr<Ship::Console> Console, const std::v
 }
 
 static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -982,7 +982,7 @@ static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
 }
 
 static bool RainstormHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -1010,7 +1010,7 @@ static bool RainstormHandler(std::shared_ptr<Ship::Console> Console, const std::
 }
 
 static bool ReverseControlsHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -1039,7 +1039,7 @@ static bool ReverseControlsHandler(std::shared_ptr<Ship::Console> Console, const
 }
 
 static bool UpdateRupeesHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -1063,7 +1063,7 @@ static bool UpdateRupeesHandler(std::shared_ptr<Ship::Console> Console, const st
 }
 
 static bool SpeedModifierHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -1093,7 +1093,7 @@ const static std::map<std::string, uint16_t> boots {
 };
 
 static bool BootsHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -1124,7 +1124,7 @@ const static std::map<std::string, uint16_t> shields {
 };
 
 static bool GiveShieldHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -1149,7 +1149,7 @@ static bool GiveShieldHandler(std::shared_ptr<Ship::Console> Console, const std:
 }
 
 static bool TakeShieldHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -1174,7 +1174,7 @@ static bool TakeShieldHandler(std::shared_ptr<Ship::Console> Console, const std:
 }
 
 static bool KnockbackHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -1270,7 +1270,7 @@ static bool GenerateRandoHandler(std::shared_ptr<Ship::Console> Console, const s
 }
 
 static bool CosmeticsHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
@@ -1288,7 +1288,7 @@ static bool CosmeticsHandler(std::shared_ptr<Ship::Console> Console, const std::
 }
 
 static bool SfxHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    if (args.size() != 2) {
+    if (args.size() < 2) {
         SohImGui::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
     }
