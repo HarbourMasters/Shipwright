@@ -279,4 +279,49 @@ void StaticData::InitLocationTable() {
                               RG_BUY_DEKU_SEEDS_30, { Category::cLakeHylia, Category::cDekuScrub, Category::cGrotto },
                               SpoilerCollectionCheck::Scrub(0x19, 0x04), SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
     // Gerudo Valley
+    locationTable[RC_GV_CHEST] =
+        Location::Chest(RC_GV_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GERUDO_VALLEY, ACTOR_EN_BOX, SCENE_SPOT09,
+                        23200, 0x00, "Chest", "GV Chest", RC_GV_CHEST, RG_PURPLE_RUPEE,
+                        {
+                            Category::cGerudoValley,
+                            Category::cGerudo,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_GV_TRADE_SAW] = Location::Base(
+        RC_GV_TRADE_SAW, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_GERUDO_VALLEY, ACTOR_ID_MAX, SCENE_SPOT09, 0x00, 0x22,
+        "Trade Saw", "GV Trade Saw", RC_GV_TRADE_SAW, RG_BROKEN_SWORD,
+        { Category::cGerudoValley, Category::cGerudo, Category::cAdultTrade },
+        SpoilerCollectionCheck::RandomizerInf(0x5A, 0x1F), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_GV_WATERFALL_FREESTANDING_POH] =
+        Location::Collectable(RC_GV_WATERFALL_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GERUDO_VALLEY,
+                              ACTOR_EN_ITEM00, SCENE_SPOT09, 262, 0x01, "Waterfall Freestanding PoH",
+                              "GV Waterfall Freestanding PoH", RC_GV_WATERFALL_FREESTANDING_POH, RG_PIECE_OF_HEART,
+                              {
+                                  Category::cGerudoValley,
+                                  Category::cGerudo,
+                              },
+                              SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_GV_CRATE_FREESTANDING_POH] =
+        Location::Collectable(RC_GV_CRATE_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GERUDO_VALLEY,
+                              ACTOR_EN_ITEM00, SCENE_SPOT09, 518, 0x02, "Crate Freestanding PoH",
+                              "GV Crate Freestanding PoH", RC_GV_CRATE_FREESTANDING_POH, RG_PIECE_OF_HEART,
+                              {
+                                  Category::cGerudoValley,
+                                  Category::cGerudo,
+                              },
+                              SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_GV_DEKU_SCRUB_GROTTO_REAR] = Location::GrottoScrub(
+        RC_GV_DEKU_SCRUB_GROTTO_REAR, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_GERUDO_VALLEY, ACTOR_EN_DNS, SCENE_KAKUSIANA,
+        TWO_ACTOR_PARAMS(0x07, 0xF0), 0x39, "Deku Scrub Grotto Rear", "GV Deku Scrub Grotto Rear",
+        RC_GV_DEKU_SCRUB_GROTTO_FRONT, RG_BUY_GREEN_POTION,
+        { Category::cGerudoValley, Category::cGerudo, Category::cDekuScrub, Category::cGrotto },
+        SpoilerCollectionCheck::Scrub(0x1A, 0x09), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_GV_DEKU_SCRUB_GROTTO_FRONT] = Location::GrottoScrub(
+        RC_GV_DEKU_SCRUB_GROTTO_FRONT, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_GERUDO_VALLEY, ACTOR_EN_DNS, SCENE_KAKUSIANA,
+        TWO_ACTOR_PARAMS(0x08, 0xF0), 0x3A, "Deku Scrub Grotto Front", "GV Deku Scrub Grotto Front",
+        RC_GV_DEKU_SCRUB_GROTTO_FRONT, RG_BUY_GREEN_POTION,
+        { Category::cGerudoValley, Category::cGerudo, Category::cDekuScrub, Category::cGrotto },
+        SpoilerCollectionCheck::Scrub(0x1A, 0x09), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    
+    // Gerudo Fortress
 }
