@@ -14,9 +14,18 @@
 #include <unistd.h>
 #endif
 
-#if __has_include(<byteswap.h>)
-#include "byteswap.h"
-#define _byteswap_ulong(x) bswap_32(x)
+#ifdef _MSC_VER
+#define BSWAP32 _byteswap_ulong
+#define BSWAP16 _byteswap_ushort
+#elif __has_include(<byteswap.h>)
+#include <byteswap.h>
+#define BSWAP32 bswap_32
+#define BSWAP16 bswap_16
+#else
+#define BSWAP16(value) ((((value)&0xff) << 8) | ((value) >> 8))
+
+#define BSWAP32(value) \
+    (((uint32_t)bswap_16((uint16_t)((value)&0xffff)) << 16) | (uint32_t)bswap_16((uint16_t)((value) >> 16)))
 #endif
 
 #if defined(_MSC_VER)
@@ -282,7 +291,7 @@ bool Extractor::GetRomPathFromBox() {
     return true;
 }
 uint32_t Extractor::GetRomVerCrc() const {
-    return _byteswap_ulong(((uint32_t*)mRomData.get())[4]);
+    return BSWAP32(((uint32_t*)mRomData.get())[4]);
 }
 
 size_t Extractor::GetCurRomSize() const {
