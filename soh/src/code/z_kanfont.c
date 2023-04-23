@@ -177,6 +177,10 @@ void Font_LoadChar(Font* font, u8 character, u16 codePointIndex) {
         memcpy(&font->charTexBuf[codePointIndex], GetResourceDataByName(fntTbl[character], false), FONT_CHAR_TEX_SIZE);
 }
 
+void* Font_FetchCharTexture(u8 character) {
+    return GetResourceDataByName(fntTbl[character], false);
+}
+
 /**
  * Loads a message box icon from message_static, such as the ending triangle/square or choice arrow into the
  * icon buffer.

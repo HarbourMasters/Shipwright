@@ -1613,7 +1613,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     } else if (this->configMode == CM_BOSS_RUSH_MENU || this->configMode == CM_START_BOSS_RUSH_MENU ||
                this->configMode == CM_ROTATE_TO_BOSS_RUSH_MENU || this->configMode == CM_BOSS_RUSH_TO_QUEST) {
 
-
+        FileChoose_DrawWord(this, "Link LinkLink", 100, 100, 255, 255, 255, 255);
 
     } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY) {
         gDPPipeSync(POLY_OPA_DISP++);
@@ -1810,6 +1810,89 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIDECALA, G_CC_MODULATEIDECALA);
 
         CLOSE_DISPS(this->state.gfxCtx);
+    }
+}
+
+void FileChoose_DrawWord(FileChooseContext* thisx, char text[16], int16_t x, int16_t y, uint16_t colorR,
+                         uint16_t colorG, uint16_t colorB, uint16_t colorA) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+
+    uint16_t textureIndex;
+    uint16_t kerningOffset = 0;
+    void* texture;
+
+    for (uint16_t i = 0; i < 16; i++) {
+        textureIndex = FileChoose_ConvertCharToTextureIndex(text[i]);
+        
+        if (textureIndex != ' ') {
+            texture = Font_FetchCharTexture(textureIndex);
+            FileChoose_DrawSingleCharacter(this, x + (i + kerningOffset), y, texture, colorR, colorG, colorB, colorA);
+        }
+        kerningOffset += FileChoose_GetTextKerning(text[i]);
+    }
+}
+
+void FileChoose_DrawSingleCharacter(FileChooseContext* thisx, int16_t x, int16_t y, void* texture, uint16_t colorR,
+                                    uint16_t colorG, uint16_t colorB, uint16_t colorA) {
+
+    FileChooseContext* this = (FileChooseContext*)thisx;
+    int32_t textScale = R_TEXT_CHAR_SCALE;
+    int32_t sCharTexSize = (textScale / 100.0f) * 16.0f;
+    int32_t sCharTexScale = 1024.0f / (textScale / 100.0f);
+
+    OPEN_DISPS(this->state.gfxCtx);
+
+    gDPPipeSync(POLY_OPA_DISP++);
+
+    gDPLoadTextureBlock_4b(POLY_OPA_DISP++, texture, G_IM_FMT_I,
+                           FONT_CHAR_TEX_WIDTH, FONT_CHAR_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                           G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+
+    // Draw drop shadow
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, 255);
+    gSPTextureRectangle(POLY_OPA_DISP++, (x + R_TEXT_DROP_SHADOW_OFFSET) << 2, (y + R_TEXT_DROP_SHADOW_OFFSET) << 2,
+                        (x + R_TEXT_DROP_SHADOW_OFFSET + sCharTexSize) << 2,
+                        (y + R_TEXT_DROP_SHADOW_OFFSET + sCharTexSize) << 2, G_TX_RENDERTILE, 0, 0, sCharTexScale,
+                        sCharTexScale);
+
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, colorR, colorG, colorB, colorA);
+    gSPTextureRectangle(POLY_OPA_DISP++, x << 2, y << 2, (x + sCharTexSize) << 2, (y + sCharTexSize) << 2,
+                        G_TX_RENDERTILE, 0, 0, sCharTexScale, sCharTexScale);
+
+    CLOSE_DISPS(this->state.gfxCtx);
+}
+
+uint16_t FileChoose_ConvertCharToTextureIndex(uint16_t character) {
+
+    if (character == 62 || character == 32 || character == 0) {
+        character = ' ';
+    } else if (character == 0x40) {
+        character = '.';
+    } else if (character == 0x3F) {
+        character = '-';
+    } else if (character < 0xA) {
+        character += 0;
+        character += '0';
+    } else if (character < 0x24) {
+        character += 0;
+        character += '7';
+    } else if (character < 0x3E) {
+        character += 0;
+        character += '=';
+    }
+    character -= ' ';
+
+    return character;
+}
+
+uint16_t FileChoose_GetTextKerning(uint16_t character) {
+
+    switch (character) {
+        case 'i':
+            return 3;
+        default:
+            return 6;
     }
 }
 

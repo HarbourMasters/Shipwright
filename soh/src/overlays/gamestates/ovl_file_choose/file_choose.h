@@ -231,4 +231,9 @@ Vec2f HandleMouseCursorSplit(FileChooseContext* thisx, Input* input, int minx, i
 
 extern s16 D_808123F0[];
 
+void FileChoose_DrawWord(FileChooseContext* thisx, char text[16], int16_t x, int16_t y, uint16_t colorR, uint16_t colorG, uint16_t colorB, uint16_t colorA);
+void FileChoose_DrawSingleCharacter(FileChooseContext* thisx, int16_t x, int16_t y, void* texture, uint16_t colorR, uint16_t colorG, uint16_t colorB, uint16_t colorA);
+uint16_t FileChoose_ConvertCharToTextureIndex(uint16_t character);
+uint16_t FileChoose_GetTextKerning(uint16_t character);
+
 #endif
