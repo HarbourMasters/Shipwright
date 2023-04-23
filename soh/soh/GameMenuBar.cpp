@@ -506,6 +506,8 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Explosions are now a static size, like in Majora's Mask and OoT3D. Makes bombchu hovering much easier.");
                     UIWidgets::PaddedEnhancementCheckbox("Prevent Bombchus Forcing First-Person", "gDisableFirstPersonChus", true, false);
                     UIWidgets::Tooltip("Prevent bombchus from forcing the camera into first-person mode when released.");
+                    UIWidgets::PaddedEnhancementCheckbox("Aiming reticle for the bow/slingshot", "gBowReticle", true, false);
+                    UIWidgets::Tooltip("Aiming with a bow or slingshot will display a reticle as with the hookshot when the projectile is ready to fire.");
                     ImGui::EndMenu();
                 }
 
@@ -924,6 +926,8 @@ namespace GameMenuBar {
 
             if (ImGui::BeginMenu("Restoration"))
             {
+                UIWidgets::PaddedEnhancementCheckbox("Hide Build Info", "gHideBuildInfo", true, false);
+                UIWidgets::Tooltip("Hides the game version and build details in the boot logo start screen");
                 UIWidgets::EnhancementCheckbox("Red Ganon blood", "gRedGanonBlood");
                 UIWidgets::Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
                 UIWidgets::PaddedEnhancementCheckbox("Fish while hovering", "gHoverFishing", true, false);
@@ -1157,8 +1161,6 @@ namespace GameMenuBar {
                 ImGui::Text("Loading :");
                 UIWidgets::EnhancementCombobox("gSaveFileID", FastFileSelect, 0);
             };
-            UIWidgets::PaddedEnhancementCheckbox("Hide Build Info", "gHideBuildInfo", true, false);
-            UIWidgets::Tooltip("Hides the game version and build details in the boot logo start screen");
             UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
             UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
             UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", "gDebugWarpScreenTranslation", true, false);

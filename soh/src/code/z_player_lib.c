@@ -1408,6 +1408,11 @@ Vec3f D_801261E0[] = {
     { 200.0f, 200.0f, 0.0f },
 };
 
+// OTRTODO: Figure out why this value works/what this value should be
+// This was originally obtained by working down from FLT_MAX until the math
+// started working out properly
+#define RETICLE_MAX 3.402823466e+12f
+
 void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
@@ -1570,6 +1575,24 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                         Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
                         Player_DrawHookshotReticle(
                             play, this, ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 77600.0f) * CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f));
+                    }
+                }
+            } else if (CVarGetInteger("gBowReticle", 0) && (
+                        (this->heldItemAction == PLAYER_IA_BOW_FIRE) ||
+                        (this->heldItemAction == PLAYER_IA_BOW_ICE) ||
+                        (this->heldItemAction == PLAYER_IA_BOW_LIGHT) ||
+                        (this->heldItemAction == PLAYER_IA_BOW) ||
+                        (this->heldItemAction == PLAYER_IA_SLINGSHOT))) {
+                if (heldActor != NULL) {
+                    MtxF sp44;
+                    s32 pad;
+
+                    Matrix_RotateZYX(0, -15216, -17496, MTXMODE_APPLY);
+                    Matrix_Get(&sp44);
+
+                    if (func_8002DD78(this) != 0) {
+                        Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
+                        Player_DrawHookshotReticle(play, this, RETICLE_MAX);
                     }
                 }
             }

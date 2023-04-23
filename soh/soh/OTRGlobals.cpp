@@ -224,9 +224,9 @@ OTRGlobals::OTRGlobals() {
         OOT_NTSC_JP_MQ,
         OOT_NTSC_US_MQ,
         OOT_PAL_GC_MQ_DBG,
-        OOT_NTSC_10,
-        OOT_NTSC_11,
-        OOT_NTSC_12,
+        OOT_NTSC_US_10,
+        OOT_NTSC_US_11,
+        OOT_NTSC_US_12,
         OOT_PAL_10,
         OOT_PAL_11,
         OOT_NTSC_JP_GC_CE,
@@ -289,9 +289,9 @@ OTRGlobals::OTRGlobals() {
             case OOT_PAL_GC_MQ_DBG:
                 hasMasterQuest = true;
                 break;
-            case OOT_NTSC_10:
-            case OOT_NTSC_11:
-            case OOT_NTSC_12:
+            case OOT_NTSC_US_10:
+            case OOT_NTSC_US_11:
+            case OOT_NTSC_US_12:
             case OOT_PAL_10:
             case OOT_PAL_11:
             case OOT_NTSC_JP_GC_CE:
