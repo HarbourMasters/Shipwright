@@ -1391,6 +1391,9 @@ Vec3f D_801261E0[] = {
     { 200.0f, 200.0f, 0.0f },
 };
 
+// OTRTODO: Figure out why this value works/what this value should be
+#define RETICLE_MAX 3.402823466e+12f
+
 void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
@@ -1535,44 +1538,42 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
         }
 
         if (this->actor.scale.y >= 0.0f) {
-            if (((this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
-                (this->heldItemAction == PLAYER_IA_LONGSHOT) ||
-                CVarGetInteger("gBowReticle", 0) && (
-                    (this->heldItemAction == PLAYER_IA_BOW_FIRE) ||
-                    (this->heldItemAction == PLAYER_IA_BOW_ICE) ||
-                    (this->heldItemAction == PLAYER_IA_BOW_LIGHT) ||
-                    (this->heldItemAction == PLAYER_IA_BOW) ||
-                    (this->heldItemAction == PLAYER_IA_SLINGSHOT)))) {
-
-                if ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
-                    (this->heldItemAction == PLAYER_IA_LONGSHOT)) {
-                    Matrix_MultVec3f(&D_80126184, &this->unk_3C8);
-                }
+            if ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
+                (this->heldItemAction == PLAYER_IA_LONGSHOT)) {
+                Matrix_MultVec3f(&D_80126184, &this->unk_3C8);
 
                 if (heldActor != NULL) {
                     MtxF sp44;
                     s32 pad;
 
-                    if ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
-                        (this->heldItemAction == PLAYER_IA_LONGSHOT)) {
-                        Matrix_MultVec3f(&D_80126190, &heldActor->world.pos);
-                        Matrix_RotateZYX(0, -0x4000, -0x4000, MTXMODE_APPLY);
-                    }
-                    else {
-                        Matrix_RotateZYX(0, -15216, -17496, MTXMODE_APPLY);
-                    }
+                    Matrix_MultVec3f(&D_80126190, &heldActor->world.pos);
+                    Matrix_RotateZYX(0, -0x4000, -0x4000, MTXMODE_APPLY);
                     Matrix_Get(&sp44);
-                    if ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
-                        (this->heldItemAction == PLAYER_IA_LONGSHOT)) {
-                        Matrix_MtxFToYXZRotS(&sp44, &heldActor->world.rot, 0);
-                        heldActor->shape.rot = heldActor->world.rot;
-                    }
+                    Matrix_MtxFToYXZRotS(&sp44, &heldActor->world.rot, 0);
+                    heldActor->shape.rot = heldActor->world.rot;
 
                     if (func_8002DD78(this) != 0) {
                         Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
                         Player_DrawHookshotReticle(
-                            play, this, ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 
-                                         ((this->heldItemAction == PLAYER_IA_LONGSHOT) ? 77600.0f : 3.402823466e+12f)) * CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f));
+                            play, this, ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 77600.0f) * CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f));
+                    }
+                }
+            } else if (CVarGetInteger("gBowReticle", 0) && (
+                        (this->heldItemAction == PLAYER_IA_BOW_FIRE) ||
+                        (this->heldItemAction == PLAYER_IA_BOW_ICE) ||
+                        (this->heldItemAction == PLAYER_IA_BOW_LIGHT) ||
+                        (this->heldItemAction == PLAYER_IA_BOW) ||
+                        (this->heldItemAction == PLAYER_IA_SLINGSHOT))) {
+                if (heldActor != NULL) {
+                    MtxF sp44;
+                    s32 pad;
+
+                    Matrix_RotateZYX(0, -15216, -17496, MTXMODE_APPLY);
+                    Matrix_Get(&sp44);
+
+                    if (func_8002DD78(this) != 0) {
+                        Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
+                        Player_DrawHookshotReticle(play, this, RETICLE_MAX);
                     }
                 }
             }
