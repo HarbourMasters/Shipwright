@@ -34,6 +34,7 @@
 #endif
 
 #include "Enhancements/game-interactor/GameInteractor.h"
+#include "Enhancements/cosmetics/authenticGfxPatches.h"
 
 bool isBetaQuestEnabled = false;
 
@@ -909,6 +910,10 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip(
                     "Adds 5 higher pitches for the Silver Rupee Jingle for the rooms with more than 5 Silver Rupees. "
                     "Currently only relevant in Master Quest.");
+                if (UIWidgets::PaddedEnhancementCheckbox("Fix out of bounds textures", "gFixTexturesOOB", true, false)) {
+                    ApplyAuthenticGfxPatches();
+                }
+                UIWidgets::Tooltip("Fixes authentic out of bounds texture reads, instead loading textures with the correct size");
 
                 ImGui::EndMenu();
             }
