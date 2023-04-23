@@ -338,8 +338,7 @@ RandomizerCheckArea GetCheckArea() {
     if (ent != nullptr && !IsAreaScene(scene) && ent->type != ENTRANCE_TYPE_DUNGEON) {
         if (ent->dstGroup == ENTRANCE_GROUP_GERUDO_VALLEY && ent->source == "GF") {
             area = RCAREA_GERUDO_FORTRESS;
-        }
-        else if (ent->dstGroup == ENTRANCE_GROUP_HAUNTED_WASTELAND && ent->source == "Desert Colossus") {
+        } else if (ent->dstGroup == ENTRANCE_GROUP_HAUNTED_WASTELAND && (ent->source == "Colossus Grotto" || ent->source == "Desert Colossus")) {
             area = RCAREA_DESERT_COLOSSUS;
         }
         else {
@@ -367,17 +366,10 @@ bool CheckChecks(GetItemEntry giEntry = GET_ITEM_NONE, bool recheck = false) {
     if (gPlayState == nullptr) {
         return false;
     }
-    //return recheck ? CheckByArea(GetCheckArea(), giEntry, recheck) : CheckByScene();
     return CheckByArea(GetCheckArea(), giEntry, recheck);
 }
 
 bool EvaluateCheck(RandomizerCheckObject rco) {
-    /*RandomizerCheckTrackerData rcData;
-    if (checkTrackerData.contains(rco.rc)) {
-        rcData = checkTrackerData.find(rco.rc)->second;
-    } else {
-        return false;
-    }*/
     RandomizerCheckTrackerData rcData = checkTrackerData.find(rco.rc)->second;
     if (HasItemBeenCollected(rco.rc) && rcData.status != RCSHOW_COLLECTED && rcData.status != RCSHOW_SAVED) {
         SetCheckCollected(rco.rc);
@@ -471,7 +463,8 @@ bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID, GetItemEntry giEntry
         }
         return true;
     } else if (area != RCAREA_INVALID) {
-        auto areaChecks = checksByArea.find(area)->second;
+        auto areaToCheck = area == checkArea ? area : checkArea;
+        auto areaChecks = checksByArea.find(areaToCheck)->second;
         if (checkCounter >= areaChecks.size()) {
             checkCounter = 0;
             checkLoops++;
@@ -581,7 +574,7 @@ void CheckTrackerFrame() {
                 checkCounter++;
             }
         }
-        if (checkLoops > 3) {
+        if (checkLoops > 10) {
             checkCollected = false;
             checkLoops = 0;
         }
@@ -674,6 +667,7 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         }*/
     }
     checkScene = scene;
+    checkArea = GetCheckArea();
     if (gSaveContext.pendingSale != ITEM_NONE) {
         pendingSaleCheck = true;
         return;
@@ -716,11 +710,11 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         transitionCheck = true;
         return;
     }
-    if (gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
+    /*if (gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
         messageCloseCheck = true;
         return;
-    }
-    if (!gSaveContext.n64ddFlag && giEntry.getItemCategory != ITEM_CATEGORY_JUNK) {
+    }*/
+    if (gSaveContext.n64ddFlag || (!gSaveContext.n64ddFlag && giEntry.getItemCategory != ITEM_CATEGORY_JUNK)) {
         checkCollected = true;
     }
 }
@@ -759,13 +753,6 @@ void LoadCheckTrackerData(json checks) {
 
         checkTrackerData.emplace(entry.rc, entry);
         checksByArea.find(entry2.rcArea)->second.push_back(entry2);
-
-        //SceneID sceneID = entry2.sceneId;
-        //if (sceneID == SCENE_TEST01) {
-        //    sceneID = SCENE_SHOP1;
-        //}
-        //checksByScene.try_emplace(sceneID, std::vector<RandomizerCheckObject>());
-        //checksByScene.find(sceneID)->second.push_back(entry2);
         if (entry.status == RCSHOW_SAVED || entry.skipped)
             areaChecksGotten[entry2.rcArea]++;
         
@@ -809,7 +796,6 @@ void Teardown() {
     checkStatusMap.clear();
     checkTrackerData.clear();
     checksByArea.clear();
-    //checksByScene.clear();
     areasSpoiled = 0;
     checkCollected = false;
     checkLoops = 0;
