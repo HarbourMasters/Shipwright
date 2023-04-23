@@ -6,6 +6,14 @@
 #include <memory>
 #include <vector>
 
+// Values come from windows.h
+#ifndef IDYES
+#define IDYES 6
+#endif
+#ifndef IDNO
+#define IDNO 7
+#endif
+
 static constexpr size_t MB_BASE = 1024 * 1024;
 static constexpr size_t MB32 = 32 * MB_BASE;
 static constexpr size_t MB54 = 54 * MB_BASE;

@@ -40,13 +40,6 @@
 
 #include <SDL2/SDL_messagebox.h>
 
-#ifndef IDYES
-#define IDYES 6
-#endif
-#ifndef IDNO
-#define IDNO 7
-#endif
-
 #include <array>
 #include <fstream>
 #include <filesystem>
