@@ -159,7 +159,7 @@ int Extractor::ShowRomPickBox(uint32_t verCrc) const {
     return ret;
 }
 
-int Extractor::ShowYesNoBox(const char* title, const char* box) const {
+static int ShowYesNoBox(const char* title, const char* box) {
     int ret;
 #ifdef _WIN32
     ret = MessageBoxA(nullptr, box, title, MB_YESNO | MB_ICONQUESTION);
@@ -333,6 +333,10 @@ bool Extractor::ValidateRom(bool skipCrcTextBox) {
         return false;
     }
     return true;
+}
+
+int Extractor::ShowYesNoBox(const char* title, const char* text) {
+    return 0;
 }
 
 bool Extractor::Run() {

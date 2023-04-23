@@ -701,21 +701,19 @@ extern "C" void OTRExtScanner() {
 }
 
 extern "C" void InitOTR() {
-#ifdef _WIN32
     if (!std::filesystem::exists(Ship::Window::GetPathRelativeToAppDirectory("oot-mq.otr")) &&
         !std::filesystem::exists(Ship::Window::GetPathRelativeToAppDirectory("oot.otr"))){
-        if (MessageBoxA(nullptr, "No Otr files found. Generate one now?", "No Otr files", MB_YESNO) == IDYES) {
+        if (Extractor::ShowYesNoBox("No OTR Files", "No OTR files found. Generate one now?") == IDYES) {
             Extractor extract;
             extract.Run();
             extract.CallZapd();
         }
-        if (MessageBoxA(nullptr, "Rom extracted. Extract another?", "Extraction complete", MB_YESNO) == IDYES) {
+        if (Extractor::ShowYesNoBox("Extraction Complete", "ROM Extracted. Extract another?") == IDYES) {
             Extractor extract;
             extract.Run();
             extract.CallZapd();
         }
     }
-    #endif
 
 #ifdef __SWITCH__
     Ship::Switch::Init(Ship::PreInitPhase);

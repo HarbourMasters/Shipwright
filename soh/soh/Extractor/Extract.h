@@ -27,7 +27,6 @@ class Extractor {
     const char* GetZapdVerStr() const;
     bool IsMasterQuest() const;
     
-    int ShowYesNoBox(const char* title, const char* text) const;
     void SetRomInfo(const std::string& path);
 
     void GetRoms(std::vector<std::string>& roms);
@@ -37,6 +36,8 @@ class Extractor {
     int ShowRomPickBox(uint32_t verCrc) const;
 
   public:
+    //TODO create some kind of abstraction for message boxes.
+    static int ShowYesNoBox(const char* title, const char* text);
     bool Run();
     bool CallZapd();
     const char* GetZapdStr();
