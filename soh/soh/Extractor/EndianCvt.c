@@ -1,7 +1,7 @@
 #include <stdint.h>
+#include <stdlib.h>
 
 #ifdef _MSC_VER
-#include <stdlib.h>
 #define BSWAP32 _byteswap_ulong
 #define BSWAP16 _byteswap_ushort
 #elif __has_include(<byteswap.h>)
