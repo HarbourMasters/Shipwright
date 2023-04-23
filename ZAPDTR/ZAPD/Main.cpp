@@ -159,6 +159,8 @@ void ErrorHandler(int sig)
 }
 #endif
 
+extern void ImportExporters();
+
 extern "C" int zapd_main(int argc, char* argv[])
 {
 	// Syntax: ZAPD.out [mode (btex/bovl/e)] (Arbritrary Number of Arguments)
@@ -282,6 +284,7 @@ extern "C" int zapd_main(int argc, char* argv[])
 		}
 		else if (arg == "-se" || arg == "--set-exporter")  // Set Current Exporter
 		{
+			ImportExporters();
 			Globals::Instance->currentExporter = argv[++i];
 		}
 		else if (arg == "--gcc-compat")  // GCC compatibility
@@ -474,6 +477,8 @@ extern "C" int zapd_main(int argc, char* argv[])
 		exporterSet->endProgramFunc();
 
 end:
+	delete exporterSet;
+	//Globals::Instance->GetExporterSet() = nullptr; TODO NULL this out
 
 	delete g;
 	return 0;

@@ -278,7 +278,7 @@ void AddFile(std::string fName, std::vector<char> data)
 	}
 }
 
-static void ImportExporters()
+void ImportExporters()
 {
 	// In this example we set up a new exporter called "EXAMPLE".
 	// By running ZAPD with the argument -se EXAMPLE, we tell it that we want to use this exporter for our resources.
@@ -319,4 +319,4 @@ static void ImportExporters()
 }
 
 // When ZAPD starts up, it will automatically call the below function, which in turn sets up our exporters.
-REGISTER_EXPORTER(ImportExporters);
+//REGISTER_EXPORTER(ImportExporters);

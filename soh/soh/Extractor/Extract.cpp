@@ -85,7 +85,8 @@ static const std::unordered_map<uint32_t, const char*> verMap = {
     //	{OOT_IQUE_CN, "IQUE CN"},
 };
 
-static constexpr std::array<const uint32_t, 5> goodCrcs = {
+static constexpr std::array<const uint32_t, 6> goodCrcs = {
+    0xfa8c0555, // MQ DBG 64MB
     0x8652ac4c, // MQ DBG 64MB
     0x1f731ffe, // MQ DBG 54MB
     0x044b3982, // NMQ DBG 54MB
@@ -293,6 +294,7 @@ bool Extractor::ValidateAndFixRom() {
     if (GetRomVerCrc() == OOT_PAL_GC_MQ_DBG) {
         mRomData[0x3E] = 'P';
     }
+
     const uint32_t actualCrc = CRC32C(mRomData.get(), mCurRomSize);
 
     for (const uint32_t crc : goodCrcs) {
@@ -495,21 +497,21 @@ bool Extractor::CallZapd() {
     argv[14] = "--otrfile";
     argv[15] = IsMasterQuest() ? "oot-mq.otr" : "oot.otr";
 
-    #ifdef _WIN32
+#ifdef _WIN32
     // Grab a handle to the command window.
     HWND cmdWindow = GetConsoleWindow();
 
     // Normally the command window is hidden. We want the window to be shown here so the user can see the progess of the extraction.
     ShowWindow(cmdWindow, SW_SHOW);
-    SetWindowPos(cmdWindow, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
-    #endif
+    SetWindowPos(cmdWindow, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
+#endif
 
     zapd_main(argc, (char**)argv.data());
 
-    #ifdef _WIN32
+#ifdef _WIN32
     // Hide the command window again.
     ShowWindow(cmdWindow, SW_HIDE);
-    #endif
+#endif
 
     return 0;
 }

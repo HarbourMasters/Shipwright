@@ -708,7 +708,9 @@ extern "C" void InitOTR() {
             Extractor extract;
             extract.Run();
             extract.CallZapd();
-            MessageBoxA(nullptr, "Rom extracted. Extract another?", "Extraction complete", MB_YESNO);
+        }
+        if (MessageBoxA(nullptr, "Rom extracted. Extract another?", "Extraction complete", MB_YESNO) == IDYES) {
+            Extractor extract;
             extract.Run();
             extract.CallZapd();
         }
