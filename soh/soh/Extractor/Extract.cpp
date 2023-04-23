@@ -25,7 +25,7 @@
 #define BSWAP16(value) ((((value)&0xff) << 8) | ((value) >> 8))
 
 #define BSWAP32(value) \
-    (((uint32_t)bswap_16((uint16_t)((value)&0xffff)) << 16) | (uint32_t)bswap_16((uint16_t)((value) >> 16)))
+    (((uint32_t)BSWAP16((uint16_t)((value)&0xffff)) << 16) | (uint32_t)BSWAP16((uint16_t)((value) >> 16)))
 #endif
 
 #if defined(_MSC_VER)
