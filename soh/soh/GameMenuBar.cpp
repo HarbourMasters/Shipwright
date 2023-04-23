@@ -926,9 +926,9 @@ namespace GameMenuBar {
 
             if (ImGui::BeginMenu("Restoration"))
             {
-                UIWidgets::PaddedEnhancementCheckbox("Hide Build Info", "gHideBuildInfo", true, false);
-                UIWidgets::Tooltip("Hides the game version and build details in the boot logo start screen");
-                UIWidgets::EnhancementCheckbox("Red Ganon blood", "gRedGanonBlood");
+                UIWidgets::EnhancementCheckbox("Authentic Logo Screen", "gAuthenticLogo");
+                UIWidgets::Tooltip("Hide the game version and build details and display the authentic model and texture on the boot logo start screen");
+                UIWidgets::PaddedEnhancementCheckbox("Red Ganon blood", "gRedGanonBlood", true, false);
                 UIWidgets::Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
                 UIWidgets::PaddedEnhancementCheckbox("Fish while hovering", "gHoverFishing", true, false);
                 UIWidgets::Tooltip("Restore a bug from NTSC 1.0 that allows casting the Fishing Rod while using the Hover Boots");

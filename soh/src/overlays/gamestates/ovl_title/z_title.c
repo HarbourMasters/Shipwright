@@ -128,6 +128,12 @@ void Title_SetupView(TitleContext* this, f32 x, f32 y, f32 z) {
     func_800AAA50(view, 0xF);
 }
 
+#define dgShipLogoDL "__OTR__textures/nintendo_rogo_static/gShipLogoDL"
+static const ALIGN_ASSET(2) char gShipLogoDL[] = dgShipLogoDL;
+
+#define dnintendo_rogo_static_Tex_LUS_000000 "__OTR__textures/nintendo_rogo_static/nintendo_rogo_static_Tex_LUS_000000"
+static const ALIGN_ASSET(2) char nintendo_rogo_static_Tex_LUS_000000[] = dnintendo_rogo_static_Tex_LUS_000000;
+
 void Title_Draw(TitleContext* this) {
     static s16 sTitleRotY = 0;
     static Lights1 sTitleLights = gdSPDefLights1(0x64, 0x64, 0x64, 0xFF, 0xFF, 0xFF, 0x45, 0x45, 0x45);
@@ -161,7 +167,11 @@ void Title_Draw(TitleContext* this) {
     Matrix_RotateZYX(0, sTitleRotY, 0, MTXMODE_APPLY);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx), G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, gNintendo64LogoDL);
+    if (CVarGetInteger("gAuthenticLogo", 0)) {
+        gSPDisplayList(POLY_OPA_DISP++, gNintendo64LogoDL);
+    } else {
+        gSPDisplayList(POLY_OPA_DISP++, gShipLogoDL);
+    }
     Gfx_SetupDL_39Opa(this->state.gfxCtx);
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetCycleType(POLY_OPA_DISP++, G_CYC_2CYCLE);
@@ -182,7 +192,7 @@ void Title_Draw(TitleContext* this) {
 
     for (idx = 0, y = 94; idx < 16; idx++, y += 2)
     {
-        gDPLoadMultiTile(POLY_OPA_DISP++, nintendo_rogo_static_Tex_000000, 0, G_TX_RENDERTILE, G_IM_FMT_I, G_IM_SIZ_8b, 192, 32,
+        gDPLoadMultiTile(POLY_OPA_DISP++, CVarGetInteger("gAuthenticLogo", 0) ? nintendo_rogo_static_Tex_000000 : nintendo_rogo_static_Tex_LUS_000000, 0, G_TX_RENDERTILE, G_IM_FMT_I, G_IM_SIZ_8b, 192, 32,
                          0, idx * 2, 192 - 1, (idx + 1) * 2 - 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                          G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         
@@ -227,7 +237,7 @@ void Title_Main(GameState* thisx) {
     Title_Calc(this);
     Title_Draw(this);
 
-    if (!CVarGetInteger("gHideBuildInfo", 0)) {
+    if (!CVarGetInteger("gAuthenticLogo", 0)) {
         Gfx* gfx = POLY_OPA_DISP;
         s32 pad;
 
