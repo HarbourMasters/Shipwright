@@ -27,7 +27,6 @@ class Extractor {
     const char* GetZapdVerStr() const;
     bool IsMasterQuest() const;
     
-
     int ShowYesNoBox(const char* title, const char* text) const;
     void SetRomInfo(const std::string& path);
 

@@ -1,5 +1,4 @@
 #ifdef _WIN32
-#define _CRT_SECURE_NO_WARNINGS
 #include <Windows.h>
 #include <winuser.h>
 #include <shlwapi.h>
@@ -30,11 +29,6 @@
 
 #include <stdlib.h>
 
-#ifndef SDL_MAIN_HANDLED
-#define SDL_MAIN_HANDLED
-#endif
-
-#include <SDL2/SDL.h>
 #include <SDL2/SDL_messagebox.h>
 
 #ifndef IDYES
@@ -492,10 +486,6 @@ bool Extractor::CallZapd() {
     argv[5] = baseromPath;
     argv[6] = "-fl";
     argv[7] = "assets/extractor/filelists";
-    //argv[8] = "-o";
-    //argv[9] = "placeholder";
-    //argv[10] = "-osf";
-    //argv[11] = "placeholder";
     argv[8] = "-gsf";
     argv[9] = "1";
     argv[10] = "-rconf";
@@ -505,7 +495,23 @@ bool Extractor::CallZapd() {
     argv[14] = "--otrfile";
     argv[15] = IsMasterQuest() ? "oot-mq.otr" : "oot.otr";
 
-    return zapd_main(argc, (char**)argv.data());
+    #ifdef _WIN32
+    // Grab a handle to the command window.
+    HWND cmdWindow = GetConsoleWindow();
+
+    // Normally the command window is hidden. We want the window to be shown here so the user can see the progess of the extraction.
+    ShowWindow(cmdWindow, SW_SHOW);
+    SetWindowPos(cmdWindow, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
+    #endif
+
+    zapd_main(argc, (char**)argv.data());
+
+    #ifdef _WIN32
+    // Hide the command window again.
+    ShowWindow(cmdWindow, SW_HIDE);
+    #endif
+
+    return 0;
 }
 
 #if 0

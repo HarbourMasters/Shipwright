@@ -107,6 +107,8 @@ static void ExporterProgramEnd()
 		}
 	}
 	otrArchive = nullptr;
+	delete fileWriter;
+	files.clear();
 
 	// Add any additional files that need to be manually copied...
 	if (File::Exists("soh.otr")) {

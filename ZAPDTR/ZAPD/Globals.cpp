@@ -33,6 +33,16 @@ Globals::~Globals()
 	{
 		delete it.second;
 	}
+
+	for (const auto& w : workerData)
+	{
+		delete w.second;
+	}
+	
+	if (rom != nullptr)
+	{
+		delete rom;
+	}
 }
 
 void Globals::AddSegment(int32_t segment, ZFile* file, int workerID)
