@@ -1,14 +1,20 @@
-#include <stdlib.h>
 #include <stdint.h>
 
-#ifndef _MSC_VER
+#ifdef _MSC_VER
+#include <stdlib.h>
+#define BSWAP32 _byteswap_ulong
+#define BSWAP16 _byteswap_ushort
+#elif __has_include(<byteswap.h>)
 #include <byteswap.h>
 #define BSWAP32 bswap_32
 #define BSWAP16 bswap_16
-#else // Windows
-#define BSWAP32 _byteswap_ulong
-#define BSWAP16 _byteswap_ushort
+#else
+#define BSWAP16(value) ((((value)&0xff) << 8) | ((value) >> 8))
+
+#define BSWAP32(value) \
+    (((uint32_t)bswap_16((uint16_t)((value)&0xffff)) << 16) | (uint32_t)bswap_16((uint16_t)((value) >> 16)))
 #endif
+
 
 #ifdef __cplusplus
 extern "C" {
