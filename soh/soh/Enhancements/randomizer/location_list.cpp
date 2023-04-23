@@ -153,4 +153,52 @@ void StaticData::InitLocationTable() {
         RC_SFM_DEKU_SCRUB_GROTTO_FRONT, RG_BUY_GREEN_POTION,
         { Category::cSacredForestMeadow, Category::cForest, Category::cDekuScrub, Category::cGrotto },
         SpoilerCollectionCheck::Scrub(0x18, 0x09), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+    locationTable[RC_HF_SOUTHEAST_GROTTO_CHEST] = Location::Chest(
+        RC_HF_SOUTHEAST_GROTTO_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_FIELD, ACTOR_EN_BOX, SCENE_KAKUSIANA,
+        22978, 0x02, "Southeast Grotto Chest", "HF Southeast Grotto Chest", RC_HF_SOUTHEAST_GROTTO_CHEST, RG_RED_RUPEE,
+        {
+            Category::cHyruleField,
+            Category::cGrotto,
+        },
+        SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
+    locationTable[RC_HF_OPEN_GROTTO_CHEST] = Location::Chest(
+        RC_HF_OPEN_GROTTO_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_FIELD, ACTOR_EN_BOX, SCENE_KAKUSIANA,
+        22947, 0x03, "Open Grotto Chest", "HF Open Grotto Chest", RC_HF_OPEN_GROTTO_CHEST, RG_BLUE_RUPEE,
+        {
+            Category::cHyruleField,
+            Category::cGrotto,
+        },
+        SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
+    locationTable[RC_HF_NEAR_MARKET_GROTTO_CHEST] =
+        Location::Chest(RC_HF_NEAR_MARKET_GROTTO_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_FIELD,
+                        ACTOR_EN_BOX, SCENE_KAKUSIANA, 22944, 0x00, "Near Market Grotto Chest",
+                        "HF Near Market Grotto Chest", RC_HF_NEAR_MARKET_GROTTO_CHEST, RG_BLUE_RUPEE,
+                        {
+                            Category::cHyruleField,
+                            Category::cGrotto,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
+    locationTable[RC_HF_OCARINA_OF_TIME_ITEM] = Location::Base(
+        RC_HF_OCARINA_OF_TIME_ITEM, RCQUEST_BOTH, RCTYPE_OCARINA, RCAREA_HYRULE_FIELD, ACTOR_ID_MAX, SCENE_SPOT00, 0x00,
+        0x0C, "Ocarina of Time Item", "HF Ocarina of Time Item", RC_HF_OCARINA_OF_TIME_ITEM, RG_PROGRESSIVE_OCARINA,
+        {
+            Category::cHyruleField,
+            Category::cNeedSpiritualStones,
+        },
+        SpoilerCollectionCheck::EventChkInf(0x43), SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
+    locationTable[RC_HF_TEKTITE_GROTTO_FREESTANDING_POH] = Location::Collectable(
+        RC_HF_TEKTITE_GROTTO_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_FIELD, ACTOR_EN_ITEM00,
+        SCENE_KAKUSIANA, 262, 0x01, "Tektite Grotto Freestanding PoH", "HF Tektite Grotto Freestanding PoH",
+        RC_HF_TEKTITE_GROTTO_FREESTANDING_POH, RG_PIECE_OF_HEART,
+        {
+            Category::cHyruleField,
+            Category::cGrotto,
+        },
+        SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
+    locationTable[RC_HF_DEKU_SCRUB_GROTTO] = Location::GrottoScrub(
+        RC_HF_DEKU_SCRUB_GROTTO, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_HYRULE_FIELD, ACTOR_EN_DNS, SCENE_KAKUSIANA,
+        TWO_ACTOR_PARAMS(0x02, 0xE6), 0x3E, "Deku Scrub Grotto", "HF Deku Scrub Grotto", RC_HF_DEKU_SCRUB_GROTTO,
+        RG_PIECE_OF_HEART,
+        { Category::cHyruleField, Category::cDekuScrub, Category::cDekuScrubUpgrades, Category::cGrotto },
+        SpoilerCollectionCheck::Scrub(0x10, 0x03), SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
 }
