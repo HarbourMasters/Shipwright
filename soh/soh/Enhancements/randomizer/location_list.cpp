@@ -9,6 +9,8 @@ void StaticData::InitLocationTable() {
     locationTable[RC_UNKNOWN_CHECK] = Location::Base(
         RC_UNKNOWN_CHECK, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_INVALID, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, 0x00,
         "Invalid Location", "Invalid Location", NONE, RG_NONE, {}, SpoilerCollectionCheck::None());
+    
+    // Kokiri Forest
     locationTable[RC_KF_KOKIRI_SWORD_CHEST] = Location::Chest(
         RC_KF_KOKIRI_SWORD_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KOKIRI_FOREST, ACTOR_EN_BOX, SCENE_SPOT04, 1248,
         0x00, "Kokiri Sword Chest", "KF Kokiri Sword Chest", RC_KF_KOKIRI_SWORD_CHEST, RG_KOKIRI_SWORD,
@@ -58,6 +60,8 @@ void StaticData::InitLocationTable() {
         22988, 0x0C, "Storms Grotto Chest", "KF Storms Grotto Chest", RC_KF_STORMS_GROTTO_CHEST, RG_RED_RUPEE,
         { Category::cKokiriForest, Category::cForest, Category::cGrotto },
         SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
+    
+    // Lost Woods
     locationTable[RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST] = Location::Chest(
         RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LOST_WOODS, ACTOR_EN_BOX,
         SCENE_KAKUSIANA, 22964, 0x3E, "Near Shortcuts Grotto Chest", "LW Near Shortcuts Grotto Chest",
@@ -136,6 +140,8 @@ void StaticData::InitLocationTable() {
                        RC_DEKU_THEATER_MASK_OF_TRUTH, RG_PROGRESSIVE_NUT_UPGRADE,
                        { Category::cLostWoods, Category::cForest, Category::cNeedSpiritualStones, Category::cGrotto },
                        SpoilerCollectionCheck::Chest(0x3E, 0x1E), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+
+    // Sacred Forest Meadow
     locationTable[RC_SFM_WOLFOS_GROTTO_CHEST] = Location::Chest(
         RC_SFM_WOLFOS_GROTTO_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_SACRED_FOREST_MEADOW, ACTOR_EN_BOX,
         SCENE_KAKUSIANA, 31409, 0x11, "Wolfos Grotto Chest", "SFM Wolfos Grotto Chest", RC_SFM_WOLFOS_GROTTO_CHEST,
@@ -153,6 +159,8 @@ void StaticData::InitLocationTable() {
         RC_SFM_DEKU_SCRUB_GROTTO_FRONT, RG_BUY_GREEN_POTION,
         { Category::cSacredForestMeadow, Category::cForest, Category::cDekuScrub, Category::cGrotto },
         SpoilerCollectionCheck::Scrub(0x18, 0x09), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+    
+    // Hyrule Field
     locationTable[RC_HF_SOUTHEAST_GROTTO_CHEST] = Location::Chest(
         RC_HF_SOUTHEAST_GROTTO_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_FIELD, ACTOR_EN_BOX, SCENE_KAKUSIANA,
         22978, 0x02, "Southeast Grotto Chest", "HF Southeast Grotto Chest", RC_HF_SOUTHEAST_GROTTO_CHEST, RG_RED_RUPEE,
@@ -209,6 +217,8 @@ void StaticData::InitLocationTable() {
             Category::cMinigame,
         },
         SpoilerCollectionCheck::Fishing(0x02), SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+
+    // Lake Hylia
     locationTable[RC_LH_ADULT_FISHING] = Location::Base(
         RC_LH_ADULT_FISHING, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LAKE_HYLIA, ACTOR_ID_MAX, SCENE_TURIBORI, 0x00, 0x38,
         "Adult Fishing", "LH Adult Fishing", RC_LH_ADULT_FISHING, RG_PROGRESSIVE_SCALE,
@@ -268,4 +278,5 @@ void StaticData::InitLocationTable() {
                               "Deku Scrub Grotto Center", "LH Deku Scrub Grotto Center", RC_LH_DEKU_SCRUB_GROTTO_CENTER,
                               RG_BUY_DEKU_SEEDS_30, { Category::cLakeHylia, Category::cDekuScrub, Category::cGrotto },
                               SpoilerCollectionCheck::Scrub(0x19, 0x04), SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    // Gerudo Valley
 }
