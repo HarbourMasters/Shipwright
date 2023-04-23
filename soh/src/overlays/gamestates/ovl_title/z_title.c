@@ -279,6 +279,5 @@ void Title_Init(GameState* thisx) {
     this->unk_1D4 = 0x14;
     this->coverAlpha = 255;
     this->addAlpha = -3;
-    // this->visibleDuration = 0x3C;
-    this->visibleDuration = 0xFFF;
+    this->visibleDuration = 0x3C;
 }
