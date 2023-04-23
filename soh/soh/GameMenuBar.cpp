@@ -34,6 +34,7 @@
 #endif
 
 #include "Enhancements/game-interactor/GameInteractor.h"
+#include "Enhancements/cosmetics/authenticGfxPatches.h"
 
 bool isBetaQuestEnabled = false;
 
@@ -928,6 +929,10 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Restore old Gold Skulltula cutscene", "gGsCutscene", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("Quick Bongo Kill", "gQuickBongoKill", true, false);
                 UIWidgets::Tooltip("Restore a bug from NTSC 1.0 that allows bypassing Bongo Bongo's intro cutscene to quickly kill him");
+                if (UIWidgets::PaddedEnhancementCheckbox("Fix out of bounds textures", "gFixTexturesOOB", true, false)) {
+                    ApplyAuthenticGfxPatches();
+                }
+                UIWidgets::Tooltip("Some textures in the game read out of bounds data (Freezards, etc.)\nThis patches them to instead load the texture with the correct size");
 
                 ImGui::EndMenu();
             }

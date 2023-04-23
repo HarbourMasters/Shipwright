@@ -2375,6 +2375,9 @@ static const ALIGN_ASSET(2) char gEffUnknown11Tex[] = dgEffUnknown11Tex;
 #define dgEffUnknown12Tex "__OTR__objects/gameplay_keep/gEffUnknown12Tex"
 static const ALIGN_ASSET(2) char gEffUnknown12Tex[] = dgEffUnknown12Tex;
 
+#define dgEffUnknown12OverflowTex "__OTR__objects/gameplay_keep/gEffUnknown12OverflowTex"
+static const ALIGN_ASSET(2) char gEffUnknown12OverflowTex[] = dgEffUnknown12OverflowTex;
+
 #define dgUnknownWoodBoardTex "__OTR__objects/gameplay_keep/gUnknownWoodBoardTex"
 static const ALIGN_ASSET(2) char gUnknownWoodBoardTex[] = dgUnknownWoodBoardTex;
 
