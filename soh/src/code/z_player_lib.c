@@ -1392,6 +1392,8 @@ Vec3f D_801261E0[] = {
 };
 
 // OTRTODO: Figure out why this value works/what this value should be
+// This was originally obtained by working down from FLT_MAX until the math
+// started working out properly
 #define RETICLE_MAX 3.402823466e+12f
 
 void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
