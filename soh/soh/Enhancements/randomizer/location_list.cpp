@@ -324,4 +324,54 @@ void StaticData::InitLocationTable() {
         SpoilerCollectionCheck::Scrub(0x1A, 0x09), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
     
     // Gerudo Fortress
+    locationTable[RC_GF_CHEST] =
+        Location::Chest(RC_GF_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GERUDO_FORTRESS, ACTOR_EN_BOX, SCENE_SPOT12,
+                        1984, 0x00, "Chest", "GF Chest", RC_GF_CHEST, RG_PIECE_OF_HEART,
+                        {
+                            Category::cGerudoFortress,
+                            Category::cGerudo,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_GF_HBA_1000_POINTS] =
+        Location::Base(RC_GF_HBA_1000_POINTS, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GERUDO_FORTRESS, ACTOR_ID_MAX,
+                       SCENE_SPOT12, 0x00, 0x3E, "GF HBA 1000 Points", "GF HBA 1000 Points", RC_GF_HBA_1000_POINTS,
+                       RG_PIECE_OF_HEART, { Category::cGerudoFortress, Category::cGerudo, Category::cMinigame },
+                       SpoilerCollectionCheck::InfTable(0x19, 0x08), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_GF_HBA_1500_POINTS] =
+        Location::Base(RC_GF_HBA_1500_POINTS, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GERUDO_FORTRESS, ACTOR_ID_MAX,
+                       SCENE_SPOT12, 0x00, 0x30, "GF HBA 1500 Points", "GF HBA 1500 Points", RC_GF_HBA_1500_POINTS,
+                       RG_PROGRESSIVE_BOW, { Category::cGerudoFortress, Category::cGerudo, Category::cMinigame },
+                       SpoilerCollectionCheck::ItemGetInf(7), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_GF_GERUDO_MEMBERSHIP_CARD] =
+        Location::Base(RC_GF_GERUDO_MEMBERSHIP_CARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GERUDO_FORTRESS,
+                       ACTOR_ID_MAX, SCENE_GERUDOWAY, 0x00, 0x3A, "GF Gerudo Membership Card",
+                       "GF Gerudo Membership Card", RC_GF_GERUDO_MEMBERSHIP_CARD, RG_GERUDO_MEMBERSHIP_CARD,
+                       {
+                           Category::cGerudoFortress,
+                           Category::cGerudo,
+                       },
+                       SpoilerCollectionCheck::GerudoToken(), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_GF_NORTH_F1_CARPENTER] = Location::Collectable(
+        RC_GF_NORTH_F1_CARPENTER, RCQUEST_BOTH, RCTYPE_GF_KEY, RCAREA_GERUDO_FORTRESS, ACTOR_EN_ITEM00, SCENE_GERUDOWAY,
+        3089, 0x0C, "GF North F1 Carpenter", "GF North F1 Carpenter", RC_GF_NORTH_F1_CARPENTER,
+        RG_GERUDO_FORTRESS_SMALL_KEY, { Category::cGerudoFortress, Category::cGerudo, Category::cVanillaGFSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_GF_NORTH_F2_CARPENTER] = Location::Collectable(
+        RC_GF_NORTH_F2_CARPENTER, RCQUEST_BOTH, RCTYPE_GF_KEY, RCAREA_GERUDO_FORTRESS, ACTOR_EN_ITEM00, SCENE_GERUDOWAY,
+        2577, 0x0A, "GF North F2 Carpenter", "GF North F2 Carpenter", RC_GF_NORTH_F2_CARPENTER,
+        RG_GERUDO_FORTRESS_SMALL_KEY, { Category::cGerudoFortress, Category::cGerudo, Category::cVanillaGFSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_GF_SOUTH_F1_CARPENTER] = Location::Collectable(
+        RC_GF_SOUTH_F1_CARPENTER, RCQUEST_BOTH, RCTYPE_GF_KEY, RCAREA_GERUDO_FORTRESS, ACTOR_EN_ITEM00, SCENE_GERUDOWAY,
+        3601, 0x0E, "GF South F1 Carpenter", "GF South F1 Carpenter", RC_GF_SOUTH_F1_CARPENTER,
+        RG_GERUDO_FORTRESS_SMALL_KEY, { Category::cGerudoFortress, Category::cGerudo, Category::cVanillaGFSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_GF_SOUTH_F2_CARPENTER] = Location::Collectable(
+        RC_GF_SOUTH_F2_CARPENTER, RCQUEST_BOTH, RCTYPE_GF_KEY, RCAREA_GERUDO_FORTRESS, ACTOR_EN_ITEM00, SCENE_GERUDOWAY,
+        3857, 0x0F, "GF South F2 Carpenter", "GF South F2 Carpenter", RC_GF_SOUTH_F2_CARPENTER,
+        RG_GERUDO_FORTRESS_SMALL_KEY, { Category::cGerudoFortress, Category::cGerudo, Category::cVanillaGFSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+
+    // Haunted Wasteland
+    
 }
