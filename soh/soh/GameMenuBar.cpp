@@ -908,6 +908,10 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip(
                     "Adds 5 higher pitches for the Silver Rupee Jingle for the rooms with more than 5 Silver Rupees. "
                     "Currently only relevant in Master Quest.");
+                if (UIWidgets::PaddedEnhancementCheckbox("Fix out of bounds textures", "gFixTexturesOOB", true, false)) {
+                    ApplyAuthenticGfxPatches();
+                }
+                UIWidgets::Tooltip("Fixes authentic out of bounds texture reads, instead loading textures with the correct size");
 
                 ImGui::EndMenu();
             }
@@ -929,10 +933,6 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Restore old Gold Skulltula cutscene", "gGsCutscene", true, false);
                 UIWidgets::PaddedEnhancementCheckbox("Quick Bongo Kill", "gQuickBongoKill", true, false);
                 UIWidgets::Tooltip("Restore a bug from NTSC 1.0 that allows bypassing Bongo Bongo's intro cutscene to quickly kill him");
-                if (UIWidgets::PaddedEnhancementCheckbox("Fix out of bounds textures", "gFixTexturesOOB", true, false)) {
-                    ApplyAuthenticGfxPatches();
-                }
-                UIWidgets::Tooltip("Some textures in the game read out of bounds data (Freezards, etc.)\nThis patches them to instead load the texture with the correct size");
 
                 ImGui::EndMenu();
             }

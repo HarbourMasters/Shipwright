@@ -20,6 +20,9 @@ static const ALIGN_ASSET(2) char gBottleGlassTex[] = dgBottleGlassTex;
 #define dgDekuStickTex "__OTR__objects/gameplay_keep/gDekuStickTex"
 static const ALIGN_ASSET(2) char gDekuStickTex[] = dgDekuStickTex;
 
+#define dgDekuStickOverflowTex "__OTR__objects/gameplay_keep/gDekuStickOverflowTex"
+static const ALIGN_ASSET(2) char gDekuStickOverflowTex[] = dgDekuStickOverflowTex;
+
 #define dgLinkHairTex "__OTR__objects/gameplay_keep/gLinkHairTex"
 static const ALIGN_ASSET(2) char gLinkHairTex[] = dgLinkHairTex;
 
