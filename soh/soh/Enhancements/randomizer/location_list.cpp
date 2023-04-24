@@ -486,7 +486,7 @@ void StaticData::InitLocationTable() {
         RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, RG_TREASURE_GAME_SMALL_KEY,
         { Category::cInnerMarket, Category::cMarket, Category::cMinigame, Category::cChestMinigame },
         SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    
+
     // Hyrule Castle
     locationTable[RC_HC_MALON_EGG] =
         Location::Base(RC_HC_MALON_EGG, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_CASTLE, ACTOR_ID_MAX, SCENE_SPOT15,
@@ -504,6 +504,160 @@ void StaticData::InitLocationTable() {
             Category::cMarket,
         },
         SpoilerCollectionCheck::EventChkInf(0x40), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    
+
     // Kakariko
+    locationTable[RC_KAK_REDEAD_GROTTO_CHEST] = Location::Chest(
+        RC_KAK_REDEAD_GROTTO_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_BOX,
+        SCENE_KAKUSIANA, 31434, 0x0A, "Redead Grotto Chest", "Kak Redead Grotto Chest", RC_KAK_REDEAD_GROTTO_CHEST,
+        RG_HUGE_RUPEE, { Category::cKakarikoVillage, Category::cKakariko, Category::cGrotto },
+        SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_OPEN_GROTTO_CHEST] = Location::Chest(
+        RC_KAK_OPEN_GROTTO_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_BOX, SCENE_KAKUSIANA,
+        22984, 0x08, "Open Grotto Chest", "Kak Open Grotto Chest", RC_KAK_OPEN_GROTTO_CHEST, RG_RED_RUPEE,
+        { Category::cKakarikoVillage, Category::cKakariko, Category::cGrotto },
+        SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_10_GOLD_SKULLTULA_REWARD] =
+        Location::Base(RC_KAK_10_GOLD_SKULLTULA_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE,
+                       ACTOR_ID_MAX, SCENE_KINSUTA, 0x00, 0x45, "10 Gold Skulltula Reward",
+                       "Kak 10 Gold Skulltula Reward", RC_KAK_10_GOLD_SKULLTULA_REWARD, RG_PROGRESSIVE_WALLET,
+                       { Category::cKakarikoVillage, Category::cKakariko, Category::cSkulltulaHouse },
+                       SpoilerCollectionCheck::EventChkInf(0xDA), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_20_GOLD_SKULLTULA_REWARD] =
+        Location::Base(RC_KAK_20_GOLD_SKULLTULA_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE,
+                       ACTOR_ID_MAX, SCENE_KINSUTA, 0x00, 0x39, "20 Gold Skulltula Reward",
+                       "Kak 20 Gold Skulltula Reward", RC_KAK_20_GOLD_SKULLTULA_REWARD, RG_STONE_OF_AGONY,
+                       { Category::cKakarikoVillage, Category::cKakariko, Category::cSkulltulaHouse },
+                       SpoilerCollectionCheck::EventChkInf(0xDB), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_30_GOLD_SKULLTULA_REWARD] =
+        Location::Base(RC_KAK_30_GOLD_SKULLTULA_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE,
+                       ACTOR_ID_MAX, SCENE_KINSUTA, 0x00, 0x46, "30 Gold Skulltula Reward",
+                       "Kak 30 Gold Skulltula Reward", RC_KAK_30_GOLD_SKULLTULA_REWARD, RG_PROGRESSIVE_WALLET,
+                       { Category::cKakarikoVillage, Category::cKakariko, Category::cSkulltulaHouse },
+                       SpoilerCollectionCheck::EventChkInf(0xDC), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_40_GOLD_SKULLTULA_REWARD] =
+        Location::Base(RC_KAK_40_GOLD_SKULLTULA_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE,
+                       ACTOR_ID_MAX, SCENE_KINSUTA, 0x00, 0x03, "40 Gold Skulltula Reward",
+                       "Kak 40 Gold Skulltula Reward", RC_KAK_40_GOLD_SKULLTULA_REWARD, RG_BOMBCHU_10,
+                       { Category::cKakarikoVillage, Category::cKakariko, Category::cSkulltulaHouse },
+                       SpoilerCollectionCheck::EventChkInf(0xDD), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_50_GOLD_SKULLTULA_REWARD] =
+        Location::Base(RC_KAK_50_GOLD_SKULLTULA_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE,
+                       ACTOR_ID_MAX, SCENE_KINSUTA, 0x00, 0x3E, "50 Gold Skulltula Reward",
+                       "Kak 50 Gold Skulltula Reward", RC_KAK_50_GOLD_SKULLTULA_REWARD, RG_PIECE_OF_HEART,
+                       { Category::cKakarikoVillage, Category::cKakariko, Category::cSkulltulaHouse },
+                       SpoilerCollectionCheck::EventChkInf(0xDE), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_100_GOLD_SKULLTULA_REWARD] =
+        Location::Base(RC_KAK_100_GOLD_SKULLTULA_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE,
+                       ACTOR_ID_MAX, SCENE_KINSUTA, 0x00, 0x3E, "100 Gold Skulltula Reward",
+                       "Kak 100 Gold Skulltula Reward", RC_KAK_100_GOLD_SKULLTULA_REWARD, RG_HUGE_RUPEE,
+                       { Category::cKakarikoVillage, Category::cKakariko, Category::cSkulltulaHouse },
+                       SpoilerCollectionCheck::EventChkInf(0xDF), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_MAN_ON_ROOF] = Location::Base(
+        RC_KAK_MAN_ON_ROOF, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE, ACTOR_ID_MAX, SCENE_SPOT01, 0x00,
+        0x3E, "Man on Roof", "Kak Man on Roof", RC_KAK_MAN_ON_ROOF, RG_PIECE_OF_HEART,
+        {
+            Category::cKakarikoVillage,
+            Category::cKakariko,
+        },
+        SpoilerCollectionCheck::ItemGetInf(29), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_SHOOTING_GALLERY_REWARD] =
+        Location::Base(RC_KAK_SHOOTING_GALLERY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE,
+                       ACTOR_ID_MAX, SCENE_SYATEKIJYOU, 0x00, 0x30, "Shooting Gallery Reward",
+                       "Kak Shooting Gallery Reward", RC_KAK_SHOOTING_GALLERY_REWARD, RG_PROGRESSIVE_BOW,
+                       { Category::cKakarikoVillage, Category::cKakariko, Category::cMinigame },
+                       SpoilerCollectionCheck::Chest(0x42, 0x1F), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_TRADE_ODD_MUSHROOM] = Location::Base(
+        RC_KAK_TRADE_ODD_MUSHROOM, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_KAKARIKO_VILLAGE, ACTOR_ID_MAX,
+        SCENE_MAHOUYA, 0x00, 0x20, "Trade Odd Mushroom", "Kak Trade Odd Mushroom", RC_KAK_TRADE_ODD_MUSHROOM,
+        RG_ODD_POTION, { Category::cKakarikoVillage, Category::cKakariko, Category::cAdultTrade },
+        SpoilerCollectionCheck::ItemGetInf(56), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_ANJU_AS_ADULT] = Location::Base(
+        RC_KAK_ANJU_AS_ADULT, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_KAKARIKO_VILLAGE, ACTOR_ID_MAX, SCENE_SPOT01,
+        0x00, 0x1D, "Anju as Adult", "Kak Anju as Adult", RC_KAK_ANJU_AS_ADULT, RG_CLAIM_CHECK,
+        {
+            Category::cKakarikoVillage,
+            Category::cKakariko,
+        },
+        SpoilerCollectionCheck::ItemGetInf(36), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_ANJU_AS_CHILD] =
+        Location::Base(RC_KAK_ANJU_AS_CHILD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE, ACTOR_ID_MAX,
+                       SCENE_SPOT01, 0x00, 0x0F, "Anju as Child", "Kak Anju as Child", RC_KAK_ANJU_AS_CHILD,
+                       RG_EMPTY_BOTTLE, { Category::cKakarikoVillage, Category::cKakariko, Category::cMinigame },
+                       SpoilerCollectionCheck::ItemGetInf(4), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_TRADE_POCKET_CUCCO] = Location::Base(
+        RC_KAK_TRADE_POCKET_CUCCO, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_KAKARIKO_VILLAGE, ACTOR_ID_MAX,
+        SCENE_SPOT01, 0x00, 0x0E, "Trade Pocket Cucco", "Kak Trade Pocket Cucco", RC_KAK_TRADE_POCKET_CUCCO, RG_COJIRO,
+        { Category::cKakarikoVillage, Category::cKakariko, Category::cAdultTrade },
+        SpoilerCollectionCheck::ItemGetInf(38), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_IMPAS_HOUSE_FREESTANDING_POH] = Location::Collectable(
+        RC_KAK_IMPAS_HOUSE_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_ITEM00,
+        SCENE_LABO, 262, 0x01, "Impas House Freestanding PoH", "Kak Impas House Freestanding PoH",
+        RC_KAK_IMPAS_HOUSE_FREESTANDING_POH, RG_PIECE_OF_HEART,
+        {
+            Category::cKakarikoVillage,
+            Category::cKakariko,
+        },
+        SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_WINDMILL_FREESTANDING_POH] =
+        Location::Collectable(RC_KAK_WINDMILL_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KAKARIKO_VILLAGE,
+                              ACTOR_EN_ITEM00, SCENE_HAKASITARELAY, 262, 0x01, "Windmill Freestanding PoH",
+                              "Kak Windmill Freestanding PoH", RC_KAK_WINDMILL_FREESTANDING_POH, RG_PIECE_OF_HEART,
+                              {
+                                  Category::cKakarikoVillage,
+                                  Category::cKakariko,
+                              },
+                              SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    
+    // Graveyard
+    locationTable[RC_GRAVEYARD_SHIELD_GRAVE_CHEST] = Location::Chest(
+        RC_GRAVEYARD_SHIELD_GRAVE_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GRAVEYARD, ACTOR_EN_BOX, SCENE_HAKAANA2,
+        21824, 0x00, "Shield Grave Chest", "GY Shield Grave Chest", RC_GRAVEYARD_SHIELD_GRAVE_CHEST, RG_HYLIAN_SHIELD,
+        {
+            Category::cGraveyard,
+            Category::cKakariko,
+        },
+        SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST] =
+        Location::Chest(RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GRAVEYARD,
+                        ACTOR_EN_BOX, SCENE_HAKAANA, -22592, 0x00, "Heart Piece Grave Chest",
+                        "GY Heart Piece Grave Chest", RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST, RG_PIECE_OF_HEART,
+                        {
+                            Category::cGraveyard,
+                            Category::cKakariko,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_CHEST] =
+        Location::Chest(RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GRAVEYARD,
+                        ACTOR_EN_BOX, SCENE_HAKAANA_OUKE, -32736, 0x00, "Composers Grave Chest",
+                        "GY Composers Grave Chest", RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_CHEST, RG_BOMBS_5,
+                        {
+                            Category::cGraveyard,
+                            Category::cKakariko,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_GRAVEYARD_HOOKSHOT_CHEST] = Location::Chest(
+        RC_GRAVEYARD_HOOKSHOT_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GRAVEYARD, ACTOR_EN_BOX, SCENE_HAKASITARELAY,
+        4352, 0x00, "Hookshot Chest", "GY Hookshot Chest", RC_GRAVEYARD_HOOKSHOT_CHEST, RG_PROGRESSIVE_HOOKSHOT,
+        {
+            Category::cGraveyard,
+            Category::cKakariko,
+        },
+        SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH] =
+        Location::Collectable(RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GRAVEYARD,
+                              ACTOR_EN_ITEM00, SCENE_HAKASITARELAY, 1798, 0x07, "Dampe Race Freestanding PoH",
+                              "GY Dampe Race Freestanding PoH", RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH,
+                              RG_PIECE_OF_HEART, { Category::cGraveyard, Category::cKakariko, Category::cMinigame },
+                              SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR] = Location::Collectable(
+        RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GRAVEYARD, ACTOR_EN_ITEM00,
+        SCENE_SPOT02, 7942, 0x08, "Dampe Gravedigging Tour", "GY Dampe Gravedigging Tour",
+        RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR, RG_PIECE_OF_HEART,
+        {
+            Category::cGraveyard,
+            Category::cKakariko,
+        },
+        SpoilerCollectionCheck::Gravedigger(0x53, 0x1F), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+
+        // Death Mountain
 }
