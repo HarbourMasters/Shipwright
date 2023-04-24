@@ -607,7 +607,7 @@ void StaticData::InitLocationTable() {
                                   Category::cKakariko,
                               },
                               SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    
+
     // Graveyard
     locationTable[RC_GRAVEYARD_SHIELD_GRAVE_CHEST] = Location::Chest(
         RC_GRAVEYARD_SHIELD_GRAVE_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GRAVEYARD, ACTOR_EN_BOX, SCENE_HAKAANA2,
@@ -659,5 +659,44 @@ void StaticData::InitLocationTable() {
         },
         SpoilerCollectionCheck::Gravedigger(0x53, 0x1F), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
 
-        // Death Mountain
+    // Death Mountain
+    locationTable[RC_DMT_CHEST] =
+        Location::Chest(RC_DMT_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_EN_BOX,
+                        SCENE_SPOT16, 23201, 0x01, "Chest", "DMT Chest", RC_DMT_CHEST, RG_PURPLE_RUPEE,
+                        {
+                            Category::cDeathMountainTrail,
+                            Category::cDeathMountain,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_DMT_STORMS_GROTTO_CHEST] = Location::Chest(
+        RC_DMT_STORMS_GROTTO_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_EN_BOX,
+        SCENE_KAKUSIANA, 23255, 0x17, "Storms Grotto Chest", "DMT Storms Grotto Chest", RC_DMT_STORMS_GROTTO_CHEST,
+        RG_HUGE_RUPEE, { Category::cDeathMountainTrail, Category::cDeathMountain, Category::cGrotto },
+        SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_DMT_TRADE_BROKEN_SWORD] = Location::Base(
+        RC_DMT_TRADE_BROKEN_SWORD, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_ID_MAX,
+        SCENE_SPOT16, 0x00, 0x23, "Trade Broken Sword", "DMT Trade Broken Sword", RC_DMT_TRADE_BROKEN_SWORD,
+        RG_PRESCRIPTION, { Category::cDeathMountainTrail, Category::cDeathMountain, Category::cAdultTrade },
+        SpoilerCollectionCheck::RandomizerInf(0x60, 0x1D), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_DMT_TRADE_EYEDROPS] = Location::Base(
+        RC_DMT_TRADE_EYEDROPS, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_ID_MAX,
+        SCENE_SPOT16, 0x00, 0x26, "Trade Eyedrops", "DMT Trade Eyedrops", RC_DMT_TRADE_EYEDROPS, RG_CLAIM_CHECK,
+        { Category::cDeathMountainTrail, Category::cDeathMountain, Category::cAdultTrade },
+        SpoilerCollectionCheck::RandomizerInf(0x60, 0x1E), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_DMT_TRADE_CLAIM_CHECK] = Location::Base(
+        RC_DMT_TRADE_CLAIM_CHECK, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_ID_MAX,
+        SCENE_SPOT16, 0x00, 0x57, "Trade Claim Check", "DMT Trade Claim Check", RC_DMT_TRADE_CLAIM_CHECK,
+        RG_BIGGORON_SWORD, { Category::cDeathMountainTrail, Category::cDeathMountain },
+        SpoilerCollectionCheck::Chest(0x60, 0x1F), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_DMT_FREESTANDING_POH] =
+        Location::Collectable(RC_DMT_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_TRAIL,
+                              ACTOR_EN_ITEM00, SCENE_SPOT16, 7686, 0x1E, "Freestanding PoH", "DMT Freestanding PoH",
+                              RC_DMT_FREESTANDING_POH, RG_PIECE_OF_HEART,
+                              {
+                                  Category::cDeathMountainTrail,
+                                  Category::cDeathMountain,
+                              },
+                              SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    
+    // Goron City
 }
