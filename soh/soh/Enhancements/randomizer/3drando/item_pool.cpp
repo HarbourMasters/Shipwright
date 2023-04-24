@@ -725,6 +725,7 @@ void GenerateItemPool() {
       AddItemToMainPool(BOMBCHU_10);
     }
   } else {
+    PlaceItemInLocation(KAK_GRANNYS_SHOP, BOTTLE_WITH_BLUE_POTION, false, true);
     PlaceItemInLocation(GC_MEDIGORON, GIANTS_KNIFE, false, true);
     PlaceItemInLocation(WASTELAND_BOMBCHU_SALESMAN, BOMBCHU_10, false, true);
   }
@@ -1071,7 +1072,11 @@ void GenerateItemPool() {
   IceTrapModels.push_back(ItemTable(RandomElement(bottles)).GetItemID()); //Get one random bottle type for ice traps
   for (uint8_t i = 0; i < bottleCount; i++) {
     if (i >= rutoBottles) {
-      AddRandomBottle(bottles);
+      if ((i == bottleCount - 1) && ShuffleMerchants.IsNot(SHUFFLEMERCHANTS_OFF)) {
+        AddItemToMainPool(BOTTLE_WITH_BLUE_POTION);
+      } else {
+        AddRandomBottle(bottles);
+      }
     } else {
       AddItemToMainPool(RUTOS_LETTER);
     }

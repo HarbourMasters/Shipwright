@@ -3126,6 +3126,13 @@ void HintTable_Init() {
               /*spanish*/ "!#^La marca que te guiará al #Templo del&Espíritu# es la #bandera que está a la&" +
                   IF_NOT_MQ() + "izquierda" + MQ_ELSE() + "derecha" + MQ_END() + "# al salir de aquí. ¡Nos vemos!" },
     });
+
+    hintTable[GRANNY_DIALOG] = HintText::MerchantsDialogs({
+        // obscure text
+        Text{ "! How about #100 Rupees#?&" + TWO_WAY_CHOICE() + "#Buy&Don't buy#",
+              /*french*/ "! Que dis-tu de #100 rubis#?&" + TWO_WAY_CHOICE() + "#Acheter&Ne pas acheter#",
+              /*spanish*/ ". Vendo por #100 rupias#.&" + TWO_WAY_CHOICE() + "#Comprar&No comprar#" },
+    });
 }
 
 int32_t StonesRequiredBySettings() {

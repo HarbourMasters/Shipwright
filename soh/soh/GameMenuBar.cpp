@@ -34,13 +34,7 @@
 #endif
 
 #include "Enhancements/game-interactor/GameInteractor.h"
-
-#define EXPERIMENTAL() \
-    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 50, 50, 255)); \
-    UIWidgets::Spacer(3.0f); \
-    ImGui::Text("Experimental"); \
-    ImGui::PopStyleColor(); \
-    UIWidgets::PaddedSeparator(false, true);
+#include "Enhancements/cosmetics/authenticGfxPatches.h"
 
 bool isBetaQuestEnabled = false;
 
@@ -93,7 +87,9 @@ namespace GameMenuBar {
 
     std::string GetWindowButtonText(const char* text, bool menuOpen) {
         char buttonText[100] = "";
-        if(menuOpen) { strcat(buttonText,"> "); }
+        if (menuOpen) {
+            strcat(buttonText, ICON_FA_CHEVRON_RIGHT " ");
+        }
         strcat(buttonText, text);
         if (!menuOpen) { strcat(buttonText, "  "); }
         return buttonText;
@@ -199,11 +195,115 @@ namespace GameMenuBar {
                 SohImGui::SetMSAALevel(CVarGetInteger("gMSAAValue", 1));
             #endif
 
+                { // FPS Slider
+                    const int minFps = 20;
+                    static int maxFps;
+                    if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
+                        maxFps = 360;
+                    } else {
+                        maxFps = Ship::Window::GetInstance()->GetCurrentRefreshRate();
+                    }
+                    int currentFps = fmax(fmin(OTRGlobals::Instance->GetInterpolationFPS(), maxFps), minFps);
+                #ifdef __WIIU__
+                    UIWidgets::Spacer(0);
+                    // only support divisors of 60 on the Wii U
+                    if (currentFps > 60) {
+                        currentFps = 60;
+                    } else {
+                        currentFps = 60 / (60 / currentFps);
+                    }
+
+                    int fpsSlider = 1;
+                    if (currentFps == 20) {
+                        ImGui::Text("FPS: Original (20)");
+                    } else {
+                        ImGui::Text("FPS: %d", currentFps);
+                        if (currentFps == 30) {
+                            fpsSlider = 2;
+                        } else { // currentFps == 60
+                            fpsSlider = 3;
+                        }
+                    }
+                    if (CVarGetInteger("gMatchRefreshRate", 0)) {
+                        UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
+                    }
+
+                    if (ImGui::Button(" - ##WiiUFPS")) {
+                        fpsSlider--;
+                    }
+                    ImGui::SameLine();
+                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+
+                    UIWidgets::Spacer(0);
+
+                    ImGui::SliderInt("##WiiUFPSSlider", &fpsSlider, 1, 3, "", ImGuiSliderFlags_AlwaysClamp);
+
+                    ImGui::SameLine();
+                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+                    if (ImGui::Button(" + ##WiiUFPS")) {
+                        fpsSlider++;
+                    }
+
+                    if (CVarGetInteger("gMatchRefreshRate", 0)) {
+                        UIWidgets::ReEnableComponent("");
+                    }
+                    if (fpsSlider > 3) {
+                        fpsSlider = 3;
+                    } else if (fpsSlider < 1) {
+                        fpsSlider = 1;
+                    }
+
+                    if (fpsSlider == 1) {
+                        currentFps = 20;
+                    } else if (fpsSlider == 2) {
+                        currentFps = 30;
+                    } else if (fpsSlider == 3) {
+                        currentFps = 60;
+                    }
+                    CVarSetInteger("gInterpolationFPS", currentFps);
+                    SohImGui::RequestCvarSaveOnNextTick();
+                #else
+                    bool matchingRefreshRate =
+                        CVarGetInteger("gMatchRefreshRate", 0) && SohImGui::WindowBackend() != SohImGui::Backend::DX11;
+                    UIWidgets::PaddedEnhancementSliderInt(
+                        (currentFps == 20) ? "FPS: Original (20)" : "FPS: %d",
+                        "##FPSInterpolation", "gInterpolationFPS", minFps, maxFps, "", 20, true, true, false, matchingRefreshRate);
+                #endif
+                    if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
+                        UIWidgets::Tooltip(
+                            "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics. This is purely "
+                            "visual and does not impact game logic, execution of glitches etc.\n\n"
+                            "A higher target FPS than your monitor's refresh rate will waste resources, and might give a worse result."
+                        );
+                    } else {
+                        UIWidgets::Tooltip(
+                            "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics. This is purely "
+                            "visual and does not impact game logic, execution of glitches etc."
+                        );
+                    }
+                } // END FPS Slider
+
+                if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
+                    UIWidgets::Spacer(0);
+                    if (ImGui::Button("Match Refresh Rate")) {
+                        int hz = Ship::Window::GetInstance()->GetCurrentRefreshRate();
+                        if (hz >= 20 && hz <= 360) {
+                            CVarSetInteger("gInterpolationFPS", hz);
+                            SohImGui::RequestCvarSaveOnNextTick();
+                        }
+                    }
+                } else {
+                    UIWidgets::PaddedEnhancementCheckbox("Match Refresh Rate", "gMatchRefreshRate", true, false);
+                }
+                UIWidgets::Tooltip("Matches interpolation value to the current game's window refresh rate");
+
                 if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
                     UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger("gExtraLatencyThreshold", 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
                         "##ExtraLatencyThreshold", "gExtraLatencyThreshold", 0, 360, "", 80, true, true, false);
                     UIWidgets::Tooltip("When Interpolation FPS setting is at least this threshold, add one frame of input lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter. This setting allows the CPU to work on one frame while GPU works on the previous frame.\nThis setting should be used when your computer is too slow to do CPU + GPU work in time.");
                 }
+
+                UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 
                 ImGui::Text("Renderer API (Needs reload)");
                 auto renderingBackends = SohImGui::GetAvailableRenderingBackends();
@@ -225,6 +325,10 @@ namespace GameMenuBar {
                     UIWidgets::ReEnableComponent("");
                 }
 
+                if (Ship::Window::GetInstance()->CanDisableVerticalSync()) {
+                    UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", "gVsyncEnabled", true, false);
+                }
+
                 if (SohImGui::SupportsWindowedFullscreen()) {
                     UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", "gSdlWindowedFullscreen", true, false);
                 }
@@ -233,8 +337,6 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false);
                     UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
                 }
-
-                EXPERIMENTAL();
 
                 // If more filters are added to LUS, make sure to add them to the filters list here
                 ImGui::Text("Texture Filter (Needs reload)");
@@ -287,13 +389,15 @@ namespace GameMenuBar {
         {
             DrawPresetSelector(PRESET_TYPE_ENHANCEMENTS);
 
-            UIWidgets::Spacer(0);
+            UIWidgets::PaddedSeparator();
 
             if (ImGui::BeginMenu("Gameplay"))
             {
                 if (ImGui::BeginMenu("Time Savers"))
                 {
                     UIWidgets::PaddedEnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "", 1, true, false, true);
+                    UIWidgets::PaddedEnhancementCheckbox("Skip Text", "gSkipText", false, true);
+                    UIWidgets::Tooltip("Holding down B skips text");
                     UIWidgets::PaddedEnhancementSliderInt("King Zora Speed: %dx", "##MWEEPSPEED", "gMweepSpeed", 1, 5, "", 1, true, false, true);
                     UIWidgets::PaddedEnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "", 3, true, false, true);
                     UIWidgets::Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
@@ -400,6 +504,8 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Explosions are now a static size, like in Majora's Mask and OoT3D. Makes bombchu hovering much easier.");
                     UIWidgets::PaddedEnhancementCheckbox("Prevent Bombchus Forcing First-Person", "gDisableFirstPersonChus", true, false);
                     UIWidgets::Tooltip("Prevent bombchus from forcing the camera into first-person mode when released.");
+                    UIWidgets::PaddedEnhancementCheckbox("Aiming reticle for the bow/slingshot", "gBowReticle", true, false);
+                    UIWidgets::Tooltip("Aiming with a bow or slingshot will display a reticle as with the hookshot when the projectile is ready to fire.");
                     ImGui::EndMenu();
                 }
 
@@ -630,7 +736,7 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Hides most of the UI when not needed\nNote: Doesn't activate until after loading a new scene");
                     UIWidgets::PaddedEnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio", true, false);
                     UIWidgets::Tooltip("Disables the voice audio when Navi calls you");
-                    UIWidgets::PaddedEnhancementCheckbox("Disable Hot/Underwater Warning Text", "gDisableWarningText", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Disable Hot/Underwater Warning Text", "gDisableTunicWarningText", true, false);
                     UIWidgets::Tooltip("Disables warning text when you don't have on the Goron/Zora Tunic in Hot/Underwater conditions.");
 
                     ImGui::EndMenu();
@@ -728,6 +834,18 @@ namespace GameMenuBar {
 
                     ImGui::EndMenu();
                 }
+                UIWidgets::PaddedEnhancementCheckbox("Disable LOD", "gDisableLOD", true, false);
+                UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
+                if (UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance", true, false)) {
+                    if (CVarGetInteger("gDisableDrawDistance", 0) == 0) {
+                        CVarSetInteger("gDisableKokiriDrawDistance", 0);
+                    }
+                }
+                UIWidgets::Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
+                if (CVarGetInteger("gDisableDrawDistance", 0) == 1) {
+                    UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance", true, false);
+                    UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this will remove their draw distance");
+                }
                 UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gLowResMode", true, false);
                 UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
                 UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", "gDrawLineupTick", true, false);
@@ -792,6 +910,10 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip(
                     "Adds 5 higher pitches for the Silver Rupee Jingle for the rooms with more than 5 Silver Rupees. "
                     "Currently only relevant in Master Quest.");
+                if (UIWidgets::PaddedEnhancementCheckbox("Fix out of bounds textures", "gFixTexturesOOB", true, false)) {
+                    ApplyAuthenticGfxPatches();
+                }
+                UIWidgets::Tooltip("Fixes authentic out of bounds texture reads, instead loading textures with the correct size");
 
                 ImGui::EndMenu();
             }
@@ -800,6 +922,8 @@ namespace GameMenuBar {
 
             if (ImGui::BeginMenu("Restoration"))
             {
+                UIWidgets::PaddedEnhancementCheckbox("Hide Build Info", "gHideBuildInfo", true, false);
+                UIWidgets::Tooltip("Hides the game version and build details in the boot logo start screen");
                 UIWidgets::EnhancementCheckbox("Red Ganon blood", "gRedGanonBlood");
                 UIWidgets::Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
                 UIWidgets::PaddedEnhancementCheckbox("Fish while hovering", "gHoverFishing", true, false);
@@ -817,7 +941,7 @@ namespace GameMenuBar {
                 ImGui::EndMenu();
             }
 
-            UIWidgets::PaddedSeparator(false, true);
+            UIWidgets::PaddedSeparator();
 
             // Autosave enum value of 1 is the default in presets and the old checkbox "on" state for backwards compatibility
             UIWidgets::PaddedText("Autosave", false, true);
@@ -825,7 +949,7 @@ namespace GameMenuBar {
             UIWidgets::Tooltip("Automatically save the game when changing locations and/or obtaining items\n"
                 "Major items exclude rupees and health/magic/ammo refills (but include bombchus unless bombchu drops are enabled)");
 
-            UIWidgets::Spacer(0);
+            UIWidgets::PaddedSeparator(true, true, 2.0f, 2.0f);
 
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
             ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
@@ -861,102 +985,6 @@ namespace GameMenuBar {
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
-
-            EXPERIMENTAL();
-
-            { // FPS Slider
-                const int minFps = 20;
-                const int maxFps = Ship::Window::GetInstance()->GetCurrentRefreshRate();
-                int currentFps = fmax(fmin(OTRGlobals::Instance->GetInterpolationFPS(), maxFps), minFps);
-            #ifdef __WIIU__
-                // only support divisors of 60 on the Wii U
-                if (currentFps > 60) {
-                    currentFps = 60;
-                } 
-                else {
-                    currentFps = 60 / (60 / currentFps);
-                }
-
-                int fpsSlider = 1;
-                if (currentFps == 20) {
-                    ImGui::Text("Frame interpolation: Off");
-                } 
-                else {
-                    ImGui::Text("Frame interpolation: %d FPS", currentFps);
-                    if (currentFps == 30) {
-                        fpsSlider = 2;
-                    }
-                    else { // currentFps == 60
-                        fpsSlider = 3;
-                    }
-                }
-                if (CVarGetInteger("gMatchRefreshRate", 0)) {
-                    UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
-                }
-
-                if (ImGui::Button(" - ##WiiUFPS")) {
-                    fpsSlider--;
-                }
-                ImGui::SameLine();
-                ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-
-                ImGui::SliderInt("##WiiUFPSSlider", &fpsSlider, 1, 3, "", ImGuiSliderFlags_AlwaysClamp);
-
-                ImGui::SameLine();
-                ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-                if (ImGui::Button(" + ##WiiUFPS")) {
-                    fpsSlider++;
-                }
-
-                if (CVarGetInteger("gMatchRefreshRate", 0)) {
-                    UIWidgets::ReEnableComponent("");
-                }
-                if (fpsSlider > 3) {
-                    fpsSlider = 3;
-                } 
-                else if (fpsSlider < 1) {
-                    fpsSlider = 1;
-                }
-
-                if (fpsSlider == 1) {
-                    currentFps = 20;
-                }
-                else if (fpsSlider == 2) {
-                    currentFps = 30;
-                }
-                else if (fpsSlider == 3) {
-                    currentFps = 60;
-                }
-                CVarSetInteger("gInterpolationFPS", currentFps);
-                SohImGui::RequestCvarSaveOnNextTick();
-            #else
-                UIWidgets::EnhancementSliderInt((currentFps == 20) ? "Frame interpolation: Off" : "Frame interpolation: %d FPS", 
-                    "##FPSInterpolation", "gInterpolationFPS", minFps, maxFps, "", 20, true, CVarGetInteger("gMatchRefreshRate", 0));
-            #endif
-                UIWidgets::Tooltip("Interpolate extra frames to get smoother graphics\n"
-                    "Set to match your monitor's refresh rate, or a divisor of it\n"
-                    "A higher target FPS than your monitor's refresh rate will just waste resources, and might give a worse result.\n"
-                    "For consistent input lag, set this value and your monitor's refresh rate to a multiple of 20\n"
-                    "Ctrl+Click for keyboard input");
-            } // END FPS Slider
-            
-            UIWidgets::PaddedEnhancementCheckbox("Match Refresh Rate", "gMatchRefreshRate", true, false);
-            UIWidgets::Tooltip("Matches interpolation value to the current game's window refresh rate");
-
-            UIWidgets::PaddedEnhancementCheckbox("Disable LOD", "gDisableLOD", true, false);
-            UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
-            if (UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance", true, false)) {
-                if (CVarGetInteger("gDisableDrawDistance", 0) == 0) {
-                    CVarSetInteger("gDisableKokiriDrawDistance", 0);
-                }
-            }
-            UIWidgets::Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
-            if (CVarGetInteger("gDisableDrawDistance", 0) == 1) {
-                UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance", true, false);
-                UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this will remove their draw distance");
-            }
-            UIWidgets::PaddedEnhancementCheckbox("Skip Text", "gSkipText", true, false);
-            UIWidgets::Tooltip("Holding down B skips text");
 
          #ifdef __SWITCH__
             UIWidgets::Spacer(0);
@@ -1106,8 +1134,6 @@ namespace GameMenuBar {
                 ImGui::Text("Loading :");
                 UIWidgets::EnhancementCombobox("gSaveFileID", FastFileSelect, 0);
             };
-            UIWidgets::PaddedEnhancementCheckbox("Hide Build Info", "gHideBuildInfo", true, false);
-            UIWidgets::Tooltip("Hides the game version and build details in the boot logo start screen");
             UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
             UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
             UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", "gDebugWarpScreenTranslation", true, false);

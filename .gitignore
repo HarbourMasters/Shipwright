@@ -409,8 +409,7 @@ DebugObj/*
 ReleaseObj/*
 .tags
 tags
-oot.otr
-oot-mq.otr
+*.otr
 *.sav
 shipofharkinian.ini
 shipofharkinian.json

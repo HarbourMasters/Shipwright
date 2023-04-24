@@ -205,6 +205,10 @@ OTRGlobals::OTRGlobals() {
     if (std::filesystem::exists(ootPath)) {
         OTRFiles.push_back(ootPath);
     }
+    std::string sohOtrPath = Ship::Window::GetPathRelativeToAppBundle("soh.otr");
+    if (std::filesystem::exists(sohOtrPath)) {
+        OTRFiles.push_back(sohOtrPath);
+    }
     std::string patchesPath = Ship::Window::GetPathRelativeToAppDirectory("mods");
     if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
         if (std::filesystem::is_directory(patchesPath)) {
@@ -220,9 +224,9 @@ OTRGlobals::OTRGlobals() {
         OOT_NTSC_JP_MQ,
         OOT_NTSC_US_MQ,
         OOT_PAL_GC_MQ_DBG,
-        OOT_NTSC_10,
-        OOT_NTSC_11,
-        OOT_NTSC_12,
+        OOT_NTSC_US_10,
+        OOT_NTSC_US_11,
+        OOT_NTSC_US_12,
         OOT_PAL_10,
         OOT_PAL_11,
         OOT_NTSC_JP_GC_CE,
@@ -285,9 +289,9 @@ OTRGlobals::OTRGlobals() {
             case OOT_PAL_GC_MQ_DBG:
                 hasMasterQuest = true;
                 break;
-            case OOT_NTSC_10:
-            case OOT_NTSC_11:
-            case OOT_NTSC_12:
+            case OOT_NTSC_US_10:
+            case OOT_NTSC_US_11:
+            case OOT_NTSC_US_12:
             case OOT_PAL_10:
             case OOT_PAL_11:
             case OOT_NTSC_JP_GC_CE:
@@ -316,6 +320,10 @@ bool OTRGlobals::HasOriginal() {
 }
 
 uint32_t OTRGlobals::GetInterpolationFPS() {
+    if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
+        return CVarGetInteger("gInterpolationFPS", 20);
+    }
+
     if (CVarGetInteger("gMatchRefreshRate", 0)) {
         return Ship::Window::GetInstance()->GetCurrentRefreshRate();
     }
@@ -1765,11 +1773,20 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
         } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS) && textId == TEXT_BEAN_SALESMAN) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN);
-        } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF && (textId == TEXT_MEDIGORON || 
+        } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF && (textId == TEXT_MEDIGORON ||
+          (textId == TEXT_GRANNYS_SHOP && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP) &&
+                    (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK)) ||
           (textId == TEXT_CARPET_SALESMAN_1 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)) ||
           (textId == TEXT_CARPET_SALESMAN_2 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)))) {
-            RandomizerInf randoInf = (RandomizerInf)(textId == TEXT_MEDIGORON ? RAND_INF_MERCHANTS_MEDIGORON : RAND_INF_MERCHANTS_CARPET_SALESMAN);
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, textId, Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_ON_HINT);            
+            RandomizerInf randoInf;
+            if (textId == TEXT_MEDIGORON) {
+                randoInf = RAND_INF_MERCHANTS_MEDIGORON;
+            } else if (textId == TEXT_GRANNYS_SHOP) {
+                randoInf = RAND_INF_MERCHANTS_GRANNYS_SHOP;
+            } else {
+                randoInf = RAND_INF_MERCHANTS_CARPET_SALESMAN;
+            }
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, textId, Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_ON_HINT);
         } else if (Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
                    (textId == TEXT_BUY_BOMBCHU_10_DESC || textId == TEXT_BUY_BOMBCHU_10_PROMPT)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
