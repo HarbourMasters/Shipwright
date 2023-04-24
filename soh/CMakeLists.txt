@@ -612,7 +612,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		COMMANDS
 		COMMAND   $<CONFIG:Debug> copy /b $<SHELL_PATH:${CMAKE_BINARY_DIR}/>build.c +,,
 	)
-	add_custom_command(
+endif()
+
+if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
+    add_custom_command(
 		TARGET ${PROJECT_NAME}
 		POST_BUILD
 		COMMENT "Copying asset xmls..."
