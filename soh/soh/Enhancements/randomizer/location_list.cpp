@@ -825,4 +825,99 @@ void StaticData::InitLocationTable() {
         SpoilerCollectionCheck::Scrub(0x23, 0x04), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
     
     // Zoras River
+    locationTable[RC_ZR_OPEN_GROTTO_CHEST] = Location::Chest(
+        RC_ZR_OPEN_GROTTO_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_RIVER, ACTOR_EN_BOX, SCENE_KAKUSIANA,
+        22985, 0x09, "Open Grotto Chest", "ZR Open Grotto Chest", RC_ZR_OPEN_GROTTO_CHEST, RG_RED_RUPEE,
+        {
+            Category::cZorasRiver,
+            Category::cGrotto,
+        },
+        SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[RC_ZR_MAGIC_BEAN_SALESMAN] = Location::Base(
+        RC_ZR_MAGIC_BEAN_SALESMAN, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_RIVER, ACTOR_ID_MAX, SCENE_SPOT03, 0x00,
+        0x16, "Magic Bean Salesman", "ZR Magic Bean Salesman", RC_ZR_MAGIC_BEAN_SALESMAN, RG_MAGIC_BEAN,
+        {
+            Category::cZorasRiver,
+        },
+        SpoilerCollectionCheck::MagicBeans(0x54, 0x01), SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[RC_ZR_FROGS_ZELDAS_LULLABY] = Location::Base(
+        RC_ZR_FROGS_ZELDAS_LULLABY, RCQUEST_BOTH, RCTYPE_FROG_SONG, RCAREA_ZORAS_RIVER, ACTOR_EN_FR, SCENE_SPOT03, 0x00,
+        0x3E, "Frogs Zelda's Lullaby", "ZR Frogs Zelda's Lullaby", RC_ZR_FROGS_ZELDAS_LULLABY, RG_PURPLE_RUPEE,
+        {
+            Category::cZorasRiver,
+        },
+        SpoilerCollectionCheck::EventChkInf(0xD1), SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[RC_ZR_FROGS_EPONAS_SONG] = Location::Base(
+        RC_ZR_FROGS_EPONAS_SONG, RCQUEST_BOTH, RCTYPE_FROG_SONG, RCAREA_ZORAS_RIVER, ACTOR_EN_FR, SCENE_SPOT03, 0x00,
+        0x3E, "Frogs Epona's Song", "ZR Frogs Epona's Song", RC_ZR_FROGS_EPONAS_SONG, RG_PURPLE_RUPEE,
+        {
+            Category::cZorasRiver,
+        },
+        SpoilerCollectionCheck::EventChkInf(0xD2), SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[RC_ZR_FROGS_SARIAS_SONG] = Location::Base(
+        RC_ZR_FROGS_SARIAS_SONG, RCQUEST_BOTH, RCTYPE_FROG_SONG, RCAREA_ZORAS_RIVER, ACTOR_EN_FR, SCENE_SPOT03, 0x00,
+        0x3E, "Frogs Saria's Song", "ZR Frogs Saria's Song", RC_ZR_FROGS_SARIAS_SONG, RG_PURPLE_RUPEE,
+        {
+            Category::cZorasRiver,
+        },
+        SpoilerCollectionCheck::EventChkInf(0xD4), SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[RC_ZR_FROGS_SUNS_SONG] = Location::Base(
+        RC_ZR_FROGS_SUNS_SONG, RCQUEST_BOTH, RCTYPE_FROG_SONG, RCAREA_ZORAS_RIVER, ACTOR_EN_FR, SCENE_SPOT03, 0x00,
+        0x3E, "Frogs Sun's Song", "ZR Frogs Sun's Song", RC_ZR_FROGS_SUNS_SONG, RG_PURPLE_RUPEE,
+        {
+            Category::cZorasRiver,
+        },
+        SpoilerCollectionCheck::EventChkInf(0xD3), SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[RC_ZR_FROGS_SONG_OF_TIME] = Location::Base(
+        RC_ZR_FROGS_SONG_OF_TIME, RCQUEST_BOTH, RCTYPE_FROG_SONG, RCAREA_ZORAS_RIVER, ACTOR_EN_FR, SCENE_SPOT03, 0x00,
+        0x3E, "Frogs Song of Time", "ZR Frogs Song of Time", RC_ZR_FROGS_SONG_OF_TIME, RG_PURPLE_RUPEE,
+        {
+            Category::cZorasRiver,
+        },
+        SpoilerCollectionCheck::EventChkInf(0xD5), SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[RC_ZR_FROGS_IN_THE_RAIN] = Location::Base(
+        RC_ZR_FROGS_IN_THE_RAIN, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_RIVER, ACTOR_EN_FR, SCENE_SPOT03, 0x00,
+        0x3E, "Frogs in the Rain", "ZR Frogs in the Rain", RC_ZR_FROGS_IN_THE_RAIN, RG_PIECE_OF_HEART,
+        {
+            Category::cZorasRiver,
+        },
+        SpoilerCollectionCheck::EventChkInf(0xD6), SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[RC_ZR_FROGS_OCARINA_GAME] = Location::Base(
+        RC_ZR_FROGS_OCARINA_GAME, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_RIVER, ACTOR_EN_FR, SCENE_SPOT03, 0x00,
+        0x76, "Frogs Ocarina Game", "ZR Frogs Ocarina Game", RC_ZR_FROGS_OCARINA_GAME, RG_PIECE_OF_HEART,
+        {
+            Category::cZorasRiver,
+            Category::cMinigame,
+        },
+        SpoilerCollectionCheck::EventChkInf(0xD0), SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH] = Location::Collectable(
+        RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_RIVER, ACTOR_EN_ITEM00,
+        SCENE_SPOT03, 1030, 0x04, "Near Open Grotto Freestanding PoH", "ZR Near Open Grotto Freestanding PoH",
+        RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH, RG_PIECE_OF_HEART,
+        {
+            Category::cZorasRiver,
+        },
+        SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[RC_ZR_NEAR_DOMAIN_FREESTANDING_POH] =
+        Location::Collectable(RC_ZR_NEAR_DOMAIN_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_RIVER,
+                              ACTOR_EN_ITEM00, SCENE_SPOT03, 2822, 0x0B, "Near Domain Freestanding PoH",
+                              "ZR Near Domain Freestanding PoH", RC_ZR_NEAR_DOMAIN_FREESTANDING_POH, RG_PIECE_OF_HEART,
+                              {
+                                  Category::cZorasRiver,
+                              },
+                              SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[RC_ZR_DEKU_SCRUB_GROTTO_REAR] = Location::GrottoScrub(
+        RC_ZR_DEKU_SCRUB_GROTTO_REAR, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_ZORAS_RIVER, ACTOR_EN_DNS, SCENE_KAKUSIANA,
+        TWO_ACTOR_PARAMS(0x07, 0xEB), 0x39, "Deku Scrub Grotto Rear", "ZR Deku Scrub Grotto Rear",
+        RC_ZR_DEKU_SCRUB_GROTTO_REAR, RG_BUY_RED_POTION_30,
+        { Category::cZorasRiver, Category::cDekuScrub, Category::cGrotto }, SpoilerCollectionCheck::Scrub(0x15, 0x08),
+        SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    locationTable[RC_ZR_DEKU_SCRUB_GROTTO_FRONT] = Location::GrottoScrub(
+        RC_ZR_DEKU_SCRUB_GROTTO_FRONT, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_ZORAS_RIVER, ACTOR_EN_DNS, SCENE_KAKUSIANA,
+        TWO_ACTOR_PARAMS(0x08, 0xEB), 0x3A, "Deku Scrub Grotto Front", "ZR Deku Scrub Grotto Front",
+        RC_ZR_DEKU_SCRUB_GROTTO_FRONT, RG_BUY_GREEN_POTION,
+        { Category::cZorasRiver, Category::cDekuScrub, Category::cGrotto }, SpoilerCollectionCheck::Scrub(0x15, 0x09),
+        SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
+    
+    // Zoras Domain
 }
