@@ -297,7 +297,7 @@ jobs:
         mv ./x64/Release/soh.exe ./soh-windows/soh.exe
         mkdir soh-windows/debug
         mkdir soh-windows/mods
-        type nul > soh-windows/mods/custom_otr_files_go_here.txt
+        New-Item soh-windows/mods/custom_otr_files_go_here.txt -type file
         mv ./x64/Release/soh.pdb ./soh-windows/debug/soh.pdb
         mv ./x64/Release/OTRGui.exe ./soh-windows/OTRGui.exe
         mv ./README.md ./soh-windows/readme.txt
