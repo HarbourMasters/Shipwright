@@ -181,6 +181,8 @@ static u8 sDecayMaskTotal[16 * 16] = {
 };
 // clang-format on
 
+static u8 sDecayTex[16 * 16] = { { 0 } };
+
 // These are Phantom Ganon's body textures, but I don't know which is which.
 static void* sLimbTex_rgba16_8x8[] = {
     gPhantomGanonLimbTex_00A800, gPhantomGanonLimbTex_00AE80, gPhantomGanonLimbTex_00AF00,
@@ -208,66 +210,9 @@ static InitChainEntry sInitChain[] = {
 
 static Vec3f sAudioVec = { 0.0f, 0.0f, 50.0f };
 
-void BossGanondrof_ClearPixels8x8(s16* texture, u8* mask, s16 index)
-{
-    if (mask[index]) {
-        WriteTextureDataInt16ByName(texture, index / 4, 0, true);
-    }
-}
-
-void BossGanondrof_ClearPixels16x8(s16* texture, u8* mask, s16 index) {
-    if (mask[index]) {
-        WriteTextureDataInt16ByName(texture, index / 2, 0, false);
-
-    }
-}
-
-void BossGanondrof_ClearPixels16x16(s16* texture, u8* mask, s16 index, s16 bpp) {
-    if (mask[index]) {
-        WriteTextureDataInt16ByName(texture, index, 0, false);
-    }
-}
-
-void BossGanondrof_ClearPixels32x16(s16* texture, u8* mask, s16 index) {
-    if (mask[index]) {
-        s16 i = (index & 0xF) + ((index & 0xF0) << 1);
-
-        WriteTextureDataInt16ByName(texture, i + 0x10, 0, false);
-        WriteTextureDataInt16ByName(texture, i, 0, false);
-    }
-}
-
-void BossGanondrof_ClearPixels16x32(s16* texture, u8* mask, s16 index) {
-    if (mask[index]) {
-        s16 i = ((index & 0xF) * 2) + ((index & 0xF0) * 2);
-
-        WriteTextureDataInt16ByName(texture, i + 1, 0, false);
-        WriteTextureDataInt16ByName(texture, i, 0, false);
-    }
-
-}
-
 void BossGanondrof_ClearPixels(u8* mask, s16 index) {
-    s16 i;
-
-    for (i = 0; i < 5; i++) {
-        // ARRAY_COUNT can't be used here because the arrays aren't guaranteed to be the same size.
-        BossGanondrof_ClearPixels8x8(SEGMENTED_TO_VIRTUAL(sLimbTex_rgba16_8x8[i]), mask, index);
-        BossGanondrof_ClearPixels16x8(SEGMENTED_TO_VIRTUAL(sLimbTex_rgba16_16x8[i]), mask, index);
-    }
-
-    for (i = 0; i < ARRAY_COUNT(sLimbTex_rgba16_16x16); i++) {
-        BossGanondrof_ClearPixels16x16(SEGMENTED_TO_VIRTUAL(sLimbTex_rgba16_16x16[i]), mask, index, 2);
-    }
-
-    for (i = 0; i < ARRAY_COUNT(sLimbTex_rgba16_16x32); i++) {
-        BossGanondrof_ClearPixels16x32(SEGMENTED_TO_VIRTUAL(sLimbTex_rgba16_16x32[i]), mask, index);
-    }
-
-    BossGanondrof_ClearPixels32x16(SEGMENTED_TO_VIRTUAL(gPhantomGanonLimbTex_00B380), mask, index);
-    BossGanondrof_ClearPixels16x32(SEGMENTED_TO_VIRTUAL(gPhantomGanonEyeTex), mask, index);
-    for (i = 0; i < ARRAY_COUNT(sMouthTex_ci8_16x16); i++) {
-        BossGanondrof_ClearPixels16x16(SEGMENTED_TO_VIRTUAL(sMouthTex_ci8_16x16[i]), mask, index, 1);
+    if (mask[index]) {
+        sDecayTex[index] = 1;
     }
 }
 
@@ -310,6 +255,26 @@ void BossGanondrof_Init(Actor* thisx, PlayState* play) {
     } else {
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG, this->actor.world.pos.x,
                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, this->actor.params);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(sDecayTex); i++) {
+        sDecayTex[i] = 0;
+    }
+
+    for (int i = 0; i < 5; i++) {
+        Gfx_RegisterBlendedTexture(sLimbTex_rgba16_8x8[i], sDecayTex, NULL);
+        Gfx_RegisterBlendedTexture(sLimbTex_rgba16_16x8[i], sDecayTex, NULL);
+    }
+    for (int i = 0; i < ARRAY_COUNT(sLimbTex_rgba16_16x16); i++) {
+        Gfx_RegisterBlendedTexture(sLimbTex_rgba16_16x16[i], sDecayTex, NULL);
+    }
+    for (int i = 0; i < ARRAY_COUNT(sLimbTex_rgba16_16x32); i++) {
+        Gfx_RegisterBlendedTexture(sLimbTex_rgba16_16x32[i], sDecayTex, NULL);
+    }
+    Gfx_RegisterBlendedTexture(gPhantomGanonLimbTex_00B380, sDecayTex, NULL);
+    Gfx_RegisterBlendedTexture(gPhantomGanonEyeTex, sDecayTex, NULL);
+    for (int i = 0; i < ARRAY_COUNT(sMouthTex_ci8_16x16); i++) {
+        Gfx_RegisterBlendedTexture(sMouthTex_ci8_16x16[i], sDecayTex, NULL);
     }
 }
 
@@ -1512,21 +1477,7 @@ void BossGanondrof_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     if (this->work[GND_BODY_DECAY_FLAG]) {
-        for (int i = 0; i < 5; i++) {
-            gSPInvalidateTexCache(POLY_OPA_DISP++, sLimbTex_rgba16_8x8[i]);
-            gSPInvalidateTexCache(POLY_OPA_DISP++, sLimbTex_rgba16_16x8[i]);
-        }
-        for (int i = 0; i < ARRAY_COUNT(sLimbTex_rgba16_16x16); i++) {
-            gSPInvalidateTexCache(POLY_OPA_DISP++, sLimbTex_rgba16_16x16[i]);
-        }
-        for (int i = 0; i < ARRAY_COUNT(sLimbTex_rgba16_16x32); i++) {
-            gSPInvalidateTexCache(POLY_OPA_DISP++, sLimbTex_rgba16_16x32[i]);
-        }
-        gSPInvalidateTexCache(POLY_OPA_DISP++, gPhantomGanonLimbTex_00B380);
-        gSPInvalidateTexCache(POLY_OPA_DISP++, gPhantomGanonEyeTex);
-        for (int i = 0; i < ARRAY_COUNT(sMouthTex_ci8_16x16); i++) {
-            gSPInvalidateTexCache(POLY_OPA_DISP++, sMouthTex_ci8_16x16[i]);
-        }
+        gSPInvalidateTexCache(POLY_OPA_DISP++, sDecayTex);
     }
 
     osSyncPrintf("MOVE P = %x\n", this->actor.update);
