@@ -488,4 +488,22 @@ void StaticData::InitLocationTable() {
         SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
     
     // Hyrule Castle
+    locationTable[RC_HC_MALON_EGG] =
+        Location::Base(RC_HC_MALON_EGG, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_CASTLE, ACTOR_ID_MAX, SCENE_SPOT15,
+                       0x00, 0x47, "Malon Egg", "HC Malon Egg", RC_HC_MALON_EGG, RG_WEIRD_EGG,
+                       {
+                           Category::cHyruleCastle,
+                           Category::cMarket,
+                       },
+                       SpoilerCollectionCheck::EventChkInf(0x12), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_HC_ZELDAS_LETTER] = Location::Base(
+        RC_HC_ZELDAS_LETTER, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_CASTLE, ACTOR_ID_MAX, SCENE_NAKANIWA, 0x00,
+        0x0B, "Zeldas Letter", "HC Zeldas Letter", RC_HC_ZELDAS_LETTER, RG_ZELDAS_LETTER,
+        {
+            Category::cHyruleCastle,
+            Category::cMarket,
+        },
+        SpoilerCollectionCheck::EventChkInf(0x40), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    
+    // Kakariko
 }
