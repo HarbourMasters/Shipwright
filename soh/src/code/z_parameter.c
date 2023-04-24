@@ -3982,26 +3982,7 @@ void Interface_DrawItemButtons(PlayState* play) {
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-
-            //There is probably a more elegant way to do it.
-            char* doAction = actionsTbl[3];
-            char newName[512];
-            if (gSaveContext.language != LANGUAGE_ENG) {
-                size_t length = strlen(doAction);
-                strcpy(newName, doAction);
-                if (gSaveContext.language == LANGUAGE_FRA) {
-                    newName[length - 6] = 'F';
-                    newName[length - 5] = 'R';
-                    newName[length - 4] = 'A';
-                } else if (gSaveContext.language == LANGUAGE_GER) {
-                    newName[length - 6] = 'G';
-                    newName[length - 5] = 'E';
-                    newName[length - 4] = 'R';
-                }
-                doAction = newName;
-            }
-
-            Interface_LoadActionLabel(interfaceCtx, doAction, 2);
+            Interface_LoadActionLabel(interfaceCtx, 3, 2);
             gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->doActionSegment[2], G_IM_FMT_IA,
                                    DO_ACTION_TEX_WIDTH(), DO_ACTION_TEX_HEIGHT(), 0, G_TX_NOMIRROR | G_TX_WRAP,
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
