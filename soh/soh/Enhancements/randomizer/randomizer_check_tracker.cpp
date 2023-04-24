@@ -710,10 +710,17 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         transitionCheck = true;
         return;
     }
-    /*if (gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
-        messageCloseCheck = true;
-        return;
-    }*/
+    RandomizerCheck rc = RC_UNKNOWN_CHECK;
+    if (gPlayState->lastCheck != nullptr) {
+        rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(gPlayState->lastCheck->id, scene, gPlayState->lastCheck->params);
+    }
+    if (gPlayState->msgCtx.msgMode != MSGMODE_NONE && rc != RC_UNKNOWN_CHECK) {
+        RandomizerCheckObject rco = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
+        if (rco.rcType == RCTYPE_SKULL_TOKEN && giEntry.itemId != ITEM_SKULL_TOKEN) {
+            messageCloseCheck = true;
+            return;
+        }
+    }
     if (gSaveContext.n64ddFlag || (!gSaveContext.n64ddFlag && giEntry.getItemCategory != ITEM_CATEGORY_JUNK)) {
         checkCollected = true;
     }
