@@ -1294,4 +1294,138 @@ void StaticData::InitLocationTable() {
             Category::cDekuScrub,
         },
         SpoilerCollectionCheck::Scrub(0x01, 0x08), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+
+    // Jabu-Jabu's Belly Vanilla
+    locationTable[RC_JABU_JABUS_BELLY_MAP_CHEST] =
+        Location::Chest(RC_JABU_JABUS_BELLY_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_JABU_JABUS_BELLY,
+                        ACTOR_EN_BOX, SCENE_BDAN, 6178, 0x02, "Map Chest", "Jabu Jabus Belly Map Chest",
+                        RC_JABU_JABUS_BELLY_MAP_CHEST, RG_JABU_JABUS_BELLY_MAP,
+                        {
+                            Category::cJabuJabusBelly,
+                            Category::cVanillaMap,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_COMPASS_CHEST] =
+        Location::Chest(RC_JABU_JABUS_BELLY_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_JABU_JABUS_BELLY,
+                        ACTOR_EN_BOX, SCENE_BDAN, -18428, 0x04, "Compass Chest", "Jabu Jabus Belly Compass Chest",
+                        RC_JABU_JABUS_BELLY_COMPASS_CHEST, RG_JABU_JABUS_BELLY_COMPASS,
+                        {
+                            Category::cJabuJabusBelly,
+                            Category::cVanillaCompass,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_BOOMERANG_CHEST] =
+        Location::Chest(RC_JABU_JABUS_BELLY_BOOMERANG_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_JABU_JABUS_BELLY,
+                        ACTOR_EN_BOX, SCENE_BDAN, 4289, 0x01, "Boomerang Chest", "Jabu Jabus Belly Boomerang Chest",
+                        RC_JABU_JABUS_BELLY_BOOMERANG_CHEST, RG_BOOMERANG,
+                        {
+                            Category::cJabuJabusBelly,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_DEKU_SCRUB] = Location::Base(
+        RC_JABU_JABUS_BELLY_DEKU_SCRUB, RCQUEST_VANILLA, RCTYPE_SCRUB, RCAREA_JABU_JABUS_BELLY, ACTOR_EN_DNS,
+        SCENE_BDAN, 0x00, 0x30, "Deku Scrub", "Jabu Jabus Belly Deku Scrub", RC_JABU_JABUS_BELLY_DEKU_SCRUB,
+        RG_BUY_DEKU_NUT_5,
+        {
+            Category::cJabuJabusBelly,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x02, 0x01), SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+
+    // Jabu-Jabu's Belly MQ
+    locationTable[RC_JABU_JABUS_BELLY_MQ_FIRST_ROOM_SIDE_CHEST] = Location::Chest(
+        RC_JABU_JABUS_BELLY_MQ_FIRST_ROOM_SIDE_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_JABU_JABUS_BELLY,
+        ACTOR_EN_BOX, SCENE_BDAN, -32699, 0x05, "MQ First Room Side Chest", "Jabu Jabus Belly MQ First Room Side Chest",
+        RC_JABU_JABUS_BELLY_MQ_FIRST_ROOM_SIDE_CHEST, RG_DEKU_NUTS_5,
+        {
+            Category::cJabuJabusBelly,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_MQ_MAP_CHEST] =
+        Location::Chest(RC_JABU_JABUS_BELLY_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_JABU_JABUS_BELLY,
+                        ACTOR_EN_BOX, SCENE_BDAN, -18397, 0x03, "MQ Map Chest", "Jabu Jabus Belly MQ Map Chest",
+                        RC_JABU_JABUS_BELLY_MQ_MAP_CHEST, RG_JABU_JABUS_BELLY_MAP,
+                        {
+                            Category::cJabuJabusBelly,
+                            Category::cVanillaMap,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_LOWER_CHEST] = Location::Chest(
+        RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_LOWER_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_JABU_JABUS_BELLY,
+        ACTOR_EN_BOX, SCENE_BDAN, 20546, 0x02, "MQ Second Room Lower Chest",
+        "Jabu Jabus Belly MQ Second Room Lower Chest", RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_LOWER_CHEST, RG_DEKU_NUTS_5,
+        {
+            Category::cJabuJabusBelly,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_MQ_COMPASS_CHEST] =
+        Location::Chest(RC_JABU_JABUS_BELLY_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_JABU_JABUS_BELLY,
+                        ACTOR_EN_BOX, SCENE_BDAN, -18432, 0x00, "MQ Compass Chest", "Jabu Jabus Belly MQ Compass Chest",
+                        RC_JABU_JABUS_BELLY_MQ_COMPASS_CHEST, RG_JABU_JABUS_BELLY_COMPASS,
+                        {
+                            Category::cJabuJabusBelly,
+                            Category::cVanillaCompass,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_UPPER_CHEST] =
+        Location::Chest(RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_UPPER_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_JABU_JABUS_BELLY, ACTOR_EN_BOX, SCENE_BDAN, -30457, 0x07, "MQ Second Room Upper Chest",
+                        "Jabu Jabus Belly MQ Second Room Upper Chest", RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_UPPER_CHEST,
+                        RG_RECOVERY_HEART,
+                        {
+                            Category::cJabuJabusBelly,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST] =
+        Location::Chest(RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_JABU_JABUS_BELLY, ACTOR_EN_BOX, SCENE_BDAN, -32696, 0x08,
+                        "MQ Basement Near Switches Chest", "Jabu Jabus Belly MQ Basement Near Switches Chest",
+                        RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST, RG_DEKU_NUTS_5,
+                        {
+                            Category::cJabuJabusBelly,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_VINES_CHEST] =
+        Location::Chest(RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_VINES_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_JABU_JABUS_BELLY, ACTOR_EN_BOX, SCENE_BDAN, -32668, 0x04, "MQ Basement Near Vines Chest",
+                        "Jabu Jabus Belly MQ Basement Near Vines Chest",
+                        RC_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_VINES_CHEST, RG_BOMBCHU_10,
+                        {
+                            Category::cJabuJabusBelly,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST] =
+        Location::Chest(RC_JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_JABU_JABUS_BELLY,
+                        ACTOR_EN_BOX, SCENE_BDAN, -31446, 0x0A, "MQ Near Boss Chest",
+                        "Jabu Jabus Belly MQ Near Boss Chest", RC_JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST, RG_DEKU_SHIELD,
+                        {
+                            Category::cJabuJabusBelly,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_ROOM_CHEST] =
+        Location::Chest(RC_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_ROOM_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_JABU_JABUS_BELLY, ACTOR_EN_BOX, SCENE_BDAN, 28905, 0x09,
+                        "MQ Falling Like Like Room Chest", "Jabu Jabus Belly MQ Falling Like Like Room Chest",
+                        RC_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_ROOM_CHEST, RG_DEKU_STICK_1,
+                        {
+                            Category::cJabuJabusBelly,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST] =
+        Location::Chest(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_JABU_JABUS_BELLY, ACTOR_EN_BOX, SCENE_BDAN, 20545, 0x01, "MQ Boomerang Room Small Chest",
+                        "Jabu Jabus Belly MQ Boomerang Room Small Chest",
+                        RC_JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST, RG_DEKU_NUTS_5,
+                        {
+                            Category::cJabuJabusBelly,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST] =
+        Location::Chest(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_JABU_JABUS_BELLY,
+                        ACTOR_EN_BOX, SCENE_BDAN, 4294, 0x06, "MQ Boomerang Chest",
+                        "Jabu Jabus Belly MQ Boomerang Chest", RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST, RG_BOOMERANG,
+                        {
+                            Category::cJabuJabusBelly,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
 }
