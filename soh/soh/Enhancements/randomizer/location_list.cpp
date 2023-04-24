@@ -775,7 +775,7 @@ void StaticData::InitLocationTable() {
                            Category::cMerchant,
                        },
                        SpoilerCollectionCheck::Merchant(0x62, 0x87), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
-    
+
     // Death Mountain Crater
     locationTable[RC_DMC_UPPER_GROTTO_CHEST] = Location::Chest(
         RC_DMC_UPPER_GROTTO_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_BOX,
@@ -823,7 +823,7 @@ void StaticData::InitLocationTable() {
         RC_DMC_DEKU_SCRUB_GROTTO_CENTER, RG_BUY_ARROWS_30,
         { Category::cDeathMountainCrater, Category::cDeathMountain, Category::cDekuScrub, Category::cGrotto },
         SpoilerCollectionCheck::Scrub(0x23, 0x04), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
-    
+
     // Zoras River
     locationTable[RC_ZR_OPEN_GROTTO_CHEST] = Location::Chest(
         RC_ZR_OPEN_GROTTO_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_RIVER, ACTOR_EN_BOX, SCENE_KAKUSIANA,
@@ -918,15 +918,15 @@ void StaticData::InitLocationTable() {
         RC_ZR_DEKU_SCRUB_GROTTO_FRONT, RG_BUY_GREEN_POTION,
         { Category::cZorasRiver, Category::cDekuScrub, Category::cGrotto }, SpoilerCollectionCheck::Scrub(0x15, 0x09),
         SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
-    
+
     // Zoras Domain
     locationTable[RC_ZD_CHEST] =
         Location::Chest(RC_ZD_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_DOMAIN, ACTOR_EN_BOX, SCENE_SPOT07,
-                       -18496, 0x00, "Chest", "ZD Chest", RC_ZD_CHEST, RG_PIECE_OF_HEART,
-                       {
-                           Category::cZorasDomain,
-                       },
-                       SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+                        -18496, 0x00, "Chest", "ZD Chest", RC_ZD_CHEST, RG_PIECE_OF_HEART,
+                        {
+                            Category::cZorasDomain,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
     locationTable[RC_ZD_DIVING_MINIGAME] = Location::Base(
         RC_ZD_DIVING_MINIGAME, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_DOMAIN, ACTOR_ID_MAX, SCENE_SPOT07, 0x00,
         0x37, "Diving Minigame", "ZD Diving Minigame", RC_ZD_DIVING_MINIGAME, RG_PROGRESSIVE_SCALE,
@@ -947,7 +947,7 @@ void StaticData::InitLocationTable() {
                        SCENE_SPOT07, 0x00, 0x24, "Trade Prescription", "ZD Trade Prescription",
                        RC_ZD_TRADE_PRESCRIPTION, RG_EYEBALL_FROG, { Category::cZorasDomain, Category::cAdultTrade },
                        SpoilerCollectionCheck::Chest(0x58, 0x1F), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
-    
+
     // Zora's Fountain
     locationTable[RC_ZF_ICEBERC_FREESTANDING_POH] =
         Location::Collectable(RC_ZF_ICEBERC_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_FOUNTAIN,
@@ -965,7 +965,36 @@ void StaticData::InitLocationTable() {
                                   Category::cZorasFountain,
                               },
                               SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
-    
+
     // Lon Lon Ranch
-    
+    locationTable[RC_LLR_TALONS_CHICKENS] =
+        Location::Base(RC_LLR_TALONS_CHICKENS, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LON_LON_RANCH, ACTOR_ID_MAX,
+                       SCENE_SOUKO, 0x00, 0x14, "Talons Chickens", "LLR Talons Chickens", RC_LLR_TALONS_CHICKENS,
+                       RG_BOTTLE_WITH_MILK, { Category::cLonLonRanch, Category::cMinigame },
+                       SpoilerCollectionCheck::ItemGetInf(10), SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
+    locationTable[RC_LLR_FREESTANDING_POH] = Location::Collectable(
+        RC_LLR_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LON_LON_RANCH, ACTOR_EN_ITEM00, SCENE_SOUKO, 262,
+        0x01, "Freestanding PoH", "LLR Freestanding PoH", RC_LLR_FREESTANDING_POH, RG_PIECE_OF_HEART,
+        {
+            Category::cLonLonRanch,
+        },
+        SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
+    locationTable[RC_LLR_DEKU_SCRUB_GROTTO_LEFT] = Location::GrottoScrub(
+        RC_LLR_DEKU_SCRUB_GROTTO_LEFT, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_LON_LON_RANCH, ACTOR_EN_DNS, SCENE_KAKUSIANA,
+        TWO_ACTOR_PARAMS(0x00, 0xFC), 0x30, "Deku Scrub Grotto Left", "LLR Deku Scrub Grotto Left",
+        RC_LLR_DEKU_SCRUB_GROTTO_LEFT, RG_BUY_DEKU_NUT_5,
+        { Category::cLonLonRanch, Category::cDekuScrub, Category::cGrotto }, SpoilerCollectionCheck::Scrub(0x26, 0x01),
+        SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
+    locationTable[RC_LLR_DEKU_SCRUB_GROTTO_RIGHT] = Location::GrottoScrub(
+        RC_LLR_DEKU_SCRUB_GROTTO_RIGHT, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_LON_LON_RANCH, ACTOR_EN_DNS, SCENE_KAKUSIANA,
+        TWO_ACTOR_PARAMS(0x05, 0xFC), 0x37, "Deku Scrub Grotto Right", "LLR Deku Scrub Grotto Right",
+        RC_LLR_DEKU_SCRUB_GROTTO_RIGHT, RG_BUY_BOMBS_535,
+        { Category::cLonLonRanch, Category::cDekuScrub, Category::cGrotto }, SpoilerCollectionCheck::Scrub(0x26, 0x06),
+        SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
+    locationTable[RC_LLR_DEKU_SCRUB_GROTTO_CENTER] = Location::GrottoScrub(
+        RC_LLR_DEKU_SCRUB_GROTTO_CENTER, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_LON_LON_RANCH, ACTOR_EN_DNS,
+        SCENE_KAKUSIANA, TWO_ACTOR_PARAMS(0x03, 0xFC), 0x33, "Deku Scrub Grotto Center", "LLR Deku Scrub Grotto Center",
+        RC_LLR_DEKU_SCRUB_GROTTO_CENTER, RG_BUY_DEKU_SEEDS_30,
+        { Category::cLonLonRanch, Category::cDekuScrub, Category::cGrotto }, SpoilerCollectionCheck::Scrub(0x26, 0x04),
+        SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
 }
