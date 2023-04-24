@@ -49,7 +49,9 @@
 #include <Hooks.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 
+#if not defined (__SWITCH__) && not defined(__WIIU__)
 #include "Extractor/Extract.h"
+#endif
 
 #include <Fast3D/gfx_pc.h>
 #include <Fast3D/gfx_rendering_api.h>
