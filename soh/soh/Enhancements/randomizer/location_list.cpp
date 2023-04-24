@@ -1112,4 +1112,186 @@ void StaticData::InitLocationTable() {
             Category::cDekuScrub,
         },
         SpoilerCollectionCheck::Scrub(0x00, 0x05), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+
+    // Dodongo's Cavern Shared
+    locationTable[RC_DODONGOS_CAVERN_BOSS_ROOM_CHEST] =
+        Location::Chest(RC_DODONGOS_CAVERN_BOSS_ROOM_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DODONGOS_CAVERN,
+                        ACTOR_EN_BOX, SCENE_DDAN_BOSS, 20512, 0x00, "Boss Room Chest",
+                        "Dodongos Cavern Boss Room Chest", RC_DODONGOS_CAVERN_BOSS_ROOM_CHEST, RG_BOMBS_5,
+                        {
+                            Category::cDodongosCavern,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+
+    // Dodongo's Cavern Vanilla
+    locationTable[RC_DODONGOS_CAVERN_MAP_CHEST] =
+        Location::Chest(RC_DODONGOS_CAVERN_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_DODONGOS_CAVERN,
+                        ACTOR_EN_BOX, SCENE_DDAN, 2088, 0x08, "Map Chest", "Dodongos Cavern Map Chest",
+                        RC_DODONGOS_CAVERN_MAP_CHEST, RG_DODONGOS_CAVERN_MAP,
+                        {
+                            Category::cDodongosCavern,
+                            Category::cVanillaMap,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_COMPASS_CHEST] =
+        Location::Chest(RC_DODONGOS_CAVERN_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_DODONGOS_CAVERN,
+                        ACTOR_EN_BOX, SCENE_DDAN, 2053, 0x05, "Compass Chest", "Dodongos Cavern Compass Chest",
+                        RC_DODONGOS_CAVERN_COMPASS_CHEST, RG_DODONGOS_CAVERN_COMPASS,
+                        {
+                            Category::cDodongosCavern,
+                            Category::cVanillaCompass,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_BOMB_FLOWER_PLATFORM_CHEST] = Location::Chest(
+        RC_DODONGOS_CAVERN_BOMB_FLOWER_PLATFORM_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_DODONGOS_CAVERN,
+        ACTOR_EN_BOX, SCENE_DDAN, 22982, 0x06, "Bomb Flower Platform Chest",
+        "Dodongos Cavern Bomb Flower Platform Chest", RC_DODONGOS_CAVERN_BOMB_FLOWER_PLATFORM_CHEST, RG_RED_RUPEE,
+        {
+            Category::cDodongosCavern,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_BOMB_BAG_CHEST] =
+        Location::Chest(RC_DODONGOS_CAVERN_BOMB_BAG_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_DODONGOS_CAVERN,
+                        ACTOR_EN_BOX, SCENE_DDAN, 1604, 0x04, "Bomb Bag Chest", "Dodongos Cavern Bomb Bag Chest",
+                        RC_DODONGOS_CAVERN_BOMB_BAG_CHEST, RG_PROGRESSIVE_BOMB_BAG,
+                        {
+                            Category::cDodongosCavern,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_END_OF_BRIDGE_CHEST] =
+        Location::Chest(RC_DODONGOS_CAVERN_END_OF_BRIDGE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+                        RCAREA_DODONGOS_CAVERN, ACTOR_EN_BOX, SCENE_DDAN, 21802, 0x0A, "End Of Bridge Chest",
+                        "Dodongos Cavern End Of Bridge Chest", RC_DODONGOS_CAVERN_END_OF_BRIDGE_CHEST, RG_DEKU_SHIELD,
+                        {
+                            Category::cDodongosCavern,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT] = Location::Base(
+        RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT, RCQUEST_VANILLA, RCTYPE_SCRUB, RCAREA_DODONGOS_CAVERN,
+        ACTOR_EN_DNS, SCENE_DDAN, 0x00, 0x30, "Deku Scrub Near Bomb Bag Left",
+        "Dodongos Cavern Deku Scrub Near Bomb Bag Left", RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT,
+        RG_BUY_DEKU_NUT_5,
+        {
+            Category::cDodongosCavern,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x01, 0x01), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS] = Location::Base(
+        RC_DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS, RCQUEST_VANILLA, RCTYPE_SCRUB, RCAREA_DODONGOS_CAVERN,
+        ACTOR_EN_DNS, SCENE_DDAN, 0x01, 0x31, "Deku Scrub Side Room Near Dodongos",
+        "Dodongos Cavern Deku Scrub Side Room Near Dodongos", RC_DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS,
+        RG_BUY_DEKU_STICK_1,
+        {
+            Category::cDodongosCavern,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x01, 0x02), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT] = Location::Base(
+        RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT, RCQUEST_VANILLA, RCTYPE_SCRUB, RCAREA_DODONGOS_CAVERN,
+        ACTOR_EN_DNS, SCENE_DDAN, 0x03, 0x33, "Deku Scrub Near Bomb Bag Right",
+        "Dodongos Cavern Deku Scrub Near Bomb Bag Right", RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT,
+        RG_BUY_DEKU_SEEDS_30,
+        {
+            Category::cDodongosCavern,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x01, 0x04), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_DEKU_SCRUB_LOBBY] = Location::Base(
+        RC_DODONGOS_CAVERN_DEKU_SCRUB_LOBBY, RCQUEST_VANILLA, RCTYPE_SCRUB, RCAREA_DODONGOS_CAVERN, ACTOR_EN_DNS,
+        SCENE_DDAN, 0x04, 0x34, "Deku Scrub Lobby", "Dodongos Cavern Deku Scrub Lobby",
+        RC_DODONGOS_CAVERN_DEKU_SCRUB_LOBBY, RG_BUY_DEKU_SHIELD,
+        {
+            Category::cDodongosCavern,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x01, 0x05), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+
+    // Dodongo's Cavern MQ
+    locationTable[RC_DODONGOS_CAVERN_MQ_MAP_CHEST] =
+        Location::Chest(RC_DODONGOS_CAVERN_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_DODONGOS_CAVERN,
+                        ACTOR_EN_BOX, SCENE_DDAN, 2080, 0x00, "MQ Map Chest", "Dodongos Cavern MQ Map Chest",
+                        RC_DODONGOS_CAVERN_MQ_MAP_CHEST, RG_DODONGOS_CAVERN_MAP,
+                        {
+                            Category::cDodongosCavern,
+                            Category::cVanillaMap,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_MQ_BOMB_BAG_CHEST] =
+        Location::Chest(RC_DODONGOS_CAVERN_MQ_BOMB_BAG_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_DODONGOS_CAVERN,
+                        ACTOR_EN_BOX, SCENE_DDAN, 1604, 0x04, "MQ Bomb Bag Chest", "Dodongos Cavern MQ Bomb Bag Chest",
+                        RC_DODONGOS_CAVERN_MQ_BOMB_BAG_CHEST, RG_PROGRESSIVE_BOMB_BAG,
+                        {
+                            Category::cDodongosCavern,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_MQ_COMPASS_CHEST] =
+        Location::Chest(RC_DODONGOS_CAVERN_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_DODONGOS_CAVERN,
+                        ACTOR_EN_BOX, SCENE_DDAN, 6149, 0x05, "MQ Compass Chest", "Dodongos Cavern MQ Compass Chest",
+                        RC_DODONGOS_CAVERN_MQ_COMPASS_CHEST, RG_DODONGOS_CAVERN_COMPASS,
+                        {
+                            Category::cDodongosCavern,
+                            Category::cVanillaCompass,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CHEST] =
+        Location::Chest(RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_DODONGOS_CAVERN,
+                        ACTOR_EN_BOX, SCENE_DDAN, 29986, 0x02, "MQ Larvae Room Chest",
+                        "Dodongos Cavern MQ Larvae Room Chest", RC_DODONGOS_CAVERN_MQ_LARVAE_ROOM_CHEST, RG_DEKU_SHIELD,
+                        {
+                            Category::cDodongosCavern,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_ROOM_CHEST] = Location::Chest(
+        RC_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_ROOM_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_DODONGOS_CAVERN,
+        ACTOR_EN_BOX, SCENE_DDAN, 22947, 0x03, "MQ Torch Puzzle Room Chest",
+        "Dodongos Cavern MQ Torch Puzzle Room Chest", RC_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_ROOM_CHEST, RG_BLUE_RUPEE,
+        {
+            Category::cDodongosCavern,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_MQ_UNDER_GRAVE_CHEST] = Location::Chest(
+        RC_DODONGOS_CAVERN_MQ_UNDER_GRAVE_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_DODONGOS_CAVERN, ACTOR_EN_BOX,
+        SCENE_DDAN, 21825, 0x01, "MQ Under Grave Chest", "Dodongos Cavern MQ Under Grave Chest",
+        RC_DODONGOS_CAVERN_MQ_UNDER_GRAVE_CHEST, RG_HYLIAN_SHIELD,
+        {
+            Category::cDodongosCavern,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR] = Location::Base(
+        RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR, RCQUEST_MQ, RCTYPE_SCRUB, RCAREA_DODONGOS_CAVERN, ACTOR_EN_DNS,
+        SCENE_DDAN, 0x01, 0x31, "MQ Deku Scrub Lobby Rear", "Dodongos Cavern Deku Scrub Lobby Rear",
+        RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR, RG_BUY_DEKU_STICK_1,
+        {
+            Category::cDodongosCavern,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x01, 0x02), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_FRONT] = Location::Base(
+        RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_FRONT, RCQUEST_MQ, RCTYPE_SCRUB, RCAREA_DODONGOS_CAVERN, ACTOR_EN_DNS,
+        SCENE_DDAN, 0x03, 0x33, "MQ Deku Scrub Lobby Front", "Dodongos Cavern Deku Scrub Lobby Front",
+        RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_FRONT, RG_BUY_DEKU_SEEDS_30,
+        {
+            Category::cDodongosCavern,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x01, 0x04), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_STAIRCASE] = Location::Base(
+        RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_STAIRCASE, RCQUEST_MQ, RCTYPE_SCRUB, RCAREA_DODONGOS_CAVERN, ACTOR_EN_DNS,
+        SCENE_DDAN, 0x04, 0x34, "MQ Deku Scrub Staircase", "Dodongos Cavern Deku Scrub Staircase",
+        RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_STAIRCASE, RG_BUY_DEKU_SHIELD,
+        {
+            Category::cDodongosCavern,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x01, 0x05), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_SIDE_ROOM_NEAR_LOWER_LIZALFOS] = Location::Base(
+        RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_SIDE_ROOM_NEAR_LOWER_LIZALFOS, RCQUEST_MQ, RCTYPE_SCRUB,
+        RCAREA_DODONGOS_CAVERN, ACTOR_EN_DNS, SCENE_DDAN, 0x07, 0x39, "MQ Deku Scrub Side Room Near Lower Lizalfos",
+        "Dodongos Cavern Deku Scrub Side Room Near Lower Lizalfos",
+        RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_SIDE_ROOM_NEAR_LOWER_LIZALFOS, RG_BUY_RED_POTION_30,
+        {
+            Category::cDodongosCavern,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x01, 0x08), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
 }
