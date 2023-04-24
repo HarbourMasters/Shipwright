@@ -180,14 +180,21 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 # }}}
 
-# soh/Extractor {{{
-file(GLOB_RECURSE soh__Extractor RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-    "soh/Extractor/*.c"
-    "soh/Extractor/*.cpp"
-    "soh/Extractor/*.h"
-    "soh/Extractor/*.hpp"
-)
+
+if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
+    # soh/Extractor {{{
+    file(GLOB_RECURSE soh__Extractor RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+        "soh/Extractor/*.c"
+        "soh/Extractor/*.cpp"
+        "soh/Extractor/*.h"
+        "soh/Extractor/*.hpp"
+    )
+    # }}}
+else()
+    file(GLOB_RECURSE soh__Extractor RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    )
 # }}}
+endif()
 
 # soh/resource {{{
 file(GLOB_RECURSE soh__Resource RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/resource/*.cpp" "soh/resource/*.h")

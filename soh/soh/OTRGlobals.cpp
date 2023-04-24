@@ -701,6 +701,7 @@ extern "C" void OTRExtScanner() {
 }
 
 extern "C" void InitOTR() {
+#if not defined (__SWITCH__) && not defined(__WIIU__)
     if (!std::filesystem::exists(Ship::Window::GetPathRelativeToAppDirectory("oot-mq.otr")) &&
         !std::filesystem::exists(Ship::Window::GetPathRelativeToAppDirectory("oot.otr"))){
         if (Extractor::ShowYesNoBox("No OTR Files", "No OTR files found. Generate one now?") == IDYES) {
@@ -714,6 +715,7 @@ extern "C" void InitOTR() {
             extract.CallZapd();
         }
     }
+#endif
 
 #ifdef __SWITCH__
     Ship::Switch::Init(Ship::PreInitPhase);
