@@ -775,4 +775,54 @@ void StaticData::InitLocationTable() {
                            Category::cMerchant,
                        },
                        SpoilerCollectionCheck::Merchant(0x62, 0x87), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    
+    // Death Mountain Crater
+    locationTable[RC_DMC_UPPER_GROTTO_CHEST] = Location::Chest(
+        RC_DMC_UPPER_GROTTO_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_BOX,
+        SCENE_KAKUSIANA, 23802, 0x1A, "Upper Grotto Chest", "DMC Upper Grotto Chest", RC_DMC_UPPER_GROTTO_CHEST,
+        RG_BOMBS_20, { Category::cDeathMountainCrater, Category::cDeathMountain, Category::cGrotto },
+        SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_DMC_WALL_FREESTANDING_POH] =
+        Location::Collectable(RC_DMC_WALL_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_CRATER,
+                              ACTOR_EN_ITEM00, SCENE_SPOT17, 518, GI_HEART_PIECE, "Wall Freestanding PoH",
+                              "DMC Wall Freestanding PoH", RC_DMC_WALL_FREESTANDING_POH, RG_PIECE_OF_HEART,
+                              {
+                                  Category::cDeathMountainCrater,
+                                  Category::cDeathMountain,
+                              },
+                              SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_DMC_VOLCANO_FREESTANDING_POH] = Location::Collectable(
+        RC_DMC_VOLCANO_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_ITEM00,
+        SCENE_SPOT17, 2054, 0x08, "Volcano Freestanding PoH", "DMC Volcano Freestanding PoH",
+        RC_DMC_WALL_FREESTANDING_POH, RG_PIECE_OF_HEART,
+        {
+            Category::cDeathMountainCrater,
+            Category::cDeathMountain,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_DMC_DEKU_SCRUB] =
+        Location::Base(RC_DMC_DEKU_SCRUB, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_DNS,
+                       SCENE_SPOT17, 0x05, 0x37, "Deku Scrub", "DMC Deku Scrub", RC_DMC_DEKU_SCRUB, RG_BUY_BOMBS_535,
+                       { Category::cDeathMountainCrater, Category::cDeathMountain, Category::cDekuScrub },
+                       SpoilerCollectionCheck::Scrub(0x61, 0x06), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_DMC_DEKU_SCRUB_GROTTO_LEFT] = Location::GrottoScrub(
+        RC_DMC_DEKU_SCRUB_GROTTO_LEFT, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_DNS,
+        SCENE_KAKUSIANA, TWO_ACTOR_PARAMS(0x00, 0xF9), 0x30, "Deku Scrub Grotto Left", "DMC Deku Scrub Grotto Left",
+        RC_DMC_DEKU_SCRUB_GROTTO_LEFT, RG_BUY_DEKU_NUT_5,
+        { Category::cDeathMountainCrater, Category::cDeathMountain, Category::cDekuScrub, Category::cGrotto },
+        SpoilerCollectionCheck::Scrub(0x23, 0x01), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_DMC_DEKU_SCRUB_GROTTO_RIGHT] = Location::GrottoScrub(
+        RC_DMC_DEKU_SCRUB_GROTTO_RIGHT, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_DNS,
+        SCENE_KAKUSIANA, TWO_ACTOR_PARAMS(0x05, 0xF9), 0x37, "Deku Scrub Grotto Right", "DMC Deku Scrub Grotto Right",
+        RC_DMC_DEKU_SCRUB_GROTTO_RIGHT, RG_BUY_BOMBS_535,
+        { Category::cDeathMountainCrater, Category::cDeathMountain, Category::cDekuScrub, Category::cGrotto },
+        SpoilerCollectionCheck::Scrub(0x23, 0x06), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_DMC_DEKU_SCRUB_GROTTO_CENTER] = Location::GrottoScrub(
+        RC_DMC_DEKU_SCRUB_GROTTO_CENTER, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_DNS,
+        SCENE_KAKUSIANA, TWO_ACTOR_PARAMS(0x03, 0xF9), 0x33, "Deku Scrub Grotto Center", "DMC Deku Scrub Grotto Center",
+        RC_DMC_DEKU_SCRUB_GROTTO_CENTER, RG_BUY_ARROWS_30,
+        { Category::cDeathMountainCrater, Category::cDeathMountain, Category::cDekuScrub, Category::cGrotto },
+        SpoilerCollectionCheck::Scrub(0x23, 0x04), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    
+    // Zoras River
 }
