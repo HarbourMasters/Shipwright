@@ -373,5 +373,43 @@ void StaticData::InitLocationTable() {
         SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
 
     // Haunted Wasteland
+    locationTable[RC_WASTELAND_CHEST] =
+        Location::Chest(RC_WASTELAND_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_WASTELAND, ACTOR_EN_BOX, SCENE_SPOT13,
+                        -30048, 0x00, "Chest", "Wasteland Chest", RC_WASTELAND_CHEST, RG_PURPLE_RUPEE,
+                        {
+                            Category::cHauntedWasteland,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_WASTELAND_BOMBCHU_SALESMAN] = Location::Base(
+        RC_WASTELAND_BOMBCHU_SALESMAN, RCQUEST_BOTH, RCTYPE_MERCHANT, RCAREA_WASTELAND, ACTOR_ID_MAX, SCENE_SPOT13,
+        0x00, 0x03, "Carpet Salesman", "Wasteland Carpet Salesman", RC_WASTELAND_BOMBCHU_SALESMAN, RG_BOMBCHU_10,
+        {
+            Category::cHauntedWasteland,
+            Category::cMerchant,
+        },
+        SpoilerCollectionCheck::Merchant(0x5E, 0x86), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
     
+    // Desert Colossus
+    locationTable[RC_COLOSSUS_FREESTANDING_POH] =
+        Location::Collectable(RC_COLOSSUS_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DESERT_COLOSSUS,
+                              ACTOR_EN_ITEM00, SCENE_SPOT11, 3334, 0x0D, "Freestanding PoH",
+                              "Colossus Freestanding PoH", RC_COLOSSUS_FREESTANDING_POH, RG_PIECE_OF_HEART,
+                              {
+                                  Category::cDesertColossus,
+                              },
+                              SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR] = Location::GrottoScrub(
+        RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_DESERT_COLOSSUS, ACTOR_EN_DNS,
+        SCENE_KAKUSIANA, TWO_ACTOR_PARAMS(0x07, 0xFD), 0x39, "Deku Scrub Grotto Rear",
+        "Colossus Deku Scrub Grotto Rear", RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR, RG_BUY_RED_POTION_30,
+        { Category::cDesertColossus, Category::cDekuScrub, Category::cGrotto },
+        SpoilerCollectionCheck::Scrub(0x27, 0x08), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT] = Location::GrottoScrub(
+        RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_DESERT_COLOSSUS, ACTOR_EN_DNS,
+        SCENE_KAKUSIANA, TWO_ACTOR_PARAMS(0x08, 0xFD), 0x3A, "Deku Scrub Grotto Front",
+        "Colossus Deku Scrub Grotto Front", RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT, RG_BUY_GREEN_POTION,
+        { Category::cDesertColossus, Category::cDekuScrub, Category::cGrotto },
+        SpoilerCollectionCheck::Scrub(0x27, 0x09), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    
+    // Market
 }
