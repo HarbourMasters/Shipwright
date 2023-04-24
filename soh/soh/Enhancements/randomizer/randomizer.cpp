@@ -540,7 +540,19 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
             "Wie wäre es mit %r&{{item}}%w für %g200 Rubine?%w\x1B&%gJa!&Nein!%w",
             "Veux-tu acheter %r&{{item}}%w pour %g200 rubis?%w\x1B&%gOui&Non&w" 
         });
-    
+
+    //Granny Shopy
+    //RANDOTODO: Implement obscure/ambiguous hints
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::merchantMessageTableID, TEXT_GRANNYS_SHOP,
+        {
+            TEXTBOX_TYPE_BLACK,
+            TEXTBOX_POS_BOTTOM,
+            "%r{{item}}%w!&How about %g100 rupees%w?\x1B&%gYes&No%w",
+            "%r{{item}}%w!&Wie wäre es mit %g100 Rubine?%w\x1B&%gJa!&Nein!%w",
+            "%r{{item}}%w!&Que dis-tu de %g100 rubis?%w\x1B&%gOui&Non&w"
+        });
+
     //Carpet Salesman
     //RANDOTODO: Implement obscure/ambiguous hints
     std::vector<std::string> cgBoxTwoText;
@@ -1868,6 +1880,10 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
 }
 
 GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId) {
+    // Shopsanity with at least one item shuffled allows for a third wallet upgrade.
+    // This is needed since Plentiful item pool also adds a third progressive wallet
+    // but we should *not* get Tycoon's Wallet in that mode.
+    u8 numWallets = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 3 : 2;
     switch (randoGet) {
         case RG_NONE:
             return ogItemId;
@@ -1912,6 +1928,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_STICK_UPGRADE_20;
                 case 2:
+                case 3:
                     return GI_STICK_UPGRADE_30;
             }
         case RG_PROGRESSIVE_NUT_UPGRADE:
@@ -1920,6 +1937,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_NUT_UPGRADE_30;
                 case 2:
+                case 3:
                     return GI_NUT_UPGRADE_40;
             }
         case RG_PROGRESSIVE_BOMB_BAG:
@@ -1929,6 +1947,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_BOMB_BAG_30;
                 case 2:
+                case 3:
                     return GI_BOMB_BAG_40;
             }
         case RG_BOMBS_5:
@@ -1950,6 +1969,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_QUIVER_40;
                 case 2:
+                case 3:
                     return GI_QUIVER_50;
             }
         case RG_ARROWS_5:
@@ -1968,6 +1988,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_BULLET_BAG_40;
                 case 2:
+                case 3:
                     return GI_BULLET_BAG_50;
             }
         case RG_DEKU_SEEDS_30:
@@ -1978,16 +1999,9 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case ITEM_NONE:
                     return GI_OCARINA_FAIRY;
                 case ITEM_OCARINA_FAIRY:
+                case ITEM_OCARINA_TIME:
                     return GI_OCARINA_OOT;
             }
-        case RG_PROGRESSIVE_BOMBCHUS:
-            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
-                return GI_BOMBCHUS_20;
-            }
-            if (AMMO(ITEM_BOMBCHU) < 5) {
-                return GI_BOMBCHUS_10;
-            }
-            return GI_BOMBCHUS_5;
         case RG_BOMBCHU_5:
         case RG_BOMBCHU_DROP:
             return GI_BOMBCHUS_5;
@@ -2002,6 +2016,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case ITEM_NONE:
                     return GI_HOOKSHOT;
                 case ITEM_HOOKSHOT:
+                case ITEM_LONGSHOT:
                     return GI_LONGSHOT;
             }
         case RG_BOOMERANG:
@@ -2098,6 +2113,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_GAUNTLETS_SILVER;
                 case 2:
+                case 3:
                     return GI_GAUNTLETS_GOLD;
             }
         case RG_PROGRESSIVE_WALLET:
@@ -2107,13 +2123,15 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_WALLET_GIANT;
                 case 2:
-                    return (GetItemID)RG_TYCOON_WALLET;
+                case 3:
+                    return numWallets == 3 ? (GetItemID)RG_TYCOON_WALLET : GI_WALLET_GIANT;
             }
         case RG_PROGRESSIVE_SCALE:
             switch (CUR_UPG_VALUE(UPG_SCALE)) {
                 case 0:
                     return GI_SCALE_SILVER;
                 case 1:
+                case 2:
                     return GI_SCALE_GOLD;
             }
         case RG_PROGRESSIVE_MAGIC_METER:
@@ -2121,6 +2139,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 0:
                     return (GetItemID)RG_MAGIC_SINGLE;
                 case 1:
+                case 2:
                     return (GetItemID)RG_MAGIC_DOUBLE;
             }
 
@@ -2291,7 +2310,6 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_PROGRESSIVE_SCALE:
         case RG_PROGRESSIVE_NUT_UPGRADE:
         case RG_PROGRESSIVE_STICK_UPGRADE:
-        case RG_PROGRESSIVE_BOMBCHUS:
         case RG_PROGRESSIVE_OCARINA:
         case RG_PROGRESSIVE_GORONSWORD:
         case RG_EMPTY_BOTTLE:
@@ -2576,7 +2594,8 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_MARKET_BOMBCHU_SHOP_ITEM_7,                                  RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_7 },
     { RC_MARKET_BOMBCHU_SHOP_ITEM_8,                                  RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8 },
     { RC_GC_MEDIGORON,                                                RAND_INF_MERCHANTS_MEDIGORON                   },
-    { RC_WASTELAND_BOMBCHU_SALESMAN,                                  RAND_INF_MERCHANTS_CARPET_SALESMAN              },
+    { RC_KAK_GRANNYS_SHOP,                                            RAND_INF_MERCHANTS_GRANNYS_SHOP                },
+    { RC_WASTELAND_BOMBCHU_SALESMAN,                                  RAND_INF_MERCHANTS_CARPET_SALESMAN             },
     { RC_LW_TRADE_COJIRO,                                             RAND_INF_ADULT_TRADES_LW_TRADE_COJIRO },
     { RC_GV_TRADE_SAW,                                                RAND_INF_ADULT_TRADES_GV_TRADE_SAW },
     { RC_DMT_TRADE_BROKEN_SWORD,                                      RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD },
@@ -3761,9 +3780,10 @@ void DrawRandoEditor(bool& open) {
                 // Shuffle Merchants
                 ImGui::Text(Settings::ShuffleMerchants.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
-                    "Enabling this adds a Giant's Knife and a pack of Bombchus to the item pool "
-                    "and changes both Medigoron and the Haunted Wasteland Carpet Salesman to sell "
-                    "a random item once at the price of 200 rupees.\n\n"
+                    "Enabling this changes Medigoron, Granny and the Carpet Salesman to sell a random item "
+                    "once at a high price (100 for Granny, 200 for the others).\n"
+                    "A Giant's Knife and a pack of Bombchus will be added to the item pool, and "
+                    "one of the bottles will contain a Blue Potion.\n\n"
                     "On (no hints) - Salesmen will be included but won't tell you what you'll get.\n"
                     "On (with hints) - Salesmen will be included and you'll know what you're buying."
                 );
@@ -4649,6 +4669,11 @@ CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u
 
     if (textId == TEXT_SCRUB_RANDOM && shopItemPrice == 0) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM_FREE);
+    } else if (textId == TEXT_GRANNYS_SHOP) {
+        // Capitalize the first letter for the item in Granny's text as the item is the first word presented
+        for (auto &itemName : shopItemName) {
+            itemName[0] = std::toupper(itemName[0]);
+        }
     }
 
     CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{item}}", shopItemName[0], shopItemName[1], shopItemName[2]);
@@ -5395,6 +5420,7 @@ void InitRandoItemTable() {
         GET_ITEM(RG_ICE_CAVERN_COMPASS,                OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_ICE_CAVERN_COMPASS),
         GET_ITEM(RG_MAGIC_BEAN_PACK,                   OBJECT_GI_BEAN,     GID_BEAN,             TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MAGIC_BEAN_PACK),
         GET_ITEM(RG_TYCOON_WALLET,                     OBJECT_GI_PURSE,    GID_WALLET_GIANT,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_TYCOON_WALLET),
+        GET_ITEM(RG_PROGRESSIVE_BOMBCHUS,              OBJECT_GI_BOMB_2,   GID_BOMBCHU,          0x33,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_PROGRESSIVE_BOMBCHUS),
     };
     ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
     for (int i = 0; i < ARRAY_COUNT(extendedVanillaGetItemTable); i++) {

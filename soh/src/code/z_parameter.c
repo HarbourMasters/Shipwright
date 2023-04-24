@@ -1417,7 +1417,7 @@ void Inventory_SwapAgeEquipment(void) {
             if (i != 0) {
                 gSaveContext.childEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
             } else {
-                if (CVarGetInteger("gSwitchAge", 0) && 
+                if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && 
                     (gSaveContext.infTable[29] & 1)) {
                     gSaveContext.childEquips.buttonItems[i] = ITEM_NONE;
                 } else {
@@ -1501,7 +1501,8 @@ void Inventory_SwapAgeEquipment(void) {
         gSaveContext.adultEquips.equipment = gSaveContext.equips.equipment;
 
         if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE ||
-            CVarGetInteger("gSwitchAge", 0)) {
+            CVarGetInteger("gSwitchAge", 0) ||
+            CVarGetInteger("gSwitchTimeline", 0)) {
             for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                 gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
 
@@ -1542,7 +1543,7 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = 0x1111;
         }
 
-        if (CVarGetInteger("gSwitchAge", 0) &&
+        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) &&
             (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
             gSaveContext.infTable[29] |= 1;
             if (gSaveContext.childEquips.equipment == 0) {
@@ -1552,7 +1553,7 @@ void Inventory_SwapAgeEquipment(void) {
             }
         }
     }
-
+    CVarSetInteger("gSwitchTimeline", 0);
     temp = gEquipMasks[EQUIP_SHIELD] & gSaveContext.equips.equipment;
     if (temp != 0) {
         temp >>= gEquipShifts[EQUIP_SHIELD];
@@ -1702,7 +1703,7 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
         return;
     }
     // Count any bombchu pack as bombchus
-    if (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) {
+    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) || item == RG_PROGRESSIVE_BOMBCHUS) {
         if (gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = 0) {
             gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
@@ -2544,6 +2545,19 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         Rupees_ChangeBy(1);
         Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
         gSaveContext.sohStats.itemTimestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_PROGRESSIVE_BOMBCHUS) {
+        if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
+            INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
+            AMMO(ITEM_BOMBCHU) = 20;
+        } else {
+            AMMO(ITEM_BOMBCHU) += AMMO(ITEM_BOMBCHU) < 5 ? 10 : 5;
+            if (AMMO(ITEM_BOMBCHU) > 50) {
+                AMMO(ITEM_BOMBCHU) = 50;
+            }
+        }
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 

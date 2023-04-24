@@ -102,9 +102,13 @@ namespace UIWidgets {
     }
 
     void PaddedSeparator(bool padTop, bool padBottom, float extraVerticalTopPadding, float extraVerticalBottomPadding) {
-        if (padTop) Spacer(0);
+        if (padTop) {
+            Spacer(extraVerticalTopPadding);
+        }
         ImGui::Separator();
-        if (padBottom) Spacer(0);
+        if (padBottom) {
+            Spacer(extraVerticalBottomPadding);
+        }
     }
 
     void RenderCross(ImDrawList* draw_list, ImVec2 pos, ImU32 col, float sz) {
