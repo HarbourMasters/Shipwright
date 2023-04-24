@@ -997,4 +997,119 @@ void StaticData::InitLocationTable() {
         RC_LLR_DEKU_SCRUB_GROTTO_CENTER, RG_BUY_DEKU_SEEDS_30,
         { Category::cLonLonRanch, Category::cDekuScrub, Category::cGrotto }, SpoilerCollectionCheck::Scrub(0x26, 0x04),
         SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
+
+    // Dungeons
+
+    // Deku Tree Vanilla
+    locationTable[RC_DEKU_TREE_MAP_CHEST] = Location::Chest(
+        RC_DEKU_TREE_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_DEKU_TREE, ACTOR_EN_BOX, SCENE_YDAN, 2083,
+        0x03, "Map Chest", "Deku Tree Map Chest", RC_DEKU_TREE_MAP_CHEST, RG_DEKU_TREE_MAP,
+        {
+            Category::cDekuTree,
+            Category::cVanillaMap,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_COMPASS_CHEST] = Location::Chest(
+        RC_DEKU_TREE_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_DEKU_TREE, ACTOR_EN_BOX, SCENE_YDAN,
+        2050, 0x02, "Compass Chest", "Deku Tree Compass Chest", RC_DEKU_TREE_COMPASS_CHEST, RG_DEKU_TREE_COMPASS,
+        {
+            Category::cDekuTree,
+            Category::cVanillaCompass,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_COMPASS_ROOM_SIDE_CHEST] =
+        Location::Chest(RC_DEKU_TREE_COMPASS_ROOM_SIDE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_DEKU_TREE,
+                        ACTOR_EN_BOX, SCENE_YDAN, 22790, 0x06, "Compass Room Side Chest",
+                        "Deku Tree Compass Room Side Chest", RC_DEKU_TREE_COMPASS_ROOM_SIDE_CHEST, RG_RECOVERY_HEART,
+                        {
+                            Category::cDekuTree,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_BASEMENT_CHEST] = Location::Chest(
+        RC_DEKU_TREE_BASEMENT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_DEKU_TREE, ACTOR_EN_BOX, SCENE_YDAN,
+        22788, 0x04, "Basement Chest", "Deku Tree Basement Chest", RC_DEKU_TREE_BASEMENT_CHEST, RG_RECOVERY_HEART,
+        {
+            Category::cDekuTree,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_SLINGSHOT_CHEST] = Location::Chest(
+        RC_DEKU_TREE_SLINGSHOT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_DEKU_TREE, ACTOR_EN_BOX, SCENE_YDAN, 161,
+        0x01, "Slingshot Chest", "Deku Tree Slingshot Chest", RC_DEKU_TREE_SLINGSHOT_CHEST, RG_PROGRESSIVE_SLINGSHOT,
+        {
+            Category::cDekuTree,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_SLINGSHOT_ROOM_SIDE_CHEST] = Location::Chest(
+        RC_DEKU_TREE_SLINGSHOT_ROOM_SIDE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_DEKU_TREE, ACTOR_EN_BOX,
+        SCENE_YDAN, 22789, 0x05, "Slingshot Room Side Chest", "Deku Tree Slingshot Room Side Chest",
+        RC_DEKU_TREE_SLINGSHOT_ROOM_SIDE_CHEST, RG_RECOVERY_HEART,
+        {
+            Category::cDekuTree,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+
+    // Deku Tree MQ
+    locationTable[RC_DEKU_TREE_MQ_MAP_CHEST] = Location::Chest(
+        RC_DEKU_TREE_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_DEKU_TREE, ACTOR_EN_BOX, SCENE_YDAN, 2083,
+        0x03, "MQ Map Chest", "Deku Tree MQ Map Chest", RC_DEKU_TREE_MQ_MAP_CHEST, RG_DEKU_TREE_MAP,
+        {
+            Category::cDekuTree,
+            Category::cVanillaMap,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_MQ_COMPASS_CHEST] = Location::Chest(
+        RC_DEKU_TREE_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_DEKU_TREE, ACTOR_EN_BOX, SCENE_YDAN, 2049,
+        0x01, "MQ Compass Chest", "Deku Tree MQ Compass Chest", RC_DEKU_TREE_MQ_COMPASS_CHEST, RG_DEKU_TREE_COMPASS,
+        {
+            Category::cDekuTree,
+            Category::cVanillaCompass,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_MQ_SLINGSHOT_CHEST] =
+        Location::Chest(RC_DEKU_TREE_MQ_SLINGSHOT_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_DEKU_TREE, ACTOR_EN_BOX,
+                        SCENE_YDAN, 4262, 0x06, "MQ Slingshot Chest", "Deku Tree MQ Slingshot Chest",
+                        RC_DEKU_TREE_MQ_SLINGSHOT_CHEST, RG_PROGRESSIVE_SLINGSHOT,
+                        {
+                            Category::cDekuTree,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_BACK_CHEST] = Location::Chest(
+        RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_BACK_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_DEKU_TREE, ACTOR_EN_BOX,
+        SCENE_YDAN, -31454, 0x02, "MQ Slingshot Room Back Chest", "Deku Tree MQ Slingshot Room Back Chest",
+        RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_BACK_CHEST, RG_DEKU_SHIELD,
+        {
+            Category::cDekuTree,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_MQ_BASEMENT_CHEST] = Location::Chest(
+        RC_DEKU_TREE_MQ_BASEMENT_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_DEKU_TREE, ACTOR_EN_BOX, SCENE_YDAN, -31452,
+        0x04, "MQ Basement Chest", "Deku Tree MQ Basement Chest", RC_DEKU_TREE_MQ_BASEMENT_CHEST, RG_DEKU_SHIELD,
+        {
+            Category::cDekuTree,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_MQ_BEFORE_SPINNING_LOG_CHEST] = Location::Chest(
+        RC_DEKU_TREE_MQ_BEFORE_SPINNING_LOG_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_DEKU_TREE, ACTOR_EN_BOX,
+        SCENE_YDAN, 22789, 0x05, "MQ Before Spinning Log Chest", "Deku Tree MQ Before Spinning Log Chest",
+        RC_DEKU_TREE_MQ_BEFORE_SPINNING_LOG_CHEST, RG_RECOVERY_HEART,
+        {
+            Category::cDekuTree,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_MQ_AFTER_SPINNING_LOG_CHEST] = Location::Chest(
+        RC_DEKU_TREE_MQ_AFTER_SPINNING_LOG_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_DEKU_TREE, ACTOR_EN_BOX,
+        SCENE_YDAN, 23200, 0x00, "MQ After Spinning Log Chest", "Deku Tree MQ After Spinning Log Chest",
+        RC_DEKU_TREE_MQ_AFTER_SPINNING_LOG_CHEST, RG_PURPLE_RUPEE,
+        {
+            Category::cDekuTree,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DEKU_TREE_MQ_DEKU_SCRUB] = Location::Base(
+        RC_DEKU_TREE_MQ_DEKU_SCRUB, RCQUEST_MQ, RCTYPE_SCRUB, RCAREA_DEKU_TREE, ACTOR_EN_DNS, SCENE_YDAN, 0x04, 0x34,
+        "MQ Deku Scrub", "Deku Tree MQ Deku Scrub", RC_DEKU_TREE_MQ_DEKU_SCRUB, RG_BUY_DEKU_SHIELD,
+        {
+            Category::cDekuTree,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x00, 0x05), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
 }
