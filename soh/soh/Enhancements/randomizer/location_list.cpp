@@ -697,6 +697,82 @@ void StaticData::InitLocationTable() {
                                   Category::cDeathMountain,
                               },
                               SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
-    
+
     // Goron City
+    locationTable[RC_GC_MAZE_LEFT_CHEST] = Location::Chest(
+        RC_GC_MAZE_LEFT_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GORON_CITY, ACTOR_EN_BOX, SCENE_SPOT18, 23232,
+        0x00, "Maze Left Chest", "GC Maze Left Chest", RC_GC_MAZE_LEFT_CHEST, RG_HUGE_RUPEE,
+        {
+            Category::cGoronCity,
+        },
+        SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_MAZE_RIGHT_CHEST] = Location::Chest(
+        RC_GC_MAZE_RIGHT_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GORON_CITY, ACTOR_EN_BOX, SCENE_SPOT18, 23201,
+        0x01, "Maze Right Chest", "GC Maze Right Chest", RC_GC_MAZE_RIGHT_CHEST, RG_PURPLE_RUPEE,
+        {
+            Category::cGoronCity,
+        },
+        SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_MAZE_CENTER_CHEST] = Location::Chest(
+        RC_GC_MAZE_CENTER_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GORON_CITY, ACTOR_EN_BOX, SCENE_SPOT18, 23202,
+        0x02, "Maze Center Chest", "GC Maze Center Chest", RC_GC_MAZE_CENTER_CHEST, RG_PURPLE_RUPEE,
+        {
+            Category::cGoronCity,
+        },
+        SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_ROLLING_GORON_AS_CHILD] =
+        Location::Base(RC_GC_ROLLING_GORON_AS_CHILD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GORON_CITY, ACTOR_ID_MAX,
+                       SCENE_SPOT18, 0x00, 0x34, "Rolling Goron as Child", "GC Rolling Goron as Child",
+                       RC_GC_ROLLING_GORON_AS_CHILD, RG_PROGRESSIVE_BOMB_BAG,
+                       {
+                           Category::cGoronCity,
+                       },
+                       SpoilerCollectionCheck::InfTable(0x11, 0x06), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_ROLLING_GORON_AS_ADULT] = Location::Base(
+        RC_GC_ROLLING_GORON_AS_ADULT, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GORON_CITY, ACTOR_ID_MAX, SCENE_SPOT18,
+        0x00, 0x2C, "Rolling Goron as Adult", "GC Rolling Goron as Adult", RC_GC_ROLLING_GORON_AS_ADULT, RG_GORON_TUNIC,
+        {
+            Category::cGoronCity,
+        },
+        SpoilerCollectionCheck::InfTable(0x10, 0x01), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_DARUNIAS_JOY] =
+        Location::Base(RC_GC_DARUNIAS_JOY, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GORON_CITY, ACTOR_ID_MAX, SCENE_SPOT18,
+                       0x00, 0x54, "Darunias Joy", "GC Darunias Joy", RC_GC_DARUNIAS_JOY, RG_PROGRESSIVE_STRENGTH,
+                       {
+                           Category::cGoronCity,
+                       },
+                       SpoilerCollectionCheck::Chest(0x62, 0x1E), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_POT_FREESTANDING_POH] = Location::Collectable(
+        RC_GC_POT_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GORON_CITY, ACTOR_EN_ITEM00, SCENE_SPOT18,
+        7942, 0x1F, "Pot Freestanding PoH", "GC Pot Freestanding PoH", RC_GC_POT_FREESTANDING_POH, RG_PIECE_OF_HEART,
+        {
+            Category::cGoronCity,
+        },
+        SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_DEKU_SCRUB_GROTTO_LEFT] =
+        Location::GrottoScrub(RC_GC_DEKU_SCRUB_GROTTO_LEFT, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_GORON_CITY, ACTOR_EN_DNS,
+                              SCENE_KAKUSIANA, TWO_ACTOR_PARAMS(0x00, 0xFB), 0x30, "Deku Scrub Grotto Left",
+                              "GC Deku Scrub Grotto Left", RC_GC_DEKU_SCRUB_GROTTO_LEFT, RG_BUY_DEKU_NUT_5,
+                              { Category::cGoronCity, Category::cDekuScrub, Category::cGrotto },
+                              SpoilerCollectionCheck::Scrub(0x25, 0x01), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_DEKU_SCRUB_GROTTO_RIGHT] =
+        Location::GrottoScrub(RC_GC_DEKU_SCRUB_GROTTO_RIGHT, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_GORON_CITY,
+                              ACTOR_EN_DNS, SCENE_KAKUSIANA, TWO_ACTOR_PARAMS(0x05, 0xFB), 0x37,
+                              "Deku Scrub Grotto Right", "GC Deku Scrub Grotto Right", RC_GC_DEKU_SCRUB_GROTTO_RIGHT,
+                              RG_BUY_BOMBS_535, { Category::cGoronCity, Category::cDekuScrub, Category::cGrotto },
+                              SpoilerCollectionCheck::Scrub(0x25, 0x06), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_DEKU_SCRUB_GROTTO_CENTER] =
+        Location::GrottoScrub(RC_GC_DEKU_SCRUB_GROTTO_CENTER, RCQUEST_BOTH, RCTYPE_SCRUB, RCAREA_GORON_CITY,
+                              ACTOR_EN_DNS, SCENE_KAKUSIANA, TWO_ACTOR_PARAMS(0x03, 0xFB), 0x33,
+                              "Deku Scrub Grotto Center", "GC Deku Scrub Grotto Center", RC_GC_DEKU_SCRUB_GROTTO_CENTER,
+                              RG_BUY_ARROWS_30, { Category::cGoronCity, Category::cDekuScrub, Category::cGrotto },
+                              SpoilerCollectionCheck::Scrub(0x25, 0x04), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    locationTable[RC_GC_MEDIGORON] =
+        Location::Base(RC_GC_MEDIGORON, RCQUEST_BOTH, RCTYPE_MERCHANT, RCAREA_GORON_CITY, ACTOR_ID_MAX, SCENE_SPOT18,
+                       0x00, 0x51, "Medigoron", "GC Medigoron", RC_GC_MEDIGORON, RG_GIANTS_KNIFE,
+                       {
+                           Category::cGoronCity,
+                           Category::cMerchant,
+                       },
+                       SpoilerCollectionCheck::Merchant(0x62, 0x87), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
 }
