@@ -680,7 +680,6 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "libultraship;"
         "ZAPDUtils;"
-		"ZAPDLib;"
         SDL2::SDL2
         -lglad
         Threads::Threads
@@ -689,7 +688,6 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
     find_package(SDL2 REQUIRED)
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "libultraship;"
-        "ZAPDUtils;"
         SDL2::SDL2-static
 
         "$<$<CONFIG:Debug>:-Wl,--wrap=abort>"
