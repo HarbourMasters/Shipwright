@@ -9,7 +9,7 @@ void StaticData::InitLocationTable() {
     locationTable[RC_UNKNOWN_CHECK] = Location::Base(
         RC_UNKNOWN_CHECK, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_INVALID, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, 0x00,
         "Invalid Location", "Invalid Location", NONE, RG_NONE, {}, SpoilerCollectionCheck::None());
-    
+
     // Kokiri Forest
     locationTable[RC_KF_KOKIRI_SWORD_CHEST] = Location::Chest(
         RC_KF_KOKIRI_SWORD_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_KOKIRI_FOREST, ACTOR_EN_BOX, SCENE_SPOT04, 1248,
@@ -60,7 +60,7 @@ void StaticData::InitLocationTable() {
         22988, 0x0C, "Storms Grotto Chest", "KF Storms Grotto Chest", RC_KF_STORMS_GROTTO_CHEST, RG_RED_RUPEE,
         { Category::cKokiriForest, Category::cForest, Category::cGrotto },
         SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
-    
+
     // Lost Woods
     locationTable[RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST] = Location::Chest(
         RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_LOST_WOODS, ACTOR_EN_BOX,
@@ -159,7 +159,7 @@ void StaticData::InitLocationTable() {
         RC_SFM_DEKU_SCRUB_GROTTO_FRONT, RG_BUY_GREEN_POTION,
         { Category::cSacredForestMeadow, Category::cForest, Category::cDekuScrub, Category::cGrotto },
         SpoilerCollectionCheck::Scrub(0x18, 0x09), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
-    
+
     // Hyrule Field
     locationTable[RC_HF_SOUTHEAST_GROTTO_CHEST] = Location::Chest(
         RC_HF_SOUTHEAST_GROTTO_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_FIELD, ACTOR_EN_BOX, SCENE_KAKUSIANA,
@@ -322,7 +322,7 @@ void StaticData::InitLocationTable() {
         RC_GV_DEKU_SCRUB_GROTTO_FRONT, RG_BUY_GREEN_POTION,
         { Category::cGerudoValley, Category::cGerudo, Category::cDekuScrub, Category::cGrotto },
         SpoilerCollectionCheck::Scrub(0x1A, 0x09), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-    
+
     // Gerudo Fortress
     locationTable[RC_GF_CHEST] =
         Location::Chest(RC_GF_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_GERUDO_FORTRESS, ACTOR_EN_BOX, SCENE_SPOT12,
@@ -388,7 +388,7 @@ void StaticData::InitLocationTable() {
             Category::cMerchant,
         },
         SpoilerCollectionCheck::Merchant(0x5E, 0x86), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-    
+
     // Desert Colossus
     locationTable[RC_COLOSSUS_FREESTANDING_POH] =
         Location::Collectable(RC_COLOSSUS_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DESERT_COLOSSUS,
@@ -410,6 +410,82 @@ void StaticData::InitLocationTable() {
         "Colossus Deku Scrub Grotto Front", RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT, RG_BUY_GREEN_POTION,
         { Category::cDesertColossus, Category::cDekuScrub, Category::cGrotto },
         SpoilerCollectionCheck::Scrub(0x27, 0x09), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-    
+
     // Market
+    locationTable[RC_MARKET_TREASURE_CHEST_GAME_REWARD] =
+        Location::Chest(RC_MARKET_TREASURE_CHEST_GAME_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET,
+                        ACTOR_EN_BOX, SCENE_TAKARAYA, 0x00, 0x0A, "Treasure Chest Game Reward",
+                        "MK Treasure Chest Game Reward", RC_MARKET_TREASURE_CHEST_GAME_REWARD, RG_TREASURE_GAME_HEART,
+                        { Category::cInnerMarket, Category::cMarket, Category::cMinigame },
+                        SpoilerCollectionCheck::ItemGetInf(19), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE] =
+        Location::Base(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET,
+                       ACTOR_ID_MAX, SCENE_BOWLING, 0x00, 0x33, "Bombchu Bowling First Prize",
+                       "MK Bombchu Bowling First Prize", RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, RG_PROGRESSIVE_BOMB_BAG,
+                       { Category::cInnerMarket, Category::cMarket, Category::cMinigame },
+                       SpoilerCollectionCheck::ItemGetInf(25), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE] =
+        Location::Base(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET,
+                       ACTOR_ID_MAX, SCENE_BOWLING, 0x00, 0x3E, "Bombchu Bowling Second Prize",
+                       "MK Bombchu Bowling Second Prize", RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, RG_PIECE_OF_HEART,
+                       { Category::cInnerMarket, Category::cMarket, Category::cMinigame },
+                       SpoilerCollectionCheck::ItemGetInf(26), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS] = Location::Base(
+        RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_ID_MAX, SCENE_BOWLING,
+        0x00, 0x00, "Bombchu Bowling Bombchus", "MK Bombchu Bowling Bombchus", RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS,
+        RG_BOMBCHU_DROP, { Category::cInnerMarket, Category::cMarket, Category::cMinigame },
+        SpoilerCollectionCheck::None(), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_LOST_DOG] =
+        Location::Base(RC_MARKET_LOST_DOG, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_ID_MAX, SCENE_IMPA, 0x00,
+                       0x3E, "Lost Dog", "MK Lost Dog", RC_MARKET_LOST_DOG, RG_PIECE_OF_HEART,
+                       {
+                           Category::cInnerMarket,
+                           Category::cMarket,
+                       },
+                       SpoilerCollectionCheck::InfTable(0x19, 0x09), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_SHOOTING_GALLERY_REWARD] = Location::Base(
+        RC_MARKET_SHOOTING_GALLERY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_ID_MAX,
+        SCENE_SYATEKIJYOU, 0x00, 0x60, "Shooting Gallery", "MK Shooting Gallery", RC_MARKET_SHOOTING_GALLERY_REWARD,
+        RG_PROGRESSIVE_SLINGSHOT, { Category::cInnerMarket, Category::cMarket, Category::cMinigame },
+        SpoilerCollectionCheck::ItemGetInf(5), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_10_BIG_POES] = Location::Base(
+        RC_MARKET_10_BIG_POES, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_ID_MAX, SCENE_MIHARIGOYA, 0x00, 0x0F,
+        "10 Big Poes", "MK 10 Big Poes", RC_MARKET_10_BIG_POES, RG_EMPTY_BOTTLE,
+        {
+            Category::cInnerMarket,
+            Category::cMarket,
+        },
+        SpoilerCollectionCheck::BigPoePoints(), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_TREASURE_CHEST_GAME_ITEM_1] = Location::Chest(
+        RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, RCQUEST_BOTH, RCTYPE_CHEST_GAME, RCAREA_MARKET, ACTOR_EN_BOX,
+        SCENE_TAKARAYA, 0x00, 0x01, "Chest Game First Room Chest", "MK Chest Game First Room Chest",
+        RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, RG_TREASURE_GAME_SMALL_KEY,
+        { Category::cInnerMarket, Category::cMarket, Category::cMinigame, Category::cChestMinigame },
+        SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_TREASURE_CHEST_GAME_ITEM_2] = Location::Chest(
+        RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, RCQUEST_BOTH, RCTYPE_CHEST_GAME, RCAREA_MARKET, ACTOR_EN_BOX,
+        SCENE_TAKARAYA, 0x00, 0x03, "Chest Game Second Room Chest", "MK Chest Game Second Room Chest",
+        RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, RG_TREASURE_GAME_SMALL_KEY,
+        { Category::cInnerMarket, Category::cMarket, Category::cMinigame, Category::cChestMinigame },
+        SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_TREASURE_CHEST_GAME_ITEM_3] = Location::Chest(
+        RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, RCQUEST_BOTH, RCTYPE_CHEST_GAME, RCAREA_MARKET, ACTOR_EN_BOX,
+        SCENE_TAKARAYA, 0x00, 0x05, "Chest Game Third Room Chest", "MK Chest Game Third Room Chest",
+        RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, RG_TREASURE_GAME_SMALL_KEY,
+        { Category::cInnerMarket, Category::cMarket, Category::cMinigame, Category::cChestMinigame },
+        SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_TREASURE_CHEST_GAME_ITEM_4] = Location::Chest(
+        RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, RCQUEST_BOTH, RCTYPE_CHEST_GAME, RCAREA_MARKET, ACTOR_EN_BOX,
+        SCENE_TAKARAYA, 0x00, 0x07, "Chest Game Fourth Room Chest", "MK Chest Game Fourth Room Chest",
+        RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, RG_TREASURE_GAME_SMALL_KEY,
+        { Category::cInnerMarket, Category::cMarket, Category::cMinigame, Category::cChestMinigame },
+        SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_MARKET_TREASURE_CHEST_GAME_ITEM_5] = Location::Chest(
+        RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, RCQUEST_BOTH, RCTYPE_CHEST_GAME, RCAREA_MARKET, ACTOR_EN_BOX,
+        SCENE_TAKARAYA, 0x00, 0x09, "Chest Game Fifth Room Chest", "MK Chest Game Fifth Room Chest",
+        RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, RG_TREASURE_GAME_SMALL_KEY,
+        { Category::cInnerMarket, Category::cMarket, Category::cMinigame, Category::cChestMinigame },
+        SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    
+    // Hyrule Castle
 }
