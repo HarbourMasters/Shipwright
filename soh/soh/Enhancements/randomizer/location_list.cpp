@@ -920,4 +920,33 @@ void StaticData::InitLocationTable() {
         SpoilerCollectionCheckGroup::GROUP_ZORAS_RIVER);
     
     // Zoras Domain
+    locationTable[RC_ZD_CHEST] =
+        Location::Chest(RC_ZD_CHEST, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_DOMAIN, ACTOR_EN_BOX, SCENE_SPOT07,
+                       -18496, 0x00, "Chest", "ZD Chest", RC_ZD_CHEST, RG_PIECE_OF_HEART,
+                       {
+                           Category::cZorasDomain,
+                       },
+                       SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZD_DIVING_MINIGAME] = Location::Base(
+        RC_ZD_DIVING_MINIGAME, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_DOMAIN, ACTOR_ID_MAX, SCENE_SPOT07, 0x00,
+        0x37, "Diving Minigame", "ZD Diving Minigame", RC_ZD_DIVING_MINIGAME, RG_PROGRESSIVE_SCALE,
+        {
+            Category::cZorasDomain,
+            Category::cMinigame,
+        },
+        SpoilerCollectionCheck::EventChkInf(0x38), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZD_KING_ZORA_THAWED] = Location::Base(
+        RC_ZD_KING_ZORA_THAWED, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_DOMAIN, ACTOR_ID_MAX, SCENE_SPOT07, 0x00,
+        0x2D, "King Zora Thawed", "ZD King Zora Thawed", RC_ZD_KING_ZORA_THAWED, RG_ZORA_TUNIC,
+        {
+            Category::cZorasDomain,
+        },
+        SpoilerCollectionCheck::InfTable(0x13, 0x01), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZD_TRADE_PRESCRIPTION] =
+        Location::Base(RC_ZD_TRADE_PRESCRIPTION, RCQUEST_BOTH, RCTYPE_ADULT_TRADE, RCAREA_ZORAS_DOMAIN, ACTOR_ID_MAX,
+                       SCENE_SPOT07, 0x00, 0x24, "Trade Prescription", "ZD Trade Prescription",
+                       RC_ZD_TRADE_PRESCRIPTION, RG_EYEBALL_FROG, { Category::cZorasDomain, Category::cAdultTrade },
+                       SpoilerCollectionCheck::Chest(0x58, 0x1F), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    
+    // Zora's Fountain
 }
