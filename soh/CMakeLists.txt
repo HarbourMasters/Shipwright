@@ -192,6 +192,8 @@ if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
     # }}}
 else()
     file(GLOB_RECURSE soh__Extractor RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+        "soh/Extractor/*.h"
+        "soh/Extractor/*.hpp"
     )
 # }}}
 endif()
