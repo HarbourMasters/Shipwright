@@ -949,4 +949,23 @@ void StaticData::InitLocationTable() {
                        SpoilerCollectionCheck::Chest(0x58, 0x1F), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
     
     // Zora's Fountain
+    locationTable[RC_ZF_ICEBERC_FREESTANDING_POH] =
+        Location::Collectable(RC_ZF_ICEBERC_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_FOUNTAIN,
+                              ACTOR_EN_ITEM00, SCENE_SPOT08, 262, 0x01, "Iceberg Freestanding PoH",
+                              "ZF Iceberg Freestanding PoH", RC_ZF_ICEBERC_FREESTANDING_POH, RG_PIECE_OF_HEART,
+                              {
+                                  Category::cZorasFountain,
+                              },
+                              SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_ZF_BOTTOM_FREESTANDING_POH] =
+        Location::Collectable(RC_ZF_BOTTOM_FREESTANDING_POH, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_FOUNTAIN,
+                              ACTOR_EN_ITEM00, SCENE_SPOT08, 5126, 0x14, "Bottom Freestanding PoH",
+                              "ZF Bottom Freestanding PoH", RC_ZF_BOTTOM_FREESTANDING_POH, RG_PIECE_OF_HEART,
+                              {
+                                  Category::cZorasFountain,
+                              },
+                              SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    
+    // Lon Lon Ranch
+    
 }
