@@ -639,8 +639,12 @@ endif()
 add_dependencies(${PROJECT_NAME}
     ZAPDUtils
     libultraship
-	ZAPDLib
 )
+if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
+add_dependencies(${PROJECT_NAME}
+    ZAPDLib
+)
+endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
