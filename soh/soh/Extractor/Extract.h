@@ -40,12 +40,13 @@ class Extractor {
     void GetRoms(std::vector<std::string>& roms);
     void ShowSizeErrorBox() const;
     void ShowCrcErrorBox() const;
-    void ShowErrorBox(const char* title, const char* text) const;
     int ShowRomPickBox(uint32_t verCrc) const;
 
   public:
     //TODO create some kind of abstraction for message boxes.
     static int ShowYesNoBox(const char* title, const char* text);
+    static void ShowErrorBox(const char* title, const char* text);
+
     bool Run();
     bool CallZapd();
     const char* GetZapdStr();

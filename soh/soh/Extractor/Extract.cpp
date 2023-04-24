@@ -87,9 +87,11 @@ static const std::unordered_map<uint32_t, const char*> verMap = {
     //	{OOT_IQUE_CN, "IQUE CN"},
 };
 
-static constexpr std::array<const uint32_t, 6> goodCrcs = {
-    0xfa8c0555, // MQ DBG 64MB
+// TODO only check the first 54MB of the rom.
+static constexpr std::array<const uint32_t, 7> goodCrcs = {
+    0xfa8c0555, // MQ DBG 64MB (Original overdump)
     0x8652ac4c, // MQ DBG 64MB
+    0x5B8A1EB7, // MQ DBG 64MB (Empty overdump)
     0x1f731ffe, // MQ DBG 54MB
     0x044b3982, // NMQ DBG 54MB
     0xEB15D7B9, // NMQ DBG 64MB
@@ -103,7 +105,7 @@ enum class ButtonId : int {
 };
 
 
-void Extractor::ShowErrorBox(const char* title, const char* text) const {
+void Extractor::ShowErrorBox(const char* title, const char* text) {
 #ifdef _WIN32
     MessageBoxA(nullptr, text, title, MB_OK | MB_ICONERROR);
 #else
