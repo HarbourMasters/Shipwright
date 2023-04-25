@@ -197,10 +197,12 @@ jobs:
       image: devkitpro/devkita64:latest
     steps:
     - name: Install dependencies
-      if: ${{ !vars.LINUX_RUNNER }}
       run: |
         sudo apt-get update
         sudo apt-get install -y ninja-build
+    - name: Fix dubious ownership error
+      if: ${{ vars.LINUX_RUNNER }}
+      run: git config --global --add safe.directory '*'
     - uses: actions/checkout@v3
       with:
         submodules: true
