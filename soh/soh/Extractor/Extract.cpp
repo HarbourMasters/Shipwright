@@ -451,21 +451,6 @@ const char* Extractor::GetZapdVerStr() const {
     }
 }
 
-#if 0
-const char* Extractor::GetZapdStr() {
-    constexpr size_t ZAPD_STR_SIZE = 1024;
-    char* zapdCall = new char[ZAPD_STR_SIZE];
-    const char* verStr = GetZapdVerStr();
-
-    // TODO anything would be better than this
-    snprintf(zapdCall, ZAPD_STR_SIZE,
-             "ed -i assets/extractor/xmls/%s -b %s -fl assets/extractor/filelists -o placeholder -osf placeholder -gsf "
-             "1 -rconf assets/extractor/Config_%s.xml -se OTR --otrfile %s",
-             verStr, mCurrentRomPath.c_str(), verStr, IsMasterQuest() ? "oot-mq.otr" : "oot.otr");
-
-    return zapdCall;
-}
-#endif
 extern "C" int zapd_main(int argc, char** argv);
 
 //const char* zapdArgv[] = {
