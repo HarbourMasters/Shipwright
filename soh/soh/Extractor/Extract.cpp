@@ -453,10 +453,6 @@ const char* Extractor::GetZapdVerStr() const {
 
 extern "C" int zapd_main(int argc, char** argv);
 
-//const char* zapdArgv[] = {
-//    {"ZAPD"}, {"ed"}, {}
-//}
-
 bool Extractor::CallZapd() {
     constexpr int argc = 16;
     char xmlPath[100];
