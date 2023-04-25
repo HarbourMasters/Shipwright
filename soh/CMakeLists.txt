@@ -180,7 +180,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 # }}}
 
-
 if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
     # soh/Extractor {{{
     file(GLOB_RECURSE soh__Extractor RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
