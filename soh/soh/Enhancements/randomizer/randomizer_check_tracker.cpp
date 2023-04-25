@@ -231,7 +231,7 @@ void LinksPocket() {
     }
 }
 
-bool IsRunning() {
+bool IsGameRunning() {
     return gPlayState != nullptr && gSaveContext.fileNum < 10;
 }
 
@@ -256,7 +256,9 @@ void SetCheckCollected(RandomizerCheck rc) {
     } else {
         checkTrackerData.find(rc)->second.skipped = false;
     }
-    SaveTrackerData(gSaveContext.fileNum, true, false);
+    EnqueueSave(gSaveContext.fileNum, false);
+    //SaveTrackerData(gSaveContext.fileNum, true, false);
+
     doAreaScroll = true;
     UpdateOrdering(rcObj.rcArea);
     UpdateInventoryChecks();
@@ -539,7 +541,7 @@ void CheckTrackerDialogClosed() {
 }
 
 void CheckTrackerTransition(uint32_t sceneNum) {
-    if (!IsRunning()) {
+    if (!IsGameRunning()) {
         return;
     }
     if (newFileCheck) {
@@ -547,7 +549,8 @@ void CheckTrackerTransition(uint32_t sceneNum) {
         for (auto [area, check] : checksByArea) {
             CheckByArea(area, GET_ITEM_NONE, true);
         }
-        SaveTrackerData(gSaveContext.fileNum, true, true);
+        EnqueueSave(gSaveContext.fileNum, true);
+        //SaveTrackerData(gSaveContext.fileNum, true, true);
         UpdateAllOrdering();
         UpdateInventoryChecks();
     }
@@ -561,7 +564,7 @@ void CheckTrackerTransition(uint32_t sceneNum) {
 }
 
 void CheckTrackerFrame() {
-    if (!IsRunning()) {
+    if (!IsGameRunning()) {
         return;
     }
     if (checkCollected) {
@@ -589,7 +592,7 @@ void CheckTrackerSaleEnd(GetItemEntry giEntry) {
 }
 
 void CheckTrackerItemReceive(GetItemEntry giEntry) {
-    if (!IsRunning() || vector_contains_scene(skipScenes, gPlayState->sceneNum)) {
+    if (!IsGameRunning() || vector_contains_scene(skipScenes, gPlayState->sceneNum)) {
         return;
     }
     auto scene = static_cast<SceneID>(gPlayState->sceneNum);
@@ -885,7 +888,8 @@ void DrawCheckTracker(bool& open) {
     ImGui::SameLine();
     if (ImGui::Button("Recheck Area")) {
         CheckChecks(GET_ITEM_NONE, true);
-        SaveTrackerData(gSaveContext.fileNum, true, false);
+        EnqueueSave(gSaveContext.fileNum, false);
+        //SaveTrackerData(gSaveContext.fileNum, true, false);
         UpdateAllOrdering();
         UpdateInventoryChecks();
     }
@@ -1361,7 +1365,8 @@ void DrawLocation(RandomizerCheckObject rcObj) {
                 checkTrackerData.find(rcObj.rc)->second.skipped = true;
                 areaChecksGotten[rcObj.rcArea]++;
             }
-            SaveTrackerData(gSaveContext.fileNum, true, false);
+            EnqueueSave(gSaveContext.fileNum, false);
+            //SaveTrackerData(gSaveContext.fileNum, true, false);
             UpdateOrdering(rcObj.rcArea);
             UpdateInventoryChecks();
         }
