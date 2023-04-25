@@ -477,7 +477,8 @@ extern "C" int zapd_main(int argc, char* argv[])
 
 end:
 	delete exporterSet;
-	//Globals::Instance->GetExporterSet() = nullptr; TODO NULL this out
+
+	//Globals::Instance->GetExporterSet() = nullptr; //TODO NULL this out. Compiler complains about lvalue assignment.
 
 	delete g;
 	return 0;
