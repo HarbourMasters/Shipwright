@@ -70,7 +70,7 @@ public:
 	bool buildRawTexture = false;
 	bool onlyGenSohOtr = false;
 
-	ZRom* rom;
+	ZRom* rom = nullptr;
 	std::vector<ZFile*> files;
 	std::vector<ZFile*> externalFiles;
 	std::vector<int32_t> segments;
