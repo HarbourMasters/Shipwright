@@ -27,13 +27,6 @@ Globals::Globals()
 
 Globals::~Globals()
 {
-	//auto& exporters = GetExporterMap();
-	
-	//for (auto& it : exporters)
-	//{
-	//	delete it.second;
-	//}
-
 	for (const auto& w : workerData)
 	{
 		delete w.second;
