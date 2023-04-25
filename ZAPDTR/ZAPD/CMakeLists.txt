@@ -266,7 +266,6 @@ add_library(${PROJECT_NAME} STATIC ${ALL_FILES})
 add_executable(ZAPD ExecutableMain.cpp)
 target_link_libraries(ZAPD ${PROJECT_NAME})
 
-# set_target_properties(ZAPD PROPERTIES RUNTIME_OUTPUT_NAME ${PROJECT_NAME})
 
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
