@@ -107,8 +107,13 @@ static void ExporterProgramEnd()
 		}
 	}
 	otrArchive = nullptr;
+	delete fileWriter;
+	files.clear();
 
 	// Add any additional files that need to be manually copied...
+	if (File::Exists("soh.otr")) {
+		return;
+	}
 	const auto& lst = Directory::ListFiles("Extract");
 	std::shared_ptr<Ship::Archive> sohOtr = Ship::Archive::CreateArchive("soh.otr", 4096);
 	//sohOtr->AddFile("version", (uintptr_t)versionStream->ToVector().data(), versionStream->GetLength());
@@ -273,7 +278,7 @@ void AddFile(std::string fName, std::vector<char> data)
 	}
 }
 
-static void ImportExporters()
+void ImportExporters()
 {
 	// In this example we set up a new exporter called "EXAMPLE".
 	// By running ZAPD with the argument -se EXAMPLE, we tell it that we want to use this exporter for our resources.
@@ -312,6 +317,3 @@ static void ImportExporters()
 
 	InitVersionInfo();
 }
-
-// When ZAPD starts up, it will automatically call the below function, which in turn sets up our exporters.
-REGISTER_EXPORTER(ImportExporters);

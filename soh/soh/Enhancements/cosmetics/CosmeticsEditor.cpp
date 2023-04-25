@@ -1,4 +1,5 @@
 #include "CosmeticsEditor.h"
+#include "authenticGfxPatches.h"
 #include <ImGuiImpl.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
@@ -1817,6 +1818,7 @@ void InitCosmeticsEditor() {
     }
     SohImGui::RequestCvarSaveOnNextTick();
     ApplyOrResetCustomGfxPatches();
+    ApplyAuthenticGfxPatches();
 
     RegisterOnLoadGameHook();
 }

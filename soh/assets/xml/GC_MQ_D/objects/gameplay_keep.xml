@@ -7,6 +7,10 @@
         <Texture Name="gOcarinaofTimeDesignTex" OutName="ocarina_of_time_design" Format="rgba16" Width="32" Height="16" Offset="0x1400"/>
         <Texture Name="gBottleGlassTex" OutName="bottle_glass" Format="rgba16" Width="16" Height="16" Offset="0x1800"/>
         <Texture Name="gDekuStickTex" OutName="deku_stick" Format="i8" Width="16" Height="16" Offset="0x1A00"/>
+        <!-- This is a duplicate texture to accound for authentic texture overflowing -->
+        <!-- ZAPDTODO: It is set to an offset position -1 of the actual value as ZAPD does not permit
+             duplicate offset values -->
+        <Texture Name="gDekuStickOverflowTex" OutName="deku_stick_overflow" Format="i8" Width="16" Height="16" Offset="0x19FF"/>
         <Texture Name="gLinkHairTex" OutName="link_hair" Format="rgba16" Width="16" Height="16" Offset="0x1A40"/>
         <Texture Name="gLinkTunic1Tex" OutName="link_tunic_1" Format="i8" Width="16" Height="16" Offset="0x1C40"/>
         <Texture Name="gLinkTunic2Tex" OutName="link_tunic_2" Format="i8" Width="16" Height="32" Offset="0x1D40"/>
@@ -809,6 +813,10 @@
         <Texture Name="gEffUnknown10Tex" OutName="eff_unknown_10" Format="i8" Width="32" Height="32" Offset="0x32490"/>
         <Texture Name="gEffUnknown11Tex" OutName="eff_unknown_11" Format="i8" Width="32" Height="32" Offset="0x32890"/>
         <Texture Name="gEffUnknown12Tex" OutName="eff_unknown_12" Format="i8" Width="32" Height="32" Offset="0x32C90"/>
+        <!-- This is a duplicate texture to accound for authentic texture overflowing -->
+        <!-- ZAPDTODO: It is set to an offset position -2 of the actual value as ZAPD does not permit
+             duplicate offset values -->
+        <Texture Name="gEffUnknown12OverflowTex" OutName="eff_unknown_12_overflow" Format="ia16" Width="32" Height="32" Offset="0x32C8E"/>
         <Texture Name="gUnknownWoodBoardTex" OutName="unknown_wood_board" Format="i8" Width="32" Height="32" Offset="0x33090"/>
         <DList Name="gEffIceFragment1DL" Offset="0x33720"/>
         <DList Name="gEffIceFragment2DL" Offset="0x33818"/>
