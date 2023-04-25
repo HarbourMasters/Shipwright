@@ -317,6 +317,3 @@ void ImportExporters()
 
 	InitVersionInfo();
 }
-
-// When ZAPD starts up, it will automatically call the below function, which in turn sets up our exporters.
-//REGISTER_EXPORTER(ImportExporters);
