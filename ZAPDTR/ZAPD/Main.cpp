@@ -72,7 +72,6 @@ ZRoom room(nullptr);
 #include "ZFile.h"
 #include "ZTexture.h"
 
-
 #ifdef __linux__
 #include <csignal>
 #include <cstdlib>
