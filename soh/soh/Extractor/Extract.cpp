@@ -520,16 +520,3 @@ bool Extractor::CallZapd() {
     return 0;
 }
 
-#if 0
-int main() {
-    Extractor e;
-    bool valid = e.Run();
-    if (valid) {
-        const char* zapd = e.GetZapdStr();
-        printf("ZAPD: %s", zapd);
-        pfd::notify("Extraction complete", "Extraction complete\n");
-    } else {
-        printf("No rom found\n");
-    }
-}
-#endif
