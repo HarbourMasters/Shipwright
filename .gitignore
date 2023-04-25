@@ -446,4 +446,6 @@ CTestTestfile.cmake
 _deps
 */extract_assets_cmake*
 /build*
-build.c
+
+soh/build.c
+soh/properties.h
