@@ -48,43 +48,16 @@
 extern "C" uint32_t CRC32C(unsigned char* data, size_t dataSize);
 extern "C" void RomToBigEndian(void* rom, size_t romSize);
 
-static constexpr uint32_t OOT_NTSC_10 = 0xEC7011B7;
-static constexpr uint32_t OOT_NTSC_11 = 0xD43DA81F;
-static constexpr uint32_t OOT_NTSC_12 = 0x693BA2AE;
-static constexpr uint32_t OOT_PAL_10 = 0xB044B569;
-static constexpr uint32_t OOT_PAL_11 = 0xB2055FBD;
-static constexpr uint32_t OOT_NTSC_JP_GC_CE = 0xF7F52DB8;
-static constexpr uint32_t OOT_NTSC_JP_GC = 0xF611F4BA;
-static constexpr uint32_t OOT_NTSC_US_GC = 0xF3DD35BA;
 static constexpr uint32_t OOT_PAL_GC = 0x09465AC3;
-static constexpr uint32_t OOT_NTSC_JP_MQ = 0xF43B45BA;
-static constexpr uint32_t OOT_NTSC_US_MQ = 0xF034001A;
-static constexpr uint32_t OOT_PAL_MQ = 0x1D4136F3;
 static constexpr uint32_t OOT_PAL_GC_DBG1 = 0x871E1C92; // 03-21-2002 build
 static constexpr uint32_t OOT_PAL_GC_DBG2 = 0x87121EFE; // 03-13-2002 build
 static constexpr uint32_t OOT_PAL_GC_MQ_DBG = 0x917D18F6;
-static constexpr uint32_t OOT_IQUE_TW = 0x3D81FB3E;
-static constexpr uint32_t OOT_IQUE_CN = 0xB1E1E07B;
-
 
 static const std::unordered_map<uint32_t, const char*> verMap = {
-    //	{OOT_NTSC_10, "NTSC 1.0"},
-    //	{OOT_NTSC_11, "NTSC 1.1"},
-    //	{OOT_NTSC_12, "NTSC 1.2"},
-    //	{OOT_PAL_10, "PAL 1.0"},
-    //	{OOT_PAL_11, "PAL 1.1"},
-    //	{OOT_NTSC_JP_GC_CE, "NTSC JP Collectors Edition"},
-    //	{OOT_NTSC_JP_GC, "NTSC JP Gamecube"},
-    //	{OOT_NTSC_US_GC, "NTSC US Gamecube"},
     { OOT_PAL_GC, "Pal Gamecube" },
-    //	{OOT_NTSC_JP_MQ, "NTSC JP Gamecube"},
-    //	{OOT_NTSC_US_MQ, "NTSC US Gamecube"},
-    //	{OOT_PAL_MQ, "PAL MQ"},
     { OOT_PAL_GC_DBG1, "PAL Debug 1" },
     { OOT_PAL_GC_DBG2, "PAL Debug 2" },
     { OOT_PAL_GC_MQ_DBG, "PAL MQ Debug" },
-    //	{OOT_IQUE_TW, "IQUE TW"},
-    //	{OOT_IQUE_CN, "IQUE CN"},
 };
 
 // TODO only check the first 54MB of the rom.
