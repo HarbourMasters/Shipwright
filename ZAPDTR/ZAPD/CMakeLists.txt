@@ -1,4 +1,4 @@
-set(PROJECT_NAME ZAPD)
+set(PROJECT_NAME ZAPDLib)
 
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
 #set(CMAKE_C_STANDARD 11 CACHE STRING "The C standard to use")
@@ -260,10 +260,17 @@ set(ALL_FILES
 ################################################################################
 # Target
 ################################################################################
-add_executable(${PROJECT_NAME} ${ALL_FILES})
+
+add_library(${PROJECT_NAME} STATIC ${ALL_FILES})
+
+add_executable(ZAPD ExecutableMain.cpp)
+target_link_libraries(ZAPD ${PROJECT_NAME})
+
+
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
+use_props(ZAPD "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
 endif()
 ################################################################################
 # Includes for CMake from *.props
@@ -282,7 +289,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		)
 	endif()
 elseif (CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-        set_target_properties(${PROJECT_NAME} PROPERTIES
+        set_target_properties(ZAPD PROPERTIES
 		OUTPUT_NAME "ZAPD.out"
 	)
 endif()
@@ -290,7 +297,8 @@ endif()
 # MSVC runtime library
 ################################################################################
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	get_property(MSVC_RUNTIME_LIBRARY_DEFAULT TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY)
+foreach(ZTarget ${PROJECT_NAME} ZAPD)
+	get_property(MSVC_RUNTIME_LIBRARY_DEFAULT TARGET ${ZTarget} PROPERTY MSVC_RUNTIME_LIBRARY)
 	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
 		string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
 			$<$<CONFIG:Debug>:
@@ -302,7 +310,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			$<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
 		)
 	endif()
-	set_target_properties(${PROJECT_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
+	set_target_properties(${ZTarget} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
+endforeach()
 endif()
 ################################################################################
 # Compile definitions
@@ -404,7 +413,7 @@ if(MSVC)
 endif()
 
 if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
-	target_compile_options(${PROJECT_NAME} PRIVATE
+	target_compile_options(${PROJECT_NAME} PUBLIC
 		-Wall -Wextra -Wno-error
         -Wno-unused-parameter
         -Wno-unused-function
@@ -417,11 +426,11 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 	)
 	
     if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-        target_link_options(${PROJECT_NAME} PRIVATE
+        target_link_options(${PROJECT_NAME} PUBLIC
             -pthread
         )
     else()
-        target_link_options(${PROJECT_NAME} PRIVATE
+        target_link_options(${PROJECT_NAME} PUBLIC
             -pthread
             -Wl,-export-dynamic
         )
@@ -491,7 +500,7 @@ endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
 add_library(pathconf OBJECT pathconf.c)
-target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}" $<TARGET_OBJECTS:pathconf> )
+target_link_libraries(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}" $<TARGET_OBJECTS:pathconf> )
 else()
-target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
+target_link_libraries(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 endif()
