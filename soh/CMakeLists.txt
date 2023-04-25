@@ -102,7 +102,7 @@ set(PROJECT_NAME soh)
 # Sources
 ################################################################################
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/build.c.in ${CMAKE_BINARY_DIR}/build.c @ONLY)
-configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/properties.h.in ${CMAKE_BINARY_DIR}/properties.h @ONLY)
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/properties.h.in ${CMAKE_CURRENT_SOURCE_DIR}/properties.h @ONLY)
 
 set(Header_Files "resource.h")
 source_group("headers" FILES ${Header_Files})
@@ -190,7 +190,7 @@ source_group("soh\\resource\\importer\\scenecommand" REGULAR_EXPRESSION "soh/res
 file(GLOB_RECURSE src__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.c" "src/*.h")
 
 list(APPEND src__ ${CMAKE_BINARY_DIR}/build.c)
-list(APPEND src__ ${CMAKE_BINARY_DIR}/properties.h)
+list(APPEND src__ ${CMAKE_CURRENT_SOURCE_DIR}/properties.h)
 list(APPEND src__ ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
 list(FILTER src__ EXCLUDE REGEX "src/dmadata/*")
 list(FILTER src__ EXCLUDE REGEX "src/elf_message/*")
@@ -210,7 +210,7 @@ list(REMOVE_ITEM src__ "src/libultra/gu/sqrtf.c")
 list(REMOVE_ITEM src__ "src/libultra/gu/us2dex.c")
 
 source_group("src" REGULAR_EXPRESSION "src/*")
-source_group("src\\build" FILES ${CMAKE_BINARY_DIR}/build.c ${CMAKE_BINARY_DIR}/properties.h ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
+source_group("src\\build" FILES ${CMAKE_BINARY_DIR}/build.c ${CMAKE_CURRENT_SOURCE_DIR}/properties.h ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
 source_group("src\\boot" REGULAR_EXPRESSION "src/boot/*")
 source_group("src\\buffers" REGULAR_EXPRESSION "src/buffers/*")
 source_group("src\\code" REGULAR_EXPRESSION "src/code/*")
@@ -599,7 +599,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		PRE_BUILD
 		COMMANDS
 		COMMAND   $<CONFIG:Debug> copy /b $<SHELL_PATH:${CMAKE_BINARY_DIR}/>build.c +,,
-		COMMAND   $<CONFIG:Debug> copy /b $<SHELL_PATH:${CMAKE_BINARY_DIR}/>properties.h +,,
 	)
 endif()
 ################################################################################
