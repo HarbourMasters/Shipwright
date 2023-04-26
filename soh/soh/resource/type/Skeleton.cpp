@@ -31,8 +31,8 @@ void SkeletonPatcher::RegisterSkeleton(std::string path, SkelAnime* skelAnime) {
     if (path.substr(0, 7) == "__OTR__")
         path = path.substr(7, path.size() - 7);
 
-    // Determine if skeleton is HD or not...
-    if (path.substr(0, 3) == "hd/") {
+    // Determine if we're using an alternate skeleton
+    if (path.substr(0, 3) == Ship::Resource::gAltAssetPrefix) {
         info.vanillaSkeletonPath = path.substr(3, path.size() - 3);
     } else {
         info.vanillaSkeletonPath = path;
@@ -65,7 +65,9 @@ void SkeletonPatcher::UpdateSkeletons(bool isHD) {
         Skeleton* newSkel = nullptr;
 
         if (isHD)
-            newSkel = (Skeleton*)OTRGlobals::Instance->context->GetResourceManager()->LoadResource("hd/" + skel.vanillaSkeletonPath).get();
+            newSkel = (Skeleton*)OTRGlobals::Instance->context->GetResourceManager()
+                          ->LoadResource(Ship::Resource::gAltAssetPrefix + skel.vanillaSkeletonPath)
+                          .get();
         else
             newSkel = (Skeleton*)OTRGlobals::Instance->context->GetResourceManager()->LoadResource(skel.vanillaSkeletonPath).get();
 

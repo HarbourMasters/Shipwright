@@ -462,8 +462,8 @@ void GameState_Destroy(GameState* gameState) {
 
     osSyncPrintf("game デストラクタ終了\n"); // "game destructor end"
 
-    if (CVarGetInteger("gHdAssets", 0)) {
-        UnloadResourceDirectory("hd/*");
+    if (CVarGetInteger("gAltAssets", 0)) {
+        UnloadResourceDirectory("alt/*");
         gfx_texture_cache_clear();
     }
 

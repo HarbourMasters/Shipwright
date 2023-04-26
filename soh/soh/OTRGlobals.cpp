@@ -901,9 +901,9 @@ extern "C" void Graph_StartFrame() {
         }
         case KbScancode::LUS_KB_TAB: {
             // Toggle HD Assets
-            CVarSetInteger("gHdAssets", !CVarGetInteger("gHdAssets", 0));
+            CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
             ShouldClearTextureCacheAtEndOfFrame = true;
-            Ship::SkeletonPatcher::UpdateSkeletons(CVarGetInteger("gHdAssets", 0));
+            Ship::SkeletonPatcher::UpdateSkeletons(CVarGetInteger("gAltAssets", 0));
             break;
         }
     }
