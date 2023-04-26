@@ -82,7 +82,7 @@ class SkeletonPatcher {
     static void RegisterSkeleton(std::string path, SkelAnime* skelAnime);
     static void UnregisterSkeleton(SkelAnime* skelAnime);
     static void ClearSkeletons();
-    static void UpdateSkeletons(bool isHD);
+    static void UpdateSkeletons();
 
     static std::vector<SkeletonPatchInfo> skeletons;
 };

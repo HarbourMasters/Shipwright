@@ -903,7 +903,6 @@ extern "C" void Graph_StartFrame() {
             // Toggle HD Assets
             CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
             ShouldClearTextureCacheAtEndOfFrame = true;
-            Ship::SkeletonPatcher::UpdateSkeletons(CVarGetInteger("gAltAssets", 0));
             break;
         }
     }
@@ -975,6 +974,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     if (ShouldClearTextureCacheAtEndOfFrame) {
         gfx_texture_cache_clear();
+        Ship::SkeletonPatcher::UpdateSkeletons();
         ShouldClearTextureCacheAtEndOfFrame = false;
     }
 

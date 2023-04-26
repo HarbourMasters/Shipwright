@@ -796,7 +796,6 @@ namespace GameMenuBar {
             {
                 if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", true, false)) {
                     ShouldClearTextureCacheAtEndOfFrame = true;
-                    Ship::SkeletonPatcher::UpdateSkeletons(CVarGetInteger("gAltAssets", 0));
                 }
                 UIWidgets::PaddedEnhancementCheckbox("Disable LOD", "gDisableLOD", true, false);
                 UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
