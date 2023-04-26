@@ -83,6 +83,7 @@ SceneID lastScene = SCENE_ID_MAX;
 SceneID currentScene = SCENE_ID_MAX;
 bool newFileCheck = false;
 bool tickCheck = false;
+bool autoSaved = false;
 int tickCounter = 0;
 
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
@@ -256,12 +257,17 @@ void SetCheckCollected(RandomizerCheck rc) {
     } else {
         checkTrackerData.find(rc)->second.skipped = false;
     }
-    EnqueueSave(gSaveContext.fileNum, false);
+    EnqueueSave(gSaveContext.fileNum, autoSaved);
+    autoSaved = false;
     //SaveTrackerData(gSaveContext.fileNum, true, false);
 
     doAreaScroll = true;
     UpdateOrdering(rcObj.rcArea);
     UpdateInventoryChecks();
+}
+
+void SetAutoSaved() {
+    autoSaved = true;
 }
 
 bool IsAreaScene(SceneID sceneNum) {
@@ -459,7 +465,11 @@ bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID, GetItemEntry giEntry
                 }
                 if (collected) {
                     checkTrackerData.find(rco.rc)->second.status = RCSHOW_SAVED;
-                    areaChecksGotten[rco.rcArea]++;
+                    if (rcData.skipped) {
+                        checkTrackerData.find(rco.rc)->second.skipped = false;
+                    } else {
+                        areaChecksGotten[rco.rcArea]++;
+                    }
                 }
             }
         }

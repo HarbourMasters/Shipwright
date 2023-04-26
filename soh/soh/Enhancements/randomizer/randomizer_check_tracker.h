@@ -32,6 +32,7 @@ void CreateTrackerData(bool);
 void SetLastItemGetRC(RandomizerCheck rc);
 void CheckTrackerDialogClosed();
 bool IsGameRunning();
+void SetAutoSaved();
 } // namespace CheckTracker
 
 NLOHMANN_JSON_SERIALIZE_ENUM(RandomizerCheckShow, {

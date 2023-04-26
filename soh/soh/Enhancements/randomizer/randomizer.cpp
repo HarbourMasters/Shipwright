@@ -3147,6 +3147,7 @@ void SaveTrackerDataHook(int fileNum) {
         CheckTracker::CreateTrackerData(true);
     }
     saveQueue.push({ fileNum, true });
+    CheckTracker::SetAutoSaved();
 }
 
 void LoadTrackerData(int fileNum) {
