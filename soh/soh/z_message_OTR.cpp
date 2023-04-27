@@ -22,6 +22,8 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
         return nullptr;
     
     // Allocate room for an additional message
+    // OTRTODO: Should not be malloc'ing here. It's fine for now since we check elsewhere that the message table is
+    // already null.
     MessageTableEntry* table = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * (file->messages.size() + 1));
 
     for (size_t i = 0; i < file->messages.size(); i++) {
@@ -29,6 +31,8 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
         if (file->messages[i].id == 0x2066) {
             // Create a new message based on the Owl Text
             uint32_t kaeporaMsgSize = file->messages[i].msg.size();
+            // OTRTODO: Should not be malloc'ing here. It's fine for now since we check elsewhere that the message table
+            // is already null.
             char* kaeporaOg = (char*)malloc(sizeof(char) * kaeporaMsgSize);
             char* kaeporaPatch = (char*)malloc(sizeof(char) * kaeporaMsgSize);
             file->messages[i].msg.copy(kaeporaOg, kaeporaMsgSize, 0);
@@ -68,25 +72,38 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
             _message_0xFFFC_nes = (char*)file->messages[i].msg.c_str();
     }
 
-	return table;
+    return table;
 }
 
 extern "C" void OTRMessage_Init()
 {
-    sNesMessageEntryTablePtr = OTRMessage_LoadTable("text/nes_message_data_static/nes_message_data_static", true);
-    sGerMessageEntryTablePtr = OTRMessage_LoadTable("text/ger_message_data_static/ger_message_data_static", false);
-    sFraMessageEntryTablePtr = OTRMessage_LoadTable("text/fra_message_data_static/fra_message_data_static", false);
+    // OTRTODO: Added a lot of null checks here so that we don't malloc the table multiple times causing a memory leak.
+    // We really ought to fix the implementation such that we aren't malloc'ing new tables.
+    // Once we fix the implementation, remove these NULL checks.
+    if (sNesMessageEntryTablePtr == NULL) {
+        sNesMessageEntryTablePtr = OTRMessage_LoadTable("text/nes_message_data_static/nes_message_data_static", true);
+    }
+    if (sGerMessageEntryTablePtr == NULL) {
+        sGerMessageEntryTablePtr = OTRMessage_LoadTable("text/ger_message_data_static/ger_message_data_static", false);
+    }
+    if (sFraMessageEntryTablePtr == NULL) {
+        sFraMessageEntryTablePtr = OTRMessage_LoadTable("text/fra_message_data_static/fra_message_data_static", false);
+    }
 
-    auto file2 = std::static_pointer_cast<Ship::Text>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource("text/staff_message_data_static/staff_message_data_static"));
+    if (sStaffMessageEntryTablePtr == NULL) {
+        auto file2 =
+            std::static_pointer_cast<Ship::Text>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(
+                "text/staff_message_data_static/staff_message_data_static"));
+        // OTRTODO: Should not be malloc'ing here. It's fine for now since we check that the message table is already null.
+        sStaffMessageEntryTablePtr = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * file2->messages.size());
 
-    sStaffMessageEntryTablePtr = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * file2->messages.size());
-
-    for (size_t i = 0; i < file2->messages.size(); i++)
-    {
-	    sStaffMessageEntryTablePtr[i].textId = file2->messages[i].id;
-	    sStaffMessageEntryTablePtr[i].typePos = (file2->messages[i].textboxType << 4) | file2->messages[i].textboxYPos;
-	    sStaffMessageEntryTablePtr[i].segment = file2->messages[i].msg.c_str();
-	    sStaffMessageEntryTablePtr[i].msgSize = file2->messages[i].msg.size();
+        for (size_t i = 0; i < file2->messages.size(); i++) {
+            sStaffMessageEntryTablePtr[i].textId = file2->messages[i].id;
+            sStaffMessageEntryTablePtr[i].typePos =
+                (file2->messages[i].textboxType << 4) | file2->messages[i].textboxYPos;
+            sStaffMessageEntryTablePtr[i].segment = file2->messages[i].msg.c_str();
+            sStaffMessageEntryTablePtr[i].msgSize = file2->messages[i].msg.size();
+        }
     }
 
     CustomMessageManager::Instance->AddCustomMessageTable(customMessageTableID);

@@ -32,10 +32,10 @@ s16 sMessageHasSetSfx = false;
 
 u16 sOcarinaSongBitFlags = 0; // ocarina bit flags
 
-MessageTableEntry* sNesMessageEntryTablePtr;
-MessageTableEntry* sGerMessageEntryTablePtr;
-MessageTableEntry* sFraMessageEntryTablePtr;
-MessageTableEntry* sStaffMessageEntryTablePtr;
+MessageTableEntry* sNesMessageEntryTablePtr = NULL;
+MessageTableEntry* sGerMessageEntryTablePtr = NULL;
+MessageTableEntry* sFraMessageEntryTablePtr = NULL;
+MessageTableEntry* sStaffMessageEntryTablePtr = NULL;
 
 char* _message_0xFFFC_nes;
 
