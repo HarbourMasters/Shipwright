@@ -820,7 +820,7 @@ Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height,
     return gfx;
 }
 
-void KaleidoScope_OverridePalIndexCI4(u8* texture, ptrdiff_t size, s32 targetIndex, s32 newIndex) {
+void KaleidoScope_OverridePalIndexCI4(u8* texture, s32 size, s32 targetIndex, s32 newIndex) {
     s32 i;
 
     targetIndex &= 0xF;
@@ -3169,8 +3169,10 @@ void KaleidoScope_UpdateCursorSize(PauseContext* pauseCtx) {
 void KaleidoScope_LoadDungeonMap(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
 
-    interfaceCtx->mapSegment[0] = sDungeonMapTexs[R_MAP_TEX_INDEX];
-    interfaceCtx->mapSegment[1] = sDungeonMapTexs[R_MAP_TEX_INDEX + 1];
+    interfaceCtx->mapSegmentName[0] = sDungeonMapTexs[R_MAP_TEX_INDEX];
+    interfaceCtx->mapSegmentName[1] = sDungeonMapTexs[R_MAP_TEX_INDEX + 1];
+    interfaceCtx->mapSegment[0] = GetResourceDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX], true);
+    interfaceCtx->mapSegment[1] = GetResourceDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX + 1], true);
 }
 
 void KaleidoScope_UpdateDungeonMap(PlayState* play) {
@@ -3185,14 +3187,14 @@ void KaleidoScope_UpdateDungeonMap(PlayState* play) {
     if ((play->sceneNum >= SCENE_YDAN) && (play->sceneNum <= SCENE_TAKARAYA)) {
         if ((VREG(30) + 3) == pauseCtx->cursorPoint[PAUSE_MAP]) {
             // HDTODO: Handle Runtime Modified Textures (HD)
-//            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment, 2040, interfaceCtx->mapPaletteIndex, 14);
+            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[0], 2040, interfaceCtx->mapPaletteIndex, 14);
         }
     }
 
     if ((play->sceneNum >= SCENE_YDAN) && (play->sceneNum <= SCENE_TAKARAYA)) {
         if ((VREG(30) + 3) == pauseCtx->cursorPoint[PAUSE_MAP]) {
             // HDTODO: Handle Runtime Modified Textures (HD)
-//            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment + 0x800, 2040, interfaceCtx->mapPaletteIndex, 14);
+            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[1], 2040, interfaceCtx->mapPaletteIndex, 14);
         }
     }
 }
@@ -4228,6 +4230,6 @@ void KaleidoScope_Update(PlayState* play)
             osSyncPrintf(VT_RST);
             break;
     }
-    
+
     GameInteractor_ExecuteOnKaleidoscopeUpdate(sInDungeonScene);
 }

@@ -344,12 +344,12 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     gSPInvalidateTexCache(POLY_KAL_DISP++, interfaceCtx->mapSegment[0]);
     gSPInvalidateTexCache(POLY_KAL_DISP++, interfaceCtx->mapSegment[1]);
 
-    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, interfaceCtx->mapSegment[0], G_IM_FMT_CI, 48, 85, 0, G_TX_WRAP | G_TX_NOMIRROR,
+    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, interfaceCtx->mapSegmentName[0], G_IM_FMT_CI, 48, 85, 0, G_TX_WRAP | G_TX_NOMIRROR,
                            G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
 
-    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, interfaceCtx->mapSegment[1], G_IM_FMT_CI, 48, 85, 0,
+    gDPLoadTextureBlock_4b(POLY_KAL_DISP++, interfaceCtx->mapSegmentName[1], G_IM_FMT_CI, 48, 85, 0,
                            G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                            G_TX_NOLOD);
 
