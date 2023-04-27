@@ -1428,4 +1428,178 @@ void StaticData::InitLocationTable() {
                             Category::cJabuJabusBelly,
                         },
                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+
+    // Forest Temple Vanilla
+    locationTable[RC_FOREST_TEMPLE_FIRST_ROOM_CHEST] =
+        Location::Chest(RC_FOREST_TEMPLE_FIRST_ROOM_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_BMORI1, 22595, 0x03, "First Room Chest", "Forest Temple First Room Chest",
+                        RC_FOREST_TEMPLE_FIRST_ROOM_CHEST, RG_FOREST_TEMPLE_SMALL_KEY,
+                        { Category::cForestTemple, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_FIRST_STALFOS_CHEST] =
+        Location::Chest(RC_FOREST_TEMPLE_FIRST_STALFOS_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_BMORI1, 30784, 0x00, "First Stalfos Chest",
+                        "Forest Temple First Stalfos Chest", RC_FOREST_TEMPLE_FIRST_STALFOS_CHEST,
+                        RG_FOREST_TEMPLE_SMALL_KEY, { Category::cForestTemple, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_RAISED_ISLAND_COURTYARD_CHEST] =
+        Location::Chest(RC_FOREST_TEMPLE_RAISED_ISLAND_COURTYARD_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+                        RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX, SCENE_BMORI1, 22789, 0x05, "Raised Island Courtyard Chest",
+                        "Forest Temple Raised Island Courtyard Chest", RC_FOREST_TEMPLE_RAISED_ISLAND_COURTYARD_CHEST,
+                        RG_RECOVERY_HEART,
+                        {
+                            Category::cForestTemple,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_MAP_CHEST] =
+        Location::Chest(RC_FOREST_TEMPLE_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_FOREST_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_BMORI1, 6177, 0x01, "Map Chest", "Forest Temple Map Chest",
+                        RC_FOREST_TEMPLE_MAP_CHEST, RG_FOREST_TEMPLE_MAP,
+                        {
+                            Category::cForestTemple,
+                            Category::cVanillaMap,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_WELL_CHEST] = Location::Chest(
+        RC_FOREST_TEMPLE_WELL_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX,
+        SCENE_BMORI1, 22601, 0x09, "Well Chest", "Forest Temple Well Chest", RC_FOREST_TEMPLE_WELL_CHEST,
+        RG_FOREST_TEMPLE_SMALL_KEY, { Category::cForestTemple, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_FALLING_CEILING_ROOM_CHEST] = Location::Chest(
+        RC_FOREST_TEMPLE_FALLING_CEILING_ROOM_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FOREST_TEMPLE,
+        ACTOR_EN_BOX, SCENE_BMORI1, 22855, 0x07, "Falling Ceiling Room Chest",
+        "Forest Temple Falling Ceiling Room Chest", RC_FOREST_TEMPLE_FALLING_CEILING_ROOM_CHEST, RG_ARROWS_10,
+        {
+            Category::cForestTemple,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_EYE_SWITCH_CHEST] =
+        Location::Chest(RC_FOREST_TEMPLE_EYE_SWITCH_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FOREST_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_BMORI1, -30364, 0x04, "Eye Switch Chest", "Forest Temple Eye Switch Chest",
+                        RC_FOREST_TEMPLE_EYE_SWITCH_CHEST, RG_ARROWS_30,
+                        {
+                            Category::cForestTemple,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_BOSS_KEY_CHEST] = Location::Chest(
+        RC_FOREST_TEMPLE_BOSS_KEY_CHEST, RCQUEST_VANILLA, RCTYPE_BOSS_KEY, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX,
+        SCENE_BMORI1, 10222, 0x0E, "Boss Key Chest", "Forest Temple Boss Key Chest", RC_FOREST_TEMPLE_BOSS_KEY_CHEST,
+        RG_FOREST_TEMPLE_BOSS_KEY, { Category::cForestTemple, Category::cVanillaBossKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_FLOORMASTER_CHEST] =
+        Location::Chest(RC_FOREST_TEMPLE_FLOORMASTER_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_BMORI1, 30786, 0x02, "Floormaster Chest", "Forest Temple Floormaster Chest",
+                        RC_FOREST_TEMPLE_FLOORMASTER_CHEST, RG_FOREST_TEMPLE_SMALL_KEY,
+                        { Category::cForestTemple, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_BOW_CHEST] = Location::Chest(
+        RC_FOREST_TEMPLE_BOW_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX, SCENE_BMORI1,
+        -20340, 0x0C, "Bow Chest", "Forest Temple Bow Chest", RC_FOREST_TEMPLE_BOW_CHEST, RG_PROGRESSIVE_BOW,
+        {
+            Category::cForestTemple,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_RED_POE_CHEST] = Location::Chest(
+        RC_FOREST_TEMPLE_RED_POE_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX,
+        SCENE_BMORI1, 30797, 0x0D, "Red Poe Chest", "Forest Temple Red Poe Chest", RC_FOREST_TEMPLE_RED_POE_CHEST,
+        RG_FOREST_TEMPLE_SMALL_KEY, { Category::cForestTemple, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_BLUE_POE_CHEST] =
+        Location::Chest(RC_FOREST_TEMPLE_BLUE_POE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FOREST_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_BMORI1, 6159, 0x0F, "Blue Poe Chest", "Forest Temple Blue Poe Chest",
+                        RC_FOREST_TEMPLE_BLUE_POE_CHEST, RG_FOREST_TEMPLE_COMPASS,
+                        {
+                            Category::cForestTemple,
+                            Category::cVanillaCompass,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_BASEMENT_CHEST] =
+        Location::Chest(RC_FOREST_TEMPLE_BASEMENT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FOREST_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_BMORI1, 22827, 0x0B, "Basement Chest", "Forest Temple Basement Chest",
+                        RC_FOREST_TEMPLE_BASEMENT_CHEST, RG_ARROWS_5,
+                        {
+                            Category::cForestTemple,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    
+    // Forest Temple MQ
+    locationTable[RC_FOREST_TEMPLE_MQ_FIRST_ROOM_CHEST] =
+        Location::Chest(RC_FOREST_TEMPLE_MQ_FIRST_ROOM_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_BMORI1, -30653, 0x03, "MQ First Room Chest",
+                        "Forest Temple MQ First Room Chest", RC_FOREST_TEMPLE_MQ_FIRST_ROOM_CHEST,
+                        RG_FOREST_TEMPLE_SMALL_KEY, { Category::cForestTemple, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_MQ_WOLFOS_CHEST] = Location::Chest(
+        RC_FOREST_TEMPLE_MQ_WOLFOS_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX,
+        SCENE_BMORI1, 30784, 0x00, "MQ Wolfos Chest", "Forest Temple MQ Wolfos Chest", RC_FOREST_TEMPLE_MQ_WOLFOS_CHEST,
+        RG_FOREST_TEMPLE_SMALL_KEY, { Category::cForestTemple, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_MQ_BOW_CHEST] = Location::Chest(
+        RC_FOREST_TEMPLE_MQ_BOW_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX, SCENE_BMORI1,
+        -20340, 0x0C, "MQ Bow Chest", "Forest Temple MQ Bow Chest", RC_FOREST_TEMPLE_MQ_BOW_CHEST, RG_PROGRESSIVE_BOW,
+        {
+            Category::cForestTemple,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_LOWER_CHEST] = Location::Chest(
+        RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_LOWER_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE,
+        ACTOR_EN_BOX, SCENE_BMORI1, 22593, 0x01, "MQ Raised Island Courtyard Lower Chest",
+        "Forest Temple MQ Raised Island Courtyard Lower Chest", RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_LOWER_CHEST,
+        RG_FOREST_TEMPLE_SMALL_KEY, { Category::cForestTemple, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_UPPER_CHEST] = Location::Chest(
+        RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_UPPER_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE,
+        ACTOR_EN_BOX, SCENE_BMORI1, 22597, 0x05, "MQ Raised Island Courtyard Upper Chest",
+        "Forest Temple MQ Raised Island Courtyard Upper Chest", RC_FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_UPPER_CHEST,
+        RG_FOREST_TEMPLE_SMALL_KEY, { Category::cForestTemple, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_MQ_WELL_CHEST] = Location::Chest(
+        RC_FOREST_TEMPLE_MQ_WELL_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX, SCENE_BMORI1,
+        22601, 0x09, "MQ Well Chest", "Forest Temple MQ Well Chest", RC_FOREST_TEMPLE_MQ_WELL_CHEST,
+        RG_FOREST_TEMPLE_SMALL_KEY, { Category::cForestTemple, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_MQ_MAP_CHEST] = Location::Chest(
+        RC_FOREST_TEMPLE_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX, SCENE_BMORI1,
+        6189, 0x0D, "MQ Map Chest", "Forest Temple MQ Map Chest", RC_FOREST_TEMPLE_MQ_MAP_CHEST, RG_FOREST_TEMPLE_MAP,
+        {
+            Category::cForestTemple,
+            Category::cVanillaMap,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_MQ_COMPASS_CHEST] =
+        Location::Chest(RC_FOREST_TEMPLE_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_FOREST_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_BMORI1, 6159, 0x0F, "MQ Compass Chest", "Forest Temple MQ Compass Chest",
+                        RC_FOREST_TEMPLE_MQ_COMPASS_CHEST, RG_FOREST_TEMPLE_COMPASS,
+                        {
+                            Category::cForestTemple,
+                            Category::cVanillaCompass,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_MQ_FALLING_CEILING_ROOM_CHEST] = Location::Chest(
+        RC_FOREST_TEMPLE_MQ_FALLING_CEILING_ROOM_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX,
+        SCENE_BMORI1, -30426, 0x06, "MQ Falling Ceiling Room Chest", "Forest Temple MQ Falling Ceiling Room Chest",
+        RC_FOREST_TEMPLE_MQ_FALLING_CEILING_ROOM_CHEST, RG_ARROWS_5,
+        {
+            Category::cForestTemple,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_MQ_BASEMENT_CHEST] =
+        Location::Chest(RC_FOREST_TEMPLE_MQ_BASEMENT_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_FOREST_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_BMORI1, 22827, 0x0B, "MQ Basement Chest", "Forest Temple MQ Basement Chest",
+                        RC_FOREST_TEMPLE_MQ_BASEMENT_CHEST, RG_ARROWS_5,
+                        {
+                            Category::cForestTemple,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_MQ_REDEAD_CHEST] = Location::Chest(
+        RC_FOREST_TEMPLE_MQ_REDEAD_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE, ACTOR_EN_BOX,
+        SCENE_BMORI1, 30786, 0x02, "MQ Redead Chest", "Forest Temple MQ Redead Chest", RC_FOREST_TEMPLE_MQ_REDEAD_CHEST,
+        RG_FOREST_TEMPLE_SMALL_KEY, { Category::cForestTemple, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_BOSS_KEY_CHEST] =
+        Location::Chest(RC_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST, RCQUEST_MQ, RCTYPE_BOSS_KEY, RCAREA_FOREST_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_BMORI1, 10222, 0x0E, "MQ Boss Key Chest", "Forest Temple MQ Boss Key Chest",
+                        RC_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST, RG_FOREST_TEMPLE_BOSS_KEY,
+                        { Category::cForestTemple, Category::cVanillaBossKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
 }
