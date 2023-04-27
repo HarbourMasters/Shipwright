@@ -1774,4 +1774,114 @@ void StaticData::InitLocationTable() {
         SCENE_HIDAN, 7185, 0x1C, "MQ Freestanding Key", "Fire Temple MQ Freestanding Key",
         RC_FIRE_TEMPLE_MQ_FREESTANDING_KEY, RG_FIRE_TEMPLE_SMALL_KEY,
         { Category::cFireTemple, Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+
+    // Water Temple Vanilla
+    locationTable[RC_WATER_TEMPLE_MAP_CHEST] =
+        Location::Chest(RC_WATER_TEMPLE_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_WATER_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_MIZUSIN, 6178, 0x02, "Map Chest", "Water Temple Map Chest",
+                        RC_WATER_TEMPLE_MAP_CHEST, RG_WATER_TEMPLE_MAP,
+                        {
+                            Category::cWaterTemple,
+                            Category::cVanillaMap,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_COMPASS_CHEST] =
+        Location::Chest(RC_WATER_TEMPLE_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_WATER_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_MIZUSIN, 2057, 0x09, "Compass Chest", "Water Temple Compass Chest",
+                        RC_WATER_TEMPLE_COMPASS_CHEST, RG_WATER_TEMPLE_COMPASS,
+                        {
+                            Category::cWaterTemple,
+                            Category::cVanillaCompass,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_TORCHES_CHEST] = Location::Chest(
+        RC_WATER_TEMPLE_TORCHES_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
+        SCENE_MIZUSIN, 30785, 0x01, "Torches Chest", "Water Temple Torches Chest", RC_WATER_TEMPLE_TORCHES_CHEST,
+        RG_WATER_TEMPLE_SMALL_KEY, { Category::cWaterTemple, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_DRAGON_CHEST] = Location::Chest(
+        RC_WATER_TEMPLE_DRAGON_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
+        SCENE_MIZUSIN, 22602, 0x0A, "Dragon Chest", "Water Temple Dragon Chest", RC_WATER_TEMPLE_DRAGON_CHEST,
+        RG_WATER_TEMPLE_SMALL_KEY, { Category::cWaterTemple, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_CENTRAL_BOW_TARGET_CHEST] =
+        Location::Chest(RC_WATER_TEMPLE_CENTRAL_BOW_TARGET_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+                        RCAREA_WATER_TEMPLE, ACTOR_EN_BOX, SCENE_MIZUSIN, 22600, 0x08, "Central Bow Target Chest",
+                        "Water Temple Central Bow Target Chest", RC_WATER_TEMPLE_CENTRAL_BOW_TARGET_CHEST,
+                        RG_WATER_TEMPLE_SMALL_KEY, { Category::cWaterTemple, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_CENTRAL_PILLAR_CHEST] =
+        Location::Chest(RC_WATER_TEMPLE_CENTRAL_PILLAR_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_MIZUSIN, 22598, 0x06, "Central Pillar Chest",
+                        "Water Temple Central Pillar Chest", RC_WATER_TEMPLE_CENTRAL_PILLAR_CHEST,
+                        RG_WATER_TEMPLE_SMALL_KEY, { Category::cWaterTemple, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_CRACKED_WALL_CHEST] =
+        Location::Chest(RC_WATER_TEMPLE_CRACKED_WALL_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_MIZUSIN, 22592, 0x00, "Cracked Wall Chest",
+                        "Water Temple Cracked Wall Chest", RC_WATER_TEMPLE_CRACKED_WALL_CHEST,
+                        RG_WATER_TEMPLE_SMALL_KEY, { Category::cWaterTemple, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_BOSS_KEY_CHEST] = Location::Chest(
+        RC_WATER_TEMPLE_BOSS_KEY_CHEST, RCQUEST_VANILLA, RCTYPE_BOSS_KEY, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
+        SCENE_MIZUSIN, 10213, 0x05, "Boss Key Chest", "Water Temple Boss Key Chest", RC_WATER_TEMPLE_BOSS_KEY_CHEST,
+        RG_WATER_TEMPLE_BOSS_KEY, { Category::cWaterTemple, Category::cVanillaBossKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_LONGSHOT_CHEST] =
+        Location::Chest(RC_WATER_TEMPLE_LONGSHOT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_WATER_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_MIZUSIN, 295, 0x07, "Longshot Chest", "Water Temple Longshot Chest",
+                        RC_WATER_TEMPLE_LONGSHOT_CHEST, RG_PROGRESSIVE_HOOKSHOT,
+                        {
+                            Category::cWaterTemple,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_RIVER_CHEST] = Location::Chest(
+        RC_WATER_TEMPLE_RIVER_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
+        SCENE_MIZUSIN, 22595, 0x03, "River Chest", "Water Temple River Chest", RC_WATER_TEMPLE_RIVER_CHEST,
+        RG_WATER_TEMPLE_SMALL_KEY, { Category::cWaterTemple, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+
+    // Water Temple MQ
+    locationTable[RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST] =
+        Location::Chest(RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_MIZUSIN, -30650, 0x06, "MQ Central Pillar Chest",
+                        "Water Temple MQ Central Pillar Chest", RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST,
+                        RG_WATER_TEMPLE_SMALL_KEY, { Category::cWaterTemple, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_MQ_BOSS_KEY_CHEST] = Location::Chest(
+        RC_WATER_TEMPLE_MQ_BOSS_KEY_CHEST, RCQUEST_MQ, RCTYPE_BOSS_KEY, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX,
+        SCENE_MIZUSIN, 10213, 0x05, "MQ Boss Key Chest", "Water Temple MQ Boss Key Chest",
+        RC_WATER_TEMPLE_MQ_BOSS_KEY_CHEST, RG_WATER_TEMPLE_BOSS_KEY,
+        { Category::cWaterTemple, Category::cVanillaBossKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_MQ_LONGSHOT_CHEST] =
+        Location::Chest(RC_WATER_TEMPLE_MQ_LONGSHOT_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_WATER_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_MIZUSIN, -20192, 0x00, "MQ Longshot Chest",
+                        "Water Temple MQ Longshot Chest", RC_WATER_TEMPLE_MQ_LONGSHOT_CHEST, RG_PROGRESSIVE_HOOKSHOT,
+                        {
+                            Category::cWaterTemple,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_MQ_COMPASS_CHEST] =
+        Location::Chest(RC_WATER_TEMPLE_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_WATER_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_MIZUSIN, 6145, 0x01, "MQ Compass Chest", "Water Temple MQ Compass Chest",
+                        RC_WATER_TEMPLE_MQ_COMPASS_CHEST, RG_WATER_TEMPLE_COMPASS,
+                        {
+                            Category::cWaterTemple,
+                            Category::cVanillaCompass,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_MQ_MAP_CHEST] = Location::Chest(
+        RC_WATER_TEMPLE_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_WATER_TEMPLE, ACTOR_EN_BOX, SCENE_MIZUSIN,
+        -18398, 0x02, "MQ Map Chest", "Water Temple MQ Map Chest", RC_WATER_TEMPLE_MQ_MAP_CHEST, RG_WATER_TEMPLE_MAP,
+        {
+            Category::cWaterTemple,
+            Category::cVanillaMap,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_MQ_FREESTANDING_KEY] =
+        Location::Collectable(RC_WATER_TEMPLE_MQ_FREESTANDING_KEY, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_WATER_TEMPLE,
+                              ACTOR_EN_ITEM00, SCENE_MIZUSIN, 273, 0x01, "MQ Freestanding Key",
+                              "Water Temple MQ Freestanding Key", RC_WATER_TEMPLE_MQ_FREESTANDING_KEY,
+                              RG_WATER_TEMPLE_SMALL_KEY, { Category::cWaterTemple, Category::cVanillaSmallKey },
+                              SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
 }
