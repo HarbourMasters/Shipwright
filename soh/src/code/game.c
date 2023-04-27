@@ -462,6 +462,7 @@ void GameState_Destroy(GameState* gameState) {
 
     osSyncPrintf("game デストラクタ終了\n"); // "game destructor end"
 
+    // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton patching system.
     ResourceMgr_ClearSkeletons();
 
     if (CVarGetInteger("gAltAssets", 0)) {
