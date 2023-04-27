@@ -42,7 +42,7 @@ The latest release is available in the most recent post in the `#downloads` chan
 * You should see a notification saying `Processing OTR`, then, once the process is complete, you should get a notification saying `OTR Successfully Generated`, then the game should start.
 
 #### Nintendo Switch
-* Use one of the PC releases to generate an `oot.otr` and/or `oot-mq.otr` file.
+* Run one of the PC releases to generate an `oot.otr` and/or `oot-mq.otr` file. After launching the game on PC, you will be able to find these files in the same directory as `soh.exe` or `soh.appimage`. On macOS, these files can be found in `/Users/<username>/Library/Application Support/com.shipofharkinian.soh/`
 * Copy the files to your sd card
 ```
 sdcard
