@@ -756,16 +756,16 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
 void EnBox_CreateExtraChestTextures() {
     if (hasCreatedRandoChestTextures) return;
     Gfx gTreasureChestChestTextures[] = {
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, GetResourceDataByName("__OTR__objects/object_box/gSkullTreasureChestFrontTex", false)),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, GetResourceDataByName("__OTR__objects/object_box/gSkullTreasureChestSideAndTopTex", false)),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, GetResourceDataByName("__OTR__objects/object_box/gGoldTreasureChestFrontTex", false)),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, GetResourceDataByName("__OTR__objects/object_box/gGoldTreasureChestSideAndTopTex", false)),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, GetResourceDataByName("__OTR__objects/object_box/gKeyTreasureChestFrontTex", false)),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, GetResourceDataByName("__OTR__objects/object_box/gKeyTreasureChestSideAndTopTex", false)),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, GetResourceDataByName("__OTR__objects/object_box/gChristmasRedTreasureChestFrontTex", false)),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, GetResourceDataByName("__OTR__objects/object_box/gChristmasRedTreasureChestSideAndTopTex", false)),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, GetResourceDataByName("__OTR__objects/object_box/gChristmasGreenTreasureChestFrontTex", false)),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, GetResourceDataByName("__OTR__objects/object_box/gChristmasGreenTreasureChestSideAndTopTex", false)),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gSkullTreasureChestFrontTex"),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gSkullTreasureChestSideAndTopTex"),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gGoldTreasureChestFrontTex"),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gGoldTreasureChestSideAndTopTex"),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gKeyTreasureChestFrontTex"),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gKeyTreasureChestSideAndTopTex"),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gChristmasRedTreasureChestFrontTex"),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gChristmasRedTreasureChestSideAndTopTex"),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gChristmasGreenTreasureChestFrontTex"),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gChristmasGreenTreasureChestSideAndTopTex"),
     };
 
     Gfx* frontCmd = ResourceMgr_LoadGfxByName(gTreasureChestChestFrontDL);
@@ -839,7 +839,7 @@ void EnBox_CreateExtraChestTextures() {
     gChristmasGreenTreasureChestChestSideAndLidDL[29] = gTreasureChestChestTextures[9];
     gChristmasGreenTreasureChestChestSideAndLidDL[45] = gTreasureChestChestTextures[8];
 
-    ResourceMgr_ListFiles("assets/objects/object_box/gChristmas*", &hasChristmasChestTexturesAvailable);
+    ResourceMgr_ListFiles("objects/object_box/gChristmas*", &hasChristmasChestTexturesAvailable);
     hasCreatedRandoChestTextures = 1;
 }
 

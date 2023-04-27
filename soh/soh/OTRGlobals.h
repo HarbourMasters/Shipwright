@@ -60,11 +60,12 @@ uint32_t ResourceMgr_GetNumGameVersions();
 uint32_t ResourceMgr_GetGameVersion(int index);
 void ResourceMgr_LoadDirectory(const char* resName);
 char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
+uint8_t ResourceMgr_FileExists(const char* resName);
 char* GetResourceDataByNameHandlingMQ(const char* path);
 void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
 uint8_t ResourceMgr_ResourceIsBackground(char* texPath);
-char* ResourceMgr_LoadJPEG(char* data, int dataSize);
+char* ResourceMgr_LoadJPEG(char* data, size_t dataSize);
 uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
 uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 char* ResourceMgr_LoadTexOrDListByName(const char* filePath);
@@ -87,7 +88,9 @@ void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 
 uint64_t GetPerfCounter();
-struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path);
+struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime);
+void ResourceMgr_UnregisterSkeleton(SkelAnime* skelAnime);
+void ResourceMgr_ClearSkeletons();
 s32* ResourceMgr_LoadCSByName(const char* path);
 int ResourceMgr_OTRSigCheck(char* imgData);
 uint64_t osGetTime(void);
@@ -139,6 +142,7 @@ void Entrance_ClearEntranceTrackingData(void);
 void Entrance_InitEntranceTrackingData(void);
 void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex);
 void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex);
+void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement);
 
 uint32_t GetGIID(uint32_t itemID);
 #endif

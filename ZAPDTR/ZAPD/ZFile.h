@@ -36,6 +36,7 @@ public:
 	std::vector<ZResource*> resources;
 
 	int workerID;
+	bool isCompilable = false;
 
 	// Default to using virtual addresses
 	uint32_t segment = 0x80;

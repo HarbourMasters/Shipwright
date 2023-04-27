@@ -1,4 +1,4 @@
-﻿#include "OTRGlobals.h"
+#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
 #include <algorithm>
@@ -694,7 +694,7 @@ extern "C" uint32_t GetGIID(uint32_t itemID) {
 }
 
 extern "C" void OTRExtScanner() {
-    auto lst = *OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->ListFiles("*.*").get();
+    auto lst = *OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->ListFiles("*").get();
 
     for (auto& rPath : lst) {
         std::vector<std::string> raw = StringHelper::Split(rPath, ".");
@@ -834,14 +834,16 @@ extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
     OTRGlobals::Instance->context->MainLoop(run_one_game_iter);
 }
 
+extern bool ShouldClearTextureCacheAtEndOfFrame;
+
 extern "C" void Graph_StartFrame() {
 #ifndef __WIIU__
-    // Why -1?
+    using Ship::KbScancode;
     int32_t dwScancode = OTRGlobals::Instance->context->GetLastScancode();
     OTRGlobals::Instance->context->SetLastScancode(-1);
 
-    switch (dwScancode - 1) {
-        case SDL_SCANCODE_F5: {
+    switch (dwScancode) {
+        case KbScancode::LUS_KB_F5: {
             const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
             const SaveStateReturn stateReturn =
                 OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
@@ -858,7 +860,7 @@ extern "C" void Graph_StartFrame() {
             }
             break;
         }
-        case SDL_SCANCODE_F6: {
+        case KbScancode::LUS_KB_F6: {
             unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
             slot++;
             if (slot > 5) {
@@ -868,7 +870,7 @@ extern "C" void Graph_StartFrame() {
             SPDLOG_INFO("Set SaveState slot to {}.", slot);
             break;
         }
-        case SDL_SCANCODE_F7: {
+        case KbScancode::LUS_KB_F7: {
             const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
             const SaveStateReturn stateReturn =
                 OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::LOAD });
@@ -892,9 +894,16 @@ extern "C" void Graph_StartFrame() {
 
             break;
         }
-        case SDL_SCANCODE_F9: {
+        case KbScancode::LUS_KB_F9: {
             // Toggle TTS
             CVarSetInteger("gA11yTTS", !CVarGetInteger("gA11yTTS", 0));
+            break;
+        }
+        case KbScancode::LUS_KB_TAB: {
+            // Toggle HD Assets
+            CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
+            ShouldClearTextureCacheAtEndOfFrame = true;
+            break;
         }
     }
 #endif
@@ -961,6 +970,12 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         while (audio.processing) {
             audio.cv_from_thread.wait(Lock);
         }
+    }
+
+    if (ShouldClearTextureCacheAtEndOfFrame) {
+        gfx_texture_cache_clear();
+        Ship::SkeletonPatcher::UpdateSkeletons();
+        ShouldClearTextureCacheAtEndOfFrame = false;
     }
 
     // OTRTODO: FIGURE OUT END FRAME POINT
@@ -1036,6 +1051,7 @@ extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
 }
 
 // OTRTODO: There is probably a more elegant way to go about this...
+// Kenix: This is definitely leaking memory when it's called.
 extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize) {
     auto lst = OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->ListFiles(searchMask);
     char** result = (char**)malloc(lst->size() * sizeof(char*));
@@ -1049,6 +1065,15 @@ extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize)
     *resultSize = lst->size();
 
     return result;
+}
+
+extern "C" uint8_t ResourceMgr_FileExists(const char* filePath) {
+    std::string path = filePath;
+    if(path.substr(0, 7) == "__OTR__"){
+        path = path.substr(7);
+    }
+
+    return ExtensionCache.contains(path);
 }
 
 extern "C" void ResourceMgr_LoadFile(const char* resName) {
@@ -1095,7 +1120,7 @@ extern "C" uint8_t ResourceMgr_ResourceIsBackground(char* texPath) {
     return res->InitData->Type == Ship::ResourceType::SOH_Background;
 }
 
-extern "C" char* ResourceMgr_LoadJPEG(char* data, int dataSize)
+extern "C" char* ResourceMgr_LoadJPEG(char* data, size_t dataSize)
 {
     static char* finalBuffer = 0;
 
@@ -1149,6 +1174,15 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     }
 }
 
+extern "C" char* ResourceMgr_LoadIfDListByName(const char* filePath) {
+    auto res = GetResourceByNameHandlingMQ(filePath);
+
+    if (res->InitData->Type == Ship::ResourceType::DisplayList)
+        return (char*)&((std::static_pointer_cast<Ship::DisplayList>(res))->Instructions[0]);
+    
+    return nullptr;
+}
+
 extern "C" Sprite* GetSeedTexture(uint8_t index) {
     return OTRGlobals::Instance->gRandomizer->GetSeedTexture(index);
 }
@@ -1157,6 +1191,11 @@ extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
     auto anim = std::static_pointer_cast<Ship::PlayerAnimation>(GetResourceByNameHandlingMQ(animPath));
 
     return (char*)&anim->limbRotData[0];
+}
+
+extern "C" void ResourceMgr_PushCurrentDirectory(char* path)
+{
+    gfx_push_current_dir(path);
 }
 
 extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
@@ -1351,8 +1390,29 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
     return (AnimationHeaderCommon*)GetResourceDataByName(path, false);
 }
 
-extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
-    return (SkeletonHeader*)GetResourceDataByName(path, false);
+extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) 
+{
+    SkeletonHeader* skelHeader = (SkeletonHeader*)GetResourceDataByName(path, false);
+
+    // This function is only called when a skeleton is initialized.
+    // Therefore we can take this oppurtunity to take note of the Skeleton that is created...
+    if (skelAnime != nullptr) {
+        auto stringPath = std::string(path);
+        Ship::SkeletonPatcher::RegisterSkeleton(stringPath, skelAnime);
+    }
+
+
+    return skelHeader;
+}
+
+extern "C" void ResourceMgr_UnregisterSkeleton(SkelAnime* skelAnime) {
+    if (skelAnime != nullptr)
+        Ship::SkeletonPatcher::UnregisterSkeleton(skelAnime);
+}
+
+extern "C" void ResourceMgr_ClearSkeletons(SkelAnime* skelAnime) {
+    if (skelAnime != nullptr)
+        Ship::SkeletonPatcher::ClearSkeletons();
 }
 
 extern "C" s32* ResourceMgr_LoadCSByName(const char* path) {
@@ -1915,4 +1975,8 @@ extern "C" void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex) {
 
 extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
     SetLastEntranceOverrideForTracker(entranceIndex);
+}
+
+extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement) {
+    gfx_register_blended_texture(name, mask, replacement);
 }
