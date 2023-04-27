@@ -24,13 +24,16 @@ size_t Skeleton::GetPointerSize() {
 std::vector<SkeletonPatchInfo> SkeletonPatcher::skeletons;
 
 
-void SkeletonPatcher::RegisterSkeleton(std::string path, SkelAnime* skelAnime) {
+void SkeletonPatcher::RegisterSkeleton(std::string& path, SkelAnime* skelAnime) {
     SkeletonPatchInfo info;
 
     info.skelAnime = skelAnime;
 
-    if (path.substr(0, 7) == "__OTR__")
-        path = path.substr(7, path.size() - 7);
+    static const std::string sOtr = "__OTR__";
+
+    if (path.starts_with(sOtr)) {
+        path = path.substr(sOtr.length());
+    }
 
     // Determine if we're using an alternate skeleton
     if (path.starts_with(Ship::Resource::gAltAssetPrefix)) {

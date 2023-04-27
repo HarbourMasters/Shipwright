@@ -1396,8 +1396,10 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
 
     // This function is only called when a skeleton is initialized.
     // Therefore we can take this oppurtunity to take note of the Skeleton that is created...
-    if (skelAnime != nullptr)
-        Ship::SkeletonPatcher::RegisterSkeleton(path, skelAnime);
+    if (skelAnime != nullptr) {
+        auto stringPath = std::string(path);
+        Ship::SkeletonPatcher::RegisterSkeleton(stringPath, skelAnime);
+    }
 
 
     return skelHeader;

@@ -462,12 +462,12 @@ void GameState_Destroy(GameState* gameState) {
 
     osSyncPrintf("game デストラクタ終了\n"); // "game destructor end"
 
+    ResourceMgr_ClearSkeletons();
+
     if (CVarGetInteger("gAltAssets", 0)) {
         UnloadResourceDirectory("alt/*");
         gfx_texture_cache_clear();
     }
-
-    ResourceMgr_ClearSkeletons();
 }
 
 GameStateFunc GameState_GetInit(GameState* gameState) {
