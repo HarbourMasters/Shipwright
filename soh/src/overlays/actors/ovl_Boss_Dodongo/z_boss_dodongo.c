@@ -233,7 +233,10 @@ void BossDodongo_Init(Actor* thisx, PlayState* play) {
     Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_016990, sMaskTex32x16, NULL);
     Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_016E10, sMaskTex32x16, NULL);
 
-    Gfx_RegisterBlendedTexture(gDodongosCavernBossLavaFloorTex, sMaskTexLava, sLavaFloorRockTex);
+    // OTRTODO: This is causing OOB memory reads with HD assets
+    // commenting this out means the lava will stay lava even after beating king d
+    // 
+    // Gfx_RegisterBlendedTexture(gDodongosCavernBossLavaFloorTex, sMaskTexLava, sLavaFloorRockTex);
 }
 
 void BossDodongo_Destroy(Actor* thisx, PlayState* play) {
