@@ -1521,7 +1521,7 @@ void StaticData::InitLocationTable() {
                             Category::cForestTemple,
                         },
                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
-    
+
     // Forest Temple MQ
     locationTable[RC_FOREST_TEMPLE_MQ_FIRST_ROOM_CHEST] =
         Location::Chest(RC_FOREST_TEMPLE_MQ_FIRST_ROOM_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FOREST_TEMPLE,
@@ -1602,4 +1602,176 @@ void StaticData::InitLocationTable() {
                         RC_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST, RG_FOREST_TEMPLE_BOSS_KEY,
                         { Category::cForestTemple, Category::cVanillaBossKey },
                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+
+    // Fire Temple Vanilla
+    locationTable[RC_FIRE_TEMPLE_NEAR_BOSS_CHEST] = Location::Chest(
+        RC_FIRE_TEMPLE_NEAR_BOSS_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
+        SCENE_HIDAN, 22593, 0x01, "Near Boss Chest", "Fire Temple Near Boss Chest", RC_FIRE_TEMPLE_NEAR_BOSS_CHEST,
+        RG_FIRE_TEMPLE_SMALL_KEY, { Category::cFireTemple, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_FLARE_DANCER_CHEST] =
+        Location::Chest(RC_FIRE_TEMPLE_FLARE_DANCER_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_HIDAN, 31936, 0x00, "Flare Dancer Chest", "Fire Temple Flare Dancer Chest",
+                        RC_FIRE_TEMPLE_FLARE_DANCER_CHEST, RG_BOMBS_10,
+                        {
+                            Category::cFireTemple,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_BOSS_KEY_CHEST] = Location::Chest(
+        RC_FIRE_TEMPLE_BOSS_KEY_CHEST, RCQUEST_VANILLA, RCTYPE_BOSS_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_HIDAN,
+        10220, 0x0C, "Boss Key Chest", "Fire Temple Boss Key Chest", RC_FIRE_TEMPLE_BOSS_KEY_CHEST,
+        RG_FIRE_TEMPLE_BOSS_KEY, { Category::cFireTemple, Category::cVanillaBossKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST] =
+        Location::Chest(RC_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+                        RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_HIDAN, 22594, 0x02, "Big Lava Room Blocked Door Chest",
+                        "Fire Temple Big Lava Room Blocked Door Chest", RC_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST,
+                        RG_FIRE_TEMPLE_SMALL_KEY, { Category::cFireTemple, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_CHEST] = Location::Chest(
+        RC_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE,
+        ACTOR_EN_BOX, SCENE_HIDAN, 22596, 0x04, "Big Lava Room Lower Open Door Chest",
+        "Fire Temple Big Lava Room Lower Open Door Chest", RC_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_CHEST,
+        RG_FIRE_TEMPLE_SMALL_KEY, { Category::cFireTemple, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_BOULDER_MAZE_LOWER_CHEST] = Location::Chest(
+        RC_FIRE_TEMPLE_BOULDER_MAZE_LOWER_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
+        SCENE_HIDAN, 22595, 0x03, "Boulder Maze Lower Chest", "Fire Temple Boulder Maze Lower Chest",
+        RC_FIRE_TEMPLE_BOULDER_MAZE_LOWER_CHEST, RG_FIRE_TEMPLE_SMALL_KEY,
+        { Category::cFireTemple, Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_BOULDER_MAZE_UPPER_CHEST] = Location::Chest(
+        RC_FIRE_TEMPLE_BOULDER_MAZE_UPPER_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
+        SCENE_HIDAN, 22598, 0x06, "Boulder Maze Upper Chest", "Fire Temple Boulder Maze Upper Chest",
+        RC_FIRE_TEMPLE_BOULDER_MAZE_UPPER_CHEST, RG_FIRE_TEMPLE_SMALL_KEY,
+        { Category::cFireTemple, Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_CHEST] =
+        Location::Chest(RC_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+                        RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_HIDAN, 22600, 0x08, "Boulder Maze Side Room Chest",
+                        "Fire Temple Boulder Maze Side Room Chest", RC_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_CHEST,
+                        RG_FIRE_TEMPLE_SMALL_KEY, { Category::cFireTemple, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST] = Location::Chest(
+        RC_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
+        SCENE_HIDAN, 22603, 0x0B, "Boulder Maze Shortcut Chest", "Fire Temple Boulder Maze Shortcut Chest",
+        RC_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST, RG_FIRE_TEMPLE_SMALL_KEY,
+        { Category::cFireTemple, Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_SCARECROW_CHEST] = Location::Chest(
+        RC_FIRE_TEMPLE_SCARECROW_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_HIDAN,
+        23245, 0x0D, "Scarecrow Chest", "Fire Temple Scarecrow Chest", RC_FIRE_TEMPLE_SCARECROW_CHEST, RG_HUGE_RUPEE,
+        {
+            Category::cFireTemple,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MAP_CHEST] = Location::Chest(
+        RC_FIRE_TEMPLE_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_HIDAN,
+        2090, 0x0A, "Map Chest", "Fire Temple Map Chest", RC_FIRE_TEMPLE_MAP_CHEST, RG_FIRE_TEMPLE_MAP,
+        {
+            Category::cFireTemple,
+            Category::cVanillaMap,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_COMPASS_CHEST] =
+        Location::Chest(RC_FIRE_TEMPLE_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_FIRE_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_HIDAN, 2055, 0x07, "Compass Chest", "Fire Temple Compass Chest",
+                        RC_FIRE_TEMPLE_COMPASS_CHEST, RG_FIRE_TEMPLE_COMPASS,
+                        {
+                            Category::cFireTemple,
+                            Category::cVanillaCompass,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_HIGHEST_GORON_CHEST] = Location::Chest(
+        RC_FIRE_TEMPLE_HIGHEST_GORON_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
+        SCENE_HIDAN, 22601, 0x09, "Highest Goron Chest", "Fire Temple Highest Goron Chest",
+        RC_FIRE_TEMPLE_HIGHEST_GORON_CHEST, RG_FIRE_TEMPLE_SMALL_KEY,
+        { Category::cFireTemple, Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MEGATON_HAMMER_CHEST] =
+        Location::Chest(RC_FIRE_TEMPLE_MEGATON_HAMMER_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_HIDAN, 421, 0x05, "Megaton Hammer Chest",
+                        "Fire Temple Megaton Hammer Chest", RC_FIRE_TEMPLE_MEGATON_HAMMER_CHEST, RG_MEGATON_HAMMER,
+                        {
+                            Category::cFireTemple,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+
+    // Fire Temple MQ
+    locationTable[RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST] = Location::Chest(
+        RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_HIDAN,
+        22599, 0x07, "MQ Near Boss Chest", "Fire Temple MQ Near Boss Chest", RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST,
+        RG_FIRE_TEMPLE_SMALL_KEY, { Category::cFireTemple, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST] = Location::Chest(
+        RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
+        SCENE_HIDAN, 4512, 0x00, "MQ Megaton Hammer Chest", "Fire Temple MQ Megaton Hammer Chest",
+        RC_FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST, RG_MEGATON_HAMMER,
+        {
+            Category::cFireTemple,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_COMPASS_CHEST] =
+        Location::Chest(RC_FIRE_TEMPLE_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_FIRE_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_HIDAN, 2059, 0x0B, "MQ Compass Chest", "Fire Temple MQ Compass Chest",
+                        RC_FIRE_TEMPLE_MQ_COMPASS_CHEST, RG_FIRE_TEMPLE_COMPASS,
+                        {
+                            Category::cFireTemple,
+                            Category::cVanillaCompass,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CHEST] = Location::Chest(
+        RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
+        SCENE_HIDAN, 23747, 0x03, "MQ Lizalfos Maze Lower Chest", "Fire Temple MQ Lizalfos Maze Lower Chest",
+        RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CHEST, RG_BOMBS_10,
+        {
+            Category::cFireTemple,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CHEST] = Location::Chest(
+        RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
+        SCENE_HIDAN, 23782, 0x06, "MQ Lizalfos Maze Upper Chest", "Fire Temple MQ Lizalfos Maze Upper Chest",
+        RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CHEST, RG_BOMBS_10,
+        {
+            Category::cFireTemple,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_CHEST_ON_FIRE] = Location::Chest(
+        RC_FIRE_TEMPLE_MQ_CHEST_ON_FIRE, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_HIDAN,
+        22597, 0x05, "MQ Chest on Fire", "Fire Temple MQ Chest on Fire", RC_FIRE_TEMPLE_MQ_CHEST_ON_FIRE,
+        RG_FIRE_TEMPLE_SMALL_KEY, { Category::cFireTemple, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST] =
+        Location::Chest(RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_FIRE_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_HIDAN, 30018, 0x02, "MQ Map Room Side Chest",
+                        "Fire Temple MQ Map Room Side Chest", RC_FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST, RG_HYLIAN_SHIELD,
+                        {
+                            Category::cFireTemple,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_MAP_CHEST] = Location::Chest(
+        RC_FIRE_TEMPLE_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_HIDAN,
+        2092, 0x0C, "MQ Map Chest", "Fire Temple MQ Map Chest", RC_FIRE_TEMPLE_MQ_MAP_CHEST, RG_FIRE_TEMPLE_MAP,
+        {
+            Category::cFireTemple,
+            Category::cVanillaMap,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST] = Location::Chest(
+        RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST, RCQUEST_MQ, RCTYPE_BOSS_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX, SCENE_HIDAN,
+        10212, 0x04, "MQ Boss Key Chest", "Fire Temple MQ Boss Key Chest", RC_FIRE_TEMPLE_MQ_BOSS_KEY_CHEST,
+        RG_FIRE_TEMPLE_BOSS_KEY, { Category::cFireTemple, Category::cVanillaBossKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST] = Location::Chest(
+        RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE,
+        ACTOR_EN_BOX, SCENE_HIDAN, 22593, 0x01, "MQ Big Lava Room Blocked Door Chest",
+        "Fire Temple MQ Big Lava Room Blocked Door Chest", RC_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST,
+        RG_FIRE_TEMPLE_SMALL_KEY, { Category::cFireTemple, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST] = Location::Chest(
+        RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_BOX,
+        SCENE_HIDAN, 22600, 0x08, "MQ Lizalfos Maze Side Room Chest", "Fire Temple MQ Lizalfos Maze Side Room Chest",
+        RC_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST, RG_FIRE_TEMPLE_SMALL_KEY,
+        { Category::cFireTemple, Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_MQ_FREESTANDING_KEY] = Location::Collectable(
+        RC_FIRE_TEMPLE_MQ_FREESTANDING_KEY, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_FIRE_TEMPLE, ACTOR_EN_ITEM00,
+        SCENE_HIDAN, 7185, 0x1C, "MQ Freestanding Key", "Fire Temple MQ Freestanding Key",
+        RC_FIRE_TEMPLE_MQ_FREESTANDING_KEY, RG_FIRE_TEMPLE_SMALL_KEY,
+        { Category::cFireTemple, Category::cVanillaSmallKey }, SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
 }
