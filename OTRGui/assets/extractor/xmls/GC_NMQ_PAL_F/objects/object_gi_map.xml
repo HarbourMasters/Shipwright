@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_map" Segment="6">
+        <DList Name="gGiDungeonMapDL" Offset="0x03C0"/>
+        <DList Name="gGiStoneOfAgonyDL" Offset="0x0B70"/>
+    </File>
+</Root>

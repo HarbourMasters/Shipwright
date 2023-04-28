@@ -1,0 +1,13 @@
+<Root>
+    <File Name="object_ossan" Segment="6">
+        <Animation Name="gObjectOssanAnim_000338" Offset="0x338"/>
+        <Texture Name="gOssanEyesTLUT" OutName="ossan_eyes_tlut" Format="rgba16" Width="63" Height="4" Offset="0x4530"/>
+        <Texture Name="gOssanTLUT" OutName="ossan_tlut" Format="rgba16" Width="168" Height="1" Offset="0x4728"/>
+        <Texture Name="gOssanEyeOpenTex" OutName="eye_open" Format="ci8" Width="32" Height="32" Offset="0x4878" TlutOffset="0x4530"/>
+        <Texture Name="gOssanBeardTex" OutName="beard" Format="ci8" Width="32" Height="32" Offset="0x4C78" TlutOffset="0x4728"/>
+        <Texture Name="gOssanEyeHalfTex" OutName="eye_half" Format="ci8" Width="32" Height="32" Offset="0x52B8" TlutOffset="0x4530"/>
+        <Texture Name="gOssanEyeClosedTex" OutName="eye_closed" Format="ci8" Width="32" Height="32" Offset="0x56B8" TlutOffset="0x4530"/>
+        <DList Name="gObjectOssanEnSyatekiManDL_007E28" Offset="0x7E28"/>
+        <Skeleton Name="gObjectOssanSkel" Type="Flex" LimbType="Standard" Offset="0x9B38"/>
+    </File>
+</Root>

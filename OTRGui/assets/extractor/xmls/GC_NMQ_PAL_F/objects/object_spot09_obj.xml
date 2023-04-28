@@ -1,0 +1,14 @@
+<Root>
+    <File Name="object_spot09_obj" Segment="6">
+        <DList Name="gValleyBridgeSidesDL" Offset="0x100"/>
+        <DList Name="gValleyBrokenBridgeDL" Offset="0x3970"/>
+        <DList Name="gValleyBridgeChildDL" Offset="0x1120"/>
+        <DList Name="gCarpentersTentDL" Offset="0x7D40"/>
+        <DList Name="gValleyRepairedBridgeDL" Offset="0x6210"/>
+        <DList Name="gCarpentersTentEntranceDL" Offset="0x8010"/>
+        <Collision Name="gValleyObjects1Col" Offset="0x5520"/>
+        <Collision Name="gValleyObjects2Col" Offset="0x283C"/>
+        <Collision Name="gValleyObjects3Col" Offset="0x8458"/>
+        <Collision Name="gValleyObjects4Col" Offset="0x7580"/>
+    </File>
+</Root>

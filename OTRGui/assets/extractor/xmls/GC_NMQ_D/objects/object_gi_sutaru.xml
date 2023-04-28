@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_sutaru" Segment="6">
+        <DList Name="gGiSkulltulaTokenDL" Offset="0x0330"/>
+        <DList Name="gGiSkulltulaTokenFlameDL" Offset="0x0438"/>
+    </File>
+</Root>

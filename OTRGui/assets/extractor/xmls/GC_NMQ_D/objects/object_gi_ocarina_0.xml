@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_ocarina_0" Segment="6">
+        <DList Name="gGiOcarinaFairyDL" Offset="0x08E0"/>
+        <DList Name="gGiOcarinaFairyHolesDL" Offset="0x0B58"/>
+    </File>
+</Root>

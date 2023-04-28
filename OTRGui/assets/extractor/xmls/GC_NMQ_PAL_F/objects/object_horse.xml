@@ -1,0 +1,67 @@
+<Root>
+    <File Name="object_horse" Segment="6">
+        <Skeleton Name="gEponaSkel" Type="Normal" LimbType="Skin" Offset="0x9D74"/>
+
+        <Animation Name="gEponaIdleAnim" Offset="0x6D50"/>
+        <Animation Name="gEponaWhinnyAnim" Offset="0x5584"/>
+        <Animation Name="gEponaRefuseAnim" Offset="0x4DEC"/>
+        <Animation Name="gEponaRearingAnim" Offset="0x3CEC"/>
+        <Animation Name="gEponaWalkingAnim" Offset="0x75F0"/>
+        <Animation Name="gEponaTrottingAnim" Offset="0x32B0"/>
+        <Animation Name="gEponaGallopingAnim" Offset="0x1E2C"/>
+        <Animation Name="gEponaJumpingAnim" Offset="0x2470"/>
+        <Animation Name="gEponaJumpingHighAnim" Offset="0x2C38"/>
+
+        <Texture Name="gEponaFeatheringTex" OutName="epona_feathering" Format="rgba16" Width="16" Height="16" Offset="0xBF10"/>
+        <Texture Name="gEponaHairTex" OutName="epona_hair" Format="rgba16" Width="8" Height="8" Offset="0xC190"/>
+
+        <!-- Head -->
+        <Texture Name="gEponaCrestTex" OutName="epona_crest" Format="rgba16" Width="16" Height="8" Offset="0xCA10"/>
+        <Texture Name="gEponaManeTex" OutName="epona_mane" Format="rgba16" Width="16" Height="16" Offset="0xC810"/>
+        <Texture Name="gEponaNostrilsTex" OutName="epona_nostrils" Format="rgba16" Width="16" Height="32" Offset="0xC410"/>
+        <Texture Name="gEponaForeheadTex" OutName="epona_forehead" Format="rgba16" Width="8" Height="32" Offset="0xC210"/>
+        <Limb Name="gEponaHeadLimb" LimbType="Skin" Offset="0x9A98"/>
+
+        <!-- Body -->
+        <Texture Name="gEponaNeckTex" OutName="epona_neck" Format="i8" Width="16" Height="16" Offset="0xDC10"/>
+        <Texture Name="gEponaChestTex" OutName="epona_chest" Format="i8" Width="16" Height="16" Offset="0xDB10"/>
+        <Texture Name="gEponaShoulderTex" OutName="epona_shoulder" Format="i8" Width="16" Height="16" Offset="0xDE10"/>
+        <Texture Name="gEponaThighTex" OutName="epona_thigh" Format="i8" Width="16" Height="16" Offset="0xDD10"/>
+        <Limb Name="gEponaBodyLimb" LimbType="Skin" Offset="0x9A18"/>
+
+        <!-- Saddle -->
+        <Texture Name="gEponaSaddleTex" OutName="epona_saddle" Format="rgba16" Width="32" Height="32" Offset="0xCB10"/>
+        <Texture Name="gEponaSaddleFlapTex" OutName="epona_saddle_flap" Format="rgba16" Width="16" Height="16" Offset="0xD510"/>
+        <Texture Name="gEponaSaddleLipTex" OutName="epona_saddle_lip" Format="rgba16" Width="16" Height="16" Offset="0xD310"/>
+        <Texture Name="gEponaSaddleGirthTex" OutName="epona_saddle_girth" Format="rgba16" Width="32" Height="16" Offset="0xD710"/>
+        <Limb Name="gEponaSaddleLimb" LimbType="Skin" Offset="0x9BA8"/>
+
+        <!-- Cannons -->
+        <Limb Name="gEponaCannon1Limb" LimbType="Skin" Offset="0x9B18"/>
+        <Limb Name="gEponaCannon2Limb" LimbType="Skin" Offset="0x9B98"/>
+        <Limb Name="gEponaCannon3Limb" LimbType="Skin" Offset="0x9C28"/>
+        <Limb Name="gEponaCannon4Limb" LimbType="Skin" Offset="0x9CA8"/>
+
+        <!-- Hooves -->
+        <Texture Name="gEponaHorseshoeTex" OutName="epona_horseshoe" Format="rgba16" Width="8" Height="8" Offset="0xC110"/>
+        <Limb Name="gEponaHoof1Limb" LimbType="Skin" Offset="0x9B08"/>
+        <Limb Name="gEponaHoof2Limb" LimbType="Skin" Offset="0x9B88"/>
+        <Limb Name="gEponaHoof3Limb" LimbType="Skin" Offset="0x9C18"/>
+        <Limb Name="gEponaHoof4Limb" LimbType="Skin" Offset="0x9C98"/>
+
+        <!-- Eyes textures -->
+        <Texture Name="gEponaEyeTLUT" OutName="epona_eye_tlut" Format="rgba16" Width="16" Height="16" Offset="0x9D80"/>
+        <Texture Name="gEponaEyeOpenTex" OutName="epona_eye_open" Format="ci8" Width="32" Height="16" Offset="0x9F80"  TlutOffset="0x9D80"/>
+        <Texture Name="gEponaEyeHalfTex" OutName="epona_eye_half" Format="ci8" Width="32" Height="16" Offset="0xA180"  TlutOffset="0x9D80"/>
+        <Texture Name="gEponaEyeClosedTex" OutName="epona_eye_closed" Format="ci8" Width="32" Height="16" Offset="0xA380"  TlutOffset="0x9D80"/>
+
+        <DList Name="gEponaUnusedWhiteCubeDL" Offset="0x4C0"/>
+        <DList Name="gEponaUnusedWhiteRectangle1DL" Offset="0x580"/>
+        <DList Name="gEponaUnusedWhiteRectangle2DL" Offset="0x620"/>
+        <DList Name="gEponaUnusedWhiteRectangle3DL" Offset="0x6C0"/>
+        <DList Name="gEponaUnusedWhiteRectangle4DL" Offset="0x760"/>
+
+        <Blob Name="gEponaBlob_000000" Size="0x380" Offset="0x0"/>
+        <Blob Name="gEponaBlob_0007C0" Size="0xB0" Offset="0x7C0"/>
+    </File>
+</Root>

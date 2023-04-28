@@ -1,0 +1,20 @@
+<Root>
+    <File Name="testroom_scene" Segment="2">
+        <Scene Name="testroom_scene" Offset="0x0"/>
+    </File>
+    <File Name="testroom_room_0" Segment="3">
+        <Room Name="testroom_room_0" Offset="0x0"/>
+    </File>
+    <File Name="testroom_room_1" Segment="3">
+        <Room Name="testroom_room_1" Offset="0x0"/>
+    </File>
+    <File Name="testroom_room_2" Segment="3">
+        <Room Name="testroom_room_2" Offset="0x0"/>
+    </File>
+    <File Name="testroom_room_3" Segment="3">
+        <Room Name="testroom_room_3" Offset="0x0"/>
+    </File>
+    <File Name="testroom_room_4" Segment="3">
+        <Room Name="testroom_room_4" Offset="0x0"/>
+    </File>
+</Root>

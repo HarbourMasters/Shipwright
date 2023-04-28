@@ -1,0 +1,10 @@
+<Root>
+    <File Name="ovl_Magic_Fire" BaseAddress="0x80B88D70" RangeStart="0xB90" RangeEnd="0x21E0">
+        <Texture Name="sTex" OutName="dins_fire" Format="i8" Width="64" Height="64" Offset="0xB90"/>
+        <Array Name="sSphereVtx" Count="76" Offset="0x1B90">
+            <Vtx/>
+        </Array>
+        <DList Name="sMaterialDL" Offset="0x2050"/>
+        <DList Name="sModelDL" Offset="0x2078"/>
+    </File>
+</Root>

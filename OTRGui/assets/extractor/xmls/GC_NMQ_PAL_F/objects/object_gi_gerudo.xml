@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_gerudo" Segment="6">
+        <DList Name="gGiGerudoCardDL" Offset="0x0F60"/>
+    </File>
+</Root>

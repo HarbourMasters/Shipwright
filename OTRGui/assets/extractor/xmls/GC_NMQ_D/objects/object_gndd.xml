@@ -1,0 +1,96 @@
+<Root>
+    <File Name="object_gndd" Segment="6">
+        <Animation Name="object_gndd_Anim_0005B4" Offset="0x5B4"/>
+        <Animation Name="object_gndd_Anim_0008A0" Offset="0x8A0"/>
+        <Animation Name="object_gndd_Anim_000BC8" Offset="0xBC8"/>
+        <Animation Name="object_gndd_Anim_000F54" Offset="0xF54"/>
+        <Animation Name="object_gndd_Anim_0014F4" Offset="0x14F4"/>
+        <Animation Name="object_gndd_Anim_001D28" Offset="0x1D28"/>
+        <Animation Name="object_gndd_Anim_002928" Offset="0x2928"/>
+        <Animation Name="object_gndd_Anim_003284" Offset="0x3284"/>
+        <Animation Name="object_gndd_Anim_003428" Offset="0x3428"/>
+        <Animation Name="object_gndd_Anim_003D84" Offset="0x3D84"/>
+        <Animation Name="object_gndd_Anim_004260" Offset="0x4260"/>
+        <Animation Name="object_gndd_Anim_004534" Offset="0x4534"/>
+        <Animation Name="object_gndd_Anim_0048B0" Offset="0x48B0"/>
+        <Animation Name="object_gndd_Anim_0050A8" Offset="0x50A8"/>
+        <DList Name="object_gndd_DL_0061C0" Offset="0x61C0"/>
+        <DList Name="object_gndd_DL_0069F8" Offset="0x69F8"/>
+        <DList Name="object_gndd_DL_006B78" Offset="0x6B78"/>
+        <DList Name="object_gndd_DL_006D90" Offset="0x6D90"/>
+        <DList Name="object_gndd_DL_006FC8" Offset="0x6FC8"/>
+        <DList Name="object_gndd_DL_00A6A8" Offset="0xA6A8"/>
+        <DList Name="object_gndd_DL_00AB10" Offset="0xAB10"/>
+        <DList Name="object_gndd_DL_00B410" Offset="0xB410"/>
+        <DList Name="object_gndd_DL_00B4B0" Offset="0xB4B0"/>
+        <DList Name="object_gndd_DL_00B918" Offset="0xB918"/>
+        <DList Name="object_gndd_DL_00BA90" Offset="0xBA90"/>
+        <DList Name="object_gndd_DL_00BC08" Offset="0xBC08"/>
+        <DList Name="object_gndd_DL_00BEA0" Offset="0xBEA0"/>
+        <DList Name="object_gndd_DL_00C138" Offset="0xC138"/>
+        <DList Name="object_gndd_DL_00C550" Offset="0xC550"/>
+        <DList Name="object_gndd_DL_00C968" Offset="0xC968"/>
+        <DList Name="object_gndd_DL_00CBF8" Offset="0xCBF8"/>
+        <DList Name="object_gndd_DL_00CE88" Offset="0xCE88"/>
+        <DList Name="object_gndd_DL_00D080" Offset="0xD080"/>
+        <DList Name="object_gndd_DL_00D278" Offset="0xD278"/>
+        <DList Name="object_gndd_DL_00D470" Offset="0xD470"/>
+        <DList Name="object_gndd_DL_00D668" Offset="0xD668"/>
+        <DList Name="object_gndd_DL_00E1A8" Offset="0xE1A8"/>
+        <Texture Name="object_gndd_TLUT_00ECB8" OutName="tlut_0000ECB8" Format="rgba16" Width="16" Height="16" Offset="0xECB8"/>
+        <Texture Name="object_gndd_Tex_00EEB8" OutName="tex_0000EEB8" Format="rgba16" Width="8" Height="8" Offset="0xEEB8"/>
+        <Texture Name="object_gndd_Tex_00EF38" OutName="tex_0000EF38" Format="rgba16" Width="16" Height="16" Offset="0xEF38"/>
+        <Texture Name="object_gndd_Tex_00F138" OutName="tex_0000F138" Format="rgba16" Width="4" Height="8" Offset="0xF138"/>
+        <Texture Name="object_gndd_Tex_00F178" OutName="tex_0000F178" Format="ci8" Width="32" Height="16" Offset="0xF178"/>
+        <Texture Name="object_gndd_Tex_00F378" OutName="tex_0000F378" Format="ci8" Width="32" Height="16" Offset="0xF378"/>
+        <Texture Name="object_gndd_Tex_00F578" OutName="tex_0000F578" Format="ci8" Width="32" Height="16" Offset="0xF578"/>
+        <Texture Name="object_gndd_Tex_00F778" OutName="tex_0000F778" Format="ci8" Width="32" Height="16" Offset="0xF778"/>
+        <Texture Name="object_gndd_Tex_00F978" OutName="tex_0000F978" Format="rgba16" Width="16" Height="16" Offset="0xF978"/>
+        <Texture Name="object_gndd_Tex_00FB78" OutName="tex_0000FB78" Format="rgba16" Width="8" Height="16" Offset="0xFB78"/>
+        <Texture Name="object_gndd_Tex_00FC78" OutName="tex_0000FC78" Format="rgba16" Width="8" Height="8" Offset="0xFC78"/>
+        <Texture Name="object_gndd_Tex_00FCF8" OutName="tex_0000FCF8" Format="rgba16" Width="4" Height="16" Offset="0xFCF8"/>
+        <Texture Name="object_gndd_Tex_00FD78" OutName="tex_0000FD78" Format="rgba16" Width="16" Height="8" Offset="0xFD78"/>
+        <Texture Name="object_gndd_Tex_00FE78" OutName="tex_0000FE78" Format="rgba16" Width="16" Height="16" Offset="0xFE78"/>
+        <Texture Name="object_gndd_Tex_010078" OutName="tex_00010078" Format="rgba16" Width="16" Height="16" Offset="0x10078"/>
+        <Texture Name="object_gndd_Tex_010278" OutName="tex_00010278" Format="rgba16" Width="32" Height="16" Offset="0x10278"/>
+        <Texture Name="object_gndd_Tex_010678" OutName="tex_00010678" Format="rgba16" Width="16" Height="16" Offset="0x10678"/>
+        <Texture Name="object_gndd_Tex_010878" OutName="tex_00010878" Format="rgba16" Width="8" Height="8" Offset="0x10878"/>
+        <Texture Name="object_gndd_Tex_0108F8" OutName="tex_000108F8" Format="rgba16" Width="8" Height="8" Offset="0x108F8"/>
+        <Texture Name="object_gndd_Tex_010978" OutName="tex_00010978" Format="rgba16" Width="16" Height="16" Offset="0x10978"/>
+        <Texture Name="object_gndd_Tex_010B78" OutName="tex_00010B78" Format="rgba16" Width="16" Height="16" Offset="0x10B78"/>
+        <Texture Name="object_gndd_Tex_010D78" OutName="tex_00010D78" Format="rgba16" Width="16" Height="16" Offset="0x10D78"/>
+        <Texture Name="object_gndd_Tex_010F78" OutName="tex_00010F78" Format="rgba16" Width="16" Height="32" Offset="0x10F78"/>
+        <Texture Name="object_gndd_Tex_011378" OutName="tex_00011378" Format="rgba16" Width="16" Height="16" Offset="0x11378"/>
+        <Texture Name="object_gndd_Tex_011578" OutName="tex_00011578" Format="rgba16" Width="8" Height="8" Offset="0x11578"/>
+        <Texture Name="object_gndd_Tex_0115F8" OutName="tex_000115F8" Format="rgba16" Width="8" Height="8" Offset="0x115F8"/>
+        <Texture Name="object_gndd_Tex_011678" OutName="tex_00011678" Format="rgba16" Width="8" Height="8" Offset="0x11678"/>
+        <Texture Name="object_gndd_Tex_0116F8" OutName="tex_000116F8" Format="rgba16" Width="4" Height="4" Offset="0x116F8"/>
+        <Texture Name="object_gndd_Tex_011718" OutName="tex_00011718" Format="i8" Width="16" Height="16" Offset="0x11718"/>
+        <Texture Name="object_gndd_Tex_011818" OutName="tex_00011818" Format="rgba16" Width="4" Height="8" Offset="0x11818"/>
+        <Texture Name="object_gndd_Tex_011858" OutName="tex_00011858" Format="rgba16" Width="4" Height="4" Offset="0x11858"/>
+        <Limb Name="object_gndd_Limb_011878" LimbType="Standard" Offset="0x11878"/>
+        <Limb Name="object_gndd_Limb_011884" LimbType="Standard" Offset="0x11884"/>
+        <Limb Name="object_gndd_Limb_011890" LimbType="Standard" Offset="0x11890"/>
+        <Limb Name="object_gndd_Limb_01189C" LimbType="Standard" Offset="0x1189C"/>
+        <Limb Name="object_gndd_Limb_0118A8" LimbType="Standard" Offset="0x118A8"/>
+        <Limb Name="object_gndd_Limb_0118B4" LimbType="Standard" Offset="0x118B4"/>
+        <Limb Name="object_gndd_Limb_0118C0" LimbType="Standard" Offset="0x118C0"/>
+        <Limb Name="object_gndd_Limb_0118CC" LimbType="Standard" Offset="0x118CC"/>
+        <Limb Name="object_gndd_Limb_0118D8" LimbType="Standard" Offset="0x118D8"/>
+        <Limb Name="object_gndd_Limb_0118E4" LimbType="Standard" Offset="0x118E4"/>
+        <Limb Name="object_gndd_Limb_0118F0" LimbType="Standard" Offset="0x118F0"/>
+        <Limb Name="object_gndd_Limb_0118FC" LimbType="Standard" Offset="0x118FC"/>
+        <Limb Name="object_gndd_Limb_011908" LimbType="Standard" Offset="0x11908"/>
+        <Limb Name="object_gndd_Limb_011914" LimbType="Standard" Offset="0x11914"/>
+        <Limb Name="object_gndd_Limb_011920" LimbType="Standard" Offset="0x11920"/>
+        <Limb Name="object_gndd_Limb_01192C" LimbType="Standard" Offset="0x1192C"/>
+        <Limb Name="object_gndd_Limb_011938" LimbType="Standard" Offset="0x11938"/>
+        <Limb Name="object_gndd_Limb_011944" LimbType="Standard" Offset="0x11944"/>
+        <Limb Name="object_gndd_Limb_011950" LimbType="Standard" Offset="0x11950"/>
+        <Limb Name="object_gndd_Limb_01195C" LimbType="Standard" Offset="0x1195C"/>
+        <Limb Name="object_gndd_Limb_011968" LimbType="Standard" Offset="0x11968"/>
+        <Limb Name="object_gndd_Limb_011974" LimbType="Standard" Offset="0x11974"/>
+        <Limb Name="object_gndd_Limb_011980" LimbType="Standard" Offset="0x11980"/>
+        <Skeleton Name="object_gndd_Skel_0119E8" Type="Flex" LimbType="Standard" Offset="0x119E8"/>
+    </File>
+</Root>

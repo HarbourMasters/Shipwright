@@ -1,0 +1,23 @@
+<Root>
+    <File Name="spot18_scene" Segment="2">
+        <Cutscene Name="gGoronCityDaruniaCorrectCs" Offset="0x59E0"/>
+        <Cutscene Name="gGoronCityDarunia01Cs" Offset="0x6930"/>
+        <Cutscene Name="gGoronCityDaruniaWrongCs" Offset="0x7DE0"/>
+        <Cutscene Name="gGoronCityIntroCs" Offset="0x8400"/>
+        <Texture Name="gGoronCityNightEntranceTex" OutName="night_entrance" Format="ia8" Width="8" Height="8" Offset="0x8FC8"/>
+        <Texture Name="gGoronCityDayEntranceTex" OutName="day_entrance" Format="ia8" Width="8" Height="8" Offset="0x9808"/>
+        <Scene Name="spot18_scene" Offset="0x0"/>
+    </File>
+    <File Name="spot18_room_0" Segment="3">
+        <Room Name="spot18_room_0" Offset="0x0"/>
+    </File>
+    <File Name="spot18_room_1" Segment="3">
+        <Room Name="spot18_room_1" Offset="0x0"/>
+    </File>
+    <File Name="spot18_room_2" Segment="3">
+        <Room Name="spot18_room_2" Offset="0x0"/>
+    </File>
+    <File Name="spot18_room_3" Segment="3">
+        <Room Name="spot18_room_3" Offset="0x0"/>
+    </File>
+</Root>
