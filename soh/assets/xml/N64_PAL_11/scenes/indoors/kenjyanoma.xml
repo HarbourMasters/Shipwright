@@ -1,0 +1,8 @@
+<Root>
+    <File Name="kenjyanoma_scene" Segment="2">
+        <Scene Name="kenjyanoma_scene" Offset="0x0"/>
+    </File>
+    <File Name="kenjyanoma_room_0" Segment="3">
+        <Room Name="kenjyanoma_room_0" Offset="0x0"/>
+    </File>
+</Root>

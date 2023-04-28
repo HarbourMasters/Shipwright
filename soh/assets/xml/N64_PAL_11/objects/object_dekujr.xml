@@ -1,0 +1,13 @@
+<Root>
+    <File Name="object_dekujr" Segment="6">
+        <Texture Name="object_dekujr_Tex_000000" OutName="tex_00000000" Format="rgba16" Width="32" Height="32" Offset="0x0"/>
+        <Texture Name="object_dekujr_Tex_000800" OutName="tex_00000800" Format="i4" Width="64" Height="64" Offset="0x800"/>
+        <Texture Name="object_dekujr_Tex_001000" OutName="tex_00001000" Format="rgba16" Width="32" Height="16" Offset="0x1000"/>
+        <Texture Name="object_dekujr_Tex_001400" OutName="tex_00001400" Format="ia8" Width="32" Height="16" Offset="0x1400"/>
+        <Texture Name="object_dekujr_Tex_001600" OutName="tex_00001600" Format="ia8" Width="8" Height="8" Offset="0x1600"/>
+        <Texture Name="object_dekujr_Tex_001640" OutName="tex_00001640" Format="ia8" Width="64" Height="64" Offset="0x1640"/>
+        <Texture Name="object_dekujr_Tex_002640" OutName="tex_00002640" Format="ia16" Width="32" Height="16" Offset="0x2640"/>
+        <DList Name="object_dekujr_DL_0030D0" Offset="0x30D0"/> <!-- dekujr body -->
+        <DList Name="object_dekujr_DL_0032D8" Offset="0x32D8"/> <!-- dekujr face and shadow -->
+    </File>
+</Root>

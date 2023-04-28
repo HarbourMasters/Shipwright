@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_prescription" Segment="6">
+        <DList Name="gGiPrescriptionDL" Offset="0x09C0"/>
+        <DList Name="gGiPrescriptionWritingDL" Offset="0x0AF0"/>
+    </File>
+</Root>
