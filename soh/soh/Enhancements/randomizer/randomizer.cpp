@@ -3145,7 +3145,7 @@ void DrawRandoEditor(bool& open) {
     static const char* randoItemPool[4] = { "Plentiful", "Balanced", "Scarce", "Minimal" };
     static const char* randoIceTraps[5] = { "Off", "Normal", "Extra", "Mayhem", "Onslaught" };
 
-    ImGui::SetNextWindowSize(ImVec2(920, 600), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(490, 130), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
@@ -3156,7 +3156,9 @@ void DrawRandoEditor(bool& open) {
         UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
     }
 
+    /* [Race Template] Hide preset selector
     DrawPresetSelector(PRESET_TYPE_RANDOMIZER);
+    */
 
     UIWidgets::Spacer(0);
     UIWidgets::EnhancementCheckbox("Manual seed entry", "gRandoManualSeedEntry", false, "");
@@ -3184,6 +3186,7 @@ void DrawRandoEditor(bool& open) {
     }
 
     UIWidgets::Spacer(0);
+    /* [Race Template] Hide the rest of the randomizer menu
     std::string spoilerfilepath = CVarGetString("gSpoilerLog", "");
     ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
 
@@ -4596,6 +4599,7 @@ void DrawRandoEditor(bool& open) {
         ImGui::EndTabBar();
     }
     
+    */
     if (disableEditingRandoSettings) {
         UIWidgets::ReEnableComponent("");
     }

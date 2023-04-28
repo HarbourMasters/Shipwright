@@ -361,10 +361,12 @@ void FileChoose_UpdateRandomizer() {
             return;
     }
 
+    /* [Race Template] Dont clear seed if file isn't found, because we instantly delete it
     if (!SpoilerFileExists(CVarGetString("gSpoilerLog", ""))) {
             CVarSetString("gSpoilerLog", "");
             fileSelectSpoilerFileLoaded = false;
     }
+    */
 
     if ((CVarGetInteger("gNewFileDropped", 0) != 0) || (CVarGetInteger("gNewSeedGenerated", 0) != 0) ||
         (!fileSelectSpoilerFileLoaded && SpoilerFileExists(CVarGetString("gSpoilerLog", "")))) {
@@ -388,6 +390,8 @@ void FileChoose_UpdateRandomizer() {
             Randomizer_LoadMasterQuestDungeons(fileLoc);
             Randomizer_LoadEntranceOverrides(fileLoc, silent);
             fileSelectSpoilerFileLoaded = true;
+            /* [Race Template] Remove spoiler file as soon as it's created */
+            remove(fileLoc);
     }
 }
 
@@ -2644,4 +2648,7 @@ void FileChoose_Init(GameState* thisx) {
     Font_LoadOrderedFont(&this->font);
     Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
     func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
+
+    /* [Race Template] Ensure fresh spoiler needs to be created each time this screen is loaded, to prevent any issues/cheating */
+    CVarSetString("gSpoilerLog", "");
 }

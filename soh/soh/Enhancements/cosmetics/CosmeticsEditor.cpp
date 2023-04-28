@@ -1773,10 +1773,12 @@ void DrawCosmeticsEditor(bool& open) {
             DrawCosmeticGroup(GROUP_NPC);
             ImGui::EndTabItem();
         }
+        /* [Race Template] Hide silly options
         if (ImGui::BeginTabItem("Silly")) {
             DrawSillyTab();
             ImGui::EndTabItem();
         }
+        */
         if (ImGui::BeginTabItem("HUD")) {
             DrawCosmeticGroup(GROUP_HUD);
             DrawCosmeticGroup(GROUP_TITLE);
