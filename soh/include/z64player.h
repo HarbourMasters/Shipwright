@@ -481,14 +481,14 @@ typedef struct {
 #define PLAYER_STATE2_SWORD_LUNGE (1 << 30)
 #define PLAYER_STATE2_FORCED_VOID_OUT (1 << 31)
 
-#define PLAYER_STATE3_0 (1 << 0) //PLAYER_STATE3_IGNORE_CEILING_FLOOR_WATER
-#define PLAYER_STATE3_1 (1 << 1) //PLAYER_STATE3_MIDAIR
-#define PLAYER_STATE3_2 (1 << 2) //PLAYER_STATE3_PAUSE_ACTION_FUNC
-#define PLAYER_STATE3_3 (1 << 3) //PLAYER_STATE3_FINISHED_ATTACKING
-#define PLAYER_STATE3_4 (1 << 4) //PLAYER_STATE3_CHECK_FLOOR_WATER_COLLISION
-#define PLAYER_STATE3_5 (1 << 5) //PLAYER_STATE3_FORCE_PULL_OCARINA
+#define PLAYER_STATE3_IGNORE_CEILING_FLOOR_WATER (1 << 0)
+#define PLAYER_STATE3_MIDAIR (1 << 1)
+#define PLAYER_STATE3_PAUSE_ACTION_FUNC (1 << 2)
+#define PLAYER_STATE3_FINISHED_ATTACKING (1 << 3)
+#define PLAYER_STATE3_CHECK_FLOOR_WATER_COLLISION (1 << 4)
+#define PLAYER_STATE3_FORCE_PULL_OCARINA (1 << 5) 
 #define PLAYER_STATE3_RESTORE_NAYRUS_LOVE (1 << 6) // Set by ocarina effects actors when destroyed to signal Nayru's Love may be restored (see `ACTOROVL_ALLOC_ABSOLUTE`)
-#define PLAYER_STATE3_7 (1 << 7) //PLAYER_STATE3_HOOKSHOT_TRAVELLING //Travelling to target
+#define PLAYER_STATE3_HOOKSHOT_TRAVELLING (1 << 7) //Travelling to target
 
 typedef void (*PlayerFunc674)(struct Player*, struct PlayState*);
 typedef s32 (*PlayerFunc82C)(struct Player*, struct PlayState*);
