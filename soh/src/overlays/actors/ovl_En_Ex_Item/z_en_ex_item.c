@@ -403,7 +403,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, PlayState* play) {
         func_8002DF54(play, NULL, 7);
         this->actor.parent = NULL;
         if (gSaveContext.n64ddFlag) {
-            GET_PLAYER(play)->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
+            GET_PLAYER(play)->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD);
             getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
             getItemId = getItemEntry.getItemId;
         } else {

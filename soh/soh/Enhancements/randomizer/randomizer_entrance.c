@@ -518,7 +518,7 @@ void Entrance_HandleEponaState(void) {
     Player* player = GET_PLAYER(gPlayState);
     //If Link is riding Epona but he's about to go through an entrance where she can't spawn,
     //unset the Epona flag to avoid Master glitch, and restore temp B.
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) && (player->stateFlags1 & PLAYER_STATE1_23)) {
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) && (player->stateFlags1 & PLAYER_STATE1_ON_HORSE)) {
         // Allow Master glitch to be performed on the Thieves Hideout entrance
         if (entrance == Entrance_GetOverride(0x0496)) { // Gerudo Fortress -> Theives Hideout
             return;
@@ -563,7 +563,7 @@ void Entrance_HandleEponaState(void) {
 
         // Update Link's status to no longer be riding epona so that the next time link
         // enters an epona supported area, he isn't automatically placed on epona
-        player->stateFlags1 &= ~PLAYER_STATE1_23;
+        player->stateFlags1 &= ~PLAYER_STATE1_ON_HORSE;
         player->actor.parent = NULL;
         AREG(6) = 0;
         gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0]; //"temp B"
