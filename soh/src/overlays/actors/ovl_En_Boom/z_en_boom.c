@@ -7,7 +7,7 @@
 #include "z_en_boom.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnBoom_Init(Actor* thisx, PlayState* play);
 void EnBoom_Destroy(Actor* thisx, PlayState* play);
@@ -161,7 +161,7 @@ void EnBoom_Fly(EnBoom* this, PlayState* play) {
         if (((this->collider.base.at->id == ACTOR_EN_ITEM00) || (this->collider.base.at->id == ACTOR_EN_SI))) {
             this->grabbed = this->collider.base.at;
             if (this->collider.base.at->id == ACTOR_EN_SI) {
-                this->collider.base.at->flags |= ACTOR_FLAG_13;
+                this->collider.base.at->flags |= ACTOR_FLAG_HOOKSHOT_ATTACHED;
             }
         }
     }
@@ -184,7 +184,7 @@ void EnBoom_Fly(EnBoom* this, PlayState* play) {
                     target->gravity = -0.9f;
                     target->bgCheckFlags &= ~0x03;
                 } else {
-                    target->flags &= ~ACTOR_FLAG_13;
+                    target->flags &= ~ACTOR_FLAG_HOOKSHOT_ATTACHED;
                 }
             }
             // Set player flags and kill the boomerang beacause Link caught it.

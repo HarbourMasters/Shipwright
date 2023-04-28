@@ -7,7 +7,7 @@
 #include "z_en_tana.h"
 #include "objects/object_shop_dungen/object_shop_dungen.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnTana_Init(Actor* thisx, PlayState* play);
 void EnTana_Destroy(Actor* thisx, PlayState* play);
@@ -60,7 +60,7 @@ void EnTana_Init(Actor* thisx, PlayState* play) {
 
     osSyncPrintf("☆☆☆ %s ☆☆☆\n", sShelfTypes[thisx->params]);
     Actor_SetScale(thisx, 1.0f);
-    thisx->flags &= ~ACTOR_FLAG_0;
+    thisx->flags &= ~ACTOR_FLAG_TARGETABLE;
     thisx->draw = sDrawFuncs[thisx->params];
 }
 

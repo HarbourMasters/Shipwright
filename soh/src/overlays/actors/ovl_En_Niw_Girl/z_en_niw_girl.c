@@ -8,7 +8,7 @@
 #include "objects/object_gr/object_gr.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnNiwGirl_Init(Actor* thisx, PlayState* play);
 void EnNiwGirl_Destroy(Actor* thisx, PlayState* play);
@@ -98,7 +98,7 @@ void EnNiwGirl_Destroy(Actor* thisx, PlayState* play) {
 void EnNiwGirl_Jump(EnNiwGirl* this, PlayState* play) {
     f32 frameCount = Animation_GetLastFrame(&gNiwGirlRunAnim);
     Animation_Change(&this->skelAnime, &gNiwGirlRunAnim, 1.0f, 0.0f, frameCount, 0, -10.0f);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actionFunc = func_80AB9210;
 }
 
@@ -139,7 +139,7 @@ void func_80AB9210(EnNiwGirl* this, PlayState* play) {
 void EnNiwGirl_Talk(EnNiwGirl* this, PlayState* play) {
     Animation_Change(&this->skelAnime, &gNiwGirlJumpAnim, 1.0f, 0.0f, Animation_GetLastFrame(&gNiwGirlJumpAnim), 0,
                      -10.0f);
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     this->actor.textId = 0x7000;
     if ((gSaveContext.eventChkInf[8] & 1) && (this->unk_27A == 0)) {
         this->actor.textId = 0x70EA;

@@ -1,7 +1,7 @@
 #include "z_en_ma2.h"
 #include "objects/object_ma2/object_ma2.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void EnMa2_Init(Actor* thisx, PlayState* play);
 void EnMa2_Destroy(Actor* thisx, PlayState* play);
@@ -257,7 +257,7 @@ void EnMa2_Destroy(Actor* thisx, PlayState* play) {
 
 void func_80AA2018(EnMa2* this, PlayState* play) {
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
     }
 }
@@ -299,10 +299,10 @@ void func_80AA21C8(EnMa2* this, PlayState* play) {
         player->stateFlags2 |= 0x800000;
     } else {
         if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
-            this->actor.flags |= ACTOR_FLAG_16;
+            this->actor.flags |= ACTOR_FLAG_WILL_TALK;
             Message_CloseTextbox(play);
         } else {
-            this->actor.flags &= ~ACTOR_FLAG_16;
+            this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
             this->actionFunc = func_80AA2018;
         }
     }

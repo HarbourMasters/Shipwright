@@ -8,7 +8,7 @@
 #include "objects/object_jya_obj/object_jya_obj.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void BgJyaZurerukabe_Init(Actor* thisx, PlayState* play);
 void BgJyaZurerukabe_Destroy(Actor* thisx, PlayState* play);

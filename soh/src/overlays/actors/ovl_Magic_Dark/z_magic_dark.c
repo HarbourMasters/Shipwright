@@ -7,7 +7,7 @@
 #include "z_magic_dark.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void MagicDark_Init(Actor* thisx, PlayState* play);
 void MagicDark_Destroy(Actor* thisx, PlayState* play);

@@ -7,7 +7,7 @@
 #include "z_en_test.h"
 #include "objects/object_sk2/object_sk2.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnTest_Init(Actor* thisx, PlayState* play);
 void EnTest_Destroy(Actor* thisx, PlayState* play);
@@ -305,7 +305,7 @@ void EnTest_Init(Actor* thisx, PlayState* play) {
     }
 
     if (this->actor.params == STALFOS_TYPE_INVISIBLE) {
-        this->actor.flags |= ACTOR_FLAG_7;
+        this->actor.flags |= ACTOR_FLAG_LENS;
     }
 }
 
@@ -428,7 +428,7 @@ void EnTest_SetupWaitGround(EnTest* this) {
     this->timer = 15;
     this->actor.scale.y = 0.0f;
     this->actor.world.pos.y = this->actor.home.pos.y - 3.5f;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     EnTest_SetupAction(this, EnTest_WaitGround);
 }
 
@@ -458,7 +458,7 @@ void EnTest_SetupWaitAbove(EnTest* this) {
     this->unk_7C8 = 0;
     this->actor.world.pos.y = this->actor.home.pos.y + 150.0f;
     Actor_SetScale(&this->actor, 0.0f);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     EnTest_SetupAction(this, EnTest_WaitAbove);
 }
 
@@ -468,7 +468,7 @@ void EnTest_WaitAbove(EnTest* this, PlayState* play) {
 
     if ((this->actor.xzDistToPlayer < 200.0f) && (ABS(this->actor.yDistToPlayer) < 450.0f)) {
         EnTest_SetupAction(this, EnTest_Fall);
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         this->actor.shape.rot.y = this->actor.world.rot.y = this->actor.yawTowardsPlayer;
         Actor_SetScale(&this->actor, 0.015f);
     }
@@ -1066,7 +1066,7 @@ void EnTest_JumpBack(EnTest* this, PlayState* play) {
                     this->timer = (Rand_ZeroOne() * 5.0f) + 5.0f;
                 }
             }
-            this->actor.flags |= ACTOR_FLAG_0;
+            this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         }
     } else if (this->skelAnime.curFrame == (this->skelAnime.endFrame - 4.0f)) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
@@ -1485,7 +1485,7 @@ void func_80862DBC(EnTest* this, PlayState* play) {
         this->swordState = -1;
     }
 
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
 
     if (this->actor.params == STALFOS_TYPE_5) {
         Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_PROP);
@@ -1514,7 +1514,7 @@ void func_80862E6C(EnTest* this, PlayState* play) {
             }
 
             this->actor.child = NULL;
-            this->actor.flags |= ACTOR_FLAG_0;
+            this->actor.flags |= ACTOR_FLAG_TARGETABLE;
             EnTest_SetupJumpBack(this);
         } else if ((this->actor.params == STALFOS_TYPE_5) &&
                    !Actor_FindNearby(play, &this->actor, ACTOR_EN_TEST, ACTORCAT_ENEMY, 8000.0f)) {
@@ -1534,7 +1534,7 @@ void func_80862FA8(EnTest* this, PlayState* play) {
     Animation_PlayOnce(&this->skelAnime, &gStalfosFallOverBackwardsAnim);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_STAL_DEAD);
     this->unk_7DE = 0;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actor.colorFilterTimer = 0;
     this->actor.speedXZ = 0.0f;
 
@@ -1568,7 +1568,7 @@ void func_808630F0(EnTest* this, PlayState* play) {
     this->actor.speedXZ = 0.0f;
 
     if (this->actor.params <= STALFOS_TYPE_CEILING) {
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
         EnTest_SetupAction(this, func_8086318C);
     } else {
         func_80862DBC(this, play);
@@ -1808,10 +1808,10 @@ void EnTest_Update(Actor* thisx, PlayState* play) {
 
     if (this->actor.params == STALFOS_TYPE_INVISIBLE) {
         if (play->actorCtx.lensActive) {
-            this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_7;
+            this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_LENS;
             this->actor.shape.shadowDraw = ActorShadow_DrawFeet;
         } else {
-            this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_7);
+            this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_LENS);
             this->actor.shape.shadowDraw = NULL;
         }
     }
@@ -1835,7 +1835,7 @@ s32 EnTest_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* 
         CLOSE_DISPS(play->state.gfxCtx);
     }
 
-    if ((this->actor.params == STALFOS_TYPE_INVISIBLE) && !CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_7)) {
+    if ((this->actor.params == STALFOS_TYPE_INVISIBLE) && !CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_LENS)) {
         *dList = NULL;
     }
 
