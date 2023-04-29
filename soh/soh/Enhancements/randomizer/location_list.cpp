@@ -2174,4 +2174,210 @@ void StaticData::InitLocationTable() {
         "Spirit Temple MQ Mirror Puzzle Invisible Chest", RC_SPIRIT_TEMPLE_MQ_MIRROR_PUZZLE_INVISIBLE_CHEST,
         RG_SPIRIT_TEMPLE_SMALL_KEY, { Category::cSpiritTemple, Category::cVanillaSmallKey },
         SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+
+    // Shadow Temple Vanilla
+    locationTable[RC_SHADOW_TEMPLE_MAP_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_SHADOW_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_HAKADAN, 6177, 0x01, "Map Chest", "Shadow Temple Map Chest",
+                        RC_SHADOW_TEMPLE_MAP_CHEST, RG_SHADOW_TEMPLE_MAP,
+                        {
+                            Category::cShadowTemple,
+                            Category::cVanillaMap,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_HOVER_BOOTS_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_HOVER_BOOTS_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_HAKADAN, 5607, 0x07, "Hover Boots Chest", "Shadow Temple Hover Boots Chest",
+                        RC_SHADOW_TEMPLE_HOVER_BOOTS_CHEST, RG_HOVER_BOOTS,
+                        {
+                            Category::cShadowTemple,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_COMPASS_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_SHADOW_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_HAKADAN, 6147, 0x03, "Compass Chest", "Shadow Temple Compass Chest",
+                        RC_SHADOW_TEMPLE_COMPASS_CHEST, RG_SHADOW_TEMPLE_COMPASS,
+                        {
+                            Category::cShadowTemple,
+                            Category::cVanillaCompass,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_EARLY_SILVER_RUPEE_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_EARLY_SILVER_RUPEE_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+                        RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX, SCENE_HAKADAN, 22594, 0x02, "Early Silver Rupee Chest",
+                        "Shadow Temple Early Silver Rupee Chest", RC_SHADOW_TEMPLE_EARLY_SILVER_RUPEE_CHEST,
+                        RG_SHADOW_TEMPLE_SMALL_KEY, { Category::cShadowTemple, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_INVISIBLE_BLADES_VISIBLE_CHEST] = Location::Chest(
+        RC_SHADOW_TEMPLE_INVISIBLE_BLADES_VISIBLE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
+        ACTOR_EN_BOX, SCENE_HAKADAN, 22668, 0x0C, "Invisible Blades Visible Chest",
+        "Shadow Temple Invisible Blades Visible Chest", RC_SHADOW_TEMPLE_INVISIBLE_BLADES_VISIBLE_CHEST, RG_BLUE_RUPEE,
+        {
+            Category::cShadowTemple,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_INVISIBLE_BLADES_INVISIBLE_CHEST] = Location::Chest(
+        RC_SHADOW_TEMPLE_INVISIBLE_BLADES_INVISIBLE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
+        ACTOR_EN_BOX, SCENE_HAKADAN, 26998, 0x16, "Invisible Blades Invisible Chest",
+        "Shadow Temple Invisible Blades Invisible Chest", SHADOW_TEMPLE_INVISIBLE_BLADES_INVISIBLE_CHEST, RG_ARROWS_30,
+        {
+            Category::cShadowTemple,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_FALLING_SPIKES_LOWER_CHEST] = Location::Chest(
+        RC_SHADOW_TEMPLE_FALLING_SPIKES_LOWER_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
+        ACTOR_EN_BOX, SCENE_HAKADAN, 22853, 0x05, "Falling Spikes Lower Chest",
+        "Shadow Temple Falling Spikes Lower Chest", RC_SHADOW_TEMPLE_FALLING_SPIKES_LOWER_CHEST, RG_ARROWS_10,
+        {
+            Category::cShadowTemple,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_FALLING_SPIKES_UPPER_CHEST] = Location::Chest(
+        RC_SHADOW_TEMPLE_FALLING_SPIKES_UPPER_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
+        ACTOR_EN_BOX, SCENE_HAKADAN, 22662, 0x06, "Falling Spikes Upper Chest",
+        "Shadow Temple Falling Spikes Upper Chest", RC_SHADOW_TEMPLE_FALLING_SPIKES_UPPER_CHEST, RG_BLUE_RUPEE,
+        {
+            Category::cShadowTemple,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_FALLING_SPIKES_SWITCH_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_FALLING_SPIKES_SWITCH_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+                        RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX, SCENE_HAKADAN, -30652, 0x04, "Falling Spikes Switch Chest",
+                        "Shadow Temple Falling Spikes Switch Chest", RC_SHADOW_TEMPLE_FALLING_SPIKES_SWITCH_CHEST,
+                        RG_SHADOW_TEMPLE_SMALL_KEY, { Category::cShadowTemple, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_INVISIBLE_SPIKES_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_INVISIBLE_SPIKES_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_HAKADAN, 30857, 0x09, "Invisible Spikes Chest",
+                        "Shadow Temple Invisible Spikes Chest", RC_SHADOW_TEMPLE_INVISIBLE_SPIKES_CHEST, RG_BLUE_RUPEE,
+                        {
+                            Category::cShadowTemple,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_WIND_HINT_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_WIND_HINT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_HAKADAN, 26965, 0x15, "Wind Hint Chest", "Shadow Temple Wind Hint Chest",
+                        RC_SHADOW_TEMPLE_WIND_HINT_CHEST, RG_ARROWS_10,
+                        {
+                            Category::cShadowTemple,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_AFTER_WIND_ENEMY_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_AFTER_WIND_ENEMY_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_HAKADAN, 30856, 0x08, "After Wind Enemy Chest",
+                        "Shadow Temple After Wind Enemy Chest", RC_SHADOW_TEMPLE_AFTER_WIND_ENEMY_CHEST, RG_BLUE_RUPEE,
+                        {
+                            Category::cShadowTemple,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_AFTER_WIND_HIDDEN_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_AFTER_WIND_HIDDEN_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+                        RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX, SCENE_HAKADAN, 26708, 0x14, "After Wind Hidden Chest",
+                        "Shadow Temple After Wind Hidden Chest", RC_SHADOW_TEMPLE_AFTER_WIND_HIDDEN_CHEST,
+                        RG_SHADOW_TEMPLE_SMALL_KEY, { Category::cShadowTemple, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_SPIKE_WALLS_LEFT_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_SPIKE_WALLS_LEFT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_HAKADAN, 22666, 0x0A, "Spike Walls Left Chest",
+                        "Shadow Temple Spike Walls Left Chest", RC_SHADOW_TEMPLE_SPIKE_WALLS_LEFT_CHEST, RG_BLUE_RUPEE,
+                        {
+                            Category::cShadowTemple,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_BOSS_KEY_CHEST] = Location::Chest(
+        RC_SHADOW_TEMPLE_BOSS_KEY_CHEST, RCQUEST_VANILLA, RCTYPE_BOSS_KEY, RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX,
+        SCENE_HAKADAN, 10219, 0x0B, "Boss Key Chest", "Shadow Temple Boss Key Chest", RC_SHADOW_TEMPLE_BOSS_KEY_CHEST,
+        RG_SHADOW_TEMPLE_BOSS_KEY, { Category::cShadowTemple, Category::cVanillaBossKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+                        RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX, SCENE_HAKADAN, 30797, 0x0D, "Invisible Floormaster Chest",
+                        "Shadow Temple Invisible Floormaster Chest", RC_SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST,
+                        RG_SHADOW_TEMPLE_SMALL_KEY, { Category::cShadowTemple, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_FREESTANDING_KEY] =
+        Location::Collectable(RC_SHADOW_TEMPLE_FREESTANDING_KEY, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+                              RCAREA_SHADOW_TEMPLE, ACTOR_EN_ITEM00, SCENE_HAKADAN, 273, 0x01, "Freestanding Key",
+                              "Shadow Temple Freestanding Key", RC_SHADOW_TEMPLE_FREESTANDING_KEY,
+                              RG_SHADOW_TEMPLE_SMALL_KEY, { Category::cShadowTemple, Category::cVanillaSmallKey },
+                              SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+
+    // Shadow Temple MQ
+    locationTable[RC_SHADOW_TEMPLE_MQ_COMPASS_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_SHADOW_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_HAKADAN, 6145, 0x01, "MQ Compass Chest", "Shadow Temple MQ Compass Chest",
+                        RC_SHADOW_TEMPLE_MQ_COMPASS_CHEST, RG_SHADOW_TEMPLE_COMPASS,
+                        {
+                            Category::cShadowTemple,
+                            Category::cVanillaCompass,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_MQ_HOVER_BOOTS_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_MQ_HOVER_BOOTS_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_HAKADAN, 5607, 0x07, "MQ Hover Boots Chest",
+                        "Shadow Temple MQ Hover Boots Chest", RC_SHADOW_TEMPLE_MQ_HOVER_BOOTS_CHEST, RG_HOVER_BOOTS,
+                        {
+                            Category::cShadowTemple,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_MQ_EARLY_GIBDOS_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_MQ_EARLY_GIBDOS_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_SHADOW_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_HAKADAN, 30787, 0x03, "MQ Early Gibdos Chest",
+                        "Shadow Temple MQ Early Gibdos Chest", RC_SHADOW_TEMPLE_MQ_EARLY_GIBDOS_CHEST,
+                        RG_SHADOW_TEMPLE_SMALL_KEY, { Category::cShadowTemple, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_MQ_MAP_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_SHADOW_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_HAKADAN, 2082, 0x02, "MQ Map Chest", "Shadow Temple MQ Map Chest",
+                        RC_SHADOW_TEMPLE_MQ_MAP_CHEST, RG_SHADOW_TEMPLE_MAP,
+                        {
+                            Category::cShadowTemple,
+                            Category::cVanillaMap,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_MQ_BEAMOS_SILVER_RUPEES_CHEST] = Location::Chest(
+        RC_SHADOW_TEMPLE_MQ_BEAMOS_SILVER_RUPEES_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX,
+        SCENE_HAKADAN, -30417, 0x0F, "MQ Beamos Silver Rupees Chest", "Shadow Temple MQ Beamos Silver Rupees Chest",
+        RC_SHADOW_TEMPLE_MQ_BEAMOS_SILVER_RUPEES_CHEST, RG_ARROWS_5,
+        {
+            Category::cShadowTemple,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_SWITCH_CHEST] = Location::Chest(
+        RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_SWITCH_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE,
+        ACTOR_EN_BOX, SCENE_HAKADAN, 22662, 0x04, "MQ Falling Spikes Switch Chest",
+        "Shadow Temple MQ Falling Spikes Switch Chest", RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_SWITCH_CHEST,
+        RG_SHADOW_TEMPLE_SMALL_KEY, { Category::cShadowTemple, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_LOWER_CHEST] = Location::Chest(
+        RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_LOWER_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX,
+        SCENE_HAKADAN, 22853, 0x05, "MQ Falling Spikes Lower Chest", "Shadow Temple MQ Falling Spikes Lower Chest",
+        RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_LOWER_CHEST, RG_ARROWS_10,
+        {
+            Category::cShadowTemple,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_UPPER_CHEST] = Location::Chest(
+        RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_UPPER_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_SHADOW_TEMPLE,
+        ACTOR_EN_BOX, SCENE_HAKADAN, -30652, 0x06, "MQ Falling Spikes Upper Chest",
+        "Shadow Temple MQ Falling Spikes Upper Chest", RC_SHADOW_TEMPLE_MQ_FALLING_SPIKES_UPPER_CHEST, RG_ARROWS_5,
+        {
+            Category::cShadowTemple,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_MQ_INVISIBLE_SPIKES_CHEST] = Location::Chest(
+        RC_SHADOW_TEMPLE_MQ_INVISIBLE_SPIKES_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_SHADOW_TEMPLE, ACTOR_EN_BOX,
+        SCENE_HAKADAN, 30857, 0x09, "MQ Invisible Spikes Chest", "Shadow Temple MQ Invisible Spikes Chest",
+        RC_SHADOW_TEMPLE_MQ_INVISIBLE_SPIKES_CHEST, RG_BLUE_RUPEE,
+        {
+            Category::cShadowTemple,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_MQ_BOSS_KEY_CHEST] =
+        Location::Chest(RC_SHADOW_TEMPLE_MQ_BOSS_KEY_CHEST, RCQUEST_MQ, RCTYPE_BOSS_KEY, RCAREA_SHADOW_TEMPLE,
+                        ACTOR_EN_BOX, SCENE_HAKADAN, 10219, 0x0B, "MQ Boss Key Chest",
+                        "Shadow Temple MQ Boss Key Chest", RC_SHADOW_TEMPLE_MQ_BOSS_KEY_CHEST,
+                        RG_SHADOW_TEMPLE_BOSS_KEY, { Category::cShadowTemple, Category::cVanillaBossKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    
 }
