@@ -81,29 +81,6 @@ ZRoom room(nullptr);
 //extern const char gBuildHash[];
 const char gBuildHash[] = "";
 
-// LINUX_TODO: remove, those are because of soh <-> lus dependency problems
-float divisor_num = 0.0f;
-
-extern "C" void Audio_SetGameVolume(int player_id, float volume)
-{
-
-}
-
-
-extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
-{
-	return 0;
-}
-
-void DebugConsole_SaveCVars()
-{
-
-}
-
-void DebugConsole_LoadCVars()
-{
-
-}
 bool Parse(const fs::path& xmlFilePath, const fs::path& basePath, const fs::path& outPath,
            ZFileMode fileMode, int workerID);
 
