@@ -1402,6 +1402,37 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
     }
 
     Ship::SkeletonPatcher::UpdateSkeletons();
+ 
+extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) 
+{
+    std::string pathStr = std::string(path);
+    static const std::string sOtr = "__OTR__";
+
+    if (pathStr.starts_with(sOtr)) {
+        pathStr = pathStr.substr(sOtr.length());
+    }
+
+    bool isHD = CVarGetInteger("gAltAssets", 0);
+
+    if (isHD)
+        pathStr = Ship::Resource::gAltAssetPrefix + pathStr;
+
+    SkeletonHeader* skelHeader = (SkeletonHeader*)GetResourceDataByName(pathStr.c_str(), false);
+
+    // If there isn't an HD model, load the regular one
+    if (isHD && skelHeader == NULL)
+        skelHeader = (SkeletonHeader*)GetResourceDataByName(path, false);
+
+    // This function is only called when a skeleton is initialized.
+    // Therefore we can take this oppurtunity to take note of the Skeleton that is created...
+    if (skelAnime != nullptr) {
+        auto stringPath = std::string(path);
+        Ship::SkeletonPatcher::RegisterSkeleton(stringPath, skelAnime);
+    }
+
+
+    return skelHeader;
+}
 
     return skelHeader;
 }
