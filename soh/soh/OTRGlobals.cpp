@@ -1,4 +1,4 @@
-#include "OTRGlobals.h"
+﻿#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
 #include <algorithm>
@@ -1401,6 +1401,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
         Ship::SkeletonPatcher::RegisterSkeleton(stringPath, skelAnime);
     }
 
+    Ship::SkeletonPatcher::UpdateSkeletons();
 
     return skelHeader;
 }
