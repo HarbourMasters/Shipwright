@@ -1390,21 +1390,7 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
     return (AnimationHeaderCommon*)GetResourceDataByName(path, false);
 }
 
-extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) 
-{
-    SkeletonHeader* skelHeader = (SkeletonHeader*)GetResourceDataByName(path, false);
-
-    // This function is only called when a skeleton is initialized.
-    // Therefore we can take this oppurtunity to take note of the Skeleton that is created...
-    if (skelAnime != nullptr) {
-        auto stringPath = std::string(path);
-        Ship::SkeletonPatcher::RegisterSkeleton(stringPath, skelAnime);
-    }
-
-    Ship::SkeletonPatcher::UpdateSkeletons();
- 
-extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) 
-{
+extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) {
     std::string pathStr = std::string(path);
     static const std::string sOtr = "__OTR__";
 
@@ -1412,16 +1398,18 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
         pathStr = pathStr.substr(sOtr.length());
     }
 
-    bool isHD = CVarGetInteger("gAltAssets", 0);
+    bool isAlt = CVarGetInteger("gAltAssets", 0);
 
-    if (isHD)
+    if (isAlt) {
         pathStr = Ship::Resource::gAltAssetPrefix + pathStr;
+    }
 
     SkeletonHeader* skelHeader = (SkeletonHeader*)GetResourceDataByName(pathStr.c_str(), false);
 
-    // If there isn't an HD model, load the regular one
-    if (isHD && skelHeader == NULL)
+    // If there isn't an alternate model, load the regular one
+    if (isAlt && skelHeader == NULL) {
         skelHeader = (SkeletonHeader*)GetResourceDataByName(path, false);
+    }
 
     // This function is only called when a skeleton is initialized.
     // Therefore we can take this oppurtunity to take note of the Skeleton that is created...
@@ -1429,10 +1417,6 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
         auto stringPath = std::string(path);
         Ship::SkeletonPatcher::RegisterSkeleton(stringPath, skelAnime);
     }
-
-
-    return skelHeader;
-}
 
     return skelHeader;
 }
