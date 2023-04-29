@@ -58,7 +58,6 @@ bool Scene_CommandSpawnList(PlayState* play, Ship::SceneCommand* cmd) {
     ActorEntry* entries = (ActorEntry*)cmdStartPos->GetPointer();
 
     play->linkActorEntry = &entries[play->setupEntranceList[play->curSpawn].spawn];
-    ;
     play->linkAgeOnLoad = ((void)0, gSaveContext.linkAge);
     s16 linkObjectId = gLinkObjectIds[((void)0, gSaveContext.linkAge)];
 
@@ -87,105 +86,7 @@ bool Scene_CommandUnused2(PlayState* play, Ship::SceneCommand* cmd) {
 bool Scene_CommandCollisionHeader(PlayState* play, Ship::SceneCommand* cmd) {
     // Ship::SetCollisionHeader* cmdCol = std::static_pointer_cast<Ship::SetCollisionHeader>(cmd);
     Ship::SetCollisionHeader* cmdCol = (Ship::SetCollisionHeader*)cmd;
-
-    auto colRes = std::static_pointer_cast<Ship::CollisionHeader>(ResourceMgr_LoadResource(cmdCol->filePath.c_str()));
-
-    CollisionHeader* colHeader = nullptr;
-
-    if (colRes->CachedGameAsset != nullptr)
-        colHeader = (CollisionHeader*)colRes->CachedGameAsset;
-    else
-    {
-        colHeader = (CollisionHeader*)malloc(sizeof(CollisionHeader));
-
-        colHeader->minBounds.x = colRes->absMinX;
-        colHeader->minBounds.y = colRes->absMinY;
-        colHeader->minBounds.z = colRes->absMinZ;
-
-        colHeader->maxBounds.x = colRes->absMaxX;
-        colHeader->maxBounds.y = colRes->absMaxY;
-        colHeader->maxBounds.z = colRes->absMaxZ;
-
-        colHeader->vtxList = (Vec3s*)malloc(sizeof(Vec3s) * colRes->vertices.size());
-        colHeader->numVertices = colRes->vertices.size();
-
-        for (int i = 0; i < colRes->vertices.size(); i++)
-        {
-            colHeader->vtxList[i].x = colRes->vertices[i].x;
-            colHeader->vtxList[i].y = colRes->vertices[i].y;
-            colHeader->vtxList[i].z = colRes->vertices[i].z;
-        }
-
-        colHeader->polyList = (CollisionPoly*)malloc(sizeof(CollisionPoly) * colRes->polygons.size());
-        colHeader->numPolygons = colRes->polygons.size();
-
-        for (int i = 0; i < colRes->polygons.size(); i++)
-        {
-            colHeader->polyList[i].type = colRes->polygons[i].type;
-            colHeader->polyList[i].flags_vIA = colRes->polygons[i].vtxA;
-            colHeader->polyList[i].flags_vIB = colRes->polygons[i].vtxB;
-            colHeader->polyList[i].vIC = colRes->polygons[i].vtxC;
-            colHeader->polyList[i].normal.x = colRes->polygons[i].a;
-            colHeader->polyList[i].normal.y = colRes->polygons[i].b;
-            colHeader->polyList[i].normal.z = colRes->polygons[i].c;
-            colHeader->polyList[i].dist = colRes->polygons[i].d;
-        }
-
-        colHeader->surfaceTypeList = (SurfaceType*)malloc(colRes->PolygonTypes.size() * sizeof(SurfaceType));
-
-        for (int i = 0; i < colRes->PolygonTypes.size(); i++)
-        {
-            colHeader->surfaceTypeList[i].data[0] = colRes->PolygonTypes[i][0];
-            colHeader->surfaceTypeList[i].data[1] = colRes->PolygonTypes[i][1];
-        }
-
-        colHeader->cameraDataList = (CamData*)malloc(sizeof(CamData) * colRes->camData->entries.size());
-        colHeader->cameraDataListLen = colRes->camData->entries.size();
-
-        for (int i = 0; i < colRes->camData->entries.size(); i++)
-        {
-            colHeader->cameraDataList[i].cameraSType = colRes->camData->entries[i]->cameraSType;
-            colHeader->cameraDataList[i].numCameras = colRes->camData->entries[i]->numData;
-
-            int idx = colRes->camData->entries[i]->cameraPosDataIdx;
-
-            colHeader->cameraDataList[i].camPosData = (Vec3s*)malloc(sizeof(Vec3s) * colRes->camData->entries[i]->numData);
-
-            for (int j = 0; j < colRes->camData->entries[i]->numData; j++)
-            {
-                if (colRes->camData->cameraPositionData.size() > 0)
-                {
-                    colHeader->cameraDataList[i].camPosData[j].x = colRes->camData->cameraPositionData[idx + j]->x;
-                    colHeader->cameraDataList[i].camPosData[j].y = colRes->camData->cameraPositionData[idx + j]->y;
-                    colHeader->cameraDataList[i].camPosData[j].z = colRes->camData->cameraPositionData[idx + j]->z;
-                }
-                else
-                {
-                    colHeader->cameraDataList[i].camPosData->x = 0;
-                    colHeader->cameraDataList[i].camPosData->y = 0;
-                    colHeader->cameraDataList[i].camPosData->z = 0;
-                }
-            }
-        }
-
-        colHeader->numWaterBoxes = colRes->waterBoxes.size();
-        colHeader->waterBoxes = (WaterBox*)malloc(sizeof(WaterBox) * colHeader->numWaterBoxes);
-
-        for (int i = 0; i < colHeader->numWaterBoxes; i++)
-        {
-            colHeader->waterBoxes[i].xLength = colRes->waterBoxes[i].xLength;
-            colHeader->waterBoxes[i].ySurface = colRes->waterBoxes[i].ySurface;
-            colHeader->waterBoxes[i].xMin = colRes->waterBoxes[i].xMin;
-            colHeader->waterBoxes[i].zMin = colRes->waterBoxes[i].zMin;
-            colHeader->waterBoxes[i].xLength = colRes->waterBoxes[i].xLength;
-            colHeader->waterBoxes[i].zLength = colRes->waterBoxes[i].zLength;
-            colHeader->waterBoxes[i].properties = colRes->waterBoxes[i].properties;
-        }
-
-        colRes->CachedGameAsset = colHeader;
-    }
-
-    BgCheck_Allocate(&play->colCtx, play, colHeader);
+    BgCheck_Allocate(&play->colCtx, play, (CollisionHeader*)cmdCol->GetPointer());
 
     return false;
 }
@@ -217,7 +118,7 @@ bool Scene_CommandSpecialFiles(PlayState* play, Ship::SceneCommand* cmd) {
     }
 
     if (specialCmd->specialObjects.elfMessage != 0) {
-        auto res =
+        auto res = 
             (Ship::Blob*)OTRPlay_LoadFile(play, sNaviMsgFiles[specialCmd->specialObjects.elfMessage - 1].fileName);
         play->cUpElfMsgs = (ElfMessage*)res->Data.data();
     }
@@ -524,7 +425,7 @@ bool Scene_CommandMiscSettings(PlayState* play, Ship::SceneCommand* cmd) {
         if (gSaveContext.cutsceneIndex < 0xFFF0) {
             gSaveContext.worldMapAreaData |= gBitFlags[gSaveContext.worldMapArea];
             osSyncPrintf("０００  ａｒｅａ＿ａｒｒｉｖａｌ＝%x (%d)\n", gSaveContext.worldMapAreaData,
-                         gSaveContext.worldMapArea);
+                gSaveContext.worldMapArea);
         }
     }
     return false;
@@ -569,8 +470,7 @@ s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* scene) {
             continue;
 
         cmdCode = sceneCmd->cmdId;
-        // osSyncPrintf("*** Scene_Word = { code=%d, data1=%02x, data2=%04x } ***\n", cmdCode, sceneCmd->base.data1,
-        // sceneCmd->base.data2);
+        // osSyncPrintf("*** Scene_Word = { code=%d, data1=%02x, data2=%04x } ***\n", cmdCode, sceneCmd->base.data1, sceneCmd->base.data2);
 
         if ((int)cmdCode == 0x14) {
             break;
@@ -631,7 +531,7 @@ extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomN
 
         osCreateMesgQueue(&roomCtx->loadQueue, &roomCtx->loadMsg, 1);
         // DmaMgr_SendRequest2(&roomCtx->dmaRequest, roomCtx->unk_34, play->roomList[roomNum].vromStart, size, 0,
-        //&roomCtx->loadQueue, NULL, __FILE__, __LINE__);
+                            //&roomCtx->loadQueue, NULL, __FILE__, __LINE__);
 
         auto roomData =
             std::static_pointer_cast<Ship::Scene>(GetResourceByNameHandlingMQ(play->roomList[roomNum].fileName));
