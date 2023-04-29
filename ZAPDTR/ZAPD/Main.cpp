@@ -81,32 +81,6 @@ ZRoom room(nullptr);
 //extern const char gBuildHash[];
 const char gBuildHash[] = "";
 
-<<<<<<< HEAD
-=======
-// LINUX_TODO: remove, those are because of soh <-> lus dependency problems
-float divisor_num = 0.0f;
-
-extern "C" void Audio_SetGameVolume(int player_id, float volume)
-{
-
-}
-
-
-extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
-{
-	return 0;
-}
-
-void DebugConsole_SaveCVars()
-{
-
-}
-
-void DebugConsole_LoadCVars()
-{
-
-}
->>>>>>> 2ce8d54fd0db3fb7670575e06bb43c0711c60ecd
 bool Parse(const fs::path& xmlFilePath, const fs::path& basePath, const fs::path& outPath,
            ZFileMode fileMode, int workerID);
 
@@ -117,13 +91,9 @@ int ExtractFunc(int workerID, int fileListSize, std::string fileListItem, ZFileM
 
 volatile int numWorkersLeft = 0;
 
-<<<<<<< HEAD
 extern void ImportExporters();
 
 extern "C" int zapd_main(int argc, char* argv[])
-=======
-int main(int argc, char* argv[])
->>>>>>> 2ce8d54fd0db3fb7670575e06bb43c0711c60ecd
 {
 	// Syntax: ZAPD.out [mode (btex/bovl/e)] (Arbritrary Number of Arguments)
 
