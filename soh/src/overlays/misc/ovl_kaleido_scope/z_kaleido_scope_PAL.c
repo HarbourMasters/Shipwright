@@ -4193,6 +4193,8 @@ void KaleidoScope_Update(PlayState* play)
             func_800981B8(&play->objectCtx);
             func_800418D0(&play->colCtx, play);
 
+            KaleidoScope_ResetTradeSelect();
+
             switch (play->sceneNum) {
                 case SCENE_YDAN:
                 case SCENE_DDAN:
