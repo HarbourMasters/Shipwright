@@ -101,6 +101,9 @@ static const ALIGN_ASSET(2) char object_ik_Tlut_00F630[] = dobject_ik_Tlut_00F63
 #define dobject_ik_Tex_00F7A0 "__OTR__objects/object_ik/object_ik_Tex_00F7A0"
 static const ALIGN_ASSET(2) char object_ik_Tex_00F7A0[] = dobject_ik_Tex_00F7A0;
 
+#define dgIronKnuckleMetalOverflowTex "__OTR__objects/object_ik/gIronKnuckleMetalOverflowTex"
+static const ALIGN_ASSET(2) char gIronKnuckleMetalOverflowTex[] = dgIronKnuckleMetalOverflowTex;
+
 #define dobject_ik_Tex_00FBA0 "__OTR__objects/object_ik/object_ik_Tex_00FBA0"
 static const ALIGN_ASSET(2) char object_ik_Tex_00FBA0[] = dobject_ik_Tex_00FBA0;
 

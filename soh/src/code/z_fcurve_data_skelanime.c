@@ -15,7 +15,7 @@ s32 SkelCurve_Init(PlayState* play, SkelAnimeCurve* skelCurve, SkelCurveLimbList
                    TransformUpdateIndex* transUpdIdx) {
 
     if (ResourceMgr_OTRSigCheck(limbListSeg))
-        limbListSeg = ResourceMgr_LoadSkeletonByName(limbListSeg);
+        limbListSeg = ResourceMgr_LoadSkeletonByName(limbListSeg, NULL);
 
     SkelCurveLimb** limbs;
     SkelCurveLimbList* limbList = SEGMENTED_TO_VIRTUAL(limbListSeg);

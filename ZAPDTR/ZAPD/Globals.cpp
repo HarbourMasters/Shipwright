@@ -27,11 +27,14 @@ Globals::Globals()
 
 Globals::~Globals()
 {
-	auto& exporters = GetExporterMap();
-
-	for (auto& it : exporters)
+	for (const auto& w : workerData)
 	{
-		delete it.second;
+		delete w.second;
+	}
+	
+	if (rom != nullptr)
+	{
+		delete rom;
 	}
 }
 

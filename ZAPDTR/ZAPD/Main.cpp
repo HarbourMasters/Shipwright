@@ -4,9 +4,71 @@
 #include "Utils/File.h"
 #include "Utils/Path.h"
 #include "WarningHandler.h"
+
 #include "ZAnimation.h"
+ZNormalAnimation nAnim(nullptr);
+ZCurveAnimation cAnim(nullptr);
+ZLinkAnimation lAnim(nullptr);
+ZLegacyAnimation lAnim2(nullptr);
+
+#include "ZArray.h"
+ZArray arr(nullptr);
+
+#include "ZAudio.h"
+ZAudio audio(nullptr);
+
 #include "ZBackground.h"
+ZBackground back(nullptr);
+
 #include "ZBlob.h"
+ZBlob blob(nullptr);
+
+#include "ZCollision.h"
+ZCollisionHeader colHeader(nullptr);
+
+#include "ZCutscene.h"
+ZCutscene cs(nullptr);
+
+#include "ZLimb.h"
+ZLimb limb(nullptr);
+
+#include "ZMtx.h"
+ZMtx mtx(nullptr);
+
+#include "ZPath.h"
+ZPath path(nullptr);
+
+#include "ZPlayerAnimationData.h"
+ZPlayerAnimationData pAnimData(nullptr);
+
+#include "ZScalar.h"
+ZScalar scalar(nullptr);
+
+#include "ZSkeleton.h"
+ZLimbTable limbTbl(nullptr);
+ZSkeleton skel(nullptr);
+
+#include "ZString.h"
+ZString str(nullptr);
+
+#include "ZSymbol.h"
+ZSymbol sym(nullptr);
+
+#include "ZText.h"
+ZText txt(nullptr);
+
+#include "ZTexture.h"
+ZTexture tex(nullptr);
+
+#include "ZVector.h"
+ZVector vec(nullptr);
+
+#include "ZVtx.h"
+ZVtx vtx(nullptr);
+
+#include "ZRoom/ZRoom.h"
+ZRoom room(nullptr);
+
 #include "ZFile.h"
 #include "ZTexture.h"
 
@@ -29,29 +91,6 @@
 const char gBuildHash[] = "";
 
 // LINUX_TODO: remove, those are because of soh <-> lus dependency problems
-float divisor_num = 0.0f;
-
-extern "C" void Audio_SetGameVolume(int player_id, float volume)
-{
-
-}
-
-
-extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
-{
-	return 0;
-}
-
-void DebugConsole_SaveCVars()
-{
-
-}
-
-void DebugConsole_LoadCVars()
-{
-
-}
-
 
 bool Parse(const fs::path& xmlFilePath, const fs::path& basePath, const fs::path& outPath,
            ZFileMode fileMode, int workerID);
@@ -119,7 +158,9 @@ void ErrorHandler(int sig)
 }
 #endif
 
-int main(int argc, char* argv[])
+extern void ImportExporters();
+
+extern "C" int zapd_main(int argc, char* argv[])
 {
 	// Syntax: ZAPD.out [mode (btex/bovl/e)] (Arbritrary Number of Arguments)
 
@@ -242,6 +283,7 @@ int main(int argc, char* argv[])
 		}
 		else if (arg == "-se" || arg == "--set-exporter")  // Set Current Exporter
 		{
+			ImportExporters();
 			Globals::Instance->currentExporter = argv[++i];
 		}
 		else if (arg == "--gcc-compat")  // GCC compatibility
@@ -260,10 +302,23 @@ int main(int argc, char* argv[])
 		{
 			Globals::Instance->buildRawTexture = true;
 		}
+		else if (arg == "--norom") 
+		{
+			Globals::Instance->onlyGenSohOtr = true;
+		}
 	}
+
 
 	// Parse File Mode
 	ExporterSet* exporterSet = Globals::Instance->GetExporterSet();
+	
+	if(Globals::Instance->onlyGenSohOtr) {
+		exporterSet->endProgramFunc();
+
+		delete g;
+		return 0;
+	}
+	
 	std::string buildMode = argv[1];
 	ZFileMode fileMode = ZFileMode::Invalid;
 
@@ -419,6 +474,11 @@ int main(int argc, char* argv[])
 
 	if (exporterSet != nullptr && exporterSet->endProgramFunc != nullptr)
 		exporterSet->endProgramFunc();
+
+end:
+	delete exporterSet;
+
+	//Globals::Instance->GetExporterSet() = nullptr; //TODO NULL this out. Compiler complains about lvalue assignment.
 
 	delete g;
 	return 0;

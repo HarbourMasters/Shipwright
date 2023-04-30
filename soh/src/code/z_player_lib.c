@@ -330,6 +330,12 @@ void Player_SetBootData(PlayState* play, Player* this) {
     }
 }
 
+// Custom method used to determine if we're using a custom model for link
+uint8_t Player_IsCustomLinkModel() {
+    return (LINK_IS_ADULT && GetResourceIsCustomByName(gLinkAdultSkel, true)) ||
+           (LINK_IS_CHILD && GetResourceIsCustomByName(gLinkChildSkel, true));
+}
+
 s32 Player_InBlockingCsMode(PlayState* play, Player* this) {
     return (this->stateFlags1 & 0x20000080) || (this->csMode != 0) || (play->sceneLoadFlag == 0x14) ||
            (this->stateFlags1 & 1) || (this->stateFlags3 & 0x80) ||
@@ -660,9 +666,9 @@ s32 func_8008F2F8(PlayState* play) {
         triggerEntry = &sTextTriggers[var];
 
         if ((triggerEntry->flag != 0) && !(gSaveContext.textTriggerFlags & triggerEntry->flag) &&
-            (((var == 0) && (this->currentTunic != PLAYER_TUNIC_GORON && CVarGetInteger("gSuperTunic", 0) == 0)) ||
+            (((var == 0) && (this->currentTunic != PLAYER_TUNIC_GORON && CVarGetInteger("gSuperTunic", 0) == 0 && CVarGetInteger("gDisableTunicWarningText", 0) == 0)) ||
              (((var == 1) || (var == 3)) && (this->currentBoots == PLAYER_BOOTS_IRON) &&
-              (this->currentTunic != PLAYER_TUNIC_ZORA && CVarGetInteger("gSuperTunic", 0) == 0)))) {
+              (this->currentTunic != PLAYER_TUNIC_ZORA && CVarGetInteger("gSuperTunic", 0) == 0 && CVarGetInteger("gDisableTunicWarningText", 0) == 0)))) {
             Message_StartTextbox(play, triggerEntry->textId, NULL);
             gSaveContext.textTriggerFlags |= triggerEntry->flag;
         }
@@ -787,6 +793,11 @@ void func_8008F470(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dLis
     }
 
     gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
+
+    // If we have a custom link model, always use the most detailed LOD
+    if (Player_IsCustomLinkModel()) {
+        lod = 0;
+    }
 
     sDListsLodOffset = lod * 2;
 
@@ -1024,7 +1035,8 @@ s32 func_8008FCC8(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
 s32 func_80090014(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
-    if (!func_8008FCC8(play, limbIndex, dList, pos, rot, thisx)) {
+    if (!func_8008FCC8(play, limbIndex, dList, pos, rot, thisx)) 
+    {
         if (limbIndex == PLAYER_LIMB_L_HAND) {
             Gfx** dLists = this->leftHandDLists;
 
@@ -1072,7 +1084,12 @@ s32 func_80090014(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
 
 
         } else if (limbIndex == PLAYER_LIMB_WAIST) {
-            *dList = ResourceMgr_LoadGfxByName(this->waistDLists[sDListsLodOffset]);
+            
+            if (!Player_IsCustomLinkModel()) {
+                *dList = ResourceMgr_LoadGfxByName(
+                    this->waistDLists[sDListsLodOffset]); // NOTE: This needs to be disabled when using custom
+                                                          // characters - they're not going to have LODs anyways...
+            }
         }
     }
 
@@ -1391,6 +1408,11 @@ Vec3f D_801261E0[] = {
     { 200.0f, 200.0f, 0.0f },
 };
 
+// OTRTODO: Figure out why this value works/what this value should be
+// This was originally obtained by working down from FLT_MAX until the math
+// started working out properly
+#define RETICLE_MAX 3.402823466e+12f
+
 void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
@@ -1555,6 +1577,24 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                             play, this, ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ? 38600.0f : 77600.0f) * CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f));
                     }
                 }
+            } else if (CVarGetInteger("gBowReticle", 0) && (
+                        (this->heldItemAction == PLAYER_IA_BOW_FIRE) ||
+                        (this->heldItemAction == PLAYER_IA_BOW_ICE) ||
+                        (this->heldItemAction == PLAYER_IA_BOW_LIGHT) ||
+                        (this->heldItemAction == PLAYER_IA_BOW) ||
+                        (this->heldItemAction == PLAYER_IA_SLINGSHOT))) {
+                if (heldActor != NULL) {
+                    MtxF sp44;
+                    s32 pad;
+
+                    Matrix_RotateZYX(0, -15216, -17496, MTXMODE_APPLY);
+                    Matrix_Get(&sp44);
+
+                    if (func_8002DD78(this) != 0) {
+                        Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
+                        Player_DrawHookshotReticle(play, this, RETICLE_MAX);
+                    }
+                }
             }
 
             if ((this->unk_862 != 0) || ((func_8002DD6C(this) == 0) && (heldActor != NULL))) {
@@ -1655,6 +1695,10 @@ s32 func_80091880(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
         }
     } else if (limbIndex == PLAYER_LIMB_WAIST) {
         type = gPlayerModelTypes[modelGroup][4];
+        
+        if (Player_IsCustomLinkModel()) {
+            return 0;
+        }
     } else {
         return 0;
     }

@@ -1307,6 +1307,9 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
                 case RG_DOUBLE_DEFENSE:
                     color_slot = 8;
                     break;
+                case RG_PROGRESSIVE_BOMBCHUS:
+                    color_slot = 9;
+                    break;
                 default:
                     return;
             }
@@ -1315,34 +1318,40 @@ void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry 
             return;
     }
 
-    s16* colors[9][3] = {
-        { 34, 255, 76 },   // Minuet and Magic Upgrades Colors
-        { 177, 35, 35 },   // Bolero Colors
-        { 115, 251, 253 }, // Serenade Color
-        { 177, 122, 35 },  // Requiem Color
-        { 177, 28, 212 },  // Nocturne Color
-        { 255, 255, 92 },  // Prelude Color
-        { 31, 152, 49 },   // Stick Upgrade Color
-        { 222, 182, 20 },  // Nut Upgrade Color
-        { 255, 255, 255 }  // Double Defense Color
+    // Color of the circle for the particles
+    static Color_RGBA8 mainColors[10][3] = {
+        { 34, 255, 76 },   // Minuet, Bean Pack, and Magic Upgrades
+        { 177, 35, 35 },   // Bolero
+        { 115, 251, 253 }, // Serenade
+        { 177, 122, 35 },  // Requiem
+        { 177, 28, 212 },  // Nocturne
+        { 255, 255, 92 },  // Prelude
+        { 31, 152, 49 },   // Stick Upgrade
+        { 222, 182, 20 },  // Nut Upgrade
+        { 255, 255, 255 }, // Double Defense
+        { 19, 120, 182 }   // Progressive Bombchu
     };
 
-    s16* colorsEnv[9][3] = {
-        { 30, 110, 30 },  // Minuet and Magic Upgrades Colors
-        { 90, 10, 10 },   // Bolero and Double Defense Colors
-        { 35, 35, 177 },  // Serenade Color
-        { 70, 20, 10 },   // Requiem Color
-        { 100, 20, 140 }, // Nocturne Color
-        { 100, 100, 10 }, // Prelude Color
-        { 5, 50, 10 },    // Stick Upgrade Color
-        { 150, 100, 5 },  // Nut Upgrade Color
-        { 154, 154, 154 } // White Color placeholder
+    // Color of the faded flares stretching off the particles
+    static Color_RGBA8 flareColors[10][3] = {
+        { 30, 110, 30 },   // Minuet, Bean Pack, and Magic Upgrades
+        { 90, 10, 10 },    // Bolero
+        { 35, 35, 177 },   // Serenade
+        { 70, 20, 10 },    // Requiem
+        { 100, 20, 140 },  // Nocturne
+        { 100, 100, 10 },  // Prelude
+        { 5, 50, 10 },     // Stick Upgrade
+        { 150, 100, 5 },   // Nut Upgrade
+        { 154, 154, 154 }, // Double Defense
+        { 204, 102, 0 }    // Progressive Bombchu
     };
 
     static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
-    Color_RGBA8 primColor = { colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 0 };
-    Color_RGBA8 envColor = { colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 0 };
+    Color_RGBA8 primColor;
+    Color_RGBA8 envColor;
+    Color_RGBA8_Copy(&primColor, &mainColors[color_slot]);
+    Color_RGBA8_Copy(&envColor, &flareColors[color_slot]);
     Vec3f pos;
 
     // Make particles more compact for shop items and use a different height offset for them.
@@ -1426,6 +1435,15 @@ void EnItem00_DrawRupee(EnItem00* this, PlayState* play) {
  */
 void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
     if (gSaveContext.n64ddFlag && (this->getItemId != GI_NONE || this->actor.params == ITEM00_SMALL_KEY)) {
+        RandomizerCheck randoCheck =
+            Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->ogParams);
+
+        if (randoCheck != RC_UNKNOWN_CHECK) {
+            this->randoGiEntry =
+                Randomizer_GetItemFromKnownCheck(randoCheck, GI_NONE);
+            this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
+        }
+        
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
         EnItem00_CustomItemsParticles(&this->actor, play, this->randoGiEntry);
@@ -1486,6 +1504,15 @@ void EnItem00_DrawHeartContainer(EnItem00* this, PlayState* play) {
  */
 void EnItem00_DrawHeartPiece(EnItem00* this, PlayState* play) {
     if (gSaveContext.n64ddFlag) {
+        RandomizerCheck randoCheck =
+            Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->ogParams);
+
+        if (randoCheck != RC_UNKNOWN_CHECK) {
+            this->randoGiEntry =
+                Randomizer_GetItemFromKnownCheck(randoCheck, GI_NONE);
+            this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
+        }
+
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
         EnItem00_CustomItemsParticles(&this->actor, play, this->randoGiEntry);

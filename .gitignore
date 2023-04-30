@@ -409,8 +409,7 @@ DebugObj/*
 ReleaseObj/*
 .tags
 tags
-oot.otr
-oot-mq.otr
+*.otr
 *.sav
 shipofharkinian.ini
 shipofharkinian.json
@@ -447,4 +446,6 @@ CTestTestfile.cmake
 _deps
 */extract_assets_cmake*
 /build*
-build.c
+
+soh/build.c
+soh/properties.h

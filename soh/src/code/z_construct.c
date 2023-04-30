@@ -41,18 +41,16 @@ void func_801109B0(PlayState* play) {
     DmaMgr_SendRequest1(interfaceCtx->parameterSegment, (uintptr_t)_parameter_staticSegmentRomStart, parameterSize,
                         __FILE__, 162);
 
-    interfaceCtx->doActionSegment = GAMESTATE_ALLOC_MC(&play->state, 0x480);
+    interfaceCtx->doActionSegment = GAMESTATE_ALLOC_MC(&play->state, 3 * sizeof(char*));
 
     osSyncPrintf("ＤＯアクション テクスチャ初期=%x\n", 0x480); // "DO Action Texture Initialization"
     osSyncPrintf("parameter->do_actionSegment=%x\n", interfaceCtx->doActionSegment);
 
     ASSERT(interfaceCtx->doActionSegment != NULL);
 
-    uint32_t attackDoActionTexSize = GetResourceTexSizeByName(gAttackDoActionENGTex, false);
-    memcpy(interfaceCtx->doActionSegment, GetResourceDataByName(gAttackDoActionENGTex, false), attackDoActionTexSize);
-    memcpy(interfaceCtx->doActionSegment + (attackDoActionTexSize / 2), GetResourceDataByName(gCheckDoActionENGTex, false), attackDoActionTexSize);
-
-    memcpy(interfaceCtx->doActionSegment + attackDoActionTexSize, GetResourceDataByName(gReturnDoActionENGTex, false), GetResourceTexSizeByName(gReturnDoActionENGTex, false));
+    interfaceCtx->doActionSegment[0] = gAttackDoActionENGTex;
+    interfaceCtx->doActionSegment[1] = gCheckDoActionENGTex;
+    interfaceCtx->doActionSegment[2] = gReturnDoActionENGTex;
 
     interfaceCtx->iconItemSegment = GAMESTATE_ALLOC_MC(
         &play->state, 0x1000 * ARRAY_COUNT(gSaveContext.equips.buttonItems));

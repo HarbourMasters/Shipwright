@@ -174,6 +174,9 @@ void EnDs_OfferOddPotion(EnDs* this, PlayState* play) {
 s32 EnDs_CheckRupeesAndBottle() {
     if (gSaveContext.rupees < 100) {
         return 0;
+    } else if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
+        !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP)) {
+        return 2;
     } else if (Inventory_HasEmptyBottle() == 0) {
         return 1;
     } else {
@@ -183,10 +186,23 @@ s32 EnDs_CheckRupeesAndBottle() {
 
 void EnDs_GiveBluePotion(EnDs* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
+            (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK) &&
+            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP)) {
+            Flags_SetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP);
+        }
+
         this->actor.parent = NULL;
         this->actionFunc = EnDs_Talk;
     } else {
-        func_8002F434(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
+            (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK) &&
+            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP)) {
+            GetItemEntry entry = Randomizer_GetItemFromKnownCheck(RC_KAK_GRANNYS_SHOP, GI_POTION_BLUE);
+            GiveItemEntryFromActor(&this->actor, play, entry, 10000.0f, 50.0f);
+        } else {
+            func_8002F434(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
+        }
     }
 }
 
@@ -205,10 +221,20 @@ void EnDs_OfferBluePotion(EnDs* this, PlayState* play) {
                     case 2: // have 100 rupees and empty bottle
                         Rupees_ChangeBy(-100);
                         this->actor.flags &= ~ACTOR_FLAG_16;
-                        GetItemEntry entry = ItemTable_Retrieve(GI_POTION_BLUE);
-                        gSaveContext.pendingSale = entry.itemId;
-                        gSaveContext.pendingSaleMod = entry.modIndex;
-                        func_8002F434(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
+                        GetItemEntry itemEntry;
+
+                        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
+                            (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK) &&
+                            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP)) {
+                            itemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_GRANNYS_SHOP, GI_POTION_BLUE);
+                            GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
+                        } else {
+                            itemEntry = ItemTable_Retrieve(GI_POTION_BLUE);
+                            func_8002F434(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
+                        }
+
+                        gSaveContext.pendingSale = itemEntry.itemId;
+                        gSaveContext.pendingSaleMod = itemEntry.modIndex;
                         this->actionFunc = EnDs_GiveBluePotion;
                         return;
                 }
@@ -229,7 +255,8 @@ void EnDs_Wait(EnDs* this, PlayState* play) {
             Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             player->actor.textId = 0x504A;
             this->actionFunc = EnDs_OfferOddPotion;
-        } else if (gSaveContext.itemGetInf[3] & 1) {
+        } else if ((gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) == RO_GENERIC_OFF) ||
+            gSaveContext.itemGetInf[3] & 1) {
             player->actor.textId = 0x500C;
             this->actionFunc = EnDs_OfferBluePotion;
         } else {
