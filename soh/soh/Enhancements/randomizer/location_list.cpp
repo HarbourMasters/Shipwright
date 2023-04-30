@@ -2600,4 +2600,74 @@ void StaticData::InitLocationTable() {
         RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_FREESTANDING_KEY, RG_BOTTOM_OF_THE_WELL_SMALL_KEY,
         { Category::cBottomOfTheWell, Category::cVanillaSmallKey },
         SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    
+    // Ice Cavern Vanilla
+    locationTable[RC_ICE_CAVERN_MAP_CHEST] = Location::Chest(
+        RC_ICE_CAVERN_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_ICE_CAVERN, ACTOR_EN_BOX,
+        SCENE_ICE_DOUKUTO, 2080, 0x00, "Map Chest", "Ice Cavern Map Chest", RC_ICE_CAVERN_MAP_CHEST, RG_ICE_CAVERN_MAP,
+        {
+            Category::cIceCavern,
+            Category::cVanillaMap,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+    locationTable[RC_ICE_CAVERN_COMPASS_CHEST] =
+        Location::Chest(RC_ICE_CAVERN_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_ICE_CAVERN,
+                        ACTOR_EN_BOX, SCENE_ICE_DOUKUTO, 2049, 0x01, "Compass Chest", "Ice Cavern Compass Chest",
+                        RC_ICE_CAVERN_COMPASS_CHEST, RG_ICE_CAVERN_COMPASS,
+                        {
+                            Category::cIceCavern,
+                            Category::cVanillaCompass,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+    locationTable[RC_ICE_CAVERN_IRON_BOOTS_CHEST] =
+        Location::Chest(RC_ICE_CAVERN_IRON_BOOTS_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_ICE_CAVERN,
+                        ACTOR_EN_BOX, SCENE_ICE_DOUKUTO, 5570, 0x02, "Iron Boots Chest",
+                        "Ice Cavern Iron Boots Chest", RC_ICE_CAVERN_IRON_BOOTS_CHEST, RG_IRON_BOOTS,
+                        {
+                            Category::cIceCavern,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+    locationTable[RC_ICE_CAVERN_FREESTANDING_POH] =
+        Location::Collectable(RC_ICE_CAVERN_FREESTANDING_POH, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_ICE_CAVERN,
+                              ACTOR_EN_ITEM00, SCENE_ICE_DOUKUTO, 262, 0x01, "Freestanding PoH",
+                              "Ice Cavern Freestanding PoH", RC_ICE_CAVERN_FREESTANDING_POH, RG_PIECE_OF_HEART,
+                              {
+                                  Category::cIceCavern,
+                              },
+                              SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+    
+    // Ice Cavern Master Quest
+    locationTable[RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST] =
+        Location::Chest(RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_ICE_CAVERN, ACTOR_EN_BOX,
+                        SCENE_ICE_DOUKUTO, 5570, 0x02, "MQ Iron Boots Chest", "Ice Cavern MQ Iron Boots Chest",
+                        RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, RG_IRON_BOOTS,
+                        {
+                            Category::cIceCavern,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+    locationTable[RC_ICE_CAVERN_MQ_COMPASS_CHEST] =
+        Location::Chest(RC_ICE_CAVERN_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_ICE_CAVERN, ACTOR_EN_BOX,
+                        SCENE_ICE_DOUKUTO, 2048, 0x00, "MQ Compass Chest", "Ice Cavern MQ Compass Chest",
+                        RC_ICE_CAVERN_MQ_COMPASS_CHEST, RG_ICE_CAVERN_COMPASS,
+                        {
+                            Category::cIceCavern,
+                            Category::cVanillaCompass,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+    locationTable[RC_ICE_CAVERN_MQ_MAP_CHEST] = Location::Chest(
+        RC_ICE_CAVERN_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_ICE_CAVERN, ACTOR_EN_BOX, SCENE_ICE_DOUKUTO,
+        -18399, 0x01, "MQ Map Chest", "Ice Cavern MQ Map Chest", RC_ICE_CAVERN_MQ_MAP_CHEST, RG_ICE_CAVERN_MAP,
+        {
+            Category::cIceCavern,
+            Category::cVanillaMap,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+    locationTable[RC_ICE_CAVERN_MQ_FREESTANDING_POH] =
+        Location::Collectable(RC_ICE_CAVERN_MQ_FREESTANDING_POH, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_ICE_CAVERN,
+                              ACTOR_EN_ITEM00, SCENE_ICE_DOUKUTO, 262, 0x01, "MQ Freestanding PoH",
+                              "Ice Cavern MQ Freestanding PoH", RC_ICE_CAVERN_MQ_FREESTANDING_POH, RG_PIECE_OF_HEART,
+                              {
+                                  Category::cIceCavern,
+                              },
+                              SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
 }
