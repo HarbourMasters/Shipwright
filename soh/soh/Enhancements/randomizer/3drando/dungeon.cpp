@@ -24,7 +24,7 @@ uint32_t DungeonInfo::GetHintKey() const {
   return hintKey;
 }
 
-uint32_t DungeonInfo::GetSmallKey() const {
+RandomizerGet DungeonInfo::GetSmallKey() const {
   return smallKey;
 }
 
