@@ -717,6 +717,8 @@ extern "C" void InitOTR() {
                 exit(1);
             }
             extract.CallZapd();
+        } else {
+            exit(1);
         }
         if (Extractor::ShowYesNoBox("Extraction Complete", "ROM Extracted. Extract another?") == IDYES) {
             Extractor extract;
