@@ -2452,4 +2452,152 @@ void StaticData::InitLocationTable() {
                               "Shadow Temple MQ Freestanding Key", RC_SHADOW_TEMPLE_MQ_FREESTANDING_KEY,
                               RG_SHADOW_TEMPLE_SMALL_KEY, { Category::cShadowTemple, Category::cVanillaSmallKey },
                               SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+
+    // Bottom of the Well Vanilla
+    locationTable[RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST] = Location::Chest(
+        RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_BOTTOM_OF_THE_WELL,
+        ACTOR_EN_BOX, SCENE_HAKADANCH, 22600, 0x08, "Front Left Fake Wall Chest",
+        "Bottom of the Well Front Left Fake Wall Chest", RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST,
+        RG_BOTTOM_OF_THE_WELL_SMALL_KEY, { Category::cBottomOfTheWell, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST] =
+        Location::Chest(RC_BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+                        RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_BOX, SCENE_HAKADANCH, 20578, 0x02,
+                        "Front Center Bombable Chest", "Bottom of the Well Front Center Bombable Chest",
+                        RC_BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST, RG_BOMBCHU_10,
+                        {
+                            Category::cBottomOfTheWell,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST] = Location::Chest(
+        RC_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+        RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_BOX, SCENE_HAKADANCH, 22597, 0x05, "Right Bottom Fake Wall Chest",
+        "Bottom of the Well Right Bottom Fake Wall Chest", RC_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST,
+        RG_BOTTOM_OF_THE_WELL_SMALL_KEY, { Category::cBottomOfTheWell, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_COMPASS_CHEST] = Location::Chest(
+        RC_BOTTOM_OF_THE_WELL_COMPASS_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_BOTTOM_OF_THE_WELL,
+        ACTOR_EN_BOX, SCENE_HAKADANCH, 2049, 0x01, "Compass Chest", "Bottom of the Well Compass Chest",
+        RC_BOTTOM_OF_THE_WELL_COMPASS_CHEST, RG_BOTTOM_OF_THE_WELL_COMPASS,
+        {
+            Category::cBottomOfTheWell,
+            Category::cVanillaCompass,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST] = Location::Chest(
+        RC_BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_BOTTOM_OF_THE_WELL,
+        ACTOR_EN_BOX, SCENE_HAKADANCH, 20558, 0x0E, "Center Skulltula Chest",
+        "Bottom of the Well Center Skulltula Chest", RC_BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST, RG_DEKU_NUTS_5,
+        {
+            Category::cBottomOfTheWell,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_BACK_LEFT_BOMBABLE_CHEST] = Location::Chest(
+        RC_BOTTOM_OF_THE_WELL_BACK_LEFT_BOMBABLE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_BOTTOM_OF_THE_WELL,
+        ACTOR_EN_BOX, SCENE_HAKADANCH, 23684, 0x04, "Back Left Bombable Chest",
+        "Bottom of the Well Back Left Bombable Chest", RC_BOTTOM_OF_THE_WELL_BACK_LEFT_BOMBABLE_CHEST, RG_DEKU_NUTS_10,
+        {
+            Category::cBottomOfTheWell,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST] =
+        Location::Chest(RC_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST, RCQUEST_VANILLA, RCTYPE_BOSS_HEART_OR_OTHER_REWARD,
+                        RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_BOX, SCENE_HAKADANCH, 4419, 0x03, "Lens of Truth Chest",
+                        "Bottom of the Well Lens of Truth Chest", RC_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST,
+                        RG_LENS_OF_TRUTH, { Category::cBottomOfTheWell, Category::cSongDungeonReward },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST] = Location::Chest(
+        RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_BOTTOM_OF_THE_WELL,
+        ACTOR_EN_BOX, SCENE_HAKADANCH, 27348, 0x14, "Invisible Chest", "Bottom of the Well Invisible Chest",
+        RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST, RG_HUGE_RUPEE,
+        {
+            Category::cBottomOfTheWell,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST] = Location::Chest(
+        RC_BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_BOTTOM_OF_THE_WELL,
+        ACTOR_EN_BOX, SCENE_HAKADANCH, 23760, 0x10, "Underwater Front Chest",
+        "Bottom of the Well Underwater Front Chest", RC_BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST, RG_BOMBS_10,
+        {
+            Category::cBottomOfTheWell,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST] = Location::Chest(
+        RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_BOTTOM_OF_THE_WELL,
+        ACTOR_EN_BOX, SCENE_HAKADANCH, 22793, 0x09, "Underwater Left Chest", "Bottom of the Well Underwater Left Chest",
+        RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST, RG_RECOVERY_HEART,
+        {
+            Category::cBottomOfTheWell,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_MAP_CHEST] =
+        Location::Chest(RC_BOTTOM_OF_THE_WELL_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_BOTTOM_OF_THE_WELL,
+                        ACTOR_EN_BOX, SCENE_HAKADANCH, 2087, 0x07, "Map Chest", "Bottom of the Well Map Chest",
+                        RC_BOTTOM_OF_THE_WELL_MAP_CHEST, RG_BOTTOM_OF_THE_WELL_MAP,
+                        {
+                            Category::cBottomOfTheWell,
+                            Category::cVanillaMap,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_FIRE_KEESE_CHEST] =
+        Location::Chest(RC_BOTTOM_OF_THE_WELL_FIRE_KEESE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+                        RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_BOX, SCENE_HAKADANCH, 21802, 0x0A, "Fire Keese Chest",
+                        "Bottom of the Well Fire Keese Chest", RC_BOTTOM_OF_THE_WELL_FIRE_KEESE_CHEST, RG_DEKU_SHIELD,
+                        {
+                            Category::cBottomOfTheWell,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_LIKE_LIKE_CHEST] =
+        Location::Chest(RC_BOTTOM_OF_THE_WELL_LIKE_LIKE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+                        RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_BOX, SCENE_HAKADANCH, 21836, 0x0C, "Like Like Chest",
+                        "Bottom of the Well Like Like Chest", RC_BOTTOM_OF_THE_WELL_LIKE_LIKE_CHEST, RG_HYLIAN_SHIELD,
+                        {
+                            Category::cBottomOfTheWell,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_FREESTANDING_KEY] =
+        Location::Chest(RC_BOTTOM_OF_THE_WELL_FREESTANDING_KEY, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+                        RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_ITEM00, SCENE_HAKADANCH, 273, 0x01, "Freestanding Key",
+                        "Bottom of the Well Freestanding Key", RC_BOTTOM_OF_THE_WELL_FREESTANDING_KEY,
+                        RG_BOTTOM_OF_THE_WELL_SMALL_KEY, { Category::cBottomOfTheWell, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    
+    // Bottom of the Well Master Quest
+    locationTable[RC_BOTTOM_OF_THE_WELL_MQ_MAP_CHEST] =
+        Location::Chest(RC_BOTTOM_OF_THE_WELL_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_BOTTOM_OF_THE_WELL,
+                        ACTOR_EN_BOX, SCENE_HAKADANCH, 2083, 0x03, "MQ Map Chest", "Bottom of the Well MQ Map Chest",
+                        RC_BOTTOM_OF_THE_WELL_MQ_MAP_CHEST, RG_BOTTOM_OF_THE_WELL_MAP,
+                        {
+                            Category::cBottomOfTheWell,
+                            Category::cVanillaMap,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_MQ_LENS_OF_TRUTH_CHEST] = Location::Chest(
+        RC_BOTTOM_OF_THE_WELL_MQ_LENS_OF_TRUTH_CHEST, RCQUEST_MQ, RCTYPE_BOSS_HEART_OR_OTHER_REWARD,
+        RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_BOX, SCENE_HAKADANCH, -20159, 0x01, "MQ Lens of Truth Chest",
+        "Bottom of the Well MQ Lens of Truth Chest", RC_BOTTOM_OF_THE_WELL_MQ_LENS_OF_TRUTH_CHEST, RG_LENS_OF_TRUTH,
+        { Category::cBottomOfTheWell, Category::cSongDungeonReward },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_MQ_COMPASS_CHEST] = Location::Chest(
+        RC_BOTTOM_OF_THE_WELL_MQ_COMPASS_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_BOX,
+        SCENE_HAKADANCH, 6146, 0x02, "MQ Compass Chest", "Bottom of the Well MQ Compass Chest",
+        RC_BOTTOM_OF_THE_WELL_MQ_COMPASS_CHEST, RG_BOTTOM_OF_THE_WELL_COMPASS,
+        {
+            Category::cBottomOfTheWell,
+            Category::cVanillaCompass,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_FREESTANDING_KEY] = Location::Collectable(
+        RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_FREESTANDING_KEY, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_BOTTOM_OF_THE_WELL,
+        ACTOR_EN_ITEM00, SCENE_HAKADANCH, 529, 0x02, "MQ Dead Hand Freestanding Key",
+        "Bottom of the Well MQ Dead Hand Freestanding Key", RC_BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_FREESTANDING_KEY,
+        RG_BOTTOM_OF_THE_WELL_SMALL_KEY, { Category::cBottomOfTheWell, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_FREESTANDING_KEY] = Location::Collectable(
+        RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_FREESTANDING_KEY, RCQUEST_MQ, RCTYPE_SMALL_KEY,
+        RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_ITEM00, SCENE_HAKADANCH, 273, 0x01, "MQ East Inner Room Freestanding Key",
+        "Bottom of the Well MQ East Inner Room Freestanding Key",
+        RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_FREESTANDING_KEY, RG_BOTTOM_OF_THE_WELL_SMALL_KEY,
+        { Category::cBottomOfTheWell, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
 }
