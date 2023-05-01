@@ -450,6 +450,146 @@ void UseBeans(Actor* thisx, PlayState* play, u8 started) {
     }
 }
 
+void UseBottle(Actor* thisx, PlayState* play, u8 started, u8 bottleType) {
+    EnPartner* this = (EnPartner*) thisx;
+    if (this->itemTimer <= 0) {
+        if (started == 1) {
+            switch (bottleType) {
+                case ITEM_BOTTLE:
+                    func_80078884(NA_SE_SY_ERROR);
+                    break;
+                case ITEM_POTION_RED:
+                    Inventory_UpdateBottleItem(play, ITEM_BOTTLE, this->usedItemButton);
+                    Health_ChangeBy(play, 0x10);
+                    break;
+                case ITEM_POTION_GREEN:
+                    Inventory_UpdateBottleItem(play, ITEM_BOTTLE, this->usedItemButton);
+                    if (gSaveContext.magic < gSaveContext.magicCapacity) {
+                        gSaveContext.magic += 0x10;
+                    }
+                    break;
+                case ITEM_POTION_BLUE:
+                    Inventory_UpdateBottleItem(play, ITEM_BOTTLE, this->usedItemButton);
+                    Health_ChangeBy(play, 0x20);
+                    if (gSaveContext.magic < gSaveContext.magicCapacity) {
+                        gSaveContext.magic += 0x20;
+                    }
+                    break;
+                case ITEM_FAIRY:
+                    s16 rand = Rand_S16Offset(ITEM_BOTTLE, 13);
+                    if (rand == ITEM_FAIRY) {
+                        rand = ITEM_BOTTLE;
+                    }
+                    Inventory_UpdateBottleItem(play, rand, this->usedItemButton);
+                    func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+                    break;
+                case ITEM_FISH:
+                    this->itemTimer = 40;
+                    Inventory_UpdateBottleItem(play, ITEM_BOTTLE, this->usedItemButton);
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_FISH, this->actor.world.pos.x,
+                    this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                    break;
+                case ITEM_MILK_BOTTLE:
+                case ITEM_MILK_HALF:
+                    Inventory_UpdateBottleItem(play, ITEM_BOTTLE, this->usedItemButton);
+                    Audio_PlayActorSound2(&this->actor, NA_SE_EV_COW_CRY);
+                    break;
+                case ITEM_LETTER_RUTO:
+                    Audio_PlayActorSound2(&this->actor, NA_SE_VO_RT_UNBALLANCE);
+                    Message_StartTextbox(play, 0x4028, &this->actor); //"Don't tell my father!"
+                    break;
+                case ITEM_BLUE_FIRE:
+                    this->itemTimer = 40;
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ICE_HONO, this->actor.world.pos.x,
+                    this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                    break;
+                case ITEM_BUG:
+                    this->itemTimer = 40;
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_INSECT, this->actor.world.pos.x,
+                    this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 3, true);
+                    break;
+                case ITEM_BIG_POE:
+                    Audio_PlaySoundTransposed(&this->actor.projectedPos, NA_SE_EN_PO_LAUGH2, -5);
+                    break;
+                case ITEM_POE:
+                    s16 rand2 = Rand_S16Offset(-1, 3);
+                    Inventory_UpdateBottleItem(play, ITEM_BOTTLE, this->usedItemButton);
+                    Health_ChangeBy(play, rand2);
+                    func_80078884(NA_SE_EN_PO_LAUGH);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+void UseChildTradeItem(Actor* thisx, PlayState* play, u8 started, u8 itemType) {
+    EnPartner* this = (EnPartner*) thisx;
+    Player* player = GET_PLAYER(play);
+    if (this->itemTimer <= 0) {
+        if (started == 1) {
+            switch (itemType) {
+                case ITEM_WEIRD_EGG:
+                    break;
+                case ITEM_CHICKEN:
+                    this->itemTimer = 40;
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_NIW, this->actor.world.pos.x,
+                    this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                    break;
+                case ITEM_LETTER_ZELDA:
+                    Audio_PlayActorSound2(&this->actor, NA_SE_VO_Z0_SMILE_0);
+                    break;
+                case ITEM_MASK_KEATON:
+                case ITEM_MASK_SKULL:
+                case ITEM_MASK_SPOOKY:
+                case ITEM_MASK_BUNNY:
+                case ITEM_MASK_GORON:
+                case ITEM_MASK_ZORA:
+                case ITEM_MASK_GERUDO:
+                case ITEM_MASK_TRUTH:
+                    func_80078884(NA_SE_PL_CHANGE_ARMS);
+                    player->currentMask = (player->currentMask == PLAYER_MASK_NONE) ?
+                        (itemType + 1) - ITEM_MASK_KEATON : PLAYER_MASK_NONE;
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+void UseAdultTradeItem(Actor* thisx, PlayState* play, u8 started, u8 itemType) {
+    EnPartner* this = (EnPartner*) thisx;
+    if (this->itemTimer <= 0) {
+        if (started == 1) {
+            switch (itemType) {
+                case ITEM_WEIRD_EGG:
+                    break;
+                case ITEM_POCKET_CUCCO:
+                    this->itemTimer = 40;
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_NIW, this->actor.world.pos.x,
+                    this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                    break;
+                case ITEM_COJIRO:
+                case ITEM_ODD_MUSHROOM:
+                case ITEM_ODD_POTION:
+                case ITEM_SAW:
+                case ITEM_SWORD_BROKEN:
+                case ITEM_PRESCRIPTION:
+                    break;
+                case ITEM_FROG:
+                    func_80078884(NA_SE_EV_FROG_CRY_0);
+                    break;
+                case ITEM_EYEDROPS:
+                case ITEM_CLAIM_CHECK:
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
+
 void UseSpell(Actor* thisx, PlayState* play, u8 started, u8 spellType) {
     EnPartner* this = (EnPartner*)thisx;
 
@@ -517,60 +657,105 @@ void UseItem(uint8_t usedItem, u8 started, Actor* thisx, PlayState* play) {
 
     if (this->usedItem != 0xFF && this->itemTimer <= 0) {
         switch (usedItem) {
-            case SLOT_STICK:
+            case ITEM_STICK:
                 UseDekuStick(this, play, started);
                 break;
-            case SLOT_BOMB:
+            case ITEM_BOMB:
                 UseBombs(this, play, started);
                 break;
-            case SLOT_BOMBCHU:
+            case ITEM_BOMBCHU:
                 UseBombchus(this, play, started);
                 break;
-            case SLOT_NUT:
+            case ITEM_NUT:
                 UseNuts(this, play, started);
                 break;
-            case SLOT_BOW:
+            case ITEM_BOW:
                 UseBow(this, play, started, 0);
                 break;
-            case SLOT_ARROW_FIRE:
+            case ITEM_ARROW_FIRE:
                 UseBow(this, play, started, 1);
                 break;
-            case SLOT_ARROW_ICE:
+            case ITEM_ARROW_ICE:
                 UseBow(this, play, started, 2);
                 break;
-            case SLOT_ARROW_LIGHT:
+            case ITEM_ARROW_LIGHT:
                 UseBow(this, play, started, 3);
                 break;
-            case SLOT_SLINGSHOT:
+            case ITEM_SLINGSHOT:
                 UseSlingshot(this, play, started);
                 break;
-            case SLOT_OCARINA:
+            case ITEM_OCARINA_FAIRY:
+            case ITEM_OCARINA_TIME:
                 UseOcarina(this, play, started);
                 break;
-            case SLOT_HOOKSHOT:
+            case ITEM_HOOKSHOT:
+            case ITEM_LONGSHOT:
                 UseHookshot(this, play, started);
                 break;
-            case SLOT_DINS_FIRE:
+            case ITEM_DINS_FIRE:
                 UseSpell(this, play, started, 1);
                 break;
-            case SLOT_NAYRUS_LOVE:
+            case ITEM_NAYRUS_LOVE:
                 UseSpell(this, play, started, 2);
                 break;
-            case SLOT_FARORES_WIND:
+            case ITEM_FARORES_WIND:
                 UseSpell(this, play, started, 3);
                 break;
-            case SLOT_HAMMER:
+            case ITEM_HAMMER:
                 UseHammer(this, play, started);
                 break;
-            case SLOT_BOOMERANG:
+            case ITEM_BOOMERANG:
                 UseBoomerang(this, play, started);
                 break;
-            case SLOT_LENS:
+            case ITEM_LENS:
                 UseLens(this, play, started);
                 break;
-            case SLOT_BEAN:
+            case ITEM_BEAN:
                 UseBeans(this, play, started);
                 break;
+           case ITEM_BOTTLE:
+           case ITEM_POTION_RED:
+           case ITEM_POTION_GREEN:
+           case ITEM_POTION_BLUE:
+           case ITEM_FAIRY:
+           case ITEM_FISH:
+           case ITEM_MILK_BOTTLE:
+           case ITEM_LETTER_RUTO:
+           case ITEM_BLUE_FIRE:
+           case ITEM_BUG:
+           case ITEM_BIG_POE:
+           case ITEM_MILK_HALF:
+           case ITEM_POE:
+               UseBottle(this, play, started, this->usedItem);
+               break;
+           case ITEM_WEIRD_EGG:
+           case ITEM_CHICKEN:
+           case ITEM_LETTER_ZELDA:
+           case ITEM_MASK_KEATON:
+           case ITEM_MASK_SKULL:
+           case ITEM_MASK_SPOOKY:
+           case ITEM_MASK_BUNNY:
+           case ITEM_MASK_GORON:
+           case ITEM_MASK_ZORA:
+           case ITEM_MASK_GERUDO:
+           case ITEM_MASK_TRUTH:
+               UseChildTradeItem(this, play, started, this->usedItem);
+               break;
+           case ITEM_POCKET_EGG:
+           case ITEM_POCKET_CUCCO:
+           case ITEM_COJIRO:
+           case ITEM_ODD_MUSHROOM:
+           case ITEM_ODD_POTION:
+           case ITEM_SAW:
+           case ITEM_SWORD_BROKEN:
+           case ITEM_PRESCRIPTION:
+           case ITEM_FROG:
+           case ITEM_EYEDROPS:
+           case ITEM_CLAIM_CHECK:
+               UseAdultTradeItem(this, play, started, this->usedItem);
+               break;
+           default:
+               break;
         }
     }
 
@@ -694,26 +879,26 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
 
         if (this->usedItem == 0xFF && this->itemTimer <= 0) {
             if (CHECK_BTN_ALL(sControlInput.press.button, BTN_CLEFT)) {
-                this->usedItem = gSaveContext.equips.cButtonSlots[0];
+                this->usedItem = gSaveContext.equips.buttonItems[1];
                 this->usedItemButton = 0;
                 pressed = 1;
             } else if (CHECK_BTN_ALL(sControlInput.press.button, BTN_CDOWN)) {
-                this->usedItem = gSaveContext.equips.cButtonSlots[1];
+                this->usedItem = gSaveContext.equips.buttonItems[2];
                 this->usedItemButton = 1;
                 pressed = 1;
             } else if (CHECK_BTN_ALL(sControlInput.press.button, BTN_CRIGHT)) {
-                this->usedItem = gSaveContext.equips.cButtonSlots[2];
+                this->usedItem = gSaveContext.equips.buttonItems[3];
                 this->usedItemButton = 2;
                 pressed = 1;
             }
         }
 
         if (this->usedItem != 0xFF) {
-            if (CHECK_BTN_ALL(sControlInput.cur.button, BTN_CLEFT) && this->usedItemButton == 0) {
+            if (CHECK_BTN_ALL(sControlInput.cur.button, BTN_CLEFT) && this->usedItemButton == 1) {
                 current = 1;
-            } else if (CHECK_BTN_ALL(sControlInput.cur.button, BTN_CDOWN) && this->usedItemButton == 1) {
+            } else if (CHECK_BTN_ALL(sControlInput.cur.button, BTN_CDOWN) && this->usedItemButton == 2) {
                 current = 1;
-            } else if (CHECK_BTN_ALL(sControlInput.cur.button, BTN_CRIGHT) && this->usedItemButton == 2) {
+            } else if (CHECK_BTN_ALL(sControlInput.cur.button, BTN_CRIGHT) && this->usedItemButton == 3) {
                 current = 1;
             }
         }
