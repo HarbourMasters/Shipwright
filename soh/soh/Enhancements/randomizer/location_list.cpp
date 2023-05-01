@@ -4568,4 +4568,54 @@ void StaticData::InitLocationTable() {
         RC_GANON, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_GANONS_CASTLE, ACTOR_DOOR_WARP1, SCENE_GANON_BOSS, 0x00,
         DungeonId::DUNGEON_GANONS_CASTLE_CRUMBLING, "Ganon", "Ganon", RC_GANON, RG_TRIFORCE, {},
         SpoilerCollectionCheck::None(), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    
+    // Heart Containers
+    locationTable[RC_DEKU_TREE_QUEEN_GOHMA_HEART] = Location::Base(
+        RC_DEKU_TREE_QUEEN_GOHMA_HEART, RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_DEKU_TREE,
+        ACTOR_ITEM_B_HEART, SCENE_YDAN_BOSS, 0x00, 0x4F, "Queen Gohma Heart Container",
+        "Deku Tree Queen Gohma Heart Container", RC_DEKU_TREE_QUEEN_GOHMA_HEART, RG_HEART_CONTAINER,
+        { Category::cDekuTree, Category::cBossHeart, Category::cSongDungeonReward },
+        SpoilerCollectionCheck::Collectable(0x11, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_DODONGOS_CAVERN_KING_DODONGO_HEART] = Location::Base(
+        RC_DODONGOS_CAVERN_KING_DODONGO_HEART, RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_DODONGOS_CAVERN,
+        ACTOR_ITEM_B_HEART, SCENE_DDAN_BOSS, 0x00, 0x4F, "King Dodongo Heart Container",
+        "Dodongos Cavern King Dodongo Heart Container", RC_DODONGOS_CAVERN_KING_DODONGO_HEART, RG_HEART_CONTAINER,
+        { Category::cDodongosCavern, Category::cBossHeart, Category::cSongDungeonReward },
+        SpoilerCollectionCheck::Collectable(0x12, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_JABU_JABUS_BELLY_BARINADE_HEART] = Location::Base(
+        RC_JABU_JABUS_BELLY_BARINADE_HEART, RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_JABU_JABUS_BELLY,
+        ACTOR_ITEM_B_HEART, SCENE_BDAN_BOSS, 0x00, 0x4F, "Barinade Heart Container",
+        "Jabu Jabus Belly Barinade Heart Container", RC_JABU_JABUS_BELLY_BARINADE_HEART, RG_HEART_CONTAINER,
+        { Category::cJabuJabusBelly, Category::cBossHeart, Category::cSongDungeonReward },
+        SpoilerCollectionCheck::Collectable(0x13, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_FOREST_TEMPLE_PHANTOM_GANON_HEART] = Location::Base(
+        RC_FOREST_TEMPLE_PHANTOM_GANON_HEART, RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_FOREST_TEMPLE,
+        ACTOR_ITEM_B_HEART, SCENE_MORIBOSSROOM, 0x00, 0x4F, "Phantom Ganon Heart Container",
+        "Forest Temple Phantom Ganon Heart Container", RC_FOREST_TEMPLE_PHANTOM_GANON_HEART, RG_HEART_CONTAINER,
+        { Category::cForestTemple, Category::cBossHeart, Category::cSongDungeonReward },
+        SpoilerCollectionCheck::Collectable(0x14, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FIRE_TEMPLE_VOLVAGIA_HEART] = Location::Base(
+        RC_FIRE_TEMPLE_VOLVAGIA_HEART, RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_FIRE_TEMPLE,
+        ACTOR_ITEM_B_HEART, SCENE_FIRE_BS, 0x00, 0x4F, "Volvagia Heart Container",
+        "Fire Temple Volvagia Heart Container", RC_FIRE_TEMPLE_VOLVAGIA_HEART, RG_HEART_CONTAINER,
+        { Category::cFireTemple, Category::cBossHeart, Category::cSongDungeonReward },
+        SpoilerCollectionCheck::Collectable(0x15, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_WATER_TEMPLE_MORPHA_HEART] = Location::Base(
+        RC_WATER_TEMPLE_MORPHA_HEART, RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_WATER_TEMPLE,
+        ACTOR_ITEM_B_HEART, SCENE_MIZUSIN_BS, 0x00, 0x4F, "Morpha Heart Container",
+        "Water Temple Morpha Heart Container", RC_WATER_TEMPLE_MORPHA_HEART, RG_HEART_CONTAINER,
+        { Category::cWaterTemple, Category::cBossHeart, Category::cSongDungeonReward },
+        SpoilerCollectionCheck::Collectable(0x16, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_SPIRIT_TEMPLE_TWINROVA_HEART] = Location::Base(
+        RC_SPIRIT_TEMPLE_TWINROVA_HEART, RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_SPIRIT_TEMPLE,
+        ACTOR_ITEM_B_HEART, SCENE_JYASINBOSS, 0x00, 0x4F, "Twinrova Heart Container",
+        "Spirit Temple Twinrova Heart Container", RC_SPIRIT_TEMPLE_TWINROVA_HEART, RG_HEART_CONTAINER,
+        { Category::cSpiritTemple, Category::cBossHeart, Category::cSongDungeonReward },
+        SpoilerCollectionCheck::Collectable(0x17, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_SHADOW_TEMPLE_BONGO_BONGO_HEART] = Location::Base(
+        RC_SHADOW_TEMPLE_BONGO_BONGO_HEART, RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_SHADOW_TEMPLE,
+        ACTOR_ITEM_B_HEART, SCENE_HAKADAN_BS, 0x00, 0x4F, "Bongo Bongo Heart Container",
+        "Shadow Temple Bongo Bongo Heart Container", RC_SHADOW_TEMPLE_BONGO_BONGO_HEART, RG_HEART_CONTAINER,
+        { Category::cShadowTemple, Category::cBossHeart, Category::cSongDungeonReward },
+        SpoilerCollectionCheck::Collectable(0x18, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
 }
