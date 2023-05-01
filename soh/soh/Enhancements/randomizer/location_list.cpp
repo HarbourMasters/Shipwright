@@ -4568,7 +4568,7 @@ void StaticData::InitLocationTable() {
         RC_GANON, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_GANONS_CASTLE, ACTOR_DOOR_WARP1, SCENE_GANON_BOSS, 0x00,
         DungeonId::DUNGEON_GANONS_CASTLE_CRUMBLING, "Ganon", "Ganon", RC_GANON, RG_TRIFORCE, {},
         SpoilerCollectionCheck::None(), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
-    
+
     // Heart Containers
     locationTable[RC_DEKU_TREE_QUEEN_GOHMA_HEART] = Location::Base(
         RC_DEKU_TREE_QUEEN_GOHMA_HEART, RCQUEST_BOTH, RCTYPE_BOSS_HEART_OR_OTHER_REWARD, RCAREA_DEKU_TREE,
@@ -4618,7 +4618,7 @@ void StaticData::InitLocationTable() {
         "Shadow Temple Bongo Bongo Heart Container", RC_SHADOW_TEMPLE_BONGO_BONGO_HEART, RG_HEART_CONTAINER,
         { Category::cShadowTemple, Category::cBossHeart, Category::cSongDungeonReward },
         SpoilerCollectionCheck::Collectable(0x18, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
-    
+
     // Cutscenes
     locationTable[RC_TOT_LIGHT_ARROWS_CUTSCENE] =
         Location::Delayed(RC_TOT_LIGHT_ARROWS_CUTSCENE, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_ID_MAX,
@@ -4660,7 +4660,7 @@ void StaticData::InitLocationTable() {
         SCENE_DAIYOUSEI_IZUMI, 3, 0x15, "OGC Great Fairy Reward", "OGC Great Fairy Reward", RC_OGC_GREAT_FAIRY_REWARD,
         RG_DOUBLE_DEFENSE, { Category::cOutsideGanonsCastle, Category::cFairies },
         SpoilerCollectionCheck::Chest(0x3B, 0x03), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
-    
+
     // Songs
     locationTable[RC_SHEIK_IN_FOREST] = Location::Delayed(
         RC_SHEIK_IN_FOREST, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_SACRED_FOREST_MEADOW, ACTOR_ID_MAX, SCENE_SPOT05,
@@ -4762,4 +4762,61 @@ void StaticData::InitLocationTable() {
             Category::cSong,
         },
         SpoilerCollectionCheck::EventChkInf(0x5B), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+
+    // Cows
+    locationTable[RC_KF_LINKS_HOUSE_COW] =
+        Location::Base(RC_KF_LINKS_HOUSE_COW, RCQUEST_BOTH, RCTYPE_COW, RCAREA_KOKIRI_FOREST, ACTOR_EN_COW,
+                       SCENE_LINK_HOME, 0x00, 0x15, "Links House Cow", "KF Links House Cow", RC_KF_LINKS_HOUSE_COW,
+                       RG_MILK, { Category::cForest, Category::cCow, Category::cMinigame },
+                       SpoilerCollectionCheck::Cow(0x34, 0x15), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
+    locationTable[RC_HF_COW_GROTTO_COW] =
+        Location::Base(RC_HF_COW_GROTTO_COW, RCQUEST_BOTH, RCTYPE_COW, RCAREA_HYRULE_FIELD, ACTOR_EN_COW,
+                       SCENE_KAKUSIANA, TWO_ACTOR_PARAMS(3485, -291), 0x16, "Cow Grotto Cow", "HF Cow Grotto Cow",
+                       RC_HF_COW_GROTTO_COW, RG_MILK, { Category::cHyruleField, Category::cCow, Category::cGrotto },
+                       SpoilerCollectionCheck::Cow(0x3E, 0x16), SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
+    locationTable[RC_LLR_STABLES_LEFT_COW] = Location::Base(
+        RC_LLR_STABLES_LEFT_COW, RCQUEST_BOTH, RCTYPE_COW, RCAREA_LON_LON_RANCH, ACTOR_EN_COW, SCENE_MALON_STABLE,
+        TWO_ACTOR_PARAMS(-122, -254), 0x16, "Stables Left Cow", "LLR Stables Left Cow", RC_LLR_STABLES_LEFT_COW,
+        RG_MILK, { Category::cLonLonRanch, Category::cCow }, SpoilerCollectionCheck::Cow(0x36, 0x16),
+        SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
+    locationTable[RC_LLR_STABLES_RIGHT_COW] = Location::Base(
+        RC_LLR_STABLES_RIGHT_COW, RCQUEST_BOTH, RCTYPE_COW, RCAREA_LON_LON_RANCH, ACTOR_EN_COW, SCENE_MALON_STABLE,
+        TWO_ACTOR_PARAMS(116, -254), 0x15, "Stables Right Cow", "LLR Stables Right Cow", RC_LLR_STABLES_RIGHT_COW,
+        RG_MILK, { Category::cLonLonRanch, Category::cCow }, SpoilerCollectionCheck::Cow(0x36, 0x15),
+        SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
+    locationTable[RC_LLR_TOWER_LEFT_COW] =
+        Location::Base(RC_LLR_TOWER_LEFT_COW, RCQUEST_BOTH, RCTYPE_COW, RCAREA_LON_LON_RANCH, ACTOR_EN_COW, SCENE_SOUKO,
+                       TWO_ACTOR_PARAMS(-229, 157), 0x15, "Tower Left Cow", "LLR Tower Left Cow", RC_LLR_TOWER_LEFT_COW,
+                       RG_MILK, { Category::cLonLonRanch, Category::cCow }, SpoilerCollectionCheck::Cow(0x4C, 0x16),
+                       SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
+    locationTable[RC_LLR_TOWER_RIGHT_COW] =
+        Location::Base(RC_LLR_TOWER_RIGHT_COW, RCQUEST_BOTH, RCTYPE_COW, RCAREA_LON_LON_RANCH, ACTOR_EN_COW,
+                       SCENE_SOUKO, TWO_ACTOR_PARAMS(-142, -140), 0x16, "Tower Right Cow", "LLR Tower Right Cow",
+                       RC_LLR_TOWER_RIGHT_COW, RG_MILK, { Category::cLonLonRanch, Category::cCow },
+                       SpoilerCollectionCheck::Cow(0x4C, 0x15), SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
+    locationTable[RC_KAK_IMPAS_HOUSE_COW] =
+        Location::Base(RC_KAK_IMPAS_HOUSE_COW, RCQUEST_BOTH, RCTYPE_COW, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_COW,
+                       SCENE_LABO, 0x00, 0x15, "Impas House Cow", "Kak Impas House Cow", RC_KAK_IMPAS_HOUSE_COW,
+                       RG_MILK, { Category::cKakarikoVillage, Category::cKakariko, Category::cCow },
+                       SpoilerCollectionCheck::Cow(0x37, 0x15), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_DMT_COW_GROTTO_COW] = Location::Base(
+        RC_DMT_COW_GROTTO_COW, RCQUEST_BOTH, RCTYPE_COW, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_EN_COW, SCENE_KAKUSIANA,
+        TWO_ACTOR_PARAMS(2444, -471), 0x15, "Cow Grotto Cow", "DMT Cow Grotto Cow", RC_DMT_COW_GROTTO_COW, RG_MILK,
+        { Category::cDeathMountainTrail, Category::cDeathMountain, Category::cCow, Category::cGrotto },
+        SpoilerCollectionCheck::Cow(0x3E, 0x15), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_GV_COW] = Location::Base(
+        RC_GV_COW, RCQUEST_BOTH, RCTYPE_COW, RCAREA_GERUDO_VALLEY, ACTOR_EN_COW, SCENE_SPOT09, 0x00, 0x15, "Cow",
+        "GV Cow", RC_GV_COW, RG_MILK, { Category::cGerudoValley, Category::cGerudo, Category::cCow },
+        SpoilerCollectionCheck::Cow(0x5A, 0x15), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_JABU_JABUS_BELLY_MQ_COW] =
+        Location::Base(RC_JABU_JABUS_BELLY_MQ_COW, RCQUEST_MQ, RCTYPE_COW, RCAREA_JABU_JABUS_BELLY, ACTOR_EN_COW,
+                       SCENE_BDAN, 0x00, 0x15, "MQ Cow", "Jabu Jabus Belly MQ Cow", RC_JABU_JABUS_BELLY_MQ_COW, RG_MILK,
+                       { Category::cJabuJabusBelly, Category::cCow }, SpoilerCollectionCheck::Cow(0x02, 0x15),
+                       SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    /*-------------------------------
+              --- SHOPS ---
+      8     6               2     4
+
+      7     5               1     3
+      -------------------------------*/
 }
