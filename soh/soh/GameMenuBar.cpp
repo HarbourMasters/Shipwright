@@ -718,14 +718,6 @@ namespace GameMenuBar {
                         ImGui::EndMenu();
                     }
 
-                    UIWidgets::Spacer(0);
-
-                    UIWidgets::PaddedEnhancementCheckbox("Rupee Dash Mode", "gRupeeDash", true, false);
-                    UIWidgets::Tooltip("Rupees reduced over time, Link suffers damage when the count hits 0.");
-                    UIWidgets::PaddedEnhancementSliderInt("Rupee Dash Interval: %d", "##DashInterval", "gDashInterval", 3, 5, "", 5, true, true, false,
-                        !CVarGetInteger("gRupeeDash", 0), "This option is disabled because \"Rupee Dash Mode\" is turned off");
-                    UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
-
                     ImGui::EndMenu();
                 }
 
@@ -960,14 +952,12 @@ namespace GameMenuBar {
 
                 UIWidgets::PaddedEnhancementCheckbox("Rupee Dash Mode", "gRupeeDash", true, false);
 
-                if (CVarGetInteger("gRupeeDash", 0)) {
-                    UIWidgets::Tooltip("Rupees reduced over time, Link suffers damage when the count hits 0.");
-                    UIWidgets::PaddedEnhancementSliderInt(
-                        "Rupee Dash Interval: %d", "##DashInterval", "gDashInterval", 3, 5, "", 5, true, true, false,
-                        !CVarGetInteger("gRupeeDash", 0),
-                        "This option is disabled because \"Rupee Dash Mode\" is turned off");
-                    UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
-                }
+                UIWidgets::Tooltip("Rupees reduced over time, Link suffers damage when the count hits 0.");
+                UIWidgets::PaddedEnhancementSliderInt(
+                    "Rupee Dash Interval: %d", "##DashInterval", "gDashInterval", 3, 5, "", 5, true, true, false,
+                    !CVarGetInteger("gRupeeDash", 0),
+                    "This option is disabled because \"Rupee Dash Mode\" is turned off");
+                UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
 
                 ImGui::EndMenu();
             }
