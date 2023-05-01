@@ -2506,14 +2506,14 @@ void StaticData::InitLocationTable() {
                         "Bottom of the Well Lens of Truth Chest", RC_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST,
                         RG_LENS_OF_TRUTH, { Category::cBottomOfTheWell, Category::cSongDungeonReward },
                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
-    locationTable[RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST] = Location::Chest(
-        RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_BOTTOM_OF_THE_WELL,
-        ACTOR_EN_BOX, SCENE_HAKADANCH, 27348, 0x14, "Invisible Chest", "Bottom of the Well Invisible Chest",
-        RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST, RG_HUGE_RUPEE,
-        {
-            Category::cBottomOfTheWell,
-        },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
+    locationTable[RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST] =
+        Location::Chest(RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+                        RCAREA_BOTTOM_OF_THE_WELL, ACTOR_EN_BOX, SCENE_HAKADANCH, 27348, 0x14, "Invisible Chest",
+                        "Bottom of the Well Invisible Chest", RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST, RG_HUGE_RUPEE,
+                        {
+                            Category::cBottomOfTheWell,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
     locationTable[RC_BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST] = Location::Chest(
         RC_BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_BOTTOM_OF_THE_WELL,
         ACTOR_EN_BOX, SCENE_HAKADANCH, 23760, 0x10, "Underwater Front Chest",
@@ -2561,7 +2561,7 @@ void StaticData::InitLocationTable() {
                         "Bottom of the Well Freestanding Key", RC_BOTTOM_OF_THE_WELL_FREESTANDING_KEY,
                         RG_BOTTOM_OF_THE_WELL_SMALL_KEY, { Category::cBottomOfTheWell, Category::cVanillaSmallKey },
                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
-    
+
     // Bottom of the Well Master Quest
     locationTable[RC_BOTTOM_OF_THE_WELL_MQ_MAP_CHEST] =
         Location::Chest(RC_BOTTOM_OF_THE_WELL_MQ_MAP_CHEST, RCQUEST_MQ, RCTYPE_MAP_COMPASS, RCAREA_BOTTOM_OF_THE_WELL,
@@ -2600,7 +2600,7 @@ void StaticData::InitLocationTable() {
         RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_FREESTANDING_KEY, RG_BOTTOM_OF_THE_WELL_SMALL_KEY,
         { Category::cBottomOfTheWell, Category::cVanillaSmallKey },
         SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
-    
+
     // Ice Cavern Vanilla
     locationTable[RC_ICE_CAVERN_MAP_CHEST] = Location::Chest(
         RC_ICE_CAVERN_MAP_CHEST, RCQUEST_VANILLA, RCTYPE_MAP_COMPASS, RCAREA_ICE_CAVERN, ACTOR_EN_BOX,
@@ -2621,8 +2621,8 @@ void StaticData::InitLocationTable() {
                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
     locationTable[RC_ICE_CAVERN_IRON_BOOTS_CHEST] =
         Location::Chest(RC_ICE_CAVERN_IRON_BOOTS_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_ICE_CAVERN,
-                        ACTOR_EN_BOX, SCENE_ICE_DOUKUTO, 5570, 0x02, "Iron Boots Chest",
-                        "Ice Cavern Iron Boots Chest", RC_ICE_CAVERN_IRON_BOOTS_CHEST, RG_IRON_BOOTS,
+                        ACTOR_EN_BOX, SCENE_ICE_DOUKUTO, 5570, 0x02, "Iron Boots Chest", "Ice Cavern Iron Boots Chest",
+                        RC_ICE_CAVERN_IRON_BOOTS_CHEST, RG_IRON_BOOTS,
                         {
                             Category::cIceCavern,
                         },
@@ -2635,7 +2635,7 @@ void StaticData::InitLocationTable() {
                                   Category::cIceCavern,
                               },
                               SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
-    
+
     // Ice Cavern Master Quest
     locationTable[RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST] =
         Location::Chest(RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_ICE_CAVERN, ACTOR_EN_BOX,
@@ -2670,4 +2670,311 @@ void StaticData::InitLocationTable() {
                                   Category::cIceCavern,
                               },
                               SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+
+    // Gerudo Training Grounds Vanilla
+    locationTable[RC_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_GERUDO_TRAINING_GROUND,
+        ACTOR_EN_BOX, SCENE_MEN, -30573, 0x13, "Lobby Left Chest", "Gerudo Training Grounds Lobby Left Chest",
+        RC_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST, RG_BLUE_RUPEE,
+        {
+            Category::cGerudoTrainingGrounds,
+        },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_LOBBY_RIGHT_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_LOBBY_RIGHT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_GERUDO_TRAINING_GROUND,
+        ACTOR_EN_BOX, SCENE_MEN, -30393, 0x07, "Lobby Right Chest", "Gerudo Training Grounds Lobby Right Chest",
+        RC_GERUDO_TRAINING_GROUND_LOBBY_RIGHT_CHEST, RG_ARROWS_10,
+        {
+            Category::cGerudoTrainingGrounds,
+        },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_STALFOS_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_STALFOS_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_GERUDO_TRAINING_GROUND,
+        ACTOR_EN_BOX, SCENE_MEN, -30656, 0x00, "Stalfos Chest", "Gerudo Training Grounds Stalfos Chest",
+        RC_GERUDO_TRAINING_GROUND_STALFOS_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
+        { Category::cGerudoTrainingGrounds, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_BEAMOS_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_BEAMOS_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_GERUDO_TRAINING_GROUND,
+        ACTOR_EN_BOX, SCENE_MEN, -30655, 0x01, "Beamos Chest", "Gerudo Training Grounds Beamos Chest",
+        RC_GERUDO_TRAINING_GROUND_BEAMOS_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
+        { Category::cGerudoTrainingGrounds, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 22603, 0x0B, "Hidden Ceiling Chest",
+        "Gerudo Training Grounds Hidden Ceiling Chest", RC_GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST,
+        RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, { Category::cGerudoTrainingGrounds, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FIRST_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FIRST_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 23206, 0x06, "Maze Path First Chest",
+                        "Gerudo Training Grounds Maze Path First Chest",
+                        RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FIRST_CHEST, RG_PURPLE_RUPEE,
+                        {
+                            Category::cGerudoTrainingGrounds,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MAZE_PATH_SECOND_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_MAZE_PATH_SECOND_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 22986, 0x0A, "Maze Path Second Chest",
+                        "Gerudo Training Grounds Maze Path Second Chest",
+                        RC_GERUDO_TRAINING_GROUND_MAZE_PATH_SECOND_CHEST, RG_RED_RUPEE,
+                        {
+                            Category::cGerudoTrainingGrounds,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MAZE_PATH_THIRD_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_MAZE_PATH_THIRD_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 22889, 0x09, "Maze Path Third Chest",
+        "Gerudo Training Grounds Maze Path Third Chest", RC_GERUDO_TRAINING_GROUND_MAZE_PATH_THIRD_CHEST, RG_ARROWS_30,
+        {
+            Category::cGerudoTrainingGrounds,
+        },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FINAL_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FINAL_CHEST, RCQUEST_VANILLA, RCTYPE_BOSS_HEART_OR_OTHER_REWARD,
+        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 2860, 0x0C, "Maze Path Final Chest",
+        "Gerudo Training Grounds Maze Path Final Chest", RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FINAL_CHEST, RG_ICE_ARROWS,
+        { Category::cGerudoTrainingGrounds, Category::cSongDungeonReward },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MAZE_RIGHT_CENTRAL_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_MAZE_RIGHT_CENTRAL_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 23877, 0x05, "Maze Right Central Chest",
+                        "Gerudo Training Grounds Maze Right Central Chest",
+                        RC_GERUDO_TRAINING_GROUND_MAZE_RIGHT_CENTRAL_CHEST, RG_BOMBCHU_5,
+                        {
+                            Category::cGerudoTrainingGrounds,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MAZE_RIGHT_SIDE_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_MAZE_RIGHT_SIDE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 22888, 0x08, "Maze Right Side Chest",
+        "Gerudo Training Grounds Maze Right Side Chest", RC_GERUDO_TRAINING_GROUND_MAZE_RIGHT_SIDE_CHEST, RG_ARROWS_30,
+        {
+            Category::cGerudoTrainingGrounds,
+        },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, -30643, 0x0D,
+                        "Underwater Silver Rupee Chest", "Gerudo Training Grounds Underwater Silver Rupee Chest",
+                        RC_GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
+                        { Category::cGerudoTrainingGrounds, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_CLEAR_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_CLEAR_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 31058, 0x12, "Hammer Room Clear Chest",
+                        "Gerudo Training Grounds Hammer Room Clear Chest",
+                        RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_CLEAR_CHEST, RG_ARROWS_10,
+                        {
+                            Category::cGerudoTrainingGrounds,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_SWITCH_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_SWITCH_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 22608, 0x10, "Hammer Room Switch Chest",
+        "Gerudo Training Grounds Hammer Room Switch Chest", RC_GERUDO_TRAINING_GROUND_HAMMER_ROOM_SWITCH_CHEST,
+        RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, { Category::cGerudoTrainingGrounds, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_GERUDO_TRAINING_GROUND,
+        ACTOR_EN_BOX, SCENE_MEN, -30653, 0x03, "Eye Statue Chest", "Gerudo Training Grounds Eye Statue Chest",
+        RC_GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
+        { Category::cGerudoTrainingGrounds, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_NEAR_SCARECROW_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_NEAR_SCARECROW_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 22596, 0x04, "Near Scarecrow Chest",
+        "Gerudo Training Grounds Near Scarecrow Chest", RC_GERUDO_TRAINING_GROUND_NEAR_SCARECROW_CHEST,
+        RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, { Category::cGerudoTrainingGrounds, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_BEFORE_HEAVY_BLOCK_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_BEFORE_HEAVY_BLOCK_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 31089, 0x11, "Before Heavy Block Chest",
+                        "Gerudo Training Grounds Before Heavy Block Chest",
+                        RC_GERUDO_TRAINING_GROUND_BEFORE_HEAVY_BLOCK_CHEST, RG_ARROWS_30,
+                        {
+                            Category::cGerudoTrainingGrounds,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_FIRST_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_FIRST_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 31439, 0x0F, "Heavy Block First Chest",
+                        "Gerudo Training Grounds Heavy Block First Chest",
+                        RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_FIRST_CHEST, RG_HUGE_RUPEE,
+                        {
+                            Category::cGerudoTrainingGrounds,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_SECOND_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_SECOND_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 30862, 0x0E, "Heavy Block Second Chest",
+                        "Gerudo Training Grounds Heavy Block Second Chest",
+                        RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_SECOND_CHEST, RG_BLUE_RUPEE,
+                        {
+                            Category::cGerudoTrainingGrounds,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_THIRD_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_THIRD_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 26708, 0x14, "Heavy Block Third Chest",
+        "Gerudo Training Grounds Heavy Block Third Chest", RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_THIRD_CHEST,
+        RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, { Category::cGerudoTrainingGrounds, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_FOURTH_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_FOURTH_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 24450, 0x02, "Heavy Block Fourth Chest",
+                        "Gerudo Training Grounds Heavy Block Fourth Chest",
+                        RC_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_FOURTH_CHEST, RG_ICE_TRAP,
+                        {
+                            Category::cGerudoTrainingGrounds,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_FREESTANDING_KEY] = Location::Collectable(
+        RC_GERUDO_TRAINING_GROUND_FREESTANDING_KEY, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_GERUDO_TRAINING_GROUND,
+        ACTOR_EN_ITEM00, SCENE_MEN, 273, 0x01, "Freestanding Key", "Gerudo Training Grounds Freestanding Key",
+        RC_GERUDO_TRAINING_GROUND_FREESTANDING_KEY, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
+        { Category::cGerudoTrainingGrounds, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    
+    // Gerudo Training Grounds Master Quest
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_GERUDO_TRAINING_GROUND,
+        ACTOR_EN_BOX, SCENE_MEN, 23879, 0x07, "MQ Lobby Right Chest", "Gerudo Training Grounds MQ Lobby Right Chest",
+        RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_CHEST, RG_BOMBCHU_5,
+        {
+            Category::cGerudoTrainingGrounds,
+        },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_GERUDO_TRAINING_GROUND,
+        ACTOR_EN_BOX, SCENE_MEN, 22867, 0x13, "MQ Lobby Left Chest", "Gerudo Training Grounds MQ Lobby Left Chest",
+        RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_LEFT_CHEST, RG_ARROWS_10,
+        {
+            Category::cGerudoTrainingGrounds,
+        },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_FIRST_IRON_KNUCKLE_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_MQ_FIRST_IRON_KNUCKLE_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, -30304, 0x00,
+                        "MQ First Iron Knuckle Chest", "Gerudo Training Grounds MQ First Iron Knuckle Chest",
+                        RC_GERUDO_TRAINING_GROUND_MQ_FIRST_IRON_KNUCKLE_CHEST, RG_BLUE_RUPEE,
+                        {
+                            Category::cGerudoTrainingGrounds,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_BEFORE_HEAVY_BLOCK_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_MQ_BEFORE_HEAVY_BLOCK_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 31057, 0x11,
+                        "MQ Before Heavy Block Chest", "Gerudo Training Grounds MQ Before Heavy Block Chest",
+                        RC_GERUDO_TRAINING_GROUND_MQ_BEFORE_HEAVY_BLOCK_CHEST, RG_ARROWS_10,
+                        {
+                            Category::cGerudoTrainingGrounds,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_EYE_STATUE_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_MQ_EYE_STATUE_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_GERUDO_TRAINING_GROUND,
+        ACTOR_EN_BOX, SCENE_MEN, -32669, 0x03, "MQ Eye Statue Chest", "Gerudo Training Grounds MQ Eye Statue Chest",
+        RC_GERUDO_TRAINING_GROUND_MQ_EYE_STATUE_CHEST, RG_BOMBCHU_10,
+        {
+            Category::cGerudoTrainingGrounds,
+        },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_FLAME_CIRCLE_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_MQ_FLAME_CIRCLE_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_GERUDO_TRAINING_GROUND,
+        ACTOR_EN_BOX, SCENE_MEN, -30642, 0x0E, "MQ Flame Circle Chest", "Gerudo Training Grounds MQ Flame Circle Chest",
+        RC_GERUDO_TRAINING_GROUND_MQ_FLAME_CIRCLE_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
+        { Category::cGerudoTrainingGrounds, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_SECOND_IRON_KNUCKLE_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_MQ_SECOND_IRON_KNUCKLE_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 31058, 0x12,
+                        "MQ Second Iron Knuckle Chest", "Gerudo Training Grounds MQ Second Iron Knuckle Chest",
+                        RC_GERUDO_TRAINING_GROUND_MQ_SECOND_IRON_KNUCKLE_CHEST, RG_ARROWS_10,
+                        {
+                            Category::cGerudoTrainingGrounds,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_GERUDO_TRAINING_GROUND,
+        ACTOR_EN_BOX, SCENE_MEN, -30655, 0x01, "MQ Dinolfos Chest", "Gerudo Training Grounds MQ Dinolfos Chest",
+        RC_GERUDO_TRAINING_GROUND_MQ_DINOLFOS_CHEST, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
+        { Category::cGerudoTrainingGrounds, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_ICE_ARROWS_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_MQ_ICE_ARROWS_CHEST, RCQUEST_MQ, RCTYPE_BOSS_HEART_OR_OTHER_REWARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, -17628, 0x04, "MQ Ice Arrows Chest",
+                        "Gerudo Training Grounds MQ Ice Arrows Chest", RC_GERUDO_TRAINING_GROUND_MQ_ICE_ARROWS_CHEST,
+                        RG_ICE_ARROWS, { Category::cGerudoTrainingGrounds, Category::cSongDungeonReward },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT_CENTRAL_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT_CENTRAL_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 22661, 0x05,
+                        "MQ Maze Right Central Chest", "Gerudo Training Grounds MQ Maze Right Central Chest",
+                        RC_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT_CENTRAL_CHEST, RG_BLUE_RUPEE,
+                        {
+                            Category::cGerudoTrainingGrounds,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_FIRST_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_FIRST_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 22918, 0x06, "MQ Maze Path First Chest",
+                        "Gerudo Training Grounds MQ Maze Path First Chest",
+                        RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_FIRST_CHEST, RG_GREEN_RUPEE,
+                        {
+                            Category::cGerudoTrainingGrounds,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT_SIDE_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT_SIDE_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 24136, 0x08, "MQ Maze Right Side Chest",
+                        "Gerudo Training Grounds MQ Maze Right Side Chest",
+                        RC_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT_SIDE_CHEST, RG_TREASURE_GAME_GREEN_RUPEE,
+                        {
+                            Category::cGerudoTrainingGrounds,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_THIRD_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_THIRD_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 24137, 0x09, "MQ Maze Path Third Chest",
+                        "Gerudo Training Grounds MQ Maze Path Third Chest",
+                        RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_THIRD_CHEST, RG_TREASURE_GAME_GREEN_RUPEE,
+                        {
+                            Category::cGerudoTrainingGrounds,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_SECOND_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_SECOND_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 22986, 0x0A,
+                        "MQ Maze Path Second Chest", "Gerudo Training Grounds MQ Maze Path Second Chest",
+                        RC_GERUDO_TRAINING_GROUND_MQ_MAZE_PATH_SECOND_CHEST, RG_RED_RUPEE,
+                        {
+                            Category::cGerudoTrainingGrounds,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_HIDDEN_CEILING_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_MQ_HIDDEN_CEILING_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, 23211, 0x0B, "MQ Hidden Ceiling Chest",
+                        "Gerudo Training Grounds MQ Hidden Ceiling Chest",
+                        RC_GERUDO_TRAINING_GROUND_MQ_HIDDEN_CEILING_CHEST, RG_PURPLE_RUPEE,
+                        {
+                            Category::cGerudoTrainingGrounds,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST] =
+        Location::Chest(RC_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY,
+                        RCAREA_GERUDO_TRAINING_GROUND, ACTOR_EN_BOX, SCENE_MEN, -30643, 0x0D,
+                        "MQ Underwater Silver Rupee Chest", "Gerudo Training Grounds MQ Underwater Silver Rupee Chest",
+                        RC_GERUDO_TRAINING_GROUND_MQ_UNDERWATER_SILVER_RUPEE_CHEST, RG_TREASURE_GAME_GREEN_RUPEE,
+                        { Category::cGerudoTrainingGrounds, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+    locationTable[RC_GERUDO_TRAINING_GROUND_MQ_HEAVY_BLOCK_CHEST] = Location::Chest(
+        RC_GERUDO_TRAINING_GROUND_MQ_HEAVY_BLOCK_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_GERUDO_TRAINING_GROUND,
+        ACTOR_EN_BOX, SCENE_MEN, 31394, 0x02, "MQ Heavy Block Chest", "Gerudo Training Grounds MQ Heavy Block Chest",
+        RC_GERUDO_TRAINING_GROUND_MQ_HEAVY_BLOCK_CHEST, RG_PURPLE_RUPEE,
+        {
+            Category::cGerudoTrainingGrounds,
+        },
+        SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
 }
