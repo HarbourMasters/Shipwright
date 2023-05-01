@@ -2837,7 +2837,7 @@ void StaticData::InitLocationTable() {
         RC_GERUDO_TRAINING_GROUND_FREESTANDING_KEY, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY,
         { Category::cGerudoTrainingGrounds, Category::cVanillaSmallKey },
         SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
-    
+
     // Gerudo Training Grounds Master Quest
     locationTable[RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_CHEST] = Location::Chest(
         RC_GERUDO_TRAINING_GROUND_MQ_LOBBY_RIGHT_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_GERUDO_TRAINING_GROUND,
@@ -2977,4 +2977,322 @@ void StaticData::InitLocationTable() {
             Category::cGerudoTrainingGrounds,
         },
         SpoilerCollectionCheckGroup::GROUP_GERUDO_TRAINING_GROUND);
+
+    // Ganon's Castle Shared
+    locationTable[RC_GANONS_TOWER_BOSS_KEY_CHEST] =
+        Location::Chest(RC_GANONS_TOWER_BOSS_KEY_CHEST, RCQUEST_BOTH, RCTYPE_GANON_BOSS_KEY, RCAREA_GANONS_CASTLE,
+                        ACTOR_EN_BOX, SCENE_GANON, 10219, 0x0B, "Boss Key Chest", "Ganon's Tower Boss Key Chest",
+                        RC_GANONS_TOWER_BOSS_KEY_CHEST, RG_GANONS_CASTLE_BOSS_KEY,
+                        {
+                            Category::cGanonsCastle,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+
+    // Ganon's Castle Vanilla
+    locationTable[RC_GANONS_CASTLE_FOREST_TRIAL_CHEST] =
+        Location::Chest(RC_GANONS_CASTLE_FOREST_TRIAL_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE,
+                        ACTOR_EN_BOX, SCENE_GANONTIKA, 30857, 0x09, "Forest Trial Chest",
+                        "Ganon's Castle Forest Trial Chest", RC_GANONS_CASTLE_FOREST_TRIAL_CHEST, RG_BLUE_RUPEE,
+                        {
+                            Category::cGanonsCastle,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_WATER_TRIAL_LEFT_CHEST] =
+        Location::Chest(RC_GANONS_CASTLE_WATER_TRIAL_LEFT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE,
+                        ACTOR_EN_BOX, SCENE_GANONTIKA, 24455, 0x07, "Water Trial Left Chest",
+                        "Ganon's Castle Water Trial Left Chest", RC_GANONS_CASTLE_WATER_TRIAL_LEFT_CHEST, RG_ICE_TRAP,
+                        {
+                            Category::cGanonsCastle,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_WATER_TRIAL_RIGHT_CHEST] = Location::Chest(
+        RC_GANONS_CASTLE_WATER_TRIAL_RIGHT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE, ACTOR_EN_BOX,
+        SCENE_GANONTIKA, 22790, 0x06, "Water Trial Right Chest", "Ganon's Castle Water Trial Right Chest",
+        RC_GANONS_CASTLE_WATER_TRIAL_RIGHT_CHEST, RG_RECOVERY_HEART,
+        {
+            Category::cGanonsCastle,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_SHADOW_TRIAL_FRONT_CHEST] = Location::Chest(
+        RC_GANONS_CASTLE_SHADOW_TRIAL_FRONT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE, ACTOR_EN_BOX,
+        SCENE_GANONTIKA, 22664, 0x08, "Shadow Trial Front Chest", "Ganon's Castle Shadow Trial Front Chest",
+        RC_GANONS_CASTLE_SHADOW_TRIAL_FRONT_CHEST, RG_BLUE_RUPEE,
+        {
+            Category::cGanonsCastle,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_SHADOW_TRIAL_GOLDEN_GAUNTLETS_CHEST] =
+        Location::Chest(RC_GANONS_CASTLE_SHADOW_TRIAL_GOLDEN_GAUNTLETS_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+                        RCAREA_GANONS_CASTLE, ACTOR_EN_BOX, SCENE_GANONTIKA, 14021, 0x05,
+                        "Shadow Trial Golden Gauntlets Chest", "Ganon's Castle Shadow Trial Golden Gauntlets Chest",
+                        RC_GANONS_CASTLE_SHADOW_TRIAL_GOLDEN_GAUNTLETS_CHEST, RG_PROGRESSIVE_STRENGTH,
+                        {
+                            Category::cGanonsCastle,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST] =
+        Location::Chest(RC_GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD,
+                        RCAREA_GANONS_CASTLE, ACTOR_EN_BOX, SCENE_GANONTIKA, -29326, GI_BOMBCHUS_20,
+                        "Spirit Trial Crystal Switch Chest", "Ganon's Castle Spirit Trial Crystal Switch Chest",
+                        RC_GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST, RG_BOMBCHU_20,
+                        {
+                            Category::cGanonsCastle,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_SPIRIT_TRIAL_INVISIBLE_CHEST] = Location::Chest(
+        RC_GANONS_CASTLE_SPIRIT_TRIAL_INVISIBLE_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE,
+        ACTOR_EN_BOX, SCENE_GANONTIKA, 26964, 0x14, "Spirit Trial Invisible Chest",
+        "Ganon's Castle Spirit Trial Invisible Chest", RC_GANONS_CASTLE_SPIRIT_TRIAL_INVISIBLE_CHEST, RG_ARROWS_10,
+        {
+            Category::cGanonsCastle,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_LIGHT_TRIAL_FIRST_LEFT_CHEST] = Location::Chest(
+        RC_GANONS_CASTLE_LIGHT_TRIAL_FIRST_LEFT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE,
+        ACTOR_EN_BOX, SCENE_GANONTIKA, 22668, 0x0C, "Light Trial First Left Chest",
+        "Ganon's Castle Light Trial First Left Chest", RC_GANONS_CASTLE_LIGHT_TRIAL_FIRST_LEFT_CHEST, RG_BLUE_RUPEE,
+        {
+            Category::cGanonsCastle,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_LIGHT_TRIAL_SECOND_LEFT_CHEST] = Location::Chest(
+        RC_GANONS_CASTLE_LIGHT_TRIAL_SECOND_LEFT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE,
+        ACTOR_EN_BOX, SCENE_GANONTIKA, 24459, 0x0B, "Light Trial Second Left Chest",
+        "Ganon's Castle Light Trial Second Left Chest", RC_GANONS_CASTLE_LIGHT_TRIAL_SECOND_LEFT_CHEST, RG_ICE_TRAP,
+        {
+            Category::cGanonsCastle,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_LIGHT_TRIAL_THIRD_LEFT_CHEST] = Location::Chest(
+        RC_GANONS_CASTLE_LIGHT_TRIAL_THIRD_LEFT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE,
+        ACTOR_EN_BOX, SCENE_GANONTIKA, 22797, 0x0D, "Light Trial Third Left Chest",
+        "Ganon's Castle Light Trial Third Left Chest", RC_GANONS_CASTLE_LIGHT_TRIAL_THIRD_LEFT_CHEST, RG_RECOVERY_HEART,
+        {
+            Category::cGanonsCastle,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_LIGHT_TRIAL_FIRST_RIGHT_CHEST] = Location::Chest(
+        RC_GANONS_CASTLE_LIGHT_TRIAL_FIRST_RIGHT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE,
+        ACTOR_EN_BOX, SCENE_GANONTIKA, 24462, 0x0E, "Light Trial First Right Chest",
+        "Ganon's Castle Light Trial First Right Chest", RC_GANONS_CASTLE_LIGHT_TRIAL_FIRST_RIGHT_CHEST, RG_ICE_TRAP,
+        {
+            Category::cGanonsCastle,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_LIGHT_TRIAL_SECOND_RIGHT_CHEST] = Location::Chest(
+        RC_GANONS_CASTLE_LIGHT_TRIAL_SECOND_RIGHT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE,
+        ACTOR_EN_BOX, SCENE_GANONTIKA, 22890, 0x0A, "Light Trial Second Right Chest",
+        "Ganon's Castle Light Trial Second Right Chest", RC_GANONS_CASTLE_LIGHT_TRIAL_SECOND_RIGHT_CHEST, RG_ARROWS_30,
+        {
+            Category::cGanonsCastle,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_LIGHT_TRIAL_THIRD_RIGHT_CHEST] = Location::Chest(
+        RC_GANONS_CASTLE_LIGHT_TRIAL_THIRD_RIGHT_CHEST, RCQUEST_VANILLA, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE,
+        ACTOR_EN_BOX, SCENE_GANONTIKA, 24463, 0x0F, "Light Trial Third Right Chest",
+        "Ganon's Castle Light Trial Third Right Chest", RC_GANONS_CASTLE_LIGHT_TRIAL_THIRD_RIGHT_CHEST, RG_ICE_TRAP,
+        {
+            Category::cGanonsCastle,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_LIGHT_TRIAL_INVISIBLE_ENEMIES_CHEST] = Location::Chest(
+        RC_GANONS_CASTLE_LIGHT_TRIAL_INVISIBLE_ENEMIES_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY, RCAREA_GANONS_CASTLE,
+        ACTOR_EN_BOX, SCENE_GANONTIKA, 30800, 0x10, "Light Trial Invisible Enemies Chest",
+        "Ganon's Castle Light Trial Invisible Enemies Chest", RC_GANONS_CASTLE_LIGHT_TRIAL_INVISIBLE_ENEMIES_CHEST,
+        RG_GANONS_CASTLE_SMALL_KEY, { Category::cGanonsCastle, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_LIGHT_TRIAL_LULLABY_CHEST] =
+        Location::Chest(RC_GANONS_CASTLE_LIGHT_TRIAL_LULLABY_CHEST, RCQUEST_VANILLA, RCTYPE_SMALL_KEY,
+                        RCAREA_GANONS_CASTLE, ACTOR_EN_BOX, SCENE_GANONTIKA, -30639, 0x11, "Light Trial Lullaby Chest",
+                        "Ganon's Castle Light Trial Lullaby Chest", RC_GANONS_CASTLE_LIGHT_TRIAL_LULLABY_CHEST,
+                        RG_GANONS_CASTLE_SMALL_KEY, { Category::cGanonsCastle, Category::cVanillaSmallKey },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT] = Location::Base(
+        RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT, RCQUEST_VANILLA, RCTYPE_SCRUB, RCAREA_GANONS_CASTLE, ACTOR_EN_DNS,
+        SCENE_GANONTIKA, 0x05, 0x37, "Deku Scrub Center-Left", "Ganon's Castle Deku Scrub Center-Left",
+        RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT, RG_BUY_BOMBS_535,
+        {
+            Category::cGanonsCastle,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x0D, 0x06), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT] = Location::Base(
+        RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT, RCQUEST_VANILLA, RCTYPE_SCRUB, RCAREA_GANONS_CASTLE, ACTOR_EN_DNS,
+        SCENE_GANONTIKA, 0x03, 0x33, "Deku Scrub Center-Right", "Ganon's Castle Deku Scrub Center-Right",
+        RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT, RG_BUY_ARROWS_30,
+        {
+            Category::cGanonsCastle,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x0D, 0x04), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT] = Location::Base(
+        RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT, RCQUEST_VANILLA, RCTYPE_SCRUB, RCAREA_GANONS_CASTLE, ACTOR_EN_DNS,
+        SCENE_GANONTIKA, 0x07, 0x39, "Deku Scrub Right", "Ganon's Castle Deku Scrub Right",
+        RC_GANONS_CASTLE_DEKU_SCRUB_RIGHT, RG_BUY_RED_POTION_30,
+        {
+            Category::cGanonsCastle,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x0D, 0x08), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_DEKU_SCRUB_LEFT] = Location::Base(
+        RC_GANONS_CASTLE_DEKU_SCRUB_LEFT, RCQUEST_VANILLA, RCTYPE_SCRUB, RCAREA_GANONS_CASTLE, ACTOR_EN_DNS,
+        SCENE_GANONTIKA, 0x08, 0x3A, "Deku Scrub Left", "Ganon's Castle Deku Scrub Left",
+        RC_GANONS_CASTLE_DEKU_SCRUB_LEFT, RG_BUY_GREEN_POTION,
+        {
+            Category::cGanonsCastle,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x0D, 0x09), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+
+    // Ganon's Castle MQ
+    locationTable[RC_GANONS_CASTLE_MQ_WATER_TRIAL_CHEST] =
+        Location::Chest(RC_GANONS_CASTLE_MQ_WATER_TRIAL_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE,
+                        ACTOR_EN_BOX, SCENE_GANONTIKA, 22977, 0x01, "MQ Water Trial Chest",
+                        "Ganon's Castle MQ Water Trial Chest", RC_GANONS_CASTLE_MQ_WATER_TRIAL_CHEST, RG_RED_RUPEE,
+                        {
+                            Category::cGanonsCastle,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_FOREST_TRIAL_EYE_SWITCH_CHEST] =
+        Location::Chest(RC_GANONS_CASTLE_MQ_FOREST_TRIAL_EYE_SWITCH_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_GANONS_CASTLE, ACTOR_EN_BOX, SCENE_GANONTIKA, -30398, 0x02,
+                        "MQ Forest Trial Eye Switch Chest", "Ganon's Castle MQ Forest Trial Eye Switch Chest",
+                        RC_GANONS_CASTLE_MQ_FOREST_TRIAL_EYE_SWITCH_CHEST, RG_ARROWS_10,
+                        {
+                            Category::cGanonsCastle,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FROZEN_EYE_SWITCH_CHEST] = Location::Chest(
+        RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FROZEN_EYE_SWITCH_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE,
+        ACTOR_EN_BOX, SCENE_GANONTIKA, -32733, 0x03, "MQ Forest Trial Frozen Eye Switch Chest",
+        "Ganon's Castle MQ Forest Trial Frozen Eye Switch Chest",
+        RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FROZEN_EYE_SWITCH_CHEST, RG_BOMBS_5,
+        {
+            Category::cGanonsCastle,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_LULLABY_CHEST] = Location::Chest(
+        RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_LULLABY_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE, ACTOR_EN_BOX,
+        SCENE_GANONTIKA, -30460, 0x04, "MQ Light Trial Lullaby Chest", "Ganon's Castle MQ Light Trial Lullaby Chest",
+        RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_LULLABY_CHEST, RG_RECOVERY_HEART,
+        {
+            Category::cGanonsCastle,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_SHADOW_TRIAL_BOMB_FLOWER_CHEST] =
+        Location::Chest(RC_GANONS_CASTLE_MQ_SHADOW_TRIAL_BOMB_FLOWER_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_GANONS_CASTLE, ACTOR_EN_BOX, SCENE_GANONTIKA, -30400, 0x00,
+                        "MQ Shadow Trial Bomb Flower Chest", "Ganon's Castle MQ Shadow Trial Bomb Flower Chest",
+                        RC_GANONS_CASTLE_MQ_SHADOW_TRIAL_BOMB_FLOWER_CHEST, RG_ARROWS_10,
+                        {
+                            Category::cGanonsCastle,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_SHADOW_TRIAL_EYE_SWITCH_CHEST] = Location::Chest(
+        RC_GANONS_CASTLE_MQ_SHADOW_TRIAL_EYE_SWITCH_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_GANONS_CASTLE,
+        ACTOR_EN_BOX, SCENE_GANONTIKA, -30651, 0x05, "MQ Shadow Trial Eye Switch Chest",
+        "Ganon's Castle MQ Shadow Trial Eye Switch Chest", RC_GANONS_CASTLE_MQ_SHADOW_TRIAL_EYE_SWITCH_CHEST,
+        RG_GANONS_CASTLE_SMALL_KEY, { Category::cGanonsCastle, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_GOLDEN_GAUNTLETS_CHEST] = Location::Chest(
+        RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_GOLDEN_GAUNTLETS_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE,
+        ACTOR_EN_BOX, SCENE_GANONTIKA, -18746, 0x06, "MQ Spirit Trial Golden Gauntlets Chest",
+        "Ganon's Castle MQ Spirit Trial Golden Gauntlets Chest",
+        RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_GOLDEN_GAUNTLETS_CHEST, RG_PROGRESSIVE_STRENGTH,
+        {
+            Category::cGanonsCastle,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_RIGHT_CHEST] =
+        Location::Chest(RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_RIGHT_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_GANONS_CASTLE, ACTOR_EN_BOX, SCENE_GANONTIKA, -30457, 0x07,
+                        "MQ Spirit Trial Sun Back Right Chest", "Ganon's Castle MQ Spirit Trial Sun Back Right Chest",
+                        RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_RIGHT_CHEST, RG_RECOVERY_HEART,
+                        {
+                            Category::cGanonsCastle,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_LEFT_CHEST] = Location::Chest(
+        RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_LEFT_CHEST, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_GANONS_CASTLE,
+        ACTOR_EN_BOX, SCENE_GANONTIKA, -30648, 0x08, "MQ Spirit Trial Sun Back Left Chest",
+        "Ganon's Castle MQ Spirit Trial Sun Back Left Chest", RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_BACK_LEFT_CHEST,
+        RG_GANONS_CASTLE_SMALL_KEY, { Category::cGanonsCastle, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_FRONT_LEFT_CHEST] =
+        Location::Chest(RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_FRONT_LEFT_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_GANONS_CASTLE, ACTOR_EN_BOX, SCENE_GANONTIKA, -30455, 0x09,
+                        "MQ Spirit Trial Sun Front Left Chest", "Ganon's Castle MQ Spirit Trial Sun Front Left Chest",
+                        RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_SUN_FRONT_LEFT_CHEST, RG_RECOVERY_HEART,
+                        {
+                            Category::cGanonsCastle,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_FIRST_CHEST] = Location::Chest(
+        RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_FIRST_CHEST, RCQUEST_MQ, RCTYPE_STANDARD, RCAREA_GANONS_CASTLE, ACTOR_EN_BOX,
+        SCENE_GANONTIKA, 20586, 0x0A, "MQ Spirit Trial First Chest", "Ganon's Castle MQ Spirit Trial First Chest",
+        RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_FIRST_CHEST, RG_BOMBCHU_10,
+        {
+            Category::cGanonsCastle,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_INVISIBLE_CHEST] =
+        Location::Chest(RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_INVISIBLE_CHEST, RCQUEST_MQ, RCTYPE_STANDARD,
+                        RCAREA_GANONS_CASTLE, ACTOR_EN_BOX, SCENE_GANONTIKA, 26964, 0x14,
+                        "MQ Spirit Trial Invisible Chest", "Ganon's Castle MQ Spirit Trial Invisible Chest",
+                        RC_GANONS_CASTLE_MQ_SPIRIT_TRIAL_INVISIBLE_CHEST, RG_ARROWS_10,
+                        {
+                            Category::cGanonsCastle,
+                        },
+                        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FREESTANDING_KEY] = Location::Collectable(
+        RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FREESTANDING_KEY, RCQUEST_MQ, RCTYPE_SMALL_KEY, RCAREA_GANONS_CASTLE,
+        ACTOR_EN_ITEM00, SCENE_GANONTIKA, 273, 0x01, "MQ Forest Trial Freestanding Key",
+        "Ganon's Castle MQ Forest Trial Freestanding Key", RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FREESTANDING_KEY,
+        RG_GANONS_CASTLE_SMALL_KEY, { Category::cGanonsCastle, Category::cVanillaSmallKey },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_DEKU_SCRUB_RIGHT] = Location::Base(
+        RC_GANONS_CASTLE_MQ_DEKU_SCRUB_RIGHT, RCQUEST_MQ, RCTYPE_SCRUB, RCAREA_GANONS_CASTLE, ACTOR_EN_DNS,
+        SCENE_GANONTIKA, 0x00, 0x30, "MQ Deku Scrub Right", "Ganon's Castle MQ Deku Scrub Right",
+        RC_GANONS_CASTLE_MQ_DEKU_SCRUB_RIGHT, RG_BUY_DEKU_NUT_5,
+        {
+            Category::cGanonsCastle,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x0D, 0x01), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_LEFT] = Location::Base(
+        RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_LEFT, RCQUEST_MQ, RCTYPE_SCRUB, RCAREA_GANONS_CASTLE, ACTOR_EN_DNS,
+        SCENE_GANONTIKA, 0x05, 0x37, "MQ Deku Scrub Center-Left", "Ganon's Castle MQ Deku Scrub Center-Left",
+        RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_LEFT, RG_BUY_BOMBS_535,
+        {
+            Category::cGanonsCastle,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x0D, 0x06), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER] = Location::Base(
+        RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER, RCQUEST_MQ, RCTYPE_SCRUB, RCAREA_GANONS_CASTLE, ACTOR_EN_DNS,
+        SCENE_GANONTIKA, 0x03, 0x33, "MQ Deku Scrub Center", "Ganon's Castle MQ Deku Scrub Center".,
+        RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER, RG_BUY_ARROWS_30,
+        {
+            Category::cGanonsCastle,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x0D, 0x04), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_RIGHT] = Location::Base(
+        RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_RIGHT, RCQUEST_MQ, RCTYPE_SCRUB, RCAREA_GANONS_CASTLE, ACTOR_EN_DNS,
+        SCENE_GANONTIKA, 0x07, 0x39, "MQ Deku Scrub Center-Right", "Ganon's Castle MQ Deku Scrub Center-Right",
+        RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_RIGHT, RG_BUY_RED_POTION_30,
+        {
+            Category::cGanonsCastle,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x0D, 0x08), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    locationTable[RC_GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT] = Location::Base(
+        RC_GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT, RCQUEST_MQ, RCTYPE_SCRUB, RCAREA_GANONS_CASTLE, ACTOR_EN_DNS,
+        SCENE_GANONTIKA, 0x08, 0x3A, "MQ Deku Scrub Left", "Ganon's Castle MQ Deku Scrub Left",
+        RC_GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT, RG_BUY_GREEN_POTION,
+        {
+            Category::cGanonsCastle,
+            Category::cDekuScrub,
+        },
+        SpoilerCollectionCheck::Scrub(0x0D, 0x09), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
 }
