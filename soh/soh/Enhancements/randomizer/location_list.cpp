@@ -4618,4 +4618,148 @@ void StaticData::InitLocationTable() {
         "Shadow Temple Bongo Bongo Heart Container", RC_SHADOW_TEMPLE_BONGO_BONGO_HEART, RG_HEART_CONTAINER,
         { Category::cShadowTemple, Category::cBossHeart, Category::cSongDungeonReward },
         SpoilerCollectionCheck::Collectable(0x18, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    
+    // Cutscenes
+    locationTable[RC_TOT_LIGHT_ARROWS_CUTSCENE] =
+        Location::Delayed(RC_TOT_LIGHT_ARROWS_CUTSCENE, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_MARKET, ACTOR_ID_MAX,
+                          SCENE_ID_MAX, 0x00, 0x01, "ToT Light Arrow Cutscene", "ToT Light Arrow Cutscene",
+                          RC_TOT_LIGHT_ARROWS_CUTSCENE, RG_LIGHT_ARROWS, { Category::cTempleOfTime, Category::cMarket },
+                          SpoilerCollectionCheck::Chest(0x43, 0x1E), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_LW_GIFT_FROM_SARIA] =
+        Location::Delayed(RC_LW_GIFT_FROM_SARIA, RCQUEST_BOTH, RCTYPE_OCARINA, RCAREA_LOST_WOODS, ACTOR_ID_MAX,
+                          SCENE_SPOT10, 0x00, 0x02, "Gift From Saria", "LW Gift From Saria", RC_LW_GIFT_FROM_SARIA,
+                          RG_PROGRESSIVE_OCARINA, { Category::cLostWoods, Category::cForest },
+                          SpoilerCollectionCheck::EventChkInf(0xC1), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+    locationTable[RC_ZF_GREAT_FAIRY_REWARD] = Location::Delayed(
+        RC_ZF_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_ZORAS_FOUNTAIN, ACTOR_BG_DY_YOSEIZO,
+        SCENE_YOUSEI_IZUMI_YOKO, 1, 0x10, "Great Fairy Reward", "ZF Great Fairy Reward", RC_ZF_GREAT_FAIRY_REWARD,
+        RG_FARORES_WIND, { Category::cZorasFountain, Category::cFairies }, SpoilerCollectionCheck::Chest(0x3D, 0x01),
+        SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
+    locationTable[RC_HC_GREAT_FAIRY_REWARD] = Location::Delayed(
+        RC_HC_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_CASTLE, ACTOR_BG_DY_YOSEIZO,
+        SCENE_YOUSEI_IZUMI_YOKO, 2, 0x11, "Great Fairy Reward", "HC Great Fairy Reward", RC_HC_GREAT_FAIRY_REWARD,
+        RG_DINS_FIRE, { Category::cHyruleCastle, Category::cMarket, Category::cFairies },
+        SpoilerCollectionCheck::Chest(0x3D, 0x02), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_COLOSSUS_GREAT_FAIRY_REWARD] = Location::Delayed(
+        RC_COLOSSUS_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DESERT_COLOSSUS, ACTOR_BG_DY_YOSEIZO,
+        SCENE_YOUSEI_IZUMI_YOKO, 3, 0x12, "Great Fairy Reward", "Colossus Great Fairy Reward",
+        RC_COLOSSUS_GREAT_FAIRY_REWARD, RG_NAYRUS_LOVE, { Category::cDesertColossus, Category::cFairies },
+        SpoilerCollectionCheck::Chest(0x3D, 0x03), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_DMT_GREAT_FAIRY_REWARD] = Location::Delayed(
+        RC_DMT_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_BG_DY_YOSEIZO,
+        SCENE_DAIYOUSEI_IZUMI, 1, 0x13, "Great Fairy Reward", "DMT Great Fairy Reward", RC_DMT_GREAT_FAIRY_REWARD,
+        RG_PROGRESSIVE_MAGIC_METER, { Category::cDeathMountainTrail, Category::cDeathMountain, Category::cFairies },
+        SpoilerCollectionCheck::Chest(0x3B, 0x01), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_DMC_GREAT_FAIRY_REWARD] = Location::Delayed(
+        RC_DMC_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_BG_DY_YOSEIZO,
+        SCENE_DAIYOUSEI_IZUMI, 2, 0x14, "Great Fairy Reward", "DMC Great Fairy Reward", RC_DMC_GREAT_FAIRY_REWARD,
+        RG_PROGRESSIVE_MAGIC_METER, { Category::cDeathMountainCrater, Category::cDeathMountain, Category::cFairies },
+        SpoilerCollectionCheck::Chest(0x3B, 0x02), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_OGC_GREAT_FAIRY_REWARD] = Location::Delayed(
+        RC_OGC_GREAT_FAIRY_REWARD, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_HYRULE_CASTLE, ACTOR_BG_DY_YOSEIZO,
+        SCENE_DAIYOUSEI_IZUMI, 3, 0x15, "OGC Great Fairy Reward", "OGC Great Fairy Reward", RC_OGC_GREAT_FAIRY_REWARD,
+        RG_DOUBLE_DEFENSE, { Category::cOutsideGanonsCastle, Category::cFairies },
+        SpoilerCollectionCheck::Chest(0x3B, 0x03), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
+    
+    // Songs
+    locationTable[RC_SHEIK_IN_FOREST] = Location::Delayed(
+        RC_SHEIK_IN_FOREST, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_SACRED_FOREST_MEADOW, ACTOR_ID_MAX, SCENE_SPOT05,
+        0x00, 0x20, "Sheik in Forest", "Sheik in Forest", RC_SHEIK_IN_FOREST, RG_MINUET_OF_FOREST,
+        {
+            Category::cSacredForestMeadow,
+            Category::cForest,
+            Category::cSong,
+        },
+        SpoilerCollectionCheck::EventChkInf(0x50), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+    locationTable[RC_SHEIK_IN_CRATER] = Location::Delayed(
+        RC_SHEIK_IN_CRATER, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_ID_MAX,
+        SCENE_ID_MAX, 0x00, 0x21, "Sheik in Crater", "Sheik in Crater", RC_SHEIK_IN_CRATER, RG_BOLERO_OF_FIRE,
+        {
+            Category::cDeathMountainCrater,
+            Category::cDeathMountain,
+            Category::cSong,
+        },
+        SpoilerCollectionCheck::EventChkInf(0x51), SpoilerCollectionCheckGroup::GROUP_DEATH_MOUNTAIN);
+    locationTable[RC_SHEIK_IN_ICE_CAVERN] = Location::Delayed(
+        RC_SHEIK_IN_ICE_CAVERN, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_ICE_CAVERN, ACTOR_ID_MAX, SCENE_ICE_DOUKUTO,
+        0x00, 0x22, "Sheik in Ice Cavern", "Sheik in Ice Cavern", RC_SHEIK_IN_ICE_CAVERN, RG_SERENADE_OF_WATER,
+        { Category::cIceCavern, Category::cSong, Category::cSongDungeonReward },
+        SpoilerCollectionCheck::EventChkInf(0x52), SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
+    locationTable[RC_SHEIK_AT_COLOSSUS] = Location::Delayed(
+        RC_SHEIK_AT_COLOSSUS, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_DESERT_COLOSSUS, ACTOR_ID_MAX, SCENE_SPOT11,
+        0x00, 0x23, "Sheik at Colossus", "Sheik at Colossus", RC_SHEIK_AT_COLOSSUS, RG_REQUIEM_OF_SPIRIT,
+        {
+            Category::cDesertColossus,
+            Category::cSong,
+        },
+        SpoilerCollectionCheck::EventChkInf(0xAC), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[RC_SHEIK_IN_KAKARIKO] = Location::Delayed(
+        RC_SHEIK_IN_KAKARIKO, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_KAKARIKO_VILLAGE, ACTOR_ID_MAX, SCENE_ID_MAX,
+        0x00, 0x24, "Sheik in Kakariko", "Sheik in Kakariko", RC_SHEIK_IN_KAKARIKO, RG_NOCTURNE_OF_SHADOW,
+        {
+            Category::cKakarikoVillage,
+            Category::cKakariko,
+            Category::cSong,
+        },
+        SpoilerCollectionCheck::EventChkInf(0xAA), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_SHEIK_AT_TEMPLE] = Location::Delayed(
+        RC_SHEIK_AT_TEMPLE, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_MARKET, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, 0x25,
+        "Sheik at Temple", "Sheik at Temple", RC_SHEIK_AT_TEMPLE, RG_PRELUDE_OF_LIGHT,
+        {
+            Category::cTempleOfTime,
+            Category::cMarket,
+            Category::cSong,
+        },
+        SpoilerCollectionCheck::Chest(0x43, 0x1F), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_SONG_FROM_IMPA] = Location::Delayed(
+        RC_SONG_FROM_IMPA, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_HYRULE_CASTLE, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00,
+        0x26, "Song from Impa", "Song from Impa", RC_SONG_FROM_IMPA, RG_ZELDAS_LULLABY,
+        { Category::cHyruleCastle, Category::cMarket, Category::cSong, Category::cSongDungeonReward },
+        SpoilerCollectionCheck::EventChkInf(0x59), SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
+    locationTable[RC_SONG_FROM_MALON] = Location::Delayed(
+        RC_SONG_FROM_MALON, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_LON_LON_RANCH, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00,
+        0x27, "Song from Malon", "Song from Malon", RC_SONG_FROM_MALON, RG_EPONAS_SONG,
+        {
+            Category::cLonLonRanch,
+            Category::cSong,
+        },
+        SpoilerCollectionCheck::Chest(0x63, 0x1F), SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
+    locationTable[RC_SONG_FROM_SARIA] = Location::Delayed(
+        RC_SONG_FROM_SARIA, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_SACRED_FOREST_MEADOW, ACTOR_ID_MAX, SCENE_SPOT05,
+        0x00, 0x28, "Song from Saria", "Song from Saria", RC_SONG_FROM_SARIA, RG_SARIAS_SONG,
+        {
+            Category::cSacredForestMeadow,
+            Category::cForest,
+            Category::cSong,
+        },
+        SpoilerCollectionCheck::Chest(0x56, 0x1F), SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+    locationTable[RC_SONG_FROM_ROYAL_FAMILYS_TOMB] =
+        Location::Delayed(RC_SONG_FROM_ROYAL_FAMILYS_TOMB, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_GRAVEYARD,
+                          ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, 0x29, "Song from Composers Grave",
+                          "Song from Composers Grave", RC_SONG_FROM_ROYAL_FAMILYS_TOMB, RG_SUNS_SONG,
+                          {
+                              Category::cGraveyard,
+                              Category::cKakariko,
+                              Category::cSong,
+                          },
+                          SpoilerCollectionCheck::Chest(0x41, 0x1F), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_SONG_FROM_OCARINA_OF_TIME] =
+        Location::Delayed(RC_SONG_FROM_OCARINA_OF_TIME, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_HYRULE_FIELD,
+                          ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, 0x2A, "Song from Ocarina of Time",
+                          "Song from Ocarina of Time", RC_SONG_FROM_OCARINA_OF_TIME, RG_SONG_OF_TIME,
+                          {
+                              Category::cHyruleField,
+                              Category::cSong,
+                              Category::cNeedSpiritualStones,
+                          },
+                          SpoilerCollectionCheck::Chest(0x51, 0x1F), SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
+    locationTable[RC_SONG_FROM_WINDMILL] = Location::Delayed(
+        RC_SONG_FROM_WINDMILL, RCQUEST_BOTH, RCTYPE_SONG_LOCATION, RCAREA_KAKARIKO_VILLAGE, ACTOR_ID_MAX, SCENE_ID_MAX,
+        0x00, 0x2B, "Song from Windmill", "Song from Windmill", RC_SONG_FROM_WINDMILL, RG_SONG_OF_STORMS,
+        {
+            Category::cKakarikoVillage,
+            Category::cKakariko,
+            Category::cSong,
+        },
+        SpoilerCollectionCheck::EventChkInf(0x5B), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
 }
