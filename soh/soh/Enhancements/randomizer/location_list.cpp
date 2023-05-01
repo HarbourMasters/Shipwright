@@ -4,6 +4,29 @@
 
 std::array<Rando::Location, RC_MAX> StaticData::locationTable;
 
+typedef enum {
+    DUNGEON_DEKU_TREE = 0,
+    DUNGEON_DODONGOS_CAVERN,
+    DUNGEON_JABUJABUS_BELLY,
+    DUNGEON_FOREST_TEMPLE,
+    DUNGEON_FIRE_TEMPLE,
+    DUNGEON_WATER_TEMPLE,
+    DUNGEON_SPIRIT_TEMPLE,
+    DUNGEON_SHADOW_TEMPLE,
+    DUNGEON_BOTTOM_OF_THE_WELL,
+    DUNGEON_ICE_CAVERN,
+    DUNGEON_GANONS_CASTLE_SECOND_PART,
+    DUNGEON_GERUDO_TRAINING_GROUNDS,
+    DUNGEON_GERUDO_FORTRESS,
+    DUNGEON_GANONS_CASTLE_FIRST_PART,
+    DUNGEON_GANONS_CASTLE_FLOOR_BENEATH_BOSS_CHAMBER,
+    DUNGEON_GANONS_CASTLE_CRUMBLING,
+    DUNGEON_TREASURE_CHEST_SHOP,
+    DUNGEON_DEKU_TREE_BOSS_ROOM,
+    DUNGEON_DODONGOS_CAVERN_BOSS_ROOM,
+    DUNGEON_JABUJABUS_BELLY_BOSS_ROOM,
+} DungeonId;
+
 void StaticData::InitLocationTable() {
     using namespace Rando;
     locationTable[RC_UNKNOWN_CHECK] = Location::Base(
@@ -3295,7 +3318,7 @@ void StaticData::InitLocationTable() {
             Category::cDekuScrub,
         },
         SpoilerCollectionCheck::Scrub(0x0D, 0x09), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
-    
+
     // Gold Skulltula Tokens
 
     // Dungeons
@@ -3366,7 +3389,7 @@ void StaticData::InitLocationTable() {
                               Category::cSkulltula,
                           },
                           SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
-    
+
     // Dodongo's Cavern
     locationTable[RC_DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS] =
         Location::GSToken(RC_DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN,
@@ -3474,15 +3497,14 @@ void StaticData::InitLocationTable() {
                               Category::cSkulltula,
                           },
                           SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
-    locationTable[RC_JABU_JABUS_BELLY_GS_NEAR_BOSS] =
-        Location::GSToken(RC_JABU_JABUS_BELLY_GS_NEAR_BOSS, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN,
-                          RCAREA_JABU_JABUS_BELLY, ACTOR_EN_SI, SCENE_BDAN, 8708, 0x04, "GS Near Boss",
-                          "Jabu Jabus Belly GS Near Boss", RC_JABU_JABUS_BELLY_GS_NEAR_BOSS,
-                          {
-                              Category::cJabuJabusBelly,
-                              Category::cSkulltula,
-                          },
-                          SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_JABU_JABUS_BELLY_GS_NEAR_BOSS] = Location::GSToken(
+        RC_JABU_JABUS_BELLY_GS_NEAR_BOSS, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_JABU_JABUS_BELLY, ACTOR_EN_SI,
+        SCENE_BDAN, 8708, 0x04, "GS Near Boss", "Jabu Jabus Belly GS Near Boss", RC_JABU_JABUS_BELLY_GS_NEAR_BOSS,
+        {
+            Category::cJabuJabusBelly,
+            Category::cSkulltula,
+        },
+        SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
     locationTable[RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM] =
         Location::GSToken(RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN,
                           RCAREA_JABU_JABUS_BELLY, ACTOR_EN_SI, SCENE_BDAN, 8712, 0x08, "GS Water Switch Room",
@@ -3545,15 +3567,15 @@ void StaticData::InitLocationTable() {
             Category::cSkulltula,
         },
         SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
-    locationTable[RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD] = Location::GSToken(
-        RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_FOREST_TEMPLE,
-        ACTOR_EN_SI, SCENE_BMORI1, 8964, 0x04, "GS Level Island Courtyard",
-        "Forest Temple GS Level Island Courtyard", RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD,
-        {
-            Category::cForestTemple,
-            Category::cSkulltula,
-        },
-        SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD] =
+        Location::GSToken(RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN,
+                          RCAREA_FOREST_TEMPLE, ACTOR_EN_SI, SCENE_BMORI1, 8964, 0x04, "GS Level Island Courtyard",
+                          "Forest Temple GS Level Island Courtyard", RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD,
+                          {
+                              Category::cForestTemple,
+                              Category::cSkulltula,
+                          },
+                          SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
     locationTable[RC_FOREST_TEMPLE_GS_LOBBY] = Location::GSToken(
         RC_FOREST_TEMPLE_GS_LOBBY, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_FOREST_TEMPLE, ACTOR_EN_SI, SCENE_BMORI1,
         8968, 0x08, "GS Lobby", "Forest Temple GS Lobby", RC_FOREST_TEMPLE_GS_LOBBY,
@@ -3614,7 +3636,7 @@ void StaticData::InitLocationTable() {
             Category::cSkulltula,
         },
         SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
-    
+
     // Fire Temple
     locationTable[RC_FIRE_TEMPLE_GS_SONG_OF_TIME_ROOM] =
         Location::GSToken(RC_FIRE_TEMPLE_GS_SONG_OF_TIME_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_FIRE_TEMPLE,
@@ -3703,7 +3725,7 @@ void StaticData::InitLocationTable() {
                               Category::cSkulltula,
                           },
                           SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
-    
+
     // Water Temple
     locationTable[RC_WATER_TEMPLE_GS_BEHIND_GATE] = Location::GSToken(
         RC_WATER_TEMPLE_GS_BEHIND_GATE, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_WATER_TEMPLE, ACTOR_EN_SI,
@@ -3792,7 +3814,7 @@ void StaticData::InitLocationTable() {
                               Category::cSkulltula,
                           },
                           SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
-    
+
     // Spirit Temple
     locationTable[RC_SPIRIT_TEMPLE_GS_HALL_AFTER_SUN_BLOCK_ROOM] = Location::GSToken(
         RC_SPIRIT_TEMPLE_GS_HALL_AFTER_SUN_BLOCK_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_SPIRIT_TEMPLE,
@@ -3842,7 +3864,7 @@ void StaticData::InitLocationTable() {
         SCENE_JYASINZOU, 9729, 0x01, "MQ GS Sun Block Room", "Spirit Temple MQ GS Sun Block Room",
         RC_SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM, { Category::cSpiritTemple, Category::cSkulltula },
         SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
-    
+
     // Shadow Temple
     locationTable[RC_SHADOW_TEMPLE_GS_SINGLE_GIANT_POT] =
         Location::GSToken(RC_SHADOW_TEMPLE_GS_SINGLE_GIANT_POT, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN,
@@ -3932,7 +3954,7 @@ void StaticData::InitLocationTable() {
             Category::cSkulltula,
         },
         SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
-    
+
     // Bottom of the Well
     locationTable[RC_BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE] =
         Location::GSToken(RC_BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN,
@@ -3988,7 +4010,7 @@ void StaticData::InitLocationTable() {
                               Category::cSkulltula,
                           },
                           SpoilerCollectionCheckGroup::GROUP_DUNGEON_BOTTOM_OF_THE_WELL);
-    
+
     // Ice Cavern
     locationTable[RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM] =
         Location::GSToken(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM, RCQUEST_VANILLA, RCTYPE_SKULL_TOKEN, RCAREA_ICE_CAVERN,
@@ -4041,7 +4063,7 @@ void StaticData::InitLocationTable() {
             Category::cSkulltula,
         },
         SpoilerCollectionCheckGroup::GROUP_DUNGEON_ICE_CAVERN);
-    
+
     // Overworld
 
     // Kokiri Forest
@@ -4069,7 +4091,7 @@ void StaticData::InitLocationTable() {
             Category::cSkulltula,
         },
         SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
-    
+
     // Lost Woods
     locationTable[RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE] = Location::GSToken(
         RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LOST_WOODS, ACTOR_EN_SI, SCENE_SPOT10,
@@ -4088,14 +4110,14 @@ void StaticData::InitLocationTable() {
                               Category::cSkulltula,
                           },
                           SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
-    locationTable[RC_LW_GS_ABOVE_THEATER] = Location::GSToken(
-        RC_LW_GS_ABOVE_THEATER, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LOST_WOODS, ACTOR_EN_SI, SCENE_SPOT10, 19716,
-        0x04, "GS Above Theater", "LW GS Above Theater", RC_LW_GS_ABOVE_THEATER,
-        {
-            Category::cLostWoods,
-            Category::cSkulltula,
-        },
-        SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
+    locationTable[RC_LW_GS_ABOVE_THEATER] =
+        Location::GSToken(RC_LW_GS_ABOVE_THEATER, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LOST_WOODS, ACTOR_EN_SI,
+                          SCENE_SPOT10, 19716, 0x04, "GS Above Theater", "LW GS Above Theater", RC_LW_GS_ABOVE_THEATER,
+                          {
+                              Category::cLostWoods,
+                              Category::cSkulltula,
+                          },
+                          SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
     locationTable[RC_SFM_GS] =
         Location::GSToken(RC_SFM_GS, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_SACRED_FOREST_MEADOW, ACTOR_EN_SI,
                           SCENE_SPOT05, 19720, 0x08, "GS", "SFM GS", RC_SFM_GS,
@@ -4104,7 +4126,7 @@ void StaticData::InitLocationTable() {
                               Category::cSkulltula,
                           },
                           SpoilerCollectionCheckGroup::GROUP_LOST_WOODS);
-    
+
     // Hyrule Field
     locationTable[RC_HF_GS_COW_GROTTO] =
         Location::GSToken(RC_HF_GS_COW_GROTTO, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_HYRULE_FIELD, ACTOR_EN_SI,
@@ -4116,7 +4138,7 @@ void StaticData::InitLocationTable() {
                           SCENE_KAKUSIANA, 10754, 0x02, "GS Near Kak Grotto", "HF GS Near Kak Grotto",
                           RC_HF_GS_NEAR_KAK_GROTTO, { Category::cHyruleField, Category::cSkulltula, Category::cGrotto },
                           SpoilerCollectionCheckGroup::GROUP_HYRULE_FIELD);
-    
+
     // Lake Hylia
     locationTable[RC_LH_GS_BEAN_PATCH] =
         Location::GSToken(RC_LH_GS_BEAN_PATCH, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LAKE_HYLIA, ACTOR_EN_SI,
@@ -4158,7 +4180,7 @@ void StaticData::InitLocationTable() {
                               Category::cSkulltula,
                           },
                           SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    
+
     // Gerudo Valley
     locationTable[RC_GV_GS_BEAN_PATCH] =
         Location::GSToken(RC_GV_GS_BEAN_PATCH, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_GERUDO_VALLEY, ACTOR_EN_SI,
@@ -4192,7 +4214,7 @@ void StaticData::InitLocationTable() {
                               Category::cSkulltula,
                           },
                           SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-    
+
     // Gerudo Fortress
     locationTable[RC_GF_GS_ARCHERY_RANGE] =
         Location::GSToken(RC_GF_GS_ARCHERY_RANGE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_GERUDO_FORTRESS, ACTOR_EN_SI,
@@ -4210,7 +4232,7 @@ void StaticData::InitLocationTable() {
                               Category::cSkulltula,
                           },
                           SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-    
+
     // Wasteland & Desert Colossus
     locationTable[RC_WASTELAND_GS] =
         Location::GSToken(RC_WASTELAND_GS, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_WASTELAND, ACTOR_EN_SI,
@@ -4244,7 +4266,7 @@ void StaticData::InitLocationTable() {
                               Category::cSkulltula,
                           },
                           SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
-    
+
     // Hyrule Castle, Market, and Outside Ganon's Castle
     locationTable[RC_OGC_GS] =
         Location::GSToken(RC_OGC_GS, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_HYRULE_CASTLE, ACTOR_EN_SI,
@@ -4275,7 +4297,7 @@ void StaticData::InitLocationTable() {
             Category::cSkulltula,
         },
         SpoilerCollectionCheckGroup::GROUP_HYRULE_CASTLE);
-    
+
     // Kakariko
     locationTable[RC_KAK_GS_HOUSE_UNDER_CONSTRUCTION] =
         Location::GSToken(RC_KAK_GS_HOUSE_UNDER_CONSTRUCTION, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_KAKARIKO_VILLAGE,
@@ -4294,13 +4316,14 @@ void StaticData::InitLocationTable() {
             Category::cSkulltula,
         },
         SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    locationTable[RC_KAK_GS_GUARDS_HOUSE] = Location::GSToken(RC_KAK_GS_GUARDS_HOUSE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_SI,
-                  SCENE_SPOT01, 20482, 0x02, "GS Guards House", "Kak GS Guards House", RC_KAK_GS_GUARDS_HOUSE,
-                  {
-                      Category::cKakarikoVillage,
-                      Category::cSkulltula,
-                  },
-                  SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
+    locationTable[RC_KAK_GS_GUARDS_HOUSE] = Location::GSToken(
+        RC_KAK_GS_GUARDS_HOUSE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_SI, SCENE_SPOT01,
+        20482, 0x02, "GS Guards House", "Kak GS Guards House", RC_KAK_GS_GUARDS_HOUSE,
+        {
+            Category::cKakarikoVillage,
+            Category::cSkulltula,
+        },
+        SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
     locationTable[RC_KAK_GS_TREE] =
         Location::GSToken(RC_KAK_GS_TREE, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_SI,
                           SCENE_SPOT01, -28640, 0x20, "GS Tree", "Kak GS Tree", RC_KAK_GS_TREE,
@@ -4325,7 +4348,7 @@ void StaticData::InitLocationTable() {
             Category::cSkulltula,
         },
         SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    
+
     // Graveyard
     locationTable[RC_GRAVEYARD_GS_WALL] =
         Location::GSToken(RC_GRAVEYARD_GS_WALL, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_GRAVEYARD, ACTOR_EN_SI,
@@ -4343,7 +4366,7 @@ void StaticData::InitLocationTable() {
             Category::cSkulltula,
         },
         SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
-    
+
     // Death Mountain
     locationTable[RC_DMC_GS_BEAN_PATCH] = Location::GSToken(
         RC_DMC_GS_BEAN_PATCH, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_SI, SCENE_SPOT17,
@@ -4410,7 +4433,7 @@ void StaticData::InitLocationTable() {
                               Category::cSkulltula,
                           },
                           SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
-    
+
     // Zora's River, Domain, and Fountain
     locationTable[RC_ZR_GS_LADDER] =
         Location::GSToken(RC_ZR_GS_LADDER, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_ZORAS_RIVER, ACTOR_EN_SI,
@@ -4468,7 +4491,7 @@ void StaticData::InitLocationTable() {
                               Category::cSkulltula,
                           },
                           SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
-    
+
     // Lon Lon Ranch
     locationTable[RC_LLR_GS_BACK_WALL] =
         Location::GSToken(RC_LLR_GS_BACK_WALL, RCQUEST_BOTH, RCTYPE_SKULL_TOKEN, RCAREA_LON_LON_RANCH, ACTOR_EN_SI,
@@ -4502,4 +4525,47 @@ void StaticData::InitLocationTable() {
                               Category::cSkulltula,
                           },
                           SpoilerCollectionCheckGroup::GROUP_LON_LON_RANCH);
+
+    // Bosses
+    locationTable[RC_LINKS_POCKET] = Location::Reward(
+        RC_LINKS_POCKET, RCQUEST_BOTH, RCTYPE_LINKS_POCKET, RCAREA_KOKIRI_FOREST, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00,
+        0x00, "Link's Pocket", "Link's Pocket", RC_LINKS_POCKET, RG_LIGHT_MEDALLION, {},
+        SpoilerCollectionCheck::AlwaysCollected(), SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
+    locationTable[RC_QUEEN_GOHMA] = Location::Reward(
+        RC_QUEEN_GOHMA, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_DEKU_TREE, ACTOR_DOOR_WARP1, SCENE_YDAN_BOSS, 0x00,
+        DungeonId::DUNGEON_DEKU_TREE, "Queen Gohma", "Queen Gohma", RC_QUEEN_GOHMA, RG_KOKIRI_EMERALD, {},
+        SpoilerCollectionCheck::Chest(0x11, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DEKU_TREE);
+    locationTable[RC_KING_DODONGO] = Location::Reward(
+        RC_KING_DODONGO, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_DODONGOS_CAVERN, ACTOR_DOOR_WARP1, SCENE_DDAN_BOSS,
+        0x00, DungeonId::DUNGEON_DODONGOS_CAVERN, "King Dodongo", "King Dodongo", RC_KING_DODONGO, RG_GORON_RUBY, {},
+        SpoilerCollectionCheck::Chest(0x12, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_DODONGOS_CAVERN);
+    locationTable[RC_BARINADE] = Location::Reward(
+        RC_BARINADE, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_JABU_JABUS_BELLY, ACTOR_DOOR_WARP1, SCENE_BDAN_BOSS,
+        0x00, DungeonId::DUNGEON_JABUJABUS_BELLY, "Barinade", "Barinade", RC_BARINADE, RG_ZORA_SAPPHIRE, {},
+        SpoilerCollectionCheck::Chest(0x13, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_JABUJABUS_BELLY);
+    locationTable[RC_PHANTOM_GANON] =
+        Location::Reward(RC_PHANTOM_GANON, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_FOREST_TEMPLE, ACTOR_DOOR_WARP1,
+                         SCENE_MORIBOSSROOM, 0x00, DungeonId::DUNGEON_FOREST_TEMPLE, "Phantom Ganon", "Phantom Ganon",
+                         RC_PHANTOM_GANON, RG_FOREST_MEDALLION, {}, SpoilerCollectionCheck::Chest(0x14, 0x1F),
+                         SpoilerCollectionCheckGroup::GROUP_DUNGEON_FOREST_TEMPLE);
+    locationTable[RC_VOLVAGIA] = Location::Reward(
+        RC_VOLVAGIA, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_FIRE_TEMPLE, ACTOR_DOOR_WARP1, SCENE_FIRE_BS, 0x00,
+        DungeonId::DUNGEON_FIRE_TEMPLE, "Volvagia", "Volvagia", RC_VOLVAGIA, RG_FIRE_MEDALLION, {},
+        SpoilerCollectionCheck::Chest(0x15, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_FIRE_TEMPLE);
+    locationTable[RC_MORPHA] = Location::Reward(
+        RC_MORPHA, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_WATER_TEMPLE, ACTOR_DOOR_WARP1, SCENE_MIZUSIN_BS, 0x00,
+        DungeonId::DUNGEON_WATER_TEMPLE, "Morpha", "Morpha", RC_MORPHA, RG_WATER_MEDALLION, {},
+        SpoilerCollectionCheck::Chest(0x16, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_WATER_TEMPLE);
+    locationTable[RC_TWINROVA] = Location::Reward(
+        RC_TWINROVA, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_SPIRIT_TEMPLE, ACTOR_DOOR_WARP1, SCENE_JYASINBOSS,
+        0x00, DungeonId::DUNGEON_SPIRIT_TEMPLE, "Twinrova", "Twinrova", RC_TWINROVA, RG_SPIRIT_MEDALLION, {},
+        SpoilerCollectionCheck::Chest(0x17, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_SPIRIT_TEMPLE);
+    locationTable[RC_BONGO_BONGO] = Location::Reward(
+        RC_BONGO_BONGO, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_SHADOW_TEMPLE, ACTOR_DOOR_WARP1, SCENE_HAKADAN_BS,
+        0x00, DungeonId::DUNGEON_SHADOW_TEMPLE, "Bongo Bongo", "Bongo Bongo", RC_BONGO_BONGO, RG_SHADOW_MEDALLION, {},
+        SpoilerCollectionCheck::Chest(0x18, 0x1F), SpoilerCollectionCheckGroup::GROUP_DUNGEON_SHADOW_TEMPLE);
+    locationTable[RC_GANON] = Location::Reward(
+        RC_GANON, RCQUEST_BOTH, RCTYPE_DUNGEON_REWARD, RCAREA_GANONS_CASTLE, ACTOR_DOOR_WARP1, SCENE_GANON_BOSS, 0x00,
+        DungeonId::DUNGEON_GANONS_CASTLE_CRUMBLING, "Ganon", "Ganon", RC_GANON, RG_TRIFORCE, {},
+        SpoilerCollectionCheck::None(), SpoilerCollectionCheckGroup::GROUP_DUNGEON_GANONS_CASTLE);
 }
