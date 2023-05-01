@@ -21,8 +21,6 @@ public class ShipOfHarkinian : SimpleTCPPack
     {
 
         // Spawn Enemies and Objects
-        //new("Spawn Enemies/Objects", "spawn_stuff", ItemKind.Folder),
-
         new("Cucco Storm", "spawn_cucco_storm") { Category = "Spawn Enemies/Objects" },
         new("Lit Bomb", "spawn_lit_bomb") { Category = "Spawn Enemies/Objects" },
         new("Explosion", "spawn_explosion") { Category = "Spawn Enemies/Objects" },
@@ -41,8 +39,6 @@ public class ShipOfHarkinian : SimpleTCPPack
 
 
         // Link Modifiers
-        //new("Link Modifiers", "link_modifiers", ItemKind.Folder),
-
         new("Take Half Damage", "take_half_damage") { Category = "Link Modifiers", Duration = 30 },
         new("Take Double Damage", "take_double_damage") { Category = "Link Modifiers", Duration = 30 },
         new("One-Hit KO", "one_hit_ko") { Category = "Link Modifiers", Duration = 30 },
@@ -60,8 +56,6 @@ public class ShipOfHarkinian : SimpleTCPPack
 
 
         // Hurt or Heal Link
-        //new("Hurt/Heal Link", "hurtheal_link", ItemKind.Folder),
-
         new("Empty Heart", "empty_heart") { Category = "Hurt/Heal Link", Quantity = 20 },
         new("Fill Heart", "fill_heart") { Category = "Hurt/Heal Link", Quantity = 20 },
         new("Knockback Link (Weak)", "knockback_link_weak") { Category = "Hurt/Heal Link" },
@@ -74,8 +68,6 @@ public class ShipOfHarkinian : SimpleTCPPack
 
 
         // Give Items and Consumables
-        //new("Give Items/Consumables", "give_item", ItemKind.Folder),
-
         new("Add Heart Container", "add_heart_container") { Category = "Give Items/Consumables" },
         new("Fill Magic", "fill_magic") { Category = "Give Items/Consumables" },
         new("Give Rupees", "add_rupees") { Category = "Give Items/Consumables", Quantity = 999 },
@@ -90,8 +82,6 @@ public class ShipOfHarkinian : SimpleTCPPack
 
 
         // Take Items and Consumables
-        //new("Take Items/Consumables", ItemKind.Folder),
-
         new("Remove Heart Container", "remove_heart_container") { Category = "Take Items/Consumables" },
         new("Empty Magic", "empty_magic") { Category = "Take Items/Consumables" },
         new("Take Rupees", "remove_rupees") { Category = "Take Items/Consumables", Quantity = 999 },
@@ -106,8 +96,6 @@ public class ShipOfHarkinian : SimpleTCPPack
 
 
         // Link Size Modifiers
-        //new("Change Link's Size", "link_size", ItemKind.Folder),
-
         new("Giant Lonk", "giant_link") { Category = "Change Link's Size", Duration = 30 },
         new("Minish Link", "minish_link") { Category = "Change Link's Size", Duration = 30 },
         new("Paper Link", "paper_link") { Category = "Change Link's Size", Duration = 30 },
@@ -116,16 +104,12 @@ public class ShipOfHarkinian : SimpleTCPPack
 
 
         // Generic Effects
-        //new("Generic Effects", "generic_effects", ItemKind.Folder),
-
         new("Random Bomb Fuse Timer", "random_bomb_timer") { Category = "Generic Effects", Duration = 60 },
         new("Set Time to Dawn", "set_time_to_dawn") { Category = "Generic Effects", },
         new("Set Time to Dusk", "set_time_to_dusk") { Category = "Generic Effects", },
 
 
         // Visual Effects
-        //new("Visual Effects", "visual_effects", ItemKind.Folder),
-
         new("No UI", "no_ui") { Category = "Visual Effects", Duration = 60 },
         new("Rainstorm", "rainstorm") { Category = "Visual Effects", Duration = 30 },
         new("Debug Mode", "debug_mode") { Category = "Visual Effects", Duration = 30 },
@@ -133,8 +117,6 @@ public class ShipOfHarkinian : SimpleTCPPack
 
 
         // Controls
-        //new("Controls", "controls", ItemKind.Folder),
-
         new("No Z Button", "no_z_button") { Category = "Controls", Duration = 30 },
         new("Reverse Controls", "reverse_controls") { Category = "Controls", Duration = 60 },
         new("Pacifist Mode", "pacifist_mode") { Category = "Controls", Duration = 15 },
@@ -144,8 +126,6 @@ public class ShipOfHarkinian : SimpleTCPPack
 
 
         // Teleport Player
-        //new("Teleport Player", "teleport", ItemKind.Folder),
-
         new("Link's House", "tp_links_house") { Category = "Teleport Player" },
         new("Minuet Destination", "tp_minuet") { Category = "Teleport Player" },
         new("Bolero Destination", "tp_bolero") { Category = "Teleport Player" },
