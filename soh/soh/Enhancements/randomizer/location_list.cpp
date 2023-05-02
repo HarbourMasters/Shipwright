@@ -5142,4 +5142,129 @@ void StaticData::InitLocationTable() {
         RC_GC_SHOP_ITEM_8, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY, ACTOR_EN_GIRLA, SCENE_GOLON, 0x07, 0x37,
         "Shop Item 8", "GC Shop Item 8", RC_GC_SHOP_ITEM_8, RG_BUY_HEART, { Category::cGoronCity, Category::cShop },
         SpoilerCollectionCheck::ShopItem(0x2E, 7), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
+    
+    // Gossip Stones
+    locationTable[RC_DMC_GOSSIP_STONE] =
+        Location::HintStone(RC_DMC_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_DEATH_MOUNTAIN_CRATER,
+                            ACTOR_EN_GS, SCENE_SPOT17, 14341, 0x05, "Gossip Stone", "DMC Gossip Stone", {});
+    locationTable[RC_DMT_GOSSIP_STONE] =
+        Location::HintStone(RC_DMT_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_DEATH_MOUNTAIN_TRAIL,
+                            ACTOR_EN_GS, SCENE_SPOT16, 14340, 0x04, "Gossip Stone", "DMT Gossip Stone", {});
+    locationTable[RC_COLOSSUS_GOSSIP_STONE] =
+        Location::HintStone(RC_COLOSSUS_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_DESERT_COLOSSUS,
+                            ACTOR_EN_GS, SCENE_SPOT11, 14362, 0x1A, "Gossip Stone", "Colossus Gossip Stone", {});
+    locationTable[RC_DODONGOS_CAVERN_GOSSIP_STONE] = Location::HintStone(
+        RC_DODONGOS_CAVERN_GOSSIP_STONE, RCQUEST_VANILLA, RCTYPE_GOSSIP_STONE, RCAREA_DODONGOS_CAVERN, ACTOR_EN_GS,
+        SCENE_DDAN, 4372, 0x14, "Gossip Stone", "Dodongo's Cavern Gossip Stone", {});
+    locationTable[RC_GV_GOSSIP_STONE] =
+        Location::HintStone(RC_GV_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_GERUDO_VALLEY, ACTOR_EN_GS,
+                            SCENE_SPOT09, 14353, 0x11, "Gossip Stone", "GV Gossip Stone", {});
+    locationTable[RC_GC_MAZE_GOSSIP_STONE] =
+        Location::HintStone(RC_GC_MAZE_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_GORON_CITY, ACTOR_EN_GS,
+                            SCENE_SPOT18, 14357, 0x15, "Maze Gossip Stone", "GC Maze Gossip Stone", {});
+    locationTable[RC_GC_MEDIGORON_GOSSIP_STONE] = Location::HintStone(
+        RC_GC_MEDIGORON_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_GORON_CITY, ACTOR_EN_GS, SCENE_SPOT18,
+        14873, 0x19, "Medigoron Gossip Stone", "GC Medigoron Gossip Stone", {});
+    locationTable[RC_GY_GOSSIP_STONE] =
+        Location::HintStone(RC_GY_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_GRAVEYARD, ACTOR_EN_GS,
+                            SCENE_SPOT02, 14346, 0x0A, "Gossip Stone", "GY Gossip Stone", {});
+    locationTable[RC_HC_MALON_GOSSIP_STONE] =
+        Location::HintStone(RC_HC_MALON_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_HYRULE_CASTLE,
+                            ACTOR_EN_GS, SCENE_SPOT15, 14610, 0x12, "Malon Gossip Stone", "HC Malon Gossip Stone", {});
+    locationTable[RC_HC_ROCK_WALL_GOSSIP_STONE] = Location::HintStone(
+        RC_HC_ROCK_WALL_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_HYRULE_CASTLE, ACTOR_EN_GS,
+        SCENE_SPOT15, 14347, 0x0B, "Rock Wall Gossip Stone", "HC Rock Wall Gossip Stone", {});
+    locationTable[RC_HC_STORMS_GROTTO_GOSSIP_STONE] = Location::HintStone(
+        RC_HC_STORMS_GROTTO_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_HYRULE_CASTLE, ACTOR_EN_GS,
+        SCENE_KAKUSIANA, 14355, 0x13, "Storms Grotto Gossip Stone", "HC Storms Grotto Gossip Stone", {});
+    locationTable[RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE] = Location::HintStone(
+        RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_KOKIRI_FOREST, ACTOR_EN_GS,
+        SCENE_SPOT04, 14623, 0x1F, "Deku Tree Left Gossip Stone", "KF Deku Tree Left Gossip Stone", {});
+    locationTable[RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE] = Location::HintStone(
+        RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_KOKIRI_FOREST, ACTOR_EN_GS,
+        SCENE_SPOT04, 14880, 0x20, "Deku Tree Right Gossip Stone", "KF Deku Tree Right Gossip Stone", {});
+    locationTable[RC_KF_GOSSIP_STONE] =
+        Location::HintStone(RC_KF_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_KOKIRI_FOREST, ACTOR_EN_GS,
+                            SCENE_SPOT04, 14366, 0x1E, "Gossip Stone", "KF Gossip Stone", {});
+    locationTable[RC_KF_STORMS_GOSSIP_STONE] = Location::HintStone(
+        RC_KF_STORMS_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_KOKIRI_FOREST, ACTOR_EN_GS,
+        SCENE_KAKUSIANA, -22988, 0x3C, "Storms Gossip Stone", "KF Storms Gossip Stone", {});
+    locationTable[RC_LH_LAB_GOSSIP_STONE] =
+        Location::HintStone(RC_LH_LAB_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_LAKE_HYLIA, ACTOR_EN_GS,
+                            SCENE_SPOT06, 14339, 0x03, "Lab Gossip Stone", "LH Lab Gossip Stone", {});
+    locationTable[RC_LH_SOUTHEAST_GOSSIP_STONE] = Location::HintStone(
+        RC_LH_SOUTHEAST_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_LAKE_HYLIA, ACTOR_EN_GS, SCENE_SPOT06,
+        14863, 0x0F, "Southeast Gossip Stone", "LH Southeast Gossip Stone", {});
+    locationTable[RC_LH_SOUTHWEST_GOSSIP_STONE] = Location::HintStone(
+        RC_LH_SOUTHWEST_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_LAKE_HYLIA, ACTOR_EN_GS, SCENE_SPOT06,
+        14600, 0x08, "Southwest Gossip Stone", "LH Southwest Gossip Stone", {});
+    locationTable[RC_LW_GOSSIP_STONE] =
+        Location::HintStone(RC_LW_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_LOST_WOODS, ACTOR_EN_GS,
+                            SCENE_SPOT10, 14365, 0x1D, "Gossip Stone", "LW Gossip Stone", {});
+    locationTable[RC_SFM_MAZE_LOWER_GOSSIP_STONE] = Location::HintStone(
+        RC_SFM_MAZE_LOWER_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_SACRED_FOREST_MEADOW, ACTOR_EN_GS,
+        SCENE_SPOT05, 14358, 0x16, "Maze Lower Gossip Stone", "SFM Maze Lower Gossip Stone", {});
+    locationTable[RC_SFM_MAZE_UPPER_GOSSIP_STONE] = Location::HintStone(
+        RC_SFM_MAZE_UPPER_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_SACRED_FOREST_MEADOW, ACTOR_EN_GS,
+        SCENE_SPOT05, 14615, 0x17, "Maze Upper Gossip Stone", "SFM Maze Upper Gossip Stone", {});
+    locationTable[RC_SFM_SARIA_GOSSIP_STONE] =
+        Location::HintStone(RC_SFM_SARIA_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_SACRED_FOREST_MEADOW,
+                            ACTOR_EN_GS, SCENE_SPOT05, 14876, 0x1C, "Saria Gossip Stone", "SFM Saria Gossip Stone", {});
+    locationTable[RC_TOT_LEFT_GOSSIP_STONE] =
+        Location::HintStone(RC_TOT_LEFT_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_MARKET, ACTOR_EN_GS,
+                            SCENE_ID_MAX, 0x00, 0x06, "ToT Left Gossip Stone", "ToT Left Gossip Stone", {});
+    locationTable[RC_TOT_RIGHT_GOSSIP_STONE] =
+        Location::HintStone(RC_TOT_RIGHT_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_MARKET, ACTOR_EN_GS,
+                            SCENE_ID_MAX, 0x00, 0x07, "ToT Right Gossip Stone", "ToT Right Gossip Stone", {});
+    locationTable[RC_TOT_RIGHT_CENTER_GOSSIP_STONE] = Location::HintStone(
+        RC_TOT_RIGHT_CENTER_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_MARKET, ACTOR_EN_GS, SCENE_ID_MAX,
+        0x00, 0x10, "ToT Right Center Gossip Stone", "ToT Right Center Gossip Stone", {});
+    locationTable[RC_TOT_LEFT_CENTER_GOSSIP_STONE] = Location::HintStone(
+        RC_TOT_LEFT_CENTER_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_MARKET, ACTOR_EN_GS, SCENE_ID_MAX,
+        0x00, 0x0E, "ToT Left Center Gossip Stone", "ToT Left Center Gossip Stone", {});
+    locationTable[RC_ZD_GOSSIP_STONE] =
+        Location::HintStone(RC_ZD_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_ZORAS_DOMAIN, ACTOR_EN_GS,
+                            SCENE_SPOT07, 14345, 0x09, "Gossip Stone", "ZD Gossip Stone", {});
+    locationTable[RC_FAIRY_GOSSIP_STONE] =
+        Location::HintStone(RC_FAIRY_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_ZORAS_FOUNTAIN,
+                            ACTOR_EN_GS, SCENE_SPOT08, 0x00, 0x01, "Fairy Gossip Stone", "Fairy Gossip Stone", {});
+    locationTable[RC_JABU_GOSSIP_STONE] =
+        Location::HintStone(RC_JABU_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_ZORAS_FOUNTAIN, ACTOR_EN_GS,
+                            SCENE_SPOT08, 0x00, 0x02, "Jabu Gossip Stone", "Jabu Gossip Stone", {});
+    locationTable[RC_ZR_NEAR_GROTTOS_GOSSIP_STONE] = Location::HintStone(
+        RC_ZR_NEAR_GROTTOS_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_ZORAS_RIVER, ACTOR_EN_GS,
+        SCENE_SPOT03, 14605, 0x0D, "Near Grottos Gossip Stone", "ZR Near Grottos Gossip Stone", {});
+    locationTable[RC_ZR_NEAR_DOMAIN_GOSSIP_STONE] = Location::HintStone(
+        RC_ZR_NEAR_DOMAIN_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_ZORAS_RIVER, ACTOR_EN_GS,
+        SCENE_SPOT03, 14860, 0x0C, "Near Domain Gossip Stone", "ZR Near Domain Gossip Stone", {});
+    locationTable[RC_HF_COW_GROTTO_GOSSIP_STONE] = Location::HintStone(
+        RC_HF_COW_GROTTO_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_HYRULE_FIELD, ACTOR_EN_GS,
+        SCENE_KAKUSIANA, 14363, 0x1B, "Cow Grotto Gossip Stone", "HF Cow Grotto Gossip Stone", {});
+    locationTable[RC_HF_NEAR_MARKET_GOSSIP_STONE] = Location::HintStone(
+        RC_HF_NEAR_MARKET_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_HYRULE_FIELD, ACTOR_EN_GS,
+        SCENE_KAKUSIANA, -22944, 0x30, "Near Market Gossip Stone", "HF Near Market Gossip Stone", {});
+    locationTable[RC_HF_SOUTHEAST_GOSSIP_STONE] = Location::HintStone(
+        RC_HF_SOUTHEAST_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_HYRULE_FIELD, ACTOR_EN_GS,
+        SCENE_KAKUSIANA, -22978, 0x32, "Southeast Gossip Stone", "HF Southeast Gossip Stone", {});
+    locationTable[RC_HF_OPEN_GROTTO_GOSSIP_STONE] = Location::HintStone(
+        RC_HF_OPEN_GROTTO_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_HYRULE_FIELD, ACTOR_EN_GS,
+        SCENE_KAKUSIANA, -22947, 0x33, "Open Grotto Gossip Stone", "HF Open Grotto Gossip Stone", {});
+    locationTable[RC_KAK_OPEN_GROTTO_GOSSIP_STONE] = Location::HintStone(
+        RC_KAK_OPEN_GROTTO_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_KAKARIKO_VILLAGE, ACTOR_EN_GS,
+        SCENE_KAKUSIANA, -22984, 0x38, "Open Grotto Gossip Stone", "Kak Open Grotto Gossip Stone", {});
+    locationTable[RC_ZR_OPEN_GROTTO_GOSSIP_STONE] = Location::HintStone(
+        RC_ZR_OPEN_GROTTO_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_ZORAS_RIVER, ACTOR_EN_GS,
+        SCENE_KAKUSIANA, -22985, 0x39, "Open Grotto Gossip Stone", "ZR Open Grotto Gossip Stone", {});
+    locationTable[RC_LW_NEAR_SHORTCUTS_GOSSIP_STONE] = Location::HintStone(
+        RC_LW_NEAR_SHORTCUTS_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_LOST_WOODS, ACTOR_EN_GS,
+        SCENE_KAKUSIANA, -22964, 0x34, "Near Shortcuts Gossip Stone", "LW Near Shortcuts Gossip Stone", {});
+    locationTable[RC_DMT_STORMS_GROTTO_GOSSIP_STONE] = Location::HintStone(
+        RC_DMT_STORMS_GROTTO_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_DEATH_MOUNTAIN_TRAIL, ACTOR_EN_GS,
+        SCENE_KAKUSIANA, -23255, 0x37, "Storms Grotto Gossip Stone", "DMT Storms Grotto Gossip Stone", {});
+    locationTable[RC_DMC_UPPER_GROTTO_GOSSIP_STONE] = Location::HintStone(
+        RC_DMC_UPPER_GROTTO_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_GS,
+        SCENE_KAKUSIANA, -23802, 0x3A, "Upper Grotto Gossip Stone", "DMC Upper Grotto Gossip Stone", {});
+    
+    // Other Hints
+    locationTable[RC_GANONDORF_HINT] = Location::OtherHint(RC_GANONDORF_HINT, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_GANONS_CASTLE, ACTOR_EN_GANON_MANT, SCENE_GANON_BOSS, 0x00, 0x00, "Hint", "Ganondorf Hint", {});
 }
