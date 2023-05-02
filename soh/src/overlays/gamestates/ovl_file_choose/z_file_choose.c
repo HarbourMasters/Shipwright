@@ -688,8 +688,6 @@ void FileChoose_RotateToNameEntry(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
 
     this->windowRot += VREG(16);
-    lusprintf(__FILE__, __LINE__, 2, "Hello World");
-    lusprintf(__FILE__, __LINE__, 2, "Hello World %d", 1);
 
     if (MIN_QUEST == MAX_QUEST && this->windowRot >= 314.0f) {
         this->windowRot = 314.0f;
