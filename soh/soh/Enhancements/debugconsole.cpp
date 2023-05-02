@@ -187,6 +187,7 @@ static bool SetPosHandler(std::shared_ptr<Ship::Console> Console, const std::vec
 }
 
 static bool ResetHandler(std::shared_ptr<Ship::Console> Console, std::vector<std::string> args) {
+    SaveManager::Instance->ThreadPoolWait();
     if (gPlayState == nullptr) {
         SohImGui::GetConsole()->SendErrorMessage("PlayState == nullptr");
         return CMD_FAILED;

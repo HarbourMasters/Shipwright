@@ -324,6 +324,7 @@ void SaveManager::Init() {
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
     auto sOldSavePath = Ship::Window::GetPathRelativeToAppDirectory("oot_save.sav");
     auto sOldBackupSavePath = Ship::Window::GetPathRelativeToAppDirectory("oot_save.bak");
+    Ship::RegisterHook<Ship::ExitGame>([this]() { ThreadPoolWait(); });
 
     // If the save directory does not exist, create it
     if (!std::filesystem::exists(sSavePath)) {
@@ -364,6 +365,7 @@ void SaveManager::Init() {
     } else {
         CreateDefaultGlobal();
     }
+    smThreadPool = std::make_shared<BS::thread_pool>(1);
 
     // Load files to initialize metadata
     for (int fileNum = 0; fileNum < MaxFiles; fileNum++) {
@@ -700,11 +702,8 @@ void SaveManager::InitFileDebug() {
     gSaveContext.sceneFlags[5].swch = 0x40000000;
 }
 
-void SaveManager::SaveFile(int fileNum) {
-    if (fileNum == 0xFF) {
-        return;
-    }
-
+// Threaded SaveFile takes copy of gSaveContext for local unmodified storage
+void SaveManager::SaveFileThreaded(int fileNum, SaveContext saveContext) {
     nlohmann::json baseBlock;
 
     baseBlock["version"] = 1;
@@ -717,18 +716,19 @@ void SaveManager::SaveFile(int fileNum) {
         section.second.second(&gSaveContext);
     }
 
-#if defined(__SWITCH__) || defined(__WIIU__)
-    FILE* w = fopen(GetFileName(fileNum).c_str(), "w");
-    std::string json_string = baseBlock.dump(4);
-    fwrite(json_string.c_str(), sizeof(char), json_string.length(), w);
-    fclose(w);
-#else
     std::ofstream output(GetFileName(fileNum));
     output << std::setw(4) << baseBlock << std::endl;
-#endif
 
     InitMeta(fileNum);
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum);
+}
+
+void SaveManager::SaveFile(int fileNum) {
+    if (fileNum == 0xFF) {
+        return;
+    }
+    // Can't think of any time the promise would be needed, so use push_task instead of submit
+    smThreadPool->push_task(&SaveManager::SaveFileThreaded, this, fileNum, gSaveContext);
 }
 
 void SaveManager::SaveGlobal() {
@@ -791,6 +791,10 @@ void SaveManager::LoadFile(int fileNum) {
     }
     InitMeta(fileNum);
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadFile>(fileNum);
+}
+
+void SaveManager::ThreadPoolWait() {
+    smThreadPool->wait_for_tasks();
 }
 
 bool SaveManager::SaveFile_Exist(int fileNum) {

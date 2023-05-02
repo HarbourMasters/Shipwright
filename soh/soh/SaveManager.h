@@ -28,6 +28,8 @@ typedef struct {
 #include <functional>
 #include <vector>
 #include <filesystem>
+#include "thread-pool/BS_thread_pool.hpp"
+
 extern "C" {
     #include "z64save.h"
 }
@@ -51,6 +53,7 @@ public:
     void SaveGlobal();
     void LoadFile(int fileNum);
     bool SaveFile_Exist(int fileNum);
+    void ThreadPoolWait();
 
     // Adds a function that is called when we are intializing a save, including when we are loading a save.
     void AddInitFunction(InitFunc func);
@@ -118,6 +121,8 @@ public:
     void ConvertFromUnversioned();
     void CreateDefaultGlobal();
 
+    void SaveFileThreaded(int fileNum, const SaveContext saveContext);
+
     void InitMeta(int slotNum);
     static void InitFileImpl(bool isDebug);
     static void InitFileNormal();
@@ -144,6 +149,7 @@ public:
 
     nlohmann::json* currentJsonContext = nullptr;
     nlohmann::json::iterator currentJsonArrayContext;
+    std::shared_ptr<BS::thread_pool> smThreadPool;
 };
 
 #else
