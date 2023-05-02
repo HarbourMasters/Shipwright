@@ -42,7 +42,7 @@ public:
 
     using InitFunc = void(*)(bool isDebug);
     using LoadFunc = void(*)();
-    using SaveFunc = void(*)(const SaveContext* saveContext);
+    using SaveFunc = void(*)(SaveContext* saveContext);
     using PostFunc = void(*)(int version);
 
     SaveManager();
@@ -121,7 +121,7 @@ public:
     void ConvertFromUnversioned();
     void CreateDefaultGlobal();
 
-    void SaveFileThreaded(int fileNum, const SaveContext saveContext);
+    void SaveFileThreaded(int fileNum, SaveContext* saveContext);
 
     void InitMeta(int slotNum);
     static void InitFileImpl(bool isDebug);
@@ -130,12 +130,12 @@ public:
 
     static void LoadRandomizerVersion1();
     static void LoadRandomizerVersion2();
-    static void SaveRandomizer(const SaveContext* saveContext);
+    static void SaveRandomizer(SaveContext* saveContext);
 
     static void LoadBaseVersion1();
     static void LoadBaseVersion2();
     static void LoadBaseVersion3();
-    static void SaveBase(const SaveContext* saveContext);
+    static void SaveBase(SaveContext* saveContext);
 
     std::vector<InitFunc> initFuncs;
 

@@ -239,7 +239,7 @@ void SaveManager::LoadRandomizerVersion2() {
     });
 }
 
-void SaveManager::SaveRandomizer(const SaveContext* saveContext) {
+void SaveManager::SaveRandomizer(SaveContext* saveContext) {
 
     if(!saveContext->n64ddFlag) return;
 
@@ -703,7 +703,7 @@ void SaveManager::InitFileDebug() {
 }
 
 // Threaded SaveFile takes copy of gSaveContext for local unmodified storage
-void SaveManager::SaveFileThreaded(int fileNum, SaveContext saveContext) {
+void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext) {
     nlohmann::json baseBlock;
 
     baseBlock["version"] = 1;
@@ -713,12 +713,12 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext saveContext) {
         sectionBlock["version"] = section.second.first;
 
         currentJsonContext = &sectionBlock["data"];
-        section.second.second(&gSaveContext);
+        section.second.second(saveContext);
     }
 
     std::ofstream output(GetFileName(fileNum));
     output << std::setw(4) << baseBlock << std::endl;
-
+    delete saveContext;
     InitMeta(fileNum);
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum);
 }
@@ -728,7 +728,9 @@ void SaveManager::SaveFile(int fileNum) {
         return;
     }
     // Can't think of any time the promise would be needed, so use push_task instead of submit
-    smThreadPool->push_task(&SaveManager::SaveFileThreaded, this, fileNum, gSaveContext);
+    auto saveContext = new SaveContext;
+    memcpy(saveContext, &gSaveContext, sizeof(gSaveContext));
+    smThreadPool->push_task(&SaveManager::SaveFileThreaded, this, fileNum, saveContext);
 }
 
 void SaveManager::SaveGlobal() {
@@ -1418,7 +1420,7 @@ void SaveManager::LoadBaseVersion3() {
     SaveManager::Instance->LoadData("dogParams", gSaveContext.dogParams);
 }
 
-void SaveManager::SaveBase(const SaveContext* saveContext) {
+void SaveManager::SaveBase(SaveContext* saveContext) {
     SaveManager::Instance->SaveData("entranceIndex", saveContext->entranceIndex);
     SaveManager::Instance->SaveData("linkAge", saveContext->linkAge);
     SaveManager::Instance->SaveData("cutsceneIndex", saveContext->cutsceneIndex);
