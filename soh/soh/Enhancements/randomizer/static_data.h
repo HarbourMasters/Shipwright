@@ -18,10 +18,11 @@ class StaticData {
 
     public:
       static void InitItemTable();
-      static void InitLocationTable();
       static RandoItem& RetrieveItem(const RandomizerGet rgid);
       static RandoItem& ItemFromGIID(const int giid);
       static std::array<RandoItem, RG_MAX>& GetItemTable();
+      static void InitLocationTable();
+      static Rando::Location* Location(RandomizerCheck locKey);
       StaticData();
       ~StaticData();
 

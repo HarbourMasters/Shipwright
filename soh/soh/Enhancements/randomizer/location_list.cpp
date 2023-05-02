@@ -27,8 +27,9 @@ typedef enum {
     DUNGEON_JABUJABUS_BELLY_BOSS_ROOM,
 } DungeonId;
 
+using namespace Rando;
+
 void StaticData::InitLocationTable() {
-    using namespace Rando;
     locationTable[RC_UNKNOWN_CHECK] = Location::Base(
         RC_UNKNOWN_CHECK, RCQUEST_BOTH, RCTYPE_STANDARD, RCAREA_INVALID, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, 0x00,
         "Invalid Location", "Invalid Location", NONE, RG_NONE, {}, SpoilerCollectionCheck::None());
@@ -5142,7 +5143,7 @@ void StaticData::InitLocationTable() {
         RC_GC_SHOP_ITEM_8, RCQUEST_BOTH, RCTYPE_SHOP, RCAREA_GORON_CITY, ACTOR_EN_GIRLA, SCENE_GOLON, 0x07, 0x37,
         "Shop Item 8", "GC Shop Item 8", RC_GC_SHOP_ITEM_8, RG_BUY_HEART, { Category::cGoronCity, Category::cShop },
         SpoilerCollectionCheck::ShopItem(0x2E, 7), SpoilerCollectionCheckGroup::GROUP_GORON_CITY);
-    
+
     // Gossip Stones
     locationTable[RC_DMC_GOSSIP_STONE] =
         Location::HintStone(RC_DMC_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_DEATH_MOUNTAIN_CRATER,
@@ -5264,7 +5265,13 @@ void StaticData::InitLocationTable() {
     locationTable[RC_DMC_UPPER_GROTTO_GOSSIP_STONE] = Location::HintStone(
         RC_DMC_UPPER_GROTTO_GOSSIP_STONE, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_DEATH_MOUNTAIN_CRATER, ACTOR_EN_GS,
         SCENE_KAKUSIANA, -23802, 0x3A, "Upper Grotto Gossip Stone", "DMC Upper Grotto Gossip Stone", {});
-    
+
     // Other Hints
-    locationTable[RC_GANONDORF_HINT] = Location::OtherHint(RC_GANONDORF_HINT, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_GANONS_CASTLE, ACTOR_EN_GANON_MANT, SCENE_GANON_BOSS, 0x00, 0x00, "Hint", "Ganondorf Hint", {});
+    locationTable[RC_GANONDORF_HINT] =
+        Location::OtherHint(RC_GANONDORF_HINT, RCQUEST_BOTH, RCTYPE_GOSSIP_STONE, RCAREA_GANONS_CASTLE,
+                            ACTOR_EN_GANON_MANT, SCENE_GANON_BOSS, 0x00, 0x00, "Hint", "Ganondorf Hint", {});
+}
+
+Location* StaticData::Location(RandomizerCheck locKey) {
+    return &(locationTable[locKey]);
 }
