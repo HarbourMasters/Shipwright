@@ -7,9 +7,9 @@
 #define VEC_SET(V,X,Y,Z) (V).x=(X);(V).y=(Y);(V).z=(Z)
 
 #ifdef __cplusplus
-#define Vec2f _Vec2f
-#define Vec3f _Vec3f
-#define Vec3s _Vec3s
+#define Vec2f Vec2f_
+#define Vec3f Vec3f_
+#define Vec3s Vec3s_
 #endif
 
 typedef struct {
