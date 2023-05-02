@@ -1,4 +1,6 @@
+extern "C" {
 #include "gameplaystats.h"
+}
 
 #include "ImGuiImpl.h"
 #include "../UIWidgets.hpp"
@@ -664,7 +666,7 @@ void SetupDisplayColors() {
     }
 }
 
-void InitStatTracker() {
+extern "C" void InitStatTracker() {
     SohImGui::AddWindow("Enhancements", "Gameplay Stats", DrawStatsTracker, CVarGetInteger("gGameplayStatsEnabled", 0) == 1);
     SetupDisplayNames();
     SetupDisplayColors();

@@ -28,6 +28,9 @@ typedef struct {
 #include <functional>
 #include <vector>
 #include <filesystem>
+extern "C" {
+    #include "z64save.h"
+}
 
 #include <nlohmann/json.hpp>
 
@@ -37,7 +40,7 @@ public:
 
     using InitFunc = void(*)(bool isDebug);
     using LoadFunc = void(*)();
-    using SaveFunc = void(*)();
+    using SaveFunc = void(*)(const SaveContext* saveContext);
     using PostFunc = void(*)(int version);
 
     SaveManager();
@@ -122,12 +125,12 @@ public:
 
     static void LoadRandomizerVersion1();
     static void LoadRandomizerVersion2();
-    static void SaveRandomizer();
+    static void SaveRandomizer(const SaveContext* saveContext);
 
     static void LoadBaseVersion1();
     static void LoadBaseVersion2();
     static void LoadBaseVersion3();
-    static void SaveBase();
+    static void SaveBase(const SaveContext* saveContext);
 
     std::vector<InitFunc> initFuncs;
 
@@ -148,7 +151,7 @@ public:
 // TODO feature parity to the C++ interface. We need Save_AddInitFunction and Save_AddPostFunction at least
 
 typedef void (*Save_LoadFunc)(void);
-typedef void (*Save_SaveFunc)(void);
+typedef void (*Save_SaveFunc)(const SaveContext* saveContext);
 
 void Save_Init(void);
 void Save_InitFile(int isDebug);
