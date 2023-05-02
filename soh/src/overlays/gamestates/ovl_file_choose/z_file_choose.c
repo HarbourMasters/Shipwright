@@ -9,6 +9,7 @@
 #include <GameVersions.h>
 #include "objects/object_mag/object_mag.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh_assets.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
@@ -687,6 +688,8 @@ void FileChoose_RotateToNameEntry(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
 
     this->windowRot += VREG(16);
+    lusprintf(__FILE__, __LINE__, 2, "Hello World");
+    lusprintf(__FILE__, __LINE__, 2, "Hello World %d", 1);
 
     if (MIN_QUEST == MAX_QUEST && this->windowRot >= 314.0f) {
         this->windowRot = 314.0f;
@@ -1367,11 +1370,11 @@ const char* FileChoose_GetQuestChooseTitleTexName(Language lang) {
     switch (lang) {
         case LANGUAGE_ENG:
         default:
-            return "__OTR__textures/title_static/gFileSelPleaseChooseAQuestENGTex";
+            return gFileSelPleaseChooseAQuestENGTex;
         case LANGUAGE_FRA:
-            return "__OTR__textures/title_static/gFileSelPleaseChooseAQuestFRATex";
+            return gFileSelPleaseChooseAQuestFRATex;
         case LANGUAGE_GER:
-            return "__OTR__textures/title_static/gFileSelPleaseChooseAQuestGERTex";
+            return gFileSelPleaseChooseAQuestGERTex;
     }
 }
 
@@ -1460,7 +1463,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
                 FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, ResourceMgr_GameHasOriginal() ? gTitleZeldaShieldLogoTex : gTitleZeldaShieldLogoMQTex, 160, 160);
-                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 182, 180, "__OTR__objects/object_mag/gTitleRandomizerSubtitleTex", 128, 32);
+                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 182, 180, gTitleRandomizerSubtitleTex, 128, 32);
                 break;
         }
     } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY) {
@@ -1536,7 +1539,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                     this->nameAlpha[i]);
                 }
                 gDPLoadTextureBlock(POLY_OPA_DISP++,
-                                    "__OTR__textures/title_static/gFileSelRANDButtonTex",
+                                    gFileSelRANDButtonTex,
                                     G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
@@ -1553,7 +1556,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                                     this->nameAlpha[i]);
                 }
                 gDPLoadTextureBlock(POLY_OPA_DISP++,
-                                    "__OTR__textures/title_static/gFileSelMQButtonTex",
+                                    gFileSelMQButtonTex,
                                     G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
