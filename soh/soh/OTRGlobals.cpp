@@ -1451,11 +1451,11 @@ void OTRGlobals::CheckSaveFile(size_t sramSize) const {
 }
 
 extern "C" void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
-    OTRGlobals::Instance->context->ReadSaveFile(GetSaveFile(), addr, dramAddr, size);
+    SaveManager::ReadSaveFile(GetSaveFile(), addr, dramAddr, size);
 }
 
 extern "C" void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
-    OTRGlobals::Instance->context->WriteSaveFile(GetSaveFile(), addr, dramAddr, size);
+    SaveManager::WriteSaveFile(GetSaveFile(), addr, dramAddr, size);
 }
 
 std::wstring StringToU16(const std::string& s) {

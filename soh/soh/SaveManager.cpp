@@ -18,6 +18,28 @@
 
 extern "C" SaveContext gSaveContext;
 
+void SaveManager::WriteSaveFile(const std::filesystem::path& savePath, const uintptr_t addr, void* dramAddr,
+                           const size_t size) {
+    std::ofstream saveFile = std::ofstream(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
+    saveFile.seekp(addr);
+    saveFile.write((char*)dramAddr, size);
+    saveFile.close();
+}
+
+void SaveManager::ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size) {
+    std::ifstream saveFile = std::ifstream(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
+
+    // If the file doesn't exist, initialize DRAM
+    if (saveFile.good()) {
+        saveFile.seekg(addr);
+        saveFile.read((char*)dramAddr, size);
+    } else {
+        memset(dramAddr, 0, size);
+    }
+
+    saveFile.close();
+}
+
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
     const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
     return sSavePath / ("file" + std::to_string(fileNum + 1) + ".sav");
