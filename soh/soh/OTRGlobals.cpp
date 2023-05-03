@@ -240,7 +240,7 @@ OTRGlobals::OTRGlobals() {
         OOT_PAL_GC_DBG1,
         OOT_PAL_GC_DBG2
     };
-    context = Ship::Window::CreateInstance("Ship of Harkinian", OTRFiles);
+    context = Ship::Window::CreateInstance("Ship of Harkinian", "soh", OTRFiles);
 
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Animation, "Animation", std::make_shared<Ship::AnimationFactory>());
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_PlayerAnimation, "PlayerAnimation", std::make_shared<Ship::PlayerAnimationFactory>());
@@ -324,7 +324,7 @@ bool OTRGlobals::HasOriginal() {
 }
 
 uint32_t OTRGlobals::GetInterpolationFPS() {
-    if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
+    if (Ship::WindowBackend() == Ship::Backend::DX11) {
         return CVarGetInteger("gInterpolationFPS", 20);
     }
 
@@ -734,8 +734,8 @@ extern "C" void InitOTR() {
 #elif defined(__WIIU__)
     Ship::WiiU::Init();
 #endif
-    SohImGui::AddSetupHooksDelegate(GameMenuBar::SetupHooks);
-    SohImGui::RegisterMenuDrawMethod(GameMenuBar::Draw);
+    Ship::AddSetupHooksDelegate(GameMenuBar::SetupHooks);
+    Ship::RegisterMenuDrawMethod(GameMenuBar::Draw);
 
     OTRGlobals::Instance = new OTRGlobals();
     SaveManager::Instance = new SaveManager();
@@ -1953,12 +1953,12 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
 }
 
 extern "C" void Overlay_DisplayText(float duration, const char* text) {
-    SohImGui::GetGameOverlay()->TextDrawNotification(duration, true, text);
+    Ship::GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
 extern "C" void Overlay_DisplayText_Seconds(int seconds, const char* text) {
     float duration = seconds * OTRGlobals::Instance->GetInterpolationFPS() * 0.05;
-    SohImGui::GetGameOverlay()->TextDrawNotification(duration, true, text);
+    Ship::GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
 extern "C" void Entrance_ClearEntranceTrackingData(void) {

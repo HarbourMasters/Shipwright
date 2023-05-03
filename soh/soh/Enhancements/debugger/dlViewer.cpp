@@ -138,7 +138,7 @@ void DrawDLViewer(bool& open) {
 }
 
 void InitDLViewer() {
-    SohImGui::AddWindow("Developer Tools", "Display List Viewer", DrawDLViewer);
+    Ship::AddWindow("Developer Tools", "Display List Viewer", DrawDLViewer);
 
     displayListsSearchResults = ResourceMgr_ListFiles("*DL", &displayListsSearchResultsCount);
 }

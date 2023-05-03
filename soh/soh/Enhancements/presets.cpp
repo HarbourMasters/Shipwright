@@ -59,7 +59,7 @@ void DrawPresetSelector(PresetType presetTypeId) {
         if (selectedPresetId != 0) {
             applyPreset(selectedPresetDef.entries);
         }
-        SohImGui::RequestCvarSaveOnNextTick();
+        Ship::RequestCvarSaveOnNextTick();
     }
     ImGui::PopStyleVar(1);
 }
