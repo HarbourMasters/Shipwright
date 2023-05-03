@@ -1,7 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 
-#include <OtrFile.h>
+#include <File.h>
 #include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
 #include <spdlog/fmt/fmt.h>

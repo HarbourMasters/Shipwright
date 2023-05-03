@@ -5,8 +5,8 @@
 #include <filesystem>
 #include <fstream>
 
-#include <ResourceMgr.h>
-#include <OtrFile.h>
+#include <ResourceManager.h>
+#include <File.h>
 #include <DisplayList.h>
 #include <Window.h>
 #include <GameVersions.h>
@@ -271,7 +271,7 @@ OTRGlobals::OTRGlobals() {
         cameraStrings[i] = dup;
     }
 
-    auto versions = context->GetResourceManager()->GetGameVersions();
+    auto versions = context->GetResourceManager()->GetArchive()->GetGameVersions();
 
     for (uint32_t version : versions) {
         if (!ValidHashes.contains(version)) {
@@ -995,11 +995,11 @@ extern "C" uint16_t OTRGetPixelDepth(float x, float y) {
 }
 
 extern "C" uint32_t ResourceMgr_GetNumGameVersions() {
-    return OTRGlobals::Instance->context->GetResourceManager()->GetGameVersions().size();
+    return OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->GetGameVersions().size();
 }
 
 extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
-    return OTRGlobals::Instance->context->GetResourceManager()->GetGameVersions()[index];
+    return OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->GetGameVersions()[index];
 }
 
 uint32_t IsSceneMasterQuest(s16 sceneNum) {

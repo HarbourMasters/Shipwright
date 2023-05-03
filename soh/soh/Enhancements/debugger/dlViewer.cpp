@@ -2,7 +2,7 @@
 #include "../../util.h"
 #include "../../UIWidgets.hpp"
 #include <ImGuiImpl.h>
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 #include "DisplayList.h"
 #include "../../OTRGlobals.h"
 
