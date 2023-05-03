@@ -264,7 +264,7 @@ namespace GameMenuBar {
                         currentFps = 60;
                     }
                     CVarSetInteger("gInterpolationFPS", currentFps);
-                    ImGui::RequestCvarSaveOnNextTick();
+                    Ship::RequestCvarSaveOnNextTick();
                 #else
                     bool matchingRefreshRate =
                         CVarGetInteger("gMatchRefreshRate", 0) && Ship::WindowBackend() != Ship::Backend::DX11;
