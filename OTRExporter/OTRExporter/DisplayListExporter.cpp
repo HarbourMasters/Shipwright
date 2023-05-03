@@ -15,7 +15,7 @@
 
 #define GFX_SIZE 8
 
-#define gsDPSetCombineLERP2(a0, b0, c0, d0, Aa0, Ab0, Ac0, Ad0,      \
+#define gsDPSetCombineLERP_NoMacros(a0, b0, c0, d0, Aa0, Ab0, Ac0, Ad0,      \
         a1, b1, c1, d1, Aa1, Ab1, Ac1, Ad1)         \
 {                                   \
     _SHIFTL(G_SETCOMBINE, 24, 8) |                  \
@@ -607,7 +607,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t ab1 = (data & 0b00000000000000000000000000000000000000000000000000000000111000) >> 3;
 			int32_t ad1 = (data & 0b00000000000000000000000000000000000000000000000000000000000111) >> 0;
 
-			Gfx value = {gsDPSetCombineLERP2(a0, b0, c0, d0, aa0, ab0, ac0, ad0, a1, b1, c1, d1, aa1, ab1, ac1, ad1)};
+			Gfx value = { gsDPSetCombineLERP_NoMacros(a0, b0, c0, d0, aa0, ab0, ac0, ad0, a1, b1, c1, d1, aa1, ab1, ac1, ad1)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}

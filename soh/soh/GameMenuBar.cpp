@@ -17,6 +17,7 @@
 #include <libultraship/libultra/types.h>
 #include <libultraship/libultra/pi.h>
 #include <libultraship/libultra/sptask.h>
+#include <Fast3D/gfx_pc.h>
 
 #ifdef __SWITCH__
 #include <port/switch/SwitchImpl.h>
@@ -28,6 +29,7 @@
 #include "soh/SaveManager.h"
 #include "OTRGlobals.h"
 #include "soh/Enhancements/presets.h"
+#include "soh/resource/type/Skeleton.h"
 
 #ifdef ENABLE_CROWD_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
@@ -36,6 +38,7 @@
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "Enhancements/cosmetics/authenticGfxPatches.h"
 
+bool ShouldClearTextureCacheAtEndOfFrame = false;
 bool isBetaQuestEnabled = false;
 
 extern "C" {
@@ -791,6 +794,34 @@ namespace GameMenuBar {
 
             if (ImGui::BeginMenu("Graphics"))
             {
+                if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", true, false)) {
+                    ShouldClearTextureCacheAtEndOfFrame = true;
+                }
+                UIWidgets::PaddedEnhancementCheckbox("Disable LOD", "gDisableLOD", true, false);
+                UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
+                if (UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance", true, false)) {
+                    if (CVarGetInteger("gDisableDrawDistance", 0) == 0) {
+                        CVarSetInteger("gDisableKokiriDrawDistance", 0);
+                    }
+                }
+                UIWidgets::Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
+                if (CVarGetInteger("gDisableDrawDistance", 0) == 1) {
+                    UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance", true, false);
+                    UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this will remove their draw distance");
+                }
+                UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gLowResMode", true, false);
+                UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
+                UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", "gDrawLineupTick", true, false);
+                UIWidgets::Tooltip("Displays a tick in the top center of the screen to help with glitch line-ups in SoH, as traditional UI based line-ups do not work outside of 4:3");
+                UIWidgets::PaddedEnhancementCheckbox("Enable 3D Dropped items/projectiles", "gNewDrops", true, false);
+                UIWidgets::Tooltip("Change most 2D items and projectiles on the overworld to their 3D versions");
+                UIWidgets::PaddedEnhancementCheckbox("Disable Black Bar Letterboxes", "gDisableBlackBars", true, false);
+                UIWidgets::Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that were covered up by the black bars\nPlease disable this setting before reporting a bug");
+                UIWidgets::PaddedEnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon", true, false);
+                UIWidgets::Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
+                UIWidgets::PaddedEnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon", true, false);
+                UIWidgets::Tooltip("Always shows dungeon entrance icons on the minimap");
+                UIWidgets::Spacer(0);
                 if (ImGui::BeginMenu("Animated Link in Pause Menu")) {
                     ImGui::Text("Rotation");
                     UIWidgets::EnhancementRadioButton("Disabled", "gPauseLiveLinkRotation", 0);
@@ -834,37 +865,14 @@ namespace GameMenuBar {
 
                     ImGui::EndMenu();
                 }
-                UIWidgets::PaddedEnhancementCheckbox("Disable LOD", "gDisableLOD", true, false);
-                UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
-                if (UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance", true, false)) {
-                    if (CVarGetInteger("gDisableDrawDistance", 0) == 0) {
-                        CVarSetInteger("gDisableKokiriDrawDistance", 0);
-                    }
-                }
-                UIWidgets::Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
-                if (CVarGetInteger("gDisableDrawDistance", 0) == 1) {
-                    UIWidgets::PaddedEnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance", true, false);
-                    UIWidgets::Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this will remove their draw distance");
-                }
-                UIWidgets::PaddedEnhancementCheckbox("N64 Mode", "gLowResMode", true, false);
-                UIWidgets::Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
-                UIWidgets::PaddedEnhancementCheckbox("Glitch line-up tick", "gDrawLineupTick", true, false);
-                UIWidgets::Tooltip("Displays a tick in the top center of the screen to help with glitch line-ups in SoH, as traditional UI based line-ups do not work outside of 4:3");
-                UIWidgets::PaddedEnhancementCheckbox("Enable 3D Dropped items/projectiles", "gNewDrops", true, false);
-                UIWidgets::Tooltip("Change most 2D items and projectiles on the overworld to their 3D versions");
-                UIWidgets::PaddedEnhancementCheckbox("Disable Black Bar Letterboxes", "gDisableBlackBars", true, false);
-                UIWidgets::Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that were covered up by the black bars\nPlease disable this setting before reporting a bug");
-                UIWidgets::PaddedEnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon", true, false);
-                UIWidgets::Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
-                UIWidgets::PaddedEnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon", true, false);
-                UIWidgets::Tooltip("Always shows dungeon entrance icons on the minimap");
                 UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
                 UIWidgets::EnhancementCombobox("gDirtPathFix", zFightingOptions, 0);
                 UIWidgets::Tooltip("Disabled: Paths vanish more the higher the resolution (Z-fighting is based on resolution)\n"
                                    "Consistent: Certain paths vanish the same way in all resolutions\n"
                                    "No Vanish: Paths do not vanish, Link seems to sink in to some paths\n"
                                    "This might affect other decal effects\n");
-
+                UIWidgets::PaddedEnhancementSliderInt("Text Spacing: %d", "##TEXTSPACING", "gTextSpacing", 4, 6, "", 6, true, true, true);
+                UIWidgets::Tooltip("Space between text characters (useful for HD font textures)");
                 ImGui::EndMenu();
             }
 
@@ -922,9 +930,9 @@ namespace GameMenuBar {
 
             if (ImGui::BeginMenu("Restoration"))
             {
-                UIWidgets::PaddedEnhancementCheckbox("Hide Build Info", "gHideBuildInfo", true, false);
-                UIWidgets::Tooltip("Hides the game version and build details in the boot logo start screen");
-                UIWidgets::EnhancementCheckbox("Red Ganon blood", "gRedGanonBlood");
+                UIWidgets::EnhancementCheckbox("Authentic Logo Screen", "gAuthenticLogo");
+                UIWidgets::Tooltip("Hide the game version and build details and display the authentic model and texture on the boot logo start screen");
+                UIWidgets::PaddedEnhancementCheckbox("Red Ganon blood", "gRedGanonBlood", true, false);
                 UIWidgets::Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
                 UIWidgets::PaddedEnhancementCheckbox("Fish while hovering", "gHoverFishing", true, false);
                 UIWidgets::Tooltip("Restore a bug from NTSC 1.0 that allows casting the Fishing Rod while using the Hover Boots");
@@ -941,7 +949,30 @@ namespace GameMenuBar {
                 ImGui::EndMenu();
             }
 
-            UIWidgets::PaddedSeparator();
+            UIWidgets::Spacer(0);
+
+            if (ImGui::BeginMenu("Extra Modes")) {
+                UIWidgets::PaddedEnhancementCheckbox("Ivan the Fairy (Coop Mode)", "gIvanCoopModeEnabled", true, false);
+                UIWidgets::Tooltip("Enables Ivan the Fairy upon the next map change. Player 2 can control Ivan and "
+                                   "press the C-Buttons to use items and mess with Player 1!");
+
+                UIWidgets::Spacer(0);
+
+                UIWidgets::PaddedEnhancementCheckbox("Rupee Dash Mode", "gRupeeDash", true, false);
+
+                if (CVarGetInteger("gRupeeDash", 0)) {
+                    UIWidgets::Tooltip("Rupees reduced over time, Link suffers damage when the count hits 0.");
+                    UIWidgets::PaddedEnhancementSliderInt(
+                        "Rupee Dash Interval: %d", "##DashInterval", "gDashInterval", 3, 5, "", 5, true, true, false,
+                        !CVarGetInteger("gRupeeDash", 0),
+                        "This option is disabled because \"Rupee Dash Mode\" is turned off");
+                    UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
+                }
+
+                ImGui::EndMenu();
+            }
+
+            UIWidgets::PaddedSeparator(false, true);
 
             // Autosave enum value of 1 is the default in presets and the old checkbox "on" state for backwards compatibility
             UIWidgets::PaddedText("Autosave", false, true);

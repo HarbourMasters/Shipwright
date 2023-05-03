@@ -38,7 +38,7 @@ void Skin_InitAnimatedLimb(PlayState* play, Skin* skin, s32 limbIndex) {
  */
 void Skin_Init(PlayState* play, Skin* skin, SkeletonHeader* skeletonHeader, AnimationHeader* animationHeader) {
     if (ResourceMgr_OTRSigCheck(skeletonHeader))
-        skeletonHeader = ResourceMgr_LoadSkeletonByName(skeletonHeader);
+        skeletonHeader = ResourceMgr_LoadSkeletonByName(skeletonHeader, NULL);
 
     s32 limbCount;
     s32 i;

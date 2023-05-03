@@ -4,6 +4,7 @@
 #include "overlays/actors/ovl_En_Zl3/z_en_zl3.h"
 #include "overlays/actors/ovl_Bg_Ganon_Otyuka/z_bg_ganon_otyuka.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
+#include "textures/boss_title_cards/object_ganon.h"
 #include "assets/objects/object_ganon/object_ganon.h"
 #include "assets/objects/object_ganon_anime1/object_ganon_anime1.h"
 #include "assets/objects/object_ganon_anime2/object_ganon_anime2.h"
@@ -118,6 +119,8 @@ BossGanon* sBossGanonGanondorf;
 EnZl3* sBossGanonZelda;
 
 GanondorfEffect sBossGanonEffectBuf[200];
+
+static u8 sWindowShatterTex[2048] = { {0} };
 
 void BossGanonEff_SpawnWindowShard(PlayState* play, Vec3f* pos, Vec3f* velocity, f32 scale) {
     static Color_RGB8 shardColors[] = { { 255, 175, 85 }, { 155, 205, 155 }, { 155, 125, 55 } };
@@ -453,6 +456,13 @@ void BossGanon_Init(Actor* thisx, PlayState* play2) {
             Collider_SetCylinder(play, &this->collider, thisx, &sLightBallCylinderInit);
         }
     }
+
+    for (int i = 0; i < ARRAY_COUNT(sWindowShatterTex); i++) {
+        sWindowShatterTex[i] = 0;
+    }
+
+    Gfx_RegisterBlendedTexture(ganon_boss_sceneTex_006C18, sWindowShatterTex, NULL);
+    Gfx_RegisterBlendedTexture(ganon_boss_sceneTex_007418, sWindowShatterTex, NULL);
 }
 
 void BossGanon_Destroy(Actor* thisx, PlayState* play) {
@@ -1095,7 +1105,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
 
                 if (!(gSaveContext.eventChkInf[7] & 0x100)) {
                     TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
-                                           SEGMENTED_TO_VIRTUAL(gGanondorfTitleCardTex), 160, 180, 128, 40, true);
+                                           SEGMENTED_TO_VIRTUAL(gGanondorfTitleCardENGTex), 160, 180, 128, 40, true);
                 }
 
                 gSaveContext.eventChkInf[7] |= 0x100;
@@ -1210,14 +1220,12 @@ void BossGanon_SetupTowerCutscene(BossGanon* this, PlayState* play) {
 
 void BossGanon_ShatterWindows(u8 windowShatterState) {
     s16 i;
-    u8* tex1 = GetResourceDataByNameHandlingMQ(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_006C18));
-    u8* tex2 = GetResourceDataByNameHandlingMQ(SEGMENTED_TO_VIRTUAL(ganon_boss_sceneTex_007418));
     u8* templateTex = GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGanondorfWindowShatterTemplateTex), false);
 
-    for (i = 0; i < 2048; i++) {
-        if ((tex1[i] != 0) && (Rand_ZeroOne() < 0.03f)) {
+    for (i = 0; i < ARRAY_COUNT(sWindowShatterTex); i++) {
+        if ((sWindowShatterTex[i] != 1) && (Rand_ZeroOne() < 0.03f)) {
             if ((templateTex[i] == 0) || (windowShatterState == GDF_WINDOW_SHATTER_FULL)) {
-                tex1[i] = tex2[i] = 1;
+                sWindowShatterTex[i] = 1;
             }
         }
     }
@@ -2776,7 +2784,7 @@ void BossGanon_UpdateDamage(BossGanon* this, PlayState* play) {
                                               Rand_ZeroFloat(200.0f) + 500.0f, 0x1E);
                 }
 
-                damage = flags = CollisionCheck_GetSwordDamage(acHitInfo->toucher.dmgFlags);
+                damage = flags = CollisionCheck_GetSwordDamage(acHitInfo->toucher.dmgFlags, play);
 
                 if (flags == 0) {
                     damage = 2;
@@ -3866,10 +3874,9 @@ void BossGanon_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    // Invalidate textures if they have changed
+    // Invalidate texture mask if it has changed
     if (this->windowShatterState != GDF_WINDOW_SHATTER_OFF) {
-        gSPInvalidateTexCache(POLY_OPA_DISP++, ganon_boss_sceneTex_006C18);
-        gSPInvalidateTexCache(POLY_OPA_DISP++, ganon_boss_sceneTex_007418);
+        gSPInvalidateTexCache(POLY_OPA_DISP++, sWindowShatterTex);
     }
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);

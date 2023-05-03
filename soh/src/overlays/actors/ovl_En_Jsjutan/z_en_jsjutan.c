@@ -418,15 +418,15 @@ void EnJsjutan_Draw(Actor* thisx, PlayState* play2) {
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     // Draws the carpet's shadow texture.
-    gSPSegment(POLY_OPA_DISP++, 0x0C, sShadowTex);
+    gSPSegmentLoadRes(POLY_OPA_DISP++, 0x0C, sShadowTex);
     gSPDisplayList(POLY_OPA_DISP++, sShadowMaterialDL);
     gDPPipeSync(POLY_OPA_DISP++);
 
     // Draws the carpet's shadow vertices. Swaps them between frames to get a smoother result.
     if (play->gameplayFrames % 2 != 0) {
-        gSPSegment(POLY_OPA_DISP++, 0x0C, gShadowOddVtx);
+        gSPSegmentLoadRes(POLY_OPA_DISP++, 0x0C, gShadowOddVtx);
     } else {
-        gSPSegment(POLY_OPA_DISP++, 0x0C, sShadowEvenVtx);
+        gSPSegmentLoadRes(POLY_OPA_DISP++, 0x0C, sShadowEvenVtx);
     }
     gSPDisplayList(POLY_OPA_DISP++, sModelDL);
 
@@ -443,9 +443,9 @@ void EnJsjutan_Draw(Actor* thisx, PlayState* play2) {
 
     // Draws the carpet vertices.
     if (play->gameplayFrames % 2 != 0) {
-        gSPSegment(POLY_OPA_DISP++, 0x0C, sCarpetOddVtx);
+        gSPSegmentLoadRes(POLY_OPA_DISP++, 0x0C, sCarpetOddVtx);
     } else {
-        gSPSegment(POLY_OPA_DISP++, 0x0C, sCarpetEvenVtx);
+        gSPSegmentLoadRes(POLY_OPA_DISP++, 0x0C, sCarpetEvenVtx);
     }
     gSPDisplayList(POLY_OPA_DISP++, sModelDL);
 

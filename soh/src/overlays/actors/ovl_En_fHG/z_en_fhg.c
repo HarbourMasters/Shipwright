@@ -5,6 +5,7 @@
  */
 
 #include "z_en_fhg.h"
+#include "textures/boss_title_cards/object_fhg.h"
 #include "objects/object_fhg/object_fhg.h"
 #include "overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "overlays/actors/ovl_Boss_Ganondrof/z_boss_ganondrof.h"
@@ -332,7 +333,7 @@ void EnfHG_Intro(EnfHG* this, PlayState* play) {
             Math_ApproachF(&this->cameraSpeedMod, 1.0f, 1.0f, 0.05f);
             if (this->timers[0] == 75) {
                 TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
-                                       SEGMENTED_TO_VIRTUAL(gPhantomGanonTitleCardTex), 160, 180, 128, 40, true);
+                                       SEGMENTED_TO_VIRTUAL(gPhantomGanonTitleCardENGTex), 160, 180, 128, 40, true);
             }
             if (this->timers[0] == 0) {
                 this->cutsceneState = INTRO_RETREAT;
