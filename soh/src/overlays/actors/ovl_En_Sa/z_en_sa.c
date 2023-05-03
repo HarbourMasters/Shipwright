@@ -387,7 +387,7 @@ s32 func_80AF5DFC(EnSa* this, PlayState* play) {
         return 1;
     }
     if (play->sceneNum == SCENE_SPOT05 && (gSaveContext.eventChkInf[4] & 1)) {
-        if (gSaveContext.n64ddFlag) {
+        if (gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) {
             return 5;
         }
         return CHECK_QUEST_ITEM(QUEST_SONG_SARIA) ? 2 : 5;
@@ -617,13 +617,16 @@ void func_80AF67D0(EnSa* this, PlayState* play) {
     }
 }
 
-void GivePlayerRandoRewardSaria(EnSa* saria, PlayState* play, RandomizerCheck check) {
-    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SARIAS_SONG);
-    if (saria->actor.parent != NULL && saria->actor.parent->id == GET_PLAYER(play)->actor.id &&
-        !Flags_GetTreasure(play, 0x1F)) {
-        Flags_SetTreasure(play, 0x1F);
-    } else if (!Flags_GetTreasure(play, 0x1F)) {
-        GiveItemEntryFromActor(&saria->actor, play, getItemEntry, 10000.0f, 100.0f);
+void GivePlayerRandoRewardSaria(EnSa* saria, PlayState* play) {
+    Player* player = GET_PLAYER(play);
+    GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
+        Randomizer_GetItemFromKnownCheck(RC_SONG_FROM_SARIA, RG_SARIAS_SONG) : 
+        ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_SARIAS_SONG);
+
+    if (!Flags_GetEventChkInf(0x57) && player != NULL && !Player_InBlockingCsMode(play, player)) {
+        GiveItemEntryWithoutActor(play, getItemEntry);
+        player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+        player->pendingFlag.flagID = 0x57;
     }
 }
 
@@ -631,8 +634,8 @@ void func_80AF683C(EnSa* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (!(player->actor.world.pos.z >= -2220.0f) && !Play_InCsMode(play)) {
-        if (gSaveContext.n64ddFlag) {
-            GivePlayerRandoRewardSaria(this, play, RC_SONG_FROM_SARIA);
+        if (gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) {
+            GivePlayerRandoRewardSaria(this, play);
             return;
         }
 
