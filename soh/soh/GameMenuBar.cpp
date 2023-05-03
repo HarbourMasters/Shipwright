@@ -397,6 +397,14 @@ namespace GameMenuBar {
             {
                 if (ImGui::BeginMenu("Time Savers"))
                 {
+                    UIWidgets::PaddedEnhancementCheckbox("Skip Cutscenes", "gSkipCutscenes", false, true);
+                    UIWidgets::Tooltip(
+                        "Major/minor cutscene skips throughout the game.\n"
+                        "\n"
+                        "Note: This is automatically applied on randomizer saves.\n"
+                        "\n"
+                        "Note: Some cutscenes like entrance cutscenes will only be skipped if a file is created with this option enabled"
+                    );
                     UIWidgets::PaddedEnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "", 1, true, false, true);
                     UIWidgets::PaddedEnhancementCheckbox("Skip Text", "gSkipText", false, true);
                     UIWidgets::Tooltip("Holding down B skips text");

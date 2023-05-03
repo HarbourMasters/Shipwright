@@ -497,7 +497,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
     // cmd->base == 8: Traveling back/forward in time cutscene
     // cmd->base == 24: Dropping a fish for Jabu Jabu
     // cmd->base == 33: Zelda escaping with impa cutscene
-    bool randoCsSkip = (gSaveContext.n64ddFlag && (cmd->base == 8 || cmd->base == 24 || cmd->base == 33));
+    bool randoCsSkip = ((gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) && (cmd->base == 8 || cmd->base == 24 || cmd->base == 33));
     bool debugCsSkip = (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_START) &&
                         (gSaveContext.fileNum != 0xFEDC) && CVarGetInteger("gDebugEnabled", 0));
 
@@ -2166,7 +2166,7 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
                 gSaveContext.cutsceneIndex = 0xFFF0;
             }
         } else if ((gSaveContext.entranceIndex == 0x05E0) && !Flags_GetEventChkInf(0xC1)) {
-            if (!gSaveContext.n64ddFlag) {
+            if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
                 Flags_SetEventChkInf(0xC1);
                 Item_Give(play, ITEM_OCARINA_FAIRY);
                 gSaveContext.entranceIndex = 0x011E;

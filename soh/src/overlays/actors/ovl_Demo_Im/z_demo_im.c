@@ -930,6 +930,15 @@ void func_80986C30(DemoIm* this, PlayState* play) {
     if (func_80986A5C(this, play)) {
         if (gSaveContext.n64ddFlag) {
             GivePlayerRandoRewardImpa(this, play, RC_SONG_FROM_IMPA);
+        } else if (CVarGetInteger("gSkipCutscenes", 0)) {
+            Player* player = GET_PLAYER(play);
+
+            play->nextEntranceIndex = 0x0594;
+            play->fadeTransition = 38;
+            play->sceneLoadFlag = 0x14;
+            play->fadeTransition = 2;
+            gSaveContext.nextTransitionType = 2;
+            func_8002DF54(play, &player->actor, 8);
         } else {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gZeldasCourtyardLullabyCs);
             gSaveContext.cutsceneTrigger = 1;

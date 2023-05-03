@@ -211,12 +211,14 @@ void Play_Destroy(GameState* thisx) {
     gPlayState = NULL;
 }
 
-void GivePlayerRandoRewardSongOfTime(PlayState* play, RandomizerCheck check) {
+void GivePlayerRandoRewardSongOfTime(PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (gSaveContext.entranceIndex == 0x050F && player != NULL && !Player_InBlockingCsMode(play, player) &&
         !Flags_GetTreasure(play, 0x1F) && gSaveContext.nextTransitionType == 0xFF && !gSaveContext.pendingIceTrapCount) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
+            Randomizer_GetItemFromKnownCheck(RC_SONG_FROM_OCARINA_OF_TIME, RG_SONG_OF_TIME) : 
+            ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_SONG_OF_TIME);
         GiveItemEntryWithoutActor(play, getItemEntry);
         player->pendingFlag.flagID = 0x1F;
         player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
@@ -388,15 +390,134 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(PlayState* play, RandomizerCheck 
     }
 }
 
-void GivePlayerRandoRewardSariaGift(PlayState* play, RandomizerCheck check) {
+void GivePlayerRandoRewardSariaGift(PlayState* play) {
     Player* player = GET_PLAYER(play);
     if (gSaveContext.entranceIndex == 0x05E0) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_ZELDAS_LULLABY);
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
+            Randomizer_GetItemFromKnownCheck(RC_LW_GIFT_FROM_SARIA, GI_OCARINA_FAIRY) : 
+            ItemTable_RetrieveEntry(MOD_NONE, GI_OCARINA_FAIRY);
 
         if (!Flags_GetEventChkInf(0xC1) && player != NULL && !Player_InBlockingCsMode(play, player)) {
             GiveItemEntryWithoutActor(play, getItemEntry);
             player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
             player->pendingFlag.flagID = 0xC1;
+        }
+    }
+}
+
+void GivePlayerRandoRewardSongFromImpa(PlayState* play) {
+    Player* player = GET_PLAYER(play);
+    if (gSaveContext.entranceIndex == 0x0594) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
+            Randomizer_GetItemFromKnownCheck(RC_SONG_FROM_IMPA, RG_ZELDAS_LULLABY) :
+            ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_ZELDAS_LULLABY);
+
+        if (!Flags_GetEventChkInf(0x59) && player != NULL && !Player_InBlockingCsMode(play, player)) {
+            if (GiveItemEntryWithoutActor(play, getItemEntry)) {
+                player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+                player->pendingFlag.flagID = 0x59;
+            }
+        }
+    }
+}
+
+void GivePlayerRandoDungeonReward(PlayState* play) {
+    Player* player = GET_PLAYER(play);
+    if (gSaveContext.entranceIndex == 0x0457) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
+            Randomizer_GetItemFromKnownCheck(RC_QUEEN_GOHMA, RG_KOKIRI_EMERALD) : 
+            ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_KOKIRI_EMERALD);
+
+        if (!Flags_GetEventChkInf(7) && player != NULL && !Player_InBlockingCsMode(play, player)) {
+            GiveItemEntryWithoutActor(play, getItemEntry);
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+            player->pendingFlag.flagID = 7;
+        }
+    }
+
+    if (gSaveContext.entranceIndex == 0x47A) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
+            Randomizer_GetItemFromKnownCheck(RC_KING_DODONGO, RG_GORON_RUBY) : 
+            ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_GORON_RUBY);
+
+        if (!Flags_GetEventChkInf(0x25) && player != NULL && !Player_InBlockingCsMode(play, player)) {
+            GiveItemEntryWithoutActor(play, getItemEntry);
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+            player->pendingFlag.flagID = 0x25;
+        }
+    }
+
+    if (gSaveContext.entranceIndex == 0x10E) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
+            Randomizer_GetItemFromKnownCheck(RC_BARINADE, RG_ZORA_SAPPHIRE) : 
+            ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_ZORA_SAPPHIRE);
+
+        if (!Flags_GetEventChkInf(0x37) && player != NULL) {
+            GiveItemEntryWithoutActor(play, getItemEntry);
+            player->stateFlags2 |= PLAYER_STATE2_10;
+            func_8083E5A8(player, play);
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+            player->pendingFlag.flagID = 0x37;
+        }
+    }
+
+    if (gSaveContext.entranceIndex == 0x608) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+            Randomizer_GetItemFromKnownCheck(RC_PHANTOM_GANON, RG_FOREST_MEDALLION) : 
+            ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_FOREST_MEDALLION);
+
+        if (!Flags_GetEventChkInf(0x48) && player != NULL) {
+            GiveItemEntryWithoutActor(play, getItemEntry);
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+            player->pendingFlag.flagID = 0x48;
+        }
+    }
+
+    if (gSaveContext.entranceIndex == 0x564) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+            Randomizer_GetItemFromKnownCheck(RC_VOLVAGIA, RG_FIRE_MEDALLION) : 
+            ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_FIRE_MEDALLION);
+
+        if (!Flags_GetEventChkInf(0x49) && player != NULL) {
+            GiveItemEntryWithoutActor(play, getItemEntry);
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+            player->pendingFlag.flagID = 0x49;
+        }
+    }
+
+    if (gSaveContext.entranceIndex == 0x60C) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+            Randomizer_GetItemFromKnownCheck(RC_MORPHA, RG_WATER_MEDALLION) : 
+            ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_WATER_MEDALLION);
+
+        if (!Flags_GetEventChkInf(0x4A) && player != NULL) {
+            GiveItemEntryWithoutActor(play, getItemEntry);
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+            player->pendingFlag.flagID = 0x4A;
+        }
+    }
+
+    if (gSaveContext.entranceIndex == 0x610) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+            Randomizer_GetItemFromKnownCheck(RC_TWINROVA, RG_SPIRIT_MEDALLION) : 
+            ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_SPIRIT_MEDALLION);
+
+        if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE) && player != NULL) {
+            GiveItemEntryWithoutActor(play, getItemEntry);
+            player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
+            player->pendingFlag.flagID = RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE;
+        }
+    }
+
+    if (gSaveContext.entranceIndex == 0x580) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+            Randomizer_GetItemFromKnownCheck(RC_BONGO_BONGO, RG_SHADOW_MEDALLION) : 
+            ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_SHADOW_MEDALLION);
+
+        if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE) && player != NULL) {
+            GiveItemEntryWithoutActor(play, getItemEntry);
+            player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
+            player->pendingFlag.flagID = RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE;
         }
     }
 }
@@ -1354,9 +1475,14 @@ skip:
     Environment_Update(play, &play->envCtx, &play->lightCtx, &play->pauseCtx, &play->msgCtx,
                        &play->gameOverCtx, play->state.gfxCtx);
 
+    if (CVarGetInteger("gSkipCutscenes", 0) || gSaveContext.n64ddFlag) {
+        GivePlayerRandoDungeonReward(play);
+        GivePlayerRandoRewardSariaGift(play);
+        GivePlayerRandoRewardSongFromImpa(play);
+        GivePlayerRandoRewardSongOfTime(play);
+    }
+
     if (gSaveContext.n64ddFlag) {
-        GivePlayerRandoRewardSariaGift(play, RC_LW_GIFT_FROM_SARIA);
-        GivePlayerRandoRewardSongOfTime(play, RC_SONG_FROM_OCARINA_OF_TIME);
         GivePlayerRandoRewardZeldaLightArrowsGift(play, RC_TOT_LIGHT_ARROWS_CUTSCENE);
         GivePlayerRandoRewardNocturne(play, RC_SHEIK_IN_KAKARIKO);
         GivePlayerRandoRewardRequiem(play, RC_SHEIK_AT_COLOSSUS);
