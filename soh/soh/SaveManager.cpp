@@ -325,6 +325,7 @@ void SaveManager::Init() {
     auto sOldSavePath = Ship::Window::GetPathRelativeToAppDirectory("oot_save.sav");
     auto sOldBackupSavePath = Ship::Window::GetPathRelativeToAppDirectory("oot_save.bak");
     Ship::RegisterHook<Ship::ExitGame>([this]() { ThreadPoolWait(); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>([this](uint32_t fileNum) { ThreadPoolWait(); });
 
     // If the save directory does not exist, create it
     if (!std::filesystem::exists(sSavePath)) {

@@ -431,7 +431,6 @@ void Play_Init(GameState* thisx) {
     // Invalid entrance, so immediately exit the game to opening title
     if (gSaveContext.entranceIndex == -1) {
         gSaveContext.entranceIndex = 0;
-        SaveManager_ThreadPoolWait();
         play->state.running = false;
         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
         GameInteractor_ExecuteOnExitGame(gSaveContext.fileNum);
