@@ -158,7 +158,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
     const std::string randomizeAllButton = "Randomize All" + hiddenTabId;
     if (ImGui::Button(resetAllButton.c_str())) {
         ResetGroup(map, type);
-        SohImGui::RequestCvarSaveOnNextTick();
+        Ship::RequestCvarSaveOnNextTick();
         if (type == SEQ_BGM_WORLD) {
             ReplayCurrentBGM();
         }
@@ -166,7 +166,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
     ImGui::SameLine();
     if (ImGui::Button(randomizeAllButton.c_str())) {
         RandomizeGroup(type);
-        SohImGui::RequestCvarSaveOnNextTick();
+        Ship::RequestCvarSaveOnNextTick();
         if (type == SEQ_BGM_WORLD) {
             ReplayCurrentBGM();
         }
@@ -205,7 +205,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
 
                 if (ImGui::Selectable(seqData.label.c_str())) {
                     CVarSetInteger(cvarKey.c_str(), value);
-                    SohImGui::RequestCvarSaveOnNextTick();
+                    Ship::RequestCvarSaveOnNextTick();
                     UpdateCurrentBGM(defaultValue, type);
                 }
             }
@@ -219,7 +219,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
         ImGui::PushItemWidth(-FLT_MIN);
         if (ImGui::Button(resetButton.c_str())) {
             CVarSetInteger(cvarKey.c_str(), defaultValue);
-            SohImGui::RequestCvarSaveOnNextTick();
+            Ship::RequestCvarSaveOnNextTick();
             UpdateCurrentBGM(defaultValue, seqData.category);
         }
         ImGui::SameLine();
@@ -236,7 +236,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
                 auto it = validSequences.begin();
                 const auto& seqData = *std::next(it, rand() % validSequences.size());
                 CVarSetInteger(cvarKey.c_str(), seqData->sequenceId);
-                SohImGui::RequestCvarSaveOnNextTick();
+                Ship::RequestCvarSaveOnNextTick();
                 UpdateCurrentBGM(seqData->sequenceId, type);
             } 
         }
@@ -378,7 +378,7 @@ void DrawSfxEditor(bool& open) {
                 const std::string resetButton = "Reset##linkVoiceFreqMultiplier";
                 if (ImGui::Button(resetButton.c_str())) {
                     CVarSetFloat("gLinkVoiceFreqMultiplier", 1.0f);
-                    SohImGui::RequestCvarSaveOnNextTick();
+                    Ship::RequestCvarSaveOnNextTick();
                 }
 
                 ImGui::NewLine();
@@ -552,7 +552,7 @@ void DrawSfxEditor(bool& open) {
 
 void InitAudioEditor() {
     //Draw the bar in the menu.
-    SohImGui::AddWindow("Enhancements", "Audio Editor", DrawSfxEditor);
+    Ship::AddWindow("Enhancements", "Audio Editor", DrawSfxEditor);
 }
 
 std::vector<SeqType> allTypes = { SEQ_BGM_WORLD, SEQ_BGM_EVENT, SEQ_BGM_BATTLE, SEQ_OCARINA, SEQ_FANFARE, SEQ_INSTRUMENT, SEQ_SFX };
@@ -562,7 +562,7 @@ void AudioEditor_RandomizeAll() {
         RandomizeGroup(type);
     }
 
-    SohImGui::RequestCvarSaveOnNextTick();
+    Ship::RequestCvarSaveOnNextTick();
     ReplayCurrentBGM();
 }
 
@@ -571,6 +571,6 @@ void AudioEditor_ResetAll() {
         ResetGroup(AudioCollection::Instance->GetAllSequences(), type);
     }
 
-    SohImGui::RequestCvarSaveOnNextTick();
+    Ship::RequestCvarSaveOnNextTick();
     ReplayCurrentBGM();
 }

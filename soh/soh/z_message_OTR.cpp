@@ -1,5 +1,5 @@
 #include "OTRGlobals.h"
-#include <ResourceMgr.h>
+#include <ResourceManager.h>
 #include "soh/resource/type/Scene.h"
 #include <Utils/StringHelper.h>
 #include "global.h"
