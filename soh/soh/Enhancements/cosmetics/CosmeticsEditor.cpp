@@ -345,28 +345,26 @@ ImVec4 GetRandomValue(int MaximumPossible){
 
 void SetMarginAll(const char* ButtonName, bool SetActivated) {
     if (ImGui::Button(ButtonName)) {
-        u8 arrayLength = sizeof(MarginCvarList) / sizeof(*MarginCvarList);
         //MarginCvarNonAnchor is an array that list every element that has No anchor by default, because if that the case this function will not touch it with pose type 0.
         u8 arrayLengthNonMargin = sizeof(MarginCvarNonAnchor) / sizeof(*MarginCvarNonAnchor);
-        for (u8 s = 0; s < arrayLength; s++) {
-            const char* cvarName = MarginCvarList[s];
-            const char* cvarPosType = std::string(cvarName).append("PosType").c_str();
-            const char* cvarNameMargins = std::string(cvarName).append("UseMargins").c_str();
-            if (CVarGetInteger(cvarPosType,0) <= 2 && SetActivated) { //Our element is not Hidden or Non anchor
+        for (auto cvarName : MarginCvarList) {
+            std::string cvarPosType = std::string(cvarName).append("PosType");
+            std::string cvarNameMargins = std::string(cvarName).append("UseMargins");
+            if (CVarGetInteger(cvarPosType.c_str(),0) <= 2 && SetActivated) { //Our element is not Hidden or Non anchor
                 for (int i = 0; i < arrayLengthNonMargin; i++){
-                    if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) && (CVarGetInteger(cvarPosType, 0) == 0)) { //Our element is both in original position and do not have anchor by default so we skip it.
-                        CVarSetInteger(cvarNameMargins, false); //force set off
+                    if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) && (CVarGetInteger(cvarPosType.c_str(), 0) == 0)) { //Our element is both in original position and do not have anchor by default so we skip it.
+                        CVarSetInteger(cvarNameMargins.c_str(), false); //force set off
                     } 
-                    else if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) && (CVarGetInteger(cvarPosType, 0) != 0)) { //Our element is not in original position regarless it has no anchor by default since player made it anchored we can toggle margins
-                        CVarSetInteger(cvarNameMargins, SetActivated);
+                    else if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) && (CVarGetInteger(cvarPosType.c_str(), 0) != 0)) { //Our element is not in original position regarless it has no anchor by default since player made it anchored we can toggle margins
+                        CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
                     } 
                     else if (strcmp(cvarName, MarginCvarNonAnchor[i]) != 0) { //Our elements has an anchor by default so regarless of it's position right now that okay to toggle margins.
-                        CVarSetInteger(cvarNameMargins, SetActivated);
+                        CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
                     }
                 }
             } 
             else { //Since the user requested to turn all margin off no need to do any check there.
-                CVarSetInteger(cvarNameMargins, SetActivated);
+                CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
             }
         }
     }
