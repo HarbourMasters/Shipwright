@@ -3,6 +3,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/do_action_static/do_action_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
+#include "soh_assets.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "libultraship/bridge.h"
@@ -5219,7 +5220,7 @@ void Interface_Draw(PlayState* play) {
 
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, dPadColor.r, dPadColor.g, dPadColor.b, dpadAlpha);
             if (fullUi) {
-                gDPLoadTextureBlock(OVERLAY_DISP++, "__OTR__textures/parameter_static/gDPad",
+                gDPLoadTextureBlock(OVERLAY_DISP++, gDPadTex,
                                     G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 gSPWideTextureRectangle(OVERLAY_DISP++, DpadPosX << 2, DpadPosY << 2,
