@@ -3,6 +3,7 @@
 #include <array>
 #include <string>
 #include <vector>
+#include <cstdint>
 
 namespace Cosmetics {
   constexpr std::string_view RANDOM_CHOICE_STR = "Random Choice";

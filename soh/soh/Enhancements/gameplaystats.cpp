@@ -667,7 +667,8 @@ void SetupDisplayColors() {
 }
 
 extern "C" void InitStatTracker() {
-    SohImGui::AddWindow("Enhancements", "Gameplay Stats", DrawStatsTracker, CVarGetInteger("gGameplayStatsEnabled", 0) == 1);
+    Ship::AddWindow("Enhancements", "Gameplay Stats", DrawStatsTracker,
+                    CVarGetInteger("gGameplayStatsEnabled", 0) == 1);
     SetupDisplayNames();
     SetupDisplayColors();
 }

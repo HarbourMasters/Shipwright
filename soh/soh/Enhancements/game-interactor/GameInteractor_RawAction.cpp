@@ -335,7 +335,7 @@ void GameInteractor::RawAction::SetCosmeticsColor(uint8_t cosmeticCategory, uint
             break;
     }
 
-    SohImGui::RequestCvarSaveOnNextTick();
+    Ship::RequestCvarSaveOnNextTick();
     ApplyOrResetCustomGfxPatches();
 }
 

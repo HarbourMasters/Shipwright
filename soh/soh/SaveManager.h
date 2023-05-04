@@ -40,6 +40,9 @@ class SaveManager {
 public:
     static SaveManager* Instance;
 
+    static void WriteSaveFile(const std::filesystem::path& savePath, uintptr_t addr, void* dramAddr, size_t size);
+    static void ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size);
+
     using InitFunc = void(*)(bool isDebug);
     using LoadFunc = void(*)();
     using SaveFunc = void(*)(SaveContext* saveContext);

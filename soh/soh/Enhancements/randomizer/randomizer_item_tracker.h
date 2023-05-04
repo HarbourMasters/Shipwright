@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <cstdint>
 
 void InitItemTracker();
 void DrawItemTracker(bool& open);
