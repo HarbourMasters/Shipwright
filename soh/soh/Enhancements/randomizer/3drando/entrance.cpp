@@ -711,8 +711,8 @@ int ShuffleAllEntrances() {
      {EntranceType::Dungeon,         ICE_CAVERN_ENTRYWAY,              ZORAS_FOUNTAIN,                       0x03D4}},
     {{EntranceType::Dungeon,         GERUDO_FORTRESS,                  GERUDO_TRAINING_GROUNDS_ENTRYWAY,     0x0008},
      {EntranceType::Dungeon,         GERUDO_TRAINING_GROUNDS_ENTRYWAY, GERUDO_FORTRESS,                      0x03A8}},
-    {{EntranceType::GanonDungeon,    GANONS_CASTLE_GROUNDS,            GANONS_CASTLE_ENTRYWAY,               0x0467},
-     {EntranceType::GanonDungeon,    GANONS_CASTLE_ENTRYWAY,           GANONS_CASTLE_GROUNDS,                0x023D}},
+    {{EntranceType::GanonDungeon,    GANONS_CASTLE_LEDGE,            GANONS_CASTLE_ENTRYWAY,               0x0467},
+     {EntranceType::GanonDungeon,    GANONS_CASTLE_ENTRYWAY,           GANONS_CASTLE_LEDGE,                  0x023D}},
 
     {{EntranceType::Interior,        KOKIRI_FOREST,                    KF_MIDOS_HOUSE,                       0x0433},
      {EntranceType::Interior,        KF_MIDOS_HOUSE,                   KOKIRI_FOREST,                        0x0443}},
