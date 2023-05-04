@@ -1561,8 +1561,8 @@ extern "C" uint32_t OTRGetCurrentHeight() {
 extern "C" void OTRControllerCallback(ControllerCallback* controller) {
     auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
 
-    for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
-        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
+    for (int i = 0; i < controlDeck->GetNumConnectedPorts(); ++i) {
+        auto physicalDevice = controlDeck->GetDeviceFromPortIndex(i);
         physicalDevice->WriteToSource(i, controller);
     }
 }
@@ -1609,8 +1609,8 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 extern "C" int Controller_ShouldRumble(size_t slot) {
     auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
     
-    if (slot < controlDeck->GetNumVirtualDevices()) {
-        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(slot);
+    if (slot < controlDeck->GetNumConnectedPorts()) {
+        auto physicalDevice = controlDeck->GetDeviceFromPortIndex(slot);
         
         if (physicalDevice->getProfile(slot)->UseRumble && physicalDevice->CanRumble()) {
             return 1;
