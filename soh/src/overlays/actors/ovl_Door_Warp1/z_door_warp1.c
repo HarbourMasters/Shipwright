@@ -502,13 +502,12 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
         osSyncPrintf("\n\n\nじかんがきたからおーしまい fade_direction=[%d]", play->sceneLoadFlag, 0x14);
 
         if (play->sceneNum == SCENE_DDAN_BOSS) {
-            if (!Flags_GetEventChkInf(0x25)) {
-                if (CVarGetInteger("gSkipCutscenes", 0) || gSaveContext.n64ddFlag) {
-                    Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN);
-                } else {
-                    Flags_SetEventChkInf(0x25);
+            if (!Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
+                Flags_SetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP);
+                if (!CVarGetInteger("gSkipCutscenes", 0) && !gSaveContext.n64ddFlag) {
                     Item_Give(play, ITEM_GORON_RUBY);
-                }
+                    Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN);
+                }       
                 play->nextEntranceIndex = 0x13D;
                 gSaveContext.nextCutsceneIndex = 0xFFF1;
             } else {
@@ -516,15 +515,14 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (play->sceneNum == SCENE_YDAN_BOSS) {
-            if (!Flags_GetEventChkInf(0x07)) {
-                if (CVarGetInteger("gSkipCutscenes", 0) || gSaveContext.n64ddFlag) {
-                    Flags_SetEventChkInf(0x09);
-                    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH);
+            if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD)) {
+                Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
+                Flags_SetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP);
+                if (!CVarGetInteger("gSkipCutscenes", 0) && !gSaveContext.n64ddFlag) {
+                    Item_Give(play, ITEM_KOKIRI_EMERALD);
                     Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE);
                 } else {
-                    Flags_SetEventChkInf(0x07);
-                    Flags_SetEventChkInf(0x09);
-                    Item_Give(play, ITEM_KOKIRI_EMERALD);
+                    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH);
                 }
                 play->nextEntranceIndex = 0xEE;
                 gSaveContext.nextCutsceneIndex = 0xFFF1;
@@ -626,11 +624,10 @@ void DoorWarp1_RutoWarpOut(DoorWarp1* this, PlayState* play) {
     this->warpTimer++;
 
     if (this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF) {
-        if (CVarGetInteger("gSkipCutscenes", 0) || gSaveContext.n64ddFlag) {
-            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY);
-        } else {
-            Flags_SetEventChkInf(0x37);
+        Flags_SetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP);
+        if (!CVarGetInteger("gSkipCutscenes", 0) && !gSaveContext.n64ddFlag) {
             Item_Give(play, ITEM_ZORA_SAPPHIRE);
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY);
         }
 
         play->nextEntranceIndex = 0x10E;
@@ -736,12 +733,11 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
 
     if (this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF) {
         if (play->sceneNum == SCENE_MORIBOSSROOM) {
-            if (!Flags_GetEventChkInf(0x48)) {
-                if (CVarGetInteger("gSkipCutscenes", 0) || gSaveContext.n64ddFlag) {
-                    Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE);
-                } else {
-                    Flags_SetEventChkInf(0x48);
+            if (!Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) {
+                Flags_SetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP);
+                if (!CVarGetInteger("gSkipCutscenes", 0) && !gSaveContext.n64ddFlag) {
                     Item_Give(play, ITEM_MEDALLION_FOREST);
+                    Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE);
                 }
                 play->nextEntranceIndex = 0x6B;
                 gSaveContext.nextCutsceneIndex = 0;
@@ -755,14 +751,14 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (play->sceneNum == SCENE_FIRE_BS) {
-            if (!Flags_GetEventChkInf(0x49)) {
-                if (CVarGetInteger("gSkipCutscenes", 0) || gSaveContext.n64ddFlag) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) {
+                Flags_SetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP);
+                if (!CVarGetInteger("gSkipCutscenes", 0) && !gSaveContext.n64ddFlag) {
+                    Item_Give(play, ITEM_MEDALLION_FIRE);
                     Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE);
+                } else {
                     // Change Death Mountain cloud since we aren't warping to the cutscene
                     Flags_SetEventChkInf(EVENTCHKINF_DEATH_MOUNTAIN_ERUPTED);
-                } else {
-                    Flags_SetEventChkInf(0x49);
-                    Item_Give(play, ITEM_MEDALLION_FIRE);
                 }
                 play->nextEntranceIndex = 0xDB;
                 gSaveContext.nextCutsceneIndex = 0xFFF3;
@@ -775,14 +771,14 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (play->sceneNum == SCENE_MIZUSIN_BS) {
-            if (!Flags_GetEventChkInf(0x4A)) {
-                if (CVarGetInteger("gSkipCutscenes", 0) || gSaveContext.n64ddFlag) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) {
+                Flags_SetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP);
+                if (!CVarGetInteger("gSkipCutscenes", 0) && !gSaveContext.n64ddFlag) {
+                    Item_Give(play, ITEM_MEDALLION_WATER);
                     Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE);
+                } else {
                     // Fill Lake Hylia since we aren't warping to the cutscene
                     Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
-                } else {
-                    Flags_SetEventChkInf(0x4A);
-                    Item_Give(play, ITEM_MEDALLION_WATER);
                 }
                 play->nextEntranceIndex = 0x6B;
                 gSaveContext.nextCutsceneIndex = 0;
@@ -797,8 +793,10 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
             }
         } else if (play->sceneNum == SCENE_JYASINBOSS) {
             if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
+                Flags_SetRandomizerInf(RAND_INF_USED_SPIRIT_TEMPLE_BLUE_WARP);
                 if (!CVarGetInteger("gSkipCutscenes", 0) && !gSaveContext.n64ddFlag) {
                     Item_Give(play, ITEM_MEDALLION_SPIRIT);
+                    Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
                 }
                 play->nextEntranceIndex = 0x6B;
                 gSaveContext.nextCutsceneIndex = 0;
@@ -813,8 +811,10 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
             }
         } else if (play->sceneNum == SCENE_HAKADAN_BS) {
             if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
+                Flags_SetRandomizerInf(RAND_INF_USED_SHADOW_TEMPLE_BLUE_WARP);
                 if (!CVarGetInteger("gSkipCutscenes", 0) && !gSaveContext.n64ddFlag) {
                     Item_Give(play, ITEM_MEDALLION_SHADOW);
+                    Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
                 }
                 play->nextEntranceIndex = 0x6B;
                 gSaveContext.nextCutsceneIndex = 0;

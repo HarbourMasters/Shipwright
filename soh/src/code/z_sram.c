@@ -229,7 +229,6 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         Flags_SetEventChkInf(EVENTCHKINF_FIRST_SPOKE_TO_MIDO);
         Flags_SetEventChkInf(EVENTCHKINF_MET_DEKU_TREE);
         Flags_SetEventChkInf(EVENTCHKINF_DEKU_TREE_OPENED_MOUTH);
-        Flags_SetInfTable(INFTABLE_SPOKE_TO_KAEPORA_IN_LAKE_HYLIA);
         Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
         Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
         Flags_SetEventChkInf(EVENTCHKINF_SHEIK_SPAWNED_AT_MASTER_SWORD_PEDESTAL);
@@ -242,8 +241,9 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         Flags_SetInfTable(INFTABLE_MET_CHILD_MALON_AT_CASTLE_OR_MARKET);
         Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_CASTLE_OR_MARKET);
         Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_INGO_AT_RANCH_BEFORE_TALON_RETURNS);
-        Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_RANCH);
-        Flags_SetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON);
+        // This interferes with malon @ hyrule castle (she wont give you egg)
+        // Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_RANCH);
+        // Flags_SetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON);
         Flags_SetInfTable(INFTABLE_CHILD_MALON_SAID_EPONA_WAS_AFRAID_OF_YOU);
         Flags_SetInfTable(INFTABLE_SPOKE_TO_INGO_ONCE_AS_ADULT);
 
@@ -272,6 +272,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         Flags_SetEventChkInf(EVENTCHKINF_ENTERED_KAKARIKO_VILLAGE);
         Flags_SetEventChkInf(EVENTCHKINF_ENTERED_ZORAS_DOMAIN);
         Flags_SetEventChkInf(EVENTCHKINF_ENTERED_HYRULE_CASTLE);
+        Flags_SetInfTable(INFTABLE_ENTERED_HYRULE_CASTLE); // This one determines where malon should be
         Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GORON_CITY);
         Flags_SetEventChkInf(EVENTCHKINF_ENTERED_TEMPLE_OF_TIME);
         Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEKU_TREE);
@@ -286,7 +287,6 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DESERT_COLOSSUS);
         Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEATH_MOUNTAIN_CRATER);
         Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GANONS_CASTLE_EXTERIOR);
-        Flags_SetInfTable(INFTABLE_ENTERED_HYRULE_CASTLE);
 
         // skip the z target talk instructions by the kokiri shop
         gSaveContext.sceneFlags[SCENE_SPOT04].swch |= (1 << 0x1F);
@@ -295,6 +295,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.sceneFlags[SCENE_MIZUSIN].swch |= (1 << 0x10);
 
         // no more kaepora
+        Flags_SetInfTable(INFTABLE_SPOKE_TO_KAEPORA_IN_LAKE_HYLIA);
+        Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_KAEPORA_BY_LOST_WOODS);
         gSaveContext.sceneFlags[SCENE_SPOT00].swch |= (1 << 0xC);  // hyrule field kaepora outside kokiri forest
         gSaveContext.sceneFlags[SCENE_SPOT00].swch |= (1 << 0xB);  // hyrule field kaepora outside lake hylia
         gSaveContext.sceneFlags[SCENE_SPOT10].swch |= (1 << 0x7);  // lost woods kaepora pre-saria

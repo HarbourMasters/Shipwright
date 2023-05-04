@@ -398,10 +398,10 @@ void GivePlayerRandoRewardSariaGift(PlayState* play) {
             Randomizer_GetItemFromKnownCheck(RC_LW_GIFT_FROM_SARIA, GI_OCARINA_FAIRY) : 
             ItemTable_RetrieveEntry(MOD_NONE, GI_OCARINA_FAIRY);
 
-        if (!Flags_GetEventChkInf(0xC1) && player != NULL && !Player_InBlockingCsMode(play, player)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE) && player != NULL && !Player_InBlockingCsMode(play, player)) {
             if (GiveItemEntryWithoutActor(play, getItemEntry)) {
                 player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
-                player->pendingFlag.flagID = 0xC1;
+                player->pendingFlag.flagID = EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE;
             }
         }
     }
@@ -425,92 +425,92 @@ void GivePlayerRandoRewardSongFromImpa(PlayState* play) {
 
 void GivePlayerRandoDungeonReward(PlayState* play) {
     Player* player = GET_PLAYER(play);
-    if (gSaveContext.entranceIndex == 0x0457) {
+    if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) && Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
         GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
             Randomizer_GetItemFromKnownCheck(RC_QUEEN_GOHMA, RG_KOKIRI_EMERALD) : 
             ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_KOKIRI_EMERALD);
 
-        if (!Flags_GetEventChkInf(0x07) && player != NULL && !Player_InBlockingCsMode(play, player)) {
+        if (player != NULL && !Player_InBlockingCsMode(play, player)) {
             if (GiveItemEntryWithoutActor(play, getItemEntry)) {
-                player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
-                player->pendingFlag.flagID = 0x07;
+                player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
+                player->pendingFlag.flagID = RAND_INF_DUNGEONS_DONE_DEKU_TREE;
             }
         }
     }
 
-    if (gSaveContext.entranceIndex == 0x47A) {
+    if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
         GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
             Randomizer_GetItemFromKnownCheck(RC_KING_DODONGO, RG_GORON_RUBY) : 
             ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_GORON_RUBY);
 
-        if (!Flags_GetEventChkInf(0x25) && player != NULL && !Player_InBlockingCsMode(play, player)) {
+        if (player != NULL && !Player_InBlockingCsMode(play, player)) {
             if (GiveItemEntryWithoutActor(play, getItemEntry)) {
-                player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
-                player->pendingFlag.flagID = 0x25;
+                player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
+                player->pendingFlag.flagID = RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN;
             }
         }
     }
 
-    if (gSaveContext.entranceIndex == 0x10E) {
+    if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
         GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
             Randomizer_GetItemFromKnownCheck(RC_BARINADE, RG_ZORA_SAPPHIRE) : 
             ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_ZORA_SAPPHIRE);
 
-        if (!Flags_GetEventChkInf(0x37) && player != NULL) {
+        if (player != NULL && !Player_InBlockingCsMode(play, player)) {
             if (GiveItemEntryWithoutActor(play, getItemEntry)) {
-                player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
-                player->pendingFlag.flagID = 0x37;
+                player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
+                player->pendingFlag.flagID = RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY;
             }
             player->stateFlags2 |= PLAYER_STATE2_10;
             func_8083E5A8(player, play);
         }
     }
 
-    if (gSaveContext.entranceIndex == 0x608) {
-        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+    if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE) && Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
             Randomizer_GetItemFromKnownCheck(RC_PHANTOM_GANON, RG_FOREST_MEDALLION) : 
             ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_FOREST_MEDALLION);
 
-        if (!Flags_GetEventChkInf(0x48) && player != NULL) {
+        if (player != NULL && !Player_InBlockingCsMode(play, player)) {
             if (GiveItemEntryWithoutActor(play, getItemEntry)) {
-                player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
-                player->pendingFlag.flagID = 0x48;
+                player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
+                player->pendingFlag.flagID = RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE;
             }
         }
     }
 
-    if (gSaveContext.entranceIndex == 0x564) {
-        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+    if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE) && Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
             Randomizer_GetItemFromKnownCheck(RC_VOLVAGIA, RG_FIRE_MEDALLION) : 
             ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_FIRE_MEDALLION);
 
-        if (!Flags_GetEventChkInf(0x49) && player != NULL) {
+        if (player != NULL && !Player_InBlockingCsMode(play, player)) {
             if (GiveItemEntryWithoutActor(play, getItemEntry)) {
-                player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
-                player->pendingFlag.flagID = 0x49;
+                player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
+                player->pendingFlag.flagID = RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE;
             }
         }
     }
 
-    if (gSaveContext.entranceIndex == 0x60C) {
-        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+    if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE) && Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
             Randomizer_GetItemFromKnownCheck(RC_MORPHA, RG_WATER_MEDALLION) : 
             ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_WATER_MEDALLION);
 
-        if (!Flags_GetEventChkInf(0x4A) && player != NULL) {
+        if (player != NULL && !Player_InBlockingCsMode(play, player)) {
             if (GiveItemEntryWithoutActor(play, getItemEntry)) {
-                player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
-                player->pendingFlag.flagID = 0x4A;
+                player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
+                player->pendingFlag.flagID = RAND_INF_DUNGEONS_DONE_WATER_TEMPLE;
             }
         }
     }
 
-    if (gSaveContext.entranceIndex == 0x610) {
-        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+    if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE) && Flags_GetRandomizerInf(RAND_INF_USED_SPIRIT_TEMPLE_BLUE_WARP)) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
             Randomizer_GetItemFromKnownCheck(RC_TWINROVA, RG_SPIRIT_MEDALLION) : 
             ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_SPIRIT_MEDALLION);
 
-        if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE) && player != NULL) {
+        if (player != NULL && !Player_InBlockingCsMode(play, player)) {
             if (GiveItemEntryWithoutActor(play, getItemEntry)) {
                 player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
                 player->pendingFlag.flagID = RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE;
@@ -518,12 +518,12 @@ void GivePlayerRandoDungeonReward(PlayState* play) {
         }
     }
 
-    if (gSaveContext.entranceIndex == 0x580) {
-        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+    if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE) && Flags_GetRandomizerInf(RAND_INF_USED_SHADOW_TEMPLE_BLUE_WARP)) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
             Randomizer_GetItemFromKnownCheck(RC_BONGO_BONGO, RG_SHADOW_MEDALLION) : 
             ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_SHADOW_MEDALLION);
 
-        if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE) && player != NULL) {
+        if (player != NULL && !Player_InBlockingCsMode(play, player)) {
             if (GiveItemEntryWithoutActor(play, getItemEntry)) {
                 player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
                 player->pendingFlag.flagID = RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE;
