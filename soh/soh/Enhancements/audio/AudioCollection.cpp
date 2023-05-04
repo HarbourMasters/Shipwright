@@ -229,7 +229,7 @@ void AudioCollection::RemoveFromShufflePool(SequenceInfo* seqInfo) {
     excludedSequences.insert(seqInfo);
     includedSequences.erase(seqInfo);
     CVarSetInteger(cvarKey.c_str(), 1);
-    SohImGui::RequestCvarSaveOnNextTick();
+    Ship::RequestCvarSaveOnNextTick();
 }
 
 void AudioCollection::AddToShufflePool(SequenceInfo* seqInfo) {
@@ -237,7 +237,7 @@ void AudioCollection::AddToShufflePool(SequenceInfo* seqInfo) {
     includedSequences.insert(seqInfo);
     excludedSequences.erase(seqInfo);
     CVarClear(cvarKey.c_str());
-    SohImGui::RequestCvarSaveOnNextTick();
+    Ship::RequestCvarSaveOnNextTick();
 }
 
 void AudioCollection::InitializeShufflePool() {

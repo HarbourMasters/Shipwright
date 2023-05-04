@@ -5,8 +5,8 @@
 #include <filesystem>
 #include <fstream>
 
-#include <ResourceMgr.h>
-#include <OtrFile.h>
+#include <ResourceManager.h>
+#include <File.h>
 #include <DisplayList.h>
 #include <Window.h>
 #include <GameVersions.h>
@@ -240,7 +240,7 @@ OTRGlobals::OTRGlobals() {
         OOT_PAL_GC_DBG1,
         OOT_PAL_GC_DBG2
     };
-    context = Ship::Window::CreateInstance("Ship of Harkinian", OTRFiles);
+    context = Ship::Window::CreateInstance("Ship of Harkinian", "soh", OTRFiles);
 
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Animation, "Animation", std::make_shared<Ship::AnimationFactory>());
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_PlayerAnimation, "PlayerAnimation", std::make_shared<Ship::PlayerAnimationFactory>());
@@ -271,7 +271,7 @@ OTRGlobals::OTRGlobals() {
         cameraStrings[i] = dup;
     }
 
-    auto versions = context->GetResourceManager()->GetGameVersions();
+    auto versions = context->GetResourceManager()->GetArchive()->GetGameVersions();
 
     for (uint32_t version : versions) {
         if (!ValidHashes.contains(version)) {
@@ -324,7 +324,7 @@ bool OTRGlobals::HasOriginal() {
 }
 
 uint32_t OTRGlobals::GetInterpolationFPS() {
-    if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
+    if (Ship::WindowBackend() == Ship::Backend::DX11) {
         return CVarGetInteger("gInterpolationFPS", 20);
     }
 
@@ -734,8 +734,8 @@ extern "C" void InitOTR() {
 #elif defined(__WIIU__)
     Ship::WiiU::Init();
 #endif
-    SohImGui::AddSetupHooksDelegate(GameMenuBar::SetupHooks);
-    SohImGui::RegisterMenuDrawMethod(GameMenuBar::Draw);
+    Ship::AddSetupHooksDelegate(GameMenuBar::SetupHooks);
+    Ship::RegisterMenuDrawMethod(GameMenuBar::Draw);
 
     OTRGlobals::Instance = new OTRGlobals();
     SaveManager::Instance = new SaveManager();
@@ -995,11 +995,11 @@ extern "C" uint16_t OTRGetPixelDepth(float x, float y) {
 }
 
 extern "C" uint32_t ResourceMgr_GetNumGameVersions() {
-    return OTRGlobals::Instance->context->GetResourceManager()->GetGameVersions().size();
+    return OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->GetGameVersions().size();
 }
 
 extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
-    return OTRGlobals::Instance->context->GetResourceManager()->GetGameVersions()[index];
+    return OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->GetGameVersions()[index];
 }
 
 uint32_t IsSceneMasterQuest(s16 sceneNum) {
@@ -1451,11 +1451,11 @@ void OTRGlobals::CheckSaveFile(size_t sramSize) const {
 }
 
 extern "C" void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
-    OTRGlobals::Instance->context->ReadSaveFile(GetSaveFile(), addr, dramAddr, size);
+    SaveManager::ReadSaveFile(GetSaveFile(), addr, dramAddr, size);
 }
 
 extern "C" void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
-    OTRGlobals::Instance->context->WriteSaveFile(GetSaveFile(), addr, dramAddr, size);
+    SaveManager::WriteSaveFile(GetSaveFile(), addr, dramAddr, size);
 }
 
 std::wstring StringToU16(const std::string& s) {
@@ -1953,12 +1953,12 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
 }
 
 extern "C" void Overlay_DisplayText(float duration, const char* text) {
-    SohImGui::GetGameOverlay()->TextDrawNotification(duration, true, text);
+    Ship::GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
 extern "C" void Overlay_DisplayText_Seconds(int seconds, const char* text) {
     float duration = seconds * OTRGlobals::Instance->GetInterpolationFPS() * 0.05;
-    SohImGui::GetGameOverlay()->TextDrawNotification(duration, true, text);
+    Ship::GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
 extern "C" void Entrance_ClearEntranceTrackingData(void) {

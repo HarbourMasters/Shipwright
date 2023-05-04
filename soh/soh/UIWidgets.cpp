@@ -206,7 +206,7 @@ namespace UIWidgets {
         bool val = (bool)CVarGetInteger(cvarName, defaultValue);
         if (CustomCheckbox(text, &val, disabled, disabledGraphic)) {
             CVarSetInteger(cvarName, val);
-            SohImGui::RequestCvarSaveOnNextTick();
+            Ship::RequestCvarSaveOnNextTick();
             changed = true;
         }
 
@@ -246,7 +246,7 @@ namespace UIWidgets {
                         CVarSetInteger(cvarName, i);
                         selected = i;
                         changed = true;
-                        SohImGui::RequestCvarSaveOnNextTick();
+                        Ship::RequestCvarSaveOnNextTick();
                     }
                 }
             }
@@ -259,7 +259,7 @@ namespace UIWidgets {
             if (disabledValue >= 0 && selected != disabledValue) {
                 CVarSetInteger(cvarName, disabledValue);
                 changed = true;
-                SohImGui::RequestCvarSaveOnNextTick();
+                Ship::RequestCvarSaveOnNextTick();
             }
         }
 
@@ -348,7 +348,7 @@ namespace UIWidgets {
 
         if (changed) {
             CVarSetInteger(cvarName, val);
-            SohImGui::RequestCvarSaveOnNextTick();
+            Ship::RequestCvarSaveOnNextTick();
         }
 
         return changed;
@@ -424,7 +424,7 @@ namespace UIWidgets {
 
         if (changed) {
             CVarSetFloat(cvarName, val);
-            SohImGui::RequestCvarSaveOnNextTick();
+            Ship::RequestCvarSaveOnNextTick();
         }
 
         return changed;
@@ -471,7 +471,7 @@ namespace UIWidgets {
         int val = CVarGetInteger(cvarName, 0);
         if (ImGui::RadioButton(make_invisible.c_str(), id == val)) {
             CVarSetInteger(cvarName, id);
-            SohImGui::RequestCvarSaveOnNextTick();
+            Ship::RequestCvarSaveOnNextTick();
             ret = true;
         }
         ImGui::SameLine();
@@ -498,7 +498,7 @@ namespace UIWidgets {
 
             CVarSetColor(cvarName, colorsRGBA);
             CVarSetInteger(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
-            SohImGui::RequestCvarSaveOnNextTick();
+            Ship::RequestCvarSaveOnNextTick();
             changed = true;
         }
         Tooltip("Revert colors to the game's original colors (GameCube version)\nOverwrites previously chosen color");
@@ -523,7 +523,7 @@ namespace UIWidgets {
             NewColors.b = fmin(fmax(colors->z * 255, 0), 255);
             CVarSetColor(cvarName, NewColors);
             CVarSetInteger(Cvar_RBM.c_str(), 0); // On click disable rainbow mode.
-            SohImGui::RequestCvarSaveOnNextTick();
+            Ship::RequestCvarSaveOnNextTick();
             changed = true;
         }
         Tooltip("Chooses a random color\nOverwrites previously chosen color");
@@ -584,7 +584,7 @@ namespace UIWidgets {
                 colors.a = 255.0;
 
                 CVarSetColor(cvarName, colors);
-                SohImGui::RequestCvarSaveOnNextTick();
+                Ship::RequestCvarSaveOnNextTick();
                 changed = true;
             }
         }
@@ -600,7 +600,7 @@ namespace UIWidgets {
                 colors.a = ColorRGBA.w * 255.0;
 
                 CVarSetColor(cvarName, colors);
-                SohImGui::RequestCvarSaveOnNextTick();
+                Ship::RequestCvarSaveOnNextTick();
                 changed = true;
             }
         }

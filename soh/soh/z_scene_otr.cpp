@@ -1,5 +1,5 @@
 #include "OTRGlobals.h"
-#include <ResourceMgr.h>
+#include <ResourceManager.h>
 #include "soh/resource/type/Scene.h"
 #include <Utils/StringHelper.h>
 #include "global.h"
@@ -38,7 +38,7 @@ extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 extern "C" RomFile sNaviMsgFiles[];
 s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* scene);
 
-std::shared_ptr<Ship::OtrFile> ResourceMgr_LoadFile(const char* path) {
+std::shared_ptr<Ship::File> ResourceMgr_LoadFile(const char* path) {
     std::string Path = path;
     if (IsGameMasterQuest()) {
         size_t pos = 0;
