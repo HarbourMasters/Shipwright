@@ -2271,6 +2271,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                     }
 
                     gSaveContext.inventory.items[temp + i] = item;
+                    break;
                 }
             }
         } else {
