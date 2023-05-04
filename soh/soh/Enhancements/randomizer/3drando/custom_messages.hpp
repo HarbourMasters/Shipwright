@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <cstdint>
 
 #include "text.hpp"
 

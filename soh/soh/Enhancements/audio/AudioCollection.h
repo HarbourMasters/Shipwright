@@ -2,6 +2,7 @@
 #include <map>
 #include <string>
 #include <set>
+#include <cstdint>
 
 enum SeqType {
     SEQ_NOSHUFFLE  = 0,

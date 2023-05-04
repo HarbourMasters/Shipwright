@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <cstdint>
 
 typedef enum {
     // ENTRANCE_GROUP_NO_GROUP,
