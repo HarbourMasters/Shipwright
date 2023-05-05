@@ -343,12 +343,12 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->giEffect->parameters[0] = -2;
             break;
         case kEffectOneHitKo:
-            effect->category = kEffectCatOhko;
+            effect->category = kEffectCatDamageTaken;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::OneHitKO();
             break;
         case kEffectInvincibility:
-            effect->category = kEffectCatInvincible;
+            effect->category = kEffectCatDamageTaken;
             effect->timeRemaining = 15000;
             effect->giEffect = new GameInteractionEffect::PlayerInvincibility();
             break;
