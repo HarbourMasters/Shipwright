@@ -894,11 +894,13 @@ extern "C" void Graph_StartFrame() {
 
             break;
         }
+#if defined(_WIN32) || defined(__APPLE__)
         case KbScancode::LUS_KB_F9: {
             // Toggle TTS
             CVarSetInteger("gA11yTTS", !CVarGetInteger("gA11yTTS", 0));
             break;
         }
+#endif
         case KbScancode::LUS_KB_TAB: {
             // Toggle HD Assets
             CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
