@@ -1627,7 +1627,7 @@ extern "C" int Controller_ShouldRumble(size_t slot) {
     if (slot < controlDeck->GetNumConnectedPorts()) {
         auto physicalDevice = controlDeck->GetDeviceFromPortIndex(slot);
         
-        if (physicalDevice->getProfile(slot)->UseRumble && physicalDevice->CanRumble()) {
+        if (physicalDevice->GetProfile(slot)->UseRumble && physicalDevice->CanRumble()) {
             return 1;
         }
     }
