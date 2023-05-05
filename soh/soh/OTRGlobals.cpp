@@ -1576,12 +1576,27 @@ extern "C" uint32_t OTRGetCurrentHeight() {
     return OTRGlobals::Instance->context->GetCurrentHeight();
 }
 
-extern "C" void OTRControllerCallback(ControllerCallback* controller) {
+extern "C" void OTRControllerCallback(uint8_t rumble, uint8_t ledColor) {
     auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
 
-    for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
-        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
-        physicalDevice->WriteToSource(i, controller);
+    for (int i = 0; i < controlDeck->GetNumConnectedPorts(); ++i) {
+        auto physicalDevice = controlDeck->GetDeviceFromPortIndex(i);
+        switch (ledColor) {
+            case 0:
+                physicalDevice->SetLed(i, 255, 0, 0);
+                break;
+            case 1:
+                physicalDevice->SetLed(i, 0x1E, 0x69, 0x1B);
+                break;
+            case 2:
+                physicalDevice->SetLed(i, 0x64, 0x14, 0x00);
+                break;
+            case 3:
+                physicalDevice->SetLed(i, 0x00, 0x3C, 0x64);
+                break;
+        }
+
+        physicalDevice->SetRumble(i, rumble);
     }
 }
 
@@ -1627,10 +1642,10 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 extern "C" int Controller_ShouldRumble(size_t slot) {
     auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
     
-    if (slot < controlDeck->GetNumVirtualDevices()) {
-        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(slot);
+    if (slot < controlDeck->GetNumConnectedPorts()) {
+        auto physicalDevice = controlDeck->GetDeviceFromPortIndex(slot);
         
-        if (physicalDevice->getProfile(slot)->UseRumble && physicalDevice->CanRumble()) {
+        if (physicalDevice->GetProfile(slot)->UseRumble && physicalDevice->CanRumble()) {
             return 1;
         }
     }
