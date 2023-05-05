@@ -21,6 +21,7 @@ extern PlayState* gPlayState;
 
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
+#include "textures/parameter_static/parameter_static.h"
 }
 
 typedef struct {
@@ -140,7 +141,7 @@ std::map<uint32_t, ItemMapEntry> itemMapping = {
 };
 
 std::map<uint32_t, ItemMapEntry> gregMapping = {
-    {ITEM_RUPEE_GREEN, {ITEM_RUPEE_GREEN, "ITEM_RUPEE_GREEN", "ITEM_RUPEE_GREEN_Faded", "__OTR__textures/parameter_static/gRupeeCounterIconTex"}}
+    {ITEM_RUPEE_GREEN, {ITEM_RUPEE_GREEN, "ITEM_RUPEE_GREEN", "ITEM_RUPEE_GREEN_Faded", gRupeeCounterIconTex}}
 };
 
 // Maps entries in the GS flag array to the area name it represents

@@ -940,6 +940,8 @@ void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
 
     gSaveContext.unk_13EA = 0;
     Interface_ChangeAlpha(50);
+
+    KaleidoScope_ResetTradeSelect();
 }
 
 void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
@@ -3586,6 +3588,8 @@ void KaleidoScope_Update(PlayState* play)
                     pauseCtx->tradeQuestLocation = 7;
                 }
             }
+
+            KaleidoScope_ResetTradeSelect();
 
             pauseCtx->state = 4;
             break;
