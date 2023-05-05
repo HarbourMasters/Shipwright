@@ -226,6 +226,23 @@ void GivePlayerRandoRewardSongOfTime(PlayState* play) {
     }
 }
 
+void GivePlayerRandoRewardLightMedallion(PlayState* play) {
+    Player* player = GET_PLAYER(play);
+
+    if (!Flags_GetRandomizerInf(RAND_INF_RECEIVED_LIGHT_MEDALLION) && Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL)) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+            Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, RG_LIGHT_MEDALLION) :
+            ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_LIGHT_MEDALLION);
+
+        if (player != NULL && !Player_InBlockingCsMode(play, player)) {
+            if (GiveItemEntryWithoutActor(play, getItemEntry)) {
+                player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
+                player->pendingFlag.flagID = RAND_INF_RECEIVED_LIGHT_MEDALLION;
+            }
+        }
+    }
+}
+
 void GivePlayerRandoRewardNocturne(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
 
@@ -341,52 +358,59 @@ u8 CheckDungeonCount() {
     return dungeonCount;
 }
 
-void GivePlayerRandoRewardZeldaLightArrowsGift(PlayState* play, RandomizerCheck check) {
+void GivePlayerRandoRewardZeldaLightArrowsGift(PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    u8 meetsRequirements = 0;
-
-    switch (Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY)) {
-        case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
-            if (CheckMedallionCount() >= Randomizer_GetSettingValue(RSK_LACS_MEDALLION_COUNT)) {
-                meetsRequirements = true;
-            }
-            break;
-        case RO_GANON_BOSS_KEY_LACS_STONES:
-            if (CheckStoneCount() >= Randomizer_GetSettingValue(RSK_LACS_STONE_COUNT)) {
-                meetsRequirements = true;
-            }
-            break;
-        case RO_GANON_BOSS_KEY_LACS_REWARDS:
-            if ((CheckMedallionCount() + CheckStoneCount()) >= Randomizer_GetSettingValue(RSK_LACS_REWARD_COUNT)) {
-                meetsRequirements = true;
-            }
-            break;
-        case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
-            if (CheckDungeonCount() >= Randomizer_GetSettingValue(RSK_LACS_DUNGEON_COUNT)) {
-                meetsRequirements = true;
-            }
-            break;
-        case RO_GANON_BOSS_KEY_LACS_TOKENS:
-            if (gSaveContext.inventory.gsTokens >= Randomizer_GetSettingValue(RSK_LACS_TOKEN_COUNT)) {
-                meetsRequirements = true;
-            }
-            break;
-        default:
-            if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
-                meetsRequirements = true;
-            }
-            break;
-    }
-
-    if (meetsRequirements && LINK_IS_ADULT &&
+    if (
+        !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
+        LINK_IS_ADULT &&
         (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA) &&
-        !Flags_GetTreasure(play, 0x1E) && player != NULL && !Player_InBlockingCsMode(play, player) &&
-        play->sceneLoadFlag == 0) {
-        GetItemEntry getItem = Randomizer_GetItemFromKnownCheck(check, GI_ARROW_LIGHT);
-        if (GiveItemEntryWithoutActor(play, getItem)) {
-            player->pendingFlag.flagID = 0x1E;
-            player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
+        player != NULL && !Player_InBlockingCsMode(play, player) &&
+        play->sceneLoadFlag == 0
+    ) {
+        u8 meetsRequirements = 0;
+
+        switch (Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY)) {
+            case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
+                if (CheckMedallionCount() >= Randomizer_GetSettingValue(RSK_LACS_MEDALLION_COUNT)) {
+                    meetsRequirements = true;
+                }
+                break;
+            case RO_GANON_BOSS_KEY_LACS_STONES:
+                if (CheckStoneCount() >= Randomizer_GetSettingValue(RSK_LACS_STONE_COUNT)) {
+                    meetsRequirements = true;
+                }
+                break;
+            case RO_GANON_BOSS_KEY_LACS_REWARDS:
+                if ((CheckMedallionCount() + CheckStoneCount()) >= Randomizer_GetSettingValue(RSK_LACS_REWARD_COUNT)) {
+                    meetsRequirements = true;
+                }
+                break;
+            case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
+                if (CheckDungeonCount() >= Randomizer_GetSettingValue(RSK_LACS_DUNGEON_COUNT)) {
+                    meetsRequirements = true;
+                }
+                break;
+            case RO_GANON_BOSS_KEY_LACS_TOKENS:
+                if (gSaveContext.inventory.gsTokens >= Randomizer_GetSettingValue(RSK_LACS_TOKEN_COUNT)) {
+                    meetsRequirements = true;
+                }
+                break;
+            default:
+                if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
+                    meetsRequirements = true;
+                }
+                break;
+        }
+
+        if (meetsRequirements) {
+            GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+                Randomizer_GetItemFromKnownCheck(RC_TOT_LIGHT_ARROWS_CUTSCENE, GI_ARROW_LIGHT) : 
+                ItemTable_RetrieveEntry(MOD_NONE, GI_ARROW_LIGHT);
+            if (GiveItemEntryWithoutActor(play, getItemEntry)) {
+                player->pendingFlag.flagID = EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS;
+                player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+            }
         }
     }
 }
@@ -1490,10 +1514,11 @@ skip:
         GivePlayerRandoRewardSariaGift(play);
         GivePlayerRandoRewardSongFromImpa(play);
         GivePlayerRandoRewardSongOfTime(play);
+        GivePlayerRandoRewardLightMedallion(play);
+        GivePlayerRandoRewardZeldaLightArrowsGift(play);
     }
 
     if (gSaveContext.n64ddFlag) {
-        GivePlayerRandoRewardZeldaLightArrowsGift(play, RC_TOT_LIGHT_ARROWS_CUTSCENE);
         GivePlayerRandoRewardNocturne(play, RC_SHEIK_IN_KAKARIKO);
         GivePlayerRandoRewardRequiem(play, RC_SHEIK_AT_COLOSSUS);
     }

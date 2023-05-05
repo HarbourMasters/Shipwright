@@ -99,6 +99,7 @@ void GiveLinksPocketItem() {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, (GetItemID)RG_NONE);
         StartingItemGive(getItemEntry);
     }
+    Flags_SetRandomizerInf(RAND_INF_RECEIVED_LIGHT_MEDALLION);
 }
 
 void SetStartingItems() {
@@ -203,11 +204,6 @@ void SetStartingItems() {
 }
 
 extern "C" void Randomizer_InitSaveFile() {
-    // Sets all rando flags to false
-    for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.randomizerInf); i++) {
-        gSaveContext.randomizerInf[i] = 0;
-    }
-
     // Starts pending ice traps out at 0 before potentially incrementing them down the line.
     gSaveContext.pendingIceTrapCount = 0;
 
@@ -295,14 +291,8 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.sceneFlags[SCENE_MIZUSIN].swch |= (1 << 0x15);
     }
 
-    int openForest = Randomizer_GetSettingValue(RSK_FOREST);
-    switch (openForest) {
-        case RO_FOREST_OPEN:
-            Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
-            // Fallthrough
-        case RO_FOREST_CLOSED_DEKU:
-            Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
-            break;
+    if (Randomizer_GetSettingValue(RSK_FOREST) == RO_FOREST_OPEN) {
+        Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
     }
 
     int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);

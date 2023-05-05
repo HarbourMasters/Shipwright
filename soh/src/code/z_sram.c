@@ -212,6 +212,10 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.playerName[offset] = Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->playerName[offset];
     }
 
+    for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.randomizerInf); i++) {
+        gSaveContext.randomizerInf[i] = 0;
+    }
+
     if (fileChooseCtx->questType[fileChooseCtx->buttonIndex] == 2 && strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
         // Set N64DD Flags for save file
         fileChooseCtx->n64ddFlags[fileChooseCtx->buttonIndex] = 1;
@@ -230,9 +234,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         Flags_SetEventChkInf(EVENTCHKINF_MET_DEKU_TREE);
         Flags_SetEventChkInf(EVENTCHKINF_DEKU_TREE_OPENED_MOUTH);
         Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
-        Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
+        // Leaves Kak gate open
+        // Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
         Flags_SetEventChkInf(EVENTCHKINF_SHEIK_SPAWNED_AT_MASTER_SWORD_PEDESTAL);
-        Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
+        // Prevents LACs
+        // Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
         Flags_SetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO);
         Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
         Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);

@@ -1184,14 +1184,16 @@ void func_80A99048(EnKo* this, PlayState* play) {
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_ELF, this->actor.world.pos.x,
                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 3);
         if (ENKO_TYPE == ENKO_TYPE_CHILD_3) {
-            if (!gSaveContext.n64ddFlag) {
+            // vanilla path
+            if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
                 if (!CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
                     this->collider.dim.height += 200;
                     this->actionFunc = func_80A995CC;
                     return;
                 }
-            } else {
-                if (!Flags_GetEventChkInf(7)) {
+            // If rando and forest is closed OR not rando and cutscenes are skipped
+            } else if ((gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FOREST) == RO_FOREST_CLOSED) || (!gSaveContext.n64ddFlag && CVarGetInteger("gSkipCutscenes", 0))) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD)) {
                     this->collider.dim.height += 200;
                     this->actionFunc = func_80A995CC;
                     return;

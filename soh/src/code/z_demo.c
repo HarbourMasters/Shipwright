@@ -496,8 +496,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
     // Automatically skip certain cutscenes when in rando
     // cmd->base == 8: Traveling back/forward in time cutscene
     // cmd->base == 24: Dropping a fish for Jabu Jabu
-    // cmd->base == 33: Zelda escaping with impa cutscene
-    bool randoCsSkip = ((gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) && (cmd->base == 8 || cmd->base == 24 || cmd->base == 33));
+    bool randoCsSkip = ((gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) && (cmd->base == 8 || cmd->base == 24));
     bool debugCsSkip = (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_START) &&
                         (gSaveContext.fileNum != 0xFEDC) && CVarGetInteger("gDebugEnabled", 0));
 
@@ -559,6 +558,8 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
     }
 
     if (playCutscene || (temp != 0) || ((csCtx->frames > 20) && (randoCsSkip || debugCsSkip))) {
+
+        lusprintf(__FILE__, __LINE__, 2, "entranceIndex:%#x, cutsceneIndex:%#x, cmdbase:%d", gSaveContext.entranceIndex, gSaveContext.cutsceneIndex, cmd->base);
 
         csCtx->state = CS_STATE_UNSKIPPABLE_EXEC;
         Audio_SetCutsceneFlag(0);
@@ -624,13 +625,16 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     gSaveContext.fw.set = 0;
                     gSaveContext.respawn[RESPAWN_MODE_TOP].data = 0;
                 }
-                if (!(gSaveContext.eventChkInf[4] & 0x20)) {
-                    gSaveContext.eventChkInf[4] |= 0x20;
+                if (!Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL) && !CVarGetInteger("gSkipCutscenes", 0)) {
+                    Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
                     play->nextEntranceIndex = 0x00A0;
                     play->sceneLoadFlag = 0x14;
                     gSaveContext.cutsceneIndex = 0xFFF3;
                     play->fadeTransition = 11;
                 } else {
+                    if (!Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL) && CVarGetInteger("gSkipCutscenes", 0)) {
+                        Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
+                    }
                     if (gSaveContext.sceneSetupIndex < 4) {
                         if (!LINK_IS_ADULT) {
                             play->linkAgeOnLoad = 0;
@@ -2165,7 +2169,7 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
             gSaveContext.entranceIndex = 0x10E;
             gSaveContext.cutsceneIndex = 0;
         // Forest Temple Blue warp
-        } else if (gSaveContext.entranceIndex == 0x6B && gSaveContext.chamberCutsceneNum == CHAMBER_CS_FOREST) {
+        } else if (gSaveContext.entranceIndex == 0x6B && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_FOREST) {
             gSaveContext.entranceIndex = 0x608;
             gSaveContext.cutsceneIndex = 0;
         // Fire Temple Blue warp
@@ -2173,15 +2177,15 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
             gSaveContext.entranceIndex = 0x564;
             gSaveContext.cutsceneIndex = 0;
         // Water Temple Blue warp
-        } else if (gSaveContext.entranceIndex == 0x6B && gSaveContext.chamberCutsceneNum == CHAMBER_CS_WATER) {
+        } else if (gSaveContext.entranceIndex == 0x6B && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_WATER) {
             gSaveContext.entranceIndex = 0x60C;
             gSaveContext.cutsceneIndex = 0;
         // Spirit Temple Blue warp
-        } else if (gSaveContext.entranceIndex == 0x6B && gSaveContext.chamberCutsceneNum == CHAMBER_CS_SPIRIT) {
+        } else if (gSaveContext.entranceIndex == 0x6B && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_SPIRIT) {
             gSaveContext.entranceIndex = 0x610;
             gSaveContext.cutsceneIndex = 0;
         // Shadow Temple Blue warp
-        } else if (gSaveContext.entranceIndex == 0x6B && gSaveContext.chamberCutsceneNum == CHAMBER_CS_SHADOW) {
+        } else if (gSaveContext.entranceIndex == 0x6B && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_SHADOW) {
             gSaveContext.entranceIndex = 0x580;
             gSaveContext.cutsceneIndex = 0;
         // Zelda escaping with impa cutscene
@@ -2214,10 +2218,10 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
                 gSaveContext.cutsceneIndex = 0xFFF0;
             }
         } else if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
-                   LINK_IS_ADULT && !Flags_GetEventChkInf(0xC4) &&
+                   LINK_IS_ADULT && !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
                    (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA)) {
-            if (!gSaveContext.n64ddFlag) {
-                Flags_SetEventChkInf(0xC4);
+            if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
+                Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
                 gSaveContext.entranceIndex = 0x0053;
                 gSaveContext.cutsceneIndex = 0xFFF8;
             }
