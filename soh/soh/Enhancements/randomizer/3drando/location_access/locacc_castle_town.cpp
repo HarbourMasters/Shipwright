@@ -157,12 +157,17 @@ void AreaTable_Init_CastleTown() {
                   Entrance(CASTLE_GROUNDS, {[]{return true;}}),
   });
 
+  areaTable[CASTLE_GROUNDS_FROM_GANONS_CASTLE] = Area("Castle Grounds From Ganon's Castle", "Castle Grounds From Ganon's Castle", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    // Exits
+    Entrance(HYRULE_CASTLE_GROUNDS, { [] { return IsChild; }}),
+    Entrance(GANONS_CASTLE_LEDGE, { [] { return IsAdult; }}),
+  });
+
   areaTable[GANONS_CASTLE_LEDGE] = Area("Ganon's Castle Ledge", "OGC Ganon's Castle Ledge", NONE, NO_DAY_NIGHT_CYCLE,
   {}, {}, {
     // Exits
-    Entrance(GANONS_CASTLE_GROUNDS, {[]{return IsAdult && BuiltRainbowBridge;}, 
-                         /*Glitched*/[]{return IsAdult && (HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::ADVANCED) || (HoverBoots && CanShield && Bombs && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::EXPERT)) || (HoverBoots && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::ADVANCED));}}),
-    Entrance(HYRULE_CASTLE_GROUNDS, {[]{return IsChild;}}),
+    Entrance(GANONS_CASTLE_GROUNDS, {[]{return BuiltRainbowBridge;}, 
+                         /*Glitched*/[]{return (HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::ADVANCED) || (HoverBoots && CanShield && Bombs && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::EXPERT)) || (HoverBoots && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::ADVANCED));}}),
     Entrance(GANONS_CASTLE_ENTRYWAY, {[]{return IsAdult;}}),
   });
 
