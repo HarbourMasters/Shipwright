@@ -1296,7 +1296,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 break;
         }
 
-        if (randoCsSkip) {
+        if (gSaveContext.n64ddFlag) {
             Entrance_OverrideCutsceneEntrance(cmd->base);
         }
     }
