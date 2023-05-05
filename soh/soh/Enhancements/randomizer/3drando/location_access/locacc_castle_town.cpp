@@ -139,7 +139,8 @@ void AreaTable_Init_CastleTown() {
                   EventAccess(&BuiltRainbowBridge, {[]{return CanBuildRainbowBridge;}}),
                 }, {
                   //Locations                                   //the terrain was lowered such that you can't get this GS with a simple sword slash
-                  LocationAccess(OGC_GS, {[]{return CanJumpslash || CanUseProjectile || CanUse(DINS_FIRE);}}),
+                  LocationAccess(OGC_GS, {[]{return CanJumpslash || CanUseProjectile
+                  || (CanShield && CanUse(MEGATON_HAMMER)) || CanUse(DINS_FIRE);}}),
                 }, {
                   //Exits
                   Entrance(CASTLE_GROUNDS,           {[]{return AtNight;}}),
