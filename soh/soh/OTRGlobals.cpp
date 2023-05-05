@@ -1558,12 +1558,27 @@ extern "C" uint32_t OTRGetCurrentHeight() {
     return OTRGlobals::Instance->context->GetCurrentHeight();
 }
 
-extern "C" void OTRControllerCallback(ControllerCallback* controller) {
+extern "C" void OTRControllerCallback(uint8_t rumble, uint8_t ledColor) {
     auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
 
     for (int i = 0; i < controlDeck->GetNumConnectedPorts(); ++i) {
         auto physicalDevice = controlDeck->GetDeviceFromPortIndex(i);
-        physicalDevice->WriteToSource(i, controller);
+        switch (ledColor) {
+            case 0:
+                physicalDevice->SetLed(i, 255, 0, 0);
+                break;
+            case 1:
+                physicalDevice->SetLed(i, 0x1E, 0x69, 0x1B);
+                break;
+            case 2:
+                physicalDevice->SetLed(i, 0x64, 0x14, 0x00);
+                break;
+            case 3:
+                physicalDevice->SetLed(i, 0x00, 0x3C, 0x64);
+                break;
+        }
+
+        physicalDevice->SetRumble(i, rumble);
     }
 }
 
