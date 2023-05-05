@@ -1139,6 +1139,11 @@ namespace GameMenuBar {
             }
             UIWidgets::Tooltip("Switches Link's age and reloads the area.");   
 
+            if (ImGui::Button("Clear Cutscene Pointer")) {
+                CVarSetInteger("gClearCutscenePointer", 1);
+            }
+            UIWidgets::Tooltip("Clears the cutscene pointer to a value safe for wrong warps.");  
+
             ImGui::EndMenu();
         }
 
