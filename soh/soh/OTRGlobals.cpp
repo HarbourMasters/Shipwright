@@ -896,11 +896,13 @@ extern "C" void Graph_StartFrame() {
 
             break;
         }
+#if defined(_WIN32) || defined(__APPLE__)
         case KbScancode::LUS_KB_F9: {
             // Toggle TTS
             CVarSetInteger("gA11yTTS", !CVarGetInteger("gA11yTTS", 0));
             break;
         }
+#endif
         case KbScancode::LUS_KB_TAB: {
             // Toggle HD Assets
             CVarSetInteger("gAltAssets", !CVarGetInteger("gAltAssets", 0));
@@ -1576,12 +1578,27 @@ extern "C" uint32_t OTRGetCurrentHeight() {
     return OTRGlobals::Instance->context->GetCurrentHeight();
 }
 
-extern "C" void OTRControllerCallback(ControllerCallback* controller) {
+extern "C" void OTRControllerCallback(uint8_t rumble, uint8_t ledColor) {
     auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
 
-    for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
-        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
-        physicalDevice->WriteToSource(i, controller);
+    for (int i = 0; i < controlDeck->GetNumConnectedPorts(); ++i) {
+        auto physicalDevice = controlDeck->GetDeviceFromPortIndex(i);
+        switch (ledColor) {
+            case 0:
+                physicalDevice->SetLed(i, 255, 0, 0);
+                break;
+            case 1:
+                physicalDevice->SetLed(i, 0x1E, 0x69, 0x1B);
+                break;
+            case 2:
+                physicalDevice->SetLed(i, 0x64, 0x14, 0x00);
+                break;
+            case 3:
+                physicalDevice->SetLed(i, 0x00, 0x3C, 0x64);
+                break;
+        }
+
+        physicalDevice->SetRumble(i, rumble);
     }
 }
 
@@ -1627,10 +1644,10 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 extern "C" int Controller_ShouldRumble(size_t slot) {
     auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
     
-    if (slot < controlDeck->GetNumVirtualDevices()) {
-        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(slot);
+    if (slot < controlDeck->GetNumConnectedPorts()) {
+        auto physicalDevice = controlDeck->GetDeviceFromPortIndex(slot);
         
-        if (physicalDevice->getProfile(slot)->UseRumble && physicalDevice->CanRumble()) {
+        if (physicalDevice->GetProfile(slot)->UseRumble && physicalDevice->CanRumble()) {
             return 1;
         }
     }
@@ -1997,4 +2014,8 @@ extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
 
 extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement) {
     gfx_register_blended_texture(name, mask, replacement);
+}
+
+extern "C" void SaveManager_ThreadPoolWait() {
+    SaveManager::Instance->ThreadPoolWait();
 }
