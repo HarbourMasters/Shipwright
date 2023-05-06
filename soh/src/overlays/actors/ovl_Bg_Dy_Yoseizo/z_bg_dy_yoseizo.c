@@ -70,14 +70,64 @@ const ActorInit Bg_Dy_Yoseizo_InitVars = {
 
 void GivePlayerRandoRewardGreatFairy(BgDyYoseizo* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    GetItemEntry getItemEntry = Randomizer_GetItemFromActor(this->actor.id, play->sceneNum, this->fountainType + 1, GI_NONE);
+    GetItemEntry getItemEntry = GET_ITEM_NONE;
+    RandomizerInf flag = RAND_INF_MAX;
 
-    if (this->actor.parent == GET_PLAYER(play) && !Flags_GetTreasure(play, this->fountainType + 1) &&
-        !Player_InBlockingCsMode(play, GET_PLAYER(play))) {
-        Flags_SetTreasure(play, this->fountainType + 1);
+    if (play->sceneNum != SCENE_DAIYOUSEI_IZUMI) {
+        switch (this->fountainType) {
+            case FAIRY_SPELL_FARORES_WIND:
+                flag = RAND_INF_ZF_GREAT_FAIRY_REWARD;
+                getItemEntry = gSaveContext.n64ddFlag ?
+                    Randomizer_GetItemFromKnownCheck(RC_ZF_GREAT_FAIRY_REWARD, GI_FARORES_WIND) :
+                    ItemTable_RetrieveEntry(MOD_NONE, GI_FARORES_WIND);
+                break;
+            case FAIRY_SPELL_DINS_FIRE:
+                flag = RAND_INF_HC_GREAT_FAIRY_REWARD;
+                getItemEntry = gSaveContext.n64ddFlag ?
+                    Randomizer_GetItemFromKnownCheck(RC_HC_GREAT_FAIRY_REWARD, GI_DINS_FIRE) :
+                    ItemTable_RetrieveEntry(MOD_NONE, GI_DINS_FIRE);
+                break;
+            case FAIRY_SPELL_NAYRUS_LOVE:
+                flag = RAND_INF_COLOSSUS_GREAT_FAIRY_REWARD;
+                getItemEntry = gSaveContext.n64ddFlag ?
+                    Randomizer_GetItemFromKnownCheck(RC_COLOSSUS_GREAT_FAIRY_REWARD, GI_NAYRUS_LOVE) :
+                    ItemTable_RetrieveEntry(MOD_NONE, GI_NAYRUS_LOVE);
+                break;
+        }
+    } else {
+        switch (this->fountainType) {
+            case FAIRY_UPGRADE_MAGIC:
+                flag = RAND_INF_DMT_GREAT_FAIRY_REWARD;
+                getItemEntry = gSaveContext.n64ddFlag ?
+                    Randomizer_GetItemFromKnownCheck(RC_DMT_GREAT_FAIRY_REWARD, RG_MAGIC_SINGLE) :
+                    ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_MAGIC_SINGLE);
+                break;
+            case FAIRY_UPGRADE_DOUBLE_MAGIC:
+                flag = RAND_INF_DMC_GREAT_FAIRY_REWARD;
+                getItemEntry = gSaveContext.n64ddFlag ?
+                    Randomizer_GetItemFromKnownCheck(RC_DMC_GREAT_FAIRY_REWARD, RG_MAGIC_DOUBLE) :
+                    ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_MAGIC_DOUBLE);
+                break;
+            case FAIRY_UPGRADE_HALF_DAMAGE:
+                flag = RAND_INF_OGC_GREAT_FAIRY_REWARD;
+                getItemEntry = gSaveContext.n64ddFlag ?
+                    Randomizer_GetItemFromKnownCheck(RC_OGC_GREAT_FAIRY_REWARD, RG_DOUBLE_DEFENSE) :
+                    ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_DOUBLE_DEFENSE);
+                break;
+        }
+    }
+
+    if (!Flags_GetRandomizerInf(flag)) {
+        if (player != NULL && !Player_InBlockingCsMode(play, player)) {
+            if (GiveItemEntryWithoutActor(play, getItemEntry)) {
+                gSaveContext.healthAccumulator = 0x140;
+                Magic_Fill(play);
+                player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
+                player->pendingFlag.flagID = flag;
+            }
+        }
+    } else {
         Actor_Kill(&this->actor);
-    } else if (!Flags_GetTreasure(play, this->fountainType + 1)) {
-        GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 100.0f);
     }
 }
 
@@ -198,15 +248,9 @@ void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, PlayState* play) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
 
         if(gSaveContext.n64ddFlag) {
-            gSaveContext.healthAccumulator = 0x140;
-            Magic_Fill(play);
-            if(Flags_GetTreasure(play, this->fountainType + 1)) {
-                Actor_Kill(&this->actor);
-            } else {
-                GivePlayerRandoRewardGreatFairy(this, play);
-            }
+            GivePlayerRandoRewardGreatFairy(this, play);
             return;
-        } 
+        }
 
         if (play->sceneNum == SCENE_DAIYOUSEI_IZUMI) {
             if (!gSaveContext.isMagicAcquired && (this->fountainType != FAIRY_UPGRADE_MAGIC)) {
@@ -219,6 +263,12 @@ void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, PlayState* play) {
                 return;
             }
         }
+
+        if(CVarGetInteger("gSkipCutscenes", 0)) {
+            GivePlayerRandoRewardGreatFairy(this, play);
+            return;
+        }
+
         func_8002DF54(play, &this->actor, 1);
         this->actionFunc = BgDyYoseizo_ChooseType;
     }
