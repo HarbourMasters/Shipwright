@@ -734,7 +734,7 @@ extern "C" void InitOTR() {
 #ifdef __SWITCH__
     Ship::Switch::Init(Ship::PreInitPhase);
 #elif defined(__WIIU__)
-    Ship::WiiU::Init();
+    Ship::WiiU::Init("soh");
 #endif
     Ship::AddSetupHooksDelegate(GameMenuBar::SetupHooks);
     Ship::RegisterMenuDrawMethod(GameMenuBar::Draw);
