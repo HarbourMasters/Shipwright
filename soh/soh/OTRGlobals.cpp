@@ -734,7 +734,8 @@ extern "C" void InitOTR() {
 #ifdef __SWITCH__
     Ship::Switch::Init(Ship::PreInitPhase);
 #elif defined(__WIIU__)
-    Ship::WiiU::Init("soh");
+    static const std::string shortName = "soh";
+    Ship::WiiU::Init(shortName);
 #endif
     Ship::AddSetupHooksDelegate(GameMenuBar::SetupHooks);
     Ship::RegisterMenuDrawMethod(GameMenuBar::Draw);
