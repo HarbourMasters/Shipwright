@@ -16,9 +16,10 @@ void SetStartPositionList::ParseRawData()
 	ZRoomCommand::ParseRawData();
 	uint8_t numActors = cmdArg1;
 
-	uint32_t currentPtr = segmentOffset;
+	offset_t currentPtr = segmentOffset;
 
-	for (int32_t i = 0; i < numActors; i++)
+	actors.reserve(numActors);
+	for (uint32_t i = 0; i < numActors; i++)
 	{
 		actors.push_back(ActorSpawnEntry(parent->GetRawData(), currentPtr));
 		currentPtr += 16;

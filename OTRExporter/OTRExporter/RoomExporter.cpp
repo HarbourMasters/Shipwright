@@ -80,10 +80,8 @@ void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWrite
 			// This can cause issues if we export actors with garbage data, so let's trust the command size
 			writer->Write((uint32_t)cmdSetActorList->numActors);
 
-			for (int i = 0; i < cmdSetActorList->numActors; i++)
+			for (const auto& entry : cmdSetActorList->actorList->actors)
 			{
-				const ActorSpawnEntry& entry = cmdSetActorList->actors[i];
-
 				writer->Write(entry.actorNum);
 				writer->Write(entry.posX);
 				writer->Write(entry.posY);
@@ -91,7 +89,7 @@ void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWrite
 				writer->Write(entry.rotX);
 				writer->Write(entry.rotY);
 				writer->Write(entry.rotZ);
-				writer->Write(entry.initVar);
+				writer->Write(entry.params);
 			}
 		}
 			break;
@@ -393,7 +391,7 @@ void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWrite
 				writer->Write(entry.rotX);
 				writer->Write(entry.rotY);
 				writer->Write(entry.rotZ);
-				writer->Write(entry.initVar);
+				writer->Write(entry.params);
 			}
 		}
 		break;
@@ -441,18 +439,18 @@ void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWrite
 		case RoomCommand::SetCutscenes:
 		{
 			SetCutscenes* cmdSetCutscenes = (SetCutscenes*)cmd;
-
+			
 			std::string listName;
 			Globals::Instance->GetSegmentedPtrName(cmdSetCutscenes->cmdArg2, room->parent, "CutsceneData", listName, res->parent->workerID);
 			std::string fName = OTRExporter_DisplayList::GetPathToRes(room, listName);
 			//std::string fName = StringHelper::Sprintf("%s\\%s", OTRExporter_DisplayList::GetParentFolderName(room).c_str(), listName.c_str());
 			writer->Write(fName);
-
+			
 			MemoryStream* csStream = new MemoryStream();
 			BinaryWriter csWriter = BinaryWriter(csStream);
 			OTRExporter_Cutscene cs;
 			cs.Save(cmdSetCutscenes->cutscenes[0], "", &csWriter);
-
+			
 			AddFile(fName, csStream->ToVector());
 		}
 			break;

@@ -48,7 +48,7 @@ void ZVector::ParseRawData()
 	int32_t currentRawDataIndex = rawDataIndex;
 	// TODO: this shouldn't be necessary.
 	scalars.clear();
-
+	scalars.reserve(dimensions);
 	for (uint32_t i = 0; i < dimensions; i++)
 	{
 		ZScalar scalar(parent);

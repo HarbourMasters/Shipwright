@@ -15,15 +15,15 @@ void OTRExporter_Skeleton::Save(ZResource* res, const fs::path& outPath, BinaryW
 	writer->Write((uint32_t)skel->limbCount);
 	writer->Write((uint32_t)skel->dListCount);
 
-	writer->Write((uint8_t)skel->limbsTable.limbType);
-	writer->Write((uint32_t)skel->limbsTable.count);
+	writer->Write((uint8_t)skel->limbsTable->limbType);
+	writer->Write((uint32_t)skel->limbsTable->count);
 
-	for (size_t i = 0; i < skel->limbsTable.count; i++)
+	for (size_t i = 0; i < skel->limbsTable->count; i++)
 	{
-		Declaration* skelDecl = skel->parent->GetDeclarationRanged(GETSEGOFFSET(skel->limbsTable.limbsAddresses[i]));
+		Declaration* skelDecl = skel->parent->GetDeclarationRanged(GETSEGOFFSET(skel->limbsTable->limbsAddresses[i]));
 
 		std::string name;
-		bool foundDecl = Globals::Instance->GetSegmentedPtrName(skel->limbsTable.limbsAddresses[i], skel->parent, "", name, res->parent->workerID);
+		bool foundDecl = Globals::Instance->GetSegmentedPtrName(skel->limbsTable->limbsAddresses[i], skel->parent, "", name, res->parent->workerID);
 		if (foundDecl)
 		{
 			if (name.at(0) == '&')

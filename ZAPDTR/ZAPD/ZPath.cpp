@@ -35,6 +35,7 @@ void ZPath::ParseRawData()
 
 	uint32_t currentPtr = rawDataIndex;
 
+	pathways.reserve(numPaths);
 	for (size_t pathIndex = 0; pathIndex < numPaths; pathIndex++)
 	{
 		PathwayEntry path(parent);
@@ -125,6 +126,7 @@ void PathwayEntry::ParseRawData()
 
 	uint32_t currentPtr = GETSEGOFFSET(listSegmentAddress);
 
+	points.reserve(numPoints);
 	for (int32_t i = 0; i < numPoints; i++)
 	{
 		ZVector vec(parent);

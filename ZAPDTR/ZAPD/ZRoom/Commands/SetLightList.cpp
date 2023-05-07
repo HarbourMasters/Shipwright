@@ -15,6 +15,8 @@ void SetLightList::ParseRawData()
 
 	numLights = cmdArg1;
 	int32_t currentPtr = segmentOffset;
+
+	lights.reserve(this->numLights);
 	for (int i = 0; i < this->numLights; i++)
 	{
 		LightInfo light(parent->GetRawData(), currentPtr);
