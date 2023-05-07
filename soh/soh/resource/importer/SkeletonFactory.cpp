@@ -32,8 +32,8 @@ std::shared_ptr<Resource> SkeletonFactory::ReadResourceXML(std::shared_ptr<Resou
     auto resource = std::make_shared<Skeleton>(resourceMgr, initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch ((Version)resource->InitData->ResourceVersion) {
-        case Version::Deckard:
+    switch (resource->InitData->ResourceVersion) {
+        case 0:
             factory = std::make_shared<SkeletonFactoryV0>();
             break;
     }

@@ -34,8 +34,8 @@ std::shared_ptr<Resource> TextFactory::ReadResourceXML(std::shared_ptr<ResourceM
     auto resource = std::make_shared<Text>(resourceMgr, initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch ((Version)resource->InitData->ResourceVersion) {
-        case Version::Deckard:
+    switch (resource->InitData->ResourceVersion) {
+        case 0:
             factory = std::make_shared<TextFactoryV0>();
             break;
     }

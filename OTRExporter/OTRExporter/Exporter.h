@@ -1,6 +1,7 @@
 #pragma once
 #include "ZResource.h"
 #include "ZArray.h"
+#include "stdint.h"
 //#include "OTRExporter.h"
 #include <Utils/BinaryWriter.h>
 #include <libultraship/bridge.h>
@@ -9,5 +10,5 @@
 class OTRExporter : public ZResourceExporter
 {
 protected:
-	static void WriteHeader(ZResource* res, const fs::path& outPath, BinaryWriter* writer, Ship::ResourceType resType, Ship::Version resVersion = MAJOR_VERSION);
+	static void WriteHeader(ZResource* res, const fs::path& outPath, BinaryWriter* writer, Ship::ResourceType resType, int32_t resVersion = 0);
 };

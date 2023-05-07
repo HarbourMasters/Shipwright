@@ -791,9 +791,6 @@ extern "C" void InitOTR() {
 
 extern "C" void DeinitOTR() {
     OTRAudio_Exit();
-#if defined(_WIN32) || defined(__APPLE__)
-    SpeechSynthesizerUninitialize();
-#endif
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance->Disable();
     CrowdControl::Instance->Shutdown();
@@ -1585,16 +1582,16 @@ extern "C" void OTRControllerCallback(uint8_t rumble, uint8_t ledColor) {
         auto physicalDevice = controlDeck->GetDeviceFromPortIndex(i);
         switch (ledColor) {
             case 0:
-                physicalDevice->SetLed(i, 255, 0, 0);
+                physicalDevice->SetLedColor(i, {255, 0, 0});
                 break;
             case 1:
-                physicalDevice->SetLed(i, 0x1E, 0x69, 0x1B);
+                physicalDevice->SetLedColor(i, {0x1E, 0x69, 0x1B});
                 break;
             case 2:
-                physicalDevice->SetLed(i, 0x64, 0x14, 0x00);
+                physicalDevice->SetLedColor(i, {0x64, 0x14, 0x00});
                 break;
             case 3:
-                physicalDevice->SetLed(i, 0x00, 0x3C, 0x64);
+                physicalDevice->SetLedColor(i, {0x00, 0x3C, 0x64});
                 break;
         }
 

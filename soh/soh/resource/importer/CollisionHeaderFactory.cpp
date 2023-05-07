@@ -11,13 +11,13 @@ std::shared_ptr<Resource> CollisionHeaderFactory::ReadResource(std::shared_ptr<R
 
     switch (resource->InitData->ResourceVersion) {
     case 0:
-	factory = std::make_shared<CollisionHeaderFactoryV0>();
-	break;
+        factory = std::make_shared<CollisionHeaderFactoryV0>();
+        break;
     }
 
     if (factory == nullptr) {
         SPDLOG_ERROR("Failed to load Collision Header with version {}", resource->InitData->ResourceVersion);
-	return nullptr;
+        return nullptr;
     }
 
     factory->ParseFileBinary(reader, resource);

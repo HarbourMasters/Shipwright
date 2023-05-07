@@ -1,7 +1,7 @@
 #include "Exporter.h"
 #include "VersionInfo.h"
 
-void OTRExporter::WriteHeader(ZResource* res, const fs::path& outPath, BinaryWriter* writer, Ship::ResourceType resType, Ship::Version resVersion)
+void OTRExporter::WriteHeader(ZResource* res, const fs::path& outPath, BinaryWriter* writer, Ship::ResourceType resType, int32_t resVersion)
 {
 	writer->Write((uint8_t)Endianness::Little); // 0x00
 	writer->Write((uint8_t)0); // 0x01

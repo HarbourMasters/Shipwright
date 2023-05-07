@@ -19,7 +19,7 @@ std::shared_ptr<Resource> AudioSoundFontFactory::ReadResource(std::shared_ptr<Re
     if (factory == nullptr)
     {
         SPDLOG_ERROR("Failed to load AudioSoundFont with version {}", resource->InitData->ResourceVersion);
-	return nullptr;
+        return nullptr;
     }
 
     factory->ParseFileBinary(reader, resource);
