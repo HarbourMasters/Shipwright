@@ -2233,7 +2233,7 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
             Flags_SetEventChkInf(0xC7);
             gSaveContext.entranceIndex = 0x0517;
             // In rando, skip the cutscene for the tower falling down after the escape.
-            if (gSaveContext.n64ddFlag) {
+            if (gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) {
                 return;
             }
             gSaveContext.cutsceneIndex = 0xFFF0;
