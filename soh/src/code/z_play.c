@@ -243,31 +243,44 @@ void GivePlayerRandoRewardLightMedallion(PlayState* play) {
     }
 }
 
-void GivePlayerRandoRewardNocturne(PlayState* play, RandomizerCheck check) {
+void GivePlayerRandoRewardNocturne(PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if ((gSaveContext.entranceIndex == 0x00DB ||
-         gSaveContext.entranceIndex == 0x0191 ||
-         gSaveContext.entranceIndex == 0x0195) && LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
-        CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && player != NULL &&
-        !Player_InBlockingCsMode(play, player) && !Flags_GetEventChkInf(0xAA)) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_NOCTURNE_OF_SHADOW);
-        GiveItemEntryWithoutActor(play, getItemEntry);
-        player->pendingFlag.flagID = 0xAA;
-        player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+    // Vanilla requirements are if the player has used the blue warp, whereas randomizer requirements are if the player has collected the medallions.
+    u8 meetsRequirements = gSaveContext.n64ddFlag ?
+        CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) :
+        Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP);
+
+    if (
+        (gSaveContext.entranceIndex == 0x00DB || gSaveContext.entranceIndex == 0x0191 || gSaveContext.entranceIndex == 0x0195) && 
+        LINK_IS_ADULT && meetsRequirements && !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)
+    ) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+            Randomizer_GetItemFromKnownCheck(RC_SHEIK_IN_KAKARIKO, RG_NOCTURNE_OF_SHADOW) :
+            ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_NOCTURNE_OF_SHADOW);
+
+        if (player != NULL && !Player_InBlockingCsMode(play, player)) {
+            if (GiveItemEntryWithoutActor(play, getItemEntry)) {
+                player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+                player->pendingFlag.flagID = EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL;
+            }
+        }
     }
 }
 
-void GivePlayerRandoRewardRequiem(PlayState* play, RandomizerCheck check) {
+void GivePlayerRandoRewardRequiem(PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
-        if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(0xAC) && player != NULL &&
-            !Player_InBlockingCsMode(play, player)) {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
-            GiveItemEntryWithoutActor(play, getItemEntry);
-            player->pendingFlag.flagID = 0xAC;
-            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+    if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+            Randomizer_GetItemFromKnownCheck(RC_SHEIK_AT_COLOSSUS, RG_REQUIEM_OF_SPIRIT) :
+            ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_REQUIEM_OF_SPIRIT);
+
+        if (player != NULL && !Player_InBlockingCsMode(play, player)) {
+            if (GiveItemEntryWithoutActor(play, getItemEntry)) {
+                player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+                player->pendingFlag.flagID = EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT;
+            }
         }
     }
 }
@@ -1516,11 +1529,8 @@ skip:
         GivePlayerRandoRewardSongOfTime(play);
         GivePlayerRandoRewardLightMedallion(play);
         GivePlayerRandoRewardZeldaLightArrowsGift(play);
-    }
-
-    if (gSaveContext.n64ddFlag) {
-        GivePlayerRandoRewardNocturne(play, RC_SHEIK_IN_KAKARIKO);
-        GivePlayerRandoRewardRequiem(play, RC_SHEIK_AT_COLOSSUS);
+        GivePlayerRandoRewardRequiem(play);
+        GivePlayerRandoRewardNocturne(play);
     }
 }
 

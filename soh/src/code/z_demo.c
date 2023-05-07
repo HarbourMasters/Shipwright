@@ -2197,22 +2197,21 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
     if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
         const bool bShouldTowerRandoSkip =
             (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE));
-        if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(0xAC)) {
-            if (!gSaveContext.n64ddFlag) {
-                Flags_SetEventChkInf(0xAC);
+        if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
+            if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
+                Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
                 gSaveContext.entranceIndex = 0x0123;
                 gSaveContext.cutsceneIndex = 0xFFF0;
             }
-        } else if ((gSaveContext.entranceIndex == 0x00DB) && LINK_IS_ADULT && (gSaveContext.eventChkInf[4] & 0x0100) &&
-                   (gSaveContext.eventChkInf[4] & 0x0200) && (gSaveContext.eventChkInf[4] & 0x0400) &&
-                   !Flags_GetEventChkInf(0xAA)) {
-            if (!gSaveContext.n64ddFlag) {
-                Flags_SetEventChkInf(0xAA);
+        } else if ((gSaveContext.entranceIndex == 0x00DB) && LINK_IS_ADULT && Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP) && 
+                    Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP) && !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)) {
+            if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
+                Flags_SetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL);
                 gSaveContext.cutsceneIndex = 0xFFF0;
             }
-        } else if ((gSaveContext.entranceIndex == 0x05E0) && !Flags_GetEventChkInf(0xC1)) {
+        } else if ((gSaveContext.entranceIndex == 0x05E0) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE)) {
             if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
-                Flags_SetEventChkInf(0xC1);
+                Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE);
                 Item_Give(play, ITEM_OCARINA_FAIRY);
                 gSaveContext.entranceIndex = 0x011E;
                 gSaveContext.cutsceneIndex = 0xFFF0;
