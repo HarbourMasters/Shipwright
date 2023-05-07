@@ -227,17 +227,18 @@ u16 EnZl4_GetText(PlayState* play, Actor* thisx) {
     return ret;
 }
 
-void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, PlayState* play, RandomizerCheck check) {
-    if (zelda->actor.parent != NULL && zelda->actor.parent->id == GET_PLAYER(play)->actor.id &&
-        !Flags_GetTreasure(play, 0x1E)) {
-        Flags_SetTreasure(play, 0x1E);
-    } else if (!Flags_GetTreasure(play, 0x1E) && !Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA) && Actor_TextboxIsClosing(&zelda->actor, play) &&
-               (play->msgCtx.textId == 0x703C || play->msgCtx.textId == 0x703D)) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_LETTER_ZELDA);
-        GiveItemEntryFromActor(&zelda->actor, play, getItemEntry, 10000.0f, 100.0f);
-    } else if (Flags_GetTreasure(play, 0x1E) && !Player_InBlockingCsMode(play, GET_PLAYER(play))) {
-        gSaveContext.unk_13EE = 0x32;
-        gSaveContext.eventChkInf[4] |= 1;
+void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, PlayState* play) {
+    Player* player = GET_PLAYER(play);
+    GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
+        Randomizer_GetItemFromKnownCheck(RC_HC_ZELDAS_LETTER, GI_LETTER_ZELDA) : 
+        ItemTable_RetrieveEntry(MOD_NONE, GI_LETTER_ZELDA);
+
+    if (!Flags_GetEventChkInf(0x40) && player != NULL && Actor_TextboxIsClosing(&zelda->actor, play) && (play->msgCtx.textId == 0x703C || play->msgCtx.textId == 0x703D)) {
+        if (GiveItemEntryWithoutActor(play, getItemEntry)) {
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+            player->pendingFlag.flagID = 0x40;
+            gSaveContext.unk_13EE = 0x32;
+        }
     }
 }
 
@@ -389,7 +390,7 @@ void EnZl4_Init(Actor* thisx, PlayState* play) {
     this->actor.textId = -1;
     this->eyeExpression = this->mouthExpression = ZL4_MOUTH_NEUTRAL;
 
-    if (gSaveContext.n64ddFlag) {
+    if (gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) {
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
         this->actionFunc = EnZl4_Idle;
         return;
@@ -1224,8 +1225,8 @@ void EnZl4_Idle(EnZl4* this, PlayState* play) {
                       EnZl4_GetText, func_80B5B9B0);
     func_80B5BB78(this, play);
     
-    if (gSaveContext.n64ddFlag) {
-        GivePlayerRandoRewardZeldaChild(this, play, RC_HC_ZELDAS_LETTER);
+    if (gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) {
+        GivePlayerRandoRewardZeldaChild(this, play);
         return;
     }
 }
