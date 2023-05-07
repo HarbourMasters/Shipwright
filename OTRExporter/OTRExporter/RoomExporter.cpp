@@ -1,7 +1,7 @@
 #include "RoomExporter.h"
 #include "Utils/BinaryWriter.h"
 #include "Utils/MemoryStream.h"
-#include "Utils/File.h"
+#include <Utils/DiskFile.h>
 #include <ZRoom/Commands/SetMesh.h>
 #include <ZRoom/Commands/SetWind.h>
 #include <ZRoom/Commands/SetTimeSettings.h>

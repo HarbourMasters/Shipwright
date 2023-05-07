@@ -37,7 +37,7 @@ void Ship::SetPathwaysFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
     setPathways->paths.reserve(setPathways->numPaths);
     for (uint32_t i = 0; i < setPathways->numPaths; i++) {
         std::string pathFileName = reader->ReadString();
-        setPathways->paths.push_back(std::static_pointer_cast<Path>(Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(pathFileName.c_str())));
+        setPathways->paths.push_back(std::static_pointer_cast<Path>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(pathFileName.c_str())));
     }
 }
 

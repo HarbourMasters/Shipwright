@@ -134,14 +134,14 @@ void Ship::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
         skeletonLimb->limbData.lodLimb.sibling = skeletonLimb->siblingIndex;
 
         if (skeletonLimb->dListPtr != "") {
-            auto dList = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->dListPtr.c_str());
+            auto dList = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->dListPtr.c_str());
             skeletonLimb->limbData.lodLimb.dLists[0] = (Gfx*)(dList ? dList->GetPointer() : nullptr);
         } else {
             skeletonLimb->limbData.lodLimb.dLists[0] = nullptr;
         }
 
         if (skeletonLimb->dList2Ptr != "") {
-            auto dList = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->dList2Ptr.c_str());
+            auto dList = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->dList2Ptr.c_str());
             skeletonLimb->limbData.lodLimb.dLists[1] = (Gfx*)(dList ? dList->GetPointer() : nullptr);
         } else {
             skeletonLimb->limbData.lodLimb.dLists[1] = nullptr;
@@ -155,7 +155,7 @@ void Ship::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
         skeletonLimb->limbData.standardLimb.dList = nullptr;
 
         if (!skeletonLimb->dListPtr.empty()) {
-            const auto dList = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->dListPtr.c_str());
+            const auto dList = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->dListPtr.c_str());
             skeletonLimb->limbData.standardLimb.dList = (Gfx*)(dList ? dList->GetPointer() : nullptr);
         }
     } else if (skeletonLimb->limbType == Ship::LimbType::Curve) {
@@ -165,12 +165,12 @@ void Ship::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
         skeletonLimb->limbData.skelCurveLimb.dList[1] = nullptr;
 
         if (!skeletonLimb->dListPtr.empty()) {
-            const auto dList = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->dListPtr.c_str());
+            const auto dList = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->dListPtr.c_str());
             skeletonLimb->limbData.skelCurveLimb.dList[0] = (Gfx*)(dList ? dList->GetPointer() : nullptr);
         }
 
         if (!skeletonLimb->dList2Ptr.empty()) {
-            const auto dList = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->dList2Ptr.c_str());
+            const auto dList = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->dList2Ptr.c_str());
             skeletonLimb->limbData.skelCurveLimb.dList[1] = (Gfx*)(dList ? dList->GetPointer() : nullptr);
         }
     } else if (skeletonLimb->limbType == Ship::LimbType::Skin) {
@@ -191,13 +191,13 @@ void Ship::SkeletonLimbFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
         }
 
         if (skeletonLimb->skinSegmentType == Ship::ZLimbSkinType::SkinType_DList) {
-            auto res = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->skinDList.c_str());
+            auto res = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->skinDList.c_str());
             skeletonLimb->limbData.skinLimb.segment = res ? res->GetPointer() : nullptr;
         } else if (skeletonLimb->skinSegmentType == Ship::ZLimbSkinType::SkinType_4) {
             skeletonLimb->skinAnimLimbData.totalVtxCount = skeletonLimb->skinVtxCnt;
             skeletonLimb->skinAnimLimbData.limbModifCount = skeletonLimb->skinLimbModifCount;
             skeletonLimb->skinAnimLimbData.limbModifications = skeletonLimb->skinLimbModifArray.data();
-            auto res = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->skinDList2.c_str());
+            auto res = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(skeletonLimb->skinDList2.c_str());
             skeletonLimb->skinAnimLimbData.dlist = (Gfx*)(res ? res->GetPointer() : nullptr);
 
             for (size_t i = 0; i < skeletonLimb->skinLimbModifArray.size(); i++) {
@@ -256,7 +256,7 @@ void SkeletonLimbFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shar
     limbData.lodLimb.jointPos.z = skelLimb->transZ;
 
     if (skelLimb->dListPtr != "") {
-        auto res = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess((const char*)skelLimb->dListPtr.c_str());
+        auto res = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess((const char*)skelLimb->dListPtr.c_str());
         limbData.lodLimb.dLists[0] = (Gfx*)(res ? res->GetPointer() : nullptr);
     } else {
         limbData.lodLimb.dLists[0] = nullptr;

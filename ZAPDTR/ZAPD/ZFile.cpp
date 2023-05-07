@@ -10,7 +10,7 @@
 #include "Utils/BinaryWriter.h"
 #include "Utils/BitConverter.h"
 #include "Utils/Directory.h"
-#include "Utils/File.h"
+#include <Utils/DiskFile.h>
 #include "Utils/MemoryStream.h"
 #include "Utils/Path.h"
 #include "Utils/StringHelper.h"
@@ -190,7 +190,7 @@ void ZFile::ParseXML(tinyxml2::XMLElement* reader, const std::string& filename)
 	{
 		if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
 		{
-			if (!File::Exists((basePath / name).string()))
+			if (!DiskFile::Exists((basePath / name).string()))
 			{
 				std::string errorHeader = StringHelper::Sprintf("binary file '%s' does not exist.",
 				                                                (basePath / name).c_str());
@@ -416,7 +416,7 @@ void ZFile::ExtractResources()
 
 	if (memStreamFile->GetLength() > 0)
 	{
-		File::WriteAllBytes(StringHelper::Sprintf("%s%s.bin",
+		DiskFile::WriteAllBytes(StringHelper::Sprintf("%s%s.bin",
 		                                          Globals::Instance->outputPath.string().c_str(),
 		                                          GetName().c_str()),
 		                    memStreamFile->ToVector());
@@ -796,7 +796,7 @@ void ZFile::GenerateSourceFiles()
 		OutputFormatter formatter;
 		formatter.Write(sourceOutput);
 
-		File::WriteAllText(outPath, formatter.GetOutput());
+		DiskFile::WriteAllText(outPath, formatter.GetOutput());
 	}
 
 	GenerateSourceHeaderFiles();
@@ -837,7 +837,7 @@ void ZFile::GenerateSourceHeaderFiles()
 		output.pop_back();
 
 	if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
-		File::WriteAllText(headerFilename, output);
+		DiskFile::WriteAllText(headerFilename, output);
 	else if (Globals::Instance->sourceOutputPath != "")
 	{
 		std::string xmlPath = xmlFilePath.string();
@@ -862,7 +862,7 @@ void ZFile::GenerateSourceHeaderFiles()
 				outPath += "/";
 		}
 
-		File::WriteAllText(outPath, output);
+		DiskFile::WriteAllText(outPath, output);
 	}
 }
 
@@ -1108,7 +1108,7 @@ std::string ZFile::ProcessDeclarations()
 						extType = "vtx";
 
 					auto filepath = outputPath / item.second->varName;
-					File::WriteAllText(
+					DiskFile::WriteAllText(
 						StringHelper::Sprintf("%s.%s.inc", filepath.string().c_str(), extType.c_str()),
 						item.second->text);
 				}

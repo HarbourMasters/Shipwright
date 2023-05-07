@@ -34,7 +34,7 @@ void Ship::SetCollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRe
     ReadCommandId(setCollisionHeader, reader);
     
     setCollisionHeader->fileName = reader->ReadString();
-    setCollisionHeader->collisionHeader = std::static_pointer_cast<CollisionHeader>(Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(setCollisionHeader->fileName.c_str()));
+    setCollisionHeader->collisionHeader = std::static_pointer_cast<CollisionHeader>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCollisionHeader->fileName.c_str()));
 }
 
 } // namespace Ship

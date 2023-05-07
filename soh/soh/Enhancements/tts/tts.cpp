@@ -681,22 +681,22 @@ void InitTTSBank() {
             break;
     }
 
-    auto sceneFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/scenes" + languageSuffix);
+    auto sceneFile = Ship::Context::GetInstance()->GetResourceManager()->LoadFile("accessibility/texts/scenes" + languageSuffix);
     if (sceneFile != nullptr) {
         sceneMap = nlohmann::json::parse(sceneFile->Buffer, nullptr, true, true);
     }
     
-    auto miscFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/misc" + languageSuffix);
+    auto miscFile = Ship::Context::GetInstance()->GetResourceManager()->LoadFile("accessibility/texts/misc" + languageSuffix);
     if (miscFile != nullptr) {
         miscMap = nlohmann::json::parse(miscFile->Buffer, nullptr, true, true);
     }
     
-    auto kaleidoFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/kaleidoscope" + languageSuffix);
+    auto kaleidoFile = Ship::Context::GetInstance()->GetResourceManager()->LoadFile("accessibility/texts/kaleidoscope" + languageSuffix);
     if (kaleidoFile != nullptr) {
         kaleidoMap = nlohmann::json::parse(kaleidoFile->Buffer, nullptr, true, true);
     }
     
-    auto fileChooseFile = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("accessibility/texts/filechoose" + languageSuffix);
+    auto fileChooseFile = Ship::Context::GetInstance()->GetResourceManager()->LoadFile("accessibility/texts/filechoose" + languageSuffix);
     if (fileChooseFile != nullptr) {
         fileChooseMap = nlohmann::json::parse(fileChooseFile->Buffer, nullptr, true, true);
     }

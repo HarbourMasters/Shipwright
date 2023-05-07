@@ -1,7 +1,7 @@
 #include "Globals.h"
 #include "Overlays/ZOverlay.h"
 #include "Utils/Directory.h"
-#include "Utils/File.h"
+#include <Utils/DiskFile.h>
 #include "Utils/Path.h"
 #include "WarningHandler.h"
 
@@ -662,7 +662,7 @@ void BuildAssetBackground(const fs::path& imageFilePath, const fs::path& outPath
 	ZBackground background(nullptr);
 	background.ParseBinaryFile(imageFilePath.string(), false);
 
-	File::WriteAllText(outPath.string(), background.GetBodySourceCode());
+	DiskFile::WriteAllText(outPath.string(), background.GetBodySourceCode());
 }
 
 void BuildAssetBlob(const fs::path& blobFilePath, const fs::path& outPath)
@@ -672,7 +672,7 @@ void BuildAssetBlob(const fs::path& blobFilePath, const fs::path& outPath)
 
 	std::string src = blob->GetBodySourceCode();
 
-	File::WriteAllText(outPath.string(), src);
+	DiskFile::WriteAllText(outPath.string(), src);
 
 	delete blob;
 }

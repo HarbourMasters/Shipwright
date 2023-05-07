@@ -65,8 +65,8 @@ void Ship::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reade
             std::string meshOpa = reader->ReadString();
             std::string meshXlu = reader->ReadString();
 
-            auto opaRes = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
-            auto xluRes = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
+            auto opaRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
+            auto xluRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
             dlist.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetPointer() : nullptr) : 0;
             dlist.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetPointer() : nullptr) : 0;
 
@@ -78,8 +78,8 @@ void Ship::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reade
             std::string imgOpa = reader->ReadString();
             std::string imgXlu = reader->ReadString();
 
-            auto opaRes = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(imgOpa.c_str());
-            auto xluRes = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(imgXlu.c_str());
+            auto opaRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(imgOpa.c_str());
+            auto xluRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(imgXlu.c_str());
             pType.opa = imgOpa != "" ? (Gfx*)(opaRes ? opaRes->GetPointer() : nullptr) : 0;
             pType.xlu = imgXlu != "" ? (Gfx*)(xluRes ? xluRes->GetPointer() : nullptr) : 0;
 
@@ -126,8 +126,8 @@ void Ship::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reade
             std::string meshOpa = reader->ReadString();
             std::string meshXlu = reader->ReadString();
 
-            opaRes = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
-            xluRes = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
+            opaRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
+            xluRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
             pType.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetPointer() : nullptr) : 0;
             pType.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetPointer() : nullptr) : 0;
 
@@ -144,8 +144,8 @@ void Ship::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reade
             std::string meshOpa = reader->ReadString();
             std::string meshXlu = reader->ReadString();
 
-            auto opaRes = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
-            auto xluRes = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
+            auto opaRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
+            auto xluRes = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
             dlist.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetPointer() : nullptr) : 0;
             dlist.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetPointer() : nullptr) : 0;
 

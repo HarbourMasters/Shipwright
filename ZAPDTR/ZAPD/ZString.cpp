@@ -1,6 +1,6 @@
 #include "ZString.h"
 
-#include "Utils/File.h"
+#include <Utils/DiskFile.h>
 #include "Utils/StringHelper.h"
 #include "ZFile.h"
 

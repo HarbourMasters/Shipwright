@@ -1,5 +1,5 @@
 #include "OTRGlobals.h"
-#include <ResourceManager.h>
+#include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
 #include <Utils/StringHelper.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -15,7 +15,7 @@ s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* scene);
 //Ship::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
 Ship::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
 {
-    auto res = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(fileName);
+    auto res = Ship::Context::GetInstance()->GetResourceManager()->LoadResource(fileName);
     return res.get();
 }
 
@@ -76,7 +76,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     gSaveContext.worldMapArea = 0;
     OTRScene_ExecuteCommands(play, (Ship::Scene*)play->sceneSegment);
     Play_InitEnvironment(play, play->skyboxId);
-    /* auto data = static_cast<Ship::Vertex*>(Ship::Window::GetInstance()
+    /* auto data = static_cast<Ship::Vertex*>(Ship::Context::GetInstance()
                                                ->GetResourceManager()
                                                ->LoadResource("object_link_child\\object_link_childVtx_01FE08")
                                                .get());

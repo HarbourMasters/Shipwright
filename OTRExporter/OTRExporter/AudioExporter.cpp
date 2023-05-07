@@ -2,7 +2,7 @@
 #include "Main.h"
 #include <Utils/MemoryStream.h>
 #include <Globals.h>
-#include <Utils/File.h>
+#include <Utils/DiskFile.h>
 #include "DisplayListExporter.h"
 
 void OTRExporter_Audio::WriteSampleEntryReference(ZAudio* audio, SampleEntry* entry, std::map<uint32_t, SampleEntry*> samples, BinaryWriter* writer)

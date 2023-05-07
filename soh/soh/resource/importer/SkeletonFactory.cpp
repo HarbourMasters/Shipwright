@@ -85,7 +85,7 @@ void SkeletonFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
 
     for (size_t i = 0; i < skeleton->limbTable.size(); i++) {
         std::string limbStr = skeleton->limbTable[i];
-        auto limb = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(limbStr.c_str());
+        auto limb = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(limbStr.c_str());
         skeleton->skeletonHeaderSegments.push_back(limb ? limb->GetPointer() : nullptr);
     }
 
@@ -142,7 +142,7 @@ void SkeletonFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_p
             std::string limbName = child->Attribute("Path");
             skel->limbTable.push_back(limbName);
 
-            auto limb = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(limbName.c_str());
+            auto limb = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(limbName.c_str());
             skel->skeletonHeaderSegments.push_back(limb ? limb->GetPointer() : nullptr);
         }
 

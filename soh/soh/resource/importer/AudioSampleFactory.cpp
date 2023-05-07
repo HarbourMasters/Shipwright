@@ -90,7 +90,7 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
 
     ExtensionEntry entry = ExtensionCache[path];
 
-    auto sampleRaw = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(entry.path);
+    auto sampleRaw = Ship::Context::GetInstance()->GetResourceManager()->LoadFile(entry.path);
     uint32_t* strem = (uint32_t*)sampleRaw->Buffer.get();
     uint8_t* strem2 = (uint8_t*)strem;
 

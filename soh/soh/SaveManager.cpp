@@ -7,7 +7,7 @@
 #include "macros.h"
 #include <variables.h>
 #include <Hooks.h>
-#include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
 #include <spdlog/spdlog.h>
@@ -41,7 +41,7 @@ void SaveManager::ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, v
 }
 
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
-    const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     return sSavePath / ("file" + std::to_string(fileNum + 1) + ".sav");
 }
 
@@ -342,10 +342,10 @@ void SaveManager::SaveRandomizer() {
 }
 
 void SaveManager::Init() {
-    const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
-    auto sOldSavePath = Ship::Window::GetPathRelativeToAppDirectory("oot_save.sav");
-    auto sOldBackupSavePath = Ship::Window::GetPathRelativeToAppDirectory("oot_save.bak");
+    auto sOldSavePath = Ship::Context::GetPathRelativeToAppDirectory("oot_save.sav");
+    auto sOldBackupSavePath = Ship::Context::GetPathRelativeToAppDirectory("oot_save.bak");
 
     // If the save directory does not exist, create it
     if (!std::filesystem::exists(sSavePath)) {
@@ -760,7 +760,7 @@ void SaveManager::SaveGlobal() {
     globalBlock["zTargetSetting"] = gSaveContext.zTargetSetting;
     globalBlock["language"] = gSaveContext.language;
 
-    const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
 
     std::ofstream output(sGlobalPath);

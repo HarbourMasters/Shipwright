@@ -10,7 +10,7 @@
 #include <bit>
 #include <map>
 #include <string>
-#include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 
 extern "C" {
 #include <z64.h>
@@ -64,7 +64,7 @@ void DrawDLViewer(bool& open) {
         ImGui::EndCombo();
     }
     if (activeDisplayList != nullptr) {
-        auto res = std::static_pointer_cast<Ship::DisplayList>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(activeDisplayList));
+        auto res = std::static_pointer_cast<Ship::DisplayList>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
         for (int i = 0; i < res->Instructions.size(); i++) {
             std::string id = "##CMD" + std::to_string(i);
             Gfx* gfx = (Gfx*)&res->Instructions[i];

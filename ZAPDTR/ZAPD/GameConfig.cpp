@@ -4,7 +4,7 @@
 #include <string_view>
 
 #include "Utils/Directory.h"
-#include "Utils/File.h"
+#include <Utils/DiskFile.h>
 #include "Utils/Path.h"
 #include "ZFile.h"
 #include "tinyxml2.h"
@@ -56,7 +56,7 @@ void GameConfig::ReadTexturePool(const fs::path& texturePoolXmlPath)
 
 void GameConfig::GenSymbolMap(const fs::path& symbolMapPath)
 {
-	auto symbolLines = File::ReadAllLines(symbolMapPath);
+	auto symbolLines = DiskFile::ReadAllLines(symbolMapPath);
 
 	for (std::string& symbolLine : symbolLines)
 	{
@@ -78,7 +78,7 @@ void GameConfig::ConfigFunc_ActorList(const tinyxml2::XMLElement& element)
 {
 	std::string fileName = element.Attribute("File");
 	std::vector<std::string> lines =
-		File::ReadAllLines(Path::GetDirectoryName(configFilePath) / fileName);
+		DiskFile::ReadAllLines(Path::GetDirectoryName(configFilePath) / fileName);
 
 	for (auto& line : lines)
 		actorList.emplace_back(std::move(line));
@@ -88,7 +88,7 @@ void GameConfig::ConfigFunc_ObjectList(const tinyxml2::XMLElement& element)
 {
 	std::string fileName = element.Attribute("File");
 	std::vector<std::string> lines =
-		File::ReadAllLines(Path::GetDirectoryName(configFilePath) / fileName);
+		DiskFile::ReadAllLines(Path::GetDirectoryName(configFilePath) / fileName);
 
 	for (auto& line : lines)
 		objectList.emplace_back(std::move(line));
