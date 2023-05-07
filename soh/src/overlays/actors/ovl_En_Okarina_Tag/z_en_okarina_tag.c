@@ -241,20 +241,23 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
             Flags_SetSwitch(play, this->switchFlag);
         }
         switch (this->type) {
+            // Zora's River Waterfall
             case 1:
                 Flags_SetSwitch(play, this->switchFlag);
                 gSaveContext.eventChkInf[3] |= 0x200;
                 break;
+            // Kakariko Windmill
             case 2:
-                if (!gSaveContext.n64ddFlag) {
+                if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
                     play->csCtx.segment = D_80ABF9D0;
                     gSaveContext.cutsceneTrigger = 1;
                 } else {
-                    gSaveContext.eventChkInf[6] |= 0x80;
-                    gSaveContext.eventChkInf[6] |= 0x20;
+                    Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SONG_OF_STORMS_IN_WINDMILL);
+                    Flags_SetEventChkInf(EVENTCHKINF_DRAINED_WELL_IN_KAKARIKO);
                 }
                 func_800F574C(1.18921f, 0x5A);
                 break;
+            // Door of Time
             case 4:
                 if (gSaveContext.n64ddFlag) {
                     if (Randomizer_GetSettingValue(RSK_DOOR_OF_TIME) == RO_DOOROFTIME_CLOSED &&
@@ -267,19 +270,22 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
                         Flags_SetEnv(play, 2);
                         func_80078884(NA_SE_SY_CORRECT_CHIME);
                     }
+                } else if (CVarGetInteger("gSkipCutscenes", 0)) {
+                    Flags_SetEnv(play, 2);
+                    func_80078884(NA_SE_SY_CORRECT_CHIME);
                 } else {
                     play->csCtx.segment = D_80ABFB40;
                     gSaveContext.cutsceneTrigger = 1;
                 }
                 break;
+            // Royal Family Tomb
             case 6:
-                // Don't start the cutscene in a rando save.
-                if (!(gSaveContext.n64ddFlag)) {
+                if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
                     play->csCtx.segment = LINK_IS_ADULT ? SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_003C80)
                                                              : SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_005020);
                     gSaveContext.cutsceneTrigger = 1;
                 }
-                gSaveContext.eventChkInf[1] |= 0x2000;
+                Flags_SetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB);
                 func_80078884(NA_SE_SY_CORRECT_CHIME);
                 break;
             default:
