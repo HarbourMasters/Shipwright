@@ -12748,7 +12748,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         play->msgCtx.msgMode = MSGMODE_TEXT_DONE;
     } else {
         if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
-            if (this->getItemId == GI_GAUNTLETS_SILVER && !gSaveContext.n64ddFlag) {
+            if (this->getItemId == GI_GAUNTLETS_SILVER && !gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
                 play->nextEntranceIndex = 0x0123;
                 play->sceneLoadFlag = 0x14;
                 gSaveContext.nextCutsceneIndex = 0xFFF1;

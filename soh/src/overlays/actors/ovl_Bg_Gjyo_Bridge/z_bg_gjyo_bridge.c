@@ -87,7 +87,12 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, PlayState* play) {
     if (!gSaveContext.n64ddFlag) {
         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
             (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) && CheckPlayerPosition(player, play)) {
-            LaunchBridgeCutscene(this, play);
+            if (CVarGetInteger("gSkipCutscenes", 0)) {
+                this->actionFunc = BgGjyoBridge_SpawnBridge;
+                func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+            } else {
+                LaunchBridgeCutscene(this, play);
+            }
         }
     } else {
         int bridge = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE);
@@ -146,7 +151,7 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, PlayState* play) {
 }
 
 void BgGjyoBridge_SpawnBridge(BgGjyoBridge* this, PlayState* play) {
-    if (gSaveContext.n64ddFlag || (play->csCtx.state != CS_STATE_IDLE) && (play->csCtx.npcActions[2] != NULL) &&
+    if ((gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) || (play->csCtx.state != CS_STATE_IDLE) && (play->csCtx.npcActions[2] != NULL) &&
         (play->csCtx.npcActions[2]->action == 2)) {
         this->dyna.actor.draw = BgGjyoBridge_Draw;
         func_8003EC50(play, &play->colCtx.dyna, this->dyna.bgId);

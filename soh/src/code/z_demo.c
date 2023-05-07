@@ -559,7 +559,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
 
     if (playCutscene || (temp != 0) || ((csCtx->frames > 20) && (randoCsSkip || debugCsSkip))) {
 
-        lusprintf(__FILE__, __LINE__, 2, "entranceIndex:%#x, cutsceneIndex:%#x, cmdbase:%d", gSaveContext.entranceIndex, gSaveContext.cutsceneIndex, cmd->base);
+        lusprintf(__FILE__, __LINE__, 2, "C: entranceIndex:%#x, cutsceneIndex:%#x, cmdbase:%d", gSaveContext.entranceIndex, gSaveContext.cutsceneIndex, cmd->base);
 
         csCtx->state = CS_STATE_UNSKIPPABLE_EXEC;
         Audio_SetCutsceneFlag(0);
@@ -2141,6 +2141,8 @@ void Cutscene_HandleEntranceTriggers(PlayState* play) {
             (!Flags_GetEventChkInf(entranceCutscene->flag) || (entranceCutscene->flag == 0x18)) &&
             (gSaveContext.cutsceneIndex < 0xFFF0) && ((u8)gSaveContext.linkAge == requiredAge) &&
             (gSaveContext.respawnFlag <= 0)) {
+                
+            lusprintf(__FILE__, __LINE__, 2, "A: entranceIndex:%#x, entranceCutscene->flag:%#x", gSaveContext.entranceIndex, entranceCutscene->flag);
             Flags_SetEventChkInf(entranceCutscene->flag);
             Cutscene_SetSegment(play, entranceCutscene->segAddr);
             gSaveContext.cutsceneTrigger = 2;
@@ -2153,7 +2155,7 @@ void Cutscene_HandleEntranceTriggers(PlayState* play) {
 void Cutscene_HandleConditionalTriggers(PlayState* play) {
     osSyncPrintf("\ngame_info.mode=[%d] restart_flag", ((void)0, gSaveContext.respawnFlag));
 
-    lusprintf(__FILE__, __LINE__, 2, "entranceIndex:%#x, cutsceneIndex:%#x", gSaveContext.entranceIndex, gSaveContext.cutsceneIndex);
+    lusprintf(__FILE__, __LINE__, 2, "B: entranceIndex:%#x, cutsceneIndex:%#x", gSaveContext.entranceIndex, gSaveContext.cutsceneIndex);
 
     if (CVarGetInteger("gSkipCutscenes", 0) || gSaveContext.n64ddFlag) {
         // Deku Tree Blue warp
