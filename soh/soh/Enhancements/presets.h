@@ -370,6 +370,37 @@ const std::vector<const char*> randomizerCvars = {
 };
 
 const std::vector<PresetEntry> racePresetEntries = {
+    PRESET_ENTRY_S32("gTextSpeed", 5),
+    PRESET_ENTRY_S32("gMweepSpeed", 5),
+    PRESET_ENTRY_S32("gClimbSpeed", 4),
+    PRESET_ENTRY_S32("gFasterBlockPush", 5),
+    PRESET_ENTRY_S32("gFasterHeavyBlockLift", 1),
+    PRESET_ENTRY_S32("gNoForcedNavi", 1),
+    PRESET_ENTRY_S32("gDisableNaviCallAudio", 1),
+    PRESET_ENTRY_S32("gFastChests", 1),
+    PRESET_ENTRY_S32("gFastDrops", 1),
+    PRESET_ENTRY_S32("gDpadText", 1),
+    PRESET_ENTRY_S32("gDpadOcarina", 1),
+    PRESET_ENTRY_S32("gRStickOcarina", 1),
+    PRESET_ENTRY_S32("gDpadEquips", 1),
+    PRESET_ENTRY_S32("gFastOcarinaPlayback", 1),
+    PRESET_ENTRY_S32("gSkipScarecrow", 1),
+    PRESET_ENTRY_S32("gInstantPutaway", 1),
+    PRESET_ENTRY_S32("gFastBoomerang", 1),
+    PRESET_ENTRY_S32("gDpadNoDropOcarinaInput", 1),
+    PRESET_ENTRY_S32("gMMBunnyHood", 2),
+    PRESET_ENTRY_S32("gSeparateArrows", 1),
+    PRESET_ENTRY_S32("gAssignableTunicsAndBoots", 1),
+    PRESET_ENTRY_S32("gEquipmentCanBeRemoved", 1),
+    PRESET_ENTRY_S32("gDrawLineupTick", 1),
+    PRESET_ENTRY_S32("gNewDrops", 1),
+    PRESET_ENTRY_S32("gCreditsFix", 1),
+    PRESET_ENTRY_S32("gSkipText", 1),
+    PRESET_ENTRY_S32("gHideBuildInfo", 1),
+    PRESET_ENTRY_S32("gSkipLogoTitle", 1),
+    PRESET_ENTRY_S32("gSaveFileID", 4),
+    PRESET_ENTRY_S32("gCheatEasyPauseBufferEnabled", 1),
+    PRESET_ENTRY_S32("gSkipCutscenes", 1),
 };
 
 const std::vector<PresetEntry> vanillaPlusPresetEntries = {

@@ -1236,6 +1236,7 @@ namespace GameMenuBar {
         ImGui::SetCursorPosY(0.0f);
         */
 
+        /* [Race Template] Hide Randomizer Menu
         if (ImGui::BeginMenu("Randomizer"))
         {
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
@@ -1280,7 +1281,7 @@ namespace GameMenuBar {
                 Ship::EnableWindow("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0));
             }
             UIWidgets::Spacer(0);
-            */
+            *//*
             if (ImGui::Button(GetWindowButtonText("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVarGetInteger("gCheckTrackerEnabled", 0);
@@ -1378,9 +1379,10 @@ namespace GameMenuBar {
                     "Enemy spawns will stay consistent throughout room reloads. Enemy spawns are based on randomizer seeds, so this only works with randomizer savefiles."
                 );
             }
-            */
+            *//*
 
             ImGui::EndMenu();
         }
+        */
     }
 }
