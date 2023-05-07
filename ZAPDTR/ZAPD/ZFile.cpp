@@ -219,27 +219,25 @@ void ZFile::ParseXML(tinyxml2::XMLElement* reader, const std::string& filename)
 	{
 		const char* nameXml = child->Attribute("Name");
 		const char* outNameXml = child->Attribute("OutName");
+		const char* offsetXml = child->Attribute("Offset");
 
 		// Check for repeated attributes.
-		if (child->Attribute("Offset") != nullptr)
+		if (offsetXml != nullptr)
 		{
-		std::string_view offsetXml = child->Attribute("Offset");
-			std::string_view offsetStr = StringHelper::Split(offsetXml, "0x")[1];
-			if (0)
+			if (!StringHelper::IsValidOffset(std::string_view(offsetXml)))
 			{
 				HANDLE_ERROR(WarningType::InvalidXML,
-				             StringHelper::Sprintf("Invalid offset %s entered", offsetStr),
-				             "");
+				             StringHelper::Sprintf("Invalid offset %s entered", offsetXml), "");
 			}
-			rawDataIndex = strtol(offsetStr.data(), NULL, 16);
+			rawDataIndex = strtol(offsetXml, NULL, 16);
 
-			if (offsetSet.find(offsetXml.data()) != offsetSet.end())
+			if (offsetSet.find(offsetXml) != offsetSet.end())
 			{
 				std::string errorHeader =
 					StringHelper::Sprintf("repeated 'Offset' attribute: %s", offsetXml);
 				HANDLE_ERROR_PROCESS(WarningType::InvalidXML, errorHeader, "");
 			}
-			offsetSet.insert(offsetXml.data());
+			offsetSet.insert(offsetXml);
 		}
 		else
 		{
