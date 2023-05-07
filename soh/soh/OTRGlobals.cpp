@@ -1289,15 +1289,15 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
 }
 
 extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path) {
-    return (CollisionHeader*)GetResourceDataByName(path, false);
+    return (CollisionHeader*) GetResourceDataByName(path);
 }
 
 extern "C" Vtx* ResourceMgr_LoadVtxByName(char* path) {
-    return (Vtx*)GetResourceDataByName(path, false);
+    return (Vtx*) GetResourceDataByName(path);
 }
 
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path) {
-    SequenceData* sequence = (SequenceData*)GetResourceDataByName(path, false);
+    SequenceData* sequence = (SequenceData*) GetResourceDataByName(path);
     return *sequence;
 }
 
@@ -1362,11 +1362,11 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
 }
 
 extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path) {
-    return (SoundFontSample*)GetResourceDataByName(path, false);
+    return (SoundFontSample*) GetResourceDataByName(path);
 }
 
 extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
-    return (SoundFont*)GetResourceDataByName(path, false);
+    return (SoundFont*) GetResourceDataByName(path);
 }
 
 extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
@@ -1388,7 +1388,7 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 }
 
 extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
-    return (AnimationHeaderCommon*)GetResourceDataByName(path, false);
+    return (AnimationHeaderCommon*) GetResourceDataByName(path);
 }
 
 extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) {
@@ -1405,11 +1405,11 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
         pathStr = Ship::Resource::gAltAssetPrefix + pathStr;
     }
 
-    SkeletonHeader* skelHeader = (SkeletonHeader*)GetResourceDataByName(pathStr.c_str(), false);
+    SkeletonHeader* skelHeader = (SkeletonHeader*) GetResourceDataByName(pathStr.c_str());
 
     // If there isn't an alternate model, load the regular one
     if (isAlt && skelHeader == NULL) {
-        skelHeader = (SkeletonHeader*)GetResourceDataByName(path, false);
+        skelHeader = (SkeletonHeader*) GetResourceDataByName(path);
     }
 
     // This function is only called when a skeleton is initialized.

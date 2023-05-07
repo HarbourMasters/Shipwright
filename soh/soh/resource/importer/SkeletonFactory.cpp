@@ -1,7 +1,7 @@
 #include "soh/resource/importer/SkeletonFactory.h"
 #include "soh/resource/type/Skeleton.h"
 #include <spdlog/spdlog.h>
-#include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 
 namespace Ship {
 std::shared_ptr<Resource> SkeletonFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
@@ -85,8 +85,8 @@ void SkeletonFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
 
     for (size_t i = 0; i < skeleton->limbTable.size(); i++) {
         std::string limbStr = skeleton->limbTable[i];
-        auto limb = GetResourceDataByName(limbStr.c_str(), true);
-        skeleton->skeletonHeaderSegments.push_back(limb);
+        auto limb = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(limbStr.c_str());
+        skeleton->skeletonHeaderSegments.push_back(limb ? limb->GetPointer() : nullptr);
     }
 
     if (skeleton->type == Ship::SkeletonType::Normal) {
@@ -142,8 +142,8 @@ void SkeletonFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_p
             std::string limbName = child->Attribute("Path");
             skel->limbTable.push_back(limbName);
 
-            auto limb = GetResourceDataByName(limbName.c_str(), true);
-            skel->skeletonHeaderSegments.push_back(limb);
+            auto limb = Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(limbName.c_str());
+            skel->skeletonHeaderSegments.push_back(limb ? limb->GetPointer() : nullptr);
         }
 
         child = child->NextSiblingElement();

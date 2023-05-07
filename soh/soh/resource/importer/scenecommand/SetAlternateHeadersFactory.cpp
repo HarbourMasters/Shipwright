@@ -1,7 +1,7 @@
 #include "soh/resource/importer/scenecommand/SetAlternateHeadersFactory.h"
 #include "soh/resource/type/scenecommand/SetAlternateHeaders.h"
 #include "spdlog/spdlog.h"
-#include "libultraship/bridge.h"
+#include "libultraship/libultraship.h"
 
 namespace Ship {
 std::shared_ptr<Resource> SetAlternateHeadersFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
@@ -40,7 +40,7 @@ void Ship::SetAlternateHeadersFactoryV0::ParseFileBinary(std::shared_ptr<BinaryR
     for (uint32_t i = 0; i < setAlternateHeaders->numHeaders; i++) {
 	auto headerName = reader->ReadString();
 	if (!headerName.empty()) {
-		setAlternateHeaders->headers.push_back(std::static_pointer_cast<Ship::Scene>(LoadResource(headerName.c_str(), true)));
+		setAlternateHeaders->headers.push_back(std::static_pointer_cast<Ship::Scene>(Ship::Window::GetInstance()->GetResourceManager()->LoadResourceProcess(headerName.c_str())));
 	} else {
 		setAlternateHeaders->headers.push_back(nullptr);
 	}
