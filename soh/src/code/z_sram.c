@@ -222,6 +222,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
     }
 
     Save_SaveFile();
+    SaveManager_ThreadPoolWait();
 }
 
 void Sram_InitSram(GameState* gameState) {

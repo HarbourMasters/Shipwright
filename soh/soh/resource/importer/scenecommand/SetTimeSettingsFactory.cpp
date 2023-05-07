@@ -3,7 +3,7 @@
 #include "spdlog/spdlog.h"
 
 namespace Ship {
-std::shared_ptr<Resource> SetTimeSettingsFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+std::shared_ptr<Resource> SetTimeSettingsFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                                std::shared_ptr<ResourceInitData> initData,
                                                                std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetTimeSettings>(resourceMgr, initData);

@@ -4,7 +4,7 @@
 #include "libultraship/bridge.h"
 
 namespace Ship {
-std::shared_ptr<Resource> AudioSoundFontFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+std::shared_ptr<Resource> AudioSoundFontFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                               std::shared_ptr<ResourceInitData> initData,
                                                               std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<AudioSoundFont>(resourceMgr, initData);

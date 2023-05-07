@@ -4,7 +4,7 @@
 #include "libultraship/bridge.h"
 
 namespace Ship {
-std::shared_ptr<Resource> SkeletonLimbFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+std::shared_ptr<Resource> SkeletonLimbFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                             std::shared_ptr<ResourceInitData> initData,
                                                             std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SkeletonLimb>(resourceMgr, initData);
@@ -26,7 +26,7 @@ std::shared_ptr<Resource> SkeletonLimbFactory::ReadResource(std::shared_ptr<Reso
     return resource;
 }
 
-std::shared_ptr<Resource> SkeletonLimbFactory::ReadResourceXML(std::shared_ptr<ResourceMgr> resourceMgr,
+std::shared_ptr<Resource> SkeletonLimbFactory::ReadResourceXML(std::shared_ptr<ResourceManager> resourceMgr,
                                               std::shared_ptr<ResourceInitData> initData,
                                               tinyxml2::XMLElement* reader) {
     auto resource = std::make_shared<SkeletonLimb>(resourceMgr, initData);
