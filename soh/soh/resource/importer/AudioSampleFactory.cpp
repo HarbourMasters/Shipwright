@@ -17,7 +17,7 @@ std::shared_ptr<Resource> AudioSampleFactory::ReadResource(std::shared_ptr<Resou
 
     if (factory == nullptr) {
         SPDLOG_ERROR("Failed to load AudioSample with version {}", resource->InitData->ResourceVersion);
-	    return nullptr;
+	return nullptr;
     }
 
     factory->ParseFileBinary(reader, resource);
