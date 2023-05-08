@@ -787,5 +787,5 @@ void DrawActorViewer(bool& open) {
 }
 
 void InitActorViewer() {
-    Ship::AddWindow("Developer Tools", "Actor Viewer", DrawActorViewer);
+    LUS::AddWindow("Developer Tools", "Actor Viewer", DrawActorViewer);
 }

@@ -288,7 +288,7 @@ void CreateSphereData() {
 }
 
 void InitColViewer() {
-    Ship::AddWindow("Developer Tools", "Collision Viewer", DrawColViewerWindow);
+    LUS::AddWindow("Developer Tools", "Collision Viewer", DrawColViewerWindow);
 
     CreateCylinderData();
     CreateSphereData();

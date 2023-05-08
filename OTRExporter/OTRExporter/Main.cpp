@@ -26,7 +26,7 @@
 #include <mutex>
 
 std::string otrFileName = "oot.otr";
-std::shared_ptr<Ship::Archive> otrArchive;
+std::shared_ptr<LUS::Archive> otrArchive;
 BinaryWriter* fileWriter;
 std::chrono::steady_clock::time_point fileStart, resStart;
 std::map<std::string, std::vector<char>> files;
@@ -48,9 +48,9 @@ static void ExporterParseFileMode(const std::string& buildMode, ZFileMode& fileM
 		printf("BOTR: Generating OTR Archive...\n");
 
 		if (DiskFile::Exists(otrFileName))
-			otrArchive = std::shared_ptr<Ship::Archive>(new Ship::Archive(otrFileName, true));
+			otrArchive = std::shared_ptr<LUS::Archive>(new LUS::Archive(otrFileName, true));
 		else
-			otrArchive = Ship::Archive::CreateArchive(otrFileName, 40000);
+			otrArchive = LUS::Archive::CreateArchive(otrFileName, 40000);
 
 		auto lst = Directory::ListFiles("Extract");
 
@@ -86,7 +86,7 @@ static void ExporterProgramEnd()
 		printf("Created version file.\n");
 
 		printf("Generating OTR Archive...\n");
-		otrArchive = Ship::Archive::CreateArchive(otrFileName, 40000);
+		otrArchive = LUS::Archive::CreateArchive(otrFileName, 40000);
 
 		otrArchive->AddFile("version", (uintptr_t)versionStream->ToVector().data(), versionStream->GetLength());
 
@@ -115,7 +115,7 @@ static void ExporterProgramEnd()
 		return;
 	}
 	const auto& lst = Directory::ListFiles("Extract");
-	std::shared_ptr<Ship::Archive> sohOtr = Ship::Archive::CreateArchive("soh.otr", 4096);
+	std::shared_ptr<LUS::Archive> sohOtr = LUS::Archive::CreateArchive("soh.otr", 4096);
 	//sohOtr->AddFile("version", (uintptr_t)versionStream->ToVector().data(), versionStream->GetLength());
 
 	for (const auto& item : lst)

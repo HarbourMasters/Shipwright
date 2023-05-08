@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/EndMarker.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Resource> EndMarkerFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                          std::shared_ptr<ResourceInitData> initData,
                                                          std::shared_ptr<BinaryReader> reader) {
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> EndMarkerFactory::ReadResource(std::shared_ptr<Resourc
     return resource;
 }
 
-void Ship::EndMarkerFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::EndMarkerFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource)
 {
     std::shared_ptr<EndMarker> endMarker = std::static_pointer_cast<EndMarker>(resource);
@@ -36,4 +36,4 @@ void Ship::EndMarkerFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> rea
     // This has no data.
 }
 
-} // namespace Ship
+} // namespace LUS

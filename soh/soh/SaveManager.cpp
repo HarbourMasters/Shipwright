@@ -41,7 +41,7 @@ void SaveManager::ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, v
 }
 
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
-    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
     return sSavePath / ("file" + std::to_string(fileNum + 1) + ".sav");
 }
 
@@ -342,11 +342,11 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext) {
 }
 
 void SaveManager::Init() {
-    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
-    auto sOldSavePath = Ship::Context::GetPathRelativeToAppDirectory("oot_save.sav");
-    auto sOldBackupSavePath = Ship::Context::GetPathRelativeToAppDirectory("oot_save.bak");
-    Ship::RegisterHook<Ship::ExitGame>([this]() { ThreadPoolWait(); });
+    auto sOldSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav");
+    auto sOldBackupSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.bak");
+    LUS::RegisterHook<LUS::ExitGame>([this]() { ThreadPoolWait(); });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>([this](uint32_t fileNum) { ThreadPoolWait(); });
 
     // If the save directory does not exist, create it
@@ -771,7 +771,7 @@ void SaveManager::SaveGlobal() {
     globalBlock["zTargetSetting"] = gSaveContext.zTargetSetting;
     globalBlock["language"] = gSaveContext.language;
 
-    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
 
     std::ofstream output(sGlobalPath);
@@ -2165,7 +2165,7 @@ extern "C" void Save_SaveGlobal(void) {
 
 extern "C" void Save_LoadFile(void) {
     SaveManager::Instance->LoadFile(gSaveContext.fileNum);
-    Ship::ExecuteHooks<Ship::LoadFile>(gSaveContext.fileNum);
+    LUS::ExecuteHooks<LUS::LoadFile>(gSaveContext.fileNum);
 }
 
 extern "C" void Save_AddLoadFunction(char* name, int version, SaveManager::LoadFunc func) {
@@ -2186,7 +2186,7 @@ extern "C" void Save_CopyFile(int from, int to) {
 
 extern "C" void Save_DeleteFile(int fileNum) {
     SaveManager::Instance->DeleteZeldaFile(fileNum);
-    Ship::ExecuteHooks<Ship::DeleteFile>(fileNum);
+    LUS::ExecuteHooks<LUS::DeleteFile>(fileNum);
 }
 
 extern "C" u32 Save_Exist(int fileNum) {

@@ -9,7 +9,7 @@
 // #include <libultraship/libultra/types.h>
 #include "z64math.h"
 
-namespace Ship {
+namespace LUS {
 typedef struct {
     struct {
         s8 room;    // Room to switch to
@@ -31,4 +31,4 @@ class SetTransitionActorList : public SceneCommand {
     uint32_t numTransitionActors;
     std::vector<TransitionActorEntry> transitionActorList;
 };
-}; // namespace Ship
+}; // namespace LUS

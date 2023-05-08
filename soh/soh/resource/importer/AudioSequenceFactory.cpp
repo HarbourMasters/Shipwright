@@ -2,7 +2,7 @@
 #include "soh/resource/type/AudioSequence.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Resource> AudioSequenceFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                              std::shared_ptr<ResourceInitData> initData,
                                                              std::shared_ptr<BinaryReader> reader) {
@@ -26,7 +26,7 @@ std::shared_ptr<Resource> AudioSequenceFactory::ReadResource(std::shared_ptr<Res
     return resource;
 }
 
-void Ship::AudioSequenceFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::AudioSequenceFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                                    std::shared_ptr<Resource> resource) {
     std::shared_ptr<AudioSequence> audioSequence = std::static_pointer_cast<AudioSequence>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, audioSequence);
@@ -50,4 +50,4 @@ void Ship::AudioSequenceFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
         audioSequence->sequence.fonts[i] = reader->ReadUByte();
     }
 }
-} // namespace Ship
+} // namespace LUS

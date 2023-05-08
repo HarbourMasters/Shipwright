@@ -2,7 +2,7 @@
 #include "soh/resource/type/CollisionHeader.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Resource> CollisionHeaderFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                                std::shared_ptr<ResourceInitData> initData,
                                                                std::shared_ptr<BinaryReader> reader) {
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> CollisionHeaderFactory::ReadResource(std::shared_ptr<R
     return resource;
 }
 
-void Ship::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                                      std::shared_ptr<Resource> resource)
 {
     std::shared_ptr<CollisionHeader> collisionHeader = std::static_pointer_cast<CollisionHeader>(resource);

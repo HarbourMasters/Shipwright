@@ -1,6 +1,6 @@
 #include "SetRoomList.h"
 
-namespace Ship {
+namespace LUS {
 void* SetRoomList::GetPointer() {
     return rooms.data();
 }
@@ -8,4 +8,4 @@ void* SetRoomList::GetPointer() {
 size_t SetRoomList::GetPointerSize() {
 	return rooms.size() * sizeof(RomFile);
 }
-} // namespace Ship
+} // namespace LUS

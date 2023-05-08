@@ -20,7 +20,7 @@ void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarS
     // std::string settingsFileName = "./randomizer/latest_settings.json";
     // CVarSetString("gLoadedPreset", settingsFileName.c_str());
 
-    std::string fileName = Ship::Context::GetPathRelativeToAppDirectory(GenerateRandomizer(cvarSettings, excludedLocations, seedString).c_str());
+    std::string fileName = LUS::Context::GetPathRelativeToAppDirectory(GenerateRandomizer(cvarSettings, excludedLocations, seedString).c_str());
     CVarSetString("gSpoilerLog", fileName.c_str());
 
     CVarSave();

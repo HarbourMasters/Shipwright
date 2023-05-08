@@ -919,7 +919,7 @@ void DrawEntranceTracker(bool& open) {
 }
 
 void InitEntranceTracker() {
-    Ship::AddWindow("Randomizer", "Entrance Tracker", DrawEntranceTracker,
+    LUS::AddWindow("Randomizer", "Entrance Tracker", DrawEntranceTracker,
                     CVarGetInteger("gEntranceTrackerEnabled", 0) == 1);
 
     // Setup hooks for loading and clearing the entrance tracker data

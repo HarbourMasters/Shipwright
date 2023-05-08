@@ -1,6 +1,6 @@
 #include "CollisionHeader.h"
 
-namespace Ship {
+namespace LUS {
 void* CollisionHeader::GetPointer() {
     return &collisionHeaderData;
 }
@@ -8,4 +8,4 @@ void* CollisionHeader::GetPointer() {
 size_t CollisionHeader::GetPointerSize() {
     return sizeof(collisionHeaderData);
 }
-} // namespace Ship
+} // namespace LUS
