@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetRoomBehavior.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Resource> SetRoomBehaviorFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                                std::shared_ptr<ResourceInitData> initData,
                                                                std::shared_ptr<BinaryReader> reader) {
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> SetRoomBehaviorFactory::ReadResource(std::shared_ptr<R
     return resource;
 }
 
-void Ship::SetRoomBehaviorFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetRoomBehaviorFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource) {
     std::shared_ptr<SetRoomBehavior> setRoomBehavior = std::static_pointer_cast<SetRoomBehavior>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setRoomBehavior);
@@ -36,4 +36,4 @@ void Ship::SetRoomBehaviorFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
     setRoomBehavior->roomBehavior.gameplayFlags2 = reader->ReadInt32();
 }
 
-} // namespace Ship
+} // namespace LUS

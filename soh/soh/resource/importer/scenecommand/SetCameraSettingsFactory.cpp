@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetCameraSettings.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Resource> SetCameraSettingsFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                                  std::shared_ptr<ResourceInitData> initData,
                                                                  std::shared_ptr<BinaryReader> reader) {
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> SetCameraSettingsFactory::ReadResource(std::shared_ptr
     return resource;
 }
 
-void Ship::SetCameraSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetCameraSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource)
 {
     std::shared_ptr<SetCameraSettings> setCameraSettings = std::static_pointer_cast<SetCameraSettings>(resource);
@@ -37,4 +37,4 @@ void Ship::SetCameraSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRea
     setCameraSettings->settings.worldMapArea = reader->ReadInt32();
 }
 
-} // namespace Ship
+} // namespace LUS

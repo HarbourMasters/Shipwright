@@ -3,7 +3,7 @@
 #include "spdlog/spdlog.h"
 #include <libultraship/libultraship.h>
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Resource> SetPathwaysFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                            std::shared_ptr<ResourceInitData> initData,
                                                            std::shared_ptr<BinaryReader> reader) {
@@ -26,7 +26,7 @@ std::shared_ptr<Resource> SetPathwaysFactory::ReadResource(std::shared_ptr<Resou
     return resource;
 }
 
-void Ship::SetPathwaysFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetPathwaysFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                                  std::shared_ptr<Resource> resource) {
     std::shared_ptr<SetPathways> setPathways = std::static_pointer_cast<SetPathways>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setPathways);
@@ -37,8 +37,8 @@ void Ship::SetPathwaysFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
     setPathways->paths.reserve(setPathways->numPaths);
     for (uint32_t i = 0; i < setPathways->numPaths; i++) {
         std::string pathFileName = reader->ReadString();
-        setPathways->paths.push_back(std::static_pointer_cast<Path>(Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(pathFileName.c_str())));
+        setPathways->paths.push_back(std::static_pointer_cast<Path>(LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(pathFileName.c_str())));
     }
 }
 
-} // namespace Ship
+} // namespace LUS

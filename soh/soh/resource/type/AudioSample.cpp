@@ -1,6 +1,6 @@
 #include "AudioSample.h"
 
-namespace Ship {
+namespace LUS {
 void* AudioSample::GetPointer() {
     return &sample;
 }
@@ -8,4 +8,4 @@ void* AudioSample::GetPointer() {
 size_t AudioSample::GetPointerSize() {
     return sizeof(Sample);
 }
-} // namespace Ship
+} // namespace LUS

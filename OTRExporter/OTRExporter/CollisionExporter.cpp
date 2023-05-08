@@ -5,7 +5,7 @@ void OTRExporter_Collision::Save(ZResource* res, const fs::path& outPath, Binary
 {
 	ZCollisionHeader* col = (ZCollisionHeader*)res;
 
-	WriteHeader(res, outPath, writer, Ship::ResourceType::SOH_CollisionHeader);
+	WriteHeader(res, outPath, writer, LUS::ResourceType::SOH_CollisionHeader);
 	
 	writer->Write(col->absMinX);
 	writer->Write(col->absMinY);

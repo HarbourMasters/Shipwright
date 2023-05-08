@@ -1,6 +1,6 @@
 #include "Text.h"
 
-namespace Ship {
+namespace LUS {
 void* Text::GetPointer() {
     return messages.data();
 }
@@ -8,4 +8,4 @@ void* Text::GetPointer() {
 size_t Text::GetPointerSize() {
 	return messages.size() * sizeof(MessageEntry);
 }
-} // namespace Ship
+} // namespace LUS

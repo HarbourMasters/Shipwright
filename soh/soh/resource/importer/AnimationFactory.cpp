@@ -2,7 +2,7 @@
 #include "soh/resource/type/Animation.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Resource> AnimationFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                          std::shared_ptr<ResourceInitData> initData,
                                                          std::shared_ptr<BinaryReader> reader) {
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> AnimationFactory::ReadResource(std::shared_ptr<Resourc
     return resource;
 }
 
-void Ship::AnimationFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<Resource> resource) {
+void LUS::AnimationFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<Resource> resource) {
     std::shared_ptr<Animation> animation = std::static_pointer_cast<Animation>(resource);
 
     ResourceVersionFactory::ParseFileBinary(reader, animation);
@@ -102,4 +102,4 @@ void Ship::AnimationFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> rea
         SPDLOG_DEBUG("BEYTAH ANIMATION?!");
     }
 }
-} // namespace Ship
+} // namespace LUS

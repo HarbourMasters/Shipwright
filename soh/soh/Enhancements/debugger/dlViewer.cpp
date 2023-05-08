@@ -64,7 +64,7 @@ void DrawDLViewer(bool& open) {
         ImGui::EndCombo();
     }
     if (activeDisplayList != nullptr) {
-        auto res = std::static_pointer_cast<Ship::DisplayList>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
+        auto res = std::static_pointer_cast<LUS::DisplayList>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
         for (int i = 0; i < res->Instructions.size(); i++) {
             std::string id = "##CMD" + std::to_string(i);
             Gfx* gfx = (Gfx*)&res->Instructions[i];
@@ -138,7 +138,7 @@ void DrawDLViewer(bool& open) {
 }
 
 void InitDLViewer() {
-    Ship::AddWindow("Developer Tools", "Display List Viewer", DrawDLViewer);
+    LUS::AddWindow("Developer Tools", "Display List Viewer", DrawDLViewer);
 
     displayListsSearchResults = ResourceMgr_ListFiles("*DL", &displayListsSearchResultsCount);
 }

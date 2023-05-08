@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetCsCamera.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Resource> SetCsCameraFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                            std::shared_ptr<ResourceInitData> initData,
                                                            std::shared_ptr<BinaryReader> reader) {
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> SetCsCameraFactory::ReadResource(std::shared_ptr<Resou
     return resource;
 }
 
-void Ship::SetCsCameraFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetCsCameraFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource) {
     std::shared_ptr<SetCsCamera> setCsCamera = std::static_pointer_cast<SetCsCamera>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setCsCamera);
@@ -38,4 +38,4 @@ void Ship::SetCsCameraFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
     // OTRTODO: FINISH!
 }
 
-} // namespace Ship
+} // namespace LUS

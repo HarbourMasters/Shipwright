@@ -5,7 +5,7 @@
 #include "Resource.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 // TODO: we've moved away from using classes for this stuff
 class MessageEntry
 {
@@ -25,4 +25,4 @@ public:
 
   std::vector<MessageEntry> messages;
 };
-}; // namespace Ship
+}; // namespace LUS

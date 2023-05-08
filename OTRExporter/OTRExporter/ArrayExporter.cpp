@@ -5,7 +5,7 @@ void OTRExporter_Array::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 {
 	ZArray* arr = (ZArray*)res;
 
-	WriteHeader(res, outPath, writer, Ship::ResourceType::Array);
+	WriteHeader(res, outPath, writer, LUS::ResourceType::Array);
 
 	writer->Write((uint32_t)arr->resList[0]->GetResourceType());
 	writer->Write((uint32_t)arr->arrayCnt);
