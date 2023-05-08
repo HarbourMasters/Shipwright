@@ -99,7 +99,7 @@ void GameConfig::ConfigFunc_EntranceList(const tinyxml2::XMLElement& element)
 {
 	std::string fileName = element.Attribute("File");
 	std::vector<std::string> lines =
-		File::ReadAllLines(Path::GetDirectoryName(configFilePath) / fileName);
+		DiskFile::ReadAllLines(Path::GetDirectoryName(configFilePath) / fileName);
 
 	for (auto& line : lines)
 		entranceList.emplace_back(std::move(line));
@@ -109,7 +109,7 @@ void GameConfig::ConfigFunc_specialEntranceList(const tinyxml2::XMLElement& elem
 {
 	std::string fileName = element.Attribute("File");
 	std::vector<std::string> lines =
-		File::ReadAllLines(Path::GetDirectoryName(configFilePath) / fileName);
+		DiskFile::ReadAllLines(Path::GetDirectoryName(configFilePath) / fileName);
 
 	for (auto& line : lines)
 		specialEntranceList.emplace_back(std::move(line));
