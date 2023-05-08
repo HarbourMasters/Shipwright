@@ -2316,7 +2316,7 @@ void func_8009F9D0(PlayState* play) {
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetEnvColor(POLY_XLU_DISP++, 128, 128, 128, 128);
 
-    gSPSegmentLoadRes(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sGoronCityEntranceTextures[gSaveContext.nightFlag]));
+    gSPSegmentHandlingMQ(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sGoronCityEntranceTextures[gSaveContext.nightFlag]));
 
     { s32 pad[2]; }
 
