@@ -92,7 +92,7 @@ struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnim
 void ResourceMgr_UnregisterSkeleton(SkelAnime* skelAnime);
 void ResourceMgr_ClearSkeletons();
 s32* ResourceMgr_LoadCSByName(const char* path);
-int ResourceMgr_OTRSigCheck(char* imgData);
+int ResourceMgr_OTRSigCheck(const char* imgData);
 uint64_t osGetTime(void);
 uint32_t osGetCount(void);
 uint32_t OTRGetCurrentWidth(void);
