@@ -1915,7 +1915,7 @@ void func_8009DD5C(PlayState* play) {
 
     { s32 pad[2]; }
 
-    gSPSegmentLoadRes(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sKakarikoWindowTextures[gSaveContext.nightFlag]));
+    gSPSegmentHandlingMQ(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sKakarikoWindowTextures[gSaveContext.nightFlag]));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
