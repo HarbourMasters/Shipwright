@@ -1472,6 +1472,11 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.infTable[29] |= 1;
         }
 
+        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && (1 << 0 & gSaveContext.inventory.equipment) == 0) {
+            gSaveContext.infTable[29] |= 1;
+            gSaveContext.childEquips.buttonItems[0] = ITEM_NONE;
+        }
+
         for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
             gSaveContext.adultEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
 
