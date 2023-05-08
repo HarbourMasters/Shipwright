@@ -21,7 +21,7 @@ uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
 uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 size_t GetResourceTexSizeByName(const char* name);
 char* ResourceMgr_LoadTexOrDListByName(char* filePath);
-char* ResourceMgr_LoadIfDListByName(const char* filePath);
+char* ResourceMgr_LoadIfDListByName(char* filePath);
 char* ResourceMgr_LoadPlayerAnimByName(char* animPath);
 char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc);
 Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
