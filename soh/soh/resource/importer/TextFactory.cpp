@@ -2,7 +2,7 @@
 #include "soh/resource/type/Text.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Resource> TextFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                     std::shared_ptr<ResourceInitData> initData,
                                                     std::shared_ptr<BinaryReader> reader) {
@@ -50,7 +50,7 @@ std::shared_ptr<Resource> TextFactory::ReadResourceXML(std::shared_ptr<ResourceM
     return resource;
 }
 
-void Ship::TextFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::TextFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource) {
     std::shared_ptr<Text> text = std::static_pointer_cast<Text>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, text);
@@ -92,4 +92,4 @@ void TextFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<R
     }
 }
 
-} // namespace Ship
+} // namespace LUS

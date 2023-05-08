@@ -3,7 +3,7 @@
 #include "Resource.h"
 #include "ResourceFactory.h"
 
-namespace Ship {
+namespace LUS {
 class SkeletonLimbFactory : public ResourceFactory
 {
   public:
@@ -21,5 +21,5 @@ class SkeletonLimbFactoryV0 : public ResourceVersionFactory
     void ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<Resource> resource) override;
     void ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<Resource> resource) override;
 };
-}; // namespace Ship
+}; // namespace LUS
 

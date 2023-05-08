@@ -1,6 +1,6 @@
 #include "SetMesh.h"
 
-namespace Ship {
+namespace LUS {
 void* SetMesh::GetPointer() {
     return &meshHeader;
 }
@@ -8,4 +8,4 @@ void* SetMesh::GetPointer() {
 size_t SetMesh::GetPointerSize() {
 	return sizeof(MeshHeader);
 }
-} // namespace Ship
+} // namespace LUS

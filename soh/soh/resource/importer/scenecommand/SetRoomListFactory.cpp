@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetRoomList.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Resource> SetRoomListFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                            std::shared_ptr<ResourceInitData> initData,
                                                            std::shared_ptr<BinaryReader> reader) {
@@ -26,7 +26,7 @@ std::shared_ptr<Resource> SetRoomListFactory::ReadResource(std::shared_ptr<Resou
     return resource;
 }
 
-void Ship::SetRoomListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetRoomListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource) {
     std::shared_ptr<SetRoomList> setRoomList = std::static_pointer_cast<SetRoomList>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setRoomList);
@@ -48,4 +48,4 @@ void Ship::SetRoomListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
     }
 }
 
-} // namespace Ship
+} // namespace LUS

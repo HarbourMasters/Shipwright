@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetLightingSettings.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Resource> SetLightingSettingsFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                                    std::shared_ptr<ResourceInitData> initData,
                                                                    std::shared_ptr<BinaryReader> reader) {
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> SetLightingSettingsFactory::ReadResource(std::shared_p
     return resource;
 }
 
-void Ship::SetLightingSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetLightingSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource)
 {
     std::shared_ptr<SetLightingSettings> setLightingSettings = std::static_pointer_cast<SetLightingSettings>(resource);
@@ -68,4 +68,4 @@ void Ship::SetLightingSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryR
     }
 }
 
-} // namespace Ship
+} // namespace LUS
