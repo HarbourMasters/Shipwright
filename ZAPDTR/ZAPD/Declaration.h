@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <cstdint>
 
 // TODO: should we drop the `_t` suffix because of UNIX compliance?
 typedef uint32_t segptr_t;
