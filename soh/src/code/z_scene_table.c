@@ -2343,14 +2343,27 @@ void* sLonLonRanchWindowTextures[] = {
     gLonLonRangeNightWindowsTex,
 };
 
+#define dgLonLonRanchDayWindowTex_MQ "__OTR__scenes/mq/spot20_scene/gLonLonRanchDayWindowTex"
+static const ALIGN_ASSET(2) char gLonLonRanchDayWindowTex_MQ[] = dgLonLonRanchDayWindowTex_MQ;
+
+#define dgLonLonRangeNightWindowsTex_MQ "__OTR__scenes/mq/spot20_scene/gLonLonRangeNightWindowsTex"
+static const ALIGN_ASSET(2) char gLonLonRangeNightWindowsTex_MQ[] = dgLonLonRangeNightWindowsTex_MQ;
+void* sLonLonRanchWindowTextures_MQ[] = {
+    gLonLonRanchDayWindowTex_MQ,
+    gLonLonRangeNightWindowsTex_MQ,
+};
+
 // Scene Draw Config 17
 void func_8009FB74(PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     { s32 pad[2]; }
 
-    gSPSegmentLoadRes(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sLonLonRanchWindowTextures[gSaveContext.nightFlag]));
-
+    if (ResourceMgr_IsGameMasterQuest()) {
+        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sLonLonRanchWindowTextures_MQ[gSaveContext.nightFlag]));
+    } else {
+        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sLonLonRanchWindowTextures[gSaveContext.nightFlag]));
+    }
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
 
