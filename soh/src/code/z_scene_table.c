@@ -991,17 +991,6 @@ void* D_8012A2F8[] = {
     gYdanTex_00CA18,
 };
 
-#define dgYdanTex_00BA18_MQ "__OTR__scenes/mq/ydan_scene/gYdanTex_00BA18"
-static const ALIGN_ASSET(2) char gYdanTex_00BA18_MQ[] = dgYdanTex_00BA18_MQ;
-
-#define dgYdanTex_00CA18_MQ "__OTR__scenes/mq/ydan_scene/gYdanTex_00CA18"
-static const ALIGN_ASSET(2) char gYdanTex_00CA18_MQ[] = dgYdanTex_00CA18_MQ;
-void* D_8012A2F8_MQ[] = {
-    gYdanTex_00BA18_MQ,
-    gYdanTex_00CA18_MQ,
-};
-
-
 // Scene Draw Config 19
 void func_800995DC(PlayState* play) {
     u32 gameplayFrames = play->gameplayFrames;
@@ -1017,11 +1006,7 @@ void func_800995DC(PlayState* play) {
 
     { s32 pad; }
 
-    if (ResourceMgr_IsGameMasterQuest()) {
-        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_8012A2F8_MQ[gSaveContext.nightFlag]));
-    } else {
-        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_8012A2F8[gSaveContext.nightFlag]));
-    }
+    gSPSegmentHandlingMQ(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_8012A2F8[gSaveContext.nightFlag]));
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
