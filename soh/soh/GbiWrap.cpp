@@ -30,38 +30,9 @@ Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
 Vtx* ResourceMgr_LoadVtxByName(char* path);
 CollisionHeader* ResourceMgr_LoadColByName(char* path);
 uint64_t GetPerfCounter();
-int ResourceMgr_OTRSigCheck(const char* imgData);
+int ResourceMgr_OTRSigCheck(char* imgData);
 void ResourceMgr_PushCurrentDirectory(char* path);
-uint32_t ResourceMgr_IsGameMasterQuest();
 
-}
-
-extern "C" void gSPSegmentHandlingMQ(void* value, int segNum, uintptr_t target) {
-    char* imgData = (char*)target;
-
-    std::string Path = imgData;
-    if (ResourceMgr_IsGameMasterQuest()) {
-        size_t pos = 0;
-        if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
-            Path.replace(pos, 7, "/mq/");
-        }
-    }
-    int res = ResourceMgr_OTRSigCheck(Path.c_str());
-
-    // OTRTODO: Disabled for now to fix an issue with HD Textures.
-    // With HD textures, we need to pass the path to F3D, not the raw texture data.
-    // Otherwise the needed metadata is not available for proper rendering...
-    // This should *not* cause any crashes, but some testing may be needed...
-    // UPDATE: To maintain compatability it will still do the old behavior if the resource is a display list.
-    // That should not affect HD textures.
-    if (res) {
-        uintptr_t desiredTarget = (uintptr_t)ResourceMgr_LoadIfDListByName(Path.c_str());
-
-        if (desiredTarget != NULL)
-            target = desiredTarget;
-    }
-
-    __gSPSegment(value, segNum, target);
 }
 
 extern "C" void gSPSegment(void* value, int segNum, uintptr_t target) {
