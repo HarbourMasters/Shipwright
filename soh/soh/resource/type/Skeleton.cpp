@@ -69,7 +69,7 @@ void SkeletonPatcher::UpdateSkeletons() {
     for (auto skel : skeletons) 
     {
         Skeleton* newSkel =
-            (Skeleton*)OTRGlobals::Instance->context->GetResourceManager()
+            (Skeleton*)Ship::Context::GetInstance()->GetResourceManager()
                 ->LoadResource((isHD ? Ship::Resource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
                 .get();
 

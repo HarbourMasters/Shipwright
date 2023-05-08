@@ -1,5 +1,5 @@
 #include "OTRGlobals.h"
-#include <ResourceManager.h>
+#include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
 #include <Utils/StringHelper.h>
 #include "global.h"
@@ -46,7 +46,7 @@ std::shared_ptr<Ship::File> ResourceMgr_LoadFile(const char* path) {
             Path.replace(pos, 7, "/mq/");
         }
     }
-    return OTRGlobals::Instance->context->GetResourceManager()->LoadFile(Path.c_str());
+    return Ship::Context::GetInstance()->GetResourceManager()->LoadFile(Path.c_str());
 }
 
 // Forward Declaration of function declared in OTRGlobals.cpp

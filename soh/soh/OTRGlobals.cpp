@@ -201,19 +201,19 @@ const char* constCameraStrings[] = {
 
 OTRGlobals::OTRGlobals() {
     std::vector<std::string> OTRFiles;
-    std::string mqPath = Ship::Window::GetPathRelativeToAppDirectory("oot-mq.otr");
+    std::string mqPath = Ship::Context::GetPathRelativeToAppDirectory("oot-mq.otr");
     if (std::filesystem::exists(mqPath)) { 
         OTRFiles.push_back(mqPath);
     } 
-    std::string ootPath = Ship::Window::GetPathRelativeToAppDirectory("oot.otr");
+    std::string ootPath = Ship::Context::GetPathRelativeToAppDirectory("oot.otr");
     if (std::filesystem::exists(ootPath)) {
         OTRFiles.push_back(ootPath);
     }
-    std::string sohOtrPath = Ship::Window::GetPathRelativeToAppBundle("soh.otr");
+    std::string sohOtrPath = Ship::Context::GetPathRelativeToAppBundle("soh.otr");
     if (std::filesystem::exists(sohOtrPath)) {
         OTRFiles.push_back(sohOtrPath);
     }
-    std::string patchesPath = Ship::Window::GetPathRelativeToAppDirectory("mods");
+    std::string patchesPath = Ship::Context::GetPathRelativeToAppDirectory("mods");
     if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
         if (std::filesystem::is_directory(patchesPath)) {
             for (const auto& p : std::filesystem::recursive_directory_iterator(patchesPath)) {
@@ -240,7 +240,7 @@ OTRGlobals::OTRGlobals() {
         OOT_PAL_GC_DBG1,
         OOT_PAL_GC_DBG2
     };
-    context = Ship::Window::CreateInstance("Ship of Harkinian", "soh", OTRFiles);
+    context = Ship::Context::CreateInstance("Ship of Harkinian", "soh", OTRFiles);
 
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_Animation, "Animation", std::make_shared<Ship::AnimationFactory>());
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(Ship::ResourceType::SOH_PlayerAnimation, "PlayerAnimation", std::make_shared<Ship::PlayerAnimationFactory>());
@@ -329,10 +329,10 @@ uint32_t OTRGlobals::GetInterpolationFPS() {
     }
 
     if (CVarGetInteger("gMatchRefreshRate", 0)) {
-        return Ship::Window::GetInstance()->GetCurrentRefreshRate();
+        return Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
     }
 
-    return std::min<uint32_t>(Ship::Window::GetInstance()->GetCurrentRefreshRate(), CVarGetInteger("gInterpolationFPS", 20));
+    return std::min<uint32_t>(Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate(), CVarGetInteger("gInterpolationFPS", 20));
 }
 
 struct ExtensionEntry {
@@ -694,7 +694,7 @@ extern "C" uint32_t GetGIID(uint32_t itemID) {
 }
 
 extern "C" void OTRExtScanner() {
-    auto lst = *OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->ListFiles("*").get();
+    auto lst = *Ship::Context::GetInstance()->GetResourceManager()->GetArchive()->ListFiles("*").get();
 
     for (auto& rPath : lst) {
         std::vector<std::string> raw = StringHelper::Split(rPath, ".");
@@ -708,8 +708,8 @@ extern "C" void OTRExtScanner() {
 
 extern "C" void InitOTR() {
 #if not defined (__SWITCH__) && not defined(__WIIU__)
-    if (!std::filesystem::exists(Ship::Window::GetPathRelativeToAppDirectory("oot-mq.otr")) &&
-        !std::filesystem::exists(Ship::Window::GetPathRelativeToAppDirectory("oot.otr"))){
+    if (!std::filesystem::exists(Ship::Context::GetPathRelativeToAppDirectory("oot-mq.otr")) &&
+        !std::filesystem::exists(Ship::Context::GetPathRelativeToAppDirectory("oot.otr"))){
         if (Extractor::ShowYesNoBox("No OTR Files", "No OTR files found. Generate one now?") == IDYES) {
             Extractor extract;
             if (!extract.Run()) {
@@ -791,9 +791,6 @@ extern "C" void InitOTR() {
 
 extern "C" void DeinitOTR() {
     OTRAudio_Exit();
-#if defined(_WIN32) || defined(__APPLE__)
-    SpeechSynthesizerUninitialize();
-#endif
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance->Disable();
     CrowdControl::Instance->Shutdown();
@@ -833,7 +830,7 @@ extern "C" uint64_t GetPerfCounter() {
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
-    OTRGlobals::Instance->context->MainLoop(run_one_game_iter);
+    OTRGlobals::Instance->context->GetWindow()->MainLoop(run_one_game_iter);
 }
 
 extern bool ShouldClearTextureCacheAtEndOfFrame;
@@ -841,8 +838,8 @@ extern bool ShouldClearTextureCacheAtEndOfFrame;
 extern "C" void Graph_StartFrame() {
 #ifndef __WIIU__
     using Ship::KbScancode;
-    int32_t dwScancode = OTRGlobals::Instance->context->GetLastScancode();
-    OTRGlobals::Instance->context->SetLastScancode(-1);
+    int32_t dwScancode = OTRGlobals::Instance->context->GetWindow()->GetLastScancode();
+    OTRGlobals::Instance->context->GetWindow()->SetLastScancode(-1);
 
     switch (dwScancode) {
         case KbScancode::LUS_KB_F5: {
@@ -911,7 +908,7 @@ extern "C" void Graph_StartFrame() {
         }
     }
 #endif
-    OTRGlobals::Instance->context->StartFrame();
+    OTRGlobals::Instance->context->GetWindow()->StartFrame();
 }
 
 void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>>& mtx_replacements) {
@@ -959,10 +956,10 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     time -= fps;
 
-    OTRGlobals::Instance->context->SetTargetFps(fps);
+    OTRGlobals::Instance->context->GetWindow()->SetTargetFps(fps);
 
     int threshold = CVarGetInteger("gExtraLatencyThreshold", 80);
-    OTRGlobals::Instance->context->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
+    OTRGlobals::Instance->context->GetWindow()->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
 
     RunCommands(commands, mtx_replacements);
 
@@ -991,19 +988,19 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 float divisor_num = 0.0f;
 
 extern "C" void OTRGetPixelDepthPrepare(float x, float y) {
-    OTRGlobals::Instance->context->GetPixelDepthPrepare(x, y);
+    OTRGlobals::Instance->context->GetWindow()->GetPixelDepthPrepare(x, y);
 }
 
 extern "C" uint16_t OTRGetPixelDepth(float x, float y) {
-    return OTRGlobals::Instance->context->GetPixelDepth(x, y);
+    return OTRGlobals::Instance->context->GetWindow()->GetPixelDepth(x, y);
 }
 
 extern "C" uint32_t ResourceMgr_GetNumGameVersions() {
-    return OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->GetGameVersions().size();
+    return Ship::Context::GetInstance()->GetResourceManager()->GetArchive()->GetGameVersions().size();
 }
 
 extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
-    return OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->GetGameVersions()[index];
+    return Ship::Context::GetInstance()->GetResourceManager()->GetArchive()->GetGameVersions()[index];
 }
 
 uint32_t IsSceneMasterQuest(s16 sceneNum) {
@@ -1048,16 +1045,16 @@ extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
 }
 
 extern "C" void ResourceMgr_LoadDirectory(const char* resName) {
-    OTRGlobals::Instance->context->GetResourceManager()->LoadDirectory(resName);
+    Ship::Context::GetInstance()->GetResourceManager()->LoadDirectory(resName);
 }
 extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
-    OTRGlobals::Instance->context->GetResourceManager()->DirtyDirectory(resName);
+    Ship::Context::GetInstance()->GetResourceManager()->DirtyDirectory(resName);
 }
 
 // OTRTODO: There is probably a more elegant way to go about this...
 // Kenix: This is definitely leaking memory when it's called.
 extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize) {
-    auto lst = OTRGlobals::Instance->context->GetResourceManager()->GetArchive()->ListFiles(searchMask);
+    auto lst = Ship::Context::GetInstance()->GetResourceManager()->GetArchive()->ListFiles(searchMask);
     char** result = (char**)malloc(lst->size() * sizeof(char*));
 
     for (size_t i = 0; i < lst->size(); i++) {
@@ -1081,7 +1078,7 @@ extern "C" uint8_t ResourceMgr_FileExists(const char* filePath) {
 }
 
 extern "C" void ResourceMgr_LoadFile(const char* resName) {
-    OTRGlobals::Instance->context->GetResourceManager()->LoadResource(resName);
+    Ship::Context::GetInstance()->GetResourceManager()->LoadResource(resName);
 }
 
 std::shared_ptr<Ship::Resource> GetResourceByNameHandlingMQ(const char* path) {
@@ -1092,7 +1089,7 @@ std::shared_ptr<Ship::Resource> GetResourceByNameHandlingMQ(const char* path) {
             Path.replace(pos, 7, "/mq/");
         }
     }
-    return OTRGlobals::Instance->context->GetResourceManager()->LoadResource(Path.c_str());
+    return Ship::Context::GetInstance()->GetResourceManager()->LoadResource(Path.c_str());
 }
 
 extern "C" char* GetResourceDataByNameHandlingMQ(const char* path) {
@@ -1219,7 +1216,7 @@ std::unordered_map<std::string, std::unordered_map<std::string, GfxPatch>> origi
 // instead (When that is available). Index can be found using the commented out section below.
 extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction) {
     auto res = std::static_pointer_cast<Ship::DisplayList>(
-        OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
 
     // Leaving this here for people attempting to find the correct Dlist index to patch
     /*if (strcmp("__OTR__objects/object_gi_longsword/gGiBiggoronSwordDL", path) == 0) {
@@ -1254,7 +1251,7 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
 extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName) {
     if (originalGfx.contains(path) && originalGfx[path].contains(patchName)) {
         auto res = std::static_pointer_cast<Ship::DisplayList>(
-            OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+            Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
 
         Gfx* gfx = (Gfx*)&res->Instructions[originalGfx[path][patchName].index];
         *gfx = originalGfx[path][patchName].instruction;
@@ -1292,15 +1289,15 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
 }
 
 extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path) {
-    return (CollisionHeader*)GetResourceDataByName(path, false);
+    return (CollisionHeader*) GetResourceDataByName(path);
 }
 
 extern "C" Vtx* ResourceMgr_LoadVtxByName(char* path) {
-    return (Vtx*)GetResourceDataByName(path, false);
+    return (Vtx*) GetResourceDataByName(path);
 }
 
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path) {
-    SequenceData* sequence = (SequenceData*)GetResourceDataByName(path, false);
+    SequenceData* sequence = (SequenceData*) GetResourceDataByName(path);
     return *sequence;
 }
 
@@ -1314,7 +1311,7 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
 
     ExtensionEntry entry = ExtensionCache[path];
 
-    auto sampleRaw = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(entry.path);
+    auto sampleRaw = Ship::Context::GetInstance()->GetResourceManager()->LoadFile(entry.path);
     uint32_t* strem = (uint32_t*)sampleRaw->Buffer.get();
     uint8_t* strem2 = (uint8_t*)strem;
 
@@ -1365,11 +1362,11 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
 }
 
 extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path) {
-    return (SoundFontSample*)GetResourceDataByName(path, false);
+    return (SoundFontSample*) GetResourceDataByName(path);
 }
 
 extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
-    return (SoundFont*)GetResourceDataByName(path, false);
+    return (SoundFont*) GetResourceDataByName(path);
 }
 
 extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
@@ -1391,7 +1388,7 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 }
 
 extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
-    return (AnimationHeaderCommon*)GetResourceDataByName(path, false);
+    return (AnimationHeaderCommon*) GetResourceDataByName(path);
 }
 
 extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) {
@@ -1408,11 +1405,11 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
         pathStr = Ship::Resource::gAltAssetPrefix + pathStr;
     }
 
-    SkeletonHeader* skelHeader = (SkeletonHeader*)GetResourceDataByName(pathStr.c_str(), false);
+    SkeletonHeader* skelHeader = (SkeletonHeader*) GetResourceDataByName(pathStr.c_str());
 
     // If there isn't an alternate model, load the regular one
     if (isAlt && skelHeader == NULL) {
-        skelHeader = (SkeletonHeader*)GetResourceDataByName(path, false);
+        skelHeader = (SkeletonHeader*) GetResourceDataByName(path);
     }
 
     // This function is only called when a skeleton is initialized.
@@ -1440,7 +1437,7 @@ extern "C" s32* ResourceMgr_LoadCSByName(const char* path) {
 }
 
 std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
-    const std::string fileName = Conf->getString("Game.SaveName", Ship::Window::GetPathRelativeToAppDirectory("oot_save.sav"));
+    const std::string fileName = Conf->getString("Game.SaveName", Ship::Context::GetPathRelativeToAppDirectory("oot_save.sav"));
     std::filesystem::path saveFile = std::filesystem::absolute(fileName);
 
     if (!exists(saveFile.parent_path())) {
@@ -1571,30 +1568,30 @@ extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(vo
 }
 
 extern "C" uint32_t OTRGetCurrentWidth() {
-    return OTRGlobals::Instance->context->GetCurrentWidth();
+    return OTRGlobals::Instance->context->GetWindow()->GetCurrentWidth();
 }
 
 extern "C" uint32_t OTRGetCurrentHeight() {
-    return OTRGlobals::Instance->context->GetCurrentHeight();
+    return OTRGlobals::Instance->context->GetWindow()->GetCurrentHeight();
 }
 
 extern "C" void OTRControllerCallback(uint8_t rumble, uint8_t ledColor) {
-    auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
+    auto controlDeck = Ship::Context::GetInstance()->GetControlDeck();
 
     for (int i = 0; i < controlDeck->GetNumConnectedPorts(); ++i) {
         auto physicalDevice = controlDeck->GetDeviceFromPortIndex(i);
         switch (ledColor) {
             case 0:
-                physicalDevice->SetLed(i, 255, 0, 0);
+                physicalDevice->SetLedColor(i, {255, 0, 0});
                 break;
             case 1:
-                physicalDevice->SetLed(i, 0x1E, 0x69, 0x1B);
+                physicalDevice->SetLedColor(i, {0x1E, 0x69, 0x1B});
                 break;
             case 2:
-                physicalDevice->SetLed(i, 0x64, 0x14, 0x00);
+                physicalDevice->SetLedColor(i, {0x64, 0x14, 0x00});
                 break;
             case 3:
-                physicalDevice->SetLed(i, 0x00, 0x3C, 0x64);
+                physicalDevice->SetLedColor(i, {0x00, 0x3C, 0x64});
                 break;
         }
 
@@ -1642,7 +1639,7 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 }
 
 extern "C" int Controller_ShouldRumble(size_t slot) {
-    auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
+    auto controlDeck = Ship::Context::GetInstance()->GetControlDeck();
     
     if (slot < controlDeck->GetNumConnectedPorts()) {
         auto physicalDevice = controlDeck->GetDeviceFromPortIndex(slot);
@@ -1656,13 +1653,13 @@ extern "C" int Controller_ShouldRumble(size_t slot) {
 }
 
 extern "C" void Controller_BlockGameInput() {
-    auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
+    auto controlDeck = Ship::Context::GetInstance()->GetControlDeck();
 
     controlDeck->BlockGameInput();
 }
 
 extern "C" void Controller_UnblockGameInput() {
-    auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
+    auto controlDeck = Ship::Context::GetInstance()->GetControlDeck();
 
     controlDeck->UnblockGameInput();
 }

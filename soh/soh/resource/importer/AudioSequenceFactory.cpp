@@ -18,7 +18,7 @@ std::shared_ptr<Resource> AudioSequenceFactory::ReadResource(std::shared_ptr<Res
     if (factory == nullptr)
     {
         SPDLOG_ERROR("Failed to load AudioSequence with version {}", resource->InitData->ResourceVersion);
-	return nullptr;
+        return nullptr;
     }
 
     factory->ParseFileBinary(reader, resource);

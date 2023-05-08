@@ -17,6 +17,7 @@
 #include <Utils/StringHelper.h>
 
 #include <Window.h>
+#include <Context.h>
 #include <ImGui/imgui_internal.h>
 #undef PATH_HACK
 #undef Path
@@ -483,7 +484,7 @@ static bool FileSelectHandler(std::shared_ptr<Ship::Console> Console, const std:
 }
 
 static bool QuitHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args) {
-    Ship::Window::GetInstance()->Close();
+    Ship::Context::GetInstance()->GetWindow()->Close();
     return CMD_SUCCESS;
 }
 

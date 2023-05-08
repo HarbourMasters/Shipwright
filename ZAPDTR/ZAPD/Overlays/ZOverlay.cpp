@@ -5,7 +5,7 @@
 #include <unordered_set>
 #include "Globals.h"
 #include "Utils/Directory.h"
-#include "Utils/File.h"
+#include <Utils/DiskFile.h>
 #include "Utils/Path.h"
 #include "Utils/StringHelper.h"
 #include "WarningHandler.h"
@@ -76,7 +76,7 @@ static const std::unordered_set<std::string> sSections = {
 
 ZOverlay* ZOverlay::FromBuild(fs::path buildPath, fs::path cfgFolderPath)
 {
-	std::string cfgText = File::ReadAllText(cfgFolderPath / "overlay.cfg");
+	std::string cfgText = DiskFile::ReadAllText(cfgFolderPath / "overlay.cfg");
 	std::vector<std::string> cfgLines = StringHelper::Split(cfgText, "\n");
 
 	ZOverlay* ovl = new ZOverlay(StringHelper::Strip(cfgLines[0], "\r"));

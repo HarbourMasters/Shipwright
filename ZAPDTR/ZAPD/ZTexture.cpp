@@ -6,7 +6,7 @@
 #include "Globals.h"
 #include "Utils/BitConverter.h"
 #include "Utils/Directory.h"
-#include "Utils/File.h"
+#include <Utils/DiskFile.h>
 #include "Utils/Path.h"
 #include "WarningHandler.h"
 
@@ -727,7 +727,7 @@ void ZTexture::Save(const fs::path& outFolder)
 	// process for generating the Texture Pool XML.
 	if (Globals::Instance->outputCrc)
 	{
-		File::WriteAllText((Globals::Instance->outputPath / (outName + ".txt")).string(),
+		DiskFile::WriteAllText((Globals::Instance->outputPath / (outName + ".txt")).string(),
 		                   StringHelper::Sprintf("%08lX", hash));
 	}
 

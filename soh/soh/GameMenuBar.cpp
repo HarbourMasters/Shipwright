@@ -12,7 +12,7 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <ImGui/imgui_internal.h>
 #include <ImGuiImpl.h>
-#include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 #include <Hooks.h>
 #include <libultraship/libultra/types.h>
 #include <libultraship/libultra/pi.h>
@@ -204,7 +204,7 @@ namespace GameMenuBar {
                     if (Ship::WindowBackend() == Ship::Backend::DX11) {
                         maxFps = 360;
                     } else {
-                        maxFps = Ship::Window::GetInstance()->GetCurrentRefreshRate();
+                        maxFps = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
                     }
                     int currentFps = fmax(fmin(OTRGlobals::Instance->GetInterpolationFPS(), maxFps), minFps);
                 #ifdef __WIIU__
@@ -289,7 +289,7 @@ namespace GameMenuBar {
                 if (Ship::WindowBackend() == Ship::Backend::DX11) {
                     UIWidgets::Spacer(0);
                     if (ImGui::Button("Match Refresh Rate")) {
-                        int hz = Ship::Window::GetInstance()->GetCurrentRefreshRate();
+                        int hz = Ship::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
                         if (hz >= 20 && hz <= 360) {
                             CVarSetInteger("gInterpolationFPS", hz);
                             Ship::RequestCvarSaveOnNextTick();
@@ -328,7 +328,7 @@ namespace GameMenuBar {
                     UIWidgets::ReEnableComponent("");
                 }
 
-                if (Ship::Window::GetInstance()->CanDisableVerticalSync()) {
+                if (Ship::Context::GetInstance()->GetWindow()->CanDisableVerticalSync()) {
                     UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", "gVsyncEnabled", true, false);
                 }
 

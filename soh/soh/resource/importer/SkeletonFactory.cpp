@@ -1,7 +1,7 @@
 #include "soh/resource/importer/SkeletonFactory.h"
 #include "soh/resource/type/Skeleton.h"
 #include <spdlog/spdlog.h>
-#include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 
 namespace Ship {
 std::shared_ptr<Resource> SkeletonFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
@@ -32,8 +32,8 @@ std::shared_ptr<Resource> SkeletonFactory::ReadResourceXML(std::shared_ptr<Resou
     auto resource = std::make_shared<Skeleton>(resourceMgr, initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch ((Version)resource->InitData->ResourceVersion) {
-        case Version::Deckard:
+    switch (resource->InitData->ResourceVersion) {
+        case 0:
             factory = std::make_shared<SkeletonFactoryV0>();
             break;
     }
@@ -85,8 +85,8 @@ void SkeletonFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
 
     for (size_t i = 0; i < skeleton->limbTable.size(); i++) {
         std::string limbStr = skeleton->limbTable[i];
-        auto limb = GetResourceDataByName(limbStr.c_str(), true);
-        skeleton->skeletonHeaderSegments.push_back(limb);
+        auto limb = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(limbStr.c_str());
+        skeleton->skeletonHeaderSegments.push_back(limb ? limb->GetPointer() : nullptr);
     }
 
     if (skeleton->type == Ship::SkeletonType::Normal) {
@@ -142,8 +142,8 @@ void SkeletonFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_p
             std::string limbName = child->Attribute("Path");
             skel->limbTable.push_back(limbName);
 
-            auto limb = GetResourceDataByName(limbName.c_str(), true);
-            skel->skeletonHeaderSegments.push_back(limb);
+            auto limb = Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(limbName.c_str());
+            skel->skeletonHeaderSegments.push_back(limb ? limb->GetPointer() : nullptr);
         }
 
         child = child->NextSiblingElement();

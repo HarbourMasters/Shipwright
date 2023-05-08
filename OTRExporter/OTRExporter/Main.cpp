@@ -18,7 +18,7 @@
 #include "MtxExporter.h"
 #include "AudioExporter.h"
 #include <Globals.h>
-#include <Utils/File.h>
+#include <Utils/DiskFile.h>
 #include <Utils/Directory.h>
 #include <Utils/MemoryStream.h>
 #include <Utils/BinaryWriter.h>
@@ -47,7 +47,7 @@ static void ExporterParseFileMode(const std::string& buildMode, ZFileMode& fileM
 
 		printf("BOTR: Generating OTR Archive...\n");
 
-		if (File::Exists(otrFileName))
+		if (DiskFile::Exists(otrFileName))
 			otrArchive = std::shared_ptr<Ship::Archive>(new Ship::Archive(otrFileName, true));
 		else
 			otrArchive = Ship::Archive::CreateArchive(otrFileName, 40000);
@@ -56,7 +56,7 @@ static void ExporterParseFileMode(const std::string& buildMode, ZFileMode& fileM
 
 		for (auto item : lst)
 		{
-			auto fileData = File::ReadAllBytes(item);
+			auto fileData = DiskFile::ReadAllBytes(item);
 			otrArchive->AddFile(StringHelper::Split(item, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
 		}
 	}
@@ -70,7 +70,7 @@ static void ExporterProgramEnd()
 	if (Globals::Instance->fileMode == ZFileMode::ExtractDirectory)
 	{
 		std::string romPath = Globals::Instance->baseRomPath.string();
-		const std::vector<uint8_t>& romData = File::ReadAllBytes(romPath);
+		const std::vector<uint8_t>& romData = DiskFile::ReadAllBytes(romPath);
 		crc = BitConverter::ToUInt32BE(romData, 0x10);
 		printf("Creating version file...\n");
 
@@ -111,7 +111,7 @@ static void ExporterProgramEnd()
 	files.clear();
 
 	// Add any additional files that need to be manually copied...
-	if (File::Exists("soh.otr")) {
+	if (DiskFile::Exists("soh.otr")) {
 		return;
 	}
 	const auto& lst = Directory::ListFiles("Extract");
@@ -158,14 +158,14 @@ static void ExporterProgramEnd()
 			splitPath.pop_back();
 			if (extension == "json")
 			{
-				const auto &fileData = File::ReadAllBytes(item);
+				const auto &fileData = DiskFile::ReadAllBytes(item);
 				printf("Adding accessibility texts %s\n", StringHelper::Split(item, "texts/")[1].c_str());
 				sohOtr->AddFile(StringHelper::Split(item, "Extract/assets/")[1], (uintptr_t)fileData.data(), fileData.size());
 			}
 			continue;
 		}
 
-		const auto& fileData = File::ReadAllBytes(item);
+		const auto& fileData = DiskFile::ReadAllBytes(item);
 		printf("sohOtr->AddFile(%s)\n", StringHelper::Split(item, "Extract/")[1].c_str());
 		sohOtr->AddFile(StringHelper::Split(item, item.find("Extract/assets/") != std::string::npos ? "Extract/assets/" : "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
 	}
@@ -249,7 +249,7 @@ static void ExporterResourceEnd(ZResource* res, BinaryWriter& writer)
 			files[fName] = strem->ToVector();
 		}
 		else
-			File::WriteAllBytes("Extract/" + fName, strem->ToVector());
+			DiskFile::WriteAllBytes("Extract/" + fName, strem->ToVector());
 	}
 
 	auto end = std::chrono::steady_clock::now();
@@ -275,7 +275,7 @@ static void ExporterXMLEnd()
 void AddFile(std::string fName, std::vector<char> data)
 {
 	if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
-		File::WriteAllBytes("Extract/" + fName, data);
+		DiskFile::WriteAllBytes("Extract/" + fName, data);
 	else
 	{
 		std::unique_lock Lock(fileMutex);
