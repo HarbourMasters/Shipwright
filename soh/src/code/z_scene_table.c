@@ -2051,7 +2051,7 @@ void func_8009E730(PlayState* play) {
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
 
-    gSPSegmentLoadRes(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sZorasDomainEntranceTextures[gSaveContext.nightFlag]));
+    gSPSegmentHandlingMQ(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sZorasDomainEntranceTextures[gSaveContext.nightFlag]));
 
     { s32 pad[2]; }
 
@@ -2172,6 +2172,7 @@ void func_8009F074(PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+// Gerudo Jail Cell Walls
 void* D_8012A380[] = {
     gSpot12_009678Tex,
     gSpot12_00DE78Tex,
@@ -2183,7 +2184,7 @@ void func_8009F1B4(PlayState* play) {
 
     { s32 pad[2]; }
 
-    gSPSegmentLoadRes(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_8012A380[gSaveContext.nightFlag]));
+    gSPSegmentHandlingMQ(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_8012A380[gSaveContext.nightFlag]));
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
