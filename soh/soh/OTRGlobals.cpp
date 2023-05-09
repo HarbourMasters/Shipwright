@@ -1583,10 +1583,6 @@ extern "C" void OTRControllerCallback(uint8_t rumble, uint8_t ledColor) {
     auto brightness = CVarGetFloat("gLEDbrightness", 1.0f) / 1.0f;
     for (int i = 0; i < controlDeck->GetNumConnectedPorts(); ++i) {
         auto physicalDevice = controlDeck->GetDeviceFromPortIndex(i);
-        if (!CVarGetInteger("gTunicLEDs", 0)) {
-            physicalDevice->SetLed(i, 0, 0, 0);
-            return;
-        }
         switch (ledColor) {
             case 0:
                 physicalDevice->SetLed(i, (255 * brightness), 0, 0);

@@ -179,14 +179,11 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false, true, true, false);
                 UIWidgets::Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
                 UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", "gSimulatedInputLag", 0, 6, "", 0, true, true, false);
-                UIWidgets::Tooltip("Buffers your inputs to be executed a specifiefd amount of frames later");
+                UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
             #if !defined __SWITCH__ && !defined __WIIU__
                 UIWidgets::PaddedSeparator();
-                UIWidgets::EnhancementCheckbox("Tunic Color LEDs", "gTunicLEDs");
-                UIWidgets::Tooltip("On supported controllers, shows the (vanilla) color of the currently equipped tunic on the on-board LEDs.");
-                UIWidgets::PaddedEnhancementSliderFloat("LED Brightness: %d%%", "##LED_Brightness", "gLEDbrightness", 0.0f, 1.0f, "", 1.0f, true, true, 
-                    true, false, CVarGetInteger("gTunicLEDs", 0) != 1, "This is disabled because Tunic Color LEDs is disabled.");
-                UIWidgets::Tooltip("Sets the brightness of Tunic Color LEDs.");
+                UIWidgets::PaddedEnhancementSliderFloat("Tunic Color LED Brightness: %d%%", "##LED_Brightness", "gLEDbrightness", 0.0f, 1.0f, "", 1.0f, true, true, true, false);
+                UIWidgets::Tooltip("Sets the brightness of Tunic Color LEDs. 0% brightness = LEDs off.");
             #endif
                 ImGui::EndMenu();
             }
