@@ -1580,21 +1580,25 @@ extern "C" uint32_t OTRGetCurrentHeight() {
 
 extern "C" void OTRControllerCallback(uint8_t rumble, uint8_t ledColor) {
     auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
-
+    auto brightness = CVarGetFloat("gLEDbrightness", 1.0f) / 1.0f;
     for (int i = 0; i < controlDeck->GetNumConnectedPorts(); ++i) {
         auto physicalDevice = controlDeck->GetDeviceFromPortIndex(i);
+        if (!CVarGetInteger("gTunicLEDs", 0)) {
+            physicalDevice->SetLed(i, 0, 0, 0);
+            return;
+        }
         switch (ledColor) {
             case 0:
-                physicalDevice->SetLed(i, 255, 0, 0);
+                physicalDevice->SetLed(i, (255 * brightness), 0, 0);
                 break;
             case 1:
-                physicalDevice->SetLed(i, 0x1E, 0x69, 0x1B);
+                physicalDevice->SetLed(i, (0x1E * brightness), (0x69 * brightness), (0x1B * brightness));
                 break;
             case 2:
-                physicalDevice->SetLed(i, 0x64, 0x14, 0x00);
+                physicalDevice->SetLed(i, (0x64 * brightness), (0x14 * brightness), (0x00 * brightness));
                 break;
             case 3:
-                physicalDevice->SetLed(i, 0x00, 0x3C, 0x64);
+                physicalDevice->SetLed(i, (0x00 * brightness), (0x3C * brightness), (0x64 * brightness));
                 break;
         }
 
