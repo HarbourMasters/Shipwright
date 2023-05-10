@@ -429,13 +429,11 @@ extern "C" int zapd_main(int argc, char** argv);
 bool Extractor::CallZapd() {
     constexpr int argc = 16;
     char xmlPath[100];
-    char baseromPath[100];
     char confPath[100];
     std::array<const char*, argc> argv;
     const char* version = GetZapdVerStr();
 
     snprintf(xmlPath, 100, "assets/extractor/xmls/%s", version);
-    snprintf(baseromPath, 100, "%s", mCurrentRomPath.c_str());
     snprintf(confPath, 100, "assets/extractor/Config_%s.xml", version);
 
     argv[0] = "ZAPD";
@@ -443,7 +441,7 @@ bool Extractor::CallZapd() {
     argv[2] = "-i";
     argv[3] = xmlPath;
     argv[4] = "-b";
-    argv[5] = baseromPath;
+    argv[5] = mCurrentRomPath.c_str();
     argv[6] = "-fl";
     argv[7] = "assets/extractor/filelists";
     argv[8] = "-gsf";

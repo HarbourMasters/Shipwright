@@ -2,7 +2,7 @@
 #include "../../util.h"
 #include "../../UIWidgets.hpp"
 #include <ImGuiImpl.h>
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 #include "DisplayList.h"
 #include "../../OTRGlobals.h"
 
@@ -138,7 +138,7 @@ void DrawDLViewer(bool& open) {
 }
 
 void InitDLViewer() {
-    SohImGui::AddWindow("Developer Tools", "Display List Viewer", DrawDLViewer);
+    Ship::AddWindow("Developer Tools", "Display List Viewer", DrawDLViewer);
 
     displayListsSearchResults = ResourceMgr_ListFiles("*DL", &displayListsSearchResultsCount);
 }

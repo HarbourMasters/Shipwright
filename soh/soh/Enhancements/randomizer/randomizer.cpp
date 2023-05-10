@@ -4586,7 +4586,7 @@ void DrawRandoEditor(bool& open) {
                                             excludedLocationString += ",";
                                         }
                                         CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
-                                        SohImGui::RequestCvarSaveOnNextTick();
+                                        Ship::RequestCvarSaveOnNextTick();
                                     }
                                     ImGui::SameLine();
                                     ImGui::Text(rcObject->rcShortName.c_str());
@@ -4627,7 +4627,7 @@ void DrawRandoEditor(bool& open) {
                                             excludedLocationString += ",";
                                         }
                                         CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
-                                        SohImGui::RequestCvarSaveOnNextTick();
+                                        Ship::RequestCvarSaveOnNextTick();
                                     }
                                     ImGui::SameLine();
                                     ImGui::Text(rcObject->rcShortName.c_str());
@@ -5668,7 +5668,7 @@ void InitRandoItemTable() {
 
 
 void InitRando() {
-    SohImGui::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
+    Ship::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     InitRandoItemTable();

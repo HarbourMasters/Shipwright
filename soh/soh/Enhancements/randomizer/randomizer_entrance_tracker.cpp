@@ -919,7 +919,8 @@ void DrawEntranceTracker(bool& open) {
 }
 
 void InitEntranceTracker() {
-    SohImGui::AddWindow("Randomizer", "Entrance Tracker", DrawEntranceTracker, CVarGetInteger("gEntranceTrackerEnabled", 0) == 1);
+    Ship::AddWindow("Randomizer", "Entrance Tracker", DrawEntranceTracker,
+                    CVarGetInteger("gEntranceTrackerEnabled", 0) == 1);
 
     // Setup hooks for loading and clearing the entrance tracker data
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
