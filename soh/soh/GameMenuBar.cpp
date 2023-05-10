@@ -162,8 +162,11 @@ namespace GameMenuBar {
                 ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
                 if (ImGui::Button(GetWindowButtonText("Controller Configuration", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f)))
                 {
-                    bool currentValue = CVarGetInteger("gControllerConfigurationEnabled", 0);
-                    CVarSetInteger("gControllerConfigurationEnabled", !currentValue);
+                    if (CVarGetInteger("gControllerConfigurationEnabled", 0)) {
+                        CVarClear("gControllerConfigurationEnabled");
+                    } else {
+                        CVarSetInteger("gControllerConfigurationEnabled", 1);
+                    }
                     LUS::RequestCvarSaveOnNextTick();
                     LUS::ToggleInputEditorWindow(CVarGetInteger("gControllerConfigurationEnabled", 0));
                 }
@@ -337,7 +340,7 @@ namespace GameMenuBar {
                 }
 
                 if (LUS::SupportsViewports()) {
-                    UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
                     UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
                 }
 
@@ -887,11 +890,13 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Anubis fireballs", "gAnubisFix", true, false);
                 UIWidgets::Tooltip("Make Anubis fireballs do fire damage when reflected back at them with the Mirror Shield");
-                UIWidgets::PaddedEnhancementCheckbox("Fix Megaton Hammer crouch stab", "gCrouchStabHammerFix", true, false);
+                if (UIWidgets::PaddedEnhancementCheckbox("Fix Megaton Hammer crouch stab", "gCrouchStabHammerFix", true, false)) {
+                    if (!CVarGetInteger("gCrouchStabHammerFix", 0)) {
+                        CVarClear("gCrouchStabFix");
+                    }
+                }
                 UIWidgets::Tooltip("Make the Megaton Hammer's crouch stab able to destroy rocks without first swinging it normally");
-                if (CVarGetInteger("gCrouchStabHammerFix", 0) == 0) {
-                    CVarSetInteger("gCrouchStabFix", 0);
-                } else {
+                if (CVarGetInteger("gCrouchStabHammerFix", 0)) {
                     UIWidgets::PaddedEnhancementCheckbox("Remove power crouch stab", "gCrouchStabFix", true, false);
                     UIWidgets::Tooltip("Make crouch stabbing always do the same damage as a regular slash");
                 }
@@ -980,28 +985,40 @@ namespace GameMenuBar {
 
             if (ImGui::Button(GetWindowButtonText("Customize Game Controls", CVarGetInteger("gGameControlEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gGameControlEditorEnabled", 0);
-                CVarSetInteger("gGameControlEditorEnabled", !currentValue);
+                if (CVarGetInteger("gGameControlEditorEnabled", 0)) {
+                    CVarClear("gGameControlEditorEnabled");
+                } else {
+                    CVarSetInteger("gGameControlEditorEnabled", 1);
+                }
                 LUS::RequestCvarSaveOnNextTick();
                 LUS::EnableWindow("Game Control Editor", CVarGetInteger("gGameControlEditorEnabled", 0));
             }
             if (ImGui::Button(GetWindowButtonText("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gCosmeticsEditorEnabled", 0);
-                CVarSetInteger("gCosmeticsEditorEnabled", !currentValue);
+                if (CVarGetInteger("gCosmeticsEditorEnabled", 0)) {
+                    CVarClear("gCosmeticsEditorEnabled");
+                } else {
+                    CVarSetInteger("gCosmeticsEditorEnabled", 1);
+                }
                 LUS::RequestCvarSaveOnNextTick();
                 LUS::EnableWindow("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0));
             }
             if (ImGui::Button(GetWindowButtonText("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gAudioEditor.WindowOpen", 0);
-                CVarSetInteger("gAudioEditor.WindowOpen", !currentValue);
+                if (CVarGetInteger("gAudioEditor.WindowOpen", 0)) {
+                    CVarClear("gAudioEditor.WindowOpen");
+                } else {
+                    CVarSetInteger("gAudioEditor.WindowOpen", 1);
+                }
                 LUS::RequestCvarSaveOnNextTick();
                 LUS::EnableWindow("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0));
             }
             if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                bool currentValue = CVarGetInteger("gGameplayStatsEnabled", 0);
-                CVarSetInteger("gGameplayStatsEnabled", !currentValue);
+                if (CVarGetInteger("gGameplayStatsEnabled", 0)) {
+                    CVarClear("gGameplayStatsEnabled");
+                } else {
+                    CVarSetInteger("gGameplayStatsEnabled", 1);
+                }
                 LUS::RequestCvarSaveOnNextTick();
                 LUS::EnableWindow("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0));
             }
@@ -1114,7 +1131,7 @@ namespace GameMenuBar {
                 }
                 else {
                     lastBetaQuestWorld = betaQuestWorld = 0xFFEF;
-                    CVarSetInteger("gBetaQuestWorld", betaQuestWorld);
+                    CVarClear("gBetaQuestWorld");
                 }
                 if (betaQuestEnabled != lastBetaQuestEnabled || betaQuestWorld != lastBetaQuestWorld)
                 {
@@ -1158,7 +1175,7 @@ namespace GameMenuBar {
             };
             UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
             UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
-            UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", "gDebugWarpScreenTranslation", true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", "gDebugWarpScreenTranslation", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
             UIWidgets::Tooltip("Translate the Debug Warp Screen based on the game language");
             UIWidgets::PaddedSeparator();
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
@@ -1167,50 +1184,68 @@ namespace GameMenuBar {
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
             if (ImGui::Button(GetWindowButtonText("Stats", CVarGetInteger("gStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gStatsEnabled", 0);
-                CVarSetInteger("gStatsEnabled", !currentValue);
-                LUS::ToggleStatisticsWindow(true);
+                if (CVarGetInteger("gStatsEnabled", 0)) {
+                    CVarClear("gStatsEnabled");
+                } else {
+                    CVarSetInteger("gStatsEnabled", 1);
+                }
+                LUS::ToggleStatisticsWindow(CVarGetInteger("gStatsEnabled", 0));
                 LUS::RequestCvarSaveOnNextTick();
             }
             UIWidgets::Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Console", CVarGetInteger("gConsoleEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gConsoleEnabled", 0);
-                CVarSetInteger("gConsoleEnabled", !currentValue);
+                if (CVarGetInteger("gConsoleEnabled", 0)) {
+                    CVarClear("gConsoleEnabled");
+                } else {
+                    CVarSetInteger("gConsoleEnabled", 1);
+                }
                 LUS::RequestCvarSaveOnNextTick();
-                LUS::ToggleConsoleWindow(!currentValue);
+                LUS::ToggleConsoleWindow(CVarGetInteger("gConsoleEnabled", 0));
             }
             UIWidgets::Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Save Editor", CVarGetInteger("gSaveEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gSaveEditorEnabled", 0);
-                CVarSetInteger("gSaveEditorEnabled", !currentValue);
+                if (CVarGetInteger("gSaveEditorEnabled", 0)) {
+                    CVarClear("gSaveEditorEnabled");
+                } else {
+                    CVarSetInteger("gSaveEditorEnabled", 1);
+                }
                 LUS::RequestCvarSaveOnNextTick();
                 LUS::EnableWindow("Save Editor", CVarGetInteger("gSaveEditorEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Collision Viewer", CVarGetInteger("gCollisionViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gCollisionViewerEnabled", 0);
-                CVarSetInteger("gCollisionViewerEnabled", !currentValue);
+                if (CVarGetInteger("gCollisionViewerEnabled", 0)) {
+                    CVarClear("gCollisionViewerEnabled");
+                } else {
+                    CVarSetInteger("gCollisionViewerEnabled", 1);
+                }
                 LUS::RequestCvarSaveOnNextTick();
                 LUS::EnableWindow("Collision Viewer", CVarGetInteger("gCollisionViewerEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Actor Viewer", CVarGetInteger("gActorViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gActorViewerEnabled", 0);
-                CVarSetInteger("gActorViewerEnabled", !currentValue);
+                if (CVarGetInteger("gActorViewerEnabled", 0)) {
+                    CVarClear("gActorViewerEnabled");
+                } else {
+                    CVarSetInteger("gActorViewerEnabled", 1);
+                }
                 LUS::RequestCvarSaveOnNextTick();
                 LUS::EnableWindow("Actor Viewer", CVarGetInteger("gActorViewerEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gDLViewerEnabled", 0);
-                CVarSetInteger("gDLViewerEnabled", !currentValue);
+                if (CVarGetInteger("gDLViewerEnabled", 0)) {
+                    CVarClear("gDLViewerEnabled");
+                } else {
+                    CVarSetInteger("gDLViewerEnabled", 1);
+                }
                 LUS::RequestCvarSaveOnNextTick();
                 LUS::EnableWindow("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0));
             }
@@ -1235,48 +1270,66 @@ namespace GameMenuBar {
         #endif
             if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0)).c_str(), buttonSize))
             {
-                bool currentValue = CVarGetInteger("gRandomizerSettingsEnabled", 0);
-                CVarSetInteger("gRandomizerSettingsEnabled", !currentValue);
+                if (CVarGetInteger("gRandomizerSettingsEnabled", 0)) {
+                    CVarClear("gRandomizerSettingsEnabled");
+                } else {
+                    CVarSetInteger("gRandomizerSettingsEnabled", 1);
+                }
                 LUS::RequestCvarSaveOnNextTick();
                 LUS::EnableWindow("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0)).c_str(), buttonSize))
             {
-                bool currentValue = CVarGetInteger("gItemTrackerEnabled", 0);
-                CVarSetInteger("gItemTrackerEnabled", !currentValue);
+                if (CVarGetInteger("gItemTrackerEnabled", 0)) {
+                    CVarClear("gItemTrackerEnabled");
+                } else {
+                    CVarSetInteger("gItemTrackerEnabled", 1);
+                }
                 LUS::RequestCvarSaveOnNextTick();
                 LUS::EnableWindow("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0)).c_str(), buttonSize))
             {
-                bool currentValue = CVarGetInteger("gItemTrackerSettingsEnabled", 0);
-                CVarSetInteger("gItemTrackerSettingsEnabled", !currentValue);
+                if (CVarGetInteger("gItemTrackerSettingsEnabled", 0)) {
+                    CVarClear("gItemTrackerSettingsEnabled");
+                } else {
+                    CVarSetInteger("gItemTrackerSettingsEnabled", 1);
+                }
                 LUS::RequestCvarSaveOnNextTick();
                 LUS::EnableWindow("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0)).c_str(), buttonSize))
             {
-                bool currentValue = CVarGetInteger("gEntranceTrackerEnabled", 0);
-                CVarSetInteger("gEntranceTrackerEnabled", !currentValue);
+                if (CVarGetInteger("gEntranceTrackerEnabled", 0)) {
+                    CVarClear("gEntranceTrackerEnabled");
+                } else {
+                    CVarSetInteger("gEntranceTrackerEnabled", 1);
+                }
                 LUS::RequestCvarSaveOnNextTick();
                 LUS::EnableWindow("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0)).c_str(), buttonSize))
             {
-                bool currentValue = CVarGetInteger("gCheckTrackerEnabled", 0);
-                CVarSetInteger("gCheckTrackerEnabled", !currentValue);
+                if (CVarGetInteger("gCheckTrackerEnabled", 0)) {
+                    CVarClear("gCheckTrackerEnabled");
+                } else {
+                    CVarSetInteger("gCheckTrackerEnabled", 1);
+                }
                 LUS::RequestCvarSaveOnNextTick();
                 LUS::EnableWindow("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Check Tracker Settings", CVarGetInteger("gCheckTrackerSettingsEnabled", 0)).c_str(), buttonSize))
             {
-                bool currentValue = CVarGetInteger("gCheckTrackerSettingsEnabled", 0);
-                CVarSetInteger("gCheckTrackerSettingsEnabled", !currentValue);
+                if (CVarGetInteger("gCheckTrackerSettingsEnabled", 0)) {
+                    CVarClear("gCheckTrackerSettingsEnabled");
+                } else {
+                    CVarSetInteger("gCheckTrackerSettingsEnabled", 1);
+                }
                 LUS::RequestCvarSaveOnNextTick();
                 LUS::EnableWindow("Check Tracker Settings", CVarGetInteger("gCheckTrackerSettingsEnabled", 0));
             }
@@ -1287,11 +1340,11 @@ namespace GameMenuBar {
 
             if (ImGui::BeginMenu("Rando Enhancements"))
             {
-                UIWidgets::EnhancementCheckbox("Rando-Relevant Navi Hints", "gRandoRelevantNavi");
+                UIWidgets::EnhancementCheckbox("Rando-Relevant Navi Hints", "gRandoRelevantNavi", false, "", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::Tooltip(
                     "Replace Navi's overworld quest hints with rando-related gameplay hints."
                 );
-                UIWidgets::PaddedEnhancementCheckbox("Random Rupee Names", "gRandomizeRupeeNames", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Random Rupee Names", "gRandomizeRupeeNames", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::Tooltip(
                     "When obtaining rupees, randomize what the rupee is called in the textbox."
                 );
@@ -1318,7 +1371,7 @@ namespace GameMenuBar {
                     "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
 
                 UIWidgets::PaddedEnhancementCheckbox("Key Colors Match Dungeon", "gRandoMatchKeyColors", true, false,
-                                                     disableKeyColors, disableKeyColorsText);
+                                                     disableKeyColors, disableKeyColorsText, UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::Tooltip(
                     "Matches the color of small keys and boss keys to the dungeon they belong to. "
                     "This helps identify keys from afar and adds a little bit of flair.\n\nThis only "

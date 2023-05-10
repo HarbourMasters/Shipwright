@@ -1668,7 +1668,10 @@ static const char* colorSchemes[2] = {
 
 void DrawCosmeticsEditor(bool& open) {
     if (!open) {
-        CVarSetInteger("gCosmeticsEditorEnabled", 0);
+        if (CVarGetInteger("gCosmeticsEditorEnabled", 0)) {
+            CVarClear("gCosmeticsEditorEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 
@@ -1803,7 +1806,7 @@ void InitCosmeticsEditor() {
     LUS::AddWindow("Enhancements", "Cosmetics Update Tick", CosmeticsUpdateTick, true, true);
 
     // Draw the bar in the menu.
-    LUS::AddWindow("Enhancements", "Cosmetics Editor", DrawCosmeticsEditor);
+    LUS::AddWindow("Enhancements", "Cosmetics Editor", DrawCosmeticsEditor, CVarGetInteger("gCosmeticsEditorEnabled", 0));
     // Convert the `current color` into the format that the ImGui color picker expects
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
         Color_RGBA8 defaultColor = {cosmeticOption.defaultColor.x, cosmeticOption.defaultColor.y, cosmeticOption.defaultColor.z, cosmeticOption.defaultColor.w};
