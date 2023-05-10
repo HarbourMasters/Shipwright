@@ -469,6 +469,8 @@ bool Extractor::IsMasterQuest() const {
     switch (GetRomVerCrc()) {
         case OOT_PAL_GC_MQ_DBG:
             return true;
+        case OOT_PAL_10:
+        case OOT_PAL_11:
         case OOT_PAL_GC:
         case OOT_PAL_GC_DBG1:
             return false;
