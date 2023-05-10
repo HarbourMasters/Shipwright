@@ -295,23 +295,38 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
     }
 
     uint8_t rumble = (padMgr->rumbleEnable[0] > 0);
-    uint8_t ledColor = 1;
+    uint8_t ledColor = LED_COLOR_KOKIRI;
 
-    if (HealthMeter_IsCritical()) {
-        ledColor = 0;
-    } else if (gPlayState) {
+    LEDColorSource source = CVarGetInteger("gLEDcolorSource", LED_SOURCE_TUNIC_VANILLA);
+    bool criticalOverride = CVarGetInteger("gLEDcriticalOverride", 0);
+    if (criticalOverride || source == LED_SOURCE_HEALTH) {
+        if (HealthMeter_IsCritical()) {
+            ledColor = LED_COLOR_RED;
+        } else if (source == LED_SOURCE_HEALTH) {
+            if (gSaveContext.health / gSaveContext.healthCapacity <= 0.4f) {
+                ledColor = LED_COLOR_YELLOW;
+            } else {
+                ledColor = LED_COLOR_GREEN;
+            }
+        } 
+    }
+    if (gPlayState && (source == LED_SOURCE_TUNIC_VANILLA || source == LED_SOURCE_TUNIC_COSMETICS)) {
         switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
             case PLAYER_TUNIC_KOKIRI:
-                ledColor = 1;
+                ledColor = LED_COLOR_KOKIRI;
                 break;
             case PLAYER_TUNIC_GORON:
-                ledColor = 2;
+                ledColor = LED_COLOR_GORON;
                 break;
             case PLAYER_TUNIC_ZORA:
-                ledColor = 3;
+                ledColor = LED_COLOR_ZORA;
                 break;
         }
     }
+    if (source == LED_SOURCE_CUSTOM) {
+        ledColor = LED_COLOR_CUSTOM;
+    }
+    
 
     OTRControllerCallback(rumble, ledColor);
 

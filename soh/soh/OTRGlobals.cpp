@@ -121,6 +121,10 @@ SpeechSynthesizer* SpeechSynthesizer::Instance;
 extern "C" char** cameraStrings;
 std::vector<std::shared_ptr<std::string>> cameraStdStrings;
 
+Color_RGBA8 kokiriColor = { 0x1E, 0x69, 0x1B, 255 };
+Color_RGBA8 goronColor = { 0x64, 0x14, 0x00, 25 };
+Color_RGBA8 zoraColor = { 0x00, 0xEC, 0x64, 255 };
+
 // OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
 const char* constCameraStrings[] = {
     "INSUFFICIENT",
@@ -1581,21 +1585,31 @@ extern "C" uint32_t OTRGetCurrentHeight() {
 extern "C" void OTRControllerCallback(uint8_t rumble, uint8_t ledColor) {
     auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
     auto brightness = CVarGetFloat("gLEDbrightness", 1.0f) / 1.0f;
+    LEDColorSource const source = static_cast<LEDColorSource>(CVarGetInteger("gLEDcolorSource", LED_SOURCE_TUNIC_VANILLA));
     for (int i = 0; i < controlDeck->GetNumConnectedPorts(); ++i) {
         auto physicalDevice = controlDeck->GetDeviceFromPortIndex(i);
         Color_RGBA8 color;
         switch (ledColor) {
-            case 0:
-                color = { 0xFF, 0, 0, 0 };
+            case LED_COLOR_RED:
+                color = { 0xFF, 0, 0, 255 };
                 break;
-            case 1:
-                color = CVarGetColor("gCosmetics.Link_KokiriTunic.Value", { 0x1E, 0x69, 0x1B, 255 });
+            case LED_COLOR_YELLOW:
+                color = { 0xFF, 0xFF, 0, 255 };
                 break;
-            case 2:
-                color = CVarGetColor("gCosmetics.Link_KokiriTunic.Value", { 0x64, 0x14, 0x00, 25 });
+            case LED_COLOR_GREEN:
+                color = { 0, 0xFF, 0, 255 };
                 break;
-            case 3:
-                color = CVarGetColor("gCosmetics.Link_KokiriTunic.Value", { 0x00, 0xEC, 0x64, 255 });
+            case LED_COLOR_KOKIRI:
+                color = source == LED_SOURCE_TUNIC_COSMETICS ? CVarGetColor("gCosmetics.Link_KokiriTunic.Value", kokiriColor) : kokiriColor;
+                break;
+            case LED_COLOR_GORON:
+                color = source == LED_SOURCE_TUNIC_COSMETICS ? CVarGetColor("gCosmetics.Link_GoronTunic.Value", goronColor) : goronColor;
+                break;
+            case LED_COLOR_ZORA:
+                color = source == LED_SOURCE_TUNIC_COSMETICS ? CVarGetColor("gCosmetics.Link_ZoraTunic.Value", zoraColor) : zoraColor;
+                break;
+            case LED_COLOR_CUSTOM:
+                color = CVarGetColor("gLEDcustomColor", { 255, 255, 255, 255 });
                 break;
         }
         physicalDevice->SetLed(i, (color.r * brightness), (color.g * brightness), (color.b * brightness));

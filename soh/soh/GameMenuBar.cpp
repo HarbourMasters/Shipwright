@@ -187,11 +187,6 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
                 UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", "gSimulatedInputLag", 0, 6, "", 0, true, true, false);
                 UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
-            #if !defined __SWITCH__ && !defined __WIIU__
-                UIWidgets::PaddedSeparator();
-                UIWidgets::PaddedEnhancementSliderFloat("Tunic Color LED Brightness: %d%%", "##LED_Brightness", "gLEDbrightness", 0.0f, 1.0f, "", 1.0f, true, true, true, false);
-                UIWidgets::Tooltip("Sets the brightness of Tunic Color LEDs. 0% brightness = LEDs off.");
-            #endif
                 ImGui::EndMenu();
             }
 

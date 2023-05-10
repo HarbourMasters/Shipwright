@@ -323,7 +323,29 @@ namespace GameControlEditor {
         UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");
         DrawHelpIcon("Speak to Navi with L but enter first-person camera with C-Up");
         Ship::EndGroupPanel();
+    }
 
+    void DrawLEDControlPanel() {
+        if (!ImGui::CollapsingHeader("Controller LEDs")) {
+            return;
+        }
+
+        ImVec2 cursor = ImGui::GetCursorPos();
+        ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
+        Ship::BeginGroupPanel("LED Colors", ImGui::GetContentRegionAvail());
+        UIWidgets::PaddedEnhancementSliderFloat("Tunic Color LED Brightness: %d%%", "##LED_Brightness",
+                                                "gLEDbrightness", 0.0f, 1.0f, "", 1.0f, true, true, true, false);
+        DrawHelpIcon("Sets the brightness of Tunic Color LEDs. 0% brightness = LEDs off.");
+        UIWidgets::PaddedText("Color Source");
+        static const char* ledSources[4] = { "Vanilla Tunic Colors", "Cosmetics Tunic Colors", "Health Colors", "Custom Color" };
+        UIWidgets::EnhancementCombobox("gLEDcolorSource", ledSources, LED_SOURCE_TUNIC_VANILLA);
+        DrawHelpIcon("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when health < 40%. Green otherwise.\n\n" \
+                     "Tunics: colors will mirror currently equipped tunic, whether vanilla or the current values in Cosmetics Editor.\n\n" \
+                     "Custom: single, solid color displayed, as set in each controller's port tab.");
+        UIWidgets::PaddedEnhancementCheckbox("Critical Health Override", "gLEDcriticalOverride", true, true, 
+            CVarGetInteger("gLEDcolorSource", LED_SOURCE_TUNIC_VANILLA) == LED_SOURCE_HEALTH, "Override redundant for health source.");
+        DrawHelpIcon("Shows red color when health is critical, otherwise displays according to color source.");
+        Ship::EndGroupPanel();
     }
 
     void DrawUI(bool& open) {
@@ -354,6 +376,9 @@ namespace GameControlEditor {
                 DrawCameraControlPanel();
                 DrawDpadControlPanel();
                 DrawMiscControlPanel();
+            #if !defined __SWITCH__ && !defined __WIIU__
+                DrawLEDControlPanel();
+            #endif
             } else {
                 DrawCustomButtons();
             }
