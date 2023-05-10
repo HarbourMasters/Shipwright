@@ -50,10 +50,12 @@ SaveManager::SaveManager() {
     AddLoadFunction("base", 2, LoadBaseVersion2);
     AddLoadFunction("base", 3, LoadBaseVersion3);
     AddSaveFunction("base", 3, SaveBase);
+    RegisterSectionAutoSave("base");
 
     AddLoadFunction("randomizer", 1, LoadRandomizerVersion1);
     AddLoadFunction("randomizer", 2, LoadRandomizerVersion2);
     AddSaveFunction("randomizer", 2, SaveRandomizer);
+    RegisterSectionAutoSave("randomizer");
 
     AddInitFunction(InitFileImpl);
 
@@ -80,6 +82,18 @@ SaveManager::SaveManager() {
         info.buildVersionMinor = 0;
         info.buildVersionPatch = 0;
         memset(&info.buildVersion, 0, sizeof(info.buildVersion));
+    }
+}
+
+void SaveManager::RegisterSectionAutoSave(std::string section) {
+    if (!std::any_of(autosaveRegistry.begin(), autosaveRegistry.end(), section)) {
+        autosaveRegistry.push_back(section);
+    }
+}
+
+void SaveManager::UnregisterSectionAutoSave(std::string section) {
+    if (std::any_of(autosaveRegistry.begin(), autosaveRegistry.end(), section)) {
+        autosaveRegistry.erase(find(autosaveRegistry.begin(), autosaveRegistry.end(), section));
     }
 }
 
@@ -726,17 +740,27 @@ void SaveManager::InitFileDebug() {
 }
 
 // Threaded SaveFile takes copy of gSaveContext for local unmodified storage
-void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext) {
-    nlohmann::json baseBlock;
+void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, const std::string sectionString = "all") {
+    /*nlohmann::json baseBlock;
 
     baseBlock["version"] = 1;
-    baseBlock["sections"] = nlohmann::json::object();
-    for (auto& section : sectionSaveHandlers) {
-        nlohmann::json& sectionBlock = baseBlock["sections"][section.first];
-        sectionBlock["version"] = section.second.first;
+    baseBlock["sections"] = nlohmann::json::object();*/
+    if (sectionString == "all") {
+        for (auto& sectionHandler : sectionSaveHandlers) {
+            nlohmann::json& sectionBlock = saveBlock["sections"][sectionHandler.first];
+            sectionBlock["version"] = sectionHandler.second.first;
 
+            currentJsonContext = &sectionBlock["data"];
+            sectionHandler.second.second(saveContext);
+        }
+    } else if (sectionSaveHandlers.contains(sectionString) && std::any_of(autosaveRegistry.begin(), autosaveRegistry.end(), sectionString)) {
+        SectionSaveHandler handler = sectionSaveHandlers.find(sectionString)->second;
+        nlohmann::json& sectionBlock = saveBlock["sections"][sectionString];
+        sectionBlock["version"] = handler.first;
         currentJsonContext = &sectionBlock["data"];
-        section.second.second(saveContext);
+        handler.second(saveContext);
+    } else {
+        return;
     }
 
 #if defined(__SWITCH__) || defined(__WIIU__)
@@ -746,7 +770,7 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext) {
     fclose(w);
 #else
     std::ofstream output(GetFileName(fileNum));
-    output << std::setw(4) << baseBlock << std::endl;
+    output << std::setw(4) << saveBlock << std::endl;
 #endif
 
     delete saveContext;

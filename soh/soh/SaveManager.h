@@ -118,13 +118,17 @@ public:
     static const int MaxFiles = 3;
     std::array<SaveFileMetaInfo, MaxFiles> fileMetaInfo;
 
+    void RegisterSectionAutoSave(std::string section);
+    void UnregisterSectionAutoSave(std::string section);
+
   private:
     std::filesystem::path GetFileName(int fileNum);
+    nlohmann::json saveBlock;
 
     void ConvertFromUnversioned();
     void CreateDefaultGlobal();
 
-    void SaveFileThreaded(int fileNum, SaveContext* saveContext);
+    void SaveFileThreaded(int fileNum, SaveContext* saveContext, const std::string sectionString);
 
     void InitMeta(int slotNum);
     static void InitFileImpl(bool isDebug);
@@ -147,6 +151,8 @@ public:
 
     using SectionSaveHandler = std::pair<int, SaveFunc>;
     std::map<std::string, SectionSaveHandler> sectionSaveHandlers;
+    // sets a section to 
+    std::vector<std::string> autosaveRegistry;
 
     std::map<std::string, PostFunc> postHandlers;
 
