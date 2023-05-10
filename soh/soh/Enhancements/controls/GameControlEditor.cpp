@@ -376,7 +376,7 @@ namespace GameControlEditor {
                 DrawCameraControlPanel();
                 DrawDpadControlPanel();
                 DrawMiscControlPanel();
-            #if !defined __SWITCH__ && !defined __WIIU__
+            #ifndef __WIIU__
                 DrawLEDControlPanel();
             #endif
             } else {

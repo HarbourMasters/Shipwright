@@ -1582,38 +1582,44 @@ extern "C" uint32_t OTRGetCurrentHeight() {
     return OTRGlobals::Instance->context->GetCurrentHeight();
 }
 
-extern "C" void OTRControllerCallback(uint8_t rumble, uint8_t ledColor) {
+extern "C" void OTRControllerCallback(uint8_t rumble) {
     auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
-    auto brightness = CVarGetFloat("gLEDbrightness", 1.0f) / 1.0f;
-    LEDColorSource const source = static_cast<LEDColorSource>(CVarGetInteger("gLEDcolorSource", LED_SOURCE_TUNIC_VANILLA));
     for (int i = 0; i < controlDeck->GetNumConnectedPorts(); ++i) {
         auto physicalDevice = controlDeck->GetDeviceFromPortIndex(i);
-        Color_RGBA8 color;
-        switch (ledColor) {
-            case LED_COLOR_RED:
-                color = { 0xFF, 0, 0, 255 };
-                break;
-            case LED_COLOR_YELLOW:
-                color = { 0xFF, 0xFF, 0, 255 };
-                break;
-            case LED_COLOR_GREEN:
-                color = { 0, 0xFF, 0, 255 };
-                break;
-            case LED_COLOR_KOKIRI:
-                color = source == LED_SOURCE_TUNIC_COSMETICS ? CVarGetColor("gCosmetics.Link_KokiriTunic.Value", kokiriColor) : kokiriColor;
-                break;
-            case LED_COLOR_GORON:
-                color = source == LED_SOURCE_TUNIC_COSMETICS ? CVarGetColor("gCosmetics.Link_GoronTunic.Value", goronColor) : goronColor;
-                break;
-            case LED_COLOR_ZORA:
-                color = source == LED_SOURCE_TUNIC_COSMETICS ? CVarGetColor("gCosmetics.Link_ZoraTunic.Value", zoraColor) : zoraColor;
-                break;
-            case LED_COLOR_CUSTOM:
+        if (physicalDevice->CanSetLed()) {
+            Color_RGBA8 color;
+            LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger("gLEDcolorSource", LED_SOURCE_TUNIC_VANILLA));
+            bool criticalOverride = CVarGetInteger("gLEDcriticalOverride", 0);
+            if (criticalOverride || source == LED_SOURCE_HEALTH) {
+                if (HealthMeter_IsCritical()) {
+                    color = { 0xFF, 0, 0, 255 };
+                } else if (source == LED_SOURCE_HEALTH) {
+                    if (gSaveContext.health / gSaveContext.healthCapacity <= 0.4f) {
+                        color = { 0xFF, 0xFF, 0, 255 };
+                    } else {
+                        color = { 0, 0xFF, 0, 255 };
+                    }
+                }
+            }
+            if (gPlayState && (source == LED_SOURCE_TUNIC_VANILLA || source == LED_SOURCE_TUNIC_COSMETICS)) {
+                switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
+                    case PLAYER_TUNIC_KOKIRI:
+                        color = source == LED_SOURCE_TUNIC_COSMETICS ? CVarGetColor("gCosmetics.Link_KokiriTunic.Value", kokiriColor) : kokiriColor;
+                        break;
+                    case PLAYER_TUNIC_GORON:
+                        color = source == LED_SOURCE_TUNIC_COSMETICS ? CVarGetColor("gCosmetics.Link_GoronTunic.Value", goronColor) : goronColor;
+                        break;
+                    case PLAYER_TUNIC_ZORA:
+                        color = source == LED_SOURCE_TUNIC_COSMETICS ? CVarGetColor("gCosmetics.Link_ZoraTunic.Value", zoraColor) : zoraColor;
+                        break;
+                }
+            }
+            if (source == LED_SOURCE_CUSTOM) {
                 color = CVarGetColor("gLEDcustomColor", { 255, 255, 255, 255 });
-                break;
+            }
+            auto brightness = CVarGetFloat("gLEDbrightness", 1.0f) / 1.0f;
+            physicalDevice->SetLed(i, (color.r * brightness), (color.g * brightness), (color.b * brightness));
         }
-        physicalDevice->SetLed(i, (color.r * brightness), (color.g * brightness), (color.b * brightness));
-
         physicalDevice->SetRumble(i, rumble);
     }
 }
