@@ -484,6 +484,43 @@ void RegisterBonkDamage() {
     });
 }
 
+void RegisterAmmoRegen() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (!CVarGetInteger("gAmmoRegen", 0)) {
+            return;
+        }
+
+        // Initialize Timer
+        static uint16_t ammoTimer = 0;
+        uint16_t arTime = CVarGetInteger("gAmmoInterval", 5) * 20;
+
+        // Did time change by AmmoInterval?
+        if (ammoTimer >= arTime) {
+            ammoTimer = 0;
+            if (CVarGetInteger("gRegenStick", 1)) {
+                GameInteractor::RawAction::AddOrTakeAmmo(1, ITEM_STICK);
+            }
+            if (CVarGetInteger("gRegenNut", 1)) {
+                GameInteractor::RawAction::AddOrTakeAmmo(1, ITEM_NUT);
+            }
+            if (CVarGetInteger("gRegenBomb", 1)) {
+                GameInteractor::RawAction::AddOrTakeAmmo(1, ITEM_BOMB);
+            }
+            if (CVarGetInteger("gRegenSeed", 1)) {
+                GameInteractor::RawAction::AddOrTakeAmmo(1, ITEM_SLINGSHOT);
+            }
+            if (CVarGetInteger("gRegenArrow", 1)) {
+                GameInteractor::RawAction::AddOrTakeAmmo(1, ITEM_BOW);
+            }
+            if (CVarGetInteger("gRegenChu", 1)) {
+                GameInteractor::RawAction::AddOrTakeAmmo(1, ITEM_BOMBCHU);
+            } 
+        } else {
+            ammoTimer++;
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -502,4 +539,5 @@ void InitMods() {
     RegisterRupeeDash();
     RegisterHyperBosses();
     RegisterBonkDamage();
+    RegisterAmmoRegen();
 }

@@ -969,6 +969,51 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
                 }
 
+                UIWidgets::Spacer(0);
+
+                UIWidgets::PaddedEnhancementCheckbox("Enable Ammo Regeneration", "gAmmoRegen", true, false);
+
+                if (CVarGetInteger("gAmmoRegen", 0)) {
+                    UIWidgets::Tooltip("Regenerate selected Ammo over time.");
+                    UIWidgets::PaddedEnhancementSliderInt(
+                        "Ammo Regeneration Interval: %d", "##AmmoInterval", "gAmmoInterval", 5, 120, "", 5, true,
+                        true, false, !CVarGetInteger("gAmmoRegen", 0),
+                        "This option is disabled because \"Ammo Regeneration\" is turned off");
+                    UIWidgets::Tooltip("Interval (in seconds) between Ammo Regeneration.");
+
+                    UIWidgets::Spacer(0);
+
+                    UIWidgets::PaddedEnhancementCheckbox("Deku Sticks", "gRegenStick", true, false);
+                    UIWidgets::Tooltip("Regenerate Deku Sticks over time.");
+
+                    UIWidgets::Spacer(0);
+
+                    UIWidgets::PaddedEnhancementCheckbox("Deku Nuts", "gRegenNut", true, false);
+                    UIWidgets::Tooltip("Regenerate Deku Nuts over time.");
+
+                    UIWidgets::Spacer(0);
+
+                    UIWidgets::PaddedEnhancementCheckbox("Bombs", "gRegenBomb", true, false);
+                    UIWidgets::Tooltip("Regenerate Bombs over time.");
+
+                    UIWidgets::Spacer(0);
+
+                    UIWidgets::PaddedEnhancementCheckbox("Deku Seeds", "gRegenSeed", true, false);
+                    UIWidgets::Tooltip("Regenerate Deku Seeds over time.");
+
+                    UIWidgets::Spacer(0);
+
+                    UIWidgets::PaddedEnhancementCheckbox("Arrows", "gRegenArrow", true, false);
+                    UIWidgets::Tooltip("Regenerate Arrows over time.");
+
+                    UIWidgets::Spacer(0);
+
+                    UIWidgets::PaddedEnhancementCheckbox("Bombchus", "gRegenChu", true, false);
+                    UIWidgets::Tooltip("Regenerate Bombchus over time.");
+
+                    UIWidgets::Spacer(0);
+                }
+
                 ImGui::EndMenu();
             }
 
