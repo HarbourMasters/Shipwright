@@ -160,12 +160,19 @@ namespace GameMenuBar {
                 ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
                 ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
                 ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-                if (ImGui::Button(GetWindowButtonText("Controller Configuration", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f)))
+                if (ImGui::Button(GetWindowButtonText("Configure Controller", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f)))
                 {
                     bool currentValue = CVarGetInteger("gControllerConfigurationEnabled", 0);
                     CVarSetInteger("gControllerConfigurationEnabled", !currentValue);
                     Ship::RequestCvarSaveOnNextTick();
                     Ship::ToggleInputEditorWindow(CVarGetInteger("gControllerConfigurationEnabled", 0));
+                }
+                if (ImGui::Button(GetWindowButtonText("Customize In-game Controls", CVarGetInteger("gGameControlEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
+                {
+                    bool currentValue = CVarGetInteger("gGameControlEditorEnabled", 0);
+                    CVarSetInteger("gGameControlEditorEnabled", !currentValue);
+                    Ship::RequestCvarSaveOnNextTick();
+                    Ship::EnableWindow("Game Control Editor", CVarGetInteger("gGameControlEditorEnabled", 0));
                 }
                 UIWidgets::PaddedSeparator();
                 ImGui::PopStyleColor(1);
@@ -982,13 +989,6 @@ namespace GameMenuBar {
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
 
-            if (ImGui::Button(GetWindowButtonText("Customize Game Controls", CVarGetInteger("gGameControlEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
-            {
-                bool currentValue = CVarGetInteger("gGameControlEditorEnabled", 0);
-                CVarSetInteger("gGameControlEditorEnabled", !currentValue);
-                Ship::RequestCvarSaveOnNextTick();
-                Ship::EnableWindow("Game Control Editor", CVarGetInteger("gGameControlEditorEnabled", 0));
-            }
             if (ImGui::Button(GetWindowButtonText("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
                 bool currentValue = CVarGetInteger("gCosmeticsEditorEnabled", 0);
