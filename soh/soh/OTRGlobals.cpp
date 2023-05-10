@@ -1588,13 +1588,16 @@ extern "C" void OTRControllerCallback(uint8_t rumble, uint8_t ledColor) {
                 physicalDevice->SetLed(i, (255 * brightness), 0, 0);
                 break;
             case 1:
-                physicalDevice->SetLed(i, (0x1E * brightness), (0x69 * brightness), (0x1B * brightness));
+                auto kokiriColor = CVarGetColor("gCosmetics.Link_KokiriTunic.Value", Color_RGBA8(0x1E, 0x69, 0x1B, 255));
+                physicalDevice->SetLed(i, (kokiriColor.r * brightness), (kokiriColor.g * brightness), (kokiriColor.b * brightness));
                 break;
             case 2:
-                physicalDevice->SetLed(i, (0x64 * brightness), (0x14 * brightness), (0x00 * brightness));
+                auto goronColor = CVarGetColor("gCosmetics.Link_KokiriTunic.Value", Color_RGBA8(0x64, 0x14, 0x00, 255));
+                physicalDevice->SetLed(i, (goronColor.r * brightness), (goronColor.g * brightness), (goronColor.b * brightness));
                 break;
             case 3:
-                physicalDevice->SetLed(i, (0x00 * brightness), (0x3C * brightness), (0x64 * brightness));
+                auto zoraColor = CVarGetColor("gCosmetics.Link_KokiriTunic.Value", Color_RGBA8(0x00, 0xEC, 0x64, 255));
+                physicalDevice->SetLed(i, (zoraColor.r * brightness), (zoraColor.g * brightness), (zoraColor.b * brightness));
                 break;
         }
 
