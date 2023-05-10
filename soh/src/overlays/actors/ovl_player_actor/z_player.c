@@ -6124,7 +6124,7 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
             maxSpeed *= 1.5f;
         } 
         
-        if (CVarGetInteger("gEnableWalkModify", 0)) {
+        if (CVarGetInteger("gEnableWalkModify", 0) && !CVarGetInteger("gWalkModifierDoesntChangeJump", 0)) {
             if (CVarGetInteger("gWalkSpeedToggle", 0)) {
                 if (gWalkSpeedToggle1) {
                     maxSpeed *= CVarGetFloat("gWalkModifierOne", 1.0f);
