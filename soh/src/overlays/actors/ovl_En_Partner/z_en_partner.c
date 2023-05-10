@@ -880,15 +880,15 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
         if (this->usedItem == 0xFF && this->itemTimer <= 0) {
             if (CHECK_BTN_ALL(sControlInput.press.button, BTN_CLEFT)) {
                 this->usedItem = gSaveContext.equips.buttonItems[1];
-                this->usedItemButton = 0;
+                this->usedItemButton = 1;
                 pressed = 1;
             } else if (CHECK_BTN_ALL(sControlInput.press.button, BTN_CDOWN)) {
                 this->usedItem = gSaveContext.equips.buttonItems[2];
-                this->usedItemButton = 1;
+                this->usedItemButton = 2;
                 pressed = 1;
             } else if (CHECK_BTN_ALL(sControlInput.press.button, BTN_CRIGHT)) {
                 this->usedItem = gSaveContext.equips.buttonItems[3];
-                this->usedItemButton = 2;
+                this->usedItemButton = 3;
                 pressed = 1;
             }
         }
@@ -904,11 +904,11 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
         }
 
         if (this->usedItem != 0xFF) {
-            if (CHECK_BTN_ALL(sControlInput.rel.button, BTN_CLEFT) && this->usedItemButton == 0) {
+            if (CHECK_BTN_ALL(sControlInput.rel.button, BTN_CLEFT) && this->usedItemButton == 1) {
                 released = 1;
-            } else if (CHECK_BTN_ALL(sControlInput.rel.button, BTN_CDOWN) && this->usedItemButton == 1) {
+            } else if (CHECK_BTN_ALL(sControlInput.rel.button, BTN_CDOWN) && this->usedItemButton == 2) {
                 released = 1;
-            } else if (CHECK_BTN_ALL(sControlInput.rel.button, BTN_CRIGHT) && this->usedItemButton == 2) {
+            } else if (CHECK_BTN_ALL(sControlInput.rel.button, BTN_CRIGHT) && this->usedItemButton == 3) {
                 released = 1;
             }
         }
