@@ -1,8 +1,8 @@
 <Root>
     <File Name="ice_doukutu_scene" Segment="2">
         <Cutscene Name="gIceCavernSerenadeCs" Offset="0x250"/>
-        <Texture Name="gIceCavernNightEntranceTex" OutName="night_entrance" Format="ia16" Width="64" Height="4" Offset="0xF7F0"/>
-        <Texture Name="gIceCavernDayEntranceTex" OutName="day_entrance" Format="ia16" Width="64" Height="4" Offset="0xF9F0"/>
+        <Texture Name="gIceCavernNightEntranceTex" OutName="night_entrance" Format="ia16" Width="64" Height="4" Offset="0xF800"/>
+        <Texture Name="gIceCavernDayEntranceTex" OutName="day_entrance" Format="ia16" Width="64" Height="4" Offset="0xFA00"/>
         <Scene Name="ice_doukutu_scene" Offset="0x0"/>
     </File>
     <File Name="ice_doukutu_room_0" Segment="3">

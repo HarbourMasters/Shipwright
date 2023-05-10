@@ -498,13 +498,13 @@ extern "C" int zapd_main(int argc, char** argv);
 
 bool Extractor::CallZapd() {
     constexpr int argc = 16;
-    char xmlPath[100];
-    char confPath[100];
+    char xmlPath[1024];
+    char confPath[1024];
     std::array<const char*, argc> argv;
     const char* version = GetZapdVerStr();
 
-    snprintf(xmlPath, 100, "assets/extractor/xmls/%s", version);
-    snprintf(confPath, 100, "assets/extractor/Config_%s.xml", version);
+    snprintf(xmlPath, 1024, "assets/extractor/xmls/%s", version);
+    snprintf(confPath, 1024, "assets/extractor/Config_%s.xml", version);
 
     argv[0] = "ZAPD";
     argv[1] = "ed";
