@@ -1589,7 +1589,7 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
         if (i == 0 && physicalDevice->CanSetLed()) {
             Color_RGBA8 color;
             LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL));
-            bool criticalOverride = CVarGetInteger("gLedCriticalOverride", 0);
+            bool criticalOverride = CVarGetInteger("gLedCriticalOverride", 1);
             if (criticalOverride || source == LED_SOURCE_HEALTH) {
                 if (HealthMeter_IsCritical()) {
                     color = { 0xFF, 0, 0, 255 };

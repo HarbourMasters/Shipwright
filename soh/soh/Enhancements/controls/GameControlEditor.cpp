@@ -356,7 +356,8 @@ namespace GameControlEditor {
                                                 0.0f, 1.0f, "", 1.0f, true, true);
         DrawHelpIcon("Sets the brightness of Tunic Color LEDs. 0% brightness = LEDs off.");
         UIWidgets::PaddedEnhancementCheckbox("Critical Health Override", "gLedCriticalOverride", true, true, 
-            CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH, "Override redundant for health source.");
+            CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH, "Override redundant for health source.",
+            UIWidgets::CheckboxGraphics::Cross, true);
         DrawHelpIcon("Shows red color when health is critical, otherwise displays according to color source.");
         Ship::EndGroupPanel();
     }
