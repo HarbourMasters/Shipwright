@@ -492,9 +492,9 @@ void RegisterAmmoRegen() {
 
         // Initialize Timer
         static uint16_t ammoTimer = 0;
-        uint16_t arTime = CVarGetInteger("gAmmoInterval", 5) * 20;
+        uint16_t arTime = CVarGetInteger("gAmmoInterval", 30) * 20;
 
-        // Did time change by AmmoInterval?
+        // AmmoInterval Time Check
         if (ammoTimer >= arTime) {
             ammoTimer = 0;
             if (CVarGetInteger("gRegenStick", 1)) {

@@ -976,7 +976,7 @@ namespace GameMenuBar {
                 if (CVarGetInteger("gAmmoRegen", 0)) {
                     UIWidgets::Tooltip("Regenerate selected Ammo over time.");
                     UIWidgets::PaddedEnhancementSliderInt(
-                        "Ammo Regeneration Interval: %d", "##AmmoInterval", "gAmmoInterval", 5, 120, "", 5, true,
+                        "Ammo Regeneration Interval: %d", "##AmmoInterval", "gAmmoInterval", 30, 120, "", 30, true,
                         true, false, !CVarGetInteger("gAmmoRegen", 0),
                         "This option is disabled because \"Ammo Regeneration\" is turned off");
                     UIWidgets::Tooltip("Interval (in seconds) between Ammo Regeneration.");
