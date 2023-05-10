@@ -2233,21 +2233,11 @@ typedef enum {
 } PauseCursorAnySlotOptions;
 
 typedef enum {
-    LED_SOURCE_TUNIC_VANILLA,
+    LED_SOURCE_TUNIC_ORIGINAL,
     LED_SOURCE_TUNIC_COSMETICS,
     LED_SOURCE_HEALTH,
     LED_SOURCE_CUSTOM
 } LEDColorSource;
-
-typedef enum {
-    LED_COLOR_RED,
-    LED_COLOR_YELLOW,
-    LED_COLOR_GREEN,
-    LED_COLOR_KOKIRI,
-    LED_COLOR_GORON,
-    LED_COLOR_ZORA,
-    LED_COLOR_CUSTOM
-} LEDColor;
 
 #define ROM_FILE(name) \
     { 0, 0, #name }

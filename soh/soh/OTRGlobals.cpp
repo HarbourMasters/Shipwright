@@ -1588,8 +1588,8 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
         auto physicalDevice = controlDeck->GetDeviceFromPortIndex(i);
         if (i == 0 && physicalDevice->CanSetLed()) {
             Color_RGBA8 color;
-            LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger("gLEDcolorSource", LED_SOURCE_TUNIC_VANILLA));
-            bool criticalOverride = CVarGetInteger("gLEDcriticalOverride", 0);
+            LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL));
+            bool criticalOverride = CVarGetInteger("gLedCriticalOverride", 0);
             if (criticalOverride || source == LED_SOURCE_HEALTH) {
                 if (HealthMeter_IsCritical()) {
                     color = { 0xFF, 0, 0, 255 };
@@ -1601,7 +1601,7 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
                     }
                 }
             }
-            if (gPlayState && (source == LED_SOURCE_TUNIC_VANILLA || source == LED_SOURCE_TUNIC_COSMETICS)) {
+            if (gPlayState && (source == LED_SOURCE_TUNIC_ORIGINAL || source == LED_SOURCE_TUNIC_COSMETICS)) {
                 switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
                     case PLAYER_TUNIC_KOKIRI:
                         color = source == LED_SOURCE_TUNIC_COSMETICS ? CVarGetColor("gCosmetics.Link_KokiriTunic.Value", kokiriColor) : kokiriColor;
@@ -1615,9 +1615,9 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
                 }
             }
             if (source == LED_SOURCE_CUSTOM) {
-                color = CVarGetColor("gLEDcustomColor", { 255, 255, 255, 255 });
+                color = CVarGetColor("gLedCustomColor", { 255, 255, 255, 255 });
             }
-            auto brightness = CVarGetFloat("gLEDbrightness", 1.0f) / 1.0f;
+            auto brightness = CVarGetFloat("gLedBrightness", 1.0f) / 1.0f;
             // We call this every tick, SDL accounts for this use and prevents driver spam
             // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
             physicalDevice->SetLed(i, (color.r * brightness), (color.g * brightness), (color.b * brightness));

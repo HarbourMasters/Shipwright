@@ -328,17 +328,35 @@ namespace GameControlEditor {
 
     void DrawLEDControlPanel() {
         Ship::BeginGroupPanel("LED Colors", ImGui::GetContentRegionAvail());
-        static const char* ledSources[4] = { "Vanilla Tunic Colors", "Cosmetics Tunic Colors", "Health Colors", "Custom Color" };
+        static const char* ledSources[4] = { "Original Tunic Colors", "Cosmetics Tunic Colors", "Health Colors", "Custom" };
         UIWidgets::PaddedText("Source");
-        UIWidgets::EnhancementCombobox("gLEDcolorSource", ledSources, LED_SOURCE_TUNIC_VANILLA);
+        UIWidgets::EnhancementCombobox("gLedColorSource", ledSources, LED_SOURCE_TUNIC_ORIGINAL);
         DrawHelpIcon("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when health < 40%. Green otherwise.\n\n" \
-                     "Tunics: colors will mirror currently equipped tunic, whether vanilla or the current values in Cosmetics Editor.\n\n" \
-                     "Custom: single, solid color displayed, as set in each controller's port tab.");
-        UIWidgets::PaddedEnhancementSliderFloat("Brightness: %d%%", "##LED_Brightness",
-                                                "gLEDbrightness", 0.0f, 1.0f, "", 1.0f, true, true);
+                     "Tunics: colors will mirror currently equipped tunic, whether original or the current values in Cosmetics Editor.\n\n" \
+                     "Custom: single, solid color");
+        if (CVarGetInteger("gLedColorSource", 1) == 3) {
+            UIWidgets::Spacer(3);
+            auto port1Color = CVarGetColor("gLedPort1Color", { 255, 255, 255, 255 });
+            ImVec4 colorVec = { port1Color.r / 255.0f, port1Color.g / 255.0f, port1Color.b / 255.0f,
+                                port1Color.a / 255.0f };
+            if (ImGui::ColorEdit3("", (float*)&colorVec, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
+                Color_RGBA8 color;
+                color.r = colorVec.x * 255.0;
+                color.g = colorVec.y * 255.0;
+                color.b = colorVec.z * 255.0;
+                color.a = colorVec.w * 255.0;
+
+                CVarSetColor("gLedPort1Color", color);
+                Ship::RequestCvarSaveOnNextTick();
+            }
+            ImGui::SameLine();
+            ImGui::Text("Custom Color");
+        }
+        UIWidgets::PaddedEnhancementSliderFloat("Brightness: %d%%", "##LED_Brightness", "gLedBrightness",
+                                                0.0f, 1.0f, "", 1.0f, true, true);
         DrawHelpIcon("Sets the brightness of Tunic Color LEDs. 0% brightness = LEDs off.");
-        UIWidgets::PaddedEnhancementCheckbox("Critical Health Override", "gLEDcriticalOverride", true, true, 
-            CVarGetInteger("gLEDcolorSource", LED_SOURCE_TUNIC_VANILLA) == LED_SOURCE_HEALTH, "Override redundant for health source.");
+        UIWidgets::PaddedEnhancementCheckbox("Critical Health Override", "gLedCriticalOverride", true, true, 
+            CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH, "Override redundant for health source.");
         DrawHelpIcon("Shows red color when health is critical, otherwise displays according to color source.");
         Ship::EndGroupPanel();
     }
