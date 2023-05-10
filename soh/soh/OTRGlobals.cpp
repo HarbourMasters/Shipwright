@@ -1586,7 +1586,7 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
     auto controlDeck = Ship::Window::GetInstance()->GetControlDeck();
     for (int i = 0; i < controlDeck->GetNumConnectedPorts(); ++i) {
         auto physicalDevice = controlDeck->GetDeviceFromPortIndex(i);
-        if (physicalDevice->CanSetLed()) {
+        if (i == 0 && physicalDevice->CanSetLed()) {
             Color_RGBA8 color;
             LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger("gLEDcolorSource", LED_SOURCE_TUNIC_VANILLA));
             bool criticalOverride = CVarGetInteger("gLEDcriticalOverride", 0);
@@ -1618,6 +1618,8 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
                 color = CVarGetColor("gLEDcustomColor", { 255, 255, 255, 255 });
             }
             auto brightness = CVarGetFloat("gLEDbrightness", 1.0f) / 1.0f;
+            // We call this every tick, SDL accounts for this use and prevents driver spam
+            // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
             physicalDevice->SetLed(i, (color.r * brightness), (color.g * brightness), (color.b * brightness));
         }
         physicalDevice->SetRumble(i, rumble);

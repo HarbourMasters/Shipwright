@@ -14,6 +14,7 @@
 #include <Utils/StringHelper.h>
 #include <ImGuiImpl.h>
 
+#include "Window.h"
 #include "../../UIWidgets.hpp"
 
 namespace GameControlEditor {
@@ -326,12 +327,6 @@ namespace GameControlEditor {
     }
 
     void DrawLEDControlPanel() {
-        if (!ImGui::CollapsingHeader("Controller LEDs")) {
-            return;
-        }
-
-        ImVec2 cursor = ImGui::GetCursorPos();
-        ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
         Ship::BeginGroupPanel("LED Colors", ImGui::GetContentRegionAvail());
         UIWidgets::PaddedEnhancementSliderFloat("Tunic Color LED Brightness: %d%%", "##LED_Brightness",
                                                 "gLEDbrightness", 0.0f, 1.0f, "", 1.0f, true, true, true, false);
@@ -376,11 +371,11 @@ namespace GameControlEditor {
                 DrawCameraControlPanel();
                 DrawDpadControlPanel();
                 DrawMiscControlPanel();
-            #ifndef __WIIU__
-                DrawLEDControlPanel();
-            #endif
             } else {
                 DrawCustomButtons();
+                if (CurrentPort == 1/* && Ship::Window::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0)->CanSetLed()*/) {
+                    DrawLEDControlPanel();
+                }
             }
         }
         ImGui::End();
