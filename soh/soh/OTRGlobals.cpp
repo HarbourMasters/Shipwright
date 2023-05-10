@@ -1583,20 +1583,20 @@ extern "C" void OTRControllerCallback(uint8_t rumble, uint8_t ledColor) {
     auto brightness = CVarGetFloat("gLEDbrightness", 1.0f) / 1.0f;
     for (int i = 0; i < controlDeck->GetNumConnectedPorts(); ++i) {
         auto physicalDevice = controlDeck->GetDeviceFromPortIndex(i);
-        auto kokiriColor = CVarGetColor("gCosmetics.Link_KokiriTunic.Value", Color_RGBA8(0x1E, 0x69, 0x1B, 255));
-        auto goronColor = CVarGetColor("gCosmetics.Link_KokiriTunic.Value", Color_RGBA8(0x64, 0x14, 0x00, 255));
-        auto zoraColor = CVarGetColor("gCosmetics.Link_KokiriTunic.Value", Color_RGBA8(0x00, 0xEC, 0x64, 255));
         switch (ledColor) {
             case 0:
                 physicalDevice->SetLed(i, (255 * brightness), 0, 0);
                 break;
             case 1:
+                auto kokiriColor = CVarGetColor("gCosmetics.Link_KokiriTunic.Value", { 0x1E, 0x69, 0x1B, 255 });
                 physicalDevice->SetLed(i, (kokiriColor.r * brightness), (kokiriColor.g * brightness), (kokiriColor.b * brightness));
                 break;
             case 2:
+                auto goronColor = CVarGetColor("gCosmetics.Link_KokiriTunic.Value", { 0x64, 0x14, 0x00, 25 });
                 physicalDevice->SetLed(i, (goronColor.r * brightness), (goronColor.g * brightness), (goronColor.b * brightness));
                 break;
             case 3:
+                auto zoraColor = CVarGetColor("gCosmetics.Link_KokiriTunic.Value", { 0x00, 0xEC, 0x64, 255 });
                 physicalDevice->SetLed(i, (zoraColor.r * brightness), (zoraColor.g * brightness), (zoraColor.b * brightness));
                 break;
         }
