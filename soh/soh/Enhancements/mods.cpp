@@ -152,7 +152,7 @@ void RegisterFreezeTime() {
             int32_t prevTime = CVarGetInteger("gPrevTime", gSaveContext.dayTime);
             gSaveContext.dayTime = prevTime;
         } else {
-            CVarSetInteger("gPrevTime", -1);
+            CVarClear("gPrevTime");
         }
     });
 }

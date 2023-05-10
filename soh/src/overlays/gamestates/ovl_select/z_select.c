@@ -1035,7 +1035,7 @@ void Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
             GfxPrint_SetColor(printer, 200, 200, 55, 255);
         }
 
-        if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
+        if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
             switch (gSaveContext.language) {
                 case LANGUAGE_ENG:
                 default:
@@ -1062,7 +1062,7 @@ void Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
     GfxPrint_SetColor(printer, 155, 55, 150, 255);
 
     // Small position hack of the OPT=X text since german Link's Age overlap if translated
-    if (CVarGetInteger("gDebugWarpScreenTranslation", 0) && gSaveContext.language == LANGUAGE_GER) {
+    if (CVarGetInteger("gDebugWarpScreenTranslation", 1) && gSaveContext.language == LANGUAGE_GER) {
         GfxPrint_SetPos(printer, 26, 26);
     } else {
         GfxPrint_SetPos(printer, 20, 26);
@@ -1091,7 +1091,7 @@ void Better_Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
             GfxPrint_SetColor(printer, 175, 175, 175, 255);
         }
         
-        if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
+        if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
             switch (gSaveContext.language) {
                 case LANGUAGE_ENG:
                 default:
@@ -1117,7 +1117,7 @@ void Better_Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
     GfxPrint_SetColor(printer, 205, 100, 200, 255);
     GfxPrint_SetPos(printer, 3, 26);
 
-    if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
+    if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
         switch (gSaveContext.language) {
             case LANGUAGE_ENG:
             default:
@@ -1157,7 +1157,7 @@ void Select_PrintLoadingMessage(SelectContext* this, GfxPrint* printer) {
     GfxPrint_SetPos(printer, 10, 15);
     GfxPrint_SetColor(printer, 255, 255, 255, 255);
     randomMsg = Rand_ZeroOne() * ARRAY_COUNT(sLoadingMessages);
-    if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
+    if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
         switch (gSaveContext.language) {
             case LANGUAGE_ENG:
             default:
@@ -1188,7 +1188,7 @@ static BetterSceneSelectAgeLabels sBetterAgeLabels[] = {
 void Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 age) {
     GfxPrint_SetPos(printer, 4, 26);
     GfxPrint_SetColor(printer, 255, 255, 55, 255);
-    if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
+    if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
         switch (gSaveContext.language) {
             case LANGUAGE_ENG:
             default:
@@ -1209,7 +1209,7 @@ void Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 age) {
 void Better_Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 age) {
     GfxPrint_SetPos(printer, 25, 25);
     GfxPrint_SetColor(printer, 100, 100, 100, 255);
-    if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
+    if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
         switch (gSaveContext.language) {
             case LANGUAGE_ENG:
             case LANGUAGE_FRA:
@@ -1225,7 +1225,7 @@ void Better_Select_PrintAgeSetting(SelectContext* this, GfxPrint* printer, s32 a
     }
     
     GfxPrint_SetColor(printer, 55, 200, 50, 255);
-    if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
+    if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
         switch (gSaveContext.language) {
             case LANGUAGE_ENG:
             default:
@@ -1261,7 +1261,7 @@ void Select_PrintCutsceneSetting(SelectContext* this, GfxPrint* printer, u16 csI
     };
     
     char* label;
-    int lang = CVarGetInteger("gDebugWarpScreenTranslation", 0) ? gSaveContext.language + 1 : 0;
+    int lang = CVarGetInteger("gDebugWarpScreenTranslation", 1) ? gSaveContext.language + 1 : 0;
 
     GfxPrint_SetPos(printer, 4, 25);
     GfxPrint_SetColor(printer, 255, 255, 55, 255);
@@ -1324,7 +1324,7 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
     GfxPrint_SetColor(printer, 100, 100, 100, 255);
 
     if (gSaveContext.dayTime > 0xC000 || gSaveContext.dayTime < 0x4555) {
-        if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
+        if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
             switch (gSaveContext.language) {
                 case LANGUAGE_ENG:
                 default:
@@ -1341,7 +1341,7 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
             label = "Night";
         }
     } else {
-        if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
+        if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
             switch (gSaveContext.language) {
                 case LANGUAGE_ENG:
                 default:
@@ -1358,7 +1358,7 @@ void Better_Select_PrintTimeSetting(SelectContext* this, GfxPrint* printer) {
             label = "Day";
         }
     }
-    if (CVarGetInteger("gDebugWarpScreenTranslation", 0)) {
+    if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
         switch (gSaveContext.language) {
             case LANGUAGE_ENG:
             default:

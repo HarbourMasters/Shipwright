@@ -88,7 +88,7 @@ namespace GameControlEditor {
     void DrawUI(bool&);
 
     void Init() {
-        LUS::AddWindow("Enhancements", "Game Control Editor", DrawUI);
+        LUS::AddWindow("Enhancements", "Game Control Editor", DrawUI, CVarGetInteger("gGameControlEditorEnabled", 0));
 
         addButtonName(BTN_A,		"A");
         addButtonName(BTN_B,		"B");
@@ -242,14 +242,16 @@ namespace GameControlEditor {
         DrawHelpIcon("Inverts the Camera Y Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
         UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First-Person View", "gDisableAutoCenterViewFirstPerson");
         DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
-        UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", "gEnableFirstPersonSensitivity", true, false);
+        if (UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", "gEnableFirstPersonSensitivity", true, false)) {
+            if (!CVarGetInteger("gEnableFirstPersonSensitivity", 0)) {
+                CVarClear("gFirstPersonCameraSensitivity");
+            }
+        }
         if (CVarGetInteger("gEnableFirstPersonSensitivity", 0)) {
             UIWidgets::EnhancementSliderFloat("Aiming/First-Person Horizontal Sensitivity: %d %%", "##FirstPersonSensitivity Horizontal",
                                                 "gFirstPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true);
             UIWidgets::EnhancementSliderFloat("Aiming/First-Person Vertical Sensitivity: %d %%", "##FirstPersonSensitivity Vertical",
                                               "gFirstPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true);
-        } else {
-            CVarSetFloat("gFirstPersonCameraSensitivity", 1.0f);
         }
         UIWidgets::Spacer(0);
         LUS::EndGroupPanel();
@@ -262,7 +264,7 @@ namespace GameControlEditor {
                             "controller config menu, and map the camera stick to the right stick.");
         UIWidgets::PaddedEnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
         DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera");
-        UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
+        UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
         DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera");
         UIWidgets::Spacer(0);
 +       UIWidgets::PaddedEnhancementSliderFloat("Third-Person Horizontal Sensitivity: %d %%", "##ThirdPersonSensitivity Horizontal",
@@ -328,7 +330,10 @@ namespace GameControlEditor {
 
     void DrawUI(bool& open) {
         if (!open) {
-            CVarSetInteger("gGameControlEditorEnabled", false);
+            if (CVarGetInteger("gGameControlEditorEnabled", 0)) {
+                CVarClear("gGameControlEditorEnabled");
+                LUS::RequestCvarSaveOnNextTick();
+            }
             return;
         }
 

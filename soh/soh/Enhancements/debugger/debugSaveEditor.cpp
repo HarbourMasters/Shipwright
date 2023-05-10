@@ -1733,7 +1733,10 @@ void DrawPlayerTab() {
 
 void DrawSaveEditor(bool& open) {
     if (!open) {
-        CVarSetInteger("gSaveEditorEnabled", 0);
+        if (CVarGetInteger("gSaveEditorEnabled", 0)) {
+            CVarClear("gSaveEditorEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 
@@ -1781,7 +1784,7 @@ void DrawSaveEditor(bool& open) {
 }
 
 void InitSaveEditor() {
-    LUS::AddWindow("Developer Tools", "Save Editor", DrawSaveEditor);
+    LUS::AddWindow("Developer Tools", "Save Editor", DrawSaveEditor, CVarGetInteger("gSaveEditorEnabled", 0));
 
     // Load item icons into ImGui
     for (const auto& entry : itemMapping) {
