@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetStartPositionList.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Resource> SetStartPositionListFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                                     std::shared_ptr<ResourceInitData> initData,
                                                                     std::shared_ptr<BinaryReader> reader) {
@@ -27,7 +27,7 @@ std::shared_ptr<Resource> SetStartPositionListFactory::ReadResource(std::shared_
     return resource;
 }
 
-void Ship::SetStartPositionListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetStartPositionListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource)
 {
     std::shared_ptr<SetStartPositionList> setStartPositionList = std::static_pointer_cast<SetStartPositionList>(resource);
@@ -53,4 +53,4 @@ void Ship::SetStartPositionListFactoryV0::ParseFileBinary(std::shared_ptr<Binary
     }
 }
 
-} // namespace Ship
+} // namespace LUS

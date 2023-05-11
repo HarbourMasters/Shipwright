@@ -113,7 +113,7 @@ public class ShipOfHarkinian : SimpleTCPPack
         new("No UI", "no_ui") { Category = "Visual Effects", Duration = 60, Price = 20, Description = "No need to see ammo counts. The cinematic experience." },
         new("Rainstorm", "rainstorm") { Category = "Visual Effects", Duration = 30, Price = 5, Description = "Summon a rainstorm for a sad moment." },
         new("Debug Mode", "debug_mode") { Category = "Visual Effects", Duration = 30, Price = 20, Description = "if (debug_mode) { ShowCollision(); }" },
-        new("Randomize Cosmetics", "random_cosmetics") { Category = "Visual Effects", Duration = 30, Price = 30, Description = "Randomize most cosmetics options. Cosmetics changed by bidding wars are unaffected." },
+        new("Randomize Cosmetics", "random_cosmetics") { Category = "Visual Effects", Price = 30, Description = "Randomize most cosmetics options. Cosmetics changed by bidding wars are unaffected." },
 
 
         // Controls

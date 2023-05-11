@@ -10,7 +10,7 @@
 #include <bit>
 #include <map>
 #include <string>
-#include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 
 extern "C" {
 #include <z64.h>
@@ -40,7 +40,10 @@ std::map<int, std::string> cmdMap = {
 
 void DrawDLViewer(bool& open) {
     if (!open) {
-        CVarSetInteger("gDLViewerEnabled", 0);
+        if (CVarGetInteger("gDLViewerEnabled", 0)) {
+            CVarClear("gDLViewerEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 
@@ -64,7 +67,7 @@ void DrawDLViewer(bool& open) {
         ImGui::EndCombo();
     }
     if (activeDisplayList != nullptr) {
-        auto res = std::static_pointer_cast<Ship::DisplayList>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(activeDisplayList));
+        auto res = std::static_pointer_cast<LUS::DisplayList>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
         for (int i = 0; i < res->Instructions.size(); i++) {
             std::string id = "##CMD" + std::to_string(i);
             Gfx* gfx = (Gfx*)&res->Instructions[i];
@@ -138,7 +141,7 @@ void DrawDLViewer(bool& open) {
 }
 
 void InitDLViewer() {
-    Ship::AddWindow("Developer Tools", "Display List Viewer", DrawDLViewer);
+    LUS::AddWindow("Developer Tools", "Display List Viewer", DrawDLViewer, CVarGetInteger("gDLViewerEnabled", 0));
 
     displayListsSearchResults = ResourceMgr_ListFiles("*DL", &displayListsSearchResultsCount);
 }

@@ -2,7 +2,7 @@
 #include "soh/resource/type/AudioSample.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Resource> AudioSampleFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                            std::shared_ptr<ResourceInitData> initData,
                                                            std::shared_ptr<BinaryReader> reader) {
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> AudioSampleFactory::ReadResource(std::shared_ptr<Resou
     return resource;
 }
 
-void Ship::AudioSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::AudioSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                                  std::shared_ptr<Resource> resource)
 {
     std::shared_ptr<AudioSample> audioSample = std::static_pointer_cast<AudioSample>(resource);
@@ -67,7 +67,7 @@ void Ship::AudioSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
     audioSample->book.book = audioSample->bookData.data();
     audioSample->sample.book = &audioSample->book;
 }
-} // namespace Ship
+} // namespace LUS
 
 
 /*
@@ -90,7 +90,7 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
 
     ExtensionEntry entry = ExtensionCache[path];
 
-    auto sampleRaw = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(entry.path);
+    auto sampleRaw = LUS::Context::GetInstance()->GetResourceManager()->LoadFile(entry.path);
     uint32_t* strem = (uint32_t*)sampleRaw->Buffer.get();
     uint8_t* strem2 = (uint8_t*)strem;
 

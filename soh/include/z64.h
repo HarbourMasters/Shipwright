@@ -39,7 +39,7 @@
 #define SYSTEM_HEAP_SIZE (1024 * 1024 * 4)
 
 #ifdef __cplusplus
-namespace Ship
+namespace LUS
 {
     class Resource;
     class Scene;

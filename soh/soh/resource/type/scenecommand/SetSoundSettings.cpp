@@ -1,6 +1,6 @@
 #include "SetSoundSettings.h"
 
-namespace Ship {
+namespace LUS {
 void* SetSoundSettings::GetPointer() {
     return &settings;
 }
@@ -8,4 +8,4 @@ void* SetSoundSettings::GetPointer() {
 size_t SetSoundSettings::GetPointerSize() {
 	return sizeof(SoundSettings);
 }
-} // namespace Ship
+} // namespace LUS

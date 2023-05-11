@@ -1,5 +1,5 @@
 #include "OTRGlobals.h"
-#include <ResourceManager.h>
+#include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
 #include <Utils/StringHelper.h>
 #include "global.h"
@@ -16,7 +16,7 @@ extern "C" MessageTableEntry* sStaffMessageEntryTablePtr;
 //extern "C" MessageTableEntry* _message_0xFFFC_nes;	
 
 MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
-    auto file = std::static_pointer_cast<Ship::Text>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(filePath));
+    auto file = std::static_pointer_cast<LUS::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(filePath));
 
     if (file == nullptr)
         return nullptr;
@@ -92,7 +92,7 @@ extern "C" void OTRMessage_Init()
 
     if (sStaffMessageEntryTablePtr == NULL) {
         auto file2 =
-            std::static_pointer_cast<Ship::Text>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(
+            std::static_pointer_cast<LUS::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(
                 "text/staff_message_data_static/staff_message_data_static"));
         // OTRTODO: Should not be malloc'ing here. It's fine for now since we check that the message table is already null.
         sStaffMessageEntryTablePtr = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * file2->messages.size());

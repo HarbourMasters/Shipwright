@@ -2,7 +2,7 @@
 #include "soh/resource/type/PlayerAnimation.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Resource> PlayerAnimationFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                                std::shared_ptr<ResourceInitData> initData,
                                                                std::shared_ptr<BinaryReader> reader) {
@@ -26,7 +26,7 @@ std::shared_ptr<Resource> PlayerAnimationFactory::ReadResource(std::shared_ptr<R
     return resource;
 }
 
-void Ship::PlayerAnimationFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::PlayerAnimationFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                                      std::shared_ptr<Resource> resource)
 {
     std::shared_ptr<PlayerAnimation> playerAnimation = std::static_pointer_cast<PlayerAnimation>(resource);
@@ -39,4 +39,4 @@ void Ship::PlayerAnimationFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
         playerAnimation->limbRotData.push_back(reader->ReadInt16());
     }
 }
-} // namespace Ship
+} // namespace LUS

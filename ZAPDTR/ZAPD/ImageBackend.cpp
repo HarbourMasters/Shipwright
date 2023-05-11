@@ -398,7 +398,7 @@ void ImageBackend::SetPaletteIndex(size_t index, uint8_t nR, uint8_t nG, uint8_t
 	alphaPalette[index] = nA;
 }
 
-void ImageBackend::SetPalette(const ImageBackend& pal)
+void ImageBackend::SetPalette(const ImageBackend& pal, uint32_t offset)
 {
 	assert(isColorIndexed);
 	size_t bytePerPixel = pal.GetBytesPerPixel();
@@ -422,7 +422,7 @@ void ImageBackend::SetPalette(const ImageBackend& pal)
 			uint8_t g = pal.pixelMatrix[y][x * bytePerPixel + 1];
 			uint8_t b = pal.pixelMatrix[y][x * bytePerPixel + 2];
 			uint8_t a = pal.pixelMatrix[y][x * bytePerPixel + 3];
-			SetPaletteIndex(index, r, g, b, a);
+			SetPaletteIndex(index + offset, r, g, b, a);
 		}
 	}
 }
