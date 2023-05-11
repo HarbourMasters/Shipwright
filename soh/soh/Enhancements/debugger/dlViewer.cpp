@@ -11,6 +11,7 @@
 #include <map>
 #include <string>
 #include <libultraship/libultraship.h>
+#include "dlViewer.h"
 
 extern "C" {
 #include <z64.h>
@@ -38,17 +39,17 @@ std::map<int, std::string> cmdMap = {
     { G_ENDDL, "gsSPEndDisplayList" },
 };
 
-void DrawDLViewer(bool& open) {
-    if (!open) {
+void DLViewerWindow::Draw() {
+    if (!mIsOpen) {
         if (CVarGetInteger("gDLViewerEnabled", 0)) {
             CVarClear("gDLViewerEnabled");
-            LUS::RequestCvarSaveOnNextTick();
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         return;
     }
 
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Display List Viewer", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Display List Viewer", &mIsOpen, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -140,8 +141,6 @@ void DrawDLViewer(bool& open) {
     ImGui::End();
 }
 
-void InitDLViewer() {
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Developer Tools", "Display List Viewer", DrawDLViewer);
-
+void DLViewerWindow::Init() {
     displayListsSearchResults = ResourceMgr_ListFiles("*DL", &displayListsSearchResultsCount);
 }

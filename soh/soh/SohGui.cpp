@@ -139,7 +139,8 @@ namespace SohGui {
 
     void SetupGuiElements() {
         mSohMenuBar = std::make_shared<SohMenuBar>();
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SetMenuBar(mSohMenuBar);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SetMenuBar(std::reinterpret_pointer_cast<LUS::GuiMenuBar>(mSohMenuBar));
+
         mAudioEditorWindow = std::make_shared<AudioEditor>();
         LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mAudioEditorWindow);
         mGameControlEditorWindow = std::make_shared<GameControlEditor::GameControlEditorWindow>();
@@ -148,6 +149,12 @@ namespace SohGui {
         LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mCosmeticsEditorWindow);
         mActorViewerWindow = std::make_shared<ActorViewerWindow>();
         LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mActorViewerWindow);
+        mColViewerWindow = std::make_shared<ColViewerWindow>();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mColViewerWindow);
+        mSaveEditorWindow = std::make_shared<SaveEditorWindow>();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mSaveEditorWindow);
+        mDLViewerWindow = std::make_shared<DLViewerWindow>();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mDLViewerWindow);
 }
 
     void SetupHooks() {

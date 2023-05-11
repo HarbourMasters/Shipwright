@@ -452,7 +452,7 @@ void DrawItemCount(ItemTrackerItem item) {
 void DrawEquip(ItemTrackerItem item) {
     bool hasEquip = (item.data & gSaveContext.inventory.equipment) != 0;
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
-    ImGui::Image(LUS::GetTextureByName(hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
@@ -462,7 +462,7 @@ void DrawQuest(ItemTrackerItem item) {
     bool hasQuestItem = (item.data & gSaveContext.inventory.questItems) != 0;
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     ImGui::BeginGroup();
-    ImGui::Image(LUS::GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     if (item.id == QUEST_SKULL_TOKEN) {
@@ -524,7 +524,7 @@ void DrawItem(ItemTrackerItem item) {
     }
     
     ImGui::BeginGroup();
-    ImGui::Image(LUS::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     DrawItemCount(item);
@@ -542,7 +542,7 @@ void DrawBottle(ItemTrackerItem item) {
     }
 
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
-    ImGui::Image(LUS::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
@@ -557,11 +557,11 @@ void DrawDungeonItem(ItemTrackerItem item) {
     bool hasSmallKey = (gSaveContext.inventory.dungeonKeys[item.data]) >= 0;
     ImGui::BeginGroup();
     if (itemId == ITEM_KEY_SMALL) {
-        ImGui::Image(LUS::GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.name : item.nameFaded),
+        ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.name : item.nameFaded),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
     else {
-        ImGui::Image(LUS::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+        ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
@@ -601,7 +601,7 @@ void DrawSong(ItemTrackerItem item) {
     bool hasSong = (bitMask & gSaveContext.inventory.questItems) != 0;
     ImVec2 p = ImGui::GetCursorScreenPos();
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
-    ImGui::Image(LUS::GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
 }

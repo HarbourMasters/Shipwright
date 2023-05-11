@@ -14,6 +14,9 @@
 #include "Enhancements/controls/GameControlEditor.h"
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugger/actorViewer.h"
+#include "Enhancements/debugger/colViewer.h"
+#include "Enhancements/debugger/debugSaveEditor.h"
+#include "Enhancements/debugger/dlViewer.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,6 +36,9 @@ namespace SohGui {
     std::shared_ptr<GameControlEditor::GameControlEditorWindow> mGameControlEditorWindow;
     std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
     std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
+    std::shared_ptr<ColViewerWindow> mColViewerWindow;
+    std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
+    std::shared_ptr<DLViewerWindow> mDLViewerWindow;
 }
 
 #endif /* SohGui_hpp */

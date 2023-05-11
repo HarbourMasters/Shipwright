@@ -265,7 +265,7 @@ void DrawStatsTracker(bool& open) {
     if (!open) {
         if (CVarGetInteger("gGameplayStatsEnabled", 0)) {
             CVarClear("gGameplayStatsEnabled");
-            LUS::RequestCvarSaveOnNextTick();
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         return;
     }

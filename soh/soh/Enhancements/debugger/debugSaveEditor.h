@@ -6,8 +6,7 @@
 #include <vector>
 #include <cstdint>
 #include <soh/Enhancements/randomizer/randomizer_inf.h>
-
-void InitSaveEditor();
+#include <libultraship/libultraship.h>
 
 typedef enum {
     EVENT_CHECK_INF,
@@ -502,4 +501,12 @@ const std::vector<FlagTable> flagTables = {
         { RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD, "KAK_100_GOLD_SKULLTULA_REWARD" },
         { RAND_INF_GREG_FOUND, "RAND_INF_GREG_FOUND" },
     } },
+};
+
+class SaveEditorWindow : public LUS::GuiWindow {
+  public:
+    using GuiWindow::GuiWindow;
+
+    void Init() override;
+    void Draw() override;
 };
