@@ -1012,7 +1012,12 @@ uint32_t IsSceneMasterQuest(s16 sceneNum) {
         if (!OTRGlobals::Instance->HasOriginal()) {
             value = 1;
         } else if (gSaveContext.isMasterQuest) {
-            value = 1;
+            if (CVarGetInteger("gBetterDebugWarpScreenMQFlag", 0)) {
+                CVarSetInteger("gBetterDebugWarpScreenMQFlag", 0);
+                value = 0;
+            } else {
+                value = 1;
+            }
         } else {
             value = 0;
             if (gSaveContext.n64ddFlag) {
@@ -1021,6 +1026,10 @@ uint32_t IsSceneMasterQuest(s16 sceneNum) {
                         value = 1;
                     }
                 }
+            }
+            else if (CVarGetInteger("gBetterDebugWarpScreenMQFlag", 0)) {
+                CVarSetInteger("gBetterDebugWarpScreenMQFlag", 0);
+                value = 1;
             }
         }
     }
