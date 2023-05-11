@@ -62,6 +62,8 @@ public:
     Entry& RetrieveEntry(const int id);
     int RetrieveId(const std::string& name);
 
+    static void AddBuiltInCustomActors();
+
 private:
     Entry& AddEntry(const std::string& name, const std::string& desc, size_t index);
     Entry& AddEntry(const std::string& name, const std::string& desc, const ActorInit& init);

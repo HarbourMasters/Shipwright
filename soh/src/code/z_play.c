@@ -29,6 +29,8 @@ u64 D_801614D0[0xA00];
 
 PlayState* gPlayState;
 
+s16 gEnPartnerId;
+
 void func_800BC450(PlayState* play) {
     Camera_ChangeDataIdx(GET_ACTIVE_CAM(play), play->unk_1242B - 1);
 }
@@ -684,7 +686,7 @@ void Play_Init(GameState* thisx) {
     #endif
 
     if (CVarGetInteger("gIvanCoopModeEnabled", 0)) {
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PARTNER, GET_PLAYER(play)->actor.world.pos.x,
+        Actor_Spawn(&play->actorCtx, play, gEnPartnerId, GET_PLAYER(play)->actor.world.pos.x,
                     GET_PLAYER(play)->actor.world.pos.y + Player_GetHeight(GET_PLAYER(play)) + 5.0f,
                     GET_PLAYER(play)->actor.world.pos.z, 0, 0, 0, 1, true);
     }

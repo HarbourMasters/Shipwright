@@ -588,6 +588,26 @@ void ActorDB::Entry::SetDesc(const std::string& newDesc) {
     entry.desc = desc.c_str();
 }
 
+#include "src/overlays/actors/ovl_En_Partner/z_en_partner.h"
+static ActorDBInit EnPartnerInit = {
+    "En_Partner",
+    "Ivan",
+    ACTORCAT_ITEMACTION,
+    (ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_10 | ACTOR_FLAG_26),
+    OBJECT_GAMEPLAY_KEEP,
+    sizeof(EnPartner),
+    (ActorFunc)EnPartner_Init,
+    (ActorFunc)EnPartner_Destroy,
+    (ActorFunc)EnPartner_Update,
+    (ActorFunc)EnPartner_Draw,
+    nullptr,
+};
+extern "C" s16 gEnPartnerId;
+
+void ActorDB::AddBuiltInCustomActors() {
+    gEnPartnerId = ActorDB::Instance->AddEntry(EnPartnerInit).entry.id;
+}
+
 extern "C" ActorDBEntry* ActorDB_Retrieve(const int id) {
     return &ActorDB::Instance->RetrieveEntry(id).entry;
 }

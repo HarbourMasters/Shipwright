@@ -775,6 +775,7 @@ extern "C" void InitOTR() {
     VanillaItemTable_Init();
 
     InitMods();
+    ActorDB::AddBuiltInCustomActors();
 
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);
