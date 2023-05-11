@@ -118,8 +118,8 @@ public:
     static const int MaxFiles = 3;
     std::array<SaveFileMetaInfo, MaxFiles> fileMetaInfo;
 
-    void RegisterSectionAutoSave(std::string section);
-    void UnregisterSectionAutoSave(std::string section);
+    void RegisterAutosaveSection(std::string section);
+    void UnregisterAutosaveSection(std::string section);
 
   private:
     std::filesystem::path GetFileName(int fileNum);
@@ -151,7 +151,7 @@ public:
 
     using SectionSaveHandler = std::pair<int, SaveFunc>;
     std::map<std::string, SectionSaveHandler> sectionSaveHandlers;
-    // sets a section to 
+    // tracks sections to save during autosave triggers
     std::vector<std::string> autosaveRegistry;
 
     std::map<std::string, PostFunc> postHandlers;
