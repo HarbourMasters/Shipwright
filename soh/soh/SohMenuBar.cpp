@@ -13,8 +13,8 @@
 #include "Enhancements/crowd-control/CrowdControl.h"
 #endif
 
-bool ShouldClearTextureCacheAtEndOfFrame = false;
-bool isBetaQuestEnabled = false;
+extern bool ShouldClearTextureCacheAtEndOfFrame;
+extern bool isBetaQuestEnabled;
 
 enum SeqPlayers {
     /* 0 */ SEQ_BGM_MAIN,

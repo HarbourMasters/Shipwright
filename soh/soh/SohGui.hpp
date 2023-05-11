@@ -36,21 +36,6 @@ namespace SohGui {
     void SetupHooks();
     void SetupGuiElements();
     void Draw();
-    std::shared_ptr<SohMenuBar> mSohMenuBar;
-    std::shared_ptr<AudioEditor> mAudioEditorWindow;
-    std::shared_ptr<GameControlEditor::GameControlEditorWindow> mGameControlEditorWindow;
-    std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
-    std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
-    std::shared_ptr<ColViewerWindow> mColViewerWindow;
-    std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
-    std::shared_ptr<DLViewerWindow> mDLViewerWindow;
-    std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
-    std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
-    std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
-    std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
-    std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
-    std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
-    std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 }
 
 #endif /* SohGui_hpp */

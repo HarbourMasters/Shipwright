@@ -278,7 +278,6 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     GameState_ReqPadData(gameState);
     GameState_Update(gameState);
-    Debug_Draw();
 
     OPEN_DISPS(gfxCtx);
 

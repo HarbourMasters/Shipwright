@@ -1,12 +1,12 @@
 #pragma once
 #include "stdint.h"
 
-#include "libultraship/libultraship.h"
+#include <libultraship/libultraship.h>
 #include <ImGui/imgui.h>
 
 class AudioEditor : public LUS::GuiWindow {
     public:
-        // using LUS::GuiWindow::GuiWindow;
+        using LUS::GuiWindow::GuiWindow;
 
         void Draw() override;
         void Init() override {};
