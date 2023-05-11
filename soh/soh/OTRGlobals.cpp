@@ -736,10 +736,10 @@ extern "C" void InitOTR() {
 #elif defined(__WIIU__)
     LUS::WiiU::Init();
 #endif
-    LUS::AddSetupHooksDelegate(GameMenuBar::SetupHooks);
     LUS::RegisterMenuDrawMethod(GameMenuBar::Draw);
 
     OTRGlobals::Instance = new OTRGlobals();
+    GameMenuBar::SetupHooks();
     SaveManager::Instance = new SaveManager();
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();

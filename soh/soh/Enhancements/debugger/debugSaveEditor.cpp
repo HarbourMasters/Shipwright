@@ -1,7 +1,7 @@
 #include "debugSaveEditor.h"
 #include "../../util.h"
 #include "../../OTRGlobals.h"
-#include <ImGuiImpl.h>
+#include <Gui.h>
 #include "../../UIWidgets.hpp"
 
 #include <spdlog/fmt/fmt.h>
@@ -1781,34 +1781,34 @@ void DrawSaveEditor(bool& open) {
 }
 
 void InitSaveEditor() {
-    LUS::AddWindow("Developer Tools", "Save Editor", DrawSaveEditor);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Developer Tools", "Save Editor", DrawSaveEditor);
 
     // Load item icons into ImGui
     for (const auto& entry : itemMapping) {
-        LUS::LoadResource(entry.second.name, entry.second.texturePath);
-        LUS::LoadResource(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture((entry.second.name, entry.second.texturePath);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture((entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }
     for (const auto& entry : gregMapping) {
         ImVec4 gregGreen = ImVec4(42.0f / 255.0f, 169.0f / 255.0f, 40.0f / 255.0f, 1.0f);
         ImVec4 gregFadedGreen = gregGreen;
         gregFadedGreen.w = 0.3f;
-        LUS::LoadResource(entry.second.name, entry.second.texturePath, gregGreen);
-        LUS::LoadResource(entry.second.nameFaded, entry.second.texturePath, gregFadedGreen);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture((entry.second.name, entry.second.texturePath, gregGreen);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture((entry.second.nameFaded, entry.second.texturePath, gregFadedGreen);
     }
     for (const auto& entry : questMapping) {
-        LUS::LoadResource(entry.second.name, entry.second.texturePath);
-        LUS::LoadResource(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture((entry.second.name, entry.second.texturePath);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture((entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }
     for (const auto& entry : songMapping) {
-        LUS::LoadResource(entry.name, gSongNoteTex, entry.color);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture((entry.name, gSongNoteTex, entry.color);
         ImVec4 fadedCol = entry.color;
         fadedCol.w = 0.3f;
-        LUS::LoadResource(entry.nameFaded, gSongNoteTex, fadedCol);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture((entry.nameFaded, gSongNoteTex, fadedCol);
     }
     for (const auto& entry : vanillaSongMapping) {
-        LUS::LoadResource(entry.name, gSongNoteTex, entry.color);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture((entry.name, gSongNoteTex, entry.color);
         ImVec4 fadedCol = entry.color;
         fadedCol.w = 0.3f;
-        LUS::LoadResource(entry.nameFaded, gSongNoteTex, fadedCol);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture((entry.nameFaded, gSongNoteTex, fadedCol);
     }
 }

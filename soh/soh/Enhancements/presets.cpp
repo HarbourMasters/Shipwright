@@ -2,7 +2,7 @@
 #include <variant>
 #include <string>
 #include <cstdint>
-#include <ImGuiImpl.h>
+#include <Gui.h>
 #include <libultraship/bridge.h>
 #include "soh/UIWidgets.hpp"
 
@@ -59,7 +59,7 @@ void DrawPresetSelector(PresetType presetTypeId) {
         if (selectedPresetId != 0) {
             applyPreset(selectedPresetDef.entries);
         }
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::PopStyleVar(1);
 }

@@ -11,7 +11,7 @@
 #include <ImGui/imgui.h>
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <ImGui/imgui_internal.h>
-#include <ImGuiImpl.h>
+#include <Gui.h>
 #include <libultraship/libultraship.h>
 #include <Hooks.h>
 #include <libultraship/libultra/types.h>
@@ -85,6 +85,35 @@ namespace GameMenuBar {
         "8 Hearts",
         "OHKO"
     };
+    
+    static const char* filters[3] = {
+#ifdef __WIIU__
+            "",
+#else
+            "Three-Point",
+#endif
+            "Linear", "None"
+    };
+
+    static const inline std::vector<std::pair<const char*, const char*>> audioBackends = {
+#ifdef _WIN32
+            { "wasapi", "Windows Audio Session API" },
+#endif
+#if defined(__linux)
+            { "pulse", "PulseAudio" },
+#endif
+            { "sdl", "SDL Audio" }
+    };
+    static const inline std::vector<std::pair<const char*, const char*>> renderingBackends = {
+#ifdef _WIN32
+            { "dx11", "DirectX" },
+#endif
+#ifndef __WIIU__
+            { "sdl", "OpenGL" }
+#else
+            { "wiiu", "GX2" }
+#endif
+    };
 
     // MARK: - Helpers
 
@@ -108,6 +137,11 @@ namespace GameMenuBar {
     // MARK: - Delegates
 
     void SetupHooks() {
+#ifdef __APPLE__
+        if (Metal_IsSupported()) {
+            msRenderingBackends.insert(renderingBackends.begin(), { "sdl", "Metal" });
+        }
+#endif
         LUS::RegisterHook<LUS::AudioInit>(UpdateAudio);
         LUS::RegisterHook<LUS::GfxInit>(UpdateAudio);
     }
@@ -131,7 +165,6 @@ namespace GameMenuBar {
                 }
 
                 ImGui::Text("Audio API (Needs reload)");
-                auto audioBackends = LUS::GetAvailableAudioBackends();
                 auto currentAudioBackend = LUS::GetCurrentAudioBackend();
 
                 if (audioBackends.size() <= 1) {
@@ -164,8 +197,12 @@ namespace GameMenuBar {
                 {
                     bool currentValue = CVarGetInteger("gControllerConfigurationEnabled", 0);
                     CVarSetInteger("gControllerConfigurationEnabled", !currentValue);
-                    LUS::RequestCvarSaveOnNextTick();
-                    LUS::ToggleInputEditorWindow(CVarGetInteger("gControllerConfigurationEnabled", 0));
+                    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    if (CVarGetInteger("gControllerConfigurationEnabled", 0)) {
+                        LUS::Context::GetInstance()->GetWindow()->GetGui()->GetInputEditorWindow()->Open();
+                    } else {
+                        LUS::Context::GetInstance()->GetWindow()->GetGui()->GetInputEditorWindow()->Close();
+                    }
                 }
                 UIWidgets::PaddedSeparator();
                 ImGui::PopStyleColor(1);
@@ -264,7 +301,7 @@ namespace GameMenuBar {
                         currentFps = 60;
                     }
                     CVarSetInteger("gInterpolationFPS", currentFps);
-                    LUS::RequestCvarSaveOnNextTick();
+                    LUS::Context::GetInstance()->GetWindow()->GetGui()->RequestCvarSaveOnNextTick();
                 #else
                     bool matchingRefreshRate =
                         CVarGetInteger("gMatchRefreshRate", 0) && LUS::WindowBackend() != LUS::Backend::DX11;
@@ -292,7 +329,7 @@ namespace GameMenuBar {
                         int hz = LUS::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
                         if (hz >= 20 && hz <= 360) {
                             CVarSetInteger("gInterpolationFPS", hz);
-                            LUS::RequestCvarSaveOnNextTick();
+                            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                         }
                     }
                 } else {
@@ -309,7 +346,6 @@ namespace GameMenuBar {
                 UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 
                 ImGui::Text("Renderer API (Needs reload)");
-                auto renderingBackends = LUS::GetAvailableRenderingBackends();
                 auto currentRenderingBackend = LUS::GetCurrentRenderingBackend();
 
                 if (renderingBackends.size() <= 1) {
@@ -332,24 +368,23 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", "gVsyncEnabled", true, false);
                 }
 
-                if (LUS::SupportsWindowedFullscreen()) {
+                if (LUS::Context::GetInstance()->GetWindow()->SupportsWindowedFullscreen()) {
                     UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", "gSdlWindowedFullscreen", true, false);
                 }
 
-                if (LUS::SupportsViewports()) {
+                if (LUS::Context::GetInstance()->GetWindow()->GetGui()->SupportsViewports()) {
                     UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false);
                     UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
                 }
 
                 // If more filters are added to LUS, make sure to add them to the filters list here
                 ImGui::Text("Texture Filter (Needs reload)");
-                const char* filters[] = { LUS::GetSupportedTextureFilters()[0], LUS::GetSupportedTextureFilters()[1],
-                                          LUS::GetSupportedTextureFilters()[2] };
+
                 UIWidgets::EnhancementCombobox("gTextureFilter", filters, 0);
 
                 UIWidgets::Spacer(0);
 
-                LUS::DrawSettings();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->DrawSettings();
 
                 ImGui::EndMenu();
             }
@@ -982,28 +1017,28 @@ namespace GameMenuBar {
             {
                 bool currentValue = CVarGetInteger("gGameControlEditorEnabled", 0);
                 CVarSetInteger("gGameControlEditorEnabled", !currentValue);
-                LUS::RequestCvarSaveOnNextTick();
-                LUS::EnableWindow("Game Control Editor", CVarGetInteger("gGameControlEditorEnabled", 0));
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Game Control Editor", CVarGetInteger("gGameControlEditorEnabled", 0));
             }
             if (ImGui::Button(GetWindowButtonText("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
                 bool currentValue = CVarGetInteger("gCosmeticsEditorEnabled", 0);
                 CVarSetInteger("gCosmeticsEditorEnabled", !currentValue);
-                LUS::RequestCvarSaveOnNextTick();
-                LUS::EnableWindow("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0));
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0));
             }
             if (ImGui::Button(GetWindowButtonText("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
                 bool currentValue = CVarGetInteger("gAudioEditor.WindowOpen", 0);
                 CVarSetInteger("gAudioEditor.WindowOpen", !currentValue);
-                LUS::RequestCvarSaveOnNextTick();
-                LUS::EnableWindow("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0));
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0));
             }
             if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 bool currentValue = CVarGetInteger("gGameplayStatsEnabled", 0);
                 CVarSetInteger("gGameplayStatsEnabled", !currentValue);
-                LUS::RequestCvarSaveOnNextTick();
-                LUS::EnableWindow("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0));
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0));
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
@@ -1124,9 +1159,8 @@ namespace GameMenuBar {
                     CVarSetInteger("gEnableBetaQuest", betaQuestEnabled);
                     CVarSetInteger("gBetaQuestWorld", betaQuestWorld);
 
-                    LUS::DispatchConsoleCommand("reset");
-
-                    LUS::RequestCvarSaveOnNextTick();
+                    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetConsoleWindow()->Dispatch("reset");
+                    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
 
                 if (!isBetaQuestEnabled) {
@@ -1170,7 +1204,7 @@ namespace GameMenuBar {
                 bool currentValue = CVarGetInteger("gStatsEnabled", 0);
                 CVarSetInteger("gStatsEnabled", !currentValue);
                 LUS::ToggleStatisticsWindow(true);
-                LUS::RequestCvarSaveOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             }
             UIWidgets::Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
             UIWidgets::Spacer(0);
@@ -1178,7 +1212,7 @@ namespace GameMenuBar {
             {
                 bool currentValue = CVarGetInteger("gConsoleEnabled", 0);
                 CVarSetInteger("gConsoleEnabled", !currentValue);
-                LUS::RequestCvarSaveOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 LUS::ToggleConsoleWindow(!currentValue);
             }
             UIWidgets::Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
@@ -1187,32 +1221,32 @@ namespace GameMenuBar {
             {
                 bool currentValue = CVarGetInteger("gSaveEditorEnabled", 0);
                 CVarSetInteger("gSaveEditorEnabled", !currentValue);
-                LUS::RequestCvarSaveOnNextTick();
-                LUS::EnableWindow("Save Editor", CVarGetInteger("gSaveEditorEnabled", 0));
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Save Editor", CVarGetInteger("gSaveEditorEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Collision Viewer", CVarGetInteger("gCollisionViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
                 bool currentValue = CVarGetInteger("gCollisionViewerEnabled", 0);
                 CVarSetInteger("gCollisionViewerEnabled", !currentValue);
-                LUS::RequestCvarSaveOnNextTick();
-                LUS::EnableWindow("Collision Viewer", CVarGetInteger("gCollisionViewerEnabled", 0));
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Collision Viewer", CVarGetInteger("gCollisionViewerEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Actor Viewer", CVarGetInteger("gActorViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
                 bool currentValue = CVarGetInteger("gActorViewerEnabled", 0);
                 CVarSetInteger("gActorViewerEnabled", !currentValue);
-                LUS::RequestCvarSaveOnNextTick();
-                LUS::EnableWindow("Actor Viewer", CVarGetInteger("gActorViewerEnabled", 0));
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Actor Viewer", CVarGetInteger("gActorViewerEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
                 bool currentValue = CVarGetInteger("gDLViewerEnabled", 0);
                 CVarSetInteger("gDLViewerEnabled", !currentValue);
-                LUS::RequestCvarSaveOnNextTick();
-                LUS::EnableWindow("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0));
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0));
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
@@ -1237,48 +1271,48 @@ namespace GameMenuBar {
             {
                 bool currentValue = CVarGetInteger("gRandomizerSettingsEnabled", 0);
                 CVarSetInteger("gRandomizerSettingsEnabled", !currentValue);
-                LUS::RequestCvarSaveOnNextTick();
-                LUS::EnableWindow("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0));
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVarGetInteger("gItemTrackerEnabled", 0);
                 CVarSetInteger("gItemTrackerEnabled", !currentValue);
-                LUS::RequestCvarSaveOnNextTick();
-                LUS::EnableWindow("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0));
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVarGetInteger("gItemTrackerSettingsEnabled", 0);
                 CVarSetInteger("gItemTrackerSettingsEnabled", !currentValue);
-                LUS::RequestCvarSaveOnNextTick();
-                LUS::EnableWindow("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0));
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVarGetInteger("gEntranceTrackerEnabled", 0);
                 CVarSetInteger("gEntranceTrackerEnabled", !currentValue);
-                LUS::RequestCvarSaveOnNextTick();
-                LUS::EnableWindow("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0));
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVarGetInteger("gCheckTrackerEnabled", 0);
                 CVarSetInteger("gCheckTrackerEnabled", !currentValue);
-                LUS::RequestCvarSaveOnNextTick();
-                LUS::EnableWindow("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0));
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Check Tracker Settings", CVarGetInteger("gCheckTrackerSettingsEnabled", 0)).c_str(), buttonSize))
             {
                 bool currentValue = CVarGetInteger("gCheckTrackerSettingsEnabled", 0);
                 CVarSetInteger("gCheckTrackerSettingsEnabled", !currentValue);
-                LUS::RequestCvarSaveOnNextTick();
-                LUS::EnableWindow("Check Tracker Settings", CVarGetInteger("gCheckTrackerSettingsEnabled", 0));
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Check Tracker Settings", CVarGetInteger("gCheckTrackerSettingsEnabled", 0));
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);

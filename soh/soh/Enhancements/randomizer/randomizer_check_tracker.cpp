@@ -1,6 +1,6 @@
 #include "randomizer_check_tracker.h"
 #include "../../OTRGlobals.h"
-#include <ImGuiImpl.h>
+#include <Gui.h>
 #include "../../UIWidgets.hpp"
 
 #include <string>
@@ -1023,8 +1023,8 @@ void DrawCheckTrackerOptions(bool& open) {
 }
 
 void InitCheckTracker() {
-    LUS::AddWindow("Randomizer", "Check Tracker", DrawCheckTracker, CVarGetInteger("gCheckTrackerEnabled", 0) == 1);
-    LUS::AddWindow("Randomizer", "Check Tracker Settings", DrawCheckTrackerOptions);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Randomizer", "Check Tracker", DrawCheckTracker, CVarGetInteger("gCheckTrackerEnabled", 0) == 1);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Randomizer", "Check Tracker Settings", DrawCheckTrackerOptions);
     Color_Background = CVarGetColor("gCheckTrackerBgColor", Color_Bg_Default);
     Color_Area_Incomplete_Main  = CVarGetColor("gCheckTrackerAreaMainIncompleteColor",    Color_Main_Default);
     Color_Area_Incomplete_Extra = CVarGetColor("gCheckTrackerAreaExtraIncompleteColor",   Color_Area_Incomplete_Extra_Default);

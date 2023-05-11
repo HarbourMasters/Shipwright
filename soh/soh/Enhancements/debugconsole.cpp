@@ -1,8 +1,8 @@
 #include "debugconsole.h"
-#include <ImGuiImpl.h>
+#include <Gui.h>
 #include <Utils.h>
 #include "savestates.h"
-#include <Console.h>
+#include <ConsoleWindow.h>
 
 #include <vector>
 #include <string>
@@ -34,7 +34,7 @@ extern PlayState* gPlayState;
 
 #define CMD_REGISTER LUS::GetConsole()->AddCommand
 
-static bool ActorSpawnHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool ActorSpawnHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if ((args.size() != 9) && (args.size() != 3) && (args.size() != 6)) {
         LUS::GetConsole()->SendErrorMessage("Not enough arguments passed to actorspawn");
         return CMD_FAILED;
@@ -83,7 +83,7 @@ static bool ActorSpawnHandler(std::shared_ptr<LUS::Console> Console, const std::
     return CMD_SUCCESS;
 }
 
-static bool KillPlayerHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>&) {
+static bool KillPlayerHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>&) {
     GameInteractionEffectBase* effect = new GameInteractionEffect::SetPlayerHealth();
     effect->parameters[0] = 0;
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
@@ -96,7 +96,7 @@ static bool KillPlayerHandler(std::shared_ptr<LUS::Console> Console, const std::
     }
 }
 
-static bool SetPlayerHealthHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool SetPlayerHealthHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -127,7 +127,7 @@ static bool SetPlayerHealthHandler(std::shared_ptr<LUS::Console> Console, const 
     }
 }
 
-static bool LoadSceneHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>&) {
+static bool LoadSceneHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>&) {
     gSaveContext.respawnFlag = 0;
     gSaveContext.seqId = 0xFF;
     gSaveContext.gameMode = 0;
@@ -135,7 +135,7 @@ static bool LoadSceneHandler(std::shared_ptr<LUS::Console> Console, const std::v
     return CMD_SUCCESS;
 }
 
-static bool RupeeHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool RupeeHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         return CMD_FAILED;
     }
@@ -160,7 +160,7 @@ static bool RupeeHandler(std::shared_ptr<LUS::Console> Console, const std::vecto
     return CMD_SUCCESS;
 }
 
-static bool SetPosHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string> args) {
+static bool SetPosHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string> args) {
     if (gPlayState == nullptr) {
         LUS::GetConsole()->SendErrorMessage("PlayState == nullptr");
         return CMD_FAILED;
@@ -187,7 +187,7 @@ static bool SetPosHandler(std::shared_ptr<LUS::Console> Console, const std::vect
     return CMD_SUCCESS;
 }
 
-static bool ResetHandler(std::shared_ptr<LUS::Console> Console, std::vector<std::string> args) {
+static bool ResetHandler(std::shared_ptr<LUS::ConsoleWindow> Console, std::vector<std::string> args) {
     if (gPlayState == nullptr) {
         LUS::GetConsole()->SendErrorMessage("PlayState == nullptr");
         return CMD_FAILED;
@@ -206,7 +206,7 @@ const static std::map<std::string, uint16_t> ammoItems{
     { "beans", ITEM_BEAN }
 };
 
-static bool AddAmmoHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool AddAmmoHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 3) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -245,7 +245,7 @@ static bool AddAmmoHandler(std::shared_ptr<LUS::Console> Console, const std::vec
     }
 }
 
-static bool TakeAmmoHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool TakeAmmoHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 3) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -292,7 +292,7 @@ const static std::map<std::string, uint16_t> bottleItems{
     { "big_poe", ITEM_BIG_POE },           { "blue_fire", ITEM_BLUE_FIRE },   { "rutos_letter", ITEM_LETTER_RUTO },
 };
 
-static bool BottleHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool BottleHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 3) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -324,7 +324,7 @@ static bool BottleHandler(std::shared_ptr<LUS::Console> Console, const std::vect
     return CMD_SUCCESS;
 }
 
-static bool BHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool BHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -334,7 +334,7 @@ static bool BHandler(std::shared_ptr<LUS::Console> Console, const std::vector<st
     return CMD_SUCCESS;
 }
 
-static bool ItemHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool ItemHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 3) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -345,7 +345,7 @@ static bool ItemHandler(std::shared_ptr<LUS::Console> Console, const std::vector
     return CMD_SUCCESS;
 }
 
-static bool GiveItemHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string> args) {
+static bool GiveItemHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string> args) {
     if (args.size() < 3) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -366,7 +366,7 @@ static bool GiveItemHandler(std::shared_ptr<LUS::Console> Console, const std::ve
     return CMD_SUCCESS;
 }
 
-static bool EntranceHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool EntranceHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -387,7 +387,7 @@ static bool EntranceHandler(std::shared_ptr<LUS::Console> Console, const std::ve
     gSaveContext.nextTransitionType = 11;
 }
 
-static bool VoidHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool VoidHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (gPlayState != nullptr) {
             gSaveContext.respawn[RESPAWN_MODE_DOWN].tempSwchFlags = gPlayState->actorCtx.flags.tempSwch;
             gSaveContext.respawn[RESPAWN_MODE_DOWN].tempCollectFlags = gPlayState->actorCtx.flags.tempCollect;
@@ -403,7 +403,7 @@ static bool VoidHandler(std::shared_ptr<LUS::Console> Console, const std::vector
     return CMD_SUCCESS;
 }
 
-static bool ReloadHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool ReloadHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (gPlayState != nullptr) {
         gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
         gPlayState->sceneLoadFlag = 0x14;
@@ -420,7 +420,7 @@ const static std::map<std::string, uint16_t> fw_options {
     { "clear", 0}, {"warp", 1}, {"backup", 2}
 };
 
-static bool FWHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool FWHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -472,7 +472,7 @@ static bool FWHandler(std::shared_ptr<LUS::Console> Console, const std::vector<s
     return CMD_SUCCESS;
 }
 
-static bool FileSelectHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool FileSelectHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (gPlayState != nullptr) {
         SET_NEXT_GAMESTATE(&gPlayState->state, FileChoose_Init, FileChooseContext);
         gPlayState->state.running = 0;
@@ -483,12 +483,12 @@ static bool FileSelectHandler(std::shared_ptr<LUS::Console> Console, const std::
     return CMD_SUCCESS;
 }
 
-static bool QuitHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool QuitHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     LUS::Context::GetInstance()->GetWindow()->Close();
     return CMD_SUCCESS;
 }
 
-static bool SaveStateHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool SaveStateHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
     const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
 
@@ -502,7 +502,7 @@ static bool SaveStateHandler(std::shared_ptr<LUS::Console> Console, const std::v
     }
 }
 
-static bool LoadStateHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool LoadStateHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
     const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::LOAD });
 
@@ -523,7 +523,7 @@ static bool LoadStateHandler(std::shared_ptr<LUS::Console> Console, const std::v
 
 }
 
-static bool StateSlotSelectHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool StateSlotSelectHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -548,7 +548,7 @@ static bool StateSlotSelectHandler(std::shared_ptr<LUS::Console> Console, const 
     return CMD_SUCCESS;
 }
 
-static bool InvisibleHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool InvisibleHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -575,7 +575,7 @@ static bool InvisibleHandler(std::shared_ptr<LUS::Console> Console, const std::v
     }
 }
 
-static bool GiantLinkHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool GiantLinkHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -603,7 +603,7 @@ static bool GiantLinkHandler(std::shared_ptr<LUS::Console> Console, const std::v
     }
 }
 
-static bool MinishLinkHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool MinishLinkHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -631,7 +631,7 @@ static bool MinishLinkHandler(std::shared_ptr<LUS::Console> Console, const std::
     }
 }
 
-static bool AddHeartContainerHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool AddHeartContainerHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -662,7 +662,7 @@ static bool AddHeartContainerHandler(std::shared_ptr<LUS::Console> Console, cons
     }
 }
 
-static bool RemoveHeartContainerHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool RemoveHeartContainerHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -693,7 +693,7 @@ static bool RemoveHeartContainerHandler(std::shared_ptr<LUS::Console> Console, c
     }
 }
 
-static bool GravityHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool GravityHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -718,7 +718,7 @@ static bool GravityHandler(std::shared_ptr<LUS::Console> Console, const std::vec
     }
 }
 
-static bool NoUIHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool NoUIHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -746,7 +746,7 @@ static bool NoUIHandler(std::shared_ptr<LUS::Console> Console, const std::vector
     }
 }
 
-static bool FreezeHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool FreezeHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     GameInteractionEffectBase* effect = new GameInteractionEffect::FreezePlayer();
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
@@ -759,7 +759,7 @@ static bool FreezeHandler(std::shared_ptr<LUS::Console> Console, const std::vect
     }
 }
 
-static bool DefenseModifierHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool DefenseModifierHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -783,7 +783,7 @@ static bool DefenseModifierHandler(std::shared_ptr<LUS::Console> Console, const 
     }
 }
 
-static bool DamageHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool DamageHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -813,7 +813,7 @@ static bool DamageHandler(std::shared_ptr<LUS::Console> Console, const std::vect
     }
 }
 
-static bool HealHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool HealHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -843,7 +843,7 @@ static bool HealHandler(std::shared_ptr<LUS::Console> Console, const std::vector
     }
 }
 
-static bool FillMagicHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool FillMagicHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     GameInteractionEffectBase* effect = new GameInteractionEffect::FillMagic();
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
@@ -856,7 +856,7 @@ static bool FillMagicHandler(std::shared_ptr<LUS::Console> Console, const std::v
     }
 }
 
-static bool EmptyMagicHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool EmptyMagicHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     GameInteractionEffectBase* effect = new GameInteractionEffect::EmptyMagic();
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
@@ -869,7 +869,7 @@ static bool EmptyMagicHandler(std::shared_ptr<LUS::Console> Console, const std::
     }
 }
 
-static bool NoZHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool NoZHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
      if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -897,7 +897,7 @@ static bool NoZHandler(std::shared_ptr<LUS::Console> Console, const std::vector<
     }
 }
 
-static bool OneHitKOHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool OneHitKOHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -925,7 +925,7 @@ static bool OneHitKOHandler(std::shared_ptr<LUS::Console> Console, const std::ve
     }
 }
 
-static bool PacifistHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool PacifistHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -953,7 +953,7 @@ static bool PacifistHandler(std::shared_ptr<LUS::Console> Console, const std::ve
     }
 }
 
-static bool PaperLinkHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool PaperLinkHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -982,7 +982,7 @@ static bool PaperLinkHandler(std::shared_ptr<LUS::Console> Console, const std::v
     }
 }
 
-static bool RainstormHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool RainstormHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -1010,7 +1010,7 @@ static bool RainstormHandler(std::shared_ptr<LUS::Console> Console, const std::v
     }
 }
 
-static bool ReverseControlsHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool ReverseControlsHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -1039,7 +1039,7 @@ static bool ReverseControlsHandler(std::shared_ptr<LUS::Console> Console, const 
     }
 }
 
-static bool UpdateRupeesHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool UpdateRupeesHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -1063,7 +1063,7 @@ static bool UpdateRupeesHandler(std::shared_ptr<LUS::Console> Console, const std
     }
 }
 
-static bool SpeedModifierHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool SpeedModifierHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -1093,7 +1093,7 @@ const static std::map<std::string, uint16_t> boots {
     { "hover", PLAYER_BOOTS_HOVER },
 };
 
-static bool BootsHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool BootsHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -1124,7 +1124,7 @@ const static std::map<std::string, uint16_t> shields {
     { "mirror", ITEM_SHIELD_MIRROR },
 };
 
-static bool GiveShieldHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool GiveShieldHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -1149,7 +1149,7 @@ static bool GiveShieldHandler(std::shared_ptr<LUS::Console> Console, const std::
     }
 }
 
-static bool TakeShieldHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool TakeShieldHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -1174,7 +1174,7 @@ static bool TakeShieldHandler(std::shared_ptr<LUS::Console> Console, const std::
     }
 }
 
-static bool KnockbackHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool KnockbackHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -1204,7 +1204,7 @@ static bool KnockbackHandler(std::shared_ptr<LUS::Console> Console, const std::v
     }
 }
 
-static bool ElectrocuteHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool ElectrocuteHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     GameInteractionEffectBase* effect = new GameInteractionEffect::ElectrocutePlayer();
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
@@ -1217,7 +1217,7 @@ static bool ElectrocuteHandler(std::shared_ptr<LUS::Console> Console, const std:
     }
 }
 
-static bool BurnHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool BurnHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     GameInteractionEffectBase* effect = new GameInteractionEffect::BurnPlayer();
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
@@ -1230,7 +1230,7 @@ static bool BurnHandler(std::shared_ptr<LUS::Console> Console, const std::vector
     }
 }
 
-static bool CuccoStormHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool CuccoStormHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     GameInteractionEffectQueryResult result = GameInteractor::RawAction::SpawnActor(ACTOR_EN_NIW, 0);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
@@ -1242,7 +1242,7 @@ static bool CuccoStormHandler(std::shared_ptr<LUS::Console> Console, const std::
     }
 }
 
-static bool GenerateRandoHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool GenerateRandoHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() == 1) {
         if (GenerateRandomizer()) {
             return CMD_SUCCESS;
@@ -1270,7 +1270,7 @@ static bool GenerateRandoHandler(std::shared_ptr<LUS::Console> Console, const st
     return CMD_FAILED;
 }
 
-static bool CosmeticsHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool CosmeticsHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -1288,7 +1288,7 @@ static bool CosmeticsHandler(std::shared_ptr<LUS::Console> Console, const std::v
     return CMD_SUCCESS;
 }
 
-static bool SfxHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool SfxHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2) {
         LUS::GetConsole()->SendErrorMessage("[SOH] Unexpected arguments passed");
         return CMD_FAILED;
@@ -1337,7 +1337,7 @@ static int CheckVarType(const std::string& input)
     return result;
 }
 
-static bool SetCVarHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool SetCVarHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 3)
         return CMD_FAILED;
 
@@ -1362,11 +1362,11 @@ static bool SetCVarHandler(std::shared_ptr<LUS::Console> Console, const std::vec
 
     CVarSave();
 
-    //LUS::GetConsole()->SendInfoMessage("[SOH] Updated player position to [ %.2f, %.2f, %.2f ]", pos.x, pos.y, pos.z);
+    //LUS::GetConsoleWindow()->SendInfoMessage("[SOH] Updated player position to [ %.2f, %.2f, %.2f ]", pos.x, pos.y, pos.z);
     return CMD_SUCCESS;
 }
 
-static bool GetCVarHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args) {
+static bool GetCVarHandler(std::shared_ptr<LUS::ConsoleWindow> Console, const std::vector<std::string>& args) {
     if (args.size() < 2)
         return CMD_FAILED;
 
@@ -1394,195 +1394,198 @@ static bool GetCVarHandler(std::shared_ptr<LUS::Console> Console, const std::vec
 
 void DebugConsole_Init(void) {
     // Console
-    CMD_REGISTER("file_select", { FileSelectHandler, "Returns to the file select." });
-    CMD_REGISTER("reset", { ResetHandler, "Resets the game." });
-    CMD_REGISTER("quit", { QuitHandler, "Quits the game." });
+    CMD_REGISTER("file_select", {FileSelectHandler, "Returns to the file select."});
+    CMD_REGISTER("reset", {ResetHandler, "Resets the game."});
+    CMD_REGISTER("quit", {QuitHandler, "Quits the game."});
 
     // Save States
-    CMD_REGISTER("save_state", { SaveStateHandler, "Save a state." });
-    CMD_REGISTER("load_state", { LoadStateHandler, "Load a state." });
-    CMD_REGISTER("set_slot", { StateSlotSelectHandler, "Selects a SaveState slot", {
-        { "Slot number", LUS::ArgumentType::NUMBER, }
+    CMD_REGISTER("save_state", {SaveStateHandler, "Save a state."});
+    CMD_REGISTER("load_state", {LoadStateHandler, "Load a state."});
+    CMD_REGISTER("set_slot", {StateSlotSelectHandler, "Selects a SaveState slot", {
+            {"Slot number", LUS::ArgumentType::NUMBER,}
     }});
 
     // Map & Location
-    CMD_REGISTER("void", { VoidHandler, "Voids out of the current map." });
-    CMD_REGISTER("reload", { ReloadHandler, "Reloads the current map." });
-    CMD_REGISTER("fw", { FWHandler,"Spawns the player where Farore's Wind is set." , {
-        { "clear|warp|backup", LUS::ArgumentType::TEXT }
+    CMD_REGISTER("void", {VoidHandler, "Voids out of the current map."});
+    CMD_REGISTER("reload", {ReloadHandler, "Reloads the current map."});
+    CMD_REGISTER("fw", {FWHandler, "Spawns the player where Farore's Wind is set.", {
+            {"clear|warp|backup", LUS::ArgumentType::TEXT}
     }});
-    CMD_REGISTER("entrance", { EntranceHandler, "Sends player to the entered entrance (hex)", {
-        { "entrance", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("entrance", {EntranceHandler, "Sends player to the entered entrance (hex)", {
+            {"entrance", LUS::ArgumentType::NUMBER}
     }});
 
     // Gameplay
-    CMD_REGISTER("kill", { KillPlayerHandler, "Commit suicide." });
+    CMD_REGISTER("kill", {KillPlayerHandler, "Commit suicide."});
 
-    CMD_REGISTER("map",  { LoadSceneHandler, "Load up kak?" });
+    CMD_REGISTER("map", {LoadSceneHandler, "Load up kak?"});
 
-    CMD_REGISTER("rupee", { RupeeHandler, "Set your rupee counter.", {
-        {"amount", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("rupee", {RupeeHandler, "Set your rupee counter.", {
+            {"amount", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("bItem", { BHandler, "Set an item to the B button.", {
-        { "Item ID", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("bItem", {BHandler, "Set an item to the B button.", {
+            {"Item ID", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("spawn", { ActorSpawnHandler, "Spawn an actor.", { { "actor_id", LUS::ArgumentType::NUMBER },
-        { "data", LUS::ArgumentType::NUMBER },
-        { "x", LUS::ArgumentType::PLAYER_POS, true },
-        { "y", LUS::ArgumentType::PLAYER_POS, true },
-        { "z", LUS::ArgumentType::PLAYER_POS, true },
-        { "rx", LUS::ArgumentType::PLAYER_ROT, true },
-        { "ry", LUS::ArgumentType::PLAYER_ROT, true },
-        { "rz", LUS::ArgumentType::PLAYER_ROT, true }
+    CMD_REGISTER("spawn", {ActorSpawnHandler, "Spawn an actor.", {{"actor_id", LUS::ArgumentType::NUMBER},
+                                                                  {"data", LUS::ArgumentType::NUMBER},
+                                                                  {"x", LUS::ArgumentType::PLAYER_POS, true},
+                                                                  {"y", LUS::ArgumentType::PLAYER_POS, true},
+                                                                  {"z", LUS::ArgumentType::PLAYER_POS, true},
+                                                                  {"rx", LUS::ArgumentType::PLAYER_ROT, true},
+                                                                  {"ry", LUS::ArgumentType::PLAYER_ROT, true},
+                                                                  {"rz", LUS::ArgumentType::PLAYER_ROT, true}
     }});
 
-    CMD_REGISTER("pos", { SetPosHandler, "Sets the position of the player.", {
-        { "x", LUS::ArgumentType::PLAYER_POS, true },
-        { "y", LUS::ArgumentType::PLAYER_POS, true },
-        { "z", LUS::ArgumentType::PLAYER_POS, true }
+    CMD_REGISTER("pos", {SetPosHandler, "Sets the position of the player.", {
+            {"x", LUS::ArgumentType::PLAYER_POS, true},
+            {"y", LUS::ArgumentType::PLAYER_POS, true},
+            {"z", LUS::ArgumentType::PLAYER_POS, true}
     }});
 
-    CMD_REGISTER("set", { SetCVarHandler,  "Sets a console variable.", {
-        { "varName", LUS::ArgumentType::TEXT },
-        { "varValue", LUS::ArgumentType::TEXT }
+    CMD_REGISTER("set", {SetCVarHandler, "Sets a console variable.", {
+            {"varName", LUS::ArgumentType::TEXT},
+            {"varValue", LUS::ArgumentType::TEXT}
     }});
 
-    CMD_REGISTER("get", { GetCVarHandler, "Gets a console variable.", {
-        { "varName", LUS::ArgumentType::TEXT }
-    }});
-    
-    CMD_REGISTER("addammo", { AddAmmoHandler, "Adds ammo of an item.", {
-        { "sticks|nuts|bombs|seeds|arrows|bombchus|beans", LUS::ArgumentType::TEXT },
-        { "count", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("get", {GetCVarHandler, "Gets a console variable.", {
+            {"varName", LUS::ArgumentType::TEXT}
     }});
 
-    CMD_REGISTER("takeammo", { TakeAmmoHandler, "Removes ammo of an item.", {
-        { "sticks|nuts|bombs|seeds|arrows|bombchus|beans", LUS::ArgumentType::TEXT },
-        { "count", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("addammo", {AddAmmoHandler, "Adds ammo of an item.", {
+            {"sticks|nuts|bombs|seeds|arrows|bombchus|beans", LUS::ArgumentType::TEXT},
+            {"count", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("bottle", { BottleHandler, "Changes item in a bottle slot.", {
-        { "item", LUS::ArgumentType::TEXT },
-        { "slot", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("takeammo", {TakeAmmoHandler, "Removes ammo of an item.", {
+            {"sticks|nuts|bombs|seeds|arrows|bombchus|beans", LUS::ArgumentType::TEXT},
+            {"count", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("give_item", { GiveItemHandler,  "Gives an item to the player as if it was given from an actor", {
-        { "vanilla|randomizer", LUS::ArgumentType::TEXT },
-        { "giveItemID", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("bottle", {BottleHandler, "Changes item in a bottle slot.", {
+            {"item", LUS::ArgumentType::TEXT},
+            {"slot", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("item", { ItemHandler,  "Sets item ID in arg 1 into slot arg 2. No boundary checks. Use with caution.", {
-        { "slot", LUS::ArgumentType::NUMBER },
-        { "item id", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("give_item", {GiveItemHandler, "Gives an item to the player as if it was given from an actor", {
+            {"vanilla|randomizer", LUS::ArgumentType::TEXT},
+            {"giveItemID", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("invisible", { InvisibleHandler, "Activate Link's Elvish cloak, making him appear invisible.", {
-        { "value", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("item", {ItemHandler, "Sets item ID in arg 1 into slot arg 2. No boundary checks. Use with caution.", {
+            {"slot", LUS::ArgumentType::NUMBER},
+            {"item id", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("giant_link", { GiantLinkHandler, "Turn Link into a giant Lonky boi.", {
-        { "value", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("invisible", {InvisibleHandler, "Activate Link's Elvish cloak, making him appear invisible.", {
+            {"value", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("minish_link", { MinishLinkHandler, "Turn Link into a minish boi.", {
-        { "value", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("giant_link", {GiantLinkHandler, "Turn Link into a giant Lonky boi.", {
+            {"value", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("add_heart_container", { AddHeartContainerHandler, "Give Link a heart! The maximum amount of hearts is 20!" });
-
-    CMD_REGISTER("remove_heart_container", { RemoveHeartContainerHandler, "Remove a heart from Link. The minimal amount of hearts is 3." });
-
-    CMD_REGISTER("gravity", { GravityHandler, "Set gravity level.", {
-        { "value", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("minish_link", {MinishLinkHandler, "Turn Link into a minish boi.", {
+            {"value", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("no_ui", { NoUIHandler, "Disables the UI.", {
-        { "value", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("add_heart_container",
+                 {AddHeartContainerHandler, "Give Link a heart! The maximum amount of hearts is 20!"});
+
+    CMD_REGISTER("remove_heart_container",
+                 {RemoveHeartContainerHandler, "Remove a heart from Link. The minimal amount of hearts is 3."});
+
+    CMD_REGISTER("gravity", {GravityHandler, "Set gravity level.", {
+            {"value", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("freeze", { FreezeHandler, "Freezes Link in place" });
-
-    CMD_REGISTER("defense_modifier", { DefenseModifierHandler, "Sets the defense modifier.", {
-        { "value", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("no_ui", {NoUIHandler, "Disables the UI.", {
+            {"value", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("damage", { DamageHandler, "Deal damage to Link.", {
-        { "value", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("freeze", {FreezeHandler, "Freezes Link in place"});
+
+    CMD_REGISTER("defense_modifier", {DefenseModifierHandler, "Sets the defense modifier.", {
+            {"value", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("heal", { HealHandler, "Heals Link.", {
-        { "value", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("damage", {DamageHandler, "Deal damage to Link.", {
+            {"value", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("fill_magic", { FillMagicHandler, "Fills magic." });
-
-    CMD_REGISTER("empty_magic", { EmptyMagicHandler, "Empties magic." });
-
-    CMD_REGISTER("no_z", { NoZHandler, "Disables Z-button presses.", {
-        { "value", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("heal", {HealHandler, "Heals Link.", {
+            {"value", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("ohko", { OneHitKOHandler, "Activates one hit KO. Any damage kills Link and he cannot gain health in this mode.", {
-        { "value", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("fill_magic", {FillMagicHandler, "Fills magic."});
+
+    CMD_REGISTER("empty_magic", {EmptyMagicHandler, "Empties magic."});
+
+    CMD_REGISTER("no_z", {NoZHandler, "Disables Z-button presses.", {
+            {"value", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("pacifist", { PacifistHandler, "Activates pacifist mode. Prevents Link from using his weapon.", {
-        { "value", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("ohko", {OneHitKOHandler,
+                          "Activates one hit KO. Any damage kills Link and he cannot gain health in this mode.", {
+                                  {"value", LUS::ArgumentType::NUMBER}
+                          }});
+
+    CMD_REGISTER("pacifist", {PacifistHandler, "Activates pacifist mode. Prevents Link from using his weapon.", {
+            {"value", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("paper_link", { PaperLinkHandler, "Link but made out of paper.", {
-        { "value", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("paper_link", {PaperLinkHandler, "Link but made out of paper.", {
+            {"value", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("rainstorm", { RainstormHandler, "Activates rainstorm." });
+    CMD_REGISTER("rainstorm", {RainstormHandler, "Activates rainstorm."});
 
-    CMD_REGISTER("reverse_controls", { ReverseControlsHandler, "Reverses the controls.", {
-        { "value", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("reverse_controls", {ReverseControlsHandler, "Reverses the controls.", {
+            {"value", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("update_rupees", { UpdateRupeesHandler, "Adds rupees.", {
-        { "value", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("update_rupees", {UpdateRupeesHandler, "Adds rupees.", {
+            {"value", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("speed_modifier", { SpeedModifierHandler, "Sets the speed modifier.", {
-        { "value", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("speed_modifier", {SpeedModifierHandler, "Sets the speed modifier.", {
+            {"value", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("boots", { BootsHandler, "Activates boots.", {
-        { "kokiri|iron|hover", LUS::ArgumentType::TEXT },
+    CMD_REGISTER("boots", {BootsHandler, "Activates boots.", {
+            {"kokiri|iron|hover", LUS::ArgumentType::TEXT},
     }});
 
-    CMD_REGISTER("giveshield", { GiveShieldHandler, "Gives a shield and equips it when Link is the right age for it.", {
-        { "deku|hylian|mirror", LUS::ArgumentType::TEXT },
+    CMD_REGISTER("giveshield", {GiveShieldHandler, "Gives a shield and equips it when Link is the right age for it.", {
+            {"deku|hylian|mirror", LUS::ArgumentType::TEXT},
     }});
 
-    CMD_REGISTER("takeshield", { TakeShieldHandler, "Takes a shield and unequips it if Link is wearing it.", {
-        { "deku|hylian|mirror", LUS::ArgumentType::TEXT },
+    CMD_REGISTER("takeshield", {TakeShieldHandler, "Takes a shield and unequips it if Link is wearing it.", {
+            {"deku|hylian|mirror", LUS::ArgumentType::TEXT},
     }});
 
-    CMD_REGISTER("knockback", { KnockbackHandler, "Knocks Link back.", {
-        { "value", LUS::ArgumentType::NUMBER }
+    CMD_REGISTER("knockback", {KnockbackHandler, "Knocks Link back.", {
+            {"value", LUS::ArgumentType::NUMBER}
     }});
 
-    CMD_REGISTER("electrocute", { ElectrocuteHandler, "Electrocutes Link." });
+    CMD_REGISTER("electrocute", {ElectrocuteHandler, "Electrocutes Link."});
 
-    CMD_REGISTER("burn", { BurnHandler, "Burns Link." });
+    CMD_REGISTER("burn", {BurnHandler, "Burns Link."});
 
-    CMD_REGISTER("cucco_storm", { CuccoStormHandler, "Cucco Storm" });
+    CMD_REGISTER("cucco_storm", {CuccoStormHandler, "Cucco Storm"});
 
-    CMD_REGISTER("gen_rando", { GenerateRandoHandler, "Generate a randomizer seed", {
-        { "seed|count", LUS::ArgumentType::NUMBER, true },
-        { "testing", LUS::ArgumentType::NUMBER, true },
+    CMD_REGISTER("gen_rando", {GenerateRandoHandler, "Generate a randomizer seed", {
+            {"seed|count", LUS::ArgumentType::NUMBER, true},
+            {"testing", LUS::ArgumentType::NUMBER, true},
     }});
 
-    CMD_REGISTER("cosmetics", { CosmeticsHandler, "Change cosmetics.", {
-        { "reset|randomize", LUS::ArgumentType::TEXT },
+    CMD_REGISTER("cosmetics", {CosmeticsHandler, "Change cosmetics.", {
+            {"reset|randomize", LUS::ArgumentType::TEXT},
     }});
 
-    CMD_REGISTER("sfx", { SfxHandler, "Change SFX.", {
-        { "reset|randomize", LUS::ArgumentType::TEXT },
+    CMD_REGISTER("sfx", {SfxHandler, "Change SFX.", {
+            {"reset|randomize", LUS::ArgumentType::TEXT},
     }});
 
     CVarSave();

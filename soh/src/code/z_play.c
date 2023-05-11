@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "soh/Enhancements/gameconsole.h"
-#include <ImGuiImpl.h>
+#include <Gui.h>
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/debugconsole.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"

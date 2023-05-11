@@ -1,5 +1,5 @@
 #include "colViewer.h"
-#include <ImGuiImpl.h>
+#include <Gui.h>
 #include "../../frame_interpolation.h"
 #include "../../UIWidgets.hpp"
 
@@ -288,7 +288,7 @@ void CreateSphereData() {
 }
 
 void InitColViewer() {
-    LUS::AddWindow("Developer Tools", "Collision Viewer", DrawColViewerWindow);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Developer Tools", "Collision Viewer", DrawColViewerWindow);
 
     CreateCylinderData();
     CreateSphereData();

@@ -1,7 +1,7 @@
 #include "randomizer_item_tracker.h"
 #include "../../util.h"
 #include "../../OTRGlobals.h"
-#include <ImGuiImpl.h>
+#include <Gui.h>
 #include "../../UIWidgets.hpp"
 
 #include <map>
@@ -637,7 +637,7 @@ void DrawNotes(bool resizeable = false) {
     ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput);
     if (ImGui::IsItemDeactivatedAfterEdit() && IsValidSaveFile()) {
         CVarSetString(("gItemTrackerNotes" + std::to_string(gSaveContext.fileNum)).c_str(), std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::EndGroup();
 }
@@ -985,7 +985,7 @@ void DrawItemTrackerOptions(bool& open) {
         CVarSetFloat("gItemTrackerBgColorG", ChromaKeyBackground.y);
         CVarSetFloat("gItemTrackerBgColorB", ChromaKeyBackground.z);
         CVarSetFloat("gItemTrackerBgColorA", ChromaKeyBackground.w);
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::PopItemWidth();
 
@@ -1081,8 +1081,8 @@ void DrawItemTrackerOptions(bool& open) {
 }
 
 void InitItemTracker() {
-    LUS::AddWindow("Randomizer", "Item Tracker", DrawItemTracker, CVarGetInteger("gItemTrackerEnabled", 0) == 1);
-    LUS::AddWindow("Randomizer", "Item Tracker Settings", DrawItemTrackerOptions);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Randomizer", "Item Tracker", DrawItemTracker, CVarGetInteger("gItemTrackerEnabled", 0) == 1);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Randomizer", "Item Tracker Settings", DrawItemTrackerOptions);
     float trackerBgR = CVarGetFloat("gItemTrackerBgColorR", 0);
     float trackerBgG = CVarGetFloat("gItemTrackerBgColorG", 0);
     float trackerBgB = CVarGetFloat("gItemTrackerBgColorB", 0);
@@ -1107,6 +1107,6 @@ void InitItemTracker() {
     });
     LUS::RegisterHook<LUS::DeleteFile>([](uint32_t fileNum) {
         CVarSetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     });
 }

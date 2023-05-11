@@ -1,5 +1,5 @@
 #pragma once
-#include <ImGuiImpl.h>
+#include <Gui.h>
 
 #define PATCH_GFX(path, name, cvar, index, instruction) \
     if (CVarGetInteger(cvar, 0)) { \

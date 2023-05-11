@@ -1,7 +1,7 @@
 #include "actorViewer.h"
 #include "../../util.h"
 #include "../../UIWidgets.hpp"
-#include <ImGuiImpl.h>
+#include <Gui.h>
 #include "ResourceManager.h"
 #include "DisplayList.h"
 #include "../../OTRGlobals.h"
@@ -138,7 +138,7 @@ void DrawDLViewer(bool& open) {
 }
 
 void InitDLViewer() {
-    LUS::AddWindow("Developer Tools", "Display List Viewer", DrawDLViewer);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Developer Tools", "Display List Viewer", DrawDLViewer);
 
     displayListsSearchResults = ResourceMgr_ListFiles("*DL", &displayListsSearchResultsCount);
 }

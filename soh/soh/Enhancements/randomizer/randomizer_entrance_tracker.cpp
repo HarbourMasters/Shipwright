@@ -1,6 +1,6 @@
 #include "randomizer_entrance_tracker.h"
 #include "soh/OTRGlobals.h"
-#include <ImGuiImpl.h>
+#include <Gui.h>
 #include "soh/UIWidgets.hpp"
 
 #include <map>
@@ -919,7 +919,7 @@ void DrawEntranceTracker(bool& open) {
 }
 
 void InitEntranceTracker() {
-    LUS::AddWindow("Randomizer", "Entrance Tracker", DrawEntranceTracker,
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Randomizer", "Entrance Tracker", DrawEntranceTracker,
                     CVarGetInteger("gEntranceTrackerEnabled", 0) == 1);
 
     // Setup hooks for loading and clearing the entrance tracker data

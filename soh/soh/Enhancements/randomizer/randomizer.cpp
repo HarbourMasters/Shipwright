@@ -9,7 +9,7 @@
 #include <libultraship/bridge.h>
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
-#include <ImGuiImpl.h>
+#include <Gui.h>
 #include <thread>
 #include "3drando/rando_main.hpp"
 #include "3drando/random.hpp"
@@ -4361,7 +4361,7 @@ void DrawRandoEditor(bool& open) {
                                             excludedLocationString += ",";
                                         }
                                         CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
-                                        LUS::RequestCvarSaveOnNextTick();
+                                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
                                     ImGui::Text(rcObject->rcShortName.c_str());
@@ -4402,7 +4402,7 @@ void DrawRandoEditor(bool& open) {
                                             excludedLocationString += ",";
                                         }
                                         CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
-                                        LUS::RequestCvarSaveOnNextTick();
+                                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
                                     ImGui::Text(rcObject->rcShortName.c_str());
@@ -5443,7 +5443,7 @@ void InitRandoItemTable() {
 
 
 void InitRando() {
-    LUS::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     InitRandoItemTable();

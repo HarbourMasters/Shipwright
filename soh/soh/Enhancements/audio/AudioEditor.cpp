@@ -5,8 +5,7 @@
 #include <set>
 #include <string>
 #include <sstream>
-#include <libultraship/bridge.h>
-#include <ImGuiImpl.h>
+#include <libultraship/libultraship.h>
 #include <functions.h>
 #include "../randomizer/3drando/random.hpp"
 #include "../../OTRGlobals.h"
@@ -158,7 +157,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
     const std::string randomizeAllButton = "Randomize All" + hiddenTabId;
     if (ImGui::Button(resetAllButton.c_str())) {
         ResetGroup(map, type);
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         if (type == SEQ_BGM_WORLD) {
             ReplayCurrentBGM();
         }
@@ -166,7 +165,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
     ImGui::SameLine();
     if (ImGui::Button(randomizeAllButton.c_str())) {
         RandomizeGroup(type);
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         if (type == SEQ_BGM_WORLD) {
             ReplayCurrentBGM();
         }
@@ -205,7 +204,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
 
                 if (ImGui::Selectable(seqData.label.c_str())) {
                     CVarSetInteger(cvarKey.c_str(), value);
-                    LUS::RequestCvarSaveOnNextTick();
+                    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                     UpdateCurrentBGM(defaultValue, type);
                 }
             }
@@ -219,7 +218,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
         ImGui::PushItemWidth(-FLT_MIN);
         if (ImGui::Button(resetButton.c_str())) {
             CVarSetInteger(cvarKey.c_str(), defaultValue);
-            LUS::RequestCvarSaveOnNextTick();
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             UpdateCurrentBGM(defaultValue, seqData.category);
         }
         ImGui::SameLine();
@@ -236,7 +235,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
                 auto it = validSequences.begin();
                 const auto& seqData = *std::next(it, rand() % validSequences.size());
                 CVarSetInteger(cvarKey.c_str(), seqData->sequenceId);
-                LUS::RequestCvarSaveOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 UpdateCurrentBGM(seqData->sequenceId, type);
             } 
         }
@@ -378,7 +377,7 @@ void DrawSfxEditor(bool& open) {
                 const std::string resetButton = "Reset##linkVoiceFreqMultiplier";
                 if (ImGui::Button(resetButton.c_str())) {
                     CVarSetFloat("gLinkVoiceFreqMultiplier", 1.0f);
-                    LUS::RequestCvarSaveOnNextTick();
+                    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
 
                 ImGui::NewLine();
@@ -552,7 +551,7 @@ void DrawSfxEditor(bool& open) {
 
 void InitAudioEditor() {
     //Draw the bar in the menu.
-    LUS::AddWindow("Enhancements", "Audio Editor", DrawSfxEditor);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Enhancements", "Audio Editor", DrawSfxEditor);
 }
 
 std::vector<SeqType> allTypes = { SEQ_BGM_WORLD, SEQ_BGM_EVENT, SEQ_BGM_BATTLE, SEQ_OCARINA, SEQ_FANFARE, SEQ_INSTRUMENT, SEQ_SFX };
@@ -562,7 +561,7 @@ void AudioEditor_RandomizeAll() {
         RandomizeGroup(type);
     }
 
-    LUS::RequestCvarSaveOnNextTick();
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ReplayCurrentBGM();
 }
 
@@ -571,6 +570,6 @@ void AudioEditor_ResetAll() {
         ResetGroup(AudioCollection::Instance->GetAllSequences(), type);
     }
 
-    LUS::RequestCvarSaveOnNextTick();
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ReplayCurrentBGM();
 }

@@ -1,7 +1,7 @@
 #include "actorViewer.h"
 #include "../../util.h"
 #include "../../UIWidgets.hpp"
-#include <ImGuiImpl.h>
+#include <Gui.h>
 
 #include <array>
 #include <bit>
@@ -787,5 +787,5 @@ void DrawActorViewer(bool& open) {
 }
 
 void InitActorViewer() {
-    LUS::AddWindow("Developer Tools", "Actor Viewer", DrawActorViewer);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Developer Tools", "Actor Viewer", DrawActorViewer);
 }

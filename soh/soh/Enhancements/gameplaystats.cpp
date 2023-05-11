@@ -2,7 +2,7 @@ extern "C" {
 #include "gameplaystats.h"
 }
 
-#include "ImGuiImpl.h"
+#include "Gui.h"
 #include "../UIWidgets.hpp"
 
 #include <vector>
@@ -667,7 +667,7 @@ void SetupDisplayColors() {
 }
 
 extern "C" void InitStatTracker() {
-    LUS::AddWindow("Enhancements", "Gameplay Stats", DrawStatsTracker,
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Enhancements", "Gameplay Stats", DrawStatsTracker,
                     CVarGetInteger("gGameplayStatsEnabled", 0) == 1);
     SetupDisplayNames();
     SetupDisplayColors();
