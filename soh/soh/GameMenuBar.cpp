@@ -172,10 +172,13 @@ namespace GameMenuBar {
                 }
                 if (ImGui::Button(GetWindowButtonText("Customize In-game Controls", CVarGetInteger("gGameControlEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
                 {
-                    bool currentValue = CVarGetInteger("gGameControlEditorEnabled", 0);
-                    CVarSetInteger("gGameControlEditorEnabled", !currentValue);
-                    Ship::RequestCvarSaveOnNextTick();
-                    Ship::EnableWindow("Game Control Editor", CVarGetInteger("gGameControlEditorEnabled", 0));
+                    if (CVarGetInteger("gGameControlEditorEnabled", 0)) {
+                        CVarClear("gGameControlEditorEnabled");
+                    } else {
+                        CVarSetInteger("gGameControlEditorEnabled", 1);
+                    }
+                    LUS::RequestCvarSaveOnNextTick();
+                    LUS::EnableWindow("Game Control Editor", CVarGetInteger("gGameControlEditorEnabled", 0));
                 }
                 UIWidgets::PaddedSeparator();
                 ImGui::PopStyleColor(1);

@@ -10,7 +10,7 @@
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
 #include <libultraship/bridge.h>
-#include <libultraship/libultra/controller.h>
+#include <libultraship/libultraship.h>
 #include <Utils/StringHelper.h>
 #include <ImGuiImpl.h>
 
@@ -329,7 +329,7 @@ namespace GameControlEditor {
     }
 
     void DrawLEDControlPanel() {
-        Ship::BeginGroupPanel("LED Colors", ImGui::GetContentRegionAvail());
+        LUS::BeginGroupPanel("LED Colors", ImGui::GetContentRegionAvail());
         static const char* ledSources[4] = { "Original Tunic Colors", "Cosmetics Tunic Colors", "Health Colors", "Custom" };
         UIWidgets::PaddedText("Source");
         UIWidgets::EnhancementCombobox("gLedColorSource", ledSources, LED_SOURCE_TUNIC_ORIGINAL);
@@ -338,18 +338,16 @@ namespace GameControlEditor {
                      "Custom: single, solid color");
         if (CVarGetInteger("gLedColorSource", 1) == 3) {
             UIWidgets::Spacer(3);
-            auto port1Color = CVarGetColor("gLedPort1Color", { 255, 255, 255, 255 });
-            ImVec4 colorVec = { port1Color.r / 255.0f, port1Color.g / 255.0f, port1Color.b / 255.0f,
-                                port1Color.a / 255.0f };
+            auto port1Color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
+            ImVec4 colorVec = { port1Color.r / 255.0f, port1Color.g / 255.0f, port1Color.b / 255.0f, 1.0f };
             if (ImGui::ColorEdit3("", (float*)&colorVec, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
-                Color_RGBA8 color;
+                Color_RGB8 color;
                 color.r = colorVec.x * 255.0;
                 color.g = colorVec.y * 255.0;
                 color.b = colorVec.z * 255.0;
-                color.a = colorVec.w * 255.0;
 
-                CVarSetColor("gLedPort1Color", color);
-                Ship::RequestCvarSaveOnNextTick();
+                CVarSetColor24("gLedPort1Color", color);
+                LUS::RequestCvarSaveOnNextTick();
             }
             ImGui::SameLine();
             ImGui::Text("Custom Color");
@@ -361,7 +359,7 @@ namespace GameControlEditor {
             CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH, "Override redundant for health source.",
             UIWidgets::CheckboxGraphics::Cross, true);
         DrawHelpIcon("Shows red color when health is critical, otherwise displays according to color source.");
-        Ship::EndGroupPanel();
+        LUS::EndGroupPanel();
     }
 
     void DrawUI(bool& open) {
@@ -397,7 +395,7 @@ namespace GameControlEditor {
                 DrawMiscControlPanel();
             } else {
                 DrawCustomButtons();
-                if (CurrentPort == 1 && Ship::Window::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0)->CanSetLed()) {
+                if (CurrentPort == 1 && LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0)->CanSetLed()) {
                     DrawLEDControlPanel();
                 }
             }

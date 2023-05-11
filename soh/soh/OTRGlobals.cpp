@@ -121,9 +121,9 @@ SpeechSynthesizer* SpeechSynthesizer::Instance;
 extern "C" char** cameraStrings;
 std::vector<std::shared_ptr<std::string>> cameraStdStrings;
 
-Color_RGBA8 kokiriColor = { 0x1E, 0x69, 0x1B, 255 };
-Color_RGBA8 goronColor = { 0x64, 0x14, 0x00, 25 };
-Color_RGBA8 zoraColor = { 0x00, 0xEC, 0x64, 255 };
+Color_RGB8 kokiriColor = { 0x1E, 0x69, 0x1B };
+Color_RGB8 goronColor = { 0x64, 0x14, 0x00 };
+Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
 
 // OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
 const char* constCameraStrings[] = {
@@ -1588,18 +1588,18 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
         auto brightness = CVarGetFloat("gLedBrightness", 1.0f) / 1.0f;
         auto physicalDevice = controlDeck->GetDeviceFromPortIndex(i);
         if (i == 0 && physicalDevice->CanSetLed()) {
-            Color_RGBA8 color = { 0, 0, 0, 0 };
+            Color_RGB8 color = { 0, 0, 0 };
             if (brightness > 0.0f) {
                 LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL));
                 bool criticalOverride = CVarGetInteger("gLedCriticalOverride", 1);
                 if (criticalOverride || source == LED_SOURCE_HEALTH) {
                     if (HealthMeter_IsCritical()) {
-                        color = { 0xFF, 0, 0, 255 };
+                        color = { 0xFF, 0, 0 };
                     } else if (source == LED_SOURCE_HEALTH) {
                         if (gSaveContext.health / gSaveContext.healthCapacity <= 0.4f) {
-                            color = { 0xFF, 0xFF, 0, 255 };
+                            color = { 0xFF, 0xFF, 0 };
                         } else {
-                            color = { 0, 0xFF, 0, 255 };
+                            color = { 0, 0xFF, 0 };
                         }
                     }
                 }
@@ -1607,28 +1607,31 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
                     switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
                         case PLAYER_TUNIC_KOKIRI:
                             color = source == LED_SOURCE_TUNIC_COSMETICS
-                                        ? CVarGetColor("gCosmetics.Link_KokiriTunic.Value", kokiriColor)
+                                        ? CVarGetColor24("gCosmetics.Link_KokiriTunic.Value", kokiriColor)
                                         : kokiriColor;
                             break;
                         case PLAYER_TUNIC_GORON:
                             color = source == LED_SOURCE_TUNIC_COSMETICS
-                                        ? CVarGetColor("gCosmetics.Link_GoronTunic.Value", goronColor)
+                                        ? CVarGetColor24("gCosmetics.Link_GoronTunic.Value", goronColor)
                                         : goronColor;
                             break;
                         case PLAYER_TUNIC_ZORA:
                             color = source == LED_SOURCE_TUNIC_COSMETICS
-                                        ? CVarGetColor("gCosmetics.Link_ZoraTunic.Value", zoraColor)
+                                        ? CVarGetColor24("gCosmetics.Link_ZoraTunic.Value", zoraColor)
                                         : zoraColor;
                             break;
                     }
                 }
                 if (source == LED_SOURCE_CUSTOM) {
-                    color = CVarGetColor("gLedPort1Color", { 255, 255, 255, 255 });
+                    color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
                 }
+                color.r = color.r * brightness;
+                color.g = color.g * brightness;
+                color.b = color.b * brightness;
             }
             // We call this every tick, SDL accounts for this use and prevents driver spam
             // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
-            physicalDevice->SetLed(i, (color.r * brightness), (color.g * brightness), (color.b * brightness));
+            physicalDevice->SetLedColor(i, color);
         }
 
         physicalDevice->SetRumble(i, rumble);
