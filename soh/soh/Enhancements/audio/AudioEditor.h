@@ -1,13 +1,15 @@
 #pragma once
 #include "stdint.h"
 
-#include "GuiWindow.h"
+#include "libultraship/libultraship.h"
 #include <ImGui/imgui.h>
 
-class AudioEditorWindow : public GuiWindow, public std::enable_shared_from_this<AudioEditorWindow> {
+class AudioEditor : public LUS::GuiWindow {
+    public:
+        using LUS::GuiWindow::GuiWindow;
 
-}
+        void Draw() override;
+};
 
-// void InitAudioEditor();
 void AudioEditor_RandomizeAll();
 void AudioEditor_ResetAll();

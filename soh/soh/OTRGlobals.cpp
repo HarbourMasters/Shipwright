@@ -736,7 +736,6 @@ extern "C" void InitOTR() {
 #elif defined(__WIIU__)
     LUS::WiiU::Init();
 #endif
-    LUS::RegisterMenuDrawMethod(SohGui::Draw);
 
     OTRGlobals::Instance = new OTRGlobals();
     SohGui::SetupHooks();
@@ -759,7 +758,6 @@ extern "C" void InitOTR() {
     OTRAudio_Init();
     InitCosmeticsEditor();
     GameControlEditor::Init();
-    InitAudioEditor();
     DebugConsole_Init();
     Debug_Init();
     Rando_Init();

@@ -140,6 +140,8 @@ namespace SohGui {
     void SetupGuiElements() {
         mSohMenuBar = std::make_shared<SohMenuBar>();
         LUS::Gui::SetMenuBar(mSohMenuBar);
+        mAudioEditorWindow = std::make_shared<AudioEditor>();
+        LUS::Gui::AddWindow(mAudioEditorWindow);
     }
 
     void SetupHooks() {

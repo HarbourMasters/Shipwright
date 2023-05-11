@@ -9,7 +9,8 @@
 #define SohGui_hpp
 
 #include <stdio.h>
-include "SohMenuBar.h"
+#include "SohMenuBar.h"
+#include "Enhancements/audio/AudioEditor.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,6 +26,7 @@ namespace SohGui {
     void SetupGuiElements();
     void Draw();
     std::shared_ptr<SohMenuBar> mSohMenuBar;
+    std::shared_ptr<AudioEditor> mAudioEditorWindow;
 }
 
 #endif /* SohGui_hpp */

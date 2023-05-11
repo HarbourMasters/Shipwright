@@ -549,11 +549,6 @@ void DrawSfxEditor(bool& open) {
     ImGui::End();
 }
 
-void AudioEditorWindow::Init() {
-    //Draw the bar in the menu.
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Enhancements", "Audio Editor", DrawSfxEditor);
-}
-
 std::vector<SeqType> allTypes = { SEQ_BGM_WORLD, SEQ_BGM_EVENT, SEQ_BGM_BATTLE, SEQ_OCARINA, SEQ_FANFARE, SEQ_INSTRUMENT, SEQ_SFX };
 
 void AudioEditor_RandomizeAll() {
