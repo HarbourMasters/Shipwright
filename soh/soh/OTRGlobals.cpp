@@ -1623,7 +1623,7 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
                     }
                 }
                 if (source == LED_SOURCE_CUSTOM) {
-                    color = CVarGetColor("gLedCustomColor", { 255, 255, 255, 255 });
+                    color = CVarGetColor("gLedPort1Color", { 255, 255, 255, 255 });
                 }
             }
             // We call this every tick, SDL accounts for this use and prevents driver spam
