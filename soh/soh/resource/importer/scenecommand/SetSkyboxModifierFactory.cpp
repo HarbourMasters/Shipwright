@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetSkyboxModifier.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Resource> SetSkyboxModifierFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                                  std::shared_ptr<ResourceInitData> initData,
                                                                  std::shared_ptr<BinaryReader> reader) {
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> SetSkyboxModifierFactory::ReadResource(std::shared_ptr
     return resource;
 }
 
-void Ship::SetSkyboxModifierFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetSkyboxModifierFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource) {
 	std::shared_ptr<SetSkyboxModifier> setSkyboxModifier = std::static_pointer_cast<SetSkyboxModifier>(resource);
 	ResourceVersionFactory::ParseFileBinary(reader, setSkyboxModifier);
@@ -36,4 +36,4 @@ void Ship::SetSkyboxModifierFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRea
     setSkyboxModifier->modifier.sunMoonDisabled = reader->ReadInt8();
 }
 
-} // namespace Ship
+} // namespace LUS

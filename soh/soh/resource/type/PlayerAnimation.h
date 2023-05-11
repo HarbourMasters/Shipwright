@@ -7,7 +7,7 @@
 #include "Vec3f.h"
 #include "Color3b.h"
 
-namespace Ship {
+namespace LUS {
 
 class PlayerAnimation : public Resource {
   public:
@@ -18,4 +18,4 @@ class PlayerAnimation : public Resource {
 
     std::vector<int16_t> limbRotData;
 };
-} // namespace Ship
+} // namespace LUS

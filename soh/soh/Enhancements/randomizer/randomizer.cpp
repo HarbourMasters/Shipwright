@@ -2155,7 +2155,8 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_ICE_CAVERN_MAP:
             if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
                 GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) {
+                (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
+                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
                 return GI_MAP;
             } else {
                 return (GetItemID)randoGet;
@@ -2173,7 +2174,8 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_ICE_CAVERN_COMPASS:
             if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
                 GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) {
+                (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
+                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
                 return GI_COMPASS;
             } else {
                 return (GetItemID)randoGet;
@@ -2186,15 +2188,16 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_SHADOW_TEMPLE_BOSS_KEY:
             if (GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
                 GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) {
+                (GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
+                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
                 return GI_KEY_BOSS;
             } else {
                 return (GetItemID)randoGet;
             }
         case RG_GANONS_CASTLE_BOSS_KEY:
-            if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_VANILLA ||
-                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_OWN_DUNGEON ||
-                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_STARTWITH) {
+            if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_STARTWITH ||
+                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_VANILLA ||
+                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_OWN_DUNGEON) {
                 return GI_KEY_BOSS;
             } else {
                 return (GetItemID)randoGet;
@@ -2210,7 +2213,8 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_GANONS_CASTLE_SMALL_KEY:
             if (GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
                 GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) {
+                (GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
+                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
                 return GI_KEY_SMALL;
             } else {
                 return (GetItemID)randoGet;
@@ -2387,10 +2391,13 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
         case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
         case RG_GANONS_CASTLE_SMALL_KEY:
-            if (GetRandoSettingValue(RSK_KEYSANITY) > 2) {
-                return false;
+            if (GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
+                GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA ||
+                (GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
+                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
+                return true;
             }
-            return true;
+            return false;
         case RG_GERUDO_FORTRESS_SMALL_KEY:
             if (GetRandoSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA) {
                 return false;
@@ -2403,14 +2410,15 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_SHADOW_TEMPLE_BOSS_KEY:
             if (GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
                 GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) {
+                (GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
+                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
                 return true;
             }
             return false;
         case RG_GANONS_CASTLE_BOSS_KEY:
-            if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_VANILLA ||
-                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_OWN_DUNGEON ||
-                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_STARTWITH) {
+            if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_STARTWITH ||
+                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_VANILLA ||
+                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_OWN_DUNGEON) {
                 return true;
             }
             return false;
@@ -2436,7 +2444,8 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_ICE_CAVERN_MAP:
             if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
                 GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) {
+                (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
+                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
                 return true;
             }
             return false;
@@ -3081,7 +3090,10 @@ void DrawRandoEditor(bool& open) {
     }
 
     if (!open) {
-        CVarSetInteger("gRandomizerSettingsEnabled", 0);
+        if (CVarGetInteger("gRandomizerSettingsEnabled", 0)) {
+            CVarClear("gRandomizerSettingsEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 
@@ -4361,7 +4373,7 @@ void DrawRandoEditor(bool& open) {
                                             excludedLocationString += ",";
                                         }
                                         CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
-                                        Ship::RequestCvarSaveOnNextTick();
+                                        LUS::RequestCvarSaveOnNextTick();
                                     }
                                     ImGui::SameLine();
                                     ImGui::Text(rcObject->rcShortName.c_str());
@@ -4402,7 +4414,7 @@ void DrawRandoEditor(bool& open) {
                                             excludedLocationString += ",";
                                         }
                                         CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
-                                        Ship::RequestCvarSaveOnNextTick();
+                                        LUS::RequestCvarSaveOnNextTick();
                                     }
                                     ImGui::SameLine();
                                     ImGui::Text(rcObject->rcShortName.c_str());
@@ -5443,7 +5455,7 @@ void InitRandoItemTable() {
 
 
 void InitRando() {
-    Ship::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
+    LUS::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor, CVarGetInteger("gRandomizerSettingsEnabled", 0));
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     InitRandoItemTable();

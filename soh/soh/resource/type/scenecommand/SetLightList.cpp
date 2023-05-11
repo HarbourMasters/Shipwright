@@ -1,6 +1,6 @@
 #include "SetLightList.h"
 
-namespace Ship {
+namespace LUS {
 void* SetLightList::GetPointer() {
     return lightList.data();
 }
@@ -8,4 +8,4 @@ void* SetLightList::GetPointer() {
 size_t SetLightList::GetPointerSize() {
 	return lightList.size() * sizeof(LightInfo);
 }
-} // namespace Ship
+} // namespace LUS

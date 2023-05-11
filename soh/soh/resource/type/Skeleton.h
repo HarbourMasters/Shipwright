@@ -5,7 +5,7 @@
 #include "SkeletonLimb.h"
 #include <z64animation.h>
 
-namespace Ship {
+namespace LUS {
 
 enum class SkeletonType {
     Normal,
@@ -88,4 +88,4 @@ class SkeletonPatcher {
 };
 
 
-} // namespace Ship
+} // namespace LUS

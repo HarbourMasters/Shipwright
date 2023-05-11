@@ -442,6 +442,8 @@ void PolygonType1::DeclareReferences(const std::string& prefix)
 		{
 			listAddress = Seg2Filespace(list, parent->baseAddress);
 			uint32_t auxPtr = listAddress;
+
+			multiList.reserve(count);
 			for (size_t i = 0; i < count; ++i)
 			{
 				BgImage bg(false, prefix, auxPtr, parent);
@@ -545,6 +547,8 @@ void PolygonType2::ParseRawData()
 	end = BitConverter::ToUInt32BE(rawData, rawDataIndex + 0x08);
 
 	uint32_t currentPtr = GETSEGOFFSET(start);
+
+	polyDLists.reserve(num);
 	for (size_t i = 0; i < num; i++)
 	{
 		PolygonDlist entry(parent);

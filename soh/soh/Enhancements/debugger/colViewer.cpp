@@ -53,7 +53,10 @@ static std::vector<Vtx> sphereVtx;
 // Draws the ImGui window for the collision viewer
 void DrawColViewerWindow(bool& open) {
     if (!open) {
-        CVarSetInteger("gCollisionViewerEnabled", 0);
+        if (CVarGetInteger("gCollisionViewerEnabled", 0)) {
+            CVarClear("gCollisionViewerEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 
@@ -288,7 +291,7 @@ void CreateSphereData() {
 }
 
 void InitColViewer() {
-    Ship::AddWindow("Developer Tools", "Collision Viewer", DrawColViewerWindow);
+    LUS::AddWindow("Developer Tools", "Collision Viewer", DrawColViewerWindow, CVarGetInteger("gCollisionViewerEnabled", 0));
 
     CreateCylinderData();
     CreateSphereData();

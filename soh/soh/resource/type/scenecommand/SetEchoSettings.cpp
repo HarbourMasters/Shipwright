@@ -1,6 +1,6 @@
 #include "SetEchoSettings.h"
 
-namespace Ship {
+namespace LUS {
 void* SetEchoSettings::GetPointer() {
     return &settings;
 }
@@ -8,4 +8,4 @@ void* SetEchoSettings::GetPointer() {
 size_t SetEchoSettings::GetPointerSize() {
 	return sizeof(EchoSettings);
 }
-} // namespace Ship
+} // namespace LUS

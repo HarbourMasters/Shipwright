@@ -3173,8 +3173,8 @@ void KaleidoScope_LoadDungeonMap(PlayState* play) {
 
     interfaceCtx->mapSegmentName[0] = sDungeonMapTexs[R_MAP_TEX_INDEX];
     interfaceCtx->mapSegmentName[1] = sDungeonMapTexs[R_MAP_TEX_INDEX + 1];
-    interfaceCtx->mapSegment[0] = GetResourceDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX], true);
-    interfaceCtx->mapSegment[1] = GetResourceDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX + 1], true);
+    interfaceCtx->mapSegment[0] = GetResourceDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX]);
+    interfaceCtx->mapSegment[1] = GetResourceDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]);
 }
 
 void KaleidoScope_UpdateDungeonMap(PlayState* play) {

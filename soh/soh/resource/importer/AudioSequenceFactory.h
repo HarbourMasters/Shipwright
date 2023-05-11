@@ -3,7 +3,7 @@
 #include "Resource.h"
 #include "ResourceFactory.h"
 
-namespace Ship {
+namespace LUS {
 class AudioSequenceFactory : public ResourceFactory
 {
   public:
@@ -17,4 +17,4 @@ class AudioSequenceFactoryV0 : public ResourceVersionFactory
   public:
     void ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<Resource> resource) override;
 };
-}; // namespace Ship
+}; // namespace LUS
