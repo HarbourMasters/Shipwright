@@ -1,4 +1,5 @@
 #include "randomizer_check_tracker.h"
+#include "randomizer_check_tracker_window.h"
 #include "../../OTRGlobals.h"
 #include <Gui.h>
 #include "../../UIWidgets.hpp"

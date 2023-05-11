@@ -11,6 +11,7 @@ class AudioEditor : public LUS::GuiWindow {
         void Draw() override;
         void Init() override {};
         void Update() override {};
+        ~AudioEditor() {};
 };
 
 void AudioEditor_RandomizeAll();
