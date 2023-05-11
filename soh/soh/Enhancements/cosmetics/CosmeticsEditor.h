@@ -1,5 +1,6 @@
 #pragma once
 #include <Gui.h>
+#include <libultraship/libultraship.h>
 
 #define PATCH_GFX(path, name, cvar, index, instruction) \
     if (CVarGetInteger(cvar, 0)) { \
@@ -28,3 +29,11 @@ ImVec4 GetRandomValue(int MaximumPossible);
 void CosmeticsEditor_RandomizeAll();
 void CosmeticsEditor_ResetAll();
 void ApplyOrResetCustomGfxPatches(bool manualChange = true);
+
+class CosmeticsEditorWindow : public LUS::GuiWindow {
+  public:
+    using GuiWindow::GuiWindow;
+
+    void Init() override;
+    void Draw() override;
+};

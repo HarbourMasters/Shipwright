@@ -139,9 +139,13 @@ namespace SohGui {
 
     void SetupGuiElements() {
         mSohMenuBar = std::make_shared<SohMenuBar>();
-        LUS::Gui::SetMenuBar(mSohMenuBar);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SetMenuBar(mSohMenuBar);
         mAudioEditorWindow = std::make_shared<AudioEditor>();
-        LUS::Gui::AddWindow(mAudioEditorWindow);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mAudioEditorWindow);
+        mGameControlEditorWindow = std::make_shared<GameControlEditorWindow>();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mGameControlEditorWindow);
+        mCosmeticsEditorWindow = std::make_shared<CosmeticsEditorWindow>();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mCosmeticsEditorWindow);
     }
 
     void SetupHooks() {

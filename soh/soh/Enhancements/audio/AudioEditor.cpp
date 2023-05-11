@@ -309,7 +309,7 @@ void DrawSfxEditor(bool& open) {
     if (!open) {
         if (CVarGetInteger("gAudioEditor.WindowOpen", 0)) {
             CVarClear("gAudioEditor.WindowOpen");
-            LUS::RequestCvarSaveOnNextTick();
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         return;
     }

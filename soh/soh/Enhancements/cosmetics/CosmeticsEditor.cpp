@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <libultraship/libultra/types.h>
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include <libultraship/libultraship.h>
 
 #include "soh/UIWidgets.hpp"
 
@@ -1666,8 +1667,8 @@ static const char* colorSchemes[2] = {
     "Gamecube",
 };
 
-void DrawCosmeticsEditor(bool& open) {
-    if (!open) {
+void CosmeticsEditorWindow::Draw() {
+    if (!mIsOpen) {
         if (CVarGetInteger("gCosmeticsEditorEnabled", 0)) {
             CVarClear("gCosmeticsEditorEnabled");
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -1676,7 +1677,7 @@ void DrawCosmeticsEditor(bool& open) {
     }
 
     ImGui::SetNextWindowSize(ImVec2(480, 520), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Cosmetics Editor", &open)) {
+    if (!ImGui::Begin("Cosmetics Editor", &mIsOpen)) {
         ImGui::End();
         return;
     }
@@ -1806,9 +1807,7 @@ void RegisterOnGameFrameUpdateHook() {
     });
 }
 
-void InitCosmeticsEditor() {
-    // Draw the bar in the menu.
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Enhancements", "Cosmetics Editor", DrawCosmeticsEditor);
+void CosmeticsEditorWindow::Init() {
     // Convert the `current color` into the format that the ImGui color picker expects
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
         Color_RGBA8 defaultColor = {cosmeticOption.defaultColor.x, cosmeticOption.defaultColor.y, cosmeticOption.defaultColor.z, cosmeticOption.defaultColor.w};
