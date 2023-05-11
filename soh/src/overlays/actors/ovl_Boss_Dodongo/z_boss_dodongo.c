@@ -87,7 +87,7 @@ void func_808C12C4(u8* arg1, s16 arg2) {
 
 void func_808C1554(void* arg0, void* floorTex, s32 arg2, f32 arg3) {
     arg0 = GetResourceDataByNameHandlingMQ(arg0);
-    floorTex = GetResourceDataByName(floorTex, false);
+    floorTex = GetResourceDataByName(floorTex);
 
     u16* temp_s3 = SEGMENTED_TO_VIRTUAL(arg0);
     u16* temp_s1 = SEGMENTED_TO_VIRTUAL(floorTex);
@@ -186,8 +186,8 @@ void BossDodongo_Init(Actor* thisx, PlayState* play) {
     Collider_SetJntSph(play, &this->collider, &this->actor, &sJntSphInit, this->items);
 
     if (Flags_GetClear(play, play->roomCtx.curRoom.num)) { // KD is dead
-        u16* LavaFloorTex = GetResourceDataByName(gDodongosCavernBossLavaFloorTex, false);
-        u16* LavaFloorRockTex = GetResourceDataByName(sLavaFloorRockTex, false);
+        u16* LavaFloorTex = GetResourceDataByName(gDodongosCavernBossLavaFloorTex);
+        u16* LavaFloorRockTex = GetResourceDataByName(sLavaFloorRockTex);
         temp_s1_3 = SEGMENTED_TO_VIRTUAL(LavaFloorTex);
         temp_s2 = SEGMENTED_TO_VIRTUAL(LavaFloorRockTex);
         Actor_Kill(&this->actor);
@@ -1018,8 +1018,8 @@ void BossDodongo_Update(Actor* thisx, PlayState* play2) {
     }
 
     if (this->unk_1C6 != 0) {
-        u16* ptr1 = GetResourceDataByName(sLavaFloorLavaTex, false);
-        u16* ptr2 = GetResourceDataByName(sLavaFloorRockTex, false);
+        u16* ptr1 = GetResourceDataByName(sLavaFloorLavaTex);
+        u16* ptr2 = GetResourceDataByName(sLavaFloorRockTex);
         s16 i2;
 
         for (i2 = 0; i2 < 20; i2++) {

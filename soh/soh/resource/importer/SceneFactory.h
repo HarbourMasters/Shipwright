@@ -6,7 +6,7 @@
 #include "Resource.h"
 #include "ResourceFactory.h"
 
-namespace Ship {
+namespace LUS {
 class SceneFactory : public ResourceFactory {
   public:
     std::shared_ptr<Resource> ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
@@ -27,4 +27,4 @@ class SceneFactoryV0 : public ResourceVersionFactory {
 protected:
     std::shared_ptr<SceneCommand> ParseSceneCommand(std::shared_ptr<Scene> scene, std::shared_ptr<BinaryReader> reader, uint32_t index);
 };
-}; // namespace Ship
+}; // namespace LUS

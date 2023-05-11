@@ -6,7 +6,7 @@
 #include <libultraship/libultra.h>
 #include "z64math.h"
 
-namespace Ship {
+namespace LUS {
 
 typedef struct {
     /* 0x00 */ u16 type;
@@ -93,4 +93,4 @@ public:
 
     std::vector<WaterBox> waterBoxes;
 };
-}; // namespace Ship
+}; // namespace LUS

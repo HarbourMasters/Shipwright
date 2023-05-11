@@ -27,7 +27,7 @@
 #include <filesystem>
 #include <variables.h>
 
-#include <Window.h>
+#include <libultraship/libultraship.h>
 
 using json = nlohmann::json;
 
@@ -807,8 +807,8 @@ const char* SpoilerLog_Write(int language) {
     WriteShuffledEntrances();
     WriteAllLocations(language);
 
-    if (!std::filesystem::exists(Ship::Window::GetPathRelativeToAppDirectory("Randomizer"))) {
-        std::filesystem::create_directory(Ship::Window::GetPathRelativeToAppDirectory("Randomizer"));
+    if (!std::filesystem::exists(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"))) {
+        std::filesystem::create_directory(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"));
     }
 
     std::string jsonString = jsonData.dump(4);
@@ -823,7 +823,7 @@ const char* SpoilerLog_Write(int language) {
         fileNameStream << std::to_string(Settings::hashIconIndexes[i]);
     }
     std::string fileName = fileNameStream.str();
-    std::ofstream jsonFile(Ship::Window::GetPathRelativeToAppDirectory(
+    std::ofstream jsonFile(LUS::Context::GetPathRelativeToAppDirectory(
         (std::string("Randomizer/") + fileName + std::string(".json")).c_str()));
     jsonFile << std::setw(4) << jsonString << std::endl;
     jsonFile.close();

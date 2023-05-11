@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <string_view>
 
-#include "Utils/File.h"
+#include <Utils/DiskFile.h>
 #include "Utils/Path.h"
 #include "WarningHandler.h"
 #include "tinyxml2.h"
@@ -134,12 +134,12 @@ void Globals::BuildAssetTexture(const fs::path& pngFilePath, TextureType texType
 	tex.FromPNG(pngFilePath.string(), texType);
 	std::string cfgPath = StringHelper::Split(pngFilePath.string(), ".")[0] + ".cfg";
 
-	if (File::Exists(cfgPath))
-		name = File::ReadAllText(cfgPath);
+	if (DiskFile::Exists(cfgPath))
+		name = DiskFile::ReadAllText(cfgPath);
 
 	std::string src = tex.GetBodySourceCode();
 
-	File::WriteAllBytes(outPath.string(), src.c_str(), src.size());
+	DiskFile::WriteAllBytes(outPath.string(), src.c_str(), src.size());
 }
 
 std::map<std::string, ExporterSet*>& Globals::GetExporterMap()
@@ -186,7 +186,7 @@ std::vector<uint8_t> Globals::GetBaseromFile(std::string fileName)
 
 	}
 	else
-		return File::ReadAllBytes(fileName);
+		return DiskFile::ReadAllBytes(fileName);
 }
 
 bool Globals::GetSegmentedPtrName(segptr_t segAddress, ZFile* currentFile,

@@ -110,7 +110,10 @@ std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT,
 
 void DrawCheckTracker(bool& open) {
     if (!open) {
-        CVarSetInteger("gCheckTrackerEnabled", 0);
+        if (CVarGetInteger("gCheckTrackerEnabled", 0)) {
+            CVarClear("gCheckTrackerEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 
@@ -962,7 +965,10 @@ static const char* buttonStrings[] = { "A Button", "B Button", "C-Up",  "C-Down"
                                        "Z Button", "R Button", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
 void DrawCheckTrackerOptions(bool& open) {
     if (!open) {
-        CVarSetInteger("gCheckTrackerSettingsEnabled", 0);
+        if (CVarGetInteger("gCheckTrackerSettingsEnabled", 0)) {
+            CVarClear("gCheckTrackerSettingsEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 
@@ -1023,8 +1029,8 @@ void DrawCheckTrackerOptions(bool& open) {
 }
 
 void InitCheckTracker() {
-    Ship::AddWindow("Randomizer", "Check Tracker", DrawCheckTracker, CVarGetInteger("gCheckTrackerEnabled", 0) == 1);
-    Ship::AddWindow("Randomizer", "Check Tracker Settings", DrawCheckTrackerOptions);
+    LUS::AddWindow("Randomizer", "Check Tracker", DrawCheckTracker, CVarGetInteger("gCheckTrackerEnabled", 0));
+    LUS::AddWindow("Randomizer", "Check Tracker Settings", DrawCheckTrackerOptions, CVarGetInteger("gCheckTrackerSettingsEnabled", 0));
     Color_Background = CVarGetColor("gCheckTrackerBgColor", Color_Bg_Default);
     Color_Area_Incomplete_Main  = CVarGetColor("gCheckTrackerAreaMainIncompleteColor",    Color_Main_Default);
     Color_Area_Incomplete_Extra = CVarGetColor("gCheckTrackerAreaExtraIncompleteColor",   Color_Area_Incomplete_Extra_Default);
@@ -1045,13 +1051,13 @@ void InitCheckTracker() {
     Color_Saved_Main            = CVarGetColor("gCheckTrackerSavedMainColor",             Color_Main_Default);
     Color_Saved_Extra           = CVarGetColor("gCheckTrackerSavedExtraColor",            Color_Saved_Extra_Default);
 
-    Ship::RegisterHook<Ship::ControllerRead>([](OSContPad* cont_pad) {
+    LUS::RegisterHook<LUS::ControllerRead>([](OSContPad* cont_pad) {
         trackerButtonsPressed = cont_pad;
     });
-    Ship::RegisterHook<Ship::LoadFile>([](uint32_t fileNum) {
+    LUS::RegisterHook<LUS::LoadFile>([](uint32_t fileNum) {
         doInitialize = true;
     });
-    Ship::RegisterHook<Ship::DeleteFile>([](uint32_t fileNum) {
+    LUS::RegisterHook<LUS::DeleteFile>([](uint32_t fileNum) {
         Teardown();
     });
     LocationTable_Init();

@@ -1,6 +1,6 @@
 #include "SkeletonLimb.h"
 
-namespace Ship {
+namespace LUS {
 void* SkeletonLimb::GetPointer() {
     return &limbData;
 }
@@ -21,4 +21,4 @@ size_t SkeletonLimb::GetPointerSize() {
             return 0;
     }
 }
-} // namespace Ship
+} // namespace LUS

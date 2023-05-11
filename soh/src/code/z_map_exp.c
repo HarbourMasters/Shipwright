@@ -413,7 +413,7 @@ void Map_InitData(PlayState* play, s16 room) {
                                 //gMapData->owMinimapTexSize[mapIndex], __FILE__, __LINE__);
 
             if (sEntranceIconMapIndex < 24) {
-                play->interfaceCtx.mapSegment[0] = GetResourceDataByName(minimapTableOW[sEntranceIconMapIndex], true);
+                play->interfaceCtx.mapSegment[0] = GetResourceDataByName(minimapTableOW[sEntranceIconMapIndex]);
                 play->interfaceCtx.mapSegmentName[0] = minimapTableOW[sEntranceIconMapIndex];
             }
 
@@ -447,7 +447,8 @@ void Map_InitData(PlayState* play, s16 room) {
                                     //((gMapData->dgnMinimapTexIndexOffset[mapIndex] + room) * 0xFF0),
                                 //0xFF0, __FILE__, __LINE__);
 
-            play->interfaceCtx.mapSegment[0] = GetResourceDataByName(minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room], true);
+            play->interfaceCtx.mapSegment[0] = GetResourceDataByName(
+                    minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room]);
             play->interfaceCtx.mapSegmentName[0] = minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room];
             R_COMPASS_OFFSET_X = gMapData->roomCompassOffsetX[mapIndex][room];
             R_COMPASS_OFFSET_Y = gMapData->roomCompassOffsetY[mapIndex][room];
