@@ -84,7 +84,7 @@ void AudioMgr_Unlock(AudioMgr* audioMgr) {
 }
 
 void AudioMgr_Init(AudioMgr* audioMgr, void* stack, OSPri pri, OSId id, SchedContext* sched, IrqMgr* irqMgr) {
-    AudioPlayer_Init();
+    // AudioPlayer_Init();
 
     memset(audioMgr,0, sizeof(AudioMgr));
 

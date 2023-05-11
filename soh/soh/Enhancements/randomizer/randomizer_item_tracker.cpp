@@ -849,9 +849,9 @@ void UpdateVectors() {
     shouldUpdateVectors = false;
 }
 
-void DrawItemTracker(bool& open) {
+void ItemTrackerWindow::Draw() {
     UpdateVectors();
-    if (!open) {
+    if (!mIsOpen) {
         if (CVarGetInteger("gItemTrackerEnabled", 0)) {
             CVarClear("gItemTrackerEnabled");
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -961,8 +961,8 @@ static const char* buttons[14] = { "A", "B", "C-Up", "C-Down", "C-Left", "C-Righ
 static const char* displayTypes[3] = { "Hidden", "Main Window", "Seperate" };
 static const char* extendedDisplayTypes[4] = { "Hidden", "Main Window", "Misc Window", "Seperate" };
 
-void DrawItemTrackerOptions(bool& open) {
-    if (!open) {
+void ItemTrackerSettingsWindow::Draw() {
+    if (!mIsOpen) {
         if (CVarGetInteger("gItemTrackerSettingsEnabled", 0)) {
             CVarClear("gItemTrackerSettingsEnabled");
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -972,7 +972,7 @@ void DrawItemTrackerOptions(bool& open) {
 
     ImGui::SetNextWindowSize(ImVec2(600,375), ImGuiCond_FirstUseEver);
 
-    if (!ImGui::Begin("Item Tracker Settings", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Item Tracker Settings", &mIsOpen, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -1087,9 +1087,7 @@ void DrawItemTrackerOptions(bool& open) {
     ImGui::End();
 }
 
-void InitItemTracker() {
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Randomizer", "Item Tracker", DrawItemTracker, CVarGetInteger("gItemTrackerEnabled", 0) == 1);
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Randomizer", "Item Tracker Settings", DrawItemTrackerOptions);
+void ItemTrackerWindow::Init() {
     float trackerBgR = CVarGetFloat("gItemTrackerBgColorR", 0);
     float trackerBgG = CVarGetFloat("gItemTrackerBgColorG", 0);
     float trackerBgB = CVarGetFloat("gItemTrackerBgColorB", 0);

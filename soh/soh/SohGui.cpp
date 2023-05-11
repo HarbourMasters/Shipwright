@@ -86,15 +86,6 @@ namespace SohGui {
         "8 Hearts",
         "OHKO"
     };
-    
-    static const char* filters[3] = {
-#ifdef __WIIU__
-            "",
-#else
-            "Three-Point",
-#endif
-            "Linear", "None"
-    };
 
     static const inline std::vector<std::pair<const char*, const char*>> audioBackends = {
 #ifdef _WIN32
@@ -163,6 +154,12 @@ namespace SohGui {
         LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mCheckTrackerSettingsWindow);
         mEntranceTrackerWindow = std::make_shared<EntranceTrackerWindow>();
         LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mEntranceTrackerWindow);
+        mItemTrackerWindow = std::make_shared<ItemTrackerWindow>();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mItemTrackerWindow);
+        mItemTrackerSettingsWindow = std::make_shared<ItemTrackerSettingsWindow>();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mItemTrackerSettingsWindow);
+        mRandomizerSettingsWindow = std::make_shared<RandomizerSettingsWindow>();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mRandomizerSettingsWindow);
 }
 
     void SetupHooks() {

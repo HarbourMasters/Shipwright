@@ -2,6 +2,76 @@
 #include "ImGui/imgui.h"
 #include "core/bridge/consolevariablebridge.h"
 #include <libultraship/libultraship.h>
+#include "UIWidgets.hpp"
+#include "include/z64audio.h"
+#include "OTRGlobals.h"
+#include "z64.h"
+#include "Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/presets.h"
+#include "Enhancements/cosmetics/authenticGfxPatches.h"
+#ifdef ENABLE_CROWD_CONTROL
+#include "Enhancements/crowd-control/CrowdControl.h"
+#endif
+
+bool ShouldClearTextureCacheAtEndOfFrame = false;
+bool isBetaQuestEnabled = false;
+
+enum SeqPlayers {
+    /* 0 */ SEQ_BGM_MAIN,
+    /* 1 */ SEQ_FANFARE,
+    /* 2 */ SEQ_SFX,
+    /* 3 */ SEQ_BGM_SUB,
+    /* 4 */ SEQ_MAX
+};
+
+std::string GetWindowButtonText(const char* text, bool menuOpen) {
+    char buttonText[100] = "";
+    if (menuOpen) {
+        strcat(buttonText, ICON_FA_CHEVRON_RIGHT " ");
+    }
+    strcat(buttonText, text);
+    if (!menuOpen) { strcat(buttonText, "  "); }
+    return buttonText;
+}
+
+    static const char* filters[3] = {
+#ifdef __WIIU__
+            "",
+#else
+            "Three-Point",
+#endif
+            "Linear", "None"
+    };
+
+    static const char* chestSizeAndTextureMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only" };
+    static const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run" };
+    static const char* allPowers[9] = {
+                        "Vanilla (1x)",
+                        "Double (2x)",
+                        "Quadruple (4x)",
+                        "Octuple (8x)",
+                        "Foolish (16x)",
+                        "Ridiculous (32x)",
+                        "Merciless (64x)",
+                        "Pure Torture (128x)",
+                        "OHKO (256x)" };
+    static const char* subPowers[8] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6], allPowers[7] };
+    static const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6] };
+    static const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
+    static const char* autosaveLabels[6] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
+    static const char* FastFileSelect[5] = { "File N.1", "File N.2", "File N.3", "Zelda Map Select (require OoT Debug Mode)", "File select" };
+    static const char* bonkDamageValues[8] = {
+        "No Damage",
+        "0.25 Heart",
+        "0.5 Heart",
+        "1 Heart",
+        "2 Hearts",
+        "4 Hearts",
+        "8 Hearts",
+        "OHKO"
+    };
+
+extern "C" SaveContext gSaveContext;
 
 namespace SohGui {
 
@@ -69,24 +139,25 @@ void DrawSettingsMenu() {
                 Audio_SetGameVolume(SEQ_FANFARE, CVarGetFloat("gFanfareVolume", 1.0f));
             }
 
-            ImGui::Text("Audio API (Needs reload)");
-            auto currentAudioBackend = LUS::GetCurrentAudioBackend();
+            // OTRTODO: figure this out
+            // ImGui::Text("Audio API (Needs reload)");
+            // auto currentAudioBackend = LUS::GetCurrentAudioBackend();
 
-            if (audioBackends.size() <= 1) {
-                UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
-            }
-            if (ImGui::BeginCombo("##AApi", currentAudioBackend.second)) {
-                for (uint8_t i = 0; i < audioBackends.size(); i++) {
-                    if (ImGui::Selectable(audioBackends[i].second, audioBackends[i] == currentAudioBackend)) {
-                        LUS::SetCurrentAudioBackend(i, audioBackends[i]);
-                    }
-                }
+            // if (audioBackends.size() <= 1) {
+            //     UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
+            // }
+            // if (ImGui::BeginCombo("##AApi", currentAudioBackend.second)) {
+            //     for (uint8_t i = 0; i < audioBackends.size(); i++) {
+            //         if (ImGui::Selectable(audioBackends[i].second, audioBackends[i] == currentAudioBackend)) {
+            //             LUS::SetCurrentAudioBackend(i, audioBackends[i]);
+            //         }
+            //     }
 
-                ImGui::EndCombo();
-            }
-            if (audioBackends.size() <= 1) {
-                UIWidgets::ReEnableComponent("");
-            }
+            //     ImGui::EndCombo();
+            // }
+            // if (audioBackends.size() <= 1) {
+            //     UIWidgets::ReEnableComponent("");
+            // }
 
             ImGui::EndMenu();
         }
@@ -132,18 +203,20 @@ void DrawSettingsMenu() {
         #ifndef __APPLE__
             UIWidgets::EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 2.0f, "", 1.0f, true);
             UIWidgets::Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
-            LUS::SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
+            // OTRTODO: fix this
+            // LUS::SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
         #endif
         #ifndef __WIIU__
             UIWidgets::PaddedEnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true, false);
             UIWidgets::Tooltip("Activates multi-sample anti-aliasing when above 1x up to 8x for 8 samples for every pixel");
-            LUS::SetMSAALevel(CVarGetInteger("gMSAAValue", 1));
+            // OTRTODO: fix this
+            // LUS::SetMSAALevel(CVarGetInteger("gMSAAValue", 1));
         #endif
 
             { // FPS Slider
                 const int minFps = 20;
                 static int maxFps;
-                if (LUS::WindowBackend() == LUS::Backend::DX11) {
+                if (LUS::Context::GetInstance()->GetWindow()->GetGui()->GetRenderBackend() == LUS::Backend::DX11) {
                     maxFps = 360;
                 } else {
                     maxFps = LUS::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
@@ -209,12 +282,12 @@ void DrawSettingsMenu() {
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->RequestCvarSaveOnNextTick();
             #else
                 bool matchingRefreshRate =
-                    CVarGetInteger("gMatchRefreshRate", 0) && LUS::WindowBackend() != LUS::Backend::DX11;
+                    CVarGetInteger("gMatchRefreshRate", 0) && LUS::Context::GetInstance()->GetWindow()->GetGui()->GetRenderBackend() != LUS::Backend::DX11;
                 UIWidgets::PaddedEnhancementSliderInt(
                     (currentFps == 20) ? "FPS: Original (20)" : "FPS: %d",
                     "##FPSInterpolation", "gInterpolationFPS", minFps, maxFps, "", 20, true, true, false, matchingRefreshRate);
             #endif
-                if (LUS::WindowBackend() == LUS::Backend::DX11) {
+                if (LUS::Context::GetInstance()->GetWindow()->GetGui()->GetRenderBackend() == LUS::Backend::DX11) {
                     UIWidgets::Tooltip(
                         "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics. This is purely "
                         "visual and does not impact game logic, execution of glitches etc.\n\n"
@@ -228,7 +301,7 @@ void DrawSettingsMenu() {
                 }
             } // END FPS Slider
 
-            if (LUS::WindowBackend() == LUS::Backend::DX11) {
+            if (LUS::Context::GetInstance()->GetWindow()->GetGui()->GetRenderBackend() == LUS::Backend::DX11) {
                 UIWidgets::Spacer(0);
                 if (ImGui::Button("Match Refresh Rate")) {
                     int hz = LUS::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
@@ -242,7 +315,7 @@ void DrawSettingsMenu() {
             }
             UIWidgets::Tooltip("Matches interpolation value to the current game's window refresh rate");
 
-            if (LUS::WindowBackend() == LUS::Backend::DX11) {
+            if (LUS::Context::GetInstance()->GetWindow()->GetGui()->GetRenderBackend() == LUS::Backend::DX11) {
                 UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger("gExtraLatencyThreshold", 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
                     "##ExtraLatencyThreshold", "gExtraLatencyThreshold", 0, 360, "", 80, true, true, false);
                 UIWidgets::Tooltip("When Interpolation FPS setting is at least this threshold, add one frame of input lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter. This setting allows the CPU to work on one frame while GPU works on the previous frame.\nThis setting should be used when your computer is too slow to do CPU + GPU work in time.");
@@ -250,24 +323,25 @@ void DrawSettingsMenu() {
 
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 
-            ImGui::Text("Renderer API (Needs reload)");
-            auto currentRenderingBackend = LUS::GetCurrentRenderingBackend();
+            // OTRTODO: fix this
+            // ImGui::Text("Renderer API (Needs reload)");
+            // auto currentRenderingBackend = LUS::GetCurrentRenderingBackend();
 
-            if (renderingBackends.size() <= 1) {
-                UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
-            }
-            if (ImGui::BeginCombo("##RApi", currentRenderingBackend.second)) {
-                for (uint8_t i = 0; i < renderingBackends.size(); i++) {
-                    if (ImGui::Selectable(renderingBackends[i].second, renderingBackends[i] == currentRenderingBackend)) {
-                        LUS::SetCurrentRenderingBackend(i, renderingBackends[i]);
-                    }
-                }
+            // if (renderingBackends.size() <= 1) {
+            //     UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
+            // }
+            // if (ImGui::BeginCombo("##RApi", currentRenderingBackend.second)) {
+            //     for (uint8_t i = 0; i < renderingBackends.size(); i++) {
+            //         if (ImGui::Selectable(renderingBackends[i].second, renderingBackends[i] == currentRenderingBackend)) {
+            //             LUS::SetCurrentRenderingBackend(i, renderingBackends[i]);
+            //         }
+            //     }
 
-                ImGui::EndCombo();
-            }
-            if (renderingBackends.size() <= 1) {
-                UIWidgets::ReEnableComponent("");
-            }
+            //     ImGui::EndCombo();
+            // }
+            // if (renderingBackends.size() <= 1) {
+            //     UIWidgets::ReEnableComponent("");
+            // }
 
             if (LUS::Context::GetInstance()->GetWindow()->CanDisableVerticalSync()) {
                 UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", "gVsyncEnabled", true, false);
@@ -923,27 +997,27 @@ void DrawEnhancementsMenu() {
             bool currentValue = CVarGetInteger("gGameControlEditorEnabled", 0);
             CVarSetInteger("gGameControlEditorEnabled", !currentValue);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Game Control Editor", CVarGetInteger("gGameControlEditorEnabled", 0));
+            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Game Control Editor", CVarGetInteger("gGameControlEditorEnabled", 0));
         }
         if (ImGui::Button(GetWindowButtonText("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
         {
             bool currentValue = CVarGetInteger("gCosmeticsEditorEnabled", 0);
             CVarSetInteger("gCosmeticsEditorEnabled", !currentValue);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0));
+            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0));
         }
         if (ImGui::Button(GetWindowButtonText("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
         {
             bool currentValue = CVarGetInteger("gAudioEditor.WindowOpen", 0);
             CVarSetInteger("gAudioEditor.WindowOpen", !currentValue);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0));
+            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0));
         }
         if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
             bool currentValue = CVarGetInteger("gGameplayStatsEnabled", 0);
             CVarSetInteger("gGameplayStatsEnabled", !currentValue);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0));
+            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0));
         }
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor(1);
@@ -1108,7 +1182,7 @@ void DrawDeveloperToolsMenu() {
         {
             bool currentValue = CVarGetInteger("gStatsEnabled", 0);
             CVarSetInteger("gStatsEnabled", !currentValue);
-            LUS::ToggleStatisticsWindow(true);
+            // LUS::ToggleStatisticsWindow(true);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         UIWidgets::Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
@@ -1118,7 +1192,7 @@ void DrawDeveloperToolsMenu() {
             bool currentValue = CVarGetInteger("gConsoleEnabled", 0);
             CVarSetInteger("gConsoleEnabled", !currentValue);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            LUS::ToggleConsoleWindow(!currentValue);
+            // LUS::ToggleConsoleWindow(!currentValue);
         }
         UIWidgets::Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
         UIWidgets::Spacer(0);
@@ -1127,7 +1201,7 @@ void DrawDeveloperToolsMenu() {
             bool currentValue = CVarGetInteger("gSaveEditorEnabled", 0);
             CVarSetInteger("gSaveEditorEnabled", !currentValue);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Save Editor", CVarGetInteger("gSaveEditorEnabled", 0));
+            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Save Editor", CVarGetInteger("gSaveEditorEnabled", 0));
         }
         UIWidgets::Spacer(0);
         if (ImGui::Button(GetWindowButtonText("Collision Viewer", CVarGetInteger("gCollisionViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
@@ -1135,7 +1209,7 @@ void DrawDeveloperToolsMenu() {
             bool currentValue = CVarGetInteger("gCollisionViewerEnabled", 0);
             CVarSetInteger("gCollisionViewerEnabled", !currentValue);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Collision Viewer", CVarGetInteger("gCollisionViewerEnabled", 0));
+            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Collision Viewer", CVarGetInteger("gCollisionViewerEnabled", 0));
         }
         UIWidgets::Spacer(0);
         if (ImGui::Button(GetWindowButtonText("Actor Viewer", CVarGetInteger("gActorViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
@@ -1143,7 +1217,7 @@ void DrawDeveloperToolsMenu() {
             bool currentValue = CVarGetInteger("gActorViewerEnabled", 0);
             CVarSetInteger("gActorViewerEnabled", !currentValue);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Actor Viewer", CVarGetInteger("gActorViewerEnabled", 0));
+            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Actor Viewer", CVarGetInteger("gActorViewerEnabled", 0));
         }
         UIWidgets::Spacer(0);
         if (ImGui::Button(GetWindowButtonText("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
@@ -1151,7 +1225,7 @@ void DrawDeveloperToolsMenu() {
             bool currentValue = CVarGetInteger("gDLViewerEnabled", 0);
             CVarSetInteger("gDLViewerEnabled", !currentValue);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0));
+            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0));
         }
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor(1);
@@ -1176,7 +1250,7 @@ void DrawRandomizerMenu() {
             bool currentValue = CVarGetInteger("gRandomizerSettingsEnabled", 0);
             CVarSetInteger("gRandomizerSettingsEnabled", !currentValue);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0));
+            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0));
         }
         UIWidgets::Spacer(0);
         if (ImGui::Button(GetWindowButtonText("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0)).c_str(), buttonSize))
@@ -1184,7 +1258,7 @@ void DrawRandomizerMenu() {
             bool currentValue = CVarGetInteger("gItemTrackerEnabled", 0);
             CVarSetInteger("gItemTrackerEnabled", !currentValue);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0));
+            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0));
         }
         UIWidgets::Spacer(0);
         if (ImGui::Button(GetWindowButtonText("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0)).c_str(), buttonSize))
@@ -1192,7 +1266,7 @@ void DrawRandomizerMenu() {
             bool currentValue = CVarGetInteger("gItemTrackerSettingsEnabled", 0);
             CVarSetInteger("gItemTrackerSettingsEnabled", !currentValue);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0));
+            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0));
         }
         UIWidgets::Spacer(0);
         if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0)).c_str(), buttonSize))
@@ -1200,7 +1274,7 @@ void DrawRandomizerMenu() {
             bool currentValue = CVarGetInteger("gEntranceTrackerEnabled", 0);
             CVarSetInteger("gEntranceTrackerEnabled", !currentValue);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0));
+            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0));
         }
         UIWidgets::Spacer(0);
         if (ImGui::Button(GetWindowButtonText("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0)).c_str(), buttonSize))
@@ -1208,7 +1282,7 @@ void DrawRandomizerMenu() {
             bool currentValue = CVarGetInteger("gCheckTrackerEnabled", 0);
             CVarSetInteger("gCheckTrackerEnabled", !currentValue);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0));
+            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0));
         }
         UIWidgets::Spacer(0);
         if (ImGui::Button(GetWindowButtonText("Check Tracker Settings", CVarGetInteger("gCheckTrackerSettingsEnabled", 0)).c_str(), buttonSize))
@@ -1216,7 +1290,7 @@ void DrawRandomizerMenu() {
             bool currentValue = CVarGetInteger("gCheckTrackerSettingsEnabled", 0);
             CVarSetInteger("gCheckTrackerSettingsEnabled", !currentValue);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Check Tracker Settings", CVarGetInteger("gCheckTrackerSettingsEnabled", 0));
+            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Check Tracker Settings", CVarGetInteger("gCheckTrackerSettingsEnabled", 0));
         }
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor(1);

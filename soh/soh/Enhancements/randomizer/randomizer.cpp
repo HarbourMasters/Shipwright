@@ -27,6 +27,8 @@
 #include "draw.h"
 #include "rando_hash.h"
 #include <boost_custom/container_hash/hash_32.hpp>
+#include <libultraship/libultraship.h>
+#include "randomizer_settings_window.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -3083,16 +3085,16 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
     return false;
 }
 
-void DrawRandoEditor(bool& open) {
+void RandomizerSettingsWindow::Draw() {
     if (generated) {
         generated = 0;
         randoThread.join();
     }
 
-    if (!open) {
+    if (!mIsOpen) {
         if (CVarGetInteger("gRandomizerSettingsEnabled", 0)) {
             CVarClear("gRandomizerSettingsEnabled");
-            LUS::RequestCvarSaveOnNextTick();
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         return;
     }
@@ -3158,7 +3160,7 @@ void DrawRandoEditor(bool& open) {
     static const char* randoIceTraps[5] = { "Off", "Normal", "Extra", "Mayhem", "Onslaught" };
 
     ImGui::SetNextWindowSize(ImVec2(920, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Randomizer Editor", &mIsOpen, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -5454,17 +5456,8 @@ void InitRandoItemTable() {
 }
 
 
-void InitRando() {
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
+void RandomizerSettingsWindow::Init() {
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     InitRandoItemTable();
-}
-
-extern "C" {
-
-void Rando_Init(void) {
-    InitRando();
-}
-
 }

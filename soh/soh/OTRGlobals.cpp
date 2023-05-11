@@ -324,7 +324,7 @@ bool OTRGlobals::HasOriginal() {
 }
 
 uint32_t OTRGlobals::GetInterpolationFPS() {
-    if (LUS::WindowBackend() == LUS::Backend::DX11) {
+    if (LUS::Context::GetInstance()->GetWindow()->GetGui()->GetRenderBackend() == LUS::Backend::DX11) {
         return CVarGetInteger("gInterpolationFPS", 20);
     }
 
@@ -758,15 +758,6 @@ extern "C" void InitOTR() {
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
-    InitCosmeticsEditor();
-    GameControlEditor::Init();
-    DebugConsole_Init();
-    Debug_Init();
-    Rando_Init();
-    InitItemTracker();
-    InitEntranceTracker();
-    InitStatTracker();
-    CheckTracker::InitCheckTracker();
     OTRExtScanner();
     VanillaItemTable_Init();
 
@@ -1623,9 +1614,9 @@ extern "C" int16_t OTRGetRectDimensionFromRightEdge(float v) {
     return ((int)ceilf(OTRGetDimensionFromRightEdge(v)));
 }
 
-extern "C" bool AudioPlayer_Init(void) {
-    return AudioPlayerInit();
-}
+// extern "C" bool AudioPlayer_Init(void) {
+//     return AudioPlayerInit();
+// }
 
 extern "C" int AudioPlayer_Buffered(void) {
     return AudioPlayerBuffered();
@@ -1986,12 +1977,12 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
 }
 
 extern "C" void Overlay_DisplayText(float duration, const char* text) {
-    LUS::GetGameOverlay()->TextDrawNotification(duration, true, text);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
 extern "C" void Overlay_DisplayText_Seconds(int seconds, const char* text) {
     float duration = seconds * OTRGlobals::Instance->GetInterpolationFPS() * 0.05;
-    LUS::GetGameOverlay()->TextDrawNotification(duration, true, text);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
 extern "C" void Entrance_ClearEntranceTrackingData(void) {

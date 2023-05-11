@@ -20,6 +20,8 @@
 #include "Enhancements/gameplaystatswindow.h"
 #include "Enhancements/randomizer/randomizer_check_tracker.h"
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
+#include "Enhancements/randomizer/randomizer_item_tracker.h"
+#include "Enhancements/randomizer/randomizer_settings_window.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -46,6 +48,9 @@ namespace SohGui {
     std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
     std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
     std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
+    std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
+    std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
+    std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 }
 
 #endif /* SohGui_hpp */
