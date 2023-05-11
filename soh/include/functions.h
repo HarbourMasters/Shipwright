@@ -8,6 +8,10 @@
 #define this thisx
 extern "C"
 {
+#else
+f32 fabsf(f32 f);
+f32 sqrtf(f32 f);
+f64 sqrt(f64 d);
 #endif
 
 #include "luslog.h"
@@ -19,13 +23,6 @@ extern "C"
 #else
 #define osSyncPrintf(fmt, ...) osSyncPrintfUnused(fmt, ##__VA_ARGS__)
 #endif
-
-f32 fabsf(f32 f);
-//#pragma intrinsic(fabsf)
-f32 sqrtf(f32 f);
-//#pragma intrinsic(sqrtf)
-f64 sqrt(f64 d);
-//#pragma intrinsic(sqrt)
 
 void gSPSegment(void* value, int segNum, uintptr_t target);
 void gSPSegmentLoadRes(void* value, int segNum, uintptr_t target);
