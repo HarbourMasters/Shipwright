@@ -8,6 +8,7 @@
 #include <map>
 #include <string>
 #include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 
 extern "C" {
 #include <z64.h>
@@ -529,17 +530,17 @@ void PopulateActorDropdown(int i, std::vector<Actor*>& data) {
 }
 
 
-void DrawActorViewer(bool& open) {
-    if (!open) {
+void ActorViewerWindow::Draw() {
+    if (mIsOpen) {
         if (CVarGetInteger("gActorViewerEnabled", 0)) {
             CVarClear("gActorViewerEnabled");
-            LUS::RequestCvarSaveOnNextTick();
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         return;
     }
 
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Actor Viewer", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Actor Viewer", &mIsOpen, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -787,8 +788,4 @@ void DrawActorViewer(bool& open) {
     
 
     ImGui::End();
-}
-
-void InitActorViewer() {
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Developer Tools", "Actor Viewer", DrawActorViewer);
 }

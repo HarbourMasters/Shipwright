@@ -7,6 +7,7 @@
 #include <string>
 #include <cmath>
 #include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 
 extern "C" {
 #include <z64.h>
@@ -55,7 +56,7 @@ void DrawColViewerWindow(bool& open) {
     if (!open) {
         if (CVarGetInteger("gCollisionViewerEnabled", 0)) {
             CVarClear("gCollisionViewerEnabled");
-            LUS::RequestCvarSaveOnNextTick();
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         return;
     }

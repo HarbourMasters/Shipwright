@@ -142,11 +142,13 @@ namespace SohGui {
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SetMenuBar(mSohMenuBar);
         mAudioEditorWindow = std::make_shared<AudioEditor>();
         LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mAudioEditorWindow);
-        mGameControlEditorWindow = std::make_shared<GameControlEditorWindow>();
+        mGameControlEditorWindow = std::make_shared<GameControlEditor::GameControlEditorWindow>();
         LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mGameControlEditorWindow);
         mCosmeticsEditorWindow = std::make_shared<CosmeticsEditorWindow>();
         LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mCosmeticsEditorWindow);
-    }
+        mActorViewerWindow = std::make_shared<ActorViewerWindow>();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mActorViewerWindow);
+}
 
     void SetupHooks() {
 #ifdef __APPLE__
