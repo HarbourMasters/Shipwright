@@ -10,7 +10,6 @@
 #include "alloca.h"
 
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
-#define SCENE_IS_DUNGEON(dungeon)
 
 void Select_LoadTitle(SelectContext* this) {
     this->state.running = false;
