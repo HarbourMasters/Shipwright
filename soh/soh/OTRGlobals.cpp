@@ -737,7 +737,7 @@ extern "C" void InitOTR() {
 #ifdef __SWITCH__
     LUS::Switch::Init(LUS::PreInitPhase);
 #elif defined(__WIIU__)
-    LUS::WiiU::Init();
+    LUS::WiiU::Init("soh");
 #endif
     LUS::AddSetupHooksDelegate(GameMenuBar::SetupHooks);
     LUS::RegisterMenuDrawMethod(GameMenuBar::Draw);
