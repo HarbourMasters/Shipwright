@@ -263,7 +263,10 @@ std::string ResolveSceneID(int sceneID, int roomID){
 
 void DrawStatsTracker(bool& open) {
     if (!open) {
-        CVarSetInteger("gGameplayStatsEnabled", 0);
+        if (CVarGetInteger("gGameplayStatsEnabled", 0)) {
+            CVarClear("gGameplayStatsEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 

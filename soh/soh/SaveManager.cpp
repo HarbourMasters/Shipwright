@@ -761,7 +761,7 @@ void SaveManager::SaveFile(int fileNum) {
     // Can't think of any time the promise would be needed, so use push_task instead of submit
     auto saveContext = new SaveContext;
     memcpy(saveContext, &gSaveContext, sizeof(gSaveContext));
-    smThreadPool->push_task(&SaveManager::SaveFileThreaded, this, fileNum, saveContext);
+    smThreadPool->push_task_back(&SaveManager::SaveFileThreaded, this, fileNum, saveContext);
 }
 
 void SaveManager::SaveGlobal() {

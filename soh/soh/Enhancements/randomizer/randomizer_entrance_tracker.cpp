@@ -623,7 +623,10 @@ void InitEntranceTrackingData() {
 
 void DrawEntranceTracker(bool& open) {
     if (!open) {
-        CVarSetInteger("gEntranceTrackerEnabled", 0);
+        if (CVarGetInteger("gEntranceTrackerEnabled", 0)) {
+            CVarClear("gEntranceTrackerEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 

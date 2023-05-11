@@ -307,7 +307,10 @@ void DrawTypeChip(SeqType type) {
 
 void DrawSfxEditor(bool& open) {
     if (!open) {
-        CVarSetInteger("gAudioEditor.WindowOpen", 0);
+        if (CVarGetInteger("gAudioEditor.WindowOpen", 0)) {
+            CVarClear("gAudioEditor.WindowOpen");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 

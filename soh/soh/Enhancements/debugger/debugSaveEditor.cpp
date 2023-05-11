@@ -1,7 +1,7 @@
 #include "debugSaveEditor.h"
 #include "../../util.h"
 #include "../../OTRGlobals.h"
-#include <Gui.h>
+#include <ImGuiImpl.h>
 #include "../../UIWidgets.hpp"
 
 #include <spdlog/fmt/fmt.h>
@@ -695,7 +695,7 @@ void DrawInventoryTab() {
                         ImGui::SameLine();
                     }
                     const ItemMapEntry& slotEntry = possibleItems[pickerIndex];
-                    if (ImGui::ImageButton(LUS::GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f),
+                    if (ImGui::ImageButton(Ship::GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f),
                                            ImVec2(0, 0), ImVec2(1, 1), 0)) {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
                         // Set adult trade item flag if you're playing adult trade shuffle in rando  
@@ -1733,7 +1733,10 @@ void DrawPlayerTab() {
 
 void DrawSaveEditor(bool& open) {
     if (!open) {
-        CVarSetInteger("gSaveEditorEnabled", 0);
+        if (CVarGetInteger("gSaveEditorEnabled", 0)) {
+            CVarClear("gSaveEditorEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 

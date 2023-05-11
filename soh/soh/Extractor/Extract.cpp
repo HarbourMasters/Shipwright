@@ -54,10 +54,10 @@ static constexpr uint32_t OOT_PAL_GC_DBG2 = 0x87121EFE; // 03-13-2002 build
 static constexpr uint32_t OOT_PAL_GC_MQ_DBG = 0x917D18F6;
 
 static const std::unordered_map<uint32_t, const char*> verMap = {
-    { OOT_PAL_GC, "Pal Gamecube" },
-    { OOT_PAL_GC_DBG1, "PAL Debug 1" },
-    { OOT_PAL_GC_DBG2, "PAL Debug 2" },
-    { OOT_PAL_GC_MQ_DBG, "PAL MQ Debug" },
+    { OOT_PAL_GC, "PAL GameCube" },
+    { OOT_PAL_GC_DBG1, "PAL GameCube Debug 1" },
+    { OOT_PAL_GC_DBG2, "PAL GameCube Debug 2" },
+    { OOT_PAL_GC_MQ_DBG, "PAL GameCube MQ Debug" },
 };
 
 // TODO only check the first 54MB of the rom.
@@ -154,6 +154,40 @@ int Extractor::ShowYesNoBox(const char* title, const char* box) {
 void Extractor::SetRomInfo(const std::string& path) {
     mCurrentRomPath = path;
     mCurRomSize = GetCurRomSize();
+}
+
+void Extractor::FilterRoms(std::vector<std::string>& roms, RomSearchMode searchMode) {
+    std::ifstream inFile;
+    std::vector<std::string>::iterator it = roms.begin();
+
+    while (it != roms.end()) {
+        std::string rom = *it;
+        SetRomInfo(rom);
+
+        // Skip. We will handle rom size errors later on after filtering
+        if (!ValidateRomSize()) {
+            it++;
+            continue;
+        }
+
+        inFile.open(rom, std::ios::in | std::ios::binary);
+        inFile.read((char*)mRomData.get(), mCurRomSize);
+        inFile.clear();
+        inFile.close();
+
+        RomToBigEndian(mRomData.get(), mCurRomSize);
+
+        // Rom doesn't claim to be valid
+        // Game type doesn't match search mode
+        if (!verMap.contains(GetRomVerCrc()) ||
+            (searchMode == RomSearchMode::Vanilla && IsMasterQuest()) ||
+            (searchMode == RomSearchMode::MQ && !IsMasterQuest())) {
+            it = roms.erase(it);
+            continue;
+        }
+
+        it++;
+    }
 }
 
 void Extractor::GetRoms(std::vector<std::string>& roms) {
@@ -258,6 +292,7 @@ bool Extractor::GetRomPathFromBox() {
     mCurRomSize = GetCurRomSize();
     return true;
 }
+
 uint32_t Extractor::GetRomVerCrc() const {
     return BSWAP32(((uint32_t*)mRomData.get())[4]);
 }
@@ -303,28 +338,73 @@ bool Extractor::ValidateRom(bool skipCrcTextBox) {
     return true;
 }
 
-bool Extractor::Run() {
+bool Extractor::ManuallySearchForRom() {
+    std::ifstream inFile;
+
+    if (!GetRomPathFromBox()) {
+        ShowErrorBox("No rom selected", "No Rom selected. Exiting");
+        return false;
+    }
+
+    inFile.open(mCurrentRomPath, std::ios::in | std::ios::binary);
+
+    if (!inFile.is_open()) {
+        return false; // TODO Handle error
+    }
+
+    inFile.read((char*)mRomData.get(), mCurRomSize);
+    inFile.close();
+    RomToBigEndian(mRomData.get(), mCurRomSize);
+
+    if (!ValidateRom()) {
+        return false;
+    }
+
+    return true;
+}
+
+bool Extractor::ManuallySearchForRomMatchingType(RomSearchMode searchMode) {
+    if (!ManuallySearchForRom()) {
+        return false;
+    }
+
+    char msgBuf[150];
+    snprintf(msgBuf, 150, "The selected rom does not match the expected game type\nExpected type: %s.\n\nDo you want to search again?",
+        searchMode == RomSearchMode::MQ ? "Master Quest" : "Vanilla");
+
+    while ((searchMode == RomSearchMode::Vanilla && IsMasterQuest()) ||
+           (searchMode == RomSearchMode::MQ && !IsMasterQuest())) {
+        int ret = ShowYesNoBox("Wrong Game Type", msgBuf);
+        switch (ret) {
+            case IDYES:
+                if (!ManuallySearchForRom()) {
+                    return false;
+                }
+                continue;
+            case IDNO:
+                return false;
+            default:
+                UNREACHABLE;
+                break;
+        }
+    }
+
+    return true;
+}
+
+bool Extractor::Run(RomSearchMode searchMode) {
     std::vector<std::string> roms;
     std::ifstream inFile;
-    uint32_t verCrc;
 
     GetRoms(roms);
+    FilterRoms(roms, searchMode);
 
     if (roms.empty()) {
         int ret = ShowYesNoBox("No roms found", "No roms found. Look for one?");
 
         switch (ret) {
             case IDYES:
-                if (!GetRomPathFromBox()) {
-                    ShowErrorBox("No rom selected", "No rom selected. Exiting");
-                    return false;
-                }
-                inFile.open(mCurrentRomPath, std::ios::in | std::ios::binary);
-                if (!inFile.is_open()) {
-                    return false; // TODO Handle error
-                }
-                inFile.read((char*)mRomData.get(), mCurRomSize);
-                if (!ValidateRom()) {
+                if (!ManuallySearchForRomMatchingType(searchMode)) {
                     return false;
                 }
                 break;
@@ -338,27 +418,21 @@ bool Extractor::Run() {
     }
 
     for (const auto& rom : roms) {
-        int option;
-
         SetRomInfo(rom);
-        if (inFile.is_open()) {
-            inFile.close();
-        }
-        inFile.open(rom, std::ios::in | std::ios::binary);
+
         if (!ValidateRomSize()) {
             ShowSizeErrorBox();
             continue;
         }
+
+        inFile.open(rom, std::ios::in | std::ios::binary);
         inFile.read((char*)mRomData.get(), mCurRomSize);
+        inFile.clear();
+        inFile.close();
         RomToBigEndian(mRomData.get(), mCurRomSize);
-        verCrc = GetRomVerCrc();
 
-        // Rom doesn't claim to be valid
-        if (!verMap.contains(verCrc)) {
-            continue;
-        }
+        int option = ShowRomPickBox(GetRomVerCrc());
 
-        option = ShowRomPickBox(verCrc);
         if (option == (int)ButtonId::YES) {
             if (!ValidateRom(true)) {
                 if (rom == roms.back()) {
@@ -371,21 +445,11 @@ bool Extractor::Run() {
             }
             break;
         } else if (option == (int)ButtonId::FIND) {
-            if (!GetRomPathFromBox()) {
-                ShowErrorBox("No rom selected", "No Rom selected. Exiting");
-                return false;
-            }
-            inFile.open(mCurrentRomPath, std::ios::in | std::ios::binary);
-            if (!inFile.is_open()) {
-                return false; // TODO Handle error
-            }
-            inFile.read((char*)mRomData.get(), mCurRomSize);
-            if (!ValidateRom()) {
+            if (!ManuallySearchForRomMatchingType(searchMode)) {
                 return false;
             }
             break;
         } else if (option == (int)ButtonId::NO) {
-            inFile.close();
             if (rom == roms.back()) {
                 ShowErrorBox("No rom provided", "No rom provided. Exiting");
                 return false;

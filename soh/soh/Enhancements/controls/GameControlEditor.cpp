@@ -242,7 +242,11 @@ namespace GameControlEditor {
         DrawHelpIcon("Inverts the Camera Y Axis in:\n-First-Person/C-Up view\n-Weapon Aiming");
         UIWidgets::PaddedEnhancementCheckbox("Disable Auto-Centering in First-Person View", "gDisableAutoCenterViewFirstPerson");
         DrawHelpIcon("Prevents the C-Up view from auto-centering, allowing for Gyro Aiming");
-        UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", "gEnableFirstPersonSensitivity", true, false);
+        if (UIWidgets::PaddedEnhancementCheckbox("Enable Custom Aiming/First-Person sensitivity", "gEnableFirstPersonSensitivity", true, false)) {
+            if (!CVarGetInteger("gEnableFirstPersonSensitivity", 0)) {
+                CVarClear("gFirstPersonCameraSensitivity");
+            }
+        }
         if (CVarGetInteger("gEnableFirstPersonSensitivity", 0)) {
             UIWidgets::EnhancementSliderFloat("Aiming/First-Person Horizontal Sensitivity: %d %%", "##FirstPersonSensitivity Horizontal",
                                                 "gFirstPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true);

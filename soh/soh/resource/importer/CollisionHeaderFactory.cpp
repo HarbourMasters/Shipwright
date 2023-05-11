@@ -77,8 +77,8 @@ void LUS::CollisionHeaderFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader
     for (uint32_t i = 0; i < collisionHeader->surfaceTypesCount; i++) {
         SurfaceType surfaceType;
 
-        surfaceType.data[0] = reader->ReadUInt32();
         surfaceType.data[1] = reader->ReadUInt32();
+        surfaceType.data[0] = reader->ReadUInt32();
 
         collisionHeader->surfaceTypes.push_back(surfaceType);
     }

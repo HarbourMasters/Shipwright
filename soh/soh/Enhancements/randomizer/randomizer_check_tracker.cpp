@@ -110,7 +110,10 @@ std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT,
 
 void DrawCheckTracker(bool& open) {
     if (!open) {
-        CVarSetInteger("gCheckTrackerEnabled", 0);
+        if (CVarGetInteger("gCheckTrackerEnabled", 0)) {
+            CVarClear("gCheckTrackerEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 
@@ -962,7 +965,10 @@ static const char* buttonStrings[] = { "A Button", "B Button", "C-Up",  "C-Down"
                                        "Z Button", "R Button", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
 void DrawCheckTrackerOptions(bool& open) {
     if (!open) {
-        CVarSetInteger("gCheckTrackerSettingsEnabled", 0);
+        if (CVarGetInteger("gCheckTrackerSettingsEnabled", 0)) {
+            CVarClear("gCheckTrackerSettingsEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 

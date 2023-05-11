@@ -40,7 +40,10 @@ std::map<int, std::string> cmdMap = {
 
 void DrawDLViewer(bool& open) {
     if (!open) {
-        CVarSetInteger("gDLViewerEnabled", 0);
+        if (CVarGetInteger("gDLViewerEnabled", 0)) {
+            CVarClear("gDLViewerEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 

@@ -531,7 +531,10 @@ void PopulateActorDropdown(int i, std::vector<Actor*>& data) {
 
 void DrawActorViewer(bool& open) {
     if (!open) {
-        CVarSetInteger("gActorViewerEnabled", 0);
+        if (CVarGetInteger("gActorViewerEnabled", 0)) {
+            CVarClear("gActorViewerEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 
