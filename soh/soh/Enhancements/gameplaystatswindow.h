@@ -7,4 +7,5 @@ class GameplayStatsWindow : public LUS::GuiWindow {
 
     void Init() override;
     void Draw() override;
+    void Update() override {};
 };

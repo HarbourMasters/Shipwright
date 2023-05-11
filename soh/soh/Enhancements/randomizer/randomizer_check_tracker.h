@@ -35,6 +35,7 @@ class CheckTrackerSettingsWindow : public LUS::GuiWindow {
 
     void Init() override;
     void Draw() override;
+    void Update() override {};
 };
 
 class CheckTrackerWindow : public LUS::GuiWindow {
@@ -43,6 +44,7 @@ class CheckTrackerWindow : public LUS::GuiWindow {
 
     void Init() override;
     void Draw() override;
+    void Update() override {};
 };
 
 } // namespace CheckTracker

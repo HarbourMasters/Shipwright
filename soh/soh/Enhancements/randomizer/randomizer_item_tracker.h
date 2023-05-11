@@ -31,6 +31,7 @@ class ItemTrackerSettingsWindow : public LUS::GuiWindow {
 
     void Init() override;
     void Draw() override;
+    void Update() override {};
 };
 
 class ItemTrackerWindow : public LUS::GuiWindow {
@@ -39,4 +40,5 @@ class ItemTrackerWindow : public LUS::GuiWindow {
 
     void Init() override;
     void Draw() override;
+    void Update() override {};
 };
