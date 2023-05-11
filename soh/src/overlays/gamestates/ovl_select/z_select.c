@@ -915,8 +915,15 @@ void Better_Select_UpdateMenu(SelectContext* this) {
         }
 
         if (CHECK_BTN_ALL(input->press.button, BTN_L)) {
-            //Hijacking opt as the "MQ" option for better select
-            this->opt = this->opt ? 0 : 1;
+            //Hijacking opt as the "MQ" option for better select. Only change opt/play sound if displayed
+            if (this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].canBeMQ) {
+                this->opt = this->opt ? 0 : 1;
+                if (this->opt) {
+                    Audio_PlaySoundGeneral(NA_SE_IT_SWORD_PICKOUT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                } else {
+                    Audio_PlaySoundGeneral(NA_SE_IT_SWORD_PUTAWAY, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                }
+            }
         }
 
         if (CHECK_BTN_ALL(input->press.button, BTN_CLEFT) || CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
