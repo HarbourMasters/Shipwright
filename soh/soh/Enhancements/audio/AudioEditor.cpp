@@ -549,7 +549,7 @@ void DrawSfxEditor(bool& open) {
     ImGui::End();
 }
 
-void InitAudioEditor() {
+void AudioEditorWindow::Init() {
     //Draw the bar in the menu.
     LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Enhancements", "Audio Editor", DrawSfxEditor);
 }

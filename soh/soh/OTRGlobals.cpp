@@ -72,7 +72,7 @@
 #include "Enhancements/custom-message/CustomMessageTypes.h"
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
-#include "GameMenuBar.hpp"
+#include "SohGui.hpp"
 
 #ifdef ENABLE_CROWD_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
@@ -736,10 +736,11 @@ extern "C" void InitOTR() {
 #elif defined(__WIIU__)
     LUS::WiiU::Init();
 #endif
-    LUS::RegisterMenuDrawMethod(GameMenuBar::Draw);
+    LUS::RegisterMenuDrawMethod(SohGui::Draw);
 
     OTRGlobals::Instance = new OTRGlobals();
-    GameMenuBar::SetupHooks();
+    SohGui::SetupHooks();
+    SohGui::SetupGuiElements();
     SaveManager::Instance = new SaveManager();
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();

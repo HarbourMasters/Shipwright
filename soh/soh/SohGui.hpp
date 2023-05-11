@@ -1,14 +1,15 @@
 //
-//  GameMenuBar.hpp
+//  SohGui.hpp
 //  soh
 //
 //  Created by David Chavez on 24.08.22.
 //
 
-#ifndef GameMenuBar_hpp
-#define GameMenuBar_hpp
+#ifndef SohGui_hpp
+#define SohGui_hpp
 
 #include <stdio.h>
+include "SohMenuBar.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,9 +20,11 @@ extern "C" {
 }
 #endif
 
-namespace GameMenuBar {
+namespace SohGui {
     void SetupHooks();
+    void SetupGuiElements();
     void Draw();
+    std::shared_ptr<SohMenuBar> mSohMenuBar;
 }
 
-#endif /* GameMenuBar_hpp */
+#endif /* SohGui_hpp */
