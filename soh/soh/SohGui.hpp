@@ -17,6 +17,9 @@
 #include "Enhancements/debugger/colViewer.h"
 #include "Enhancements/debugger/debugSaveEditor.h"
 #include "Enhancements/debugger/dlViewer.h"
+#include "Enhancements/gameplaystatswindow.h"
+#include "Enhancements/randomizer/randomizer_check_tracker.h"
+#include "Enhancements/randomizer/randomizer_entrance_tracker.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -39,6 +42,10 @@ namespace SohGui {
     std::shared_ptr<ColViewerWindow> mColViewerWindow;
     std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
     std::shared_ptr<DLViewerWindow> mDLViewerWindow;
+    std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
+    std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
+    std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
+    std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
 }
 
 #endif /* SohGui_hpp */

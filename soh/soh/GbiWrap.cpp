@@ -16,7 +16,6 @@ int32_t OTRGetLastScancode();
 void ResourceMgr_LoadDirectory(const char* resName);
 void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
-char* GetResourceDataByName(char* texPath);
 uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
 uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 size_t GetResourceTexSizeByName(const char* name);

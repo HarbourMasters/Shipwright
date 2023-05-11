@@ -5,6 +5,7 @@
 #include <Gui.h>
 #include <libultraship/bridge.h>
 #include "soh/UIWidgets.hpp"
+#include <libultraship/libultraship.h>
 
 void clearCvars(std::vector<const char*> cvarsToClear) {
     for(const char* cvar : cvarsToClear) {

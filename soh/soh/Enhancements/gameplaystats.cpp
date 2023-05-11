@@ -1,6 +1,7 @@
 extern "C" {
 #include "gameplaystats.h"
 }
+#include "gameplaystatswindow.h"
 
 #include "Gui.h"
 #include "../UIWidgets.hpp"
@@ -8,7 +9,9 @@ extern "C" {
 #include <vector>
 #include <string>
 #include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 #include <Hooks.h>
+
 
 extern "C" {
 #include <z64.h>
@@ -261,8 +264,8 @@ std::string ResolveSceneID(int sceneID, int roomID){
     return scene;
 }
 
-void DrawStatsTracker(bool& open) {
-    if (!open) {
+void GameplayStatsWindow::Draw() {
+    if (!mIsOpen) {
         if (CVarGetInteger("gGameplayStatsEnabled", 0)) {
             CVarClear("gGameplayStatsEnabled");
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -271,7 +274,7 @@ void DrawStatsTracker(bool& open) {
     }
 
     ImGui::SetNextWindowSize(ImVec2(480, 550), ImGuiCond_Appearing);
-    if (!ImGui::Begin("Gameplay Stats", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Gameplay Stats", &mIsOpen, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -669,9 +672,7 @@ void SetupDisplayColors() {
     }
 }
 
-extern "C" void InitStatTracker() {
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Enhancements", "Gameplay Stats", DrawStatsTracker,
-                    CVarGetInteger("gGameplayStatsEnabled", 0) == 1);
+void GameplayStatsWindow::Init() {
     SetupDisplayNames();
     SetupDisplayColors();
 }

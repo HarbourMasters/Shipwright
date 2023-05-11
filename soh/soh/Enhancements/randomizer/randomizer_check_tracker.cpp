@@ -7,6 +7,7 @@
 #include <vector>
 #include <set>
 #include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 #include <Hooks.h>
 #include "3drando/item_location.hpp"
 
@@ -108,11 +109,11 @@ OSContPad* trackerButtonsPressed;
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 
-void DrawCheckTracker(bool& open) {
-    if (!open) {
+void CheckTrackerWindow::Draw() {
+    if (!mIsOpen) {
         if (CVarGetInteger("gCheckTrackerEnabled", 0)) {
             CVarClear("gCheckTrackerEnabled");
-            LUS::RequestCvarSaveOnNextTick();
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         return;
     }
@@ -143,7 +144,7 @@ void DrawCheckTracker(bool& open) {
         }
     }
 
-    BeginFloatWindows("Check Tracker", open, ImGuiWindowFlags_NoScrollbar);
+    BeginFloatWindows("Check Tracker", mIsOpen, ImGuiWindowFlags_NoScrollbar);
 
     if (!initialized) {
         ImGui::Text("Waiting for file load..."); //TODO Language
@@ -963,18 +964,18 @@ static const char* windowType[] = { "Floating", "Window" };
 static const char* displayType[] = { "Always", "Combo Button Hold" };
 static const char* buttonStrings[] = { "A Button", "B Button", "C-Up",  "C-Down", "C-Left", "C-Right", "L Button",
                                        "Z Button", "R Button", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
-void DrawCheckTrackerOptions(bool& open) {
-    if (!open) {
+void CheckTrackerSettingsWindow::Draw() {
+    if (!mIsOpen) {
         if (CVarGetInteger("gCheckTrackerSettingsEnabled", 0)) {
             CVarClear("gCheckTrackerSettingsEnabled");
-            LUS::RequestCvarSaveOnNextTick();
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         return;
     }
 
     ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
 
-    if (!ImGui::Begin("Check Tracker Settings", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Check Tracker Settings", &mIsOpen, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -1028,9 +1029,7 @@ void DrawCheckTrackerOptions(bool& open) {
     ImGui::End();
 }
 
-void InitCheckTracker() {
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Randomizer", "Check Tracker", DrawCheckTracker, CVarGetInteger("gCheckTrackerEnabled", 0) == 1);
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Randomizer", "Check Tracker Settings", DrawCheckTrackerOptions);
+void CheckTrackerWindow::Init() {
     Color_Background = CVarGetColor("gCheckTrackerBgColor", Color_Bg_Default);
     Color_Area_Incomplete_Main  = CVarGetColor("gCheckTrackerAreaMainIncompleteColor",    Color_Main_Default);
     Color_Area_Incomplete_Extra = CVarGetColor("gCheckTrackerAreaExtraIncompleteColor",   Color_Area_Incomplete_Extra_Default);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <libultraship/libultraship.h>
+
 namespace CheckTracker {
 
 // Check tracker check visibility categories
@@ -27,7 +29,20 @@ typedef enum {
 //repeat...
 #define INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(idx) (0x8000 >> (7 - (idx % 8) + ((idx % 16) / 8) * 8))
 
-void InitCheckTracker();
-void DrawCheckTracker(bool& open);
+class CheckTrackerSettingsWindow : public LUS::GuiWindow {
+  public:
+    using GuiWindow::GuiWindow;
+
+    void Init() override;
+    void Draw() override;
+};
+
+class CheckTrackerWindow : public LUS::GuiWindow {
+  public:
+    using GuiWindow::GuiWindow;
+
+    void Init() override;
+    void Draw() override;
+};
 
 } // namespace CheckTracker

@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 #include <Hooks.h>
 
 extern "C" {
@@ -621,18 +622,18 @@ void InitEntranceTrackingData() {
     SortEntranceListByType(destListSortedByType, 1);
 }
 
-void DrawEntranceTracker(bool& open) {
-    if (!open) {
+void EntranceTrackerWindow::Draw() {
+    if (!mIsOpen) {
         if (CVarGetInteger("gEntranceTrackerEnabled", 0)) {
             CVarClear("gEntranceTrackerEnabled");
-            LUS::RequestCvarSaveOnNextTick();
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         return;
     }
 
     ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
 
-    if (!ImGui::Begin("Entrance Tracker", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Entrance Tracker", &mIsOpen, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -921,10 +922,7 @@ void DrawEntranceTracker(bool& open) {
     ImGui::End();
 }
 
-void InitEntranceTracker() {
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow("Randomizer", "Entrance Tracker", DrawEntranceTracker,
-                    CVarGetInteger("gEntranceTrackerEnabled", 0) == 1);
-
+void EntranceTrackerWindow::Init() {
     // Setup hooks for loading and clearing the entrance tracker data
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         InitEntranceTrackingData();

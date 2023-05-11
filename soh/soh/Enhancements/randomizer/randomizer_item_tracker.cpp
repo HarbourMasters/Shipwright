@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 #include <Hooks.h>
 #include <algorithm>
 
@@ -853,7 +854,7 @@ void DrawItemTracker(bool& open) {
     if (!open) {
         if (CVarGetInteger("gItemTrackerEnabled", 0)) {
             CVarClear("gItemTrackerEnabled");
-            LUS::RequestCvarSaveOnNextTick();
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         return;
     }
@@ -964,7 +965,7 @@ void DrawItemTrackerOptions(bool& open) {
     if (!open) {
         if (CVarGetInteger("gItemTrackerSettingsEnabled", 0)) {
             CVarClear("gItemTrackerSettingsEnabled");
-            LUS::RequestCvarSaveOnNextTick();
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         return;
     }

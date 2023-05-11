@@ -1,11 +1,12 @@
 #include "SohMenuBar.h"
 #include "ImGui/imgui.h"
 #include "core/bridge/consolevariablebridge.h"
+#include <libultraship/libultraship.h>
 
 namespace SohGui {
 
 void DrawMenuBarIcon() {
-    if (mGuiTextures.contains("Game_Icon")) {
+    if (LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiTextures().contains("Game_Icon")) {
 #ifdef __SWITCH__
         ImVec2 iconSize = ImVec2(20.0f, 20.0f);
         float posScale = 1.0f;
@@ -17,7 +18,7 @@ void DrawMenuBarIcon() {
         float posScale = 1.0f;
 #endif
         ImGui::SetCursorPos(ImVec2(5, 2.5f) * posScale);
-        ImGui::Image(GetTextureById(mGuiTextures["Game_Icon"].TextureId), iconSize);
+        ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureById(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiTextures()["Game_Icon"].TextureId), iconSize);
         ImGui::SameLine();
         ImGui::SetCursorPos(ImVec2(25, 0) * posScale);
     }
@@ -32,17 +33,17 @@ void DrawShipwrightMenu() {
                             "Ctrl+R"
 #endif
                             )) {
-            GetConsoleWindow()->Dispatch("reset");
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->GetConsoleWindow()->Dispatch("reset");
         }
 #if !defined(__SWITCH__) && !defined(__WIIU__)
         const char* keyboardShortcut =
-            strcmp(Context::GetInstance()->GetWindow()->GetWindowManagerName().c_str(), "sdl") == 0 ? "F10"
+            strcmp(LUS::Context::GetInstance()->GetWindow()->GetWindowManagerName().c_str(), "sdl") == 0 ? "F10"
                                                                                                     : "ALT+Enter";
         if (ImGui::MenuItem("Toggle Fullscreen", keyboardShortcut)) {
-            wnd->ToggleFullscreen();
+            LUS::Context::GetInstance()->GetWindow()->ToggleFullscreen();
         }
         if (ImGui::MenuItem("Quit")) {
-            wnd->Close();
+            LUS::Context::GetInstance()->GetWindow()->Close();
         }
 #endif
         ImGui::EndMenu();

@@ -155,6 +155,14 @@ namespace SohGui {
         LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mSaveEditorWindow);
         mDLViewerWindow = std::make_shared<DLViewerWindow>();
         LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mDLViewerWindow);
+        mGameplayStatsWindow = std::make_shared<GameplayStatsWindow>();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mGameplayStatsWindow);
+        mCheckTrackerWindow = std::make_shared<CheckTracker::CheckTrackerWindow>();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mCheckTrackerWindow);
+        mCheckTrackerSettingsWindow = std::make_shared<CheckTracker::CheckTrackerSettingsWindow>();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mCheckTrackerSettingsWindow);
+        mEntranceTrackerWindow = std::make_shared<EntranceTrackerWindow>();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mEntranceTrackerWindow);
 }
 
     void SetupHooks() {

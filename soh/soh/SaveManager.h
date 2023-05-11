@@ -30,9 +30,9 @@ typedef struct {
 #include <filesystem>
 #include "thread-pool/BS_thread_pool.hpp"
 
-extern "C" {
+// extern "C" {
     #include "z64save.h"
-}
+// }
 
 #include <nlohmann/json.hpp>
 
