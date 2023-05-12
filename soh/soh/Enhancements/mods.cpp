@@ -11,12 +11,6 @@ extern "C" {
 #include "functions.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
-extern void Play_PerformSave(PlayState* play);
-extern s32 Health_ChangeBy(PlayState* play, s16 healthChange);
-extern void Rupees_ChangeBy(s16 rupeeChange);
-extern Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ,
-                            s16 rotX, s16 rotY, s16 rotZ, s16 params, s16 canRandomize);
-extern void Inventory_ChangeEquipment(s16 equipment, u16 value);
 }
 bool performDelayedSave = false;
 bool performSave = false;
@@ -440,6 +434,25 @@ void RegisterHyperBosses() {
     });
 }
 
+void RegisterHyperEnemies() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+        // Run the update function a second time to make enemies and minibosses move and act twice as fast.
+
+        Player* player = GET_PLAYER(gPlayState);
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        // Some enemies are not in the ACTORCAT_ENEMY category, and some are that aren't really enemies.
+        bool isEnemy = actor->category == ACTORCAT_ENEMY || actor->id == ACTOR_EN_TORCH2;
+        bool isExcludedEnemy = actor->id == ACTOR_EN_FIRE_ROCK || actor->id == ACTOR_EN_ENCOUNT2;
+
+        // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
+        if (CVarGetInteger("gHyperEnemies", 0) && isEnemy && !isExcludedEnemy &&
+            !Player_InBlockingCsMode(gPlayState, player)) {
+            GameInteractor::RawAction::UpdateActor(actor);
+        }
+    });
+}
+
 void RegisterBonkDamage() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerBonk>([]() {
         uint8_t bonkOption = CVarGetInteger("gBonkDamageMul", 0);
@@ -503,5 +516,6 @@ void InitMods() {
     RegisterDaytimeGoldSkultullas();
     RegisterRupeeDash();
     RegisterHyperBosses();
+    RegisterHyperEnemies();
     RegisterBonkDamage();
 }
