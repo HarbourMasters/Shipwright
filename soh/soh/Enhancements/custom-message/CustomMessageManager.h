@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <unordered_map>
+#include <cstdint>
 #include "../../../include/z64item.h"
 #include "../../../include/message_data_textbox_types.h"
 

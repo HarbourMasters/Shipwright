@@ -199,8 +199,16 @@ bool WarningHandler::WasElevatedToError(WarningType warnType) {
  * Print file/line/function info for debugging
  */
 void WarningHandler::FunctionPreamble(const char* filename, int32_t line, const char* function) {
-    if (Globals::Instance->verbosity >= VerbosityLevel::VERBOSITY_DEBUG) {
-        fprintf(stderr, "%s:%i: in function %s:\n", filename, line, function);
+    bool forcePrint = false;
+
+#ifdef DEVELOPMENT
+    forcePrint = true;
+#endif
+
+    fprintf(stderr, "\n");
+
+    if (forcePrint || Globals::Instance->verbosity >= VerbosityLevel::VERBOSITY_DEBUG) {
+        fprintf(stderr, "%s:%i: in function <%s>:\n", filename, line, function);
     }
 }
 

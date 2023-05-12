@@ -1,6 +1,6 @@
 #include "SetObjectList.h"
 
-namespace Ship {
+namespace LUS {
 void* SetObjectList::GetPointer() {
     return objects.data();
 }
@@ -8,4 +8,4 @@ void* SetObjectList::GetPointer() {
 size_t SetObjectList::GetPointerSize() {
 	return objects.size() * sizeof(int16_t);
 }
-} // namespace Ship
+} // namespace LUS

@@ -152,7 +152,7 @@ void RegisterFreezeTime() {
             int32_t prevTime = CVarGetInteger("gPrevTime", gSaveContext.dayTime);
             gSaveContext.dayTime = prevTime;
         } else {
-            CVarSetInteger("gPrevTime", -1);
+            CVarClear("gPrevTime");
         }
     });
 }
@@ -417,11 +417,13 @@ void RegisterHyperBosses() {
         uint8_t isBossActor =
             actor->id == ACTOR_BOSS_GOMA ||                              // Gohma
             actor->id == ACTOR_BOSS_DODONGO ||                           // King Dodongo
+            actor->id == ACTOR_EN_BDFIRE ||                              // King Dodongo Fire Breath
             actor->id == ACTOR_BOSS_VA ||                                // Barinade
             actor->id == ACTOR_BOSS_GANONDROF ||                         // Phantom Ganon
-            (actor->id == 0 && actor->category == ACTORCAT_BOSS) ||      // Phantom Ganon/Ganondorf Energy Ball/Thunder
+            actor->id == ACTOR_EN_FHG_FIRE ||                            // Phantom Ganon/Ganondorf Energy Ball/Thunder
             actor->id == ACTOR_EN_FHG ||                                 // Phantom Ganon's Horse
             actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || // Volvagia (grounded/flying)
+            actor->id == ACTOR_EN_VB_BALL ||                             // Volvagia Rocks
             actor->id == ACTOR_BOSS_MO ||                                // Morpha
             actor->id == ACTOR_BOSS_SST ||                               // Bongo Bongo
             actor->id == ACTOR_BOSS_TW ||                                // Twinrova

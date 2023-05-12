@@ -1,6 +1,6 @@
 #include "SetRoomBehavior.h"
 
-namespace Ship {
+namespace LUS {
 void* SetRoomBehavior::GetPointer() {
     return &roomBehavior;
 }
@@ -8,4 +8,4 @@ void* SetRoomBehavior::GetPointer() {
 size_t SetRoomBehavior::GetPointerSize() {
 	return sizeof(RoomBehavior);
 }
-} // namespace Ship
+} // namespace LUS

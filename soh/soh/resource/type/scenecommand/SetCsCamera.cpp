@@ -1,6 +1,6 @@
 #include "SetCsCamera.h"
 
-namespace Ship {
+namespace LUS {
 void* SetCsCamera::GetPointer() {
     return &csCamera;
 }
@@ -8,4 +8,4 @@ void* SetCsCamera::GetPointer() {
 size_t SetCsCamera::GetPointerSize() {
 	return sizeof(CsCamera);
 }
-} // namespace Ship
+} // namespace LUS

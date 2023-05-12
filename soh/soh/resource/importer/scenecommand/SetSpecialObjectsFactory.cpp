@@ -2,8 +2,8 @@
 #include "soh/resource/type/scenecommand/SetSpecialObjects.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> SetSpecialObjectsFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+namespace LUS {
+std::shared_ptr<Resource> SetSpecialObjectsFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                                  std::shared_ptr<ResourceInitData> initData,
                                                                  std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetSpecialObjects>(resourceMgr, initData);
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> SetSpecialObjectsFactory::ReadResource(std::shared_ptr
     return resource;
 }
 
-void Ship::SetSpecialObjectsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetSpecialObjectsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource) {
     std::shared_ptr<SetSpecialObjects> setSpecialObjects = std::static_pointer_cast<SetSpecialObjects>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setSpecialObjects);
@@ -36,4 +36,4 @@ void Ship::SetSpecialObjectsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRea
     setSpecialObjects->specialObjects.globalObject = reader->ReadInt16();
 }
 
-} // namespace Ship
+} // namespace LUS

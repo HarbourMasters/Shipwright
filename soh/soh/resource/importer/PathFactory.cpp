@@ -2,8 +2,8 @@
 #include "soh/resource/type/Path.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> PathFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+namespace LUS {
+std::shared_ptr<Resource> PathFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                     std::shared_ptr<ResourceInitData> initData,
                                                     std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<Path>(resourceMgr, initData);
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> PathFactory::ReadResource(std::shared_ptr<ResourceMgr>
     return resource;
 }
 
-void Ship::PathFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::PathFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                           std::shared_ptr<Resource> resource) {
     std::shared_ptr<Path> path = std::static_pointer_cast<Path>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, path);
@@ -54,4 +54,4 @@ void Ship::PathFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
         path->pathData.push_back(pathDataEntry);
     }
 }
-} // namespace Ship
+} // namespace LUS
