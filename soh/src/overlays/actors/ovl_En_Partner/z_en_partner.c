@@ -876,40 +876,35 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
         uint8_t pressed = 0;
         uint8_t released = 0;
         uint8_t current = 0;
+        uint16_t partnerButtons[7] = { BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT};
+        uint8_t buttonMax = 3;
+        if (CVarGetInteger("gDpadEquips", 0) != 0) {
+            buttonMax = ARRAY_COUNT(gSaveContext.equips.cButtonSlots);
+        }
 
         if (this->usedItem == 0xFF && this->itemTimer <= 0) {
-            if (CHECK_BTN_ALL(sControlInput.press.button, BTN_CLEFT)) {
-                this->usedItem = gSaveContext.equips.buttonItems[1];
-                this->usedItemButton = 1;
-                pressed = 1;
-            } else if (CHECK_BTN_ALL(sControlInput.press.button, BTN_CDOWN)) {
-                this->usedItem = gSaveContext.equips.buttonItems[2];
-                this->usedItemButton = 2;
-                pressed = 1;
-            } else if (CHECK_BTN_ALL(sControlInput.press.button, BTN_CRIGHT)) {
-                this->usedItem = gSaveContext.equips.buttonItems[3];
-                this->usedItemButton = 3;
-                pressed = 1;
+            for (uint8_t i = 0; i < buttonMax; i++) {
+                if (CHECK_BTN_ALL(sControlInput.press.button, partnerButtons[i])) {
+                    this->usedItem = gSaveContext.equips.buttonItems[i+1];
+                    this->usedItemButton = i + 1;
+                    pressed = 1;
+                }
             }
         }
 
         if (this->usedItem != 0xFF) {
-            if (CHECK_BTN_ALL(sControlInput.cur.button, BTN_CLEFT) && this->usedItemButton == 1) {
-                current = 1;
-            } else if (CHECK_BTN_ALL(sControlInput.cur.button, BTN_CDOWN) && this->usedItemButton == 2) {
-                current = 1;
-            } else if (CHECK_BTN_ALL(sControlInput.cur.button, BTN_CRIGHT) && this->usedItemButton == 3) {
-                current = 1;
+            for (uint8_t i = 0; i < buttonMax; i++) {
+                if (CHECK_BTN_ALL(sControlInput.cur.button, partnerButtons[i]) && this->usedItemButton == i + 1) {
+                    current = 1;
+                }
             }
         }
 
         if (this->usedItem != 0xFF) {
-            if (CHECK_BTN_ALL(sControlInput.rel.button, BTN_CLEFT) && this->usedItemButton == 1) {
-                released = 1;
-            } else if (CHECK_BTN_ALL(sControlInput.rel.button, BTN_CDOWN) && this->usedItemButton == 2) {
-                released = 1;
-            } else if (CHECK_BTN_ALL(sControlInput.rel.button, BTN_CRIGHT) && this->usedItemButton == 3) {
-                released = 1;
+            for (uint8_t i = 0; i < buttonMax; i++) {
+                if (CHECK_BTN_ALL(sControlInput.rel.button, partnerButtons[i]) && this->usedItemButton == i + 1) {
+                    released = 1;
+                }
             }
         }
 
