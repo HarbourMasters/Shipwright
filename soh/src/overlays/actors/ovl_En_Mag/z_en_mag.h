@@ -3,6 +3,7 @@
 
 #include <libultraship/libultra.h>
 #include "global.h"
+#include "align_asset_macro.h"
 
 struct EnMag;
 
@@ -39,5 +40,14 @@ typedef enum {
     /* 0x03 */ MAG_STATE_FADE_OUT,
     /* 0x04 */ MAG_STATE_POST_DISPLAY
 } EnMagGlobalState;
+
+#define dgTitleCopyrightGCTex "__OTR__objects/object_mag/gTitleCopyright19982003Tex"
+static const ALIGN_ASSET(2) char gTitleCopyrightGCTex[] = dgTitleCopyrightGCTex;
+
+#define dgTitleCopyrightN64Tex "__OTR__objects/object_mag/gTitleCopyright1998Tex"
+static const ALIGN_ASSET(2) char gTitleCopyrightN64Tex[] = dgTitleCopyrightN64Tex;
+
+#define dgTitleMQSubtitleTex "__OTR__objects/object_mag/gTitleMasterQuestSubtitleTex"
+static const ALIGN_ASSET(2) char gTitleMQSubtitleTex[] = dgTitleMQSubtitleTex;
 
 #endif

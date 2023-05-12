@@ -625,13 +625,10 @@ static char* EnMag_GetCopyrightTex()
 
     switch (gameVersion) {
         case OOT_PAL_11:
-            return "__OTR__objects/object_mag/gTitleCopyright1998Tex";
+            return dgTitleCopyrightN64Tex;
         default:
-            return "__OTR__objects/object_mag/gTitleCopyright19982003Tex";
+            return dgTitleCopyrightGCTex;
     }
-    
-    // 160
-
 }
 
 static int EnMag_GetCopyrightTexWidth() {
@@ -728,7 +725,7 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
 
         gDPPipeSync(gfx++);
         gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, (s16)this->subAlpha);
-        EnMag_DrawImageRGBA32(&gfx, 174, 145, "__OTR__objects/object_mag/gTitleMasterQuestSubtitleTex",
+        EnMag_DrawImageRGBA32(&gfx, 174, 145, dgTitleMQSubtitleTex,
                               EnMag_GetCopyrightTexWidth(), 32);
     }
 
