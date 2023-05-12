@@ -305,19 +305,11 @@ void DrawTypeChip(SeqType type) {
     ImGui::EndDisabled();
 }
 
-void DrawSfxEditor(bool& open) {
-    if (!open) {
-        if (CVarGetInteger("gAudioEditor.WindowOpen", 0)) {
-            CVarClear("gAudioEditor.WindowOpen");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-        return;
-    }
-
+void AudioEditor::DrawElement() {
     AudioCollection::Instance->InitializeShufflePool();
 
     ImGui::SetNextWindowSize(ImVec2(820, 630), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Audio Editor", &open)) {
+    if (!ImGui::Begin("Audio Editor", &mIsVisible)) {
         ImGui::End();
         return;
     }

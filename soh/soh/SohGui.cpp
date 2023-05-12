@@ -11,7 +11,6 @@
 #include <ImGui/imgui.h>
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <ImGui/imgui_internal.h>
-#include <Gui.h>
 #include <libultraship/libultraship.h>
 #include <Hooks.h>
 #include <libultraship/libultra/types.h>
@@ -148,34 +147,34 @@ namespace SohGui {
         mSohMenuBar = std::make_shared<SohMenuBar>();
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SetMenuBar(std::reinterpret_pointer_cast<LUS::GuiMenuBar>(mSohMenuBar));
 
-        mAudioEditorWindow = std::make_shared<AudioEditor>("Audio Editor");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mAudioEditorWindow);
+        mAudioEditorWindow = std::make_shared<AudioEditor>("gAudioEditor.WindowOpen", "Audio Editor");
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddGuiWindow(mAudioEditorWindow);
         mGameControlEditorWindow = std::make_shared<GameControlEditor::GameControlEditorWindow>("Game Control Editor");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mGameControlEditorWindow);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddGuiWindow(mGameControlEditorWindow);
         mCosmeticsEditorWindow = std::make_shared<CosmeticsEditorWindow>("Cosmetics Editor");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mCosmeticsEditorWindow);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddGuiWindow(mCosmeticsEditorWindow);
         mActorViewerWindow = std::make_shared<ActorViewerWindow>("Actor Viewer");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mActorViewerWindow);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddGuiWindow(mActorViewerWindow);
         mColViewerWindow = std::make_shared<ColViewerWindow>("Collision Viewer");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mColViewerWindow);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddGuiWindow(mColViewerWindow);
         mSaveEditorWindow = std::make_shared<SaveEditorWindow>("Save Editor");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mSaveEditorWindow);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddGuiWindow(mSaveEditorWindow);
         mDLViewerWindow = std::make_shared<DLViewerWindow>("Display List Viewer");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mDLViewerWindow);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddGuiWindow(mDLViewerWindow);
         mGameplayStatsWindow = std::make_shared<GameplayStatsWindow>("Gameplay Stats");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mGameplayStatsWindow);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddGuiWindow(mGameplayStatsWindow);
         mCheckTrackerWindow = std::make_shared<CheckTracker::CheckTrackerWindow>("Check Tracker");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mCheckTrackerWindow);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddGuiWindow(mCheckTrackerWindow);
         mCheckTrackerSettingsWindow = std::make_shared<CheckTracker::CheckTrackerSettingsWindow>("Check Tracker Settings");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mCheckTrackerSettingsWindow);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddGuiWindow(mCheckTrackerSettingsWindow);
         mEntranceTrackerWindow = std::make_shared<EntranceTrackerWindow>("Entrance Tracker");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mEntranceTrackerWindow);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddGuiWindow(mEntranceTrackerWindow);
         mItemTrackerWindow = std::make_shared<ItemTrackerWindow>("Item Tracker");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mItemTrackerWindow);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddGuiWindow(mItemTrackerWindow);
         mItemTrackerSettingsWindow = std::make_shared<ItemTrackerSettingsWindow>("Item Tracker Settings");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mItemTrackerSettingsWindow);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddGuiWindow(mItemTrackerSettingsWindow);
         mRandomizerSettingsWindow = std::make_shared<RandomizerSettingsWindow>("Randomizer Settings");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddWindow(mRandomizerSettingsWindow);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->AddGuiWindow(mRandomizerSettingsWindow);
 }
 
     void SetupHooks() {

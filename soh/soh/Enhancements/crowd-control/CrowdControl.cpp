@@ -3,8 +3,7 @@
 #include "CrowdControl.h"
 #include "CrowdControlTypes.h"
 #include <libultraship/bridge.h>
-#include <ConsoleWindow.h>
-#include <Gui.h>
+#include <libultraship/libultraship.h>
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/fmt.h>

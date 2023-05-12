@@ -1732,8 +1732,8 @@ void DrawPlayerTab() {
     }
 }
 
-void SaveEditorWindow::Draw() {
-    if (!mIsOpen) {
+void SaveEditorWindow::DrawElement() {
+    if (!mIsVisible) {
         if (CVarGetInteger("gSaveEditorEnabled", 0)) {
             CVarClear("gSaveEditorEnabled");
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -1742,7 +1742,7 @@ void SaveEditorWindow::Draw() {
     }
 
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Save Editor", &mIsOpen, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Save Editor", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -1784,7 +1784,7 @@ void SaveEditorWindow::Draw() {
     ImGui::End();
 }
 
-void SaveEditorWindow::Init() {
+void SaveEditorWindow::InitElement() {
     // Load item icons into ImGui
     for (const auto& entry : itemMapping) {
         LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));

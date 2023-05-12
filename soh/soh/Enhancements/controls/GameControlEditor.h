@@ -1,15 +1,15 @@
 #pragma once
 
-#include "menu/GuiWindow.h"
+#include <libultraship/libultraship.h>
 
 namespace GameControlEditor {
 class GameControlEditorWindow : public LUS::GuiWindow {
     public:
         using LUS::GuiWindow::GuiWindow;
 
-        void Init() override;
-        void Draw() override;
-        void Update() override {};
+        void InitElement() override;
+        void DrawElement() override;
+        void UpdateElement() override {};
 };
 
 static int CurrentPort = 0;

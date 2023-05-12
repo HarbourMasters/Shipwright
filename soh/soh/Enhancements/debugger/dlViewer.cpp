@@ -1,7 +1,6 @@
 #include "actorViewer.h"
 #include "../../util.h"
 #include "../../UIWidgets.hpp"
-#include <Gui.h>
 #include "ResourceManager.h"
 #include "DisplayList.h"
 #include "../../OTRGlobals.h"
@@ -39,8 +38,8 @@ std::map<int, std::string> cmdMap = {
     { G_ENDDL, "gsSPEndDisplayList" },
 };
 
-void DLViewerWindow::Draw() {
-    if (!mIsOpen) {
+void DLViewerWindow::DrawElement() {
+    if (!mIsVisible) {
         if (CVarGetInteger("gDLViewerEnabled", 0)) {
             CVarClear("gDLViewerEnabled");
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -49,7 +48,7 @@ void DLViewerWindow::Draw() {
     }
 
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Display List Viewer", &mIsOpen, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Display List Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -141,6 +140,6 @@ void DLViewerWindow::Draw() {
     ImGui::End();
 }
 
-void DLViewerWindow::Init() {
+void DLViewerWindow::InitElement() {
     displayListsSearchResults = ResourceMgr_ListFiles("*DL", &displayListsSearchResultsCount);
 }

@@ -4,12 +4,13 @@
 #include <string.h>
 
 #include "soh/Enhancements/gameconsole.h"
-#include <Gui.h>
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/debugconsole.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
+
+#include <libultraship/libultraship.h>
 
 #include <time.h>
 

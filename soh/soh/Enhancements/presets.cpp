@@ -2,7 +2,6 @@
 #include <variant>
 #include <string>
 #include <cstdint>
-#include <Gui.h>
 #include <libultraship/bridge.h>
 #include "soh/UIWidgets.hpp"
 #include <libultraship/libultraship.h>

@@ -85,7 +85,7 @@ class EntranceTrackerWindow : public LUS::GuiWindow {
   public:
     using GuiWindow::GuiWindow;
 
-    void Init() override;
-    void Draw() override;
-    void Update() override {};
+    void InitElement() override;
+    void DrawElement() override;
+    void UpdateElement() override {};
 };

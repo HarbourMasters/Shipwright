@@ -1,6 +1,5 @@
 #include "randomizer_entrance_tracker.h"
 #include "soh/OTRGlobals.h"
-#include <Gui.h>
 #include "soh/UIWidgets.hpp"
 
 #include <map>
@@ -622,8 +621,8 @@ void InitEntranceTrackingData() {
     SortEntranceListByType(destListSortedByType, 1);
 }
 
-void EntranceTrackerWindow::Draw() {
-    if (!mIsOpen) {
+void EntranceTrackerWindow::DrawElement() {
+    if (!mIsVisible) {
         if (CVarGetInteger("gEntranceTrackerEnabled", 0)) {
             CVarClear("gEntranceTrackerEnabled");
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -633,7 +632,7 @@ void EntranceTrackerWindow::Draw() {
 
     ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
 
-    if (!ImGui::Begin("Entrance Tracker", &mIsOpen, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Entrance Tracker", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -922,7 +921,7 @@ void EntranceTrackerWindow::Draw() {
     ImGui::End();
 }
 
-void EntranceTrackerWindow::Init() {
+void EntranceTrackerWindow::InitElement() {
     // Setup hooks for loading and clearing the entrance tracker data
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         InitEntranceTrackingData();

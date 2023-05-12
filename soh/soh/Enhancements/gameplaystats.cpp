@@ -3,7 +3,6 @@ extern "C" {
 }
 #include "gameplaystatswindow.h"
 
-#include "Gui.h"
 #include "../UIWidgets.hpp"
 
 #include <vector>
@@ -264,8 +263,8 @@ std::string ResolveSceneID(int sceneID, int roomID){
     return scene;
 }
 
-void GameplayStatsWindow::Draw() {
-    if (!mIsOpen) {
+void GameplayStatsWindow::DrawElement() {
+    if (!mIsVisible) {
         if (CVarGetInteger("gGameplayStatsEnabled", 0)) {
             CVarClear("gGameplayStatsEnabled");
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -274,7 +273,7 @@ void GameplayStatsWindow::Draw() {
     }
 
     ImGui::SetNextWindowSize(ImVec2(480, 550), ImGuiCond_Appearing);
-    if (!ImGui::Begin("Gameplay Stats", &mIsOpen, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Gameplay Stats", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -672,7 +671,7 @@ void SetupDisplayColors() {
     }
 }
 
-void GameplayStatsWindow::Init() {
+void GameplayStatsWindow::InitElement() {
     SetupDisplayNames();
     SetupDisplayColors();
 }

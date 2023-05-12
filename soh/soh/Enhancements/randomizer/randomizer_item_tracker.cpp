@@ -1,7 +1,6 @@
 #include "randomizer_item_tracker.h"
 #include "../../util.h"
 #include "../../OTRGlobals.h"
-#include <Gui.h>
 #include "../../UIWidgets.hpp"
 
 #include <map>
@@ -849,9 +848,9 @@ void UpdateVectors() {
     shouldUpdateVectors = false;
 }
 
-void ItemTrackerWindow::Draw() {
+void ItemTrackerWindow::DrawElement() {
     UpdateVectors();
-    if (!mIsOpen) {
+    if (!mIsVisible) {
         if (CVarGetInteger("gItemTrackerEnabled", 0)) {
             CVarClear("gItemTrackerEnabled");
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -961,8 +960,8 @@ static const char* buttons[14] = { "A", "B", "C-Up", "C-Down", "C-Left", "C-Righ
 static const char* displayTypes[3] = { "Hidden", "Main Window", "Seperate" };
 static const char* extendedDisplayTypes[4] = { "Hidden", "Main Window", "Misc Window", "Seperate" };
 
-void ItemTrackerSettingsWindow::Draw() {
-    if (!mIsOpen) {
+void ItemTrackerSettingsWindow::DrawElement() {
+    if (!mIsVisible) {
         if (CVarGetInteger("gItemTrackerSettingsEnabled", 0)) {
             CVarClear("gItemTrackerSettingsEnabled");
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -972,7 +971,7 @@ void ItemTrackerSettingsWindow::Draw() {
 
     ImGui::SetNextWindowSize(ImVec2(600,375), ImGuiCond_FirstUseEver);
 
-    if (!ImGui::Begin("Item Tracker Settings", &mIsOpen, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Item Tracker Settings", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -1087,7 +1086,7 @@ void ItemTrackerSettingsWindow::Draw() {
     ImGui::End();
 }
 
-void ItemTrackerWindow::Init() {
+void ItemTrackerWindow::InitElement() {
     float trackerBgR = CVarGetFloat("gItemTrackerBgColorR", 0);
     float trackerBgG = CVarGetFloat("gItemTrackerBgColorG", 0);
     float trackerBgB = CVarGetFloat("gItemTrackerBgColorB", 0);

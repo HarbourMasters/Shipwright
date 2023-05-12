@@ -1,7 +1,6 @@
 #include "randomizer_check_tracker.h"
 #include "randomizer_check_tracker_window.h"
 #include "../../OTRGlobals.h"
-#include <Gui.h>
 #include "../../UIWidgets.hpp"
 
 #include <string>
@@ -110,8 +109,8 @@ OSContPad* trackerButtonsPressed;
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 
-void CheckTrackerWindow::Draw() {
-    if (!mIsOpen) {
+void CheckTrackerWindow::DrawElement() {
+    if (!mIsVisible) {
         if (CVarGetInteger("gCheckTrackerEnabled", 0)) {
             CVarClear("gCheckTrackerEnabled");
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -145,7 +144,7 @@ void CheckTrackerWindow::Draw() {
         }
     }
 
-    BeginFloatWindows("Check Tracker", mIsOpen, ImGuiWindowFlags_NoScrollbar);
+    BeginFloatWindows("Check Tracker", mIsVisible, ImGuiWindowFlags_NoScrollbar);
 
     if (!initialized) {
         ImGui::Text("Waiting for file load..."); //TODO Language
@@ -965,8 +964,8 @@ static const char* windowType[] = { "Floating", "Window" };
 static const char* displayType[] = { "Always", "Combo Button Hold" };
 static const char* buttonStrings[] = { "A Button", "B Button", "C-Up",  "C-Down", "C-Left", "C-Right", "L Button",
                                        "Z Button", "R Button", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
-void CheckTrackerSettingsWindow::Draw() {
-    if (!mIsOpen) {
+void CheckTrackerSettingsWindow::DrawElement() {
+    if (!mIsVisible) {
         if (CVarGetInteger("gCheckTrackerSettingsEnabled", 0)) {
             CVarClear("gCheckTrackerSettingsEnabled");
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -976,7 +975,7 @@ void CheckTrackerSettingsWindow::Draw() {
 
     ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
 
-    if (!ImGui::Begin("Check Tracker Settings", &mIsOpen, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Check Tracker Settings", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -1030,7 +1029,7 @@ void CheckTrackerSettingsWindow::Draw() {
     ImGui::End();
 }
 
-void CheckTrackerWindow::Init() {
+void CheckTrackerWindow::InitElement() {
     Color_Background = CVarGetColor("gCheckTrackerBgColor", Color_Bg_Default);
     Color_Area_Incomplete_Main  = CVarGetColor("gCheckTrackerAreaMainIncompleteColor",    Color_Main_Default);
     Color_Area_Incomplete_Extra = CVarGetColor("gCheckTrackerAreaExtraIncompleteColor",   Color_Area_Incomplete_Extra_Default);

@@ -1,7 +1,6 @@
 #include "actorViewer.h"
 #include "../../util.h"
 #include "../../UIWidgets.hpp"
-#include <Gui.h>
 
 #include <array>
 #include <bit>
@@ -530,8 +529,8 @@ void PopulateActorDropdown(int i, std::vector<Actor*>& data) {
 }
 
 
-void ActorViewerWindow::Draw() {
-    if (mIsOpen) {
+void ActorViewerWindow::DrawElement() {
+    if (mIsVisible) {
         if (CVarGetInteger("gActorViewerEnabled", 0)) {
             CVarClear("gActorViewerEnabled");
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -540,7 +539,7 @@ void ActorViewerWindow::Draw() {
     }
 
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Actor Viewer", &mIsOpen, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Actor Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }

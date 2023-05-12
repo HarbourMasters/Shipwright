@@ -9,7 +9,6 @@
 #include <libultraship/bridge.h>
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
-#include <Gui.h>
 #include <thread>
 #include "3drando/rando_main.hpp"
 #include "3drando/random.hpp"
@@ -3085,13 +3084,13 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
     return false;
 }
 
-void RandomizerSettingsWindow::Draw() {
+void RandomizerSettingsWindow::DrawElement() {
     if (generated) {
         generated = 0;
         randoThread.join();
     }
 
-    if (!mIsOpen) {
+    if (!mIsVisible) {
         if (CVarGetInteger("gRandomizerSettingsEnabled", 0)) {
             CVarClear("gRandomizerSettingsEnabled");
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -3160,7 +3159,7 @@ void RandomizerSettingsWindow::Draw() {
     static const char* randoIceTraps[5] = { "Off", "Normal", "Extra", "Mayhem", "Onslaught" };
 
     ImGui::SetNextWindowSize(ImVec2(920, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Randomizer Editor", &mIsOpen, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Randomizer Editor", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -5456,7 +5455,7 @@ void InitRandoItemTable() {
 }
 
 
-void RandomizerSettingsWindow::Init() {
+void RandomizerSettingsWindow::InitElement() {
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     InitRandoItemTable();

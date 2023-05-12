@@ -76,7 +76,7 @@ extern "C" SaveContext gSaveContext;
 namespace SohGui {
 
 void DrawMenuBarIcon() {
-    if (LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiTextures().contains("Game_Icon")) {
+    if (LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Game_Icon")) {
 #ifdef __SWITCH__
         ImVec2 iconSize = ImVec2(20.0f, 20.0f);
         float posScale = 1.0f;
@@ -88,7 +88,7 @@ void DrawMenuBarIcon() {
         float posScale = 1.0f;
 #endif
         ImGui::SetCursorPos(ImVec2(5, 2.5f) * posScale);
-        ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureById(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiTextures()["Game_Icon"].TextureId), iconSize);
+        ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Game_Icon"), iconSize);
         ImGui::SameLine();
         ImGui::SetCursorPos(ImVec2(25, 0) * posScale);
     }
@@ -103,7 +103,7 @@ void DrawShipwrightMenu() {
                             "Ctrl+R"
 #endif
                             )) {
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->GetConsoleWindow()->Dispatch("reset");
+            std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
         }
 #if !defined(__SWITCH__) && !defined(__WIIU__)
         const char* keyboardShortcut =
@@ -175,9 +175,9 @@ void DrawSettingsMenu() {
                 CVarSetInteger("gControllerConfigurationEnabled", !currentValue);
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 if (CVarGetInteger("gControllerConfigurationEnabled", 0)) {
-                    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetInputEditorWindow()->Open();
+                    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Input Editor")->Show();
                 } else {
-                    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetInputEditorWindow()->Close();
+                    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Input Editor")->Hide();
                 }
             }
             UIWidgets::PaddedSeparator();
@@ -1138,7 +1138,7 @@ void DrawCheatsMenu() {
                 CVarSetInteger("gEnableBetaQuest", betaQuestEnabled);
                 CVarSetInteger("gBetaQuestWorld", betaQuestWorld);
 
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetConsoleWindow()->Dispatch("reset");
+                std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             }
 
@@ -1379,7 +1379,7 @@ void DrawRandomizerMenu() {
     }
 }
 
-void SohMenuBar::Draw() {
+void SohMenuBar::DrawElement() {
     if (ImGui::BeginMenuBar()) {
         DrawMenuBarIcon();
 

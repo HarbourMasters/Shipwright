@@ -1,6 +1,5 @@
 #include "CosmeticsEditor.h"
 #include "authenticGfxPatches.h"
-#include <Gui.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #include <string>
@@ -1667,8 +1666,8 @@ static const char* colorSchemes[2] = {
     "Gamecube",
 };
 
-void CosmeticsEditorWindow::Draw() {
-    if (!mIsOpen) {
+void CosmeticsEditorWindow::DrawElement() {
+    if (!mIsVisible) {
         if (CVarGetInteger("gCosmeticsEditorEnabled", 0)) {
             CVarClear("gCosmeticsEditorEnabled");
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
@@ -1677,7 +1676,7 @@ void CosmeticsEditorWindow::Draw() {
     }
 
     ImGui::SetNextWindowSize(ImVec2(480, 520), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Cosmetics Editor", &mIsOpen)) {
+    if (!ImGui::Begin("Cosmetics Editor", &mIsVisible)) {
         ImGui::End();
         return;
     }
@@ -1807,7 +1806,7 @@ void RegisterOnGameFrameUpdateHook() {
     });
 }
 
-void CosmeticsEditorWindow::Init() {
+void CosmeticsEditorWindow::InitElement() {
     // Convert the `current color` into the format that the ImGui color picker expects
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
         Color_RGBA8 defaultColor = {cosmeticOption.defaultColor.x, cosmeticOption.defaultColor.y, cosmeticOption.defaultColor.z, cosmeticOption.defaultColor.w};

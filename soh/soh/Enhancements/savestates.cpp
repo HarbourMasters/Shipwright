@@ -10,8 +10,6 @@
 #include <soh/OTRGlobals.h>
 #include <soh/OTRAudio.h>
 
-#include <Gui.h>
-
 #include "z64.h"
 #include "z64save.h"
 #include <variables.h>

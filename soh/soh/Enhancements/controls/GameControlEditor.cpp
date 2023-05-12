@@ -12,7 +12,6 @@
 #include <libultraship/bridge.h>
 #include <libultraship/libultra/controller.h>
 #include <Utils/StringHelper.h>
-#include <Gui.h>
 #include <libultraship/libultraship.h>
 
 #include "../../UIWidgets.hpp"
@@ -88,7 +87,7 @@ namespace GameControlEditor {
 
     void DrawUI(bool&);
 
-    void GameControlEditorWindow::Init() {
+    void GameControlEditorWindow::InitElement() {
         addButtonName(BTN_A,		"A");
         addButtonName(BTN_B,		"B");
         addButtonName(BTN_CUP,		"C Up");
@@ -330,14 +329,14 @@ namespace GameControlEditor {
 
     }
 
-    void GameControlEditorWindow::Draw() {
-        if (!mIsOpen) {
+    void GameControlEditorWindow::DrawElement() {
+        if (!mIsVisible) {
             CVarSetInteger("gGameControlEditorEnabled", false);
             return;
         }
 
         ImGui::SetNextWindowSize(ImVec2(465, 430), ImGuiCond_FirstUseEver);
-        if (ImGui::Begin("Game Controls Configuration", &mIsOpen)) {
+        if (ImGui::Begin("Game Controls Configuration", &mIsVisible)) {
             ImGui::BeginTabBar("##CustomControllers");
             if (ImGui::BeginTabItem("Generic")) {
                 CurrentPort = 0;

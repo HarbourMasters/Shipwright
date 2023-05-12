@@ -5,8 +5,8 @@
 namespace SohGui {
 class SohMenuBar : public LUS::GuiMenuBar {
   public:
-    void Draw() override;
-    void Init() override {};
-    void Update() override {};
+    void DrawElement() override;
+    void InitElement() override {};
+    void UpdateElement() override {};
 };
 } // namespace SohGui
