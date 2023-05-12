@@ -413,6 +413,7 @@ void SaveManager::Init() {
     for (int fileNum = 0; fileNum < MaxFiles; fileNum++) {
         if (std::filesystem::exists(GetFileName(fileNum))) {
             LoadFile(fileNum);
+            saveBlock = nlohmann::json::object();
         }
     }
 }
@@ -529,37 +530,6 @@ void SaveManager::InitFileNormal() {
     }
     gSaveContext.inventory.defenseHearts = 0;
     gSaveContext.inventory.gsTokens = 0;
-    gSaveContext.sohStats.heartPieces = 0;
-    gSaveContext.sohStats.heartContainers = 0;
-    for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys); dungeon++) {
-        gSaveContext.sohStats.dungeonKeys[dungeon] = 0;
-    }
-    gSaveContext.sohStats.playTimer = 0;
-    gSaveContext.sohStats.pauseTimer = 0;
-    for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp); timestamp++) {
-        gSaveContext.sohStats.itemTimestamp[timestamp] = 0;
-    }
-    for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps); timestamp++) {
-        gSaveContext.sohStats.sceneTimestamps[timestamp].sceneTime = 0;
-        gSaveContext.sohStats.sceneTimestamps[timestamp].roomTime = 0;
-        gSaveContext.sohStats.sceneTimestamps[timestamp].scene = 254;
-        gSaveContext.sohStats.sceneTimestamps[timestamp].room = 254;
-        gSaveContext.sohStats.sceneTimestamps[timestamp].isRoom = 0;
-    }
-    gSaveContext.sohStats.tsIdx = 0;
-    for (int count = 0; count < ARRAY_COUNT(gSaveContext.sohStats.count); count++) {
-        gSaveContext.sohStats.count[count] = 0;
-    }
-    gSaveContext.sohStats.gameComplete = false;
-    for (int scenesIdx = 0; scenesIdx < ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered); scenesIdx++) {
-        gSaveContext.sohStats.scenesDiscovered[scenesIdx] = 0;
-    }
-    for (int entrancesIdx = 0; entrancesIdx < ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered); entrancesIdx++) {
-        gSaveContext.sohStats.entrancesDiscovered[entrancesIdx] = 0;
-    }
-    for (int rc = 0; rc < ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped); rc++) {
-        gSaveContext.sohStats.locationsSkipped[rc] = 0;
-    }
     for (int scene = 0; scene < ARRAY_COUNT(gSaveContext.sceneFlags); scene++) {
         gSaveContext.sceneFlags[scene].chest = 0;
         gSaveContext.sceneFlags[scene].swch = 0;
@@ -627,13 +597,6 @@ void SaveManager::InitFileNormal() {
     gSaveContext.sceneFlags[5].swch = 0x40000000;
     gSaveContext.pendingSale = ITEM_NONE;
     gSaveContext.pendingSaleMod = MOD_NONE;
-
-    strncpy(gSaveContext.sohStats.buildVersion, (const char*)gBuildVersion,
-            sizeof(gSaveContext.sohStats.buildVersion) - 1);
-    gSaveContext.sohStats.buildVersion[sizeof(gSaveContext.sohStats.buildVersion) - 1] = 0;
-    gSaveContext.sohStats.buildVersionMajor = gBuildVersionMajor;
-    gSaveContext.sohStats.buildVersionMinor = gBuildVersionMinor;
-    gSaveContext.sohStats.buildVersionPatch = gBuildVersionPatch;
 
     // RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
@@ -718,11 +681,6 @@ void SaveManager::InitFileDebug() {
     }
     gSaveContext.inventory.defenseHearts = 0;
     gSaveContext.inventory.gsTokens = 0;
-    gSaveContext.sohStats.heartPieces = 8;
-    gSaveContext.sohStats.heartContainers = 8;
-    for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys); dungeon++) {
-        gSaveContext.sohStats.dungeonKeys[dungeon] = 8;
-    }
 
     gSaveContext.horseData.scene = SCENE_SPOT00;
     gSaveContext.horseData.pos.x = -1840;
@@ -760,6 +718,7 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, const 
         for (auto& sectionHandler : sectionSaveHandlers) {
             nlohmann::json& sectionBlock = saveBlock["sections"][sectionHandler.first];
             sectionBlock["version"] = sectionHandler.second.first;
+            sectionBlock["data"] = nlohmann::json::object();
 
             currentJsonContext = &sectionBlock["data"];
             sectionHandler.second.second(saveContext);
