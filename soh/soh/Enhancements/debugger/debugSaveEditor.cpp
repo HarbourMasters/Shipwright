@@ -1733,14 +1733,6 @@ void DrawPlayerTab() {
 }
 
 void SaveEditorWindow::DrawElement() {
-    if (!mIsVisible) {
-        if (CVarGetInteger("gSaveEditorEnabled", 0)) {
-            CVarClear("gSaveEditorEnabled");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-        return;
-    }
-
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Save Editor", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();

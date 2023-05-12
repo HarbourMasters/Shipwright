@@ -622,14 +622,6 @@ void InitEntranceTrackingData() {
 }
 
 void EntranceTrackerWindow::DrawElement() {
-    if (!mIsVisible) {
-        if (CVarGetInteger("gEntranceTrackerEnabled", 0)) {
-            CVarClear("gEntranceTrackerEnabled");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-        return;
-    }
-
     ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
 
     if (!ImGui::Begin("Entrance Tracker", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {

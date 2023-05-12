@@ -3090,14 +3090,6 @@ void RandomizerSettingsWindow::DrawElement() {
         randoThread.join();
     }
 
-    if (!mIsVisible) {
-        if (CVarGetInteger("gRandomizerSettingsEnabled", 0)) {
-            CVarClear("gRandomizerSettingsEnabled");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-        return;
-    }
-
     // Randomizer settings
     // Logic Settings
     static const char* randoLogicRules[2] = { "Glitchless", "No logic" };

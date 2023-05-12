@@ -39,14 +39,6 @@ std::map<int, std::string> cmdMap = {
 };
 
 void DLViewerWindow::DrawElement() {
-    if (!mIsVisible) {
-        if (CVarGetInteger("gDLViewerEnabled", 0)) {
-            CVarClear("gDLViewerEnabled");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-        return;
-    }
-
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Display List Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();

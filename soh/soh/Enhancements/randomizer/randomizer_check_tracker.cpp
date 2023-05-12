@@ -110,14 +110,6 @@ std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 
 void CheckTrackerWindow::DrawElement() {
-    if (!mIsVisible) {
-        if (CVarGetInteger("gCheckTrackerEnabled", 0)) {
-            CVarClear("gCheckTrackerEnabled");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-        return;
-    }
-
     ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
 
     if (doInitialize) {

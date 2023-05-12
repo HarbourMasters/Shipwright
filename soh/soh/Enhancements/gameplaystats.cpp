@@ -264,14 +264,6 @@ std::string ResolveSceneID(int sceneID, int roomID){
 }
 
 void GameplayStatsWindow::DrawElement() {
-    if (!mIsVisible) {
-        if (CVarGetInteger("gGameplayStatsEnabled", 0)) {
-            CVarClear("gGameplayStatsEnabled");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-        return;
-    }
-
     ImGui::SetNextWindowSize(ImVec2(480, 550), ImGuiCond_Appearing);
     if (!ImGui::Begin("Gameplay Stats", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();

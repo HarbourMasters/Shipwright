@@ -530,14 +530,6 @@ void PopulateActorDropdown(int i, std::vector<Actor*>& data) {
 
 
 void ActorViewerWindow::DrawElement() {
-    if (mIsVisible) {
-        if (CVarGetInteger("gActorViewerEnabled", 0)) {
-            CVarClear("gActorViewerEnabled");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-        return;
-    }
-
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Actor Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();

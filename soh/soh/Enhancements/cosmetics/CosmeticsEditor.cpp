@@ -1667,14 +1667,6 @@ static const char* colorSchemes[2] = {
 };
 
 void CosmeticsEditorWindow::DrawElement() {
-    if (!mIsVisible) {
-        if (CVarGetInteger("gCosmeticsEditorEnabled", 0)) {
-            CVarClear("gCosmeticsEditorEnabled");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-        return;
-    }
-
     ImGui::SetNextWindowSize(ImVec2(480, 520), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Cosmetics Editor", &mIsVisible)) {
         ImGui::End();

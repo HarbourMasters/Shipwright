@@ -330,11 +330,6 @@ namespace GameControlEditor {
     }
 
     void GameControlEditorWindow::DrawElement() {
-        if (!mIsVisible) {
-            CVarSetInteger("gGameControlEditorEnabled", false);
-            return;
-        }
-
         ImGui::SetNextWindowSize(ImVec2(465, 430), ImGuiCond_FirstUseEver);
         if (ImGui::Begin("Game Controls Configuration", &mIsVisible)) {
             ImGui::BeginTabBar("##CustomControllers");

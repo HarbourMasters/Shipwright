@@ -52,14 +52,6 @@ static std::vector<Vtx> sphereVtx;
 
 // Draws the ImGui window for the collision viewer
 void ColViewerWindow::DrawElement() {
-    if (!mIsVisible) {
-        if (CVarGetInteger("gCollisionViewerEnabled", 0)) {
-            CVarClear("gCollisionViewerEnabled");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-        return;
-    }
-
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Collision Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();

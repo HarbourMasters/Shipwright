@@ -850,13 +850,7 @@ void UpdateVectors() {
 
 void ItemTrackerWindow::DrawElement() {
     UpdateVectors();
-    if (!mIsVisible) {
-        if (CVarGetInteger("gItemTrackerEnabled", 0)) {
-            CVarClear("gItemTrackerEnabled");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-        return;
-    }
+
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     int iconSpacing = CVarGetInteger("gItemTrackerIconSpacing", 12);
     int comboButton1Mask = buttonMap[CVarGetInteger("gItemTrackerComboButton1", 6)];
@@ -961,14 +955,6 @@ static const char* displayTypes[3] = { "Hidden", "Main Window", "Seperate" };
 static const char* extendedDisplayTypes[4] = { "Hidden", "Main Window", "Misc Window", "Seperate" };
 
 void ItemTrackerSettingsWindow::DrawElement() {
-    if (!mIsVisible) {
-        if (CVarGetInteger("gItemTrackerSettingsEnabled", 0)) {
-            CVarClear("gItemTrackerSettingsEnabled");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-        return;
-    }
-
     ImGui::SetNextWindowSize(ImVec2(600,375), ImGuiCond_FirstUseEver);
 
     if (!ImGui::Begin("Item Tracker Settings", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
