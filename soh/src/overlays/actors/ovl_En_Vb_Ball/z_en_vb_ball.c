@@ -17,7 +17,7 @@ void EnVbBall_Update(Actor* thisx, PlayState* play);
 void EnVbBall_Draw(Actor* thisx, PlayState* play);
 
 const ActorInit En_Vb_Ball_InitVars = {
-    0,
+    ACTOR_EN_VB_BALL,
     ACTORCAT_BOSS,
     FLAGS,
     OBJECT_FD,

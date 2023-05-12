@@ -10,7 +10,7 @@
 #include <iostream>
 #include <string>
 #include "MtxExporter.h"
-#include <Utils/File.h>
+#include <Utils/DiskFile.h>
 #include "VersionInfo.h"
 
 #define GFX_SIZE 8
@@ -50,7 +50,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 	//printf("Exporting DList %s\n", dList->GetName().c_str());
 
-	WriteHeader(res, outPath, writer, Ship::ResourceType::DisplayList);
+	WriteHeader(res, outPath, writer, LUS::ResourceType::DisplayList);
 
 	while (writer->GetBaseAddress() % 8 != 0)
 		writer->Write((uint8_t)0xFF);
@@ -356,7 +356,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 					//std::string fName = StringHelper::Sprintf("%s\\%s", GetParentFolderName(res).c_str(), dListDecl2->varName.c_str());
 					std::string fName = OTRExporter_DisplayList::GetPathToRes(res, dListDecl2->varName.c_str());
 
-					if (files.find(fName) == files.end() && !File::Exists("Extract/" + fName))
+					if (files.find(fName) == files.end() && !DiskFile::Exists("Extract/" + fName))
 					{
 						MemoryStream* dlStream = new MemoryStream();
 						BinaryWriter dlWriter = BinaryWriter(dlStream);
@@ -442,7 +442,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 						//std::string fName = StringHelper::Sprintf("%s\\%s", GetParentFolderName(res).c_str(), dListDecl2->varName.c_str());
 						std::string fName = OTRExporter_DisplayList::GetPathToRes(res, dListDecl2->varName.c_str());
 
-						if (files.find(fName) == files.end() && !File::Exists("Extract/" + fName))
+						if (files.find(fName) == files.end() && !DiskFile::Exists("Extract/" + fName))
 						{
 							MemoryStream* dlStream = new MemoryStream();
 							BinaryWriter dlWriter = BinaryWriter(dlStream);
@@ -767,7 +767,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 					word0 = hash >> 32;
 					word1 = hash & 0xFFFFFFFF;
 
-					if (files.find(fName) == files.end() && !File::Exists("Extract/" + fName))
+					if (files.find(fName) == files.end() && !DiskFile::Exists("Extract/" + fName))
 					{
 						// Write vertices to file
 						MemoryStream* vtxStream = new MemoryStream();
@@ -786,7 +786,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 						}
 
 						// OTRTODO: Once we aren't relying on text representations, we should call ArrayExporter...
-						OTRExporter::WriteHeader(nullptr, "", &vtxWriter, Ship::ResourceType::Array);
+						OTRExporter::WriteHeader(nullptr, "", &vtxWriter, LUS::ResourceType::Array);
 
 						vtxWriter.Write((uint32_t)ZResourceType::Vertex);
 						vtxWriter.Write((uint32_t)arrCnt);

@@ -50,17 +50,19 @@ void ExporterExample_Collision::Save(ZResource* res, [[maybe_unused]] const fs::
 		writer->Write(col->polygons[i].vtxA);
 		writer->Write(col->polygons[i].vtxB);
 		writer->Write(col->polygons[i].vtxC);
-		writer->Write(col->polygons[i].a);
-		writer->Write(col->polygons[i].b);
-		writer->Write(col->polygons[i].c);
-		writer->Write(col->polygons[i].d);
+		writer->Write(col->polygons[i].normX);
+		writer->Write(col->polygons[i].normY);
+		writer->Write(col->polygons[i].normZ);
+		writer->Write(col->polygons[i].dist);
 	}
 
 	writer->Seek(col->polyTypeDefSegmentOffset, SeekOffsetType::Start);
 
-	for (uint16_t i = 0; i < col->polygonTypes.size(); i++)
-		writer->Write(col->polygonTypes[i]);
-
+	for (const auto& poly : col->polygonTypes)
+	{
+		writer->Write(poly.data[0]);
+		writer->Write(poly.data[1]);
+	}
 	writer->Seek(col->camDataSegmentOffset, SeekOffsetType::Start);
 
 	for (auto entry : col->camData->entries)

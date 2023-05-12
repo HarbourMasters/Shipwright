@@ -1,9 +1,9 @@
 #include "soh/resource/importer/scenecommand/SetCutscenesFactory.h"
 #include "soh/resource/type/scenecommand/SetCutscenes.h"
-#include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 #include "spdlog/spdlog.h"
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Resource> SetCutscenesFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                             std::shared_ptr<ResourceInitData> initData,
                                                             std::shared_ptr<BinaryReader> reader) {
@@ -27,7 +27,7 @@ std::shared_ptr<Resource> SetCutscenesFactory::ReadResource(std::shared_ptr<Reso
     return resource;
 }
 
-void Ship::SetCutscenesFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetCutscenesFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         		  std::shared_ptr<Resource> resource) {
     std::shared_ptr<SetCutscenes> setCutscenes = std::static_pointer_cast<SetCutscenes>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setCutscenes);
@@ -35,7 +35,7 @@ void Ship::SetCutscenesFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
     ReadCommandId(setCutscenes, reader);
     
     setCutscenes->fileName = reader->ReadString();
-    setCutscenes->cutscene = std::static_pointer_cast<Cutscene>(LoadResource(setCutscenes->fileName.c_str(), true));
+    setCutscenes->cutscene = std::static_pointer_cast<Cutscene>(LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCutscenes->fileName.c_str()));
 }
 
-} // namespace Ship
+} // namespace LUS

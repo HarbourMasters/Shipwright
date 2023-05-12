@@ -2,7 +2,7 @@
 #include "soh/resource/type/scenecommand/SetTransitionActorList.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Resource> SetTransitionActorListFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                                       std::shared_ptr<ResourceInitData> initData,
                                                                       std::shared_ptr<BinaryReader> reader) {
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> SetTransitionActorListFactory::ReadResource(std::share
     return resource;
 }
 
-void Ship::SetTransitionActorListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetTransitionActorListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource) {
     std::shared_ptr<SetTransitionActorList> setTransitionActorList = std::static_pointer_cast<SetTransitionActorList>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setTransitionActorList);
@@ -52,4 +52,4 @@ void Ship::SetTransitionActorListFactoryV0::ParseFileBinary(std::shared_ptr<Bina
     }
 }
 
-} // namespace Ship
+} // namespace LUS

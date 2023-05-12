@@ -9,7 +9,7 @@
 #include "soh/resource/type/scenecommand/SetActorList.h"
 // #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 // typedef struct {
 //     /* 0x00 */ s16   id;
 //     /* 0x02 */ Vec3s pos;
@@ -27,4 +27,4 @@ class SetStartPositionList : public SceneCommand {
     uint32_t numStartPositions;
     std::vector<ActorEntry> startPositions;
 };
-}; // namespace Ship
+}; // namespace LUS

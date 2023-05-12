@@ -1,6 +1,6 @@
 #include "SetEntranceList.h"
 
-namespace Ship {
+namespace LUS {
 void* SetEntranceList::GetPointer() {
     return entrances.data();
 }
@@ -8,4 +8,4 @@ void* SetEntranceList::GetPointer() {
 size_t SetEntranceList::GetPointerSize() {
 	return entrances.size() * sizeof(EntranceEntry);
 }
-} // namespace Ship
+} // namespace LUS

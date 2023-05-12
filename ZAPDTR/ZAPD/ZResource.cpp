@@ -261,6 +261,11 @@ offset_t ZResource::GetRawDataIndex() const
 	return rawDataIndex;
 }
 
+void ZResource::SetRawDataIndex(offset_t nRawDataIndex)
+{
+	rawDataIndex = nRawDataIndex;
+}
+
 std::string ZResource::GetBodySourceCode() const
 {
 	return "ERROR";
