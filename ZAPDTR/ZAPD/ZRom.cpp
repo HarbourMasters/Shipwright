@@ -211,8 +211,6 @@ ZRom::ZRom(std::string romPath)
 		outData.resize(size);
 		memcpy(outData.data(), romData.data() + physStart, size);
 
-		//printf("%s - %08X\n", lines[i].c_str(), virtStart);
-
 		if (compressed)
 		{
 			int decSize = virtEnd - virtStart;
