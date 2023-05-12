@@ -2,8 +2,8 @@
 #include "soh/resource/type/scenecommand/SetLightList.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> SetLightListFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+namespace LUS {
+std::shared_ptr<Resource> SetLightListFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                             std::shared_ptr<ResourceInitData> initData,
                                                             std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetLightList>(resourceMgr, initData);
@@ -26,7 +26,7 @@ std::shared_ptr<Resource> SetLightListFactory::ReadResource(std::shared_ptr<Reso
     return resource;
 }
 
-void Ship::SetLightListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetLightListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         		  std::shared_ptr<Resource> resource)
 {
     std::shared_ptr<SetLightList> setLightList = std::static_pointer_cast<SetLightList>(resource);
@@ -56,4 +56,4 @@ void Ship::SetLightListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
     }
 }
 
-} // namespace Ship
+} // namespace LUS

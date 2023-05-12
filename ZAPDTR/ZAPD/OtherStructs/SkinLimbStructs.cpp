@@ -104,6 +104,8 @@ void Struct_800A598C::ParseRawData()
 	if (unk_8 != 0 && GETSEGNUM(unk_8) == parent->segment)
 	{
 		uint32_t unk_8_Offset = Seg2Filespace(unk_8, parent->baseAddress);
+
+		unk_8_arr.reserve(unk_0);
 		for (size_t i = 0; i < unk_0; i++)
 		{
 			Struct_800A57C0 unk8_data(parent);
@@ -117,6 +119,8 @@ void Struct_800A598C::ParseRawData()
 	if (unk_C != 0 && GETSEGNUM(unk_8) == parent->segment)
 	{
 		uint32_t unk_C_Offset = Seg2Filespace(unk_C, parent->baseAddress);
+
+		unk_C_arr.reserve(unk_2);
 		for (size_t i = 0; i < unk_2; i++)
 		{
 			Struct_800A598C_2 unkC_data(parent);
@@ -246,6 +250,8 @@ void Struct_800A5E28::ParseRawData()
 	if (unk_4 != 0 && GETSEGNUM(unk_4) == parent->segment)
 	{
 		uint32_t unk_4_Offset = Seg2Filespace(unk_4, parent->baseAddress);
+
+		unk_4_arr.reserve(unk_2);
 		for (size_t i = 0; i < unk_2; i++)
 		{
 			Struct_800A598C unk_4_data(parent);

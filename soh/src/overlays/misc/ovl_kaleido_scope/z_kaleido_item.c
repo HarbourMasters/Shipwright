@@ -922,3 +922,8 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
         }
     }
 }
+
+void KaleidoScope_ResetTradeSelect() {
+    gSelectingMask = false;
+    gSelectingAdultTrade = false;
+}

@@ -531,7 +531,10 @@ void PopulateActorDropdown(int i, std::vector<Actor*>& data) {
 
 void DrawActorViewer(bool& open) {
     if (!open) {
-        CVarSetInteger("gActorViewerEnabled", 0);
+        if (CVarGetInteger("gActorViewerEnabled", 0)) {
+            CVarClear("gActorViewerEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 
@@ -787,5 +790,5 @@ void DrawActorViewer(bool& open) {
 }
 
 void InitActorViewer() {
-    SohImGui::AddWindow("Developer Tools", "Actor Viewer", DrawActorViewer);
+    LUS::AddWindow("Developer Tools", "Actor Viewer", DrawActorViewer, CVarGetInteger("gActorViewerEnabled", 0));
 }

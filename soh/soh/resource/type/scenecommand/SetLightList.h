@@ -8,7 +8,7 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 typedef struct {
     /* 0x0 */ s16 x;
     /* 0x2 */ s16 y;
@@ -45,4 +45,4 @@ class SetLightList : public SceneCommand {
     uint32_t numLights;
     std::vector<LightInfo> lightList;
 };
-}; // namespace Ship
+}; // namespace LUS

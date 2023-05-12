@@ -19,7 +19,7 @@ class OTRGlobals
 public:
     static OTRGlobals* Instance;
 
-    std::shared_ptr<Ship::Window> context;
+    std::shared_ptr<LUS::Context> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
     std::shared_ptr<Randomizer> gRandomizer;
 
@@ -143,6 +143,7 @@ void Entrance_InitEntranceTrackingData(void);
 void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex);
 void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex);
 void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement);
+void SaveManager_ThreadPoolWait();
 
 uint32_t GetGIID(uint32_t itemID);
 #endif

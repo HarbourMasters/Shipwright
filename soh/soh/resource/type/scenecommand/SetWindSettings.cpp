@@ -1,6 +1,6 @@
 #include "SetWindSettings.h"
 
-namespace Ship {
+namespace LUS {
 void* SetWindSettings::GetPointer() {
     return &settings;
 }
@@ -8,4 +8,4 @@ void* SetWindSettings::GetPointer() {
 size_t SetWindSettings::GetPointerSize() {
 	return sizeof(WindSettings);
 }
-} // namespace Ship
+} // namespace LUS

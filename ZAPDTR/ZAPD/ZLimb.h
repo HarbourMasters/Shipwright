@@ -18,9 +18,14 @@ enum class ZLimbType
 	Legacy,
 };
 
+class ZLimbTable;
+
 class ZLimb : public ZResource
 {
 public:
+	std::string enumName;
+	ZLimbTable* limbsTable = nullptr;  // borrowed pointer, do not delete!
+
 	ZLimbType type = ZLimbType::Standard;
 
 	ZLimbSkinType skinSegmentType = ZLimbSkinType::SkinType_0;  // Skin only
@@ -38,6 +43,8 @@ public:
 
 	int16_t transX = 0, transY = 0, transZ = 0;
 	uint8_t childIndex = 0, siblingIndex = 0;
+
+	uint8_t limbIndex = 0;
 
 	ZLimb(ZFile* nParent);
 
@@ -58,6 +65,8 @@ public:
 	void SetLimbType(ZLimbType value);
 	static const char* GetSourceTypeName(ZLimbType limbType);
 	static ZLimbType GetTypeByAttributeName(const std::string& attrName);
+
+	void SetLimbIndex(uint8_t nLimbIndex);
 
 protected:
 	void DeclareDList(segptr_t dListSegmentedPtr, const std::string& prefix,

@@ -2,8 +2,8 @@
 #include "soh/resource/type/scenecommand/SetActorList.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> SetActorListFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+namespace LUS {
+std::shared_ptr<Resource> SetActorListFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                             std::shared_ptr<ResourceInitData> initData,
                                                             std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetActorList>(resourceMgr, initData);
@@ -26,7 +26,7 @@ std::shared_ptr<Resource> SetActorListFactory::ReadResource(std::shared_ptr<Reso
     return resource;
 }
 
-void Ship::SetActorListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetActorListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource) {
     std::shared_ptr<SetActorList> setActorList = std::static_pointer_cast<SetActorList>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setActorList);
@@ -51,4 +51,4 @@ void Ship::SetActorListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
     }
 }
 
-} // namespace Ship
+} // namespace LUS

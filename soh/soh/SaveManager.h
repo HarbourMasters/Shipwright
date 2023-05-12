@@ -28,6 +28,11 @@ typedef struct {
 #include <functional>
 #include <vector>
 #include <filesystem>
+#include "thread-pool/BS_thread_pool.hpp"
+
+extern "C" {
+    #include "z64save.h"
+}
 
 #include <nlohmann/json.hpp>
 
@@ -35,9 +40,12 @@ class SaveManager {
 public:
     static SaveManager* Instance;
 
+    static void WriteSaveFile(const std::filesystem::path& savePath, uintptr_t addr, void* dramAddr, size_t size);
+    static void ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size);
+
     using InitFunc = void(*)(bool isDebug);
     using LoadFunc = void(*)();
-    using SaveFunc = void(*)();
+    using SaveFunc = void(*)(SaveContext* saveContext);
     using PostFunc = void(*)(int version);
 
     SaveManager();
@@ -48,6 +56,7 @@ public:
     void SaveGlobal();
     void LoadFile(int fileNum);
     bool SaveFile_Exist(int fileNum);
+    void ThreadPoolWait();
 
     // Adds a function that is called when we are intializing a save, including when we are loading a save.
     void AddInitFunction(InitFunc func);
@@ -115,6 +124,8 @@ public:
     void ConvertFromUnversioned();
     void CreateDefaultGlobal();
 
+    void SaveFileThreaded(int fileNum, SaveContext* saveContext);
+
     void InitMeta(int slotNum);
     static void InitFileImpl(bool isDebug);
     static void InitFileNormal();
@@ -122,12 +133,12 @@ public:
 
     static void LoadRandomizerVersion1();
     static void LoadRandomizerVersion2();
-    static void SaveRandomizer();
+    static void SaveRandomizer(SaveContext* saveContext);
 
     static void LoadBaseVersion1();
     static void LoadBaseVersion2();
     static void LoadBaseVersion3();
-    static void SaveBase();
+    static void SaveBase(SaveContext* saveContext);
 
     std::vector<InitFunc> initFuncs;
 
@@ -141,6 +152,7 @@ public:
 
     nlohmann::json* currentJsonContext = nullptr;
     nlohmann::json::iterator currentJsonArrayContext;
+    std::shared_ptr<BS::thread_pool> smThreadPool;
 };
 
 #else
@@ -148,7 +160,7 @@ public:
 // TODO feature parity to the C++ interface. We need Save_AddInitFunction and Save_AddPostFunction at least
 
 typedef void (*Save_LoadFunc)(void);
-typedef void (*Save_SaveFunc)(void);
+typedef void (*Save_SaveFunc)(const SaveContext* saveContext);
 
 void Save_Init(void);
 void Save_InitFile(int isDebug);

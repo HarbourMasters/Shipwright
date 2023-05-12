@@ -45,7 +45,7 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play);
 void EnFhgFire_PhantomWarp(EnFhgFire* this, PlayState* play);
 
 const ActorInit En_Fhg_Fire_InitVars = {
-    0,
+    ACTOR_EN_FHG_FIRE,
     ACTORCAT_BOSS,
     FLAGS,
     OBJECT_FHG,
