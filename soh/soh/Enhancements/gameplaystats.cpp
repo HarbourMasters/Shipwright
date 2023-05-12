@@ -3,6 +3,7 @@ extern "C" {
 }
 
 #include "soh/SaveManager.h"
+#include "functions.h"
 #include "macros.h"
 #include "ImGuiImpl.h"
 #include "../UIWidgets.hpp"
@@ -11,6 +12,8 @@ extern "C" {
 #include <string>
 #include <libultraship/bridge.h>
 #include <Hooks.h>
+
+//#define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
 
 extern "C" {
 #include <z64.h>
@@ -196,8 +199,9 @@ void LoadStatsVersion1() {
     SaveManager::Instance->LoadArray(
         "itemTimestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp),
         [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.sohStats.itemTimestamp[i]); });
+    int sceneTimestampCount = 0;
     SaveManager::Instance->LoadArray(
-        "sceneTimestamps", ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps), [](size_t i) {
+        "sceneTimestamps", ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps), [&sceneTimestampCount](size_t i) {
             SaveManager::Instance->LoadStruct("", [&i]() {
                 SaveManager::Instance->LoadData("scene", gSaveContext.sohStats.sceneTimestamps[i].scene);
                 SaveManager::Instance->LoadData("room", gSaveContext.sohStats.sceneTimestamps[i].room);
@@ -205,7 +209,12 @@ void LoadStatsVersion1() {
                 SaveManager::Instance->LoadData("roomTime", gSaveContext.sohStats.sceneTimestamps[i].roomTime);
                 SaveManager::Instance->LoadData("isRoom", gSaveContext.sohStats.sceneTimestamps[i].isRoom);
             });
+            sceneTimestampCount++;
         });
+    for (int j = sceneTimestampCount; j < 8191; j++) {
+        gSaveContext.sohStats.sceneTimestamps[j].scene = 254;
+        gSaveContext.sohStats.sceneTimestamps[j].room = 254;
+    }
     SaveManager::Instance->LoadData("tsIdx", gSaveContext.sohStats.tsIdx);
     SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.sohStats.count[i]);
@@ -221,7 +230,7 @@ void LoadStatsVersion1() {
         [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.sohStats.locationsSkipped[i]); });
 }
 
-void SaveStatsVersion1(SaveContext* saveContext) {
+void SaveStats(SaveContext* saveContext) {
     SaveManager::Instance->SaveData("buildVersion", saveContext->sohStats.buildVersion);
     SaveManager::Instance->SaveData("buildVersionMajor", saveContext->sohStats.buildVersionMajor);
     SaveManager::Instance->SaveData("buildVersionMinor", saveContext->sohStats.buildVersionMinor);
@@ -239,13 +248,15 @@ void SaveStatsVersion1(SaveContext* saveContext) {
         [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->sohStats.itemTimestamp[i]); });
     SaveManager::Instance->SaveArray(
         "sceneTimestamps", ARRAY_COUNT(saveContext->sohStats.sceneTimestamps), [&](size_t i) {
-            SaveManager::Instance->SaveStruct("", [&]() {
-                SaveManager::Instance->SaveData("scene", saveContext->sohStats.sceneTimestamps[i].scene);
-                SaveManager::Instance->SaveData("room", saveContext->sohStats.sceneTimestamps[i].room);
-                SaveManager::Instance->SaveData("sceneTime", saveContext->sohStats.sceneTimestamps[i].sceneTime);
-                SaveManager::Instance->SaveData("roomTime", saveContext->sohStats.sceneTimestamps[i].roomTime);
-                SaveManager::Instance->SaveData("isRoom", saveContext->sohStats.sceneTimestamps[i].isRoom);
-            });
+            if (saveContext->sohStats.sceneTimestamps[i].scene != 254 && saveContext->sohStats.sceneTimestamps[i].room != 254) {
+                SaveManager::Instance->SaveStruct("", [&]() {
+                    SaveManager::Instance->SaveData("scene", saveContext->sohStats.sceneTimestamps[i].scene);
+                    SaveManager::Instance->SaveData("room", saveContext->sohStats.sceneTimestamps[i].room);
+                    SaveManager::Instance->SaveData("sceneTime", saveContext->sohStats.sceneTimestamps[i].sceneTime);
+                    SaveManager::Instance->SaveData("roomTime", saveContext->sohStats.sceneTimestamps[i].roomTime);
+                    SaveManager::Instance->SaveData("isRoom", saveContext->sohStats.sceneTimestamps[i].isRoom);
+                });
+            }
         });
     SaveManager::Instance->SaveData("tsIdx", saveContext->sohStats.tsIdx);
     SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext->sohStats.count), [&](size_t i) {
@@ -762,6 +773,6 @@ extern "C" void InitStatTracker() {
     SetupDisplayNames();
     SetupDisplayColors();
     SaveManager::Instance->AddLoadFunction("sohStats", 1, LoadStatsVersion1);
-    SaveManager::Instance->AddSaveFunction("sohStats", 1, SaveStatsVersion1);
-    SaveManager::Instance->RegisterAutosaveSection("sohStats");
+    SaveManager::Instance->AddSaveFunction("sohStats", 1, SaveStats);
+    SaveManager::Instance->RegisterGameSaveSection("sohStats");
 }

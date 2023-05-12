@@ -118,7 +118,7 @@ public:
     static const int MaxFiles = 3;
     std::array<SaveFileMetaInfo, MaxFiles> fileMetaInfo;
 
-    void RegisterAutosaveSection(std::string section);
+    void RegisterGameSaveSection(std::string section);
     void UnregisterAutosaveSection(std::string section);
 
   private:
@@ -142,6 +142,7 @@ public:
     static void LoadBaseVersion1();
     static void LoadBaseVersion2();
     static void LoadBaseVersion3();
+    static void LoadBaseVersion4();
     static void SaveBase(SaveContext* saveContext);
 
     std::vector<InitFunc> initFuncs;
@@ -151,8 +152,8 @@ public:
 
     using SectionSaveHandler = std::pair<int, SaveFunc>;
     std::map<std::string, SectionSaveHandler> sectionSaveHandlers;
-    // tracks sections to save during autosave triggers
-    std::vector<std::string> autosaveRegistry;
+    // tracks sections to save during game saves
+    std::vector<std::string> gameSaveRegistry;
 
     std::map<std::string, PostFunc> postHandlers;
 
