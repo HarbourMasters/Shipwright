@@ -1,4 +1,5 @@
 #include "z_boss_dodongo.h"
+#include "textures/boss_title_cards/object_kingdodongo.h"
 #include "objects/object_kingdodongo/object_kingdodongo.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "scenes/dungeons/ddan_boss/ddan_boss_room_1.h"
@@ -49,6 +50,14 @@ const ActorInit Boss_Dodongo_InitVars = {
 
 #include "z_boss_dodongo_data.c"
 
+static u8 sMaskTex16x16[16 * 16] = { { 0 } };
+static u8 sMaskTex8x16[8 * 16] = { { 0 } };
+static u8 sMaskTex16x32[16 * 32] = { { 0 } };
+static u8 sMaskTex32x16[32 * 16] = { { 0 } };
+static u8 sMaskTex8x8[8 * 8] = { { 0 } };
+static u8 sMaskTex8x32[8 * 32] = { { 0 } };
+static u8 sMaskTexLava[32 * 64] = { { 0 } };
+
 static InitChainEntry sInitChain[] = {
     ICHAIN_U8(targetMode, 5, ICHAIN_CONTINUE),
     ICHAIN_S8(naviEnemyId, 0x0C, ICHAIN_CONTINUE),
@@ -56,70 +65,29 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(targetArrowOffset, 8200.0f, ICHAIN_STOP),
 };
 
-void func_808C1190(s16* arg0, u8* arg1, s16 arg2) {
-    arg0 = GetResourceDataByName(arg0, false);
-
-    if (arg2[arg1] != 0) {
-        arg0[arg2 / 2] = 0;
-    }
-}
-
-void func_808C11D0(s16* arg0, u8* arg1, s16 arg2) {
-    arg0 = GetResourceDataByName(arg0, false);
-
-    if (arg1[arg2] != 0) {
-        arg0[arg2] = 0;
-    }
-}
-
-void func_808C1200(s16* arg0, u8* arg1, s16 arg2) {
-    arg0 = GetResourceDataByName(arg0, false);
-
-    if (arg1[arg2] != 0) {
-        arg0[arg2] = 0;
-    }
-}
-
-void func_808C1230(s16* arg0, u8* arg1, s16 arg2) {
-    s16 index;
-
-    arg0 = GetResourceDataByName(arg0, false);
-
-    if (arg1[arg2] != 0) {
-        index = ((arg2 & 0xF) + ((arg2 & 0xF0) * 2));
-        arg0[index + 16] = 0;
-        arg0[index] = 0;
-    }
-}
-
-void func_808C1278(s16* arg0, u8* arg1, s16 arg2) {
-    s16 index;
-
-    arg0 = GetResourceDataByName(arg0, false);
-
-    if (arg1[arg2] != 0) {
-        index = ((arg2 & 0xF) * 2) + ((arg2 & 0xF0) * 2);
-        arg0[index + 1] = 0;
-        arg0[index] = 0;
-    }
-}
-
 void func_808C12C4(u8* arg1, s16 arg2) {
-    func_808C1190(SEGMENTED_TO_VIRTUAL(object_kingdodongo_Tex_015890), arg1, arg2);
-    func_808C1200(SEGMENTED_TO_VIRTUAL(object_kingdodongo_Tex_017210), arg1, arg2);
-    func_808C11D0(SEGMENTED_TO_VIRTUAL(object_kingdodongo_Tex_015D90), arg1, arg2);
-    func_808C11D0(SEGMENTED_TO_VIRTUAL(object_kingdodongo_Tex_016390), arg1, arg2);
-    func_808C11D0(SEGMENTED_TO_VIRTUAL(object_kingdodongo_Tex_016590), arg1, arg2);
-    func_808C11D0(SEGMENTED_TO_VIRTUAL(object_kingdodongo_Tex_016790), arg1, arg2);
-    func_808C1230(SEGMENTED_TO_VIRTUAL(object_kingdodongo_Tex_015990), arg1, arg2);
-    func_808C1230(SEGMENTED_TO_VIRTUAL(object_kingdodongo_Tex_015F90), arg1, arg2);
-    func_808C1278(SEGMENTED_TO_VIRTUAL(object_kingdodongo_Tex_016990), arg1, arg2);
-    func_808C1278(SEGMENTED_TO_VIRTUAL(object_kingdodongo_Tex_016E10), arg1, arg2);
+    if (arg2[arg1] != 0) {
+        sMaskTex8x16[arg2 / 2] = 1;
+
+        sMaskTex8x32[arg2] = 1;
+
+        sMaskTex16x16[arg2] = 1;
+
+        sMaskTex16x16[arg2] = 1;
+
+        s16 index = ((arg2 & 0xF) + ((arg2 & 0xF0) * 2));
+        sMaskTex16x32[index + 16] = 1;
+        sMaskTex16x32[index] = 1;
+
+        index = ((arg2 & 0xF) * 2) + ((arg2 & 0xF0) * 2);
+        sMaskTex32x16[index + 1] = 1;
+        sMaskTex32x16[index] = 1;
+    }
 }
 
 void func_808C1554(void* arg0, void* floorTex, s32 arg2, f32 arg3) {
     arg0 = GetResourceDataByNameHandlingMQ(arg0);
-    floorTex = GetResourceDataByName(floorTex, false);
+    floorTex = GetResourceDataByName(floorTex);
 
     u16* temp_s3 = SEGMENTED_TO_VIRTUAL(arg0);
     u16* temp_s1 = SEGMENTED_TO_VIRTUAL(floorTex);
@@ -218,8 +186,8 @@ void BossDodongo_Init(Actor* thisx, PlayState* play) {
     Collider_SetJntSph(play, &this->collider, &this->actor, &sJntSphInit, this->items);
 
     if (Flags_GetClear(play, play->roomCtx.curRoom.num)) { // KD is dead
-        u16* LavaFloorTex = GetResourceDataByName(gDodongosCavernBossLavaFloorTex, false);
-        u16* LavaFloorRockTex = GetResourceDataByName(sLavaFloorRockTex, false);
+        u16* LavaFloorTex = GetResourceDataByName(gDodongosCavernBossLavaFloorTex);
+        u16* LavaFloorRockTex = GetResourceDataByName(sLavaFloorRockTex);
         temp_s1_3 = SEGMENTED_TO_VIRTUAL(LavaFloorTex);
         temp_s2 = SEGMENTED_TO_VIRTUAL(LavaFloorRockTex);
         Actor_Kill(&this->actor);
@@ -228,13 +196,47 @@ void BossDodongo_Init(Actor* thisx, PlayState* play) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_BG_BREAKWALL, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, 0x6000, true);
         Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -690.0f, -1523.76f, -3304.0f, 0, 0, 0, 0, true);
 
-        for (i = 0; i < 2048; i++) {
-            temp_v0 = i;
-            temp_s1_3[temp_v0] = temp_s2[temp_v0];
+        for (int i = 0; i < ARRAY_COUNT(sMaskTexLava); i++) {
+            sMaskTexLava[i] = 1;
+        }
+    } else {
+        for (int i = 0; i < ARRAY_COUNT(sMaskTexLava); i++) {
+            sMaskTexLava[i] = 0;
         }
     }
 
     this->actor.flags &= ~ACTOR_FLAG_0;
+
+    for (int i = 0; i < ARRAY_COUNT(sMaskTex8x16); i++) {
+        sMaskTex8x16[i] = 0;
+    }
+    for (int i = 0; i < ARRAY_COUNT(sMaskTex8x32); i++) {
+        sMaskTex8x32[i] = 0;
+    }
+    for (int i = 0; i < ARRAY_COUNT(sMaskTex16x16); i++) {
+        sMaskTex16x16[i] = 0;
+    }
+    for (int i = 0; i < ARRAY_COUNT(sMaskTex16x32); i++) {
+        sMaskTex16x32[i] = 0;
+    }
+    for (int i = 0; i < ARRAY_COUNT(sMaskTex32x16); i++) {
+        sMaskTex32x16[i] = 0;
+    }
+    Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_015890, sMaskTex8x16, NULL);
+    Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_017210, sMaskTex8x32, NULL);
+    Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_015D90, sMaskTex16x16, NULL);
+    Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_016390, sMaskTex16x16, NULL);
+    Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_016590, sMaskTex16x16, NULL);
+    Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_016790, sMaskTex16x16, NULL);
+    Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_015990, sMaskTex16x32, NULL);
+    Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_015F90, sMaskTex16x32, NULL);
+    Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_016990, sMaskTex32x16, NULL);
+    Gfx_RegisterBlendedTexture(object_kingdodongo_Tex_016E10, sMaskTex32x16, NULL);
+
+    // OTRTODO: This is causing OOB memory reads with HD assets
+    // commenting this out means the lava will stay lava even after beating king d
+    // 
+    // Gfx_RegisterBlendedTexture(gDodongosCavernBossLavaFloorTex, sMaskTexLava, sLavaFloorRockTex);
 }
 
 void BossDodongo_Destroy(Actor* thisx, PlayState* play) {
@@ -421,7 +423,7 @@ void BossDodongo_IntroCutscene(BossDodongo* this, PlayState* play) {
             if (this->unk_198 == 0x5A) {
                 if (!(gSaveContext.eventChkInf[7] & 2)) {
                     TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
-                                           SEGMENTED_TO_VIRTUAL(gKingDodongoTitleCardTex), 160, 180, 128, 40, true);
+                                           SEGMENTED_TO_VIRTUAL(gKingDodongoTitleCardENGTex), 160, 180, 128, 40, true);
                 }
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_FIRE_BOSS);
             }
@@ -1011,18 +1013,19 @@ void BossDodongo_Update(Actor* thisx, PlayState* play2) {
             }
         }
 
-        func_808C1554(gDodongosCavernBossLavaFloorTex, sLavaFloorLavaTex, this->unk_19E, this->unk_224);
+        // TODO The lave floor bubbles with an effect that modifies the texture. This needs to be recreated shader-side.
+        //func_808C1554(gDodongosCavernBossLavaFloorTex, sLavaFloorLavaTex, this->unk_19E, this->unk_224);
     }
 
     if (this->unk_1C6 != 0) {
-        u16* ptr1 = GetResourceDataByName(sLavaFloorLavaTex, false);
-        u16* ptr2 = GetResourceDataByName(sLavaFloorRockTex, false);
+        u16* ptr1 = GetResourceDataByName(sLavaFloorLavaTex);
+        u16* ptr2 = GetResourceDataByName(sLavaFloorRockTex);
         s16 i2;
 
         for (i2 = 0; i2 < 20; i2++) {
             s16 new_var = this->unk_1C2 & 0x7FF;
 
-            ptr1[new_var] = ptr2[new_var];
+            sMaskTexLava[new_var] = 1;
             this->unk_1C2 += 37;
         }
         Math_SmoothStepToF(&this->unk_224, 0.0f, 1.0f, 0.01f, 0.0f);
@@ -1138,6 +1141,18 @@ void BossDodongo_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    if ((this->csState == 9) && (this->unk_1DA < 854)) {
+        gSPInvalidateTexCache(POLY_OPA_DISP++, sMaskTex8x16);
+        gSPInvalidateTexCache(POLY_OPA_DISP++, sMaskTex8x32);
+        gSPInvalidateTexCache(POLY_OPA_DISP++, sMaskTex16x16);
+        gSPInvalidateTexCache(POLY_OPA_DISP++, sMaskTex16x32);
+        gSPInvalidateTexCache(POLY_OPA_DISP++, sMaskTex32x16);
+    }
+
+    if (this->unk_1C6 != 0) {
+        gSPInvalidateTexCache(POLY_OPA_DISP++, sMaskTexLava);
+    }
 
     if ((this->unk_1C0 >= 2) && (this->unk_1C0 & 1)) {
         POLY_OPA_DISP = Gfx_SetFog(POLY_OPA_DISP, 255, 255, 255, 0, 900, 1099);
@@ -1274,7 +1289,7 @@ void BossDodongo_UpdateDamage(BossDodongo* this, PlayState* play) {
             this->collider.elements->info.bumperFlags &= ~2;
             item1 = this->collider.elements[0].info.acHitInfo;
             if ((this->actionFunc == BossDodongo_Vulnerable) || (this->actionFunc == BossDodongo_LayDown)) {
-                swordDamage = damage = CollisionCheck_GetSwordDamage(item1->toucher.dmgFlags);
+                swordDamage = damage = CollisionCheck_GetSwordDamage(item1->toucher.dmgFlags, play);
 
                 if (damage != 0) {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_K_DAMAGE);
@@ -1706,8 +1721,6 @@ void BossDodongo_DrawEffects(PlayState* play) {
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     unkMtx = &play->billboardMtxF;
-
-    gSPInvalidateTexCache(POLY_XLU_DISP++, gDodongosCavernBossLavaFloorTex);
 
     for (i = 0; i < 80; i++, eff++) {
         FrameInterpolation_RecordOpenChild(eff, eff->epoch);

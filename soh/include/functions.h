@@ -28,6 +28,7 @@ f64 sqrt(f64 d);
 //#pragma intrinsic(sqrt)
 
 void gSPSegment(void* value, int segNum, uintptr_t target);
+void gSPSegmentLoadRes(void* value, int segNum, uintptr_t target);
 void gDPSetTextureImage(Gfx* pkt, u32 f, u32 s, u32 w, uintptr_t i);
 void gSPDisplayList(Gfx* pkt, Gfx* dl);
 void gSPDisplayListOffset(Gfx* pkt, Gfx* dl, int offset);
@@ -840,7 +841,7 @@ void CollisionCheck_SpawnShieldParticlesMetal2(PlayState* play, Vec3f* v);
 void CollisionCheck_SpawnShieldParticlesWood(PlayState* play, Vec3f* b, Vec3f* actorPos);
 s32 CollisionCheck_CylSideVsLineSeg(f32 radius, f32 height, f32 offset, Vec3f* actorPos, Vec3f* itemPos,
                                     Vec3f* itemProjPos, Vec3f* out1, Vec3f* out2);
-u8 CollisionCheck_GetSwordDamage(s32 dmgFlags);
+u8 CollisionCheck_GetSwordDamage(s32 dmgFlags, PlayState* play);
 void SaveContext_Init(void);
 s32 func_800635D0(s32);
 void func_800636C0(void);

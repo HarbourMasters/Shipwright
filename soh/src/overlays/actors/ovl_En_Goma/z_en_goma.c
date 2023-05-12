@@ -44,7 +44,7 @@ void EnGoma_SetupJump(EnGoma* this);
 void EnGoma_SetupStunned(EnGoma* this, PlayState* play);
 
 const ActorInit En_Goma_InitVars = {
-    ACTOR_BOSS_GOMA,
+    ACTOR_EN_GOMA,
     ACTORCAT_ENEMY,
     FLAGS,
     OBJECT_GOL,
@@ -644,7 +644,7 @@ void EnGoma_UpdateHit(EnGoma* this, PlayState* play) {
                         this->hurtTimer = 8;
                     }
                 } else {
-                    swordDamage = CollisionCheck_GetSwordDamage(dmgFlags);
+                    swordDamage = CollisionCheck_GetSwordDamage(dmgFlags, play);
 
                     if (swordDamage) {
                         EffectSsSibuki_SpawnBurst(play, &this->actor.focus.pos);

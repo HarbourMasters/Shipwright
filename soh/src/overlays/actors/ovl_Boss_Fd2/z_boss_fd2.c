@@ -874,7 +874,7 @@ void BossFd2_CollisionCheck(BossFd2* this, PlayState* play) {
             u8 canKill = false;
             u8 damage;
 
-            if ((damage = CollisionCheck_GetSwordDamage(hurtbox->toucher.dmgFlags)) == 0) {
+            if ((damage = CollisionCheck_GetSwordDamage(hurtbox->toucher.dmgFlags, play)) == 0) {
                 damage = (hurtbox->toucher.dmgFlags & 0x00001000) ? 4 : 2;
             } else {
                 canKill = true;

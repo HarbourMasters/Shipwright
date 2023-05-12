@@ -1,5 +1,5 @@
 #include "OTRGlobals.h"
-#include <ResourceMgr.h>
+#include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
 #include <Utils/StringHelper.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -10,12 +10,12 @@
 extern "C" void Play_InitScene(PlayState * play, s32 spawn);
 extern "C" void Play_InitEnvironment(PlayState * play, s16 skyboxId);
 void OTRPlay_InitScene(PlayState* play, s32 spawn);
-s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* scene);
+s32 OTRScene_ExecuteCommands(PlayState* play, LUS::Scene* scene);
 
-//Ship::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
-Ship::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
+//LUS::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
+LUS::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
 {
-    auto res = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(fileName);
+    auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResource(fileName);
     return res.get();
 }
 
@@ -74,12 +74,12 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     func_80096FD4(play, &play->roomCtx.curRoom);
     YREG(15) = 0;
     gSaveContext.worldMapArea = 0;
-    OTRScene_ExecuteCommands(play, (Ship::Scene*)play->sceneSegment);
+    OTRScene_ExecuteCommands(play, (LUS::Scene*)play->sceneSegment);
     Play_InitEnvironment(play, play->skyboxId);
     if (gSaveContext.isBossRush && play->sceneNum != SCENE_KENJYANOMA) {
         gSaveContext.isBossRushPaused = 0;
     }
-    /* auto data = static_cast<Ship::Vertex*>(Ship::Window::GetInstance()
+    /* auto data = static_cast<LUS::Vertex*>(LUS::Context::GetInstance()
                                                ->GetResourceManager()
                                                ->LoadResource("object_link_child\\object_link_childVtx_01FE08")
                                                .get());

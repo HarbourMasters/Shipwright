@@ -682,6 +682,12 @@ void Play_Init(GameState* thisx) {
         DmaMgr_DmaRomToRam(0x03FEB000, D_8012D1F0, sizeof(D_801614D0));
     }
     #endif
+
+    if (CVarGetInteger("gIvanCoopModeEnabled", 0)) {
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PARTNER, GET_PLAYER(play)->actor.world.pos.x,
+                    GET_PLAYER(play)->actor.world.pos.y + Player_GetHeight(GET_PLAYER(play)) + 5.0f,
+                    GET_PLAYER(play)->actor.world.pos.z, 0, 0, 0, 1, true);
+    }
 }
 
 void Play_Update(PlayState* play) {

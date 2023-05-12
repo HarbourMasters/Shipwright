@@ -5,6 +5,7 @@
  */
 
 #include "z_boss_mo.h"
+#include "textures/boss_title_cards/object_mo.h"
 #include "objects/object_mo/object_mo.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
@@ -1442,7 +1443,7 @@ void BossMo_IntroCs(BossMo* this, PlayState* play) {
             }
             if (this->timers[2] == 130) {
                 TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
-                                       SEGMENTED_TO_VIRTUAL(gMorphaTitleCardTex), 160, 180, 128, 40, true);
+                                       SEGMENTED_TO_VIRTUAL(gMorphaTitleCardENGTex), 160, 180, 128, 40, true);
                 gSaveContext.eventChkInf[7] |= 0x10;
             }
             break;
@@ -1772,7 +1773,7 @@ void BossMo_CoreCollisionCheck(BossMo* this, PlayState* play) {
         // "hit 2 !!"
         osSyncPrintf("Core_Damage_check 当り 2 ！！\n");
         if ((this->work[MO_TENT_ACTION_STATE] != MO_CORE_UNDERWATER) && (this->work[MO_TENT_INVINC_TIMER] == 0)) {
-            u8 damage = CollisionCheck_GetSwordDamage(hurtbox->toucher.dmgFlags);
+            u8 damage = CollisionCheck_GetSwordDamage(hurtbox->toucher.dmgFlags, play);
 
             if ((damage != 0) && (this->work[MO_TENT_ACTION_STATE] < MO_CORE_ATTACK)) {
                 // "sword hit !!"

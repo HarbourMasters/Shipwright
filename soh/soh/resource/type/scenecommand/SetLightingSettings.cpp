@@ -1,6 +1,6 @@
 #include "SetLightingSettings.h"
 
-namespace Ship {
+namespace LUS {
 void* SetLightingSettings::GetPointer() {
     return settings.data();
 }
@@ -8,4 +8,4 @@ void* SetLightingSettings::GetPointer() {
 size_t SetLightingSettings::GetPointerSize() {
 	return settings.size() * sizeof(EnvLightSettings);
 }
-} // namespace Ship
+} // namespace LUS

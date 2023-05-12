@@ -1,6 +1,6 @@
 #include "SetStartPositionList.h"
 
-namespace Ship {
+namespace LUS {
 void* SetStartPositionList::GetPointer() {
     return startPositions.data();
 }
@@ -8,4 +8,4 @@ void* SetStartPositionList::GetPointer() {
 size_t SetStartPositionList::GetPointerSize() {
 	return startPositions.size() * sizeof(ActorEntry);
 }
-} // namespace Ship
+} // namespace LUS

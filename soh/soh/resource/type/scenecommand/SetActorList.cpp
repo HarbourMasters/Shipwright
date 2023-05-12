@@ -1,6 +1,6 @@
 #include "SetActorList.h"
 
-namespace Ship {
+namespace LUS {
 void* SetActorList::GetPointer() {
     return actorList.data();
 }
@@ -8,4 +8,4 @@ void* SetActorList::GetPointer() {
 size_t SetActorList::GetPointerSize() {
 	return actorList.size() * sizeof(ActorEntry);
 }
-} // namespace Ship
+} // namespace LUS

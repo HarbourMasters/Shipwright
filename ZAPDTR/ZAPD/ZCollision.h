@@ -1,19 +1,11 @@
 #pragma once
 
+#include "ZCollisionPoly.h"
 #include "ZFile.h"
 #include "ZResource.h"
 #include "ZRoom/ZRoom.h"
+#include "ZSurfaceType.h"
 #include "ZVector.h"
-
-class PolygonEntry
-{
-public:
-	uint16_t type;
-	uint16_t vtxA, vtxB, vtxC;
-	uint16_t a, b, c, d;
-
-	PolygonEntry(const std::vector<uint8_t>& rawData, uint32_t rawDataIndex);
-};
 
 class WaterBoxHeader
 {
@@ -54,8 +46,7 @@ public:
 	std::vector<CameraPositionData*> cameraPositionData;
 
 	CameraDataList(ZFile* parent, const std::string& prefix, const std::vector<uint8_t>& rawData,
-	               uint32_t rawDataIndex, uint32_t polyTypeDefSegmentOffset,
-	               uint32_t polygonTypesCnt);
+	               offset_t rawDataIndex, offset_t upperCameraBoundary);
 	~CameraDataList();
 };
 
@@ -78,8 +69,8 @@ public:
 		waterBoxSegmentOffset;
 
 	std::vector<ZVector> vertices;
-	std::vector<PolygonEntry> polygons;
-	std::vector<uint64_t> polygonTypes;
+	std::vector<ZCollisionPoly> polygons;
+	std::vector<ZSurfaceType> PolygonTypes;
 	std::vector<WaterBoxHeader> waterBoxes;
 	CameraDataList* camData = nullptr;
 

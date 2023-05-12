@@ -56,19 +56,19 @@ RomVersion GetVersion(FILE* rom) {
 
     version.crc = __bswap_32(version.crc);
     switch (version.crc) {
-    case OOT_NTSC_10:
+    case OOT_NTSC_US_10:
         version.version = "N64 NTSC 1.0";
         version.listPath = "ntsc_oot.txt";
         version.offset = OOT_OFF_NTSC_10;
         version.isMQ = false;
         break;
-    case OOT_NTSC_11:
+    case OOT_NTSC_US_11:
         version.version = "N64 NTSC 1.1";
         version.listPath = "ntsc_oot.txt";
         version.offset = OOT_OFF_NTSC_11;
         version.isMQ = false;
         break;
-    case OOT_NTSC_12:
+    case OOT_NTSC_US_12:
         version.version = "N64 NTSC 1.2";
         version.listPath = "ntsc_oot.txt";
         version.offset = OOT_OFF_NTSC_12;
