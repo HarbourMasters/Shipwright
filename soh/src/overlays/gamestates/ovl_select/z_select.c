@@ -43,8 +43,10 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
     if (ResourceMgr_GameHasMasterQuest() && ResourceMgr_GameHasOriginal()) {
         //check to see if the scene/entrance we just picked can be MQ'd
         u8 isMQScene = this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].canBeMQ;
-        if ((!gSaveContext.isMasterQuest && this->opt) || (gSaveContext.isMasterQuest && !this->opt) && isMQScene) {
-            CVarSetInteger("gBetterDebugWarpScreenMQFlag", 1);
+        if ((!gSaveContext.isMasterQuest && this->opt) && isMQScene) {
+            CVarSetInteger("gBetterDebugWarpScreenMQMode", 1);
+        } else if ((gSaveContext.isMasterQuest && !this->opt) && isMQScene) {
+            CVarSetInteger("gBetterDebugWarpScreenMQMode", 2);
         }
     };
 

@@ -1008,31 +1008,29 @@ extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
 
 uint32_t IsSceneMasterQuest(s16 sceneNum) {
     uint32_t value = 0;
-    if (OTRGlobals::Instance->HasMasterQuest()) {
-        if (!OTRGlobals::Instance->HasOriginal()) {
-            value = 1;
-        } else if (gSaveContext.isMasterQuest) {
-            if (CVarGetInteger("gBetterDebugWarpScreenMQFlag", 0)) {
-                CVarSetInteger("gBetterDebugWarpScreenMQFlag", 0);
-                value = 0;
-            } else {
+    uint8_t mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", 0);
+    if (mqMode == 1) { //non-mq wants to be mq
+        return 1;
+    } else if (mqMode == 2) {//mq wants to be non-mq
+        return 0;
+    } else {
+        if (OTRGlobals::Instance->HasMasterQuest()) {
+            if (!OTRGlobals::Instance->HasOriginal()) {
+                value = 1;
+            } else if (gSaveContext.isMasterQuest) {
                 value = 1;
             }
-        } else {
-            value = 0;
-            if (gSaveContext.n64ddFlag) {
-                if (!OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty()) {
-                    if (gPlayState != NULL && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
-                        value = 1;
+            } else {
+                value = 0;
+                if (gSaveContext.n64ddFlag) {
+                    if (!OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty()) {
+                        if (gPlayState != NULL && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
+                            value = 1;
+                        }
                     }
                 }
             }
-            else if (CVarGetInteger("gBetterDebugWarpScreenMQFlag", 0)) {
-                CVarSetInteger("gBetterDebugWarpScreenMQFlag", 0);
-                value = 1;
-            }
         }
-    }
     return value;
 }
 
