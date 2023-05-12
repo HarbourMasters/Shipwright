@@ -22,8 +22,8 @@ You can verify you have a supported copy of the game by checking the `sha1` hash
 | - | - |
 | PAL GC | `0227d7c0074f2d0ac935631990da8ec5914597b4` |
 | PAL GC (Debug) | `cee6bc3c2a634b41728f2af8da54d9bf8cc14099` |
-| PAL MQ | `079b855b943d6ad8bd1eb026c0ed169ecbdac7da` |
-| PAL MQ | `50bebedad9e0f10746a52b07239e47fa6c284d03` | 
+| PAL MQ (Debug) | `079b855b943d6ad8bd1eb026c0ed169ecbdac7da` |
+| PAL MQ (Debug) | `50bebedad9e0f10746a52b07239e47fa6c284d03` | 
 
 ### 2. Download The Ship of Harkinian from [Discord](https://discord.com/invite/shipofharkinian)
 The latest release is available in the most recent post in the `#downloads` channel.
@@ -73,7 +73,9 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 | F5 | Save state |
 | F6 | Change state |
 | F7 | Load state |
+| F9 | Toggle Text-to-Speech (Windows and Mac only) |
 | F10 | Fullscreen (OpenGL) |
+| Tab | Toggle Alternate assets |
 | Alt+Enter | Fullscreen (DirectX) |
 | Ctrl+R | Reset |
 

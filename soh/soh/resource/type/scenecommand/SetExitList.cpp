@@ -1,6 +1,6 @@
 #include "SetExitList.h"
 
-namespace Ship {
+namespace LUS {
 void* SetExitList::GetPointer() {
     return exits.data();
 }
@@ -8,4 +8,4 @@ void* SetExitList::GetPointer() {
 size_t SetExitList::GetPointerSize() {
 	return exits.size() * sizeof(int16_t);
 }
-} // namespace Ship
+} // namespace LUS

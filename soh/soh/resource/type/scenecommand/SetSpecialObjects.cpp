@@ -1,6 +1,6 @@
 #include "SetSpecialObjects.h"
 
-namespace Ship {
+namespace LUS {
 void* SetSpecialObjects::GetPointer() {
     return &specialObjects;
 }
@@ -8,4 +8,4 @@ void* SetSpecialObjects::GetPointer() {
 size_t SetSpecialObjects::GetPointerSize() {
 	return sizeof(SpecialObjects);
 }
-} // namespace Ship
+} // namespace LUS

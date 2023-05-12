@@ -17,6 +17,7 @@ void SetObjectList::ParseRawData()
 	uint8_t objectCnt = parent->GetRawData().at(rawDataIndex + 1);
 	uint32_t currentPtr = segmentOffset;
 
+	objects.reserve(objectCnt);
 	for (uint8_t i = 0; i < objectCnt; i++)
 	{
 		uint16_t objectIndex = BitConverter::ToInt16BE(parent->GetRawData(), currentPtr);

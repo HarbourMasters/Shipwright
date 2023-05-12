@@ -17,8 +17,9 @@ void SetMinimapList::ParseRawData()
 	listSegmentOffset = GETSEGOFFSET(listSegmentAddr);
 	unk4 = BitConverter::ToInt32BE(parent->GetRawData(), segmentOffset + 4);
 
-	int32_t currentPtr = listSegmentOffset;
+	uint32_t currentPtr = listSegmentOffset;
 
+	minimaps.reserve(zRoom->roomCount);
 	for (int32_t i = 0; i < zRoom->roomCount; i++)
 	{
 		MinimapEntry entry(parent->GetRawData(), currentPtr);

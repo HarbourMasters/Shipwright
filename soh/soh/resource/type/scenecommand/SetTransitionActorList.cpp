@@ -1,6 +1,6 @@
 #include "SetTransitionActorList.h"
 
-namespace Ship {
+namespace LUS {
 void* SetTransitionActorList::GetPointer() {
     return transitionActorList.data();
 }
@@ -8,4 +8,4 @@ void* SetTransitionActorList::GetPointer() {
 size_t SetTransitionActorList::GetPointerSize() {
 	return transitionActorList.size() * sizeof(TransitionActorEntry);
 }
-} // namespace Ship
+} // namespace LUS
