@@ -736,6 +736,7 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, const 
         currentJsonContext = &sectionBlock["data"];
         handler.second(saveContext, subsection);
     } else {
+        // save function for specified section does not exist. should this error?
         return;
     }
 
