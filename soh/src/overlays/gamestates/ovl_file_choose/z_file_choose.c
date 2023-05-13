@@ -1525,13 +1525,13 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     } else if (this->configMode == CM_BOSS_RUSH_MENU || this->configMode == CM_START_BOSS_RUSH_MENU ||
                this->configMode == CM_ROTATE_TO_BOSS_RUSH_MENU || this->configMode == CM_BOSS_RUSH_TO_QUEST) {
 
-        Interface_DrawTextLine(this->state.gfxCtx, "abcdefghijklmnopqrstuvwxyzz\nABCDEFGHIJKLMNOPQRSTUVWXYZZ", 60, 80, 255, 255, 255, 255, 1.0f, true);
+        Interface_DrawTextLine(this->state.gfxCtx, "abcdefghijklmnopqrstuvwxyzz\nABCDEFGHIJKLMNOPQRSTUVWXYZZ", 60, 80, 255, 255, 255, 255, 1.0f, 1);
 
-        Interface_DrawTextLine(this->state.gfxCtx, "*+,-./:;<=>?[]^_{|}~!\"#$%&'()@`", 60, 110, 255, 255, 255, 255, 1.0f, true);
+        Interface_DrawTextLine(this->state.gfxCtx, "*+,-./:;<=>?[]^_{|}~!\"#$%&'()@`", 60, 110, 255, 255, 255, 255, 1.0f, 1);
 
-        Interface_DrawTextLine(this->state.gfxCtx, "0123456789", 60, 125, 255, 255, 255, 255, 1.0f, true);
+        Interface_DrawTextLine(this->state.gfxCtx, "0123456789", 60, 125, 255, 255, 255, 255, 1.0f, 1);
 
-        Interface_DrawTextLine(this->state.gfxCtx, "ÀîÂÄÇÈÉÊËÏÔÖÙÛÜßàáâäçèéêëïôöùûü", 60, 140, 255, 255, 255, 255, 1.0f, true);
+        Interface_DrawTextLine(this->state.gfxCtx, "ÀîÂÄÇÈÉÊËÏÔÖÙÛÜßàáâäçèéêëïôöùûü", 60, 140, 255, 255, 255, 255, 1.0f, 1);
 
     } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY) {
         gDPPipeSync(POLY_OPA_DISP++);
