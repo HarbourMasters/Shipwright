@@ -723,6 +723,8 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, const 
             if (std::find(gameSaveRegistry.begin(), gameSaveRegistry.end(), sectionHandler.first) != gameSaveRegistry.end()) {
                 nlohmann::json& sectionBlock = saveBlock["sections"][sectionHandler.first];
                 sectionBlock["version"] = sectionHandler.second.first;
+                // If any save file is loaded for medatata, or a spoiler log is loaded (not sure which at this point), there is still data in the "randomizer" section
+                // This clears the randomizer data block if and only if the section being called is "randomizer" and n64ddFlag is false.
                 if (sectionHandler.first == "randomizer" && !gSaveContext.n64ddFlag) {
                     sectionBlock["data"] = nlohmann::json::object();
                 }
