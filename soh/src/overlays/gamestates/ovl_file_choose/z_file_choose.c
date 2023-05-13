@@ -1531,8 +1531,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
         Interface_DrawTextLine(this->state.gfxCtx, "0123456789", 60, 125, 255, 255, 255, 255, 1.0f, true);
 
-        //Interface_DrawTextLine(this->state.gfxCtx, "‾À", 60, 140, 255, 255, 255, 255, 1.0f, true);
-        // ‾ÀîÂÄÇÈÉÊËÏÔÖÙÛÜßàáâäçèéêëïôöùûü
+        Interface_DrawTextLine(this->state.gfxCtx, "ÀîÂÄÇÈÉÊËÏÔÖÙÛÜßàáâäçèéêëïôöùûü", 60, 140, 255, 255, 255, 255, 1.0f, true);
 
     } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY) {
         gDPPipeSync(POLY_OPA_DISP++);

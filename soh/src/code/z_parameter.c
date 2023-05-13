@@ -6389,7 +6389,97 @@ uint16_t Interface_ConvertCharToTextureIndex(int16_t character) {
 
     switch (character) {
         case -64: // À
-            character = 0;
+            character = 96;
+            break;
+        case -18: // î
+            character = 97;
+            break;
+        case -62: // Â
+            character = 98;
+            break;
+        case -60: // Ä
+            character = 99;
+            break;
+        case -57: // Ç
+            character = 100;
+            break;
+        case -56: // È
+            character = 101;
+            break;
+        case -55: // É
+            character = 102;
+            break;
+        case -54: // Ê
+            character = 103;
+            break;
+        case -53: // Ë
+            character = 104;
+            break;
+        case -49: // Ï
+            character = 105;
+            break;
+        case -44: // Ô
+            character = 106;
+            break;
+        case -42: // Ö
+            character = 107;
+            break;
+        case -39: // Ù
+            character = 108;
+            break;
+        case -37: // Û
+            character = 109;
+            break;
+        case -36: // Ü
+            character = 110;
+            break;
+        case -33: // ß
+            character = 111;
+            break;
+        case -32: // à
+            character = 112;
+            break;
+        case -31: // á
+            character = 113;
+            break;
+        case -30: // â
+            character = 114;
+            break;
+        case -28: // ä
+            character = 115;
+            break;
+        case -25: // ç
+            character = 116;
+            break;
+        case -24: // è
+            character = 117;
+            break;
+        case -23: // é
+            character = 118;
+            break;
+        case -22: // ê
+            character = 119;
+            break;
+        case -21: // ë
+            character = 120;
+            break;
+        case -17: // ï
+            character = 121;
+            break;
+        case -12: // ô
+            character = 122;
+            break;
+        case -10: // ö
+            character = 123;
+            break;
+        case -7: // ù
+            character = 124;
+            break;
+        case -5: // û
+            character = 125;
+            break;
+        case -4: // ü
+            character = 126;
             break;
         default:
             if (character > 32) {
