@@ -1525,7 +1525,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     } else if (this->configMode == CM_BOSS_RUSH_MENU || this->configMode == CM_START_BOSS_RUSH_MENU ||
                this->configMode == CM_ROTATE_TO_BOSS_RUSH_MENU || this->configMode == CM_BOSS_RUSH_TO_QUEST) {
 
-        Interface_DrawTextLine(this->state.gfxCtx, "Link LinkLink herpaderp", 100, 100, 255, 255, 255, 255);
+        Interface_DrawTextLine(this->state.gfxCtx, "abcdefghijklmnopqrstuvwxyzz\nABCDEFGHIJKLMNOPQRSTUVWXYZZ", 60, 80, 255, 255, 255, 255, 1.0f, true);
 
     } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY) {
         gDPPipeSync(POLY_OPA_DISP++);
