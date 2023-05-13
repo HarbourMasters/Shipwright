@@ -6385,10 +6385,10 @@ void Interface_DrawTextCharacter(GraphicsContext* gfx, int16_t x, int16_t y, voi
     CLOSE_DISPS(gfx);
 }
 
-uint16_t Interface_ConvertCharToTextureIndex(uint16_t character) {
+uint16_t Interface_ConvertCharToTextureIndex(int16_t character) {
 
     switch (character) {
-        case 0:
+        case -64: // À
             character = 0;
             break;
         default:
@@ -6403,7 +6403,7 @@ uint16_t Interface_ConvertCharToTextureIndex(uint16_t character) {
     return character;
 }
 
-uint16_t Interface_GetTextKerningOffset(uint16_t character) {
+uint16_t Interface_GetTextKerningOffset(int16_t character) {
 
     switch (character) {
         case 'i':
@@ -6483,7 +6483,7 @@ void Interface_DrawTextLine(GraphicsContext* gfx, char text[], int16_t x, int16_
         } else {
             textureIndex = Interface_ConvertCharToTextureIndex(text[i]);
 
-            if (textureIndex != ' ') {
+            if (textureIndex != 0) {
                 texture = Font_FetchCharTexture(textureIndex);
                 Interface_DrawTextCharacter(gfx, x + kerningOffset, y + lineOffset, texture, colorR, colorG, colorB,
                                             colorA, textScale, textShadow);
