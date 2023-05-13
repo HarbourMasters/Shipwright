@@ -746,7 +746,7 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, const 
 
 #if defined(__SWITCH__) || defined(__WIIU__)
     FILE* w = fopen(GetFileName(fileNum).c_str(), "w");
-    std::string json_string = baseBlock.dump(4);
+    std::string json_string = saveBlock.dump(4);
     fwrite(json_string.c_str(), sizeof(char), json_string.length(), w);
     fclose(w);
 #else
