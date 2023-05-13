@@ -723,7 +723,9 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, const 
             if (std::find(gameSaveRegistry.begin(), gameSaveRegistry.end(), sectionHandler.first) != gameSaveRegistry.end()) {
                 nlohmann::json& sectionBlock = saveBlock["sections"][sectionHandler.first];
                 sectionBlock["version"] = sectionHandler.second.first;
-                sectionBlock["data"] = nlohmann::json::object();
+                if (sectionHandler.first == "randomizer" && !gSaveContext.n64ddFlag) {
+                    sectionBlock["data"] = nlohmann::json::object();
+                }
 
                 currentJsonContext = &sectionBlock["data"];
                 sectionHandler.second.second(saveContext, "all");
