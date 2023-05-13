@@ -45,7 +45,7 @@ public:
 
     using InitFunc = void(*)(bool isDebug);
     using LoadFunc = void(*)();
-    using SaveFunc = void(*)(SaveContext* saveContext);
+    using SaveFunc = void(*)(SaveContext* saveContext, const std::string& subSection);
     using PostFunc = void(*)(int version);
 
     SaveManager();
@@ -53,6 +53,7 @@ public:
     void Init();
     void InitFile(bool isDebug);
     void SaveFile(int fileNum);
+    void SaveSection(int fileNum, const std::string& sectionString);
     void SaveGlobal();
     void LoadFile(int fileNum);
     bool SaveFile_Exist(int fileNum);
@@ -128,7 +129,7 @@ public:
     void ConvertFromUnversioned();
     void CreateDefaultGlobal();
 
-    void SaveFileThreaded(int fileNum, SaveContext* saveContext, const std::string sectionString);
+    void SaveFileThreaded(int fileNum, SaveContext* saveContext, const std::string& sectionString);
 
     void InitMeta(int slotNum);
     static void InitFileImpl(bool isDebug);
@@ -137,13 +138,13 @@ public:
 
     static void LoadRandomizerVersion1();
     static void LoadRandomizerVersion2();
-    static void SaveRandomizer(SaveContext* saveContext);
+    static void SaveRandomizer(SaveContext* saveContext, const std::string& subString);
 
     static void LoadBaseVersion1();
     static void LoadBaseVersion2();
     static void LoadBaseVersion3();
     static void LoadBaseVersion4();
-    static void SaveBase(SaveContext* saveContext);
+    static void SaveBase(SaveContext* saveContext, const std::string& subString);
 
     std::vector<InitFunc> initFuncs;
 
@@ -172,6 +173,7 @@ typedef void (*Save_SaveFunc)(const SaveContext* saveContext);
 void Save_Init(void);
 void Save_InitFile(int isDebug);
 void Save_SaveFile(void);
+void Save_SaveSection(char* sectionString);
 void Save_SaveGlobal(void);
 void Save_LoadGlobal(void);
 void Save_AddLoadFunction(char* name, int version, Save_LoadFunc func);

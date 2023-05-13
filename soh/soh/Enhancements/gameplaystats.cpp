@@ -233,47 +233,54 @@ void LoadStatsVersion1() {
         [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.sohStats.locationsSkipped[i]); });
 }
 
-void SaveStats(SaveContext* saveContext) {
-    SaveManager::Instance->SaveData("buildVersion", saveContext->sohStats.buildVersion);
-    SaveManager::Instance->SaveData("buildVersionMajor", saveContext->sohStats.buildVersionMajor);
-    SaveManager::Instance->SaveData("buildVersionMinor", saveContext->sohStats.buildVersionMinor);
-    SaveManager::Instance->SaveData("buildVersionPatch", saveContext->sohStats.buildVersionPatch);
+void SaveStats(SaveContext* saveContext, const std::string& subSection) {
+    if (subSection == "all") {
+        SaveManager::Instance->SaveData("buildVersion", saveContext->sohStats.buildVersion);
+        SaveManager::Instance->SaveData("buildVersionMajor", saveContext->sohStats.buildVersionMajor);
+        SaveManager::Instance->SaveData("buildVersionMinor", saveContext->sohStats.buildVersionMinor);
+        SaveManager::Instance->SaveData("buildVersionPatch", saveContext->sohStats.buildVersionPatch);
 
-    SaveManager::Instance->SaveData("heartPieces", saveContext->sohStats.heartPieces);
-    SaveManager::Instance->SaveData("heartContainers", saveContext->sohStats.heartContainers);
-    SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(saveContext->sohStats.dungeonKeys), [&](size_t i) {
-        SaveManager::Instance->SaveData("", saveContext->sohStats.dungeonKeys[i]);
-    });
-    SaveManager::Instance->SaveData("playTimer", saveContext->sohStats.playTimer);
-    SaveManager::Instance->SaveData("pauseTimer", saveContext->sohStats.pauseTimer);
-    SaveManager::Instance->SaveArray(
-        "itemTimestamps", ARRAY_COUNT(saveContext->sohStats.itemTimestamp),
-        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->sohStats.itemTimestamp[i]); });
-    SaveManager::Instance->SaveArray(
-        "sceneTimestamps", ARRAY_COUNT(saveContext->sohStats.sceneTimestamps), [&](size_t i) {
-            if (saveContext->sohStats.sceneTimestamps[i].scene != 254 && saveContext->sohStats.sceneTimestamps[i].room != 254) {
-                SaveManager::Instance->SaveStruct("", [&]() {
-                    SaveManager::Instance->SaveData("scene", saveContext->sohStats.sceneTimestamps[i].scene);
-                    SaveManager::Instance->SaveData("room", saveContext->sohStats.sceneTimestamps[i].room);
-                    SaveManager::Instance->SaveData("sceneTime", saveContext->sohStats.sceneTimestamps[i].sceneTime);
-                    SaveManager::Instance->SaveData("roomTime", saveContext->sohStats.sceneTimestamps[i].roomTime);
-                    SaveManager::Instance->SaveData("isRoom", saveContext->sohStats.sceneTimestamps[i].isRoom);
-                });
-            }
+        SaveManager::Instance->SaveData("heartPieces", saveContext->sohStats.heartPieces);
+        SaveManager::Instance->SaveData("heartContainers", saveContext->sohStats.heartContainers);
+        SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(saveContext->sohStats.dungeonKeys), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->sohStats.dungeonKeys[i]);
         });
-    SaveManager::Instance->SaveData("tsIdx", saveContext->sohStats.tsIdx);
-    SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext->sohStats.count), [&](size_t i) {
-        SaveManager::Instance->SaveData("", saveContext->sohStats.count[i]);
-    });
-    SaveManager::Instance->SaveArray(
-        "scenesDiscovered", ARRAY_COUNT(saveContext->sohStats.scenesDiscovered),
-        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->sohStats.scenesDiscovered[i]); });
-    SaveManager::Instance->SaveArray(
-        "entrancesDiscovered", ARRAY_COUNT(saveContext->sohStats.entrancesDiscovered),
-        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->sohStats.entrancesDiscovered[i]); });
-    SaveManager::Instance->SaveArray(
-        "locationsSkipped", ARRAY_COUNT(saveContext->sohStats.locationsSkipped),
-        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->sohStats.locationsSkipped[i]); });
+        SaveManager::Instance->SaveData("playTimer", saveContext->sohStats.playTimer);
+        SaveManager::Instance->SaveData("pauseTimer", saveContext->sohStats.pauseTimer);
+        SaveManager::Instance->SaveArray(
+            "itemTimestamps", ARRAY_COUNT(saveContext->sohStats.itemTimestamp),
+            [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->sohStats.itemTimestamp[i]); });
+        SaveManager::Instance->SaveArray(
+            "sceneTimestamps", ARRAY_COUNT(saveContext->sohStats.sceneTimestamps), [&](size_t i) {
+                if (saveContext->sohStats.sceneTimestamps[i].scene != 254 &&
+                    saveContext->sohStats.sceneTimestamps[i].room != 254) {
+                    SaveManager::Instance->SaveStruct("", [&]() {
+                        SaveManager::Instance->SaveData("scene", saveContext->sohStats.sceneTimestamps[i].scene);
+                        SaveManager::Instance->SaveData("room", saveContext->sohStats.sceneTimestamps[i].room);
+                        SaveManager::Instance->SaveData("sceneTime", saveContext->sohStats.sceneTimestamps[i].sceneTime);
+                        SaveManager::Instance->SaveData("roomTime", saveContext->sohStats.sceneTimestamps[i].roomTime);
+                        SaveManager::Instance->SaveData("isRoom", saveContext->sohStats.sceneTimestamps[i].isRoom);
+                    });
+                }
+            });
+        SaveManager::Instance->SaveData("tsIdx", saveContext->sohStats.tsIdx);
+        SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext->sohStats.count), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->sohStats.count[i]);
+        });
+        SaveManager::Instance->SaveArray(
+            "locationsSkipped", ARRAY_COUNT(saveContext->sohStats.locationsSkipped),
+            [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->sohStats.locationsSkipped[i]); });
+    }
+    if (subSection == "entrances" || subSection == "all") {
+        SaveManager::Instance->SaveArray("entrancesDiscovered", ARRAY_COUNT(saveContext->sohStats.entrancesDiscovered), [&](size_t i) { 
+            SaveManager::Instance->SaveData("", saveContext->sohStats.entrancesDiscovered[i]);
+        });
+    }
+    if (subSection == "scenes" || subSection == "all") {
+        SaveManager::Instance->SaveArray("scenesDiscovered", ARRAY_COUNT(saveContext->sohStats.scenesDiscovered), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->sohStats.scenesDiscovered[i]); 
+        });
+    }
 }
 
 void InitStats(bool isDebug) {

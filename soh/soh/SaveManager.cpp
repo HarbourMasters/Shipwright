@@ -279,7 +279,7 @@ void SaveManager::LoadRandomizerVersion2() {
     });
 }
 
-void SaveManager::SaveRandomizer(SaveContext* saveContext) {
+void SaveManager::SaveRandomizer(SaveContext* saveContext, const std::string& subString) {
 
     if (!saveContext->n64ddFlag)
         return;
@@ -709,26 +709,32 @@ void SaveManager::InitFileDebug() {
 }
 
 // Threaded SaveFile takes copy of gSaveContext for local unmodified storage
-void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, const std::string sectionString) {
-    /*nlohmann::json baseBlock;
-
-    baseBlock["version"] = 1;
-    baseBlock["sections"] = nlohmann::json::object();*/
+void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, const std::string& sectionString) {
+    saveBlock["version"] = 1;
+    size_t period = sectionString.find(".");
+    std::string section = sectionString;
+    std::string subsection = "";
+    if (period != std::string::npos) {
+        subsection = sectionString.substr(period + 1, std::string::npos);
+        section = sectionString.substr(0, sectionString.length() - (subsection.length() + 1));
+    }
     if (sectionString == "all") {
         for (auto& sectionHandler : sectionSaveHandlers) {
-            nlohmann::json& sectionBlock = saveBlock["sections"][sectionHandler.first];
-            sectionBlock["version"] = sectionHandler.second.first;
-            sectionBlock["data"] = nlohmann::json::object();
+            if (std::find(gameSaveRegistry.begin(), gameSaveRegistry.end(), sectionHandler.first) != gameSaveRegistry.end()) {
+                nlohmann::json& sectionBlock = saveBlock["sections"][sectionHandler.first];
+                sectionBlock["version"] = sectionHandler.second.first;
+                sectionBlock["data"] = nlohmann::json::object();
 
-            currentJsonContext = &sectionBlock["data"];
-            sectionHandler.second.second(saveContext);
+                currentJsonContext = &sectionBlock["data"];
+                sectionHandler.second.second(saveContext, "all");
+            }
         }
-    } else if (sectionSaveHandlers.contains(sectionString) && std::find(gameSaveRegistry.begin(), gameSaveRegistry.end(), sectionString) != gameSaveRegistry.end()) {
-        SectionSaveHandler handler = sectionSaveHandlers.find(sectionString)->second;
-        nlohmann::json& sectionBlock = saveBlock["sections"][sectionString];
+    } else if (sectionSaveHandlers.contains(section)) {
+        SectionSaveHandler handler = sectionSaveHandlers.find(section)->second;
+        nlohmann::json& sectionBlock = saveBlock["sections"][section];
         sectionBlock["version"] = handler.first;
         currentJsonContext = &sectionBlock["data"];
-        handler.second(saveContext);
+        handler.second(saveContext, subsection);
     } else {
         return;
     }
@@ -748,14 +754,18 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, const 
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum);
 }
 
-void SaveManager::SaveFile(int fileNum) {
+void SaveManager::SaveSection(int fileNum, const std::string& sectionString) {
     if (fileNum == 0xFF) {
         return;
     }
     // Can't think of any time the promise would be needed, so use push_task instead of submit
     auto saveContext = new SaveContext;
     memcpy(saveContext, &gSaveContext, sizeof(gSaveContext));
-    smThreadPool->push_task_back(&SaveManager::SaveFileThreaded, this, fileNum, saveContext, "all");
+    smThreadPool->push_task_back(&SaveManager::SaveFileThreaded, this, fileNum, saveContext, sectionString);
+}
+
+void SaveManager::SaveFile(int fileNum) {
+    SaveSection(fileNum, "all");
 }
 
 void SaveManager::SaveGlobal() {
@@ -1616,7 +1626,7 @@ void SaveManager::LoadBaseVersion4() {
     SaveManager::Instance->LoadData("dogParams", gSaveContext.dogParams);
 }
 
-void SaveManager::SaveBase(SaveContext* saveContext) {
+void SaveManager::SaveBase(SaveContext* saveContext, const std::string& subString) {
     SaveManager::Instance->SaveData("entranceIndex", saveContext->entranceIndex);
     SaveManager::Instance->SaveData("linkAge", saveContext->linkAge);
     SaveManager::Instance->SaveData("cutsceneIndex", saveContext->cutsceneIndex);
@@ -2279,6 +2289,10 @@ extern "C" void Save_InitFile(int isDebug) {
 
 extern "C" void Save_SaveFile(void) {
     SaveManager::Instance->SaveFile(gSaveContext.fileNum);
+}
+
+extern "C" void Save_SaveSection(char* sectionString) {
+    SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionString);
 }
 
 extern "C" void Save_SaveGlobal(void) {
