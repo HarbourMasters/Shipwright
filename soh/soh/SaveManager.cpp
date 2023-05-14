@@ -19,7 +19,7 @@
 extern "C" SaveContext gSaveContext;
 
 void SaveManager::WriteSaveFile(const std::filesystem::path& savePath, const uintptr_t addr, void* dramAddr,
-                                const size_t size) {
+                            const size_t size) {
     std::ofstream saveFile = std::ofstream(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
     saveFile.seekp(addr);
     saveFile.write((char*)dramAddr, size);
@@ -193,7 +193,7 @@ void SaveManager::LoadRandomizerVersion2() {
     });
 
     SaveManager::Instance->LoadArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.seedIcons[i]); 
+        SaveManager::Instance->LoadData("", gSaveContext.seedIcons[i]);
     });
 
     SaveManager::Instance->LoadArray("randoSettings", RSK_MAX, [&](size_t i) {
@@ -280,7 +280,7 @@ void SaveManager::LoadRandomizerVersion2() {
 
 void SaveManager::SaveRandomizer(SaveContext* saveContext, const std::string& subString) {
 
-    if (!saveContext->n64ddFlag) return;
+    if(!saveContext->n64ddFlag) return;
 
     SaveManager::Instance->SaveArray("itemLocations", RC_MAX, [&](size_t i) {
         SaveManager::Instance->SaveStruct("", [&]() {
@@ -335,7 +335,7 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, const std::string& su
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
     std::vector<std::pair<RandomizerCheck, u16>> merchantPrices;
-    for (const auto& [ check, price ] : randomizer->merchantPrices) {
+    for (const auto & [ check, price ] : randomizer->merchantPrices) {
         merchantPrices.push_back(std::make_pair(check, price));
     }
 
@@ -364,8 +364,7 @@ void SaveManager::Init() {
     auto sOldSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav");
     auto sOldBackupSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.bak");
     LUS::RegisterHook<LUS::ExitGame>([this]() { ThreadPoolWait(); });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>(
-        [this](uint32_t fileNum) { ThreadPoolWait(); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>([this](uint32_t fileNum) { ThreadPoolWait(); });
 
     // If the save directory does not exist, create it
     if (!std::filesystem::exists(sSavePath)) {
@@ -436,8 +435,8 @@ void SaveManager::InitMeta(int fileNum) {
     // If the file is marked as a Master Quest file or if we're randomized and have at least one master quest dungeon,
     // we need the mq otr.
     fileMetaInfo[fileNum].requiresMasterQuest = gSaveContext.isMasterQuest > 0 || (gSaveContext.n64ddFlag && gSaveContext.mqDungeonCount > 0);
-    // If the file is not marked as Master Quest, it could still theoretically be a rando save with all 12 MQ dungeons,
-    // in which case we don't actually require a vanilla OTR.
+    // If the file is not marked as Master Quest, it could still theoretically be a rando save with all 12 MQ dungeons, in which case
+    // we don't actually require a vanilla OTR.
     fileMetaInfo[fileNum].requiresOriginal = !gSaveContext.isMasterQuest && (!gSaveContext.n64ddFlag || gSaveContext.mqDungeonCount < 12);
 
     fileMetaInfo[fileNum].buildVersionMajor = gSaveContext.sohStats.buildVersionMajor;
@@ -838,7 +837,7 @@ bool SaveManager::SaveFile_Exist(int fileNum) {
         SPDLOG_INFO("File[{}] - {}", fileNum, exists ? "exists" : "does not exist");
         return exists;
     }
-    catch (std::filesystem::filesystem_error const& ex) {
+    catch(std::filesystem::filesystem_error const& ex) {
         SPDLOG_ERROR("Filesystem error");
         return false;
     }
@@ -958,8 +957,9 @@ void SaveManager::LoadBaseVersion1() {
         SaveManager::Instance->LoadData("equipment", gSaveContext.inventory.equipment);
         SaveManager::Instance->LoadData("upgrades", gSaveContext.inventory.upgrades);
         SaveManager::Instance->LoadData("questItems", gSaveContext.inventory.questItems);
-        SaveManager::Instance->LoadArray("dungeonItems", ARRAY_COUNT(gSaveContext.inventory.dungeonItems),
-            [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.inventory.dungeonItems[i]); });
+        SaveManager::Instance->LoadArray("dungeonItems", ARRAY_COUNT(gSaveContext.inventory.dungeonItems), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.inventory.dungeonItems[i]);
+        });
         SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.inventory.dungeonKeys), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.inventory.dungeonKeys[i]);
         });
@@ -1221,18 +1221,17 @@ void SaveManager::LoadBaseVersion2() {
     if (!gSaveContext.scarecrowLongSongSet) {
         SaveManager::Instance->LoadData("scarecrowLongSongSet", gSaveContext.scarecrowLongSongSet);
         if (gSaveContext.scarecrowLongSongSet) {
-            SaveManager::Instance->LoadArray(
-                "scarecrowLongSong", ARRAY_COUNT(gSaveContext.scarecrowLongSong), [](size_t i) {
-                    SaveManager::Instance->LoadStruct("", [&i]() {
-                        SaveManager::Instance->LoadData("noteIdx", gSaveContext.scarecrowLongSong[i].noteIdx);
-                        SaveManager::Instance->LoadData("unk_01", gSaveContext.scarecrowLongSong[i].unk_01);
-                        SaveManager::Instance->LoadData("unk_02", gSaveContext.scarecrowLongSong[i].unk_02);
-                        SaveManager::Instance->LoadData("volume", gSaveContext.scarecrowLongSong[i].volume);
-                        SaveManager::Instance->LoadData("vibrato", gSaveContext.scarecrowLongSong[i].vibrato);
-                        SaveManager::Instance->LoadData("tone", gSaveContext.scarecrowLongSong[i].tone);
-                        SaveManager::Instance->LoadData("semitone", gSaveContext.scarecrowLongSong[i].semitone);
-                    });
+            SaveManager::Instance->LoadArray("scarecrowLongSong", ARRAY_COUNT(gSaveContext.scarecrowLongSong), [](size_t i) {
+                SaveManager::Instance->LoadStruct("", [&i]() {
+                    SaveManager::Instance->LoadData("noteIdx", gSaveContext.scarecrowLongSong[i].noteIdx);
+                    SaveManager::Instance->LoadData("unk_01", gSaveContext.scarecrowLongSong[i].unk_01);
+                    SaveManager::Instance->LoadData("unk_02", gSaveContext.scarecrowLongSong[i].unk_02);
+                    SaveManager::Instance->LoadData("volume", gSaveContext.scarecrowLongSong[i].volume);
+                    SaveManager::Instance->LoadData("vibrato", gSaveContext.scarecrowLongSong[i].vibrato);
+                    SaveManager::Instance->LoadData("tone", gSaveContext.scarecrowLongSong[i].tone);
+                    SaveManager::Instance->LoadData("semitone", gSaveContext.scarecrowLongSong[i].semitone);
                 });
+            });
         }
     }
 }
@@ -1305,7 +1304,7 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadData("equipment", gSaveContext.inventory.equipment);
         SaveManager::Instance->LoadData("upgrades", gSaveContext.inventory.upgrades);
         SaveManager::Instance->LoadData("questItems", gSaveContext.inventory.questItems);
-        SaveManager::Instance->LoadArray("dungeonItems", ARRAY_COUNT(gSaveContext.inventory.dungeonItems),[](size_t i) {
+        SaveManager::Instance->LoadArray("dungeonItems", ARRAY_COUNT(gSaveContext.inventory.dungeonItems), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.inventory.dungeonItems[i]);
         });
         SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.inventory.dungeonKeys), [](size_t i) {
@@ -1317,8 +1316,7 @@ void SaveManager::LoadBaseVersion3() {
     SaveManager::Instance->LoadStruct("sohStats", []() {
         std::string buildVersion;
         SaveManager::Instance->LoadData("buildVersion", buildVersion);
-        strncpy(gSaveContext.sohStats.buildVersion, buildVersion.c_str(),
-                ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1);
+        strncpy(gSaveContext.sohStats.buildVersion, buildVersion.c_str(), ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1);
         gSaveContext.sohStats.buildVersion[ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1] = 0;
         SaveManager::Instance->LoadData("buildVersionMajor", gSaveContext.sohStats.buildVersionMajor);
         SaveManager::Instance->LoadData("buildVersionMinor", gSaveContext.sohStats.buildVersionMinor);
@@ -1350,7 +1348,7 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadArray("scenesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.scenesDiscovered[i]);
         });
-        SaveManager::Instance->LoadArray("entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered),[](size_t i) {
+        SaveManager::Instance->LoadArray("entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.entrancesDiscovered[i]);
         });
         SaveManager::Instance->LoadArray("locationsSkipped", ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped), [](size_t i) {
@@ -1521,7 +1519,7 @@ void SaveManager::LoadBaseVersion4() {
         SaveManager::Instance->LoadData("equipment", gSaveContext.inventory.equipment);
         SaveManager::Instance->LoadData("upgrades", gSaveContext.inventory.upgrades);
         SaveManager::Instance->LoadData("questItems", gSaveContext.inventory.questItems);
-        SaveManager::Instance->LoadArray("dungeonItems", ARRAY_COUNT(gSaveContext.inventory.dungeonItems),[](size_t i) {
+        SaveManager::Instance->LoadArray("dungeonItems", ARRAY_COUNT(gSaveContext.inventory.dungeonItems), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.inventory.dungeonItems[i]);
         });
         SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.inventory.dungeonKeys), [](size_t i) {

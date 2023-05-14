@@ -182,8 +182,7 @@ void DisplayTimeHHMMSS(uint32_t timeInTenthsOfSeconds, std::string text, ImVec4 
 void LoadStatsVersion1() {
     std::string buildVersion;
     SaveManager::Instance->LoadData("buildVersion", buildVersion);
-    strncpy(gSaveContext.sohStats.buildVersion, buildVersion.c_str(),
-            ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1);
+    strncpy(gSaveContext.sohStats.buildVersion, buildVersion.c_str(), ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1);
     gSaveContext.sohStats.buildVersion[ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1] = 0;
     SaveManager::Instance->LoadData("buildVersionMajor", gSaveContext.sohStats.buildVersionMajor);
     SaveManager::Instance->LoadData("buildVersionMinor", gSaveContext.sohStats.buildVersionMinor);
@@ -236,8 +235,7 @@ void SaveStats(SaveContext* saveContext, const std::string& subSection) {
     if (subSection == "all") {
         std::string buildVersion;
         SaveManager::Instance->LoadData("buildVersion", buildVersion);
-        strncpy(gSaveContext.sohStats.buildVersion, buildVersion.c_str(),
-                ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1);
+        strncpy(gSaveContext.sohStats.buildVersion, buildVersion.c_str(), ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1);
         gSaveContext.sohStats.buildVersion[ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1] = 0;
         SaveManager::Instance->LoadData("buildVersionMajor", gSaveContext.sohStats.buildVersionMajor);
         SaveManager::Instance->LoadData("buildVersionMinor", gSaveContext.sohStats.buildVersionMinor);
