@@ -19,7 +19,7 @@
 extern "C" SaveContext gSaveContext;
 
 void SaveManager::WriteSaveFile(const std::filesystem::path& savePath, const uintptr_t addr, void* dramAddr,
-                            const size_t size) {
+                           const size_t size) {
     std::ofstream saveFile = std::ofstream(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
     saveFile.seekp(addr);
     saveFile.write((char*)dramAddr, size);
@@ -432,8 +432,7 @@ void SaveManager::InitMeta(int fileNum) {
     }
 
     fileMetaInfo[fileNum].randoSave = gSaveContext.n64ddFlag;
-    // If the file is marked as a Master Quest file or if we're randomized and have at least one master quest dungeon,
-    // we need the mq otr.
+    // If the file is marked as a Master Quest file or if we're randomized and have at least one master quest dungeon, we need the mq otr.
     fileMetaInfo[fileNum].requiresMasterQuest = gSaveContext.isMasterQuest > 0 || (gSaveContext.n64ddFlag && gSaveContext.mqDungeonCount > 0);
     // If the file is not marked as Master Quest, it could still theoretically be a rando save with all 12 MQ dungeons, in which case
     // we don't actually require a vanilla OTR.
@@ -1650,21 +1649,21 @@ void SaveManager::SaveBase(SaveContext* saveContext, const std::string& subStrin
     SaveManager::Instance->SaveData("bgsFlag", saveContext->bgsFlag);
     SaveManager::Instance->SaveData("ocarinaGameRoundNum", saveContext->ocarinaGameRoundNum);
     SaveManager::Instance->SaveStruct("childEquips", [&]() {
-        SaveManager::Instance->SaveArray(
-            "buttonItems", ARRAY_COUNT(saveContext->childEquips.buttonItems),
-            [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->childEquips.buttonItems[i]); });
-        SaveManager::Instance->SaveArray(
-            "cButtonSlots", ARRAY_COUNT(saveContext->childEquips.cButtonSlots),
-            [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->childEquips.cButtonSlots[i]); });
+        SaveManager::Instance->SaveArray("buttonItems", ARRAY_COUNT(saveContext->childEquips.buttonItems), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->childEquips.buttonItems[i]);
+        });
+        SaveManager::Instance->SaveArray("cButtonSlots", ARRAY_COUNT(saveContext->childEquips.cButtonSlots), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->childEquips.cButtonSlots[i]);
+        });
         SaveManager::Instance->SaveData("equipment", saveContext->childEquips.equipment);
     });
     SaveManager::Instance->SaveStruct("adultEquips", [&]() {
-        SaveManager::Instance->SaveArray(
-            "buttonItems", ARRAY_COUNT(saveContext->adultEquips.buttonItems),
-            [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->adultEquips.buttonItems[i]); });
-        SaveManager::Instance->SaveArray(
-            "cButtonSlots", ARRAY_COUNT(saveContext->adultEquips.cButtonSlots),
-            [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->adultEquips.cButtonSlots[i]); });
+        SaveManager::Instance->SaveArray("buttonItems", ARRAY_COUNT(saveContext->adultEquips.buttonItems), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->adultEquips.buttonItems[i]);
+        });
+        SaveManager::Instance->SaveArray("cButtonSlots", ARRAY_COUNT(saveContext->adultEquips.cButtonSlots), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->adultEquips.cButtonSlots[i]);
+        });
         SaveManager::Instance->SaveData("equipment", saveContext->adultEquips.equipment);
     });
     SaveManager::Instance->SaveData("unk_54", saveContext->unk_54);
@@ -1688,9 +1687,9 @@ void SaveManager::SaveBase(SaveContext* saveContext, const std::string& subStrin
         SaveManager::Instance->SaveData("equipment", saveContext->inventory.equipment);
         SaveManager::Instance->SaveData("upgrades", saveContext->inventory.upgrades);
         SaveManager::Instance->SaveData("questItems", saveContext->inventory.questItems);
-        SaveManager::Instance->SaveArray(
-            "dungeonItems", ARRAY_COUNT(saveContext->inventory.dungeonItems),
-            [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->inventory.dungeonItems[i]); });
+        SaveManager::Instance->SaveArray("dungeonItems", ARRAY_COUNT(saveContext->inventory.dungeonItems), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->inventory.dungeonItems[i]);
+        });
         SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(saveContext->inventory.dungeonKeys), [&](size_t i) {
             SaveManager::Instance->SaveData("", saveContext->inventory.dungeonKeys[i]);
         });
@@ -1722,8 +1721,9 @@ void SaveManager::SaveBase(SaveContext* saveContext, const std::string& subStrin
         SaveManager::Instance->SaveData("tempSwchFlags", saveContext->fw.tempSwchFlags);
         SaveManager::Instance->SaveData("tempCollectFlags", saveContext->fw.tempCollectFlags);
     });
-    SaveManager::Instance->SaveArray("gsFlags", ARRAY_COUNT(saveContext->gsFlags),
-                                     [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->gsFlags[i]); });
+    SaveManager::Instance->SaveArray("gsFlags", ARRAY_COUNT(saveContext->gsFlags), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->gsFlags[i]);
+    });
     SaveManager::Instance->SaveArray("highScores", ARRAY_COUNT(saveContext->highScores), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->highScores[i]);
     });
@@ -1733,8 +1733,9 @@ void SaveManager::SaveBase(SaveContext* saveContext, const std::string& subStrin
     SaveManager::Instance->SaveArray("itemGetInf", ARRAY_COUNT(saveContext->itemGetInf), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->itemGetInf[i]);
     });
-    SaveManager::Instance->SaveArray("infTable", ARRAY_COUNT(saveContext->infTable),
-                                     [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->infTable[i]); });
+    SaveManager::Instance->SaveArray("infTable", ARRAY_COUNT(saveContext->infTable), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->infTable[i]);
+    });
     SaveManager::Instance->SaveData("worldMapAreaData", saveContext->worldMapAreaData);
     SaveManager::Instance->SaveData("scarecrowLongSongSet", saveContext->scarecrowLongSongSet);
     SaveManager::Instance->SaveArray("scarecrowLongSong", ARRAY_COUNT(saveContext->scarecrowLongSong), [&](size_t i) {
@@ -1830,8 +1831,8 @@ void SaveManager::LoadArray(const std::string& name, const size_t size, LoadArra
     for (; (currentJsonArrayContext != currentJsonContext->end()) && (i < size); i++, currentJsonArrayContext++) {
         func(i);
     }
-    // Handle remainer of items. Either this was data that was manually deleted, or a later version extended the size of
-    // the array. The later members will be default constructed.
+    // Handle remainer of items. Either this was data that was manually deleted, or a later version extended the size of the array.
+    // The later members will be default constructed.
     for (; i < size; i++) {
         func(i);
     }
