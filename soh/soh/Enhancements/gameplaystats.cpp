@@ -196,80 +196,79 @@ void LoadStatsVersion1() {
     });
     SaveManager::Instance->LoadData("playTimer", gSaveContext.sohStats.playTimer);
     SaveManager::Instance->LoadData("pauseTimer", gSaveContext.sohStats.pauseTimer);
-    SaveManager::Instance->LoadArray(
-        "itemTimestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp),
-        [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.sohStats.itemTimestamp[i]); });
-    SaveManager::Instance->LoadArray(
-        "sceneTimestamps", ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps), [](size_t i) {
-            SaveManager::Instance->LoadStruct("", [&i]() {
-                int scene, room, sceneTime, roomTime, isRoom;
-                SaveManager::Instance->LoadData("scene", scene);
-                SaveManager::Instance->LoadData("room", room);
-                SaveManager::Instance->LoadData("sceneTime", sceneTime);
-                SaveManager::Instance->LoadData("roomTime", roomTime);
-                SaveManager::Instance->LoadData("isRoom", isRoom);
-                if (scene == 0 && room == 0 && sceneTime == 0 && roomTime == 0 && isRoom == 0) {
-                    return;
-                }
-                gSaveContext.sohStats.sceneTimestamps[i].scene = scene;
-                gSaveContext.sohStats.sceneTimestamps[i].room = room;
-                gSaveContext.sohStats.sceneTimestamps[i].sceneTime = sceneTime;
-                gSaveContext.sohStats.sceneTimestamps[i].roomTime = roomTime;
-                gSaveContext.sohStats.sceneTimestamps[i].isRoom = isRoom;
-            });
+    SaveManager::Instance->LoadArray("itemTimestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.sohStats.itemTimestamp[i]);
+    });
+    SaveManager::Instance->LoadArray("sceneTimestamps", ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps), [](size_t i) {
+        SaveManager::Instance->LoadStruct("", [&i]() {
+            int scene, room, sceneTime, roomTime, isRoom;
+            SaveManager::Instance->LoadData("scene", scene);
+            SaveManager::Instance->LoadData("room", room);
+            SaveManager::Instance->LoadData("sceneTime", sceneTime);
+            SaveManager::Instance->LoadData("roomTime", roomTime);
+            SaveManager::Instance->LoadData("isRoom", isRoom);
+            if (scene == 0 && room == 0 && sceneTime == 0 && roomTime == 0 && isRoom == 0) {
+                return;
+            }
+            gSaveContext.sohStats.sceneTimestamps[i].scene = scene;
+            gSaveContext.sohStats.sceneTimestamps[i].room = room;
+            gSaveContext.sohStats.sceneTimestamps[i].sceneTime = sceneTime;
+            gSaveContext.sohStats.sceneTimestamps[i].roomTime = roomTime;
+            gSaveContext.sohStats.sceneTimestamps[i].isRoom = isRoom;
         });
+    });
     SaveManager::Instance->LoadData("tsIdx", gSaveContext.sohStats.tsIdx);
     SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.sohStats.count[i]);
     });
-    SaveManager::Instance->LoadArray(
-        "scenesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered),
-        [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.sohStats.scenesDiscovered[i]); });
-    SaveManager::Instance->LoadArray(
-        "entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered),
-        [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.sohStats.entrancesDiscovered[i]); });
-    SaveManager::Instance->LoadArray(
-        "locationsSkipped", ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped),
-        [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.sohStats.locationsSkipped[i]); });
+    SaveManager::Instance->LoadArray("scenesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.sohStats.scenesDiscovered[i]);
+    });
+    SaveManager::Instance->LoadArray("entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.sohStats.entrancesDiscovered[i]);
+    });
+    SaveManager::Instance->LoadArray("locationsSkipped", ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.sohStats.locationsSkipped[i]);
+    });
 }
 
 void SaveStats(SaveContext* saveContext, const std::string& subSection) {
     if (subSection == "all") {
-        SaveManager::Instance->SaveData("buildVersion", saveContext->sohStats.buildVersion);
-        SaveManager::Instance->SaveData("buildVersionMajor", saveContext->sohStats.buildVersionMajor);
-        SaveManager::Instance->SaveData("buildVersionMinor", saveContext->sohStats.buildVersionMinor);
-        SaveManager::Instance->SaveData("buildVersionPatch", saveContext->sohStats.buildVersionPatch);
+        std::string buildVersion;
+        SaveManager::Instance->LoadData("buildVersion", buildVersion);
+        strncpy(gSaveContext.sohStats.buildVersion, buildVersion.c_str(),
+                ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1);
+        gSaveContext.sohStats.buildVersion[ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1] = 0;
+        SaveManager::Instance->LoadData("buildVersionMajor", gSaveContext.sohStats.buildVersionMajor);
+        SaveManager::Instance->LoadData("buildVersionMinor", gSaveContext.sohStats.buildVersionMinor);
+        SaveManager::Instance->LoadData("buildVersionPatch", gSaveContext.sohStats.buildVersionPatch);
 
-        SaveManager::Instance->SaveData("heartPieces", saveContext->sohStats.heartPieces);
-        SaveManager::Instance->SaveData("heartContainers", saveContext->sohStats.heartContainers);
-        SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(saveContext->sohStats.dungeonKeys), [&](size_t i) {
-            SaveManager::Instance->SaveData("", saveContext->sohStats.dungeonKeys[i]);
+        SaveManager::Instance->LoadData("heartPieces", gSaveContext.sohStats.heartPieces);
+        SaveManager::Instance->LoadData("heartContainers", gSaveContext.sohStats.heartContainers);
+        SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.sohStats.dungeonKeys[i]);
         });
-        SaveManager::Instance->SaveData("playTimer", saveContext->sohStats.playTimer);
-        SaveManager::Instance->SaveData("pauseTimer", saveContext->sohStats.pauseTimer);
-        SaveManager::Instance->SaveArray(
-            "itemTimestamps", ARRAY_COUNT(saveContext->sohStats.itemTimestamp),
-            [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->sohStats.itemTimestamp[i]); });
-        SaveManager::Instance->SaveArray(
-            "sceneTimestamps", ARRAY_COUNT(saveContext->sohStats.sceneTimestamps), [&](size_t i) {
-                if (saveContext->sohStats.sceneTimestamps[i].scene != 254 &&
-                    saveContext->sohStats.sceneTimestamps[i].room != 254) {
-                    SaveManager::Instance->SaveStruct("", [&]() {
-                        SaveManager::Instance->SaveData("scene", saveContext->sohStats.sceneTimestamps[i].scene);
-                        SaveManager::Instance->SaveData("room", saveContext->sohStats.sceneTimestamps[i].room);
-                        SaveManager::Instance->SaveData("sceneTime", saveContext->sohStats.sceneTimestamps[i].sceneTime);
-                        SaveManager::Instance->SaveData("roomTime", saveContext->sohStats.sceneTimestamps[i].roomTime);
-                        SaveManager::Instance->SaveData("isRoom", saveContext->sohStats.sceneTimestamps[i].isRoom);
-                    });
-                }
+        SaveManager::Instance->LoadData("playTimer", gSaveContext.sohStats.playTimer);
+        SaveManager::Instance->LoadData("pauseTimer", gSaveContext.sohStats.pauseTimer);
+        SaveManager::Instance->LoadArray("itemTimestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.sohStats.itemTimestamp[i]);
+        });
+        SaveManager::Instance->LoadArray("sceneTimestamps", ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps), [](size_t i) {
+            SaveManager::Instance->LoadStruct("", [&i]() {
+                SaveManager::Instance->LoadData("scene", gSaveContext.sohStats.sceneTimestamps[i].scene);
+                SaveManager::Instance->LoadData("room", gSaveContext.sohStats.sceneTimestamps[i].room);
+                SaveManager::Instance->LoadData("sceneTime", gSaveContext.sohStats.sceneTimestamps[i].sceneTime);
+                SaveManager::Instance->LoadData("roomTime", gSaveContext.sohStats.sceneTimestamps[i].roomTime);
+                SaveManager::Instance->LoadData("isRoom", gSaveContext.sohStats.sceneTimestamps[i].isRoom);
             });
-        SaveManager::Instance->SaveData("tsIdx", saveContext->sohStats.tsIdx);
-        SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext->sohStats.count), [&](size_t i) {
-            SaveManager::Instance->SaveData("", saveContext->sohStats.count[i]);
         });
-        SaveManager::Instance->SaveArray(
-            "locationsSkipped", ARRAY_COUNT(saveContext->sohStats.locationsSkipped),
-            [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->sohStats.locationsSkipped[i]); });
+        SaveManager::Instance->LoadData("tsIdx", gSaveContext.sohStats.tsIdx);
+        SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.sohStats.count[i]);
+        });
+        SaveManager::Instance->LoadArray("locationsSkipped", ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.sohStats.locationsSkipped[i]);
+        });
     }
     if (subSection == "entrances" || subSection == "all") {
         SaveManager::Instance->SaveArray("entrancesDiscovered", ARRAY_COUNT(saveContext->sohStats.entrancesDiscovered), [&](size_t i) { 
