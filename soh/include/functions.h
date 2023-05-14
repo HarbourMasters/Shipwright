@@ -8,10 +8,6 @@
 #define this thisx
 extern "C"
 {
-#else
-f32 fabsf(f32 f);
-f32 sqrtf(f32 f);
-f64 sqrt(f64 d);
 #endif
 
 #include "luslog.h"
