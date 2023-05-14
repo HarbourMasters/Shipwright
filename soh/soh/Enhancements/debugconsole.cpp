@@ -54,7 +54,7 @@ static bool ActorSpawnHandler(std::shared_ptr<LUS::Console> Console, const std::
         try {
             actorId = std::stoi(args[1]);
         } catch (std::invalid_argument const& ex) {
-            Ship::GetConsole()->SendErrorMessage("Invalid actor ID");
+            LUS::GetConsole()->SendErrorMessage("Invalid actor ID");
             return CMD_FAILED;
         }
     } else {
