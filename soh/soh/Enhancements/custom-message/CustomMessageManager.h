@@ -48,12 +48,12 @@ class CustomMessageManager {
     void ReplaceColors(std::string& string);
     bool InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages);
 
-    std::string MESSAGE_END();
-    std::string ITEM_OBTAINED(uint8_t x);
-    std::string NEWLINE();
-    std::string COLOR(uint8_t x);
-    std::string WAIT_FOR_INPUT();
-    std::string PLAYER_NAME();
+    const std::string MESSAGE_END() const;
+    const std::string ITEM_OBTAINED(uint8_t x) const;
+    const std::string NEWLINE() const;
+    const std::string COLOR(uint8_t x) const;
+    const std::string WAIT_FOR_INPUT() const;
+    const std::string PLAYER_NAME() const;
 
   public:
     static CustomMessageManager* Instance;

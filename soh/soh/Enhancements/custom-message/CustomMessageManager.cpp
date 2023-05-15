@@ -146,26 +146,26 @@ bool CustomMessageManager::AddCustomMessageTable(std::string tableID) {
     return messageTables.emplace(tableID, newMessageTable).second;
 }
 
-std::string CustomMessageManager::MESSAGE_END() {
+const std::string CustomMessageManager::MESSAGE_END() const {
     return "\x02"s;
 }
 
-std::string CustomMessageManager::ITEM_OBTAINED(uint8_t x) {
+const std::string CustomMessageManager::ITEM_OBTAINED(uint8_t x) const {
     return "\x13"s + char(x);
 }
 
-std::string CustomMessageManager::NEWLINE() {
+const std::string CustomMessageManager::NEWLINE() const {
     return "\x01"s;
 }
 
-std::string CustomMessageManager::COLOR(uint8_t x) {
+const std::string CustomMessageManager::COLOR(uint8_t x) const {
     return "\x05"s + char(x);
 }
 
-std::string CustomMessageManager::WAIT_FOR_INPUT() {
+const std::string CustomMessageManager::WAIT_FOR_INPUT() const {
     return "\x04"s;
 }
 
-std::string CustomMessageManager::PLAYER_NAME() {
+const std::string CustomMessageManager::PLAYER_NAME() const {
     return "\x0F"s;
 }
