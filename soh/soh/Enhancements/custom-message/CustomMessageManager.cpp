@@ -47,7 +47,7 @@ void CustomMessageManager::ReplaceColors(std::string& string) {
     }
 }
 
-void ReplaceString(std::string& source, std::string textToReplace, std::string value) {
+void ReplaceString(std::string& source, std::string&& textToReplace, std::string&& value) {
     size_t pos = source.find(textToReplace);
     if (pos != std::string::npos) {
         source.replace(pos, textToReplace.length(), value);
@@ -56,15 +56,15 @@ void ReplaceString(std::string& source, std::string textToReplace, std::string v
 }
 
 void CustomMessageManager::ReplaceStringInMessage(CustomMessageEntry& messageEntry, std::string&& textToReplace, std::string&& value) {
-    ReplaceString(messageEntry.english, textToReplace, value);
-    ReplaceString(messageEntry.german, textToReplace, value);
-    ReplaceString(messageEntry.french, textToReplace, value);
+    ReplaceString(messageEntry.english, std::move(textToReplace), std::move(value));
+    ReplaceString(messageEntry.german, std::move(textToReplace), std::move(value));
+    ReplaceString(messageEntry.french, std::move(textToReplace), std::move(value));
 }
 
 void CustomMessageManager::ReplaceStringInMessage(CustomMessageEntry& messageEntry, std::string&& textToReplace, std::string&& englishValue, std::string&& germanValue, std::string&& frenchValue) {
-    ReplaceString(messageEntry.english, textToReplace, englishValue);
-    ReplaceString(messageEntry.german, textToReplace, germanValue);
-    ReplaceString(messageEntry.french, textToReplace, frenchValue);
+    ReplaceString(messageEntry.english, std::move(textToReplace), std::move(englishValue));
+    ReplaceString(messageEntry.german, std::move(textToReplace), std::move(germanValue));
+    ReplaceString(messageEntry.french, std::move(textToReplace), std::move(frenchValue));
 }
 
 void CustomMessageManager::FormatCustomMessage(std::string& message, ItemID iid) {
