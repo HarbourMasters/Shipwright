@@ -106,8 +106,9 @@ void DrawShipwrightMenu() {
             std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
         }
 #if !defined(__SWITCH__) && !defined(__WIIU__)
+        auto backend = LUS::Context::GetInstance()->GetWindow()->GetWindowBackend();
         const char* keyboardShortcut =
-            strcmp(LUS::Context::GetInstance()->GetWindow()->GetWindowManagerName().c_str(), "sdl") == 0 ? "F10"
+                backend == LUS::WindowBackend::SDL_OPENGL || backend == LUS::WindowBackend::SDL_METAL ? "F10"
                                                                                                     : "ALT+Enter";
         if (ImGui::MenuItem("Toggle Fullscreen", keyboardShortcut)) {
             LUS::Context::GetInstance()->GetWindow()->ToggleFullscreen();
@@ -216,7 +217,7 @@ void DrawSettingsMenu() {
             { // FPS Slider
                 const int minFps = 20;
                 static int maxFps;
-                if (LUS::Context::GetInstance()->GetWindow()->GetGui()->GetRenderBackend() == LUS::Backend::DX11) {
+                if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
                     maxFps = 360;
                 } else {
                     maxFps = LUS::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
@@ -282,12 +283,12 @@ void DrawSettingsMenu() {
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->RequestCvarSaveOnNextTick();
             #else
                 bool matchingRefreshRate =
-                    CVarGetInteger("gMatchRefreshRate", 0) && LUS::Context::GetInstance()->GetWindow()->GetGui()->GetRenderBackend() != LUS::Backend::DX11;
+                    CVarGetInteger("gMatchRefreshRate", 0) && LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() != LUS::WindowBackend::DX11;
                 UIWidgets::PaddedEnhancementSliderInt(
                     (currentFps == 20) ? "FPS: Original (20)" : "FPS: %d",
                     "##FPSInterpolation", "gInterpolationFPS", minFps, maxFps, "", 20, true, true, false, matchingRefreshRate);
             #endif
-                if (LUS::Context::GetInstance()->GetWindow()->GetGui()->GetRenderBackend() == LUS::Backend::DX11) {
+                if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
                     UIWidgets::Tooltip(
                         "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics. This is purely "
                         "visual and does not impact game logic, execution of glitches etc.\n\n"
@@ -301,7 +302,7 @@ void DrawSettingsMenu() {
                 }
             } // END FPS Slider
 
-            if (LUS::Context::GetInstance()->GetWindow()->GetGui()->GetRenderBackend() == LUS::Backend::DX11) {
+            if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
                 UIWidgets::Spacer(0);
                 if (ImGui::Button("Match Refresh Rate")) {
                     int hz = LUS::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
@@ -315,7 +316,7 @@ void DrawSettingsMenu() {
             }
             UIWidgets::Tooltip("Matches interpolation value to the current game's window refresh rate");
 
-            if (LUS::Context::GetInstance()->GetWindow()->GetGui()->GetRenderBackend() == LUS::Backend::DX11) {
+            if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
                 UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger("gExtraLatencyThreshold", 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
                     "##ExtraLatencyThreshold", "gExtraLatencyThreshold", 0, 360, "", 80, true, true, false);
                 UIWidgets::Tooltip("When Interpolation FPS setting is at least this threshold, add one frame of input lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter. This setting allows the CPU to work on one frame while GPU works on the previous frame.\nThis setting should be used when your computer is too slow to do CPU + GPU work in time.");

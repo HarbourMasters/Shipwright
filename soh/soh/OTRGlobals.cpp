@@ -240,7 +240,7 @@ OTRGlobals::OTRGlobals() {
         OOT_PAL_GC_DBG2
     };
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
-    context = LUS::Context::CreateInstance("Ship of Harkinian", "soh", OTRFiles, {}, 3);
+    context = LUS::Context::CreateInstance("Ship of Harkinian", "soh", "shipofharkinian.json", OTRFiles, {}, 3);
 
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Animation, "Animation", std::make_shared<LUS::AnimationFactory>());
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_PlayerAnimation, "PlayerAnimation", std::make_shared<LUS::PlayerAnimationFactory>());
@@ -324,7 +324,7 @@ bool OTRGlobals::HasOriginal() {
 }
 
 uint32_t OTRGlobals::GetInterpolationFPS() {
-    if (LUS::Context::GetInstance()->GetWindow()->GetGui()->GetRenderBackend() == LUS::Backend::DX11) {
+    if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
         return CVarGetInteger("gInterpolationFPS", 20);
     }
 
