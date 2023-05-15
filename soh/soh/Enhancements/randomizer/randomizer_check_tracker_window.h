@@ -3,21 +3,23 @@
 namespace CheckTracker {
 class CheckTrackerSettingsWindow : public LUS::GuiWindow {
   public:
-    using GuiWindow::GuiWindow;
+    using LUS::GuiWindow::GuiWindow;
+    ~CheckTrackerSettingsWindow() {};
 
-    void InitElement() override;
+  protected:
+    void InitElement() override {};
     void DrawElement() override;
     void UpdateElement() override {};
-    ~CheckTrackerSettingsWindow() {};
 };
 
 class CheckTrackerWindow : public LUS::GuiWindow {
   public:
-    using GuiWindow::GuiWindow;
+    using LUS::GuiWindow::GuiWindow;
+    ~CheckTrackerWindow() {};
 
+  protected:
     void InitElement() override;
     void DrawElement() override;
     void UpdateElement() override {};
-    ~CheckTrackerWindow() {};
 };
 }
