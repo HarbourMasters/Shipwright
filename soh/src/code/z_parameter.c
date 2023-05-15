@@ -6498,18 +6498,62 @@ uint16_t Interface_GetTextKerningOffset(int16_t character) {
     switch (character) {
         case 'i':
         case 'I':
+        case '|':
+        case '\'':
+        case -18: // î
+        case -49: // Ï
+        case -17: // ï
             return 3;
         case 'l':
+        case ',':
+        case '.':
+        case '[':
+        case ']':
+        case ':':
+        case ';':
+        case '`':
             return 4;
         case 'j':
         case 't':
         case ' ':
+        case '{':
+        case '}':
+        case '"':
+        case '1':
             return 5;
         case 'f':
         case 'r':
         case 's':
         case 'x':
         case 'z':
+        case '*':
+        case '-':
+        case '<':
+        case '>':
+        case '/':
+        case '_':
+        case '!':
+        case '(':
+        case ')':
+        case -56: // È
+        case -55: // É
+        case -54: // Ê
+        case -53: // Ë
+        case -33: // ß
+        case -32: // à
+        case -31: // á
+        case -30: // â
+        case -28: // ä
+        case -25: // ç
+        case -24: // è
+        case -23: // é
+        case -22: // ê
+        case -21: // ë
+        case -12: // ô
+        case -10: // ö
+        case -7:  // ù
+        case -5:  // û
+        case -4:  // ü
             return 6;
         case 'a':
         case 'b':
@@ -6526,6 +6570,14 @@ uint16_t Interface_GetTextKerningOffset(int16_t character) {
         case 'F':
         case 'J':
         case 'L':
+        case '^':
+        case '~':
+        case '#':
+        case '$':
+        case '2':
+        case '4':
+        case '6':
+        case '7':
             return 7;
         case 'g':
         case 'o':
@@ -6539,6 +6591,19 @@ uint16_t Interface_GetTextKerningOffset(int16_t character) {
         case 'X':
         case 'Y':
         case 'Z':
+        case '+':
+        case '=':
+        case '?':
+        case '0':
+        case '3':
+        case '5':
+        case '8':
+        case '9':
+        case -64: // À
+        case -62: // Â
+        case -39: // Ù
+        case -37: // Û
+        case -36: // Ü
             return 8;
         case 'w':
         case 'N':
@@ -6546,10 +6611,13 @@ uint16_t Interface_GetTextKerningOffset(int16_t character) {
         case 'U':
         case 'V':
         case 'H':
+        case -60: // Ä
+        case -57: // Ç
             return 9;
         case 'M':
         case 'Q':
         case 'W':
+        case '%':
             return 11;
         default:
             return 10;
