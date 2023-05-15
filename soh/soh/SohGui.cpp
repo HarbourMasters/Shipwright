@@ -144,7 +144,7 @@ namespace SohGui {
     std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 
     void SetupGuiElements() {
-        mSohMenuBar = std::make_shared<SohMenuBar>();
+        mSohMenuBar = std::make_shared<SohMenuBar>("gOpenMenuBar");
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SetMenuBar(std::reinterpret_pointer_cast<LUS::GuiMenuBar>(mSohMenuBar));
 
         mAudioEditorWindow = std::make_shared<AudioEditor>("gAudioEditor.WindowOpen", "Audio Editor");
