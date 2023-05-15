@@ -740,11 +740,11 @@ extern "C" void InitOTR() {
 #endif
 
     OTRGlobals::Instance = new OTRGlobals();
+    CustomMessageManager::Instance = new CustomMessageManager();
+    ItemTableManager::Instance = new ItemTableManager();
     SohGui::SetupHooks();
     SohGui::SetupGuiElements();
     SaveManager::Instance = new SaveManager();
-    CustomMessageManager::Instance = new CustomMessageManager();
-    ItemTableManager::Instance = new ItemTableManager();
     GameInteractor::Instance = new GameInteractor();
     AudioCollection::Instance = new AudioCollection();
 #ifdef __APPLE__
