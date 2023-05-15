@@ -4618,7 +4618,7 @@ CustomMessageEntry Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
     CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(
         Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT);
     if (mysterious) {
-        std::vector<std::string> locationName ={
+        std::array<const char*, 3> locationName ={
             "a mysterious place",
             "ein mysteriöser Ort",
             "un endroit mystérieux",
@@ -4629,25 +4629,25 @@ CustomMessageEntry Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
         return messageEntry;
     }
 
-    std::string locationName;
+    const char* locationName;
     switch (textId) {
         case TEXT_WARP_MINUET_OF_FOREST:
-            locationName = std::string(gSaveContext.warpMinuetText);
+            locationName = gSaveContext.warpMinuetText;
             break;
         case TEXT_WARP_BOLERO_OF_FIRE:
-            locationName = std::string(gSaveContext.warpBoleroText);
+            locationName = gSaveContext.warpBoleroText;
             break;
         case TEXT_WARP_SERENADE_OF_WATER:
-            locationName = std::string(gSaveContext.warpSerenadeText);
+            locationName = gSaveContext.warpSerenadeText;
             break;
         case TEXT_WARP_REQUIEM_OF_SPIRIT:
-            locationName = std::string(gSaveContext.warpRequiemText);
+            locationName = gSaveContext.warpRequiemText;
             break;
         case TEXT_WARP_NOCTURNE_OF_SHADOW:
-            locationName = std::string(gSaveContext.warpNocturneText);
+            locationName = gSaveContext.warpNocturneText;
             break;
         case TEXT_WARP_PRELUDE_OF_LIGHT:
-            locationName = std::string(gSaveContext.warpPreludeText);
+            locationName = gSaveContext.warpPreludeText;
             break;
     }
 
@@ -4659,7 +4659,7 @@ CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u
     CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
     RandomizerCheck rc = GetCheckFromRandomizerInf(randomizerInf);
     RandomizerGet shopItemGet = this->itemLocations[rc].rgID;
-    std::vector<std::string> shopItemName;
+    std::array<std::string, 3> shopItemName;
     if (mysterious) {
         shopItemName = {
             "mysterious item",
@@ -4688,7 +4688,7 @@ CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u
         }
     }
 
-    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{item}}", shopItemName[0], shopItemName[1], shopItemName[2]);
+    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{item}}", std::move(shopItemName[0]), std::move(shopItemName[1]), std::move(shopItemName[2]));
     CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{price}}", std::to_string(shopItemPrice));
     return messageEntry;
 }
@@ -4697,7 +4697,7 @@ CustomMessageEntry Randomizer::GetCursedSkullMessage(s16 params) {
     CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE);
     RandomizerCheck rc = GetCheckFromActor(ACTOR_EN_SSH, SCENE_KINSUTA, params);
     RandomizerGet itemGet = this->itemLocations[rc].rgID;
-    std::vector<std::string> itemName;
+    std::array<std::string, 3> itemName;
     if (itemGet == RG_ICE_TRAP) {
         itemGet = this->itemLocations[rc].fakeRgID;
         itemName = {
@@ -4710,7 +4710,7 @@ CustomMessageEntry Randomizer::GetCursedSkullMessage(s16 params) {
     }
 
     CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{params}}", std::to_string(params*10));
-    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{check}}", itemName[0], itemName[1], itemName[2]);
+    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{check}}", std::move(itemName[0]), std::move(itemName[1]), std::move(itemName[2]));
     return messageEntry;
 }
 
@@ -4808,10 +4808,8 @@ void CreateRupeeMessages() {
 
 CustomMessageEntry Randomizer::GetRupeeMessage(u16 rupeeTextId) {
     CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::rupeeMessageTableID, rupeeTextId);
-    std::string englishName = RandomElement(englishRupeeNames);
-    std::string germanName = RandomElement(germanRupeeNames);
-    std::string frenchName = RandomElement(frenchRupeeNames);
-    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{rupee}}", englishName, germanName, frenchName);
+    CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{rupee}}", RandomElement(englishRupeeNames),
+                                                 RandomElement(germanRupeeNames), RandomElement(frenchRupeeNames));
     return messageEntry;
 }
 

@@ -55,13 +55,13 @@ void ReplaceString(std::string& source, std::string textToReplace, std::string v
     CustomMessageManager::Instance->FormatCustomMessage(source);
 }
 
-void CustomMessageManager::ReplaceStringInMessage(CustomMessageEntry& messageEntry, std::string textToReplace, std::string value) {
+void CustomMessageManager::ReplaceStringInMessage(CustomMessageEntry& messageEntry, std::string&& textToReplace, std::string&& value) {
     ReplaceString(messageEntry.english, textToReplace, value);
     ReplaceString(messageEntry.german, textToReplace, value);
     ReplaceString(messageEntry.french, textToReplace, value);
 }
 
-void CustomMessageManager::ReplaceStringInMessage(CustomMessageEntry& messageEntry, std::string textToReplace, std::string englishValue, std::string germanValue, std::string frenchValue) {
+void CustomMessageManager::ReplaceStringInMessage(CustomMessageEntry& messageEntry, std::string&& textToReplace, std::string&& englishValue, std::string&& germanValue, std::string&& frenchValue) {
     ReplaceString(messageEntry.english, textToReplace, englishValue);
     ReplaceString(messageEntry.german, textToReplace, germanValue);
     ReplaceString(messageEntry.french, textToReplace, frenchValue);
