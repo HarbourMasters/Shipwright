@@ -18,6 +18,12 @@
 #define QM_YELLOW 0x46
 #define QM_BLACK 0x47
 
+/**
+ * @brief Encapsulates logic surrounding languages, and formatting strings for OoT's textboxes and
+ * performing variable replacement across all of them at once. Also stores a message's text box type
+ * (i.e. black, blue, none, typically describes the background but also changes what a few codes mean),
+ * and position (i.e. top, bottom, middle).
+ */
 class CustomMessage {
   public:
     CustomMessage() = default;
@@ -38,7 +44,8 @@ class CustomMessage {
 
     /**
      * @brief Finds an instance of oldStr in each language of the CustomMessage
-     * and replaces it with newStr.
+     * and replaces it with newStr. Typically used for dynamic variable replacement
+     * (i.e. gameplay stats, skulltula count)
      *
      * @param oldStr the string to be replaced
      * @param newStr the string to replace with
@@ -48,6 +55,7 @@ class CustomMessage {
     /**
      * @brief Finds an instance of oldStr in each language of the CustomMessage,
      * and replaces it with the corresponding new string provided for each language.
+     * Typically used for dynamic variable replacement (i.e. gameplay stats, skulltula count)
      *
      * @param oldStr the string to be replaced
      * @param newEnglish the new string for the English message
@@ -105,12 +113,16 @@ class CustomMessage {
 
 typedef std::unordered_map<uint16_t, CustomMessage> CustomMessageTable;
 
+/**
+ * @brief Encapsulates data and functions for creating custom message tables and storing and retrieving
+ * `CustomMessage`s from them. It also converts a more user-friendly string syntax to the raw control
+ * characters that OoT's message system uses (i.e. & for newline, ^ for new page (wait for input), and %
+ * followed by various letters for colors).
+ */
 class CustomMessageManager {
   private:
     std::unordered_map<std::string, CustomMessageTable> messageTables;
 
-    void ReplaceSpecialCharacters(std::string& string);
-    void ReplaceColors(std::string& string);
     bool InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessage message);
 
   public:
