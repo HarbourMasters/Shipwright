@@ -413,17 +413,7 @@ void DrawSettingsMenu() {
 extern std::shared_ptr<AudioEditor> mAudioEditorWindow;
 extern std::shared_ptr<GameControlEditor::GameControlEditorWindow> mGameControlEditorWindow;
 extern std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
-extern std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
-extern std::shared_ptr<ColViewerWindow> mColViewerWindow;
-extern std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
-extern std::shared_ptr<DLViewerWindow> mDLViewerWindow;
 extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
-extern std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
-extern std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
-extern std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
-extern std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
-extern std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
-extern std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 
 void DrawEnhancementsMenu() {
     if (ImGui::BeginMenu("Enhancements"))
@@ -1017,19 +1007,16 @@ void DrawEnhancementsMenu() {
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
         ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
 
-        if (ImGui::Button(GetWindowButtonText("Customize Game Controls", CVarGetInteger("gGameControlEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
-        {
-            bool currentValue = CVarGetInteger("gGameControlEditorEnabled", 0);
-            CVarSetInteger("gGameControlEditorEnabled", !currentValue);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Game Control Editor", CVarGetInteger("gGameControlEditorEnabled", 0));
+        if (mGameControlEditorWindow) {
+            if (ImGui::Button(GetWindowButtonText("Customize Game Controls", CVarGetInteger("gGameControlEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mGameControlEditorWindow->ToggleVisibility();
+            }
         }
-        if (ImGui::Button(GetWindowButtonText("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
-        {
-            bool currentValue = CVarGetInteger("gCosmeticsEditorEnabled", 0);
-            CVarSetInteger("gCosmeticsEditorEnabled", !currentValue);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0));
+
+        if (mCosmeticsEditorWindow) {
+            if (ImGui::Button(GetWindowButtonText("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mCosmeticsEditorWindow->ToggleVisibility();
+            }
         }
 
         if (mAudioEditorWindow) {
@@ -1038,11 +1025,10 @@ void DrawEnhancementsMenu() {
             }
         }
 
-        if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-            bool currentValue = CVarGetInteger("gGameplayStatsEnabled", 0);
-            CVarSetInteger("gGameplayStatsEnabled", !currentValue);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0));
+        if (mGameplayStatsWindow) {
+            if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mGameplayStatsWindow->ToggleVisibility();
+            }
         }
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor(1);
@@ -1181,6 +1167,13 @@ void DrawCheatsMenu() {
     }
 }
 
+extern std::shared_ptr<LUS::GuiWindow> mStatsWindow;
+extern std::shared_ptr<LUS::GuiWindow> mConsoleWindow;
+extern std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
+extern std::shared_ptr<ColViewerWindow> mColViewerWindow;
+extern std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
+extern std::shared_ptr<DLViewerWindow> mDLViewerWindow;
+
 void DrawDeveloperToolsMenu() {
             if (ImGui::BeginMenu("Developer Tools"))
     {
@@ -1203,61 +1196,57 @@ void DrawDeveloperToolsMenu() {
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0,0));
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
         ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-        if (ImGui::Button(GetWindowButtonText("Stats", CVarGetInteger("gStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
-        {
-            bool currentValue = CVarGetInteger("gStatsEnabled", 0);
-            CVarSetInteger("gStatsEnabled", !currentValue);
-            // LUS::ToggleStatisticsWindow(true);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-        UIWidgets::Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
-        UIWidgets::Spacer(0);
-        if (ImGui::Button(GetWindowButtonText("Console", CVarGetInteger("gConsoleEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
-        {
-            bool currentValue = CVarGetInteger("gConsoleEnabled", 0);
-            CVarSetInteger("gConsoleEnabled", !currentValue);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            // LUS::ToggleConsoleWindow(!currentValue);
-        }
-        UIWidgets::Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
-        UIWidgets::Spacer(0);
-        if (ImGui::Button(GetWindowButtonText("Save Editor", CVarGetInteger("gSaveEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
-        {
-            bool currentValue = CVarGetInteger("gSaveEditorEnabled", 0);
-            CVarSetInteger("gSaveEditorEnabled", !currentValue);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Save Editor", CVarGetInteger("gSaveEditorEnabled", 0));
+        if (mStatsWindow) {
+            if (ImGui::Button(GetWindowButtonText("Stats", CVarGetInteger("gStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mStatsWindow->ToggleVisibility();
+            }
+            UIWidgets::Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
         }
         UIWidgets::Spacer(0);
-        if (ImGui::Button(GetWindowButtonText("Collision Viewer", CVarGetInteger("gCollisionViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
-        {
-            bool currentValue = CVarGetInteger("gCollisionViewerEnabled", 0);
-            CVarSetInteger("gCollisionViewerEnabled", !currentValue);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Collision Viewer", CVarGetInteger("gCollisionViewerEnabled", 0));
+        if (mConsoleWindow) {
+            if (ImGui::Button(GetWindowButtonText("Console", CVarGetInteger("gConsoleEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mConsoleWindow->ToggleVisibility();
+            }
+            UIWidgets::Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
         }
         UIWidgets::Spacer(0);
-        if (ImGui::Button(GetWindowButtonText("Actor Viewer", CVarGetInteger("gActorViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
-        {
-            bool currentValue = CVarGetInteger("gActorViewerEnabled", 0);
-            CVarSetInteger("gActorViewerEnabled", !currentValue);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Actor Viewer", CVarGetInteger("gActorViewerEnabled", 0));
+        if (mSaveEditorWindow) {
+            if (ImGui::Button(GetWindowButtonText("Save Editor", CVarGetInteger("gSaveEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mSaveEditorWindow->ToggleVisibility();
+            }
         }
         UIWidgets::Spacer(0);
-        if (ImGui::Button(GetWindowButtonText("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
-        {
-            bool currentValue = CVarGetInteger("gDLViewerEnabled", 0);
-            CVarSetInteger("gDLViewerEnabled", !currentValue);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0));
+        if (mColViewerWindow) {
+            if (ImGui::Button(GetWindowButtonText("Collision Viewer", CVarGetInteger("gCollisionViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mColViewerWindow->ToggleVisibility();
+            }
         }
+        UIWidgets::Spacer(0);
+        if (mActorViewerWindow) {
+            if (ImGui::Button(GetWindowButtonText("Actor Viewer", CVarGetInteger("gActorViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mActorViewerWindow->ToggleVisibility();
+            }
+        }
+        UIWidgets::Spacer(0);
+        if (mDLViewerWindow) {
+            if (ImGui::Button(GetWindowButtonText("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mDLViewerWindow->ToggleVisibility();
+            }
+        }
+
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor(1);
 
         ImGui::EndMenu();
     }
 }
+
+extern std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
+extern std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
+extern std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
+extern std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
+extern std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
+extern std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
 
 void DrawRandomizerMenu() {
     if (ImGui::BeginMenu("Randomizer")) {
@@ -1270,52 +1259,42 @@ void DrawRandomizerMenu() {
     #else
         static ImVec2 buttonSize(200.0f, 0.0f);
     #endif
-        if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0)).c_str(), buttonSize))
-        {
-            bool currentValue = CVarGetInteger("gRandomizerSettingsEnabled", 0);
-            CVarSetInteger("gRandomizerSettingsEnabled", !currentValue);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0));
+        if (mRandomizerSettingsWindow) {
+            if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0)).c_str(), buttonSize)) {
+                mRandomizerSettingsWindow->ToggleVisibility();
+            }
+        }
+
+        UIWidgets::Spacer(0);
+        if (mItemTrackerWindow) {
+            if (ImGui::Button(GetWindowButtonText("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0)).c_str(), buttonSize)) {
+                mItemTrackerWindow->ToggleVisibility();
+            }
+        }
+
+        UIWidgets::Spacer(0);
+        if (mItemTrackerSettingsWindow) {
+            if (ImGui::Button(GetWindowButtonText("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0)).c_str(), buttonSize)) {
+                mItemTrackerSettingsWindow->ToggleVisibility();
+            }
         }
         UIWidgets::Spacer(0);
-        if (ImGui::Button(GetWindowButtonText("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0)).c_str(), buttonSize))
-        {
-            bool currentValue = CVarGetInteger("gItemTrackerEnabled", 0);
-            CVarSetInteger("gItemTrackerEnabled", !currentValue);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0));
+        if (mEntranceTrackerWindow) {
+            if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0)).c_str(), buttonSize)) {
+                mEntranceTrackerWindow->ToggleVisibility();
+            }
         }
         UIWidgets::Spacer(0);
-        if (ImGui::Button(GetWindowButtonText("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0)).c_str(), buttonSize))
-        {
-            bool currentValue = CVarGetInteger("gItemTrackerSettingsEnabled", 0);
-            CVarSetInteger("gItemTrackerSettingsEnabled", !currentValue);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0));
+        if (mCheckTrackerWindow) {
+            if (ImGui::Button(GetWindowButtonText("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0)).c_str(), buttonSize)) {
+                mCheckTrackerWindow->ToggleVisibility();
+            }
         }
         UIWidgets::Spacer(0);
-        if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0)).c_str(), buttonSize))
-        {
-            bool currentValue = CVarGetInteger("gEntranceTrackerEnabled", 0);
-            CVarSetInteger("gEntranceTrackerEnabled", !currentValue);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0));
-        }
-        UIWidgets::Spacer(0);
-        if (ImGui::Button(GetWindowButtonText("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0)).c_str(), buttonSize))
-        {
-            bool currentValue = CVarGetInteger("gCheckTrackerEnabled", 0);
-            CVarSetInteger("gCheckTrackerEnabled", !currentValue);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0));
-        }
-        UIWidgets::Spacer(0);
-        if (ImGui::Button(GetWindowButtonText("Check Tracker Settings", CVarGetInteger("gCheckTrackerSettingsEnabled", 0)).c_str(), buttonSize))
-        {
-            bool currentValue = CVarGetInteger("gCheckTrackerSettingsEnabled", 0);
-            CVarSetInteger("gCheckTrackerSettingsEnabled", !currentValue);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Check Tracker Settings", CVarGetInteger("gCheckTrackerSettingsEnabled", 0));
+        if (mCheckTrackerSettingsWindow) {
+            if (ImGui::Button(GetWindowButtonText("Check Tracker Settings", CVarGetInteger("gCheckTrackerSettingsEnabled", 0)).c_str(), buttonSize)) {
+                mCheckTrackerSettingsWindow->ToggleVisibility();
+            }
         }
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor(1);
