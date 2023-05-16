@@ -2,6 +2,7 @@
 
 #include <libultraship/libultra/gbi.h>
 
+#define SECTION_PARENT_NONE -1
 typedef struct {
     u8 valid;
     u16 deaths;
@@ -27,6 +28,7 @@ typedef struct {
 #include <tuple>
 #include <functional>
 #include <vector>
+#include <set>
 #include <filesystem>
 #include "thread-pool/BS_thread_pool.hpp"
 
@@ -38,6 +40,7 @@ extern "C" {
 
 class SaveManager {
 public:
+
     static SaveManager* Instance;
 
     static void WriteSaveFile(const std::filesystem::path& savePath, uintptr_t addr, void* dramAddr, size_t size);
@@ -45,15 +48,23 @@ public:
 
     using InitFunc = void(*)(bool isDebug);
     using LoadFunc = void(*)();
-    using SaveFunc = void(*)(SaveContext* saveContext, const std::string& subSection);
-    using PostFunc = void(*)(int version);
+    using SaveFunc = void(*)(SaveContext* saveContext, int sectionID);
+    using PostFunc = void (*)(int version);
+
+    typedef struct {
+        std::string name;
+        int version;
+        SaveManager::SaveFunc func;
+        bool saveWithBase;
+        int parentSection;
+    } SaveFuncInfo;
 
     SaveManager();
 
     void Init();
     void InitFile(bool isDebug);
     void SaveFile(int fileNum);
-    void SaveSection(int fileNum, const std::string& sectionString);
+    void SaveSection(int fileNum, int sectionID);
     void SaveGlobal();
     void LoadFile(int fileNum);
     bool SaveFile_Exist(int fileNum);
@@ -66,7 +77,7 @@ public:
     void AddLoadFunction(const std::string& name, int version, LoadFunc func);
 
     // Adds a function that is called when saving. This should only be called once for each function, the version is filled in automatically.
-    void AddSaveFunction(const std::string& name, int version, SaveFunc func);
+    void AddSaveFunction(const std::string& name, int version, SaveFunc func, bool saveWithBase, int parentSection);
 
     // Adds a function to be called after loading is complete. This is to handle any cleanup required from loading old versions.
     void AddPostFunction(const std::string& name, PostFunc func);
@@ -119,9 +130,6 @@ public:
     static const int MaxFiles = 3;
     std::array<SaveFileMetaInfo, MaxFiles> fileMetaInfo;
 
-    void RegisterGameSaveSection(std::string section);
-    void UnregisterAutosaveSection(std::string section);
-
   private:
     std::filesystem::path GetFileName(int fileNum);
     nlohmann::json saveBlock;
@@ -129,7 +137,7 @@ public:
     void ConvertFromUnversioned();
     void CreateDefaultGlobal();
 
-    void SaveFileThreaded(int fileNum, SaveContext* saveContext, const std::string& sectionString);
+    void SaveFileThreaded(int fileNum, SaveContext* saveContext, int sectionID);
 
     void InitMeta(int slotNum);
     static void InitFileImpl(bool isDebug);
@@ -138,23 +146,23 @@ public:
 
     static void LoadRandomizerVersion1();
     static void LoadRandomizerVersion2();
-    static void SaveRandomizer(SaveContext* saveContext, const std::string& subString);
+    static void SaveRandomizer(SaveContext* saveContext, int sectionID);
 
     static void LoadBaseVersion1();
     static void LoadBaseVersion2();
     static void LoadBaseVersion3();
     static void LoadBaseVersion4();
-    static void SaveBase(SaveContext* saveContext, const std::string& subString);
+    static void SaveBase(SaveContext* saveContext, int sectionID);
 
     std::vector<InitFunc> initFuncs;
 
     using SectionLoadHandler = std::map<int, LoadFunc>;
     std::map<std::string, SectionLoadHandler> sectionLoadHandlers;
 
-    using SectionSaveHandler = std::pair<int, SaveFunc>;
-    std::map<std::string, SectionSaveHandler> sectionSaveHandlers;
-    // tracks sections to save during game saves
-    std::vector<std::string> gameSaveRegistry;
+    int sectionIndex = SECTION_ID_MAX;
+    std::map<std::string, int> coreSectionIDsByName;
+    std::map<int, SaveFuncInfo> sectionSaveHandlers;
+    std::set<std::string> sectionRegistry;
 
     std::map<std::string, PostFunc> postHandlers;
 
@@ -168,16 +176,16 @@ public:
 // TODO feature parity to the C++ interface. We need Save_AddInitFunction and Save_AddPostFunction at least
 
 typedef void (*Save_LoadFunc)(void);
-typedef void (*Save_SaveFunc)(const SaveContext* saveContext);
+typedef void (*Save_SaveFunc)(const SaveContext* saveContext, int sectionID);
 
 void Save_Init(void);
 void Save_InitFile(int isDebug);
 void Save_SaveFile(void);
-void Save_SaveSection(char* sectionString);
+void Save_SaveSection(int sectionID);
 void Save_SaveGlobal(void);
 void Save_LoadGlobal(void);
 void Save_AddLoadFunction(char* name, int version, Save_LoadFunc func);
-void Save_AddSaveFunction(char* name, int version, Save_SaveFunc func);
+void Save_AddSaveFunction(char* name, int version, Save_SaveFunc func, bool saveWithBase, int parentSection);
 SaveFileMetaInfo* Save_GetSaveMetaInfo(int fileNum);
 void Save_CopyFile(int from, int to);
 void Save_DeleteFile(int fileNum);

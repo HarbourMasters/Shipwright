@@ -231,8 +231,8 @@ void LoadStatsVersion1() {
     });
 }
 
-void SaveStats(SaveContext* saveContext, const std::string& subSection) {
-    if (subSection == "all") {
+void SaveStats(SaveContext* saveContext, int sectionID) {
+    if (sectionID == SECTION_ID_BASE) {
         std::string buildVersion;
         SaveManager::Instance->LoadData("buildVersion", buildVersion);
         strncpy(gSaveContext.sohStats.buildVersion, buildVersion.c_str(), ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1);
@@ -268,12 +268,12 @@ void SaveStats(SaveContext* saveContext, const std::string& subSection) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.locationsSkipped[i]);
         });
     }
-    if (subSection == "entrances" || subSection == "all") {
+    if (sectionID == SECTION_ID_ENTRANCES || sectionID == SECTION_ID_BASE) {
         SaveManager::Instance->SaveArray("entrancesDiscovered", ARRAY_COUNT(saveContext->sohStats.entrancesDiscovered), [&](size_t i) { 
             SaveManager::Instance->SaveData("", saveContext->sohStats.entrancesDiscovered[i]);
         });
     }
-    if (subSection == "scenes" || subSection == "all") {
+    if (sectionID == SECTION_ID_SCENES || sectionID == SECTION_ID_BASE) {
         SaveManager::Instance->SaveArray("scenesDiscovered", ARRAY_COUNT(saveContext->sohStats.scenesDiscovered), [&](size_t i) {
             SaveManager::Instance->SaveData("", saveContext->sohStats.scenesDiscovered[i]); 
         });
@@ -821,7 +821,10 @@ extern "C" void InitStatTracker() {
     SetupDisplayNames();
     SetupDisplayColors();
     SaveManager::Instance->AddLoadFunction("sohStats", 1, LoadStatsVersion1);
-    SaveManager::Instance->AddSaveFunction("sohStats", 1, SaveStats);
+    // Add main section save, no parent
+    SaveManager::Instance->AddSaveFunction("sohStats", 1, SaveStats, true, SECTION_PARENT_NONE);
+    // Add subsections, parent of "sohStats". Not sure how to do this without the redundant references to "SaveStats"
+    SaveManager::Instance->AddSaveFunction("entrances", 1, SaveStats, false, SECTION_ID_STATS);
+    SaveManager::Instance->AddSaveFunction("scenes", 1, SaveStats, false, SECTION_ID_STATS);
     SaveManager::Instance->AddInitFunction(InitStats);
-    SaveManager::Instance->RegisterGameSaveSection("sohStats");
 }

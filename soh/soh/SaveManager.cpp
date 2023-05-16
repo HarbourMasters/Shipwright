@@ -17,6 +17,7 @@
 #include <array>
 
 extern "C" SaveContext gSaveContext;
+using namespace std::string_literals;
 
 void SaveManager::WriteSaveFile(const std::filesystem::path& savePath, const uintptr_t addr, void* dramAddr,
                            const size_t size) {
@@ -46,17 +47,20 @@ std::filesystem::path SaveManager::GetFileName(int fileNum) {
 }
 
 SaveManager::SaveManager() {
+    coreSectionIDsByName["base"] = SECTION_ID_BASE;
+    coreSectionIDsByName["randomizer"] = SECTION_ID_RANDOMIZER;
+    coreSectionIDsByName["sohStats"] = SECTION_ID_STATS;
+    coreSectionIDsByName["entrances"] = SECTION_ID_ENTRANCES;
+    coreSectionIDsByName["scenes"] = SECTION_ID_SCENES;
     AddLoadFunction("base", 1, LoadBaseVersion1);
     AddLoadFunction("base", 2, LoadBaseVersion2);
     AddLoadFunction("base", 3, LoadBaseVersion3);
     AddLoadFunction("base", 4, LoadBaseVersion4);
-    AddSaveFunction("base", 4, SaveBase);
-    RegisterGameSaveSection("base");
+    AddSaveFunction("base", 4, SaveBase, true, SECTION_PARENT_NONE);
 
     AddLoadFunction("randomizer", 1, LoadRandomizerVersion1);
     AddLoadFunction("randomizer", 2, LoadRandomizerVersion2);
-    AddSaveFunction("randomizer", 2, SaveRandomizer);
-    RegisterGameSaveSection("randomizer");
+    AddSaveFunction("randomizer", 2, SaveRandomizer, true, SECTION_PARENT_NONE);
 
     AddInitFunction(InitFileImpl);
 
@@ -83,20 +87,6 @@ SaveManager::SaveManager() {
         info.buildVersionMinor = 0;
         info.buildVersionPatch = 0;
         memset(&info.buildVersion, 0, sizeof(info.buildVersion));
-    }
-}
-
-// GameSaveSection functions affect the list of sections that save their data when a game save is triggered
-void SaveManager::RegisterGameSaveSection(std::string section) {
-    if (std::find(gameSaveRegistry.begin(), gameSaveRegistry.end(), section) == gameSaveRegistry.end()) {
-        gameSaveRegistry.push_back(section);
-    }
-}
-
-void SaveManager::UnregisterAutosaveSection(std::string section) {
-    auto find = std::find(gameSaveRegistry.begin(), gameSaveRegistry.end(), section);
-    if (find != gameSaveRegistry.end()) {
-        gameSaveRegistry.erase(find);
     }
 }
 
@@ -278,7 +268,7 @@ void SaveManager::LoadRandomizerVersion2() {
     });
 }
 
-void SaveManager::SaveRandomizer(SaveContext* saveContext, const std::string& subString) {
+void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID) {
 
     if(!saveContext->n64ddFlag) return;
 
@@ -700,40 +690,42 @@ void SaveManager::InitFileDebug() {
     gSaveContext.sceneFlags[5].swch = 0x40000000;
 }
 
-// Threaded SaveFile takes copy of gSaveContext for local unmodified storage
-void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, const std::string& sectionString) {
+void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int sectionID) {
+    // Needed for first time save, hasn't changed in forever anyway
     saveBlock["version"] = 1;
-    size_t period = sectionString.find(".");
-    std::string section = sectionString;
-    std::string subsection = "";
-    if (period != std::string::npos) {
-        subsection = sectionString.substr(period + 1, std::string::npos);
-        section = sectionString.substr(0, sectionString.length() - (subsection.length() + 1));
-    }
-    if (sectionString == "all") {
-        for (auto& sectionHandler : sectionSaveHandlers) {
-            if (std::find(gameSaveRegistry.begin(), gameSaveRegistry.end(), sectionHandler.first) != gameSaveRegistry.end()) {
-                nlohmann::json& sectionBlock = saveBlock["sections"][sectionHandler.first];
-                sectionBlock["version"] = sectionHandler.second.first;
-                // If any save file is loaded for medatata, or a spoiler log is loaded (not sure which at this point), there is still data in the "randomizer" section
-                // This clears the randomizer data block if and only if the section being called is "randomizer" and n64ddFlag is false.
-                if (sectionHandler.first == "randomizer" && !gSaveContext.n64ddFlag) {
-                    sectionBlock["data"] = nlohmann::json::object();
-                }
-
-                currentJsonContext = &sectionBlock["data"];
-                sectionHandler.second.second(saveContext, "all");
+    if (sectionID == SECTION_ID_BASE) {
+        for (auto& sectionHandlerPair : sectionSaveHandlers) {
+            auto& saveFuncInfo = sectionHandlerPair.second;
+            // Don't call SaveFuncs for sections that aren't tied to game save
+            if (!saveFuncInfo.saveWithBase) {
+                continue;
             }
+            nlohmann::json& sectionBlock = saveBlock["sections"][saveFuncInfo.name];
+            sectionBlock["version"] = sectionHandlerPair.second.version;
+            // If any save file is loaded for medatata, or a spoiler log is loaded (not sure which at this point), there is still data in the "randomizer" section
+            // This clears the randomizer data block if and only if the section being called is "randomizer" and n64ddFlag is false.
+            if (sectionHandlerPair.second.name == "randomizer" && !gSaveContext.n64ddFlag) {
+                sectionBlock["data"] = nlohmann::json::object();
+                continue;
+            }
+
+            currentJsonContext = &sectionBlock["data"];
+            sectionHandlerPair.second.func(saveContext, sectionID);
         }
-    } else if (sectionSaveHandlers.contains(section)) {
-        SectionSaveHandler handler = sectionSaveHandlers.find(section)->second;
-        nlohmann::json& sectionBlock = saveBlock["sections"][section];
-        sectionBlock["version"] = handler.first;
-        currentJsonContext = &sectionBlock["data"];
-        handler.second(saveContext, subsection);
     } else {
-        // save function for specified section does not exist. should this error?
-        return;
+        SaveFuncInfo svi = sectionSaveHandlers.find(sectionID)->second;
+        auto& sectionName = svi.name;
+        auto sectionVersion = svi.version;
+        // If section has a parentSection, it is a subsection. Load parentSection version and set sectionBlock to parent string
+        if (svi.parentSection != -1 && svi.parentSection < sectionIndex) {
+            auto parentSvi = sectionSaveHandlers.find(svi.parentSection)->second;
+            sectionName = parentSvi.name;
+            sectionVersion = parentSvi.version;
+        }
+        nlohmann::json& sectionBlock = saveBlock["sections"][sectionName];
+        sectionBlock["version"] = sectionVersion;
+        currentJsonContext = &sectionBlock["data"];
+        svi.func(saveContext, sectionID);
     }
 
 #if defined(__SWITCH__) || defined(__WIIU__)
@@ -751,18 +743,24 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, const 
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum);
 }
 
-void SaveManager::SaveSection(int fileNum, const std::string& sectionString) {
+// SaveSection creates a copy of gSaveContext to prevent mid-save data modification, and passes its reference to SaveFileThreaded
+void SaveManager::SaveSection(int fileNum, int sectionID) {
     if (fileNum == 0xFF) {
         return;
     }
-    // Can't think of any time the promise would be needed, so use push_task instead of submit
+    // Don't save a nonexistent section
+    if (sectionID >= sectionIndex) {
+        SPDLOG_ERROR("SaveSection: Section ID not registered.");
+        return;
+    }
     auto saveContext = new SaveContext;
     memcpy(saveContext, &gSaveContext, sizeof(gSaveContext));
-    smThreadPool->push_task_back(&SaveManager::SaveFileThreaded, this, fileNum, saveContext, sectionString);
+    // Can't think of any time the promise would be needed, so use push_task instead of submit
+    smThreadPool->push_task_back(&SaveManager::SaveFileThreaded, this, fileNum, saveContext, sectionID);
 }
 
 void SaveManager::SaveFile(int fileNum) {
-    SaveSection(fileNum, "all");
+    SaveSection(fileNum, SECTION_ID_BASE);
 }
 
 void SaveManager::SaveGlobal() {
@@ -860,14 +858,21 @@ void SaveManager::AddLoadFunction(const std::string& name, int version, LoadFunc
     sectionLoadHandlers[name][version] = func;
 }
 
-void SaveManager::AddSaveFunction(const std::string& name, int version, SaveFunc func) {
-    if (sectionSaveHandlers.contains(name)) {
+void SaveManager::AddSaveFunction(const std::string& name, int version, SaveFunc func, bool saveWithBase, int parentSection = -1) {
+    if (sectionRegistry.contains(name)) {
         SPDLOG_ERROR("Adding save function for section that already has one: " + name);
         assert(false);
         return;
     }
-
-    sectionSaveHandlers[name] = std::make_pair(version, func);
+    int index = sectionIndex;
+    if (coreSectionIDsByName.contains(name)) {
+        index = coreSectionIDsByName.find(name)->second;
+    } else {
+        sectionIndex++;
+    }
+    SaveFuncInfo sfi = { name, version, func, saveWithBase, parentSection };
+    sectionSaveHandlers.emplace(index, sfi);
+    sectionRegistry.emplace(name);
 }
 
 void SaveManager::AddPostFunction(const std::string& name, PostFunc func) {
@@ -1623,7 +1628,7 @@ void SaveManager::LoadBaseVersion4() {
     SaveManager::Instance->LoadData("dogParams", gSaveContext.dogParams);
 }
 
-void SaveManager::SaveBase(SaveContext* saveContext, const std::string& subString) {
+void SaveManager::SaveBase(SaveContext* saveContext, int sectionID) {
     SaveManager::Instance->SaveData("entranceIndex", saveContext->entranceIndex);
     SaveManager::Instance->SaveData("linkAge", saveContext->linkAge);
     SaveManager::Instance->SaveData("cutsceneIndex", saveContext->cutsceneIndex);
@@ -2290,8 +2295,8 @@ extern "C" void Save_SaveFile(void) {
     SaveManager::Instance->SaveFile(gSaveContext.fileNum);
 }
 
-extern "C" void Save_SaveSection(char* sectionString) {
-    SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionString);
+extern "C" void Save_SaveSection(int sectionID) {
+    SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionID);
 }
 
 extern "C" void Save_SaveGlobal(void) {
@@ -2307,8 +2312,8 @@ extern "C" void Save_AddLoadFunction(char* name, int version, SaveManager::LoadF
     SaveManager::Instance->AddLoadFunction(name, version, func);
 }
 
-extern "C" void Save_AddSaveFunction(char* name, int version, SaveManager::SaveFunc func) {
-    SaveManager::Instance->AddSaveFunction(name, version, func);
+extern "C" void Save_AddSaveFunction(char* name, int version, SaveManager::SaveFunc func, bool saveWithBase, int parentSection = SECTION_PARENT_NONE) {
+    SaveManager::Instance->AddSaveFunction(name, version, func, saveWithBase, parentSection);
 }
 
 extern "C" SaveFileMetaInfo* Save_GetSaveMetaInfo(int fileNum) {
