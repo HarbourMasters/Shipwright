@@ -885,6 +885,15 @@ void SaveManager::AddPostFunction(const std::string& name, PostFunc func) {
     postHandlers[name] = func;
 }
 
+// Returns -1 if section name not found
+int SaveManager::GetSaveSectionID(std::string& sectionName) {
+    if (sectionRegistry.contains(sectionName)) {
+        return sectionRegistry.find(sectionName)->second;
+    } else {
+        return -1;
+    }
+}
+
 void SaveManager::CreateDefaultGlobal() {
     gSaveContext.audioSetting = 0;
     gSaveContext.zTargetSetting = 0;

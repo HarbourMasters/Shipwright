@@ -65,6 +65,7 @@ public:
     void InitFile(bool isDebug);
     void SaveFile(int fileNum);
     void SaveSection(int fileNum, int sectionID);
+    int GetSaveSectionID(std::string& name);
     void SaveGlobal();
     void LoadFile(int fileNum);
     bool SaveFile_Exist(int fileNum);
@@ -162,7 +163,7 @@ public:
     int sectionIndex = SECTION_ID_MAX;
     std::map<std::string, int> coreSectionIDsByName;
     std::map<int, SaveFuncInfo> sectionSaveHandlers;
-    std::set<std::string> sectionRegistry;
+    std::map<std::string, int> sectionRegistry;
 
     std::map<std::string, PostFunc> postHandlers;
 
