@@ -18,6 +18,10 @@
 #include <libultraship/libultra/sptask.h>
 #include <Fast3D/gfx_pc.h>
 
+#ifdef __APPLE__
+#include "graphic/Fast3D/gfx_metal.h"
+#endif
+
 #ifdef __SWITCH__
 #include <port/switch/SwitchImpl.h>
 #endif
@@ -200,7 +204,7 @@ namespace SohGui {
     void SetupHooks() {
 #ifdef __APPLE__
         if (Metal_IsSupported()) {
-            msRenderingBackends.insert(renderingBackends.begin(), { "sdl", "Metal" });
+            renderingBackends.insert(renderingBackends.begin(), { "sdl", "Metal" });
         }
 #endif
         LUS::RegisterHook<LUS::AudioInit>(UpdateAudio);
