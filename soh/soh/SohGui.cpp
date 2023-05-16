@@ -128,6 +128,11 @@ namespace SohGui {
     // MARK: - Delegates
 
     std::shared_ptr<SohMenuBar> mSohMenuBar;
+
+    std::shared_ptr<LUS::GuiWindow> mConsoleWindow;
+    std::shared_ptr<LUS::GuiWindow> mStatsWindow;
+    std::shared_ptr<LUS::GuiWindow> mInputEditorWindow;
+
     std::shared_ptr<AudioEditor> mAudioEditorWindow;
     std::shared_ptr<GameControlEditor::GameControlEditorWindow> mGameControlEditorWindow;
     std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
@@ -146,6 +151,21 @@ namespace SohGui {
     void SetupGuiElements() {
         mSohMenuBar = std::make_shared<SohMenuBar>("gOpenMenuBar");
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SetMenuBar(std::reinterpret_pointer_cast<LUS::GuiMenuBar>(mSohMenuBar));
+
+        mStatsWindow = LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Stats");
+        if (mStatsWindow == nullptr) {
+            SPDLOG_ERROR("Could not find stats window");
+        }
+
+        mConsoleWindow = LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console");
+        if (mConsoleWindow == nullptr) {
+            SPDLOG_ERROR("Could not find console window");
+        }
+
+        mInputEditorWindow = LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Input Editor");
+        if (mInputEditorWindow == nullptr) {
+            SPDLOG_ERROR("Could not find input editor window");
+        }
 
         mAudioEditorWindow = std::make_shared<AudioEditor>("gAudioEditor.WindowOpen", "Audio Editor");
         LUS::Context::GetInstance()->GetWindow()->GetGui()->AddGuiWindow(mAudioEditorWindow);

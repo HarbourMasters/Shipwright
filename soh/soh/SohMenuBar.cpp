@@ -121,6 +121,7 @@ void DrawShipwrightMenu() {
     }
 }
 
+extern std::shared_ptr<LUS::GuiWindow> mInputEditorWindow;
 
 void DrawSettingsMenu() {
     if (ImGui::BeginMenu("Settings"))
@@ -170,15 +171,9 @@ void DrawSettingsMenu() {
             ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-            if (ImGui::Button(GetWindowButtonText("Controller Configuration", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f)))
-            {
-                bool currentValue = CVarGetInteger("gControllerConfigurationEnabled", 0);
-                CVarSetInteger("gControllerConfigurationEnabled", !currentValue);
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-                if (CVarGetInteger("gControllerConfigurationEnabled", 0)) {
-                    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Input Editor")->Show();
-                } else {
-                    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Input Editor")->Hide();
+            if (mInputEditorWindow) {
+                if (ImGui::Button(GetWindowButtonText("Controller Configuration", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
+                    mInputEditorWindow->ToggleVisibilty();
                 }
             }
             UIWidgets::PaddedSeparator();
@@ -1007,8 +1002,7 @@ void DrawEnhancementsMenu() {
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0));
         }
-        if (ImGui::Button(GetWindowButtonText("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
-        {
+        if (ImGui::Button(GetWindowButtonText("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
             bool currentValue = CVarGetInteger("gAudioEditor.WindowOpen", 0);
             CVarSetInteger("gAudioEditor.WindowOpen", !currentValue);
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
