@@ -81,8 +81,7 @@ class CustomMessageManager {
   public:
     static CustomMessageManager* Instance;
 
-    CustomMessageManager();
-    ~CustomMessageManager();
+    CustomMessageManager() = default;
 
     /*
     Formats the provided Custom Message Entry and inserts it into the table with the provided tableID,

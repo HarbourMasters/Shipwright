@@ -186,13 +186,6 @@ const std::string CustomMessage::PLAYER_NAME() const {
     return "\x0F"s;
 }
 
-CustomMessageManager::CustomMessageManager() {
-}
-
-CustomMessageManager::~CustomMessageManager() {
-    this->messageTables.clear();
-}
-
 bool CustomMessageManager::InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessage messages) {
     auto foundMessageTable = messageTables.find(tableID);
     if (foundMessageTable == messageTables.end()) {
