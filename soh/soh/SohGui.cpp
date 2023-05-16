@@ -153,7 +153,7 @@ namespace SohGui {
     std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 
     void SetupGuiElements() {
-        mSohMenuBar = std::make_shared<SohMenuBar>("gOpenMenuBar");
+        mSohMenuBar = std::make_shared<SohMenuBar>("gOpenMenuBar", CVarGetInteger("gOpenMenuBar", 0));
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SetMenuBar(std::reinterpret_pointer_cast<LUS::GuiMenuBar>(mSohMenuBar));
 
         mStatsWindow = LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Stats");
