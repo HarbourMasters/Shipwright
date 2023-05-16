@@ -193,15 +193,6 @@ CustomMessageManager::~CustomMessageManager() {
     this->messageTables.clear();
 }
 
-void CustomMessageManager::ReplaceStringInMessage(CustomMessage& messageEntry, std::string&& textToReplace, std::string&& value) {
-    messageEntry.Replace(std::move(textToReplace), std::move(value));
-}
-
-void CustomMessageManager::ReplaceStringInMessage(CustomMessage& messageEntry, std::string&& textToReplace, std::string&& englishValue, std::string&& germanValue, std::string&& frenchValue) {
-    messageEntry.Replace(std::move(textToReplace), std::move(englishValue), std::move(germanValue),
-                         std::move(frenchValue));
-}
-
 bool CustomMessageManager::InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessage messages) {
     auto foundMessageTable = messageTables.find(tableID);
     if (foundMessageTable == messageTables.end()) {
