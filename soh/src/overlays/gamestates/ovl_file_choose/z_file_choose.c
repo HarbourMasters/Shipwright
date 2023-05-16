@@ -11,6 +11,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh_assets.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/bossrush.h"
 
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 
@@ -581,7 +582,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     s8 i = 0;
-    bool dpad = CVarGetInteger("gDpadText", 0);(dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP));
+    bool dpad = CVarGetInteger("gDpadText", 0);
 
     FileChoose_UpdateRandomizer();
 
@@ -656,6 +657,51 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
 void FileChoose_UpdateBossRushMenu(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
+    bool dpad = CVarGetInteger("gDpadText", 0);
+
+    if (ABS(this->stickRelY) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
+        if (this->stickRelY < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN))) {
+            if ((this->bossRushIndex + 1) > BOSSRUSH_OPTIONS_AMOUNT - 1) {
+                this->bossRushIndex = 0;
+                this->bossRushOffset = 0;
+            } else {
+                this->bossRushIndex++;
+                if (this->bossRushIndex - this->bossRushOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN - 1) {
+                    this->bossRushOffset++;
+                }
+            }
+        } else if (this->stickRelY > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DUP))) {
+            if ((this->bossRushIndex - 1) < 0) {
+                this->bossRushIndex = BOSSRUSH_OPTIONS_AMOUNT - 1;
+                this->bossRushOffset = this->bossRushIndex - BOSSRUSH_MAX_OPTIONS_ON_SCREEN + 1;
+            } else {
+                if (this->bossRushIndex - this->bossRushOffset == 0) {
+                    this->bossRushOffset--;
+                }
+                this->bossRushIndex--;
+            }
+        }
+
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+    }
+
+    /*if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
+        if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
+            if ((this->bossRushIndex + 1) > BOSSRUSH_OPTIONS_AMOUNT - 1) {
+                this->bossRushIndex = 0;
+            } else {
+                this->bossRushIndex++;
+            }
+        } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
+            if ((this->bossRushIndex - 1) < 0) {
+                this->bossRushIndex = BOSSRUSH_OPTIONS_AMOUNT - 1;
+            } else {
+                this->bossRushIndex--;
+            }
+        }
+
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+    }*/
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
         this->configMode = CM_BOSS_RUSH_TO_QUEST;
@@ -1525,13 +1571,16 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     } else if (this->configMode == CM_BOSS_RUSH_MENU || this->configMode == CM_START_BOSS_RUSH_MENU ||
                this->configMode == CM_ROTATE_TO_BOSS_RUSH_MENU || this->configMode == CM_BOSS_RUSH_TO_QUEST) {
 
-        Interface_DrawTextLine(this->state.gfxCtx, "abcdefghijklmnopqrstuvwxyzz\nABCDEFGHIJKLMNOPQRSTUVWXYZZ", 60, 80, 255, 255, 255, 255, 1.0f, true);
+        uint8_t offset = this->bossRushOffset;
 
-        Interface_DrawTextLine(this->state.gfxCtx, "*+,-./:;<=>?[]^_{|}~!\"#$%&'()@``", 60, 110, 255, 255, 255, 255, 1.0f, true);
-
-        Interface_DrawTextLine(this->state.gfxCtx, "01234567899", 60, 125, 255, 255, 255, 255, 1.0f, true);
-
-        Interface_DrawTextLine(this->state.gfxCtx, "ÀîÂÄÇÈÉÊËÏÔÖÙÛÜßàáâäçèéêëïôöùûüü", 60, 140, 255, 255, 255, 255, 1.0f, true);
+        for (uint8_t i = offset; i - offset < BOSSRUSH_MAX_OPTIONS_ON_SCREEN; i++) {
+            uint8_t fontColor = 255;
+            if (this->bossRushIndex == i) {
+                fontColor = 0;
+            }
+            Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingName(i, gSaveContext.language), 65, (80 + ((i - offset) * 18)), 255, 255, 0, 255, 0.8f, true);
+            Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, 0, gSaveContext.language), 145, (80 + ((i - offset) * 18)), 255, 255, fontColor, 255, 0.8f, true);
+        }
 
     } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY) {
         gDPPipeSync(POLY_OPA_DISP++);
@@ -2669,6 +2718,9 @@ void FileChoose_InitContext(GameState* thisx) {
     this->stickAnimState = 0;
     this->arrowAnimTween = 0;
     this->stickAnimTween = 0;
+
+    this->bossRushIndex = 0;
+    this->bossRushOffset = 0;
 
     ShrinkWindow_SetVal(0);
 

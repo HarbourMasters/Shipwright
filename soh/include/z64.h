@@ -1499,6 +1499,8 @@ typedef struct {
     f32 stickAnimTween;
     u8 arrowAnimState;
     u8 stickAnimState;
+    uint8_t bossRushIndex;
+    uint8_t bossRushOffset;
 } FileChooseContext; // size = 0x1CAE0
 
 typedef enum {

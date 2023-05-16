@@ -6526,6 +6526,7 @@ uint16_t Interface_GetTextKerningOffset(int16_t character) {
         case 's':
         case 'x':
         case 'z':
+        case 'E':
         case '*':
         case '-':
         case '<':
@@ -6570,6 +6571,8 @@ uint16_t Interface_GetTextKerningOffset(int16_t character) {
         case 'F':
         case 'J':
         case 'L':
+        case 'B':
+        case 'R':
         case '^':
         case '~':
         case '#':
@@ -6582,11 +6585,8 @@ uint16_t Interface_GetTextKerningOffset(int16_t character) {
         case 'g':
         case 'o':
         case 'q':
-        case 'B':
-        case 'E':
         case 'K':
         case 'P':
-        case 'R':
         case 'S':
         case 'X':
         case 'Y':
@@ -6614,7 +6614,6 @@ uint16_t Interface_GetTextKerningOffset(int16_t character) {
         case -60: // Ä
         case -57: // Ç
             return 9;
-        case 'M':
         case 'Q':
         case 'W':
         case '%':

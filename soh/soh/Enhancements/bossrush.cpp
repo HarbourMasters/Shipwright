@@ -3,6 +3,91 @@
 #include "macros.h"
 
 #include <array>
+#include <string>
+#include <vector>
+
+typedef struct BossRushSetting {
+    std::vector<std::string> name;
+    std::vector<std::vector<std::string>> choices;
+} BossRushSetting;
+
+BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = { 
+    {
+        { "BOSSES:", "BOSSES DE:", "BOSSES FR:" },
+        {
+            { "Both", "Both DE", "Both FR" },
+            { "Child", "Child DE", "Child FR" },
+            { "Adult", "Adult DE", "Adult FR" }
+        }
+    },
+    {
+        { "HEARTS:", "HEARTS DE:", "HEARTS FR:" },
+        {
+            { "3", "3", "3" },
+            { "5", "5", "5" },
+            { "7", "7", "7" },
+            { "10", "10", "10" },
+            { "15", "15", "15" },
+            { "20", "20", "20" },
+        }
+    },
+    {
+        { "AMMO:", "AMMO DE:", "AMMO FR:" },
+        {
+            { "Limited", "Limited DE", "Limited FR" },
+            { "Full", "Full DE", "Full FR" },
+            { "Maxed", "Maxed DE", "Maxed FR" }
+        }
+    },
+    {
+        { "HEAL:", "HEAL DE:", "HEAL FR:" },
+        {
+            { "Ganondorf", "Ganondorf DE", "Ganondorf FR" },
+            { "Every Boss", "Every Boss DE", "Every Boss FR" },
+            { "Never", "Never DE", "Never FR" }
+        }
+    },
+    {
+        { "BOTTLE:", "BOTTLE DE:", "BOTTLE FR:" },
+        {
+            { "No", "No DE", "No FR" },
+            { "Yes", "Yes DE", "Yes FR" }
+        }
+    },
+    {
+        { "LONGSHOT:", "LONGSHOT DE:", "LONGSHOT FR:" },
+        {
+            { "No", "No DE", "No FR" },
+            { "Yes", "Yes DE", "Yes FR" }
+        }
+    },
+    {
+        { "HOVER BOOTS:", "HOVER BOOTS DE:", "HOVER BOOTS FR:" },
+        {
+            { "No", "No DE", "No FR" },
+            { "Yes", "Yes DE", "Yes FR" }
+        }
+    },
+    {
+        { "TIMER:", "TIMER DE:", "TIMER FR:" },
+        {
+            { "Yes", "Yes DE", "Yes FR" },
+            { "No", "No DE", "No FR" }
+        }
+    }
+};
+
+extern "C" const char* BossRush_GetSettingName(uint8_t optionIndex, uint8_t language) {
+    return BossRushOptions[optionIndex].name[language].c_str();
+}
+
+extern "C" const char* BossRush_GetSettingChoiceName(uint8_t optionIndex, uint8_t choiceIndex, uint8_t language) {
+    return BossRushOptions[optionIndex].choices[choiceIndex][language].c_str();
+}
+
+extern "C" uint8_t BossRush_GetSettingOptionsAmount(uint8_t optionIndex) {
+    return BossRushOptions[optionIndex].choices.size();
+}
 
 extern "C" void BossRush_SpawnBlueWarps(PlayState* play) {
 
