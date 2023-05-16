@@ -760,6 +760,7 @@ extern "C" void InitOTR() {
     OTRAudio_Init();
     OTRExtScanner();
     VanillaItemTable_Init();
+    DebugConsole_Init();
 
     InitMods();
 
