@@ -13,6 +13,20 @@
 #include "Enhancements/crowd-control/CrowdControl.h"
 #endif
 
+
+#include "Enhancements/audio/AudioEditor.h"
+// #include "Enhancements/controls/GameControlEditor.h"
+// #include "Enhancements/cosmetics/CosmeticsEditor.h"
+// #include "Enhancements/debugger/actorViewer.h"
+// #include "Enhancements/debugger/colViewer.h"
+// #include "Enhancements/debugger/debugSaveEditor.h"
+// #include "Enhancements/debugger/dlViewer.h"
+// #include "Enhancements/gameplaystatswindow.h"
+// #include "Enhancements/randomizer/randomizer_check_tracker_window.h"
+// #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
+// #include "Enhancements/randomizer/randomizer_item_tracker.h"
+// #include "Enhancements/randomizer/randomizer_settings_window.h"
+
 extern bool ShouldClearTextureCacheAtEndOfFrame;
 extern bool isBetaQuestEnabled;
 
@@ -173,7 +187,7 @@ void DrawSettingsMenu() {
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
             if (mInputEditorWindow) {
                 if (ImGui::Button(GetWindowButtonText("Controller Configuration", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
-                    mInputEditorWindow->ToggleVisibilty();
+                    mInputEditorWindow->ToggleVisibility();
                 }
             }
             UIWidgets::PaddedSeparator();
@@ -395,6 +409,21 @@ void DrawSettingsMenu() {
         ImGui::EndMenu();
     }
 }
+
+extern std::shared_ptr<AudioEditor> mAudioEditorWindow;
+// extern std::shared_ptr<GameControlEditor::GameControlEditorWindow> mGameControlEditorWindow;
+// extern std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
+// extern std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
+// extern std::shared_ptr<ColViewerWindow> mColViewerWindow;
+// extern std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
+// extern std::shared_ptr<DLViewerWindow> mDLViewerWindow;
+// extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
+// extern std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
+// extern std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
+// extern std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
+// extern std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
+// extern std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
+// extern std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 
 void DrawEnhancementsMenu() {
     if (ImGui::BeginMenu("Enhancements"))
@@ -1002,12 +1031,13 @@ void DrawEnhancementsMenu() {
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0));
         }
-        if (ImGui::Button(GetWindowButtonText("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-            bool currentValue = CVarGetInteger("gAudioEditor.WindowOpen", 0);
-            CVarSetInteger("gAudioEditor.WindowOpen", !currentValue);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            // LUS::Context::GetInstance()->GetWindow()->GetGui()->EnableWindow("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0));
+
+        if (mAudioEditorWindow) {
+            if (ImGui::Button(GetWindowButtonText("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mAudioEditorWindow->ToggleVisibility();
+            }
         }
+
         if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
             bool currentValue = CVarGetInteger("gGameplayStatsEnabled", 0);
             CVarSetInteger("gGameplayStatsEnabled", !currentValue);
