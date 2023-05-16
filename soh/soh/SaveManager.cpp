@@ -872,7 +872,7 @@ void SaveManager::AddSaveFunction(const std::string& name, int version, SaveFunc
     }
     SaveFuncInfo sfi = { name, version, func, saveWithBase, parentSection };
     sectionSaveHandlers.emplace(index, sfi);
-    sectionRegistry.emplace(name);
+    sectionRegistry.emplace(name, index);
 }
 
 void SaveManager::AddPostFunction(const std::string& name, PostFunc func) {
