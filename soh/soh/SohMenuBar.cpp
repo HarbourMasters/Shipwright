@@ -15,17 +15,17 @@
 
 
 #include "Enhancements/audio/AudioEditor.h"
-// #include "Enhancements/controls/GameControlEditor.h"
-// #include "Enhancements/cosmetics/CosmeticsEditor.h"
-// #include "Enhancements/debugger/actorViewer.h"
-// #include "Enhancements/debugger/colViewer.h"
-// #include "Enhancements/debugger/debugSaveEditor.h"
-// #include "Enhancements/debugger/dlViewer.h"
-// #include "Enhancements/gameplaystatswindow.h"
-// #include "Enhancements/randomizer/randomizer_check_tracker_window.h"
-// #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
-// #include "Enhancements/randomizer/randomizer_item_tracker.h"
-// #include "Enhancements/randomizer/randomizer_settings_window.h"
+#include "Enhancements/controls/GameControlEditor.h"
+#include "Enhancements/cosmetics/CosmeticsEditor.h"
+#include "Enhancements/debugger/actorViewer.h"
+#include "Enhancements/debugger/colViewer.h"
+#include "Enhancements/debugger/debugSaveEditor.h"
+#include "Enhancements/debugger/dlViewer.h"
+#include "Enhancements/gameplaystatswindow.h"
+#include "Enhancements/randomizer/randomizer_check_tracker_window.h"
+#include "Enhancements/randomizer/randomizer_entrance_tracker.h"
+#include "Enhancements/randomizer/randomizer_item_tracker.h"
+#include "Enhancements/randomizer/randomizer_settings_window.h"
 
 extern bool ShouldClearTextureCacheAtEndOfFrame;
 extern bool isBetaQuestEnabled;
@@ -411,19 +411,19 @@ void DrawSettingsMenu() {
 }
 
 extern std::shared_ptr<AudioEditor> mAudioEditorWindow;
-// extern std::shared_ptr<GameControlEditor::GameControlEditorWindow> mGameControlEditorWindow;
-// extern std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
-// extern std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
-// extern std::shared_ptr<ColViewerWindow> mColViewerWindow;
-// extern std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
-// extern std::shared_ptr<DLViewerWindow> mDLViewerWindow;
-// extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
-// extern std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
-// extern std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
-// extern std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
-// extern std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
-// extern std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
-// extern std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
+extern std::shared_ptr<GameControlEditor::GameControlEditorWindow> mGameControlEditorWindow;
+extern std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
+extern std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
+extern std::shared_ptr<ColViewerWindow> mColViewerWindow;
+extern std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
+extern std::shared_ptr<DLViewerWindow> mDLViewerWindow;
+extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
+extern std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
+extern std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
+extern std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
+extern std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
+extern std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
+extern std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 
 void DrawEnhancementsMenu() {
     if (ImGui::BeginMenu("Enhancements"))
