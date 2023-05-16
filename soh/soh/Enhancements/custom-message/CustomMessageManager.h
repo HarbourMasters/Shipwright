@@ -2,6 +2,8 @@
 #include <string>
 #include <unordered_map>
 #include <cstdint>
+#include <exception>
+
 #include "../../../include/z64item.h"
 #include "../../../include/message_data_textbox_types.h"
 
@@ -16,38 +18,42 @@
 #define QM_YELLOW 0x46
 #define QM_BLACK 0x47
 
-typedef struct {
-    TextBoxType textBoxType;
-    TextBoxPosition textBoxPos;
-    std::string english;
-    std::string german;
-    std::string french;
-} CustomMessageEntry;
+class CustomMessage {
+  public:
+  CustomMessage() = default;
+  CustomMessage(std::string english_, std::string german_, std::string french_, TextBoxType type_ = TEXTBOX_TYPE_BLACK,
+                TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
 
-// Message Entry without the text type and position, useful for when
-// you need an array of these to loop over for registration
-// that will all have the same textbox type and position.
-typedef struct {
-    std::string english;
-    std::string german;
-    std::string french;
-} CustomMessageMinimal;
+  const std::string& GetEnglish() const;
+  const std::string& GetFrench() const;
+  const std::string& GetGerman() const;
+  const TextBoxType& GetTextBoxType() const;
+  const TextBoxPosition& GetTextBoxPosition() const;
 
-#define NULL_CUSTOM_MESSAGE \
-    { (TextBoxType)(-1), (TextBoxPosition)(-1), "", "", "" }
+  CustomMessage operator+ (const CustomMessage& right) const;
 
-typedef std::unordered_map<uint16_t, CustomMessageEntry> CustomMessageTable;
+  CustomMessage operator+ (const std::string& right) const;
 
-class CustomMessageManager {
-  private: 
-    std::unordered_map<std::string, char> textBoxSpecialCharacters;
-    std::unordered_map<std::string, char> colors;
-    std::unordered_map<std::string, CustomMessageTable> messageTables;
+  void operator += (const std::string& right);
 
-    void ReplaceSpecialCharacters(std::string &string);
-    void ReplaceColors(std::string& string);
-    bool InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages);
+  bool operator== (const CustomMessage& right) const;
 
+  bool operator!= (const CustomMessage& right) const;
+
+  void Replace(std::string&& oldStr, std::string&& newStr);
+
+  void Replace(std::string&& oldStr, std::string&& newEnglish, std::string&& newGerman, std::string&& newFrench);
+
+  void Capitalize();
+
+  void ReplaceSpecialCharacters();
+  void ReplaceColors();
+
+  void Format(ItemID iid);
+
+  void Format();
+
+  private:
     const std::string MESSAGE_END() const;
     const std::string ITEM_OBTAINED(uint8_t x) const;
     const std::string NEWLINE() const;
@@ -55,15 +61,32 @@ class CustomMessageManager {
     const std::string WAIT_FOR_INPUT() const;
     const std::string PLAYER_NAME() const;
 
+    std::string english = "";
+    std::string french = "";
+    std::string german = "";
+    TextBoxType type = TEXTBOX_TYPE_BLACK;
+    TextBoxPosition position = TEXTBOX_POS_BOTTOM;
+};
+
+typedef std::unordered_map<uint16_t, CustomMessage> CustomMessageTable;
+
+class CustomMessageManager {
+  private: 
+    std::unordered_map<std::string, CustomMessageTable> messageTables;
+
+    void ReplaceSpecialCharacters(std::string &string);
+    void ReplaceColors(std::string& string);
+    bool InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessage messages);
+
   public:
     static CustomMessageManager* Instance;
 
     /*
     Replaces the specified string in a CustomMessageEntry with the provided value
     */
-    static void ReplaceStringInMessage(CustomMessageEntry& messageEntry, std::string&& textToReplace,
+    static void ReplaceStringInMessage(CustomMessage& messageEntry, std::string&& textToReplace,
                                        std::string&& value);
-    static void ReplaceStringInMessage(CustomMessageEntry& messageEntry, std::string&& textToReplace,
+    static void ReplaceStringInMessage(CustomMessage& messageEntry, std::string&& textToReplace,
                                        std::string&& englishValue, std::string&& germanValue,
                                        std::string&& frenchValue);
 
@@ -75,19 +98,19 @@ class CustomMessageManager {
     with the provided giid (getItemID) as its key. This function also inserts the icon corresponding to
     the provided iid (itemID) at the beginning of each page of the textbox.
     */
-    bool CreateGetItemMessage(std::string tableID, uint16_t giid, ItemID iid, CustomMessageEntry messages);
+    bool CreateGetItemMessage(std::string tableID, uint16_t giid, ItemID iid, CustomMessage messages);
 
     /*
     Formats the provided Custom Message Entry and inserts it into the table with the provided tableID,
     with the provided textID as its key.
     */
-    bool CreateMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages);
+    bool CreateMessage(std::string tableID, uint16_t textID, CustomMessage messages);
 
     /*
     Retrieves a message from the table with id tableID with the provided textID.
     Returns a NULL_CUSTOM_MESSAGE if the message or table does not exist.
     */
-    CustomMessageEntry RetrieveMessage(std::string tableID, uint16_t textID);
+    CustomMessage RetrieveMessage(std::string tableID, uint16_t textID);
 
     /*
     Empties out the message table identified by tableID.
@@ -102,18 +125,23 @@ class CustomMessageManager {
     if not.
     */
     bool AddCustomMessageTable(std::string tableID);
+};
 
-    /*
-    Replaces special characters and certain symbols with control codes
-    & for newline, ^ for wait-for-input, and @ for the player name,
-    as well as %<letter> for colors (i.e. %r for red and %w for white).
-    */
-    void FormatCustomMessage(std::string& message, ItemID iid);
+class MessageNotFoundException : public std::exception {
+  private:
+    std::string messageTableId;
+    uint16_t textId;
 
-    /*
-    Replaces special characters and certain symbols with control codes
-    & for newline, ^ for wait-for-input, and @ for the player name,
-    as well as %<letter> for colors (i.e. %r for red and %w for white).
-    */
-    void FormatCustomMessage(std::string& message);
+  public:
+    MessageNotFoundException(std::string messageTableId_, uint16_t textId_)
+        : messageTableId(messageTableId_), textId(textId) {
+    }
+    MessageNotFoundException(std::string&& messageTableId_, uint16_t textId_)
+        : messageTableId(std::move(messageTableId_)), textId(textId_) {
+    }
+    virtual const char* what() const {
+      char* message;
+      sprintf(message, "Message from table %s with textId %u was not found", messageTableId.c_str(), textId);
+      return message;
+    }
 };

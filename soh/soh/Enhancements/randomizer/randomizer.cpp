@@ -382,22 +382,20 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     CustomMessageManager::Instance->ClearMessageTable(Randomizer::hintMessageTableID);
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::hintMessageTableID);
 
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD,
-                                           { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, gSaveContext.childAltarText,
-                                             gSaveContext.childAltarText, gSaveContext.childAltarText });
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT,
-                                           { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, gSaveContext.adultAltarText,
-                                             gSaveContext.adultAltarText, gSaveContext.adultAltarText });
+    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD,
+                                                  CustomMessage(gSaveContext.childAltarText,
+                                                                gSaveContext.childAltarText,
+                                                                gSaveContext.childAltarText, TEXTBOX_TYPE_BLUE));
+    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT,
+                                                  CustomMessage(gSaveContext.adultAltarText,
+                                                                gSaveContext.adultAltarText,
+                                                                gSaveContext.adultAltarText, TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_GANONDORF,
-                                           { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, gSaveContext.ganonHintText,
-                                             gSaveContext.ganonHintText, gSaveContext.ganonHintText });
+        CustomMessage(gSaveContext.ganonHintText, gSaveContext.ganonHintText, gSaveContext.ganonHintText));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT,
-                                           { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, gSaveContext.ganonText,
-                                             gSaveContext.ganonText, gSaveContext.ganonText });
+        CustomMessage(gSaveContext.ganonText, gSaveContext.ganonText, gSaveContext.ganonText));
 
     this->childAltarText = gSaveContext.childAltarText;
     this->adultAltarText = gSaveContext.adultAltarText;
@@ -408,7 +406,7 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         if(hintLocation.check == RC_LINKS_POCKET) break;
         this->hintLocations[hintLocation.check] = hintLocation.hintText;
         CustomMessageManager::Instance->CreateMessage(
-            Randomizer::hintMessageTableID, hintLocation.check, { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, hintLocation.hintText, hintLocation.hintText, hintLocation.hintText });
+            Randomizer::hintMessageTableID, hintLocation.check, CustomMessage(hintLocation.hintText, hintLocation.hintText, hintLocation.hintText));
     }
 
     //Extra Hints
@@ -417,51 +415,36 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
 
     CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE,
-            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, 
-                "Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you my&%b{{check}}%w!",
+            CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying&%r{{params}} Spiders of the Curse%w&and I will give you my&%b{{check}}%w!",
                 "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du %r{{params}} Skulltulas&%wzerstörst und ich werde dir dafür&%b{{check}} %wgeben!",
-                "Yeaaarrgh! Je suis maudit!^Détruit encore %r{{params}} Araignées de&la Malédiction%w et j'aurai quelque&chose à te donner!&%b({{check}})",
-            }
+                "Yeaaarrgh! Je suis maudit!^Détruit encore %r{{params}} Araignées de&la Malédiction%w et j'aurai quelque&chose à te donner!&%b({{check}})")
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY,
-            {
-                TEXTBOX_TYPE_BLUE,
-                TEXTBOX_POS_TOP,
+            CustomMessage(gSaveContext.dampeText,
                 gSaveContext.dampeText,
-                gSaveContext.dampeText,
-                gSaveContext.dampeText
-            }
+                gSaveContext.dampeText)
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_CHEST_GAME_PROCEED,
-            {
-                TEXTBOX_TYPE_BLACK,
-                TEXTBOX_POS_VARIABLE,
+            CustomMessage(gSaveContext.gregHintText,
                 gSaveContext.gregHintText,
-                gSaveContext.gregHintText,
-                gSaveContext.gregHintText
-            }
+                gSaveContext.gregHintText)
         );
 
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT,
-        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-        "Warp to&{{location}}?\x1B&%gOK&No%w\x02",
+        CustomMessage("Warp to&{{location}}?\x1B&%gOK&No%w\x02",
         "Zu {{location}}?\x1B&%gOK&No%w\x02",
-        "Se téléporter vers&{{location}}?\x1B&%gOK!&Non%w\x02" });
+        "Se téléporter vers&{{location}}?\x1B&%gOK!&Non%w\x02"));
 
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN,
-        { TEXTBOX_TYPE_WOODEN, TEXTBOX_POS_BOTTOM,
-            "Water level control system.&Keep away!",
+        CustomMessage("Water level control system.&Keep away!",
             "Wasserstand Kontrollsystem&Finger weg!",
-            "Système de contrôle du niveau&d'eau.&Ne pas toucher!"
-        });
+            "Système de contrôle du niveau&d'eau.&Ne pas toucher!"));
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI,
-        { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
-            "%cThis switch is rustier than you think.^%cSomething must be wrong with the&pipe system in the %bWater Temple%c.",
+        CustomMessage("%cThis switch is rustier than you think.^%cSomething must be wrong with the&pipe system in the %bWater Temple%c.",
             "%cDieser Schalter scheint rostiger zu&sein als er aussieht.^%cEtwas muss mit dem Leitungssystem&im %bWassertempel%c nicht stimmen.",
-            "%cCet interrupteur est très rouillé.^%cIl doit y avoir un problème avec&la tuyauterie du %bTemple de l'Eau%c."
-        });
+            "%cCet interrupteur est très rouillé.^%cIl doit y avoir un problème avec&la tuyauterie du %bTemple de l'Eau%c."));
 }
 
 // Reference soh/src/overlays/actors/ovl_En_GirlA/z_en_girla.h
@@ -503,29 +486,21 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
 
     // Prices have a chance of being 0, and the "sell" message below doesn't really make sense for a free item, so adding a "free" variation here
     CustomMessageManager::Instance->CreateMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM_FREE,
-        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-            "\x12\x38\x82" "All right! You win! In return for&sparing me, I will give you a&%g{{item}}%w!&Please, take it!\x07\x10\xA3",
+        CustomMessage("\x12\x38\x82" "All right! You win! In return for&sparing me, I will give you a&%g{{item}}%w!&Please, take it!\x07\x10\xA3",
             "\x12\x38\x82" "In Ordnung! Du gewinnst! Im Austausch&dafür, dass du mich verschont hast,&werde ich dir einen &%g{{item}}%w geben!\x07\x10\xA3",
-            "\x12\x38\x82" "J'me rends! Laisse-moi partir et en&échange, je te donne un &%g{{item}}%w! Vas-y prends le!\x07\x10\xA3",
-        });
+            "\x12\x38\x82" "J'me rends! Laisse-moi partir et en&échange, je te donne un &%g{{item}}%w! Vas-y prends le!\x07\x10\xA3"));
     CustomMessageManager::Instance->CreateMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM,
-        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-            "\x12\x38\x82" "All right! You win! In return for&sparing me, I will sell you a&%g{{item}}%w!&%r{{price}} Rupees%w it is!\x07\x10\xA3",
+        CustomMessage("\x12\x38\x82" "All right! You win! In return for&sparing me, I will sell you a&%g{{item}}%w!&%r{{price}} Rupees%w it is!\x07\x10\xA3",
             "\x12\x38\x82" "Aufgeben! Ich verkaufe dir einen&%g{{item}}%w&für %r{{price}} Rubine%w!\x07\x10\xA3",
-            "\x12\x38\x82" "J'abandonne! Tu veux bien m'acheter&un %g{{item}}%w?&Ça fera %r{{price}} Rubis%w!\x07\x10\xA3"
-        });
+            "\x12\x38\x82" "J'abandonne! Tu veux bien m'acheter&un %g{{item}}%w?&Ça fera %r{{price}} Rubis%w!\x07\x10\xA3"));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN,
-        {
-            TEXTBOX_TYPE_BLACK,
-            TEXTBOX_POS_BOTTOM,
-            "I tried to be a %rmagic bean%w salesman,&but it turns out my marketing skills&weren't worth "
+        CustomMessage("I tried to be a %rmagic bean%w salesman,&but it turns out my marketing skills&weren't worth "
             "beans!^Anyway, want to buy my&%gmysterious item%w for 60 Rupees?\x1B&%gYes&No%w",
             "Möchten Sie einen geheimnisvollen&Gegenstand für 60 Rubine?\x1B&%gJa&Nein%w",
             "J'ai essayé d'être un vendeur de&%rharicots magiques%w, mais j'étais&mauvais au niveau du marketing et&ça "
             "me courait sur le haricot...^Enfin bref, ça te dirait de m'acheter un&"
-            "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w",
-        });
+            "%gobjet mystérieux%w pour 60 Rubis?\x1B&%gOui&Non%w"));
 
 
     //Setup for merchant text boxes
@@ -533,25 +508,17 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
     //RANDOTODO: Implement obscure/ambiguous hints
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_MEDIGORON,
-        {
-            TEXTBOX_TYPE_BLACK,
-            TEXTBOX_POS_BOTTOM,
-            "How about buying %r&{{item}}%w for %g200 rupees%w?\x1B&%gYes&No%w",
+        CustomMessage("How about buying %r&{{item}}%w for %g200 rupees%w?\x1B&%gYes&No%w",
             "Wie wäre es mit %r&{{item}}%w für %g200 Rubine?%w\x1B&%gJa!&Nein!%w",
-            "Veux-tu acheter %r&{{item}}%w pour %g200 rubis?%w\x1B&%gOui&Non&w" 
-        });
+            "Veux-tu acheter %r&{{item}}%w pour %g200 rubis?%w\x1B&%gOui&Non&w"));
 
     //Granny Shopy
     //RANDOTODO: Implement obscure/ambiguous hints
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::merchantMessageTableID, TEXT_GRANNYS_SHOP,
-        {
-            TEXTBOX_TYPE_BLACK,
-            TEXTBOX_POS_BOTTOM,
-            "%r{{item}}%w!&How about %g100 rupees%w?\x1B&%gYes&No%w",
+        CustomMessage("%r{{item}}%w!&How about %g100 rupees%w?\x1B&%gYes&No%w",
             "%r{{item}}%w!&Wie wäre es mit %g100 Rubine?%w\x1B&%gJa!&Nein!%w",
-            "%r{{item}}%w!&Que dis-tu de %g100 rubis?%w\x1B&%gOui&Non&w"
-        });
+            "%r{{item}}%w!&Que dis-tu de %g100 rubis?%w\x1B&%gOui&Non&w"));
 
     //Carpet Salesman
     //RANDOTODO: Implement obscure/ambiguous hints
@@ -569,45 +536,36 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
             "!%w&Je ne te dirai pas ce que c'est avant&d'être payé rubis sur l'ongle...^"
             };
         }
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_1,
-        {
-            TEXTBOX_TYPE_BLACK,
-            TEXTBOX_POS_BOTTOM,
-            "Welcome!^I am selling stuff, strange and rare, &from all over the world to everybody.&Today's special is...^%r{{item}}" + cgBoxTwoText[0] +
-            "How about %g200 Rupees?%w\x1B&&%gYes&No%w",
-            "Sei gegrüßt!^Ich verkaufe allerlei Kuriorisäten.&Stets sonderliche und seltene Ware&aus aller Welt für jedermann.&Das heutige Angebot bleibt...^%r{{item}}" + 
-            cgBoxTwoText[1] + "Wie wäre es mit %g200 Rubinen?%w\x1B&&%gJa!&Nein!%w",
-            "Bienvenue!^Je vends des trucs étranges et rares,&de partout dans le monde et à tout le&monde! L'objet du jour est...^%r{{item}}" + 
-            cgBoxTwoText[2] + "Alors, marché conclu pour %g200 rubis?%w\x1B&&%gOui&Non%w"
-        }
-    );
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_1,
+            CustomMessage("Welcome!^I am selling stuff, strange and rare, &from all over the world to "
+                          "everybody.&Today's special is...^%r{{item}}" +
+                              cgBoxTwoText[0] + "How about %g200 Rupees?%w\x1B&&%gYes&No%w",
+                          "Sei gegrüßt!^Ich verkaufe allerlei Kuriorisäten.&Stets sonderliche und seltene Ware&aus "
+                          "aller Welt für jedermann.&Das heutige Angebot bleibt...^%r{{item}}" +
+                              cgBoxTwoText[1] + "Wie wäre es mit %g200 Rubinen?%w\x1B&&%gJa!&Nein!%w",
+                          "Bienvenue!^Je vends des trucs étranges et rares,&de partout dans le monde et à tout "
+                          "le&monde! L'objet du jour est...^%r{{item}}" +
+                              cgBoxTwoText[2] + "Alors, marché conclu pour %g200 rubis?%w\x1B&&%gOui&Non%w"));
 
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_2,
-        {
-            TEXTBOX_TYPE_BLACK,
-            TEXTBOX_POS_TOP,
-            "Finally! Now I can go back to being &an %rarms dealer%w!",
-            "Endlich! Schon bald kann ich wieder &%rKrabbelminen-Händler%w sein!",
-            "Squalala! Je vais enfin pouvoir &%rprendre des vacances%w!"
-        }
-    );
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::merchantMessageTableID, TEXT_CARPET_SALESMAN_2,
+            CustomMessage("Finally! Now I can go back to being &an %rarms dealer%w!",
+              "Endlich! Schon bald kann ich wieder &%rKrabbelminen-Händler%w sein!",
+              "Squalala! Je vais enfin pouvoir &%rprendre des vacances%w!"));
 
-    // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
-    // prompted buy/don't buy
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM, { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
-            "\x08%r{{item}}  {{price}} Rupees&%wSpecial deal! ONE LEFT!&Get it while it lasts!\x0A\x02",
-            "\x08%r{{item}}  {{price}} Rubine&%wSonderangebot! NUR NOCH EINES VERFÜGBAR!&Beeilen Sie sich!\x0A\x02",
-            "\x08%r{{item}}  {{price}} Rubis&%wOffre spéciale! DERNIER EN STOCK!&Faites vite!\x0A\x02",
-        });
-    CustomMessageManager::Instance->CreateMessage(
-        Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM_CONFIRM, { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
-            "\x08{{item}}  {{price}} Rupees\x09&&\x1B%gBuy&Don't buy%w\x09\x02",
-            "\x08{{item}}  {{price}} Rubine\x09&&\x1B%gKaufen&Nicht kaufen%w\x09\x02",
-            "\x08{{item}}  {{price}} Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w\x09\x02",
-        });
+        // Each shop item has two messages, one for when the cursor is over it, and one for when you select it and are
+        // prompted buy/don't buy
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM,
+            CustomMessage("\x08%r{{item}}  {{price}} Rupees&%wSpecial deal! ONE LEFT!&Get it while it lasts!\x0A\x02",
+                "\x08%r{{item}}  {{price}} Rubine&%wSonderangebot! NUR NOCH EINES VERFÜGBAR!&Beeilen Sie sich!\x0A\x02",
+                "\x08%r{{item}}  {{price}} Rubis&%wOffre spéciale! DERNIER EN STOCK!&Faites vite!\x0A\x02"));
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::merchantMessageTableID, TEXT_SHOP_ITEM_RANDOM_CONFIRM,
+            CustomMessage("\x08{{item}}  {{price}} Rupees\x09&&\x1B%gBuy&Don't buy%w\x09\x02",
+                "\x08{{item}}  {{price}} Rubine\x09&&\x1B%gKaufen&Nicht kaufen%w\x09\x02",
+                "\x08{{item}}  {{price}} Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w\x09\x02"));
 }
 
 void Randomizer::LoadItemLocations(const char* spoilerFileName, bool silent) {
@@ -4614,8 +4572,8 @@ void DrawRandoEditor(bool& open) {
     ImGui::End();
 }
 
-CustomMessageEntry Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
-    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(
+CustomMessage Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
+    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(
         Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT);
     if (mysterious) {
         std::array<const char*, 3> locationName ={
@@ -4655,8 +4613,8 @@ CustomMessageEntry Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
     return messageEntry;
 }
 
-CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious) {
-    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
+CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious) {
+    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
     RandomizerCheck rc = GetCheckFromRandomizerInf(randomizerInf);
     RandomizerGet shopItemGet = this->itemLocations[rc].rgID;
     std::array<std::string, 3> shopItemName;
@@ -4693,8 +4651,8 @@ CustomMessageEntry Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u
     return messageEntry;
 }
 
-CustomMessageEntry Randomizer::GetCursedSkullMessage(s16 params) {
-    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE);
+CustomMessage Randomizer::GetCursedSkullMessage(s16 params) {
+    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE);
     RandomizerCheck rc = GetCheckFromActor(ACTOR_EN_SSH, SCENE_KINSUTA, params);
     RandomizerGet itemGet = this->itemLocations[rc].rgID;
     std::array<std::string, 3> itemName;
@@ -4720,8 +4678,8 @@ static const char* mapGetItemHints[3][2] = {
     { "&Elle vous semble %rordinaire%w.", "&Étrange... les mots %r\"Master&Quest\"%w sont gravés dessus." },
 };
 
-CustomMessageEntry Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
-    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, itemEntry.getItemId);
+CustomMessage Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
+    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, itemEntry.getItemId);
     int sceneNum;
     switch (itemEntry.getItemId) {
         case RG_DEKU_TREE_MAP:
@@ -4771,9 +4729,10 @@ void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::getItemMessageTableID);
     for (const GetItemMessage& messageEntry : messageEntries) {
-        customMessageManager->CreateGetItemMessage(Randomizer::getItemMessageTableID, messageEntry.giid, messageEntry.iid,
-                                                    { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, messageEntry.english,
-                                                        messageEntry.german, messageEntry.french });
+        customMessageManager->CreateGetItemMessage(
+            Randomizer::getItemMessageTableID, messageEntry.giid, messageEntry.iid,
+            CustomMessage(messageEntry.english, messageEntry.german, messageEntry.french, TEXTBOX_TYPE_BLUE,
+                          TEXTBOX_POS_BOTTOM));
     }
 }
 
@@ -4797,23 +4756,21 @@ void CreateRupeeMessages() {
                 rupeeText = "\x05\x06 200 {{rupee}}\x05\x00";
                 break;
         }
-        customMessageManager->CreateMessage(Randomizer::rupeeMessageTableID, rupee,
-            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-                "You found" + rupeeText + " !",
-                "Du hast" + rupeeText + "  gefunden!",
-                "Vous obtenez" + rupeeText + " !"
-        });
+        customMessageManager->CreateMessage(
+            Randomizer::rupeeMessageTableID, rupee,
+            CustomMessage("You found" + rupeeText + " !", "Du hast" + rupeeText + "  gefunden!",
+                          "Vous obtenez" + rupeeText + " !", TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM));
     }
 }
 
-CustomMessageEntry Randomizer::GetRupeeMessage(u16 rupeeTextId) {
-    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::rupeeMessageTableID, rupeeTextId);
+CustomMessage Randomizer::GetRupeeMessage(u16 rupeeTextId) {
+    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::rupeeMessageTableID, rupeeTextId);
     CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{rupee}}", RandomElement(englishRupeeNames),
                                                  RandomElement(germanRupeeNames), RandomElement(frenchRupeeNames));
     return messageEntry;
 }
 
-CustomMessageMinimal NaviMessages[NUM_NAVI_MESSAGES] = { 
+CustomMessage NaviMessages[NUM_NAVI_MESSAGES] = { 
     
     { "%cMissing a small key in a dungeon?&Maybe the %rboss %chas it!", 
       "%cFehlt dir ein kleiner Schlüssel in &einem Labyrinth? Vielleicht hat ihn&ja der %rEndgegner%c!", 
@@ -4896,13 +4853,13 @@ void CreateNaviRandoMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::NaviRandoMessageTableID);
     for (unsigned int i = 0; i <= (NUM_NAVI_MESSAGES - 1); i++) {
-        customMessageManager->CreateMessage(Randomizer::NaviRandoMessageTableID, i,
-                                            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, NaviMessages[i].english,
-                                              NaviMessages[i].german, NaviMessages[i].french });
+        customMessageManager->CreateMessage(
+            Randomizer::NaviRandoMessageTableID, i,
+            NaviMessages[i]);
     }
 }
 
-CustomMessageMinimal IceTrapMessages[NUM_ICE_TRAP_MESSAGES] = {
+CustomMessage IceTrapMessages[NUM_ICE_TRAP_MESSAGES] = {
     { "You are a %bFOOL%w!",
       "Du bist ein %bDUMMKOPF%w!",
       "%bPauvre fou%w..." },
@@ -5002,19 +4959,18 @@ void CreateIceTrapRandoMessages() {
     customMessageManager->AddCustomMessageTable(Randomizer::IceTrapRandoMessageTableID);
     for (u8 i = 0; i <= (NUM_ICE_TRAP_MESSAGES - 1); i++) {
         customMessageManager->CreateMessage(Randomizer::IceTrapRandoMessageTableID, i,
-                                            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, IceTrapMessages[i].english,
-                                              IceTrapMessages[i].german, IceTrapMessages[i].french });
+                                            IceTrapMessages[i]);
     }
 
     // We only use this ice trap message for christmas, so we don't want it in the normal ice trap messages rotation
-    customMessageManager->CreateMessage(Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1,
-                                            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-                                              "This year for Christmas, all&you get is %BCOAL%w!",
-                                              "This year for Christmas, all&you get is %BCOAL%w!",
-                                              "Pour Noël, cette année, tu&n'auras que du %BCHARBON!&%rJoyeux Noël%w!" });
+    customMessageManager->CreateMessage(
+        Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1,
+        CustomMessage("This year for Christmas, all&you get is %BCOAL%w!",
+                      "This year for Christmas, all&you get is %BCOAL%w!",
+                      "Pour Noël, cette année, tu&n'auras que du %BCHARBON!&%rJoyeux Noël%w!"));
 }
 
-CustomMessageMinimal FireTempleGoronMessages[NUM_GORON_MESSAGES] = {
+CustomMessage FireTempleGoronMessages[NUM_GORON_MESSAGES] = {
     {
         "Are you the one they call %g@%w?^You look really weird for %rDarunia's kid.%w&Are you adopted?",
         "Du bist also der, den sie @ nennen?^Du siehst nicht aus als wärst du&%rDarunias Kind.%w Bist du adoptiert?",
@@ -5070,15 +5026,12 @@ void CreateFireTempleGoronMessages() {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(customMessageTableID);
     for (u8 i = 0; i <= NUM_GORON_MESSAGES - 1; i++) {
-        customMessageManager->CreateMessage(customMessageTableID, goronIDs[i], {
-            TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
-            FireTempleGoronMessages[i].english, FireTempleGoronMessages[i].german, FireTempleGoronMessages[i].french
-        });
+        customMessageManager->CreateMessage(customMessageTableID, goronIDs[i], FireTempleGoronMessages[i]);
     }
 }
 
-CustomMessageEntry Randomizer::GetGoronMessage(u16 index) {
-    CustomMessageEntry messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, goronIDs[index]);
+CustomMessage Randomizer::GetGoronMessage(u16 index) {
+    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, goronIDs[index]);
     CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{days}}", std::to_string(gSaveContext.totalDays));
     CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{a_btn}}", std::to_string(gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]));
     return messageEntry;

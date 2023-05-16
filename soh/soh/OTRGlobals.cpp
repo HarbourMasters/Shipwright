@@ -1677,22 +1677,43 @@ extern "C" void* getN64WeirdFrame(s32 i) {
 }
 
 extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize) {
+    CustomMessage customMessage("\x04\x1A\x08"
+                                "D\x96sirez-vous l'\x96quiper maintenant?"
+                                "\x09&&"
+                                "\x1B%g"
+                                "Oui"
+                                "&"
+                                "Non"
+                                "%w\x02",
+                                "\x04\x1A\x08"
+                                "M"
+                                "\x9A"
+                                "chtest Du es jetzt ausr\x9Esten?"
+                                "\x09&&"
+                                "\x1B%g"
+                                "Ja!"
+                                "&"
+                                "Nein!"
+                                "%w\x02",
+                                "\x04\x1A\x08"
+                                "Would you like to equip it now?"
+                                "\x09&&"
+                                "\x1B%g"
+                                "Yes"
+                                "&"
+                                "No"
+                                "%w\x02");
+    customMessage.Format();
+
     std::string postfix;
 
     if (gSaveContext.language == LANGUAGE_FRA) {
-        postfix = "\x04\x1A\x08" "D\x96sirez-vous l'\x96quiper maintenant?" "\x09&&"
-                  "\x1B%g" "Oui" "&"
-                           "Non" "%w\x02";
+        postfix = customMessage.GetFrench();
     } else if (gSaveContext.language == LANGUAGE_GER) {
-        postfix = "\x04\x1A\x08" "M""\x9A""chtest Du es jetzt ausr\x9Esten?" "\x09&&"
-                  "\x1B%g" "Ja!" "&"
-                           "Nein!" "%w\x02";
+        postfix = customMessage.GetGerman();
     } else {
-        postfix = "\x04\x1A\x08" "Would you like to equip it now?" "\x09&&"
-                  "\x1B%g" "Yes" "&"
-                           "No" "%w\x02";
+        postfix = customMessage.GetEnglish();
     }
-    CustomMessageManager::Instance->FormatCustomMessage(postfix);
     std::string str;
     std::string FixedBaseStr(src);
     int RemoveControlChar = FixedBaseStr.find_first_of("\x02");
@@ -1796,14 +1817,14 @@ extern "C" ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(
     return OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerCheck(randomizerCheck);
 }
 
-extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(Player* player) {
+CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {
     s16 giid;
     if (player->getItemEntry.objectId != OBJECT_INVALID) {
         giid = player->getItemEntry.getItemId;
     } else {
         giid = player->getItemId;
     }
-    const CustomMessageEntry getItemText = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
+    const CustomMessage getItemText = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
     return getItemText;
 }
 
@@ -1813,7 +1834,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     Font* font = &msgCtx->font;
     char* buffer = font->msgBuf;
     const int maxBufferSize = sizeof(font->msgBuf);
-    CustomMessageEntry messageEntry;
+    CustomMessage messageEntry;
     s16 actorParams = 0;
     if (gSaveContext.n64ddFlag) {
         if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
@@ -1969,21 +1990,19 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     if (textId == TEXT_RANDO_SAVE_VERSION_WARNING) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_RANDO_SAVE_VERSION_WARNING);
     }
-    if (messageEntry.textBoxType != -1) {
-        font->charTexBuf[0] = (messageEntry.textBoxType << 4) | messageEntry.textBoxPos;
+        font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
         switch (gSaveContext.language) {
             case LANGUAGE_FRA:
                 return msgCtx->msgLength = font->msgLength =
-                           CopyStringToCharBuffer(messageEntry.french, buffer, maxBufferSize);
+                           CopyStringToCharBuffer(messageEntry.GetFrench(), buffer, maxBufferSize);
             case LANGUAGE_GER:
                 return msgCtx->msgLength = font->msgLength =
-                           CopyStringToCharBuffer(messageEntry.german, buffer, maxBufferSize);
+                           CopyStringToCharBuffer(messageEntry.GetGerman(), buffer, maxBufferSize);
             case LANGUAGE_ENG:
             default:
                 return msgCtx->msgLength = font->msgLength =
-                           CopyStringToCharBuffer(messageEntry.english, buffer, maxBufferSize);
+                           CopyStringToCharBuffer(messageEntry.GetEnglish(), buffer, maxBufferSize);
         }
-    }
     return false;
 }
 
