@@ -270,6 +270,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Dungeon Items:Token Count", RSK_LACS_TOKEN_COUNT },
     { "Shuffle Dungeon Items:Key Rings", RSK_KEYRINGS },
     { "Shuffle Dungeon Items:Keyring Dungeon Count", RSK_KEYRINGS_RANDOM_COUNT },
+    { "Shuffle Dungeon Items:Gerudo Fortress", RSK_KEYRINGS_GERUDO_FORTRESS },
     { "Shuffle Dungeon Items:Forest Temple", RSK_KEYRINGS_FOREST_TEMPLE },
     { "Shuffle Dungeon Items:Fire Temple", RSK_KEYRINGS_FIRE_TEMPLE },
     { "Shuffle Dungeon Items:Water Temple", RSK_KEYRINGS_WATER_TEMPLE },
@@ -845,6 +846,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_KAK_50_SKULLS_HINT:
                     case RSK_WARP_SONG_HINTS:
                     case RSK_SCRUB_TEXT_HINT:
+                    case RSK_KEYRINGS_GERUDO_FORTRESS:
                     case RSK_KEYRINGS_FOREST_TEMPLE:
                     case RSK_KEYRINGS_FIRE_TEMPLE:
                     case RSK_KEYRINGS_WATER_TEMPLE:
@@ -2966,6 +2968,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_GERUDO_KEYS] = CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA);
     cvarSettings[RSK_KEYRINGS] = CVarGetInteger("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF);
     cvarSettings[RSK_KEYRINGS_RANDOM_COUNT] = CVarGetInteger("gRandomizeShuffleKeyRingsRandomCount", 8);
+    cvarSettings[RSK_KEYRINGS_GERUDO_FORTRESS] = CVarGetInteger("gRandomizeShuffleKeyRingsGerudoFortress", 0);
     cvarSettings[RSK_KEYRINGS_FOREST_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsForestTemple", 0);
     cvarSettings[RSK_KEYRINGS_FIRE_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsFireTemple", 0);
     cvarSettings[RSK_KEYRINGS_WATER_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsWaterTemple", 0);
@@ -3921,20 +3924,26 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Off - No dungeons will have their keys replaced with keyrings.\n"
                     "\n"
-                    "Random - A random amount of dungeons(0-8) will have their keys replaced with keyrings.\n"
+                    "Random - A random amount of dungeons(0-9) will have their keys replaced with keyrings.\n"
                     "\n"
                     "Count - A specified amount of randomly selected dungeons will have their keys replaced with keyrings.\n"
                     "\n"
-                    "Selection - Hand select which dungeons will have their keys replaced with keyrings."
+                    "Selection - Hand select which dungeons will have their keys replaced with keyrings.\n"
+                    "\n"
+                    "Selecting key ring for dungeons will have no effect if Small Keys are set to Start With or Vanilla.\n"
+                    "\n"
+                    "Selecting key ring for Thieves' Hideout will have no effect if Thieves' Hideout keys are in vanilla "
+                    "locations or Gerudo's Fortress is set to Fast (Rescue One Carpenter)."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleKeyRings", randoShuffleKeyRings, RO_KEYRINGS_OFF);
                 ImGui::PopItemWidth();
                 switch (CVarGetInteger("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF)) {
                     case RO_KEYRINGS_COUNT:
                         UIWidgets::PaddedEnhancementSliderInt("Key Ring Count: %d", "##RandomizeShuffleKeyRingsRandomCount",
-                                                        "gRandomizeShuffleKeyRingsRandomCount", 1, 8, "", 8, true, true, false);
+                                                        "gRandomizeShuffleKeyRingsRandomCount", 1, 9, "", 9, true, true, false);
                         break;
                     case RO_KEYRINGS_SELECTION:
+                        UIWidgets::EnhancementCheckbox("Gerudo Fortress##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGerudoFortress");
                         UIWidgets::EnhancementCheckbox("Forest Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsForestTemple");
                         UIWidgets::EnhancementCheckbox("Fire Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsFireTemple");
                         UIWidgets::EnhancementCheckbox("Water Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsWaterTemple");

@@ -236,7 +236,7 @@ namespace Settings {
   Option LACSDungeonCount    = Option::U8  ("Dungeon Count",           {NumOpts(0, 8)},                                                        {lacsDungeonCountDesc},                                                                                           OptionCategory::Setting,    1,                          true);
   Option LACSTokenCount      = Option::U8  ("Token Count",             {NumOpts(0, 100)},                                                      {lacsTokenCountDesc},                                                                                             OptionCategory::Setting,    1,                          true);
   Option KeyRings            = Option::U8  ("Key Rings",               {"Off", "Random", "Count", "Selection"},                                {keyRingDesc});
-  Option KeyRingsRandomCount = Option::U8  ("Keyring Dungeon Count",   {NumOpts(0, 8)},                                                        {keyRingDesc},                                                                                                    OptionCategory::Setting,    1);
+  Option KeyRingsRandomCount = Option::U8  ("Keyring Dungeon Count",   {NumOpts(0, 9)},                                                        {keyRingDesc},                                                                                                    OptionCategory::Setting,    1);
   Option RingFortress        = Option::Bool("Gerudo Fortress",         {"Off", "On"},                                                          {keyRingDesc},                                                                                                    OptionCategory::Setting);
   Option RingForest          = Option::Bool("Forest Temple",           {"Off", "On"},                                                          {keyRingDesc},                                                                                                    OptionCategory::Setting);
   Option RingFire            = Option::Bool("Fire Temple",             {"Off", "On"},                                                          {keyRingDesc},                                                                                                    OptionCategory::Setting);
@@ -2155,7 +2155,8 @@ namespace Settings {
         LACSTokenCount.Hide();
       }
 
-      if (KeyRings.IsNot(KEYRINGS_OFF)) {
+      // Only show dungeons when keyring selection is enabled
+      if (KeyRings.Is(KEYRINGS_SELECTION)) {
         for (Option *option : keyRingOptions) {
           option->Unhide();
         }
@@ -2829,6 +2830,7 @@ namespace Settings {
 
     KeyRings.SetSelectedIndex(cvarSettings[RSK_KEYRINGS]);
     KeyRingsRandomCount.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_RANDOM_COUNT]);
+    RingFortress.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_GERUDO_FORTRESS]);
     RingForest.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_FOREST_TEMPLE]);
     RingFire.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_FIRE_TEMPLE]);
     RingWater.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_WATER_TEMPLE]);
@@ -2923,22 +2925,20 @@ namespace Settings {
       }
     }
 
-    std::vector<uint8_t> randKeyRingDungeons = {};
     //Set key ring for each dungeon
     for (size_t i = 0; i < dungeons.size(); i++) {
       dungeons[i]->ClearKeyRing();
-      if (dungeons[i]->GetSmallKeyCount() > 0) {
-        randKeyRingDungeons.push_back(i);
-      }
     }
-    if (KeyRings.Is(KEYRINGS_RANDOM) || KeyRings.Is(KEYRINGS_RANDOM_COUNT)) {
-      int keyRingCount = KeyRings.Is(KEYRINGS_RANDOM_COUNT) ? KeyRingsRandomCount.Value<uint8_t>() : Random(0, randKeyRingDungeons.size());
-      Shuffle(randKeyRingDungeons);
-
-      for (uint8_t i = 0; i < keyRingCount; i++) {
-        dungeons[randKeyRingDungeons[i]]->SetKeyRing();
+    if (KeyRings) {
+      // Random Key Rings
+      if (KeyRings.Is(KEYRINGS_RANDOM) || KeyRings.Is(KEYRINGS_RANDOM_COUNT)) {
+        auto keyRings = keyRingOptions;
+        int keyRingCount = KeyRings.Is(KEYRINGS_RANDOM_COUNT) ? KeyRingsRandomCount.Value<uint8_t>() : Random(0, keyRings.size());
+        Shuffle(keyRings);
+        for (size_t i = 0; i < keyRingCount; i++) {
+          keyRings[i]->SetSelectedIndex(ON);
+        }
       }
-    } else if (KeyRings.Is(KEYRINGS_SELECTION)) {
       if (RingWell) {
         BottomOfTheWell.SetKeyRing();
       }
