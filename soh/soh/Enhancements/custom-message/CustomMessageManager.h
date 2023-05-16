@@ -20,38 +20,73 @@
 
 class CustomMessage {
   public:
-  CustomMessage() = default;
-  CustomMessage(std::string english_, std::string german_, std::string french_, TextBoxType type_ = TEXTBOX_TYPE_BLACK,
-                TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
+    CustomMessage() = default;
+    CustomMessage(std::string english_, std::string german_, std::string french_,
+                  TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
 
-  const std::string& GetEnglish() const;
-  const std::string& GetFrench() const;
-  const std::string& GetGerman() const;
-  const TextBoxType& GetTextBoxType() const;
-  const TextBoxPosition& GetTextBoxPosition() const;
+    const std::string& GetEnglish() const;
+    const std::string& GetFrench() const;
+    const std::string& GetGerman() const;
+    const TextBoxType& GetTextBoxType() const;
+    const TextBoxPosition& GetTextBoxPosition() const;
 
-  CustomMessage operator+ (const CustomMessage& right) const;
+    CustomMessage operator+(const CustomMessage& right) const;
+    CustomMessage operator+(const std::string& right) const;
+    void operator+=(const std::string& right);
+    bool operator==(const CustomMessage& right) const;
+    bool operator!=(const CustomMessage& right) const;
 
-  CustomMessage operator+ (const std::string& right) const;
+    /**
+     * @brief Finds an instance of oldStr in each language of the CustomMessage
+     * and replaces it with newStr.
+     *
+     * @param oldStr the string to be replaced
+     * @param newStr the string to replace with
+     */
+    void Replace(std::string&& oldStr, std::string&& newStr);
 
-  void operator += (const std::string& right);
+    /**
+     * @brief Finds an instance of oldStr in each language of the CustomMessage,
+     * and replaces it with the corresponding new string provided for each language.
+     *
+     * @param oldStr the string to be replaced
+     * @param newEnglish the new string for the English message
+     * @param newGerman the new string for the German message
+     * @param newFrench the new string for the French message
+     */
+    void Replace(std::string&& oldStr, std::string&& newEnglish, std::string&& newGerman, std::string&& newFrench);
 
-  bool operator== (const CustomMessage& right) const;
+    /**
+     * @brief Capitalizes the first letter of the string for each language.
+     */
+    void Capitalize();
 
-  bool operator!= (const CustomMessage& right) const;
+    /**
+     * @brief Replaces special characters (things like diacritics for non-english langugages)
+     * with the control codes used to display them in OoT's textboxes.
+     */
+    void ReplaceSpecialCharacters();
 
-  void Replace(std::string&& oldStr, std::string&& newStr);
+    /**
+     * @brief Replaces our color variable strings with the OoT control codes.
+     */
+    void ReplaceColors();
 
-  void Replace(std::string&& oldStr, std::string&& newEnglish, std::string&& newGerman, std::string&& newFrench);
+    /**
+     * @brief Replaces various symbols with the control codes necessary to
+     * display them in OoT's textboxes. i.e. special characters, colors, newlines,
+     * wait for input, etc. Also adds the item icon to each page of the textbox.
+     *
+     * @param iid the ItemID whose icon should be displayed in this message's textbox.
+     */
+    void Format(ItemID iid);
 
-  void Capitalize();
-
-  void ReplaceSpecialCharacters();
-  void ReplaceColors();
-
-  void Format(ItemID iid);
-
-  void Format();
+    /**
+     * @brief Replaces various symbols with the control codes necessary to
+     * display them in OoT's textboxes. i.e. special characters, colors, newlines,
+     * wait for input, etc.
+     */
+    void Format();
 
   private:
     const std::string MESSAGE_END() const;
@@ -71,49 +106,74 @@ class CustomMessage {
 typedef std::unordered_map<uint16_t, CustomMessage> CustomMessageTable;
 
 class CustomMessageManager {
-  private: 
+  private:
     std::unordered_map<std::string, CustomMessageTable> messageTables;
 
-    void ReplaceSpecialCharacters(std::string &string);
+    void ReplaceSpecialCharacters(std::string& string);
     void ReplaceColors(std::string& string);
-    bool InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessage messages);
+    bool InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessage message);
 
   public:
     static CustomMessageManager* Instance;
 
     CustomMessageManager() = default;
 
-    /*
-    Formats the provided Custom Message Entry and inserts it into the table with the provided tableID,
-    with the provided giid (getItemID) as its key. This function also inserts the icon corresponding to
-    the provided iid (itemID) at the beginning of each page of the textbox.
-    */
-    bool CreateGetItemMessage(std::string tableID, uint16_t giid, ItemID iid, CustomMessage messages);
+    /**
+     * @brief Formats the provided Custom Message Entry and inserts it into the table with the provided tableID,
+     * with the provided giid (getItemID) as its key. This function also inserts the icon corresponding to
+     * the provided iid (itemID) at the beginning of each page of the textbox.
+     *
+     * @param tableID the ID of the custom message table
+     * @param giid the GetItemID of the item (or the textID you want to use to retrieve it later)
+     * @param iid the ItemID of the item
+     * @param message the CustomMessage instance being added
+     * @return true if adding the custom message succeeds, or
+     * @return false if it does not.
+     */
+    bool CreateGetItemMessage(std::string tableID, uint16_t giid, ItemID iid, CustomMessage message);
 
-    /*
-    Formats the provided Custom Message Entry and inserts it into the table with the provided tableID,
-    with the provided textID as its key.
-    */
-    bool CreateMessage(std::string tableID, uint16_t textID, CustomMessage messages);
+    /**
+     * @brief Formats the provided Custom Message Entry and inserts it into the table with the provided tableID,
+     * with the provided textID as its key.
+     *
+     * @param tableID the ID of the custom message table
+     * @param textID the ID to use for later retrieval
+     * @param message the CustomMessage instance being added
+     * @return true if adding the custom message succeeds, or
+     * @return false if it does not.
+     */
+    bool CreateMessage(std::string tableID, uint16_t textID, CustomMessage message);
 
-    /*
-    Retrieves a message from the table with id tableID with the provided textID.
-    Returns a NULL_CUSTOM_MESSAGE if the message or table does not exist.
-    */
+    /**
+     * @brief Retrieves a message from the table with id tableID with the provided textID.
+     * Throws an exception if either the table or the message do not exist. Note: this
+     * returns a copy of the CustomMessage in the table on purpose, as it is sometimes normal
+     * to modify it's contents between retrieval and displaying it in game, in order to
+     * display some dynamic data like gameplay stats.
+     *
+     * @param tableID the ID of the custom message table
+     * @param textID the ID of the message you want to retrieve
+     * @return CustomMessage
+     */
     CustomMessage RetrieveMessage(std::string tableID, uint16_t textID);
 
-    /*
-    Empties out the message table identified by tableID.
-    Returns true if successful and false if not (for instance
-    if a table with the provided tableID does not exist).
-    */
+    /**
+     * @brief Empties out the message table identified by tableID.
+     *
+     * @param tableID the ID of the table to clear
+     * @return true if it was cleared successfully, or
+     * @return false if the table did not exist
+     */
     bool ClearMessageTable(std::string tableID);
 
-    /*
-    Creates an empty CustomMessageTable accessible at the provided
-    tableID, returns true if creation was successful and false
-    if not.
-    */
+    /**
+     * @brief Creates an empty CustomMessageTable accessible at the provided tableID
+     *
+     * @param tableID the ID of the table to create
+     * @return true if the table was created successfully, or
+     * @return false if not (i.e. because a table with that ID
+     * already exists.)
+     */
     bool AddCustomMessageTable(std::string tableID);
 };
 
@@ -130,8 +190,8 @@ class MessageNotFoundException : public std::exception {
         : messageTableId(std::move(messageTableId_)), textId(textId_) {
     }
     virtual const char* what() const {
-      char* message;
-      sprintf(message, "Message from table %s with textId %u was not found", messageTableId.c_str(), textId);
-      return message;
+        char* message;
+        sprintf(message, "Message from table %s with textId %u was not found", messageTableId.c_str(), textId);
+        return message;
     }
 };
