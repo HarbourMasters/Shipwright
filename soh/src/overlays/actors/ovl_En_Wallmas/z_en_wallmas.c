@@ -497,9 +497,8 @@ void EnWallmas_TakePlayer(EnWallmas* this, PlayState* play) {
 
 void EnWallmas_WaitForProximity(EnWallmas* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    if (this->actor.params == WMT_SHADOWTAG) {
-        EnWallmas_TimerInit(this, play);
-    } else if (Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) < 200.0f) {
+    if (this->actor.params == WMT_SHADOWTAG ||
+        Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) < 200.0f) {
         EnWallmas_TimerInit(this, play);
     }
 }

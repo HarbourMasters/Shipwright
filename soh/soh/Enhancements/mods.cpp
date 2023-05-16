@@ -343,27 +343,27 @@ void RegisterRupeeDash() {
 }
 
 void RegisterShadowTag() {
-    static uint16_t stSpawn = 0;
-    static uint16_t stDelay = 60;
+    static bool shouldSpawn = false;
+    static uint16_t delayTimer = 60;
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
         if (!CVarGetInteger("gShadowTag", 0)) {
             return;
         }
-        if (stSpawn == 1 && (stDelay <= 0)) {
+        if (shouldSpawn && (delayTimer <= 0)) {
             Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3, false);
-            stSpawn = 0;
+            shouldSpawn = false;
         } else {
-            stDelay--;
+            delayTimer--;
         }
     });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
-        stSpawn = 1;
-        stDelay = 60;
+        shouldSpawn = true;
+        delayTimer = 60;
     });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
-        stSpawn = 1;
-        stDelay = 60;
+        shouldSpawn = true;
+        delayTimer = 60;
     });
 }
 
