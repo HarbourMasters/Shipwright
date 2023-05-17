@@ -99,16 +99,7 @@ namespace SohGui {
 #endif
             { "sdl", "SDL Audio" }
     };
-    static const inline std::vector<std::pair<const char*, const char*>> renderingBackends = {
-#ifdef _WIN32
-            { "dx11", "DirectX" },
-#endif
-#ifndef __WIIU__
-            { "sdl", "OpenGL" }
-#else
-            { "wiiu", "GX2" }
-#endif
-    };
+
 
     // MARK: - Helpers
 
@@ -212,11 +203,6 @@ namespace SohGui {
 }
 
     void SetupHooks() {
-#ifdef __APPLE__
-        if (Metal_IsSupported()) {
-            renderingBackends.insert(renderingBackends.begin(), { "sdl", "Metal" });
-        }
-#endif
         LUS::RegisterHook<LUS::AudioInit>(UpdateAudio);
         LUS::RegisterHook<LUS::GfxInit>(UpdateAudio);
     }

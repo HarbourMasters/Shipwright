@@ -333,25 +333,32 @@ void DrawSettingsMenu() {
 
             UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 
-            // OTRTODO: fix this
-            // ImGui::Text("Renderer API (Needs reload)");
-            // auto currentRenderingBackend = LUS::GetCurrentRenderingBackend();
+            
+            static std::unordered_map<LUS::WindowBackend, const char*> windowBackendNames = {
+                { LUS::WindowBackend::DX11, "DirectX" },
+                { LUS::WindowBackend::SDL_OPENGL, "OpenGL"},
+                { LUS::WindowBackend::SDL_METAL, "Metal" },
+                { LUS::WindowBackend::GX2, "GX2"}
+            };
 
-            // if (renderingBackends.size() <= 1) {
-            //     UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
-            // }
-            // if (ImGui::BeginCombo("##RApi", currentRenderingBackend.second)) {
-            //     for (uint8_t i = 0; i < renderingBackends.size(); i++) {
-            //         if (ImGui::Selectable(renderingBackends[i].second, renderingBackends[i] == currentRenderingBackend)) {
-            //             LUS::SetCurrentRenderingBackend(i, renderingBackends[i]);
-            //         }
-            //     }
+            ImGui::Text("Renderer API (Needs reload)");
+            LUS::WindowBackend currentRenderingBackend = LUS::Context::GetInstance()->GetWindow()->GetWindowBackend();
 
-            //     ImGui::EndCombo();
-            // }
-            // if (renderingBackends.size() <= 1) {
-            //     UIWidgets::ReEnableComponent("");
-            // }
+            if (LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size() <= 1) {
+                UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
+            }
+            if (ImGui::BeginCombo("##RApi", windowBackendNames[currentRenderingBackend])) {
+                for (size_t i = 0; i < LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size(); i++) {
+                    auto backend = LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->data()[i];
+                    if (ImGui::Selectable(windowBackendNames[backend], backend == currentRenderingBackend)) {
+                        LUS::Context::GetInstance()->GetWindow()->SetWindowBackend(backend);
+                    }
+                }
+                ImGui::EndCombo();
+            }
+            if (LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size() <= 1) {
+                UIWidgets::ReEnableComponent("");
+            }
 
             if (LUS::Context::GetInstance()->GetWindow()->CanDisableVerticalSync()) {
                 UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", "gVsyncEnabled", true, false);
