@@ -568,6 +568,9 @@ void FileChoose_StartBossRushMenu(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
 
     this->logoAlpha -= 25;
+    this->bossRushUIAlpha = 0;
+    this->bossRushPulsatingTextColor = 0;
+    this->bossRushPulsatingTextColorDirection = 0;
 
     if (this->logoAlpha >= 0) {
         this->logoAlpha = 0;
@@ -659,22 +662,47 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
     Input* input = &this->state.input[0];
     bool dpad = CVarGetInteger("gDpadText", 0);
 
+    // Fade in elements after opening Boss Rush options menu
+    this->bossRushUIAlpha += 25;
+    if (this->bossRushUIAlpha > 255) {
+        this->bossRushUIAlpha = 255;
+    }
+
+    // Cycle from 0 to 255 and back to 0 again.
+    if (!this->bossRushPulsatingTextColorDirection) {
+        this->bossRushPulsatingTextColor += 5;
+        if (this->bossRushPulsatingTextColor == 255) {
+            this->bossRushPulsatingTextColorDirection = 1;
+        }
+    } else {
+        this->bossRushPulsatingTextColor -= 5;
+        if (this->bossRushPulsatingTextColor == 0) {
+            this->bossRushPulsatingTextColorDirection = 0;
+        }
+    }
+    
+    // Move menu selection up or down.
     if (ABS(this->stickRelY) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
+        // Move down
         if (this->stickRelY < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN))) {
+            // When selecting past the last option, cycle back to the first option.
             if ((this->bossRushIndex + 1) > BOSSRUSH_OPTIONS_AMOUNT - 1) {
                 this->bossRushIndex = 0;
                 this->bossRushOffset = 0;
             } else {
                 this->bossRushIndex++;
+                // When last visible option is selected when moving down, offset the list down by one.
                 if (this->bossRushIndex - this->bossRushOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN - 1) {
                     this->bossRushOffset++;
                 }
             }
         } else if (this->stickRelY > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DUP))) {
+            // When selecting past the first option, cycle back to the last option and offset the list to view it properly.
             if ((this->bossRushIndex - 1) < 0) {
                 this->bossRushIndex = BOSSRUSH_OPTIONS_AMOUNT - 1;
                 this->bossRushOffset = this->bossRushIndex - BOSSRUSH_MAX_OPTIONS_ON_SCREEN + 1;
             } else {
+                // When first visible option is selected when moving up, offset the list up by one.
                 if (this->bossRushIndex - this->bossRushOffset == 0) {
                     this->bossRushOffset--;
                 }
@@ -682,17 +710,22 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
             }
         }
 
+        this->bossRushPulsatingTextColor = 255;
+        this->bossRushPulsatingTextColorDirection = 1;
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
     }
 
+    // Cycle through choices for currently selected option.
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
+            // If exceeding the amount of choices for the selected option, cycle back to the first.
             if ((gSaveContext.bossRushSelectedOptions[this->bossRushIndex] + 1) == BossRush_GetSettingOptionsAmount(this->bossRushIndex)) {
                 gSaveContext.bossRushSelectedOptions[this->bossRushIndex] = 0;
             } else {
                 gSaveContext.bossRushSelectedOptions[this->bossRushIndex]++;
             }
         } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
+            // If cycling back when already at the first choice for the selected option, cycle back to the last choice.
             if ((gSaveContext.bossRushSelectedOptions[this->bossRushIndex] - 1) < 0) {
                 gSaveContext.bossRushSelectedOptions[this->bossRushIndex] = BossRush_GetSettingOptionsAmount(this->bossRushIndex) - 1;
             } else {
@@ -708,6 +741,7 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
         return;
     }
 
+    // Load into the game.
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->buttonIndex = 0xFE;
@@ -1569,15 +1603,43 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         }
     } else if (this->configMode == CM_BOSS_RUSH_MENU) {
 
-        uint8_t offset = this->bossRushOffset;
+        uint8_t listOffset = this->bossRushOffset;
+        uint8_t textAlpha = this->bossRushUIAlpha;
 
-        for (uint8_t i = offset; i - offset < BOSSRUSH_MAX_OPTIONS_ON_SCREEN; i++) {
-            uint8_t fontColor = 255;
+        // Draw options. There's more options than what fits on the screen, so the visible options
+        // depend on the current offset of the list. Currently selected option pulses in
+        // color and has arrows surrounding the option.
+        for (uint8_t i = listOffset; i - listOffset < BOSSRUSH_MAX_OPTIONS_ON_SCREEN; i++) {
+            uint16_t textYOffset = (i - listOffset) * 16;
+            uint8_t selectedOptionColor = 255;
             if (this->bossRushIndex == i) {
-                fontColor = 0;
+                selectedOptionColor = this->bossRushPulsatingTextColor;
             }
-            Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingName(i, gSaveContext.language), 65, (85 + ((i - offset) * 16)), 255, 255, 0, 255, 0.8f, true);
-            Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, gSaveContext.bossRushSelectedOptions[i], gSaveContext.language), 165, (85 + ((i - offset) * 16)), 255, 255, fontColor, 255, 0.8f, true);
+
+            // Option name.
+            Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingName(i, gSaveContext.language), 
+                65, (85 + textYOffset), 255, 255, 0, textAlpha, 0.8f, true);
+
+            // Selected choice for option.
+            Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, gSaveContext.bossRushSelectedOptions[i], gSaveContext.language), 
+                165, (85 + textYOffset), 255, 255, selectedOptionColor, textAlpha, 0.8f, true);
+
+            // Draw arrows around selected option.
+            if (this->bossRushIndex == i) {
+                /*Gfx_SetupDL_39Opa(this->state.gfxCtx);
+                gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+                gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
+                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                                    G_TX_NOLOD);
+                FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR,
+                                       this->stickLeftPrompt.arrowColorG, this->stickLeftPrompt.arrowColorB,
+                                       this->stickLeftPrompt.arrowColorA, this->stickLeftPrompt.arrowTexX,
+                                       this->stickLeftPrompt.arrowTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+                FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
+                                       this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
+                                       this->stickRightPrompt.arrowColorA, this->stickRightPrompt.arrowTexX,
+                                       this->stickRightPrompt.arrowTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);*/
+            }
         }
 
     } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY && this->configMode != CM_START_BOSS_RUSH_MENU &&

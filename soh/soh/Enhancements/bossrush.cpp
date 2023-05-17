@@ -250,14 +250,38 @@ extern "C" void BossRush_InitSave() {
     }
 
     gSaveContext.isBossRushPaused = 1;
-    gSaveContext.linkAge = LINK_AGE_CHILD;
     gSaveContext.entranceIndex = 107;
     gSaveContext.cutsceneIndex = 0x8000;
-    gSaveContext.healthCapacity = 160;
-    gSaveContext.health = 160;
     gSaveContext.magicLevel = 0;
     gSaveContext.magic = 0x30;
     gSaveContext.isMagicAcquired = 1;
+
+    uint16_t health = 16;
+    switch (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_HEARTS]) { 
+        case BR_OPTION_HEARTS_CHOICE_7:
+            health *= 7;
+            break;
+        case BR_OPTION_HEARTS_CHOICE_10:
+            health *= 10;
+            break;
+        case BR_OPTION_HEARTS_CHOICE_15:
+            health *= 15;
+            break;
+        case BR_OPTION_HEARTS_CHOICE_20:
+            health *= 20;
+            break;
+        case BR_OPTION_HEARTS_CHOICE_3:
+            health *= 3;
+            break;
+        case BR_OPTION_HEARTS_CHOICE_5:
+            health *= 5;
+            break;
+        default:
+            break;
+    }
+
+    gSaveContext.healthCapacity = health;
+    gSaveContext.health = health;
 
     // Skip boss cutscenes
     gSaveContext.eventChkInf[7] |= 1;    // gohma
@@ -276,10 +300,18 @@ extern "C" void BossRush_InitSave() {
 
     static std::array<u8, 24> brItems = {
         ITEM_STICK,     ITEM_NUT,  ITEM_BOMB, ITEM_BOW,      ITEM_NONE,        ITEM_NONE,
-        ITEM_SLINGSHOT, ITEM_NONE, ITEM_NONE, ITEM_LONGSHOT, ITEM_NONE,        ITEM_NONE,
+        ITEM_SLINGSHOT, ITEM_NONE, ITEM_NONE, ITEM_HOOKSHOT, ITEM_NONE,        ITEM_NONE,
         ITEM_BOOMERANG, ITEM_LENS, ITEM_NONE, ITEM_HAMMER,   ITEM_ARROW_LIGHT, ITEM_NONE,
         ITEM_NONE,      ITEM_NONE, ITEM_NONE, ITEM_NONE,     ITEM_NONE,        ITEM_NONE,
     };
+
+    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_LONGSHOT] == BR_OPTION_LONGSHOT_CHOICE_YES) {
+        brItems[9] = ITEM_LONGSHOT;
+    }
+
+    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOTTLE] == BR_OPTION_BOTTLE_CHOICE_YES) {
+        brItems[18] = ITEM_BOTTLE;
+    }
 
     static std::array<s8, 16> brAmmo = { 5, 5, 10, 10, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -294,7 +326,16 @@ extern "C" void BossRush_InitSave() {
     gSaveContext.inventory.equipment = 4947;
     gSaveContext.inventory.upgrades = 1196105;
 
-    BossRush_SetEquipment(LINK_AGE_CHILD);
+    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOSSES] == BR_OPTION_BOSSES_CHOICE_ADULT) {
+        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE);
+        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN);
+        Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY);
+        gSaveContext.linkAge = LINK_AGE_ADULT;
+        BossRush_SetEquipment(LINK_AGE_ADULT);
+    } else {
+        gSaveContext.linkAge = LINK_AGE_CHILD;
+        BossRush_SetEquipment(LINK_AGE_CHILD);
+    }
 }
 
 void BossRush_SetEquipment(uint8_t linkAge) {
@@ -314,10 +355,10 @@ void BossRush_SetEquipment(uint8_t linkAge) {
     // Set Adult equipment. Used when first 3 bosses are defeated and the player is set to adult.
     } else {
         brButtonItems = {
-            ITEM_SWORD_MASTER, ITEM_BOW, ITEM_LONGSHOT, ITEM_HAMMER, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE
+            ITEM_SWORD_MASTER, ITEM_BOW, ITEM_HAMMER, ITEM_BOMB, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE
         };
 
-        brCButtonSlots = { SLOT_BOW, SLOT_HOOKSHOT, SLOT_HAMMER, SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE };
+        brCButtonSlots = { SLOT_BOW, SLOT_HAMMER, SLOT_BOMB, SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE };
 
         gSaveContext.equips.equipment = 4658;
     }

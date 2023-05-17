@@ -6368,7 +6368,7 @@ void Interface_DrawTextCharacter(GraphicsContext* gfx, int16_t x, int16_t y, voi
 
     if (textShadow) {
         // Draw drop shadow
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, 255);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, colorA);
         gSPTextureRectangle(POLY_OPA_DISP++, (x + R_TEXT_DROP_SHADOW_OFFSET) << 2, (y + R_TEXT_DROP_SHADOW_OFFSET) << 2,
                             (x + R_TEXT_DROP_SHADOW_OFFSET + sCharTexSize) << 2,
                             (y + R_TEXT_DROP_SHADOW_OFFSET + sCharTexSize) << 2, G_TX_RENDERTILE, 0, 0, sCharTexScale,

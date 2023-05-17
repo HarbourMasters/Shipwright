@@ -1501,6 +1501,9 @@ typedef struct {
     u8 stickAnimState;
     uint8_t bossRushIndex;
     uint8_t bossRushOffset;
+    int16_t bossRushUIAlpha;
+    int16_t bossRushPulsatingTextColor;
+    uint8_t bossRushPulsatingTextColorDirection;
 } FileChooseContext; // size = 0x1CAE0
 
 typedef enum {
