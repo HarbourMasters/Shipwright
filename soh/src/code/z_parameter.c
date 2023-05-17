@@ -3,6 +3,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/do_action_static/do_action_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
+#include "soh_assets.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "libultraship/bridge.h"
@@ -16,30 +17,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 
-static uint16_t _doActionTexWidth, _doActionTexHeight = -1;
-static uint16_t DO_ACTION_TEX_WIDTH() {
-    return 48;
-
-    // TODO: Figure out why Ship::Texture is not returning a valid width
-    if (_doActionTexWidth == -1)
-        _doActionTexWidth = GetResourceTexWidthByName(gCheckDoActionENGTex, false);
-    return _doActionTexWidth;
-}
-static uint16_t DO_ACTION_TEX_HEIGHT() {
-    return 16;
-
-    // TODO: Figure out why Ship::Texture is not returning a valid height
-    if (_doActionTexHeight == -1)
-        _doActionTexHeight = GetResourceTexHeightByName(gCheckDoActionENGTex, false);
-    return _doActionTexHeight;
-}
-
-static uint32_t _doActionTexSize = -1;
-static uint32_t DO_ACTION_TEX_SIZE() {
-    if (_doActionTexSize == -1)
-        _doActionTexSize = GetResourceTexSizeByName(gCheckDoActionENGTex, false);
-    return _doActionTexSize;
-}
+#define DO_ACTION_TEX_WIDTH() 48
+#define DO_ACTION_TEX_HEIGHT() 16
+#define DO_ACTION_TEX_SIZE() ((DO_ACTION_TEX_WIDTH() * DO_ACTION_TEX_HEIGHT()) / 2)
 
 // The button statuses include the A button when most things are only the equip item buttons
 // So, when indexing into it with a item button index, we need to adjust
@@ -224,6 +204,8 @@ static const char* actionsTbl[] =
     gNum7DoActionENGTex,
     gNum8DoActionENGTex,
 };
+
+static const char gDoEmptyTexture[] = "__OTR__textures/virtual/gEmptyTexture";
 
 // original name: "alpha_change"
 void Interface_ChangeAlpha(u16 alphaType) {
@@ -1417,7 +1399,7 @@ void Inventory_SwapAgeEquipment(void) {
             if (i != 0) {
                 gSaveContext.childEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
             } else {
-                if (CVarGetInteger("gSwitchAge", 0) && 
+                if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && 
                     (gSaveContext.infTable[29] & 1)) {
                     gSaveContext.childEquips.buttonItems[i] = ITEM_NONE;
                 } else {
@@ -1501,7 +1483,8 @@ void Inventory_SwapAgeEquipment(void) {
         gSaveContext.adultEquips.equipment = gSaveContext.equips.equipment;
 
         if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE ||
-            CVarGetInteger("gSwitchAge", 0)) {
+            CVarGetInteger("gSwitchAge", 0) ||
+            CVarGetInteger("gSwitchTimeline", 0)) {
             for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                 gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
 
@@ -1542,7 +1525,7 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = 0x1111;
         }
 
-        if (CVarGetInteger("gSwitchAge", 0) &&
+        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) &&
             (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
             gSaveContext.infTable[29] |= 1;
             if (gSaveContext.childEquips.equipment == 0) {
@@ -1552,7 +1535,7 @@ void Inventory_SwapAgeEquipment(void) {
             }
         }
     }
-
+    CVarSetInteger("gSwitchTimeline", 0);
     temp = gEquipMasks[EQUIP_SHIELD] & gSaveContext.equips.equipment;
     if (temp != 0) {
         temp >>= gEquipShifts[EQUIP_SHIELD];
@@ -1702,7 +1685,7 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
         return;
     }
     // Count any bombchu pack as bombchus
-    if (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) {
+    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) || item == RG_PROGRESSIVE_BOMBCHUS) {
         if (gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = 0) {
             gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
@@ -2288,6 +2271,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                     }
 
                     gSaveContext.inventory.items[temp + i] = item;
+                    break;
                 }
             }
         } else {
@@ -2544,6 +2528,19 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         Rupees_ChangeBy(1);
         Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
         gSaveContext.sohStats.itemTimestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_PROGRESSIVE_BOMBCHUS) {
+        if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
+            INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
+            AMMO(ITEM_BOMBCHU) = 20;
+        } else {
+            AMMO(ITEM_BOMBCHU) += AMMO(ITEM_BOMBCHU) < 5 ? 10 : 5;
+            if (AMMO(ITEM_BOMBCHU) > 50) {
+                AMMO(ITEM_BOMBCHU) = 50;
+            }
+        }
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
@@ -2834,11 +2831,7 @@ bool Inventory_HatchPocketCucco(PlayState* play) {
 }
 
 void func_80086D5C(s32* buf, u16 size) {
-    u16 i;
-
-    //buf = GetResourceDataByName(buf, false);
-
-    for (i = 0; i < size; i++) {
+    for (u16 i = 0; i < size; i++) {
         buf[i] = 0;
     }
 }
@@ -2851,46 +2844,25 @@ void Interface_LoadActionLabel(InterfaceContext* interfaceCtx, u16 action, s16 l
 
     char* doAction = actionsTbl[action];
 
-    char newName[512];
+    static char newName[4][512];
     if (gSaveContext.language != LANGUAGE_ENG) {
         size_t length = strlen(doAction);
-        strcpy(newName, doAction);
+        strcpy(newName[loadOffset], doAction);
         if (gSaveContext.language == LANGUAGE_FRA) {
-            newName[length - 6] = 'F';
-            newName[length - 5] = 'R';
-            newName[length - 4] = 'A';
+            newName[loadOffset][length - 6] = 'F';
+            newName[loadOffset][length - 5] = 'R';
+            newName[loadOffset][length - 4] = 'A';
         } else if (gSaveContext.language == LANGUAGE_GER) {
-            newName[length - 6] = 'G';
-            newName[length - 5] = 'E';
-            newName[length - 4] = 'R';
+            newName[loadOffset][length - 6] = 'G';
+            newName[loadOffset][length - 5] = 'E';
+            newName[loadOffset][length - 4] = 'R';
         }
-        doAction = newName;
+        doAction = newName[loadOffset];
     }
-
-    /*
-    if (gSaveContext.language != LANGUAGE_ENG) {
-        action += DO_ACTION_MAX;
-    }
-
-    if (gSaveContext.language == LANGUAGE_FRA) {
-        action += DO_ACTION_MAX;
-    }*/
-
-
-    if (action != DO_ACTION_NONE) {
-        //osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
-        memcpy(interfaceCtx->doActionSegment + (loadOffset * DO_ACTION_TEX_SIZE()), GetResourceDataByName(doAction, false),
-               DO_ACTION_TEX_SIZE());
-        //DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160,
-                            //interfaceCtx->doActionSegment + (loadOffset * DO_ACTION_TEX_SIZE),
-                            //(uintptr_t)_do_action_staticSegmentRomStart + (action * DO_ACTION_TEX_SIZE), DO_ACTION_TEX_SIZE,
-                            //0, &interfaceCtx->loadQueue, NULL, __FILE__, __LINE__);
-        //osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
-    } else {
-        gSegments[7] = VIRTUAL_TO_PHYSICAL(interfaceCtx->doActionSegment);
-        //func_80086D5C(SEGMENTED_TO_VIRTUAL(sDoActionTextures[loadOffset]), DO_ACTION_TEX_SIZE / 4);
-        func_80086D5C(interfaceCtx->doActionSegment + (loadOffset * DO_ACTION_TEX_SIZE()), DO_ACTION_TEX_SIZE() / 4);
-    }
+    
+    char* segment = interfaceCtx->doActionSegment[loadOffset];
+    interfaceCtx->doActionSegment[loadOffset] = action != DO_ACTION_NONE ? doAction : gDoEmptyTexture;
+    gSegments[7] = interfaceCtx->doActionSegment[loadOffset];
 }
 
 void Interface_SetDoAction(PlayState* play, u16 action) {
@@ -2936,7 +2908,7 @@ void Interface_LoadActionLabelB(PlayState* play, u16 action) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
 
     char* doAction = actionsTbl[action];
-    char newName[512];
+    static char newName[512];
 
     if (gSaveContext.language != LANGUAGE_ENG) {
         size_t length = strlen(doAction);
@@ -2953,24 +2925,10 @@ void Interface_LoadActionLabelB(PlayState* play, u16 action) {
         doAction = newName;
     }
 
-    /*if (gSaveContext.language != LANGUAGE_ENG) {
-        action += DO_ACTION_MAX;
-    }
-
-    if (gSaveContext.language == LANGUAGE_FRA) {
-        action += DO_ACTION_MAX;
-    }*/
-
     interfaceCtx->unk_1FC = action;
-
-
-
-    // OTRTODO
-    osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
-    memcpy(interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE(), GetResourceDataByName(doAction, false), DO_ACTION_TEX_SIZE());
-    //DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE,
-                        //(uintptr_t)_do_action_staticSegmentRomStart + (action * DO_ACTION_TEX_SIZE), DO_ACTION_TEX_SIZE, 0,
-                        //&interfaceCtx->loadQueue, NULL, __FILE__, __LINE__);
+    
+    char* segment = interfaceCtx->doActionSegment[1];
+    interfaceCtx->doActionSegment[1] = action != DO_ACTION_NONE ? doAction : gDoEmptyTexture;
     osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
 
     interfaceCtx->unk_1FA = 1;
@@ -4026,28 +3984,8 @@ void Interface_DrawItemButtons(PlayState* play) {
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-
-            //There is probably a more elegant way to do it.
-            char* doAction = actionsTbl[3];
-            char newName[512];
-            if (gSaveContext.language != LANGUAGE_ENG) {
-                size_t length = strlen(doAction);
-                strcpy(newName, doAction);
-                if (gSaveContext.language == LANGUAGE_FRA) {
-                    newName[length - 6] = 'F';
-                    newName[length - 5] = 'R';
-                    newName[length - 4] = 'A';
-                } else if (gSaveContext.language == LANGUAGE_GER) {
-                    newName[length - 6] = 'G';
-                    newName[length - 5] = 'E';
-                    newName[length - 4] = 'R';
-                }
-                doAction = newName;
-            }
-
-            memcpy(interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE() * 2, GetResourceDataByName(doAction, false), DO_ACTION_TEX_SIZE());
-
-            gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE() * 2, G_IM_FMT_IA,
+            Interface_LoadActionLabel(interfaceCtx, 3, 2);
+            gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->doActionSegment[2], G_IM_FMT_IA,
                                    DO_ACTION_TEX_WIDTH(), DO_ACTION_TEX_HEIGHT(), 0, G_TX_NOMIRROR | G_TX_WRAP,
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
@@ -4062,7 +4000,7 @@ void Interface_DrawItemButtons(PlayState* play) {
             gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                     G_MTX_MODELVIEW | G_MTX_LOAD);
             gSPVertex(OVERLAY_DISP++, &interfaceCtx->actionVtx[4], 4, 0);
-            Interface_DrawActionLabel(play->state.gfxCtx, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE() * 2);
+            Interface_DrawActionLabel(play->state.gfxCtx, interfaceCtx->doActionSegment[2]);
             gDPPipeSync(OVERLAY_DISP++);
         }
     }
@@ -4886,10 +4824,6 @@ void Interface_Draw(PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    // Invalidate Do Action textures as they may have changed
-    gSPInvalidateTexCache(OVERLAY_DISP++, interfaceCtx->doActionSegment);
-    gSPInvalidateTexCache(OVERLAY_DISP++, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE());
-
     gSPSegment(OVERLAY_DISP++, 0x02, interfaceCtx->parameterSegment);
     gSPSegment(OVERLAY_DISP++, 0x07, interfaceCtx->doActionSegment);
     gSPSegment(OVERLAY_DISP++, 0x08, interfaceCtx->iconItemSegment);
@@ -5197,7 +5131,7 @@ void Interface_Draw(PlayState* play) {
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->bAlpha);
 
-            gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE(), G_IM_FMT_IA,
+            gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->doActionSegment[1], G_IM_FMT_IA,
                                    DO_ACTION_TEX_WIDTH(), DO_ACTION_TEX_HEIGHT(), 0, G_TX_NOMIRROR | G_TX_WRAP,
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
@@ -5287,7 +5221,7 @@ void Interface_Draw(PlayState* play) {
 
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, dPadColor.r, dPadColor.g, dPadColor.b, dpadAlpha);
             if (fullUi) {
-                gDPLoadTextureBlock(OVERLAY_DISP++, GetResourceDataByName("__OTR__textures/parameter_static/gDPad", false),
+                gDPLoadTextureBlock(OVERLAY_DISP++, gDPadTex,
                                     G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 gSPWideTextureRectangle(OVERLAY_DISP++, DpadPosX << 2, DpadPosY << 2,
@@ -5403,9 +5337,9 @@ void Interface_Draw(PlayState* play) {
         gSPVertex(OVERLAY_DISP++, &interfaceCtx->actionVtx[4], 4, 0);
 
         if ((interfaceCtx->unk_1EC < 2) || (interfaceCtx->unk_1EC == 3)) {
-            Interface_DrawActionLabel(play->state.gfxCtx, interfaceCtx->doActionSegment);
+            Interface_DrawActionLabel(play->state.gfxCtx, interfaceCtx->doActionSegment[0]);
         } else {
-            Interface_DrawActionLabel(play->state.gfxCtx, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE());
+            Interface_DrawActionLabel(play->state.gfxCtx, interfaceCtx->doActionSegment[1]);
         }
 
         gDPPipeSync(OVERLAY_DISP++);

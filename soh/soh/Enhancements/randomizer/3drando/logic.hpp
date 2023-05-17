@@ -290,6 +290,7 @@ extern bool CanUseMagicArrow;
 extern bool HasAllStones;
 extern bool HasAllMedallions;
 extern bool CanBuildRainbowBridge;
+extern bool BuiltRainbowBridge;
 extern bool CanTriggerLACS;
 
 // Other

@@ -447,15 +447,16 @@ string_view magicBeansDesc            = "Enabling this adds a pack of 10 beans t
 /*------------------------------                                                           //
 |       SHUFFLE MERCHANTS      |                                                           //
 ------------------------------*/                                                           //
-string_view merchantsDesc             = "Enabling this adds a Giant's Knife and a pack\n"  //
-                                        "of Bombchus to the item pool and changes both\n"  //
-                                        "Medigoron and the Haunted Wasteland Carpet\n"     //
-                                        "Salesman to sell a random item once at the price\n"
-                                        "of 200 rupees.";                                  //
-string_view merchantsHintsDesc        = "These hints will make Medigoron and the Carpet\n" //
-                                        "Salesman tell you which item they're selling.\n"  //
+string_view merchantsDesc             = "Enabling this changes Medigoron, Granny and the\n"//
+                                        "Carpet Salesman to sell a random item once at a\n"//
+                                        "high price (100 for Granny, 200 for the others).\n\n"
+                                        "A Giant's Knife and a pack of Bombchus will be\n" //
+                                        "added to the item pool, and one of the bottles\n" //
+                                        "will contain a Blue Potion";                      //
+string_view merchantsHintsDesc        = "These hints will make the merchants tell you\n"   //
+                                        "which item they're selling.\n"                    //
                                         "\n"                                               //
-                                        "The Clearer Hints setting will affect how they\n" //
+                                        "The Hint Clarity setting will affect how they\n"  //
                                         "refer to the item.";                              //
 /*------------------------------                                                           //
 |   SHUFFLE FROG SONG RUPEES   |                                                           //

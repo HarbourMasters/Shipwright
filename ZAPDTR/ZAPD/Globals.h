@@ -22,6 +22,7 @@ typedef bool (*ExporterSetFuncBool)(ZFileMode fileMode);
 typedef void (*ExporterSetFuncVoid)(int argc, char* argv[], int& i);
 typedef void (*ExporterSetFuncVoid2)(const std::string& buildMode, ZFileMode& fileMode);
 typedef void (*ExporterSetFuncVoid3)();
+typedef void (*ExporterSetFuncVoid4)(tinyxml2::XMLElement* reader);
 typedef void (*ExporterSetResSave)(ZResource* res, BinaryWriter& writer);
 
 class ExporterSet
@@ -39,6 +40,8 @@ public:
 	ExporterSetFuncVoid3 endXMLFunc = nullptr;
 	ExporterSetResSave resSaveFunc = nullptr;
 	ExporterSetFuncVoid3 endProgramFunc = nullptr;
+
+	ExporterSetFuncVoid4 processCompilableFunc = nullptr;
 };
 
 class Globals
@@ -54,7 +57,7 @@ public:
 	bool useLegacyZDList;
 	bool singleThreaded;
 	VerbosityLevel verbosity;  // ZAPD outputs additional information
-	ZFileMode fileMode;
+	ZFileMode fileMode = ZFileMode::Invalid;
 	fs::path baseRomPath, inputPath, outputPath, sourceOutputPath, cfgPath, fileListPath;
 	TextureType texType;
 	ZGame game;
@@ -65,8 +68,9 @@ public:
 	bool forceUnaccountedStatic = false;
 	bool otrMode = true;
 	bool buildRawTexture = false;
+	bool onlyGenSohOtr = false;
 
-	ZRom* rom;
+	ZRom* rom = nullptr;
 	std::vector<ZFile*> files;
 	std::vector<ZFile*> externalFiles;
 	std::vector<int32_t> segments;

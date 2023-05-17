@@ -129,14 +129,17 @@ void AreaTable_Init_CastleTown() {
                   Entrance(CASTLE_GROUNDS, {[]{return true;}}),
   });
 
-  areaTable[GANONS_CASTLE_GROUNDS] = Area("Ganon's Castle Grounds", "Castle Grounds", OUTSIDE_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {}, {
-                  //Locations                                   //3D logic means that adult cannot get this with a simple slash, but in the original link can kill the skulltula with a variety of slashes
-                  LocationAccess(OGC_GS, {[]{return IsAdult;}}),
+  areaTable[GANONS_CASTLE_GROUNDS] = Area("Ganon's Castle Grounds", "Castle Grounds", OUTSIDE_GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
+                  EventAccess(&BuiltRainbowBridge, {[]{return CanBuildRainbowBridge;}}),
+                }, {
+                  //Locations                                   //the terrain was lowered such that you can't get this GS with a simple sword slash
+                  LocationAccess(OGC_GS, {[]{return CanJumpslash || CanUseProjectile
+                  || (CanShield && CanUse(MEGATON_HAMMER)) || CanUse(DINS_FIRE);}}),
                 }, {
                   //Exits
                   Entrance(CASTLE_GROUNDS,           {[]{return AtNight;}}),
                   Entrance(OGC_GREAT_FAIRY_FOUNTAIN, {[]{return CanUse(GOLDEN_GAUNTLETS) && AtNight;}}),
-                  Entrance(GANONS_CASTLE_ENTRYWAY,   {[]{return CanBuildRainbowBridge;}}),
+                  Entrance(GANONS_CASTLE_LEDGE,      {[]{return BuiltRainbowBridge;}}),
   });
 
   areaTable[OGC_GREAT_FAIRY_FOUNTAIN] = Area("OGC Great Fairy Fountain", "OGC Great Fairy Fountain", NONE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -145,6 +148,19 @@ void AreaTable_Init_CastleTown() {
                 }, {
                   //Exits
                   Entrance(CASTLE_GROUNDS, {[]{return true;}}),
+  });
+
+  areaTable[CASTLE_GROUNDS_FROM_GANONS_CASTLE] = Area("Castle Grounds From Ganon's Castle", "Castle Grounds From Ganon's Castle", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+    // Exits
+    Entrance(HYRULE_CASTLE_GROUNDS, { [] { return IsChild; }}),
+    Entrance(GANONS_CASTLE_LEDGE, { [] { return IsAdult; }}),
+  });
+
+  areaTable[GANONS_CASTLE_LEDGE] = Area("Ganon's Castle Ledge", "OGC Ganon's Castle Ledge", NONE, NO_DAY_NIGHT_CYCLE,
+  {}, {}, {
+    // Exits
+    Entrance(GANONS_CASTLE_GROUNDS, {[]{return BuiltRainbowBridge;}}),
+    Entrance(GANONS_CASTLE_ENTRYWAY, {[]{return IsAdult;}}),
   });
 
   areaTable[MARKET_GUARD_HOUSE] = Area("Market Guard House", "Market Guard House", NONE, NO_DAY_NIGHT_CYCLE, {}, {

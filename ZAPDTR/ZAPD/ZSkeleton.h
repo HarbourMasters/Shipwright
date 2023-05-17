@@ -20,7 +20,14 @@ class ZLimbTable : public ZResource
 public:
 	ZLimbType limbType = ZLimbType::Standard;
 	size_t count = 0;
+
 	std::vector<segptr_t> limbsAddresses;
+	std::vector<ZLimb*> limbsReferences;  // borrowed pointers, do not delete!
+
+	// XML attributes
+	std::string enumName;
+	std::string limbNoneName;
+	std::string limbMaxName;
 
 	ZLimbTable(ZFile* nParent);
 
@@ -34,10 +41,14 @@ public:
 
 	std::string GetBodySourceCode() const override;
 
+	std::string GetSourceOutputHeader([[maybe_unused]] const std::string& prefix);
+
 	std::string GetSourceTypeName() const override;
 	ZResourceType GetResourceType() const override;
 
 	size_t GetRawDataSize() const override;
+
+	std::string GetLimbEnumName(uint8_t limbIndex) const;
 };
 
 class ZSkeleton : public ZResource
@@ -45,10 +56,13 @@ class ZSkeleton : public ZResource
 public:
 	ZSkeletonType type = ZSkeletonType::Normal;
 	ZLimbType limbType = ZLimbType::Standard;
+	std::string enumName;
+	std::string limbNoneName;
+	std::string limbMaxName;
+
 	segptr_t limbsArrayAddress;
 	uint8_t limbCount = 0;
 	uint8_t dListCount = 0;  // FLEX SKELETON ONLY
-	ZLimbTable limbsTable;
 
 	ZSkeleton(ZFile* nParent);
 
@@ -65,4 +79,7 @@ public:
 	DeclarationAlignment GetDeclarationAlignment() const override;
 
 	uint8_t GetLimbCount();
+
+	ZLimbTable* limbsTable = nullptr;  // borrowed pointer, do not delete!
+
 };

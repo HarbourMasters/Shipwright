@@ -24,6 +24,7 @@
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include <overlays/actors/ovl_En_Partner/z_en_partner.h>
 
 typedef enum {
     /* 0x00 */ KNOB_ANIM_ADULT_L,
@@ -136,6 +137,7 @@ s32 func_80835800(Player* this, PlayState* play);
 s32 func_80835884(Player* this, PlayState* play); // Start aiming boomerang
 s32 func_808358F0(Player* this, PlayState* play); // Aim boomerang
 s32 func_808359FC(Player* this, PlayState* play); // Throw boomerang
+s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play); // Throw boomerang Ivan
 s32 func_80835B60(Player* this, PlayState* play); // Boomerang active
 s32 func_80835C08(Player* this, PlayState* play);
 void func_80835F44(PlayState* play, Player* this, s32 item);
@@ -2794,6 +2796,27 @@ s32 func_808359FC(Player* this, PlayState* play) {
             func_8002F7DC(&this->actor, NA_SE_IT_BOOMERANG_THROW);
             func_80832698(this, NA_SE_VO_LI_SWORD_N);
         }
+    }
+
+    return 1;
+}
+
+s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play) {
+    if (!CVarGetInteger("gIvanCoopModeEnabled", 0)) {
+        return 0;
+    }
+
+    f32 posX = (Math_SinS(this->actor.shape.rot.y) * 1.0f) + this->actor.world.pos.x;
+    f32 posZ = (Math_CosS(this->actor.shape.rot.y) * 1.0f) + this->actor.world.pos.z;
+    s32 yaw = this->actor.shape.rot.y;
+    EnBoom* boomerang =
+        (EnBoom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOOM, posX, this->actor.world.pos.y + 7.0f, posZ,
+                             this->actor.focus.rot.x, yaw, 0, 0, true);
+
+    this->boomerangActor = &boomerang->actor;
+    if (boomerang != NULL) {
+        boomerang->returnTimer = 20;
+        Audio_PlayActorSound2(&this->actor, NA_SE_IT_BOOMERANG_THROW);
     }
 
     return 1;
@@ -6998,7 +7021,10 @@ void func_8084029C(Player* this, f32 arg1) {
         arg1 = 7.25f;
     }
 
-    if ((this->currentBoots == PLAYER_BOOTS_HOVER) && !(this->actor.bgCheckFlags & 1) && (this->hoverBootsTimer != 0)) {
+    if ((this->currentBoots == PLAYER_BOOTS_HOVER ||
+         (CVarGetInteger("gIvanCoopModeEnabled", 0) && this->ivanFloating)) &&
+        !(this->actor.bgCheckFlags & 1) &&
+        (this->hoverBootsTimer != 0 || (CVarGetInteger("gIvanCoopModeEnabled", 0) && this->ivanFloating))) {
         func_8002F8F0(&this->actor, NA_SE_PL_HOBBERBOOTS_LV - SFX_FLAG);
     } else if (func_8084021C(this->unk_868, arg1, 29.0f, 10.0f) || func_8084021C(this->unk_868, arg1, 29.0f, 24.0f)) {
         func_808327F8(this, this->linearVelocity);
@@ -9591,6 +9617,8 @@ void Player_InitCommon(Player* this, PlayState* play, FlexSkeletonHeader* skelHe
     Collider_SetQuad(play, &this->meleeWeaponQuads[1], &this->actor, &D_80854650);
     Collider_InitQuad(play, &this->shieldQuad);
     Collider_SetQuad(play, &this->shieldQuad, &this->actor, &D_808546A0);
+
+    this->ivanDamageMultiplier = 1;
 }
 
 static void (*D_80854738[])(PlayState* play, Player* this) = {
@@ -9925,13 +9953,16 @@ void func_808473D4(PlayState* play, Player* this) {
 s32 func_80847A78(Player* this) {
     s32 cond;
 
-    if ((this->currentBoots == PLAYER_BOOTS_HOVER) && (this->hoverBootsTimer != 0)) {
+    if ((this->currentBoots == PLAYER_BOOTS_HOVER ||
+         (CVarGetInteger("gIvanCoopModeEnabled", 0) && this->ivanFloating)) &&
+        (this->hoverBootsTimer != 0)) {
         this->hoverBootsTimer--;
     } else {
         this->hoverBootsTimer = 0;
     }
 
-    cond = (this->currentBoots == PLAYER_BOOTS_HOVER) &&
+    cond = (this->currentBoots == PLAYER_BOOTS_HOVER ||
+            (CVarGetInteger("gIvanCoopModeEnabled", 0) && this->ivanFloating)) &&
            ((this->actor.yDistToWater >= 0.0f) || (func_80838144(D_808535E4) >= 0) || func_8083816C(D_808535E4));
 
     if (cond && (this->actor.bgCheckFlags & 1) && (this->hoverBootsTimer != 0)) {
@@ -11123,7 +11154,9 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
         if (CVarGetInteger("gFixIceTrapWithBunnyHood", 1)) Matrix_Pop();
     }
 
-    if ((this->currentBoots == PLAYER_BOOTS_HOVER) && !(this->actor.bgCheckFlags & 1) &&
+    if ((this->currentBoots == PLAYER_BOOTS_HOVER ||
+         (CVarGetInteger("gIvanCoopModeEnabled", 0) && this->ivanFloating)) &&
+        !(this->actor.bgCheckFlags & 1) &&
         !(this->stateFlags1 & PLAYER_STATE1_23) && (this->hoverBootsTimer != 0)) {
         s32 sp5C;
         s32 hoverBootsTimer = this->hoverBootsTimer;
@@ -11207,8 +11240,9 @@ void Player_Draw(Actor* thisx, PlayState* play2) {
             lod = 1;
         }
 
-        if (CVarGetInteger("gDisableLOD", 0) != 0)
+        if (CVarGetInteger("gDisableLOD", 0) != 0) {
             lod = 0;
+        }
 
         func_80093C80(play);
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);

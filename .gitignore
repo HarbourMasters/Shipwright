@@ -7,7 +7,7 @@ __pycache__/
 .vscode/
 .vs/
 .idea/
-cmake-build-debug
+cmake-build-**
 venv/
 .cache/
 
@@ -409,8 +409,7 @@ DebugObj/*
 ReleaseObj/*
 .tags
 tags
-oot.otr
-oot-mq.otr
+*.otr
 *.sav
 shipofharkinian.ini
 shipofharkinian.json
@@ -445,6 +444,9 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
+_packages
 */extract_assets_cmake*
 /build*
-build.c
+
+soh/build.c
+soh/properties.h

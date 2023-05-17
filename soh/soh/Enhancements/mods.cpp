@@ -152,7 +152,7 @@ void RegisterFreezeTime() {
             int32_t prevTime = CVarGetInteger("gPrevTime", gSaveContext.dayTime);
             gSaveContext.dayTime = prevTime;
         } else {
-            CVarSetInteger("gPrevTime", -1);
+            CVarClear("gPrevTime");
         }
     });
 }
@@ -194,26 +194,6 @@ void RegisterSwitchAge() {
 
 /// Switches Link's age and respawns him at the last entrance he entered.
 void RegisterOcarinaTimeTravel() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!gPlayState) return;
-
-        // For the gTimeTravel: Don't give child Link a Kokiri Sword if we don't have one
-        if (LINK_AGE_IN_YEARS == 5 && CVarGetInteger("gTimeTravel", 0)) {
-            uint32_t kokiriSwordBitMask = 1 << 0;
-            if (!(gSaveContext.inventory.equipment & kokiriSwordBitMask)) {
-                Player* player = GET_PLAYER(gPlayState);
-                player->currentSwordItemId = ITEM_NONE;
-                gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
-            }
-        }
-
-        // Switches Link's age and respawns him at the last entrance he entered.
-        if (CVarGetInteger("gTimeTravel", 0) && CVarGetInteger("gSwitchTimeline", 0)) {
-            CVarSetInteger("gSwitchTimeline", 0);
-            ReloadSceneTogglingLinkAge();
-        }
-    });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnOcarinaSongAction>([]() {
         if (!gPlayState) {
@@ -233,6 +213,7 @@ void RegisterOcarinaTimeTravel() {
         if (CVarGetInteger("gTimeTravel", 0) && hasOcarinaOfTime && hasMasterSword &&
             gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && !nearbyTimeBlockEmpty && !nearbyTimeBlock &&
             !nearbyOcarinaSpot && !nearbyFrogs) {
+
             if (gSaveContext.n64ddFlag) {
                 CVarSetInteger("gSwitchTimeline", 1);
             } else if (!gSaveContext.n64ddFlag && !nearbyDoorOfTime) {
@@ -240,6 +221,7 @@ void RegisterOcarinaTimeTravel() {
                 // Temple of Time scene where the only object present is the Door of Time
                 CVarSetInteger("gSwitchTimeline", 1);
             }
+            ReloadSceneTogglingLinkAge();
         }
     });
 }
@@ -426,11 +408,13 @@ void RegisterHyperBosses() {
         uint8_t isBossActor =
             actor->id == ACTOR_BOSS_GOMA ||                              // Gohma
             actor->id == ACTOR_BOSS_DODONGO ||                           // King Dodongo
+            actor->id == ACTOR_EN_BDFIRE ||                              // King Dodongo Fire Breath
             actor->id == ACTOR_BOSS_VA ||                                // Barinade
             actor->id == ACTOR_BOSS_GANONDROF ||                         // Phantom Ganon
-            (actor->id == 0 && actor->category == ACTORCAT_BOSS) ||      // Phantom Ganon/Ganondorf Energy Ball/Thunder
+            actor->id == ACTOR_EN_FHG_FIRE ||                            // Phantom Ganon/Ganondorf Energy Ball/Thunder
             actor->id == ACTOR_EN_FHG ||                                 // Phantom Ganon's Horse
             actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || // Volvagia (grounded/flying)
+            actor->id == ACTOR_EN_VB_BALL ||                             // Volvagia Rocks
             actor->id == ACTOR_BOSS_MO ||                                // Morpha
             actor->id == ACTOR_BOSS_SST ||                               // Bongo Bongo
             actor->id == ACTOR_BOSS_TW ||                                // Twinrova

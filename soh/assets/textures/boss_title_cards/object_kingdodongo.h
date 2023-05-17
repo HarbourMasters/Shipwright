@@ -1,23 +1,12 @@
 #pragma once
-#define dgKingDodongoTitleCardENGTex "__OTR__textures/object_kingdodongo/gKingDodongoTitleCardENGTex"
-#ifdef _WIN32
-static const __declspec(align(2)) char gKingDodongoTitleCardENGTex[] = dgKingDodongoTitleCardENGTex;
-#else
-static const char gKingDodongoTitleCardENGTex[] __attribute__((aligned (2))) = dgKingDodongoTitleCardENGTex;
-#endif
-            
-#define dgKingDodongoTitleCardGERTex "__OTR__textures/object_kingdodongo/gKingDodongoTitleCardGERTex"
-#ifdef _WIN32
-static const __declspec(align(2)) char gKingDodongoTitleCardGERTex[] = dgKingDodongoTitleCardGERTex;
-#else
-static const char gKingDodongoTitleCardGERTex[] __attribute__((aligned (2))) = dgKingDodongoTitleCardGERTex;
-#endif
-            
-#define dgKingDodongoTitleCardFRATex "__OTR__textures/object_kingdodongo/gKingDodongoTitleCardFRATex"
-#ifdef _WIN32
-static const __declspec(align(2)) char gKingDodongoTitleCardFRATex[] = dgKingDodongoTitleCardFRATex;
-#else
-static const char gKingDodongoTitleCardFRATex[] __attribute__((aligned (2))) = dgKingDodongoTitleCardFRATex;
-#endif
-            
 
+#include "align_asset_macro.h"
+
+#define dgKingDodongoTitleCardENGTex "__OTR__textures/object_kingdodongo/gKingDodongoTitleCardENGTex"
+static const ALIGN_ASSET(2) char gKingDodongoTitleCardENGTex[] = dgKingDodongoTitleCardENGTex;
+
+#define dgKingDodongoTitleCardGERTex "__OTR__textures/object_kingdodongo/gKingDodongoTitleCardGERTex"
+static const ALIGN_ASSET(2) char gKingDodongoTitleCardGERTex[] = dgKingDodongoTitleCardGERTex;
+
+#define dgKingDodongoTitleCardFRATex "__OTR__textures/object_kingdodongo/gKingDodongoTitleCardFRATex"
+static const ALIGN_ASSET(2) char gKingDodongoTitleCardFRATex[] = dgKingDodongoTitleCardFRATex;

@@ -820,7 +820,7 @@ Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height,
     return gfx;
 }
 
-void KaleidoScope_OverridePalIndexCI4(u8* texture, ptrdiff_t size, s32 targetIndex, s32 newIndex) {
+void KaleidoScope_OverridePalIndexCI4(u8* texture, s32 size, s32 targetIndex, s32 newIndex) {
     s32 i;
 
     targetIndex &= 0xF;
@@ -940,6 +940,8 @@ void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
 
     gSaveContext.unk_13EA = 0;
     Interface_ChangeAlpha(50);
+
+    KaleidoScope_ResetTradeSelect();
 }
 
 void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
@@ -1934,12 +1936,12 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
                 pauseCtx->infoPanelVtx[21].v.tc[0] = pauseCtx->infoPanelVtx[23].v.tc[0] =
                     D_8082ADD8[gSaveContext.language] << 5;
 
-                s16 PosX; //General Pos of C button icon
-                if (gSaveContext.language == 0) { //eng
+                s16 PosX; // General Pos of C button icon
+                if (gSaveContext.language == LANGUAGE_ENG) {
                     PosX = 112;
-                } else if (gSaveContext.language == 1) { //ger
+                } else if (gSaveContext.language == LANGUAGE_GER) {
                     PosX = 175;
-                } else {//baguettes
+                } else { // French
                     PosX = 98;
                 }
                 s16 PosY = 200 - pauseCtx->infoPanelOffsetY; //General Pos of C button icon
@@ -2079,7 +2081,7 @@ void KaleidoScope_UpdateNamePanel(PlayState* play) {
                 }
 
                 const char* textureName = mapNameTextures[sp2A];
-                memcpy(pauseCtx->nameSegment, GetResourceDataByName(textureName, false), GetResourceTexSizeByName(textureName, false));
+                memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
             } else {
                 osSyncPrintf("zoom_name=%d\n", pauseCtx->namedItem);
 
@@ -2093,7 +2095,7 @@ void KaleidoScope_UpdateNamePanel(PlayState* play) {
                 osSyncPrintf("J_N=%d  point=%d\n", gSaveContext.language, sp2A);
 
                 const char* textureName = iconNameTextures[sp2A];
-                memcpy(pauseCtx->nameSegment, GetResourceDataByName(textureName, false), GetResourceTexSizeByName(textureName, false));
+                memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
             }
 
             pauseCtx->nameDisplayTimer = 0;
@@ -3045,31 +3047,6 @@ uint32_t _bswap32(uint32_t a)
     return a;
 }
 
-void KaleidoScope_GrayOutTextureRGBA32(u32* texture, u16 pixelCount) {
-    u32 rgb;
-    u16 gray;
-    u16 i;
-
-    texture = GetResourceDataByName(texture, false);
-
-    for (i = 0; i < pixelCount; i++) {
-        uint32_t px = texture[i];
-        if ((px & 0xFFFFFF00) != 0) {
-            u8 a = (px & 0xFF000000) >> 24;
-            u8 b = (px & 0x00FF0000) >> 16;
-            u8 g = (px & 0x0000FF00) >> 8;
-            u8 r = (px & 0x000000FF) >> 0;
-            gray = (r + g + b) / 7;
-
-            r = gray;
-            g = gray;
-            b = gray;
-
-            texture[i] = (a << 24) + (b << 16) + (g << 8) + (r << 0);
-        }
-    }
-}
-
 void func_808265BC(PlayState* play) {
     PauseContext* pauseCtx = &play->pauseCtx;
 
@@ -3194,11 +3171,10 @@ void KaleidoScope_UpdateCursorSize(PauseContext* pauseCtx) {
 void KaleidoScope_LoadDungeonMap(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
 
-    char* firstTextureName = sDungeonMapTexs[R_MAP_TEX_INDEX];
-    char* secondTextureName = sDungeonMapTexs[R_MAP_TEX_INDEX + 1];
-
-    memcpy(interfaceCtx->mapSegment, GetResourceDataByName(firstTextureName, false), GetResourceTexSizeByName(firstTextureName, false));
-    memcpy(interfaceCtx->mapSegment + 0x800, GetResourceDataByName(secondTextureName, false), GetResourceTexSizeByName(secondTextureName, false));
+    interfaceCtx->mapSegmentName[0] = sDungeonMapTexs[R_MAP_TEX_INDEX];
+    interfaceCtx->mapSegmentName[1] = sDungeonMapTexs[R_MAP_TEX_INDEX + 1];
+    interfaceCtx->mapSegment[0] = GetResourceDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX]);
+    interfaceCtx->mapSegment[1] = GetResourceDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]);
 }
 
 void KaleidoScope_UpdateDungeonMap(PlayState* play) {
@@ -3212,13 +3188,15 @@ void KaleidoScope_UpdateDungeonMap(PlayState* play) {
 
     if ((play->sceneNum >= SCENE_YDAN) && (play->sceneNum <= SCENE_TAKARAYA)) {
         if ((VREG(30) + 3) == pauseCtx->cursorPoint[PAUSE_MAP]) {
-            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment, 2040, interfaceCtx->mapPaletteIndex, 14);
+            // HDTODO: Handle Runtime Modified Textures (HD)
+            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[0], 2040, interfaceCtx->mapPaletteIndex, 14);
         }
     }
 
     if ((play->sceneNum >= SCENE_YDAN) && (play->sceneNum <= SCENE_TAKARAYA)) {
         if ((VREG(30) + 3) == pauseCtx->cursorPoint[PAUSE_MAP]) {
-            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment + 0x800, 2040, interfaceCtx->mapPaletteIndex, 14);
+            // HDTODO: Handle Runtime Modified Textures (HD)
+            KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[1], 2040, interfaceCtx->mapPaletteIndex, 14);
         }
     }
 }
@@ -3375,19 +3353,13 @@ void KaleidoScope_Update(PlayState* play)
             osSyncPrintf("サイズ＝%x\n", size2 + size1 + size0 + size + 0x800);
 
             if (((void)0, gSaveContext.worldMapArea) < 22) {
-                if (gSaveContext.language == LANGUAGE_ENG) {
-                    const char* textureName = mapNameTextures[36 + gSaveContext.worldMapArea];
-                    memcpy(pauseCtx->nameSegment + 0x400, GetResourceDataByName(textureName, false), GetResourceTexSizeByName(textureName, false));
-                } else if (gSaveContext.language == LANGUAGE_GER) {
-                    const char* textureName = mapNameTextures[58 + gSaveContext.worldMapArea];
-                    memcpy(pauseCtx->nameSegment + 0x400, GetResourceDataByName(textureName, false), GetResourceTexSizeByName(textureName, false));
-                } else {
-                    const char* textureName = mapNameTextures[80 + gSaveContext.worldMapArea];
-                    memcpy(pauseCtx->nameSegment + 0x400, GetResourceDataByName(textureName, false), GetResourceTexSizeByName(textureName, false));
-                }
+                const uint8_t offsets[] = { 36, 58, 80 };
+                const char* textureName = mapNameTextures[offsets[gSaveContext.language] + gSaveContext.worldMapArea];
+                memcpy(pauseCtx->nameSegment + 0x400, textureName, strlen(textureName) + 1);
             }
             // OTRTODO - player on pause
             #if 1
+            // HDTODO: Remove sPreRenderCvg stuff?
             sPreRenderCvg = (void*)(((uintptr_t)pauseCtx->nameSegment + 0x400 + 0xA00 + 0xF) & ~0xF);
 
             PreRender_Init(&sPlayerPreRender);
@@ -3616,6 +3588,8 @@ void KaleidoScope_Update(PlayState* play)
                     pauseCtx->tradeQuestLocation = 7;
                 }
             }
+
+            KaleidoScope_ResetTradeSelect();
 
             pauseCtx->state = 4;
             break;
@@ -4260,6 +4234,6 @@ void KaleidoScope_Update(PlayState* play)
             osSyncPrintf(VT_RST);
             break;
     }
-    
+
     GameInteractor_ExecuteOnKaleidoscopeUpdate(sInDungeonScene);
 }

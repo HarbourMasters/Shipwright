@@ -8,7 +8,7 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 typedef struct {
     /* 0x00 */ u8 spawn;
     /* 0x01 */ u8 room;
@@ -25,4 +25,4 @@ class SetEntranceList : public SceneCommand {
 
     std::vector<EntranceEntry> entrances;
 };
-}; // namespace Ship
+}; // namespace LUS

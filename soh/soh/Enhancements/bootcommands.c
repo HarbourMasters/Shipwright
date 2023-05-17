@@ -20,13 +20,10 @@ static BootCommand sCommands[] = { { "--skiplogo", BootCommands_Command_SkipLogo
 
 void BootCommands_Init()
 {
-    CVarRegisterInteger("gDebugEnabled", 0);
-    CVarRegisterInteger("gLanguages", LANGUAGE_ENG);
-    CVarRegisterInteger("gDebugWarpScreenTranslation", 1);
-    CVarRegisterInteger("gInvertYAxis", 1);
     // Clears vars to prevent randomizer menu from being disabled
-    CVarSetInteger("gRandoGenerating", 0); // Clear when a crash happened during rando seed generation
-    CVarSetInteger("gOnFileSelectNameEntry", 0); // Clear when soh is killed on the file name entry page
+    CVarClear("gRandoGenerating"); // Clear when a crash happened during rando seed generation
+    CVarClear("gNewSeedGenerated");
+    CVarClear("gOnFileSelectNameEntry"); // Clear when soh is killed on the file name entry page
 #if defined(__SWITCH__) || defined(__WIIU__)
     CVarRegisterInteger("gControlNav", 1); // always enable controller nav on switch/wii u
 #endif

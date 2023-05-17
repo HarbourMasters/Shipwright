@@ -15,7 +15,7 @@ void AreaTable_Init_GanonsCastle() {
                   //Exits
                   Entrance(GANONS_CASTLE_LOBBY,    {[]{return Dungeon::GanonsCastle.IsVanilla();}}),
                   Entrance(GANONS_CASTLE_MQ_LOBBY, {[]{return Dungeon::GanonsCastle.IsMQ();}}),
-                  Entrance(GANONS_CASTLE_GROUNDS,  {[]{return true;}}),
+                  Entrance(CASTLE_GROUNDS_FROM_GANONS_CASTLE,    {[]{return true;}}),
   });
 
   /*--------------------------

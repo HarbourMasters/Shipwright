@@ -6,7 +6,7 @@
 #include <libultraship/libultra/types.h>
 #include "z64math.h"
 
-namespace Ship {
+namespace LUS {
 
 typedef struct {
     /* 0x00 */ u8 count; // number of points in the path
@@ -24,4 +24,4 @@ public:
   std::vector<PathData> pathData;
   std::vector<std::vector<Vec3s>> paths;
 };
-}; // namespace Ship
+}; // namespace LUS

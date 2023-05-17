@@ -224,6 +224,7 @@ std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
     RC_OBJECT(RC_KAK_MAN_ON_ROOF,                                             RCVORMQ_BOTH,    RCTYPE_STANDARD,      RCAREA_KAKARIKO_VILLAGE,       ACTOR_ID_MAX,       SCENE_SPOT01,                         0x00,                        GI_NONE,             "Man on Roof", "Kak Man on Roof"),
     RC_OBJECT(RC_KAK_SHOOTING_GALLERY_REWARD,                                 RCVORMQ_BOTH,    RCTYPE_STANDARD,      RCAREA_KAKARIKO_VILLAGE,       ACTOR_ID_MAX,       SCENE_SYATEKIJYOU,                    0x00,                        GI_NONE,             "Shooting Gallery Reward", "Kak Shooting Gallery Reward"),
     RC_OBJECT(RC_KAK_TRADE_ODD_MUSHROOM,                                      RCVORMQ_BOTH,    RCTYPE_ADULT_TRADE,   RCAREA_KAKARIKO_VILLAGE,       ACTOR_ID_MAX,       SCENE_MAHOUYA,                        0x00,                        GI_NONE,             "Trade Odd Mushroom", "Kak Trade Odd Mushroom"),
+    RC_OBJECT(RC_KAK_GRANNYS_SHOP,                                            RCVORMQ_BOTH,    RCTYPE_MERCHANT,      RCAREA_KAKARIKO_VILLAGE,       ACTOR_ID_MAX,       SCENE_MAHOUYA,                        0x00,                        GI_POTION_BLUE,      "Granny's Shop", "Kak Granny's Shop"),
     RC_OBJECT(RC_KAK_ANJU_AS_ADULT,                                           RCVORMQ_BOTH,    RCTYPE_ADULT_TRADE,   RCAREA_KAKARIKO_VILLAGE,       ACTOR_ID_MAX,       SCENE_SPOT01,                         0x00,                        GI_NONE,             "Anju as Adult", "Kak Anju as Adult"),
     RC_OBJECT(RC_KAK_ANJU_AS_CHILD,                                           RCVORMQ_BOTH,    RCTYPE_STANDARD,      RCAREA_KAKARIKO_VILLAGE,       ACTOR_ID_MAX,       SCENE_SPOT01,                         0x00,                        GI_NONE,             "Anju as Child", "Kak Anju as Child"),
     RC_OBJECT(RC_KAK_TRADE_POCKET_CUCCO,                                      RCVORMQ_BOTH,    RCTYPE_ADULT_TRADE,   RCAREA_KAKARIKO_VILLAGE,       ACTOR_ID_MAX,       SCENE_SPOT01,                         0x00,                        GI_NONE,             "Trade Pocket Cucco", "Kak Trade Pocket Cucco"),
@@ -925,8 +926,11 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (locationIt.rc != RC_UNKNOWN_CHECK) &&
             (!RandomizerCheckObjects::AreaIsDungeon(locationIt.rcArea) ||
                 locationIt.vOrMQ == RCVORMQ_BOTH ||
-                locationIt.vOrMQ == RCVORMQ_MQ && CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_NONE && CVarGetInteger("gRandomizeMqDungeonCount", 0) > 0 || // at least one MQ dungeon
-                locationIt.vOrMQ == RCVORMQ_VANILLA && (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_NONE || CVarGetInteger("gRandomizeMqDungeonCount", 0) < 12) // at least one vanilla dungeon
+                locationIt.vOrMQ == RCVORMQ_MQ &&
+                    ((CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SET_NUMBER && (CVarGetInteger("gRandomizeMqDungeonCount", 12) > 0) || // at least one MQ dungeon
+                      CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_RANDOM_NUMBER)) ||
+                locationIt.vOrMQ == RCVORMQ_VANILLA &&
+                    (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) != RO_MQ_DUNGEONS_SET_NUMBER || CVarGetInteger("gRandomizeMqDungeonCount", 12) < 12) // at least one vanilla dungeon
             ) &&
             (locationIt.rcType != RCTYPE_SHOP || CVarGetInteger("gRandomizeShopsanity", RO_SHOPSANITY_OFF) > RO_SHOPSANITY_ZERO_ITEMS) &&
             (locationIt.rcType != RCTYPE_SCRUB || CVarGetInteger("gRandomizeShuffleScrubs", RO_SCRUBS_OFF) != RO_SCRUBS_OFF ||
