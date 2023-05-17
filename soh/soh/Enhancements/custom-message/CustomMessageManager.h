@@ -196,12 +196,12 @@ class MessageNotFoundException : public std::exception {
 
   public:
     MessageNotFoundException(std::string messageTableId_, uint16_t textId_)
-        : messageTableId(messageTableId_), textId(textId) {
+        : messageTableId(messageTableId_), textId(textId_) {
     }
     MessageNotFoundException(std::string&& messageTableId_, uint16_t textId_)
         : messageTableId(std::move(messageTableId_)), textId(textId_) {
     }
-    virtual const char* what() const {
+    virtual const char* what() const noexcept {
         char* message;
         sprintf(message, "Message from table %s with textId %u was not found", messageTableId.c_str(), textId);
         return message;
