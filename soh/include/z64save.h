@@ -271,6 +271,7 @@ typedef struct {
     /*        */ uint32_t isMasterQuest;
     /*        */ uint32_t isBossRush;
     /*        */ uint32_t isBossRushPaused;
+    /*        */ uint8_t bossRushSelectedOptions[8];
     /*        */ u8 mqDungeonCount;
     /*        */ u8 pendingIceTrapCount;
     /*        */ SohStats sohStats;

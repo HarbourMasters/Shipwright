@@ -19,3 +19,61 @@ uint8_t BossRush_GetSettingOptionsAmount(uint8_t optionIndex);
 #ifdef __cplusplus
 };
 #endif
+
+typedef enum {
+	BR_OPTIONS_BOSSES,
+	BR_OPTIONS_HEARTS,
+    BR_OPTIONS_AMMO,
+    BR_OPTIONS_HEAL,
+    BR_OPTIONS_BOTTLE,
+    BR_OPTIONS_LONGSHOT,
+    BR_OPTIONS_HOVERBOOTS,
+    BR_OPTIONS_TIMER
+} BossRushOptionEnums;
+
+typedef enum {
+    BR_OPTION_BOSSES_CHOICE_ALL,
+    BR_OPTION_BOSSES_CHOICE_CHILD,
+    BR_OPTION_BOSSES_CHOICE_ADULT
+} BossRushOptionBossesChoices;
+
+typedef enum {
+    BR_OPTION_HEARTS_CHOICE_7,
+    BR_OPTION_HEARTS_CHOICE_10,
+    BR_OPTION_HEARTS_CHOICE_15,
+    BR_OPTION_HEARTS_CHOICE_20,
+    BR_OPTION_HEARTS_CHOICE_3,
+    BR_OPTION_HEARTS_CHOICE_5
+} BossRushOptionHeartsChoices;
+
+typedef enum {
+    BR_OPTION_AMMO_CHOICE_LIMITED,
+    BR_OPTION_AMMO_CHOICE_FULL,
+    BR_OPTION_AMMO_CHOICE_MAXED
+} BossRushOptionAmmoChoices;
+
+typedef enum {
+    BR_OPTION_HEAL_CHOICE_GANONDORF,
+    BR_OPTION_HEAL_CHOICE_EVERYBOSS,
+    BR_OPTION_HEAL_CHOICE_NEVER
+} BossRushOptionHealChoices;
+
+typedef enum {
+    BR_OPTION_BOTTLE_CHOICE_NO,
+    BR_OPTION_BOTTLE_CHOICE_YES
+} BossRushOptionBottleChoices;
+
+typedef enum {
+    BR_OPTION_LONGSHOT_CHOICE_NO,
+    BR_OPTION_LONGSHOT_CHOICE_YES
+} BossRushOptionLongshotChoices;
+
+typedef enum {
+    BR_OPTION_HOVERBOOTS_CHOICE_NO,
+    BR_OPTION_HOVERBOOTS_CHOICE_YES
+} BossRushOptionHoverBootsChoices;
+
+typedef enum {
+    BR_OPTION_TIMER_CHOICE_YES,
+    BR_OPTION_TIMER_CHOICE_NO
+} BossRushOptionTimerChoices;

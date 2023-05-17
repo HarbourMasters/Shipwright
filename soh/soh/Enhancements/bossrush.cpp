@@ -13,66 +13,66 @@ typedef struct BossRushSetting {
 
 BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = { 
     {
-        { "BOSSES:", "BOSSES DE:", "BOSSES FR:" },
+        { "BOSSES:", "BOSSES DE:", "BOSS:" },
         {
-            { "Both", "Both DE", "Both FR" },
-            { "Child", "Child DE", "Child FR" },
-            { "Adult", "Adult DE", "Adult FR" }
+            { "All", "All DE", "Tous" },
+            { "Child", "Child DE", "Enfant" },
+            { "Adult", "Adult DE", "Adulte" }
         }
     },
     {
-        { "HEARTS:", "HEARTS DE:", "HEARTS FR:" },
+        { "HEARTS:", "HEARTS DE:", "COEURS:" },
         {
-            { "3", "3", "3" },
-            { "5", "5", "5" },
             { "7", "7", "7" },
             { "10", "10", "10" },
             { "15", "15", "15" },
             { "20", "20", "20" },
+            { "3", "3", "3" },
+            { "5", "5", "5" }
         }
     },
     {
-        { "AMMO:", "AMMO DE:", "AMMO FR:" },
+        { "AMMO:", "AMMO DE:", "MUNITIONS" },
         {
-            { "Limited", "Limited DE", "Limited FR" },
+            { "Limited", "Limited DE", "Limitées" },
             { "Full", "Full DE", "Full FR" },
             { "Maxed", "Maxed DE", "Maxed FR" }
         }
     },
     {
-        { "HEAL:", "HEAL DE:", "HEAL FR:" },
+        { "HEAL:", "HEAL DE:", "SOIN:" },
         {
-            { "Ganondorf", "Ganondorf DE", "Ganondorf FR" },
-            { "Every Boss", "Every Boss DE", "Every Boss FR" },
-            { "Never", "Never DE", "Never FR" }
+            { "Ganondorf", "Ganondorf DE", "Ganondorf" },
+            { "Every Boss", "Every Boss DE", "Tous les Boss" },
+            { "Never", "Never DE", "Jamais" }
         }
     },
     {
-        { "BOTTLE:", "BOTTLE DE:", "BOTTLE FR:" },
+        { "BOTTLE:", "BOTTLE DE:", "BOUTEILLE:" },
         {
-            { "No", "No DE", "No FR" },
-            { "Yes", "Yes DE", "Yes FR" }
+            { "No", "Nein", "Non" },
+            { "Yes", "Ja", "Oui" }
         }
     },
     {
-        { "LONGSHOT:", "LONGSHOT DE:", "LONGSHOT FR:" },
+        { "LONGSHOT:", "LONGSHOT DE:", "SUPER GRAPPIN:" },
         {
-            { "No", "No DE", "No FR" },
-            { "Yes", "Yes DE", "Yes FR" }
+            { "No", "Nein", "Non" },
+            { "Yes", "Ja", "Oui" }
         }
     },
     {
-        { "HOVER BOOTS:", "HOVER BOOTS DE:", "HOVER BOOTS FR:" },
+        { "HOVER BOOTS:", "HOVER BOOTS DE:", "BOTTES DES AIRS:" },
         {
-            { "No", "No DE", "No FR" },
-            { "Yes", "Yes DE", "Yes FR" }
+            { "No", "Nein", "Non" },
+            { "Yes", "Ja", "Oui" }
         }
     },
     {
-        { "TIMER:", "TIMER DE:", "TIMER FR:" },
+        { "TIMER:", "TIMER DE:", "TIMER:" },
         {
-            { "Yes", "Yes DE", "Yes FR" },
-            { "No", "No DE", "No FR" }
+            { "Yes", "Ja", "Oui" },
+            { "No", "Nein", "Non" }
         }
     }
 };

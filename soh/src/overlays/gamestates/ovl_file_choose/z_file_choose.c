@@ -685,23 +685,23 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
     }
 
-    /*if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
+    if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
-            if ((this->bossRushIndex + 1) > BOSSRUSH_OPTIONS_AMOUNT - 1) {
-                this->bossRushIndex = 0;
+            if ((gSaveContext.bossRushSelectedOptions[this->bossRushIndex] + 1) == BossRush_GetSettingOptionsAmount(this->bossRushIndex)) {
+                gSaveContext.bossRushSelectedOptions[this->bossRushIndex] = 0;
             } else {
-                this->bossRushIndex++;
+                gSaveContext.bossRushSelectedOptions[this->bossRushIndex]++;
             }
         } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
-            if ((this->bossRushIndex - 1) < 0) {
-                this->bossRushIndex = BOSSRUSH_OPTIONS_AMOUNT - 1;
+            if ((gSaveContext.bossRushSelectedOptions[this->bossRushIndex] - 1) < 0) {
+                gSaveContext.bossRushSelectedOptions[this->bossRushIndex] = BossRush_GetSettingOptionsAmount(this->bossRushIndex) - 1;
             } else {
-                this->bossRushIndex--;
+                gSaveContext.bossRushSelectedOptions[this->bossRushIndex]--;
             }
         }
 
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-    }*/
+    }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
         this->configMode = CM_BOSS_RUSH_TO_QUEST;
@@ -714,7 +714,6 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
         this->menuMode = FS_MENU_MODE_SELECT;
         this->selectMode = SM_FADE_OUT;
         this->prevConfigMode = this->configMode;
-        this->configMode = CM_FADE_IN_START;
         return;
     }
 }
@@ -1447,7 +1446,7 @@ const char* FileChoose_GetQuestChooseTitleTexName(Language lang) {
     }
 }
 
-const char* FileChoose_GetBossRushOptionsTitleTexName(Language lang) {
+const char* FileChoose_GetbossRushSelectedOptionsTitleTexName(Language lang) {
     switch (lang) {
         case LANGUAGE_ENG:
         default:
@@ -1485,7 +1484,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         case CM_BOSS_RUSH_MENU:
         case CM_START_BOSS_RUSH_MENU:
         case CM_BOSS_RUSH_TO_QUEST:
-            tex = FileChoose_GetBossRushOptionsTitleTexName(gSaveContext.language);
+            tex = FileChoose_GetbossRushSelectedOptionsTitleTexName(gSaveContext.language);
             break;
         default:
             tex = sTitleLabels[gSaveContext.language][this->titleLabel];
@@ -1568,8 +1567,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 FileChoose_DrawImageRGBA32(this->state.gfxCtx, 182, 180, "__OTR__objects/object_mag/gTitleBossRushSubtitleTex", 128, 32);
                 break;
         }
-    } else if (this->configMode == CM_BOSS_RUSH_MENU || this->configMode == CM_START_BOSS_RUSH_MENU ||
-               this->configMode == CM_ROTATE_TO_BOSS_RUSH_MENU || this->configMode == CM_BOSS_RUSH_TO_QUEST) {
+    } else if (this->configMode == CM_BOSS_RUSH_MENU) {
 
         uint8_t offset = this->bossRushOffset;
 
@@ -1578,11 +1576,12 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             if (this->bossRushIndex == i) {
                 fontColor = 0;
             }
-            Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingName(i, gSaveContext.language), 65, (80 + ((i - offset) * 18)), 255, 255, 0, 255, 0.8f, true);
-            Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, 0, gSaveContext.language), 145, (80 + ((i - offset) * 18)), 255, 255, fontColor, 255, 0.8f, true);
+            Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingName(i, gSaveContext.language), 65, (85 + ((i - offset) * 16)), 255, 255, 0, 255, 0.8f, true);
+            Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, gSaveContext.bossRushSelectedOptions[i], gSaveContext.language), 165, (85 + ((i - offset) * 16)), 255, 255, fontColor, 255, 0.8f, true);
         }
 
-    } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY) {
+    } else if (this->configMode != CM_ROTATE_TO_NAME_ENTRY && this->configMode != CM_START_BOSS_RUSH_MENU &&
+               this->configMode != CM_ROTATE_TO_BOSS_RUSH_MENU && this->configMode != CM_BOSS_RUSH_TO_QUEST) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->titleAlpha[1]);
         gDPLoadTextureBlock(POLY_OPA_DISP++, sTitleLabels[gSaveContext.language][this->nextTitleLabel], G_IM_FMT_IA,
@@ -2064,6 +2063,8 @@ void FileChoose_ConfirmFile(GameState* thisx) {
         if (this->confirmButtonIndex == FS_BTN_CONFIRM_YES) {
             func_800AA000(300.0f, 180, 20, 100);
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            // Reset Boss Rush because it's only ever saved in memory.
+            gSaveContext.isBossRush = 0;
             this->selectMode = SM_FADE_OUT;
             func_800F6964(0xF);
         } else {
