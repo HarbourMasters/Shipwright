@@ -4623,7 +4623,7 @@ void DrawRandoEditor(bool& open) {
                         enabledTrickString += ",";
                     }
                     CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                    SohImGui::RequestCvarSaveOnNextTick();
+                    LUS::RequestCvarSaveOnNextTick();
                 }
                 ImGui::SameLine();
                 if (ImGui::Button("Enable All")) {
@@ -4640,7 +4640,7 @@ void DrawRandoEditor(bool& open) {
                         enabledTrickString += ",";
                     }
                     CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                    SohImGui::RequestCvarSaveOnNextTick();
+                    LUS::RequestCvarSaveOnNextTick();
                 }
             }
             /* toggle for tags
@@ -4730,7 +4730,7 @@ void DrawRandoEditor(bool& open) {
                             enabledTrickString += ",";
                         }
                         CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                        SohImGui::RequestCvarSaveOnNextTick();
+                        LUS::RequestCvarSaveOnNextTick();
                     }
                     
                     ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
@@ -4766,7 +4766,7 @@ void DrawRandoEditor(bool& open) {
                                                 enabledTrickString += ",";
                                             }
                                             CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                                            SohImGui::RequestCvarSaveOnNextTick();
+                                            LUS::RequestCvarSaveOnNextTick();
                                         }
                                         DrawTagChips(*rtObject.rtTags);
                                         ImGui::SameLine();
@@ -4840,7 +4840,7 @@ void DrawRandoEditor(bool& open) {
                             enabledTrickString += ",";
                         }
                         CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                        SohImGui::RequestCvarSaveOnNextTick();
+                        LUS::RequestCvarSaveOnNextTick();
                     }
                     
                     ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
@@ -4878,7 +4878,7 @@ void DrawRandoEditor(bool& open) {
                                                 enabledTrickString += ",";
                                             }
                                             CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                                            SohImGui::RequestCvarSaveOnNextTick();
+                                            LUS::RequestCvarSaveOnNextTick();
                                         }
                                         DrawTagChips(*rtObject.rtTags);
                                         ImGui::SameLine();
@@ -5007,7 +5007,7 @@ void DrawRandoEditor(bool& open) {
                                                 enabledGlitchString += ",";
                                             }
                                             CVarSetString("gRandomizeEnabledGlitches", enabledGlitchString.c_str());
-                                            SohImGui::RequestCvarSaveOnNextTick();
+                                            LUS::RequestCvarSaveOnNextTick()
                                         }
                                         ImGui::SameLine();
                                         DrawAreaChip(rtArea);
@@ -5045,7 +5045,7 @@ void DrawRandoEditor(bool& open) {
                                                 enabledGlitchString += ",";
                                             }
                                             CVarSetString("gRandomizeEnabledGlitches", enabledGlitchString.c_str());
-                                            SohImGui::RequestCvarSaveOnNextTick();
+                                            LUS::RequestCvarSaveOnNextTick()
                                         }
                                         ImGui::SameLine();
                                         DrawAreaChip(rtArea);
