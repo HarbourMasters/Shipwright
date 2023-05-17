@@ -851,7 +851,10 @@ void UpdateVectors() {
 void DrawItemTracker(bool& open) {
     UpdateVectors();
     if (!open) {
-        CVarSetInteger("gItemTrackerEnabled", 0);
+        if (CVarGetInteger("gItemTrackerEnabled", 0)) {
+            CVarClear("gItemTrackerEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
@@ -959,7 +962,10 @@ static const char* extendedDisplayTypes[4] = { "Hidden", "Main Window", "Misc Wi
 
 void DrawItemTrackerOptions(bool& open) {
     if (!open) {
-        CVarSetInteger("gItemTrackerSettingsEnabled", 0);
+        if (CVarGetInteger("gItemTrackerSettingsEnabled", 0)) {
+            CVarClear("gItemTrackerSettingsEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 
@@ -1081,8 +1087,8 @@ void DrawItemTrackerOptions(bool& open) {
 }
 
 void InitItemTracker() {
-    LUS::AddWindow("Randomizer", "Item Tracker", DrawItemTracker, CVarGetInteger("gItemTrackerEnabled", 0) == 1);
-    LUS::AddWindow("Randomizer", "Item Tracker Settings", DrawItemTrackerOptions);
+    LUS::AddWindow("Randomizer", "Item Tracker", DrawItemTracker, CVarGetInteger("gItemTrackerEnabled", 0));
+    LUS::AddWindow("Randomizer", "Item Tracker Settings", DrawItemTrackerOptions, CVarGetInteger("gItemTrackerSettingsEnabled", 0));
     float trackerBgR = CVarGetFloat("gItemTrackerBgColorR", 0);
     float trackerBgG = CVarGetFloat("gItemTrackerBgColorG", 0);
     float trackerBgB = CVarGetFloat("gItemTrackerBgColorB", 0);

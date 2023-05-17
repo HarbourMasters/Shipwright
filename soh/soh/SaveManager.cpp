@@ -762,7 +762,7 @@ void SaveManager::SaveFile(int fileNum, bool threaded = true) {
     auto saveContext = new SaveContext;
     memcpy(saveContext, &gSaveContext, sizeof(gSaveContext));
     if (threaded) {
-        smThreadPool->push_task(&SaveManager::SaveFileThreaded, this, fileNum, saveContext);
+        smThreadPool->push_task_back(&SaveManager::SaveFileThreaded, this, fileNum, saveContext);
     } else {
         SaveFileThreaded(fileNum, saveContext);
     }

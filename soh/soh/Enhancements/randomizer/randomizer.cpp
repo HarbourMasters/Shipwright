@@ -3090,7 +3090,10 @@ void DrawRandoEditor(bool& open) {
     }
 
     if (!open) {
-        CVarSetInteger("gRandomizerSettingsEnabled", 0);
+        if (CVarGetInteger("gRandomizerSettingsEnabled", 0)) {
+            CVarClear("gRandomizerSettingsEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 
@@ -5452,7 +5455,7 @@ void InitRandoItemTable() {
 
 
 void InitRando() {
-    LUS::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
+    LUS::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor, CVarGetInteger("gRandomizerSettingsEnabled", 0));
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     InitRandoItemTable();

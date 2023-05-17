@@ -385,7 +385,7 @@ void ResetPositionAll() {
 int hue = 0;
 
 // Runs every frame to update rainbow hue, a potential future optimization is to only run this a once or twice a second and increase the speed of the rainbow hue rotation.
-void CosmeticsUpdateTick(bool& open) {
+void CosmeticsUpdateTick() {
     int index = 0;
     float rainbowSpeed = CVarGetFloat("gCosmetics.RainbowSpeed", 0.6f);
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
@@ -1668,7 +1668,10 @@ static const char* colorSchemes[2] = {
 
 void DrawCosmeticsEditor(bool& open) {
     if (!open) {
-        CVarSetInteger("gCosmeticsEditorEnabled", 0);
+        if (CVarGetInteger("gCosmeticsEditorEnabled", 0)) {
+            CVarClear("gCosmeticsEditorEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 
@@ -1797,13 +1800,15 @@ void RegisterOnLoadGameHook() {
     });
 }
 
-void InitCosmeticsEditor() {
-    // There's probably a better way to do this, but leaving as is for historical reasons. Even though there is no
-    // real window being rendered here, it calls this every frame allowing us to rotate through the rainbow hue for cosmetics
-    LUS::AddWindow("Enhancements", "Cosmetics Update Tick", CosmeticsUpdateTick, true, true);
+void RegisterOnGameFrameUpdateHook() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        CosmeticsUpdateTick();
+    });
+}
 
+void InitCosmeticsEditor() {
     // Draw the bar in the menu.
-    LUS::AddWindow("Enhancements", "Cosmetics Editor", DrawCosmeticsEditor);
+    LUS::AddWindow("Enhancements", "Cosmetics Editor", DrawCosmeticsEditor, CVarGetInteger("gCosmeticsEditorEnabled", 0));
     // Convert the `current color` into the format that the ImGui color picker expects
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
         Color_RGBA8 defaultColor = {cosmeticOption.defaultColor.x, cosmeticOption.defaultColor.y, cosmeticOption.defaultColor.z, cosmeticOption.defaultColor.w};
@@ -1819,6 +1824,7 @@ void InitCosmeticsEditor() {
     ApplyAuthenticGfxPatches();
 
     RegisterOnLoadGameHook();
+    RegisterOnGameFrameUpdateHook();
 }
 
 void CosmeticsEditor_RandomizeAll() {
