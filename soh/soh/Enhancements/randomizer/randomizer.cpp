@@ -4576,7 +4576,7 @@ CustomMessage Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(
         Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT);
     if (mysterious) {
-        std::array<const char*, 3> locationName ={
+        std::array<const char*, LANGUAGE_MAX> locationName ={
             "a mysterious place",
             "ein mysteriöser Ort",
             "un endroit mystérieux",
@@ -4617,7 +4617,7 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
     RandomizerCheck rc = GetCheckFromRandomizerInf(randomizerInf);
     RandomizerGet shopItemGet = this->itemLocations[rc].rgID;
-    std::array<std::string, 3> shopItemName;
+    std::array<std::string, LANGUAGE_MAX> shopItemName;
     if (mysterious) {
         shopItemName = {
             "mysterious item",
@@ -4655,7 +4655,7 @@ CustomMessage Randomizer::GetCursedSkullMessage(s16 params) {
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE);
     RandomizerCheck rc = GetCheckFromActor(ACTOR_EN_SSH, SCENE_KINSUTA, params);
     RandomizerGet itemGet = this->itemLocations[rc].rgID;
-    std::array<std::string, 3> itemName;
+    std::array<std::string, LANGUAGE_MAX> itemName;
     if (itemGet == RG_ICE_TRAP) {
         itemGet = this->itemLocations[rc].fakeRgID;
         itemName = {
