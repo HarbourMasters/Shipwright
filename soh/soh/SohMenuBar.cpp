@@ -155,25 +155,30 @@ void DrawSettingsMenu() {
                 Audio_SetGameVolume(SEQ_FANFARE, CVarGetFloat("gFanfareVolume", 1.0f));
             }
 
-            // OTRTODO: figure this out
-            // ImGui::Text("Audio API (Needs reload)");
-            // auto currentAudioBackend = LUS::GetCurrentAudioBackend();
+            static std::unordered_map<LUS::AudioBackend, const char*> audioBackendNames = {
+                { LUS::AudioBackend::WASAPI, "Windows Audio Session API" },
+                { LUS::AudioBackend::PULSE, "PulseAudio" },
+                { LUS::AudioBackend::SDL, "SDL" },
+            };
 
-            // if (audioBackends.size() <= 1) {
-            //     UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
-            // }
-            // if (ImGui::BeginCombo("##AApi", currentAudioBackend.second)) {
-            //     for (uint8_t i = 0; i < audioBackends.size(); i++) {
-            //         if (ImGui::Selectable(audioBackends[i].second, audioBackends[i] == currentAudioBackend)) {
-            //             LUS::SetCurrentAudioBackend(i, audioBackends[i]);
-            //         }
-            //     }
+            ImGui::Text("Audio API (Needs reload)");
+            auto currentAudioBackend = LUS::Context::GetInstance()->GetAudio()->GetAudioBackend();
 
-            //     ImGui::EndCombo();
-            // }
-            // if (audioBackends.size() <= 1) {
-            //     UIWidgets::ReEnableComponent("");
-            // }
+            if (LUS::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size() <= 1) {
+                UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
+            }
+            if (ImGui::BeginCombo("##AApi", audioBackendNames[currentAudioBackend])) {
+                for (uint8_t i = 0; i < LUS::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size(); i++) {
+                    auto backend = LUS::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->data()[i];
+                    if (ImGui::Selectable(audioBackendNames[backend], backend == currentAudioBackend)) {
+                        LUS::Context::GetInstance()->GetAudio()->SetAudioBackend(backend);
+                    }
+                }
+                ImGui::EndCombo();
+            }
+            if (LUS::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size() <= 1) {
+                UIWidgets::ReEnableComponent("");
+            }
 
             ImGui::EndMenu();
         }
