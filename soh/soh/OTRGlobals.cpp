@@ -1645,18 +1645,6 @@ extern "C" int Controller_ShouldRumble(size_t slot) {
     return 0;
 }
 
-extern "C" void Controller_BlockGameInput() {
-    auto controlDeck = LUS::Context::GetInstance()->GetControlDeck();
-
-    controlDeck->BlockGameInput();
-}
-
-extern "C" void Controller_UnblockGameInput() {
-    auto controlDeck = LUS::Context::GetInstance()->GetControlDeck();
-
-    controlDeck->UnblockGameInput();
-}
-
 extern "C" void Hooks_ExecuteAudioInit() {
     LUS::ExecuteHooks<LUS::AudioInit>();
 }

@@ -209,6 +209,7 @@ void PadMgr_RumbleSet(PadMgr* padMgr, u8* ctrlrRumbles) {
     padMgr->rumbleOnFrames = 240;
 }
 
+#define PAUSE_BUFFER_INPUT_BLOCK_ID 0
 void PadMgr_ProcessInputs(PadMgr* padMgr) {
     s32 i;
     Input* input;
@@ -316,9 +317,9 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
     OTRControllerCallback(rumble, ledColor);
 
     if (CVarGetInteger("gPauseBufferBlockInputFrame", 0)) {
-        Controller_BlockGameInput();
+        BlockGameInput(PAUSE_BUFFER_INPUT_BLOCK_ID);
     } else {
-        Controller_UnblockGameInput();
+        UnblockGameInput(PAUSE_BUFFER_INPUT_BLOCK_ID);
     }
 
     PadMgr_UnlockPadData(padMgr);
