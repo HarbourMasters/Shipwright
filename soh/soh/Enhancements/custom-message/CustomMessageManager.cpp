@@ -60,12 +60,12 @@ void CustomMessage::operator+=(const std::string& right) {
     german += right;
 }
 
-bool CustomMessage::operator==(const CustomMessage& right) const {
-    return english == right.english;
+bool CustomMessage::operator==(const CustomMessage& operand) const {
+    return english == operand.english;
 }
 
-bool CustomMessage::operator!=(const CustomMessage& right) const {
-    return !operator==(right);
+bool CustomMessage::operator!=(const CustomMessage& operand) const {
+    return !operator==(operand);
 }
 
 void CustomMessage::Replace(std::string&& oldStr, std::string&& newStr) {
