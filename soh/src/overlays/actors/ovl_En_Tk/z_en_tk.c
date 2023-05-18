@@ -526,6 +526,8 @@ void EnTk_Destroy(Actor* thisx, PlayState* play) {
     EnTk* this = (EnTk*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnTk_Rest(EnTk* this, PlayState* play) {

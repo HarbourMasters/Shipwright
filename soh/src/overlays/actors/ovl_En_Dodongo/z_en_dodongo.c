@@ -353,6 +353,8 @@ void EnDodongo_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyTris(play, &this->colliderHard);
     Collider_DestroyJntSph(play, &this->colliderBody);
     Collider_DestroyQuad(play, &this->colliderAT);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDodongo_SetupIdle(EnDodongo* this) {
