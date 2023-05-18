@@ -365,6 +365,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/resource
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/resource/type
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/audio
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/window
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/window/gui
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/extern
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/extern/Mercury
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/extern/tinyxml2

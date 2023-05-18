@@ -1,8 +1,8 @@
 #pragma once
 
 #include <libultraship/libultraship.h>
-#include "gui/GuiMenuBar.h"
-#include "gui/GuiElement.h"
+#include "window/gui/GuiMenuBar.h"
+#include "window/gui/GuiElement.h"
 
 namespace SohGui {
 class SohMenuBar : public LUS::GuiMenuBar {
