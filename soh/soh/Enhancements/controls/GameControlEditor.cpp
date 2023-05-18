@@ -89,7 +89,7 @@ namespace GameControlEditor {
     void DrawUI(bool&);
 
     void Init() {
-        LUS::AddWindow("Enhancements", "Game Control Editor", DrawUI, CVarGetInteger("gGameControlEditorEnabled", 0));
+        LUS::AddWindow("Enhancements", "Additional Controller Options", DrawUI, CVarGetInteger("gControllerOptionsEnabled", 0));
 
         addButtonName(BTN_A,		"A");
         addButtonName(BTN_B,		"B");
@@ -354,7 +354,7 @@ namespace GameControlEditor {
         }
         UIWidgets::PaddedEnhancementSliderFloat("Brightness: %d%%", "##LED_Brightness", "gLedBrightness",
                                                 0.0f, 1.0f, "", 1.0f, true, true);
-        DrawHelpIcon("Sets the brightness of Tunic Color LEDs. 0% brightness = LEDs off.");
+        DrawHelpIcon("Sets the brightness of controller LEDs. 0% brightness = LEDs off.");
         UIWidgets::PaddedEnhancementCheckbox("Critical Health Override", "gLedCriticalOverride", true, true, 
             CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH, "Override redundant for health source.",
             UIWidgets::CheckboxGraphics::Cross, true);
@@ -364,8 +364,8 @@ namespace GameControlEditor {
 
     void DrawUI(bool& open) {
         if (!open) {
-            if (CVarGetInteger("gGameControlEditorEnabled", 0)) {
-                CVarClear("gGameControlEditorEnabled");
+            if (CVarGetInteger("gControllerOptionsEnabled", 0)) {
+                CVarClear("gControllerOptionsEnabled");
                 LUS::RequestCvarSaveOnNextTick();
             }
             return;
