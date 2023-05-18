@@ -25,7 +25,7 @@ u8 hasRandomizerQuest() {
 }
 
 void FileChoose_DrawTextureI8(GraphicsContext* gfxCtx, const void* texture, s16 texWidth, s16 texHeight, s16 rectLeft, s16 rectTop,
-                         s16 rectWidth, s16 rectHeight, u16 dsdx, u16 dtdy) {
+                         s16 rectWidth, s16 rectHeight, s16 dsdx, s16 dtdy) {
     OPEN_DISPS(gfxCtx);
     gDPLoadTextureBlock(POLY_OPA_DISP++, texture, G_IM_FMT_I, G_IM_SIZ_8b, texWidth, texHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -658,6 +658,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
 }
 
 void FileChoose_UpdateBossRushMenu(GameState* thisx) {
+    FileChoose_UpdateStickDirectionPromptAnim(thisx);
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     bool dpad = CVarGetInteger("gDpadText", 0);
@@ -1606,6 +1607,16 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         uint8_t listOffset = this->bossRushOffset;
         uint8_t textAlpha = this->bossRushUIAlpha;
 
+        // Draw arrows to indicate that the list can scroll up or down.
+        // Arrow up
+        if (listOffset > 0) {
+            FileChoose_DrawTextureI8(this->state.gfxCtx, gEmptyCDownArrowTex, 32, 32, 140, 68, 32, 32, 2048, 2048);
+        }
+        // Arrow down
+        if (BOSSRUSH_OPTIONS_AMOUNT - listOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN) {
+            FileChoose_DrawTextureI8(this->state.gfxCtx, gEmptyCDownArrowTex, 32, 32, 140, 180, 32, 32, 2048, 2048);
+        }
+
         // Draw options. There's more options than what fits on the screen, so the visible options
         // depend on the current offset of the list. Currently selected option pulses in
         // color and has arrows surrounding the option.
@@ -1618,27 +1629,27 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
             // Option name.
             Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingName(i, gSaveContext.language), 
-                65, (85 + textYOffset), 255, 255, 0, textAlpha, 0.8f, true);
+                65, (87 + textYOffset), 255, 255, 0, textAlpha, 0.8f, true);
 
             // Selected choice for option.
-            Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, gSaveContext.bossRushSelectedOptions[i], gSaveContext.language), 
-                165, (85 + textYOffset), 255, 255, selectedOptionColor, textAlpha, 0.8f, true);
+            uint16_t finalKerning = Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, gSaveContext.bossRushSelectedOptions[i], gSaveContext.language), 
+                165, (87 + textYOffset), 255, 255, selectedOptionColor, textAlpha, 0.8f, true);
 
             // Draw arrows around selected option.
             if (this->bossRushIndex == i) {
-                /*Gfx_SetupDL_39Opa(this->state.gfxCtx);
+                Gfx_SetupDL_39Opa(this->state.gfxCtx);
                 gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
                 gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
                                     G_TX_NOLOD);
                 FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR,
                                        this->stickLeftPrompt.arrowColorG, this->stickLeftPrompt.arrowColorB,
-                                       this->stickLeftPrompt.arrowColorA, this->stickLeftPrompt.arrowTexX,
-                                       this->stickLeftPrompt.arrowTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+                                       textAlpha, 160, (92 + textYOffset), 0.42f, 0, 0, -1.0f,
+                                       1.0f);
                 FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
                                        this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
-                                       this->stickRightPrompt.arrowColorA, this->stickRightPrompt.arrowTexX,
-                                       this->stickRightPrompt.arrowTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);*/
+                                       textAlpha, (171 + finalKerning),
+                                       (92 + textYOffset), 0.42f, 0, 0, 1.0f, 1.0f);
             }
         }
 

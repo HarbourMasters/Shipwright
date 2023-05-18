@@ -6623,7 +6623,7 @@ uint16_t Interface_GetTextKerningOffset(int16_t character) {
     }
 }
 
-void Interface_DrawTextLine(GraphicsContext* gfx, char text[], int16_t x, int16_t y, uint16_t colorR,
+uint16_t Interface_DrawTextLine(GraphicsContext* gfx, char text[], int16_t x, int16_t y, uint16_t colorR,
                          uint16_t colorG, uint16_t colorB, uint16_t colorA, float textScale, uint8_t textShadow) {
 
     uint16_t textureIndex;
@@ -6648,4 +6648,6 @@ void Interface_DrawTextLine(GraphicsContext* gfx, char text[], int16_t x, int16_
             kerningOffset += Interface_GetTextKerningOffset(text[i]) * textScale;
         }
     }
+
+    return kerningOffset;
 }
