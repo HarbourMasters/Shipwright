@@ -347,7 +347,7 @@ void DrawSettingsMenu() {
             };
 
             ImGui::Text("Renderer API (Needs reload)");
-            LUS::WindowBackend currentRenderingBackend = LUS::Context::GetInstance()->GetWindow()->GetWindowBackend();
+            LUS::WindowBackend currentRenderingBackend = LUS::Context::GetInstance()->GetWindow()->GetConfigWindowBackend();
 
             if (LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size() <= 1) {
                 UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
@@ -356,7 +356,7 @@ void DrawSettingsMenu() {
                 for (size_t i = 0; i < LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size(); i++) {
                     auto backend = LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->data()[i];
                     if (ImGui::Selectable(windowBackendNames[backend], backend == currentRenderingBackend)) {
-                        LUS::Context::GetInstance()->GetWindow()->SetWindowBackend(backend);
+                        LUS::Context::GetInstance()->GetWindow()->SetConfigWindowBackend(backend);
                     }
                 }
                 ImGui::EndCombo();
