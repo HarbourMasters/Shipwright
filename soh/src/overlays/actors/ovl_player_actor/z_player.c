@@ -354,8 +354,6 @@ static Input* sControlInput;
 
 static u8 D_80853410[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
-extern const char* digitTextures[];
-
 static PlayerAgeProperties sAgeProperties[] = {
     {
         56.0f,

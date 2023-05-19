@@ -881,6 +881,7 @@ void func_80083108(PlayState* play) {
                     Interface_ChangeAlpha(12);
                 }
             }
+        // Don't hide the HUD in the Chamber of Sages when in Boss Rush.
         } else if (play->sceneNum == SCENE_KENJYANOMA && !gSaveContext.isBossRush) {
             Interface_ChangeAlpha(1);
         } else if (play->sceneNum == SCENE_TURIBORI) {
@@ -4833,7 +4834,6 @@ void Interface_Draw(PlayState* play) {
     if (pauseCtx->debugState == 0) {
         Interface_InitVertices(play);
         func_8008A994(interfaceCtx);
-
         if (fullUi || gSaveContext.health != gSaveContext.healthCapacity) {
             HealthMeter_Draw(play);
         }
@@ -4913,6 +4913,7 @@ void Interface_Draw(PlayState* play) {
                 PosX_RC = PosX_RC_ori;
             }
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor.r, rColor.g, rColor.b, interfaceCtx->magicAlpha);
+            // Draw Rupee icon. Hide in Boss Rush.
             if (!gSaveContext.isBossRush) {
                 OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16, 1 << 10, 1 << 10);
             }
@@ -4974,8 +4975,8 @@ void Interface_Draw(PlayState* play) {
                         // Small Key Counter
                         gDPPipeSync(OVERLAY_DISP++);
                         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->magicAlpha);
-                        gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE,
-                                          TEXEL0, 0, PRIMITIVE, 0);
+                        gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
+                              PRIMITIVE, 0);
 
                         interfaceCtx->counterDigits[2] = 0;
                         interfaceCtx->counterDigits[3] = gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex];
@@ -5030,6 +5031,7 @@ void Interface_Draw(PlayState* play) {
             svar2 = rupeeDigitsFirst[CUR_UPG_VALUE(UPG_WALLET)];
             svar5 = rupeeDigitsCount[CUR_UPG_VALUE(UPG_WALLET)];
 
+            // Draw Rupee Counter. Hide in Boss Rush.
             if (!gSaveContext.isBossRush) {
                 for (svar1 = 0, svar3 = 16; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
                     OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]),

@@ -605,7 +605,6 @@ void SaveManager::InitFileNormal() {
     gSaveContext.infTable[29] = 1;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
     gSaveContext.pendingSale = ITEM_NONE;
-    
     gSaveContext.pendingSaleMod = MOD_NONE;
 
     strncpy(gSaveContext.sohStats.buildVersion, (const char*) gBuildVersion, sizeof(gSaveContext.sohStats.buildVersion) - 1);
@@ -761,6 +760,7 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext) {
 }
 
 void SaveManager::SaveFile(int fileNum) {
+    // Don't save in Boss rush.
     if (fileNum == 0xFF || fileNum == 0xFE) {
         return;
     }

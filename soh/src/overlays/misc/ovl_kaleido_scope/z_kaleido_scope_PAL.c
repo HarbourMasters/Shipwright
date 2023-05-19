@@ -1512,6 +1512,7 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                     POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(
                         POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][0], 48, 16, 12);
                 } else {
+                    // Show "No" twice in Boss Rush because the player can't save within it.
                     POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(
                         POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][1], 48, 16, 12);
                 }
@@ -3634,10 +3635,14 @@ void KaleidoScope_Update(PlayState* play)
         case 6:
             switch (pauseCtx->unk_1E4) {
                 case 0:
+                    // Boss Rush skips past the "Save?" window when pressing B while paused.
                     if (CHECK_BTN_ALL(input->press.button, BTN_START) ||
                         (CHECK_BTN_ALL(input->press.button, BTN_B) && gSaveContext.isBossRush)) {
                         if (CVarGetInteger("gCheatEasyPauseBufferEnabled", 0) || CVarGetInteger("gCheatEasyInputBufferingEnabled", 0)) {
                             CVarSetInteger("gPauseBufferBlockInputFrame", 9);
+                        }
+                        if (CVarGetInteger("gCheatEasyPauseBufferEnabled", 0)) {
+                            CVarSetInteger("gCheatEasyPauseBufferFrameAdvance", 13);
                         }
                         Interface_SetDoAction(play, DO_ACTION_NONE);
                         pauseCtx->state = 0x12;
