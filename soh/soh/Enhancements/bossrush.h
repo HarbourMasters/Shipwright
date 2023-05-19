@@ -25,12 +25,12 @@ typedef enum {
 } BossRushBossesChoices;
 
 typedef enum {
-    BR_CHOICE_HEARTS_7,
     BR_CHOICE_HEARTS_10,
     BR_CHOICE_HEARTS_15,
     BR_CHOICE_HEARTS_20,
     BR_CHOICE_HEARTS_3,
-    BR_CHOICE_HEARTS_5
+    BR_CHOICE_HEARTS_5,
+    BR_CHOICE_HEARTS_7
 } BossRushHeartsChoices;
 
 typedef enum {
