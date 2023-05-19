@@ -1429,8 +1429,8 @@ extern "C" s32* ResourceMgr_LoadCSByName(const char* path) {
     return (s32*)GetResourceDataByNameHandlingMQ(path);
 }
 
-std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
-    const std::string fileName = Conf->getString("Game.SaveName", LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav"));
+std::filesystem::path GetSaveFile(std::shared_ptr<LUS::Config> Conf) {
+    const std::string fileName = Conf->GetString("Game.SaveName", LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav"));
     std::filesystem::path saveFile = std::filesystem::absolute(fileName);
 
     if (!exists(saveFile.parent_path())) {
@@ -1441,13 +1441,13 @@ std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
 }
 
 std::filesystem::path GetSaveFile() {
-    const std::shared_ptr<Mercury> pConf = OTRGlobals::Instance->context->GetConfig();
+    const std::shared_ptr<LUS::Config> pConf = OTRGlobals::Instance->context->GetConfig();
 
     return GetSaveFile(pConf);
 }
 
 void OTRGlobals::CheckSaveFile(size_t sramSize) const {
-    const std::shared_ptr<Mercury> pConf = Instance->context->GetConfig();
+    const std::shared_ptr<LUS::Config> pConf = Instance->context->GetConfig();
 
     std::filesystem::path savePath = GetSaveFile(pConf);
     std::fstream saveFile(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);

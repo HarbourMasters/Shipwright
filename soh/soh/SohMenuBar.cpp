@@ -349,7 +349,7 @@ void DrawSettingsMenu() {
             ImGui::Text("Renderer API (Needs reload)");
             LUS::WindowBackend runningWindowBackend = LUS::Context::GetInstance()->GetWindow()->GetWindowBackend();
             LUS::WindowBackend configWindowBackend;
-            int configWindowBackendId = LUS::Context::GetInstance()->GetConfig()->getInt("Window.Backend.Id", -1);
+            int configWindowBackendId = LUS::Context::GetInstance()->GetConfig()->GetInt("Window.Backend.Id", -1);
             if (configWindowBackendId != -1 && configWindowBackendId < static_cast<int>(LUS::WindowBackend::BACKEND_COUNT)) {
                 configWindowBackend = static_cast<LUS::WindowBackend>(configWindowBackendId);
             } else {
@@ -363,9 +363,10 @@ void DrawSettingsMenu() {
                 for (size_t i = 0; i < LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->size(); i++) {
                     auto backend = LUS::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends()->data()[i];
                     if (ImGui::Selectable(windowBackendNames[backend], backend == configWindowBackend)) {
-                        LUS::Context::GetInstance()->GetConfig()->setInt("Window.Backend.Id", static_cast<int>(backend));
-                        LUS::Context::GetInstance()->GetConfig()->setString("Window.Backend.Name", windowBackendNames[backend]);
-                        LUS::Context::GetInstance()->GetConfig()->save();
+                        LUS::Context::GetInstance()->GetConfig()->SetInt("Window.Backend.Id", static_cast<int>(backend));
+                        LUS::Context::GetInstance()->GetConfig()->SetString("Window.Backend.Name",
+                                                                            windowBackendNames[backend]);
+                        LUS::Context::GetInstance()->GetConfig()->Save();
                     }
                 }
                 ImGui::EndCombo();
