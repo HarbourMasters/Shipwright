@@ -1,6 +1,6 @@
 #include "SohMenuBar.h"
 #include "ImGui/imgui.h"
-#include "core/bridge/consolevariablebridge.h"
+#include "public/bridge/consolevariablebridge.h"
 #include <libultraship/libultraship.h>
 #include "UIWidgets.hpp"
 #include "include/z64audio.h"
