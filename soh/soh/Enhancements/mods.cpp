@@ -2,6 +2,7 @@
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
 #include "tts/tts.h"
+#include "soh/Enhancements/bossrush.h"
 
 extern "C" {
 #include <z64.h>
@@ -421,8 +422,13 @@ void RegisterHyperBosses() {
             actor->id == ACTOR_BOSS_GANON ||                             // Ganondorf
             actor->id == ACTOR_BOSS_GANON2;                              // Ganon
 
+        uint8_t hyperBossesActive =
+            CVarGetInteger("gHyperBosses", 0) ||
+            (gSaveContext.isBossRush &&
+             gSaveContext.bossRushSelectedOptions[BR_OPTIONS_HYPERBOSSES] == BR_OPTION_HYPERBOSSES_CHOICE_YES);
+
         // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
-        if (CVarGetInteger("gHyperBosses", 0) && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
+        if (hyperBossesActive && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
             // Barinade needs to be updated in sequence to avoid unintended behaviour.
             if (actor->id == ACTOR_BOSS_VA) {
                 // params -1 is BOSSVA_BODY

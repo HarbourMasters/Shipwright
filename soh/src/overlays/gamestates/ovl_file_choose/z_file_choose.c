@@ -569,8 +569,6 @@ void FileChoose_StartBossRushMenu(GameState* thisx) {
 
     this->logoAlpha -= 25;
     this->bossRushUIAlpha = 0;
-    this->bossRushPulsatingTextColor = 0;
-    this->bossRushPulsatingTextColorDirection = 0;
 
     if (this->logoAlpha >= 0) {
         this->logoAlpha = 0;
@@ -668,19 +666,6 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
     if (this->bossRushUIAlpha > 255) {
         this->bossRushUIAlpha = 255;
     }
-
-    // Cycle from 0 to 255 and back to 0 again.
-    if (!this->bossRushPulsatingTextColorDirection) {
-        this->bossRushPulsatingTextColor += 5;
-        if (this->bossRushPulsatingTextColor == 255) {
-            this->bossRushPulsatingTextColorDirection = 1;
-        }
-    } else {
-        this->bossRushPulsatingTextColor -= 5;
-        if (this->bossRushPulsatingTextColor == 0) {
-            this->bossRushPulsatingTextColorDirection = 0;
-        }
-    }
     
     // Move menu selection up or down.
     if (ABS(this->stickRelY) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
@@ -711,8 +696,6 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
             }
         }
 
-        this->bossRushPulsatingTextColor = 255;
-        this->bossRushPulsatingTextColorDirection = 1;
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
     }
 
@@ -1622,18 +1605,14 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         // color and has arrows surrounding the option.
         for (uint8_t i = listOffset; i - listOffset < BOSSRUSH_MAX_OPTIONS_ON_SCREEN; i++) {
             uint16_t textYOffset = (i - listOffset) * 16;
-            uint8_t selectedOptionColor = 255;
-            if (this->bossRushIndex == i) {
-                selectedOptionColor = this->bossRushPulsatingTextColor;
-            }
 
             // Option name.
             Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingName(i, gSaveContext.language), 
-                65, (87 + textYOffset), 255, 255, 0, textAlpha, 0.8f, true);
+                65, (87 + textYOffset), 190, 210, 240, textAlpha, 0.8f, true);
 
             // Selected choice for option.
             uint16_t finalKerning = Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, gSaveContext.bossRushSelectedOptions[i], gSaveContext.language), 
-                165, (87 + textYOffset), 255, 255, selectedOptionColor, textAlpha, 0.8f, true);
+                165, (87 + textYOffset), 255, 255, 255, textAlpha, 0.8f, true);
 
             // Draw arrows around selected option.
             if (this->bossRushIndex == i) {

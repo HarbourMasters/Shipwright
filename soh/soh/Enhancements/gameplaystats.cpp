@@ -618,16 +618,7 @@ void SetupDisplayNames() {
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_TWINROVA],      "Twinrova Defeated:  ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANONDORF],     "Ganondorf Defeated: ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:     ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_GOHMA],           "Gohma Completed:    ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_KING_DODONGO],    "KD Completed:       ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_BARINADE],        "Barinade Completed: ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_PHANTOM_GANON],   "PG Completed:       ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_VOLVAGIA],        "Volvagia Completed: ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_MORPHA],          "Morpha Completed:   ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_BONGO_BONGO],     "Bongo Completed:    ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_TWINROVA],        "Twinrova Completed: ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_GANONDORF],       "Ganondorf Completed:");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_DEFEAT_GANON],           "Boss Rush Finished: ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_FINISH],      "Boss Rush Finished: ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:         ");
 }
 
@@ -638,49 +629,50 @@ void SetupDisplayColors() {
             case ITEM_KOKIRI_EMERALD:
             case ITEM_SONG_SARIA:
             case ITEM_MEDALLION_FOREST:
-            case TIMESTAMP_BOSSRUSH_DEFEAT_GOHMA:
-            case TIMESTAMP_BOSSRUSH_DEFEAT_PHANTOM_GANON:
+            case TIMESTAMP_DEFEAT_GOHMA:
+            case TIMESTAMP_DEFEAT_PHANTOM_GANON:
             case TIMESTAMP_FOUND_GREG:
                 itemTimestampDisplayColor[i] = COLOR_GREEN;
                 break;
             case ITEM_SONG_BOLERO:
             case ITEM_GORON_RUBY:
             case ITEM_MEDALLION_FIRE:
-            case TIMESTAMP_BOSSRUSH_DEFEAT_KING_DODONGO:
-            case TIMESTAMP_BOSSRUSH_DEFEAT_VOLVAGIA:
+            case TIMESTAMP_DEFEAT_KING_DODONGO:
+            case TIMESTAMP_DEFEAT_VOLVAGIA:
                 itemTimestampDisplayColor[i] = COLOR_RED;
                 break;
             case ITEM_SONG_SERENADE:
             case ITEM_ZORA_SAPPHIRE:
             case ITEM_MEDALLION_WATER:
-            case TIMESTAMP_BOSSRUSH_DEFEAT_BARINADE:
-            case TIMESTAMP_BOSSRUSH_DEFEAT_MORPHA:
+            case TIMESTAMP_DEFEAT_BARINADE:
+            case TIMESTAMP_DEFEAT_MORPHA:
                 itemTimestampDisplayColor[i] = COLOR_BLUE;
                 break;
             case ITEM_SONG_LULLABY:
             case ITEM_SONG_NOCTURNE:
             case ITEM_MEDALLION_SHADOW:
-            case TIMESTAMP_BOSSRUSH_DEFEAT_BONGO_BONGO:
+            case TIMESTAMP_DEFEAT_BONGO_BONGO:
                 itemTimestampDisplayColor[i] = COLOR_PURPLE;
                 break;
             case ITEM_SONG_EPONA:
             case ITEM_SONG_REQUIEM:
             case ITEM_MEDALLION_SPIRIT:
-            case TIMESTAMP_BOSSRUSH_DEFEAT_TWINROVA:
+            case TIMESTAMP_DEFEAT_TWINROVA:
                 itemTimestampDisplayColor[i] = COLOR_ORANGE;
                 break;
             case ITEM_SONG_SUN:
             case ITEM_SONG_PRELUDE:
             case ITEM_MEDALLION_LIGHT:
             case ITEM_ARROW_LIGHT:
-            case TIMESTAMP_BOSSRUSH_DEFEAT_GANONDORF:
+            case TIMESTAMP_DEFEAT_GANONDORF:
+            case TIMESTAMP_DEFEAT_GANON:
                 itemTimestampDisplayColor[i] = COLOR_YELLOW;
                 break;
             case ITEM_SONG_STORMS:
                 itemTimestampDisplayColor[i] = COLOR_GREY;
                 break;
             case ITEM_SONG_TIME:
-            case TIMESTAMP_BOSSRUSH_DEFEAT_GANON:
+            case TIMESTAMP_BOSSRUSH_FINISH:
                 itemTimestampDisplayColor[i] = COLOR_LIGHT_BLUE;
                 break;
             default:

@@ -24,16 +24,7 @@ typedef enum {
     /* 0xA7 */ TIMESTAMP_DEFEAT_TWINROVA,       // z_boss_tw.c
     /* 0xA8 */ TIMESTAMP_DEFEAT_GANONDORF,      // z_boss_ganon.c
     /* 0xA9 */ TIMESTAMP_DEFEAT_GANON,          // z_boss_ganon2.c
-    /* 0xA0 */ TIMESTAMP_BOSSRUSH_DEFEAT_GOHMA,         // z_door_warp1.c
-    /* 0xA1 */ TIMESTAMP_BOSSRUSH_DEFEAT_KING_DODONGO,  // z_door_warp1.c
-    /* 0xA2 */ TIMESTAMP_BOSSRUSH_DEFEAT_BARINADE,      // z_door_warp1.c
-    /* 0xA3 */ TIMESTAMP_BOSSRUSH_DEFEAT_PHANTOM_GANON, // z_door_warp1.c
-    /* 0xA4 */ TIMESTAMP_BOSSRUSH_DEFEAT_VOLVAGIA,      // z_door_warp1.c
-    /* 0xA5 */ TIMESTAMP_BOSSRUSH_DEFEAT_MORPHA,        // z_door_warp1.c
-    /* 0xA6 */ TIMESTAMP_BOSSRUSH_DEFEAT_BONGO_BONGO,   // z_door_warp1.c
-    /* 0xA7 */ TIMESTAMP_BOSSRUSH_DEFEAT_TWINROVA,      // z_door_warp1.c
-    /* 0xA8 */ TIMESTAMP_BOSSRUSH_DEFEAT_GANONDORF,     // z_boss_ganon.c
-    /* 0xA9 */ TIMESTAMP_BOSSRUSH_DEFEAT_GANON,         // z_boss_ganon2.c
+    /* 0xA9 */ TIMESTAMP_BOSSRUSH_FINISH,       // z_boss_ganon2.c
     /* 0xAA */ TIMESTAMP_FOUND_GREG,            // z_parameter.c
     /* 0xAB */ TIMESTAMP_MAX
 

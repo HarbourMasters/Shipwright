@@ -57,7 +57,7 @@ void KaleidoScopeCall_Update(PlayState* play) {
     PauseContext* pauseCtx = &play->pauseCtx;
 
     if (!gSaveContext.sohStats.gameComplete &&
-        (!gSaveContext.isBossRush || (gSaveContext.isBossRush && !gSaveContext.isBossRushPaused))) {
+        (!gSaveContext.isBossRush || !gSaveContext.isBossRushPaused)) {
         gSaveContext.sohStats.pauseTimer++;
     }
 

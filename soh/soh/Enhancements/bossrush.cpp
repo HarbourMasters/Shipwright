@@ -32,7 +32,7 @@ BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = {
         }
     },
     {
-        { "AMMO:", "AMMO DE:", "MUNITIONS" },
+        { "AMMO:", "AMMO DE:", "MUNITIONS:" },
         {
             { "Limited", "Limited DE", "Limitées" },
             { "Full", "Full DE", "Full FR" },
@@ -42,16 +42,24 @@ BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = {
     {
         { "HEAL:", "HEAL DE:", "SOIN:" },
         {
-            { "Ganondorf", "Ganondorf DE", "Ganondorf" },
+            { "Before Ganondorf", "Before Ganondorf DE", "Before Ganondorf FR" },
             { "Every Boss", "Every Boss DE", "Tous les Boss" },
             { "Never", "Never DE", "Jamais" }
+        }
+    },
+    {
+        { "HYPER BOSSES:", "HYPER BOSSES DE:", "HYPER BOSS:" },
+        {
+            { "No", "Nein", "Non" },
+            { "Yes", "Ja", "Oui" }
         }
     },
     {
         { "BOTTLE:", "BOTTLE DE:", "BOUTEILLE:" },
         {
             { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
+            { "Empty", "Empty DE", "Empty FR" },
+            { "Fairy", "Fairy DE", "Fairy FR" }
         }
     },
     {
@@ -171,40 +179,21 @@ extern "C" void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpP
     // If coming from a boss room, teleport back to Chamber of Sages and set flag.
     } else {
         play->nextEntranceIndex = SCENE_HAIRAL_NIWA2;
-        switch (play->sceneNum) {
-            case SCENE_YDAN_BOSS:
-                Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE);
-                break;
-            case SCENE_DDAN_BOSS:
-                Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN);
-                break;
-            case SCENE_BDAN_BOSS:
-                Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY);
-                break;
-            case SCENE_MORIBOSSROOM:
-                Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE);
-                break;
-            case SCENE_FIRE_BS:
-                Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE);
-                break;
-            case SCENE_MIZUSIN_BS:
-                Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE);
-                break;
-            case SCENE_JYASINBOSS:
-                Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
-                break;
-            case SCENE_HAKADAN_BS:
-                Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
-                break;
-            default:
-                break;
-        }
 
-        // When 3 bosses (all child bosses) are defeated, change to Adult Link.
         if (CheckDungeonCount() == 3) {
             play->linkAgeOnLoad = LINK_AGE_ADULT;
             gSaveContext.linkAge = LINK_AGE_ADULT;
-            BossRush_SetEquipment(LINK_AGE_ADULT);
+
+            // Change to Adult Link.
+            if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOSSES] == BR_OPTION_BOSSES_CHOICE_ALL) {
+                BossRush_SetEquipment(LINK_AGE_ADULT);
+            // Warp to credits.
+            } else if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOSSES] == BR_OPTION_BOSSES_CHOICE_CHILD) {
+                play->nextEntranceIndex = 0x6B;
+                gSaveContext.nextCutsceneIndex = 0xFFF2;
+                play->sceneLoadFlag = 0x14;
+                play->fadeTransition = 3;
+            }
         }
     }
 }
@@ -213,31 +202,42 @@ extern "C" void BossRush_HandleCompleteBoss(PlayState* play) {
     gSaveContext.isBossRushPaused = 1;
     switch (play->sceneNum) {
         case SCENE_YDAN_BOSS:
-            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE);
             break;
         case SCENE_DDAN_BOSS:
-            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_KING_DODONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN);
             break;
         case SCENE_BDAN_BOSS:
-            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY);
             break;
         case SCENE_MORIBOSSROOM:
-            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_PHANTOM_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE);
             break;
         case SCENE_FIRE_BS:
-            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE);
             break;
         case SCENE_MIZUSIN_BS:
-            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_MORPHA] = GAMEPLAYSTAT_TOTAL_TIME;
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE);
             break;
         case SCENE_JYASINBOSS:
-            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
             break;
         case SCENE_HAKADAN_BS:
-            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_DEFEAT_BONGO_BONGO] = GAMEPLAYSTAT_TOTAL_TIME;
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
             break;
         default:
             break;
+    }
+
+    // Fully heal the player
+    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_HEAL] == BR_OPTION_HEAL_CHOICE_EVERYBOSS) {
+        Health_ChangeBy(play, 320);
+    }
+
+    if ((CheckDungeonCount() == 3 && gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOSSES] == BR_OPTION_BOSSES_CHOICE_CHILD) ||
+        play->sceneNum == SCENE_GANON_FINAL) {
+        gSaveContext.sohStats.gameComplete = 1;
+        gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_FINISH] = GAMEPLAYSTAT_TOTAL_TIME;
     }
 }
 
@@ -298,6 +298,7 @@ extern "C" void BossRush_InitSave() {
         gSaveContext.randomizerInf[i] = 0;
     }
 
+    // Set items
     static std::array<u8, 24> brItems = {
         ITEM_STICK,     ITEM_NUT,  ITEM_BOMB, ITEM_BOW,      ITEM_NONE,        ITEM_NONE,
         ITEM_SLINGSHOT, ITEM_NONE, ITEM_NONE, ITEM_HOOKSHOT, ITEM_NONE,        ITEM_NONE,
@@ -309,23 +310,51 @@ extern "C" void BossRush_InitSave() {
         brItems[9] = ITEM_LONGSHOT;
     }
 
-    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOTTLE] == BR_OPTION_BOTTLE_CHOICE_YES) {
+    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOTTLE] == BR_OPTION_BOTTLE_CHOICE_EMPTY) {
         brItems[18] = ITEM_BOTTLE;
+    } else if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOTTLE] == BR_OPTION_BOTTLE_CHOICE_FAIRY) {
+        brItems[18] = ITEM_FAIRY;
     }
-
-    static std::array<s8, 16> brAmmo = { 5, 5, 10, 10, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     for (int item = 0; item < ARRAY_COUNT(gSaveContext.inventory.items); item++) {
         gSaveContext.inventory.items[item] = brItems[item];
+    }
+
+    // Set consumable counts
+    static std::array<s8, 16> brAmmo = { 5, 5, 10, 10, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_AMMO] == BR_OPTION_AMMO_CHOICE_FULL) {
+        brAmmo = { 10, 20, 20, 30, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    } else if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_AMMO] == BR_OPTION_AMMO_CHOICE_MAXED) {
+        brAmmo = { 30, 40, 40, 50, 0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     }
 
     for (int ammo = 0; ammo < ARRAY_COUNT(gSaveContext.inventory.ammo); ammo++) {
         gSaveContext.inventory.ammo[ammo] = brAmmo[ammo];
     }
 
-    gSaveContext.inventory.equipment = 4947;
-    gSaveContext.inventory.upgrades = 1196105;
+    // Equipment
+    gSaveContext.inventory.equipment |= 1 << 0; // Kokiri Sword
+    gSaveContext.inventory.equipment |= 1 << 1; // Master Sword
+    gSaveContext.inventory.equipment |= 1 << 4; // Deku Shield
+    gSaveContext.inventory.equipment |= 1 << 6; // Mirror Shield
+    gSaveContext.inventory.equipment |= 1 << 9; // Goron Tunic
+    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_HOVERBOOTS] == BR_OPTION_HOVERBOOTS_CHOICE_YES) {
+        gSaveContext.inventory.equipment |= 1 << 14; // Hover Boots
+    }
 
+    // Upgrades
+    uint8_t upgradeLevel = 1;
+    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_AMMO] == BR_OPTION_AMMO_CHOICE_MAXED) {
+        upgradeLevel = 3;
+    }
+    Inventory_ChangeUpgrade(UPG_QUIVER, upgradeLevel);
+    Inventory_ChangeUpgrade(UPG_BOMB_BAG, upgradeLevel);
+    Inventory_ChangeUpgrade(UPG_BULLET_BAG, upgradeLevel);
+    Inventory_ChangeUpgrade(UPG_STICKS, upgradeLevel);
+    Inventory_ChangeUpgrade(UPG_NUTS, upgradeLevel);
+
+    // Check off child dungeons when starting as adult.
     if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOSSES] == BR_OPTION_BOSSES_CHOICE_ADULT) {
         Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE);
         Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN);
@@ -351,16 +380,18 @@ void BossRush_SetEquipment(uint8_t linkAge) {
 
         brCButtonSlots = { SLOT_STICK, SLOT_NUT, SLOT_BOMB, SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE };
 
-        gSaveContext.equips.equipment = 4369;
-    // Set Adult equipment. Used when first 3 bosses are defeated and the player is set to adult.
+        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
+        Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_DEKU);
+        // Set Adult equipment. Used when first 3 bosses are defeated and the player is set to adult.
     } else {
-        brButtonItems = {
-            ITEM_SWORD_MASTER, ITEM_BOW, ITEM_HAMMER, ITEM_BOMB, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE
-        };
+        brButtonItems = { ITEM_SWORD_MASTER, ITEM_BOW,  ITEM_HAMMER, ITEM_BOMB,
+                          ITEM_NONE,         ITEM_NONE, ITEM_NONE,   ITEM_NONE };
 
         brCButtonSlots = { SLOT_BOW, SLOT_HAMMER, SLOT_BOMB, SLOT_NONE, SLOT_NONE, SLOT_NONE, SLOT_NONE };
 
-        gSaveContext.equips.equipment = 4658;
+        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_MASTER);
+        Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_MIRROR);
+        Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_GORON + 1); // Game expects tunic + 1, don't ask me why.
     }
 
     // Button Items

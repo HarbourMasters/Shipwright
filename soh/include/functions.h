@@ -1091,6 +1091,7 @@ void func_80088AA0(s16 seconds);
 void func_80088AF0(PlayState* play);
 void func_80088B34(s16 arg0);
 void Interface_Draw(PlayState* play);
+void Interface_DrawTotalGameplayTimer(PlayState* play);
 void Interface_Update(PlayState* play);
 Path* Path_GetByIndex(PlayState* play, s16 index, s16 max);
 f32 Path_OrientAndGetDistSq(Actor* actor, Path* path, s16 waypoint, s16* yaw);

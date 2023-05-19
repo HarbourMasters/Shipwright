@@ -7,6 +7,7 @@
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "libultraship/bridge.h"
+#include "soh/Enhancements/bossrush.h"
 
 #ifdef _MSC_VER
 #include <stdlib.h>
@@ -5951,6 +5952,129 @@ void Interface_Draw(PlayState* play) {
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
+}
+
+void Interface_DrawTotalGameplayTimer(PlayState* play) {
+    // Draw timer based on the Gameplay Stats total time.
+    if (gSaveContext.isBossRush &&
+        gSaveContext.bossRushSelectedOptions[BR_OPTIONS_TIMER] == BR_OPTION_TIMER_CHOICE_YES) {
+        s32 totalTimer = GAMEPLAYSTAT_TOTAL_TIME;
+        s32 bossRushTimer[6];
+        s32 sec = totalTimer / 10;
+        s32 hh = sec / 3600;
+        s32 mm = (sec - (hh * 3600)) / 60;
+        s32 ss = sec - (hh * 3600) - (mm * 60);
+        s32 ds = totalTimer % 10;
+
+        // Hours
+        bossRushTimer[0] = hh % 10;
+
+        // Minutes
+        if (mm >= 10) {
+            bossRushTimer[1] = mm;
+            while (bossRushTimer[1] >= 10) {
+                bossRushTimer[1] = bossRushTimer[1] / 10;
+            }
+        } else {
+            bossRushTimer[1] = 0;
+        }
+        bossRushTimer[2] = mm % 10;
+
+        // Seconds
+        if (ss >= 10) {
+            bossRushTimer[3] = ss;
+            while (bossRushTimer[3] >= 10) {
+                bossRushTimer[3] = bossRushTimer[3] / 10;
+            }
+        } else {
+            bossRushTimer[3] = 0;
+        }
+        bossRushTimer[4] = ss % 10;
+
+        // Deciseconds
+        bossRushTimer[5] = ds;
+
+        s32 rectLeftOri = OTRGetRectDimensionFromLeftEdge(24);
+        s32 rectLeft;
+        s32 rectTopOri = 60;
+        s32 rectTop;
+        s32 rectWidth = 8;
+        s32 rectHeightOri = 16;
+        s32 rectHeight;
+
+        OPEN_DISPS(play->state.gfxCtx);
+
+        gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
+                          PRIMITIVE, 0);
+
+        gDPSetOtherMode(OVERLAY_DISP++,
+                        G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_IA16 | G_TL_TILE |
+                            G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE,
+                        G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
+
+        for (s8 i = 0; i <= 8; i++) {
+            rectLeft = rectLeftOri + (i * 8);
+            rectTop = rectTopOri;
+            rectHeight = rectHeightOri;
+
+            if (i == 1 || i == 4 || i == 7) {
+                gDPLoadTextureBlock(OVERLAY_DISP++, ((u8*)digitTextures[10]), G_IM_FMT_I, G_IM_SIZ_8b, rectWidth,
+                                    rectHeight, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                                    G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            } else {
+                // Grab right timer number index.
+                s8 timerIndex = i;
+                switch (i) {
+                    case 2:
+                    case 3:
+                        timerIndex -= 1;
+                        break;
+                    case 5:
+                    case 6:
+                        timerIndex -= 2;
+                        break;
+                    case 8:
+                        timerIndex -= 3;
+                        break;
+                    default:
+                        break;
+                }
+                gDPLoadTextureBlock(OVERLAY_DISP++, ((u8*)digitTextures[bossRushTimer[timerIndex]]), G_IM_FMT_I,
+                                    G_IM_SIZ_8b, rectWidth, rectHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            }
+
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 0, 0, 255);
+
+            gDPSetEnvColor(OVERLAY_DISP++, 255, 255, 255, 255);
+
+            // Create dot image from the colon image.
+            if (i == 7) {
+                rectHeight = rectHeight / 2;
+                rectTop += 5;
+                rectLeft -= 1;
+            }
+
+            gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2,
+                                    (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+
+            rectLeft -= 1;
+            rectTop -= 1;
+
+            if (gSaveContext.sohStats.gameComplete) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, 255);
+            } else if (gSaveContext.isBossRushPaused) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 150, 150, 150, 255);
+            } else {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
+            }
+
+            gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2,
+                                    (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+        }
+
+        CLOSE_DISPS(play->state.gfxCtx);
+    }
 }
 
 void Interface_Update(PlayState* play) {
