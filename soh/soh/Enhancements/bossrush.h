@@ -2,7 +2,7 @@
 
 #include "variables.h"
 
-#define BOSSRUSH_OPTIONS_AMOUNT 9
+#define BOSSRUSH_OPTIONS_AMOUNT 10
 #define BOSSRUSH_MAX_OPTIONS_ON_SCREEN 6
 
 typedef enum {
@@ -11,6 +11,7 @@ typedef enum {
     BR_OPTIONS_AMMO,
     BR_OPTIONS_HEAL,
     BR_OPTIONS_HYPERBOSSES,
+    BR_OPTIONS_MAGIC,
     BR_OPTIONS_BOTTLE,
     BR_OPTIONS_LONGSHOT,
     BR_OPTIONS_HOVERBOOTS,
@@ -21,7 +22,7 @@ typedef enum {
     BR_CHOICE_BOSSES_ALL,
     BR_CHOICE_BOSSES_CHILD,
     BR_CHOICE_BOSSES_ADULT
-} BossRushOptionBossesChoices;
+} BossRushBossesChoices;
 
 typedef enum {
     BR_CHOICE_HEARTS_7,
@@ -30,45 +31,53 @@ typedef enum {
     BR_CHOICE_HEARTS_20,
     BR_CHOICE_HEARTS_3,
     BR_CHOICE_HEARTS_5
-} BossRushOptionHeartsChoices;
+} BossRushHeartsChoices;
 
 typedef enum {
     BR_CHOICE_AMMO_LIMITED,
     BR_CHOICE_AMMO_FULL,
     BR_CHOICE_AMMO_MAXED
-} BossRushOptionAmmoChoices;
+} BossRushAmmoChoices;
 
 typedef enum {
     BR_CHOICE_HEAL_GANONDORF,
     BR_CHOICE_HEAL_EVERYBOSS,
     BR_CHOICE_HEAL_NEVER
-} BossRushOptionHealChoices;
+} BossRushHealChoices;
 
 typedef enum {
     BR_CHOICE_HYPERBOSSES_NO,
     BR_CHOICE_HYPERBOSSES_YES
-} BossRushOptionHyperBossesChoices;
+} BossRushHyperBossesChoices;
+
+typedef enum {
+    BR_CHOICE_MAGIC_SINGLE,
+    BR_CHOICE_MAGIC_DOUBLE
+} BossRushMagicChoices;
 
 typedef enum {
     BR_CHOICE_BOTTLE_NO,
     BR_CHOICE_BOTTLE_EMPTY,
-    BR_CHOICE_BOTTLE_FAIRY
-} BossRushOptionBottleChoices;
+    BR_CHOICE_BOTTLE_FAIRY,
+    BR_CHOICE_BOTTLE_REDPOTION,
+    BR_CHOICE_BOTTLE_GREENPOTION,
+    BR_CHOICE_BOTTLE_BLUEPOTION
+} BossRushBottleChoices;
 
 typedef enum {
     BR_CHOICE_LONGSHOT_NO,
     BR_CHOICE_LONGSHOT_YES
-} BossRushOptionLongshotChoices;
+} BossRushLongshotChoices;
 
 typedef enum {
     BR_CHOICE_HOVERBOOTS_NO,
     BR_CHOICE_HOVERBOOTS_YES
-} BossRushOptionHoverBootsChoices;
+} BossRushHoverBootsChoices;
 
 typedef enum {
     BR_CHOICE_TIMER_YES,
     BR_CHOICE_TIMER_NO
-} BossRushOptionTimerChoices;
+} BossRushTimerChoices;
 
 #ifdef __cplusplus
 extern "C" {

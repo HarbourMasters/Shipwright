@@ -55,11 +55,21 @@ BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = {
         }
     },
     {
+        { "MAGIC:", "MAGIC DE:", "MAGIC FR:" },
+        {
+            { "Single", "Single DE", "Single FR" },
+            { "Double", "Double DE", "Double FR" }
+        }
+    },
+    {
         { "BOTTLE:", "BOTTLE DE:", "BOUTEILLE:" },
         {
             { "No", "Nein", "Non" },
             { "Empty", "Empty DE", "Empty FR" },
-            { "Fairy", "Fairy DE", "Fairy FR" }
+            { "Fairy", "Fairy DE", "Fairy FR" },
+            { "Red Potion", "Red Potion DE", "Red Potion FR" },
+            { "Green Potion", "Green Potion DE", "Green Potion FR" },
+            { "Blue Potion", "Blue Potion DE", "Blue Potion FR" }
         }
     },
     {
@@ -252,10 +262,19 @@ extern "C" void BossRush_InitSave() {
     gSaveContext.isBossRushPaused = 1;
     gSaveContext.entranceIndex = 107;
     gSaveContext.cutsceneIndex = 0x8000;
-    gSaveContext.magicLevel = 0;
-    gSaveContext.magic = 0x30;
     gSaveContext.isMagicAcquired = 1;
 
+    // Set magic
+    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_MAGIC] == BR_CHOICE_MAGIC_SINGLE) {
+        gSaveContext.magicLevel = 1;
+        gSaveContext.magic = 48;
+    } else {
+        gSaveContext.isDoubleMagicAcquired = 1;
+        gSaveContext.magicLevel = 2;
+        gSaveContext.magic = 96;
+    }
+
+    // Set health
     uint16_t health = 16;
     switch (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_HEARTS]) { 
         case BR_CHOICE_HEARTS_7:
@@ -310,10 +329,24 @@ extern "C" void BossRush_InitSave() {
         brItems[9] = ITEM_LONGSHOT;
     }
 
-    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOTTLE] == BR_CHOICE_BOTTLE_EMPTY) {
-        brItems[18] = ITEM_BOTTLE;
-    } else if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOTTLE] == BR_CHOICE_BOTTLE_FAIRY) {
-        brItems[18] = ITEM_FAIRY;
+    switch (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOTTLE]) {
+        case BR_CHOICE_BOTTLE_EMPTY:
+            brItems[18] = ITEM_BOTTLE;
+            break;
+        case BR_CHOICE_BOTTLE_FAIRY:
+            brItems[18] = ITEM_FAIRY;
+            break;
+        case BR_CHOICE_BOTTLE_REDPOTION:
+            brItems[18] = ITEM_POTION_RED;
+            break;
+        case BR_CHOICE_BOTTLE_GREENPOTION:
+            brItems[18] = ITEM_POTION_GREEN;
+            break;
+        case BR_CHOICE_BOTTLE_BLUEPOTION:
+            brItems[18] = ITEM_POTION_BLUE;
+            break;
+        default:
+            break;
     }
 
     for (int item = 0; item < ARRAY_COUNT(gSaveContext.inventory.items); item++) {
