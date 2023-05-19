@@ -5959,7 +5959,7 @@ void Interface_Draw(PlayState* play) {
 void Interface_DrawTotalGameplayTimer(PlayState* play) {
     // Draw timer based on the Gameplay Stats total time.
     if (gSaveContext.isBossRush &&
-        gSaveContext.bossRushSelectedOptions[BR_OPTIONS_TIMER] == BR_OPTION_TIMER_CHOICE_YES) {
+        gSaveContext.bossRushSelectedOptions[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) {
         s32 totalTimer = GAMEPLAYSTAT_TOTAL_TIME;
         s32 bossRushTimer[6];
         s32 sec = totalTimer / 10;

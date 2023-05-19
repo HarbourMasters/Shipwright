@@ -48,7 +48,7 @@ BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = {
         }
     },
     {
-        { "HYPER BOSSES:", "HYPER BOSSES DE:", "HYPER BOSS:" },
+        { "HYPER BOSSES:", "HYPER BOSSES DE:", "HYPER BOSSES FR:" },
         {
             { "No", "Nein", "Non" },
             { "Yes", "Ja", "Oui" }
@@ -185,10 +185,10 @@ extern "C" void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpP
             gSaveContext.linkAge = LINK_AGE_ADULT;
 
             // Change to Adult Link.
-            if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOSSES] == BR_OPTION_BOSSES_CHOICE_ALL) {
+            if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ALL) {
                 BossRush_SetEquipment(LINK_AGE_ADULT);
             // Warp to credits.
-            } else if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOSSES] == BR_OPTION_BOSSES_CHOICE_CHILD) {
+            } else if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) {
                 play->nextEntranceIndex = 0x6B;
                 gSaveContext.nextCutsceneIndex = 0xFFF2;
                 play->sceneLoadFlag = 0x14;
@@ -230,11 +230,11 @@ extern "C" void BossRush_HandleCompleteBoss(PlayState* play) {
     }
 
     // Fully heal the player
-    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_HEAL] == BR_OPTION_HEAL_CHOICE_EVERYBOSS) {
+    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS) {
         Health_ChangeBy(play, 320);
     }
 
-    if ((CheckDungeonCount() == 3 && gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOSSES] == BR_OPTION_BOSSES_CHOICE_CHILD) ||
+    if ((CheckDungeonCount() == 3 && gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) ||
         play->sceneNum == SCENE_GANON_FINAL) {
         gSaveContext.sohStats.gameComplete = 1;
         gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_FINISH] = GAMEPLAYSTAT_TOTAL_TIME;
@@ -258,22 +258,22 @@ extern "C" void BossRush_InitSave() {
 
     uint16_t health = 16;
     switch (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_HEARTS]) { 
-        case BR_OPTION_HEARTS_CHOICE_7:
+        case BR_CHOICE_HEARTS_7:
             health *= 7;
             break;
-        case BR_OPTION_HEARTS_CHOICE_10:
+        case BR_CHOICE_HEARTS_10:
             health *= 10;
             break;
-        case BR_OPTION_HEARTS_CHOICE_15:
+        case BR_CHOICE_HEARTS_15:
             health *= 15;
             break;
-        case BR_OPTION_HEARTS_CHOICE_20:
+        case BR_CHOICE_HEARTS_20:
             health *= 20;
             break;
-        case BR_OPTION_HEARTS_CHOICE_3:
+        case BR_CHOICE_HEARTS_3:
             health *= 3;
             break;
-        case BR_OPTION_HEARTS_CHOICE_5:
+        case BR_CHOICE_HEARTS_5:
             health *= 5;
             break;
         default:
@@ -306,13 +306,13 @@ extern "C" void BossRush_InitSave() {
         ITEM_NONE,      ITEM_NONE, ITEM_NONE, ITEM_NONE,     ITEM_NONE,        ITEM_NONE,
     };
 
-    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_LONGSHOT] == BR_OPTION_LONGSHOT_CHOICE_YES) {
+    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_LONGSHOT] == BR_CHOICE_LONGSHOT_YES) {
         brItems[9] = ITEM_LONGSHOT;
     }
 
-    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOTTLE] == BR_OPTION_BOTTLE_CHOICE_EMPTY) {
+    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOTTLE] == BR_CHOICE_BOTTLE_EMPTY) {
         brItems[18] = ITEM_BOTTLE;
-    } else if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOTTLE] == BR_OPTION_BOTTLE_CHOICE_FAIRY) {
+    } else if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOTTLE] == BR_CHOICE_BOTTLE_FAIRY) {
         brItems[18] = ITEM_FAIRY;
     }
 
@@ -323,9 +323,9 @@ extern "C" void BossRush_InitSave() {
     // Set consumable counts
     static std::array<s8, 16> brAmmo = { 5, 5, 10, 10, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_AMMO] == BR_OPTION_AMMO_CHOICE_FULL) {
+    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_FULL) {
         brAmmo = { 10, 20, 20, 30, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    } else if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_AMMO] == BR_OPTION_AMMO_CHOICE_MAXED) {
+    } else if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
         brAmmo = { 30, 40, 40, 50, 0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     }
 
@@ -339,13 +339,13 @@ extern "C" void BossRush_InitSave() {
     gSaveContext.inventory.equipment |= 1 << 4; // Deku Shield
     gSaveContext.inventory.equipment |= 1 << 6; // Mirror Shield
     gSaveContext.inventory.equipment |= 1 << 9; // Goron Tunic
-    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_HOVERBOOTS] == BR_OPTION_HOVERBOOTS_CHOICE_YES) {
+    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_HOVERBOOTS] == BR_CHOICE_HOVERBOOTS_YES) {
         gSaveContext.inventory.equipment |= 1 << 14; // Hover Boots
     }
 
     // Upgrades
     uint8_t upgradeLevel = 1;
-    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_AMMO] == BR_OPTION_AMMO_CHOICE_MAXED) {
+    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
         upgradeLevel = 3;
     }
     Inventory_ChangeUpgrade(UPG_QUIVER, upgradeLevel);
@@ -355,7 +355,7 @@ extern "C" void BossRush_InitSave() {
     Inventory_ChangeUpgrade(UPG_NUTS, upgradeLevel);
 
     // Check off child dungeons when starting as adult.
-    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOSSES] == BR_OPTION_BOSSES_CHOICE_ADULT) {
+    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ADULT) {
         Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE);
         Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN);
         Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY);
