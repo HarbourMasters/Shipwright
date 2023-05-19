@@ -1588,17 +1588,6 @@ Color_RGB8 GetColorForControllerLED() {
     if (brightness > 0.0f) {
         LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL));
         bool criticalOverride = CVarGetInteger("gLedCriticalOverride", 1);
-        if (criticalOverride || source == LED_SOURCE_HEALTH) {
-            if (HealthMeter_IsCritical()) {
-                color = { 0xFF, 0, 0 };
-            } else if (source == LED_SOURCE_HEALTH) {
-                if (gSaveContext.health / gSaveContext.healthCapacity <= 0.4f) {
-                    color = { 0xFF, 0xFF, 0 };
-                } else {
-                    color = { 0, 0xFF, 0 };
-                }
-            }
-        }
         if (gPlayState && (source == LED_SOURCE_TUNIC_ORIGINAL || source == LED_SOURCE_TUNIC_COSMETICS)) {
             switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
                 case PLAYER_TUNIC_KOKIRI:
@@ -1620,6 +1609,17 @@ Color_RGB8 GetColorForControllerLED() {
         }
         if (source == LED_SOURCE_CUSTOM) {
             color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
+        }
+        if (criticalOverride || source == LED_SOURCE_HEALTH) {
+            if (HealthMeter_IsCritical()) {
+                color = { 0xFF, 0, 0 };
+            } else if (source == LED_SOURCE_HEALTH) {
+                if (gSaveContext.health / gSaveContext.healthCapacity <= 0.4f) {
+                    color = { 0xFF, 0xFF, 0 };
+                } else {
+                    color = { 0, 0xFF, 0 };
+                }
+            }
         }
         color.r = color.r * brightness;
         color.g = color.g * brightness;
