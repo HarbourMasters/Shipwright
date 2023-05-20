@@ -1707,6 +1707,11 @@ u8 Return_Item_Entry(GetItemEntry itemEntry, ItemID returnItem ) {
 
 // Processes Item_Give returns
 u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
+    // ITEM_SOLD_OUT doesn't have an ItemTable entry, so pass custom entry instead
+    if (itemID == ITEM_SOLD_OUT) {
+        GetItemEntry gie = { ITEM_SOLD_OUT, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_LESSER, NULL };
+        return Return_Item_Entry(gie, returnItem);
+    }
     int32_t get = GetGIID(itemID);
     if (get == -1) {
         modId = MOD_RANDOMIZER;
