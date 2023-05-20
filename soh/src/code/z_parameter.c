@@ -1706,9 +1706,10 @@ u8 Return_Item_Entry(GetItemEntry itemEntry, ItemID returnItem ) {
 
 // Processes Item_Give returns
 u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
-    // No need to call OnItemGive for ITEM_SOLD_OUT. Doesn't have any ItemTable entries anyway.
+    // ITEM_SOLD_OUT doesn't have an ItemTable entry, so pass custom entry instead
     if (itemID == ITEM_SOLD_OUT) {
-        return ITEM_NONE;
+        GetItemEntry gie = { ITEM_SOLD_OUT, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_LESSER, NULL };
+        return Return_Item_Entry(gie, returnItem);
     }
     uint32_t get = GetGIID(itemID);
     if (get == -1) {
