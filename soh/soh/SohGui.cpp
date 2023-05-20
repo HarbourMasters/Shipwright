@@ -118,10 +118,6 @@ namespace SohGui {
         Audio_SetGameVolume(SEQ_BGM_SUB, CVarGetFloat("gSubMusicVolume", 1.0f));
         Audio_SetGameVolume(SEQ_FANFARE, CVarGetFloat("gFanfareVolume", 1.0f));
         Audio_SetGameVolume(SEQ_SFX, CVarGetFloat("gSFXMusicVolume", 1.0f));
-        Audio_SetGameVolume(SEQ_BGM_MAIN, 1.0f);
-        Audio_SetGameVolume(SEQ_BGM_SUB, 1.0f);
-        Audio_SetGameVolume(SEQ_FANFARE, 1.0f);
-        Audio_SetGameVolume(SEQ_SFX, 1.0f);
     }
 
     // MARK: - Delegates
