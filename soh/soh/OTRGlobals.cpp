@@ -688,9 +688,10 @@ std::unordered_map<uint32_t, uint32_t> ItemIDtoGetItemID{
     { ITEM_WEIRD_EGG, GI_WEIRD_EGG }
 };
 
-extern "C" uint32_t GetGIID(uint32_t itemID) {
-    if (ItemIDtoGetItemID.contains(itemID))
+extern "C" int32_t GetGIID(uint32_t itemID) {
+    if (ItemIDtoGetItemID.contains(itemID)) {
         return ItemIDtoGetItemID.at(itemID);
+    }
     return -1;
 }
 
