@@ -8,7 +8,7 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 class SetObjectList : public SceneCommand {
   public:
     using SceneCommand::SceneCommand;
@@ -19,4 +19,4 @@ class SetObjectList : public SceneCommand {
     uint32_t numObjects;
     std::vector<int16_t> objects;
 };
-}; // namespace Ship
+}; // namespace LUS

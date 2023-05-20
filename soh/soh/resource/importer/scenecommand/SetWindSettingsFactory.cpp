@@ -2,8 +2,8 @@
 #include "soh/resource/type/scenecommand/SetWindSettings.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> SetWindSettingsFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+namespace LUS {
+std::shared_ptr<Resource> SetWindSettingsFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                                std::shared_ptr<ResourceInitData> initData,
                                                                std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetWindSettings>(resourceMgr, initData);
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> SetWindSettingsFactory::ReadResource(std::shared_ptr<R
     return resource;
 }
 
-void Ship::SetWindSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetWindSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource) {
     std::shared_ptr<SetWindSettings> setWind = std::static_pointer_cast<SetWindSettings>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setWind);
@@ -38,4 +38,4 @@ void Ship::SetWindSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
     setWind->settings.windSpeed = reader->ReadUByte();
 }
 
-} // namespace Ship
+} // namespace LUS

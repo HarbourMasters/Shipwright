@@ -4,6 +4,7 @@
 #include "Utils/BitConverter.h"
 #include "Utils/StringHelper.h"
 #include "ZFile.h"
+#include "ZRoom/ZNames.h"
 #include "ZRoom/ZRoom.h"
 
 SetExitList::SetExitList(ZFile* nParent) : ZRoomCommand(nParent)
@@ -23,10 +24,11 @@ void SetExitList::DeclareReferences([[maybe_unused]] const std::string& prefix)
 void SetExitList::ParseRawDataLate()
 {
 	// Parse Entrances and Generate Declaration
-	int numEntrances = zRoom->GetDeclarationSizeFromNeighbor(segmentOffset) / 2;
+	uint32_t numEntrances = zRoom->GetDeclarationSizeFromNeighbor(segmentOffset) / 2;
 	uint32_t currentPtr = segmentOffset;
 
-	for (int32_t i = 0; i < numEntrances; i++)
+	exits.reserve(numEntrances);
+	for (uint32_t i = 0; i < numEntrances; i++)
 	{
 		uint16_t exit = BitConverter::ToUInt16BE(parent->GetRawData(), currentPtr);
 		exits.push_back(exit);
@@ -43,7 +45,8 @@ void SetExitList::DeclareReferencesLate([[maybe_unused]] const std::string& pref
 
 		for (size_t i = 0; i < exits.size(); i++)
 		{
-			declaration += StringHelper::Sprintf("    0x%04X,", exits.at(i));
+			declaration +=
+				StringHelper::Sprintf("    %s,", ZNames::GetEntranceName(exits[i]).c_str());
 			if (i + 1 < exits.size())
 				declaration += "\n";
 		}

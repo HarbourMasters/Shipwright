@@ -38,6 +38,10 @@
 
         <Texture Name="object_ik_Tlut_00F630" OutName="tlut_00F630" Format="rgba16" Width="23" Height="8" Offset="0xf630"/>
         <Texture Name="object_ik_Tex_00F7A0" OutName="tex_00F7A0" Format="i4" Width="32" Height="64" Offset="0xF7A0"/>
+        <!-- This is a duplicate texture to accound for authentic texture overflowing -->
+        <!-- ZAPDTODO: It is set to an offset position -1 of the actual value as ZAPD does not permit
+             duplicate offset values -->
+        <Texture Name="gIronKnuckleMetalOverflowTex" OutName="iron_knuckle_metal_overflow_tex" Format="i8" Width="32" Height="64" Offset="0xF79F"/>
         <Texture Name="object_ik_Tex_00FBA0" OutName="tex_00FBA0" Format="ia8" Width="32" Height="32" Offset="0xFBA0"/>
         <Texture Name="object_ik_Tex_00FFA0" OutName="tex_00FFA0" Format="rgba16" Width="16" Height="16" Offset="0xFFA0"/>
         <Texture Name="object_ik_Tex_0101A0" OutName="tex_0101A0" Format="rgba16" Width="16" Height="16" Offset="0x101A0"/>

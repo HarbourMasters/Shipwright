@@ -5,7 +5,7 @@
 #include "Resource.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 
 typedef struct {
     char* seqData;
@@ -27,4 +27,4 @@ public:
     Sequence sequence;
     std::vector<char> sequenceData;
 };
-}; // namespace Ship
+}; // namespace LUS

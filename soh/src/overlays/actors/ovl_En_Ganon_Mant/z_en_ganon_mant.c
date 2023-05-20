@@ -96,7 +96,7 @@ static u16 sVerticesMap[GANON_MANT_NUM_STRANDS * GANON_MANT_NUM_JOINTS] = {
 #define MANT_TEX_WIDTH 32
 #define MANT_TEX_HEIGHT 64
 
-//static u64 sForceAlignment = 0;
+static u8 sMaskTex[MANT_TEX_WIDTH * MANT_TEX_HEIGHT] = { {0} };
 
 #include "overlays/ovl_En_Ganon_Mant/ovl_En_Ganon_Mant.h"
 
@@ -104,6 +104,12 @@ void EnGanonMant_Init(Actor* thisx, PlayState* play) {
     EnGanonMant* this = (EnGanonMant*)thisx;
 
     this->actor.flags &= ~ACTOR_FLAG_0;
+
+    for (int i = 0; i < ARRAY_COUNT(sMaskTex); i++) {
+        sMaskTex[i] = 0;
+    }
+
+    Gfx_RegisterBlendedTexture(gMantTex, sMaskTex, NULL);
 }
 
 void EnGanonMant_Destroy(Actor* thisx, PlayState* play) {
@@ -127,8 +133,6 @@ void EnGanonMant_Tear(EnGanonMant* this) {
     s16 count = shape->count;
     s16* tearAreaSizes = shape->tearAreaSizes;
 
-    u8* gMantTexProper = GetResourceDataByName(gMantTex, false);
-
     for (i = 0; i < count; i++) {
         if ((0 <= tx && tx < MANT_TEX_WIDTH) && (0 <= ty && ty < MANT_TEX_HEIGHT)) {
             for (areaX = 0; areaX <= tearAreaSizes[i]; areaX++) {
@@ -136,7 +140,7 @@ void EnGanonMant_Tear(EnGanonMant* this) {
                 for (areaY = 0; areaY <= tearAreaSizes[i]; areaY++) {
                     texIdx = (s16)((s16)tx + ((s16)ty * MANT_TEX_WIDTH)) + ((s16)areaX + ((s16)areaY * MANT_TEX_WIDTH));
                     if (texIdx < MANT_TEX_WIDTH * MANT_TEX_HEIGHT) {
-                        ((u16*)gMantTexProper)[texIdx] = 0;
+                        sMaskTex[texIdx] = 1;
                     }
                 }
             }
@@ -365,8 +369,8 @@ void EnGanonMant_DrawCloak(PlayState* play, EnGanonMant* this) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    // Invalidate cape texture as it may have been torn
-    gSPInvalidateTexCache(POLY_OPA_DISP++, gMantTex);
+    // Invalidate cape texture mask as it may have been torn
+    gSPInvalidateTexCache(POLY_OPA_DISP++, sMaskTex);
 
     Matrix_Translate(0.0f, 0.0f, 0.0f, MTXMODE_NEW);
 
@@ -379,9 +383,9 @@ void EnGanonMant_DrawCloak(PlayState* play, EnGanonMant* this) {
     // set vertices, vertices are double buffered to prevent
     // modification of vertices as they are being drawn
     if (this->frameTimer % 2 != 0) {
-        gSPSegment(POLY_OPA_DISP++, 0x0C, gMant1Vtx);
+        gSPSegmentLoadRes(POLY_OPA_DISP++, 0x0C, gMant1Vtx);
     } else {
-        gSPSegment(POLY_OPA_DISP++, 0x0C, gMant2Vtx);
+        gSPSegmentLoadRes(POLY_OPA_DISP++, 0x0C, gMant2Vtx);
     }
 
     // draw cloak

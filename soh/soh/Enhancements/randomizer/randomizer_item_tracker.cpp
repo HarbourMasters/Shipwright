@@ -452,7 +452,7 @@ void DrawItemCount(ItemTrackerItem item) {
 void DrawEquip(ItemTrackerItem item) {
     bool hasEquip = (item.data & gSaveContext.inventory.equipment) != 0;
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
-    ImGui::Image(SohImGui::GetTextureByName(hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::GetTextureByName(hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
@@ -462,7 +462,7 @@ void DrawQuest(ItemTrackerItem item) {
     bool hasQuestItem = (item.data & gSaveContext.inventory.questItems) != 0;
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     ImGui::BeginGroup();
-    ImGui::Image(SohImGui::GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     if (item.id == QUEST_SKULL_TOKEN) {
@@ -524,7 +524,7 @@ void DrawItem(ItemTrackerItem item) {
     }
     
     ImGui::BeginGroup();
-    ImGui::Image(SohImGui::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     DrawItemCount(item);
@@ -542,7 +542,7 @@ void DrawBottle(ItemTrackerItem item) {
     }
 
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
-    ImGui::Image(SohImGui::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
@@ -557,11 +557,11 @@ void DrawDungeonItem(ItemTrackerItem item) {
     bool hasSmallKey = (gSaveContext.inventory.dungeonKeys[item.data]) >= 0;
     ImGui::BeginGroup();
     if (itemId == ITEM_KEY_SMALL) {
-        ImGui::Image(SohImGui::GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.name : item.nameFaded),
+        ImGui::Image(LUS::GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.name : item.nameFaded),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
     else {
-        ImGui::Image(SohImGui::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+        ImGui::Image(LUS::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
@@ -601,7 +601,7 @@ void DrawSong(ItemTrackerItem item) {
     bool hasSong = (bitMask & gSaveContext.inventory.questItems) != 0;
     ImVec2 p = ImGui::GetCursorScreenPos();
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
-    ImGui::Image(SohImGui::GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
 }
@@ -637,7 +637,7 @@ void DrawNotes(bool resizeable = false) {
     ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput);
     if (ImGui::IsItemDeactivatedAfterEdit() && IsValidSaveFile()) {
         CVarSetString(("gItemTrackerNotes" + std::to_string(gSaveContext.fileNum)).c_str(), std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
-        SohImGui::RequestCvarSaveOnNextTick();
+        LUS::RequestCvarSaveOnNextTick();
     }
     ImGui::EndGroup();
 }
@@ -851,7 +851,10 @@ void UpdateVectors() {
 void DrawItemTracker(bool& open) {
     UpdateVectors();
     if (!open) {
-        CVarSetInteger("gItemTrackerEnabled", 0);
+        if (CVarGetInteger("gItemTrackerEnabled", 0)) {
+            CVarClear("gItemTrackerEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
@@ -959,7 +962,10 @@ static const char* extendedDisplayTypes[4] = { "Hidden", "Main Window", "Misc Wi
 
 void DrawItemTrackerOptions(bool& open) {
     if (!open) {
-        CVarSetInteger("gItemTrackerSettingsEnabled", 0);
+        if (CVarGetInteger("gItemTrackerSettingsEnabled", 0)) {
+            CVarClear("gItemTrackerSettingsEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 
@@ -985,7 +991,7 @@ void DrawItemTrackerOptions(bool& open) {
         CVarSetFloat("gItemTrackerBgColorG", ChromaKeyBackground.y);
         CVarSetFloat("gItemTrackerBgColorB", ChromaKeyBackground.z);
         CVarSetFloat("gItemTrackerBgColorA", ChromaKeyBackground.w);
-        SohImGui::RequestCvarSaveOnNextTick();
+        LUS::RequestCvarSaveOnNextTick();
     }
     ImGui::PopItemWidth();
 
@@ -1081,8 +1087,8 @@ void DrawItemTrackerOptions(bool& open) {
 }
 
 void InitItemTracker() {
-    SohImGui::AddWindow("Randomizer", "Item Tracker", DrawItemTracker, CVarGetInteger("gItemTrackerEnabled", 0) == 1);
-    SohImGui::AddWindow("Randomizer", "Item Tracker Settings", DrawItemTrackerOptions);
+    LUS::AddWindow("Randomizer", "Item Tracker", DrawItemTracker, CVarGetInteger("gItemTrackerEnabled", 0));
+    LUS::AddWindow("Randomizer", "Item Tracker Settings", DrawItemTrackerOptions, CVarGetInteger("gItemTrackerSettingsEnabled", 0));
     float trackerBgR = CVarGetFloat("gItemTrackerBgColorR", 0);
     float trackerBgG = CVarGetFloat("gItemTrackerBgColorG", 0);
     float trackerBgB = CVarGetFloat("gItemTrackerBgColorB", 0);
@@ -1097,16 +1103,16 @@ void InitItemTracker() {
     if (itemTrackerNotes.empty()) {
         itemTrackerNotes.push_back(0);
     }
-    Ship::RegisterHook<Ship::ControllerRead>([](OSContPad* cont_pad) {
+    LUS::RegisterHook<LUS::ControllerRead>([](OSContPad* cont_pad) {
         buttonsPressed = cont_pad;
     });
-    Ship::RegisterHook<Ship::LoadFile>([](uint32_t fileNum) {
+    LUS::RegisterHook<LUS::LoadFile>([](uint32_t fileNum) {
         const char* initialTrackerNotes = CVarGetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
         itemTrackerNotes.resize(strlen(initialTrackerNotes) + 1);
         strcpy(itemTrackerNotes.Data, initialTrackerNotes);
     });
-    Ship::RegisterHook<Ship::DeleteFile>([](uint32_t fileNum) {
+    LUS::RegisterHook<LUS::DeleteFile>([](uint32_t fileNum) {
         CVarSetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
-        SohImGui::RequestCvarSaveOnNextTick();
+        LUS::RequestCvarSaveOnNextTick();
     });
 }

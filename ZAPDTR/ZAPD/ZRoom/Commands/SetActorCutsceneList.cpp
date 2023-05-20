@@ -14,8 +14,9 @@ void SetActorCutsceneList::ParseRawData()
 {
 	ZRoomCommand::ParseRawData();
 	int numCutscenes = cmdArg1;
-	int32_t currentPtr = segmentOffset;
+	offset_t currentPtr = segmentOffset;
 
+	cutscenes.reserve(numCutscenes);
 	for (int32_t i = 0; i < numCutscenes; i++)
 	{
 		ActorCutsceneEntry entry(parent->GetRawData(), currentPtr);

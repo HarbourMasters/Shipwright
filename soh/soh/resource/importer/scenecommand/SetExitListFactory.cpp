@@ -2,8 +2,8 @@
 #include "soh/resource/type/scenecommand/SetExitList.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> SetExitListFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+namespace LUS {
+std::shared_ptr<Resource> SetExitListFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                            std::shared_ptr<ResourceInitData> initData,
                                                            std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetExitList>(resourceMgr, initData);
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> SetExitListFactory::ReadResource(std::shared_ptr<Resou
     return resource;
 }
 
-void Ship::SetExitListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetExitListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource) {
     std::shared_ptr<SetExitList> setExitList = std::static_pointer_cast<SetExitList>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setExitList);
@@ -39,4 +39,4 @@ void Ship::SetExitListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
     }
 }
 
-} // namespace Ship
+} // namespace LUS

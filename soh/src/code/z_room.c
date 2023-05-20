@@ -1,3 +1,7 @@
+#ifdef WIN32
+#include <vcruntime_string.h>
+#endif
+
 #include "global.h"
 #include "vt.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
@@ -222,41 +226,28 @@ void func_80095D04(PlayState* play, Room* room, u32 flags) {
 
 s32 swapAndConvertJPEG(void* data) {
     OSTime time;
+    if (BE32SWAP(*(u32*)data) == JPEG_MARKER) {
+        size_t size = 320 * 240 * 2;
 
-    if (BE32SWAP(*(u32*)data) == JPEG_MARKER)
-    {
-        char* decodedJpeg = ResourceMgr_LoadJPEG(data, 320 * 240 * 2);
-        //char* decodedJpeg = ResourceMgr_LoadJPEG(data, 480 * 240 * 2);
+        char *decodedJpeg = ResourceMgr_LoadJPEG(data, size);
 
-        osSyncPrintf("JPEGデータを展開します\n");        // "Expanding jpeg data"
-        osSyncPrintf("JPEGデータアドレス %08x\n", data); // "Jpeg data address %08x"
-        // "Work buffer address (Z buffer) %08x"
-        osSyncPrintf("ワークバッファアドレス（Ｚバッファ）%08x\n", gZBuffer);
+        osSyncPrintf("Expanding jpeg data\n");
+        osSyncPrintf("Work buffer address (Z buffer) %08x\n", gZBuffer);
 
         time = osGetTime();
 
-        //if (!Jpeg_Decode(data, gZBuffer, gGfxSPTaskOutputBuffer, sizeof(gGfxSPTaskOutputBuffer)))
-        if (1)
-        {
-            memcpy(data, decodedJpeg, 320 * 240 * 2);
-            //memcpy(data, decodedJpeg, 480 * 240 * 2);
-            time = osGetTime() - time;
+        memcpy(data, decodedJpeg, size);
+        time = osGetTime() - time;
 
-            // "Success... I think. time = %6.3f ms"
-            osSyncPrintf("成功…だと思う。 time = %6.3f ms \n", OS_CYCLES_TO_USEC(time) / 1000.0f);
-            // "Writing back to original address from work buffer."
-            osSyncPrintf("ワークバッファから元のアドレスに書き戻します。\n");
-            // "If the original buffer size isn't at least 150kb, it will be out of control."
-            osSyncPrintf("元のバッファのサイズが150キロバイト無いと暴走するでしょう。\n");
-
-            //bcopy(gZBuffer, data, sizeof(gZBuffer));
-        } else {
-            osSyncPrintf("失敗！なんで〜\n"); // "Failure! Why is it 〜"
-        }
+        osSyncPrintf("Success... I think. time = %6.3f ms", OS_CYCLES_TO_USEC(time) / 1000.0f);
+        osSyncPrintf("Writing back to original address from work buffer.");
+        osSyncPrintf("If the original buffer size isn't at least 150kb, it will be out of control.");
+        return 1;
     }
 
     return 0;
 }
+
 
 void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 height, u8 fmt, u8 siz, u16 mode0,
                    u16 tlutCount, f32 frameX, f32 frameY) {
@@ -265,7 +256,6 @@ void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 h
     s32 temp;
 
     displayListHead = *displayList;
-    swapAndConvertJPEG(SEGMENTED_TO_VIRTUAL(source));
 
     bg = (uObjBg*)(displayListHead + 1);
     gSPBranchList(displayListHead, (u8*)bg + sizeof(uObjBg));
@@ -283,7 +273,7 @@ void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 h
     bg->b.imageFlip = 0;
 
     if (ResourceMgr_ResourceIsBackground((char*) source)) {
-        char* blob = (char*) GetResourceDataByName((char*) source, true);
+        char* blob = (char*) GetResourceDataByName((char *) source);
         swapAndConvertJPEG(blob);
         bg->b.imagePtr = (uintptr_t) blob;
     }
@@ -413,7 +403,7 @@ BgImage* func_80096A74(PolygonType1* polygon1, PlayState* play) {
         // camera (such as din's fire) on scenes with prerendered backgrounds
         return NULL;
     }
-    
+
     // jfifid
     camId2 = func_80041C10(&play->colCtx, camId, BGCHECK_SCENE)[2].y;
     if (camId2 >= 0) {

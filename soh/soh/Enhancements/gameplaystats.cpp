@@ -1,4 +1,6 @@
+extern "C" {
 #include "gameplaystats.h"
+}
 
 #include "ImGuiImpl.h"
 #include "../UIWidgets.hpp"
@@ -261,7 +263,10 @@ std::string ResolveSceneID(int sceneID, int roomID){
 
 void DrawStatsTracker(bool& open) {
     if (!open) {
-        CVarSetInteger("gGameplayStatsEnabled", 0);
+        if (CVarGetInteger("gGameplayStatsEnabled", 0)) {
+            CVarClear("gGameplayStatsEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 
@@ -664,8 +669,8 @@ void SetupDisplayColors() {
     }
 }
 
-void InitStatTracker() {
-    SohImGui::AddWindow("Enhancements", "Gameplay Stats", DrawStatsTracker, CVarGetInteger("gGameplayStatsEnabled", 0) == 1);
+extern "C" void InitStatTracker() {
+    LUS::AddWindow("Enhancements", "Gameplay Stats", DrawStatsTracker, CVarGetInteger("gGameplayStatsEnabled", 0));
     SetupDisplayNames();
     SetupDisplayColors();
 }

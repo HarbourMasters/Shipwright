@@ -11,8 +11,6 @@ extern void* __cdecl memset(_Out_writes_bytes_all_(_Size) void* _Dst, _In_ int _
 
 s32 D_8012D280 = 1;
 
-static ControllerCallback controllerCallback;
-
 OSMesgQueue* PadMgr_LockSerialMesgQueue(PadMgr* padMgr) {
     OSMesgQueue* ctrlrQ = NULL;
 
@@ -296,25 +294,27 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
         input->press.stick_y += (s8)(input->cur.stick_y - input->prev.stick_y);
     }
 
-    controllerCallback.rumble = (padMgr->rumbleEnable[0] > 0);
+    uint8_t rumble = (padMgr->rumbleEnable[0] > 0);
+    uint8_t ledColor = 1;
 
     if (HealthMeter_IsCritical()) {
-        controllerCallback.ledColor = 0;
+        ledColor = 0;
     } else if (gPlayState) {
         switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
             case PLAYER_TUNIC_KOKIRI:
-                controllerCallback.ledColor = 1;
+                ledColor = 1;
                 break;
             case PLAYER_TUNIC_GORON:
-                controllerCallback.ledColor = 2;
+                ledColor = 2;
                 break;
             case PLAYER_TUNIC_ZORA:
-                controllerCallback.ledColor = 3;
+                ledColor = 3;
                 break;
         }
     }
 
-    OTRControllerCallback(&controllerCallback);
+    OTRControllerCallback(rumble, ledColor);
+
     if (CVarGetInteger("gPauseBufferBlockInputFrame", 0)) {
         Controller_BlockGameInput();
     } else {

@@ -1,10 +1,10 @@
 #include "soh/resource/importer/scenecommand/SetAlternateHeadersFactory.h"
 #include "soh/resource/type/scenecommand/SetAlternateHeaders.h"
 #include "spdlog/spdlog.h"
-#include "libultraship/bridge.h"
+#include "libultraship/libultraship.h"
 
-namespace Ship {
-std::shared_ptr<Resource> SetAlternateHeadersFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+namespace LUS {
+std::shared_ptr<Resource> SetAlternateHeadersFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                                    std::shared_ptr<ResourceInitData> initData,
                                                                    std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetAlternateHeaders>(resourceMgr, initData);
@@ -27,7 +27,7 @@ std::shared_ptr<Resource> SetAlternateHeadersFactory::ReadResource(std::shared_p
     return resource;
 }
 
-void Ship::SetAlternateHeadersFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetAlternateHeadersFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource)
 {
     std::shared_ptr<SetAlternateHeaders> setAlternateHeaders = std::static_pointer_cast<SetAlternateHeaders>(resource);
@@ -40,11 +40,11 @@ void Ship::SetAlternateHeadersFactoryV0::ParseFileBinary(std::shared_ptr<BinaryR
     for (uint32_t i = 0; i < setAlternateHeaders->numHeaders; i++) {
 	auto headerName = reader->ReadString();
 	if (!headerName.empty()) {
-		setAlternateHeaders->headers.push_back(std::static_pointer_cast<Ship::Scene>(LoadResource(headerName.c_str(), true)));
+		setAlternateHeaders->headers.push_back(std::static_pointer_cast<LUS::Scene>(LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(headerName.c_str())));
 	} else {
 		setAlternateHeaders->headers.push_back(nullptr);
 	}
     }
 }
 
-} // namespace Ship
+} // namespace LUS
