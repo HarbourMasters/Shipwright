@@ -1706,6 +1706,10 @@ u8 Return_Item_Entry(GetItemEntry itemEntry, ItemID returnItem ) {
 
 // Processes Item_Give returns
 u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
+    // No need to call OnItemGive for ITEM_SOLD_OUT. Doesn't have any ItemTable entries anyway.
+    if (itemID == ITEM_SOLD_OUT) {
+        return ITEM_NONE;
+    }
     uint32_t get = GetGIID(itemID);
     if (get == -1) {
         modId = MOD_RANDOMIZER;
@@ -2305,8 +2309,6 @@ u8 Item_Give(PlayState* play, u8 item) {
                         }
                     } else {
                         gSaveContext.equips.buttonItems[i] = ITEM_NONE;
-                        // No need to call OnItemGive for ITEM_SOLD_OUT. Doesn't have any ItemTable entries anyway.
-                        return -1;
                     }
                     return Return_Item(item, MOD_NONE, ITEM_NONE);
                 }
