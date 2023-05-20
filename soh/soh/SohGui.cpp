@@ -118,6 +118,10 @@ namespace SohGui {
         Audio_SetGameVolume(SEQ_BGM_SUB, CVarGetFloat("gSubMusicVolume", 1.0f));
         Audio_SetGameVolume(SEQ_FANFARE, CVarGetFloat("gFanfareVolume", 1.0f));
         Audio_SetGameVolume(SEQ_SFX, CVarGetFloat("gSFXMusicVolume", 1.0f));
+        Audio_SetGameVolume(SEQ_BGM_MAIN, 1.0f);
+        Audio_SetGameVolume(SEQ_BGM_SUB, 1.0f);
+        Audio_SetGameVolume(SEQ_FANFARE, 1.0f);
+        Audio_SetGameVolume(SEQ_SFX, 1.0f);
     }
 
     // MARK: - Delegates
@@ -145,6 +149,8 @@ namespace SohGui {
 
     void SetupGuiElements() {
         auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
+
+        UpdateAudio();
 
         mSohMenuBar = std::make_shared<SohMenuBar>("gOpenMenuBar", CVarGetInteger("gOpenMenuBar", 0));
         gui->SetMenuBar(std::reinterpret_pointer_cast<LUS::GuiMenuBar>(mSohMenuBar));
@@ -201,9 +207,4 @@ namespace SohGui {
         mRandomizerSettingsWindow = std::make_shared<RandomizerSettingsWindow>("gRandomizerSettingsEnabled", "Randomizer Settings");
         gui->AddGuiWindow(mRandomizerSettingsWindow);
 }
-
-    void SetupHooks() {
-        LUS::RegisterHook<LUS::AudioInit>(UpdateAudio);
-        LUS::RegisterHook<LUS::GfxInit>(UpdateAudio);
-    }
 }
