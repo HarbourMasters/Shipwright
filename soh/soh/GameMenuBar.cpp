@@ -860,7 +860,7 @@ namespace GameMenuBar {
                     ImGui::EndMenu();
                 }
                 UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
-                UIWidgets::EnhancementCombobox("gDirtPathFix", zFightingOptions, 0);
+                UIWidgets::EnhancementCombobox("gSceneSpecificDirtPathFix", zFightingOptions, 0);
                 UIWidgets::Tooltip("Disabled: Paths vanish more the higher the resolution (Z-fighting is based on resolution)\n"
                                    "Consistent: Certain paths vanish the same way in all resolutions\n"
                                    "No Vanish: Paths do not vanish, Link seems to sink in to some paths\n"

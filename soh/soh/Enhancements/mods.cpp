@@ -486,6 +486,29 @@ void RegisterBonkDamage() {
     });
 }
 
+void RegisterPathFix() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnInterfaceUpdate>([]() {
+        if ((gPlayState != NULL) && ((gPlayState->sceneNum == SCENE_SPOT00) || (gPlayState->sceneNum == SCENE_SPOT04) || (gPlayState->sceneNum == SCENE_SPOT15))) {
+           
+            switch (CVarGetInteger("gSceneSpecificDirtPathFix", 0)) {
+                case 1:
+                    CVarSetInteger("gDirtPathFix", 1);
+                    break;
+                case 2:
+                    CVarSetInteger("gDirtPathFix", 2);
+                    break;
+                case 0:
+                default:
+                    CVarSetInteger("gDirtPathFix", 0);
+                    break;
+            }
+        }
+        if ((gPlayState != NULL) && !((gPlayState->sceneNum == SCENE_SPOT00) || (gPlayState->sceneNum == SCENE_SPOT04) || (gPlayState->sceneNum == SCENE_SPOT15))) {
+            CVarSetInteger("gDirtPathFix", 0);
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -504,4 +527,5 @@ void InitMods() {
     RegisterRupeeDash();
     RegisterHyperBosses();
     RegisterBonkDamage();
+    RegisterPathFix();
 }
