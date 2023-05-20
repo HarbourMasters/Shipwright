@@ -518,7 +518,7 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
     srand(time(NULL));
     // if a blank seed was entered, make a random one
     if (seedString.empty()) {
-        Settings::seed = rand() & 0xFFFFFFFF;
+        seedString = std::to_string(rand() % 0xFFFFFFFF);
     } else if (seedString.rfind("seed_testing_count", 0) == 0 && seedString.length() > 18) {
         int count;
         try {
@@ -530,15 +530,11 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
         }
         Playthrough::Playthrough_Repeat(cvarSettings, excludedLocations, count);
         return "";
-    } else {
-        try {
-            uint32_t seedHash = boost::hash_32<std::string>{}(seedString);
-            Settings::seed = seedHash & 0xFFFFFFFF;
-            Settings::seedString = seedString;
-        } catch (...) {
-            return "";
-        }
     }
+
+    Settings::seedString = seedString;
+    uint32_t seedHash = boost::hash_32<std::string>{}(Settings::seedString);
+    Settings::seed = seedHash & 0xFFFFFFFF;
 
     int ret = Playthrough::Playthrough_Init(Settings::seed, cvarSettings, excludedLocations);
     if (ret < 0) {
