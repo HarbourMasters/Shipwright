@@ -2305,6 +2305,8 @@ u8 Item_Give(PlayState* play, u8 item) {
                         }
                     } else {
                         gSaveContext.equips.buttonItems[i] = ITEM_NONE;
+                        // No need to call OnItemGive for ITEM_SOLD_OUT. Doesn't have any ItemTable entries anyway.
+                        return -1;
                     }
                     return Return_Item(item, MOD_NONE, ITEM_NONE);
                 }
