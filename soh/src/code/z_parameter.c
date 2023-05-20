@@ -15,6 +15,7 @@
 #endif
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 
 #define DO_ACTION_TEX_WIDTH() 48
@@ -1711,7 +1712,7 @@ u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
         GetItemEntry gie = { ITEM_SOLD_OUT, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_LESSER, NULL };
         return Return_Item_Entry(gie, returnItem);
     }
-    uint32_t get = GetGIID(itemID);
+    int32_t get = GetGIID(itemID);
     if (get == -1) {
         modId = MOD_RANDOMIZER;
         get = itemID;
@@ -6163,8 +6164,13 @@ void Interface_Update(PlayState* play) {
                     u16 tempSaleMod = gSaveContext.pendingSaleMod;
                     gSaveContext.pendingSale = ITEM_NONE;
                     gSaveContext.pendingSaleMod = MOD_NONE;
-                    if (tempSaleMod == 0) {
-                        tempSaleItem = GetGIID(tempSaleItem);
+                    if (tempSaleMod == MOD_NONE) {
+                        s16 giid = GetGIID(tempSaleItem);
+                        if (giid == -1) {
+                            tempSaleMod = MOD_RANDOMIZER;
+                        } else {
+                            tempSaleItem = giid;
+                        }
                     }
                     GameInteractor_ExecuteOnSaleEndHooks(ItemTable_RetrieveEntry(tempSaleMod, tempSaleItem));
                 }
