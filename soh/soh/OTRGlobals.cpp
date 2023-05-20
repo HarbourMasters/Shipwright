@@ -788,6 +788,9 @@ extern "C" void DeinitOTR() {
     CrowdControl::Instance->Disable();
     CrowdControl::Instance->Shutdown();
 #endif
+
+    OTRGlobals::Instance->context = nullptr;
+    int bp = 0;
 }
 
 #ifdef _WIN32

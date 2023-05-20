@@ -104,7 +104,6 @@ bool optExpandAll;   // A bool that will expand all checks once
 RandomizerCheck lastLocationChecked = RC_UNKNOWN_CHECK;
 RandomizerCheckArea previousArea = RCAREA_INVALID;
 RandomizerCheckArea currentArea = RCAREA_INVALID;
-OSContPad* trackerButtonsPressed;
 
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
@@ -128,6 +127,7 @@ void CheckTrackerWindow::DrawElement() {
         if (CVarGetInteger("gCheckTrackerDisplayType", 0) == 1) {
             int comboButton1Mask = buttons[CVarGetInteger("gCheckTrackerComboButton1", 6)];
             int comboButton2Mask = buttons[CVarGetInteger("gCheckTrackerComboButton2", 8)];
+            OSContPad* trackerButtonsPressed = LUS::Context::GetInstance()->GetControlDeck()->GetPads();
             bool comboButtonsHeld = trackerButtonsPressed != nullptr &&
                                     trackerButtonsPressed[0].button & comboButton1Mask &&
                                     trackerButtonsPressed[0].button & comboButton2Mask;
@@ -1042,9 +1042,6 @@ void CheckTrackerWindow::InitElement() {
     Color_Saved_Main            = CVarGetColor("gCheckTrackerSavedMainColor",             Color_Main_Default);
     Color_Saved_Extra           = CVarGetColor("gCheckTrackerSavedExtraColor",            Color_Saved_Extra_Default);
 
-    LUS::RegisterHook<LUS::ControllerRead>([](OSContPad* cont_pad) {
-        trackerButtonsPressed = cont_pad;
-    });
     LUS::RegisterHook<LUS::LoadFile>([](uint32_t fileNum) {
         doInitialize = true;
     });

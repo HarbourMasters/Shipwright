@@ -30,8 +30,6 @@ void DrawBottle(ItemTrackerItem item);
 void DrawQuest(ItemTrackerItem item);
 void DrawSong(ItemTrackerItem item);
 
-OSContPad* buttonsPressed;
-
 bool shouldUpdateVectors = true;
 
 std::vector<ItemTrackerItem> mainWindowItems = {};
@@ -855,6 +853,7 @@ void ItemTrackerWindow::DrawElement() {
     int iconSpacing = CVarGetInteger("gItemTrackerIconSpacing", 12);
     int comboButton1Mask = buttonMap[CVarGetInteger("gItemTrackerComboButton1", 6)];
     int comboButton2Mask = buttonMap[CVarGetInteger("gItemTrackerComboButton2", 8)];
+    OSContPad* buttonsPressed = LUS::Context::GetInstance()->GetControlDeck()->GetPads();
     bool comboButtonsHeld = buttonsPressed != nullptr && buttonsPressed[0].button & comboButton1Mask && buttonsPressed[0].button & comboButton2Mask;
     bool isPaused = CVarGetInteger("gItemTrackerShowOnlyPaused", 0) == 0 || gPlayState != nullptr && gPlayState->pauseCtx.state > 0;
 
@@ -1087,9 +1086,7 @@ void ItemTrackerWindow::InitElement() {
     if (itemTrackerNotes.empty()) {
         itemTrackerNotes.push_back(0);
     }
-    LUS::RegisterHook<LUS::ControllerRead>([](OSContPad* cont_pad) {
-        buttonsPressed = cont_pad;
-    });
+
     LUS::RegisterHook<LUS::LoadFile>([](uint32_t fileNum) {
         const char* initialTrackerNotes = CVarGetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
         itemTrackerNotes.resize(strlen(initialTrackerNotes) + 1);
