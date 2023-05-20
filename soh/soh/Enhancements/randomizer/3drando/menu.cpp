@@ -533,8 +533,7 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
     } else {
         try {
             uint32_t seedHash = boost::hash_32<std::string>{}(seedString);
-            int seed = seedHash & 0xFFFFFFFF;
-            Settings::seed = seed;
+            Settings::seed = seedHash & 0xFFFFFFFF;
             Settings::seedString = seedString;
         } catch (...) {
             return "";
