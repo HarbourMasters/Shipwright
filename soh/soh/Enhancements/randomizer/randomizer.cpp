@@ -3191,8 +3191,8 @@ void DrawRandoEditor(bool& open) {
     }
 
     UIWidgets::Spacer(0);
-    if (ImGui::Button("Generate Randomizer")) {        
-        GenerateRandomizer(CVarGetInteger("gRandoManualSeedEntry", 0) ? seedString : std::to_string(rand() & 0xFFFFFFFF).c_str());
+    if (ImGui::Button("Generate Randomizer")) {
+        GenerateRandomizer(CVarGetInteger("gRandoManualSeedEntry", 0) ? seedString : "");
     }
 
     UIWidgets::Spacer(0);

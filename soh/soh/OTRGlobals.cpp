@@ -782,6 +782,8 @@ extern "C" void InitOTR() {
     } else {
         CVarClear("gLetItSnow");
     }
+
+    srand(now);
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance = new CrowdControl();
     CrowdControl::Instance->Init();
