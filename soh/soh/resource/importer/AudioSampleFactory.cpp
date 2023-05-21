@@ -2,6 +2,12 @@
 #include "soh/resource/type/AudioSample.h"
 #include "spdlog/spdlog.h"
 
+#define DRMP3_IMPLEMENTATION
+#include <dr_libs/mp3.h>
+#define DRWAV_IMPLEMENTATION
+#include <dr_libs/wav.h>
+
+
 namespace LUS {
 std::shared_ptr<Resource> AudioSampleFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                            std::shared_ptr<ResourceInitData> initData,
@@ -11,8 +17,11 @@ std::shared_ptr<Resource> AudioSampleFactory::ReadResource(std::shared_ptr<Resou
 
     switch (resource->InitData->ResourceVersion) {
     case 2:
-	factory = std::make_shared<AudioSampleFactoryV0>();
-	break;
+        factory = std::make_shared<AudioSampleFactoryV0>();
+        break;
+    case 3:
+        factory = std::make_shared<AudioSampleFactoryV1>(); //wav/mp3
+        break;
     }
 
     if (factory == nullptr) {
@@ -66,6 +75,49 @@ void LUS::AudioSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> re
     }
     audioSample->book.book = audioSample->bookData.data();
     audioSample->sample.book = &audioSample->book;
+}
+
+void LUS::AudioSampleFactoryV1::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+                                                 std::shared_ptr<Resource> resource)
+{
+    std::shared_ptr<AudioSample> audioSample = std::static_pointer_cast<AudioSample>(resource);
+    ResourceVersionFactory::ParseFileBinary(reader, audioSample);
+
+    reader->Seek(52, SeekOffsetType::Start);
+    if (reader->ReadChar() == 'W' &&
+        reader->ReadChar() == 'A' &&
+        reader->ReadChar() == 'V' &&
+        reader->ReadChar() == 'E') {
+        reader->Seek(-12, SeekOffsetType::Current);
+        u32 curr = reader->GetBaseAddress();
+        reader->Seek(0, SeekOffsetType::End);
+        u32 end = reader->GetBaseAddress();
+        reader->Seek(curr, SeekOffsetType::Start);
+        u32 len = end - curr + 1;
+        u8* strem2 = malloc(sizeof(u8) * len);
+        reader->Read(strem2, len);
+        drwav_uint32 channels;
+        drwav_uint32 sampleRate;
+        drwav_uint64 totalPcm;
+        drmp3_int16* pcmData =
+            drwav_open_memory_and_read_pcm_frames_s16(strem2, len, &channels, &sampleRate, &totalPcm, NULL);
+        audioSample->sample.size = totalPcm;
+        audioSample->sample.sampleAddr = (uint8_t*)pcmData;
+        audioSample->sample.codec = 5; //CODEC_S16
+
+        audioSample->loop.start = 0;
+        audioSample->loop.end = audioSample->sample.size - 1;
+        audioSample->loop.count = 0;
+        audioSample->sample.loop = &audioSample->loop;
+        audioSample->sample.sampleRateMagicValue = 'RIFF';
+        audioSample->sample.book = &audioSample->book;
+        audioSample->sample.sampleRate = sampleRate;
+
+    }
+    else {
+        SPDLOG_ERROR("Corrupted wav");
+    }
+
 }
 } // namespace LUS
 
