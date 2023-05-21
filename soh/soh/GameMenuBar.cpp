@@ -29,6 +29,7 @@
 #include "soh/SaveManager.h"
 #include "OTRGlobals.h"
 #include "soh/Enhancements/presets.h"
+#include "soh/Enhancements/mods.h"
 #include "soh/resource/type/Skeleton.h"
 
 #ifdef ENABLE_CROWD_CONTROL
@@ -45,6 +46,8 @@ extern "C" {
     void enableBetaQuest() { isBetaQuestEnabled = true; }
     void disableBetaQuest() { isBetaQuestEnabled = false; }
 }
+
+extern "C" PlayState* gPlayState;
 
 enum SeqPlayers {
     /* 0 */ SEQ_BGM_MAIN,
@@ -860,7 +863,9 @@ namespace GameMenuBar {
                     ImGui::EndMenu();
                 }
                 UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
-                UIWidgets::EnhancementCombobox("gDirtPathFix", zFightingOptions, 0);
+                if (UIWidgets::EnhancementCombobox("gSceneSpecificDirtPathFix", zFightingOptions, 0) && gPlayState != NULL) {
+                    UpdateDirtPathFixState(gPlayState->sceneNum);
+                }
                 UIWidgets::Tooltip("Disabled: Paths vanish more the higher the resolution (Z-fighting is based on resolution)\n"
                                    "Consistent: Certain paths vanish the same way in all resolutions\n"
                                    "No Vanish: Paths do not vanish, Link seems to sink in to some paths\n"
