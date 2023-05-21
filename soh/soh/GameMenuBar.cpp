@@ -29,6 +29,7 @@
 #include "soh/SaveManager.h"
 #include "OTRGlobals.h"
 #include "soh/Enhancements/presets.h"
+#include "soh/Enhancements/mods.h"
 #include "soh/resource/type/Skeleton.h"
 
 #ifdef ENABLE_CROWD_CONTROL

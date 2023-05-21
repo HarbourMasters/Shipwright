@@ -87,8 +87,6 @@ uint8_t GameInteractor_SecondCollisionUpdate();
 }
 #endif
 
-void UpdateDirtPathFixState(int32_t sceneNum);
-
 #ifdef __cplusplus
 
 #include <vector>
