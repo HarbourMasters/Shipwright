@@ -487,24 +487,16 @@ void RegisterBonkDamage() {
 }
 
 void RegisterPathFix() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnInterfaceUpdate>([]() {
-        if ((gPlayState != NULL) && ((gPlayState->sceneNum == SCENE_SPOT00) || (gPlayState->sceneNum == SCENE_SPOT04) || (gPlayState->sceneNum == SCENE_SPOT15))) {
-           
-            switch (CVarGetInteger("gSceneSpecificDirtPathFix", 0)) {
-                case 1:
-                    CVarSetInteger("gDirtPathFix", 1);
-                    break;
-                case 2:
-                    CVarSetInteger("gDirtPathFix", 2);
-                    break;
-                case 0:
-                default:
-                    CVarSetInteger("gDirtPathFix", 0);
-                    break;
-            }
-        }
-        if ((gPlayState != NULL) && !((gPlayState->sceneNum == SCENE_SPOT00) || (gPlayState->sceneNum == SCENE_SPOT04) || (gPlayState->sceneNum == SCENE_SPOT15))) {
-            CVarSetInteger("gDirtPathFix", 0);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([](int32_t sceneNum) {
+        switch (sceneNum) {
+            case SCENE_SPOT00:
+            case SCENE_SPOT04:
+            case SCENE_SPOT15:
+                CVarSetInteger("gDirtPathFix", CVarGetInteger("gSceneSpecificDirtPathFix", 0));
+                break;
+            default:
+                CVarClear("gDirtPathFix");
+                break;
         }
     });
 }
