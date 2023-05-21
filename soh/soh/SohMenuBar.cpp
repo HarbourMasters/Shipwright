@@ -114,8 +114,8 @@ void DrawMenuBarIcon() {
     }
 }
 
-void DrawShipwrightMenu() {
-    if (ImGui::BeginMenu("Shipwright")) {
+void DrawShipMenu() {
+    if (ImGui::BeginMenu("Ship")) {
         if (ImGui::MenuItem("Reset",
 #ifdef __APPLE__
                             "Command-R"
@@ -1419,7 +1419,7 @@ void SohMenuBar::DrawElement() {
 
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, sWindowPadding);
 
-        DrawShipwrightMenu();
+        DrawShipMenu();
 
         ImGui::SetCursorPosY(0.0f);
 
