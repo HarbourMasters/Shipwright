@@ -94,7 +94,7 @@ void LUS::AudioSampleFactoryV1::ParseFileBinary(std::shared_ptr<BinaryReader> re
         u32 end = reader->GetBaseAddress();
         reader->Seek(curr, SeekOffsetType::Start);
         u32 len = end - curr + 1;
-        u8* strem2 = malloc(sizeof(u8) * len);
+        u8* strem2 = (u8 *) malloc(sizeof(u8) * len);
         reader->Read(strem2, len);
         drwav_uint32 channels;
         drwav_uint32 sampleRate;
