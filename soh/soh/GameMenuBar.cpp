@@ -46,6 +46,8 @@ extern "C" {
     void disableBetaQuest() { isBetaQuestEnabled = false; }
 }
 
+extern "C" PlayState* gPlayState;
+
 enum SeqPlayers {
     /* 0 */ SEQ_BGM_MAIN,
     /* 1 */ SEQ_FANFARE,
@@ -860,7 +862,9 @@ namespace GameMenuBar {
                     ImGui::EndMenu();
                 }
                 UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
-                UIWidgets::EnhancementCombobox("gDirtPathFix", zFightingOptions, 0);
+                if (UIWidgets::EnhancementCombobox("gSceneSpecificDirtPathFix", zFightingOptions, 0) && gPlayState != NULL) {
+                    UpdateDirtPathFixState(gPlayState->sceneNum);
+                }
                 UIWidgets::Tooltip("Disabled: Paths vanish more the higher the resolution (Z-fighting is based on resolution)\n"
                                    "Consistent: Certain paths vanish the same way in all resolutions\n"
                                    "No Vanish: Paths do not vanish, Link seems to sink in to some paths\n"
