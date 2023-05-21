@@ -864,16 +864,7 @@ namespace GameMenuBar {
                 UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
                
                 if (UIWidgets::EnhancementCombobox("gSceneSpecificDirtPathFix", zFightingOptions, 0) && gPlayState != NULL) {
-                    switch (gPlayState->sceneNum) {
-                        case SCENE_SPOT00:
-                        case SCENE_SPOT04:
-                        case SCENE_SPOT15:
-                            CVarSetInteger("gDirtPathFix", CVarGetInteger("gSceneSpecificDirtPathFix", 0));
-                            break;
-                        default:
-                            CVarClear("gDirtPathFix");
-                            break;
-                    }
+                    UpdateDirtPathFixState(gPlayState->sceneNum);
                 }
                 UIWidgets::Tooltip("Disabled: Paths vanish more the higher the resolution (Z-fighting is based on resolution)\n"
                                    "Consistent: Certain paths vanish the same way in all resolutions\n"
