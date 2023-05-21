@@ -87,6 +87,7 @@ uint8_t GameInteractor_SecondCollisionUpdate();
 }
 #endif
 
+
 #ifdef __cplusplus
 
 #include <vector>
