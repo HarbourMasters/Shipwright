@@ -5958,10 +5958,10 @@ void Interface_Draw(PlayState* play) {
 
 void Interface_DrawTotalGameplayTimer(PlayState* play) {
     // Draw timer based on the Gameplay Stats total time.
-    if (gSaveContext.isBossRush &&
-        gSaveContext.bossRushSelectedOptions[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) {
+    if (/*gSaveContext.isBossRush &&
+        gSaveContext.bossRushSelectedOptions[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES*/ true) {
         s32 totalTimer = GAMEPLAYSTAT_TOTAL_TIME;
-        s32 bossRushTimer[6];
+        s32 bossRushTimer[7];
         s32 sec = totalTimer / 10;
         s32 hh = sec / 3600;
         s32 mm = (sec - (hh * 3600)) / 60;
@@ -5969,36 +5969,69 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
         s32 ds = totalTimer % 10;
 
         // Hours
-        bossRushTimer[0] = hh % 10;
+        if (hh >= 10) {
+            bossRushTimer[0] = hh;
+            while (bossRushTimer[0] >= 10) {
+                bossRushTimer[0] = bossRushTimer[0] / 10;
+            }
+        } else {
+            bossRushTimer[0] = 0;
+        }
+        bossRushTimer[1] = hh % 10;
 
         // Minutes
         if (mm >= 10) {
-            bossRushTimer[1] = mm;
-            while (bossRushTimer[1] >= 10) {
-                bossRushTimer[1] = bossRushTimer[1] / 10;
+            bossRushTimer[2] = mm;
+            while (bossRushTimer[2] >= 10) {
+                bossRushTimer[2] = bossRushTimer[2] / 10;
             }
         } else {
-            bossRushTimer[1] = 0;
+            bossRushTimer[2] = 0;
         }
-        bossRushTimer[2] = mm % 10;
+        bossRushTimer[3] = mm % 10;
 
         // Seconds
         if (ss >= 10) {
-            bossRushTimer[3] = ss;
-            while (bossRushTimer[3] >= 10) {
-                bossRushTimer[3] = bossRushTimer[3] / 10;
+            bossRushTimer[4] = ss;
+            while (bossRushTimer[4] >= 10) {
+                bossRushTimer[4] = bossRushTimer[4] / 10;
             }
         } else {
-            bossRushTimer[3] = 0;
+            bossRushTimer[4] = 0;
         }
-        bossRushTimer[4] = ss % 10;
+        bossRushTimer[5] = ss % 10;
 
         // Deciseconds
-        bossRushTimer[5] = ds;
+        bossRushTimer[6] = ds;
 
-        s32 rectLeftOri = OTRGetRectDimensionFromLeftEdge(24);
+        s32 X_Margins_Timer = 0;
+        if (CVarGetInteger("gIGTUseMargins", 0) != 0) {
+            if (CVarGetInteger("gIGTPosType", 0) == 0) {
+                X_Margins_Timer = Left_HUD_Margin;
+            };
+        }
+        s32 rectLeftOri = OTRGetRectDimensionFromLeftEdge(24 + X_Margins_Timer);
+        s32 rectTopOri = 73;
+        if (CVarGetInteger("gIGTPosType", 0) != 0) {
+            rectTopOri = (CVarGetInteger("gIGTPosY", 0));
+            if (CVarGetInteger("gIGTPosType", 0) == 1) { // Anchor Left
+                if (CVarGetInteger("gIGTUseMargins", 0) != 0) {
+                    X_Margins_Timer = Left_HUD_Margin;
+                };
+                rectLeftOri = OTRGetRectDimensionFromLeftEdge(CVarGetInteger("gIGTPosX", 0) + X_Margins_Timer);
+            } else if (CVarGetInteger("gIGTPosType", 0) == 2) { // Anchor Right
+                if (CVarGetInteger("gIGTUseMargins", 0) != 0) {
+                    X_Margins_Timer = Right_HUD_Margin;
+                };
+                rectLeftOri = OTRGetRectDimensionFromRightEdge(CVarGetInteger("gIGTPosX", 0) + X_Margins_Timer);
+            } else if (CVarGetInteger("gIGTPosType", 0) == 3) { // Anchor None
+                rectLeftOri = CVarGetInteger("gIGTPosX", 0) + 204 + X_Margins_Timer;
+            } else if (CVarGetInteger("gIGTPosType", 0) == 4) { // Hidden
+                rectLeftOri = -9999;
+            }
+        }
+
         s32 rectLeft;
-        s32 rectTopOri = 60;
         s32 rectTop;
         s32 rectWidth = 8;
         s32 rectHeightOri = 16;
@@ -6014,12 +6047,12 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
                             G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE,
                         G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
 
-        for (s8 i = 0; i <= 8; i++) {
+        for (s8 i = 0; i <= 9; i++) {
             rectLeft = rectLeftOri + (i * 8);
             rectTop = rectTopOri;
             rectHeight = rectHeightOri;
 
-            if (i == 1 || i == 4 || i == 7) {
+            if (i == 2 || i == 5 || i == 8) {
                 gDPLoadTextureBlock(OVERLAY_DISP++, ((u8*)digitTextures[10]), G_IM_FMT_I, G_IM_SIZ_8b, rectWidth,
                                     rectHeight, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                     G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -6027,15 +6060,15 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
                 // Grab right timer number index.
                 s8 timerIndex = i;
                 switch (i) {
-                    case 2:
                     case 3:
+                    case 4:
                         timerIndex -= 1;
                         break;
-                    case 5:
                     case 6:
+                    case 7:
                         timerIndex -= 2;
                         break;
-                    case 8:
+                    case 9:
                         timerIndex -= 3;
                         break;
                     default:
@@ -6051,7 +6084,7 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
             gDPSetEnvColor(OVERLAY_DISP++, 255, 255, 255, 255);
 
             // Create dot image from the colon image.
-            if (i == 7) {
+            if (i == 8) {
                 rectHeight = rectHeight / 2;
                 rectTop += 5;
                 rectLeft -= 1;
