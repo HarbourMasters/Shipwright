@@ -1647,10 +1647,6 @@ extern "C" int Controller_ShouldRumble(size_t slot) {
     return 0;
 }
 
-extern "C" void Hooks_ExecuteAudioInit() {
-    LUS::ExecuteHooks<LUS::AudioInit>();
-}
-
 extern "C" void* getN64WeirdFrame(s32 i) {
     char* weirdFrameBytes = reinterpret_cast<char*>(n64WeirdFrames);
     return &weirdFrameBytes[i + sizeof(n64WeirdFrames)];
