@@ -5961,7 +5961,7 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
     if (gSaveContext.isBossRush &&
         gSaveContext.bossRushSelectedOptions[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) {
         s32 totalTimer = GAMEPLAYSTAT_TOTAL_TIME;
-        s32 bossRushTimer[7];
+        s32 gameplayTimer[7];
         s32 sec = totalTimer / 10;
         s32 hh = sec / 3600;
         s32 mm = (sec - (hh * 3600)) / 60;
@@ -5970,39 +5970,39 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
 
         // Hours
         if (hh >= 10) {
-            bossRushTimer[0] = hh;
-            while (bossRushTimer[0] >= 10) {
-                bossRushTimer[0] = bossRushTimer[0] / 10;
+            gameplayTimer[0] = hh;
+            while (gameplayTimer[0] >= 10) {
+                gameplayTimer[0] = gameplayTimer[0] / 10;
             }
         } else {
-            bossRushTimer[0] = 0;
+            gameplayTimer[0] = 0;
         }
-        bossRushTimer[1] = hh % 10;
+        gameplayTimer[1] = hh % 10;
 
         // Minutes
         if (mm >= 10) {
-            bossRushTimer[2] = mm;
-            while (bossRushTimer[2] >= 10) {
-                bossRushTimer[2] = bossRushTimer[2] / 10;
+            gameplayTimer[2] = mm;
+            while (gameplayTimer[2] >= 10) {
+                gameplayTimer[2] = gameplayTimer[2] / 10;
             }
         } else {
-            bossRushTimer[2] = 0;
+            gameplayTimer[2] = 0;
         }
-        bossRushTimer[3] = mm % 10;
+        gameplayTimer[3] = mm % 10;
 
         // Seconds
         if (ss >= 10) {
-            bossRushTimer[4] = ss;
-            while (bossRushTimer[4] >= 10) {
-                bossRushTimer[4] = bossRushTimer[4] / 10;
+            gameplayTimer[4] = ss;
+            while (gameplayTimer[4] >= 10) {
+                gameplayTimer[4] = gameplayTimer[4] / 10;
             }
         } else {
-            bossRushTimer[4] = 0;
+            gameplayTimer[4] = 0;
         }
-        bossRushTimer[5] = ss % 10;
+        gameplayTimer[5] = ss % 10;
 
         // Deciseconds
-        bossRushTimer[6] = ds;
+        gameplayTimer[6] = ds;
 
         s32 X_Margins_Timer = 0;
         if (CVarGetInteger("gIGTUseMargins", 0) != 0) {
@@ -6074,7 +6074,7 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
                     default:
                         break;
                 }
-                gDPLoadTextureBlock(OVERLAY_DISP++, ((u8*)digitTextures[bossRushTimer[timerIndex]]), G_IM_FMT_I,
+                gDPLoadTextureBlock(OVERLAY_DISP++, ((u8*)digitTextures[gameplayTimer[timerIndex]]), G_IM_FMT_I,
                                     G_IM_SIZ_8b, rectWidth, rectHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             }
