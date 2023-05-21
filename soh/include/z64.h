@@ -1502,6 +1502,7 @@ typedef struct {
     uint8_t bossRushIndex;
     uint8_t bossRushOffset;
     int16_t bossRushUIAlpha;
+    float bossRushArrowOffset;
 } FileChooseContext; // size = 0x1CAE0
 
 typedef enum {

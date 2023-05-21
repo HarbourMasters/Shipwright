@@ -569,6 +569,7 @@ void FileChoose_StartBossRushMenu(GameState* thisx) {
 
     this->logoAlpha -= 25;
     this->bossRushUIAlpha = 0;
+    this->bossRushArrowOffset = 0;
 
     if (this->logoAlpha >= 0) {
         this->logoAlpha = 0;
@@ -665,6 +666,12 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
     this->bossRushUIAlpha += 25;
     if (this->bossRushUIAlpha > 255) {
         this->bossRushUIAlpha = 255;
+    }
+
+    // Animate up/down arrows.
+    this->bossRushArrowOffset += 0.25;
+    if (this->bossRushArrowOffset > 4) {
+        this->bossRushArrowOffset = 0;
     }
     
     // Move menu selection up or down.
@@ -1593,11 +1600,24 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         // Draw arrows to indicate that the list can scroll up or down.
         // Arrow up
         if (listOffset > 0) {
-            FileChoose_DrawTextureI8(this->state.gfxCtx, gEmptyCDownArrowTex, 32, 32, 140, 68, 32, 32, 2048, 2048);
+            uint16_t arrowUpX = 140;
+            uint16_t arrowUpY = 75 - (s32)this->bossRushArrowOffset;
+            gDPLoadTextureBlock(POLY_OPA_DISP++, "__OTR__textures/parameter_static/garrowUp", G_IM_FMT_IA,
+                                G_IM_SIZ_16b, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gSPWideTextureRectangle(POLY_OPA_DISP++, arrowUpX << 2, arrowUpY << 2, (arrowUpX + 8) << 2,
+                                    (arrowUpY + 8) << 2, G_TX_RENDERTILE, 0, 0, (1 << 11), (1 << 11));
         }
         // Arrow down
         if (BOSSRUSH_OPTIONS_AMOUNT - listOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN) {
-            FileChoose_DrawTextureI8(this->state.gfxCtx, gEmptyCDownArrowTex, 32, 32, 140, 180, 32, 32, 2048, 2048);
+            uint16_t arrowDownX = 140;
+            uint16_t arrowDownY = 183 + (s32)this->bossRushArrowOffset;
+            gDPLoadTextureBlock(POLY_OPA_DISP++, "__OTR__textures/parameter_static/gArrowDown", G_IM_FMT_IA,
+                                G_IM_SIZ_16b, 16, 16, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                G_TX_NOLOD, G_TX_NOLOD);
+            gSPWideTextureRectangle(POLY_OPA_DISP++, arrowDownX << 2, arrowDownY << 2, (arrowDownX + 8) << 2,
+                                    (arrowDownY + 8) << 2, G_TX_RENDERTILE, 0, 0, (1 << 11), (1 << 11));
         }
 
         // Draw options. There's more options than what fits on the screen, so the visible options
