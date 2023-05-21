@@ -669,8 +669,8 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
     }
 
     // Animate up/down arrows.
-    this->bossRushArrowOffset += 0.25;
-    if (this->bossRushArrowOffset > 4) {
+    this->bossRushArrowOffset += 1;
+    if (this->bossRushArrowOffset >= 30) {
         this->bossRushArrowOffset = 0;
     }
     
@@ -1601,7 +1601,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         // Arrow up
         if (listOffset > 0) {
             uint16_t arrowUpX = 140;
-            uint16_t arrowUpY = 75 - (s32)this->bossRushArrowOffset;
+            uint16_t arrowUpY = 77 - (this->bossRushArrowOffset / 10);
             gDPLoadTextureBlock(POLY_OPA_DISP++, "__OTR__textures/parameter_static/garrowUp", G_IM_FMT_IA,
                                 G_IM_SIZ_16b, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -1611,7 +1611,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         // Arrow down
         if (BOSSRUSH_OPTIONS_AMOUNT - listOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN) {
             uint16_t arrowDownX = 140;
-            uint16_t arrowDownY = 183 + (s32)this->bossRushArrowOffset;
+            uint16_t arrowDownY = 181 + (this->bossRushArrowOffset / 10);
             gDPLoadTextureBlock(POLY_OPA_DISP++, "__OTR__textures/parameter_static/gArrowDown", G_IM_FMT_IA,
                                 G_IM_SIZ_16b, 16, 16, 0,
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
