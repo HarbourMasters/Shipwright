@@ -1608,7 +1608,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
             // Option name.
             Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingName(i, gSaveContext.language), 
-                65, (87 + textYOffset), 190, 210, 240, textAlpha, 0.8f, true);
+                65, (87 + textYOffset), 255, 255, 80, textAlpha, 0.8f, true);
 
             // Selected choice for option.
             uint16_t finalKerning = Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, gSaveContext.bossRushSelectedOptions[i], gSaveContext.language), 

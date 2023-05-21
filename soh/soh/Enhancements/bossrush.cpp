@@ -13,15 +13,15 @@ typedef struct BossRushSetting {
 
 BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = { 
     {
-        { "BOSSES:", "BOSSES:", "BOSS:" },
+        { "BOSSES:", "BOSSE:", "BOSS:" },
         {
-            { "All", "All", "Tous" },
-            { "Child", "Child", "Enfant" },
-            { "Adult", "Adult", "Adulte" }
+            { "All", "Alle", "Tous" },
+            { "Child", "Kind", "Enfant" },
+            { "Adult", "Erwachsener", "Adulte" }
         }
     },
     {
-        { "HEARTS:", "HEARTS:", "COEURS:" },
+        { "HEARTS:", "HERZEN:", "COEURS:" },
         {
             { "10", "10", "10" },
             { "15", "15", "15" },
@@ -32,55 +32,55 @@ BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = {
         }
     },
     {
-        { "AMMO:", "AMMO:", "MUNITIONS:" },
+        { "AMMO:", "MUNITION:", "MUNITIONS:" },
         {
-            { "Limited", "Limited", "Limitées" },
-            { "Full", "Full", "Pleines" },
-            { "Maxed", "Maxed", "Maximum" }
+            { "Limited", "Limitiert", "Limitées" },
+            { "Full", "Voll", "Pleines" },
+            { "Maxed", "Maximum", "Maximum" }
         }
     },
     {
-        { "HEAL:", "HEAL:", "SOIN:" },
+        { "HEAL:", "REGENERATION:", "SOIN:" },
         {
-            { "Before Ganondorf", "Before Ganondorf", "Avant Ganondorf" },
-            { "Every Boss", "Every Boss", "Tous les Boss" },
-            { "Never", "Never", "Jamais" }
+            { "Before Ganondorf", "Vor Ganondorf", "Avant Ganondorf" },
+            { "Every Boss", "Bei jedem Boss", "Tous les Boss" },
+            { "Never", "Niemals", "Jamais" }
         }
     },
     {
-        { "HYPER BOSSES:", "HYPER BOSSES:", "HYPER BOSS:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
-        }
-    },
-    {
-        { "MAGIC:", "MAGIC:", "MAGIE:" },
-        {
-            { "Single", "Single", "Simple" },
-            { "Double", "Double", "Double" }
-        }
-    },
-    {
-        { "BOTTLE:", "BOTTLE:", "BOUTEILLE:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Empty", "Empty", "Vide" },
-            { "Fairy", "Fairy", "Fée" },
-            { "Red Potion", "Red Potion", "Potion Rouge" },
-            { "Green Potion", "Green Potion", "Potion Verte" },
-            { "Blue Potion", "Blue Potion", "Potion Bleue" }
-        }
-    },
-    {
-        { "LONGSHOT:", "LONGSHOT:", "SUPER GRAPPIN:" },
+        { "HYPER BOSSES:", "HYPER-BOSSE:", "HYPER BOSS:" },
         {
             { "No", "Nein", "Non" },
             { "Yes", "Ja", "Oui" }
         }
     },
     {
-        { "HOVER BOOTS:", "HOVER BOOTS:", "BOTTES DES AIRS:" },
+        { "MAGIC:", "MAGIE:", "MAGIE:" },
+        {
+            { "Single", "Einzel", "Simple" },
+            { "Double", "Doppel", "Double" }
+        }
+    },
+    {
+        { "BOTTLE:", "FLASCHEN:", "BOUTEILLE:" },
+        {
+            { "No", "Nein", "Non" },
+            { "Empty", "Leer", "Vide" },
+            { "Fairy", "Fee", "Fée" },
+            { "Red Potion", "Rotes Elixier", "Potion Rouge" },
+            { "Green Potion", "Grünes Elixier", "Potion Verte" },
+            { "Blue Potion", "Blaues Elixier", "Potion Bleue" }
+        }
+    },
+    {
+        { "LONGSHOT:", "ENTERHAKEN:", "SUPER GRAPPIN:" },
+        {
+            { "No", "Nein", "Non" },
+            { "Yes", "Ja", "Oui" }
+        }
+    },
+    {
+        { "HOVER BOOTS:", "GLEITSTIEFEL:", "BOTTES DES AIRS:" },
         {
             { "No", "Nein", "Non" },
             { "Yes", "Ja", "Oui" }
