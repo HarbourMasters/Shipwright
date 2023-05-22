@@ -1601,7 +1601,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         // Arrow up
         if (listOffset > 0) {
             uint16_t arrowUpX = 140;
-            uint16_t arrowUpY = 77 - (this->bossRushArrowOffset / 10);
+            uint16_t arrowUpY = 76 - (this->bossRushArrowOffset / 10);
             gDPLoadTextureBlock(POLY_OPA_DISP++, "__OTR__textures/parameter_static/garrowUp", G_IM_FMT_IA,
                                 G_IM_SIZ_16b, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
