@@ -1680,9 +1680,9 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
             if ((ABS(temp_a0_2) < 0x2000) && (sqrtf(SQ(temp_f14) + SQ(temp_f12)) < 70.0f) &&
                 (player->swordState != 0) && (player->heldItemAction == PLAYER_IA_SWORD_MASTER)) {
                 func_80064520(play, &play->csCtx);
-                gSaveContext.sohStats.gameComplete = true;
                 gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
                 BossRush_HandleCompleteBoss(play);
+                gSaveContext.sohStats.gameComplete = true;
                 this->unk_39E = Play_CreateSubCamera(play);
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->unk_39E, CAM_STAT_ACTIVE);

@@ -1,10 +1,18 @@
 #pragma once
 
-// Total gameplay time is tracked in tenths of seconds
-// I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
-// Frame counts in z_play.c and z_kaleido_scope_call.c
-#define GAMEPLAYSTAT_TOTAL_TIME (gSaveContext.sohStats.playTimer / 2 + gSaveContext.sohStats.pauseTimer / 3)
-#define CURRENT_MODE_TIMER (CVarGetInteger("gGameplayStatRoomBreakdown", 0) ?\
+// When using RTA timing
+    // get the diff since the save was created,
+    // unless the game is complete in which we use the defeated ganon timestamp
+// When not using RTA timing
+    // Total gameplay time is tracked in tenths of seconds
+    // I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
+    // Frame counts in z_play.c and z_kaleido_scope_call.c
+#define GAMEPLAYSTAT_TOTAL_TIME (gSaveContext.sohStats.rtaTiming ?\
+    (!gSaveContext.sohStats.gameComplete ?\
+        (!gSaveContext.sohStats.fileCreatedAt ? 0 : ((GetUnixTimestamp() - gSaveContext.sohStats.fileCreatedAt) / 100)) :\
+        (gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON])) :\
+    (gSaveContext.sohStats.playTimer / 2 + gSaveContext.sohStats.pauseTimer / 3))
+#define CURRENT_MODE_TIMER (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) ?\
     gSaveContext.sohStats.roomTimer :\
     gSaveContext.sohStats.sceneTimer)
 

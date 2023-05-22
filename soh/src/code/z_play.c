@@ -751,6 +751,14 @@ void Play_Update(PlayState* play) {
             if (CHECK_BTN_ALL(input[0].press.button, BTN_R))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_R]++;}
             if (CHECK_BTN_ALL(input[0].press.button, BTN_Z))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_Z]++;}
             if (CHECK_BTN_ALL(input[0].press.button, BTN_START))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_START]++;}
+
+            // Start RTA timing on first non-c-up input after intro cutscene
+            if (
+                !gSaveContext.sohStats.fileCreatedAt && !Player_InCsMode(play) && 
+                ((input[0].press.button && input[0].press.button != 0x8) || input[0].rel.stick_x != 0 || input[0].rel.stick_y != 0)
+            ) {
+                gSaveContext.sohStats.fileCreatedAt = GetUnixTimestamp();
+            }
         }
 
         if (gTrnsnUnkState != 0) {
