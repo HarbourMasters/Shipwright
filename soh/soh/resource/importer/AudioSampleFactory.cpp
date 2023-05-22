@@ -95,7 +95,7 @@ void LUS::AudioSampleFactoryV1::ParseFileBinary(std::shared_ptr<BinaryReader> re
         reader->Seek(curr, SeekOffsetType::Start);
         u32 len = end - curr + 1;
         u8* strem2 = (u8 *) malloc(sizeof(u8) * len);
-        reader->Read(strem2, len);
+        reader->Read((char *) strem2, len);
         drwav_uint32 channels;
         drwav_uint32 sampleRate;
         drwav_uint64 totalPcm;
@@ -104,14 +104,27 @@ void LUS::AudioSampleFactoryV1::ParseFileBinary(std::shared_ptr<BinaryReader> re
         audioSample->sample.size = totalPcm;
         audioSample->sample.sampleAddr = (uint8_t*)pcmData;
         audioSample->sample.codec = 5; //CODEC_S16
-
         audioSample->loop.start = 0;
-        audioSample->loop.end = audioSample->sample.size - 1;
+        audioSample->loop.end = audioSample->sample.size;
         audioSample->loop.count = 0;
+        
+        drwav pWav;
+        pWav.pMetadata = NULL;
+        drwav_smpl drwavSmpl;
+        if (drwav_init_memory_with_metadata(&pWav, (const void*) strem2, len, DRWAV_SEQUENTIAL, NULL) &&
+            pWav.pMetadata != NULL &&
+            pWav.pMetadata->data.smpl.pLoops != NULL) {
+                audioSample->loop.start = pWav.pMetadata->data.smpl.pLoops->firstSampleByteOffset;
+                audioSample->loop.end = pWav.pMetadata->data.smpl.pLoops->lastSampleByteOffset;
+                audioSample->loop.count = pWav.pMetadata->data.smpl.pLoops->playCount;
+        }
         audioSample->sample.loop = &audioSample->loop;
         audioSample->sample.sampleRateMagicValue = 'RIFF';
         audioSample->sample.book = &audioSample->book;
         audioSample->sample.sampleRate = sampleRate;
+
+        drwav_uninit(&pWav);
+        free(strem2);
 
     }
     else {
