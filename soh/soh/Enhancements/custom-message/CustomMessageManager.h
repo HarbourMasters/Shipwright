@@ -111,7 +111,21 @@ class CustomMessage {
     TextBoxPosition position = TEXTBOX_POS_BOTTOM;
 };
 
-typedef std::unordered_map<uint16_t, CustomMessage> CustomMessageTable;
+typedef void (*CustomMessageVariableReplacer)(uint16_t textId, CustomMessage& message);
+
+class CustomMessageTable {
+  private:
+    std::unordered_map<uint16_t, CustomMessage> mTable;
+    std::vector<CustomMessageVariableReplacer> mVariableReplacers;
+  
+  public:
+    CustomMessageTable() = default;
+
+    bool InsertCustomMessage(uint16_t textId, CustomMessage message);
+    CustomMessage RetrieveMessage(uint16_t textId);
+    void AddVariableReplacer(CustomMessageVariableReplacer variableReplacer);
+    void Clear();
+};
 
 /**
  * @brief Encapsulates data and functions for creating custom message tables and storing and retrieving
@@ -187,6 +201,8 @@ class CustomMessageManager {
      * already exists.)
      */
     bool AddCustomMessageTable(std::string tableID);
+
+    bool AddVariableReplacer(std::string tableId, CustomMessageVariableReplacer replacer);
 };
 
 class MessageNotFoundException : public std::exception {
