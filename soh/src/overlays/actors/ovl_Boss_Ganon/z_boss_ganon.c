@@ -11,6 +11,7 @@
 #include "assets/scenes/dungeons/ganon_boss/ganon_boss_scene.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/enhancements/bossrush.h"
 
 #include <string.h>
 
@@ -580,7 +581,9 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
                 BossGanon_SetIntroCsCamera(this, 11);
                 this->unk_198 = 2;
                 this->timers[2] = 110;
-                gSaveContext.healthAccumulator = 0x140;
+                if (!(gSaveContext.isBossRush && gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_NEVER)) {
+                    gSaveContext.healthAccumulator = 0x140;
+                }
                 Audio_QueueSeqCmd(NA_BGM_STOP);
             } else {
                 this->useOpenHand = true;
