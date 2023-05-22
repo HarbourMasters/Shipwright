@@ -74,6 +74,8 @@ void EnXc_Destroy(Actor* thisx, PlayState* play) {
     EnXc* this = (EnXc*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnXc_CalculateHeadTurn(EnXc* this, PlayState* play) {

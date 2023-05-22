@@ -249,6 +249,8 @@ void EnAm_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyCylinder(play, &this->hurtCollider);
     Collider_DestroyCylinder(play, &this->blockCollider);
     //! @bug Quad collider is not destroyed (though destroy doesnt really do anything anyway)
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnAm_SpawnEffects(EnAm* this, PlayState* play) {
