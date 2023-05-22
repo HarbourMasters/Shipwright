@@ -3,10 +3,9 @@
 #include "spdlog/spdlog.h"
 
 namespace LUS {
-std::shared_ptr<Resource> SetEchoSettingsFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
-                                                               std::shared_ptr<ResourceInitData> initData,
-                                                               std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<SetEchoSettings>(resourceMgr, initData);
+std::shared_ptr<Resource>
+SetEchoSettingsFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<SetEchoSettings>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
     switch (resource->InitData->ResourceVersion) {

@@ -50,7 +50,10 @@ enum class SceneCommandID : uint8_t {
 class SceneCommand : public Resource {
 public:
   using Resource::Resource;
-  SceneCommandID cmdId;
+
+    SceneCommand() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
+    SceneCommandID cmdId;
 };
 
 }; // namespace LUS

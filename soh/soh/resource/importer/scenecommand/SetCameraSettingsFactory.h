@@ -5,9 +5,8 @@
 namespace LUS {
 class SetCameraSettingsFactory : public SceneCommandFactory {
   public:
-    std::shared_ptr<Resource> ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
-                                           std::shared_ptr<ResourceInitData> initData,
-                                           std::shared_ptr<BinaryReader> reader) override;
+    std::shared_ptr<Resource>
+    ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) override;
 };
 
 class SetCameraSettingsFactoryV0 : public SceneCommandVersionFactory {

@@ -53,6 +53,8 @@ class Skeleton : public Resource {
   public:
     using Resource::Resource;
 
+    Skeleton() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
     void* GetPointer();
     size_t GetPointerSize();
 

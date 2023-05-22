@@ -43,7 +43,9 @@ namespace LUS {
         public:
             using Resource::Resource;
 
-            void* GetPointer();
+        AudioSample() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
+        void* GetPointer();
             size_t GetPointerSize();
 
             Sample sample;

@@ -317,9 +317,9 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
     OTRControllerCallback(rumble, ledColor);
 
     if (CVarGetInteger("gPauseBufferBlockInputFrame", 0)) {
-        BlockGameInput(PAUSE_BUFFER_INPUT_BLOCK_ID);
+        ControllerBlockGameInput(PAUSE_BUFFER_INPUT_BLOCK_ID);
     } else {
-        UnblockGameInput(PAUSE_BUFFER_INPUT_BLOCK_ID);
+        ControllerUnblockGameInput(PAUSE_BUFFER_INPUT_BLOCK_ID);
     }
 
     PadMgr_UnlockPadData(padMgr);

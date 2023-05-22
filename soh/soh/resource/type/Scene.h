@@ -13,7 +13,9 @@ class Scene : public Resource {
 public:
   using Resource::Resource;
 
-  void* GetPointer();
+    Scene() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
+    void* GetPointer();
   size_t GetPointerSize();
 
   std::vector<std::shared_ptr<SceneCommand>> commands;

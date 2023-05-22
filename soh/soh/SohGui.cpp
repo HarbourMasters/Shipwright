@@ -190,5 +190,26 @@ namespace SohGui {
         gui->AddGuiWindow(mItemTrackerSettingsWindow);
         mRandomizerSettingsWindow = std::make_shared<RandomizerSettingsWindow>("gRandomizerSettingsEnabled", "Randomizer Settings");
         gui->AddGuiWindow(mRandomizerSettingsWindow);
-}
+    }
+
+    void Destroy() {
+        mRandomizerSettingsWindow = nullptr;
+        mItemTrackerWindow = nullptr;
+        mItemTrackerSettingsWindow = nullptr;
+        mEntranceTrackerWindow = nullptr;
+        mCheckTrackerWindow = nullptr;
+        mCheckTrackerSettingsWindow = nullptr;
+        mGameplayStatsWindow = nullptr;
+        mDLViewerWindow = nullptr;
+        mSaveEditorWindow = nullptr;
+        mColViewerWindow = nullptr;
+        mActorViewerWindow = nullptr;
+        mCosmeticsEditorWindow = nullptr;
+        mGameControlEditorWindow = nullptr;
+        mAudioEditorWindow = nullptr;
+        mInputEditorWindow = nullptr;
+        mStatsWindow = nullptr;
+        mConsoleWindow = nullptr;
+        mSohMenuBar = nullptr;
+    }
 }

@@ -56,6 +56,8 @@ class AudioSoundFont : public Resource {
 public:
     using Resource::Resource;
 
+    AudioSoundFont() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
     void* GetPointer();
     size_t GetPointerSize();
 

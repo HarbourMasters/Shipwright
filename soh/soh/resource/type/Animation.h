@@ -67,6 +67,8 @@ namespace LUS {
     public:
       using Resource::Resource;
 
+      Animation() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
       void* GetPointer();
       size_t GetPointerSize();
 

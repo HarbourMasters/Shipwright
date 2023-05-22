@@ -30,9 +30,8 @@
 
 namespace LUS {
 
-std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
-                                                     std::shared_ptr<ResourceInitData> initData,
-                                                     std::shared_ptr<BinaryReader> reader) {
+std::shared_ptr<Resource>
+SceneFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     if (SceneFactory::sceneCommandFactories.empty()) {
         SceneFactory::sceneCommandFactories[LUS::SceneCommandID::SetLightingSettings] = std::make_shared<SetLightingSettingsFactory>();
         SceneFactory::sceneCommandFactories[LUS::SceneCommandID::SetWind] = std::make_shared<SetWindSettingsFactory>();
@@ -61,7 +60,7 @@ std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<ResourceMan
         SceneFactory::sceneCommandFactories[LUS::SceneCommandID::SetMesh] = std::make_shared<SetMeshFactory>();
     }
 
-    auto resource = std::make_shared<Scene>(resourceMgr, initData);
+    auto resource = std::make_shared<Scene>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
     switch (resource->InitData->ResourceVersion) {
@@ -113,7 +112,7 @@ std::shared_ptr<SceneCommand> SceneFactoryV0::ParseSceneCommand(std::shared_ptr<
         initData->Type = ResourceType::SOH_SceneCommand;
         initData->Path = scene->InitData->Path + "/SceneCommand" + std::to_string(index);
         initData->ResourceVersion = scene->InitData->ResourceVersion;
-        result = std::static_pointer_cast<SceneCommand>(commandFactory->ReadResource(scene->ResourceManager, initData, reader));
+        result = std::static_pointer_cast<SceneCommand>(commandFactory->ReadResource(initData, reader));
         // Cache the resource?
     }
 

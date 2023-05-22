@@ -21,6 +21,8 @@ class AudioSequence : public Resource {
 public:
     using Resource::Resource;
 
+    AudioSequence() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
     void* GetPointer();
     size_t GetPointerSize();
 

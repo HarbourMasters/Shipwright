@@ -1220,7 +1220,7 @@ void BossGanon_SetupTowerCutscene(BossGanon* this, PlayState* play) {
 
 void BossGanon_ShatterWindows(u8 windowShatterState) {
     s16 i;
-    u8* templateTex = GetResourceDataByName(SEGMENTED_TO_VIRTUAL(gGanondorfWindowShatterTemplateTex));
+    u8* templateTex = ResourceGetDataByName(SEGMENTED_TO_VIRTUAL(gGanondorfWindowShatterTemplateTex));
 
     for (i = 0; i < ARRAY_COUNT(sWindowShatterTex); i++) {
         if ((sWindowShatterTex[i] != 1) && (Rand_ZeroOne() < 0.03f)) {

@@ -273,7 +273,7 @@ void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 h
     bg->b.imageFlip = 0;
 
     if (ResourceMgr_ResourceIsBackground((char*) source)) {
-        char* blob = (char*) GetResourceDataByName((char *) source);
+        char* blob = (char*) ResourceGetDataByName((char *) source);
         swapAndConvertJPEG(blob);
         bg->b.imagePtr = (uintptr_t) blob;
     }

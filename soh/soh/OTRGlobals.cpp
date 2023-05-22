@@ -792,6 +792,9 @@ extern "C" void DeinitOTR() {
     CrowdControl::Instance->Shutdown();
 #endif
 
+    // Destroying gui here because we have shared ptrs to LUS objects which output to SPDLOG which is destroyed before these shared ptrs.
+    SohGui::Destroy();
+
     OTRGlobals::Instance->context = nullptr;
 }
 
@@ -1287,15 +1290,15 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
 }
 
 extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path) {
-    return (CollisionHeader*) GetResourceDataByName(path);
+    return (CollisionHeader*) ResourceGetDataByName(path);
 }
 
 extern "C" Vtx* ResourceMgr_LoadVtxByName(char* path) {
-    return (Vtx*) GetResourceDataByName(path);
+    return (Vtx*) ResourceGetDataByName(path);
 }
 
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path) {
-    SequenceData* sequence = (SequenceData*) GetResourceDataByName(path);
+    SequenceData* sequence = (SequenceData*) ResourceGetDataByName(path);
     return *sequence;
 }
 
@@ -1360,11 +1363,11 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
 }
 
 extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path) {
-    return (SoundFontSample*) GetResourceDataByName(path);
+    return (SoundFontSample*) ResourceGetDataByName(path);
 }
 
 extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
-    return (SoundFont*) GetResourceDataByName(path);
+    return (SoundFont*) ResourceGetDataByName(path);
 }
 
 extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
@@ -1386,7 +1389,7 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 }
 
 extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
-    return (AnimationHeaderCommon*) GetResourceDataByName(path);
+    return (AnimationHeaderCommon*) ResourceGetDataByName(path);
 }
 
 extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) {
@@ -1403,11 +1406,11 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
         pathStr = LUS::Resource::gAltAssetPrefix + pathStr;
     }
 
-    SkeletonHeader* skelHeader = (SkeletonHeader*) GetResourceDataByName(pathStr.c_str());
+    SkeletonHeader* skelHeader = (SkeletonHeader*) ResourceGetDataByName(pathStr.c_str());
 
     // If there isn't an alternate model, load the regular one
     if (isAlt && skelHeader == NULL) {
-        skelHeader = (SkeletonHeader*) GetResourceDataByName(path);
+        skelHeader = (SkeletonHeader*) ResourceGetDataByName(path);
     }
 
     // This function is only called when a skeleton is initialized.

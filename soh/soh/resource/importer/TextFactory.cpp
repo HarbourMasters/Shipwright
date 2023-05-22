@@ -3,10 +3,9 @@
 #include "spdlog/spdlog.h"
 
 namespace LUS {
-std::shared_ptr<Resource> TextFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
-                                                    std::shared_ptr<ResourceInitData> initData,
-                                                    std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<Text>(resourceMgr, initData);
+std::shared_ptr<Resource>
+TextFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<Text>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
     switch (resource->InitData->ResourceVersion) {
@@ -28,10 +27,9 @@ std::shared_ptr<Resource> TextFactory::ReadResource(std::shared_ptr<ResourceMana
     return resource;
 }
 
-std::shared_ptr<Resource> TextFactory::ReadResourceXML(std::shared_ptr<ResourceManager> resourceMgr,
-                                                       std::shared_ptr<ResourceInitData> initData,
-                                                       tinyxml2::XMLElement* reader) {
-    auto resource = std::make_shared<Text>(resourceMgr, initData);
+std::shared_ptr<Resource>
+TextFactory::ReadResourceXML(std::shared_ptr<ResourceInitData> initData, tinyxml2::XMLElement *reader) {
+    auto resource = std::make_shared<Text>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
     switch (resource->InitData->ResourceVersion) {

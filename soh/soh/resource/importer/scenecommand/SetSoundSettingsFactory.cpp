@@ -3,10 +3,9 @@
 #include "spdlog/spdlog.h"
 
 namespace LUS {
-std::shared_ptr<Resource> SetSoundSettingsFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
-                                                                std::shared_ptr<ResourceInitData> initData,
+std::shared_ptr<Resource> SetSoundSettingsFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
                                                                 std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<SetSoundSettings>(resourceMgr, initData);
+    auto resource = std::make_shared<SetSoundSettings>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
     switch (resource->InitData->ResourceVersion) {

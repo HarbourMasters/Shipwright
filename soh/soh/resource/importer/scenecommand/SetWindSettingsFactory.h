@@ -5,9 +5,8 @@
 namespace LUS {
 class SetWindSettingsFactory : public SceneCommandFactory {
   public:
-    std::shared_ptr<Resource> ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
-                                           std::shared_ptr<ResourceInitData> initData,
-                                           std::shared_ptr<BinaryReader> reader) override;
+    std::shared_ptr<Resource>
+    ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) override;
 };
 
 class SetWindSettingsFactoryV0 : public SceneCommandVersionFactory {

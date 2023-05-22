@@ -18,7 +18,7 @@ void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
 uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
 uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
-size_t GetResourceTexSizeByName(const char* name);
+size_t ResourceGetTexSizeByName(const char* name);
 char* ResourceMgr_LoadTexOrDListByName(char* filePath);
 char* ResourceMgr_LoadIfDListByName(char* filePath);
 char* ResourceMgr_LoadPlayerAnimByName(char* animPath);

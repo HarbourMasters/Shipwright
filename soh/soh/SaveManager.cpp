@@ -825,7 +825,9 @@ void SaveManager::LoadFile(int fileNum) {
 }
 
 void SaveManager::ThreadPoolWait() {
-    smThreadPool->wait_for_tasks();
+    if (smThreadPool) {
+        smThreadPool->wait_for_tasks();
+    }
 }
 
 bool SaveManager::SaveFile_Exist(int fileNum) {

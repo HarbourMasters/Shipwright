@@ -9,9 +9,8 @@
 namespace LUS {
 class SceneFactory : public ResourceFactory {
   public:
-    std::shared_ptr<Resource> ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
-                                           std::shared_ptr<ResourceInitData> initData,
-                                           std::shared_ptr<BinaryReader> reader) override;
+    std::shared_ptr<Resource>
+    ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) override;
 
     // Doing something very similar to what we do on the ResourceLoader.
     // Eventually, scene commands should be moved up to the ResourceLoader as well.

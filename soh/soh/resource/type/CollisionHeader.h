@@ -71,6 +71,8 @@ class CollisionHeader : public Resource {
 public:
     using Resource::Resource;
 
+    CollisionHeader() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
     void* GetPointer();
     size_t GetPointerSize();
 

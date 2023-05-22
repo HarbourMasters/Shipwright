@@ -78,7 +78,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     Play_InitEnvironment(play, play->skyboxId);
     /* auto data = static_cast<LUS::Vertex*>(LUS::Context::GetInstance()
                                                ->GetResourceManager()
-                                               ->LoadResource("object_link_child\\object_link_childVtx_01FE08")
+                                               ->ResourceLoad("object_link_child\\object_link_childVtx_01FE08")
                                                .get());
 
     auto data2 = ResourceMgr_LoadVtxByCRC(0x68d4ea06044e228f);*/

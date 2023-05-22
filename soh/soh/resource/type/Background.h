@@ -7,6 +7,8 @@ class Background : public Resource {
   public:
     using Resource::Resource;
 
+    Background() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
     void* GetPointer();
     size_t GetPointerSize();
 

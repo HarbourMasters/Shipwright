@@ -3,10 +3,9 @@
 #include "spdlog/spdlog.h"
 
 namespace LUS {
-std::shared_ptr<Resource> SetTimeSettingsFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
-                                                               std::shared_ptr<ResourceInitData> initData,
-                                                               std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<SetTimeSettings>(resourceMgr, initData);
+std::shared_ptr<Resource>
+SetTimeSettingsFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<SetTimeSettings>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
     switch (resource->InitData->ResourceVersion) {

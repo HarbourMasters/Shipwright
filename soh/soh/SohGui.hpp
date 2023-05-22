@@ -36,6 +36,7 @@ namespace SohGui {
     void SetupHooks();
     void SetupGuiElements();
     void Draw();
+    void Destroy();
 }
 
 #endif /* SohGui_hpp */

@@ -17,7 +17,9 @@ class Path : public Resource {
 public:
   using Resource::Resource;
 
-  void* GetPointer();
+    Path() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
+    void* GetPointer();
   size_t GetPointerSize();
 
   uint32_t numPaths;

@@ -101,7 +101,9 @@ class SkeletonLimb : public Resource {
 public:
   using Resource::Resource;
 
-  void* GetPointer();
+    SkeletonLimb() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
+    void* GetPointer();
   size_t GetPointerSize();
 
   LimbType limbType;

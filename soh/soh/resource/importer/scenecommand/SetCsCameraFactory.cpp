@@ -3,10 +3,9 @@
 #include "spdlog/spdlog.h"
 
 namespace LUS {
-std::shared_ptr<Resource> SetCsCameraFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
-                                                           std::shared_ptr<ResourceInitData> initData,
-                                                           std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<SetCsCamera>(resourceMgr, initData);
+std::shared_ptr<Resource>
+SetCsCameraFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<SetCsCamera>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
     switch (resource->InitData->ResourceVersion) {
