@@ -12,10 +12,6 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <ImGui/imgui_internal.h>
 #include <libultraship/libultraship.h>
-#include <Hooks.h>
-#include <libultraship/libultra/types.h>
-#include <libultraship/libultra/pi.h>
-#include <libultraship/libultra/sptask.h>
 #include <Fast3D/gfx_pc.h>
 
 #ifdef __APPLE__

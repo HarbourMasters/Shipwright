@@ -45,7 +45,6 @@
 #include "z64.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
-#include <Hooks.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 
 #if not defined (__SWITCH__) && not defined(__WIIU__)

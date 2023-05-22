@@ -9,7 +9,6 @@ extern "C" {
 #include <string>
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
-#include <Hooks.h>
 
 
 extern "C" {

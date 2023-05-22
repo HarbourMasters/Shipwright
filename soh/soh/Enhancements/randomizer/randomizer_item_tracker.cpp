@@ -6,9 +6,8 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
-#include <Hooks.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <algorithm>
 
 extern "C" {
@@ -1087,12 +1086,12 @@ void ItemTrackerWindow::InitElement() {
         itemTrackerNotes.push_back(0);
     }
 
-    LUS::RegisterHook<LUS::LoadFile>([](uint32_t fileNum) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](uint32_t fileNum) {
         const char* initialTrackerNotes = CVarGetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
         itemTrackerNotes.resize(strlen(initialTrackerNotes) + 1);
         strcpy(itemTrackerNotes.Data, initialTrackerNotes);
     });
-    LUS::RegisterHook<LUS::DeleteFile>([](uint32_t fileNum) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteFile>([](uint32_t fileNum) {
         CVarSetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     });

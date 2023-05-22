@@ -6,10 +6,10 @@
 #include <string>
 #include <vector>
 #include <set>
-#include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
-#include <Hooks.h>
 #include "3drando/item_location.hpp"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+
 
 extern "C" {
 #include "variables.h"
@@ -1042,10 +1042,10 @@ void CheckTrackerWindow::InitElement() {
     Color_Saved_Main            = CVarGetColor("gCheckTrackerSavedMainColor",             Color_Main_Default);
     Color_Saved_Extra           = CVarGetColor("gCheckTrackerSavedExtraColor",            Color_Saved_Extra_Default);
 
-    LUS::RegisterHook<LUS::LoadFile>([](uint32_t fileNum) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](uint32_t fileNum) {
         doInitialize = true;
     });
-    LUS::RegisterHook<LUS::DeleteFile>([](uint32_t fileNum) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteFile>([](uint32_t fileNum) {
         Teardown();
     });
     LocationTable_Init();

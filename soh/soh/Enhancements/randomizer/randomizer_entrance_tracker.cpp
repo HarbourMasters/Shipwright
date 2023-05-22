@@ -5,9 +5,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
-#include <Hooks.h>
 
 extern "C" {
 #include <z64.h>
