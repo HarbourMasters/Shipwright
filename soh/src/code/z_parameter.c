@@ -7,6 +7,7 @@
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "libultraship/bridge.h"
+#include "soh/Enhancements/gameplaystats.h"
 #include "soh/Enhancements/bossrush.h"
 
 #ifdef _MSC_VER
@@ -5958,51 +5959,9 @@ void Interface_Draw(PlayState* play) {
 
 void Interface_DrawTotalGameplayTimer(PlayState* play) {
     // Draw timer based on the Gameplay Stats total time.
-    if (gSaveContext.isBossRush &&
-        gSaveContext.bossRushSelectedOptions[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) {
-        s32 totalTimer = GAMEPLAYSTAT_TOTAL_TIME;
-        s32 gameplayTimer[7];
-        s32 sec = totalTimer / 10;
-        s32 hh = sec / 3600;
-        s32 mm = (sec - (hh * 3600)) / 60;
-        s32 ss = sec - (hh * 3600) - (mm * 60);
-        s32 ds = totalTimer % 10;
 
-        // Hours
-        if (hh >= 10) {
-            gameplayTimer[0] = hh;
-            while (gameplayTimer[0] >= 10) {
-                gameplayTimer[0] = gameplayTimer[0] / 10;
-            }
-        } else {
-            gameplayTimer[0] = 0;
-        }
-        gameplayTimer[1] = hh % 10;
-
-        // Minutes
-        if (mm >= 10) {
-            gameplayTimer[2] = mm;
-            while (gameplayTimer[2] >= 10) {
-                gameplayTimer[2] = gameplayTimer[2] / 10;
-            }
-        } else {
-            gameplayTimer[2] = 0;
-        }
-        gameplayTimer[3] = mm % 10;
-
-        // Seconds
-        if (ss >= 10) {
-            gameplayTimer[4] = ss;
-            while (gameplayTimer[4] >= 10) {
-                gameplayTimer[4] = gameplayTimer[4] / 10;
-            }
-        } else {
-            gameplayTimer[4] = 0;
-        }
-        gameplayTimer[5] = ss % 10;
-
-        // Deciseconds
-        gameplayTimer[6] = ds;
+    if ((gSaveContext.isBossRush && gSaveContext.bossRushSelectedOptions[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) ||
+        CVarGetInteger("gGameplayStats.ShowIngameTimer", 0)) {
 
         s32 X_Margins_Timer = 0;
         if (CVarGetInteger("gIGTUseMargins", 0) != 0) {
@@ -6047,55 +6006,41 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
                             G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE,
                         G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
 
-        for (s8 i = 0; i <= 9; i++) {
+        char* totalTimeText = GameplayStats_GetCurrentTime();
+        char* textPointer = &totalTimeText[0];
+        uint8_t textLength = strlen(textPointer);
+        uint16_t textureIndex = 0;
+
+        for (uint16_t i = 0; i < textLength; i++) {
+            if (totalTimeText[i] == ':' || totalTimeText[i] == '.') {
+                textureIndex = 10;
+            } else {
+                textureIndex = totalTimeText[i] - 48;
+            }
+
             rectLeft = rectLeftOri + (i * 8);
             rectTop = rectTopOri;
             rectHeight = rectHeightOri;
 
-            if (i == 2 || i == 5 || i == 8) {
-                gDPLoadTextureBlock(OVERLAY_DISP++, ((u8*)digitTextures[10]), G_IM_FMT_I, G_IM_SIZ_8b, rectWidth,
-                                    rectHeight, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                                    G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            } else {
-                // Grab right timer number index.
-                s8 timerIndex = i;
-                switch (i) {
-                    case 3:
-                    case 4:
-                        timerIndex -= 1;
-                        break;
-                    case 6:
-                    case 7:
-                        timerIndex -= 2;
-                        break;
-                    case 9:
-                        timerIndex -= 3;
-                        break;
-                    default:
-                        break;
-                }
-                gDPLoadTextureBlock(OVERLAY_DISP++, ((u8*)digitTextures[gameplayTimer[timerIndex]]), G_IM_FMT_I,
-                                    G_IM_SIZ_8b, rectWidth, rectHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            }
-
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 0, 0, 255);
-
-            gDPSetEnvColor(OVERLAY_DISP++, 255, 255, 255, 255);
+            // Load correct digit (or : symbol)
+            gDPLoadTextureBlock(OVERLAY_DISP++, ((u8*)digitTextures[textureIndex]), G_IM_FMT_I, G_IM_SIZ_8b, rectWidth,
+                                rectHeight, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
             // Create dot image from the colon image.
-            if (i == 8) {
+            if (totalTimeText[i] == '.') {
                 rectHeight = rectHeight / 2;
                 rectTop += 5;
                 rectLeft -= 1;
             }
 
+            // Draw text shadow
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 0, 0, 255);
+            gDPSetEnvColor(OVERLAY_DISP++, 255, 255, 255, 255);
             gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2,
                                     (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
-            rectLeft -= 1;
-            rectTop -= 1;
-
+            // Draw regular text. Change color based on if the timer is paused, running or the game is completed.
             if (gSaveContext.sohStats.gameComplete) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, 255);
             } else if (gSaveContext.isBossRushPaused) {
@@ -6103,6 +6048,10 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
             } else {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
             }
+
+            // Offset text so underlaying shadow is to the bottom right of the text.
+            rectLeft -= 1;
+            rectTop -= 1;
 
             gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2,
                                     (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);

@@ -6,6 +6,10 @@
 #include <string>
 #include <vector>
 
+extern "C" {
+uint64_t GetUnixTimestamp();
+}
+
 typedef struct BossRushSetting {
     std::vector<std::string> name;
     std::vector<std::vector<std::string>> choices;

@@ -273,6 +273,14 @@ std::string formatHexOnlyGameplayStat(uint32_t value) {
     return fmt::format("{:#x}", value, value);
 }
 
+extern "C" char* GameplayStats_GetCurrentTime() {
+    std::string timeString = formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME).c_str();
+    const int length = timeString.length();
+    char* timeChar = new char[length + 1];
+    strcpy(timeChar, timeString.c_str());
+    return timeChar;
+}
+
 void GameplayStatsRow(const char* label, std::string value, ImVec4 color = COLOR_WHITE) {
     ImGui::PushStyleColor(ImGuiCol_Text, color);
     ImGui::TableNextRow();
@@ -497,18 +505,20 @@ void DrawGameplayStatsBreakdownTab() {
 }
 
 void DrawGameplayStatsOptionsTab() {
-    UIWidgets::PaddedEnhancementCheckbox("Show latest timestamps on top", "gGameplayStats.TimestampsReverse");
-    UIWidgets::PaddedEnhancementCheckbox("Room Breakdown", "gGameplayStats.RoomBreakdown");
+    UIWidgets::PaddedEnhancementCheckbox("Show in-game total timer", "gGameplayStats.ShowIngameTimer", true, false);
+    UIWidgets::InsertHelpHoverText("Keep track of the timer as an in-game HUD element. The position of the timer can be changed in the Cosmetics Editor.");
+    UIWidgets::PaddedEnhancementCheckbox("Show latest timestamps on top", "gGameplayStats.TimestampsReverse", true, false);
+    UIWidgets::PaddedEnhancementCheckbox("Room Breakdown", "gGameplayStats.RoomBreakdown", true, false);
     ImGui::SameLine();
     UIWidgets::InsertHelpHoverText("Allows a more in-depth perspective of time spent in a certain map.");   
-    UIWidgets::PaddedEnhancementCheckbox("RTA Timing on new files", "gGameplayStats.RTATiming");
+    UIWidgets::PaddedEnhancementCheckbox("RTA Timing on new files", "gGameplayStats.RTATiming", true, false);
     ImGui::SameLine();
     UIWidgets::InsertHelpHoverText(
         "Timestamps are relative to starting timestamp rather than in game time, usually necessary for races/speedruns.\n\n"
         "Starting timestamp is on first non-c-up input after intro cutscene.\n\n"
         "NOTE: THIS NEEDS TO BE SET BEFORE CREATING A FILE TO TAKE EFFECT"
     );   
-    UIWidgets::PaddedEnhancementCheckbox("Show additional detail timers", "gGameplayStats.ShowAdditionalTimers");
+    UIWidgets::PaddedEnhancementCheckbox("Show additional detail timers", "gGameplayStats.ShowAdditionalTimers", true, false);
     UIWidgets::PaddedEnhancementCheckbox("Show Debug Info", "gGameplayStats.ShowDebugInfo");
 }
 
