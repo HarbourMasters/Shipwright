@@ -781,7 +781,12 @@ extern "C" void InitOTR() {
 #endif
 }
 
+extern "C" void SaveManager_ThreadPoolWait() {
+    SaveManager::Instance->ThreadPoolWait();
+}
+
 extern "C" void DeinitOTR() {
+    SaveManager_ThreadPoolWait();
     OTRAudio_Exit();
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance->Disable();
@@ -789,7 +794,6 @@ extern "C" void DeinitOTR() {
 #endif
 
     OTRGlobals::Instance->context = nullptr;
-    int bp = 0;
 }
 
 #ifdef _WIN32
@@ -1990,8 +1994,4 @@ extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
 
 extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement) {
     gfx_register_blended_texture(name, mask, replacement);
-}
-
-extern "C" void SaveManager_ThreadPoolWait() {
-    SaveManager::Instance->ThreadPoolWait();
 }
