@@ -21,7 +21,8 @@ typedef enum {
 typedef enum {
     BR_CHOICE_BOSSES_ALL,
     BR_CHOICE_BOSSES_CHILD,
-    BR_CHOICE_BOSSES_ADULT
+    BR_CHOICE_BOSSES_ADULT,
+    BR_CHOICE_BOSSES_GANONDORF_GANON
 } BossRushBossesChoices;
 
 typedef enum {

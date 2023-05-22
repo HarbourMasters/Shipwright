@@ -710,17 +710,17 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
             // If exceeding the amount of choices for the selected option, cycle back to the first.
-            if ((gSaveContext.bossRushSelectedOptions[this->bossRushIndex] + 1) == BossRush_GetSettingOptionsAmount(this->bossRushIndex)) {
-                gSaveContext.bossRushSelectedOptions[this->bossRushIndex] = 0;
+            if ((gSaveContext.bossRushOptions[this->bossRushIndex] + 1) == BossRush_GetSettingOptionsAmount(this->bossRushIndex)) {
+                gSaveContext.bossRushOptions[this->bossRushIndex] = 0;
             } else {
-                gSaveContext.bossRushSelectedOptions[this->bossRushIndex]++;
+                gSaveContext.bossRushOptions[this->bossRushIndex]++;
             }
         } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
             // If cycling back when already at the first choice for the selected option, cycle back to the last choice.
-            if ((gSaveContext.bossRushSelectedOptions[this->bossRushIndex] - 1) < 0) {
-                gSaveContext.bossRushSelectedOptions[this->bossRushIndex] = BossRush_GetSettingOptionsAmount(this->bossRushIndex) - 1;
+            if ((gSaveContext.bossRushOptions[this->bossRushIndex] - 1) < 0) {
+                gSaveContext.bossRushOptions[this->bossRushIndex] = BossRush_GetSettingOptionsAmount(this->bossRushIndex) - 1;
             } else {
-                gSaveContext.bossRushSelectedOptions[this->bossRushIndex]--;
+                gSaveContext.bossRushOptions[this->bossRushIndex]--;
             }
         }
 
@@ -1471,7 +1471,7 @@ const char* FileChoose_GetQuestChooseTitleTexName(Language lang) {
     }
 }
 
-const char* FileChoose_GetbossRushSelectedOptionsTitleTexName(Language lang) {
+const char* FileChoose_GetbossRushOptionsTitleTexName(Language lang) {
     switch (lang) {
         case LANGUAGE_ENG:
         default:
@@ -1509,7 +1509,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         case CM_BOSS_RUSH_MENU:
         case CM_START_BOSS_RUSH_MENU:
         case CM_BOSS_RUSH_TO_QUEST:
-            tex = FileChoose_GetbossRushSelectedOptionsTitleTexName(gSaveContext.language);
+            tex = FileChoose_GetbossRushOptionsTitleTexName(gSaveContext.language);
             break;
         default:
             tex = sTitleLabels[gSaveContext.language][this->titleLabel];
@@ -1631,7 +1631,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 65, (87 + textYOffset), 255, 255, 80, textAlpha, 0.8f, true);
 
             // Selected choice for option.
-            uint16_t finalKerning = Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, gSaveContext.bossRushSelectedOptions[i], gSaveContext.language), 
+            uint16_t finalKerning = Interface_DrawTextLine(this->state.gfxCtx, BossRush_GetSettingChoiceName(i, gSaveContext.bossRushOptions[i], gSaveContext.language), 
                 165, (87 + textYOffset), 255, 255, 255, textAlpha, 0.8f, true);
 
             // Draw arrows around selected option.

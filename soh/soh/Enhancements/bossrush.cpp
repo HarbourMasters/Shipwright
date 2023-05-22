@@ -21,7 +21,8 @@ BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = {
         {
             { "All", "Alle", "Tous" },
             { "Child", "Kind", "Enfant" },
-            { "Adult", "Erwachsener", "Adulte" }
+            { "Adult", "Erwachsener", "Adulte" },
+            { "Ganondorf & Ganon", "Ganondorf & Ganon", "Ganondorf & Ganon" }
         }
     },
     {
@@ -199,10 +200,10 @@ extern "C" void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpP
             gSaveContext.linkAge = LINK_AGE_ADULT;
 
             // Change to Adult Link.
-            if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ALL) {
+            if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ALL) {
                 BossRush_SetEquipment(LINK_AGE_ADULT);
             // Warp to credits.
-            } else if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) {
+            } else if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) {
                 play->nextEntranceIndex = 0x6B;
                 gSaveContext.nextCutsceneIndex = 0xFFF2;
                 play->sceneLoadFlag = 0x14;
@@ -244,11 +245,11 @@ extern "C" void BossRush_HandleCompleteBoss(PlayState* play) {
     }
 
     // Fully heal the player
-    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS) {
+    if (gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS) {
         Health_ChangeBy(play, 320);
     }
 
-    if ((CheckDungeonCount() == 3 && gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) ||
+    if ((CheckDungeonCount() == 3 && gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) ||
         play->sceneNum == SCENE_GANON_FINAL) {
         gSaveContext.sohStats.gameComplete = 1;
         gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_FINISH] = GAMEPLAYSTAT_TOTAL_TIME;
@@ -269,7 +270,7 @@ extern "C" void BossRush_InitSave() {
     gSaveContext.isMagicAcquired = 1;
 
     // Set magic
-    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_MAGIC] == BR_CHOICE_MAGIC_SINGLE) {
+    if (gSaveContext.bossRushOptions[BR_OPTIONS_MAGIC] == BR_CHOICE_MAGIC_SINGLE) {
         gSaveContext.magicLevel = 1;
         gSaveContext.magic = 48;
     } else {
@@ -280,7 +281,7 @@ extern "C" void BossRush_InitSave() {
 
     // Set health
     uint16_t health = 16;
-    switch (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_HEARTS]) { 
+    switch (gSaveContext.bossRushOptions[BR_OPTIONS_HEARTS]) { 
         case BR_CHOICE_HEARTS_7:
             health *= 7;
             break;
@@ -329,11 +330,11 @@ extern "C" void BossRush_InitSave() {
         ITEM_NONE,      ITEM_NONE, ITEM_NONE, ITEM_NONE,     ITEM_NONE,        ITEM_NONE,
     };
 
-    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_LONGSHOT] == BR_CHOICE_LONGSHOT_YES) {
+    if (gSaveContext.bossRushOptions[BR_OPTIONS_LONGSHOT] == BR_CHOICE_LONGSHOT_YES) {
         brItems[9] = ITEM_LONGSHOT;
     }
 
-    switch (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOTTLE]) {
+    switch (gSaveContext.bossRushOptions[BR_OPTIONS_BOTTLE]) {
         case BR_CHOICE_BOTTLE_EMPTY:
             brItems[18] = ITEM_BOTTLE;
             break;
@@ -360,9 +361,9 @@ extern "C" void BossRush_InitSave() {
     // Set consumable counts
     static std::array<s8, 16> brAmmo = { 5, 5, 10, 10, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_FULL) {
+    if (gSaveContext.bossRushOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_FULL) {
         brAmmo = { 10, 20, 20, 30, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    } else if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
+    } else if (gSaveContext.bossRushOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
         brAmmo = { 30, 40, 40, 50, 0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     }
 
@@ -376,13 +377,13 @@ extern "C" void BossRush_InitSave() {
     gSaveContext.inventory.equipment |= 1 << 4; // Deku Shield
     gSaveContext.inventory.equipment |= 1 << 6; // Mirror Shield
     gSaveContext.inventory.equipment |= 1 << 9; // Goron Tunic
-    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_HOVERBOOTS] == BR_CHOICE_HOVERBOOTS_YES) {
+    if (gSaveContext.bossRushOptions[BR_OPTIONS_HOVERBOOTS] == BR_CHOICE_HOVERBOOTS_YES) {
         gSaveContext.inventory.equipment |= 1 << 14; // Hover Boots
     }
 
     // Upgrades
     uint8_t upgradeLevel = 1;
-    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
+    if (gSaveContext.bossRushOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_MAXED) {
         upgradeLevel = 3;
     }
     Inventory_ChangeUpgrade(UPG_QUIVER, upgradeLevel);
@@ -391,11 +392,19 @@ extern "C" void BossRush_InitSave() {
     Inventory_ChangeUpgrade(UPG_STICKS, upgradeLevel);
     Inventory_ChangeUpgrade(UPG_NUTS, upgradeLevel);
 
-    // Check off child dungeons when starting as adult.
-    if (gSaveContext.bossRushSelectedOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ADULT) {
+    // Set flags and Link's age based on chosen settings.
+    if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ADULT ||
+        gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_GANONDORF_GANON) {
         Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE);
         Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN);
         Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY);
+        if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_GANONDORF_GANON) {
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE);
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE);
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE);
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
+            Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
+        }
         gSaveContext.linkAge = LINK_AGE_ADULT;
         BossRush_SetEquipment(LINK_AGE_ADULT);
     } else {
@@ -409,7 +418,7 @@ void BossRush_SetEquipment(uint8_t linkAge) {
     static std::array<u8, 8> brButtonItems;
     static std::array<u8, 7> brCButtonSlots;
 
-    // Set Child Equipment. Used on save init.
+    // Set Child Equipment.
     if (linkAge == LINK_AGE_CHILD) {
         brButtonItems = {
             ITEM_SWORD_KOKIRI, ITEM_STICK, ITEM_NUT, ITEM_BOMB, ITEM_NONE, ITEM_NONE, ITEM_NONE, ITEM_NONE
@@ -419,7 +428,7 @@ void BossRush_SetEquipment(uint8_t linkAge) {
 
         Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
         Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_DEKU);
-        // Set Adult equipment. Used when first 3 bosses are defeated and the player is set to adult.
+    // Set Adult equipment.
     } else {
         brButtonItems = { ITEM_SWORD_MASTER, ITEM_BOW,  ITEM_HAMMER, ITEM_BOMB,
                           ITEM_NONE,         ITEM_NONE, ITEM_NONE,   ITEM_NONE };

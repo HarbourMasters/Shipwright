@@ -425,7 +425,7 @@ void RegisterHyperBosses() {
         uint8_t hyperBossesActive =
             CVarGetInteger("gHyperBosses", 0) ||
             (gSaveContext.isBossRush &&
-             gSaveContext.bossRushSelectedOptions[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
+             gSaveContext.bossRushOptions[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
 
         // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
         if (hyperBossesActive && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {

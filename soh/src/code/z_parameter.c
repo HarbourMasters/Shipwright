@@ -5960,8 +5960,8 @@ void Interface_Draw(PlayState* play) {
 void Interface_DrawTotalGameplayTimer(PlayState* play) {
     // Draw timer based on the Gameplay Stats total time.
 
-    if ((gSaveContext.isBossRush && gSaveContext.bossRushSelectedOptions[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) ||
-        CVarGetInteger("gGameplayStats.ShowIngameTimer", 0)) {
+    if ((gSaveContext.isBossRush && gSaveContext.bossRushOptions[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) ||
+        (CVarGetInteger("gGameplayStats.ShowIngameTimer", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2)) {
 
         s32 X_Margins_Timer = 0;
         if (CVarGetInteger("gIGTUseMargins", 0) != 0) {

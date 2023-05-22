@@ -275,8 +275,8 @@ std::string formatHexOnlyGameplayStat(uint32_t value) {
 
 extern "C" char* GameplayStats_GetCurrentTime() {
     std::string timeString = formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME).c_str();
-    const int length = timeString.length();
-    char* timeChar = new char[length + 1];
+    const int stringLength = timeString.length();
+    char* timeChar = new char[stringLength + 1];
     strcpy(timeChar, timeString.c_str());
     return timeChar;
 }
