@@ -2,7 +2,7 @@
 
 #include "variables.h"
 
-#define BOSSRUSH_OPTIONS_AMOUNT 10
+#define BOSSRUSH_OPTIONS_AMOUNT 11
 #define BOSSRUSH_MAX_OPTIONS_ON_SCREEN 6
 
 typedef enum {
@@ -12,6 +12,7 @@ typedef enum {
     BR_OPTIONS_HEAL,
     BR_OPTIONS_HYPERBOSSES,
     BR_OPTIONS_MAGIC,
+    BR_OPTIONS_BGS,
     BR_OPTIONS_BOTTLE,
     BR_OPTIONS_LONGSHOT,
     BR_OPTIONS_HOVERBOOTS,
@@ -55,6 +56,11 @@ typedef enum {
     BR_CHOICE_MAGIC_SINGLE,
     BR_CHOICE_MAGIC_DOUBLE
 } BossRushMagicChoices;
+
+typedef enum {
+    BR_CHOICE_BGS_NO,
+    BR_CHOICE_BGS_YES
+} BossRushBgsChoices;
 
 typedef enum {
     BR_CHOICE_BOTTLE_NO,

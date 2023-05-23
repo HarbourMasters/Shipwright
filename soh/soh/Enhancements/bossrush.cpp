@@ -67,6 +67,13 @@ BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = {
         }
     },
     {
+        { "BIG. SWORD:", "BIG.-SCHWERT:", "EPÉE DE BIG.:" },
+        {
+            { "No", "Nein", "Non" },
+            { "Yes", "Ja", "Oui" }
+        }
+    },
+    {
         { "BOTTLE:", "FLASCHEN:", "BOUTEILLE:" },
         {
             { "No", "Nein", "Non" },
@@ -377,6 +384,10 @@ extern "C" void BossRush_InitSave() {
     gSaveContext.inventory.equipment |= 1 << 4; // Deku Shield
     gSaveContext.inventory.equipment |= 1 << 6; // Mirror Shield
     gSaveContext.inventory.equipment |= 1 << 9; // Goron Tunic
+    if (gSaveContext.bossRushOptions[BR_OPTIONS_BGS] == BR_CHOICE_BGS_YES) {
+        gSaveContext.inventory.equipment |= 1 << 2; // Biggoron Sword
+        gSaveContext.bgsFlag = 1;
+    }
     if (gSaveContext.bossRushOptions[BR_OPTIONS_HOVERBOOTS] == BR_CHOICE_HOVERBOOTS_YES) {
         gSaveContext.inventory.equipment |= 1 << 14; // Hover Boots
     }
