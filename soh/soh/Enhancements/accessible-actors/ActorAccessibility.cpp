@@ -7,6 +7,7 @@ typedef struct {
     s16 sound;//The ID of a sound to play. Ignored if the callback is set.
 
     int n; // How often to run the callback in frames.
+    float distance;//Maximum distance from player before the actor should be considered out of range.
 
 }ActorAccessibilityPolicy;
 
@@ -16,19 +17,21 @@ typedef std::map<Actor*, AccessibleActorState> TrackedActors_t;
 SupportedActors_t SupportedActors;
 TrackedActors_t TrackedActors;
 
-void ActorAccessibility_AddSupportedActor(s16 type, ActorAccessibilityCallback callback, int frames = 20) {
+void ActorAccessibility_AddSupportedActor(s16 type, ActorAccessibilityCallback callback, int frames = 20, float distance = 500) {
     ActorAccessibilityPolicy policy;
     policy.callback = callback;
     policy.n = frames;
+    policy.distance = distance;
 
     SupportedActors[type] = policy;
 
 }
-void ActorAccessibility_AddSupportedActor(s16 type, s16 sound, int frames = 20) {
+void ActorAccessibility_AddSupportedActor(s16 type, s16 sound, int frames = 20, float distance = 500) {
     ActorAccessibilityPolicy policy;
     policy.sound = sound;
     policy.n = frames;
     policy.callback = NULL;
+    policy.distance = distance;
 
     SupportedActors[type] = policy;
 }
@@ -76,6 +79,9 @@ ActorAccessibilityPolicy* ActorAccessibility_GetPolicyForActor(s16 type) {
         if (state->frameCount > 0)
             return;
         state->frameCount = policy->n;
+        //if(distance < policy->distance)
+        //return;
+
         if (policy->callback != NULL)
             policy->callback(actor, state);
         else
