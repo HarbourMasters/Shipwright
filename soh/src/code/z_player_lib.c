@@ -213,7 +213,7 @@ Gfx* D_80125EC8[] = {
 Gfx* D_80125ED8[] = {
     gLinkAdultRightHandHoldingHookshotNearDL,
     gLinkChildRightHandNearDL,
-    gLinkAdultRightHandHoldingHookshotNearDL, // The 'far' display list exists but is not used
+    gLinkAdultRightHandHoldingHookshotNearDL, // Despite there being a 'far' displayList named, it's actually the FPS model. Why? No clue. -Moriya
     gLinkChildRightHandFarDL,
 };
 
@@ -1128,7 +1128,7 @@ s32 func_800902F0(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
                     firstPersonWeaponIndex = 1;
                 }
             }
-            *dList = Player_HoldsHookshot(this) ? gLinkAdultRightHandHoldingHookshotFarDL
+            *dList = Player_HoldsHookshot(this) ? gLinkAdultRightHandHoldingHookshotFarDL //despite the name, this is the FPS hookshot
                                                 : sHoldingFirstPersonWeaponDLs[firstPersonWeaponIndex];
         } else {
             *dList = NULL;
