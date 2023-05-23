@@ -85,10 +85,10 @@ extern "C"
 	extern s16 gSpoilingItemReverts[3];
 	extern FlexSkeletonHeader* gPlayerSkelHeaders[2];
 	extern u8 gPlayerModelTypes[][5];
-	extern Gfx* D_80125DE8[];
-	extern Gfx* D_80125E08[];
-	extern Gfx* D_80125E18[];
-	extern Gfx* D_80125EF8[];
+	extern Gfx* sLeftHandWithTwoHandedSwordDLs[];
+	extern Gfx* sLeftHandDLs[];
+	extern Gfx* sLeftFistDLs[];
+	extern Gfx* sLeftHandWithBoomerangDLs[];
 	extern Gfx gCullBackDList[];
 	extern Gfx gCullFrontDList[];
 	extern Gfx gEmptyDL[];
