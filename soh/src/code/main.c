@@ -10,7 +10,7 @@
 
 #include <libultraship/bridge.h>
 #include "soh/CrashHandlerExp.h"
-
+#include <soh/Enhancements/accessible-actors/ActorAccessibility.h>
 s32 gScreenWidth = SCREEN_WIDTH;
 s32 gScreenHeight = SCREEN_HEIGHT;
 size_t gSystemHeapSize = 0;
@@ -64,6 +64,8 @@ int main(int argc, char** argv)
     // TODO: Was moved to below InitOTR because it requires window to be setup. But will be late to catch crashes.
     CrashHandlerRegisterCallback(CrashHandler_PrintSohData);
     BootCommands_Init();
+    ActorAccessibility_Init();
+
 
     Main(0);
     DeinitOTR();

@@ -75,7 +75,7 @@
 #include "textures/place_title_cards/g_pn_56.h"
 #include "textures/place_title_cards/g_pn_57.h"
 #endif
-
+#include <soh/Enhancements/accessible-actors/ActorAccessibility.h>
 static CollisionPoly* sCurCeilingPoly;
 static s32 sCurCeilingBgId;
 
@@ -2622,6 +2622,8 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
     func_8002C7BC(&actorCtx->targetCtx, player, actor, play);
     TitleCard_Update(play, &actorCtx->titleCtx);
     DynaPoly_UpdateBgActorTransforms(play, &play->colCtx.dyna);
+    ActorAccessibility_RunAccessibilityForAllActors();
+
 }
 
 void Actor_FaultPrint(Actor* actor, char* command) {
@@ -3309,6 +3311,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     temp = gSegments[6];
     Actor_Init(actor, play);
     gSegments[6] = temp;
+    ActorAccessibility_TrackNewActor(actor);
 
     return actor;
 }
@@ -3427,7 +3430,9 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
         Actor_FreeOverlay(overlayEntry);
     //}
 
-    return newHead;
+ActorAccessibility_RemoveTrackedActor(actor);
+
+        return newHead;
 }
 
 s32 func_80032880(PlayState* play, Actor* actor) {
