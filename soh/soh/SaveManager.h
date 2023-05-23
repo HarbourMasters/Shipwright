@@ -52,7 +52,7 @@ public:
 
     void Init();
     void InitFile(bool isDebug);
-    void SaveFile(int fileNum);
+    void SaveFile(int fileNum, bool threaded);
     void SaveGlobal();
     void LoadFile(int fileNum);
     bool SaveFile_Exist(int fileNum);

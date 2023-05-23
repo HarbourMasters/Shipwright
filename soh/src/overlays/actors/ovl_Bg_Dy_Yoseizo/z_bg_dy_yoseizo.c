@@ -109,7 +109,9 @@ void BgDyYoseizo_Init(Actor* thisx, PlayState* play2) {
     this->actionFunc = BgDyYoseizo_CheckMagicAcquired;
 }
 
-void BgDyYoseizo_Destroy(Actor* this, PlayState* play) {
+void BgDyYoseizo_Destroy(Actor* thisx, PlayState* play) {
+    BgDyYoseizo* this = (BgDyYoseizo*)thisx;
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 static Color_RGB8 sParticlePrimColors[] = {

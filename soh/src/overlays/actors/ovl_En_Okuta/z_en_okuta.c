@@ -163,6 +163,10 @@ void EnOkuta_Destroy(Actor* thisx, PlayState* play) {
     EnOkuta* this = (EnOkuta*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    if (thisx->params == 0) {
+        ResourceMgr_UnregisterSkeleton(&this->skelAnime);
+    }
 }
 
 void EnOkuta_SpawnBubbles(EnOkuta* this, PlayState* play) {
