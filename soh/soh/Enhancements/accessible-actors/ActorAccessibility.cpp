@@ -4,7 +4,9 @@ typedef void (*ActorAccessibilityCallback)(Actor*, AccessibleActorState*);
 
 typedef struct {
     ActorAccessibilityCallback callback;//If set, it will be called once every n frames. If null, then sfx will be played once every n frames.
-    int n;//How often to run the callback in frames.
+    s16 sound;//The ID of a sound to play. Ignored if the callback is set.
+
+    int n; // How often to run the callback in frames.
 
 }ActorAccessibilityPolicy;
 
@@ -14,7 +16,7 @@ typedef std::map<Actor*, AccessibleActorState> TrackedActors_t;
 SupportedActors_t SupportedActors;
 TrackedActors_t TrackedActors;
 
-void ActorAccessibility_AddSupportedActor(s16 type, ActorAccessibilityCallback callback, int frames = 25) {
+void ActorAccessibility_AddSupportedActor(s16 type, ActorAccessibilityCallback callback, int frames = 20) {
     ActorAccessibilityPolicy policy;
     policy.callback = callback;
     policy.n = frames;
@@ -22,7 +24,16 @@ void ActorAccessibility_AddSupportedActor(s16 type, ActorAccessibilityCallback c
     SupportedActors[type] = policy;
 
 }
- ActorAccessibilityPolicy* ActorAccessibility_GetPolicyForActor(s16 type) {
+void ActorAccessibility_AddSupportedActor(s16 type, s16 sound, int frames = 20) {
+    ActorAccessibilityPolicy policy;
+    policy.sound = sound;
+    policy.n = frames;
+    policy.callback = NULL;
+
+    SupportedActors[type] = policy;
+}
+
+ActorAccessibilityPolicy* ActorAccessibility_GetPolicyForActor(s16 type) {
     SupportedActors_t::iterator i = SupportedActors.find(type);
      if (i == SupportedActors.end())
          return NULL;
@@ -67,6 +78,8 @@ void ActorAccessibility_AddSupportedActor(s16 type, ActorAccessibilityCallback c
         state->frameCount = policy->n;
         if (policy->callback != NULL)
             policy->callback(actor, state);
+        else
+            actor->sfx = policy->sound;
 
     }
     void ActorAccessibility_RunAccessibilityForAllActors() {
@@ -81,5 +94,5 @@ void ActorAccessibility_AddSupportedActor(s16 type, ActorAccessibilityCallback c
     }
 
     void ActorAccessibility_Init() {
-        ActorAccessibility_AddSupportedActor(ACTOR_EN_ISHI, accessible_en_ishi);
+        ActorAccessibility_AddSupportedActor(ACTOR_EN_ISHI, NA_SE_EN_OCTAROCK_ROCK);
     }
