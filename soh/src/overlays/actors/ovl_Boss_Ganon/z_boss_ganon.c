@@ -1279,19 +1279,16 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
             this->actor.shape.yOffset = -7000.0f;
 
             this->actor.shape.rot.y = 0;
-            // In rando, skip Ganondorf dying and go straight to next scene.
-            // Commented out for potential future use.
+            // Skip Ganondorf dying and go straight to next scene.
             // The cutscene skip met a mixed reaction, so until we figure out a better way of doing it,
-            // it will stay not-skipped.
-            /*if (!gSaveContext.n64ddFlag && !gSaveContext.isBossRush) {
+            // it will stay not-skipped outside of Boss Rush (originally implemented for randomizer).
+            if (!gSaveContext.isBossRush) {
                 this->csState = 1;
                 this->csTimer = 0;
             } else {
                 this->csState = 9;
                 this->csTimer = 170;
-            }*/
-            this->csState = 1;
-            this->csTimer = 0;
+            }
             this->useOpenHand = true;
             // fallthrough
         case 1:
