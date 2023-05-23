@@ -1013,14 +1013,14 @@ namespace GameMenuBar {
                 LUS::RequestCvarSaveOnNextTick();
                 LUS::EnableWindow("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0));
             }
-            if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                if (CVarGetInteger("gGameplayStatsEnabled", 0)) {
-                    CVarClear("gGameplayStatsEnabled");
+            if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVarGetInteger("gGameplayStats.Enabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                if (CVarGetInteger("gGameplayStats.Enabled", 0)) {
+                    CVarClear("gGameplayStats.Enabled");
                 } else {
-                    CVarSetInteger("gGameplayStatsEnabled", 1);
+                    CVarSetInteger("gGameplayStats.Enabled", 1);
                 }
                 LUS::RequestCvarSaveOnNextTick();
-                LUS::EnableWindow("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0));
+                LUS::EnableWindow("Gameplay Stats", CVarGetInteger("gGameplayStats.Enabled", 0));
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);

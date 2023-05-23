@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <filesystem>
 #include <fstream>
+#include <chrono>
 
 #include <ResourceManager.h>
 #include <File.h>
@@ -826,6 +827,14 @@ extern "C" uint64_t GetPerfCounter() {
     return monotime.tv_sec * 1000 + remainingMs;
 }
 #endif
+
+extern "C" uint64_t GetUnixTimestamp() {
+    auto time = std::chrono::system_clock::now();
+    auto since_epoch = time.time_since_epoch();
+    auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(since_epoch);
+    long now = millis.count();
+    return now;
+}
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
