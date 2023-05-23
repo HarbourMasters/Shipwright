@@ -166,6 +166,8 @@ void EnHeishi2_Destroy(Actor* thisx, PlayState* play) {
     if ((this->collider.dim.radius != 0) || (this->collider.dim.height != 0)) {
         Collider_DestroyCylinder(play, &this->collider);
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnHeishi2_DoNothing1(EnHeishi2* this, PlayState* play) {

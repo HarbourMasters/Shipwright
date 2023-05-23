@@ -177,6 +177,8 @@ void EnDha_Destroy(Actor* thisx, PlayState* play) {
     EnDha* this = (EnDha*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDha_SetupWait(EnDha* this) {

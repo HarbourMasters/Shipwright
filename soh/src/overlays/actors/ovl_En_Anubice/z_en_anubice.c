@@ -167,6 +167,8 @@ void EnAnubice_Destroy(Actor* thisx, PlayState* play) {
             tag->anubis = NULL;
         }
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnAnubice_FindFlameCircles(EnAnubice* this, PlayState* play) {

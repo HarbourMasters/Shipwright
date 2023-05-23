@@ -240,6 +240,9 @@ void EnOwl_Destroy(Actor* thisx, PlayState* play) {
     EnOwl* this = (EnOwl*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime2);
 }
 
 /**
