@@ -1,39 +1,36 @@
 #include "ActorAccessibility.h"
 #include <map>
-typedef void (*ActorAccessibilityCallback)(Actor*, AccessibleActorState*);
+#include <random>
 
-typedef struct {
-    ActorAccessibilityCallback callback;//If set, it will be called once every n frames. If null, then sfx will be played once every n frames.
-    s16 sound;//The ID of a sound to play. Ignored if the callback is set.
-
-    int n; // How often to run the callback in frames.
-    float distance;//Maximum distance from player before the actor should be considered out of range.
-
-}ActorAccessibilityPolicy;
-
+#include <functions.h>
+const int MAX_DB_REDUCTION = 35;//This is the amount in DB that a sound will be reduced by when it is at the maximum distance from the player. A reduction of -35 DB pretty much makes a sound inaudible.
+//One potential use of virtual actors is to place sounds at static platforms or other things that aren't represented by actors.
 typedef std::map<s16, ActorAccessibilityPolicy> SupportedActors_t;
-typedef std::map<Actor*, AccessibleActorState> TrackedActors_t;
-
+typedef std::map<Actor*, uint64_t> TrackedActors_t;
+typedef std::map<uint64_t, AccessibleActor> AccessibleActorList_t;
 SupportedActors_t SupportedActors;
 TrackedActors_t TrackedActors;
+AccessibleActorList_t AccessibleActorList;
+uint64_t ActorAccessibility_GetNextID() {
+    static uint64_t NextActorID = 0;
+    uint64_t result = NextActorID;
+    NextActorID++;
+    return result;
+}
 
-void ActorAccessibility_AddSupportedActor(s16 type, ActorAccessibilityCallback callback, int frames = 20, float distance = 500) {
+void ActorAccessibility_AddSupportedActor(s16 type, const char* englishName, ActorAccessibilityCallback callback, int frames, float distance, f32 pitch, f32 volume, s16 sfx) {
     ActorAccessibilityPolicy policy;
     policy.callback = callback;
+
+policy.englishName = englishName;
     policy.n = frames;
     policy.distance = distance;
+    policy.pitch = pitch;
+    policy.volume = volume;
+    policy.sound = sfx;
 
     SupportedActors[type] = policy;
 
-}
-void ActorAccessibility_AddSupportedActor(s16 type, s16 sound, int frames = 20, float distance = 500) {
-    ActorAccessibilityPolicy policy;
-    policy.sound = sound;
-    policy.n = frames;
-    policy.callback = NULL;
-    policy.distance = distance;
-
-    SupportedActors[type] = policy;
 }
 
 ActorAccessibilityPolicy* ActorAccessibility_GetPolicyForActor(s16 type) {
@@ -43,62 +40,99 @@ ActorAccessibilityPolicy* ActorAccessibility_GetPolicyForActor(s16 type) {
      return &(i->second);
 
  }
-    void ActorAccessibility_TrackNewActor(Actor* actor) {
+int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
+     static std::mt19937 gen;
+    std::uniform_int_distribution<> dist(min, max);
+     return dist(gen);
+
+ }
+
+void ActorAccessibility_TrackNewActor(Actor* actor) {
         // Don't track actors for which no accessibility policy has been configured.
         ActorAccessibilityPolicy* policy = ActorAccessibility_GetPolicyForActor(actor->id);
         if (policy == NULL)
             return;
-        AccessibleActorState state;
-        memset(&state, 0, sizeof(AccessibleActorState));
-        state.frameCount = policy->n;
+        AccessibleActor state;
+        state.instanceID = ActorAccessibility_GetNextID();
+        state.actor = actor;
+        state.id = actor->id;
+        //Stagger the start times so that all of the sounds don't play at exactly the same time.
+        state.frameCount = ActorAccessibility_GetRandomStartingFrameCount(0, policy->n);
+        state.basePitch = policy->pitch;
 
-        TrackedActors[actor] = state;
-    }
-    AccessibleActorState* ActorAccessibility_GetTrackedActorState(Actor* actor) {
-        TrackedActors_t::iterator i = TrackedActors.find(actor);
-        if (i == TrackedActors.end())
-            return NULL;
-        return &(i->second);
+        state.currentPitch = policy->pitch;
+        state.baseVolume = policy->volume;
+        state.currentVolume = policy->volume;
+
+        state.currentVolume = 1.0;
+        state.currentReverb = 0;
+        state.policy = *policy;
+
+        TrackedActors[actor] = state.instanceID;
+        AccessibleActorList[state.instanceID] = state;
 
     }
     void ActorAccessibility_RemoveTrackedActor(Actor* actor) {
         TrackedActors_t::iterator i = TrackedActors.find(actor);
         if (i == TrackedActors.end())
             return;
+        uint64_t id = i->second;
         TrackedActors.erase(i);
+        AccessibleActorList_t::iterator i2 = AccessibleActorList.find(id);
+        if (i2 == AccessibleActorList.end())
+            return;
+        AccessibleActorList.erase(i2);
 
     }
-    void ActorAccessibility_RunAccessibilityForActor(Actor* actor) {
-        AccessibleActorState* state = ActorAccessibility_GetTrackedActorState(actor);
-        if (state == NULL)
-            return;
-        ActorAccessibilityPolicy* policy = ActorAccessibility_GetPolicyForActor(actor->id);
-        if (policy == NULL)
-            return;
-        state->frameCount--;
-        if (state->frameCount > 0)
-            return;
-        state->frameCount = policy->n;
-        //if(distance < policy->distance)
-        //return;
 
-        if (policy->callback != NULL)
-            policy->callback(actor, state);
+    f32 ActorAccessibility_DBToLinear(float gain) {
+        return (float)pow(10.0, gain / 20.0f);
+    }
+    f32 ActorAccessibility_ComputeCurrentVolume(AccessibleActor* actor) {
+        if (actor->policy.distance == 0)
+            return 0.0;
+        f32 db = (abs(actor->xzDistToPlayer) / actor->policy.distance) * MAX_DB_REDUCTION;
+
+        return ActorAccessibility_DBToLinear(db * -1);
+
+    }
+
+    void ActorAccessibility_PlaySpecialSound(AccessibleActor* actor, s16 sfxId) {
+        Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &actor->currentPitch, &actor->currentVolume, &actor->currentReverb);
+    }
+    bool ActorAccessibility_IsRealActor(AccessibleActor* actor) {
+        return actor->actor != NULL;
+
+    }
+    void ActorAccessibility_CopyParamsFromRealActor(AccessibleActor* actor) {
+        if (actor->actor == NULL)
+            return;
+        actor->projectedPos = actor->actor->projectedPos;
+        actor->xzDistToPlayer = actor->actor->xzDistToPlayer;
+    
+    }
+
+    void ActorAccessibility_RunAccessibilityForActor(PlayState* play, AccessibleActor* actor) {
+        actor->play = play;
+        ActorAccessibility_CopyParamsFromRealActor(actor);
+        actor->currentVolume = ActorAccessibility_ComputeCurrentVolume(actor);
+
+        actor->frameCount--;
+        if (actor->frameCount > 0)
+            return;
+        actor->frameCount = actor->policy.n;
+        if (actor->xzDistToPlayer > actor->policy.distance) {
+            return;
+        }
+
+        if (actor->policy.callback != NULL)
+            actor->policy.callback(actor);
         else
-            actor->sfx = policy->sound;
+            ActorAccessibility_PlaySpecialSound(actor, actor->policy.sound);
 
     }
-    void ActorAccessibility_RunAccessibilityForAllActors() {
-        for (TrackedActors_t::iterator i = TrackedActors.begin(); i != TrackedActors.end(); i++)
-            ActorAccessibility_RunAccessibilityForActor(i->first);
+    void ActorAccessibility_RunAccessibilityForAllActors(PlayState* play) {
+        for (AccessibleActorList_t::iterator i = AccessibleActorList.begin(); i != AccessibleActorList.end(); i++)
+            ActorAccessibility_RunAccessibilityForActor(play, &i->second);
 
-    }
-    //Begin actor-specific policy callbacks.
-    void accessible_en_ishi(Actor* actor, AccessibleActorState* state) {
-        // SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 20, NA_SE_EN_OCTAROCK_ROCK);
-        actor->sfx = NA_SE_EN_OCTAROCK_ROCK;
-    }
-
-    void ActorAccessibility_Init() {
-        ActorAccessibility_AddSupportedActor(ACTOR_EN_ISHI, NA_SE_EN_OCTAROCK_ROCK);
     }
