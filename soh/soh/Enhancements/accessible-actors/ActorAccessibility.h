@@ -34,6 +34,7 @@ struct AccessibleActor
     f32 xzDistToPlayer;
     Vec3f projectedPos;
     PlayState* play;
+    u8 isDrawn;//Do we just never play accessibility sounds for actors that aren't drawn?
 
     int frameCount; // Incremented every time the callback is called. The callback is free to modify this. Can be used
                     // to implement playback of sounds at regular intervals.

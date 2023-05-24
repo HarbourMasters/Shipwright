@@ -109,7 +109,8 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
             return;
         actor->projectedPos = actor->actor->projectedPos;
         actor->xzDistToPlayer = actor->actor->xzDistToPlayer;
-    
+        actor->isDrawn = actor->actor->isDrawn;
+
     }
 
     void ActorAccessibility_RunAccessibilityForActor(PlayState* play, AccessibleActor* actor) {
@@ -124,6 +125,8 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         if (actor->xzDistToPlayer > actor->policy.distance) {
             return;
         }
+        if (actor->isDrawn == 0)
+            return;
 
         if (actor->policy.callback != NULL)
             actor->policy.callback(actor);
