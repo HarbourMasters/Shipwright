@@ -11,11 +11,6 @@ Official Discord: https://discord.com/invite/shipofharkinian
 
 If you're having any trouble after reading through this `README`, feel free ask for help in the Support text channels. Please keep in mind that we do not condone piracy.
 
-## Associated Tools
-- Fast64: https://github.com/HarbourMasters/fast64
-- Retro: https://gamebanana.com/tools/12193
-- Randomizer Spoiler Viewer: https://www.spoiledlog.com
-
 # Quick Start
 
 The Ship does not include any copyrighted assets.  You are required to provide a supported copy of the game.
@@ -91,7 +86,9 @@ Currently, there are three rendering APIs supported: DirectX11 (Windows), OpenGL
 
 Custom assets are packed in `.otr` files. To use custom assets, place them in the `mods` folder.
 
-If you're interested in creating and/or packing your own custom asset `.otr` files, check out [**retro**](https://github.com/HarbourMasters64/retro)!
+If you're interested in creating and/or packing your own custom asset `.otr` files, check out the following tools:
+* [**retro - OTR generator**](https://github.com/HarbourMasters64/retro)
+* [**fast64 - Blender plugin**](https://github.com/HarbourMasters/fast64)
 
 # Development
 ### Building
