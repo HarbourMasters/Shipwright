@@ -27,7 +27,7 @@ void ActorAccessibility_Init() {
     const int Npc_Frames = 35;
     // ActorAccessibility_AddSupportedActor(ACTOR_EN_ISHI, NA_SE_EN_OCTAROCK_ROCK, 20, 1000, 1.5);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_ISHI, "Rock", accessible_en_ishi, 20, 1000, 1.5);
-    ActorAccessibility_AddSupportedActor(ACTOR_EN_KO, "Kikori Children", accessible_en_NPC_Gen, Npc_Frames, 1000, 1.1);
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_KO, "Kikiri Child", accessible_en_NPC_Gen, Npc_Frames, 1000, 1.1);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_MD, "Mido", accessible_en_NPC_Gen, Npc_Frames, 1000, 1.1);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_SA, "Saria", accessible_en_NPC_Gen, Npc_Frames, 1000, 1.1);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_KUSA, "Bush", NULL, 20, 1000, 1.5, 1.0, NA_SE_PL_PULL_UP_PLANT);
