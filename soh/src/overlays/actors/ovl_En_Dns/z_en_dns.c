@@ -200,6 +200,8 @@ void EnDns_Destroy(Actor* thisx, PlayState* play) {
     EnDns* this = (EnDns*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDns_ChangeAnim(EnDns* this, u8 index) {

@@ -346,6 +346,8 @@ void BossSst_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyJntSph(play, &this->colliderJntSph);
     Collider_DestroyCylinder(play, &this->colliderCyl);
     Audio_StopSfxByPos(&this->center);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void BossSst_HeadSetupLurk(BossSst* this) {

@@ -84,6 +84,8 @@ void EnZl3_Destroy(Actor* thisx, PlayState* play) {
     EnZl3* this = (EnZl3*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80B53468(void) {

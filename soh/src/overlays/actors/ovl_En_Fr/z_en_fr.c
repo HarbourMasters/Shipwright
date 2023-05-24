@@ -309,6 +309,9 @@ void EnFr_Destroy(Actor* thisx, PlayState* play) {
     EnFr* this = (EnFr*)thisx;
 
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNode);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
+    ResourceMgr_UnregisterSkeleton(&this->skelAnimeButterfly);
 }
 
 void EnFr_IsDivingIntoWater(EnFr* this, PlayState* play) {

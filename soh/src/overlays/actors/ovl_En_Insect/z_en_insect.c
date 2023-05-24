@@ -234,6 +234,8 @@ void EnInsect_Destroy(Actor* thisx, PlayState* play) {
     if ((temp_v0 == 2 || temp_v0 == 3) && D_80A7DEB8 > 0) {
         D_80A7DEB8--;
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80A7C3A0(EnInsect* this) {

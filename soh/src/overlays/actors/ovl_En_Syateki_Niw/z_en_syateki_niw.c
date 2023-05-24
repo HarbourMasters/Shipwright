@@ -103,6 +103,8 @@ void EnSyatekiNiw_Destroy(Actor* thisx, PlayState* play) {
     EnSyatekiNiw* this = (EnSyatekiNiw*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80B11A94(EnSyatekiNiw* this, PlayState* play, s16 arg2) {
