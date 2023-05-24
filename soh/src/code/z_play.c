@@ -1401,6 +1401,8 @@ void Play_Draw(PlayState* play) {
     Lights* sp228;
     Vec3f sp21C;
 
+    Interface_DrawTotalGameplayTimer(play);
+
     OPEN_DISPS(gfxCtx);
 
     gSegments[4] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[play->objectCtx.mainKeepIndex].segment);
