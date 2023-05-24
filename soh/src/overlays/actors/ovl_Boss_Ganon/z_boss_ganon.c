@@ -11,7 +11,7 @@
 #include "assets/scenes/dungeons/ganon_boss/ganon_boss_scene.h"
 
 #include "soh/frame_interpolation.h"
-#include "soh/enhancements/bossrush.h"
+#include "soh/Enhancements/bossrush.h"
 
 #include <string.h>
 
