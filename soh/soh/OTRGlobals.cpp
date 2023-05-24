@@ -1569,11 +1569,11 @@ extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(vo
 }
 
 extern "C" uint32_t OTRGetCurrentWidth() {
-    return OTRGlobals::Instance->context->GetWindow()->GetCurrentWidth();
+    return OTRGlobals::Instance->context->GetWindow()->GetWidth();
 }
 
 extern "C" uint32_t OTRGetCurrentHeight() {
-    return OTRGlobals::Instance->context->GetWindow()->GetCurrentHeight();
+    return OTRGlobals::Instance->context->GetWindow()->GetHeight();
 }
 
 extern "C" void OTRControllerCallback(uint8_t rumble, uint8_t ledColor) {

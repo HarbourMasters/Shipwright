@@ -85,8 +85,6 @@ namespace GameControlEditor {
     static CustomButtonMap ocarinaSharp = {"Pitch up", "gOcarinaSharpBtnMap", BTN_R};
     static CustomButtonMap ocarinaFlat = {"Pitch down", "gOcarinaFlatBtnMap", BTN_Z};
 
-    void DrawUI(bool&);
-
     void GameControlEditorWindow::InitElement() {
         addButtonName(BTN_A,		"A");
         addButtonName(BTN_B,		"B");
@@ -142,7 +140,7 @@ namespace GameControlEditor {
         UIWidgets::Spacer(0);
     }
 
-    void DrawOcarinaControlPanel() {
+    void DrawOcarinaControlPanel(GameControlEditorWindow* window) {
         if (!ImGui::CollapsingHeader("Ocarina Controls")) {
             return;
         }
@@ -170,7 +168,7 @@ namespace GameControlEditor {
                 ImGui::TableSetupColumn("Modifiers##CustomOcaranaModifiers", PANEL_TABLE_COLUMN_FLAGS);
                 TableHelper::InitHeader(false);
 
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->BeginGroupPanel("Notes", ImGui::GetContentRegionAvail());
+                window->BeginGroupPanelPublic("Notes", ImGui::GetContentRegionAvail());
                 labelWidth = ImGui::CalcTextSize("D5").x + 10;
                 DrawMapping(ocarinaD5, labelWidth, disableMask);
                 DrawMapping(ocarinaB4, labelWidth, disableMask);
@@ -179,16 +177,16 @@ namespace GameControlEditor {
                 DrawMapping(ocarinaD4, labelWidth, disableMask);
                 ImGui::Dummy(ImVec2(0, 5));
                 float cursorY = ImGui::GetCursorPosY();
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->EndGroupPanel(0);
+                window->EndGroupPanelPublic(0);
 
                 TableHelper::NextCol();
 
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->BeginGroupPanel("Modifiers", ImGui::GetContentRegionAvail());
+                window->BeginGroupPanelPublic("Modifiers", ImGui::GetContentRegionAvail());
                 labelWidth = ImGui::CalcTextSize(ocarinaSongDisable.label).x + 10;
                 DrawMapping(ocarinaSongDisable, labelWidth, disableMask);
                 DrawMapping(ocarinaSharp, labelWidth, disableMask);
                 DrawMapping(ocarinaFlat, labelWidth, disableMask);
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->EndGroupPanel(cursorY - ImGui::GetCursorPosY() + 2);
+                window->EndGroupPanelPublic(cursorY - ImGui::GetCursorPosY() + 2);
 
                 ImGui::EndTable();
             }
@@ -199,7 +197,7 @@ namespace GameControlEditor {
             UIWidgets::Spacer(0);
         }
 
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->BeginGroupPanel("Alternate controls", ImGui::GetContentRegionAvail());
+        window->BeginGroupPanelPublic("Alternate controls", ImGui::GetContentRegionAvail());
         if (ImGui::BeginTable("tableOcarinaAlternateControls", 2, ImGuiTableFlags_SizingFixedSame)) {
             ImGui::TableSetupColumn("D-pad", PANEL_TABLE_COLUMN_FLAGS);
             ImGui::TableSetupColumn("Right stick", PANEL_TABLE_COLUMN_FLAGS);
@@ -211,7 +209,7 @@ namespace GameControlEditor {
             UIWidgets::Spacer(0);
             ImGui::EndTable();
         }
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->EndGroupPanel(0);
+        window->EndGroupPanelPublic(0);
 
         ImGui::EndTable();
     }
@@ -226,13 +224,13 @@ namespace GameControlEditor {
         inputEditorWindow->DrawButton("Modifier 2", BTN_MODIFIER2, CurrentPort - 1, &BtnReading);
     }
 
-    void DrawCameraControlPanel() {
+    void DrawCameraControlPanel(GameControlEditorWindow* window) {
         if (!ImGui::CollapsingHeader("Camera Controls")) {
             return;
         }
 
         UIWidgets::Spacer(0);
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->BeginGroupPanel("Aiming/First-Person Camera", ImGui::GetContentRegionAvail());
+        window->BeginGroupPanelPublic("Aiming/First-Person Camera", ImGui::GetContentRegionAvail());
         UIWidgets::PaddedEnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
         DrawHelpIcon("Allows for aiming with the right stick in:\n-First-Person/C-Up view\n-Weapon Aiming");
         UIWidgets::PaddedEnhancementCheckbox("Invert Aiming X Axis", "gInvertAimingXAxis");
@@ -255,10 +253,10 @@ namespace GameControlEditor {
             CVarSetFloat("gFirstPersonCameraSensitivity", 1.0f);
         }
         UIWidgets::Spacer(0);
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->EndGroupPanel(0);
+        window->EndGroupPanelPublic(0);
 
         UIWidgets::Spacer(0);
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->BeginGroupPanel("Third-Person Camera", ImGui::GetContentRegionAvail());
+        window->BeginGroupPanelPublic("Third-Person Camera", ImGui::GetContentRegionAvail());
 
         UIWidgets::PaddedEnhancementCheckbox("Free Camera", "gFreeCamera");
         DrawHelpIcon("Enables free camera control\nNote: You must remap C buttons off of the right stick in the "
@@ -276,17 +274,17 @@ namespace GameControlEditor {
                                         "gFreeCameraDistMax", 100, 900, "", 185, true, false, true);
         UIWidgets::PaddedEnhancementSliderInt("Camera Transition Speed: %d", "##CamTranSpeed",
                                         "gFreeCameraTransitionSpeed", 0, 900, "", 25, true, false, true);
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->EndGroupPanel(0);
+        window->EndGroupPanelPublic(0);
     }
 
-    void DrawDpadControlPanel() {
+    void DrawDpadControlPanel(GameControlEditorWindow* window) {
         if (!ImGui::CollapsingHeader("D-Pad Controls")) {
             return;
         }
 
         ImVec2 cursor = ImGui::GetCursorPos();
         ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->BeginGroupPanel("D-Pad Options", ImGui::GetContentRegionAvail());
+        window->BeginGroupPanelPublic("D-Pad Options", ImGui::GetContentRegionAvail());
         UIWidgets::PaddedEnhancementCheckbox("D-pad Support on Pause Screen", "gDpadPause");
         DrawHelpIcon("Navigate Pause with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate\n"
                     "To make the cursor only move a single space no matter how long a direction is held, manually set gDpadHoldChange to 0");
@@ -295,17 +293,17 @@ namespace GameControlEditor {
                     "To make the cursor only move a single space during name entry no matter how long a direction is held, manually set gDpadHoldChange to 0");
         UIWidgets::PaddedEnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
         DrawHelpIcon("Equip items and equipment on the D-pad\nIf used with D-pad on Pause Screen, you must hold C-Up to equip instead of navigate");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->EndGroupPanel(0);
+        window->EndGroupPanelPublic(0);
     }
 
-    void DrawMiscControlPanel() {
+    void DrawMiscControlPanel(GameControlEditorWindow* window) {
         if (!ImGui::CollapsingHeader("Miscellaneous Controls")) {
             return;
         }
 
         ImVec2 cursor = ImGui::GetCursorPos();
         ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->BeginGroupPanel("Misc Controls", ImGui::GetContentRegionAvail());
+        window->BeginGroupPanelPublic("Misc Controls", ImGui::GetContentRegionAvail());
         UIWidgets::PaddedText("Allow the cursor to be on any slot");
         static const char* cursorOnAnySlot[3] = { "Only in Rando", "Always", "Never" };
         UIWidgets::EnhancementCombobox("gPauseAnyCursor", cursorOnAnySlot, PAUSE_ANY_CURSOR_RANDO_ONLY);
@@ -316,17 +314,16 @@ namespace GameControlEditor {
         DrawHelpIcon("Hold the assigned button to change the maximum walking speed\nTo change the assigned button, go into the Ports tabs above");
          if (CVarGetInteger("gEnableWalkModify", 0)) {
             UIWidgets::Spacer(5);
-             LUS::Context::GetInstance()->GetWindow()->GetGui()->BeginGroupPanel("Walk Modifier", ImGui::GetContentRegionAvail());
+            window->BeginGroupPanelPublic("Walk Modifier", ImGui::GetContentRegionAvail());
             UIWidgets::PaddedEnhancementCheckbox("Toggle modifier instead of holding", "gWalkSpeedToggle", true, false);
             UIWidgets::PaddedEnhancementSliderFloat("Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
             UIWidgets::PaddedEnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true, true, false, true);
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->EndGroupPanel(0);
+            window->EndGroupPanelPublic(0);
         }
         UIWidgets::Spacer(0);
         UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");
         DrawHelpIcon("Speak to Navi with L but enter first-person camera with C-Up");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->EndGroupPanel(0);
-
+        window->EndGroupPanelPublic(0);
     }
 
     void GameControlEditorWindow::DrawElement() {
@@ -348,14 +345,22 @@ namespace GameControlEditor {
             ImGui::EndTabBar();
 
             if (CurrentPort == 0) {
-                DrawOcarinaControlPanel();
-                DrawCameraControlPanel();
-                DrawDpadControlPanel();
-                DrawMiscControlPanel();
+                DrawOcarinaControlPanel(this);
+                DrawCameraControlPanel(this);
+                DrawDpadControlPanel(this);
+                DrawMiscControlPanel(this);
             } else {
                 DrawCustomButtons();
             }
         }
         ImGui::End();
+    }
+
+    void GameControlEditorWindow::BeginGroupPanelPublic(const char* name, const ImVec2& size) {
+        BeginGroupPanel(name, size);
+    }
+
+    void GameControlEditorWindow::EndGroupPanelPublic(float minHeight) {
+        EndGroupPanel(minHeight);
     }
 }

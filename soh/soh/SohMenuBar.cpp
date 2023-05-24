@@ -127,10 +127,7 @@ void DrawShipMenu() {
         }
 #if !defined(__SWITCH__) && !defined(__WIIU__)
         auto backend = LUS::Context::GetInstance()->GetWindow()->GetWindowBackend();
-        const char* keyboardShortcut =
-                backend == LUS::WindowBackend::SDL_OPENGL || backend == LUS::WindowBackend::SDL_METAL ? "F10"
-                                                                                                    : "ALT+Enter";
-        if (ImGui::MenuItem("Toggle Fullscreen", keyboardShortcut)) {
+        if (ImGui::MenuItem("Toggle Fullscreen", "F9")) {
             LUS::Context::GetInstance()->GetWindow()->ToggleFullscreen();
         }
         if (ImGui::MenuItem("Quit")) {
