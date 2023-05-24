@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <filesystem>
 #include <fstream>
+#include <chrono>
 
 #include <ResourceManager.h>
 #include <File.h>
@@ -692,9 +693,10 @@ std::unordered_map<uint32_t, uint32_t> ItemIDtoGetItemID{
     { ITEM_WEIRD_EGG, GI_WEIRD_EGG }
 };
 
-extern "C" uint32_t GetGIID(uint32_t itemID) {
-    if (ItemIDtoGetItemID.contains(itemID))
+extern "C" int32_t GetGIID(uint32_t itemID) {
+    if (ItemIDtoGetItemID.contains(itemID)) {
         return ItemIDtoGetItemID.at(itemID);
+    }
     return -1;
 }
 
@@ -785,6 +787,8 @@ extern "C" void InitOTR() {
     } else {
         CVarClear("gLetItSnow");
     }
+
+    srand(now);
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance = new CrowdControl();
     CrowdControl::Instance->Init();
@@ -834,6 +838,14 @@ extern "C" uint64_t GetPerfCounter() {
     return monotime.tv_sec * 1000 + remainingMs;
 }
 #endif
+
+extern "C" uint64_t GetUnixTimestamp() {
+    auto time = std::chrono::system_clock::now();
+    auto since_epoch = time.time_since_epoch();
+    auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(since_epoch);
+    long now = millis.count();
+    return now;
+}
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {

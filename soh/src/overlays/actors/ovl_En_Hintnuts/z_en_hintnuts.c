@@ -105,6 +105,8 @@ void EnHintnuts_Destroy(Actor* thisx, PlayState* play) {
 
     if (this->actor.params != 0xA) {
         Collider_DestroyCylinder(play, &this->collider);
+
+        ResourceMgr_UnregisterSkeleton(&this->skelAnime);
     }
 }
 

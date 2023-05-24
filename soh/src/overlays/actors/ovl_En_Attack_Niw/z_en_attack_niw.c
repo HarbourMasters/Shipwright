@@ -68,6 +68,8 @@ void EnAttackNiw_Destroy(Actor* thisx, PlayState* play) {
             cucco->unk_296--;
         }
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_809B5268(EnAttackNiw* this, PlayState* play, s16 arg2) {
