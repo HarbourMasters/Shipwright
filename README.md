@@ -11,6 +11,11 @@ Official Discord: https://discord.com/invite/shipofharkinian
 
 If you're having any trouble after reading through this `README`, feel free ask for help in the Support text channels. Please keep in mind that we do not condone piracy.
 
+## Associated Tools
+- Fast64: https://github.com/HarbourMasters/fast64
+- Retro: https://gamebanana.com/tools/12193
+- Randomizer Spoiler Viewer: https://www.spoiledlog.com
+
 # Quick Start
 
 The Ship does not include any copyrighted assets.  You are required to provide a supported copy of the game.
