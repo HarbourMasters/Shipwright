@@ -238,6 +238,8 @@ void EnPoSisters_Destroy(Actor* thisx, PlayState* play) {
         func_800F5B58();
     }
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AD9240(EnPoSisters* this, s32 arg1, Vec3f* arg2) {

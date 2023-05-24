@@ -403,6 +403,7 @@ void SaveManager::Init() {
             LoadFile(fileNum);
             saveBlock = nlohmann::json::object();
         }
+
     }
 }
 
@@ -690,6 +691,8 @@ void SaveManager::InitFileDebug() {
     gSaveContext.sceneFlags[5].swch = 0x40000000;
 }
 
+// Threaded SaveFile takes copy of gSaveContext for local unmodified storage
+
 void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int sectionID) {
     // Needed for first time save, hasn't changed in forever anyway
     saveBlock["version"] = 1;
@@ -744,7 +747,7 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
 }
 
 // SaveSection creates a copy of gSaveContext to prevent mid-save data modification, and passes its reference to SaveFileThreaded
-void SaveManager::SaveSection(int fileNum, int sectionID) {
+void SaveManager::SaveSection(int fileNum, int sectionID, bool threaded) {
     if (fileNum == 0xFF) {
         return;
     }
@@ -755,12 +758,15 @@ void SaveManager::SaveSection(int fileNum, int sectionID) {
     }
     auto saveContext = new SaveContext;
     memcpy(saveContext, &gSaveContext, sizeof(gSaveContext));
-    // Can't think of any time the promise would be needed, so use push_task instead of submit
-    smThreadPool->push_task_back(&SaveManager::SaveFileThreaded, this, fileNum, saveContext, sectionID);
+    if (threaded) {
+        smThreadPool->push_task_back(&SaveManager::SaveFileThreaded, this, fileNum, saveContext, sectionID);
+    } else {
+        SaveFileThreaded(fileNum, saveContext, sectionID);
+    }
 }
 
 void SaveManager::SaveFile(int fileNum) {
-    SaveSection(fileNum, SECTION_ID_BASE);
+    SaveSection(fileNum, SECTION_ID_BASE, true);
 }
 
 void SaveManager::SaveGlobal() {
@@ -783,6 +789,7 @@ void SaveManager::LoadFile(int fileNum) {
 
     std::ifstream input(GetFileName(fileNum));
 
+    nlohmann::json saveBlock;
     input >> saveBlock;
     if (!saveBlock.contains("version")) {
         SPDLOG_ERROR("Save at " + GetFileName(fileNum).string() + " contains no version");
@@ -831,7 +838,7 @@ void SaveManager::ThreadPoolWait() {
 bool SaveManager::SaveFile_Exist(int fileNum) {
     try {
         bool exists = std::filesystem::exists(GetFileName(fileNum));
-        SPDLOG_INFO("File[{}] - {}", fileNum, exists ? "exists" : "does not exist");
+        SPDLOG_INFO("File[{}] - {}", fileNum, exists ? "exists" : "does not exist" );
         return exists;
     }
     catch(std::filesystem::filesystem_error const& ex) {
@@ -864,6 +871,7 @@ void SaveManager::AddSaveFunction(const std::string& name, int version, SaveFunc
         assert(false);
         return;
     }
+
     int index = sectionIndex;
     if (coreSectionIDsByName.contains(name)) {
         index = coreSectionIDsByName.find(name)->second;
@@ -1126,6 +1134,8 @@ void SaveManager::LoadBaseVersion2() {
         SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.dungeonKeys[i]);
         });
+        SaveManager::Instance->LoadData("rtaTiming", gSaveContext.sohStats.rtaTiming);
+        SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.sohStats.fileCreatedAt);
         SaveManager::Instance->LoadData("playTimer", gSaveContext.sohStats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.sohStats.pauseTimer);
         SaveManager::Instance->LoadArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
@@ -1340,6 +1350,8 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.dungeonKeys[i]);
         });
+        SaveManager::Instance->LoadData("rtaTiming", gSaveContext.sohStats.rtaTiming);
+        SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.sohStats.fileCreatedAt);
         SaveManager::Instance->LoadData("playTimer", gSaveContext.sohStats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.sohStats.pauseTimer);
         SaveManager::Instance->LoadArray("itemTimestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
@@ -1352,6 +1364,7 @@ void SaveManager::LoadBaseVersion3() {
                 SaveManager::Instance->LoadData("sceneTime", gSaveContext.sohStats.sceneTimestamps[i].sceneTime);
                 SaveManager::Instance->LoadData("roomTime", gSaveContext.sohStats.sceneTimestamps[i].roomTime);
                 SaveManager::Instance->LoadData("isRoom", gSaveContext.sohStats.sceneTimestamps[i].isRoom);
+
             });
         });
         SaveManager::Instance->LoadData("tsIdx", gSaveContext.sohStats.tsIdx);
@@ -1853,6 +1866,7 @@ void SaveManager::LoadArray(const std::string& name, const size_t size, LoadArra
     currentJsonContext = saveJsonContext;
 }
 
+
 void SaveManager::LoadStruct(const std::string& name, LoadStructFunc func) {
     // Create an empty struct and set it as the current load context, then call the function that loads the struct.
     // If it is an array entry, load it from the array instead.
@@ -2280,7 +2294,7 @@ void SaveManager::ConvertFromUnversioned() {
             static SaveContext saveContextSave = gSaveContext;
             InitFile(false);
             CopyV0Save(*file, gSaveContext);
-            SaveFile(fileNum);
+            SaveSection(fileNum, SECTION_ID_BASE, false);
             InitMeta(fileNum);
             gSaveContext = saveContextSave;
         }
@@ -2305,7 +2319,7 @@ extern "C" void Save_SaveFile(void) {
 }
 
 extern "C" void Save_SaveSection(int sectionID) {
-    SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionID);
+    SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionID, true);
 }
 
 extern "C" void Save_SaveGlobal(void) {
@@ -2321,8 +2335,8 @@ extern "C" void Save_AddLoadFunction(char* name, int version, SaveManager::LoadF
     SaveManager::Instance->AddLoadFunction(name, version, func);
 }
 
-extern "C" void Save_AddSaveFunction(char* name, int version, SaveManager::SaveFunc func, bool saveWithBase, int parentSection = SECTION_PARENT_NONE) {
-    SaveManager::Instance->AddSaveFunction(name, version, func, saveWithBase, parentSection);
+extern "C" void Save_AddSaveFunction(char* name, int version, SaveManager::SaveFunc func, bool saveWithBase) {
+    SaveManager::Instance->AddSaveFunction(name, version, func, saveWithBase);
 }
 
 extern "C" SaveFileMetaInfo* Save_GetSaveMetaInfo(int fileNum) {

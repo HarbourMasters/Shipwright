@@ -196,6 +196,8 @@ void EnBigokuta_Destroy(Actor* thisx, PlayState* play) {
     for (i = 0; i < ARRAY_COUNT(this->cylinder); i++) {
         Collider_DestroyCylinder(play, &this->cylinder[i]);
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_809BCE3C(EnBigokuta* this) {

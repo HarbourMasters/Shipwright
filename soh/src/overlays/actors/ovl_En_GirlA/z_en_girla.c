@@ -452,11 +452,6 @@ void EnGirlA_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnGirlA_Destroy(Actor* thisx, PlayState* play) {
-    EnGirlA* this = (EnGirlA*)thisx;
-
-    if (this->isInitialized) {
-        SkelAnime_Free(&this->skelAnime, play);
-    }
 }
 
 s32 EnGirlA_CanBuy_Arrows(PlayState* play, EnGirlA* this) {

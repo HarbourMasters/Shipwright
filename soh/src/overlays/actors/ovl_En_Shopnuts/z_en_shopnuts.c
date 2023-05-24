@@ -91,6 +91,8 @@ void EnShopnuts_Destroy(Actor* thisx, PlayState* play) {
     EnShopnuts* this = (EnShopnuts*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnShopnuts_SetupWait(EnShopnuts* this) {

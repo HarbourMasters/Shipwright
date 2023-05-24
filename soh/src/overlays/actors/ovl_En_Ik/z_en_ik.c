@@ -175,6 +175,8 @@ void EnIk_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyTris(play, &this->shieldCollider);
     Collider_DestroyCylinder(play, &this->bodyCollider);
     Collider_DestroyQuad(play, &this->axeCollider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnIk_SetupAction(EnIk* this, EnIkActionFunc actionFunc) {

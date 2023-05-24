@@ -177,6 +177,8 @@ void EnGoma_Destroy(Actor* thisx, PlayState* play) {
     if (this->actor.params < 10) {
         Collider_DestroyCylinder(play, &this->colCyl1);
         Collider_DestroyCylinder(play, &this->colCyl2);
+
+        ResourceMgr_UnregisterSkeleton(&this->skelanime);
     }
 }
 

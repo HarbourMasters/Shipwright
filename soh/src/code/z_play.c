@@ -604,6 +604,15 @@ void Play_Init(GameState* thisx) {
                  (s32)(zAllocAligned + zAllocSize) - (s32)(zAllocAligned - zAlloc));
 
     Fault_AddClient(&D_801614B8, ZeldaArena_Display, NULL, NULL);
+    // In order to keep bunny hood equipped on first load, we need to pre-set the age reqs for the item and slot
+    if (CVarGetInteger("gMMBunnyHood", 0) || CVarGetInteger("gTimelessEquipment", 0)) {
+        gItemAgeReqs[ITEM_MASK_BUNNY] = 9;
+        if(INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
+            gSlotAgeReqs[SLOT_TRADE_CHILD] = 9;
+    }
+    else {
+        gItemAgeReqs[ITEM_MASK_BUNNY] = gSlotAgeReqs[SLOT_TRADE_CHILD] = 1;
+    }
     func_800304DC(play, &play->actorCtx, play->linkActorEntry);
 
     while (!func_800973FC(play, &play->roomCtx)) {
@@ -751,6 +760,14 @@ void Play_Update(PlayState* play) {
             if (CHECK_BTN_ALL(input[0].press.button, BTN_R))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_R]++;}
             if (CHECK_BTN_ALL(input[0].press.button, BTN_Z))      {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_Z]++;}
             if (CHECK_BTN_ALL(input[0].press.button, BTN_START))  {gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_START]++;}
+
+            // Start RTA timing on first non-c-up input after intro cutscene
+            if (
+                !gSaveContext.sohStats.fileCreatedAt && !Player_InCsMode(play) && 
+                ((input[0].press.button && input[0].press.button != 0x8) || input[0].rel.stick_x != 0 || input[0].rel.stick_y != 0)
+            ) {
+                gSaveContext.sohStats.fileCreatedAt = GetUnixTimestamp();
+            }
         }
 
         if (gTrnsnUnkState != 0) {

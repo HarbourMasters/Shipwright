@@ -92,6 +92,8 @@ typedef struct {
     /*      */ u32 entrancesDiscovered[SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT];
     /*      */ u32 scenesDiscovered[SAVEFILE_SCENES_DISCOVERED_IDX_COUNT];
     /*      */ u8 locationsSkipped[RC_MAX];
+    /*      */ bool rtaTiming;
+    /*      */ uint64_t fileCreatedAt;
 } SohStats;
 
 typedef struct {

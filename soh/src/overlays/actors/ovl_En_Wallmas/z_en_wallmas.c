@@ -148,6 +148,8 @@ void EnWallmas_Destroy(Actor* thisx, PlayState* play) {
     EnWallmas* this = (EnWallmas*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnWallmas_TimerInit(EnWallmas* this, PlayState* play) {
