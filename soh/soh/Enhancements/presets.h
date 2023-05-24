@@ -201,6 +201,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gLowResMode",
     "gDrawLineupTick",
     "gQuickBongoKill",
+    "gFPSGauntlets",
 };
 
 const std::vector<const char*> randomizerCvars = {
