@@ -98,7 +98,16 @@ void DoorWarp1_Destroy(Actor* thisx, PlayState* play) {
         play->envCtx.adjAmbientColor[i] = play->envCtx.adjFogColor[i] = play->envCtx.adjLight1Color[i] =
             0;
     }
-    //! @bug SkelAnime_Free is not called for crystal variants
+
+    switch (this->actor.params) {
+        case WARP_DUNGEON_ADULT:
+        case WARP_BLUE_CRYSTAL:
+        case WARP_PURPLE_CRYSTAL:
+            SkelAnime_Free(&this->skelAnime, play);
+            break;
+        default:
+            break;
+    }
 }
 
 void DoorWarp1_SetupWarp(DoorWarp1* this, PlayState* play) {

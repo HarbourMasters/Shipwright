@@ -118,6 +118,8 @@ void EnWeiyer_Destroy(Actor* thisx, PlayState* play) {
     EnWeiyer* this = (EnWeiyer*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80B32384(EnWeiyer* this) {

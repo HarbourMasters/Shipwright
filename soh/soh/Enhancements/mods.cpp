@@ -492,6 +492,24 @@ void RegisterBonkDamage() {
     });
 }
 
+void UpdateDirtPathFixState(int32_t sceneNum) {
+    switch (sceneNum) {
+        case SCENE_SPOT00:
+        case SCENE_SPOT04:
+        case SCENE_SPOT15:
+            CVarSetInteger("gDirtPathFix", CVarGetInteger("gSceneSpecificDirtPathFix", 0));
+            return;
+        default:
+            CVarClear("gDirtPathFix");
+    }
+}
+
+void RegisterMenuPathFix() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([](int32_t sceneNum) {
+        UpdateDirtPathFixState(sceneNum);
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -510,4 +528,5 @@ void InitMods() {
     RegisterRupeeDash();
     RegisterHyperBosses();
     RegisterBonkDamage();
+    RegisterMenuPathFix();
 }

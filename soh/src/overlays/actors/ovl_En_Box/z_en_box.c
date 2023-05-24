@@ -213,6 +213,8 @@ void EnBox_Destroy(Actor* thisx, PlayState* play) {
     EnBox* this = (EnBox*)thisx;
 
     DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelanime);
 }
 
 void EnBox_RandomDustKinematic(EnBox* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel) {

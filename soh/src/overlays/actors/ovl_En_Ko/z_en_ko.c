@@ -1145,6 +1145,8 @@ void EnKo_Init(Actor* thisx, PlayState* play) {
 void EnKo_Destroy(Actor* thisx, PlayState* play) {
     EnKo* this = (EnKo*)thisx;
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80A99048(EnKo* this, PlayState* play) {

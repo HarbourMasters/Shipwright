@@ -761,7 +761,7 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum);
 }
 
-void SaveManager::SaveFile(int fileNum) {
+void SaveManager::SaveFile(int fileNum, bool threaded) {
     // Don't save in Boss rush.
     if (fileNum == 0xFF || fileNum == 0xFE) {
         return;
@@ -769,7 +769,11 @@ void SaveManager::SaveFile(int fileNum) {
     // Can't think of any time the promise would be needed, so use push_task instead of submit
     auto saveContext = new SaveContext;
     memcpy(saveContext, &gSaveContext, sizeof(gSaveContext));
-    smThreadPool->push_task_back(&SaveManager::SaveFileThreaded, this, fileNum, saveContext);
+    if (threaded) {
+        smThreadPool->push_task_back(&SaveManager::SaveFileThreaded, this, fileNum, saveContext);
+    } else {
+        SaveFileThreaded(fileNum, saveContext);
+    }
 }
 
 void SaveManager::SaveGlobal() {
@@ -2149,7 +2153,7 @@ void SaveManager::ConvertFromUnversioned() {
             static SaveContext saveContextSave = gSaveContext;
             InitFile(false);
             CopyV0Save(*file, gSaveContext);
-            SaveFile(fileNum);
+            SaveFile(fileNum, false);
             InitMeta(fileNum);
             gSaveContext = saveContextSave;
         }
@@ -2170,7 +2174,7 @@ extern "C" void Save_InitFile(int isDebug) {
 }
 
 extern "C" void Save_SaveFile(void) {
-    SaveManager::Instance->SaveFile(gSaveContext.fileNum);
+    SaveManager::Instance->SaveFile(gSaveContext.fileNum, true);
 }
 
 extern "C" void Save_SaveGlobal(void) {
