@@ -11335,6 +11335,9 @@ void Player_Destroy(Actor* thisx, PlayState* play) {
     func_800876C8(play);
 
     gSaveContext.linkAge = play->linkAgeOnLoad;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime2);
 }
 
 //first person manipulate player actor

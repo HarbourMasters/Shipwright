@@ -512,6 +512,8 @@ void SaveManager::InitFileNormal() {
     for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys); dungeon++) {
         gSaveContext.sohStats.dungeonKeys[dungeon] = 0;
     }
+    gSaveContext.sohStats.rtaTiming = CVarGetInteger("gGameplayStats.RTATiming", 0);
+    gSaveContext.sohStats.fileCreatedAt = 0;
     gSaveContext.sohStats.playTimer = 0;
     gSaveContext.sohStats.pauseTimer = 0;
     for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp); timestamp++) {
@@ -754,14 +756,18 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum);
 }
 
-void SaveManager::SaveFile(int fileNum) {
+void SaveManager::SaveFile(int fileNum, bool threaded) {
     if (fileNum == 0xFF) {
         return;
     }
     // Can't think of any time the promise would be needed, so use push_task instead of submit
     auto saveContext = new SaveContext;
     memcpy(saveContext, &gSaveContext, sizeof(gSaveContext));
-    smThreadPool->push_task_back(&SaveManager::SaveFileThreaded, this, fileNum, saveContext);
+    if (threaded) {
+        smThreadPool->push_task_back(&SaveManager::SaveFileThreaded, this, fileNum, saveContext);
+    } else {
+        SaveFileThreaded(fileNum, saveContext);
+    }
 }
 
 void SaveManager::SaveGlobal() {
@@ -1112,6 +1118,8 @@ void SaveManager::LoadBaseVersion2() {
         SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.dungeonKeys[i]);
         });
+        SaveManager::Instance->LoadData("rtaTiming", gSaveContext.sohStats.rtaTiming);
+        SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.sohStats.fileCreatedAt);
         SaveManager::Instance->LoadData("playTimer", gSaveContext.sohStats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.sohStats.pauseTimer);
         SaveManager::Instance->LoadArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
@@ -1326,6 +1334,8 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.dungeonKeys[i]);
         });
+        SaveManager::Instance->LoadData("rtaTiming", gSaveContext.sohStats.rtaTiming);
+        SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.sohStats.fileCreatedAt);
         SaveManager::Instance->LoadData("playTimer", gSaveContext.sohStats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.sohStats.pauseTimer);
         SaveManager::Instance->LoadArray("itemTimestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
@@ -1535,6 +1545,8 @@ void SaveManager::SaveBase(SaveContext* saveContext) {
         SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(saveContext->sohStats.dungeonKeys), [&](size_t i) {
             SaveManager::Instance->SaveData("", saveContext->sohStats.dungeonKeys[i]);
         });
+        SaveManager::Instance->SaveData("rtaTiming", saveContext->sohStats.rtaTiming);
+        SaveManager::Instance->SaveData("fileCreatedAt", saveContext->sohStats.fileCreatedAt);
         SaveManager::Instance->SaveData("playTimer", saveContext->sohStats.playTimer);
         SaveManager::Instance->SaveData("pauseTimer", saveContext->sohStats.pauseTimer);
         SaveManager::Instance->SaveArray("itemTimestamps", ARRAY_COUNT(saveContext->sohStats.itemTimestamp), [&](size_t i) {
@@ -2135,7 +2147,7 @@ void SaveManager::ConvertFromUnversioned() {
             static SaveContext saveContextSave = gSaveContext;
             InitFile(false);
             CopyV0Save(*file, gSaveContext);
-            SaveFile(fileNum);
+            SaveFile(fileNum, false);
             InitMeta(fileNum);
             gSaveContext = saveContextSave;
         }
@@ -2156,7 +2168,7 @@ extern "C" void Save_InitFile(int isDebug) {
 }
 
 extern "C" void Save_SaveFile(void) {
-    SaveManager::Instance->SaveFile(gSaveContext.fileNum);
+    SaveManager::Instance->SaveFile(gSaveContext.fileNum, true);
 }
 
 extern "C" void Save_SaveGlobal(void) {

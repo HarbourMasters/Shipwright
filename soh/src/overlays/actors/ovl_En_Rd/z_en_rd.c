@@ -175,6 +175,8 @@ void EnRd_Destroy(Actor* thisx, PlayState* play) {
         gSaveContext.sunsSongState = SUNSSONG_INACTIVE;
     }
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AE2630(PlayState* play, Actor* thisx, s32 arg2) {

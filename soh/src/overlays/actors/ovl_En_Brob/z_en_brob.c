@@ -102,6 +102,8 @@ void EnBrob_Destroy(Actor* thisx, PlayState* play) {
     DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
     Collider_DestroyCylinder(play, &this->colliders[0]);
     Collider_DestroyCylinder(play, &this->colliders[1]);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_809CADDC(EnBrob* this, PlayState* play) {

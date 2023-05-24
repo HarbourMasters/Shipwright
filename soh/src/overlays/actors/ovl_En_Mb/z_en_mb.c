@@ -336,6 +336,8 @@ void EnMb_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyTris(play, &this->frontShielding);
     Collider_DestroyCylinder(play, &this->hitbox);
     Collider_DestroyQuad(play, &this->attackCollider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnMb_FaceWaypoint(EnMb* this, PlayState* play) {
