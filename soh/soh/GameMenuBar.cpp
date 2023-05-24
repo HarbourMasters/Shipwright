@@ -395,6 +395,9 @@ namespace GameMenuBar {
 
         if (ImGui::BeginMenu("Enhancements"))
         {
+            if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", true, false)) {
+                ShouldClearTextureCacheAtEndOfFrame = true;
+            }
             /* [Race Template] Hide appropriate enhancements
             DrawPresetSelector(PRESET_TYPE_ENHANCEMENTS);
 
