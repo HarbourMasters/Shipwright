@@ -1,4 +1,4 @@
-#include "bossrush.h"
+ï»¿#include "bossrush.h"
 #include "functions.h"
 #include "macros.h"
 
@@ -39,7 +39,7 @@ BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = {
     {
         { "AMMO:", "MUNITION:", "MUNITIONS:" },
         {
-            { "Limited", "Limitiert", "Limitées" },
+            { "Limited", "Limitiert", "LimitÃ©es" },
             { "Full", "Voll", "Pleines" },
             { "Maxed", "Maximum", "Maximum" }
         }
@@ -67,7 +67,7 @@ BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = {
         }
     },
     {
-        { "BIG. SWORD:", "BIG.-SCHWERT:", "EPÉE DE BIG.:" },
+        { "BIG. SWORD:", "BIG.-SCHWERT:", "EPÃ‰E DE BIG.:" },
         {
             { "No", "Nein", "Non" },
             { "Yes", "Ja", "Oui" }
@@ -78,9 +78,9 @@ BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = {
         {
             { "No", "Nein", "Non" },
             { "Empty", "Leer", "Vide" },
-            { "Fairy", "Fee", "Fée" },
+            { "Fairy", "Fee", "FÃ©e" },
             { "Red Potion", "Rotes Elixier", "Potion Rouge" },
-            { "Green Potion", "Grünes Elixier", "Potion Verte" },
+            { "Green Potion", "GrÃ¼nes Elixier", "Potion Verte" },
             { "Blue Potion", "Blaues Elixier", "Potion Bleue" }
         }
     },
