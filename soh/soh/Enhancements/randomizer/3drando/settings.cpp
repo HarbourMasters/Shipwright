@@ -2932,7 +2932,7 @@ namespace Settings {
       // Random Key Rings
       if (KeyRings.Is(KEYRINGS_RANDOM) || KeyRings.Is(KEYRINGS_RANDOM_COUNT)) {
         auto keyRings = keyRingOptions;
-        if (GerudoFortress.Is(0) && GerudoKeys.IsNot(0)) {
+        if (GerudoFortress.Is(GERUDOFORTRESS_NORMAL) && GerudoKeys.IsNot(GERUDOKEYS_VANILLA)) {
           keyRings.push_back(&RingFortress);
         }
         int keyRingCount = KeyRings.Is(KEYRINGS_RANDOM_COUNT) ? KeyRingsRandomCount.Value<uint8_t>() : Random(0, keyRings.size());
