@@ -12933,7 +12933,6 @@ void func_8084E6D4(Player* this, PlayState* play) {
             }
         } else {
             func_80832DBC(this);
-
             if ((this->getItemId == GI_ICE_TRAP && !gSaveContext.n64ddFlag) ||
                 (gSaveContext.n64ddFlag && (this->getItemId == RG_ICE_TRAP || this->getItemEntry.getItemId == RG_ICE_TRAP))) {
                 this->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD);
@@ -12945,21 +12944,25 @@ void func_8084E6D4(Player* this, PlayState* play) {
                     func_8083C0E8(this, play);
                     GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
                 } else {
-                    this->actor.colChkInfo.damage = 0;
-                    func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
-                    GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
-                    this->getItemId = GI_NONE;
-                    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
-                    // Gameplay stats: Increment Ice Trap count
-                    gSaveContext.sohStats.count[COUNT_ICE_TRAPS]++;
+                        this->actor.colChkInfo.damage = 0;
+                    if (!CVarGetInteger("gChestTraps.enabled", 0)) {
+                        func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
+                    }
+                        GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
+                        this->getItemId = GI_NONE;
+                        this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
+                        // Gameplay stats: Increment Ice Trap count
+                        gSaveContext.sohStats.count[COUNT_ICE_TRAPS]++;
                 }
                 return;
             }
 
-            if (this->skelAnime.animation == &gPlayerAnim_link_normal_box_kick) {
-                func_808322D0(play, this, &gPlayerAnim_link_demo_get_itemB);
-            } else {
-                func_808322D0(play, this, &gPlayerAnim_link_demo_get_itemA);
+            if (!CVarGetInteger("gChestTraps.enabled", 0)) {
+                if (this->skelAnime.animation == &gPlayerAnim_link_normal_box_kick) {
+                        func_808322D0(play, this, &gPlayerAnim_link_demo_get_itemB);
+                } else {
+                        func_808322D0(play, this, &gPlayerAnim_link_demo_get_itemA);
+                }
             }
 
             this->unk_850 = 2;

@@ -1054,6 +1054,39 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("A wallmaster follows Link everywhere, don't get caught!");
             }
 
+            UIWidgets::Spacer(0);
+
+            UIWidgets::PaddedEnhancementCheckbox("Additional Chest Traps", "gChestTraps.enabled", true, false);
+            UIWidgets::Tooltip("Enables additional Chest Trap variants.");
+
+            if (CVarGetInteger("gChestTraps.enabled", 0)) {
+                UIWidgets::PaddedSeparator();
+                if (ImGui::BeginMenu("Chest Options")) {
+                    ImGui::Text("Tier 1 Traps:");
+                    UIWidgets::Spacer(0);
+                    UIWidgets::PaddedEnhancementCheckbox("Freeze Traps", "gChestTraps.Ice", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Burn Traps", "gChestTraps.Burn", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Shock Traps", "gChestTraps.Shock", true, false);
+
+                    UIWidgets::PaddedSeparator();
+                    ImGui::Text("Tier 2 Traps:");
+                    UIWidgets::Spacer(0);
+                    UIWidgets::PaddedEnhancementCheckbox("Knockback Traps", "gChestTraps.Knock", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Speed Traps", "gChestTraps.Speed", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Bomb Traps", "gChestTraps.Bomb", true, false);
+
+                    UIWidgets::PaddedSeparator();
+                    ImGui::Text("Tier 3 Traps:");
+                    UIWidgets::Spacer(0);
+                    UIWidgets::PaddedEnhancementCheckbox("Void Traps", "gChestTraps.Void", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Ammo Traps", "gChestTraps.Ammo", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Death Traps", "gChestTraps.Kill", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Teleport Traps", "gChestTraps.Tele", true, false);
+
+                    ImGui::EndMenu();
+                }
+            }
+
             ImGui::EndMenu();
         }
 
