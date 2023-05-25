@@ -297,7 +297,6 @@ void LoadStatsVersion1() {
     SaveManager::Instance->LoadArray("itemTimestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.sohStats.itemTimestamp[i]);
     });
-    uint32_t sceneTimestampCount = 0;
     SaveManager::Instance->LoadArray("sceneTimestamps", ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps), [&](size_t i) {
         SaveManager::Instance->LoadStruct("", [&]() {
             int scene, room, sceneTime, roomTime, isRoom;
@@ -314,7 +313,6 @@ void LoadStatsVersion1() {
             gSaveContext.sohStats.sceneTimestamps[i].sceneTime = sceneTime;
             gSaveContext.sohStats.sceneTimestamps[i].roomTime = roomTime;
             gSaveContext.sohStats.sceneTimestamps[i].isRoom = isRoom;
-            sceneTimestampCount++;
         });
     });
     SaveManager::Instance->LoadData("tsIdx", gSaveContext.sohStats.tsIdx);
