@@ -297,14 +297,24 @@ void LoadStatsVersion1() {
     SaveManager::Instance->LoadArray("itemTimestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.sohStats.itemTimestamp[i]);
     });
-    SaveManager::Instance->LoadArray("sceneTimestamps", ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps), [](size_t i) {
-        SaveManager::Instance->LoadStruct("", [&i]() {
-            SaveManager::Instance->LoadData("scene", gSaveContext.sohStats.sceneTimestamps[i].scene);
-            SaveManager::Instance->LoadData("room", gSaveContext.sohStats.sceneTimestamps[i].room);
-            SaveManager::Instance->LoadData("sceneTime", gSaveContext.sohStats.sceneTimestamps[i].sceneTime);
-            SaveManager::Instance->LoadData("roomTime", gSaveContext.sohStats.sceneTimestamps[i].roomTime);
-            SaveManager::Instance->LoadData("isRoom", gSaveContext.sohStats.sceneTimestamps[i].isRoom);
-
+    uint32_t sceneTimestampCount = 0;
+    SaveManager::Instance->LoadArray("sceneTimestamps", ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps), [&](size_t i) {
+        SaveManager::Instance->LoadStruct("", [&]() {
+            int scene, room, sceneTime, roomTime, isRoom;
+            SaveManager::Instance->LoadData("scene", scene);
+            SaveManager::Instance->LoadData("room", room);
+            SaveManager::Instance->LoadData("sceneTime", sceneTime);
+            SaveManager::Instance->LoadData("roomTime", roomTime);
+            SaveManager::Instance->LoadData("isRoom", isRoom);
+            if (scene == 0 && room == 0 && sceneTime == 0 && roomTime == 0 && isRoom == 0) {
+                return;
+            }
+            gSaveContext.sohStats.sceneTimestamps[i].scene = scene;
+            gSaveContext.sohStats.sceneTimestamps[i].room = room;
+            gSaveContext.sohStats.sceneTimestamps[i].sceneTime = sceneTime;
+            gSaveContext.sohStats.sceneTimestamps[i].roomTime = roomTime;
+            gSaveContext.sohStats.sceneTimestamps[i].isRoom = isRoom;
+            sceneTimestampCount++;
         });
     });
     SaveManager::Instance->LoadData("tsIdx", gSaveContext.sohStats.tsIdx);
@@ -341,13 +351,15 @@ void SaveStats(SaveContext* saveContext, int sectionID) {
         SaveManager::Instance->SaveData("", saveContext->sohStats.itemTimestamp[i]);
     });
     SaveManager::Instance->SaveArray("sceneTimestamps", ARRAY_COUNT(saveContext->sohStats.sceneTimestamps), [&](size_t i) {
-        SaveManager::Instance->SaveStruct("", [&]() {
-            SaveManager::Instance->SaveData("scene", saveContext->sohStats.sceneTimestamps[i].scene);
-            SaveManager::Instance->SaveData("room", saveContext->sohStats.sceneTimestamps[i].room);
-            SaveManager::Instance->SaveData("sceneTime", saveContext->sohStats.sceneTimestamps[i].sceneTime);
-            SaveManager::Instance->SaveData("roomTime", saveContext->sohStats.sceneTimestamps[i].roomTime);
-            SaveManager::Instance->SaveData("isRoom", saveContext->sohStats.sceneTimestamps[i].isRoom);
-        });
+        if (saveContext->sohStats.sceneTimestamps[i].scene != 254 && saveContext->sohStats.sceneTimestamps[i].room != 254) {
+            SaveManager::Instance->SaveStruct("", [&]() {
+                SaveManager::Instance->SaveData("scene", saveContext->sohStats.sceneTimestamps[i].scene);
+                SaveManager::Instance->SaveData("room", saveContext->sohStats.sceneTimestamps[i].room);
+                SaveManager::Instance->SaveData("sceneTime", saveContext->sohStats.sceneTimestamps[i].sceneTime);
+                SaveManager::Instance->SaveData("roomTime", saveContext->sohStats.sceneTimestamps[i].roomTime);
+                SaveManager::Instance->SaveData("isRoom", saveContext->sohStats.sceneTimestamps[i].isRoom);
+            });
+        }
     });
     SaveManager::Instance->SaveData("tsIdx", saveContext->sohStats.tsIdx);
     SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext->sohStats.count), [&](size_t i) {

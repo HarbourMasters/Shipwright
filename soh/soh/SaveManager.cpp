@@ -789,7 +789,7 @@ void SaveManager::LoadFile(int fileNum) {
 
     std::ifstream input(GetFileName(fileNum));
 
-    nlohmann::json saveBlock;
+    saveBlock = nlohmann::json::object();
     input >> saveBlock;
     if (!saveBlock.contains("version")) {
         SPDLOG_ERROR("Save at " + GetFileName(fileNum).string() + " contains no version");
