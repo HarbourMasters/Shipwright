@@ -143,6 +143,8 @@ void EnJj_Destroy(Actor* thisx, PlayState* play) {
         case JABUJABU_MAIN:
             DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
             Collider_DestroyCylinder(play, &this->collider);
+
+            ResourceMgr_UnregisterSkeleton(&this->skelAnime);
             break;
 
         case JABUJABU_COLLISION:

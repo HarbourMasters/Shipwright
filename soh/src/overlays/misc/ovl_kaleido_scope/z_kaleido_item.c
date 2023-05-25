@@ -344,12 +344,6 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
             pauseCtx->cursorItem[PAUSE_ITEM] = cursorItem;
             pauseCtx->cursorSlot[PAUSE_ITEM] = cursorSlot;
 
-            gSlotAgeReqs[SLOT_TRADE_CHILD] = gItemAgeReqs[ITEM_MASK_BUNNY] =
-                ((CVarGetInteger("gMMBunnyHood", 0) || CVarGetInteger("gTimelessEquipment", 0)) &&
-                 INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
-                    ? 9
-                    : 1;
-
             if (!CHECK_SLOT_AGE(cursorSlot)) {
                 pauseCtx->nameColorSet = 1;
             }
@@ -405,6 +399,12 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                             }
                         }
                         gSelectingMask = cursorSlot == SLOT_TRADE_CHILD;
+
+                        gSlotAgeReqs[SLOT_TRADE_CHILD] = gItemAgeReqs[ITEM_MASK_BUNNY] =
+                            ((CVarGetInteger("gMMBunnyHood", 0) || CVarGetInteger("gTimelessEquipment", 0)) &&
+                             INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
+                                ? 9
+                                : 1;
                     }
                     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
                         cursorSlot == SLOT_TRADE_ADULT && CHECK_BTN_ALL(input->press.button, BTN_A)) {

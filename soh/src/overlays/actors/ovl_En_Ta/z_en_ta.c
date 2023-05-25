@@ -243,6 +243,8 @@ void EnTa_Destroy(Actor* thisx, PlayState* play) {
     if (this->unk_2E0 & 0x200) {
         func_800F5B58();
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80B142F4(EnTa* this, PlayState* play, u16 textId) {

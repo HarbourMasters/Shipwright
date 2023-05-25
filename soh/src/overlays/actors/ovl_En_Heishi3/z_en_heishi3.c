@@ -90,6 +90,8 @@ void EnHeishi3_Destroy(Actor* thisx, PlayState* play) {
     EnHeishi3* this = (EnHeishi3*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnHeishi3_SetupGuardType(EnHeishi3* this, PlayState* play) {

@@ -88,6 +88,8 @@ void EnGm_Destroy(Actor* thisx, PlayState* play) {
     EnGm* this = (EnGm*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80A3D7C8(void) {

@@ -208,6 +208,8 @@ void EnFw_Init(Actor* thisx, PlayState* play) {
 void EnFw_Destroy(Actor* thisx, PlayState* play) {
     EnFw* this = (EnFw*)thisx;
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnFw_Bounce(EnFw* this, PlayState* play) {
