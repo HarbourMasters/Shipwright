@@ -2967,8 +2967,17 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_KEYSANITY] = CVarGetInteger("gRandomizeKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     cvarSettings[RSK_GERUDO_KEYS] = CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA);
     cvarSettings[RSK_KEYRINGS] = CVarGetInteger("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF);
-    cvarSettings[RSK_KEYRINGS_RANDOM_COUNT] = CVarGetInteger("gRandomizeShuffleKeyRingsRandomCount", 8);
-    cvarSettings[RSK_KEYRINGS_GERUDO_FORTRESS] = CVarGetInteger("gRandomizeShuffleKeyRingsGerudoFortress", 0);
+    int maxKeyringCount = (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
+                       CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA)
+                          ? 9
+                          : 8;
+    cvarSettings[RSK_KEYRINGS_RANDOM_COUNT] = std::min(CVarGetInteger("gRandomizeShuffleKeyRingsRandomCount", maxKeyringCount), maxKeyringCount);
+    // Don't allow this to be on if Gerudo Fortress Carpenters is anything other than Normal
+    cvarSettings[RSK_KEYRINGS_GERUDO_FORTRESS] =
+        (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
+         CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA)
+            ? CVarGetInteger("gRandomizeShuffleKeyRingsGerudoFortress", RO_GENERIC_OFF)
+            : RO_GENERIC_OFF;
     cvarSettings[RSK_KEYRINGS_FOREST_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsForestTemple", 0);
     cvarSettings[RSK_KEYRINGS_FIRE_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsFireTemple", 0);
     cvarSettings[RSK_KEYRINGS_WATER_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsWaterTemple", 0);
@@ -3160,6 +3169,9 @@ void DrawRandoEditor(bool& open) {
     static const char* randoItemPool[4] = { "Plentiful", "Balanced", "Scarce", "Minimal" };
     static const char* randoIceTraps[5] = { "Off", "Normal", "Extra", "Mayhem", "Onslaught" };
 
+    static int maxKeyringCount;
+    static bool disableGFKeyring = false;
+
     ImGui::SetNextWindowSize(ImVec2(920, 600), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
@@ -3327,7 +3339,9 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Fast - Only the bottom left carpenter requires rescuing.\n"
                     "\n"
-                    "Open - The bridge is repaired from the start."
+                    "Open - The bridge is repaired from the start.\n"
+                    "\n"
+                    "Only \"Normal\" is compatible with Gerudo Fortress Key Rings."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, RO_GF_NORMAL);
 
@@ -3924,7 +3938,7 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Off - No dungeons will have their keys replaced with keyrings.\n"
                     "\n"
-                    "Random - A random amount of dungeons(0-9) will have their keys replaced with keyrings.\n"
+                    "Random - A random amount of dungeons(0-8 or 9) will have their keys replaced with keyrings.\n"
                     "\n"
                     "Count - A specified amount of randomly selected dungeons will have their keys replaced with keyrings.\n"
                     "\n"
@@ -3932,18 +3946,30 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "Selecting key ring for dungeons will have no effect if Small Keys are set to Start With or Vanilla.\n"
                     "\n"
-                    "Selecting key ring for Thieves' Hideout will have no effect if Thieves' Hideout keys are in vanilla "
-                    "locations or Gerudo's Fortress is set to Fast (Rescue One Carpenter)."
+                    "If Gerudo Fortress Carpenters is set to Normal, and Gerudo Fortress Keys is set to anything "
+                    "other than Vanilla, then the maximum amount of Key Rings that can be selected by Random or "
+                    "Count will be 9. Otherwise, the maximum amount of Key Rings will be 8."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleKeyRings", randoShuffleKeyRings, RO_KEYRINGS_OFF);
                 ImGui::PopItemWidth();
                 switch (CVarGetInteger("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF)) {
                     case RO_KEYRINGS_COUNT:
-                        UIWidgets::PaddedEnhancementSliderInt("Key Ring Count: %d", "##RandomizeShuffleKeyRingsRandomCount",
-                                                        "gRandomizeShuffleKeyRingsRandomCount", 1, 9, "", 9, true, true, false);
+                        maxKeyringCount =
+                            (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
+                             CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA)
+                                ? 9
+                                : 8;
+                        UIWidgets::PaddedEnhancementSliderInt("Key Ring Count: %d",
+                                                              "##RandomizeShuffleKeyRingsRandomCount",
+                                                              "gRandomizeShuffleKeyRingsRandomCount", 1,
+                                                              maxKeyringCount, "", maxKeyringCount, true, true, false);
                         break;
                     case RO_KEYRINGS_SELECTION:
-                        UIWidgets::EnhancementCheckbox("Gerudo Fortress##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGerudoFortress");
+                        disableGFKeyring =
+                            CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) != RO_GF_NORMAL || CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) == RO_GERUDO_KEYS_VANILLA;
+                        UIWidgets::EnhancementCheckbox(
+                            "Gerudo Fortress##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGerudoFortress",
+                            disableGFKeyring, "Disabled because the currently selected Gerudo Fortress Carpenters\n setting and/or Gerudo Fortress Keys setting is incompatible with \nhaving a Gerudo Fortress keyring.");
                         UIWidgets::EnhancementCheckbox("Forest Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsForestTemple");
                         UIWidgets::EnhancementCheckbox("Fire Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsFireTemple");
                         UIWidgets::EnhancementCheckbox("Water Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsWaterTemple");
