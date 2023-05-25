@@ -93,6 +93,9 @@ void EnNiwGirl_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnNiwGirl_Destroy(Actor* thisx, PlayState* play) {
+    EnNiwGirl* this = (EnNiwGirl*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnNiwGirl_Jump(EnNiwGirl* this, PlayState* play) {

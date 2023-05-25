@@ -171,6 +171,8 @@ void EnVali_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyQuad(play, &this->leftArmCollider);
     Collider_DestroyQuad(play, &this->rightArmCollider);
     Collider_DestroyCylinder(play, &this->bodyCollider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnVali_SetupLurk(EnVali* this) {

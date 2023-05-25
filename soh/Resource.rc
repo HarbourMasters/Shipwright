@@ -91,6 +91,13 @@ END
 // remains consistent on all systems.
 IDI_ICON1               ICON                    "SHIPOFHARKINIAN.ico"
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+
+1                       RT_MANIFEST             "SHIPOFHARKINIAN.manifest"
+
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 

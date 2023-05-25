@@ -500,6 +500,7 @@ if(MSVC)
                 /INCREMENTAL:NO;
                 /FORCE:MULTIPLE
             >
+            /MANIFEST:NO;
             /DEBUG;
             /SUBSYSTEM:WINDOWS
         )
@@ -514,6 +515,7 @@ if(MSVC)
                 /INCREMENTAL:NO;
                 /FORCE:MULTIPLE
             >
+            /MANIFEST:NO;
             /DEBUG;
             /SUBSYSTEM:WINDOWS
         )

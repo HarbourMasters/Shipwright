@@ -188,6 +188,8 @@ void EnPoField_Destroy(Actor* thisx, PlayState* play) {
         Collider_DestroyCylinder(play, &this->flameCollider);
         Collider_DestroyCylinder(play, &this->collider);
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnPoField_SetupWaitForSpawn(EnPoField* this, PlayState* play) {

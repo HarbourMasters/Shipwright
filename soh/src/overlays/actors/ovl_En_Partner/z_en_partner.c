@@ -124,6 +124,8 @@ void EnPartner_Destroy(Actor* thisx, PlayState* play) {
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNodeNoGlow);
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnPartner_UpdateLights(EnPartner* this, PlayState* play) {

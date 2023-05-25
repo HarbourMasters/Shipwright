@@ -161,6 +161,8 @@ void EnCs_Destroy(Actor* thisx, PlayState* play) {
     EnCs* this = (EnCs*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnCs_GetTalkState(EnCs* this, PlayState* play) {
