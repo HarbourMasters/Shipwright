@@ -257,7 +257,7 @@ extern "C" void BossRush_HandleCompleteBoss(PlayState* play) {
     }
 
     if ((CheckDungeonCount() == 3 && gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) ||
-        play->sceneNum == SCENE_GANON_FINAL) {
+        play->sceneNum == SCENE_GANON_DEMO) {
         gSaveContext.sohStats.gameComplete = 1;
         gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_FINISH] = GAMEPLAYSTAT_TOTAL_TIME;
     }
