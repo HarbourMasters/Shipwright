@@ -1471,15 +1471,15 @@ const char* FileChoose_GetQuestChooseTitleTexName(Language lang) {
     }
 }
 
-const char* FileChoose_GetbossRushOptionsTitleTexName(Language lang) {
+const char* FileChoose_GetBossRushOptionsTitleTexName(Language lang) {
     switch (lang) {
         case LANGUAGE_ENG:
         default:
-            return "__OTR__textures/title_static/gFileSelBossRushSettingsENGTex";
+            return gFileSelBossRushSettingsENGText;
         case LANGUAGE_FRA:
-            return "__OTR__textures/title_static/gFileSelBossRushSettingsFRATex";
+            return gFileSelBossRushSettingsFRAText;
         case LANGUAGE_GER:
-            return "__OTR__textures/title_static/gFileSelBossRushSettingsGERTex";
+            return gFileSelBossRushSettingsGERText;
     }
 }
 
@@ -1509,7 +1509,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         case CM_BOSS_RUSH_MENU:
         case CM_START_BOSS_RUSH_MENU:
         case CM_BOSS_RUSH_TO_QUEST:
-            tex = FileChoose_GetbossRushOptionsTitleTexName(gSaveContext.language);
+            tex = FileChoose_GetBossRushOptionsTitleTexName(gSaveContext.language);
             break;
         default:
             tex = sTitleLabels[gSaveContext.language][this->titleLabel];
@@ -1589,7 +1589,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleTheLegendOfTextTex, 72, 8, 156, 108, 72, 8, 1024, 1024);
                 FileChoose_DrawTextureI8(this->state.gfxCtx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 154, 163, 96, 8, 1024, 1024);
                 FileChoose_DrawImageRGBA32(this->state.gfxCtx, 160, 135, ResourceMgr_GameHasOriginal() ? gTitleZeldaShieldLogoTex : gTitleZeldaShieldLogoMQTex, 160, 160);
-                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 182, 180, "__OTR__objects/object_mag/gTitleBossRushSubtitleTex", 128, 32);
+                FileChoose_DrawImageRGBA32(this->state.gfxCtx, 182, 180, gTitleBossRushSubtitleTex, 128, 32);
                 break;
         }
     } else if (this->configMode == CM_BOSS_RUSH_MENU) {
@@ -1602,7 +1602,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         if (listOffset > 0) {
             uint16_t arrowUpX = 140;
             uint16_t arrowUpY = 76 - (this->bossRushArrowOffset / 10);
-            gDPLoadTextureBlock(POLY_OPA_DISP++, "__OTR__textures/parameter_static/garrowUp", G_IM_FMT_IA,
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowUpTex, G_IM_FMT_IA,
                                 G_IM_SIZ_16b, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             gSPWideTextureRectangle(POLY_OPA_DISP++, arrowUpX << 2, arrowUpY << 2, (arrowUpX + 8) << 2,
@@ -1612,7 +1612,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         if (BOSSRUSH_OPTIONS_AMOUNT - listOffset > BOSSRUSH_MAX_OPTIONS_ON_SCREEN) {
             uint16_t arrowDownX = 140;
             uint16_t arrowDownY = 181 + (this->bossRushArrowOffset / 10);
-            gDPLoadTextureBlock(POLY_OPA_DISP++, "__OTR__textures/parameter_static/gArrowDown", G_IM_FMT_IA,
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowDownTex, G_IM_FMT_IA,
                                 G_IM_SIZ_16b, 16, 16, 0,
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
