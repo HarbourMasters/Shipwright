@@ -3,6 +3,7 @@
 #include <random>
 
 #include <functions.h>
+#include <overlays/actors/ovl_Obj_Switch/z_obj_switch.h>
 const int MAX_DB_REDUCTION = 35;//This is the amount in DB that a sound will be reduced by when it is at the maximum distance from the player. A reduction of -35 DB pretty much makes a sound inaudible.
 //One potential use of virtual actors is to place sounds at static platforms or other things that aren't represented by actors.
 typedef std::map<s16, ActorAccessibilityPolicy> SupportedActors_t;
@@ -47,7 +48,7 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
 
  }
 
-void ActorAccessibility_TrackNewActor(Actor* actor) {
+void ActorAccessibility_TrackNewActor(Actor* actor, ObjSwitch* sw) {
         // Don't track actors for which no accessibility policy has been configured.
         ActorAccessibilityPolicy* policy = ActorAccessibility_GetPolicyForActor(actor->id);
         if (policy == NULL)
@@ -56,6 +57,13 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         state.instanceID = ActorAccessibility_GetNextID();
         state.actor = actor;
         state.id = actor->id;
+        state.params = actor->params;
+        state.flags = actor->flags;
+        state.scaley = actor->scale.y;
+        if (sw != NULL && sw->eyeTexIndex != NULL) {
+            state.eyeTex = sw->eyeTexIndex;
+
+        }
         //Stagger the start times so that all of the sounds don't play at exactly the same time.
         state.frameCount = ActorAccessibility_GetRandomStartingFrameCount(0, policy->n);
         state.basePitch = policy->pitch;
