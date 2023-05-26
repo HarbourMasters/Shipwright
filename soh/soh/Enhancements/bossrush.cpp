@@ -221,6 +221,10 @@ extern "C" void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpP
 }
 
 extern "C" void BossRush_HandleCompleteBoss(PlayState* play) {
+    if (!gSaveContext.isBossRush) {
+        return;
+    }
+
     gSaveContext.isBossRushPaused = 1;
     switch (play->sceneNum) {
         case SCENE_YDAN_BOSS:
