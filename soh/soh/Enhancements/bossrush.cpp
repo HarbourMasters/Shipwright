@@ -265,8 +265,8 @@ extern "C" void BossRush_HandleCompleteBoss(PlayState* play) {
 
 extern "C" void BossRush_InitSave() {
 
-    // Set player name to Link just in case it'll be used in textboxes. Player can't input their own name.
-    static std::array<char, 8> brPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
+    // Set player name to Lonk for the few textboxes that show up during Boss Rush. Player can't input their own name.
+    std::array<char, 8> brPlayerName = { 21, 50, 49, 46, 62, 62, 62, 62 };
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
         gSaveContext.playerName[i] = brPlayerName[i];
     }
@@ -330,7 +330,7 @@ extern "C" void BossRush_InitSave() {
     }
 
     // Set items
-    static std::array<u8, 24> brItems = {
+    std::array<u8, 24> brItems = {
         ITEM_STICK,     ITEM_NUT,  ITEM_BOMB, ITEM_BOW,      ITEM_NONE,        ITEM_NONE,
         ITEM_SLINGSHOT, ITEM_NONE, ITEM_NONE, ITEM_HOOKSHOT, ITEM_NONE,        ITEM_NONE,
         ITEM_BOOMERANG, ITEM_LENS, ITEM_NONE, ITEM_HAMMER,   ITEM_ARROW_LIGHT, ITEM_NONE,
@@ -366,7 +366,7 @@ extern "C" void BossRush_InitSave() {
     }
 
     // Set consumable counts
-    static std::array<s8, 16> brAmmo = { 5, 5, 10, 10, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    std::array<s8, 16> brAmmo = { 5, 5, 10, 10, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     if (gSaveContext.bossRushOptions[BR_OPTIONS_AMMO] == BR_CHOICE_AMMO_FULL) {
         brAmmo = { 10, 20, 20, 30, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -426,8 +426,8 @@ extern "C" void BossRush_InitSave() {
 
 void BossRush_SetEquipment(uint8_t linkAge) {
 
-    static std::array<u8, 8> brButtonItems;
-    static std::array<u8, 7> brCButtonSlots;
+    std::array<u8, 8> brButtonItems;
+    std::array<u8, 7> brCButtonSlots;
 
     // Set Child Equipment.
     if (linkAge == LINK_AGE_CHILD) {
