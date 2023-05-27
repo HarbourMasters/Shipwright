@@ -434,7 +434,7 @@ void DrawGameplayStatsHeader() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
     ImGui::BeginTable("gameplayStatsHeader", 1, ImGuiTableFlags_BordersOuter);
     ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
-    GameplayStatsRow("Build Version:", gSaveContext.sohStats.buildVersion);
+    GameplayStatsRow("Build Version:", (char*) gBuildVersion);
     if (gSaveContext.sohStats.rtaTiming) {
         GameplayStatsRow("Total Time (RTA):", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME), gSaveContext.sohStats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     } else {
@@ -615,8 +615,8 @@ void DrawGameplayStatsOptionsTab() {
 
 void DrawStatsTracker(bool& open) {
     if (!open) {
-        if (CVarGetInteger("gGameplayStatsEnabled", 0)) {
-            CVarClear("gGameplayStatsEnabled");
+        if (CVarGetInteger("gGameplayStats.Enabled", 0)) {
+            CVarClear("gGameplayStats.Enabled");
             LUS::RequestCvarSaveOnNextTick();
         }
         return;
@@ -844,6 +844,7 @@ extern "C" void InitStatTracker() {
     LUS::AddWindow("Enhancements", "Gameplay Stats", DrawStatsTracker, CVarGetInteger("gGameplayStats.Enabled", 0));
     SetupDisplayNames();
     SetupDisplayColors();
+
     SaveManager::Instance->AddLoadFunction("sohStats", 1, LoadStatsVersion1);
     // Add main section save, no parent
     SaveManager::Instance->AddSaveFunction("sohStats", 1, SaveStats, true, SECTION_PARENT_NONE);
