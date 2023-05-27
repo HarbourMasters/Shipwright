@@ -18,7 +18,7 @@ std::shared_ptr<Resource> AudioSampleFactory::ReadResource(std::shared_ptr<Resou
         factory = std::make_shared<AudioSampleFactoryV0>();
         break;
     case 3:
-        factory = std::make_shared<AudioSampleFactoryV1>(); //wav/mp3
+        factory = std::make_shared<AudioSampleFactoryV1>(); //wav
         break;
     }
 
